@@ -133,10 +133,9 @@
 <script type="text/javascript" >
 
 var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
-
+titlePage = "smartconso";
 jQuery(document).ready(function() {
-
-    setTitle("", "", titlePage);
+    setTitle(titlePage, "recycle", titlePage);
     initKInterface({"affixTop":320});
 
 });

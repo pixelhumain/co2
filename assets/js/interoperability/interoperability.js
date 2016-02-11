@@ -576,7 +576,7 @@ function getScopeValue() {
 }
 
 function getCityId() { 
-
+    var city_id = "";
     if ($.cookie().communexionActivated == true) {
         city_id = communexion.currentValue;
     } else { 
@@ -598,7 +598,7 @@ function getCityId() {
 }
 
 function getTypeZone() {
-
+    var type_zone = "";
     if ($.cookie().communexionActivated == true) {
         type_zone = "city";
     } else { 

@@ -86,17 +86,23 @@ foreach($news as $key => $media){
     <div class="timeline-panel"
          id="nbAbuse<?php echo @$media["reportAbuseCount"]; ?>">
          <?php if( @$media["reportAbuseCount"] >= 1){ ?>
-         <h6>
-            <small class="pull-left margin-left-10 letter-orange">
-              <i class="fa fa-flag"></i> Ce contenu a été signalé <?php echo @$media["reportAbuseCount"]; ?> fois !<br>
-              <b>participez à la modération en signalant le contenu qui vous semble innaproprié</b>
-            </small>
-         </h6>
-         <button class="btn btn-link bg-orange pull-right margin-right-10 btn-start-moderation"
-                 data-newsid="<?php echo @$media["_id"]; ?>" 
-                 data-toggle="modal" data-target="#modal-moderation">
-            <i class="fa fa-balance-scale"></i> Modération
-        </button>
+           <h6 class="pull-left">
+              <small class="pull-left margin-left-10 letter-orange">
+                <i class="fa fa-flag"></i> Ce contenu a été signalé <?php echo @$media["reportAbuseCount"]; ?> fois !
+                <?php if(@$media["reportAbuseCount"] < 4){ ?>
+                  <br><b>participez à la modération en signalant le contenu qui vous semble innaproprié</b>
+                <?php }else{ ?>
+                  <br><b>participez à la modération en votant</b>
+                <?php } ?>
+              </small>
+           </h6>
+           <?php if(@$media["reportAbuseCount"] >= 1 && isset(Yii::app()->session["userId"])){ ?>
+           <button class="btn btn-link bg-orange pull-right margin-right-10 margin-top-10 btn-start-moderation"
+                   data-newsid="<?php echo @$media["_id"]; ?>" 
+                   data-toggle="modal" data-target="#modal-moderation">
+              <i class="fa fa-balance-scale"></i> Modération
+          </button>
+          <?php } ?>
          <?php } ?>
       <?php 
         $this->renderPartial('../news/timeline-panel', 
@@ -153,27 +159,25 @@ foreach($news as $key => $media){
     
     $.each(news, function(e,v){
       updateNews[e]= v;
-      if(typeof v._id.$id != "undefined")
-      if($(".newsActivityStream"+v._id.$id).length>0)
-         $("#news"+v._id.$id).remove();
+        if(typeof v._id.$id != "undefined")
+        if($("#news-list .newsActivityStream"+v._id.$id).length>0)
+           $("#news-list #news"+v._id.$id).remove();
 
-      if(typeof v.object != "undefined"){ 
-        if($(".newsActivityStream"+v.object.id).length>0)
-          $("#news"+v.object.id).remove();
+        if(typeof v.object != "undefined"){ 
+          if($("#news-list .newsActivityStream"+v.object.id).length>0)
+            $("#news-list #news"+v.object.id).remove();
 
-        $(".newsActivityStream"+v.object.id).each(function(b, ob){
-          if(b>0) {
-            var parent = $(ob).parent().parent().parent();
-            parent.remove();
-          }
-        });
-
+          $("#news-list .newsActivityStream"+v.object.id).each(function(b, ob){
+            if(b>0) {
+              var parent = $(ob).parent().parent().parent();
+              parent.remove();
+            }
+          });
         if(v.object.type != "news"){
           var html = directory.showResultsDirectoryHtml(new Array(v.object), v.object.type);
           $(".newsActivityStream"+v.object.id).html(html);
         }
       }
-
     });
 
     $.each(news, function(e,v){

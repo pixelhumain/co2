@@ -47,6 +47,37 @@
 <?php exit; } ?>
 
 
+<div class="col-lg-9 col-md-12 col-sm-12 pull-left margin-bottom-15">
+	
+	<?php if(@$proposal["status"] == "tovote"){ ?>
+		<h5>
+			<?php if(@$proposal["voteDateEnd"]){ ?>
+				<i class='fa fa-clock-o'></i> <?php echo Yii::t("cooperation", "End of vote session"); ?> 
+				<?php echo Translate::pastTime($proposal["voteDateEnd"], "date"); ?> · 
+				<small class='letter-green'> 
+					<?php echo date('d/m/Y H:i e', strtotime($proposal["voteDateEnd"])); ?>
+				</small>
+			<?php }else{ ?>
+				<?php echo Yii::t("cooperation", "Vote open until undefined date"); ?>
+			<?php } ?>
+			
+		</h5>
+	<?php } ?>
+
+	<?php if(@$proposal["status"] == "tovote" && $hasVote!=false){ ?>
+		<h5 class="pull-left no-margin"><i class="fa fa-user-circle"></i> <?php echo Yii::t("cooperation", "You did vote"); ?> 
+			<span class="letter-<?php echo Cooperation::getColorVoted($hasVote); ?>">
+				<?php echo Yii::t("cooperation", $hasVote); ?>
+			</span>
+		</h5>
+	<?php }elseif(@$proposal["status"] == "tovote"){ ?>
+		<h5 class="letter-red pull-left no-margin">
+			<i class="fa fa-user-circle"></i> <?php echo Yii::t("cooperation", "You did not vote"); ?>
+		</h5>
+	<?php } ?>
+</div>
+
+
 <?php if(@$proposal["status"] == "resolved"){ ?>
 	<div class="col-lg-9 col-md-12 col-sm-12 margin-bottom-15">
 		<h4 class="">
@@ -95,6 +126,14 @@
 		display: none;
 	}
 
+	#modal-moderation .timeline > li{
+		width:100%!important;
+	}
+
+	#modal-moderation .timeline::before {
+		left:0px;
+	}
+
 </style>
 <div class="col-xs-12 letter-blue padding-15 hidden" id="howitworkmoderation">
 		<button class="btn btn-link pull-right btn-howitworkmoderation"><i class="fa fa-times"></i></button>
@@ -141,14 +180,17 @@
 
 <ul class="col-lg-8 col-md-8 col-sm-10 col-xs-12 margin-top-15 timeline" id="news-to-moderate">
 	
-    <?php $this->renderPartial('../news/newsPartialCO2', 
+    <?php 
+    	unset($news["reportAbuseCount"]);
+    	$this->renderPartial('../news/newsPartialCO2', 
                           array( "news"=>array($news),
                                  "pair"=>false,
                                  "nbCol"=>1,
                                  "timezone"=>"",
                                  "canManageNews" => false,
                                  "isLive" => false,
-                                 "isFirst"=>false)); ?>
+                                 "isFirst"=>false,
+                                 "notClearDouble"=>true)); ?>
 </ul>
 
 

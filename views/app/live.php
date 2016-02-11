@@ -147,6 +147,7 @@ var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 jQuery(document).ready(function() {
 
 	$(".subsub").hide();
+
 	//setTitle("", "", titlePage);
 
 	/*var liveType = "<?php echo (@$type && !empty($type)) ? $type : ''; ?>";
@@ -183,7 +184,7 @@ jQuery(document).ready(function() {
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
-            startNewsSearch(true);
+            startNewsSearch(true); 
             KScrollTo("#content-social");
         }
     });
@@ -218,7 +219,7 @@ jQuery(document).ready(function() {
     });
 
 
-    setTitle(titlePage, "stack-exchange", titlePage);
+    setTitle(titlePage, "stack-exchange", "freedom ");
     //KScrollTo(".main-btn-scopes");
 });
 

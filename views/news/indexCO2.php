@@ -31,6 +31,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
       '/js/news/newsHtml.js',
       '/js/menus/multi_tags_scopes.js',
       '/js/cooperation/uiModeration.js',
+      '/js/cooperation/uiCoop.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 

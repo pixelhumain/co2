@@ -18,8 +18,7 @@
                     </small>
                 </h3>
                 <hr>
-                <div class="" id="coop-data-container">
-                    
+                <div class="" id="coop-data-container">        
                 </div>
             </div>
             <div class="col-xs-12">

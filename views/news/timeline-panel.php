@@ -247,9 +247,12 @@
       </span>
     <?php } ?>
     
-    <?php if(!empty(@$media["text"])){ ?>
+    <?php if(!empty(@$media["text"]) && (!@$media["reportAbuseCount"] || @$media["reportAbuseCount"] < 4)){ ?>
       <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" 
            class="newsContent no-padding"><?php echo $media["text"]; ?>
+      </div>
+      <?php }else if(@$media["reportAbuseCount"] >= 4){ ?>
+      <div class="newsContent no-padding letter-red">Contenu masqué
       </div>
     <?php } ?>
 

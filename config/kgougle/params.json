@@ -57,6 +57,19 @@
                   "mainTitle" : "Fil d'actu <span class='letter-red'>média</span>",
                   "placeholderMainSearch" : "rechercher dans l'actu ..."},
 
+            "#social": {
+                  "inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true,
+                  "subdomain" : "social", 
+                  "subdomainName" : "social",
+                  "hash" : "#app.search",
+                  "icon" : "user-circle-o", 
+                  "mainTitle" : "Réseau social citoyen",
+                  "placeholderMainSearch" : "rechercher une page ...",
+                  "lblBtnCreate" : "Créer une page",
+                  "colorBtnCreate" : "green"},
+
             "#freedom": {
                   "inMenu" : true, 
                   "useHeader" : true, 
@@ -68,19 +81,6 @@
                   "mainTitle" : "Fil de discussion <span class='letter-red'>citoyen</span>",
                   "placeholderMainSearch" : "Rechercher dans le fil de discussion ..."
             },
-
-            "#social":
-      	  	{"inMenu" : true, 
-                  "useHeader" : true, 
-                  "open" : true,
-                  "subdomain" : "social", 
-                  "subdomainName" : "social",
-                  "hash" : "#app.search",
-                  "icon" : "user-circle-o", 
-                  "mainTitle" : "Réseau social citoyen",
-                  "placeholderMainSearch" : "rechercher une page ...",
-                  "lblBtnCreate" : "Créer une page",
-                  "colorBtnCreate" : "green"},
 
       	"#annonces":
       	  	{"inMenu" : true, 

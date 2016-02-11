@@ -449,6 +449,7 @@ class CommunecterController extends Controller
       "index" => array("href" => "/ph/co2/gamification/index"),
     ),
     "graph"=> array(
+      "getdata" => array("href" => "/ph/co2/graph/getdata"),
       "viewer" => array("href" => "/ph/co2/graph/viewer"),
     ),
     "log"=> array(

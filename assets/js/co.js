@@ -645,6 +645,7 @@ var urlCtrl = {
 	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
+	    "#graph.viewer" : {title:'GRAPE VIEW', icon : 'share-alt', useHeader: true },
 	    //"#news.detail" : {title:'NEWS DETAIL ', icon : 'rss' },
 	    //"#news.index.type" : {title:'NEWS INDEX ', icon : 'rss', menuId:"menu-btn-news-network","urlExtraParam":"isFirst=1" },
 	    "#need.detail" : {title:'NEED DETAIL ', icon : 'cubes' },

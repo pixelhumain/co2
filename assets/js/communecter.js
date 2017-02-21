@@ -607,6 +607,7 @@ function jsController(hash){
 	mylog.log("jsController",hash);
 	res = false;
 	$(".menuShortcuts").addClass("hide");
+	mylog.log("loadableUrls", loadableUrls);
 	$.each( loadableUrls, function(urlIndex,urlObj)
 	{
 		//mylog.log("replaceAndShow2",urlIndex);

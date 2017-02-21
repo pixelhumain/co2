@@ -1,0 +1,56 @@
+{
+	"Technologie" : 
+		["TV / Vidéo", "Informatique", "Tablettes", "Téléphonie", "Appareils photos", "Appareil audio"], 
+	 
+	 "Immobilier" : 
+	 	["Maison", "Appartement", "Terrain", "Parking", "Bureaux"], 
+	 
+	 "Véhicules" : 
+	 	[	"Voiture", 
+ 			"SUV", 
+ 			"4x4", 
+ 			"Moto", 
+ 			"Scooter", 
+ 			"Bateau", 
+ 			"Voiturette", 
+ 			"Vélos",
+ 			"Équipement véhicule",
+ 			"Équipement 2 roues",
+ 			"Équipement bateau",
+ 			"Équipement vélo"
+	 	], 
+
+	 "Maison" : 
+		[	 "Electroménager",
+			 "Mobilier", 
+			 "Équipement bébé", 
+			 "Animaux", 
+			 "Divers"
+		],
+
+	 "Loisirs" : 
+		[	 "Sports", 
+	 		 "Instrument musique", 
+	 		 "Sonorisation", 
+	 		 "CD / DVD",
+			 "Jouet", 
+			 "Jeux de société", 
+			 "Livres / BD", 
+			 "Collections", 
+			 "Bricolages", 
+			 "Jardinage", 
+			 "Art / Déco", 
+			 "Modélisme", 
+			 "Puériculture", 
+			 "Animaux", 
+			 "Divers"
+		],
+
+	"Mode" : 
+		[	 "Vêtements", 
+			 "Chaussures", 
+			 "Accessoires", 
+			 "Montres", 
+			 "Bijoux"
+		]
+}

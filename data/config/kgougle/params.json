@@ -1,0 +1,91 @@
+{ 
+      "title" : "kgougle",
+
+      "pages" : 
+      {
+      	"#co2.index":
+      		 {"redirect":"web"},
+      	  
+      	"#co2.web":
+      	  	{"inMenu" : true, 
+                  "useHeader" : true, 
+                  "subdomain" : "web", 
+                  "subdomainName" : "web",
+                  "icon" : "search", 
+                  "mainTitle" : "Le moteur de recherche des cagous",
+                  "placeholderMainSearch" : "Que recherchez-vous ?"},
+
+      	"#co2.referencement":
+      	  	{"inMenu" : false, 
+                  "useHeader" : true, 
+                  "subdomain" : "referencement", 
+                  "subdomainName" : "referencement",
+                  "icon" : "search", 
+                  "mainTitle" : "Référencer un site",
+                  "placeholderMainSearch" : ""},
+
+      	"#co2.media":
+      	  	{"inMenu" : true, 
+                  "useHeader" : true, 
+                  "subdomain" : "media", 
+                  "subdomainName" : "media",
+                  "icon" : "newspaper-o", 
+                  "mainTitle" : "Toute l'actu du pays, d'hier à aujourd'hui",
+                  "placeholderMainSearch" : "rechercher dans l'actu ..."},
+
+      	"#co2.social":
+      	  	{"inMenu" : true, 
+                  "useHeader" : true, 
+                  "subdomain" : "social", 
+                  "subdomainName" : "social",
+                  "icon" : "user-circle-o", 
+                  "mainTitle" : "Le réseau social des Nouzot",
+                  "placeholderMainSearch" : "rechercher une page ..."},
+
+      	"#co2.freedom":
+      	  	{"inMenu" : true, 
+                  "useHeader" : true, 
+                  "subdomain" : "freedom", 
+                  "subdomainName" : "freedom",
+                  "icon" : "comments", 
+                  "mainTitle" : "Toutes vos annonces en direct",
+                  "placeholderMainSearch" : "rechercher parmis les annonces  ..."},
+
+      	"#co2.agenda":
+      	  	{"inMenu" : true, 
+                  "useHeader" : true, 
+                  "subdomain" : "agenda", 
+                  "subdomainName" : "agenda",
+                  "icon" : "calendar", 
+                  "mainTitle" : "L'agenda collaboratif des Calédoniens",
+                  "placeholderMainSearch" : "rechercher un événement  ..."},
+
+      	"#co2.power":
+      	  	{"inMenu" : true, 
+                  "useHeader" : true, 
+                  "subdomain" : "power", 
+                  "subdomainName" : "power",
+                  "icon" : "hand-rock-o", 
+                  "mainTitle" : "L'espace collaboratif des Calédoniens.",
+                  "placeholderMainSearch" : "rechercher parmis les propositions"},
+
+      	"#co2.page.type":
+      	  	{"inMenu" : false, 
+                  "useHeader" : false, 
+                  "subdomain" : "page.type", 
+                  "subdomainName" : "page",
+                  "icon" : "", 
+                  "mainTitle" : "Le réseau social Calédonien",
+                  "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."},
+
+      	"#co2.info":
+      	  	{"inMenu" : false, 
+                  "useHeader" : false, 
+                  "subdomain" : "apropos", 
+                  "subdomainName" : "Info",
+                  "icon" : "search", 
+                  "mainTitle" : "Le moteur de recherche des Cagous",
+                  "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."}
+      } 								  
+
+}

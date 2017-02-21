@@ -1,0 +1,73 @@
+{
+  "title" : "CO2",
+
+	"pages" : 
+		{
+		  "#co2.index":
+			 	 {"redirect":"social"},
+			  
+			"#co2.social":
+			  	{"inMenu" : true, 
+            "useHeader" : true, 
+            "subdomain" : "social", 
+            "subdomainName" : "Recherche",
+            "icon" : "search", 
+            "mainTitle" : "Moteur de recherche <span class='letter-red'>territorial</span>",
+            "placeholderMainSearch" : "Rechercher une page ..."
+          },
+
+			"#co2.freedom":
+			  	{"inMenu" : true, 
+            "useHeader" : true, 
+            "subdomain" : "freedom", 
+            "subdomainName" : "annonces",
+            "icon" : "newspaper-o", 
+            "mainTitle" : "Toutes vos annonces en direct",
+            "placeholderMainSearch" : "rechercher parmis les annonces  ..."
+          },
+
+			"#co2.agenda":
+			  	{"inMenu" : true, 
+            "useHeader" : true, 
+            "subdomain" : "agenda", 
+            "subdomainName" : "agenda",
+            "icon" : "calendar", 
+            "mainTitle" : "L'agenda <span class='letter-red'>CO</span>mmun",
+            "placeholderMainSearch" : "rechercher un événement ..."
+          },
+
+			"#co2.power":
+			  	{"inMenu" : true, 
+            "useHeader" : true, 
+            "subdomain" : "power", 
+            "subdomainName" : "power",
+            "icon" : "hand-rock-o", 
+            "mainTitle" : "Un bien <span class='letter-red'>CO</span>mmun dédié à l'intelligence <span class='letter-red'>CO</span>llective",
+            "placeholderMainSearch" : "rechercher parmis les propositions ..."
+          },
+
+			"#co2.page.type":
+			  	{"inMenu" : false, 
+            "useHeader" : false, 
+            "subdomain" : "page.type", 
+            "subdomainName" : "page",
+            "icon" : "", 
+            "mainTitle" : "Le réseau social à effet de sert",
+            "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
+          },
+
+			"#co2.info":
+			  	{"inMenu" : false, 
+            "useHeader" : false, 
+            "subdomain" : "apropos", 
+            "subdomainName" : "Info",
+            "icon" : "search", 
+            "mainTitle" : "Le réseau social à effet de sert",
+            "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
+          }
+      
+	  }
+  
+  }
+
+

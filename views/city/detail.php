@@ -255,7 +255,7 @@ $this->renderPartial('../default/panels/toolbar');
                 </div>
                 <div class="space20"></div>
                 <a href="javascript:elementLib.openForm(zonesDynForm)" class="btn btn-default">Zones</a>
-                <a href="javascript:cityFinderObj.finder('city','<?php echo $city["name"];?>')" class="btn btn-default">Filiaires locales</a>  <a href="javascript:cityFinderObj.finder('departement','<?php echo $city["depName"];?>')" class="btn btn-default">Filiaires département</a>  <a href="javascript:cityFinderObj.finder('region','<?php echo $city["regionName"];?>')" class="btn btn-default">Filiaires région</a> 
+                <a href="javascript:cityFinderObj.finder('city','<?php echo $city["name"];?>')" class="btn btn-default">Filiaires locales</a>  <a href="javascript:cityFinderObj.finder('departement','<?php echo @$city["depName"];?>')" class="btn btn-default">Filiaires département</a>  <a href="javascript:cityFinderObj.finder('region','<?php echo @$city["regionName"];?>')" class="btn btn-default">Filiaires région</a> 
         <!--       </div>
             </div>
            
@@ -640,11 +640,11 @@ var cityFinderObj = {
   {
     scopeType = type;
     if( type == "region" ) 
-        scopeName = 'region : <?php echo $city["regionName"];?>';
+        scopeName = 'region : <?php echo @$city["regionName"];?>';
     else if( type == "departement" ) 
-        scopeName = 'dep : <?php echo $city["depName"];?>';
+        scopeName = 'dep : <?php echo @$city["depName"];?>';
     else 
-        scopeName = '<?php echo $city["name"];?>';
+        scopeName = '<?php echo @$city["name"];?>';
 
     cityFinderObj.title1 = "<i class='fa fa-map-marker text-yellow'></i> "+scopeName; 
 
@@ -700,9 +700,9 @@ var cityFinderObj = {
     delete params.searchLocalityREGION;
     delete params.searchLocalityDEPARTEMENT;
     if( type == "region" ) 
-        params.searchLocalityREGION = ['<?php echo $city["regionName"];  ?>'];
+        params.searchLocalityREGION = ['<?php echo @$city["regionName"];  ?>'];
     if( type == "departement" ) 
-        params.searchLocalityDEPARTEMENT = ['<?php echo $city["depName"];  ?>'];
+        params.searchLocalityDEPARTEMENT = ['<?php echo @$city["depName"];  ?>'];
     else 
         params.searchLocalityCODE_POSTAL = postalCodes;
     

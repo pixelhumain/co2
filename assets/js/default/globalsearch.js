@@ -150,7 +150,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                   var dataId = "";
                   if(type == "city"){
                     //url = "javascript:"; //#main-col-search";
-                    //onclick = 'loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'");'; //"'+o.name.replace("'", "\'")+'");';
+                    url = '#co2.city.insee.' + insee + '.postalCode.'+postalCode; //"'+o.name.replace("'", "\'")+'");';
                     //onclickCp = 'loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'";';
                     //target = "";
                     dataId = o.name; //.replace("'", "\'");

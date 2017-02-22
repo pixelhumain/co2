@@ -462,6 +462,7 @@ class CommunecterController extends Controller
       "power"             => array('href' => "/ph/communecter/co2/power",             "public" => true),
       "superadmin"        => array('href' => "/ph/communecter/co2/superadmin",        "public" => false),
       "info"              => array('href' => "/ph/communecter/co2/info",              "public" => false),
+      "city"              => array('href' => "/ph/communecter/co2/city",              "public" => false),
       ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick")

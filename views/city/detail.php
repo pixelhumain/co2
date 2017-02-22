@@ -407,7 +407,10 @@ jQuery(document).ready(function() {
     $("#btn-communecter").attr("onclick", "");
   }
 
-  Sig.showMapElements(Sig.map, contextMap);
+  setTimeout(function(){
+    Sig.showMapElements(Sig.map, contextMap);
+  }, 4000);
+  
   //initCityMap();
 /*  $('.pulsate').pulsate({
             color: '#2A3945', // set the color of the pulse
@@ -500,7 +503,7 @@ function initCityMap(){
   
   Sig.showMapElements(Sig.map, contextMap);
   var latlng = [parseFloat(city.geo.latitude)+0.0003, parseFloat(city.geo.longitude)+0.0003];
-   mylog.dir(latlng);
+  mylog.dir(latlng);
  
   var content = Sig.getPopupSimpleCity(city);
   var properties = {  id : "0",

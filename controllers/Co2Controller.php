@@ -141,11 +141,16 @@ class Co2Controller extends CommunecterController {
 	}
 
 
-	public function actionInfo($p){
-		$CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? 
-							   Yii::app()->params["CO2DomainName"] : "CO2";
+    public function actionInfo($p){
+        $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? 
+                               Yii::app()->params["CO2DomainName"] : "CO2";
 
         $page = @$p ? $p : "apropos";
         echo $this->renderPartial("info/" . $CO2DomainName . "/" . $page, array(), true);
-	}
+    }
+
+    public function actionCity($insee, $postalCode){
+        
+        echo $this->renderPartial("city", array("insee"=> $insee, "postalCode" => $postalCode), true);
+    }
 }

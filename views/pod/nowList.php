@@ -67,7 +67,9 @@
                 $style = "";
                // if(@$v["profilMediumImageUrl"] && @$v["profilMediumImageUrl"] != ""){
                //var_dump($v); ?>
-                    <a href="#<?php echo $specs["hash"].(@$v["_id"]?$v["_id"]:@$v["id"]); ?>" class="lbh add2fav elemt_img">
+                    <!-- <a href="#<?php echo $specs["hash"].(@$v["_id"]?$v["_id"]:@$v["id"]); ?>" class="lbh add2fav elemt_img"> -->
+                    <a href="#co2.page.type.<?php echo @$v["type"] ?>.id.<?php echo (@$v["_id"]?$v["_id"]:@$v["id"]); ?>" 
+                        class="lbh add2fav elemt_img">
                     <img src="<?php echo $img ?>" class="img-responsive <?php echo $classMin; ?>">
                     </a>
                 <?php //$style = "margin-top: -32px;"; } ?> 

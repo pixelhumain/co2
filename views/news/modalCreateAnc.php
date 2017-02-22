@@ -43,7 +43,7 @@
                             <div class="col-md-2 padding-5"></div>
                             <div class="col-md-2 text-center padding-5">
                             <?php 
-                                    $freedomTags = CO2::getFreedomTags();
+                                    $freedomTags = CO2::getContextList("freedomSections");
                                     $currentSection = 1;
                                     $align="right";
                                     foreach ($freedomTags as $key => $tag) { ?>
@@ -75,7 +75,7 @@
                                 <i class="fa fa-angle-down"></i> Sélectionnez une catégorie<br><br>
                             </h4>
                             <div class="col-md-2 text-<?php $align="left"; echo $align; ?> padding-5 hidden">
-                            <?php $categories = CO2::getAnnounceCategories();
+                            <?php $categories = CO2::getContextList("classifiedCategories");
                                   foreach ($categories as $key => $cat) {
                             ?>
                                     <?php if(is_array($cat)) { ?>
@@ -92,7 +92,7 @@
 
                             <div class="col-md-12 col-sm-12 text-center">
                                 <hr style="margin:10px;">
-                                <?php $categories = CO2::getAnnounceCategories();
+                                <?php //$categories = CO2::getAnnounceCategories();
                                       foreach ($categories as $key => $cat) {
                                 ?>
                                         <?php if(is_array($cat)) { ?>

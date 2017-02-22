@@ -220,7 +220,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream");
 
 	scrollEnd = false;
 
-	var isFirstParam = isFirst ? "?isFirst=1" : "";
+	var isFirstParam = isFirst ? "?isFirst=1&tpl=co2" : "?tpl=co2";
 	var tagSearch = $('#searchTags').val().split(',');; //$('#searchBarText').val();
 	var levelCommunexionName = { 1 : "CITYKEY",
 	                             2 : "CODE_POSTAL",

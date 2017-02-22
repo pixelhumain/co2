@@ -56,14 +56,24 @@
             "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
           },
 
-			"#co2.info":
-			  	{"inMenu" : false, 
+            "#co2.info":
+                {"inMenu" : false, 
             "useHeader" : false, 
             "subdomain" : "apropos", 
             "subdomainName" : "Info",
             "icon" : "search", 
             "mainTitle" : "Le réseau social à effet de sert",
             "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
+          },
+
+            "#co2.city":
+            {"inMenu" : false, 
+            "useHeader" : false, 
+            "subdomain" : "city", 
+            "subdomainName" : "City",
+            "icon" : "university", 
+            "mainTitle" : "Communexion activée",
+            "placeholderMainSearch" : "rechercher ..."
           }
       
 	  }

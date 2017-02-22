@@ -60,7 +60,7 @@ PAGE PROFIL PERSO :::ALL
   [ ] Paramètres de confidentialité / autres paramètres :::Rapha
   [ ] Nouveau système de notifications :::Clem
   [ ] Edition des données perso :::Rapha
-  [ ] Option Follow / Favoris / Devenir membre / etc
+  [ ] Option Follow / Favoris / Devenir membre / etc :::Tango
   [ ] Refactor Directory - Communauté / Collection :::Tango :::Tib
   [ ] Messagerie privée / RocketChat :::Tib
   [ ] Besoins / Need pour orga&projets

@@ -207,7 +207,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                         str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
                                   "<i class='fa fa-home'></i> " + fullLocality;
 
-                        if(nbFollower > 1)
+                        if(nbFollower >= 1)
                         str +=    " <span class='pull-right'><i class='fa fa-chain margin-left-10'></i> " + nbFollower + " follower</span>";
                        
                         str +=  "</div>";

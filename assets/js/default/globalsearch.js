@@ -8,7 +8,7 @@ function showDropDownGS(show){
     if($(".dropdown-result-global-search").css("display") == "none"){
       $(".dropdown-result-global-search").css("maxHeight", "0px");
       $(".dropdown-result-global-search").show();
-      $(".dropdown-result-global-search").animate({"maxHeight" : "80%"}, 300);
+      $(".dropdown-result-global-search").animate({"maxHeight" : "70%"}, 300);
     }
   }else{
     if(!loadingDataGS){
@@ -32,16 +32,15 @@ var mapElementsGS = new Array();
 function startGlobalSearch(indexMin, indexMax){
     mylog.log("startGlobalSearch", indexMin, indexMax, indexStepGS, loadingDataGS);
 
-    if(loadingDataGS) return;
-
     setTimeout(function(){ loadingDataGS = false; }, 10000);
-
+    
+    var search = $('.input-global-search').val();
+    //if(search == "") search = $('#input-global-search-xs').val();
+    if(loadingDataGS || search.length<3) return;
+    
     mylog.log("loadingDataGS true");
     loadingDataGS = true;
     
-    var search = $('.input-global-search').val();
-    if(search == "") search = $('#input-global-search-xs').val();
-      
     if(typeof indexMin == "undefined") indexMin = 0;
     if(typeof indexMax == "undefined") indexMax = indexStepGS;
 
@@ -54,16 +53,7 @@ function startGlobalSearch(indexMin, indexMax){
     }
     else{ mylog.log("scrollEndGS ? ", scrollEndGS); if(scrollEndGS) return; }
     
-    if(search.length>=3){
-      autoCompleteSearchGS(search, indexMin, indexMax);
-    }else{
-      var str = '<div class="center" id="footerDropdownGS">';
-      str += "<hr style='float:left; width:100%;'/><label style='margin-bottom:10px; margin-left:15px;' class='text-dark'>Aucun résultat</label><br/>";
-      str += "</div>";
-      $(".dropdown-result-global-search").html(str);
-      loadingDataGS = false;
-      scrollEndGS = false;
-    }   
+    autoCompleteSearchGS(search, indexMin, indexMax);
 }
 
 
@@ -78,7 +68,8 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
     if(indexMin > 0)
     $("#btnShowMoreResultGS").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
     else
-    $(".dropdown-result-global-search").html("<h3 class='text-dark center'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</h3>");
+    $(".dropdown-result-global-search").html(
+      "<h5 class='text-dark center padding-15'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</h5>");
       
 
     $.ajax({
@@ -104,8 +95,23 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               str = "";
               var city, postalCode = "";
               
+              if(totalDataGS == 0)      totalDataGSMSG = "<i class='fa fa-ban'></i> Aucun résultat";
+              else if(totalDataGS == 1) totalDataGSMSG = totalDataGS + " résultat";   
+              else if(totalDataGS > 1)  totalDataGSMSG = totalDataGS + " résultats";   
+
+              if(totalDataGS > 0){
+                str += '<div class="text-left" id="footerDropdownGS" style="">';
+                str += "<label class='text-dark margin-top-5'><i class='fa fa-angle-down'></i> " + totalDataGSMSG + "</label>";
+                str += '<a href="#co2.social" class="btn btn-default btn-sm pull-right" id="btnShowMoreResultGS">'+
+                          '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> Recherche étendue'+
+                        '</a>';
+                str += '</div>';
+                str += "<hr style='margin: 0px; float:left; width:100%;'/>"
+              }
+
               //parcours la liste des résultats de la recherche
               $.each(data, function(i, o) {
+                mylog.log("globalsearch res : ", o);
                   var typeIco = i;
                   var ico = mapIconTop["default"];
                   var color = mapColorIconTop["default"];
@@ -134,19 +140,23 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                   var insee = o.insee ? o.insee : "";
                   type = o.type;
                   if(type=="citoyen") type = "person";
-                  var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
-                  var onclick = 'loadByHash("#' + type + '.detail.id.' + id + '");';
+                  //var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
+                  var url = (notEmpty(o.type) && notEmpty(id)) ? 
+                            '#co2.page.type.'+o.type+'.id.' + id : "";
+
+                  //var onclick = 'loadByHash("#' + type + '.detail.id.' + id + '");';
                   var onclickCp = "";
                   var target = " target='_blank'";
                   var dataId = "";
                   if(type == "city"){
-                    url = "javascript:"; //#main-col-search";
-                    onclick = 'loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'");'; //"'+o.name.replace("'", "\'")+'");';
-                    onclickCp = 'loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'";';
-                    target = "";
+                    //url = "javascript:"; //#main-col-search";
+                    //onclick = 'loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'");'; //"'+o.name.replace("'", "\'")+'");';
+                    //onclickCp = 'loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'";';
+                    //target = "";
                     dataId = o.name; //.replace("'", "\'");
                   }
 
+                  
                   var tags = "";
                   if(typeof o.tags != "undefined" && o.tags != null){
                     $.each(o.tags, function(key, value){
@@ -164,7 +174,10 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                           typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
                   
                   var fullLocality = postalCode + " " + cityName;
-
+                  if(fullLocality == " Addresse non renseignée" || fullLocality == "" || fullLocality == " ") 
+                      fullLocality = "<i class='fa fa-ban'></i>";
+                  mylog.log("fullLocality", fullLocality);
+                    
                   var description = (typeof o.shortDescription != "undefined" &&
                             o.shortDescription != null) ? o.shortDescription : "";
                   if(description == "") description = (typeof o.description != "undefined" &&
@@ -173,111 +186,75 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                   var startDate = (typeof o.startDate != "undefined") ? "Du "+dateToStr(o.startDate, "fr", true, true) : null;
                   var endDate   = (typeof o.endDate   != "undefined") ? "Au "+dateToStr(o.endDate, "fr", true, true)   : null;
 
+                  var followers = (typeof o.links != "undefined" && o.links != null && typeof o.links.followers != "undefined") ?
+                                    o.links.followers : 0;
+                  var nbFollower = 0;
+                  if(followers !== 0)                 
+                  $.each(followers, function(key, value){
+                    nbFollower++;
+                  });
+
                     target = "";
 
-                    str += "<div class='col-md-12 col-sm-12 col-xs-12 no-padding searchEntity'>";
-                    str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
-                    str +=   "<a href='"+url+"' onclick='"+onclick+"'>" + htmlIco + "</a>";
-                    str += "</div>";
-                    str += "<div class='col-md-10 col-sm-10 col-xs-10 entityRight'>";
+                    str += "<a href='"+url+"' class='lbh col-md-12 col-sm-12 col-xs-12 no-padding searchEntity'>";
+                      str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
+                      str +=   htmlIco;
+                      str += "</div>";
+                      str += "<div class='col-md-10 col-sm-10 col-xs-10 entityRight'>";
 
-                    str += "<a href='"+url+"' onclick='"+onclick+"'"+target+" class='entityName text-dark'>" + name + "</a>";
-                      if(fullLocality != "" && fullLocality != " ")
-                      str += "<a href='"+url+"' onclick='"+onclickCp+"'"+target+ ' data-id="' + dataId + '"' + "  class='entityLocality'><i class='fa fa-home'></i> " + fullLocality + "</a>";
-                    str += "</div>";
-                    str += "</div>";
+                      str += "<div class='entityName text-dark'>" + name + "</div>";
+                        
+                        str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
+                                  "<i class='fa fa-home'></i> " + fullLocality;
+
+                        if(nbFollower > 1)
+                        str +=    " <span class='pull-right'><i class='fa fa-chain margin-left-10'></i> " + nbFollower + " follower</span>";
+                       
+                        str +=  "</div>";
+                        
+                      str += "</div>";
+                    str += "</a>";
                               
-                  //str += "</div>";
               }); //end each
 
-              if(str == "") { 
-                  if(indexMin == 0){
-                    //ajout du footer       
-                    str += '<div class="center" id="footerDropdownGS">';
-                    str += "<hr style='float:left; width:100%;'/><label style='margin-bottom:10px; margin-left:15px;' class='text-dark'>Aucun résultat</label><br/>";
-                    str += "</div>";
-                    $(".dropdown-result-global-search").html(str);
-                  }
-              }
-              else
-              {       
-                //ajout du footer   
-                if(!scrollEndGS){    
-                 
-                  str += '<div class="center" id="footerDropdownGS">';
-                  str += "<hr style='margin-top: 5px; margin-top: 10px; float:left; width:100%;'/><label style='margin-top:0px; margin-bottom:5px;' class='text-dark'>" + totalDataGS + " résultats</label><br/>";
-                  str += '<button class="btn btn-default" id="btnShowMoreResultGS"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
-                  str += '</div>';
-                }
-                //si on n'est pas sur une première recherche (chargement de la suite des résultat)
-                if(indexMin > 0){
-                  //on supprime l'ancien bouton "afficher plus de résultat"
-                  $("#btnShowMoreResultGS").remove();
-                  //on supprimer le footer (avec nb résultats)
-                  $("#footerDropdownGS").remove();
+              //ajout du footer   
+              str += '<div class="text-center" id="footerDropdownGS">';
+              str += "<label class='text-dark'>" + totalDataGSMSG + "</label><br/>";
+              str += '<a href="#co2.social" class="btn btn-default btn-sm" id="btnShowMoreResultGS">'+
+                        '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> Recherche étendue'+
+                      '</a>';
+              str += '</div>';
+            
+              //on ajoute le texte dans le html
+              $(".dropdown-result-global-search").html(str);
+              //on scroll pour coller le haut de l'arbre au menuTop
+              $(".dropdown-result-global-search").scrollTop(0);
+              //on affiche la dropdown
+              showDropDownGS(true);
+            
+              bindLBHLinks();
 
-                  //on calcul la valeur du nouveau scrollTop
-                  var heightContainer = $(".dropdown-result-global-search")[0].scrollHeight - 140;
-                  //on affiche le résultat à l'écran
-                  $(".dropdown-result-global-search").append(str);
-                  //on scroll pour afficher le premier résultat de la dernière recherche
-                  $(".dropdown-result-global-search").animate({"scrollTop" : heightContainer}, 1000);
-                  
-                  
-                //si on est sur une première recherche
-                }else{
-                  //on ajoute le texte dans le html
-                  $(".dropdown-result-global-search").html(str);
-                  //on scroll pour coller le haut de l'arbre au menuTop
-                  $(".dropdown-result-global-search").scrollTop(0);
-                  //on affiche la dropdown
-                  showDropDownGS(true);
-                }
-                //remet l'icon "loupe" du bouton search
-                //$(".btn-start-search").html("<i class='fa fa-search'></i>");
-                //affiche la dropdown
-                //$(".dropdown-result-global-search").css({"display" : "inline" });
-
-                //active le chargement de la suite des résultat au survol du bouton "afficher plus de résultats"
-                //(au cas où le scroll n'ait pas lancé le chargement comme prévu)
-                $("#btnShowMoreResultGS").click(function(){
-                  if(!loadingDataGS){
-                    //startGlobalSearch(indexMin+indexStepGS, indexMax+indexStepGS);
-                    //selectScopeLevelCommunexion(5);
-                    loadByHash("#default.directory");
-                  }
-                });
-                
-                //initialise les boutons pour garder une entité dans Mon répertoire (boutons links)
-                //initBtnLinkGS();
-
-              } //end else (str=="")
-
-              //signal que le chargement est terminé
-              mylog.log("loadingDataGS false");
-              loadingDataGS = false;
-
-              //quand la recherche est terminé, on remet la couleur normal du bouton search
-              //$(".btn-start-search").removeClass("bg-azure");
-            }
-
-            //mylog.log("scrollEndGS ? ", scrollEnd, indexMax, countData , indexMin);
-            //si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
-            if(indexMax - countData > indexMin){
-              $("#btnShowMoreResultGS").remove(); 
-              scrollEndGS = true;
-            }else{
-              scrollEndGS = false;
-            }
-
-            if(isMapEnd){
-              //affiche les éléments sur la carte
-              showDropDownGS(false);
-              Sig.showMapElements(Sig.map, mapElementsGS);
-            }
-
-            //$("#footerDropdownGS").append("<br><a class='btn btn-default' href='javascript:' onclick='loadByHash("+'"#default.directory"'+")'><i class='fa fa-plus'></i></a>");
+            //signal que le chargement est terminé
+            mylog.log("loadingDataGS false");
+            loadingDataGS = false;
           }
+
+          //si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
+          if(indexMax - countData > indexMin){
+            $("#btnShowMoreResultGS").remove(); 
+            scrollEndGS = true;
+          }else{
+            scrollEndGS = false;
+          }
+
+          if(isMapEnd){
+            //affiche les éléments sur la carte
+            showDropDownGS(false);
+            Sig.showMapElements(Sig.map, mapElementsGS);
+          }
+
+          //$("#footerDropdownGS").append("<br><a class='btn btn-default' href='javascript:' onclick='loadByHash("+'"#default.directory"'+")'><i class='fa fa-plus'></i></a>");
+        }
     });
 
                     

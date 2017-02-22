@@ -475,7 +475,7 @@ var directory = {
               // var url = "javascript:"; // baseUrl+'/'+moduleId+ "/default/simple#" + type + ".detail.id." + id;
               //type += "s";
 
-                var urlParent = (notEmpty(o.parentType) && notEmpty(o.parentId)) ? 
+              var urlParent = (notEmpty(o.parentType) && notEmpty(o.parentId)) ? 
                               '#element.detail.type.'+o.parentType+'.id.' + o.parentId : "";
 
               var url = '#element.detail.type.'+type+'.id.' + id;

@@ -23,9 +23,9 @@ function startSearch(indexMin, indexMax, callBack){
     //mylog.log("loadingData true");
     indexStep = indexStepInit;
 
-    mylog.log("startSearch", indexMin, indexMax, indexStep);
+    mylog.log("startSearch", indexMin, indexMax, indexStep, searchType);
 
-	  var name = ($('#searchBarText').length>0) ? $('#searchBarText').val() : "";
+	  var name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
     
     if(name == "" && searchType.indexOf("cities") > -1) return;  
 

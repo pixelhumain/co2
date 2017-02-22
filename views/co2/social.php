@@ -293,17 +293,22 @@ var type = "<?php echo @$type ? $type : 'persons'; ?>";
 
 //var TPL = "kgougle";
 
+//allSearchType = ["persons", "NGO", "LocalBusiness", "projects", "Group"];
+
 var currentKFormType = "";
 
 jQuery(document).ready(function() {
-	initKInterface();
+	initKInterface({"affixTop":350});
 
     if(type!='') type = "?type="+type;
 	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+type,function(){ 
 
         $(".btn-directory-type").click(function(){
             var type = $(this).data("type");
-            searchType = [ type ];
+
+            if(type == "all") searchType = ["persons", "organizations", "projects", "Group"];
+            else searchType = [ type ];
+            
             setHeaderDirectory(type);
             loadingData = false;
             startSearch(0, indexStepInit, searchCallback);

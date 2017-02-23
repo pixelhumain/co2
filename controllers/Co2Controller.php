@@ -22,6 +22,7 @@ class Co2Controller extends CommunecterController {
 	        'savereferencement' => 'citizenToolKit.controllers.co2.SaveReferencementAction',
 	        'mediacrawler'  	=> 'citizenToolKit.controllers.co2.MediaCrawlerAction',
 	        'superadmin' 		=> 'citizenToolKit.controllers.co2.SuperAdminAction',
+            
 	    );
 	}
 

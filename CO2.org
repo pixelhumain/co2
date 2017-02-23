@@ -54,6 +54,8 @@ ANNONCES :::Tib :::Tango (5J)
 CITIES :::Rapha :::Tib (10J)
 [ ] Réintégrer les City  :::Rapha
   [ ] Filiaires thématiques   :::Tib
+  [ ] Espace info commune
+  [ ] 
 
 PAGE PROFIL PERSO :::ALL
 [ ] Finir les pages perso :::ALL

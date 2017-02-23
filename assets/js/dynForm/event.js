@@ -72,7 +72,7 @@ dynForm = {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Si vous voulez créer un nouvel évènement de façon à le rendre plus visible : c'est le bon endroit !!<br>Vous pouvez inviter des participants, planifier des sous évènements, publier des actus lors de l'évènement...</p>",
             },
-            name : typeObjLib.nameEvent,
+            name : typeObjLib.name("event"),
 	        similarLink : typeObjLib.similarLink,
 	        organizerId :{
 	        	rules : { required : true },
@@ -157,6 +157,7 @@ dynForm = {
             	}
             },*/
             formshowers : {
+            	label : "En détails",
                 inputType : "custom",
                 html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> options (desc, urls)</a>",
             },

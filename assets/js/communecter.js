@@ -766,7 +766,7 @@ function loadByHash( hash , back ) {
 	} */
 
     else 
-        showAjaxPanel( '/default/home', 'Home Communecter ','home' );
+        showAjaxPanel( '/co2/index', 'Home','home' );
 
     location.hash = hash;
 
@@ -901,7 +901,7 @@ function showPanel(box,callback){
 			
 	mylog.log("showPanel");
 	//showTopMenu(false);
-	$(".main-col-search").animate({ top: -1500, opacity:0 }, 500 );
+	$(themeObj.mainContainer).animate({ top: -1500, opacity:0 }, 500 );
 
 	$("."+box).show(500);
 
@@ -915,31 +915,26 @@ Generic ajax panel loading process
 loads any REST Url endpoint returning HTML into the content section
 also switches the global Title and Icon
 **************/
-var rand = Math.floor((Math.random() * 7) + 1); 
-var urlImgRand = proverbs[rand];
+
 function  processingBlockUi() { 
-	$.blockUI({
-	 	message : '<h4 style="font-weight:300" class=" text-dark padding-10"><i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...</h4>' //+
-	    //"<img style='max-width:60%; margin-bottom:20px;' src='"+urlImgRand+"'>"
-	 });
+	msg = '<h4 style="font-weight:300" class=" text-dark padding-10"><i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...</h4>';
+	if( jsonHelper.notNull( "themeObj.blockUi.processingBlockUi" ) )
+		msg = themeObj.blockUi.processingBlockUi();
+	$.blockUI({ message :  msg });
+	bindLBHLinks();
 }
 function showAjaxPanel (url,title,icon, mapEnd) { 
-	//$(".main-col-search").css("opacity", 0);
 	mylog.log("showAjaxPanel",url,"TITLE",title);
 	hideScrollTop = false;
 
 	showNotif(false);
 			
-	//$(".main-col-search").animate({ top: -1500, opacity:0 }, 800 );
-
 	setTimeout(function(){
-		$(".main-col-search").html("");
+		$(themeObj.mainContainer).html("");
 		$(".hover-info,.hover-info2").hide();
 		processingBlockUi();
-		setTitle("Chargement en cours ...", "spin fa-circle-o-notch");
-		//$(".main-col-search").show();
 		showMap(false);
-	}, 800);
+	}, 200);
 
 	$(".box").hide(200);
 	//showPanel('box-ajax');
@@ -950,14 +945,11 @@ function showAjaxPanel (url,title,icon, mapEnd) {
 	showTopMenu(true);
 	userIdBefore = userId;
 	setTimeout(function(){
-		 getAjax('.main-col-search', baseUrl+'/'+moduleId+url, function(data){ 
-			/*if(!userId && userIdBefore != userId )
-				window.location.reload();*/
-
-
-			//$(".main-col-search").slideDown(); 
-			initNotifications(); 
+		 getAjax(themeObj.mainContainer, baseUrl+'/'+moduleId+url, function(data){ 
 			
+			//initNotifications(); 
+			
+			$(".modal-backdrop").hide();
 			bindExplainLinks();
 			bindTags();
 			bindLBHLinks();
@@ -987,7 +979,7 @@ function showAjaxPanel (url,title,icon, mapEnd) {
         	}
 
 		},"html");
-	}, 800);
+	}, 400);
 }
 prevDbAccessCount = 0; 
 function clearDbAccess() { 
@@ -1052,7 +1044,7 @@ function showDefinition( id,copySection ){
 	setTimeout(function(){
 		mylog.log("showDefinition",id,copySection);
 		$(".hover-info,.hover-info2").hide();
-		$(".main-col-search").animate({ opacity:0.3 }, 400 );
+		$( themeObj.mainContainer ).animate({ opacity:0.3 }, 400 );
 		
 		if(copySection){
 			contentHTML = $("."+id).html();
@@ -1077,7 +1069,7 @@ var positionMouseMenu = "out";
 function activateHoverMenu () { 
 	//mylog.log("enter all");
 	positionMouseMenu = "in";
-	$(".main-col-search").animate({ opacity:0.3 }, 400 );
+	$(themeObj.mainContainer).animate({ opacity:0.3 }, 400 );
 	$(".lbl-btn-menu-name").show(200);
 	$(".lbl-btn-menu-name").css("display", "inline");
 	$(".menu-button-title").addClass("large");
@@ -1121,7 +1113,7 @@ var smallMenu = {
 		   	$('.searchSmallMenu').off().on("keyup",function() { 
 				directory.search ( ".favSection", $(this).val() );
 		   	});
-		   	if( notNull(params) && notNull(params.otherCollectionList) && typeof params.otherCollectionList == "function" )
+		   	if( jsonHelper.notNull( "params.otherCollectionList", "function") )
 		   		params.otherCollectionList();
 		   	//else collection.buildCollectionList( "linkList" ,"#listCollections",function(){ $("#listCollections").html("<h4 class=''>Collections</h4>"); });
 
@@ -2255,8 +2247,9 @@ var collection = {
 ********************************** */
 
 var elementLib = {
+	elementObj : null,
 	formatData : function (formData, collection,ctrl) { 
-		mylog.warn("formatData");
+		mylog.warn("----------- formatData",formData, collection,ctrl);
 		formData.collection = collection;
 		formData.key = ctrl;
 		
@@ -2267,7 +2260,7 @@ var elementLib = {
 			formData.geoPosition = centerLocation.geoPosition;
 			if( elementLocations.length ){
 				$.each( elementLocations,function (i,v) { 
-					if( notNull(v) && notNull(v.center) )
+					if( jsonHelper.notNull( "v.center") )
 						elementLocations.splice(i, 1);
 				});
 				formData.addresses = elementLocations;
@@ -2346,7 +2339,7 @@ var elementLib = {
 
 	saveElement : function  ( formId,collection,ctrl,saveUrl,afterSave ) 
 	{ 
-		mylog.warn("saveElement",formId,collection);
+		mylog.warn("---------------- saveElement",formId,collection,ctrl,saveUrl,afterSave );
 		formData = $(formId).serializeFormJSON();
 		mylog.log("before",formData);
 		formData = elementLib.formatData(formData,collection,ctrl);
@@ -2429,7 +2422,7 @@ var elementLib = {
 	},
 	editElement : function (type,id)
 	{
-		mylog.warn("--------------- editElement "+type+" ---------------------",id);
+		mylog.warn("--------------- editElement ",type,id);
 		//get ajax of the elemetn content
 		$.ajax({
 	        type: "GET",
@@ -2477,52 +2470,67 @@ var elementLib = {
 	        }
 	    });
 	},
-	getDynFormObj : function(type, callback,afterLoad, data ){
-		if(typeof type == "object"){
-			if( notNull(type.col) ) uploadObj.type = type.col;
-    		callback(type, afterLoad, data);
-		}else if( notNull(typeObj[type]) && notNull(typeObj[type].dynForm) ){
-			if( notNull(typeObj[type].col) ) uploadObj.type = typeObj[type].col;
-    		callback(typeObj[type], afterLoad, data);
-		}else {
-			lazyLoad( moduleUrl+'/js/dynForm/'+type+'.js', 
-				null,
-				function() { 
-					mylog.dir(dynForm);
-				  	typeObj[type].dynForm = dynForm;
-					specs = typeObj[type];
-					if( notNull(typeObj[type].col) ) uploadObj.type = typeObj[type].col;
-    				callback(specs, afterLoad, data);
-			});
-		}
-	},
+	//entry point function for opening dynForms
 	openForm : function  (type, afterLoad,data) { 
 	    //mylog.clear();
 	    $.unblockUI();
-	    mylog.warn("--------------- Open Form "+type+" ---------------------",data);
+	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
 	    //global variables clean up
 	    elementLocation = null;
 	    elementLocations = [];
 	    centerLocation = null;
 	    updateLocality = false;
-
+	    //initKSpec();
 	    if(userId)
 		{
 			formType = type;
 			elementLib.getDynFormObj(type, function() { 
-				elementLib.starBuild(specs,afterLoad,data);
+				elementLib.starBuild(afterLoad,data);
 			},afterLoad, data);
 		} else {
 			toastr.error("Vous devez être connecté pour afficher les formulaires de création");
 			showPanel('box-login');
 		}
 	},
-	starBuild : function  (specs, afterLoad, data) {
-		mylog.dir(specs);
-		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(specs.bgClass);
+	//get the specification of a given dynform
+	//can be of 3 types 
+	//(string) :: will get the definition if exist in typeObj[key].dybnForm
+	//if doesn't exist tries to lazyload it from assets/js/dynForm
+	//(object) :: is dynformp definition
+	getDynFormObj : function(type, callback,afterLoad, data ){
+		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
+		if(typeof type == "object"){
+			mylog.log(" object directly Loaded : ", type);
+			if( notNull(type.col) ) uploadObj.type = type.col;
+    		callback(type, afterLoad, data);
+		}else if( jsonHelper.notNull( "typeObj."+type+".dynForm" , "object") ){
+			mylog.log(" typeObj Loaded : ", type);
+			elementLib.elementObj = typeObj[type];
+			if( notNull(typeObj[type].col) ) uploadObj.type = typeObj[type].col;
+    		callback( elementLib.elementObj, afterLoad, data );
+		}else {
+			lazyLoad( moduleUrl+'/js/dynForm/'+type+'.js', 
+				null,
+				function() { 
+					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+type+'.js');
+					mylog.dir(dynForm);
+				  	typeObj[type].dynForm = dynForm;
+					elementLib.elementObj = typeObj[type];
+					if( notNull(typeObj[type].col) ) uploadObj.type = typeObj[type].col;
+    				callback( afterLoad, data );
+			});
+		}
+	},
+	//prepare information for the modal panel 
+	//and launches the build process
+	starBuild : function  (afterLoad, data) {
+		mylog.warn("------------ starBuild",elementLib.elementObj, afterLoad, data);
+		mylog.dir(elementLib.elementObj);
+		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(elementLib.elementObj.bgClass);
 		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
-		$(".modal-header").removeClass("bg-purple bg-green bg-orange bg-yellow bg-lightblue ").addClass(specs.titleClass);
+		$("#ajax-modal-modal-title").removeClass("text-green").removeClass("text-purple").removeClass("text-orange").removeClass("text-azure");
+		$(".modal-header").removeClass("bg-purple bg-green bg-orange bg-yellow bg-lightblue ").addClass(elementLib.elementObj.titleClass);
 	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
@@ -2534,52 +2542,54 @@ var elementLib = {
 	  	$('#ajax-modal').modal("show");
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
-	  	elementLib.buildDynForm(specs, afterLoad, data);
+	  	elementLib.buildDynForm(afterLoad, data);
 	},
-	buildDynForm : function (elementObj, afterLoad,data) { 
-		mylog.warn("--------------- buildDynForm", elementObj, afterLoad,data);
+	buildDynForm : function (afterLoad,data) { 
+		mylog.warn("--------------- buildDynForm", elementLib.elementObj, afterLoad,data);
 		if(userId)
 		{
 			var form = $.dynForm({
 			      formId : "#ajax-modal-modal-body #ajaxFormModal",
-			      formObj : elementObj.dynForm,
+			      formObj : elementLib.elementObj.dynForm,
 			      formValues : data,
 			      beforeBuild : function  () {
-			      	if( typeof elementObj.dynForm.jsonSchema.beforeBuild == "function" )
-				        	elementObj.dynForm.jsonSchema.beforeBuild();
+			      	if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.beforeBuild","function") )
+				        	elementLib.elementObj.dynForm.jsonSchema.beforeBuild();
 			      },
 			      onLoad : function  () {
-
-			        $("#ajax-modal-modal-title").html("<i class='fa fa-"+elementObj.dynForm.jsonSchema.icon+"'></i> "+elementObj.dynForm.jsonSchema.title);
-			        $("#ajax-modal-modal-body").append("<div class='space20'></div>");
-			        //alert(afterLoad+"|"+typeof elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
-
-			        if( notNull(afterLoad) && elementObj.dynForm.jsonSchema.onLoads )
+			      	if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
+			      		themeObj.dynForm.onLoadPanel(elementLib.elementObj);
+			      	} else {
+				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+elementLib.elementObj.dynForm.jsonSchema.icon+"'></i> "+elementLib.elementObj.dynForm.jsonSchema.title);
+				        $("#ajax-modal-modal-body").append("<div class='space20'></div>");
+				        //alert(afterLoad+"|"+typeof elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
+			    	}
+			        if( notNull(afterLoad) && elementLib.elementObj.dynForm.jsonSchema.onLoads )
 			        {
-				        if( typeof elementObj.dynForm.jsonSchema.onLoads[afterLoad] == "function" )
-				        	elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
+				        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
+				        	elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
 				        //incase we need a second global post process
-				        if( typeof elementObj.dynForm.jsonSchema.onLoads.onload == "function" )
-				        	elementObj.dynForm.jsonSchema.onLoads.onload();
+				        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
+				        	elementLib.elementObj.dynForm.jsonSchema.onLoads.onload();
 				        //incase we need a second global post process
-				        if( typeof elementObj.dynForm.jsonSchema.onLoads.onload == "function" )
-				        	elementObj.dynForm.jsonSchema.onLoads.onload();
+				        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads.onload","function") )
+				        	elementLib.elementObj.dynForm.jsonSchema.onLoads.onload();
 				    }
 			        bindLBHLinks();
 			      },
 			      onSave : function(){
 
-			      	if( typeof elementObj.dynForm.jsonSchema.beforeSave == "function")
-			        	elementObj.dynForm.jsonSchema.beforeSave();
+			      	if( typeof elementLib.elementObj.dynForm.jsonSchema.beforeSave == "function")
+			        	elementLib.elementObj.dynForm.jsonSchema.beforeSave();
 
-			        var afterSave = ( typeof elementObj.dynForm.jsonSchema.afterSave == "function") ? elementObj.dynForm.jsonSchema.afterSave : null;
+			        var afterSave = ( typeof elementLib.elementObj.dynForm.jsonSchema.afterSave == "function") ? elementLib.elementObj.dynForm.jsonSchema.afterSave : null;
 
-			        if( elementObj.save )
-			        	elementObj.save("#ajaxFormModal");
-			        else if(elementObj.saveUrl)
-			        	elementLib.saveElement("#ajaxFormModal",elementObj.col,elementObj.ctrl,elementObj.saveUrl,afterSave);
+			        if( elementLib.elementObj.save )
+			        	elementLib.elementObj.save("#ajaxFormModal");
+			        else if(elementLib.elementObj.saveUrl)
+			        	elementLib.saveElement("#ajaxFormModal",elementLib.elementObj.col,elementLib.elementObj.ctrl,elementLib.elementObj.saveUrl,afterSave);
 			        else
-			        	elementLib.saveElement("#ajaxFormModal",elementObj.col,elementObj.ctrl,null,afterSave);
+			        	elementLib.saveElement("#ajaxFormModal",elementLib.elementObj.col,elementLib.elementObj.ctrl,null,afterSave);
 			        return false;
 			    }
 			});
@@ -2647,71 +2657,34 @@ var uploadObj = {
 };
 
 var typeObjLib = {
-	name : {
-    	placeholder : "Nom",
-        inputType : "text",
-        rules : { required : true }
+	name :function(type) { 
+		var inputObj = {
+	    	placeholder : "Nom",
+	        inputType : "text",
+	        rules : { required : true }
+	    };
+	    if(type){
+	    	inputObj.label = "Nom de "+type;
+	    	inputObj.init = function(){
+	        	$("#ajaxFormModal #name ").off().on("blur",function(){
+	        		if($("#ajaxFormModal #name ").val().length > 3 )
+	            		globalSearch($(this).val(),[ typeObj[type].col ] );
+	        	});
+	        }
+	    }
+    	return inputObj;
     },
-    nameOrga : {
+    /*nameOrganiser : {
     	placeholder : "Nom",
         inputType : "text",
-        rules : { required : true },
-        init : function(){
-        	$("#ajaxFormModal #name ").off().on("blur",function(){
-        		if($("#ajaxFormModal #name ").val().length > 3 )
-            		globalSearch($(this).val(),["organizations"]);
-        	});
-        }
-    },
-    nameEvent : {
-    	placeholder : "Nom",
-    	labelText:"Nom",
-        inputType : "text",
-        rules : { required : true },
-        init : function(){
-        	$("#ajaxFormModal #name ").off().on("blur",function(){
-        		if($("#ajaxFormModal #name ").val().length > 3 )
-        			globalSearch($(this).val(),["events"]);
-        	});
-        }
-    },
-    nameProject : {
-    	placeholder : "Nom",
-        inputType : "text",
-        rules : {
-            required : true
-        },
-        init : function(){
-        	$("#ajaxFormModal #name ").off().on("blur",function(){
-        		if($("#ajaxFormModal #name ").val().length > 3 )
-        			globalSearch($(this).val(),["projects"]);
-        	});
-        }
-    },
-    namePerson : {
-    	placeholder : "Nom",
-    	labelText:"Nom",
-        inputType : "text",
-        init : function(){
-        	$("#ajaxFormModal #name ").off().on("blur",function(){
-        		if($("#ajaxFormModal #name ").val().length > 3 )
-        			globalSearch($(this).val(),["persons"],true);
-        	});
-        }
-    },
-    nameOrganiser : {
-    	placeholder : "Nom",
-        inputType : "text",
-        rules : {
-            required : true
-        },
+        rules : {required : true},
         init : function(){
         	$("#ajaxFormModal #name ").off().on("blur",function(){
         		if($("#ajaxFormModal #name ").val().length > 3 )
         			globalSearch($(this).val(),["projects", "events", "organizations"]);
         	});
         }
-    },
+    },*/
     username : {
     	placeholder : "username",
         inputType : "text",
@@ -2738,12 +2711,14 @@ var typeObjLib = {
         html:"<div id='similarLink'><div id='listSameName'></div></div>",
     },
     typeOrga :{
+    	label : "Type d'organisation",
     	inputType : "select",
     	placeholder : "Type d'organisation",
     	rules : { required : true },
     	options : organizationTypes
     },
     typeEvent :{
+    	label : "Type d\'évènement",
     	inputType : "select",
     	placeholder : "Type d\'évènement",
     	options : eventTypes,
@@ -2784,23 +2759,28 @@ var typeObjLib = {
 		placeholder : "Décrire c'est partager",
 		init : function(){
         	$(".descriptiontextarea").css("display","none");
-        }
+        },
+		label : "Description optionnelle"
     },
     description : {
         inputType : "textarea",
-		placeholder : "Décrire c'est partager"
+		placeholder : "Décrire c'est partager",
+		label : "Description principale"
     },
     tags : {
 		inputType : "tags",
-		placeholder : "Ajouter des tags",
-		values : tagsList
+		placeholder : "Mots clés",
+		values : tagsList,
+		label : "Ajouter quelques mots clés"
 	},
 	location : {
+		label :"Localisation",
        inputType : "location"
     },
     email : {
 		placeholder : "Ajouter un e-mail",
-		inputType : "text"
+		inputType : "text",
+		label : "E-mail principal"
 	},
     emailOptionnel : {
 		placeholder : "Email du responsable",
@@ -2812,7 +2792,8 @@ var typeObjLib = {
 	url : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        placeholder : "Site web"
+        placeholder : "Site web",
+        label : "URL principale"
     },
     urlOptionnel : {
         inputType :"text",
@@ -2982,8 +2963,9 @@ var typeObjLib = {
     	options : poiTypes
     },
     role :{
+    	label :"Votre rôle",
     	inputType : "select",
-    	placeholder : "Quel est votre rôle dans cette organisation ?",
+    	placeholder : "Quel est votre rôle ?",
     	rules : { required : true },
     	//value : "admin",
     	options : {
@@ -3104,6 +3086,37 @@ var typeObj = {
 		bgClass : "bgOrga",
 	},
 	"organizations" : {col:"organizations",ctrl:"organization",color:"green",icon:"users"},
+	"LocalBusiness" : {
+		title: "entreprise",
+		title2: "de l'entreprise",
+		title3: "cette entreprise",
+		color: "azure",
+		icon: "industry",
+	},
+	"NGO" : {
+		title: "association",
+		title2: "de l'association",
+		title3: "cette association",
+		color: "green",
+		icon: "group",
+
+	},
+	"Group" : {
+		title: "groupe",
+		title2: "du groupe",
+		title3: "ce groupe",
+		color: "turq",
+		icon: "circle-o",
+
+	},
+	"project" : {
+		title: "projet",
+		title2: "du projet",
+		title3: "ce projet",
+		color: "purple",
+		icon: "circle-o",
+
+	},
 	"event" : {
 		col:"events",
 		ctrl:"event",
@@ -3533,8 +3546,120 @@ var album = {
 	}
 }
 
+var CoAllReadyLoad = false;
+var CoSigAllReadyLoad = false;
+//back sert juste a differencier un load avec le back btn
+//ne sert plus, juste a savoir d'ou vient drait l'appel
+
+function KScrollTo(target){ 
+	mylog.log("target", target);
+	if(!$(target)) return;
+
+	$('html, body').stop().animate({
+        scrollTop: $(target).offset().top - 70
+    }, 800, '');
+}
+
+var timerCloseDropdownUser = false;
+function initKInterface(params){
+
+	$(window).off();
+
+    //jQuery for page scrolling feature - requires jQuery Easing plugin
+    $('.page-scroll a').bind('click', function(event) {
+        var $anchor = $(this);
+        $('html, body').stop().animate({
+            scrollTop: ($($anchor.attr('href')).offset().top - 50)
+        }, 1250, 'easeInOutExpo');
+        event.preventDefault();
+    });
+
+    // jQuery for page scrolling feature - requires jQuery Easing plugin
+    $('.btn-scroll').bind('click', function(event) {
+        var target = $(this).data('targetid');
+        KScrollTo(target);
+        event.preventDefault();
+    });
+
+    // Highlight the top nav as scrolling occurs
+    $('body').scrollspy({
+        target: '.navbar-fixed-top',
+        offset: 51
+    });
+
+    // Closes the Responsive Menu on Menu Item Click
+    $('.navbar-collapse ul li a').click(function(){ 
+            $('.navbar-toggle:visible').click();
+    });
+
+    $(".logout").click(function(){
+    	document.location.href="/ph/co2/person/logout";
+    });
+
+    var affixTop = 400;
+    if(notEmpty(params)){
+    	if(typeof params["affixTop"] != "undefined") affixTop = params["affixTop"];
+    }
+    console.log("affixTop", affixTop);
+    if(affixTop > 0){
+      // Offset for Main Navigation
+      $('#mainNav').affix({
+          offset: {
+              top: affixTop
+          }
+      });
+    }
+
+    // Floating label headings for the contact form
+    $(function() {
+        $("body").on("input propertychange", ".floating-label-form-group", function(e) {
+            $(this).toggleClass("floating-label-form-group-with-value", !!$(e.target).val());
+        }).on("focus", ".floating-label-form-group", function() {
+            $(this).addClass("floating-label-form-group-with-focus");
+        }).on("blur", ".floating-label-form-group", function() {
+            $(this).removeClass("floating-label-form-group-with-focus");
+        });
+    });
+
+
+    $(".btn-show-map").off().click(function(){
+    	showMap();
+    });
+
+    bindLBHLinks();
+
+    $(".menu-name-profil #menu-thumb-profil, "+
+      ".menu-name-profil #menu-name-profil").mouseenter(function(){
+        $("#dropdown-user").addClass("open");
+        clearTimeout(timerCloseDropdownUser);
+    });
+    $(".menu-name-profil #menu-thumb-profil, "+
+      ".menu-name-profil #menu-name-profil").mouseleave(function(){
+      	timerCloseDropdownUser=true;
+        setTimeout(function(){
+        	if(timerCloseDropdownUser==true)
+        	$("#dropdown-user").removeClass("open");
+        },1000);
+    });
+    $("#dropdown-user").mouseenter(function(){
+    	timerCloseDropdownUser = false;
+    });
+    $("#dropdown-user").mouseleave(function(){
+        $("#dropdown-user").removeClass("open");
+    });
+
+    setTimeout(function(){ 
+      $(".tooltips").tooltip();
+      mapBg = Sig.loadMap("mapCanvas", initSigParams);
+      Sig.showIcoLoading(false);
+      CoSigAllReadyLoad = true;
+    }, 3000);
+
+    KScrollTo(".main-container");
+
+}
+
 $(document).ready(function() { 
-	initSequence();
 	setTimeout( function () { checkPoll() }, 10000);
 	document.onkeyup = keyboardNav.checkKeycode;
 	bindRightClicks();

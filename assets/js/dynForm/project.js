@@ -29,14 +29,17 @@ dynForm = {
 			    properties : {
 			    	info : {
 		                inputType : "custom",
-		                html:"<p><i class='fa fa-info-circle'></i> Si vous voulez créer un nouveau projet de façon à le rendre plus visible : c'est le bon endroit !!<br>Vous pouvez ainsi organiser l'équipe projet, planifier les tâches, échanger, prendre des décisions ...</p>",
+		                html:"<p class='text-purple'>Faire connaître vos projets n'a jamais été aussi simple !<br>" +
+							  "Créez votre page en quelques secondes,<br>et complétez les informations plus tard, selon vos besoins<hr>" +
+							  "</p>",
 		            },
-			        name : typeObjLib.nameProject,
+			        name : typeObjLib.name("project"),
 		            parentType : typeObjLib.hidden,
 		            image : typeObjLib.image("#project.detail.id."+uploadObj.id),
 		            location : typeObjLib.location,
 		            tags :typeObjLib.tags,
 		            formshowers : {
+		            	label : "En détails",
 		                inputType : "custom",
 		                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> options (desc, urls)</a>",
 		            },

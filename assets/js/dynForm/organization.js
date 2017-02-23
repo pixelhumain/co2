@@ -21,9 +21,11 @@ dynForm = {
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p><i class='fa fa-info-circle'></i> Si vous voulez créer une nouvelle organisation de façon à le rendre plus visible : c'est le bon endroit !!<br>Vous pouvez ainsi organiser l'équipe projet, planifier les tâches, échanger, prendre des décisions ...</p>",
+                html:"<p class='text-"+typeObj["organization"].color+"'>Faire connaître votre Organisation n'a jamais été aussi simple !<br>" +
+																		  "Créez votre page en quelques secondes,<br>puis rajoutez des détails,<br>selon vos besoins ...<hr>" +
+																		  "</p>",
             },
-	        name : typeObjLib.nameOrga,
+	        name : typeObjLib.name("organization"),
 	        similarLink : typeObjLib.similarLink,
 	        type : typeObjLib.typeOrga,
             role : typeObjLib.role,
@@ -31,6 +33,7 @@ dynForm = {
             location : typeObjLib.location,
 	        image : typeObjLib.image( "#organization.detail.id."+uploadObj.id ),
             formshowers : {
+            	label : "En détails",
                 inputType : "custom",
                 html:
 				"<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".emailtext,.descriptiontextarea,.urltext\").slideToggle();activateMarkdown(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> options (email, desc, urls, telephone)</a>",

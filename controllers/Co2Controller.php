@@ -141,7 +141,6 @@ class Co2Controller extends CommunecterController {
     	echo $this->renderPartial("page", $params, true);
 	}
 
-
     public function actionInfo($p){
         $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? 
                                Yii::app()->params["CO2DomainName"] : "CO2";

@@ -82,6 +82,7 @@ dynForm = {
             //     values : tagsList
             // },
             formshowers : {
+            	label : "En détails",
                 inputType : "custom",
                 html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
             },

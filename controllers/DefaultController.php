@@ -27,8 +27,6 @@ class DefaultController extends CommunecterController {
 	{
     	//Yii::app()->theme = $theme;   
       //Yii::app()->session["theme"] = $theme; 
-      
-      
       //Yii::app()->theme = "notragora";
       //Yii::app()->theme = "CO2";
 	    if(@$_GET["network"]){

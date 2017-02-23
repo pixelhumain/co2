@@ -11,6 +11,7 @@
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
     $page = "social";
+    if(!@$type) $type = "all";// : "social";
     if(@$type=="events") $page = "agenda";// : "social";
     if(@$type=="vote") $page = "power";// : "social";
 
@@ -52,7 +53,7 @@
 }
 #page #dropdown_search{
 	min-height:500px;
-    margin-top:30px;
+    /*margin-top:30px;*/
 }
 #page .row.headerDirectory{
     margin-top: 20px;
@@ -88,12 +89,15 @@
     border: 2px solid #34a853!important;
 
 }
+.main-btn-scopes {
+    margin-top: 7px;
+}
 
 .scope-min-header{
-    position: absolute;
+    /*position: absolute;
     top: 60px;
-    left: 30%;
-    width:40%;
+    left: 30%;*/
+    width:100%;
     text-align: center;
     z-index: 10;
     border-radius: 0 50%;
@@ -105,14 +109,19 @@
 
 .subtitle-search{
     display: none;
+    /*width: 100%;
+    text-align: center;*/
 }
-
+header .container, 
+.header .container{
+    padding-bottom: 40px;
+}
 </style>
 
 
 
 
-<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" style="min-height:700px;">
+<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
 
     <h5 class="text-center letter-red">
         <button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5" 
@@ -124,7 +133,6 @@
         </button><br>
         recherche ciblée
     </h5>
-    <br>
     <div class="scope-min-header list_tags_scopes hidden-xs hidden-sm">
     </div>
 
@@ -165,7 +173,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/KGOUGLE-logo.png" height="50" class="inline margin-top-25 margin-bottom-5"><br>
+                    <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" height="50" class="inline margin-top-25 margin-bottom-5"><br>
                     
                     <h3 class="letter-red no-margin hidden-xs">
                         <small class="text-dark">Un réseau social <span class="letter-red">citoyen</span>, au service du <span class="letter-red">bien commun</span></small>
@@ -198,12 +206,12 @@
                             date-target="#modalMainMenu" data-dismiss="modal">
                             <div class="modal-body text-left">
                                 <h2 class="text-green"><i class="fa fa-group padding-bottom-10"></i><br>
-                                    <span class="font-blackoutT"> Association</span>
+                                    <span class="font-light"> Association</span>
                                 </h2>
                                 
                                 <div class="col-md-12 no-padding text-center hidden-xs">
                                     <h5>Resserrer les liens du tissu associatif
-                                        <small class="hidden-xs"><br>
+                                        <small class="hidden-xs" style="text-transform: none;"><br>
                                             Le monde associatif est basé sur l'entraide et la solidarité.<br>
                                             Plus que jamais, les associations ont besoin de se relier entre-elles,<br> 
                                             pour faire plus et mieux, ensemble.
@@ -217,15 +225,15 @@
                             date-target="#modalMainMenu" data-dismiss="modal">
                             <div class="modal-body text-left">
                                 <h2 class="text-azure"><i class="fa fa-industry padding-bottom-10"></i><br>
-                                    <span class="font-blackoutT"> Entreprise</span>
+                                    <span class="font-light"> Entreprise</span>
                                 </h2>
                                 
                                 <div class="col-md-12 no-padding text-center hidden-xs">
                                     <h5>Dynamiser le monde de l'entreprise
-                                        <small class="hidden-xs"><br>
-                                            Rester connecté à vos contacts, vos clients, vos fournisseurs...<br>
+                                        <small class="hidden-xs" style="text-transform: none;"><br>
+                                            Rester connecté à vos contacts, vos clients, vos employés, vos fournisseurs...<br>
                                             Le réseau vous apportera une visibilité incomparable<br>
-                                            auprès de tous les internautes Calédoniens.
+                                            auprès de ceux qui vivent près de vous.
                                         </small>
                                     </h5>
                                     <button class="btn btn-default text-azure margin-bottom-15"><i class="fa fa-plus-circle"></i> Créer ma page</button>
@@ -236,12 +244,12 @@
                             date-target="#modalMainMenu" data-dismiss="modal">
                             <div class="modal-body text-left">
                                 <h2 class="text-turq"><i class="fa fa-circle-o padding-bottom-10"></i><br>
-                                    <span class="font-blackoutT"> Groupe</span>
+                                    <span class="font-light"> Groupe</span>
                                 </h2>
                                 
                                 <div class="col-md-12 no-padding text-center hidden-xs">
                                     <h5>Mettre en valeur les liens humains
-                                        <small class="hidden-xs"><br>
+                                        <small class="hidden-xs" style="text-transform: none;"><br>
                                             La vie c'est des rencontres, des amitiés, des liens qui nous unissent<br>
                                             à travers nos activités, nos centres d'intérêts, nos plaisirs.<br>
                                             Les vivres c'est bien, les partager c'est encore mieux !
@@ -255,12 +263,12 @@
                             date-target="#modalMainMenu" data-dismiss="modal">
                             <div class="modal-body text-left">
                                 <h2 class="text-purple"><i class="fa fa-lightbulb-o padding-bottom-10"></i><br>
-                                    <span class="font-blackoutT"> Projet</span>
+                                    <span class="font-light"> Projet</span>
                                 </h2>
                                 
                                 <div class="col-md-12 no-padding text-center hidden-xs">
                                     <h5>Ce sont les petites initiatives<br>qui donnent naissance aux projets hors du commun
-                                        <small class="hidden-xs"><br>
+                                        <small class="hidden-xs" style="text-transform: none;"><br>
                                             N'hésitez jamais à faire connaître vos envies, vos projets, vos rêves.<br>
                                             C'est comme ça qu'ils grandissent !
                                         </small>
@@ -289,7 +297,7 @@
 
 <script type="text/javascript" >
 
-var type = "<?php echo @$type ? $type : 'persons'; ?>";
+var type = "<?php echo @$type ? $type : 'all'; ?>";
 
 //var TPL = "kgougle";
 
@@ -298,38 +306,69 @@ var type = "<?php echo @$type ? $type : 'persons'; ?>";
 var currentKFormType = "";
 
 jQuery(document).ready(function() {
+
 	initKInterface({"affixTop":350});
+    
+    if(type!='') typeUrl = "?type=all&nopreload=true";
+	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
 
-    if(type!='') type = "?type="+type;
-	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+type,function(){ 
-
+        
         $(".btn-directory-type").click(function(){
-            var type = $(this).data("type");
+            var typeD = $(this).data("type");
 
-            if(type == "all") searchType = ["persons", "organizations", "projects", "Group"];
-            else searchType = [ type ];
-            
-            setHeaderDirectory(type);
+            initTypeSearch(typeD);
+
+            setHeaderDirectory(typeD);
             loadingData = false;
             startSearch(0, indexStepInit, searchCallback);
+            KScrollTo("#content-social");
         });
 
-        loadingData = false;    
+
+        loadingData = false; 
+        initTypeSearch(type);
         startSearch(0, indexStepInit, searchCallback);
 
     },"html");
 
-    $("#main-search-bar").keyup(function(e){
-        $("#searchBarText").val($(this).val());
+    $("#main-search-bar, .menu-btn-start-search").keyup(function(e){
+        $("#second-search-bar").val($(this).val());
+        $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
-            //var search = $(this).val();
+            initTypeSearch("all");
             startSearch(0, indexStepInit, searchCallback);
-            //KScrollTo("#page");
+            KScrollTo("#content-social");
         }
     });
     $("#main-search-bar").change(function(){
-        $("#searchBarText").val($(this).val());
+        $("#second-search-bar").val($(this).val());
     });
+
+    $("#second-search-bar").keyup(function(e){
+        $("#main-search-bar").val($(this).val());
+        $("#input-search-map").val($(this).val());
+        if(e.keyCode == 13){
+            initTypeSearch("all");
+            startSearch(0, indexStepInit, searchCallback);
+            KScrollTo("#content-social");
+         }
+    });
+
+    $("#input-search-map").keyup(function(e){
+        $("#second-search-bar").val($("#input-search-map").val());
+        $("#main-search-bar").val($("#input-search-map").val());
+        if(e.keyCode == 13){
+            initTypeSearch("all");
+            startSearch(0, indexStepInit, searchCallback);
+         }
+    });
+
+    $("#menu-map-btn-start-search").click(function(){
+        initTypeSearch("all");
+        startSearch(0, indexStepInit, searchCallback);
+    });
+
+
 
     $(".btn-create-elem").click(function(){
         currentKFormType = $(this).data("ktype");
@@ -346,4 +385,19 @@ jQuery(document).ready(function() {
     //elementLib.openForm ("organization");
 });
 
+
+function initTypeSearch(typeInit){
+    //var defaultType = $("#main-btn-start-search").data("type");
+
+    if(typeInit == "all") {
+        searchType = ["persons", "organizations", "projects"];
+        if($('#main-search-bar').val() != "") searchType.push("cities");
+
+        indexStepInit = 30;
+    }
+    else{
+        searchType = [ typeInit ];
+        indexStepInit = 100;
+    }
+}
 </script>

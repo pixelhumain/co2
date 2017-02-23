@@ -46,6 +46,10 @@
 #searchBarTextJS{
   margin-bottom: 15px;
 }
+
+.btn-directory-type{
+  margin-bottom:5px;
+}
   </style>
  
 
@@ -55,17 +59,18 @@
       <?php $typeSelected = $_GET['type']; ?>
       <?php if($typeSelected == "persons") $typeSelected = "citoyens" ; ?>
       <?php $spec = Element::getElementSpecsByType($typeSelected); ?>
-      <h2 class="text-left pull-left" style="margin-left:10px; margin-top:15px; width:90%;">
+      <h4 class="text-left pull-left subtitle-search" style="margin-left:10px; margin-top:15px; width:100%;">
         <span class="subtitle-search text-<?php echo $spec["text-color"]; ?> homestead">
-          <i class="fa fa-angle-down"></i> 
           <?php 
             $typeName = Yii::t("common",$_GET['type']); 
             if($_GET['type'] == "vote") $typeName = "propositions";
             if($_GET['type'] == "cities") $typeName = "communes";
           ?>
-          <i class="fa fa-<?php echo $spec["icon"]; ?>"></i> Liste des  <?php echo $typeName; ?>
+          <i class="fa fa-<?php echo $spec["icon"]; ?>"></i> <?php echo $typeName; ?><br>
+          <i class="fa fa-angle-down"></i> 
+          
         </span>
-      </h2>
+      </h4>
      <?php } ?>
 
 	  	<div class="col-md-12 padding-10 margin-bottom-5 lbl-info-search">
@@ -96,7 +101,40 @@
       </div>
 
       <?php if(Yii::app()->theme->name == "CO2"){ ?>
-        <div class="col-sm-2 col-md-2"></div>
+        <div class="col-sm-2 col-md-2 text-right margin-top-10">
+
+          <?php if($typeSelected != "events" && $typeSelected != "vote"){ ?>   
+          <button class="btn text-black bg-white btn-directory-type" data-type="all">
+              <i class="fa fa-search"></i> 
+              <span class="hidden-xs">Tous</span>
+          </button><hr>
+          <button class="btn text-white bg-yellow btn-directory-type" data-type="persons">
+              <i class="fa fa-user"></i> 
+              <span class="hidden-xs">Citoyens</span>
+          </button><hr>
+          <button class="btn text-white bg-green  btn-directory-type" data-type="NGO">
+              <i class="fa fa-group"></i> 
+              <span class="hidden-xs">Associations</span>
+          </button><br>
+          <button class="btn text-white bg-azure  btn-directory-type" data-type="LocalBusiness">
+              <i class="fa fa-industry"></i> 
+              <span class="hidden-xs">Entreprises</span>
+          </button><br>
+          <button class="btn text-white bg-turq btn-directory-type" data-type="Group">
+              <i class="fa fa-circle-o"></i> 
+              <span class="hidden-xs">Groupes</span>
+          </button><br>
+          <button class="btn text-white bg-purple btn-directory-type" data-type="projects">
+              <i class="fa fa-lightbulb-o"></i> 
+              <span class="hidden-xs">Projets</span>
+          </button><hr>
+          <button class="btn text-white bg-red  btn-directory-type" data-type="cities">
+              <i class="fa fa-university"></i> 
+              <span class="hidden-xs">Communes</span>
+          </button>
+          <?php }?>
+
+        </div>
         <div class="col-md-8 col-sm-8 padding-10" id="dropdown_search"></div>
       <?php }else{ ?>
         <div class="col-md-10 col-sm-10 padding-10" id="dropdown_search"></div>
@@ -248,10 +286,11 @@ jQuery(document).ready(function() {
   $('.tooltips').tooltip();
   searchPage = true;
 
-
-  //initBtnScopeList();
-  indexStepInit = 100;
-  startSearch(0, indexStepInit, searchCallback);
+  <?php if(!@$_GET["nopreload"]){ ?>
+    //initBtnScopeList();
+    indexStepInit = 100;
+    startSearch(0, indexStepInit, searchCallback);
+  <?php } ?>
 });
 
 

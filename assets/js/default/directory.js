@@ -16,7 +16,7 @@ var translate = {"organizations":"Organisations",
                  "followers":"Ils nous suivent"};
 
 function startSearch(indexMin, indexMax, callBack){
-    console.log("startSearch", typeof callBack, callBack);
+    console.log("startSearch 1", typeof callBack, callBack, loadingData);
     if(loadingData) return;
     loadingData = true;
     
@@ -133,9 +133,10 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       $("#dropdown_search").html("<span class='search-loader text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span>");
       
     if(isMapEnd)
-      $.blockUI({
-        message : "<h3 class='text-red'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span></h3>"
-      });
+      $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> chargement en cours");
+      // $.blockUI({
+      //   message : "<h3 class='text-red'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span></h3>"
+      // });
    
     $.ajax({
         type: "POST",
@@ -161,11 +162,26 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
               //parcours la liste des résultats de la recherche
               //mylog.dir(data);
-              str = directory.showResultsDirectoryHtml(data);
+              str += '<div class="col-md-12 text-left" id="">';
+              str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+
+                        "<i class='fa fa-angle-down'></i> " + totalData + " résultats ";
+              str += "<small>";
+              if(typeof headerParams != "undefined"){
+                $.each(searchType, function(key, val){
+                  var params = headerParams[val];
+                  str += "<span class='letter-"+params.color+"'><i class='fa fa-'"+params.icon+"'></i> "+params.name+"</span>";
+                });
+              }
+              str += "</small>";
+              str += "</h4>";
+              str += "<hr style='float:left; width:100%;'/>";
+              str += "</div>";
+              
+              str += directory.showResultsDirectoryHtml(data);
               
               if(str == "") { 
 	              $.unblockUI();
-	              showMap(false);
+                showMap(false);
                   $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
                   if(indexMin == 0){
                     //ajout du footer   
@@ -183,8 +199,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               {       
                 //ajout du footer      	
                 str += '<div class="pull-left col-md-12 text-center" id="footerDropdown" style="width:100%;">';
-                str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " résultats</h3><br/>";
-                str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
+                str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " résultats</h3>";
+                //str += '<span class="" id="">Complétez votre recherche pour un résultat plus précis</span></center><br/>';
+                //str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
                 str += "</div>";
 
                 //si on n'est pas sur une première recherche (chargement de la suite des résultat)
@@ -222,6 +239,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 bindLBHLinks();
 
                 $.unblockUI();
+                $("#map-loading-data").html("");
+                
 				        //showMap(false);
                 
                 //active le chargement de la suite des résultat au survol du bouton "afficher plus de résultats"

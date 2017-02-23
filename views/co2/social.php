@@ -331,7 +331,13 @@ jQuery(document).ready(function() {
 
     },"html");
 
-    $("#main-search-bar, .menu-btn-start-search").keyup(function(e){
+    $("#main-btn-start-search, .menu-btn-start-search").click(function(){
+            initTypeSearch("all");
+            startSearch(0, indexStepInit, searchCallback);
+            KScrollTo("#content-social");
+    });
+
+    $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){

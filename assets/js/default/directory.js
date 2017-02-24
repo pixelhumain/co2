@@ -130,8 +130,10 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     if(indexMin > 0)
       $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
     else
-      $("#dropdown_search").html("<span class='search-loader text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span>");
-      
+      $("#dropdown_search").html("<div class='col-md-12 col-sm-12 text-center search-loader text-dark'>"+
+                                    "<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ..."+
+                                  "</div>");
+    
     if(isMapEnd)
       $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> chargement en cours");
       // $.blockUI({
@@ -169,7 +171,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               if(typeof headerParams != "undefined"){
                 $.each(searchType, function(key, val){
                   var params = headerParams[val];
-                  str += "<span class='letter-"+params.color+"'><i class='fa fa-'"+params.icon+"'></i> "+params.name+"</span>";
+                  str += "<span class='letter-"+params.color+"'>"+
+                            "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
+                          "</span> ";
                 });
               }
               str += "</small>";

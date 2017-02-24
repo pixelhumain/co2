@@ -116,6 +116,10 @@ header .container,
 .header .container{
     padding-bottom: 40px;
 }
+
+.btn-directory-type.bg-white {
+    background-color: #F2F2F2 !important;
+}
 </style>
 
 
@@ -133,15 +137,13 @@ header .container,
         </button><br>
         recherche ciblée
     </h5>
-    <div class="scope-min-header list_tags_scopes hidden-xs hidden-sm">
+    <div class="scope-min-header list_tags_scopes hidden-xs">
     </div>
 
-	<div class="col-md-12 padding-50" id="page"></div>
+	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
-    <div class="col-md-12 padding-50 text-center">
+    <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
         <hr style="margin-bottom:-20px;">
-        <!-- data-target="#modalScopes" data-toggle="modal" -->
-        
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 
             data-target="#dash-create-modal" data-toggle="modal"
             data-toggle="tooltip" data-placement="top" 

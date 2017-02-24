@@ -1400,8 +1400,8 @@ function hideSearchResults(){
 	    
 }
 function getFooterScopeChanged(method){
-	var str = 	'<div class="padding-15" id="footerDropdown">';
-	    str += 		"<hr style='float:left; width:100%;'/>"
+	var str = 	'<div class="padding-5 text-center" id="footerDropdown">';
+	    //str += 		"<hr style='float:left; width:100%;'/>"
 	    str += 		'<button class="btn btn-default" onclick="'+method+'"><i class="fa fa-refresh"></i> Relancer la recherche</button>'+
 	    	   		"<span style='' class='text-dark padding-10'><i class='fa fa-angle-right'></i> Les critères ont changés</span><br/>";
 	    str +=  "</div>";
@@ -3628,28 +3628,32 @@ function initKInterface(params){
 
     bindLBHLinks();
 
-    $(".menu-name-profil #menu-thumb-profil, "+
-      ".menu-name-profil #menu-name-profil").mouseenter(function(){
+    $(".menu-name-profil").click(function(){
         $("#dropdown-user").addClass("open");
-        clearTimeout(timerCloseDropdownUser);
+        //clearTimeout(timerCloseDropdownUser);
     });
-    $(".menu-name-profil #menu-thumb-profil, "+
-      ".menu-name-profil #menu-name-profil").mouseleave(function(){
-      	timerCloseDropdownUser=true;
-        setTimeout(function(){
-        	if(timerCloseDropdownUser==true)
-        	$("#dropdown-user").removeClass("open");
-        },1000);
-    });
-    $("#dropdown-user").mouseenter(function(){
-    	timerCloseDropdownUser = false;
-    });
-    $("#dropdown-user").mouseleave(function(){
+    // $(".menu-name-profil #menu-thumb-profil, "+
+    //   ".menu-name-profil #menu-name-profil").mouseleave(function(){
+    //   	timerCloseDropdownUser=true;
+    //     setTimeout(function(){
+    //     	if(timerCloseDropdownUser==true)
+    //     	$("#dropdown-user").removeClass("open");
+    //     },1000);
+    // });
+    // $("#dropdown-user").mouseenter(function(){
+    // 	timerCloseDropdownUser = false;
+    // });
+    $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
         $("#dropdown-user").removeClass("open");
     });
 
+    $("header .container").mouseenter(function(){ 
+    	$("#dropdown-user").removeClass("open");
+    });
+
+    $(".tooltips").tooltip();
+      
     setTimeout(function(){ 
-      $(".tooltips").tooltip();
       mapBg = Sig.loadMap("mapCanvas", initSigParams);
       Sig.showIcoLoading(false);
       CoSigAllReadyLoad = true;

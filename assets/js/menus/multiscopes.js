@@ -3,7 +3,7 @@ function scopeExists(scopeValue){
 	return typeof myMultiScopes[scopeValue] != "undefined";
 }
 
-function saveMultiScope(){ //mylog.log("saveMultiScope() try - userId = ",userId); mylog.dir(myMultiScopes);
+function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId); mylog.dir(myMultiScopes);
 	
 	hideSearchResults();
 	if(userId != null && userId != ""){
@@ -141,7 +141,7 @@ function showScopeInMultiscope(scopeValue){ //mylog.log("showScopeInMultiscope()
 		var classDisable = (myMultiScopes[scopeValue].active == false) ? "disabled" : "";
 		html = 
 		'<span class="item-scope-input bg-red item-scope-'+scope.type+' '+classDisable+'" data-scope-value="'+scopeValue+'">' +
-				'<a  href="javascript:" class="item-scope-checker tooltips"' +
+				'<a href="javascript:" class="item-scope-checker tooltips"' +
 					'data-toggle="tooltip" data-placement="bottom" ' +
 					'title="Activer/Désactiver" data-scope-value="'+scopeValue+'">' +
 					'<i class="fa fa-'+faActive+'"></i>' +
@@ -190,7 +190,7 @@ function deleteScopeInMultiscope(scopeValue){ //mylog.log("deleteScopeInMultisco
 	//mylog.dir(myMultiScopes);
 }
 
-function toogleScopeMultiscope(scopeValue, selected){ //mylog.log("toogleScopeMultiscope(scopeValue)", scopeValue);
+function toogleScopeMultiscope(scopeValue, selected){ mylog.log("toogleScopeMultiscope(scopeValue)", scopeValue);
 	if(scopeExists(scopeValue)){
 		myMultiScopes[scopeValue].active = !myMultiScopes[scopeValue].active;
 		
@@ -206,6 +206,7 @@ function toogleScopeMultiscope(scopeValue, selected){ //mylog.log("toogleScopeMu
 			$("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-check-circle");
 			$("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
 		}
+		console.log("before rebuildSearchScopeInput from toogleScope");
 		rebuildSearchScopeInput();
 	}else{
 		//showMsgInfoMultiScope("Ce scope n'existe pas", "danger");

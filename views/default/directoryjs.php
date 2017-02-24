@@ -50,6 +50,12 @@
 .btn-directory-type{
   margin-bottom:5px;
 }
+
+@media (max-width: 768px) {
+  #col-btn-type-directory{
+    text-align: center!important;
+  }
+}
   </style>
  
 
@@ -101,45 +107,45 @@
       </div>
 
       <?php if(Yii::app()->theme->name == "CO2"){ ?>
-        <div class="col-sm-2 col-md-2 text-right margin-top-10">
+        <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-10 no-padding" id="col-btn-type-directory">
 
           <?php if($typeSelected != "events" && $typeSelected != "vote"){ ?>   
           <button class="btn text-black bg-white btn-directory-type" data-type="all">
               <i class="fa fa-search"></i> 
               <span class="hidden-xs">Tous</span>
-          </button><hr>
+          </button><hr class="hidden-xs">
           <button class="btn text-white bg-yellow btn-directory-type" data-type="persons">
               <i class="fa fa-user"></i> 
               <span class="hidden-xs">Citoyens</span>
-          </button><hr>
+          </button><hr class="hidden-xs">
           <button class="btn text-white bg-green  btn-directory-type" data-type="NGO">
               <i class="fa fa-group"></i> 
               <span class="hidden-xs">Associations</span>
-          </button><br>
+          </button><br class="hidden-xs">
           <button class="btn text-white bg-azure  btn-directory-type" data-type="LocalBusiness">
               <i class="fa fa-industry"></i> 
               <span class="hidden-xs">Entreprises</span>
-          </button><br>
+          </button><br class="hidden-xs">
           <button class="btn text-white bg-turq btn-directory-type" data-type="Group">
               <i class="fa fa-circle-o"></i> 
               <span class="hidden-xs">Groupes</span>
-          </button><br>
+          </button><br class="hidden-xs">
           <button class="btn text-white bg-purple btn-directory-type" data-type="projects">
               <i class="fa fa-lightbulb-o"></i> 
               <span class="hidden-xs">Projets</span>
-          </button><hr>
+          </button><hr class="hidden-xs">
           <button class="btn text-white bg-red  btn-directory-type" data-type="cities">
               <i class="fa fa-university"></i> 
               <span class="hidden-xs">Communes</span>
           </button>
           <?php }?>
-
+          <hr class="hidden-sm hidden-md hidden-lg">
         </div>
-        <div class="col-md-8 col-sm-8 padding-10" id="dropdown_search"></div>
+        <div class="col-md-8 col-sm-8 col-xs-12 padding-10" id="dropdown_search"></div>
       <?php }else{ ?>
-        <div class="col-md-10 col-sm-10 padding-10" id="dropdown_search"></div>
+        <div class="col-md-10 col-sm-10 col-xs-12 padding-10" id="dropdown_search"></div>
       <?php } ?>
-      <div id="listTags" class="col-sm-2 col-md-2 text-left"></div>
+      <div id="listTags" class="col-sm-2 col-md-2 hidden-xs text-left"></div>
       
   </div>
 

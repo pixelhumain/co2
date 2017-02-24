@@ -171,8 +171,14 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               if(typeof headerParams != "undefined"){
                 $.each(searchType, function(key, val){
                   var params = headerParams[val];
-                  str += "<span class='letter-"+params.color+"'>"+
+                  str += "<span class='text-"+params.color+"'>"+
                             "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
+                          "</span> ";
+                });//console.log("myMultiTags", myMultiTags);
+                $.each(myMultiTags, function(key, val){
+                  var params = headerParams[val];
+                  str += "<span class='text-dark hidden-xs pull-right'>"+
+                            "#"+key+
                           "</span> ";
                 });
               }

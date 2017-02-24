@@ -326,6 +326,9 @@ jQuery(document).ready(function() {
             KScrollTo("#content-social");
         });
 
+        $(".btn-open-filliaire").click(function(){
+            KScrollTo("#content-social");
+        });
 
         loadingData = false; 
         initTypeSearch(type);

@@ -46,11 +46,25 @@
 #searchBarTextJS{
   margin-bottom: 15px;
 }
-
-.btn-directory-type{
-  margin-bottom:5px;
+.btn-open-filliaire{
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
+#col-btn-type-directory .btn-directory-type{
+  margin-bottom:5px;
+  /*font-weight: 700;*/
+  text-transform: uppercase;
+  background-color: transparent;
+}
+
+#col-btn-type-directory .btn-directory-type .btn-all{
+  /*background-color: #F2F2F2;*/
+}
+
+.btn-select-filliaire:hover{
+  background-color: #F2F2F2;
+}
 @media (max-width: 768px) {
   #col-btn-type-directory{
     text-align: center!important;
@@ -106,38 +120,64 @@
           <hr class="margin-bottom-10">
       </div>
 
-        <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-10 no-padding" id="col-btn-type-directory">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
+        <h5>Recherche thématique<br><i class='fa fa-chevron-down'></i></h5>
+        <?php $filliaireCategories = CO2::getContextList("filliaireCategories"); 
+              //var_dump($categories); exit;
+              foreach ($filliaireCategories as $key => $cat) { 
+          ?>
+              <?php if(is_array($cat)) { ?>
+              <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
+                <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis margin-bottom-5 btn-select-filliaire" 
+                        data-fkey="<?php echo $key; ?>"
+                        style="border-radius:0px; border-color: transparent; text-transform: uppercase;" 
+                        data-keycat="<?php echo $cat["name"]; ?>">
+                  <i class="fa <?php echo $cat["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $cat["name"]; ?>
+                </button>
+              </div>
+                <?php //foreach ($cat as $key2 => $cat2) { ?>
+                  <!-- <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php //echo $key; ?>">
+                    <i class="fa fa-angle-right"></i> <?php //echo $cat2; ?>
+                  </button><br class="hidden"> -->
+                <?php //} ?>
+              <?php } ?>
+            </button>
+          <?php } ?>
+          <hr class="col-md-12 col-sm-12 col-xs-12 no-padding">
+        </div>
+
+        <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
 
           <?php if($typeSelected != "events" && $typeSelected != "vote"){ ?>   
-          <button class="btn text-black bg-dark btn-directory-type" data-type="all">
+          <button class="btn text-black bg-dark btn-open-filliaire">
               <i class="fa fa-th"></i> 
-              <span class="hidden-xs">Rechercher par filliaire</span>
+              <span class="hidden-xs">Thématiques</span>
           </button><hr class="hidden-xs">
-          <button class="btn text-black bg-white btn-directory-type" data-type="all">
+          <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
               <i class="fa fa-search"></i> 
               <span class="hidden-xs">Tous</span>
           </button><hr class="hidden-xs">
-          <button class="btn text-white bg-yellow btn-directory-type" data-type="persons">
+          <button class="btn text-yellow btn-directory-type" data-type="persons">
               <i class="fa fa-user"></i> 
               <span class="hidden-xs">Citoyens</span>
           </button><hr class="hidden-xs">
-          <button class="btn text-white bg-green  btn-directory-type" data-type="NGO">
+          <button class="btn text-green  btn-directory-type" data-type="NGO">
               <i class="fa fa-group"></i> 
               <span class="hidden-xs">Associations</span>
           </button><br class="hidden-xs">
-          <button class="btn text-white bg-azure  btn-directory-type" data-type="LocalBusiness">
+          <button class="btn text-azure  btn-directory-type" data-type="LocalBusiness">
               <i class="fa fa-industry"></i> 
               <span class="hidden-xs">Entreprises</span>
           </button><br class="hidden-xs">
-          <button class="btn text-white bg-turq btn-directory-type" data-type="Group">
+          <button class="btn text-turq btn-directory-type" data-type="Group">
               <i class="fa fa-circle-o"></i> 
               <span class="hidden-xs">Groupes</span>
           </button><br class="hidden-xs">
-          <button class="btn text-white bg-purple btn-directory-type" data-type="projects">
+          <button class="btn text-purple btn-directory-type" data-type="projects">
               <i class="fa fa-lightbulb-o"></i> 
               <span class="hidden-xs">Projets</span>
           </button><hr class="hidden-xs">
-          <button class="btn text-white bg-red  btn-directory-type" data-type="cities">
+          <button class="btn text-red  btn-directory-type" data-type="cities">
               <i class="fa fa-university"></i> 
               <span class="hidden-xs">Communes</span>
           </button>
@@ -145,25 +185,7 @@
           <hr class="hidden-sm hidden-md hidden-lg">
         </div>
 
-        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 margin-top-25 text-left subsub" id="sub-menu-left">
-        <?php $categories = CO2::getContextList("classifiedCategories"); 
-              foreach ($categories as $key => $cat) {
-          ?>
-              <?php if(is_array($cat)) { ?>
-                <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
-                  <i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo $key; ?>
-                </button><br>
-                <?php foreach ($cat as $key2 => $cat2) { ?>
-                  <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>">
-                    <i class="fa fa-angle-right"></i> <?php echo $cat2; ?>
-                  </button><br class="hidden">
-                <?php } ?>
-              <?php } ?>
-            </button>
-          <?php } ?>
-        </div>
-
-        <div class="col-md-6 col-sm-6 col-xs-10 padding-10" id="dropdown_search"></div>
+        <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search"></div>
       
       <div id="listTags" class="col-sm-2 col-md-2 hidden-xs text-left"></div>
       
@@ -253,6 +275,8 @@ var lockCityKey = <?php echo (@$_GET['lockCityKey']) ? "'".$_GET['lockCityKey'].
 var cityNameLocked = "<?php echo $cityName; ?>";
 var typeSelected = <?php echo (@$_GET['type']) ? "'".$_GET['type']."'" : "null" ?>;
 
+var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
+
 jQuery(document).ready(function() {
 
 	
@@ -306,6 +330,23 @@ jQuery(document).ready(function() {
     }
   });
 
+  $(".btn-open-filliaire").click(function(){
+      if($("#sub-menu-filliaire").hasClass("hidden"))
+        $("#sub-menu-filliaire").removeClass("hidden");
+      else
+        $("#sub-menu-filliaire").addClass("hidden");
+  });
+
+  $(".btn-select-filliaire").click(function(){
+      var fKey = $(this).data("fkey");
+      myMultiTags = {};
+      $.each(filliaireCategories[fKey]["tags"], function(key, tag){
+        addTagToMultitag(tag);
+      });
+      console.log("myMultiTags", myMultiTags);
+      
+      startSearch(0, indexStepInit, searchCallback);
+  });
   
   /*  $(".searchIcon").removeClass("fa-search").addClass("fa-file-text-o");
   $(".searchIcon").attr("title","Mode Recherche ciblé (ne concerne que cette page)");*/

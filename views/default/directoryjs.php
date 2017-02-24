@@ -106,10 +106,13 @@
           <hr class="margin-bottom-10">
       </div>
 
-      <?php if(Yii::app()->theme->name == "CO2"){ ?>
         <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-10 no-padding" id="col-btn-type-directory">
 
           <?php if($typeSelected != "events" && $typeSelected != "vote"){ ?>   
+          <button class="btn text-black bg-dark btn-directory-type" data-type="all">
+              <i class="fa fa-th"></i> 
+              <span class="hidden-xs">Rechercher par filliaire</span>
+          </button><hr class="hidden-xs">
           <button class="btn text-black bg-white btn-directory-type" data-type="all">
               <i class="fa fa-search"></i> 
               <span class="hidden-xs">Tous</span>
@@ -141,10 +144,27 @@
           <?php }?>
           <hr class="hidden-sm hidden-md hidden-lg">
         </div>
-        <div class="col-md-8 col-sm-8 col-xs-12 padding-10" id="dropdown_search"></div>
-      <?php }else{ ?>
-        <div class="col-md-10 col-sm-10 col-xs-12 padding-10" id="dropdown_search"></div>
-      <?php } ?>
+
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 margin-top-25 text-left subsub" id="sub-menu-left">
+        <?php $categories = CO2::getContextList("classifiedCategories"); 
+              foreach ($categories as $key => $cat) {
+          ?>
+              <?php if(is_array($cat)) { ?>
+                <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                  <i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo $key; ?>
+                </button><br>
+                <?php foreach ($cat as $key2 => $cat2) { ?>
+                  <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>">
+                    <i class="fa fa-angle-right"></i> <?php echo $cat2; ?>
+                  </button><br class="hidden">
+                <?php } ?>
+              <?php } ?>
+            </button>
+          <?php } ?>
+        </div>
+
+        <div class="col-md-6 col-sm-6 col-xs-10 padding-10" id="dropdown_search"></div>
+      
       <div id="listTags" class="col-sm-2 col-md-2 hidden-xs text-left"></div>
       
   </div>

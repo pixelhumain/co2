@@ -500,4 +500,4 @@ function toogleNotif(open){
 </script>
 
 
-<?php $this->renderPartial('sectionEditTools');?>
+<?php //$this->renderPartial('sectionEditTools');?>

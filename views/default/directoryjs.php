@@ -143,7 +143,7 @@
               <?php } ?>
             </button>
           <?php } ?>
-          <hr class="col-md-12 col-sm-12 col-xs-12 no-padding">
+          <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
         </div>
 
         <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
@@ -346,6 +346,7 @@ jQuery(document).ready(function() {
       console.log("myMultiTags", myMultiTags);
       
       startSearch(0, indexStepInit, searchCallback);
+      KScrollTo("#before-section-result");
   });
   
   /*  $(".searchIcon").removeClass("fa-search").addClass("fa-file-text-o");

@@ -39,7 +39,7 @@ class AppController extends CommunecterController {
     	
         $params = array("type" => @$type );
 
-        if(!@$hash || @$hash=="") $hash="social";
+        if(!@$hash || @$hash=="") $hash="search";
     	echo $this->renderPartial($hash, $params, true);
 	}
 
@@ -99,10 +99,10 @@ class AppController extends CommunecterController {
 	}
 
 
-	public function actionSocial($type=null){
-		CO2Stat::incNbLoad("co2-social");	
+	public function actionSearch($type=null){
+		CO2Stat::incNbLoad("co2-search");	
         $params = array("type" => @$type );
-    	echo $this->renderPartial("social", $params, true);
+    	echo $this->renderPartial("search", $params, true);
 	}
 
 
@@ -118,7 +118,7 @@ class AppController extends CommunecterController {
 	public function actionAgenda(){
 		CO2Stat::incNbLoad("co2-agenda");	
         $params = array("type" => "events");
-    	echo $this->renderPartial("social", $params, true);
+    	echo $this->renderPartial("search", $params, true);
 	}
 
 
@@ -126,7 +126,7 @@ class AppController extends CommunecterController {
 	public function actionPower(){
 		CO2Stat::incNbLoad("co2-power");	
         $params = array("type" => "vote");
-    	echo $this->renderPartial("social", $params, true);
+    	echo $this->renderPartial("search", $params, true);
 	}
 
 

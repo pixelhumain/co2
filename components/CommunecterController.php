@@ -457,7 +457,7 @@ class CommunecterController extends Controller
       "agenda"            => array('href' => "/ph/communecter/app/agenda",            "public" => true),
       "mediacrawler"      => array('href' => "/ph/communecter/app/mediacrawler",      "public" => false),
       "page"              => array('href' => "/ph/communecter/app/page",              "public" => true),
-      "social"            => array('href' => "/ph/communecter/app/social",            "public" => true),
+      "search"            => array('href' => "/ph/communecter/app/search",            "public" => true),
       "agenda"            => array('href' => "/ph/communecter/app/agenda",            "public" => true),
       "power"             => array('href' => "/ph/communecter/app/power",             "public" => true),
       "superadmin"        => array('href' => "/ph/communecter/app/superadmin",        "public" => false),

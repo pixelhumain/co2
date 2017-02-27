@@ -1,0 +1,83 @@
+{
+  "title" : "app",
+
+	"pages" : 
+		{
+		  "#app.index":
+			 	 {"redirect":"social"},
+			  
+			"#app.social":
+			  	{"inMenu" : true, 
+                "useHeader" : true, 
+                "subdomain" : "social", 
+                "subdomainName" : "Recherche",
+                "icon" : "search", 
+                "mainTitle" : "Moteur de recherche <span class='letter-red'>territorial</span>",
+                "placeholderMainSearch" : "Rechercher une page ..."
+          },
+
+			"#app.annonces":
+			  	{"inMenu" : true, 
+                "useHeader" : true, 
+                "subdomain" : "annonces", 
+                "subdomainName" : "annonces",
+                "icon" : "bullhorn", 
+                "mainTitle" : "Toutes vos annonces en direct",
+                "placeholderMainSearch" : "rechercher parmis les annonces  ..."
+          },
+
+			"#app.agenda":
+			  	{"inMenu" : true, 
+                "useHeader" : true, 
+                "subdomain" : "agenda", 
+                "subdomainName" : "agenda",
+                "icon" : "calendar", 
+                "mainTitle" : "L'agenda <span class='letter-red'>CO</span>mmun",
+                "placeholderMainSearch" : "rechercher un événement ..."
+          },
+
+			"#app.power":
+			  	{"inMenu" : true, 
+                "useHeader" : true, 
+                "subdomain" : "power", 
+                "subdomainName" : "power",
+                "icon" : "hand-rock-o", 
+                "mainTitle" : "Un bien <span class='letter-red'>CO</span>mmun dédié à l'intelligence <span class='letter-red'>CO</span>llective",
+                "placeholderMainSearch" : "rechercher parmis les propositions ..."
+          },
+
+			"#app.page.type":
+			  	{"inMenu" : false, 
+                "useHeader" : false, 
+                "subdomain" : "page.type", 
+                "subdomainName" : "page",
+                "icon" : "", 
+                "mainTitle" : "Le réseau social à effet de sert",
+                "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
+          },
+
+            "#app.info":
+                {"inMenu" : false, 
+                "useHeader" : false, 
+                "subdomain" : "apropos", 
+                "subdomainName" : "Info",
+                "icon" : "search", 
+                "mainTitle" : "Le réseau social à effet de sert",
+                "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
+          },
+
+            "#app.city":
+                {"inMenu" : false, 
+                "useHeader" : false, 
+                "subdomain" : "city", 
+                "subdomainName" : "City",
+                "icon" : "university", 
+                "mainTitle" : "Communexion activée",
+                "placeholderMainSearch" : "rechercher ..."
+          }
+      
+	  }
+  
+  }
+
+

@@ -42,7 +42,7 @@ class CO2 {
     	return $cities;
     }
 
-    public static function getCommunexionUserLoged(){
+    public static function getCommunexionCookies(){
         if(isset( Yii::app()->request->cookies['cpCommunexion'] )){
             $cp = Yii::app()->request->cookies['cpCommunexion'];
             $where = array("postalCodes.postalCode" =>new MongoRegex("/^".$cp."/i"));

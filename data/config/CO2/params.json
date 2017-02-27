@@ -16,12 +16,12 @@
                 "placeholderMainSearch" : "Rechercher une page ..."
           },
 
-			"#app.freedom":
+			"#app.annonces":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
-                "subdomain" : "freedom", 
+                "subdomain" : "annonces", 
                 "subdomainName" : "annonces",
-                "icon" : "newspaper-o", 
+                "icon" : "bullhorn", 
                 "mainTitle" : "Toutes vos annonces en direct",
                 "placeholderMainSearch" : "rechercher parmis les annonces  ..."
           },

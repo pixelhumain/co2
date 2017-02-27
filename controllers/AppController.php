@@ -107,10 +107,10 @@ class AppController extends CommunecterController {
 
 
 
-	public function actionFreedom(){
-		CO2Stat::incNbLoad("co2-freedom");	
+	public function actionAnnonces(){
+		CO2Stat::incNbLoad("co2-annonces");	
         $params = array("type" => @$type );
-    	echo $this->renderPartial("freedom", $params, true);
+    	echo $this->renderPartial("annonces", $params, true);
 	}
 
 

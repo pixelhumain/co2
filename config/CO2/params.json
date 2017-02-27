@@ -39,11 +39,12 @@
                 "placeholderMainSearch" : "rechercher un événement ..."
           },
 
-			"#app.power":
+			"#power":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
                 "subdomain" : "power", 
                 "subdomainName" : "power",
+                "hash":"#app.power",
                 "icon" : "hand-rock-o", 
                 "mainTitle" : "Un bien <span class='letter-red'>CO</span>mmun dédié à l'intelligence <span class='letter-red'>CO</span>llective",
                 "placeholderMainSearch" : "rechercher parmis les propositions ..."

@@ -520,7 +520,7 @@ var directory = {
 
               //if(type=="citoyen") type = "person";
              
-              var onclick = 'loadByHash("' + url + '");';
+              var onclick = 'url.loadByHash("' + url + '");';
 
               var onclickCp = "";
               var target = " target='_blank'";

@@ -3,22 +3,22 @@ var prevStep = 0;
 var steps = ["explain1","live","explain2","event","explain3","orga","explain4","project","explain5","person"];
 var slides = {
 	explain1 : function() { showDefinition("explainCommunectMe")},
-	live : function() { loadByHash("#default.live")},
+	live : function() { url.loadByHash("#default.live")},
 	explain2 : function() { showDefinition("explainCartographiedeReseau")},
-	event : function() { loadByHash("#event.detail.id.57bb4078f6ca47cb6c8b457d")}, 
+	event : function() { url.loadByHash("#event.detail.id.57bb4078f6ca47cb6c8b457d")}, 
 	explain3 : function() { showDefinition("explainDemoPart")},
-	orga : function() { loadByHash("#organization.detail.id.57553776f6ca47b37da93c2d")}, 
+	orga : function() { url.loadByHash("#organization.detail.id.57553776f6ca47b37da93c2d")}, 
 	explain4 : function() { showDefinition("explainCommunecter")},
-	project : function() { loadByHash("#project.detail.id.56c1a474f6ca47a8378b45ef")},
+	project : function() { url.loadByHash("#project.detail.id.56c1a474f6ca47a8378b45ef")},
 	explain5 : function() { showDefinition("explainProxicity")},
-	person : function() { loadByHash("#person.detail.id.54eda798f6b95cb404000903")} 
+	person : function() { url.loadByHash("#person.detail.id.54eda798f6b95cb404000903")} 
 };
 
 function runslide(cmd)
 {
 	if(cmd == 0){
 		prevStep = null;
-		loadByHash("#default.live");
+		url.loadByHash("#default.live");
 	}
 
 	if( prevStep != null ){
@@ -183,7 +183,7 @@ function updateField(type,id,name,value,reload){
 		if(data.result) {
         	toastr.success(data.msg);
         	if(reload)
-        		loadByHash(location.hash);
+        		url.loadByHash(location.hash);
 		}
         else
         	toastr.error(data.msg);  
@@ -323,7 +323,7 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 								if (typeof callback == "function") 
 									callback();
 								else
-									loadByHash(location.hash);
+									url.loadByHash(location.hash);
 							} else {
 							   toastr.error("You leave succesfully");
 							}
@@ -387,7 +387,7 @@ function follow(parentType, parentId, childId, childType, callback){
 				if (typeof callback == "function") 
 					callback();
 				else
-					loadByHash(location.hash);
+					url.loadByHash(location.hash);
 			}
 			else
 				toastr.error(data.msg);
@@ -447,7 +447,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 									if(data.result){
 										addFloopEntity(data.parent["_id"]["$id"], data.parentType, data.parent);
 										toastr.success(data.msg);	
-										loadByHash(location.hash);
+										url.loadByHash(location.hash);
 									}
 									else{
 										if(typeof(data.type)!="undefined" && data.type=="info")
@@ -496,7 +496,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 									if(data.result){
 										addFloopEntity(data.parent["_id"]["$id"], data.parentType, data.parent);
 										toastr.success(data.msg);	
-										loadByHash(location.hash);
+										url.loadByHash(location.hash);
 									}
 									else{
 										if(typeof(data.type)!="undefined" && data.type=="info")
@@ -521,260 +521,181 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 	}
 }		
 
-var loadableUrls = {
-	"#organization.addorganizationform" : {title:"ADD AN ORGANIZATION ", icon : "users","login":true},
-	"#person.invite": {title:'INVITE SOMEONE', icon : "share-alt","login":true},
-	"#event.eventsv": {title:'ADD AN EVENT', icon : "calendar","login":true},
-	"#project.projectsv": {title:'ADD A PROJECT', icon : 'lightbulb-o',"login":true},
-	//directory
-	"#person.directory" : {aliasParam: "#element.directory.type.citoyens.id.$id", params: ["id"], title:"PERSON DIRECTORY ", icon : "share-alt"},
-	"#organization.directory" : {aliasParam: "#element.directory.type.organizations.id.$id", params: ["id"], title:"ORGANIZATION MEMBERS ", icon : "users"},
-	"#project.directory" : {aliasParam: "#element.directory.type.projects.id.$id", params: ["id"], title:"PROJECT CONTRIBUTORS ", icon : "users"},
-	"#event.directory" : {aliasParam: "#element.directory.type.events.id.$id", params: ["id"], title:"EVENT VISUALISATION ", icon : "calendar"},
-	"#event.calendarview" : {title:"EVENT CALENDAR ", icon : "calendar"},
-	//"#city.directory" : {title:"CITY DIRECTORY ", icon : "bookmark fa-rotate-270","urlExtraParam":"tpl=directory2"},
-	"#city.opendata" : {title:'STATISTICS ', icon : 'line-chart' },
-    "#person.detail" : {aliasParam: "#element.detail.type.citoyens.id.$id", params: ["id"], title:'PERSON DETAIL ', icon : 'user' },
-    "#person.invite" : {title:'PERSON INVITE ', icon : 'user' },
-    "#person.changepassword" : {title:'Change your password ', icon : 'fa-lock' },
-    "#person.updateprofil" : {title:'Update profil', icon : 'fa-lock' },
-    "#person.telegram" : {title:'CONTACT PERSON VIA TELEGRAM ', icon : 'send' },
-    "#event.detail" : {aliasParam: "#element.detail.type.events.id.$id", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
-    "#poi.detail" : {aliasParam: "#element.detail.type.poi.id.$id", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
-    "#project.detail" : {aliasParam: "#element.detail.type.projects.id.$id", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
-    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
-    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
-    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
-    "#news.detail" : {title:'NEWS DETAIL ', icon : 'rss' },
-    "#news.index.type" : {title:'NEWS INDEX ', icon : 'rss', menuId:"menu-btn-news-network","urlExtraParam":"isFirst=1" },
-    "#organization.detail" : {aliasParam: "#element.detail.type.organizations.id.$id", params: ["id"], title:'ORGANIZATION DETAIL ', icon : 'users' },
-    "#need.detail" : {title:'NEED DETAIL ', icon : 'cubes' },
-    "#need.addneedsv" : {title:'NEED DETAIL ', icon : 'cubes' },
-    "#city.detail" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
-    "#city.creategraph" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
-    "#city.graphcity" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
-    "#city.statisticPopulation" : {title:'CITY ', icon : 'university' },
-    "#news" : {title:'NEWS ', icon : 'rss'},
-    "#survey" : {title:'VOTE LOCAL ', icon : 'legal'},
-    "#rooms.index.type.cities" : {title:'ACTION ROOMS ', icon : 'cubes', menuId:"btn-citizen-council-commun"},
-    "#rooms.editroom" : {title:'ADD A ROOM ', icon : 'plus', action:function(){ editRoomSV ();	}},
-	"#rooms" : {title:'ACTION ROOMS ', icon : 'cubes'},
-    "#element.aroundme" : {title:"Around me" , icon : 'crosshairs', menuId:"menu-btn-around-me"},
-	"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
-    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
-    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
-    "#admin.checkgeocodage" : {title:'CHECKGEOCODAGE ', icon : 'download'},
-    "#admin.openagenda" : {title:'OPENAGENDA ', icon : 'download'},
-    "#admin.adddata" : {title:'ADDDATA ', icon : 'download'},
-    "#admin.importdata" : {title:'IMPORT DATA ', icon : 'download'},
-    "#admin.index" : {title:'IMPORT DATA ', icon : 'download'},
-    "#admin.cities" : {title:'CITIES ', icon : 'university'},
-    "#admin.sourceadmin" : {title:'SOURCE ADMIN', icon : 'download'},
-    "#admin.checkcities" : {title:'SOURCE ADMIN', icon : 'download'},
-    "#admin.directory" : {title:'IMPORT DATA ', icon : 'download'},
-    "#admin.mailerrordashboard" : {title:'MAIL ERROR ', icon : 'download'},
-    "#admin.moderate" : {title:'MODERATE ', icon : 'download'},
-    "#admin.createfile" : {title:'IMPORT DATA', icon : 'download'},
-	"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus'},
-    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download'},
-    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download'},
-    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download'},
-    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
-    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
-    "#default.agenda" : {title:'COMMUNECTED AGENDA ', icon : 'calendar', menuId:"menu-btn-agenda"},
-	"#default.home" : {title:'COMMUNECTED HOME ', icon : 'home',"menu":"homeShortcuts"},
-	"#default.apropos" : {title:'COMMUNECTED HOME ', icon : 'star',"menu":"homeShortcuts"},
-	"#default.twostepregister" : {title:'TWO STEP REGISTER', icon : 'home', "menu":"homeShortcuts"},
-	"#default.view.page" : {title:'FINANCEMENT PARTICIPATIF ', icon : 'euro'},
-	//"#home" : {"alias":"#default.home"},
-    "#stat.chartglobal" : {title:'STATISTICS ', icon : 'bar-chart'},
-    "#stat.chartlogs" : {title:'STATISTICS ', icon : 'bar-chart'},
-    "#network.savoir" : {title:"En savoir plus" , icon : 'plus'},
-    "#default.live" : {title:"FLUX'Direct" , icon : 'heartbeat', menuId:"menu-btn-live"},
-	"#default.login" : {title:'COMMUNECTED AGENDA ', icon : 'calendar'},
-	"#project.addcontributorsv" : {title:'Add contributors', icon : 'plus'},
-	"#organization.addmember" : {title:'Add Members ', icon : 'plus'},
-	"#event.addattendeesv" : {title:'ADD ATTENDEES ', icon : 'plus'},
-	"#project.addcontributorsv" : {title:'COMMUNECTED AGENDA ', icon : 'calendar'},
-	"#showTagOnMap.tag" : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showTagOnMap(hash.split('.')[2])	} },
-	"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
-	"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
-	"#opendata" : {"alias":"#data.index"},
-	//"#search" : { "title":'SEARCH AND FIND', "icon" : 'map-search', "hash" : "#default.directory", "preaction":function( hash ){ return searchByHash(hash);} },
-	
-};
 
-function jsController(hash){
-	mylog.log("jsController",hash);
-	res = false;
-	$(".menuShortcuts").addClass("hide");
-	mylog.log("loadableUrls", loadableUrls);
-	$.each( loadableUrls, function(urlIndex,urlObj)
-	{
-		//mylog.log("replaceAndShow2",urlIndex);
-		if( hash.indexOf(urlIndex) >= 0 )
+var CoAllReadyLoad = false;
+var url = {
+	loadableUrls : {},
+	jsController : function (hash){
+		mylog.log("jsController",hash);
+		res = false;
+		$(".menuShortcuts").addClass("hide");
+		mylog.log("url.loadableUrls", url.loadableUrls);
+		$.each( url.loadableUrls, function(urlIndex,urlObj)
 		{
-			checkMenu(urlObj, hash);
-		
-			endPoint = loadableUrls[urlIndex];
-			mylog.log("jsController 2",endPoint,"login",endPoint.login,endPoint.hash );
-			if( typeof endPoint.login == undefined || !endPoint.login || ( endPoint.login && userId ) ){
-				//alises are renaming of urls example default.home could be #home
-				if( endPoint.alias ){
-					endPoint = jsController(endPoint.alias);
+			//mylog.log("replaceAndShow2",urlIndex);
+			if( hash.indexOf(urlIndex) >= 0 )
+			{
+				checkMenu(urlObj, hash);
+			
+				endPoint = url.loadableUrls[urlIndex];
+				mylog.log("jsController 2",endPoint,"login",endPoint.login,endPoint.hash );
+				if( typeof endPoint.login == undefined || !endPoint.login || ( endPoint.login && userId ) ){
+					//alises are renaming of urls example default.home could be #home
+					if( endPoint.alias ){
+						endPoint = url.jsController(endPoint.alias);
+						return false;
+					} 
+					if( endPoint.aliasParam ){
+						hashT=hash.split(".");
+						alias=endPoint.aliasParam;
+						$.each(endPoint.params, function(i, v){
+							$.each(hashT, function(ui, e){
+								if (v == e){
+									paramId=hashT[ui+1];
+									alias = alias.replace("$"+v, paramId);
+								}
+							});
+						});		
+						endPoint = url.jsController(alias);	
+						return false;
+					} 
+					// an action can be connected to a url, and executed
+					if( endPoint.action && typeof endPoint.action == "function"){
+						endPoint.action(hash);
+					} else {
+						//classic url management : converts urls by replacing dots to slashes and ajax retreiving and showing the content 
+						extraParams = (endPoint.urlExtraParam) ? "?"+endPoint.urlExtraParam : "";
+						urlExtra = (endPoint.urlExtra) ? endPoint.urlExtra : "";
+						//execute actions before teh ajax request
+						res = false;
+						if( endPoint.preaction && typeof endPoint.preaction == "function")
+							res = endPoint.preaction(hash);
+						//hash can be iliased
+						if (endPoint.hash) 
+							hash = endPoint.hash;
+						if(hash.indexOf("?") >= 0){
+							hashT=hash.split("?");
+							mylog.log(hashT);
+							hash=hashT[0];
+							extraParams = "?"+hashT[1];
+						}
+						if(extraParams.indexOf("#") >= 0){
+							extraParams=extraParams.replace( "#","%hash%" );
+						}
+						path = hash.replace( "#","" ).replace( /\./g,"/" );
+						showAjaxPanel( '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res );
+						
+						if(endPoint.menu)
+							$("."+endPoint.menu).removeClass("hide");
+					}
+					res = true;
 					return false;
-				} 
-				if( endPoint.aliasParam ){
-					hashT=hash.split(".");
-					alias=endPoint.aliasParam;
-					$.each(endPoint.params, function(i, v){
-						$.each(hashT, function(ui, e){
-							if (v == e){
-								paramId=hashT[ui+1];
-								alias = alias.replace("$"+v, paramId);
-							}
-						});
-					});		
-					endPoint = jsController(alias);	
-					return false;
-				} 
-				// an action can be connected to a url, and executed
-				if( endPoint.action && typeof endPoint.action == "function"){
-					endPoint.action(hash);
 				} else {
-					//classic url management : converts urls by replacing dots to slashes and ajax retreiving and showing the content 
-					extraParams = (endPoint.urlExtraParam) ? "?"+endPoint.urlExtraParam : "";
-					urlExtra = (endPoint.urlExtra) ? endPoint.urlExtra : "";
-					//execute actions before teh ajax request
-					res = false;
-					if( endPoint.preaction && typeof endPoint.preaction == "function")
-						res = endPoint.preaction(hash);
-					//hash can be iliased
-					if (endPoint.hash) 
-						hash = endPoint.hash;
-					if(hash.indexOf("?") >= 0){
-						hashT=hash.split("?");
-						mylog.log(hashT);
-						hash=hashT[0];
-						extraParams = "?"+hashT[1];
-					}
-					if(extraParams.indexOf("#") >= 0){
-						extraParams=extraParams.replace( "#","%hash%" );
-					}
-					path = hash.replace( "#","" ).replace( /\./g,"/" );
-					showAjaxPanel( '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res );
-					
-					if(endPoint.menu)
-						$("."+endPoint.menu).removeClass("hide");
+					mylog.warn("PRIVATE SECTION LOGIN FIRST",hash);
+					showPanel( "box-login" );
+					resetUnlogguedTopBar();
+					res = true;
 				}
-				res = true;
-				return false;
-			} else {
-				mylog.warn("PRIVATE SECTION LOGIN FIRST",hash);
-				showPanel( "box-login" );
-				resetUnlogguedTopBar();
-				res = true;
 			}
-		}
-	});
-	return res;
-}
+		});
+		return res;
+	},
 
- var CoAllReadyLoad = false;
-//back sert juste a differencier un load avec le back btn
-//ne sert plus, juste a savoir d'ou vient drait l'appel
-function loadByHash( hash , back ) {
-	/* court circuit du lbh pour changer le type du directory si on est déjà sur une page directory */
-	// mylog.log("IS DIRECTORY ? ", 
-	// 			hash.indexOf("#default.directory"), 
-	// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
-	if(typeof globalTheme != "undefined" && globalTheme=="network"){
-		if( hash.indexOf("#network") >= 0 &&
-			location.hash.indexOf("#network") >= 0 || hash=="#" || hash==""){ 
+	//back sert juste a differencier un load avec le back btn
+	//ne sert plus, juste a savoir d'ou vient drait l'appel
+	loadByHash : function ( hash , back ) {
+		/* court circuit du lbh pour changer le type du directory si on est déjà sur une page directory */
+		// mylog.log("IS DIRECTORY ? ", 
+		// 			hash.indexOf("#default.directory"), 
+		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
+		if(typeof globalTheme != "undefined" && globalTheme=="network"){
+			if( hash.indexOf("#network") >= 0 &&
+				location.hash.indexOf("#network") >= 0 || hash=="#" || hash==""){ 
+			}
+			else{
+				count=$(".breadcrumAnchor").length;
+				//case on reload view
+				if(count==0)
+					count=1;
+				breadcrumGuide(count, hash);
+			}
+			
+			return ;
 		}
-		else{
-			count=$(".breadcrumAnchor").length;
-			//case on reload view
-			if(count==0)
-				count=1;
-			breadcrumGuide(count, hash);
+
+		if( hash.indexOf("#default.directory") >= 0 &&
+			location.hash.indexOf("#default.directory") >= 0 && CoAllReadyLoad==true){ 
+			var n = hash.indexOf("type=")+5;
+			var type = hash.substr(n);
+			mylog.log("CHANGE directory", type);
+			searchType = [type];
+			setHeaderDirectory(type);
+			loadingData = false;
+			startSearch(0, indexStepInit, ( notNull(searchCallback) ) ? searchCallback : null );
+			location.hash = hash;
+			return;
 		}
+
+		currentUrl = hash;
+		allReadyLoad = true;
+		CoAllReadyLoad = true;
+		contextData = null;
+
+		$(".my-main-container").off()
+							   .bind("scroll", function () {shadowOnHeader()})
+							   .scrollTop(0);
+
+		$(".searchIcon").removeClass("fa-file-text-o").addClass("fa-search");
+		searchPage = false;
 		
-		return ;
-	}
 
-	if( hash.indexOf("#default.directory") >= 0 &&
-		location.hash.indexOf("#default.directory") >= 0 && CoAllReadyLoad==true){ 
-		var n = hash.indexOf("type=")+5;
-		var type = hash.substr(n);
-		mylog.log("CHANGE directory", type);
-		searchType = [type];
-		setHeaderDirectory(type);
-		loadingData = false;
-		startSearch(0, indexStepInit, ( notNull(searchCallback) ) ? searchCallback : null );
-		location.hash = hash;
-		return;
-	}
-
-	currentUrl = hash;
-	allReadyLoad = true;
-	CoAllReadyLoad = true;
-	contextData = null;
-
-	$(".my-main-container").off()
-						   .bind("scroll", function () {shadowOnHeader()})
-						   .scrollTop(0);
-
-	$(".searchIcon").removeClass("fa-file-text-o").addClass("fa-search");
-	searchPage = false;
-	
-
-	//alert("loadByHash"+hash);
-    mylog.warn("loadByHash",hash,back);
-    if( jsController(hash) ){
-    	mylog.log("loadByHash >>> jsController",hash);
-    }
-    else if( hash.indexOf("#panel") >= 0 ){
-    	panelName = hash.substr(7);
-    	if( (panelName == "box-login" || panelName == "box-register") && userId != "" && userId != null ){
-    		loadByHash("#default.home");
-    		return false;
-    	} else if(panelName == "box-add")
-            title = 'ADD SOMETHING TO MY NETWORK';
-        else
-            title = "WELCOM MUNECT HEY !!!";
-        showPanel(panelName,null,title);
-    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
-        hashT = hash.split(".");
-        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
-    }
-    /*else if( hash.indexOf("#news.index.type") >= 0 ){
-        hashT = hash.split(".");
-        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" )+'?isFirst=1', 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
-
-    } */
-    else if( hash.indexOf("#city.directory") >= 0 ){
-        hashT = hash.split(".");
-        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
-    } 
-	/*else if( hash.indexOf("#need.addneedsv") >= 0 ){
+		//alert("url.loadByHash"+hash);
+	    mylog.warn("url.loadByHash",hash,back);
+	    if( url.jsController(hash) ){
+	    	mylog.log("url.loadByHash >>> jsController",hash);
+	    }
+	    else if( hash.indexOf("#panel") >= 0 ){
+	    	panelName = hash.substr(7);
+	    	if( (panelName == "box-login" || panelName == "box-register") && userId != "" && userId != null ){
+	    		url.loadByHash("#default.home");
+	    		return false;
+	    	} else if(panelName == "box-add")
+	            title = 'ADD SOMETHING TO MY NETWORK';
+	        else
+	            title = "WELCOM MUNECT HEY !!!";
+	        showPanel(panelName,null,title);
+	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
 	        hashT = hash.split(".");
-	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ADD NEED '+typesLabels[hashT[3]],'cubes' );
-	} 
-	else if( hash.indexOf("#need.addneedsv") >= 0 ){
+	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
+	    }
+	    /*else if( hash.indexOf("#news.index.type") >= 0 ){
 	        hashT = hash.split(".");
-	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ADD NEED '+typesLabels[hashT[3]],'cubes' );
-	} */
+	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" )+'?isFirst=1', 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
 
-    else 
-        showAjaxPanel( '/app/index', 'Home','home' );
+	    } */
+	    else if( hash.indexOf("#city.directory") >= 0 ){
+	        hashT = hash.split(".");
+	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
+	    } 
+		/*else if( hash.indexOf("#need.addneedsv") >= 0 ){
+		        hashT = hash.split(".");
+		        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ADD NEED '+typesLabels[hashT[3]],'cubes' );
+		} 
+		else if( hash.indexOf("#need.addneedsv") >= 0 ){
+		        hashT = hash.split(".");
+		        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ADD NEED '+typesLabels[hashT[3]],'cubes' );
+		} */
 
-    location.hash = hash;
+	    else 
+	        showAjaxPanel( '/app/index', 'Home','home' );
 
-    /*if(!back){
-    	history.replaceState( { "hash" :location.hash} , null, location.hash ); //changes the history.state
-	    mylog.warn("replaceState history.state",history.state);
-	}*/
+	    location.hash = hash;
+
+	    /*if(!back){
+	    	history.replaceState( { "hash" :location.hash} , null, location.hash ); //changes the history.state
+		    mylog.warn("replaceState history.state",history.state);
+		}*/
+	}
 }
 
 function decodeHtml(str) {
@@ -1033,7 +954,7 @@ function showTagOnMap (tag) {
 	          }
 	 	});
 
-	//loadByHash('#project.detail.id.56c1a474f6ca47a8378b45ef',null,true);
+	//url.loadByHash('#project.detail.id.56c1a474f6ca47a8378b45ef',null,true);
 	//Sig.showFilterOnMap(tag);
 }
 
@@ -1321,7 +1242,7 @@ function  bindLBHLinks() {
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-	    loadByHash( h );
+	    url.loadByHash( h );
 	})/*.on("contextmenu", function(e){
 		var href = $(this).attr("href").split(".");
 		console.log($(this).attr("href"),href[0])
@@ -2408,9 +2329,9 @@ var elementLib = {
 	            	else{
 						elementLib.closeForm();
 		                if(data.url)
-		                	loadByHash( data.url );
+		                	url.loadByHash( data.url );
 		                else if(data.id)
-			        		loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+			        		url.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 					}
 	            }
 	    	}
@@ -2738,7 +2659,7 @@ var typeObjLib = {
     		{
         		$('#trigger-upload').click(function() {
 		        	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-		        	loadByHash(location.hash);
+		        	url.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
         	},500);
@@ -2751,7 +2672,7 @@ var typeObjLib = {
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	elementLib.closeForm();
-	            loadByHash( url );	
+	            url.loadByHash( url );	
 		    	}
     	}
     },
@@ -3279,10 +3200,10 @@ var keyboardNav = {
 
 	keyMap : {
 		"112" : function(){ $(".menu-name-profil").trigger('click') },//f1
-		"113" : function(){ if(userId)loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
+		"113" : function(){ if(userId)url.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
 		"114" : function(){ showMap(true); },//f3
 		"115" : function(){ elementLib.openForm('themes') },//f4
-		"117" : function(){ console.clear();loadByHash(location.hash) },//f6
+		"117" : function(){ console.clear();url.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {
 		"13" : function(){elementLib.openForm('addElement')},//enter : aadd elemetn

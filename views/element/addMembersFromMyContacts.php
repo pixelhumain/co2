@@ -379,7 +379,7 @@ function bindEventScopeModal(){
 
 	$("#btn-cancel").click(function(){
 		if(newMemberInCommunity && (currentView=="detail" || currentView=="directory")) {
-			loadByHash(location.hash);
+			url.loadByHash(location.hash);
 		}
 	});
 	$("#btn-save").click(function(){
@@ -753,7 +753,7 @@ function sendInvitation(){
 						mapUrl.directory.load = false;
 				}
 				if(currentView=="detail" || currentView=="directory"){
-					loadByHash(location.hash);
+					url.loadByHash(location.hash);
 				}
 				$.unblockUI();
         	}

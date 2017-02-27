@@ -46,7 +46,7 @@ $this->renderPartial("../docs/assets");
 
 <div class="space20"></div>
 <!-- Left and right CHAPTER controls -->
-<!--<a href="javascript:loadByHash('#default.view.page.comprendre.dir.docs')" class="homestead text-extra-large bg-red pull-left tooltips radius-5 padding-10 homestead pull-left btn-carousel-previous">
+<!--<a href="javascript:url.loadByHash('#default.view.page.comprendre.dir.docs')" class="homestead text-extra-large bg-red pull-left tooltips radius-5 padding-10 homestead pull-left btn-carousel-previous">
 	<i class="fa fa-arrow-left"></i> Comprendre
 </a>-->
 <a href="#default.view.page.elements.dir.docs" class="lbh homestead text-extra-large bg-red pull-left tooltips radius-5 padding-10 homestead pull-left btn-carousel-previous">

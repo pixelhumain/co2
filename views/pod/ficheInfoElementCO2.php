@@ -668,7 +668,7 @@
 										$(".visible-communected").hide();
 									}
 									toastr.success(data.msg);
-									loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+									url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
 						    	}
 						    }
 						});

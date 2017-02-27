@@ -31,7 +31,7 @@ function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId);
 function saveCookieMultiscope(){  //mylog.log("saveCookieMultiscope", typeof myMultiScopes);
 	$.cookie('multiscopes',   	JSON.stringify(myMultiScopes), { expires: 365, path: "/" });
 	/*if(location.hash.indexOf("#city.detail")==0)
-		loadByHash("#default.live");*/
+		url.loadByHash("#default.live");*/
 }
 
 function autocompleteMultiScope(){

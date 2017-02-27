@@ -1,5 +1,5 @@
 <div class="infoVersion">
-	<a href="javascript:loadByHash('#default.view.page.index.dir.docs')" class="homestead text-red"><i class="fa fa-book fa-2x "></i> DOCUMENTATIONS</a>
+	<a href="javascript:url.loadByHash('#default.view.page.index.dir.docs')" class="homestead text-red"><i class="fa fa-book fa-2x "></i> DOCUMENTATIONS</a>
 	
 	<br/>
 	update <?php echo $this->versionDate ?>

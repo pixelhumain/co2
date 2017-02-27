@@ -114,13 +114,13 @@ function editRoomSV (roomObj) {
                   mylog.log("SUCCESS SAVE ROOM :");
                   mylog.dir(data);
                     if( data.newInfos.type == "<?php echo ActionRoom::TYPE_DISCUSS ?>" )
-                      loadByHash("#comment.index.type.actionRooms.id."+data.newInfos["_id"]["$id"]);
+                      url.loadByHash("#comment.index.type.actionRooms.id."+data.newInfos["_id"]["$id"]);
                     else if(data.newInfos.type == "<?php echo ActionRoom::TYPE_FRAMAPAD ?>" )
-                      loadByHash("#rooms.external.id."+data.newInfos["_id"]["$id"]);
+                      url.loadByHash("#rooms.external.id."+data.newInfos["_id"]["$id"]);
                     else if( data.newInfos.type == "<?php echo ActionRoom::TYPE_ACTIONS ?>")
-                      loadByHash("#rooms.actions.id."+data.newInfos["_id"]["$id"]);
+                      url.loadByHash("#rooms.actions.id."+data.newInfos["_id"]["$id"]);
                     else 
-                      loadByHash("#survey.entries.id."+data.newInfos["_id"]["$id"]);
+                      url.loadByHash("#survey.entries.id."+data.newInfos["_id"]["$id"]);
                     //rooms.index.type.<?php echo (isset($_GET['type'])) ? $_GET['type'] : '' ?>.id.<?php echo (isset($_GET['id'])) ? $_GET['id'] : '' ?>");
                     $("#modal-create-room").modal("toogle");
                 }

@@ -13,7 +13,7 @@
 </thead><tbody>
 <tr>
 	<td>click</td>
-	<td>//button[@onclick=&quot;loadByHash('#event.eventsv');&quot;]</td>
+	<td>//button[@onclick=&quot;url.loadByHash('#event.eventsv');&quot;]</td>
 	<td></td>
 </tr>
 <tr>

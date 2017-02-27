@@ -174,7 +174,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
                   type = typeObj[o.type].ctrl;
                   //if(type=="citoyen") type = "person";
                   var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
-                  var onclick = 'loadByHash("#' + type + '.detail.id.' + id + '");';
+                  var onclick = 'url.loadByHash("#' + type + '.detail.id.' + id + '");';
                   var onclickCp = "";
                   var target = " target='_blank'";
                   var dataId = "";

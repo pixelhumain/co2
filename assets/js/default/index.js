@@ -245,7 +245,7 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 		
 		$("#btn-geoloc-auto-menu .fa-crosshairs").attr("data-original-title", cityNameCommunexion);
 		$("#btn-geoloc-auto-menu .fa-crosshairs").attr("title", cityNameCommunexion);
-		$("#btn-geoloc-auto-menu").off(); //click(function(){ loadByHash("#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion) });
+		$("#btn-geoloc-auto-menu").off(); //click(function(){ url.loadByHash("#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion) });
 		$("#btn-geoloc-auto-menu").attr("href", '#city.detail.insee.' + inseeCommunexion+'.'+'postalCode.'+cpCommunexion);
 		$("#btn-geoloc-auto-menu").data("hash", "#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion);
 		//mylog.log("HASHHHHHHHHHHHHHHHHHHHH", $("#btn-geoloc-auto-menu").data("hash"));
@@ -268,14 +268,14 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
   		
   		if(!userId)
   		$(".btn-geoloc-auto").attr("onclick", 
-  			"loadByHash('#rooms.index.type.cities.id.' + countryCommunexion + '_'+ inseeCommunexion + '-'+ cpCommunexion)");
+  			"url.loadByHash('#rooms.index.type.cities.id.' + countryCommunexion + '_'+ inseeCommunexion + '-'+ cpCommunexion)");
 
   		
 		Sig.clearMap();
 		mylog.log("hash city ? ", location.hash.indexOf("#default.city"));
 		if(location.hash == "#default.home"){
 			//showLocalActorsCityCommunexion();
-			loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+			url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 		}else
 		if(location.hash == "#default.directory"){
 			startSearch();
@@ -290,7 +290,7 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 		if(location.hash.indexOf("#city.detail") >= 0) {
 			//showLocalActorsCityCommunexion();
 			if(location.hash != "#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion){
-				loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+				url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 			}else{
 				$("#btn-communecter").html("<i class='fa fa-check'></i> COMMUNECTÉ");
 	    		$("#btn-communecter").attr("onclick", "");
@@ -309,14 +309,14 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 			showTwoStep("load-conf-communexion");
 			setCookies();
 			$(".btn-param-postal-code").attr("data-original-title", cityNameCommunexion + " en détail");
-			//$(".btn-param-postal-code").attr("onclick", "loadByHash('#city.detail.insee."+inseeCommunexion+"')");
+			//$(".btn-param-postal-code").attr("onclick", "url.loadByHash('#city.detail.insee."+inseeCommunexion+"')");
 			$(".search-loader").html("<i class='fa fa-check'></i> Vous êtes communecté : " + cityNameCommunexion + ', ' + cpCommunexion);
 			$(".lbl-btn-menu-name-city .lbl-btn-menu").html(cityNameCommunexion);
 			setTimeout(function(){ achiveTSRAddress(); /*showTwoStep("street");*/  }, 2000);
 			//showMap(false);
 		}else{
 			//showLocalActorsCityCommunexion();
-			loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+			url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 		}
 	}
 	
@@ -325,7 +325,7 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 
 function showLocalActorsCityCommunexion(){
 
-	loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+	url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 	return;
 
 	mylog.log("showLocalActorsCityCommunexion");

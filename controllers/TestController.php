@@ -643,7 +643,7 @@ db.getCollection('citoyens').find({'geoPosition.coordinates': {
     $params = array(   
                        "title" => Yii::app()->session["user"]["username"] ,
                         "logo"  => "/images/logo.png",
-                        "url" => "href='javascript:;' onclick='loadByHash(\'#news.index.type.pixels?isNotSV=1\')'",
+                        "url" => "href='javascript:;' onclick='url.loadByHash(\'#news.index.type.pixels?isNotSV=1\')'",
                         "content"=> $text);
     
     $this->renderPartial('application.views.emails.helpAndDebugNews', $params);

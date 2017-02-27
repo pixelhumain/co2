@@ -10,7 +10,7 @@ function bindAboutPodElement() {
 
 		$("#changePasswordBtn").click(function () {
 			mylog.log("changePasswordbuttton");
-			loadByHash('#person.changepassword.id.'+userId+'.mode.initSV', false);
+			url.loadByHash('#person.changepassword.id.'+userId+'.mode.initSV', false);
 		});
 
 		$("#downloadProfil").click(function () {
@@ -810,7 +810,7 @@ function bindAboutPodElement() {
 				    	success: function(data){
 					    	if(data.result){
 								toastr.success(data.msg);
-								loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+								url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
 					    	}
 					    }
 					});
@@ -855,7 +855,7 @@ function bindAboutPodElement() {
 				    	success: function(data){
 					    	if(data.result){
 								toastr.success(data.msg);
-								loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+								url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
 					    	} else {
 					    		toastr.error(data.msg);
 					    	}

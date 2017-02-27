@@ -144,14 +144,14 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                   var url = (notEmpty(o.type) && notEmpty(id)) ? 
                             '#co2.page.type.'+o.type+'.id.' + id : "";
 
-                  //var onclick = 'loadByHash("#' + type + '.detail.id.' + id + '");';
+                  //var onclick = 'url.loadByHash("#' + type + '.detail.id.' + id + '");';
                   var onclickCp = "";
                   var target = " target='_blank'";
                   var dataId = "";
                   if(type == "city"){
                     //url = "javascript:"; //#main-col-search";
                     url = '#co2.city.insee.' + insee + '.postalCode.'+postalCode; //"'+o.name.replace("'", "\'")+'");';
-                    //onclickCp = 'loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'";';
+                    //onclickCp = 'url.loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'";';
                     //target = "";
                     dataId = o.name; //.replace("'", "\'");
                   }
@@ -253,7 +253,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
             Sig.showMapElements(Sig.map, mapElementsGS);
           }
 
-          //$("#footerDropdownGS").append("<br><a class='btn btn-default' href='javascript:' onclick='loadByHash("+'"#default.directory"'+")'><i class='fa fa-plus'></i></a>");
+          //$("#footerDropdownGS").append("<br><a class='btn btn-default' href='javascript:' onclick='url.loadByHash("+'"#default.directory"'+")'><i class='fa fa-plus'></i></a>");
         }
     });
 

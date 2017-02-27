@@ -394,7 +394,7 @@ function callBackSearch(data){
 		if(type=="citoyen") 
 			type = "person";
 		var url = "javascript:";
-		var onclick = 'loadByHash("#' + type + '.detail.id.' + id + '");';
+		var onclick = 'url.loadByHash("#' + type + '.detail.id.' + id + '");';
 		var onclickCp = "";
 		var target = " target='_blank'";
 		var dataId = "";

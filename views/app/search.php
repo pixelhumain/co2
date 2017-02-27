@@ -10,7 +10,7 @@
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
-    $page = "social";
+    $page = "search";
     if(!@$type) $type = "all";// : "social";
     if(@$type=="events") $page = "agenda";// : "social";
     if(@$type=="vote") $page = "power";// : "social";
@@ -129,20 +129,20 @@ header .container,
 
     <h5 class="text-center letter-red">
         <?php
-           $communexion = CO2::getCommunexionCookies();  
-           if($communexion == false){
+           // $communexion = CO2::getCommunexionUserLoged();  
+           // if($communexion == false){
         ?>
             <button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5" 
                 data-target="#modalScopes" data-toggle="modal"
                 data-toggle="tooltip" data-placement="top" 
                                     title="Sélectionner des lieux de recherche">
-                <i class="fa fa-bullseye" style="font-size:18px;"></i>
+                <!-- <i class="fa fa-bullseye" style="font-size:18px;"></i> -->
                 <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/cible3.png" height=42>
             </button><br>
         recherche ciblée
-         <?php }else{ ?>
-            Vous êtes communecté à <?php echo $communexion["cityName"]; ?>
-         <?php } ?>
+         <?php //}else{ ?>
+            <!-- Vous êtes communecté à <?php //echo $communexion["cityName"]; ?> -->
+         <?php //} ?>
     </h5>
     <div class="scope-min-header list_tags_scopes hidden-xs">
     </div>

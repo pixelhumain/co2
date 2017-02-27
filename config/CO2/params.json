@@ -4,33 +4,36 @@
 	"pages" : 
 		{
 		  "#app.index":
-			 	 {"redirect":"social"},
+			 	 {"redirect":"search"},
 			  
-			"#app.social":
+			"#search":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
-                "subdomain" : "social", 
+                "subdomain" : "search", 
                 "subdomainName" : "Recherche",
+                "hash" : "#app.search",
                 "icon" : "search", 
                 "mainTitle" : "Moteur de recherche <span class='letter-red'>territorial</span>",
                 "placeholderMainSearch" : "Rechercher une page ..."
           },
 
-			"#app.freedom":
+			"#annonces":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
-                "subdomain" : "freedom", 
+                "subdomain" : "annonces", 
                 "subdomainName" : "annonces",
+                "hash" : "#app.annonces",
                 "icon" : "newspaper-o", 
                 "mainTitle" : "Toutes vos annonces en direct",
                 "placeholderMainSearch" : "rechercher parmis les annonces  ..."
           },
 
-			"#app.agenda":
+			"#agenda":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
                 "subdomain" : "agenda", 
                 "subdomainName" : "agenda",
+                "hash":"#app.agenda",
                 "icon" : "calendar", 
                 "mainTitle" : "L'agenda <span class='letter-red'>CO</span>mmun",
                 "placeholderMainSearch" : "rechercher un événement ..."
@@ -46,31 +49,34 @@
                 "placeholderMainSearch" : "rechercher parmis les propositions ..."
           },
 
-			"#app.page.type":
+			"#page.type":
 			  	{"inMenu" : false, 
                 "useHeader" : false, 
                 "subdomain" : "page.type", 
                 "subdomainName" : "page",
+                "hash":"#app.page.type",
                 "icon" : "", 
                 "mainTitle" : "Le réseau social à effet de sert",
                 "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
           },
 
-            "#app.info":
+            "#info":
                 {"inMenu" : false, 
                 "useHeader" : false, 
                 "subdomain" : "apropos", 
                 "subdomainName" : "Info",
+                "hash":"#app.info",
                 "icon" : "search", 
                 "mainTitle" : "Le réseau social à effet de sert",
                 "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
           },
 
-            "#app.city":
+            "#city":
                 {"inMenu" : false, 
                 "useHeader" : false, 
                 "subdomain" : "city", 
                 "subdomainName" : "City",
+                "hash":"#app.city",
                 "icon" : "university", 
                 "mainTitle" : "Communexion activée",
                 "placeholderMainSearch" : "rechercher ..."

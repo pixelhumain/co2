@@ -600,11 +600,8 @@ var loadableUrls = {
 	"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
 	"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
 	"#opendata" : {"alias":"#data.index"},
-	"#search" : { "title":'SEARCH AND FIND', "icon" : 'map-search', "hash" : "#default.directory", "preaction":function( hash ){ return searchByHash(hash);} },
-	"#social" : { "title":'SOCIAL web', "icon" : 'search', "hash" : "#app.social" },
-	"#annonces" : { "title":'ANNONCE', "icon" : 'bullhorn', "hash" : "#app.annonces" },
-	"#agenda" : { "title":'AGENDA', "icon" : 'calendar', "hash" : "#app.agenda" },
-	"#power" : { "title":'POWER', "icon" : 'hand-rock-o', "hash" : "#app.power" },
+	//"#search" : { "title":'SEARCH AND FIND', "icon" : 'map-search', "hash" : "#default.directory", "preaction":function( hash ){ return searchByHash(hash);} },
+	
 };
 
 function jsController(hash){

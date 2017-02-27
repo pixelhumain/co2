@@ -766,7 +766,7 @@ function loadByHash( hash , back ) {
 	} */
 
     else 
-        showAjaxPanel( '/co2/index', 'Home','home' );
+        showAjaxPanel( '/app/index', 'Home','home' );
 
     location.hash = hash;
 

@@ -114,7 +114,7 @@
 </button>
 
 <section class="padding-top-5 text-center margin-bottom-10" id="section-fav">
-    <a href="#co2.media" target="_blank" class="tooltips btn-fast-access" data-placement="bottom" data-toggle="tooltip" 
+    <a href="#app.media" target="_blank" class="tooltips btn-fast-access" data-placement="bottom" data-toggle="tooltip" 
        title="Aller sur KgougleActu"><i class="fa fa-newspaper-o fa-2 padding-10 text-dark"></i></a> 
     
     <?php if(!empty($myWebFavorites)){ ?>
@@ -188,7 +188,7 @@ jQuery(document).ready(function() {
     initWebInterface();
     buildListCategories();
 
-    location.hash = "#co2.web";
+    location.hash = "#app.web";
 });
 
 function initWebInterface(){

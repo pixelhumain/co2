@@ -26,11 +26,11 @@
         			data-toggle="tooltip" data-placement="right" title="Découvrir les Pixels sur GitHub">Les pixels humains</a>
         	</h5>
         	
-        	<a href="#co2.web" class="lbh btn btn-default pull-right margin-left-5 btn-submenu tooltips"
+        	<a href="#app.web" class="lbh btn btn-default pull-right margin-left-5 btn-submenu tooltips"
         		data-toggle="tooltip" data-placement="top" title="Retourner vers le moteur de recherche">
         		<b>Quitter cette page <i class="fa fa-arrow-right"></i></b>
         	</a> 
-        	<a href="#co2.info.p.apropos" class="lbh btn btn-danger pull-right btn-submenu tooltips"
+        	<a href="#app.info.p.apropos" class="lbh btn btn-danger pull-right btn-submenu tooltips"
         		data-toggle="tooltip" data-placement="top" title='Retourner vers la page de présentation "A propos"'>
 				<b><i class="fa fa-arrow-left"></i> À propos</b>
 			</a>
@@ -93,7 +93,7 @@
 			ORD promeut <b>l’intelligence collective et l’initiative citoyenne</b> en militant pour la conjugaison de l’éthique et de l’efficacité, autour de l’économie numérique et en oeuvrant dans le principe de développement soutenable, durable et solidaire.<br><br>
 
 			<h4 class="pull-left">
-        		<a href="#co2.info.p.communecter" class="tooltips homestead text-red"  target='_blank'
+        		<a href="#app.info.p.communecter" class="tooltips homestead text-red"  target='_blank'
         			data-toggle="tooltip" data-placement="right" title="En savoir plus sur le projet Communecter">
         			<i class="fa fa-angle-right"></i> Communecter
         		</a> 
@@ -111,7 +111,7 @@
 
 jQuery(document).ready(function() {
     initKInterface();
-    location.hash = "#co2.info.p.ph";
+    location.hash = "#app.info.p.ph";
 });
 
 </script>

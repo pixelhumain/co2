@@ -7,7 +7,7 @@
 </button>
 
 <?php if(sizeof($siteurls) == 0){ ?>
-	<a class="btn btn-default btn-success margin-bottom-5 margin-top-5 lbh" href="#co2.referencement">
+	<a class="btn btn-default btn-success margin-bottom-5 margin-top-5 lbh" href="#app.referencement">
 		<i class="fa fa-plus-circle"></i> Ajouter une URL
 	</a><br>
 
@@ -89,7 +89,7 @@
 	<div class="col-md-12 margin-bottom-15 url-<?php echo $siteurl['_id']; ?>">
 
 		<div class="addToFavInfo">
-			<a href="#co2.web" class="btn-favory tooltips" data-idFav="<?php echo $siteurl['_id']; ?>" 
+			<a href="#app.web" class="btn-favory tooltips" data-idFav="<?php echo $siteurl['_id']; ?>" 
 					data-placement="top" data-toggle="tooltip" title="Garder en favoris">
 				<i class="fa fa-star-o"></i><i class="fa fa-star letter-yellow"></i>
 			</a>
@@ -173,7 +173,7 @@
 		</b></small>
 	</span><br><br>
 	<b>Référencer un site <i class="fa fa-angle-right"></i></b> 
-	<a class="btn btn-default btn-success margin-bottom-5 lbh" href="#co2.referencement">
+	<a class="btn btn-default btn-success margin-bottom-5 lbh" href="#app.referencement">
 		<i class="fa fa-plus-circle"></i> Ajouter une URL
 	</a> 
 </div>

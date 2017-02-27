@@ -5,7 +5,7 @@
  * @author: Alpha Tango
  * Date: 12/2016
  */
-class Co2Controller extends CommunecterController {
+class AppController extends CommunecterController {
   
 
 	protected function beforeAction($action) {
@@ -16,12 +16,12 @@ class Co2Controller extends CommunecterController {
 	public function actions()
 	{
 	    return array(
-	        'index'     		=> 'citizenToolKit.controllers.co2.IndexAction',
-	        'websearch'     	=> 'citizenToolKit.controllers.co2.WebSearchAction',
-	        'live'    			=> 'citizenToolKit.controllers.co2.LiveAction',
-	        'savereferencement' => 'citizenToolKit.controllers.co2.SaveReferencementAction',
-	        'mediacrawler'  	=> 'citizenToolKit.controllers.co2.MediaCrawlerAction',
-	        'superadmin' 		=> 'citizenToolKit.controllers.co2.SuperAdminAction',
+	        'index'     		=> 'citizenToolKit.controllers.app.IndexAction',
+	        'websearch'     	=> 'citizenToolKit.controllers.app.WebSearchAction',
+	        'live'    			=> 'citizenToolKit.controllers.app.LiveAction',
+	        'savereferencement' => 'citizenToolKit.controllers.app.SaveReferencementAction',
+	        'mediacrawler'  	=> 'citizenToolKit.controllers.app.MediaCrawlerAction',
+	        'superadmin' 		=> 'citizenToolKit.controllers.app.SuperAdminAction',
             
 	    );
 	}
@@ -35,7 +35,7 @@ class Co2Controller extends CommunecterController {
         Yii::app()->session["theme"] = "CO2";
         $params = CO2::getThemeParams();
         
-        $hash = $params["pages"]["#co2.index"]["redirect"];
+        $hash = $params["pages"]["#app.index"]["redirect"];
     	
         $params = array("type" => @$type );
 

@@ -592,7 +592,7 @@ function sendReferencement(){
 	    	success: function(data){
 	    		//if(data.valid == true) 
                     toastr.success("Votre demande a bien été enregistrée");
-                    loadByHash("#co2.referencement");
+                    loadByHash("#app.referencement");
 	    		//else toastr.error("Une erreur est survenue pendant le référencement");
 	    		console.log("save referencement success");
 	    	},

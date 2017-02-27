@@ -28,11 +28,11 @@
         		</a> 
         	</h4>
 
-        	<a href="#co2.web" class="lbh btn btn-default pull-right margin-left-5 btn-submenu tooltips"
+        	<a href="#app.web" class="lbh btn btn-default pull-right margin-left-5 btn-submenu tooltips"
         		data-toggle="tooltip" data-placement="top" title="Retourner vers le moteur de recherche">
         		<b>Quitter cette page <i class="fa fa-arrow-right"></i></b>
         	</a> 
-        	<a href="#co2.info.p.apropos" class="lbh btn btn-danger pull-right btn-submenu tooltips"
+        	<a href="#app.info.p.apropos" class="lbh btn btn-danger pull-right btn-submenu tooltips"
         		data-toggle="tooltip" data-placement="top" title='Retourner vers la page de présentation "A propos"'>
 				<b><i class="fa fa-arrow-left"></i> À propos</b>
 			</a>
@@ -52,7 +52,7 @@
 
 			<br>
 
-			<span class="letter-red">Communecter</span> c’est une plateforme web portée par le collectif <a href="#co2.info.p.ph" class="lbh letter-yellow">Pixel Humain</a> dans lequel les citoyens sont connectés a leur commune.
+			<span class="letter-red">Communecter</span> c’est une plateforme web portée par le collectif <a href="#app.info.p.ph" class="lbh letter-yellow">Pixel Humain</a> dans lequel les citoyens sont connectés a leur commune.
 			Ils sont informés en quasi temps réel de ce qui se passe localement et participent à l'activité locale (dialogue facilité avec les collectivités, regroupement de citoyens pour réfléchir ou débattre...)
 			Connectés à la commune, ils le sont aussi avec leurs voisins pour partager des intérêts communs, avec des associations locales qui proposent des initiatives sociales et solidaires, des entreprises et producteurs qui fabriquent localement des produits.
 			<br><br>
@@ -95,7 +95,7 @@
 
 jQuery(document).ready(function() {
     initKInterface();
-    location.hash = "#co2.info.p.communecter";
+    location.hash = "#app.info.p.communecter";
 });
 
 </script>

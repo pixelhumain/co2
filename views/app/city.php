@@ -50,7 +50,7 @@ jQuery(document).ready(function() {
         //$(idres).html(data);
     },"html");
 
-    //location.hash = "#co2.web";
+    //location.hash = "#app.web";
 });
 
 </script>

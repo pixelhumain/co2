@@ -1,12 +1,12 @@
 {
-  "title" : "CO2",
+  "title" : "app",
 
 	"pages" : 
 		{
-		  "#co2.index":
+		  "#app.index":
 			 	 {"redirect":"social"},
 			  
-			"#co2.social":
+			"#app.social":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
                 "subdomain" : "social", 
@@ -16,7 +16,7 @@
                 "placeholderMainSearch" : "Rechercher une page ..."
           },
 
-			"#co2.freedom":
+			"#app.freedom":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
                 "subdomain" : "freedom", 
@@ -26,7 +26,7 @@
                 "placeholderMainSearch" : "rechercher parmis les annonces  ..."
           },
 
-			"#co2.agenda":
+			"#app.agenda":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
                 "subdomain" : "agenda", 
@@ -36,7 +36,7 @@
                 "placeholderMainSearch" : "rechercher un événement ..."
           },
 
-			"#co2.power":
+			"#app.power":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
                 "subdomain" : "power", 
@@ -46,7 +46,7 @@
                 "placeholderMainSearch" : "rechercher parmis les propositions ..."
           },
 
-			"#co2.page.type":
+			"#app.page.type":
 			  	{"inMenu" : false, 
                 "useHeader" : false, 
                 "subdomain" : "page.type", 
@@ -56,7 +56,7 @@
                 "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
           },
 
-            "#co2.info":
+            "#app.info":
                 {"inMenu" : false, 
                 "useHeader" : false, 
                 "subdomain" : "apropos", 
@@ -66,7 +66,7 @@
                 "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
           },
 
-            "#co2.city":
+            "#app.city":
                 {"inMenu" : false, 
                 "useHeader" : false, 
                 "subdomain" : "city", 

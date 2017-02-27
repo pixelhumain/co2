@@ -128,17 +128,25 @@ header .container,
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
 
     <h5 class="text-center letter-red">
-        <button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5" 
-            data-target="#modalScopes" data-toggle="modal"
-            data-toggle="tooltip" data-placement="top" 
-                                title="Sélectionner des lieux de recherche">
-            <!-- <i class="fa fa-bullseye" style="font-size:18px;"></i> -->
-            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/cible3.png" height=42>
-        </button><br>
+        <?php
+           // $communexion = CO2::getCommunexionUserLoged();  
+           // if($communexion == false){
+        ?>
+            <button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5" 
+                data-target="#modalScopes" data-toggle="modal"
+                data-toggle="tooltip" data-placement="top" 
+                                    title="Sélectionner des lieux de recherche">
+                <!-- <i class="fa fa-bullseye" style="font-size:18px;"></i> -->
+                <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/cible3.png" height=42>
+            </button><br>
         recherche ciblée
+         <?php //}else{ ?>
+            <!-- Vous êtes communecté à <?php //echo $communexion["cityName"]; ?> -->
+         <?php //} ?>
     </h5>
     <div class="scope-min-header list_tags_scopes hidden-xs">
     </div>
+
 
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 

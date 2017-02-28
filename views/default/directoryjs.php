@@ -116,9 +116,9 @@
 		    </button>
 	  	</div>
 
-  		<div class="col-md-12">
+  		<!-- <div class="col-md-12">
           <hr class="margin-bottom-10">
-      </div>
+      </div> -->
 
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
         <h5>Recherche thématique<br><i class='fa fa-chevron-down'></i></h5>
@@ -148,7 +148,7 @@
 
         <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
 
-          <?php if($typeSelected != "events" && $typeSelected != "vote"){ ?>   
+          <?php if($typeSelected != "events" && $typeSelected != "vote" && $typeSelected != "cities"){ ?>   
           <button class="btn text-black bg-dark btn-open-filliaire">
               <i class="fa fa-th"></i> 
               <span class="hidden-xs">Thématiques</span>
@@ -305,13 +305,13 @@ jQuery(document).ready(function() {
 
   setHeaderDirectory(typeSelected);  
 
-  showTagsScopesMin("#scopeListContainer");
+  //showTagsScopesMin("#scopeListContainer");
 
-  if(lockCityKey != null){
-    lockScopeOnCityKey(lockCityKey, cityNameLocked);
-  }else{
-    rebuildSearchScopeInput();
-  }
+  // if(lockCityKey != null){
+  //   lockScopeOnCityKey(lockCityKey, cityNameLocked);
+  // }else{
+  //   rebuildSearchScopeInput();
+  // }
 
 
   $(".my-main-container").bind('scroll', function(){

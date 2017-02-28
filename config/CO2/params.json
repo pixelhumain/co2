@@ -13,7 +13,7 @@
                 "subdomainName" : "Recherche",
                 "hash" : "#app.search",
                 "icon" : "search", 
-                "mainTitle" : "Moteur de recherche <span class='letter-red'>territorial</span>",
+                "mainTitle" : "Moteur de recherche <span class='text-red'>territorial</span>",
                 "placeholderMainSearch" : "Rechercher une page ..."
           },
 
@@ -35,7 +35,7 @@
                 "subdomainName" : "agenda",
                 "hash":"#app.agenda",
                 "icon" : "calendar", 
-                "mainTitle" : "L'agenda <span class='letter-red'>CO</span>mmun",
+                "mainTitle" : "L'agenda <span class='text-red'>CO</span>mmun",
                 "placeholderMainSearch" : "rechercher un événement ..."
           },
 
@@ -46,19 +46,19 @@
                 "subdomainName" : "power",
                 "hash":"#app.power",
                 "icon" : "hand-rock-o", 
-                "mainTitle" : "Un bien <span class='letter-red'>CO</span>mmun dédié à l'intelligence <span class='letter-red'>CO</span>llective",
+                "mainTitle" : "Espace <span class='text-red'>CO</span>mmun dédié à l'intelligence <span class='text-red'>CO</span>llective",
                 "placeholderMainSearch" : "rechercher parmis les propositions ..."
           },
 
-			"#page.type":
+			"#page":
 			  	{"inMenu" : false, 
                 "useHeader" : false, 
-                "subdomain" : "page.type", 
+                "subdomain" : "page", 
                 "subdomainName" : "page",
-                "hash":"#app.page.type",
+                "hash":"#app.page",
                 "icon" : "", 
                 "mainTitle" : "Le réseau social à effet de sert",
-                "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
+                "placeholderMainSearch" : "rechercher ..."
           },
 
             "#info":

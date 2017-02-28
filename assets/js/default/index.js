@@ -558,7 +558,7 @@ function selectScopeLevelCommunexion(level){
 	if(typeof startSearch == "function")
 	startSearch();
 }
-function setCookies(path){
+function setCookies(path){ mylog.log("setCookies", path);
 	//if(false){
 		$.cookie('inseeCommunexion',   	inseeCommunexion,  	{ expires: 365, path: path });
 		$.cookie('cityNameCommunexion', cityNameCommunexion,{ expires: 365, path: path });

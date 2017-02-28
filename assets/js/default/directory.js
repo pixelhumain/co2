@@ -507,12 +507,13 @@ var directory = {
               var urlParent = (notEmpty(o.parentType) && notEmpty(o.parentId)) ? 
                               '#element.detail.type.'+o.parentType+'.id.' + o.parentId : "";
 
-              var url = '#element.detail.type.'+type+'.id.' + id;
+              //var url = '#element.detail.type.'+type+'.id.' + id;
+              //if(typeof globalTheme != "undefined" && globalTheme=="CO2")
+              var  url = '#page.type.'+type+'.id.' + id;
+
               if(type == "citoyens") url += '.viewer.' + userId;
 
-              if(typeof globalTheme != "undefined" && globalTheme=="CO2")
-                url = '#co2.page.type.'+type+'.id.' + id;
-
+              
               //else if(type == "poi")    url = '#element.detail.type.poi.id.' + id;
               else if(type == "cities") url = "#city.detail.insee."+o.insee+".postalCode."+o.cp;
               else if(type == "surveys") url = "#survey.entry.id."+id;

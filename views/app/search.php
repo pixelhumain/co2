@@ -62,10 +62,14 @@
 #page p {
     font-size: 13px;
 }
-
-.homestead{
-    font-family:unset!important;
+.container-result-search {
+    border-top:1px solid #eee;
+    padding-top:15px;
 }
+
+/*.homestead{
+    font-family:unset!important;
+}*/
 /*
 .main-btn-scopes{
     position: absolute;
@@ -127,31 +131,80 @@ header .container,
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
 
-    <h5 class="text-center letter-red">
-        <?php
-           // $communexion = CO2::getCommunexionUserLoged();  
-           // if($communexion == false){
-        ?>
-            <button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5" 
-                data-target="#modalScopes" data-toggle="modal"
-                data-toggle="tooltip" data-placement="top" 
-                                    title="Sélectionner des lieux de recherche">
-                <!-- <i class="fa fa-bullseye" style="font-size:18px;"></i> -->
-                <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/cible3.png" height=42>
-            </button><br>
-        recherche ciblée
-         <?php //}else{ ?>
-            <!-- Vous êtes communecté à <?php //echo $communexion["cityName"]; ?> -->
-         <?php //} ?>
-    </h5>
-    <div class="scope-min-header list_tags_scopes hidden-xs">
-    </div>
+    <?php
+        $communexion = CO2::getCommunexionCookies();  
+        if($communexion["state"] == false){
+    ?>
 
+    <?php if($type != "cities"){ ?>            
+        <h5 class="text-center letter-red">
+                <br>Communectez-vous à 
+                <button class="btn btn-danger item-globalscope-checker start-new-communexion"
+                        data-scope-value='<?php echo @$communexion["values"]["cityKey"]; ?>'
+                        data-scope-name='<?php echo @$communexion["values"]["cityName"]; ?>'
+                        data-scope-type='city'>
+                    <?php echo @$communexion["values"]["cityName"]; ?> 
+                </button>
+                <br>
+                <button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5" 
+                    data-target="#modalScopes" data-toggle="modal"
+                    data-toggle="tooltip" data-placement="top" 
+                                        title="Sélectionner des lieux de recherche">
+                    <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/cible3.png" height=42>
+                </button><br>
+                recherche ciblée 
+        </h5>
+     
+        <div class="scope-min-header list_tags_scopes hidden-xs">
+        </div>
+    <?php } ?> 
+
+    <?php }else{ ?>
+        <div class="text- hidden-xs margin-top-15 col-md-12 col-md-offset- ">
+            <button class="btn btn-link text-red btn-decommunecter tooltips"
+                    data-toggle="tooltip" data-placement="right" 
+                    title="Sortir de la communexion actuelle">
+                <i class="fa fa-sign-out"></i>
+            </button>
+
+            <i class="fa fa-university fa-2x text-red"></i> 
+            <button data-toggle='dropdown' data-target='dropdown-multi-scope'
+                class='btn btn-link text-red item-globalscope-checker homestead' 
+                data-scope-value='<?php echo @$communexion["values"]["regionName"]; ?>'
+                data-scope-name='<?php echo @$communexion["values"]["regionName"]; ?>'
+                data-scope-type='region'>
+                <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["regionName"]; ?>
+            </button> 
+            <button data-toggle='dropdown' data-target='dropdown-multi-scope'
+                class='btn btn-link text-red item-globalscope-checker homestead' 
+                data-scope-value='<?php echo @$communexion["values"]["depName"]; ?>'
+                data-scope-name='<?php echo @$communexion["values"]["depName"]; ?>'
+                data-scope-type='dep'>
+                <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["depName"]; ?>
+            </button> 
+            <button data-toggle='dropdown' data-target='dropdown-multi-scope'
+                class='btn btn-link text-red item-globalscope-checker homestead' 
+                data-scope-value='<?php echo @$communexion["values"]["cityCp"]; ?>'
+                data-scope-name='<?php echo @$communexion["values"]["cityCp"]; ?>'
+                data-scope-type='cp'>
+                <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["cityCp"]; ?>
+            </button> 
+            <button data-toggle='dropdown' data-target='dropdown-multi-scope'
+                class='btn btn-link text-red item-globalscope-checker homestead'
+                data-scope-value='<?php echo @$communexion["values"]["cityKey"]; ?>'
+                data-scope-name='<?php echo @$communexion["values"]["cityName"]; ?>'
+                data-scope-type='city'>
+                <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["cityName"]; ?>
+            </button> 
+
+            
+        </div>
+    <?php } ?>
 
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
     <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
-        <hr style="margin-bottom:-20px;">
+        <!-- <hr style="margin-bottom:-20px;"> -->
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 
             data-target="#dash-create-modal" data-toggle="modal"
             data-toggle="tooltip" data-placement="top" 
@@ -319,7 +372,7 @@ jQuery(document).ready(function() {
 
 	initKInterface({"affixTop":350});
     
-    if(type!='') typeUrl = "?type=all&nopreload=true";
+    if(type!='') typeUrl = "?type="+type+"&nopreload=true";
 	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
 
         
@@ -397,6 +450,10 @@ jQuery(document).ready(function() {
                     elementLib.openForm(type);
                  },500);
         
+    });
+
+    $(".btn-decommunecter").click(function(){
+        activateGlobalCommunexion(false);
     });
 
     $(".tooltips").tooltip();

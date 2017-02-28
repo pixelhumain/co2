@@ -181,6 +181,7 @@ function addScopeToMultiscope(scopeValue, scopeName){
 	$("#dropdown-multi-scope-found").hide();
 }
 
+
 function deleteScopeInMultiscope(scopeValue){ //mylog.log("deleteScopeInMultiscope(scopeValue)", scopeValue);
 	if(scopeExists(scopeValue)){
 		delete myMultiScopes[scopeValue];
@@ -324,4 +325,44 @@ function lockScopeOnCityKey(cityKey, cityName){ //mylog.log("lockScopeOnCityKey"
 function openDropdownMultiscope(){
 	if(!$("#dropdown-content-multi-scope").hasClass('open'))
 	setTimeout(function(){ $("#dropdown-content-multi-scope").addClass('open'); }, 300);
+}
+
+
+
+function setGlobalScope(scopeValue, scopeName, scopeType){  
+	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType);
+	if(scopeValue == "") return;
+	//if(!scopeExists(scopeValue)){ //mylog.log("adding", scopeValue);
+		myMultiScopes[scopeValue] = { name: scopeName, active: true, type: scopeType };
+		mylog.log("myMultiScopes", myMultiScopes, indexStepInit);
+
+		$("#searchLocalityCITYKEY").val("");
+		$("#searchLocalityCODE_POSTAL").val("");
+		$("#searchLocalityDEPARTEMENT").val("");
+		$("#searchLocalityREGION").val("");
+
+		if(scopeType == "city") $("#searchLocalityCITYKEY").val(scopeValue);
+		if(scopeType == "cp") $("#searchLocalityCODE_POSTAL").val(scopeValue);
+		if(scopeType == "dep") $("#searchLocalityDEPARTEMENT").val(scopeValue);
+		if(scopeType == "region") $("#searchLocalityREGION").val(scopeValue);
+
+		$("#main-scope-name").html(scopeName);
+		$.cookie('communexionType', scopeType, { expires: 365, path: "/" });
+		$.cookie('communexionValue', scopeValue, { expires: 365, path: "/" });
+		$.cookie('communexionName', scopeName, { expires: 365, path: "/" });
+	
+		//rebuildSearchScopeInput();
+		//activateGlobalCommunexion(true);
+		
+		startSearch(0, indexStepInit, searchCallback);
+		//loadByHash(location.hash);
+}
+
+//vision city : scoping global for all applications
+//levelCO == city cp dep region
+function activateGlobalCommunexion(active){  //mylog.log("saveCookieMultiscope", typeof myMultiScopes);
+	$.cookie('communexionActivated', active, { expires: 365, path: "/" });
+	loadByHash(location.hash);
+	/*if(location.hash.indexOf("#city.detail")==0)
+		loadByHash("#default.live");*/
 }

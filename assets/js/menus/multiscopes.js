@@ -329,8 +329,11 @@ function openDropdownMultiscope(){
 
 
 
-function setGlobalScope(scopeValue, scopeName, scopeType){  
-	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType);
+function setGlobalScope(scopeValue, scopeName, scopeType,
+						  inseeCommunexion, cityNameCommunexion, cpCommunexion, 
+						  regionNameCommunexion, countryCommunexion){  
+	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType,
+			  inseeCommunexion, cityNameCommunexion, cpCommunexion, regionNameCommunexion, countryCommunexion);
 	if(scopeValue == "") return;
 	//if(!scopeExists(scopeValue)){ //mylog.log("adding", scopeValue);
 		myMultiScopes[scopeValue] = { name: scopeName, active: true, type: scopeType };
@@ -346,11 +349,20 @@ function setGlobalScope(scopeValue, scopeName, scopeType){
 		if(scopeType == "dep") $("#searchLocalityDEPARTEMENT").val(scopeValue);
 		if(scopeType == "region") $("#searchLocalityREGION").val(scopeValue);
 
-		$("#main-scope-name").html(scopeName);
-		$.cookie('communexionType', scopeType, { expires: 365, path: "/" });
-		$.cookie('communexionValue', scopeValue, { expires: 365, path: "/" });
-		$.cookie('communexionName', scopeName, { expires: 365, path: "/" });
+		$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName);
+		$.cookie('communexionType', scopeType, { expires: 365, path: location.pathname });
+		$.cookie('communexionValue', scopeValue, { expires: 365, path: location.pathname });
+		$.cookie('communexionName', scopeName, { expires: 365, path: location.pathname });
 	
+		if(inseeCommunexion != null){
+			$.cookie('inseeCommunexion',   		inseeCommunexion,  		{ expires: 365, path: location.pathname });
+			$.cookie('cityNameCommunexion', 	cityNameCommunexion,	{ expires: 365, path: location.pathname });
+			$.cookie('cpCommunexion',   		cpCommunexion,  		{ expires: 365, path: location.pathname });		
+			$.cookie('regionNameCommunexion',   regionNameCommunexion,  { expires: 365, path: location.pathname });
+			$.cookie('countryCommunexion',   	countryCommunexion,  	{ expires: 365, path: location.pathname });
+		}else{
+			startSearch(0, indexStepInit, searchCallback);
+		}
 		//rebuildSearchScopeInput();
 		//activateGlobalCommunexion(true);
 		
@@ -360,9 +372,13 @@ function setGlobalScope(scopeValue, scopeName, scopeType){
 
 //vision city : scoping global for all applications
 //levelCO == city cp dep region
-function activateGlobalCommunexion(active){  //mylog.log("saveCookieMultiscope", typeof myMultiScopes);
-	$.cookie('communexionActivated', active, { expires: 365, path: "/" });
-	url.loadByHash(location.hash);
+function activateGlobalCommunexion(active){  mylog.log("activateGlobalCommunexion", active);
+	$.cookie('communexionActivated', active, { expires: 365, path: location.pathname });
+
+	if(location.hash == "#search.type.cities")
+		url.loadByHash("#search");
+	else
+		url.loadByHash(location.hash);
 	/*if(location.hash.indexOf("#city.detail")==0)
 		loadByHash("#default.live");*/
 }

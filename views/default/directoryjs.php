@@ -76,24 +76,30 @@
   <div class="container-result-search">
 
       <?php if(@$_GET['type']!="") { ?>
-      <?php $typeSelected = $_GET['type']; ?>
-      <?php if($typeSelected == "persons") $typeSelected = "citoyens" ; ?>
-      <?php $spec = Element::getElementSpecsByType($typeSelected); ?>
-      <h4 class="text-left pull-left subtitle-search" style="margin-left:10px; margin-top:15px; width:100%;">
-        <span class="subtitle-search text-<?php echo $spec["text-color"]; ?> homestead">
-          <?php 
-            $typeName = Yii::t("common",$_GET['type']); 
-            if($_GET['type'] == "vote") $typeName = "propositions";
-            if($_GET['type'] == "cities") $typeName = "communes";
-          ?>
-          <i class="fa fa-<?php echo $spec["icon"]; ?>"></i> <?php echo $typeName; ?><br>
-          <i class="fa fa-angle-down"></i> 
-          
-        </span>
-      </h4>
+        <?php $typeSelected = $_GET['type']; ?>
+        <?php if($typeSelected == "persons") $typeSelected = "citoyens" ; ?>
+        <?php $spec = Element::getElementSpecsByType($typeSelected); ?>
+        <h4 class="text-left pull-left subtitle-search" style="margin-left:10px; margin-top:15px; width:100%;">
+          <span class="subtitle-search text-<?php echo $spec["text-color"]; ?> homestead">
+            <?php 
+              $typeName = Yii::t("common",$_GET['type']); 
+              if($_GET['type'] == "vote") $typeName = "propositions";
+              if($_GET['type'] == "cities") $typeName = "communes";
+            ?>
+            <i class="fa fa-<?php echo $spec["icon"]; ?>"></i> <?php echo $typeName; ?><br>
+            <i class="fa fa-angle-down"></i> 
+            
+          </span>
+        </h4>
      <?php } ?>
 
-	  	<div class="col-md-12 padding-10 margin-bottom-5 lbl-info-search">
+     <?php if($typeSelected == "cities"){ ?>   
+      <p class="text-center bold"> Recherchez une commune à laquelle vous communecter.<br>
+          Une fois communecté, toutes vos recherches seront automatiquement filtrées en fonction de la commune choisie.
+      </p>
+    <?php }?>
+
+	  	<!-- <div class="col-md-12 padding-10 margin-bottom-5 lbl-info-search">
 		    <div class="lbl-info lbl-info-vote lbl-info-actions pull-left hidden col-xs-9 no-padding margin-bottom-10">
 		      <i class="fa fa-info-circle"></i> 
 		      <b>Seuls les résultats auxquels vous avez accès sont affichés</b> <br>
@@ -114,7 +120,7 @@
 		      <i class="fa fa-map"></i>
 		      <span class="hidden-xs"> Afficher <span class="hidden-sm hidden-xs">sur</span> la carte</span>
 		    </button>
-	  	</div>
+	  	</div> -->
 
   		<!-- <div class="col-md-12">
           <hr class="margin-bottom-10">
@@ -182,10 +188,13 @@
               <span class="hidden-xs">Communes</span>
           </button>
           <?php }?>
+
           <hr class="hidden-sm hidden-md hidden-lg">
         </div>
 
-        <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search"></div>
+        <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search">
+          
+        </div>
       
       <div id="listTags" class="col-sm-2 col-md-2 hidden-xs text-left"></div>
       

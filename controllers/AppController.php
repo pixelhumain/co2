@@ -100,6 +100,7 @@ class AppController extends CommunecterController {
 
 
 	public function actionSearch($type=null){
+        var_dump($type);
 		CO2Stat::incNbLoad("co2-search");	
         $params = array("type" => @$type );
     	echo $this->renderPartial("search", $params, true);
@@ -109,7 +110,7 @@ class AppController extends CommunecterController {
 
 	public function actionAnnonces(){
 		CO2Stat::incNbLoad("co2-annonces");	
-        $params = array("type" => @$type );
+        $params = array();//"type" => @$type );
     	echo $this->renderPartial("annonces", $params, true);
 	}
 

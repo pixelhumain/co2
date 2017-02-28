@@ -572,7 +572,7 @@ var url = {
 							res = endPoint.preaction(hash);
 						//hash can be iliased
 						if (endPoint.hash) 
-							hash = endPoint.hash;
+							hash = hash.replace(urlIndex, endPoint.hash);
 						if(hash.indexOf("?") >= 0){
 							hashT=hash.split("?");
 							mylog.log(hashT);

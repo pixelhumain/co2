@@ -10,9 +10,12 @@
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
+    $params = CO2::getThemeParams();
+
     $page = "search";
     if(!@$type) $type = "all";// : "social";
     if(@$type=="events") $page = "agenda";// : "social";
+    if(@$type=="classified") $page = "annonces";// : "social";
     if(@$type=="vote") $page = "power";// : "social";
 
     $subdomain = $page;
@@ -116,6 +119,21 @@
     /*width: 100%;
     text-align: center;*/
 }
+
+.breadcrum-communexion .item-globalscope-checker{
+    border-bottom:1px solid #e6344d;
+}
+.item-globalscope-checker.inactive{
+    color:#DBBCC1 !important;
+    border-bottom:0px;
+}
+.item-globalscope-checker:hover,
+.item-globalscope-checker:active,
+.item-globalscope-checker:focus{
+    color:#e6344d !important;
+    border-bottom:1px solid #e6344d;
+    text-decoration: none !important;
+}
 header .container, 
 .header .container{
     padding-bottom: 40px;
@@ -138,14 +156,6 @@ header .container,
 
     <?php if($type != "cities"){ ?>            
         <h5 class="text-center letter-red">
-                <br>Communectez-vous à 
-                <button class="btn btn-danger item-globalscope-checker start-new-communexion"
-                        data-scope-value='<?php echo @$communexion["values"]["cityKey"]; ?>'
-                        data-scope-name='<?php echo @$communexion["values"]["cityName"]; ?>'
-                        data-scope-type='city'>
-                    <?php echo @$communexion["values"]["cityName"]; ?> 
-                </button>
-                <br>
                 <button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5" 
                     data-target="#modalScopes" data-toggle="modal"
                     data-toggle="tooltip" data-placement="top" 
@@ -160,44 +170,55 @@ header .container,
     <?php } ?> 
 
     <?php }else{ ?>
-        <div class="text- hidden-xs margin-top-15 col-md-12 col-md-offset- ">
+        <div class="breadcrum-communexion  hidden-xs margin-top-15 col-md-12">
             <button class="btn btn-link text-red btn-decommunecter tooltips"
                     data-toggle="tooltip" data-placement="right" 
-                    title="Sortir de la communexion actuelle">
-                <i class="fa fa-sign-out"></i>
+                    title="Quitter la communexion">
+                <i class="fa fa-times"></i>
             </button>
 
             <i class="fa fa-university fa-2x text-red"></i> 
             <button data-toggle='dropdown' data-target='dropdown-multi-scope'
-                class='btn btn-link text-red item-globalscope-checker homestead' 
+                class='btn btn-link text-red item-globalscope-checker homestead 
+                      <?php if(@$communexion["currentName"]!=@$communexion["values"]["regionName"]) echo "inactive"; ?>' 
                 data-scope-value='<?php echo @$communexion["values"]["regionName"]; ?>'
                 data-scope-name='<?php echo @$communexion["values"]["regionName"]; ?>'
                 data-scope-type='region'>
                 <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["regionName"]; ?>
             </button> 
             <button data-toggle='dropdown' data-target='dropdown-multi-scope'
-                class='btn btn-link text-red item-globalscope-checker homestead' 
+                class='btn btn-link text-red item-globalscope-checker homestead
+                      <?php if(@$communexion["currentName"]!=@$communexion["values"]["depName"]) echo "inactive"; ?>' 
                 data-scope-value='<?php echo @$communexion["values"]["depName"]; ?>'
                 data-scope-name='<?php echo @$communexion["values"]["depName"]; ?>'
                 data-scope-type='dep'>
                 <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["depName"]; ?>
             </button> 
             <button data-toggle='dropdown' data-target='dropdown-multi-scope'
-                class='btn btn-link text-red item-globalscope-checker homestead' 
+                class='btn btn-link text-red item-globalscope-checker homestead
+                      <?php if(@$communexion["currentName"]!=@$communexion["values"]["cityCp"]) echo "inactive"; ?>' 
                 data-scope-value='<?php echo @$communexion["values"]["cityCp"]; ?>'
                 data-scope-name='<?php echo @$communexion["values"]["cityCp"]; ?>'
                 data-scope-type='cp'>
                 <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["cityCp"]; ?>
             </button> 
             <button data-toggle='dropdown' data-target='dropdown-multi-scope'
-                class='btn btn-link text-red item-globalscope-checker homestead'
+                class='btn btn-link text-red item-globalscope-checker homestead
+                      <?php if(@$communexion["currentName"]!=@$communexion["values"]["cityName"]) echo "inactive"; ?>'
                 data-scope-value='<?php echo @$communexion["values"]["cityKey"]; ?>'
                 data-scope-name='<?php echo @$communexion["values"]["cityName"]; ?>'
                 data-scope-type='city'>
                 <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["cityName"]; ?>
             </button> 
-
-            
+            <?php //echo @$communexion["currentName"]." != ".@$communexion["values"]["cityName"]; ?>
+             
+            <?php   //$icon = @$params["pages"]["#".$page]["icon"]; 
+                    //$subdomainName = $params["pages"]["#".$page]["subdomainName"];
+            ?>
+           <!--  <span class="pull-right">
+                <span class="font-blackoutM text-red"> <?php //echo $subdomainName; ?></span>
+                <i class="fa fa-<?php //echo $icon; ?> fa-2x text-red"></i> 
+            </span> -->
         </div>
     <?php } ?>
 
@@ -361,6 +382,7 @@ header .container,
 <script type="text/javascript" >
 
 var type = "<?php echo @$type ? $type : 'all'; ?>";
+var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 
 //var TPL = "kgougle";
 
@@ -372,6 +394,7 @@ jQuery(document).ready(function() {
 
 	initKInterface({"affixTop":350});
     
+    var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
 	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
 
@@ -398,17 +421,17 @@ jQuery(document).ready(function() {
 
     },"html");
 
-    $("#main-btn-start-search, .menu-btn-start-search").click(function(){
-            initTypeSearch("all");
+    /*$("#main-btn-start-search, .menu-btn-start-search").off().click(function(){
+            initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
             KScrollTo("#content-social");
-    });
+    });*/
 
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
-            initTypeSearch("all");
+            initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
             KScrollTo("#content-social");
         }
@@ -421,7 +444,7 @@ jQuery(document).ready(function() {
         $("#main-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
-            initTypeSearch("all");
+            initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
             KScrollTo("#content-social");
          }
@@ -431,13 +454,13 @@ jQuery(document).ready(function() {
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
-            initTypeSearch("all");
+            initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
          }
     });
 
     $("#menu-map-btn-start-search").click(function(){
-        initTypeSearch("all");
+        initTypeSearch(typeInit);
         startSearch(0, indexStepInit, searchCallback);
     });
 

@@ -248,6 +248,18 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 //active les link lbh
                 bindLBHLinks();
 
+                //btn communexion pour CO globale - recherche city
+                // $(".item-globalscope-checker").click(function(){  
+                //     setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type") ) ;
+                // });
+
+                 $(".start-new-communexion").click(function(){  
+                    setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
+                                     $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
+                                      $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
+                    activateGlobalCommunexion(true);
+                });
+
                 $.unblockUI();
                 $("#map-loading-data").html("");
                 
@@ -645,6 +657,35 @@ var directory = {
                                         "</a>";
                     else thisLocality = "<br>";
                     
+                    if(itemType=="city"){
+                      var citykey = o.country + "_" + o.insee + "-" + o.cp;
+                      //$city["country"]."_".$city["insee"]."-".$city["cp"];
+                      mylog.log(o);
+                      thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
+                                      "data-scope-value='" + citykey + "' " + 
+                                      "data-scope-name='" + o.name + "' " + 
+                                      "data-scope-type='city' " + 
+                                      "data-insee-communexion='" + o.insee + "' "+ 
+                                      "data-name-communexion='" + o.name + "' "+ 
+                                      "data-cp-communexion='" + o.cp + "' "+ 
+                                      "data-region-communexion='" + o.regionName + "' "+ 
+                                      "data-country-communexion='" + o.country + "' "+ 
+                                      ">"+
+                                          "Communecter" + 
+                                      "</button>";
+
+                                      
+                    }
+
+
+                //     <button class="btn btn-danger item-globalscope-checker start-new-communexion"
+                //         data-scope-value='<?php echo @$communexion["values"]["cityKey"]; ?>'
+                //         data-scope-name='<?php echo @$communexion["values"]["cityName"]; ?>'
+                //         data-scope-type='city'>
+                //     <?php echo @$communexion["values"]["cityName"]; ?> 
+                // </button>
+
+
                     //debat / actions
                     if(notEmpty(o.parentRoom)){
                       parentUrl = "";

@@ -362,7 +362,7 @@ function setGlobalScope(scopeValue, scopeName, scopeType){
 //levelCO == city cp dep region
 function activateGlobalCommunexion(active){  //mylog.log("saveCookieMultiscope", typeof myMultiScopes);
 	$.cookie('communexionActivated', active, { expires: 365, path: "/" });
-	loadByHash(location.hash);
+	url.loadByHash(location.hash);
 	/*if(location.hash.indexOf("#city.detail")==0)
 		loadByHash("#default.live");*/
 }

@@ -187,7 +187,16 @@
               <i class="fa fa-university"></i> 
               <span class="hidden-xs">Communes</span>
           </button>
-          <?php }?>
+          <?php } else if( $typeSelected == "vote" ){?>
+            <button class="btn text-black bg-azure btn-directory-type" data-type="vote">
+              <i class="fa fa-gavel"></i> 
+              <span class="hidden-xs">Propositions</span>
+            </button>
+            <button class="btn text-black bg-azure btn-directory-type" data-type="actions">
+              <i class="fa fa-cogs"></i> 
+              <span class="hidden-xs">Actions</span>
+            </button>
+          <?php } ?>
 
           <hr class="hidden-sm hidden-md hidden-lg">
         </div>

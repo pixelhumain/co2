@@ -125,7 +125,7 @@ var Login = function() {
 		    		  	var url = requestedUrl;
 		    		  	//mylog.warn(url,", has #"+url.indexOf("#"),"count / : ",url.split("/").length - 1 );
 		    		  	if(backUrl != null){
-		    		  		loadByHash(backUrl);
+		    		  		url.loadByHash(backUrl);
 		    		  		backUrl = null;
 		    		  	} else if(url && url.indexOf("#") >= 0 ) {
 		    		  		//mylog.log("login 1",url);
@@ -142,7 +142,7 @@ var Login = function() {
 		        					window.location.href = baseUrl+'#default.home';*/
 		        			}
 		        			else {
-		        				//mylog.log("login 3 reload");
+		        				mylog.log("login 3 reload", data);
 		        				//for urls like notifications/get/not/id...
 		        				window.location.href = baseUrl+'#default.live';
 		        				//window.location.reload();
@@ -325,7 +325,7 @@ var Login = function() {
 					    	window.location.href = baseUrl+'/#default.live';
 					    	window.location.reload();
 					    });
-		        		//loadByHash("#default.directory");
+		        		//url.loadByHash("#default.directory");
 		    		  }
 		    		  else {
 						$('.registerResult').html(data.msg);

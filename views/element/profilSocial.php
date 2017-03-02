@@ -229,7 +229,7 @@
 				<h3 class="text-left margin-10 padding-left-15 pull-left" id="main-name-element">
 					<?php echo @$element["name"]; ?>		
 				</h3>
-				<a href="#co2.page.type.citoyens.id.580827a8da5a3bca128b456b?tpl=onepage" target="_blank" class="font-blackoutM letter-red bold">
+				<a href="#app.page.type.citoyens.id.580827a8da5a3bca128b456b?tpl=onepage" target="_blank" class="font-blackoutM letter-red bold">
 					  <i class="fa fa-external-link"></i> <span class="hidden-xs hidden-sm">Page</span> web
 				</a>
 				<br>
@@ -412,7 +412,7 @@
 
 	function loadAdminDashboard(){
 		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
-		getAjax('#central-container' ,baseUrl+'/'+moduleId+"/co2/superadmin/action/main",function(){ 
+		getAjax('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/main",function(){ 
 				
 		},"html");
 	}

@@ -171,7 +171,7 @@ function showCalendar() {
     eventClick : function(calEvent, jsEvent, view) {
       //show event in subview
       dateToShow = calEvent.start;
-      loadByHash("#event.detail.id."+calEvent._id);
+      url.loadByHash("#event.detail.id."+calEvent._id);
     }
   });
 

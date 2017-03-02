@@ -10,11 +10,15 @@
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
-    $page = "social";
-    if(!@$type) $type = "all";// : "social";
-    if(@$type=="events") $page = "agenda";// : "social";
-    if(@$type=="vote") $page = "power";// : "social";
+    $params = CO2::getThemeParams();
 
+    $page = "search";
+    if(!@$type) $type = "all";
+    if(@$type=="events") $page = "agenda";
+    if(@$type=="classified") $page = "annonces";
+    if(@$type=="vote") $page = "power";
+
+    if($params["title"] == "kgougle") $page = "social";
     $subdomain = $page;
     //header + menu
     $this->renderPartial($layoutPath.'header', 
@@ -62,10 +66,14 @@
 #page p {
     font-size: 13px;
 }
-
-.homestead{
-    font-family:unset!important;
+.container-result-search {
+    border-top:1px solid #eee;
+    padding-top:15px;
 }
+
+/*.homestead{
+    font-family:unset!important;
+}*/
 /*
 .main-btn-scopes{
     position: absolute;
@@ -94,13 +102,9 @@
 }
 
 .scope-min-header{
-    /*position: absolute;
-    top: 60px;
-    left: 30%;*/
-    width:100%;
-    text-align: center;
-    z-index: 10;
-    border-radius: 0 50%;
+    float: left;
+    margin-top: 27px;
+    margin-left: 35px;
 }
 
 .links-create-element .btn-create-elem{
@@ -111,6 +115,21 @@
     display: none;
     /*width: 100%;
     text-align: center;*/
+}
+
+.breadcrum-communexion .item-globalscope-checker{
+    border-bottom:1px solid #e6344d;
+}
+.item-globalscope-checker.inactive{
+    color:#DBBCC1 !important;
+    border-bottom:0px;
+}
+.item-globalscope-checker:hover,
+.item-globalscope-checker:active,
+.item-globalscope-checker:focus{
+    color:#e6344d !important;
+    border-bottom:1px solid #e6344d;
+    text-decoration: none !important;
 }
 header .container, 
 .header .container{
@@ -127,23 +146,83 @@ header .container,
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
 
-    <h5 class="text-center letter-red">
-        <button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5" 
-            data-target="#modalScopes" data-toggle="modal"
-            data-toggle="tooltip" data-placement="top" 
-                                title="Sélectionner des lieux de recherche">
-            <!-- <i class="fa fa-bullseye" style="font-size:18px;"></i> -->
-            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/cible3.png" height=42>
-        </button><br>
-        recherche ciblée
-    </h5>
-    <div class="scope-min-header list_tags_scopes hidden-xs">
-    </div>
+    <?php
+        $communexion = CO2::getCommunexionCookies();  
+        if($communexion["state"] == false){
+    ?>
+
+        <?php if($type != "cities"){ ?>            
+            <h5 class="pull-left letter-red" style="margin-bottom: -8px;">
+                    <button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-25 margin-right-10" 
+                        data-target="#modalScopes" data-toggle="modal"
+                        data-toggle="tooltip" data-placement="top" 
+                                            title="Sélectionner des lieux de recherche">
+                        <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/cible3.png" height=32>
+                    </button> 
+                    recherche ciblée <i class="fa fa-angle-right"></i> 
+            </h5>
+         
+            <div class="scope-min-header list_tags_scopes hidden-xs text-left">
+            </div>
+        <?php } ?> 
+
+    <?php }else{ ?>
+        <div class="breadcrum-communexion  hidden-xs margin-top-15 col-md-12">
+            <button class="btn btn-link text-red btn-decommunecter tooltips"
+                    data-toggle="tooltip" data-placement="right" 
+                    title="Quitter la communexion">
+                <i class="fa fa-times"></i>
+            </button>
+
+            <i class="fa fa-university fa-2x text-red"></i> 
+            <button data-toggle='dropdown' data-target='dropdown-multi-scope'
+                class='btn btn-link text-red item-globalscope-checker homestead 
+                      <?php if(@$communexion["currentName"]!=@$communexion["values"]["regionName"]) echo "inactive"; ?>' 
+                data-scope-value='<?php echo @$communexion["values"]["regionName"]; ?>'
+                data-scope-name='<?php echo @$communexion["values"]["regionName"]; ?>'
+                data-scope-type='region'>
+                <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["regionName"]; ?>
+            </button> 
+            <button data-toggle='dropdown' data-target='dropdown-multi-scope'
+                class='btn btn-link text-red item-globalscope-checker homestead
+                      <?php if(@$communexion["currentName"]!=@$communexion["values"]["depName"]) echo "inactive"; ?>' 
+                data-scope-value='<?php echo @$communexion["values"]["depName"]; ?>'
+                data-scope-name='<?php echo @$communexion["values"]["depName"]; ?>'
+                data-scope-type='dep'>
+                <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["depName"]; ?>
+            </button> 
+            <button data-toggle='dropdown' data-target='dropdown-multi-scope'
+                class='btn btn-link text-red item-globalscope-checker homestead
+                      <?php if(@$communexion["currentName"]!=@$communexion["values"]["cityCp"]) echo "inactive"; ?>' 
+                data-scope-value='<?php echo @$communexion["values"]["cityCp"]; ?>'
+                data-scope-name='<?php echo @$communexion["values"]["cityCp"]; ?>'
+                data-scope-type='cp'>
+                <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["cityCp"]; ?>
+            </button> 
+            <button data-toggle='dropdown' data-target='dropdown-multi-scope'
+                class='btn btn-link text-red item-globalscope-checker homestead
+                      <?php if(@$communexion["currentName"]!=@$communexion["values"]["cityName"]) echo "inactive"; ?>'
+                data-scope-value='<?php echo @$communexion["values"]["cityKey"]; ?>'
+                data-scope-name='<?php echo @$communexion["values"]["cityName"]; ?>'
+                data-scope-type='city'>
+                <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["cityName"]; ?>
+            </button> 
+            <?php //echo @$communexion["currentName"]." != ".@$communexion["values"]["cityName"]; ?>
+             
+            <?php   //$icon = @$params["pages"]["#".$page]["icon"]; 
+                    //$subdomainName = $params["pages"]["#".$page]["subdomainName"];
+            ?>
+           <!--  <span class="pull-right">
+                <span class="font-blackoutM text-red"> <?php //echo $subdomainName; ?></span>
+                <i class="fa fa-<?php //echo $icon; ?> fa-2x text-red"></i> 
+            </span> -->
+        </div>
+    <?php } ?>
 
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
     <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
-        <hr style="margin-bottom:-20px;">
+        <!-- <hr style="margin-bottom:-20px;"> -->
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 
             data-target="#dash-create-modal" data-toggle="modal"
             data-toggle="tooltip" data-placement="top" 
@@ -293,13 +372,14 @@ header .container,
 </div>
 
 
-<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"social")); ?>
+<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>$page)); ?>
 
 
 
 <script type="text/javascript" >
 
 var type = "<?php echo @$type ? $type : 'all'; ?>";
+var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 
 //var TPL = "kgougle";
 
@@ -311,7 +391,8 @@ jQuery(document).ready(function() {
 
 	initKInterface({"affixTop":350});
     
-    if(type!='') typeUrl = "?type=all&nopreload=true";
+    var typeUrl = "?nopreload=true";
+    if(type!='') typeUrl = "?type="+type+"&nopreload=true";
 	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
 
         
@@ -337,17 +418,17 @@ jQuery(document).ready(function() {
 
     },"html");
 
-    $("#main-btn-start-search, .menu-btn-start-search").click(function(){
-            initTypeSearch("all");
+    /*$("#main-btn-start-search, .menu-btn-start-search").off().click(function(){
+            initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
             KScrollTo("#content-social");
-    });
+    });*/
 
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
-            initTypeSearch("all");
+            initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
             KScrollTo("#content-social");
         }
@@ -360,7 +441,7 @@ jQuery(document).ready(function() {
         $("#main-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
-            initTypeSearch("all");
+            initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
             KScrollTo("#content-social");
          }
@@ -370,13 +451,13 @@ jQuery(document).ready(function() {
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
-            initTypeSearch("all");
+            initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
          }
     });
 
     $("#menu-map-btn-start-search").click(function(){
-        initTypeSearch("all");
+        initTypeSearch(typeInit);
         startSearch(0, indexStepInit, searchCallback);
     });
 
@@ -389,6 +470,10 @@ jQuery(document).ready(function() {
                     elementLib.openForm(type);
                  },500);
         
+    });
+
+    $(".btn-decommunecter").click(function(){
+        activateGlobalCommunexion(false);
     });
 
     $(".tooltips").tooltip();

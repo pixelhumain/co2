@@ -258,7 +258,7 @@ function showCalendar() {
 
 
     eventClick : function(calEvent, jsEvent, view) {
-      loadByHash("#event.detail.id."+calEvent._id);
+      url.loadByHash("#event.detail.id."+calEvent._id);
     }
   });
 

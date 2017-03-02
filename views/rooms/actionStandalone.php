@@ -63,9 +63,9 @@
                         "fromView" => "rooms.actions",
                         "faTitle" => "cogs",
                         "colorTitle" => "azure",
-                        "textTitle" => "<a class='text-dark btn' href='javascript:loadByHash(\"#rooms.index.type.".$room['parentType'].".id.".$room['parentId'].".tab.3\")'><i class='fa fa-cogs'></i> ".Yii::t("rooms","Actions", null, Yii::app()->controller->module->id)."</a>".
+                        "textTitle" => "<a class='text-dark btn' href='javascript:url.loadByHash(\"#rooms.index.type.".$room['parentType'].".id.".$room['parentId'].".tab.3\")'><i class='fa fa-cogs'></i> ".Yii::t("rooms","Actions", null, Yii::app()->controller->module->id)."</a>".
                         				" / ".
-                        				"<a class='text-dark btn' href='javascript:loadByHash(\"#rooms.actions.id.".$parentSpace["_id"]."\")'><i class='fa fa-cogs'></i> ".$parentSpace["name"]."</a>".$extraBtn
+                        				"<a class='text-dark btn' href='javascript:url.loadByHash(\"#rooms.actions.id.".$parentSpace["_id"]."\")'><i class='fa fa-cogs'></i> ".$parentSpace["name"]."</a>".$extraBtn
                             
                             )); 
 		echo '<div class="col-md-12 panel-white padding-15" id="room-container">';
@@ -351,7 +351,7 @@ function closeAction(id)
               params = { "id" : id };
               ajaxPost(null,'<?php echo Yii::app()->createUrl(Yii::app()->controller->module->id."/rooms/closeaction")?>',params,function(data){
                 if(data.result)
-                  loadByHash(location.hash);
+                  url.loadByHash(location.hash);
                 else 
                   toastr.error(data.msg);
               });
@@ -369,7 +369,7 @@ function assignMe(id)
               params = { "id" : id };
               ajaxPost(null,'<?php echo Yii::app()->createUrl(Yii::app()->controller->module->id."/rooms/assignme")?>',params,function(data){
                 if(data.result)
-                  loadByHash(location.hash);
+                  url.loadByHash(location.hash);
                 else 
                   toastr.error(data.msg);
               });
@@ -395,7 +395,7 @@ function move( type,destId ){
 		        success: function(data){
 		          if(data.result){
 		            toastr.success(data.msg);
-		            loadByHash(data.url);
+		            url.loadByHash(data.url);
 		          } else {
 		            toastr.error(data.msg);
 		            if(data.action == "login")

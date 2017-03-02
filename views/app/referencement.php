@@ -16,14 +16,14 @@
 ?>
 
 <style>
-	.name .pastille {
+	/*.name .pastille {
 	    margin-top: -44px;
 	    display: block;
 	    text-align: right;
 	    max-width: 82%;
 	    font-size: 0.3em;
 	    margin-bottom: 22px;
-	}
+	}*/
 	
 </style>
 
@@ -592,7 +592,7 @@ function sendReferencement(){
 	    	success: function(data){
 	    		//if(data.valid == true) 
                     toastr.success("Votre demande a bien été enregistrée");
-                    loadByHash("#co2.referencement");
+                    url.loadByHash("#app.referencement");
 	    		//else toastr.error("Une erreur est survenue pendant le référencement");
 	    		console.log("save referencement success");
 	    	},

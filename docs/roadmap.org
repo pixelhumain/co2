@@ -718,7 +718,7 @@ Liste des notifications déjà lues => #370 #453
     [ ] script devlog pour ajouter updated sur les anciennes data 
     [ ] reparer le click du milieu
         - en mettant simplement notre hash dans le href
-    [ ] refactor links.loadByHash + chemin dans href
+    [ ] refactor links.url.loadByHash + chemin dans href
     [ ] search and filter tag engine
     [ ] wisiwig sur les desc de form create
     [ ] markdown editor sur les desc de form create using bootstrap-markdown ex : in projectsv.php

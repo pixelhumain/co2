@@ -149,7 +149,7 @@ h1.citizenAssembly-header {
 			
 	    	<div class="col-md-<?php echo $colSize; ?> col-sm-<?php echo $colSize; ?>">
 	    		<div class="col-md-12 no-padding margin-bottom-15">
-		    		<a href="javascript:loadByHash('#<?php echo $urlParent; ?>');" class="text-<?php echo $colorName; ?> homestead">
+		    		<a href="javascript:url.loadByHash('#<?php echo $urlParent; ?>');" class="text-<?php echo $colorName; ?> homestead">
 						<i class="fa fa-<?php echo $icon; ?>"></i> 
 							<?php
 								if($parentType == City::COLLECTION) echo "Commune de "; 
@@ -185,7 +185,7 @@ h1.citizenAssembly-header {
 					<div class="col-md-12 margin-top-15 link-tools">
 						<a href="javascript:showRoom('all', '<?php echo $parentId; ?>')" class="pull-left text-dark" style="font-size:15px;"><i class="fa fa-list"></i> Afficher tout</a>
 						<?php if(@$_GET["archived"] == null){ ?>
-						 <a href="javascript:loadByHash(location.hash+'.archived.1')" class="pull-left text-red" style="font-size:15px;margin-left:30px;"><i class="fa fa-times"></i> Archives</a>
+						 <a href="javascript:url.loadByHash(location.hash+'.archived.1')" class="pull-left text-red" style="font-size:15px;margin-left:30px;"><i class="fa fa-times"></i> Archives</a>
 						<?php } ?>
 						<?php //if(@$history && !empty($history)){ ?>
 							<a href="javascript:" class="pull-right text-dark" style="font-size:15px;" data-toggle="modal" data-target="#modal-select-room4">
@@ -198,13 +198,13 @@ h1.citizenAssembly-header {
 					<?php 
 						$btnLbl = "<i class='fa fa-sign-in'></i> ".Yii::t("rooms","JOIN TO PARTICIPATE", null, Yii::app()->controller->module->id);
 					    $ctrl = Element::getControlerByCollection($parentType);
-					    $btnUrl = "loadByHash('#".$ctrl.".detail.id.".$parentId."')";
+					    $btnUrl = "url.loadByHash('#".$ctrl.".detail.id.".$parentId."')";
 						if( $parentType == City::COLLECTION || 
 							($parentType != Person::COLLECTION && 
 							Authorisation::canParticipate(Yii::app()->session['userId'],$parentType,$parentId) ))
 							{ 
 								$btnLbl = "<i class='fa fa-plus'></i> ".Yii::t("rooms","Add an Action Room", null, Yii::app()->controller->module->id);
-							    $btnUrl = "loadByHash('#rooms.editroom.type.".$parentType.".id.".$parentId."')";
+							    $btnUrl = "url.loadByHash('#rooms.editroom.type.".$parentType.".id.".$parentId."')";
 							} 
 						if(!isset(Yii::app()->session['userId'])){ 
 							$btnLbl = "<i class='fa fa-sign-in'></i> ".Yii::t("rooms","LOGIN TO PARTICIPATE", null, Yii::app()->controller->module->id);
@@ -214,7 +214,7 @@ h1.citizenAssembly-header {
 						$addBtn = ( $parentType != Person::COLLECTION ) ? ' <i class="fa fa-angle-right"></i> <a class="filter btn btn-xs btn-primary Helvetica" href="javascript:;" onclick="'.$btnUrl.'">'.$btnLbl.'</a>' : ""; 
 					?>
 					<!-- <span class="breadscrum">
-						<a class='text-dark' href='javascript:loadByHash("#rooms.index.type.<?php //echo $parentType ?>.id.<?php //echo $parentId ?>.tab.1")'>
+						<a class='text-dark' href='javascript:url.loadByHash("#rooms.index.type.<?php //echo $parentType ?>.id.<?php //echo $parentId ?>.tab.1")'>
 							<i class="fa fa-connectdevelop"></i> <?php //echo Yii::t("rooms","Action Rooms", null, Yii::app()->controller->module->id) ?>
 						</a> 
 						<?php 

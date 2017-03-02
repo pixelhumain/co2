@@ -106,7 +106,7 @@
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     $this->renderPartial('admin/modalEditUrl',  array( ) ); 
     //var_dump($myWebFavorites);
-    $this->renderPartial($layoutPath.'modals.favorites',  array("myWebFavorites"=>@$myWebFavorites ) ); 
+    $this->renderPartial($layoutPath.'modals.kgougle.favorites',  array("myWebFavorites"=>@$myWebFavorites ) ); 
 ?>
 
 <button class="hidden btn letter-red btn-link font-montserrat dropdown-toggle" data-toggle="dropdown" id="btn-onepage-main-menu">
@@ -114,9 +114,11 @@
 </button>
 
 <section class="padding-top-5 text-center margin-bottom-10" id="section-fav">
-    <a href="#co2.media" target="_blank" class="tooltips btn-fast-access" data-placement="bottom" data-toggle="tooltip" 
+    <?php if(false){ ?>
+    <a href="#media" target="_blank" class="tooltips btn-fast-access" data-placement="bottom" data-toggle="tooltip" 
        title="Aller sur KgougleActu"><i class="fa fa-newspaper-o fa-2 padding-10 text-dark"></i></a> 
-    
+    <?php } ?>
+
     <?php if(!empty($myWebFavorites)){ ?>
     <i class="fa fa-ellipsis-v btn-fast-access padding-10 letter-yellow hidden-xs hidden"></i>
     <?php } ?>   
@@ -188,7 +190,7 @@ jQuery(document).ready(function() {
     initWebInterface();
     buildListCategories();
 
-    location.hash = "#co2.web";
+    location.hash = "#web";
 });
 
 function initWebInterface(){

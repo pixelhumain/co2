@@ -106,21 +106,32 @@ function checkScroll(){
 		
 }
 
+var currentScrollTop = 0;
+var isMapEnd = false;
 function showMap(show)
 {
+
+  if(mapBg == null) return;
+
 	//if(typeof Sig == "undefined") { alert("Pas de SIG"); return; } 
 	mylog.log("typeof SIG : ", typeof Sig);
 	if(typeof Sig == "undefined") show = false;
 
+  //chargement de la carte
+
+
+
 	mylog.log("showMap");
-	mylog.warn("showMap");
 	if(show === undefined) show = !isMapEnd;
 	if(show){
 		isMapEnd =true;
 		showNotif(false);
 
-		$("#mapLegende").html("");
-		$("#mapLegende").hide();
+		currentScrollTop = $('html').scrollTop();
+		
+
+		//$("#mapLegende").html("");
+		//$("#mapLegende").hide();
 
 		showTopMenu(true);
 		if(Sig.currentMarkerPopupOpen != null){
@@ -129,62 +140,67 @@ function showMap(show)
 		
 		$(".btn-group-map").show( 700 );
 		$("#right_tool_map").show(700);
-		$(".btn-menu5, .btn-menu6, .btn-menu7, .btn-menu8, .btn-menu9, .btn-menu10, .btn-menu-add").hide();
-		$("#btn-toogle-map").html("<i class='fa fa-th-large'></i>");
-		$("#btn-toogle-map").attr("data-original-title", "Tableau de bord");
-		$("#btn-toogle-map").css("display","inline !important");
-		$("#btn-toogle-map").show();
+		// $(".btn-menu5, .btn-menu6, .btn-menu7, .btn-menu8, .btn-menu9, .btn-menu10, .btn-menu-add").hide();
+		// $("#btn-toogle-map").html("<i class='fa fa-th-large'></i>");
+		// $("#btn-toogle-map").attr("data-original-title", "Tableau de bord");
+		// $("#btn-toogle-map").css("display","inline !important");
+		// $("#btn-toogle-map").show();
 		//$(".lbl-btn-menu").hide(400);
 		//$(".fa-angle-right").hide(400);
 		//$(".menu-left-container hr").css({opacity:0});
-		$(".main-menu-left").addClass("inSig");
+		$(".main-menu-left").hide(); //addClass("inSig");
 		$("body").addClass("inSig");
 
-		$(".my-main-container").animate({
+		$(".main-container").animate({
      							//top: -1000,
      							opacity:0,
 						      }, 'slow' );
 
-		setTimeout(function(){ $(".my-main-container").hide(); }, 100);
+		setTimeout(function(){ $(".main-container").hide(); }, 100);
 		var timer = setTimeout("Sig.constructUI()", 1000);
 		
 	}else{
-		isMapEnd =false;
+		isMapEnd = false;
 		hideMapLegende();
 
 		var iconMap = "map-marker";
 		if(typeof ICON_MAP_MENU_TOP != "undefined") iconMap = ICON_MAP_MENU_TOP;
 		//mylog.log(ICON_MAP_MENU_TOP);
-		$(".btn-group-map").hide( 700 );
-		$("#right_tool_map").hide(700);
-		$(".btn-menu5, .btn-menu6, .btn-menu7, .btn-menu8, .btn-menu9, .btn-menu10, .btn-menu-add").show();
-		$(".panel_map").hide(1);
-		$("#btn-toogle-map").html("<i class='fa fa-"+iconMap+"'></i>");
-		$("#btn-toogle-map").attr("data-original-title", "Carte");
-		$(".main-col-search").animate({ top: 0, opacity:1 }, 800 );
+		// $(".btn-group-map").hide( 700 );
+		// $("#right_tool_map").hide(700);
+		// $(".btn-menu5, .btn-menu6, .btn-menu7, .btn-menu8, .btn-menu9, .btn-menu10, .btn-menu-add").show();
+		// $(".panel_map").hide(1);
+		// $("#btn-toogle-map").html("<i class='fa fa-"+iconMap+"'></i>");
+		// $("#btn-toogle-map").attr("data-original-title", "Carte");
+		//$(".main-col-search").animate({ top: 0, opacity:1 }, 800 );
 		//$(".lbl-btn-menu").show(400);
 		//$(".fa-angle-right").show(400);		
 		//$(".menu-left-container hr").css({opacity:1} );
-		$(".main-menu-left").removeClass("inSig");
+		//$(".main-menu-left").removeClass("inSig");
 		$("body").removeClass("inSig");
-		$(".my-main-container").animate({
+		$(".main-container").animate({
      							//top: 50,
      							opacity:1
 						      }, 'slow' );
-		setTimeout(function(){ $(".my-main-container").show(); }, 100);
+		setTimeout(function(){ 
+			$(".main-container").show();
+			$('html, body').stop().animate({
+	            scrollTop: currentScrollTop
+	        }, 500, ''); 
+		}, 100);
 
 		//hideFormInMap();
 
-		if(typeof Sig != "undefined")
-		if(Sig.currentMarkerPopupOpen != null){
-			Sig.currentMarkerPopupOpen.closePopup();
-		}
+		// if(typeof Sig != "undefined")
+		// if(Sig.currentMarkerPopupOpen != null){
+		// 	Sig.currentMarkerPopupOpen.closePopup();
+		// }
 
 		//if($(".box-add").css("display") == "none" && notEmpty(userId))
 		//	$("#ajaxSV").show( 700 );
 
-		showTopMenu(true);	
-		checkScroll();
+		//showTopMenu(true);	
+		//checkScroll();
 	}
 		
 }
@@ -229,7 +245,7 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 		
 		$("#btn-geoloc-auto-menu .fa-crosshairs").attr("data-original-title", cityNameCommunexion);
 		$("#btn-geoloc-auto-menu .fa-crosshairs").attr("title", cityNameCommunexion);
-		$("#btn-geoloc-auto-menu").off(); //click(function(){ loadByHash("#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion) });
+		$("#btn-geoloc-auto-menu").off(); //click(function(){ url.loadByHash("#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion) });
 		$("#btn-geoloc-auto-menu").attr("href", '#city.detail.insee.' + inseeCommunexion+'.'+'postalCode.'+cpCommunexion);
 		$("#btn-geoloc-auto-menu").data("hash", "#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion);
 		//mylog.log("HASHHHHHHHHHHHHHHHHHHHH", $("#btn-geoloc-auto-menu").data("hash"));
@@ -252,14 +268,14 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
   		
   		if(!userId)
   		$(".btn-geoloc-auto").attr("onclick", 
-  			"loadByHash('#rooms.index.type.cities.id.' + countryCommunexion + '_'+ inseeCommunexion + '-'+ cpCommunexion)");
+  			"url.loadByHash('#rooms.index.type.cities.id.' + countryCommunexion + '_'+ inseeCommunexion + '-'+ cpCommunexion)");
 
   		
 		Sig.clearMap();
 		mylog.log("hash city ? ", location.hash.indexOf("#default.city"));
 		if(location.hash == "#default.home"){
 			//showLocalActorsCityCommunexion();
-			loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+			url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 		}else
 		if(location.hash == "#default.directory"){
 			startSearch();
@@ -274,7 +290,7 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 		if(location.hash.indexOf("#city.detail") >= 0) {
 			//showLocalActorsCityCommunexion();
 			if(location.hash != "#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion){
-				loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+				url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 			}else{
 				$("#btn-communecter").html("<i class='fa fa-check'></i> COMMUNECTÉ");
 	    		$("#btn-communecter").attr("onclick", "");
@@ -293,14 +309,14 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 			showTwoStep("load-conf-communexion");
 			setCookies();
 			$(".btn-param-postal-code").attr("data-original-title", cityNameCommunexion + " en détail");
-			//$(".btn-param-postal-code").attr("onclick", "loadByHash('#city.detail.insee."+inseeCommunexion+"')");
+			//$(".btn-param-postal-code").attr("onclick", "url.loadByHash('#city.detail.insee."+inseeCommunexion+"')");
 			$(".search-loader").html("<i class='fa fa-check'></i> Vous êtes communecté : " + cityNameCommunexion + ', ' + cpCommunexion);
 			$(".lbl-btn-menu-name-city .lbl-btn-menu").html(cityNameCommunexion);
 			setTimeout(function(){ achiveTSRAddress(); /*showTwoStep("street");*/  }, 2000);
 			//showMap(false);
 		}else{
 			//showLocalActorsCityCommunexion();
-			loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+			url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 		}
 	}
 	
@@ -309,7 +325,7 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 
 function showLocalActorsCityCommunexion(){
 
-	loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+	url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 	return;
 
 	mylog.log("showLocalActorsCityCommunexion");
@@ -542,7 +558,7 @@ function selectScopeLevelCommunexion(level){
 	if(typeof startSearch == "function")
 	startSearch();
 }
-function setCookies(path){
+function setCookies(path){ mylog.log("setCookies", path);
 	//if(false){
 		$.cookie('inseeCommunexion',   	inseeCommunexion,  	{ expires: 365, path: path });
 		$.cookie('cityNameCommunexion', cityNameCommunexion,{ expires: 365, path: path });

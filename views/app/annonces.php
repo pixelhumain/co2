@@ -15,8 +15,9 @@
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
     $this->renderPartial($layoutPath.'header', 
-                        array(  "layoutPath"=>$layoutPath , 
-                                "page" => "freedom") ); 
+                        array(  "layoutPath"=>$layoutPath ,
+                                "type" => @$type,
+                                "page" => "annonces") ); 
 ?>
 <style>
 	
@@ -247,7 +248,7 @@
 
 <?php $this->renderPartial('../news/modalCreateAnc'); ?>
 
-<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"freedom")); ?>
+<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"annonces")); ?>
 
 <script type="text/javascript" >
 

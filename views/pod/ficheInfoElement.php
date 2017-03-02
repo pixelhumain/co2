@@ -596,7 +596,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 						echo '<div class="imgDiv left-col" style="padding-right: 10px;width: 75px;">'.$img.$flag.'</div>';
 				?> 
 					<a 	href="javascript:;" 
-						onclick="loadByHash('#<?php echo @$organizer["type"]; ?>.detail.id.<?php echo @$organizer["id"]; ?>')"><?php echo @$organizer["name"]; ?></a><br/>
+						onclick="url.loadByHash('#<?php echo @$organizer["type"]; ?>.detail.id.<?php echo @$organizer["id"]; ?>')"><?php echo @$organizer["name"]; ?></a><br/>
 						<span><?php echo ucfirst(Yii::t("common", @$organizer["type"])); if (@$organizer["type"]=="organization") echo " - ".Yii::t("common", $organizer["typeOrga"]); ?></span>
 				<?php
 					} else {
@@ -829,7 +829,7 @@ if($showOdesc == true){
 										$(".visible-communected").hide();
 									}
 									toastr.success(data.msg);
-									loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+									url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
 						    	}
 						    }
 						});
@@ -1350,7 +1350,7 @@ if($showOdesc == true){
 
 		$("#changePasswordBtn").click(function () {
 			mylog.log("changePasswordbuttton");
-			loadByHash('#person.changepassword.id.'+userId+'.mode.initSV', false);
+			url.loadByHash('#person.changepassword.id.'+userId+'.mode.initSV', false);
 		});
 
 		$("#downloadProfil").click(function () {
@@ -1644,7 +1644,7 @@ function removeAddresses (index){
 			    	success: function(data){
 				    	if(data.result){
 							toastr.success(data.msg);
-							loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+							url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
 				    	}
 				    }
 				});
@@ -1687,7 +1687,7 @@ function updateOrganizer() {
 			    	success: function(data){
 				    	if(data.result){
 							toastr.success(data.msg);
-							loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+							url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
 				    	} else {
 				    		toastr.error(data.msg);
 				    	}

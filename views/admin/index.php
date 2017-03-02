@@ -15,7 +15,7 @@ $cs = Yii::app()->getClientScript();
            <?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
 
           <li class="list-group-item text-yellow col-md-4 col-sm-6 link-to-directory">
-            <div class="" style="cursor:pointer;" onclick="loadByHash('#admin.directory')">
+            <div class="" style="cursor:pointer;" onclick="url.loadByHash('#admin.directory')">
               <i class="fa fa-user fa-2x"></i>
                 
               <?php echo Yii::t("admin", "DIRECTORY", null, Yii::app()->controller->module->id); ?>
@@ -23,7 +23,7 @@ $cs = Yii::app()->getClientScript();
             </div>
           </li>
           <!--<li class="list-group-item text-purple col-md-4 col-sm-6 link-to-directory">
-            <div class="" style="cursor:pointer;" onclick="loadByHash('#admin.importdata')">
+            <div class="" style="cursor:pointer;" onclick="url.loadByHash('#admin.importdata')">
               <i class="fa fa-upload fa-2x"></i>
                 
               
@@ -31,13 +31,13 @@ $cs = Yii::app()->getClientScript();
             </div>
           </li>-->
           <li class="list-group-item text-purple col-md-4 col-sm-6 link-to-directory">
-            <div class="" style="cursor:pointer;" onclick="loadByHash('#adminpublic.createfile')">
+            <div class="" style="cursor:pointer;" onclick="url.loadByHash('#adminpublic.createfile')">
               <i class="fa fa-upload fa-2x"></i> 
               <?php echo Yii::t("admin", "IMPORT DATA", null, Yii::app()->controller->module->id); ?>
             </div>
           </li>
           <li class="list-group-item text-red col-md-4 col-sm-6 link-to-directory">
-            <div class="" style="cursor:pointer;" onclick="loadByHash('#admin.openagenda')">
+            <div class="" style="cursor:pointer;" onclick="url.loadByHash('#admin.openagenda')">
               <i class="fa fa-calendar fa-2x"></i>
                 
               <?php echo Yii::t("admin", "OPEN AGENDA", null, Yii::app()->controller->module->id); ?>
@@ -45,7 +45,7 @@ $cs = Yii::app()->getClientScript();
             </div>
           </li>
           <li class="list-group-item text-red col-md-4 col-sm-6 link-to-directory">
-            <div class="" style="cursor:pointer;" onclick="loadByHash('#admin.checkgeocodage')">
+            <div class="" style="cursor:pointer;" onclick="url.loadByHash('#admin.checkgeocodage')">
               <i class="fa fa-map fa-2x"></i>
                 
               <?php echo Yii::t("admin", "CHECK GEOCODAGE", null, Yii::app()->controller->module->id); ?>
@@ -53,7 +53,7 @@ $cs = Yii::app()->getClientScript();
             </div>
           </li>
           <li class="list-group-item text-red col-md-4 col-sm-6 link-to-directory">
-            <div class="" style="cursor:pointer;" onclick="loadByHash('#adminpublic.adddata')">
+            <div class="" style="cursor:pointer;" onclick="url.loadByHash('#adminpublic.adddata')">
               <i class="fa fa-plus fa-2x"></i>
                 
               <?php echo Yii::t("admin", "ADD DATA", null, Yii::app()->controller->module->id); ?>
@@ -62,7 +62,7 @@ $cs = Yii::app()->getClientScript();
           </li>
 
           <li class="list-group-item text-green col-md-4 col-sm-6 link-to-directory">
-            <div class="" style="cursor:pointer;" onclick="loadByHash('#log.monitoring')">
+            <div class="" style="cursor:pointer;" onclick="url.loadByHash('#log.monitoring')">
               <i class="fa fa-list fa-2x"></i>
                 
               <?php echo Yii::t("admin", "LOG", null, Yii::app()->controller->module->id); ?>
@@ -71,7 +71,7 @@ $cs = Yii::app()->getClientScript();
           </li>
 
           <li class="list-group-item text-green col-md-4 col-sm-6 link-to-directory">
-            <div class="" style="cursor:pointer;" onclick="loadByHash('#admin.checkcities')">
+            <div class="" style="cursor:pointer;" onclick="url.loadByHash('#admin.checkcities')">
               <i class="fa fa-list fa-2x"></i>
                 
               <?php echo Yii::t("admin", "CHECK CITIES", null, Yii::app()->controller->module->id); ?>
@@ -80,7 +80,7 @@ $cs = Yii::app()->getClientScript();
           </li>
 
            <li class="list-group-item text-orange col-md-4 col-sm-6 link-to-moderate">
-              <div class="" style="cursor:pointer;" onclick="loadByHash('#admin.moderate.one')">
+              <div class="" style="cursor:pointer;" onclick="url.loadByHash('#admin.moderate.one')">
                 <i class="fa fa-check fa-2x"></i>
                   
                 <?php echo Yii::t("admin", "MODERATION", null, Yii::app()->controller->module->id); ?>
@@ -88,7 +88,7 @@ $cs = Yii::app()->getClientScript();
               </div>
 
           <li class="list-group-item text-orange col-md-4 col-sm-6 link-to-moderate">
-            <div class="" style="cursor:pointer;" onclick="loadByHash('#stat.chartglobal')">
+            <div class="" style="cursor:pointer;" onclick="url.loadByHash('#stat.chartglobal')">
               <i class="fa fa-bar-chart fa-2x"></i>
               
               <?php echo Yii::t("admin", "STATISTICS", null, Yii::app()->controller->module->id); ?>
@@ -97,7 +97,7 @@ $cs = Yii::app()->getClientScript();
           </li>
 
           <li class="list-group-item text-yellow col-md-4 col-sm-6 link-to-directory">
-            <div class="" style="cursor:pointer;" onclick="loadByHash('#admin.mailerrordashboard')">
+            <div class="" style="cursor:pointer;" onclick="url.loadByHash('#admin.mailerrordashboard')">
               <i class="fa fa-envelope fa-2x"></i>
                 
               <?php echo Yii::t("admin", "MAILERROR", null, Yii::app()->controller->module->id); ?>
@@ -105,7 +105,7 @@ $cs = Yii::app()->getClientScript();
             </div>
           </li>
            <li class="list-group-item text-yellow col-md-4 col-sm-6 link-to-directory">
-            <div class="" style="cursor:pointer;" onclick="loadByHash('#admin.cities')">
+            <div class="" style="cursor:pointer;" onclick="url.loadByHash('#admin.cities')">
               <i class="fa fa-university fa-2x"></i>
                 
               <?php echo Yii::t("admin", "CITIES", null, Yii::app()->controller->module->id); ?>
@@ -117,7 +117,7 @@ $cs = Yii::app()->getClientScript();
             if( Role::isSourceAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) ){ 
           ?>
              <li class="list-group-item text-red col-md-4 col-sm-6 link-to-directory">
-              <div class="" style="cursor:pointer;" onclick="loadByHash('#stat.chart')">
+              <div class="" style="cursor:pointer;" onclick="url.loadByHash('#stat.chart')">
                 <i class="fa fa-plus fa-2x"></i>
                   
                 <?php echo Yii::t("admin", "SOURCE ADMIN", null, Yii::app()->controller->module->id); ?>

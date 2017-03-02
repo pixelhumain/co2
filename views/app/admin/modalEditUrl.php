@@ -147,7 +147,7 @@ jQuery(document).ready(function() {
         var url = $("#form-url").val();
         $.ajax({
             type: "POST",
-            url: baseUrl+"/"+moduleId+"/co2/superadmin/action/deleteUrl",
+            url: baseUrl+"/"+moduleId+"/app/superadmin/action/deleteUrl",
             data: { "url" : url },
             dataType: "json",
             success: function(data){
@@ -203,7 +203,7 @@ function sendReferencement(){
    
     $.ajax({
         type: "POST",
-        url: baseUrl+"/"+moduleId+"/co2/superadmin/action/updateurlmetadata",
+        url: baseUrl+"/"+moduleId+"/app/superadmin/action/updateurlmetadata",
         data: { "id" : id,
                 "values" : urlObj },
         dataType: "json",

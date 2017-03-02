@@ -5,7 +5,7 @@
  * @author: Alpha Tango
  * Date: 12/2016
  */
-class Co2Controller extends CommunecterController {
+class AppController extends CommunecterController {
   
 
 	protected function beforeAction($action) {
@@ -16,12 +16,12 @@ class Co2Controller extends CommunecterController {
 	public function actions()
 	{
 	    return array(
-	        'index'     		=> 'citizenToolKit.controllers.co2.IndexAction',
-	        'websearch'     	=> 'citizenToolKit.controllers.co2.WebSearchAction',
-	        'live'    			=> 'citizenToolKit.controllers.co2.LiveAction',
-	        'savereferencement' => 'citizenToolKit.controllers.co2.SaveReferencementAction',
-	        'mediacrawler'  	=> 'citizenToolKit.controllers.co2.MediaCrawlerAction',
-	        'superadmin' 		=> 'citizenToolKit.controllers.co2.SuperAdminAction',
+	        'index'     		=> 'citizenToolKit.controllers.app.IndexAction',
+	        'websearch'     	=> 'citizenToolKit.controllers.app.WebSearchAction',
+	        'live'    			=> 'citizenToolKit.controllers.app.LiveAction',
+	        'savereferencement' => 'citizenToolKit.controllers.app.SaveReferencementAction',
+	        'mediacrawler'  	=> 'citizenToolKit.controllers.app.MediaCrawlerAction',
+	        'superadmin' 		=> 'citizenToolKit.controllers.app.SuperAdminAction',
             
 	    );
 	}
@@ -35,13 +35,18 @@ class Co2Controller extends CommunecterController {
         Yii::app()->session["theme"] = "CO2";
         $params = CO2::getThemeParams();
         
-        $hash = $params["pages"]["#co2.index"]["redirect"];
+        $hash = $params["pages"]["#app.index"]["redirect"];
     	
         $params = array("type" => @$type );
 
-        if(!@$hash || @$hash=="") $hash="social";
-    	echo $this->renderPartial($hash, $params, true);
-	}
+        if(!@$hash || @$hash=="") $hash="search";
+        //echo @$hash; exit;
+        if(@$hash == "web"){
+            self::actionWeb();
+        }else{
+    	   echo $this->renderPartial($hash, $params, true);
+	    }
+    }
 
 
 
@@ -51,9 +56,9 @@ class Co2Controller extends CommunecterController {
         //get my favorites web sites in my cookies
         $cookiesFav = isset( Yii::app()->request->cookies['webFavorites'] ) && Yii::app()->request->cookies['webFavorites'] != "" ? 
 		   			  explode(",", Yii::app()->request->cookies['webFavorites']->value) : array();
-    	
+    	//var_dump($cookiesFav);exit;
     	//get information about each website
-    	$myWebFavorites = array();
+    	$myWebFavorites = array();//
     	foreach ($cookiesFav as $key => $urlId) { //var_dump($web); exit;
     		$url = PHDB::findOne(Url::COLLECTION,array("_id"=>new MongoId($urlId)));
     		$myWebFavorites[] = $url;
@@ -99,18 +104,18 @@ class Co2Controller extends CommunecterController {
 	}
 
 
-	public function actionSocial($type=null){
-		CO2Stat::incNbLoad("co2-social");	
+	public function actionSearch($type=null){
+        CO2Stat::incNbLoad("co2-search");	
         $params = array("type" => @$type );
-    	echo $this->renderPartial("social", $params, true);
+    	echo $this->renderPartial("search", $params, true);
 	}
 
 
 
-	public function actionFreedom(){
-		CO2Stat::incNbLoad("co2-freedom");	
-        $params = array("type" => @$type );
-    	echo $this->renderPartial("freedom", $params, true);
+	public function actionAnnonces(){
+		CO2Stat::incNbLoad("co2-annonces");	
+        $params = array();//"type" => @$type );
+    	echo $this->renderPartial("annonces", $params, true);
 	}
 
 
@@ -118,7 +123,7 @@ class Co2Controller extends CommunecterController {
 	public function actionAgenda(){
 		CO2Stat::incNbLoad("co2-agenda");	
         $params = array("type" => "events");
-    	echo $this->renderPartial("social", $params, true);
+    	echo $this->renderPartial("search", $params, true);
 	}
 
 
@@ -126,7 +131,7 @@ class Co2Controller extends CommunecterController {
 	public function actionPower(){
 		CO2Stat::incNbLoad("co2-power");	
         $params = array("type" => "vote");
-    	echo $this->renderPartial("social", $params, true);
+    	echo $this->renderPartial("search", $params, true);
 	}
 
 

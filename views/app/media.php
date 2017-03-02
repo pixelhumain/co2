@@ -102,7 +102,7 @@ function loadStream(indexMin, indexMax){ console.log("load stream media");
 
 	$.ajax({ 
         type: "POST",
-        url: baseUrl+"/"+moduleId+"/co2/media",
+        url: baseUrl+"/"+moduleId+"/app/media",
         data: { indexMin: indexMin, 
         		indexMax:indexMax, 
         		renderPartial:true 

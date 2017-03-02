@@ -18,7 +18,7 @@
 </tr>
 <tr>
 	<td>runScript</td>
-	<td>loadByHash('#rooms.index.type.cities.id.RE_97414-97421')</td>
+	<td>url.loadByHash('#rooms.index.type.cities.id.RE_97414-97421')</td>
 	<td></td>
 </tr>
 <tr>
@@ -63,7 +63,7 @@
 </tr>
 <tr>
 	<td>runScript</td>
-	<td>loadByHash('#rooms.index.type.cities.id.RE_97414-97421')</td>
+	<td>url.loadByHash('#rooms.index.type.cities.id.RE_97414-97421')</td>
 	<td></td>
 </tr>
 <tr>
@@ -173,7 +173,7 @@
 </tr>
 <tr>
 	<td>runScript</td>
-	<td>loadByHash('#rooms.index.type.cities.id.RE_97414-97421')</td>
+	<td>url.loadByHash('#rooms.index.type.cities.id.RE_97414-97421')</td>
 	<td></td>
 </tr>
 <tr>

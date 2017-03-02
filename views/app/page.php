@@ -7,7 +7,7 @@
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
-                                "page" => "page.type") ); 
+                                "page" => "page") ); 
 ?>
 
 

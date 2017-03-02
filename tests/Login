@@ -48,7 +48,7 @@
 </tr>
 <tr>
 	<td>runScript</td>
-	<td>loadByHash('#person.detail.id.'+userId)</td>
+	<td>url.loadByHash('#person.detail.id.'+userId)</td>
 	<td></td>
 </tr>
 </tbody></table>

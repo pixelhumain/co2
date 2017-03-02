@@ -886,7 +886,7 @@ function updateLocalityElement(){
 							}
 							Sig.restartMap();
 							Sig.showMapElements(Sig.map, contextMap);
-							loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+							url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
 						}else{
 
 							changeMenuCommunextion(locality);
@@ -898,18 +898,18 @@ function updateLocalityElement(){
 							var url = window.location.href ;
 							$('.showIfCommucted').removeClass("hidden");
 							if(url.indexOf("#person.detail.id."+userId) == -1) {
-								loadByHash("#person.detail.id."+userId);
+								url.loadByHash("#person.detail.id."+userId);
 							}else{
 								Sig.restartMap();
 								Sig.showMapElements(Sig.map, contextMap);
-								loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+								url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
 							}
 
 						}
 					}else{
 						initData();
 						toastr.success(data.msg);
-						loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+						url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
 					}
 					
 		    	}else{

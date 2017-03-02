@@ -338,7 +338,7 @@ function buildLineHTML(newsObj,idSession,update)
 			authorId=newsObj.author.id;
 		else
 			authorId=newsObj.author._id.$id;
-			urlTarget = 'href="#person.detail.id.'+authorId+'" onclick="loadByHash(\'#person.detail.id.'+authorId+'\')"';
+			urlTarget = 'href="#person.detail.id.'+authorId+'" onclick="url.loadByHash(\'#person.detail.id.'+authorId+'\')"';
 		if (newsObj.author.name.length > 25)
 			nameAuthor = newsObj.author.name.substr(0,25)+"...";
 		else
@@ -527,7 +527,7 @@ function buildHtmlUrlAndActionObject(obj){
 			titleAction = "a créé un besoin";
 		}
 
-		url = 'href="#'+redirectTypeUrl+'.detail.id.'+id+'" onclick="loadByHash(\'#'+redirectTypeUrl+'.detail.id.'+id+'\')"';
+		url = 'href="#'+redirectTypeUrl+'.detail.id.'+id+'" onclick="url.loadByHash(\'#'+redirectTypeUrl+'.detail.id.'+id+'\')"';
 	}
 	object=new Object;
 	object.url= url,
@@ -933,7 +933,7 @@ function addMentionInText(textNews,mentions){
    		else
    			controler = "person"; 
    		textNews=array[0]+
-   					"<span onclick='loadByHash(\"#"+controler+".detail.id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+   					"<span onclick='url.loadByHash(\"#"+controler+".detail.id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
    						value.name+
    					"</span>"+
    				array[1];

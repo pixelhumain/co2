@@ -15,7 +15,7 @@ dynForm = {
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
 		    	elementLib.closeForm();
-		    	loadByHash( location.hash );	
+		    	url.loadByHash( location.hash );	
 		    }
 	    },
 	    properties : {

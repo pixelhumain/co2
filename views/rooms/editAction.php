@@ -224,9 +224,9 @@ function editEntrySV () {
                 success: function(data){
                   if(data.result){
                     if( $("#editActionContainer #id").val() != "" )
-                      loadByHash( "#rooms.action.id."+$("#editActionContainer #id").val() );
+                      url.loadByHash( "#rooms.action.id."+$("#editActionContainer #id").val() );
                     else
-                      loadByHash( "#rooms.actions.id."+data.parentId )
+                      url.loadByHash( "#rooms.actions.id."+data.parentId )
                   }
                   else {
                     toastr.error(data.msg);

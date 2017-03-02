@@ -13,7 +13,7 @@
 </thead><tbody>
 <tr>
 	<td>click</td>
-	<td>//button[@onclick=&quot;loadByHash('#organization.addorganizationform');&quot;]</td>
+	<td>//button[@onclick=&quot;url.loadByHash('#organization.addorganizationform');&quot;]</td>
 	<td></td>
 </tr>
 <tr>

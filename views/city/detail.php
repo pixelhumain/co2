@@ -308,13 +308,13 @@ $this->renderPartial('../default/panels/toolbar');
                     </a>
                     
                     <?php /*
-                    <div class="text-prune" onclick='loadByHash("#city.directory?tpl=directory2&type=organizations&insee=<?php echo $city["insee"]; ?>");'>
+                    <div class="text-prune" onclick='url.loadByHash("#city.directory?tpl=directory2&type=organizations&insee=<?php echo $city["insee"]; ?>");'>
                       <i class="fa fa-male"></i><i class="fa fa-male"></i><i class="fa fa-male"></i><?php echo strtolower (Yii::t("common", "GROUPES")); ?>
                       <?php $cnt=0;foreach($organizations as $orga){if($orga["type"]==Organization::TYPE_GROUP )$cnt++;} ?>
                       <span class="badge bg-prune"><?php echo $cnt;?></span>
                     </div>
 
-                    <div class="text-azure" onclick='loadByHash("#city.directory?tpl=directory2&type=organizations&insee=<?php echo $city["insee"]; ?>");'>
+                    <div class="text-azure" onclick='url.loadByHash("#city.directory?tpl=directory2&type=organizations&insee=<?php echo $city["insee"]; ?>");'>
                       <i class="fa fa-industry"></i> <?php echo strtolower (Yii::t("common", "ENTREPRISES")); ?>
                       <?php $cnt=0;foreach($organizations as $orga){ if($orga["type"] == Organization::TYPE_BUSINESS )$cnt++; } ?>
                       <span class="badge bg-azure"><?php echo $cnt;?></span>
@@ -457,7 +457,7 @@ jQuery(document).ready(function() {
 
   $('#selectRoom').change(function(){
     if($('#selectRoom').val() != "")
-      loadByHash($('#selectRoom').val());
+      url.loadByHash($('#selectRoom').val());
       
   });
   

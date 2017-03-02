@@ -25,7 +25,7 @@
         //                     '<a href="javascript:"> Ajouter des filtres géographiques ?</a>'+
         //                 '</span>';
         // }
-        html +=     "</span>";
+        //html +=     "</span>";
         html += "</div>";
 
         $(htmlId).html(html);

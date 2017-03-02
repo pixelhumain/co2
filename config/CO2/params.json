@@ -1,76 +1,83 @@
 {
-  "title" : "CO2",
+  "title" : "app",
 
 	"pages" : 
 		{
-		  "#co2.index":
-			 	 {"redirect":"social"},
+		  "#app.index":
+			 	 {"redirect":"search"},
 			  
-			"#co2.social":
+			"#search":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
-                "subdomain" : "social", 
+                "subdomain" : "search", 
                 "subdomainName" : "Recherche",
+                "hash" : "#app.search",
                 "icon" : "search", 
-                "mainTitle" : "Moteur de recherche <span class='letter-red'>territorial</span>",
+                "mainTitle" : "Moteur de recherche <span class='text-red'>territorial</span>",
                 "placeholderMainSearch" : "Rechercher une page ..."
           },
 
-			"#co2.freedom":
+			"#annonces":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
-                "subdomain" : "freedom", 
+                "subdomain" : "annonces", 
                 "subdomainName" : "annonces",
+                "hash" : "#app.annonces",
                 "icon" : "newspaper-o", 
                 "mainTitle" : "Toutes vos annonces en direct",
                 "placeholderMainSearch" : "rechercher parmis les annonces  ..."
           },
 
-			"#co2.agenda":
+			"#agenda":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
                 "subdomain" : "agenda", 
                 "subdomainName" : "agenda",
+                "hash":"#app.agenda",
                 "icon" : "calendar", 
-                "mainTitle" : "L'agenda <span class='letter-red'>CO</span>mmun",
+                "mainTitle" : "L'agenda <span class='text-red'>CO</span>mmun",
                 "placeholderMainSearch" : "rechercher un événement ..."
           },
 
-			"#co2.power":
+			"#power":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
                 "subdomain" : "power", 
                 "subdomainName" : "power",
+                "hash":"#app.power",
                 "icon" : "hand-rock-o", 
-                "mainTitle" : "Un bien <span class='letter-red'>CO</span>mmun dédié à l'intelligence <span class='letter-red'>CO</span>llective",
+                "mainTitle" : "Espace <span class='text-red'>CO</span>mmun dédié à l'intelligence <span class='text-red'>CO</span>llective",
                 "placeholderMainSearch" : "rechercher parmis les propositions ..."
           },
 
-			"#co2.page.type":
+			"#page":
 			  	{"inMenu" : false, 
                 "useHeader" : false, 
-                "subdomain" : "page.type", 
+                "subdomain" : "page", 
                 "subdomainName" : "page",
+                "hash":"#app.page",
                 "icon" : "", 
                 "mainTitle" : "Le réseau social à effet de sert",
-                "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
+                "placeholderMainSearch" : "rechercher ..."
           },
 
-            "#co2.info":
+            "#info":
                 {"inMenu" : false, 
                 "useHeader" : false, 
                 "subdomain" : "apropos", 
                 "subdomainName" : "Info",
+                "hash":"#app.info",
                 "icon" : "search", 
                 "mainTitle" : "Le réseau social à effet de sert",
                 "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
           },
 
-            "#co2.city":
+            "#city":
                 {"inMenu" : false, 
                 "useHeader" : false, 
                 "subdomain" : "city", 
                 "subdomainName" : "City",
+                "hash":"#app.city",
                 "icon" : "university", 
                 "mainTitle" : "Communexion activée",
                 "placeholderMainSearch" : "rechercher ..."

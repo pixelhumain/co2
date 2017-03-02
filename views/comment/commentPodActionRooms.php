@@ -27,7 +27,7 @@
                             "fromView" => "comment.index",
                             "faTitle" => "comments",
                             "colorTitle" => "azure",
-                            "textTitle" => "<a class='text-dark btn' href='javascript:loadByHash(\"#rooms.index.type.$parentType.id.$parentId.tab.1\")'><i class='fa fa-comments'></i> ".Yii::t("rooms","Discuss", null, Yii::app()->controller->module->id)."</a>"
+                            "textTitle" => "<a class='text-dark btn' href='javascript:url.loadByHash(\"#rooms.index.type.$parentType.id.$parentId.tab.1\")'><i class='fa fa-comments'></i> ".Yii::t("rooms","Discuss", null, Yii::app()->controller->module->id)."</a>"
                             )); 
     echo '<div class="col-md-12 panel-white padding-15 discussContainer" id="room-container">';
   }
@@ -121,7 +121,7 @@ function archive(collection,id){
              "value":"<?php echo ( @$context["status"] != ActionRoom::STATE_ARCHIVED ) ? ActionRoom::STATE_ARCHIVED : "" ?>",
           };
           ajaxPost(null,'<?php echo Yii::app()->createUrl(Yii::app()->controller->module->id."/element/updatefield")?>',params,function(data){
-            loadByHash(window.location.hash);
+            url.loadByHash(window.location.hash);
           });
       } else {
         $("."+clickedVoteObject).removeClass("faa-bounce animated");

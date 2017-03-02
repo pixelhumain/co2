@@ -67,7 +67,7 @@
 	jQuery(document).ready(function() {
 		$(".btn-superadmin").click(function(){
 			var action = $(this).data("action");
-				getAjax('#central-container' ,baseUrl+'/'+moduleId+"/co2/superadmin/action/"+action,function(){ 
+				getAjax('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/"+action,function(){ 
 					
 			},"html");
 		});

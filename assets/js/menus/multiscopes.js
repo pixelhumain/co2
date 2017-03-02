@@ -28,8 +28,8 @@ function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId);
 	rebuildSearchScopeInput();
 	saveCookieMultiscope();
 }
-function saveCookieMultiscope(){  //mylog.log("saveCookieMultiscope", typeof myMultiScopes);
-	$.cookie('multiscopes',   	JSON.stringify(myMultiScopes), { expires: 365, path: "/" });
+function saveCookieMultiscope(){  mylog.log("saveCookieMultiscope", typeof myMultiScopes, myMultiScopes);
+	$.cookie('multiscopes',   	JSON.stringify(myMultiScopes), { expires: 365, path: location.pathname });
 	/*if(location.hash.indexOf("#city.detail")==0)
 		url.loadByHash("#default.live");*/
 }

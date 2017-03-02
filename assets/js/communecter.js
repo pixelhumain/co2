@@ -3518,6 +3518,10 @@ function initKInterface(params){
     	document.location.href="/ph/co2/person/logout";
     });
 
+    $("#btn-sethome").click(function(){
+    	url.loadByHash("#info.p.sethome")
+    });
+
     var affixTop = 400;
     if(notEmpty(params)){
     	if(typeof params["affixTop"] != "undefined") affixTop = params["affixTop"];

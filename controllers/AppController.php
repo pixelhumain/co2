@@ -40,8 +40,13 @@ class AppController extends CommunecterController {
         $params = array("type" => @$type );
 
         if(!@$hash || @$hash=="") $hash="search";
-    	echo $this->renderPartial($hash, $params, true);
-	}
+        //echo @$hash; exit;
+        if(@$hash == "web"){
+            self::actionWeb();
+        }else{
+    	   echo $this->renderPartial($hash, $params, true);
+	    }
+    }
 
 
 
@@ -51,9 +56,9 @@ class AppController extends CommunecterController {
         //get my favorites web sites in my cookies
         $cookiesFav = isset( Yii::app()->request->cookies['webFavorites'] ) && Yii::app()->request->cookies['webFavorites'] != "" ? 
 		   			  explode(",", Yii::app()->request->cookies['webFavorites']->value) : array();
-    	
+    	//var_dump($cookiesFav);exit;
     	//get information about each website
-    	$myWebFavorites = array();
+    	$myWebFavorites = array();//
     	foreach ($cookiesFav as $key => $urlId) { //var_dump($web); exit;
     		$url = PHDB::findOne(Url::COLLECTION,array("_id"=>new MongoId($urlId)));
     		$myWebFavorites[] = $url;
@@ -100,8 +105,7 @@ class AppController extends CommunecterController {
 
 
 	public function actionSearch($type=null){
-        var_dump($type);
-		CO2Stat::incNbLoad("co2-search");	
+        CO2Stat::incNbLoad("co2-search");	
         $params = array("type" => @$type );
     	echo $this->renderPartial("search", $params, true);
 	}

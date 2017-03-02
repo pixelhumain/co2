@@ -69,11 +69,11 @@
 					    <li><a href="javascript:" data-target="#dev" class="letter-red"><i class="fa fa-angle-right"></i> En developpement</a></li>
 					    <li><a href="javascript:" data-target="#motivation" class="letter-red"><i class="fa fa-angle-right"></i> Nos motivations</a></li>
 					    <li role="separator" class="divider"></li>
-					    <li><a href="#app.info.p.ph" class="lbh letter-yellow"><i class="fa fa-angle-right"></i> Pixel Humain</a></li>
+					    <li><a href="#info.p.ph" class="lbh letter-yellow"><i class="fa fa-angle-right"></i> Pixel Humain</a></li>
 					    <li role="separator" class="divider"></li>
-					    <li><a href="#app.info.p.communecter" class="lbh letter-red"><i class="fa fa-angle-right"></i> Communecter</a></li>
+					    <li><a href="#info.p.communecter" class="lbh letter-red"><i class="fa fa-angle-right"></i> Communecter</a></li>
 					    <li role="separator" class="divider"></li>
-					    <li><a href="#app.info.p.alphatango" class="lbh text-azure"><i class="fa fa-angle-right"></i> Alpha Tango</a></li>
+					    <li><a href="#info.p.alphatango" class="lbh text-azure"><i class="fa fa-angle-right"></i> Alpha Tango</a></li>
 					  </ul>
 				</div>
 			</div>
@@ -84,7 +84,7 @@
         		<i class="fa fa-angle-down"></i> A propos
         	</h5>
         	
-        	<a href="#app.web" class="lbh btn btn-default pull-right margin-left-5 btn-submenu tooltips"
+        	<a href="#web" class="lbh btn btn-default pull-right margin-left-5 btn-submenu tooltips"
         		data-toggle="tooltip" data-placement="top" title="Retourner vers le moteur de recherche">
         		<b>Quitter cette page <i class="fa fa-arrow-right"></i></b>
         	</a> 
@@ -126,7 +126,7 @@
 				Avec près de <b class="letter-green">300 sites répertoriés</b>, vous retrouverez à coup sûr tous les sites les plus utilisés en Nouvelle-Calédonie. <br>
 				Mais il reste encore beaucoup de sites à ajouter, pour compléter le résultats de vos recherches, et rendre ce moteur encore plus puissant…<br><br>
 
-				C’est pourquoi <b class="letter-green">vous pouvez TOUS référencer de nouvelles URL</b> via <a href="#app.referencement" class="letter-blue" target="_blank"><b>un formulaire de référencement</b></a>, lui aussi simplifié au maximum…<br>
+				C’est pourquoi <b class="letter-green">vous pouvez TOUS référencer de nouvelles URL</b> via <a href="#referencement" class="letter-blue" target="_blank"><b>un formulaire de référencement</b></a>, lui aussi simplifié au maximum…<br>
 				<i>N’hésitez pas à ajouter les sites manquant et ainsi participer à la construction de cette base de données.</i>
 
         	</p>
@@ -229,7 +229,7 @@
 				En Nouvelle-Calédonie, certaines particularités propres à ce territoire isolé d'océanie nous ont poussé à adopter une approche légèrement différente de celle que nous suivons depuis nos débuts. Pour répondre au mieux aux <b>besoins réels du pays</b> dans le domaine de l'internet.<br><br>
 				C'est ainsi que KGOUGLE est né : c'est une application issue de la plateforme <a href="www.communecter.org" class="letter-red"><b>Communecter.org</b></a>, adaptée au territoire Calédonien, pour en simplifier l'utilisation et proposer des applications spécifiques.
 				<br><br>
-				Motivé et conseillé par notre développeur calédonien <a href="#app.info.p.alphatango" class="letter-green"><b>AlphaTango</b></a>, nous espérons faire avancer internet sur le Caillou et en multiplier les usages : d'abord via ce moteur de recherche, pour faciliter votre navigation sur le web d'aujourd'hui, puis par la mise en place d'autres fonctionnalités innovantes déjà inclues dans la plateforme <a href="www.communecter.org" class="letter-red"><b>Communecter.org</b></a>.
+				Motivé et conseillé par notre développeur calédonien <a href="#info.p.alphatango" class="letter-green"><b>AlphaTango</b></a>, nous espérons faire avancer internet sur le Caillou et en multiplier les usages : d'abord via ce moteur de recherche, pour faciliter votre navigation sur le web d'aujourd'hui, puis par la mise en place d'autres fonctionnalités innovantes déjà inclues dans la plateforme <a href="www.communecter.org" class="letter-red"><b>Communecter.org</b></a>.
         	</p>
 
 			
@@ -247,7 +247,7 @@
 
 jQuery(document).ready(function() {
     initKInterface();
-    location.hash = "#app.info.p.apropos";
+    location.hash = "#info.p.apropos";
 
     $(".dropdown-onepage-main-menu li a").click(function(e){
 		e.stopPropagation();

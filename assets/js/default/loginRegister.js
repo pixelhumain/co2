@@ -142,7 +142,7 @@ var Login = function() {
 		        					window.location.href = baseUrl+'#default.home';*/
 		        			}
 		        			else {
-		        				//mylog.log("login 3 reload");
+		        				mylog.log("login 3 reload", data);
 		        				//for urls like notifications/get/not/id...
 		        				window.location.href = baseUrl+'#default.live';
 		        				//window.location.reload();

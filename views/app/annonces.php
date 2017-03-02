@@ -15,7 +15,8 @@
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
     $this->renderPartial($layoutPath.'header', 
-                        array(  "layoutPath"=>$layoutPath , 
+                        array(  "layoutPath"=>$layoutPath ,
+                                "type" => @$type,
                                 "page" => "annonces") ); 
 ?>
 <style>

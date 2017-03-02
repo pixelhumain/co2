@@ -412,7 +412,7 @@
 
 	function loadAdminDashboard(){
 		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
-		getAjax('#central-container' ,baseUrl+'/'+moduleId+"/co2/superadmin/action/main",function(){ 
+		getAjax('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/main",function(){ 
 				
 		},"html");
 	}

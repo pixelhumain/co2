@@ -35,11 +35,11 @@
         		<i class="fa fa-angle-down"></i> Alpha Tango
         	</h5>
         	
-			<a href="#app.web" class="lbh btn btn-default pull-right margin-left-5 btn-submenu tooltips"
+			<a href="#web" class="lbh btn btn-default pull-right margin-left-5 btn-submenu tooltips"
         		data-toggle="tooltip" data-placement="top" title="Retourner vers le moteur de recherche">
         		<b>Quitter cette page <i class="fa fa-arrow-right"></i></b>
         	</a> 
-        	<a href="#app.info.p.apropos" class="lbh btn btn-danger pull-right btn-submenu tooltips"
+        	<a href="#info.p.apropos" class="lbh btn btn-danger pull-right btn-submenu tooltips"
         		data-toggle="tooltip" data-placement="top" title='Retourner vers la page de présentation "A propos"'>
 				<b><i class="fa fa-arrow-left"></i> À propos</b>
 			</a>
@@ -58,7 +58,7 @@
 	        		 <span class="letter-azure">Aplha Tango</span>, C ki lui ?!?
 	        	</h1>
 	        	<h3 class="letter-blue"><i class="fa fa-angle-right"></i> Votre contact Calédonien</h3>
-				<b>KGOUGLE</b> a été mis en place par une équipe de développeurs indépendants : <a class="letter-yellow lbh" href="#app.info.p.ph"><b>les PixelHumains</b></a><br>
+				<b>KGOUGLE</b> a été mis en place par une équipe de développeurs indépendants : <a class="letter-yellow lbh" href="#info.p.ph"><b>les PixelHumains</b></a><br>
 				Ce collectif est composée de 5 développeurs répartis sur 3 fuseaux horaires : <b>Nouvelle-Calédonie, île de la Réunion, et métropole.</b><br><br>
 				
 				<b><span class="letter-azure font-blackoutM">Alpha Tango</span> est notre développeur Calédonien</b>, à l'origine de la création de <b>KGOUGLE</b>, et à votre disposition pour répondre à toutes vos questions.<br>C'est le lien entre les Calédoniens et notre collectif <b>PixelHumain</b>.
@@ -69,7 +69,7 @@
 
 			<div class="col-md-10 text-left padding-top-60 form-group">
 				<h3>
-					<i class="fa fa-chevron-down"></i> <i class="fa fa-send"></i> 
+					<i class="fa fa-send"></i> 
 					Contacter <span class="letter-azure font-blackoutM">Alpha Tango</span> par e-mail
 				</h3>
 				<br><br>
@@ -111,7 +111,7 @@ var currentCategory = "";
 
 jQuery(document).ready(function() {
     initKInterface();
-    location.hash = "#app.info.p.alphatango";
+    location.hash = "#info.p.alphatango";
 
     $(".dropdown-onepage-main-menu li a").click(function(e){
 		e.stopPropagation();

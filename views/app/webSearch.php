@@ -89,7 +89,7 @@
 	<div class="col-md-12 margin-bottom-15 url-<?php echo $siteurl['_id']; ?>">
 
 		<div class="addToFavInfo">
-			<a href="#app.web" class="btn-favory tooltips" data-idFav="<?php echo $siteurl['_id']; ?>" 
+			<a href="#web" class="btn-favory tooltips" data-idFav="<?php echo $siteurl['_id']; ?>" 
 					data-placement="top" data-toggle="tooltip" title="Garder en favoris">
 				<i class="fa fa-star-o"></i><i class="fa fa-star letter-yellow"></i>
 			</a>

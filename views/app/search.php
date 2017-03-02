@@ -13,11 +13,12 @@
     $params = CO2::getThemeParams();
 
     $page = "search";
-    if(!@$type) $type = "all";// : "social";
-    if(@$type=="events") $page = "agenda";// : "social";
-    if(@$type=="classified") $page = "annonces";// : "social";
-    if(@$type=="vote") $page = "power";// : "social";
+    if(!@$type) $type = "all";
+    if(@$type=="events") $page = "agenda";
+    if(@$type=="classified") $page = "annonces";
+    if(@$type=="vote") $page = "power";
 
+    if($params["title"] == "kgougle") $page = "social";
     $subdomain = $page;
     //header + menu
     $this->renderPartial($layoutPath.'header', 
@@ -101,13 +102,9 @@
 }
 
 .scope-min-header{
-    /*position: absolute;
-    top: 60px;
-    left: 30%;*/
-    width:100%;
-    text-align: center;
-    z-index: 10;
-    border-radius: 0 50%;
+    float: left;
+    margin-top: 27px;
+    margin-left: 35px;
 }
 
 .links-create-element .btn-create-elem{
@@ -154,20 +151,20 @@ header .container,
         if($communexion["state"] == false){
     ?>
 
-    <?php if($type != "cities"){ ?>            
-        <h5 class="text-center letter-red">
-                <button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5" 
-                    data-target="#modalScopes" data-toggle="modal"
-                    data-toggle="tooltip" data-placement="top" 
-                                        title="Sélectionner des lieux de recherche">
-                    <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/cible3.png" height=42>
-                </button><br>
-                recherche ciblée 
-        </h5>
-     
-        <div class="scope-min-header list_tags_scopes hidden-xs">
-        </div>
-    <?php } ?> 
+        <?php if($type != "cities"){ ?>            
+            <h5 class="pull-left letter-red" style="margin-bottom: -8px;">
+                    <button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-25 margin-right-10" 
+                        data-target="#modalScopes" data-toggle="modal"
+                        data-toggle="tooltip" data-placement="top" 
+                                            title="Sélectionner des lieux de recherche">
+                        <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/cible3.png" height=32>
+                    </button> 
+                    recherche ciblée <i class="fa fa-angle-right"></i> 
+            </h5>
+         
+            <div class="scope-min-header list_tags_scopes hidden-xs text-left">
+            </div>
+        <?php } ?> 
 
     <?php }else{ ?>
         <div class="breadcrum-communexion  hidden-xs margin-top-15 col-md-12">
@@ -375,7 +372,7 @@ header .container,
 </div>
 
 
-<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"social")); ?>
+<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>$page)); ?>
 
 
 

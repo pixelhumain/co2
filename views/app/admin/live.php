@@ -20,7 +20,7 @@ jQuery(document).ready(function() {
 		var action = $(this).data("action");
 		var idres = $(this).data("idres");
 		$(idres).html("<i class='fa fa-refresh fa-spin'></i>");
-		getAjax(idres ,baseUrl+'/'+moduleId+"/co2/superadmin/action/"+action,function(data){ //alert("yeh");
+		getAjax(idres ,baseUrl+'/'+moduleId+"/app/superadmin/action/"+action,function(data){ //alert("yeh");
 			$(idres).html(data);
 		},"html");
 	});
@@ -37,7 +37,7 @@ function initStream(){
 	//toastr.info("Initialisation du LIVE en cours, merci de patienter quelques secondes.");
 	$.ajax({ 
         type: "POST",
-        url: baseUrl+"/"+moduleId+"/co2/mediacrawler",
+        url: baseUrl+"/"+moduleId+"/app/mediacrawler",
         success:
             function(html) {
                 toastr.success("Chargement terminé.");

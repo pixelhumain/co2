@@ -3,86 +3,95 @@
 
       "pages" : 
       {
-      	"#co2.index":
-      		 {"redirect":"web"},
+      	"#app.index":
+                  {"redirect":"web"},
       	  
-      	"#co2.web":
+      	"#web":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
                   "subdomain" : "web", 
                   "subdomainName" : "web",
+                  "hash" : "#app.web",
                   "icon" : "search", 
                   "mainTitle" : "Le moteur de recherche des cagous",
                   "placeholderMainSearch" : "Que recherchez-vous ?"},
 
-      	"#co2.referencement":
+      	"#referencement":
       	  	{"inMenu" : false, 
                   "useHeader" : true, 
                   "subdomain" : "referencement", 
                   "subdomainName" : "referencement",
+                  "hash" : "#app.referencement",
                   "icon" : "search", 
                   "mainTitle" : "Référencer un site",
                   "placeholderMainSearch" : ""},
 
-      	"#co2.media":
+      	"#media":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
                   "subdomain" : "media", 
                   "subdomainName" : "media",
+                  "hash" : "#app.media",
                   "icon" : "newspaper-o", 
                   "mainTitle" : "Toute l'actu du pays, d'hier à aujourd'hui",
                   "placeholderMainSearch" : "rechercher dans l'actu ..."},
 
-      	"#co2.social":
+      	"#social":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
                   "subdomain" : "social", 
                   "subdomainName" : "social",
+                  "hash" : "#app.search",
                   "icon" : "user-circle-o", 
                   "mainTitle" : "Le réseau social des Nouzot",
                   "placeholderMainSearch" : "rechercher une page ..."},
 
-      	"#co2.freedom":
+      	"#freedom":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
                   "subdomain" : "freedom", 
                   "subdomainName" : "freedom",
+                  "hash" : "#app.annonces",
                   "icon" : "comments", 
                   "mainTitle" : "Toutes vos annonces en direct",
                   "placeholderMainSearch" : "rechercher parmis les annonces  ..."},
 
-      	"#co2.agenda":
+      	"#agenda":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
                   "subdomain" : "agenda", 
                   "subdomainName" : "agenda",
+                  "hash" : "#app.agenda",
                   "icon" : "calendar", 
                   "mainTitle" : "L'agenda collaboratif des Calédoniens",
                   "placeholderMainSearch" : "rechercher un événement  ..."},
 
-      	"#co2.power":
+      	"#power":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
                   "subdomain" : "power", 
                   "subdomainName" : "power",
+                  "hash" : "#app.power",
                   "icon" : "hand-rock-o", 
                   "mainTitle" : "L'espace collaboratif des Calédoniens.",
                   "placeholderMainSearch" : "rechercher parmis les propositions"},
 
-      	"#co2.page.type":
+      	"#page":
       	  	{"inMenu" : false, 
                   "useHeader" : false, 
-                  "subdomain" : "page.type", 
+                  "subdomain" : "page", 
                   "subdomainName" : "page",
+                  "hash" : "#app.page",
                   "icon" : "", 
                   "mainTitle" : "Le réseau social Calédonien",
                   "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."},
 
-      	"#co2.info":
+      	"#info":
       	  	{"inMenu" : false, 
                   "useHeader" : false, 
                   "subdomain" : "apropos", 
                   "subdomainName" : "Info",
+                  "hash" : "#app.info",
                   "icon" : "search", 
                   "mainTitle" : "Le moteur de recherche des Cagous",
                   "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."}

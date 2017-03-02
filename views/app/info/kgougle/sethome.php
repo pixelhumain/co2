@@ -50,14 +50,10 @@
             en page d'accueil
           </h5>
           
-          <a href="#app.web" class="lbh btn btn-default pull-right margin-left-5 btn-submenu tooltips"
+          <a href="#web" class="lbh btn btn-default pull-right margin-left-5 btn-submenu tooltips"
             data-toggle="tooltip" data-placement="top" title="Retourner vers le moteur de recherche">
             <b>Quitter cette page <i class="fa fa-arrow-right"></i></b>
           </a> 
-          <a href="#app.info.p.apropos" class="lbh btn btn-danger pull-right btn-submenu tooltips"
-            data-toggle="tooltip" data-placement="top" title='Retourner vers la page de présentation "A propos"'>
-            <b><i class="fa fa-arrow-left"></i> À propos</b>
-          </a>
 
           <br>
           <hr>
@@ -92,7 +88,7 @@ var currentCategory = "";
 
 jQuery(document).ready(function() {
     initKInterface();
-    location.hash = "#app.info.p.sethome";
+    location.hash = "#info.p.sethome";
 });
 
 </script>

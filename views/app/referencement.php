@@ -16,14 +16,14 @@
 ?>
 
 <style>
-	.name .pastille {
+	/*.name .pastille {
 	    margin-top: -44px;
 	    display: block;
 	    text-align: right;
 	    max-width: 82%;
 	    font-size: 0.3em;
 	    margin-bottom: 22px;
-	}
+	}*/
 	
 </style>
 

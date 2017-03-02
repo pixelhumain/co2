@@ -144,7 +144,7 @@
 			var action = $(this).data("action");
 			var idres = $(this).data("idres");
 			$(idres).html("<i class='fa fa-refresh fa-spin'></i>");
-			getAjax(idres ,baseUrl+'/'+moduleId+"/co2/superadmin/action/"+action,function(data){ //alert("yeh");
+			getAjax(idres ,baseUrl+'/'+moduleId+"/app/superadmin/action/"+action,function(data){ //alert("yeh");
 				$(idres).html(data);
 			},"html");
 		});
@@ -422,7 +422,7 @@ function sendReferencementAuto(id){
         if(favicon!="")
 		$.ajax({
 	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/co2/superadmin/action/updateurlmetadata",
+	        url: baseUrl+"/"+moduleId+"/app/superadmin/action/updateurlmetadata",
 	        data: { "id" : id,
 	        		"values" : urlObj },
 	       	dataType: "json",
@@ -452,7 +452,7 @@ function setStateUnreachable(id){
         //if(false)
 		$.ajax({
 	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/co2/superadmin/action/updateurlmetadata",
+	        url: baseUrl+"/"+moduleId+"/app/superadmin/action/updateurlmetadata",
 	        data: { "id" : id,
 	        		"values" : urlObj },
 	       	dataType: "json",
@@ -482,7 +482,7 @@ function startWebSearch(search, status){
 
     $.ajax({ 
         type: "POST",
-        url: baseUrl+"/"+moduleId+"/co2/websearch/",
+        url: baseUrl+"/"+moduleId+"/app/websearch/",
         data: params,
         //dataType: "json",
         success:

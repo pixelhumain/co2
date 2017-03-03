@@ -1,3 +1,11 @@
+<?php
+
+ $cssAnsScriptFiles = array(
+    '/assets/js/web.js',
+    );
+    HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->baseUrl);       
+?>
+
 <h1 class="letter-"><i class="fa fa-grav letter-red"></i> Bonjour <span class="letter-red">Super Admin</span></h1>
 <h5 class="letter-">
 	<button class="btn btn-sm btn-superadmin" data-action="web" data-idres="#central-container"><i class="fa fa-refresh"></i> </button>
@@ -64,13 +72,13 @@
 
 
 	<div class="col-md-4 text-center">
-		<div class="c100 p<?php echo intval($urlsActivatedNb*100/$urlsAllNb); ?> green small center">
-		  <span data-status="active"><?php echo intval($urlsActivatedNb*100/$urlsAllNb); ?>%</span>
+		<div class="c100 p<?php echo intval($urlsEditedNb*100/$urlsAllNb); ?> green small center">
+		  <span data-status="edited"><?php echo intval($urlsEditedNb*100/$urlsAllNb); ?>%</span>
 		  <div class="slice"> 
 		  	<div class="bar"></div> <div class="fill"></div>
 		  </div>
 		</div>
-		<h5>active<br><small><?php echo $urlsActivatedNb; ?></small></h5>
+		<h5>edited<br><small><?php echo $urlsEditedNb; ?></small></h5>
 	</div>
 
 	<div class="col-md-4 text-center">
@@ -477,8 +485,17 @@ function startWebSearch(search, status){
 
     var params = {
         search:search,
-        status:status
+        status:status,
+        orderBy:"url"
     };
+
+    if(status == "edited"){
+    	params = {
+	       search:search,
+	       searchEdit:true,
+	       orderBy:"url"
+	    };
+    }
 
     $.ajax({ 
         type: "POST",

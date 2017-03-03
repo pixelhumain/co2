@@ -574,7 +574,7 @@ function sendReferencement(){
         		description: description,
         		tags: keywords,
         		categories : categoriesSelected,
-                status: "validated"
+                status: "locked"
         };
 
         if(address != false) {

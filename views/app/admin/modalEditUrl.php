@@ -18,15 +18,21 @@
             <div class="row">
                 <div class="col-md-6 text-left">
                     <h3 class="letter-red"><i class="fa fa-cog"></i> Editer une URL</h3>
+                    
                     <hr>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label id="lbl-url">
                                 <i class="fa fa-circle"></i> URL
                             </label>
-                            <input type="text" class="form-control" placeholder="id" id="form-idurl"><br>
-                            
-                            <input type="text" class="form-control" placeholder="exemple : http://kgougle.nc" id="form-url"><br>
+                            <?php
+                                $idhidden="hidden";
+                                if(Role::isSuperAdmin(Role::getRolesUserId(@Yii::app()->session["userId"]) ) )
+                                    $idhidden="";
+                            ?>
+                            <input type="text" class="form-control <?php echo $idhidden; ?>" placeholder="id" id="form-idurl"><br>
+                            <input type="text" class="form-control" 
+                                    placeholder="exemple : http://kgougle.nc" id="form-url"><br>
                             <h5 class="letter-green pull-left" id="status-ref"></h5>                    
                             <!-- <button class="btn btn-success pull-right btn-scroll" data-targetid="#formRef" id="btn-start-ref-url">
                                 <i class="fa fa-binoculars"></i> Lancer la recherche d'information
@@ -74,30 +80,53 @@
                         <div class="col-md-3 padding-5">
                             <input type="text" class="form-control" placeholder="expression 4" id="form-keywords4"><br>
                         </div>
-                        <div class="col-md-12 padding-5">  
-                             <label id="lbl-description">
+                        <div class="col-md-12 padding-5">
+                            <?php $isAdmin = Role::isSuperAdmin(Role::getRolesUserId(@Yii::app()->session["userId"]) ); ?>
+                       
+                            <label id="lbl-description">
                                 <i class="fa fa-circle"></i> Status
                             </label>
                             <select class="form-control" id="form-status">
+                                 <?php if($isAdmin){ ?>
                                 <option name="status" value="locked">locked</option>
                                 <option name="status" value="uncomplet">uncomplet</option>
-                                <option name="status" value="validated">validated</option>
-                                <option name="status" value="active">active</option>
-                            </select>
+                                <?php } ?>  
+                                <option name="status" value="validated" <?php if($isAdmin) echo "selected"; ?> >validated</option>                        
+                            </select>  
+                                             
                             <hr>
                         </div>
                         
                         <div class="row">  
-                            <button class="btn btn-danger pull-left" id="btn-conf-delete" data-target="#modalDeleteUrl" data-toggle="modal" >
+                            <?php if(Role::isSuperAdmin(Role::getRolesUserId(@Yii::app()->session["userId"]) ) ) { ?>
+                            <button class="btn btn-danger pull-left" id="btn-conf-delete" 
+                                    data-target="#modalDeleteUrl" data-toggle="modal" >
                                 <i class="fa fa-trash"></i> Supprimer
                             </button>
+                            <?php } ?>
+                            <button class="btn btn-danger pull-left" id="btn-conf-delete" 
+                                    data-target="#modalDeleteUrl" data-toggle="modal" >
+                                <i class="fa fa-map-marker"></i> Géolocaliser
+                            </button>
+                            
                             <button class="btn btn-success pull-right" id="btn-save-maj-metadata" ><i class="fa fa-save"></i> Enregistrer</button> 
                             <button class="btn btn-default pull-right margin-right-5" data-dismiss="modal"><i class="fa fa-times"></i> Annuler</button> 
+
+
+                        </div>
+
+                        <div class="row">  
+                            <hr>
+                            <small>
+                                <span class="letter-red"><i class="fa fa-info-circle"></i> Afin d'éviter tout abus,</span> votre demande de modification sera envoyée aux administrateurs du site, et soumise à leur validation (sous 7 jours).<br>
+                                <i class="fa fa-info-circle"></i> Si les informations fournies semblent farfellues, ou inexactes, nous nous réservons le droit de ne pas donner suite à votre demande.<br>
+                                <i class="fa fa-info-circle"></i> Dans tous les autres cas, votre demande sera validée en quelques jours et vous pourrez retrouver vos modifications lors de vos futures recherches.
+                            </small>
                         </div>
 
                     </div>
                 </div>
-                <div class="col-md-6" id="mainCategoriesEdit">
+                <div class="col-md-6 pull-right" id="mainCategoriesEdit">
                 </div>
             </div>
         </div>

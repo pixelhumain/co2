@@ -100,6 +100,11 @@
 				<?php } ?> 
 				<?php echo $siteurl["title"]; ?>
 			</a>
+			<button class="btn btn-xs bg-white btn-edit-url" 
+					data-target="#modalEditUrl" data-toggle="modal" 
+					data-idurl="<?php echo $key; ?>">
+				<i class="fa fa-cog"></i>
+			</button>
 			<br>
 			<span class="siteurl_hostname letter-green"><?php echo @$siteurl["urlDisplay"]; ?></span><br>
 		</div>
@@ -108,7 +113,7 @@
 		<span class="siteurl_desc letter-grey"><?php echo @$siteurl["description"]; ?></span><br>
 		<?php } ?>
 
-		<span class="siteurl_desc letter-grey hidden">
+		<span class="siteurl_desc letter-grey">
 			<b><?php //echo $siteurl["countKW"]; ?>
 			<?php if(!empty($siteurl["wordsFound"])) foreach ($siteurl["wordsFound"] as $key2 => $wordFound) { ?>
 			<?php //echo $wordFound; ?>  
@@ -118,15 +123,18 @@
 			<?php echo $wordFound; ?>  
 			<?php } ?>
 			</b>  -->
-			<b><?php //if(!empty($siteurl["categories"])) foreach ($siteurl["categories"] as $key2 => $category) { ?>
-			<?php //echo $category; ?>  
-			<?php //} ?>
-			</b> 
-			<b>
-				<?php //if(!empty($siteurl["tags"])) foreach ($siteurl["tags"] as $key2 => $tag) { ?>
-					<?php //echo $tag; ?> 
-				<?php //} ?>
-			</b>
+			<?php if(Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) ) { ?>
+				<b>
+					<?php if(!empty($siteurl["categories"])) foreach ($siteurl["categories"] as $key2 => $category) { ?>
+					$<?php echo $category; ?>  
+					<?php } ?>
+				</b> 
+				<b>
+					<?php if(!empty($siteurl["tags"])) foreach ($siteurl["tags"] as $key2 => $tag) { ?>
+						#<?php echo $tag; ?> 
+					<?php } ?>
+				</b>
+			<?php } ?>
 		</span>
 
 		<?php if(Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) ) { ?>

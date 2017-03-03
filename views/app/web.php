@@ -136,16 +136,16 @@
             foreach ($myWebFavorites as $key => $siteurl) { 
                 if(@$siteurl["favicon"]){ 
 
-                    $file_headers = @get_headers($siteurl["favicon"]);
+                    //$file_headers = @get_headers($siteurl["favicon"]);
                     //echo $siteurl["favicon"]."-".$file_headers[0];
-                    if($file_headers[0] == "HTTP/1.1 200 OK") {
+                   // if($file_headers[0] == "HTTP/1.1 200 OK") {
         ?>
             <a class="siteurl_title letter-blue elipsis tooltips" target="_blank" href="<?php echo $siteurl["url"]; ?>"
                 data-placement="bottom" data-toggle="tooltip" title="<?php echo $siteurl["title"]; ?>">
                     <img src='<?php echo $siteurl["favicon"]; ?>' alt="o" height=18 class="margin-right-5" style="margin:0 10px;margin-top:4px;" alt="">
             </a>
                 
-        <?php   }}
+        <?php   }//}
             } 
         ?>
 

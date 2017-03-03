@@ -72,12 +72,10 @@ class AppController extends CommunecterController {
 
     public function actionReferencement(){ //kgougle
     	CO2Stat::incNbLoad("co2-referencement");
-    	$cities = CO2::getCitiesNewCaledonia();
-        
+    	        
     	$params = array("subdomain" => "referencement",
                         "mainTitle" => "Référencer votre site Calédonien",
-                        "placeholderMainSearch" => "",
-                        "cities" => $cities);
+                        "placeholderMainSearch" => "");
 
     	echo $this->renderPartial("referencement", $params, true);
     }

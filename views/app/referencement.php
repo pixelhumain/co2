@@ -113,8 +113,7 @@
 	            					<code>&ltmeta name="keywords"&gt</code>
 	            				</small><br>
 	            				<small class="text-light">
-	            					<i class="fa fa-info-circle"></i> Les mots clés servent à optimiser les résultats de recherche, choisissez les avec soins<br>
-	            					<i class="fa fa-signal fa-flip-horizontal"></i> Par ordre d'importance (1 > 2 > 3 > 4)</small><br><br>
+	            					<i class="fa fa-info-circle"></i> Les mots clés servent à optimiser les résultats de recherche, choisissez les avec soins<br><br>
 	            			</label>
             			</div>
             			<div class="col-md-3 padding-5">
@@ -168,8 +167,7 @@
 							<i class="fa fa-university"></i> Sélectionner une commune
 						</button><br>
 
-						<h4 class='col-md-12 text-center text-red' id="h4-name-city">
-							<i class='fa fa-university'></i> <span id="name-city-selected">Nouméa</span>
+						<h4 class='col-md-12 text-center text-red' id="name-city-selected">
 						</h4><br>
 
 						<input type="text" class="form-control" placeholder="addresse, rue" id="form-street"><br>
@@ -201,45 +199,12 @@
 	</section>
 </div>
 
-<div class="portfolio-modal modal fade" id="portfolioModalCities" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-content">
-        <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-                <div class="rl">
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                    <div class="modal-body text-left">
-                        <h2 class="text-red"><i class="fa fa-university fa-2x"></i><br>Sélectionner une commune</h2>
-                        <hr>
-                        <?php foreach(array("GN", "Sud", "Nord", "Iles") as $province){ ?>
-                            <?php foreach($cities[$province] as $city){ ?>
-                            	<div class="col-md-3">
-                            		<button class="btn btn-scope" data-dismiss="modal"
-                            				data-city-name="<?php echo $city["name"]; ?>"
-                            				data-city-insee="<?php echo $city["insee"]; ?>"
-                            				data-city-cp="<?php echo $city["postalCodes"][0]["postalCode"]; ?>"
-                            				data-city-lat="<?php echo $city["geo"]["latitude"]; ?>"
-                            				data-city-lng="<?php echo $city["geo"]["longitude"]; ?>">
-                            			<i class="fa fa-bullseye"></i> <?php echo $city["name"]; ?>
-                            		</button> 
-                            	</div>
-                            <?php } ?>
-                        <?php } ?>
-                        <div class="col-md-12 text-center"><hr>
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Annuler</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+<?php $cities = CO2::getCitiesNewCaledonia(); ?>
+<?php $this->renderPartial($layoutPath.'modals.kgougle.citiesReferencement', array("cities"=>$cities)); ?>
 
 <?php $this->renderPartial($layoutPath.'footer'); ?>
+
 
 <script type="text/javascript" >
 
@@ -271,7 +236,7 @@ jQuery(document).ready(function() {
     	$(".show-subscribe").addClass("hidden");
     });
 
-    $("#h4-name-city, #form-street, #btn-find-position").hide();
+    $("#name-city-selected, #form-street, #btn-find-position").hide();
 
     $("#btn-start-anonymous").click(function(){
     	$("#refStart").removeClass("hidden");
@@ -399,14 +364,6 @@ function refUrl(url){
 	$("#send-ref").addClass("hidden");
 
 	urlValidated = "";
-
-	// $.ajaxPrefilter( function (options) {
-	//   if (options.crossDomain && jQuery.support.cors) {
-	//     var http = (window.location.protocol === 'http:' ? 'http:' : 'https:');
-	//     options.url = http + '//cors-anywhere.herokuapp.com/' + options.url;
-	//     //options.url = "http://cors.corsproxy.io/url=" + options.url;
-	//   }
-	// });
 
     $.ajax({ 
     	url: "//cors-anywhere.herokuapp.com/" + url, // 'http://google.fr', 
@@ -590,11 +547,15 @@ function sendReferencement(){
 	        data: urlObj,
 	       	dataType: "json",
 	    	success: function(data){
-	    		//if(data.valid == true) 
+	    		if(typeof data.result != "undefined" && data.result == false) 
+                    toastr.error("Une erreur est survenue, ou cette URL existe déjà dans notre base de données");
+                else{
+                    console.log("save referencement success");
                     toastr.success("Votre demande a bien été enregistrée");
-                    url.loadByHash("#app.referencement");
-	    		//else toastr.error("Une erreur est survenue pendant le référencement");
-	    		console.log("save referencement success");
+                    url.loadByHash("#web");
+	    		}
+                //else toastr.error("Une erreur est survenue pendant le référencement");
+	    		
 	    	},
 	    	error: function(data){
 	    		toastr.error("Une erreur est survenue pendant l'envoi de votre demande'");

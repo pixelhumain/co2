@@ -27,6 +27,7 @@
 * ************************************************************  
 [ ] Finir le formulaire de contact par mail
 [ ] CGU
+[ ] Favicon
 
 
 
@@ -48,8 +49,14 @@ ANNONCES :::Tib :::Tango (5J)
 [ ] Finir le système de petites annonces
   [ ] Système de Mot Clé Contextuel
   [ ] Finir DynForm Annonce
-  [ ] Refonte NEWS ?
-    -> Séparer les news public et private ? == NewsPublic devient : Annonce
+  [ ] template Annonce
+    [ ] Mise en avant du prix
+    [ ] Photos gallerie ?
+    [ ] 
+  [ ] Sytème de réponse "ça m'intéresse", pour répondre à une annonce
+    [ ] Message privée
+    [ ] Coordonnées
+    [ ] Notification Mail
 
 CITIES :::Rapha :::Tib (10J)
 [ ] Réintégrer les City  :::Rapha

@@ -359,6 +359,11 @@ function buildListCategoriesForm(){
 
 function refUrl(url){
 
+    if(!isValidURL(url)){
+        $("#status-ref").html("<span class='letter-red'><i class='fa fa-times'></i> cette url n'est pas valide.</span>");
+        return;
+    }
+
 	$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> recherche en cours</span>");
 	$("#refResult").addClass("hidden");
 	$("#send-ref").addClass("hidden");
@@ -480,6 +485,11 @@ function refUrl(url){
 			}
 		}
 	});
+}
+
+function isValidURL(url) {
+  var match_url = new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+  return match_url.test(url);
 }
 
 function checkAllInfo(){

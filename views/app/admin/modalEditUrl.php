@@ -16,7 +16,10 @@
         <div class="container">
 
             <div class="row">
-                <h3 class="letter-red"><i class="fa fa-cog"></i> Modifier les informations</h3>
+                <h3 class="letter-red text-left">
+                    <i class="fa fa-cog"></i> Modifier les informations
+                    <button class="btn btn-success pull-right margin-bottom-5 btn-save-maj-metadata" ><i class="fa fa-check-circle"></i> Valider mes modifications</button> 
+                </h3>
                     
                     <hr>
                 <div class="col-md-6 text-left">
@@ -119,12 +122,12 @@
                         <div class="col-md-12 padding-5">  
                             <hr>
                             <small>
-                                <span class="letter-red"><i class="fa fa-info-circle"></i> Afin d'éviter tout abus,</span> votre demande de modification sera envoyée aux administrateurs du site, et soumise à leur validation (sous 7 jours).<br>
+                                <span class="letter-red"><i class="fa fa-info-circle"></i> Afin d'éviter tout abus,</span> vos modification seront envoyées aux administrateurs du site, et soumise à leur validation (sous 7 jours).<br>
                                 <i class="fa fa-info-circle"></i> Si les informations fournies semblent farfellues, ou inexactes, nous nous réservons le droit de ne pas donner suite à votre demande.<br>
-                                <i class="fa fa-info-circle"></i> Dans tous les autres cas, votre demande sera validée en quelques jours et vous pourrez retrouver vos modifications lors de vos futures recherches.
+                                <i class="fa fa-info-circle"></i> Si elles semblent correctes, votre demande sera validée en quelques jours et vous pourrez retrouver vos modifications lors de vos futures recherches.<br>
+                                <i class="fa fa-info-circle"></i> 
                             </small>
                         </div>
-
                     </div>
                 </div>
                 <div class="col-md-6 pull-right" id="mainCategoriesEdit">
@@ -137,7 +140,7 @@
                     </button> 
                     <?php } ?>
                     
-                    <button class="btn btn-success pull-right margin-bottom-5" id="btn-save-maj-metadata" ><i class="fa fa-save"></i> Enregistrer</button> 
+                    <button class="btn btn-success pull-right margin-bottom-5 btn-save-maj-metadata" ><i class="fa fa-check-circle"></i> Valider mes modifications</button> 
                     <button class="btn btn-default pull-right margin-right-5 margin-bottom-5" data-dismiss="modal"><i class="fa fa-times"></i> Annuler</button> 
 
 
@@ -183,7 +186,7 @@
 <script type="text/javascript">
 
 jQuery(document).ready(function() {
-    $("#btn-save-maj-metadata").click(function(){
+    $(".btn-save-maj-metadata").click(function(){
         sendReferencement();
     });
 
@@ -330,7 +333,7 @@ function buildListCategoriesForm(){
     console.log("mainCategoriesEdit", mainCategories);
 
     var html = "<h4 class='text-dark'>"+
-                    "sélectionner une catégorie"+
+                    "sélectionner la / les catégorie(s)"+
                 "</h4>";
 
     $.each(mainCategories, function(name, params){

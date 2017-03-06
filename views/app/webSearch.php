@@ -7,7 +7,7 @@
 </button>
 
 <?php if(sizeof($siteurls) == 0){ ?>
-	<a class="btn btn-default btn-success margin-bottom-5 margin-top-5 lbh" href="#app.referencement">
+	<a class="btn btn-default btn-success margin-bottom-5 margin-top-5 margin-left-5 lbh" href="#app.referencement">
 		<i class="fa fa-plus-circle"></i> Ajouter une URL
 	</a><br>
 

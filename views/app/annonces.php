@@ -170,7 +170,7 @@
 	<div class="col-lg-1  hidden-md col-sm-1 hidden-xs"></div>
 	<div class="col-lg-2 col-md-3 hidden-sm col-xs-12 padding-20 text-right hidden-xs" id="sub-menu-left">
 		<button class="btn btn-default letter-green hidden-xs btn-menu-left-add margin-top-5" 
-				data-target="#modal-create-anc" data-toggle="modal">
+				id="btn-create-classified">
 			<i class="fa fa-plus"></i> Publier une annonce
 		</button><hr>
 		<?php 
@@ -378,6 +378,10 @@ function initFreedomInterface(){
     $(".keycat").click(function(){
     	$(".keycat").removeClass("active");
 	  	$(this).addClass("active");
+	});
+
+	$("#btn-create-classified").click(function(){
+		 elementLib.openForm('classified');
 	});
 
 	initFormImages();

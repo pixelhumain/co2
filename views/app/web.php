@@ -83,11 +83,19 @@
 }
 
 #section-fav{
-    max-height: 40px;
+    max-height: 50px;
     overflow: hidden;
 }
+#main-search-bar-addon{
+    cursor: pointer;
+}
 @media screen and (max-width: 1024px) {
-    
+    #mainCategories .portfolio .portfolio-item{
+        height: 110px;
+    }
+    #mainCategories .portfolio .portfolio-item button.portfolio-link{
+        margin-top: 15px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -97,6 +105,9 @@
     }
     #mainCategories h3{
         font-size: 1.3em;
+    }
+    .navbar-header{
+        padding: 2px 10px;
     }
 }
 </style>
@@ -113,7 +124,7 @@
      <i class='fa fa-angle-right'></i> A propos
 </button>
 
-<section class="padding-top-5 text-center margin-bottom-10" id="section-fav">
+<section class="padding-top-10 text-center margin-bottom-10" id="section-fav">
     <?php if(false){ ?>
     <a href="#media" target="_blank" class="tooltips btn-fast-access" data-placement="bottom" data-toggle="tooltip" 
        title="Aller sur KgougleActu"><i class="fa fa-newspaper-o fa-2 padding-10 text-dark"></i></a> 
@@ -130,19 +141,16 @@
        
     <?php if(!empty($myWebFavorites)){ ?>
        <i class="fa fa-ellipsis-v btn-fast-access padding-10 letter-yellow hidden-xs hidden"></i>
-       
         <?php  
-
             foreach ($myWebFavorites as $key => $siteurl) { 
                 if(@$siteurl["favicon"]){ 
-
                     //$file_headers = @get_headers($siteurl["favicon"]);
                     //echo $siteurl["favicon"]."-".$file_headers[0];
                    // if($file_headers[0] == "HTTP/1.1 200 OK") {
         ?>
             <a class="siteurl_title letter-blue elipsis tooltips" target="_blank" href="<?php echo $siteurl["url"]; ?>"
                 data-placement="bottom" data-toggle="tooltip" title="<?php echo $siteurl["title"]; ?>">
-                    <img src='<?php echo $siteurl["favicon"]; ?>' alt="o" height=18 class="margin-right-5" style="margin:0 10px;margin-top:4px;" alt="">
+                    <img src='<?php echo $siteurl["favicon"]; ?>' alt="o" height=22 class="margin-right-5" style="margin:0 14px;margin-top:4px;" alt="">
             </a>
                 
         <?php   }//}
@@ -160,20 +168,9 @@
 
 <section class="no-padding hidden" id="sectionSearchResults">
     <div class="row">
-
-        <div class="col-md-2 col-sm-2 text-right" id="sub-menu-left">
-            
-
-        </div>
-        <div class=" col-lg-8 col-md-7 col-sm-7" id="searchResults"></div>
-        <div class="col-md-2 col-sm-2 text-left" id="sub-menu-right">
-            <!-- <a href="https://github.com/pixelhumain" target="_blank">
-                <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/anc/105.jpg" height=170>
-            </a><br><br>
-            <a href="https://github.com/pixelhumain" target="_blank">
-                <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/anc/105.jpg" height=170>
-            </a><br><br> -->
-        </div>
+        <div class="col-md-2 col-sm-2 text-right" id="sub-menu-left"></div>
+        <div class="col-md-7 col-sm-9 col-lg-8" id="searchResults"></div>
+        <div class="col-md-2 col-sm-1 text-left" id="sub-menu-right"></div>
     </div>
 </section>
 
@@ -196,6 +193,7 @@ jQuery(document).ready(function() {
 function initWebInterface(){
     $("#main-btn-start-search, .menu-btn-start-search").click(function(){
         var search = $("#main-search-bar").val();
+        currentCategory = "";
         startWebSearch(search, currentCategory);
     });
 
@@ -204,6 +202,7 @@ function initWebInterface(){
         $("#input-search-map").val($("#second-search-bar").val());
         if(e.keyCode == 13){
             var search = $(this).val();
+            currentCategory = "";
             startWebSearch(search, currentCategory);
          }
     });
@@ -212,6 +211,7 @@ function initWebInterface(){
         $("#input-search-map").val($("#main-search-bar").val());
         if(e.keyCode == 13){
             var search = $(this).val();
+            currentCategory = "";
             startWebSearch(search, currentCategory);
          }
     });
@@ -220,12 +220,14 @@ function initWebInterface(){
         $("#main-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
             var search = $(this).val();
+            currentCategory = "";
             startWebSearch(search, currentCategory);
          }
     });
 
-    $("#menu-map-btn-start-search").click(function(){
-        var search = $("#input-search-map").val();
+    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
+        var search = $("#input-search-map").val();    
+        currentCategory = "";
         startWebSearch(search, currentCategory);
     });
 

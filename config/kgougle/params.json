@@ -1,5 +1,5 @@
 { 
-      "title" : "kgougle",
+      "title" : "Kgougle",
 
       "pages" : 
       {
@@ -23,7 +23,7 @@
                   "subdomainName" : "referencement",
                   "hash" : "#app.referencement",
                   "icon" : "search", 
-                  "mainTitle" : "Référencer un site",
+                  "mainTitle" : "Référencer une page",
                   "placeholderMainSearch" : ""},
 
       	"#media":

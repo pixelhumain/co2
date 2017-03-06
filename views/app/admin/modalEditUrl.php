@@ -16,10 +16,14 @@
         <div class="container">
 
             <div class="row">
-                <div class="col-md-6 text-left">
-                    <h3 class="letter-red"><i class="fa fa-cog"></i> Editer une URL</h3>
+                <h3 class="letter-red text-left">
+                    <i class="fa fa-cog"></i> Modifier les informations
+                    <button class="btn btn-success pull-right margin-bottom-5 btn-save-maj-metadata" ><i class="fa fa-check-circle"></i> Valider mes modifications</button> 
+                </h3>
                     
                     <hr>
+                <div class="col-md-6 text-left">
+                    
                     <div class="col-md-12">
                         <div class="form-group">
                             <label id="lbl-url">
@@ -30,7 +34,7 @@
                                 if(Role::isSuperAdmin(Role::getRolesUserId(@Yii::app()->session["userId"]) ) )
                                     $idhidden="";
                             ?>
-                            <input type="text" class="form-control <?php echo $idhidden; ?>" placeholder="id" id="form-idurl"><br>
+                            <input type="hidden" class="form-control <?php echo $idhidden; ?>" placeholder="id" id="form-idurl"><br>
                             <input type="text" class="form-control" 
                                     placeholder="exemple : http://kgougle.nc" id="form-url"><br>
                             <h5 class="letter-green pull-left" id="status-ref"></h5>                    
@@ -63,9 +67,6 @@
                                 <small class="pull-right text-light">
                                     <code>&ltmeta name="keywords"&gt</code>
                                 </small><br>
-                                <!-- <small class="text-light">
-                                    <i class="fa fa-info-circle"></i> Les mots clés servent à optimiser les résultats de recherche, choisissez les avec soins<br>
-                                    <i class="fa fa-signal fa-flip-horizontal"></i> Par ordre d'importance (1 > 2 > 3 > 4)</small><br><br> -->
                             </label>
                         </div>
                         <div class="col-md-3 padding-5">
@@ -80,53 +81,69 @@
                         <div class="col-md-3 padding-5">
                             <input type="text" class="form-control" placeholder="expression 4" id="form-keywords4"><br>
                         </div>
-                        <div class="col-md-12 padding-5">
-                            <?php $isAdmin = Role::isSuperAdmin(Role::getRolesUserId(@Yii::app()->session["userId"]) ); ?>
-                       
+
+                        <?php $isAdmin = Role::isSuperAdmin(Role::getRolesUserId(@Yii::app()->session["userId"]) ); ?>
+                        <div class="col-md-12 padding-5 <?php if(!$isAdmin) echo "hidden"; ?>">                           
                             <label id="lbl-description">
                                 <i class="fa fa-circle"></i> Status
                             </label>
                             <select class="form-control" id="form-status">
-                                 <?php if($isAdmin){ ?>
+                                <?php if($isAdmin){ ?>
                                 <option name="status" value="locked">locked</option>
                                 <option name="status" value="uncomplet">uncomplet</option>
                                 <?php } ?>  
-                                <option name="status" value="validated" <?php if($isAdmin) echo "selected"; ?> >validated</option>                        
-                            </select>  
-                                             
+                                <option name="status" value="validated" <?php if($isAdmin) echo "selected"; ?> >validated</option>
+                            </select>                                        
                             <hr>
                         </div>
+                        <div class="col-md-12 padding-5">                           
                         
-                        <div class="row">  
-                            <?php if(Role::isSuperAdmin(Role::getRolesUserId(@Yii::app()->session["userId"]) ) ) { ?>
-                            <button class="btn btn-danger pull-left" id="btn-conf-delete" 
-                                    data-target="#modalDeleteUrl" data-toggle="modal" >
-                                <i class="fa fa-trash"></i> Supprimer
+                            <label id="lbl-description">
+                                <i class="fa fa-map-marker"></i> Addresse
+                            </label>
+
+                            <h4 class='pull-left text-red' id="name-city-selected">
+                            </h4>
+
+
+                            <button class="btn btn-default text-red pull-right" id="btn-select-city" 
+                                    data-target="#portfolioModalCities" data-toggle="modal">
+                                <i class="fa fa-university"></i> Sélectionner une commune
                             </button>
-                            <?php } ?>
-                            <button class="btn btn-danger pull-left" id="btn-conf-delete" 
-                                    data-target="#modalDeleteUrl" data-toggle="modal" >
-                                <i class="fa fa-map-marker"></i> Géolocaliser
+                            <br>
+
+                            <input type="text" class="form-control" placeholder="addresse, rue" id="form-street"><br>
+
+                            <button class="btn btn-default text-azure pull-right" id="btn-find-position">
+                                <i class="fa fa-map-marker"></i> Définir la position sur la carte
                             </button>
-                            
-                            <button class="btn btn-success pull-right" id="btn-save-maj-metadata" ><i class="fa fa-save"></i> Enregistrer</button> 
-                            <button class="btn btn-default pull-right margin-right-5" data-dismiss="modal"><i class="fa fa-times"></i> Annuler</button> 
+                        </div>                
 
-
-                        </div>
-
-                        <div class="row">  
+                        <div class="col-md-12 padding-5">  
                             <hr>
                             <small>
-                                <span class="letter-red"><i class="fa fa-info-circle"></i> Afin d'éviter tout abus,</span> votre demande de modification sera envoyée aux administrateurs du site, et soumise à leur validation (sous 7 jours).<br>
+                                <span class="letter-red"><i class="fa fa-info-circle"></i> Afin d'éviter tout abus,</span> vos modification seront envoyées aux administrateurs du site, et soumise à leur validation (sous 7 jours).<br>
                                 <i class="fa fa-info-circle"></i> Si les informations fournies semblent farfellues, ou inexactes, nous nous réservons le droit de ne pas donner suite à votre demande.<br>
-                                <i class="fa fa-info-circle"></i> Dans tous les autres cas, votre demande sera validée en quelques jours et vous pourrez retrouver vos modifications lors de vos futures recherches.
+                                <i class="fa fa-info-circle"></i> Si elles semblent correctes, votre demande sera validée en quelques jours et vous pourrez retrouver vos modifications lors de vos futures recherches.<br>
+                                <i class="fa fa-info-circle"></i> 
                             </small>
                         </div>
-
                     </div>
                 </div>
                 <div class="col-md-6 pull-right" id="mainCategoriesEdit">
+                </div>
+                <div class="col-md-12">  
+                    <?php if(Role::isSuperAdmin(Role::getRolesUserId(@Yii::app()->session["userId"]) ) ) { ?>
+                    <button class="btn btn-danger pull-left margin-bottom-5" id="btn-conf-delete" 
+                            data-target="#modalDeleteUrl" data-toggle="modal" >
+                        <i class="fa fa-trash"></i> Supprimer
+                    </button> 
+                    <?php } ?>
+                    
+                    <button class="btn btn-success pull-right margin-bottom-5 btn-save-maj-metadata" ><i class="fa fa-check-circle"></i> Valider mes modifications</button> 
+                    <button class="btn btn-default pull-right margin-right-5 margin-bottom-5" data-dismiss="modal"><i class="fa fa-times"></i> Annuler</button> 
+
+
                 </div>
             </div>
         </div>
@@ -160,10 +177,16 @@
 </div>
 
 
+<?php 
+    $cities = CO2::getCitiesNewCaledonia();
+    $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+    $this->renderPartial($layoutPath.'modals.kgougle.citiesReferencement', array("cities"=>$cities)); 
+?>
+
 <script type="text/javascript">
 
 jQuery(document).ready(function() {
-    $("#btn-save-maj-metadata").click(function(){
+    $(".btn-save-maj-metadata").click(function(){
         sendReferencement();
     });
 
@@ -189,6 +212,40 @@ jQuery(document).ready(function() {
                 console.log("save referencement error");
             }
         });
+
+
+    });
+
+    $("#form-street, #btn-find-position").hide();
+    $(".btn-scope").click(function(){
+        //h4-name-city btn-select-city name-city-selected
+        var cityName = $(this).data("city-name");
+        var cityCp = $(this).data("city-cp");
+        var cityInsee = $(this).data("city-insee");
+        var cityLat = $(this).data("city-lat");
+        var cityLng = $(this).data("city-lng");
+
+        $("#h4-name-city, #form-street, #btn-find-position").show();
+        $("#name-city-selected").html(cityName + ", " + cityCp);
+
+        formType = "url";
+        coordinatesPreLoadedFormMap = [cityLat, cityLng];
+        showMarkerNewElement();
+        preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "");
+
+        $("#btn-find-position").off().click(function(){
+            showMap(true);
+
+            if(Sig.markerFindPlace == null)
+                showMarkerNewElement();
+    
+            var street = $("#form-street").val();
+            preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, street);
+            
+            if(street != "")
+                searchAdressNewElement();           
+        });
+        
     });
 
     
@@ -219,6 +276,8 @@ function sendReferencement(){
     
     var status = $("#form-status").val();
 
+    var address = getAddressObj(); //formInMap.js
+
     var urlObj = {
             url : url,
             title: title, 
@@ -227,6 +286,13 @@ function sendReferencement(){
             categories : categoriesSelected,
             status: status
     };
+
+    if(address != false) {
+        urlObj["address"] = address.address;
+        urlObj["geo"] = address.geo;
+        urlObj["geoPosition"] = address.geoPosition;
+    }
+    console.log("address", address);
 
     console.log("UPDATE THIS URL DATA ?", urlObj, id);
    
@@ -266,7 +332,9 @@ var categoriesSelected = new Array();
 function buildListCategoriesForm(){
     console.log("mainCategoriesEdit", mainCategories);
 
-    var html = "";
+    var html = "<h4 class='text-dark'>"+
+                    "sélectionner la / les catégorie(s)"+
+                "</h4>";
 
     $.each(mainCategories, function(name, params){
         var classe="";
@@ -276,10 +344,11 @@ function buildListCategoriesForm(){
                         '<div class="">'+
                             '<div class="row">'+
                                 '<div class="col-lg-12 text-center">'+
-                                    '<h4 class="letter-'+params.color+'">'+
-                                        name+
-                                    '</h4>'+
                                     '<hr>'+
+                                    //'<h4 class="letter-'+params.color+'">'+
+                                    //    name+
+                                    //'</h4>'+
+                                    //'<hr>'+
                                 '</div>'+
                             '</div>'+
                             '<div class="row text-'+params.color+'">';
@@ -328,6 +397,8 @@ function buildListCategoriesForm(){
         //console.log("categoriesSelected");
         //console.dir(categoriesSelected);
     });
+
+   
 }
 
 

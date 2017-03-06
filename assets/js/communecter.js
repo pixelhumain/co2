@@ -844,6 +844,7 @@ function  processingBlockUi() {
 		msg = themeObj.blockUi.processingMsg;
 	$.blockUI({ message :  msg });
 	bindLBHLinks();
+	$(".tooltips").tooltip();
 }
 function showAjaxPanel (url,title,icon, mapEnd) { 
 	mylog.log("showAjaxPanel",url,"TITLE",title);

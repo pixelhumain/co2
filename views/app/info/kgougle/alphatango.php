@@ -103,7 +103,7 @@
 </section>
 
 
-<?php $this->renderPartial($layoutPath.'footer',  array( "subdomain"=>"web" ) ); ?>
+<?php $this->renderPartial($layoutPath.'footer',  array( "subdomain"=>"info" ) ); ?>
 
 <script>
 
@@ -139,7 +139,7 @@ function sendEmail(){
 	        	};
 
 	console.log("sendMail", params);
-	toastr.error("L'envoie d'email est désactivé");
+	toastr.error("L'envoie d'email est désactivé pour l'instant, retentez votre chance dans quelques jours !");
 	return;
 
 	$.ajax({ 

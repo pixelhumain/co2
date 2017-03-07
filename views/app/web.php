@@ -134,10 +134,19 @@
     <i class="fa fa-ellipsis-v btn-fast-access padding-10 letter-yellow hidden-xs hidden"></i>
     <?php } ?>   
 
-    <a href="https://www.youtube.com" target="_blank" class="tooltips btn-fast-access" data-placement="bottom" data-toggle="tooltip" 
-       title="Aller sur YouTube"><i class="fa fa-youtube-play fa-2 padding-10 letter-red"></i></a> 
-    <a href="https://www.facebook.com/" target="_blank" class="tooltips btn-fast-access" data-placement="bottom" data-toggle="tooltip" 
-       title="Aller sur Facebook"><i class="fa fa-facebook-square fa-2 padding-10 letter-blue"></i></a>
+    <a href="https://www.youtube.com" target="_blank" class="tooltips btn-fast-access" 
+        data-placement="bottom" data-toggle="tooltip" title="Aller sur YouTube">
+        <i class="fa fa-youtube-play padding-10 letter-red"></i>
+    </a> 
+    <a href="https://www.facebook.com/" target="_blank" class="tooltips btn-fast-access"
+        data-placement="bottom" data-toggle="tooltip" title="Aller sur Facebook">
+        <i class="fa fa-facebook-square padding-10 letter-blue"></i>
+    </a>
+    <a href="https://fr.wikipedia.org/w/index.php?search=&title=Sp%C3%A9cial%3ARecherche&go=Lire" 
+        target="_blank" class="tooltips btn-fast-access" style="font-size: 19px;"
+        data-placement="bottom" data-toggle="tooltip" title="Aller sur Wikipedia">
+        <i class="fa fa-wikipedia-w padding-10"></i>
+    </a>
        
     <?php if(!empty($myWebFavorites)){ ?>
        <i class="fa fa-ellipsis-v btn-fast-access padding-10 letter-yellow hidden-xs hidden"></i>

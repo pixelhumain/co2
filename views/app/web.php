@@ -236,6 +236,10 @@ function initWebInterface(){
         deleteFavorites(id);
    });
 
+   $(".menu-btn-back-category").click(function(){
+        KScrollTo("#section-fav");
+   });
+
    $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@#\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
     
 }

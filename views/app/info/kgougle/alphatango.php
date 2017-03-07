@@ -75,7 +75,7 @@
 				<br><br>
 				<div class="col-md-6">
 					<label for="email"><i class="fa fa-angle-down"></i> Votre addresse e-mail*</label>
-	 				<input class="form-control" placeholder="votre addresse e-mail : exemple@mail.com" id="email">
+	 				<input class="form-control" placeholder="votre addresse e-mail : exemple@mail.com" id="emailSender">
 					<br>
 				</div>
 				<div class="col-md-6">
@@ -85,7 +85,7 @@
 				</div>
 				<div class="col-md-12">
 					<label for="objet"><i class="fa fa-angle-down"></i> Objet de votre message</label>
-	 				<input class="form-control" placeholder="c'est à quel sujet ?" id="objet">
+	 				<input class="form-control" placeholder="c'est à quel sujet ?" id="subject">
 				</div>
 			</div>
 			<div class="col-md-11 text-left form-group">
@@ -121,7 +121,44 @@ jQuery(document).ready(function() {
 	});
 
 	$("#btn-onepage-main-menu").trigger("click");
-
+	$("#btn-send-mail").click(function(){
+		sendEmail();
+	});
 });
 
+function sendEmail(){
+	var emailSender = $("#emailSender").val();
+	var subject = $("#subject").val();
+	var name = $("#name").val();
+	var message = $("#message").val();
+
+	var params = { 	emailSender: emailSender, 
+	        		subject:subject, 
+	        		name:name,
+	        		message: message
+	        	};
+
+	console.log("sendMail", params);
+	toastr.error("L'envoie d'email est désactivé");
+	return;
+
+	$.ajax({ 
+        type: "POST",
+        url: baseUrl+"/"+moduleId+"/app/sendmailformcontact",
+        data: params,
+        success:
+            function(data) {
+                if(data.res == true) toastr.success("Votre message a bien été envoyé");
+                else 				 toastr.error("Une erreur est survenue pendant l'envoie de votre message");
+            },
+        error:function(xhr, status, error){
+            toastr.error("Une erreur est survenue pendant l'envoie de votre message - error");
+        },
+        statusCode:{
+                404: function(){
+                	toastr.error("Une erreur est survenue pendant l'envoie de votre message - 404");
+            }
+        }
+    });
+}
 </script>

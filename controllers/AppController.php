@@ -21,7 +21,8 @@ class AppController extends CommunecterController {
 	        'live'    			=> 'citizenToolKit.controllers.app.LiveAction',
 	        'savereferencement' => 'citizenToolKit.controllers.app.SaveReferencementAction',
 	        'mediacrawler'  	=> 'citizenToolKit.controllers.app.MediaCrawlerAction',
-	        'superadmin' 		=> 'citizenToolKit.controllers.app.SuperAdminAction',
+            'superadmin'        => 'citizenToolKit.controllers.app.SuperAdminAction',
+            'sendmailformcontact' => 'citizenToolKit.controllers.app.SendMailFormContactAction',
             
 	    );
 	}

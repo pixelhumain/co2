@@ -503,8 +503,8 @@ var directory = {
                                      
                       
                     if(notEmpty(params.parent) && notEmpty(params.parent.name))
-                      str += "<a href='"+urlParent+"' class='entityName text-"+parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
-                                "<i class='fa "+parentIcon+"'></i> "
+                      str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
+                                "<i class='fa "+params.parentIcon+"'></i> "
                                 + params.parent.name + 
                               "</a>";
 
@@ -542,18 +542,18 @@ var directory = {
 
                     //debat / actions
                     if(notEmpty(params.parentRoom)){
-                      parentUrl = "";
-                      parentIco = "";
-                      if(type == "surveys"){ parentUrl = "#survey.entries.id."+params.survey; parentIco = "archive"; }
-                      else if(type == "actions") {parentUrl = "#rooms.actions.id."+params.room;parentIco = "cogs";}
-                      str += "<div class='entityDescription text-dark'><i class='fa fa-" + parentIco + "'></i><a href='" + parentUrl + "' class='lbh add2fav'> " + params.parentRoom.name + "</a></div>";
+                      params.parentUrl = "";
+                      params.parentIco = "";
+                      if(type == "surveys"){ params.parentUrl = "#survey.entries.id."+params.survey; params.parentIco = "archive"; }
+                      else if(type == "actions") {params.parentUrl = "#rooms.actions.id."+params.room;params.parentIco = "cogs";}
+                      str += "<div class='entityDescription text-dark'><i class='fa fa-" + params.parentIco + "'></i><a href='" + params.parentUrl + "' class='lbh add2fav'> " + params.parentRoom.name + "</a></div>";
                       if(notEmpty(params.parentRoom.parentObj)){
                         var typeIcoParent = params.parentRoom.parentObj.typeSig;
                         //mylog.log("typeIcoParent", params.parentRoom);
 
                         var p = typeObjLib.get(typeIcoParent);
-                        var icoParent = p.icon;
-                        var colorParent = p.color;
+                        params.icoParent = p.icon;
+                        params.colorParent = p.color;
 
                         var thisLocality = notEmpty(params.parentRoom) && notEmpty(params.parentRoom.parentObj) && 
                                       notEmpty(params.parentRoom.parentObj.address) ? 
@@ -567,14 +567,13 @@ var directory = {
                         else thisLocality = "";
 
                         var ctzCouncil = typeIcoParent=="city" ? "Conseil citoyen de " : "";
-                        str += "<div class='entityDescription text-"+colorParent+"'> <i class='fa "+icoParent+"'></i> <b>" + ctzCouncil + o.parentRoom.parentObj.name + "</b>" + thisLocality+ "</div>";
+                        str += "<div class='entityDescription text-"+params.colorParent+"'> <i class='fa "+params.icoParent+"'></i> <b>" + ctzCouncil + params.parentRoom.parentObj.name + "</b>" + thisLocality+ "</div>";
                       
 
                       }
                     }else{
                       str += thisLocality;
                     }
-                    
                     
                     if(itemType == "entry"){
                       var vUp   = notEmpty(params.voteUpCount)       ? params.voteUpCount.toString()        : "0";
@@ -617,90 +616,958 @@ var directory = {
               str += "</div>";
               return str;
     },
-    personPanelHtml : function(){
+    personPanelHtml : function(params){
+      str = "";  
+      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+              str +=    "<div class='searchEntity'>";
 
+              if(params.itemType!="city" && (params.useMinSize))
+                  str += "<div class='imgHover'>" + params.imgProfil + "</div>"+
+                          "<div class='contentMin'>";
+
+                if(userId != null && userId != "" && params.id != userId){
+                  isFollowed=false;
+                  if(typeof params.isFollowed != "undefined" ) isFollowed=true;
+                  if(params.type!="cities" && params.type!="poi" && params.type!="surveys" && params.type!="actions" ){
+                    tip = (type == "events") ? "Participer" : 'Suivre';
+                    str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+                          'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+                          " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+                              "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
+                            "</a>";
+                  }
+                }
+
+
+                if(params.updated != null && !params.useMinSize)
+                  str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
+
+                if(params.itemType!="city" && (typeof params.size == "undefined" || params.size == "max"))
+                  str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
+
+                str += "<div class='padding-10 informations'>";
+
+
+                  if(!params.useMinSize){
+                    if(params.startDate != null)
+                    str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+                    if(params.endDate != null)
+                    str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+                    
+                    if(typeof params.size == "undefined" || params.size == "max"){
+                      str += "<div class='entityCenter no-padding'>";
+                      str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                      str += "</div>";
+                    }
+                  }  
+                      
+                    str += "<div class='entityRight no-padding'>";
+                                     
+                      
+                    if(notEmpty(params.parent) && notEmpty(params.parent.name))
+                      str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
+                                "<i class='fa "+params.parentIcon+"'></i> "
+                                + params.parent.name + 
+                              "</a>";
+
+                    var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+                    str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+                              iconFaReply + params.name + 
+                           "</a>";
+                    
+                    var thisLocality = "";
+                    if(params.fullLocality != "" && params.fullLocality != " ")
+                         thisLocality = "<a href='"+url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                                          "<i class='fa fa-home'></i> " + params.fullLocality + 
+                                        "</a>";
+                    else thisLocality = "<br>";
+                    
+                    if(itemType=="city"){
+                      var citykey = params.country + "_" + params.insee + "-" + params.cp;
+                      //$city["country"]."_".$city["insee"]."-".$city["cp"];
+                      mylog.log(o);
+                      thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
+                                      "data-scope-value='" + citykey + "' " + 
+                                      "data-scope-name='" + params.name + "' " + 
+                                      "data-scope-type='city' " + 
+                                      "data-insee-communexion='" + params.insee + "' "+ 
+                                      "data-name-communexion='" + params.name + "' "+ 
+                                      "data-cp-communexion='" + params.cp + "' "+ 
+                                      "data-region-communexion='" + params.regionName + "' "+ 
+                                      "data-country-communexion='" + params.country + "' "+ 
+                                      ">"+
+                                          "Communecter" + 
+                                      "</button>";
+
+                                      
+                    }
+
+                    //debat / actions
+                    if(notEmpty(params.parentRoom)){
+                      params.parentUrl = "";
+                      params.parentIco = "";
+                      if(type == "surveys"){ params.parentUrl = "#survey.entries.id."+params.survey; params.parentIco = "archive"; }
+                      else if(type == "actions") {params.parentUrl = "#rooms.actions.id."+params.room;params.parentIco = "cogs";}
+                      str += "<div class='entityDescription text-dark'><i class='fa fa-" + params.parentIco + "'></i><a href='" + params.parentUrl + "' class='lbh add2fav'> " + params.parentRoom.name + "</a></div>";
+                      if(notEmpty(params.parentRoom.parentObj)){
+                        var typeIcoParent = params.parentRoom.parentObj.typeSig;
+                        //mylog.log("typeIcoParent", params.parentRoom);
+
+                        var p = typeObjLib.get(typeIcoParent);
+                        params.icoParent = p.icon;
+                        params.colorParent = p.color;
+
+                        var thisLocality = notEmpty(params.parentRoom) && notEmpty(params.parentRoom.parentObj) && 
+                                      notEmpty(params.parentRoom.parentObj.address) ? 
+                                      params.parentRoom.parentObj.address : null;
+
+                        var postalCode = notEmpty(thisLocality) && notEmpty(thisLocality.postalCode) ? thisLocality.postalCode : "";
+                        var cityName = notEmpty(thisLocality) && notEmpty(thisLocality.addressLocality) ? thisLocality.addressLocality : "";
+
+                        thisLocality = postalCode + " " + cityName;
+                        if(thisLocality != " ") thisLocality = ", <small> " + thisLocality + "</small>";
+                        else thisLocality = "";
+
+                        var ctzCouncil = typeIcoParent=="city" ? "Conseil citoyen de " : "";
+                        str += "<div class='entityDescription text-"+params.colorParent+"'> <i class='fa "+params.icoParent+"'></i> <b>" + ctzCouncil + params.parentRoom.parentObj.name + "</b>" + thisLocality+ "</div>";
+                      
+
+                      }
+                    }else{
+                      str += thisLocality;
+                    }
+                    
+                    if(itemType == "entry"){
+                      var vUp   = notEmpty(params.voteUpCount)       ? params.voteUpCount.toString()        : "0";
+                      var vMore = notEmpty(params.voteMoreInfoCount) ? params.voteMoreInfoCount.toString()  : "0";
+                      var vAbs  = notEmpty(params.voteAbstainCount)  ? params.voteAbstainCount.toString()   : "0";
+                      var vUn   = notEmpty(params.voteUnclearCount)  ? params.voteUnclearCount.toString()   : "0";
+                      var vDown = notEmpty(params.voteDownCount)     ? params.voteDownCount.toString()      : "0";
+                      str += "<div class='pull-left margin-bottom-10 no-padding'>";
+                        str += "<span class='bg-green lbl-res-vote'><i class='fa fa-thumbs-up'></i> " + vUp + "</span>";
+                        str += " <span class='bg-blue lbl-res-vote'><i class='fa fa-pencil'></i> " + vMore + "</span>";
+                        str += " <span class='bg-dark lbl-res-vote'><i class='fa fa-circle'></i> " + vAbs + "</span>";
+                        str += " <span class='bg-purple lbl-res-vote'><i class='fa fa-question-circle'></i> " + vUn + "</span>";
+                        str += " <span class='bg-red lbl-res-vote'><i class='fa fa-thumbs-down'></i> " + vDown + "</span>";
+                      str += "</div>";
+                    }
+
+                    str += "<div class='entityDescription'>" + params.description + "</div>";
+                 
+                    str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+
+                    if(params.useMinSize){
+                      if(params.startDate != null)
+                      str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+                      if(params.endDate != null)
+                      str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+                      
+                      if(typeof params.size == "undefined" || params.size == "max"){
+                        str += "<div class='entityCenter no-padding'>";
+                        str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                        str += "</div>";
+                      }
+                    }  
+
+                if(params.type!="city" && (params.useMinSize))
+                  str += "</div>";
+                  str += "</div>";
+                str += "</div>";
+              str += "</div>";
+
+              str += "</div>";
+              return str;
     },
-    eventPanelHtml : function(){
+    eventPanelHtml : function(params){
+      str = "";  
+      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+              str +=    "<div class='searchEntity'>";
 
+              if(params.itemType!="city" && (params.useMinSize))
+                  str += "<div class='imgHover'>" + params.imgProfil + "</div>"+
+                          "<div class='contentMin'>";
+
+                if(userId != null && userId != "" && params.id != userId){
+                  isFollowed=false;
+                  if(typeof params.isFollowed != "undefined" ) isFollowed=true;
+                  if(params.type!="cities" && params.type!="poi" && params.type!="surveys" && params.type!="actions" ){
+                    tip = (type == "events") ? "Participer" : 'Suivre';
+                    str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+                          'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+                          " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+                              "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
+                            "</a>";
+                  }
+                }
+
+
+                if(params.updated != null && !params.useMinSize)
+                  str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
+
+                if(params.itemType!="city" && (typeof params.size == "undefined" || params.size == "max"))
+                  str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
+
+                str += "<div class='padding-10 informations'>";
+
+
+                  if(!params.useMinSize){
+                    if(params.startDate != null)
+                    str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+                    if(params.endDate != null)
+                    str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+                    
+                    if(typeof params.size == "undefined" || params.size == "max"){
+                      str += "<div class='entityCenter no-padding'>";
+                      str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                      str += "</div>";
+                    }
+                  }  
+                      
+                    str += "<div class='entityRight no-padding'>";
+                                     
+                      
+                    if(notEmpty(params.parent) && notEmpty(params.parent.name))
+                      str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
+                                "<i class='fa "+params.parentIcon+"'></i> "
+                                + params.parent.name + 
+                              "</a>";
+
+                    var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+                    str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+                              iconFaReply + params.name + 
+                           "</a>";
+                    
+                    var thisLocality = "";
+                    if(params.fullLocality != "" && params.fullLocality != " ")
+                         thisLocality = "<a href='"+url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                                          "<i class='fa fa-home'></i> " + params.fullLocality + 
+                                        "</a>";
+                    else thisLocality = "<br>";
+                    
+                    if(itemType=="city"){
+                      var citykey = params.country + "_" + params.insee + "-" + params.cp;
+                      //$city["country"]."_".$city["insee"]."-".$city["cp"];
+                      mylog.log(o);
+                      thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
+                                      "data-scope-value='" + citykey + "' " + 
+                                      "data-scope-name='" + params.name + "' " + 
+                                      "data-scope-type='city' " + 
+                                      "data-insee-communexion='" + params.insee + "' "+ 
+                                      "data-name-communexion='" + params.name + "' "+ 
+                                      "data-cp-communexion='" + params.cp + "' "+ 
+                                      "data-region-communexion='" + params.regionName + "' "+ 
+                                      "data-country-communexion='" + params.country + "' "+ 
+                                      ">"+
+                                          "Communecter" + 
+                                      "</button>";
+
+                                      
+                    }
+
+                    //debat / actions
+                    if(notEmpty(params.parentRoom)){
+                      params.parentUrl = "";
+                      params.parentIco = "";
+                      if(type == "surveys"){ params.parentUrl = "#survey.entries.id."+params.survey; params.parentIco = "archive"; }
+                      else if(type == "actions") {params.parentUrl = "#rooms.actions.id."+params.room;params.parentIco = "cogs";}
+                      str += "<div class='entityDescription text-dark'><i class='fa fa-" + params.parentIco + "'></i><a href='" + params.parentUrl + "' class='lbh add2fav'> " + params.parentRoom.name + "</a></div>";
+                      if(notEmpty(params.parentRoom.parentObj)){
+                        var typeIcoParent = params.parentRoom.parentObj.typeSig;
+                        //mylog.log("typeIcoParent", params.parentRoom);
+
+                        var p = typeObjLib.get(typeIcoParent);
+                        params.icoParent = p.icon;
+                        params.colorParent = p.color;
+
+                        var thisLocality = notEmpty(params.parentRoom) && notEmpty(params.parentRoom.parentObj) && 
+                                      notEmpty(params.parentRoom.parentObj.address) ? 
+                                      params.parentRoom.parentObj.address : null;
+
+                        var postalCode = notEmpty(thisLocality) && notEmpty(thisLocality.postalCode) ? thisLocality.postalCode : "";
+                        var cityName = notEmpty(thisLocality) && notEmpty(thisLocality.addressLocality) ? thisLocality.addressLocality : "";
+
+                        thisLocality = postalCode + " " + cityName;
+                        if(thisLocality != " ") thisLocality = ", <small> " + thisLocality + "</small>";
+                        else thisLocality = "";
+
+                        var ctzCouncil = typeIcoParent=="city" ? "Conseil citoyen de " : "";
+                        str += "<div class='entityDescription text-"+params.colorParent+"'> <i class='fa "+params.icoParent+"'></i> <b>" + ctzCouncil + params.parentRoom.parentObj.name + "</b>" + thisLocality+ "</div>";
+                      
+
+                      }
+                    }else{
+                      str += thisLocality;
+                    }
+                    
+                    if(itemType == "entry"){
+                      var vUp   = notEmpty(params.voteUpCount)       ? params.voteUpCount.toString()        : "0";
+                      var vMore = notEmpty(params.voteMoreInfoCount) ? params.voteMoreInfoCount.toString()  : "0";
+                      var vAbs  = notEmpty(params.voteAbstainCount)  ? params.voteAbstainCount.toString()   : "0";
+                      var vUn   = notEmpty(params.voteUnclearCount)  ? params.voteUnclearCount.toString()   : "0";
+                      var vDown = notEmpty(params.voteDownCount)     ? params.voteDownCount.toString()      : "0";
+                      str += "<div class='pull-left margin-bottom-10 no-padding'>";
+                        str += "<span class='bg-green lbl-res-vote'><i class='fa fa-thumbs-up'></i> " + vUp + "</span>";
+                        str += " <span class='bg-blue lbl-res-vote'><i class='fa fa-pencil'></i> " + vMore + "</span>";
+                        str += " <span class='bg-dark lbl-res-vote'><i class='fa fa-circle'></i> " + vAbs + "</span>";
+                        str += " <span class='bg-purple lbl-res-vote'><i class='fa fa-question-circle'></i> " + vUn + "</span>";
+                        str += " <span class='bg-red lbl-res-vote'><i class='fa fa-thumbs-down'></i> " + vDown + "</span>";
+                      str += "</div>";
+                    }
+
+                    str += "<div class='entityDescription'>" + params.description + "</div>";
+                 
+                    str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+
+                    if(params.useMinSize){
+                      if(params.startDate != null)
+                      str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+                      if(params.endDate != null)
+                      str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+                      
+                      if(typeof params.size == "undefined" || params.size == "max"){
+                        str += "<div class='entityCenter no-padding'>";
+                        str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                        str += "</div>";
+                      }
+                    }  
+
+                if(params.type!="city" && (params.useMinSize))
+                  str += "</div>";
+                  str += "</div>";
+                str += "</div>";
+              str += "</div>";
+
+              str += "</div>";
+              return str;
     },
-    organizationPanelHtml: function(){
+    organizationPanelHtml: function(params){
+      str = "";  
+      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+              str +=    "<div class='searchEntity'>";
 
+              if(params.itemType!="city" && (params.useMinSize))
+                  str += "<div class='imgHover'>" + params.imgProfil + "</div>"+
+                          "<div class='contentMin'>";
+
+                if(userId != null && userId != "" && params.id != userId){
+                  isFollowed=false;
+                  if(typeof params.isFollowed != "undefined" ) isFollowed=true;
+                  if(params.type!="cities" && params.type!="poi" && params.type!="surveys" && params.type!="actions" ){
+                    tip = (type == "events") ? "Participer" : 'Suivre';
+                    str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+                          'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+                          " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+                              "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
+                            "</a>";
+                  }
+                }
+
+
+                if(params.updated != null && !params.useMinSize)
+                  str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
+
+                if(params.itemType!="city" && (typeof params.size == "undefined" || params.size == "max"))
+                  str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
+
+                str += "<div class='padding-10 informations'>";
+
+
+                  if(!params.useMinSize){
+                    if(params.startDate != null)
+                    str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+                    if(params.endDate != null)
+                    str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+                    
+                    if(typeof params.size == "undefined" || params.size == "max"){
+                      str += "<div class='entityCenter no-padding'>";
+                      str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                      str += "</div>";
+                    }
+                  }  
+                      
+                    str += "<div class='entityRight no-padding'>";
+                                     
+                      
+                    if(notEmpty(params.parent) && notEmpty(params.parent.name))
+                      str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
+                                "<i class='fa "+params.parentIcon+"'></i> "
+                                + params.parent.name + 
+                              "</a>";
+
+                    var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+                    str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+                              iconFaReply + params.name + 
+                           "</a>";
+                    
+                    var thisLocality = "";
+                    if(params.fullLocality != "" && params.fullLocality != " ")
+                         thisLocality = "<a href='"+url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                                          "<i class='fa fa-home'></i> " + params.fullLocality + 
+                                        "</a>";
+                    else thisLocality = "<br>";
+                    
+                    if(itemType=="city"){
+                      var citykey = params.country + "_" + params.insee + "-" + params.cp;
+                      //$city["country"]."_".$city["insee"]."-".$city["cp"];
+                      mylog.log(o);
+                      thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
+                                      "data-scope-value='" + citykey + "' " + 
+                                      "data-scope-name='" + params.name + "' " + 
+                                      "data-scope-type='city' " + 
+                                      "data-insee-communexion='" + params.insee + "' "+ 
+                                      "data-name-communexion='" + params.name + "' "+ 
+                                      "data-cp-communexion='" + params.cp + "' "+ 
+                                      "data-region-communexion='" + params.regionName + "' "+ 
+                                      "data-country-communexion='" + params.country + "' "+ 
+                                      ">"+
+                                          "Communecter" + 
+                                      "</button>";
+
+                                      
+                    }
+
+                    //debat / actions
+                    if(notEmpty(params.parentRoom)){
+                      params.parentUrl = "";
+                      params.parentIco = "";
+                      if(type == "surveys"){ params.parentUrl = "#survey.entries.id."+params.survey; params.parentIco = "archive"; }
+                      else if(type == "actions") {params.parentUrl = "#rooms.actions.id."+params.room;params.parentIco = "cogs";}
+                      str += "<div class='entityDescription text-dark'><i class='fa fa-" + params.parentIco + "'></i><a href='" + params.parentUrl + "' class='lbh add2fav'> " + params.parentRoom.name + "</a></div>";
+                      if(notEmpty(params.parentRoom.parentObj)){
+                        var typeIcoParent = params.parentRoom.parentObj.typeSig;
+                        //mylog.log("typeIcoParent", params.parentRoom);
+
+                        var p = typeObjLib.get(typeIcoParent);
+                        params.icoParent = p.icon;
+                        params.colorParent = p.color;
+
+                        var thisLocality = notEmpty(params.parentRoom) && notEmpty(params.parentRoom.parentObj) && 
+                                      notEmpty(params.parentRoom.parentObj.address) ? 
+                                      params.parentRoom.parentObj.address : null;
+
+                        var postalCode = notEmpty(thisLocality) && notEmpty(thisLocality.postalCode) ? thisLocality.postalCode : "";
+                        var cityName = notEmpty(thisLocality) && notEmpty(thisLocality.addressLocality) ? thisLocality.addressLocality : "";
+
+                        thisLocality = postalCode + " " + cityName;
+                        if(thisLocality != " ") thisLocality = ", <small> " + thisLocality + "</small>";
+                        else thisLocality = "";
+
+                        var ctzCouncil = typeIcoParent=="city" ? "Conseil citoyen de " : "";
+                        str += "<div class='entityDescription text-"+params.colorParent+"'> <i class='fa "+params.icoParent+"'></i> <b>" + ctzCouncil + params.parentRoom.parentObj.name + "</b>" + thisLocality+ "</div>";
+                      
+
+                      }
+                    }else{
+                      str += thisLocality;
+                    }
+                    
+                    if(itemType == "entry"){
+                      var vUp   = notEmpty(params.voteUpCount)       ? params.voteUpCount.toString()        : "0";
+                      var vMore = notEmpty(params.voteMoreInfoCount) ? params.voteMoreInfoCount.toString()  : "0";
+                      var vAbs  = notEmpty(params.voteAbstainCount)  ? params.voteAbstainCount.toString()   : "0";
+                      var vUn   = notEmpty(params.voteUnclearCount)  ? params.voteUnclearCount.toString()   : "0";
+                      var vDown = notEmpty(params.voteDownCount)     ? params.voteDownCount.toString()      : "0";
+                      str += "<div class='pull-left margin-bottom-10 no-padding'>";
+                        str += "<span class='bg-green lbl-res-vote'><i class='fa fa-thumbs-up'></i> " + vUp + "</span>";
+                        str += " <span class='bg-blue lbl-res-vote'><i class='fa fa-pencil'></i> " + vMore + "</span>";
+                        str += " <span class='bg-dark lbl-res-vote'><i class='fa fa-circle'></i> " + vAbs + "</span>";
+                        str += " <span class='bg-purple lbl-res-vote'><i class='fa fa-question-circle'></i> " + vUn + "</span>";
+                        str += " <span class='bg-red lbl-res-vote'><i class='fa fa-thumbs-down'></i> " + vDown + "</span>";
+                      str += "</div>";
+                    }
+
+                    str += "<div class='entityDescription'>" + params.description + "</div>";
+                 
+                    str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+
+                    if(params.useMinSize){
+                      if(params.startDate != null)
+                      str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+                      if(params.endDate != null)
+                      str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+                      
+                      if(typeof params.size == "undefined" || params.size == "max"){
+                        str += "<div class='entityCenter no-padding'>";
+                        str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                        str += "</div>";
+                      }
+                    }  
+
+                if(params.type!="city" && (params.useMinSize))
+                  str += "</div>";
+                  str += "</div>";
+                str += "</div>";
+              str += "</div>";
+
+              str += "</div>";
+              return str;
     },
-    projectPanelHtml : function(){
+    projectPanelHtml : function(params){
+      str = "";  
+      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+              str +=    "<div class='searchEntity'>";
 
+              if(params.itemType!="city" && (params.useMinSize))
+                  str += "<div class='imgHover'>" + params.imgProfil + "</div>"+
+                          "<div class='contentMin'>";
+
+                if(userId != null && userId != "" && params.id != userId){
+                  isFollowed=false;
+                  if(typeof params.isFollowed != "undefined" ) isFollowed=true;
+                  if(params.type!="cities" && params.type!="poi" && params.type!="surveys" && params.type!="actions" ){
+                    tip = (type == "events") ? "Participer" : 'Suivre';
+                    str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+                          'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+                          " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+                              "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
+                            "</a>";
+                  }
+                }
+
+
+                if(params.updated != null && !params.useMinSize)
+                  str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
+
+                if(params.itemType!="city" && (typeof params.size == "undefined" || params.size == "max"))
+                  str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
+
+                str += "<div class='padding-10 informations'>";
+
+
+                  if(!params.useMinSize){
+                    if(params.startDate != null)
+                    str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+                    if(params.endDate != null)
+                    str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+                    
+                    if(typeof params.size == "undefined" || params.size == "max"){
+                      str += "<div class='entityCenter no-padding'>";
+                      str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                      str += "</div>";
+                    }
+                  }  
+                      
+                    str += "<div class='entityRight no-padding'>";
+                                     
+                      
+                    if(notEmpty(params.parent) && notEmpty(params.parent.name))
+                      str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
+                                "<i class='fa "+params.parentIcon+"'></i> "
+                                + params.parent.name + 
+                              "</a>";
+
+                    var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+                    str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+                              iconFaReply + params.name + 
+                           "</a>";
+                    
+                    var thisLocality = "";
+                    if(params.fullLocality != "" && params.fullLocality != " ")
+                         thisLocality = "<a href='"+url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                                          "<i class='fa fa-home'></i> " + params.fullLocality + 
+                                        "</a>";
+                    else thisLocality = "<br>";
+                    
+                    if(itemType=="city"){
+                      var citykey = params.country + "_" + params.insee + "-" + params.cp;
+                      //$city["country"]."_".$city["insee"]."-".$city["cp"];
+                      mylog.log(o);
+                      thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
+                                      "data-scope-value='" + citykey + "' " + 
+                                      "data-scope-name='" + params.name + "' " + 
+                                      "data-scope-type='city' " + 
+                                      "data-insee-communexion='" + params.insee + "' "+ 
+                                      "data-name-communexion='" + params.name + "' "+ 
+                                      "data-cp-communexion='" + params.cp + "' "+ 
+                                      "data-region-communexion='" + params.regionName + "' "+ 
+                                      "data-country-communexion='" + params.country + "' "+ 
+                                      ">"+
+                                          "Communecter" + 
+                                      "</button>";
+
+                                      
+                    }
+
+                    //debat / actions
+                    if(notEmpty(params.parentRoom)){
+                      params.parentUrl = "";
+                      params.parentIco = "";
+                      if(type == "surveys"){ params.parentUrl = "#survey.entries.id."+params.survey; params.parentIco = "archive"; }
+                      else if(type == "actions") {params.parentUrl = "#rooms.actions.id."+params.room;params.parentIco = "cogs";}
+                      str += "<div class='entityDescription text-dark'><i class='fa fa-" + params.parentIco + "'></i><a href='" + params.parentUrl + "' class='lbh add2fav'> " + params.parentRoom.name + "</a></div>";
+                      if(notEmpty(params.parentRoom.parentObj)){
+                        var typeIcoParent = params.parentRoom.parentObj.typeSig;
+                        //mylog.log("typeIcoParent", params.parentRoom);
+
+                        var p = typeObjLib.get(typeIcoParent);
+                        params.icoParent = p.icon;
+                        params.colorParent = p.color;
+
+                        var thisLocality = notEmpty(params.parentRoom) && notEmpty(params.parentRoom.parentObj) && 
+                                      notEmpty(params.parentRoom.parentObj.address) ? 
+                                      params.parentRoom.parentObj.address : null;
+
+                        var postalCode = notEmpty(thisLocality) && notEmpty(thisLocality.postalCode) ? thisLocality.postalCode : "";
+                        var cityName = notEmpty(thisLocality) && notEmpty(thisLocality.addressLocality) ? thisLocality.addressLocality : "";
+
+                        thisLocality = postalCode + " " + cityName;
+                        if(thisLocality != " ") thisLocality = ", <small> " + thisLocality + "</small>";
+                        else thisLocality = "";
+
+                        var ctzCouncil = typeIcoParent=="city" ? "Conseil citoyen de " : "";
+                        str += "<div class='entityDescription text-"+params.colorParent+"'> <i class='fa "+params.icoParent+"'></i> <b>" + ctzCouncil + params.parentRoom.parentObj.name + "</b>" + thisLocality+ "</div>";
+                      
+
+                      }
+                    }else{
+                      str += thisLocality;
+                    }
+                    
+                    if(itemType == "entry"){
+                      var vUp   = notEmpty(params.voteUpCount)       ? params.voteUpCount.toString()        : "0";
+                      var vMore = notEmpty(params.voteMoreInfoCount) ? params.voteMoreInfoCount.toString()  : "0";
+                      var vAbs  = notEmpty(params.voteAbstainCount)  ? params.voteAbstainCount.toString()   : "0";
+                      var vUn   = notEmpty(params.voteUnclearCount)  ? params.voteUnclearCount.toString()   : "0";
+                      var vDown = notEmpty(params.voteDownCount)     ? params.voteDownCount.toString()      : "0";
+                      str += "<div class='pull-left margin-bottom-10 no-padding'>";
+                        str += "<span class='bg-green lbl-res-vote'><i class='fa fa-thumbs-up'></i> " + vUp + "</span>";
+                        str += " <span class='bg-blue lbl-res-vote'><i class='fa fa-pencil'></i> " + vMore + "</span>";
+                        str += " <span class='bg-dark lbl-res-vote'><i class='fa fa-circle'></i> " + vAbs + "</span>";
+                        str += " <span class='bg-purple lbl-res-vote'><i class='fa fa-question-circle'></i> " + vUn + "</span>";
+                        str += " <span class='bg-red lbl-res-vote'><i class='fa fa-thumbs-down'></i> " + vDown + "</span>";
+                      str += "</div>";
+                    }
+
+                    str += "<div class='entityDescription'>" + params.description + "</div>";
+                 
+                    str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+
+                    if(params.useMinSize){
+                      if(params.startDate != null)
+                      str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+                      if(params.endDate != null)
+                      str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+                      
+                      if(typeof params.size == "undefined" || params.size == "max"){
+                        str += "<div class='entityCenter no-padding'>";
+                        str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                        str += "</div>";
+                      }
+                    }  
+
+                if(params.type!="city" && (params.useMinSize))
+                  str += "</div>";
+                  str += "</div>";
+                str += "</div>";
+              str += "</div>";
+
+              str += "</div>";
+              return str;
     },
-    cityPanelHtml : function(){
+    cityPanelHtml : function(params){
+      str = "";  
+      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+              str +=    "<div class='searchEntity'>";
 
+
+                if(params.updated != null && !params.useMinSize)
+                  str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
+
+                str += "<div class='padding-10 informations'>";
+
+
+                  if(!params.useMinSize){
+                    if(params.startDate != null)
+                    str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+                    if(params.endDate != null)
+                    str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+                    
+                    if(typeof params.size == "undefined" || params.size == "max"){
+                      str += "<div class='entityCenter no-padding'>";
+                      str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                      str += "</div>";
+                    }
+                  }  
+                      
+                    str += "<div class='entityRight no-padding'>";
+                               
+                    
+                    var thisLocality = "";
+                    if(params.fullLocality != "" && params.fullLocality != " ")
+                         thisLocality = "<a href='"+url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                                          "<i class='fa fa-home'></i> " + params.fullLocality + 
+                                        "</a>";
+                    else thisLocality = "<br>";
+                    
+                      var citykey = params.country + "_" + params.insee + "-" + params.cp;
+                      //$city["country"]."_".$city["insee"]."-".$city["cp"];
+                      mylog.log(o);
+                      thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
+                                      "data-scope-value='" + citykey + "' " + 
+                                      "data-scope-name='" + params.name + "' " + 
+                                      "data-scope-type='city' " + 
+                                      "data-insee-communexion='" + params.insee + "' "+ 
+                                      "data-name-communexion='" + params.name + "' "+ 
+                                      "data-cp-communexion='" + params.cp + "' "+ 
+                                      "data-region-communexion='" + params.regionName + "' "+ 
+                                      "data-country-communexion='" + params.country + "' "+ 
+                                      ">"+
+                                          "Communecter" + 
+                                      "</button>";
+
+                    str += thisLocality;
+                    
+                    str += "<div class='entityDescription'>" + params.description + "</div>";
+                 
+                    str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+
+                    if(params.useMinSize){
+                      if(params.startDate != null)
+                      str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+                      if(params.endDate != null)
+                      str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+                      
+                      if(typeof params.size == "undefined" || params.size == "max"){
+                        str += "<div class='entityCenter no-padding'>";
+                        str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                        str += "</div>";
+                      }
+                    }  
+
+                  str += "</div>";
+                str += "</div>";
+              str += "</div>";
+
+              str += "</div>";
+              return str;
     },
-    roomsPanelHtml : function(){
+    roomsPanelHtml : function(params){
+      str = "";  
+      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+              str +=    "<div class='searchEntity'>";
 
+              if(params.itemType!="city" && (params.useMinSize))
+                  str += "<div class='imgHover'>" + params.imgProfil + "</div>"+
+                          "<div class='contentMin'>";
+
+                if(userId != null && userId != "" && params.id != userId){
+                  isFollowed=false;
+                  if(typeof params.isFollowed != "undefined" ) isFollowed=true;
+                  if(params.type!="cities" && params.type!="poi" && params.type!="surveys" && params.type!="actions" ){
+                    tip = (type == "events") ? "Participer" : 'Suivre';
+                    str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+                          'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+                          " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+                              "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
+                            "</a>";
+                  }
+                }
+
+
+                if(params.updated != null && !params.useMinSize)
+                  str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
+
+                if(params.itemType!="city" && (typeof params.size == "undefined" || params.size == "max"))
+                  str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
+
+                str += "<div class='padding-10 informations'>";
+
+
+                  if(!params.useMinSize){
+                    if(params.startDate != null)
+                    str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+                    if(params.endDate != null)
+                    str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+                    
+                    if(typeof params.size == "undefined" || params.size == "max"){
+                      str += "<div class='entityCenter no-padding'>";
+                      str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                      str += "</div>";
+                    }
+                  }  
+                      
+                    str += "<div class='entityRight no-padding'>";
+                                     
+                      
+                    if(notEmpty(params.parent) && notEmpty(params.parent.name))
+                      str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
+                                "<i class='fa "+params.parentIcon+"'></i> "
+                                + params.parent.name + 
+                              "</a>";
+
+                    var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+                    str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+                              iconFaReply + params.name + 
+                           "</a>";
+                    
+                    var thisLocality = "";
+                    if(params.fullLocality != "" && params.fullLocality != " ")
+                         thisLocality = "<a href='"+url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                                          "<i class='fa fa-home'></i> " + params.fullLocality + 
+                                        "</a>";
+                    else thisLocality = "<br>";
+                    
+                    if(itemType=="city"){
+                      var citykey = params.country + "_" + params.insee + "-" + params.cp;
+                      //$city["country"]."_".$city["insee"]."-".$city["cp"];
+                      mylog.log(o);
+                      thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
+                                      "data-scope-value='" + citykey + "' " + 
+                                      "data-scope-name='" + params.name + "' " + 
+                                      "data-scope-type='city' " + 
+                                      "data-insee-communexion='" + params.insee + "' "+ 
+                                      "data-name-communexion='" + params.name + "' "+ 
+                                      "data-cp-communexion='" + params.cp + "' "+ 
+                                      "data-region-communexion='" + params.regionName + "' "+ 
+                                      "data-country-communexion='" + params.country + "' "+ 
+                                      ">"+
+                                          "Communecter" + 
+                                      "</button>";
+
+                                      
+                    }
+
+                    //debat / actions
+                    if(notEmpty(params.parentRoom)){
+                      params.parentUrl = "";
+                      params.parentIco = "";
+                      if(type == "surveys"){ params.parentUrl = "#survey.entries.id."+params.survey; params.parentIco = "archive"; }
+                      else if(type == "actions") {params.parentUrl = "#rooms.actions.id."+params.room;params.parentIco = "cogs";}
+                      str += "<div class='entityDescription text-dark'><i class='fa fa-" + params.parentIco + "'></i><a href='" + params.parentUrl + "' class='lbh add2fav'> " + params.parentRoom.name + "</a></div>";
+                      if(notEmpty(params.parentRoom.parentObj)){
+                        var typeIcoParent = params.parentRoom.parentObj.typeSig;
+                        //mylog.log("typeIcoParent", params.parentRoom);
+
+                        var p = typeObjLib.get(typeIcoParent);
+                        params.icoParent = p.icon;
+                        params.colorParent = p.color;
+
+                        var thisLocality = notEmpty(params.parentRoom) && notEmpty(params.parentRoom.parentObj) && 
+                                      notEmpty(params.parentRoom.parentObj.address) ? 
+                                      params.parentRoom.parentObj.address : null;
+
+                        var postalCode = notEmpty(thisLocality) && notEmpty(thisLocality.postalCode) ? thisLocality.postalCode : "";
+                        var cityName = notEmpty(thisLocality) && notEmpty(thisLocality.addressLocality) ? thisLocality.addressLocality : "";
+
+                        thisLocality = postalCode + " " + cityName;
+                        if(thisLocality != " ") thisLocality = ", <small> " + thisLocality + "</small>";
+                        else thisLocality = "";
+
+                        var ctzCouncil = typeIcoParent=="city" ? "Conseil citoyen de " : "";
+                        str += "<div class='entityDescription text-"+params.colorParent+"'> <i class='fa "+params.icoParent+"'></i> <b>" + ctzCouncil + params.parentRoom.parentObj.name + "</b>" + thisLocality+ "</div>";
+                      
+
+                      }
+                    }else{
+                      str += thisLocality;
+                    }
+                    
+                    if(itemType == "entry"){
+                      var vUp   = notEmpty(params.voteUpCount)       ? params.voteUpCount.toString()        : "0";
+                      var vMore = notEmpty(params.voteMoreInfoCount) ? params.voteMoreInfoCount.toString()  : "0";
+                      var vAbs  = notEmpty(params.voteAbstainCount)  ? params.voteAbstainCount.toString()   : "0";
+                      var vUn   = notEmpty(params.voteUnclearCount)  ? params.voteUnclearCount.toString()   : "0";
+                      var vDown = notEmpty(params.voteDownCount)     ? params.voteDownCount.toString()      : "0";
+                      str += "<div class='pull-left margin-bottom-10 no-padding'>";
+                        str += "<span class='bg-green lbl-res-vote'><i class='fa fa-thumbs-up'></i> " + vUp + "</span>";
+                        str += " <span class='bg-blue lbl-res-vote'><i class='fa fa-pencil'></i> " + vMore + "</span>";
+                        str += " <span class='bg-dark lbl-res-vote'><i class='fa fa-circle'></i> " + vAbs + "</span>";
+                        str += " <span class='bg-purple lbl-res-vote'><i class='fa fa-question-circle'></i> " + vUn + "</span>";
+                        str += " <span class='bg-red lbl-res-vote'><i class='fa fa-thumbs-down'></i> " + vDown + "</span>";
+                      str += "</div>";
+                    }
+
+                    str += "<div class='entityDescription'>" + params.description + "</div>";
+                 
+                    str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+
+                    if(params.useMinSize){
+                      if(params.startDate != null)
+                      str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+                      if(params.endDate != null)
+                      str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+                      
+                      if(typeof params.size == "undefined" || params.size == "max"){
+                        str += "<div class='entityCenter no-padding'>";
+                        str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                        str += "</div>";
+                      }
+                    }  
+
+                if(params.type!="city" && (params.useMinSize))
+                  str += "</div>";
+                  str += "</div>";
+                str += "</div>";
+              str += "</div>";
+
+              str += "</div>";
+              return str;
     },
     showResultsDirectoryHtml : function ( data, contentType, size ){ //size == null || min || max
       mylog.log("-----------showResultsDirectoryHtml",data, contentType, size)
         var str = "";
 
         if(typeof data == "object" && data!=null)
-        $.each(data, function(i, o) {
-            itemType=(contentType) ? contentType :o.type;
+        $.each(data, function(i, params) {
+            itemType=(contentType) ? contentType :params.type;
             if( itemType )
             {
               //mylog.log("showResultsDirectoryHtml", o);
               var typeIco = i;
-              var params = o;
               params.size = size;
-              params.id = getObjectId(o);
-              params.name = notEmpty(o.name) ? o.name : "";
-              params.description = notEmpty(o.shortDescription) ? o.shortDescription : (notEmpty(o.message)) ? o.message : "";
+              params.id = getObjectId(params);
+              params.name = notEmpty(params.name) ? params.name : "";
+              params.description = notEmpty(params.shortDescription) ? params.shortDescription : (notEmpty(params.message)) ? params.message : "";
 
-              mapElements.push(o);
+              mapElements.push(params);
 
               if(typeof(typeObj[itemType]) == "undefined")
                 itemType="poi";
               typeIco = itemType;
 
-              if(typeof(o.typeOrga) != "undefined")
-                typeIco = o.typeOrga;
+              if(typeof(params.typeOrga) != "undefined")
+                typeIco = params.typeOrga;
 
-              var ico = ("undefined" != typeof typeObj[typeIco]) ? "fa-"+typeObj[typeIco].icon : "fa-"+typeObj["default"].icon;
-              var color = ("undefined" != typeof typeObj[typeIco]) ? typeObj[typeIco].color : typeObj["default"].color;
-              var parentIcon = ("undefined" != typeof typeObj[o.parentType]) ? "fa-"+typeObj[o.parentType].icon : "fa-"+typeObj["default"].icon;
-              var parentColor = ("undefined" != typeof typeObj[o.parentType]) ? typeObj[o.parentType].color : typeObj["default"].color;
+              params.ico = ("undefined" != typeof typeObj[typeIco]) ? "fa-"+typeObj[typeIco].icon : "fa-"+typeObj["default"].icon;
+              params.color = ("undefined" != typeof typeObj[typeIco]) ? typeObj[typeIco].color : typeObj["default"].color;
+              params.parentIcon = ("undefined" != typeof typeObj[params.parentType]) ? "fa-"+typeObj[params.parentType].icon : "fa-"+typeObj["default"].icon;
+              params.parentColor = ("undefined" != typeof typeObj[params.parentType]) ? typeObj[params.parentType].color : typeObj["default"].color;
               
-              params.htmlIco ="<i class='fa "+ ico +" fa-2x bg-"+color+"'></i>";
+              params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
 
              // var urlImg = "/upload/communecter/color.jpg";
-             // o.profilImageUrl = urlImg;
+             // params.profilImageUrl = urlImg;
               params.useMinSize = typeof size != "undefined" && size == "min";
               params.imgProfil = ""; 
               if(!params.useMinSize)
                 params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
               
-              if("undefined" != typeof o.profilImageUrl && o.profilImageUrl != ""){
-                params.imgProfil= "<img class='img-responsive' src='"+baseUrl+o.profilImageUrl+"'/>";
+              if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != ""){
+                params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>";
               }
-              if(typeObj[itemType] && typeObj[itemType].col == "poi" && typeof o.medias != "undefined" && typeof o.medias[0].content.image != "undefined")
-                params.imgProfil= "<img class='img-responsive' src='"+o.medias[0].content.image+"'/>";
+              if(typeObj[itemType] && typeObj[itemType].col == "poi" && typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
+                params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
               
-              params.insee = o.insee ? o.insee : "";
+              params.insee = params.insee ? params.insee : "";
               params.postalCode = "", params.city="",params.cityName="";
-              if (o.address != null) {
-                params.city = o.address.addressLocality;
-                params.postalCode = o.cp ? o.cp : o.address.postalCode ? o.address.postalCode : "";
-                params.cityName = o.address.addressLocality ? o.address.addressLocality : "";
+              if (params.address != null) {
+                params.city = params.address.addressLocality;
+                params.postalCode = params.cp ? params.cp : params.address.postalCode ? params.address.postalCode : "";
+                params.cityName = params.address.addressLocality ? params.address.addressLocality : "";
               }
               params.fullLocality = params.postalCode + " " + params.cityName;
 
               //mylog.dir(o);
               mylog.log(itemType);
               params.type = typeObj[itemType].col;
-              params.urlParent = (notEmpty(o.parentType) && notEmpty(o.parentId)) ? 
-                              '#page.type.'+o.parentType+'.id.' + o.parentId : "";
+              params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
+                              '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
               params.url = '#page.type.'+params.type+'.id.' + params.id;
               if(params.type == "citoyens") params.url += '.viewer.' + userId;
 
               //else if(type == "poi")    url = '#element.detail.type.poi.id.' + id;
-              else if(params.type == "cities") params.url = "#city.detail.insee."+o.insee+".postalCode."+o.cp;
+              else if(params.type == "cities") params.url = "#city.detail.insee."+params.insee+".postalCode."+params.cp;
               else if(params.type == "surveys") params.url = "#survey.entry.id."+params.id;
               else if(params.type == "actions") params.url = "#rooms.action.id."+params.id;
 
@@ -713,16 +1580,16 @@ var directory = {
               params.dataId = "";
               if(type == "cities"){
                 params.url = "javascript:"; //#main-col-search";
-                params.onclick = 'setScopeValue($(this))'; //"'+o.name.replace("'", "\'")+'");';
+                params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
                 params.onclickCp = 'setScopeValue($(this));';
                 params.target = "";
-                params.dataId = o.name; //.replace("'", "\'");
+                params.dataId = params.name; //.replace("'", "\'");
               }
 
               params.tags = "";
               params.elTagsList = "";
-              if(typeof o.tags != "undefined" && o.tags != null){
-                $.each(o.tags, function(key, value){
+              if(typeof params.tags != "undefined" && params.tags != null){
+                $.each(params.tags, function(key, value){
                   if(value != ""){
                     params.tags +=   "<a href='javascript:' class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value)+"'>#" + value + "</a> ";
                     params.elTagsList += slugify(value)+" ";
@@ -742,7 +1609,7 @@ var directory = {
                 params.startDate = notEmpty(params.startDate) ? "Du " + params.startDate : params.startDate;
                 params.endDate = notEmpty(params.endDate) ? "jusqu'au " + params.endDate : params.endDate;
               }
-              params.updated   = notEmpty(o.updatedLbl) ? o.updatedLbl : null; 
+              params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
               
               //template principal
               str += directory.defaultPanelHtml(params);

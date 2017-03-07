@@ -1303,6 +1303,7 @@ function bindRefreshBtns() { mylog.log("bindRefreshBtns");
 	    });
 	}
 }
+
 function hideSearchResults(){
 	var searchFeed = "#dropdown_search";
 		var method = "startSearch(0, indexStepInit);"
@@ -1341,9 +1342,6 @@ function reloadNewsSearch(){
 /* **************************************
 maybe movebale into Element.js
 ***************************************** */
-
-
-
 
 function  buildQRCode(type,id) { 
 		

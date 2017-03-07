@@ -8,6 +8,7 @@
 ## Wishlist
 [ ] faire un générateur de config avec dynform 
 [ ] permettre une autre url ?db=http://data.json qui eviterait de passer par la DB 
+	[ ] btn : export data > data.json
 [ ] enregistrer les configs pour analyser les taux d'utilisation et générer une estimation de cout 
 [ ] pour inciter les utilisateurs de carte a participer au financement du commun
 [ ] configurer des icones cartos pour chaque tag 
@@ -18,4 +19,6 @@
 		[ ] type
 		[ ] tags
 		[ ] localité
+[ ] version imprimable + QR COde recto liste , verso carto
+
 

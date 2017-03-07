@@ -1,6 +1,8 @@
 {
   "title" : "app",
-
+  "metaImg" : "/assets/img/CO.png",
+  "metaDesc" : "Réseau sociétal citoyen",
+      
 	"pages" : 
 		{
 		  "#app.index":

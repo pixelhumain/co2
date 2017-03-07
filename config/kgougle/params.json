@@ -1,6 +1,8 @@
 { 
       "title" : "Kgougle",
-
+      "metaImg" : "/assets/img/KGOUGLE-logo.png",
+      "metaDesc" : "Le moteur de recherche des cagous",
+      
       "pages" : 
       {
       	"#app.index":

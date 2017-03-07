@@ -84,7 +84,7 @@ var idElement = "<?php echo $id ?>";
 var typeElement = "<?php echo $type ?>";
 var parentName = "<?php echo @$parentName ?>";
 
-var iconTitle = mapIconTop[typeElement];
+var iconTitle = "fa-"+typeObj[typeElement].icon;
 var colorTitle = mapColorIconTop[typeElement];
 
 var noFitBoundAroundMe = true;

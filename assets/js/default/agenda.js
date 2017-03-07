@@ -146,13 +146,13 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
               //parcours la liste des résultats de la recherche
               $.each(data, function(i, o) {
                   var typeIco = i;
-                  var ico = mapIconTop["default"];
+                  var ico = "fa-"+typeObj["default"].icon;
                   var color = mapColorIconTop["default"];
 
                   mapElements.push(o);
 
                   typeIco = o.type;
-                  ico = ("undefined" != typeof mapIconTop[typeIco]) ? mapIconTop[typeIco] : mapIconTop["default"];
+                  ico = ("undefined" != typeof typeObj[typeIco].icon) ? "fa-"+typeObj[typeIco].icon : "fa-"+typeObj["default"].icon;
                   color = ("undefined" != typeof mapColorIconTop[typeIco]) ? mapColorIconTop[typeIco] : mapColorIconTop["default"];
                   
                   htmlIco ="<i class='fa "+ ico +" fa-2x bg-"+color+"'></i>";

@@ -81,7 +81,7 @@
                 			<label id="lbl-url">
                 				<i class="fa fa-circle"></i> Indiquez l'URL de la page
                 			</label>
-						    <input type="text" class="form-control" placeholder="exemple : http://kgougle.nc" id="form-url"><br>
+						    <input type="text" class="form-control" placeholder="exemple : http://www.kgougle.nc" id="form-url"><br>
 						    <h5 class="letter-green pull-left" id="status-ref"></h5>             		
 						    <button class="btn btn-success pull-right btn-scroll" data-targetid="#formRef" id="btn-start-ref-url">
 						    	<i class="fa fa-binoculars"></i> Lancer la recherche d'information
@@ -203,7 +203,7 @@
 <?php $cities = CO2::getCitiesNewCaledonia(); ?>
 <?php $this->renderPartial($layoutPath.'modals.kgougle.citiesReferencement', array("cities"=>$cities)); ?>
 
-<?php $this->renderPartial($layoutPath.'footer'); ?>
+<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"referencement")); ?>
 
 
 <script type="text/javascript" >
@@ -220,7 +220,7 @@ jQuery(document).ready(function() {
     initKInterface();
     buildListCategoriesForm();
 
-    $('#form-url').val("https://fr.wikipedia.org");//"https://www.bci.nc/");//" http://groupe-vocal-nc.net/");
+    $('#form-url').val("");//"https://www.bci.nc/");//" http://groupe-vocal-nc.net/");
 
     $("#btn-start-ref-url").click(function(){
     	refUrl($('#form-url').val());

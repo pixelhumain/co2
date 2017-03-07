@@ -2431,7 +2431,7 @@ var elementLib = {
 		mylog.dir(elementLib.elementObj);
 		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(elementLib.elementObj.bgClass);
 		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
-		$("#ajax-modal-modal-title").removeClass("text-green").removeClass("text-purple").removeClass("text-orange").removeClass("text-azure");
+		$("#ajax-modal-modal-title").removeClass("text-green text-purple text-orange text-azure");
 		$(".modal-header").removeClass("bg-purple bg-green bg-orange bg-yellow bg-lightblue ").addClass(elementLib.elementObj.titleClass);
 	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
@@ -2652,7 +2652,8 @@ var typeObjLib = {
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	elementLib.closeForm();
-	            url.loadByHash( url );	
+		    	allert(url+uploadObj.id);
+	            url.loadByHash( url+uploadObj.id );	
 		    	}
     	}
     },

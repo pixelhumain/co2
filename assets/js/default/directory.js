@@ -808,9 +808,9 @@ var directory = {
                 str += '<div class="col-xs-5">'+
                     '<div class="col-xs-4">';
                     if(params.startDate != null)
-                        str += '<div class="bg-'+params.color+' text-white padding-5 text-bold" style="font-size:27px;margin-top:5px;">'+params.startDay+'</div>'+ params.startTime;
+                        str += '<div class="bg-'+params.color+' text-white padding-5 text-bold" style="border: 2px solid #328a00; font-size:27px;margin-top:5px;">'+params.startDay+'</div>'+ params.startTime;
                     if(params.endDate != null)
-                        str += '<div class="bg-'+params.color+' text-white padding-5 text-bold" style="font-size:27px;margin-top:5px;">'+params.endDay+'</div>'+ params.endTime;
+                        str += '<div class="bg-'+params.color+' text-white padding-5 text-bold" style="border: 2px solid #328a00; font-size:27px;margin-top:5px;">'+params.endDay+'</div>'+ params.endTime;
                     str += '</div>'+
                     '<div class="col-xs-8">'+
                         '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+

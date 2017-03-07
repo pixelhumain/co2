@@ -2431,7 +2431,7 @@ var elementLib = {
 		mylog.dir(elementLib.elementObj);
 		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(elementLib.elementObj.bgClass);
 		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
-		$("#ajax-modal-modal-title").removeClass("text-green text-purple text-orange text-azure");
+		$("#ajax-modal-modal-title").removeClass("text-green").removeClass("text-purple").removeClass("text-orange").removeClass("text-azure");
 		$(".modal-header").removeClass("bg-purple bg-green bg-orange bg-yellow bg-lightblue ").addClass(elementLib.elementObj.titleClass);
 	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
@@ -2652,7 +2652,7 @@ var typeObjLib = {
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	elementLib.closeForm();
-		    	allert(url+uploadObj.id);
+		    	alert(url+uploadObj.id);
 	            url.loadByHash( url+uploadObj.id );	
 		    	}
     	}
@@ -3076,7 +3076,7 @@ var keyboardNav = {
 	"comma":188,"dash":189,"period":190,"forward slash":191,"grave accent":192,"open bracket":219,"back slash":220,"close braket":221,"single quote":222},
 
 	keyMap : {
-		"112" : function(){ $(".menu-name-profil").trigger('click') },//f1
+		"112" : function(){ $('#modalMainMenu').modal("show"); },//f1
 		"113" : function(){ if(userId)url.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
 		"114" : function(){ showMap(true); },//f3
 		"115" : function(){ elementLib.openForm('themes') },//f4

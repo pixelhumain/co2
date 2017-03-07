@@ -122,7 +122,7 @@
                         <div class="col-md-12 padding-5">  
                             <hr>
                             <small>
-                                <span class="letter-red"><i class="fa fa-info-circle"></i> Afin d'éviter tout abus,</span> vos modification seront envoyées aux administrateurs du site, et soumise à leur validation (sous 7 jours).<br>
+                                <span class="letter-red"><i class="fa fa-info-circle"></i> Afin d'éviter tout abus,</span> vos modification seront envoyées aux administrateurs du site, et soumises à leur validation (sous 7 jours).<br>
                                 <i class="fa fa-info-circle"></i> Si les informations fournies semblent farfellues, ou inexactes, nous nous réservons le droit de ne pas donner suite à votre demande.<br>
                                 <i class="fa fa-info-circle"></i> Si elles semblent correctes, votre demande sera validée en quelques jours et vous pourrez retrouver vos modifications lors de vos futures recherches.<br>
                                 <i class="fa fa-info-circle"></i> 

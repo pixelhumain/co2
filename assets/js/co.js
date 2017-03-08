@@ -2894,7 +2894,7 @@ var typeObjLib = {
     	}
     },
     get:function(type){
-    	if( typeof typeObj[type] != "undefined"){
+    	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
     			return typeObj[typeObj[type].sameAs];
     		} else

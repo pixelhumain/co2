@@ -617,7 +617,7 @@ var directory = {
               return str;
     },
     elementPanelHtml : function(params){
-        mylog.log("-----------personPanelHtml");
+        mylog.log("----------- elementPanelHtml");
       str = "";  
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
               str +=    "<div class='searchEntity'>";
@@ -1069,7 +1069,7 @@ var directory = {
               //template principal
             if(params.type == "cities")
               str += directory.cityPanelHtml(params);  
-            else if( $.inArray(params.type, ["citoyens","organizations","project"])) 
+            else if( $.inArray(params.type, ["citoyens","organizations","project"])>=0) 
               str += directory.elementPanelHtml(params);  
             else if(params.type == "events")
               str += directory.eventPanelHtml(params);  

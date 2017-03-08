@@ -2892,6 +2892,15 @@ var typeObjLib = {
     		required : true,
     		greaterThanNow : ["DD/MM/YYYY"]
     	}
+    },
+    get:function(type){
+    	if( typeof typeObj[type] != "undefined"){
+    		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
+    			return typeObj[typeObj[type].sameAs];
+    		} else
+    			return typeObj[type];
+    	}else 
+    		return null;
     }
 };
 
@@ -2958,10 +2967,10 @@ var typeObj = {
 			}
 		}},
 	"person" : {col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
-	"persons" : {col:"citoyens" , ctrl:"person",icon:"user",color:"yellow"},
-	"people" : {col:"citoyens" , ctrl:"person",color:"yellow",icon:"user"},
-	"citoyen" : {col:"citoyens" , ctrl:"person",icon:"user"},
-	"citoyens" : {col:"citoyens" , ctrl:"person",color:"yellow",icon:"user"},
+	"persons" : { sameAs:"person" },
+	"people" : { sameAs:"person" },
+	"citoyen" : { sameAs:"person" },
+	"citoyens" : { sameAs:"person" },
 	"poi":{ col:"poi",ctrl:"poi",color:"azure",	icon:"info-circle"},
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},

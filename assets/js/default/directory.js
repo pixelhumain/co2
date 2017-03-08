@@ -616,7 +616,7 @@ var directory = {
               str += "</div>";
               return str;
     },
-    personPanelHtml : function(params){
+    elementPanelHtml : function(params){
         mylog.log("-----------personPanelHtml");
       str = "";  
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
@@ -636,7 +636,6 @@ var directory = {
                   
                 }
 
-
                 if(params.updated != null )
                   str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
 
@@ -648,8 +647,10 @@ var directory = {
 
                       
                 str += "<div class='entityRight no-padding'>";
-                                     
-                      
+                    var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+                    str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+                              iconFaReply + params.name + 
+                           "</a>";                 
                     var thisLocality = "";
                     if(params.fullLocality != "" && params.fullLocality != " ")
                          thisLocality = "<a href='"+url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
@@ -659,12 +660,10 @@ var directory = {
                     
                     str += thisLocality;
                     
-                    
                     str += "<div class='entityDescription'>" + params.description + "</div>";
                  
                     str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
 
-                    
                       if(params.startDate != null)
                       str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
                       if(params.endDate != null)
@@ -701,7 +700,6 @@ var directory = {
                               "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
                             "</a>";
                 }
-
 
                 if(params.updated != null && !params.useMinSize)
                   str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
@@ -762,157 +760,11 @@ var directory = {
               str += "</div>";
               return str;
     },
-    organizationPanelHtml: function(params){
-      str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
-              str +=    "<div class='searchEntity'>";
-
-              
-
-                if(userId != null && userId != "" && params.id != userId){
-                  isFollowed=false;
-                  if(typeof params.isFollowed != "undefined" ) isFollowed=true;
-                  
-                    tip = (type == "events") ? "Participer" : 'Suivre';
-                    str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-                          'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-                          " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-                              "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-                            "</a>";
-                  
-                }
-
-
-                if(params.updated != null && !params.useMinSize)
-                  str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
-
-                if(typeof params.size == "undefined" || params.size == "max")
-                  str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
-
-                str += "<div class='padding-10 informations'>";
-
-                     
-                    str += "<div class='entityRight no-padding'>";
-                                     
-                      
-                    if(notEmpty(params.parent) && notEmpty(params.parent.name))
-                      str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
-                                "<i class='fa "+params.parentIcon+"'></i> "
-                                + params.parent.name + 
-                              "</a>";
-
-                    var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-                    str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
-                              iconFaReply + params.name + 
-                           "</a>";
-                    
-                    var thisLocality = "";
-                    if(params.fullLocality != "" && params.fullLocality != " ")
-                         thisLocality = "<a href='"+url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
-                                          "<i class='fa fa-home'></i> " + params.fullLocality + 
-                                        "</a>";
-                    else thisLocality = "<br>";
-                    
-                    
-                    str += thisLocality;
-                    
-                    
-
-                    str += "<div class='entityDescription'>" + params.description + "</div>";
-                 
-                    str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
-
-                  str += "</div>";
-                str += "</div>";
-              str += "</div>";
-
-              str += "</div>";
-              return str;
-    },
-    projectPanelHtml : function(params){
-      str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
-              str +=    "<div class='searchEntity'>";
-
-             
-                if(userId != null && userId != "" && params.id != userId){
-                  isFollowed=false;
-                  if(typeof params.isFollowed != "undefined" ) isFollowed=true;
-                    tip = (type == "events") ? "Participer" : 'Suivre';
-                    str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-                          'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-                          " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-                              "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-                            "</a>";
-                  
-                }
-
-                if(params.updated != null )
-                  str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
-
-                if(typeof params.size == "undefined" || params.size == "max")
-                  str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
-
-                str += "<div class='padding-10 informations'>";
-
-
-                  if(!params.useMinSize){
-                    if(params.startDate != null)
-                    str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
-                    if(params.endDate != null)
-                    str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
-                    
-                    if(typeof params.size == "undefined" || params.size == "max"){
-                      str += "<div class='entityCenter no-padding'>";
-                      str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
-                      str += "</div>";
-                    }
-                  }  
-                      
-                    str += "<div class='entityRight no-padding'>";
-                                     
-                      
-                    if(notEmpty(params.parent) && notEmpty(params.parent.name))
-                      str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
-                                "<i class='fa "+params.parentIcon+"'></i> "
-                                + params.parent.name + 
-                              "</a>";
-
-                    var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-                    str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
-                              iconFaReply + params.name + 
-                           "</a>";
-                    
-                    var thisLocality = "";
-                    if(params.fullLocality != "" && params.fullLocality != " ")
-                         thisLocality = "<a href='"+url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
-                                          "<i class='fa fa-home'></i> " + params.fullLocality + 
-                                        "</a>";
-                    else thisLocality = "<br>";
-                    
-                    
-                      str += thisLocality;
-                   
-                    str += "<div class='entityDescription'>" + params.description + "</div>";
-                 
-                    str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
-
-                     
-
-                
-                  str += "</div>";
-                str += "</div>";
-              str += "</div>";
-
-              str += "</div>";
-              return str;
-    },
     cityPanelHtml : function(params){
         mylog.log("-----------cityPanelHtml");
-      str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
-              str +=    "<div class='searchEntity'>";
-
+        str = "";  
+        str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+        str +=    "<div class='searchEntity'>";
 
                 if(params.updated != null)
                   str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
@@ -1144,18 +996,22 @@ var directory = {
 
               mapElements.push(params);
 
-              if(typeof(typeObj[itemType]) == "undefined")
+              if(typeof( typeObj[itemType] ) == "undefined")
                 itemType="poi";
               typeIco = itemType;
 
               if(typeof(params.typeOrga) != "undefined")
                 typeIco = params.typeOrga;
 
-              params.ico = ("undefined" != typeof typeObj[typeIco]) ? "fa-"+typeObj[typeIco].icon : "fa-"+typeObj["default"].icon;
-              params.color = ("undefined" != typeof typeObj[typeIco]) ? typeObj[typeIco].color : typeObj["default"].color;
-              params.parentIcon = ("undefined" != typeof typeObj[params.parentType]) ? "fa-"+typeObj[params.parentType].icon : "fa-"+typeObj["default"].icon;
-              params.parentColor = ("undefined" != typeof typeObj[params.parentType]) ? typeObj[params.parentType].color : typeObj["default"].color;
-              
+              var obj = ("undefined" != typeof typeObjLib.get(typeIco)) ? typeObjLib.get(typeIco) : typeObj["default"] ;
+              params.ico =  "fa-"+obj.icon;
+              params.color = obj.color;
+              if(params.parentType){
+                mylog.log(params.parentType);
+                var parentObj = ("undefined" != typeof typeObjLib.get(params.parentType)) ? typeObjLib.get(params.parentType) : typeObj["default"] ;
+                params.parentIcon = "fa-"+parentObj.icon;
+                params.parentColor = parentObj.color;
+              }
               params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
 
              // var urlImg = "/upload/communecter/color.jpg";
@@ -1196,9 +1052,6 @@ var directory = {
 
               params.onclick = 'url.loadByHash("' + url + '");';
 
-              
-                
-
               params.tags = "";
               params.elTagsList = "";
               if(typeof params.tags != "undefined" && params.tags != null){
@@ -1216,10 +1069,8 @@ var directory = {
               //template principal
             if(params.type == "cities")
               str += directory.cityPanelHtml(params);  
-            else if(params.type == "citoyens")
-              str += directory.personPanelHtml(params);  
-            else if(params.type == "organizations")
-              str += directory.organizationPanelHtml(params);  
+            else if( $.inArray(params.type, ["citoyens","organizations","project"])) 
+              str += directory.elementPanelHtml(params);  
             else if(params.type == "events")
               str += directory.eventPanelHtml(params);  
             else

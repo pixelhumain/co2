@@ -129,7 +129,6 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 
   var initLimitDate = <?php echo json_encode(@$limitDate) ?>;
 
-
   var contextParentType = <?php echo json_encode(@$contextParentType) ?>;
   var contextParentId = <?php echo json_encode(@$contextParentId) ?>;
 
@@ -144,14 +143,15 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 
   var uploadUrl = "<?php echo Yii::app()->params['uploadUrl'] ?>";
 
-
+  var mentionsContact = [];
+  var stopMention = false;
 
 console.log("NEWS", news);
 jQuery(document).ready(function() {
   
   showFormBlock(false);
   initForm();
-
+  bindEventNews();
   if(typeof(initLimitDate.created) == "object")
       dateLimit=initLimitDate.created.sec;
   else

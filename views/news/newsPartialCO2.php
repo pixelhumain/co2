@@ -14,7 +14,7 @@
 
       $thumbAuthor =  @$media['author']['profilThumbImageUrl'] ? 
                       Yii::app()->createUrl('/'.@$media['author']['profilThumbImageUrl']) 
-                      : $imgDefault;
+                      : @$imgDefault;
 
       $srcMainImg = "";              
       if(@$media["media"]["images"])
@@ -46,11 +46,11 @@
                     <i class="fa fa-pencil-square"></i> a publié un message
                   <?php } ?>
                   <?php if($media["type"]=="activityStream") { ?>
-                    <?php $iconColor = Element::getColorIcon($media["object"]["objectType"]) ? 
-                                       Element::getColorIcon($media["object"]["objectType"]) : ""; ?>
+                    <?php $iconColor = Element::getColorIcon($media["object"]["type"]) ? 
+                                       Element::getColorIcon($media["object"]["type"]) : ""; ?>
                     <i class="fa fa-plus-circle"></i> a créé un 
                     <span class="text-<?php echo @$iconColor; ?>">
-                      <?php echo Yii::t("common", @$media["object"]["objectType"]); ?>
+                      <?php echo Yii::t("common", @$media["object"]["type"]); ?>
                     </span>
                   <?php } ?>
                   </span>
@@ -68,11 +68,11 @@
                     <i class="fa fa-pencil-square"></i> a publié un message
                   <?php } ?>
                   <?php if($media["type"]=="activityStream") { ?>
-                    <?php $iconColor = Element::getColorIcon($media["object"]["objectType"]) ? 
-                                       Element::getColorIcon($media["object"]["objectType"]) : ""; ?>
+                    <?php $iconColor = Element::getColorIcon($media["object"]["type"]) ? 
+                                       Element::getColorIcon($media["object"]["type"]) : ""; ?>
                     <i class="fa fa-plus-circle"></i> a créé un 
                     <span class="text-<?php echo @$iconColor; ?>">
-                      <?php echo Yii::t("common", @$media["object"]["objectType"]); ?>
+                      <?php echo Yii::t("common", @$media["object"]["type"]); ?>
                     </span>
                   <?php } ?>
                   </span>
@@ -83,7 +83,7 @@
               <a href="<?php echo @$media["href"]; ?>" target="_blank" class="link-read-media margin-top-10 hidden-xs img-circle">
                 <small>
                   <i class="fa fa-clock-o"></i> 
-                  <?php echo Translate::pastTime(date($media["date"]->sec), "timestamp", $timezone); ?>
+                  <?php echo Translate::pastTime(date($media["created"]->sec), "timestamp", $timezone); ?>
                 </small>
               </a>
             </h5>
@@ -91,11 +91,11 @@
           <div class="timeline-body padding-10 col-md-12 text-left">
             <!-- <h4><a target="_blank" href="<?php echo @$media["href"]; ?>"><?php echo @$media["title"]; ?></a></h4> -->
             <?php if($media["type"]=="activityStream") { ?>
-              <?php $faIcon = Element::getFaIcon($media["object"]["objectType"]) ? 
-                              Element::getFaIcon($media["object"]["objectType"]) : ""; ?>
+              <?php $faIcon = Element::getFaIcon($media["object"]["type"]) ? 
+                              Element::getFaIcon($media["object"]["type"]) : ""; ?>
               <h4 class="no-padding">
                 <a target="_blank" 
-                   href="#app.page.type.<?php echo @$media["object"]["objectType"]; ?>.id.<?php echo @$media["object"]["id"]; ?>">
+                   href="#app.page.type.<?php echo @$media["object"]["type"]; ?>.id.<?php echo @$media["object"]["id"]; ?>">
                    <i class="fa fa-<?php echo $faIcon; ?>"></i> <?php echo @$media["name"]; ?>
                 </a>
               </h4>

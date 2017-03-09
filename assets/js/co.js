@@ -2561,12 +2561,15 @@ var uploadObj = {
 var typeObjLib = {
 	name :function(type) { 
 		var inputObj = {
-	    	placeholder : "Nom",
+	    	placeholder : "... ",
 	        inputType : "text",
 	        rules : { required : true }
 	    };
 	    if(type){
-	    	inputObj.label = "Nom de "+type;
+	    	inputObj.label = "Nom de votre " + trad[type]+" ";
+	    	if(type=="classified") 
+	    		inputObj.label = "Titre de votre " + trad[type]+" ";
+
 	    	inputObj.init = function(){
 	        	$("#ajaxFormModal #name ").off().on("blur",function(){
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
@@ -2659,7 +2662,7 @@ var typeObjLib = {
     },
     descriptionOptionnel : {
         inputType : "textarea",
-		placeholder : "Décrire c'est partager",
+		placeholder : "...",
 		init : function(){
         	$(".descriptiontextarea").css("display","none");
         },
@@ -2667,7 +2670,7 @@ var typeObjLib = {
     },
     description : {
         inputType : "textarea",
-		placeholder : "Décrire c'est partager",
+		placeholder : "...",
 		label : "Description principale"
     },
     tags : {

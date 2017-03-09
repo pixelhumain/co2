@@ -2895,6 +2895,15 @@ var typeObjLib = {
     		required : true,
     		greaterThanNow : ["DD/MM/YYYY"]
     	}
+    },
+    get:function(type){
+    	if( jsonHelper.notNull("typeObj."+type)){
+    		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
+    			return typeObj[typeObj[type].sameAs];
+    		} else
+    			return typeObj[type];
+    	}else 
+    		return null;
     }
 };
 
@@ -2961,24 +2970,24 @@ var typeObj = {
 			}
 		}},
 	"person" : {col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
-	"persons" : {col:"citoyens" , ctrl:"person",icon:"user",color:"yellow"},
-	"people" : {col:"citoyens" , ctrl:"person",color:"yellow",icon:"user"},
-	"citoyen" : {col:"citoyens" , ctrl:"person",icon:"user"},
-	"citoyens" : {col:"citoyens" , ctrl:"person",color:"yellow",icon:"user"},
+	"persons" : { sameAs:"person" },
+	"people" : { sameAs:"person" },
+	"citoyen" : { sameAs:"person" },
+	"citoyens" : { sameAs:"person" },
 	"poi":{ col:"poi",ctrl:"poi",color:"azure",	icon:"info-circle"},
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
-	"organizations" : {col:"organizations",ctrl:"organization",color:"green",icon:"users"},
+	"organizations" : {sameAs:"organization"},
 	"LocalBusiness" : {color: "azure",icon: "industry"},
-	"NGO" : {color: "green",icon: "group"},
-	"association" : {color: "green",icon: "group"},
+	"NGO" : {sameAs:"organization"},
+	"association" : {sameAs:"organization"},
 	"GovernmentOrganization" : {color: "green",icon: "circle-o"},
 	"Group" : {	color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
-	"events" : {col:"events",ctrl:"event",icon : "calendar",color:"orange"},
+	"events" : {sameAs:"event"},
 	"project" : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
-	"projects" : {col:"projects",ctrl:"project",color:"purple",icon:"lightbulb-o"},
-	"city" : {col:"cities",ctrl:"city",icon:"university"},
+	"projects" : {sameAs:"project"},
+	"city" : {sameAs:"cities"},
 	"cities" : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
 	"entry" : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-lightblue",bgClass : "bgDDA",	icon : "gavel",	color : "azure", saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
 	"vote" : {col:"actionRooms",ctrl:"survey"},

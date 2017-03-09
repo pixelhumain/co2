@@ -79,7 +79,7 @@ function resizeInterface()
 
 function initNotifications(){
 	
-	$('.main-top-menu .btn-menu-notif').off().click(function(){
+	$('.btn-menu-notif').off().click(function(){
 	  mylog.log("click notification main-top-menu");
       showNotif();
     });

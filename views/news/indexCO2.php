@@ -109,6 +109,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
                                                        "pair"=>$pair,
                                                        "nbCol"=>$nbCol,
                                                        "timezone"=>$timezone,
+                                                       "imgDefault" => $imgDefault,
                                                        "isFirst"=>true)); ?>
 
 </ul>

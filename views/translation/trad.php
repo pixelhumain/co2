@@ -77,6 +77,7 @@ var trad = {"areyousuretodelete" : "<?php echo Yii::t("common", "Are you sure yo
         "citoyens":"<?php echo Yii::t("common","citoyens"); ?>",
         "followers":"<?php echo Yii::t("common","followers"); ?>",
 		"address" : "<?php echo Yii::t("common","Address") ?>",
+		"classified" : "<?php echo Yii::t("common","classified") ?>",
 
 };
 

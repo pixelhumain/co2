@@ -2765,8 +2765,8 @@ var typeObjLib = {
     				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
 					endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
     			}
-			    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
-				if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
+			    if (startDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(startDate);
+				if (endDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(endDate);
     		}
     	}
     },
@@ -2783,7 +2783,7 @@ var typeObjLib = {
         placeholder: "Date de fin",
         rules : { 
         	required : true,
-        	greaterThan: ["#ajaxFormModal #startDate","la date de début"],
+        	greaterThan: ["#ajaxFormModal #startDateInput","la date de début"],
         	duringDates: ["#startDateParent","#endDateParent","La date de fin"]
 	    }
     },

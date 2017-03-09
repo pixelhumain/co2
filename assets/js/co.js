@@ -2561,12 +2561,15 @@ var uploadObj = {
 var typeObjLib = {
 	name :function(type) { 
 		var inputObj = {
-	    	placeholder : "Nom",
+	    	placeholder : "... ",
 	        inputType : "text",
 	        rules : { required : true }
 	    };
 	    if(type){
-	    	inputObj.label = "Nom de "+type;
+	    	inputObj.label = "Nom de votre " + trad[type]+" ";
+	    	if(type=="classified") 
+	    		inputObj.label = "Titre de votre " + trad[type]+" ";
+
 	    	inputObj.init = function(){
 	        	$("#ajaxFormModal #name ").off().on("blur",function(){
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
@@ -2652,13 +2655,14 @@ var typeObjLib = {
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	elementLib.closeForm();
-	            url.loadByHash( url );	
+		    	alert(url+uploadObj.id);
+	            url.loadByHash( url+uploadObj.id );	
 		    	}
     	}
     },
     descriptionOptionnel : {
         inputType : "textarea",
-		placeholder : "Décrire c'est partager",
+		placeholder : "...",
 		init : function(){
         	$(".descriptiontextarea").css("display","none");
         },
@@ -2666,7 +2670,7 @@ var typeObjLib = {
     },
     description : {
         inputType : "textarea",
-		placeholder : "Décrire c'est partager",
+		placeholder : "...",
 		label : "Description principale"
     },
     tags : {
@@ -2891,6 +2895,15 @@ var typeObjLib = {
     		required : true,
     		greaterThanNow : ["DD/MM/YYYY"]
     	}
+    },
+    get:function(type){
+    	if( jsonHelper.notNull("typeObj."+type)){
+    		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
+    			return typeObj[typeObj[type].sameAs];
+    		} else
+    			return typeObj[type];
+    	}else 
+    		return null;
     }
 };
 
@@ -2957,24 +2970,24 @@ var typeObj = {
 			}
 		}},
 	"person" : {col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
-	"persons" : {col:"citoyens" , ctrl:"person",icon:"user",color:"yellow"},
-	"people" : {col:"citoyens" , ctrl:"person",color:"yellow",icon:"user"},
-	"citoyen" : {col:"citoyens" , ctrl:"person",icon:"user"},
-	"citoyens" : {col:"citoyens" , ctrl:"person",color:"yellow",icon:"user"},
+	"persons" : { sameAs:"person" },
+	"people" : { sameAs:"person" },
+	"citoyen" : { sameAs:"person" },
+	"citoyens" : { sameAs:"person" },
 	"poi":{ col:"poi",ctrl:"poi",color:"azure",	icon:"info-circle"},
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
-	"organizations" : {col:"organizations",ctrl:"organization",color:"green",icon:"users"},
+	"organizations" : {sameAs:"organization"},
 	"LocalBusiness" : {color: "azure",icon: "industry"},
-	"NGO" : {color: "green",icon: "group"},
-	"association" : {color: "green",icon: "group"},
+	"NGO" : {sameAs:"organization"},
+	"association" : {sameAs:"organization"},
 	"GovernmentOrganization" : {color: "green",icon: "circle-o"},
 	"Group" : {	color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
-	"events" : {col:"events",ctrl:"event",icon : "calendar",color:"orange"},
+	"events" : {sameAs:"event"},
 	"project" : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
-	"projects" : {col:"projects",ctrl:"project",color:"purple",icon:"lightbulb-o"},
-	"city" : {col:"cities",ctrl:"city",icon:"university"},
+	"projects" : {sameAs:"project"},
+	"city" : {sameAs:"cities"},
 	"cities" : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
 	"entry" : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-lightblue",bgClass : "bgDDA",	icon : "gavel",	color : "azure", saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
 	"vote" : {col:"actionRooms",ctrl:"survey"},
@@ -3075,7 +3088,7 @@ var keyboardNav = {
 	"comma":188,"dash":189,"period":190,"forward slash":191,"grave accent":192,"open bracket":219,"back slash":220,"close braket":221,"single quote":222},
 
 	keyMap : {
-		"112" : function(){ $(".menu-name-profil").trigger('click') },//f1
+		"112" : function(){ $('#modalMainMenu').modal("show"); },//f1
 		"113" : function(){ if(userId)url.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
 		"114" : function(){ showMap(true); },//f3
 		"115" : function(){ elementLib.openForm('themes') },//f4
@@ -3362,6 +3375,10 @@ var timerCloseDropdownUser = false;
 function initKInterface(params){
 
 	$(window).off();
+
+	$(window).resize(function(){
+      resizeInterface();
+    });
 
     //jQuery for page scrolling feature - requires jQuery Easing plugin
     $('.page-scroll a').bind('click', function(event) {

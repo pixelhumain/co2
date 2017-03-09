@@ -1,11 +1,6 @@
 <?php 
-
 	//HtmlHelper::registerCssAndScriptsFiles( array('/css/default/directory.css', ) , Yii::app()->theme->baseUrl. '/assets');
-
-
-	//$cssAnsScriptFilesModule = array(
-	//	''
-	//);
+	//$cssAnsScriptFilesModule = array('');
 	//HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
@@ -13,13 +8,15 @@
     $params = CO2::getThemeParams();
 
     $page = "search";
+
     if(!@$type) $type = "all";
-    if(@$type=="events") $page = "agenda";
+
+    if(@$type=="events")     $page = "agenda";
     if(@$type=="classified") $page = "annonces";
-    if(@$type=="vote") $page = "power";
+    if(@$type=="vote")       $page = "power";
 
     if($params["title"] == "kgougle") $page = "social";
-    $subdomain = $page;
+    
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                             array(  "layoutPath"=>$layoutPath ,
@@ -380,6 +377,7 @@ header .container,
 
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
+var page = "<?php echo @$page; ?>";
 
 //var TPL = "kgougle";
 
@@ -470,6 +468,14 @@ jQuery(document).ready(function() {
                     elementLib.openForm(type);
                  },500);
         
+    });
+
+    $(".main-btn-create").click(function(){
+        currentKFormType = $(this).data("ktype");
+        var type = $(this).data("type");
+        if(type=="events") type="event";
+        if(type=="vote") type="entry";
+        elementLib.openForm(type);
     });
 
     $(".btn-decommunecter").click(function(){

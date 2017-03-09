@@ -141,10 +141,10 @@ dynForm = {
             },
             parentType : typeObjLib.hidden,
 	        type : typeObjLib.typeEvent,
-	        image : typeObjLib.image( "#event.detail.id."+uploadObj.id ),
+	        image : typeObjLib.image( "#event.detail.id." ),
             allDay : typeObjLib.allDay,
-            startDateInput : typeObjLib.startDateInput,
-            endDateInput : typeObjLib.endDateInput,
+            startDate : typeObjLib.startDateInput,
+            endDate : typeObjLib.endDateInput,
             location : typeObjLib.location,
             tags : typeObjLib.tags,
             
@@ -167,8 +167,6 @@ dynForm = {
             "preferences[privateFields]" : typeObjLib.hiddenArray,
             "preferences[isOpenData]" :  typeObjLib.hiddenTrue,
             "preferences[isOpenEdition]" :  typeObjLib.hiddenTrue,
-            "startDate" :  typeObjLib.hidden,
-            "endDate" :  typeObjLib.hidden
 	    }
 	}
 };

@@ -40,13 +40,13 @@ dynForm = {
                 inputType : "custom",
                 html:"",//<p><i class='fa fa-info-circle'></i> Une Annonce est un élément assez libre qui peut etre géolocalisé ou pas, qui peut etre rataché à tous les éléments.</p>",
             },
-	        name : typeObjLib.name,
+	        name : typeObjLib.name("classified"),
             description : typeObjLib.description,
             location : typeObjLib.location,
             typeBtn :{
-                label : "Type d'annonce",
+                label : "Choisir une catégorie",
 	            inputType : "tagList",
-                placeholder : "Type d'annonce",
+                placeholder : "Choisir une catégorie",
                 list : classifiedTypes,
                 init : function(){
 	            	$(".typeBtn").off().on("click",function()
@@ -57,14 +57,15 @@ dynForm = {
 
 	            		$("#ajaxFormModal #subtype").val("");
 	            		fieldHTML = "";
-	            		$.each(classifiedSubTypes[ $(this).data('tag') ].subType, function(k,v) { 
-	            			fieldHTML += '<a class="btn btn-link tagListEl subtypeBtn '+k+'Btn " data-tag="'+k+'" href="javascript:;">'+v+'</a>';
+	            		$.each(classifiedTypes[ $(this).data('tag') ], function(k,v) { 
+	            			fieldHTML += '<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>';
 	            		});
-	            		$(".subtypeSection").html(fieldHTML);
+	            		$(".subtypeSection").html("<hr>"+fieldHTML);
 
 	            		$(".subtypeBtn").off().on("click",function()
 		            	{
-		            		$( "."+$(this).data('tag')+"Btn" ).toggleClass("btn-link text-white").toggleClass("active  btn-dark-blue text-white");
+		            		$( ".subtypeBtn" ).removeClass("active");
+		            		$(this).addClass("active");
 		            		$("#ajaxFormModal #subtype").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
 						});
 	            	});

@@ -301,6 +301,7 @@ if($('#breadcum').length)
 														"contentType" => $type,
 														"countStrongLinks" => $countStrongLinks,
 														"countLowLinks" => $countLowLinks,
+														"countInvitations" => $countInvitations,
 														"admin" => $edit, 
 														"invitedMe" => @$invitedMe,
 														"openEdition" => $openEdition));

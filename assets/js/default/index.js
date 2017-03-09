@@ -64,22 +64,22 @@ function resizeInterface()
   $("#ajaxSV").css({"minHeight" : height});
   //$("#menu-container").css({"minHeight" : height});
   var heightDif = $("#search-contact").height() + $("#floopHeader").height() + 60 /* top */ + 0 /* bottom */;
-  var menuTopHeight = $(".main-top-menu").height();// - $(".toolbar").height();
+  var menuTopHeight = $("#mainNav").height();// - $(".toolbar").height();
   
   //mylog.log("heightDif", heightDif);
   $(".floopScroll").css({"minHeight" : height-heightDif});
   $(".floopScroll").css({"maxHeight" : height-heightDif});
-  $(".my-main-container").css("min-height", $(".sigModuleBg").height()-menuTopHeight);
-  $(".my-main-container").css("max-height", $(".sigModuleBg").height()-menuTopHeight);
-  $(".my-main-container").css("height", $(".sigModuleBg").height()-menuTopHeight);
-  $(".main-col-search").css("min-height", $(".sigModuleBg").height());
+  //$(".my-main-container").css("min-height", $(".sigModuleBg").height()-menuTopHeight);
+  //$(".my-main-container").css("max-height", $(".sigModuleBg").height()-menuTopHeight);
+  //$(".my-main-container").css("height", $(".sigModuleBg").height()-menuTopHeight);
+  //$(".main-col-search").css("min-height", $(".sigModuleBg").height());
   //$("ul.notifList").css({"maxHeight" : height-heightDif});
 
 }
 
 function initNotifications(){
 	
-	$('.main-top-menu .btn-menu-notif').off().click(function(){
+	$('.btn-menu-notif').off().click(function(){
 	  mylog.log("click notification main-top-menu");
       showNotif();
     });

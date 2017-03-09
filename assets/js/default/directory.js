@@ -1121,16 +1121,16 @@ var directory = {
         var subContent = directory.showResultsDirectoryHtml ( list, key /*,"min"*/); //min == dark template 
         if( notEmpty(subContent) ){
           favTypes.push(typeObj[key].col);
-          var o = typeObjLib.get(key);
-          var color = (o.color) ? o.color : "dark";
-          var icon = (o.icon) ? o.icon : "circle";
-          $(smallMenu.destination + " #listDirectory").append("<div class='"+o.col+"fav favSection '>"+
+          
+          var color = (typeObj[key] && typeObj[key].color) ? typeObj[key].color : "dark";
+          var icon = (typeObj[key] && typeObj[key].icon) ? typeObj[key].icon : "circle";
+          $(smallMenu.destination + " #listDirectory").append("<div class='"+typeObj[key].col+"fav favSection '>"+
                                             "<div class=' col-xs-12 col-sm-12'>"+
                                             "<h4 class='text-left text-"+color+"'><i class='fa fa-angle-down'></i> "+trad[key]+"</h4><hr>"+
                                             subContent+
                                             "</div>");
           $(".sectionFilters").append(" <a class='text-black btn btn-default favSectionBtn favSectionBtnNew  bg-"+color+"'"+
-                                      " href='javascript:directory.showAll(\".favSection\",directory.elemClass);toggle(\"."+o.col+"fav\",\".favSection\",1)'> "+
+                                      " href='javascript:directory.showAll(\".favSection\",directory.elemClass);toggle(\"."+typeObj[key].col+"fav\",\".favSection\",1)'> "+
                                           "<i class='fa fa-"+icon+" fa-2x'></i><br>"+trad[key]+
                                         "</a>");
         }

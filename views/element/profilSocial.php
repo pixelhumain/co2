@@ -194,6 +194,7 @@
                                 "openEdition" => $openEdition,
                                 "countStrongLinks" => $countStrongLinks,
                                 "countLowLinks" => $countLowLinks,
+                                "countInvitations"=> $countInvitations
                                 );
 
 	    	if(@$members) $params["members"] = $members;

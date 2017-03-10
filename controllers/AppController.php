@@ -111,11 +111,18 @@ class AppController extends CommunecterController {
 
 
 
-	public function actionAnnonces(){
-		CO2Stat::incNbLoad("co2-annonces");	
+    public function actionAnnonces(){
+        CO2Stat::incNbLoad("co2-annonces"); 
         $params = array("type" => "classified");
-    	echo $this->renderPartial("search", $params, true);
-	}
+        echo $this->renderPartial("search", $params, true);
+    }
+
+
+    public function actionLive(){
+        CO2Stat::incNbLoad("co2-live"); 
+        $params = array();//"type" => "classified");
+        echo $this->renderPartial("live", $params, true);
+    }
 
 
 

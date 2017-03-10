@@ -228,14 +228,14 @@ function buildTimeLine (news, indexMin, indexMax)
 		
 	}
 	$(".stream-processing").hide();
-	bindEvent();
+	bindEventNews();
 	//Unblock message when click to change type stream
 	if (dateLimit==0)
 		setTimeout(function(){$.unblockUI()},1);
 }
 
 
-function bindEvent(){
+function bindEventNews(){
 	var separator, anchor;
 	$("#get_url").elastic();
 	
@@ -554,7 +554,7 @@ function initXEditable() {
  	$("#form-news #tags").select2('val', "");
  	showFormBlock(false);
  	$('.tooltips').tooltip();
- 	bindEvent();
+ 	bindEventNews();
  }
 
 

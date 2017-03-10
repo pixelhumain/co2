@@ -155,7 +155,12 @@
 #form-news input#falseInput{
   border: none!important;
 }
-
+.mentions-input-box .mentions{
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  left: 5px !important;
+  top: 1px !important;
+  padding:0 !important;
+}
 </style>
 <?php 
   $isLive = isset($_GET["isLive"]) ? true : false;

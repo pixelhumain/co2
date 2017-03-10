@@ -19,19 +19,19 @@
                 "placeholderMainSearch" : "Rechercher une page ..."
           },
 
-			"#annonces":
+		    "#annonces":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
                 "subdomain" : "annonces", 
                 "subdomainName" : "annonces",
                 "hash" : "#app.annonces",
-                "icon" : "newspaper-o", 
+                "icon" : "bullhorn", 
                 "mainTitle" : "Toutes vos annonces en direct",
                 "placeholderMainSearch" : "rechercher parmis les annonces  ..."
           },
 
 			"#agenda":
-			  	{"inMenu" : true, 
+                {"inMenu" : true, 
                 "useHeader" : true, 
                 "subdomain" : "agenda", 
                 "subdomainName" : "agenda",
@@ -39,6 +39,16 @@
                 "icon" : "calendar", 
                 "mainTitle" : "L'agenda <span class='text-red'>CO</span>mmun",
                 "placeholderMainSearch" : "rechercher un événement ..."
+          },
+            "#live":
+                {"inMenu" : true, 
+                "useHeader" : true, 
+                "subdomain" : "live", 
+                "subdomainName" : "live",
+                "hash":"#app.live",
+                "icon" : "newspaper-o", 
+                "mainTitle" : "Le fil d'actualité <span class='text-red'>CO</span>mmun",
+                "placeholderMainSearch" : "rechercher parmis les messages ..."
           },
 
 			"#power":

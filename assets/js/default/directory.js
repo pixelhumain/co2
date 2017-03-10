@@ -686,7 +686,7 @@ var directory = {
       return str;
     },
     classifiedPanelHtml : function(params){
-      mylog.log("----------- classifiedPanelHtml",params.type,params.name);
+      mylog.log("----------- classifiedPanelHtml",params,params.name);
       str = "";  
       str += "<div class='col-lg-6 col-md-12 col-sm-12 col-xs-12 searchEntityContainer classified "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
@@ -694,11 +694,11 @@ var directory = {
       if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
-           tip = (type == "events") ? "Participer" : 'Suivre';
+           var tip = 'Garder en favoris';
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
                   'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
                   " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-                      "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
+                      "<i class='fa fa-star'></i>"+ //fa-bookmark fa-rotate-270
                     "</a>";
           
         }
@@ -721,9 +721,10 @@ var directory = {
               str += "</div>";
             }
 
-            if(typeof params.category != "undefined"){ console.log("params.category", params.category);
-              
-
+            if(typeof params.price != "undefined" && params.price != "")
+            str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + "</div>";
+         
+            if(typeof params.category != "undefined"){
               str += "<div class='entityType bold'>" + params.category; 
                 if(typeof params.subtype != "undefined") str += " > " + params.subtype;
               str += "</div>";
@@ -733,22 +734,26 @@ var directory = {
             str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
                       iconFaReply + params.name + 
                    "</a>";  
+       
+            
+            
+            if(typeof params.description != "undefined" && params.description != "")
+            str += "<div class='entityDescription'>" + params.description + "</div>";
+            
 
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbh add2fav letter-red'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             //else thisLocality = "<br>";
             
             str += thisLocality;
-            
-            str += "<div class='entityDescription'>" + params.description + "</div>";
-            if(typeof params.price != "undefined")
-            str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + "</div>";
-         
-            
 
+
+            if(typeof params.contactInfo != "undefined" && params.contactInfo != "")
+            str += "<div class='entityType letter-green'><i class='fa fa-address-card'></i> " + params.contactInfo + "</div>";
+         
             str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
 
             if(params.startDate != null)
@@ -888,10 +893,6 @@ var directory = {
 
                     str += thisLocality;
                     
-                    str += "<div class='entityDescription'>" + params.description + "</div>";
-                 
-                    str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
-
                   str += "</div>";
                 str += "</div>";
               str += "</div>";
@@ -1034,7 +1035,10 @@ var directory = {
                 params.size = size;
                 params.id = getObjectId(params);
                 params.name = notEmpty(params.name) ? params.name : "";
-                params.description = notEmpty(params.shortDescription) ? params.shortDescription : (notEmpty(params.message)) ? params.message : "";
+                params.description = notEmpty(params.shortDescription) ? params.shortDescription : 
+                                    (notEmpty(params.message)) ? params.message : 
+                                    (notEmpty(params.description)) ? params.description : 
+                                    "";
 
                 mapElements.push(params);
 

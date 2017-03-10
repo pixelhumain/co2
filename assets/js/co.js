@@ -2844,6 +2844,11 @@ var typeObjLib = {
       	label : "Prix",
       	placeholder : "Prix ..."
     },
+    contactInfo :{
+      	inputType : "text",
+      	label : "Coordonnées",
+      	placeholder : "n° tel, addresse email ..."
+    },
     hidden :{
       	inputType : "hidden"
     },

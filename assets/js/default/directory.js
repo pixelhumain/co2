@@ -308,7 +308,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    		var type = $(value).attr("data-type");
       mylog.log("error type :", type);
    		if(type == "person") type = "people";
-   		else type = typeObj[type].col;
+   		else type = typeObjLib.get(type).col;
       //mylog.log("#floopItem-"+type+"-"+id);
    		if($("#floopItem-"+type+"-"+id).length){
    			//mylog.log("I FOLLOW THIS");
@@ -348,11 +348,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    		var name = $(this).attr("data-name");
    		var id = $(this).attr("data-id");
    		//traduction du type pour le floopDrawer
-   		var typeOrigine = typeObj[type].col;
+   		var typeOrigine = typeObjLib.get(type).col;
       if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
    		formData.parentType = typeOrigine;
    		if(type == "person") type = "people";
-   		else type = typeObj[type].col;
+   		else type = typeObjLib.get(type).col;
 
 		var thiselement = this;
 		$(this).html("<i class='fa fa-spin fa-circle-o-notch text-azure'></i>");
@@ -620,7 +620,7 @@ var directory = {
         if(params.type == "citoyens") 
             params.url += '.viewer.' + userId;
         if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
+          str += "<a href='"+params.url+"' class='container-img-profil lbhp add2fav'>" + params.imgProfil + "</a>";
 
         str += "<div class='padding-10 informations'>";
 
@@ -628,17 +628,17 @@ var directory = {
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.url+"' class='lbhp add2fav'>" + params.htmlIco + "</a>";
               str += "</div>";
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbhp add2fav'>"+
                       iconFaReply + params.name + 
                    "</a>";                 
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality lbhp add2fav'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -883,6 +883,9 @@ var directory = {
     roomsPanelHtml : function(params){
       mylog.log("-----------roomsPanelHtml");
 
+      if(params.type == "surveys") params.url = "#survey.entry.id."+params.id;
+      else if(params.type == "actions") params.url = "#rooms.action.id."+params.id;
+      
       str = "";  
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
@@ -920,7 +923,7 @@ var directory = {
         }
         var w = (params.startDate != null) ? "8" : "12"
             str += '<div class="col-xs-'+w+'">'+
-                '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+
+                '<a href="'+params.url+'" class="container-img-profil lbhp add2fav">'+params.imgProfil+'</a>'+
             '</div>'+
         '</div>';
         
@@ -929,19 +932,19 @@ var directory = {
         str += "<div class='entityRight no-padding'>";
                
             if(notEmpty(params.parent) && notEmpty(params.parent.name))
-              str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
+              str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbhp add2fav text-light-weight margin-bottom-5'>" +
                         "<i class='fa "+params.parentIcon+"'></i> "
                         + params.parent.name + 
                       "</a>";
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbhp add2fav'>"+
                       iconFaReply + params.name + 
                    "</a>";
             
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbhp add2fav'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -958,7 +961,7 @@ var directory = {
                 params.parentIco = "cogs";}
               str += "<div class='text-dark'>"+
 
-                        "<i class='fa fa-" + params.parentIco + "'></i><a href='" + params.parentUrl + "' class='lbh add2fav'> " + params.parentRoom.name + "</a>"+
+                        "<i class='fa fa-" + params.parentIco + "'></i><a href='" + params.parentUrl + "' class='lbhp add2fav'> " + params.parentRoom.name + "</a>"+
                     "</div>";
               if(notEmpty(params.parentRoom.parentObj)){
                 var typeIcoParent = params.parentRoom.parentObj.typeSig;
@@ -1088,7 +1091,8 @@ var directory = {
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
-                params.url = '#page.type.'+params.type+'.id.' + params.id;
+                //params.url = '#page.type.'+params.type+'.id.' + params.id;
+                params.url = '#element.detail.type.'+params.type+'.id.' + params.id;
                 if(type == "poi")    
                     url = '#element.detail.type.poi.id.' + id;
 

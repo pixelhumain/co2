@@ -257,8 +257,12 @@
 
 	    <div class="col-md-12 col-sm-12 col-xs-12 sub-menu-social">
 	    	<div class="btn-group">
+	    	<?php if(@Yii::app()->session["userId"] && $type==Person::COLLECTION && $id==Yii::app()->session["userId"]){ 
+	    		$iconNewsPaper="user-circle"; ?>
 			  <button type="button" class="btn btn-default bold" id="btn-start-newsstream"><i class="fa fa-rss"></i> Fil d'actu<span class="hidden-sm">alité</span>s</button>
-			  <button type="button" class="btn btn-default bold" id="btn-start-mystream"><i class="fa fa-user-circle"></i> Journal</button>
+			  <?php } else $iconNewsPaper="rss"; ?>
+			  <button type="button" class="btn btn-default bold" id="btn-start-mystream"><i class="fa fa-<?php echo $iconNewsPaper ?>"></i> Journal</button>
+			  <button type="button" class="btn btn-default bold" id="btn-start-gallery"><i class="fa fa-camera"></i> <?php echo Yii::t("common", "Gallery") ?></button>
 			</div>
 
 			<div class="btn-group margin-left-10">
@@ -371,6 +375,9 @@
 		$("#btn-start-mystream").click(function(){
 			loadNewsStream(false);
 		});
+		$("#btn-start-gallery").click(function(){
+			loadGallery();
+		});
 	}
 
 	function initSocial(){
@@ -441,6 +448,15 @@
 				    }
 				});
 		},"html");
+	}
+	function loadGallery(){
+		toogleNotif(false);
+		var url = "gallery/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
+		
+		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+			function(){},"html");
 	}
 
 

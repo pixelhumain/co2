@@ -54,7 +54,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 					?>
 					<tr class="<?php echo $projectClass ?>" style="<?php echo $projectStyle ?>" id="project<?php echo (string)$e["_id"];?>" style="padding:5px 0px;">
 						<td class="center" style="padding-left: 15px;">
-							<?php $url = '#element.detail.type.'.Project::COLLECTION.'.id.'.$e["_id"];?>
+							<?php $url = '#page.type.'.Project::COLLECTION.'.id.'.$e["_id"];?>
 							<a href="<?php echo $url?>" class="lbh text-dark">
 							<?php if ($e && isset($e["imagePath"])){ ?>
 								<img width="50" height="50" alt="image" class="img-circle" src="<?php echo $e["imagePath"]; ?>">

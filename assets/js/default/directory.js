@@ -882,6 +882,7 @@ var directory = {
     },
     roomsPanelHtml : function(params){
       mylog.log("-----------roomsPanelHtml");
+
       str = "";  
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";

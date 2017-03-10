@@ -688,7 +688,7 @@ var directory = {
     classifiedPanelHtml : function(params){
       mylog.log("----------- classifiedPanelHtml",params.type,params.name);
       str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-lg-6 col-md-12 col-sm-12 col-xs-12 searchEntityContainer classified "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
         
       if(userId != null && userId != "" && params.id != userId){
@@ -722,10 +722,9 @@ var directory = {
             }
 
             if(typeof params.category != "undefined"){ console.log("params.category", params.category);
-              var icon = typeof classifiedTypes[params.category] != "undefined" ?
-                        classifiedTypes[params.category]["icon"] : "";
+              
 
-              str += "<div class='entityType bold'><i class='fa fa-" + icon + "'></i> " + params.category; 
+              str += "<div class='entityType bold'>" + params.category; 
                 if(typeof params.subtype != "undefined") str += " > " + params.subtype;
               str += "</div>";
             }
@@ -744,9 +743,9 @@ var directory = {
             
             str += thisLocality;
             
-            //str += "<div class='entityDescription'>" + params.description + "</div>";
+            str += "<div class='entityDescription'>" + params.description + "</div>";
             if(typeof params.price != "undefined")
-            str += "<div class='entityPrice'>" + params.price + "</div>";
+            str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + "</div>";
          
             
 
@@ -774,7 +773,7 @@ var directory = {
         if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
-          tip = (type == "events") ? "Participer" : 'Suivre';
+          var tip = (type == "events") ? "Participer" : 'Suivre';
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
                   'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
                   " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
@@ -844,7 +843,7 @@ var directory = {
     cityPanelHtml : function(params){
         mylog.log("-----------cityPanelHtml");
         str = "";  
-        str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+        str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
         str +=    "<div class='searchEntity'>";
 
                 if(params.updated != null)
@@ -856,22 +855,24 @@ var directory = {
                     str += "<div class='entityRight no-padding'>";
                     
                     //params.url = "#city.detail.insee."+params.insee+".postalCode."+params.cp;           
-                    params.url = "javascript:"; //#main-col-search";
+                    params.url = ""; //#main-col-search";
                     params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
                     params.onclickCp = 'setScopeValue($(this));';
                     params.target = "";
                     params.dataId = params.name; 
-
+                    params.fullLocality =  "<b>" +params.name + "</b> - " +  params.cp+ "<br>" +  params.regionName;
+                    
+                    mylog.log("-----------cityPanelHtml", params);
                     var thisLocality = "";
                     if(params.fullLocality != "" && params.fullLocality != " ")
-                         thisLocality = "<a href='"+params.url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
-                                          "<i class='fa fa-home'></i> " + params.fullLocality + 
-                                        "</a>";
+                         thisLocality = '<span data-id="' + params.dataId + '"' + "  class='margin-bottom-5 entityName letter-red lbh add2fav'>"+
+                                          "<i class='fa fa-university'></i> " + params.fullLocality + 
+                                        "</span>";
                     else thisLocality = "<br>";
                     
                       var citykey = params.country + "_" + params.insee + "-" + params.cp;
                       //$city["country"]."_".$city["insee"]."-".$city["cp"];
-                      mylog.log(o);
+                     
                       thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
                                       "data-scope-value='" + citykey + "' " + 
                                       "data-scope-name='" + params.name + "' " + 
@@ -882,7 +883,7 @@ var directory = {
                                       "data-region-communexion='" + params.regionName + "' "+ 
                                       "data-country-communexion='" + params.country + "' "+ 
                                       ">"+
-                                          "Communecter" + 
+                                          "<i class='fa fa-angle-right'></i> Communecter" + 
                                       "</button>";
 
                     str += thisLocality;
@@ -1053,6 +1054,11 @@ var directory = {
                     params.parentIcon = "fa-"+parentObj.icon;
                     params.parentColor = parentObj.color;
                 }
+                if(params.type == "classified" && typeof params.category != "undefined"){
+                  params.ico = typeof classifiedTypes[params.category] != "undefined" ?
+                               "fa-" + classifiedTypes[params.category]["icon"] : "";
+                }
+
                 params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
 
                 // var urlImg = "/upload/communecter/color.jpg";

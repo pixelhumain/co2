@@ -55,7 +55,7 @@
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
                 "subdomain" : "power", 
-                "subdomainName" : "power",
+                "subdomainName" : "démocratie",
                 "hash":"#app.power",
                 "icon" : "hand-rock-o", 
                 "mainTitle" : "Espace <span class='text-red'>CO</span>mmun dédié à l'intelligence <span class='text-red'>CO</span>llective",

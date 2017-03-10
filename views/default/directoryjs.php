@@ -186,10 +186,6 @@
           <button class="btn text-purple btn-directory-type" data-type="projects">
               <i class="fa fa-lightbulb-o"></i> 
               <span class="hidden-xs">Projets</span>
-          </button><hr class="hidden-xs">
-          <button class="btn text-red  btn-directory-type" data-type="cities">
-              <i class="fa fa-university"></i> 
-              <span class="hidden-xs">Communes</span>
           </button>
           <?php } else if( $typeSelected == "vote" ){?>
             <button class="btn text-black bg-azure btn-directory-type" data-type="vote">

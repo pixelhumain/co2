@@ -2980,7 +2980,7 @@ var typeObj = {
 	"organizations" : {sameAs:"organization"},
 	"LocalBusiness" : {color: "azure",icon: "industry"},
 	"NGO" : {sameAs:"organization"},
-	"association" : {sameAs:"organization"},
+	"Association" : {sameAs:"organization"},
 	"GovernmentOrganization" : {color: "green",icon: "circle-o"},
 	"Group" : {	color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},

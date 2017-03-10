@@ -400,8 +400,8 @@
 															"openEdition" => $openEdition
 					)); ?>
 					<div class="text-right padding-10">
-						<?php if(@$edit==true) { ?>
-						<button onclick="" 
+						<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
+						<button onclick="elementLib.openForm('project','sub')" 
 								class="btn btn-default letter-blue margin-top-5">
 					    	<b><i class="fa fa-plus"></i> Nouveau projet</b>
 						</button> 
@@ -447,7 +447,7 @@
 																					  ));
 							?>
 							<div class="text-right padding-10">
-								<?php if(@$edit==true) { ?>
+								<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
 								<button onclick="" 
 										class="btn btn-default letter-blue margin-top-5">
 							    	<b><i class="fa fa-plus"></i> Nouvel événement</b>

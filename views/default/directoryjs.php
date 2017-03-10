@@ -154,7 +154,11 @@
 
         <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
 
-          <?php if($typeSelected != "events" && $typeSelected != "vote" && $typeSelected != "cities"){ ?>   
+          <?php if($typeSelected != "events"  && 
+                   $typeSelected != "vote"    && 
+                   $typeSelected != "cities"  && 
+                   $typeSelected != "classified"){ 
+          ?>   
           <button class="btn text-black bg-dark btn-open-filliaire">
               <i class="fa fa-th"></i> 
               <span class="hidden-xs">Thématiques</span>

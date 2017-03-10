@@ -2570,6 +2570,8 @@ var typeObjLib = {
 	    	if(type=="classified") 
 	    		inputObj.label = "Titre de votre " + trad[type]+" ";
 
+	    	inputObj.placeholder = inputObj.label + " ...";
+
 	    	inputObj.init = function(){
 	        	$("#ajaxFormModal #name ").off().on("blur",function(){
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
@@ -2711,7 +2713,8 @@ var typeObjLib = {
         }
     },
     urls : {
-    	placeholder : "url",
+    	label : "Ajouter des informations libres",
+    	placeholder : "informations / urls ...",
         inputType : "array",
         value : [],
         init:function(){
@@ -2835,6 +2838,11 @@ var typeObjLib = {
     fax :{
       	inputType : "text",
       	placeholder : "Saisir les numéros de fax séparer par une virgule"
+    },
+    price :{
+      	inputType : "text",
+      	label : "Prix",
+      	placeholder : "Prix ..."
     },
     hidden :{
       	inputType : "hidden"

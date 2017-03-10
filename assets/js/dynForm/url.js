@@ -1,7 +1,7 @@
 dynForm = {
     jsonSchema : {
 	    title : "Ajouter une url",
-	    icon : "user",
+	    icon : "link",
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un contact depuis un element existant

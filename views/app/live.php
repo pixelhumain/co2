@@ -52,7 +52,7 @@
 
 
 
-<?php $this->renderPartial('../news/modalCreateAnc'); ?>
+<?php //$this->renderPartial('../news/modalCreateAnc'); ?>
 
 <?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"annonces")); ?>
 

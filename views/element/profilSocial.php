@@ -266,7 +266,7 @@
 			</div>
 
 			<div class="btn-group margin-left-10">
-			  <button type="button" class="btn btn-default bold">
+			  <button type="button" class="btn btn-default bold" id="btn-start-notifications">
 			  	<i class="fa fa-bell"></i> 
 			  	<span class="hidden-xs hidden-sm">
 			  		Mes notif<span class="hidden-md">ications</span>
@@ -378,6 +378,9 @@
 		$("#btn-start-gallery").click(function(){
 			loadGallery();
 		});
+		$("#btn-start-notifications").click(function(){
+			loadNotifications();
+		});
 	}
 
 	function initSocial(){
@@ -452,6 +455,15 @@
 	function loadGallery(){
 		toogleNotif(false);
 		var url = "gallery/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
+		
+		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+			function(){},"html");
+	}
+	function loadNotifications(){
+		toogleNotif(false);
+		var url = "element/notifications/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
 		
 		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 

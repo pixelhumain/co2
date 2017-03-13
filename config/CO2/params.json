@@ -16,7 +16,9 @@
                 "hash" : "#app.search",
                 "icon" : "search", 
                 "mainTitle" : "Moteur de recherche <span class='text-red'>territorial</span>",
-                "placeholderMainSearch" : "Rechercher une page ..."
+                "placeholderMainSearch" : "Rechercher une page ...",
+                "lblBtnCreate" : "Créer une page",
+                "colorBtnCreate" : "green"
           },
 
 		    "#annonces":
@@ -27,7 +29,9 @@
                 "hash" : "#app.annonces",
                 "icon" : "bullhorn", 
                 "mainTitle" : "Toutes vos annonces en direct",
-                "placeholderMainSearch" : "rechercher parmis les annonces  ..."
+                "placeholderMainSearch" : "rechercher parmis les annonces  ...",
+                "lblBtnCreate" : "Publier une annonce",
+                "colorBtnCreate" : "azure"
           },
 
 			"#agenda":
@@ -38,17 +42,9 @@
                 "hash":"#app.agenda",
                 "icon" : "calendar", 
                 "mainTitle" : "L'agenda <span class='text-red'>CO</span>mmun",
-                "placeholderMainSearch" : "rechercher un événement ..."
-          },
-            "#live":
-                {"inMenu" : true, 
-                "useHeader" : true, 
-                "subdomain" : "live", 
-                "subdomainName" : "live",
-                "hash":"#app.live",
-                "icon" : "newspaper-o", 
-                "mainTitle" : "Le fil d'actualité <span class='text-red'>CO</span>mmun",
-                "placeholderMainSearch" : "rechercher parmis les messages ..."
+                "placeholderMainSearch" : "rechercher un événement ...",
+                "lblBtnCreate" : "Créer un événement",
+                "colorBtnCreate" : "orange"
           },
 
 			"#power":
@@ -59,7 +55,20 @@
                 "hash":"#app.power",
                 "icon" : "hand-rock-o", 
                 "mainTitle" : "Espace <span class='text-red'>CO</span>mmun dédié à l'intelligence <span class='text-red'>CO</span>llective",
-                "placeholderMainSearch" : "rechercher parmis les propositions ..."
+                "placeholderMainSearch" : "rechercher parmis les propositions ...",
+                "lblBtnCreate" : "Faire une proposition",
+                "colorBtnCreate" : "azure"
+          },
+
+            "#live":
+                {"inMenu" : true, 
+                "useHeader" : true, 
+                "subdomain" : "live", 
+                "subdomainName" : "live",
+                "hash":"#app.live",
+                "icon" : "newspaper-o", 
+                "mainTitle" : "Le fil d'actualité <span class='text-red'>CO</span>mmun",
+                "placeholderMainSearch" : "rechercher parmis les messages ..."
           },
 
 			"#page":

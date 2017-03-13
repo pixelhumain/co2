@@ -9,28 +9,13 @@
 
     $page = "search";
 
-    if(!@$type){
-        $type = "all";
-        $lblCreate = "Créer une page";
-    }
+    if(!@$type){  $type = "all"; }
 
-    if(@$type=="events"){
-        $page = "agenda";
-        $lblCreate = "Créer un événement";
-    }
-    if(@$type=="classified"){
-        $page = "annonces";
-        $lblCreate = "Publier une annonce";
-    }
-    if(@$type=="vote"){
-        $page = "power";
-        $lblCreate = "Faire une proposition";
-    }
+    if(@$type=="events")    { $page = "agenda"; }
+    if(@$type=="classified"){ $page = "annonces"; }
+    if(@$type=="vote")      { $page = "power"; }
 
-    if(@$type=="cities"){
-        //$page = "Communes";
-        $lblCreate = "";
-    }
+    if(@$type=="cities")    { $lblCreate = ""; }
 
     if($params["title"] == "kgougle") $page = "social";
     
@@ -167,20 +152,20 @@
     <?php if(@$type!="cities"){ ?>
         <div class="col-md-2 col-sm-2 col-xs-12 no-padding">
             <?php if(@$type=="all"){ ?>
-            <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white pull-right margin-top-25 margin-right-10 tooltips"
+            <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips"
                     data-target="#dash-create-modal" data-toggle="modal"
                     data-toggle="tooltip" data-placement="top" 
-                    title="<?php echo $lblCreate; ?>">
-                <i class="fa fa-times" style="font-size:18px;"></i>
+                    title="<?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>">
+                <i class="fa fa-plus-circle"></i> <?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>
             </button>
             <?php }else{ ?>
-            <button class="btn btn-default btn-circle-1 btn-create-page main-btn-create bg-green-k text-white pull-right margin-top-25 margin-right-10 tooltips" data-type="<?php echo @$type; ?>"
+            <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips" data-type="<?php echo @$type; ?>"
                     data-toggle="tooltip" data-placement="top" 
-                    title="<?php echo $lblCreate; ?>">
-                <i class="fa fa-times" style="font-size:18px;"></i>
+                    title="<?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>">
+                <i class="fa fa-plus-circle"></i> <?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>
             </button>
             <?php } ?>
-                  
+
         </div>
 
         <div class="col-md-10 col-sm-10 col-xs-12 padding-5">
@@ -383,6 +368,9 @@ jQuery(document).ready(function() {
             KScrollTo("#content-social");
         });
          
+        <?php if(@$type == "classified"){ ?>
+            initFreedomInterface();
+        <?php } ?>
 
         loadingData = false; 
         initTypeSearch(type);
@@ -456,6 +444,17 @@ jQuery(document).ready(function() {
         activateGlobalCommunexion(false);
     });
 
+
+      $(window).bind("scroll",function(){ mylog("test scroll");
+        if(!loadingData && !scrollEnd){
+              var heightWindow = $("html").height() - $("body").height();
+              if( $(this).scrollTop() >= heightWindow - 400){
+                startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
+              }
+        }
+    });
+
+
     $(".tooltips").tooltip();
 
     //currentKFormType = "Group";
@@ -477,4 +476,55 @@ function initTypeSearch(typeInit){
         indexStepInit = 100;
     }
 }
+
+<?php 
+    if(@$type == "classified")
+    $freedomSections = CO2::getContextList("freedomSections");
+?>
+var freedomCategories = <?php echo json_encode($freedomSections); ?>
+
+function initFreedomInterface(){
+    $(".btn-select-type-anc").click(function(){
+
+      $(".btn-select-type-anc").removeClass("active");
+      $(this).addClass("active");
+
+      var typeAnc = $(this).data("type-anc");
+      if(typeAnc == "forsale" || typeAnc == "location" || typeAnc == "donation" || 
+        typeAnc == "sharing" || typeAnc == "lookingfor"){
+        $(".subsub").show(300);
+      }else{
+        $(".subsub").hide(300);
+      }
+
+      if(typeof freedomCategories[typeAnc] != "undefined")
+            $(".label-category").html("<i class='fa fa-"+ freedomCategories[typeAnc]["icon"] + "'></i> " + freedomCategories[typeAnc]["label"]);
+            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+freedomCategories[typeAnc]["color"])
+            $(".fa-title-list").removeClass("hidden");
+            KScrollTo(".top-page");
+    });
+
+    $(".btn-select-category-1").click(function(){
+        $(".btn-select-category-1").removeClass("active");
+        $(this).addClass("active");
+
+        var keycat = $(this).data("keycat");
+        $(".keycat").addClass("hidden");
+        $(".keycat-"+keycat).removeClass("hidden");     
+    });
+
+    $(".keycat").click(function(){
+        $(".keycat").removeClass("active");
+        $(this).addClass("active");
+    });
+
+    $("#btn-create-classified").click(function(){
+         elementLib.openForm('classified');
+    });
+
+    initFormImages();
+
+    //loadLiveNow();
+}
+
 </script>

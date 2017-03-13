@@ -564,6 +564,7 @@
 		changeHiddenIconeElement(true);
 		manageDivEditElement();
 		bindAboutPodElement();
+		bindLBHLinks();
 		//favorite.applyColor(contextData.type,contextData.id);
 
 		//loadNewsStream();

@@ -802,7 +802,7 @@ function getMediaHtml(data,action,idNews){
             width="100";
             height="100";
 
-            aVideo='<a href="#" class="videoSignal text-white center"><i class="fa fa-3x fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
+            aVideo='<a href="javascript:;" class="videoSignal text-white center"><i class="fa fa-3x fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
             inputToSave+="<input type='hidden' class='video_link_value' value='"+data.content.videoLink+"'/>"+
             "<input type='hidden' class='media_type' value='video_link' />";   
 		}
@@ -1213,31 +1213,31 @@ function getMediaImages(o,newsId,authorId,targetName){
 		for(var i in o.images){
 			path=baseUrl+"/"+uploadUrl+moduleId+"/"+o.images[i].folder+"/"+o.images[i].name;
 			if(i==0){
-			html+="<div class='col-md-12 padding-5' style='position:relative;height:200px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a></div>";
+			html+="<div class='col-md-6 padding-5' style='position:relative;height:400px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a></div>";
 			}else{
-			html+="<div class='col-md-6 padding-5' style='position:relative; height:120px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a></div>";	
+			html+="<div class='col-md-6 padding-5' style='position:relative; height:200px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a></div>";	
 			}
 		}
 	}
 	else if(countImages==4){
 		for(var i in o.images){
 			path=baseUrl+"/"+uploadUrl+moduleId+"/"+o.images[i].folder+"/"+o.images[i].name;
-			html+="<div class='col-md-6 padding-5' style='position:relative;height:120px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;height:auto;'></a></div>";
+			html+="<div class='col-md-6 padding-5' style='position:relative;height:250px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;height:auto;'></a></div>";
 		}
 	}
 	else if(countImages>=5){
 		for(var i in o.images){
 			path=baseUrl+"/"+uploadUrl+moduleId+"/"+o.images[i].folder+"/"+o.images[i].name;
 			if(i==0)
-				html+="<div class='col-md-8 no-padding'><div class='col-md-12 padding-5' style='position:relative;height:120px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a></div>";
+				html+="<div class='col-md-12 no-padding'><div class='col-md-6 padding-5' style='position:relative;height:260px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a></div>";
 			else if(i==1){
-				html+="<div class='col-md-12 padding-5' style='position:relative;height:120px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a></div></div>";
+				html+="<div class='col-md-6 padding-5' style='position:relative;height:260px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a></div></div>";
 			}
 			else if(i<5){
-				html+="<div class='col-md-4 padding-5' style='position:relative;height:80px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a>";
+				html+="<div class='col-md-4 padding-5' style='position:relative;height:160px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a>";
 				if(i==4 && countImages > 5){
 					diff=countImages-5;
-					html+="<div style='position: absolute;width: 100%;height: 100%;background-color: rgba(0,0,0,0.4);color: white;text-align: center;line-height: 75px;font-size: 30px;'><span>+ "+diff+"</span></div>";
+					html+="<div style='position: absolute;width: 100%;height: 100%;background-color: rgba(0,0,0,0.4);color: white;text-align: center;line-height: 150px;font-size: 50px;'><span>+ "+diff+"</span></div>";
 				}
 				html+="</div>";
 			} else{

@@ -1,72 +1,61 @@
 {
 	"all": 
-        {"label":"Tout", 				
+        {"label":"Tous", 				
          "key" : "all", 		
          "icon" : "circle-o", 				
-         "section":1, "color":"default"},
+         "section":1, 
+         "color":"default"
+    },
 
-	"like": 
-        {"label":"Coup de cœur", 		
-         "key" : "like", 		
-         "icon" : "heartbeat", 				
+	
+
+    "sharing": 
+        {"label":"À partager",      
+         "key" : "sharing",     
+         "icon" : "exchange",               
          "section":2, 
-         "color":"green"
+         "color":"azure"
     },
-
-	"dislike": 
-        {"label":"Coup de gueule", 	
-         "key" : "dislike", 	
-         "icon" : "thumbs-o-down", 			
-         "section":2, 
-         "color":"red"
-    },
-
-	"lookingfor" : 
-        {"label":"À la recherche", 	
-         "key" : "lookingfor", 	
-         "icon" : "eye", 					
-         "section":3, 
-         "color":"yellow"
-    },
-
-	"job": 
-        {"label":"Offre d'emplois", 	
-         "key" : "job", 		
-         "icon" : "briefcase", 				
-         "section":3, 
-         "color":"yellow"
-    },
-
-	"forsale": 
-        {"label":"À vendre", 			
-         "key" : "forsale", 	
-         "icon" : "money", 					
-         "section":4, 
-         "color":"blue"
-    },
-
-	"location": 
-        {"label":"À louer", 			
-         "key" : "location", 	
-         "icon" : "external-link", 			
-         "section":4, 
-         "color":"blue"
-    },
-
 	"donation": 
         {"label":"À donner", 			
          "key" : "donation", 	
          "icon" : "gift", 					
-         "section":5, 
-         "color":"blue"
+         "section":2, 
+         "color":"azure"
     },
 
-	"sharing": 
-        {"label":"À partager", 		
-         "key" : "sharing", 	
-         "icon" : "exchange", 				
+    "forsale": 
+        {"label":"À vendre",            
+         "key" : "forsale",     
+         "icon" : "money",                  
+         "section":3, 
+         "color":"azure"
+    },
+
+    "location": 
+        {"label":"À louer",             
+         "key" : "location",    
+         "icon" : "external-link",          
+         "section":3, 
+         "color":"azure"
+    },
+
+
+    "lookingfor" : 
+        {"label":"À la recherche",  
+         "key" : "lookingfor",  
+         "icon" : "eye",                    
+         "section":4, 
+         "color":"azure"
+    },
+
+    "job": 
+        {"label":"Offre d'emplois",     
+         "key" : "job",         
+         "icon" : "briefcase",              
          "section":5, 
-         "color":"blue"
+         "color":"azure"
     }
+
 
 }

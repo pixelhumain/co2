@@ -9,11 +9,13 @@
 
     $page = "search";
 
-    if(!@$type) $type = "all";
+    if(!@$type){  $type = "all"; }
 
-    if(@$type=="events")     $page = "agenda";
-    if(@$type=="classified") $page = "annonces";
-    if(@$type=="vote")       $page = "power";
+    if(@$type=="events")    { $page = "agenda"; }
+    if(@$type=="classified"){ $page = "annonces"; }
+    if(@$type=="vote")      { $page = "power"; }
+
+    if(@$type=="cities")    { $lblCreate = ""; }
 
     if($params["title"] == "kgougle") $page = "social";
     
@@ -23,129 +25,155 @@
                                     "page" => $page,
                                     "type" => @$type) ); 
 ?>
+
 <style>
-#page .bg-dark {
-    color: white !important;
-    background-color: #3C5665 !important;
-}
-#page .bg-red{
-    background-color:#E33551 !important;
-    color:white!important;
-}
-#page .bg-blue{
-    background-color: #5f8295 !important;
-    color:white!important;
-}
-#page .bg-green{
-    background-color:#93C020 !important;
-    color:white!important;
-}
-#page .bg-orange{
-    background-color:#FFA200 !important;
-    color:white!important;
-}
-#page .bg-yellow{
-    background-color:#FFC600 !important;
-    color:white!important;
-}
-#page .bg-purple{
-    background-color:#8C5AA1 !important;
-    color:white!important;
-}
-#page #dropdown_search{
-	min-height:500px;
-    /*margin-top:30px;*/
-}
-#page .row.headerDirectory{
-    margin-top: 20px;
-    display: none;
-}
-#page p {
-    font-size: 13px;
-}
-.container-result-search {
-    border-top:1px solid #eee;
-    padding-top:15px;
-}
+    #page .bg-dark {
+        color: white !important;
+        background-color: #3C5665 !important;
+    }
+    #page .bg-red{
+        background-color:#E33551 !important;
+        color:white!important;
+    }
+    #page .bg-blue{
+        background-color: #5f8295 !important;
+        color:white!important;
+    }
+    #page .bg-green{
+        background-color:#93C020 !important;
+        color:white!important;
+    }
+    #page .bg-orange{
+        background-color:#FFA200 !important;
+        color:white!important;
+    }
+    #page .bg-yellow{
+        background-color:#FFC600 !important;
+        color:white!important;
+    }
+    #page .bg-purple{
+        background-color:#8C5AA1 !important;
+        color:white!important;
+    }
+    #page #dropdown_search{
+    	min-height:500px;
+        /*margin-top:30px;*/
+    }
+    #page .row.headerDirectory{
+        margin-top: 20px;
+        display: none;
+    }
+    #page p {
+        font-size: 13px;
+    }
+    .container-result-search {
+        border-top:1px solid #eee;
+        padding-top:15px;
+    }
 
-/*.homestead{
-    font-family:unset!important;
-}*/
-/*
-.main-btn-scopes{
-    position: absolute;
-    top: 85px;
-    left: 18px;
-    z-index: 10;
-    border-radius: 0 50%;
-}*/
+    /*.homestead{
+        font-family:unset!important;
+    }*/
+    /*
+    .main-btn-scopes{
+        position: absolute;
+        top: 85px;
+        left: 18px;
+        z-index: 10;
+        border-radius: 0 50%;
+    }*/
 
-.btn-create-page{
-    margin-top:0px;
-    z-index: 10;
-    border-radius: 0 50%;
-    -ms-transform: rotate(7deg);
-    -webkit-transform: rotate(7deg);
-    transform: rotate(-45deg);
-}
-.btn-create-page:hover{
-    background-color: white!important;
-    color:#34a853!important;
-    border: 2px solid #34a853!important;
+    .btn-create-page{
+        margin-top:0px;
+        z-index: 10;
+        border-radius: 0 50%;
+        -ms-transform: rotate(7deg);
+        -webkit-transform: rotate(7deg);
+        transform: rotate(-45deg);
+    }
+    .btn-create-page:hover{
+        background-color: white!important;
+        color:#34a853!important;
+        border: 2px solid #34a853!important;
 
-}
-.main-btn-scopes {
-    margin-top: 7px;
-}
+    }
+    .main-btn-scopes {
+        margin-top: 7px;
+    }
 
-.scope-min-header{
-    float: left;
-    margin-top: 27px;
-    margin-left: 35px;
-}
+    .scope-min-header{
+        float: left;
+        margin-top: 27px;
+        margin-left: 35px;
+    }
 
-.links-create-element .btn-create-elem{
-    margin-top:25px;
-}
+    .links-create-element .btn-create-elem{
+        margin-top:25px;
+    }
 
-.subtitle-search{
-    display: none;
-    /*width: 100%;
-    text-align: center;*/
-}
+    .subtitle-search{
+        display: none;
+        /*width: 100%;
+        text-align: center;*/
+    }
+       
+    .breadcrum-communexion{ 
+         margin-top:25px;
+    }
 
-.breadcrum-communexion .item-globalscope-checker{
-    border-bottom:1px solid #e6344d;
-}
-.item-globalscope-checker.inactive{
-    color:#DBBCC1 !important;
-    border-bottom:0px;
-}
-.item-globalscope-checker:hover,
-.item-globalscope-checker:active,
-.item-globalscope-checker:focus{
-    color:#e6344d !important;
-    border-bottom:1px solid #e6344d;
-    text-decoration: none !important;
-}
-header .container, 
-.header .container{
-    padding-bottom: 40px;
-}
+    .breadcrum-communexion .item-globalscope-checker{
+        border-bottom:1px solid #e6344d;
+    }
+    .item-globalscope-checker.inactive{
+        color:#DBBCC1 !important;
+        border-bottom:0px;
+        margin(top:-6px;)
+    }
+    .item-globalscope-checker:hover,
+    .item-globalscope-checker:active,
+    .item-globalscope-checker:focus{
+        color:#e6344d !important;
+        border-bottom:1px solid #e6344d;
+        text-decoration: none !important;
+    }
+    header .container, 
+    .header .container{
+        padding-bottom: 40px;
+    }
 
-.btn-directory-type.bg-white {
-    background-color: #F2F2F2 !important;
-}
+    .btn-directory-type.bg-white {
+        background-color: #F2F2F2 !important;
+    }
 </style>
-
-
 
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
 
-    <?php
-        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
-    ?>
+    <?php if(@$type!="cities"){ ?>
+        <div class="col-md-2 col-sm-2 col-xs-12 no-padding">
+            <?php if(@$type=="all"){ ?>
+            <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips"
+                    data-target="#dash-create-modal" data-toggle="modal"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="<?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>">
+                <i class="fa fa-plus-circle"></i> <?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>
+            </button>
+            <?php }else{ ?>
+            <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips" data-type="<?php echo @$type; ?>"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="<?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>">
+                <i class="fa fa-plus-circle"></i> <?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>
+            </button>
+            <?php } ?>
+
+        </div>
+
+        <div class="col-md-10 col-sm-10 col-xs-12 padding-5">
+        <?php
+            $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
+        ?>
+        </div>
+    <?php } ?>
 
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
@@ -154,7 +182,7 @@ header .container,
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 
             data-target="#dash-create-modal" data-toggle="modal"
             data-toggle="tooltip" data-placement="top" 
-                                title="Créer une nouvelle page">
+            title="Créer une nouvelle page">
                 <i class="fa fa-times" style="font-size:18px;"></i>
         </button>
         <h5 class="text-center letter-green margin-top-25">Créer une page</h5>
@@ -340,6 +368,9 @@ jQuery(document).ready(function() {
             KScrollTo("#content-social");
         });
          
+        <?php if(@$type == "classified"){ ?>
+            initFreedomInterface();
+        <?php } ?>
 
         loadingData = false; 
         initTypeSearch(type);
@@ -413,6 +444,17 @@ jQuery(document).ready(function() {
         activateGlobalCommunexion(false);
     });
 
+
+      $(window).bind("scroll",function(){ mylog("test scroll");
+        if(!loadingData && !scrollEnd){
+              var heightWindow = $("html").height() - $("body").height();
+              if( $(this).scrollTop() >= heightWindow - 400){
+                startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
+              }
+        }
+    });
+
+
     $(".tooltips").tooltip();
 
     //currentKFormType = "Group";
@@ -434,4 +476,56 @@ function initTypeSearch(typeInit){
         indexStepInit = 100;
     }
 }
+
+<?php 
+    if(@$type == "classified"){
+    $freedomSections = CO2::getContextList("freedomSections");
+?>
+var freedomCategories = <?php echo json_encode($freedomSections); ?>
+<?php } ?>
+
+function initFreedomInterface(){
+    $(".btn-select-type-anc").click(function(){
+
+      $(".btn-select-type-anc").removeClass("active");
+      $(this).addClass("active");
+
+      var typeAnc = $(this).data("type-anc");
+      if(typeAnc == "forsale" || typeAnc == "location" || typeAnc == "donation" || 
+        typeAnc == "sharing" || typeAnc == "lookingfor"){
+        $(".subsub").show(300);
+      }else{
+        $(".subsub").hide(300);
+      }
+
+      if(typeof freedomCategories[typeAnc] != "undefined")
+            $(".label-category").html("<i class='fa fa-"+ freedomCategories[typeAnc]["icon"] + "'></i> " + freedomCategories[typeAnc]["label"]);
+            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+freedomCategories[typeAnc]["color"])
+            $(".fa-title-list").removeClass("hidden");
+            KScrollTo(".top-page");
+    });
+
+    $(".btn-select-category-1").click(function(){
+        $(".btn-select-category-1").removeClass("active");
+        $(this).addClass("active");
+
+        var keycat = $(this).data("keycat");
+        $(".keycat").addClass("hidden");
+        $(".keycat-"+keycat).removeClass("hidden");     
+    });
+
+    $(".keycat").click(function(){
+        $(".keycat").removeClass("active");
+        $(this).addClass("active");
+    });
+
+    $("#btn-create-classified").click(function(){
+         elementLib.openForm('classified');
+    });
+
+    initFormImages();
+
+    //loadLiveNow();
+}
+
 </script>

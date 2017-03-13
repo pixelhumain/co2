@@ -112,7 +112,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
                                                        "imgDefault" => $imgDefault,
                                                        "contextParentId" => $contextParentId,
                                                        "contextParentType" => $contextParentType,
-                                                       "canManageNews" => $canManageNews,
+                                                       "canManageNews" => @$canManageNews,
                                                        "isFirst"=>true)); ?>
 
 </ul>

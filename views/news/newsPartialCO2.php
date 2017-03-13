@@ -19,11 +19,15 @@
           else
             $thumbAuthor = $this->module->assetsUrl."/images/thumb/default_".$media["target"]["type"].".png";
           $nameAuthor=$media["target"]["name"];
+          $authorType=$media["target"]["type"];
+          $authorId=$media["target"]["id"];
       } else{
          $thumbAuthor =  @$media['author']['profilThumbImageUrl'] ? 
                       Yii::app()->createUrl('/'.@$media['author']['profilThumbImageUrl']) 
                       : @$imgDefault;
-          $nameAuthor=$media["author"]["name"];             
+          $nameAuthor=$media["author"]["name"];  
+          $authorType=Person::COLLECTION;
+          $authorId=$media["author"]["id"];           
       }
       $srcMainImg = "";              
       if(@$media["media"]["images"] && $media["media"]["type"] != "gallery_images")
@@ -49,7 +53,7 @@
 
                 <img class="pull-right img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
                 <div class="pull-right padding-5">
-                  <a href=""><?php echo $nameAuthor ?></a><br>
+                  <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh"><?php echo $nameAuthor ?></a><br>
                   <span class="margin-top-5">
                   <?php if($media["type"]=="news") { ?>
                     <i class="fa fa-pencil-square"></i> a publié un message
@@ -85,7 +89,7 @@
 
                 <img class="pull-left img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
                 <div class="pull-left padding-5">
-                  <a href=""><?php echo @$nameAuthor; ?></a><br>
+                  <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh"><?php echo @$nameAuthor; ?></a><br>
                   <span class="margin-top-5">
                   <?php if($media["type"]=="news") { ?>
                     <i class="fa fa-pencil-square"></i> a publié un message
@@ -117,7 +121,7 @@
                 
               </small>
 
-              <a href="<?php echo @$media["href"]; ?>" target="_blank" class="link-read-media margin-top-10 hidden-xs img-circle">
+              <a href="javascript:;" target="_blank" class="link-read-media margin-top-10 hidden-xs img-circle">
                 <small>
                   <i class="fa fa-clock-o"></i> 
                   <?php echo Translate::pastTime(date($media["created"]->sec), "timestamp", $timezone); ?>
@@ -196,6 +200,7 @@
             media=getMediaImages(v.media,e,v.author.id,v.target.name);
           $("#result"+e).append(media);
         }
+        bindLBHLinks();
       });
 
       <?php if(!(@$isFirst == true) && @$limitDate && @$limitDate["created"]){ ?>

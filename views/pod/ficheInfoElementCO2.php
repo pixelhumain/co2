@@ -252,6 +252,33 @@
 					</li>
 				</ul>
 			</li>
+			<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
+			<li class="editable">
+				<div class="link"><i class="fa fa-puzzle-piece"></i><?php echo Yii::t("chart", "Values and Cultures") ?><i class="fa fa-chevron-down"></i></div>
+
+				<ul class="submenu">
+					<?php
+					if(empty($element["properties"]["chart"])) $element["properties"]["chart"] = array();
+					$this->renderPartial('../chart/index',array(
+											"itemId" => (string)$element["_id"], 
+											"itemName" => $element["name"], 
+											"parentType" => $type, 
+											"properties" => $element["properties"]["chart"],
+											"admin" =>$edit,
+											"isDetailView" => 1,
+											"openEdition" => $openEdition));
+					?>
+					<div class="text-right padding-10">
+					<?php if (($edit || $openEdition) && @Yii::app()->session["userId"]){	?>
+						<button class="edit-chart btn btn-default letter-blue margin-top-5 tooltips" 
+							data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("chart","Edit properties") ?>">
+							<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?><i class="fa fa-chevron-right"></i></b>
+						</button>
+					<?php } ?>
+					</div>
+				</ul>
+			</li>
+		<?php } ?>
 		</ul>
 
 		<ul id="accordion4" class="accordion shadow2 margin-top-20">
@@ -724,8 +751,16 @@
 			toogleNotif(false);
 			smallMenu.openAjax(baseUrl+'/'+moduleId+'/element/directory/type/'+contextType+'/id/'+contextId+
 								'?tpl=json','Communauté','fa-connectdevelop','dark');
+			bindLBHLinks();
 		});
-
+		$(".edit-chart").click(function(){
+			toogleNotif(false);
+			var url = "chart/addchartsv/type/"+contextType+"/id/"+contextId;
+			$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+			ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+			function(){},"html");
+		});
 		$(".btn-open-collection").click(function(){
 			toogleNotif(false);
 		});

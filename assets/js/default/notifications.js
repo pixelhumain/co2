@@ -50,14 +50,10 @@ function updateNotification(action, element, id)
         		$(".notifList"+element+" li.notifLi").addClass("seen")  
         		notifCount();
         	}else{           
-        		if(all){
-        			alert(element);
+        		if(all)
         			$(".notifList"+element+" li.notifLi").addClass("read");
-        		}
-        		else{
-        			alert(element);
+        		else
         			$(".notifList"+element+" li.notif_"+notifId).addClass("read");
-        		}
         	}
         	mylog.log("notification cleared ",data);
         } else {

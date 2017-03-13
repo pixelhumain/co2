@@ -257,7 +257,7 @@
 
 	    <div class="col-md-12 col-sm-12 col-xs-12 sub-menu-social">
 	    	<div class="btn-group">
-	    	<?php if(@Yii::app()->session["userId"] && $type==Person::COLLECTION && $id==Yii::app()->session["userId"]){ 
+	    	<?php if(@Yii::app()->session["userId"] && $type==Person::COLLECTION && (string)$element["_id"]==Yii::app()->session["userId"]){ 
 	    		$iconNewsPaper="user-circle"; ?>
 			  <button type="button" class="btn btn-default bold" id="btn-start-newsstream"><i class="fa fa-rss"></i> Fil d'actu<span class="hidden-sm">alité</span>s</button>
 			  <?php } else $iconNewsPaper="rss"; ?>
@@ -355,11 +355,11 @@
 
 	var elementName = "<?php echo @$element["name"]; ?>";
     var contextType = "<?php echo @$type; ?>";
+    var contextId = "<?php echo @(string)$element['_id'] ?>";
     var members = <?php echo json_encode(@$members); ?>;
     var params = <?php echo json_encode(@$params); ?>;
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
-
     console.log("params", params);
 
 	jQuery(document).ready(function() {

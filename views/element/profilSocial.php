@@ -261,31 +261,35 @@
 	    		$iconNewsPaper="user-circle"; ?>
 			  <button type="button" class="btn btn-default bold" id="btn-start-newsstream"><i class="fa fa-rss"></i> Fil d'actu<span class="hidden-sm">alité</span>s</button>
 			  <?php } else $iconNewsPaper="rss"; ?>
-			  <button type="button" class="btn btn-default bold" id="btn-start-mystream"><i class="fa fa-<?php echo $iconNewsPaper ?>"></i> Journal</button>
+			  <button type="button" class="btn btn-default bold" id="btn-start-mystream"><i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper") ?></button>
 			  <button type="button" class="btn btn-default bold" id="btn-start-gallery"><i class="fa fa-camera"></i> <?php echo Yii::t("common", "Gallery") ?></button>
 			</div>
-
+			<?php if(@Yii::app()->session["userId"] && $isLinked==true){ ?>
 			<div class="btn-group margin-left-10">
 			  <button type="button" class="btn btn-default bold" id="btn-start-notifications">
 			  	<i class="fa fa-bell"></i> 
 			  	<span class="hidden-xs hidden-sm">
 			  		Mes notif<span class="hidden-md">ications</span>
-			  	</span><span class="badge badge-success">12</span>
+			  	</span>
+			  	<span class="badge notifications-countElement <?php if(!@$countNotifElement || (@$countNotifElement && $countNotifElement=="0")) echo 'badge-transparent hide'; else echo 'badge-success'; ?>">
+			  		<?php echo @$countNotifElement ?>
+			  	</span>
 			  </button>
-			  <button type="button" class="btn btn-default bold">
+			  <!--<button type="button" class="btn btn-default bold">
 			  	<i class="fa fa-envelope"></i> 
 			  	<span class="hidden-xs hidden-sm hidden-md">
 			  		Messagerie
-			  	</span><span class="badge bg-azure">3</span>
+			  	</span><span class="badge bg-azure">3</span>-->
 			  </button>
 			</div>
-
+			<?php } ?>
+			<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 			<div class="btn-group margin-left-10">
 			  <button type="button" class="btn btn-default bold">
 			  	<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md">Paramètres</span>
 			  </button>
 			</div>
-
+			<?php } ?>
 			<div class="btn-group margin-left-10">
 			  <button type="button" class="btn btn-default bold">
 			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
@@ -301,7 +305,7 @@
 		<div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 margin-top-50" id="central-container">
 		</div>
 
-		<div class="col-md-2 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
+		<!--<div class="col-md-2 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
 			<div class="alert alert-info">
 				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
 				<span>
@@ -337,7 +341,7 @@
 					<small class="margin-left-15">il y a 10 jours</small><br>
 				</span>
 	    	</div>
-	    </div>
+	    </div>-->
 	</section>
 	
 

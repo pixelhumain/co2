@@ -478,10 +478,11 @@ function initTypeSearch(typeInit){
 }
 
 <?php 
-    if(@$type == "classified")
+    if(@$type == "classified"){
     $freedomSections = CO2::getContextList("freedomSections");
 ?>
 var freedomCategories = <?php echo json_encode($freedomSections); ?>
+<?php } ?>
 
 function initFreedomInterface(){
     $(".btn-select-type-anc").click(function(){

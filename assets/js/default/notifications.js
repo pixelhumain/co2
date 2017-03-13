@@ -12,7 +12,7 @@ function bindNotifEvents(element){
 		setTimeout(function(){
           //  elem.addClass("read");
             //elem.removeClass('animated bounceOutRight');
-            urls.loadByHash(hash);
+            url.loadByHash(hash);
             //notifCount();
         }, 200);
 	});

@@ -503,14 +503,14 @@ var directory = {
               //$city["country"]."_".$city["insee"]."-".$city["cp"];
               mylog.log(o);
               thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
-                              "data-scope-value='" + citykey + "' " + 
-                              "data-scope-name='" + params.name + "' " + 
-                              "data-scope-type='city' " + 
-                              "data-insee-communexion='" + params.insee + "' "+ 
-                              "data-name-communexion='" + params.name + "' "+ 
-                              "data-cp-communexion='" + params.cp + "' "+ 
-                              "data-region-communexion='" + params.regionName + "' "+ 
-                              "data-country-communexion='" + params.country + "' "+ 
+                                      "data-scope-value='" + citykey + "' " + 
+                                      "data-scope-name='" + params.name + "' " + 
+                                      "data-scope-type='city' " + 
+                                      "data-insee-communexion='" + params.insee + "' "+ 
+                                      "data-name-communexion='" + params.name + "' "+ 
+                                      "data-cp-communexion='" + params.cp + "' "+ 
+                                      "data-region-communexion='" + params.regionName + "' "+ 
+                                      "data-country-communexion='" + params.country + "' "+ 
                               ">"+
                                   "Communecter" + 
                               "</button>";
@@ -752,6 +752,38 @@ var directory = {
       str +=    "<div class='searchEntity'>";
 
       
+        
+
+        if(params.updated.indexOf("il y a")>=0)
+            params.updated = "En ce moment";
+
+        if(params.updated != null && !params.useMinSize)
+          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
+
+        params.startDay = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD") : "";
+        params.startMonth = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("MM") : "";
+        params.startYear = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("YYYY") : "";
+        params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("d") : "";
+        params.startTime = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("HH:mm") : "";
+        params.startDate = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        
+        params.endDay = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD") : "";
+        params.endMonth = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("MM") : "";
+        params.endYear = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("YYYY") : "";
+        params.endDayNum = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("d") : "";
+        params.endTime = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("HH:mm") : "";
+        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        
+        params.startDayNum = directory.getWeekDayName(params.startDayNum);
+        params.endDayNum = directory.getWeekDayName(params.endDayNum);
+
+        params.startMonth = directory.getMonthName(params.startMonth);
+        params.endMonth = directory.getMonthName(params.endMonth);
+
+         str += '<div class="col-xs-5 no-padding">'+
+                      '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+
+                '</div>';
+        
         if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
@@ -763,62 +795,58 @@ var directory = {
                     "</a>";
         }
 
-        if(params.updated.indexOf("il y a")>=0)
-            params.updated = "En ce moment";
 
-        if(params.updated != null && !params.useMinSize)
-          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
+        str += "<div class='col-md-5 margin-top-5'>";
+          
+        var startLbl = (params.endDay != params.startDay) ? "Du" : "Le";
+        var endTime = (params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
 
-        params.startDay = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD/MM") : "";
-        params.startTime = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("HH:mm") : "";
-        params.startDate = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
-        params.endDay = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD/MM") : "";
-        params.endTime = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("HH:mm") : "";
-        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        if(params.startDate != null)
+            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                      '<small>Du </small>'+
+                      '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
+                      params.startDay + ' ' + params.startMonth + 
+                      ' <small class="letter-'+params.color+'">' + params.startYear + '</small>' + 
+                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + params.startTime+endTime+"</b></small>"+
+                   '</h3>';
         
-        str += '<div class="col-xs-5">'+
-            '<div class="col-xs-4">';
-            if(params.startDate != null)
-                str += '<div class="bg-'+params.color+' text-white padding-5 text-bold" style="font-size:27px;margin-top:5px;">'+params.startDay+'</div>'+ params.startTime;
-            if(params.endDate != null && params.startDate != params.endDate)
-                str += '<div class="bg-'+params.color+' text-white padding-5 text-bold" style="font-size:27px;margin-top:5px;">'+params.endDay+'</div>'+ params.endTime;
-            str += '</div>'+
-            '<div class="col-xs-8">'+
-                '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+
-            '</div>'+
-        '</div>';
+        if(params.endDay != params.startDay && params.endDate != null && params.startDate != params.endDate)
+            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                      "<small>Au </small>"+
+                      '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
+                      params.endDay + ' ' + params.endMonth + 
+                      ' <small class="letter-'+params.color+'">' + params.endYear + '</small>' + 
+                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + params.endTime+"</b></small>"+
+                   '</h3>';
+
+            
+        str += "</div>";
+
+       
+        str += "<div class='col-md-7 entityRight padding-top-10 margin-top-10' style='border-top: 1px solid rgba(0,0,0,0.2);'>";
+
+        var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+        str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+                  iconFaReply + params.name + 
+               "</a>";
         
-        str += "<div class='padding-10 informations'>";
-
-        str += "<div class='entityRight no-padding'>";
-               
-            if(notEmpty(params.parent) && notEmpty(params.parent.name))
-              str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
-                        "<i class='fa "+params.parentIcon+"'></i> "
-                        + params.parent.name + 
-                      "</a>";
-
-            var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
-                      iconFaReply + params.name + 
-                   "</a>";
-            
-            var thisLocality = "";
-            if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
-                                  "<i class='fa fa-home'></i> " + params.fullLocality + 
-                                "</a>";
-            else thisLocality = "<br>";
-            
-            
-            str += thisLocality;
-            
-            str += "<div class='entityDescription'>" + params.description + "</div>";
-         
-            str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+        var thisLocality = "";
+        if(params.fullLocality != "" && params.fullLocality != " ")
+             thisLocality = "<a href='"+params.url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                              "<i class='fa fa-home'></i> " + params.fullLocality + 
+                            "</a>";
+        else thisLocality = "<br>";
+        
+        
+        str += thisLocality;
+        
 
 
-          str += "</div>";
+        str +=    "<div class='entityDescription margin-bottom-10'>" + params.description + "</div>";
+        str +=    "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+        str += "</div>";
+            
+
         str += "</div>";
       str += "</div>";
 
@@ -1141,6 +1169,17 @@ var directory = {
       directory.filterList();
       $(directory.elemClass).show();
       //bindTags();
+    },
+    getWeekDayName : function(numWeek){
+      var wdays = new Array("", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche");
+      if(typeof wdays[numWeek] != "undefined") return wdays[numWeek];
+      else return "";
+    },
+    getMonthName : function(numMonth){
+      numMonth = parseInt(numMonth);
+      var wdays = new Array("", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
+      if(typeof wdays[numMonth] != "undefined") return wdays[numMonth];
+      else return "";
     },
 
     //build list of unique tags based on a directory structure

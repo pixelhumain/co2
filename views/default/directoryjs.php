@@ -408,7 +408,7 @@ jQuery(document).ready(function() {
   
   setTimeout(function(){ $("#input-communexion").hide(300); }, 300);
 
-	setTitle("<span id='main-title-menu'>Moteur de recherche</span>","search","Moteur de recherche");
+	//setTitle("<span id='main-title-menu'>Moteur de recherche</span>","search","Moteur de recherche");
 	
   $('.tooltips').tooltip();
 

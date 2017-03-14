@@ -706,13 +706,17 @@ function decodeHtml(str) {
     return txt.value;
 }
 
-function setTitle(str, icon, topTitle,keywords,shortDesc) { 
-	if(icon != "")
+function setTitle(str, icon, topTitle,keywords,shortDesc) { mylog.log("setTitle", str);
+	if(typeof icon != "undefined" && icon != "")
 		icon = ( icon.indexOf("<i") >= 0 ) ? icon : "<i class='fa fa-"+icon+"'></i> ";
-	$(".moduleLabel").html( icon +" "+ str);
+
+	//$(".moduleLabel").html( icon +" "+ str);
+
 	if(topTitle)
 		str = topTitle;
+	
 	$(document).prop('title', ( str != "" ) ? str : "Communecter, se connecter à sa commune" );
+	
 	if(notNull(keywords))
 		$('meta[name="keywords"]').attr("content",keywords);
 	else
@@ -1242,7 +1246,7 @@ function  bindLBHLinks() {
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-	    url.loadByHash( h );
+		url.loadByHash( h );
 	})/*.on("contextmenu", function(e){
 		var href = $(this).attr("href").split(".");
 		console.log($(this).attr("href"),href[0])
@@ -3428,7 +3432,7 @@ function initKInterface(params){
     	url.loadByHash("#info.p.sethome")
     });
 
-    var affixTop = 400;
+    var affixTop = 300;
     if(notEmpty(params)){
     	if(typeof params["affixTop"] != "undefined") affixTop = params["affixTop"];
     }

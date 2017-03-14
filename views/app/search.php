@@ -188,7 +188,8 @@
         </div>
     <?php } ?>
 
-    <div class="col-md-12 no-padding calendar"></div>
+    <?php if(@$type=="events"){ ?>
+    <div class="col-md-10 col-md-offset-1 no-padding calendar"></div>
     <div class="responsive-calendar-init hidden"> 
       <div class="responsive-calendar col-md-12 no-padding">   
           <div class="day-headers">
@@ -208,6 +209,7 @@
           </div>
       </div>
     </div>
+    <?php } ?>
 
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
@@ -371,6 +373,7 @@
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
+var titlePage = "<?php echo @$params["pages"]["#".$page]["subdomainName"]; ?>";
 
 //var TPL = "kgougle";
 
@@ -380,7 +383,9 @@ var currentKFormType = "";
 
 jQuery(document).ready(function() {
 
-	initKInterface({"affixTop":350});
+    setTitle("", "", titlePage);
+
+    initKInterface({"affixTop":320});
     
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";

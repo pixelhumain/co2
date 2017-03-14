@@ -102,7 +102,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               if(totalDataGS > 0){
                 str += '<div class="text-left" id="footerDropdownGS" style="">';
                 str += "<label class='text-dark margin-top-5'><i class='fa fa-angle-down'></i> " + totalDataGSMSG + "</label>";
-                str += '<a href="#co2.social" class="btn btn-default btn-sm pull-right" id="btnShowMoreResultGS">'+
+                str += '<a href="#search" class="btn btn-default btn-sm pull-right" id="btnShowMoreResultGS">'+
                           '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> Recherche étendue'+
                         '</a>';
                 str += '</div>';

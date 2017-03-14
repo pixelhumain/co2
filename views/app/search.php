@@ -1,7 +1,16 @@
 <?php 
-	//HtmlHelper::registerCssAndScriptsFiles( array('/css/default/directory.css', ) , Yii::app()->theme->baseUrl. '/assets');
-	//$cssAnsScriptFilesModule = array('');
-	//HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+
+  $cssAnsScriptFilesModule = array(
+    '/assets/css/default/responsive-calendar.css',
+  );
+  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
+  
+  $cssAnsScriptFilesModule = array(
+    '/js/default/directory.js',
+    '/js/default/responsive-calendar.js',
+  );
+  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
@@ -147,6 +156,10 @@
 </style>
 
 
+
+
+
+
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
 
     <?php if(@$type!="cities"){ ?>
@@ -173,6 +186,29 @@
             $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
         ?>
         </div>
+    <?php } ?>
+
+    <?php if(@$type=="events"){ ?>
+    <div class="col-md-10 col-md-offset-1 no-padding calendar"></div>
+    <div class="responsive-calendar-init hidden"> 
+      <div class="responsive-calendar col-md-12 no-padding">   
+          <div class="day-headers">
+            <div class="day header">Lun</div>
+            <div class="day header">Mar</div>
+            <div class="day header">Mer</div>
+            <div class="day header">Jeu</div>
+            <div class="day header">Ven</div>
+            <div class="day header">Sam</div>
+            <div class="day header">Dim</div>
+          </div>
+          <div class="days" data-group="days"></div>   
+          <div class="controls">
+              <a id="btn-month-before" class="text-white" data-go="prev"><div class="btn"><i class="fa fa-arrow-left"></i></div></a>
+              <h4 class="text-white"><span data-head-month></span> <span data-head-year></span></h4>
+              <a id="btn-month-next" class="text-white" data-go="next"><div class="btn"><i class="fa fa-arrow-right"></i></div></a>
+          </div>
+      </div>
+    </div>
     <?php } ?>
 
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
@@ -337,6 +373,7 @@
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
+var titlePage = "<?php echo @$params["pages"]["#".$page]["subdomainName"]; ?>";
 
 //var TPL = "kgougle";
 
@@ -346,7 +383,9 @@ var currentKFormType = "";
 
 jQuery(document).ready(function() {
 
-	initKInterface({"affixTop":350});
+    setTitle("", "", titlePage);
+
+    initKInterface({"affixTop":320});
     
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
@@ -527,5 +566,63 @@ function initFreedomInterface(){
 
     //loadLiveNow();
 }
+
+
+
+var calendarInit = false;
+function showResultInCalendar(mapElements){
+  mylog.log("showResultInCalendar xxx");
+  mylog.dir(mapElements);
+
+  var events = new Array();
+  $.each(mapElements, function(key, thisEvent){
+    
+    var startDate = exists(thisEvent["startDateTime"]) ? thisEvent["startDateTime"].substr(0, 10) : "";
+    var endDate = exists(thisEvent["endDateTime"]) ? thisEvent["endDateTime"].substr(0, 10) : "";
+    var cp = "";
+    var loc = "";
+    if(thisEvent["address"] != null){
+        var cp = exists(thisEvent["address"]["postalCode"]) ? thisEvent["address"]["postalCode"] : "" ;
+        var loc = exists(thisEvent["address"]["addressLocality"]) ? thisEvent["address"]["addressLocality"] : "";
+    }
+    var position = cp + " " + loc;
+
+    var name = exists(thisEvent["name"]) ? thisEvent["name"] : "";
+    var thumb_url = notEmpty(thisEvent["profilThumbImageUrl"]) ? baseUrl+thisEvent["profilThumbImageUrl"] : "";
+    
+    if(typeof events[startDate] == "undefined") events[startDate] = new Array();
+    events[startDate].push({  "id" : thisEvent["_id"]["$id"],
+                              "thumb_url" : thumb_url, 
+                              "startDate": startDate,
+                              "endDate": endDate,
+                              "name" : name,
+                              "position" : position });
+  });
+
+  //mylog.dir(events);
+
+  if(calendarInit == true) {
+    $(".calendar").html("");
+  }
+
+  $(".calendar").html($(".responsive-calendar-init").html());
+
+  var aujourdhui = new Date();
+  var  month = (aujourdhui.getMonth()+1).toString();
+  if(aujourdhui.getMonth() < 10) month = "0" + month;
+  var date = aujourdhui.getFullYear().toString() + "-" + month;
+  
+  $(".responsive-calendar").responsiveCalendar({
+          time: date,
+          events: events
+        });
+
+
+  $(".responsive-calendar").show();
+
+  calendarInit = true;
+}
+
+
 
 </script>

@@ -173,7 +173,7 @@
           if (typeof dayEvents === "object") {
               var action = 'url.loadByHash("#event.detail.id.'+dayEvents.id+'");';
               var item = "<li>";
-              var imgProfil = "<i class='badge bg-orange fa fa-calendar'></i>";
+              var imgProfil = "<span class='badge bg-orange'></span>";
               if (typeof dayEvents.thumb_url != "undefined" && dayEvents.thumb_url != "") {
                   imgProfil = "<img class='badge bg-orange' src='"+dayEvents.thumb_url+"'>"; 
               }

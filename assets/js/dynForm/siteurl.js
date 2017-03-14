@@ -22,7 +22,7 @@ dynForm = {
 	        name :  typeObjLib.name,
             description : typeObjLib.descriptionOptionnel ,
             location : typeObjLib.location,
-            tags : typeObjLib.tags,
+            tags : typeObjLib.tags(),
             parentId :typeObjLib.hidden,
             parentType : typeObjLib.hidden,
 	    }

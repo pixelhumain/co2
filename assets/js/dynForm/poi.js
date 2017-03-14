@@ -43,7 +43,7 @@ dynForm = {
 	        image : typeObjLib.image(),
             description : typeObjLib.description,
             location : typeObjLib.location,
-            tags :typeObjLib.tags,
+            tags :typeObjLib.tags(),
             formshowers : {
             	label : "En détails",
                 inputType : "custom",

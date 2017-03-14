@@ -159,32 +159,6 @@
       </p>
     <?php }?>
 
-	  	<!-- <div class="col-md-12 padding-10 margin-bottom-5 lbl-info-search">
-		    <div class="lbl-info lbl-info-vote lbl-info-actions pull-left hidden col-xs-9 no-padding margin-bottom-10">
-		      <i class="fa fa-info-circle"></i> 
-		      <b>Seuls les résultats auxquels vous avez accès sont affichés</b> <br>
-		      (issus de vos <span class="text-green"><b>organisations</b></span>, 
-		      vos <span class="text-purple"><b>projets</b></span> ou votre <span class="text-red"><b>conseil citoyen</b></span>)
-		    </div>
-
-		    <div class="lbl-info lbl-info-organizations lbl-info-projects lbl-info-poi lbl-info-persons pull-left hidden col-xs-9 no-padding margin-bottom-10">
-		      <i class="fa fa-info-circle"></i> 
-		      <b>Résultats triés en fonction de l'activité la plus récente des éléments recherchés</b> 
-		    </div>
-
-		    <div class="lbl-info lbl-info-cities pull-left hidden col-xs-9 no-padding margin-bottom-10">
-		      <i class="fa fa-info-circle"></i> Indiquez le nom d'une commune, ou un code postal, pour lancer la recherche
-		    </div> 
-
-		    <button class="btn btn-default pull-right text-dark" onclick="showMap(true)" style="margin-bottom: -15px;margin-top: -10px;">
-		      <i class="fa fa-map"></i>
-		      <span class="hidden-xs"> Afficher <span class="hidden-sm hidden-xs">sur</span> la carte</span>
-		    </button>
-	  	</div> -->
-
-  		<!-- <div class="col-md-12">
-          <hr class="margin-bottom-10">
-      </div> -->
 
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
         <!-- <h5>Recherche thématique<br><i class='fa fa-chevron-down'></i></h5> -->
@@ -434,7 +408,7 @@ jQuery(document).ready(function() {
   
   setTimeout(function(){ $("#input-communexion").hide(300); }, 300);
 
-	setTitle("<span id='main-title-menu'>Moteur de recherche</span>","search","Moteur de recherche");
+	//setTitle("<span id='main-title-menu'>Moteur de recherche</span>","search","Moteur de recherche");
 	
   $('.tooltips').tooltip();
 

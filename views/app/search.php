@@ -162,6 +162,29 @@
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
 
+    <?php if(@$type=="events"){ ?>
+    <div class="col-md-12 no-padding calendar"></div>
+    <div class="responsive-calendar-init hidden"> 
+      <div class="responsive-calendar light col-md-12 no-padding">   
+          <div class="day-headers">
+            <div class="day header">Lun</div>
+            <div class="day header">Mar</div>
+            <div class="day header">Mer</div>
+            <div class="day header">Jeu</div>
+            <div class="day header">Ven</div>
+            <div class="day header">Sam</div>
+            <div class="day header">Dim</div>
+          </div>
+          <div class="days" data-group="days"></div>   
+          <div class="controls">
+              <a id="btn-month-before" class="text-white" data-go="prev"><div class="btn"><i class="fa fa-arrow-left"></i></div></a>
+              <h4 class="text-white"><span data-head-month></span> <span data-head-year></span></h4>
+              <a id="btn-month-next" class="text-white" data-go="next"><div class="btn"><i class="fa fa-arrow-right"></i></div></a>
+          </div>
+      </div>
+    </div>
+    <?php } ?>
+
     <?php if(@$type!="cities"){ ?>
         <div class="col-md-2 col-sm-2 col-xs-12 no-padding">
             <?php if(@$type=="all"){ ?>
@@ -188,28 +211,7 @@
         </div>
     <?php } ?>
 
-    <?php if(@$type=="events"){ ?>
-    <div class="col-md-10 col-md-offset-1 no-padding calendar"></div>
-    <div class="responsive-calendar-init hidden"> 
-      <div class="responsive-calendar col-md-12 no-padding">   
-          <div class="day-headers">
-            <div class="day header">Lun</div>
-            <div class="day header">Mar</div>
-            <div class="day header">Mer</div>
-            <div class="day header">Jeu</div>
-            <div class="day header">Ven</div>
-            <div class="day header">Sam</div>
-            <div class="day header">Dim</div>
-          </div>
-          <div class="days" data-group="days"></div>   
-          <div class="controls">
-              <a id="btn-month-before" class="text-white" data-go="prev"><div class="btn"><i class="fa fa-arrow-left"></i></div></a>
-              <h4 class="text-white"><span data-head-month></span> <span data-head-year></span></h4>
-              <a id="btn-month-next" class="text-white" data-go="next"><div class="btn"><i class="fa fa-arrow-right"></i></div></a>
-          </div>
-      </div>
-    </div>
-    <?php } ?>
+    
 
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
@@ -493,7 +495,9 @@ jQuery(document).ready(function() {
         }
     });
 
-
+    setTimeout(function(){
+        KScrollTo("#content-social");  
+    }, 2000);
     $(".tooltips").tooltip();
 
     //currentKFormType = "Group";

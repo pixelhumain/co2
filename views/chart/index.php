@@ -23,22 +23,14 @@ $tabCommons = array(	"0" => "Ne souhaite pas",
 
 <div class="panel panel-white">
 
-	<div class="panel-heading border-light bg-dark">
+	<!--<div class="panel-heading border-light bg-dark">
 		<h4 class="panel-title"><span><i class="fa fa-puzzle-piece"></i> <?php echo Yii::t("project","Chart",null,Yii::app()->controller->module->id) ?></span></h4>	
-	</div>
-	<div class="panel-tools">			
-		<?php if (($admin || $openEdition) && @Yii::app()->session["userId"]){	?>
-		<a id="" class="edit-chart btn btn-xs btn-light-blue tooltips" 
-			data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("project","Edit properties",null,Yii::app()->controller->module->id) ?>" onclick="showElementPad('addchart')">
-			<i class="fa fa-pencil"></i> Editer la charte 
-		</a>
-		<?php } ?>
-	</div>
+	</div>-->
 		<div id="switchChart">
 		</div>
 		<div id="infoPodChart" class="padding-10 <?php if(!empty($properties)) echo "hide" ?>">
 			<blockquote> 
-				<?php echo Yii::t("project","Create Chart<br/>Opening<br/>Values<br/>Governance<br/>To explain the aim and draw project conduct",null,Yii::app()->controller->module->id) ?>
+				<?php echo Yii::t("chart","Create Chart<br/>Opening<br/>Values<br/>Governance<br/>To explain the aim and draw project conduct") ?>
 			</blockquote>
 		</div>
 		<?php 
@@ -110,14 +102,6 @@ $tabCommons = array(	"0" => "Ne souhaite pas",
 			?>
 			</div>
 		</div>
-	<!--	<div id="infoPodChart" class="padding-10">
-			<blockquote> 
-				<?php echo Yii::t("project","Create Chart<br/>Opening<br/>Values<br/>Governance<br/>To explain the aim and draw project conduct",null,Yii::app()->controller->module->id) ?>
-			</blockquote>
-		</div>
-		<div class="panel-body no-padding contentChart hide">
-			<canvas id="myChart" width="" height=""></canvas>
-		</div>-->
 </div>
 
 <script type="text/javascript">

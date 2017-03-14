@@ -69,7 +69,7 @@ dynForm = {
               placeholder : "Date de fin"
             },
 
-         	tags : typeObjLib.tags,
+         	tags : typeObjLib.tags(),
             formshowers : {
                 label : "En détails",
                 inputType : "custom",

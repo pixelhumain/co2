@@ -308,7 +308,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    		var type = $(value).attr("data-type");
       mylog.log("error type :", type);
    		if(type == "person") type = "people";
-   		else type = typeObj[type].col;
+   		else type = typeObjLib.get(type).col;
       //mylog.log("#floopItem-"+type+"-"+id);
    		if($("#floopItem-"+type+"-"+id).length){
    			//mylog.log("I FOLLOW THIS");
@@ -348,11 +348,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    		var name = $(this).attr("data-name");
    		var id = $(this).attr("data-id");
    		//traduction du type pour le floopDrawer
-   		var typeOrigine = typeObj[type].col;
+   		var typeOrigine = typeObjLib.get(type).col;
       if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
    		formData.parentType = typeOrigine;
    		if(type == "person") type = "people";
-   		else type = typeObj[type].col;
+   		else type = typeObjLib.get(type).col;
 
 		var thiselement = this;
 		$(this).html("<i class='fa fa-spin fa-circle-o-notch text-azure'></i>");
@@ -620,7 +620,7 @@ var directory = {
         if(params.type == "citoyens") 
             params.url += '.viewer.' + userId;
         if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
+          str += "<a href='"+params.url+"' class='container-img-profil lbhp add2fav'>" + params.imgProfil + "</a>";
 
         str += "<div class='padding-10 informations'>";
 
@@ -628,17 +628,17 @@ var directory = {
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.url+"' class='lbhp add2fav'>" + params.htmlIco + "</a>";
               str += "</div>";
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbhp add2fav'>"+
                       iconFaReply + params.name + 
                    "</a>";                 
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality lbhp add2fav'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -909,42 +909,58 @@ var directory = {
               return str;
     },
     roomsPanelHtml : function(params){
-      mylog.log("----------- roomsPanelHtml");
+      mylog.log("-----------roomsPanelHtml");
+
+      if(params.type == "surveys") params.url = "#survey.entry.id."+params.id;
+      else if(params.type == "actions") params.url = "#rooms.action.id."+params.id;
+      
       str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
       
-        if(params.updated != null )
+        if(userId != null && userId != "" && params.id != userId){
+          isFollowed=false;
+          if(typeof params.isFollowed != "undefined" ) isFollowed=true;
+          tip = (type == "events") ? "Participer" : 'Suivre';
+            str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+                  'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+                      "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
+                    "</a>";
+        }
+
+        if(params.updated != null && !params.useMinSize)
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
 
-        if(params.type == "surveys") 
-            params.url = "#survey.entry.id."+params.id;
-        else if(params.type == "actions") 
-            params.url = "#rooms.action.id."+params.id;
+        params.startDay = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD/MM") : "";
+        params.startTime = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("HH:mm") : "";
+        params.startDate = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        params.endDay = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD/MM") : "";
+        params.endTime = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("HH:mm") : "";
+        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
         
-        if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
-
+        str += '<div class="col-xs-5">';
+        if(params.startDate != null){
+            str += '<div class="col-xs-4">';
+            if(params.startDate != null)
+                str += '<div class="bg-'+params.color+' text-white padding-5 text-bold" style="border: 2px solid #328a00; font-size:27px;margin-top:5px;">'+params.startDay+'</div>'+ params.startTime;
+            if(params.endDate != null)
+                str += '<div class="bg-'+params.color+' text-white padding-5 text-bold" style="border: 2px solid #328a00; font-size:27px;margin-top:5px;">'+params.endDay+'</div>'+ params.endTime;
+            str += '</div>';
+        }
+        var w = (params.startDate != null) ? "8" : "12"
+            str += '<div class="col-xs-'+w+'">'+
+                '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+
+            '</div>'+
+        '</div>';
+        
         str += "<div class='padding-10 informations'>";
 
-
-        if(params.startDate != null)
-            str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
-        if(params.endDate != null)
-            str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
-        
-        if(typeof params.size == "undefined" || params.size == "max"){
-          str += "<div class='entityCenter no-padding'>";
-          str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
-          str += "</div>";
-        }
-              
         str += "<div class='entityRight no-padding'>";
-                             
-              
+               
             if(notEmpty(params.parent) && notEmpty(params.parent.name))
-              str += "<a href='"+params.urlParent+"' class='entityName text-"+params.parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
+              str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
                         "<i class='fa "+params.parentIcon+"'></i> "
                         + params.parent.name + 
                       "</a>";
@@ -961,7 +977,7 @@ var directory = {
                                 "</a>";
             else thisLocality = "<br>";
             
-            //debat / actions
+            
             if(notEmpty(params.parentRoom)){
               params.parentUrl = "";
               params.parentIco = "";
@@ -971,7 +987,10 @@ var directory = {
               else if(params.type == "actions") {
                 params.parentUrl = "#rooms.actions.id."+params.room;
                 params.parentIco = "cogs";}
-              str += "<div class='entityDescription text-dark'><i class='fa fa-" + params.parentIco + "'></i><a href='" + params.parentUrl + "' class='lbh add2fav'> " + params.parentRoom.name + "</a></div>";
+              str += "<div class='text-dark'>"+
+
+                        "<i class='fa fa-" + params.parentIco + "'></i><a href='" + params.parentUrl + "' class='lbh add2fav'> " + params.parentRoom.name + "</a>"+
+                    "</div>";
               if(notEmpty(params.parentRoom.parentObj)){
                 var typeIcoParent = params.parentRoom.parentObj.typeSig;
                 //mylog.log("typeIcoParent", params.parentRoom);
@@ -992,7 +1011,7 @@ var directory = {
                 else thisLocality = "";
 
                 var ctzCouncil = typeIcoParent=="city" ? "Conseil citoyen de " : "";
-                str += "<div class='entityDescription text-"+params.colorParent+"'> <i class='fa "+params.icoParent+"'></i> <b>" + ctzCouncil + params.parentRoom.parentObj.name + "</b>" + thisLocality+ "</div>";
+                str += "<div class=' text-"+params.colorParent+"'> <i class='fa "+params.icoParent+"'></i> <b>" + ctzCouncil + params.parentRoom.parentObj.name + "</b>" + thisLocality+ "</div>";
               
 
               }
@@ -1006,7 +1025,7 @@ var directory = {
               var vAbs  = notEmpty(params.voteAbstainCount)  ? params.voteAbstainCount.toString()   : "0";
               var vUn   = notEmpty(params.voteUnclearCount)  ? params.voteUnclearCount.toString()   : "0";
               var vDown = notEmpty(params.voteDownCount)     ? params.voteDownCount.toString()      : "0";
-              str += "<div class='pull-left margin-bottom-10 no-padding'>";
+              str += "<div class='margin-bottom-10 no-padding'>";
                 str += "<span class='bg-green lbl-res-vote'><i class='fa fa-thumbs-up'></i> " + vUp + "</span>";
                 str += " <span class='bg-blue lbl-res-vote'><i class='fa fa-pencil'></i> " + vMore + "</span>";
                 str += " <span class='bg-dark lbl-res-vote'><i class='fa fa-circle'></i> " + vAbs + "</span>";
@@ -1015,16 +1034,17 @@ var directory = {
               str += "</div>";
             }
 
-            str += "<div class='entityDescription'>" + params.description + "</div>";
+            str += "<div>" + params.description + "</div>";
          
             str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+
 
           str += "</div>";
         str += "</div>";
       str += "</div>";
 
       str += "</div>";
-      return     str;
+      return str;
     },
     showResultsDirectoryHtml : function ( data, contentType, size ){ //size == null || min || max
         mylog.log("START -----------showResultsDirectoryHtml",data, contentType, size)
@@ -1099,7 +1119,8 @@ var directory = {
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
-                params.url = '#page.type.'+params.type+'.id.' + params.id;
+                //params.url = '#page.type.'+params.type+'.id.' + params.id;
+                params.url = '#element.detail.type.'+params.type+'.id.' + params.id;
                 if(type == "poi")    
                     url = '#element.detail.type.poi.id.' + id;
 
@@ -1149,16 +1170,16 @@ var directory = {
         var subContent = directory.showResultsDirectoryHtml ( list, key /*,"min"*/); //min == dark template 
         if( notEmpty(subContent) ){
           favTypes.push(typeObj[key].col);
-          var o = typeObjLib.get(key);
-          var color = (o.color) ? o.color : "dark";
-          var icon = (o.icon) ? o.icon : "circle";
-          $(smallMenu.destination + " #listDirectory").append("<div class='"+o.col+"fav favSection '>"+
+          
+          var color = (typeObj[key] && typeObj[key].color) ? typeObj[key].color : "dark";
+          var icon = (typeObj[key] && typeObj[key].icon) ? typeObj[key].icon : "circle";
+          $(smallMenu.destination + " #listDirectory").append("<div class='"+typeObj[key].col+"fav favSection '>"+
                                             "<div class=' col-xs-12 col-sm-12'>"+
                                             "<h4 class='text-left text-"+color+"'><i class='fa fa-angle-down'></i> "+trad[key]+"</h4><hr>"+
                                             subContent+
                                             "</div>");
           $(".sectionFilters").append(" <a class='text-black btn btn-default favSectionBtn favSectionBtnNew  bg-"+color+"'"+
-                                      " href='javascript:directory.showAll(\".favSection\",directory.elemClass);toggle(\"."+o.col+"fav\",\".favSection\",1)'> "+
+                                      " href='javascript:directory.showAll(\".favSection\",directory.elemClass);toggle(\"."+typeObj[key].col+"fav\",\".favSection\",1)'> "+
                                           "<i class='fa fa-"+icon+" fa-2x'></i><br>"+trad[key]+
                                         "</a>");
         }

@@ -146,7 +146,7 @@ dynForm = {
             startDate : typeObjLib.startDateInput,
             endDate : typeObjLib.endDateInput,
             location : typeObjLib.location,
-            tags : typeObjLib.tags,
+            tags : typeObjLib.tags(),
             
             /*public : {
             	inputType : "hidden",

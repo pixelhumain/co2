@@ -22,7 +22,7 @@
 
 
 
-
+	$id = $_GET["id"];
 	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 	
 	//récupération du type de l'element

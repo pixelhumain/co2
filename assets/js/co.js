@@ -2120,6 +2120,10 @@ function cityKeyPart(unikey, part){
 	if(part == "country") return unikey.substr(e+1, len);
 }
 
+/* *********************************
+			COLLECTIONS
+********************************** */
+
 var collection = {
 	crud : function (action, name,type,id) { 
 		if(userId){
@@ -2323,8 +2327,7 @@ var elementLib = {
 		return formData;
 	},
 
-	saveElement : function  ( formId,collection,ctrl,saveUrl,afterSave ) 
-	{ 
+	saveElement : function  ( formId,collection,ctrl,saveUrl,afterSave ) { 
 		mylog.warn("---------------- saveElement",formId,collection,ctrl,saveUrl,afterSave );
 		formData = $(formId).serializeFormJSON();
 		mylog.log("before",formData);
@@ -2406,8 +2409,7 @@ var elementLib = {
 	    //clear the unecessary DOM 
 	    $("#ajaxFormModal").html(''); 
 	},
-	editElement : function (type,id)
-	{
+	editElement : function (type,id){
 		mylog.warn("--------------- editElement ",type,id);
 		//get ajax of the elemetn content
 		$.ajax({
@@ -2532,17 +2534,13 @@ var elementLib = {
 				        $("#ajax-modal-modal-body").append("<div class='space20'></div>");
 				        //alert(afterLoad+"|"+typeof elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
 			    	}
-			        if( notNull(afterLoad) && elementLib.elementObj.dynForm.jsonSchema.onLoads )
-			        {
-				        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
-				        	elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
-				        //incase we need a second global post process
-				        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
-				        	elementLib.elementObj.dynForm.jsonSchema.onLoads.onload();
-				        //incase we need a second global post process
-				        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads.onload","function") )
-				        	elementLib.elementObj.dynForm.jsonSchema.onLoads.onload();
-				    }
+			        
+			        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
+			        	elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
+			        //incase we need a second global post process
+			        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
+			        	elementLib.elementObj.dynForm.jsonSchema.onLoads.onload();
+				    
 			        bindLBHLinks();
 			      },
 			      onSave : function(){
@@ -2741,11 +2739,14 @@ var typeObjLib = {
 		placeholder : "...",
 		label : "Description principale"
     },
-    tags : {
-		inputType : "tags",
-		placeholder : "Mots clés",
-		values : tagsList,
-		label : "Ajouter quelques mots clés"
+    tags : function(list) { 
+    	tagsL = (list) ? list : tagsList;
+    	return {
+			inputType : "tags",
+			placeholder : "Mots clés",
+			values : tagsL,
+			label : "Ajouter quelques mots clés"
+		}
 	},
 	location : {
 		label :"Localisation",

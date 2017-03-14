@@ -240,18 +240,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                     });
                     }
                   
-                  //on scroll pour coller le haut de l'arbre au menuTop
-                  //$(".my-main-container").scrollTop(95);
                 }
                 //remet l'icon "loupe" du bouton search
                 $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
                 //active les link lbh
                 bindLBHLinks();
-
-                //btn communexion pour CO globale - recherche city
-                // $(".item-globalscope-checker").click(function(){  
-                //     setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type") ) ;
-                // });
 
                  $(".start-new-communexion").click(function(){  
                     setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
@@ -260,24 +253,12 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                     activateGlobalCommunexion(true);
                 });
 
+
                 $.unblockUI();
                 $("#map-loading-data").html("");
                 
-				        //showMap(false);
-                
-                //active le chargement de la suite des résultat au survol du bouton "afficher plus de résultats"
-                //(au cas où le scroll n'ait pas lancé le chargement comme prévu)
-               	//$("#btnShowMoreResult").mouseenter(function(){
-                  // if(!loadingData){
-                  //   startSearch(indexMin+indexStep, indexMax+indexStep);
-                  //   $("#btnShowMoreResult").mouseenter(function(){});
-                  // }
-                //});
-                
                 //initialise les boutons pour garder une entité dans Mon répertoire (boutons links)
                 initBtnLink();
-
-                
 
     	        } //end else (str=="")
 
@@ -288,11 +269,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     	        $(".btn-start-search").removeClass("bg-azure");
         	  }
 
-            //mylog.log("scrollEnd ? ", scrollEnd, indexMax, countData , indexMin);
             //si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
-            //mylog.log("SHOW MORE ?", indexMax, indexMin, indexMax - indexMin, countData);
             mylog.log("SHOW MORE ?", countData, indexStep);
-            //if(indexMax - countData > indexMin){ 
             if(countData < indexStep){
               $("#btnShowMoreResult").remove(); 
               scrollEnd = true;
@@ -301,7 +279,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             }
 
             if(typeof showResultInCalendar != "undefined")
-              showResultInCalendar(mapElements);
+              showResultInCalendar(data);
 
             //affiche les éléments sur la carte
             if(CoSigAllReadyLoad)
@@ -309,10 +287,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             else{
               setTimeout(function(){ 
                 Sig.showMapElements(Sig.map, mapElements);
-              }, 4000);
+              }, 3000);
             }
             
-
             if(typeof callBack == "function")
                 callBack();
         }
@@ -778,7 +755,7 @@ var directory = {
         if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
-          var tip = (type == "events") ? "Participer" : 'Suivre';
+          var tip = "Ça m'intéresse";
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
                   'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
                   " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
@@ -786,8 +763,11 @@ var directory = {
                     "</a>";
         }
 
+        if(params.updated.indexOf("il y a")>=0)
+            params.updated = "En ce moment";
+
         if(params.updated != null && !params.useMinSize)
-          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
+          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
 
         params.startDay = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD/MM") : "";
         params.startTime = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("HH:mm") : "";
@@ -799,9 +779,9 @@ var directory = {
         str += '<div class="col-xs-5">'+
             '<div class="col-xs-4">';
             if(params.startDate != null)
-                str += '<div class="bg-'+params.color+' text-white padding-5 text-bold" style="border: 2px solid #328a00; font-size:27px;margin-top:5px;">'+params.startDay+'</div>'+ params.startTime;
-            if(params.endDate != null)
-                str += '<div class="bg-'+params.color+' text-white padding-5 text-bold" style="border: 2px solid #328a00; font-size:27px;margin-top:5px;">'+params.endDay+'</div>'+ params.endTime;
+                str += '<div class="bg-'+params.color+' text-white padding-5 text-bold" style="font-size:27px;margin-top:5px;">'+params.startDay+'</div>'+ params.startTime;
+            if(params.endDate != null && params.startDate != params.endDate)
+                str += '<div class="bg-'+params.color+' text-white padding-5 text-bold" style="font-size:27px;margin-top:5px;">'+params.endDay+'</div>'+ params.endTime;
             str += '</div>'+
             '<div class="col-xs-8">'+
                 '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+

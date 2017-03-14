@@ -229,7 +229,7 @@ class CommunecterController extends Controller
         "activate"        => array('href' => "/ph/communecter/person/activate"),
         "updatesettings"        => array('href' => "/ph/communecter/person/updatesettings"),
         "validateinvitation" => array('href' => "/ph/communecter/person/validateinvitation", "public" => true),
-        "logout"          => array("href" => "/ph/communecter/person/logout"),
+        "logout"          => array("href" => "/ph/co2/person/logout"),
         'getthumbpath'    => array("href" => "/ph/communecter/person/getThumbPath"),
         'getnotification' => array("href" => "/person/getNotification"),
         'changepassword'  => array("href" => "/person/changepassword"),

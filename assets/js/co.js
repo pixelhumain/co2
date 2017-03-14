@@ -3489,8 +3489,8 @@ function initKInterface(params){
             $('.navbar-toggle:visible').click();
     });
 
-    $(".logout").click(function(){
-    	document.location.href="/ph/co2/person/logout";
+   $(".logout").click(function(){
+    	window.location.href=baseUrl+"/co2/person/logout";
     });
 
     $("#btn-sethome").click(function(){

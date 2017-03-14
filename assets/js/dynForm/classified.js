@@ -69,12 +69,13 @@ dynForm = {
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
                 list : freedomCategories,
+                trad : trad,
                 init : function(){
                 	$(".sectionBtn").off().on("click",function()
 	            	{
 	            		$(".typeBtntagList").show();
 	            		$(".sectionBtn").removeClass("active btn-dark-blue text-white");
-	            		$( "."+$(this).data('tag')+"Btn" ).toggleClass("active btn-dark-blue text-white");
+	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
 	            		$("#ajaxFormModal #section").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
 						//$(".sectionBtn:not(.active)").hide();
 						
@@ -94,7 +95,7 @@ dynForm = {
 	            	{
 	            		
 	            		$(".typeBtn").removeClass("active btn-dark-blue text-white");
-	            		$( "."+$(this).data('tag')+"Btn" ).toggleClass("active btn-dark-blue text-white");
+	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
 	            		$("#ajaxFormModal #type").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
 	            		
 	            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a>  "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+"</h4>" );
@@ -103,7 +104,7 @@ dynForm = {
 	            		//$(".typeBtn:not(.active)").hide();
 	            		$("#ajaxFormModal #subtype").val("");
 	            		fieldHTML = "";
-	            		$.each(classifiedTypes[ $(this).data('tag') ]["subcat"], function(k,v) { 
+	            		$.each(classifiedTypes[ $(this).data('key') ]["subcat"], function(k,v) { 
 	            			fieldHTML += '<div class="col-md-6 padding-5">'+
         									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>' +
 	            						"</div>";

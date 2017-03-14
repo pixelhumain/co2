@@ -505,24 +505,6 @@
 		</ul>
 
 
-		
-
-		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
-			<div class="col-xs-12 no-padding podchart padding-10 accordion margin-top-15">
-				<?php
-					if(empty($element["properties"]["chart"])) $element["properties"]["chart"] = array();
-					$this->renderPartial('../chart/index',array(
-											"itemId" => (string)$element["_id"], 
-											"itemName" => $element["name"], 
-											"parentType" => $type, 
-											"properties" => $element["properties"]["chart"],
-											"admin" =>$edit,
-											"isDetailView" => 1,
-											"openEdition" => $openEdition));
-				?>						  
-			</div>
-		<?php } ?>
-
 <?php 
 	$element["type"] = $type;
 	$element["id"] = (string)$element["_id"];

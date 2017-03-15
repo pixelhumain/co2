@@ -27,14 +27,14 @@
 * ************************************************************  
 [ ] Finir le formulaire de contact par mail
 [ ] CGU
-[ ] Favicon
+[X] Favicon
 
 
 
 * ************************************************************    
 * Evolutions / New Features
 * ************************************************************   
-[ ] Mettre en ligne Kgougle :::Sylvain
+[X] Mettre en ligne Kgougle :::Sylvain
 
 RECHERCHE (&AGENDA  &POWER) :::ALL  (1J)
 [ ] Finir et valider la page de recherche
@@ -62,11 +62,11 @@ ANNONCES :::Tib :::Tango (5J)
     [X] Mise en avant du prix
     [X] Photos 
     [ ] gallerie ?
-    [ ] 
   [ ] Sytème de réponse "ça m'intéresse", pour répondre à une annonce
-    [ ] Message privée
+    [ ] Message privée ?
     [ ] Coordonnées
     [ ] Notification Mail
+  [ ] Système de recherche par prix (à ajouter au globalautocomplete) 
 
 CITIES :::Rapha :::Tib (10J)
 [ ] Réintégrer les City  :::Rapha
@@ -88,7 +88,9 @@ PAGE PROFIL PERSO :::ALL
 
 DDA
 [ ] Refonte DDA :::Tango :::Tib
-  [ ] Unifier Discusion/Vote/Action
+  [ ] Unifier Discusion/Vote/Action ?
+  [ ] Constituante ?
+  [ ] Rev Rev Revolution ?
 
 PUB
 [ ] Faire le système de publicité sur Kgougle :::Tango

@@ -439,7 +439,8 @@ jQuery(document).ready(function() {
       console.log("myMultiTags", myMultiTags);
       
       startSearch(0, indexStepInit, searchCallback);
-      KScrollTo("#before-section-result");
+      KScrollTo("#content-social");
+      //KScrollTo("#before-section-result");
   });
   
   /*  $(".searchIcon").removeClass("fa-search").addClass("fa-file-text-o");

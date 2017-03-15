@@ -751,9 +751,6 @@ var directory = {
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
-      
-        
-
         if(params.updated.indexOf("il y a")>=0)
             params.updated = "En ce moment";
 
@@ -780,10 +777,19 @@ var directory = {
         params.startMonth = directory.getMonthName(params.startMonth);
         params.endMonth = directory.getMonthName(params.endMonth);
 
+        var attendees = "";
+        var cntAtt = 0;
+        if(typeof params.links != "undefined")
+          if(typeof params.links.attendees != "undefined"){
+            $.each(params.links.attendees, function(key, val){ cntAtt++; });
+            attendees = "<span class='col-md-12'><i class='fa fa-link'></i> " + cntAtt + " invité</span>";
+          }
+
         mylog.log("-----------eventPanelHtml", params);
         //if(params.imgProfil.indexOf("fa-2x")<0)
         str += '<div class="col-xs-12 col-sm-4 col-md-4 no-padding">'+
                   '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+
+                  attendees +
                 '</div>';
         
         if(userId != null && userId != "" && params.id != userId){
@@ -798,9 +804,9 @@ var directory = {
                     "</a>";
         }
 
-        str += "<div class='col-md-6 col-sm-6 col-xs-12 margin-top-5'>";
+        str += "<div class='col-md-6 col-sm-6 col-xs-12 margin-top-15'>";
           
-        var startLbl = (params.endDay != params.startDay) ? "Du" : "Le";
+        var startLbl = (params.endDay != params.startDay) ? "Du" : "";
         var endTime = (params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
 
         if(params.startDate != null)
@@ -826,11 +832,36 @@ var directory = {
         str += "</div>";
 
        
+        if("undefined" != typeof params.organizerObj){ 
+
+          str += "<div class='col-md-8 col-sm-8 col-xs-12 entityOrganizer margin-top-10'>";
+            if("undefined" != typeof params.organizerObj.profilThumbImageUrl &&
+              params.organizerObj.profilThumbImageUrl != ""){
+              
+                str += "<img class='pull-left img-responsive' src='"+baseUrl+params.organizerObj.profilThumbImageUrl+"' height='50'/>";
+                
+            }            
+            str += "<h5 class='no-margin padding-top-5'><small>Organisé par</small></h5>";
+            str += "<small class='entityOrganizerName'>"+params.organizerObj.name+"</small>";
+          str += "</div>";
+
+        }
+        
+
         str += "<div class='col-md-8 col-sm-8 col-xs-12 entityRight padding-top-10 margin-top-10' style='border-top: 1px solid rgba(0,0,0,0.2);'>";
 
-        var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-        str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
-                  iconFaReply + params.name + 
+        var typeEvent = notEmpty(params.typeEvent) ? 
+                        (notEmpty(eventTypes[params.typeEvent]) ? 
+                        eventTypes[params.typeEvent] : 
+                        trad["event"]) : 
+                        trad["event"];
+
+        str += "<h5 class='text-dark lbh add2fav no-margin'>"+
+                  "<i class='fa fa-reply fa-rotate-180'></i> " + typeEvent + 
+               "</h5>";
+
+        str += "<a href='"+params.url+"' class='entityName text-dark lbh add2fav'>"+
+                  params.name + 
                "</a>";
         
         var thisLocality = "";
@@ -839,17 +870,13 @@ var directory = {
                               "<i class='fa fa-home'></i> " + params.fullLocality + 
                             "</a>";
         else thisLocality = "<br>";
-        
-        
+                
         str += thisLocality;
         
-
-
         str +=    "<div class='entityDescription margin-bottom-10'>" + params.description + "</div>";
         str +=    "<div class='tagsContainer text-red'>"+params.tags+"</div>";
         str += "</div>";
             
-
         str += "</div>";
       str += "</div>";
 

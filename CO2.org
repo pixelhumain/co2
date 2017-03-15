@@ -43,10 +43,11 @@ RECHERCHE (&AGENDA  &POWER) :::ALL  (1J)
   [ ] Recherche Agenda
     [ ] afficher seulement les jours du mois en cours == hide before and after
     [ ] ajouter un bouton "+" sur chaque jour, pour préselectionner la date d'un event que l'on veut créer
-    [ ] dans le formulaire event, il manque le type de l'événement
+    [X] dans le formulaire event, il manque le type de l'événement
+    [ ] rajouter la recherche par type d'event
     [ ] dans le calendrier : afficher de couleurs différentes les événements selon si l'on est invité, intéressé, ou créateur/admin
-    [ ] tpl event : il manque l'identité de l'organisateur, s'il y en a un
-    [ ] et peut être le nombre de personne "intéressé", "participants", "invités"
+    [X] tpl event : il manque l'identité de l'organisateur, s'il y en a un
+    [X] et peut être le nombre de personne "intéressé", "participants", "invités"
 
   [ ] Recherche DDA
 

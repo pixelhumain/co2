@@ -84,31 +84,32 @@ dynForm = {
 	            init : function(){
 	            	$("#ajaxFormModal #organizerId").off().on("change",function(){
 	            		
-	            		organizerId = $(this).val();
+	            		var organizerId = $(this).val();
+	            		var organizerType = "notfound";
 	            		if(organizerId == "dontKnow" )
 	            			organizerType = "dontKnow";
 	            		else if( $('#organizerId').find(':selected').data('type') && typeObj[$('#organizerId').find(':selected').data('type')] )
-	            			organizerType = typeObj[$('#organizerId').find(':selected').data('type')].col;
+	            			organizerType = $('#organizerId').find(':selected').data('type');
 	            		else
 	            			organizerType = typeObj["person"].col;
 
-	            		mylog.warn( "organizer",organizerId,organizerType );
-	            		$("#ajaxFormModal #organizerType ").val( organizerType );
+	            		mylog.warn( "organizer",organizerId,organizerType, $('#organizerId').find(':selected').data('type') );
+	            		$("#ajaxFormModal #organizerType").val( organizerType );
 	            	});
 	            }
             },
 	        organizerType : typeObjLib.hidden,
 	        parentId :{
             	inputType : "select",
-            	"class" : "hidden",
+            	class : "hidden",
             	placeholder : "Fait parti d'un évènement ?",
             	options : {
             		"":"Pas de Parent"
             	},
             	"groupOptions" : myAdminList( ["events"] ),
-            	init : function(){
-	            	$("#ajaxFormModal #parentId ").off().on("change",function(){
-
+            	init : function(){ console.log("init ParentId");
+	            	$("#ajaxFormModal #parentId").off().on("change",function(){
+	            		console.log("on change ParentId");
 	            		parentId = $(this).val();
 	            		startDateParent = "2000/01/01 00:00";
 	            		endDateParent = "2100/01/01 00:00";

@@ -135,9 +135,9 @@ dynForm = {
                 html:"<div class='subtypeSection'></div>"
             },
             subtype : typeObjLib.hidden,
+            price : typeObjLib.price,
             name : typeObjLib.name("classified"),
             description : typeObjLib.description,
-            price : typeObjLib.price,
             image : typeObjLib.image( "#classified.detail.id."+uploadObj.id ),
             contactInfo : typeObjLib.contactInfo,
             location : typeObjLib.location,

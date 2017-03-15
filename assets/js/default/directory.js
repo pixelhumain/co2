@@ -751,9 +751,6 @@ var directory = {
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
-      
-        
-
         if(params.updated.indexOf("il y a")>=0)
             params.updated = "En ce moment";
 
@@ -769,8 +766,8 @@ var directory = {
         
         params.endDay = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD") : "";
         params.endMonth = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("MM") : "";
-        params.endYear = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("YYYY") : "";
-        params.endDayNum = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("d") : "";
+        params.endYear = notEmpty(params.startDate) ? moment(params.endDate).local().locale("fr").format("YYYY") : "";
+        params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate).local().locale("fr").format("d") : "";
         params.endTime = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("HH:mm") : "";
         params.endDate   = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
         
@@ -780,8 +777,19 @@ var directory = {
         params.startMonth = directory.getMonthName(params.startMonth);
         params.endMonth = directory.getMonthName(params.endMonth);
 
-         str += '<div class="col-xs-5 no-padding">'+
-                      '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+
+        var attendees = "";
+        var cntAtt = 0;
+        if(typeof params.links != "undefined")
+          if(typeof params.links.attendees != "undefined"){
+            $.each(params.links.attendees, function(key, val){ cntAtt++; });
+            attendees = "<span class='col-md-12'><i class='fa fa-link'></i> " + cntAtt + " invité</span>";
+          }
+
+        mylog.log("-----------eventPanelHtml", params);
+        //if(params.imgProfil.indexOf("fa-2x")<0)
+        str += '<div class="col-xs-12 col-sm-4 col-md-4 no-padding">'+
+                  '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+
+                  attendees +
                 '</div>';
         
         if(userId != null && userId != "" && params.id != userId){
@@ -789,25 +797,26 @@ var directory = {
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
           var tip = "Ça m'intéresse";
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-                  'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+                      'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+                      " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"'"+
+                      " data-isFollowed='"+isFollowed+"'>"+
                       "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
                     "</a>";
         }
 
-
-        str += "<div class='col-md-5 margin-top-5'>";
+        str += "<div class='col-md-6 col-sm-6 col-xs-12 margin-top-15'>";
           
-        var startLbl = (params.endDay != params.startDay) ? "Du" : "Le";
+        var startLbl = (params.endDay != params.startDay) ? "Du" : "";
         var endTime = (params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
 
         if(params.startDate != null)
             str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      '<small>Du </small>'+
+                      '<small>'+startLbl+' </small>'+
                       '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
                       params.startDay + ' ' + params.startMonth + 
                       ' <small class="letter-'+params.color+'">' + params.startYear + '</small>' + 
-                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + params.startTime+endTime+"</b></small>"+
+                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
+                      params.startTime+endTime+"</b></small>"+
                    '</h3>';
         
         if(params.endDay != params.startDay && params.endDate != null && params.startDate != params.endDate)
@@ -816,18 +825,43 @@ var directory = {
                       '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
                       params.endDay + ' ' + params.endMonth + 
                       ' <small class="letter-'+params.color+'">' + params.endYear + '</small>' + 
-                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + params.endTime+"</b></small>"+
+                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
+                      params.endTime+"</b></small>"+
                    '</h3>';
-
             
         str += "</div>";
 
        
-        str += "<div class='col-md-7 entityRight padding-top-10 margin-top-10' style='border-top: 1px solid rgba(0,0,0,0.2);'>";
+        if("undefined" != typeof params.organizerObj){ 
 
-        var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-        str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
-                  iconFaReply + params.name + 
+          str += "<div class='col-md-8 col-sm-8 col-xs-12 entityOrganizer margin-top-10'>";
+            if("undefined" != typeof params.organizerObj.profilThumbImageUrl &&
+              params.organizerObj.profilThumbImageUrl != ""){
+              
+                str += "<img class='pull-left img-responsive' src='"+baseUrl+params.organizerObj.profilThumbImageUrl+"' height='50'/>";
+                
+            }            
+            str += "<h5 class='no-margin padding-top-5'><small>Organisé par</small></h5>";
+            str += "<small class='entityOrganizerName'>"+params.organizerObj.name+"</small>";
+          str += "</div>";
+
+        }
+        
+
+        str += "<div class='col-md-8 col-sm-8 col-xs-12 entityRight padding-top-10 margin-top-10' style='border-top: 1px solid rgba(0,0,0,0.2);'>";
+
+        var typeEvent = notEmpty(params.typeEvent) ? 
+                        (notEmpty(eventTypes[params.typeEvent]) ? 
+                        eventTypes[params.typeEvent] : 
+                        trad["event"]) : 
+                        trad["event"];
+
+        str += "<h5 class='text-dark lbh add2fav no-margin'>"+
+                  "<i class='fa fa-reply fa-rotate-180'></i> " + typeEvent + 
+               "</h5>";
+
+        str += "<a href='"+params.url+"' class='entityName text-dark lbh add2fav'>"+
+                  params.name + 
                "</a>";
         
         var thisLocality = "";
@@ -836,17 +870,13 @@ var directory = {
                               "<i class='fa fa-home'></i> " + params.fullLocality + 
                             "</a>";
         else thisLocality = "<br>";
-        
-        
+                
         str += thisLocality;
         
-
-
         str +=    "<div class='entityDescription margin-bottom-10'>" + params.description + "</div>";
         str +=    "<div class='tagsContainer text-red'>"+params.tags+"</div>";
         str += "</div>";
             
-
         str += "</div>";
       str += "</div>";
 

@@ -25,10 +25,10 @@ dynForm = {
 		    },*/
 	    },
 	    beforeSave : function(){
-	    	var tagAndTypes = $("#ajaxFormModal #tags").val();
+	    	var tagAndTypes = ( $("#ajaxFormModal #tags").val() != "" ) ? $("#ajaxFormModal #tags").val()+"," : "" ;
 
 	    	if( $("#ajaxFormModal #section").val() )
-	    		tagAndTypes += ","+$("#ajaxFormModal #section").val();
+	    		tagAndTypes += $("#ajaxFormModal #section").val();
 	    	if( $("#ajaxFormModal #type").val() )
 	    		tagAndTypes += ","+$("#ajaxFormModal #type").val();
 	    	if( $("#ajaxFormModal #subtype").val() )
@@ -40,6 +40,14 @@ dynForm = {
 	    	if($('#ajaxFormModal #parentId').val() == "" && $('#ajaxFormModal #parentType').val() ){
 		    	$('#ajaxFormModal #parentId').val(userId);
 		    	$("#ajaxFormModal #parentType").val( "citoyens" ); 
+		    }
+	    },
+	    afterSave : function(){
+			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
+		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+		    else {
+		    	elementLib.closeForm();
+		    	url.loadByHash( location.hash );	
 		    }
 	    },
 	    actions : {

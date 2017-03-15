@@ -136,10 +136,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     
     if(isMapEnd)
       $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> chargement en cours");
-      // $.blockUI({
-      //   message : "<h3 class='text-red'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span></h3>"
-      // });
    
+    mylog.dir(data);
+    //alert();
     $.ajax({
         type: "POST",
         url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
@@ -702,7 +701,7 @@ var directory = {
             str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + "</div>";
          
             if(typeof params.category != "undefined"){
-              str += "<div class='entityType bold'>" + params.category; 
+              str += "<div class='entityType bold'>" + params.section+" > "+params.category+"<br/>"+params.elTagsList;
                 if(typeof params.subtype != "undefined") str += " > " + params.subtype;
               str += "</div>";
             }

@@ -201,7 +201,7 @@
 		?>
 				<?php if(is_array($cat)) { ?>
 					<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
-						<i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo $key; ?>
+						<i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo $key; ?> 
 					</button><br>
 					<?php foreach ($cat as $key2 => $cat2) { ?>
 						<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>">

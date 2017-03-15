@@ -395,6 +395,7 @@ jQuery(document).ready(function() {
 
         
         $(".btn-directory-type").click(function(){
+                alert("btn-directory-type");
             var typeD = $(this).data("type");
 
             initTypeSearch(typeD);
@@ -410,7 +411,7 @@ jQuery(document).ready(function() {
         });
          
         <?php if(@$type == "classified"){ ?>
-            initFreedomInterface();
+            initClassifiedInterface();
         <?php } ?>
 
         loadingData = false; 
@@ -527,50 +528,72 @@ function initTypeSearch(typeInit){
 var freedomCategories = <?php echo json_encode($freedomSections); ?>
 <?php } ?>
 
-function initFreedomInterface(){
-    $(".btn-select-type-anc").click(function(){
+var section = "";
+var classType = "";
+var classSubType = "";
+function initClassifiedInterface(){
 
-      $(".btn-select-type-anc").removeClass("active");
-      $(this).addClass("active");
+    $('#menu-section-classified').removeClass("hidden");
 
-      var typeAnc = $(this).data("type-anc");
-      if(typeAnc == "forsale" || typeAnc == "location" || typeAnc == "donation" || 
-        typeAnc == "sharing" || typeAnc == "lookingfor"){
-        $(".subsub").show(300);
-      }else{
-        $(".subsub").hide(300);
-      }
+    $(".btn-select-type-anc").click( function()
+    {    
+        searchType = [ "classified" ];
+        indexStepInit = 100;
+        $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
+        $(".keycat").addClass("hidden");
+        $(this).addClass("active");
 
-      if(typeof freedomCategories[typeAnc] != "undefined")
-            $(".label-category").html("<i class='fa fa-"+ freedomCategories[typeAnc]["icon"] + "'></i> " + freedomCategories[typeAnc]["label"]);
-            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+freedomCategories[typeAnc]["color"])
+        section = $(this).data("type-anc");
+        sectionKey = $(this).data("key");
+        //alert("section : " + section);
+        if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
+            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" ){
+            //$(".subsub").show(300);
+            $('#searchTags').val(section);
+            //KScrollTo(".top-page");
+            startSearch(0, indexStepInit, searchCallback); 
+        } 
+
+        if(typeof freedomCategories[sectionKey] != "undefined") {
+            $(".label-category").html("<i class='fa fa-"+ freedomCategories[sectionKey]["icon"] + "'></i> " + freedomCategories[sectionKey]["label"]);
+            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+freedomCategories[sectionKey]["color"])
             $(".fa-title-list").removeClass("hidden");
-            KScrollTo(".top-page");
+        }
     });
 
     $(".btn-select-category-1").click(function(){
+        searchType = [ "classified" ];
         $(".btn-select-category-1").removeClass("active");
         $(this).addClass("active");
 
-        var keycat = $(this).data("keycat");
+        var classType = $(this).data("keycat");
         $(".keycat").addClass("hidden");
-        $(".keycat-"+keycat).removeClass("hidden");     
+        $(".keycat-"+classType).removeClass("hidden");   
+
+        ////alert("classType : "+classType);
+
+        $('#searchTags').val(section+","+classType);
+        startSearch(0, indexStepInit, searchCallback);  
     });
 
     $(".keycat").click(function(){
+
+        searchType = [ "classified" ];
         $(".keycat").removeClass("active");
         $(this).addClass("active");
+        var classSubType = $(this).data("keycat");
+        var classType = $(this).data("categ");
+        //alert("classSubType : "+classSubType);
+        $('#searchTags').val(section+","+classType+","+classSubType);
+        startSearch(0, indexStepInit, searchCallback);  
     });
 
     $("#btn-create-classified").click(function(){
          elementLib.openForm('classified');
     });
 
-    initFormImages();
-
-    //loadLiveNow();
+    
 }
-
 
 
 var calendarInit = false;

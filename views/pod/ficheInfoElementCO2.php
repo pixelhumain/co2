@@ -253,21 +253,38 @@
 				</ul>
 			</li>
 			<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
-			<li class="editable">
-				<div class="link"><i class="fa fa-puzzle-piece"></i><?php echo Yii::t("chart", "Values and Cultures") ?><i class="fa fa-chevron-down"></i></div>
+			<li class="podInside">
+				<?php $countCharts=0;
+						if(@$element["properties"] && @$element["properties"]["chart"]) 
+							$countCharts=count($element["properties"]["chart"]) 
+				?>
+				<div class="link"><i class="fa fa-puzzle-piece"></i><?php echo Yii::t("chart", "Values and Cultures") ?> 
+					<?php if($countCharts > 0) echo "(".$countCharts.")"; ?> 
+					<i class="fa fa-chevron-down"></i>
+				</div>
 
 				<ul class="submenu">
-					<?php
-					if(empty($element["properties"]["chart"])) $element["properties"]["chart"] = array();
-					$this->renderPartial('../chart/index',array(
-											"itemId" => (string)$element["_id"], 
-											"itemName" => $element["name"], 
-											"parentType" => $type, 
-											"properties" => $element["properties"]["chart"],
-											"admin" =>$edit,
-											"isDetailView" => 1,
-											"openEdition" => $openEdition));
-					?>
+					<div class="panel panel-white">		
+					<?php if($countCharts==0){ ?>				
+							<div id="infoPodChart" class="padding-10 <?php if(!empty($properties)) echo "hide" ?>">
+								<blockquote> 
+									<?php echo Yii::t("chart","Create Chart<br/>Opening<br/>Values<br/>Governance<br/>To explain the aim and draw project conduct") ?>
+								</blockquote>
+							</div>
+					<?php }else{
+						foreach($element["properties"]["chart"] as $key => $data){
+							if($key=="commons") $title=Yii::t("chart","Chart of commons");
+							else $title=Yii::t("chart","Open chart");
+						?>
+							<li>
+								<div class="subLink btn-start-chart" data-value="<?php echo $key ?>">
+								<?php echo $title; ?>
+								<i class="fa fa-chevron-right pull-right letter-blue"></i>
+								</div>
+							</li>
+						<?php }
+					} ?>
+					</div>
 					<div class="text-right padding-10">
 					<?php if (($edit || $openEdition) && @Yii::app()->session["userId"]){	?>
 						<button class="edit-chart btn btn-default letter-blue margin-top-5 tooltips" 
@@ -276,6 +293,18 @@
 						</button>
 					<?php } ?>
 					</div>
+					</ul>
+					<?php
+					/*if(empty($element["properties"]["chart"])) $element["properties"]["chart"] = array();
+					$this->renderPartial('../chart/index',array(
+											"itemId" => (string)$element["_id"], 
+											"itemName" => $element["name"], 
+											"parentType" => $type, 
+											"properties" => $element["properties"]["chart"],
+											"admin" =>$edit,
+											"isDetailView" => 1,
+											"openEdition" => $openEdition));*/
+					?>
 				</ul>
 			</li>
 		<?php } ?>

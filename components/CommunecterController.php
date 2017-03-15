@@ -331,9 +331,9 @@ class CommunecterController extends Controller
     ),
     "chart" => array(
 	    "addchartsv"      => array("href" => "/ph/communecter/chart/addchartsv"),
-		"index"      => array("href" => "/ph/communecter/chart/index"),
-		"editchart"       => array("href" => "/ph/communecter/chart/editchart"),
-		"get"       => array("href" => "/ph/communecter/chart/get"),
+		  "index"      => array("href" => "/ph/communecter/chart/index"),
+		  "editchart"       => array("href" => "/ph/communecter/chart/editchart"),
+		  "get"       => array("href" => "/ph/communecter/chart/get"),
     ),
     "job"=> array(
       "edit"    => array("href" => "/ph/communecter/job/edit"),

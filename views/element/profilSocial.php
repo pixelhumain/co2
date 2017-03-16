@@ -193,7 +193,7 @@
                                 "controller" => $controller,
                                 "openEdition" => $openEdition,
                                 "countStrongLinks" => $countStrongLinks,
-                                "countLowLinks" => $countLowLinks,
+                                "countLowLinks" => @$countLowLinks,
                                 "countInvitations"=> $countInvitations
                                 );
 

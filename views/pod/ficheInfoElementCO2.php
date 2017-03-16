@@ -504,7 +504,7 @@
 							?>
 							<div class="text-right padding-10">
 								<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
-								<button onclick="" 
+								<button onclick="elementLib.openForm('event','subEvent')" 
 										class="btn btn-default letter-blue margin-top-5">
 							    	<b><i class="fa fa-plus"></i> Nouvel événement</b>
 								</button> 

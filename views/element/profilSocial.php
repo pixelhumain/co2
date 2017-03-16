@@ -193,7 +193,7 @@
                                 "controller" => $controller,
                                 "openEdition" => $openEdition,
                                 "countStrongLinks" => $countStrongLinks,
-                                "countLowLinks" => $countLowLinks,
+                                "countLowLinks" => @$countLowLinks,
                                 "countInvitations"=> $countInvitations
                                 );
 
@@ -385,6 +385,10 @@
 		$("#btn-start-notifications").click(function(){
 			loadNotifications();
 		});
+		$(".btn-start-chart").click(function(){
+			id=$(this).data("value");
+			loadChart(id);
+		});
 	}
 
 	function initSocial(){
@@ -418,7 +422,6 @@
 
 		//ouvre le pod communauté
 		$('#accordion4 .link').trigger("click");
-
    		$(".tooltips").tooltip();
 
 
@@ -460,6 +463,14 @@
 		toogleNotif(false);
 		var url = "gallery/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
 		
+		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+			function(){},"html");
+	}
+	function loadChart(id){
+		toogleNotif(false);
+		var url = "chart/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>/chart/"+id;
 		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,

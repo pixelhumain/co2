@@ -300,10 +300,10 @@ function runChartFormValidation() {
 					nameProperties=$(this).find(".newLabelProperty").val();
 					//alert(nameProperties);
 					if(nameProperties.length){
-						newChart["free"][nameProperties]={};
+						newChart["open"][nameProperties]={};
 						newProperties={"description": descriptionProperties, "value": valueProperties};
 						//newProperties={"label" : nameProperties , "value" : valueProperties};
-						newChart["free"][nameProperties]=newProperties;
+						newChart["open"][nameProperties]=newProperties;
 						nbProperties++;
 					}
 				}
@@ -317,22 +317,7 @@ function runChartFormValidation() {
 				}
 			});
 			console.log(newChart);
-			$.blockUI({
-				message : '<i class="fa fa-spinner fa-spin"></i> Processing... <br/> '+
-	            '<blockquote>'+
-	              '<p>la Liberté est la reconnaissance de la nécessité.</p>'+
-	              '<cite title="Hegel">Hegel</cite>'+
-	            '</blockquote> '
-			});
 			//mockjax simulates an ajax call
-			$.mockjax({
-				url : '/project/edit/webservice',
-				dataType : 'json',
-				responseTime : 1000,
-				responseText : {
-					say : 'ok'
-				}
-			});
 			$.ajax({
 		        type: "POST",
 		        url: baseUrl+"/"+moduleId+'/chart/editchart',

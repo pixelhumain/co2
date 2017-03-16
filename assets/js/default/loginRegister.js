@@ -137,7 +137,8 @@ var Login = function() {
 		        				//classic use case wherever you login from if not notifications/get/not/id...
 		        				//you stay on the current page
 		        				//if(location.hash == '#default.home')
-		        					window.location.reload();
+		        				window.location.href = baseUrl+'/co2#page.type.citoyens.id.'+data.id;
+		        				window.location.reload();
 		        				/*else
 		        					window.location.href = baseUrl+'#default.home';*/
 		        			}

@@ -930,7 +930,8 @@ function showAjaxPanel (url,title,icon, mapEnd) {
         				dbAccessCount = parseInt(data)-prevDbAccessCount;
         				prevDbAccessCount = parseInt(data);
         			}
-        			console.error('dbaccess:'+prevDbAccessCount);
+        			//console.error('dbaccess:'+prevDbAccessCount);
+        			
         			//$(".dbAccessBtn").remove();
         			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
         		},null);
@@ -2685,19 +2686,26 @@ var typeObjLib = {
         inputType : "custom",
         html:"<div id='similarLink'><div id='listSameName'></div></div>",
     },
+    type :function  (title,list,notRequired) {  
+    	var title = (title) ? title : "Type";
+    	var list = (list) ? list : eventTypes;
+	    var res = {
+	    	label : title,
+	    	inputType : "select",
+	    	placeholder : title,
+	    	rules : { required : true },
+	    	options : list
+	    }
+	    if(notRequired == false)
+	    	delete res.rules;
+	    return res;
+	},
     typeOrga :{
     	label : "Type d'organisation",
     	inputType : "select",
     	placeholder : "Type d'organisation",
     	rules : { required : true },
     	options : organizationTypes
-    },
-    typeEvent :{
-    	label : "Type d\'évènement",
-    	inputType : "select",
-    	placeholder : "Type d\'évènement",
-    	options : eventTypes,
-    	rules : { required : true }
     },
    	avancementProject :{
     	inputType : "select",
@@ -2719,14 +2727,14 @@ var typeObjLib = {
     	}
     },
     image :function(str) { 
-    	url = (str) ? str : location.hash;
+    	gotoUrl = (str) ? str : location.hash;
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	elementLib.closeForm();
-		    	alert(url+uploadObj.id);
-	            url.loadByHash( url+uploadObj.id );	
+		    	alert(gotoUrl+uploadObj.id);
+	            url.loadByHash( gotoUrl+uploadObj.id );	
 		    	}
     	}
     },
@@ -3454,7 +3462,7 @@ function KScrollTo(target){
 }
 
 var timerCloseDropdownUser = false;
-function initKInterface(params){
+function initKInterface(params){ console.log("initKInterface");
 
 	$(window).off();
 

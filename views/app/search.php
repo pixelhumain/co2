@@ -60,6 +60,10 @@
         background-color:#FFC600 !important;
         color:white!important;
     }
+    #page .bg-turq{
+        background-color: #229296 !important;
+        color:white!important;
+    }
     #page .bg-purple{
         background-color:#8C5AA1 !important;
         color:white!important;
@@ -215,6 +219,8 @@
 
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
+
+    <?php if(@$type=="all"){ ?>
     <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
         <!-- <hr style="margin-bottom:-20px;"> -->
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 
@@ -233,6 +239,7 @@
             </small>
         </h5><br>
     </div>
+    <?php } ?>
 
 </div>
 
@@ -334,7 +341,8 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="project" data-type="project"
+                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" 
+                            data-ktype="project" data-type="project"
                             date-target="#modalMainMenu" data-dismiss="modal">
                             <div class="modal-body text-left">
                                 <h2 class="text-purple"><i class="fa fa-lightbulb-o padding-bottom-10"></i><br>
@@ -393,7 +401,6 @@ jQuery(document).ready(function() {
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
 	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
 
-        
         $(".btn-directory-type").click(function(){
             var typeD = $(this).data("type");
 
@@ -410,8 +417,19 @@ jQuery(document).ready(function() {
         });
          
         <?php if(@$type == "classified"){ ?>
-            initFreedomInterface();
+            initClassifiedInterface();
         <?php } ?>
+
+        //console.log("init Scroll");
+        $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
+            if(!loadingData && !scrollEnd){
+                  var heightWindow = $("html").height() - $("body").height();
+                  if( $(this).scrollTop() >= heightWindow - 400){
+                    startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
+                  }
+            }
+        });
+
 
         loadingData = false; 
         initTypeSearch(type);
@@ -486,15 +504,6 @@ jQuery(document).ready(function() {
     });
 
 
-      $(window).bind("scroll",function(){ mylog("test scroll");
-        if(!loadingData && !scrollEnd){
-              var heightWindow = $("html").height() - $("body").height();
-              if( $(this).scrollTop() >= heightWindow - 400){
-                startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
-              }
-        }
-    });
-
     setTimeout(function(){
         KScrollTo("#content-social");  
     }, 2000);
@@ -527,52 +536,75 @@ function initTypeSearch(typeInit){
 var freedomCategories = <?php echo json_encode($freedomSections); ?>
 <?php } ?>
 
-function initFreedomInterface(){
-    $(".btn-select-type-anc").click(function(){
+var section = "";
+var classType = "";
+var classSubType = "";
+function initClassifiedInterface(){
 
-      $(".btn-select-type-anc").removeClass("active");
-      $(this).addClass("active");
+    $('#menu-section-classified').removeClass("hidden");
 
-      var typeAnc = $(this).data("type-anc");
-      if(typeAnc == "forsale" || typeAnc == "location" || typeAnc == "donation" || 
-        typeAnc == "sharing" || typeAnc == "lookingfor"){
-        $(".subsub").show(300);
-      }else{
-        $(".subsub").hide(300);
-      }
+    $(".btn-select-type-anc").click( function()
+    {    
+        searchType = [ "classified" ];
+        indexStepInit = 100;
+        $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
+        $(".keycat").addClass("hidden");
+        $(this).addClass("active");
 
-      if(typeof freedomCategories[typeAnc] != "undefined")
-            $(".label-category").html("<i class='fa fa-"+ freedomCategories[typeAnc]["icon"] + "'></i> " + freedomCategories[typeAnc]["label"]);
-            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+freedomCategories[typeAnc]["color"])
+        section = $(this).data("type-anc");
+        sectionKey = $(this).data("key");
+        //alert("section : " + section);
+        if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
+            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" ){
+            //$(".subsub").show(300);
+            $('#searchTags').val(section);
+            //KScrollTo(".top-page");
+            startSearch(0, indexStepInit, searchCallback); 
+        } 
+
+        if(typeof freedomCategories[sectionKey] != "undefined") {
+            $(".label-category").html("<i class='fa fa-"+ freedomCategories[sectionKey]["icon"] + "'></i> " + freedomCategories[sectionKey]["label"]);
+            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+freedomCategories[sectionKey]["color"])
             $(".fa-title-list").removeClass("hidden");
-            KScrollTo(".top-page");
+        }
     });
 
     $(".btn-select-category-1").click(function(){
+        searchType = [ "classified" ];
         $(".btn-select-category-1").removeClass("active");
         $(this).addClass("active");
 
-        var keycat = $(this).data("keycat");
+        var classType = $(this).data("keycat");
         $(".keycat").addClass("hidden");
-        $(".keycat-"+keycat).removeClass("hidden");     
+        $(".keycat-"+classType).removeClass("hidden");   
+
+        ////alert("classType : "+classType);
+
+        $('#searchTags').val(section+","+classType);
+        startSearch(0, indexStepInit, searchCallback);  
     });
 
     $(".keycat").click(function(){
+
+        searchType = [ "classified" ];
         $(".keycat").removeClass("active");
         $(this).addClass("active");
+        var classSubType = $(this).data("keycat");
+        var classType = $(this).data("categ");
+        //alert("classSubType : "+classSubType);
+        $('#searchTags').val(section+","+classType+","+classSubType);
+        startSearch(0, indexStepInit, searchCallback);  
     });
 
     $("#btn-create-classified").click(function(){
          elementLib.openForm('classified');
     });
 
-    initFormImages();
-
-    //loadLiveNow();
+    
 }
 
 
-
+<?php if(@$type == "events"){ ?>
 var calendarInit = false;
 function showResultInCalendar(mapElements){
   mylog.log("showResultInCalendar xxx");
@@ -627,6 +659,6 @@ function showResultInCalendar(mapElements){
   calendarInit = true;
 }
 
-
+<?php } ?>
 
 </script>

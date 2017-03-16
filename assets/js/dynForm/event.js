@@ -141,14 +141,13 @@ dynForm = {
 	            }
             },
             parentType : typeObjLib.hidden,
-	        type : typeObjLib.typeEvent,
+	        type : typeObjLib.type ("Type d\'évènement",eventTypes),
 	        image : typeObjLib.image( "#event.detail.id." ),
             allDay : typeObjLib.allDay,
             startDate : typeObjLib.startDateInput,
             endDate : typeObjLib.endDateInput,
             location : typeObjLib.location,
             tags : typeObjLib.tags(),
-            
             /*public : {
             	inputType : "hidden",
             	"switch" : {

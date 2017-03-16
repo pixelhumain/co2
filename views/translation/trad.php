@@ -88,12 +88,12 @@ var trad = {
 "Mode" : "Mode",
 
 "all" : "Tous", 
-"sharing" : "À partager", 
-"donation" : "À donner", 
-"forsale" : "À vendre",  
-"forrent" : "À louer", 
-"lookingfor" : "À la recherche",  
-"job" : "Offre d'emplois" 
+"sharing" : "Partager", 
+"donation" : "Donner", 
+"forsale" : "Vendre",  
+"forrent" : "Louer", 
+"lookingfor" : "Recherche",  
+"job" : "Emplois" 
 
 };
 

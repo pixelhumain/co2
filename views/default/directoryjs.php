@@ -196,7 +196,7 @@
               $freedomSections = CO2::getContextList("freedomSections");
               $currentSection = 1;
               foreach ($freedomSections as $key => $section) { ?>
-                  <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc bold text-dark elipsis margin-bottom-5 btn-select-filliaire letter-<?php echo @$section["color"]; ?>" 
+                  <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc bold text-dark elipsis margin-bottom-5 letter-<?php echo @$section["color"]; ?>" 
                           data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" data-type="classified">
                     <i class="fa fa-<?php echo @$section["icon"]; ?>"></i>
                     <span class="hidden-xs hidden-sm"><?php echo @$section["label"]; ?></span>

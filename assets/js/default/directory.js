@@ -221,7 +221,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                     $("#footerDropdown").remove();
 
                     //on calcul la valeur du nouveau scrollTop
-                    var heightContainer = $(".my-main-container")[0].scrollHeight - 180;
+                    var heightContainer = $(".main-container")[0].scrollHeight - 180;
                     //on affiche le résultat à l'écran
                     $("#dropdown_search").append(str);
                     //on scroll pour afficher le premier résultat de la dernière recherche
@@ -269,7 +269,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         	  }
 
             //si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
-            mylog.log("SHOW MORE ?", countData, indexStep);
+            //mylog.log("SHOW MORE ?", countData, indexStep);
             if(countData < indexStep){
               $("#btnShowMoreResult").remove(); 
               scrollEnd = true;
@@ -280,6 +280,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             if(typeof showResultInCalendar != "undefined")
               showResultInCalendar(data);
 
+            if(mapElements.length==0) mapElements = data;
+            else $.extend(mapElements, data);
+            
             //affiche les éléments sur la carte
             if(CoSigAllReadyLoad)
             Sig.showMapElements(Sig.map, mapElements);
@@ -1133,7 +1136,7 @@ var directory = {
                                     (notEmpty(params.description)) ? params.description : 
                                     "";
 
-                mapElements.push(params);
+                //mapElements.push(params);
 
                 if(typeof( typeObj[itemType] ) == "undefined")
                     itemType="poi";

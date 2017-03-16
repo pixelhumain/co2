@@ -3462,7 +3462,7 @@ function KScrollTo(target){
 }
 
 var timerCloseDropdownUser = false;
-function initKInterface(params){
+function initKInterface(params){ console.log("initKInterface");
 
 	$(window).off();
 

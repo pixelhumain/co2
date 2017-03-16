@@ -215,6 +215,8 @@
 
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
+
+    <?php if(@$type=="all"){ ?>
     <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
         <!-- <hr style="margin-bottom:-20px;"> -->
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 
@@ -233,6 +235,7 @@
             </small>
         </h5><br>
     </div>
+    <?php } ?>
 
 </div>
 
@@ -334,7 +337,8 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="project" data-type="project"
+                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" 
+                            data-ktype="project" data-type="project"
                             date-target="#modalMainMenu" data-dismiss="modal">
                             <div class="modal-body text-left">
                                 <h2 class="text-purple"><i class="fa fa-lightbulb-o padding-bottom-10"></i><br>
@@ -393,9 +397,7 @@ jQuery(document).ready(function() {
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
 	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
 
-        
         $(".btn-directory-type").click(function(){
-                alert("btn-directory-type");
             var typeD = $(this).data("type");
 
             initTypeSearch(typeD);
@@ -413,6 +415,17 @@ jQuery(document).ready(function() {
         <?php if(@$type == "classified"){ ?>
             initClassifiedInterface();
         <?php } ?>
+
+        //console.log("init Scroll");
+        $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
+            if(!loadingData && !scrollEnd){
+                  var heightWindow = $("html").height() - $("body").height();
+                  if( $(this).scrollTop() >= heightWindow - 400){
+                    startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
+                  }
+            }
+        });
+
 
         loadingData = false; 
         initTypeSearch(type);
@@ -486,15 +499,6 @@ jQuery(document).ready(function() {
         activateGlobalCommunexion(false);
     });
 
-
-      $(window).bind("scroll",function(){ mylog("test scroll");
-        if(!loadingData && !scrollEnd){
-              var heightWindow = $("html").height() - $("body").height();
-              if( $(this).scrollTop() >= heightWindow - 400){
-                startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
-              }
-        }
-    });
 
     setTimeout(function(){
         KScrollTo("#content-social");  
@@ -596,6 +600,7 @@ function initClassifiedInterface(){
 }
 
 
+<?php if(@$type == "events"){ ?>
 var calendarInit = false;
 function showResultInCalendar(mapElements){
   mylog.log("showResultInCalendar xxx");
@@ -650,6 +655,6 @@ function showResultInCalendar(mapElements){
   calendarInit = true;
 }
 
-
+<?php } ?>
 
 </script>

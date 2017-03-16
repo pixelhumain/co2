@@ -776,19 +776,47 @@ var directory = {
         params.startMonth = directory.getMonthName(params.startMonth);
         params.endMonth = directory.getMonthName(params.endMonth);
 
-        var attendees = "";
-        var cntAtt = 0;
+        params.attendees = "";
+        var cntP = 0;
+        var cntIv = 0;
+        var cntIt = 0;
         if(typeof params.links != "undefined")
           if(typeof params.links.attendees != "undefined"){
-            $.each(params.links.attendees, function(key, val){ cntAtt++; });
-            attendees = "<span class='col-md-12'><i class='fa fa-link'></i> " + cntAtt + " invité</span>";
-          }
+            $.each(params.links.attendees, function(key, val){ 
+              if(typeof val.isInviting != "undefined" && val.isInviting == true)
+                cntIv++; 
+              else
+                cntP++; 
+            });
+
+            params.attendees = "<hr class='margin-top-10 margin-bottom-10'>";
+            
+             
+            params.attendees += "<button id='btn-participate' class='text-dark btn btn-link no-padding'><i class='fa fa-street-view'></i> Je participe</button>";
+            params.attendees += "<button id='btn-interested' class='text-dark btn btn-link no-padding margin-left-10'><i class='fa fa-thumbs-up'></i> Ça m'intéresse</button>";
+            params.attendees += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10'> <i class='fa fa-share'></i> Partager</button>";
+          
+            params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
+                                        "data-toggle='tooltip' data-placement='bottom' data-original-title='participant(s)'>" + 
+                                  cntP + " <i class='fa fa-street-view'></i>"+
+                                "</small>";
+
+            params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
+                                        "data-toggle='tooltip' data-placement='bottom' data-original-title='intéressé(s)'>" +
+                                   cntIt + " <i class='fa fa-thumbs-up'></i>"+
+                                "</small>";
+
+            params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
+                                        "data-toggle='tooltip' data-placement='bottom' data-original-title='invité(s)'>" +
+                                   cntIv + " <i class='fa fa-envelope'></i>"+
+                                "</small>";
+
+           }
 
         mylog.log("-----------eventPanelHtml", params);
         //if(params.imgProfil.indexOf("fa-2x")<0)
         str += '<div class="col-xs-12 col-sm-4 col-md-4 no-padding">'+
-                  '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+
-                  attendees +
+                  '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+            
                 '</div>';
         
         if(userId != null && userId != "" && params.id != userId){
@@ -803,7 +831,7 @@ var directory = {
                     "</a>";
         }
 
-        str += "<div class='col-md-6 col-sm-6 col-xs-12 margin-top-15'>";
+        str += "<div class='col-md-8 col-sm-8 col-xs-12 margin-top-25'>";
           
         var startLbl = (params.endDay != params.startDay) ? "Du" : "";
         var endTime = (params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
@@ -849,6 +877,15 @@ var directory = {
 
         str += "<div class='col-md-8 col-sm-8 col-xs-12 entityRight padding-top-10 margin-top-10' style='border-top: 1px solid rgba(0,0,0,0.2);'>";
 
+        var thisLocality = "";
+        if(params.fullLocality != "" && params.fullLocality != " ")
+             thisLocality = //"<h4 class='pull-right no-padding no-margin lbh add2fav'>" +
+                              "<small class='margin-left-5 letter-red'><i class='fa fa-map-marker'></i> " + params.fullLocality + "</small>" ;
+                            //"</h4>";
+        else thisLocality = "";
+                
+       // str += thisLocality;
+
         var typeEvent = notEmpty(params.typeEvent) ? 
                         (notEmpty(eventTypes[params.typeEvent]) ? 
                         eventTypes[params.typeEvent] : 
@@ -856,23 +893,22 @@ var directory = {
                         trad["event"];
 
         str += "<h5 class='text-dark lbh add2fav no-margin'>"+
-                  "<i class='fa fa-reply fa-rotate-180'></i> " + typeEvent + 
+                  "<i class='fa fa-reply fa-rotate-180'></i> " + typeEvent + thisLocality +
                "</h5>";
 
         str += "<a href='"+params.url+"' class='entityName text-dark lbh add2fav'>"+
                   params.name + 
                "</a>";
         
-        var thisLocality = "";
-        if(params.fullLocality != "" && params.fullLocality != " ")
-             thisLocality = "<a href='"+params.url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
-                              "<i class='fa fa-home'></i> " + params.fullLocality + 
-                            "</a>";
-        else thisLocality = "<br>";
-                
-        str += thisLocality;
-        
-        str +=    "<div class='entityDescription margin-bottom-10'>" + params.description + "</div>";
+          
+        str +=    "<div class='entityDescription margin-bottom-10'>" + 
+                    params.description + 
+                  "</div>";
+        str +=    "<div class='margin-bottom-10'>" + 
+                    params.attendees + 
+                    //"<button class='btn btn-link no-padding margin-right-10 pull-right'><i class='fa fa-link'></i> Je participe</button>";
+          
+                  "</div>";
         str +=    "<div class='tagsContainer text-red'>"+params.tags+"</div>";
         str += "</div>";
             

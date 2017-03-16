@@ -60,6 +60,10 @@
         background-color:#FFC600 !important;
         color:white!important;
     }
+    #page .bg-turq{
+        background-color: #229296 !important;
+        color:white!important;
+    }
     #page .bg-purple{
         background-color:#8C5AA1 !important;
         color:white!important;

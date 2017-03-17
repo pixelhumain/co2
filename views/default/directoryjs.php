@@ -187,14 +187,14 @@
 
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="menu-section-classified">
           <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
-                        data-type="classified" data-type-anc="">
+                        data-type="classified" data-type-anc=""  data-key="all">
                   <i class="fa fa-circle-o"></i>
                   <span class="hidden-xs hidden-sm"> Tous </span>
                 </button>
           <?php 
-              $freedomSections = CO2::getContextList("freedomSections");
+              $classifiedSections = CO2::getContextList("freedomSections");
               $currentSection = 1;
-              foreach ($freedomSections as $key => $section) { ?>
+              foreach ($classifiedSections as $key => $section) { ?>
                   <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc bold text-dark elipsis margin-bottom-5 letter-<?php echo @$section["color"]; ?>" 
                           data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" data-type="classified">
                     <i class="fa fa-<?php echo @$section["icon"]; ?>"></i>
@@ -278,7 +278,7 @@
                       <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
                     </button><br>
                     <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
-                      <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
+                      <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
                         <i class="fa fa-angle-right"></i> <?php echo $cat2; ?>
                       </button><br class="hidden">
                     <?php } ?>

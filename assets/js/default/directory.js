@@ -872,7 +872,7 @@ var directory = {
         str += "</div>";
 
        
-        if("undefined" != typeof params.organizerObj){ 
+        if("undefined" != typeof params.organizerObj && params.organizerObj != null){ 
 
           str += "<div class='col-md-8 col-sm-8 col-xs-12 entityOrganizer margin-top-10'>";
             if("undefined" != typeof params.organizerObj.profilThumbImageUrl &&

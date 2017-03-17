@@ -186,21 +186,25 @@
         </div>
 
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="menu-section-classified">
-          <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
-                        data-type="classified" data-type-anc=""  data-key="all">
-                  <i class="fa fa-circle-o"></i>
-                  <span class="hidden-xs hidden-sm"> Tous </span>
-                </button>
+          <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
+                  data-type="classified" data-type-anc=""  data-key="all">
+            <i class="fa fa-circle-o"></i>
+            <span class="hidden-xs hidden-sm"> Tous </span>
+          </button> -->
           <?php 
               $classifiedSections = CO2::getContextList("freedomSections");
               $currentSection = 1;
               foreach ($classifiedSections as $key => $section) { ?>
-                  <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc bold text-dark elipsis margin-bottom-5 letter-<?php echo @$section["color"]; ?>" 
-                          data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" data-type="classified">
-                    <i class="fa fa-<?php echo @$section["icon"]; ?>"></i>
-                    <span class="hidden-xs hidden-sm"><?php echo @$section["label"]; ?></span>
+                <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
+                  <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
+                          data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
+                          data-type="classified"
+                          style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
+                    <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["label"]; ?>
                   </button>
-          <?php } ?>   
+                </div>
+          <?php } ?>  
+          <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> 
         </div>
 
         <?php if($typeSelected != "events"  && 

@@ -2622,6 +2622,7 @@ var dynForm = null;
 var uploadObj = {
 	type : null,
 	id : null,
+	folder : "communecter", //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
 		uploadObj.id = id;

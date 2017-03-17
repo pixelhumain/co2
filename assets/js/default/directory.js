@@ -1178,9 +1178,9 @@ var directory = {
                 if(!params.useMinSize)
                     params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
 
-                if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != ""){
+                if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
                     params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>";
-                }
+
                 if(typeObjLib.get(itemType).col == "poi" && typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
                 params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
 

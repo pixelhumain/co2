@@ -24,6 +24,9 @@ dynForm = {
 	    		$("#ajaxFormModal #parentType").val( data.parentType ); 
 		    },*/
 	    },
+	    beforeBuild : function(){
+	    	elementLib.setMongoId('classified');
+	    },
 	    beforeSave : function(){
 	    	var tagAndTypes = ( $("#ajaxFormModal #tags").val() != "" ) ? $("#ajaxFormModal #tags").val()+"," : "" ;
 

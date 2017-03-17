@@ -130,10 +130,9 @@
   }
 }
 
-  </style>
+</style>
  
-
-  <div class="container-result-search">
+<div class="container-result-search">
 
       <?php if(@$_GET['type']!="") { ?>
         <?php $typeSelected = $_GET['type']; ?>
@@ -291,11 +290,9 @@
           
           <?php } ?>
 
-        <?php if($typeSelected == "classified"){ ?>
-          <div class="col-md-6 col-sm-6 col-xs-10 padding-10" id="dropdown_search"></div>
-        <?php }else{ ?>
+        
           <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search"></div>
-        <?php } ?>
+        
 
       <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
       

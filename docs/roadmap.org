@@ -98,6 +98,64 @@ Liste des notifications déjà lues => #370 #453
 * ************************************************************    
 * Version 0.2  : en cours
 * ************************************************************  
+** @Tib 
+  [ ] annonces
+    [X] top level types
+    [ ] differents filtre apr section
+    [ ] mes annonces
+  * bugs
+    [ ] dynSurvey photos
+  [ ] module clean up communecter to CO2 : clear deprecated views
+    [ ] mainSearch Libs clean up 
+      wysihtml5
+      Chart.min
+      boostrapswitch
+      bostrap editable ???
+      datetimepicker
+    [X] default.home
+    [X] #default.live
+    [X] news.index.type.citoyens.id.582e9551f6ca4759438b4584
+    [X] element.detail
+      [X] person #person.detail.id.582e9551f6ca4759438b4584
+      [X] me
+      [X] orga
+        - why chart/index
+      [X] project #element.detail.type.project
+      [X] event #element.detail.type.event
+      [X] #element.detail.type.poi
+        bug : Undefined index: parentId
+    [X] dynform
+      [X] orga
+      [X] poi
+      [X] project
+      [X] event
+      [X] survey
+      [X] actions
+    [X] directory
+      [X] agenda
+      [X] orga
+      [X] project
+      [X] citoyens
+      [X] survey #default.directory?type=vote
+      [X] actions #default.directory?type=actions
+      [X] classified #default.directory?type=classified
+        [ ] icon in directory
+      [X] cities #default.directory?type=cities
+    [X] DDA
+      [X] #survey.entries.id.57b71a0ff6ca4712778b4570
+      [X] #survey.entry.id.582d9920f6ca47630c8b4580
+      [X] #rooms.actions.id.5786585cf6ca477b4e8b457d
+      [X] #rooms.action.id.5788d9f3f6ca47f8168b457d
+      [X] #comment.index.type.actionRooms.id.57a19c21f6ca47d2548b456e
+    [X] city.detail #city.detail.insee.97414.postalCode.97450
+      - sliderAgenda ???
+      - podBtnTypeNews ???
+    [X] docs #default.view.page.index.dir.docs
+      [X] move docs to github
+
+* ************************************************************    
+* Version 0.17  : cloturé sur ph-dori
+* ************************************************************  
 
 ** @Clem 
   [.2] add POI to news

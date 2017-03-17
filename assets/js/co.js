@@ -2733,7 +2733,7 @@ var typeObjLib = {
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	elementLib.closeForm();
-		    	alert(gotoUrl+uploadObj.id);
+		    	//alert(gotoUrl+uploadObj.id);
 	            url.loadByHash( gotoUrl+uploadObj.id );	
 		    	}
     	}

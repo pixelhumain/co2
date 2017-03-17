@@ -1046,8 +1046,8 @@ var directory = {
                     itemType="poi";
                 typeIco = itemType;
 
-                if(typeof(params.typeOrga) != "undefined")
-                    typeIco = params.typeOrga;
+                if(typeof params.typeOrga != "undefined")
+                  typeIco = params.typeOrga;
 
                 var obj = (typeObjLib.get(typeIco)) ? typeObjLib.get(typeIco) : typeObj["default"] ;
                 params.ico =  "fa-"+obj.icon;

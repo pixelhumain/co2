@@ -115,6 +115,19 @@ Liste des notifications déjà lues => #370 #453
       [ ] Nettoyer le code inutile
       * BUG
       [ ] Historique bug lorsqu'on ajoutes des contacts
+    [ ] In CO2
+      [X] Integrer dans CO2
+      [ ] Bug 
+        [ ] Info
+          [ ] Gestion BirthDate
+        [ ] Description
+          [ ] c'est centré au milieu surement du au dynForm 
+        [ ] Network
+        [ ] Type
+          [ ] Orga
+          [ ] Event
+          [ ] Project
+          [ ] Person
 
   * Import / Export 
   [.2] RSS (Personne, Orga, Projet, event, city, region, thematique, tags) => #523

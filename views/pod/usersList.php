@@ -252,7 +252,7 @@
 					if($countStrongLinks>1)
 						$strongLinksLabel .= "s";
 					echo "<div class='col-md-4 inline' style='float:inherit;'>".
-							"<span class='text-dark' style='font-size:16px;font-weight:bold'>".$countStrongLinks."</span><br/>".
+							"<span class='text-dark' style='font-size:16px;font-weight:bold'>".$countStrongLinks."</span> ".
 							"<span class='text-dark'>".ucfirst(@$strongLinksLabel)."</span>".
 						"</div>";
 				}if (@$countInvitations && $countInvitations != 0){
@@ -263,7 +263,7 @@
 					if($countStrongLinks != 0)
 						$style="padding-left:15px;";
 					echo "<div class='col-md-4 inline' style='float:inherit;".$style."'>".
-						"<span class='text-dark' style='font-size:16px;font-weight:bold'>".$countInvitations."</span><br/>".
+						"<span class='text-dark' style='font-size:16px;font-weight:bold'>".$countInvitations."</span> ".
 						"<span class='text-dark'>".ucfirst($invitationsLabel)."</span>".
 					"</div>";
 				}
@@ -275,7 +275,7 @@
 					if($countStrongLinks != 0 || $countInvitations != 0)
 						$style="padding-left:15px;";
 					echo "<div class='col-md-4 inline' style='float:inherit;".$style."'>".
-						"<span class='text-dark' style='font-size:16px;font-weight:bold'>".$countLowLinks."</span><br/>".
+						"<span class='text-dark' style='font-size:16px;font-weight:bold'>".$countLowLinks."</span> ".
 						"<span class='text-dark'>".ucfirst($lowLinksLabel)."</span>".
 					"</div>";
 				}

@@ -445,7 +445,7 @@ jQuery(document).ready(function() {
     });
 
 
-      $(window).bind("scroll",function(){ mylog("test scroll");
+      $(window).bind("scroll",function(){ mylog.log("test scroll");
         if(!loadingData && !scrollEnd){
               var heightWindow = $("html").height() - $("body").height();
               if( $(this).scrollTop() >= heightWindow - 400){

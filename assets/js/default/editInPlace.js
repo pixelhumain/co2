@@ -5,7 +5,7 @@ function bindAboutPodElement() {
 		});
 		
 		$("#editElementDetail").on("click", function(){
-				switchModeElement();
+			switchModeElement();
 		});		
 
 		$("#changePasswordBtn").click(function () {
@@ -89,7 +89,7 @@ function bindAboutPodElement() {
 
 	}
 
-	function switchModeElement() {
+	/*function switchModeElement() {
 		mylog.log("-------------"+mode);
 		if(mode == "view"){
 			mode = "update";
@@ -108,9 +108,9 @@ function bindAboutPodElement() {
 		manageModeContextElement();
 		changeHiddenIconeElement(false);
 		manageDivEditElement();
-	}
+	}*/
 
-	function manageModeContextElement() {
+	/* function manageModeContextElement() {
 		mylog.log("-----------------manageModeContextElement----------------------", mode);
 		listXeditablesContext = [	'#birthDate', '#description', '#shortDescription', '#fax', '#fixe', '#mobile', 
 							'#tags', '#facebookAccount', '#twitterAccount',
@@ -144,7 +144,10 @@ function bindAboutPodElement() {
 			$("#btn-update-organizer").removeClass("hidden");
 			$("#btn-add-organizer").removeClass("hidden");
 		}
-	}
+	} */
+
+
+
 
 	function manageDivEditElement() {
 		mylog.log("-----------------manageDivEditElement----------------------", mode);
@@ -163,8 +166,8 @@ function bindAboutPodElement() {
 		}
 	}
 
-	function manageSocialNetwork(iconObject, value) {
-		//mylog.log("-----------------manageSocialNetwork----------------------");
+	/* function manageSocialNetwork(iconObject, value) {
+		mylog.log("-----------------manageSocialNetwork----------------------");
 		tabId2Icon = {"facebookAccount" : "fa-facebook", "twitterAccount" : "fa-twitter", 
 				"gpplusAccount" : "fa-google-plus", "gitHubAccount" : "fa-github", 
 				"skypeAccount" : "fa-skype", "telegramAccount" : "fa-send"}
@@ -182,480 +185,45 @@ function bindAboutPodElement() {
 
 		if(iconObject.attr("id") == "telegramAccount"){
 			iconObject.tooltip({title: value, placement: "left"});
-			/*var chaineTelegram = "";
-			if(speudoTelegram.length > 0)
-				chaineTelegram = " : "+speudoTelegram;*/
 			if(speudoTelegram != "")
 				iconObject.html('<i class="fa '+fa+' text-white"></i> '+speudoTelegram);
 			else
 				iconObject.html('<i class="fa '+fa+' text-white"></i> Telegram');
-
-
 		}
+	} */
 
-		mylog.log(iconObject);
-	}
-
-	function changeHiddenIconeElement(init) { 
-		mylog.log("-----------------changeHiddenIconeElement----------------------", mode);
+	/*function changeHiddenIconeElementOld(init) { 
+		mylog.log("-----------------changeHiddenIconeElement----------------------");
 		//
-		listIcones = [	'.fa_name', ".fa_birthDate", ".fa_email", ".fa_telephone_mobile",
-						".fa_telephone",".fa_telephone_fax",".fa_url" , ".fa-file-text-o",
-						".fa_streetAddress", ".fa_postalCode", ".fa_addressCountry",".addresses"];
+		listIcones = [	".fa_birthDate", ".fa_email", ".fa_telephone_mobile",
+						".fa_telephone",".fa_telephone_fax",".fa_url" , ".fa-file-text-o"];
 
-		listXeditablesId = ['#username','#birthDate',"#email", "#mobile", 
-							"#fixe", "#fax","#url", "#licence",
-							"#detailStreetAddress" , "#detailCity" , "#detailCountry"];
-		if (init == true) {
-			$.each(listIcones, function(i,value) {
-				mylog.log(listXeditablesId[i], $(listXeditablesId[i]).text().length, $(listXeditablesId[i]).text()) ;
-				if($(listXeditablesId[i]).text().length != 0){
-					//mylog.log(listXeditables[i], " : ", value);
-					$(value).removeClass("hidden");	
-				}
-					 
-			});
-		}
-		else if (mode == "view") {
-			$.each(listIcones, function(i,value) {
-
-				if($(listXeditablesId[i]).text().length == 0)
-					$(value).addClass("hidden");
-			});
-		} else if (mode == "update") {
-			$.each(listIcones, function(i,value) {
+		listXeditablesId = ['#birthDate',"#email", "#mobile", "#fixe", "#fax","#url", "#licence"];
+		$.each(listIcones, function(i,value) {
+			mylog.log("listIcones", value, listXeditablesId[i]);
+			if($("#contentGeneralInfos "+listXeditablesId[i]).text().length == 0)
+				$(value).addClass("hidden");
+			else
 				$(value).removeClass("hidden"); 
-			});
-		}
-	}
-
-	function activateEditableContext() {
-		$.fn.editable.defaults.mode = 'popup';
-		$.fn.editable.defaults.container='body';
-		$('.editable-context').editable({
-			url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
-			title : $(this).data("title"),
-			onblur: 'submit',
-			/*success: function(response, newValue) {
-				mylog.log(response, newValue);
-				if(! response.result) return response.msg; //msg will be shown in editable form
-    		},*/
-    		success : function(data) {
-    			mylog.log("hello", data);
-				if(data.result) {
-					toastr.success(data.msg);
-					loadActivity=true;
-
-					if(typeof data.name != "undefined" && $('#nameHeader').length ){
-						$('#nameHeader').html(data.name);
-					}	
-				}
-				else 
-					return data.msg;
-			}
-
-		});
-
-		$('.socialIcon').editable({
-			display: function(value) {
-				manageSocialNetwork($(this), value);
-			},
-			url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
-			mode: 'popup',
-			success : function(data) {
-				mylog.log("herehehre", data);
-				//mylog.log(data.telegramAccount, typeof data.telegramAccount);
-				if(typeof data.telegramAccount != "undefined" && data.telegramAccount.length > 0){
-					speudoTelegram = data.telegramAccount.trim();
-					$('#telegramAccount').attr('href', 'https://web.telegram.org/#/im?p=@'+speudoTelegram);
-					$('#telegramAccount').html('<i class="fa telegramAccount text-white"></i>'+speudoTelegram);
-					
-				}
-				if(typeof data.facebookAccount != "undefined" && data.facebookAccount.length > 0){
-					pseudoFacebook = data.facebookAccount.trim();
-					$('#facebookAccount').attr('href', pseudoFacebook);
-				}
-				if(typeof data.twitterAccount != "undefined" && data.twitterAccount.length > 0){
-					pseudoTwitter = data.TwitterAccount.trim();
-					$('#twitterAccount').attr('href', pseudoTwitter);
-				}
-				if(typeof data.gitHubAccount != "undefined" && data.gitHubAccount.length > 0){
-					pseudoGithub = data.gitHubAccount.trim();
-					$('#gitHubAccount').attr('href', pseudoGithub);
-				}
-				if(typeof data.skypeAccount != "undefined" && data.skypeAccount.length > 0){
-					pseudoSkype = data.skypeAccount.trim();
-					$('#skypeAccount').attr('href', pseudoSkype);
-				}
-				if(typeof data.gpplusAccount != "undefined" && data.gpplusAccount.length > 0){
-					pseudoGpplus = data.gpplusAccount.trim();
-					$('#gpplusAccount').attr('href', pseudoGpplus);
-				}
-
-			}
-		}); 
-
-
-		//Type Organization
-		 $('#type').editable({
-		 	url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType, 
-		 	value: contextType,
-		 	placement: 'bottom',
-		 	source: function() {
-		 		return types;
-		 	},
-		 	success : function(data) {
-				if(data.result) {
-					toastr.success(data.msg);
-					loadActivity=true;
-					if(typeof data.type != "undefined" && $('#typeHeader').length ){
-						$('#typeHeader').html(data.type);
-					}
-				}
-				else 
-					return data.msg;
-			}
-		 });
-
-		$('#birthDate').editable({
-			url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType, 
-			mode: 'popup',
-			placement: "right",
-			format: 'yyyy-mm-dd',   
-	    	viewformat: 'dd/mm/yyyy',
-	    	datepicker: {
-	            weekStart: 1,
-	        },
-	        showbuttons: true
-		});
-
-		/*$('#tags').editable({
-	        url: baseUrl+"/"+moduleId+"/element/updatefield", //this url will not be used for creating new user, it is only for update
-	        mode : 'popup',
-	        value: 
-	        select2: {
-	            tags: 
-	            tokenSeparators: [","],
-	            width: 200,
-	            dropdownCssClass: 'select2-hidden'
-	        }
-	    });*/
-
-		//Select2 tags
-		$('#tags').editable({
-			url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
-		 	mode: 'popup',
-		 	value: returnttags(),
-		 	select2: {
-		 		tags: tags,
-		 		tokenSeparators: [","],
-		 		width: 200,
-		 		dropdownCssClass: 'select2-hidden'
-		 	},
-		 	success : function(data) {
-		 		mylog.log("TAGS", data);
-				if(data.result) {
-					toastr.success(data.msg);
-					loadActivity=true;
-					var str = "";
-					if($('#divTagsHeader').length ){
-						
-						$.each(data.tags, function (key, tag){
-							str +=	'<div class="tag label label-danger pull-right" data-val="'+tag+'">'+
-										'<i class="fa fa-tag"></i>'+tag+
-									'</div>';
-							addTagToMultitag(tag);
-						});
-						
-					}
-					$('#divTagsHeader').html(str);	
-				}
-				else 
-					return data.msg;
-			}
-		});
-
-
-		$('#mobile').editable({
-	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
-	        mode : 'popup',
-	        value: mobile,
-	    	success : function(data) {
-				if(data.result)
-					toastr.success(data.msg);
-				else 
-					toastr.error(data.msg);
-			}
-	    });
-
-	    $('#fax').editable({
-	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
-	        mode : 'popup',
-	        value: fax,
-	    	success : function(data) {
-				if(data.result)
-					toastr.success(data.msg);
-				else 
-					toastr.error(data.msg);
-			}
-	    }); 
-
-		$('#fixe').editable({
-			url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType, 
-			mode: 'popup',
-			value: fixe,
-			success : function(data) {
-				if(data.result)
-					toastr.success(data.msg);
-				else 
-					toastr.error(data.msg);
-			}
-		});
-
-		
-
-		$('#category').editable({
-			url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType, 
-			mode: 'popup',
-			value: category,
-			source: function() {
-				var result = new Array();
-				var categorySource = null;
-
-				mylog.log("contextData.type",contextData.type);
-				if (contextData.type == TYPE_NGO) categorySource = NGOCategoriesList;
-				if (contextData.type == TYPE_BUSINESS) categorySource = localBusinessCategoriesList;
-				
-				if(categorySource != null)
-				$.each(categorySource, function(i,value) {
-					result.push({"value" : value, "text" : value}) ;
-				});
-				return result;
-			},
-			success : function(data) {
-				if(data.result) {
-					toastr.success(data.msg);
-					loadActivity=true;	
-				}
-				else 
-					return data.msg;
-			}
-		});
-
-		$('#avancement').editable({
-			url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,  
-			source: function() {
-				//idea => concept => Started => development => testing => mature
-				avancement=["idea","concept","started","development","testing","mature"];
-				return avancement;
-			},
-			success : function(data) {
-				if(data.result) {
-					toastr.success(data.msg);
-					loadActivity=true;	
-					if(data.avancement=="idea")
-						val=5;
-					else if(data.avancement=="concept")
-						val=20;
-					else if (data.avancement== "started")
-						val=40;
-					else if (data.avancement == "development")
-						val=60;
-					else if(data.avancement == "testing")
-						val=80;
-					else
-						val=100;
-					$('#progressStyle').val(val);
-					$('#labelProgressStyle').html(data.avancement);
-				}
-				else 
-					return data.msg;
-		    }
-		});
-
-		$('#shortDescription').editable({
-			url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType, 
-			placement: 'bottom', //MODIFIED
-			wysihtml5: {
-				color: false,
-				html: false,
-				video: false,
-				image: false,
-				table : false
-			},
-			container: 'body',
-			validate: function(value) {
-			    mylog.log(value);
-			    if($.trim(value).length > 140) {
-			        return 'La description courte ne doit pas dépasser 140 caractères.';
-			    }
-			},
-			success : function(data) {
-				if(data.result) {
-					toastr.success(data.msg);
-					loadActivity=true;
-
-					if(typeof data.shortDescription != "undefined" && $('#shortDescriptionHeader').length ){
-						$('#shortDescriptionHeader').html(data.shortDescription);
-					}
-				}
-				else 
-					return data.msg;
-			}
-		});
-
-
-		$('#description').editable({
-			url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,  
-			value: description,
-			placement: 'top',
-			wysihtml5: {
-				html: true,
-				video: false,
-				image: false
-			},
-			container: 'body',
-			success : function(data) {
-				if(data.result) {
-					toastr.success(data.msg);
-					loadActivity=true;	
-				}
-				else 
-					return data.msg;
-			}
 		});
 		
-		$('#allDay').editable({
-			url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,  
-			mode: "popup",
-			value: allDay,
-			source:[{value: "true", text: "Oui"}, {value: "false", text: "Non"}],
-			success : function(data, newValue) {
-		        if(data.result) {
-		        	manageAllDayElement(newValue);
-		        	toastr.success(data.msg);
-					loadActivity=true;	
-		        }
-		        else
-		        	return data.msg;  
-		    }
+	}*/
+
+
+	function changeHiddenFields() { 
+		mylog.log("-----------------changeHiddenFields----------------------");
+		//
+		listIcones = [	"username", "birthDate", "email", "avancement", "url", "fixe",
+						"mobile","fax", "facebook", "twitter", "gpplus", "gitHub", "skype", "telegram"];
+		//listXeditablesId = ['#birthDate',"#email", "#mobile", "#fixe", "#fax","#url", "#licence"];
+		$.each(listIcones, function(i,value) {
+			mylog.log("listIcones", value, typeof contextData[value]);
+			if(typeof contextData[value] != "undefined" && contextData[value].length == 0)
+				$("."+value).addClass("hidden");
+			else
+				$("."+value).removeClass("hidden"); 
 		});
-	   
-		//Validation Rules
-		//Mandotory field
-		$('.required').editable('option', 'validate', function(v) {
-			var intRegex = /^\d+$/;
-			if (!v)
-				return 'Field is required !';
-		});
-	
-		
-	} 
-	function manageAllDayElement(isAllDay) {
-		mylog.warn("Manage all day event ", isAllDay);
-
-		$('#startDate').editable('destroy');
-		$('#endDate').editable('destroy');
-		if (isAllDay == "true") {
-			mylog.log("init Xedit with dd/mm/yyyy");
-			$('#startDate').editable({
-				url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,  
-				pk: contextData.id,
-				type: "date",
-				mode: "popup",
-				placement: "bottom",
-				format: 'yyyy-mm-dd',
-				viewformat: 'dd/mm/yyyy',
-				datepicker: {
-					weekStart: 1
-				},
-				success : function(data) {
-					if(data.result) {
-						toastr.success(data.msg);
-						loadActivity=true;
-						updateCalendar();
-					}else 
-						return data.msg;
-			    }
-			});
-
-			$('#endDate').editable({
-				url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,  
-				pk: contextData.id,
-				type: "date",
-				mode: "popup",
-				placement: "bottom",
-				format: 'yyyy-mm-dd',   
-	        	viewformat: 'dd/mm/yyyy',
-	        	datepicker: {
-	                weekStart: 1
-	           },
-	           success : function(data) {
-			        if(data.result) {
-			        	toastr.success(data.msg);
-						loadActivity=true;
-						updateCalendar();	
-			        }else 
-						return data.msg;
-			    }
-	        });
-
-			formatDate = "YYYY-MM-DD";
-		} else {
-			mylog.log("init Xedit with dd/mm/yyyy hh:ii");
-			$('#startDate').editable({
-				url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType, 
-				pk: contextData.id,
-				type: "datetime",
-				mode: "popup",
-				placement: "bottom",
-				format: 'yyyy-mm-dd hh:ii',
-				viewformat: 'dd/mm/yyyy hh:ii',
-				datetimepicker: {
-					weekStart: 1,
-					minuteStep: 30,
-					language: 'fr'
-				   },
-				success : function(data) {
-					if(data.result) {
-						toastr.success(data.msg);
-						loadActivity=true;
-						updateCalendar();
-					}else 
-						return data.msg;
-			    }
-			});
-
-			$('#endDate').editable({
-				url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType, 
-				pk: contextData.id,
-				mode: "popup",
-				type: "datetime",
-				placement: "bottom",
-				format: 'yyyy-mm-dd hh:ii',
-	        	viewformat: 'dd/mm/yyyy hh:ii',
-	        	datetimepicker: {
-	                weekStart: 1,
-	                minuteStep: 30,
-	                language: 'fr'
-	           },
-	           success : function(data) {
-			        if(data.result) {
-			        	toastr.success(data.msg);
-						loadActivity=true;
-						updateCalendar();
-						
-			        }else 
-						return data.msg;
-			    }
-	        });
-
-			formatDate = "YYYY-MM-DD HH:mm";
-		}
-		if(startDate != "")
-			$('#startDate').editable('setValue', moment(startDate, "YYYY-MM-DD HH:mm").format(formatDate), true);
-		if(endDate != "")
-			$('#endDate').editable('setValue', moment(endDate, "YYYY-MM-DD HH:mm").format(formatDate), true);
+		mylog.log("-----------------changeHiddenFields END----------------------");
 	}
 
 	function updateCalendar() {
@@ -664,15 +232,15 @@ function bindAboutPodElement() {
 		}
 	}
 
-	function returnttags() {
+	/* function returnttags() {
 		mylog.log("------------- returnttags -------------------");
 		//var tags = <?php echo (isset($element["tags"])) ? json_encode(implode(",", $element["tags"])) : "''"; ?>;
 		//var tags = <?php echo (isset($element["tags"])) ? json_encode( $element["tags"]) : "''"; ?>;
 
 		return tags2 ;
-	}
+	} */
 
-	function returntel() {
+	/*function returntel() {
 		var tel = "";
 		$(".tel").each(function(){
 			
@@ -688,10 +256,10 @@ function bindAboutPodElement() {
 
 	    mylog.log(tel);
 		return tel ;
-	}
+	} */
 	//modification de la position geographique	
 
-	function findGeoPosByAddress(){
+	/* function findGeoPosByAddress(){
 		//si la streetAdress n'est pas renseignée
 		if($("#streetAddress").html() == $("#streetAddress").attr("data-emptytext")){
 			//on récupère la valeur du code insee s'il existe
@@ -719,10 +287,10 @@ function bindAboutPodElement() {
 			findGeoposByNominatim(request);
 		}
 	
-	}
+	} */
 
 	//quand la recherche nominatim a fonctionné
-	function callbackNominatimSuccess(obj){
+	/*function callbackNominatimSuccess(obj){
 		mylog.log("callbackNominatimSuccess");
 		//si nominatim a trouvé un/des resultats
 		if (obj.length > 0) {
@@ -747,10 +315,10 @@ function bindAboutPodElement() {
 			//si on a un codeInsee, on lance la recherche de position par codeInsee
 			if(insee != "") findGeoposByInsee(insee);
 		}
-	}
+	} */
 
 	//quand la recherche par code insee a fonctionné
-	function callbackFindByInseeSuccess(obj){
+	/* function callbackFindByInseeSuccess(obj){
 		mylog.log("callbackFindByInseeSuccess");
 		//si on a bien un résultat
 		if (typeof obj != "undefined" && obj != "") {
@@ -766,18 +334,18 @@ function bindAboutPodElement() {
 		else {
 			mylog.log("Erreur getlatlngbyinsee vide");
 		}
-	}
+	} */
 
 
 	//en cas d'erreur nominatim
-	function callbackNominatimError(error){
+	/* function callbackNominatimError(error){
 		mylog.log("callbackNominatimError", error);
 	}
 
 	//quand la recherche par code insee n'a pas fonctionné
 	function callbackFindByInseeError(){
 		mylog.log("erreur getlatlngbyinsee", error);
-	}
+	} */
 
 	function removeAddresses (index){
 
@@ -907,4 +475,496 @@ function bindAboutPodElement() {
 			fieldHTML += '</select>';
         }
         return fieldHTML;
+	}
+
+
+	function bindDynFormEditable(){
+
+		$("#btn-update-when").off().on( "click", function(){
+
+			var properties = {
+				block : typeObjLib.hidden,
+				typeElement : typeObjLib.hidden,
+				isUpdate : typeObjLib.hiddenTrue	
+			};
+
+			if(contextData.type == "<?php echo Event::COLLECTION; ?>"){
+				properties.allDay = typeObjLib.allDay;
+			}
+
+			properties.startDate = typeObjLib.startDateInput;
+			properties.endDate = typeObjLib.endDateInput;
+			
+			var dataUpdate = {
+				block : "when",
+		        id : contextData.id,
+		        typeElement : contextData.type,
+			};
+			
+			if(contextData.startDate.length > 0)
+				dataUpdate.startDate = moment(contextData.startDate).local().format(formatDatedynForm);
+
+			if(contextData.endDate.length > 0)
+				dataUpdate.endDate = moment(contextData.endDate).local().format(formatDatedynForm);
+
+			mylog.log("dataUpdate", dataUpdate);
+
+			var onLoads = {
+				initWhen : function(){
+					if(typeof contextData.allDay != "undefined" && contextData.allDay == "true")
+						$("#ajaxFormModal #allDay").attr("checked");
+				}
+			};
+
+			var beforeSave = function(){
+				mylog.log("beforeSave");
+		    	if($("#ajaxFormModal #allDay").length && $("#ajaxFormModal #allDay").val() == contextData.allDay)
+		    		$("#ajaxFormModal #allDay").remove();
+
+		    	if($("#ajaxFormModal #startDate").length && $("#ajaxFormModal #startDate").val() ==  contextData.startDate)
+		    		$("#ajaxFormModal #startDate").remove();
+
+		    	if($("#ajaxFormModal #endDate").length && $("#ajaxFormModal #endDate").val() ==  contextData.endDate)
+		    		$("#ajaxFormModal #endDate").remove();
+
+		    	var allDay = $("#ajaxFormModal #allDay").is(':checked');
+		    	var dateformat = "DD/MM/YYYY";
+		    	if (! allDay) 
+		    		var dateformat = "DD/MM/YYYY HH:mm" ;
+		    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format());
+				$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format());
+		    };
+
+			var afterSave = function(data){
+				mylog.dir(data);
+				if(data.result && data.resultGoods.result){
+					if(typeof data.resultGoods.values.allDay != "undefined"){
+						contextData.allDay = data.resultGoods.values.allDay;
+						$("#contentGeneralInfos #allDay").html(contextData.allDay);
+					}  
+					if(typeof data.resultGoods.values.endDate != "undefined"){
+						contextData.startDate = data.resultGoods.values.startDate;
+						$("#contentGeneralInfos #startDate").html(moment(contextData.startDate).local().format(formatDateView));
+					}  
+					if(typeof data.resultGoods.values.endDate != "undefined"){
+						contextData.endDate = data.resultGoods.values.endDate;
+						$("#contentGeneralInfos #endDate").html(moment(contextData.endDate).local().format(formatDateView));
+					}  
+					updateCalendar();
+				}
+				elementLib.closeForm();
+			};
+			
+			var saveUrl = baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType;
+			elementLib.editDynForm("Modifier les dates", "fa-calendar", properties, "initWhen", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
+		});
+
+
+		$(".btn-update-info").off().on( "click", function(){
+
+			mylog.log("btn-update-info");
+			var properties = {
+				block : typeObjLib.hidden,
+				name : typeObjLib.name(contextData.type),
+				typeElement : typeObjLib.hidden,
+				isUpdate : typeObjLib.hiddenTrue		
+			};
+
+			if(contextData.type == typeObj.person.col ){
+				properties.username = typeObjLib.username;
+				properties.birthDate = typeObjLib.birthDate;
+			}
+
+			if(contextData.type == typeObj.organization.col ){
+				properties.type = typeObjLib.typeOrga;
+				properties.tags = typeObjLib.tags;
+			}
+
+			if(contextData.type == typeObj.project.col ){
+				properties.avancement = typeObjLib.avancementProject;
+			}
+
+			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
+				properties.email = typeObjLib.email;
+				
+			}
+			properties.url = typeObjLib.url;
+			properties.fixe= typeObjLib.phone;
+			properties.mobile= typeObjLib.mobile;
+			properties.fax= typeObjLib.fax;
+
+			var dataUpdate = {
+				block : "info",
+		        id : contextData.id,
+		        typeElement : contextData.type,
+		        name : contextData.name,	
+			};
+			
+			if(contextData.tags.length > 0)
+				dataUpdate.tags = contextData.tags;
+
+			if(contextData.type == typeObj.person.col ){
+				if(contextData.username.length > 0)
+					dataUpdate.username = contextData.username;
+				if(contextData.birthDate.length > 0)
+					dataUpdate.birthDate = contextData.birthDate;
+			}
+
+			if(contextData.type == typeObj.organization.col ){
+				if(contextData.typeOrga.length > 0)
+					dataUpdate.type = contextData.typeOrga;
+			}
+			if(contextData.type == typeObj.project.col ){
+				if(contextData.avancement.length > 0)
+					dataUpdate.avancement = contextData.avancement;
+			}
+			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
+				if(contextData.email != "") 
+					dataUpdate.email = contextData.email;
+			}
+
+			if(contextData.url != "") 
+				dataUpdate.url = contextData.url;
+			if(contextData.fixe.length > 0)
+				dataUpdate.fixe = contextData.fixe;
+			if(contextData.mobile.length > 0)
+				dataUpdate.mobile = contextData.mobile;
+			if(contextData.fax.length > 0)
+				dataUpdate.fax = contextData.fax;
+
+			mylog.log("dataUpdate", dataUpdate);
+
+			var onLoads = {
+				initUpdateInfo : function(){
+					mylog.log("initUpdateInfo");
+					$(".emailtext").slideToggle();
+				}
+			};
+
+			var beforeSave = function(){
+				mylog.log("beforeSave");
+		    	if($("#ajaxFormModal #name").length && $("#ajaxFormModal #name").val() == contextData.name)
+		    		$("#ajaxFormModal #name").remove();
+
+		    	if($("#ajaxFormModal #tags").length && $("#ajaxFormModal #tags").val() ==  contextData.tags)
+		    		$("#ajaxFormModal #tags").remove();
+
+		    	if(contextData.type == typeObj.person.col ){
+			    	if($("#ajaxFormModal #username").length && $("#ajaxFormModal #username").val() == contextData.username)
+			    		$("#ajaxFormModal #username").remove();
+			    	if($("#ajaxFormModal #birthDate").length && $("#ajaxFormModal #birthDate").val() ==  contextData.birthDate)
+			    		$("#ajaxFormModal #birthDate").remove();
+			    }
+
+			    if(contextData.type == typeObj.organization.col ){
+					if($("#ajaxFormModal #type").length && $("#ajaxFormModal #type").val() ==  contextData.typeOrga)
+			    		$("#ajaxFormModal #type").remove();
+				}
+
+				if(contextData.type == typeObj.project.col ){
+					if($("#ajaxFormModal #avancement").length && $("#ajaxFormModal #avancement").val() ==  contextData.avancement)
+			    		$("#ajaxFormModal #avancement").remove();
+				}
+
+				if(contextData.type == typeObj.person.col ){
+					if($("#ajaxFormModal #email").length && $("#ajaxFormModal #email").val() == contextData.email)
+			    		$("#ajaxFormModal #email").remove();
+			    }
+
+				if($("#ajaxFormModal #url").length && $("#ajaxFormModal #url").val() == contextData.url)
+		    		$("#ajaxFormModal #url").remove();
+
+		    	if($("#ajaxFormModal #fixe").length && $("#ajaxFormModal #fixe").val() ==  contextData.fixe)
+		    		$("#ajaxFormModal #fixe").remove();
+		    	
+		    	if($("#ajaxFormModal #mobile").length && $("#ajaxFormModal #mobile").val() == contextData.mobile)
+		    		$("#ajaxFormModal #mobile").remove();
+
+		    	if($("#ajaxFormModal #fax").length && $("#ajaxFormModal #fax").val() ==  contextData.fax)
+		    		$("#ajaxFormModal #fax").remove();
+
+		    };
+
+			var afterSave = function(data){
+				mylog.dir(data);
+				if(data.result && data.resultGoods.result){
+
+					if(typeof data.resultGoods.values.name != "undefined"){
+						contextData.name = data.resultGoods.values.name;
+						$("#nameHeader").html(contextData.name);
+						$("#nameMenuLeft").html(contextData.name);
+					}
+
+					if(typeof data.resultGoods.values.username != "undefined"){
+						contextData.username = data.resultGoods.values.username;
+						$("#usernameMenuLeft").html(contextData.username);
+					}
+						
+					if(typeof data.resultGoods.values.tags != "undefined"){
+						contextData.tags = data.resultGoods.values.tags;
+						var str = "";
+						if($('#divTagsHeader').length){
+							$.each(contextData.tags, function (key, tag){
+								str +=	'<div class="tag label label-danger pull-right" data-val="'+tag+'">'+
+											'<i class="fa fa-tag"></i>'+tag+
+										'</div>';
+								if(typeof globalTheme == "undefined" || globalTheme != "network")
+									addTagToMultitag(tag);
+							});
+						}
+						$('#divTagsHeader').html(str);
+					}
+
+					if(typeof data.resultGoods.values.avancement != "undefined"){
+						contextData.avancement = data.resultGoods.values.avancement.trim();
+						val=0;
+				    	if(contextData.avancement=="idea")
+							val=5;
+						else if(contextData.avancement=="concept")
+							val=20;
+						else if (contextData.avancement== "started")
+							val=40;
+						else if (contextData.avancement == "development")
+							val=60;
+						else if (contextData.avancement == "testing")
+							val=80;
+						else if (contextData.avancement == "mature")
+							val=100;
+						$('#progressStyle').val(val);
+						$('#labelProgressStyle').html(contextData.avancement);
+						$('#avancementMenuLeft').html(trad["Project maturity"] + " : " + trad[contextData.avancement] );
+					}
+
+					if(typeof data.resultGoods.values.type != "undefined"){
+						contextData.typeOrga = data.resultGoods.values.typeOrga;
+						$("#typeHeader").html(contextData.typeOrga);
+						$("#typeMenuLeft").html(contextData.typeOrga);
+					}
+
+					if(typeof data.resultGoods.values.email != "undefined"){
+						mylog.log("update email");
+						contextData.email = data.resultGoods.values.email;
+						$("#emailMenuLeft").html(contextData.email);
+					}
+
+					if(typeof data.resultGoods.values.url != "undefined"){
+						mylog.log("update url");
+						contextData.url = data.resultGoods.values.url;
+						$("#urlMenuLeft").html(contextData.url);
+						$("#urlMenuLeft").attr("href", url);
+					}  
+						
+					if(typeof data.resultGoods.values.birthDate != "undefined"){
+						mylog.log("update birthDate");
+						contextData.birthDate = data.resultGoods.values.birthDate;
+						$("#birthDateMenuLeft").html(contextData.birthDate);
+					}
+
+					if(typeof data.resultGoods.values.fixe != "undefined"){
+						mylog.log("update fixe");
+						contextData.fixe = parsePhone(data.resultGoods.values.fixe);
+						$("#fixeMenuLeft").html(str);
+					}
+
+					if(typeof data.resultGoods.values.mobile != "undefined"){
+						mylog.log("update mobile");
+						contextData.mobile = parsePhone(data.resultGoods.values.mobile);
+						$("#mobileMenuLeft").html(contextData.mobile);
+					}
+
+					if(typeof data.resultGoods.values.fax != "undefined"){
+						mylog.log("update fax");
+						contextData.fax = parsePhone(data.resultGoods.values.fax);
+						$("#faxMenuLeft").html(contextData.fax);
+					}
+				}
+				elementLib.closeForm();
+				changeHiddenFields();
+			};
+			
+			var saveUrl = baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType;
+			elementLib.editDynForm("Modifier les coordonnées", "fa-pencil", properties, "", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
+		});
+
+		$(".btn-update-desc").off().on( "click", function(){
+			var dataUpdate = { value : $("#descriptionMarkdown").val() } ;
+			var properties = {
+				value : typeObjLib.description,
+				pk : {
+		            inputType : "hidden",
+		            value : contextData.id
+		        },
+				name: {
+		            inputType : "hidden",
+		            value : "description"
+		        }
+			};
+
+			var onLoads = {
+				markdown : function(){
+					mylog.log("#btn-update-desc #ajaxFormModal #description");
+					activateMarkdown("#ajaxFormModal #value");
+				}
+			};
+			var beforeSave = null ;
+
+			var afterSave = function(data){
+				$("#description").html(markdownToHtml(data.description));
+				$("#descriptionMarkdown").val(data.description);
+				elementLib.closeForm();		
+			};
+			
+			var saveUrl = baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType;
+			elementLib.editDynForm("Modifier la description", "fa-pencil", properties, "markdown", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
+		});
+
+		$(".btn-update-shortDesc").off().on( "click", function(){
+			var dataUpdate = { value : $("#shortDescriptionHeader").html() } ;
+			var properties = {
+				value : typeObjLib.shortDescription,
+				pk : {
+		            inputType : "hidden",
+		            value : contextData.id
+		        },
+				name: {
+		            inputType : "hidden",
+		            value : "shortDescription"
+		        }
+			};
+
+			var onLoads = null;
+			var beforeSave = null ;
+
+			var afterSave = function(data){
+				$("#shortDescriptionHeader").html(data.shortDescription);
+				elementLib.closeForm();		
+			};
+			
+			var saveUrl = baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType;
+			elementLib.editDynForm("Modifier la description", "fa-pencil", properties, "markdown", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
+		});
+
+
+		$(".btn-update-network").off().on( "click", function(){
+			if(contextData.type == typeObj.person.col ){
+				var properties = {
+					block : typeObjLib.hidden,
+					typeElement : typeObjLib.hidden,
+					isUpdate : typeObjLib.hiddenTrue,
+					telegram : typeObjLib.telegram,
+					skype : typeObjLib.skype,
+					gitHub : typeObjLib.github,
+					gpplus : typeObjLib.googleplus,
+			        twitter : typeObjLib.twitter,
+			        facebook : typeObjLib.facebook
+				}
+
+				var dataUpdate = {
+					block : "network",
+			        id : contextData.id,
+			        typeElement : contextData.type,
+				};
+				
+				if(contextData.twitter.length > 0)
+					dataUpdate.twitter = contextData.twitter;
+				if(contextData.gpplus.length > 0)
+					dataUpdate.gpplus = contextData.gpplus;
+				if(contextData.gitHub.length > 0)
+					dataUpdate.gitHub = contextData.gitHub;
+				if(contextData.skype.length > 0)
+					dataUpdate.skype = contextData.skype;
+				if(contextData.telegram.length > 0)
+					dataUpdate.telegram = contextData.telegram;
+				if(contextData.facebook.length > 0)
+					dataUpdate.facebook = contextData.facebook;
+
+
+				mylog.log("dataUpdate", dataUpdate);
+
+				var onLoads = null;
+
+				
+				var beforeSave = function(){
+					mylog.log("beforeSave");
+			    	
+			    	if($("#ajaxFormModal #telegram").length && $("#ajaxFormModal #telegram").val() ==  contextData.telegram)
+			    		$("#ajaxFormModal #telegram").remove();
+
+			    	if($("#ajaxFormModal #gitHub").length && $("#ajaxFormModal #gitHub").val() == contextData.gitHub)
+			    		$("#ajaxFormModal #gitHub").remove();
+
+			    	if($("#ajaxFormModal #skype").length && $("#ajaxFormModal #skype").val() ==  contextData.skype)
+			    		$("#ajaxFormModal #skype").remove();
+
+			    	if($("#ajaxFormModal #twitter").length && $("#ajaxFormModal #twitter").val() ==  contextData.twitter)
+			    		$("#ajaxFormModal #twitter").remove();
+
+			    	if($("#ajaxFormModal #facebook").length && $("#ajaxFormModal #facebook").val() ==  contextData.facebook)
+			    		$("#ajaxFormModal #facebook").remove();
+
+				    if(contextData.type == "<?php echo Organization::COLLECTION; ?>" ){
+						if($("#ajaxFormModal #type").length && $("#ajaxFormModal #type").val() ==  contextData.typeOrga)
+				    		$("#ajaxFormModal #type").remove();
+					}
+			    };
+
+				var afterSave = function(data){
+					mylog.dir(data);
+					if(data.result && data.resultGoods.result){
+
+						if(typeof data.resultGoods.values.telegram != "undefined"){
+							contextData.telegram = data.resultGoods.values.telegram.trim();
+							changeNetwork('#facebookMenuLeft', contextData.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.telegram);
+						}
+
+						if(typeof data.resultGoods.values.facebook != "undefined"){
+							contextData.facebook = data.resultGoods.values.facebook.trim();
+							//var iconNetwork = ((contextData.facebook=="")?"":'<i class="fa fa-facebook"></i>');
+							changeNetwork('#facebookMenuLeft', contextData.facebook, contextData.facebook);
+						}
+
+						if(typeof data.resultGoods.values.twitter != "undefined"){
+							contextData.twitter = data.resultGoods.values.twitter.trim();
+							changeNetwork('#twitterMenuLeft', contextData.twitter, contextData.twitter);
+						}
+
+						if(typeof data.resultGoods.values.gitHub != "undefined"){
+							contextData.gitHub = data.resultGoods.values.gitHub.trim();
+							changeNetwork('#gitHubMenuLeft', contextData.gitHub, contextData.gitHub);
+						}
+
+						if(typeof data.resultGoods.values.skype != "undefined"){
+							contextData.skype = data.resultGoods.values.skype.trim();
+							changeNetwork('#skypeMenuLeft', contextData.skype, contextData.skype);
+						}
+
+						if(typeof data.resultGoods.values.gpplus != "undefined"){
+							contextData.gpplus = data.resultGoods.values.gpplus.trim();
+							changeNetwork('#gpplusMenuLeft', contextData.gpplus, contextData.gpplus);
+						}
+					}
+					elementLib.closeForm();
+					changeHiddenFields();
+				};
+				
+				var saveUrl = baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType;
+				elementLib.editDynForm("Modifier vos comptes", "fa-pencil", properties, "", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
+			}
+		});
+	}
+
+	function changeNetwork(id, url, str){
+		mylog.log("changeNetwork", id, url, str);
+		$(id).attr('href', url);
+		$(id).html(str);
+	}
+
+	function parsePhone(arrayPhones){
+		var str = "";
+		$.each(arrayPhones, function(i,num) {
+			if(str != "")
+				str += ", ";
+			str += num.trim();
+		});
+		return str ;
 	}

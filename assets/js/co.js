@@ -1790,7 +1790,7 @@ function activeMenuElement(page) {
 
 function shadowOnHeader() {
 	var y = $(".my-main-container").scrollTop(); 
-    if (y > 0) {  $('.main-top-menu').addClass('shadow'); }
+    if (y > 0) {  $('.main-top-menu').addClass('shadow'); }////NOTIFICATIONS}
     else { $('.main-top-menu').removeClass('shadow'); }
 }
 function getMediaFromUrlContent(className, appendClassName,nbParent){

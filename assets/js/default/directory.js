@@ -93,7 +93,7 @@ var mapElements = new Array();
 
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
-  console.log("autoCompleteSearch", typeof callBack, callBack);
+  console.log("autoCompleteSearch 2", typeof callBack, callBack);
 	if(typeof(cityInseeCommunexion) != "undefined"){
 	    var levelCommunexionName = { 1 : "CODE_POSTAL_INSEE",
 	                             2 : "INSEE",
@@ -119,7 +119,10 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       "searchLocalityREGION" : ($('#searchLocalityREGION').length ) ? $('#searchLocalityREGION').val().split(',') : [],
       "searchBy" : levelCommunexionName[levelCommunexion], 
       "indexMin" : indexMin, 
-      "indexMax" : indexMax  };
+      "indexMax" : indexMax
+    };
+
+    
 				
 
     if(searchSType != "")
@@ -869,7 +872,7 @@ var directory = {
         str += "</div>";
 
        
-        if("undefined" != typeof params.organizerObj){ 
+        if("undefined" != typeof params.organizerObj && params.organizerObj != null){ 
 
           str += "<div class='col-md-8 col-sm-8 col-xs-12 entityOrganizer margin-top-10'>";
             if("undefined" != typeof params.organizerObj.profilThumbImageUrl &&

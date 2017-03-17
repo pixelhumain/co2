@@ -555,7 +555,7 @@ function initClassifiedInterface(){
         sectionKey = $(this).data("key");
         //alert("section : " + section);
         if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
-            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" ){
+            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
             //$(".subsub").show(300);
             $('#searchTags').val(section);
             //KScrollTo(".top-page");

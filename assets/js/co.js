@@ -63,7 +63,18 @@ function bindRightClicks() {
 					var	id = ( href[0] == "#element" ) ? href[5] : href[3];
 				}
 				//console.log(href,href[0],what,id);
-				var btns = {};
+				var btns = {
+					openInNewTab : {
+						name: "Ouvrir dans un nouvel onglet",
+			        	icon: "fa-arrow-circle-right", 
+			        	callback: function(key, opt){ 
+				        	if(userId ){
+					        	window.open($trigger[0].hash, '_blank');
+							}
+			        	}
+						
+					}
+				};
 	        	$.each( userConnected.collections, function (col,list) { 
 	        		btns[col] = { 
 			        	name: function($element, key, item){ 

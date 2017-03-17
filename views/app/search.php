@@ -160,10 +160,6 @@
 </style>
 
 
-
-
-
-
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
 
     <?php if(@$type=="events"){ ?>
@@ -215,7 +211,6 @@
         </div>
     <?php } ?>
 
-    
 
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 

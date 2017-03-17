@@ -748,12 +748,12 @@ var directory = {
       return str;
     },
     eventPanelHtml : function(params){
-      mylog.log("-----------eventPanelHtml");
+      mylog.log("-----------eventPanelHtml", params);
       str = "";  
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
-        if(params.updated.indexOf("il y a")>=0)
+        if(params.updated != null && params.updated.indexOf("il y a")>=0)
             params.updated = "En ce moment";
 
         if(params.updated != null && !params.useMinSize)
@@ -1188,7 +1188,7 @@ var directory = {
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
                 //params.url = '#page.type.'+params.type+'.id.' + params.id;
-                params.url = '#element.detail.type.'+params.type+'.id.' + params.id;
+                params.url = '#page.type.'+params.type+'.id.' + params.id;
                 if(type == "poi")    
                     url = '#element.detail.type.poi.id.' + id;
 

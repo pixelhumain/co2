@@ -902,10 +902,8 @@ function bindAboutPodElement() {
 			    	if($("#ajaxFormModal #facebook").length && $("#ajaxFormModal #facebook").val() ==  contextData.facebook)
 			    		$("#ajaxFormModal #facebook").remove();
 
-				    if(contextData.type == "<?php echo Organization::COLLECTION; ?>" ){
-						if($("#ajaxFormModal #type").length && $("#ajaxFormModal #type").val() ==  contextData.typeOrga)
-				    		$("#ajaxFormModal #type").remove();
-					}
+			    	if($("#ajaxFormModal #gpplus").length && $("#ajaxFormModal #gpplus").val() ==  contextData.gpplus)
+			    		$("#ajaxFormModal #gpplus").remove();
 			    };
 
 				var afterSave = function(data){

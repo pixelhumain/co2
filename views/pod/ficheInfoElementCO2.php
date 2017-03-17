@@ -409,6 +409,62 @@
 					</div>
 				</ul>
 			</li>
+			<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
+			<li class="podInside">
+				<?php $countCharts=0;
+						if(@$element["properties"] && @$element["properties"]["chart"]) 
+							$countCharts=count($element["properties"]["chart"]) 
+				?>
+				<div class="link"><i class="fa fa-puzzle-piece"></i><?php echo Yii::t("chart", "Values and Cultures") ?> 
+					<?php if($countCharts > 0) echo "(".$countCharts.")"; ?> 
+					<i class="fa fa-chevron-down"></i>
+				</div>
+
+				<ul class="submenu">
+					<div class="panel panel-white">		
+					<?php if($countCharts==0){ ?>				
+							<div id="infoPodChart" class="padding-10 <?php if(!empty($properties)) echo "hide" ?>">
+								<blockquote> 
+									<?php echo Yii::t("chart","Create Chart<br/>Opening<br/>Values<br/>Governance<br/>To explain the aim and draw project conduct") ?>
+								</blockquote>
+							</div>
+					<?php }else{
+						foreach($element["properties"]["chart"] as $key => $data){
+							if($key=="commons") $title=Yii::t("chart","Chart of commons");
+							else $title=Yii::t("chart","Open chart");
+						?>
+							<li>
+								<div class="subLink btn-start-chart" data-value="<?php echo $key ?>">
+								<?php echo $title; ?>
+								<i class="fa fa-chevron-right pull-right letter-blue"></i>
+								</div>
+							</li>
+						<?php }
+					} ?>
+					</div>
+					<div class="text-right padding-10">
+					<?php if (($edit || $openEdition) && @Yii::app()->session["userId"]){	?>
+						<button class="edit-chart btn btn-default letter-blue margin-top-5 tooltips" 
+							data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("chart","Edit properties") ?>">
+							<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?><i class="fa fa-chevron-right"></i></b>
+						</button>
+					<?php } ?>
+					</div>
+					</ul>
+					<?php
+					/*if(empty($element["properties"]["chart"])) $element["properties"]["chart"] = array();
+					$this->renderPartial('../chart/index',array(
+											"itemId" => (string)$element["_id"], 
+											"itemName" => $element["name"], 
+											"parentType" => $type, 
+											"properties" => $element["properties"]["chart"],
+											"admin" =>$edit,
+											"isDetailView" => 1,
+											"openEdition" => $openEdition));*/
+					?>
+				</ul>
+			</li>
+		<?php } ?>
 		</ul>
 
 		<ul id="accordion4" class="accordion shadow2 margin-top-20">
@@ -605,7 +661,7 @@
 							?>
 							<div class="text-right padding-10">
 								<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
-								<button onclick="" 
+								<button onclick="elementLib.openForm('event','subEvent')" 
 										class="btn btn-default letter-blue margin-top-5">
 							    	<b><i class="fa fa-plus"></i> Nouvel événement</b>
 								</button> 
@@ -634,24 +690,6 @@
 
 		</ul>
 
-
-		
-
-		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
-			<div class="col-xs-12 no-padding podchart padding-10 accordion margin-top-15">
-				<?php
-					if(empty($element["properties"]["chart"])) $element["properties"]["chart"] = array();
-					$this->renderPartial('../chart/index',array(
-											"itemId" => (string)$element["_id"], 
-											"itemName" => $element["name"], 
-											"parentType" => $type, 
-											"properties" => $element["properties"]["chart"],
-											"admin" =>$edit,
-											"isDetailView" => 1,
-											"openEdition" => $openEdition));
-				?>						  
-			</div>
-		<?php } ?>
 
 <?php 
 	//$element["type"] = $type;
@@ -907,8 +945,16 @@
 			toogleNotif(false);
 			smallMenu.openAjax(baseUrl+'/'+moduleId+'/element/directory/type/'+contextData.type+'/id/'+contextData.id+
 								'?tpl=json','Communauté','fa-connectdevelop','dark');
+			bindLBHLinks();
 		});
-
+		$(".edit-chart").click(function(){
+			toogleNotif(false);
+			var url = "chart/addchartsv/type/"+contextType+"/id/"+contextId;
+			$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+			ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+			function(){},"html");
+		});
 		$(".btn-open-collection").click(function(){
 			toogleNotif(false);
 		});

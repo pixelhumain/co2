@@ -251,6 +251,7 @@
 						$strongLinksLabel=Yii::t("event","attendee");
 					if($countStrongLinks>1)
 						$strongLinksLabel .= "s";
+
 					echo "<div class='col-md-4 inline' style='float:inherit;'>".
 							"<span class='text-dark' style='font-size:16px;font-weight:bold'>".$countStrongLinks."</span> ".
 							"<span class='text-dark'>".ucfirst(@$strongLinksLabel)."</span>".
@@ -264,6 +265,7 @@
 						$style="padding-left:15px;";
 					echo "<div class='col-md-4 inline' style='float:inherit;".$style."'>".
 						"<span class='text-dark' style='font-size:16px;font-weight:bold'>".$countInvitations."</span> ".
+
 						"<span class='text-dark'>".ucfirst($invitationsLabel)."</span>".
 					"</div>";
 				}

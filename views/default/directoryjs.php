@@ -130,10 +130,9 @@
   }
 }
 
-  </style>
+</style>
  
-
-  <div class="container-result-search">
+<div class="container-result-search">
 
       <?php if(@$_GET['type']!="") { ?>
         <?php $typeSelected = $_GET['type']; ?>
@@ -159,32 +158,6 @@
       </p>
     <?php }?>
 
-	  	<!-- <div class="col-md-12 padding-10 margin-bottom-5 lbl-info-search">
-		    <div class="lbl-info lbl-info-vote lbl-info-actions pull-left hidden col-xs-9 no-padding margin-bottom-10">
-		      <i class="fa fa-info-circle"></i> 
-		      <b>Seuls les résultats auxquels vous avez accès sont affichés</b> <br>
-		      (issus de vos <span class="text-green"><b>organisations</b></span>, 
-		      vos <span class="text-purple"><b>projets</b></span> ou votre <span class="text-red"><b>conseil citoyen</b></span>)
-		    </div>
-
-		    <div class="lbl-info lbl-info-organizations lbl-info-projects lbl-info-poi lbl-info-persons pull-left hidden col-xs-9 no-padding margin-bottom-10">
-		      <i class="fa fa-info-circle"></i> 
-		      <b>Résultats triés en fonction de l'activité la plus récente des éléments recherchés</b> 
-		    </div>
-
-		    <div class="lbl-info lbl-info-cities pull-left hidden col-xs-9 no-padding margin-bottom-10">
-		      <i class="fa fa-info-circle"></i> Indiquez le nom d'une commune, ou un code postal, pour lancer la recherche
-		    </div> 
-
-		    <button class="btn btn-default pull-right text-dark" onclick="showMap(true)" style="margin-bottom: -15px;margin-top: -10px;">
-		      <i class="fa fa-map"></i>
-		      <span class="hidden-xs"> Afficher <span class="hidden-sm hidden-xs">sur</span> la carte</span>
-		    </button>
-	  	</div> -->
-
-  		<!-- <div class="col-md-12">
-          <hr class="margin-bottom-10">
-      </div> -->
 
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
         <!-- <h5>Recherche thématique<br><i class='fa fa-chevron-down'></i></h5> -->
@@ -210,6 +183,24 @@
             </button>
           <?php } ?>
           <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="menu-section-classified">
+          <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
+                        data-type="classified" data-type-anc=""  data-key="all">
+                  <i class="fa fa-circle-o"></i>
+                  <span class="hidden-xs hidden-sm"> Tous </span>
+                </button>
+          <?php 
+              $classifiedSections = CO2::getContextList("freedomSections");
+              $currentSection = 1;
+              foreach ($classifiedSections as $key => $section) { ?>
+                  <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc bold text-dark elipsis margin-bottom-5 letter-<?php echo @$section["color"]; ?>" 
+                          data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" data-type="classified">
+                    <i class="fa fa-<?php echo @$section["icon"]; ?>"></i>
+                    <span class="hidden-xs hidden-sm"><?php echo @$section["label"]; ?></span>
+                  </button>
+          <?php } ?>   
         </div>
 
         <?php if($typeSelected != "events"  && 
@@ -272,23 +263,6 @@
 
           <?php }else if($typeSelected == "classified"){ ?>
 
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 padding-10 text-right" id="sub-menu-left">
-              <?php 
-                  $freedomSections = CO2::getContextList("freedomSections");
-                  $currentSection = 1;
-                  foreach ($freedomSections as $key => $section) { ?>
-                    <?php if($section["section"] > $currentSection){ $currentSection++; ?>
-                    <hr>
-                    <?php } ?>
-                    <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc btn-directory-type letter-<?php echo @$section["color"]; ?>" 
-                            data-type-anc="<?php echo @$section["key"]; ?>">
-                      <i class="fa fa-<?php echo @$section["icon"]; ?>"></i> 
-                      <span class="hidden-xs hidden-sm"><?php echo @$section["label"]; ?></span>
-                    </button>
-                    <br>  
-              <?php } ?>   
-            </div>
-
             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub" id="sub-menu-left">
               <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
               <hr> -->
@@ -304,7 +278,7 @@
                       <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
                     </button><br>
                     <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
-                      <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>">
+                      <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
                         <i class="fa fa-angle-right"></i> <?php echo $cat2; ?>
                       </button><br class="hidden">
                     <?php } ?>
@@ -316,11 +290,9 @@
           
           <?php } ?>
 
-        <?php if($typeSelected == "classified"){ ?>
-          <div class="col-md-6 col-sm-6 col-xs-10 padding-10" id="dropdown_search"></div>
-        <?php }else{ ?>
+        
           <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search"></div>
-        <?php } ?>
+        
 
       <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
       
@@ -434,7 +406,7 @@ jQuery(document).ready(function() {
   
   setTimeout(function(){ $("#input-communexion").hide(300); }, 300);
 
-	setTitle("<span id='main-title-menu'>Moteur de recherche</span>","search","Moteur de recherche");
+	//setTitle("<span id='main-title-menu'>Moteur de recherche</span>","search","Moteur de recherche");
 	
   $('.tooltips').tooltip();
 
@@ -465,7 +437,8 @@ jQuery(document).ready(function() {
       console.log("myMultiTags", myMultiTags);
       
       startSearch(0, indexStepInit, searchCallback);
-      KScrollTo("#before-section-result");
+      KScrollTo("#content-social");
+      //KScrollTo("#before-section-result");
   });
   
   /*  $(".searchIcon").removeClass("fa-search").addClass("fa-file-text-o");

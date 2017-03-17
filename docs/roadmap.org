@@ -98,6 +98,64 @@ Liste des notifications déjà lues => #370 #453
 * ************************************************************    
 * Version 0.2  : en cours
 * ************************************************************  
+** @Tib 
+  [ ] annonces
+    [X] top level types
+    [X] differents filtre apr section
+    [ ] mes annonces
+  * bugs
+    [ ] dynSurvey photos
+  [ ] module clean up communecter to CO2 : clear deprecated views
+    [ ] mainSearch Libs clean up 
+      wysihtml5
+      Chart.min
+      boostrapswitch
+      bostrap editable ???
+      datetimepicker
+    [X] default.home
+    [X] #default.live
+    [X] news.index.type.citoyens.id.582e9551f6ca4759438b4584
+    [X] element.detail
+      [X] person #person.detail.id.582e9551f6ca4759438b4584
+      [X] me
+      [X] orga
+        - why chart/index
+      [X] project #element.detail.type.project
+      [X] event #element.detail.type.event
+      [X] #element.detail.type.poi
+        bug : Undefined index: parentId
+    [X] dynform
+      [X] orga
+      [X] poi
+      [X] project
+      [X] event
+      [X] survey
+      [X] actions
+    [X] directory
+      [X] agenda
+      [X] orga
+      [X] project
+      [X] citoyens
+      [X] survey #default.directory?type=vote
+      [X] actions #default.directory?type=actions
+      [X] classified #default.directory?type=classified
+        [ ] icon in directory
+      [X] cities #default.directory?type=cities
+    [X] DDA
+      [X] #survey.entries.id.57b71a0ff6ca4712778b4570
+      [X] #survey.entry.id.582d9920f6ca47630c8b4580
+      [X] #rooms.actions.id.5786585cf6ca477b4e8b457d
+      [X] #rooms.action.id.5788d9f3f6ca47f8168b457d
+      [X] #comment.index.type.actionRooms.id.57a19c21f6ca47d2548b456e
+    [X] city.detail #city.detail.insee.97414.postalCode.97450
+      - sliderAgenda ???
+      - podBtnTypeNews ???
+    [X] docs #default.view.page.index.dir.docs
+      [X] move docs to github
+
+* ************************************************************    
+* Version 0.17  : cloturé sur ph-dori
+* ************************************************************  
 
 ** @Clem 
   [.2] add POI to news
@@ -466,8 +524,8 @@ Liste des notifications déjà lues => #370 #453
   [1]    [X] Onclick mark all as read, update all notif as read
   [1]    [X] Create delete btn
   [1]  [X] Bug on lbh load
-  [2][ ] Count notifications badge by element CO2
-  [2][ ] Count notifications badge in menu CO2
+  [2][X] Count notifications badge by element CO2
+  [2][X] Count notifications badge in menu CO2
   [2][X] MERGE DEVELOPMENT ON CO2
     *** Wishlist
   [2]  [X] View of notification by element
@@ -477,7 +535,7 @@ Liste des notifications déjà lues => #370 #453
   [2]    [X] fix bug when refuse an admin already member... He stays member
   [2]    [X] Generalize js for element.notifications && notification2.php => assets/default/notifications.js
   [2]    [ ] Simplify confirmation using js
-  [2]    [ ] Add count badges on view
+  [2]    [X] Add count badges on view
   [2]    [ ] Redirect "Verb_ASK" notif on notif
   [2]    [X] Merge Element/GetNotificationsAction in Notification/GetAction
   *** MAIL
@@ -521,6 +579,7 @@ Liste des notifications déjà lues => #370 #453
     [ ] Link on news
     [X] Change target
     [X] View scope of the news
+    [ ] Repair citizen actu
   *** LINK
   [1][X] Add confirmation if someone link me to orga or projet (as event) -- ValdiateLink
   [1][X] Rework pod/userList to get invitations

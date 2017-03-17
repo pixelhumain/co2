@@ -1,7 +1,16 @@
 <?php 
-	//HtmlHelper::registerCssAndScriptsFiles( array('/css/default/directory.css', ) , Yii::app()->theme->baseUrl. '/assets');
-	//$cssAnsScriptFilesModule = array('');
-	//HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+
+  $cssAnsScriptFilesModule = array(
+    '/assets/css/default/responsive-calendar.css',
+  );
+  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
+  
+  $cssAnsScriptFilesModule = array(
+    '/js/default/directory.js',
+    '/js/default/responsive-calendar.js',
+  );
+  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
@@ -49,6 +58,10 @@
     }
     #page .bg-yellow{
         background-color:#FFC600 !important;
+        color:white!important;
+    }
+    #page .bg-turq{
+        background-color: #229296 !important;
         color:white!important;
     }
     #page .bg-purple{
@@ -147,7 +160,34 @@
 </style>
 
 
+
+
+
+
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
+
+    <?php if(@$type=="events"){ ?>
+    <div class="col-md-12 no-padding calendar"></div>
+    <div class="responsive-calendar-init hidden"> 
+      <div class="responsive-calendar light col-md-12 no-padding">   
+          <div class="day-headers">
+            <div class="day header">Lun</div>
+            <div class="day header">Mar</div>
+            <div class="day header">Mer</div>
+            <div class="day header">Jeu</div>
+            <div class="day header">Ven</div>
+            <div class="day header">Sam</div>
+            <div class="day header">Dim</div>
+          </div>
+          <div class="days" data-group="days"></div>   
+          <div class="controls">
+              <a id="btn-month-before" class="text-white" data-go="prev"><div class="btn"><i class="fa fa-arrow-left"></i></div></a>
+              <h4 class="text-white"><span data-head-month></span> <span data-head-year></span></h4>
+              <a id="btn-month-next" class="text-white" data-go="next"><div class="btn"><i class="fa fa-arrow-right"></i></div></a>
+          </div>
+      </div>
+    </div>
+    <?php } ?>
 
     <?php if(@$type!="cities"){ ?>
         <div class="col-md-2 col-sm-2 col-xs-12 no-padding">
@@ -175,8 +215,12 @@
         </div>
     <?php } ?>
 
+    
+
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
+
+    <?php if(@$type=="all"){ ?>
     <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
         <!-- <hr style="margin-bottom:-20px;"> -->
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 
@@ -195,6 +239,7 @@
             </small>
         </h5><br>
     </div>
+    <?php } ?>
 
 </div>
 
@@ -296,7 +341,8 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="project" data-type="project"
+                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" 
+                            data-ktype="project" data-type="project"
                             date-target="#modalMainMenu" data-dismiss="modal">
                             <div class="modal-body text-left">
                                 <h2 class="text-purple"><i class="fa fa-lightbulb-o padding-bottom-10"></i><br>
@@ -337,6 +383,7 @@
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
+var titlePage = "<?php echo @$params["pages"]["#".$page]["subdomainName"]; ?>";
 
 //var TPL = "kgougle";
 
@@ -346,13 +393,14 @@ var currentKFormType = "";
 
 jQuery(document).ready(function() {
 
-	initKInterface({"affixTop":350});
+    setTitle("", "", titlePage);
+
+    initKInterface({"affixTop":320});
     
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
 	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
 
-        
         $(".btn-directory-type").click(function(){
             var typeD = $(this).data("type");
 
@@ -369,8 +417,19 @@ jQuery(document).ready(function() {
         });
          
         <?php if(@$type == "classified"){ ?>
-            initFreedomInterface();
+            initClassifiedInterface();
         <?php } ?>
+
+        //console.log("init Scroll");
+        $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
+            if(!loadingData && !scrollEnd && !isMapEnd){
+                  var heightWindow = $("html").height() - $("body").height();
+                  if( $(this).scrollTop() >= heightWindow - 400){
+                    startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
+                  }
+            }
+        });
+
 
         loadingData = false; 
         initTypeSearch(type);
@@ -444,17 +503,9 @@ jQuery(document).ready(function() {
         activateGlobalCommunexion(false);
     });
 
-
-      $(window).bind("scroll",function(){ mylog.log("test scroll");
-        if(!loadingData && !scrollEnd){
-              var heightWindow = $("html").height() - $("body").height();
-              if( $(this).scrollTop() >= heightWindow - 400){
-                startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
-              }
-        }
-    });
-
-
+    setTimeout(function(){
+        KScrollTo("#content-social");  
+    }, 2000);
     $(".tooltips").tooltip();
 
     //currentKFormType = "Group";
@@ -484,48 +535,129 @@ function initTypeSearch(typeInit){
 var freedomCategories = <?php echo json_encode($freedomSections); ?>
 <?php } ?>
 
-function initFreedomInterface(){
-    $(".btn-select-type-anc").click(function(){
+var section = "";
+var classType = "";
+var classSubType = "";
+function initClassifiedInterface(){
 
-      $(".btn-select-type-anc").removeClass("active");
-      $(this).addClass("active");
+    $('#menu-section-classified').removeClass("hidden");
 
-      var typeAnc = $(this).data("type-anc");
-      if(typeAnc == "forsale" || typeAnc == "location" || typeAnc == "donation" || 
-        typeAnc == "sharing" || typeAnc == "lookingfor"){
-        $(".subsub").show(300);
-      }else{
-        $(".subsub").hide(300);
-      }
+    $(".btn-select-type-anc").click( function()
+    {    
+        searchType = [ "classified" ];
+        indexStepInit = 100;
+        $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
+        $(".keycat").addClass("hidden");
+        $(this).addClass("active");
 
-      if(typeof freedomCategories[typeAnc] != "undefined")
-            $(".label-category").html("<i class='fa fa-"+ freedomCategories[typeAnc]["icon"] + "'></i> " + freedomCategories[typeAnc]["label"]);
-            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+freedomCategories[typeAnc]["color"])
+        section = $(this).data("type-anc");
+        sectionKey = $(this).data("key");
+        //alert("section : " + section);
+        if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
+            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
+            //$(".subsub").show(300);
+            $('#searchTags').val(section);
+            //KScrollTo(".top-page");
+            startSearch(0, indexStepInit, searchCallback); 
+        } 
+
+        if(typeof freedomCategories[sectionKey] != "undefined") {
+            $(".label-category").html("<i class='fa fa-"+ freedomCategories[sectionKey]["icon"] + "'></i> " + freedomCategories[sectionKey]["label"]);
+            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+freedomCategories[sectionKey]["color"])
             $(".fa-title-list").removeClass("hidden");
-            KScrollTo(".top-page");
+        }
     });
 
     $(".btn-select-category-1").click(function(){
+        searchType = [ "classified" ];
         $(".btn-select-category-1").removeClass("active");
         $(this).addClass("active");
 
-        var keycat = $(this).data("keycat");
+        var classType = $(this).data("keycat");
         $(".keycat").addClass("hidden");
-        $(".keycat-"+keycat).removeClass("hidden");     
+        $(".keycat-"+classType).removeClass("hidden");   
+
+        ////alert("classType : "+classType);
+
+        $('#searchTags').val(section+","+classType);
+        startSearch(0, indexStepInit, searchCallback);  
     });
 
     $(".keycat").click(function(){
+
+        searchType = [ "classified" ];
         $(".keycat").removeClass("active");
         $(this).addClass("active");
+        var classSubType = $(this).data("keycat");
+        var classType = $(this).data("categ");
+        //alert("classSubType : "+classSubType);
+        $('#searchTags').val(section+","+classType+","+classSubType);
+        startSearch(0, indexStepInit, searchCallback);  
     });
 
     $("#btn-create-classified").click(function(){
          elementLib.openForm('classified');
     });
 
-    initFormImages();
-
-    //loadLiveNow();
+    
 }
+
+
+<?php if(@$type == "events"){ ?>
+var calendarInit = false;
+function showResultInCalendar(mapElements){
+  mylog.log("showResultInCalendar xxx");
+  mylog.dir(mapElements);
+
+  var events = new Array();
+  $.each(mapElements, function(key, thisEvent){
+    
+    var startDate = exists(thisEvent["startDateTime"]) ? thisEvent["startDateTime"].substr(0, 10) : "";
+    var endDate = exists(thisEvent["endDateTime"]) ? thisEvent["endDateTime"].substr(0, 10) : "";
+    var cp = "";
+    var loc = "";
+    if(thisEvent["address"] != null){
+        var cp = exists(thisEvent["address"]["postalCode"]) ? thisEvent["address"]["postalCode"] : "" ;
+        var loc = exists(thisEvent["address"]["addressLocality"]) ? thisEvent["address"]["addressLocality"] : "";
+    }
+    var position = cp + " " + loc;
+
+    var name = exists(thisEvent["name"]) ? thisEvent["name"] : "";
+    var thumb_url = notEmpty(thisEvent["profilThumbImageUrl"]) ? baseUrl+thisEvent["profilThumbImageUrl"] : "";
+    
+    if(typeof events[startDate] == "undefined") events[startDate] = new Array();
+    events[startDate].push({  "id" : thisEvent["_id"]["$id"],
+                              "thumb_url" : thumb_url, 
+                              "startDate": startDate,
+                              "endDate": endDate,
+                              "name" : name,
+                              "position" : position });
+  });
+
+  //mylog.dir(events);
+
+  if(calendarInit == true) {
+    $(".calendar").html("");
+  }
+
+  $(".calendar").html($(".responsive-calendar-init").html());
+
+  var aujourdhui = new Date();
+  var  month = (aujourdhui.getMonth()+1).toString();
+  if(aujourdhui.getMonth() < 10) month = "0" + month;
+  var date = aujourdhui.getFullYear().toString() + "-" + month;
+  
+  $(".responsive-calendar").responsiveCalendar({
+          time: date,
+          events: events
+        });
+
+
+  $(".responsive-calendar").show();
+
+  calendarInit = true;
+}
+
+<?php } ?>
 
 </script>

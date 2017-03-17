@@ -229,7 +229,7 @@ class CommunecterController extends Controller
         "activate"        => array('href' => "/ph/communecter/person/activate"),
         "updatesettings"        => array('href' => "/ph/communecter/person/updatesettings"),
         "validateinvitation" => array('href' => "/ph/communecter/person/validateinvitation", "public" => true),
-        "logout"          => array("href" => "/ph/communecter/person/logout"),
+        "logout"          => array("href" => "/ph/co2/person/logout"),
         'getthumbpath'    => array("href" => "/ph/communecter/person/getThumbPath"),
         'getnotification' => array("href" => "/person/getNotification"),
         'changepassword'  => array("href" => "/person/changepassword"),
@@ -331,9 +331,9 @@ class CommunecterController extends Controller
     ),
     "chart" => array(
 	    "addchartsv"      => array("href" => "/ph/communecter/chart/addchartsv"),
-		"index"      => array("href" => "/ph/communecter/chart/index"),
-		"editchart"       => array("href" => "/ph/communecter/chart/editchart"),
-		"get"       => array("href" => "/ph/communecter/chart/get"),
+		  "index"      => array("href" => "/ph/communecter/chart/index"),
+		  "editchart"       => array("href" => "/ph/communecter/chart/editchart"),
+		  "get"       => array("href" => "/ph/communecter/chart/get"),
     ),
     "job"=> array(
       "edit"    => array("href" => "/ph/communecter/job/edit"),
@@ -467,6 +467,7 @@ class CommunecterController extends Controller
       "info"              => array('href' => "/ph/communecter/app/info",              "public" => true),
       "city"              => array('href' => "/ph/communecter/app/city",              "public" => false),
       "sendmailformcontact" => array('href' => "/ph/communecter/app/sendmailformcontact", "public" => true),
+      "checkurlexists" => array('href' => "/ph/communecter/app/checkurlexists", "public" => true),
       ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick")

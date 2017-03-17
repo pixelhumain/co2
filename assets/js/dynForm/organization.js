@@ -29,7 +29,7 @@ dynForm = {
 	        similarLink : typeObjLib.similarLink,
 	        type : typeObjLib.typeOrga,
             role : typeObjLib.role,
-            tags : typeObjLib.tags,
+            tags : typeObjLib.tags(),
             location : typeObjLib.location,
 	        image : typeObjLib.image( "#organization.detail.id."+uploadObj.id ),
             formshowers : {

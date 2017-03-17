@@ -20,8 +20,6 @@
 			  ) , 
 		Yii::app()->theme->baseUrl. '/assets');
 
-
-
 	$id = $_GET['id'];
 	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 	
@@ -193,7 +191,7 @@
                                 "controller" => $controller,
                                 "openEdition" => $openEdition,
                                 "countStrongLinks" => $countStrongLinks,
-                                "countLowLinks" => $countLowLinks,
+                                "countLowLinks" => @$countLowLinks,
                                 "countInvitations"=> $countInvitations
                                 );
 
@@ -262,35 +260,39 @@
 
 	    <div class="col-md-12 col-sm-12 col-xs-12 sub-menu-social">
 	    	<div class="btn-group">
-	    	<?php if(@Yii::app()->session["userId"] && $type==Person::COLLECTION && $id==Yii::app()->session["userId"]){ 
+	    	<?php if(@Yii::app()->session["userId"] && $type==Person::COLLECTION && (string)$element["_id"]==Yii::app()->session["userId"]){ 
 	    		$iconNewsPaper="user-circle"; ?>
 			  <button type="button" class="btn btn-default bold" id="btn-start-newsstream"><i class="fa fa-rss"></i> Fil d'actu<span class="hidden-sm">alité</span>s</button>
 			  <?php } else $iconNewsPaper="rss"; ?>
-			  <button type="button" class="btn btn-default bold" id="btn-start-mystream"><i class="fa fa-<?php echo $iconNewsPaper ?>"></i> Journal</button>
+			  <button type="button" class="btn btn-default bold" id="btn-start-mystream"><i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper") ?></button>
 			  <button type="button" class="btn btn-default bold" id="btn-start-gallery"><i class="fa fa-camera"></i> <?php echo Yii::t("common", "Gallery") ?></button>
 			</div>
-
+			<?php if(@Yii::app()->session["userId"] && $isLinked==true){ ?>
 			<div class="btn-group margin-left-10">
 			  <button type="button" class="btn btn-default bold" id="btn-start-notifications">
 			  	<i class="fa fa-bell"></i> 
 			  	<span class="hidden-xs hidden-sm">
 			  		Mes notif<span class="hidden-md">ications</span>
-			  	</span><span class="badge badge-success">12</span>
+			  	</span>
+			  	<span class="badge notifications-countElement <?php if(!@$countNotifElement || (@$countNotifElement && $countNotifElement=="0")) echo 'badge-transparent hide'; else echo 'badge-success'; ?>">
+			  		<?php echo @$countNotifElement ?>
+			  	</span>
 			  </button>
-			  <button type="button" class="btn btn-default bold">
+			  <!--<button type="button" class="btn btn-default bold">
 			  	<i class="fa fa-envelope"></i> 
 			  	<span class="hidden-xs hidden-sm hidden-md">
 			  		Messagerie
-			  	</span><span class="badge bg-azure">3</span>
+			  	</span><span class="badge bg-azure">3</span>-->
 			  </button>
 			</div>
-
+			<?php } ?>
+			<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 			<div class="btn-group margin-left-10">
 			  <button type="button" class="btn btn-default bold">
 			  	<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md">Paramètres</span>
 			  </button>
 			</div>
-
+			<?php } ?>
 			<div class="btn-group margin-left-10">
 			  <button type="button" class="btn btn-default bold">
 			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
@@ -306,7 +308,7 @@
 		<div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 margin-top-50" id="central-container">
 		</div>
 
-		<div class="col-md-2 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
+		<!--<div class="col-md-2 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
 			<div class="alert alert-info">
 				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
 				<span>
@@ -342,7 +344,7 @@
 					<small class="margin-left-15">il y a 10 jours</small><br>
 				</span>
 	    	</div>
-	    </div>
+	    </div>-->
 	</section>
 	
 
@@ -356,11 +358,11 @@
 
 	var elementName = "<?php echo @$element["name"]; ?>";
     var contextType = "<?php echo @$type; ?>";
+    var contextId = "<?php echo @(string)$element['_id'] ?>";
     var members = <?php echo json_encode(@$members); ?>;
     var params = <?php echo json_encode(@$params); ?>;
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
-
     console.log("params", params);
 
 	jQuery(document).ready(function() {
@@ -385,6 +387,10 @@
 		});
 		$("#btn-start-notifications").click(function(){
 			loadNotifications();
+		});
+		$(".btn-start-chart").click(function(){
+			id=$(this).data("value");
+			loadChart(id);
 		});
 	}
 
@@ -419,7 +425,6 @@
 
 		//ouvre le pod communauté
 		$('#accordion4 .link').trigger("click");
-
    		$(".tooltips").tooltip();
 
 
@@ -461,6 +466,14 @@
 		toogleNotif(false);
 		var url = "gallery/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
 		
+		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+			function(){},"html");
+	}
+	function loadChart(id){
+		toogleNotif(false);
+		var url = "chart/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>/chart/"+id;
 		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,

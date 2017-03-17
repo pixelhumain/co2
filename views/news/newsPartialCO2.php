@@ -19,11 +19,15 @@
           else
             $thumbAuthor = $this->module->assetsUrl."/images/thumb/default_".$media["target"]["type"].".png";
           $nameAuthor=$media["target"]["name"];
+          $authorType=$media["target"]["type"];
+          $authorId=$media["target"]["id"];
       } else{
          $thumbAuthor =  @$media['author']['profilThumbImageUrl'] ? 
                       Yii::app()->createUrl('/'.@$media['author']['profilThumbImageUrl']) 
                       : @$imgDefault;
-          $nameAuthor=$media["author"]["name"];             
+          $nameAuthor=@$media["author"]["name"];  
+          $authorType=Person::COLLECTION;
+          $authorId=@$media["author"]["id"];           
       }
       $srcMainImg = "";              
       if(@$media["media"]["images"] && $media["media"]["type"] != "gallery_images")
@@ -49,12 +53,12 @@
 
                 <img class="pull-right img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
                 <div class="pull-right padding-5">
-                  <a href=""><?php echo $nameAuthor ?></a><br>
+                  <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh"><?php echo $nameAuthor ?></a><br>
                   <span class="margin-top-5">
-                  <?php if($media["type"]=="news") { ?>
+                  <?php if(@$media["type"]=="news") { ?>
                     <i class="fa fa-pencil-square"></i> a publié un message
                   <?php } ?>
-                  <?php if($media["type"]=="activityStream") { ?>
+                  <?php if(@$media["type"]=="activityStream") { ?>
                     <?php $iconColor = Element::getColorIcon($media["object"]["type"]) ? 
                                        Element::getColorIcon($media["object"]["type"]) : ""; ?>
                     <i class="fa fa-plus-circle"></i> a créé un 
@@ -67,7 +71,7 @@
                       $scopeIcon="globe";
                       $scopeTooltip =Yii::t("common","Visible to all and posted on the city's wall");
                     } 
-                    else if ($media["scope"]["type"]=="restricted"){
+                    else if (@$media["scope"]["type"]=="restricted"){
                       $scopeIcon="connectdevelop";
                       $scopeTooltip= Yii::t("common","Visible to all on this wall and published on this network");
                     }else{
@@ -85,12 +89,12 @@
 
                 <img class="pull-left img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
                 <div class="pull-left padding-5">
-                  <a href=""><?php echo @$nameAuthor; ?></a><br>
+                  <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh"><?php echo @$nameAuthor; ?></a><br>
                   <span class="margin-top-5">
-                  <?php if($media["type"]=="news") { ?>
+                  <?php if(@$media["type"]=="news") { ?>
                     <i class="fa fa-pencil-square"></i> a publié un message
                   <?php } ?>
-                  <?php if($media["type"]=="activityStream") { ?>
+                  <?php if(@$media["type"]=="activityStream") { ?>
                     <?php $iconColor = Element::getColorIcon($media["object"]["type"]) ? 
                                        Element::getColorIcon($media["object"]["type"]) : ""; ?>
                     <i class="fa fa-plus-circle"></i> a créé un 
@@ -117,7 +121,7 @@
                 
               </small>
 
-              <a href="<?php echo @$media["href"]; ?>" target="_blank" class="link-read-media margin-top-10 hidden-xs img-circle">
+              <a href="javascript:;" target="_blank" class="link-read-media margin-top-10 hidden-xs img-circle">
                 <small>
                   <i class="fa fa-clock-o"></i> 
                   <?php echo Translate::pastTime(date($media["created"]->sec), "timestamp", $timezone); ?>
@@ -127,7 +131,7 @@
           
           <div class="timeline-body padding-10 col-md-12 text-left">
             <!-- <h4><a target="_blank" href="<?php echo @$media["href"]; ?>"><?php echo @$media["title"]; ?></a></h4> -->
-            <?php if($media["type"]=="activityStream") { ?>
+            <?php if(@$media["type"]=="activityStream") { ?>
               <?php $faIcon = Element::getFaIcon($media["object"]["type"]) ? 
                               Element::getFaIcon($media["object"]["type"]) : ""; ?>
               <h4 class="no-padding">
@@ -140,7 +144,7 @@
                 <?php echo date(@$media["startDate"]->sec); ?>
               <?php } ?>
             <?php } ?>
-            <p><?php echo $media["text"]; ?></p>
+            <p><?php echo @$media["text"]; ?></p>
             
           </div>
 
@@ -164,11 +168,11 @@
       
       
       <div class="timeline-footer pull-left col-md-12 col-sm-12 col-xs-12 padding-top-5">
-          <!-- <a class="btn-comment-media" data-media-id="<?php echo $media["_id"]; ?>"><i class="fa fa-comment"></i> Commenter</a> -->
+          <!-- <a class="btn-comment-media" data-media-id="<?php //echo $media["_id"]; ?>"><i class="fa fa-comment"></i> Commenter</a> -->
           <!-- <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
           <a><i class="glyphicon glyphicon-share"></i></a> -->
-          <div class="col-md-12 pull-left padding-5" id="footer-media-<?php echo $media["_id"]; ?>"></div>
-          <div class="col-md-12 no-padding pull-left margin-top-10" id="commentContent<?php echo $media["_id"]; ?>"></div>
+          <div class="col-md-12 pull-left padding-5" id="footer-media-<?php echo @$media["_id"]; ?>"></div>
+          <div class="col-md-12 no-padding pull-left margin-top-10" id="commentContent<?php echo @$media["_id"]; ?>"></div>
       </div>
     </div>
   </li>
@@ -196,6 +200,7 @@
             media=getMediaImages(v.media,e,v.author.id,v.target.name);
           $("#result"+e).append(media);
         }
+        bindLBHLinks();
       });
 
       <?php if(!(@$isFirst == true) && @$limitDate && @$limitDate["created"]){ ?>

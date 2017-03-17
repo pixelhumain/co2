@@ -230,22 +230,22 @@ function notifCount(upNotifUnseen, element)
 	$(".notifCount").html( countNotif );
 	if(countNotif == 0)
 		$(".notifList"+element).html("<li><i class='fa fa-ban'></i> No more notifications for the moment</li>");
-	if(element==""){
+	//if(element==""){
 		if( countNotifUnseen > 0)
 		{
-		    $(".notifications-count").html(countNotifUnseen);
-			$('.notifications-count').removeClass('hide');
-			$('.notifications-count').addClass('animated bounceIn');
-			$('.notifications-count').addClass('badge-success');
-			$('.notifications-count').removeClass('badge-tranparent');
+		    $(".notifications-count"+element).html(countNotifUnseen);
+			$('.notifications-count'+element).removeClass('hide');
+			$('.notifications-count'+element).addClass('animated bounceIn');
+			$('.notifications-count'+element).addClass('badge-success');
+			$('.notifications-count'+element).removeClass('badge-tranparent');
 			$(".markAllAsRead").show();
 		} else {
 			//$('.notifications-count').addClass('hide');
 			//$(".notifications-count").html("0");
-			$('.notifications-count').addClass('hide');
-			$('.notifications-count').removeClass('badge-success');
-			$('.notifications-count').addClass('badge-tranparent');
+			$('.notifications-count'+element).addClass('hide');
+			$('.notifications-count'+element).removeClass('badge-success');
+			$('.notifications-count'+element).addClass('badge-tranparent');
 			$(".markAllAsRead").hide();
 		}
-	}
+	//}
 }

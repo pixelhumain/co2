@@ -67,7 +67,7 @@ dynForm = {
             name : typeObjLib.name,
             message : typeObjLib.description,
             dateEnd : typeObjLib.dateEnd,
-            tags : typeObjLib.tags,
+            tags : typeObjLib.tags(),
             formshowers : {
             	label : "En détails",
                 inputType : "custom",

@@ -18,35 +18,71 @@
                                 "page" => "media") ); 
 ?>
 
-
+<style>
+	#timeline-live{
+		min-height:400px;
+	}
+</style>
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding">
 
 	<!-- <div class="col-md-12 col-sm-12 col-xs-12 no-padding row-radio" style="background-color: #f8f8f8;">
 		<?php //$this->renderPartial($layoutPath.'radioplayer', array( "layoutPath"=>$layoutPath ) ); ?>  
 	</div> -->
 
-	<div class="col-md-12 col-sm-12 inline page-header text-center margin-top-20">
+	<div class="col-md-2 col-sm-1 hidden-xs no-padding" style="min-height: 500px;">
+	</div>
+
+	<div class="col-md-8 col-sm-10 inline text-center page-header text-center margin-top-20">
+		<div class="col-md-3 col-sm-3 bg-white">
+		<button class="btn btn-link tooltips btn-select-media-src srcNC1" data-srcactive="true" data-srcid="NC1" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NC1.png" height=40>
+			<br><i class="fa fa-check-circle letter-green srcActive"></i>
+			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
+		</button>
+		</div>
+		<div class="col-md-3 col-sm-3 bg-white">
+		<button class="btn btn-link tooltips btn-select-media-src srcNCI" data-srcactive="true" data-srcid="NCI" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NCI.png" height=40>
+			<br><i class="fa fa-check-circle letter-green srcActive"></i>
+			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
+		</button>
+		</div>
+		<div class="col-md-3 col-sm-3 bg-white">
+		<button class="btn btn-link tooltips btn-select-media-src srcNCTV" data-srcactive="true" data-srcid="NCTV" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NCTV.png" height=40>
+			<br><i class="fa fa-check-circle letter-green srcActive"></i>
+			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
+		</button>
+		</div>
+		<div class="col-md-3 col-sm-3 bg-white">
+		<button class="btn btn-link tooltips btn-select-media-src srcTAZAR" data-srcactive="true" data-srcid="TAZAR" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/TAZAR.png" height=40>
+			<br><i class="fa fa-check-circle letter-green srcActive"></i>
+			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
+		</button>
+		</div>
+	</div>
+	<!-- <div class="col-md-12 col-sm-12 inline page-header text-center margin-top-20">
 	    <h3 id="timeline"><i class="fa fa-newspaper-o"></i><br>L'Actu locale en direct<br><i class="fa fa-angle-down"></i></h3>
 	    <?php //if(!@$medias || sizeOf($medias) <= 0){ ?>
 	    	<!-- <div class="initStream">
 		    	<button class="btn btn-success" id="btn-init-stream">Actualiser le fil d'actu</button></br>
 		    	<span>lancer le processus d'import de données</span>
-	    	</div> -->
+	    	</div> - ->
 	    <?php //} ?>
-	</div>
+	</div> -->
 
-	<div class="col-md-2 col-sm-1 hidden-xs no-padding">
-	</div>
+	
 
 
 	<div class="col-md-8 col-sm-10 no-padding">
-	
-	<ul class="timeline inline-block" id="timeline-live">
-		<?php  
-			if(@$medias && sizeOf($medias) > 0)
-			$this->renderPartial('liveStream', array("medias"=>$medias)); 
-		?>
-	</ul>
+		<div class="col-md-12 no-padding text-center" id="timeline-reload"></div>
+		<ul class="timeline inline-block" id="timeline-live">
+			<?php  
+				if(@$medias && sizeOf($medias) > 0)
+				$this->renderPartial('liveStream', array("medias"=>$medias)); 
+			?>
+		</ul>
 	</div>
 
 
@@ -67,7 +103,7 @@ var indexStep = currentIndexMax;
 
 //var medias = <?php //echo json_encode($medias); ?>;
 
-var idSession = "<?php echo Yii::app()->session["userId"] ?>";
+var idSession = "<?php echo @Yii::app()->session["userId"] ?>";
 
 //permet d'ajouter des commentaires sur n'importe quel data (collection)
 var parentTypeComment = "media";
@@ -85,6 +121,38 @@ jQuery(document).ready(function() {
 	    }
 	});
 
+	$(".btn-select-media-src").click(function(){
+		var src = $(this).data("srcid");
+		var srcActive = $(this).data("srcactive");
+		console.log("srcactive", srcActive, sources);
+		if(srcActive==true){
+			if(sources.length == 1){
+				toastr.error("Longin ! Impossible de désactiver toutes les sources en même temps !");
+				setTimeout(function(){
+					toastr.error("Nan mé... t'as cru koi ?");
+					setTimeout(function(){
+						toastr.error("Fou la flème !..");
+					}, 1000);
+				}, 1500);
+				return;
+			}
+			for(var i = sources.length; i--;){
+				if (sources[i] === src) sources.splice(i, 1);
+				$(this).data("srcactive", false);
+				$(".src"+src+" .srcActive").addClass("hidden");
+				$(".src"+src+" .srcDisable").removeClass("hidden");
+			}
+		}else{
+			sources.push(src);
+			$(this).data("srcactive", true);
+			$(".src"+src+" .srcActive").removeClass("hidden");
+			$(".src"+src+" .srcDisable").addClass("hidden");
+		}
+		startReloadTimeout();
+		console.log("srcactive", srcActive, sources);
+		
+	});
+
     //btn to load media data for first time (if no media found)
 	$("#main-btn-start-search").click(function(){
 		$("#timeline-live").html("");
@@ -95,7 +163,34 @@ jQuery(document).ready(function() {
 
 });
 
-var sources = new Array("NCI", "NC1", "CALEDOSPHERE", "NCTV");
+var interval;
+function startReloadTimeout(){
+	$("#timeline-live").html("");
+	$("#timeline-reload").html("<i class='fa fa-circle'></i> "+
+								"<i class='fa fa-circle'></i> "+
+								"<i class='fa fa-circle'></i>"+
+								"<hr style='margin-top: 34px;'>");
+        var sec = 3;
+        if(typeof interval != "undefined") clearInterval(interval);
+        interval = setInterval(function(){ 
+        	if(sec == 1){
+        		loadStream(0, indexStep);
+        		$("#timeline-reload").html("");
+				$("#timeline-live").html("");
+        		clearInterval(interval);
+        	}
+        	else{
+        		sec--;
+        		var str = "";
+        		for(n=0;n<sec;n++) str += "<i class='fa fa-circle'></i> ";
+        		str += "<hr style='margin-top: 34px;'>";
+        		$("#timeline-reload").html(str);
+        	}
+        }, 800);
+}
+
+
+var sources = new Array("NC1", "NCI", "NCTV", "TAZAR");
 
 function loadStream(indexMin, indexMax){ console.log("load stream media");
 	if(indexMin == 0) scrollEnd = false;

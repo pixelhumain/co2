@@ -191,13 +191,38 @@
                     </button><br><br>
                 	<label class="text-white">(soumis à l'approbation des administrateurs sous 7 jours)</label>
                     <hr>
-                    <label class="text-white">Les informations fournies à propos de cette URL seront examinées par les administrateurs du réseau avant d'être publiées, afin d'éviter tout abus et de garantir la pertinance des résultats de recherches.</label>
-                    
+                    <label class="text-white">
+                    Les informations fournies à propos de cette URL seront examinées par les administrateurs du réseau avant d'être publiées, afin d'éviter tout abus et de garantir la pertinance des résultats de recherches.
+                    </label>
+                    <hr>
+                    <label class="text-white">Seront refusés : les sites web à caractère violent, ou pornographique</label>
                 </div>
             </div>
         </div>
 	</section>
 </div>
+
+<section class="letter-green hidden" id="section-thanks">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center" style="margin-bottom:50px;">
+                <h3 class=""><i class="fa fa-thumbs-up"></i><br>Merci pour votre participation</h3>
+                <label>
+                    <a href="" class="letter-green bold" id="url-validated"></a><br>
+                    <i class="fa fa-check"></i> L'url a bien été enregistrée
+                </label>
+                <hr>
+                <label>Les informations fournies à propos de cette URL seront examinées par les administrateurs du site avant d'être publiées, afin d'éviter tout abus et de garantir la pertinence des résultats de recherches.</label>
+                <br><br>
+                <button class="btn bg-green-k text-white btn-lg lbh" data-hash="#web" id="btn-send-ref">
+                    <i class="fa fa-arrow-left"></i> retour
+                </button>
+                    
+                
+            </div>
+        </div>
+    </div>
+</section>
 
 
 <?php $cities = CO2::getCitiesNewCaledonia(); ?>
@@ -213,6 +238,8 @@ var urlValidated = "";
 var formType = "poi";
 var cities = <?php echo json_encode($cities); ?>;
 var coordinatesPreLoadedFormMap = [0, 0];
+
+var urlExists = "DONTKNOW";
 
 console.log("CITIES", cities);
 
@@ -357,12 +384,53 @@ function buildListCategoriesForm(){
     });
 }
 
+function checkUrlExists(url){
+    url = url.trim();
+    if(url.lastIndexOf("/") == url.lenght){
+        url = url.substr(0, url.lenght-1);
+        $("#form-url").val(url); 
+    }
+
+    $.ajax({
+        type: "POST",
+        url: baseUrl+"/"+moduleId+"/app/checkurlexists",
+        data: { url: url },
+        dataType: "json",
+        success: function(data){ console.log("checkUrlExists", data);
+            if(data.status == "URL_EXISTS")
+            urlExists = true;
+            else
+            urlExists = false;
+            console.log("checkUrlExists", data);
+            refUrl(url);
+        },
+        error: function(data){
+            console.log("check url exists error");
+        }
+    });
+}
+//http://www.evaneos.com/nouvelle-caledonie/voyage/
 function refUrl(url){
 
     if(!isValidURL(url)){
         $("#status-ref").html("<span class='letter-red'><i class='fa fa-times'></i> cette url n'est pas valide.</span>");
         return;
     }
+
+    if(urlExists == "DONTKNOW"){
+        checkUrlExists(url);
+        return;
+    }
+
+    if(urlExists == true){
+        $("#form-url").val(); 
+        $("#send-ref, #refLocalisation, #refMainCategories, #refResult").addClass("hidden");
+        $("#status-ref").html("<span class='letter-green'><i class='fa fa-thumbs-up'></i> Cette url est déjà référencée dans notre base de données.</span>");
+        urlExists = "DONTKNOW";
+        return; 
+    }
+
+    urlExists = "DONTKNOW";
 
 	$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> recherche en cours</span>");
 	$("#refResult").addClass("hidden");
@@ -562,13 +630,20 @@ function sendReferencement(){
                 else{
                     console.log("save referencement success");
                     toastr.success("Votre demande a bien été enregistrée");
-                    url.loadByHash("#web");
+                    $("#mainFormReferencement").hide();
+                    $("#url-validated").html(urlValidated)
+                    $("#section-thanks").removeClass("hidden");
+                    //url.loadByHash("#web");
 	    		}
                 //else toastr.error("Une erreur est survenue pendant le référencement");
 	    		
 	    	},
 	    	error: function(data){
-	    		toastr.error("Une erreur est survenue pendant l'envoi de votre demande'");
+                if(data.status == "URL_EXISTS")
+                toastr.error("Une erreur est survenue pendant l'envoi de votre demande'");
+
+                if(data.status == "URL_EXISTS")
+                toastr.error("Une erreur est survenue pendant l'envoi de votre demande'");
 	    		console.log("save referencement error");
 	    	}
 	    });

@@ -59,6 +59,9 @@ var medias = <?php echo json_encode($medias); ?>;
 
 jQuery(document).ready(function() {
   if(medias.length == 0) scrollEnd = true;
-  initCommentsTools(medias);
+
+  <?php if(isset(Yii::app()->session["userId"])) { ?>
+    initCommentsTools(medias);
+  <?php } ?>
 });
 </script>

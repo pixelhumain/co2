@@ -467,6 +467,7 @@ class CommunecterController extends Controller
       "info"              => array('href' => "/ph/communecter/app/info",              "public" => true),
       "city"              => array('href' => "/ph/communecter/app/city",              "public" => false),
       "sendmailformcontact" => array('href' => "/ph/communecter/app/sendmailformcontact", "public" => true),
+      "checkurlexists" => array('href' => "/ph/communecter/app/checkurlexists", "public" => true),
       ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick")

@@ -68,11 +68,8 @@ function bindRightClicks() {
 						name: "Ouvrir dans un nouvel onglet",
 			        	icon: "fa-arrow-circle-right", 
 			        	callback: function(key, opt){ 
-				        	if(userId ){
 					        	window.open($trigger[0].hash, '_blank');
-							}
 			        	}
-						
 					}
 				};
 	        	$.each( userConnected.collections, function (col,list) { 

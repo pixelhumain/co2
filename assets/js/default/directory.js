@@ -8,6 +8,7 @@ var totalData = 0;
 
 var timeout = null;
 var searchType = '';
+var searchSType = '';
 
 var translate = {"organizations":"Organisations",
                  "projects":"Projets",
@@ -120,6 +121,12 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       "indexMin" : indexMin, 
       "indexMax" : indexMax  };
 				
+
+    if(searchSType != "")
+      data.searchSType = searchSType;
+
+    searchSType = "";
+
     loadingData = true;
     
     str = "<i class='fa fa-circle-o-notch fa-spin'></i>";
@@ -277,7 +284,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               scrollEnd = false;
             }
 
-            if(typeof showResultInCalendar != "undefined")
+            if( typeof page != "undefined" && page == "agenda" && typeof showResultInCalendar != "undefined")
               showResultInCalendar(data);
 
             if(mapElements.length==0) mapElements = data;
@@ -791,30 +798,30 @@ var directory = {
               else
                 cntP++; 
             });
+          }
 
-            params.attendees = "<hr class='margin-top-10 margin-bottom-10'>";
-            
-             
-            params.attendees += "<button id='btn-participate' class='text-dark btn btn-link no-padding'><i class='fa fa-street-view'></i> Je participe</button>";
-            params.attendees += "<button id='btn-interested' class='text-dark btn btn-link no-padding margin-left-10'><i class='fa fa-thumbs-up'></i> Ça m'intéresse</button>";
-            params.attendees += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10'> <i class='fa fa-share'></i> Partager</button>";
-          
-            params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
-                                        "data-toggle='tooltip' data-placement='bottom' data-original-title='participant(s)'>" + 
-                                  cntP + " <i class='fa fa-street-view'></i>"+
-                                "</small>";
+        params.attendees = "<hr class='margin-top-10 margin-bottom-10'>";
+        
+        params.attendees += "<button id='btn-participate' class='text-dark btn btn-link no-padding'><i class='fa fa-street-view'></i> Je participe</button>";
+        params.attendees += "<button id='btn-interested' class='text-dark btn btn-link no-padding margin-left-10'><i class='fa fa-thumbs-up'></i> Ça m'intéresse</button>";
+        params.attendees += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10'> <i class='fa fa-share'></i> Partager</button>";
+      
+        params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
+                                    "data-toggle='tooltip' data-placement='bottom' data-original-title='participant(s)'>" + 
+                              cntP + " <i class='fa fa-street-view'></i>"+
+                            "</small>";
 
-            params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
-                                        "data-toggle='tooltip' data-placement='bottom' data-original-title='intéressé(s)'>" +
-                                   cntIt + " <i class='fa fa-thumbs-up'></i>"+
-                                "</small>";
+        params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
+                                    "data-toggle='tooltip' data-placement='bottom' data-original-title='intéressé(s)'>" +
+                               cntIt + " <i class='fa fa-thumbs-up'></i>"+
+                            "</small>";
 
-            params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
-                                        "data-toggle='tooltip' data-placement='bottom' data-original-title='invité(s)'>" +
-                                   cntIv + " <i class='fa fa-envelope'></i>"+
-                                "</small>";
+        params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
+                                    "data-toggle='tooltip' data-placement='bottom' data-original-title='invité(s)'>" +
+                               cntIv + " <i class='fa fa-envelope'></i>"+
+                            "</small>";
 
-           }
+           
 
         mylog.log("-----------eventPanelHtml", params);
         //if(params.imgProfil.indexOf("fa-2x")<0)

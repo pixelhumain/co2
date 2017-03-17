@@ -3,7 +3,7 @@
 <?php 
 
 	$cssAnsScriptFilesModule = array(
-		'/js/news/newsHtml.js'
+		'/js/news/newsHtml.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
@@ -20,9 +20,7 @@
 			  ) , 
 		Yii::app()->theme->baseUrl. '/assets');
 
-
-
-	$id = $_GET["id"];
+	$id = $_GET['id'];
 	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 	
 	//récupération du type de l'element
@@ -219,7 +217,7 @@
 		    <?php } ?>
 	        <div class="col-md-9 col-sm-10 col-lg-10 text-left">
 	        	
-	        	<div class="col-md-12 padding-5 margin-bottom-10">
+	        	<div id="divTagsHeader" class="col-md-12 padding-5 margin-bottom-10">
 					<!-- <div class="link"><i class="fa fa-tag"></i> Tags</div> -->
 					<?php if(@$element["tags"])
 	            			foreach ($element["tags"]  as $key => $tag) { ?>
@@ -229,7 +227,12 @@
 
 				
 				<h3 class="text-left margin-10 padding-left-15 pull-left" id="main-name-element">
-					<?php echo @$element["name"]; ?>		
+					<?php if($edit==true || $openEdition==true ){?>
+						<a href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a>
+					<?php } ?>
+					<span id="nameHeader">
+						<?php echo @$element["name"]; ?>
+					</span>	
 				</h3>
 				<a href="#app.page.type.citoyens.id.580827a8da5a3bca128b456b?tpl=onepage" target="_blank" class="font-blackoutM letter-red bold">
 					  <i class="fa fa-external-link"></i> <span class="hidden-xs hidden-sm">Page</span> web
@@ -241,9 +244,9 @@
 					<span class="" id="shortDescriptionHeader"><?php echo @$element["shortDescription"]; ?></span>
 					
 					<?php if(@$edit==true) { ?>
-					<button class=" btn btn-default btn-xs tooltips editElementDetail margin-top-5" data-edit-id="shortDescription" 
+					<button class=" btn btn-default btn-xs tooltips btn-update-shortDesc margin-top-5" data-edit-id="shortDescription" 
 							data-toggle="tooltip" data-placement="right" title="modifier ma description">
-						<i class="fa fa-pencil"></i> en quelques mots
+						<i class="fa fa-pencil"></i> en quelques mots 
 					</button>
 					<a href="#" id="shortDescription" data-type="wysihtml5" 
 						data-original-title="Décrivez <?php echo @$element["name"]; ?> en quelques mots (140)" 

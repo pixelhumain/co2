@@ -106,14 +106,16 @@
 				<i class="fa fa-cog"></i>
 			</button>
 			<br>
-			<span class="siteurl_hostname letter-green"><?php echo @$siteurl["urlDisplay"]; ?></span><br>
+			<a href="<?php echo $siteurl["url"]; ?>" target="_blank" class="siteurl_hostname letter-green">
+				<?php echo @$siteurl["urlDisplay"]; ?>
+			</a><br>
 		</div>
 
 		<?php if(@$siteurl["description"]){ ?>
 		<span class="siteurl_desc letter-grey"><?php echo @$siteurl["description"]; ?></span><br>
 		<?php } ?>
 
-		<span class="siteurl_desc letter-grey">
+		<span class="siteurl_desc letter-grey hidden">
 			<?php if(Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) ) { ?>
 				<b>
 					<?php if(!empty($siteurl["categories"])) foreach ($siteurl["categories"] as $key2 => $category) { ?>
@@ -157,7 +159,7 @@
 
 
 <?php if(sizeof($siteurls) >= 1){ ?>
-<div class="col-md-12 margin-bottom-15 text-right" style="">
+<div class="col-md-12 margin-bottom-50 text-right" style="">
 	<hr class="margin-top-5">
 	<span>
 		<small><b>

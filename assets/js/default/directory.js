@@ -8,6 +8,7 @@ var totalData = 0;
 
 var timeout = null;
 var searchType = '';
+var searchSType = '';
 
 var translate = {"organizations":"Organisations",
                  "projects":"Projets",
@@ -92,7 +93,7 @@ var mapElements = new Array();
 
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
-  console.log("autoCompleteSearch", typeof callBack, callBack);
+  console.log("autoCompleteSearch 2", typeof callBack, callBack);
 	if(typeof(cityInseeCommunexion) != "undefined"){
 	    var levelCommunexionName = { 1 : "CODE_POSTAL_INSEE",
 	                             2 : "INSEE",
@@ -118,8 +119,17 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       "searchLocalityREGION" : ($('#searchLocalityREGION').length ) ? $('#searchLocalityREGION').val().split(',') : [],
       "searchBy" : levelCommunexionName[levelCommunexion], 
       "indexMin" : indexMin, 
-      "indexMax" : indexMax  };
+      "indexMax" : indexMax
+    };
+
+    
 				
+
+    if(searchSType != "")
+      data.searchSType = searchSType;
+
+    searchSType = "";
+
     loadingData = true;
     
     str = "<i class='fa fa-circle-o-notch fa-spin'></i>";
@@ -277,7 +287,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               scrollEnd = false;
             }
 
-            if(typeof showResultInCalendar != "undefined")
+            if( typeof page != "undefined" && page == "agenda" && typeof showResultInCalendar != "undefined")
               showResultInCalendar(data);
 
             if(mapElements.length==0) mapElements = data;
@@ -748,12 +758,12 @@ var directory = {
       return str;
     },
     eventPanelHtml : function(params){
-      mylog.log("-----------eventPanelHtml");
+      mylog.log("-----------eventPanelHtml", params);
       str = "";  
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
-        if(params.updated.indexOf("il y a")>=0)
+        if(params.updated != null && params.updated.indexOf("il y a")>=0)
             params.updated = "En ce moment";
 
         if(params.updated != null && !params.useMinSize)
@@ -791,30 +801,30 @@ var directory = {
               else
                 cntP++; 
             });
+          }
 
-            params.attendees = "<hr class='margin-top-10 margin-bottom-10'>";
-            
-             
-            params.attendees += "<button id='btn-participate' class='text-dark btn btn-link no-padding'><i class='fa fa-street-view'></i> Je participe</button>";
-            params.attendees += "<button id='btn-interested' class='text-dark btn btn-link no-padding margin-left-10'><i class='fa fa-thumbs-up'></i> Ça m'intéresse</button>";
-            params.attendees += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10'> <i class='fa fa-share'></i> Partager</button>";
-          
-            params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
-                                        "data-toggle='tooltip' data-placement='bottom' data-original-title='participant(s)'>" + 
-                                  cntP + " <i class='fa fa-street-view'></i>"+
-                                "</small>";
+        params.attendees = "<hr class='margin-top-10 margin-bottom-10'>";
+        
+        params.attendees += "<button id='btn-participate' class='text-dark btn btn-link no-padding'><i class='fa fa-street-view'></i> Je participe</button>";
+        params.attendees += "<button id='btn-interested' class='text-dark btn btn-link no-padding margin-left-10'><i class='fa fa-thumbs-up'></i> Ça m'intéresse</button>";
+        params.attendees += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10'> <i class='fa fa-share'></i> Partager</button>";
+      
+        params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
+                                    "data-toggle='tooltip' data-placement='bottom' data-original-title='participant(s)'>" + 
+                              cntP + " <i class='fa fa-street-view'></i>"+
+                            "</small>";
 
-            params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
-                                        "data-toggle='tooltip' data-placement='bottom' data-original-title='intéressé(s)'>" +
-                                   cntIt + " <i class='fa fa-thumbs-up'></i>"+
-                                "</small>";
+        params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
+                                    "data-toggle='tooltip' data-placement='bottom' data-original-title='intéressé(s)'>" +
+                               cntIt + " <i class='fa fa-thumbs-up'></i>"+
+                            "</small>";
 
-            params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
-                                        "data-toggle='tooltip' data-placement='bottom' data-original-title='invité(s)'>" +
-                                   cntIv + " <i class='fa fa-envelope'></i>"+
-                                "</small>";
+        params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
+                                    "data-toggle='tooltip' data-placement='bottom' data-original-title='invité(s)'>" +
+                               cntIv + " <i class='fa fa-envelope'></i>"+
+                            "</small>";
 
-           }
+           
 
         mylog.log("-----------eventPanelHtml", params);
         //if(params.imgProfil.indexOf("fa-2x")<0)
@@ -862,7 +872,7 @@ var directory = {
         str += "</div>";
 
        
-        if("undefined" != typeof params.organizerObj){ 
+        if("undefined" != typeof params.organizerObj && params.organizerObj != null){ 
 
           str += "<div class='col-md-8 col-sm-8 col-xs-12 entityOrganizer margin-top-10'>";
             if("undefined" != typeof params.organizerObj.profilThumbImageUrl &&
@@ -1142,8 +1152,8 @@ var directory = {
                     itemType="poi";
                 typeIco = itemType;
 
-                if(typeof(params.typeOrga) != "undefined")
-                    typeIco = params.typeOrga;
+                if(typeof params.typeOrga != "undefined")
+                  typeIco = params.typeOrga;
 
                 var obj = (typeObjLib.get(typeIco)) ? typeObjLib.get(typeIco) : typeObj["default"] ;
                 params.ico =  "fa-"+obj.icon;
@@ -1188,7 +1198,7 @@ var directory = {
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
                 //params.url = '#page.type.'+params.type+'.id.' + params.id;
-                params.url = '#element.detail.type.'+params.type+'.id.' + params.id;
+                params.url = '#page.type.'+params.type+'.id.' + params.id;
                 if(type == "poi")    
                     url = '#element.detail.type.poi.id.' + id;
 

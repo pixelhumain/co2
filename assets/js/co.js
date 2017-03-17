@@ -2474,6 +2474,7 @@ var elementLib = {
 		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
 		if(typeof type == "object"){
 			mylog.log(" object directly Loaded : ", type);
+			elementLib.elementObj = type;
 			if( notNull(type.col) ) uploadObj.type = type.col;
     		callback(type, afterLoad, data);
 		}else if( jsonHelper.notNull( "typeObj."+type+".dynForm" , "object") ){
@@ -2647,7 +2648,10 @@ var typeObjLib = {
 	            		globalSearch($(this).val(),[ typeObjLib.get(type).col ] );
 	        	});
 	        }
+	    }else{
+	    	inputObj.label = "Nom ";
 	    }
+	    mylog.log("typeObjLib ", inputObj);
     	return inputObj;
     },
     /*nameOrganiser : {
@@ -2664,6 +2668,7 @@ var typeObjLib = {
     username : {
     	placeholder : "username",
         inputType : "text",
+        label : "Username",
         rules : { required : true },
         init : function(){
         	$("#ajaxFormModal #username ").off().on("blur",function(){
@@ -2733,7 +2738,7 @@ var typeObjLib = {
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	elementLib.closeForm();
-		    	alert(gotoUrl+uploadObj.id);
+		    	//alert(gotoUrl+uploadObj.id);
 	            url.loadByHash( gotoUrl+uploadObj.id );	
 		    	}
     	}
@@ -2750,6 +2755,11 @@ var typeObjLib = {
         inputType : "textarea",
 		placeholder : "...",
 		label : "Description principale"
+    },
+    shortDescription : {
+        inputType : "textarea",
+		placeholder : "...",
+		label : "Description court"
     },
     tags : function(list) { 
     	tagsL = (list) ? list : tagsList;
@@ -2851,14 +2861,15 @@ var typeObjLib = {
     				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
 					endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
     			}
-			    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
-				if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
+			    if (startDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(startDate);
+				if (endDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(endDate);
     		}
     	}
     },
     startDateInput : {
         inputType : "datetime",
         placeholder: "Date de début",
+        label : "Date de début",
         rules : { 
         	required : true,
         	duringDates: ["#startDateParent","#endDateParent","La date de début"]
@@ -2867,55 +2878,66 @@ var typeObjLib = {
     endDateInput : {
         inputType : "datetime",
         placeholder: "Date de fin",
+        label : "Date de fin",
         rules : { 
         	required : true,
-        	greaterThan: ["#ajaxFormModal #startDate","la date de début"],
+        	greaterThan: ["#ajaxFormModal #startDateInput","la date de début"],
         	duringDates: ["#startDateParent","#endDateParent","La date de fin"]
 	    }
     },
     telegram : {
         inputType :"text",
+        label : "Votre Speudo Telegram",
         placeholder : "Votre Speudo Telegram"
     },
     skype : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
+        label : "Lien vers Skype",
         placeholder : "Lien vers Skype"
     },
     facebook : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
+        label : "Lien vers Facebook",
         placeholder : "Lien vers Facebook"
     },
     github : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
+        label : "Lien vers Git Hub",
         placeholder : "Lien vers Git Hub"
     },
     googleplus : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
+        label : "Lien vers Google Plus",
         placeholder : "Lien vers Google Plus"
     },
     twitter : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
+        label : "Lien vers Twitter",
         placeholder : "Lien vers Twitter"
     },
     birthDate : {
         inputType : "date",
-        placeholder: "Date d'anniversaire'"
+        label : "Date d'anniversaire",
+        placeholder: "Date d'anniversaire"
     },
     phone :{
       	inputType : "text",
+      	label : "Fixe",
       	placeholder : "Saisir les numéros de téléphone séparer par une virgule"
     },
     mobile :{
       	inputType : "text",
+      	label : "Mobile",
       	placeholder : "Saisir les numéros de portable séparer par une virgule"
     },
     fax :{
       	inputType : "text",
+      	label : "Fax",
       	placeholder : "Saisir les numéros de fax séparer par une virgule"
     },
     price :{
@@ -2989,6 +3011,7 @@ var typeObjLib = {
     	}
     },
     get:function(type){
+    	mylog.log("get", type);
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
     			return typeObj[ typeObj[type].sameAs ];
@@ -3070,7 +3093,7 @@ var typeObj = {
 	"organizations" : {sameAs:"organization"},
 	"LocalBusiness" : {color: "azure",icon: "industry"},
 	"NGO" : {sameAs:"organization"},
-	"association" : {sameAs:"organization"},
+	"Association" : {sameAs:"organization"},
 	"GovernmentOrganization" : {color: "green",icon: "circle-o"},
 	"Group" : {	color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},

@@ -160,10 +160,6 @@
 </style>
 
 
-
-
-
-
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
 
     <?php if(@$type=="events"){ ?>
@@ -215,7 +211,6 @@
         </div>
     <?php } ?>
 
-    
 
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
@@ -404,6 +399,11 @@ jQuery(document).ready(function() {
         $(".btn-directory-type").click(function(){
             var typeD = $(this).data("type");
 
+            if(typeD == "events"){
+                var typeEvent = $(this).data("type-event");
+                searchSType = typeEvent;
+            }
+
             initTypeSearch(typeD);
 
             setHeaderDirectory(typeD);
@@ -422,7 +422,7 @@ jQuery(document).ready(function() {
 
         //console.log("init Scroll");
         $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
-            if(!loadingData && !scrollEnd){
+            if(!loadingData && !scrollEnd && !isMapEnd){
                   var heightWindow = $("html").height() - $("body").height();
                   if( $(this).scrollTop() >= heightWindow - 400){
                     startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
@@ -503,7 +503,6 @@ jQuery(document).ready(function() {
         activateGlobalCommunexion(false);
     });
 
-
     setTimeout(function(){
         KScrollTo("#content-social");  
     }, 2000);
@@ -555,7 +554,7 @@ function initClassifiedInterface(){
         sectionKey = $(this).data("key");
         //alert("section : " + section);
         if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
-            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" ){
+            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
             //$(".subsub").show(300);
             $('#searchTags').val(section);
             //KScrollTo(".top-page");

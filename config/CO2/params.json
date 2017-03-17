@@ -11,6 +11,7 @@
 			"#search":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
+                "open" : true, 
                 "subdomain" : "search", 
                 "subdomainName" : "Recherche",
                 "hash" : "#app.search",
@@ -24,6 +25,7 @@
 		    "#annonces":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
+                "open" : true, 
                 "subdomain" : "annonces", 
                 "subdomainName" : "Annonces",
                 "hash" : "#app.annonces",
@@ -37,6 +39,7 @@
 			"#agenda":
                 {"inMenu" : true, 
                 "useHeader" : true, 
+                "open" : true, 
                 "subdomain" : "agenda", 
                 "subdomainName" : "Agenda",
                 "hash":"#app.agenda",
@@ -50,6 +53,7 @@
 			"#power":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
+                "open" : true, 
                 "subdomain" : "power", 
                 "subdomainName" : "Démocratie",
                 "hash":"#app.power",
@@ -63,6 +67,7 @@
             "#live":
                 {"inMenu" : true, 
                 "useHeader" : true, 
+                "open" : true, 
                 "subdomain" : "live", 
                 "subdomainName" : "Actus",
                 "hash":"#app.live",
@@ -74,6 +79,7 @@
 			"#page":
 			  	{"inMenu" : false, 
                 "useHeader" : false, 
+                "open" : true, 
                 "subdomain" : "page", 
                 "subdomainName" : "page",
                 "hash":"#app.page",
@@ -85,6 +91,7 @@
             "#info":
                 {"inMenu" : false, 
                 "useHeader" : false, 
+                "open" : true, 
                 "subdomain" : "apropos", 
                 "subdomainName" : "Info",
                 "hash":"#app.info",
@@ -95,7 +102,8 @@
 
             "#city":
                 {"inMenu" : false, 
-                "useHeader" : false, 
+                "useHeader" : false,
+                "open" : true,  
                 "subdomain" : "city", 
                 "subdomainName" : "City",
                 "hash":"#app.city",

@@ -96,15 +96,13 @@
                             </select>                                        
                             <hr>
                         </div>
-                        <div class="col-md-12 padding-5">                           
-                        
+
+                        <div class="col-md-12 padding-5">           
                             <label id="lbl-description">
                                 <i class="fa fa-map-marker"></i> Addresse
                             </label>
 
-                            <h4 class='pull-left text-red' id="name-city-selected">
-                            </h4>
-
+                            <h4 class='pull-left text-red' id="name-city-selected"></h4>
 
                             <button class="btn btn-default text-red pull-right" id="btn-select-city" 
                                     data-target="#portfolioModalCities" data-toggle="modal">
@@ -125,7 +123,6 @@
                                 <span class="letter-red"><i class="fa fa-info-circle"></i> Afin d'éviter tout abus,</span> vos modification seront envoyées aux administrateurs du site, et soumises à leur validation (sous 7 jours).<br>
                                 <i class="fa fa-info-circle"></i> Si les informations fournies semblent farfellues, ou inexactes, nous nous réservons le droit de ne pas donner suite à votre demande.<br>
                                 <i class="fa fa-info-circle"></i> Si elles semblent correctes, votre demande sera validée en quelques jours et vous pourrez retrouver vos modifications lors de vos futures recherches.<br>
-                                <i class="fa fa-info-circle"></i> 
                             </small>
                         </div>
                     </div>
@@ -140,8 +137,12 @@
                     </button> 
                     <?php } ?>
                     
-                    <button class="btn btn-success pull-right margin-bottom-5 btn-save-maj-metadata" ><i class="fa fa-check-circle"></i> Valider mes modifications</button> 
-                    <button class="btn btn-default pull-right margin-right-5 margin-bottom-5" data-dismiss="modal"><i class="fa fa-times"></i> Annuler</button> 
+                    <button class="btn btn-success pull-right margin-bottom-5 btn-save-maj-metadata" >
+                        <i class="fa fa-check-circle"></i> Valider mes modifications
+                    </button> 
+                    <button class="btn btn-default pull-right margin-right-5 margin-bottom-5" data-dismiss="modal">
+                        <i class="fa fa-times"></i> Annuler
+                    </button> 
 
 
                 </div>
@@ -167,8 +168,12 @@
                     <h4 id="urlDeleteName"></h4>
 
                     <div class="row margin-top-70">  
-                        <button class="btn btn-danger pull-left" id="btn-delete-url" ><i class="fa fa-trash"></i> Oui, supprimer</button>
-                        <button class="btn btn-default pull-right margin-right-5" data-dismiss="modal"><i class="fa fa-times"></i> Non, annuler</button> 
+                        <button class="btn btn-danger pull-left" id="btn-delete-url" data-dismiss="modal">
+                            <i class="fa fa-trash"></i> Oui, supprimer
+                        </button>
+                        <button class="btn btn-default pull-right margin-right-5" data-dismiss="modal">
+                            <i class="fa fa-times"></i> Non, annuler
+                        </button> 
                     </div>
                 </div>
             </div>

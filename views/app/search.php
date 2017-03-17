@@ -399,6 +399,11 @@ jQuery(document).ready(function() {
         $(".btn-directory-type").click(function(){
             var typeD = $(this).data("type");
 
+            if(typeD == "events"){
+                var typeEvent = $(this).data("type-event");
+                searchSType = typeEvent;
+            }
+
             initTypeSearch(typeD);
 
             setHeaderDirectory(typeD);

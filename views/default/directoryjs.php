@@ -156,7 +156,7 @@
       <p class="text-center bold"> Recherchez une commune à laquelle vous communecter.<br>
           Une fois communecté, toutes vos recherches seront automatiquement filtrées en fonction de la commune choisie.
       </p>
-    <?php }?>
+    <?php } ?>
 
 
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
@@ -207,44 +207,39 @@
           <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> 
         </div>
 
-        <?php if($typeSelected != "events"  && 
-                   $typeSelected != "vote"    && 
-                   $typeSelected != "cities"  && 
-                   $typeSelected != "classified"){ 
-          ?>   
+        <?php if($typeSelected == "all"){ ?>   
           
-        <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
-
-          <button class="btn text-black bg-dark btn-open-filliaire">
-              <i class="fa fa-th"></i> 
-              <span class="hidden-xs">Thématiques</span>
-          </button><hr class="hidden-xs">
-          <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
-              <i class="fa fa-search"></i> 
-              <span class="hidden-xs">Tous</span>
-          </button><hr class="hidden-xs">
-          <button class="btn text-yellow btn-directory-type" data-type="persons">
-              <i class="fa fa-user"></i> 
-              <span class="hidden-xs">Citoyens</span>
-          </button><hr class="hidden-xs">
-          <button class="btn text-green  btn-directory-type" data-type="NGO">
-              <i class="fa fa-group"></i> 
-              <span class="hidden-xs">Associations</span>
-          </button><br class="hidden-xs">
-          <button class="btn text-azure  btn-directory-type" data-type="LocalBusiness">
-              <i class="fa fa-industry"></i> 
-              <span class="hidden-xs">Entreprises</span>
-          </button><br class="hidden-xs">
-          <button class="btn text-turq btn-directory-type" data-type="Group">
-              <i class="fa fa-circle-o"></i> 
-              <span class="hidden-xs">Groupes</span>
-          </button><br class="hidden-xs">
-          <button class="btn text-purple btn-directory-type" data-type="projects">
-              <i class="fa fa-lightbulb-o"></i> 
-              <span class="hidden-xs">Projets</span>
-          </button>
-          <hr class="hidden-sm hidden-md hidden-lg">
-        </div>
+          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
+            <button class="btn text-black bg-dark btn-open-filliaire">
+                <i class="fa fa-th"></i> 
+                <span class="hidden-xs">Thématiques</span>
+            </button><hr class="hidden-xs">
+            <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
+                <i class="fa fa-search"></i> 
+                <span class="hidden-xs">Tous</span>
+            </button><hr class="hidden-xs">
+            <button class="btn text-yellow btn-directory-type" data-type="persons">
+                <i class="fa fa-user"></i> 
+                <span class="hidden-xs">Citoyens</span>
+            </button><hr class="hidden-xs">
+            <button class="btn text-green  btn-directory-type" data-type="NGO">
+                <i class="fa fa-group"></i> 
+                <span class="hidden-xs">Associations</span>
+            </button><br class="hidden-xs">
+            <button class="btn text-azure  btn-directory-type" data-type="LocalBusiness">
+                <i class="fa fa-industry"></i> 
+                <span class="hidden-xs">Entreprises</span>
+            </button><br class="hidden-xs">
+            <button class="btn text-turq btn-directory-type" data-type="Group">
+                <i class="fa fa-circle-o"></i> 
+                <span class="hidden-xs">Groupes</span>
+            </button><br class="hidden-xs">
+            <button class="btn text-purple btn-directory-type" data-type="projects">
+                <i class="fa fa-lightbulb-o"></i> 
+                <span class="hidden-xs">Projets</span>
+            </button>
+            <hr class="hidden-sm hidden-md hidden-lg">
+          </div>
         
         <?php } else if( $typeSelected == "vote" ){?>
 
@@ -262,41 +257,53 @@
         <?php } else if( $typeSelected == "events" ){?>
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
+            <button class="btn text-black bg-white btn-directory-type btn-all" data-type-event="" data-type="events">
+                <i class="fa fa-search"></i> 
+                <span class="hidden-xs">Tous</span>
+            </button><hr class="hidden-xs">
             
-          </div>
-
-          <?php }else if($typeSelected == "classified"){ ?>
-
-            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub" id="sub-menu-left">
-              <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
-              <hr> -->
-              <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
-                <i class="fa fa-money"></i> A vendre
-              </h4>
-              <hr>
-              <?php $categories = CO2::getContextList("classifiedCategories"); 
+            <?php $categories = Event::$types; 
                   foreach ($categories as $key => $cat) {
               ?>
-                  <?php if(is_array($cat)) { ?>
-                    <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
-                      <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
-                    </button><br>
-                    <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
-                      <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
-                        <i class="fa fa-angle-right"></i> <?php echo $cat2; ?>
-                      </button><br class="hidden">
-                    <?php } ?>
-                  <?php } ?>
+                  <?php //if(is_array($cat)) { ?>
+                    <button class="btn text-orange btn-directory-type" 
+                            style="margin-left:-5px;" data-type-event="<?php echo $key; ?>" data-type="events">
+                      <?php echo $cat; ?>
+                    </button><br class="hidden-xs">
+                  <?php //} ?>
                 </button>
               <?php } ?>
-            </div>
+          </div>
 
-          
-          <?php } ?>
+        <?php }else if($typeSelected == "classified"){ ?>
 
+          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub" id="sub-menu-left">
+            <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
+            <hr> -->
+            <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
+              <i class="fa fa-money"></i> A vendre
+            </h4>
+            <hr>
+            <?php $categories = CO2::getContextList("classifiedCategories"); 
+                foreach ($categories as $key => $cat) {
+            ?>
+                <?php if(is_array($cat)) { ?>
+                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                    <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
+                  </button><br>
+                  <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
+                    <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
+                      <i class="fa fa-angle-right"></i> <?php echo $cat2; ?>
+                    </button><br class="hidden">
+                  <?php } ?>
+                <?php } ?>
+              </button>
+            <?php } ?>
+          </div>
         
-          <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search"></div>
-        
+        <?php } ?>
+
+        <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search"></div>
 
       <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
       

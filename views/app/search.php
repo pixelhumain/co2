@@ -422,7 +422,7 @@ jQuery(document).ready(function() {
 
         //console.log("init Scroll");
         $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
-            if(!loadingData && !scrollEnd){
+            if(!loadingData && !scrollEnd && !isMapEnd){
                   var heightWindow = $("html").height() - $("body").height();
                   if( $(this).scrollTop() >= heightWindow - 400){
                     startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);

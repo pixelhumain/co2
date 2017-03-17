@@ -3,7 +3,7 @@
 <?php 
 
 	$cssAnsScriptFilesModule = array(
-		'/js/news/newsHtml.js'
+		'/js/news/newsHtml.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
@@ -20,9 +20,7 @@
 			  ) , 
 		Yii::app()->theme->baseUrl. '/assets');
 
-
-
-
+	$id = $_GET['id'];
 	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 	
 	//récupération du type de l'element
@@ -193,7 +191,8 @@
                                 "controller" => $controller,
                                 "openEdition" => $openEdition,
                                 "countStrongLinks" => $countStrongLinks,
-                                "countLowLinks" => $countLowLinks,
+                                "countLowLinks" => @$countLowLinks,
+                                "countInvitations"=> $countInvitations
                                 );
 
 	    	if(@$members) $params["members"] = $members;
@@ -217,7 +216,7 @@
 		    <?php } ?>
 	        <div class="col-md-9 col-sm-10 col-lg-10 text-left">
 	        	
-	        	<div class="col-md-12 padding-5 margin-bottom-10">
+	        	<div id="divTagsHeader" class="col-md-12 padding-5 margin-bottom-10">
 					<!-- <div class="link"><i class="fa fa-tag"></i> Tags</div> -->
 					<?php if(@$element["tags"])
 	            			foreach ($element["tags"]  as $key => $tag) { ?>
@@ -227,7 +226,12 @@
 
 				
 				<h3 class="text-left margin-10 padding-left-15 pull-left" id="main-name-element">
-					<?php echo @$element["name"]; ?>		
+					<?php if($edit==true || $openEdition==true ){?>
+						<a href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a>
+					<?php } ?>
+					<span id="nameHeader">
+						<?php echo @$element["name"]; ?>
+					</span>	
 				</h3>
 				<a href="#app.page.type.citoyens.id.580827a8da5a3bca128b456b?tpl=onepage" target="_blank" class="font-blackoutM letter-red bold">
 					  <i class="fa fa-external-link"></i> <span class="hidden-xs hidden-sm">Page</span> web
@@ -239,9 +243,9 @@
 					<span class="" id="shortDescriptionHeader"><?php echo @$element["shortDescription"]; ?></span>
 					
 					<?php if(@$edit==true) { ?>
-					<button class=" btn btn-default btn-xs tooltips editElementDetail margin-top-5" data-edit-id="shortDescription" 
+					<button class=" btn btn-default btn-xs tooltips btn-update-shortDesc margin-top-5" data-edit-id="shortDescription" 
 							data-toggle="tooltip" data-placement="right" title="modifier ma description">
-						<i class="fa fa-pencil"></i> en quelques mots
+						<i class="fa fa-pencil"></i> en quelques mots 
 					</button>
 					<a href="#" id="shortDescription" data-type="wysihtml5" 
 						data-original-title="Décrivez <?php echo @$element["name"]; ?> en quelques mots (140)" 
@@ -256,31 +260,39 @@
 
 	    <div class="col-md-12 col-sm-12 col-xs-12 sub-menu-social">
 	    	<div class="btn-group">
+	    	<?php if(@Yii::app()->session["userId"] && $type==Person::COLLECTION && (string)$element["_id"]==Yii::app()->session["userId"]){ 
+	    		$iconNewsPaper="user-circle"; ?>
 			  <button type="button" class="btn btn-default bold" id="btn-start-newsstream"><i class="fa fa-rss"></i> Fil d'actu<span class="hidden-sm">alité</span>s</button>
-			  <button type="button" class="btn btn-default bold" id="btn-start-mystream"><i class="fa fa-user-circle"></i> Journal</button>
+			  <?php } else $iconNewsPaper="rss"; ?>
+			  <button type="button" class="btn btn-default bold" id="btn-start-mystream"><i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper") ?></button>
+			  <button type="button" class="btn btn-default bold" id="btn-start-gallery"><i class="fa fa-camera"></i> <?php echo Yii::t("common", "Gallery") ?></button>
 			</div>
-
+			<?php if(@Yii::app()->session["userId"] && $isLinked==true){ ?>
 			<div class="btn-group margin-left-10">
-			  <button type="button" class="btn btn-default bold">
+			  <button type="button" class="btn btn-default bold" id="btn-start-notifications">
 			  	<i class="fa fa-bell"></i> 
 			  	<span class="hidden-xs hidden-sm">
 			  		Mes notif<span class="hidden-md">ications</span>
-			  	</span><span class="badge badge-success">12</span>
+			  	</span>
+			  	<span class="badge notifications-countElement <?php if(!@$countNotifElement || (@$countNotifElement && $countNotifElement=="0")) echo 'badge-transparent hide'; else echo 'badge-success'; ?>">
+			  		<?php echo @$countNotifElement ?>
+			  	</span>
 			  </button>
-			  <button type="button" class="btn btn-default bold">
+			  <!--<button type="button" class="btn btn-default bold">
 			  	<i class="fa fa-envelope"></i> 
 			  	<span class="hidden-xs hidden-sm hidden-md">
 			  		Messagerie
-			  	</span><span class="badge bg-azure">3</span>
+			  	</span><span class="badge bg-azure">3</span>-->
 			  </button>
 			</div>
-
+			<?php } ?>
+			<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 			<div class="btn-group margin-left-10">
 			  <button type="button" class="btn btn-default bold">
 			  	<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md">Paramètres</span>
 			  </button>
 			</div>
-
+			<?php } ?>
 			<div class="btn-group margin-left-10">
 			  <button type="button" class="btn btn-default bold">
 			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
@@ -296,7 +308,7 @@
 		<div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 margin-top-50" id="central-container">
 		</div>
 
-		<div class="col-md-2 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
+		<!--<div class="col-md-2 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
 			<div class="alert alert-info">
 				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
 				<span>
@@ -332,7 +344,7 @@
 					<small class="margin-left-15">il y a 10 jours</small><br>
 				</span>
 	    	</div>
-	    </div>
+	    </div>-->
 	</section>
 	
 
@@ -346,11 +358,11 @@
 
 	var elementName = "<?php echo @$element["name"]; ?>";
     var contextType = "<?php echo @$type; ?>";
+    var contextId = "<?php echo @(string)$element['_id'] ?>";
     var members = <?php echo json_encode(@$members); ?>;
     var params = <?php echo json_encode(@$params); ?>;
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
-
     console.log("params", params);
 
 	jQuery(document).ready(function() {
@@ -369,6 +381,16 @@
 		});
 		$("#btn-start-mystream").click(function(){
 			loadNewsStream(false);
+		});
+		$("#btn-start-gallery").click(function(){
+			loadGallery();
+		});
+		$("#btn-start-notifications").click(function(){
+			loadNotifications();
+		});
+		$(".btn-start-chart").click(function(){
+			id=$(this).data("value");
+			loadChart(id);
 		});
 	}
 
@@ -403,7 +425,6 @@
 
 		//ouvre le pod communauté
 		$('#accordion4 .link').trigger("click");
-
    		$(".tooltips").tooltip();
 
 
@@ -440,6 +461,32 @@
 				    }
 				});
 		},"html");
+	}
+	function loadGallery(){
+		toogleNotif(false);
+		var url = "gallery/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
+		
+		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+			function(){},"html");
+	}
+	function loadChart(id){
+		toogleNotif(false);
+		var url = "chart/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>/chart/"+id;
+		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+			function(){},"html");
+	}
+	function loadNotifications(){
+		toogleNotif(false);
+		var url = "element/notifications/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
+		
+		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+			function(){},"html");
 	}
 
 

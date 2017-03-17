@@ -5,7 +5,7 @@ on garde les librairies specifique au module dans le module
 *******************************************/
 
 	$cssAnsScriptFilesModule = array(
-		'/js/communecter.js',
+		'/js/co.js',
 		'/js/default/directory.js',
 		'/js/default/index.js',
 		//'/js/default/directory.js',

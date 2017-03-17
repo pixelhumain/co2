@@ -81,7 +81,7 @@
                 			<label id="lbl-url">
                 				<i class="fa fa-circle"></i> Indiquez l'URL de la page
                 			</label>
-						    <input type="text" class="form-control" placeholder="exemple : http://kgougle.nc" id="form-url"><br>
+						    <input type="text" class="form-control" placeholder="exemple : http://www.kgougle.nc" id="form-url"><br>
 						    <h5 class="letter-green pull-left" id="status-ref"></h5>             		
 						    <button class="btn btn-success pull-right btn-scroll" data-targetid="#formRef" id="btn-start-ref-url">
 						    	<i class="fa fa-binoculars"></i> Lancer la recherche d'information
@@ -113,8 +113,7 @@
 	            					<code>&ltmeta name="keywords"&gt</code>
 	            				</small><br>
 	            				<small class="text-light">
-	            					<i class="fa fa-info-circle"></i> Les mots clés servent à optimiser les résultats de recherche, choisissez les avec soins<br>
-	            					<i class="fa fa-signal fa-flip-horizontal"></i> Par ordre d'importance (1 > 2 > 3 > 4)</small><br><br>
+	            					<i class="fa fa-info-circle"></i> Les mots clés servent à optimiser les résultats de recherche, choisissez les avec soins<br><br>
 	            			</label>
             			</div>
             			<div class="col-md-3 padding-5">
@@ -168,8 +167,7 @@
 							<i class="fa fa-university"></i> Sélectionner une commune
 						</button><br>
 
-						<h4 class='col-md-12 text-center text-red' id="h4-name-city">
-							<i class='fa fa-university'></i> <span id="name-city-selected">Nouméa</span>
+						<h4 class='col-md-12 text-center text-red' id="name-city-selected">
 						</h4><br>
 
 						<input type="text" class="form-control" placeholder="addresse, rue" id="form-street"><br>
@@ -193,53 +191,45 @@
                     </button><br><br>
                 	<label class="text-white">(soumis à l'approbation des administrateurs sous 7 jours)</label>
                     <hr>
-                    <label class="text-white">Les informations fournies à propos de cette URL seront examinées par les administrateurs du réseau avant d'être publiées, afin d'éviter tout abus et de garantir la pertinance des résultats de recherches.</label>
-                    
+                    <label class="text-white">
+                    Les informations fournies à propos de cette URL seront examinées par les administrateurs du réseau avant d'être publiées, afin d'éviter tout abus et de garantir la pertinance des résultats de recherches.
+                    </label>
+                    <hr>
+                    <label class="text-white">Seront refusés : les sites web à caractère violent, ou pornographique</label>
                 </div>
             </div>
         </div>
 	</section>
 </div>
 
-<div class="portfolio-modal modal fade" id="portfolioModalCities" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-content">
-        <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-                <div class="rl">
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                    <div class="modal-body text-left">
-                        <h2 class="text-red"><i class="fa fa-university fa-2x"></i><br>Sélectionner une commune</h2>
-                        <hr>
-                        <?php foreach(array("GN", "Sud", "Nord", "Iles") as $province){ ?>
-                            <?php foreach($cities[$province] as $city){ ?>
-                            	<div class="col-md-3">
-                            		<button class="btn btn-scope" data-dismiss="modal"
-                            				data-city-name="<?php echo $city["name"]; ?>"
-                            				data-city-insee="<?php echo $city["insee"]; ?>"
-                            				data-city-cp="<?php echo $city["postalCodes"][0]["postalCode"]; ?>"
-                            				data-city-lat="<?php echo $city["geo"]["latitude"]; ?>"
-                            				data-city-lng="<?php echo $city["geo"]["longitude"]; ?>">
-                            			<i class="fa fa-bullseye"></i> <?php echo $city["name"]; ?>
-                            		</button> 
-                            	</div>
-                            <?php } ?>
-                        <?php } ?>
-                        <div class="col-md-12 text-center"><hr>
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Annuler</button>
-                        </div>
-                    </div>
-                </div>
+<section class="letter-green hidden" id="section-thanks">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center" style="margin-bottom:50px;">
+                <h3 class=""><i class="fa fa-thumbs-up"></i><br>Merci pour votre participation</h3>
+                <label>
+                    <a href="" class="letter-green bold" id="url-validated"></a><br>
+                    <i class="fa fa-check"></i> L'url a bien été enregistrée
+                </label>
+                <hr>
+                <label>Les informations fournies à propos de cette URL seront examinées par les administrateurs du site avant d'être publiées, afin d'éviter tout abus et de garantir la pertinence des résultats de recherches.</label>
+                <br><br>
+                <button class="btn bg-green-k text-white btn-lg lbh" data-hash="#web" id="btn-send-ref">
+                    <i class="fa fa-arrow-left"></i> retour
+                </button>
+                    
+                
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<?php $this->renderPartial($layoutPath.'footer'); ?>
+
+<?php $cities = CO2::getCitiesNewCaledonia(); ?>
+<?php $this->renderPartial($layoutPath.'modals.kgougle.citiesReferencement', array("cities"=>$cities)); ?>
+
+<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"referencement")); ?>
+
 
 <script type="text/javascript" >
 
@@ -249,13 +239,15 @@ var formType = "poi";
 var cities = <?php echo json_encode($cities); ?>;
 var coordinatesPreLoadedFormMap = [0, 0];
 
+var urlExists = "DONTKNOW";
+
 console.log("CITIES", cities);
 
 jQuery(document).ready(function() {
     initKInterface();
     buildListCategoriesForm();
 
-    $('#form-url').val("https://fr.wikipedia.org");//"https://www.bci.nc/");//" http://groupe-vocal-nc.net/");
+    $('#form-url').val("");//"https://www.bci.nc/");//" http://groupe-vocal-nc.net/");
 
     $("#btn-start-ref-url").click(function(){
     	refUrl($('#form-url').val());
@@ -271,7 +263,7 @@ jQuery(document).ready(function() {
     	$(".show-subscribe").addClass("hidden");
     });
 
-    $("#h4-name-city, #form-street, #btn-find-position").hide();
+    $("#name-city-selected, #form-street, #btn-find-position").hide();
 
     $("#btn-start-anonymous").click(function(){
     	$("#refStart").removeClass("hidden");
@@ -392,21 +384,59 @@ function buildListCategoriesForm(){
     });
 }
 
+function checkUrlExists(url){
+    url = url.trim();
+    if(url.lastIndexOf("/") == url.lenght){
+        url = url.substr(0, url.lenght-1);
+        $("#form-url").val(url); 
+    }
+
+    $.ajax({
+        type: "POST",
+        url: baseUrl+"/"+moduleId+"/app/checkurlexists",
+        data: { url: url },
+        dataType: "json",
+        success: function(data){ console.log("checkUrlExists", data);
+            if(data.status == "URL_EXISTS")
+            urlExists = true;
+            else
+            urlExists = false;
+            console.log("checkUrlExists", data);
+            refUrl(url);
+        },
+        error: function(data){
+            console.log("check url exists error");
+        }
+    });
+}
+//http://www.evaneos.com/nouvelle-caledonie/voyage/
 function refUrl(url){
+
+    if(!isValidURL(url)){
+        $("#status-ref").html("<span class='letter-red'><i class='fa fa-times'></i> cette url n'est pas valide.</span>");
+        return;
+    }
+
+    if(urlExists == "DONTKNOW"){
+        checkUrlExists(url);
+        return;
+    }
+
+    if(urlExists == true){
+        $("#form-url").val(); 
+        $("#send-ref, #refLocalisation, #refMainCategories, #refResult").addClass("hidden");
+        $("#status-ref").html("<span class='letter-green'><i class='fa fa-thumbs-up'></i> Cette url est déjà référencée dans notre base de données.</span>");
+        urlExists = "DONTKNOW";
+        return; 
+    }
+
+    urlExists = "DONTKNOW";
 
 	$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> recherche en cours</span>");
 	$("#refResult").addClass("hidden");
 	$("#send-ref").addClass("hidden");
 
 	urlValidated = "";
-
-	// $.ajaxPrefilter( function (options) {
-	//   if (options.crossDomain && jQuery.support.cors) {
-	//     var http = (window.location.protocol === 'http:' ? 'http:' : 'https:');
-	//     options.url = http + '//cors-anywhere.herokuapp.com/' + options.url;
-	//     //options.url = "http://cors.corsproxy.io/url=" + options.url;
-	//   }
-	// });
 
     $.ajax({ 
     	url: "//cors-anywhere.herokuapp.com/" + url, // 'http://google.fr', 
@@ -525,6 +555,11 @@ function refUrl(url){
 	});
 }
 
+function isValidURL(url) {
+  var match_url = new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+  return match_url.test(url);
+}
+
 function checkAllInfo(){
 	if(	urlValidated != "" &&
 		//$("#form-keywords1").val() != "" && 
@@ -574,7 +609,7 @@ function sendReferencement(){
         		description: description,
         		tags: keywords,
         		categories : categoriesSelected,
-                status: "validated"
+                status: "locked"
         };
 
         if(address != false) {
@@ -590,14 +625,25 @@ function sendReferencement(){
 	        data: urlObj,
 	       	dataType: "json",
 	    	success: function(data){
-	    		//if(data.valid == true) 
+	    		if(typeof data.result != "undefined" && data.result == false) 
+                    toastr.error("Une erreur est survenue, ou cette URL existe déjà dans notre base de données");
+                else{
+                    console.log("save referencement success");
                     toastr.success("Votre demande a bien été enregistrée");
-                    url.loadByHash("#app.referencement");
-	    		//else toastr.error("Une erreur est survenue pendant le référencement");
-	    		console.log("save referencement success");
+                    $("#mainFormReferencement").hide();
+                    $("#url-validated").html(urlValidated)
+                    $("#section-thanks").removeClass("hidden");
+                    //url.loadByHash("#web");
+	    		}
+                //else toastr.error("Une erreur est survenue pendant le référencement");
+	    		
 	    	},
 	    	error: function(data){
-	    		toastr.error("Une erreur est survenue pendant l'envoi de votre demande'");
+                if(data.status == "URL_EXISTS")
+                toastr.error("Une erreur est survenue pendant l'envoi de votre demande'");
+
+                if(data.status == "URL_EXISTS")
+                toastr.error("Une erreur est survenue pendant l'envoi de votre demande'");
 	    		console.log("save referencement error");
 	    	}
 	    });

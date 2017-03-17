@@ -7,7 +7,7 @@
 </button>
 
 <?php if(sizeof($siteurls) == 0){ ?>
-	<a class="btn btn-default btn-success margin-bottom-5 margin-top-5 lbh" href="#app.referencement">
+	<a class="btn btn-default btn-success margin-bottom-5 margin-top-5 margin-left-5 lbh" href="#app.referencement">
 		<i class="fa fa-plus-circle"></i> Ajouter une URL
 	</a><br>
 
@@ -86,7 +86,7 @@
 ?>
 
 
-	<div class="col-md-12 margin-bottom-15 url-<?php echo $siteurl['_id']; ?>">
+	<div class="col-md-12 margin-bottom-15 url-<?php echo $siteurl['_id']; ?> url-div">
 
 		<div class="addToFavInfo">
 			<a href="#web" class="btn-favory tooltips" data-idFav="<?php echo $siteurl['_id']; ?>" 
@@ -100,8 +100,15 @@
 				<?php } ?> 
 				<?php echo $siteurl["title"]; ?>
 			</a>
+			<button class="btn btn-xs bg-white btn-edit-url tooltips" title="modifier"
+					data-target="#modalEditUrl" data-toggle="modal" data-placement="right"
+					data-idurl="<?php echo $key; ?>">
+				<i class="fa fa-cog"></i>
+			</button>
 			<br>
-			<span class="siteurl_hostname letter-green"><?php echo @$siteurl["urlDisplay"]; ?></span><br>
+			<a href="<?php echo $siteurl["url"]; ?>" target="_blank" class="siteurl_hostname letter-green">
+				<?php echo @$siteurl["urlDisplay"]; ?>
+			</a><br>
 		</div>
 
 		<?php if(@$siteurl["description"]){ ?>
@@ -109,31 +116,19 @@
 		<?php } ?>
 
 		<span class="siteurl_desc letter-grey hidden">
-			<b><?php //echo $siteurl["countKW"]; ?>
-			<?php if(!empty($siteurl["wordsFound"])) foreach ($siteurl["wordsFound"] as $key2 => $wordFound) { ?>
-			<?php //echo $wordFound; ?>  
+			<?php if(Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) ) { ?>
+				<b>
+					<?php if(!empty($siteurl["categories"])) foreach ($siteurl["categories"] as $key2 => $category) { ?>
+					$<?php echo $category; ?>  
+					<?php } ?>
+				</b> 
+				<b>
+					<?php if(!empty($siteurl["tags"])) foreach ($siteurl["tags"] as $key2 => $tag) { ?>
+						#<?php echo $tag; ?> 
+					<?php } ?>
+				</b>
 			<?php } ?>
-			</b> 
-			<!-- <b><?php if(isset($arraySearch)) foreach ($arraySearch as $key2 => $wordFound) { ?>
-			<?php echo $wordFound; ?>  
-			<?php } ?>
-			</b>  -->
-			<b><?php //if(!empty($siteurl["categories"])) foreach ($siteurl["categories"] as $key2 => $category) { ?>
-			<?php //echo $category; ?>  
-			<?php //} ?>
-			</b> 
-			<b>
-				<?php //if(!empty($siteurl["tags"])) foreach ($siteurl["tags"] as $key2 => $tag) { ?>
-					<?php //echo $tag; ?> 
-				<?php //} ?>
-			</b>
 		</span>
-
-		<?php if(Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) ) { ?>
-		<button class="btn btn-xs btn-edit-url" data-target="#modalEditUrl" data-toggle="modal" data-idurl="<?php echo $key; ?>">
-			<i class="fa fa-cog"></i> Editer
-		</button> 
-		<?php } ?>
 		<br>
 	</div>
 <?php } ?>
@@ -164,7 +159,7 @@
 
 
 <?php if(sizeof($siteurls) >= 1){ ?>
-<div class="col-md-12 margin-bottom-15 text-right" style="">
+<div class="col-md-12 margin-bottom-50 text-right" style="">
 	<hr class="margin-top-5">
 	<span>
 		<small><b>
@@ -202,12 +197,37 @@ jQuery(document).ready(function() {
 	    $("#form-title").val(site.title);
 	    $("#form-description").val(site.description);
 
+	    if(typeof site.geo != "undefined"){
+	    	$("#form-lat").val(site.geo.latitude);
+		    $("#form-lng").val(site.geo.longitude);
+		}
 	    if(typeof site.tags != "undefined"){
 		    $("#form-keywords1").val(site.tags[0]);
 		    $("#form-keywords2").val(site.tags[1]);
 		    $("#form-keywords3").val(site.tags[2]);
 		    $("#form-keywords4").val(site.tags[3]);
 		}
+
+		if(typeof site.address != "undefined"){
+		    $("#btn-geoloc").data("city-name", site.address.addressLocality);
+	        $("#btn-geoloc").data("city-cp", site.address.postalCode);
+	        $("#btn-geoloc").data("city-insee", site.address.codeInsee);
+	        $("#btn-geoloc").data("city-lat", site.geo.latitude);
+	        $("#btn-geoloc").data("city-lng", site.geo.longitude);
+	        NE_insee = site.address.codeInsee;
+			NE_lat = site.geo.latitude;
+			NE_lng = site.geo.longitude;
+			NE_city = site.address.addressLocality;
+			NE_cp = site.address.postalCode;
+			NE_street = site.address.streetAddress.trim();
+			NE_country = site.address.addressCountry;
+			NE_dep = site.address.depName;
+			NE_region = site.address.regionName;
+	        $("#name-city-selected").html(site.address.addressLocality + ", " + site.address.postalCode);
+	    }else{
+	    	$("#form-street, #btn-find-position").hide();
+    		$("#name-city-selected").html("");
+	    }
 
 	    $("#form-status").val(site.status);
 

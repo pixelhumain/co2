@@ -98,7 +98,7 @@
 
         	<h3 class="letter-blue"><i class="fa fa-angle-right"></i> Un moteur de recherche simplifié</h3>
         	<p>
-				Kgougle vous permet de retrouver rapidement et facilement, <b>tous les principaux sites calédoniens</b>.<br>
+				Kgougle vous permet de retrouver rapidement et facilement, <b> les principaux sites calédoniens</b>.<br>
 				Nous avons répertorié pour vous <b>près de 300 sites web</b>, pour vous permettre de gagner un temps fou lors de vos recherches !<br>
 				Vous trouverez tout ce que vous cherchez <b>sans taper plus d’un mot sur votre clavier...</b>
         	</p>
@@ -124,7 +124,7 @@
         	<h4>En amélioration continue...</h4>
 			<p>
 				Avec près de <b class="letter-green">300 sites répertoriés</b>, vous retrouverez à coup sûr tous les sites les plus utilisés en Nouvelle-Calédonie. <br>
-				Mais il reste encore beaucoup de sites à ajouter, pour compléter le résultats de vos recherches, et rendre ce moteur encore plus puissant…<br><br>
+				<b>Mais il reste encore beaucoup de sites à ajouter</b> pour compléter le résultats de vos recherches, et rendre ce moteur encore plus puissant…<br><br>
 
 				C’est pourquoi <b class="letter-green">vous pouvez TOUS référencer de nouvelles URL</b> via <a href="#referencement" class="letter-blue" target="_blank"><b>un formulaire de référencement</b></a>, lui aussi simplifié au maximum…<br>
 				<i>N’hésitez pas à ajouter les sites manquant et ainsi participer à la construction de cette base de données.</i>
@@ -239,7 +239,7 @@
 
 
 
-<?php $this->renderPartial($layoutPath.'footer',  array( "subdomain"=>"web" ) ); ?>
+<?php $this->renderPartial($layoutPath.'footer',  array( "subdomain"=>"info" ) ); ?>
 
 
 

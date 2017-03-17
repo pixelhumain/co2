@@ -166,10 +166,10 @@ function bindEventMenu(){
 		}
 	});
 
-	$(".btn-logout").click(function(){
+/*	$(".btn-logout").click(function(){
     	mylog.log("btn-logout");
 		window.location.href = urlLogout;
-	});
+	});*/
 
 	$(".btn-scope, .btn-param-postal-code").mouseenter(function(e){
 		clearTimeout(timeoutHover);

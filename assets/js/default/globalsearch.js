@@ -102,7 +102,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               if(totalDataGS > 0){
                 str += '<div class="text-left" id="footerDropdownGS" style="">';
                 str += "<label class='text-dark margin-top-5'><i class='fa fa-angle-down'></i> " + totalDataGSMSG + "</label>";
-                str += '<a href="#co2.social" class="btn btn-default btn-sm pull-right" id="btnShowMoreResultGS">'+
+                str += '<a href="#search" class="btn btn-default btn-sm pull-right" id="btnShowMoreResultGS">'+
                           '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> Recherche étendue'+
                         '</a>';
                 str += '</div>';
@@ -113,13 +113,13 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               $.each(data, function(i, o) {
                 mylog.log("globalsearch res : ", o);
                   var typeIco = i;
-                  var ico = mapIconTop["default"];
+                  var ico = "fa-"+typeObj["default"].icon;
                   var color = mapColorIconTop["default"];
 
                   mapElementsGS.push(o);
 
                   typeIco = o.type;
-                  ico = ("undefined" != typeof mapIconTop[typeIco]) ? mapIconTop[typeIco] : mapIconTop["default"];
+                  ico = ("undefined" != typeof typeObj[typeIco]) ? "fa-"+typeObj[typeIco].icon : "fa-"+typeObj["default"].icon;
                   color = ("undefined" != typeof mapColorIconTop[typeIco]) ? mapColorIconTop[typeIco] : mapColorIconTop["default"];
                   
                   htmlIco ="<i class='fa "+ ico +" fa-2x bg-"+color+"'></i>";

@@ -30,12 +30,13 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 	</div>
 	<div class="panel-body no-padding">
 		<div class="panel-scroll height-230 ps-container">			
+			<?php 
+			$nbOldProjects = 0;
+			$nbProjectsVisible = 0;
+			if(isset($projects) && count($projects)>0){ ?>
 			<table class="table table-striped table-hover" id="projects">
 				<tbody>
 					<?php
-						//print_r($projects);
-					$nbOldProjects = 0;
-					if(isset($projects) && count($projects)>0){
 					foreach ($projects as $e) {
 						if (!empty($e["endDate"])) {
 							$endDate = strtotime($e["endDate"]);
@@ -44,6 +45,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 						if (empty($e["endDate"]) || $endDate > time()) {
 							$projectStyle = "";
 							$projectClass = "";
+							$nbProjectsVisible++;
 						} else {
 							$projectStyle = "display:none;";
 							$projectClass = "oldProject";
@@ -52,7 +54,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 					?>
 					<tr class="<?php echo $projectClass ?>" style="<?php echo $projectStyle ?>" id="project<?php echo (string)$e["_id"];?>" style="padding:5px 0px;">
 						<td class="center" style="padding-left: 15px;">
-							<?php $url = '#element.detail.type.'.Project::COLLECTION.'.id.'.$e["_id"];?>
+							<?php $url = '#page.type.'.Project::COLLECTION.'.id.'.$e["_id"];?>
 							<a href="<?php echo $url?>" class="lbh text-dark">
 							<?php if ($e && isset($e["imagePath"])){ ?>
 								<img width="50" height="50" alt="image" class="img-circle" src="<?php echo $e["imagePath"]; ?>">
@@ -74,26 +76,26 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 						</div>
 						</td>
 					</tr>
-					<?php
-						}}
-					?>
 				</tbody>
 			</table>
+			<?php
+				}}
+			?>
 			<?php if(isset($projects) && count($projects) > 0 ){ ?>
 				<div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 230px; display: inherit;"><div class="ps-scrollbar-y" style="top: 11px; height: 200px;"></div></div>
 			<?php } ?>
-		<?php if(isset($projects) && count($projects) == 0) {?>
+		<?php if($nbOldProjects==0 && $nbProjectsVisible==0) {?>
 			<div id="info" class="padding-10">
 				<blockquote>
-					Créez des projets ...
-					<?php //echo Yii::t("project","Create or Contribute <br>Build Things<br>Find Help<br>Organize<br>Local or distant<br>Projects",null,Yii::app()->controller->module->id) ?>
+					<!--Créez des projets ...-->
+					<?php echo Yii::t("project","Create or Contribute <br>Build Things<br>Find Help<br>Organize<br>Local or distant<br>Projects") ?>
 				</blockquote>
 			</div>
 		<?php } ?>
-		<?php if(isset($projects) && count($projects) > 0 && count($projects)==$nbOldProjects ) {?>
+		<?php if($nbProjectsVisible==0 && $nbOldProjects > 0) {?>
 			<div id="infoLastButNotNew" class="padding-10">
 				<blockquote>
-					<?php echo Yii::t("project","Create new projects <br>To show your current activity<br>And what's happened around people",null,Yii::app()->controller->module->id) ?>
+					<?php echo Yii::t("project","Create new projects <br>To show your current activity<br>And what's happened around people") ?>
 				</blockquote>
 			</div>
 		<?php } ?>

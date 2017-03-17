@@ -541,7 +541,7 @@ function add(complete, data, inseeGeoSHapes){
 	}
 	
 	Sig.markerFindPlace.setLatLng([data.data("lat"), data.data("lng")]);
-	Sig.map.panTo([data.data("lat"), data.data("lng")]);
+	
 	
 	mylog.log("geoShape", inseeGeoSHapes);
 	if(notEmpty(inseeGeoSHapes[NE_insee])){
@@ -553,7 +553,9 @@ function add(complete, data, inseeGeoSHapes){
 			Sig.map.invalidateSize();
 		}, 1500);
 	}else{
-		Sig.centerPopupMarker([NE_lat, NE_lng], 12);
+		setTimeout(function(){
+			Sig.centerPopupMarker([NE_lat, NE_lng], 12);
+		}, 2500);
 		// timeoutAddCity = setTimeout(function(){ //alert("zoom centerrrrr");
 		// 						Sig.centerPopupMarker([NE_lat, NE_lng], 12);
 
@@ -690,7 +692,8 @@ function backToForm(cancel){
 			$("#form-street").val($("[name='newElement_streetAddress']").val());
 			showMap(false);
 			Sig.clearMap();
-			$('#ajax-modal').modal("show");
+			if(location.hash != "#referencement" && location.hash != "#web")
+				$('#ajax-modal').modal("show");
 		}else{
 			if(typeof cancel == "undefined" || cancel == false)
 				updateLocalityElement();
@@ -711,7 +714,8 @@ function backToForm(cancel){
 			}
 			showMap(false);
 			Sig.clearMap();
-			$('#ajax-modal').modal("show");
+			if(location.hash != "#referencement" && location.hash != "#web")
+				$('#ajax-modal').modal("show");
 	}
 
 
@@ -1051,6 +1055,7 @@ function preLoadAddress(hide, country, insee, city, postalCode, lat, lng, street
 	$("#newElement_btnValidateAddress").prop('disabled', (NE_insee==""?true:false));
 
 	Sig.markerFindPlace.setLatLng([NE_lat, NE_lng]);
+	Sig.map.panTo([NE_lat, NE_lng]);
 }
 
 

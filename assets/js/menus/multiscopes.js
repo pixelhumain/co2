@@ -349,7 +349,7 @@ function setGlobalScope(scopeValue, scopeName, scopeType,
 		if(scopeType == "dep") $("#searchLocalityDEPARTEMENT").val(scopeValue);
 		if(scopeType == "region") $("#searchLocalityREGION").val(scopeValue);
 
-		$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName);
+		$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
 		$.cookie('communexionType', scopeType, { expires: 365, path: location.pathname });
 		$.cookie('communexionValue', scopeValue, { expires: 365, path: location.pathname });
 		$.cookie('communexionName', scopeName, { expires: 365, path: location.pathname });

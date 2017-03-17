@@ -1,6 +1,8 @@
 { 
-      "title" : "kgougle",
-
+      "title" : "Kgougle",
+      "metaImg" : "/assets/img/KGOUGLE-logo-min.png",
+      "metaDesc" : "Le moteur de recherche des cagous",
+      
       "pages" : 
       {
       	"#app.index":
@@ -9,6 +11,7 @@
       	"#web":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
+                  "open" : true, 
                   "subdomain" : "web", 
                   "subdomainName" : "web",
                   "hash" : "#app.web",
@@ -18,19 +21,21 @@
 
       	"#referencement":
       	  	{"inMenu" : false, 
-                  "useHeader" : true, 
+                  "useHeader" : true,
+                  "open" : true, 
                   "subdomain" : "referencement", 
                   "subdomainName" : "referencement",
                   "hash" : "#app.referencement",
                   "icon" : "search", 
-                  "mainTitle" : "Référencer un site",
+                  "mainTitle" : "Référencer une page",
                   "placeholderMainSearch" : ""},
 
       	"#media":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
+                  "open" : true,
                   "subdomain" : "media", 
-                  "subdomainName" : "media",
+                  "subdomainName" : "Actu",
                   "hash" : "#app.media",
                   "icon" : "newspaper-o", 
                   "mainTitle" : "Toute l'actu du pays, d'hier à aujourd'hui",
@@ -39,6 +44,7 @@
       	"#social":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
+                  "open" : false,
                   "subdomain" : "social", 
                   "subdomainName" : "social",
                   "hash" : "#app.search",
@@ -49,6 +55,7 @@
       	"#freedom":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
+                  "open" : false,
                   "subdomain" : "freedom", 
                   "subdomainName" : "freedom",
                   "hash" : "#app.annonces",
@@ -59,6 +66,7 @@
       	"#agenda":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
+                  "open" : false,
                   "subdomain" : "agenda", 
                   "subdomainName" : "agenda",
                   "hash" : "#app.agenda",
@@ -69,6 +77,7 @@
       	"#power":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
+                  "open" : false,
                   "subdomain" : "power", 
                   "subdomainName" : "power",
                   "hash" : "#app.power",
@@ -79,6 +88,7 @@
       	"#page":
       	  	{"inMenu" : false, 
                   "useHeader" : false, 
+                  "open" : false,
                   "subdomain" : "page", 
                   "subdomainName" : "page",
                   "hash" : "#app.page",
@@ -89,6 +99,7 @@
       	"#info":
       	  	{"inMenu" : false, 
                   "useHeader" : false, 
+                  "open" : false,
                   "subdomain" : "apropos", 
                   "subdomainName" : "Info",
                   "hash" : "#app.info",

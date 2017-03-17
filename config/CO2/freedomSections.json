@@ -1,72 +1,50 @@
 {
-	"all": 
-        {"label":"Tout", 				
-         "key" : "all", 		
-         "icon" : "circle-o", 				
-         "section":1, "color":"default"},
-
-	"like": 
-        {"label":"Coup de cœur", 		
-         "key" : "like", 		
-         "icon" : "heartbeat", 				
-         "section":2, 
-         "color":"green"
+	
+    "sharing": {"label":"Partager",      
+        "key" : "sharing",     
+        "icon" : "exchange",               
+        "section":2, 
+        "color":"azure"
+    },
+	"donation": {
+        "label":"Donner", 			
+        "key" : "donation", 	
+        "icon" : "gift", 					
+        "section":2, 
+        "color":"azure"
     },
 
-	"dislike": 
-        {"label":"Coup de gueule", 	
-         "key" : "dislike", 	
-         "icon" : "thumbs-o-down", 			
-         "section":2, 
-         "color":"red"
+    "forsale": {
+        "label":"Vendre",            
+        "key" : "forsale",     
+        "icon" : "money",                  
+        "section":3, 
+        "color":"azure"
     },
 
-	"lookingfor" : 
-        {"label":"À la recherche", 	
-         "key" : "lookingfor", 	
-         "icon" : "eye", 					
-         "section":3, 
-         "color":"yellow"
+    "forrent": {
+        "label":"Louer",             
+        "key" : "forrent",    
+        "icon" : "external-link",          
+        "section":3, 
+        "color":"azure"
     },
 
-	"job": 
-        {"label":"Offre d'emplois", 	
-         "key" : "job", 		
-         "icon" : "briefcase", 				
-         "section":3, 
-         "color":"yellow"
+
+    "lookingfor" : {
+        "label":"Recherche",  
+        "key" : "lookingfor",  
+        "icon" : "eye",                    
+        "section":4, 
+        "color":"azure"
     },
 
-	"forsale": 
-        {"label":"À vendre", 			
-         "key" : "forsale", 	
-         "icon" : "money", 					
-         "section":4, 
-         "color":"blue"
-    },
-
-	"location": 
-        {"label":"À louer", 			
-         "key" : "location", 	
-         "icon" : "external-link", 			
-         "section":4, 
-         "color":"blue"
-    },
-
-	"donation": 
-        {"label":"À donner", 			
-         "key" : "donation", 	
-         "icon" : "gift", 					
-         "section":5, 
-         "color":"blue"
-    },
-
-	"sharing": 
-        {"label":"À partager", 		
-         "key" : "sharing", 	
-         "icon" : "exchange", 				
-         "section":5, 
-         "color":"blue"
+    "job": {
+        "label":"Emplois",     
+        "key" : "job",         
+        "icon" : "briefcase",              
+        "section":5, 
+        "color":"azure"
     }
 
 }

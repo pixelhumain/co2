@@ -89,7 +89,7 @@
 </section>
 
 
-<?php $this->renderPartial($layoutPath.'footer',  array( "subdomain"=>"web" ) ); ?>
+<?php $this->renderPartial($layoutPath.'footer',  array( "subdomain"=>"info" ) ); ?>
 
 <script>
 

@@ -356,7 +356,7 @@
 
 			var elemType = ("undefined" != typeof element['typeSig']) ? element['typeSig'] : "";
 
-			//mylog.dir(element);
+			mylog.dir('createItemRigthListMapAddress', element);
 
 			var thisSig = this;
 			var objectId = thisSig.getObjectId(this);

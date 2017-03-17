@@ -422,7 +422,7 @@ jQuery(document).ready(function() {
 
         //console.log("init Scroll");
         $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
-            if(!loadingData && !scrollEnd){
+            if(!loadingData && !scrollEnd && !isMapEnd){
                   var heightWindow = $("html").height() - $("body").height();
                   if( $(this).scrollTop() >= heightWindow - 400){
                     startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
@@ -555,7 +555,7 @@ function initClassifiedInterface(){
         sectionKey = $(this).data("key");
         //alert("section : " + section);
         if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
-            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" ){
+            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
             //$(".subsub").show(300);
             $('#searchTags').val(section);
             //KScrollTo(".top-page");

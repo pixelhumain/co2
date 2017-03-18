@@ -63,7 +63,15 @@ function bindRightClicks() {
 					var	id = ( href[0] == "#element" ) ? href[5] : href[3];
 				}
 				//console.log(href,href[0],what,id);
-				var btns = {};
+				var btns = {
+					openInNewTab : {
+						name: "Ouvrir dans un nouvel onglet",
+			        	icon: "fa-arrow-circle-right", 
+			        	callback: function(key, opt){ 
+					        	window.open($trigger[0].hash, '_blank');
+			        	}
+					}
+				};
 	        	$.each( userConnected.collections, function (col,list) { 
 	        		btns[col] = { 
 			        	name: function($element, key, item){ 
@@ -1790,7 +1798,7 @@ function activeMenuElement(page) {
 
 function shadowOnHeader() {
 	var y = $(".my-main-container").scrollTop(); 
-    if (y > 0) {  $('.main-top-menu').addClass('shadow'); }
+    if (y > 0) {  $('.main-top-menu').addClass('shadow'); }////NOTIFICATIONS}
     else { $('.main-top-menu').removeClass('shadow'); }
 }
 function getMediaFromUrlContent(className, appendClassName,nbParent){
@@ -2622,6 +2630,7 @@ var dynForm = null;
 var uploadObj = {
 	type : null,
 	id : null,
+	folder : "communecter", //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
 		uploadObj.id = id;

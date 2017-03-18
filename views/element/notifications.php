@@ -132,7 +132,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 	.removeBtn{
 		position: absolute !important;
 		right: 3px;
-		bottom: -4px;
+		bottom: 3px;
 		border-radius:25px !important;
 		border:1px solid grey;
 		color: grey;
@@ -148,6 +148,8 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 		border-radius:3px !important;
 		color: white;
 		background-color: #71CE4E;
+		padding: 5px 10px;
+		margin-top: 5px;
 	}
 	.acceptBtn:hover{
 		color: #71CE4E !important;
@@ -161,6 +163,8 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 		border-radius:3px !important;
 		color: white;
 		background-color: #E33551;
+		padding: 5px 10px;
+	margin-top: 5px;
 	}
 	.refuseBtn:hover{
 		color: #E33551 !important;

@@ -103,9 +103,10 @@
 						<a href="https://twitter.com/gurdeeposahan1" target="_blank" class="fa fa-twitter"></a>
 						<a href="https://plus.google.com/u/0/105032594920038016998" target="_blank" class="fa fa-google"></a>
 					</div>
-					<div class="blockUsername">
-					    <h2 class="text-left">
-						    <?php //echo @$element["name"]; ?><!-- <br> -->
+					<?php if(@Yii::app()->session["userId"]){ ?>
+					<div class="username">
+					    <!--<h2 class="text-left">
+						    <?php //echo @$element["name"]; ?><!-- <br>
 						    <small>
 						    	<?php if(@$element["address"] && @$element["address"]["addressLocality"]) {
 		                				echo "<i class='fa fa-university'></i> ".$element["address"]["addressLocality"];
@@ -115,26 +116,17 @@
 		                			  	echo $element["address"]["postalCode"];
 		                		?>
 		                	</small>
-	                	</h2>
+	                	</h2>-->
+	                	<?php $this->renderPartial('../element/linksMenu', 
+	                			array("linksBtn"=>$linksBtn,
+	                					"elementId"=>(string)$element["_id"],
+	                					"elementType"=>$type,
+	                					"elementName"=> $element["name"]) 
+	                			); 
+	                	?>
 					    <!-- <p><i class="fa fa-briefcase"></i> Web Design and Development.</p> -->
-					    
-					    <a href="https://web.facebook.com/" target="_blank" class="btn-o"> <i class="fa fa-chain"></i> Suivre </a>
-					    <a href="https://www.instagram.com/gurdeeposahan/" target="_blank"  class="btn-o"> <i class="fa fa-star"></i> Favoris </a>
-					    
-					    
-						<ul class="nav navbar-nav pull-right">
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-ellipsis-v pull-left"></span></a>
-								<ul class="dropdown-menu pull-right">
-									<li><a href="#">Video Call <i class="fa fa-video-camera"></i></a></li>
-									<li><a href="#">Poke <i class="fa fa-hand-o-right"></i></a></li>
-									<li><a href="#">Report <i class="fa fa-bug"></i></a></li>
-									<li><a href="#">Block <i class="fa fa-lock"></i></a></li>
-								</ul>
-							</li>
-						</ul>
-					   
 					</div>
+					<?php } ?>
 				    
 				</div>
 		        

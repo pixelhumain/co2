@@ -22,6 +22,16 @@
 	#timeline-live{
 		min-height:400px;
 	}
+	.btn-select-media-src img{
+		height:40px;
+	}
+
+@media screen and (max-width: 767px) {
+	.btn-select-media-src img{
+		height:30px;
+	}
+}
+
 </style>
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding">
 
@@ -33,49 +43,38 @@
 	</div>
 
 	<div class="col-md-8 col-sm-10 inline text-center page-header text-center margin-top-20">
-		<div class="col-md-3 col-sm-3 bg-white">
+		<div class="col-md-3 col-sm-3 col-xs-6 bg-white">
 		<button class="btn btn-link tooltips btn-select-media-src srcNC1" data-srcactive="true" data-srcid="NC1" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
 			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NC1.png" height=40>
 			<br><i class="fa fa-check-circle letter-green srcActive"></i>
 			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
 		</button>
 		</div>
-		<div class="col-md-3 col-sm-3 bg-white">
+		<div class="col-md-3 col-sm-3 col-xs-6 bg-white">
 		<button class="btn btn-link tooltips btn-select-media-src srcNCI" data-srcactive="true" data-srcid="NCI" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NCI.png" height=40>
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NCI.png">
 			<br><i class="fa fa-check-circle letter-green srcActive"></i>
 			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
 		</button>
 		</div>
-		<div class="col-md-3 col-sm-3 bg-white">
+		<div class="col-md-3 col-sm-3 col-xs-6 bg-white">
 		<button class="btn btn-link tooltips btn-select-media-src srcNCTV" data-srcactive="true" data-srcid="NCTV" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NCTV.png" height=40>
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NCTV.png">
 			<br><i class="fa fa-check-circle letter-green srcActive"></i>
 			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
 		</button>
 		</div>
-		<div class="col-md-3 col-sm-3 bg-white">
+		<div class="col-md-3 col-sm-3 col-xs-6 bg-white">
 		<button class="btn btn-link tooltips btn-select-media-src srcTAZAR" data-srcactive="true" data-srcid="TAZAR" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/TAZAR.png" height=40>
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/TAZAR.png">
 			<br><i class="fa fa-check-circle letter-green srcActive"></i>
 			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
 		</button>
 		</div>
 	</div>
-	<!-- <div class="col-md-12 col-sm-12 inline page-header text-center margin-top-20">
-	    <h3 id="timeline"><i class="fa fa-newspaper-o"></i><br>L'Actu locale en direct<br><i class="fa fa-angle-down"></i></h3>
-	    <?php //if(!@$medias || sizeOf($medias) <= 0){ ?>
-	    	<!-- <div class="initStream">
-		    	<button class="btn btn-success" id="btn-init-stream">Actualiser le fil d'actu</button></br>
-		    	<span>lancer le processus d'import de données</span>
-	    	</div> - ->
-	    <?php //} ?>
-	</div> -->
-
-	
 
 
-	<div class="col-md-8 col-sm-10 no-padding">
+	<div class="col-md-8 col-sm-10 inline-block no-padding">
 		<div class="col-md-12 no-padding text-center" id="timeline-reload"></div>
 		<ul class="timeline inline-block" id="timeline-live">
 			<?php  

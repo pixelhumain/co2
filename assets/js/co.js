@@ -63,7 +63,15 @@ function bindRightClicks() {
 					var	id = ( href[0] == "#element" ) ? href[5] : href[3];
 				}
 				//console.log(href,href[0],what,id);
-				var btns = {};
+				var btns = {
+					openInNewTab : {
+						name: "Ouvrir dans un nouvel onglet",
+			        	icon: "fa-arrow-circle-right", 
+			        	callback: function(key, opt){ 
+					        	window.open($trigger[0].hash, '_blank');
+			        	}
+					}
+				};
 	        	$.each( userConnected.collections, function (col,list) { 
 	        		btns[col] = { 
 			        	name: function($element, key, item){ 
@@ -2622,6 +2630,7 @@ var dynForm = null;
 var uploadObj = {
 	type : null,
 	id : null,
+	folder : "communecter", //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
 		uploadObj.id = id;
@@ -3526,6 +3535,9 @@ function initKInterface(params){ console.log("initKInterface");
 
     $("#btn-sethome").click(function(){
     	url.loadByHash("#info.p.sethome")
+    });
+    $("#btn-apropos").click(function(){
+    	url.loadByHash("#info.p.apropos")
     });
 
     var affixTop = 300;

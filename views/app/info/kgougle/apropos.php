@@ -63,7 +63,7 @@
 				</button>
 				<div class="dropdown-onepage-main-menu font-montserrat" aria-labelledby="btn-onepage-main-menu">
 					<ul class="dropdown-menu arrow_box font-blackoutM letter-red">
-					    <li><a href="javascript:" data-target="#koica" class="letter-red"><i class="fa fa-angle-right"></i> C koi ca ?!?</a></li>
+					    <li><a href="javascript:" data-target="#koica" class="letter-red"><i class="fa fa-angle-right"></i> C koissa ?!?</a></li>
 					    <li><a href="javascript:" data-target="#aussi" class="letter-red"><i class="fa fa-angle-right"></i> C'est aussi</a></li>
 					    <li><a href="javascript:" data-target="#philo" class="letter-red"><i class="fa fa-angle-right"></i> Notre philosophie</a></li>
 					    <li><a href="javascript:" data-target="#dev" class="letter-red"><i class="fa fa-angle-right"></i> En developpement</a></li>
@@ -93,7 +93,7 @@
         	<hr>
         	<!-- --------------------------------------------------------------------------------- -->
         	<h1 class="letter-red font-blackoutM" id="koica">
-        		<img src="<?php echo $urlKgou; ?>" class="logoKgou"> C koi ca ?!?
+        		<img src="<?php echo $urlKgou; ?>" class="logoKgou"> C koissa ?!?
         	</h1>
 
         	<h3 class="letter-blue"><i class="fa fa-angle-right"></i> Un moteur de recherche simplifié</h3>
@@ -131,37 +131,46 @@
 
         	</p>
 
+        	<h1 class="letter-red font-blackoutM" id="aussi">
+        		<img src="<?php echo $urlKgou; ?>" height="35" class="logoKgou"> c'est ossi ...
+        	</h1>
         	<hr>
         	<h3 class="letter-blue"><i class="fa fa-star-o fa-2x"></i> <i class="fa fa-angle-righ"></i> La gestion de vos sites favoris</h3>
         	<h4>Cherchez une fois, trouvez pour toujours...</h4>
 			<p>
-				Grâce à la section <b class="letter-blue">Mes favoris</b>, gardez à portée de main les sites que vous fréquentez le plus, et ne les cherchez plus !<br><small>* en attendant l'ouverture des inscriptions, cette fonctionnalité utilise vos cookies</small>
+				Grâce à la section <b class="letter-blue">Mes favoris</b>, gardez à portée de main les sites que vous fréquentez le plus, et ne les cherchez plus !<!-- <br><small>* en attendant l'ouverture des inscriptions, cette fonctionnalité utilise vos cookies</small> -->
         	</p>
 
         	<hr>
+        	
         	<h3 class="letter-blue">
-        		<i class="fa fa-map fa-2x"></i> <i class="fa fa-angle-rigt"></i> Un outil de cartographie 
-        	</h3>
-        	<h4>Pour se repérer facilement sur le Caillou...</h4>
-			<p>
-				Grâce à la section "Mes favoris", gardez à portée de main les sites que vous fréquentez le plus, et ne les cherchez plus !
-        	</p>
-        	<button class="btn btn-link letter-blue btn-show-map">
-        		<i class="fa fa-arrow-circle-right"></i> Afficher la carte
-        	</button>
-
-        	<hr>
-        	<h3 class="letter-blue">
-        		<i class="fa fa-microphone fa-2x"></i> <i class="fa fa-angle-rigt"></i> Un poste de radio 
+        		<i class="fa fa-microphone fa-2x"></i> Un poste de radio 
         	</h3>
         	<h4>Pour rester en contact permanent avec le reste du pays...</h4>
 			<p>
-				Retrouver à tout moment les radios locales, suivre l’actualité, se divertir, ou simplement écouter de la musique.
+				Retrouvez à tout moment les radios locales, pour suivre l’actualité, se divertir, ou simplement écouter de la musique.
         	</p>
-        	<button class="btn btn-link letter-blue" data-target="#modalRadioTool" data-toggle="modal">
+        	<!-- <button class="btn btn-link letter-blue" data-target="#modalRadioTool" data-toggle="modal">
         		<i class="fa fa-arrow-circle-right"></i> Afficher la radio
-        	</button>
+        	</button> -->
 
+        	<hr>
+        	<h3 class="letter-blue">
+        		<i class="fa fa-map fa-2x"></i> Un outil de cartographie 
+        	</h3>
+        	<h4>Pour se repérer facilement sur le Caillou...</h4>
+			
+        	<hr>
+        	<h3 class="letter-blue">
+        		<i class="fa fa-newspaper-o fa-2x"></i> Un fil d'actualités
+        	</h3>
+        	<h4>Composé des principaux articles des grands médias calédoniens...</h4>
+			<p>
+				Pour suivre l'actualité locale en direct, à travers les publications de nos médias locaux.<br>
+        	</p>
+        	<!-- <button class="btn btn-link letter-blue btn-show-map">
+        		<i class="fa fa-arrow-circle-right"></i> Afficher la carte
+        	</button> -->
 
 
         	<!-- --------------------------------------------------------------------------------- -->

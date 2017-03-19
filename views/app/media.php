@@ -29,7 +29,7 @@
 		<?php //$this->renderPartial($layoutPath.'radioplayer', array( "layoutPath"=>$layoutPath ) ); ?>  
 	</div> -->
 
-	<div class="col-md-2 col-sm-1 hidden-xs no-padding" style="min-height: 500px;">
+	<div class="col-md-2 col-sm-1 hidden-xs no-padding" id="content-media" style="min-height: 500px;">
 	</div>
 
 	<div class="col-md-8 col-sm-10 inline text-center page-header text-center margin-top-20">
@@ -109,10 +109,18 @@ var idSession = "<?php echo @Yii::app()->session["userId"] ?>";
 var parentTypeComment = "media";
 
 jQuery(document).ready(function() {
-    initKInterface();
 
-    //init loading in scroll
-    $(window).off().bind("scroll",function(){ 
+    initKInterface();
+    initMediaInterface();
+    
+	//initCommentsTools(medias);
+
+});
+
+
+function initMediaInterface(){
+	//init loading in scroll
+    $(window).bind("scroll",function(){ 
 	    if(!loadingData && !scrollEnd){
 	          var heightWindow = $("html").height() - $("body").height();
 	          if( $(this).scrollTop() >= heightWindow - 400){
@@ -127,13 +135,13 @@ jQuery(document).ready(function() {
 		console.log("srcactive", srcActive, sources);
 		if(srcActive==true){
 			if(sources.length == 1){
-				toastr.error("Longin ! Impossible de désactiver toutes les sources en même temps !");
-				setTimeout(function(){
+				toastr.error("Looooongin ! Impossible de désactiver toutes les sources en même temps !");
+				/*setTimeout(function(){
 					toastr.error("Nan mé... t'as cru koi ?");
 					setTimeout(function(){
 						toastr.error("Fou la flème !..");
 					}, 1000);
-				}, 1500);
+				}, 1500);*/
 				return;
 			}
 			for(var i = sources.length; i--;){
@@ -154,14 +162,46 @@ jQuery(document).ready(function() {
 	});
 
     //btn to load media data for first time (if no media found)
-	$("#main-btn-start-search").click(function(){
+	$("#main-btn-start-search, #main-search-bar-addon").click(function(){
 		$("#timeline-live").html("");
 		loadStream(0, indexStep);
 	});
 
-	//initCommentsTools(medias);
 
-});
+    $("#main-btn-start-search, .menu-btn-start-search").click(function(){
+        loadStream(0, indexStep);
+    });
+
+    $("#second-search-bar").keyup(function(e){
+        $("#main-search-bar").val($("#second-search-bar").val());
+        $("#input-search-map").val($("#second-search-bar").val());
+        if(e.keyCode == 13){
+            loadStream(0, indexStep);
+         }
+    });
+    $("#main-search-bar").keyup(function(e){
+        $("#second-search-bar").val($("#main-search-bar").val());
+        $("#input-search-map").val($("#main-search-bar").val());
+        if(e.keyCode == 13){
+            loadStream(0, indexStep);
+         }
+    });
+    $("#input-search-map").keyup(function(e){
+        $("#second-search-bar").val($("#input-search-map").val());
+        $("#main-search-bar").val($("#input-search-map").val());
+        if(e.keyCode == 13){
+            loadStream(0, indexStep);
+         }
+    });
+
+    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
+        loadStream(0, indexStep);
+    });
+
+   	$('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@#\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
+    
+}
+
 
 var interval;
 function startReloadTimeout(){
@@ -199,6 +239,12 @@ function loadStream(indexMin, indexMax){ console.log("load stream media");
 	currentIndexMin = indexMin;
 	currentIndexMax = indexMax;
 	var search = $("#main-search-bar").val();
+
+
+    if(indexMin == 0){
+    	$("#timeline-live").html("");
+       	KScrollTo("#content-media");
+    }
 
 	$.ajax({ 
         type: "POST",

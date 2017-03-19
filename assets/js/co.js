@@ -3527,6 +3527,9 @@ function initKInterface(params){ console.log("initKInterface");
     $("#btn-sethome").click(function(){
     	url.loadByHash("#info.p.sethome")
     });
+    $("#btn-apropos").click(function(){
+    	url.loadByHash("#info.p.apropos")
+    });
 
     var affixTop = 300;
     if(notEmpty(params)){

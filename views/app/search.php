@@ -26,7 +26,7 @@
 
     if(@$type=="cities")    { $lblCreate = ""; }
 
-    if($params["title"] == "kgougle") $page = "social";
+    if($params["title"] == "Kgougle") $page = "social";
     
     //header + menu
     $this->renderPartial($layoutPath.'header', 
@@ -475,7 +475,7 @@ jQuery(document).ready(function() {
          }
     });
 
-    $("#menu-map-btn-start-search").click(function(){
+    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
         initTypeSearch(typeInit);
         startSearch(0, indexStepInit, searchCallback);
     });

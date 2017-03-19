@@ -367,12 +367,12 @@ function callBackSearch(data){
 	$.each(data, function(key, element) {
 
 		var typeIco = key;
-		var ico = mapIconTop["default"];
+		var ico = "fa-"+typeObj["default"].icon;
 		var color = mapColorIconTop["default"];
 
 		mapElements.push(element);
 		typeIco = element.type;
-		ico = ("undefined" != typeof mapIconTop[typeIco]) ? mapIconTop[typeIco] : mapIconTop["default"];
+		ico = ("undefined" != typeof typeObj[typeIco]) ? "fa-"+typeObj[typeIco].icon : "fa-"+typeObj["default"].icon;
 		color = ("undefined" != typeof mapColorIconTop[typeIco]) ? mapColorIconTop[typeIco] : mapColorIconTop["default"];
 		htmlIco ="<i class='fa "+ ico +" fa-2x bg-"+color+"'></i>";
 

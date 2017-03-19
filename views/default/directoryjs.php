@@ -10,33 +10,6 @@
 ?>  
   <style>
 
-<?php 
-    $btnAnc = array("blue"      =>array("color1"=>"#ea4335", 
-                                        "color2"=>"#ea4335"),
-                    );
-?>
-
-<?php foreach($btnAnc as $color => $params){ ?>
-.btn-anc-color-<?php echo $color; ?>{
-    background-color: transparent;
-    border-color: transparent;
-    color: <?php echo $params["color1"]; ?>!important;
-}
-
-.btn-anc-color-<?php echo $color; ?>:hover{
-    background-color:transparent!important;
-    color:<?php echo $params["color1"]; ?>!important;
-}
-.btn-anc-color-<?php echo $color; ?>.active{ 
-    border-color: <?php echo $params["color1"]; ?>!important;
-    background-color:#fff!important;
-    color:<?php echo $params["color1"]; ?>!important;
-}
-.btn-anc-color-<?php echo $color; ?>.active:hover{
-    background-color: #fff;
-    color: <?php echo $params["color1"]; ?>;
-}
-<?php } ?>
 
 .favElBtn, .favAllBtn{
   padding: 5px 8px;
@@ -51,7 +24,8 @@
   text-transform: uppercase;
 }
 
-#col-btn-type-directory .btn-directory-type{
+#col-btn-type-directory .btn-directory-type,
+#sub-menu-left .btn-select-type-anc{
   margin-bottom:5px;
   /*font-weight: 700;*/
   text-transform: uppercase;
@@ -70,10 +44,95 @@
     text-align: center!important;
   }
 }
-  </style>
- 
 
-  <div class="container-result-search">
+
+/* ANNONCES MENU*/
+<?php 
+  $btnAnc = array("blue"    =>array("color1"=>"#4285f4", 
+                      "color2"=>"#1c6df5"),
+
+          "green"   =>array("color1"=>"#34a853", 
+                      "color2"=>"#2b8f45"),
+
+          "red"   =>array("color1"=>"#ea4335", 
+                      "color2"=>"#cc392d"),
+
+          "yellow"  =>array("color1"=>"#fbbc05", 
+                      "color2"=>"#e3a800"),
+          );
+?>
+
+<?php foreach($btnAnc as $color => $params){ ?>
+.btn-anc-color-<?php echo $color; ?>{
+    background-color: <?php echo $params["color1"]; ?>;
+    border-color: <?php echo $params["color1"]; ?>!important;
+    color: #fff!important;
+}
+
+.btn-anc-color-<?php echo $color; ?>:hover{
+    background-color: <?php echo $params["color2"]; ?>!important;
+    border-color: <?php echo $params["color1"]; ?>!important;
+}
+.btn-anc-color-<?php echo $color; ?>.active{ 
+  background-color:#fff!important;
+  color:<?php echo $params["color1"]; ?>!important;
+}
+.btn-anc-color-<?php echo $color; ?>.active:hover{
+    background-color: #fff;
+    color: <?php echo $params["color1"]; ?>;
+}
+<?php } ?>
+
+.keycat:hover,
+.keycat.active,
+.btn-select-category-1:hover,
+.btn-select-category-1.active{
+  background-color: #2C3E50!important;
+    color: #fff!important;
+    border-color:transparent!important;
+}
+
+
+#sub-menu-left.subsub .btn{
+  width:95%;    
+  text-align: left;
+  background-color: white;
+    border-color: white;
+  color:#4285f4;
+}
+#sub-menu-left.subsub{
+  min-width: 180px;
+}
+
+.btn-menu-left-add{
+  background-color: transparent !important;
+    border-color: transparent !important;
+}
+
+#photoAddNews{
+  text-align: left;
+}
+
+.tagstags, .form-actions{
+  /*display: none!important;*/
+}
+
+
+@media (max-width: 768px) {
+  .btn-select-type-anc.col-xs-5{
+    width:48%!important;
+  }
+}
+
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+    .btn-select-type-anc.col-xs-5{
+    font-size:0.8em;
+  }
+}
+
+</style>
+ 
+<div class="container-result-search">
 
       <?php if(@$_GET['type']!="") { ?>
         <?php $typeSelected = $_GET['type']; ?>
@@ -97,34 +156,8 @@
       <p class="text-center bold"> Recherchez une commune à laquelle vous communecter.<br>
           Une fois communecté, toutes vos recherches seront automatiquement filtrées en fonction de la commune choisie.
       </p>
-    <?php }?>
+    <?php } ?>
 
-	  	<!-- <div class="col-md-12 padding-10 margin-bottom-5 lbl-info-search">
-		    <div class="lbl-info lbl-info-vote lbl-info-actions pull-left hidden col-xs-9 no-padding margin-bottom-10">
-		      <i class="fa fa-info-circle"></i> 
-		      <b>Seuls les résultats auxquels vous avez accès sont affichés</b> <br>
-		      (issus de vos <span class="text-green"><b>organisations</b></span>, 
-		      vos <span class="text-purple"><b>projets</b></span> ou votre <span class="text-red"><b>conseil citoyen</b></span>)
-		    </div>
-
-		    <div class="lbl-info lbl-info-organizations lbl-info-projects lbl-info-poi lbl-info-persons pull-left hidden col-xs-9 no-padding margin-bottom-10">
-		      <i class="fa fa-info-circle"></i> 
-		      <b>Résultats triés en fonction de l'activité la plus récente des éléments recherchés</b> 
-		    </div>
-
-		    <div class="lbl-info lbl-info-cities pull-left hidden col-xs-9 no-padding margin-bottom-10">
-		      <i class="fa fa-info-circle"></i> Indiquez le nom d'une commune, ou un code postal, pour lancer la recherche
-		    </div> 
-
-		    <button class="btn btn-default pull-right text-dark" onclick="showMap(true)" style="margin-bottom: -15px;margin-top: -10px;">
-		      <i class="fa fa-map"></i>
-		      <span class="hidden-xs"> Afficher <span class="hidden-sm hidden-xs">sur</span> la carte</span>
-		    </button>
-	  	</div> -->
-
-  		<!-- <div class="col-md-12">
-          <hr class="margin-bottom-10">
-      </div> -->
 
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
         <!-- <h5>Recherche thématique<br><i class='fa fa-chevron-down'></i></h5> -->
@@ -152,42 +185,65 @@
           <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
         </div>
 
-        <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="menu-section-classified">
+          <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
+                  data-type="classified" data-type-anc=""  data-key="all">
+            <i class="fa fa-circle-o"></i>
+            <span class="hidden-xs hidden-sm"> Tous </span>
+          </button> -->
+          <?php 
+              $classifiedSections = CO2::getContextList("freedomSections");
+              $currentSection = 1;
+              foreach ($classifiedSections as $key => $section) { ?>
+                <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
+                  <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
+                          data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
+                          data-type="classified"
+                          style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
+                    <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["label"]; ?>
+                  </button>
+                </div>
+          <?php } ?>  
+          <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> 
+        </div>
 
-          <?php if($typeSelected != "events" && $typeSelected != "vote" && $typeSelected != "cities"){ ?>   
-          <button class="btn text-black bg-dark btn-open-filliaire">
-              <i class="fa fa-th"></i> 
-              <span class="hidden-xs">Thématiques</span>
-          </button><hr class="hidden-xs">
-          <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
-              <i class="fa fa-search"></i> 
-              <span class="hidden-xs">Tous</span>
-          </button><hr class="hidden-xs">
-          <button class="btn text-yellow btn-directory-type" data-type="persons">
-              <i class="fa fa-user"></i> 
-              <span class="hidden-xs">Citoyens</span>
-          </button><hr class="hidden-xs">
-          <button class="btn text-green  btn-directory-type" data-type="NGO">
-              <i class="fa fa-group"></i> 
-              <span class="hidden-xs">Associations</span>
-          </button><br class="hidden-xs">
-          <button class="btn text-azure  btn-directory-type" data-type="LocalBusiness">
-              <i class="fa fa-industry"></i> 
-              <span class="hidden-xs">Entreprises</span>
-          </button><br class="hidden-xs">
-          <button class="btn text-turq btn-directory-type" data-type="Group">
-              <i class="fa fa-circle-o"></i> 
-              <span class="hidden-xs">Groupes</span>
-          </button><br class="hidden-xs">
-          <button class="btn text-purple btn-directory-type" data-type="projects">
-              <i class="fa fa-lightbulb-o"></i> 
-              <span class="hidden-xs">Projets</span>
-          </button><hr class="hidden-xs">
-          <button class="btn text-red  btn-directory-type" data-type="cities">
-              <i class="fa fa-university"></i> 
-              <span class="hidden-xs">Communes</span>
-          </button>
-          <?php } else if( $typeSelected == "vote" ){?>
+        <?php if($typeSelected == "all"){ ?>   
+          
+          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
+            <button class="btn text-black bg-dark btn-open-filliaire">
+                <i class="fa fa-th"></i> 
+                <span class="hidden-xs">Thématiques</span>
+            </button><hr class="hidden-xs">
+            <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
+                <i class="fa fa-search"></i> 
+                <span class="hidden-xs">Tous</span>
+            </button><hr class="hidden-xs">
+            <button class="btn text-yellow btn-directory-type" data-type="persons">
+                <i class="fa fa-user"></i> 
+                <span class="hidden-xs">Citoyens</span>
+            </button><hr class="hidden-xs">
+            <button class="btn text-green  btn-directory-type" data-type="NGO">
+                <i class="fa fa-group"></i> 
+                <span class="hidden-xs">Associations</span>
+            </button><br class="hidden-xs">
+            <button class="btn text-azure  btn-directory-type" data-type="LocalBusiness">
+                <i class="fa fa-industry"></i> 
+                <span class="hidden-xs">Entreprises</span>
+            </button><br class="hidden-xs">
+            <button class="btn text-turq btn-directory-type" data-type="Group">
+                <i class="fa fa-circle-o"></i> 
+                <span class="hidden-xs">Groupes</span>
+            </button><br class="hidden-xs">
+            <button class="btn text-purple btn-directory-type" data-type="projects">
+                <i class="fa fa-lightbulb-o"></i> 
+                <span class="hidden-xs">Projets</span>
+            </button>
+            <hr class="hidden-sm hidden-md hidden-lg">
+          </div>
+        
+        <?php } else if( $typeSelected == "vote" ){?>
+
+          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
             <button class="btn text-black bg-azure btn-directory-type" data-type="vote">
               <i class="fa fa-gavel"></i> 
               <span class="hidden-xs">Propositions</span>
@@ -196,16 +252,60 @@
               <i class="fa fa-cogs"></i> 
               <span class="hidden-xs">Actions</span>
             </button>
-          <?php } ?>
+          </div>
 
-          <hr class="hidden-sm hidden-md hidden-lg">
-        </div>
+        <?php } else if( $typeSelected == "events" ){?>
 
-        <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search">
-          
-        </div>
-      
-      <div id="listTags" class="col-sm-2 col-md-2 hidden-xs text-left"></div>
+          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
+            <button class="btn text-black bg-white btn-directory-type btn-all" data-type-event="" data-type="events">
+                <i class="fa fa-search"></i> 
+                <span class="hidden-xs">Tous</span>
+            </button><hr class="hidden-xs">
+            
+            <?php $categories = Event::$types; 
+                  foreach ($categories as $key => $cat) {
+              ?>
+                  <?php //if(is_array($cat)) { ?>
+                    <button class="btn text-orange btn-directory-type" 
+                            style="margin-left:-5px;" data-type-event="<?php echo $key; ?>" data-type="events">
+                      <?php echo $cat; ?>
+                    </button><br class="hidden-xs">
+                  <?php //} ?>
+                </button>
+              <?php } ?>
+          </div>
+
+        <?php }else if($typeSelected == "classified"){ ?>
+
+          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub" id="sub-menu-left">
+            <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
+            <hr> -->
+            <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
+              <i class="fa fa-money"></i> A vendre
+            </h4>
+            <hr>
+            <?php $categories = CO2::getContextList("classifiedCategories"); 
+                foreach ($categories as $key => $cat) {
+            ?>
+                <?php if(is_array($cat)) { ?>
+                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                    <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
+                  </button><br>
+                  <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
+                    <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
+                      <i class="fa fa-angle-right"></i> <?php echo $cat2; ?>
+                    </button><br class="hidden">
+                  <?php } ?>
+                <?php } ?>
+              </button>
+            <?php } ?>
+          </div>
+        
+        <?php } ?>
+
+        <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search"></div>
+
+      <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
       
   </div>
 
@@ -317,7 +417,7 @@ jQuery(document).ready(function() {
   
   setTimeout(function(){ $("#input-communexion").hide(300); }, 300);
 
-	setTitle("<span id='main-title-menu'>Moteur de recherche</span>","search","Moteur de recherche");
+	//setTitle("<span id='main-title-menu'>Moteur de recherche</span>","search","Moteur de recherche");
 	
   $('.tooltips').tooltip();
 
@@ -331,22 +431,6 @@ jQuery(document).ready(function() {
   //   rebuildSearchScopeInput();
   // }
 
-
-  $(".my-main-container").bind('scroll', function(){
-    if(!loadingData && !scrollEnd){
-        var heightContainer = $(".my-main-container")[0].scrollHeight;
-        var heightWindow = $(window).height();
-        
-        if(scrollEnd == false){
-          var heightContainer = $(".my-main-container")[0].scrollHeight;
-          var heightWindow = $(window).height();
-          if( ($(this).scrollTop() + heightWindow) >= heightContainer-150){
-            mylog.log("scroll MAX");
-            startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep,searchCallback);
-          }
-        } 
-    }
-  });
 
   $(".btn-open-filliaire").click(function(){
       if($("#sub-menu-filliaire").hasClass("hidden"))
@@ -364,7 +448,8 @@ jQuery(document).ready(function() {
       console.log("myMultiTags", myMultiTags);
       
       startSearch(0, indexStepInit, searchCallback);
-      KScrollTo("#before-section-result");
+      KScrollTo("#content-social");
+      //KScrollTo("#before-section-result");
   });
   
   /*  $(".searchIcon").removeClass("fa-search").addClass("fa-file-text-o");
@@ -378,6 +463,8 @@ jQuery(document).ready(function() {
     startSearch(0, indexStepInit, searchCallback);
   <?php } ?>
 });
+
+
 
 
 </script>

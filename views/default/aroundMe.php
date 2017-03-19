@@ -84,7 +84,7 @@ var idElement = "<?php echo $id ?>";
 var typeElement = "<?php echo $type ?>";
 var parentName = "<?php echo @$parentName ?>";
 
-var iconTitle = mapIconTop[typeElement];
+var iconTitle = "fa-"+typeObj[typeElement].icon;
 var colorTitle = mapColorIconTop[typeElement];
 
 var noFitBoundAroundMe = true;
@@ -237,7 +237,7 @@ function initBtnLink(){
     var type = $(value).attr("data-type");
     //mylog.log("error type :", type);
     if(type == "person") type = "people";
-    else type = typeObj[type].col;
+    else type = typeObjLib.get(type).col;
     //mylog.log("#floopItem-"+type+"-"+id);
     if($("#floopItem-"+type+"-"+id).length){
       //mylog.log("I FOLLOW THIS");
@@ -277,11 +277,11 @@ function initBtnLink(){
     var name = $(this).attr("data-name");
     var id = $(this).attr("data-id");
     //traduction du type pour le floopDrawer
-    var typeOrigine = typeObj[type].col;
+    var typeOrigine = typeObjLib.get(type).col;
     if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
     formData.parentType = typeOrigine;
     if(type == "person") type = "people";
-    else type = typeObj[type].col;
+    else type = typeObjLib.get(type).col;
 
   var thiselement = this;
   $(this).html("<i class='fa fa-spin fa-circle-o-notch text-azure'></i>");

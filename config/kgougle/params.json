@@ -11,6 +11,7 @@
       	"#web":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
+                  "open" : true, 
                   "subdomain" : "web", 
                   "subdomainName" : "web",
                   "hash" : "#app.web",
@@ -20,7 +21,8 @@
 
       	"#referencement":
       	  	{"inMenu" : false, 
-                  "useHeader" : true, 
+                  "useHeader" : true,
+                  "open" : true, 
                   "subdomain" : "referencement", 
                   "subdomainName" : "referencement",
                   "hash" : "#app.referencement",
@@ -31,46 +33,57 @@
       	"#media":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
+                  "open" : true,
                   "subdomain" : "media", 
-                  "subdomainName" : "media",
+                  "subdomainName" : "Actu",
                   "hash" : "#app.media",
                   "icon" : "newspaper-o", 
-                  "mainTitle" : "Toute l'actu du pays, d'hier à aujourd'hui",
+                  "mainTitle" : "Toute l'actualité du pays",
                   "placeholderMainSearch" : "rechercher dans l'actu ..."},
 
       	"#social":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
+                  "open" : false,
                   "subdomain" : "social", 
                   "subdomainName" : "social",
                   "hash" : "#app.search",
                   "icon" : "user-circle-o", 
                   "mainTitle" : "Le réseau social des Nouzot",
-                  "placeholderMainSearch" : "rechercher une page ..."},
+                  "placeholderMainSearch" : "rechercher une page ...",
+                  "lblBtnCreate" : "Créer une page",
+                  "colorBtnCreate" : "green"},
 
       	"#freedom":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
+                  "open" : false,
                   "subdomain" : "freedom", 
                   "subdomainName" : "freedom",
                   "hash" : "#app.annonces",
                   "icon" : "comments", 
                   "mainTitle" : "Toutes vos annonces en direct",
-                  "placeholderMainSearch" : "rechercher parmis les annonces  ..."},
+                  "placeholderMainSearch" : "rechercher parmis les annonces  ...",
+                  "lblBtnCreate" : "Publier une annonce",
+                  "colorBtnCreate" : "azure"},
 
       	"#agenda":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
+                  "open" : false,
                   "subdomain" : "agenda", 
                   "subdomainName" : "agenda",
                   "hash" : "#app.agenda",
                   "icon" : "calendar", 
                   "mainTitle" : "L'agenda collaboratif des Calédoniens",
-                  "placeholderMainSearch" : "rechercher un événement  ..."},
+                  "placeholderMainSearch" : "rechercher un événement  ...",
+                  "lblBtnCreate" : "Créer un événement",
+                  "colorBtnCreate" : "orange"},
 
       	"#power":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
+                  "open" : false,
                   "subdomain" : "power", 
                   "subdomainName" : "power",
                   "hash" : "#app.power",
@@ -81,6 +94,7 @@
       	"#page":
       	  	{"inMenu" : false, 
                   "useHeader" : false, 
+                  "open" : true,
                   "subdomain" : "page", 
                   "subdomainName" : "page",
                   "hash" : "#app.page",
@@ -91,6 +105,7 @@
       	"#info":
       	  	{"inMenu" : false, 
                   "useHeader" : false, 
+                  "open" : true,
                   "subdomain" : "apropos", 
                   "subdomainName" : "Info",
                   "hash" : "#app.info",

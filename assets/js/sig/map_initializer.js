@@ -337,6 +337,8 @@
 
 											"address" 			: "MARKER",
 
+											"classified" 		: "classified-marker-default"
+
 									  };
 
 			this.icoMarkersTypes = { 		"default" 			: { ico : "circle", color : "yellow" 	},
@@ -380,6 +382,8 @@
 											"url" 				: { ico : "desktop", color : "blue" 	},
 
 											"address" 			: { ico : "map-marker", color : "red" 	},
+
+											"classified" 		: { ico : "bullhorn", color : "azure" 	},
 
 									  };
 

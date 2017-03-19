@@ -23,6 +23,7 @@ class AppController extends CommunecterController {
 	        'mediacrawler'  	=> 'citizenToolKit.controllers.app.MediaCrawlerAction',
             'superadmin'        => 'citizenToolKit.controllers.app.SuperAdminAction',
             'sendmailformcontact' => 'citizenToolKit.controllers.app.SendMailFormContactAction',
+            'checkurlexists' => 'citizenToolKit.controllers.app.CheckUrlExistsAction',
             
 	    );
 	}
@@ -55,8 +56,11 @@ class AppController extends CommunecterController {
 		CO2Stat::incNbLoad("co2-web");
 
         //get my favorites web sites in my cookies
-        $cookiesFav = isset( Yii::app()->request->cookies['webFavorites'] ) && Yii::app()->request->cookies['webFavorites'] != "" ? 
-		   			  explode(",", Yii::app()->request->cookies['webFavorites']->value) : array();
+        $cookiesFav = isset( Yii::app()->request->cookies['webFavorites'] ) 
+                      && Yii::app()->request->cookies['webFavorites'] != "" ? 
+		   			  explode(",", Yii::app()->request->cookies['webFavorites']->value) : 
+                      array();
+
     	//var_dump($cookiesFav);exit;
     	//get information about each website
     	$myWebFavorites = array();//
@@ -86,10 +90,30 @@ class AppController extends CommunecterController {
 	public function actionMedia(){ //kgougle
 		$indexMin = isset($_POST['indexMin']) ? $_POST['indexMin'] : 0;
         $indexMax = isset($_POST['indexMax']) ? $_POST['indexMax'] : 10;
+        $sources = isset($_POST['sources']) ? $_POST['sources'] : array("NCI", "NC1", "CALEDOSPHERE", "NCTV");
+        $search = isset($_POST['search']) ? $_POST['search'] : "";
 
         $indexStep = $indexMax - $indexMin;
        
-        $query = array('srcMedia' => array('$in' => array("NCI", "NC1", "CALEDOSPHERE", "NCTV")));
+        $query = array('srcMedia' => array('$in' => $sources));
+
+        if($search != ""){
+
+            $searchStr = Search::removeEmptyWords($search);
+
+            $searchRegExp1 = Search::accentToRegex($searchStr);
+            $arraySearch = explode(" ", $searchRegExp1);
+            
+            foreach ($arraySearch as $key => $searchRegExp) {
+                $plain['$or'][]["title"] = new MongoRegex("/.*{$searchRegExp}.*/i");
+                $plain['$or'][]["content"] = new MongoRegex("/.*{$searchRegExp}.*/i");
+                $plain['$or'][]["srcMedia"] = new MongoRegex("/.*{$searchRegExp}.*/i");                
+            }
+
+            $query['$and'][] = $plain;
+        }
+
+        //var_dump($query);// exit;
     	$medias = PHDB::findAndSortAndLimitAndIndex("media", $query, array("date"=>-1) , $indexStep, $indexMin);
     	
         $params = array("medias" => $medias );
@@ -103,19 +127,39 @@ class AppController extends CommunecterController {
 	}
 
 
-	public function actionSearch($type=null){
-        CO2Stat::incNbLoad("co2-search");	
+    public function actionSearch($type=null){
+        CO2Stat::incNbLoad("co2-search");   
         $params = array("type" => @$type );
-    	echo $this->renderPartial("search", $params, true);
-	}
+        echo $this->renderPartial("search", $params, true);
+    }
+    public function actionSocial($type=null){
+        CO2Stat::incNbLoad("co2-search");   
+        $params = array("type" => @$type );
+        echo $this->renderPartial("search", $params, true);
+    }
 
 
 
-	public function actionAnnonces(){
-		CO2Stat::incNbLoad("co2-annonces");	
+    public function actionAnnonces(){
+        CO2Stat::incNbLoad("co2-annonces"); 
         $params = array("type" => "classified");
-    	echo $this->renderPartial("search", $params, true);
-	}
+        echo $this->renderPartial("search", $params, true);
+    }
+
+
+
+    public function actionFreedom(){
+        CO2Stat::incNbLoad("co2-annonces"); 
+        $params = array("type" => "classified");
+        echo $this->renderPartial("search", $params, true);
+    }
+
+
+    public function actionLive(){
+        CO2Stat::incNbLoad("co2-live"); 
+        $params = array();//"type" => "classified");
+        echo $this->renderPartial("live", $params, true);
+    }
 
 
 

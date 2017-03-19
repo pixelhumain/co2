@@ -109,6 +109,10 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
                                                        "pair"=>$pair,
                                                        "nbCol"=>$nbCol,
                                                        "timezone"=>$timezone,
+                                                       "imgDefault" => $imgDefault,
+                                                       "contextParentId" => $contextParentId,
+                                                       "contextParentType" => $contextParentType,
+                                                       "canManageNews" => @$canManageNews,
                                                        "isFirst"=>true)); ?>
 
 </ul>
@@ -128,7 +132,6 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 
   var initLimitDate = <?php echo json_encode(@$limitDate) ?>;
 
-
   var contextParentType = <?php echo json_encode(@$contextParentType) ?>;
   var contextParentId = <?php echo json_encode(@$contextParentId) ?>;
 
@@ -142,15 +145,24 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 
 
   var uploadUrl = "<?php echo Yii::app()->params['uploadUrl'] ?>";
+  var docType="<?php echo Document::DOC_TYPE_IMAGE; ?>";
+  var contentKey = "<?php echo Document::IMG_SLIDER; ?>";
 
+  var mentionsContact = [];
+  var stopMention = false;
 
 
 console.log("NEWS", news);
 jQuery(document).ready(function() {
-  
+  $(".uploadImageNews").click(function(event){
+       if (!$(event.target).is('input')) {
+        $(this).find("input").trigger('click');
+    }
+    //$("#addImage").click();
+  });
   showFormBlock(false);
   initForm();
-
+  bindEventNews();
   if(typeof(initLimitDate.created) == "object")
       dateLimit=initLimitDate.created.sec;
   else
@@ -172,6 +184,7 @@ function initForm(){ console.log("initForm initForm");
 
   //Sig.restartMap();
   //Sig.showMapElements(Sig.map, news);
+  
   initFormImages();
   console.log(myContacts);
   if(myContacts != null){

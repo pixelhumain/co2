@@ -63,7 +63,15 @@ function bindRightClicks() {
 					var	id = ( href[0] == "#element" ) ? href[5] : href[3];
 				}
 				//console.log(href,href[0],what,id);
-				var btns = {};
+				var btns = {
+					openInNewTab : {
+						name: "Ouvrir dans un nouvel onglet",
+			        	icon: "fa-arrow-circle-right", 
+			        	callback: function(key, opt){ 
+					        	window.open($trigger[0].hash, '_blank');
+			        	}
+					}
+				};
 	        	$.each( userConnected.collections, function (col,list) { 
 	        		btns[col] = { 
 			        	name: function($element, key, item){ 
@@ -525,7 +533,39 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 var CoAllReadyLoad = false;
 var url = {
 	loadableUrls : {},
+	short : {
+		"citoyens" : "p",
+		"poi" : "poi",
+		"siteurl":"s",
+		"organizations" : "o",
+		"events" : "e",
+		"projects" : "pr",
+		"cities" : "c",
+		/*"entry" : "s",
+		"vote" : "v",
+		"action" : "a",
+		"rooms" : "r",*/
+		"classified":"cl"
+	},
+	convertToPath : function(hash) { 
+		return hash.substring(1).replace( "#","" ).replace( /\./g,"/" );
+	},
+	//manages url short cuts like eve_xxxxx
+	//warning : works with only 1 underscore 
+	//can contain more variables eve_xxxxx.viewer.dsdsd
+	checkAndConvert : function (hash) {
+		hashT = hash.split('_');
+		mylog.log("-------checkAndConvert : ",hash,hashT);
+		pos = $.inArray( hashT[0].substring(1) , Object.values( url.short ) );
+		if( pos >= 0 ){
+			type = Object.keys( url.short )[pos];
+			hash =  "#page.type."+type+".id."+hashT[1];
+			mylog.log("converted hash : ",hash);
+		} 
+		return hash;
+	},
 	jsController : function (hash){
+		hash = url.checkAndConvert(hash);
 		mylog.log("jsController",hash);
 		res = false;
 		$(".menuShortcuts").addClass("hide");
@@ -582,7 +622,7 @@ var url = {
 						if(extraParams.indexOf("#") >= 0){
 							extraParams=extraParams.replace( "#","%hash%" );
 						}
-						path = hash.replace( "#","" ).replace( /\./g,"/" );
+						path = url.convertToPath(hash);
 						showAjaxPanel( '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res );
 						
 						if(endPoint.menu)
@@ -706,13 +746,17 @@ function decodeHtml(str) {
     return txt.value;
 }
 
-function setTitle(str, icon, topTitle,keywords,shortDesc) { 
-	if(icon != "")
+function setTitle(str, icon, topTitle,keywords,shortDesc) { mylog.log("setTitle", str);
+	if(typeof icon != "undefined" && icon != "")
 		icon = ( icon.indexOf("<i") >= 0 ) ? icon : "<i class='fa fa-"+icon+"'></i> ";
-	$(".moduleLabel").html( icon +" "+ str);
+
+	//$(".moduleLabel").html( icon +" "+ str);
+
 	if(topTitle)
 		str = topTitle;
+	
 	$(document).prop('title', ( str != "" ) ? str : "Communecter, se connecter à sa commune" );
+	
 	if(notNull(keywords))
 		$('meta[name="keywords"]').attr("content",keywords);
 	else
@@ -844,7 +888,6 @@ function  processingBlockUi() {
 		msg = themeObj.blockUi.processingMsg;
 	$.blockUI({ message :  msg });
 	bindLBHLinks();
-	$(".tooltips").tooltip();
 }
 function showAjaxPanel (url,title,icon, mapEnd) { 
 	mylog.log("showAjaxPanel",url,"TITLE",title);
@@ -895,7 +938,8 @@ function showAjaxPanel (url,title,icon, mapEnd) {
         				dbAccessCount = parseInt(data)-prevDbAccessCount;
         				prevDbAccessCount = parseInt(data);
         			}
-        			console.error('dbaccess:'+prevDbAccessCount);
+        			//console.error('dbaccess:'+prevDbAccessCount);
+        			
         			//$(".dbAccessBtn").remove();
         			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
         		},null);
@@ -1108,35 +1152,60 @@ var smallMenu = {
 	},
 	//openSmallMenuAjaxBuild("",baseUrl+"/"+moduleId+"/favorites/list/tpl/directory2","FAvoris")
 	//opens any html without post processing
-	openAjaxHTML : function  (url,title) { 
-		smallMenu.open( );
-		getAjax( smallMenu.destination , url , null,"html" );
+	openAjaxHTML : function  (url,title,type,nextPrev) { 
+		smallMenu.open("",type );
+		dest = (type == "blockUI") ? ".blockContent" : "#openModal .modal-content .container" ;
+		getAjax( dest , url , function () { 
+			$("#pad-element-container").hide();
+			//next and previous btn to nav from preview to preview
+			if(nextPrev){
+				var p = 0;
+				var n = 0;
+				var  found = false;
+				var l = $( '.searchEntityContainer .container-img-profil' ).length;
+				$.each( $( '.searchEntityContainer .container-img-profil' ), function(i,val){
+					if(found){
+						n = (i == l-1 ) ? $( $('.searchEntityContainer .container-img-profil' )[0] ).attr('href') : $(this).attr('href');
+						return false;
+					}
+					if( $(this).attr('href') == nextPrev )
+						found = true;
+					else 
+						p = (i == 0 ) ? $( $('.searchEntityContainer .container-img-profil' )[ $('.searchEntityContainer .container-img-profil' ).length ] ).attr('href') : $(this).attr('href');
+				});
+				html = "<div style='margin-bottom:50px'><a href='"+p+"' class='plbhp text-dark'><i class='fa fa-2x fa-arrow-circle-left'></i> PREV </a> "+
+						" <a href='"+n+"' class='lbhp text-dark'> NEXT <i class='fa fa-2x fa-arrow-circle-right'></i></a></div>";
+				$(dest).prepend(html);
+				bindLBHLinks();
+			}
+		 },"html" );
 	},
 	//content Loader can go into a block
-	open : function (content) { 
+	open : function (content,type) { 
 		if(!smallMenu.inBlockUI){
 			$(smallMenu.destination).html( content );
 			$.unblockUI();
 		}
 		else {
-			menuContent = (content) ? content : $(".menuSmall").html();
-			//buildCollectionList ();
-
-			$.blockUI({ 
-				title : 'Welcome to your page', 
-				message : menuContent,
-				onOverlayClick: $.unblockUI,
-		        css: { 
-		         //    border: 'none', 
-		         //    padding: '15px', 
-		         //    backgroundColor: 'rgba(0,0,0,0.7)', 
-		         //    '-webkit-border-radius': '10px', 
-		         //    '-moz-border-radius': '10px', 
-		         //    color: '#fff' ,
-		        	// "cursor": "pointer"
-		        },
-				overlayCSS: { backgroundColor: '#000'}
-			});
+			if(type == "blockUI"){
+				$.blockUI({ 
+					//title : 'Welcome to your page', 
+					message : "<div class='blockContent'></div>",
+					onOverlayClick: $.unblockUI,
+			        css: { 
+			         //border: '10px solid black', 
+			         margin : "50px",
+			         width:"80%",
+			         //    padding: '15px', 
+			         backgroundColor: 'rgba(256,256,256,0.85)', 
+			         //    '-webkit-border-radius': '10px', 
+			         //    '-moz-border-radius': '10px', 
+			             //color: '#fff' ,
+			        	// "cursor": "pointer"
+			        }//,overlayCSS: { backgroundColor: '#fff'}
+				});
+			}else
+				$("#openModal").modal("show");
 			$(".blockPage").addClass(smallMenu.destination.slice(1));
 			// If network, check width of menu small
 			if( typeof globalTheme != "undefined" && globalTheme == "network" ) {
@@ -1244,7 +1313,16 @@ function  bindLBHLinks() {
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 	    url.loadByHash( h );
-	})/*.on("contextmenu", function(e){
+	})
+	$(".lbhp").off().on("click",function(e) {  		
+		e.preventDefault();
+		mylog.warn("***************************************");
+		mylog.warn("bindLBHLinks Preview", $(this).attr("href"));
+		mylog.warn("***************************************");
+		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
+	    smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url.convertToPath(h) ,"","blockUI",h);
+	})
+	/*.on("contextmenu", function(e){
 		var href = $(this).attr("href").split(".");
 		console.log($(this).attr("href"),href[0])
 		if(userId && $.inArray(href[0],["#organization","#project","#event","#person","#element","#survey","#rooms"])){
@@ -1304,6 +1382,7 @@ function bindRefreshBtns() { mylog.log("bindRefreshBtns");
 	    });
 	}
 }
+
 function hideSearchResults(){
 	var searchFeed = "#dropdown_search";
 		var method = "startSearch(0, indexStepInit);"
@@ -1343,13 +1422,10 @@ function reloadNewsSearch(){
 maybe movebale into Element.js
 ***************************************** */
 
-
-
-
 function  buildQRCode(type,id) { 
 		
 	$(".qrCode").qrcode({
-	    text: baseUrl+"/#"+typeObj[type].ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
+	    text: baseUrl+"/#"+typeObjLib.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
 	    render: 'image',
 		minVersion: 8,
 	    maxVersion: 40,
@@ -1533,7 +1609,7 @@ function globalSearch(searchValue,types,autre){
 				var htmlIco ="<i class='fa fa-users'></i>";
 				if(elem.type){
 					typeIco = elem.type;
-					htmlIco ="<i class='fa "+mapIconTop[elem.type] +"'></i>";
+					htmlIco ="<i class='fa fa-"+typeObj[elem.type].icon +"'></i>";
 				}
 				where = "";
 				if (elem.address != null) {
@@ -1558,7 +1634,7 @@ function globalSearch(searchValue,types,autre){
 				}
 				
 				compt++;
-  				//str += "<li class='li-dropdown-scope'><a href='javascript:initAddMeAsMemberOrganizationForm(\""+key+"\")'><i class='fa "+mapIconTop[value.type]+"'></i> " + value.name + "</a></li>";
+
   			});
 			
 			if (compt > 0) {
@@ -1722,7 +1798,7 @@ function activeMenuElement(page) {
 
 function shadowOnHeader() {
 	var y = $(".my-main-container").scrollTop(); 
-    if (y > 0) {  $('.main-top-menu').addClass('shadow'); }
+    if (y > 0) {  $('.main-top-menu').addClass('shadow'); }////NOTIFICATIONS}
     else { $('.main-top-menu').removeClass('shadow'); }
 }
 function getMediaFromUrlContent(className, appendClassName,nbParent){
@@ -2057,6 +2133,10 @@ function cityKeyPart(unikey, part){
 	if(part == "country") return unikey.substr(e+1, len);
 }
 
+/* *********************************
+			COLLECTIONS
+********************************** */
+
 var collection = {
 	crud : function (action, name,type,id) { 
 		if(userId){
@@ -2260,8 +2340,7 @@ var elementLib = {
 		return formData;
 	},
 
-	saveElement : function  ( formId,collection,ctrl,saveUrl,afterSave ) 
-	{ 
+	saveElement : function  ( formId,collection,ctrl,saveUrl,afterSave ) { 
 		mylog.warn("---------------- saveElement",formId,collection,ctrl,saveUrl,afterSave );
 		formData = $(formId).serializeFormJSON();
 		mylog.log("before",formData);
@@ -2343,8 +2422,7 @@ var elementLib = {
 	    //clear the unecessary DOM 
 	    $("#ajaxFormModal").html(''); 
 	},
-	editElement : function (type,id)
-	{
+	editElement : function (type,id){
 		mylog.warn("--------------- editElement ",type,id);
 		//get ajax of the elemetn content
 		$.ajax({
@@ -2362,32 +2440,11 @@ var elementLib = {
 				delete data.map["_id"];
 				mylog.dir(data);
 				console.log(data);
-				if( notNull(globalTheme) && globalTheme=="notragora"){
-					if(type=="poi"){
-						if(typeof data.map["tags"] != "undefined" && data.map["tags"].length > 0){
-					  		$.each(data.map["tags"], function(i,e){
-						  		if(jQuery.inArray( e, collectionsType ) >= 0){
-							   		 data.map["collections"]=[];
-							   		 data.map["collections"].push(e);
-							   		 var i = data.map["tags"].indexOf(e);
-									if(i != -1) {
-										data.map["tags"].splice(i, 1);
-									}
-								}
-								if(jQuery.inArray( e, genresType ) >= 0){
-							   		 data.map["genres"]=[];
-							   		 data.map["genres"].push(e);
-							   		 var i = data.map["tags"].indexOf(e);
-									if(i != -1) {
-										data.map["tags"].splice(i, 1);
-									}
-								}
+				
+				if( jsonHelper.notNull("themeObj.dynForm.editElementPOI","function") )
+					themeObj.dynForm.editElementPOI(type,data);
 
-					  		});
-			  			}
-		  			}
-				}
-				elementLib.openForm(type,null, data.map);
+				elementLib.openForm( typeObjLib.get(type).ctrl ,null, data.map);
 	        } else {
 	           toastr.error("something went wrong!! please try again.");
 	        }
@@ -2413,7 +2470,7 @@ var elementLib = {
 			},afterLoad, data);
 		} else {
 			toastr.error("Vous devez être connecté pour afficher les formulaires de création");
-			showPanel('box-login');
+			$('#modalLogin').modal("show");
 		}
 	},
 	//get the specification of a given dynform
@@ -2425,22 +2482,26 @@ var elementLib = {
 		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
 		if(typeof type == "object"){
 			mylog.log(" object directly Loaded : ", type);
+			elementLib.elementObj = type;
 			if( notNull(type.col) ) uploadObj.type = type.col;
     		callback(type, afterLoad, data);
 		}else if( jsonHelper.notNull( "typeObj."+type+".dynForm" , "object") ){
 			mylog.log(" typeObj Loaded : ", type);
-			elementLib.elementObj = typeObj[type];
-			if( notNull(typeObj[type].col) ) uploadObj.type = typeObj[type].col;
+			elementLib.elementObj = typeObjLib.get(type);
+			if( notNull(typeObjLib.get(type).col) ) uploadObj.type = typeObjLib.get(type).col;
     		callback( elementLib.elementObj, afterLoad, data );
 		}else {
-			lazyLoad( moduleUrl+'/js/dynForm/'+type+'.js', 
+			//TODO : pouvoir surchargé le dossier dynform dans le theme
+			//via themeObj.dynForm.folder overload
+			var dfPath = (jsonHelper.notNull( "themeObj.dynForm.folder") ) ? themeObj.dynForm.folder : moduleUrl+'/js/dynForm/';
+			lazyLoad( dfPath+type+'.js', 
 				null,
 				function() { 
-					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+type+'.js');
+					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+typeObjLib.get(type).ctrl+'.js');
 					mylog.dir(dynForm);
-				  	typeObj[type].dynForm = dynForm;
-					elementLib.elementObj = typeObj[type];
-					if( notNull(typeObj[type].col) ) uploadObj.type = typeObj[type].col;
+				  	typeObjLib.get(type).dynForm = dynForm;
+					elementLib.elementObj = typeObjLib.get(type);
+					if( notNull(typeObjLib.get(type).col) ) uploadObj.type = typeObjLib.get(type).col;
     				callback( afterLoad, data );
 			});
 		}
@@ -2487,17 +2548,13 @@ var elementLib = {
 				        $("#ajax-modal-modal-body").append("<div class='space20'></div>");
 				        //alert(afterLoad+"|"+typeof elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
 			    	}
-			        if( notNull(afterLoad) && elementLib.elementObj.dynForm.jsonSchema.onLoads )
-			        {
-				        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
-				        	elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
-				        //incase we need a second global post process
-				        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
-				        	elementLib.elementObj.dynForm.jsonSchema.onLoads.onload();
-				        //incase we need a second global post process
-				        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads.onload","function") )
-				        	elementLib.elementObj.dynForm.jsonSchema.onLoads.onload();
-				    }
+			        
+			        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
+			        	elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
+			        //incase we need a second global post process
+			        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
+			        	elementLib.elementObj.dynForm.jsonSchema.onLoads.onload();
+				    
 			        bindLBHLinks();
 			      },
 			      onSave : function(){
@@ -2519,7 +2576,7 @@ var elementLib = {
 			mylog.dir(form);
 		} else {
 			toastr.error("Vous devez être connecté pour afficher les formulaires de création");
-			showPanel('box-login');
+			$('#modalLogin').modal("show");
 		}
 	},
 
@@ -2573,6 +2630,7 @@ var dynForm = null;
 var uploadObj = {
 	type : null,
 	id : null,
+	folder : "communecter", //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
 		uploadObj.id = id;
@@ -2582,19 +2640,27 @@ var uploadObj = {
 var typeObjLib = {
 	name :function(type) { 
 		var inputObj = {
-	    	placeholder : "Nom",
+	    	placeholder : "... ",
 	        inputType : "text",
 	        rules : { required : true }
 	    };
 	    if(type){
-	    	inputObj.label = "Nom de "+type;
+	    	inputObj.label = "Nom de votre " + trad[type]+" ";
+	    	if(type=="classified") 
+	    		inputObj.label = "Titre de votre " + trad[type]+" ";
+
+	    	inputObj.placeholder = inputObj.label + " ...";
+
 	    	inputObj.init = function(){
 	        	$("#ajaxFormModal #name ").off().on("blur",function(){
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
-	            		globalSearch($(this).val(),[ typeObj[type].col ] );
+	            		globalSearch($(this).val(),[ typeObjLib.get(type).col ] );
 	        	});
 	        }
+	    }else{
+	    	inputObj.label = "Nom ";
 	    }
+	    mylog.log("typeObjLib ", inputObj);
     	return inputObj;
     },
     /*nameOrganiser : {
@@ -2611,6 +2677,7 @@ var typeObjLib = {
     username : {
     	placeholder : "username",
         inputType : "text",
+        label : "Username",
         rules : { required : true },
         init : function(){
         	$("#ajaxFormModal #username ").off().on("blur",function(){
@@ -2633,19 +2700,26 @@ var typeObjLib = {
         inputType : "custom",
         html:"<div id='similarLink'><div id='listSameName'></div></div>",
     },
+    type :function  (title,list,notRequired) {  
+    	var title = (title) ? title : "Type";
+    	var list = (list) ? list : eventTypes;
+	    var res = {
+	    	label : title,
+	    	inputType : "select",
+	    	placeholder : title,
+	    	rules : { required : true },
+	    	options : list
+	    }
+	    if(notRequired == false)
+	    	delete res.rules;
+	    return res;
+	},
     typeOrga :{
     	label : "Type d'organisation",
     	inputType : "select",
     	placeholder : "Type d'organisation",
     	rules : { required : true },
     	options : organizationTypes
-    },
-    typeEvent :{
-    	label : "Type d\'évènement",
-    	inputType : "select",
-    	placeholder : "Type d\'évènement",
-    	options : eventTypes,
-    	rules : { required : true }
     },
    	avancementProject :{
     	inputType : "select",
@@ -2667,19 +2741,20 @@ var typeObjLib = {
     	}
     },
     image :function(str) { 
-    	url = (str) ? str : location.hash;
+    	gotoUrl = (str) ? str : location.hash;
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	elementLib.closeForm();
-	            url.loadByHash( url );	
+		    	//alert(gotoUrl+uploadObj.id);
+	            url.loadByHash( gotoUrl+uploadObj.id );	
 		    	}
     	}
     },
     descriptionOptionnel : {
         inputType : "textarea",
-		placeholder : "Décrire c'est partager",
+		placeholder : "...",
 		init : function(){
         	$(".descriptiontextarea").css("display","none");
         },
@@ -2687,14 +2762,22 @@ var typeObjLib = {
     },
     description : {
         inputType : "textarea",
-		placeholder : "Décrire c'est partager",
+		placeholder : "...",
 		label : "Description principale"
     },
-    tags : {
-		inputType : "tags",
-		placeholder : "Mots clés",
-		values : tagsList,
-		label : "Ajouter quelques mots clés"
+    shortDescription : {
+        inputType : "textarea",
+		placeholder : "...",
+		label : "Description court"
+    },
+    tags : function(list) { 
+    	tagsL = (list) ? list : tagsList;
+    	return {
+			inputType : "tags",
+			placeholder : "Mots clés",
+			values : tagsL,
+			label : "Ajouter quelques mots clés"
+		}
 	},
 	location : {
 		label :"Localisation",
@@ -2728,7 +2811,8 @@ var typeObjLib = {
         }
     },
     urls : {
-    	placeholder : "url",
+    	label : "Ajouter des informations libres",
+    	placeholder : "informations / urls ...",
         inputType : "array",
         value : [],
         init:function(){
@@ -2786,14 +2870,15 @@ var typeObjLib = {
     				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
 					endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
     			}
-			    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
-				if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
+			    if (startDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(startDate);
+				if (endDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(endDate);
     		}
     	}
     },
     startDateInput : {
         inputType : "datetime",
         placeholder: "Date de début",
+        label : "Date de début",
         rules : { 
         	required : true,
         	duringDates: ["#startDateParent","#endDateParent","La date de début"]
@@ -2802,56 +2887,77 @@ var typeObjLib = {
     endDateInput : {
         inputType : "datetime",
         placeholder: "Date de fin",
+        label : "Date de fin",
         rules : { 
         	required : true,
-        	greaterThan: ["#ajaxFormModal #startDate","la date de début"],
+        	greaterThan: ["#ajaxFormModal #startDateInput","la date de début"],
         	duringDates: ["#startDateParent","#endDateParent","La date de fin"]
 	    }
     },
     telegram : {
         inputType :"text",
+        label : "Votre Speudo Telegram",
         placeholder : "Votre Speudo Telegram"
     },
     skype : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
+        label : "Lien vers Skype",
         placeholder : "Lien vers Skype"
     },
     facebook : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
+        label : "Lien vers Facebook",
         placeholder : "Lien vers Facebook"
     },
     github : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
+        label : "Lien vers Git Hub",
         placeholder : "Lien vers Git Hub"
     },
     googleplus : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
+        label : "Lien vers Google Plus",
         placeholder : "Lien vers Google Plus"
     },
     twitter : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
+        label : "Lien vers Twitter",
         placeholder : "Lien vers Twitter"
     },
     birthDate : {
         inputType : "date",
-        placeholder: "Date d'anniversaire'"
+        label : "Date d'anniversaire",
+        placeholder: "Date d'anniversaire"
     },
     phone :{
       	inputType : "text",
+      	label : "Fixe",
       	placeholder : "Saisir les numéros de téléphone séparer par une virgule"
     },
     mobile :{
       	inputType : "text",
+      	label : "Mobile",
       	placeholder : "Saisir les numéros de portable séparer par une virgule"
     },
     fax :{
       	inputType : "text",
+      	label : "Fax",
       	placeholder : "Saisir les numéros de fax séparer par une virgule"
+    },
+    price :{
+      	inputType : "text",
+      	label : "Prix",
+      	placeholder : "Prix ..."
+    },
+    contactInfo :{
+      	inputType : "text",
+      	label : "Coordonnées",
+      	placeholder : "n° tel, addresse email ..."
     },
     hidden :{
       	inputType : "hidden"
@@ -2912,6 +3018,16 @@ var typeObjLib = {
     		required : true,
     		greaterThanNow : ["DD/MM/YYYY"]
     	}
+    },
+    get:function(type){
+    	mylog.log("get", type);
+    	if( jsonHelper.notNull("typeObj."+type)){
+    		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
+    			return typeObj[ typeObj[type].sameAs ];
+    		} else
+    			return typeObj[type];
+    	}else 
+    		return null;
     }
 };
 
@@ -2937,8 +3053,7 @@ var typeObj = {
 		            }
 			    }
 			}
-		}
-	},
+		}	},
 	"addElement":{ 
 		dynForm : {
 		    jsonSchema : {
@@ -2964,8 +3079,7 @@ var typeObj = {
 		            }
 			    }
 			}
-		}
-	},
+		}	},
 	"addPhoto":{ 
 		dynForm : {
 		    jsonSchema : {
@@ -2976,143 +3090,39 @@ var typeObj = {
 			    	image : typeObjLib.imageAddPhoto
 			    }
 			}
-		}
-	},
-	"person" : {
-		col : "citoyens" , 
-		ctrl : "person",
-		titleClass : "bg-yellow",
-		bgClass : "bgPerson",
-		color:"yellow",
-		icon:"user",
-		lbh : "#person.invite",
-	},
-	"persons" : {col:"citoyens" , ctrl:"person"},
-	"people" : {col:"citoyens" , ctrl:"person",color:"yellow"},
-	"poi":{ 
-		col:"poi",
-		ctrl:"poi",
-		color:"azure",
-		icon:"info-circle"},
-	"citoyen" : {col:"citoyens" , ctrl:"person"},
-	"citoyens" : {col:"citoyens" , ctrl:"person",color:"yellow",icon:"user"},
-	"siteurl":{ 
-		col:"siteurl",
-		ctrl:"siteurl",
-	},
-	"organization" : { 
-		col:"organizations", 
-		ctrl:"organization", 
-		icon : "group",
-		titleClass : "bg-green",
-		color:"green",
-		bgClass : "bgOrga",
-	},
-	"organizations" : {col:"organizations",ctrl:"organization",color:"green",icon:"users"},
-	"LocalBusiness" : {
-		title: "entreprise",
-		title2: "de l'entreprise",
-		title3: "cette entreprise",
-		color: "azure",
-		icon: "industry",
-	},
-	"NGO" : {
-		title: "association",
-		title2: "de l'association",
-		title3: "cette association",
-		color: "green",
-		icon: "group",
-
-	},
-	"Group" : {
-		title: "groupe",
-		title2: "du groupe",
-		title3: "ce groupe",
-		color: "turq",
-		icon: "circle-o",
-
-	},
-	"project" : {
-		title: "projet",
-		title2: "du projet",
-		title3: "ce projet",
-		color: "purple",
-		icon: "circle-o",
-
-	},
-	"event" : {
-		col:"events",
-		ctrl:"event",
-		icon : "calendar",
-		titleClass : "bg-orange",
-		color:"orange",
-		bgClass : "bgEvent"
-	},
-	"events" : {col:"events",ctrl:"event",icon : "calendar",color:"orange"},
-	"project" : {
-		col:"projects",
-		ctrl:"project",
-		icon : "lightbulb-o",
-		color : "purple",
-		titleClass : "bg-purple",
-		bgClass : "bgProject"
-	},
-	"projects" : {col:"projects",ctrl:"project",color:"purple",icon:"lightbulb-o"},
-	"city" : {col:"cities",ctrl:"city"},
-	"cities" : {
-		col:"cities",
-		ctrl:"city", 
-		titleClass : "bg-red", 
-		icon : "university",
-		color:"red"
-	},
-	"entry" : {
-		col:"surveys",
-		ctrl:"survey",
-		titleClass : "bg-lightblue",
-		bgClass : "bgDDA",
-		icon : "gavel",
-		color : "azure",
-		saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"
-	},
+		}},
+	"person" : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
+	"persons" : { sameAs:"person" },
+	"people" : { sameAs:"person" },
+	"citoyen" : { sameAs:"person" },
+	"citoyens" : { sameAs:"person" },
+	"poi":{  col:"poi",ctrl:"poi",color:"azure",	icon:"info-circle"},
+	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
+	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
+	"organizations" : {sameAs:"organization"},
+	"LocalBusiness" : {color: "azure",icon: "industry"},
+	"NGO" : {sameAs:"organization"},
+	"Association" : {sameAs:"organization"},
+	"GovernmentOrganization" : {color: "green",icon: "circle-o"},
+	"Group" : {	color: "turq",icon: "circle-o"},
+	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
+	"events" : {sameAs:"event"},
+	"project" : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
+	"projects" : {sameAs:"project"},
+	"city" : {sameAs:"cities"},
+	"cities" : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
+	"entry" : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-lightblue",bgClass : "bgDDA",	icon : "gavel",	color : "azure", saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
 	"vote" : {col:"actionRooms",ctrl:"survey"},
 	"survey" : {col:"actionRooms",ctrl:"survey",color:"lightblue2",icon:"cog"},
-	"action" : {
-		col:"actions",
-		ctrl:"room",
-		titleClass : "bg-lightblue",
-		bgClass : "bgDDA",
-		icon : "cogs",
-		color : "lightblue2",
-		saveUrl : baseUrl+"/" + moduleId + "/rooms/saveaction",
-	},
+	"action" : {col:"actions",ctrl:"room",titleClass : "bg-lightblue",bgClass : "bgDDA",icon : "cogs",color : "lightblue2", saveUrl : baseUrl+"/" + moduleId + "/rooms/saveaction"},
 	"actions" : {col:"actions",color:"azure",ctrl:"room",icon:"cog"},
 	"rooms" : {col:"actions",ctrl:"room",color:"azure",icon:"gavel"},
 	"discuss" : {col:"actionRooms",ctrl:"room"},
-	"contactPoint" : {
-		col : "contact" , 
-		ctrl : "person",
-		titleClass : "bg-blue",
-		bgClass : "bgPerson",
-		color:"blue",
-		icon:"user",
-		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact",
-		},
-	"classified":{ 
-		col:"classified",
-		ctrl:"classified",
-		color:"azure",
-		icon:"bullhorn",
-	},
-	"url" : {
-		col : "url" , 
-		ctrl : "url",
-		titleClass : "bg-blue",
-		bgClass : "bgPerson",
-		color:"blue",
-		icon:"user",
-		saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",
-	},
+	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
+	"classified":{col:"classified",ctrl:"classified",color:"azure",	icon:"bullhorn",	},
+	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
+	"default" : {icon:"arrow-circle-right",color:"dark"},
+	"video" : {icon:"video-camera",color:"dark"},
 };
 
 var documents = {
@@ -3200,7 +3210,7 @@ var keyboardNav = {
 	"comma":188,"dash":189,"period":190,"forward slash":191,"grave accent":192,"open bracket":219,"back slash":220,"close braket":221,"single quote":222},
 
 	keyMap : {
-		"112" : function(){ $(".menu-name-profil").trigger('click') },//f1
+		"112" : function(){ $('#modalMainMenu').modal("show"); },//f1
 		"113" : function(){ if(userId)url.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
 		"114" : function(){ showMap(true); },//f3
 		"115" : function(){ elementLib.openForm('themes') },//f4
@@ -3484,9 +3494,13 @@ function KScrollTo(target){
 }
 
 var timerCloseDropdownUser = false;
-function initKInterface(params){
+function initKInterface(params){ console.log("initKInterface");
 
 	$(window).off();
+
+	$(window).resize(function(){
+      resizeInterface();
+    });
 
     //jQuery for page scrolling feature - requires jQuery Easing plugin
     $('.page-scroll a').bind('click', function(event) {
@@ -3515,15 +3529,18 @@ function initKInterface(params){
             $('.navbar-toggle:visible').click();
     });
 
-    $(".logout").click(function(){
-    	document.location.href="/ph/co2/person/logout";
+   $(".logout").click(function(){
+    	window.location.href=baseUrl+"/co2/person/logout";
     });
 
     $("#btn-sethome").click(function(){
     	url.loadByHash("#info.p.sethome")
     });
+    $("#btn-apropos").click(function(){
+    	url.loadByHash("#info.p.apropos")
+    });
 
-    var affixTop = 400;
+    var affixTop = 300;
     if(notEmpty(params)){
     	if(typeof params["affixTop"] != "undefined") affixTop = params["affixTop"];
     }

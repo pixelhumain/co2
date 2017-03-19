@@ -10,7 +10,7 @@
 <br>
 
 <button class="btn btn-success" id="btn-init-stream"><i class="fa fa-refresh"></i> Actualiser le fil d'actu</button>
-
+<div id="res-loadstream" class="col-md-12"></div>
 
 <script type="text/javascript">
 
@@ -40,6 +40,7 @@ function initStream(){
         url: baseUrl+"/"+moduleId+"/app/mediacrawler",
         success:
             function(html) {
+                //$("#res-loadstream").html(html);
                 toastr.success("Chargement terminé.");
                 $.unblockUI();
             },

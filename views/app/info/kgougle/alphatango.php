@@ -70,7 +70,8 @@
 			<div class="col-md-10 text-left padding-top-60 form-group">
 				<h3>
 					<i class="fa fa-send"></i> 
-					Contacter <span class="letter-azure font-blackoutM">Alpha Tango</span> par e-mail
+					Contacter <span class="letter-azure font-blackoutM">Alpha Tango</span> par e-mail<br>
+					<small>(ce formulaire de contact n'est pas encore opérationnel, merci de patienter encore quelques jours)</small>
 				</h3>
 				<br><br>
 				<div class="col-md-6">

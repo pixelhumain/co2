@@ -1,232 +1,227 @@
 <?php 
 
-	//HtmlHelper::registerCssAndScriptsFiles( array('/css/default/directory.css', ) , Yii::app()->theme->baseUrl. '/assets');
+  $cssAnsScriptFilesModule = array(
+    '/assets/css/default/responsive-calendar.css',
+  );
+  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
+  
+  $cssAnsScriptFilesModule = array(
+    '/js/default/directory.js',
+    '/js/default/responsive-calendar.js',
+  );
+  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
-
-	//$cssAnsScriptFilesModule = array(
-	//	''
-	//);
-	//HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
     $params = CO2::getThemeParams();
 
     $page = "search";
-    if(!@$type) $type = "all";
-    if(@$type=="events") $page = "agenda";
-    if(@$type=="classified") $page = "annonces";
-    if(@$type=="vote") $page = "power";
 
-    if($params["title"] == "kgougle") $page = "social";
-    $subdomain = $page;
+    if(!@$type){  $type = "all"; }
+
+    if(@$type=="events")    { $page = "agenda"; }
+    if(@$type=="classified"){ $page = "annonces"; }
+    if(@$type=="vote")      { $page = "power"; }
+
+    if(@$type=="cities")    { $lblCreate = ""; }
+
+    if($params["title"] == "Kgougle") $page = "social";
+    
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                             array(  "layoutPath"=>$layoutPath ,
                                     "page" => $page,
                                     "type" => @$type) ); 
 ?>
+
 <style>
-#page .bg-dark {
-    color: white !important;
-    background-color: #3C5665 !important;
-}
-#page .bg-red{
-    background-color:#E33551 !important;
-    color:white!important;
-}
-#page .bg-blue{
-    background-color: #5f8295 !important;
-    color:white!important;
-}
-#page .bg-green{
-    background-color:#93C020 !important;
-    color:white!important;
-}
-#page .bg-orange{
-    background-color:#FFA200 !important;
-    color:white!important;
-}
-#page .bg-yellow{
-    background-color:#FFC600 !important;
-    color:white!important;
-}
-#page .bg-purple{
-    background-color:#8C5AA1 !important;
-    color:white!important;
-}
-#page #dropdown_search{
-	min-height:500px;
-    /*margin-top:30px;*/
-}
-#page .row.headerDirectory{
-    margin-top: 20px;
-    display: none;
-}
-#page p {
-    font-size: 13px;
-}
-.container-result-search {
-    border-top:1px solid #eee;
-    padding-top:15px;
-}
+    #page .bg-dark {
+        color: white !important;
+        background-color: #3C5665 !important;
+    }
+    #page .bg-red{
+        background-color:#E33551 !important;
+        color:white!important;
+    }
+    #page .bg-blue{
+        background-color: #5f8295 !important;
+        color:white!important;
+    }
+    #page .bg-green{
+        background-color:#93C020 !important;
+        color:white!important;
+    }
+    #page .bg-orange{
+        background-color:#FFA200 !important;
+        color:white!important;
+    }
+    #page .bg-yellow{
+        background-color:#FFC600 !important;
+        color:white!important;
+    }
+    #page .bg-turq{
+        background-color: #229296 !important;
+        color:white!important;
+    }
+    #page .bg-purple{
+        background-color:#8C5AA1 !important;
+        color:white!important;
+    }
+    #page #dropdown_search{
+    	min-height:500px;
+        /*margin-top:30px;*/
+    }
+    #page .row.headerDirectory{
+        margin-top: 20px;
+        display: none;
+    }
+    #page p {
+        font-size: 13px;
+    }
+    .container-result-search {
+        border-top:1px solid #eee;
+        padding-top:15px;
+    }
 
-/*.homestead{
-    font-family:unset!important;
-}*/
-/*
-.main-btn-scopes{
-    position: absolute;
-    top: 85px;
-    left: 18px;
-    z-index: 10;
-    border-radius: 0 50%;
-}*/
+    /*.homestead{
+        font-family:unset!important;
+    }*/
+    /*
+    .main-btn-scopes{
+        position: absolute;
+        top: 85px;
+        left: 18px;
+        z-index: 10;
+        border-radius: 0 50%;
+    }*/
 
-.btn-create-page{
-    margin-top:0px;
-    z-index: 10;
-    border-radius: 0 50%;
-    -ms-transform: rotate(7deg);
-    -webkit-transform: rotate(7deg);
-    transform: rotate(-45deg);
-}
-.btn-create-page:hover{
-    background-color: white!important;
-    color:#34a853!important;
-    border: 2px solid #34a853!important;
+    .btn-create-page{
+        margin-top:0px;
+        z-index: 10;
+        border-radius: 0 50%;
+        -ms-transform: rotate(7deg);
+        -webkit-transform: rotate(7deg);
+        transform: rotate(-45deg);
+    }
+    .btn-create-page:hover{
+        background-color: white!important;
+        color:#34a853!important;
+        border: 2px solid #34a853!important;
 
-}
-.main-btn-scopes {
-    margin-top: 7px;
-}
+    }
+    .main-btn-scopes {
+        margin-top: 7px;
+    }
 
-.scope-min-header{
-    float: left;
-    margin-top: 27px;
-    margin-left: 35px;
-}
+    .scope-min-header{
+        float: left;
+        margin-top: 27px;
+        margin-left: 35px;
+    }
 
-.links-create-element .btn-create-elem{
-    margin-top:25px;
-}
+    .links-create-element .btn-create-elem{
+        margin-top:25px;
+    }
 
-.subtitle-search{
-    display: none;
-    /*width: 100%;
-    text-align: center;*/
-}
+    .subtitle-search{
+        display: none;
+        /*width: 100%;
+        text-align: center;*/
+    }
+       
+    .breadcrum-communexion{ 
+         margin-top:25px;
+    }
 
-.breadcrum-communexion .item-globalscope-checker{
-    border-bottom:1px solid #e6344d;
-}
-.item-globalscope-checker.inactive{
-    color:#DBBCC1 !important;
-    border-bottom:0px;
-}
-.item-globalscope-checker:hover,
-.item-globalscope-checker:active,
-.item-globalscope-checker:focus{
-    color:#e6344d !important;
-    border-bottom:1px solid #e6344d;
-    text-decoration: none !important;
-}
-header .container, 
-.header .container{
-    padding-bottom: 40px;
-}
+    .breadcrum-communexion .item-globalscope-checker{
+        border-bottom:1px solid #e6344d;
+    }
+    .item-globalscope-checker.inactive{
+        color:#DBBCC1 !important;
+        border-bottom:0px;
+        margin(top:-6px;)
+    }
+    .item-globalscope-checker:hover,
+    .item-globalscope-checker:active,
+    .item-globalscope-checker:focus{
+        color:#e6344d !important;
+        border-bottom:1px solid #e6344d;
+        text-decoration: none !important;
+    }
+    header .container, 
+    .header .container{
+        padding-bottom: 40px;
+    }
 
-.btn-directory-type.bg-white {
-    background-color: #F2F2F2 !important;
-}
+    .btn-directory-type.bg-white {
+        background-color: #F2F2F2 !important;
+    }
 </style>
-
-
 
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
 
-    <?php
-        $communexion = CO2::getCommunexionCookies();  
-        if($communexion["state"] == false){
-    ?>
+    <?php if(@$type=="events"){ ?>
+    <div class="col-md-12 no-padding calendar"></div>
+    <div class="responsive-calendar-init hidden"> 
+      <div class="responsive-calendar light col-md-12 no-padding">   
+          <div class="day-headers">
+            <div class="day header">Lun</div>
+            <div class="day header">Mar</div>
+            <div class="day header">Mer</div>
+            <div class="day header">Jeu</div>
+            <div class="day header">Ven</div>
+            <div class="day header">Sam</div>
+            <div class="day header">Dim</div>
+          </div>
+          <div class="days" data-group="days"></div>   
+          <div class="controls">
+              <a id="btn-month-before" class="text-white" data-go="prev"><div class="btn"><i class="fa fa-arrow-left"></i></div></a>
+              <h4 class="text-white"><span data-head-month></span> <span data-head-year></span></h4>
+              <a id="btn-month-next" class="text-white" data-go="next"><div class="btn"><i class="fa fa-arrow-right"></i></div></a>
+          </div>
+      </div>
+    </div>
+    <?php } ?>
 
-        <?php if($type != "cities"){ ?>            
-            <h5 class="pull-left letter-red" style="margin-bottom: -8px;">
-                    <button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-25 margin-right-10" 
-                        data-target="#modalScopes" data-toggle="modal"
-                        data-toggle="tooltip" data-placement="top" 
-                                            title="Sélectionner des lieux de recherche">
-                        <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/cible3.png" height=32>
-                    </button> 
-                    recherche ciblée <i class="fa fa-angle-right"></i> 
-            </h5>
-         
-            <div class="scope-min-header list_tags_scopes hidden-xs text-left">
-            </div>
-        <?php } ?> 
-
-    <?php }else{ ?>
-        <div class="breadcrum-communexion  hidden-xs margin-top-15 col-md-12">
-            <button class="btn btn-link text-red btn-decommunecter tooltips"
-                    data-toggle="tooltip" data-placement="right" 
-                    title="Quitter la communexion">
-                <i class="fa fa-times"></i>
+    <?php if(@$type!="cities"){ ?>
+        <div class="col-md-2 col-sm-2 col-xs-12 no-padding">
+            <?php if(@$type=="all"){ ?>
+            <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips"
+                    data-target="#dash-create-modal" data-toggle="modal"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="<?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>">
+                <i class="fa fa-plus-circle"></i> <?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>
             </button>
+            <?php }else{ ?>
+            <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips" data-type="<?php echo @$type; ?>"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="<?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>">
+                <i class="fa fa-plus-circle"></i> <?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>
+            </button>
+            <?php } ?>
 
-            <i class="fa fa-university fa-2x text-red"></i> 
-            <button data-toggle='dropdown' data-target='dropdown-multi-scope'
-                class='btn btn-link text-red item-globalscope-checker homestead 
-                      <?php if(@$communexion["currentName"]!=@$communexion["values"]["regionName"]) echo "inactive"; ?>' 
-                data-scope-value='<?php echo @$communexion["values"]["regionName"]; ?>'
-                data-scope-name='<?php echo @$communexion["values"]["regionName"]; ?>'
-                data-scope-type='region'>
-                <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["regionName"]; ?>
-            </button> 
-            <button data-toggle='dropdown' data-target='dropdown-multi-scope'
-                class='btn btn-link text-red item-globalscope-checker homestead
-                      <?php if(@$communexion["currentName"]!=@$communexion["values"]["depName"]) echo "inactive"; ?>' 
-                data-scope-value='<?php echo @$communexion["values"]["depName"]; ?>'
-                data-scope-name='<?php echo @$communexion["values"]["depName"]; ?>'
-                data-scope-type='dep'>
-                <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["depName"]; ?>
-            </button> 
-            <button data-toggle='dropdown' data-target='dropdown-multi-scope'
-                class='btn btn-link text-red item-globalscope-checker homestead
-                      <?php if(@$communexion["currentName"]!=@$communexion["values"]["cityCp"]) echo "inactive"; ?>' 
-                data-scope-value='<?php echo @$communexion["values"]["cityCp"]; ?>'
-                data-scope-name='<?php echo @$communexion["values"]["cityCp"]; ?>'
-                data-scope-type='cp'>
-                <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["cityCp"]; ?>
-            </button> 
-            <button data-toggle='dropdown' data-target='dropdown-multi-scope'
-                class='btn btn-link text-red item-globalscope-checker homestead
-                      <?php if(@$communexion["currentName"]!=@$communexion["values"]["cityName"]) echo "inactive"; ?>'
-                data-scope-value='<?php echo @$communexion["values"]["cityKey"]; ?>'
-                data-scope-name='<?php echo @$communexion["values"]["cityName"]; ?>'
-                data-scope-type='city'>
-                <i class='fa fa-angle-right'></i>  <?php echo @$communexion["values"]["cityName"]; ?>
-            </button> 
-            <?php //echo @$communexion["currentName"]." != ".@$communexion["values"]["cityName"]; ?>
-             
-            <?php   //$icon = @$params["pages"]["#".$page]["icon"]; 
-                    //$subdomainName = $params["pages"]["#".$page]["subdomainName"];
-            ?>
-           <!--  <span class="pull-right">
-                <span class="font-blackoutM text-red"> <?php //echo $subdomainName; ?></span>
-                <i class="fa fa-<?php //echo $icon; ?> fa-2x text-red"></i> 
-            </span> -->
+        </div>
+
+        <div class="col-md-10 col-sm-10 col-xs-12 padding-5">
+        <?php
+            $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
+        ?>
         </div>
     <?php } ?>
 
+
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
+
+    <?php if(@$type=="all"){ ?>
     <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
         <!-- <hr style="margin-bottom:-20px;"> -->
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 
             data-target="#dash-create-modal" data-toggle="modal"
             data-toggle="tooltip" data-placement="top" 
-                                title="Créer une nouvelle page">
+            title="Créer une nouvelle page">
                 <i class="fa fa-times" style="font-size:18px;"></i>
         </button>
         <h5 class="text-center letter-green margin-top-25">Créer une page</h5>
@@ -239,6 +234,7 @@ header .container,
             </small>
         </h5><br>
     </div>
+    <?php } ?>
 
 </div>
 
@@ -340,7 +336,8 @@ header .container,
                                 </div>
                             </div>
                         </a>
-                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="project" data-type="project"
+                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" 
+                            data-ktype="project" data-type="project"
                             date-target="#modalMainMenu" data-dismiss="modal">
                             <div class="modal-body text-left">
                                 <h2 class="text-purple"><i class="fa fa-lightbulb-o padding-bottom-10"></i><br>
@@ -380,6 +377,8 @@ header .container,
 
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
+var page = "<?php echo @$page; ?>";
+var titlePage = "<?php echo @$params["pages"]["#".$page]["subdomainName"]; ?>";
 
 //var TPL = "kgougle";
 
@@ -389,15 +388,21 @@ var currentKFormType = "";
 
 jQuery(document).ready(function() {
 
-	initKInterface({"affixTop":350});
+    setTitle("", "", titlePage);
+
+    initKInterface({"affixTop":320});
     
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
 	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
 
-        
         $(".btn-directory-type").click(function(){
             var typeD = $(this).data("type");
+
+            if(typeD == "events"){
+                var typeEvent = $(this).data("type-event");
+                searchSType = typeEvent;
+            }
 
             initTypeSearch(typeD);
 
@@ -411,6 +416,20 @@ jQuery(document).ready(function() {
             KScrollTo("#content-social");
         });
          
+        <?php if(@$type == "classified"){ ?>
+            initClassifiedInterface();
+        <?php } ?>
+
+        //console.log("init Scroll");
+        $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
+            if(!loadingData && !scrollEnd && !isMapEnd){
+                  var heightWindow = $("html").height() - $("body").height();
+                  if( $(this).scrollTop() >= heightWindow - 400){
+                    startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
+                  }
+            }
+        });
+
 
         loadingData = false; 
         initTypeSearch(type);
@@ -456,7 +475,7 @@ jQuery(document).ready(function() {
          }
     });
 
-    $("#menu-map-btn-start-search").click(function(){
+    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
         initTypeSearch(typeInit);
         startSearch(0, indexStepInit, searchCallback);
     });
@@ -472,10 +491,21 @@ jQuery(document).ready(function() {
         
     });
 
+    $(".main-btn-create").click(function(){
+        currentKFormType = $(this).data("ktype");
+        var type = $(this).data("type");
+        if(type=="events") type="event";
+        if(type=="vote") type="entry";
+        elementLib.openForm(type);
+    });
+
     $(".btn-decommunecter").click(function(){
         activateGlobalCommunexion(false);
     });
 
+    setTimeout(function(){
+        KScrollTo("#content-social");  
+    }, 2000);
     $(".tooltips").tooltip();
 
     //currentKFormType = "Group";
@@ -497,4 +527,137 @@ function initTypeSearch(typeInit){
         indexStepInit = 100;
     }
 }
+
+<?php 
+    if(@$type == "classified"){
+    $freedomSections = CO2::getContextList("freedomSections");
+?>
+var freedomCategories = <?php echo json_encode($freedomSections); ?>
+<?php } ?>
+
+var section = "";
+var classType = "";
+var classSubType = "";
+function initClassifiedInterface(){
+
+    $('#menu-section-classified').removeClass("hidden");
+
+    $(".btn-select-type-anc").click( function()
+    {    
+        searchType = [ "classified" ];
+        indexStepInit = 100;
+        $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
+        $(".keycat").addClass("hidden");
+        $(this).addClass("active");
+
+        section = $(this).data("type-anc");
+        sectionKey = $(this).data("key");
+        //alert("section : " + section);
+        if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
+            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
+            //$(".subsub").show(300);
+            $('#searchTags').val(section);
+            //KScrollTo(".top-page");
+            startSearch(0, indexStepInit, searchCallback); 
+        } 
+
+        if(typeof freedomCategories[sectionKey] != "undefined") {
+            $(".label-category").html("<i class='fa fa-"+ freedomCategories[sectionKey]["icon"] + "'></i> " + freedomCategories[sectionKey]["label"]);
+            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+freedomCategories[sectionKey]["color"])
+            $(".fa-title-list").removeClass("hidden");
+        }
+    });
+
+    $(".btn-select-category-1").click(function(){
+        searchType = [ "classified" ];
+        $(".btn-select-category-1").removeClass("active");
+        $(this).addClass("active");
+
+        var classType = $(this).data("keycat");
+        $(".keycat").addClass("hidden");
+        $(".keycat-"+classType).removeClass("hidden");   
+
+        ////alert("classType : "+classType);
+
+        $('#searchTags').val(section+","+classType);
+        startSearch(0, indexStepInit, searchCallback);  
+    });
+
+    $(".keycat").click(function(){
+
+        searchType = [ "classified" ];
+        $(".keycat").removeClass("active");
+        $(this).addClass("active");
+        var classSubType = $(this).data("keycat");
+        var classType = $(this).data("categ");
+        //alert("classSubType : "+classSubType);
+        $('#searchTags').val(section+","+classType+","+classSubType);
+        startSearch(0, indexStepInit, searchCallback);  
+    });
+
+    $("#btn-create-classified").click(function(){
+         elementLib.openForm('classified');
+    });
+
+    
+}
+
+
+<?php if(@$type == "events"){ ?>
+var calendarInit = false;
+function showResultInCalendar(mapElements){
+  mylog.log("showResultInCalendar xxx");
+  mylog.dir(mapElements);
+
+  var events = new Array();
+  $.each(mapElements, function(key, thisEvent){
+    
+    var startDate = exists(thisEvent["startDateTime"]) ? thisEvent["startDateTime"].substr(0, 10) : "";
+    var endDate = exists(thisEvent["endDateTime"]) ? thisEvent["endDateTime"].substr(0, 10) : "";
+    var cp = "";
+    var loc = "";
+    if(thisEvent["address"] != null){
+        var cp = exists(thisEvent["address"]["postalCode"]) ? thisEvent["address"]["postalCode"] : "" ;
+        var loc = exists(thisEvent["address"]["addressLocality"]) ? thisEvent["address"]["addressLocality"] : "";
+    }
+    var position = cp + " " + loc;
+
+    var name = exists(thisEvent["name"]) ? thisEvent["name"] : "";
+    var thumb_url = notEmpty(thisEvent["profilThumbImageUrl"]) ? baseUrl+thisEvent["profilThumbImageUrl"] : "";
+    
+    if(typeof events[startDate] == "undefined") events[startDate] = new Array();
+    events[startDate].push({  "id" : thisEvent["_id"]["$id"],
+                              "thumb_url" : thumb_url, 
+                              "startDate": startDate,
+                              "endDate": endDate,
+                              "name" : name,
+                              "position" : position });
+  });
+
+  //mylog.dir(events);
+
+  if(calendarInit == true) {
+    $(".calendar").html("");
+  }
+
+  $(".calendar").html($(".responsive-calendar-init").html());
+
+  var aujourdhui = new Date();
+  var  month = (aujourdhui.getMonth()+1).toString();
+  if(aujourdhui.getMonth() < 10) month = "0" + month;
+  var date = aujourdhui.getFullYear().toString() + "-" + month;
+  
+  $(".responsive-calendar").responsiveCalendar({
+          time: date,
+          events: events
+        });
+
+
+  $(".responsive-calendar").show();
+
+  calendarInit = true;
+}
+
+<?php } ?>
+
 </script>

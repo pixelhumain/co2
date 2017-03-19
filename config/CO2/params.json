@@ -11,50 +11,75 @@
 			"#search":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
+                "open" : true, 
                 "subdomain" : "search", 
                 "subdomainName" : "Recherche",
                 "hash" : "#app.search",
                 "icon" : "search", 
                 "mainTitle" : "Moteur de recherche <span class='text-red'>territorial</span>",
-                "placeholderMainSearch" : "Rechercher une page ..."
+                "placeholderMainSearch" : "Rechercher une page ...",
+                "lblBtnCreate" : "Créer une page",
+                "colorBtnCreate" : "green"
           },
 
-			"#annonces":
+		    "#annonces":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
+                "open" : true, 
                 "subdomain" : "annonces", 
-                "subdomainName" : "annonces",
+                "subdomainName" : "Annonces",
                 "hash" : "#app.annonces",
-                "icon" : "newspaper-o", 
-                "mainTitle" : "Toutes vos annonces en direct",
-                "placeholderMainSearch" : "rechercher parmis les annonces  ..."
+                "icon" : "bullhorn", 
+                "mainTitle" : "Petites annonces",
+                "placeholderMainSearch" : "rechercher parmis les annonces  ...",
+                "lblBtnCreate" : "Publier une annonce",
+                "colorBtnCreate" : "azure"
           },
 
 			"#agenda":
-			  	{"inMenu" : true, 
+                {"inMenu" : true, 
                 "useHeader" : true, 
+                "open" : true, 
                 "subdomain" : "agenda", 
-                "subdomainName" : "agenda",
+                "subdomainName" : "Agenda",
                 "hash":"#app.agenda",
                 "icon" : "calendar", 
-                "mainTitle" : "L'agenda <span class='text-red'>CO</span>mmun",
-                "placeholderMainSearch" : "rechercher un événement ..."
+                "mainTitle" : "L'agenda <span class='text-red'>C</span>Ommun",
+                "placeholderMainSearch" : "rechercher un événement ...",
+                "lblBtnCreate" : "Créer un événement",
+                "colorBtnCreate" : "orange"
           },
 
 			"#power":
 			  	{"inMenu" : true, 
                 "useHeader" : true, 
+                "open" : true, 
                 "subdomain" : "power", 
-                "subdomainName" : "power",
+                "subdomainName" : "Démocratie",
                 "hash":"#app.power",
-                "icon" : "hand-rock-o", 
-                "mainTitle" : "Espace <span class='text-red'>CO</span>mmun dédié à l'intelligence <span class='text-red'>CO</span>llective",
-                "placeholderMainSearch" : "rechercher parmis les propositions ..."
+                "icon" : "comments", 
+                "mainTitle" : "Espace d'expression démocratique",
+                "placeholderMainSearch" : "rechercher parmis les propositions ...",
+                "lblBtnCreate" : "Faire une proposition",
+                "colorBtnCreate" : "azure"
+          },
+
+            "#live":
+                {"inMenu" : true, 
+                "useHeader" : true, 
+                "open" : true, 
+                "subdomain" : "live", 
+                "subdomainName" : "Actus",
+                "hash":"#app.live",
+                "icon" : "newspaper-o", 
+                "mainTitle" : "Le fil d'actualité <span class='text-red'>CO</span>mmun",
+                "placeholderMainSearch" : "rechercher parmis les messages ..."
           },
 
 			"#page":
 			  	{"inMenu" : false, 
                 "useHeader" : false, 
+                "open" : true, 
                 "subdomain" : "page", 
                 "subdomainName" : "page",
                 "hash":"#app.page",
@@ -66,6 +91,7 @@
             "#info":
                 {"inMenu" : false, 
                 "useHeader" : false, 
+                "open" : true, 
                 "subdomain" : "apropos", 
                 "subdomainName" : "Info",
                 "hash":"#app.info",
@@ -76,7 +102,8 @@
 
             "#city":
                 {"inMenu" : false, 
-                "useHeader" : false, 
+                "useHeader" : false,
+                "open" : true,  
                 "subdomain" : "city", 
                 "subdomainName" : "City",
                 "hash":"#app.city",

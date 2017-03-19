@@ -155,7 +155,12 @@
 #form-news input#falseInput{
   border: none!important;
 }
-
+.mentions-input-box .mentions{
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  left: 5px !important;
+  top: 1px !important;
+  padding:0 !important;
+}
 </style>
 <?php 
   $isLive = isset($_GET["isLive"]) ? true : false;
@@ -326,12 +331,11 @@
       <?php if((@$canManageNews && $canManageNews==true) || (@$isLive && $isLive == true)){ ?>
       <div class="user-image-buttons">
         <form method="post" id="photoAddNews" enctype="multipart/form-data">
-          <span class="btn btn-white btn-file fileupload-new btn-sm"  <?php if (!$authorizedToStock){ ?> onclick="addMoreSpace();" <?php } ?>>
+          <span class="btn btn-white btn-file fileupload-new btn-sm uploadImageNews"  <?php if (!$authorizedToStock){ ?> onclick="addMoreSpace();" <?php } ?>>
           <span class="fileupload-new"><i class="fa fa-picture-o fa-x"></i> </span>
             <?php if ($authorizedToStock){ ?>
               <input type="file" accept=".gif, .jpg, .png" name="newsImage" id="addImage" onchange="showMyImage(this);">
             <?php } ?>
-            
           </span>
         </form>
       </div>

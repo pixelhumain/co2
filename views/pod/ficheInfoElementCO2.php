@@ -1,8 +1,8 @@
 <?php 
 	$cssAnsScriptFilesTheme = array(
 		//X-editable
-		'/plugins/x-editable/css/bootstrap-editable.css',
-		'/plugins/x-editable/js/bootstrap-editable.js' , 
+		//'/plugins/x-editable/css/bootstrap-editable.css',
+		//'/plugins/x-editable/js/bootstrap-editable.js' , 
 
 		//DatePicker
 		'/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
@@ -22,7 +22,12 @@
 		
 		//SELECT2
 		'/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
-		'/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js' , 
+		'/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js' ,
+
+		// SHOWDOWN
+		'/plugins/showdown/showdown.min.js',
+		//MARKDOWN
+		'/plugins/to-markdown/to-markdown.js',
 
 	);
 	//if ($type == Project::COLLECTION)
@@ -75,6 +80,10 @@
 		/*padding: 6px;
 		margin-bottom: 4px;*/
 	}
+
+	.editBtn{
+		float: right;
+	}
 	
 </style>
 <div id="menu-name" class="hidden">
@@ -94,9 +103,10 @@
 						<a href="https://twitter.com/gurdeeposahan1" target="_blank" class="fa fa-twitter"></a>
 						<a href="https://plus.google.com/u/0/105032594920038016998" target="_blank" class="fa fa-google"></a>
 					</div>
+					<?php if(@Yii::app()->session["userId"]){ ?>
 					<div class="username">
-					    <h2 class="text-left">
-						    <?php //echo @$element["name"]; ?><!-- <br> -->
+					    <!--<h2 class="text-left">
+						    <?php //echo @$element["name"]; ?><!-- <br>
 						    <small>
 						    	<?php if(@$element["address"] && @$element["address"]["addressLocality"]) {
 		                				echo "<i class='fa fa-university'></i> ".$element["address"]["addressLocality"];
@@ -106,152 +116,346 @@
 		                			  	echo $element["address"]["postalCode"];
 		                		?>
 		                	</small>
-	                	</h2>
+	                	</h2>-->
+	                	<?php $this->renderPartial('../element/linksMenu', 
+	                			array("linksBtn"=>$linksBtn,
+	                					"elementId"=>(string)$element["_id"],
+	                					"elementType"=>$type,
+	                					"elementName"=> $element["name"]) 
+	                			); 
+	                	?>
 					    <!-- <p><i class="fa fa-briefcase"></i> Web Design and Development.</p> -->
-					    
-					    <a href="https://web.facebook.com/" target="_blank" class="btn-o"> <i class="fa fa-chain"></i> Suivre </a>
-					    <a href="https://www.instagram.com/gurdeeposahan/" target="_blank"  class="btn-o"> <i class="fa fa-star"></i> Favoris </a>
-					    
-					    
-					     <ul class="nav navbar-nav pull-right">
-					        <li class="dropdown">
-					          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-ellipsis-v pull-left"></span></a>
-					          <ul class="dropdown-menu pull-right">
-					            <li><a href="#">Video Call <i class="fa fa-video-camera"></i></a></li>
-					            <li><a href="#">Poke <i class="fa fa-hand-o-right"></i></a></li>
-					            <li><a href="#">Report <i class="fa fa-bug"></i></a></li>
-					            <li><a href="#">Block <i class="fa fa-lock"></i></a></li>
-					          </ul>
-					        </li>
-					      </ul>
-					   
 					</div>
+					<?php } ?>
 				    
 				</div>
 		        
 		    </li>
-			<li class="editable">
-				<div class="link"><i class="fa fa-globe"></i>A propos<i class="fa fa-chevron-down"></i></div>
-				<ul class="submenu">
-
-
-					<?php if(@$edit==true){ ?>
-							<li class="tooltips editElementDetail" data-edit-id="name" 
-								data-toggle="tooltip" data-placement="right" title="cliquer pour modifier">
-
-								<i class="fa fa-user-circle-o fa_name"></i> <?php echo Yii::t("common","Name"); ?> : 
-								<a href="javascript:" id="name" data-type="text" 
-									data-title="<?php echo Yii::t("person","Enter your name"); ?>" 
-									data-emptytext="<?php echo Yii::t("person","Enter your name"); ?>" class="editable-context editable editable-click">
-
-									<?php if(isset($element["name"])) echo $element["name"]; else echo ""; ?>
-
-									<?php 
-									// function clean($string) {
-									//    $string = str_replace(' ', '', $string); // Replaces all spaces with hyphens.
-									//    $string = str_replace('-', '', $string); // Replaces all spaces with hyphens.
-
-									//    return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-									// }
-									// echo clean("Jean-MichelL@p#'(ez");
-									?>
-								</a>
-							</li>
+			<li>
+				<div class="link">
+					<i class="fa fa-globe"></i><?php echo Yii::t("common","About"); ?><i class="fa fa-chevron-down"></i>
+					<?php if($edit==true || $openEdition==true ){?>
+						<a href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a>
 					<?php } ?>
-
-					<?php if(@$edit==true){ ?>
-							<li class="tooltips editElementDetail" data-edit-id="username" 
-								data-toggle="tooltip" data-placement="right" title="cliquer pour modifier">
-
-								<i class="fa fa-user-secret fa_username"></i> <?php echo Yii::t("common","Username"); ?> : 
-								<a href="javascript:" id="username" data-type="text" 
-									data-title="<?php echo Yii::t("person","Enter your username"); ?>" 
-									data-emptytext="<?php echo Yii::t("person","Enter your username"); ?>" class="editable-context editable editable-click">
-
-									<?php if(isset($element["username"])) echo $element["username"]; else echo ""; ?>
-								</a>
+				</div>
+				<ul class="submenu">
+				<!--
+					<?php //if(@$edit==true){ ?>
+							<li class="tooltips " data-edit-id="name">
+								<i class="fa fa-user-circle-o"></i> <?php //echo Yii::t("common","Name"); ?> : 
+								<span id="name" class=""><?php //if(isset($element["name"])) echo $element["name"]; else echo ""; ?></span>
+							</li>
+					<?php //} ?>
+				-->
+					<?php if($type==Person::COLLECTION){ ?>
+							<li class="tooltips hidden username" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("common","Username"); ?>">
+								<i class="fa fa-user-secret"></i>
+								<span id="usernameMenuLeft" class=""><?php if(isset($element["username"])) echo $element["username"]; else echo ""; ?></span>
 							</li>
 					<?php } ?>
 
 					<?php if($type==Person::COLLECTION){
 						if(Preference::showPreference($element, $type, "birthDate", Yii::app()->session["userId"])){ ?>
-							<li class="tooltips editElementDetail" data-edit-id="birthDate" 
-								<?php if(@$edit==true){ ?>
-								data-toggle="tooltip" data-placement="right" title="cliquer pour modifier"
-								<?php } ?>>
-
-								<i class="fa fa-birthday-cake fa_birthDate"></i> <?php echo Yii::t("person","Birth date"); ?> : 
-								<a href="javascript:" id="birthDate" data-type="date" 
-									data-title="<?php echo Yii::t("person","Birth date"); ?>" 
-									data-emptytext="<?php echo Yii::t("person","Birth date"); ?>" class="editable editable-click">
-
-									<?php echo (isset($element["birthDate"])) ? date("d/m/Y", strtotime($element["birthDate"]))  : null; ?>
-								</a>
+							<li class="hidden birthDate" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("person","Birth date"); ?>">
+								<i class="fa fa-birthday-cake"></i><?php echo Yii::t("person","Birth date"); ?> : 
+								<span id="birthDateMenuLeft" class=""><?php echo (isset($element["birthDate"])) ? date("d/m/Y", strtotime($element["birthDate"]))  : null; ?></span>
 							</li>
 						<?php }
 					} ?>
 
-					<?php 	if(($type==Person::COLLECTION && Preference::showPreference($element, $type, "email", Yii::app()->session["userId"])) || 
-								($type!=Person::COLLECTION && $type!=Event::COLLECTION)){ ?>
-								<li class="tooltips editElementDetail" data-edit-id="email" 
-									<?php if(@$edit==true){ ?>
-									data-toggle="tooltip" data-placement="right" title="cliquer pour modifier"
-									<?php } ?>>
+					<?php if($type==Project::COLLECTION && isset($element["properties"]["avancement"]) ){ ?>
+						<li class="tooltips hidden avancement"  data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("project","Project maturity",null,Yii::app()->controller->module->id); ?>">
+							<span id="avancementMenuLeft"> <?php echo Yii::t("project","Project maturity",null,Yii::app()->controller->module->id)." : ".Yii::t("project",$element["properties"]["avancement"],null,Yii::app()->controller->module->id); ?></span>
+						</li>
+					<?php } ?>
 
-									<i class="fa fa-envelop fa_birthDate"></i> E-mail : 
-									<a href="javascript:" id="email" data-type="text" 
-										data-title="E-mail" 
-										data-emptytext="E-mail" class="editable-context editable editable-click required">
-
-										<?php echo (isset($element["email"])) ? $element["email"] : ""; ?>
-									</a>
+					<?php if( 	( 	$type==Person::COLLECTION && 
+									Preference::showPreference($element, $type, "email", Yii::app()->session["userId"]) ) || 
+							  	(	$type!=Person::COLLECTION && $type!=Event::COLLECTION ) ){ ?>
+								<li class="tooltips hidden email" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("common","E-mail"); ?>">
+									<i class="fa fa-envelope"></i>
+									<span id="emailMenuLeft" class=""><?php echo (isset($element["email"])) ? $element["email"] : ""; ?></span>
 								</li>
 					<?php } ?>
 					
+					<?php //If there is no http:// in the url
+					$scheme = "";
+					if(isset($element["url"])){
+						if (!preg_match("~^(?:f|ht)tps?://~i", $element["url"])) $scheme = 'http://';
 
-					
+					}?>
+
+					<li class="tooltips url hidden" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("common","Website URL") ?>">
+						<i class="fa fa-desktop"></i>
+						<span>
+							<a href="<?php echo (isset($element["url"])) ? $scheme.$element['url'] : 'javascript:;'; ?>" target="_blank" id="urlMenuLeft" style="cursor:pointer;">
+								<?php echo (isset($element["url"])) ? $element["url"] : ""; ?>
+							</a>
+						</span>
+					</li>
+
+
 					<?php  if($type==Organization::COLLECTION || $type==Person::COLLECTION){ ?>
-								<li class="tooltips editElementDetail" data-edit-id="phone" 
-									<?php if(@$edit==true){ ?>
-									data-toggle="tooltip" data-placement="right" title="cliquer pour modifier"
-									<?php } ?>>
-
-									<i class="fa fa-phone"></i> Téléphone : 
-									<a href="javascript:" id="fixe" data-type="text" 
-										data-title="<?php echo Yii::t("person","Phone"); ?>" 
-										data-emptytext="<?php echo Yii::t("person","Phone"); ?>" class="telephone editable editable-click">
-
-										<?php 	if(isset($element["telephone"]["fixe"])){
-													foreach ($element["telephone"]["fixe"] as $key => $tel) {
-														if($key > 0)
-															echo ", ";
-														echo $tel;
-													}
+								<li class="tooltips fixe hidden" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("common","Phone") ?>">
+									<i class="fa fa-phone"></i>
+									<span id="fixe">
+										<?php
+											if( !empty($element["telephone"]["fixe"])){
+												$fixe = "";
+												foreach ($element["telephone"]["fixe"] as $key => $num) {
+													$fixe .= ($fixe != "") ? ", ".trim($num) : trim($num);
 												}
-											?>
-									</a>
+												echo $fixe;
+											}	
+										?>
+									</span>
+								</li>
+								<li class="tooltips mobile hidden" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("common","Mobile") ?>">
+									<i class="fa fa-mobile"></i>
+									<span id="mobile">
+										<?php
+											if( !empty($element["telephone"]["mobile"])){
+												$mobile = "";
+												foreach ($element["telephone"]["mobile"] as $key => $num) {
+													$mobile .= ($mobile != "") ? ", ".trim($num) : trim($num);
+												}
+												echo $mobile;
+											}	
+										?>
+									</span>
+								</li>
+								<li class="tooltips fax hidden" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("common","Fax") ?>">
+									<i class="fa fa-fax"></i>
+									<span id="fax">
+										<?php
+											if( !empty($element["telephone"]["fax"])){
+												$fax = "";
+												foreach ($element["telephone"]["fax"] as $key => $num) {
+													$fax .= ($fax != "") ? ", ".trim($num) : trim($num);
+												}
+												echo $fax;
+											}	
+										?>
+									</span>
 								</li>
 					<?php } ?>
-					
-					
 				</ul>
 			</li>
-			<li class="editable">
-				<div class="link"><i class="fa fa-map-marker"></i>Addresse(s)<i class="fa fa-chevron-down"></i></div>
+
+			<?php 
+				$skype = (!empty($element["socialNetwork"]["skype"])? $element["socialNetwork"]["skype"]:"javascript:;") ;
+				$telegram =  (!empty($element["socialNetwork"]["telegram"])? "https://web.telegram.org/#/im?p=@".$element["socialNetwork"]["telegram"]:"javascript:;") ;
+				$facebook = (!empty($element["socialNetwork"]["facebook"])? $element["socialNetwork"]["facebook"]:"javascript:;") ;
+				$twitter =  (!empty($element["socialNetwork"]["twitter"])? $element["socialNetwork"]["twitter"]:"javascript:;") ;
+				$googleplus =  (!empty($element["socialNetwork"]["googleplus"])? $element["socialNetwork"]["googleplus"]:"javascript:;") ;
+				$gitHub =  (!empty($element["socialNetwork"]["github"])? $element["socialNetwork"]["github"]:"javascript:;") ;
+			?>
+
+			
+			<li class="blockSocial">
+				<div class="link">
+					<i class="fa fa-map-marker"></i>Social<i class="fa fa-chevron-down"></i>
+					<?php if($edit==true || $openEdition==true ){?>
+						<a href="javascript:;" class="tooltips btn-update-network" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a>
+					<?php } ?>
+				</div>
 				<ul class="submenu">
-					<li>
-						<a href="#">Addresse : 
-						<?php if(@$element["address"] && @$element["address"]["addressLocality"]) {
-                				echo "<i class='fa fa-university'></i> ".$element["address"]["addressLocality"];
-                				if(@$element["address"]["postalCode"]) echo ", ";
-                			  }
-                			  if(@$element["address"] && @$element["address"]["postalCode"]) 
-                			  	echo $element["address"]["postalCode"];
-                		?>
-						</a>
+					<li class="tooltips telegram hidden" data-toggle="tooltip" data-placement="right" title="Telegram">
+						<span class="titleField text-dark"><i class="fa fa-telegram fa-lg"></i></i> 
+							<a href="<?php echo $telegram ; ?>" id="telegramMenuLeft" class="socialIcon"><?php echo ($telegram != "javascript:;") ? $telegram : "" ; ?></a>
+						</span>
+					</li>
+					<li class="tooltips skype hidden" data-toggle="tooltip" data-placement="right" title="Skype">
+						<span class="titleField text-dark"><i class="fa fa-skype fa-lg"></i> 
+							<a href="<?php echo $skype ; ?>" id="skypeMenuLeft" class="socialIcon"><?php echo ($skype != "javascript:;") ? $skype : "" ; ?></a>
+						</span>
+					</li>
+					<li class="tooltips facebook hidden" data-toggle="tooltip" data-placement="right" title="Facebook">
+						<span class="titleField text-dark"><i class="fa fa-facebook fa-lg"></i> 
+							<a href="<?php echo $facebook ; ?>" target="_blank" id="facebookMenuLeft" class="socialIcon"><?php echo ($facebook != "javascript:;") ? $facebook : "" ; ?></a>
+						</span>
+					</li>
+					<li class="tooltips twitter hidden" data-toggle="tooltip" data-placement="right" title="Twitter">
+						<span class="titleField text-dark"><i class="fa fa-twitter fa-lg"></i>
+							<a href="<?php echo $twitter ;?>" target="_blank" id="twitterMenuLeft" class="socialIcon tooltips" data-toggle="tooltip" data-placement="bottom" title="Twitter"><?php echo ($twitter != "javascript:;") ? $twitter : "" ; ?></a>
+						</span>
+					</li>
+					<li class="tooltips gpplus hidden" data-toggle="tooltip" data-placement="right" title="Google Plus">
+						<span class="titleField text-dark"><i class="fa fa-google-plus fa-lg"></i> 
+							<a href="<?php echo $googleplus ;?>" target="_blank" id="gpplusMenuLeft" class="socialIcon"><?php echo ($googleplus != "javascript:;") ? $googleplus : "" ; ?></a>
+						</span>
+					</li>
+					<li class="tooltips gitHub hidden" data-toggle="tooltip" data-placement="right" title="Git Hub">
+						<span class="titleField text-dark"><i class="fa fa-github fa-lg"></i> 
+							<a href="<?php echo $gitHub ;?>" target="_blank" id="gitHubMenuLeft" class="socialIcon"><?php echo ($gitHub != "javascript:;") ? $gitHub : "" ; ?></a>
+						</span>
 					</li>
 				</ul>
 			</li>
+			<li>
+				<div class="link"><i class="fa fa-map-marker"></i>Description<i class="fa fa-chevron-down"></i>
+					<?php if($edit==true || $openEdition==true ){?>
+		  				<a href='javascript:;' class="tooltips btn-update-desc" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Description");?>"><i class="fa text-red fa-pencil"></i></a> <?php } ?>
+		  		</div>
+				<ul class="submenu">
+					<li>
+						<span id="description"  class=""><?php  echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
+						<input type="hidden" id="descriptionMarkdown" name="descriptionMarkdown" value="<?php echo (!empty($element['description'])) ? $element['description'] : ''; ?>">	
+						<div class="text-right padding-10">
+							<button class="btn btn-default letter-blue open-description margin-top-5">
+						    	<b><i class="fa fa-connectdevelop"></i> En lire plus <i class="fa fa-chevron-right"></i></b>
+							</button>
+						</div>	
+					</li>
+				</ul>
+			</li>
+			<li>
+				<div class="link">
+					<i class="fa fa-map-marker"></i><?php echo Yii::t("common","Localitie(s)"); ?><i class="fa fa-chevron-down"></i>
+				</div>
+				<ul class="submenu">
+					<li>	
+						<?php 
+							if( ($type == Person::COLLECTION && Preference::showPreference($element, $type, "locality", Yii::app()->session["userId"])) ||  $type!=Person::COLLECTION) {
+						?>
+							<span>
+								<?php
+									if(! empty($element["address"])) 
+										echo '<i class="fa fa-home"></i>' ;
+									$address = "";
+									$address .= '<span id="detailStreetAddress"> '.
+													(( @$element["address"]["streetAddress"]) ? 
+														$element["address"]["streetAddress"]."<br/>": 
+														((@$element["address"]["codeInsee"])?"":Yii::t("common","Unknown Locality"))).
+												'</span>';
+									$address .= '<span id="detailCity">'.
+													(( @$element["address"]["postalCode"]) ?
+													 $element["address"]["postalCode"].", " :
+													 "")
+													." ".(( @$element["address"]["addressLocality"]) ? 
+															 $element["address"]["addressLocality"] : "")
+												.'</span>';
+									$address .= '<span id="detailCountry">'.
+													(( @$element["address"]["addressCountry"]) ?
+													 ", ".OpenData::$phCountries[ $element["address"]["addressCountry"] ] 
+									 				: "").
+									 			'</span>';
+									echo $address;
+								
+						
+									if(empty($element["address"]["codeInsee"]) && $type==Person::COLLECTION && ($edit==true || $openEdition==true )) {
+										echo '<br/><a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.Yii::t("common", "Connect to your city").'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe" >'. Yii::t("common", "Why ?").'</a>';
+									}else{
+										echo '<a href="javascript:;" id="btn-remove-geopos" class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Remove Locality").'">
+													<i class="fa text-red fa-trash-o"></i>
+												</a>
+												<a href="javascript:;" id="btn-update-geopos" class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Update Locality").'" >
+													<i class="fa text-red fa-map-marker"></i>
+												</a> ';	
+									}
+								?>
+							</span>
+						<?php } ?>
+					</li>
+
+
+
+					<?php
+						if( !empty($element["addresses"]) ){ 
+							foreach ($element["addresses"] as $ix => $p) { ?>
+								
+								<li id="addresses_<?php echo $ix ; ?>">
+									<span>
+									<?php 
+									$address = '<i class="fa fa-circle"></i> <span id="detailStreetAddress_'.$ix.'">'.(( @$p["address"]["streetAddress"]) ? $p["address"]["streetAddress"]."<br/>" : "").'</span>';
+									$address .= '<span id="detailCity">'.(( @$p["address"]["postalCode"]) ? $p["address"]["postalCode"] : "")." ".(( @$p["address"]["addressLocality"]) ? $p["address"]["addressLocality"] : "").'</span>';
+									$address .= '<span id="detailCountry_'.$ix.'">'.(( @$p["address"]["addressCountry"]) ? " ".OpenData::$phCountries[ $p["address"]["addressCountry"] ] : "").'</span>';
+									echo $address;
+									?>
+
+									<a href='javascript:removeAddresses("<?php echo $ix ; ?>");'  class="addresses pull-right hidden tooltips" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Remove Locality");?>"><i class="fa text-red fa-trash-o"></i></a>
+									<a href='javascript:updateLocalityEntities("<?php echo $ix ; ?>", <?php echo json_encode($p);?>);' class=" pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Locality");?>"><i class="fa text-red fa-map-marker hidden addresses"></i></a></span>
+								</li>
+					<?php 	} 
+					} ?>
+
+					<div class="text-right padding-10">
+						<?php if(empty($element["address"]) && $type!=Person::COLLECTION && ($edit==true || $openEdition==true )){ ?>
+							<b><a href="javascript:;" class="btn btn-default letter-blue margin-top-5 addresses" id="btn-update-geopos">
+										<i class="fa fa-map-marker"></i>
+										<span class="hidden-sm"><?php echo Yii::t("common","Add a primary address") ; ?></span>
+									</a></b>
+						<?php	}  
+
+						if($type!=Person::COLLECTION && !empty($element["address"]) && ($edit==true || $openEdition==true )) { ?>
+							<li>
+								<b>
+								<a href='javascript:updateLocalityEntities("<?php echo count(@$element["addresses"]) ; ?>");' id="btn-add-geopos" class="btn btn-default letter-blue margin-top-5 addresses" style="margin: 10px 0px;">
+									<i class="fa fa-plus" style="margin:0px !important;"></i> 
+									<span class="hidden-sm"><?php echo Yii::t("common","Add a secondary address"); ?></span>
+								</a>
+								</b>
+							</li>
+						<?php } ?>						
+					</div>
+				</ul>
+			</li>
+			<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
+			<li class="podInside">
+				<?php $countCharts=0;
+						if(@$element["properties"] && @$element["properties"]["chart"]) 
+							$countCharts=count($element["properties"]["chart"]) 
+				?>
+				<div class="link"><i class="fa fa-puzzle-piece"></i><?php echo Yii::t("chart", "Values and Cultures") ?> 
+					<?php if($countCharts > 0) echo "(".$countCharts.")"; ?> 
+					<i class="fa fa-chevron-down"></i>
+				</div>
+
+				<ul class="submenu">
+					<div class="panel panel-white">		
+					<?php if($countCharts==0){ ?>				
+							<div id="infoPodChart" class="padding-10 <?php if(!empty($properties)) echo "hide" ?>">
+								<blockquote> 
+									<?php echo Yii::t("chart","Create Chart<br/>Opening<br/>Values<br/>Governance<br/>To explain the aim and draw project conduct") ?>
+								</blockquote>
+							</div>
+					<?php }else{
+						foreach($element["properties"]["chart"] as $key => $data){
+							if($key=="commons") $title=Yii::t("chart","Chart of commons");
+							else $title=Yii::t("chart","Open chart");
+						?>
+							<li>
+								<div class="subLink btn-start-chart" data-value="<?php echo $key ?>">
+								<?php echo $title; ?>
+								<i class="fa fa-chevron-right pull-right letter-blue"></i>
+								</div>
+							</li>
+						<?php }
+					} ?>
+					</div>
+					<div class="text-right padding-10">
+					<?php if (($edit || $openEdition) && @Yii::app()->session["userId"]){	?>
+						<button class="edit-chart btn btn-default letter-blue margin-top-5 tooltips" 
+							data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("chart","Edit properties") ?>">
+							<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?><i class="fa fa-chevron-right"></i></b>
+						</button>
+					<?php } ?>
+					</div>
+					</ul>
+					<?php
+					/*if(empty($element["properties"]["chart"])) $element["properties"]["chart"] = array();
+					$this->renderPartial('../chart/index',array(
+											"itemId" => (string)$element["_id"], 
+											"itemName" => $element["name"], 
+											"parentType" => $type, 
+											"properties" => $element["properties"]["chart"],
+											"admin" =>$edit,
+											"isDetailView" => 1,
+											"openEdition" => $openEdition));*/
+					?>
+				</ul>
+			</li>
+		<?php } ?>
 		</ul>
 
 		<ul id="accordion4" class="accordion shadow2 margin-top-20">
@@ -271,6 +475,7 @@
 														"contentType" => $type,
 														"countStrongLinks" => $countStrongLinks,
 														"countLowLinks" => $countLowLinks,
+														"countInvitations" => $countInvitations,
 														"admin" => $edit, 
 														"invitedMe" => @$invitedMe,
 														"openEdition" => $openEdition)); ?>
@@ -399,8 +604,8 @@
 															"openEdition" => $openEdition
 					)); ?>
 					<div class="text-right padding-10">
-						<?php if(@$edit==true) { ?>
-						<button onclick="" 
+						<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
+						<button onclick="elementLib.openForm('project','sub')" 
 								class="btn btn-default letter-blue margin-top-5">
 					    	<b><i class="fa fa-plus"></i> Nouveau projet</b>
 						</button> 
@@ -446,8 +651,8 @@
 																					  ));
 							?>
 							<div class="text-right padding-10">
-								<?php if(@$edit==true) { ?>
-								<button onclick="" 
+								<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
+								<button onclick="elementLib.openForm('event','subEvent')" 
 										class="btn btn-default letter-blue margin-top-5">
 							    	<b><i class="fa fa-plus"></i> Nouvel événement</b>
 								</button> 
@@ -477,69 +682,131 @@
 		</ul>
 
 
-		
-
-		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
-			<div class="col-xs-12 no-padding podchart padding-10 accordion margin-top-15">
-				<?php
-					if(empty($element["properties"]["chart"])) $element["properties"]["chart"] = array();
-					$this->renderPartial('../chart/index',array(
-											"itemId" => (string)$element["_id"], 
-											"itemName" => $element["name"], 
-											"parentType" => $type, 
-											"properties" => $element["properties"]["chart"],
-											"admin" =>$edit,
-											"isDetailView" => 1,
-											"openEdition" => $openEdition));
-				?>						  
-			</div>
-		<?php } ?>
-
 <?php 
-	$element["type"] = $type;
-	$element["id"] = (string)$element["_id"];
+	//$element["type"] = $type;
+	//$element["id"] = (string)$element["_id"];
+	$emptyAddress = (empty($element["address"]["codeInsee"])?true:false);
+	$showOdesc = true ;
+	if(Person::COLLECTION == $type){
+		$showLocality = (Preference::showPreference($element, $type, "locality", Yii::app()->session["userId"])?true:false);
+		$showOdesc = ((Preference::isOpenData($element["preferences"]) && Preference::isPublic($element, "locality"))?true:false);	
+	}
+	$odesc = "" ;
+	if($showOdesc == true){
+		$controller = Element::getControlerByCollection($type) ;
+		if($type == Person::COLLECTION)
+			$odesc = $controller." : ".addslashes( strip_tags(json_encode(@$element["shortDescription"]))).",".addslashes(json_encode(@$element["address"]["streetAddress"])).",".@$element["address"]["postalCode"].",".@$element["address"]["addressLocality"].",".@$element["address"]["addressCountry"] ;
+		else if($type == Organization::COLLECTION)
+			$odesc = $controller." : ".@$element["type"].", ".addslashes( strip_tags(json_encode(@$element["shortDescription"]))).",".addslashes(json_encode(@$element["address"]["streetAddress"])).",".@$element["address"]["postalCode"].",".@$element["address"]["addressLocality"].",".@$element["address"]["addressCountry"];
+		else if($type == Event::COLLECTION)
+			$odesc = $controller." : ".@$element["startDate"].",".@$element["endDate"].",".addslashes(json_encode(@$element["address"]["streetAddress"])).",".@$element["address"]["postalCode"].",". @$element["address"]["addressLocality"].",".@$element["address"]["addressCountry"].",".addslashes(strip_tags(json_encode(@$element["shortDescription"])));
+		else if($type == Project::COLLECTION)
+			$odesc = $controller." : ".addslashes( strip_tags(json_encode(@$element["shortDescription"]))).",".addslashes(json_encode(@$element["address"]["streetAddress"])).",".@$element["address"]["postalCode"].",".@$element["address"]["addressLocality"].",".@$element["address"]["addressCountry"];
+	}
 ?>
 <script type="text/javascript">
 
-	var elementName = "<?php echo @$element["name"]; ?>";
-    var contextType = "<?php echo @$type; ?>";
-    var contextId = "<?php echo @$element["id"]; ?>";
-    
-	
-	var contextData = <?php echo json_encode($element)?>;
+	//var elementName = "<?php //echo @$element["name"]; ?>";
+    var contextType = "<?php //echo @$type; ?>";
+    var contextId = "<?php //echo @$element["id"]; ?>";
+    //var contextData = <?php //echo json_encode($element)?>;
+    var edit = '<?php echo (@$edit == true) ? "true" : "false"; ?>';
+	var openEdition = '<?php echo (@$openEdition == true) ? "true" : "false"; ?>';
+
 	var showLocality = (( "<?php echo @$showLocality; ?>" == "<?php echo false; ?>")?false:true);
-	if(( showLocality == true && "<?php echo Person::COLLECTION; ?>" == contextData.type ) || "<?php echo Person::COLLECTION; ?>" != contextData.type){
+	var contextData = {
+			name : "<?php echo addslashes($element["name"]) ?>",
+			id : "<?php echo (string)$element["_id"] ?>",
+			type : "<?php echo $type ?>",
+			controller : <?php echo json_encode(Element::getControlerByCollection($type))?>,
+			otags : "<?php echo addslashes($element["name"]).",".$type.",communecter,".@$element["type"].",".addslashes(@implode(",", $element["tags"])) ?>",
+			odesc : <?php echo json_encode($odesc) ?>,
+			<?php 
+			if( @$element["startDate"] )
+				echo "'startDate':'".$element["startDate"]."',";
+			if( @$element["endDate"] )
+				echo "'endDate':'".$element["endDate"]."'"; ?>
+	};
+
+	if(	( showLocality == true && "<?php echo Person::COLLECTION; ?>" == contextData.type ) 
+		|| "<?php echo Person::COLLECTION; ?>" != contextData.type) {
 		contextData.geo = <?php echo json_encode(@$element["geo"]) ?>;
 		contextData.geoPosition = <?php echo json_encode(@$element["geoPosition"]) ?>;
 		contextData.address = <?php echo json_encode(@$element["address"]) ?>;
 		contextData.addresses = <?php echo json_encode(@$element["addresses"]) ?>;
 	}
-	//var emptyAddress = ((typeof(contextData.address) == "undefined" || contextData.address == null || typeof(contextData.address.codeInsee) == "undefined" || (typeof(contextData.address.codeInsee) != "undefined" && contextData.address.codeInsee == ""))?true:false);
+
+	if(	edit == "true" || openEdition == "true") {
+		contextData.email = '<?php if(isset($element["email"])) echo $element["email"]; else echo ""; ?>';
+		contextData.url = '<?php if(isset($element["url"])) echo $element["url"]; else echo ""; ?>';
+		contextData.fixe =parsePhone(<?php echo json_encode((isset($element["telephone"]["fixe"]) ? $element["telephone"]["fixe"] : array())); ?>);
+		contextData.mobile = parsePhone(<?php echo json_encode((isset($element["telephone"]["mobile"]) ? $element["telephone"]["mobile"] : array())); ?>);
+		contextData.fax = parsePhone(<?php echo json_encode((isset($element["telephone"]["fax"]) ? $element["telephone"]["fax"] : array())); ?>);
+		contextData.tags = <?php echo json_encode((isset($element["tags"]) ? $element["tags"] : array())); ?>;
+
+		if(contextData.type == "<?php echo Person::COLLECTION; ?>" ){
+			contextData.username = '<?php if(isset($element["username"])) echo $element["username"]; else echo ""; ?>';
+			contextData.birthDate = '<?php if(isset($element["birthDate"])) echo $element["birthDate"]; else echo ""; ?>';
+			contextData.twitter = '<?php if(isset($element["socialNetwork"]["twitter"])) echo $element["socialNetwork"]["twitter"]; else echo ""; ?>';
+			contextData.gpplus = '<?php if(isset($element["socialNetwork"]["googleplus"])) echo $element["socialNetwork"]["googleplus"]; else echo ""; ?>';
+			contextData.gitHub = '<?php if(isset($element["socialNetwork"]["github"])) echo $element["socialNetwork"]["github"]; else echo ""; ?>';
+			contextData.skype = '<?php if(isset($element["socialNetwork"]["skype"])) echo $element["socialNetwork"]["skype"]; else echo ""; ?>';
+			contextData.telegram = '<?php if(isset($element["socialNetwork"]["telegram"])) echo $element["socialNetwork"]["telegram"]; else echo ""; ?>';
+			contextData.facebook = '<?php if(isset($element["socialNetwork"]["facebook"])) echo $element["socialNetwork"]["facebook"]; else echo ""; ?>';
+		}
+	}
+
+
+	if(contextData.type == "<?php echo Organization::COLLECTION; ?>" ){
+		contextData.typeOrga = '<?php if(isset($element["type"])) echo $element["type"]; else echo ""; ?>';
+	}
+	contextData.descriptionHTML = '<?php if(isset($element["descriptionHTML"])) echo $element["descriptionHTML"]; else echo ""; ?>';
+	
+
+	if(contextData.type == "<?php echo Event::COLLECTION; ?>"){
+		contextData.allDay = '<?php echo (@$element["allDay"] == true) ? "true" : "false"; ?>';
+	}
+
+	if(contextData.type == "<?php echo Event::COLLECTION; ?>" || contextData.type == "<?php echo Project::COLLECTION; ?>" ){
+		contextData.startDate = '<?php if(isset($element["startDate"])) echo $element["startDate"]; else echo ""; ?>';
+		contextData.endDate = '<?php if(isset($element["endDate"])) echo $element["endDate"]; else echo "" ?>';
+	}
+
+	if(contextData.type == "<?php echo Project::COLLECTION; ?>" )
+		contextData.avancement = '<?php if(isset($element["properties"]["avancement"])) echo $element["properties"]["avancement"]; else echo "" ?>' ;
+
+	var formatDateView = "DD MMMM YYYY à HH:mm" ;
+	var formatDatedynForm = "DD/MM/YYYY HH:mm" ;
+	if(typeof contextData.allDay != "undefined" && contextData.allDay == "true"){
+		formatDateView = "DD MMMM YYYY" ;
+		formatDatedynForm = "DD/MM/YYYY" ;
+	}
+
 	var emptyAddress = (( "<?php echo @$emptyAddress; ?>" == "<?php echo false; ?>")?false:true);
 
 	var mode = "view";
 	var types = <?php echo json_encode(@$elementTypes) ?>;
 	var countries = <?php echo json_encode($countries) ?>;
-	var startDate = '<?php if(isset($element["startDate"])) echo $element["startDate"]; else echo ""; ?>';
-	var endDate = '<?php if(isset($element["endDate"])) echo $element["endDate"]; else echo "" ?>';
-	var allDay = '<?php echo (@$element["allDay"] == true) ? "true" : "false"; ?>';
-	var edit = '<?php echo (@$edit == true) ? "true" : "false"; ?>';
+	//var startDate = '<?php //if(isset($element["startDate"])) echo $element["startDate"]; else echo ""; ?>';
+	//var endDate = '<?php //if(isset($element["endDate"])) echo $element["endDate"]; else echo "" ?>';
+	//var allDay = '<?php //echo (@$element["allDay"] == true) ? "true" : "false"; ?>';
+	//var edit = '<?php //echo (@$edit == true) ? "true" : "false"; ?>';
 	var modeEdit = '<?php echo (@$modeEdit == true) ? "true" : "false"; ?>';
-	var birthDate = '<?php echo (isset($person["birthDate"])) ? $person["birthDate"] : null; ?>';
+	//var birthDate = '<?php echo (isset($person["birthDate"])) ? $person["birthDate"] : null; ?>';
 	var NGOCategoriesList = <?php echo json_encode(@$NGOCategories) ?>;
 	var localBusinessCategoriesList = <?php echo json_encode(@$localBusinessCategories) ?>;
-	var seePreferences = '<?php echo (@$element["seePreferences"] == true) ? "true" : "false"; ?>';
+	//var seePreferences = '<?php echo (@$element["seePreferences"] == true) ? "true" : "false"; ?>';
 	var color = '<?php echo Element::getColorIcon($type); ?>';
 	var icon = '<?php echo Element::getFaIcon($type); ?>';
-	var speudoTelegram = '<?php echo @$element["socialNetwork"]["telegram"]; ?>';
+	//var speudoTelegram = '<?php echo @$element["socialNetwork"]["telegram"]; ?>';
 	var organizer = <?php echo json_encode(@$organizer) ?>;
 	var tags = <?php echo json_encode($tags)?>;
 
-	var tags2 = <?php echo (isset($element["tags"])) ? json_encode(implode(",", $element["tags"])) : "''"; ?>;
+	//var tags2 = <?php //echo (isset($element["tags"])) ? json_encode(implode(",", $element["tags"])) : "''"; ?>;
 		
-	var mobile 	 = <?php echo (isset($element["telephone"]["mobile"])) 	? json_encode(implode(",", $element["telephone"]["mobile"])) : "''"; ?>;
-	var fax 	 = <?php echo (isset($element["telephone"]["fax"])) 	? json_encode(implode(",", $element["telephone"]["fax"])) : "''"; ?>;
-	var fixe 	 = <?php echo (isset($element["telephone"]["fixe"])) 	? json_encode(implode(",", $element["telephone"]["fixe"])) : "''"; ?>;
+	//var mobile 	 = <?php //echo (isset($element["telephone"]["mobile"])) 	? json_encode(implode(",", $element["telephone"]["mobile"])) : "''"; ?>;
+	//var fax 	 = <?php //echo (isset($element["telephone"]["fax"])) 	? json_encode(implode(",", $element["telephone"]["fax"])) : "''"; ?>;
+	//var fixe 	 = <?php //echo (isset($element["telephone"]["fixe"])) 	? json_encode(implode(",", $element["telephone"]["fixe"])) : "''"; ?>;
 	var category = <?php echo (isset($element["category"])) 			? json_encode(implode(",", $element["category"])) : "''"; ?>;
 	var description = <?php echo (isset($element["description"])) ? json_encode($element["description"]) : "''"; ?>;
 
@@ -549,7 +816,7 @@
 
 	
 
-	//var contentKeyBase = "<?php echo isset($contentKeyBase) ? $contentKeyBase : ""; ?>";
+	//var contentKeyBase = "<?php //echo isset($contentKeyBase) ? $contentKeyBase : ""; ?>";
 	//By default : view mode
 	//var images = <?php //echo json_encode(@$images) ?>;
 	
@@ -557,52 +824,16 @@
 	var isEditing = false;
 	
 	jQuery(document).ready(function() {
-		activateEditableContext();
-		manageAllDayElement(allDay);
-		manageModeContextElement();
-		changeHiddenIconeElement(true);
-		manageDivEditElement();
+		bindDynFormEditable();
+		initDate();
+		inintDescs();
+		changeHiddenFields();
 		bindAboutPodElement();
-		//favorite.applyColor(contextData.type,contextData.id);
-
-		//loadNewsStream();
+		bindLBHLinks();
 
 		$("#small_profil").html($("#menu-name").html());
 		$("#menu-name").html("");
 
-		/*CHANGED*/
-		$(".editElementDetail").off();
-		$(".editElementDetail, .editElementDetail a.editable-click").on("click", function(e){
-				//switchModeElement();
-				var id = $(this).data("edit-id");
-				console.log("found id", id, isEditing);
-				
-				e.preventDefault();
-				if(isEditing==false){
-					isEditing = true;
-					setTimeout(function(){
-						$("#"+id).trigger("click");
-						isEditing = false;
-						console.log("trigger");
-					}, 200);
-				}
-		});
-
-
-		//console.log("EDIT", edit);
-		if(edit == "true") {
-			switchModeElement();
-		}
-		/*$("#btn-update-geopos").click(function(){
-			findGeoPosByAddress();
-		});
-
-		$("#btn-update-locality").click(function(){
-			Sig.showMapElements(Sig.map, mapData);
-		});*/
-
-		if(!emptyAddress)
-			$("#btn-view-map").removeClass('hidden');
 
 		$("#btn-update-geopos").off().on( "click", function(){
 			updateLocalityEntities();
@@ -646,7 +877,7 @@
 				    	param.pk = contextData.id;
 						$.ajax({
 					        type: "POST",
-					        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
+					        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextDate.type,
 					        data: param,
 					       	dataType: "json",
 					    	success: function(data){
@@ -678,14 +909,8 @@
 
 		});
 
-		
-
 		$("#btn-update-geopos-admin").click(function(){
 			findGeoPosByAddress();
-		});
-
-		$("#btn-view-map").click(function(){
-			showMap(true);
 		});
 
 		//console.log("contextDatacontextData", contextData, contextData.type,contextData.id);
@@ -701,17 +926,6 @@
 			setTimeout(function(){ $("#dropdown-content-multi-scope").addClass('open'); }, 300);
 		});
 
-		if(emptyAddress){
-			$(".cobtn,.whycobtn").removeClass("hidden");
-			$(".cobtn").click(function () { 
-				updateLocalityEntities();
-			});
-			mylog.log("modeEdit",modeEdit);
-			if(modeEdit == "true"){
-				switchModeElement();
-			}
-		}
-
 		smallMenu.inBlockUI = false; 
 		smallMenu.destination = "#central-container"; 
 		directory.elemClass = smallMenu.destination+' .searchEntityContainer ';
@@ -720,21 +934,88 @@
 		
 		$(".open-directory").click(function(){
 			toogleNotif(false);
-			smallMenu.openAjax(baseUrl+'/'+moduleId+'/element/directory/type/'+contextType+'/id/'+contextId+
+			smallMenu.openAjax(baseUrl+'/'+moduleId+'/element/directory/type/'+contextData.type+'/id/'+contextData.id+
 								'?tpl=json','Communauté','fa-connectdevelop','dark');
+			bindLBHLinks();
 		});
-
+		$(".edit-chart").click(function(){
+			toogleNotif(false);
+			var url = "chart/addchartsv/type/"+contextType+"/id/"+contextId;
+			$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+			ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+			function(){},"html");
+		});
 		$(".btn-open-collection").click(function(){
 			toogleNotif(false);
 		});
 
-		// $("#btn-open-collection").click(function(){
-		// 	smallMenu.openAjax(baseUrl+'/'+moduleId+'/collections/list/col/Ma collection','Ma collection','fa-folder-open','yellow');
-		// });
-
-
-
-
+		$("#btn-start-detail").click(function(){
+			loadDetail();
+		});
+		
 	});
+
+	function loadDetail(){
+		toogleNotif(false);
+		var url = "element/detail/type/"+contextData.type+"/id/"+contextData.id;
+		
+		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
+	}
+
+	function parsePhone(arrayPhones){
+		var str = "";
+		$.each(arrayPhones, function(i,num) {
+			if(str != "")
+				str += ", ";
+			str += num.trim();
+		});
+		return str ;
+	}
+
+	function initDate() {//DD/mm/YYYY hh:mm
+		if($("#contentGeneralInfos #startDate").html() != "")
+	    	$("#contentGeneralInfos #startDate").html(moment($("#contentGeneralInfos #startDate").html()).local().format(formatDateView));
+	    if($("#contentGeneralInfos #endDate").html() != "")
+	    	$("#contentGeneralInfos #endDate").html(moment($("#contentGeneralInfos #endDate").html()).local().format(formatDateView));
+	    $('#dateTimezone').attr('data-original-title', "Fuseau horaire : GMT " + moment().local().format("Z"));
+	}
+
+	function descHtmlToMarkdown() {
+		mylog.log("htmlToMarkdown");
+		if(typeof contextData.descriptionHTML != "undefined" && contextData.descriptionHTML == "1"){
+			if($("#contentGeneralInfos #description").html() != ""){
+				var descToMarkdown = toMarkdown($("#contentGeneralInfos #descriptionMarkdown").val()) ;
+				mylog.log("descToMarkdown", descToMarkdown);
+	    		$("#contentGeneralInfos #descriptionMarkdown").html(descToMarkdown);
+				var param = new Object;
+				param.name = "description";
+				param.value = descToMarkdown;
+				param.id = contextData.id;
+				param.typeElement = contextType;
+				param.block = "toMarkdown";
+	    		$.ajax({
+			        type: "POST",
+			       	url : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
+			        data: param,
+			       	dataType: "json",
+			    	success: function(data){
+			    		mylog.log("here");
+				    	toastr.success(data.msg);
+				    }
+				});
+				mylog.log("param", param);
+			}
+		}
+	}
+
+	function inintDescs() {
+		mylog.log("inintDescs");
+		descHtmlToMarkdown();
+		mylog.log("after");
+		$("#description").html(markdownToHtml($("#descriptionMarkdown").val()));
+		//$("#shortDescriptionHeader").html(markdownToHtml($("#shortDescriptionMarkdown").val()));
+	}
 
 </script>

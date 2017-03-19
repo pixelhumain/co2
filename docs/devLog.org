@@ -13,8 +13,14 @@
 ----------------------------------------------------
 ----------------------------------------------------
 * Version 0.2
-** @Bouboule : Bash de reprise des data dans les chart des projets
+** @Bouboule : 
+**** Bash de reprise des data dans les chart des projets
 /communecter/datamigration/RefactorChartProjectData
+**** Bash de reprise des data dans notifications 
+****** Create notify.id as object with isUnread and isUnseen
+/communecter/datamigration/UpOldNotifications
+**** Bash of object.type inbstead of object.objectType on news(!!!important with notification reactor!!!!)
+ph/communecter/datamigration/ObjectObjectTypeNewsToObjectType
 ----------------------------------------------------
 
 * Version 0.17

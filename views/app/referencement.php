@@ -195,7 +195,7 @@
                     Les informations fournies à propos de cette URL seront examinées par les administrateurs du réseau avant d'être publiées, afin d'éviter tout abus et de garantir la pertinance des résultats de recherches.
                     </label>
                     <hr>
-                    <label class="text-white">Seront refusés : les sites web à caractère violent, ou pornographique</label>
+                    <label class="text-white">Seront automatiquement refusés :<br>les sites web à caractère violent, ou pornographique</label>
                 </div>
             </div>
         </div>

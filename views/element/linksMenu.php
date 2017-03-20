@@ -21,32 +21,32 @@
 .profilSocial .username{
 	padding: 2px 0px 0px !important;
 }
-.username .dropdown-menu li{
+.blockUsername .dropdown-menu li{
 	text-shadow: none !important;
 	color: #333;
 }
-.username .dropdown-menu a{
+.blockUsername .dropdown-menu a{
 	padding:0px 5px !important;
 }
-.username .dropdown-menu{
+.blockUsername .dropdown-menu{
 	/*position:absolute!important;*/
 	border: 1px solid #ccc !important;
 	border-radius: 0px !important;
 }
-.username .noHover{
+.blockUsername .noHover{
 	background-color: white !important;
 	font-size: 12px !important;
 	font-style: italic;
 	padding:0px 5px !important;
 }
 .littleActions{
-	padding-top: 8px !important;
-	padding-bottom: 8px !important; 
+	padding-top: 10px !important;
+	padding-bottom: 15px !important; 
 }
 </style>
 <?php
-	if(@$linksBtn["followBtn"]){
- 		if($linksBtn["isFollowing"]){ 
+	if(@$linksBtn["followBtn"] && ($elementType!= Person::COLLECTION && $elementId!=Yii::app()->session["userId"])){
+ 		if(@$linksBtn["isFollowing"]){ 
  ?>
 		<ul class="nav navbar-nav">
 				<li class="dropdown">
@@ -121,7 +121,9 @@
 		}
 	}
 ?>
-<a href="javascript:;"  class="btn-o menu-linksBtn"><i class="fa fa-star"></i> <?php echo Yii::t("common","Favorites"); ?></a>
+<?php if ($elementType!= Person::COLLECTION && $elementId!=Yii::app()->session["userId"]){ ?>
+<a href="javascript:collection.add2fav('<?php echo $elementType ?>','<?php echo $elementId ?>')"  class="btn-o menu-linksBtn"><i class="fa fa-star"></i> <?php echo Yii::t("common","Favorites"); ?></a>
+<?php } ?>
 <ul class="nav navbar-nav pull-right">
 	<li class="dropdown">
 		<a href="#" class="dropdown-toggle littleActions" data-toggle="dropdown"><span class="fa fa-ellipsis-v pull-left"></span></a>

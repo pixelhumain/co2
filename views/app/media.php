@@ -22,6 +22,16 @@
 	#timeline-live{
 		min-height:400px;
 	}
+	.btn-select-media-src img{
+		height:40px;
+	}
+
+@media screen and (max-width: 767px) {
+	.btn-select-media-src img{
+		height:30px;
+	}
+}
+
 </style>
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding">
 
@@ -29,53 +39,42 @@
 		<?php //$this->renderPartial($layoutPath.'radioplayer', array( "layoutPath"=>$layoutPath ) ); ?>  
 	</div> -->
 
-	<div class="col-md-2 col-sm-1 hidden-xs no-padding" style="min-height: 500px;">
+	<div class="col-md-2 col-sm-1 hidden-xs no-padding" id="content-media" style="min-height: 500px;">
 	</div>
 
 	<div class="col-md-8 col-sm-10 inline text-center page-header text-center margin-top-20">
-		<div class="col-md-3 col-sm-3 bg-white">
+		<div class="col-md-3 col-sm-3 col-xs-6 bg-white">
 		<button class="btn btn-link tooltips btn-select-media-src srcNC1" data-srcactive="true" data-srcid="NC1" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
 			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NC1.png" height=40>
 			<br><i class="fa fa-check-circle letter-green srcActive"></i>
 			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
 		</button>
 		</div>
-		<div class="col-md-3 col-sm-3 bg-white">
+		<div class="col-md-3 col-sm-3 col-xs-6 bg-white">
 		<button class="btn btn-link tooltips btn-select-media-src srcNCI" data-srcactive="true" data-srcid="NCI" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NCI.png" height=40>
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NCI.png">
 			<br><i class="fa fa-check-circle letter-green srcActive"></i>
 			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
 		</button>
 		</div>
-		<div class="col-md-3 col-sm-3 bg-white">
+		<div class="col-md-3 col-sm-3 col-xs-6 bg-white">
 		<button class="btn btn-link tooltips btn-select-media-src srcNCTV" data-srcactive="true" data-srcid="NCTV" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NCTV.png" height=40>
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NCTV.png">
 			<br><i class="fa fa-check-circle letter-green srcActive"></i>
 			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
 		</button>
 		</div>
-		<div class="col-md-3 col-sm-3 bg-white">
+		<div class="col-md-3 col-sm-3 col-xs-6 bg-white">
 		<button class="btn btn-link tooltips btn-select-media-src srcTAZAR" data-srcactive="true" data-srcid="TAZAR" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/TAZAR.png" height=40>
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/TAZAR.png">
 			<br><i class="fa fa-check-circle letter-green srcActive"></i>
 			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
 		</button>
 		</div>
 	</div>
-	<!-- <div class="col-md-12 col-sm-12 inline page-header text-center margin-top-20">
-	    <h3 id="timeline"><i class="fa fa-newspaper-o"></i><br>L'Actu locale en direct<br><i class="fa fa-angle-down"></i></h3>
-	    <?php //if(!@$medias || sizeOf($medias) <= 0){ ?>
-	    	<!-- <div class="initStream">
-		    	<button class="btn btn-success" id="btn-init-stream">Actualiser le fil d'actu</button></br>
-		    	<span>lancer le processus d'import de données</span>
-	    	</div> - ->
-	    <?php //} ?>
-	</div> -->
-
-	
 
 
-	<div class="col-md-8 col-sm-10 no-padding">
+	<div class="col-md-8 col-sm-10 inline-block no-padding">
 		<div class="col-md-12 no-padding text-center" id="timeline-reload"></div>
 		<ul class="timeline inline-block" id="timeline-live">
 			<?php  
@@ -109,10 +108,18 @@ var idSession = "<?php echo @Yii::app()->session["userId"] ?>";
 var parentTypeComment = "media";
 
 jQuery(document).ready(function() {
-    initKInterface();
 
-    //init loading in scroll
-    $(window).off().bind("scroll",function(){ 
+    initKInterface();
+    initMediaInterface();
+    
+	//initCommentsTools(medias);
+
+});
+
+
+function initMediaInterface(){
+	//init loading in scroll
+    $(window).bind("scroll",function(){ 
 	    if(!loadingData && !scrollEnd){
 	          var heightWindow = $("html").height() - $("body").height();
 	          if( $(this).scrollTop() >= heightWindow - 400){
@@ -127,13 +134,13 @@ jQuery(document).ready(function() {
 		console.log("srcactive", srcActive, sources);
 		if(srcActive==true){
 			if(sources.length == 1){
-				toastr.error("Longin ! Impossible de désactiver toutes les sources en même temps !");
-				setTimeout(function(){
+				toastr.error("Looooongin ! Impossible de désactiver toutes les sources en même temps !");
+				/*setTimeout(function(){
 					toastr.error("Nan mé... t'as cru koi ?");
 					setTimeout(function(){
 						toastr.error("Fou la flème !..");
 					}, 1000);
-				}, 1500);
+				}, 1500);*/
 				return;
 			}
 			for(var i = sources.length; i--;){
@@ -154,14 +161,46 @@ jQuery(document).ready(function() {
 	});
 
     //btn to load media data for first time (if no media found)
-	$("#main-btn-start-search").click(function(){
+	$("#main-btn-start-search, #main-search-bar-addon").click(function(){
 		$("#timeline-live").html("");
 		loadStream(0, indexStep);
 	});
 
-	//initCommentsTools(medias);
 
-});
+    $("#main-btn-start-search, .menu-btn-start-search").click(function(){
+        loadStream(0, indexStep);
+    });
+
+    $("#second-search-bar").keyup(function(e){
+        $("#main-search-bar").val($("#second-search-bar").val());
+        $("#input-search-map").val($("#second-search-bar").val());
+        if(e.keyCode == 13){
+            loadStream(0, indexStep);
+         }
+    });
+    $("#main-search-bar").keyup(function(e){
+        $("#second-search-bar").val($("#main-search-bar").val());
+        $("#input-search-map").val($("#main-search-bar").val());
+        if(e.keyCode == 13){
+            loadStream(0, indexStep);
+         }
+    });
+    $("#input-search-map").keyup(function(e){
+        $("#second-search-bar").val($("#input-search-map").val());
+        $("#main-search-bar").val($("#input-search-map").val());
+        if(e.keyCode == 13){
+            loadStream(0, indexStep);
+         }
+    });
+
+    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
+        loadStream(0, indexStep);
+    });
+
+   	$('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@#\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
+    
+}
+
 
 var interval;
 function startReloadTimeout(){
@@ -199,6 +238,12 @@ function loadStream(indexMin, indexMax){ console.log("load stream media");
 	currentIndexMin = indexMin;
 	currentIndexMax = indexMax;
 	var search = $("#main-search-bar").val();
+
+
+    if(indexMin == 0){
+    	$("#timeline-live").html("");
+       	KScrollTo("#content-media");
+    }
 
 	$.ajax({ 
         type: "POST",

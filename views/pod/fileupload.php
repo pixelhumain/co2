@@ -3,31 +3,34 @@
 	#fileuploadContainer{
 		position: relative;
 		width: 100%;
-		z-index: 8;
 		background-color: transparent;
-		margin: 3%;
-		border: transparent solid 1px;
-		margin: 0px 10px 10px 10px;
-		border-radius: 5px;
-
 	}
 	.fileupload-new .thumbnail, .fileupload-exists .thumbnail{
 		height: auto;
 	}
+	.fileupload-new, .fileupload-preview{
+		max-height: 250px;
+		overflow-y: hidden;
+	}
+	.fileupload-preview .thumbnail, .fileupload-new .thumbnail{
+		min-height: 250px;
+    	line-height: 250px;
+    	background-color: black;
+	}
 	.fileupload, .fileupload-preview.thumbnail, .fileupload-new .thumbnail, .fileupload-new .thumbnail img, .fileupload-preview.thumbnail img{
-		/*width: 100%;*/
-		min-height: 50px;
-		max-width: 100%;
-		max-height: 300px;
 		padding : 0px;
 		margin:0px !important;
+		transition: none !important;
+		border-radius: 0px !important;
+		min-height: 250px;
+		width:100%;
 	}
 
 	.photoUploading{
 		position: absolute;
 		width: 100%;
 		display: none;
-		top:40%;
+		top:35%;
 		left: 0%;
 		opacity: 0.4;
     	filter: alpha(opacity=40); /* For IE8 and earlier */
@@ -41,6 +44,41 @@
 		background-color: transparent !important;
 		border: 0;
 	}
+	.user-image .user-image-buttons {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: none;
+}
+.user-image .user-image-buttons a.fileupload-new:hover{
+    color: #0095FF;
+    background-color: white;
+    border:1px solid #0095FF;
+    border-radius: 3px;
+    margin-right: 2px;
+}
+.user-image .user-image-buttons a.fileupload-new{
+    background-color: #0095FF;
+    color: white;
+    border-radius: 3px;
+    margin-right: 2px;
+}
+.user-image .user-image-buttons .btn-red:hover{
+    color: #ea4335;
+    background-color: white;
+    border:1px solid red;
+    border-radius: 3px;
+    margin-right: 2px;
+}
+.user-image .user-image-buttons .btn-red{
+    background-color: #ea4335;
+    color: white;
+    border-radius: 3px;
+    margin-right: 2px;
+}
+.user-image:hover .user-image-buttons {
+  display: block;
+}
 </style>
 	<div class="center" id="fileuploadContainer">
 		<form  method="post" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_photoAdd" enctype="multipart/form-data">
@@ -50,18 +88,18 @@
 				</div>
 				<div class="fileupload-preview fileupload-exists thumbnail container-fluid" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_imgNewPreview"></div>
 				<?php
-				if(isset($editMode) && $editMode || isset($openEdition) && $openEdition){ ?>
+				if(@Yii::app()->session["userId"] && ((@$editMode && $editMode) || (@$openEdition && $openEdition))){ ?>
 				<div class="user-image-buttons">
-					<span class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_photoAddBtn" ><span class="fileupload-new"><i class="fa fa-plus"></i> <span class="hidden-xs">Photo</span></span>
-						<input type="file" accept=".gif, .jpg, .png" name="avatar" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_avatar">
+					<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="profil_photoAddBtn" ><span class="fileupload-new"><i class="fa fa-plus"></i> <span class="hidden-xs">Photo</span></span>
+						<input type="file" accept=".gif, .jpg, .png" name="avatar" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_avatar" class="hide">
 						<input class="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_isSubmit hidden" value="true"/>
-					</span>
+					</a>
 					<a href="#" class="btn btn-upload fileupload-exists btn-red btn-sm" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_photoRemove" data-dismiss="fileupload">
 						<i class="fa fa-times"></i>
 					</a>
 				</div>
 				<div class="photoUploading" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_photoUploading">
-					<div class="center">
+					<div class="center" style="text-align: center;">
 						<i class="fa fa-spinner fa-spin fa-5x"></i>
 					</div>
 				</div>
@@ -77,45 +115,50 @@
 	
 	jQuery(document).ready(function() {
 		var id = "<?php echo $itemId ?>";
-		var sliderKey = "<?php echo Document::IMG_SLIDER; ?>";
+		//var sliderKey = "<?php echo Document::IMG_SLIDER; ?>";
 		var editFile = <?php echo ($editMode) ? 'true':'false'; ?>;
 		var type = "<?php echo $type ?>";
-		var contentId = "<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>";
+		var contentId = "<?php echo Document::IMG_PROFIL ?>";
 		var contentIdtoSend = "<?php echo $contentId ?>";
 		var resize = <?php echo (@$resize) ? 'true':'false'; ?>;
 		var imageName= "";
 		var imageId= "";
 		var imagesPath = [];
-		var image = <?php if(@$image) echo json_encode($image); else echo "''" ?>;
-
+		var image = "<?php echo $image; ?>";
+		//alert(image);
 		if("undefined" != typeof(contentKeyBase))
 			var contentKey = contentKeyBase/*+"."+contentIdtoSend*/;
 		else
 			contentKey = contentIdtoSend;
 		
 
-		if("undefined" != typeof(image[contentId])){
-			initFileUpload();
-		}else{
-			setTimeout(function(){
-			    initFileUpload();
-			}, 1000);
-		}
+		//if("undefined" != typeof(image[contentId])){
+		//setTimeout(function(){
+		initProfilImageUpload();
+		//}, 1000);
+		//}else{
+		//	setTimeout(function(){
+			    //initFileUpload();
+		//	}, 1000);
+		//}
 		mylog.log(baseUrl+"/imageTableu:");
 		mylog.log(image[contentId.toLowerCase()]);
-
+		$("#"+contentId+"_photoAddBtn").click(function(event){
+  			if (!$(event.target).is('input')) {
+  					$(this).find("input[name='avatar']").trigger('click');
+  			}
+			//$('#'+contentId+'_avatar').trigger("click");		
+		});
 		$('#'+contentId+'_avatar').off().on('change.bs.fileinput', function () {
-			
 			if($("."+contentId+"_isSubmit").val()== "true" ){
 				setTimeout(function(){
 					if(resize){
-						
+						alert();
 						$(".fileupload-preview img").css("height", parseInt($("#"+contentId+"_fileUpload").css("width"))*45/100+"px");
 						$(".fileupload-preview img").css("width", "auto");
 					}
 					var file = document.getElementById(contentId+'_avatar').files[0];
 					if(file && file.size < 2097152){
-						
 						$("#"+contentId+"_photoAdd").submit();
 					}else{
 						if(file && file.size > 2097152){
@@ -206,7 +249,6 @@
 			updateBtnUpload(true);
 			$("#"+contentId+"_imgPreview").removeClass("hidden");
 			$.ajax({
-				
 				url: baseUrl+"/"+moduleId+"/document/delete/dir/"+moduleId+"/type/"+type+"/parentId/"+id,
 				type: "POST",
 				dataType : "json",
@@ -221,9 +263,9 @@
 							$(".btn-upload").removeClass("disabled");*/
 							updateBtnUpload(false);
 							toastr.success(data.msg);
-							if("undefined" != typeof updateShiftSlider && "function" == typeof updateShiftSlider && (contentId.indexOf(sliderKey) > -1)){
+							/*if("undefined" != typeof updateShiftSlider && "function" == typeof updateShiftSlider && (contentId.indexOf(sliderKey) > -1)){
 								updateShiftSlider();
-							}
+							}*/
 						}, 2000);
 
 					}else{
@@ -235,18 +277,17 @@
 		});
 
 
-		function initFileUpload(){
+		function initProfilImageUpload(){
 			var j = 0;
-			if("undefined" != typeof(image[contentId.toLowerCase()]) && image[contentId.toLowerCase()].length>0 ){
-				imageUrl = baseUrl+image[contentId.toLowerCase()][0];
-				j= j+1;
-				$("#"+contentId+"_imgPreview").html('<img class="img-responsive" src="'+imageUrl+'" />');	
+			//console.log("profilImage",image);
+			if(image!=""){
+				//imageUrl = baseUrl+image[contentId.toLowerCase()][0];
+				j++;
+				$("#profil_imgPreview").html('<img class="img-responsive" src="'+baseUrl+image+'" />');	
 			}else{
-				imageUrl = "<div class='center'>"+
-								'<img class="img-responsive thumbnail" src="<?php echo $this->module->assetsUrl ?>/images/thumbnail-default.jpg"/>'+
-							"</div>";
-				j= j+1;
-				$("#"+contentId+"_imgPreview").html(imageUrl);
+				imageUrl = '<img class="img-responsive thumbnail" src="<?php echo $this->module->assetsUrl ?>/images/thumbnail-default.jpg"/>';
+				j++;
+				$("#profil_imgPreview").html(imageUrl);
 
 			}
 			//if(debug)mylog.log("initFileUpload", images, imagesPath);
@@ -276,7 +317,7 @@
 			}).done( function(data){
 		        if(data.result){
 		        	imagesPath.push(baseUrl+path);
-					$(".fileupload-preview img").css("max-height", "190px");
+					//$(".fileupload-preview img").css("max-height", "190px");
 					imageId = data.id["$id"];
 					setTimeout(function(){
 						/*$("#"+contentId+"_fileUpload").css("opacity", "1");
@@ -312,23 +353,19 @@
 			  	url: baseUrl+"/"+moduleId+"/person/getthumbpath",
 			  	dataType: "json"
 			}).done( function(data){
-
-		        /*if(typeof data.profilImageUrl != "undefined"){
-		        	$("#menu-thumb-profil").attr("src", "<?php echo Yii::app()->createUrl('/'.$this->module->id.'/document/resized/50x50/'); ?>" + data.profilImageUrl);
-		        	$(".item_map_list_"+Sig.getObjectId(Sig.userData)+" .thumbnail-profil img").attr("src", "<?php echo Yii::app()->createUrl('/'.$this->module->id.'/document/resized/50x50/'); ?>" + data.profilImageUrl);
-				*/
 		        if(typeof data.profilThumbImageUrl != "undefined"){
-		        	profilThumbImageUrl = baseUrl + data.profilThumbImageUrl + "?_=" + Date.now();
+		        	//console.log(data);
+		        	profilThumbImageUrl = baseUrl + data.profilThumbImageUrl;
+		        	//alert(profilThumbImageUrl);
 		        	$("#menu-thumb-profil").attr("src", profilThumbImageUrl);
 		        	$("#menu-left-thumb-profil").attr("src", profilThumbImageUrl);
 		        	$("#menu-small-thumb-profil").attr("src", profilThumbImageUrl);
 		        	$(".item_map_list_"+Sig.getObjectId(Sig.userData)+" .thumbnail-profil img").attr("src", profilThumbImageUrl);
-
 		        }
 
 		        mylog.log(Sig.userData.profilImageUrl);
 		        mylog.log("NOUVELLE PATH THUMB PROFIL : <?php echo Yii::app()->createUrl('/'.$this->module->id.'/document/resized/50x50/'); ?>" + data.profilImageUrl);
-		    	Sig.userData.profilImageUrl = "<?php echo Yii::app()->createUrl('/'.$this->module->id.'/document/resized/50x50/'); ?>" + data.profilImageUrl;
+		    	//Sig.userData.profilImageUrl = "<?php echo Yii::app()->createUrl('/'.$this->module->id.'/document/resized/50x50/'); ?>" + data.profilImageUrl;
 		        mylog.log(Sig.userData.profilImageUrl);
 		        
 		    });

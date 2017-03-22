@@ -20,6 +20,7 @@
 
 var type = "<?php echo $type; ?>";
 var id = "<?php echo $id; ?>";
+var view = "<?php echo @$view; ?>";
 var indexStepGS = 20;
 
 jQuery(document).ready(function() {
@@ -28,7 +29,7 @@ jQuery(document).ready(function() {
 	$("#mainNav").addClass("affix");
 	
 	var tpl = '<?php echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
-	getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"?tpl="+tpl,function(){ 
+	getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
 		initPageInterface();
 	},"html");
 });

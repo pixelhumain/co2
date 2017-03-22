@@ -680,34 +680,31 @@ var directory = {
     // ********************************
     //  DIRECTORY PREVIEW PANEL
     // ********************************
-    findnextPrev : function  (hash) { 
-                var p = 0;
+    findNextPrev : function  (hash) { 
+        mylog.log("----------- findNextPrev", hash);
+        var p = 0;
         var n = 0;
         var nid = 0;
         var pid = 0;
         var  found = false;
         var l = $( '.searchEntityContainer .container-img-profil' ).length;
         $.each( $( '.searchEntityContainer .container-img-profil' ), function(i,val){
-            if(found){
-                n = $(this).attr('href');
-                nid =  $(this).data('modalshow');
+            console.log("found ??",$(val).attr('href'), hash);
+            if( $(val).attr('href') == hash ){
+                found = i;
+                console.log("found",found);
                 return false;
             }
-            if( $(this).attr('href') == hash )
-                found = true;
-            else {
-                p = $(this).attr('href');
-                pid = $(this).data('modalshow');
-            }
         });
-        if(!p){
-            p =  $( $('.searchEntityContainer .container-img-profil' )[ $('.searchEntityContainer .container-img-profil' ).length-1 ] ).attr('href');
-            pid = $( $('.searchEntityContainer .container-img-profil' )[ $('.searchEntityContainer .container-img-profil' ).length-1 ] ).data('modalshow');
-        } 
-        if(!n ){
-            n = $( $('.searchEntityContainer .container-img-profil' )[0] ).attr('href');
-            nid =  $( $('.searchEntityContainer .container-img-profil' )[0] ).data('modalshow');
-        }
+        
+        prevIx = (found == 0) ? l-1 : found-1;
+        p =  $( $('.searchEntityContainer .container-img-profil' )[ prevIx ] ).attr('href');
+        pid = url.map(p).id;
+        
+        nextIx = (found == l-1) ? 0 : found+1;
+        n = $( $('.searchEntityContainer .container-img-profil' )[nextIx] ).attr('href');
+        nid =  url.map(n).id;
+        
         console.log("next",n,nid);
         console.log("prev",p,pid);
 
@@ -737,7 +734,7 @@ var directory = {
       // ********************************
       // NEXT PREVIOUS 
       // ********************************
-      var nav = directory.findnextPrev(hash);
+      var nav = directory.findNextPrev(hash);
       str += "<div class='col-xs-1 col-xs-offset-1'>"+nav.prev+"</div>";
       
       // ********************************

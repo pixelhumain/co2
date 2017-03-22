@@ -547,6 +547,14 @@ var url = {
 		"rooms" : "r",*/
 		"classified":"cl"
 	},
+	map : function (hash) {
+		hashT = hash.split('.');
+		return {
+			hash : hash,
+			type : hashT[2],
+			id : hashT[4]
+		};
+	},
 	convertToPath : function(hash) { 
 		return hash.substring(1).replace( "#","" ).replace( /\./g,"/" );
 	},
@@ -1333,7 +1341,7 @@ function  bindLBHLinks() {
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 		if( $(this).data("modalshow") )
-			smallMenu.open ( directory.preview( mapElements[ $(this).data("modalshow") ] ),h );
+			smallMenu.open ( directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
 		else 
 	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url.convertToPath(h) ,"","blockUI",h);
 	})

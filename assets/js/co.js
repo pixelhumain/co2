@@ -547,6 +547,14 @@ var url = {
 		"rooms" : "r",*/
 		"classified":"cl"
 	},
+	map : function (hash) {
+		hashT = hash.split('.');
+		return {
+			hash : hash,
+			type : hashT[2],
+			id : hashT[4]
+		};
+	},
 	convertToPath : function(hash) { 
 		return hash.substring(1).replace( "#","" ).replace( /\./g,"/" );
 	},
@@ -1325,7 +1333,7 @@ function  bindLBHLinks() {
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 	    url.loadByHash( h );
 	})
-	$(".lbhp").off().on("click",function(e) {  		
+	$(".lbhp").off().on("click",function(e) {
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
@@ -1333,7 +1341,7 @@ function  bindLBHLinks() {
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 		if( $(this).data("modalshow") )
-			smallMenu.open ( directory.preview( mapElements[ $(this).data("modalshow") ] ),h );
+			smallMenu.open ( directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
 		else 
 	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url.convertToPath(h) ,"","blockUI",h);
 	})
@@ -2458,6 +2466,7 @@ var elementLib = {
 	openForm : function  (type, afterLoad,data) { 
 	    //mylog.clear();
 	    $.unblockUI();
+	    $("#openModal").modal("hide");
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
 	    //global variables clean up

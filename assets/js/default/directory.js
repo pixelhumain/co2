@@ -678,36 +678,33 @@ var directory = {
       return str;
     },
     // ********************************
-    //  DIRECTORY PREVIEW PANEL
+    // CALCULATE NEXT PREVIOUS 
     // ********************************
-    findnextPrev : function  (hash) { 
-                var p = 0;
+    findNextPrev : function  (hash) { 
+        mylog.log("----------- findNextPrev", hash);
+        var p = 0;
         var n = 0;
         var nid = 0;
         var pid = 0;
         var  found = false;
         var l = $( '.searchEntityContainer .container-img-profil' ).length;
         $.each( $( '.searchEntityContainer .container-img-profil' ), function(i,val){
-            if(found){
-                n = $(this).attr('href');
-                nid =  $(this).data('modalshow');
+            console.log("found ??",$(val).attr('href'), hash);
+            if( $(val).attr('href') == hash ){
+                found = i;
+                console.log("found",found);
                 return false;
             }
-            if( $(this).attr('href') == hash )
-                found = true;
-            else {
-                p = $(this).attr('href');
-                pid = $(this).data('modalshow');
-            }
         });
-        if(!p){
-            p =  $( $('.searchEntityContainer .container-img-profil' )[ $('.searchEntityContainer .container-img-profil' ).length-1 ] ).attr('href');
-            pid = $( $('.searchEntityContainer .container-img-profil' )[ $('.searchEntityContainer .container-img-profil' ).length-1 ] ).data('modalshow');
-        } 
-        if(!n ){
-            n = $( $('.searchEntityContainer .container-img-profil' )[0] ).attr('href');
-            nid =  $( $('.searchEntityContainer .container-img-profil' )[0] ).data('modalshow');
-        }
+        
+        prevIx = (found == 0) ? l-1 : found-1;
+        p =  $( $('.searchEntityContainer .container-img-profil' )[ prevIx ] ).attr('href');
+        pid = url.map(p).id;
+        
+        nextIx = (found == l-1) ? 0 : found+1;
+        n = $( $('.searchEntityContainer .container-img-profil' )[nextIx] ).attr('href');
+        nid =  url.map(n).id;
+        
         console.log("next",n,nid);
         console.log("prev",p,pid);
 
@@ -716,13 +713,20 @@ var directory = {
             next : "<a href='"+n+"' data-modalshow='"+nid+"' class='lbhp text-dark'> <i class='fa fa-4x fa-arrow-circle-right'></i></a>"
         }
     },
-    //ADD link to seller contact page
-    previewedHash : null,
-    preview : function(params,hash){
-      directory.previewedHash = hash;
-      mylog.log("----------- preview",params,params.name, hash);
+    // ********************************
+    //  DIRECTORY PREVIEW PANEL
+    // ********************************
+    //TODO : ADD link to seller contact page
+    previewedObj : null,
+    preview : function(params,hash)
+    {
+        directory.previewedObj = {
+            hash : hash,
+            params : params
+        };
+        mylog.log("----------- preview",params,params.name, hash);
 
-      str = '<br><br><div class="row">'+
+        str = '<div class="row">'+
                 '<div class="col-lg-12 text-center" onclick="$(\'#\')">'+
                     '<h2 class="text-'+typeObj[params.type].color+'"><i class="fa fa-'+typeObj[params.type].icon+' fa-2x padding-bottom-10"></i><br>'+
                         '<span class="font-blackoutT"> '+trad[params.type]+'</span>'+
@@ -731,13 +735,9 @@ var directory = {
             '</div><br/><br/>';
       
       // ********************************
-      // CALCULATE NEXT PREVIOUS 
-      // ********************************
-
-      // ********************************
       // NEXT PREVIOUS 
       // ********************************
-      var nav = directory.findnextPrev(hash);
+      var nav = directory.findNextPrev(hash);
       str += "<div class='col-xs-1 col-xs-offset-1'>"+nav.prev+"</div>";
       
       // ********************************
@@ -791,6 +791,11 @@ var directory = {
 
       str += "</div>";
 
+      if( params.creator == userId )
+      str += '<br/><br/><a href="javascript:elementLib.openForm(\'classified\', null, directory.previewedObj.params );" style="font-size:25px;" class="btn btn-default letter-green bold ">'+
+                '<i class="fa fa-pencil"></i> Edit'+
+            '</a>';
+
       str += "</div>";
 
 
@@ -799,7 +804,7 @@ var directory = {
       // ********************************
       // ADD NEW Btn
       // ********************************
-      str += '<div class="col-xs-12 text-center"> <br/><br/><a href="javascript:elementLib.openForm();" style="font-size:25px;" class="btn btn-default letter-green bold ">'+
+      str += '<div class="col-xs-12 text-center"> <br/><br/><a href="javascript:elementLib.openForm(\'classified\');" style="font-size:25px;" class="btn btn-default letter-green bold ">'+
                 '<i class="fa fa-plus-circle"></i> CRÉER UNE ANNONCE'+
             '</a></div>';
       return str;
@@ -1325,7 +1330,9 @@ var directory = {
                 if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
                     params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>";
 
-                if(typeObjLib.get(itemType).col == "poi" && typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
+                if(typeObjLib.get(itemType) && 
+                    typeObjLib.get(itemType).col == "poi" && 
+                    typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
                 params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
 
                 params.insee = params.insee ? params.insee : "";

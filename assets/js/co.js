@@ -1333,7 +1333,7 @@ function  bindLBHLinks() {
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 	    url.loadByHash( h );
 	})
-	$(".lbhp").off().on("click",function(e) {  		
+	$(".lbhp").off().on("click",function(e) {
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
@@ -2466,6 +2466,7 @@ var elementLib = {
 	openForm : function  (type, afterLoad,data) { 
 	    //mylog.clear();
 	    $.unblockUI();
+	    $("#openModal").modal("hide");
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
 	    //global variables clean up

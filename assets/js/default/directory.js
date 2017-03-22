@@ -678,7 +678,7 @@ var directory = {
       return str;
     },
     // ********************************
-    //  DIRECTORY PREVIEW PANEL
+    // CALCULATE NEXT PREVIOUS 
     // ********************************
     findNextPrev : function  (hash) { 
         mylog.log("----------- findNextPrev", hash);
@@ -713,13 +713,20 @@ var directory = {
             next : "<a href='"+n+"' data-modalshow='"+nid+"' class='lbhp text-dark'> <i class='fa fa-4x fa-arrow-circle-right'></i></a>"
         }
     },
-    //ADD link to seller contact page
-    previewedHash : null,
-    preview : function(params,hash){
-      directory.previewedHash = hash;
-      mylog.log("----------- preview",params,params.name, hash);
+    // ********************************
+    //  DIRECTORY PREVIEW PANEL
+    // ********************************
+    //TODO : ADD link to seller contact page
+    previewedObj : null,
+    preview : function(params,hash)
+    {
+        directory.previewedObj = {
+            hash : hash,
+            params : params
+        };
+        mylog.log("----------- preview",params,params.name, hash);
 
-      str = '<br><br><div class="row">'+
+        str = '<div class="row">'+
                 '<div class="col-lg-12 text-center" onclick="$(\'#\')">'+
                     '<h2 class="text-'+typeObj[params.type].color+'"><i class="fa fa-'+typeObj[params.type].icon+' fa-2x padding-bottom-10"></i><br>'+
                         '<span class="font-blackoutT"> '+trad[params.type]+'</span>'+
@@ -727,10 +734,6 @@ var directory = {
                 '</div>'+
             '</div><br/><br/>';
       
-      // ********************************
-      // CALCULATE NEXT PREVIOUS 
-      // ********************************
-
       // ********************************
       // NEXT PREVIOUS 
       // ********************************
@@ -788,6 +791,11 @@ var directory = {
 
       str += "</div>";
 
+      if( params.creator == userId )
+      str += '<br/><br/><a href="javascript:elementLib.openForm(\'classified\', null, directory.previewedObj.params );" style="font-size:25px;" class="btn btn-default letter-green bold ">'+
+                '<i class="fa fa-pencil"></i> Edit'+
+            '</a>';
+
       str += "</div>";
 
 
@@ -796,7 +804,7 @@ var directory = {
       // ********************************
       // ADD NEW Btn
       // ********************************
-      str += '<div class="col-xs-12 text-center"> <br/><br/><a href="javascript:elementLib.openForm();" style="font-size:25px;" class="btn btn-default letter-green bold ">'+
+      str += '<div class="col-xs-12 text-center"> <br/><br/><a href="javascript:elementLib.openForm(\'classified\');" style="font-size:25px;" class="btn btn-default letter-green bold ">'+
                 '<i class="fa fa-plus-circle"></i> CRÉER UNE ANNONCE'+
             '</a></div>';
       return str;
@@ -1322,7 +1330,9 @@ var directory = {
                 if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
                     params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>";
 
-                if(typeObjLib.get(itemType).col == "poi" && typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
+                if(typeObjLib.get(itemType) && 
+                    typeObjLib.get(itemType).col == "poi" && 
+                    typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
                 params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
 
                 params.insee = params.insee ? params.insee : "";

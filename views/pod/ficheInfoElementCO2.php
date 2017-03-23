@@ -94,9 +94,22 @@
 <ul id="accordion" class="accordion shadow2">
 		    <li>
 				<div class="iamgurdeep-pic">
-					<img class="img-responsive" alt="" 
+					<?php if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
+					$images=$element["profilMediumImageUrl"];
+				else 
+					$images="";	
+					$this->renderPartial('../pod/fileupload', array(  "itemId" => (string) $element["_id"],
+																  "type" => $type,
+																  "resize" => false,
+																  "contentId" => Document::IMG_PROFIL,
+																  "show" => true,
+																  "editMode" => $edit,
+																  "image" => $images,
+																  "openEdition" => $openEdition) ); 
+																  ?>
+					<!--<img class="img-responsive" alt="" 
 						 src="<?php echo @$element['profilMediumImageUrl'] ? 
-						 		Yii::app()->createUrl('/'.@$element['profilMediumImageUrl']) : $imgDefault; ?>">
+						 		Yii::app()->createUrl('/'.@$element['profilMediumImageUrl']) : $imgDefault; ?>">-->
 					<div class="edit-pic">
 						<a href="https://web.facebook.com/" target="_blank" class="fa fa-facebook"></a>
 						<a href="https://www.instagram.com/gurdeeposahan/" target="_blank" class="fa fa-instagram"></a>
@@ -104,7 +117,7 @@
 						<a href="https://plus.google.com/u/0/105032594920038016998" target="_blank" class="fa fa-google"></a>
 					</div>
 					<?php if(@Yii::app()->session["userId"]){ ?>
-					<div class="username">
+					<div class="blockUsername">
 					    <!--<h2 class="text-left">
 						    <?php //echo @$element["name"]; ?><!-- <br>
 						    <small>
@@ -437,7 +450,7 @@
 					<?php if (($edit || $openEdition) && @Yii::app()->session["userId"]){	?>
 						<button class="edit-chart btn btn-default letter-blue margin-top-5 tooltips" 
 							data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("chart","Edit properties") ?>">
-							<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?><i class="fa fa-chevron-right"></i></b>
+							<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?></b>
 						</button>
 					<?php } ?>
 					</div>

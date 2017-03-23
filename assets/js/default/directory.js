@@ -606,6 +606,9 @@ var directory = {
       str += "</div>";
       return str;
     },
+    // ********************************
+    //  ELEMENT DIRECTORY PANEL
+    // ********************************
     elementPanelHtml : function(params){
       mylog.log("----------- elementPanelHtml",params.type,params.name);
       str = "";  
@@ -632,7 +635,7 @@ var directory = {
         if(params.type == "citoyens") 
             params.url += '.viewer.' + userId;
         if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.url+"' class='container-img-profil lbhp add2fav'>" + params.imgProfil + "</a>";
+          str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
 
         str += "<div class='padding-10 informations'>";
 
@@ -640,17 +643,17 @@ var directory = {
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.url+"' class='lbhp add2fav'>" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
               str += "</div>";
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbhp add2fav'>"+
+            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
                       iconFaReply + params.name + 
                    "</a>";                 
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality lbhp add2fav'>"+
+                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -674,11 +677,147 @@ var directory = {
       str += "</div>";
       return str;
     },
+    // ********************************
+    // CALCULATE NEXT PREVIOUS 
+    // ********************************
+    findNextPrev : function  (hash) { 
+        mylog.log("----------- findNextPrev", hash);
+        var p = 0;
+        var n = 0;
+        var nid = 0;
+        var pid = 0;
+        var  found = false;
+        var l = $( '.searchEntityContainer .container-img-profil' ).length;
+        $.each( $( '.searchEntityContainer .container-img-profil' ), function(i,val){
+            console.log("found ??",$(val).attr('href'), hash);
+            if( $(val).attr('href') == hash ){
+                found = i;
+                console.log("found",found);
+                return false;
+            }
+        });
+        
+        prevIx = (found == 0) ? l-1 : found-1;
+        p =  $( $('.searchEntityContainer .container-img-profil' )[ prevIx ] ).attr('href');
+        pid = url.map(p).id;
+        
+        nextIx = (found == l-1) ? 0 : found+1;
+        n = $( $('.searchEntityContainer .container-img-profil' )[nextIx] ).attr('href');
+        nid =  url.map(n).id;
+        
+        console.log("next",n,nid);
+        console.log("prev",p,pid);
+
+        return {
+            prev : "<a href='"+p+"' data-modalshow='"+pid+"' class='lbhp text-dark'><i class='fa fa-4x fa-arrow-circle-left'></i> </a> ",
+            next : "<a href='"+n+"' data-modalshow='"+nid+"' class='lbhp text-dark'> <i class='fa fa-4x fa-arrow-circle-right'></i></a>"
+        }
+    },
+    // ********************************
+    //  DIRECTORY PREVIEW PANEL
+    // ********************************
+    //TODO : ADD link to seller contact page
+    previewedObj : null,
+    preview : function(params,hash)
+    {
+        directory.previewedObj = {
+            hash : hash,
+            params : params
+        };
+        mylog.log("----------- preview",params,params.name, hash);
+
+        str = '<div class="row">'+
+                '<div class="col-lg-12 text-center" onclick="$(\'#\')">'+
+                    '<h2 class="text-'+typeObj[params.type].color+'"><i class="fa fa-'+typeObj[params.type].icon+' fa-2x padding-bottom-10"></i><br>'+
+                        '<span class="font-blackoutT"> '+trad[params.type]+'</span>'+
+                    '</h2>'+
+                '</div>'+
+            '</div><br/><br/>';
+      
+      // ********************************
+      // NEXT PREVIOUS 
+      // ********************************
+      var nav = directory.findNextPrev(hash);
+      str += "<div class='col-xs-1 col-xs-offset-1'>"+nav.prev+"</div>";
+      
+      // ********************************
+      // RIGHT SECTION
+      // ********************************
+      str += "<div class='col-xs-6 '>";
+
+      if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
+        str += '<div class="col-xs-6"><a class="thumb-info" href="'+baseUrl+params.profilImageUrl+'" data-title="" data-lightbox="all">'+
+                  "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
+               '</a></div>';
+
+      // ********************************
+      // LEFT SECTION
+      // ********************************
+      str += "<div class='col-xs-6'>";
+      
+        cat = (typeof params.category != "undefined") ? params.section+" > "+params.category : "";
+        if(params.type == "classified" && typeof params.category != "undefined")
+          params.ico = (typeof classifiedTypes[params.category] != "undefined") ? "fa-" + classifiedTypes[params.category]["icon"] : "";
+        
+        subtype = (typeof params.subtype != "undefined") ? params.subtype+" > " : "";
+        price = (typeof params.price != "undefined" && params.price != "") ? "<br/><i class='fa fa-money'></i> " + params.price : "";
+        
+        str += '<br><br><div class="row">'+
+                '<div class="padding-5">'+
+                    '<h2 class="text-dark no-margin hidden-xs" style="margin-top:5px!important;">'+
+                        cat+" <i class='fa "+ params.ico +"'></i><br/><br/>"+ 
+                        subtype+params.name +"<br/>"+
+                        price+
+                    '</h3>'+
+                '</div>'+
+            '</div><br/><br/>';
+
+        if(typeof params.description != "undefined" && params.description != "")
+            str += "<div class=''>" + params.description + "</div>";
+
+            var thisLocality = "";
+            if(params.fullLocality != "" && params.fullLocality != " ")
+                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
+                                  "<i class='fa fa-home'></i> " + params.fullLocality + 
+                                "</a>";
+            //else thisLocality = "<br>";
+            
+            str += thisLocality;
+
+            if(typeof params.contactInfo != "undefined" && params.contactInfo != "")
+            str += "<div class='entityType letter-green'><i class='fa fa-address-card'></i> " + params.contactInfo + "</div>";
+         
+            str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+
+      str += "</div>";
+
+      if( params.creator == userId )
+      str += '<br/><br/><a href="javascript:elementLib.openForm(\'classified\', null, directory.previewedObj.params );" style="font-size:25px;" class="btn btn-default letter-green bold ">'+
+                '<i class="fa fa-pencil"></i> Edit'+
+            '</a>';
+
+      str += "</div>";
+
+
+      str += "<div class='col-xs-1 col-xs-offset-1'>"+nav.next+"</div>";
+
+      // ********************************
+      // ADD NEW Btn
+      // ********************************
+      str += '<div class="col-xs-12 text-center"> <br/><br/><a href="javascript:elementLib.openForm(\'classified\');" style="font-size:25px;" class="btn btn-default letter-green bold ">'+
+                '<i class="fa fa-plus-circle"></i> CRÉER UNE ANNONCE'+
+            '</a></div>';
+      return str;
+    },
+
+    // ********************************
+    // CLASSIFIED DIRECTORY PANEL
+    // ********************************    
     classifiedPanelHtml : function(params){
       mylog.log("----------- classifiedPanelHtml",params,params.name);
 
       str = "";  
-      str += "<div class='col-lg-6 col-md-12 col-sm-12 col-xs-12 searchEntityContainer classified "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-lg-6 col-md-12 col-sm-12 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
         
       if(userId != null && userId != "" && params.id != userId){
@@ -699,7 +838,7 @@ var directory = {
         if(params.type == "citoyens") 
             params.url += '.viewer.' + userId;
         if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
+          str += "<a href='"+params.url+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + params.imgProfil + "</a>";
 
         str += "<div class='padding-10 informations'>";
 
@@ -707,7 +846,7 @@ var directory = {
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.url+"' class='lbhp add2fav' data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
               str += "</div>";
             }
 
@@ -721,7 +860,7 @@ var directory = {
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbhp add2fav'  data-modalshow='"+params.id+"'>"+
                       iconFaReply + params.name + 
                    "</a>";  
        
@@ -733,7 +872,7 @@ var directory = {
 
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbh add2fav letter-red'>"+
+                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             //else thisLocality = "<br>";
@@ -758,6 +897,9 @@ var directory = {
       str += "</div>";
       return str;
     },
+    // ********************************
+    // EVENT DIRECTORY PANEL
+    // ********************************
     eventPanelHtml : function(params){
       mylog.log("-----------eventPanelHtml", params);
       str = "";  
@@ -932,6 +1074,9 @@ var directory = {
       str += "</div>";
       return str;
     },
+    // ********************************
+    // CITY DIRECTORY PANEL
+    // ********************************
     cityPanelHtml : function(params){
         mylog.log("-----------cityPanelHtml");
         str = "";  
@@ -987,6 +1132,9 @@ var directory = {
               str += "</div>";
               return str;
     },
+    // ********************************
+    // ROOMS DIRECTORY PANEL
+    // ********************************
     roomsPanelHtml : function(params){
       mylog.log("-----------roomsPanelHtml");
 
@@ -1182,7 +1330,9 @@ var directory = {
                 if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
                     params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>";
 
-                if(typeObjLib.get(itemType).col == "poi" && typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
+                if(typeObjLib.get(itemType) && 
+                    typeObjLib.get(itemType).col == "poi" && 
+                    typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
                 params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
 
                 params.insee = params.insee ? params.insee : "";

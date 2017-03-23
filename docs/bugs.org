@@ -2,8 +2,8 @@
 * Correction de bugs CO2
 * ************************************************************
 
-
-
+[ ] agenda ajout d'evenement impossible le datepicker bloque la date de fin, même si c'est bien une date ultérieur à la date de début.
+[ ] Les annonces ne s'enregistre pas si on ajoute une adresse (passage par la carte).
 
 
 

@@ -607,7 +607,7 @@ jQuery(document).ready(function() {
       //TODO : Adapter la largeur des graphe à l'écran de l'utilisateur
 
     for ( var i = 0; i< listDevice.length ; i++) {
-      var urlReq="https://api.smartcitizen.me/v0/devices/"+listDevice[i]+"/readings?sensor_id="+sensorId+"&"+tRollup+"&from="+dXnISO+"&to="+dXmISO;
+      var urlReq="<?php echo Thing::URL_API_SC ?>/devices/"+listDevice[i]+"/readings?sensor_id="+sensorId+"&"+tRollup+"&from="+dXnISO+"&to="+dXmISO;
       var sensorkey = "";
 
       //console.log(urlReq);

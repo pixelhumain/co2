@@ -365,11 +365,24 @@
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
     console.log("params", params);
-
+    var subView="<?php echo @$subview; ?>";
+    var hashUrlPage="#page.type."+contextType+".id."+contextId;
 	jQuery(document).ready(function() {
 		initSocial();
 		bindButtonMenu();
-		loadNewsStream(true);
+		if(subView!=""){
+			if(subView=="gallery")
+				loadGallery()
+			else if(subView=="notifications")
+				loadNotifications();
+			else if(subView.indexOf("chart") >= 0){
+				id=subView.split("chart");
+				loadChart(id[1]);
+			}
+			else if(subView=="mystream")
+				loadNewsStream(false);
+		} else
+			loadNewsStream(true);
 	});
 
 
@@ -378,19 +391,30 @@
 			loadAdminDashboard();
 		});
 		$("#btn-start-newsstream").click(function(){
+			history.pushState(null, "New Title", hashUrlPage);
 			loadNewsStream(true);
 		});
 		$("#btn-start-mystream").click(function(){
+			if(contextType=="citoyens" && userId==contextId)
+				history.pushState(null, "New Title", hashUrlPage+".view.mystream");
+			else
+				history.pushState(null, "New Title", hashUrlPage);
 			loadNewsStream(false);
 		});
 		$("#btn-start-gallery").click(function(){
+			history.pushState(null, "New Title", hashUrlPage+".view.gallery");
+			//location.search="?view=gallery";
 			loadGallery();
 		});
 		$("#btn-start-notifications").click(function(){
+			history.pushState(null, "New Title", hashUrlPage+".view.notifications");
+			//location.search="?view=notifications";
 			loadNotifications();
 		});
 		$(".btn-start-chart").click(function(){
 			id=$(this).data("value");
+			history.pushState(null, "New Title", hashUrlPage+".view.chart"+id);
+			//location.search="?view=chart&id="+id;
 			loadChart(id);
 		});
 	}

@@ -41,7 +41,7 @@
 }
 .littleActions{
 	padding-top: 10px !important;
-	padding-bottom: 15px !important; 
+	padding-bottom: 20px !important; 
 }
 </style>
 <?php

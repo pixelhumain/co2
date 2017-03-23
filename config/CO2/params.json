@@ -110,6 +110,20 @@
                 "icon" : "university", 
                 "mainTitle" : "Communexion activée",
                 "placeholderMainSearch" : "rechercher ..."
+          },
+
+            "#thing":
+                {"inMenu" : true, 
+                "useHeader" : true, 
+                "open" : true, 
+                "subdomain" : "thing", 
+                "subdomainName" : "Données libres",
+                "hash" : "#thing",
+                "icon" : "line-chart", 
+                "mainTitle" : "Les objets communectés",
+                "placeholderMainSearch" : "Choisir parmis les objets ...",
+                "lblBtnCreate" : "Ajouter un objet",
+                "colorBtnCreate" : "azure"
           }
       
 	  }

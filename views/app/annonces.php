@@ -21,7 +21,7 @@
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath ,
                                 "type" => @$type,
-                                "page" => page) ); 
+                                "page" => $page) ); 
 ?>
 <style>
 	

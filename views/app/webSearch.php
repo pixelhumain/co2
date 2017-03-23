@@ -174,11 +174,9 @@
 </div>
 <?php } ?>
 
-
-
 <script type="text/javascript" >
   
-var siteurls = <?php echo json_encode($siteurls); ?>;
+var siteurls = <?php echo json_encode($siteurls) ? json_encode($siteurls) : "{}"; ?>;
 var search = "<?php echo $search; ?>";
 
 jQuery(document).ready(function() { 

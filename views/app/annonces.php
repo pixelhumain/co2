@@ -13,11 +13,15 @@
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+
+    $page = "annonces";
+    if($params["title"] == "Kgougle") $page = "freedom";
+
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath ,
                                 "type" => @$type,
-                                "page" => "annonces") ); 
+                                "page" => page) ); 
 ?>
 <style>
 	

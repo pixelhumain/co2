@@ -86,9 +86,6 @@
     max-height: 50px;
     overflow: hidden;
 }
-#main-search-bar-addon{
-    cursor: pointer;
-}
 @media screen and (max-width: 1024px) {
     #mainCategories .portfolio .portfolio-item{
         height: 110px;

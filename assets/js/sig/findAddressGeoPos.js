@@ -216,6 +216,7 @@ function getCommonGeoObject(objs, providerName){
 			commonObj = addAttObjNominatim(commonObj, address, "cityName", "town");
 			commonObj = addAttObjNominatim(commonObj, address, "suburb", "suburb");
 			commonObj = addAttObjNominatim(commonObj, address, "country", "country");
+			commonObj = addAttObjNominatim(commonObj, address, "state", "state");
 			commonObj = addAttObjNominatim(commonObj, address, "countryCode", "country_code");
 			commonObj = addAttObjNominatim(commonObj, address, "postalCode", "postcode");
 			commonObj = addAttObjNominatim(commonObj, obj, "placeId", "place_id");

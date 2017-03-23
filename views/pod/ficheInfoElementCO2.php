@@ -94,18 +94,32 @@
 <ul id="accordion" class="accordion shadow2">
 		    <li>
 				<div class="iamgurdeep-pic">
-					<img class="img-responsive" alt="" 
+					<?php if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
+					$images=$element["profilMediumImageUrl"];
+				else 
+					$images="";	
+					$this->renderPartial('../pod/fileupload', array(  "itemId" => (string) $element["_id"],
+																  "type" => $type,
+																  "resize" => false,
+																  "contentId" => Document::IMG_PROFIL,
+																  "show" => true,
+																  "editMode" => $edit,
+																  "image" => $images,
+																  "openEdition" => $openEdition) ); 
+																  ?>
+					<!--<img class="img-responsive" alt="" 
 						 src="<?php echo @$element['profilMediumImageUrl'] ? 
-						 		Yii::app()->createUrl('/'.@$element['profilMediumImageUrl']) : $imgDefault; ?>">
+						 		Yii::app()->createUrl('/'.@$element['profilMediumImageUrl']) : $imgDefault; ?>">-->
 					<div class="edit-pic">
 						<a href="https://web.facebook.com/" target="_blank" class="fa fa-facebook"></a>
 						<a href="https://www.instagram.com/gurdeeposahan/" target="_blank" class="fa fa-instagram"></a>
 						<a href="https://twitter.com/gurdeeposahan1" target="_blank" class="fa fa-twitter"></a>
 						<a href="https://plus.google.com/u/0/105032594920038016998" target="_blank" class="fa fa-google"></a>
 					</div>
+					<?php if(@Yii::app()->session["userId"]){ ?>
 					<div class="blockUsername">
-					    <h2 class="text-left">
-						    <?php //echo @$element["name"]; ?><!-- <br> -->
+					    <!--<h2 class="text-left">
+						    <?php //echo @$element["name"]; ?><!-- <br>
 						    <small>
 						    	<?php if(@$element["address"] && @$element["address"]["addressLocality"]) {
 		                				echo "<i class='fa fa-university'></i> ".$element["address"]["addressLocality"];
@@ -115,26 +129,17 @@
 		                			  	echo $element["address"]["postalCode"];
 		                		?>
 		                	</small>
-	                	</h2>
+	                	</h2>-->
+	                	<?php $this->renderPartial('../element/linksMenu', 
+	                			array("linksBtn"=>$linksBtn,
+	                					"elementId"=>(string)$element["_id"],
+	                					"elementType"=>$type,
+	                					"elementName"=> $element["name"]) 
+	                			); 
+	                	?>
 					    <!-- <p><i class="fa fa-briefcase"></i> Web Design and Development.</p> -->
-					    
-					    <a href="https://web.facebook.com/" target="_blank" class="btn-o"> <i class="fa fa-chain"></i> Suivre </a>
-					    <a href="https://www.instagram.com/gurdeeposahan/" target="_blank"  class="btn-o"> <i class="fa fa-star"></i> Favoris </a>
-					    
-					    
-						<ul class="nav navbar-nav pull-right">
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-ellipsis-v pull-left"></span></a>
-								<ul class="dropdown-menu pull-right">
-									<li><a href="#">Video Call <i class="fa fa-video-camera"></i></a></li>
-									<li><a href="#">Poke <i class="fa fa-hand-o-right"></i></a></li>
-									<li><a href="#">Report <i class="fa fa-bug"></i></a></li>
-									<li><a href="#">Block <i class="fa fa-lock"></i></a></li>
-								</ul>
-							</li>
-						</ul>
-					   
 					</div>
+					<?php } ?>
 				    
 				</div>
 		        
@@ -445,7 +450,7 @@
 					<?php if (($edit || $openEdition) && @Yii::app()->session["userId"]){	?>
 						<button class="edit-chart btn btn-default letter-blue margin-top-5 tooltips" 
 							data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("chart","Edit properties") ?>">
-							<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?><i class="fa fa-chevron-right"></i></b>
+							<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?></b>
 						</button>
 					<?php } ?>
 					</div>

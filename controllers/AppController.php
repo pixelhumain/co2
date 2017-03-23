@@ -127,15 +127,28 @@ class AppController extends CommunecterController {
 	}
 
 
-	public function actionSearch($type=null){
-        CO2Stat::incNbLoad("co2-search");	
+    public function actionSearch($type=null){
+        CO2Stat::incNbLoad("co2-search");   
         $params = array("type" => @$type );
-    	echo $this->renderPartial("search", $params, true);
-	}
+        echo $this->renderPartial("search", $params, true);
+    }
+    public function actionSocial($type=null){
+        CO2Stat::incNbLoad("co2-search");   
+        $params = array("type" => @$type );
+        echo $this->renderPartial("search", $params, true);
+    }
 
 
 
     public function actionAnnonces(){
+        CO2Stat::incNbLoad("co2-annonces"); 
+        $params = array("type" => "classified");
+        echo $this->renderPartial("search", $params, true);
+    }
+
+
+
+    public function actionFreedom(){
         CO2Stat::incNbLoad("co2-annonces"); 
         $params = array("type" => "classified");
         echo $this->renderPartial("search", $params, true);
@@ -165,10 +178,11 @@ class AppController extends CommunecterController {
 	}
 
 
-	public function actionPage($type, $id){
+	public function actionPage($type, $id, $view=null){
         CO2Stat::incNbLoad("co2-page");
         $params = array("id" => @$id,
                         "type" => @$type,
+                        "view" => @$view,
                         "subdomain" => "page",
                         "mainTitle" => "Page perso",
                         "placeholderMainSearch" => "");

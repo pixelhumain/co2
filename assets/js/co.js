@@ -63,7 +63,15 @@ function bindRightClicks() {
 					var	id = ( href[0] == "#element" ) ? href[5] : href[3];
 				}
 				//console.log(href,href[0],what,id);
-				var btns = {};
+				var btns = {
+					openInNewTab : {
+						name: "Ouvrir dans un nouvel onglet",
+			        	icon: "fa-arrow-circle-right", 
+			        	callback: function(key, opt){ 
+					        	window.open($trigger[0].hash, '_blank');
+			        	}
+					}
+				};
 	        	$.each( userConnected.collections, function (col,list) { 
 	        		btns[col] = { 
 			        	name: function($element, key, item){ 
@@ -538,6 +546,14 @@ var url = {
 		"action" : "a",
 		"rooms" : "r",*/
 		"classified":"cl"
+	},
+	map : function (hash) {
+		hashT = hash.split('.');
+		return {
+			hash : hash,
+			type : hashT[2],
+			id : hashT[4]
+		};
 	},
 	convertToPath : function(hash) { 
 		return hash.substring(1).replace( "#","" ).replace( /\./g,"/" );
@@ -1148,7 +1164,7 @@ var smallMenu = {
 		smallMenu.open("",type );
 		dest = (type == "blockUI") ? ".blockContent" : "#openModal .modal-content .container" ;
 		getAjax( dest , url , function () { 
-			$("#pad-element-container").hide();
+			
 			//next and previous btn to nav from preview to preview
 			if(nextPrev){
 				var p = 0;
@@ -1165,7 +1181,7 @@ var smallMenu = {
 					else 
 						p = (i == 0 ) ? $( $('.searchEntityContainer .container-img-profil' )[ $('.searchEntityContainer .container-img-profil' ).length ] ).attr('href') : $(this).attr('href');
 				});
-				html = "<div style='margin-bottom:50px'><a href='"+p+"' class='plbhp text-dark'><i class='fa fa-2x fa-arrow-circle-left'></i> PREV </a> "+
+				html = "<div style='margin-bottom:50px'><a href='"+p+"' class='lbhp text-dark'><i class='fa fa-2x fa-arrow-circle-left'></i> PREV </a> "+
 						" <a href='"+n+"' class='lbhp text-dark'> NEXT <i class='fa fa-2x fa-arrow-circle-right'></i></a></div>";
 				$(dest).prepend(html);
 				bindLBHLinks();
@@ -1174,20 +1190,23 @@ var smallMenu = {
 	},
 	//content Loader can go into a block
 	open : function (content,type) { 
+		//alert("small menu open");
+		//add somewhere in page
 		if(!smallMenu.inBlockUI){
 			$(smallMenu.destination).html( content );
 			$.unblockUI();
 		}
 		else {
+			//this uses blockUI
 			if(type == "blockUI"){
 				$.blockUI({ 
 					//title : 'Welcome to your page', 
-					message : "<div class='blockContent'></div>",
+					message : (content) ? content : "<div class='blockContent'></div>",
 					onOverlayClick: $.unblockUI,
 			        css: { 
 			         //border: '10px solid black', 
-			         margin : "50px",
-			         width:"80%",
+			         //margin : "50px",
+			         //width:"80%",
 			         //    padding: '15px', 
 			         backgroundColor: 'rgba(256,256,256,0.85)', 
 			         //    '-webkit-border-radius': '10px', 
@@ -1196,8 +1215,16 @@ var smallMenu = {
 			        	// "cursor": "pointer"
 			        }//,overlayCSS: { backgroundColor: '#fff'}
 				});
-			}else
+			}else if(type == "bootbox"){
+				bootbox.dialog({
+				  message: content
+				});
+			} else{//open inside a boostrap modal 
 				$("#openModal").modal("show");
+				if(content)
+					$("#openModal div.modal-content div.container").html(content);
+			}
+
 			$(".blockPage").addClass(smallMenu.destination.slice(1));
 			// If network, check width of menu small
 			if( typeof globalTheme != "undefined" && globalTheme == "network" ) {
@@ -1306,25 +1333,18 @@ function  bindLBHLinks() {
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 	    url.loadByHash( h );
 	})
-	$(".lbhp").off().on("click",function(e) {  		
+	$(".lbhp").off().on("click",function(e) {
 		e.preventDefault();
 		mylog.warn("***************************************");
-		mylog.warn("bindLBHLinks Preview", $(this).attr("href"));
+		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
+		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-	    smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url.convertToPath(h) ,"","blockUI",h);
+		if( $(this).data("modalshow") )
+			smallMenu.open ( directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
+		else 
+	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url.convertToPath(h) ,"","blockUI",h);
 	})
-	/*.on("contextmenu", function(e){
-		var href = $(this).attr("href").split(".");
-		console.log($(this).attr("href"),href[0])
-		if(userId && $.inArray(href[0],["#organization","#project","#event","#person","#element","#survey","#rooms"])){
-			var what = ( href[0] == "#element" ) ? href[3] : typeObj[ href[0].substring(1) ].col; 
-			var	id = ( href[0] == "#element" ) ? href[5] : href[3];
-			//alert( what+id+$(this).attr("href") );
-			//collection.add2fav(what,id);
-		}
-	   return false;
-	});*/
 }
 
 
@@ -1790,7 +1810,7 @@ function activeMenuElement(page) {
 
 function shadowOnHeader() {
 	var y = $(".my-main-container").scrollTop(); 
-    if (y > 0) {  $('.main-top-menu').addClass('shadow'); }
+    if (y > 0) {  $('.main-top-menu').addClass('shadow'); }////NOTIFICATIONS}
     else { $('.main-top-menu').removeClass('shadow'); }
 }
 function getMediaFromUrlContent(className, appendClassName,nbParent){
@@ -2446,6 +2466,7 @@ var elementLib = {
 	openForm : function  (type, afterLoad,data) { 
 	    //mylog.clear();
 	    $.unblockUI();
+	    $("#openModal").modal("hide");
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
 	    //global variables clean up
@@ -2622,6 +2643,7 @@ var dynForm = null;
 var uploadObj = {
 	type : null,
 	id : null,
+	folder : "communecter", //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
 		uploadObj.id = id;
@@ -3406,7 +3428,7 @@ var js_templates = {
 					'</div>' ;
 			return str;
 				
-		},
+		}
 
 	};
 
@@ -3526,6 +3548,9 @@ function initKInterface(params){ console.log("initKInterface");
 
     $("#btn-sethome").click(function(){
     	url.loadByHash("#info.p.sethome")
+    });
+    $("#btn-apropos").click(function(){
+    	url.loadByHash("#info.p.apropos")
     });
 
     var affixTop = 300;

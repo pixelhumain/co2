@@ -130,8 +130,12 @@
 		<ul class="dropdown-menu pull-right">
 			<li>
 				<a href="javascript:;" id="btn-show-activity">
-					<?php echo Yii::t("common","History")?> <i class="fa fa-history"></i>
+					<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
 				</a>
+			</li>
+			<li>
+				<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
+					<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?></a>
 			</li>
 			<!--<li><a href="#">Video Call <i class="fa fa-video-camera"></i></a></li>
 			<li><a href="#">Poke <i class="fa fa-hand-o-right"></i></a></li>

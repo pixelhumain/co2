@@ -95,3 +95,6 @@ DDA
 
 PUB
 [ ] Faire le système de publicité sur Kgougle :::Tango
+
+ADMIN 
+[ ] rétablir le module Admin

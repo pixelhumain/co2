@@ -1009,7 +1009,7 @@ function saveNews(){
 				//plugins/showdown/showdown.min.js // bootstrap-markdown
 				// example in editInPlace.js /assets/js/
 				console.log(newNews.text);
-				alert(newNews.text);
+				//alert(newNews.text);
 				if($('#authorIsTarget').length && $('#authorIsTarget').val()==1)
 					newNews.targetIsAuthor = true;
 				mylog.log("contextParentType", contextParentType);

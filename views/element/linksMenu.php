@@ -128,11 +128,16 @@
 	<li class="dropdown">
 		<a href="#" class="dropdown-toggle littleActions" data-toggle="dropdown"><span class="fa fa-ellipsis-v pull-left"></span></a>
 		<ul class="dropdown-menu pull-right">
-			<li><a href="#">Video Call <i class="fa fa-video-camera"></i></a></li>
+			<li>
+				<a href="javascript:;" id="btn-show-activity">
+					<?php echo Yii::t("common","History")?> <i class="fa fa-history"></i>
+				</a>
+			</li>
+			<!--<li><a href="#">Video Call <i class="fa fa-video-camera"></i></a></li>
 			<li><a href="#">Poke <i class="fa fa-hand-o-right"></i></a></li>
 			<li><a href="#">Report <i class="fa fa-bug"></i></a></li>
-			<li><a href="#">Block <i class="fa fa-lock"></i></a></li>
-			</ul>
+			<li><a href="#">Block <i class="fa fa-lock"></i></a></li>-->
+		</ul>
 	</li>
 </ul>		    
 <script type="text/javascript">

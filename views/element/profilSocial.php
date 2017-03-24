@@ -381,6 +381,8 @@
 			}
 			else if(subView=="mystream")
 				loadNewsStream(false);
+			else if(subView=="history")
+				loadHistoryActivity();
 		} else
 			loadNewsStream(true);
 	});
@@ -416,6 +418,10 @@
 			history.pushState(null, "New Title", hashUrlPage+".view.chart"+id);
 			//location.search="?view=chart&id="+id;
 			loadChart(id);
+		});
+		$("#btn-show-activity").click(function(){
+			history.pushState(null, "New Title", hashUrlPage+".view.history");
+			loadHistoryActivity();
 		});
 	}
 
@@ -513,7 +519,14 @@
 			null,
 			function(){},"html");
 	}
-
+	function loadHistoryActivity(){
+		toogleNotif(false);
+		var url = "pod/activitylist/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
+		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+			function(){},"html");
+	}
 
 function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL");
 	loadingData = true;

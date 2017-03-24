@@ -45,7 +45,7 @@
 }
 </style>
 <?php
-	if(@$linksBtn["followBtn"] && ($elementType!= Person::COLLECTION && $elementId!=Yii::app()->session["userId"])){
+	if(@$linksBtn["followBtn"]){
  		if(@$linksBtn["isFollowing"]){ 
  ?>
 		<ul class="nav navbar-nav">

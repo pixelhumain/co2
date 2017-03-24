@@ -1,13 +1,11 @@
 <?php
-	$cs = Yii::app()->getClientScript();
-	// if(!Yii::app()->request->isAjaxRequest)
-	// {
+
 	  	$cssAnsScriptFilesModule = array(
 	  		'/plugins/d3/d3.v3.min.js',
         '/plugins/d3/c3.min.js',
         '/plugins/d3/c3.min.css',
         '/plugins/d3/d3.v4.min.js',
-        //DatePicker
+        /*/DatePicker
         '/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
         '/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js' ,
         '/plugins/bootstrap-datepicker/css/datepicker.css',
@@ -15,15 +13,17 @@
         //DateTime Picker
         '/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
         '/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js' , 
-        '/plugins/bootstrap-datetimepicker/css/datetimepicker.css',
+        '/plugins/bootstrap-datetimepicker/css/datetimepicker.css',*/
 
 	  	);
 	  	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->request->baseUrl);
-  	// }
+      $params = CO2::getThemeParams();
+ 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath ,
+                                "type" => "all",
                                 "page" => "thing") ); 
 
 ?>
@@ -51,6 +51,7 @@ $infoSensors=array();
 $infoSensorsDeviceOk=false;
 //todo : mutiliser les pois en objet sig, au lieu de construire des objets 
 foreach ($devicesMongoRes as $mdataDevice) {
+
   $devices[]=$mdataDevice;
   
   $sigDevicesForContextMap[]=array('geo' => $mdataDevice['geo'],'typeSig'=>'poi',
@@ -72,10 +73,11 @@ foreach ($devicesMongoRes as $mdataDevice) {
     }
   }
 
-};
+}
+//print_r($sigDevicesForContextMap);
 
 
-
+//$this->renderPartial("./thingMap");
 
 //print_r($devices);
 ?>
@@ -538,12 +540,13 @@ function showSCKDeviceOnMap(country,cp){
   console.log("montrer sur la carte");
   //console.log(country+" "+cp);
 
-  var contextDeviceMap= <?php echo json_encode($sigDevicesForContextMap,true)?>;
-  //console.log(contextDeviceMap);
 
-  Sig.showMapElements(Sig.map, contextDeviceMap); 
+  
+  //console.log(contextDeviceMap);
+  //mapThing = Sig.loadMap('mapCanvas');
+  //Sig.showMapElements(Sig.map, contextDeviceMap); 
   showMap(true);
-  $('#ajax-modal').modal("hide");
+  //$('#ajax-modal').modal("hide");
 
 }
 /*
@@ -584,6 +587,12 @@ function showSCKDeviceOnMap(country,cp){
 
 jQuery(document).ready(function() {
 
+  contextDeviceMap= <?php echo json_encode($sigDevicesForContextMap,true)?>;
+  console.log("Sig.map : ");
+  console.log(Sig.map);
+  //Sig.showMapElements(Sig.map, contextDeviceMap);
+  
+
   setTitle("Mesures","line-chart");
   
   if(devices.length>0){
@@ -612,7 +621,7 @@ jQuery(document).ready(function() {
 
       //console.log(urlReq);
 
-      $.ajax({
+      /*$.ajax({
 
       //exemple api GET https://api.smartcitizen.me/v0/devices/1616/readings?sensor_id=7&rollup=4h&from=2015-07-28&to=2015-07-30
       type: 'GET',
@@ -641,7 +650,7 @@ jQuery(document).ready(function() {
       //console.log(data); 
       }
 
-      }).done(function() {setAxisXY(svgG,sensorkey); });    
+      }).done(function() {setAxisXY(svgG,sensorkey); });  */  
       
     }
 

@@ -181,7 +181,7 @@ function initForm(){ console.log("initForm initForm");
 
   initTags();
   initCommentsTools(news);
-
+  //activateMarkdown("#form-news #get_url");
   //Sig.restartMap();
   //Sig.showMapElements(Sig.map, news);
   

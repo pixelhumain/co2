@@ -144,8 +144,7 @@
                 <?php echo date(@$media["startDate"]->sec); ?>
               <?php } ?>
             <?php } ?>
-            <p><?php echo @$media["text"]; ?></p>
-            
+            <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent" ></div>
           </div>
 
           <?php if(@$srcMainImg != ""){ ?>
@@ -189,6 +188,16 @@
     var contentKey = "<?php echo Document::IMG_SLIDER; ?>";
     jQuery(document).ready(function() {
       $.each(news, function(e,v){
+        if("undefined" != typeof v.text){
+          textHtml="";
+           if(v.text.length > 0)
+              textNews=checkAndCutLongString(v.text,500,v._id.$id);
+      //Check if @mentions return text with link
+            if(typeof(v.mentions) != "undefined")
+              textNews = addMentionInText(textNews,v.mentions);
+          textHtml='<span class="timeline_text no-padding text-black" >'+textNews+'</span>';
+          $("#newsContent"+e).html(textHtml);
+        }
         if("undefined" != typeof v.media){
           if(typeof(v.media.type)=="undefined" || v.media.type=="url_content"){
             if("object" != typeof v.media)

@@ -933,7 +933,7 @@ function addMentionInText(textNews,mentions){
    		else
    			controler = "person"; 
    		textNews=array[0]+
-   					"<span onclick='url.loadByHash(\"#"+controler+".detail.id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+   					"<span class='lbh' onclick='url.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
    						value.name+
    					"</span>"+
    				array[1];

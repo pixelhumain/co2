@@ -1001,7 +1001,15 @@ function saveNews(){
 				newNews.parentType = $("#form-news #parentType").val(),
 				newNews.scope = $("input[name='scope']").val(),
 				newNews.type = $("input[name='type']").val(),
-				newNews.text = $("#form-news #get_url").val();
+				newNews.text =$("#form-news #get_url").val();
+				// AFAIRE
+				// activateMarkdown("#id")
+				// markdownToHtml(description);
+				//plugins/showdown/showdown.min.js
+				//plugins/showdown/showdown.min.js // bootstrap-markdown
+				// example in editInPlace.js /assets/js/
+				console.log(newNews.text);
+				//alert(newNews.text);
 				if($('#authorIsTarget').length && $('#authorIsTarget').val()==1)
 					newNews.targetIsAuthor = true;
 				mylog.log("contextParentType", contextParentType);

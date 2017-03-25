@@ -136,7 +136,7 @@ function sendEmail(){
 	var params = { 	emailSender: emailSender, 
 	        		subject:subject, 
 	        		names:name,
-	        		contentMsgsujet	: message
+	        		contentMsg	: message
 	        	};
 
 	console.log("sendMail", params);

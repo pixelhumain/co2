@@ -164,8 +164,7 @@
         <?php $filliaireCategories = CO2::getContextList("filliaireCategories"); 
               //var_dump($categories); exit;
               foreach ($filliaireCategories as $key => $cat) { 
-          ?>
-              <?php if(is_array($cat)) { ?>
+                 if(is_array($cat)) { ?>
               <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
                 <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis margin-bottom-5 btn-select-filliaire" 
                         data-fkey="<?php echo $key; ?>"
@@ -184,7 +183,8 @@
           <?php } ?>
           <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
         </div>
-
+        
+        <?php if($typeSelected == "classified"){ ?>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="menu-section-classified">
           <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
                   data-type="classified" data-type-anc=""  data-key="all">
@@ -192,9 +192,9 @@
             <span class="hidden-xs hidden-sm"> Tous </span>
           </button> -->
           <?php 
-              $classifiedSections = CO2::getContextList("freedomSections");
+              $sections = CO2::getContextList("freedomSections");
               $currentSection = 1;
-              foreach ($classifiedSections as $key => $section) { ?>
+              foreach ($sections as $key => $section) { ?>
                 <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
                   <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
                           data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
@@ -206,6 +206,29 @@
           <?php } ?>  
           <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> 
         </div>
+        <?php } else if($typeSelected == "place"){ ?>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="menu-section-place">
+          <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
+                  data-type="classified" data-type-anc=""  data-key="all">
+            <i class="fa fa-circle-o"></i>
+            <span class="hidden-xs hidden-sm"> Tous </span>
+          </button> -->
+          <?php 
+              $sections = CO2::getContextList("placeSections");
+              $currentSection = 1;
+              foreach ($sections as $key => $section) { ?>
+                <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
+                  <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
+                          data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
+                          data-type="place"
+                          style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
+                    <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["label"]; ?>
+                  </button>
+                </div>
+          <?php } ?>  
+          <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> 
+        </div>
+        <?php } ?>
 
         <?php if($typeSelected == "all"){ ?>   
           
@@ -301,8 +324,35 @@
             <?php } ?>
           </div>
         
-        <?php } ?>
+        <?php } 
+        else if($typeSelected == "place"){ ?>
 
+          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub" id="sub-menu-left">
+            <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
+            <hr> -->
+            <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
+              <i class="fa fa-money"></i> Lieux           </h4>
+            <hr>
+            <?php $categories = CO2::getContextList("placesFilters"); 
+                foreach ($categories as $key => $cat) {
+            ?>
+                <?php if(is_array($cat)) { ?>
+                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                    <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
+                  </button><br>
+                  <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
+                    <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
+                      <i class="fa fa-angle-right"></i> <?php echo $cat2; ?>
+                    </button><br class="hidden">
+                  <?php } ?>
+                <?php } ?>
+              </button>
+            <?php } ?>
+          </div>
+        <?php } 
+
+        $col = ( !in_array($typeSelected, array("classified","events","vote","all","place") )) ? 10 : 8; ?>
+        <div class="col-md-<?php echo $col ?> col-sm-<?php echo $col ?>
         <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search"></div>
 
       <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
@@ -332,7 +382,8 @@ var headerParams = {
   "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
   "cities"        : { color: "red",     icon: "university",   name: "communes" },
   "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
-  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" }
+  "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
+  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
@@ -385,7 +436,7 @@ function setHeaderDirectory(type){
 }
 
 var searchType = [ "persons" ];
-var allSearchType = [ "persons", "organizations", "projects", "events", "vote", "cities" ];
+var allSearchType = [ "persons", "organizations", "projects", "events", "vote", "cities","place" ];
 
 var personCOLLECTION = "<?php echo Person::COLLECTION ?>";
 var userId = '<?php echo isset( Yii::app()->session["userId"] ) ? Yii::app() -> session["userId"] : null; ?>';
@@ -407,7 +458,7 @@ jQuery(document).ready(function() {
 
 
   searchType = (typeSelected == null) ? [ "persons" ] : [ typeSelected ];
-  allSearchType = [ "persons", "organizations", "projects", "events", "events", "vote", "cities","poi" ];
+  allSearchType = [ "persons", "organizations", "projects", "events", "events", "vote", "cities","poi","place" ];
 	topMenuActivated = true;
 	hideScrollTop = true; 
   loadingData = false;

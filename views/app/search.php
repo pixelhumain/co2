@@ -405,7 +405,7 @@ jQuery(document).ready(function() {
             }
 
             initTypeSearch(typeD);
-
+            mylog.log("search.php",searchType);
             setHeaderDirectory(typeD);
             loadingData = false;
             startSearch(0, indexStepInit, searchCallback);
@@ -416,9 +416,12 @@ jQuery(document).ready(function() {
             KScrollTo("#content-social");
         });
          
-        <?php if(@$type == "classified"){ ?>
+         //anny double section filter directory
+        <?php if(@$type == "classified" || @$type == "place"  ){ ?>
             initClassifiedInterface();
         <?php } ?>
+
+        bindLeftMenuFilters();
 
         //console.log("init Scroll");
         $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
@@ -540,11 +543,19 @@ var classType = "";
 var classSubType = "";
 function initClassifiedInterface(){
 
-    $('#menu-section-classified').removeClass("hidden");
+    $('#menu-section-'+typeInit).removeClass("hidden");
+    $("#btn-create-classified").click(function(){
+         elementLib.openForm('classified');
+    });
+
+    
+}
+
+function bindLeftMenuFilters () { 
 
     $(".btn-select-type-anc").click( function()
     {    
-        searchType = [ "classified" ];
+        searchType = [ typeInit ];
         indexStepInit = 100;
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
         $(".keycat").addClass("hidden");
@@ -553,13 +564,10 @@ function initClassifiedInterface(){
         section = $(this).data("type-anc");
         sectionKey = $(this).data("key");
         //alert("section : " + section);
-        if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
-            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
-            //$(".subsub").show(300);
-            $('#searchTags').val(section);
-            //KScrollTo(".top-page");
-            startSearch(0, indexStepInit, searchCallback); 
-        } 
+        
+        $('#searchTags').val(section);
+        //KScrollTo(".top-page");
+        startSearch(0, indexStepInit, searchCallback); 
 
         if(typeof freedomCategories[sectionKey] != "undefined") {
             $(".label-category").html("<i class='fa fa-"+ freedomCategories[sectionKey]["icon"] + "'></i> " + freedomCategories[sectionKey]["label"]);
@@ -569,7 +577,7 @@ function initClassifiedInterface(){
     });
 
     $(".btn-select-category-1").click(function(){
-        searchType = [ "classified" ];
+        searchType = [ typeInit ];
         $(".btn-select-category-1").removeClass("active");
         $(this).addClass("active");
 
@@ -577,7 +585,7 @@ function initClassifiedInterface(){
         $(".keycat").addClass("hidden");
         $(".keycat-"+classType).removeClass("hidden");   
 
-        ////alert("classType : "+classType);
+        //alert("classType : "+classType);
 
         $('#searchTags').val(section+","+classType);
         startSearch(0, indexStepInit, searchCallback);  
@@ -585,7 +593,7 @@ function initClassifiedInterface(){
 
     $(".keycat").click(function(){
 
-        searchType = [ "classified" ];
+        searchType = [ typeInit ];
         $(".keycat").removeClass("active");
         $(this).addClass("active");
         var classSubType = $(this).data("keycat");
@@ -595,12 +603,7 @@ function initClassifiedInterface(){
         startSearch(0, indexStepInit, searchCallback);  
     });
 
-    $("#btn-create-classified").click(function(){
-         elementLib.openForm('classified');
-    });
-
-    
-}
+ }
 
 
 <?php if(@$type == "events"){ ?>

@@ -139,10 +139,10 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                   var id = getObjectId(o);
                   var insee = o.insee ? o.insee : "";
                   type = o.type;
-                  if(type=="citoyen") type = "person";
+                  if(type=="citoyens") type = "person";
                   //var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
                   var url = (notEmpty(o.type) && notEmpty(id)) ? 
-                            '#co2.page.type.'+o.type+'.id.' + id : "";
+                            '#page.type.'+o.type+'.id.' + id : "";
 
                   //var onclick = 'url.loadByHash("#' + type + '.detail.id.' + id + '");';
                   var onclickCp = "";

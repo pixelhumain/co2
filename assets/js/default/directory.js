@@ -181,7 +181,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                         "<i class='fa fa-angle-down'></i> " + totalData + " résultats ";
               str += "<small>";
               if(typeof headerParams != "undefined"){
-                $.each(searchType, function(key, val){
+                $.each( searchType, function(key, val){
+                  mylog.log("success autocomplete search",val);
                   var params = headerParams[val];
                   str += "<span class='text-"+params.color+"'>"+
                             "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
@@ -620,8 +621,6 @@ var directory = {
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
-      
-
         if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
@@ -630,8 +629,7 @@ var directory = {
                   'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
                   " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
                       "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-                    "</a>";
-          
+                    "</a>";          
         }
 
         if(params.updated != null )
@@ -655,7 +653,14 @@ var directory = {
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
             str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
                       iconFaReply + params.name + 
-                   "</a>";                 
+                   "</a>";   
+
+            if( params.section ){
+              str += "<div class='entityType bold'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
+                if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+              str += "</div>";
+            }
+                                 
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
                  thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
@@ -724,6 +729,7 @@ var directory = {
     //TODO : ADD link to seller contact page
     previewedObj : null,
     preview : function(params,hash){
+
         
       directory.previewedObj = {
           hash : hash,
@@ -1345,11 +1351,11 @@ var directory = {
                                     "";
 
                 //mapElements.push(params);
-
+                
                 if(typeof( typeObj[itemType] ) == "undefined")
                     itemType="poi";
                 typeIco = itemType;
-
+                mylog.warn("itemType",itemType,"typeIco",typeIco);
                 if(typeof params.typeOrga != "undefined")
                   typeIco = params.typeOrga;
 
@@ -1425,7 +1431,7 @@ var directory = {
                   //template principal
                 if(params.type == "cities")
                   str += directory.cityPanelHtml(params);  
-                else if( $.inArray(params.type, ["citoyens","organizations","project"])>=0) 
+                else if( $.inArray(params.type, ["citoyens","organizations","project","poi","place"])>=0) 
                   str += directory.elementPanelHtml(params);  
                 else if(params.type == "events")
                   str += directory.eventPanelHtml(params);  
@@ -1641,7 +1647,7 @@ var directory = {
                   //mylog.log("found");
                   found = 1;
                 }
-
+                
                 if(found)
                     $(this).removeClass('hide');
                 else

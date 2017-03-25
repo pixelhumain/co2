@@ -81,6 +81,7 @@ var trad = {
 "followers":"<?php echo Yii::t("common","followers"); ?>",
 "address" : "<?php echo Yii::t("common","Address") ?>",
 "classified" : "<?php echo Yii::t("common","classified") ?>",
+"place" : "<?php echo Yii::t("common","Places") ?>",
 
 "Technologie" : "Technologie",
 "Immobilier" : "Immobilier",

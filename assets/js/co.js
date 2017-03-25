@@ -3004,6 +3004,11 @@ var typeObjLib = {
         	$(".invitedUserEmailtext").css("display","none");	 
         }
     },
+    list :{
+    	inputType : "select",
+    	placeholder : "Type du point d'intérêt",
+    	options : poiTypes
+    },
     poiTypes :{
     	inputType : "select",
     	placeholder : "Type du point d'intérêt",
@@ -3039,13 +3044,15 @@ var typeObjLib = {
     },
     get:function(type){
     	mylog.log("get", type);
+    	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
-    			return typeObj[ typeObj[type].sameAs ];
+    			obj = typeObj[ typeObj[type].sameAs ];
     		} else
-    			return typeObj[type];
-    	}else 
-    		return null;
+    			obj = typeObj[type];
+    		obj.name = (trad[type]) ? trad[type] : type;
+    	}
+    	return obj;
     }
 };
 
@@ -3114,7 +3121,9 @@ var typeObj = {
 	"people" : { sameAs:"person" },
 	"citoyen" : { sameAs:"person" },
 	"citoyens" : { sameAs:"person" },
-	"poi":{  col:"poi",ctrl:"poi",color:"azure",	icon:"info-circle"},
+	"poi":{  col:"poi",ctrl:"poi",color:"azure",icon:"info-circle"},
+	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
+	"TiersLieux" : {color: "azure",icon: "home"},
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
 	"organizations" : {sameAs:"organization"},

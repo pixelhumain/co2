@@ -5,7 +5,7 @@ dynForm = {
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	subPlace : function(){
+	    	sub : function(){
 	    		if(contextData.type && contextData.id )
 	    		{
     				$('#ajaxFormModal #parentId').val(contextData.id);
@@ -63,6 +63,10 @@ dynForm = {
 	    	info : {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Un Point d'interet est un élément assez libre qui peut etre géolocalisé ou pas, qui peut etre rataché à une organisation, un projet ou un évènement.</p>",
+            },
+            breadcrumb : {
+                inputType : "custom",
+                html:"",
             },
             sectionBtn :{
                 label : "De quel type de Lieu s'agit-il ? ",

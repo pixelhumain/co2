@@ -1,4 +1,9 @@
 {
+    "all": {
+        "label":"Tous",           
+        "key" : "all",  
+        "icon" : "cloud"
+    },
     "common": {
         "label":"Commun",           
         "key" : "common",  

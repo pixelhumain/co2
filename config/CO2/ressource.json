@@ -1,9 +1,9 @@
 {
-    sections : {
+    "sections" : {
         "tool": {
             "label":"Outil",           
             "key" : "tool",  
-            "icon" : "tool"
+            "icon" : "cutlery"
         },
         "competence": {
             "label":"Compétence",      
@@ -11,23 +11,23 @@
             "icon" : "users"
         }
     },
-    filters : {
+    "filters" : {
         "Machine" : 
             {   "icon" : "home",
                 "subcat" : 
                 [   "CNC",
-                    "Imprimante 3D" 
+                    "Imprimante 3D",
                     "Découpeuse laser"
                 ]
             }, 
-        "Machine" : 
-            {   "icon" : "home",
+        "Knowledge" : 
+            {   "icon" : "user",
                 "subcat" : 
-                [   "CNC",
-                    "Imprimante 3D" 
-                    "Découpeuse laser"
+                [   "Ingenieur Elec",
+                    "Electrcité", 
+                    "Journaliste"
                 ]
-            }, 
+            }
     }
     
 }

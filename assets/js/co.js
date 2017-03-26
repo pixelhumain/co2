@@ -3141,11 +3141,11 @@ var typeObj = {
 	
 	"poi":{  col:"poi",ctrl:"poi",color:"azure",icon:"info-circle"},
 
-	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker",subtypes:placesFilters},
+	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
 	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
 	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
 	
-	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube",sections : rscSections },
+	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
 
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},

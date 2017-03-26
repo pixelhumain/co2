@@ -4,7 +4,8 @@
 	 "TiersLieux" : 
 		{ 	"icon" : "home",
 			"subcat" : 
-			[	"Fablab", 
+			[	"Fablab",
+				"Repaire Café",
 	 			"Coworking", 
 	 			"Salle reunion",
 	 			"Urbaine",

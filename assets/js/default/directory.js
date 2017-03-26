@@ -1297,11 +1297,11 @@ var directory = {
                                     "";
 
                 //mapElements.push(params);
-
+                
                 if(typeof( typeObj[itemType] ) == "undefined")
                     itemType="poi";
                 typeIco = itemType;
-
+                mylog.warn("itemType",itemType,"typeIco",typeIco);
                 if(typeof params.typeOrga != "undefined")
                   typeIco = params.typeOrga;
 

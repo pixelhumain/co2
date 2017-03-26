@@ -84,7 +84,7 @@
                 "subdomainName" : "Lieux",
                 "hash" : "#app.search.type.place",
                 "icon" : "map-marker", 
-                "mainTitle" : "Moteur de ressources <span class='text-red'>territoriales</span>",
+                "mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
                 "placeholderMainSearch" : "Rechercher un lieu ...",
                 "lblBtnCreate" : "Ajouter un Lieux",
                 "colorBtnCreate" : "green"

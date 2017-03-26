@@ -1,0 +1,33 @@
+{
+    sections : {
+        "tool": {
+            "label":"Outil",           
+            "key" : "tool",  
+            "icon" : "tool"
+        },
+        "competence": {
+            "label":"Compétence",      
+            "key" : "competence",     
+            "icon" : "users"
+        }
+    },
+    filters : {
+        "Machine" : 
+            {   "icon" : "home",
+                "subcat" : 
+                [   "CNC",
+                    "Imprimante 3D" 
+                    "Découpeuse laser"
+                ]
+            }, 
+        "Machine" : 
+            {   "icon" : "home",
+                "subcat" : 
+                [   "CNC",
+                    "Imprimante 3D" 
+                    "Découpeuse laser"
+                ]
+            }, 
+    }
+    
+}

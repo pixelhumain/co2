@@ -9,8 +9,22 @@ function bindAboutPodElement() {
 		});		
 
 		$("#changePasswordBtn").click(function () {
-			mylog.log("changePasswordbuttton");
-			url.loadByHash('#person.changepassword.id.'+userId+'.mode.initSV', false);
+			var urlToSend = baseUrl+'/'+moduleId+'/person/changepassword/id/'+userId+'/mode/initSV';
+			$.blockUI({
+				message : '<div>'+
+							'<div class="changePasswordForm"></div>'+
+						'</div>', 
+				onOverlayClick: $.unblockUI,
+				css: {"text-align": "left", "cursor":"default", "width":"50%", "left":"25%" }
+			});
+
+			getAjax('.changePasswordForm',urlToSend,function(){
+
+			//$('.bar_tools_post').hide();
+			//$('.saySomething').hide();
+			},"html");
+			//mylog.log("changePasswordbuttton");
+			//url.loadByHash('#person.changepassword.id.'+userId+'.mode.initSV', false);
 		});
 
 		$("#downloadProfil").click(function () {

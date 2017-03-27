@@ -134,7 +134,8 @@
 	                			array("linksBtn"=>$linksBtn,
 	                					"elementId"=>(string)$element["_id"],
 	                					"elementType"=>$type,
-	                					"elementName"=> $element["name"]) 
+	                					"elementName"=> $element["name"],
+	                					"openEdition" => $openEdition) 
 	                			); 
 	                	?>
 					    <!-- <p><i class="fa fa-briefcase"></i> Web Design and Development.</p> -->

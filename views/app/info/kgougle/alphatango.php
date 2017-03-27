@@ -135,13 +135,13 @@ function sendEmail(){
 
 	var params = { 	emailSender: emailSender, 
 	        		subject:subject, 
-	        		name:name,
-	        		message: message
+	        		names:name,
+	        		contentMsg	: message
 	        	};
 
 	console.log("sendMail", params);
-	toastr.error("L'envoie d'email est désactivé pour l'instant, retentez votre chance dans quelques jours !");
-	return;
+	//toastr.error("L'envoie d'email est désactivé pour l'instant, retentez votre chance dans quelques jours !");
+	//return;
 
 	$.ajax({ 
         type: "POST",

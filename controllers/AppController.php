@@ -116,7 +116,7 @@ class AppController extends CommunecterController {
         //var_dump($query);// exit;
     	$medias = PHDB::findAndSortAndLimitAndIndex("media", $query, array("date"=>-1) , $indexStep, $indexMin);
     	
-        $params = array("medias" => $medias );
+        $params = array("medias" => $medias, "indexMin" => @$indexMin, "indexMax" => @$indexMax );
 
         CO2Stat::incNbLoad("co2-live");
 
@@ -178,11 +178,10 @@ class AppController extends CommunecterController {
 	}
 
 
-	public function actionPage($type, $id, $view=null){
+	public function actionPage($type, $id){
         CO2Stat::incNbLoad("co2-page");
         $params = array("id" => @$id,
                         "type" => @$type,
-                        "view" => @$view,
                         "subdomain" => "page",
                         "mainTitle" => "Page perso",
                         "placeholderMainSearch" => "");
@@ -201,5 +200,13 @@ class AppController extends CommunecterController {
     public function actionCity($insee, $postalCode){
         
         echo $this->renderPartial("city", array("insee"=> $insee, "postalCode" => $postalCode), true);
+    }
+
+
+    public function actionSendMailFormContact(){
+        Mail::sendMailFormContact($_POST["emailSender"], $_POST["names"], $_POST["subject"], $_POST["contentMsg"]);
+        $res = array("res"=>true);  
+        Rest::json($res);
+        exit;
     }
 }

@@ -73,6 +73,8 @@
 		margin-bottom: 30px;*/
 	}
 	.sub-menu-social button{
+		background-color: #fff;
+		border: 1px solid #ccc !important;
 		height:45px;
 		margin-top: 5px;
 	}
@@ -173,6 +175,11 @@
   padding: 5px 8px;
   font-weight: 800;
   margin-bottom:5px;
+}
+.menu-params{
+	position: absolute;
+	top: 60px;
+	left: -25px;
 }
 
 <?php } ?>
@@ -289,9 +296,38 @@
 			<?php } ?>
 			<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 			<div class="btn-group margin-left-10">
-			  <button type="button" class="btn btn-default bold">
-			  	<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md">Paramètres</span>
-			  </button>
+				<ul class="nav navbar-nav">
+					<li class="dropdown">
+					<button type="button" class="btn btn-default bold">
+			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md">Paramètres</span>
+			  		</button>
+			  		<ul class="dropdown-menu arrow_box menu-params">
+			  			<li class="text-left">
+			               	<a href="javascript:;" class="bg-white">
+			                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Settings"); ?>
+			                </a>
+			            </li>
+			  			<?php if($type !=Person::COLLECTION){ ?>
+			  			<li class="text-left">
+			               	<a href="javascript:;" class="bg-white text-red">
+			                    <i class="fa fa-trash"></i><?php echo Yii::t("common", "Delete {what}",array("{what}"=> Yii::t("common","this ".Element::getControlerByCollection($type)))); ?>
+			                </a>
+			            </li>
+			            <?php } else { ?>
+						<li class="text-left">
+							<a href='javascript:' id="downloadProfil">
+								<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
+							</a>
+						</li>
+			            <li class="text-left">
+			               	<a href='javascript:' id="changePasswordBtn" class='text-red'>
+								<i class='fa fa-key'></i> <?php echo Yii::t("common","Change assword"); ?>
+							</a>
+			            </li>
+			            <?php } ?>
+			  		</ul>
+			  		</li>
+			  	</ul>
 			</div>
 			<?php } ?>
 			<div class="btn-group margin-left-10">
@@ -381,6 +417,8 @@
 			}
 			else if(subView=="mystream")
 				loadNewsStream(false);
+			else if(subView=="history")
+				loadHistoryActivity();
 		} else
 			loadNewsStream(true);
 	});
@@ -416,6 +454,10 @@
 			history.pushState(null, "New Title", hashUrlPage+".view.chart"+id);
 			//location.search="?view=chart&id="+id;
 			loadChart(id);
+		});
+		$("#btn-show-activity").click(function(){
+			history.pushState(null, "New Title", hashUrlPage+".view.history");
+			loadHistoryActivity();
 		});
 	}
 
@@ -513,7 +555,14 @@
 			null,
 			function(){},"html");
 	}
-
+	function loadHistoryActivity(){
+		toogleNotif(false);
+		var url = "pod/activitylist/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
+		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+			function(){},"html");
+	}
 
 function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL");
 	loadingData = true;

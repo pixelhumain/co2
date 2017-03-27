@@ -601,12 +601,12 @@
 		<ul id="accordion3" class="accordion shadow2 margin-top-20">
 				
 			<!-- PROJETS -->
-			<?php if ($type==Organization::COLLECTION){ 
+			<?php if ($type==Organization::COLLECTION || $type==Project::COLLECTION){ 
 				if(!@$front || (@$front && $front["project"])){ 
 			?>
-			<li class="podInside events">
+			<li class="podInside projects">
 				<div class="link">
-					<i class="fa fa-lightbulb-o"></i> Projets 
+					<i class="fa fa-lightbulb-o"></i> <?php echo Yii::t("common","Projects") ?> 
 					<small>(<?php echo @$projects ? count($projects) : "0"; ?>)</small>
 					<i class="fa fa-chevron-down"></i>
 				</div>
@@ -621,7 +621,7 @@
 						<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
 						<button onclick="elementLib.openForm('project','sub')" 
 								class="btn btn-default letter-blue margin-top-5">
-					    	<b><i class="fa fa-plus"></i> Nouveau projet</b>
+					    	<b><i class="fa fa-plus"></i> <?php Yii::t("common", "New project"); ?></b>
 						</button> 
 						<?php } ?>
 						<button class="btn btn-default letter-blue open-directory margin-top-5">
@@ -632,8 +632,8 @@
 				</ul>			
 			</li>
 			<?php }} ?>
-
-
+				
+			
 			<!-- ÉVÉNEMENTS -->
 			<?php if (($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION)){ ?>
 	    		<?php if(!@$front || (@$front && $front["event"]==true)){ ?>
@@ -650,7 +650,7 @@
 					<li class="podInside events">
 					
 						<div class="link">
-							<i class="fa fa-calendar"></i> Événements 
+							<i class="fa fa-calendar"></i> <?php echo Yii::t("common","Events") ?> 
 							<small>(<?php echo @$events ? count($events) : "0"; ?>)</small>
 							<i class="fa fa-chevron-down"></i>
 						</div>
@@ -668,7 +668,7 @@
 								<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
 								<button onclick="elementLib.openForm('event','subEvent')" 
 										class="btn btn-default letter-blue margin-top-5">
-							    	<b><i class="fa fa-plus"></i> Nouvel événement</b>
+							    	<b><i class="fa fa-plus"></i> <?php echo Yii::t("common","New event") ?></b>
 								</button> 
 								<?php } ?>
 								<button class="btn btn-default letter-blue open-directory margin-top-5" 
@@ -682,6 +682,42 @@
 				<?php } ?>
 			<?php } ?>
 
+			<!-- POI -->
+			<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION || $type==Person::COLLECTION){ 
+				if(!@$front || (@$front && $front["poi"])){ 
+			?>
+			<li class="podInside poi">
+				<div class="link">
+				<?php   
+				$pois = PHDB::find(Poi::COLLECTION,array("parentId"=>(String)$element["_id"],"parentType"=>$type));
+				?>
+					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common", "Points of interests") ?>
+					<small>(<?php echo @$pois ? count($pois) : "0"; ?>)</small>
+					<i class="fa fa-chevron-down"></i>
+				</div>
+				<ul class="submenu">
+					<?php $this->renderPartial('../pod/POIList', array( "pois"=>$pois, "parentType"=> $type)); ?>
+		 			<?php /* $this->renderPartial('../pod/projectsList',array( "projects" => @$projects, 
+															"contextId" => (String) $element["_id"],
+															"contextType" => $type,
+															"authorised" =>	$edit,
+															"openEdition" => $openEdition
+					)); */ ?>
+					<div class="text-right padding-10">
+						<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
+						<button onclick="elementLib.openForm('poi','subPoi')" 
+								class="btn btn-default letter-blue margin-top-5">
+					    	<b><i class="fa fa-plus"></i> <?php echo Yii::t("common", "New point of interests") ?></b>
+						</button> 
+						<?php } ?>
+						<!--<button class="btn btn-default letter-blue open-directory margin-top-5">
+					    	<i class="fa fa-chevron-right"></i>
+						</button>-->
+						
+					</div>	
+				</ul>			
+			</li>
+			<?php }} ?>
 
 			<?php /*$this->renderPartial('../pod/ficheInfoPodThumb', array("list"=>@$events, 
 																		 "title"=>"Événements", 

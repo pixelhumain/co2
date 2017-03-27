@@ -577,7 +577,7 @@ function bindAboutPodElement() {
 
 			if(contextData.type == typeObj.organization.col ){
 				properties.type = typeObjLib.typeOrga;
-				properties.tags = typeObjLib.tags;
+				properties.tags = typeObjLib.tags();
 			}
 
 			if(contextData.type == typeObj.project.col ){

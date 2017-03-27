@@ -306,21 +306,11 @@
 				</ul>
 			</li>
 			<li>
-				<div class="link"><i class="fa fa-map-marker"></i>Description<i class="fa fa-chevron-down"></i>
+				<div class="link open-description"><i class="fa fa-map-marker"></i>Description<i class="fa fa-chevron-down"></i>
 					<?php if($edit==true || $openEdition==true ){?>
 		  				<a href='javascript:;' class="tooltips btn-update-desc" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Description");?>"><i class="fa text-red fa-pencil"></i></a> <?php } ?>
+		  			<input type="hidden" id="descriptionMarkdown" name="descriptionMarkdown" value="<?php echo (!empty($element['description'])) ? $element['description'] : ''; ?>">
 		  		</div>
-				<ul class="submenu">
-					<li>
-						<span id="description"  class=""><?php  echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
-						<input type="hidden" id="descriptionMarkdown" name="descriptionMarkdown" value="<?php echo (!empty($element['description'])) ? $element['description'] : ''; ?>">	
-						<div class="text-right padding-10">
-							<button class="btn btn-default letter-blue open-description margin-top-5">
-						    	<b><i class="fa fa-connectdevelop"></i> En lire plus <i class="fa fa-chevron-right"></i></b>
-							</button>
-						</div>	
-					</li>
-				</ul>
 			</li>
 			<li>
 				<div class="link">
@@ -537,6 +527,36 @@
 						<button onclick="elementLib.openForm ( 'contactPoint','contact')" 
 								class="btn btn-default letter-blue margin-top-5">
 					    	<b><i class="fa fa-plus"></i> Ajouter un contact </b>
+						</button>
+						<?php } ?>
+					</div>
+				</ul>
+			</li>
+			<?php } ?>
+
+
+			<!-- URL -->
+			<?php if (($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION)){ ?>
+			<li class="podInside">
+				<div class="link">
+					<i class="fa fa-user-circle"></i> Liste de liens
+					<small>(<?php echo @$element["urls"] ? count($element["urls"]) : "0"; ?>)</small>
+					<i class="fa fa-chevron-down"></i>
+				</div>
+				<ul class="submenu">
+					<?php 
+					$urls = ( empty($element["urls"]) ? array() : $element["urls"] ) ;
+					$this->renderPartial('../pod/urlsList',array( 	"urls" => $urls, 
+																	"contextId" => (String) $element["_id"],
+																	"contextType" => $controller,
+																	"authorised" => $edit,
+																	"openEdition" => $openEdition));
+					?>
+					<div class="text-right padding-10">
+						<?php if(@$edit==true || @$openEdition==true) { ?>
+						<button onclick="elementLib.openForm ( 'url','parentUrl')" 
+								class="btn btn-default letter-blue margin-top-5">
+					    	<b><i class="fa fa-plus"></i> Ajouter une url </b>
 						</button>
 						<?php } ?>
 					</div>
@@ -951,6 +971,15 @@
 								'?tpl=json','Communauté','fa-connectdevelop','dark');
 			bindLBHLinks();
 		});
+
+		$(".open-description").click(function(){
+			mylog.log("here", $("#descriptionMarkdown").val());
+			toogleNotif(false);
+			smallMenu.open( markdownToHtml($("#descriptionMarkdown").val()));
+			bindLBHLinks();
+		});
+
+
 		$(".edit-chart").click(function(){
 			toogleNotif(false);
 			var url = "chart/addchartsv/type/"+contextType+"/id/"+contextId;

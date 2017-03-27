@@ -61,6 +61,7 @@ var trad = {
 "usernamenotunique" : "<?php echo Yii::t("login","The user name is not unique : please change it.")?>",
 "somethingwentwrong" : "<?php echo Yii::t("login","Something went really bad : contact your administrator !")?>",
 "suredeletelocality" : "<?php echo Yii::t("common","Are you sure you want to delete the locality")?>",
+"updateParams" : "<?php echo Yii::t("common","Update Params") ?>",
 
 "udpateorganizer" : "<?php echo Yii::t("event","Update the organizer") ?>",
 "organizations" : "<?php echo Yii::t("common","organizations") ?>",

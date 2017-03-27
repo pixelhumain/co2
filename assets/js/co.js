@@ -2735,6 +2735,7 @@ var typeObjLib = {
     	options : organizationTypes
     },
    	avancementProject :{
+   		label : "L'avancement du project",
     	inputType : "select",
     	placeholder : "Avancement du projet",
     	options : avancementProject

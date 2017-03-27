@@ -265,47 +265,48 @@
 				$gitHub =  (!empty($element["socialNetwork"]["github"])? $element["socialNetwork"]["github"]:"javascript:;") ;
 			?>
 
-			
-			<li class="blockSocial">
-				<div class="link">
-					<i class="fa fa-map-marker"></i>Social<i class="fa fa-chevron-down"></i>
-					<?php if($edit==true || $openEdition==true ){?>
-						<a href="javascript:;" class="tooltips btn-update-network" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a>
-					<?php } ?>
-				</div>
-				<ul class="submenu">
-					<li class="tooltips telegram hidden" data-toggle="tooltip" data-placement="right" title="Telegram">
-						<span class="titleField text-dark"><i class="fa fa-telegram fa-lg"></i></i> 
-							<a href="<?php echo $telegram ; ?>" id="telegramMenuLeft" class="socialIcon"><?php echo ($telegram != "javascript:;") ? $telegram : "" ; ?></a>
-						</span>
-					</li>
-					<li class="tooltips skype hidden" data-toggle="tooltip" data-placement="right" title="Skype">
-						<span class="titleField text-dark"><i class="fa fa-skype fa-lg"></i> 
-							<a href="<?php echo $skype ; ?>" id="skypeMenuLeft" class="socialIcon"><?php echo ($skype != "javascript:;") ? $skype : "" ; ?></a>
-						</span>
-					</li>
-					<li class="tooltips facebook hidden" data-toggle="tooltip" data-placement="right" title="Facebook">
-						<span class="titleField text-dark"><i class="fa fa-facebook fa-lg"></i> 
-							<a href="<?php echo $facebook ; ?>" target="_blank" id="facebookMenuLeft" class="socialIcon"><?php echo ($facebook != "javascript:;") ? $facebook : "" ; ?></a>
-						</span>
-					</li>
-					<li class="tooltips twitter hidden" data-toggle="tooltip" data-placement="right" title="Twitter">
-						<span class="titleField text-dark"><i class="fa fa-twitter fa-lg"></i>
-							<a href="<?php echo $twitter ;?>" target="_blank" id="twitterMenuLeft" class="socialIcon tooltips" data-toggle="tooltip" data-placement="bottom" title="Twitter"><?php echo ($twitter != "javascript:;") ? $twitter : "" ; ?></a>
-						</span>
-					</li>
-					<li class="tooltips gpplus hidden" data-toggle="tooltip" data-placement="right" title="Google Plus">
-						<span class="titleField text-dark"><i class="fa fa-google-plus fa-lg"></i> 
-							<a href="<?php echo $googleplus ;?>" target="_blank" id="gpplusMenuLeft" class="socialIcon"><?php echo ($googleplus != "javascript:;") ? $googleplus : "" ; ?></a>
-						</span>
-					</li>
-					<li class="tooltips gitHub hidden" data-toggle="tooltip" data-placement="right" title="Git Hub">
-						<span class="titleField text-dark"><i class="fa fa-github fa-lg"></i> 
-							<a href="<?php echo $gitHub ;?>" target="_blank" id="gitHubMenuLeft" class="socialIcon"><?php echo ($gitHub != "javascript:;") ? $gitHub : "" ; ?></a>
-						</span>
-					</li>
-				</ul>
-			</li>
+			<?php  if($type==Person::COLLECTION){ ?>
+				<li class="blockSocial">
+					<div class="link">
+						<i class="fa fa-map-marker"></i>Social<i class="fa fa-chevron-down"></i>
+						<?php if($edit==true || $openEdition==true ){?>
+							<a href="javascript:;" class="tooltips btn-update-network" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a>
+						<?php } ?>
+					</div>
+					<ul class="submenu">
+						<li class="tooltips telegram hidden" data-toggle="tooltip" data-placement="right" title="Telegram">
+							<span class="titleField text-dark"><i class="fa fa-telegram fa-lg"></i></i> 
+								<a href="<?php echo $telegram ; ?>" id="telegramMenuLeft" class="socialIcon"><?php echo ($telegram != "javascript:;") ? $telegram : "" ; ?></a>
+							</span>
+						</li>
+						<li class="tooltips skype hidden" data-toggle="tooltip" data-placement="right" title="Skype">
+							<span class="titleField text-dark"><i class="fa fa-skype fa-lg"></i> 
+								<a href="<?php echo $skype ; ?>" id="skypeMenuLeft" class="socialIcon"><?php echo ($skype != "javascript:;") ? $skype : "" ; ?></a>
+							</span>
+						</li>
+						<li class="tooltips facebook hidden" data-toggle="tooltip" data-placement="right" title="Facebook">
+							<span class="titleField text-dark"><i class="fa fa-facebook fa-lg"></i> 
+								<a href="<?php echo $facebook ; ?>" target="_blank" id="facebookMenuLeft" class="socialIcon"><?php echo ($facebook != "javascript:;") ? $facebook : "" ; ?></a>
+							</span>
+						</li>
+						<li class="tooltips twitter hidden" data-toggle="tooltip" data-placement="right" title="Twitter">
+							<span class="titleField text-dark"><i class="fa fa-twitter fa-lg"></i>
+								<a href="<?php echo $twitter ;?>" target="_blank" id="twitterMenuLeft" class="socialIcon tooltips" data-toggle="tooltip" data-placement="bottom" title="Twitter"><?php echo ($twitter != "javascript:;") ? $twitter : "" ; ?></a>
+							</span>
+						</li>
+						<li class="tooltips gpplus hidden" data-toggle="tooltip" data-placement="right" title="Google Plus">
+							<span class="titleField text-dark"><i class="fa fa-google-plus fa-lg"></i> 
+								<a href="<?php echo $googleplus ;?>" target="_blank" id="gpplusMenuLeft" class="socialIcon"><?php echo ($googleplus != "javascript:;") ? $googleplus : "" ; ?></a>
+							</span>
+						</li>
+						<li class="tooltips gitHub hidden" data-toggle="tooltip" data-placement="right" title="Git Hub">
+							<span class="titleField text-dark"><i class="fa fa-github fa-lg"></i> 
+								<a href="<?php echo $gitHub ;?>" target="_blank" id="gitHubMenuLeft" class="socialIcon"><?php echo ($gitHub != "javascript:;") ? $gitHub : "" ; ?></a>
+							</span>
+						</li>
+					</ul>
+				</li>
+			<?php } ?>
 			<li>
 				<div class="link open-description"><i class="fa fa-map-marker"></i>Description<i class="fa fa-chevron-down"></i>
 					<?php if($edit==true || $openEdition==true ){?>

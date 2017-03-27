@@ -621,7 +621,7 @@
 						<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
 						<button onclick="elementLib.openForm('project','sub')" 
 								class="btn btn-default letter-blue margin-top-5">
-					    	<b><i class="fa fa-plus"></i> <?php Yii::t("common", "New project"); ?></b>
+					    	<b><i class="fa fa-plus"></i> <?php echo Yii::t("common", "New project"); ?></b>
 						</button> 
 						<?php } ?>
 						<button class="btn btn-default letter-blue open-directory margin-top-5">
@@ -982,37 +982,9 @@
 
 		mylog.log("tagg1 smallMenu.destination", smallMenu.destination);
 		
-		$(".open-directory").click(function(){
-			toogleNotif(false);
-			smallMenu.openAjax(baseUrl+'/'+moduleId+'/element/directory/type/'+contextData.type+'/id/'+contextData.id+
-								'?tpl=json','Communauté','fa-connectdevelop','dark');
-			bindLBHLinks();
-		});
-		$(".edit-chart").click(function(){
-			toogleNotif(false);
-			var url = "chart/addchartsv/type/"+contextType+"/id/"+contextId;
-			$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
-			ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
-			null,
-			function(){},"html");
-		});
-		$(".btn-open-collection").click(function(){
-			toogleNotif(false);
-		});
-
-		$("#btn-start-detail").click(function(){
-			loadDetail();
-		});
+		
 		
 	});
-
-	function loadDetail(){
-		toogleNotif(false);
-		var url = "element/detail/type/"+contextData.type+"/id/"+contextData.id;
-		
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
-		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
-	}
 
 	function parsePhone(arrayPhones){
 		var str = "";

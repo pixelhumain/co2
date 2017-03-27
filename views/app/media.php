@@ -26,6 +26,10 @@
 		height:40px;
 	}
 
+	.btn-show-map{ 
+		display: none;
+	}
+
 @media screen and (max-width: 767px) {
 	.btn-select-media-src img{
 		height:30px;

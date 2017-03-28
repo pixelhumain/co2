@@ -1,13 +1,21 @@
-<?php 
+<?php if(sizeof($medias)==0 && $indexMin == 0){ ?>
+      <li class="bold text-center bg-white" style="width:100%!important;">
+        <h4><i class="fa fa-ban"></i> Aucun résultat</h4>
+        <h5>Précisez votre recherche</h5>
+      </li>
+<?php }else if(sizeof($medias)==0 && $indexMin > 0){ ?>
+      <li class="bold text-center bg-white" style="width:100%!important;">
+        <h4><i class="fa fa-ban"></i> Fin des résultats</h4>
+      </li>
+<?php } ?>
 
+<?php 
     $timezone = ''; //'Pacific/Noumea';
 		$pair = false;
 		foreach($medias as $key => $media){ 
 			$class = $pair ? "timeline-inverted" : "";
 			$pair = !$pair;
-
-   
-	?>
+?>
 
       <li class="<?php echo $class; ?>">
         <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip"></i></a></div>

@@ -20,10 +20,14 @@
 
 <style>
 	#timeline-live{
-		min-height:400px;
+		min-height:600px;
 	}
 	.btn-select-media-src img{
 		height:40px;
+	}
+
+	.btn-show-map{ 
+		display: none;
 	}
 
 @media screen and (max-width: 767px) {
@@ -161,40 +165,39 @@ function initMediaInterface(){
 	});
 
     //btn to load media data for first time (if no media found)
-	$("#main-btn-start-search, #main-search-bar-addon").click(function(){
+	$("#main-btn-start-search, #main-search-bar-addon, .menu-btn-start-search").click(function(){
 		$("#timeline-live").html("");
 		loadStream(0, indexStep);
 	});
-
-
-    $("#main-btn-start-search, .menu-btn-start-search").click(function(){
-        loadStream(0, indexStep);
-    });
 
     $("#second-search-bar").keyup(function(e){
         $("#main-search-bar").val($("#second-search-bar").val());
         $("#input-search-map").val($("#second-search-bar").val());
         if(e.keyCode == 13){
-            loadStream(0, indexStep);
+            $("#timeline-live").html("");
+			loadStream(0, indexStep);
          }
     });
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($("#main-search-bar").val());
         $("#input-search-map").val($("#main-search-bar").val());
         if(e.keyCode == 13){
-            loadStream(0, indexStep);
+            $("#timeline-live").html("");
+			loadStream(0, indexStep);
          }
     });
     $("#input-search-map").keyup(function(e){
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
-            loadStream(0, indexStep);
+            $("#timeline-live").html("");
+			loadStream(0, indexStep);
          }
     });
 
     $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
-        loadStream(0, indexStep);
+        $("#timeline-live").html("");
+			loadStream(0, indexStep);
     });
 
    	$('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@#\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 

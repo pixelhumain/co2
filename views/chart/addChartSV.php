@@ -71,19 +71,33 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 }
 </style>
 <div id="editProjectChart">
-	<div class="noteWrap col-md-8 col-sm-12 col-xs-12 col-md-offset-2">
-		<button class="btn btn-primary escapeForm"><i class="fa fa-sign-out"></i>Sortir des formulaires</button>
+	<div class="noteWrap col-md-12 col-sm-12 col-xs-12 bg-white">
+		<!-- <button class="btn btn-primary escapeForm"><i class="fa fa-sign-out"></i>Sortir des formulaires</button> -->
 		<h3 style="font-variant:small-caps;"><span class="stepFormChart">1</span><?php echo Yii::t("chart","Choose which kind of form to complete") ?></h3>
-		<span style="font-style:italic; margin-left:45px;">Indicatif : <i class="fa fa-circle text-green"></i> <span class="text-green">Actif</span>   <i class="fa fa-circle text-orange"></i> <span class="text-orange">A modifier</span>    <i class="fa fa-circle"></i> Non rempli</span><br/>
-		<div class="btn-group chooseTypeForm">
-			<a id="btncommons" href="javascript:;" onclick="switchTypeChart('commons')" class="btn <?php if (isset($properties["commons"]) && !empty($properties["commons"])) echo "text-orange" ?>">
-				<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Commons") ?>
-			</a>
-			<a id="btnopen" href="javascript:;" onclick="switchTypeChart('open')" class="btn <?php if (isset($properties["open"]) && !empty($properties["open"])) echo "text-orange" ?>">
-				<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Open") ?>
-			</a>
+		
+		<span style="font-style:italic; margin-left:45px;" class="text-right">Indicatif : <i class="fa fa-circle text-green"></i> <span class="text-green">Actif</span>   <i class="fa fa-circle text-orange"></i> <span class="text-orange">A modifier</span>    <i class="fa fa-circle"></i> Non rempli</span><br/>
+		
+		<div class="chooseTypeForm margin-top-50 text-center">
+			<div class="col-md-12">
+				<p>Explication sur le role de ce formulaire, et de l'importance </p>
+			</div>
+			<div class="col-md-6">
+				<a id="btncommons" href="javascript:;" onclick="switchTypeChart('commons')" class="btn <?php if (isset($properties["commons"]) && !empty($properties["commons"])) echo "text-orange" ?>">
+					<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Commons") ?>
+				</a>
+				<p>Explication de ce qu'on entend par "bien commun" pour qu'on soit bien tous d'accord  sur la définition de ce terme + explication sur l'action de "choisir un type de formulaire"</p>
+
+			</div>
+			<div class="col-md-6">
+				<a id="btnopen" href="javascript:;" onclick="switchTypeChart('open')" class="btn <?php if (isset($properties["open"]) && !empty($properties["open"])) echo "text-orange" ?>">
+					<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Open") ?>
+				</a>
+				<p>Explication de ce qu'on entend par "libre" pour qu'on soit bien tous d'accord  sur la définition de ce terme + explication sur l'action de "choisir un type de formulaire"</p>
+			</div>
 		</div>
-		<div id="commonsChart" class="formChart" style="display:none;">
+
+
+		<div id="commonsChart" class="formChart col-md-12" style="display:none;">
 			<h3 style="font-variant:small-caps;"><span class="stepFormChart">2</span><?php echo Yii::t("chart","Evaluate your ".substr($parentType,0,-1)." as commons") ?></h3>
 			<form id="opendata"></form>
 		</div>

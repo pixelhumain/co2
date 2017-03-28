@@ -38,13 +38,13 @@
 
 RECHERCHE (&AGENDA  &POWER) :::ALL  (1J)
 [ ] Finir et valider la page de recherche
-  [ ] Recherche Element
+  [X] Recherche Element
 
   [ ] Recherche Agenda
     [ ] afficher seulement les jours du mois en cours == hide before and after
     [ ] ajouter un bouton "+" sur chaque jour, pour préselectionner la date d'un event que l'on veut créer
     [X] dans le formulaire event, il manque le type de l'événement
-    [ ] rajouter la recherche par type d'event
+    [X] rajouter la recherche par type d'event
     [ ] dans le calendrier : afficher de couleurs différentes les événements selon si l'on est invité, intéressé, ou créateur/admin
     [X] tpl event : il manque l'identité de l'organisateur, s'il y en a un
     [X] et peut être le nombre de personne "intéressé", "participants", "invités"
@@ -56,8 +56,7 @@ DASHBOARD
 [ ] 
 
 ANNONCES :::Tib :::Tango (5J)
-[ ] Finir le système de petites annonces
-  [ ] Système de Mot Clé Contextuel
+  [X] Système de Mot Clé Contextuel
   [ ] Finir DynForm Annonce
   [ ] template Annonce
     [X] Mise en avant du prix
@@ -65,9 +64,13 @@ ANNONCES :::Tib :::Tango (5J)
     [ ] gallerie ?
   [ ] Sytème de réponse "ça m'intéresse", pour répondre à une annonce
     [ ] Message privée ?
-    [ ] Coordonnées
+    [X] Coordonnées
     [ ] Notification Mail
   [ ] Système de recherche par prix (à ajouter au globalautocomplete) 
+  [ ] Redirection vers la page annonce apres SAVE
+  [ ] pouvoir faire une RAZ de tous les filtres
+  [ ] wording (donner / à donner etc)
+  [ ] Finir tpl preview
 
 CITIES :::Rapha :::Tib (10J)
 [ ] Réintégrer les City  :::Rapha
@@ -86,6 +89,7 @@ PAGE PROFIL PERSO :::ALL
   [ ] Besoins / Need pour orga&projets
   [ ] Pouvoir partager les news (in / out) :::
   [ ] Finir les OnePages :::Tango (5J)
+  [ ] Système de partage d'element dans les news (annonces, events, etc)
 
 DDA
 [ ] Refonte DDA :::Tango :::Tib

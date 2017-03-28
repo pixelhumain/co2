@@ -13,8 +13,8 @@
 		overflow-y: hidden;
 	}
 	.fileupload-preview .thumbnail, .fileupload-new .thumbnail{
-		min-height: 250px;
-    	line-height: 250px;
+		/*min-height: 250px;*/
+    	/*line-height: 250px;*/
     	background-color: black;
 	}
 	.fileupload, .fileupload-preview.thumbnail, .fileupload-new .thumbnail, .fileupload-new .thumbnail img, .fileupload-preview.thumbnail img{
@@ -22,7 +22,7 @@
 		margin:0px !important;
 		transition: none !important;
 		border-radius: 0px !important;
-		min-height: 250px;
+		/*min-height: 250px;*/
 		width:100%;
 	}
 

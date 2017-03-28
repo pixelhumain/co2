@@ -1,0 +1,26 @@
+{
+	
+	 
+	 "TiersLieux" : 
+		{ 	"icon" : "home",
+			"subcat" : 
+			[	"Fablab", 
+	 			"Coworking", 
+	 			"Salle reunion",
+	 			"Urbaine",
+	 			"Rurale"
+		 	]
+		}, 
+
+	 "Maison" :  
+		{ 	"icon" : "home",
+			"subcat" : 
+			[	 "Electroménager",
+				 "Mobilier", 
+				 "Équipement bébé", 
+				 "Animaux", 
+				 "Divers"
+			]
+		}
+
+}

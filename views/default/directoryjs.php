@@ -95,7 +95,7 @@
 
 #sub-menu-left.subsub .btn{
   width:95%;    
-  text-align: left;
+  text-align: right;
   background-color: white;
     border-color: white;
   color:#4285f4;
@@ -185,27 +185,6 @@
           <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
         </div>
 
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="menu-section-classified">
-          <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
-                  data-type="classified" data-type-anc=""  data-key="all">
-            <i class="fa fa-circle-o"></i>
-            <span class="hidden-xs hidden-sm"> Tous </span>
-          </button> -->
-          <?php 
-              $classifiedSections = CO2::getContextList("freedomSections");
-              $currentSection = 1;
-              foreach ($classifiedSections as $key => $section) { ?>
-                <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
-                  <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
-                          data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
-                          data-type="classified"
-                          style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
-                    <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["label"]; ?>
-                  </button>
-                </div>
-          <?php } ?>  
-          <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> 
-        </div>
 
         <?php if($typeSelected == "all"){ ?>   
           
@@ -277,7 +256,7 @@
 
         <?php }else if($typeSelected == "classified"){ ?>
 
-          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub" id="sub-menu-left">
+          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub text-right" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
@@ -288,18 +267,36 @@
                 foreach ($categories as $key => $cat) {
             ?>
                 <?php if(is_array($cat)) { ?>
-                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                  <button class="btn btn-default text-dark bold margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
                     <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
                   </button><br>
                   <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
                     <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
-                      <i class="fa fa-angle-right"></i> <?php echo $cat2; ?>
+                      <?php echo $cat2; ?> <i class="fa fa-angle-left margin-right-10"></i>
                     </button><br class="hidden">
                   <?php } ?>
                 <?php } ?>
               </button>
             <?php } ?>
           </div>
+
+
+        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 hidden text-center subsub" id="menu-section-classified">
+          <?php 
+              $classifiedSections = CO2::getContextList("freedomSections");
+              $currentSection = 1;
+              foreach ($classifiedSections as $key => $section) { ?>
+                <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
+                  <button class="btn btn-default col-md-12 col-sm-12 padding-5 bold text-dark elipsis btn-select-type-anc" 
+                          data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
+                          data-type="classified"
+                          style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
+                    <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["label"]; ?>
+                  </button>
+                </div>
+          <?php } ?>  
+          <hr class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding" id="before-section-result"> 
+        </div>
         
         <?php } ?>
 

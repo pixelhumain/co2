@@ -69,14 +69,19 @@
 		top:0px;*/
 	}
 	.sub-menu-social{
-		/*margin-top: -55px;
-		margin-bottom: 30px;*/
+		margin-top:-15px;
+		background-color: white;
+		border-top: 1px solid #ccc !important;
+		border-bottom: 1px solid #ccc !important;
 	}
 	.sub-menu-social button{
 		background-color: #fff;
 		border: 1px solid #ccc !important;
+		border-top: 0px !important;
+		border-bottom: 0px !important;
 		height:45px;
-		margin-top: 5px;
+		margin-top: 0px;
+		border-radius: 0px !important;
 	}
 	footer{
         /*position: absolute!important;*/
@@ -182,13 +187,87 @@
 	left: -25px;
 }
 
+#main-name-element{
+	background-color: white;
+	border-radius:50px;
+	padding:10px;
+}
+
 <?php } ?>
 
   </style>
 	
-    <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section>
-		    
-	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 margin-top-70 profilSocial">        
+    <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
+<div class="col-md-offset-1 col-md-10">	
+    <!-- Header -->
+    <section class="col-md-12 col-sm-12 col-xs-12" id="social-header">
+    	<?php if(@$edit==true && false) { ?>
+    	<button class="btn btn-default btn-sm pull-right margin-right-15 margin-top-70 hidden-xs btn-edit-section" 
+    			data-id="#header">
+	        <i class="fa fa-cog"></i>
+	    </button>
+	    <?php } ?>
+        <div class="col-md-12 col-sm-12 col-lg-12 text-left no-padding">
+        	<?php 
+				$thumbAuthor =  @$element['profilImageUrl'] ? 
+                  Yii::app()->createUrl('/'.@$element['profilImageUrl']) 
+                  : "";
+			?>
+			<img class="col-xs-11 col-sm-12 col-md-12 no-padding img-responsive" src="<?php echo $thumbAuthor; ?>" 
+				 style="border-bottom:45px solid white;">
+			
+			<div class="col-xs-11 col-sm-12 col-md-12" style="margin-top:-290px;">
+	        	<div class="margin-bottom-15" id="topPosKScroll"></div>
+					
+	        	<div class="col-md-12 no-padding">
+					<h4 class="text-left margin-bottom-10 padding-left-15 pull-left" id="main-name-element">
+						<?php if($edit==true || $openEdition==true ){?>
+							<!-- <a href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a> -->
+						<?php } ?>
+
+						<span id="nameHeader">
+							<?php echo @$element["name"]; ?>
+						</span>	
+					</h4>
+				</div>
+
+				<div class="row bg-white pull-left bulle-desc arrow_box">
+					<span class="pull-left" id="shortDescriptionHeader">
+						<?php echo substr(@$element["shortDescription"], 0, 180); ?>
+						<?php if(@$edit==true) { ?>
+						<a href="#" id="shortDescription" data-type="wysihtml5" 
+							data-original-title="Décrivez <?php echo @$element["name"]; ?> en quelques mots (140)" 
+							data-emptytext="<?php echo Yii::t("common","Short description",null,Yii::app()->controller->module->id); ?>" 
+							class="editable editable-click" style="max-width: 0px; height:0px;font-size: 0px!important;">
+							<?php echo (!empty($element["shortDescription"])) ? $element["shortDescription"] : ""; ?>
+						</a>
+						<button class="pull-right btn btn-default btn-sm tooltips btn-update-shortDesc margin-left-15 margin-top-5" 
+								data-edit-id="shortDescription" 
+								data-toggle="tooltip" data-placement="right" title="modifier ma description">
+							<i class="fa fa-pencil"></i> en quelques mots 
+						</button>
+					<?php } ?>
+					</span>	
+				</div>
+				<div class="pull-right col-sm-3 col-md-3" style="">
+					
+				</div>
+				<!-- <a href="#app.page.type.citoyens.id.580827a8da5a3bca128b456b?tpl=onepage" target="_blank" class="font-blackoutM letter-red bold">
+					  <i class="fa fa-external-link"></i> <span class="hidden-xs hidden-sm">Page</span> web
+				</a>
+				<br> -->
+
+				<!-- <?php //if(@$element["shortDescription"]!="") { ?><i class="fa fa-quote-left pull-left "></i><?php //} ?> -->
+				
+
+				
+				
+			</div>
+	    </div>
+    </section>
+    	  
+	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 profilSocial" style="margin-top:-120px;">  
+		
 	    <?php 
 	    	$params = array(    "element" => @$element, 
                                 "type" => @$type, 
@@ -210,63 +289,20 @@
 
 	    	$this->renderPartial('../pod/ficheInfoElementCO2', $params ); 
 	    ?>
+
+	    <div id="divTagsHeader" class="col-md-12 padding-5 text-right margin-bottom-10">
+			<!-- <div class="link"><i class="fa fa-tag"></i> Tags</div> -->
+			<?php if(@$element["tags"])
+        			foreach ($element["tags"]  as $key => $tag) { ?>
+        		<span class="badge letter-red bg-white"><?php echo $tag; ?></span>
+        	<?php } ?>
+		</div>
 	</div>
-        
-    <section class="col-md-8 col-sm-8 col-lg-9  margin-top-15 padding-15">
+
+	<section class="row col-md-8 col-sm-8 col-lg-9 no-padding" style="margin-top: -30px;">
 	    	
-    	<!-- Header -->
-	    <section class="col-md-12 col-sm-12 col-xs-12" id="social-header">
-	    	<?php if(@$edit==true) { ?>
-	    	<button class="btn btn-default btn-sm pull-right margin-right-15 margin-top-70 hidden-xs btn-edit-section" 
-	    			data-id="#header">
-		        <i class="fa fa-cog"></i>
-		    </button>
-		    <?php } ?>
-	        <div class="col-md-9 col-sm-10 col-lg-10 text-left">
-	        	
-	        	<div id="divTagsHeader" class="col-md-12 padding-5 margin-bottom-10">
-					<!-- <div class="link"><i class="fa fa-tag"></i> Tags</div> -->
-					<?php if(@$element["tags"])
-	            			foreach ($element["tags"]  as $key => $tag) { ?>
-	            		<span class="badge letter-red bg-white"><?php echo $tag; ?></span>
-	            	<?php } ?>
-				</div>
-
-				
-				<h3 class="text-left margin-10 padding-left-15 pull-left" id="main-name-element">
-					<?php if($edit==true || $openEdition==true ){?>
-						<a href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a>
-					<?php } ?>
-					<span id="nameHeader">
-						<?php echo @$element["name"]; ?>
-					</span>	
-				</h3>
-				<a href="#app.page.type.citoyens.id.580827a8da5a3bca128b456b?tpl=onepage" target="_blank" class="font-blackoutM letter-red bold">
-					  <i class="fa fa-external-link"></i> <span class="hidden-xs hidden-sm">Page</span> web
-				</a>
-				<br>
-
-				<!-- <?php //if(@$element["shortDescription"]!="") { ?><i class="fa fa-quote-left pull-left "></i><?php //} ?> -->
-				<div class="col-sm-10 col-md-10">
-					<span class="" id="shortDescriptionHeader"><?php echo @$element["shortDescription"]; ?></span>
-					
-					<?php if(@$edit==true) { ?>
-					<button class=" btn btn-default btn-xs tooltips btn-update-shortDesc margin-top-5" data-edit-id="shortDescription" 
-							data-toggle="tooltip" data-placement="right" title="modifier ma description">
-						<i class="fa fa-pencil"></i> en quelques mots 
-					</button>
-					<a href="#" id="shortDescription" data-type="wysihtml5" 
-						data-original-title="Décrivez <?php echo @$element["name"]; ?> en quelques mots (140)" 
-						data-emptytext="<?php echo Yii::t("common","Short description",null,Yii::app()->controller->module->id); ?>" 
-						class="editable editable-click" style="max-width: 0px; height:0px;font-size: 0px!important;">
-						<?php echo (!empty($element["shortDescription"])) ? $element["shortDescription"] : ""; ?>
-					</a>
-					<?php } ?>
-				</div>
-		    </div>
-	    </section>
-
-	    <div class="col-md-12 col-sm-12 col-xs-12 sub-menu-social">
+  
+	    <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12  sub-menu-social no-padding">
 	    	<div class="btn-group">
 	    	<?php if(@Yii::app()->session["userId"] && $type==Person::COLLECTION && (string)$element["_id"]==Yii::app()->session["userId"]){ 
 	    		$iconNewsPaper="user-circle"; ?>
@@ -276,7 +312,7 @@
 			  <button type="button" class="btn btn-default bold" id="btn-start-gallery"><i class="fa fa-camera"></i> <?php echo Yii::t("common", "Gallery") ?></button>
 			</div>
 			<?php if(@Yii::app()->session["userId"] && $isLinked==true){ ?>
-			<div class="btn-group margin-left-10">
+			<div class="btn-group">
 			  <button type="button" class="btn btn-default bold" id="btn-start-notifications">
 			  	<i class="fa fa-bell"></i> 
 			  	<span class="hidden-xs hidden-sm">
@@ -294,8 +330,20 @@
 			  </button>
 			</div>
 			<?php } ?>
+			
+			<div class="btn-group pull-right">
+			  <button type="button" class="btn btn-default bold">
+			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
+			  </button>
+			  <?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
+			  <button type="button" class="btn btn-default bold" id="btn-superadmin">
+			  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
+			  </button>
+			  <?php } ?>
+			</div>
+
 			<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
-			<div class="btn-group margin-left-10">
+			<div class="btn-group pull-right">
 				<ul class="nav navbar-nav">
 					<li class="dropdown">
 					<button type="button" class="btn btn-default bold">
@@ -330,16 +378,6 @@
 			  	</ul>
 			</div>
 			<?php } ?>
-			<div class="btn-group margin-left-10">
-			  <button type="button" class="btn btn-default bold">
-			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
-			  </button>
-			  <?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
-			  <button type="button" class="btn btn-default bold" id="btn-superadmin">
-			  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
-			  </button>
-			  <?php } ?>
-			</div>
 		</div>
 
 		<div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 margin-top-50" id="central-container">
@@ -383,7 +421,7 @@
 	    	</div>
 	    </div>-->
 	</section>
-	
+</div>	
 
 	<?php 
 		//$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
@@ -427,6 +465,8 @@
 				loadDetail();
 		} else
 			loadNewsStream(true);
+
+		KScrollTo("#topPosKScroll");
 	});
 
 

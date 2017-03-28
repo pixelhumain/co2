@@ -299,12 +299,12 @@
 				<ul class="nav navbar-nav">
 					<li class="dropdown">
 					<button type="button" class="btn btn-default bold">
-			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md">Paramètres</span>
+			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo Yii::t("common", "Settings"); ?></span>
 			  		</button>
 			  		<ul class="dropdown-menu arrow_box menu-params">
 			  			<li class="text-left">
-			               	<a href="javascript:;" class="bg-white">
-			                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Settings"); ?>
+			               	<a href="javascript:;" id="editConfidentialityBtn" class="bg-white">
+			                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
 			                </a>
 			            </li>
 			  			<?php if($type !=Person::COLLECTION){ ?>
@@ -383,13 +383,16 @@
 	    	</div>
 	    </div>-->
 	</section>
-	
-
 	<?php 
-		//$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
-		//$this->renderPartial($layoutPath.'footer',  array( "subdomain"=>"page" ) ); 
-	?>
-    
+	    	$paramsConfidentiality = array( "element" => @$element, 
+                                "type" => @$type, 
+                                "edit" => @$edit,
+                                "controller" => $controller,
+                                "openEdition" => $openEdition,
+                                );
+
+	    	$this->renderPartial('../pod/confidentiality', $params ); 
+	    ?>
 
 <script type="text/javascript">
 
@@ -400,6 +403,7 @@
     var params = <?php echo json_encode(@$params); ?>;
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
+    
     console.log("params", params);
     var subView="<?php echo @$subview; ?>";
     var hashUrlPage="#page.type."+contextType+".id."+contextId;
@@ -459,7 +463,17 @@
 			history.pushState(null, "New Title", hashUrlPage+".view.history");
 			loadHistoryActivity();
 		});
+
+
+		$(".open-confidentiality").click(function(){
+			mylog.log("open-confidentiality");
+			toogleNotif(false);
+			smallMenu.open( markdownToHtml($("#descriptionMarkdown").val()));
+			bindLBHLinks();
+		});
 	}
+
+	
 
 	function initSocial(){
 		var Accordion = function(el, multiple) {

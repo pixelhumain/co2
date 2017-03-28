@@ -823,8 +823,9 @@ function bindAboutPodElement() {
 			var beforeSave = null ;
 
 			var afterSave = function(data){
-				$("#description").html(markdownToHtml(data.description));
+				$("#central-container").html(markdownToHtml(data.description));
 				$("#descriptionMarkdown").val(data.description);
+				//smallMenu.open( markdownToHtml(data.description);
 				elementLib.closeForm();		
 			};
 			

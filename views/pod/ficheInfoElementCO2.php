@@ -975,7 +975,7 @@
 		});
 
 		$(".open-description").click(function(){
-			mylog.log("here", $("#descriptionMarkdown").val());
+			mylog.log("here", markdownToHtml($("#descriptionMarkdown").val()));
 			toogleNotif(false);
 			smallMenu.open( markdownToHtml($("#descriptionMarkdown").val()));
 			bindLBHLinks();

@@ -19,7 +19,6 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
       <div class="panel-body no-padding center">
         <ul class="list-group text-left no-margin">
            
-
           <li class="list-group-item text-yellow col-md-4 col-sm-6 link-to-directory">
             <div class="" style="cursor:pointer;" onclick="url.loadByHash('#thing.graph')">
               <i class="fa fa-line-chart fa-2x"></i>
@@ -37,7 +36,7 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
               
             </div>
           </li>
-          <!--?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?-->
+          <?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
           <li class="list-group-item text-yellow col-md-4 col-sm-6 link-to-directory">
             <div class="" style="cursor:pointer;" onclick="url.loadByHash('#thing.manage')">
               <i class="fa fa-database fa-2x"></i>
@@ -47,7 +46,7 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
             </div>
           </li>
 
-            <!--?php } ?-->
+            <?php } ?>
 
         </ul>
       </div>

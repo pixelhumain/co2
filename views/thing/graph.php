@@ -1,29 +1,31 @@
 <?php
 
-	  	$cssAnsScriptFilesModule = array(
-	  		'/plugins/d3/d3.v3.min.js',
-        '/plugins/d3/c3.min.js',
-        '/plugins/d3/c3.min.css',
-        '/plugins/d3/d3.v4.min.js',
-        /*/DatePicker
-        '/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
-        '/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js' ,
-        '/plugins/bootstrap-datepicker/css/datepicker.css',
+ 	  $cssAnsScriptFilesModule = array(
+	  	'/plugins/d3/d3.v3.min.js',
+      '/plugins/d3/c3.min.js',
+      '/plugins/d3/c3.min.css',
+      '/plugins/d3/d3.v4.min.js',
+      /*/DatePicker
+      '/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
+      '/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js' ,
+      '/plugins/bootstrap-datepicker/css/datepicker.css',
   
-        //DateTime Picker
-        '/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
-        '/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js' , 
-        '/plugins/bootstrap-datetimepicker/css/datetimepicker.css',*/
+      //DateTime Picker
+      '/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
+      '/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js' , 
+      '/plugins/bootstrap-datetimepicker/css/datetimepicker.css',*/
 
-	  	);
-	  	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->request->baseUrl);
-      $params = CO2::getThemeParams();
+	  );
+	  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->request->baseUrl);
+
+    HtmlHelper::registerCssAndScriptsFiles( array('/js/thing/graph.js', ) , $this->module->assetsUrl);
+    
+    $params = CO2::getThemeParams();
  
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath ,
-                                "type" => "all",
                                 "page" => "thing") ); 
 
 ?>
@@ -105,6 +107,12 @@ foreach ($devicesMongoRes as $mdataDevice) {
     width: 180px;
     z-index: 1;
   }
+
+  #legend-graph {
+    color : black;
+  }
+
+
   .grid .tick {
     stroke: lightgrey;
     opacity: 0.7;
@@ -113,28 +121,31 @@ foreach ($devicesMongoRes as $mdataDevice) {
       stroke-width: 0;
   }
 
+  #graph-container {
+    background-color: #fefefe;
+
+  }
+
 </style>
-
-
-<div class="panel panel-white col-sm-12 col-md-12">
-  <section class="panel-title col-sm-12">
+    
+  <div class="padding-top-15 col-md-12 col-sm-12 col-xs-12 container" id="graph-container">
+  <section class="header col-sm-12">
     <form class="form-inline col-sm-12"> 
       <span class="form-group col-sm-12">
-        <label for="btngraphs" class="hide col-xs-12 col-sm-3 control-label">Graphe(s)</label>
-        <span class="btn-toolbar col-sm-12" role="toolbar" aria-label="choixgraph" id="btngraphs" name="btngraphs">
+        <span class="btn-toolbar col-sm-12 col-xs-12" role="toolbar" aria-label="choixgraph" id="btngraphs" name="btngraphs">
           <div class="btn-group " role="group" aria-label="choixmesuressensors">
             <button type="button" class="btn btn-default" id="btn1" title="Température et humidité" value="1"> 
-              <i class="fa fa-thermometer-half"></i> </button>
+              <i class="fa fa-thermometer-half"></i> <span class="hidden-sm hidden-xs"> Température et humidité </span> </button>
             <button type="button" class="btn btn-default" title="Énergies : Batterie et PV" value="2"> 
-              <i class="fa fa-battery-full" ></i> </button>
+              <i class="fa fa-battery-full" ></i> <span class="hidden-sm hidden-xs"> Énergies</span> </button>
             <button type="button" class="btn btn-default" title="Luminosité" value="3"> 
-              <i class="fa fa-sun-o" ></i> </button>
+              <i class="fa fa-sun-o" ></i> <span class="hidden-sm hidden-xs"> Luminosité</span> </button>
             <button type="button" class="btn btn-default" title="Gaz : CO et NO2" value="4"> 
-              <i class="fa fa-cloud"> </i> </button>
+              <i class="fa fa-cloud"> </i> <span class="hidden-sm hidden-xs">CO et NO2 </span> </button>
             <button type="button" class="btn btn-default" title="Bruit" value="5"> 
-              <i class="fa fa-volume-up" ></i> </button>
+              <i class="fa fa-volume-up" ></i> <span class="hidden-sm hidden-xs">Bruit</span> </button>
             <button type="button" class="btn btn-default" title="Tous les graphes" value="6"> 
-              <i class="fa fa-check-square"></i> </button>
+              <i class="fa fa-check-square"></i> <span class="hidden-sm hidden-xs" >Tous les graphes</span> </button>
           </div>
         </span>
       
@@ -145,9 +156,10 @@ foreach ($devicesMongoRes as $mdataDevice) {
   <div class="btn-group" role="group" aria-label="nets"></div -->
 
       </span>
-      <span class="btn-toolbar pull-right" role="group" aria-label="autreaction">
+
+      <!--span class="btn-toolbar pull-right" role="group" aria-label="autreaction">
         <button class="pull-right btn btn-default" type='button' onclick="showSCKDeviceOnMap('<?php echo $country; echo "','"; echo $postalCode; ?>')" title="Voir les devices sur la carte"><i class="fa fa-globe"></i> </button>
-      </span>
+      </span-->
 
         <!-- <select class="hide control-select col-xs-11 col-sm-8 form-control" name="">
           <option class="form-control" value="1">Température et humidité</option> 
@@ -183,10 +195,10 @@ foreach ($devicesMongoRes as $mdataDevice) {
       </div>
     </form>
   </section>
-  <section class="panel-body center col-sm-12" > 
+  <section class="body center col-sm-12" > 
     <div class="col-xs-12" id="graphs"> </div>
   </section>
-  <section class="panel-footer center col-sm-12">
+  <section class="footer center col-sm-12" id="legend-graph">
     <div class="col-sm-12"> 
       <label class="col-xs-12 col-sm-3">Légende</label> 
         <div class="col-xs-12" id="legend">   </div>
@@ -195,16 +207,14 @@ foreach ($devicesMongoRes as $mdataDevice) {
 
 </div>
 
-<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"thing")); ?>
 
-
-
+<!--?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"thing")); ?-->
 
 <script>
 
 //variable globale :
-nbDays=<?php echo $nbDays ?>;
 
+nbDays=<?php echo $nbDays ?>;
 if(nbDays>0 && nbDays<=2){
   tRollup = "rollup=10m";
 }else if (nbDays>2 && nbDays<=7 ){
@@ -310,282 +320,51 @@ $(".btn").click(function(){
 );
 
 
-// Fonctions pour cacher et montrer les graphe
- function showAllGraph(){ $(".graphs").show(); }
+function initPageInterface(){
 
- function showGraph(figGraph){ $("#"+figGraph).show(); }
+  $("#second-search-bar").addClass("input-global-search");
 
- function hideAllGraph(){ $(".graphs").hide(); }
+    $("#main-btn-start-search, .menu-btn-start-search").click(function(){
+        startGlobalSearch(0, indexStepGS);
+    });
 
- function hideGraph(figGraph){ $("#"+figGraph).hide(); }
-
-//
-function setSVGForSensor(sensor) {
-
-  var svgId = "sensor"+sensor;
-  var figGraph = "graphe_"+sensor;
-  var gId = svgId+"_g";
-  //console.log(svgId);
-
-  var svgObj = d3.select("#"+figGraph)
-      .append("svg").attr("width",svgwidth).attr("height",svgheight)
-      .attr("viewBox","0 0 "+svgwidth+" "+svgheight)
-      .attr("preserveAspectRatio","xMidYMid meet")
-      .attr("class","col-sm-12 svggraph")
-      .attr("id", svgId);   //.style("visibility","hidden");
-  var g = svgObj.append("g").attr("transform", "translate(" + gmargin.left + "," + gmargin.top + ")").attr("id", gId);
-
-  var captionSensor =  d3.select("#"+figGraph).append("figcaption").text("Graph of sensor "+infoSensors[svgId].name+" ("+infoSensors[svgId].description+")");
-
-  var objGraph = {svgid : svgId, 
-        svg : svgObj,
-        mesure : {description :  "", unit : "" }, 
-        dimension : { width : +gwidth, 
-              height : +gheight, 
-              margin : gmargin },
-      gid : gId , 
-      domain : {Yn : vYn, Ym : vYm, Xn : vXn, Xm : vXm , domainInitialized : false},
-      devices : [],
-      divgraphid : figGraph,
-      urlReqApi : "",
-  };
-
-  //console.dir(objGraph);
-   //Voir si on peu ce passer de la mise en tableau
-   var indexObjGraphe = (multiGraphe.push(objGraph)) - 1 ;
-   //console.log(indexObjGraphe);
-  return indexObjGraphe; 
-}
-
-function setLegend(deviceId,strkCol){
-
-console.log(strockeColorArray);
-
-  var idIM='icnmin_'+deviceId; 
-  var idTL= 'textdevice_'+deviceId;
- // var stId = "sCol_"+deviceId;
-  console.log(deviceId);
-  console.log(idIM);
-  //console.log(stId);
-  var legendILSC="<a href='https://smartcitizen.me/kits/"+deviceId+"' target='_blank'><i class='fa fa-minus' id='"+idIM+"' style='color:"+strkCol+";'></i> SCK device "+deviceId+"</a>";
-
- // var iconMinus = "<i class='fa fa-minus' id='"+idIM+"' style='color:"+strkCol+";'></i>";
-
-  var dLegend = d3.select("#legend").append("div").attr("id","legend_"+deviceId).attr("class","col-sm-12 col-xs-12");
-  dLegend.append("span").html(legendILSC);
-
-
-}
-
-function showLegendGraph( ){
-
-
-}
-
-
-function updateTheDomain(xArray,yArray,indexGraphe){
-  var yChanged = false;
-  var xChanged = false;
-  var Yn = multiGraphe[indexGraphe].domain.Yn;
-  var Ym = multiGraphe[indexGraphe].domain.Ym;
-  var Xn = multiGraphe[indexGraphe].domain.Xn;
-  var Xm = multiGraphe[indexGraphe].domain.Xm;
- 
-  if( yArray[0] < Yn || Yn == 0) {
-      multiGraphe[indexGraphe].domain.Yn = yArray[0]; yChanged = true; } //min
-  if( yArray[1] > Ym || Yn == 0) { 
-      multiGraphe[indexGraphe].domain.Ym = yArray[1]; yChanged = true; } //max
-  if( yChanged == true || multiGraphe[indexGraphe].domain.domainInitialized == false ) { 
-    y.domain([multiGraphe[indexGraphe].domain.Yn,multiGraphe[indexGraphe].domain.Ym]); }
-
-  if(xArray[0].valueOf() < Xn.valueOf() ){ 
-    multiGraphe[indexGraphe].domain.Xn = xArray[0]; xChanged = true;}
-  if(xArray[1].valueOf() > Xm.valueOf() ){ 
-    multiGraphe[indexGraphe].domain.Xm = xArray[1]; xChanged = true;}
-
-  if( xChanged == true || multiGraphe[indexGraphe].domain.domainInitialized == false ) {
-    x.domain([multiGraphe[indexGraphe].domain.Xn,multiGraphe[indexGraphe].domain.Xm]);
-    multiGraphe[indexGraphe].domain.domainInitialized=true;
-    }
-
-}
-
-function setAxisXY(indexGraphe,sensorkey){
-  //console.log(indexGraphe);
-
-  var gId = multiGraphe[indexGraphe].gid;
-  var g = d3.select("#"+gId);
-  var xAxisId="xAxis"+ multiGraphe[indexGraphe].svgid; 
-  var yAxisId="yAxis"+ multiGraphe[indexGraphe].svgid; 
-  var height = multiGraphe[indexGraphe].dimension.height;
-
-  d3.select("#"+xAxisId).remove();    // TODO refaire la selection sur le graphe sensor
-  d3.select("#"+yAxisId).remove();
+    $("#second-search-bar").keyup(function(e){
+        $("#input-search-map").val($("#second-search-bar").val());
+        if(e.keyCode == 13){
+            startGlobalSearch(0, indexStepGS);
+         }
+    });
     
-    g.append("g")
-      .attr("id", xAxisId)
-      .attr("class", "theAxis")
-      .attr("transform", "translate(0," + gheight + ")")
-      .call(d3.axisBottom(x))
-      /*
-      .append("text")
-      .attr("fill","#000")
-      .attr("x", gwidth)
-      .attr("text-anchor","end")
-      .text("time")*/
-      ;
+    $("#input-search-map").keyup(function(e){
+        $("#second-search-bar").val($("#input-search-map").val());
+        if(e.keyCode == 13){
+            startGlobalSearch(0, indexStepGS);
+         }
+    });
 
-    var sensorkunit = sensorkey+" "+infoSensors[multiGraphe[indexGraphe].svgid].unit ;
-    //console.log(sensorkunit);
-    g.append("g")
-      .attr("id", yAxisId)
-      .attr("class", "theAxis")
-      .call(d3.axisLeft(y))
-      .append("text")
-      .attr("fill","#000")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 8)
-      .attr("dy", "0.71em")
-      .attr("text-anchor","end")
-      .text(sensorkunit)
-      ;
+    $("#menu-map-btn-start-search").click(function(){
+        startGlobalSearch(0, indexStepGS);
+    });
 
-  
-}
-//TODO : réglé le pb de color utiliser find dans array 
-function setStrokeColorForDevice(device) {
+    $(".social-main-container").mouseenter(function(){
+      $(".dropdown-result-global-search").hide();
+    });
 
-  var stId = "sCol_"+device;
-  if (strockeColorArray[stId] != null )
-  {
-    strockeColor = strockeColorArray[stId];
-    //console.log("strockeColor alreadySet: "+strockeColor);
-  } else
-  {   // || strockeColorArray["sCol_"+device] ) {
-      strockeColor = "rgb("+Math.floor((Math.random()*220)+1)+","+
-      Math.floor((Math.random()*220)+1)+","+
-      Math.floor((Math.random()*220)+1)+")";
-      //console.log("new strockeColor :"+strockeColor);
-      //stId = "sCol_"+device ;
-
-      strockeColorArray[stId]=strockeColor;
-    //console.log(strockeColorArray);
-    setLegend(device,strockeColor);
-
-  }
-  
-  return strockeColor;
-}
-
-function fillArrayWithObjectTimestampsAndValues(readings){
-  var d=[];
-  readings.forEach(
-    function(item){
-      var ts = new Date();
-      ts.setTime(Date.parse(item[0]));
-      ts.setSeconds(0)
-      item[1] = +item[1];
-      d.push({timestamps : ts, values : item[1]});
-    }
-  );
-  return d;
-}
-/**
-@function tracer
-@strockeColor 
-*/
-function tracer(da,device,sensor,strokeColor="blue", indexGraphe,strokeWidth=1.5){
-  
-  var g = d3.select("#"+multiGraphe[indexGraphe].gid);
-
-  var gpathId = "gpId_"+device+multiGraphe[indexGraphe].svgid; //ex : gpId_4162sensor17
-  var graphClassSensor = "gcs_"+sensor;
-      g.append("path")
-        .datum(da)
-        .attr("fill", "none")
-        .attr("class", graphClassSensor)
-        .attr("id", gpathId)
-        .attr("stroke", strokeColor)
-        .attr("stroke-linejoin", "round")
-        .attr("stroke-linecap", "round")
-        .attr("stroke-width", strokeWidth)
-        .attr("d", line);
-/*
-      g.append("text")
-      .datum(function(d){ return {id: d.id, value: d.values[d.values.length - 1]}; })
-      .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
-      .attr("x", 3)
-      .attr("dy", "0.35em")
-      .style("font", "10px sans-serif")
-      .text(function(d) { return d.id; });*/
-}
-
-function graphe(device,sensors,readings,svgG){
-
-  var de = fillArrayWithObjectTimestampsAndValues(readings);
-  
-    var xMinMax = d3.extent(de, function(d){return d.timestamps;});
-    var yMinMax = d3.extent(de, function(d){return d.values;});
-
-    updateTheDomain(xMinMax,yMinMax,svgG);
-    strkCol = setStrokeColorForDevice(device);
-
-  tracer(de,device,sensors,strkCol,svgG);
-  
-}
-
-
-
-function showSCKDeviceOnMap(country,cp){
-  console.log("montrer sur la carte");
-  //console.log(country+" "+cp);
-
-
-  
-  //console.log(contextDeviceMap);
-  //mapThing = Sig.loadMap('mapCanvas');
-  //Sig.showMapElements(Sig.map, contextDeviceMap); 
-  showMap(true);
-  //$('#ajax-modal').modal("hide");
+    //$(".dropdown-result-global-search").hide();
+    
 
 }
-/*
-  $( function() {
-    var dateFormat = "mm/dd/yy",
-      from = $( "#from" )
-        .datepicker({
-          defaultDate: "+1w",
-          changeMonth: true,
-          numberOfMonths: 3
-        })
-        .on( "change", function() {
-          to.datepicker( "option", "minDate", getDate( this ) );
-        }),
-      to = $( "#to" ).datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        numberOfMonths: 3
-      })
-      .on( "change", function() {
-        from.datepicker( "option", "maxDate", getDate( this ) );
-      });
- 
-    function getDate( element ) {
-      var date;
-      try {
-        date = $.datepicker.parseDate( dateFormat, element.value );
-      } catch( error ) {
-        date = null;
-      }
- 
-      return date;
-    }
-  } );
-*/
+
+
 
 
 
 jQuery(document).ready(function() {
+
+  initKInterface({"affixTop":0});
+  $("#mainNav").addClass("affix");
+
+  initPageInterface();
 
   contextDeviceMap= <?php echo json_encode($sigDevicesForContextMap,true)?>;
   console.log("Sig.map : ");
@@ -593,7 +372,7 @@ jQuery(document).ready(function() {
   //Sig.showMapElements(Sig.map, contextDeviceMap);
   
 
-  setTitle("Mesures","line-chart");
+  setTitle("<span id='main-title-menu'>Graphes</span>","line-chart","Graphes");
   
   if(devices.length>0){
 
@@ -621,7 +400,7 @@ jQuery(document).ready(function() {
 
       //console.log(urlReq);
 
-      /*$.ajax({
+      $.ajax({
 
       //exemple api GET https://api.smartcitizen.me/v0/devices/1616/readings?sensor_id=7&rollup=4h&from=2015-07-28&to=2015-07-30
       type: 'GET',
@@ -650,7 +429,7 @@ jQuery(document).ready(function() {
       //console.log(data); 
       }
 
-      }).done(function() {setAxisXY(svgG,sensorkey); });  */  
+      }).done(function() {setAxisXY(svgG,sensorkey); });    
       
     }
 

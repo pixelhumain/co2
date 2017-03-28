@@ -604,7 +604,6 @@
 	function loadDetail(){
 		toogleNotif(false);
 		var url = "element/detail/type/"+contextData.type+"/id/"+contextData.id;
-		
 		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
 	}

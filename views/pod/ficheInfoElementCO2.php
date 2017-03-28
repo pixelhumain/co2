@@ -596,10 +596,10 @@
 			<?php } ?>
 
 		</ul>
-		<ul id="accordion5" class="accordion shadow2 margin-top-20">
 		<?php if($type==Project::COLLECTION || $type==Organization::COLLECTION){
 			if(!@$front || (@$front && $front["dda"]==true)){
 				$rooms = ActionRoom::getAllRoomsActivityByTypeId($type, (string)$element["_id"]); ?>
+		<ul id="accordion5" class="accordion shadow2 margin-top-20">
 			<li class="podInside dda">
 				<div class="link">
 					<i class="fa fa-comments"></i> <?php echo Yii::t("common","Espace coopératif (activité récente)") ?> 
@@ -617,7 +617,6 @@
 			                    "renderPartial" => true
 			                    ));
 						}
-					}
 					?>
 					<div class="text-right padding-10">
 						<button class="btn btn-default letter-blue margin-top-5" onclick='url.loadByHash("#rooms.type.<?php echo $type; ?>.id.<?php echo (String)$element["_id"]; ?>")'>
@@ -627,6 +626,7 @@
 				</ul>			
 			</li>
 		</ul>
+		<?php } ?>
 		<ul id="accordion3" class="accordion shadow2 margin-top-20">
 				
 			<!-- PROJETS -->

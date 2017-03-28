@@ -455,8 +455,8 @@ class CommunecterController extends Controller
       "media"             => array('href' => "/ph/communecter/app/media",             "public" => true),
       "referencement"     => array('href' => "/ph/communecter/app/referencement",     "public" => true),
       "savereferencement" => array('href' => "/ph/communecter/app/savereferencement", "public" => true),
-      "annonces"          => array('href' => "/ph/communecter/app/annonces",         "public" => true),
-      "live"              => array('href' => "/ph/communecter/app/live",            "public" => true),
+      "annonces"          => array('href' => "/ph/communecter/app/annonces",          "public" => true),
+      "live"              => array('href' => "/ph/communecter/app/live",              "public" => true),
       "agenda"            => array('href' => "/ph/communecter/app/agenda",            "public" => true),
       "mediacrawler"      => array('href' => "/ph/communecter/app/mediacrawler",      "public" => false),
       "page"              => array('href' => "/ph/communecter/app/page",              "public" => true),
@@ -469,8 +469,13 @@ class CommunecterController extends Controller
       "sendmailformcontact" => array('href' => "/ph/communecter/app/sendmailformcontact", "public" => true),
       "checkurlexists" => array('href' => "/ph/communecter/app/checkurlexists", "public" => true),
       ),
+    "export" => array(
+      "index"             => array('href' => "ph/communecter/export/index",            "public" => true),
+      ),
     "siteurl" => array(
-      "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick")
+      "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick"),
+    
+
     ),
   );
 

@@ -85,7 +85,9 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 #formCreateNewsTemp .form-create-news-container, #formActivity{
     max-width: 700px;
 }
-
+.newsContent{ 
+  white-space: pre; 
+}
 </style>
 
 <div class="col-md-12 col-sm-12 no-padding margin-bottom-15" style="padding-left:25px!important;">

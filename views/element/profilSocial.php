@@ -512,6 +512,7 @@
 		var accordion2 = new Accordion($('#accordion2'), false);
 		var accordion3 = new Accordion($('#accordion3'), false);
 		var accordion4 = new Accordion($('#accordion4'), false);
+		var accordion5 = new Accordion($('#accordion5'), false);
 
 		//ouvre le pod communauté
 		$('#accordion4 .link').trigger("click");

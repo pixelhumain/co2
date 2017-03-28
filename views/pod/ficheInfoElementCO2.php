@@ -596,8 +596,37 @@
 			<?php } ?>
 
 		</ul>
-
-
+		<ul id="accordion5" class="accordion shadow2 margin-top-20">
+		<?php if($type==Project::COLLECTION || $type==Organization::COLLECTION){
+			if(!@$front || (@$front && $front["dda"]==true)){
+				$rooms = ActionRoom::getAllRoomsActivityByTypeId($type, (string)$element["_id"]); ?>
+			<li class="podInside dda">
+				<div class="link">
+					<i class="fa fa-comments"></i> <?php echo Yii::t("common","Espace coopératif (activité récente)") ?> 
+					<small>(<?php echo @$rooms ? count($rooms) : "0"; ?>)</small>
+					<i class="fa fa-chevron-down"></i>
+				</div>
+				<ul class="submenu">
+					<?php	
+						$this->renderPartial('../pod/activityList2',array(    
+			   					"parent" => $element, 
+			                    "parentId" => (string)$element["_id"], 
+			                    "parentType" => $type, 
+			                    "title" => "Espace coopératif (activité récente)",
+		                    	"list" => @$rooms, 
+			                    "renderPartial" => true
+			                    ));
+						}
+					}
+					?>
+					<div class="text-right padding-10">
+						<button class="btn btn-default letter-blue margin-top-5" onclick='url.loadByHash("#rooms.type.<?php echo $type; ?>.id.<?php echo (String)$element["_id"]; ?>")'>
+					    	<i class="fa fa-sign-in"></i> Entrer dans l'espace coopératif
+						</button>
+					</div>	
+				</ul>			
+			</li>
+		</ul>
 		<ul id="accordion3" class="accordion shadow2 margin-top-20">
 				
 			<!-- PROJETS -->

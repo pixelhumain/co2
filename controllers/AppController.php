@@ -176,6 +176,14 @@ class AppController extends CommunecterController {
         $params = array("type" => "vote");
     	echo $this->renderPartial("search", $params, true);
 	}
+    public function actionRooms($type,$id){
+        CO2Stat::incNbLoad("co2-rooms");    
+        $params = array("id" => @$id,
+                        "type" => @$type
+                        );
+        print_r($params);
+        echo $this->renderPartial("rooms", $params, true);
+    }
 
 
 	public function actionPage($type, $id, $view=null){

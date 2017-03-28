@@ -532,7 +532,8 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 
 var CoAllReadyLoad = false;
 var url = {
-	loadableUrls : {},
+	loadableUrls : {
+	},
 	short : {
 		"citoyens" : "p",
 		"poi" : "poi",

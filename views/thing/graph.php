@@ -1,9 +1,9 @@
 <?php
 
  	  $cssAnsScriptFilesModule = array(
-	  	'/plugins/d3/d3.v3.min.js',
-      '/plugins/d3/c3.min.js',
-      '/plugins/d3/c3.min.css',
+	  	//'/plugins/d3/d3.v3.min.js',
+      //'/plugins/d3/c3.min.js',
+      //'/plugins/d3/c3.min.css',
       '/plugins/d3/d3.v4.min.js',
       /*/DatePicker
       '/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
@@ -44,7 +44,7 @@ if(empty($postalCode) || !isset($postalCode)){$postalCode='97490';}
 else if (is_int($postalCode)){$postalCode=strval($postalCode);}
 
 $devicesMongoRes = Thing::getSCKDevicesByCountryAndCP($country,$postalCode);
-//$devices=array();
+$devices=array();
 //print_r($devicesMongoRes);
 
 $sigDevicesForContextMap = array();
@@ -56,8 +56,8 @@ foreach ($devicesMongoRes as $mdataDevice) {
 
   $devices[]=$mdataDevice;
   
-  $sigDevicesForContextMap[]=array('geo' => $mdataDevice['geo'],'typeSig'=>'poi',
-    'name'=> "sck".$mdataDevice['deviceId'],"_id"=>$mdataDevice["_id"], 'type'=>Thing::SCK_TYPE, 
+  $sigDevicesForContextMap[]= array('geo' => $mdataDevice['geo'], 'typeSig'=>'poi.'.Thing::SCK_TYPE,
+    'name'=> "sck".$mdataDevice['deviceId'], '_id'=>$mdataDevice['_id'], 'type'=>Thing::SCK_TYPE, 
     'address'=>$mdataDevice['address']);
 
   if(!$infoSensorsDeviceOk){
@@ -82,6 +82,66 @@ foreach ($devicesMongoRes as $mdataDevice) {
 //$this->renderPartial("./thingMap");
 
 //print_r($devices);
+
+
+
+
+
+$sigParams = array(
+      
+          /* CLÉ UNIQUE QUI SERT D'IDENTIFIANT POUR CETTE CARTE */
+          "sigKey" => "IOT",
+          
+          /* MAP */
+          "mapHeight" => 450,
+          "mapTop" => 0,
+          "mapColor" => '#456074',  //ex : '#456074', //'#5F8295', //'#955F5F', rgba(69, 116, 88, 0.49)
+          "mapOpacity" => 1, //ex : 0.4
+          
+          /* *
+           * Provider de fond de carte  
+           * http://leaflet-extras.github.io/leaflet-providers/preview/index.html 
+           * */
+           
+          /* MAP LAYERS (FOND DE CARTE) */
+          "mapTileLayer"    => 'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png', //'http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png'
+          "mapAttributions" => '<a href="http://www.opencyclemap.org">OpenCycleMap</a>',    //'Map tiles by <a href="http://stamen.com">Stamen Design</a>'
+          
+           
+          /* MAP BUTTONS */     
+          "mapBtnBgColor" => '#E6D414', 
+          "mapBtnColor" => '#213042', 
+          "mapBtnBgColor_hover" => '#5896AB',
+           
+          /* USE */
+          "usePanel" => true,
+          "titlePanel" => 'THÈMES',
+          "useRightList" => true,
+          "useZoomButton" => true,
+          "useHelpCoordinates" => false,
+          "useFullScreen" => false,
+          "useFilterType" => false,
+          
+          /* TYPE NON CLUSTERISÉ (liste des types de données à ne pas inclure dans les clusters sur la carte (marker seul))*/
+          "notClusteredTag" => array("citoyens"),
+          
+          /* COORDONNÉES DE DÉPART (position géographique de la carte au chargement) && zoom de départ */
+          "firstView"     => array(  "coordinates" => array(-21.13318, 55.5314),
+                         "zoom"     => 9),
+
+          );
+    /* ***********************************************************************************/
+          
+    $moduleName = "sigModule".$sigParams['sigKey'];
+
+
+
+
+
+
+
+
+
 ?>
 <style type="text/css">
   /*#graphs{
@@ -158,7 +218,7 @@ foreach ($devicesMongoRes as $mdataDevice) {
       </span>
 
       <!--span class="btn-toolbar pull-right" role="group" aria-label="autreaction">
-        <button class="pull-right btn btn-default" type='button' onclick="showSCKDeviceOnMap('<?php echo $country; echo "','"; echo $postalCode; ?>')" title="Voir les devices sur la carte"><i class="fa fa-globe"></i> </button>
+        <button class="pull-right btn btn-default" type='button' onclick="showSCKDeviceOnMap('<?php //echo $country; echo "','"; echo $postalCode; ?>')" title="Voir les devices sur la carte"><i class="fa fa-globe"></i> </button>
       </span-->
 
         <!-- <select class="hide control-select col-xs-11 col-sm-8 form-control" name="">
@@ -222,7 +282,7 @@ if(nbDays>0 && nbDays<=2){
 }else if (nbDays>7 && nbDays<=14) {
   tRollup = "rollup=40m";
 } else {
-  tRollup = "rollup=1h";
+  tRollup = "rollup=2h";
 }
 
 $("#period").text("Graphe sur "+nbDays+" jours, "+tRollup);
@@ -366,10 +426,38 @@ jQuery(document).ready(function() {
 
   initPageInterface();
 
-  contextDeviceMap= <?php echo json_encode($sigDevicesForContextMap,true)?>;
+
+  //Sig = SigLoader.getSig();
+
+
+
+  contextDevicesMap = <?php echo json_encode($sigDevicesForContextMap,true);?>;
+  
+  var initParams =  <?php echo json_encode($sigParams); ?>;
+
+  //chargement la carte
+  //mapThing = Sig.loadMap("mapCanvas", initParams);
   console.log("Sig.map : ");
   console.log(Sig.map);
-  //Sig.showMapElements(Sig.map, contextDeviceMap);
+  
+/*
+  setTimeout(function(){
+    Sig.showMapElements(Sig.map, contextDevicesMap);
+  }, 3000); 
+  //Sig.showMapElements(mapThing, contextDevicesMap);
+*/
+if(CoSigAllReadyLoad)
+Sig.showMapElements(Sig.map, contextDevicesMap);
+else{
+setTimeout(function(){
+Sig.showMapElements(Sig.map, contextDevicesMap);
+}, 3000);
+}
+
+
+
+  
+  
   
 
   setTitle("<span id='main-title-menu'>Graphes</span>","line-chart","Graphes");
@@ -399,7 +487,7 @@ jQuery(document).ready(function() {
       var sensorkey = "";
 
       //console.log(urlReq);
-
+/*
       $.ajax({
 
       //exemple api GET https://api.smartcitizen.me/v0/devices/1616/readings?sensor_id=7&rollup=4h&from=2015-07-28&to=2015-07-30
@@ -431,6 +519,8 @@ jQuery(document).ready(function() {
 
       }).done(function() {setAxisXY(svgG,sensorkey); });    
       
+      */
+
     }
 
   }

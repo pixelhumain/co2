@@ -18,7 +18,7 @@ class ThingController extends CommunecterController {
 	    return array(
           'index'                     => 'citizenToolKit.controllers.thing.IndexAction',
           'graph'                   	=> 'citizenToolKit.controllers.thing.GetGraphAction',
-          //'scklastestreadings'        => 'citizenToolKit.controllers.thing.GetLastestReadingAction',
+          'scklastestreadings'        => 'citizenToolKit.controllers.thing.GetLastestReadingAction',
           'updatesckdevices'          => 'citizenToolKit.controllers.thing.UpdateSckDevicesAction',
           'manage'                    => 'citizenToolKit.controllers.thing.ManageAction',
           

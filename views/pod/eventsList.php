@@ -23,7 +23,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 	</div>
 	
 	<div class="panel-body no-padding">
-		<div class="panel-scroll height-230 ps-container">
+		<div class="panel-scroll height-230 ps-container" style="overflow-y: scroll;">
 				<?php
 						
 					$nbOldEvents = 0;

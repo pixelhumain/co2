@@ -53,11 +53,11 @@ a h1.text-azure:hover{
 	?>
 </div>
 
-<div id="endOfRoom">
+<!--<div id="endOfRoom">
 	<a href='javascript:url.loadByHash("#rooms.index.type.<?php echo (String) $parentType; ?>.id.<?php echo (String) $parentId; ?>")'>
 		<i class='fa fa-sign-in'></i> Entrer dans l'espace coopératif 
 	</a>
-</div>
+</div>-->
 <?php 
 	function createAccordionMenu($elements, $index, $title, $emptyMsg){
 	
@@ -65,7 +65,7 @@ a h1.text-azure:hover{
 	
 	echo '<div class="panel panel-default">';
 
-	echo    '<div class="panel-heading bg-dark">
+	/*echo    '<div class="panel-heading bg-dark">
 		      <div class="panel-title">
 		        <a data-toggle="collapse" data-parent="#accordion" href="#collapse'.$index.'" class="show-menu-co">
 		        	<i class="fa fa-angle-down hide-on-reduce-menu"></i> <span class="hide-on-reduce-menu">'.$title.'</span>
@@ -73,7 +73,7 @@ a h1.text-azure:hover{
 		        </a>
 		      </div>
 		      
-		    </div>';
+		    </div>';*/
 
 	echo 	'<div id="collapse'.$index.'" class="panel-collapse collapse '.$in.'">';
 

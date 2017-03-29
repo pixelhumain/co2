@@ -124,6 +124,30 @@
                 "placeholderMainSearch" : "Choisir parmis les objets ...",
                 "lblBtnCreate" : "Ajouter un objet",
                 "colorBtnCreate" : "azure"
+          },
+
+            "#rooms":
+                {"inMenu" : false, 
+                "useHeader" : false,
+                "open" : true,  
+                "subdomain" : "rooms", 
+                "subdomainName" : "rooms",
+                "hash":"#app.rooms",
+                "icon" : "university", 
+                "mainTitle" : "Communexion activée",
+                "placeholderMainSearch" : "rechercher ..."
+          },
+          
+            "#survey":
+                {"inMenu" : false, 
+                "useHeader" : false,
+                "open" : true,  
+                "subdomain" : "city", 
+                "subdomainName" : "City",
+                "hash":"#app.survey",
+                "icon" : "university", 
+                "mainTitle" : "Communexion activée",
+                "placeholderMainSearch" : "rechercher ..."
           }
       
 	  }

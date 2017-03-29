@@ -566,17 +566,46 @@
 			<?php } ?>
 
 		</ul>
-
-
+		<?php if($type==Project::COLLECTION || $type==Organization::COLLECTION){
+			if(!@$front || (@$front && $front["dda"]==true)){
+				$rooms = ActionRoom::getAllRoomsActivityByTypeId($type, (string)$element["_id"]); ?>
+		<ul id="accordion5" class="accordion shadow2 margin-top-20">
+			<li class="podInside dda">
+				<div class="link">
+					<i class="fa fa-comments"></i> <?php echo Yii::t("common","Espace coopératif (activité récente)") ?> 
+					<small>(<?php echo @$rooms ? count($rooms) : "0"; ?>)</small>
+					<i class="fa fa-chevron-down"></i>
+				</div>
+				<ul class="submenu">
+					<?php	
+						$this->renderPartial('../pod/activityList2',array(    
+			   					"parent" => $element, 
+			                    "parentId" => (string)$element["_id"], 
+			                    "parentType" => $type, 
+			                    "title" => "Espace coopératif (activité récente)",
+		                    	"list" => @$rooms, 
+			                    "renderPartial" => true
+			                    ));
+						}
+					?>
+					<div class="text-right padding-10">
+						<button class="btn btn-default letter-blue margin-top-5" onclick='url.loadByHash("#rooms.type.<?php echo $type; ?>.id.<?php echo (String)$element["_id"]; ?>")'>
+					    	<i class="fa fa-sign-in"></i> Entrer dans l'espace coopératif
+						</button>
+					</div>	
+				</ul>			
+			</li>
+		</ul>
+		<?php } ?>
 		<ul id="accordion3" class="accordion shadow2 margin-top-20">
 				
 			<!-- PROJETS -->
-			<?php if ($type==Organization::COLLECTION){ 
+			<?php if ($type==Organization::COLLECTION || $type==Project::COLLECTION){ 
 				if(!@$front || (@$front && $front["project"])){ 
 			?>
-			<li class="podInside events">
+			<li class="podInside projects">
 				<div class="link">
-					<i class="fa fa-lightbulb-o"></i> Projets 
+					<i class="fa fa-lightbulb-o"></i> <?php echo Yii::t("common","Projects") ?> 
 					<small>(<?php echo @$projects ? count($projects) : "0"; ?>)</small>
 					<i class="fa fa-chevron-down"></i>
 				</div>
@@ -591,7 +620,7 @@
 						<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
 						<button onclick="elementLib.openForm('project','sub')" 
 								class="btn btn-default letter-blue margin-top-5">
-					    	<b><i class="fa fa-plus"></i> Nouveau projet</b>
+					    	<b><i class="fa fa-plus"></i> <?php echo Yii::t("common", "New project"); ?></b>
 						</button> 
 						<?php } ?>
 						<button class="btn btn-default letter-blue open-directory margin-top-5">
@@ -602,8 +631,8 @@
 				</ul>			
 			</li>
 			<?php }} ?>
-
-
+				
+			
 			<!-- ÉVÉNEMENTS -->
 			<?php if (($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION)){ ?>
 	    		<?php if(!@$front || (@$front && $front["event"]==true)){ ?>
@@ -620,7 +649,7 @@
 					<li class="podInside events">
 					
 						<div class="link">
-							<i class="fa fa-calendar"></i> Événements 
+							<i class="fa fa-calendar"></i> <?php echo Yii::t("common","Events") ?> 
 							<small>(<?php echo @$events ? count($events) : "0"; ?>)</small>
 							<i class="fa fa-chevron-down"></i>
 						</div>
@@ -638,7 +667,7 @@
 								<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
 								<button onclick="elementLib.openForm('event','subEvent')" 
 										class="btn btn-default letter-blue margin-top-5">
-							    	<b><i class="fa fa-plus"></i> Nouvel événement</b>
+							    	<b><i class="fa fa-plus"></i> <?php echo Yii::t("common","New event") ?></b>
 								</button> 
 								<?php } ?>
 								<button class="btn btn-default letter-blue open-directory margin-top-5" 
@@ -652,6 +681,42 @@
 				<?php } ?>
 			<?php } ?>
 
+			<!-- POI -->
+			<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION || $type==Person::COLLECTION){ 
+				if(!@$front || (@$front && $front["poi"])){ 
+			?>
+			<li class="podInside poi">
+				<div class="link">
+				<?php   
+				$pois = PHDB::find(Poi::COLLECTION,array("parentId"=>(String)$element["_id"],"parentType"=>$type));
+				?>
+					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common", "Points of interests") ?>
+					<small>(<?php echo @$pois ? count($pois) : "0"; ?>)</small>
+					<i class="fa fa-chevron-down"></i>
+				</div>
+				<ul class="submenu">
+					<?php $this->renderPartial('../pod/POIList', array( "pois"=>$pois, "parentType"=> $type)); ?>
+		 			<?php /* $this->renderPartial('../pod/projectsList',array( "projects" => @$projects, 
+															"contextId" => (String) $element["_id"],
+															"contextType" => $type,
+															"authorised" =>	$edit,
+															"openEdition" => $openEdition
+					)); */ ?>
+					<div class="text-right padding-10">
+						<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
+						<button onclick="elementLib.openForm('poi','subPoi')" 
+								class="btn btn-default letter-blue margin-top-5">
+					    	<b><i class="fa fa-plus"></i> <?php echo Yii::t("common", "New point of interests") ?></b>
+						</button> 
+						<?php } ?>
+						<!--<button class="btn btn-default letter-blue open-directory margin-top-5">
+					    	<i class="fa fa-chevron-right"></i>
+						</button>-->
+						
+					</div>	
+				</ul>			
+			</li>
+			<?php }} ?>
 
 			<?php /*$this->renderPartial('../pod/ficheInfoPodThumb', array("list"=>@$events, 
 																		 "title"=>"Événements", 
@@ -916,37 +981,9 @@
 
 		mylog.log("tagg1 smallMenu.destination", smallMenu.destination);
 		
-		$(".open-directory").click(function(){
-			toogleNotif(false);
-			smallMenu.openAjax(baseUrl+'/'+moduleId+'/element/directory/type/'+contextData.type+'/id/'+contextData.id+
-								'?tpl=json','Communauté','fa-connectdevelop','dark');
-			bindLBHLinks();
-		});
-		$(".edit-chart").click(function(){
-			toogleNotif(false);
-			var url = "chart/addchartsv/type/"+contextType+"/id/"+contextId;
-			$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
-			ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
-			null,
-			function(){},"html");
-		});
-		$(".btn-open-collection").click(function(){
-			toogleNotif(false);
-		});
-
-		$("#btn-start-detail").click(function(){
-			loadDetail();
-		});
+		
 		
 	});
-
-	function loadDetail(){
-		toogleNotif(false);
-		var url = "element/detail/type/"+contextData.type+"/id/"+contextData.id;
-		
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
-		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
-	}
 
 	function parsePhone(arrayPhones){
 		var str = "";

@@ -457,6 +457,12 @@
 				loadNewsStream(false);
 			else if(subView=="history")
 				loadHistoryActivity();
+			else if(subView=="directory")
+				loadDirectory();
+			else if(subView=="editChart")
+				loadEditChart();
+			else if(subView=="detail")
+				loadDetail();
 		} else
 			loadNewsStream(true);
 
@@ -499,7 +505,24 @@
 			history.pushState(null, "New Title", hashUrlPage+".view.history");
 			loadHistoryActivity();
 		});
+		$(".open-directory").click(function(){
+			history.pushState(null, "New Title", hashUrlPage+".view.directory");
+			loadDirectory();
+		});
+		$(".edit-chart").click(function(){
+			history.pushState(null, "New Title", hashUrlPage+".view.editChart");
+			loadEditChart();
+		});
+		$(".btn-open-collection").click(function(){
+			toogleNotif(false);
+		});
+
+		$("#btn-start-detail").click(function(){
+			history.pushState(null, "New Title", hashUrlPage+".view.detail");
+			loadDetail();
+		});
 	}
+
 
 	function initSocial(){
 		var Accordion = function(el, multiple) {
@@ -529,6 +552,7 @@
 		var accordion2 = new Accordion($('#accordion2'), false);
 		var accordion3 = new Accordion($('#accordion3'), false);
 		var accordion4 = new Accordion($('#accordion4'), false);
+		var accordion5 = new Accordion($('#accordion5'), false);
 
 		//ouvre le pod communauté
 		$('#accordion4 .link').trigger("click");
@@ -603,46 +627,65 @@
 			null,
 			function(){},"html");
 	}
+	function loadDirectory(){
+		toogleNotif(false);
+		smallMenu.openAjax(baseUrl+'/'+moduleId+'/element/directory/type/'+contextData.type+'/id/'+contextData.id+
+								'?tpl=json','Communauté','fa-connectdevelop','dark');
+		bindLBHLinks();
+	}
+	function loadEditChart(){
+		toogleNotif(false);
+		var url = "chart/addchartsv/type/"+contextType+"/id/"+contextId;
+		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+		function(){},"html");
+	}
+	function loadDetail(){
+		toogleNotif(false);
+		var url = "element/detail/type/"+contextData.type+"/id/"+contextData.id;
+		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
+	}
+	function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL");
+		loadingData = true;
+		currentIndexMin = indexMin;
+		currentIndexMax = indexMax;
+		
 
-function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL");
-	loadingData = true;
-	currentIndexMin = indexMin;
-	currentIndexMax = indexMax;
-	
+		if(typeof dateLimit == "undefined") dateLimit = 0;
 
-	if(typeof dateLimit == "undefined") dateLimit = 0;
-
-	isLive = isLiveBool==true ? "/isLive/true" : "";
-	var url = "news/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>"+isLive+"/date/"+dateLimit+"?tpl=co2&renderPartial=true";
-	$.ajax({ 
-        type: "POST",
-        url: baseUrl+"/"+moduleId+'/'+url,
-        data: { indexMin: indexMin, 
-        		indexMax:indexMax, 
-        		renderPartial:true 
-        	},
-        success:
-            function(data) {
-                if(data){ //alert(data);
-                	$("#news-list").append(data);
-                	//bindTags();
-					
-				}
-				loadingData = false;
-				$(".stream-processing").hide();
-            },
-        error:function(xhr, status, error){
-            loadingData = false;
-            $("#news-list").html("erreur");
-        },
-        statusCode:{
-                404: function(){
-                	loadingData = false;
-                    $("#news-list").html("not found");
-            }
-        }
-    });
-}
+		isLive = isLiveBool==true ? "/isLive/true" : "";
+		var url = "news/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>"+isLive+"/date/"+dateLimit+"?tpl=co2&renderPartial=true";
+		$.ajax({ 
+	        type: "POST",
+	        url: baseUrl+"/"+moduleId+'/'+url,
+	        data: { indexMin: indexMin, 
+	        		indexMax:indexMax, 
+	        		renderPartial:true 
+	        	},
+	        success:
+	            function(data) {
+	                if(data){ //alert(data);
+	                	$("#news-list").append(data);
+	                	//bindTags();
+						
+					}
+					loadingData = false;
+					$(".stream-processing").hide();
+	            },
+	        error:function(xhr, status, error){
+	            loadingData = false;
+	            $("#news-list").html("erreur");
+	        },
+	        statusCode:{
+	                404: function(){
+	                	loadingData = false;
+	                    $("#news-list").html("not found");
+	            }
+	        }
+	    });
+	}
 
 var colNotifOpen = true;
 function toogleNotif(open){

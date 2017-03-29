@@ -819,10 +819,10 @@ var directory = {
       mylog.log("----------- classifiedPanelHtml",params,params.name);
 
       str = "";  
-      str += "<div class='col-lg-6 col-md-12 pull-"+directory.colPos+" col-sm-12 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-lg-6 col-md-12 pull- col-sm-12 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
       
-      directory.colPos = directory.colPos == "left" ? "right" : "left";
+     // directory.colPos = directory.colPos == "left" ? "right" : "left";
        
       if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;

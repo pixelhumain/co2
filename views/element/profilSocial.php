@@ -191,11 +191,23 @@
 	background-color: white;
 	border-radius:50px;
 	padding:10px;
+	padding-right: 22px;
 }
 
 <?php } ?>
 
-  </style>
+
+	.pastille-type-element{
+		border-radius: 50px;
+		height:40px;
+		width:40px;
+		color:white;
+		text-align: center;
+		padding-top: 10px;
+		margin-right: 10px;
+	}
+
+</style>
 	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-md-offset-1 col-md-10">	
@@ -226,7 +238,10 @@
 						<?php } ?>
 
 						<span id="nameHeader">
-							<?php echo @$element["name"]; ?>
+							<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left">
+								<i class="fa fa-<?php echo $icon; ?>"></i> 
+							</div>
+							<div class="name-header pull-left margin-top-10"><?php echo @$element["name"]; ?></div>
 						</span>	
 					</h4>
 				</div>

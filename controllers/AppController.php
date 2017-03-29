@@ -186,10 +186,11 @@ class AppController extends CommunecterController {
     }
 
 
-	public function actionPage($type, $id){
+	public function actionPage($type, $id, $view=null){
         CO2Stat::incNbLoad("co2-page");
         $params = array("id" => @$id,
                         "type" => @$type,
+                        "view" => @$view,
                         "subdomain" => "page",
                         "mainTitle" => "Page perso",
                         "placeholderMainSearch" => "");

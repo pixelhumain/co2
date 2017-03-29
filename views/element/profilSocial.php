@@ -382,7 +382,16 @@
 
 		<div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 margin-top-50" id="central-container">
 		</div>
-
+		<?php $this->renderPartial('../pod/qrcode',array(
+																"type" => @$type,
+																"name" => @$element['name'],
+																"address" => @$address,
+																"address2" => @$address2,
+																"email" => @$element['email'],
+																"url" => @$element["url"],
+																"tel" => @$tel,
+																"img"=>@$element['profilThumbImageUrl']));
+																?>
 		<!--<div class="col-md-2 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
 			<div class="alert alert-info">
 				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
@@ -643,7 +652,7 @@
 	}
 	function loadDetail(){
 		toogleNotif(false);
-		var url = "element/detail/type/"+contextData.type+"/id/"+contextData.id;
+		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
 		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
 	}

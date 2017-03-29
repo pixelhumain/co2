@@ -84,12 +84,17 @@
 <?php } ?>
 
 .keycat:hover,
-.keycat.active,
+.keycat.active{
+  background-color: #2BB0C6!important;
+  color: #fff!important;
+  border-color:transparent!important;
+}
+
 .btn-select-category-1:hover,
 .btn-select-category-1.active{
   background-color: #2C3E50!important;
-    color: #fff!important;
-    border-color:transparent!important;
+  color: #fff!important;
+  border-color:transparent!important;
 }
 
 
@@ -97,8 +102,9 @@
   width:95%;    
   text-align: right;
   background-color: white;
-    border-color: white;
+  border-color: white;
   color:#4285f4;
+  text-transform: uppercase;
 }
 #sub-menu-left.subsub{
   min-width: 180px;
@@ -291,7 +297,7 @@
                           data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
                           data-type="classified"
                           style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
-                    <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["label"]; ?>
+                    <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["labelFront"]; ?>
                   </button>
                 </div>
           <?php } ?>  
@@ -353,8 +359,8 @@ function setHeaderDirectory(type){
                               //  "<i class='fa fa-search'></i> Recherche avancée</a>"+
                               '</span>' );
 
-  $(".lbl-info-search .lbl-info").addClass("hidden");
-  $(".lbl-info-search .lbl-info.lbl-info-"+type).removeClass("hidden");
+  $(".lbl-info-search .lbl-info").addClass("hidden", {duration:700});
+  $(".lbl-info-search .lbl-info.lbl-info-"+type).removeClass("hidden", {duration:700});
 
   $("#dropdown_search").html("");
 
@@ -366,8 +372,8 @@ function setHeaderDirectory(type){
     $("#scopeListContainer, #btn-slidup-scopetags").show(200);
   }
 
-  $(".menu-left-container #menu-extend .menu-button-left").removeClass("selected");
-  $(".menu-left-container #menu-extend #menu-btn-"+type).addClass("selected");
+  $(".menu-left-container #menu-extend .menu-button-left").removeClass("selected", {duration:700});
+  $(".menu-left-container #menu-extend #menu-btn-"+type).addClass("selected", {duration:700});
 
   $(".my-main-container").scrollTop(0);
 

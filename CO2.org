@@ -58,6 +58,7 @@ DASHBOARD
 ANNONCES :::Tib :::Tango (5J)
   [X] Système de Mot Clé Contextuel
   [ ] Finir DynForm Annonce
+    [ ] Gérer les devises du prix / pays (Euro, CFP)
   [ ] template Annonce
     [X] Mise en avant du prix
     [X] Photos 
@@ -71,6 +72,7 @@ ANNONCES :::Tib :::Tango (5J)
   [ ] pouvoir faire une RAZ de tous les filtres
   [ ] wording (donner / à donner etc)
   [ ] Finir tpl preview
+  [ ] Gestion des annonces favorites ?
 
 CITIES :::Rapha :::Tib (10J)
 [ ] Réintégrer les City  :::Rapha
@@ -90,6 +92,8 @@ PAGE PROFIL PERSO :::ALL
   [ ] Pouvoir partager les news (in / out) :::
   [ ] Finir les OnePages :::Tango (5J)
   [ ] Système de partage d'element dans les news (annonces, events, etc)
+  [ ] Ajouter un onglet "mon agenda"
+
 
 DDA
 [ ] Refonte DDA :::Tango :::Tib

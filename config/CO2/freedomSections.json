@@ -1,13 +1,16 @@
 {
 	
-    "sharing": {"label":"Partager",      
+    "sharing": {
+        "label":"Partager",      
+        "labelFront":"À partager",      
         "key" : "sharing",     
         "icon" : "exchange",               
         "section":2, 
         "color":"azure"
     },
 	"donation": {
-        "label":"Donner", 			
+        "label":"Donner", 	
+        "labelFront":"À donner",  		
         "key" : "donation", 	
         "icon" : "gift", 					
         "section":2, 
@@ -15,7 +18,8 @@
     },
 
     "forsale": {
-        "label":"Vendre",            
+        "label":"Vendre",  
+        "labelFront":"À vendre",            
         "key" : "forsale",     
         "icon" : "money",                  
         "section":3, 
@@ -23,7 +27,8 @@
     },
 
     "forrent": {
-        "label":"Louer",             
+        "label":"Louer",   
+        "labelFront":"À louer",            
         "key" : "forrent",    
         "icon" : "external-link",          
         "section":3, 
@@ -32,7 +37,8 @@
 
 
     "lookingfor" : {
-        "label":"Recherche",  
+        "label":"Recherche", 
+        "labelFront":"À la recherche",   
         "key" : "lookingfor",  
         "icon" : "eye",                    
         "section":4, 
@@ -40,7 +46,8 @@
     },
 
     "job": {
-        "label":"Emplois",     
+        "label":"Emplois", 
+        "labelFront":"Offres d'emplois",      
         "key" : "job",         
         "icon" : "briefcase",              
         "section":5, 

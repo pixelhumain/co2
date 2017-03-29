@@ -170,8 +170,8 @@
 			</div>
 		<?php } ?>		
 	</div>
-	<div class="panel-heading border-light padding-15" style="background-color: #dee2e680;">
-		<h4 class="panel-title text-dark"> 
+	<div class="panel-heading border-light col-md-12" style="background-color: #dee2e680;">
+		<h4 class="panel-title text-dark pull-left"> 
 			<i class="fa fa-pencil"></i> <?php echo Yii::t("common","Descriptions") ?>
 		</h4>
 		<?php if($edit==true || $openEdition==true ){?>
@@ -275,12 +275,10 @@
 				</a></b>
 			<?php	}
 			if($type!=Person::COLLECTION && !empty($element["address"]) && ($edit==true || $openEdition==true )) { ?>
-				<li>
-					<b><a href='javascript:updateLocalityEntities("<?php echo count(@$element["addresses"]) ; ?>");' id="btn-add-geopos" class="btn btn-default letter-blue margin-top-5 addresses" style="margin: 10px 0px;">
-						<i class="fa fa-plus" style="margin:0px !important;"></i> 
-						<span class="hidden-sm"><?php echo Yii::t("common","Add a secondary address"); ?></span>
-					</a></b>
-				</li>
+				<b><a href='javascript:updateLocalityEntities("<?php echo count(@$element["addresses"]) ; ?>");' id="btn-add-geopos" class="btn btn-default letter-blue margin-top-5 addresses" style="margin: 10px 0px;">
+					<i class="fa fa-plus" style="margin:0px !important;"></i> 
+					<span class="hidden-sm"><?php echo Yii::t("common","Add a secondary address"); ?></span>
+				</a></b>
 			<?php } ?>						
 		</div>
 	</div>
@@ -295,7 +293,7 @@
 	?>
 	<div id="socialAbout" class="panel panel-white col-md-12 no-padding shadow2">
 		<div class="panel-heading border-light col-md-12" style="background-color: #dee2e680;">
-			<h4 class="panel-title text-dark pull-right"> 
+			<h4 class="panel-title text-dark pull-left"> 
 				<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common","Social networks"); ?>
 			</h4>
 			<?php if($edit==true || $openEdition==true ){?>

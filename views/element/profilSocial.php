@@ -207,6 +207,10 @@
 		margin-right: 10px;
 	}
 
+	#fileuploadContainer{
+		box-shadow: 0px 0px 5px 0px grey;
+	}
+
 </style>
 	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
@@ -228,7 +232,7 @@
 			<img class="col-xs-11 col-sm-12 col-md-12 no-padding img-responsive" src="<?php echo $thumbAuthor; ?>" 
 				 style="border-bottom:45px solid white;">
 			
-			<div class="col-xs-11 col-sm-12 col-md-12" style="margin-top:-290px;">
+			<div class="col-xs-11 col-sm-12 col-md-12" style="margin-top:-350px;">
 	        	<div class="margin-bottom-15" id="topPosKScroll"></div>
 					
 	        	<div class="col-md-12 no-padding">

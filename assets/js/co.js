@@ -3590,17 +3590,7 @@ function initKInterface(params){ console.log("initKInterface");
         $("#dropdown-user").addClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });
-    // $(".menu-name-profil #menu-thumb-profil, "+
-    //   ".menu-name-profil #menu-name-profil").mouseleave(function(){
-    //   	timerCloseDropdownUser=true;
-    //     setTimeout(function(){
-    //     	if(timerCloseDropdownUser==true)
-    //     	$("#dropdown-user").removeClass("open");
-    //     },1000);
-    // });
-    // $("#dropdown-user").mouseenter(function(){
-    // 	timerCloseDropdownUser = false;
-    // });
+    
     $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
         $("#dropdown-user").removeClass("open");
     });
@@ -3610,12 +3600,16 @@ function initKInterface(params){ console.log("initKInterface");
     });
 
     $(".tooltips").tooltip();
-      
-    setTimeout(function(){ 
-      mapBg = Sig.loadMap("mapCanvas", initSigParams);
-      Sig.showIcoLoading(false);
-      CoSigAllReadyLoad = true;
-    }, 3000);
+    
+    //sur mobile la carto est désactivée car non fonctionnelle pour le moment
+    //(pb pour manipuler la carte open/close etc)
+ //    if($("#mainNav .btn-show-map").css("display") != "none"){
+	//     setTimeout(function(){ 
+	//       mapBg = Sig.loadMap("mapCanvas", initSigParams);
+	//       Sig.showIcoLoading(false);
+	//       CoSigAllReadyLoad = true;
+	//     }, 3000);
+	// }
 
     KScrollTo(".main-container");
 

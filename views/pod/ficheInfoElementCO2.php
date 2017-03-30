@@ -580,9 +580,12 @@
 				</ul>
 			</li>
 			<?php } ?>
-
+			
 		</ul>
 
+<button onclick="elementLib.openForm('ressource','sub')" class="btn btn-default letter-blue margin-top-5">
+				<b><i class="fa fa-plus"></i> Ajouter une ressource </b>
+			</button>
 
 		<ul id="accordion3" class="accordion shadow2 margin-top-20">
 				

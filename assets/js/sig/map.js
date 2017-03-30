@@ -33,6 +33,7 @@
 
 			//mémorise les éléments
 			this.Sig.elementsMap = new Array();
+			this.Sig.preloadElementsMap = {};
 
 			//##
 			//créer un marker sur la carte, en fonction de sa position géographique
@@ -690,6 +691,16 @@
 			this.Sig.showMapElements = function(thisMap, data)
 			{
 				mylog.warn("--------------- showMapElements ---------------------");
+				
+				//si la carte n'est pas chargée
+				//on mémorise les données et on les affichera avec le prochain showMap
+				if(CoSigAllReadyLoad != true) {
+					console.log("showMapElements CoSigAllReadyLoad false -> save data", data);
+					Sig.preloadElementsMap = data;
+					return;
+		 		}
+
+				mylog.warn("--------------- showMapElements ---------------------", data);
 				//mylog.log(data);
 				if(data == null) return;
 
@@ -912,6 +923,7 @@
 			
 			//rafraichi les tiles après le redimentionnement du mapCanvas
 			map.invalidateSize(false);
+			CoSigAllReadyLoad = true;
 			return map;
 		};
 

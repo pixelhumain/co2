@@ -157,6 +157,13 @@
     .btn-directory-type.bg-white {
         background-color: #F2F2F2 !important;
     }
+
+    .searchEntityContainer.pull-right.classified{
+        clear: right;
+    }
+    .searchEntityContainer.pull-left.classified{
+        clear: left;
+    }
 </style>
 
 
@@ -358,7 +365,7 @@
 
                         <div class="col-md-12 col-sm-12 col-xs-12 text-center">
                             <hr>
-                            <a href="javascript:" style="font-size: 13px;" type="button" class="" data-dismiss="modal"><i class="fa fa-times"></i> Retour</a>
+                            <a href="javascript:" style="font-size: 13px;" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Retour</a>
                         </div>
 
                     </div>
@@ -503,9 +510,11 @@ jQuery(document).ready(function() {
         activateGlobalCommunexion(false);
     });
 
-    setTimeout(function(){
-        KScrollTo("#content-social");  
-    }, 2000);
+    if(page == "annonces" || page == "agenda" || page == "power"){
+        setTimeout(function(){
+            KScrollTo("#content-social");  
+        }, 2000);
+    }
     $(".tooltips").tooltip();
 
     //currentKFormType = "Group";

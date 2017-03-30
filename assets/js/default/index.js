@@ -114,8 +114,15 @@ var currentScrollTop = 0;
 var isMapEnd = false;
 function showMap(show)
 {
-
-  if(mapBg == null) return;
+	if(show != false && CoSigAllReadyLoad == false){
+		console.log("showMap", show, "elementsMap", Sig.preloadElementsMap);
+		mapBg = Sig.loadMap("mapCanvas", initSigParams);
+	    Sig.showIcoLoading(false);
+	    Sig.showMapElements(Sig.map, Sig.preloadElementsMap);
+	}
+	//alert("hello showMap " + CoSigAllReadyLoad);
+	
+    if(mapBg == null) return;
 
 	//if(typeof Sig == "undefined") { alert("Pas de SIG"); return; } 
 	mylog.log("typeof SIG : ", typeof Sig);

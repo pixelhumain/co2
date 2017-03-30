@@ -411,9 +411,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 		}
    	});
    	//on click sur les boutons link
-    $(".btn-tag").click(function(){
-      setSearchValue($(this).html());
-    });
+    // $(".btn-tag").click(function(){
+    //   setSearchValue($(this).html());
+    // });
   }
 
 
@@ -428,7 +428,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 function searchCallback() { 
   directory.elemClass = '.searchEntityContainer ';
   directory.filterTags(true);
-  $(".btn-tag").off().on("click",function(){ directory.toggleEmptyParentSection(null,"."+$(this).data("tag-value"), directory.elemClass, 1)});
+  //$(".btn-tag").off().on("click",function(){ directory.toggleEmptyParentSection(null,"."+$(this).data("tag-value"), directory.elemClass, 1)});
   $("#searchBarTextJS").off().on("keyup",function() { 
     directory.search ( null, $(this).val() );
   });
@@ -442,6 +442,8 @@ var directory = {
     scopesT :[],
     multiTagsT : [],
     multiScopesT :[],
+
+    colPos: "left",
 
     defaultPanelHtml : function(params){
       mylog.log("----------- defaultPanelHtml",params.type,params.name);
@@ -662,7 +664,7 @@ var directory = {
             
             str += "<div class='entityDescription'>" + params.description + "</div>";
          
-            str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+            str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
 
               if(params.startDate != null)
               str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
@@ -718,21 +720,21 @@ var directory = {
     // ********************************
     //TODO : ADD link to seller contact page
     previewedObj : null,
-    preview : function(params,hash)
-    {
-        directory.previewedObj = {
-            hash : hash,
-            params : params
-        };
-        mylog.log("----------- preview",params,params.name, hash);
+    preview : function(params,hash){
+        
+      directory.previewedObj = {
+          hash : hash,
+          params : params
+      };
+      mylog.log("----------- preview",params,params.name, hash);
 
-        str = '<div class="row">'+
-                '<div class="col-lg-12 text-center" onclick="$(\'#\')">'+
-                    '<h2 class="text-'+typeObj[params.type].color+'"><i class="fa fa-'+typeObj[params.type].icon+' fa-2x padding-bottom-10"></i><br>'+
-                        '<span class="font-blackoutT"> '+trad[params.type]+'</span>'+
-                    '</h2>'+
-                '</div>'+
-            '</div><br/><br/>';
+      str = '<div class="row">'+
+              '<div class="col-lg-12 text-center" onclick="$(\'#\')">'+
+                  '<h2 class="text-'+typeObj[params.type].color+'"><i class="fa fa-'+typeObj[params.type].icon+' fa-2x padding-bottom-10"></i><br>'+
+                      '<span class="font-blackoutT"> '+trad[params.type]+'</span>'+
+                  '</h2>'+
+              '</div>'+
+          '</div><br/><br/>';
       
       // ********************************
       // NEXT PREVIOUS 
@@ -817,9 +819,11 @@ var directory = {
       mylog.log("----------- classifiedPanelHtml",params,params.name);
 
       str = "";  
-      str += "<div class='col-lg-6 col-md-12 col-sm-12 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-lg-6 col-md-12 pull- col-sm-12 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
-        
+      
+     // directory.colPos = directory.colPos == "left" ? "right" : "left";
+       
       if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
@@ -854,7 +858,7 @@ var directory = {
             str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + "</div>";
          
             if(typeof params.category != "undefined"){
-              str += "<div class='entityType bold'>" + params.section+" > "+params.category+"<br/>"+params.elTagsList;
+              str += "<div class='entityType bold'>" + params.section+" > "+params.category;
                 if(typeof params.subtype != "undefined") str += " > " + params.subtype;
               str += "</div>";
             }
@@ -883,7 +887,7 @@ var directory = {
             if(typeof params.contactInfo != "undefined" && params.contactInfo != "")
             str += "<div class='entityType letter-green'><i class='fa fa-address-card'></i> " + params.contactInfo + "</div>";
          
-            str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+            str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
 
             if(params.startDate != null)
             str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
@@ -1065,7 +1069,7 @@ var directory = {
                     //"<button class='btn btn-link no-padding margin-right-10 pull-right'><i class='fa fa-link'></i> Je participe</button>";
           
                   "</div>";
-        str +=    "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+        str +=    "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
         str += "</div>";
             
         str += "</div>";
@@ -1263,7 +1267,7 @@ var directory = {
 
             str += "<div>" + params.description + "</div>";
          
-            str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+            str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
 
 
           str += "</div>";
@@ -1277,6 +1281,7 @@ var directory = {
         mylog.log("START -----------showResultsDirectoryHtml",data, contentType, size)
         var str = "";
 
+        directory.colPos = "left";
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
             itemType=(contentType) ? contentType :params.type;
@@ -1355,16 +1360,18 @@ var directory = {
 
                 params.onclick = 'url.loadByHash("' + url + '");';
 
-                params.tags = "";
                 params.elTagsList = "";
+                var thisTags = "";
                 if(typeof params.tags != "undefined" && params.tags != null){
-                $.each(params.tags, function(key, value){
-                  if(value != ""){
-                    params.tags +=   "<a href='javascript:' class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value)+"'>#" + value + "</a> ";
-                    params.elTagsList += slugify(value)+" ";
-                  }
-
-                });
+                  $.each(params.tags, function(key, value){
+                    if(value != ""){
+                      thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value)+"'>#" + value + "</span> ";
+                      params.elTagsList += slugify(value)+" ";
+                    }
+                  });
+                  params.tagsLbl = thisTags;
+                }else{
+                  params.tagsLbl = "";
                 }
 
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
@@ -1448,12 +1455,12 @@ var directory = {
             var oTag = $(oT).data('tag-value');
             if( notEmpty( oTag ) && !inArray( oTag,directory.tagsT ) ){
               directory.tagsT.push(oTag);
-              $("#listTags").append("<a class='btn btn-xs btn-link btn-anc-color-blue text-left w100p favElBtn "+slugify(oTag)+"Btn' data-tag='"+slugify(oTag)+"' href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(oTag)+"\",directory.elemClass,1)'><i class='fa fa-tag'></i> "+oTag+"</a><br/>");
+              $("#listTags").append("<a class='btn btn-xs btn-link text-red text-left w100p favElBtn "+slugify(oTag)+"Btn' data-tag='"+slugify(oTag)+"' href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(oTag)+"\",directory.elemClass,1)'><i class='fa fa-tag'></i> "+oTag+"</a><br/>");
             }
           });
           if( notEmpty( oScope ) && !inArray( oScope,directory.scopesT ) ){
             directory.scopesT.push(oScope);
-            $("#listScopes").append("<a class='btn btn-xs btn-link btn-anc-color-blue text-left w100p favElBtn "+slugify(oScope)+"Btn' href='javascript:directory.searchFor(\""+oScope+"\")'><i class='fa fa-map-marker'></i> "+oScope+"</a><br/>");
+            $("#listScopes").append("<a class='btn btn-xs btn-link text-red text-left w100p favElBtn "+slugify(oScope)+"Btn' href='javascript:directory.searchFor(\""+oScope+"\")'><i class='fa fa-map-marker'></i> "+oScope+"</a><br/>");
           }
         })
         //mylog.log("tags count", directory.tagsT.length, directory.scopesT.length);
@@ -1465,19 +1472,21 @@ var directory = {
         directory.tagsT = [];
         $("#listTags").html('');
         if(withSearch){
-            $("#listTags").append("<h5 class=''><i class='fa fa-search'></i> Filtrer</h5>");
+            $("#listTags").append("<h5 class=''><i class='fa fa-search'></i> Filtrer par tag</h5>");
             $("#listTags").append('<input id="searchBarTextJS" data-searchPage="true" type="text" class="input-search form-control">');
         }
        // alert(directory.elemClass);
        // $("#listTags").append("<h4 class=''> <i class='fa fa-tags'></i> trier </h4>");
-        $("#listTags").append("<a class='btn btn-anc-color-blue favElBtn favAllBtn' href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,directory.elemClass,1)'> <b>Tout voir</b> </a><br/>");
+        $("#listTags").append("<a class='btn btn-link text-red favElBtn favAllBtn' "+
+            "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,directory.elemClass,1)'>"+
+            " <i class='fa fa-refresh'></i> <b>Afficher tout</b></a><br/>");
         $.each( $(directory.elemClass),function(k,o){
             $.each($(o).find(".btn-tag"),function(i,oT){
                 var oTag = $(oT).data('tag-value').toLowerCase();
                 if( notEmpty( oTag ) && !inArray( oTag,directory.tagsT ) ){
                   directory.tagsT.push(oTag);
                   //mylog.log(oTag);
-                  $("#listTags").append("<a class='btn btn-link favElBtn btn-anc-color-blue "+slugify(oTag)+"Btn' "+
+                  $("#listTags").append("<a class='btn btn-link favElBtn text-red "+slugify(oTag)+"Btn' "+
                                             "data-tag='"+slugify(oTag)+"' "+
                                             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(oTag)+"\",directory.elemClass,1)'>"+
                                               "#"+oTag+

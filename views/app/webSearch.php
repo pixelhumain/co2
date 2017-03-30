@@ -6,7 +6,6 @@
 	<i class="fa fa-undo"></i> Nouvelle recherche
 </button>
 
-<?php echo json_encode($siteurls)!=false ? json_encode($siteurls) : "error"; ?>
 <hr>
 	<?php if($category == "Météo"){ ?>
 	<h3 class="text-azure"><i class='fa fa-angle-down'></i> <i class='fa fa-sun-o'></i> Météo Nouméa</h3>

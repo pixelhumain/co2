@@ -72,7 +72,7 @@ dynForm = {
                 label : "De quel type de Lieu s'agit-il ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
-                list : placeSections,
+                list : place.sections,
                 trad : trad,
                 init : function(){
                 	$(".sectionBtn").off().on("click",function()
@@ -93,7 +93,7 @@ dynForm = {
                 label : "Type de lieu ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir une catégorie",
-                list : placesFilters,
+                list : place.filters,
                 init : function(){
 	            	$(".typeBtn").off().on("click",function()
 	            	{
@@ -108,7 +108,7 @@ dynForm = {
 	            		//$(".typeBtn:not(.active)").hide();
 	            		$("#ajaxFormModal #subtype").val("");
 	            		fieldHTML = "";
-	            		$.each(placesFilters[ $(this).data('key') ]["subcat"], function(k,v) { 
+	            		$.each(place.filters[ $(this).data('key') ]["subcat"], function(k,v) { 
 	            			fieldHTML += '<div class="col-md-6 padding-5">'+
         									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>' +
 	            						"</div>";

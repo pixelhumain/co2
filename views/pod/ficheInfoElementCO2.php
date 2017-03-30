@@ -429,8 +429,9 @@
 				</ul>
 			</li>
 			<?php } ?>
-
+			
 		</ul>
+		
 		<?php if($type==Project::COLLECTION || $type==Organization::COLLECTION){
 			if(!@$front || (@$front && $front["dda"]==true)){
 				$rooms = ActionRoom::getAllRoomsActivityByTypeId($type, (string)$element["_id"]); ?>
@@ -462,6 +463,11 @@
 			</li>
 		</ul>
 		<?php } ?>
+
+<button onclick="elementLib.openForm('ressource','sub')" class="btn btn-default letter-blue margin-top-5">
+				<b><i class="fa fa-plus"></i> Ajouter une ressource </b>
+			</button>
+
 		<ul id="accordion3" class="accordion shadow2 margin-top-20">
 				
 			<!-- PROJETS -->

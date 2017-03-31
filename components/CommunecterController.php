@@ -446,6 +446,7 @@ class CommunecterController extends Controller
       "get"                 => array("href" => "/ph/communecter/element/get"),
       "delete"              => array("href" => "/ph/communecter/element/delete"),
       "notifications"       => array("href" => "/ph/communecter/element/notifications"),
+      "about"               => array("href" => "/ph/communecter/element/about"),
     ),
     "app" => array(
       "index"             => array('href' => "/ph/communecter/app/index",             "public" => true),
@@ -468,7 +469,9 @@ class CommunecterController extends Controller
       "city"              => array('href' => "/ph/communecter/app/city",              "public" => false),
       "sendmailformcontact" => array('href' => "/ph/communecter/app/sendmailformcontact", "public" => true),
       "checkurlexists" => array('href' => "/ph/communecter/app/checkurlexists", "public" => true),
-      ),
+      "rooms" => array('href' => "/ph/communecter/app/rooms", "public" => true),
+      "survey" => array('href' => "/ph/communecter/app/survey", "public" => true),
+    ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick")
     ),

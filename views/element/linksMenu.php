@@ -18,9 +18,6 @@
 .menu-linksBtn li{
 	font-size:12px !important;
 }
-.profilSocial .username{
-	padding: 2px 0px 0px !important;
-}
 .blockUsername .dropdown-menu li{
 	text-shadow: none !important;
 	color: #333;

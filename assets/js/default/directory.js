@@ -443,6 +443,8 @@ var directory = {
     multiTagsT : [],
     multiScopesT :[],
 
+    colPos: "left",
+
     defaultPanelHtml : function(params){
       mylog.log("----------- defaultPanelHtml",params.type,params.name);
       str = "";  
@@ -662,7 +664,7 @@ var directory = {
             
             str += "<div class='entityDescription'>" + params.description + "</div>";
          
-            str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+            str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
 
               if(params.startDate != null)
               str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
@@ -817,9 +819,11 @@ var directory = {
       mylog.log("----------- classifiedPanelHtml",params,params.name);
 
       str = "";  
-      str += "<div class='col-lg-6 col-md-12 col-sm-12 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-lg-6 col-md-12 pull- col-sm-12 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
-        
+      
+     // directory.colPos = directory.colPos == "left" ? "right" : "left";
+       
       if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
@@ -854,7 +858,7 @@ var directory = {
             str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + "</div>";
          
             if(typeof params.category != "undefined"){
-              str += "<div class='entityType bold'>" + params.section+" > "+params.category+"<br/>"+params.elTagsList;
+              str += "<div class='entityType bold'>" + params.section+" > "+params.category;
                 if(typeof params.subtype != "undefined") str += " > " + params.subtype;
               str += "</div>";
             }
@@ -883,7 +887,7 @@ var directory = {
             if(typeof params.contactInfo != "undefined" && params.contactInfo != "")
             str += "<div class='entityType letter-green'><i class='fa fa-address-card'></i> " + params.contactInfo + "</div>";
          
-            str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+            str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
 
             if(params.startDate != null)
             str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
@@ -1065,7 +1069,7 @@ var directory = {
                     //"<button class='btn btn-link no-padding margin-right-10 pull-right'><i class='fa fa-link'></i> Je participe</button>";
           
                   "</div>";
-        str +=    "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+        str +=    "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
         str += "</div>";
             
         str += "</div>";
@@ -1263,7 +1267,7 @@ var directory = {
 
             str += "<div>" + params.description + "</div>";
          
-            str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+            str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
 
 
           str += "</div>";
@@ -1277,6 +1281,7 @@ var directory = {
         mylog.log("START -----------showResultsDirectoryHtml",data, contentType, size)
         var str = "";
 
+        directory.colPos = "left";
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
             itemType=(contentType) ? contentType :params.type;
@@ -1364,9 +1369,9 @@ var directory = {
                       params.elTagsList += slugify(value)+" ";
                     }
                   });
-                  params.tags = thisTags;
+                  params.tagsLbl = thisTags;
                 }else{
-                  params.tags = "";
+                  params.tagsLbl = "";
                 }
 
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 

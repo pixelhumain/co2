@@ -67,39 +67,7 @@
 				<br>				
 			</div>
 
-			<div class="col-md-10 text-left padding-top-60 form-group">
-				<h3>
-					<i class="fa fa-send"></i> 
-					Contacter <span class="letter-azure font-blackoutM">Alpha Tango</span> par e-mail<br>
-					<small>(ce formulaire de contact n'est pas encore opérationnel, merci de patienter encore quelques jours)</small>
-				</h3>
-				<br><br>
-				<div class="col-md-6">
-					<label for="email"><i class="fa fa-angle-down"></i> Votre addresse e-mail*</label>
-	 				<input class="form-control" placeholder="votre addresse e-mail : exemple@mail.com" id="emailSender">
-					<br>
-				</div>
-				<div class="col-md-6">
-					<label for="name"><i class="fa fa-angle-down"></i> Nom / Prénom</label>
-	 				<input class="form-control" placeholder="comment vous appelez-vous ?" id="name">
-					<br>
-				</div>
-				<div class="col-md-12">
-					<label for="objet"><i class="fa fa-angle-down"></i> Objet de votre message</label>
-	 				<input class="form-control" placeholder="c'est à quel sujet ?" id="subject">
-				</div>
-			</div>
-			<div class="col-md-11 text-left form-group">
-				<div class="col-md-12">
-					<label for="message"><i class="fa fa-angle-down"></i> Votre message</label>
-	 				<textarea placeholder="Votre message..." class="form-control txt-mail" id="message"></textarea>
-	 				<br>
-					<button class="btn btn-success pull-right" id="btn-send-mail">
-						<i class="fa fa-send"></i> Envoyer le message
-					</button>
-				</div>
-			</div>
-        </div>
+			<?php $this->renderPartial($layoutPath.'forms.'.Yii::app()->params["CO2DomainName"].'.formContact'); ?>
     </div>
 </section>
 
@@ -113,7 +81,8 @@ var currentCategory = "";
 jQuery(document).ready(function() {
     initKInterface();
     location.hash = "#info.p.alphatango";
-
+    $(".tooltips").tooltip();
+    
     $(".dropdown-onepage-main-menu li a").click(function(e){
 		e.stopPropagation();
 		var target = $(this).data("target");
@@ -122,44 +91,7 @@ jQuery(document).ready(function() {
 	});
 
 	$("#btn-onepage-main-menu").trigger("click");
-	$("#btn-send-mail").click(function(){
-		sendEmail();
-	});
+	
 });
 
-function sendEmail(){
-	var emailSender = $("#emailSender").val();
-	var subject = $("#subject").val();
-	var name = $("#name").val();
-	var message = $("#message").val();
-
-	var params = { 	emailSender: emailSender, 
-	        		subject:subject, 
-	        		names:name,
-	        		contentMsg	: message
-	        	};
-
-	console.log("sendMail", params);
-	//toastr.error("L'envoie d'email est désactivé pour l'instant, retentez votre chance dans quelques jours !");
-	//return;
-
-	$.ajax({ 
-        type: "POST",
-        url: baseUrl+"/"+moduleId+"/app/sendmailformcontact",
-        data: params,
-        success:
-            function(data) {
-                if(data.res == true) toastr.success("Votre message a bien été envoyé");
-                else 				 toastr.error("Une erreur est survenue pendant l'envoie de votre message");
-            },
-        error:function(xhr, status, error){
-            toastr.error("Une erreur est survenue pendant l'envoie de votre message - error");
-        },
-        statusCode:{
-                404: function(){
-                	toastr.error("Une erreur est survenue pendant l'envoie de votre message - 404");
-            }
-        }
-    });
-}
 </script>

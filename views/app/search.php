@@ -157,6 +157,13 @@
     .btn-directory-type.bg-white {
         background-color: #F2F2F2 !important;
     }
+
+    .searchEntityContainer.pull-right.classified{
+        clear: right;
+    }
+    .searchEntityContainer.pull-left.classified{
+        clear: left;
+    }
 </style>
 
 

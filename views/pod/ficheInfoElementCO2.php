@@ -8,7 +8,7 @@
 		'/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
 		'/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js' ,
 		'/plugins/bootstrap-datepicker/css/datepicker.css',
-		
+			'/plugins/jquery.qrcode/jquery-qrcode.min.js',
 		//DateTime Picker
 		'/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
 		'/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js' , 
@@ -84,13 +84,19 @@
 	.editBtn{
 		float: right;
 	}
+
+
+	.btn-update-info, 
+	.btn-update-network, 
+	.btn-update-desc{
+
+	}
 	
 </style>
 <div id="menu-name" class="hidden">
 	<img src="<?php echo $thumbAuthor; ?>" height="45" class="img-circle">
 	<span class="font-montserrat hidden-sm hidden-xs"><?php echo @$element["name"]; ?></span>
 </div>
-
 <ul id="accordion" class="accordion shadow2">
 		    <li>
 				<div class="iamgurdeep-pic">
@@ -110,12 +116,7 @@
 					<!--<img class="img-responsive" alt="" 
 						 src="<?php echo @$element['profilMediumImageUrl'] ? 
 						 		Yii::app()->createUrl('/'.@$element['profilMediumImageUrl']) : $imgDefault; ?>">-->
-					<div class="edit-pic">
-						<a href="https://web.facebook.com/" target="_blank" class="fa fa-facebook"></a>
-						<a href="https://www.instagram.com/gurdeeposahan/" target="_blank" class="fa fa-instagram"></a>
-						<a href="https://twitter.com/gurdeeposahan1" target="_blank" class="fa fa-twitter"></a>
-						<a href="https://plus.google.com/u/0/105032594920038016998" target="_blank" class="fa fa-google"></a>
-					</div>
+					
 					<?php if(@Yii::app()->session["userId"]){ ?>
 					<div class="blockUsername">
 					    <!--<h2 class="text-left">
@@ -146,10 +147,13 @@
 		        
 		    </li>
 			<li>
-				<div class="link">
-					<i class="fa fa-globe"></i><?php echo Yii::t("common","About"); ?><i class="fa fa-chevron-down"></i>
+				<div id="btn-start-detail" class="link">
+					<i class="fa fa-info-circle"></i><?php echo Yii::t("common","About"); ?><i class="fa fa-chevron-right"></i>
 					<?php if($edit==true || $openEdition==true ){?>
-						<a href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a>
+						<a  href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" 
+							title="<?php echo Yii::t("common","Update Contact information");?>">
+							<i class="fa text-red fa-cog"></i>
+						</a>
 					<?php } ?>
 				</div>
 				<ul class="submenu">
@@ -162,23 +166,28 @@
 					<?php //} ?>
 				-->
 					<?php if($type==Person::COLLECTION){ ?>
-							<li class="tooltips hidden username" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("common","Username"); ?>">
-								<i class="fa fa-user-secret"></i>
-								<span id="usernameMenuLeft" class=""><?php if(isset($element["username"])) echo $element["username"]; else echo ""; ?></span>
+							<li class="tooltips hidden username" data-toggle="tooltip" data-placement="right" 
+								title="<?php echo Yii::t("common","Username"); ?>">
+								<i class="fa fa-user-secret"></i> 
+								<span id="usernameMenuLeft" class="">
+									<?php if(isset($element["username"])) echo $element["username"]; else echo ""; ?>
+								</span>
 							</li>
 					<?php } ?>
 
 					<?php if($type==Person::COLLECTION){
 						if(Preference::showPreference($element, $type, "birthDate", Yii::app()->session["userId"])){ ?>
-							<li class="hidden birthDate" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("person","Birth date"); ?>">
-								<i class="fa fa-birthday-cake"></i><?php echo Yii::t("person","Birth date"); ?> : 
+							<li class="hidden birthDate" data-toggle="tooltip" data-placement="right" 
+								title="<?php echo Yii::t("person","Birth date"); ?>">
+								<i class="fa fa-birthday-cake"></i> <?php echo Yii::t("person","Birth date"); ?> : 
 								<span id="birthDateMenuLeft" class=""><?php echo (isset($element["birthDate"])) ? date("d/m/Y", strtotime($element["birthDate"]))  : null; ?></span>
 							</li>
 						<?php }
 					} ?>
 
 					<?php if($type==Project::COLLECTION && isset($element["properties"]["avancement"]) ){ ?>
-						<li class="tooltips hidden avancement"  data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("project","Project maturity",null,Yii::app()->controller->module->id); ?>">
+						<li class="tooltips hidden avancement"  data-toggle="tooltip" data-placement="right" 
+							title="<?php echo Yii::t("project","Project maturity",null,Yii::app()->controller->module->id); ?>">
 							<span id="avancementMenuLeft"> <?php echo Yii::t("project","Project maturity",null,Yii::app()->controller->module->id)." : ".Yii::t("project",$element["properties"]["avancement"],null,Yii::app()->controller->module->id); ?></span>
 						</li>
 					<?php } ?>
@@ -306,12 +315,15 @@
 						</li>
 					</ul>
 				</li>
-			<?php } ?>
 			<li>
 				<div class="link open-description"><i class="fa fa-map-marker"></i>Description<i class="fa fa-chevron-down"></i>
 					<?php if($edit==true || $openEdition==true ){?>
 		  				<a href='javascript:;' class="tooltips btn-update-desc" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Description");?>"><i class="fa text-red fa-pencil"></i></a> <?php } ?>
 		  			<input type="hidden" id="descriptionMarkdown" name="descriptionMarkdown" value="<?php echo (!empty($element['description'])) ? $element['description'] : ''; ?>">
+			<li>
+				<div class="link"><i class="fa fa-pencil"></i>Description<i class="fa fa-chevron-down"></i>
+					<?php if($edit==true || $openEdition==true ){?>
+		  				<a href='javascript:;' class="tooltips btn-update-desc" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Description");?>"><i class="fa text-red fa-cog"></i></a> <?php } ?>
 		  		</div>
 			</li>
 			<li>
@@ -353,8 +365,8 @@
 									}else{
 										echo '<a href="javascript:;" id="btn-remove-geopos" class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Remove Locality").'">
 													<i class="fa text-red fa-trash-o"></i>
-												</a>
-												<a href="javascript:;" id="btn-update-geopos" class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Update Locality").'" >
+												</a> 
+												<a href="javascript:;" id="btn-update-geopos" class="pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Update Locality").'" >
 													<i class="fa text-red fa-map-marker"></i>
 												</a> ';	
 									}
@@ -617,17 +629,46 @@
 			<?php } ?>
 
 		</ul>
-
-
+		<?php if($type==Project::COLLECTION || $type==Organization::COLLECTION){
+			if(!@$front || (@$front && $front["dda"]==true)){
+				$rooms = ActionRoom::getAllRoomsActivityByTypeId($type, (string)$element["_id"]); ?>
+		<ul id="accordion5" class="accordion shadow2 margin-top-20">
+			<li class="podInside dda">
+				<div class="link">
+					<i class="fa fa-comments"></i> <?php echo Yii::t("common","Espace coopératif (activité récente)") ?> 
+					<small>(<?php echo @$rooms ? count($rooms) : "0"; ?>)</small>
+					<i class="fa fa-chevron-down"></i>
+				</div>
+				<ul class="submenu">
+					<?php	
+						$this->renderPartial('../pod/activityList2',array(    
+			   					"parent" => $element, 
+			                    "parentId" => (string)$element["_id"], 
+			                    "parentType" => $type, 
+			                    "title" => "Espace coopératif (activité récente)",
+		                    	"list" => @$rooms, 
+			                    "renderPartial" => true
+			                    ));
+						}
+					?>
+					<div class="text-right padding-10">
+						<button class="btn btn-default letter-blue margin-top-5" onclick='url.loadByHash("#rooms.type.<?php echo $type; ?>.id.<?php echo (String)$element["_id"]; ?>")'>
+					    	<i class="fa fa-sign-in"></i> Entrer dans l'espace coopératif
+						</button>
+					</div>	
+				</ul>			
+			</li>
+		</ul>
+		<?php } ?>
 		<ul id="accordion3" class="accordion shadow2 margin-top-20">
 				
 			<!-- PROJETS -->
-			<?php if ($type==Organization::COLLECTION){ 
+			<?php if ($type==Organization::COLLECTION || $type==Project::COLLECTION){ 
 				if(!@$front || (@$front && $front["project"])){ 
 			?>
-			<li class="podInside events">
+			<li class="podInside projects">
 				<div class="link">
-					<i class="fa fa-lightbulb-o"></i> Projets 
+					<i class="fa fa-lightbulb-o"></i> <?php echo Yii::t("common","Projects") ?> 
 					<small>(<?php echo @$projects ? count($projects) : "0"; ?>)</small>
 					<i class="fa fa-chevron-down"></i>
 				</div>
@@ -642,7 +683,7 @@
 						<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
 						<button onclick="elementLib.openForm('project','sub')" 
 								class="btn btn-default letter-blue margin-top-5">
-					    	<b><i class="fa fa-plus"></i> Nouveau projet</b>
+					    	<b><i class="fa fa-plus"></i> <?php echo Yii::t("common", "New project"); ?></b>
 						</button> 
 						<?php } ?>
 						<button class="btn btn-default letter-blue open-directory margin-top-5">
@@ -653,8 +694,8 @@
 				</ul>			
 			</li>
 			<?php }} ?>
-
-
+				
+			
 			<!-- ÉVÉNEMENTS -->
 			<?php if (($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION)){ ?>
 	    		<?php if(!@$front || (@$front && $front["event"]==true)){ ?>
@@ -671,7 +712,7 @@
 					<li class="podInside events">
 					
 						<div class="link">
-							<i class="fa fa-calendar"></i> Événements 
+							<i class="fa fa-calendar"></i> <?php echo Yii::t("common","Events") ?> 
 							<small>(<?php echo @$events ? count($events) : "0"; ?>)</small>
 							<i class="fa fa-chevron-down"></i>
 						</div>
@@ -689,7 +730,7 @@
 								<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
 								<button onclick="elementLib.openForm('event','subEvent')" 
 										class="btn btn-default letter-blue margin-top-5">
-							    	<b><i class="fa fa-plus"></i> Nouvel événement</b>
+							    	<b><i class="fa fa-plus"></i> <?php echo Yii::t("common","New event") ?></b>
 								</button> 
 								<?php } ?>
 								<button class="btn btn-default letter-blue open-directory margin-top-5" 
@@ -703,6 +744,42 @@
 				<?php } ?>
 			<?php } ?>
 
+			<!-- POI -->
+			<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION || $type==Person::COLLECTION){ 
+				if(!@$front || (@$front && $front["poi"])){ 
+			?>
+			<li class="podInside poi">
+				<div class="link">
+				<?php   
+				$pois = PHDB::find(Poi::COLLECTION,array("parentId"=>(String)$element["_id"],"parentType"=>$type));
+				?>
+					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common", "Points of interests") ?>
+					<small>(<?php echo @$pois ? count($pois) : "0"; ?>)</small>
+					<i class="fa fa-chevron-down"></i>
+				</div>
+				<ul class="submenu">
+					<?php $this->renderPartial('../pod/POIList', array( "pois"=>$pois, "parentType"=> $type)); ?>
+		 			<?php /* $this->renderPartial('../pod/projectsList',array( "projects" => @$projects, 
+															"contextId" => (String) $element["_id"],
+															"contextType" => $type,
+															"authorised" =>	$edit,
+															"openEdition" => $openEdition
+					)); */ ?>
+					<div class="text-right padding-10">
+						<?php if(@$edit==true || ($openEdition==true && @Yii::app()->session["userId"])) { ?>
+						<button onclick="elementLib.openForm('poi','subPoi')" 
+								class="btn btn-default letter-blue margin-top-5">
+					    	<b><i class="fa fa-plus"></i> <?php echo Yii::t("common", "New point of interests") ?></b>
+						</button> 
+						<?php } ?>
+						<!--<button class="btn btn-default letter-blue open-directory margin-top-5">
+					    	<i class="fa fa-chevron-right"></i>
+						</button>-->
+						
+					</div>	
+				</ul>			
+			</li>
+			<?php }} ?>
 
 			<?php /*$this->renderPartial('../pod/ficheInfoPodThumb', array("list"=>@$events, 
 																		 "title"=>"Événements", 
@@ -949,7 +1026,7 @@
 		});
 
 		//console.log("contextDatacontextData", contextData, contextData.type,contextData.id);
-		//buildQRCode(contextData.type,contextData.id.$id);
+		buildQRCode(contextData.type,contextData.id.$id);
 
 		$(".toggle-tag-dropdown").click(function(){ mylog.log("toogle");
 			if(!$("#dropdown-content-multi-tag").hasClass('open'))
@@ -998,15 +1075,8 @@
 			loadDetail();
 		});
 		
-	});
-
-	function loadDetail(){
-		toogleNotif(false);
-		var url = "element/detail/type/"+contextData.type+"/id/"+contextData.id;
 		
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
-		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
-	}
+	});
 
 	function parsePhone(arrayPhones){
 		var str = "";

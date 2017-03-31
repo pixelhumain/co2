@@ -121,7 +121,7 @@
      <i class='fa fa-angle-right'></i> A propos
 </button>
 
-<section class="padding-top-10 text-center margin-bottom-10" id="section-fav">
+<section class="padding-top-10 text-center margin-bottom-10 hidden-xs" id="section-fav">
     <?php if(false){ ?>
     <a href="#media" target="_blank" class="tooltips btn-fast-access" data-placement="bottom" data-toggle="tooltip" 
        title="Aller sur KgougleActu"><i class="fa fa-newspaper-o fa-2 padding-10 text-dark"></i></a> 
@@ -247,7 +247,12 @@ function initWebInterface(){
    });
 
    $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@#\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
-    
+
+   if($("#mainNav .btn-show-map").css("display") == "none"){
+        $("#main-search-bar").focus(function(e){
+            KScrollTo("#main-search-bar");
+        });
+   }
 }
 
 

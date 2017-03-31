@@ -104,7 +104,7 @@
 
 	.<?php echo $moduleName; ?> 
 	.btn-group-charts	{
-		top:<?php echo $mapTop + 70; ?>px;px;
+		top:<?php echo $mapTop + 70; ?>px;
 		right:<?php echo $right ?> !important;
 		position:absolute;
 		margin-right: 10px;

@@ -34,6 +34,12 @@
 	.btn-select-media-src img{
 		height:30px;
 	}
+	.timeline-body > p, 
+	.timeline-body > ul, 
+	.timeline-body > h4{
+		font-size:12px;
+	}
+	
 }
 
 </style>

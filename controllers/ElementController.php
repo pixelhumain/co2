@@ -31,6 +31,7 @@ class ElementController extends CommunecterController {
           'delete'                => 'citizenToolKit.controllers.element.DeleteAction',
           'get'                   => 'citizenToolKit.controllers.element.GetAction',
           'notifications'         => 'citizenToolKit.controllers.element.NotificationsAction',
+          'about'                 => 'citizenToolKit.controllers.element.AboutAction',
       );
   }
 }

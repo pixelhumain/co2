@@ -8,7 +8,7 @@
 		'/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
 		'/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js' ,
 		'/plugins/bootstrap-datepicker/css/datepicker.css',
-		
+			'/plugins/jquery.qrcode/jquery-qrcode.min.js',
 		//DateTime Picker
 		'/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
 		'/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js' , 
@@ -147,8 +147,8 @@
 		        
 		    </li>
 			<li>
-				<div class="link">
-					<i class="fa fa-info-circle"></i><?php echo Yii::t("common","About"); ?><i class="fa fa-chevron-down"></i>
+				<div id="btn-start-detail" class="link">
+					<i class="fa fa-info-circle"></i><?php echo Yii::t("common","About"); ?><i class="fa fa-chevron-right"></i>
 					<?php if($edit==true || $openEdition==true ){?>
 						<a  href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" 
 							title="<?php echo Yii::t("common","Update Contact information");?>">
@@ -963,7 +963,7 @@
 		});
 
 		//console.log("contextDatacontextData", contextData, contextData.type,contextData.id);
-		//buildQRCode(contextData.type,contextData.id.$id);
+		buildQRCode(contextData.type,contextData.id.$id);
 
 		$(".toggle-tag-dropdown").click(function(){ mylog.log("toogle");
 			if(!$("#dropdown-content-multi-tag").hasClass('open'))

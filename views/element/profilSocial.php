@@ -191,11 +191,27 @@
 	background-color: white;
 	border-radius:50px;
 	padding:10px;
+	padding-right: 22px;
 }
 
 <?php } ?>
 
-  </style>
+
+	.pastille-type-element{
+		border-radius: 50px;
+		height:40px;
+		width:40px;
+		color:white;
+		text-align: center;
+		padding-top: 10px;
+		margin-right: 10px;
+	}
+
+	#fileuploadContainer{
+		box-shadow: 0px 0px 5px 0px grey;
+	}
+
+</style>
 	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-md-offset-1 col-md-10">	
@@ -216,7 +232,7 @@
 			<img class="col-xs-11 col-sm-12 col-md-12 no-padding img-responsive" src="<?php echo $thumbAuthor; ?>" 
 				 style="border-bottom:45px solid white;">
 			
-			<div class="col-xs-11 col-sm-12 col-md-12" style="margin-top:-290px;">
+			<div class="col-xs-11 col-sm-12 col-md-12" style="margin-top:-350px;">
 	        	<div class="margin-bottom-15" id="topPosKScroll"></div>
 					
 	        	<div class="col-md-12 no-padding">
@@ -226,7 +242,10 @@
 						<?php } ?>
 
 						<span id="nameHeader">
-							<?php echo @$element["name"]; ?>
+							<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left">
+								<i class="fa fa-<?php echo $icon; ?>"></i> 
+							</div>
+							<div class="name-header pull-left margin-top-10"><?php echo @$element["name"]; ?></div>
 						</span>	
 					</h4>
 				</div>
@@ -382,7 +401,16 @@
 
 		<div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 margin-top-50" id="central-container">
 		</div>
-
+		<?php $this->renderPartial('../pod/qrcode',array(
+																"type" => @$type,
+																"name" => @$element['name'],
+																"address" => @$address,
+																"address2" => @$address2,
+																"email" => @$element['email'],
+																"url" => @$element["url"],
+																"tel" => @$tel,
+																"img"=>@$element['profilThumbImageUrl']));
+																?>
 		<!--<div class="col-md-2 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
 			<div class="alert alert-info">
 				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
@@ -643,7 +671,7 @@
 	}
 	function loadDetail(){
 		toogleNotif(false);
-		var url = "element/detail/type/"+contextData.type+"/id/"+contextData.id;
+		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
 		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
 	}

@@ -2482,6 +2482,11 @@ var elementLib = {
 				elementLib.starBuild(afterLoad,data);
 			},afterLoad, data);
 		} else {
+			elementLib.openFormAfterLogin = {
+				type : type, 
+				afterLoad : afterLoad,
+				data : data
+			};
 			toastr.error("Vous devez être connecté pour afficher les formulaires de création");
 			$('#modalLogin').modal("show");
 		}

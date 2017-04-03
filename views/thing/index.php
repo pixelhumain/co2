@@ -7,12 +7,30 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath ,
                                 "page" => "thing") ); 
+
+//tu auras "states":true si ta communexion est activée
+//pour récupérer les valeurs de communexion tu a juste à faire ça : CO2::getCommunexionCookies();
+$boardIds = Thing::getDistinctBoardId();
+$deviceIds= Thing::getDistinctDeviceId();
+
+$communexion = CO2::getCommunexionCookies();
+        if($communexion["state"] == false){
+
+        }else{
+
+        }
+
 ?>
+
+ 
+
 
 <div class="col-xs-12" id="">
   <div class="panel panel-white">
       <div class="panel-heading text-center border-light">
         <h3 class="panel-title text-blue"> Smart-Citizen-Kit </h3>
+        <p>Il y a <?php echo count($boardIds) ?> SCK communectés (BoardId différents, Double push) </p>
+        <p>Il y a <?php echo count($deviceIds) ?> SCK Enregistrés </p>
 
       </div>
 

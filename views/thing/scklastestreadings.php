@@ -1,5 +1,30 @@
 <?php 
-$cs = Yii::app()->getClientScript();
+  /*$cssAnsScriptFilesModule = array(
+      //'/plugins/d3/d3.v3.min.js',
+      //'/plugins/d3/c3.min.js',
+      //'/plugins/d3/c3.min.css',
+      '/plugins/d3/d3.v4.min.js',
+      //DatePicker
+      '/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
+      '/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js' ,
+      '/plugins/bootstrap-datepicker/css/datepicker.css',
+  
+      //DateTime Picker
+      '/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
+      '/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js' , 
+      '/plugins/bootstrap-datetimepicker/css/datetimepicker.css',
+
+    );
+    HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->request->baseUrl);
+    */
+
+$params = CO2::getThemeParams();
+ 
+    $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+    //header + menu
+    $this->renderPartial($layoutPath.'header', 
+                        array(  "layoutPath"=>$layoutPath ,
+                                "page" => "thing") );
 ?>
 
 <!--?php
@@ -17,23 +42,25 @@ $cs = Yii::app()->getClientScript();
   	// }
 
 ?-->
-<!--?php
+<?php
 //(Page en chantier)
 if(empty($device) || !isset($device)){$device=0; }
 
 
 $sckdevicemdata = Thing::getSCKDeviceMdata(array("type"=>Thing::SCK_TYPE, "deviceId"=> strval($device)));
-print_r($sckdevicemdata);
+//print_r($sckdevicemdata);
 echo "</br>\n";
 $sckmeasurements = Thing::getSCKDeviceMdata(array("type"=>"sckMeasurements"))["sckMeasurements"];
-print_r($sckmeasurements);
+//print_r($sckmeasurements);
 //boardId et deviceId namepoi
 $boardId=$sckdevicemdata["boardId"];
 echo "</br>\n";
-echo $boardId;
+//echo $boardId;
 
-$lRecordInDB = current(Thing::getConvertedRercord($sckdevicemdata["boardId"],true));
-echo "</br>\n";
+$record = Thing::getConvertedRercord($sckdevicemdata["boardId"],true,"2017-02-28");
+
+$lRecordInDB = current($record);
+echo "l record in DB current :</br>\n";
 print_r($lRecordInDB);
 
 echo "</br>\n";
@@ -50,7 +77,7 @@ $sensors = $lReadingsAPI["sensors"];//
 //print_r($sensors);
 
 
-?-->
+?>
 
 <div class="col-sm-12 col-md-10 container">
   <section class="col-sm-12 row">

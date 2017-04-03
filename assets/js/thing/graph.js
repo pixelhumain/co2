@@ -223,8 +223,19 @@ function graphe(device,sensors,readings,svgG){
   
 }
 
+function dataSensorAdaptor(convertedDataRecord){
+
+  convertedDataRecord.forEach(
 
 
+    );
+
+
+}
+
+
+
+/*
 function showSCKDeviceOnMap(country,cp){
   console.log("montrer sur la carte");
   //console.log(country+" "+cp);
@@ -238,7 +249,7 @@ function showSCKDeviceOnMap(country,cp){
   //$('#ajax-modal').modal("hide");
 
 }
-/*
+
   $( function() {
     var dateFormat = "mm/dd/yy",
       from = $( "#from" )

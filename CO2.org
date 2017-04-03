@@ -14,7 +14,7 @@ AGENDA
     [X] et peut être le nombre de personne "intéressé", "participants", "invités"
 
 
-ANNONCES :::Tib :::Tango (5J)
+ANNONCES :::Tib :::Tango
   [X] Système de Mot Clé Contextuel
   [ ] Finir DynForm Annonce
     [ ] Gérer les devises du prix / pays (Euro, CFP)
@@ -29,7 +29,7 @@ ANNONCES :::Tib :::Tango (5J)
   [X] wording (donner / à donner etc)
   [ ] Gestion des annonces favorites ?
 
-CITIES :::Rapha :::Tib (10J)
+CITIES :::Rapha :::Tib
 [ ] Réintégrer les City  :::Rapha
   [ ] Filiaires thématiques   :::Tib
   [ ] Espace info commune
@@ -44,7 +44,7 @@ PAGE PROFIL PERSO :::ALL
   [ ] Messagerie privée / RocketChat :::Tib
   [ ] Besoins / Need pour orga&projets
   [ ] Pouvoir partager les news (in / out) :::
-  [ ] Système de partage d'element dans les news (annonces, events, etc)
+  [ ] Système de partage d'element dans les news (annonces, events, etc) :::CLem
   [ ] Ajouter un onglet "mon agenda"
   [ ] Finir les OnePages :::Tango (5J)
   

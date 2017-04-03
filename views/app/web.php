@@ -103,9 +103,6 @@
     #mainCategories h3{
         font-size: 1.3em;
     }
-    .navbar-header{
-        padding: 2px 10px;
-    }
 }
 </style>
 

@@ -11,6 +11,7 @@
 	.fileupload-new, .fileupload-preview{
 		max-height: 250px;
 		overflow-y: hidden;
+		border: 3px solid white;
 	}
 	.fileupload-preview .thumbnail, .fileupload-new .thumbnail{
 		/*min-height: 250px;*/
@@ -153,7 +154,6 @@
 			if($("."+contentId+"_isSubmit").val()== "true" ){
 				setTimeout(function(){
 					if(resize){
-						alert();
 						$(".fileupload-preview img").css("height", parseInt($("#"+contentId+"_fileUpload").css("width"))*45/100+"px");
 						$(".fileupload-preview img").css("width", "auto");
 					}

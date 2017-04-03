@@ -19,9 +19,18 @@
 				'/js/comments.js',
 			  ) , 
 		Yii::app()->theme->baseUrl. '/assets');
+		$cssAnsScriptFilesTheme = array(
+		
+"/plugins/jquery-cropbox/jquery.cropbox.css",
+"/plugins/jquery-cropbox/jquery.cropbox.js",
 
+	);
+	//if ($type == Project::COLLECTION)
+	//	array_push($cssAnsScriptFilesTheme, "/assets/plugins/Chart.js/Chart.min.js");
+	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	$id = $_GET['id'];
 	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
+
 	
 	//récupération du type de l'element
     $typeItem = (@$element["typeSig"] && $element["typeSig"] != "") ? $element["typeSig"] : "";
@@ -193,6 +202,20 @@
 	padding:10px;
 	padding-right: 22px;
 }
+#uploadScropResizeAndSaveImage{
+	position:absolute;
+	top:0px;
+	bottom: 0px;
+	left:0px;
+	right: 0px;
+	background-color: rgba(1,1,1,0.8);
+	padding-top: 150px;
+	padding-left: 50px;
+}
+#banniere_photoAdd{
+	position:absolute;
+	z-index: 10000;
+}
 
 <?php } ?>
 
@@ -225,9 +248,26 @@
                   Yii::app()->createUrl('/'.@$element['profilImageUrl']) 
                   : "";
 			?>
-			<img class="col-xs-11 col-sm-12 col-md-12 no-padding img-responsive" src="<?php echo $thumbAuthor; ?>" 
+			<form  method="post" id="banniere_photoAdd" enctype="multipart/form-data">
+				<?php
+				if(@Yii::app()->session["userId"] && ((@$edit && $edit) || (@$openEdition && $openEdition))){ ?>
+				<div class="user-image-buttons">
+					<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="banniere_element" ><span class="fileupload-new"><i class="fa fa-plus"></i> <span class="hidden-xs">Photo</span></span>
+						<input type="file" accept=".gif, .jpg, .png" name="banniere" id="banniere_change" class="hide">
+						<input class="banniere_isSubmit hidden" value="true"/>
+					</a>
+				</div>
+				<?php }; ?>
+
+			</form>
+			<div id="contentBanniere" class="col-md-12 col-sm-12 col-xs-12 no-padding">
+				<?php if (@$element["profilBanniereUrl"] && !empty($element["profilBanniereUrl"])){ ?> 
+					<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="<?php echo Yii::app()->createUrl('/'.$element["profilBanniereUrl"]) ?>" style="border-bottom:45px solid white;">
+				<?php } ?>
+			</div>
+			<!--<img class="col-xs-11 col-sm-12 col-md-12 no-padding img-responsive" src="<?php echo $thumbAuthor; ?>" 
 				 style="border-bottom:45px solid white;">
-			
+			-->
 			<div class="col-xs-11 col-sm-12 col-md-12" style="margin-top:-290px;">
 	        	<div class="margin-bottom-15" id="topPosKScroll"></div>
 					
@@ -281,7 +321,7 @@
 	    </div>
     </section>
     	  
-	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 profilSocial" style="margin-top:-120px;">  
+	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 profilSocial" style="margin-top:-230px;">  
 		
 	    <?php 
 	    	$params = array(    "element" => @$element, 
@@ -314,7 +354,7 @@
 		</div>
 	</div>
 
-	<section class="row col-md-8 col-sm-8 col-lg-9 no-padding" style="margin-top: -30px;">
+	<section class="row col-md-8 col-sm-8 col-lg-9 no-padding" style="margin-top: -10px;">
 	    	
   
 	    <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12  sub-menu-social no-padding">
@@ -446,7 +486,16 @@
 	    </div>-->
 	</section>
 </div>	
-
+<div id="uploadScropResizeAndSaveImage" style="display:none;">
+	<!--<img src='' id="previewBanniere"/>-->
+	<div class='col-md-offset-1' id='cropContainer'>
+		<h1 class='text-white'>Resize and crop your image to render a beautiful banniere</h1>
+		<img src='' id='cropImage' class='' style=''/>
+		<div class='col-md-12'>
+			<input type='submit' class='btn-blue text-white imageCrop saveBanniere'/>
+		</div>
+	</div>
+</div>
 	<?php 
 		//$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 		//$this->renderPartial($layoutPath.'footer',  array( "subdomain"=>"page" ) ); 
@@ -491,8 +540,215 @@
 			loadNewsStream(true);
 
 		KScrollTo("#topPosKScroll");
+		//IMAGE CHANGE//
+		$("#banniere_element").click(function(event){
+  			if (!$(event.target).is('input')) {
+  					$(this).find("input[name='banniere']").trigger('click');
+  			}
+			//$('#'+contentId+'_avatar').trigger("click");		
+		});
+		/*$('#banniere_change').off().on('change.bs.fileinput', function () {
+			setTimeout(function(){
+				var files=document.getElementById("banniere_change").files;
+				if (files[0].size > 2097152)
+					toastr.warning("Please reduce your image before to 2Mo");
+				else {
+					for (var i = 0; i < files.length; i++) {           
+				        var file = files[i];
+				       	var imageType = /image.*//*;     
+				        if (!file.type.match(imageType)) {
+				            continue;
+				        }           
+				        var img=document.getElementById("previewBanniere");            
+				        img.file = file;    
+				        var reader = new FileReader();
+				        reader.onload = (function(aImg) { 
+				        	var image = new Image();
+   							image.src = reader.result;
+   							image.onload = function() {
+       							// access image size here 
+       						 	var imgWidth=this.width;
+       						 	var imgHeight=this.height;
+       							if(imgWidth>=1000 && imgHeight>=500)
+       						 		$("#banniere_photoAdd").submit();
+       						 	else
+       						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
+  							};
+				        });
+				        reader.readAsDataURL(file);
+				    }  
+				}
+			}, 400);
+		});
+		$("#banniere_photoAdd").off().on('submit',(function(e) {
+			//alert(moduleId);
+			if(debug)mylog.log("id2", contextId);
+			$(".banniere_isSubmit").val("true");
+			e.preventDefault();
+			$.ajax({
+						//url: baseUrl+"/"+moduleId+"/api/saveUserImages/type/"+type+"/id/"+id+"/contentKey/"+contentKey+"/user/<?php echo Yii::app()->session["userId"]?>",
+						url : baseUrl+"/"+moduleId+"/document/<?php echo Yii::app()->params['uploadUrl'] ?>dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/banniere",
+						type: "POST",
+						data: new FormData(this),
+						contentType: false,
+						cache: false, 
+						processData: false,
+						dataType: "json",
+						success: function(data){
+							html="<div class='col-md-offset-1' id='cropContainer'>"+
+									"<h1 class='text-white'>Resize and crop your image to render a beautiful banniere</h1>"+
+									"<img src='"+baseUrl+"/<?php echo Yii::app()->params['uploadUrl'] ?>"+moduleId+"/"+contextType+"/"+contextId+"/banniere/"+data.name+"' id='cropImage' class='' style=''/>"+
+									"<div class='col-md-12'><input type='submit' class='btn-blue text-white imageCrop saveBanniere'/></div>"+
+									"</div>";
+							$("#uploadScropResizeAndSaveImage").show();
+							$("#uploadScropResizeAndSaveImage").html(html);
+							setTimeout(function(){
+								var crop = $('#cropImage').cropbox({width: 1300,
+									height: 400,
+									zoomIn:true,
+									zoomOut:true}, function() {
+									cropResult=this.result;
+								});
+	        					/*$('#cropImage').cropbox({
+								    width: 1300,
+									height: 400,
+									zoomIn:true,
+									zoomOut:true
+								}, function() {*/
+									//on load
+									//this.getBlob();
+  									// this.getDataURL(); 
+  									/*$(".saveBanniere").click(function(){
+							        	//$("#uploadScropResizeAndSaveImage").hide();
+							        	console.log(cropResult);
+							        	imageName = data.name;
+							       		var doc = { 
+									  		"id":id,
+									  		"type":contextType,
+									  		"folder":contextType+"/"+contextId+"/banniere",
+									  		"moduleId":moduleId,
+									  		"author" : "<?php echo (isset(Yii::app()->session['userId'])) ? Yii::app()->session['userId'] : 'unknown'?>"  , 
+									  		"name" : data.name , 
+									  		"date" : new Date() , 
+									  		"size" : data.size ,
+									  		"doctype" : "<?php echo Document::DOC_TYPE_IMAGE; ?>",
+									  		"contentKey" : "banniere",
+									  		"formOrigin" : "banniere",
+									  		"parentType":contextType,
+									  		"parentId" : contextId,
+									  		"crop":cropResult
+									  	};
+									  	$.ajax({
+										  	type: "POST",
+										  	url: baseUrl+"/"+moduleId+"/document/save",
+										  	data: doc,
+									      	dataType: "json"
+										}).done( function(data){
+									        if(data.result){
+									        	newBanniere='<img class="img-responsive" src="'+baseUrl+data.src+'" style="border-bottom:45px solid white;">';
+									        	$("#contentBanniere").html(newBanniere);
+									        	$("#uploadScropResizeAndSaveImage").hide();
+									    	}
+									    });
+									});
+									//console.log('Url: ' + this.getDataURL());
+								/*}).on('cropbox', function(e, crop) {
+									var crop=crop;
+							        console.log('crop window: ', crop);
+							        
+								});*/
+							/*}, 300);
+						}
+					});
+		}));*/
+		$('#banniere_change').off().on('change.bs.fileinput', function () {
+			setTimeout(function(){
+				var files=document.getElementById("banniere_change").files;
+				if (files[0].size > 2097152)
+					toastr.warning("Please reduce your image before to 2Mo");
+				else {
+					for (var i = 0; i < files.length; i++) {           
+				        var file = files[i];
+				       	var imageType = /image.*/;     
+				        if (!file.type.match(imageType)) {
+				            continue;
+				        }           
+				        var img=document.getElementById("cropImage");            
+				        img.file = file;    
+				        var reader = new FileReader();
+				        reader.onload = (function(aImg) { 
+				        	var image = new Image();
+   							image.src = reader.result;
+   							img.src = reader.result;
+   							image.onload = function() {
+       							// access image size here 
+       						 	var imgWidth=this.width;
+       						 	var imgHeight=this.height;
+       							if(imgWidth>=1000 && imgHeight>=500){
+	               					getCroppingModal();
+	            				}
+       						 	else
+       						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
+  							};
+				        });
+				        reader.readAsDataURL(file);
+				    }  
+				}
+			}, 400);
+		});
+		$("#banniere_photoAdd").off().on('submit',(function(e) {
+			//alert(moduleId);
+			if(debug)mylog.log("id2", contextId);
+			$(".banniere_isSubmit").val("true");
+			e.preventDefault();
+			
+			var formData = new FormData(this);
+						console.log("formdata",formData);
+			formData.crop= cropResult;
+			formData.parentId= contextId;
+			formData.parentType= contextType;
+			formData.formOrigin= "banniere";
+			console.log(formData);
+			// Attach file
+			//formData.append('image', $('input[type=banniere]')[0].files[0]); 
+			$.ajax({
+				url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/banniere",
+				type: "POST",
+				data: FormData,
+				contentType: false,
+				cache: false, 
+				processData: false,
+				dataType: "json",
+				success: function(data){
+			        if(data.result){
+			        	newBanniere='<img class="img-responsive" src="'+baseUrl+data.src+'" style="border-bottom:45px solid white;">';
+			        	$("#contentBanniere").html(newBanniere);
+			        	$("#uploadScropResizeAndSaveImage").hide();
+			    	}
+			    }
+			});
+		}));
+		//END MAGE CHNGE
 	});
 
+	function getCroppingModal(){
+		$("#uploadScropResizeAndSaveImage").show();
+		//$("#uploadScropResizeAndSaveImage").html(html);
+		setTimeout(function(){
+			var crop = $('#cropImage').cropbox({width: 1300,
+				height: 400,
+				zoomIn:true,
+				zoomOut:true}, function() {
+				cropResult=this.result;
+			});
+			$(".saveBanniere").click(function(){
+		        console.log(cropResult);
+		        var cropResult=cropResult;
+		        $("#banniere_photoAdd").submit();
+		       
+			});
+		}, 300);
+	}
 
 	function bindButtonMenu(){
 		$("#btn-superadmin").click(function(){

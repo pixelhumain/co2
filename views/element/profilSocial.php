@@ -251,22 +251,7 @@
 				</div>
 
 				<div class="row bg-white pull-left bulle-desc arrow_box">
-					<span class="pull-left" id="shortDescriptionHeader">
-						<?php echo substr(@$element["shortDescription"], 0, 180); ?>
-						<?php if(@$edit==true) { ?>
-						<a href="#" id="shortDescription" data-type="wysihtml5" 
-							data-original-title="Décrivez <?php echo @$element["name"]; ?> en quelques mots (140)" 
-							data-emptytext="<?php echo Yii::t("common","Short description",null,Yii::app()->controller->module->id); ?>" 
-							class="editable editable-click" style="max-width: 0px; height:0px;font-size: 0px!important;">
-							<?php echo (!empty($element["shortDescription"])) ? $element["shortDescription"] : ""; ?>
-						</a>
-						<button class="pull-right btn btn-default btn-sm tooltips btn-update-shortDesc margin-left-15 margin-top-5" 
-								data-edit-id="shortDescription" 
-								data-toggle="tooltip" data-placement="right" title="modifier ma description">
-							<i class="fa fa-pencil"></i> en quelques mots 
-						</button>
-					<?php } ?>
-					</span>	
+					<span class="pull-left" id="shortDescriptionHeader"><?php echo substr(@$element["shortDescription"], 0, 180); ?></span>
 				</div>
 				<div class="pull-right col-sm-3 col-md-3" style="">
 					
@@ -309,13 +294,13 @@
 	    	$this->renderPartial('../pod/ficheInfoElementCO2', $params ); 
 	    ?>
 
-	    <div id="divTagsHeader" class="col-md-12 padding-5 text-right margin-bottom-10">
-			<!-- <div class="link"><i class="fa fa-tag"></i> Tags</div> -->
+	   <!--  <div id="divTagsHeader" class="col-md-12 padding-5 text-right margin-bottom-10">
 			<?php if(@$element["tags"])
         			foreach ($element["tags"]  as $key => $tag) { ?>
         		<span class="badge letter-red bg-white"><?php echo $tag; ?></span>
         	<?php } ?>
 		</div>
+		-->
 	</div>
 
 	<section class="row col-md-8 col-sm-8 col-lg-9 no-padding" style="margin-top: -30px;">
@@ -366,12 +351,12 @@
 				<ul class="nav navbar-nav">
 					<li class="dropdown">
 					<button type="button" class="btn btn-default bold">
-			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md">Paramètres</span>
+			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo Yii::t("common", "Settings"); ?></span>
 			  		</button>
 			  		<ul class="dropdown-menu arrow_box menu-params">
 			  			<li class="text-left">
-			               	<a href="javascript:;" class="bg-white">
-			                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Settings"); ?>
+			               	<a href="javascript:;" id="editConfidentialityBtn" class="bg-white">
+			                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
 			                </a>
 			            </li>
 			  			<?php if($type !=Person::COLLECTION){ ?>
@@ -449,13 +434,18 @@
 	    	</div>
 	    </div>-->
 	</section>
-</div>	
 
+</div>
 	<?php 
-		//$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
-		//$this->renderPartial($layoutPath.'footer',  array( "subdomain"=>"page" ) ); 
-	?>
-    
+	    	$paramsConfidentiality = array( "element" => @$element, 
+                                "type" => @$type, 
+                                "edit" => @$edit,
+                                "controller" => $controller,
+                                "openEdition" => $openEdition,
+                                );
+
+	    	$this->renderPartial('../pod/confidentiality', $params ); 
+	    ?>
 
 <script type="text/javascript">
 
@@ -466,6 +456,7 @@
     var params = <?php echo json_encode(@$params); ?>;
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
+    
     console.log("params", params);
     var subView="<?php echo @$subview; ?>";
     var hashUrlPage="#page.type."+contextType+".id."+contextId;
@@ -533,6 +524,14 @@
 			history.pushState(null, "New Title", hashUrlPage+".view.history");
 			loadHistoryActivity();
 		});
+		
+		$(".open-confidentiality").click(function(){
+			mylog.log("open-confidentiality");
+			toogleNotif(false);
+			smallMenu.open( markdownToHtml($("#descriptionMarkdown").val()));
+			bindLBHLinks();
+		});
+	
 		$(".open-directory").click(function(){
 			history.pushState(null, "New Title", hashUrlPage+".view.directory");
 			loadDirectory();
@@ -550,7 +549,6 @@
 			loadDetail();
 		});
 	}
-
 
 	function initSocial(){
 		var Accordion = function(el, multiple) {
@@ -669,12 +667,15 @@
 			null,
 		function(){},"html");
 	}
+
 	function loadDetail(){
 		toogleNotif(false);
 		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
 		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
 	}
+
+	
 	function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL");
 		loadingData = true;
 		currentIndexMin = indexMin;

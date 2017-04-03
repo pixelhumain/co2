@@ -108,44 +108,6 @@
     #mainCategories h3{
         font-size: 1.3em;
     }
-    .navbar-header{
-        padding: 2px 10px;
-    }
-    #sub-menu-left{
-        margin-top: 0px;
-        text-align: left;
-        padding:20px 15px 0px 5px;
-    }
-    #mainCategories .portfolio .portfolio-item{
-        height: 80px;
-        font-size: 10px;
-        font-weight: 100 !important;
-        padding: 0px;
-        padding-top: 15px;
-    }
-    .category-search-link h4{
-        font-weight: 100 !important;
-    }
-    #mainCategories h3{
-        font-size: 1em;
-    }
-    hr.angle-down::after {
-        background-color: #7bc3d1;
-        color: white;
-        content: "\f107";
-        font-family: FontAwesome;
-        display: inline-block;
-        position: relative;
-        top: -0.6em;
-        font-size: 22px;
-        padding: 0 0.25em;
-        border-radius: 20px;
-        width: 30px;
-        height: 30px;
-    }
-    #mainCategories .portfolio .portfolio-item button.portfolio-link{
-        margin-top:0px;
-    }
 }
 </style>
 

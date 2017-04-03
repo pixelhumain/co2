@@ -34,6 +34,18 @@
 	.btn-select-media-src img{
 		height:30px;
 	}
+	
+	.timeline::before,
+	.timeline-badge{
+		display: none;
+	}
+	ul.timeline > li > .timeline-panel{
+		width: 90%;
+	}
+	.page-header.text-center,
+	.show-sources-xs{
+		text-align: right;
+	}
 	.timeline-body > p, 
 	.timeline-body > ul, 
 	.timeline-body > h4{
@@ -49,40 +61,56 @@
 		<?php //$this->renderPartial($layoutPath.'radioplayer', array( "layoutPath"=>$layoutPath ) ); ?>  
 	</div> -->
 
-	<div class="col-md-2 col-sm-1 hidden-xs no-padding" id="content-media" style="min-height: 500px;">
+	
+	<div class="col-md-12 col-sm-12 inline show-sources-xs text-center margin-top-20 visible-xs">
+		<button class="btn btn-default" id="btn-show-sources-xs"><i class="fa fa-rss"></i></button>
 	</div>
-
-	<div class="col-md-8 col-sm-10 inline text-center page-header text-center margin-top-20">
-		<div class="col-md-3 col-sm-3 col-xs-6 bg-white">
+	<div class="col-md-12 col-sm-12 inline page-header text-center medias-sources margin-top-20 hidden-xs">
+		<div class="col-md-1 hidden-sm hidden-xs bg-white"></div>
+		<div class="col-md-2 col-sm-2 col-xs-12 bg-white">
 		<button class="btn btn-link tooltips btn-select-media-src srcNC1" data-srcactive="true" data-srcid="NC1" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NC1.png" height=40>
-			<br><i class="fa fa-check-circle letter-green srcActive"></i>
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NC1.png">
+			<br class="hidden-xs"><i class="fa fa-check-circle letter-green srcActive"></i>
 			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
 		</button>
 		</div>
-		<div class="col-md-3 col-sm-3 col-xs-6 bg-white">
-		<button class="btn btn-link tooltips btn-select-media-src srcNCI" data-srcactive="true" data-srcid="NCI" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NCI.png">
-			<br><i class="fa fa-check-circle letter-green srcActive"></i>
-			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
-		</button>
-		</div>
-		<div class="col-md-3 col-sm-3 col-xs-6 bg-white">
+
+		<div class="col-md-2 col-sm-2 col-xs-12 bg-white">
 		<button class="btn btn-link tooltips btn-select-media-src srcNCTV" data-srcactive="true" data-srcid="NCTV" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
 			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NCTV.png">
-			<br><i class="fa fa-check-circle letter-green srcActive"></i>
+			<br class="hidden-xs"><i class="fa fa-check-circle letter-green srcActive"></i>
 			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
 		</button>
 		</div>
-		<div class="col-md-3 col-sm-3 col-xs-6 bg-white">
+
+		<div class="col-md-2 col-sm-2 col-xs-12 bg-white">
+		<button class="btn btn-link tooltips btn-select-media-src srcNCI" data-srcactive="true" data-srcid="NCI" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/NCI.png">
+			<br class="hidden-xs"><i class="fa fa-check-circle letter-green srcActive"></i>
+			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
+		</button>
+		</div>
+
+		<div class="col-md-2 col-sm-2 col-xs-12 bg-white">
 		<button class="btn btn-link tooltips btn-select-media-src srcTAZAR" data-srcactive="true" data-srcid="TAZAR" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
 			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/TAZAR.png">
-			<br><i class="fa fa-check-circle letter-green srcActive"></i>
+			<br class="hidden-xs"><i class="fa fa-check-circle letter-green srcActive"></i>
 			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
 		</button>
 		</div>
+
+		<div class="col-md-2 col-sm-2 col-xs-12 bg-white">
+		<button class="btn btn-link tooltips btn-select-media-src srcOUTREMERS360" data-srcactive="true" data-srcid="OUTREMERS360" data-placement="top" data-toggle="tooltip" title="Cliquer pour activer/désactiver">
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/medias/OUTREMERS360.png">
+			<br class="hidden-xs"><i class="fa fa-check-circle letter-green srcActive"></i>
+			<i class="fa fa-minus-circle letter-red srcDisable hidden"></i>
+		</button>
+		</div>
+
 	</div>
 
+	<div class="col-md-2 col-sm-1 hidden-xs no-padding" id="content-media" style="min-height: 500px;">
+	</div>
 
 	<div class="col-md-8 col-sm-10 inline-block no-padding">
 		<div class="col-md-12 no-padding text-center" id="timeline-reload"></div>
@@ -144,7 +172,7 @@ function initMediaInterface(){
 		console.log("srcactive", srcActive, sources);
 		if(srcActive==true){
 			if(sources.length == 1){
-				toastr.error("Looooongin ! Impossible de désactiver toutes les sources en même temps !");
+				//toastr.error("Looooongin ! Impossible de désactiver toutes les sources en même temps !");
 				/*setTimeout(function(){
 					toastr.error("Nan mé... t'as cru koi ?");
 					setTimeout(function(){
@@ -208,6 +236,14 @@ function initMediaInterface(){
 
    	$('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@#\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
     
+
+    $("#btn-show-sources-xs").click(function(){
+    	if($(".medias-sources").hasClass("hidden-xs")){
+    		$(".medias-sources").removeClass("hidden-xs");
+    	}else{
+    		$(".medias-sources").addClass("hidden-xs");
+    	}
+    });
 }
 
 
@@ -238,7 +274,7 @@ function startReloadTimeout(){
 }
 
 
-var sources = new Array("NC1", "NCI", "NCTV", "TAZAR");
+var sources = new Array("NC1", "NCI", "NCTV", "TAZAR", "OUTREMERS360");
 
 function loadStream(indexMin, indexMax){ console.log("load stream media");
 	if(indexMin == 0) scrollEnd = false;
@@ -266,6 +302,7 @@ function loadStream(indexMin, indexMax){ console.log("load stream media");
         success:
             function(html) {
                 $("#timeline-live").append(html);
+                $(".medias-sources").hasClass("hidden-xs");
                 loadingData = false;
             },
         error:function(xhr, status, error){

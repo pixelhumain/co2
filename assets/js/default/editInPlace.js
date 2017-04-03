@@ -154,7 +154,7 @@ function bindAboutPodElement() {
 				    	success: function(data){
 					    	if(data.result){
 								toastr.success(data.msg);
-								url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+								url.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					    	}
 					    }
 					});
@@ -199,7 +199,7 @@ function bindAboutPodElement() {
 				    	success: function(data){
 					    	if(data.result){
 								toastr.success(data.msg);
-								url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+								url.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					    	} else {
 					    		toastr.error(data.msg);
 					    	}
@@ -432,7 +432,7 @@ function bindAboutPodElement() {
 			    		$("#ajaxFormModal #birthDate").remove();
 			    }
 
-			    if(contextData.type == typeObj.organization.col ){
+			    if(contextData.type == typeObj.organization.col || contextData.type == typeObj.event.col){
 					if($("#ajaxFormModal #type").length && $("#ajaxFormModal #type").val() ==  contextData.typeOrga)
 			    		$("#ajaxFormModal #type").remove();
 				}
@@ -442,11 +442,9 @@ function bindAboutPodElement() {
 			    		$("#ajaxFormModal #avancement").remove();
 				}
 
-				if(contextData.type == typeObj.person.col ){
-					if($("#ajaxFormModal #email").length && $("#ajaxFormModal #email").val() == contextData.email)
-			    		$("#ajaxFormModal #email").remove();
-			    }
-
+				if($("#ajaxFormModal #email").length && $("#ajaxFormModal #email").val() == contextData.email)
+			    	$("#ajaxFormModal #email").remove();
+			    
 				if($("#ajaxFormModal #url").length && $("#ajaxFormModal #url").val() == contextData.url)
 		    		$("#ajaxFormModal #url").remove();
 
@@ -512,9 +510,13 @@ function bindAboutPodElement() {
 					}
 
 					if(typeof data.resultGoods.values.type != "undefined"){
-						contextData.typeOrga = data.resultGoods.values.typeOrga;
-						$("#typeHeader").html(contextData.typeOrga);
-						$("#typeAbout").html(contextData.typeOrga);
+
+						if(contextData.type == typeObj.organization.col )
+							contextData.typeOrga = data.resultGoods.values.typeEvent;
+						else
+							contextData.typeEvent = data.resultGoods.values.typeEvent;
+						//$("#typeHeader").html(data.resultGoods.values.type);
+						$("#typeAbout").html(trad[data.resultGoods.values.type]);
 					}
 
 					if(typeof data.resultGoods.values.email != "undefined"){
@@ -619,6 +621,52 @@ function bindAboutPodElement() {
 			
 			var saveUrl = baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType;
 			elementLib.editDynForm("Modifier la description", "fa-pencil", properties, "markdown", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
+		});
+
+
+		$(".btn-update-descriptions").off().on( "click", function(){
+
+			
+			var properties = {
+				block : typeObjLib.hidden,
+				typeElement : typeObjLib.hidden,
+				isUpdate : typeObjLib.hiddenTrue,
+				shortDescription : 	typeObjLib.shortDescription,
+				description : typeObjLib.description,
+
+			};
+
+			var dataUpdate = {
+				block : "descriptions",
+		        id : contextData.id,
+		        typeElement : contextData.type,
+		        name : contextData.name,
+		        shortDescription : $(".contentInformation #shortDescriptionAbout").html(),
+				description : $("#descriptionMarkdown").val(),	
+			};
+			
+			var onLoads = {
+				markdown : function(){
+					activateMarkdown("#ajaxFormModal #description");
+				}
+			};
+
+			var beforeSave = null;
+
+			var afterSave = function(data){
+				mylog.dir(data);
+				if(data.result && data.resultGoods.result){shortDescriptionHeader
+					$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
+					$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
+					$(".contentInformation #descriptionAbout").html(markdownToHtml(data.resultGoods.values.description));
+					$("#descriptionMarkdown").val(data.resultGoods.values.description);
+				}
+				elementLib.closeForm();
+				changeHiddenFields();
+			};
+			mylog.log("btn-update-descriptions", properties, dataUpdate);
+			var saveUrl = baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType;
+			elementLib.editDynForm("Modifier les descriptions", "fa-pencil", properties, "markdown", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
 		});
 
 

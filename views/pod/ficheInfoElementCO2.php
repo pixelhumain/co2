@@ -150,14 +150,121 @@
 				<div id="btn-start-detail" class="link">
 					<i class="fa fa-info-circle"></i><?php echo Yii::t("common","About"); ?><i class="fa fa-chevron-right"></i>
 					<?php if($edit==true || $openEdition==true ){?>
-						<a  href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" 
+						<!-- <a  href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" 
 							title="<?php echo Yii::t("common","Update Contact information");?>">
 							<i class="fa text-red fa-cog"></i>
-						</a>
+						</a> -->
 					<?php } ?>
 				</div>
-			</li>		
-			
+				<ul class="submenu">
+				<!--
+					<?php //if(@$edit==true){ ?>
+							<li class="tooltips " data-edit-id="name">
+								<i class="fa fa-user-circle-o"></i> <?php //echo Yii::t("common","Name"); ?> : 
+								<span id="name" class=""><?php //if(isset($element["name"])) echo $element["name"]; else echo ""; ?></span>
+							</li>
+					<?php //} ?>
+				-->
+					<?php if($type==Person::COLLECTION){ ?>
+							<li class="tooltips hidden username" data-toggle="tooltip" data-placement="right" 
+								title="<?php echo Yii::t("common","Username"); ?>">
+								<i class="fa fa-user-secret"></i> 
+								<span id="usernameMenuLeft" class="">
+									<?php if(isset($element["username"])) echo $element["username"]; else echo ""; ?>
+								</span>
+							</li>
+					<?php } ?>
+
+					<?php if($type==Person::COLLECTION){
+						if(Preference::showPreference($element, $type, "birthDate", Yii::app()->session["userId"])){ ?>
+							<li class="hidden birthDate" data-toggle="tooltip" data-placement="right" 
+								title="<?php echo Yii::t("person","Birth date"); ?>">
+								<i class="fa fa-birthday-cake"></i> <?php echo Yii::t("person","Birth date"); ?> : 
+								<span id="birthDateMenuLeft" class=""><?php echo (isset($element["birthDate"])) ? date("d/m/Y", strtotime($element["birthDate"]))  : null; ?></span>
+							</li>
+						<?php }
+					} ?>
+
+					<?php if($type==Project::COLLECTION && isset($element["properties"]["avancement"]) ){ ?>
+						<li class="tooltips hidden avancement"  data-toggle="tooltip" data-placement="right" 
+							title="<?php echo Yii::t("project","Project maturity",null,Yii::app()->controller->module->id); ?>">
+							<span id="avancementMenuLeft"> <?php echo Yii::t("project","Project maturity",null,Yii::app()->controller->module->id)." : ".Yii::t("project",$element["properties"]["avancement"],null,Yii::app()->controller->module->id); ?></span>
+						</li>
+					<?php } ?>
+
+					<?php if( 	( 	$type==Person::COLLECTION && 
+									Preference::showPreference($element, $type, "email", Yii::app()->session["userId"]) ) || 
+							  	(	$type!=Person::COLLECTION && $type!=Event::COLLECTION ) ){ ?>
+								<li class="tooltips hidden email" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("common","E-mail"); ?>">
+									<i class="fa fa-envelope"></i>
+									<span id="emailMenuLeft" class=""><?php echo (isset($element["email"])) ? $element["email"] : ""; ?></span>
+								</li>
+					<?php } ?>
+					
+					<?php //If there is no http:// in the url
+					$scheme = "";
+					if(isset($element["url"])){
+						if (!preg_match("~^(?:f|ht)tps?://~i", $element["url"])) $scheme = 'http://';
+
+					}?>
+
+					<li class="tooltips url hidden" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("common","Website URL") ?>">
+						<i class="fa fa-desktop"></i>
+						<span>
+							<a href="<?php echo (isset($element["url"])) ? $scheme.$element['url'] : 'javascript:;'; ?>" target="_blank" id="urlMenuLeft" style="cursor:pointer;">
+								<?php echo (isset($element["url"])) ? $element["url"] : ""; ?>
+							</a>
+						</span>
+					</li>
+
+
+					<?php  if($type==Organization::COLLECTION || $type==Person::COLLECTION){ ?>
+								<li class="tooltips fixe hidden" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("common","Phone") ?>">
+									<i class="fa fa-phone"></i>
+									<span id="fixe">
+										<?php
+											if( !empty($element["telephone"]["fixe"])){
+												$fixe = "";
+												foreach ($element["telephone"]["fixe"] as $key => $num) {
+													$fixe .= ($fixe != "") ? ", ".trim($num) : trim($num);
+												}
+												echo $fixe;
+											}	
+										?>
+									</span>
+								</li>
+								<li class="tooltips mobile hidden" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("common","Mobile") ?>">
+									<i class="fa fa-mobile"></i>
+									<span id="mobile">
+										<?php
+											if( !empty($element["telephone"]["mobile"])){
+												$mobile = "";
+												foreach ($element["telephone"]["mobile"] as $key => $num) {
+													$mobile .= ($mobile != "") ? ", ".trim($num) : trim($num);
+												}
+												echo $mobile;
+											}	
+										?>
+									</span>
+								</li>
+								<li class="tooltips fax hidden" data-toggle="tooltip" data-placement="right" title="<?php echo Yii::t("common","Fax") ?>">
+									<i class="fa fa-fax"></i>
+									<span id="fax">
+										<?php
+											if( !empty($element["telephone"]["fax"])){
+												$fax = "";
+												foreach ($element["telephone"]["fax"] as $key => $num) {
+													$fax .= ($fax != "") ? ", ".trim($num) : trim($num);
+												}
+												echo $fax;
+											}	
+										?>
+									</span>
+								</li>
+					<?php } ?>
+				</ul>
+			</li>
+
 			<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
 			<li class="podInside">
 				<?php $countCharts=0;

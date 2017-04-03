@@ -164,6 +164,11 @@
     .searchEntityContainer.pull-left.classified{
         clear: left;
     }
+
+    .carousel-inner > .item > img.img-responsive{
+        display: inline !important;
+        max-height: 400px !important;
+    }
 </style>
 
 

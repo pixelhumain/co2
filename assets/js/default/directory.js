@@ -711,8 +711,8 @@ var directory = {
         console.log("prev",p,pid);
 
         return {
-            prev : "<a href='"+p+"' data-modalshow='"+pid+"' class='lbhp text-dark'><i class='fa fa-4x fa-arrow-circle-left'></i> </a> ",
-            next : "<a href='"+n+"' data-modalshow='"+nid+"' class='lbhp text-dark'> <i class='fa fa-4x fa-arrow-circle-right'></i></a>"
+            prev : "<a href='"+p+"' data-modalshow='"+pid+"' class='lbhp text-dark pull-right margin-right-10 margin-left-10'><i class='fa fa-2x fa-arrow-circle-left'></i> </a> ",
+            next : "<a href='"+n+"' data-modalshow='"+nid+"' class='lbhp text-dark pull-right'> <i class='fa fa-2x fa-arrow-circle-right'></i></a>"
         }
     },
     // ********************************
@@ -728,87 +728,120 @@ var directory = {
       };
       mylog.log("----------- preview",params,params.name, hash);
 
-      str = '<div class="row">'+
-              '<div class="col-lg-12 text-center" onclick="$(\'#\')">'+
-                  '<h2 class="text-'+typeObj[params.type].color+'"><i class="fa fa-'+typeObj[params.type].icon+' fa-2x padding-bottom-10"></i><br>'+
-                      '<span class="font-blackoutT"> '+trad[params.type]+'</span>'+
-                  '</h2>'+
-              '</div>'+
-          '</div><br/><br/>';
+      str = '';
+      // '<div class="row">'+
+      //         '<div class="col-lg-12 text-center" onclick="$(\'#\')">'+
+      //             '<h2 class="text-'+typeObj[params.type].color+'"><i class="fa fa-'+typeObj[params.type].icon+' fa-2x padding-bottom-10"></i><br>'+
+      //                 '<span class="font-blackoutT"> '+trad[params.type]+'</span>'+
+      //             '</h2>'+
+      //             '<hr>'+
+      //         '</div>'+
+      //     '</div><br/><br/>';
       
       // ********************************
       // NEXT PREVIOUS 
       // ********************************
       var nav = directory.findNextPrev(hash);
-      str += "<div class='col-xs-1 col-xs-offset-1'>"+nav.prev+"</div>";
-      
+      str += "<div class='col-xs-6 col-sm-2 col-md-3 pull-left text-right'></div>";
+      //str += "<div class='col-xs-6 col-sm-2 col-md-3 pull-right text-left visible-xs'>"+nav.next+"</div>";
       // ********************************
       // RIGHT SECTION
       // ********************************
-      str += "<div class='col-xs-6 '>";
+      str += "<div class='col-xs-12 col-sm-8 col-md-6 margin-top-15'>";
 
-      if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
-        str += '<div class="col-xs-6"><a class="thumb-info" href="'+baseUrl+params.profilImageUrl+'" data-title="" data-lightbox="all">'+
-                  "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
-               '</a></div>';
-
-      // ********************************
-      // LEFT SECTION
-      // ********************************
-      str += "<div class='col-xs-6'>";
-      
-        cat = (typeof params.category != "undefined") ? params.section+" > "+params.category : "";
-        if(params.type == "classified" && typeof params.category != "undefined")
-          params.ico = (typeof classifiedTypes[params.category] != "undefined") ? "fa-" + classifiedTypes[params.category]["icon"] : "";
+        // ********************************
+        // LEFT SECTION
+        // ********************************
+        str +=  "<div class='col-xs-12 text-left'>";
         
-        subtype = (typeof params.subtype != "undefined") ? params.subtype+" > " : "";
-        price = (typeof params.price != "undefined" && params.price != "") ? "<br/><i class='fa fa-money'></i> " + params.price : "";
-        
-        str += '<br><br><div class="row">'+
-                '<div class="padding-5">'+
-                    '<h2 class="text-dark no-margin hidden-xs" style="margin-top:5px!important;">'+
-                        cat+" <i class='fa "+ params.ico +"'></i><br/><br/>"+ 
-                        subtype+params.name +"<br/>"+
-                        price+
-                    '</h3>'+
-                '</div>'+
-            '</div><br/><br/>';
+          price = (typeof params.price != "undefined" && params.price != "") ? "<br/><i class='fa fa-money'></i> " + params.price : "";
+          
+          str += "<h4 class='text-azure'>"+price+"</h4>";
 
-        if(typeof params.description != "undefined" && params.description != "")
-            str += "<div class=''>" + params.description + "</div>";
+          if(typeof params.category != "undefined"){
+              str += "<div class='entityType text-dark bold'>" + params.section+" > "+params.category;
+                if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+              str += "</div><hr>";
+            }
 
-            var thisLocality = "";
-            if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
-                                  "<i class='fa fa-home'></i> " + params.fullLocality + 
-                                "</a>";
-            //else thisLocality = "<br>";
-            
-            str += thisLocality;
+          if(typeof params.name != "undefined" && params.name != "")
+              str += "<div class='bold text-black' style='font-size:20px;'>"+ 
+                        "<div class='col-md-8 col-sm-8 col-xs-7 no-padding margin-top-10'>"+params.name + "</div>" +
+                        "<div class='col-md-4 col-sm-4 col-xs-5 no-padding'>"+ 
+                        nav.next+
+                        nav.prev+
+                        "</div>" +
+                        "<br>"+
+                    "</div>";
 
-            if(typeof params.contactInfo != "undefined" && params.contactInfo != "")
-            str += "<div class='entityType letter-green'><i class='fa fa-address-card'></i> " + params.contactInfo + "</div>";
+          if(typeof params.description != "undefined" && params.description != "")
+              str += "<div class='col-md-12 col-sm-12 col-xs-12 no-padding pull-left'><hr>" + params.description + "<hr></div>";
+
          
-            str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+          var thisLocality = "";
+          if(params.fullLocality != "" && params.fullLocality != " ")
+               thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
+                                "<i class='fa fa-home'></i> " + params.fullLocality + 
+                              "</a>";
+          //else thisLocality = "<br>";
+          
+          str += thisLocality;
+
+          if(typeof params.contactInfo != "undefined" && params.contactInfo != "")
+          str += "<div class='entityType letter-green bold' style='font-size:17px;'><i class='fa fa-address-card'></i> " + params.contactInfo + "</div>";
+       
+          //str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+
+        str += "<hr></div>";
+
+        
+
+        if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
+          str += '<div class="col-xs-12 text-center">'+
+                    '<div id="myCarousel" class="carousel slide" data-ride="carousel">'+
+                      //<!-- Indicators -->
+                      '<ol class="carousel-indicators">'+
+                      '  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>'+
+                      '  <li data-target="#myCarousel" data-slide-to="1"></li>'+
+                      '</ol>'+
+
+                      //<!-- Wrapper for slides -->'+
+                      '<div class="carousel-inner" role="listbox">'+
+                      '  <div class="item active">'+
+                      "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
+                      '  </div>'+
+                      '  <div class="item">'+
+                      "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
+                      '  </div>'+
+                      '</div>'+
+
+                      //<!-- Left and right controls -->'+
+                      '<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">'+
+                      '  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'+
+                      '  <span class="sr-only">Previous</span>'+
+                      '</a>'+
+                      '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">'+
+                      '  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'+
+                      '  <span class="sr-only">Next</span>'+
+                      '</a>'+
+                    '</div>'+
+                    // '<a class="thumb-info" href="'+baseUrl+params.profilImageUrl+'" data-title="" data-lightbox="all">'+
+                    //   "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
+                    // '</a>'+
+                 '</div>';
+
+        if( params.creator == userId )
+        str += '<hr><a href="javascript:elementLib.openForm(\'classified\', null, directory.previewedObj.params );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
+                  '<i class="fa fa-pencil"></i> Modifier mon annonce'+
+              '</a>';
+
+
 
       str += "</div>";
 
-      if( params.creator == userId )
-      str += '<br/><br/><a href="javascript:elementLib.openForm(\'classified\', null, directory.previewedObj.params );" style="font-size:25px;" class="btn btn-default letter-green bold ">'+
-                '<i class="fa fa-pencil"></i> Edit'+
-            '</a>';
 
-      str += "</div>";
+      //str += "<div class='col-xs-1 col-sm-2 col-md-3 pull-right text-left margin-top-15 hidden-xs'></div>";
 
-
-      str += "<div class='col-xs-1 col-xs-offset-1'>"+nav.next+"</div>";
-
-      // ********************************
-      // ADD NEW Btn
-      // ********************************
-      str += '<div class="col-xs-12 text-center"> <br/><br/><a href="javascript:elementLib.openForm(\'classified\');" style="font-size:25px;" class="btn btn-default letter-green bold ">'+
-                '<i class="fa fa-plus-circle"></i> CRÉER UNE ANNONCE'+
-            '</a></div>';
       return str;
     },
 

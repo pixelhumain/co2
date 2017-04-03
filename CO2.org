@@ -44,7 +44,7 @@ PAGE PROFIL PERSO :::ALL
   [ ] Messagerie privée / RocketChat :::Tib
   [ ] Besoins / Need pour orga&projets
   [ ] Pouvoir partager les news (in / out) :::
-  [ ] Système de partage d'element dans les news (annonces, events, etc)
+  [ ] Système de partage d'element dans les news (annonces, events, etc) :::CLem
   [ ] Ajouter un onglet "mon agenda"
   [ ] Finir les OnePages :::Tango (5J)
   

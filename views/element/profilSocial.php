@@ -539,15 +539,14 @@
 			history.pushState(null, "New Title", hashUrlPage+".view.history");
 			loadHistoryActivity();
 		});
-
-
+		
 		$(".open-confidentiality").click(function(){
 			mylog.log("open-confidentiality");
 			toogleNotif(false);
 			smallMenu.open( markdownToHtml($("#descriptionMarkdown").val()));
 			bindLBHLinks();
 		});
-	}
+	
 		$(".open-directory").click(function(){
 			history.pushState(null, "New Title", hashUrlPage+".view.directory");
 			loadDirectory();
@@ -683,12 +682,15 @@
 			null,
 		function(){},"html");
 	}
+
 	function loadDetail(){
 		toogleNotif(false);
 		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
 		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
 	}
+
+	
 	function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL");
 		loadingData = true;
 		currentIndexMin = indexMin;

@@ -102,6 +102,7 @@ var trad = {
 "development" : "<?php echo Yii::t("project","development",null,Yii::app()->controller->module->id)?>",
 "testing" : "<?php echo Yii::t("project","testing",null,Yii::app()->controller->module->id)?>",
 
+"notSpecified" : "<?php echo Yii::t("common","Not specified") ?>",
 };
 
 var tradCountry = {

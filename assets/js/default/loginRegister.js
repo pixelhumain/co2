@@ -122,11 +122,16 @@ var Login = function() {
 		    	  success: function(data){
 		    		  if(data.result)
 		    		  {
+		    		  	alert("elementLib.openForm"+elementLib.openFormAfterLogin.type);
 		    		  	var url = requestedUrl;
 		    		  	//mylog.warn(url,", has #"+url.indexOf("#"),"count / : ",url.split("/").length - 1 );
 		    		  	if(backUrl != null){
 		    		  		url.loadByHash(backUrl);
 		    		  		backUrl = null;
+		    		  	} else if( typeof elementLib.openFormAfterLogin != "undefined"){
+		    		  		userId = data.id;
+		    		  		$('#modalLogin').modal("hide");
+		    		  		elementLib.openForm( elementLib.openFormAfterLogin.type, elementLib.openFormAfterLogin.afterLoad, elementLib.openFormAfterLogin.data );
 		    		  	} else if(url && url.indexOf("#") >= 0 ) {
 		    		  		//mylog.log("login 1",url);
 		    		  		//reload to the url initialy requested

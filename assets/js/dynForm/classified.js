@@ -13,7 +13,7 @@ dynForm = {
 	    		
 	    	},
 	    	onload : function(){
-	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
+	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
 	    	},
 	    	/*,
 	    	loadData : function(data){
@@ -63,7 +63,7 @@ dynForm = {
 	    		$(".typeBtntagList").hide(); 
 	    		$(".subtypeSection").html("");
 	    		$(".subtypeSectioncustom").show();
-	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
+	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
 	    	}
 	    },
 	    properties : {
@@ -102,8 +102,7 @@ dynForm = {
                 placeholder : "Choisir une catégorie",
                 list : classifiedTypes,
                 init : function(){
-	            	$(".typeBtn").off().on("click",function()
-	            	{
+	            	$(".typeBtn").off().on("click",function(){
 	            		
 	            		$(".typeBtn").removeClass("active btn-dark-blue text-white");
 	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
@@ -131,7 +130,7 @@ dynForm = {
 		            		$( ".subtypeBtn" ).removeClass("active");
 		            		$(this).addClass("active");
 		            		$("#ajaxFormModal #subtype").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
-		            		$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
+		            		$(".nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
 		            		//$(".subtypeBtn:not(.active)").hide();
 
 		            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+" > "+$(".subtypeBtn.active").data('tag')+"</h4>" );

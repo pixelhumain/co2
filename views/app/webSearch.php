@@ -6,24 +6,11 @@
 	<i class="fa fa-undo"></i> Nouvelle recherche
 </button>
 
-<?php if(sizeof($siteurls) == 0){ ?>
-	<a class="btn btn-default btn-success margin-bottom-5 margin-top-5 margin-left-5 lbh" href="#app.referencement">
-		<i class="fa fa-plus-circle"></i> Ajouter une URL
-	</a><br>
-
-	<span>
-		<small><b>
-		Vous connaissez un site qui n'est pas référencé ?<br> 
-		Ajoutez le <span class="letter-green">gratuitement</span> dans la base de données, et faites-en profiter tout le monde !
-		</b></small>
-	</span>
-<?php } ?>
-
 <hr>
 	<?php if($category == "Météo"){ ?>
 	<h3 class="text-azure"><i class='fa fa-angle-down'></i> <i class='fa fa-sun-o'></i> Météo Nouméa</h3>
 
-	<div id="cont_OTU3MTR8NXwzfDV8NHwwMDAwMDB8OXxGRkZGRkZ8Y3wx">
+	<div id="cont_OTU3MTR8NXwzfDV8NHwwMDAwMDB8OXxGRkZGRkZ8Y3wx" class="hidden-xs">
 		<div id="spa_OTU3MTR8NXwzfDV8NHwwMDAwMDB8OXxGRkZGRkZ8Y3wx">
 			<b><a id="a_OTU3MTR8NXwzfDV8NHwwMDAwMDB8OXxGRkZGRkZ8Y3wx" class="hidden" 
 				href="http://www.meteocity.com/france/noumea_v95714/" target="_blank" style="color:#333;text-decoration:none;">
@@ -158,7 +145,7 @@
 
 
 
-<?php if(sizeof($siteurls) >= 1){ ?>
+<?php if(sizeof($siteurls) >= 0){ ?>
 <div class="col-md-12 margin-bottom-50 text-right" style="">
 	<hr class="margin-top-5">
 	<span>
@@ -173,14 +160,15 @@
 	</a> 
 </div>
 <?php } ?>
-
 <script type="text/javascript" >
   
 var siteurls = <?php echo json_encode($siteurls) ? json_encode($siteurls) : "{}"; ?>;
 var search = "<?php echo $search; ?>";
 
 jQuery(document).ready(function() { 
-   Sig.showMapElements(Sig.map, siteurls);
+
+    Sig.showMapElements(Sig.map, siteurls);
+	
    		
    $(".siteurl_title").click(function(){
    		var url = $(this).attr("href");

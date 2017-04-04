@@ -817,7 +817,7 @@ transform: rotate(90deg);
 				dataType: "json",
 				success: function(data){
 			        if(data.result){
-			        	newBanniere='<img class="img-responsive" src="'+baseUrl+data.src+'" style="border-bottom:45px solid white;">';
+			        	newBanniere='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
 			        	$("#contentBanniere").html(newBanniere);
 			        	$.unblockUI();
 			        	//$("#uploadScropResizeAndSaveImage").hide();

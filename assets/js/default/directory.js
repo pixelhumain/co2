@@ -863,19 +863,24 @@ var directory = {
            var tip = 'Garder en favoris';
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
                   'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+
+                  "' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
                       "<i class='fa fa-star'></i>"+ //fa-bookmark fa-rotate-270
                     "</a>";
           
         }
 
         if(params.updated != null )
-          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
+          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>publié </span>" + 
+                    params.updated + 
+                  "</div>";
         
         if(params.type == "citoyens") 
             params.url += '.viewer.' + userId;
         if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.url+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + params.imgProfil + "</a>";
+          str += "<a href='"+params.url+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + 
+                    params.imgProfil + 
+                  "</a>";
 
         str += "<div class='padding-10 informations'>";
 
@@ -891,7 +896,7 @@ var directory = {
             str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + "</div>";
          
             if(typeof params.category != "undefined"){
-              str += "<div class='entityType bold'>" + params.section+" > "+params.category;
+              str += "<div class='entityType bold'><span class='uppercase'>" + params.section+"</span> | "+params.category;
                 if(typeof params.subtype != "undefined") str += " > " + params.subtype;
               str += "</div>";
             }

@@ -2965,9 +2965,12 @@ var typeObjLib = {
       	placeholder : "Saisir les numéros de fax séparer par une virgule"
     },
     price :{
-      	inputType : "text",
+      	inputType : "price",
       	label : "Prix",
-      	placeholder : "Prix ..."
+      	placeholder : "Prix ...",
+      	init : function(){
+    		$('input#price').filter_input({regex:'[0-9]'});
+      	}
     },
     contactInfo :{
       	inputType : "text",

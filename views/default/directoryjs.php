@@ -128,6 +128,12 @@
   .btn-select-type-anc.col-xs-5{
     width:48%!important;
   }
+
+ /* #sub-menu-left.subsub .btn{
+    width: 45%;
+    padding:4px 0px;
+    font-size:10px;
+  }*/
 }
 
   @media screen and (min-width: 768px) and (max-width: 1024px) {
@@ -262,7 +268,7 @@
 
         <?php }else if($typeSelected == "classified"){ ?>
 
-          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub text-right" id="sub-menu-left">
+          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 margin-top-15 text-left subsub text-right" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
@@ -274,8 +280,8 @@
             ?>
                 <?php if(is_array($cat)) { ?>
                   <button class="btn btn-default text-dark bold margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
-                    <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
-                  </button><br>
+                    <i class="fa fa-<?php echo @$cat["icon"]; ?>"></i> <?php echo $key; ?>
+                  </button><br class="hidden-xs">
                   <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
                     <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
                       <?php echo $cat2; ?> <i class="fa fa-angle-left margin-right-10"></i>
@@ -286,27 +292,57 @@
             <?php } ?>
           </div>
 
+          <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 hidden text-center subsub" id="menu-section-classified">
+            <?php 
+                $classifiedSections = CO2::getContextList("freedomSections");
+                $currentSection = 1;
+                foreach ($classifiedSections as $key => $section) { ?>
+                  <div class="col-md-2 col-sm-4 col-xs-6 no-padding">
+                    <button class="btn btn-default col-md-12 col-sm-12 padding-5 bold text-dark elipsis btn-select-type-anc" 
+                            data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
+                            data-type="classified"
+                            style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
+                      <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x"></i><br><?php echo $section["labelFront"]; ?>
+                    </button>
+                  </div>
+            <?php } ?>  
+            <hr class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding" id="before-section-result"> 
+          </div>
 
-        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 hidden text-center subsub" id="menu-section-classified">
-          <?php 
-              $classifiedSections = CO2::getContextList("freedomSections");
-              $currentSection = 1;
-              foreach ($classifiedSections as $key => $section) { ?>
-                <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
-                  <button class="btn btn-default col-md-12 col-sm-12 padding-5 bold text-dark elipsis btn-select-type-anc" 
-                          data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
-                          data-type="classified"
-                          style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
-                    <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["labelFront"]; ?>
-                  </button>
-                </div>
-          <?php } ?>  
-          <hr class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding" id="before-section-result"> 
-        </div>
+          <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 padding-top-5" id="section-price">
+            
+            <div class="form-group col-md-4 col-sm-4 col-xs-6">
+              <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
+                <i class="fa fa-chevron-down"></i> Prix min
+              </label>
+              <input type="text" id="priceMin" name="priceMin" class="form-control" placeholder="prix min"/>
+            </div>
+
+            <div class="form-group col-md-4 col-sm-4 col-xs-6">
+              <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
+                <i class="fa fa-chevron-down"></i> Prix max
+              </label>
+              <input type="text" id="priceMax" name="priceMax" class="form-control col-md-5" placeholder="prix max"/>
+            </div>
+            
+            <div class="form-group col-md-4 col-sm-4 col-xs-12">
+              <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
+                <i class="fa fa-money"></i> Devise
+              </label>
+              <select class="form-control" name="devise" id="devise" style="">
+                <option class="bold" value="€">euro €</option>
+                <option class="bold" value="$">dollars $</option>
+                <option class="bold" value="CFP">CFP</option>
+              </select>
+            </div>
+
+            <hr class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding" id="before-section-result"> 
+        
+          </div>
         
         <?php } ?>
 
-        <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search"></div>
+        <div class="col-md-8 col-sm-8 col-xs-12 padding-10" id="dropdown_search"></div>
 
       <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
       

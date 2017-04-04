@@ -11,12 +11,14 @@
 	.fileupload-new, .fileupload-preview{
 		max-height: 250px;
 		overflow-y: hidden;
-		border: 3px solid white;
 	}
 	.fileupload-preview .thumbnail, .fileupload-new .thumbnail{
 		/*min-height: 250px;*/
     	/*line-height: 250px;*/
     	background-color: black;
+	}
+	.fileupload-preview.thumbnail, .fileupload-new.thumbnail {
+   		border: 3px solid white !important;
 	}
 	.fileupload, .fileupload-preview.thumbnail, .fileupload-new .thumbnail, .fileupload-new .thumbnail img, .fileupload-preview.thumbnail img{
 		padding : 0px;

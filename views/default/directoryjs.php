@@ -272,9 +272,9 @@
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
-              <i class="fa fa-money"></i> A vendre
+              <i class="fa fa-asterisk"></i>
             </h4>
-            <hr>
+            <hr style="margin-bottom: 25px;">
             <?php $categories = CO2::getContextList("classifiedCategories"); 
                 foreach ($categories as $key => $cat) {
             ?>
@@ -309,7 +309,7 @@
             <hr class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding" id="before-section-result"> 
           </div>
 
-          <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 padding-top-5" id="section-price">
+          <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 padding-top-10" id="section-price">
             
             <div class="form-group col-md-4 col-sm-4 col-xs-6">
               <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">

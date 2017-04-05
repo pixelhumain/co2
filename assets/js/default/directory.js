@@ -123,7 +123,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     };
 
     
-				
+    if($("#priceMin").val()!="") data.priceMin = $("#priceMin").val();
+    if($("#priceMax").val()!="") data.priceMax = $("#priceMax").val();
+    if($("#devise").val()!="") data.devise = $("#devise").val();
 
     if(searchSType != "")
       data.searchSType = searchSType;
@@ -155,7 +157,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         data: data,
         dataType: "json",
         error: function (data){
-             mylog.log("error autocomplete search"); mylog.dir(data);     
+             mylog.log("error autocomplete search"); mylog.dir(data);   
+             $("#dropdown_search").html(data.responseText);  
              //signal que le chargement est terminé
             loadingData = false;     
         },
@@ -754,12 +757,14 @@ var directory = {
         // ********************************
         str +=  "<div class='col-xs-12 text-left'>";
         
-          price = (typeof params.price != "undefined" && params.price != "") ? "<br/><i class='fa fa-money'></i> " + params.price : "";
+          var devise = typeof params.devise != "undefined" ? params.devise : "";
+          var price = (typeof params.price != "undefined" && params.price != "") ? 
+                        "<br/><i class='fa fa-money'></i> " + params.price + " " + devise : "";
           
           str += "<h4 class='text-azure'>"+price+"</h4>";
 
           if(typeof params.category != "undefined"){
-              str += "<div class='entityType text-dark bold'>" + params.section+" > "+params.category;
+              str += "<div class='entityType text-dark'><span class='bold uppercase'>" + params.section + "</span> > "+params.category;
                 if(typeof params.subtype != "undefined") str += " > " + params.subtype;
               str += "</div><hr>";
             }
@@ -892,12 +897,13 @@ var directory = {
               str += "</div>";
             }
 
+            var devise = typeof params.devise != "undefined" ? params.devise : "";
             if(typeof params.price != "undefined" && params.price != "")
-            str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + "</div>";
+            str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
          
             if(typeof params.category != "undefined"){
-              str += "<div class='entityType bold'><span class='uppercase'>" + params.section+"</span> | "+params.category;
-                if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+              str += "<div class='entityType'><span class='uppercase bold'>" + params.section + "</span> > " + params.category;
+              if(typeof params.subtype != "undefined") str += " > " + params.subtype;
               str += "</div>";
             }
 

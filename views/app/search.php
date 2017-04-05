@@ -526,7 +526,7 @@ jQuery(document).ready(function() {
     if(page == "annonces" || page == "agenda" || page == "power"){
         setTimeout(function(){
             KScrollTo("#content-social");  
-        }, 300);
+        }, 1000);
     }
     $(".tooltips").tooltip();
 
@@ -575,11 +575,22 @@ function initClassifiedInterface(){
         section = $(this).data("type-anc");
         sectionKey = $(this).data("key");
         //alert("section : " + section);
+        if( sectionKey == "forsale" || sectionKey == "forrent"){
+            $("#section-price").show(200);
+            KScrollTo("#section-price");
+        }
+        else {
+            $("#section-price").hide();
+            $("#priceMin").val("");
+            $("#priceMax").val("");
+            KScrollTo("#dropdown_search");
+        }
+
         if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
             sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
             //$(".subsub").show(300);
             $('#searchTags').val(section);
-            KScrollTo("#section-price");
+            //KScrollTo("#section-price");
             startSearch(0, indexStepInit, searchCallback); 
         } 
 

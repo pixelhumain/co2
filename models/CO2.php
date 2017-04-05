@@ -58,6 +58,7 @@ class CO2 {
             $city = PHDB::findOne( City::COLLECTION , $where );
             $communexion["values"] = array( "cityName"  =>$city["alternateName"],
                                             "cityKey"   => City::getUnikey($city),
+                                            "wikidataID" =>@$city["wikidataID"],
                                             "cityCp"    =>Yii::app()->request->cookies['cpCommunexion'],
                                             "depName"   =>@$city["depName"],
                                             "regionName"=>@$city["regionName"]);

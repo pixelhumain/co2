@@ -99,51 +99,7 @@
 </div>
 <ul id="accordion" class="accordion shadow2">
 		    <li>
-				<div class="iamgurdeep-pic">
-					<?php if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
-					$images=$element["profilMediumImageUrl"];
-				else 
-					$images="";	
-					$this->renderPartial('../pod/fileupload', array(  "itemId" => (string) $element["_id"],
-																  "type" => $type,
-																  "resize" => false,
-																  "contentId" => Document::IMG_PROFIL,
-																  "show" => true,
-																  "editMode" => $edit,
-																  "image" => $images,
-																  "openEdition" => $openEdition) ); 
-																  ?>
-					<!--<img class="img-responsive" alt="" 
-						 src="<?php echo @$element['profilMediumImageUrl'] ? 
-						 		Yii::app()->createUrl('/'.@$element['profilMediumImageUrl']) : $imgDefault; ?>">-->
-					
-					<?php if(@Yii::app()->session["userId"]){ ?>
-					<div class="blockUsername">
-					    <!--<h2 class="text-left">
-						    <?php //echo @$element["name"]; ?><!-- <br>
-						    <small>
-						    	<?php if(@$element["address"] && @$element["address"]["addressLocality"]) {
-		                				echo "<i class='fa fa-university'></i> ".$element["address"]["addressLocality"];
-		                				if(@$element["address"]["postalCode"]) echo ", ";
-		                			  }
-		                			  if(@$element["address"] && @$element["address"]["postalCode"]) 
-		                			  	echo $element["address"]["postalCode"];
-		                		?>
-		                	</small>
-	                	</h2>-->
-	                	<?php $this->renderPartial('../element/linksMenu', 
-	                			array("linksBtn"=>$linksBtn,
-	                					"elementId"=>(string)$element["_id"],
-	                					"elementType"=>$type,
-	                					"elementName"=> $element["name"],
-	                					"openEdition" => $openEdition) 
-	                			); 
-	                	?>
-					    <!-- <p><i class="fa fa-briefcase"></i> Web Design and Development.</p> -->
-					</div>
-					<?php } ?>
-				    
-				</div>
+				
 		        
 		    </li>
 			<li>

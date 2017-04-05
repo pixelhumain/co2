@@ -237,20 +237,43 @@
 #shortDescriptionHeader{
 	white-space: pre-line;
 	font-size: 16px;
+	line-height: 19px;
 }
 .contentHeaderInformation{
-	position: absolute;
-    bottom: 0px;
-    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 25%);
+	background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 25%);
     padding: 35px 0px;
+    position: absolute;
+    bottom: 0px;
 }
-	#fileuploadContainer{
-		box-shadow: 0px 0px 5px 0px grey;
+#col-banniere{
+	min-height:280px;
+}
+#fileuploadContainer{
+	box-shadow: 0px 0px 5px 0px grey;
+}
+
+.sub-menu-social.affix {
+    top: 81px !important;
+    position: fixed;
+    right: 0;
+    z-index: 10;
+    width:100%!important;
+    -webkit-box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.5);
+	-moz-box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.5);
+	box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.5);
+}
+
+@media (max-width: 768px) {
+
+	#shortDescriptionHeader{
+		font-size: 13px;
+		line-height: 17px;
 	}
+}
 </style>
 	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
-<div class="col-md-offset-1 col-md-10">	
+<div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
     <section class="col-md-12 col-sm-12 col-xs-12" id="social-header">
         <div id="topPosKScroll"></div>
@@ -260,7 +283,7 @@
 	        <i class="fa fa-cog"></i>
 	    </button>
 	    <?php } ?>
-        <div class="col-md-12 col-sm-12 col-lg-12 text-left no-padding">
+        <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-left no-padding" id="col-banniere">
         	<?php 
 				$thumbAuthor =  @$element['profilImageUrl'] ? 
                   Yii::app()->createUrl('/'.@$element['profilImageUrl']) 
@@ -286,8 +309,8 @@
 			<!--<img class="col-xs-11 col-sm-12 col-md-12 no-padding img-responsive" src="<?php echo $thumbAuthor; ?>" 
 				 style="border-bottom:45px solid white;">
 			-->
-			<div class="col-xs-11 col-sm-12 col-md-12 contentHeaderInformation">	
-	        	<div class="col-md-8 col-lg-9 text-white pull-right no-padding">
+			<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation">	
+	        	<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 text-white pull-right no-padding">
 					<h4 class="text-left margin-bottom-10 padding-left-15 pull-left no-margin" id="main-name-element">
 						<?php if($edit==true || $openEdition==true ){?>
 							<!-- <a href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a> -->
@@ -302,9 +325,8 @@
 					</h4>
 				</div>
 
-				<div class="col-md-8 col-lg-9 pull-right" style="padding:0px 5px;">
-					<span class="pull-left text-white" id="shortDescriptionHeader">
-						<?php echo ucfirst(substr(@$element["shortDescription"], 0, 180)); ?>
+				<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 pull-right" style="padding:0px 5px;">
+					<span class="pull-left text-white" id="shortDescriptionHeader"><?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
 						<?php if(@$edit==true) { ?>
 					<?php } ?>
 					</span>	
@@ -324,9 +346,164 @@
 				
 			</div>
 	    </div>
+
+	    <div class="col-md-3 col-sm-3 col-xs-3 no-padding" style="bottom:-31px; position: absolute;">
+					<?php if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
+							$images=$element["profilMediumImageUrl"];
+							else 
+								$images="";	
+								$this->renderPartial('../pod/fileupload', array(  "itemId" => (string) $element["_id"],
+																			  "type" => $type,
+																			  "resize" => false,
+																			  "contentId" => Document::IMG_PROFIL,
+																			  "show" => true,
+																			  "editMode" => $edit,
+																			  "image" => $images,
+																			  "openEdition" => $openEdition) ); 
+																			  ?>
+								<!--<img class="img-responsive" alt="" 
+									 src="<?php echo @$element['profilMediumImageUrl'] ? 
+									 		Yii::app()->createUrl('/'.@$element['profilMediumImageUrl']) : $imgDefault; ?>">-->
+								
+								<?php if(false && @Yii::app()->session["userId"]){ ?>
+								<div class="blockUsername">
+								    <!--<h2 class="text-left">
+									    <?php //echo @$element["name"]; ?><!-- <br>
+									    <small>
+									    	<?php if(@$element["address"] && @$element["address"]["addressLocality"]) {
+					                				echo "<i class='fa fa-university'></i> ".$element["address"]["addressLocality"];
+					                				if(@$element["address"]["postalCode"]) echo ", ";
+					                			  }
+					                			  if(@$element["address"] && @$element["address"]["postalCode"]) 
+					                			  	echo $element["address"]["postalCode"];
+					                		?>
+					                	</small>
+				                	</h2>-->
+				                	<?php $this->renderPartial('../element/linksMenu', 
+				                			array("linksBtn"=>$linksBtn,
+				                					"elementId"=>(string)$element["_id"],
+				                					"elementType"=>$type,
+				                					"elementName"=> $element["name"],
+				                					"openEdition" => $openEdition) 
+				                			); 
+				                	?>
+								    <!-- <p><i class="fa fa-briefcase"></i> Web Design and Development.</p> -->
+								</div>
+								<?php } ?>
+		</div>
     </section>
-    	  
-	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 profilSocial" style="margin-top:-175px;">  
+    
+    <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 pull-right sub-menu-social no-padding">
+
+    	<?php if(@Yii::app()->session["userId"]){ ?>
+		<div class="btn-group pull-right padding-top-5">
+		    <?php $this->renderPartial('../element/linksMenu', 
+        			array("linksBtn"=>$linksBtn,
+        					"elementId"=>(string)$element["_id"],
+        					"elementType"=>$type,
+        					"elementName"=> $element["name"],
+        					"openEdition" => $openEdition) 
+        			); 
+        	?>
+		</div>
+		<?php } ?>
+
+    	<div class="btn-group">
+
+    	  <?php if(@Yii::app()->session["userId"] && 
+    			 $type==Person::COLLECTION && 
+    			 (string)$element["_id"]==Yii::app()->session["userId"]){ 
+
+    			$iconNewsPaper="user-circle"; 
+    	  ?>
+		  <button type="button" class="btn btn-default bold" id="btn-start-newsstream">
+		  		<i class="fa fa-rss"></i> Fil d'actu<span class="hidden-sm">alité</span>s
+		  </button>
+
+		  <?php } else $iconNewsPaper="rss"; ?>
+		  <button type="button" class="btn btn-default bold" id="btn-start-mystream">
+		  		<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper") ?>
+		  </button>
+
+		  <button type="button" class="btn btn-default bold" id="btn-start-gallery">
+		  		<i class="fa fa-camera"></i> <?php echo Yii::t("common", "Gallery") ?>
+		  </button>
+		</div>
+
+		<?php if(@Yii::app()->session["userId"] && $isLinked==true){ ?>
+		<div class="btn-group">
+		  <button type="button" class="btn btn-default bold" id="btn-start-notifications">
+		  	<i class="fa fa-bell"></i> 
+		  	<span class="hidden-xs hidden-sm">
+		  		Mes notif<span class="hidden-md">ications</span>
+		  	</span>
+		  	<span class="badge notifications-countElement <?php if(!@$countNotifElement || (@$countNotifElement && $countNotifElement=="0")) echo 'badge-transparent hide'; else echo 'badge-success'; ?>">
+		  		<?php echo @$countNotifElement ?>
+		  	</span>
+		  </button>
+		  <!--<button type="button" class="btn btn-default bold">
+		  	<i class="fa fa-envelope"></i> 
+		  	<span class="hidden-xs hidden-sm hidden-md">
+		  		Messagerie
+		  	</span><span class="badge bg-azure">3</span>-->
+		  </button>
+		</div>
+		<?php } ?>
+		
+		<div class="btn-group pull-right">
+		  <button type="button" class="btn btn-default bold">
+		  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
+		  </button>
+		  <?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
+		  <button type="button" class="btn btn-default bold" id="btn-superadmin">
+		  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
+		  </button>
+		  <?php } ?>
+		</div>
+
+		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+		<div class="btn-group pull-right">
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+				<button type="button" class="btn btn-default bold">
+		  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo Yii::t("common", "Settings"); ?></span>
+		  		</button>
+		  		<ul class="dropdown-menu arrow_box menu-params">			
+	  				<li class="text-left">
+		               	<a href="javascript:;" id="editConfidentialityBtn" class="bg-white">
+		                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
+		                </a>
+		            </li>
+		  			<?php if($type !=Person::COLLECTION){ ?>
+		  			<li class="text-left">
+		               	<a href="javascript:;" class="bg-white text-red">
+		                    <i class="fa fa-trash"></i><?php echo Yii::t("common", "Delete {what}",array("{what}"=> Yii::t("common","this ".Element::getControlerByCollection($type)))); ?>
+		                </a>
+		            </li>
+		            <?php } else { ?>
+					<li class="text-left">
+						<a href='javascript:' id="downloadProfil">
+							<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
+						</a>
+					</li>
+		            <li class="text-left">
+		               	<a href='javascript:' id="changePasswordBtn" class='text-red'>
+							<i class='fa fa-key'></i> <?php echo Yii::t("common","Change assword"); ?>
+						</a>
+		            </li>
+		            <?php } ?>
+		  		</ul>
+		  		</li>
+		  	</ul>
+		</div>
+		<?php } ?>
+
+		
+		  		
+	</div>
+
+	  
+	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 profilSocial" style="margin-top:50px;">  
 		
 	    <?php 
 	    	$params = array(    "element" => @$element, 
@@ -359,87 +536,8 @@
 		-->
 	</div>
 
-	<section class="row col-md-8 col-sm-8 col-lg-9 no-padding" style="margin-top: -10px;">
+	<section class="col-xs-12 col-md-8 col-sm-8 col-lg-9 no-padding" style="margin-top: -10px;">
 	    	
-  
-	    <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12  sub-menu-social no-padding">
-	    	<div class="btn-group">
-	    	<?php if(@Yii::app()->session["userId"] && $type==Person::COLLECTION && (string)$element["_id"]==Yii::app()->session["userId"]){ 
-	    		$iconNewsPaper="user-circle"; ?>
-			  <button type="button" class="btn btn-default bold" id="btn-start-newsstream"><i class="fa fa-rss"></i> Fil d'actu<span class="hidden-sm">alité</span>s</button>
-			  <?php } else $iconNewsPaper="rss"; ?>
-			  <button type="button" class="btn btn-default bold" id="btn-start-mystream"><i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper") ?></button>
-			  <button type="button" class="btn btn-default bold" id="btn-start-gallery"><i class="fa fa-camera"></i> <?php echo Yii::t("common", "Gallery") ?></button>
-			</div>
-			<?php if(@Yii::app()->session["userId"] && $isLinked==true){ ?>
-			<div class="btn-group">
-			  <button type="button" class="btn btn-default bold" id="btn-start-notifications">
-			  	<i class="fa fa-bell"></i> 
-			  	<span class="hidden-xs hidden-sm">
-			  		Mes notif<span class="hidden-md">ications</span>
-			  	</span>
-			  	<span class="badge notifications-countElement <?php if(!@$countNotifElement || (@$countNotifElement && $countNotifElement=="0")) echo 'badge-transparent hide'; else echo 'badge-success'; ?>">
-			  		<?php echo @$countNotifElement ?>
-			  	</span>
-			  </button>
-			  <!--<button type="button" class="btn btn-default bold">
-			  	<i class="fa fa-envelope"></i> 
-			  	<span class="hidden-xs hidden-sm hidden-md">
-			  		Messagerie
-			  	</span><span class="badge bg-azure">3</span>-->
-			  </button>
-			</div>
-			<?php } ?>
-			
-			<div class="btn-group pull-right">
-			  <button type="button" class="btn btn-default bold">
-			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
-			  </button>
-			  <?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
-			  <button type="button" class="btn btn-default bold" id="btn-superadmin">
-			  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
-			  </button>
-			  <?php } ?>
-			</div>
-
-			<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
-			<div class="btn-group pull-right">
-				<ul class="nav navbar-nav">
-					<li class="dropdown">
-					<button type="button" class="btn btn-default bold">
-			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo Yii::t("common", "Settings"); ?></span>
-			  		</button>
-			  		<ul class="dropdown-menu arrow_box menu-params">
-			  			<li class="text-left">
-			               	<a href="javascript:;" id="editConfidentialityBtn" class="bg-white">
-			                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
-			                </a>
-			            </li>
-			  			<?php if($type !=Person::COLLECTION){ ?>
-			  			<li class="text-left">
-			               	<a href="javascript:;" class="bg-white text-red">
-			                    <i class="fa fa-trash"></i><?php echo Yii::t("common", "Delete {what}",array("{what}"=> Yii::t("common","this ".Element::getControlerByCollection($type)))); ?>
-			                </a>
-			            </li>
-			            <?php } else { ?>
-						<li class="text-left">
-							<a href='javascript:' id="downloadProfil">
-								<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
-							</a>
-						</li>
-			            <li class="text-left">
-			               	<a href='javascript:' id="changePasswordBtn" class='text-red'>
-								<i class='fa fa-key'></i> <?php echo Yii::t("common","Change assword"); ?>
-							</a>
-			            </li>
-			            <?php } ?>
-			  		</ul>
-			  		</li>
-			  	</ul>
-			</div>
-			<?php } ?>
-		</div>
-
 		<div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 margin-top-50" id="central-container">
 		</div>
 		<?php $this->renderPartial('../pod/qrcode',array(
@@ -936,10 +1034,14 @@ transform: rotate(90deg);
 		var accordion5 = new Accordion($('#accordion5'), false);
 
 		//ouvre le pod communauté
-		$('#accordion4 .link').trigger("click");
+		//$('#accordion4 .link').trigger("click");
    		$(".tooltips").tooltip();
 
-
+   		$('.sub-menu-social').affix({
+          offset: {
+              top: 350
+          }
+      });
    		
 	}
 

@@ -214,9 +214,9 @@
             <span class="hidden-xs hidden-sm"> Tous </span>
           </button> -->
           <?php 
-              $sections = CO2::getContextList("place");
+              $place = CO2::getContextList("place");
               $currentSection = 1;
-              foreach ($sections["sections"] as $key => $section) { ?>
+              foreach ($place["sections"] as $key => $section) { ?>
                 <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
                   <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
                           data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
@@ -300,7 +300,7 @@
 
         <?php }else if($typeSelected == "classified"){ ?>
 
-          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub" id="sub-menu-left">
+          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub classifiedFilters" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
@@ -333,8 +333,8 @@
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
               <i class="fa fa-money"></i> Lieux           </h4>
             <hr>
-            <?php $categories = CO2::getContextList("place"); 
-                foreach ($categories["filters"] as $key => $cat) {
+            <?php 
+                foreach ($place["filters"] as $key => $cat) {
             ?>
                 <?php if(is_array($cat)) { ?>
                   <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">

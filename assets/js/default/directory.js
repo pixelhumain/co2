@@ -1517,8 +1517,7 @@ var directory = {
     },
 
     //todo add count on each tag
-    filterTags : function (withSearch,open) 
-    { 
+    filterTags : function (withSearch,open) { 
         directory.tagsT = [];
         $("#listTags").html('');
         if(withSearch){
@@ -1550,6 +1549,24 @@ var directory = {
         //$("#btn-open-tags").append("("+$(".favElBtn").length+")");
     },
     
+    sectionFilter : function (list, dest, what) { 
+      mylog.log("sectionFilter",list,what,dest);
+
+        $(dest).html('');
+        $(dest).append('<h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">'+
+              '<i class="fa fa-'+what.icon+'"></i> '+what.title+'</h4><hr>');
+        $.each( list,function(k,o){
+            str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="'+k+'">'+
+                    '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+k+'</button><br>';
+            if( o.subcat ){
+              $.each( o.subcat ,function(i,oT){
+                  str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
+                          '<i class="fa fa-angle-right"></i>'+oT+'</button><br class="hidden">';
+              });
+            }
+            $(dest).append(str);
+        });
+    },
     showFilters : function () { 
       if($("#listTags").hasClass("hide")){
         $("#listTags").removeClass("hide");
@@ -1611,8 +1628,7 @@ var directory = {
         $(".my-main-container").scrollTop(0);
     },
 
-    showAll: function(parents,children,path,color) 
-    {
+    showAll: function(parents,children,path,color) {
       //show all
       if(!color)
         color = "text-white";

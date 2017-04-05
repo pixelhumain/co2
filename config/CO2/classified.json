@@ -6,7 +6,8 @@
             "key" : "sharing",     
             "icon" : "exchange",               
             "section":2, 
-            "color":"azure"
+            "color":"azure",
+            "filters" : "sharingFilters"
         },
         "donation": {
             "label":"Donner",   
@@ -57,6 +58,79 @@
     },
     "filters" : {
         "Technologie" : 
+            {   "icon" : "laptop",
+                "subcat" : ["TV / Vidéo", "Informatique", "Tablettes", "Téléphonie", "Appareils photos", "Appareil audio"]
+            }, 
+         
+         "Immobilier" : 
+            {   "icon" : "building",
+                "subcat" : ["Maison", "Appartement", "Terrain", "Parking", "Bureaux"]
+            }, 
+         
+         "Véhicules" : 
+            {   "icon" : "car",
+                "subcat" : 
+                [   "Voiture", 
+                    "SUV", 
+                    "4x4", 
+                    "Utilitaire", 
+                    "Moto", 
+                    "Scooter", 
+                    "Bateau", 
+                    "Voiturette", 
+                    "Vélos",
+                    "Équipement véhicule",
+                    "Équipement 2 roues",
+                    "Équipement bateau",
+                    "Équipement vélo"
+                ]
+            }, 
+
+         "Maison" :  
+            {   "icon" : "home",
+                "subcat" : 
+                [    "Electroménager",
+                     "Mobilier", 
+                     "Équipement bébé", 
+                     "Animaux", 
+                     "Divers"
+                ]
+            },
+
+         "Loisirs" :  
+            {   "icon" : "smile-o",
+                "subcat" : 
+                [    "Sports", 
+                     "Instrument musique", 
+                     "Sonorisation", 
+                     "CD / DVD",
+                     "Jouet", 
+                     "Jeux de société", 
+                     "Livres / BD", 
+                     "Collections", 
+                     "Bricolages", 
+                     "Jardinage", 
+                     "Art / Déco", 
+                     "Modélisme", 
+                     "Puériculture", 
+                     "Animaux", 
+                     "Divers"
+                ]
+            },
+
+        "Mode" : 
+            {   "icon" : "shopping-bag",
+                "subcat" :  
+                [    "Vêtements", 
+                     "Chaussures", 
+                     "Accessoires", 
+                     "Montres", 
+                     "Bijoux"
+                ]
+            }
+    },
+    "sharingFilters" : {
+        "TechnologieSH" : 
             {   "icon" : "laptop",
                 "subcat" : ["TV / Vidéo", "Informatique", "Tablettes", "Téléphonie", "Appareils photos", "Appareil audio"]
             }, 

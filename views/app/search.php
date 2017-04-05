@@ -560,18 +560,16 @@ var section = "";
 var classType = "";
 var classSubType = "";
 function initClassifiedInterface(){
-
+    classified.currentLeftFilters = null;
     $('#menu-section-'+typeInit).removeClass("hidden");
     $("#btn-create-classified").click(function(){
          elementLib.openForm('classified');
-    });
-
-    
+    });    
 }
 
 function bindLeftMenuFilters () { 
 
-    $(".btn-select-type-anc").click( function()
+    $(".btn-select-type-anc").off().on("click", function()
     {    
         searchType = [ typeInit ];
         indexStepInit = 100;
@@ -602,7 +600,24 @@ function bindLeftMenuFilters () {
             //KScrollTo("#section-price");
             startSearch(0, indexStepInit, searchCallback); 
         } */
-        
+        if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
+            alert('build left menu'+classified.sections[sectionKey].filters);
+            var filters = classified[classified.sections[sectionKey].filters]; 
+            var what = { title : classified.sections[sectionKey].label, 
+                         icon : classified.sections[sectionKey].icon }
+            directory.sectionFilter( filters, ".classifiedFilters",what);
+            bindLeftMenuFilters ();
+            classified.currentLeftFilters = sectionKey;
+        }
+        else if(classified.currentLeftFilters != null) {
+            alert('rebuild original'); 
+            var what = { title : classified.sections[sectionKey].label, 
+                         icon : classified.sections[sectionKey].icon }
+            directory.sectionFilter( classified.filters, ".classifiedFilters",what);
+            bindLeftMenuFilters ();
+            classified.currentLeftFilters = null;
+        }
+
         $('#searchTags').val(section);
         //KScrollTo(".top-page");
         startSearch(0, indexStepInit, searchCallback); 
@@ -615,7 +630,7 @@ function bindLeftMenuFilters () {
         }
     });
 
-    $(".btn-select-category-1").click(function(){
+    $(".btn-select-category-1").off().on("click", function(){
         searchType = [ typeInit ];
         $(".btn-select-category-1").removeClass("active");
         $(this).addClass("active");
@@ -630,7 +645,7 @@ function bindLeftMenuFilters () {
         startSearch(0, indexStepInit, searchCallback);  
     });
 
-    $(".keycat").click(function(){
+    $(".keycat").off().on("click", function(){
 
         searchType = [ typeInit ];
         $(".keycat").removeClass("active");
@@ -644,7 +659,7 @@ function bindLeftMenuFilters () {
     });
 
 
-    $("#btn-create-classified").click(function(){
+    $("#btn-create-classified").off().on("click", function(){
          elementLib.openForm('classified');
     });
 

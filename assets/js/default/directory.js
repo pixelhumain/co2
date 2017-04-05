@@ -1370,7 +1370,7 @@ var directory = {
                 }
                 if(params.type == "classified" && typeof params.category != "undefined"){
                   params.ico = typeof classified.filters[params.category] != "undefined" ?
-                               "fa-" + classifiedclassified.filters[params.category]["icon"] : "";
+                               "fa-" + classified.filters[params.category]["icon"] : "";
                 }
 
                 params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";

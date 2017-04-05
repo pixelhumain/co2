@@ -553,13 +553,9 @@ function initTypeSearch(typeInit){
     }
 }
 
-<?php 
-    if(@$type == "classified"){
-    $classified = CO2::getContextList("classified");
-?>
-var freedomCategories = <?php echo json_encode($classified["sections"]); ?>
-<?php } ?>
-
+/* -------------------------
+CLASSIFIED
+----------------------------- */
 var section = "";
 var classType = "";
 var classSubType = "";
@@ -598,22 +594,23 @@ function bindLeftMenuFilters () {
             KScrollTo("#dropdown_search");
         }
 
+        /*
         if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
             sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
             //$(".subsub").show(300);
             $('#searchTags').val(section);
             //KScrollTo("#section-price");
             startSearch(0, indexStepInit, searchCallback); 
-        } 
+        } */
         
         $('#searchTags').val(section);
         //KScrollTo(".top-page");
         startSearch(0, indexStepInit, searchCallback); 
 
 
-        if(typeof freedomCategories[sectionKey] != "undefined") {
-            $(".label-category").html("<i class='fa fa-"+ freedomCategories[sectionKey]["icon"] + "'></i> " + freedomCategories[sectionKey]["label"]);
-            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+freedomCategories[sectionKey]["color"])
+        if(typeof classified.sections[sectionKey] != "undefined") {
+            $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]);
+            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+classified.sections[sectionKey]["color"])
             $(".fa-title-list").removeClass("hidden");
         }
     });
@@ -658,6 +655,16 @@ function bindLeftMenuFilters () {
 
  }
 
+
+/* -------------------------
+END CLASSIFIED
+----------------------------- */
+
+
+
+/* -------------------------
+AGENDA
+----------------------------- */
 
 <?php if(@$type == "events"){ ?>
 var calendarInit = false;
@@ -715,5 +722,10 @@ function showResultInCalendar(mapElements){
 }
 
 <?php } ?>
+
+
+/* -------------------------
+END AGENDA
+----------------------------- */
 
 </script>

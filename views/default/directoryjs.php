@@ -192,9 +192,9 @@
             <span class="hidden-xs hidden-sm"> Tous </span>
           </button> -->
           <?php 
-              $sections = CO2::getContextList("classified");
+              $classified = CO2::getContextList("classified");
               $currentSection = 1;
-              foreach ($sections["sections"] as $key => $section) { ?>
+              foreach ($classified["sections"] as $key => $section) { ?>
                 <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
                   <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
                           data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
@@ -307,7 +307,7 @@
               <i class="fa fa-money"></i> A vendre
             </h4>
             <hr>
-            <?php $classified = CO2::getContextList("classified"); 
+            <?php 
                 foreach ($classified['filters'] as $key => $cat) {
             ?>
                 <?php if(is_array($cat)) { ?>

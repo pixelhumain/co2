@@ -131,7 +131,6 @@ jQuery(document).ready(function() {
     //KScrollTo(".main-btn-scopes");
 });
 
-//var freedomCategories = <?php //echo json_encode($freedomSections); ?>
 
 function initFreedomInterface(){
 	

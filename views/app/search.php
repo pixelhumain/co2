@@ -555,9 +555,9 @@ function initTypeSearch(typeInit){
 
 <?php 
     if(@$type == "classified"){
-    $freedomSections = CO2::getContextList("freedomSections");
+    $classified = CO2::getContextList("classified");
 ?>
-var freedomCategories = <?php echo json_encode($freedomSections); ?>
+var freedomCategories = <?php echo json_encode($classified["sections"]); ?>
 <?php } ?>
 
 var section = "";

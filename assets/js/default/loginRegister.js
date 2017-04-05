@@ -122,7 +122,7 @@ var Login = function() {
 		    	  success: function(data){
 		    		  if(data.result)
 		    		  {
-		    		  	alert("elementLib.openForm"+elementLib.openFormAfterLogin.type);
+		    		  	//alert("elementLib.openForm"+elementLib.openFormAfterLogin.type);
 		    		  	var url = requestedUrl;
 		    		  	//mylog.warn(url,", has #"+url.indexOf("#"),"count / : ",url.split("/").length - 1 );
 		    		  	if(backUrl != null){

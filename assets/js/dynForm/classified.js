@@ -100,7 +100,7 @@ dynForm = {
                 label : "Dans quelle catégorie souhaitez-vous publier votre annonce ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir une catégorie",
-                list : classifiedTypes,
+                list : classified.filters,
                 init : function(){
 	            	$(".typeBtn").off().on("click",function(){
 	            		
@@ -114,7 +114,7 @@ dynForm = {
 	            		//$(".typeBtn:not(.active)").hide();
 	            		$("#ajaxFormModal #subtype").val("");
 	            		fieldHTML = "";
-	            		$.each(classifiedTypes[ $(this).data('key') ]["subcat"], function(k,v) { 
+	            		$.each(classified.filters[ $(this).data('key') ]["subcat"], function(k,v) { 
 	            			fieldHTML += '<div class="col-md-6 padding-5">'+
         									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>' +
 	            						"</div>";

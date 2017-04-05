@@ -164,6 +164,19 @@
     .searchEntityContainer.pull-left.classified{
         clear: left;
     }
+
+    .carousel-inner > .item > img.img-responsive{
+        display: inline !important;
+        max-height: 400px !important;
+    }
+
+    .btn-select-type-anc.active,
+    .btn-select-type-anc:active,
+    .btn-select-type-anc:focus{
+        color: white !important;
+        background-color: #2C3E50;
+    }
+
 </style>
 
 
@@ -513,7 +526,7 @@ jQuery(document).ready(function() {
     if(page == "annonces" || page == "agenda" || page == "power"){
         setTimeout(function(){
             KScrollTo("#content-social");  
-        }, 2000);
+        }, 1000);
     }
     $(".tooltips").tooltip();
 
@@ -562,11 +575,22 @@ function initClassifiedInterface(){
         section = $(this).data("type-anc");
         sectionKey = $(this).data("key");
         //alert("section : " + section);
+        if( sectionKey == "forsale" || sectionKey == "forrent"){
+            $("#section-price").show(200);
+            KScrollTo("#section-price");
+        }
+        else {
+            $("#section-price").hide();
+            $("#priceMin").val("");
+            $("#priceMax").val("");
+            KScrollTo("#dropdown_search");
+        }
+
         if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
             sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
             //$(".subsub").show(300);
             $('#searchTags').val(section);
-            //KScrollTo(".top-page");
+            //KScrollTo("#section-price");
             startSearch(0, indexStepInit, searchCallback); 
         } 
 
@@ -601,6 +625,7 @@ function initClassifiedInterface(){
         var classType = $(this).data("categ");
         //alert("classSubType : "+classSubType);
         $('#searchTags').val(section+","+classType+","+classSubType);
+        KScrollTo("#menu-section-classified");
         startSearch(0, indexStepInit, searchCallback);  
     });
 
@@ -608,7 +633,11 @@ function initClassifiedInterface(){
          elementLib.openForm('classified');
     });
 
-    
+    $("#priceMin").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
+    $("#priceMax").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
+
+    $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@#\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
+
 }
 
 

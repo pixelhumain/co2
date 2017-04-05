@@ -2965,9 +2965,12 @@ var typeObjLib = {
       	placeholder : "Saisir les numéros de fax séparer par une virgule"
     },
     price :{
-      	inputType : "text",
+      	inputType : "price",
       	label : "Prix",
-      	placeholder : "Prix ..."
+      	placeholder : "Prix ...",
+      	init : function(){
+    		$('input#price').filter_input({regex:'[0-9]'});
+      	}
     },
     contactInfo :{
       	inputType : "text",
@@ -3500,7 +3503,7 @@ var CoSigAllReadyLoad = false;
 //ne sert plus, juste a savoir d'ou vient drait l'appel
 
 function KScrollTo(target){ 
-	mylog.log("target", target);
+	mylog.log("KScrollTo target", target);
 	if(!$(target)) return;
 
 	$('html, body').stop().animate({

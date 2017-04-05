@@ -17,6 +17,9 @@
     	/*line-height: 250px;*/
     	background-color: black;
 	}
+	.fileupload-preview.thumbnail, .fileupload-new.thumbnail {
+   		border: 3px solid white !important;
+	}
 	.fileupload, .fileupload-preview.thumbnail, .fileupload-new .thumbnail, .fileupload-new .thumbnail img, .fileupload-preview.thumbnail img{
 		padding : 0px;
 		margin:0px !important;
@@ -153,7 +156,6 @@
 			if($("."+contentId+"_isSubmit").val()== "true" ){
 				setTimeout(function(){
 					if(resize){
-						alert();
 						$(".fileupload-preview img").css("height", parseInt($("#"+contentId+"_fileUpload").css("width"))*45/100+"px");
 						$(".fileupload-preview img").css("width", "auto");
 					}

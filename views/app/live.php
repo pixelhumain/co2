@@ -20,28 +20,28 @@
                                 "page" => "live") ); 
 ?>
 <style>
-	
+	.scope-min-header{
+        float: left;
+        margin-top: 23px;
+        margin-left: 35px;
+    }
+    .main-btn-scopes{
+    	margin-top:0px !important;
+    }
 </style>
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
-	<?php
-        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
-    ?>
-    
+	<div class="col-md-offset-4 col-md-8 col-sm-8 col-xs-12 padding-20 col-md-offset">
+		<?php
+	        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
+	    ?>
+	</div>
 	<div class="col-lg-1  hidden-md col-sm-1 hidden-xs"></div>
 	<div class="col-lg-2 col-md-3 hidden-sm col-xs-12 padding-20 text-right hidden-xs" id="sub-menu-left">
 		
 	</div>
 
 	<div class="col-lg-6 col-md-6 col-sm-6 no-padding margin-top-10">
-		<h4 class="text-dark padding-bottom-5 margin-top-25 text-center">
-			<i class="fa fa-angle-down"></i> Le fil d'actus
-			<i class="fa fa-angle-right hidden fa-title-list"></i> <span class="letter-blue label-category"><i class="fa fa-"></i> </span>
-		</h4>
-		<hr>
-
-		
-
 		<div id="newsstream"></div>
 	</div>	
 

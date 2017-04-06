@@ -805,7 +805,15 @@ var directory = {
 
         str += "<hr></div>";
 
-        
+        getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/classified/tpl/json" , function( data ) { 
+          
+          $.each(data.list,function(k,v) { 
+            mylog.log("data list",k,v);
+              $(".carousel-inner").append('  <div class="item">'+
+              "   <img class='img-responsive' src='"+baseUrl+v.path+"'/>"+
+              ' </div>');
+          });
+        });
 
         if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
           str += '<div class="col-xs-12 text-center">'+
@@ -819,9 +827,6 @@ var directory = {
                       //<!-- Wrapper for slides -->'+
                       '<div class="carousel-inner" role="listbox">'+
                       '  <div class="item active">'+
-                      "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
-                      '  </div>'+
-                      '  <div class="item">'+
                       "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
                       '  </div>'+
                       '</div>'+

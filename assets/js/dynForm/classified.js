@@ -168,7 +168,7 @@ dynForm = {
             price : typeObjLib.price,
             name : typeObjLib.name("classified"),
             description : typeObjLib.description,
-            image : typeObjLib.image( "#classified.detail.id."+uploadObj.id ),
+            image : typeObjLib.image(),
             contactInfo : typeObjLib.contactInfo,
             location : typeObjLib.location,
             tags : typeObjLib.tags(),

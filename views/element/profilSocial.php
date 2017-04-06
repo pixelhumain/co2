@@ -39,11 +39,11 @@
     
     $typeItemHead = $typeItem;
     if($typeItem == "organizations" && @$element["type"]) $typeItemHead = $element["type"];
-
-    if(strpos($typeItem, "place.")>=0){
+    
+    if(strpos($typeItem, "place.")!==false){
     	$typeItem = "place";
     }
-
+    
     //icon et couleur de l'element
     $icon = Element::getFaIcon($typeItemHead) ? Element::getFaIcon($typeItemHead) : "";
     $iconColor = Element::getColorIcon($typeItemHead) ? Element::getColorIcon($typeItemHead) : "";
@@ -507,7 +507,7 @@
 	</div>
 
 	  
-	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 profilSocial" style="margin-top:50px;">  
+	<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial" style="margin-top:50px;">  
 		
 	    <?php 
 	    	$params = array(    "element" => @$element, 
@@ -540,7 +540,7 @@
 		-->
 	</div>
 
-	<section class="col-xs-12 col-md-8 col-sm-8 col-lg-9 no-padding" style="margin-top: -10px;">
+	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding" style="margin-top: -10px;">
 	    	
 		<div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 margin-top-50" id="central-container">
 		</div>

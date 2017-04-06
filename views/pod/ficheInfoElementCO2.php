@@ -91,13 +91,137 @@
 	.btn-update-desc{
 
 	}
+
+	a.letter-grey{
+		color:#425B5F;
+	}
+
+
+
+	#subsubMenuLeft hr{
+	    margin-top: 7px;
+    	margin-bottom: 7px;	
+    	border-top: 2px solid #e0e0e0;
+	}
+
+	#subsubMenuLeft a{
+		color:#425B5F;
+		font-size: 16px;
+		padding: 6px;
+		padding-left: 10px;
+		display: block;
+		text-align: left;
+		font-weight: bold;
+		border-left: 3px solid transparent;
+	}
+
+	#subsubMenuLeft a:hover{
+		color:#0095FF;
+		background-color: #edecec;
+		border-left: 3px solid #0095FF;
+	}
 	
+	#subsubMenuLeft a:active,
+	#subsubMenuLeft a.active{
+		background-color: #edecec;
+		border-left: 3px solid #0095FF;
+		color:#0095FF;
+	}
+	
+	#subsubMenuLeft i.fa{
+		width:22px;
+	}
 </style>
-<div id="menu-name" class="hidden">
-	<img src="<?php echo $thumbAuthor; ?>" height="45" class="img-circle">
-	<span class="font-montserrat hidden-sm hidden-xs"><?php echo @$element["name"]; ?></span>
-</div>
-<ul id="accordion" class="accordion shadow2">
+
+
+<ul id="subsubMenuLeft">
+	<li class="">
+		<a href="javascript:" class="" id="btn-start-detail">
+			<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","About"); ?>
+		</a>
+	</li>
+	
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
+	<li class="">
+		<a href="" class="">
+			<i class="fa fa-map-marker"></i> <?php echo Yii::t("chart", "Values and Cultures") ?>
+		</a>
+	</li>
+	<?php } ?>
+
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
+	<li class=""><a href="" class=""><i class="fa fa-envelope"></i> Nous contacter</a></li>
+	<?php } ?>
+
+	<li><hr></li>
+
+	<li class="">
+		<a href="" class=""><i class="fa fa-users"></i> Communauté</a>
+	</li>
+	
+	
+	
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
+	<li class="">
+		<a href="" class=""><i class="fa fa-link"></i> Liste de liens</a>
+	</li>
+	<?php } ?>
+
+	<?php if ($type==Person::COLLECTION){ ?>
+	<li class="">
+		<a href="" class=""><i class="fa fa-star"></i> Collections</a>
+	</li>
+	<?php } ?>
+
+
+	<?php if ($type==Organization::COLLECTION || $type==Project::COLLECTION){ 
+		  if(!@$front || (@$front && $front["project"])){ 
+	?>	
+	<li class="">
+		<a href="" class=""><i class="fa fa-lightbulb-o"></i> Projets</a>
+	</li>
+	<?php }} ?>
+
+	<?php if (($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION)){ ?>
+	<?php if(!@$front || (@$front && $front["event"]==true)){ ?>
+	<li class="">
+		<a href="" class=""><i class="fa fa-calendar"></i> Événements</a>
+	</li>
+	<?php }} ?>
+
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION || $type==Person::COLLECTION){  if(!@$front || (@$front && $front["poi"])){ 
+	?>
+	<li class="">
+		<a href="" class=""><i class="fa fa-map-marker"></i> Points d'intérêts</a>
+	</li>
+	<?php }} ?>
+
+	
+	<?php if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true))){ ?>
+	<li><hr></li>
+	<li class="">
+		<a href="" class=""><i class="fa fa-cubes"></i> Besoins</a>
+	</li>
+	<?php } ?>
+
+	<li><hr></li>
+	<li class="">
+		<a href="" class=""><i class="fa fa-gavel"></i> Espace coopératif</a>
+	</li>
+
+	<li><hr></li>
+
+</ul>
+
+
+<div class="">
+
+		<div id="menu-name" class="hidden">
+			<img src="<?php echo $thumbAuthor; ?>" height="45" class="img-circle">
+			<span class="font-montserrat hidden-sm hidden-xs"><?php echo @$element["name"]; ?></span>
+		</div>
+
+		<ul id="accordion" class="accordion shadow2">
 		    <li>
 				
 		        
@@ -464,9 +588,9 @@
 		</ul>
 		<?php } ?>
 
-<button onclick="elementLib.openForm('ressource','sub')" class="btn btn-default letter-blue margin-top-5">
-				<b><i class="fa fa-plus"></i> Ajouter une ressource </b>
-			</button>
+		<button onclick="elementLib.openForm('ressource','sub')" class="btn btn-default letter-blue margin-top-5">
+			<b><i class="fa fa-plus"></i> Ajouter une ressource </b>
+		</button>
 
 		<ul id="accordion3" class="accordion shadow2 margin-top-20">
 				
@@ -600,7 +724,7 @@
 																		 "icon"=>"cubes") ); */?>
 
 		</ul>
-
+</div>
 
 <?php 
 	//$element["type"] = $type;

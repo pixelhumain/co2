@@ -79,7 +79,7 @@ dynForm = {
                 label : "De quel type d'annonce s'agit-il ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
-                list : freedomCategories,
+                list : classified.sections,
                 trad : trad,
                 init : function(){
                 	$(".sectionBtn").off().on("click",function()

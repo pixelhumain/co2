@@ -132,7 +132,7 @@
     "sharingFilters" : {
         "TechnologieSH" : 
             {   "icon" : "laptop",
-                "subcat" : ["SH TV / Vidéo", "Informatique", "Tablettes", "Téléphonie", "Appareils photos", "Appareil audio"]
+                "subcat" : ["SH TV / Vidéo", "SH Informatique", "SH Tablettes", "SH Téléphonie", "SH Appareils photos", "SH Appareil audio"]
             }, 
          
          "Immobilier" : 

@@ -601,7 +601,7 @@ function bindLeftMenuFilters () {
             startSearch(0, indexStepInit, searchCallback); 
         } */
         if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
-            alert('build left menu'+classified.sections[sectionKey].filters);
+            //alert('build left menu'+classified.sections[sectionKey].filters);
             classified.currentLeftFilters = classified.sections[sectionKey].filters;
             var filters = classified[ classified.currentLeftFilters ]; 
             var what = { title : classified.sections[sectionKey].label, 
@@ -611,7 +611,7 @@ function bindLeftMenuFilters () {
             
         }
         else if(classified.currentLeftFilters != null) {
-            alert('rebuild original'); 
+            //alert('rebuild original'); 
             var what = { title : classified.sections[sectionKey].label, 
                          icon : classified.sections[sectionKey].icon }
             directory.sectionFilter( classified.filters, ".classifiedFilters",what);

@@ -141,7 +141,7 @@
 		 		$element["_id"] == Yii::app()->session["userId"]){	?>
 	<li><hr></li>
 	<a href="javascript:elementLib.openForm('ressource','sub')" class="letter-green">
-		<i class="fa fa-plus-circle"></i> Publier quelque chose ...
+		<i class="fa fa-plus-circle"></i> Publier ...
 	</a>
 	<li><hr></li>
 	<?php } ?>
@@ -150,12 +150,12 @@
 		<a href="javascript:" class="" id="btn-start-detail">
 			<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","About"); ?>
 		</a>
-	</li>
-	
+	</li>	
+
 	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
 	<li class="">
 		<a href="" class="">
-			<i class="fa fa-map-marker"></i> <?php echo Yii::t("chart", "Values and Cultures") ?>
+			<i class="fa fa-heartbeat"></i> <?php echo Yii::t("chart", "Nos valeurs"/*"Values and Cultures"*/) ?>
 		</a>
 	</li>
 	<?php } ?>
@@ -166,11 +166,34 @@
 
 	<li><hr></li>
 
+
+	<li class="">
+		<a href="javascript:" class="" id="btn-start-gallery">
+			<i class="fa fa-camera"></i> <?php echo Yii::t("common","Gallery"); ?>
+		</a>
+	</li>
+	
+	<li><hr></li>
+
 	<li class="">
 		<a href="" class=""><i class="fa fa-users"></i> Communauté</a>
 	</li>
-	
-	
+
+	<?php if (($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION)){ ?>
+	<?php if(!@$front || (@$front && $front["event"]==true)){ ?>
+	<li class="">
+		<a href="" class=""><i class="fa fa-calendar"></i> Événements</a>
+	</li>
+	<?php }} ?>
+
+
+	<?php if ($type==Organization::COLLECTION || $type==Project::COLLECTION){ 
+		  if(!@$front || (@$front && $front["project"])){ 
+	?>	
+	<li class="">
+		<a href="" class=""><i class="fa fa-lightbulb-o"></i> Projets</a>
+	</li>
+	<?php }} ?>
 	
 	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
 	<li class="">
@@ -183,22 +206,6 @@
 		<a href="" class=""><i class="fa fa-star"></i> Collections</a>
 	</li>
 	<?php } ?>
-
-
-	<?php if ($type==Organization::COLLECTION || $type==Project::COLLECTION){ 
-		  if(!@$front || (@$front && $front["project"])){ 
-	?>	
-	<li class="">
-		<a href="" class=""><i class="fa fa-lightbulb-o"></i> Projets</a>
-	</li>
-	<?php }} ?>
-
-	<?php if (($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION)){ ?>
-	<?php if(!@$front || (@$front && $front["event"]==true)){ ?>
-	<li class="">
-		<a href="" class=""><i class="fa fa-calendar"></i> Événements</a>
-	</li>
-	<?php }} ?>
 
 	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION || $type==Person::COLLECTION){  if(!@$front || (@$front && $front["poi"])){ 
 	?>
@@ -220,29 +227,6 @@
 		<a href="" class=""><i class="fa fa-gavel"></i> Espace coopératif</a>
 	</li>
 
-	<?php if (false && ($edit || $openEdition) && @Yii::app()->session["userId"]){	?>
-	<li><hr class=" margin-top-25"></li>
-	<a href="javascript:elementLib.openForm('ressource','sub')" class="letter-green">
-		<i class="fa fa-plus-circle"></i> <i class="fa fa-diamond"></i> Ajouter une ressource
-	</a>
-	<?php } ?>
-	<?php if (false && ($edit || $openEdition) && 
-				@Yii::app()->session["userId"] &&
-		 		$element["_id"] == Yii::app()->session["userId"]){	?>
-	<li><hr></li>
-	<a href="javascript:elementLib.openForm('ressource','sub')" class="text-orange">
-		<i class="fa fa-plus-circle"></i> <i class="fa fa-calendar"></i> Créer un événement
-	</a>
-	<a href="javascript:elementLib.openForm('ressource','sub')" class="text-green">
-		<i class="fa fa-plus-circle"></i> <i class="fa fa-group"></i> Créer une organisation
-	</a>
-	<a href="javascript:elementLib.openForm('ressource','sub')" class="text-purple">
-		<i class="fa fa-plus-circle"></i> <i class="fa fa-lightbulb-o"></i> Créer un projet
-	</a>
-
-	<?php } ?>
-				
-	
 </ul>
 
 

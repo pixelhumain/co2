@@ -23,7 +23,10 @@
         /*margin-left:80px;*/
         padding-bottom:50px;
     }
-    
+    #sub-menu-left {
+        margin-top: 207px;
+        text-align: right;
+    }
 <?php 
     $btnAnc = array("blue"      =>array("color1"=>"#4285f4", 
                                         "color2"=>"#1c6df5"),

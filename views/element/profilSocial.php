@@ -310,7 +310,7 @@
 				 style="border-bottom:45px solid white;">
 			-->
 			<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation">	
-	        	<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 text-white pull-right no-padding">
+	        	<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
 					<h4 class="text-left margin-bottom-10 padding-left-15 pull-left no-margin" id="main-name-element">
 						<?php if($edit==true || $openEdition==true ){?>
 							<!-- <a href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a> -->
@@ -325,7 +325,7 @@
 					</h4>
 				</div>
 
-				<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 pull-right" style="padding:0px 5px;">
+				<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 pull-right">
 					<span class="pull-left text-white" id="shortDescriptionHeader"><?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
 						<?php if(@$edit==true) { ?>
 					<?php } ?>

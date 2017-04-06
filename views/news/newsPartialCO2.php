@@ -190,6 +190,7 @@
       $.each(news, function(e,v){
         if("undefined" != typeof v.text){
           textHtml="";
+          textNews="";
            if(v.text.length > 0)
               textNews=checkAndCutLongString(v.text,500,v._id.$id);
       //Check if @mentions return text with link

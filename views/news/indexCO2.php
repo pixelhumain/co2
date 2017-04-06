@@ -29,6 +29,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
     $cssAnsScriptFilesModule = array(
       '/js/news/autosize.js',
       '/js/news/newsHtml.js',
+      '/js/menus/multi_tags_scopes.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
@@ -90,7 +91,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 }
 </style>
 
-<div class="col-md-12 col-sm-12 no-padding margin-bottom-15" style="padding-left:25px!important;">
+<div class="col-md-12 col-sm-12 no-padding margin-bottom-15" style="<?php if(!@isLive){ ?>padding-left:25px!important;<?php } ?>">
   <?php //var_dump($params); 
         $params = array(
                   "type" => $type,

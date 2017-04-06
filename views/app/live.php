@@ -17,8 +17,10 @@
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath ,
                                 "type" => @$type,
-                                "page" => "live") ); 
+                                "page" => "live",
+                                "explain"=> "Live public : retrouvez tous les messages publics selon vos lieux favoris") ); 
 ?>
+
 <style>
 	.scope-min-header{
         float: left;
@@ -28,10 +30,13 @@
     .main-btn-scopes{
     	margin-top:0px !important;
     }
+    #formCreateNewsTemp .form-create-news-container{
+    max-width: inherit !important;
+	}
 </style>
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
-	<div class="col-md-offset-4 col-md-8 col-sm-8 col-xs-12 padding-20 col-md-offset">
+	<div class="col-md-offset-3 col-md-9 col-sm-12 col-xs-12 padding-20 col-md-offset">
 		<?php
 	        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
 	    ?>
@@ -293,10 +298,10 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 
 			bindTags();
 
-			$("#formCreateNewsTemp").appendTo("#modal-create-anc #formCreateNews");
-			$("#info-write-msg").html("Conseil : donnez un maximum de détails");
-			$("#info-write-msg").html("Conseil : donnez un maximum de détails");
-			showFormBlock(true);
+			//$("#formCreateNewsTemp").appendTo("#modal-create-anc #formCreateNews");
+			//$("#info-write-msg").html("<?php echo Yii::t("common","Write a public message visible on the wall of selected places") ?>");
+			//$("#info-write-msg").html("Conseil : donnez un maximum de détails");
+			//showFormBlock(true);
 			//$("#formCreateNewsTemp").html("");
 
 	 	},"html");
@@ -313,6 +318,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 			    	//mylog.log(data.news);
 			    	$(".newsTL").html('<div class="spine"></div>');
 					if(data){
+						alert();
 						buildTimeLine (data.news, 0, 5);
 						bindTags();
 						if(typeof(data.limitDate.created) == "object")

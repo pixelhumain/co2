@@ -39,7 +39,11 @@
     
     $typeItemHead = $typeItem;
     if($typeItem == "organizations" && @$element["type"]) $typeItemHead = $element["type"];
-
+    
+    if(strpos($typeItem, "place.")!==false){
+    	$typeItem = "place";
+    }
+    
     //icon et couleur de l'element
     $icon = Element::getFaIcon($typeItemHead) ? Element::getFaIcon($typeItemHead) : "";
     $iconColor = Element::getColorIcon($typeItemHead) ? Element::getColorIcon($typeItemHead) : "";
@@ -310,7 +314,7 @@
 				 style="border-bottom:45px solid white;">
 			-->
 			<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation">	
-	        	<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 text-white pull-right no-padding">
+	        	<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
 					<h4 class="text-left margin-bottom-10 padding-left-15 pull-left no-margin" id="main-name-element">
 						<?php if($edit==true || $openEdition==true ){?>
 							<!-- <a href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a> -->
@@ -325,7 +329,7 @@
 					</h4>
 				</div>
 
-				<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 pull-right" style="padding:0px 5px;">
+				<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 pull-right">
 					<span class="pull-left text-white" id="shortDescriptionHeader"><?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
 						<?php if(@$edit==true) { ?>
 					<?php } ?>
@@ -503,7 +507,7 @@
 	</div>
 
 	  
-	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 profilSocial" style="margin-top:50px;">  
+	<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial" style="margin-top:50px;">  
 		
 	    <?php 
 	    	$params = array(    "element" => @$element, 
@@ -536,7 +540,7 @@
 		-->
 	</div>
 
-	<section class="col-xs-12 col-md-8 col-sm-8 col-lg-9 no-padding" style="margin-top: -10px;">
+	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding" style="margin-top: -10px;">
 	    	
 		<div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 margin-top-50" id="central-container">
 		</div>

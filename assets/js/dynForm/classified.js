@@ -89,7 +89,21 @@ dynForm = {
 	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
 	            		$("#ajaxFormModal #section").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
 						//$(".sectionBtn:not(.active)").hide();
-						
+						var sectionKey = $(this).data('key');
+						//alert(sectionKey);
+						var what = { title : "Dans quelle catégorie souhaitez-vous publier votre annonce ?", 
+				                         icon : classified.sections[sectionKey].icon }
+						if( jsonHelper.notNull( "classified.sections."+sectionKey+".filters" ) ){
+				            //alert('build btns menu'+classified.sections[sectionKey].filters);
+				            classified.currentLeftFilters = classified.sections[sectionKey].filters;
+				            var filters = classified[classified.currentLeftFilters]; 
+				            directory.sectionFilter( filters, ".typeBtntagList",what,'btn');
+				        }
+				        else if( classified.currentLeftFilters != null ) {
+				            //alert('rebuild common list'); 
+				            directory.sectionFilter( classified.filters, ".typeBtntagList",what,'btn');
+				            classified.currentLeftFilters = null;
+				        }
 						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
 						$(".sectionBtntagList").hide();
 	            	});
@@ -102,6 +116,7 @@ dynForm = {
                 placeholder : "Choisir une catégorie",
                 list : classified.filters,
                 init : function(){
+                	classified.currentLeftFilters = null;
 	            	$(".typeBtn").off().on("click",function(){
 	            		
 	            		$(".typeBtn").removeClass("active btn-dark-blue text-white");
@@ -114,7 +129,8 @@ dynForm = {
 	            		//$(".typeBtn:not(.active)").hide();
 	            		$("#ajaxFormModal #subtype").val("");
 	            		fieldHTML = "";
-	            		$.each(classified.filters[ $(this).data('key') ]["subcat"], function(k,v) { 
+	            		var filt = (classified.currentLeftFilters != null ) ? classified[classified.currentLeftFilters] : classified.filters; 
+	            		$.each(filt[ $(this).data('key') ]["subcat"], function(k,v) { 
 	            			fieldHTML += '<div class="col-md-6 padding-5">'+
         									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>' +
 	            						"</div>";

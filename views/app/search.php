@@ -602,12 +602,13 @@ function bindLeftMenuFilters () {
         } */
         if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
             alert('build left menu'+classified.sections[sectionKey].filters);
-            var filters = classified[classified.sections[sectionKey].filters]; 
+            classified.currentLeftFilters = classified.sections[sectionKey].filters;
+            var filters = classified[ classified.currentLeftFilters ]; 
             var what = { title : classified.sections[sectionKey].label, 
                          icon : classified.sections[sectionKey].icon }
             directory.sectionFilter( filters, ".classifiedFilters",what);
             bindLeftMenuFilters ();
-            classified.currentLeftFilters = sectionKey;
+            
         }
         else if(classified.currentLeftFilters != null) {
             alert('rebuild original'); 

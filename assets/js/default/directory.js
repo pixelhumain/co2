@@ -1549,16 +1549,25 @@ var directory = {
         //$("#btn-open-tags").append("("+$(".favElBtn").length+")");
     },
     
-    sectionFilter : function (list, dest, what) { 
+    sectionFilter : function (list, dest, what, type ) { 
       mylog.log("sectionFilter",list,what,dest);
 
-        $(dest).html('');
-        $(dest).append('<h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">'+
-              '<i class="fa fa-'+what.icon+'"></i> '+what.title+'</h4><hr>');
+        if( type == "btn" )
+          str = '<label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="typeBtn"><i class="fa fa-chevron-down"></i> '+what.title+' </label>'
+        else
+          str = '<h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">'+
+                '<i class="fa fa-'+what.icon+'"></i> </h4><hr>';
+        
+        $(dest).html(str);
+
         $.each( list,function(k,o){
-            str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="'+k+'">'+
+            if( type == "btn" )
+              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'"><a class="btn tagListEl btn-select-type-anc typeBtn '+k+'Btn " data-tag="'+k+'" data-key="'+k+'" href="javascript:;"><i class="fa fa-'+o.icon+'"></i> <br>'+k+'</a></div>'
+            else 
+              str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="'+k+'">'+
                     '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+k+'</button><br>';
-            if( o.subcat ){
+            if( o.subcat && type != "btn" )
+            {
               $.each( o.subcat ,function(i,oT){
                   str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
                           '<i class="fa fa-angle-right"></i>'+oT+'</button><br class="hidden">';

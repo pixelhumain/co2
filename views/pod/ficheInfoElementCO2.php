@@ -101,7 +101,7 @@
 	#subsubMenuLeft hr{
 	    margin-top: 7px;
     	margin-bottom: 7px;	
-    	border-top: 2px solid #e0e0e0;
+    	border-top: 2px solid #ededed;
 	}
 
 	#subsubMenuLeft a{
@@ -129,12 +129,23 @@
 	}
 	
 	#subsubMenuLeft i.fa{
-		width:22px;
+		width: 25px;
+		text-align: center;
 	}
 </style>
 
 
 <ul id="subsubMenuLeft">
+	<?php if (($edit || $openEdition) && 
+				@Yii::app()->session["userId"] &&
+		 		$element["_id"] == Yii::app()->session["userId"]){	?>
+	<li><hr></li>
+	<a href="javascript:elementLib.openForm('ressource','sub')" class="letter-green">
+		<i class="fa fa-plus-circle"></i> Publier quelque chose ...
+	</a>
+	<li><hr></li>
+	<?php } ?>
+
 	<li class="">
 		<a href="javascript:" class="" id="btn-start-detail">
 			<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","About"); ?>
@@ -209,12 +220,33 @@
 		<a href="" class=""><i class="fa fa-gavel"></i> Espace coopératif</a>
 	</li>
 
+	<?php if (false && ($edit || $openEdition) && @Yii::app()->session["userId"]){	?>
+	<li><hr class=" margin-top-25"></li>
+	<a href="javascript:elementLib.openForm('ressource','sub')" class="letter-green">
+		<i class="fa fa-plus-circle"></i> <i class="fa fa-diamond"></i> Ajouter une ressource
+	</a>
+	<?php } ?>
+	<?php if (false && ($edit || $openEdition) && 
+				@Yii::app()->session["userId"] &&
+		 		$element["_id"] == Yii::app()->session["userId"]){	?>
 	<li><hr></li>
+	<a href="javascript:elementLib.openForm('ressource','sub')" class="text-orange">
+		<i class="fa fa-plus-circle"></i> <i class="fa fa-calendar"></i> Créer un événement
+	</a>
+	<a href="javascript:elementLib.openForm('ressource','sub')" class="text-green">
+		<i class="fa fa-plus-circle"></i> <i class="fa fa-group"></i> Créer une organisation
+	</a>
+	<a href="javascript:elementLib.openForm('ressource','sub')" class="text-purple">
+		<i class="fa fa-plus-circle"></i> <i class="fa fa-lightbulb-o"></i> Créer un projet
+	</a>
 
+	<?php } ?>
+				
+	
 </ul>
 
 
-<div class="">
+<div class="hidden">
 
 		<div id="menu-name" class="hidden">
 			<img src="<?php echo $thumbAuthor; ?>" height="45" class="img-circle">

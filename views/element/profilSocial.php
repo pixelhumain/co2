@@ -514,7 +514,7 @@
 
 		  <?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
 		  <button type="button" class="btn btn-default bold letter-green" id="btn-open-create">
-		  		<i class="fa fa-plus"></i> <?php echo Yii::t("common", "Nouveau") ?> ...
+		  		<i class="fa fa-plus"></i> <?php echo Yii::t("common", "Nouveau") ?>
 		  </button>
 		  <?php } ?>
 		</div>

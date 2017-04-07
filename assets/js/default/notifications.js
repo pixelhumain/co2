@@ -163,7 +163,7 @@ function buildNotifications(list, element)
 	//element="";
 //	if(isPodView)
 //		element="Element";
-	mylog.info("buildNotifications"+element+"()");
+//	mylog.info("buildNotifications"+element+"()");
 	mylog.log(typeof list);
 	//$(".notifList").html("");
 	if(typeof list != "undefined" && typeof list == "object"){

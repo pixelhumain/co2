@@ -84,27 +84,21 @@
 <?php } ?>
 
 .keycat:hover,
-.keycat.active{
-  background-color: #2BB0C6!important;
-  color: #fff!important;
-  border-color:transparent!important;
-}
-
+.keycat.active,
 .btn-select-category-1:hover,
 .btn-select-category-1.active{
   background-color: #2C3E50!important;
-  color: #fff!important;
-  border-color:transparent!important;
+    color: #fff!important;
+    border-color:transparent!important;
 }
 
 
 #sub-menu-left.subsub .btn{
   width:95%;    
-  text-align: right;
+  text-align: left;
   background-color: white;
-  border-color: white;
+    border-color: white;
   color:#4285f4;
-  text-transform: uppercase;
 }
 #sub-menu-left.subsub{
   min-width: 180px;
@@ -170,8 +164,7 @@
         <?php $filliaireCategories = CO2::getContextList("filliaireCategories"); 
               //var_dump($categories); exit;
               foreach ($filliaireCategories as $key => $cat) { 
-          ?>
-              <?php if(is_array($cat)) { ?>
+                 if(is_array($cat)) { ?>
               <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
                 <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis margin-bottom-5 btn-select-filliaire" 
                         data-fkey="<?php echo $key; ?>"
@@ -190,6 +183,31 @@
           <?php } ?>
           <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
         </div>
+        
+        
+        <?php if($typeSelected == "place"){ ?>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="menu-section-place">
+          <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
+                  data-type="classified" data-type-anc=""  data-key="all">
+            <i class="fa fa-circle-o"></i>
+            <span class="hidden-xs hidden-sm"> Tous </span>
+          </button> -->
+          <?php 
+              $place = CO2::getContextList("place");
+              $currentSection = 1;
+              foreach ($place["sections"] as $key => $section) { ?>
+                <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
+                  <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
+                          data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
+                          data-type="place"
+                          style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
+                    <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["label"]; ?>
+                  </button>
+                </div>
+          <?php } ?>  
+          <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> 
+        </div>
+        <?php } ?>
 
 
         <?php if($typeSelected == "all"){ ?>   
@@ -256,56 +274,117 @@
                       <?php echo $cat; ?>
                     </button><br class="hidden-xs">
                   <?php //} ?>
-                </button>
               <?php } ?>
           </div>
 
         <?php }else if($typeSelected == "classified"){ ?>
 
-          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub text-right" id="sub-menu-left">
+          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub classifiedFilters" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
               <i class="fa fa-money"></i> A vendre
             </h4>
             <hr>
-            <?php $categories = CO2::getContextList("classifiedCategories"); 
-                foreach ($categories as $key => $cat) {
+            <?php 
+                $classified = CO2::getContextList("classified");
+                foreach ($classified['filters'] as $key => $cat) {
             ?>
                 <?php if(is_array($cat)) { ?>
-                  <button class="btn btn-default text-dark bold margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
                     <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
                   </button><br>
                   <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
                     <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
-                      <?php echo $cat2; ?> <i class="fa fa-angle-left margin-right-10"></i>
+                      <i class="fa fa-angle-right"></i> <?php echo $cat2; ?>
+                    </button><br class="hidden">
+                  <?php } ?>
+                <?php } ?>
+            <?php } ?>
+          </div>
+         
+          <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 text-center subsub" id="menu-section-classified">
+            <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
+                    data-type="classified" data-type-anc=""  data-key="all">
+              <i class="fa fa-circle-o"></i>
+              <span class="hidden-xs hidden-sm"> Tous </span>
+            </button> -->
+            <?php 
+                $currentSection = 1;
+                foreach ($classified["sections"] as $key => $section) { ?>
+                  <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
+                    <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
+                            data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
+                            data-type="classified"
+                            style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
+                      <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["label"]; ?>
+                    </button>
+                  </div>
+            <?php } ?>  
+             <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
+          </div>
+
+          <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 padding-top-10" id="section-price">
+          
+            <div class="form-group col-md-4 col-sm-4 col-xs-6">
+              <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
+                <i class="fa fa-chevron-down"></i> Prix min
+              </label>
+              <input type="text" id="priceMin" name="priceMin" class="form-control" placeholder="prix min"/>
+            </div>
+
+            <div class="form-group col-md-4 col-sm-4 col-xs-6">
+              <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
+                <i class="fa fa-chevron-down"></i> Prix max
+              </label>
+              <input type="text" id="priceMax" name="priceMax" class="form-control col-md-5" placeholder="prix max"/>
+            </div>
+            
+            <div class="form-group col-md-4 col-sm-4 col-xs-12">
+              <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
+                <i class="fa fa-money"></i> Devise
+              </label>
+              <select class="form-control" name="devise" id="devise" style="">
+                <option class="bold" value="€">euro €</option>
+                <option class="bold" value="$">dollars $</option>
+                <option class="bold" value="CFP">CFP</option>
+              </select>
+            </div>
+
+            <hr class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding" id="before-section-result"> 
+          
+          </div>
+          <!-- </div> -->
+
+        <?php } 
+        else if($typeSelected == "place"){ ?>
+
+          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub" id="sub-menu-left">
+            <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
+            <hr> -->
+            <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
+              <i class="fa fa-money"></i> Lieux           </h4>
+            <hr>
+            <?php 
+                foreach ($place["filters"] as $key => $cat) {
+            ?>
+                <?php if(is_array($cat)) { ?>
+                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                    <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
+                  </button><br>
+                  <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
+                    <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
+                      <i class="fa fa-angle-right"></i> <?php echo $cat2; ?>
                     </button><br class="hidden">
                   <?php } ?>
                 <?php } ?>
               </button>
             <?php } ?>
           </div>
+        <?php } 
 
-
-        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 hidden text-center subsub" id="menu-section-classified">
-          <?php 
-              $classifiedSections = CO2::getContextList("freedomSections");
-              $currentSection = 1;
-              foreach ($classifiedSections as $key => $section) { ?>
-                <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
-                  <button class="btn btn-default col-md-12 col-sm-12 padding-5 bold text-dark elipsis btn-select-type-anc" 
-                          data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
-                          data-type="classified"
-                          style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
-                    <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["labelFront"]; ?>
-                  </button>
-                </div>
-          <?php } ?>  
-          <hr class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding" id="before-section-result"> 
-        </div>
-        
-        <?php } ?>
-
+        $col = ( !in_array($typeSelected, array("classified","events","vote","all","place") )) ? 10 : 8; ?>
+        <div class="col-md-<?php echo $col ?> col-sm-<?php echo $col ?>
         <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search"></div>
 
       <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
@@ -335,7 +414,8 @@ var headerParams = {
   "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
   "cities"        : { color: "red",     icon: "university",   name: "communes" },
   "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
-  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" }
+  "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
+  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
@@ -359,8 +439,8 @@ function setHeaderDirectory(type){
                               //  "<i class='fa fa-search'></i> Recherche avancée</a>"+
                               '</span>' );
 
-  $(".lbl-info-search .lbl-info").addClass("hidden", {duration:700});
-  $(".lbl-info-search .lbl-info.lbl-info-"+type).removeClass("hidden", {duration:700});
+  $(".lbl-info-search .lbl-info").addClass("hidden");
+  $(".lbl-info-search .lbl-info.lbl-info-"+type).removeClass("hidden");
 
   $("#dropdown_search").html("");
 
@@ -372,8 +452,8 @@ function setHeaderDirectory(type){
     $("#scopeListContainer, #btn-slidup-scopetags").show(200);
   }
 
-  $(".menu-left-container #menu-extend .menu-button-left").removeClass("selected", {duration:700});
-  $(".menu-left-container #menu-extend #menu-btn-"+type).addClass("selected", {duration:700});
+  $(".menu-left-container #menu-extend .menu-button-left").removeClass("selected");
+  $(".menu-left-container #menu-extend #menu-btn-"+type).addClass("selected");
 
   $(".my-main-container").scrollTop(0);
 
@@ -388,7 +468,7 @@ function setHeaderDirectory(type){
 }
 
 var searchType = [ "persons" ];
-var allSearchType = [ "persons", "organizations", "projects", "events", "vote", "cities" ];
+var allSearchType = [ "persons", "organizations", "projects", "events", "vote", "cities","place" ];
 
 var personCOLLECTION = "<?php echo Person::COLLECTION ?>";
 var userId = '<?php echo isset( Yii::app()->session["userId"] ) ? Yii::app() -> session["userId"] : null; ?>';
@@ -410,7 +490,7 @@ jQuery(document).ready(function() {
 
 
   searchType = (typeSelected == null) ? [ "persons" ] : [ typeSelected ];
-  allSearchType = [ "persons", "organizations", "projects", "events", "events", "vote", "cities","poi" ];
+  allSearchType = [ "persons", "organizations", "projects", "events", "events", "vote", "cities","poi","place" ];
 	topMenuActivated = true;
 	hideScrollTop = true; 
   loadingData = false;

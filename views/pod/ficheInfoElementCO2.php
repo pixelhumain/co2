@@ -91,69 +91,200 @@
 	.btn-update-desc{
 
 	}
+
+	a.letter-grey{
+		color:#425B5F;
+	}
+
+
+
+	#subsubMenuLeft hr{
+	    margin-top: 7px;
+    	margin-bottom: 7px;	
+    	border-top: 2px solid #ededed;
+	}
+
+	#subsubMenuLeft a{
+		color:#5B5B5C;
+		font-size: 16px;
+		padding: 6px;
+		padding-left: 10px;
+		display: block;
+		text-align: left;
+		font-weight: bold;
+		border-left: 3px solid transparent;
+	}
+
+	#subsubMenuLeft a:hover{
+		color:#0095FF;
+		background-color: #edecec;
+		border-left: 3px solid #0095FF;
+	}
 	
+	#subsubMenuLeft a:active,
+	#subsubMenuLeft a.active{
+		background-color: #edecec;
+		border-left: 3px solid #0095FF;
+		color:#0095FF;
+	}
+	
+	#subsubMenuLeft i.fa{
+		width: 25px;
+		text-align: center;
+	}
 </style>
-<div id="menu-name" class="hidden">
-	<img src="<?php echo $thumbAuthor; ?>" height="45" class="img-circle">
-	<span class="font-montserrat hidden-sm hidden-xs"><?php echo @$element["name"]; ?></span>
-</div>
-<ul id="accordion" class="accordion shadow2">
+
+
+<ul id="subsubMenuLeft">
+	<?php if (($edit || $openEdition) && 
+				@Yii::app()->session["userId"] &&
+		 		$element["_id"] == Yii::app()->session["userId"]){	?>
+	<!-- <li><hr></li>
+	<a href="javascript:elementLib.openForm('ressource','sub')" class="letter-green">
+		<i class="fa fa-plus-circle"></i> Publier ...
+	</a>
+	<li><hr></li> -->
+	<?php } ?>
+
+	<li class="">
+		<a href="javascript:" class="" id="btn-start-detail">
+			<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","About"); ?>
+		</a>
+	</li>	
+
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
+	<li class="">
+		<a href="javascript:" class="edit-chart">
+			<i class="fa fa-heartbeat"></i> <?php echo Yii::t("chart", "Nos valeurs"/*"Values and Cultures"*/) ?>
+		</a>
+	</li>
+	<?php } ?>
+
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
+	<li class=""><a href="javascript:" class=""><i class="fa fa-envelope"></i> Nous contacter</a></li>
+	<?php } ?>
+
+	<li><hr></li>
+
+
+	<li class="">
+		<a href="javascript:" class="" id="btn-start-gallery">
+			<i class="fa fa-camera"></i> <?php echo Yii::t("common","Gallery"); ?>
+		</a>
+	</li>
+	
+	<li><hr></li>
+
+	<li class="">
+		<a href="javascript:" class="open-directory" data-type-dir="community">
+			<i class="fa fa-users"></i> Communauté
+		</a>
+	</li>
+
+	<?php //if (($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION)){ ?>
+	<?php if(!@$front || (@$front && $front["event"]==true)){ ?>
+	<li class="">
+		<a href="javascript:" class="load-data-directory" data-type-dir="citoyens">
+			<i class="fa fa-user"></i> Citoyens
+		</a>
+	</li>
+	<li class="">
+		<a href="javascript:" class="load-data-directory" data-type-dir="events">
+			<i class="fa fa-calendar"></i> Événements
+		</a>
+	</li>
+	<li class="">
+		<a href="javascript:" class="load-data-directory" data-type-dir="organizations">
+			<i class="fa fa-group"></i> Organisations
+		</a>
+	</li>
+	<li class="">
+		<a href="javascript:" class="load-data-directory" data-type-dir="projects">
+			<i class="fa fa-lightbulb-o"></i> Projets
+		</a>
+	</li>
+	<li><hr></li>
+
+	<?php }//} ?>
+
+
+	<?php if ($type==Organization::COLLECTION || $type==Project::COLLECTION){ 
+		  if(!@$front || (@$front && $front["project"])){ 
+	?>	
+	<li class="">
+		<a href="javascript:" class="load-data-directory" data-type-dir="projects">
+			<i class="fa fa-lightbulb-o"></i> Projets
+		</a>
+	</li>
+	<?php }} ?>
+	
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
+	<li class="">
+		<a href="javascript:" class="load-data-directory" data-type-dir="links">
+			<i class="fa fa-link"></i> Liste de liens
+		</a>
+	</li>
+	<?php } ?>
+
+	<?php if ($type==Person::COLLECTION){ ?>
+	<li class="">
+		<a href="javascript:" class="load-data-directory" data-type-dir="collections">
+			<i class="fa fa-star"></i> Collections
+		</a>
+	</li>
+	<?php } ?>
+
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
+			  $type==Event::COLLECTION || $type==Person::COLLECTION){  
+				if(!@$front || (@$front && $front["poi"])){ 
+	?>
+	<li>
+		<a href="javascript:"  class="load-data-directory" data-type-dir="poi">
+			<i class="fa fa-map-marker"></i> Points d'intérêts
+		</a>
+	</li>
+	<?php }} ?>
+
+	
+	<?php if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true))){ ?>
+	<li><hr></li>
+	<li class="">
+		<a href="javascript:" class="load-data-directory" data-type-dir="needs">
+			<i class="fa fa-cubes"></i> Besoins
+		</a>
+	</li>
+	<?php } ?>
+
+	<li><hr></li>
+	<li class="">
+		<a href="javascript:" class="load-data-directory" data-type-dir="dda">
+			<i class="fa fa-gavel"></i> Espace coopératif
+		</a>
+	</li>
+
+</ul>
+
+
+<div class="hidden">
+
+		<div id="menu-name" class="hidden">
+			<img src="<?php echo $thumbAuthor; ?>" height="45" class="img-circle">
+			<span class="font-montserrat hidden-sm hidden-xs"><?php echo @$element["name"]; ?></span>
+		</div>
+
+		<ul id="accordion" class="accordion shadow2">
 		    <li>
-				<div class="iamgurdeep-pic">
-					<?php if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
-					$images=$element["profilMediumImageUrl"];
-				else 
-					$images="";	
-					$this->renderPartial('../pod/fileupload', array(  "itemId" => (string) $element["_id"],
-																  "type" => $type,
-																  "resize" => false,
-																  "contentId" => Document::IMG_PROFIL,
-																  "show" => true,
-																  "editMode" => $edit,
-																  "image" => $images,
-																  "openEdition" => $openEdition) ); 
-																  ?>
-					<!--<img class="img-responsive" alt="" 
-						 src="<?php echo @$element['profilMediumImageUrl'] ? 
-						 		Yii::app()->createUrl('/'.@$element['profilMediumImageUrl']) : $imgDefault; ?>">-->
-					
-					<?php if(@Yii::app()->session["userId"]){ ?>
-					<div class="blockUsername">
-					    <!--<h2 class="text-left">
-						    <?php //echo @$element["name"]; ?><!-- <br>
-						    <small>
-						    	<?php if(@$element["address"] && @$element["address"]["addressLocality"]) {
-		                				echo "<i class='fa fa-university'></i> ".$element["address"]["addressLocality"];
-		                				if(@$element["address"]["postalCode"]) echo ", ";
-		                			  }
-		                			  if(@$element["address"] && @$element["address"]["postalCode"]) 
-		                			  	echo $element["address"]["postalCode"];
-		                		?>
-		                	</small>
-	                	</h2>-->
-	                	<?php $this->renderPartial('../element/linksMenu', 
-	                			array("linksBtn"=>$linksBtn,
-	                					"elementId"=>(string)$element["_id"],
-	                					"elementType"=>$type,
-	                					"elementName"=> $element["name"],
-	                					"openEdition" => $openEdition) 
-	                			); 
-	                	?>
-					    <!-- <p><i class="fa fa-briefcase"></i> Web Design and Development.</p> -->
-					</div>
-					<?php } ?>
-				    
-				</div>
+				
 		        
 		    </li>
 			<li>
 				<div id="btn-start-detail" class="link">
 					<i class="fa fa-info-circle"></i><?php echo Yii::t("common","About"); ?><i class="fa fa-chevron-right"></i>
 					<?php if($edit==true || $openEdition==true ){?>
-						<a  href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" 
+						<!-- <a  href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" 
 							title="<?php echo Yii::t("common","Update Contact information");?>">
 							<i class="fa text-red fa-cog"></i>
-						</a>
+						</a> -->
 					<?php } ?>
 				</div>
 				<ul class="submenu">
@@ -265,125 +396,6 @@
 				</ul>
 			</li>
 
-			<?php 
-				$skype = (!empty($element["socialNetwork"]["skype"])? $element["socialNetwork"]["skype"]:"javascript:;") ;
-				$telegram =  (!empty($element["socialNetwork"]["telegram"])? "https://web.telegram.org/#/im?p=@".$element["socialNetwork"]["telegram"]:"javascript:;") ;
-				$facebook = (!empty($element["socialNetwork"]["facebook"])? $element["socialNetwork"]["facebook"]:"javascript:;") ;
-				$twitter =  (!empty($element["socialNetwork"]["twitter"])? $element["socialNetwork"]["twitter"]:"javascript:;") ;
-				$googleplus =  (!empty($element["socialNetwork"]["googleplus"])? $element["socialNetwork"]["googleplus"]:"javascript:;") ;
-				$gitHub =  (!empty($element["socialNetwork"]["github"])? $element["socialNetwork"]["github"]:"javascript:;") ;
-			?>
-
-			
-			
-			<li>
-				<div class="link"><i class="fa fa-pencil"></i>Description<i class="fa fa-chevron-down"></i>
-					<?php if($edit==true || $openEdition==true ){?>
-		  				<a href='javascript:;' class="tooltips btn-update-desc" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Description");?>"><i class="fa text-red fa-cog"></i></a> <?php } ?>
-		  		</div>
-				<ul class="submenu">
-					<li>
-						<span id="description"  class=""><?php  echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
-						<input type="hidden" id="descriptionMarkdown" name="descriptionMarkdown" value="<?php echo (!empty($element['description'])) ? $element['description'] : ''; ?>">	
-						<div class="text-right padding-10">
-							<button class="btn btn-default letter-blue open-description margin-top-5">
-						    	<b><i class="fa fa-connectdevelop"></i> En lire plus <i class="fa fa-chevron-right"></i></b>
-							</button>
-						</div>	
-					</li>
-				</ul>
-			</li>
-			<li>
-				<div class="link">
-					<i class="fa fa-map-marker"></i><?php echo Yii::t("common","Localitie(s)"); ?><i class="fa fa-chevron-down"></i>
-				</div>
-				<ul class="submenu">
-					<li>	
-						<?php 
-							if( ($type == Person::COLLECTION && Preference::showPreference($element, $type, "locality", Yii::app()->session["userId"])) ||  $type!=Person::COLLECTION) {
-						?>
-							<span>
-								<?php
-									if(! empty($element["address"])) 
-										echo '<i class="fa fa-home"></i>' ;
-									$address = "";
-									$address .= '<span id="detailStreetAddress"> '.
-													(( @$element["address"]["streetAddress"]) ? 
-														$element["address"]["streetAddress"]."<br/>": 
-														((@$element["address"]["codeInsee"])?"":Yii::t("common","Unknown Locality"))).
-												'</span>';
-									$address .= '<span id="detailCity">'.
-													(( @$element["address"]["postalCode"]) ?
-													 $element["address"]["postalCode"].", " :
-													 "")
-													." ".(( @$element["address"]["addressLocality"]) ? 
-															 $element["address"]["addressLocality"] : "")
-												.'</span>';
-									$address .= '<span id="detailCountry">'.
-													(( @$element["address"]["addressCountry"]) ?
-													 ", ".OpenData::$phCountries[ $element["address"]["addressCountry"] ] 
-									 				: "").
-									 			'</span>';
-									echo $address;
-								
-						
-									if(empty($element["address"]["codeInsee"]) && $type==Person::COLLECTION && ($edit==true || $openEdition==true )) {
-										echo '<br/><a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.Yii::t("common", "Connect to your city").'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe" >'. Yii::t("common", "Why ?").'</a>';
-									}else{
-										echo '<a href="javascript:;" id="btn-remove-geopos" class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Remove Locality").'">
-													<i class="fa text-red fa-trash-o"></i>
-												</a> 
-												<a href="javascript:;" id="btn-update-geopos" class="pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Update Locality").'" >
-													<i class="fa text-red fa-map-marker"></i>
-												</a> ';	
-									}
-								?>
-							</span>
-						<?php } ?>
-					</li>
-
-
-
-					<?php
-						if( !empty($element["addresses"]) ){ 
-							foreach ($element["addresses"] as $ix => $p) { ?>
-								
-								<li id="addresses_<?php echo $ix ; ?>">
-									<span>
-									<?php 
-									$address = '<i class="fa fa-circle"></i> <span id="detailStreetAddress_'.$ix.'">'.(( @$p["address"]["streetAddress"]) ? $p["address"]["streetAddress"]."<br/>" : "").'</span>';
-									$address .= '<span id="detailCity">'.(( @$p["address"]["postalCode"]) ? $p["address"]["postalCode"] : "")." ".(( @$p["address"]["addressLocality"]) ? $p["address"]["addressLocality"] : "").'</span>';
-									$address .= '<span id="detailCountry_'.$ix.'">'.(( @$p["address"]["addressCountry"]) ? " ".OpenData::$phCountries[ $p["address"]["addressCountry"] ] : "").'</span>';
-									echo $address;
-									?>
-
-									<a href='javascript:removeAddresses("<?php echo $ix ; ?>");'  class="addresses pull-right hidden tooltips" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Remove Locality");?>"><i class="fa text-red fa-trash-o"></i></a>
-									<a href='javascript:updateLocalityEntities("<?php echo $ix ; ?>", <?php echo json_encode($p);?>);' class=" pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Locality");?>"><i class="fa text-red fa-map-marker hidden addresses"></i></a></span>
-								</li>
-					<?php 	} 
-					} ?>
-
-					<div class="text-right padding-10">
-						<?php if(empty($element["address"]) && $type!=Person::COLLECTION && ($edit==true || $openEdition==true )){ ?>
-							<b><a href="javascript:;" class="btn btn-default letter-blue margin-top-5 addresses" id="btn-update-geopos">
-										<i class="fa fa-map-marker"></i>
-										<span class="hidden-sm"><?php echo Yii::t("common","Add a primary address") ; ?></span>
-									</a></b>
-						<?php	}  
-
-						if($type!=Person::COLLECTION && !empty($element["address"]) && ($edit==true || $openEdition==true )) { ?>
-							<li>
-								<b>
-								<a href='javascript:updateLocalityEntities("<?php echo count(@$element["addresses"]) ; ?>");' id="btn-add-geopos" class="btn btn-default letter-blue margin-top-5 addresses" style="margin: 10px 0px;">
-									<i class="fa fa-plus" style="margin:0px !important;"></i> 
-									<span class="hidden-sm"><?php echo Yii::t("common","Add a secondary address"); ?></span>
-								</a>
-								</b>
-							</li>
-						<?php } ?>						
-					</div>
-				</ul>
-			</li>
 			<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
 			<li class="podInside">
 				<?php $countCharts=0;
@@ -424,9 +436,7 @@
 							<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?></b>
 						</button>
 					<?php } ?>
-					</div>
-					</ul>
-					<?php
+					</div>					<?php
 					/*if(empty($element["properties"]["chart"])) $element["properties"]["chart"] = array();
 					$this->renderPartial('../chart/index',array(
 											"itemId" => (string)$element["_id"], 
@@ -515,6 +525,36 @@
 			</li>
 			<?php } ?>
 
+
+			<!-- URL -->
+			<?php if (($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION)){ ?>
+			<li class="podInside">
+				<div class="link">
+					<i class="fa fa-user-circle"></i> Liste de liens
+					<small>(<?php echo @$element["urls"] ? count($element["urls"]) : "0"; ?>)</small>
+					<i class="fa fa-chevron-down"></i>
+				</div>
+				<ul class="submenu">
+					<?php 
+					$urls = ( empty($element["urls"]) ? array() : $element["urls"] ) ;
+					$this->renderPartial('../pod/urlsList',array( 	"urls" => $urls, 
+																	"contextId" => (String) $element["_id"],
+																	"contextType" => $controller,
+																	"authorised" => $edit,
+																	"openEdition" => $openEdition));
+					?>
+					<div class="text-right padding-10">
+						<?php if(@$edit==true || @$openEdition==true) { ?>
+						<button onclick="elementLib.openForm ( 'url','parentUrl')" 
+								class="btn btn-default letter-blue margin-top-5">
+					    	<b><i class="fa fa-plus"></i> Ajouter une url </b>
+						</button>
+						<?php } ?>
+					</div>
+				</ul>
+			</li>
+			<?php } ?>
+
 			<!-- COLLECTION -->
 			<?php if ($type==Person::COLLECTION){ ?>
 			<li class="podInside collections">
@@ -564,8 +604,9 @@
 				</ul>
 			</li>
 			<?php } ?>
-
+			
 		</ul>
+		
 		<?php if($type==Project::COLLECTION || $type==Organization::COLLECTION){
 			if(!@$front || (@$front && $front["dda"]==true)){
 				$rooms = ActionRoom::getAllRoomsActivityByTypeId($type, (string)$element["_id"]); ?>
@@ -597,6 +638,11 @@
 			</li>
 		</ul>
 		<?php } ?>
+
+		<button onclick="elementLib.openForm('ressource','sub')" class="btn btn-default letter-blue margin-top-5">
+			<b><i class="fa fa-plus"></i> Ajouter une ressource </b>
+		</button>
+
 		<ul id="accordion3" class="accordion shadow2 margin-top-20">
 				
 			<!-- PROJETS -->
@@ -729,7 +775,7 @@
 																		 "icon"=>"cubes") ); */?>
 
 		</ul>
-
+</div>
 
 <?php 
 	//$element["type"] = $type;
@@ -755,10 +801,7 @@
 ?>
 <script type="text/javascript">
 
-	//var elementName = "<?php //echo @$element["name"]; ?>";
-    var contextType = "<?php //echo @$type; ?>";
     var contextId = "<?php //echo @$element["id"]; ?>";
-    //var contextData = <?php //echo json_encode($element)?>;
     var edit = '<?php echo (@$edit == true) ? "true" : "false"; ?>';
 	var openEdition = '<?php echo (@$openEdition == true) ? "true" : "false"; ?>';
 
@@ -836,26 +879,14 @@
 	var mode = "view";
 	var types = <?php echo json_encode(@$elementTypes) ?>;
 	var countries = <?php echo json_encode($countries) ?>;
-	//var startDate = '<?php //if(isset($element["startDate"])) echo $element["startDate"]; else echo ""; ?>';
-	//var endDate = '<?php //if(isset($element["endDate"])) echo $element["endDate"]; else echo "" ?>';
-	//var allDay = '<?php //echo (@$element["allDay"] == true) ? "true" : "false"; ?>';
-	//var edit = '<?php //echo (@$edit == true) ? "true" : "false"; ?>';
 	var modeEdit = '<?php echo (@$modeEdit == true) ? "true" : "false"; ?>';
-	//var birthDate = '<?php echo (isset($person["birthDate"])) ? $person["birthDate"] : null; ?>';
 	var NGOCategoriesList = <?php echo json_encode(@$NGOCategories) ?>;
 	var localBusinessCategoriesList = <?php echo json_encode(@$localBusinessCategories) ?>;
-	//var seePreferences = '<?php echo (@$element["seePreferences"] == true) ? "true" : "false"; ?>';
 	var color = '<?php echo Element::getColorIcon($type); ?>';
 	var icon = '<?php echo Element::getFaIcon($type); ?>';
-	//var speudoTelegram = '<?php echo @$element["socialNetwork"]["telegram"]; ?>';
 	var organizer = <?php echo json_encode(@$organizer) ?>;
 	var tags = <?php echo json_encode($tags)?>;
 
-	//var tags2 = <?php //echo (isset($element["tags"])) ? json_encode(implode(",", $element["tags"])) : "''"; ?>;
-		
-	//var mobile 	 = <?php //echo (isset($element["telephone"]["mobile"])) 	? json_encode(implode(",", $element["telephone"]["mobile"])) : "''"; ?>;
-	//var fax 	 = <?php //echo (isset($element["telephone"]["fax"])) 	? json_encode(implode(",", $element["telephone"]["fax"])) : "''"; ?>;
-	//var fixe 	 = <?php //echo (isset($element["telephone"]["fixe"])) 	? json_encode(implode(",", $element["telephone"]["fixe"])) : "''"; ?>;
 	var category = <?php echo (isset($element["category"])) 			? json_encode(implode(",", $element["category"])) : "''"; ?>;
 	var description = <?php echo (isset($element["description"])) ? json_encode($element["description"]) : "''"; ?>;
 
@@ -863,104 +894,16 @@
 	var TYPE_BUSINESS = "<?php echo Organization::TYPE_BUSINESS ?>";
 	var EVENT_COLLECTION = "<?php echo Event::COLLECTION ?>";
 
-	
-
-	//var contentKeyBase = "<?php //echo isset($contentKeyBase) ? $contentKeyBase : ""; ?>";
-	//By default : view mode
-	//var images = <?php //echo json_encode(@$images) ?>;
-	
-	//var publics = <?php //echo json_encode(@$publics) ?>;
 	var isEditing = false;
 	
 	jQuery(document).ready(function() {
 		bindDynFormEditable();
-		initDate();
-		inintDescs();
 		changeHiddenFields();
 		bindAboutPodElement();
 		bindLBHLinks();
 
 		$("#small_profil").html($("#menu-name").html());
 		$("#menu-name").html("");
-
-
-		$("#btn-update-geopos").off().on( "click", function(){
-			updateLocalityEntities();
-		});
-
-		$("#btn-add-geopos").off().on( "click", function(){
-			updateLocalityEntities();
-		});
-
-		$("#btn-update-organizer").off().on( "click", function(){
-			updateOrganizer();
-		});
-		$("#btn-add-organizer").off().on( "click", function(){
-			updateOrganizer();
-		});
-
-		$("#btn-remove-geopos").off().on( "click", function(){
-			var msg = "<?php echo Yii::t('common','Are you sure you want to delete the locality') ;?>" ;
-			if(contextData.type == "<?php echo Person::COLLECTION; ?>")
-				msg = "<?php echo Yii::t('common',"Are you sure you want to delete the locality ? You can't vote anymore in the citizen council of your city."); ?> ";
-
-			bootbox.confirm({
-				message: msg + "<span class='text-red'></span>",
-				buttons: {
-					confirm: {
-						label: "<?php echo Yii::t('common','Yes');?>",
-						className: 'btn-success'
-					},
-					cancel: {
-						label: "<?php echo Yii::t('common','No');?>",
-						className: 'btn-danger'
-					}
-				},
-				callback: function (result) {
-					if (!result) {
-						return;
-					} else {
-						param = new Object;
-				    	param.name = "locality";
-				    	param.value = "";
-				    	param.pk = contextData.id;
-						$.ajax({
-					        type: "POST",
-					        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextDate.type,
-					        data: param,
-					       	dataType: "json",
-					    	success: function(data){
-						    	//
-						    	if(data.result){
-									if(contextData.type == "<?php echo Person::COLLECTION ;?>"){
-										//Menu Left
-										$("#btn-geoloc-auto-menu").attr("href", "javascript:");
-										$('#btn-geoloc-auto-menu > span.lbl-btn-menu').html("Communectez-vous");
-										$("#btn-geoloc-auto-menu").attr("onclick", "communecterUser()");
-										$("#btn-geoloc-auto-menu").off().removeClass("lbh");
-										//Dashbord
-										$("#btn-menuSmall-mycity").attr("href", "javascript:");
-										$("#btn-menuSmall-citizenCouncil").attr("href", "javascript:");
-										//Multiscope
-										$(".msg-scope-co").html("<i class='fa fa-cogs'></i> Paramétrer mon code postal</a>");
-										//MenuSmall
-										$(".hide-communected").show();
-										$(".visible-communected").hide();
-									}
-									toastr.success(data.msg);
-									url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
-						    	}
-						    }
-						});
-					}
-				}
-			});	
-
-		});
-
-		$("#btn-update-geopos-admin").click(function(){
-			findGeoPosByAddress();
-		});
 
 		//console.log("contextDatacontextData", contextData, contextData.type,contextData.id);
 		buildQRCode(contextData.type,contextData.id.$id);
@@ -981,7 +924,36 @@
 
 		mylog.log("tagg1 smallMenu.destination", smallMenu.destination);
 		
-		
+		$(".open-directory").click(function(){
+			toogleNotif(false);
+			smallMenu.openAjax(baseUrl+'/'+moduleId+'/element/directory/type/'+contextData.type+'/id/'+contextData.id+
+								'?tpl=json','Communauté','fa-connectdevelop','dark');
+			bindLBHLinks();
+		});
+
+		/*$(".open-description").click(function(){
+			mylog.log("here", markdownToHtml($("#descriptionMarkdown").val()));
+			toogleNotif(false);
+			smallMenu.open( markdownToHtml($("#descriptionMarkdown").val()));
+			bindLBHLinks();
+		});*/
+
+
+		$(".edit-chart").click(function(){
+			toogleNotif(false);
+			var url = "chart/addchartsv/type/"+contextData.type+"/id/"+contextData.id;
+			$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+			ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+			null,
+			function(){},"html");
+		});
+		$(".btn-open-collection").click(function(){
+			toogleNotif(false);
+		});
+
+		$("#btn-start-detail").click(function(){
+			loadDetail();
+		});		
 		
 	});
 
@@ -993,50 +965,6 @@
 			str += num.trim();
 		});
 		return str ;
-	}
-
-	function initDate() {//DD/mm/YYYY hh:mm
-		if($("#contentGeneralInfos #startDate").html() != "")
-	    	$("#contentGeneralInfos #startDate").html(moment($("#contentGeneralInfos #startDate").html()).local().format(formatDateView));
-	    if($("#contentGeneralInfos #endDate").html() != "")
-	    	$("#contentGeneralInfos #endDate").html(moment($("#contentGeneralInfos #endDate").html()).local().format(formatDateView));
-	    $('#dateTimezone').attr('data-original-title', "Fuseau horaire : GMT " + moment().local().format("Z"));
-	}
-
-	function descHtmlToMarkdown() {
-		mylog.log("htmlToMarkdown");
-		if(typeof contextData.descriptionHTML != "undefined" && contextData.descriptionHTML == "1"){
-			if($("#contentGeneralInfos #description").html() != ""){
-				var descToMarkdown = toMarkdown($("#contentGeneralInfos #descriptionMarkdown").val()) ;
-				mylog.log("descToMarkdown", descToMarkdown);
-	    		$("#contentGeneralInfos #descriptionMarkdown").html(descToMarkdown);
-				var param = new Object;
-				param.name = "description";
-				param.value = descToMarkdown;
-				param.id = contextData.id;
-				param.typeElement = contextType;
-				param.block = "toMarkdown";
-	    		$.ajax({
-			        type: "POST",
-			       	url : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
-			        data: param,
-			       	dataType: "json",
-			    	success: function(data){
-			    		mylog.log("here");
-				    	toastr.success(data.msg);
-				    }
-				});
-				mylog.log("param", param);
-			}
-		}
-	}
-
-	function inintDescs() {
-		mylog.log("inintDescs");
-		descHtmlToMarkdown();
-		mylog.log("after");
-		$("#description").html(markdownToHtml($("#descriptionMarkdown").val()));
-		//$("#shortDescriptionHeader").html(markdownToHtml($("#shortDescriptionMarkdown").val()));
 	}
 
 </script>

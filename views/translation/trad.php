@@ -60,7 +60,9 @@ var trad = {
 "mustacceptCGU" : "<?php echo Yii::t("login","You must validate the CGU to sign up.") ?>",
 "usernamenotunique" : "<?php echo Yii::t("login","The user name is not unique : please change it.")?>",
 "somethingwentwrong" : "<?php echo Yii::t("login","Something went really bad : contact your administrator !")?>",
-"suredeletelocality" : "<?php echo Yii::t("common","Are you sure you want to delete the locality")?>",
+"suredeletelocality" : "<?php echo Yii::t("common","Are you sure you want to delete the locality ?")?>",
+"suredeletepersonlocality" : "<?php echo Yii::t('common',"Are you sure you want to delete the locality ? You can't vote anymore in the citizen council of your city.")?>",
+"updateParams" : "<?php echo Yii::t("common","Update Params") ?>",
 
 "udpateorganizer" : "<?php echo Yii::t("event","Update the organizer") ?>",
 "organizations" : "<?php echo Yii::t("common","organizations") ?>",
@@ -79,6 +81,8 @@ var trad = {
 "followers":"<?php echo Yii::t("common","followers"); ?>",
 "address" : "<?php echo Yii::t("common","Address") ?>",
 "classified" : "<?php echo Yii::t("common","classified") ?>",
+"place" : "<?php echo Yii::t("common","Places") ?>",
+"ressource" : "<?php echo Yii::t("common","Ressource") ?>",
 
 "Technologie" : "Technologie",
 "Immobilier" : "Immobilier",
@@ -101,6 +105,13 @@ var trad = {
 "development" : "<?php echo Yii::t("project","development",null,Yii::app()->controller->module->id)?>",
 "testing" : "<?php echo Yii::t("project","testing",null,Yii::app()->controller->module->id)?>",
 
+"notSpecified" : "<?php echo Yii::t("common","Not specified") ?>",
+"UnknownLocality" : "<?php echo Yii::t("common","Unknown Locality") ?>",
+
+"NGO" : "<?php echo Yii::t("common","NGO") ?>",
+"LocalBusiness" : "<?php echo Yii::t("common","LocalBusiness") ?>",
+"Group" :"<?php echo Yii::t("common","Group") ?>",
+"GovernmentOrganization" : "<?php echo Yii::t("common","GovernmentOrganization") ?>",
 };
 
 var tradCountry = {

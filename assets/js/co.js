@@ -2483,6 +2483,11 @@ var elementLib = {
 				elementLib.starBuild(afterLoad,data);
 			},afterLoad, data);
 		} else {
+			elementLib.openFormAfterLogin = {
+				type : type, 
+				afterLoad : afterLoad,
+				data : data
+			};
 			toastr.error("Vous devez être connecté pour afficher les formulaires de création");
 			$('#modalLogin').modal("show");
 		}
@@ -2736,6 +2741,7 @@ var typeObjLib = {
     	options : organizationTypes
     },
    	avancementProject :{
+   		label : "L'avancement du project",
     	inputType : "select",
     	placeholder : "Avancement du projet",
     	options : avancementProject
@@ -2755,14 +2761,14 @@ var typeObjLib = {
     	}
     },
     image :function(str) { 
-    	gotoUrl = (str) ? str : location.hash;
+    	gotoUrl = (str) ? str+uploadObj.id : location.hash;
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	elementLib.closeForm();
 		    	//alert(gotoUrl+uploadObj.id);
-	            url.loadByHash( gotoUrl+uploadObj.id );	
+	            url.loadByHash( gotoUrl );	
 		    	}
     	}
     },
@@ -2964,9 +2970,12 @@ var typeObjLib = {
       	placeholder : "Saisir les numéros de fax séparer par une virgule"
     },
     price :{
-      	inputType : "text",
+      	inputType : "price",
       	label : "Prix",
-      	placeholder : "Prix ..."
+      	placeholder : "Prix ...",
+      	init : function(){
+    		$('input#price').filter_input({regex:'[0-9]'});
+      	}
     },
     contactInfo :{
       	inputType : "text",
@@ -2999,6 +3008,11 @@ var typeObjLib = {
         init:function(){
         	$(".invitedUserEmailtext").css("display","none");	 
         }
+    },
+    list :{
+    	inputType : "select",
+    	placeholder : "Type du point d'intérêt",
+    	options : poiTypes
     },
     poiTypes :{
     	inputType : "select",
@@ -3035,13 +3049,31 @@ var typeObjLib = {
     },
     get:function(type){
     	mylog.log("get", type);
+    	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
-    			return typeObj[ typeObj[type].sameAs ];
+    			obj = typeObj[ typeObj[type].sameAs ];
     		} else
-    			return typeObj[type];
-    	}else 
-    		return null;
+    			obj = typeObj[type];
+    		obj.name = (trad[type]) ? trad[type] : type;
+    	}
+    	return obj;
+    },
+    deepGet:function(type){
+    	mylog.log("get", type);
+    	var obj = null;
+    	if( jsonHelper.notNull("typeObj."+type)){
+    		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
+    			obj = typeObj[ typeObj[type].sameAs ];
+    		} else
+    			obj = typeObj[type];
+    		obj.name = (trad[type]) ? trad[type] : type;
+    	} else {
+    		//calculate only once
+    		//get list of all keys and sub keys
+    		//return corresponding map
+    	}
+    	return obj;
     }
 };
 
@@ -3105,12 +3137,21 @@ var typeObj = {
 			    }
 			}
 		}},
+	
 	"person" : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
 	"persons" : { sameAs:"person" },
 	"people" : { sameAs:"person" },
 	"citoyen" : { sameAs:"person" },
 	"citoyens" : { sameAs:"person" },
-	"poi":{  col:"poi",ctrl:"poi",color:"azure",	icon:"info-circle"},
+	
+	"poi":{  col:"poi",ctrl:"poi",color:"azure",icon:"info-circle"},
+
+	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
+	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
+	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
+	
+	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
+
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
 	"organizations" : {sameAs:"organization"},
@@ -3499,7 +3540,7 @@ var CoSigAllReadyLoad = false;
 //ne sert plus, juste a savoir d'ou vient drait l'appel
 
 function KScrollTo(target){ 
-	mylog.log("target", target);
+	mylog.log("KScrollTo target", target);
 	if(!$(target)) return;
 
 	$('html, body').stop().animate({

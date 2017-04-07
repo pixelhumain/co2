@@ -38,8 +38,8 @@
 
 
         "lookingfor" : {
-            "label":"Recherche", 
-            "labelFront":"À la recherche",   
+            "label":"Besoin", 
+            "labelFront":"Besoin",   
             "key" : "lookingfor",  
             "icon" : "eye",                    
             "section":4, 

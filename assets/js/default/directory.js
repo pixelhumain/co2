@@ -806,13 +806,18 @@ var directory = {
         str += "<hr></div>";
 
         getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/classified/tpl/json" , function( data ) { 
-          
+          var c = 1;
           $.each(data.list,function(k,v) { 
             mylog.log("data list",k,v);
+            if( $('.carousel-first img').attr('src').indexOf(v.name) < 0 ){
               $(".carousel-inner").append('  <div class="item">'+
-              "   <img class='img-responsive' src='"+baseUrl+v.path+"'/>"+
+              "   <img class='img-responsive' src='"+v.path+"/"+v.name+"'/>"+
               ' </div>');
+              $(".carousel-indicators").append('<li data-target="#myCarousel" data-slide-to="'+c+'"></li>');
+              c++;
+            }
           });
+
         });
 
         if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
@@ -821,12 +826,11 @@ var directory = {
                       //<!-- Indicators -->
                       '<ol class="carousel-indicators">'+
                       '  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>'+
-                      '  <li data-target="#myCarousel" data-slide-to="1"></li>'+
                       '</ol>'+
 
                       //<!-- Wrapper for slides -->'+
                       '<div class="carousel-inner" role="listbox">'+
-                      '  <div class="item active">'+
+                      '  <div class="item active carousel-first ">'+
                       "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
                       '  </div>'+
                       '</div>'+

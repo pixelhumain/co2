@@ -79,7 +79,7 @@ var liveTypeName = { "news":"<i class='fa fa-rss'></i> Les messages",
 
 
 var liveScopeType = "global";
-
+var scrollEnd = false;
 <?php if(@$type && !empty($type)){ ?>
 	searchType = ["<?php echo $type; ?>"];
 <?php }else{ ?>
@@ -119,17 +119,7 @@ jQuery(document).ready(function() {
 	$(".titleNowEvents .btnhidden").hide();
 
 	//init loading in scroll
-    $(window).off().bind("scroll",function(){ 
-	    if(!loadingData && !scrollEnd){
-	          var heightWindow = $("html").height() - $("body").height();
-	          console.log(heightWindow);
-	          if( $(this).scrollTop() >= heightWindow - 400){
-	            //loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
-	            showNewsStream(false);
-	          }
-	    }
-	});
-
+   
     initKInterface();//{"affixTop":10});
     initFreedomInterface();
 
@@ -148,11 +138,11 @@ var timeout;
 function startSearch(isFirst){
 	//Modif SBAR
 	//$(".my-main-container").off();
-	if(liveScopeType == "global"){
+	//if(liveScopeType == "global"){
 		showNewsStream(isFirst);
-	}else{
-		showNewsStream(isFirst);//loadStream(0,5);
-	}
+	//}else{
+	//	showNewsStream(isFirst);//loadStream(0,5);
+	//}
 	//loadLiveNow();
 }
 
@@ -161,7 +151,7 @@ function loadStream(indexMin, indexMax){ console.log("LOAD STREAM FREEDOM");
 	loadingData = true;
 	currentIndexMin = indexMin;
 	currentIndexMax = indexMax;
-
+	alert("ici on doit aller");
 	//isLive = isLiveBool==true ? "/isLive/true" : "";
 	//var url = "news/index/type/citoyens/id/<?php echo @Yii::app()->session["userId"]; ?>"+isLive+"/date/"+dateLimit+"?isFirst=1&tpl=co2&renderPartial=true";
 		
@@ -271,7 +261,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		"<span style='font-size:25px;' class='homestead'>"+
 			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
 			"<span class='text-dark'>Chargement en cours ...</span>" + 
-	"</div>";
+		"</div>";
 
 	//loading = "";
 
@@ -279,6 +269,15 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		$("#newsstream").html(loading);
 		ajaxPost("#newsstream",baseUrl+"/"+moduleId+urlCtrl+"/date/0"+isFirstParam,dataNewsSearch, function(news){
 			showTagsScopesMin(".list_tags_scopes");
+			 $(window).bind("scroll",function(){ 
+	    		if(!loadingData && !scrollEnd){
+	         		var heightWindow = $("html").height() - $("body").height();
+	         		if( $(this).scrollTop() >= heightWindow - 400){
+	            		//loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
+	            		showNewsStream(false);
+	          		}
+	    		}
+			});
 			if(loadContent != ''){
 				if(userId){
 					showFormBlock(true);
@@ -286,7 +285,6 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 						loadContent = loadContent.replace("%hash%", "#");
 					$("#get_url").val(loadContent);
 					$("#get_url").trigger("input");
-
 				}
 				else {
 					toastr.error('you must be loggued to post on communecter!');
@@ -305,25 +303,24 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 
 	 	},"html");
 	}else{ //data JSON for load next
-		dateLimit=0;currentMonth = null;
-		$(".newsTL").html(loading);
+		//dateLimit=0;currentMonth = null;
+		loadingData = true;
+		$("#newsstream").append(loading);
 		$.ajax({
 		        type: "POST",
-		        url: baseUrl+"/"+moduleId+urlCtrl+"/date/"+dateLimit+"?tpl=co2",
-		       	dataType: "json",
+		        url: baseUrl+"/"+moduleId+urlCtrl+"/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=2",
 		       	data: dataNewsSearch,
 		    	success: function(data){
-			    	//mylog.log("LOAD NEWS BY AJAX");
-			    	//mylog.log(data.news);
-			    	$(".newsTL").html('<div class="spine"></div>');
 					if(data){
 						alert();
-						buildTimeLine (data.news, 0, 5);
-						bindTags();
-						if(typeof(data.limitDate.created) == "object")
-							dateLimit=data.limitDate.created.sec;
-						else
-							dateLimit=data.limitDate.created;
+						$("#newsstream").find(".loader").remove();
+						$("#news-list").append(data);
+						//buildTimeLine (data.news, 0, 5);
+						//bindTags();
+						//if(typeof(data.limitDate.created) == "object")
+						//	dateLimit=data.limitDate.created.sec;
+						//else
+						//	dateLimit=data.limitDate.created;
 					}
 					loadingData = false;
 				},

@@ -77,6 +77,7 @@ var loadStream = function(indexMin, indexMax){ mylog.log("loadStream");
 		    	mylog.log("LOAD NEWS BY AJAX");
 		    	//mylog.log(data.news);
 		    	if(data){
+		    		alert();
 					buildTimeLine (data.news, indexMin, indexMax);
 					bindTags();
 					if(typeof(data.limitDate.created) == "object")

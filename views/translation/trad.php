@@ -96,7 +96,7 @@ var trad = {
 "donation" : "Donner", 
 "forsale" : "Vendre",  
 "forrent" : "Louer", 
-"lookingfor" : "Recherche",  
+"lookingfor" : "Besoin",  
 "job" : "Emplois",
 
 "Project maturity" : "<?php echo Yii::t("project","Project maturity",null,Yii::app()->controller->module->id)?>",

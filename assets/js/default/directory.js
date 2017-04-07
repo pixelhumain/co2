@@ -1431,19 +1431,24 @@ var directory = {
 
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
                 
-                mylog.log("template principal",params);
+                mylog.log("template principal",params,params.type);
                 
                   //template principal
                 if(params.type == "cities")
                   str += directory.cityPanelHtml(params);  
+                
                 else if( $.inArray(params.type, ["citoyens","organizations","project","poi","place"])>=0) 
                   str += directory.elementPanelHtml(params);  
+                
                 else if(params.type == "events")
                   str += directory.eventPanelHtml(params);  
+                
                 else if(params.type == "surveys" || params.type == "actions")
                     str += directory.roomsPanelHtml(params);  
+                
                 else if(params.type == "classified")
                   str += directory.classifiedPanelHtml(params);
+                
                 else
                   str += directory.defaultPanelHtml(params);
             }

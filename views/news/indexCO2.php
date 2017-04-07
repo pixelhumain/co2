@@ -84,7 +84,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
   }
 
 #formCreateNewsTemp .form-create-news-container, #formActivity{
-    max-width: 700px;
+    /*max-width: 700px;*/
 }
 .newsContent{ 
   white-space: pre; 

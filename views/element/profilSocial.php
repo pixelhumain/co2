@@ -206,6 +206,9 @@
 	padding:10px;
 	padding-right: 22px;*/
 }
+#second-name-element{
+  margin-top:5px;
+}
 #uploadScropResizeAndSaveImage{
 	/*position:absolute;
 	top:0px;
@@ -269,6 +272,16 @@
 
 #fileuploadContainer{
 	box-shadow: 1px -1px 3px 0px #969696;
+}
+
+.identity-min{
+	display: none;
+}
+.identity-min .pastille-type-element{
+	margin-top:12px;
+}
+.sub-menu-social.affix .identity-min{
+	display: inline;
 }
 
 @media (max-width: 768px) {
@@ -338,10 +351,6 @@
 					</div>
 
         			<h4 class="text-left padding-left-15 pull-left no-margin" id="main-name-element">
-						<?php if($edit==true || $openEdition==true ){?>
-							<!-- <a href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a> -->
-						<?php } ?>
-
 						<span id="nameHeader">
 							<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left">
 								<!--<i class="fa fa-<?php echo $icon; ?>"></i>--> 
@@ -425,7 +434,25 @@
     
     <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 pull-right sub-menu-social no-padding">
 
-    	<div class="btn-group">
+    	<div class="btn-group inline">
+
+    	  <?php 
+    	  	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
+			$thumbAuthor =  @$element['profilThumbImageUrl'] ? 
+		                      Yii::app()->createUrl('/'.@$element['profilThumbImageUrl']) 
+		                      : "";
+    	  ?>
+    	  <div class="identity-min">
+	    	  <img class="pull-left" src="<?php echo $thumbAuthor; ?>" height=45>
+	    	  <div class="pastille-type-element hidden-xs bg-<?php echo $iconColor; ?> pull-left"></div>
+			  <div class="col-lg-1 col-md-2 col-sm-2 hidden-xs pull-left no-padding">
+	    	  	<div class="text-left padding-left-15" id="second-name-element">
+					<span id="nameHeader">
+						<h5 class="elipsis"><?php echo @$element["name"]; ?></h5>
+					</span>	
+				</div>
+	    	  </div>
+    	  </div>
 
     	  <?php if(@Yii::app()->session["userId"] && 
     			 $type==Person::COLLECTION && 
@@ -1033,48 +1060,35 @@ transform: rotate(90deg);
 			history.pushState(null, "New Title", hashUrlPage+".view.detail");
 			loadDetail();
 		});
+
+		$(".load-data-directory").click(function(){
+   			var dataName = $(this).data("type-dir");
+   			console.log(".load-data-directory", dataName);
+   			loadDataDirectory(dataName);
+   		});
+   		
 	}
 
-	function initSocial(){
-		var Accordion = function(el, multiple) {
-			this.el = el || {};
-			this.multiple = multiple || false;
-
-			// Variables privadas
-			var links = this.el.find('.link');
-			// Evento
-			links.on('click', {el: this.el, multiple: this.multiple}, this.dropdown);
-		}
-
-		Accordion.prototype.dropdown = function(e) {
-			var $el = e.data.el;
-				$this = $(this),
-				$next = $this.next();
-
-			$next.slideToggle();
-			$this.parent().toggleClass('open');
-
-			if (!e.data.multiple) {
-				$el.find('.submenu').not($next).slideUp().parent().removeClass('open');
-			};
-		}	
-
-		var accordion = new Accordion($('#accordion'), false);
-		var accordion2 = new Accordion($('#accordion2'), false);
-		var accordion3 = new Accordion($('#accordion3'), false);
-		var accordion4 = new Accordion($('#accordion4'), false);
-		var accordion5 = new Accordion($('#accordion5'), false);
-
-		//ouvre le pod communauté
-		//$('#accordion4 .link').trigger("click");
+	function initSocial(){	
    		$(".tooltips").tooltip();
 
    		$('.sub-menu-social').affix({
           offset: {
               top: 350
-          }
-      });
-   		
+          }});
+	}
+
+	function loadDataDirectory(dataName){
+		getAjax('',
+					baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
+					function(data){ 
+						console.log("loadDataDirectory success", data);
+						var html = directory.showResultsDirectoryHtml(data);
+
+						console.log("html:", html);
+						$("#central-container").html(html);
+					}
+		,"html");
 	}
 
 	function loadAdminDashboard(){

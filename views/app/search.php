@@ -559,7 +559,7 @@ CLASSIFIED
 var section = "";
 var classType = "";
 var classSubType = "";
-function initClassifiedInterface(){
+function initClassifiedInterface(){ return;
     classified.currentLeftFilters = null;
     $('#menu-section-'+typeInit).removeClass("hidden");
     $("#btn-create-classified").click(function(){

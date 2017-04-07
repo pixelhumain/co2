@@ -75,6 +75,7 @@ class CommunecterController extends Controller
   public $pages = array(
     "admin" => array(
       "index"     => array("href" => "/ph/communecter/admin"),
+      "accueil"     => array("href" => "/ph/communecter/accueil"),
       "directory" => array("href" => "/ph/communecter/admin/directory"),
       "switchto"  => array("href" => "/ph/communecter/admin/switchto"),
       "delete"    => array("href" => "/ph/communecter/admin/delete"),

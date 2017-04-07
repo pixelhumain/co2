@@ -119,11 +119,14 @@
 	}
 ?>
 <?php if ($elementType!= Person::COLLECTION && $elementId!=Yii::app()->session["userId"]){ ?>
-<a href="javascript:collection.add2fav('<?php echo $elementType ?>','<?php echo $elementId ?>')"  class="btn-o menu-linksBtn"><i class="fa fa-star"></i> <?php echo Yii::t("common","Favorites"); ?></a>
+<a href="javascript:collection.add2fav('<?php echo $elementType ?>','<?php echo $elementId ?>')"  
+	class="btn-o menu-linksBtn"><i class="fa fa-star"></i> <?php echo Yii::t("common","Favorites"); ?></a>
 <?php } ?>
 <ul class="nav navbar-nav pull-right">
 	<li class="dropdown">
-		<a href="#" class="dropdown-toggle littleActions" data-toggle="dropdown"><span class="fa fa-ellipsis-v pull-left"></span></a>
+		<a href="#" class="dropdown-toggle littleActions" data-toggle="dropdown">
+			<span class="fa fa-ellipsis-v pull-left"></span>
+		</a>
 		<ul class="dropdown-menu pull-right">
 			<li>
 				<a href="javascript:;" id="btn-show-activity">

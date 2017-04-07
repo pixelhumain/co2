@@ -1,33 +1,23 @@
 dynForm = {
     jsonSchema : {
-	    title : "Publier une annonce",
-	    icon : "bullhorn",
-	    type : "object",	    
+	    title : "Formulaire d'un Lieu",
+	    icon : "map-marker",
+	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	subPoi : function(){
-	    		if(contextData.type && contextData.id ){
+	    	sub : function(){
+	    		if(contextData.type && contextData.id )
+	    		{
     				$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 	    		}
-	    		
-	    	},
+	    	}, 
 	    	onload : function(){
-	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
+	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
 	    	},
-	    	/*,
-	    	loadData : function(data){
-		    	mylog.warn("--------------- loadData ---------------------",data);
-		    	$('#ajaxFormModal #name').val(data.name);
-		    	$('#ajaxFormModal #type').val(data.type);
-		    	$('#ajaxFormModal #parentId').val(data.parentId);
-	    		$("#ajaxFormModal #parentType").val( data.parentType ); 
-		    },*/
-	    },
-	    beforeBuild : function(){
-	    	elementLib.setMongoId('classified');
 	    },
 	    beforeSave : function(){
+	    	
 	    	var tagAndTypes = ( $("#ajaxFormModal #tags").val() != "" ) ? $("#ajaxFormModal #tags").val()+"," : "" ;
 
 	    	if( $("#ajaxFormModal #section").val() )
@@ -37,20 +27,23 @@ dynForm = {
 	    	if( $("#ajaxFormModal #subtype").val() )
 	    		tagAndTypes += ","+$("#ajaxFormModal #subtype").val();
 	    	$("#ajaxFormModal #tags").val( tagAndTypes );
-	    	
+
 	    	if( typeof $("#ajaxFormModal #description").code === 'function' )  
 	    		$("#ajaxFormModal #description").val( $("#ajaxFormModal #description").code() );
 	    	if($('#ajaxFormModal #parentId').val() == "" && $('#ajaxFormModal #parentType').val() ){
-		    	$('#ajaxFormModal #parentId').val(userId);
+		    	$('#ajaxFormModal #parentId').val( userId );
 		    	$("#ajaxFormModal #parentType").val( "citoyens" ); 
 		    }
 	    },
-	    afterSave : function(){
+	    beforeBuild : function(){
+	    	elementLib.setMongoId('place');
+	    },
+		afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
-		    	elementLib.closeForm();
-		    	url.loadByHash( location.hash );	
+		    	elementLib.closeForm();	
+		    	url.loadByHash( location.hash );
 		    }
 	    },
 	    actions : {
@@ -63,23 +56,23 @@ dynForm = {
 	    		$(".typeBtntagList").hide(); 
 	    		$(".subtypeSection").html("");
 	    		$(".subtypeSectioncustom").show();
-	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
+	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
 	    	}
 	    },
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"",//<p><i class='fa fa-info-circle'></i> Une Annonce est un élément assez libre qui peut etre géolocalisé ou pas, qui peut etre rataché à tous les éléments.</p>",
+                html:"<p><i class='fa fa-info-circle'></i> Un Point d'interet est un élément assez libre qui peut etre géolocalisé ou pas, qui peut etre rataché à une organisation, un projet ou un évènement.</p>",
             },
             breadcrumb : {
                 inputType : "custom",
                 html:"",
             },
             sectionBtn :{
-                label : "De quel type d'annonce s'agit-il ? ",
+                label : "De quel type de Lieu s'agit-il ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
-                list : classified.sections,
+                list : place.sections,
                 trad : trad,
                 init : function(){
                 	$(".sectionBtn").off().on("click",function()
@@ -97,12 +90,13 @@ dynForm = {
             },
             section : typeObjLib.hidden,
 	        typeBtn :{
-                label : "Dans quelle catégorie souhaitez-vous publier votre annonce ? ",
+                label : "Type de lieu ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir une catégorie",
-                list : classified.filters,
+                list : place.filters,
                 init : function(){
-	            	$(".typeBtn").off().on("click",function(){
+	            	$(".typeBtn").off().on("click",function()
+	            	{
 	            		
 	            		$(".typeBtn").removeClass("active btn-dark-blue text-white");
 	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
@@ -114,7 +108,7 @@ dynForm = {
 	            		//$(".typeBtn:not(.active)").hide();
 	            		$("#ajaxFormModal #subtype").val("");
 	            		fieldHTML = "";
-	            		$.each(classified.filters[ $(this).data('key') ]["subcat"], function(k,v) { 
+	            		$.each(place.filters[ $(this).data('key') ]["subcat"], function(k,v) { 
 	            			fieldHTML += '<div class="col-md-6 padding-5">'+
         									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>' +
 	            						"</div>";
@@ -130,7 +124,7 @@ dynForm = {
 		            		$( ".subtypeBtn" ).removeClass("active");
 		            		$(this).addClass("active");
 		            		$("#ajaxFormModal #subtype").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
-		            		$(".nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
+		            		$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
 		            		//$(".subtypeBtn:not(.active)").hide();
 
 		            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+" > "+$(".subtypeBtn.active").data('tag')+"</h4>" );
@@ -145,13 +139,17 @@ dynForm = {
                 html:"<div class='subtypeSection'></div>"
             },
             subtype : typeObjLib.hidden,
-            price : typeObjLib.price,
-            name : typeObjLib.name("classified"),
+            name : typeObjLib.name("place"),
+	        image : typeObjLib.image( "#place.detail.id."+uploadObj.id ),
             description : typeObjLib.description,
-            image : typeObjLib.image( "#classified.detail.id."+uploadObj.id ),
-            contactInfo : typeObjLib.contactInfo,
             location : typeObjLib.location,
-            tags : typeObjLib.tags(),
+            tags :typeObjLib.tags(),
+            formshowers : {
+            	label : "En détails",
+                inputType : "custom",
+                html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
+            },
+            urls : typeObjLib.urlsOptionnel,
             parentId : typeObjLib.hidden,
             parentType : typeObjLib.hidden,
 	    }

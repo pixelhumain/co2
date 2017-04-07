@@ -175,10 +175,9 @@ class AppController extends CommunecterController {
 	}
 
     public function actionAdmin(){
-        //CO2Stat::incNbLoad("co2-admin");   
+        CO2Stat::incNbLoad("co2-admin");   
         $params = array();
-        echo "Yo";
-       // echo $this->renderPartial("admin", $params, true);
+        echo $this->renderPartial("admin", $params, true);
     }
 
     public function actionRooms($type,$id){

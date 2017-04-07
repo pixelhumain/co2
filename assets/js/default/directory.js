@@ -181,7 +181,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                         "<i class='fa fa-angle-down'></i> " + totalData + " résultats ";
               str += "<small>";
               if(typeof headerParams != "undefined"){
-                $.each(searchType, function(key, val){
+                $.each( searchType, function(key, val){
+                  mylog.log("success autocomplete search",val);
                   var params = headerParams[val];
                   str += "<span class='text-"+params.color+"'>"+
                             "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
@@ -620,8 +621,6 @@ var directory = {
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
-      
-
         if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
@@ -630,8 +629,7 @@ var directory = {
                   'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
                   " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
                       "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-                    "</a>";
-          
+                    "</a>";          
         }
 
         if(params.updated != null )
@@ -655,7 +653,14 @@ var directory = {
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
             str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
                       iconFaReply + params.name + 
-                   "</a>";                 
+                   "</a>";   
+
+            if( params.section ){
+              str += "<div class='entityType bold'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
+                if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+              str += "</div>";
+            }
+                                 
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
                  thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
@@ -724,6 +729,7 @@ var directory = {
     //TODO : ADD link to seller contact page
     previewedObj : null,
     preview : function(params,hash){
+
         
       directory.previewedObj = {
           hash : hash,
@@ -1345,11 +1351,11 @@ var directory = {
                                     "";
 
                 //mapElements.push(params);
-
+                
                 if(typeof( typeObj[itemType] ) == "undefined")
                     itemType="poi";
                 typeIco = itemType;
-
+                mylog.warn("itemType",itemType,"typeIco",typeIco);
                 if(typeof params.typeOrga != "undefined")
                   typeIco = params.typeOrga;
 
@@ -1363,8 +1369,8 @@ var directory = {
                     params.parentColor = parentObj.color;
                 }
                 if(params.type == "classified" && typeof params.category != "undefined"){
-                  params.ico = typeof classifiedTypes[params.category] != "undefined" ?
-                               "fa-" + classifiedTypes[params.category]["icon"] : "";
+                  params.ico = typeof classified.filters[params.category] != "undefined" ?
+                               "fa-" + classified.filters[params.category]["icon"] : "";
                 }
 
                 params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
@@ -1425,7 +1431,7 @@ var directory = {
                   //template principal
                 if(params.type == "cities")
                   str += directory.cityPanelHtml(params);  
-                else if( $.inArray(params.type, ["citoyens","organizations","project"])>=0) 
+                else if( $.inArray(params.type, ["citoyens","organizations","project","poi","place"])>=0) 
                   str += directory.elementPanelHtml(params);  
                 else if(params.type == "events")
                   str += directory.eventPanelHtml(params);  
@@ -1511,8 +1517,7 @@ var directory = {
     },
 
     //todo add count on each tag
-    filterTags : function (withSearch,open) 
-    { 
+    filterTags : function (withSearch,open) { 
         directory.tagsT = [];
         $("#listTags").html('');
         if(withSearch){
@@ -1544,6 +1549,24 @@ var directory = {
         //$("#btn-open-tags").append("("+$(".favElBtn").length+")");
     },
     
+    sectionFilter : function (list, dest, what) { 
+      mylog.log("sectionFilter",list,what,dest);
+
+        $(dest).html('');
+        $(dest).append('<h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">'+
+              '<i class="fa fa-'+what.icon+'"></i> '+what.title+'</h4><hr>');
+        $.each( list,function(k,o){
+            str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="'+k+'">'+
+                    '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+k+'</button><br>';
+            if( o.subcat ){
+              $.each( o.subcat ,function(i,oT){
+                  str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
+                          '<i class="fa fa-angle-right"></i>'+oT+'</button><br class="hidden">';
+              });
+            }
+            $(dest).append(str);
+        });
+    },
     showFilters : function () { 
       if($("#listTags").hasClass("hide")){
         $("#listTags").removeClass("hide");
@@ -1605,8 +1628,7 @@ var directory = {
         $(".my-main-container").scrollTop(0);
     },
 
-    showAll: function(parents,children,path,color) 
-    {
+    showAll: function(parents,children,path,color) {
       //show all
       if(!color)
         color = "text-white";
@@ -1641,7 +1663,7 @@ var directory = {
                   //mylog.log("found");
                   found = 1;
                 }
-
+                
                 if(found)
                     $(this).removeClass('hide');
                 else

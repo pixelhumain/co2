@@ -4,9 +4,11 @@
 	"metaDesc" : "Réseau sociétal citoyen",
 
 	"pages" : {
+
 		"#app.index": {
 			"redirect":"search"
 		},
+
 		"#search": { 
 			"inMenu" : true, 
 			"useHeader" : true, 
@@ -75,18 +77,6 @@
 			"placeholderMainSearch" : "rechercher parmis les messages ..."
 		},
 
-		"#page": {
-			"inMenu" : false, 
-			"useHeader" : false, 
-			"open" : true, 
-			"subdomain" : "page", 
-			"subdomainName" : "page",
-			"hash":"#app.page",
-			"icon" : "", 
-			"mainTitle" : "Le réseau social à effet de sert",
-			"placeholderMainSearch" : "rechercher ..."
-		},
-
 		"#info": {
 			"inMenu" : false, 
 			"useHeader" : false, 
@@ -97,6 +87,32 @@
 			"icon" : "search", 
 			"mainTitle" : "Le réseau social à effet de sert",
 			"placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
+		},
+
+		"#place":{
+			"inMenu" : true, 
+			"useHeader" : false, 
+			"open" : true, 
+			"subdomain" : "place", 
+			"subdomainName" : "Lieux",
+			"hash" : "#app.search.type.place",
+			"icon" : "map-marker", 
+			"mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
+			"placeholderMainSearch" : "Rechercher un lieu ...",
+			"lblBtnCreate" : "Ajouter un Lieux",
+			"colorBtnCreate" : "green"
+		},
+
+		"#page":{
+			"inMenu" : false, 
+			"useHeader" : false, 
+			"open" : true, 
+			"subdomain" : "page", 
+			"subdomainName" : "page",
+			"hash":"#app.page",
+			"icon" : "", 
+			"mainTitle" : "Le réseau social à effet de sert",
+			"placeholderMainSearch" : "rechercher ..."
 		},
 
 		"#city": {
@@ -110,6 +126,7 @@
 			"mainTitle" : "Communexion activée",
 			"placeholderMainSearch" : "rechercher ..."
 		},
+
 		"#rooms": {
 			"inMenu" : false, 
 			"useHeader" : false,
@@ -135,27 +152,28 @@
 
 		"#admin": {
 			"inMenu" : false, 
-			"useHeader" : false, 
-			"open" : true, 
-			"subdomain" : "page", 
-			"subdomainName" : "page",
-			"hash":"#app.page",
-			"icon" : "", 
-			"mainTitle" : "Le réseau social à effet de sert",
-			"placeholderMainSearch" : "rechercher ..."
+			"useHeader" : true, 
+			"open" : false, 
+			"subdomain" : "admin", 
+			"subdomainName" : "admin",
+			"hash":"#admin.index",
+			"icon" : "university", 
+			"mainTitle" : "Partie Admin",
+			"placeholderMainSearch" : "Admin ..."
 		},
-		"#superadmin": {
+
+		"#adminpublic": {
 			"inMenu" : false, 
-			"useHeader" : false, 
-			"open" : true, 
-			"subdomain" : "page", 
-			"subdomainName" : "page",
-			"hash":"#app.page",
-			"icon" : "", 
-			"mainTitle" : "Le réseau social à effet de sert",
-			"placeholderMainSearch" : "rechercher ..."
+			"useHeader" : true, 
+			"open" : false, 
+			"subdomain" : "admin", 
+			"subdomainName" : "admin",
+			"hash":"#adminpublic.index",
+			"icon" : "university", 
+			"mainTitle" : "Partie Admin Public",
+			"placeholderMainSearch" : "Admin Public ..."
 		}
-      
+
 	  }
   
   }

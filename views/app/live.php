@@ -131,7 +131,6 @@ jQuery(document).ready(function() {
     //KScrollTo(".main-btn-scopes");
 });
 
-//var freedomCategories = <?php //echo json_encode($freedomSections); ?>
 
 function initFreedomInterface(){
 	
@@ -161,7 +160,7 @@ function loadStream(indexMin, indexMax){ console.log("LOAD STREAM FREEDOM");
 	//isLive = isLiveBool==true ? "/isLive/true" : "";
 	//var url = "news/index/type/citoyens/id/<?php echo @Yii::app()->session["userId"]; ?>"+isLive+"/date/"+dateLimit+"?isFirst=1&tpl=co2&renderPartial=true";
 		
-	var url = "news/index/type/city/isLive/true/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=1";
+	var url = "news/index/type/city/isLive/true/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=2";
 	$.ajax({ 
         type: "POST",
         url: baseUrl+"/"+moduleId+'/'+url,
@@ -224,7 +223,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 	scrollEnd = false;
 
 	var isFirstParam = isFirst ? "?isFirst=1&tpl=co2" : "?tpl=co2";
-	isFirstParam += "&nbCol=1";
+	isFirstParam += "&nbCol=2";
 	var tagSearch = $('#searchTags').val().split(',');; //$('#searchBarText').val();
 	var levelCommunexionName = { 1 : "CITYKEY",
 	                             2 : "CODE_POSTAL",

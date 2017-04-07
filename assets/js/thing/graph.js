@@ -172,7 +172,7 @@ function fillArrayWithObjectTimestampsAndValues(readings){
     function(item){
       var ts = new Date();
       ts.setTime(Date.parse(item[0]));
-      ts.setSeconds(0)
+      ts.setSeconds(0);
       item[1] = +item[1];
       d.push({timestamps : ts, values : item[1]});
     }
@@ -225,12 +225,37 @@ function graphe(device,sensors,readings,svgG){
 
 function dataSensorAdaptor(convertedDataRecord){
 
-  convertedDataRecord.forEach(
+  var d={};
+  d.temp=[], d.hum=[], d.bat=[], d.panel=[], d.no2=[], d.co=[], d.noise=[], d.nets=[], d.light=[];
+  
+  convertedDataRecord.forEach( function(item){
 
+      var ts = new Date();
+      ts.setTime(Date.parse(item.timestamp));
+      ts.setSeconds(0);
 
-    );
+      item.temp =+item.temp;
+      item.hum  =+item.hum;
+      item.bat  =+item.bat;
+      item.panel=+item.panel;
+      item.co   =+item.co;
+      item.no2  =+item.no2;
+      item.light=+item.light;
+      item.nets =+item.nets;
+      item.noise=+item.noise;
+      
+      d.temp.push({timestamps : ts, values : item.temp});
+      d.hum.push({timestamps : ts, values : item.hum});
+      d.bat.push({timestamps : ts, values : item.bat});, 
+      d.panel.push({timestamps : ts, values : item.panel});
+      d.no2.push({timestamps : ts, values : item.no2});
+      d.co.push({timestamps : ts, values : item.co});
+      d.noise.push({timestamps : ts, values : item.noise});
+      d.nets.push({timestamps : ts, values : item.nets});
+      d.light.push({timestamps : ts, values : item.light});
 
-
+  });
+  return d;
 }
 
 

@@ -1197,6 +1197,7 @@
 							$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
 																	"<i class='fa fa-ban'></i> Aucune donnée"+
 																"</span>");
+							toogleNotif(false);
 						}
 					}
 		,"html");

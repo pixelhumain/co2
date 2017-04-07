@@ -39,7 +39,7 @@
 
         "lookingfor" : {
             "label":"Besoin", 
-            "labelFront":"Besoin",   
+            "labelFront":"À la recherche",   
             "key" : "lookingfor",  
             "icon" : "eye",                    
             "section":4, 

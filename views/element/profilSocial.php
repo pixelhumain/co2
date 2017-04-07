@@ -240,6 +240,7 @@
 .name-header{
 	line-height: 30px;
 	font-size: 20px;
+	text-transform: none;
 }
 #shortDescriptionHeader{
 	white-space: pre-line;
@@ -282,6 +283,31 @@
 }
 .sub-menu-social.affix .identity-min{
 	display: inline;
+}
+
+#name-lbl-title{
+	text-decoration: none;
+	font-weight: 800;
+	font-size:20px;
+}
+.labelTitleDir{
+	font-size: 18px;
+}
+#div-select-create{
+	-webkit-box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
+	-moz-box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
+	box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
+	display: none;
+}
+#div-select-create i.fa{
+	width:50px;
+	height:50px;
+	text-align: center;
+	border-radius: 50px;
+	color:white!important;
+	padding-top:12px;
+	margin-bottom: 6px;
+
 }
 
 @media (max-width: 768px) {
@@ -470,10 +496,10 @@
 		  ?>
 
 		  <button type="button" class="btn btn-default bold" id="btn-start-mystream">
-		  		<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper") ?>
+		  		<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper").(string)$isLinked; ?>
 		  </button>
 
-		  <?php if(@Yii::app()->session["userId"] && $isLinked==true){ ?>
+		  <?php if((@Yii::app()->session["userId"] && $isLinked==true) || @Yii::app()->session["userId"] == $element["_id"]){ ?>
 		  <button type="button" class="btn btn-default bold" id="btn-start-notifications">
 		  	<i class="fa fa-bell"></i> 
 		  	<span class="hidden-xs hidden-sm">
@@ -487,23 +513,27 @@
 
 
 		  <?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
-		  <button type="button" class="btn btn-default bold">
-		  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
-		  </button>
-		  <button type="button" class="btn btn-default bold letter-green" id="">
-		  		<i class="fa fa-plus"></i> <?php echo Yii::t("common", "Nouveau ...") ?>
+		  <button type="button" class="btn btn-default bold letter-green" id="btn-open-create">
+		  		<i class="fa fa-plus"></i> <?php echo Yii::t("common", "Nouveau") ?>
 		  </button>
 		  <?php } ?>
 		</div>
 		
 		<div class="btn-group pull-right">
+			<?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
+			  <button type="button" class="btn btn-default bold">
+			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
+			  </button>
+			<?php } ?>
 		  <?php if($element["_id"] == Yii::app()->session["userId"] && 
 		  			Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
 		  <button type="button" class="btn btn-default bold" id="btn-superadmin">
 		  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
 		  </button>
 		  <?php } ?>
+
 		</div>
+
 
 		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 		<div class="btn-group pull-right">
@@ -558,6 +588,8 @@
 		</div>
 		<?php } ?>
 
+		
+
 	</div>
 
 	
@@ -594,8 +626,50 @@
 		-->
 	</div>
 
+
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding" style="margin-top: -10px;">
 	    	
+		
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-10 no-padding" id="div-select-create">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg-white text-center padding-20">
+				
+				<button data-form-type="project" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-purple">
+					<h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> Projet</h6>
+				</button>
+				<button data-form-type="event" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-orange">
+					<h6><i class="fa fa-calendar fa-2x bg-orange"></i><br> Événement</h6>
+				</button>
+				<button data-form-type="organization" data-form-subtype="association" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-green">
+					<h6><i class="fa fa-group fa-2x bg-green"></i><br> Association</h6>
+				</button>
+				<button data-form-type="organization" data-form-subtype="business" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-azure">
+					<h6><i class="fa fa-industry fa-2x bg-azure"></i><br> Entreprise</h6>
+				</button>
+				
+				<button data-form-type="organization" data-form-subtype="group" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 letter-turq">
+					<h6><i class="fa fa-group fa-2x bg-turq"></i><br> Groupe</h6>
+				</button>
+				<button data-form-type="classified" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-azure">
+					<h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> Annonce</h6>
+				</button>
+				<button data-form-type="entry" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 letter-yellow">
+					<h6><i class="fa fa-gavel fa-2x bg-yellow-k"></i><br> Proposition</h6>
+				</button>
+				<button data-form-type="poi" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-red">
+					<h6><i class="fa fa-map-marker fa-2x bg-red"></i><br> Point d'intérêt</h6>
+				</button>
+				
+			</div>
+		</div>
+
 		<div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 margin-top-50" id="central-container">
 		</div>
 
@@ -609,7 +683,7 @@
 																"tel" => @$tel,
 																"img"=>@$element['profilThumbImageUrl']));
 																?>
-		<!--<div class="col-md-2 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
+		<div class="col-md-2 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
 			<div class="alert alert-info">
 				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
 				<span>
@@ -645,56 +719,56 @@
 					<small class="margin-left-15">il y a 10 jours</small><br>
 				</span>
 	    	</div>
-	    </div>-->
+	    </div>
 	</section>
 </div>	
 <style>
-#uploadScropResizeAndSaveImage i{
-	position: inherit !important;
-}
-#uploadScropResizeAndSaveImage .close-modal .lr,
-#uploadScropResizeAndSaveImage .close-modal .lr .rl{
-	z-index: 1051;
-height: 75px;
-width: 1px;
-background-color: #2C3E50;
-}
-#uploadScropResizeAndSaveImage .close-modal .lr{
-margin-left: 35px;
-transform: rotate(45deg);
--ms-transform: rotate(45deg);
--webkit-transform: rotate(45deg);
-}
-#uploadScropResizeAndSaveImage .close-modal .rl{
-transform: rotate(90deg);
--ms-transform: rotate(90deg);
--webkit-transform: rotate(90deg);
-}
-#uploadScropResizeAndSaveImage .close-modal {
-	position: absolute;
-	width: 75px;
+	#uploadScropResizeAndSaveImage i{
+		position: inherit !important;
+	}
+	#uploadScropResizeAndSaveImage .close-modal .lr,
+	#uploadScropResizeAndSaveImage .close-modal .lr .rl{
+		z-index: 1051;
 	height: 75px;
-	background-color: transparent;
-	top: 25px;
-	right: 25px;
-	cursor: pointer;
-}
-.blockUI, .blockPage, .blockMsg{
-	padding-top: 0px !important;
-} 
-#banniere_element:hover{
-    color: #0095FF;
-    background-color: white;
-    border:1px solid #0095FF;
-    border-radius: 3px;
-    margin-right: 2px;
-}
-#banniere_element{
-    background-color: #0095FF;
-    color: white;
-    border-radius: 3px;
-    margin-right: 2px;
-}
+	width: 1px;
+	background-color: #2C3E50;
+	}
+	#uploadScropResizeAndSaveImage .close-modal .lr{
+	margin-left: 35px;
+	transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	}
+	#uploadScropResizeAndSaveImage .close-modal .rl{
+	transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	}
+	#uploadScropResizeAndSaveImage .close-modal {
+		position: absolute;
+		width: 75px;
+		height: 75px;
+		background-color: transparent;
+		top: 25px;
+		right: 25px;
+		cursor: pointer;
+	}
+	.blockUI, .blockPage, .blockMsg{
+		padding-top: 0px !important;
+	} 
+	#banniere_element:hover{
+	    color: #0095FF;
+	    background-color: white;
+	    border:1px solid #0095FF;
+	    border-radius: 3px;
+	    margin-right: 2px;
+	}
+	#banniere_element{
+	    background-color: #0095FF;
+	    color: white;
+	    border-radius: 3px;
+	    margin-right: 2px;
+	}
 
 </style>
 <div id="uploadScropResizeAndSaveImage" style="display:none;padding:0px 60px;">
@@ -1066,9 +1140,28 @@ transform: rotate(90deg);
    			console.log(".load-data-directory", dataName);
    			loadDataDirectory(dataName);
    		});
-   		
-	}
 
+   		$("#btn-open-create").click(function(){
+   			showSelectCreate();
+   		});
+   		$("#div-select-create").hide();
+   		
+
+   		$(".btn-open-form").click(function(){
+   			var typeForm = $(this).data("form-type");
+   			elementLib.openForm(typeForm);
+   		});
+	}
+	function showSelectCreate(open){
+		if($("#div-select-create").hasClass("open") || open===false){
+	   			$("#div-select-create").fadeOut(300);
+   				$("#div-select-create").removeClass("open");
+   			}else{
+	   			$("#div-select-create").fadeIn(600);
+   				$("#div-select-create").addClass("open");
+	   		}
+		
+	}
 	function initSocial(){	
    		$(".tooltips").tooltip();
 
@@ -1079,16 +1172,55 @@ transform: rotate(90deg);
 	}
 
 	function loadDataDirectory(dataName){
-		getAjax('',
-					baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
+		getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
+					'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 					function(data){ 
-						console.log("loadDataDirectory success", data);
-						var html = directory.showResultsDirectoryHtml(data);
+						var n=0;
+						$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
+						if(n>0){
+							var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'><i class='fa fa-angle-down'></i> "+
+											getLabelTitleDir(dataName, parseInt(n), n)+
+										"<hr></div>";
 
-						console.log("html:", html);
-						$("#central-container").html(html);
+							html += directory.showResultsDirectoryHtml(data);
+							toogleNotif(false);
+
+							$("#central-container").html(html);
+						}else{
+							var nothing = "Aucun";
+							if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
+								nothing = "Aucune";
+
+							var html =  "<div class='col-md-12 margin-bottom-15'><i class='fa fa-angle-down'></i> "+
+											getLabelTitleDir(dataName, nothing, n)+
+										"</div>";
+							$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
+																	"<i class='fa fa-ban'></i> Aucune donnée"+
+																"</span>");
+						}
 					}
 		,"html");
+	}
+
+	function getLabelTitleDir(dataName, countData, n){
+		var elementName = "<span class='Montserrat' id='name-lbl-title'>"+$("#nameHeader .name-header").html()+"</span>";
+		
+		var s = (n>1) ? "s" : "";
+		if(dataName == "follows")	{ return elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
+		if(dataName == "followers")	{ return countData + " <b>abonné"+s+"</b> à " + elementName; }
+		
+		if(dataName == "events")		{ return countData+" <b>événement"+s+"</b> créé"+s+" par " + elementName; }
+		if(dataName == "organizations")	{ return countData+" <b>organisation"+s+"</b> créée"+s+" par " + elementName; }
+		if(dataName == "projects")		{ return countData+" <b>projet"+s+"</b> créé"+s+" par " + elementName; }
+
+		if(dataName == "collections"){ return countData+" <b>collection"+s+"</b> de " + elementName; }
+		if(dataName == "poi"){ return countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
+
+		if(dataName == "needs"){ return countData+" <b>besoin"+s+"</b> de " + elementName; }
+
+		if(dataName == "dda"){ return countData+" <b>proposition"+s+"</b> de " + elementName; }
+
+		return "";
 	}
 
 	function loadAdminDashboard(){
@@ -1232,6 +1364,7 @@ function toogleNotif(open){
 		}
 
 		colNotifOpen = open;
+		showSelectCreate(false);
 	}
 </script>
 

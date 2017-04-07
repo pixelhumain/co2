@@ -687,6 +687,7 @@ var directory = {
       str += "</div>";
       return str;
     },
+<<<<<<< Updated upstream
     // ********************************
     // CALCULATE NEXT PREVIOUS 
     // ********************************
@@ -871,6 +872,10 @@ var directory = {
     classifiedPanelHtml : function(params){
       mylog.log("----------- classifiedPanelHtml",params,params.name);
 
+=======
+    eventPanelHtml : function(params){
+      mylog.log("-----------eventPanelHtml");
+>>>>>>> Stashed changes
       str = "";  
       str += "<div class='col-lg-6 col-md-12 pull- col-sm-12 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
@@ -1203,7 +1208,7 @@ var directory = {
 
       if(params.type == "surveys") params.url = "#survey.entry.id."+params.id;
       else if(params.type == "actions") params.url = "#rooms.action.id."+params.id;
-     
+   
       str = "";  
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";

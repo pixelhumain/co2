@@ -303,7 +303,7 @@
             <?php } ?>
           </div>
          
-          <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 hidden text-center subsub" id="menu-section-classified">
+          <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 text-center subsub" id="menu-section-classified">
             <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
                     data-type="classified" data-type-anc=""  data-key="all">
               <i class="fa fa-circle-o"></i>

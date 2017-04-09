@@ -120,14 +120,10 @@
                 </div>
                 
               </small>  
-              <a href="javascript:;" target="_blank" class="link-read-media margin-top-10 hidden-xs img-circle">
-                <small>
-                  <i class="fa fa-clock-o"></i> 
-                  <?php echo Translate::pastTime(date($media["created"]->sec), "timestamp", $timezone); ?>
-                </small>
-                <?php if (@Yii::app()->session["userId"]){ ?>
-                  <strong> • </strong> 
-                  <div class="btn dropdown no-padding">
+              <?php if (@Yii::app()->session["userId"]){ ?>
+                  
+                  <div class="btn dropdown pull-right padding-5">
+                    <strong> • </strong> 
                     <a class="dropdown-toggle" type="button" data-toggle="dropdown" style="color:#8b91a0;">
                       <i class="fa fa-cog"></i>  <i class="fa fa-angle-down"></i>
                     </a>
@@ -145,6 +141,12 @@
                     </ul>
                   </div>
                   <?php } ?>
+              <a href="javascript:;" target="_blank" class="link-read-media margin-top-10 hidden-xs img-circle">
+                <small>
+                  <i class="fa fa-clock-o"></i> 
+                  <?php echo Translate::pastTime(date($media["created"]->sec), "timestamp", $timezone); ?>
+                </small>
+
               </a>
             </h5>
           

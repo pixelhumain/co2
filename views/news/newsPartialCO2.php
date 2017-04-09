@@ -42,7 +42,7 @@
 	?>
 
   
-  <li class="<?php echo $class; ?>">
+  <li class="<?php echo $class; ?>" id="news<?php echo $key ?>">
     <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip"></i></a></div>
     <div class="timeline-panel">
       <div class="timeline-heading text-center">
@@ -182,12 +182,22 @@
     var news=<?php echo json_encode($news) ?>;
     var canPostNews = <?php echo json_encode(@$canPostNews) ?>;
     var canManageNews = <?php echo json_encode(@$canManageNews) ?>;
+    var actionController = <?php echo json_encode(@$actionController) ?>;
     var idSession = "<?php echo Yii::app()->session["userId"] ?>";
     var uploadUrl = "<?php echo Yii::app()->params['uploadUrl'] ?>";
     var docType="<?php echo Document::DOC_TYPE_IMAGE; ?>";
     var contentKey = "<?php echo Document::IMG_SLIDER; ?>";
     jQuery(document).ready(function() {
       $.each(news, function(e,v){
+        if(actionController=="save"){
+          if($("#news-list").children().eq(0).hasClass("timeline-inverted")){
+            alert("has");
+            $("#news"+e).removeClass("timeline-inverted");
+          }else{
+            alert("hasnt");
+            $("#news"+e).addClass("timeline-inverted");
+          }
+        }
         if("undefined" != typeof v.text){
           textHtml="";
           textNews="";

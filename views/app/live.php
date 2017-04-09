@@ -36,17 +36,16 @@
 </style>
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
-	<div class="col-md-offset-3 col-md-9 col-sm-12 col-xs-12 padding-20 col-md-offset">
+	<div class="col-md-offset-2 col-md-9 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
 		<?php
 	        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
 	    ?>
 	</div>
-	<div class="col-lg-1  hidden-md col-sm-1 hidden-xs"></div>
 	<div class="col-lg-2 col-md-3 hidden-sm col-xs-12 padding-20 text-right hidden-xs" id="sub-menu-left">
 		
 	</div>
 
-	<div class="col-lg-6 col-md-6 col-sm-6 no-padding margin-top-10">
+	<div class="col-lg-8 col-md-8 col-sm-12 no-padding margin-top-10">
 		<div id="newsstream"></div>
 	</div>	
 
@@ -151,7 +150,7 @@ function loadStream(indexMin, indexMax){ console.log("LOAD STREAM FREEDOM");
 	loadingData = true;
 	currentIndexMin = indexMin;
 	currentIndexMax = indexMax;
-	alert("ici on doit aller");
+
 	//isLive = isLiveBool==true ? "/isLive/true" : "";
 	//var url = "news/index/type/citoyens/id/<?php echo @Yii::app()->session["userId"]; ?>"+isLive+"/date/"+dateLimit+"?isFirst=1&tpl=co2&renderPartial=true";
 		
@@ -312,7 +311,6 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		       	data: dataNewsSearch,
 		    	success: function(data){
 					if(data){
-						alert();
 						$("#newsstream").find(".loader").remove();
 						$("#news-list").append(data);
 						//buildTimeLine (data.news, 0, 5);

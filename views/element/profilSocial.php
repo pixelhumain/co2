@@ -206,6 +206,9 @@
 	padding:10px;
 	padding-right: 22px;*/
 }
+#second-name-element{
+  margin-top:5px;
+}
 #uploadScropResizeAndSaveImage{
 	/*position:absolute;
 	top:0px;
@@ -237,6 +240,7 @@
 .name-header{
 	line-height: 30px;
 	font-size: 20px;
+	text-transform: none;
 }
 #shortDescriptionHeader{
 	white-space: pre-line;
@@ -244,7 +248,7 @@
 	line-height: 19px;
 }
 .contentHeaderInformation{
-	background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 25%);
+	background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 50%);
     padding: 35px 0px;
     position: absolute;
     bottom: 0px;
@@ -267,6 +271,45 @@
 	box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.5);
 }
 
+#fileuploadContainer{
+	box-shadow: 1px -1px 3px 0px #969696;
+}
+
+.identity-min{
+	display: none;
+}
+.identity-min .pastille-type-element{
+	margin-top:12px;
+}
+.sub-menu-social.affix .identity-min{
+	display: inline;
+}
+
+#name-lbl-title{
+	text-decoration: none;
+	font-weight: 800;
+	font-size:20px;
+}
+.labelTitleDir{
+	font-size: 18px;
+}
+#div-select-create{
+	-webkit-box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
+	-moz-box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
+	box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
+	display: none;
+}
+#div-select-create i.fa{
+	width:50px;
+	height:50px;
+	text-align: center;
+	border-radius: 50px;
+	color:white!important;
+	padding-top:12px;
+	margin-bottom: 6px;
+
+}
+
 @media (max-width: 768px) {
 
 	#shortDescriptionHeader{
@@ -277,7 +320,7 @@
 </style>
 	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
-<div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
     <section class="col-md-12 col-sm-12 col-xs-12" id="social-header">
         <div id="topPosKScroll"></div>
@@ -297,7 +340,8 @@
 				<?php
 				if(@Yii::app()->session["userId"] && ((@$edit && $edit) || (@$openEdition && $openEdition))){ ?>
 				<div class="user-image-buttons padding-10">
-					<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="banniere_element" ><span class="fileupload-new"><i class="fa fa-plus"></i> <span class="hidden-xs"> Banniere</span></span>
+					<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="banniere_element" >
+						<span class="fileupload-new"><i class="fa fa-plus"></i> <span class="hidden-xs"> Banniere</span></span>
 						<input type="file" accept=".gif, .jpg, .png" name="banniere" id="banniere_change" class="hide">
 						<input class="banniere_isSubmit hidden" value="true"/>
 					</a>
@@ -314,12 +358,26 @@
 				 style="border-bottom:45px solid white;">
 			-->
 			<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation">	
-	        	<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
-					<h4 class="text-left margin-bottom-10 padding-left-15 pull-left no-margin" id="main-name-element">
-						<?php if($edit==true || $openEdition==true ){?>
-							<!-- <a href="javascript:;" class="tooltips btn-update-info" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Contact information");?>"><i class="fa text-red fa-pencil"></i></a> -->
-						<?php } ?>
+				
 
+	        	<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
+	        		
+	        		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-padding margin-bottom-10">
+						<?php if(@Yii::app()->session["userId"]){ ?>
+						<div class="btn-group pull-left padding-top-5">
+						    <?php $this->renderPartial('../element/linksMenu', 
+				        			array("linksBtn"=>$linksBtn,
+				        					"elementId"=>(string)$element["_id"],
+				        					"elementType"=>$type,
+				        					"elementName"=> $element["name"],
+				        					"openEdition" => $openEdition) 
+				        			); 
+				        	?>
+						</div>
+						<?php } ?>
+					</div>
+
+        			<h4 class="text-left padding-left-15 pull-left no-margin" id="main-name-element">
 						<span id="nameHeader">
 							<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left">
 								<!--<i class="fa fa-<?php echo $icon; ?>"></i>--> 
@@ -327,6 +385,10 @@
 							<div class="name-header pull-left"><?php echo @$element["name"]; ?></div>
 						</span>	
 					</h4>
+
+
+					
+					
 				</div>
 
 				<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 pull-right">
@@ -399,20 +461,25 @@
     
     <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 pull-right sub-menu-social no-padding">
 
-    	<?php if(@Yii::app()->session["userId"]){ ?>
-		<div class="btn-group pull-right padding-top-5">
-		    <?php $this->renderPartial('../element/linksMenu', 
-        			array("linksBtn"=>$linksBtn,
-        					"elementId"=>(string)$element["_id"],
-        					"elementType"=>$type,
-        					"elementName"=> $element["name"],
-        					"openEdition" => $openEdition) 
-        			); 
-        	?>
-		</div>
-		<?php } ?>
+    	<div class="btn-group inline">
 
-    	<div class="btn-group">
+    	  <?php 
+    	  	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
+			$thumbAuthor =  @$element['profilThumbImageUrl'] ? 
+		                      Yii::app()->createUrl('/'.@$element['profilThumbImageUrl']) 
+		                      : "";
+    	  ?>
+    	  <div class="identity-min">
+	    	  <img class="pull-left" src="<?php echo $thumbAuthor; ?>" height=45>
+	    	  <div class="pastille-type-element hidden-xs bg-<?php echo $iconColor; ?> pull-left"></div>
+			  <div class="col-lg-1 col-md-2 col-sm-2 hidden-xs pull-left no-padding">
+	    	  	<div class="text-left padding-left-15" id="second-name-element">
+					<span id="nameHeader">
+						<h5 class="elipsis"><?php echo @$element["name"]; ?></h5>
+					</span>	
+				</div>
+	    	  </div>
+    	  </div>
 
     	  <?php if(@Yii::app()->session["userId"] && 
     			 $type==Person::COLLECTION && 
@@ -424,18 +491,16 @@
 		  		<i class="fa fa-rss"></i> Fil d'actu<span class="hidden-sm">alité</span>s
 		  </button>
 
-		  <?php } else $iconNewsPaper="rss"; ?>
+		  <?php } else {
+		  		  $iconNewsPaper="rss"; 
+		  		}
+		  ?>
+
 		  <button type="button" class="btn btn-default bold" id="btn-start-mystream">
-		  		<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper") ?>
+		  		<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper").(string)$isLinked; ?>
 		  </button>
 
-		  <button type="button" class="btn btn-default bold" id="btn-start-gallery">
-		  		<i class="fa fa-camera"></i> <?php echo Yii::t("common", "Gallery") ?>
-		  </button>
-		</div>
-
-		<?php if(@Yii::app()->session["userId"] && $isLinked==true){ ?>
-		<div class="btn-group">
+		  <?php if((@Yii::app()->session["userId"] && $isLinked==true) || @Yii::app()->session["userId"] == $element["_id"]){ ?>
 		  <button type="button" class="btn btn-default bold" id="btn-start-notifications">
 		  	<i class="fa fa-bell"></i> 
 		  	<span class="hidden-xs hidden-sm">
@@ -445,25 +510,31 @@
 		  		<?php echo @$countNotifElement ?>
 		  	</span>
 		  </button>
-		  <!--<button type="button" class="btn btn-default bold">
-		  	<i class="fa fa-envelope"></i> 
-		  	<span class="hidden-xs hidden-sm hidden-md">
-		  		Messagerie
-		  	</span><span class="badge bg-azure">3</span>-->
+		  <?php } ?>
+
+
+		  <?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
+		  <button type="button" class="btn btn-default bold letter-green" id="btn-open-create">
+		  		<i class="fa fa-plus"></i> <?php echo Yii::t("common", "Nouveau") ?>
 		  </button>
+		  <?php } ?>
 		</div>
-		<?php } ?>
 		
 		<div class="btn-group pull-right">
-		  <button type="button" class="btn btn-default bold">
-		  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
-		  </button>
-		  <?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
+			<?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
+			  <button type="button" class="btn btn-default bold">
+			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
+			  </button>
+			<?php } ?>
+		  <?php if($element["_id"] == Yii::app()->session["userId"] && 
+		  			Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
 		  <button type="button" class="btn btn-default bold" id="btn-superadmin">
 		  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
 		  </button>
 		  <?php } ?>
+
 		</div>
+
 
 		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 		<div class="btn-group pull-right">
@@ -478,10 +549,25 @@
 		                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
 		                </a>
 		            </li>
+
+		            <li class="text-left">
+						<a href="javascript:;" id="btn-show-activity">
+							<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
+						</a>
+					</li>
+					<li>
+						<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
+							<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?></a>
+					</li>
+
 		  			<?php if($type !=Person::COLLECTION){ ?>
 		  			<li class="text-left">
 		               	<a href="javascript:;" class="bg-white text-red">
-		                    <i class="fa fa-trash"></i><?php echo Yii::t("common", "Delete {what}",array("{what}"=> Yii::t("common","this ".Element::getControlerByCollection($type)))); ?>
+		                    <i class="fa fa-trash"></i> 
+		                    <?php echo Yii::t("common", "Delete {what}", 
+		                    					array("{what}"=> 
+		                    						Yii::t("common","this ".Element::getControlerByCollection($type)))); 
+		                    ?>
 		                </a>
 		            </li>
 		            <?php } else { ?>
@@ -490,12 +576,13 @@
 							<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
 						</a>
 					</li>
-		            <li class="text-left">
+					<li class="text-left">
 		               	<a href='javascript:' id="changePasswordBtn" class='text-red'>
-							<i class='fa fa-key'></i> <?php echo Yii::t("common","Change assword"); ?>
+							<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
 						</a>
 		            </li>
 		            <?php } ?>
+		            
 		  		</ul>
 		  		</li>
 		  	</ul>
@@ -503,11 +590,11 @@
 		<?php } ?>
 
 		
-		  		
+
 	</div>
 
-	  
-	<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial" style="margin-top:50px;">  
+	
+	<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial" style="margin-top:65px;">  
 		
 	    <?php 
 	    	$params = array(    "element" => @$element, 
@@ -540,10 +627,53 @@
 		-->
 	</div>
 
+
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding" style="margin-top: -10px;">
 	    	
-		<div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 margin-top-50" id="central-container">
+		
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-10 no-padding" id="div-select-create">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg-white text-center padding-20">
+				
+				<button data-form-type="project" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-purple">
+					<h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> Projet</h6>
+				</button>
+				<button data-form-type="event" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-orange">
+					<h6><i class="fa fa-calendar fa-2x bg-orange"></i><br> Événement</h6>
+				</button>
+				<button data-form-type="organization" data-form-subtype="association" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-green">
+					<h6><i class="fa fa-group fa-2x bg-green"></i><br> Association</h6>
+				</button>
+				<button data-form-type="organization" data-form-subtype="business" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-azure">
+					<h6><i class="fa fa-industry fa-2x bg-azure"></i><br> Entreprise</h6>
+				</button>
+				
+				<button data-form-type="organization" data-form-subtype="group" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 letter-turq">
+					<h6><i class="fa fa-group fa-2x bg-turq"></i><br> Groupe</h6>
+				</button>
+				<button data-form-type="classified" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-azure">
+					<h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> Annonce</h6>
+				</button>
+				<button data-form-type="entry" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 letter-yellow">
+					<h6><i class="fa fa-gavel fa-2x bg-yellow-k"></i><br> Proposition</h6>
+				</button>
+				<button data-form-type="poi" 
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-green">
+					<h6><i class="fa fa-map-marker fa-2x bg-green"></i><br> Point d'intérêt</h6>
+				</button>
+				
+			</div>
 		</div>
+
+		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-50" id="central-container">
+		</div>
+
 		<?php $this->renderPartial('../pod/qrcode',array(
 																"type" => @$type,
 																"name" => @$element['name'],
@@ -554,7 +684,15 @@
 																"tel" => @$tel,
 																"img"=>@$element['profilThumbImageUrl']));
 																?>
-		<!--<div class="col-md-2 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
+		<div class="col-md-3 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
+			<h5><i class="fa fa-bell"></i> Notifications d'Activité locale</h5>
+			<span>
+				Un condensé de l'activité locale, basée sur le département de communexion de l'utilisateur
+				(visible que sur MA page, pas celles des autres)<br>
+				Composée de plusieurs types d'éléments : evenement à venir & en cours, nouvelles propositions & must participate, annonces en cours 
+				<br> 
+				<br>
+			</span>
 			<div class="alert alert-info">
 				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
 				<span>
@@ -590,56 +728,56 @@
 					<small class="margin-left-15">il y a 10 jours</small><br>
 				</span>
 	    	</div>
-	    </div>-->
+	    </div>
 	</section>
 </div>	
 <style>
-#uploadScropResizeAndSaveImage i{
-	position: inherit !important;
-}
-#uploadScropResizeAndSaveImage .close-modal .lr,
-#uploadScropResizeAndSaveImage .close-modal .lr .rl{
-	z-index: 1051;
-height: 75px;
-width: 1px;
-background-color: #2C3E50;
-}
-#uploadScropResizeAndSaveImage .close-modal .lr{
-margin-left: 35px;
-transform: rotate(45deg);
--ms-transform: rotate(45deg);
--webkit-transform: rotate(45deg);
-}
-#uploadScropResizeAndSaveImage .close-modal .rl{
-transform: rotate(90deg);
--ms-transform: rotate(90deg);
--webkit-transform: rotate(90deg);
-}
-#uploadScropResizeAndSaveImage .close-modal {
-	position: absolute;
-	width: 75px;
+	#uploadScropResizeAndSaveImage i{
+		position: inherit !important;
+	}
+	#uploadScropResizeAndSaveImage .close-modal .lr,
+	#uploadScropResizeAndSaveImage .close-modal .lr .rl{
+		z-index: 1051;
 	height: 75px;
-	background-color: transparent;
-	top: 25px;
-	right: 25px;
-	cursor: pointer;
-}
-.blockUI, .blockPage, .blockMsg{
-	padding-top: 0px !important;
-} 
-#banniere_element:hover{
-    color: #0095FF;
-    background-color: white;
-    border:1px solid #0095FF;
-    border-radius: 3px;
-    margin-right: 2px;
-}
-#banniere_element{
-    background-color: #0095FF;
-    color: white;
-    border-radius: 3px;
-    margin-right: 2px;
-}
+	width: 1px;
+	background-color: #2C3E50;
+	}
+	#uploadScropResizeAndSaveImage .close-modal .lr{
+	margin-left: 35px;
+	transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	}
+	#uploadScropResizeAndSaveImage .close-modal .rl{
+	transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	}
+	#uploadScropResizeAndSaveImage .close-modal {
+		position: absolute;
+		width: 75px;
+		height: 75px;
+		background-color: transparent;
+		top: 25px;
+		right: 25px;
+		cursor: pointer;
+	}
+	.blockUI, .blockPage, .blockMsg{
+		padding-top: 0px !important;
+	} 
+	#banniere_element:hover{
+	    color: #0095FF;
+	    background-color: white;
+	    border:1px solid #0095FF;
+	    border-radius: 3px;
+	    margin-right: 2px;
+	}
+	#banniere_element{
+	    background-color: #0095FF;
+	    color: white;
+	    border-radius: 3px;
+	    margin-right: 2px;
+	}
 
 </style>
 <div id="uploadScropResizeAndSaveImage" style="display:none;padding:0px 60px;">
@@ -675,7 +813,8 @@ transform: rotate(90deg);
 
 <script type="text/javascript">
 
-	var elementName = "<?php echo @$element["name"]; ?>";
+	var element = <?php echo json_encode(@$element); ?>;
+    var elementName = "<?php echo @$element["name"]; ?>";
     var contextType = "<?php echo @$type; ?>";
     var contextId = "<?php echo @(string)$element['_id'] ?>";
     var members = <?php echo json_encode(@$members); ?>;
@@ -1005,48 +1144,95 @@ transform: rotate(90deg);
 			history.pushState(null, "New Title", hashUrlPage+".view.detail");
 			loadDetail();
 		});
+
+		$(".load-data-directory").click(function(){
+   			var dataName = $(this).data("type-dir");
+   			console.log(".load-data-directory", dataName);
+   			loadDataDirectory(dataName);
+   		});
+
+   		$("#btn-open-create").click(function(){
+   			showSelectCreate();
+   			KScrollTo("#fileuploadContainer");
+   		});
+   		$("#div-select-create").hide();
+   		
+
+   		$(".btn-open-form").click(function(){
+   			var typeForm = $(this).data("form-type");
+   			elementLib.openForm(typeForm);
+   		});
 	}
-
-	function initSocial(){
-		var Accordion = function(el, multiple) {
-			this.el = el || {};
-			this.multiple = multiple || false;
-
-			// Variables privadas
-			var links = this.el.find('.link');
-			// Evento
-			links.on('click', {el: this.el, multiple: this.multiple}, this.dropdown);
-		}
-
-		Accordion.prototype.dropdown = function(e) {
-			var $el = e.data.el;
-				$this = $(this),
-				$next = $this.next();
-
-			$next.slideToggle();
-			$this.parent().toggleClass('open');
-
-			if (!e.data.multiple) {
-				$el.find('.submenu').not($next).slideUp().parent().removeClass('open');
-			};
-		}	
-
-		var accordion = new Accordion($('#accordion'), false);
-		var accordion2 = new Accordion($('#accordion2'), false);
-		var accordion3 = new Accordion($('#accordion3'), false);
-		var accordion4 = new Accordion($('#accordion4'), false);
-		var accordion5 = new Accordion($('#accordion5'), false);
-
-		//ouvre le pod communauté
-		//$('#accordion4 .link').trigger("click");
+	function showSelectCreate(open){
+		if($("#div-select-create").hasClass("open") || open===false){
+	   			$("#div-select-create").fadeOut(300);
+   				$("#div-select-create").removeClass("open");
+   			}else{
+	   			$("#div-select-create").fadeIn(600);
+   				$("#div-select-create").addClass("open");
+	   		}
+		
+	}
+	function initSocial(){	
    		$(".tooltips").tooltip();
 
    		$('.sub-menu-social').affix({
           offset: {
               top: 350
-          }
-      });
-   		
+          }});
+	}
+
+	function loadDataDirectory(dataName){
+		getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
+					'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
+					function(data){ 
+						var n=0;
+						$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
+						if(n>0){
+							var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'><i class='fa fa-angle-down'></i> "+
+											getLabelTitleDir(dataName, parseInt(n), n)+
+										"<hr></div>";
+
+							html += directory.showResultsDirectoryHtml(data);
+							toogleNotif(false);
+
+							$("#central-container").html(html);
+						}else{
+							var nothing = "Aucun";
+							if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
+								nothing = "Aucune";
+
+							var html =  "<div class='col-md-12 margin-bottom-15'><i class='fa fa-angle-down'></i> "+
+											getLabelTitleDir(dataName, nothing, n)+
+										"</div>";
+							$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
+																	"<i class='fa fa-ban'></i> Aucune donnée"+
+																"</span>");
+							toogleNotif(false);
+						}
+					}
+		,"html");
+	}
+
+	function getLabelTitleDir(dataName, countData, n){
+		var elementName = "<span class='Montserrat' id='name-lbl-title'>"+$("#nameHeader .name-header").html()+"</span>";
+		
+		var s = (n>1) ? "s" : "";
+		if(dataName == "follows")	{ return elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
+		if(dataName == "followers")	{ return countData + " <b>abonné"+s+"</b> à " + elementName; }
+		
+		if(dataName == "events")		{ return countData+" <b>événement"+s+"</b> créé"+s+" par " + elementName; }
+		if(dataName == "organizations")	{ return countData+" <b>organisation"+s+"</b> créée"+s+" par " + elementName; }
+		if(dataName == "projects")		{ return countData+" <b>projet"+s+"</b> créé"+s+" par " + elementName; }
+
+		if(dataName == "collections"){ return countData+" <b>collection"+s+"</b> de " + elementName; }
+		if(dataName == "poi"){ return countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
+
+		if(dataName == "needs"){ return countData+" <b>besoin"+s+"</b> de " + elementName; }
+
+		if(dataName == "dda"){ return countData+" <b>proposition"+s+"</b> de " + elementName; }
+
+		return "";
 	}
 
 	function loadAdminDashboard(){
@@ -1070,7 +1256,8 @@ transform: rotate(90deg);
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){ 
-				$(window).bind("scroll",function(){ 
+				loadLiveNow();
+	            $(window).bind("scroll",function(){ 
 				    if(!loadingData && !scrollEnd && colNotifOpen){
 				          var heightWindow = $("html").height() - $("body").height();
 				          if( $(this).scrollTop() >= heightWindow - 400){
@@ -1137,7 +1324,7 @@ transform: rotate(90deg);
 	}
 
 	
-	function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL");
+	function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
 		loadingData = true;
 		currentIndexMin = indexMin;
 		currentIndexMax = indexMax;
@@ -1182,15 +1369,53 @@ function toogleNotif(open){
 		if(typeof open == "undefined") open = false;
 		
 		if(open==false){
-			$('#notif-column').removeClass("col-md-2 col-sm-3 col-lg-3").addClass("hidden");
-			$('#central-container').removeClass("col-md-10 col-lg-9").addClass("col-md-12 col-lg-12");
+			$('#notif-column').removeClass("col-md-3 col-sm-3 col-lg-3").addClass("hidden");
+			$('#central-container').removeClass("col-md-9 col-lg-9").addClass("col-md-12 col-lg-12");
 		}else{
-			$('#notif-column').addClass("col-md-2 col-sm-3 col-lg-3").removeClass("hidden");
-			$('#central-container').addClass("col-sm-12 col-md-10 col-lg-9").removeClass("col-md-12 col-lg-12");
+			$('#notif-column').addClass("col-md-3 col-sm-3 col-lg-3").removeClass("hidden");
+			$('#central-container').addClass("col-sm-12 col-md-9 col-lg-9").removeClass("col-md-12 col-lg-12");
 		}
 
 		colNotifOpen = open;
+		showSelectCreate(false);
 	}
+
+
+
+function loadLiveNow () { 
+	var dep = element["address"]["depName"];
+
+	/*typeof element != "undefined" ? 
+			  typeof element["address"] != "undefined" ? 
+			  typeof element["address"]["depName"] != "undefined" ? 
+			  element["address"]["depName"] : "" : "" : "";*/
+
+    var searchParams = {
+      //"name":$('.input-global-search').val(),
+      "tpl":"/pod/nowList",
+      //"latest" : true,
+      //"searchType" : [typeObj["event"]["col"],typeObj["project"]["col"],
+      //					typeObj["organization"]["col"],"classified",
+      //				 /*typeObj["organization"]["col"]*//*,typeObj["action"]["col"]*/], 
+      //"searchTag" : $('#searchTags').val().split(','), //is an array
+      //"searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
+      //"searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
+      "searchLocalityDEPARTEMENT" : dep, //$('#searchLocalityDEPARTEMENT').val().split(','),
+      //"searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
+      "indexMin" : 0, 
+      "indexMax" : 30 
+    };
+
+    ajaxPost( "#notif-column", baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
+					'/id/'+contextData.id+'/dataName/liveNow?tpl=nowList',
+					searchParams, function() { 
+			        bindLBHLinks();
+			        /*if($('.el-nowList').length==0)
+			        	$('.titleNowEvents').addClass("hidden");
+			        else
+			        	$('.titleNowEvents').removeClass("hidden");*/
+     } , "html" );
+}
 </script>
 
 

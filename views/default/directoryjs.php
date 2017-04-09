@@ -95,7 +95,7 @@
 
 #sub-menu-left.subsub .btn{
   width:95%;    
-  text-align: left;
+  text-align: right;
   background-color: white;
     border-color: white;
   color:#4285f4;
@@ -279,7 +279,7 @@
 
         <?php }else if($typeSelected == "classified"){ ?>
 
-          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub classifiedFilters" id="sub-menu-left">
+          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub classifiedFilters" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
@@ -303,7 +303,7 @@
             <?php } ?>
           </div>
          
-          <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 hidden text-center subsub" id="menu-section-classified">
+          <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 text-center subsub" id="menu-section-classified">
             <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
                     data-type="classified" data-type-anc=""  data-key="all">
               <i class="fa fa-circle-o"></i>

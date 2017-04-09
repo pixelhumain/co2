@@ -64,6 +64,47 @@ dynForm = {
 	    		$(".subtypeSection").html("");
 	    		$(".subtypeSectioncustom").show();
 	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
+	    	}, 
+	    	initTypeBtn : function () { 
+	    		$(".typeBtn").off().on("click",function(){
+	            		
+            		$(".typeBtn").removeClass("active btn-dark-blue text-white");
+            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
+            		$("#ajaxFormModal #type").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+            		
+            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a>  "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+"</h4>" );
+            		$(".typeBtntagList").hide();
+
+            		//$(".typeBtn:not(.active)").hide();
+            		$("#ajaxFormModal #subtype").val("");
+            		fieldHTML = "";
+            		var filt = (classified.currentLeftFilters != null ) ? classified[classified.currentLeftFilters] : classified.filters; 
+            		if(filt[ $(this).data('key') ]["subcat"].length >= 1){
+	            		$.each(filt[ $(this).data('key') ]["subcat"], function(k,v) { 
+	            			fieldHTML += '<div class="col-md-6 padding-5">'+
+	    									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>' +
+	            						"</div>";
+	            		});
+	            		$(".subtypeSection").html('<hr class="col-md-12 no-padding">'+
+	            								  '<label class="col-md-12 text-left control-label no-padding" for="typeBtn">'+
+	            								  	'<i class="fa fa-chevron-down"></i> Sous-catégorie'+
+	            								  '</label>' + fieldHTML );
+
+	            		$(".subtypeBtn").off().on("click",function()
+		            	{
+		            		$( ".subtypeBtn" ).removeClass("active");
+		            		$(this).addClass("active");
+		            		$("#ajaxFormModal #subtype").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+		            		$(".nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
+		            		//$(".subtypeBtn:not(.active)").hide();
+
+		            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+" > "+$(".subtypeBtn.active").data('tag')+"</h4>" );
+		            		$(".subtypeSectioncustom").hide();
+						});
+	            	} else {
+	            		$(".nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
+	            	}
+            	});
 	    	}
 	    },
 	    properties : {
@@ -98,10 +139,12 @@ dynForm = {
 				            classified.currentLeftFilters = classified.sections[sectionKey].filters;
 				            var filters = classified[classified.currentLeftFilters]; 
 				            directory.sectionFilter( filters, ".typeBtntagList",what,'btn');
+				            elementLib.elementObj.dynForm.jsonSchema.actions.initTypeBtn();
 				        }
 				        else if( classified.currentLeftFilters != null ) {
 				            //alert('rebuild common list'); 
 				            directory.sectionFilter( classified.filters, ".typeBtntagList",what,'btn');
+				            elementLib.elementObj.dynForm.jsonSchema.actions.initTypeBtn()
 				            classified.currentLeftFilters = null;
 				        }
 						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
@@ -117,42 +160,7 @@ dynForm = {
                 list : classified.filters,
                 init : function(){
                 	classified.currentLeftFilters = null;
-	            	$(".typeBtn").off().on("click",function(){
-	            		
-	            		$(".typeBtn").removeClass("active btn-dark-blue text-white");
-	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
-	            		$("#ajaxFormModal #type").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
-	            		
-	            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a>  "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+"</h4>" );
-	            		$(".typeBtntagList").hide();
-
-	            		//$(".typeBtn:not(.active)").hide();
-	            		$("#ajaxFormModal #subtype").val("");
-	            		fieldHTML = "";
-	            		var filt = (classified.currentLeftFilters != null ) ? classified[classified.currentLeftFilters] : classified.filters; 
-	            		$.each(filt[ $(this).data('key') ]["subcat"], function(k,v) { 
-	            			fieldHTML += '<div class="col-md-6 padding-5">'+
-        									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>' +
-	            						"</div>";
-	            		});
-	            		$(".subtypeSection").html('<hr class="col-md-12 no-padding">'+
-	            								  '<label class="col-md-12 text-left control-label no-padding" for="typeBtn">'+
-	            								  	'<i class="fa fa-chevron-down"></i> Sous-catégorie'+
-	            								  '</label>' +
-	            								  fieldHTML );
-
-	            		$(".subtypeBtn").off().on("click",function()
-		            	{
-		            		$( ".subtypeBtn" ).removeClass("active");
-		            		$(this).addClass("active");
-		            		$("#ajaxFormModal #subtype").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
-		            		$(".nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
-		            		//$(".subtypeBtn:not(.active)").hide();
-
-		            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+" > "+$(".subtypeBtn.active").data('tag')+"</h4>" );
-		            		$(".subtypeSectioncustom").hide();
-						});
-	            	});
+                	elementLib.elementObj.dynForm.jsonSchema.actions.initTypeBtn();
 	            }
             },
             type : typeObjLib.hidden,
@@ -164,7 +172,7 @@ dynForm = {
             price : typeObjLib.price,
             name : typeObjLib.name("classified"),
             description : typeObjLib.description,
-            image : typeObjLib.image( "#classified.detail.id."+uploadObj.id ),
+            image : typeObjLib.image(),
             contactInfo : typeObjLib.contactInfo,
             location : typeObjLib.location,
             tags : typeObjLib.tags(),

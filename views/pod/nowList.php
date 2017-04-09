@@ -4,12 +4,19 @@
         font-size: 13px;
         height: 25px;
         padding: 5px 10px;
-        width: 100%;
+        width: 67%;
         float: left;
         text-overflow: ellipsis;
         overflow: hidden;
         max-width: 100%;
         font-weight: 600;
+    }
+    .no-img .elemt_name, 
+    .no-img .elemt_date {
+        width: 100%;
+    }
+    .no-img .cnt-img{
+        display: none;
     }
     .elemt_date {
         font-weight: 200;
@@ -24,7 +31,7 @@
        text-decoration: underline !important;
     }
     .elemt_name i.fa{
-        font-size: 19px;
+        /*font-size: 19px;*/
     }
     .col-updated .border-dark {
         border: 0;
@@ -41,58 +48,60 @@
 
     }
     .elemt_img img{
-        min-height: 150px;
+        min-height: 50px;
     }
 
     .elemt_img .img-responsive{
         display:inline-block;
     }
+
+    .el-nowList{
+        background-color: white;
+    }
 </style>
 <div class="col-xs-12 no-padding col-nowList"  data-tpl="pod.nowList">
+    <h6 class="no-margin"><i class="fa fa-angle-down"></i> <i class="fa fa-bell"></i> Activité locale</h6 class="no-margin">
+    <hr>
+
     <?php foreach ($result as $key => $v) { 
-        $specs = Element::getElementSpecsByType(@$v["type"]."s");
+        $specs = Element::getElementSpecsByType(@$v["type"]);
 
         $type = null;
         if(@$specs) $type = @$v["type"];
         else if(@$v["typeSig"]) $type = $v["typeSig"];
+
+        $class = "";
+        $img = Element::getImgProfil($v, "profilThumbImageUrl", $this->module->assetsUrl);
+        if(!@$v["profilMediumImageUrl"] || $v["profilThumbImageUrl"] == "") 
+            $class = "no-img";
+        //echo "class:".$class;
     ?>
-    <div class="border-dark margin-bottom-15 col-xs-12 no-padding el-nowList <?php echo $type?>">
-        <div class="pull-left col-xs-12 no-padding">
-            <?php 
-                $classMin = "";
-                $img = Element::getImgProfil($v, "profilMediumImageUrl", $this->module->assetsUrl);
-                if(!@$v["profilMediumImageUrl"] || $v["profilMediumImageUrl"] == "") 
-                    $classMin = "min";
-            
-                $style = "";
-               // if(@$v["profilMediumImageUrl"] && @$v["profilMediumImageUrl"] != ""){
-               //var_dump($v); ?>
-                    <!-- <a href="#<?php echo $specs["hash"].(@$v["_id"]?$v["_id"]:@$v["id"]); ?>" class="lbh add2fav elemt_img"> -->
-                    <a href="#app.page.type.<?php echo @$v["type"] ?>.id.<?php echo (@$v["_id"]?$v["_id"]:@$v["id"]); ?>" 
-                        class="lbh add2fav elemt_img">
-                    <img src="<?php echo $img ?>" class="img-responsive <?php echo $classMin; ?>">
-                    </a>
-                <?php //$style = "margin-top: -32px;"; } ?> 
+    <a href="#page.type.<?php echo @$v["type"] ?>.id.<?php echo (@$v["_id"]?$v["_id"]:@$v["id"]); ?>"  
+        class="lbh shadow2 border-left-<?php echo @$specs["text-color"]?> margin-bottom-5 col-xs-12 no-padding el-nowList <?php echo $type?> <?php echo $class; ?>">
+        <div class="pull-left no-padding cnt-img">
+            <div class="add2fav elemt_img">
+                <img src="<?php echo $img ?>" class="pull-left">
+            </div>
         </div>
-        <div class="elemt_name" style="<?php echo $style ?>">
-            <i style="color:<?php echo @$specs["color"]?>" class="fa fa-<?php echo $specs["icon"]?>"></i> 
+        <div class="pull-left elemt_name elipsis">
+            <i class="fa fa-<?php echo $specs["icon"]?> text-<?php echo @$specs["text-color"]?>"></i> 
+            <span class="hidden-xs hidden-sm"><?php echo $v["name"]; ?></span>
             <?php 
             $id = null;
             if(@$v["_id"])
                 $id = (string)@$v["_id"];
             else if(@$v["id"])
                 $id = $v["id"];
-            echo ($type) ? Element::getLink(@$type."s",$id) : "no type"; //echo @$type;?>
-        </div>
-        <div class="elemt_date pull-left margin-top-5 text-left">
-            <i class="fa fa-flash"></i> actif 
+            //echo ($type) ? Element::getLink(@$type."s",$id) : "no type"; //echo @$type;?>
+        </div><br>
+        <div class="hidden-xs hidden-sm elemt_date pull-left text-left elipsis">
             <span class="dateTZ"><?php echo @$v["updatedLbl"];?> </span>            
             <?php //DDA : if( @$v["organizerType"] && @$v["organizerId"] ) echo "-".Element::getLink( @$v["organizerType"],@$v["organizerId"] )?>
             <?php //DDA : if( @$v["parentType"] && @$v["parentId"] ) echo ">".Element::getLink( @$v["parentType"],@$v["parentId"] )?>
 
             <?php //if( @$v["creator"] ) echo ">".Element::getLink( Person::COLLECTION,@$v["creator"] )?>
         </div>
-    </div>
+    </a>
     <?php } ?>
 </div>
 

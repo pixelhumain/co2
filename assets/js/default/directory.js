@@ -805,7 +805,20 @@ var directory = {
 
         str += "<hr></div>";
 
-        
+        getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/classified/tpl/json" , function( data ) { 
+          var c = 1;
+          $.each(data.list,function(k,v) { 
+            mylog.log("data list",k,v);
+            if( $('.carousel-first img').attr('src').indexOf(v.name) < 0 ){
+              $(".carousel-inner").append('  <div class="item">'+
+              "   <img class='img-responsive' src='"+v.path+"/"+v.name+"'/>"+
+              ' </div>');
+              $(".carousel-indicators").append('<li data-target="#myCarousel" data-slide-to="'+c+'"></li>');
+              c++;
+            }
+          });
+
+        });
 
         if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
           str += '<div class="col-xs-12 text-center">'+
@@ -813,15 +826,11 @@ var directory = {
                       //<!-- Indicators -->
                       '<ol class="carousel-indicators">'+
                       '  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>'+
-                      '  <li data-target="#myCarousel" data-slide-to="1"></li>'+
                       '</ol>'+
 
                       //<!-- Wrapper for slides -->'+
                       '<div class="carousel-inner" role="listbox">'+
-                      '  <div class="item active">'+
-                      "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
-                      '  </div>'+
-                      '  <div class="item">'+
+                      '  <div class="item active carousel-first ">'+
                       "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
                       '  </div>'+
                       '</div>'+
@@ -1194,7 +1203,7 @@ var directory = {
 
       if(params.type == "surveys") params.url = "#survey.entry.id."+params.id;
       else if(params.type == "actions") params.url = "#rooms.action.id."+params.id;
-     
+   
       str = "";  
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
@@ -1426,19 +1435,24 @@ var directory = {
 
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
                 
-                mylog.log("template principal",params);
+                mylog.log("template principal",params,params.type);
                 
                   //template principal
                 if(params.type == "cities")
                   str += directory.cityPanelHtml(params);  
+                
                 else if( $.inArray(params.type, ["citoyens","organizations","project","poi","place"])>=0) 
                   str += directory.elementPanelHtml(params);  
+                
                 else if(params.type == "events")
                   str += directory.eventPanelHtml(params);  
+                
                 else if(params.type == "surveys" || params.type == "actions")
                     str += directory.roomsPanelHtml(params);  
+                
                 else if(params.type == "classified")
                   str += directory.classifiedPanelHtml(params);
+                
                 else
                   str += directory.defaultPanelHtml(params);
             }

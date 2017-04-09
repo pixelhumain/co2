@@ -250,8 +250,8 @@
 	<?php if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true))){ ?>
 	<li><hr></li>
 	<li class="">
-		<a href="javascript:" class="load-data-directory" data-type-dir="needs">
-			<i class="fa fa-cubes"></i> Besoins
+		<a href="javascript:" class="load-data-directory" data-type-dir="classified">
+			<i class="fa fa-bullhorn"></i> Annonces
 		</a>
 	</li>
 	<?php } ?>

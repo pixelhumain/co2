@@ -119,13 +119,32 @@
                   </span>
                 </div>
                 
-              </small>
-
+              </small>  
               <a href="javascript:;" target="_blank" class="link-read-media margin-top-10 hidden-xs img-circle">
                 <small>
                   <i class="fa fa-clock-o"></i> 
                   <?php echo Translate::pastTime(date($media["created"]->sec), "timestamp", $timezone); ?>
                 </small>
+                <?php if (@Yii::app()->session["userId"]){ ?>
+                  <strong> • </strong> 
+                  <div class="btn dropdown no-padding">
+                    <a class="dropdown-toggle" type="button" data-toggle="dropdown" style="color:#8b91a0;">
+                      <i class="fa fa-cog"></i>  <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                    <?php if (@$media["author"]["id"]==Yii::app()->session["userId"] || (@$canManageNews && $canManageNews)){ ?>
+                      <li>
+                        <a href="javascript:;" class="deleteNews" onclick="deleteNews('<?php echo $key ?>', $(this))" data-id="'<?php echo $key ?>"><small><i class="fa fa-times"></i> <?php echo Yii::t("common", "Delete")?></small></a></li>
+                        <?php if ($media["type"] != "activityStream" && $media["author"]["id"]==Yii::app()->session["userId"]){ ?>
+                          <li><a href="javascript:" class="modifyNews" onclick="modifyNews('<?php echo $key ?>')" data-id="<?php echo $key ?>"><small><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Update publication")?></small></a></li>
+                        <?php }
+                    } ?> 
+                    <?php if (!@$media["reportAbuse"] || (@$media["reportAbuse"] && !@$media["reportAbuse"][@Yii::app()->session["userId"]])) { ?>
+                        <li><a href="javascript:;" class="newsReport" onclick="newsReportAbuse(this,'<?php echo $key ?>')" data-id="<?php echo $key ?>"><small><i class="fa fa-flag"></i> <?php echo Yii::t("common", "Report an abuse")?></small></a></li>
+                    <?php } ?>
+                    </ul>
+                  </div>
+                  <?php } ?>
               </a>
             </h5>
           

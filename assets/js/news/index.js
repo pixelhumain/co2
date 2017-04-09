@@ -442,10 +442,11 @@ function deleteNews(id, $this){
 		        	success: function(data){
 			        	if (data) {               
 							toastr.success(trad["successdeletenews"] + "!!");
-							liParent=$this.parents().eq(4);
+							$("#news"+id).fadeOut();
+							/*liParent=$this.parents().eq(4);
 							if (typeof(offset) != "undefined")
 								offset.top = offset.top-liParent.height();
-				        	liParent.fadeOut();
+				        	liParent.fadeOut();*/
 				        	
 						} else {
 				            toastr.error(trad["somethingwrong"] + " " + trad["tryagain"]);

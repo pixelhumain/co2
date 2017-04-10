@@ -549,38 +549,38 @@
 		                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
 		                </a>
 		            </li>
-
-		            <li class="text-left">
-						<a href="javascript:;" id="btn-show-activity">
-							<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
-						</a>
-					</li>
 					<li>
 						<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
-							<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?></a>
+							<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?>
+						</a>
 					</li>
 
 		  			<?php if($type !=Person::COLLECTION){ ?>
-		  			<li class="text-left">
-		               	<a href="javascript:;" class="bg-white text-red">
-		                    <i class="fa fa-trash"></i> 
-		                    <?php echo Yii::t("common", "Delete {what}", 
-		                    					array("{what}"=> 
-		                    						Yii::t("common","this ".Element::getControlerByCollection($type)))); 
-		                    ?>
-		                </a>
-		            </li>
+		  				<li class="text-left">
+							<a href="javascript:;" id="btn-show-activity">
+								<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
+							</a>
+						</li>
+			  			<li class="text-left">
+			               	<a href="javascript:;" class="bg-white text-red">
+			                    <i class="fa fa-trash"></i> 
+			                    <?php echo Yii::t("common", "Delete {what}", 
+			                    					array("{what}"=> 
+			                    						Yii::t("common","this ".Element::getControlerByCollection($type)))); 
+			                    ?>
+			                </a>
+			            </li>
 		            <?php } else { ?>
-					<li class="text-left">
-						<a href='javascript:' id="downloadProfil">
-							<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
-						</a>
-					</li>
-					<li class="text-left">
-		               	<a href='javascript:' id="changePasswordBtn" class='text-red'>
-							<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
-						</a>
-		            </li>
+						<li class="text-left">
+							<a href='javascript:' id="downloadProfil">
+								<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
+							</a>
+						</li>
+						<li class="text-left">
+			               	<a href='javascript:' id="changePasswordBtn" class='text-red'>
+								<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
+							</a>
+			            </li>
 		            <?php } ?>
 		            
 		  		</ul>

@@ -174,20 +174,21 @@
 	</li>
 	
 	<li><hr></li>
-
 	<li class="">
-		<a href="javascript:" class="open-directory" data-type-dir="community">
-			<i class="fa fa-users"></i> Communauté
+		<a href="javascript:" class="load-data-directory" data-type-dir="follows">
+			<i class="fa fa-link"></i> Abonnements
 		</a>
 	</li>
+	<li class="">
+		<a href="javascript:" class="load-data-directory" data-type-dir="followers">
+			<i class="fa fa-link"></i> Abonnés
+		</a>
+	</li>
+	<li><hr></li>
 
+	
 	<?php //if (($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION)){ ?>
 	<?php if(!@$front || (@$front && $front["event"]==true)){ ?>
-	<li class="">
-		<a href="javascript:" class="load-data-directory" data-type-dir="citoyens">
-			<i class="fa fa-user"></i> Citoyens
-		</a>
-	</li>
 	<li class="">
 		<a href="javascript:" class="load-data-directory" data-type-dir="events">
 			<i class="fa fa-calendar"></i> Événements
@@ -249,8 +250,8 @@
 	<?php if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true))){ ?>
 	<li><hr></li>
 	<li class="">
-		<a href="javascript:" class="load-data-directory" data-type-dir="needs">
-			<i class="fa fa-cubes"></i> Besoins
+		<a href="javascript:" class="load-data-directory" data-type-dir="classified">
+			<i class="fa fa-bullhorn"></i> Annonces
 		</a>
 	</li>
 	<?php } ?>

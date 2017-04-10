@@ -87,7 +87,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
     /*max-width: 700px;*/
 }
 .newsContent{ 
-  white-space: pre; 
+  white-space: pre-line; 
 }
 </style>
 

@@ -79,27 +79,31 @@ dynForm = {
             		$("#ajaxFormModal #subtype").val("");
             		fieldHTML = "";
             		var filt = (classified.currentLeftFilters != null ) ? classified[classified.currentLeftFilters] : classified.filters; 
-            		$.each(filt[ $(this).data('key') ]["subcat"], function(k,v) { 
-            			fieldHTML += '<div class="col-md-6 padding-5">'+
-    									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>' +
-            						"</div>";
-            		});
-            		$(".subtypeSection").html('<hr class="col-md-12 no-padding">'+
-            								  '<label class="col-md-12 text-left control-label no-padding" for="typeBtn">'+
-            								  	'<i class="fa fa-chevron-down"></i> Sous-catégorie'+
-            								  '</label>' + fieldHTML );
+            		if(filt[ $(this).data('key') ]["subcat"].length >= 1){
+	            		$.each(filt[ $(this).data('key') ]["subcat"], function(k,v) { 
+	            			fieldHTML += '<div class="col-md-6 padding-5">'+
+	    									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>' +
+	            						"</div>";
+	            		});
+	            		$(".subtypeSection").html('<hr class="col-md-12 no-padding">'+
+	            								  '<label class="col-md-12 text-left control-label no-padding" for="typeBtn">'+
+	            								  	'<i class="fa fa-chevron-down"></i> Sous-catégorie'+
+	            								  '</label>' + fieldHTML );
 
-            		$(".subtypeBtn").off().on("click",function()
-	            	{
-	            		$( ".subtypeBtn" ).removeClass("active");
-	            		$(this).addClass("active");
-	            		$("#ajaxFormModal #subtype").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+	            		$(".subtypeBtn").off().on("click",function()
+		            	{
+		            		$( ".subtypeBtn" ).removeClass("active");
+		            		$(this).addClass("active");
+		            		$("#ajaxFormModal #subtype").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+		            		$(".nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
+		            		//$(".subtypeBtn:not(.active)").hide();
+
+		            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+" > "+$(".subtypeBtn.active").data('tag')+"</h4>" );
+		            		$(".subtypeSectioncustom").hide();
+						});
+	            	} else {
 	            		$(".nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
-	            		//$(".subtypeBtn:not(.active)").hide();
-
-	            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+" > "+$(".subtypeBtn.active").data('tag')+"</h4>" );
-	            		$(".subtypeSectioncustom").hide();
-					});
+	            	}
             	});
 	    	}
 	    },

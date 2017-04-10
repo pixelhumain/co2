@@ -26,5 +26,11 @@ class AdminpublicController extends CommunecterController {
 	    'assigndata'  => 'citizenToolKit.controllers.adminpublic.AssignDataAction',
 	    'previewdata'  => 'citizenToolKit.controllers.adminpublic.PreviewDataAction',
 		);
-	}	
+	}
+
+	public function actionIndexpublic(){
+		CO2Stat::incNbLoad("co2-admin");   
+        $params = array();
+        echo $this->renderPartial("createfile", $params, true);
+	}
 }

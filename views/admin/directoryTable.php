@@ -4,13 +4,12 @@ echo CHtml::cssFile(Yii::app()->request->baseUrl. '/plugins/DataTables/media/css
 echo CHtml::scriptFile(Yii::app()->request->baseUrl. '/plugins/DataTables/media/js/DT_bootstrap.js');
 
 $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
-    //header + menu
-    $this->renderPartial($layoutPath.'header', 
-                        array(  "layoutPath"=>$layoutPath , 
-                                "page" => "admin") ); 
+//header + menu
+$this->renderPartial($layoutPath.'header', 
+                    array(  "layoutPath"=>$layoutPath , 
+                            "page" => "admin") ); 
 ?>
-
-<div class="panel panel-white">
+<div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
 	<div class="panel-heading border-light">
 		<h4 class="panel-title"><i class="fa fa-globe fa-2x text-green"></i> <a href="javascript:;" onclick="applyStateFilter('organization|NGO|Group|LocalBusiness')" class="filter<?php echo Organization::COLLECTION ?> btn btn-xs btn-default"> Organizations <span class="badge badge-warning"> <?php echo count(@$organizations) ?></span></a> 
 																				<a href="javascript:;" onclick="applyStateFilter('person')" class="filter<?php echo Person::COLLECTION ?> btn btn-xs btn-default"> People <span class="badge badge-warning"> <?php echo count(@$people) ?></span></a>  
@@ -20,13 +19,12 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 	</div>
 	<div class="panel-tools">
 		<?php if( Yii::app()->session["userId"] ) { ?>
-		<a href="javascript:;" onclick="openSubView('Add an Organisation', '/'+moduleId+'/organization/addorganizationform',null)" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Add an Organization"><i class="fa fa-plus"></i> <i class="fa fa-group"></i> </a>
+		<a href="javascript:;" onclick="elementLib.openForm('organization')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Add an Organization"><i class="fa fa-plus"></i> <i class="fa fa-group"></i> </a>
 
-		<a href="javascript:;" onclick="openSubView('Add an Organisation', '/'+moduleId+'/events/addeventform',null)" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Add an Event"><i class="fa fa-plus"></i> <i class="fa fa-calendar"></i></a>
+		<a href="javascript:;" onclick="elementLib.openForm('event')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Add an Event"><i class="fa fa-plus"></i> <i class="fa fa-calendar"></i></a>
 
-		<a href="javascript:;" onclick="openSubView('Add an Organisation', '/'+moduleId+'/person/inviteSomeone',null)" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Invite Someone "><i class="fa fa-plus"></i> <i class="fa fa-user"></i></a>
+		<a href="javascript:;" onclick="elementLib.openForm('person')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Invite Someone "><i class="fa fa-plus"></i> <i class="fa fa-user"></i></a>
 		<?php } ?>
-
 	</div>
 	<div class="panel-body">
 		<div>	
@@ -347,7 +345,7 @@ function bindAdminBtnEvents(){
 	/* **************************************
 	* ADMIN STUFF
 	***************************************** */
-	if( Yii::app()->session["userIsAdmin"] ) {?>		
+	if( Yii::app()->session["userIsAdmin"] ) { ?>		
 
 		$(".validateThisBtn").off().on("click",function () 
 		{
@@ -423,8 +421,8 @@ function bindAdminBtnEvents(){
 		
 		$(".switch2UserThisBtn").off().on("click",function () 
 		{
-			mylog.log("switch2UserThisBtn click");
-	        $(this).empty().html('<i class="fa fa-spinner fa-spin"></i>');
+			mylog.log("A FAIRE : switch2UserThisBtn click");
+	        /*$(this).empty().html('<i class="fa fa-spinner fa-spin"></i>');
 	        var btnClick = $(this);
 	        var id = $(this).data("id");
 	        var urlToSend = baseUrl+"/"+moduleId+"/admin/switchto/uid/"+id;
@@ -451,14 +449,14 @@ function bindAdminBtnEvents(){
 				        }
 				    });
 				}
-			});
+			});*/
 
 		});
 
 		$(".deleteThisBtn").off().on("click",function () 
 		{
 			mylog.log("deleteThisBtn click");
-	        $(this).empty().html('<i class="fa fa-spinner fa-spin"></i>');
+	        /*$(this).empty().html('<i class="fa fa-spinner fa-spin"></i>');
 	        var btnClick = $(this);
 	        var id = $(this).data("id");
 	        var type = $(this).data("type");
@@ -486,15 +484,15 @@ function bindAdminBtnEvents(){
 				        }
 				    });
 				}
-			});
+			});*/
 
 		});
 	
 	<?php } ?>
-	$(".banThisBtn").off().on("click",function () 
-		{
-			mylog.log("banThisBtn click");
-		});
+
+	$(".banThisBtn").off().on("click",function (){
+		mylog.log("banThisBtn click");
+	});
 }
 
 function changeRole(button, action) {

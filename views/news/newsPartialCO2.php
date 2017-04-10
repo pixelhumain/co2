@@ -42,7 +42,7 @@
 	?>
 
   
-  <li class="<?php echo $class; ?>">
+  <li class="<?php echo $class; ?>" id="news<?php echo $key ?>">
     <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip"></i></a></div>
     <div class="timeline-panel">
       <div class="timeline-heading text-center">
@@ -119,13 +119,34 @@
                   </span>
                 </div>
                 
-              </small>
-
+              </small>  
+              <?php if (@Yii::app()->session["userId"]){ ?>
+                  
+                  <div class="btn dropdown pull-right padding-5">
+                    <strong> • </strong> 
+                    <a class="dropdown-toggle" type="button" data-toggle="dropdown" style="color:#8b91a0;">
+                      <i class="fa fa-cog"></i>  <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                    <?php if (@$media["author"]["id"]==Yii::app()->session["userId"] || (@$canManageNews && $canManageNews)){ ?>
+                      <li>
+                        <a href="javascript:;" class="deleteNews" onclick="deleteNews('<?php echo $key ?>', $(this))" data-id="'<?php echo $key ?>"><small><i class="fa fa-times"></i> <?php echo Yii::t("common", "Delete")?></small></a></li>
+                        <?php if ($media["type"] != "activityStream" && $media["author"]["id"]==Yii::app()->session["userId"]){ ?>
+                          <li><a href="javascript:" class="modifyNews" onclick="modifyNews('<?php echo $key ?>')" data-id="<?php echo $key ?>"><small><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Update publication")?></small></a></li>
+                        <?php }
+                    } ?> 
+                    <?php if (!@$media["reportAbuse"] || (@$media["reportAbuse"] && !@$media["reportAbuse"][@Yii::app()->session["userId"]])) { ?>
+                        <li><a href="javascript:;" class="newsReport" onclick="newsReportAbuse(this,'<?php echo $key ?>')" data-id="<?php echo $key ?>"><small><i class="fa fa-flag"></i> <?php echo Yii::t("common", "Report an abuse")?></small></a></li>
+                    <?php } ?>
+                    </ul>
+                  </div>
+                  <?php } ?>
               <a href="javascript:;" target="_blank" class="link-read-media margin-top-10 hidden-xs img-circle">
                 <small>
                   <i class="fa fa-clock-o"></i> 
                   <?php echo Translate::pastTime(date($media["created"]->sec), "timestamp", $timezone); ?>
                 </small>
+
               </a>
             </h5>
           
@@ -182,12 +203,22 @@
     var news=<?php echo json_encode($news) ?>;
     var canPostNews = <?php echo json_encode(@$canPostNews) ?>;
     var canManageNews = <?php echo json_encode(@$canManageNews) ?>;
+    var actionController = <?php echo json_encode(@$actionController) ?>;
     var idSession = "<?php echo Yii::app()->session["userId"] ?>";
     var uploadUrl = "<?php echo Yii::app()->params['uploadUrl'] ?>";
     var docType="<?php echo Document::DOC_TYPE_IMAGE; ?>";
     var contentKey = "<?php echo Document::IMG_SLIDER; ?>";
     jQuery(document).ready(function() {
       $.each(news, function(e,v){
+        if(actionController=="save"){
+          if($("#news-list").children().eq(0).hasClass("timeline-inverted")){
+            alert("has");
+            $("#news"+e).removeClass("timeline-inverted");
+          }else{
+            alert("hasnt");
+            $("#news"+e).addClass("timeline-inverted");
+          }
+        }
         if("undefined" != typeof v.text){
           textHtml="";
           textNews="";

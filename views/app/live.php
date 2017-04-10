@@ -36,17 +36,16 @@
 </style>
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
-	<div class="col-md-offset-3 col-md-9 col-sm-12 col-xs-12 padding-20 col-md-offset">
+	<div class="col-md-offset-2 col-md-9 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
 		<?php
 	        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
 	    ?>
 	</div>
-	<div class="col-lg-1  hidden-md col-sm-1 hidden-xs"></div>
 	<div class="col-lg-2 col-md-3 hidden-sm col-xs-12 padding-20 text-right hidden-xs" id="sub-menu-left">
 		
 	</div>
 
-	<div class="col-lg-6 col-md-6 col-sm-6 no-padding margin-top-10">
+	<div class="col-lg-8 col-md-8 col-sm-12 no-padding margin-top-10">
 		<div id="newsstream"></div>
 	</div>	
 
@@ -79,7 +78,7 @@ var liveTypeName = { "news":"<i class='fa fa-rss'></i> Les messages",
 
 
 var liveScopeType = "global";
-
+var scrollEnd = false;
 <?php if(@$type && !empty($type)){ ?>
 	searchType = ["<?php echo $type; ?>"];
 <?php }else{ ?>
@@ -119,17 +118,7 @@ jQuery(document).ready(function() {
 	$(".titleNowEvents .btnhidden").hide();
 
 	//init loading in scroll
-    $(window).off().bind("scroll",function(){ 
-	    if(!loadingData && !scrollEnd){
-	          var heightWindow = $("html").height() - $("body").height();
-	          console.log(heightWindow);
-	          if( $(this).scrollTop() >= heightWindow - 400){
-	            //loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
-	            showNewsStream(false);
-	          }
-	    }
-	});
-
+   
     initKInterface();//{"affixTop":10});
     initFreedomInterface();
 
@@ -148,11 +137,11 @@ var timeout;
 function startSearch(isFirst){
 	//Modif SBAR
 	//$(".my-main-container").off();
-	if(liveScopeType == "global"){
+	//if(liveScopeType == "global"){
 		showNewsStream(isFirst);
-	}else{
-		showNewsStream(isFirst);//loadStream(0,5);
-	}
+	//}else{
+	//	showNewsStream(isFirst);//loadStream(0,5);
+	//}
 	//loadLiveNow();
 }
 
@@ -271,7 +260,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		"<span style='font-size:25px;' class='homestead'>"+
 			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
 			"<span class='text-dark'>Chargement en cours ...</span>" + 
-	"</div>";
+		"</div>";
 
 	//loading = "";
 
@@ -279,6 +268,15 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		$("#newsstream").html(loading);
 		ajaxPost("#newsstream",baseUrl+"/"+moduleId+urlCtrl+"/date/0"+isFirstParam,dataNewsSearch, function(news){
 			showTagsScopesMin(".list_tags_scopes");
+			 $(window).bind("scroll",function(){ 
+	    		if(!loadingData && !scrollEnd){
+	         		var heightWindow = $("html").height() - $("body").height();
+	         		if( $(this).scrollTop() >= heightWindow - 400){
+	            		//loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
+	            		showNewsStream(false);
+	          		}
+	    		}
+			});
 			if(loadContent != ''){
 				if(userId){
 					showFormBlock(true);
@@ -286,7 +284,6 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 						loadContent = loadContent.replace("%hash%", "#");
 					$("#get_url").val(loadContent);
 					$("#get_url").trigger("input");
-
 				}
 				else {
 					toastr.error('you must be loggued to post on communecter!');
@@ -305,25 +302,23 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 
 	 	},"html");
 	}else{ //data JSON for load next
-		dateLimit=0;currentMonth = null;
-		$(".newsTL").html(loading);
+		//dateLimit=0;currentMonth = null;
+		loadingData = true;
+		$("#newsstream").append(loading);
 		$.ajax({
 		        type: "POST",
-		        url: baseUrl+"/"+moduleId+urlCtrl+"/date/"+dateLimit+"?tpl=co2",
-		       	dataType: "json",
+		        url: baseUrl+"/"+moduleId+urlCtrl+"/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=2",
 		       	data: dataNewsSearch,
 		    	success: function(data){
-			    	//mylog.log("LOAD NEWS BY AJAX");
-			    	//mylog.log(data.news);
-			    	$(".newsTL").html('<div class="spine"></div>');
 					if(data){
-						alert();
-						buildTimeLine (data.news, 0, 5);
-						bindTags();
-						if(typeof(data.limitDate.created) == "object")
-							dateLimit=data.limitDate.created.sec;
-						else
-							dateLimit=data.limitDate.created;
+						$("#newsstream").find(".loader").remove();
+						$("#news-list").append(data);
+						//buildTimeLine (data.news, 0, 5);
+						//bindTags();
+						//if(typeof(data.limitDate.created) == "object")
+						//	dateLimit=data.limitDate.created.sec;
+						//else
+						//	dateLimit=data.limitDate.created;
 					}
 					loadingData = false;
 				},

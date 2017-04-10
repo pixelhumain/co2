@@ -320,7 +320,7 @@
 </style>
 	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
-<div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
     <section class="col-md-12 col-sm-12 col-xs-12" id="social-header">
         <div id="topPosKScroll"></div>
@@ -340,7 +340,8 @@
 				<?php
 				if(@Yii::app()->session["userId"] && ((@$edit && $edit) || (@$openEdition && $openEdition))){ ?>
 				<div class="user-image-buttons padding-10">
-					<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="banniere_element" ><span class="fileupload-new"><i class="fa fa-plus"></i> <span class="hidden-xs"> Banniere</span></span>
+					<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="banniere_element" >
+						<span class="fileupload-new"><i class="fa fa-plus"></i> <span class="hidden-xs"> Banniere</span></span>
 						<input type="file" accept=".gif, .jpg, .png" name="banniere" id="banniere_change" class="hide">
 						<input class="banniere_isSubmit hidden" value="true"/>
 					</a>
@@ -663,14 +664,14 @@
 					<h6><i class="fa fa-gavel fa-2x bg-yellow-k"></i><br> Proposition</h6>
 				</button>
 				<button data-form-type="poi" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-red">
-					<h6><i class="fa fa-map-marker fa-2x bg-red"></i><br> Point d'intérêt</h6>
+						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-green">
+					<h6><i class="fa fa-map-marker fa-2x bg-green"></i><br> Point d'intérêt</h6>
 				</button>
 				
 			</div>
 		</div>
 
-		<div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 margin-top-50" id="central-container">
+		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-50" id="central-container">
 		</div>
 
 		<?php $this->renderPartial('../pod/qrcode',array(
@@ -683,7 +684,15 @@
 																"tel" => @$tel,
 																"img"=>@$element['profilThumbImageUrl']));
 																?>
-		<div class="col-md-2 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
+		<div class="col-md-3 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
+			<h5><i class="fa fa-bell"></i> Notifications d'Activité locale</h5>
+			<span>
+				Un condensé de l'activité locale, basée sur le département de communexion de l'utilisateur
+				(visible que sur MA page, pas celles des autres)<br>
+				Composée de plusieurs types d'éléments : evenement à venir & en cours, nouvelles propositions & must participate, annonces en cours 
+				<br> 
+				<br>
+			</span>
 			<div class="alert alert-info">
 				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
 				<span>
@@ -804,7 +813,8 @@
 
 <script type="text/javascript">
 
-	var elementName = "<?php echo @$element["name"]; ?>";
+	var element = <?php echo json_encode(@$element); ?>;
+    var elementName = "<?php echo @$element["name"]; ?>";
     var contextType = "<?php echo @$type; ?>";
     var contextId = "<?php echo @(string)$element['_id'] ?>";
     var members = <?php echo json_encode(@$members); ?>;
@@ -1143,6 +1153,7 @@
 
    		$("#btn-open-create").click(function(){
    			showSelectCreate();
+   			KScrollTo("#fileuploadContainer");
    		});
    		$("#div-select-create").hide();
    		
@@ -1245,7 +1256,8 @@
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){ 
-				$(window).bind("scroll",function(){ 
+				loadLiveNow();
+	            $(window).bind("scroll",function(){ 
 				    if(!loadingData && !scrollEnd && colNotifOpen){
 				          var heightWindow = $("html").height() - $("body").height();
 				          if( $(this).scrollTop() >= heightWindow - 400){
@@ -1312,7 +1324,7 @@
 	}
 
 	
-	function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL");
+	function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
 		loadingData = true;
 		currentIndexMin = indexMin;
 		currentIndexMax = indexMax;
@@ -1357,16 +1369,53 @@ function toogleNotif(open){
 		if(typeof open == "undefined") open = false;
 		
 		if(open==false){
-			$('#notif-column').removeClass("col-md-2 col-sm-3 col-lg-3").addClass("hidden");
-			$('#central-container').removeClass("col-md-10 col-lg-9").addClass("col-md-12 col-lg-12");
+			$('#notif-column').removeClass("col-md-3 col-sm-3 col-lg-3").addClass("hidden");
+			$('#central-container').removeClass("col-md-9 col-lg-9").addClass("col-md-12 col-lg-12");
 		}else{
-			$('#notif-column').addClass("col-md-2 col-sm-3 col-lg-3").removeClass("hidden");
-			$('#central-container').addClass("col-sm-12 col-md-10 col-lg-9").removeClass("col-md-12 col-lg-12");
+			$('#notif-column').addClass("col-md-3 col-sm-3 col-lg-3").removeClass("hidden");
+			$('#central-container').addClass("col-sm-12 col-md-9 col-lg-9").removeClass("col-md-12 col-lg-12");
 		}
 
 		colNotifOpen = open;
 		showSelectCreate(false);
 	}
+
+
+
+function loadLiveNow () { 
+	var dep = element["address"]["depName"];
+
+	/*typeof element != "undefined" ? 
+			  typeof element["address"] != "undefined" ? 
+			  typeof element["address"]["depName"] != "undefined" ? 
+			  element["address"]["depName"] : "" : "" : "";*/
+
+    var searchParams = {
+      //"name":$('.input-global-search').val(),
+      "tpl":"/pod/nowList",
+      //"latest" : true,
+      //"searchType" : [typeObj["event"]["col"],typeObj["project"]["col"],
+      //					typeObj["organization"]["col"],"classified",
+      //				 /*typeObj["organization"]["col"]*//*,typeObj["action"]["col"]*/], 
+      //"searchTag" : $('#searchTags').val().split(','), //is an array
+      //"searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
+      //"searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
+      "searchLocalityDEPARTEMENT" : dep, //$('#searchLocalityDEPARTEMENT').val().split(','),
+      //"searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
+      "indexMin" : 0, 
+      "indexMax" : 30 
+    };
+
+    ajaxPost( "#notif-column", baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
+					'/id/'+contextData.id+'/dataName/liveNow?tpl=nowList',
+					searchParams, function() { 
+			        bindLBHLinks();
+			        /*if($('.el-nowList').length==0)
+			        	$('.titleNowEvents').addClass("hidden");
+			        else
+			        	$('.titleNowEvents').removeClass("hidden");*/
+     } , "html" );
+}
 </script>
 
 

@@ -7,6 +7,13 @@ $cssAnsScriptFilesModule = array(
 
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->request->baseUrl);
 $userId = Yii::app()->session["userId"] ;
+$userId = Yii::app()->session["userId"] ;
+
+$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+//header + menu
+$this->renderPartial($layoutPath.'header', 
+                    array(  "layoutPath"=>$layoutPath , 
+                            "page" => "admin") );
 ?>
 <style>
 	.dropdown-menu{
@@ -99,89 +106,90 @@ $userId = Yii::app()->session["userId"] ;
 
 </style>
 
-<div class="col-xs-12 no-padding ">
-	<h4>Obligatoire</h4>
-	<div class="col-sm-4 col-xs-12">
-		<label for="chooseElement"><?php echo Yii::t("common", "Element"); ?> : </label>
-		<select id="chooseElement" name="chooseElement" class="">
-			<option value="-1"><?php echo Yii::t("common", "Choose"); ?></option>
-			<option value="<?php echo Organization::COLLECTION; ?>"><?php echo Yii::t("common", "Organization"); ?></option>
-			<option value="<?php echo Project::COLLECTION; ?>"><?php echo Yii::t("common", "Project"); ?></option>
-			<option value="<?php echo Event::COLLECTION; ?>"><?php echo Yii::t("common", "Event"); ?></option>
-			<option value="<?php echo Person::COLLECTION; ?>"><?php echo Yii::t("common", "Person"); ?></option>
-		</select>
-	</div>
-	<div class="col-sm-4 col-xs-12">
-		<label for="fileImport">Fichier JSON :</label>
-		<input type="file" id="fileImport" name="fileImport" accept=".json,.js">
-	</div>
-</div>
-<div class="col-xs-12 no-padding">
-	<h4>Option</h4>
-	<div class="col-xs-12">
-		<label for="checkboxLink">Lier les entités : <input type="hidden" id="isLink" value=""/></label>
-		<input id="checkboxLink" name="checkboxLink" type="checkbox" data-on-text="<?php echo Yii::t("common","Yes") ?>" data-off-text="<?php echo Yii::t("common","No") ?>"></input>
-		<br/>
-		<div id="searchLink" class="input-group col-xs-8 pull-left hide">
-			<span class="input-group-btn">
-				<select id="chooseElementLink" name="chooseElementLink" class="">
-					<option value="<?php echo Person::COLLECTION; ?>"><?php echo Yii::t("common", "Person"); ?></option>
-					<option value="<?php echo Organization::COLLECTION; ?>"><?php echo Yii::t("common", "Organization"); ?></option>
-					<option value="<?php echo Event::COLLECTION; ?>"><?php echo Yii::t("common", "Event"); ?></option>
-					<option value="<?php echo Project::COLLECTION; ?>"><?php echo Yii::t("common", "Project"); ?></option>
-				</select>
-			</span>
-			<input id="searchBarText" data-searchPage="true" type="text" placeholder="Chercher le citoyen ou l'organisation pour lier les données importer" class="input-search form-control">
-			<span class="input-group-btn">
-	            <a href="javascript:;" class="btn btn-success btn-start-search tooltips" id="btn-start-search">
-	            	<i class="fa fa-search"></i>
-	           	</a>
-	      	</span>
-	      	<ul class="dropdown-menu" id="dropdown_searchInvite" style="">
-				<li class="li-dropdown-scope"></li>
-			</ul>
-		</div>
-		<!-- onclick='addElementLink("name","name")' -->
-		<div id="resultSearchEntity" class='col-xs-8 no-padding hide'>
-			Link :
-			<span id="nameSearchEntity" class='vcenter entityName text-dark'></span>
-			<img id="imgSearchEntity" width='40' height='40' class='img-circle' src=''/>			
-			<input type="hidden" id="idSearchEntity" value=""/>
-			<select id="roleLink" name="roleLink" class="">
-				<option value="member"><?php echo Yii::t("common", "Member"); ?></option>
-				<option value="admin"><?php echo Yii::t("common", "Admin"); ?></option>
+<div class="col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
+	<div class="col-xs-12 no-padding ">
+		<h4>Obligatoire</h4>
+		<div class="col-sm-4 col-xs-12">
+			<label for="chooseElement"><?php echo Yii::t("common", "Element"); ?> : </label>
+			<select id="chooseElement" name="chooseElement" class="">
+				<option value="-1"><?php echo Yii::t("common", "Choose"); ?></option>
+				<option value="<?php echo Organization::COLLECTION; ?>"><?php echo Yii::t("common", "Organization"); ?></option>
+				<option value="<?php echo Project::COLLECTION; ?>"><?php echo Yii::t("common", "Project"); ?></option>
+				<option value="<?php echo Event::COLLECTION; ?>"><?php echo Yii::t("common", "Event"); ?></option>
+				<option value="<?php echo Person::COLLECTION; ?>"><?php echo Yii::t("common", "Person"); ?></option>
 			</select>
 		</div>
-	</div>
-</div>
-
-<div class="col-xs-12 center">
-	<br/><a href="#" class="btn btn-primary col-sm-3" id="sumitVerification">Ajouter</a>
-</div>
-<br/>
-<div id="resultAddData">
-	<br/><h4 class="panel-title">Résultat</h4>
-
-	<div class="panel-body">
-		<div id="divtab" class="table-responsive">
-			<table id="tabcreatemapping" class="table table-striped table-bordered table-hover">
-	    		<thead>
-		    		<tr>
-		    			<th class="col-sm-5">Entité</th>
-		    			<th class="col-sm-5">Result</th>
-		    			<th class="col-sm-5">Url</th>
-		    			<th class="col-sm-5">Type</th>
-		    			<th class="col-sm-5">Id</th>
-		    		</tr>
-	    		</thead>
-		    	<tbody class="directoryLines" id="bodyResult">
-			    	
-				</tbody>
-			</table>
+		<div class="col-sm-4 col-xs-12">
+			<label for="fileImport">Fichier JSON :</label>
+			<input type="file" id="fileImport" name="fileImport" accept=".json,.js">
 		</div>
 	</div>
-</div>
-	
+	<div class="col-xs-12 no-padding">
+		<h4>Option</h4>
+		<div class="col-xs-12">
+			<label for="checkboxLink">Lier les entités : <input type="hidden" id="isLink" value=""/></label>
+			<input id="checkboxLink" name="checkboxLink" type="checkbox" data-on-text="<?php echo Yii::t("common","Yes") ?>" data-off-text="<?php echo Yii::t("common","No") ?>"/>
+			<br/>
+			<div id="searchLink" class="input-group col-xs-8 pull-left hide">
+				<span class="input-group-btn">
+					<select id="chooseElementLink" name="chooseElementLink" class="">
+						<option value="<?php echo Person::COLLECTION; ?>"><?php echo Yii::t("common", "Person"); ?></option>
+						<option value="<?php echo Organization::COLLECTION; ?>"><?php echo Yii::t("common", "Organization"); ?></option>
+						<option value="<?php echo Event::COLLECTION; ?>"><?php echo Yii::t("common", "Event"); ?></option>
+						<option value="<?php echo Project::COLLECTION; ?>"><?php echo Yii::t("common", "Project"); ?></option>
+					</select>
+				</span>
+				<input id="searchBarText" data-searchPage="true" type="text" placeholder="Chercher le citoyen ou l'organisation pour lier les données importer" class="input-search form-control">
+				<span class="input-group-btn">
+		            <a href="javascript:;" class="btn btn-success btn-start-search tooltips" id="btn-start-search">
+		            	<i class="fa fa-search"></i>
+		           	</a>
+		      	</span>
+		      	<ul class="dropdown-menu" id="dropdown_searchInvite" style="">
+					<li class="li-dropdown-scope"></li>
+				</ul>
+			</div>
+			<!-- onclick='addElementLink("name","name")' -->
+			<div id="resultSearchEntity" class='col-xs-8 no-padding hide'>
+				Link :
+				<span id="nameSearchEntity" class='vcenter entityName text-dark'></span>
+				<img id="imgSearchEntity" width='40' height='40' class='img-circle' src=''/>			
+				<input type="hidden" id="idSearchEntity" value=""/>
+				<select id="roleLink" name="roleLink" class="">
+					<option value="member"><?php echo Yii::t("common", "Member"); ?></option>
+					<option value="admin"><?php echo Yii::t("common", "Admin"); ?></option>
+				</select>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12 center">
+		<br/><a href="#" class="btn btn-primary col-sm-3" id="sumitVerification">Ajouter</a>
+	</div>
+	<br/>
+	<div id="resultAddData">
+		<br/><h4 class="panel-title">Résultat</h4>
+
+		<div class="panel-body">
+			<div id="divtab" class="table-responsive">
+				<table id="tabcreatemapping" class="table table-striped table-bordered table-hover">
+		    		<thead>
+			    		<tr>
+			    			<th class="col-sm-5">Entité</th>
+			    			<th class="col-sm-5">Result</th>
+			    			<th class="col-sm-5">Url</th>
+			    			<th class="col-sm-5">Type</th>
+			    			<th class="col-sm-5">Id</th>
+			    		</tr>
+		    		</thead>
+			    	<tbody class="directoryLines" id="bodyResult">
+				    	
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+		
 </div>
 
 		

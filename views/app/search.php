@@ -36,38 +36,7 @@
 ?>
 
 <style>
-    #page .bg-dark {
-        color: white !important;
-        background-color: #3C5665 !important;
-    }
-    #page .bg-red{
-        background-color:#E33551 !important;
-        color:white!important;
-    }
-    #page .bg-blue{
-        background-color: #5f8295 !important;
-        color:white!important;
-    }
-    #page .bg-green{
-        background-color:#93C020 !important;
-        color:white!important;
-    }
-    #page .bg-orange{
-        background-color:#FFA200 !important;
-        color:white!important;
-    }
-    #page .bg-yellow{
-        background-color:#FFC600 !important;
-        color:white!important;
-    }
-    #page .bg-turq{
-        background-color: #229296 !important;
-        color:white!important;
-    }
-    #page .bg-purple{
-        background-color:#8C5AA1 !important;
-        color:white!important;
-    }
+    
     #page #dropdown_search{
     	min-height:500px;
         /*margin-top:30px;*/

@@ -310,6 +310,10 @@
 
 }
 
+.btn-open-form:hover{
+	text-decoration: none;
+}
+
 @media (max-width: 768px) {
 
 	#shortDescriptionHeader{
@@ -320,7 +324,7 @@
 </style>
 	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">	
+<div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
     <section class="col-md-12 col-sm-12 col-xs-12" id="social-header">
         <div id="topPosKScroll"></div>
@@ -515,7 +519,7 @@
 
 		  <?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
 		  <button type="button" class="btn btn-default bold letter-green" id="btn-open-create">
-		  		<i class="fa fa-plus"></i> <?php echo Yii::t("common", "Nouveau") ?>
+		  		<i class="fa fa-plus"></i> <?php echo Yii::t("common", "Créer") ?>
 		  </button>
 		  <?php } ?>
 		</div>
@@ -633,39 +637,47 @@
 		
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-10 no-padding" id="div-select-create">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg-white text-center padding-20">
-				
+				<h4>+ Créer un nouveau ...</h4>
 				<button data-form-type="project" 
 						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-purple">
 					<h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> Projet</h6>
+					<small>Faire connaitre votre projet<br>Trouver du soutien<br>Construire une communauté</small>
 				</button>
 				<button data-form-type="event" 
 						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-orange">
 					<h6><i class="fa fa-calendar fa-2x bg-orange"></i><br> Événement</h6>
+					<small>Faire connaitre votre événement<br>Inviter des participants<br>Informer en direct</small>
 				</button>
 				<button data-form-type="organization" data-form-subtype="association" 
 						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-green">
 					<h6><i class="fa fa-group fa-2x bg-green"></i><br> Association</h6>
+					<small>Faire connaitre votre association<br>Gérer les adhérents<br>Partager votre actualité</small>
 				</button>
 				<button data-form-type="organization" data-form-subtype="business" 
 						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-azure">
 					<h6><i class="fa fa-industry fa-2x bg-azure"></i><br> Entreprise</h6>
+					<small>Faire connaitre votre entreprise<br>Trouver de nouveaux clients<br>Gérer vos contacts</small>
 				</button>
 				
 				<button data-form-type="organization" data-form-subtype="group" 
 						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 letter-turq">
 					<h6><i class="fa fa-group fa-2x bg-turq"></i><br> Groupe</h6>
+					<small>Créer un groupe<br>Partager vos centres d'intêrets<br>Discuter, communiquer, s'amuser</small>
 				</button>
 				<button data-form-type="classified" 
 						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-azure">
 					<h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> Annonce</h6>
+					<small>Publier une petite annonce<br>Partager Donner Vendre Louer<br>Matériel Immobilier Emploi</small>
 				</button>
 				<button data-form-type="entry" 
 						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 letter-yellow">
 					<h6><i class="fa fa-gavel fa-2x bg-yellow-k"></i><br> Proposition</h6>
+					<small>Faire une proposition citoyenne<br>Participer à la démocratie locale<br>Être un citoyen actif</small>
 				</button>
 				<button data-form-type="poi" 
 						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-green">
 					<h6><i class="fa fa-map-marker fa-2x bg-green"></i><br> Point d'intérêt</h6>
+					<small>Faire connaître un lieu intéressant<br><br>Matériel, immobilier, emploi, etc</small>
 				</button>
 				
 			</div>
@@ -826,6 +838,10 @@
     var subView="<?php echo @$subview; ?>";
     var hashUrlPage="#page.type."+contextType+".id."+contextId;
     var cropResult;
+
+    var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
+	
+
 	jQuery(document).ready(function() {
 		initSocial();
 		bindButtonMenu();
@@ -1183,6 +1199,8 @@
 	}
 
 	function loadDataDirectory(dataName){
+		showLoader('#central-container');
+		// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
 		getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 					'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 					function(data){ 
@@ -1193,10 +1211,23 @@
 											getLabelTitleDir(dataName, parseInt(n), n)+
 										"<hr></div>";
 
-							html += directory.showResultsDirectoryHtml(data);
+							if(dataName != "collections"){
+								html += directory.showResultsDirectoryHtml(data);
+							}else{ console.log("data", data);
+								$.each(data, function(col, val){
+									console.log("testaa col", col, "val", val);
+									html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
+									$.each(val.list, function(key, elements){ 
+										console.log("testaa key", key, "elements", elements);
+										html += directory.showResultsDirectoryHtml(elements, key);
+									});
+								});
+								
+							}
 							toogleNotif(false);
 
 							$("#central-container").html(html);
+							initBtnLink();
 						}else{
 							var nothing = "Aucun";
 							if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
@@ -1221,12 +1252,13 @@
 		if(dataName == "follows")	{ return elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
 		if(dataName == "followers")	{ return countData + " <b>abonné"+s+"</b> à " + elementName; }
 		
-		if(dataName == "events")		{ return countData+" <b>événement"+s+"</b> créé"+s+" par " + elementName; }
-		if(dataName == "organizations")	{ return countData+" <b>organisation"+s+"</b> créée"+s+" par " + elementName; }
-		if(dataName == "projects")		{ return countData+" <b>projet"+s+"</b> créé"+s+" par " + elementName; }
+		if(dataName == "events")		{ return elementName + " participe à " + countData+" <b>événement"+s; }
+		if(dataName == "organizations")	{ return elementName + " est membre de " + countData+" <b>organisation"+s; }
+		if(dataName == "projects")		{ return elementName + " contribue à " + countData+" <b>project"+s }
 
 		if(dataName == "collections"){ return countData+" <b>collection"+s+"</b> de " + elementName; }
 		if(dataName == "poi"){ return countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
+		if(dataName == "classified"){ return countData+" <b>annonce"+s+"</b> créée"+s+" par " + elementName; }
 
 		if(dataName == "needs"){ return countData+" <b>besoin"+s+"</b> de " + elementName; }
 
@@ -1236,7 +1268,7 @@
 	}
 
 	function loadAdminDashboard(){
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		getAjax('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/main",function(){ 
 				
 		},"html");
@@ -1252,7 +1284,7 @@
 		var url = "news/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>"+isLive+"/date/"+dateLimit+
 				  "?isFirst=1&tpl=co2&renderPartial=true";
 		
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){ 
@@ -1271,7 +1303,7 @@
 		toogleNotif(false);
 		var url = "gallery/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
 		
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){},"html");
@@ -1279,7 +1311,7 @@
 	function loadChart(id){
 		toogleNotif(false);
 		var url = "chart/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>/chart/"+id;
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){},"html");
@@ -1288,7 +1320,7 @@
 		toogleNotif(false);
 		var url = "element/notifications/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
 		
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){},"html");
@@ -1296,7 +1328,7 @@
 	function loadHistoryActivity(){
 		toogleNotif(false);
 		var url = "pod/activitylist/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){},"html");
@@ -1310,7 +1342,7 @@
 	function loadEditChart(){
 		toogleNotif(false);
 		var url = "chart/addchartsv/type/"+contextType+"/id/"+contextId;
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 		function(){},"html");
@@ -1319,7 +1351,7 @@
 	function loadDetail(){
 		toogleNotif(false);
 		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
 	}
 
@@ -1400,7 +1432,7 @@ function loadLiveNow () {
       //"searchTag" : $('#searchTags').val().split(','), //is an array
       //"searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
       //"searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-      "searchLocalityDEPARTEMENT" : dep, //$('#searchLocalityDEPARTEMENT').val().split(','),
+      "searchLocalityDEPARTEMENT" : new Array(dep), //$('#searchLocalityDEPARTEMENT').val().split(','),
       //"searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
       "indexMin" : 0, 
       "indexMax" : 30 
@@ -1415,6 +1447,11 @@ function loadLiveNow () {
 			        else
 			        	$('.titleNowEvents').removeClass("hidden");*/
      } , "html" );
+}
+
+
+function showLoader(id){
+	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 }
 </script>
 

@@ -186,6 +186,15 @@
 	</li>
 	<li><hr></li>
 
+	<?php if ($type==Person::COLLECTION){ ?>
+	<li class="">
+		<a href="javascript:" class="load-data-directory" data-type-dir="collections">
+			<i class="fa fa-star"></i> Collections
+		</a>
+	</li>
+	<?php } ?>
+
+	<li><hr></li>
 	
 	<?php //if (($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION)){ ?>
 	<?php if(!@$front || (@$front && $front["event"]==true)){ ?>
@@ -223,14 +232,6 @@
 	<li class="">
 		<a href="javascript:" class="load-data-directory" data-type-dir="links">
 			<i class="fa fa-link"></i> Liste de liens
-		</a>
-	</li>
-	<?php } ?>
-
-	<?php if ($type==Person::COLLECTION){ ?>
-	<li class="">
-		<a href="javascript:" class="load-data-directory" data-type-dir="collections">
-			<i class="fa fa-star"></i> Collections
 		</a>
 	</li>
 	<?php } ?>

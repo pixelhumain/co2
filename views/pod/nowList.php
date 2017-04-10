@@ -58,10 +58,29 @@
     .el-nowList{
         background-color: white;
     }
+
+    .el-nowList:hover{
+        width: 300px;
+        float: right;
+    }
+    .el-nowList .address{
+        display: inline;
+    }
+    .el-nowList:hover .address{
+        display: inline;
+    }
+
+    .el-nowList:hover .elemt_name, 
+    .el-nowList:hover .elemt_date {
+        width: 80%;
+    }
 </style>
 <div class="col-xs-12 no-padding col-nowList"  data-tpl="pod.nowList">
-    <h6 class="no-margin"><i class="fa fa-angle-down"></i> <i class="fa fa-bell"></i> Activité locale</h6 class="no-margin">
-    <hr>
+    <h6 class="no-margin">
+        <i class="fa fa-cog letter-red"></i> <i class="fa fa-bell"></i> Mon activité locale<br>
+        <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope; ?></small>
+    </h6>
+    <hr class="margin-5 margin-bottom-10">
 
     <?php foreach ($result as $key => $v) { 
         $specs = Element::getElementSpecsByType(@$v["type"]);
@@ -95,7 +114,16 @@
             //echo ($type) ? Element::getLink(@$type."s",$id) : "no type"; //echo @$type;?>
         </div><br>
         <div class="hidden-xs hidden-sm elemt_date pull-left text-left elipsis">
-            <span class="dateTZ"><?php echo @$v["updatedLbl"];?> </span>            
+            <span class="dateTZ">
+                <?php echo @$v["updatedLbl"];?>
+                <?php if(@$v["price"]) echo " | <span class='text-azure'>" .@$v["price"].' '.@$v["devise"].'</span>';?> 
+            </span> 
+            <?php if(@$v["address"]["addressLocality"]) { ?>        
+            <span class="address text-red">
+                <i class="fa fa-map-marker margin-left-5"></i> <?php echo @$v["address"]["addressLocality"]; ?> 
+            </span>
+            <?php } ?> 
+
             <?php //DDA : if( @$v["organizerType"] && @$v["organizerId"] ) echo "-".Element::getLink( @$v["organizerType"],@$v["organizerId"] )?>
             <?php //DDA : if( @$v["parentType"] && @$v["parentId"] ) echo ">".Element::getLink( @$v["parentType"],@$v["parentId"] )?>
 

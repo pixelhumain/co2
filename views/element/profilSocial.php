@@ -519,7 +519,7 @@
 
 		  <?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
 		  <button type="button" class="btn btn-default bold letter-green" id="btn-open-create">
-		  		<i class="fa fa-plus"></i> <?php echo Yii::t("common", "Créer") ?>
+		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
 		  </button>
 		  <?php } ?>
 		</div>
@@ -634,51 +634,59 @@
 
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding" style="margin-top: -10px;">
 	    	
-		
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-10 no-padding" id="div-select-create">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg-white text-center padding-20">
-				<h4>+ Créer un nouveau ...</h4>
-				<button data-form-type="project" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-purple">
-					<h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> Projet</h6>
-					<small>Faire connaitre votre projet<br>Trouver du soutien<br>Construire une communauté</small>
-				</button>
+				
+				<h4 class="text-left" style="padding-left:50px;">+ Publier ...</h4>
+				<div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
+
 				<button data-form-type="event" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-orange">
+						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 text-orange">
 					<h6><i class="fa fa-calendar fa-2x bg-orange"></i><br> Événement</h6>
 					<small>Faire connaitre votre événement<br>Inviter des participants<br>Informer en direct</small>
 				</button>
+				<button data-form-type="classified" 
+						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 text-azure">
+					<h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> Annonce</h6>
+					<small>Publier une petite annonce<br>Partager Donner Vendre Louer<br>Matériel Immobilier Emploi</small>
+				</button>
+				<button data-form-type="entry" 
+						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 letter-yellow">
+					<h6><i class="fa fa-gavel fa-2x bg-yellow-k"></i><br> Proposition</h6>
+					<small>Faire une proposition citoyenne<br>Participer à la démocratie locale<br>Être un citoyen actif</small>
+				</button>
+				<button data-form-type="poi" 
+						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 text-green">
+					<h6><i class="fa fa-map-marker fa-2x bg-green"></i><br> Point d'intérêt</h6>
+					<small>Faire connaître un lieu intéressant<br>Contribuer à la carte collaborative<br>Connecter son territoire</small>
+				</button>
+				<div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
+				<h4 class="pull-left text-left no-margin" style="padding-left:50px;">+ Créer une page ...</h4>
+				<div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
+				
+
+				<button data-form-type="project" 
+						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 text-purple">
+					<h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> Projet</h6>
+					<small>Faire connaitre votre projet<br>Trouver du soutien<br>Construire une communauté</small>
+				</button>
 				<button data-form-type="organization" data-form-subtype="association" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-green">
+						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 text-green">
 					<h6><i class="fa fa-group fa-2x bg-green"></i><br> Association</h6>
 					<small>Faire connaitre votre association<br>Gérer les adhérents<br>Partager votre actualité</small>
 				</button>
 				<button data-form-type="organization" data-form-subtype="business" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-azure">
+						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 text-azure">
 					<h6><i class="fa fa-industry fa-2x bg-azure"></i><br> Entreprise</h6>
 					<small>Faire connaitre votre entreprise<br>Trouver de nouveaux clients<br>Gérer vos contacts</small>
 				</button>
 				
 				<button data-form-type="organization" data-form-subtype="group" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 letter-turq">
+						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 letter-turq">
 					<h6><i class="fa fa-group fa-2x bg-turq"></i><br> Groupe</h6>
-					<small>Créer un groupe<br>Partager vos centres d'intêrets<br>Discuter, communiquer, s'amuser</small>
+					<small>Créer un groupe<br>Partager vos centres d'intêrets<br>Discuter Communiquer S'amuser</small>
 				</button>
-				<button data-form-type="classified" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-azure">
-					<h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> Annonce</h6>
-					<small>Publier une petite annonce<br>Partager Donner Vendre Louer<br>Matériel Immobilier Emploi</small>
-				</button>
-				<button data-form-type="entry" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 letter-yellow">
-					<h6><i class="fa fa-gavel fa-2x bg-yellow-k"></i><br> Proposition</h6>
-					<small>Faire une proposition citoyenne<br>Participer à la démocratie locale<br>Être un citoyen actif</small>
-				</button>
-				<button data-form-type="poi" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-green">
-					<h6><i class="fa fa-map-marker fa-2x bg-green"></i><br> Point d'intérêt</h6>
-					<small>Faire connaître un lieu intéressant<br><br>Matériel, immobilier, emploi, etc</small>
-				</button>
+
 				
 			</div>
 		</div>
@@ -697,50 +705,8 @@
 																"img"=>@$element['profilThumbImageUrl']));
 																?>
 		<div class="col-md-3 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
-			<h5><i class="fa fa-bell"></i> Notifications d'Activité locale</h5>
-			<span>
-				Un condensé de l'activité locale, basée sur le département de communexion de l'utilisateur
-				(visible que sur MA page, pas celles des autres)<br>
-				Composée de plusieurs types d'éléments : evenement à venir & en cours, nouvelles propositions & must participate, annonces en cours 
-				<br> 
-				<br>
-			</span>
-			<div class="alert alert-info">
-				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
-				<span>
-					<i class="fa fa-comment"></i> <b>Quelqu'un</b> a commenté votre message<br>
-					<small class="margin-left-15">il y a 2 minutes</small><br>
-				</span>
-	    	</div>
-			<div class="alert alert-info">
-				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
-				<span>
-					<i class="fa fa-comment"></i> <b>Quelqu'un</b> a commenté <b>votre message</b><br>
-					<small class="margin-left-15">il y a 3h</small>
-				</span>
-	    	</div>
-			<div class="alert alert-success">
-				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
-				<a href="#...">
-					<i class="fa fa-calendar"></i> <b>Quelqu'un</b> a vous invite à <b>un événement</b><br>
-					<small class="margin-left-15">il y a 5h</small>
-				</a>
-	    	</div>
-			<div class="alert alert-success">
-				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
-				<a href="#...">
-					<i class="fa fa-hand-rock-o"></i> <b>Conseil citoyen de votre ville :</b> une nouvelle <b>proposition</b> vient d'être publiée par <b>quelqu'un</b>.<br>
-					<small class="margin-left-15">il y a 2 jours</small><br>
-				</a>
-	    	</div>
-			<div class="alert alert-danger">
-				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
-				<span>
-					<i class="fa fa-flag"></i> <b>Quelqu'un</b> a signalé l'un de vos commentaires<br>
-					<small class="margin-left-15">il y a 10 jours</small><br>
-				</span>
-	    	</div>
-	    </div>
+		</div>
+
 	</section>
 </div>	
 <style>

@@ -216,27 +216,8 @@
 		</a>
 	</li>
 	<li><hr></li>
-
-		<?php if(!@$front || (@$front && $front["organization"]==true)){ ?>
-			<li class="">
-				<a href="javascript:" class="load-data-directory" data-type-dir="organizations">
-					<i class="fa fa-group"></i> <?php echo Yii::t("common","Organisations"); ?>
-				</a>
-			</li>
-		<?php }  
-
-		if( ($type==Organization::COLLECTION || $type==Person::COLLECTION) &&
-			(!@$front || ( @$front && $front["project"]==true) ) ) { ?>
-			<li class="">
-				<a href="javascript:" class="load-data-directory" data-type-dir="projects">
-					<i class="fa fa-lightbulb-o"></i> <?php echo Yii::t("common","Projects"); ?>
-				</a>
-			</li>
-			
-		<?php } ?>
-
-		<li><hr></li>
-
+	<?php }  ?>
+		
 	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
 			  $type==Event::COLLECTION || $type==Person::COLLECTION){  
 				if(!@$front || (@$front && $front["poi"])){ 
@@ -248,17 +229,7 @@
 	</li>
 	<?php }} ?>
 
-		<?php if( 	( $type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION || $type==Person::COLLECTION ) && 
-					(!@$front || ( @$front && $front["poi"] ) ) ) { 
-		?>
-			<li>
-				<a href="javascript:"  class="load-data-directory" data-type-dir="poi">
-					<i class="fa fa-map-marker"></i> Points d'intérêts
-				</a>
-			</li>
-		<?php } ?>
-
-		
+			
 		<?php if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true))){ ?>
 			<li><hr></li>
 			<li class="">

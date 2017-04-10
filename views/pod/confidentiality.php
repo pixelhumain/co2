@@ -165,7 +165,7 @@ function bindButtonConfidentiality(){
 		}	
 	?>
 
-    $(".confidentialitySettings").click(function(){
+   /* $(".confidentialitySettings").click(function(){
     	param = new Object;
     	param.type = $(this).attr("type");
     	param.value = $(this).attr("value");
@@ -205,6 +205,6 @@ function bindButtonConfidentiality(){
 			});
     	}
     	
-    });
+    });*/
 }
 </script>

@@ -59,6 +59,9 @@ class CO2 {
             $communexion["values"] = array( "cityName"  =>$city["alternateName"],
                                             "cityKey"   => City::getUnikey($city),
                                             "wikidataID" =>@$city["wikidataID"],
+                                            "insee" => @$city["insee"],
+                                            "region" => @$city["region"],
+                                            "dep" => @$city["dep"],
                                             "cityCp"    =>Yii::app()->request->cookies['cpCommunexion'],
                                             "depName"   =>@$city["depName"],
                                             "regionName"=>@$city["regionName"]);

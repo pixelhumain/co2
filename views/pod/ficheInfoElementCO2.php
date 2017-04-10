@@ -178,86 +178,81 @@
 				Preference::showPreference( $element, $type, "directory", Yii::app()->session["userId"]) ) { ?>
 		<li class="">
 			<a href="javascript:" class="load-data-directory" data-type-dir="follows">
-				<i class="fa fa-link"></i> Abonnements
+				<i class="fa fa-link"></i> <?php echo Yii::t("common","Follows"); ?>
 			</a>
 		</li>
 		<li class="">
 			<a href="javascript:" class="load-data-directory" data-type-dir="followers">
-				<i class="fa fa-link"></i> Abonnés
+				<i class="fa fa-link"></i> <?php echo Yii::t("common","Followers"); ?>
 			</a>
 		</li>
 		<li><hr></li>
 
-		
-		<?php //if (($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION)){ ?>
 		<?php if(!@$front || (@$front && $front["event"]==true)){ ?>
-		<li class="">
-			<a href="javascript:" class="load-data-directory" data-type-dir="events">
-				<i class="fa fa-calendar"></i> Événements
-			</a>
-		</li>
-		<li class="">
-			<a href="javascript:" class="load-data-directory" data-type-dir="organizations">
-				<i class="fa fa-group"></i> Organisations
-			</a>
-		</li>
-		<li class="">
-			<a href="javascript:" class="load-data-directory" data-type-dir="projects">
-				<i class="fa fa-lightbulb-o"></i> Projets
-			</a>
-		</li>
+			<li class="">
+				<a href="javascript:" class="load-data-directory" data-type-dir="events">
+					<i class="fa fa-calendar"></i> <?php echo Yii::t("common","Events"); ?>
+				</a>
+			</li>
+		<?php } ?>
+
+		<?php if(!@$front || (@$front && $front["organization"]==true)){ ?>
+			<li class="">
+				<a href="javascript:" class="load-data-directory" data-type-dir="organizations">
+					<i class="fa fa-group"></i> <?php echo Yii::t("common","Organisations"); ?>
+				</a>
+			</li>
+		<?php }  
+
+		if( ($type==Organization::COLLECTION || $type==Person::COLLECTION) &&
+			(!@$front || ( @$front && $front["project"]==true) ) ) { ?>
+			<li class="">
+				<a href="javascript:" class="load-data-directory" data-type-dir="projects">
+					<i class="fa fa-lightbulb-o"></i> <?php echo Yii::t("common","Projects"); ?>
+				</a>
+			</li>
+			
+		<?php } ?>
+
 		<li><hr></li>
 
-		<?php }//} ?>
-
-
-		<?php if ($type==Organization::COLLECTION || $type==Project::COLLECTION){ 
-			  if(!@$front || (@$front && $front["project"])){ 
-		?>	
-		<li class="">
-			<a href="javascript:" class="load-data-directory" data-type-dir="projects">
-				<i class="fa fa-lightbulb-o"></i> Projets
-			</a>
-		</li>
-		<?php }} ?>
-		
 		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
-		<li class="">
-			<a href="javascript:" class="load-data-directory" data-type-dir="links">
-				<i class="fa fa-link"></i> Liste de liens
-			</a>
-		</li>
+			<li class="">
+				<a href="javascript:" class="load-data-directory" data-type-dir="links">
+					<i class="fa fa-link"></i> Liste de liens
+				</a>
+			</li>
 		<?php } ?>
 
 		<?php if ($type==Person::COLLECTION){ ?>
-		<li class="">
-			<a href="javascript:" class="load-data-directory" data-type-dir="collections">
-				<i class="fa fa-star"></i> Collections
-			</a>
-		</li>
+			<li class="">
+				<a href="javascript:" class="load-data-directory" data-type-dir="collections">
+					<i class="fa fa-star"></i> Collections
+				</a>
+			</li>
 		<?php } ?>
 
-		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
-				  $type==Event::COLLECTION || $type==Person::COLLECTION){  
-					if(!@$front || (@$front && $front["poi"])){ 
+		<?php if( 	( $type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION || $type==Person::COLLECTION ) && 
+					(!@$front || ( @$front && $front["poi"] ) ) ) { 
 		?>
-		<li>
-			<a href="javascript:"  class="load-data-directory" data-type-dir="poi">
-				<i class="fa fa-map-marker"></i> Points d'intérêts
-			</a>
-		</li>
-		<?php }} ?>
+			<li>
+				<a href="javascript:"  class="load-data-directory" data-type-dir="poi">
+					<i class="fa fa-map-marker"></i> Points d'intérêts
+				</a>
+			</li>
+		<?php } ?>
 
 		
 		<?php if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true))){ ?>
-		<li><hr></li>
-		<li class="">
-			<a href="javascript:" class="load-data-directory" data-type-dir="classified">
-				<i class="fa fa-bullhorn"></i> Annonces
-			</a>
-		</li>
+			<li><hr></li>
+			<li class="">
+				<a href="javascript:" class="load-data-directory" data-type-dir="classified">
+					<i class="fa fa-bullhorn"></i> Annonces
+				</a>
+			</li>
 		<?php } ?>
 		<li><hr></li>
+
 	<?php } ?>
 
 	

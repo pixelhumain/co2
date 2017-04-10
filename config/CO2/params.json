@@ -1,162 +1,160 @@
 {
-	"title" : "app",
-	"metaImg" : "/assets/img/CO.png",
-	"metaDesc" : "Réseau sociétal citoyen",
+  "title" : "app",
+  "metaImg" : "/assets/img/CO.png",
+  "metaDesc" : "Réseau sociétal citoyen",
+      
+	"pages" : 
+		{
+		  "#app.index":
+			 	 {"redirect":"search"},
+			  
+			"#search":
+			  	{"inMenu" : true, 
+                "useHeader" : true, 
+                "open" : true, 
+                "subdomain" : "search", 
+                "subdomainName" : "Recherche",
+                "hash" : "#app.search",
+                "icon" : "search", 
+                "mainTitle" : "Moteur de recherche <span class='text-red'>territorial</span>",
+                "placeholderMainSearch" : "Rechercher une page ...",
+                "lblBtnCreate" : "Créer une page",
+                "colorBtnCreate" : "green"
+          },
 
-	"pages" : {
+		    "#annonces":
+			  	{"inMenu" : true, 
+                "useHeader" : true, 
+                "open" : true, 
+                "subdomain" : "annonces", 
+                "subdomainName" : "Annonces",
+                "hash" : "#app.annonces",
+                "icon" : "bullhorn", 
+                "mainTitle" : "Petites annonces",
+                "placeholderMainSearch" : "rechercher parmis les annonces  ...",
+                "lblBtnCreate" : "Publier une annonce",
+                "colorBtnCreate" : "azure"
+          },
 
-		"#app.index": {
-			"redirect":"search"
-		},
+			"#agenda":
+                {"inMenu" : true, 
+                "useHeader" : true, 
+                "open" : true, 
+                "subdomain" : "agenda", 
+                "subdomainName" : "Agenda",
+                "hash":"#app.agenda",
+                "icon" : "calendar", 
+                "mainTitle" : "L'agenda <span class='text-red'>C</span>Ommun",
+                "placeholderMainSearch" : "rechercher un événement ...",
+                "lblBtnCreate" : "Créer un événement",
+                "colorBtnCreate" : "orange"
+          },
 
-		"#search": { 
-			"inMenu" : true, 
-			"useHeader" : true, 
-			"open" : true, 
-			"subdomain" : "search", 
-			"subdomainName" : "Recherche",
-			"hash" : "#app.search",
-			"icon" : "search", 
-			"mainTitle" : "Moteur de recherche <span class='text-red'>territorial</span>",
-			"placeholderMainSearch" : "Rechercher une page ...",
-			"lblBtnCreate" : "Créer une page",
-			"colorBtnCreate" : "green"
-		},
+			"#power":
+			  	{"inMenu" : true, 
+                "useHeader" : true, 
+                "open" : true, 
+                "subdomain" : "power", 
+                "subdomainName" : "Démocratie",
+                "hash":"#app.power",
+                "icon" : "comments", 
+                "mainTitle" : "Espace d'expression démocratique",
+                "placeholderMainSearch" : "rechercher parmis les propositions ...",
+                "lblBtnCreate" : "Faire une proposition",
+                "colorBtnCreate" : "azure"
+          },
 
-		"#annonces": {
-			"inMenu" : true, 
-			"useHeader" : true, 
-			"open" : true, 
-			"subdomain" : "annonces", 
-			"subdomainName" : "Annonces",
-			"hash" : "#app.annonces",
-			"icon" : "bullhorn", 
-			"mainTitle" : "Petites annonces",
-			"placeholderMainSearch" : "rechercher parmis les annonces  ...",
-			"lblBtnCreate" : "Publier une annonce",
-			"colorBtnCreate" : "azure"
-		},
+            "#live":
+                {"inMenu" : true, 
+                "useHeader" : true, 
+                "open" : true, 
+                "subdomain" : "live", 
+                "subdomainName" : "Actus",
+                "hash":"#app.live",
+                "icon" : "newspaper-o", 
+                "mainTitle" : "Le fil d'actualité <span class='text-red'>CO</span>mmun",
+                "placeholderMainSearch" : "rechercher parmis les messages ..."
+          },
 
-		"#agenda": {
-			"inMenu" : true, 
-			"useHeader" : true, 
-			"open" : true, 
-			"subdomain" : "agenda", 
-			"subdomainName" : "Agenda",
-			"hash":"#app.agenda",
-			"icon" : "calendar", 
-			"mainTitle" : "L'agenda <span class='text-red'>C</span>Ommun",
-			"placeholderMainSearch" : "rechercher un événement ...",
-			"lblBtnCreate" : "Créer un événement",
-			"colorBtnCreate" : "orange"
-		},
+          "#place":
+                {"inMenu" : true, 
+                "useHeader" : false, 
+                "open" : true, 
+                "subdomain" : "place", 
+                "subdomainName" : "Lieux",
+                "hash" : "#app.search.type.place",
+                "icon" : "map-marker", 
+                "mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
+                "placeholderMainSearch" : "Rechercher un lieu ...",
+                "lblBtnCreate" : "Ajouter un lieu",
+                "colorBtnCreate" : "green"
+          },
 
-		"#power": {
-			"inMenu" : true, 
-			"useHeader" : true, 
-			"open" : true, 
-			"subdomain" : "power", 
-			"subdomainName" : "Démocratie",
-			"hash":"#app.power",
-			"icon" : "comments", 
-			"mainTitle" : "Espace d'expression démocratique",
-			"placeholderMainSearch" : "rechercher parmis les propositions ...",
-			"lblBtnCreate" : "Faire une proposition",
-			"colorBtnCreate" : "azure"
-		},
+			"#page":
+			  	{"inMenu" : false, 
+                "useHeader" : false, 
+                "open" : true, 
+                "subdomain" : "page", 
+                "subdomainName" : "page",
+                "hash":"#app.page",
+                "icon" : "", 
+                "mainTitle" : "Le réseau social à effet de sert",
+                "placeholderMainSearch" : "rechercher ..."
+          },
 
-		"#live": {
-			"inMenu" : true, 
-			"useHeader" : true, 
-			"open" : true, 
-			"subdomain" : "live", 
-			"subdomainName" : "Actus",
-			"hash":"#app.live",
-			"icon" : "newspaper-o", 
-			"mainTitle" : "Le fil d'actualité <span class='text-red'>CO</span>mmun",
-			"placeholderMainSearch" : "rechercher parmis les messages ..."
-		},
+            "#info":
+                {"inMenu" : false, 
+                "useHeader" : false, 
+                "open" : true, 
+                "subdomain" : "apropos", 
+                "subdomainName" : "Info",
+                "hash":"#app.info",
+                "icon" : "search", 
+                "mainTitle" : "Le réseau social à effet de sert",
+                "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
+          },
 
-		"#info": {
-			"inMenu" : false, 
-			"useHeader" : false, 
-			"open" : true, 
-			"subdomain" : "apropos", 
-			"subdomainName" : "Info",
-			"hash":"#app.info",
-			"icon" : "search", 
-			"mainTitle" : "Le réseau social à effet de sert",
-			"placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
-		},
+            "#city":
+                {"inMenu" : false, 
+                "useHeader" : false,
+                "open" : true,  
+                "subdomain" : "city", 
+                "subdomainName" : "City",
+                "hash":"#app.city",
+                "icon" : "university", 
+                "mainTitle" : "Communexion activée",
+                "placeholderMainSearch" : "rechercher ..."
+          },
+          "#rooms":
+                {"inMenu" : false, 
+                "useHeader" : false,
+                "open" : true,  
+                "subdomain" : "rooms", 
+                "subdomainName" : "rooms",
+                "hash":"#app.rooms",
+                "icon" : "university", 
+                "mainTitle" : "Communexion activée",
+                "placeholderMainSearch" : "rechercher ..."
+          },
+          "#survey":
+                {"inMenu" : false, 
+                "useHeader" : false,
+                "open" : true,  
+                "subdomain" : "city", 
+                "subdomainName" : "City",
+                "hash":"#app.survey",
+                "icon" : "university", 
+                "mainTitle" : "Communexion activée",
+                "placeholderMainSearch" : "rechercher ..."
+          },
 
-		"#place":{
-			"inMenu" : true, 
-			"useHeader" : false, 
-			"open" : true, 
-			"subdomain" : "place", 
-			"subdomainName" : "Lieux",
-			"hash" : "#app.search.type.place",
-			"icon" : "map-marker", 
-			"mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
-			"placeholderMainSearch" : "Rechercher un lieu ...",
-			"lblBtnCreate" : "Ajouter un Lieux",
-			"colorBtnCreate" : "green"
-		},
-
-		"#page":{
-			"inMenu" : false, 
-			"useHeader" : false, 
-			"open" : true, 
-			"subdomain" : "page", 
-			"subdomainName" : "page",
-			"hash":"#app.page",
-			"icon" : "", 
-			"mainTitle" : "Le réseau social à effet de sert",
-			"placeholderMainSearch" : "rechercher ..."
-		},
-
-		"#city": {
-			"inMenu" : false, 
-			"useHeader" : false,
-			"open" : true,  
-			"subdomain" : "city", 
-			"subdomainName" : "City",
-			"hash":"#app.city",
-			"icon" : "university", 
-			"mainTitle" : "Communexion activée",
-			"placeholderMainSearch" : "rechercher ..."
-		},
-
-		"#rooms": {
-			"inMenu" : false, 
-			"useHeader" : false,
-			"open" : true,  
-			"subdomain" : "rooms", 
-			"subdomainName" : "rooms",
-			"hash":"#app.rooms",
-			"icon" : "university", 
-			"mainTitle" : "Communexion activée",
-			"placeholderMainSearch" : "rechercher ..."
-		},
-		"#survey": {
-			"inMenu" : false, 
-			"useHeader" : false,
-			"open" : true,  
-			"subdomain" : "city", 
-			"subdomainName" : "City",
-			"hash":"#app.survey",
-			"icon" : "university", 
-			"mainTitle" : "Communexion activée",
-			"placeholderMainSearch" : "rechercher ..."
-		},
-
-		"#admin": {
+          "#admin": {
 			"inMenu" : false, 
 			"useHeader" : true, 
 			"open" : false, 
 			"subdomain" : "admin", 
 			"subdomainName" : "admin",
-			"hash":"#admin.index",
+			"hash":"#admin",
 			"icon" : "university", 
 			"mainTitle" : "Partie Admin",
 			"placeholderMainSearch" : "Admin ..."
@@ -168,12 +166,11 @@
 			"open" : false, 
 			"subdomain" : "admin", 
 			"subdomainName" : "admin",
-			"hash":"#adminpublic.index",
+			"hash":"#adminpublic",
 			"icon" : "university", 
 			"mainTitle" : "Partie Admin Public",
 			"placeholderMainSearch" : "Admin Public ..."
 		}
-
 	  }
   
   }

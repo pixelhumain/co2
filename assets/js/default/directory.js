@@ -805,7 +805,20 @@ var directory = {
 
         str += "<hr></div>";
 
-        
+        getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/classified/tpl/json" , function( data ) { 
+          var c = 1;
+          $.each(data.list,function(k,v) { 
+            mylog.log("data list",k,v);
+            if( $('.carousel-first img').attr('src').indexOf(v.name) < 0 ){
+              $(".carousel-inner").append('  <div class="item">'+
+              "   <img class='img-responsive' src='"+v.path+"/"+v.name+"'/>"+
+              ' </div>');
+              $(".carousel-indicators").append('<li data-target="#myCarousel" data-slide-to="'+c+'"></li>');
+              c++;
+            }
+          });
+
+        });
 
         if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
           str += '<div class="col-xs-12 text-center">'+
@@ -813,15 +826,11 @@ var directory = {
                       //<!-- Indicators -->
                       '<ol class="carousel-indicators">'+
                       '  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>'+
-                      '  <li data-target="#myCarousel" data-slide-to="1"></li>'+
                       '</ol>'+
 
                       //<!-- Wrapper for slides -->'+
                       '<div class="carousel-inner" role="listbox">'+
-                      '  <div class="item active">'+
-                      "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
-                      '  </div>'+
-                      '  <div class="item">'+
+                      '  <div class="item active carousel-first ">'+
                       "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
                       '  </div>'+
                       '</div>'+
@@ -1194,7 +1203,7 @@ var directory = {
 
       if(params.type == "surveys") params.url = "#survey.entry.id."+params.id;
       else if(params.type == "actions") params.url = "#rooms.action.id."+params.id;
-     
+   
       str = "";  
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
@@ -1426,19 +1435,24 @@ var directory = {
 
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
                 
-                mylog.log("template principal",params);
+                mylog.log("template principal",params,params.type);
                 
                   //template principal
                 if(params.type == "cities")
                   str += directory.cityPanelHtml(params);  
+                
                 else if( $.inArray(params.type, ["citoyens","organizations","project","poi","place"])>=0) 
                   str += directory.elementPanelHtml(params);  
+                
                 else if(params.type == "events")
                   str += directory.eventPanelHtml(params);  
+                
                 else if(params.type == "surveys" || params.type == "actions")
                     str += directory.roomsPanelHtml(params);  
+                
                 else if(params.type == "classified")
                   str += directory.classifiedPanelHtml(params);
+                
                 else
                   str += directory.defaultPanelHtml(params);
             }
@@ -1549,16 +1563,25 @@ var directory = {
         //$("#btn-open-tags").append("("+$(".favElBtn").length+")");
     },
     
-    sectionFilter : function (list, dest, what) { 
+    sectionFilter : function (list, dest, what, type ) { 
       mylog.log("sectionFilter",list,what,dest);
 
-        $(dest).html('');
-        $(dest).append('<h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">'+
-              '<i class="fa fa-'+what.icon+'"></i> '+what.title+'</h4><hr>');
+        if( type == "btn" )
+          str = '<label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="typeBtn"><i class="fa fa-chevron-down"></i> '+what.title+' </label>'
+        else
+          str = '<h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">'+
+                '<i class="fa fa-'+what.icon+'"></i> </h4><hr>';
+        
+        $(dest).html(str);
+
         $.each( list,function(k,o){
-            str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="'+k+'">'+
+            if( type == "btn" )
+              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'"><a class="btn tagListEl btn-select-type-anc typeBtn '+k+'Btn " data-tag="'+k+'" data-key="'+k+'" href="javascript:;"><i class="fa fa-'+o.icon+'"></i> <br>'+k+'</a></div>'
+            else 
+              str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="'+k+'">'+
                     '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+k+'</button><br>';
-            if( o.subcat ){
+            if( o.subcat && type != "btn" )
+            {
               $.each( o.subcat ,function(i,oT){
                   str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
                           '<i class="fa fa-angle-right"></i>'+oT+'</button><br class="hidden">';

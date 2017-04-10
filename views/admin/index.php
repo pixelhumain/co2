@@ -9,8 +9,7 @@
 <!-- start: PAGE CONTENT -->
 
 
-<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
-	<h3 class="panel-title text-blue"><i class="fa fa-connectdevelop"></i> Admin </h3>
+<div class="col-lg-offset-1 col-lg-10 col-xs-12 no-padding" id="content-social" style="min-height:700px;">
 	<div class="">
 		<ul class="list-group text-left no-margin">
 		<?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
@@ -29,19 +28,19 @@
 				</a>
 			</li>
 
-			<li class="list-group-item col-md-4 col-sm-6 ">
+			<!-- <li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="lbh text-red" style="cursor:pointer;" href="#admin.openagenda">
 					<i class="fa fa-calendar fa-2x"></i>
 					<?php echo Yii::t("admin", "OPEN AGENDA", null, Yii::app()->controller->module->id); ?>
 				</a>
-			</li>
+			</li> -->
 
-			<li class="list-group-item col-md-4 col-sm-6 ">
+			<!-- <li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="lbh text-red" style="cursor:pointer;" href="#admin.checkgeocodage">
 					<i class="fa fa-map fa-2x"></i>
 					<?php echo Yii::t("admin", "CHECK GEOCODAGE", null, Yii::app()->controller->module->id); ?>
 				</a>
-			</li>
+			</li> -->
 
 			<li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="lbh text-red" style="cursor:pointer;" href="#adminpublic.adddata">
@@ -57,12 +56,12 @@
 				</a>
 			</li>
 
-			<li class="list-group-item col-md-4 col-sm-6 ">
+			<!-- <li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="lbh text-green" style="cursor:pointer;" href="#admin.checkcities">
 					<i class="fa fa-list fa-2x"></i>
 					<?php echo Yii::t("admin", "CHECK CITIES", null, Yii::app()->controller->module->id); ?>
 				</a>
-			</li>
+			</li> -->
 
 			<li class="list-group-item col-md-4 col-sm-6 link-to-moderate">
 				<a class="lbh text-orange" style="cursor:pointer;" href="#admin.moderate.one">
@@ -83,12 +82,12 @@
 					<?php echo Yii::t("admin", "MAILERROR", null, Yii::app()->controller->module->id); ?>              
 				</a>
 			</li>
-			<li class="list-group-item col-md-4 col-sm-6 ">
+			<!-- <li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="lbh text-yellow" style="cursor:pointer;" href="#admin.cities">
 					<i class="fa fa-university fa-2x"></i>               
 					<?php echo Yii::t("admin", "CITIES", null, Yii::app()->controller->module->id); ?>              
 				</a>
-			</li>
+			</li> -->
          
 <?php 	}
 		

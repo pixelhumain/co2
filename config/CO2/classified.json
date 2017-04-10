@@ -1,7 +1,7 @@
 {
     "sections" : {
         "sharing": {
-            "label":"Partager",      
+            "label":"Partager", 
             "labelFront":"À partager",      
             "key" : "sharing",     
             "icon" : "exchange",               
@@ -38,7 +38,7 @@
 
 
         "lookingfor" : {
-            "label":"Recherche", 
+            "label":"Besoin", 
             "labelFront":"À la recherche",   
             "key" : "lookingfor",  
             "icon" : "eye",                    
@@ -132,18 +132,18 @@
     "sharingFilters" : {
         "TechnologieSH" : 
             {   "icon" : "laptop",
-                "subcat" : ["TV / Vidéo", "Informatique", "Tablettes", "Téléphonie", "Appareils photos", "Appareil audio"]
+                "subcat" : ["SH TV / Vidéo", "SH Informatique", "SH Tablettes", "SH Téléphonie", "SH Appareils photos", "SH Appareil audio"]
             }, 
          
          "Immobilier" : 
             {   "icon" : "building",
-                "subcat" : ["Maison", "Appartement", "Terrain", "Parking", "Bureaux"]
+                "subcat" : ["SH Maison", "Appartement", "Terrain", "Parking", "Bureaux"]
             }, 
          
          "Véhicules" : 
             {   "icon" : "car",
                 "subcat" : 
-                [   "Voiture", 
+                [   "SH Voiture", 
                     "SUV", 
                     "4x4", 
                     "Utilitaire", 

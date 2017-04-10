@@ -613,7 +613,7 @@ function showFormBlock(bool){
 		$(".form-create-news-container .form-actions").show("fast");
 		$(".form-create-news-container .publiccheckbox").show("fast");
 		$(".form-create-news-container .tools_bar").show("fast");
-		$(".form-create-news-container .scopescope").show("fast");	
+		$(".form-create-news-container .scopescope").show("fast");
 		multiTagScopeLbl("send");
 		$('.extract_url').show();
 		$(".form-create-news-container #falseInput").hide();

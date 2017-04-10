@@ -13,7 +13,7 @@ class AdminpublicController extends CommunecterController {
 	return parent::beforeAction($action);
   }
 
-	/*public function actions()
+	public function actions()
 	{
 		return array(
 		// captcha action renders the CAPTCHA image displayed on the contact page
@@ -26,17 +26,11 @@ class AdminpublicController extends CommunecterController {
 	    'assigndata'  => 'citizenToolKit.controllers.adminpublic.AssignDataAction',
 	    'previewdata'  => 'citizenToolKit.controllers.adminpublic.PreviewDataAction',
 		);
-	} */
+	}
 
 	public function actionIndexpublic(){
 		CO2Stat::incNbLoad("co2-admin");   
         $params = array();
         echo $this->renderPartial("createfile", $params, true);
 	}
-
-	public function actionCreatefile(){
-		CO2Stat::incNbLoad("co2-admin");   
-        $params = array();
-        echo $this->renderPartial("createfile", $params, true);
-	}	
 }

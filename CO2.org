@@ -58,3 +58,7 @@ DDA
 
 ADMIN 
 [ ] rétablir le module Admin
+
+
+[ ] Rédiger les filtre dans classified.json
+[ ] Faire le menu de gauche des pages elements

@@ -2761,14 +2761,14 @@ var typeObjLib = {
     	}
     },
     image :function(str) { 
-    	gotoUrl = (str) ? str : location.hash;
+    	gotoUrl = (str) ? str+uploadObj.id : location.hash;
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	elementLib.closeForm();
 		    	//alert(gotoUrl+uploadObj.id);
-	            url.loadByHash( gotoUrl+uploadObj.id );	
+	            url.loadByHash( gotoUrl );	
 		    	}
     	}
     },

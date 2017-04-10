@@ -123,9 +123,10 @@ Liste des notifications déjà lues => #370 #453
     [X] top level types
     [X] differents filtre apr section
     [ ] mes annonces
-    [ ] annonce leaner : faire un script pour vider la DB 
+    [ ] annonce cleaner : faire un script pour vider la DB 
       [ ] durée d'une annonces 
       [ ] avertir avant le clean , btn relance l'annonce
+    [ ] dynform on section > click > add section is pre-set
   * bugs
     [ ] dynSurvey photos
   [ ] module clean up communecter to CO2 : clear deprecated views

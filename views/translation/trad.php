@@ -112,6 +112,9 @@ var trad = {
 "LocalBusiness" : "<?php echo Yii::t("common","LocalBusiness") ?>",
 "Group" :"<?php echo Yii::t("common","Group") ?>",
 "GovernmentOrganization" : "<?php echo Yii::t("common","GovernmentOrganization") ?>",
+
+"character(s)" : "<?php echo Yii::t("common","character(s)") ?>",
+
 };
 
 var tradCountry = {

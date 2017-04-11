@@ -2788,7 +2788,8 @@ var typeObjLib = {
     shortDescription : {
         inputType : "textarea",
 		placeholder : "...",
-		label : "Description court"
+		label : "Description courte",
+		rules : { maxlength: 140 }
     },
     tags : function(list) { 
     	tagsL = (list) ? list : tagsList;

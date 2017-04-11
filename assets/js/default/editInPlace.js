@@ -648,6 +648,7 @@ function bindAboutPodElement() {
 			var onLoads = {
 				markdown : function(){
 					activateMarkdown("#ajaxFormModal #description");
+					bindDesc("#ajaxFormModal");
 				}
 			};
 
@@ -791,3 +792,14 @@ function bindAboutPodElement() {
 		});
 		return str ;
 	}
+
+
+	function bindDesc(parent){
+		$(".maxlengthTextarea").off().keyup(function(){
+			var name = "#" + $(this).attr("id") ;
+			mylog.log(".maxlengthTextarea", parent+" "+name, $(this).attr("id"), $(parent+" "+name).val().length, $(this).val().length);
+			$(parent+" #maxlength"+$(this).attr("id")).html($(parent+" "+name).val().length);
+			maxlengthshortDescription
+		});
+	}
+

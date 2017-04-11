@@ -881,12 +881,11 @@ var directory = {
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
            var tip = 'Garder en favoris';
-            str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+            str += "<a href='javascript:collection.add2fav(\"classified\",\""+params.id+"\")' class='dirStar star_classified_"+params.id+" btn btn-default btn-sm btn-add-to-directory bg-white tooltips'" + 
                   'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+
-                  "' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-                      "<i class='fa fa-star'></i>"+ //fa-bookmark fa-rotate-270
-                    "</a>";
+                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"'>"+
+                    "<i class='fa fa star fa-star-o'></i>"+ //fa-bookmark fa-rotate-270
+                  "</a>";
           
         }
 

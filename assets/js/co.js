@@ -51,6 +51,7 @@ function checkPoll(){
 		countPoll++;
 	}
 }
+
 function bindRightClicks() { 
 	$.contextMenu({
 	    selector: ".add2fav",

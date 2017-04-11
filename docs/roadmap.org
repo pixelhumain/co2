@@ -127,6 +127,7 @@ Liste des notifications déjà lues => #370 #453
       [ ] durée d'une annonces 
       [ ] avertir avant le clean , btn relance l'annonce
     [ ] add something on a section > click > add section is pre-set
+    
   * bugs
     [ ] dynSurvey photos
   [ ] module clean up communecter to CO2 : clear deprecated views

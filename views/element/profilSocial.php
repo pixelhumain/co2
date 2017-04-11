@@ -292,27 +292,13 @@
 }
 .labelTitleDir{
 	font-size: 18px;
-}
+}/*
 #div-select-create{
 	-webkit-box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
 	-moz-box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
 	box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
 	display: none;
-}
-#div-select-create i.fa{
-	width:50px;
-	height:50px;
-	text-align: center;
-	border-radius: 50px;
-	color:white!important;
-	padding-top:12px;
-	margin-bottom: 6px;
-
-}
-
-.btn-open-form:hover{
-	text-decoration: none;
-}
+}*/
 
 @media (max-width: 768px) {
 
@@ -518,7 +504,7 @@
 
 
 		  <?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
-		  <button type="button" class="btn btn-default bold letter-green" id="btn-open-create">
+		  <button type="button" class="btn btn-default bold letter-green" data-target="#selectCreate" data-toggle="modal">
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
 		  </button>
 		  <?php } ?>
@@ -631,10 +617,10 @@
 		-->
 	</div>
 
-
+	
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding" style="margin-top: -10px;">
 	    	
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-10 no-padding" id="div-select-create">
+		<!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-10 no-padding" id="div-select-create">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg-white text-center padding-20">
 				
 				<h4 class="text-left" style="padding-left:50px;">+ Publier ...</h4>
@@ -689,7 +675,7 @@
 
 				
 			</div>
-		</div>
+		</div> -->
 
 		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-50" id="central-container">
 		</div>
@@ -1133,28 +1119,9 @@
    			loadDataDirectory(dataName);
    		});
 
-   		$("#btn-open-create").click(function(){
-   			showSelectCreate();
-   			KScrollTo("#fileuploadContainer");
-   		});
-   		$("#div-select-create").hide();
    		
-
-   		$(".btn-open-form").click(function(){
-   			var typeForm = $(this).data("form-type");
-   			elementLib.openForm(typeForm);
-   		});
 	}
-	function showSelectCreate(open){
-		if($("#div-select-create").hasClass("open") || open===false){
-	   			$("#div-select-create").fadeOut(300);
-   				$("#div-select-create").removeClass("open");
-   			}else{
-	   			$("#div-select-create").fadeIn(600);
-   				$("#div-select-create").addClass("open");
-	   		}
-		
-	}
+	
 	function initSocial(){	
    		$(".tooltips").tooltip();
 
@@ -1375,7 +1342,6 @@ function toogleNotif(open){
 		}
 
 		colNotifOpen = open;
-		showSelectCreate(false);
 	}
 
 

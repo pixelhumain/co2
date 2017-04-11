@@ -486,6 +486,12 @@ jQuery(document).ready(function() {
     $(".main-btn-create").click(function(){
         currentKFormType = $(this).data("ktype");
         var type = $(this).data("type");
+
+        if(type=="all"){
+            $("#dash-create-modal").modal("show");
+            return;
+        }
+
         if(type=="events") type="event";
         if(type=="vote") type="entry";
         elementLib.openForm(type);

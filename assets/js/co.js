@@ -1500,6 +1500,11 @@ function markdownToHtml(str) {
 	return res;
 }
 
+function convertMardownToHtml(text) { 
+	var converter = new showdown.Converter();
+	return converter.makeHtml(text);
+}
+
 
 function activateMarkdown(elem) { 
 	mylog.log("activateMarkdown", elem);
@@ -1509,13 +1514,16 @@ function activateMarkdown(elem) {
 			iconlibrary:'fa',
 			onPreview: function(e) {
 				var previewContent = "";
+				mylog.log(e);
 			    mylog.log(e.isDirty());
 			    if (e.isDirty()) {
-			    	var converter = new showdown.Converter(),
+			    	/*var converter = new showdown.Converter(),
 			    		text      = e.getContent(),
-			    		previewContent      = converter.makeHtml(text);
+			    		previewContent      = converter.makeHtml(text);*/
+			    	previewContent = convertMardownToHtml(e.getContent());
 			    } else {
-			    	previewContent = "Default content";
+			    	//previewContent = "Default content";
+			    	previewContent = convertMardownToHtml($(elem).val());
 			    }
 			    return previewContent;
 		  	},

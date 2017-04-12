@@ -115,7 +115,7 @@ var trad = {
 "GovernmentOrganization" : "<?php echo Yii::t("common","GovernmentOrganization") ?>",
 
 "character(s)" : "<?php echo Yii::t("common","character(s)") ?>",
-
+"Change password" : "<?php echo Yii::t("common","Change password") ?>",
 
 
 'Bold' : "<?php echo Yii::t("common","Bold") ?>", 
@@ -134,6 +134,11 @@ var trad = {
 'Insert Image Hyperlink' : "<?php echo Yii::t("common","Insert Image Hyperlink") ?>",
 'enter image title here' : "<?php echo Yii::t("common","enter image title here") ?>",
 'list text here' : "<?php echo Yii::t("common","list text here") ?>",
+
+
+"Old password" : "<?php echo Yii::t("common","Old password") ?>",
+"New password" : "<?php echo Yii::t("common","New password") ?>",
+"Repeat your new password" : "<?php echo Yii::t("common","Repeat your new password") ?>",
 
 };
 

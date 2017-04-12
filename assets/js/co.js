@@ -1516,15 +1516,9 @@ function activateMarkdown(elem) {
 			language:'fr',
 			onPreview: function(e) {
 				var previewContent = "";
-				mylog.log(e);
-			    mylog.log(e.isDirty());
-			    if (e.isDirty()) {
-			    	/*var converter = new showdown.Converter(),
-			    		text      = e.getContent(),
-			    		previewContent      = converter.makeHtml(text);*/
+				if (e.isDirty()) {
 			    	previewContent = convertMardownToHtml(e.getContent());
 			    } else {
-			    	//previewContent = "Default content";
 			    	previewContent = convertMardownToHtml($(elem).val());
 			    }
 			    return previewContent;
@@ -1574,6 +1568,8 @@ function activateMarkdown(elem) {
 		mylog.log("activateMarkdown else");
 		$(elem).markdown(markdownParams);
 	}
+
+	$(elem).before('La syntaxe Mardown utilisé pour la description. Si vous souhaitez <a href="https://michelf.ca/projets/php-markdown/syntaxe/" target="_blank">en savoir plus</a>');
 }
 
 function  firstOptions() { 
@@ -2305,7 +2301,7 @@ var elementLib = {
 			formData.geoPosition = centerLocation.geoPosition;
 			if( elementLocations.length ){
 				$.each( elementLocations,function (i,v) { 
-					if( jsonHelper.notNull( "v.center") )
+					if( typeof v.center != "undefined" )
 						elementLocations.splice(i, 1);
 				});
 				formData.addresses = elementLocations;
@@ -2829,6 +2825,19 @@ var typeObjLib = {
 			label : "Ajouter quelques mots clés"
 		}
 	},
+	password : function  (title, rules) {  
+    	var title = (title) ? title : trad["New password"];
+    	var ph = "";
+    	var rules = (rules) ? rules : { required : true } ;
+	    var res = {
+	    	label : title,
+	    	inputType : "password",
+	    	placeholder : ph,
+	    	rules : rules
+	    }
+	    return res;
+	},
+
 	location : {
 		label :"Localisation",
        inputType : "location"
@@ -2836,20 +2845,23 @@ var typeObjLib = {
     email : {
 		placeholder : "Ajouter un e-mail",
 		inputType : "text",
-		label : "E-mail principal"
+		label : "E-mail principal",
+        rules : { email: true }
 	},
     emailOptionnel : {
 		placeholder : "Email du responsable",
 		inputType : "text",
 		init : function(){
 			$(".emailtext").css("display","none");
-		}
+		},
+        rules : { email: true }
 	},
 	url : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
         placeholder : "Site web",
-        label : "URL principale"
+        label : "URL principale",
+        rules : { url: true }
     },
     urlOptionnel : {
         inputType :"text",
@@ -2858,7 +2870,8 @@ var typeObjLib = {
         init:function(){
             getMediaFromUrlContent("#url", ".resultGetUrl0",0);
             $(".urltext").css("display","none");
-        }
+        },
+        rules : { url: true }
     },
     urls : {
     	label : "Ajouter des informations libres",

@@ -32,6 +32,19 @@
 	.panel-title{
 		line-height:35px;
 	}
+
+	.md-preview{
+		text-align:left;
+		padding: 0px 10px;
+	}
+
+	.md-editor > textarea {
+		padding: 10px;
+	}
+
+	.descriptiontextarea label{
+		margin-left:10px;
+	}
 </style>
 
 

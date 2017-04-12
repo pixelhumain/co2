@@ -51,6 +51,7 @@ function checkPoll(){
 		countPoll++;
 	}
 }
+
 function bindRightClicks() { 
 	$.contextMenu({
 	    selector: ".add2fav",
@@ -3577,11 +3578,11 @@ var CoSigAllReadyLoad = false;
 
 function KScrollTo(target){ 
 	mylog.log("KScrollTo target", target);
-	if(!$(target)) return;
-
-	$('html, body').stop().animate({
-        scrollTop: $(target).offset().top - 70
-    }, 800, '');
+	if($(target).length>=1){
+		$('html, body').stop().animate({
+	        scrollTop: $(target).offset().top - 70
+	    }, 800, '');
+	}
 }
 
 var timerCloseDropdownUser = false;

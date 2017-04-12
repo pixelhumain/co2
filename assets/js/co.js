@@ -2301,7 +2301,7 @@ var elementLib = {
 			formData.geoPosition = centerLocation.geoPosition;
 			if( elementLocations.length ){
 				$.each( elementLocations,function (i,v) { 
-					if( jsonHelper.notNull( "v.center") )
+					if( typeof v.center != "undefined" )
 						elementLocations.splice(i, 1);
 				});
 				formData.addresses = elementLocations;

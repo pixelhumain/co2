@@ -1515,15 +1515,9 @@ function activateMarkdown(elem) {
 			language:'fr',
 			onPreview: function(e) {
 				var previewContent = "";
-				mylog.log(e);
-			    mylog.log(e.isDirty());
-			    if (e.isDirty()) {
-			    	/*var converter = new showdown.Converter(),
-			    		text      = e.getContent(),
-			    		previewContent      = converter.makeHtml(text);*/
+				if (e.isDirty()) {
 			    	previewContent = convertMardownToHtml(e.getContent());
 			    } else {
-			    	//previewContent = "Default content";
 			    	previewContent = convertMardownToHtml($(elem).val());
 			    }
 			    return previewContent;
@@ -2828,6 +2822,19 @@ var typeObjLib = {
 			label : "Ajouter quelques mots clés"
 		}
 	},
+	password : function  (title, rules) {  
+    	var title = (title) ? title : trad["New password"];
+    	var ph = "";
+    	var rules = (rules) ? rules : { required : true } ;
+	    var res = {
+	    	label : title,
+	    	inputType : "password",
+	    	placeholder : ph,
+	    	rules : rules
+	    }
+	    return res;
+	},
+
 	location : {
 		label :"Localisation",
        inputType : "location"

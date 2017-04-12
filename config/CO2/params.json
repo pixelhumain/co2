@@ -69,7 +69,7 @@
                 "useHeader" : true, 
                 "open" : true, 
                 "subdomain" : "live", 
-                "subdomainName" : "Actus",
+                "subdomainName" : "Live",
                 "hash":"#app.live",
                 "icon" : "newspaper-o", 
                 "mainTitle" : "Le fil d'actualité <span class='text-red'>CO</span>mmun",

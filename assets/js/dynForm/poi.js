@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : "Formulaire Point d'interet",
+	    title : "Créer un point d'interet",
 	    icon : "map-marker",
 	    type : "object",
 	    onLoads : {
@@ -55,14 +55,18 @@ dynForm = {
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p><i class='fa fa-info-circle'></i> Un Point d'interet est un élément assez libre qui peut etre géolocalisé ou pas, qui peut etre rataché à une organisation, un projet ou un évènement.</p>",
+                html:"<p class='text-"+typeObj["poi"].color+"'>"+
+                		"Partagez librement toutes sortes d'informations<br>" +
+					    "Localisez-les pour les rendres accessibles à tous<br>" +
+					    "Et participez à la co-construction de votre territoire connecté !<hr>" +
+					 "</p>",
             },
             breadcrumb : {
                 inputType : "custom",
                 html:"",
             },
             sectionBtn :{
-                label : "De quel type de Lieu s'agit-il ? ",
+                label : "Quel type de lieu souhaitez-vous localiser ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
                 list : poi.sections,

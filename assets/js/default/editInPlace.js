@@ -538,19 +538,19 @@ function bindAboutPodElement() {
 						mylog.log("update url");
 						contextData.url = data.resultGoods.values.url;
 						$("#urlAbout").html(contextData.url);
-						$("#urlAbout").attr("href", url);
+						$("#urlAbout").attr("href", contextData.url);
 					}  
 						
 					if(typeof data.resultGoods.values.birthDate != "undefined"){
 						mylog.log("update birthDate");
 						contextData.birthDate = data.resultGoods.values.birthDate;
-						$("#birthDateAbout").html(contextData.birthDate);
+						$("#birthDateAbout").html(moment(contextData.birthDate).local().format("DD MM YYYY"));
 					}
 
 					if(typeof data.resultGoods.values.fixe != "undefined"){
 						mylog.log("update fixe");
 						contextData.fixe = parsePhone(data.resultGoods.values.fixe);
-						$("#fixeAbout").html(str);
+						$("#fixeAbout").html(contextData.fixe);
 					}
 
 					if(typeof data.resultGoods.values.mobile != "undefined"){

@@ -109,6 +109,7 @@
 jQuery(document).ready(function() {
 	//setTitle("Espace administrateur","cog");
 	//Index.init();
+	initKInterface();
 });
 
 </script>

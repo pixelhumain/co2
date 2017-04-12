@@ -215,7 +215,7 @@ var Login = function() {
 				forgotBtn.start();
 				var params = { 
 					"email" : $("#email2").val(),
-					"type"	: emailType
+					"type"	: "password"
 				};
 		        $.ajax({
 		          type: "POST",
@@ -328,7 +328,8 @@ var Login = function() {
 					    $('#modalRegisterSuccess .btn-default').click(function() {
 					        mylog.log("hide modale and reload");
 					        $('.modal').modal('hide');
-					    	window.location.href = baseUrl+'/#default.live';
+					    	//window.location.href = baseUrl+'/#default.live';
+					    	window.location.href = baseUrl+"/"+moduleId;
 					    	window.location.reload();
 					    });
 		        		//url.loadByHash("#default.directory");

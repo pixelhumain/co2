@@ -1568,6 +1568,8 @@ function activateMarkdown(elem) {
 		mylog.log("activateMarkdown else");
 		$(elem).markdown(markdownParams);
 	}
+
+	$(elem).before('La syntaxe Mardown utilisé pour la description. Si vous souhaitez <a href="https://michelf.ca/projets/php-markdown/syntaxe/" target="_blank">en savoir plus</a>');
 }
 
 function  firstOptions() { 
@@ -2843,20 +2845,23 @@ var typeObjLib = {
     email : {
 		placeholder : "Ajouter un e-mail",
 		inputType : "text",
-		label : "E-mail principal"
+		label : "E-mail principal",
+        rules : { email: true }
 	},
     emailOptionnel : {
 		placeholder : "Email du responsable",
 		inputType : "text",
 		init : function(){
 			$(".emailtext").css("display","none");
-		}
+		},
+        rules : { email: true }
 	},
 	url : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
         placeholder : "Site web",
-        label : "URL principale"
+        label : "URL principale",
+        rules : { url: true }
     },
     urlOptionnel : {
         inputType :"text",
@@ -2865,7 +2870,8 @@ var typeObjLib = {
         init:function(){
             getMediaFromUrlContent("#url", ".resultGetUrl0",0);
             $(".urltext").css("display","none");
-        }
+        },
+        rules : { url: true }
     },
     urls : {
     	label : "Ajouter des informations libres",

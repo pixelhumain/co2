@@ -301,6 +301,11 @@
                   <?php } ?>
                 <?php } ?>
             <?php } ?>
+            <?php if( @Yii::app()->session["userId"] ) { ?>
+            <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 text-red" style="margin-left:-5px;" data-keycat="favorites">
+              <i class="fa fa-star  hidden-xs"></i> Favoris
+            </button>
+            <?php } ?>
           </div>
          
           <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 text-center subsub" id="menu-section-classified">

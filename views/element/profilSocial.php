@@ -567,7 +567,7 @@
 							</a>
 						</li>
 						<li class="text-left">
-			               	<a href='javascript:' id="changePasswordBtn" class='text-red'>
+			               	<a href='javascript:;' id="btn-update-password" class='text-red'>
 								<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
 							</a>
 			            </li>
@@ -1118,7 +1118,6 @@
    			console.log(".load-data-directory", dataName);
    			loadDataDirectory(dataName);
    		});
-
    		
 	}
 	

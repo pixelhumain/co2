@@ -270,7 +270,7 @@
                         </h4>
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="NGO" data-type="organization"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-green"><i class="fa fa-group padding-bottom-10"></i><br>
                                     <span class="font-light"> Association</span>
                                 </h2>
@@ -289,7 +289,7 @@
                         </a>
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="LocalBusiness" data-type="organization"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-azure"><i class="fa fa-industry padding-bottom-10"></i><br>
                                     <span class="font-light"> Entreprise</span>
                                 </h2>
@@ -308,7 +308,7 @@
                         </a>
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="Group" data-type="organization"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-turq"><i class="fa fa-circle-o padding-bottom-10"></i><br>
                                     <span class="font-light"> Groupe</span>
                                 </h2>
@@ -328,7 +328,7 @@
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" 
                             data-ktype="project" data-type="project"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-purple"><i class="fa fa-lightbulb-o padding-bottom-10"></i><br>
                                     <span class="font-light"> Projet</span>
                                 </h2>

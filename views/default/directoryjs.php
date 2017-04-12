@@ -212,8 +212,8 @@
 
         <?php if($typeSelected == "all"){ ?>   
           
-          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
-            <button class="btn text-black bg-dark btn-open-filliaire">
+          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
+            <button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
                 <span class="hidden-xs">Thématiques</span>
             </button><hr class="hidden-xs">
@@ -259,7 +259,7 @@
 
         <?php } else if( $typeSelected == "events" ){?>
 
-          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
+          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
             <button class="btn text-black bg-white btn-directory-type btn-all" data-type-event="" data-type="events">
                 <i class="fa fa-search"></i> 
                 <span class="hidden-xs">Tous</span>

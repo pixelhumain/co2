@@ -300,6 +300,14 @@
 	display: none;
 }*/
 
+
+<?php if($typeItem != "citoyens"){ ?>
+	.section-create-page{
+		display: none;
+	}
+<?php } ?>
+
+
 @media (max-width: 768px) {
 
 	#shortDescriptionHeader{
@@ -494,7 +502,7 @@
 		  ?>
 
 		  <button type="button" class="btn btn-default bold" id="btn-start-mystream">
-		  		<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper").(string)$isLinked; ?>
+		  		<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper"); ?>
 		  </button>
 
 		  <?php if((@Yii::app()->session["userId"] && $isLinked==true) || @Yii::app()->session["userId"] == $element["_id"]){ ?>
@@ -598,7 +606,6 @@
                                 "type" => @$type, 
                                 "edit" => @$edit,
                                 "countries" => @$countries,
-                                "tags" => @$tags,
                                 "controller" => $controller,
                                 "openEdition" => $openEdition,
                                 "countStrongLinks" => $countStrongLinks,
@@ -615,13 +622,7 @@
 	    	$this->renderPartial('../pod/ficheInfoElementCO2', $params ); 
 	    ?>
 
-	   <!--  <div id="divTagsHeader" class="col-md-12 padding-5 text-right margin-bottom-10">
-			<?php if(@$element["tags"])
-        			foreach ($element["tags"]  as $key => $tag) { ?>
-        		<span class="badge letter-red bg-white"><?php echo $tag; ?></span>
-        	<?php } ?>
-		</div>
-		-->
+		
 	</div>
 	<?php if(@$invitedMe && !empty($invitedMe)){ ?>
 	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-9 divInvited">
@@ -666,64 +667,7 @@
 	</div>
 	<?php } ?>
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding" style="margin-top: -10px;">
-	    	
-		<!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-10 no-padding" id="div-select-create">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg-white text-center padding-20">
-				
-				<h4 class="text-left" style="padding-left:50px;">+ Publier ...</h4>
-				<div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
-
-				<button data-form-type="event" 
-						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 text-orange">
-					<h6><i class="fa fa-calendar fa-2x bg-orange"></i><br> Événement</h6>
-					<small>Faire connaitre votre événement<br>Inviter des participants<br>Informer en direct</small>
-				</button>
-				<button data-form-type="classified" 
-						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 text-azure">
-					<h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> Annonce</h6>
-					<small>Publier une petite annonce<br>Partager Donner Vendre Louer<br>Matériel Immobilier Emploi</small>
-				</button>
-				<button data-form-type="entry" 
-						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 letter-yellow">
-					<h6><i class="fa fa-gavel fa-2x bg-yellow-k"></i><br> Proposition</h6>
-					<small>Faire une proposition citoyenne<br>Participer à la démocratie locale<br>Être un citoyen actif</small>
-				</button>
-				<button data-form-type="poi" 
-						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 text-green">
-					<h6><i class="fa fa-map-marker fa-2x bg-green"></i><br> Point d'intérêt</h6>
-					<small>Faire connaître un lieu intéressant<br>Contribuer à la carte collaborative<br>Connecter son territoire</small>
-				</button>
-				<div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
-				<h4 class="pull-left text-left no-margin" style="padding-left:50px;">+ Créer une page ...</h4>
-				<div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
-				
-
-				<button data-form-type="project" 
-						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 text-purple">
-					<h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> Projet</h6>
-					<small>Faire connaitre votre projet<br>Trouver du soutien<br>Construire une communauté</small>
-				</button>
-				<button data-form-type="organization" data-form-subtype="association" 
-						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 text-green">
-					<h6><i class="fa fa-group fa-2x bg-green"></i><br> Association</h6>
-					<small>Faire connaitre votre association<br>Gérer les adhérents<br>Partager votre actualité</small>
-				</button>
-				<button data-form-type="organization" data-form-subtype="business" 
-						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 text-azure">
-					<h6><i class="fa fa-industry fa-2x bg-azure"></i><br> Entreprise</h6>
-					<small>Faire connaitre votre entreprise<br>Trouver de nouveaux clients<br>Gérer vos contacts</small>
-				</button>
-				
-				<button data-form-type="organization" data-form-subtype="group" 
-						class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-3 col-lg-3 letter-turq">
-					<h6><i class="fa fa-group fa-2x bg-turq"></i><br> Groupe</h6>
-					<small>Créer un groupe<br>Partager vos centres d'intêrets<br>Discuter Communiquer S'amuser</small>
-				</button>
-
-				
-			</div>
-		</div> -->
-
+	
 		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-50" id="central-container">
 		</div>
 
@@ -819,7 +763,7 @@ $paramsConfidentiality = array( "element" => @$element,
 	"controller" => $controller,
 	"openEdition" => $openEdition,
 );
-$this->renderPartial('../pod/confidentiality', $params ); 
+$this->renderPartial('../pod/confidentiality', $params );
 ?>
 
 <script type="text/javascript">
@@ -828,6 +772,7 @@ $this->renderPartial('../pod/confidentiality', $params );
     var elementName = "<?php echo @$element["name"]; ?>";
     var contextType = "<?php echo @$type; ?>";
     var contextId = "<?php echo @(string)$element['_id'] ?>";
+    var contextData = { "id":contextId, "type":contextType };
     var members = <?php echo json_encode(@$members); ?>;
     var params = <?php echo json_encode(@$params); ?>;
     var dateLimit = 0;
@@ -877,120 +822,7 @@ $this->renderPartial('../pod/confidentiality', $params );
   			}
 			//$('#'+contentId+'_avatar').trigger("click");		
 		});
-		/*$('#banniere_change').off().on('change.bs.fileinput', function () {
-			setTimeout(function(){
-				var files=document.getElementById("banniere_change").files;
-				if (files[0].size > 2097152)
-					toastr.warning("Please reduce your image before to 2Mo");
-				else {
-					for (var i = 0; i < files.length; i++) {           
-				        var file = files[i];
-				       	var imageType = /image.*//*;     
-				        if (!file.type.match(imageType)) {
-				            continue;
-				        }           
-				        var img=document.getElementById("previewBanniere");            
-				        img.file = file;    
-				        var reader = new FileReader();
-				        reader.onload = (function(aImg) { 
-				        	var image = new Image();
-   							image.src = reader.result;
-   							image.onload = function() {
-       							// access image size here 
-       						 	var imgWidth=this.width;
-       						 	var imgHeight=this.height;
-       							if(imgWidth>=1000 && imgHeight>=500)
-       						 		$("#banniere_photoAdd").submit();
-       						 	else
-       						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
-  							};
-				        });
-				        reader.readAsDataURL(file);
-				    }  
-				}
-			}, 400);
-		});
-		$("#banniere_photoAdd").off().on('submit',(function(e) {
-			//alert(moduleId);
-			if(debug)mylog.log("id2", contextId);
-			$(".banniere_isSubmit").val("true");
-			e.preventDefault();
-			$.ajax({
-						//url: baseUrl+"/"+moduleId+"/api/saveUserImages/type/"+type+"/id/"+id+"/contentKey/"+contentKey+"/user/<?php echo Yii::app()->session["userId"]?>",
-						url : baseUrl+"/"+moduleId+"/document/<?php echo Yii::app()->params['uploadUrl'] ?>dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/banniere",
-						type: "POST",
-						data: new FormData(this),
-						contentType: false,
-						cache: false, 
-						processData: false,
-						dataType: "json",
-						success: function(data){
-							html="<div class='col-md-offset-1' id='cropContainer'>"+
-									"<h1 class='text-white'>Resize and crop your image to render a beautiful banniere</h1>"+
-									"<img src='"+baseUrl+"/<?php echo Yii::app()->params['uploadUrl'] ?>"+moduleId+"/"+contextType+"/"+contextId+"/banniere/"+data.name+"' id='cropImage' class='' style=''/>"+
-									"<div class='col-md-12'><input type='submit' class='btn-blue text-white imageCrop saveBanniere'/></div>"+
-									"</div>";
-							$("#uploadScropResizeAndSaveImage").show();
-							$("#uploadScropResizeAndSaveImage").html(html);
-							setTimeout(function(){
-								var crop = $('#cropImage').cropbox({width: 1300,
-									height: 400,
-									zoomIn:true,
-									zoomOut:true}, function() {
-									cropResult=this.result;
-								});
-	        					/*$('#cropImage').cropbox({
-								    width: 1300,
-									height: 400,
-									zoomIn:true,
-									zoomOut:true
-								}, function() {*/
-									//on load
-									//this.getBlob();
-  									// this.getDataURL(); 
-  									/*$(".saveBanniere").click(function(){
-							        	//$("#uploadScropResizeAndSaveImage").hide();
-							        	console.log(cropResult);
-							        	imageName = data.name;
-							       		var doc = { 
-									  		"id":id,
-									  		"type":contextType,
-									  		"folder":contextType+"/"+contextId+"/banniere",
-									  		"moduleId":moduleId,
-									  		"author" : "<?php echo (isset(Yii::app()->session['userId'])) ? Yii::app()->session['userId'] : 'unknown'?>"  , 
-									  		"name" : data.name , 
-									  		"date" : new Date() , 
-									  		"size" : data.size ,
-									  		"doctype" : "<?php echo Document::DOC_TYPE_IMAGE; ?>",
-									  		"contentKey" : "banniere",
-									  		"formOrigin" : "banniere",
-									  		"parentType":contextType,
-									  		"parentId" : contextId,
-									  		"crop":cropResult
-									  	};
-									  	$.ajax({
-										  	type: "POST",
-										  	url: baseUrl+"/"+moduleId+"/document/save",
-										  	data: doc,
-									      	dataType: "json"
-										}).done( function(data){
-									        if(data.result){
-									        	newBanniere='<img class="img-responsive" src="'+baseUrl+data.src+'" style="border-bottom:45px solid white;">';
-									        	$("#contentBanniere").html(newBanniere);
-									        	$("#uploadScropResizeAndSaveImage").hide();
-									    	}
-									    });
-									});
-									//console.log('Url: ' + this.getDataURL());
-								/*}).on('cropbox', function(e, crop) {
-									var crop=crop;
-							        console.log('crop window: ', crop);
-							        
-								});*/
-							/*}, 300);
-						}
-					});
-		}));*/
+		
 		$('#banniere_change').off().on('change.bs.fileinput', function () {
 			setTimeout(function(){
 				var files=document.getElementById("banniere_change").files;
@@ -1163,9 +995,13 @@ $this->renderPartial('../pod/confidentiality', $params );
 		$(".load-data-directory").click(function(){
    			var dataName = $(this).data("type-dir");
    			console.log(".load-data-directory", dataName);
-   			loadDataDirectory(dataName);
+   			loadDataDirectory(dataName, $(this).data("icon"));
    		});
    		
+   		$("#subsubMenuLeft a").click(function(){
+   			$("#subsubMenuLeft a").removeClass("active");
+   			$(this).addClass("active");
+   		});
 	}
 	
 	function initSocial(){	
@@ -1177,7 +1013,7 @@ $this->renderPartial('../pod/confidentiality', $params );
           }});
 	}
 
-	function loadDataDirectory(dataName){
+	function loadDataDirectory(dataName, dataIcon){
 		showLoader('#central-container');
 		// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
 		getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
@@ -1186,18 +1022,16 @@ $this->renderPartial('../pod/confidentiality', $params );
 						var n=0;
 						$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
 						if(n>0){
-							var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'><i class='fa fa-angle-down'></i> "+
-											getLabelTitleDir(dataName, parseInt(n), n)+
+							var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
+											getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
 										"<hr></div>";
 
 							if(dataName != "collections"){
 								html += directory.showResultsDirectoryHtml(data);
-							}else{ console.log("data", data);
+							}else{
 								$.each(data, function(col, val){
-									console.log("testaa col", col, "val", val);
 									html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
 									$.each(val.list, function(key, elements){ 
-										console.log("testaa key", key, "elements", elements);
 										html += directory.showResultsDirectoryHtml(elements, key);
 									});
 								});
@@ -1212,8 +1046,8 @@ $this->renderPartial('../pod/confidentiality', $params );
 							if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
 								nothing = "Aucune";
 
-							var html =  "<div class='col-md-12 margin-bottom-15'><i class='fa fa-angle-down'></i> "+
-											getLabelTitleDir(dataName, nothing, n)+
+							var html =  "<div class='col-md-12 margin-bottom-15'>"+
+											getLabelTitleDir(dataName, dataIcon, nothing, n)+
 										"</div>";
 							$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
 																	"<i class='fa fa-ban'></i> Aucune donnée"+
@@ -1224,26 +1058,36 @@ $this->renderPartial('../pod/confidentiality', $params );
 		,"html");
 	}
 
-	function getLabelTitleDir(dataName, countData, n){
+	function getLabelTitleDir(dataName, dataIcon, countData, n){
 		var elementName = "<span class='Montserrat' id='name-lbl-title'>"+$("#nameHeader .name-header").html()+"</span>";
 		
 		var s = (n>1) ? "s" : "";
-		if(dataName == "follows")	{ return elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
-		if(dataName == "followers")	{ return countData + " <b>abonné"+s+"</b> à " + elementName; }
+		var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
+		if(dataName == "follows")	{ html += elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
+		if(dataName == "followers")	{ html += countData + " <b>abonné"+s+"</b> à " + elementName; }
+		if(dataName == "members")	{ html += elementName + " est composé de " + countData + " <b>membre"+s+"</b>"; }
+		if(dataName == "attendees")	{ html += countData + " <b>invité"+s+"</b> à l'événement " + elementName; }
+		if(dataName == "contributors")	{ html += countData + " <b>contributeur"+s+"</b> au projet " + elementName; }
 		
-		if(dataName == "events")		{ return elementName + " participe à " + countData+" <b>événement"+s; }
-		if(dataName == "organizations")	{ return elementName + " est membre de " + countData+" <b>organisation"+s; }
-		if(dataName == "projects")		{ return elementName + " contribue à " + countData+" <b>project"+s }
+		if(dataName == "events"){ 
+			if(type == "events"){
+				html += elementName + " est composé de " + countData+" <b> sous-événement"+s; 
+			}else{
+				html += elementName + " participe à " + countData+" <b> événement"+s; 
+			}
+		}
+		if(dataName == "organizations")	{ html += elementName + " est membre de " + countData+" <b>organisation"+s; }
+		if(dataName == "projects")		{ html += elementName + " contribue à " + countData+" <b>projet"+s }
 
-		if(dataName == "collections"){ return countData+" <b>collection"+s+"</b> de " + elementName; }
-		if(dataName == "poi"){ return countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
-		if(dataName == "classified"){ return countData+" <b>annonce"+s+"</b> créée"+s+" par " + elementName; }
+		if(dataName == "collections"){ html += countData+" <b>collection"+s+"</b> de " + elementName; }
+		if(dataName == "poi"){ html += countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
+		if(dataName == "classified"){ html += countData+" <b>annonce"+s+"</b> créée"+s+" par " + elementName; }
 
-		if(dataName == "needs"){ return countData+" <b>besoin"+s+"</b> de " + elementName; }
+		if(dataName == "needs"){ html += countData+" <b>besoin"+s+"</b> de " + elementName; }
 
-		if(dataName == "dda"){ return countData+" <b>proposition"+s+"</b> de " + elementName; }
+		if(dataName == "dda"){ html += countData+" <b>proposition"+s+"</b> de " + elementName; }
 
-		return "";
+		return html;
 	}
 
 	function loadAdminDashboard(){
@@ -1382,8 +1226,8 @@ $this->renderPartial('../pod/confidentiality', $params );
 	    });
 	}
 
-var colNotifOpen = true;
-function toogleNotif(open){
+	var colNotifOpen = true;
+	function toogleNotif(open){
 		if(typeof open == "undefined") open = false;
 		
 		if(open==false){

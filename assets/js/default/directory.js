@@ -320,7 +320,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     $('.tooltips').tooltip();
     $(".dirStar").each(function(i,el){
       collection.applyColor($(el).data('type'),$(el).data('id'));
-    })
+    });
+    bindLBHLinks();
   	//parcours tous les boutons link pour vérifier si l'entité est déjà dans mon répertoire
   	$.each( $(".followBtn"), function(index, value){
     	var id = $(value).attr("data-id");
@@ -1488,7 +1489,6 @@ var directory = {
       });
 
       initBtnLink();
-      bindLBHLinks();
       directory.filterList();
       $(directory.elemClass).show();
       //bindTags();

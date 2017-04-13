@@ -146,6 +146,27 @@
 	<li><br><hr></li>
 	<?php } ?>
 
+	
+	<li class="">
+		<?php
+		if ( $type != Person::COLLECTION && ($edit==true || $openEdition==true ) ){ 
+			if ($type == Event::COLLECTION){ 
+				$inviteTooltip = Yii::t("event","Invite attendees to the event");
+				$invitetext =  Yii::t("common","Send invitations") ;			
+			}else if ($type == Organization::COLLECTION){ 
+				$inviteTooltip = Yii::t('common','Add a member to this organization');
+				$invitetext =  Yii::t("common",'Add member') ;
+			}else if ($type == Project::COLLECTION){ 
+				$inviteTooltip = Yii::t('common','Add a contributor to this project');
+				$invitetext =  Yii::t("common",'Add contributor') ;
+			}
+			echo '<a href="javascript:" class="tooltips" data-placement="bottom" data-original-title="'.$inviteTooltip.'" data-toggle="modal" data-target="#modal-scope"><i class="fa fa-plus"></i> '.$invitetext.'</a>';
+		}
+
+		?>
+				
+	</li>
+
 	<li class="">
 		<a href="javascript:" class="" id="btn-start-detail">
 			<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","About"); ?>
@@ -192,13 +213,11 @@
 				<i class="fa fa-link"></i> <?php echo Yii::t("common",@Element::$connectTypes[$type]); ?>
 			</a>
 		</li>
-		<li><hr></li>
 
 		<?php if ($type==Person::COLLECTION){ ?>
 			<li class="">
-				<a href="javascript:" class="load-data-directory" 
-					data-type-dir="collections" data-icon="star">
-					<i class="fa fa-star"></i> Collections
+				<a href="javascript:" class="load-data-directory" data-type-dir="collections" data-icon="star">
+					<i class="fa fa-star"></i> <?php echo Yii::t("common","Collections"); ?>
 				</a>
 			</li>
 
@@ -208,20 +227,20 @@
 		<?php if(!@$front || (@$front && $front["event"]==true)){ ?>
 			<li class="">
 				<a href="javascript:" class="load-data-directory" data-type-dir="events" data-icon="calendar">
-					<i class="fa fa-calendar"></i> Événements
+					<i class="fa fa-calendar"></i> <?php echo Yii::t("common","Events"); ?>
 				</a>
 			</li>
 			<?php if ($type==Person::COLLECTION){ ?>
 			<li class="">
 				<a href="javascript:" class="load-data-directory" data-type-dir="organizations" data-icon="group">
-					<i class="fa fa-group"></i> Organisations
+					<i class="fa fa-group"></i>  <?php echo Yii::t("common","Organizations"); ?>
 				</a>
 			</li>
 			<?php }  ?>
 			<?php if ($type==Person::COLLECTION || $type==Project::COLLECTION){ ?>
 			<li class="">
 				<a href="javascript:" class="load-data-directory" data-type-dir="projects" data-icon="lightbulb-o">
-					<i class="fa fa-lightbulb-o"></i> Projets
+					<i class="fa fa-lightbulb-o"></i>  <?php echo Yii::t("common","Projects"); ?>
 				</a>
 			</li>
 			<li><hr></li>
@@ -234,7 +253,8 @@
 		?>
 			<li>
 				<a href="javascript:"  class="load-data-directory" data-type-dir="poi" data-icon="map-marker">
-					<i class="fa fa-map-marker"></i> Points d'intérêts
+					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Points of interests"); ?>
+		</a>
 				</a>
 			</li>			
 		<?php }  
@@ -245,7 +265,7 @@
 			<li><hr></li>
 			<li class="">
 				<a href="javascript:" class="load-data-directory" data-type-dir="classified" data-icon="bullhorn">
-					<i class="fa fa-bullhorn"></i> Annonces
+					<i class="fa fa-bullhorn"></i> <?php echo Yii::t("common","Classifieds"); ?>
 				</a>
 			</li>
 		<?php } ?>
@@ -253,10 +273,9 @@
 
 	<?php } ?>
 
-	
 	<li class="">
 		<a href="javascript:" class="load-data-directory" data-type-dir="dda" data-icon="gavel">
-			<i class="fa fa-gavel"></i> Espace coopératif
+			<i class="fa fa-gavel"></i> <?php echo Yii::t("common","Cooperative space"); ?>
 		</a>
 	</li>
 

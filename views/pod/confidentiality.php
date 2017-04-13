@@ -117,14 +117,6 @@
 			<div class="modal-footer">
 				<button type="button" class="lbh btn btn-success btn-confidentialitySettings" data-dismiss="modal" aria-label="Close" data-hash="#page.type.<?php echo $type ?>.id.<?php echo $element['_id'] ;?>">OK</button>
 			</div>
-			<?php
-			//$addLink = (empty($users[Yii::app()->session["userId"]])?false:true); 
-			if($edit && $type != Person::COLLECTION) 
-				$this->renderPartial('../element/addMembersFromMyContacts',
-									array("type"=>$type, 
-										  "parentId" =>(string)$element['_id'], 
-										  "users"=>@$users)); 
-			?>
 		</div>
 	</div>
 </div>

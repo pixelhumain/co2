@@ -315,6 +315,13 @@
 		line-height: 17px;
 	}
 }
+
+
+.divInvited {
+	border: 1px solid #ccc !important;
+	padding: 5px;
+	background-color: blanchedalmond;
+}
 </style>
 	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
@@ -617,8 +624,48 @@
 
 		
 	</div>
+	<?php if(@$invitedMe && !empty($invitedMe)){ ?>
+	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-9 divInvited">
+		<?php 
+			
+			$inviteRefuse="Refuse";
+			$inviteAccept="Accept";
+			$tooltipAccept="Join this ".Element::getControlerByCollection($type);
+			if ($type == Project::COLLECTION){ 
+				$tooltips = "La communauté du projet";
+			}
+			else if ($type == Organization::COLLECTION){
+				$tooltips = "La communauté de l'organisation";							
+			}
+			else if ($type == Event::COLLECTION){
+				$parentRedirect = "event";
+				$inviteRefuse="Not interested";
+				$inviteAccept="I go";
+				$tooltipAccept="Go to the event";
+				$tooltips = "La communauté de l'évènement";						
+			}
+			else if ($type == Person::COLLECTION){
+				$tooltips = "La communauté de cette personne";						
+			}
+			else if ($type == Place::COLLECTION){
+				$tooltips = "La communauté de ce lieu";						
+			}
 
-	
+
+			//$addLink = (empty($users[Yii::app()->session["userId"]])?false:true);
+		
+			
+				echo "<a href='#page.type.".Person::COLLECTION.".id.".$invitedMe["invitorId"]."' class='lbh text-purple'>".$invitedMe["invitorName"]."</a><span class='text-dark'> vous a invité : ".
+						'<a class="btn btn-xs btn-success tooltips" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.$id.'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Link::IS_INVITING.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
+							'<i class="fa fa-check "></i> '.Yii::t("common",$inviteAccept).
+						'</a> '.
+						' <a class="btn btn-xs btn-danger tooltips" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.$id.'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\'attendees\')" data-placement="bottom" data-original-title="Not interested by the invitation">'.
+							'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
+						'</a>';
+			
+		?>
+	</div>
+	<?php } ?>
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding" style="margin-top: -10px;">
 	
 		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-50" id="central-container">
@@ -710,14 +757,13 @@
 </div>
 
 <?php 
-	$paramsConfidentiality = array( "element" => @$element, 
-                        "type" => @$type, 
-                        "edit" => @$edit,
-                        "controller" => $controller,
-                        "openEdition" => $openEdition,
-                        );
-
-	$this->renderPartial('../pod/confidentiality', $params ); 
+$paramsConfidentiality = array( "element" => @$element, 
+	"type" => @$type, 
+	"edit" => @$edit,
+	"controller" => $controller,
+	"openEdition" => $openEdition,
+);
+$this->renderPartial('../pod/confidentiality', $params );
 ?>
 
 <script type="text/javascript">
@@ -1126,6 +1172,13 @@
 	}
 
 	function loadDetail(){
+		toogleNotif(false);
+		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
+		showLoader('#central-container');
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
+	}
+
+	function loadInvite(){
 		toogleNotif(false);
 		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
 		showLoader('#central-container');

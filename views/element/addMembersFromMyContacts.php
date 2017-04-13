@@ -57,7 +57,7 @@
 		margin-right: 0px;
 		padding-left: 10px;
 		padding-right: 10px;
-		height: 52px;
+		/*height: 52px;*/
 		border-radius: 0px;
 		text-align:left;
 		background-color: rgba(255, 255, 255, 0.54);
@@ -167,6 +167,11 @@
 		font-weight:500;
 		color:#8C8C8C !important;
 	}
+
+	#modalDirectoryForm .modal h4 {
+	    font-size : 14px;
+	}
+
 	#modalDirectoryForm .modal #menu-type h4 {
 	    background-color: rgba(35, 83, 96, 0.15);
 		color: #2D6569;
@@ -253,7 +258,7 @@ if(elementType != "<?php echo Event::COLLECTION ?>")
 	contactTypes.push({ name : "organizations", color: "green", icon:"group", label:"Organisations" });
 
 
-var users = <?php echo json_encode(@$users) ?>;
+var members = <?php echo json_encode(@$members) ?>;
 
 var addLinkDynForm = {
 		"inputType" : "scope",
@@ -293,11 +298,12 @@ jQuery(document).ready(function() {
 	});
 });
 
-function excludeMembers(contacts, users){
+function excludeMembers(contacts, members){
+	mylog.log("excludeMembers",contacts, members);
 
 	//delete mes contacts qui sont déjà membre
-	if(users != null){
-		$.each(users, function(idUser, value){
+	if(members != null){
+		$.each(members, function(idUser, value){
 			if(typeof value != "undefined"){
 				var type = notEmpty(value["typeSig"]) ? value["typeSig"] : notEmpty(value["type"]) ? value["type"] : null;
 				if(type != null){
@@ -341,6 +347,7 @@ function excludeMembers(contacts, users){
 }
 
 function switchContact(){
+	mylog.log("switchContact");
 	$("#select-type-search-contacts").prop("checked", true);
 	$("#btn-save").removeClass("hidden");
 	$("#search-contact").attr("placeholder", "Recherchez parmis vos contacts...");
@@ -350,6 +357,7 @@ function switchContact(){
 }
 	
 function bindEventScopeModal(){
+	mylog.log("bindEventScopeModal");
 	/* initialisation des fonctionnalités de la modale SCOPE */
 	//parcourt tous les types de contacts
 	$.each(contactTypes, function(key, type){ //mylog.log("BINDEVENT CONTACTTYPES : " + type.name);
@@ -379,7 +387,7 @@ function bindEventScopeModal(){
 
 	$("#btn-cancel").click(function(){
 		if(newMemberInCommunity && (currentView=="detail" || currentView=="directory")) {
-			url.loadByHash(location.hash);
+			loadByHash(location.hash);
 		}
 	});
 	$("#btn-save").click(function(){
@@ -406,7 +414,7 @@ function bindEventScopeModal(){
 
 function bindEventScopeContactsModal(){
 	//initialise la selection d'une checkbox contact au click sur le bouton qui lui correspond
-
+	mylog.log("bindEventScopeContactsModal");
 	$(".btn-chk-contact").click(function(){ 
 		var id = $(this).attr("idcontact"); 
 		var type = $(this).attr("typecontact");
@@ -444,6 +452,7 @@ function bindEventScopeContactsModal(){
 }
 
 function buildModal(fieldObj, idUi){
+	mylog.log("buildModal", fieldObj, idUi);
 	//var fieldClass = " select2TagsInput select2ScopeInput";
     var fieldHTML = "";    		
 	fieldHTML += '<div class="modal fade" id="modal-scope" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
@@ -512,10 +521,10 @@ function buildModal(fieldObj, idUi){
 }
 
 function showMyContactInModalAddMembers(fieldObj, jqElement){
-	mylog.log("showMyContactInModalAddMembers1", fieldObj);
+	mylog.log("showMyContactInModalAddMembers1", fieldObj, jqElement);
     
 	var contacts = fieldObj.values;
-	excludeMembers(contacts, users);
+	excludeMembers(contacts, members);
 	fieldObj.values = contacts;
 
     var fieldHTML = "";
@@ -533,7 +542,7 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 										if(typeof value != "undefined"){
 											var cp = (typeof value.address != "undefined" && typeof value.address.postalCode != "undefined") ? value.address.postalCode : typeof value.cp != "undefined" ? value.cp : "";
 											var city = (typeof value.address != "undefined" && typeof value.address.addressLocality != "undefined") ? value.address.addressLocality : "";
-											var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl + value.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
+											var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl+'/'+moduleId+ value.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
 											var name =  typeof value.name != "undefined" ? value.name : 
 														typeof value.username != "undefined" ? value.username : "";
 											//mylog.log("data contact +++++++++++ "); mylog.dir(value);
@@ -615,7 +624,7 @@ function autoCompleteEmailAddMember(searchValue){
 	$("#list-scroll-type").html("<div class='padding-10'><i class='fa fa-spin fa-refresh'></i> Recherche en cours</div>");
 	$.ajax({
 		type: "POST",
-        url: baseUrl+"/communecter/search/searchmemberautocomplete",
+        url: baseUrl+'/'+moduleId+'/search/searchmemberautocomplete',
         data: data,
         dataType: "json",
         success: function(data){
@@ -720,12 +729,14 @@ function sendInvitation(){
 	
 	//mylog.log(params);
 	mylog.log("send ajax invite");
-	$.blockUI({
+	/*$.blockUI({
 		message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Processing<br><blockquote><p>la Liberté est la reconnaissance de la nécessité.</p><cite title='Hegel'>Hegel</cite></blockquote></h4>"
-	});
+	});*/
+	processingBlockUi();
+
 	$.ajax({
         type: "POST",
-        url: baseUrl+"/communecter/link/multiconnect",
+        url: baseUrl+'/'+moduleId+'/link/multiconnect',
         data: params,
         dataType: "json",
         success: function(data){
@@ -744,7 +755,7 @@ function sendInvitation(){
 			        mapType = newMember.childType;
 			        if(newMember.childType=="<?php echo Person::COLLECTION ?>")
 			            mapType="people";
-			        contextMap[mapType].push(newMember);
+			        //mapElements[mapType].push(newMember);
 				});
 				if(typeof(mapUrl) != "undefined"){
 					if(typeof(mapUrl.detail.load) != "undefined" && mapUrl.detail.load)
@@ -752,9 +763,8 @@ function sendInvitation(){
 					if(typeof(mapUrl.directory.load) != "undefined" && mapUrl.directory.load)
 						mapUrl.directory.load = false;
 				}
-				if(currentView=="detail" || currentView=="directory"){
-					url.loadByHash(location.hash);
-				}
+				loadByHash(location.hash);
+				
 				$.unblockUI();
         	}
         	mylog.log(data.result);   
@@ -787,7 +797,7 @@ function sendInvitationMailAddMember(){ mylog.log("sendInvitationMailAddMember")
 
 	$.ajax({
         type: "POST",
-        url: baseUrl+"/communecter/link/connect",
+        url: baseUrl+'/'+moduleId+'/link/connect',
         data: params,
         dataType: "json",
         success: function(data){
@@ -805,7 +815,7 @@ function sendInvitationMailAddMember(){ mylog.log("sendInvitationMailAddMember")
                	mapType = data.newElementType;
                	if(data.newElementType=="<?php echo Person::COLLECTION ?>")
                		mapType="people";
-               	contextMap[mapType].push(data.newElement);
+               	//mapElements[mapType].push(data.newElement);
                	//Minus 1 on number of invit
                	if ($("#addMembers #memberId").val().length==0){
 	               	var count = parseInt($("#numberOfInvit").data("count")) - 1;

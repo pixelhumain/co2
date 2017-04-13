@@ -191,14 +191,19 @@ class AppController extends CommunecterController {
 
 
 	public function actionPage($type, $id, $view=null){
-        var_dump("header(string)2");
         CO2Stat::incNbLoad("co2-page");
+            
+        $element = Element::getByTypeAndId($type, $id);
+
         $params = array("id" => @$id,
                         "type" => @$type,
                         "view" => @$view,
                         "subdomain" => "page",
                         "mainTitle" => "Page perso",
-                        "placeholderMainSearch" => "");
+                        "placeholderMainSearch" => "",
+                        "element" => $element);
+
+        $params = Element::getInfoDetail($params, $element, $type, $id);
 
     	echo $this->renderPartial("page", $params, true);
 	}

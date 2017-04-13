@@ -51,6 +51,7 @@ function checkPoll(){
 		countPoll++;
 	}
 }
+
 function bindRightClicks() { 
 	$.contextMenu({
 	    selector: ".add2fav",
@@ -1500,6 +1501,11 @@ function markdownToHtml(str) {
 	return res;
 }
 
+function convertMardownToHtml(text) { 
+	var converter = new showdown.Converter();
+	return converter.makeHtml(text);
+}
+
 
 function activateMarkdown(elem) { 
 	mylog.log("activateMarkdown", elem);
@@ -1507,15 +1513,13 @@ function activateMarkdown(elem) {
 	markdownParams = {
 			savable:false,
 			iconlibrary:'fa',
+			language:'fr',
 			onPreview: function(e) {
 				var previewContent = "";
-			    mylog.log(e.isDirty());
-			    if (e.isDirty()) {
-			    	var converter = new showdown.Converter(),
-			    		text      = e.getContent(),
-			    		previewContent      = converter.makeHtml(text);
+				if (e.isDirty()) {
+			    	previewContent = convertMardownToHtml(e.getContent());
 			    } else {
-			    	previewContent = "Default content";
+			    	previewContent = convertMardownToHtml($(elem).val());
 			    }
 			    return previewContent;
 		  	},
@@ -1536,6 +1540,25 @@ function activateMarkdown(elem) {
 
 			$.getScript( baseUrl+"/plugins/bootstrap-markdown/js/bootstrap-markdown.js", function( data, textStatus, jqxhr ) {
 				mylog.log("HERE", elem);
+
+				$.fn.markdown.messages['fr'] = {
+					'Bold': trad.Bold,
+					'Italic': trad.Italic,
+					'Heading': trad.Heading,
+					'URL/Link': trad['URL/Link'],
+					'Image': trad.Image,
+					'List': trad.List,
+					'Preview': trad.Preview,
+					'strong text': trad['strong text'],
+					'emphasized text': trad['strong text'],
+					'heading text': trad[''],
+					'enter link description here': trad['enter link description here'],
+					'Insert Hyperlink': trad['Insert Hyperlink'],
+					'enter image description here': trad['enter image description here'],
+					'Insert Image Hyperlink': trad['Insert Image Hyperlink'],
+					'enter image title here': trad['enter image title here'],
+					'list text here': trad['list text here']
+				};
 				$(elem).markdown(markdownParams);
 			});
 
@@ -1545,6 +1568,8 @@ function activateMarkdown(elem) {
 		mylog.log("activateMarkdown else");
 		$(elem).markdown(markdownParams);
 	}
+
+	$(elem).before('La syntaxe Mardown utilisé pour la description. Si vous souhaitez <a href="https://michelf.ca/projets/php-markdown/syntaxe/" target="_blank">en savoir plus</a>');
 }
 
 function  firstOptions() { 
@@ -2276,7 +2301,7 @@ var elementLib = {
 			formData.geoPosition = centerLocation.geoPosition;
 			if( elementLocations.length ){
 				$.each( elementLocations,function (i,v) { 
-					if( jsonHelper.notNull( "v.center") )
+					if( typeof v.center != "undefined" )
 						elementLocations.splice(i, 1);
 				});
 				formData.addresses = elementLocations;
@@ -2533,7 +2558,7 @@ var elementLib = {
 		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(elementLib.elementObj.bgClass);
 		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
 		$("#ajax-modal-modal-title").removeClass("text-green").removeClass("text-purple").removeClass("text-orange").removeClass("text-azure");
-		$(".modal-header").removeClass("bg-purple bg-green bg-orange bg-yellow bg-lightblue ").addClass(elementLib.elementObj.titleClass);
+		$(".modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-lightblue ").addClass(elementLib.elementObj.titleClass);
 	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
@@ -2788,7 +2813,8 @@ var typeObjLib = {
     shortDescription : {
         inputType : "textarea",
 		placeholder : "...",
-		label : "Description court"
+		label : "Description courte",
+		rules : { maxlength: 140 }
     },
     tags : function(list) { 
     	tagsL = (list) ? list : tagsList;
@@ -2799,6 +2825,19 @@ var typeObjLib = {
 			label : "Ajouter quelques mots clés"
 		}
 	},
+	password : function  (title, rules) {  
+    	var title = (title) ? title : trad["New password"];
+    	var ph = "";
+    	var rules = (rules) ? rules : { required : true } ;
+	    var res = {
+	    	label : title,
+	    	inputType : "password",
+	    	placeholder : ph,
+	    	rules : rules
+	    }
+	    return res;
+	},
+
 	location : {
 		label :"Localisation",
        inputType : "location"
@@ -2806,20 +2845,23 @@ var typeObjLib = {
     email : {
 		placeholder : "Ajouter un e-mail",
 		inputType : "text",
-		label : "E-mail principal"
+		label : "E-mail principal",
+        rules : { email: true }
 	},
     emailOptionnel : {
 		placeholder : "Email du responsable",
 		inputType : "text",
 		init : function(){
 			$(".emailtext").css("display","none");
-		}
+		},
+        rules : { email: true }
 	},
 	url : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
         placeholder : "Site web",
-        label : "URL principale"
+        label : "URL principale",
+        rules : { url: true }
     },
     urlOptionnel : {
         inputType :"text",
@@ -2828,7 +2870,8 @@ var typeObjLib = {
         init:function(){
             getMediaFromUrlContent("#url", ".resultGetUrl0",0);
             $(".urltext").css("display","none");
-        }
+        },
+        rules : { url: true }
     },
     urls : {
     	label : "Ajouter des informations libres",
@@ -3144,7 +3187,7 @@ var typeObj = {
 	"citoyen" : { sameAs:"person" },
 	"citoyens" : { sameAs:"person" },
 	
-	"poi":{  col:"poi",ctrl:"poi",color:"azure",icon:"info-circle"},
+	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle"},
 
 	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
 	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
@@ -3174,7 +3217,7 @@ var typeObj = {
 	"rooms" : {col:"actions",ctrl:"room",color:"azure",icon:"gavel"},
 	"discuss" : {col:"actionRooms",ctrl:"room"},
 	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	"classified":{col:"classified",ctrl:"classified",color:"azure",	icon:"bullhorn",	},
+	"classified":{col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",	},
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
 	"video" : {icon:"video-camera",color:"dark"},
@@ -3541,11 +3584,11 @@ var CoSigAllReadyLoad = false;
 
 function KScrollTo(target){ 
 	mylog.log("KScrollTo target", target);
-	if(!$(target)) return;
-
-	$('html, body').stop().animate({
-        scrollTop: $(target).offset().top - 70
-    }, 800, '');
+	if($(target).length>=1){
+		$('html, body').stop().animate({
+	        scrollTop: $(target).offset().top - 70
+	    }, 800, '');
+	}
 }
 
 var timerCloseDropdownUser = false;

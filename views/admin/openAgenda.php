@@ -1,4 +1,4 @@
-<div class="panel panel-white">
+<div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
 	<div>
 		<div class="panel-heading text-center border-light">
 			<h3 class="panel-title text-red"><i class="fa fa-calendar"></i> OpenAgenda</h3>

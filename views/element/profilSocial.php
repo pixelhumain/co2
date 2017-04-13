@@ -292,23 +292,21 @@
 }
 .labelTitleDir{
 	font-size: 18px;
-}
+}/*
 #div-select-create{
 	-webkit-box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
 	-moz-box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
 	box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
 	display: none;
-}
-#div-select-create i.fa{
-	width:50px;
-	height:50px;
-	text-align: center;
-	border-radius: 50px;
-	color:white!important;
-	padding-top:12px;
-	margin-bottom: 6px;
+}*/
 
-}
+
+<?php if($typeItem != "citoyens"){ ?>
+	.section-create-page{
+		display: none;
+	}
+<?php } ?>
+
 
 @media (max-width: 768px) {
 
@@ -317,10 +315,17 @@
 		line-height: 17px;
 	}
 }
+
+
+.divInvited {
+	border: 1px solid #ccc !important;
+	padding: 5px;
+	background-color: blanchedalmond;
+}
 </style>
 	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">	
+<div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
     <section class="col-md-12 col-sm-12 col-xs-12" id="social-header">
         <div id="topPosKScroll"></div>
@@ -497,7 +502,7 @@
 		  ?>
 
 		  <button type="button" class="btn btn-default bold" id="btn-start-mystream">
-		  		<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper").(string)$isLinked; ?>
+		  		<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper"); ?>
 		  </button>
 
 		  <?php if((@Yii::app()->session["userId"] && $isLinked==true) || @Yii::app()->session["userId"] == $element["_id"]){ ?>
@@ -514,8 +519,8 @@
 
 
 		  <?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
-		  <button type="button" class="btn btn-default bold letter-green" id="btn-open-create">
-		  		<i class="fa fa-plus"></i> <?php echo Yii::t("common", "Nouveau") ?>
+		  <button type="button" class="btn btn-default bold letter-green" data-target="#selectCreate" data-toggle="modal">
+		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
 		  </button>
 		  <?php } ?>
 		</div>
@@ -549,38 +554,38 @@
 		                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
 		                </a>
 		            </li>
-
-		            <li class="text-left">
-						<a href="javascript:;" id="btn-show-activity">
-							<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
-						</a>
-					</li>
 					<li>
 						<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
-							<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?></a>
+							<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?>
+						</a>
 					</li>
 
 		  			<?php if($type !=Person::COLLECTION){ ?>
-		  			<li class="text-left">
-		               	<a href="javascript:;" class="bg-white text-red">
-		                    <i class="fa fa-trash"></i> 
-		                    <?php echo Yii::t("common", "Delete {what}", 
-		                    					array("{what}"=> 
-		                    						Yii::t("common","this ".Element::getControlerByCollection($type)))); 
-		                    ?>
-		                </a>
-		            </li>
+		  				<li class="text-left">
+							<a href="javascript:;" id="btn-show-activity">
+								<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
+							</a>
+						</li>
+			  			<li class="text-left">
+			               	<a href="javascript:;" class="bg-white text-red">
+			                    <i class="fa fa-trash"></i> 
+			                    <?php echo Yii::t("common", "Delete {what}", 
+			                    					array("{what}"=> 
+			                    						Yii::t("common","this ".Element::getControlerByCollection($type)))); 
+			                    ?>
+			                </a>
+			            </li>
 		            <?php } else { ?>
-					<li class="text-left">
-						<a href='javascript:' id="downloadProfil">
-							<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
-						</a>
-					</li>
-					<li class="text-left">
-		               	<a href='javascript:' id="changePasswordBtn" class='text-red'>
-							<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
-						</a>
-		            </li>
+						<li class="text-left">
+							<a href='javascript:' id="downloadProfil">
+								<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
+							</a>
+						</li>
+						<li class="text-left">
+			               	<a href='javascript:;' id="btn-update-password" class='text-red'>
+								<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
+							</a>
+			            </li>
 		            <?php } ?>
 		            
 		  		</ul>
@@ -601,7 +606,6 @@
                                 "type" => @$type, 
                                 "edit" => @$edit,
                                 "countries" => @$countries,
-                                "tags" => @$tags,
                                 "controller" => $controller,
                                 "openEdition" => $openEdition,
                                 "countStrongLinks" => $countStrongLinks,
@@ -618,59 +622,52 @@
 	    	$this->renderPartial('../pod/ficheInfoElementCO2', $params ); 
 	    ?>
 
-	   <!--  <div id="divTagsHeader" class="col-md-12 padding-5 text-right margin-bottom-10">
-			<?php if(@$element["tags"])
-        			foreach ($element["tags"]  as $key => $tag) { ?>
-        		<span class="badge letter-red bg-white"><?php echo $tag; ?></span>
-        	<?php } ?>
-		</div>
-		-->
-	</div>
-
-
-	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding" style="margin-top: -10px;">
-	    	
 		
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-10 no-padding" id="div-select-create">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg-white text-center padding-20">
-				
-				<button data-form-type="project" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-purple">
-					<h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> Projet</h6>
-				</button>
-				<button data-form-type="event" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-orange">
-					<h6><i class="fa fa-calendar fa-2x bg-orange"></i><br> Événement</h6>
-				</button>
-				<button data-form-type="organization" data-form-subtype="association" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-green">
-					<h6><i class="fa fa-group fa-2x bg-green"></i><br> Association</h6>
-				</button>
-				<button data-form-type="organization" data-form-subtype="business" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-azure">
-					<h6><i class="fa fa-industry fa-2x bg-azure"></i><br> Entreprise</h6>
-				</button>
-				
-				<button data-form-type="organization" data-form-subtype="group" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 letter-turq">
-					<h6><i class="fa fa-group fa-2x bg-turq"></i><br> Groupe</h6>
-				</button>
-				<button data-form-type="classified" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-azure">
-					<h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> Annonce</h6>
-				</button>
-				<button data-form-type="entry" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 letter-yellow">
-					<h6><i class="fa fa-gavel fa-2x bg-yellow-k"></i><br> Proposition</h6>
-				</button>
-				<button data-form-type="poi" 
-						class="btn btn-link btn-open-form col-xs-3 col-sm-3 col-md-3 col-lg-3 text-green">
-					<h6><i class="fa fa-map-marker fa-2x bg-green"></i><br> Point d'intérêt</h6>
-				</button>
-				
-			</div>
-		</div>
+	</div>
+	<?php if(@$invitedMe && !empty($invitedMe)){ ?>
+	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-9 divInvited">
+		<?php 
+			
+			$inviteRefuse="Refuse";
+			$inviteAccept="Accept";
+			$tooltipAccept="Join this ".Element::getControlerByCollection($type);
+			if ($type == Project::COLLECTION){ 
+				$tooltips = "La communauté du projet";
+			}
+			else if ($type == Organization::COLLECTION){
+				$tooltips = "La communauté de l'organisation";							
+			}
+			else if ($type == Event::COLLECTION){
+				$parentRedirect = "event";
+				$inviteRefuse="Not interested";
+				$inviteAccept="I go";
+				$tooltipAccept="Go to the event";
+				$tooltips = "La communauté de l'évènement";						
+			}
+			else if ($type == Person::COLLECTION){
+				$tooltips = "La communauté de cette personne";						
+			}
+			else if ($type == Place::COLLECTION){
+				$tooltips = "La communauté de ce lieu";						
+			}
 
+
+			//$addLink = (empty($users[Yii::app()->session["userId"]])?false:true);
+		
+			
+				echo "<a href='#page.type.".Person::COLLECTION.".id.".$invitedMe["invitorId"]."' class='lbh text-purple'>".$invitedMe["invitorName"]."</a><span class='text-dark'> vous a invité : ".
+						'<a class="btn btn-xs btn-success tooltips" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.$id.'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Link::IS_INVITING.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
+							'<i class="fa fa-check "></i> '.Yii::t("common",$inviteAccept).
+						'</a> '.
+						' <a class="btn btn-xs btn-danger tooltips" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.$id.'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\'attendees\')" data-placement="bottom" data-original-title="Not interested by the invitation">'.
+							'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
+						'</a>';
+			
+		?>
+	</div>
+	<?php } ?>
+	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding" style="margin-top: -10px;">
+	
 		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-50" id="central-container">
 		</div>
 
@@ -685,50 +682,8 @@
 																"img"=>@$element['profilThumbImageUrl']));
 																?>
 		<div class="col-md-3 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
-			<h5><i class="fa fa-bell"></i> Notifications d'Activité locale</h5>
-			<span>
-				Un condensé de l'activité locale, basée sur le département de communexion de l'utilisateur
-				(visible que sur MA page, pas celles des autres)<br>
-				Composée de plusieurs types d'éléments : evenement à venir & en cours, nouvelles propositions & must participate, annonces en cours 
-				<br> 
-				<br>
-			</span>
-			<div class="alert alert-info">
-				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
-				<span>
-					<i class="fa fa-comment"></i> <b>Quelqu'un</b> a commenté votre message<br>
-					<small class="margin-left-15">il y a 2 minutes</small><br>
-				</span>
-	    	</div>
-			<div class="alert alert-info">
-				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
-				<span>
-					<i class="fa fa-comment"></i> <b>Quelqu'un</b> a commenté <b>votre message</b><br>
-					<small class="margin-left-15">il y a 3h</small>
-				</span>
-	    	</div>
-			<div class="alert alert-success">
-				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
-				<a href="#...">
-					<i class="fa fa-calendar"></i> <b>Quelqu'un</b> a vous invite à <b>un événement</b><br>
-					<small class="margin-left-15">il y a 5h</small>
-				</a>
-	    	</div>
-			<div class="alert alert-success">
-				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
-				<a href="#...">
-					<i class="fa fa-hand-rock-o"></i> <b>Conseil citoyen de votre ville :</b> une nouvelle <b>proposition</b> vient d'être publiée par <b>quelqu'un</b>.<br>
-					<small class="margin-left-15">il y a 2 jours</small><br>
-				</a>
-	    	</div>
-			<div class="alert alert-danger">
-				<a href="#..."><i class="fa fa-times text-dark padding-5"></i></a> 
-				<span>
-					<i class="fa fa-flag"></i> <b>Quelqu'un</b> a signalé l'un de vos commentaires<br>
-					<small class="margin-left-15">il y a 10 jours</small><br>
-				</span>
-	    	</div>
-	    </div>
+		</div>
+
 	</section>
 </div>	
 <style>
@@ -800,16 +755,16 @@
 		</div>
 	</div>
 </div>
-	<?php 
-	    	$paramsConfidentiality = array( "element" => @$element, 
-                                "type" => @$type, 
-                                "edit" => @$edit,
-                                "controller" => $controller,
-                                "openEdition" => $openEdition,
-                                );
 
-	    	$this->renderPartial('../pod/confidentiality', $params ); 
-	    ?>
+<?php 
+$paramsConfidentiality = array( "element" => @$element, 
+	"type" => @$type, 
+	"edit" => @$edit,
+	"controller" => $controller,
+	"openEdition" => $openEdition,
+);
+$this->renderPartial('../pod/confidentiality', $params );
+?>
 
 <script type="text/javascript">
 
@@ -817,6 +772,7 @@
     var elementName = "<?php echo @$element["name"]; ?>";
     var contextType = "<?php echo @$type; ?>";
     var contextId = "<?php echo @(string)$element['_id'] ?>";
+    var contextData = { "id":contextId, "type":contextType };
     var members = <?php echo json_encode(@$members); ?>;
     var params = <?php echo json_encode(@$params); ?>;
     var dateLimit = 0;
@@ -826,6 +782,10 @@
     var subView="<?php echo @$subview; ?>";
     var hashUrlPage="#page.type."+contextType+".id."+contextId;
     var cropResult;
+
+    var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
+	
+
 	jQuery(document).ready(function() {
 		initSocial();
 		bindButtonMenu();
@@ -862,120 +822,7 @@
   			}
 			//$('#'+contentId+'_avatar').trigger("click");		
 		});
-		/*$('#banniere_change').off().on('change.bs.fileinput', function () {
-			setTimeout(function(){
-				var files=document.getElementById("banniere_change").files;
-				if (files[0].size > 2097152)
-					toastr.warning("Please reduce your image before to 2Mo");
-				else {
-					for (var i = 0; i < files.length; i++) {           
-				        var file = files[i];
-				       	var imageType = /image.*//*;     
-				        if (!file.type.match(imageType)) {
-				            continue;
-				        }           
-				        var img=document.getElementById("previewBanniere");            
-				        img.file = file;    
-				        var reader = new FileReader();
-				        reader.onload = (function(aImg) { 
-				        	var image = new Image();
-   							image.src = reader.result;
-   							image.onload = function() {
-       							// access image size here 
-       						 	var imgWidth=this.width;
-       						 	var imgHeight=this.height;
-       							if(imgWidth>=1000 && imgHeight>=500)
-       						 		$("#banniere_photoAdd").submit();
-       						 	else
-       						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
-  							};
-				        });
-				        reader.readAsDataURL(file);
-				    }  
-				}
-			}, 400);
-		});
-		$("#banniere_photoAdd").off().on('submit',(function(e) {
-			//alert(moduleId);
-			if(debug)mylog.log("id2", contextId);
-			$(".banniere_isSubmit").val("true");
-			e.preventDefault();
-			$.ajax({
-						//url: baseUrl+"/"+moduleId+"/api/saveUserImages/type/"+type+"/id/"+id+"/contentKey/"+contentKey+"/user/<?php echo Yii::app()->session["userId"]?>",
-						url : baseUrl+"/"+moduleId+"/document/<?php echo Yii::app()->params['uploadUrl'] ?>dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/banniere",
-						type: "POST",
-						data: new FormData(this),
-						contentType: false,
-						cache: false, 
-						processData: false,
-						dataType: "json",
-						success: function(data){
-							html="<div class='col-md-offset-1' id='cropContainer'>"+
-									"<h1 class='text-white'>Resize and crop your image to render a beautiful banniere</h1>"+
-									"<img src='"+baseUrl+"/<?php echo Yii::app()->params['uploadUrl'] ?>"+moduleId+"/"+contextType+"/"+contextId+"/banniere/"+data.name+"' id='cropImage' class='' style=''/>"+
-									"<div class='col-md-12'><input type='submit' class='btn-blue text-white imageCrop saveBanniere'/></div>"+
-									"</div>";
-							$("#uploadScropResizeAndSaveImage").show();
-							$("#uploadScropResizeAndSaveImage").html(html);
-							setTimeout(function(){
-								var crop = $('#cropImage').cropbox({width: 1300,
-									height: 400,
-									zoomIn:true,
-									zoomOut:true}, function() {
-									cropResult=this.result;
-								});
-	        					/*$('#cropImage').cropbox({
-								    width: 1300,
-									height: 400,
-									zoomIn:true,
-									zoomOut:true
-								}, function() {*/
-									//on load
-									//this.getBlob();
-  									// this.getDataURL(); 
-  									/*$(".saveBanniere").click(function(){
-							        	//$("#uploadScropResizeAndSaveImage").hide();
-							        	console.log(cropResult);
-							        	imageName = data.name;
-							       		var doc = { 
-									  		"id":id,
-									  		"type":contextType,
-									  		"folder":contextType+"/"+contextId+"/banniere",
-									  		"moduleId":moduleId,
-									  		"author" : "<?php echo (isset(Yii::app()->session['userId'])) ? Yii::app()->session['userId'] : 'unknown'?>"  , 
-									  		"name" : data.name , 
-									  		"date" : new Date() , 
-									  		"size" : data.size ,
-									  		"doctype" : "<?php echo Document::DOC_TYPE_IMAGE; ?>",
-									  		"contentKey" : "banniere",
-									  		"formOrigin" : "banniere",
-									  		"parentType":contextType,
-									  		"parentId" : contextId,
-									  		"crop":cropResult
-									  	};
-									  	$.ajax({
-										  	type: "POST",
-										  	url: baseUrl+"/"+moduleId+"/document/save",
-										  	data: doc,
-									      	dataType: "json"
-										}).done( function(data){
-									        if(data.result){
-									        	newBanniere='<img class="img-responsive" src="'+baseUrl+data.src+'" style="border-bottom:45px solid white;">';
-									        	$("#contentBanniere").html(newBanniere);
-									        	$("#uploadScropResizeAndSaveImage").hide();
-									    	}
-									    });
-									});
-									//console.log('Url: ' + this.getDataURL());
-								/*}).on('cropbox', function(e, crop) {
-									var crop=crop;
-							        console.log('crop window: ', crop);
-							        
-								});*/
-							/*}, 300);
-						}
-					});
-		}));*/
+		
 		$('#banniere_change').off().on('change.bs.fileinput', function () {
 			setTimeout(function(){
 				var files=document.getElementById("banniere_change").files;
@@ -1148,31 +995,15 @@
 		$(".load-data-directory").click(function(){
    			var dataName = $(this).data("type-dir");
    			console.log(".load-data-directory", dataName);
-   			loadDataDirectory(dataName);
+   			loadDataDirectory(dataName, $(this).data("icon"));
    		});
-
-   		$("#btn-open-create").click(function(){
-   			showSelectCreate();
-   			KScrollTo("#fileuploadContainer");
-   		});
-   		$("#div-select-create").hide();
    		
-
-   		$(".btn-open-form").click(function(){
-   			var typeForm = $(this).data("form-type");
-   			elementLib.openForm(typeForm);
+   		$("#subsubMenuLeft a").click(function(){
+   			$("#subsubMenuLeft a").removeClass("active");
+   			$(this).addClass("active");
    		});
 	}
-	function showSelectCreate(open){
-		if($("#div-select-create").hasClass("open") || open===false){
-	   			$("#div-select-create").fadeOut(300);
-   				$("#div-select-create").removeClass("open");
-   			}else{
-	   			$("#div-select-create").fadeIn(600);
-   				$("#div-select-create").addClass("open");
-	   		}
-		
-	}
+	
 	function initSocial(){	
    		$(".tooltips").tooltip();
 
@@ -1182,28 +1013,41 @@
           }});
 	}
 
-	function loadDataDirectory(dataName){
+	function loadDataDirectory(dataName, dataIcon){
+		showLoader('#central-container');
+		// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
 		getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 					'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 					function(data){ 
 						var n=0;
 						$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
 						if(n>0){
-							var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'><i class='fa fa-angle-down'></i> "+
-											getLabelTitleDir(dataName, parseInt(n), n)+
+							var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
+											getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
 										"<hr></div>";
 
-							html += directory.showResultsDirectoryHtml(data);
+							if(dataName != "collections"){
+								html += directory.showResultsDirectoryHtml(data);
+							}else{
+								$.each(data, function(col, val){
+									html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
+									$.each(val.list, function(key, elements){ 
+										html += directory.showResultsDirectoryHtml(elements, key);
+									});
+								});
+								
+							}
 							toogleNotif(false);
 
 							$("#central-container").html(html);
+							initBtnLink();
 						}else{
 							var nothing = "Aucun";
 							if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
 								nothing = "Aucune";
 
-							var html =  "<div class='col-md-12 margin-bottom-15'><i class='fa fa-angle-down'></i> "+
-											getLabelTitleDir(dataName, nothing, n)+
+							var html =  "<div class='col-md-12 margin-bottom-15'>"+
+											getLabelTitleDir(dataName, dataIcon, nothing, n)+
 										"</div>";
 							$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
 																	"<i class='fa fa-ban'></i> Aucune donnée"+
@@ -1214,29 +1058,40 @@
 		,"html");
 	}
 
-	function getLabelTitleDir(dataName, countData, n){
+	function getLabelTitleDir(dataName, dataIcon, countData, n){
 		var elementName = "<span class='Montserrat' id='name-lbl-title'>"+$("#nameHeader .name-header").html()+"</span>";
 		
 		var s = (n>1) ? "s" : "";
-		if(dataName == "follows")	{ return elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
-		if(dataName == "followers")	{ return countData + " <b>abonné"+s+"</b> à " + elementName; }
+		var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
+		if(dataName == "follows")	{ html += elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
+		if(dataName == "followers")	{ html += countData + " <b>abonné"+s+"</b> à " + elementName; }
+		if(dataName == "members")	{ html += elementName + " est composé de " + countData + " <b>membre"+s+"</b>"; }
+		if(dataName == "attendees")	{ html += countData + " <b>invité"+s+"</b> à l'événement " + elementName; }
+		if(dataName == "contributors")	{ html += countData + " <b>contributeur"+s+"</b> au projet " + elementName; }
 		
-		if(dataName == "events")		{ return countData+" <b>événement"+s+"</b> créé"+s+" par " + elementName; }
-		if(dataName == "organizations")	{ return countData+" <b>organisation"+s+"</b> créée"+s+" par " + elementName; }
-		if(dataName == "projects")		{ return countData+" <b>projet"+s+"</b> créé"+s+" par " + elementName; }
+		if(dataName == "events"){ 
+			if(type == "events"){
+				html += elementName + " est composé de " + countData+" <b> sous-événement"+s; 
+			}else{
+				html += elementName + " participe à " + countData+" <b> événement"+s; 
+			}
+		}
+		if(dataName == "organizations")	{ html += elementName + " est membre de " + countData+" <b>organisation"+s; }
+		if(dataName == "projects")		{ html += elementName + " contribue à " + countData+" <b>projet"+s }
 
-		if(dataName == "collections"){ return countData+" <b>collection"+s+"</b> de " + elementName; }
-		if(dataName == "poi"){ return countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
+		if(dataName == "collections"){ html += countData+" <b>collection"+s+"</b> de " + elementName; }
+		if(dataName == "poi"){ html += countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
+		if(dataName == "classified"){ html += countData+" <b>annonce"+s+"</b> créée"+s+" par " + elementName; }
 
-		if(dataName == "needs"){ return countData+" <b>besoin"+s+"</b> de " + elementName; }
+		if(dataName == "needs"){ html += countData+" <b>besoin"+s+"</b> de " + elementName; }
 
-		if(dataName == "dda"){ return countData+" <b>proposition"+s+"</b> de " + elementName; }
+		if(dataName == "dda"){ html += countData+" <b>proposition"+s+"</b> de " + elementName; }
 
-		return "";
+		return html;
 	}
 
 	function loadAdminDashboard(){
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		getAjax('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/main",function(){ 
 				
 		},"html");
@@ -1252,7 +1107,7 @@
 		var url = "news/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>"+isLive+"/date/"+dateLimit+
 				  "?isFirst=1&tpl=co2&renderPartial=true";
 		
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){ 
@@ -1271,7 +1126,7 @@
 		toogleNotif(false);
 		var url = "gallery/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
 		
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){},"html");
@@ -1279,7 +1134,7 @@
 	function loadChart(id){
 		toogleNotif(false);
 		var url = "chart/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>/chart/"+id;
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){},"html");
@@ -1288,7 +1143,7 @@
 		toogleNotif(false);
 		var url = "element/notifications/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
 		
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){},"html");
@@ -1296,7 +1151,7 @@
 	function loadHistoryActivity(){
 		toogleNotif(false);
 		var url = "pod/activitylist/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){},"html");
@@ -1310,7 +1165,7 @@
 	function loadEditChart(){
 		toogleNotif(false);
 		var url = "chart/addchartsv/type/"+contextType+"/id/"+contextId;
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 		function(){},"html");
@@ -1319,7 +1174,14 @@
 	function loadDetail(){
 		toogleNotif(false);
 		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
-		$('#central-container').html("<i class='fa fa-spin fa-refresh'></i>");
+		showLoader('#central-container');
+		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
+	}
+
+	function loadInvite(){
+		toogleNotif(false);
+		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
+		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
 	}
 
@@ -1364,8 +1226,8 @@
 	    });
 	}
 
-var colNotifOpen = true;
-function toogleNotif(open){
+	var colNotifOpen = true;
+	function toogleNotif(open){
 		if(typeof open == "undefined") open = false;
 		
 		if(open==false){
@@ -1377,7 +1239,6 @@ function toogleNotif(open){
 		}
 
 		colNotifOpen = open;
-		showSelectCreate(false);
 	}
 
 
@@ -1400,7 +1261,7 @@ function loadLiveNow () {
       //"searchTag" : $('#searchTags').val().split(','), //is an array
       //"searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
       //"searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-      "searchLocalityDEPARTEMENT" : dep, //$('#searchLocalityDEPARTEMENT').val().split(','),
+      "searchLocalityDEPARTEMENT" : new Array(dep), //$('#searchLocalityDEPARTEMENT').val().split(','),
       //"searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
       "indexMin" : 0, 
       "indexMax" : 30 
@@ -1415,6 +1276,11 @@ function loadLiveNow () {
 			        else
 			        	$('.titleNowEvents').removeClass("hidden");*/
      } , "html" );
+}
+
+
+function showLoader(id){
+	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 }
 </script>
 

@@ -1224,7 +1224,7 @@ function getMediaImages(o,newsId,authorId,targetName){
 		col0="6";
 		height0="400";
 		absoluteImg="position:absolute;";
-		if (liveScopeType == "global"){
+		if (typeof liveScopeType != "undefined" && liveScopeType == "global"){
 			col0="12";
 			height0="260";
 			absoluteImg="";
@@ -1240,7 +1240,7 @@ function getMediaImages(o,newsId,authorId,targetName){
 	}
 	else if(countImages==4){
 		absoluteImg="position:absolute;";
-		if (liveScopeType == "global")
+		if (typeof liveScopeType != "undefined" && liveScopeType == "global")
 			absoluteImg="";
 		for(var i in o.images){
 			path=baseUrl+"/"+uploadUrl+moduleId+"/"+o.images[i].folder+"/"+o.images[i].name;
@@ -1249,7 +1249,7 @@ function getMediaImages(o,newsId,authorId,targetName){
 	}
 	else if(countImages>=5){
 		absoluteImg="position:absolute;";
-		if (liveScopeType == "global")
+		if (typeof liveScopeType != "undefined" && liveScopeType == "global")
 			absoluteImg="";
 		for(var i in o.images){
 			path=baseUrl+"/"+uploadUrl+moduleId+"/"+o.images[i].folder+"/"+o.images[i].name;

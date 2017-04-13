@@ -24,12 +24,12 @@ class AppController extends CommunecterController {
             'superadmin'        => 'citizenToolKit.controllers.app.SuperAdminAction',
             'sendmailformcontact' => 'citizenToolKit.controllers.app.SendMailFormContactAction',
             'checkurlexists' => 'citizenToolKit.controllers.app.CheckUrlExistsAction',
-            
 	    );
 	}
 
 
 	public function actionIndex(){
+        var_dump("expression");
 		$CO2DomainName = isset( Yii::app()->params["CO2DomainName"]) ? 
 								Yii::app()->params["CO2DomainName"] : "CO2";
 
@@ -128,6 +128,7 @@ class AppController extends CommunecterController {
 
 
     public function actionSearch($type=null){
+        var_dump("header(string)3");
         CO2Stat::incNbLoad("co2-search");   
         $params = array("type" => @$type );
         echo $this->renderPartial("search", $params, true);
@@ -161,21 +162,24 @@ class AppController extends CommunecterController {
         echo $this->renderPartial("live", $params, true);
     }
 
-
-
 	public function actionAgenda(){
 		CO2Stat::incNbLoad("co2-agenda");	
         $params = array("type" => "events");
     	echo $this->renderPartial("search", $params, true);
 	}
 
-
-
 	public function actionPower(){
 		CO2Stat::incNbLoad("co2-power");	
         $params = array("type" => "vote");
     	echo $this->renderPartial("search", $params, true);
 	}
+
+    public function actionAdmin(){
+        CO2Stat::incNbLoad("co2-admin");   
+        $params = array();
+        echo $this->renderPartial("admin", $params, true);
+    }
+
     public function actionRooms($type,$id){
         CO2Stat::incNbLoad("co2-rooms");    
         $params = array("id" => @$id,
@@ -188,12 +192,18 @@ class AppController extends CommunecterController {
 
 	public function actionPage($type, $id, $view=null){
         CO2Stat::incNbLoad("co2-page");
+            
+        $element = Element::getByTypeAndId($type, $id);
+
         $params = array("id" => @$id,
                         "type" => @$type,
                         "view" => @$view,
                         "subdomain" => "page",
                         "mainTitle" => "Page perso",
-                        "placeholderMainSearch" => "");
+                        "placeholderMainSearch" => "",
+                        "element" => $element);
+
+        $params = Element::getInfoDetail($params, $element, $type, $id);
 
     	echo $this->renderPartial("page", $params, true);
 	}
@@ -253,4 +263,6 @@ class AppController extends CommunecterController {
         Rest::json($res);
         exit;
     }
+
+    
 }

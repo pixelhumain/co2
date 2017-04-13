@@ -12,7 +12,22 @@
 
 
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
-	<div class="padding-top-15" id="onepage"></div>
+	<div class="padding-top-15" id="onepage">
+        <?php $this->renderPartial('../element/profilSocial', 
+                                    array(  "element"=>$element , 
+                                            "page" => "page",
+                                            "edit"=>$edit,
+                                            "openEdition" => $openEdition,
+                                            "linksBtn" => $linksBtn,
+                                            "type" => $type,
+                                            "isLinked" => $isLinked,
+                                            "controller" => $controller,
+                                            "countStrongLinks" => $countStrongLinks,
+                                            "countInvitations" => $countInvitations,
+                                            "countries" => $countries
+                                            ) ); 
+        ?>   
+    </div>
 </div>
 
 
@@ -27,11 +42,11 @@ jQuery(document).ready(function() {
 	
 	initKInterface({"affixTop":0});
 	$("#mainNav").addClass("affix");
-	
-	var tpl = '<?php echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
-	getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
-		initPageInterface();
-	},"html");
+	initPageInterface();
+	// var tpl = '<?php echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
+	// getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
+	// 	initPageInterface();
+	// },"html");
 });
 
 
@@ -43,14 +58,14 @@ function initPageInterface(){
         startGlobalSearch(0, indexStepGS);
     });
 
-    $("#second-search-bar").keyup(function(e){
+    $("#second-search-bar").keyup(function(e){ console.log("keyup #second-search-bar");
         $("#input-search-map").val($("#second-search-bar").val());
         if(e.keyCode == 13){
             startGlobalSearch(0, indexStepGS);
          }
     });
     
-    $("#input-search-map").keyup(function(e){
+    $("#input-search-map").keyup(function(e){ console.log("keyup #input-search-map");
         $("#second-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
             startGlobalSearch(0, indexStepGS);

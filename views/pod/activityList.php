@@ -24,7 +24,7 @@ $arrayLabel=array(
 	"shortDescription" => Yii::t("common", "the short description"),
 	"telephone.fax" => Yii::t("common", "the fax"),
 	"telephone.mobile" => Yii::t("common", "the mobile"),
-	"telephone.fixe" => Yii::t("common", "the fix"),
+	"telephone.fixe" => Yii::t("common", "the fixe"),
 	"email" => Yii::t("common", "the email"),
 	"url" => Yii::t("common", "the website"),
 	"licence" => Yii::t("common", "the licence"),
@@ -110,7 +110,7 @@ $countries= OpenData::getCountriesList();
 							}
 							echo empty($organizer["name"]) ? "Inconnu" : @$value["object"]["displayValue"]["organizerType"]." / ".$organizer["name"];
 						} else if (@$value["object"]["displayName"] == "contacts") {
-							if ($value["object"]["displayValue"] == "dontKnow") {
+							if (empty($value["object"]["displayValue"]) || $value["object"]["displayValue"] == "dontKnow") {
 								$contacts = "";
 							} else {
 								$contacts = $value["object"]["displayValue"];
@@ -125,7 +125,7 @@ $countries= OpenData::getCountriesList();
 							if(isset($contacts["tel"]))
 								echo " ".Yii::t("common", "Phone")." : ".$contacts["tel"];
 						
-						} else
+						} else if (!empty($value["object"]["displayValue"]) )
 							echo Yii::t("common",$value["object"]["displayValue"]);
 						
 							

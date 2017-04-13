@@ -83,6 +83,7 @@ var trad = {
 "classified" : "<?php echo Yii::t("common","classified") ?>",
 "place" : "<?php echo Yii::t("common","Places") ?>",
 "ressource" : "<?php echo Yii::t("common","Ressource") ?>",
+"poi" : "<?php echo Yii::t("common","Point of interest") ?>",
 
 "Technologie" : "Technologie",
 "Immobilier" : "Immobilier",
@@ -112,6 +113,33 @@ var trad = {
 "LocalBusiness" : "<?php echo Yii::t("common","LocalBusiness") ?>",
 "Group" :"<?php echo Yii::t("common","Group") ?>",
 "GovernmentOrganization" : "<?php echo Yii::t("common","GovernmentOrganization") ?>",
+
+"character(s)" : "<?php echo Yii::t("common","character(s)") ?>",
+"Change password" : "<?php echo Yii::t("common","Change password") ?>",
+
+
+'Bold' : "<?php echo Yii::t("common","Bold") ?>", 
+'Italic' : "<?php echo Yii::t("common","Italic") ?>", 
+'Heading' : "<?php echo Yii::t("common","Heading") ?>",
+'URL/Link' : "<?php echo Yii::t("common","URL/Link") ?>",
+'Image' : "<?php echo Yii::t("common","Image") ?>",
+'List' : "<?php echo Yii::t("common","List") ?>",
+'Preview' : "<?php echo Yii::t("common","Preview") ?>", 
+'strong text' : "<?php echo Yii::t("common","strong text") ?>", 
+'emphasized text' : "<?php echo Yii::t("common","emphasized text") ?>",
+'heading text' : "<?php echo Yii::t("common","heading text") ?>",
+'enter link description here' : "<?php echo Yii::t("common","enter link description here") ?>", 
+'Insert Hyperlink' : "<?php echo Yii::t("common","Insert Hyperlink") ?>",
+'enter image description here' : "<?php echo Yii::t("common","enter image description here") ?>",
+'Insert Image Hyperlink' : "<?php echo Yii::t("common","Insert Image Hyperlink") ?>",
+'enter image title here' : "<?php echo Yii::t("common","enter image title here") ?>",
+'list text here' : "<?php echo Yii::t("common","list text here") ?>",
+
+
+"Old password" : "<?php echo Yii::t("common","Old password") ?>",
+"New password" : "<?php echo Yii::t("common","New password") ?>",
+"Repeat your new password" : "<?php echo Yii::t("common","Repeat your new password") ?>",
+
 };
 
 var tradCountry = {

@@ -1,4 +1,13 @@
-<div class="panel panel-white">
+<?php
+$userId = Yii::app()->session["userId"] ;
+
+$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+//header + menu
+$this->renderPartial($layoutPath.'header', 
+                    array(  "layoutPath"=>$layoutPath , 
+                            "page" => "admin") );
+?>
+<div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
 	<div>
 		<div class="panel-heading text-center border-light">
 			<h3 class="panel-title text-red"><i class="fa fa-map-marker"></i>   <?php echo Yii::t("common", "CHECKGEOCODAGE"); ?></h3>

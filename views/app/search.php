@@ -36,38 +36,7 @@
 ?>
 
 <style>
-    #page .bg-dark {
-        color: white !important;
-        background-color: #3C5665 !important;
-    }
-    #page .bg-red{
-        background-color:#E33551 !important;
-        color:white!important;
-    }
-    #page .bg-blue{
-        background-color: #5f8295 !important;
-        color:white!important;
-    }
-    #page .bg-green{
-        background-color:#93C020 !important;
-        color:white!important;
-    }
-    #page .bg-orange{
-        background-color:#FFA200 !important;
-        color:white!important;
-    }
-    #page .bg-yellow{
-        background-color:#FFC600 !important;
-        color:white!important;
-    }
-    #page .bg-turq{
-        background-color: #229296 !important;
-        color:white!important;
-    }
-    #page .bg-purple{
-        background-color:#8C5AA1 !important;
-        color:white!important;
-    }
+    
     #page #dropdown_search{
     	min-height:500px;
         /*margin-top:30px;*/
@@ -301,7 +270,7 @@
                         </h4>
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="NGO" data-type="organization"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-green"><i class="fa fa-group padding-bottom-10"></i><br>
                                     <span class="font-light"> Association</span>
                                 </h2>
@@ -320,7 +289,7 @@
                         </a>
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="LocalBusiness" data-type="organization"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-azure"><i class="fa fa-industry padding-bottom-10"></i><br>
                                     <span class="font-light"> Entreprise</span>
                                 </h2>
@@ -339,7 +308,7 @@
                         </a>
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="Group" data-type="organization"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-turq"><i class="fa fa-circle-o padding-bottom-10"></i><br>
                                     <span class="font-light"> Groupe</span>
                                 </h2>
@@ -359,7 +328,7 @@
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" 
                             data-ktype="project" data-type="project"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-purple"><i class="fa fa-lightbulb-o padding-bottom-10"></i><br>
                                     <span class="font-light"> Projet</span>
                                 </h2>
@@ -517,6 +486,12 @@ jQuery(document).ready(function() {
     $(".main-btn-create").click(function(){
         currentKFormType = $(this).data("ktype");
         var type = $(this).data("type");
+
+        if(type=="all"){
+            $("#dash-create-modal").modal("show");
+            return;
+        }
+
         if(type=="events") type="event";
         if(type=="vote") type="entry";
         elementLib.openForm(type);
@@ -667,7 +642,7 @@ function bindLeftMenuFilters () {
     $("#priceMin").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
     $("#priceMax").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
 
-    $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@#\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
+    $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
 
  }
 

@@ -120,7 +120,10 @@
 			<?php
 			//$addLink = (empty($users[Yii::app()->session["userId"]])?false:true); 
 			if($edit && $type != Person::COLLECTION) 
-				$this->renderPartial('../element/addMembersFromMyContacts',array("type"=>$type, "parentId" =>(string)$element['_id'], "users"=>@$users)); 
+				$this->renderPartial('../element/addMembersFromMyContacts',
+									array("type"=>$type, 
+										  "parentId" =>(string)$element['_id'], 
+										  "users"=>@$users)); 
 			?>
 		</div>
 	</div>

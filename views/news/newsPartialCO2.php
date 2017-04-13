@@ -131,7 +131,7 @@
                     <?php if (@$media["author"]["id"]==Yii::app()->session["userId"] || (@$canManageNews && $canManageNews)){ ?>
                       <li>
                         <a href="javascript:;" class="deleteNews" onclick="deleteNews('<?php echo $key ?>', $(this))" data-id="'<?php echo $key ?>"><small><i class="fa fa-times"></i> <?php echo Yii::t("common", "Delete")?></small></a></li>
-                        <?php if ($media["type"] != "activityStream" && $media["author"]["id"]==Yii::app()->session["userId"]){ ?>
+                        <?php if (@$media["type"] != "activityStream" && @$media["author"]["id"]==Yii::app()->session["userId"]){ ?>
                           <li><a href="javascript:" class="modifyNews" onclick="modifyNews('<?php echo $key ?>')" data-id="<?php echo $key ?>"><small><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Update publication")?></small></a></li>
                         <?php }
                     } ?> 
@@ -157,7 +157,7 @@
                               Element::getFaIcon($media["object"]["type"]) : ""; ?>
               <h4 class="no-padding">
                 <a target="_blank" 
-                   href="#app.page.type.<?php echo @$media["object"]["type"]; ?>.id.<?php echo @$media["object"]["id"]; ?>">
+                   href="#page.type.<?php echo @$media["object"]["type"]; ?>.id.<?php echo @$media["object"]["id"]; ?>">
                    <i class="fa fa-<?php echo $faIcon; ?>"></i> <?php echo @$media["name"]; ?>
                 </a>
               </h4>
@@ -169,7 +169,7 @@
           </div>
 
           <?php if(@$srcMainImg != ""){ ?>
-            <a class="inline-block bg-black" target="_blank" href="<?php echo @$media["href"]; ?>">
+            <a class="inline-block bg-black" target="_blank" href="#page.type.<?php echo @$media["object"]["type"]; ?>.id.<?php echo @$media["object"]["id"]; ?>">
             <img class="img-responsive" src="<?php echo $srcMainImg; ?>" />
             </a>
           <?php } ?>

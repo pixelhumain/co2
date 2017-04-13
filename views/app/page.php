@@ -42,7 +42,7 @@ jQuery(document).ready(function() {
 	
 	initKInterface({"affixTop":0});
 	$("#mainNav").addClass("affix");
-	
+	initPageInterface();
 	// var tpl = '<?php echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
 	// getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
 	// 	initPageInterface();
@@ -58,14 +58,14 @@ function initPageInterface(){
         startGlobalSearch(0, indexStepGS);
     });
 
-    $("#second-search-bar").keyup(function(e){
+    $("#second-search-bar").keyup(function(e){ console.log("keyup #second-search-bar");
         $("#input-search-map").val($("#second-search-bar").val());
         if(e.keyCode == 13){
             startGlobalSearch(0, indexStepGS);
          }
     });
     
-    $("#input-search-map").keyup(function(e){
+    $("#input-search-map").keyup(function(e){ console.log("keyup #input-search-map");
         $("#second-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
             startGlobalSearch(0, indexStepGS);

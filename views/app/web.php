@@ -106,6 +106,11 @@
     #mainCategories h3{
         font-size: 1.3em;
     }
+    #sub-menu-left {
+        margin-top: 5px;
+        padding:15px;
+        text-align: left;
+    }
 }
 </style>
 
@@ -173,7 +178,7 @@
 </section>
 
 <section class="no-padding hidden" id="sectionSearchResults">
-    <div class="row">
+    <div class="row padding-10">
         <div class="col-md-2 col-sm-2 text-right" id="sub-menu-left"></div>
         <div class="col-md-7 col-sm-9 col-lg-8" id="searchResults"></div>
         <div class="col-md-2 col-sm-1 text-left" id="sub-menu-right"></div>

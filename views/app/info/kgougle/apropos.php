@@ -59,7 +59,7 @@
         <div class="col-lg-3 col-md-3 col-sm-4 text-right hidden-xs" id="sub-menu-left">
         	<div class="dropdown">
 				<button class="btn bg-red text-white btn font-blackoutM dropdown-toggle" data-toggle="dropdown" id="btn-onepage-main-menu">
-					<i class="fa fa-bars"></i> KGOUGLE
+					<i class="fa fa-bars"></i> MENU
 				</button>
 				<div class="dropdown-onepage-main-menu font-montserrat" aria-labelledby="btn-onepage-main-menu">
 					<ul class="dropdown-menu arrow_box font-blackoutM letter-red">
@@ -144,15 +144,15 @@
         	<hr>
         	
         	<h3 class="letter-blue">
-        		<i class="fa fa-microphone fa-2x"></i> Un poste de radio 
+        		<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/radios/radio-ico.png" height="25"> Un poste de radio 
         	</h3>
         	<h4>Pour rester en contact permanent avec le reste du pays...</h4>
 			<p>
 				Retrouvez à tout moment les radios locales, pour suivre l’actualité, se divertir, ou simplement écouter de la musique.
         	</p>
-        	<!-- <button class="btn btn-link letter-blue" data-target="#modalRadioTool" data-toggle="modal">
+        	<button class="btn btn-link letter-blue" data-target="#modalRadioTool" data-toggle="modal">
         		<i class="fa fa-arrow-circle-right"></i> Afficher la radio
-        	</button> -->
+        	</button>
 
         	<hr>
         	<h3 class="letter-blue">
@@ -168,9 +168,9 @@
 			<p>
 				Pour suivre l'actualité locale en direct, à travers les publications de nos médias locaux.<br>
         	</p>
-        	<!-- <button class="btn btn-link letter-blue btn-show-map">
+        	<button class="btn btn-link letter-blue btn-show-map">
         		<i class="fa fa-arrow-circle-right"></i> Afficher la carte
-        	</button> -->
+        	</button>
 
 
         	<!-- --------------------------------------------------------------------------------- -->
@@ -206,11 +206,8 @@
         	</h1>
 
         	<h3 class="letter-blue"><i class="fa fa-cubes fa-2x"></i> <i class="fa fa-angle-righ"></i> Plusieurs nouveautés déjà en préparation</h3>
-        	<h4>Notre imagination est sans limite...</h4>
+        	<!-- <h4>Notre imagination est sans limite...</h4> -->
 			<p>
-				<i class="fa fa-newspaper-o letter-red"></i> <span class="letter-red font-blackoutT">ACTU</span> <b><span class="letter-green">Un fil d’actualité média</span>, regroupant les principaux articles de presse publiés sur internet, issus des grands médias calédoniens.</b> 
-				Pour retrouver toute l’actu du pays, d’hier et d’aujourd’hui, en un seul clic !
-				<br><br>
 				<i class="fa fa-user-circle-o letter-red"></i> <span class="letter-red font-blackoutT">SOCIAL</span> <b><span class="letter-green">Un réseau social indépendant</span>, offrant toutes les fonctionnalités des réseaux les plus connus :</b> <br>Création de compte perso, partages de messages et URL, création de page pour associations, entreprises, groupes, projets, une messagerie privée... 
 				Et bien plus encore ! 
 				<br><br>

@@ -1,3 +1,25 @@
+<style>
+.activity-image{
+  max-height: 350px;
+  overflow-y: hidden;
+}
+.text-large{
+  font-size: 16px;
+}
+.text-bold{
+  font-weight: 700;
+}
+.activity-title{
+  font-size: 20px;
+}
+.activity-heading{
+position: absolute;
+bottom: 120px;
+left: 0px;
+right: 0px;
+background-color: rgba(250,250,250,0.8);
+}
+</style>
 <?php 
   $timezone = "";// @$timezone ? $timezone : 'Pacific/Noumea';
   $pair = @$pair ? $pair : false;
@@ -45,9 +67,14 @@
   <li class="<?php echo $class; ?>" id="news<?php echo $key ?>">
     <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip"></i></a></div>
     <div class="timeline-panel">
-      <div class="timeline-heading text-center">
-        
 
+      <?php $classHeading="";
+      if(@$srcMainImg != "" && $media["type"] == "activityStream"){ $classHeading="activity-heading"; ?>
+        <a class="inline-block bg-black activity-image" target="_blank" href="<?php echo @$media["href"]; ?>">
+          <img class="img-responsive" src="<?php echo $srcMainImg; ?>" />
+        </a>
+      <?php } ?>
+      <div class="timeline-heading text-center <?php echo $classHeading; ?>">
            	<h5 class="text-left srcMedia">
           		<small class="ilyaL">
 
@@ -120,7 +147,9 @@
                 </div>
                 
               </small>  
-              <?php if (@Yii::app()->session["userId"]){ ?>
+              <?php if (@Yii::app()->session["userId"]){ 
+                if($class=="timeline-inverted"){}
+                ?>
                   
                   <div class="btn dropdown pull-right padding-5">
                     <strong> • </strong> 
@@ -149,27 +178,15 @@
 
               </a>
             </h5>
-          
+          </div>
           <div class="timeline-body padding-10 col-md-12 text-left">
             <!-- <h4><a target="_blank" href="<?php echo @$media["href"]; ?>"><?php echo @$media["title"]; ?></a></h4> -->
-            <?php if(@$media["type"]=="activityStream") { ?>
-              <?php $faIcon = Element::getFaIcon($media["object"]["type"]) ? 
-                              Element::getFaIcon($media["object"]["type"]) : ""; ?>
-              <h4 class="no-padding">
-                <a target="_blank" 
-                   href="#page.type.<?php echo @$media["object"]["type"]; ?>.id.<?php echo @$media["object"]["id"]; ?>">
-                   <i class="fa fa-<?php echo $faIcon; ?>"></i> <?php echo @$media["name"]; ?>
-                </a>
-              </h4>
-              <?php if(@$media["startDate"]) { ?>
-                <?php echo date(@$media["startDate"]->sec); ?>
-              <?php } ?>
-            <?php } ?>
+            <div id="newsActivityStream<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent" ></div>
             <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent" ></div>
           </div>
 
-          <?php if(@$srcMainImg != ""){ ?>
-            <a class="inline-block bg-black" target="_blank" href="#page.type.<?php echo @$media["object"]["type"]; ?>.id.<?php echo @$media["object"]["id"]; ?>">
+          <?php if(@$srcMainImg != "" && $media["type"] != "activityStream"){ ?>
+            <a class="inline-block bg-black" target="_blank" href="<?php echo @$media["href"]; ?>">
             <img class="img-responsive" src="<?php echo $srcMainImg; ?>" />
             </a>
           <?php } ?>
@@ -181,11 +198,6 @@
           <?php if(@$media["media"]){ ?>
             <div id="result<?php echo $key ?>" class="bg-white results col-sm-12"></div>
           <?php } ?>
-
-
-        
-      </div>
-      
       
       <div class="timeline-footer pull-left col-md-12 col-sm-12 col-xs-12 padding-top-5">
           <!-- <a class="btn-comment-media" data-media-id="<?php //echo $media["_id"]; ?>"><i class="fa fa-comment"></i> Commenter</a> -->
@@ -207,9 +219,58 @@
     var idSession = "<?php echo Yii::app()->session["userId"] ?>";
     var uploadUrl = "<?php echo Yii::app()->params['uploadUrl'] ?>";
     var docType="<?php echo Document::DOC_TYPE_IMAGE; ?>";
+    var months = ["<?php echo Yii::t('common','january') ?>", "<?php echo Yii::t('common','febuary') ?>", "<?php echo Yii::t('common','march') ?>", "<?php echo Yii::t('common','april') ?>", "<?php echo Yii::t('common','may') ?>", "<?php echo Yii::t('common','june') ?>", "<?php echo Yii::t('common','july') ?>", "<?php echo Yii::t('common','august') ?>", "<?php echo Yii::t('common','september') ?>", "<?php echo Yii::t('common','october') ?>", "<?php echo Yii::t('common','november') ?>", "<?php echo Yii::t('common','december') ?>"];
     var contentKey = "<?php echo Document::IMG_SLIDER; ?>";
     jQuery(document).ready(function() {
       $.each(news, function(e,v){
+        if(v.type == "activityStream"){
+          //if(v.object.type=="events" || v.object.type=="needs"){
+            console.log(v.object);
+            if(v.startDate && v.endDate){
+              if(typeof(v.startDate) == "object")
+                var startDate = new Date( parseInt(v.startDate.sec)*1000 );
+              else if(typeof(v.startDateSec) != "undefined")
+                var startDate = new Date( parseInt(v.startDateSec)*1000 );
+              else
+                var startDate = new Date( parseInt(v.startDate)*1000 );
+              var startMonth = months[startDate.getMonth()];
+              var startDay = (startDate.getDate() < 10) ?  "0"+startDate.getDate() : startDate.getDate();
+              if(typeof(v.endDate) == "object")
+                var endDate = new Date( parseInt(v.endDate.sec)*1000 );
+              else if(typeof(v.endDateSec) != "undefined")
+                var endDate = new Date( parseInt(v.endDateSec)*1000 );
+              else
+                var endDate = new Date( parseInt(v.endDate)*1000 );
+              var endMonth = months[endDate.getMonth()];
+              var endDay = (endDate.getDate() < 10) ?  "0"+endDate.getDate() : endDate.getDate();
+            }
+            var objectLocality = "";
+            if (v.object.type=="needs")
+              objectLocality=v.target.address.addressLocality;
+            else 
+              if(typeof v.scope != "undefined")
+              objectLocality=v.scope.address.addressLocality;
+       
+            //var hour = (startDate.getHours() < 10) ?  "0"+startDate.getHours() : startDate.getHours();
+            //var min = (startDate.getMinutes() < 10) ?  "0"+startDate.getMinutes() : startDate.getMinutes();
+            //var dateStr = day + ' ' + month + ' ' + year + ' ' + hour + ':' + min;
+            activityHtml = '<a href="#page.type.'+v.object.type+'.id.'+v.object.id+'" class="lbh col-md-12 col-sm-12 col-xs-12 no-padding">';
+            if (typeof(startDay)!="undefined"){
+              activityHtml += '<div class="col-md-3 col-sm-3 col-xs-3 no-padding text-center">'+
+                    '<span class="text-large text-red text-bold light-text no-margin">'+startDay+'</span><br/><span class="text-dark light-text no-margin" style="font-variant:small-caps;">'+startMonth+'</span>'+
+                  '</div>';
+            }
+            activityHtml +=  '<div class="col-md-9  col-sm-9 col-xs-9 no-padding">'+
+                    '<span class="text-dark light-text activity-title no-margin">'+v.name+'</span><br/>';
+            if (typeof(startDay)!= "undefined" && typeof(endDay) != "undefined"){ 
+            activityHtml +=    '<span style="color: #8b91a0 !important;"><i class="fa fa-calendar"></i> '+startDay+' '+startMonth+' • '+endDay+' '+endMonth+' • ';
+            }
+            activityHtml +=    '<i class="fa fa-map-marker"></i> '+objectLocality+'</span>'+
+                  '</div>'+
+                '</a>';
+          $("#newsActivityStream"+e).html(activityHtml);
+        }
+
         if(actionController=="save"){
           if($("#news-list").children().eq(0).hasClass("timeline-inverted")){
             alert("has");
@@ -219,7 +280,7 @@
             $("#news"+e).addClass("timeline-inverted");
           }
         }
-        if("undefined" != typeof v.text){
+        if("undefined" != typeof v.text && $){
           textHtml="";
           textNews="";
            if(v.text.length > 0)

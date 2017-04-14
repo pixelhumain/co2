@@ -144,9 +144,6 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
   var canManageNews = <?php echo json_encode(@$canManageNews) ?>;
   var idSession = "<?php echo Yii::app()->session["userId"] ?>";
 
-  var months = ["<?php echo Yii::t('common','january') ?>", "<?php echo Yii::t('common','febuary') ?>", "<?php echo Yii::t('common','march') ?>", "<?php echo Yii::t('common','april') ?>", "<?php echo Yii::t('common','may') ?>", "<?php echo Yii::t('common','june') ?>", "<?php echo Yii::t('common','july') ?>", "<?php echo Yii::t('common','august') ?>", "<?php echo Yii::t('common','september') ?>", "<?php echo Yii::t('common','october') ?>", "<?php echo Yii::t('common','november') ?>", "<?php echo Yii::t('common','december') ?>"];
-
-
   var uploadUrl = "<?php echo Yii::app()->params['uploadUrl'] ?>";
   var docType="<?php echo Document::DOC_TYPE_IMAGE; ?>";
   var contentKey = "<?php echo Document::IMG_SLIDER; ?>";

@@ -89,6 +89,11 @@
     max-height: 50px;
     overflow: hidden;
 }
+
+#sub-menu-left{
+    margin-top: 207px;
+    text-align: right;
+}
 @media screen and (max-width: 1024px) {
     #mainCategories .portfolio .portfolio-item{
         height: 110px;
@@ -98,7 +103,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 
     .category-search-link h4{
         font-size: 0.9em;

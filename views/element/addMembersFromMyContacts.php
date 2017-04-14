@@ -201,17 +201,17 @@
 </div>
 
 <div id="formSendMailInvite" class="hidden">
-	<div class="text-red"><i class="fa fa-ban"></i> Aucun résultat ne correspond à votre recherche</div>
+	<div class="text-red"><i class="fa fa-ban"></i> <?php echo Yii::t("common","No results match in your search"); ?></div>
 	<hr>
-	<h3 class='text-dark'><i class="fa fa-angle-down"></i> Inviter par mail</h3>
+	<h3 class='text-dark'><i class="fa fa-angle-down"></i> <?php echo Yii::t("common","Invite by mail"); ?></h3>
 	<div id="addMembers" style="line-height:40px; padding:0px;" autocomplete="off" submit='false'>
 		<input type="hidden" id="parentOrganisation" name="parentOrganisation" value="<?php echo (string)$parentId; ?>"/>
 	    <input type="hidden" id="memberId" name="memberId" value=""/>
         <div class="form-group" id="addMemberSection">
 
-        	<input type="radio" value="citoyens" name="memberType" data-fa="user" checked> <i class="fa fa-user"></i> un citoyen
+        	<input type="radio" value="citoyens" name="memberType" data-fa="user" checked> <i class="fa fa-user"></i> <?php echo Yii::t("common","a citizen"); ?>
         	<?php if($type != "events"){ ?>
-        		<input type="radio" value="organizations" name="memberType" data-fa="group" style="margin-left:25px;"> <i class="fa fa-group"></i> une organisation
+        		<input type="radio" value="organizations" name="memberType" data-fa="group" style="margin-left:25px;"> <i class="fa fa-group"></i> <?php echo Yii::t("common","an organization"); ?>
         	<?php } ?>
 			<div class="input-group">
 		      <span class="input-group-addon" id="basic-addon1">
@@ -233,9 +233,9 @@
 		      <select class="member-organization-type form-control text-left" autocomplete="off" id="organizationType" name="organizationType" value=""/>
 		    </div>
 		    <div class="col-md-12 no-padding">
-		    	<span id='isAdminDiv' ><input type="checkbox" id="memberIsAdmin" value="true"> <i class="fa fa-user-secret"></i> Ajouter en tant qu'admin</span>
+		    	<span id='isAdminDiv' ><input type="checkbox" id="memberIsAdmin" value="true"> <i class="fa fa-user-secret"></i> <?php echo Yii::t("common","Add as admin"); ?></span>
 		    	<button class="btn btn-primary pull-right" onclick="sendInvitationMailAddMember()">
-		    		<i class="fa fa-send"></i> Envoyer l'invitation
+		    		<i class="fa fa-send"></i> <?php echo Yii::t("common","Send invitation"); ?>
 		    	</button>
         	</div>
         	<div class="col-md-12 padding-15 text-right" id="loader-send-mail-invite" style="margin-bottom:10px;">
@@ -262,16 +262,16 @@ var members = <?php echo json_encode(@$members) ?>;
 
 var addLinkDynForm = {
 		"inputType" : "scope",
-  		"title1" : "Ajouter des membres ...",
-  		"title2" : "Parmis mes contacts ...",
-  		"title3" : "Autres ...",
-  		"btnCancelTitle" : "Fermer",
-  		"btnSaveTitle" : "Ajouter ces contacts",
-  		"btnResetTitle" : "Annuler tout",
+  		"title1" : trad["Add members ..."],
+  		"title2" : trad["Among my contacts ..."],
+  		"title3" : trad["Others ..."],
+  		"btnCancelTitle" : trad["Close"],
+  		"btnSaveTitle" : trad["Add this contacts"],
+  		"btnResetTitle" : trad["Cancel all"],
 
         "values" : myContactsMembers,
-        "mainTitle" : "Inviter vos contacts",
-        "labelBtnOpenModal" : "<span class='text-dark'><i class='fa fa-group'></i> Sélectionner parmis mes contacts</span>",
+        "mainTitle" : trad["Invite your contacts"],
+        "labelBtnOpenModal" : "<span class='text-dark'><i class='fa fa-group'></i> "+trad["Select among my contacts"]+"</span>",
         "contactTypes" : contactTypes
 };
 
@@ -288,7 +288,7 @@ jQuery(document).ready(function() {
 		$("#select-type-search-all").prop("checked", true);
 		$("#btn-save").removeClass("hidden");
 		$("#list-scroll-type").html('<i class="fa fa-search fa-4x padding-15 center-block text-grey"></i>');
-		$("#search-contact").attr("placeholder", "Recherchez un nom ou une addresse e-mail...");
+		$("#search-contact").attr("placeholder", trad["Research a name or e-mail address..."]);
 		addLinkSearchMode = "all";
 		filterContact($("#search-contact").val());
 	});
@@ -387,7 +387,7 @@ function bindEventScopeModal(){
 
 	$("#btn-cancel").click(function(){
 		if(newMemberInCommunity && (currentView=="detail" || currentView=="directory")) {
-			loadByHash(location.hash);
+			url.loadByHash(location.hash);
 		}
 	});
 	$("#btn-save").click(function(){
@@ -649,7 +649,6 @@ function autoCompleteEmailAddMember(searchValue){
         					$(".organization-type").hide();
         				}
         			});
-        			//$("#formSendMailInvite").removeClass("hidden");
         			
         		}else{
 	        		listContact = {"people" : data.citoyens, "organizations" : data.organizations};
@@ -751,11 +750,10 @@ function sendInvitation(){
         		$.each(data.newMembers, function(k, newMember){
 	        		mylog.log("neewsMens >>>>");
 	        		mylog.log(newMember);
-	        		//setValidationTable(newMember,newMember.childType, true);
-			        mapType = newMember.childType;
+	        		mapType = newMember.childType;
 			        if(newMember.childType=="<?php echo Person::COLLECTION ?>")
 			            mapType="people";
-			        //mapElements[mapType].push(newMember);
+			        mapElements.push(newMember);
 				});
 				if(typeof(mapUrl) != "undefined"){
 					if(typeof(mapUrl.detail.load) != "undefined" && mapUrl.detail.load)
@@ -763,7 +761,7 @@ function sendInvitation(){
 					if(typeof(mapUrl.directory.load) != "undefined" && mapUrl.directory.load)
 						mapUrl.directory.load = false;
 				}
-				loadByHash(location.hash);
+				url.loadByHash(location.hash);
 				
 				$.unblockUI();
         	}
@@ -815,7 +813,7 @@ function sendInvitationMailAddMember(){ mylog.log("sendInvitationMailAddMember")
                	mapType = data.newElementType;
                	if(data.newElementType=="<?php echo Person::COLLECTION ?>")
                		mapType="people";
-               	//mapElements[mapType].push(data.newElement);
+               	mapElements.push(data.newElement);
                	//Minus 1 on number of invit
                	if ($("#addMembers #memberId").val().length==0){
 	               	var count = parseInt($("#numberOfInvit").data("count")) - 1;

@@ -167,7 +167,6 @@
 			</li>
 			<li><hr></li>
 	<?php }	?>
-
 				
 	
 	<li class="">
@@ -261,7 +260,6 @@
 		<?php }  
 		} ?>
 
-			
 		<?php if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true))){ ?>
 			<li><hr></li>
 			<li class="">
@@ -282,3 +280,5 @@
 
 	<li><hr></li>
 </ul>
+
+

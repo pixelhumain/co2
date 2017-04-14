@@ -368,7 +368,13 @@ function validateConnection(parentType, parentId, childId, childType, linkOption
 		dataType: "json",
 		success: function(data) {
 			if (data.result) {
-				if (typeof callback == "function") callback(parentType, parentId, childId, childType, linkOption);
+				if (typeof callback == "function") 
+					callback(parentType, parentId, childId, childType, linkOption);
+				else{
+					toastr.success(data.msg);
+					url.loadByHash(location.hash);
+				}
+
 			} else {
 				toastr.error(data.msg);
 			}

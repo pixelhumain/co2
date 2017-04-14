@@ -978,7 +978,7 @@
 		this.Sig.modifLocalityContextMap = function(contextMap, element, type)
 	 	{
 	 		
-			mylog.warn("--------------- addContextMap ---------------------", contextMap, element, type);
+			mylog.log("--------------- modifLocalityContextMap ---------------------", contextMap, element, type);
 
 			if(typeof contextMap[type] == "undefined")
 				contextMap[type] = [];

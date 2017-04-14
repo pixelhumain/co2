@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : "Formulaire Point d'interet",
+	    title : "Créer un point d'interet",
 	    icon : "map-marker",
 	    type : "object",
 	    onLoads : {
@@ -11,10 +11,16 @@ dynForm = {
     				$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 	    		}
-	    	}
+	    	},
+	    	onload : function(){
+	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+	    	},
 	    },
 	    beforeSave : function(){
 	    	
+	    	if( $("#ajaxFormModal #section").val() )
+	    		$("#ajaxFormModal #type").val($("#ajaxFormModal #section").val());
+
 	    	if( typeof $("#ajaxFormModal #description").code === 'function' )  
 	    		$("#ajaxFormModal #description").val( $("#ajaxFormModal #description").code() );
 	    	if($('#ajaxFormModal #parentId').val() == "" && $('#ajaxFormModal #parentType').val() ){
@@ -33,13 +39,55 @@ dynForm = {
 		    	url.loadByHash( location.hash );
 		    }
 	    },
+	    actions : {
+	    	clear : function() {
+	    		
+	    		$("#ajaxFormModal #section, #ajaxFormModal #type, #ajaxFormModal #subtype").val("");
+
+	    		$(".breadcrumbcustom").html( "");
+	    		$(".sectionBtntagList").show(); 
+	    		$(".typeBtntagList").hide(); 
+	    		$(".subtypeSection").html("");
+	    		$(".subtypeSectioncustom").show();
+	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+	    	}
+	    },
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p><i class='fa fa-info-circle'></i> Un Point d'interet est un élément assez libre qui peut etre géolocalisé ou pas, qui peut etre rataché à une organisation, un projet ou un évènement.</p>",
+                html:"<p class='text-"+typeObj["poi"].color+"'>"+
+                		"Partagez librement toutes sortes d'informations<br>" +
+					    "Localisez-les pour les rendres accessibles à tous<br>" +
+					    "Et participez à la co-construction de votre territoire connecté !<hr>" +
+					 "</p>",
             },
-            type : typeObjLib.poiTypes,
-	        name : typeObjLib.name,
+            breadcrumb : {
+                inputType : "custom",
+                html:"",
+            },
+            sectionBtn :{
+                label : "Quel type de lieu souhaitez-vous localiser ? ",
+	            inputType : "tagList",
+                placeholder : "Choisir un type",
+                list : poi.sections,
+                trad : trad,
+                init : function(){
+                	$(".sectionBtn").off().on("click",function()
+	            	{
+	            		$(".typeBtntagList").show();
+	            		$(".sectionBtn").removeClass("active btn-dark-blue text-white");
+	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
+	            		$("#ajaxFormModal #section").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+						//$(".sectionBtn:not(.active)").hide();
+						
+						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
+						$(".sectionBtntagList").hide();
+						$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").show();
+	            	});
+	            }
+            },
+            type : typeObjLib.hidden,
+	        name : typeObjLib.name("poi"),
 	        image : typeObjLib.image(),
             description : typeObjLib.description,
             location : typeObjLib.location,

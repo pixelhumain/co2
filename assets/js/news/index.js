@@ -77,6 +77,7 @@ var loadStream = function(indexMin, indexMax){ mylog.log("loadStream");
 		    	mylog.log("LOAD NEWS BY AJAX");
 		    	//mylog.log(data.news);
 		    	if(data){
+		    		alert();
 					buildTimeLine (data.news, indexMin, indexMax);
 					bindTags();
 					if(typeof(data.limitDate.created) == "object")
@@ -441,10 +442,11 @@ function deleteNews(id, $this){
 		        	success: function(data){
 			        	if (data) {               
 							toastr.success(trad["successdeletenews"] + "!!");
-							liParent=$this.parents().eq(4);
+							$("#news"+id).fadeOut();
+							/*liParent=$this.parents().eq(4);
 							if (typeof(offset) != "undefined")
 								offset.top = offset.top-liParent.height();
-				        	liParent.fadeOut();
+				        	liParent.fadeOut();*/
 				        	
 						} else {
 				            toastr.error(trad["somethingwrong"] + " " + trad["tryagain"]);
@@ -613,7 +615,7 @@ function showFormBlock(bool){
 		$(".form-create-news-container .form-actions").show("fast");
 		$(".form-create-news-container .publiccheckbox").show("fast");
 		$(".form-create-news-container .tools_bar").show("fast");
-		$(".form-create-news-container .scopescope").show("fast");	
+		$(".form-create-news-container .scopescope").show("fast");
 		multiTagScopeLbl("send");
 		$('.extract_url').show();
 		$(".form-create-news-container #falseInput").hide();
@@ -1023,16 +1025,17 @@ function saveNews(){
 				mylog.log(newNews);
 				$.ajax({
 			        type: "POST",
-			        url: baseUrl+"/"+moduleId+"/news/save",
-			        dataType: "json",
+			        url: baseUrl+"/"+moduleId+"/news/save?tpl=co2",
+			        //dataType: "json",
 			        data: newNews,
 					type: "POST",
 			    })
 			    .done(function (data) {
-		    		if(data.result)
+		    		if(data)
 		    		{
+		    			$("#news-list").prepend(data);
 		    			//if the news is post in a different month than last news and current month
-		    			if(data.object.date.sec) {
+		    			/*if(data.object.date.sec) {
 		    				var monthSection = new Date( parseInt(data.object.date.sec)*1000 );
 		    				
 		    				//if we need a month space to insert the news
@@ -1045,7 +1048,7 @@ function saveNews(){
 							insertNews(data.object);
 						}
 						$("#get_url").height(50);
-						$.unblockUI();
+						$.unblockUI();*/
 						toastr.success(trad["successsavenews"]);
 		    		}
 		    		else 
@@ -1218,36 +1221,50 @@ function getMediaImages(o,newsId,authorId,targetName){
 		}
 	}
 	else if(countImages==3){
+		col0="6";
+		height0="400";
+		absoluteImg="position:absolute;";
+		if (typeof liveScopeType != "undefined" && liveScopeType == "global"){
+			col0="12";
+			height0="260";
+			absoluteImg="";
+		}
 		for(var i in o.images){
 			path=baseUrl+"/"+uploadUrl+moduleId+"/"+o.images[i].folder+"/"+o.images[i].name;
 			if(i==0){
-			html+="<div class='col-md-6 padding-5' style='position:relative;height:400px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a></div>";
+			html+="<div class='col-md-"+col0+" padding-5' style='position:relative;height:"+height0+"px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"min-height:100%;min-width:100%;'></a></div>";
 			}else{
-			html+="<div class='col-md-6 padding-5' style='position:relative; height:200px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a></div>";	
+			html+="<div class='col-md-6 padding-5' style='position:relative; height:200px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"min-height:100%;min-width:100%;'></a></div>";	
 			}
 		}
 	}
 	else if(countImages==4){
+		absoluteImg="position:absolute;";
+		if (typeof liveScopeType != "undefined" && liveScopeType == "global")
+			absoluteImg="";
 		for(var i in o.images){
 			path=baseUrl+"/"+uploadUrl+moduleId+"/"+o.images[i].folder+"/"+o.images[i].name;
-			html+="<div class='col-md-6 padding-5' style='position:relative;height:250px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;height:auto;'></a></div>";
+			html+="<div class='col-md-6 padding-5' style='position:relative;height:250px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"min-height:100%;min-width:100%;height:auto;'></a></div>";
 		}
 	}
 	else if(countImages>=5){
+		absoluteImg="position:absolute;";
+		if (typeof liveScopeType != "undefined" && liveScopeType == "global")
+			absoluteImg="";
 		for(var i in o.images){
 			path=baseUrl+"/"+uploadUrl+moduleId+"/"+o.images[i].folder+"/"+o.images[i].name;
 			if(i==0)
-				html+="<div class='col-md-12 no-padding'><div class='col-md-6 padding-5' style='position:relative;height:260px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a></div>";
+				html+="<div class='col-md-12 no-padding'><div class='col-md-6 padding-5' style='position:relative;height:260px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"min-height:100%;min-width:100%;'></a></div>";
 			else if(i==1){
-				html+="<div class='col-md-6 padding-5' style='position:relative;height:260px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a></div></div>";
+				html+="<div class='col-md-6 padding-5' style='position:relative;height:260px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"height:100%;width:100%;'></a></div></div>";
 			}
 			else if(i<5){
-				html+="<div class='col-md-4 padding-5' style='position:relative;height:160px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='position:absolute;min-height:100%;min-width:100%;'></a>";
+				html+="<div class='col-md-4 padding-5' style='position:relative;height:160px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"height:100%;width:100%;'>";
 				if(i==4 && countImages > 5){
 					diff=countImages-5;
-					html+="<div style='position: absolute;width: 100%;height: 100%;background-color: rgba(0,0,0,0.4);color: white;text-align: center;line-height: 150px;font-size: 50px;'><span>+ "+diff+"</span></div>";
+					html+="<div style='position: absolute;top:5px;left:5px;right:5px;bottom:5px;background-color: rgba(0,0,0,0.4);color: white;text-align: center;line-height: 150px;font-size: 50px;'><span>+ "+diff+"</span></div>";
 				}
-				html+="</div>";
+				html+="</a></div>";
 			} else{
 				html+="<a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'></a>";	
 			}

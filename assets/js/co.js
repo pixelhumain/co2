@@ -51,6 +51,7 @@ function checkPoll(){
 		countPoll++;
 	}
 }
+
 function bindRightClicks() { 
 	$.contextMenu({
 	    selector: ".add2fav",
@@ -367,7 +368,13 @@ function validateConnection(parentType, parentId, childId, childType, linkOption
 		dataType: "json",
 		success: function(data) {
 			if (data.result) {
-				if (typeof callback == "function") callback(parentType, parentId, childId, childType, linkOption);
+				if (typeof callback == "function") 
+					callback(parentType, parentId, childId, childType, linkOption);
+				else{
+					toastr.success(data.msg);
+					url.loadByHash(location.hash);
+				}
+
 			} else {
 				toastr.error(data.msg);
 			}
@@ -529,7 +536,6 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 	}
 }		
 
-
 var CoAllReadyLoad = false;
 var url = {
 	loadableUrls : {
@@ -542,12 +548,40 @@ var url = {
 		"events" : "e",
 		"projects" : "pr",
 		"cities" : "c",
+		"classified":"cl"
 		/*"entry" : "s",
 		"vote" : "v",
 		"action" : "a",
 		"rooms" : "r",*/
-		"classified":"cl"
 	},
+	shortVal : [
+		"p",
+		"poi",
+		"s",
+		"o",
+		"e",
+		"pr",
+		"c",
+		"cl"
+		/*"entry" : "s",
+		"vote" : "v",
+		"action" : "a",
+		"rooms" : "r",*/
+	],
+	shortKey : [
+		"citoyens",
+		"poi" ,
+		"siteurl",
+		"organizations",
+		"events",
+		"projects" ,
+		"cities" ,
+		"classified"
+		/*"entry" : "s",
+		"vote" : "v",
+		"action" : "a",
+		"rooms" : "r",*/
+	],
 	map : function (hash) {
 		hashT = hash.split('.');
 		return {
@@ -565,9 +599,9 @@ var url = {
 	checkAndConvert : function (hash) {
 		hashT = hash.split('_');
 		mylog.log("-------checkAndConvert : ",hash,hashT);
-		pos = $.inArray( hashT[0].substring(1) , Object.values( url.short ) );
+		pos = $.inArray( hashT[0].substring(1) , url.shortVal );
 		if( pos >= 0 ){
-			type = Object.keys( url.short )[pos];
+			type = url.shortKey[pos];
 			hash =  "#page.type."+type+".id."+hashT[1];
 			mylog.log("converted hash : ",hash);
 		} 
@@ -1500,6 +1534,11 @@ function markdownToHtml(str) {
 	return res;
 }
 
+function convertMardownToHtml(text) { 
+	var converter = new showdown.Converter();
+	return converter.makeHtml(text);
+}
+
 
 function activateMarkdown(elem) { 
 	mylog.log("activateMarkdown", elem);
@@ -1507,15 +1546,13 @@ function activateMarkdown(elem) {
 	markdownParams = {
 			savable:false,
 			iconlibrary:'fa',
+			language:'fr',
 			onPreview: function(e) {
 				var previewContent = "";
-			    mylog.log(e.isDirty());
-			    if (e.isDirty()) {
-			    	var converter = new showdown.Converter(),
-			    		text      = e.getContent(),
-			    		previewContent      = converter.makeHtml(text);
+				if (e.isDirty()) {
+			    	previewContent = convertMardownToHtml(e.getContent());
 			    } else {
-			    	previewContent = "Default content";
+			    	previewContent = convertMardownToHtml($(elem).val());
 			    }
 			    return previewContent;
 		  	},
@@ -1536,6 +1573,25 @@ function activateMarkdown(elem) {
 
 			$.getScript( baseUrl+"/plugins/bootstrap-markdown/js/bootstrap-markdown.js", function( data, textStatus, jqxhr ) {
 				mylog.log("HERE", elem);
+
+				$.fn.markdown.messages['fr'] = {
+					'Bold': trad.Bold,
+					'Italic': trad.Italic,
+					'Heading': trad.Heading,
+					'URL/Link': trad['URL/Link'],
+					'Image': trad.Image,
+					'List': trad.List,
+					'Preview': trad.Preview,
+					'strong text': trad['strong text'],
+					'emphasized text': trad['strong text'],
+					'heading text': trad[''],
+					'enter link description here': trad['enter link description here'],
+					'Insert Hyperlink': trad['Insert Hyperlink'],
+					'enter image description here': trad['enter image description here'],
+					'Insert Image Hyperlink': trad['Insert Image Hyperlink'],
+					'enter image title here': trad['enter image title here'],
+					'list text here': trad['list text here']
+				};
 				$(elem).markdown(markdownParams);
 			});
 
@@ -1545,6 +1601,8 @@ function activateMarkdown(elem) {
 		mylog.log("activateMarkdown else");
 		$(elem).markdown(markdownParams);
 	}
+
+	$(elem).before('La syntaxe Mardown utilisé pour la description. Si vous souhaitez <a href="https://michelf.ca/projets/php-markdown/syntaxe/" target="_blank">en savoir plus</a>');
 }
 
 function  firstOptions() { 
@@ -2276,7 +2334,7 @@ var elementLib = {
 			formData.geoPosition = centerLocation.geoPosition;
 			if( elementLocations.length ){
 				$.each( elementLocations,function (i,v) { 
-					if( jsonHelper.notNull( "v.center") )
+					if( typeof v.center != "undefined" )
 						elementLocations.splice(i, 1);
 				});
 				formData.addresses = elementLocations;
@@ -2483,6 +2541,11 @@ var elementLib = {
 				elementLib.starBuild(afterLoad,data);
 			},afterLoad, data);
 		} else {
+			elementLib.openFormAfterLogin = {
+				type : type, 
+				afterLoad : afterLoad,
+				data : data
+			};
 			toastr.error("Vous devez être connecté pour afficher les formulaires de création");
 			$('#modalLogin').modal("show");
 		}
@@ -2528,7 +2591,7 @@ var elementLib = {
 		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(elementLib.elementObj.bgClass);
 		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
 		$("#ajax-modal-modal-title").removeClass("text-green").removeClass("text-purple").removeClass("text-orange").removeClass("text-azure");
-		$(".modal-header").removeClass("bg-purple bg-green bg-orange bg-yellow bg-lightblue ").addClass(elementLib.elementObj.titleClass);
+		$(".modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-lightblue ").addClass(elementLib.elementObj.titleClass);
 	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
@@ -2736,6 +2799,7 @@ var typeObjLib = {
     	options : organizationTypes
     },
    	avancementProject :{
+   		label : "L'avancement du project",
     	inputType : "select",
     	placeholder : "Avancement du projet",
     	options : avancementProject
@@ -2755,14 +2819,14 @@ var typeObjLib = {
     	}
     },
     image :function(str) { 
-    	gotoUrl = (str) ? str : location.hash;
+    	gotoUrl = (str) ? str+uploadObj.id : location.hash;
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	elementLib.closeForm();
 		    	//alert(gotoUrl+uploadObj.id);
-	            url.loadByHash( gotoUrl+uploadObj.id );	
+	            url.loadByHash( gotoUrl );	
 		    	}
     	}
     },
@@ -2782,7 +2846,8 @@ var typeObjLib = {
     shortDescription : {
         inputType : "textarea",
 		placeholder : "...",
-		label : "Description court"
+		label : "Description courte",
+		rules : { maxlength: 140 }
     },
     tags : function(list) { 
     	tagsL = (list) ? list : tagsList;
@@ -2793,6 +2858,19 @@ var typeObjLib = {
 			label : "Ajouter quelques mots clés"
 		}
 	},
+	password : function  (title, rules) {  
+    	var title = (title) ? title : trad["New password"];
+    	var ph = "";
+    	var rules = (rules) ? rules : { required : true } ;
+	    var res = {
+	    	label : title,
+	    	inputType : "password",
+	    	placeholder : ph,
+	    	rules : rules
+	    }
+	    return res;
+	},
+
 	location : {
 		label :"Localisation",
        inputType : "location"
@@ -2800,20 +2878,23 @@ var typeObjLib = {
     email : {
 		placeholder : "Ajouter un e-mail",
 		inputType : "text",
-		label : "E-mail principal"
+		label : "E-mail principal",
+        rules : { email: true }
 	},
     emailOptionnel : {
 		placeholder : "Email du responsable",
 		inputType : "text",
 		init : function(){
 			$(".emailtext").css("display","none");
-		}
+		},
+        rules : { email: true }
 	},
 	url : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
         placeholder : "Site web",
-        label : "URL principale"
+        label : "URL principale",
+        rules : { url: true }
     },
     urlOptionnel : {
         inputType :"text",
@@ -2822,7 +2903,8 @@ var typeObjLib = {
         init:function(){
             getMediaFromUrlContent("#url", ".resultGetUrl0",0);
             $(".urltext").css("display","none");
-        }
+        },
+        rules : { url: true }
     },
     urls : {
     	label : "Ajouter des informations libres",
@@ -2964,9 +3046,12 @@ var typeObjLib = {
       	placeholder : "Saisir les numéros de fax séparer par une virgule"
     },
     price :{
-      	inputType : "text",
+      	inputType : "price",
       	label : "Prix",
-      	placeholder : "Prix ..."
+      	placeholder : "Prix ...",
+      	init : function(){
+    		$('input#price').filter_input({regex:'[0-9]'});
+      	}
     },
     contactInfo :{
       	inputType : "text",
@@ -2999,6 +3084,11 @@ var typeObjLib = {
         init:function(){
         	$(".invitedUserEmailtext").css("display","none");	 
         }
+    },
+    list :{
+    	inputType : "select",
+    	placeholder : "Type du point d'intérêt",
+    	options : poiTypes
     },
     poiTypes :{
     	inputType : "select",
@@ -3035,13 +3125,31 @@ var typeObjLib = {
     },
     get:function(type){
     	mylog.log("get", type);
+    	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
-    			return typeObj[ typeObj[type].sameAs ];
+    			obj = typeObj[ typeObj[type].sameAs ];
     		} else
-    			return typeObj[type];
-    	}else 
-    		return null;
+    			obj = typeObj[type];
+    		obj.name = (trad[type]) ? trad[type] : type;
+    	}
+    	return obj;
+    },
+    deepGet:function(type){
+    	mylog.log("get", type);
+    	var obj = null;
+    	if( jsonHelper.notNull("typeObj."+type)){
+    		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
+    			obj = typeObj[ typeObj[type].sameAs ];
+    		} else
+    			obj = typeObj[type];
+    		obj.name = (trad[type]) ? trad[type] : type;
+    	} else {
+    		//calculate only once
+    		//get list of all keys and sub keys
+    		//return corresponding map
+    	}
+    	return obj;
     }
 };
 
@@ -3105,12 +3213,21 @@ var typeObj = {
 			    }
 			}
 		}},
+	
 	"person" : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
 	"persons" : { sameAs:"person" },
 	"people" : { sameAs:"person" },
 	"citoyen" : { sameAs:"person" },
 	"citoyens" : { sameAs:"person" },
-	"poi":{  col:"poi",ctrl:"poi",color:"azure",	icon:"info-circle"},
+	
+	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle"},
+
+	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
+	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
+	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
+	
+	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
+
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
 	"organizations" : {sameAs:"organization"},
@@ -3133,7 +3250,7 @@ var typeObj = {
 	"rooms" : {col:"actions",ctrl:"room",color:"azure",icon:"gavel"},
 	"discuss" : {col:"actionRooms",ctrl:"room"},
 	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	"classified":{col:"classified",ctrl:"classified",color:"azure",	icon:"bullhorn",	},
+	"classified":{col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",	},
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
 	"video" : {icon:"video-camera",color:"dark"},
@@ -3499,12 +3616,12 @@ var CoSigAllReadyLoad = false;
 //ne sert plus, juste a savoir d'ou vient drait l'appel
 
 function KScrollTo(target){ 
-	mylog.log("target", target);
-	if(!$(target)) return;
-
-	$('html, body').stop().animate({
-        scrollTop: $(target).offset().top - 70
-    }, 800, '');
+	mylog.log("KScrollTo target", target);
+	if($(target).length>=1){
+		$('html, body').stop().animate({
+	        scrollTop: $(target).offset().top - 70
+	    }, 800, '');
+	}
 }
 
 var timerCloseDropdownUser = false;
@@ -3586,7 +3703,7 @@ function initKInterface(params){ console.log("initKInterface");
 
     bindLBHLinks();
 
-    $(".menu-name-profil").click(function(){
+    $(".btn-show-mainmenu").click(function(){
         $("#dropdown-user").addClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });

@@ -48,14 +48,14 @@ function showMarkerNewElement(modePC){
 		NE_country = currentUser.addressCountry;
 		mylog.log("NE_country", NE_country);
 	}
-	//console.log("coordinatesPreLoadedFormMap", coordinatesPreLoadedFormMap);
+	//mylog.log("coordinatesPreLoadedFormMap", coordinatesPreLoadedFormMap);
 	var coordinates = new Array(0, 0);
 	if(typeof contextData != "undefined" && contextData != null && typeof contextData.geo != "undefined" && contextData.geo != null && updateLocality == true)
 		coordinates = new Array(contextData.geo.latitude, contextData.geo.longitude);
 	
 	/*if(typeof coordinatesPreLoadedFormMap != "undefined")
 		coordinates = coordinatesPreLoadedFormMap;*/
-	console.log("coordinates", coordinates);
+	mylog.log("coordinates", coordinates);
 	
 	//efface le marker s'il existe
 	if(Sig.markerFindPlace != null) Sig.map.removeLayer(Sig.markerFindPlace);
@@ -263,7 +263,7 @@ function bindEventFormSig(){
 		if(notEmpty(saveCities[NE_insee])){
 			var obj = { city : saveCities[NE_insee] }
 			obj.city.geoShape = 1;
-			console.log(typeof obj.city.postalCodes);
+			mylog.log(typeof obj.city.postalCodes);
 			console.dir(obj.city.postalCodes);
 			if(uncomplete == true){
 				var postalCode = {};
@@ -277,7 +277,7 @@ function bindEventFormSig(){
 
 				obj.city.postalCodes.push(postalCode);
 			}
-			console.log(typeof obj.city.postalCodes);
+			mylog.log(typeof obj.city.postalCodes);
 			console.dir(obj.city.postalCodes);
 			$.ajax({
 		        type: "POST",
@@ -418,7 +418,7 @@ function autocompleteFormAddress(currentScopeType, scopeValue){
 		    				var lbl = valueCP.postalCode ;
 		    				var lat = valueCP.geo.latitude;
 		    				var lng = valueCP.geo.longitude;
-		    				var lblList = value.name + ", " + valueCP.name + ", " +valueCP.postalCode + ", " + value.osmID ;
+		    				var lblList = value.name + ", " + valueCP.name + ", " + valueCP.postalCode ;
 		    				html += "<li><a href='javascript:' data-type='"+currentScopeType+"' data-dep='"+dep+"' data-region='"+region+"' data-country='"+country+"' data-city='"+val+"' data-cp='"+lbl+"' data-lat='"+lat+"' data-lng='"+lng+"' data-insee='"+insee+"' class='item-city-found'>"+lblList+"</a></li>";
 		    			});
     				}else{
@@ -514,7 +514,7 @@ function autocompleteFormAddress(currentScopeType, scopeValue){
 }
 
 function add(complete, data, inseeGeoSHapes){
-	console.log("add", complete);
+	mylog.log("add", complete);
 	$('[name="newElement_insee"]').val(data.data("insee"));
 	$('[name="newElement_lat"]').val(data.data("lat"));
 	$('[name="newElement_lng"]').val(data.data("lng"));
@@ -860,14 +860,16 @@ function updateLocalityElement(){
 					
 					if(!addressesIndex){
 						//Header && ficheInfoElement
-						console.log("locality.address.streetAddress", locality.address.streetAddress);
-						$("#detailStreetAddress").html(locality.address.streetAddress);
+						mylog.log("locality.address.streetAddress", locality.address.streetAddress);
+						
+						// PH-dori
+						/*$("#detailStreetAddress").html(locality.address.streetAddress);
 						$("#detailCity").html(((locality.address.postalCode)?locality.address.postalCode : "")+" "+((locality.address.addressLocality) ? locality.address.addressLocality : ""));
-						//$("#detailCity").html(locality.address.addressLocality+", "+locality.address.postalCode);
+						
 						$("#detailCountry").html(" "+tradCountry[locality.address.addressCountry]);
 						$('#localityHeader').html(locality.address.addressLocality);
 						$('#pcHeader').html(locality.address.postalCode);
-						$('#countryHeader').html(tradCountry[locality.address.addressCountry]);
+						$('#countryHeader').html(tradCountry[locality.address.addressCountry]); 
 						$('#iconLocalityyHeader').removeClass("hidden");
 						$('#addressHeader').removeClass("hidden");
 						$(".detailMyCity").attr("href", "#city.detail.insee."+locality.address.codeInsee+".postalCode."+locality.address.postalCode);
@@ -875,10 +877,15 @@ function updateLocalityElement(){
 						$(".detailMyCity").attr("onclick", "");
 						$(".detailMyCity").removeClass("detailMyCity");
 						$("#detailMyCity").addClass("lbh");
-						$(".cobtn,.whycobtn,.cobtnHeader,.whycobtnHeader").hide();
+						$(".cobtn,.whycobtn,.cobtnHeader,.whycobtnHeader").hide(); */
+
+						// CO2 
+						$("#detailAddress").html(seenAddress(locality.address.streetAddress, locality.address.postalCode, locality.address.addressLocality, locality.address.addressCountry, locality.address.codeInsee));
+						$(".cobtn,.whycobtn").hide();
 
 						toastr.success(data.msg);
 						initData();
+						toastr.success(data.msg);
 						if(contextData.id != userId){
 							var typeMap = ((typeof contextData == "undefined" || contextData == null)?"citoyens":contextData.type) ;
 							if(typeMap == "citoyens")
@@ -899,21 +906,21 @@ function updateLocalityElement(){
 							currentUser.codeInsee = locality.address.codeInsee;
 							Sig.myPosition.position.latitude = locality.geo.latitude;
 							Sig.myPosition.position.longitude = locality.geo.longitude;
-							var url = window.location.href ;
+							var urlPage = window.location.href ;
 							$('.showIfCommucted').removeClass("hidden");
-							if(url.indexOf("#person.detail.id."+userId) == -1) {
-								url.loadByHash("#person.detail.id."+userId);
+							if(urlPage.indexOf("#page.type.citoyens.id."+userId) == -1) {
+								url.loadByHash("#page.type.citoyens.id."+userId+".view.detail");
 							}else{
 								Sig.restartMap();
 								Sig.showMapElements(Sig.map, contextMap);
-								url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+								url.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 							}
 
 						}
 					}else{
 						initData();
 						toastr.success(data.msg);
-						url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+						url.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					}
 					
 		    	}else{
@@ -931,6 +938,14 @@ function updateLocalityElement(){
 		initData();
 	}
 	
+}
+
+function seenAddress(street, cp, city, country, insee){
+	var val = "" ;
+	val += ( ( notEmpty(street)  ) ? street+"<br/>": ( (notEmpty(insee) ) ? "": trad.UnknownLocality ) );
+	val += ( ( notEmpty(cp)  ) ?  cp + ", " : "") + " " + ( ( notEmpty(city) ) ?  city : "")  ;	
+	val += ( ( notEmpty(country) && notEmpty(tradCountry[ country ]) ) ? ", " + tradCountry[ country ] : "" ) ;
+	return val ;
 }
 
 // Pour effectuer une recherche a la Réunion avec Nominatim, il faut choisir le code de la France, pas celui de la Réunion
@@ -1059,7 +1074,7 @@ function preLoadAddress(hide, country, insee, city, postalCode, lat, lng, street
 }
 
 
-function getAddressObj(){ console.log("GET ADDRESS OBJ INSEE : ", NE_insee);
+function getAddressObj(){ mylog.log("GET ADDRESS OBJ INSEE : ", NE_insee);
 	if(notEmpty(NE_insee)){
 		var	locationObj = {
 				address : {

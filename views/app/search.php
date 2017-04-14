@@ -36,38 +36,7 @@
 ?>
 
 <style>
-    #page .bg-dark {
-        color: white !important;
-        background-color: #3C5665 !important;
-    }
-    #page .bg-red{
-        background-color:#E33551 !important;
-        color:white!important;
-    }
-    #page .bg-blue{
-        background-color: #5f8295 !important;
-        color:white!important;
-    }
-    #page .bg-green{
-        background-color:#93C020 !important;
-        color:white!important;
-    }
-    #page .bg-orange{
-        background-color:#FFA200 !important;
-        color:white!important;
-    }
-    #page .bg-yellow{
-        background-color:#FFC600 !important;
-        color:white!important;
-    }
-    #page .bg-turq{
-        background-color: #229296 !important;
-        color:white!important;
-    }
-    #page .bg-purple{
-        background-color:#8C5AA1 !important;
-        color:white!important;
-    }
+    
     #page #dropdown_search{
     	min-height:500px;
         /*margin-top:30px;*/
@@ -164,6 +133,19 @@
     .searchEntityContainer.pull-left.classified{
         clear: left;
     }
+
+    .carousel-inner > .item > img.img-responsive{
+        display: inline !important;
+        max-height: 400px !important;
+    }
+
+    .btn-select-type-anc.active,
+    .btn-select-type-anc:active,
+    .btn-select-type-anc:focus{
+        color: white !important;
+        background-color: #2C3E50;
+    }
+
 </style>
 
 
@@ -288,7 +270,7 @@
                         </h4>
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="NGO" data-type="organization"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-green"><i class="fa fa-group padding-bottom-10"></i><br>
                                     <span class="font-light"> Association</span>
                                 </h2>
@@ -307,7 +289,7 @@
                         </a>
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="LocalBusiness" data-type="organization"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-azure"><i class="fa fa-industry padding-bottom-10"></i><br>
                                     <span class="font-light"> Entreprise</span>
                                 </h2>
@@ -326,7 +308,7 @@
                         </a>
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="Group" data-type="organization"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-turq"><i class="fa fa-circle-o padding-bottom-10"></i><br>
                                     <span class="font-light"> Groupe</span>
                                 </h2>
@@ -346,7 +328,7 @@
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" 
                             data-ktype="project" data-type="project"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-purple"><i class="fa fa-lightbulb-o padding-bottom-10"></i><br>
                                     <span class="font-light"> Projet</span>
                                 </h2>
@@ -412,7 +394,7 @@ jQuery(document).ready(function() {
             }
 
             initTypeSearch(typeD);
-
+            mylog.log("search.php",searchType);
             setHeaderDirectory(typeD);
             loadingData = false;
             startSearch(0, indexStepInit, searchCallback);
@@ -423,9 +405,12 @@ jQuery(document).ready(function() {
             KScrollTo("#content-social");
         });
          
-        <?php if(@$type == "classified"){ ?>
+         //anny double section filter directory
+        <?php if(@$type == "classified" || @$type == "place"  ){ ?>
             initClassifiedInterface();
         <?php } ?>
+
+        bindLeftMenuFilters();
 
         //console.log("init Scroll");
         $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
@@ -501,6 +486,12 @@ jQuery(document).ready(function() {
     $(".main-btn-create").click(function(){
         currentKFormType = $(this).data("ktype");
         var type = $(this).data("type");
+
+        if(type=="all"){
+            $("#dash-create-modal").modal("show");
+            return;
+        }
+
         if(type=="events") type="event";
         if(type=="vote") type="entry";
         elementLib.openForm(type);
@@ -513,7 +504,7 @@ jQuery(document).ready(function() {
     if(page == "annonces" || page == "agenda" || page == "power"){
         setTimeout(function(){
             KScrollTo("#content-social");  
-        }, 2000);
+        }, 1000);
     }
     $(".tooltips").tooltip();
 
@@ -537,23 +528,25 @@ function initTypeSearch(typeInit){
     }
 }
 
-<?php 
-    if(@$type == "classified"){
-    $freedomSections = CO2::getContextList("freedomSections");
-?>
-var freedomCategories = <?php echo json_encode($freedomSections); ?>
-<?php } ?>
-
+/* -------------------------
+CLASSIFIED
+----------------------------- */
 var section = "";
 var classType = "";
 var classSubType = "";
-function initClassifiedInterface(){
+function initClassifiedInterface(){ return;
+    classified.currentLeftFilters = null;
+    $('#menu-section-'+typeInit).removeClass("hidden");
+    $("#btn-create-classified").click(function(){
+         elementLib.openForm('classified');
+    });    
+}
 
-    $('#menu-section-classified').removeClass("hidden");
+function bindLeftMenuFilters () { 
 
-    $(".btn-select-type-anc").click( function()
+    $(".btn-select-type-anc").off().on("click", function()
     {    
-        searchType = [ "classified" ];
+        searchType = [ typeInit ];
         indexStepInit = 100;
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
         $(".keycat").addClass("hidden");
@@ -562,23 +555,59 @@ function initClassifiedInterface(){
         section = $(this).data("type-anc");
         sectionKey = $(this).data("key");
         //alert("section : " + section);
+
+        if( sectionKey == "forsale" || sectionKey == "forrent"){
+            $("#section-price").show(200);
+            KScrollTo("#section-price");
+        }
+        else {
+            $("#section-price").hide();
+            $("#priceMin").val("");
+            $("#priceMax").val("");
+            KScrollTo("#dropdown_search");
+        }
+
+        /*
         if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
             sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
             //$(".subsub").show(300);
             $('#searchTags').val(section);
-            //KScrollTo(".top-page");
+            //KScrollTo("#section-price");
             startSearch(0, indexStepInit, searchCallback); 
-        } 
+        } */
+        if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
+            //alert('build left menu'+classified.sections[sectionKey].filters);
+            classified.currentLeftFilters = classified.sections[sectionKey].filters;
+            var filters = classified[ classified.currentLeftFilters ]; 
+            var what = { title : classified.sections[sectionKey].label, 
+                         icon : classified.sections[sectionKey].icon }
+            directory.sectionFilter( filters, ".classifiedFilters",what);
+            bindLeftMenuFilters ();
+            
+        }
+        else if(classified.currentLeftFilters != null) {
+            //alert('rebuild original'); 
+            var what = { title : classified.sections[sectionKey].label, 
+                         icon : classified.sections[sectionKey].icon }
+            directory.sectionFilter( classified.filters, ".classifiedFilters",what);
+            bindLeftMenuFilters ();
+            classified.currentLeftFilters = null;
+        }
 
-        if(typeof freedomCategories[sectionKey] != "undefined") {
-            $(".label-category").html("<i class='fa fa-"+ freedomCategories[sectionKey]["icon"] + "'></i> " + freedomCategories[sectionKey]["label"]);
-            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+freedomCategories[sectionKey]["color"])
+        $('#searchTags').val(section);
+        //KScrollTo(".top-page");
+        startSearch(0, indexStepInit, searchCallback); 
+
+
+        if(typeof classified.sections[sectionKey] != "undefined") {
+            $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]);
+            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+classified.sections[sectionKey]["color"])
             $(".fa-title-list").removeClass("hidden");
         }
     });
 
-    $(".btn-select-category-1").click(function(){
-        searchType = [ "classified" ];
+    $(".btn-select-category-1").off().on("click", function(){
+        searchType = [ typeInit ];
         $(".btn-select-category-1").removeClass("active");
         $(this).addClass("active");
 
@@ -586,31 +615,47 @@ function initClassifiedInterface(){
         $(".keycat").addClass("hidden");
         $(".keycat-"+classType).removeClass("hidden");   
 
-        ////alert("classType : "+classType);
+        //alert("classType : "+classType);
 
         $('#searchTags').val(section+","+classType);
         startSearch(0, indexStepInit, searchCallback);  
     });
 
-    $(".keycat").click(function(){
+    $(".keycat").off().on("click", function(){
 
-        searchType = [ "classified" ];
+        searchType = [ typeInit ];
         $(".keycat").removeClass("active");
         $(this).addClass("active");
         var classSubType = $(this).data("keycat");
         var classType = $(this).data("categ");
         //alert("classSubType : "+classSubType);
         $('#searchTags').val(section+","+classType+","+classSubType);
+        KScrollTo("#menu-section-classified");
         startSearch(0, indexStepInit, searchCallback);  
     });
 
-    $("#btn-create-classified").click(function(){
+
+    $("#btn-create-classified").off().on("click", function(){
          elementLib.openForm('classified');
     });
 
-    
-}
+    $("#priceMin").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
+    $("#priceMax").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
 
+    $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
+
+ }
+
+
+/* -------------------------
+END CLASSIFIED
+----------------------------- */
+
+
+
+/* -------------------------
+AGENDA
+----------------------------- */
 
 <?php if(@$type == "events"){ ?>
 var calendarInit = false;
@@ -668,5 +713,10 @@ function showResultInCalendar(mapElements){
 }
 
 <?php } ?>
+
+
+/* -------------------------
+END AGENDA
+----------------------------- */
 
 </script>

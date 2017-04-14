@@ -1,7 +1,11 @@
 
 <?php
 $cs = Yii::app()->getClientScript();
-
+$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+//header + menu
+$this->renderPartial($layoutPath.'header', 
+                    array(  "layoutPath"=>$layoutPath , 
+                            "page" => "admin") );
 Menu::moderate();
 $this->renderPartial('../default/panels/toolbar'); 
 
@@ -70,7 +74,7 @@ if(isset($comments) && is_array($comments))
 					
 ?>
 <!-- ************ DATATABLES ********************** -->
-<div class="panel panel-white" style="margin-top:40px">
+<div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding" style="margin-top:40px">
 	<div class="panel-heading border-light">
 		<h4 class="panel-title">
 		<i class="fa fa-globe fa-2x text-green"></i>

@@ -60,7 +60,9 @@ var trad = {
 "mustacceptCGU" : "<?php echo Yii::t("login","You must validate the CGU to sign up.") ?>",
 "usernamenotunique" : "<?php echo Yii::t("login","The user name is not unique : please change it.")?>",
 "somethingwentwrong" : "<?php echo Yii::t("login","Something went really bad : contact your administrator !")?>",
-"suredeletelocality" : "<?php echo Yii::t("common","Are you sure you want to delete the locality")?>",
+"suredeletelocality" : "<?php echo Yii::t("common","Are you sure you want to delete the locality ?")?>",
+"suredeletepersonlocality" : "<?php echo Yii::t('common',"Are you sure you want to delete the locality ? You can't vote anymore in the citizen council of your city.")?>",
+"updateParams" : "<?php echo Yii::t("common","Update Params") ?>",
 
 "udpateorganizer" : "<?php echo Yii::t("event","Update the organizer") ?>",
 "organizations" : "<?php echo Yii::t("common","organizations") ?>",
@@ -79,6 +81,9 @@ var trad = {
 "followers":"<?php echo Yii::t("common","followers"); ?>",
 "address" : "<?php echo Yii::t("common","Address") ?>",
 "classified" : "<?php echo Yii::t("common","classified") ?>",
+"place" : "<?php echo Yii::t("common","Places") ?>",
+"ressource" : "<?php echo Yii::t("common","Ressource") ?>",
+"poi" : "<?php echo Yii::t("common","Point of interest") ?>",
 
 "Technologie" : "Technologie",
 "Immobilier" : "Immobilier",
@@ -92,7 +97,7 @@ var trad = {
 "donation" : "Donner", 
 "forsale" : "Vendre",  
 "forrent" : "Louer", 
-"lookingfor" : "Recherche",  
+"lookingfor" : "Besoin",  
 "job" : "Emplois",
 
 "Project maturity" : "<?php echo Yii::t("project","Project maturity",null,Yii::app()->controller->module->id)?>",
@@ -100,6 +105,54 @@ var trad = {
 "started" : "<?php echo Yii::t("project","started",null,Yii::app()->controller->module->id)?>", 
 "development" : "<?php echo Yii::t("project","development",null,Yii::app()->controller->module->id)?>",
 "testing" : "<?php echo Yii::t("project","testing",null,Yii::app()->controller->module->id)?>",
+
+"notSpecified" : "<?php echo Yii::t("common","Not specified") ?>",
+"UnknownLocality" : "<?php echo Yii::t("common","Unknown Locality") ?>",
+
+"NGO" : "<?php echo Yii::t("common","NGO") ?>",
+"LocalBusiness" : "<?php echo Yii::t("common","LocalBusiness") ?>",
+"Group" :"<?php echo Yii::t("common","Group") ?>",
+"GovernmentOrganization" : "<?php echo Yii::t("common","GovernmentOrganization") ?>",
+
+"character(s)" : "<?php echo Yii::t("common","character(s)") ?>",
+"Change password" : "<?php echo Yii::t("common","Change password") ?>",
+
+
+'Bold' : "<?php echo Yii::t("common","Bold") ?>", 
+'Italic' : "<?php echo Yii::t("common","Italic") ?>", 
+'Heading' : "<?php echo Yii::t("common","Heading") ?>",
+'URL/Link' : "<?php echo Yii::t("common","URL/Link") ?>",
+'Image' : "<?php echo Yii::t("common","Image") ?>",
+'List' : "<?php echo Yii::t("common","List") ?>",
+'Preview' : "<?php echo Yii::t("common","Preview") ?>", 
+'strong text' : "<?php echo Yii::t("common","strong text") ?>", 
+'emphasized text' : "<?php echo Yii::t("common","emphasized text") ?>",
+'heading text' : "<?php echo Yii::t("common","heading text") ?>",
+'enter link description here' : "<?php echo Yii::t("common","enter link description here") ?>", 
+'Insert Hyperlink' : "<?php echo Yii::t("common","Insert Hyperlink") ?>",
+'enter image description here' : "<?php echo Yii::t("common","enter image description here") ?>",
+'Insert Image Hyperlink' : "<?php echo Yii::t("common","Insert Image Hyperlink") ?>",
+'enter image title here' : "<?php echo Yii::t("common","enter image title here") ?>",
+'list text here' : "<?php echo Yii::t("common","list text here") ?>",
+
+
+"Old password" : "<?php echo Yii::t("common","Old password") ?>",
+"New password" : "<?php echo Yii::t("common","New password") ?>",
+"Repeat your new password" : "<?php echo Yii::t("common","Repeat your new password") ?>",
+
+
+"Add members ..." : "<?php echo Yii::t("common","Add members ...") ?>",
+"Among my contacts ..." : "<?php echo Yii::t("common","Among my contacts ...") ?>",
+"Others ..." : "<?php echo Yii::t("common","Others ...") ?>",
+"Close" : "<?php echo Yii::t("common","Close") ?>",
+"Add this contacts" : "<?php echo Yii::t("common","Add this contacts") ?>",
+"Cancel all" : "<?php echo Yii::t("common","Cancel all") ?>",
+"Invite your contacts" : "<?php echo Yii::t("common","Invite your contacts") ?>",
+"Select among my contacts" : "<?php echo Yii::t("common","Select among my contacts") ?>",
+"Research a name or e-mail address..." : "<?php echo Yii::t("common","Research a name or e-mail address...") ?>",
+"Invitation  accept" : "<?php echo Yii::t("common","Invitation  accept") ?>",
+
+
 
 };
 

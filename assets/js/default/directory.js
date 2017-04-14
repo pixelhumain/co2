@@ -123,7 +123,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     };
 
     
-				
+    if($("#priceMin").val()!="") data.priceMin = $("#priceMin").val();
+    if($("#priceMax").val()!="") data.priceMax = $("#priceMax").val();
+    if($("#devise").val()!="") data.devise = $("#devise").val();
 
     if(searchSType != "")
       data.searchSType = searchSType;
@@ -155,7 +157,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         data: data,
         dataType: "json",
         error: function (data){
-             mylog.log("error autocomplete search"); mylog.dir(data);     
+             mylog.log("error autocomplete search"); mylog.dir(data);   
+             $("#dropdown_search").html(data.responseText);  
              //signal que le chargement est terminé
             loadingData = false;     
         },
@@ -178,7 +181,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                         "<i class='fa fa-angle-down'></i> " + totalData + " résultats ";
               str += "<small>";
               if(typeof headerParams != "undefined"){
-                $.each(searchType, function(key, val){
+                $.each( searchType, function(key, val){
+                  mylog.log("success autocomplete search",val);
                   var params = headerParams[val];
                   str += "<span class='text-"+params.color+"'>"+
                             "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
@@ -314,6 +318,10 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   function initBtnLink(){ mylog.log("initBtnLink");
       
     $('.tooltips').tooltip();
+    $(".dirStar").each(function(i,el){
+      collection.applyColor($(el).data('type'),$(el).data('id'));
+    });
+    bindLBHLinks();
   	//parcours tous les boutons link pour vérifier si l'entité est déjà dans mon répertoire
   	$.each( $(".followBtn"), function(index, value){
     	var id = $(value).attr("data-id");
@@ -617,8 +625,6 @@ var directory = {
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
-      
-
         if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
@@ -627,8 +633,7 @@ var directory = {
                   'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
                   " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
                       "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-                    "</a>";
-          
+                    "</a>";          
         }
 
         if(params.updated != null )
@@ -652,7 +657,14 @@ var directory = {
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
             str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
                       iconFaReply + params.name + 
-                   "</a>";                 
+                   "</a>";   
+
+            if( params.section ){
+              str += "<div class='entityType bold'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
+                if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+              str += "</div>";
+            }
+                                 
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
                  thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
@@ -711,8 +723,8 @@ var directory = {
         console.log("prev",p,pid);
 
         return {
-            prev : "<a href='"+p+"' data-modalshow='"+pid+"' class='lbhp text-dark'><i class='fa fa-4x fa-arrow-circle-left'></i> </a> ",
-            next : "<a href='"+n+"' data-modalshow='"+nid+"' class='lbhp text-dark'> <i class='fa fa-4x fa-arrow-circle-right'></i></a>"
+            prev : "<a href='"+p+"' data-modalshow='"+pid+"' class='lbhp text-dark pull-right margin-right-10 margin-left-10'><i class='fa fa-2x fa-arrow-circle-left'></i> </a> ",
+            next : "<a href='"+n+"' data-modalshow='"+nid+"' class='lbhp text-dark pull-right'> <i class='fa fa-2x fa-arrow-circle-right'></i></a>"
         }
     },
     // ********************************
@@ -721,6 +733,7 @@ var directory = {
     //TODO : ADD link to seller contact page
     previewedObj : null,
     preview : function(params,hash){
+
         
       directory.previewedObj = {
           hash : hash,
@@ -728,87 +741,131 @@ var directory = {
       };
       mylog.log("----------- preview",params,params.name, hash);
 
-      str = '<div class="row">'+
-              '<div class="col-lg-12 text-center" onclick="$(\'#\')">'+
-                  '<h2 class="text-'+typeObj[params.type].color+'"><i class="fa fa-'+typeObj[params.type].icon+' fa-2x padding-bottom-10"></i><br>'+
-                      '<span class="font-blackoutT"> '+trad[params.type]+'</span>'+
-                  '</h2>'+
-              '</div>'+
-          '</div><br/><br/>';
+      str = '';
+      // '<div class="row">'+
+      //         '<div class="col-lg-12 text-center" onclick="$(\'#\')">'+
+      //             '<h2 class="text-'+typeObj[params.type].color+'"><i class="fa fa-'+typeObj[params.type].icon+' fa-2x padding-bottom-10"></i><br>'+
+      //                 '<span class="font-blackoutT"> '+trad[params.type]+'</span>'+
+      //             '</h2>'+
+      //             '<hr>'+
+      //         '</div>'+
+      //     '</div><br/><br/>';
       
       // ********************************
       // NEXT PREVIOUS 
       // ********************************
       var nav = directory.findNextPrev(hash);
-      str += "<div class='col-xs-1 col-xs-offset-1'>"+nav.prev+"</div>";
-      
+      str += "<div class='col-xs-6 col-sm-2 col-md-3 pull-left text-right'></div>";
+      //str += "<div class='col-xs-6 col-sm-2 col-md-3 pull-right text-left visible-xs'>"+nav.next+"</div>";
       // ********************************
       // RIGHT SECTION
       // ********************************
-      str += "<div class='col-xs-6 '>";
+      str += "<div class='col-xs-12 col-sm-8 col-md-6 margin-top-15'>";
 
-      if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
-        str += '<div class="col-xs-6"><a class="thumb-info" href="'+baseUrl+params.profilImageUrl+'" data-title="" data-lightbox="all">'+
-                  "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
-               '</a></div>';
-
-      // ********************************
-      // LEFT SECTION
-      // ********************************
-      str += "<div class='col-xs-6'>";
-      
-        cat = (typeof params.category != "undefined") ? params.section+" > "+params.category : "";
-        if(params.type == "classified" && typeof params.category != "undefined")
-          params.ico = (typeof classifiedTypes[params.category] != "undefined") ? "fa-" + classifiedTypes[params.category]["icon"] : "";
+        // ********************************
+        // LEFT SECTION
+        // ********************************
+        str +=  "<div class='col-xs-12 text-left'>";
         
-        subtype = (typeof params.subtype != "undefined") ? params.subtype+" > " : "";
-        price = (typeof params.price != "undefined" && params.price != "") ? "<br/><i class='fa fa-money'></i> " + params.price : "";
-        
-        str += '<br><br><div class="row">'+
-                '<div class="padding-5">'+
-                    '<h2 class="text-dark no-margin hidden-xs" style="margin-top:5px!important;">'+
-                        cat+" <i class='fa "+ params.ico +"'></i><br/><br/>"+ 
-                        subtype+params.name +"<br/>"+
-                        price+
-                    '</h3>'+
-                '</div>'+
-            '</div><br/><br/>';
+          var devise = typeof params.devise != "undefined" ? params.devise : "";
+          var price = (typeof params.price != "undefined" && params.price != "") ? 
+                        "<br/><i class='fa fa-money'></i> " + params.price + " " + devise : "";
+          
+          str += "<h4 class='text-azure'>"+price+"</h4>";
 
-        if(typeof params.description != "undefined" && params.description != "")
-            str += "<div class=''>" + params.description + "</div>";
+          if(typeof params.category != "undefined"){
+              str += "<div class='entityType text-dark'><span class='bold uppercase'>" + params.section + "</span> > "+params.category;
+                if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+              str += "</div><hr>";
+            }
 
-            var thisLocality = "";
-            if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
-                                  "<i class='fa fa-home'></i> " + params.fullLocality + 
-                                "</a>";
-            //else thisLocality = "<br>";
-            
-            str += thisLocality;
+          if(typeof params.name != "undefined" && params.name != "")
+              str += "<div class='bold text-black' style='font-size:20px;'>"+ 
+                        "<div class='col-md-8 col-sm-8 col-xs-7 no-padding margin-top-10'>"+params.name + "</div>" +
+                        "<div class='col-md-4 col-sm-4 col-xs-5 no-padding'>"+ 
+                        nav.next+
+                        nav.prev+
+                        "</div>" +
+                        "<br>"+
+                    "</div>";
 
-            if(typeof params.contactInfo != "undefined" && params.contactInfo != "")
-            str += "<div class='entityType letter-green'><i class='fa fa-address-card'></i> " + params.contactInfo + "</div>";
+          if(typeof params.description != "undefined" && params.description != "")
+              str += "<div class='col-md-12 col-sm-12 col-xs-12 no-padding pull-left'><hr>" + params.description + "<hr></div>";
+
          
-            str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+          var thisLocality = "";
+          if(params.fullLocality != "" && params.fullLocality != " ")
+               thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
+                                "<i class='fa fa-home'></i> " + params.fullLocality + 
+                              "</a>";
+          //else thisLocality = "<br>";
+          
+          str += thisLocality;
+
+          if(typeof params.contactInfo != "undefined" && params.contactInfo != "")
+          str += "<div class='entityType letter-green bold' style='font-size:17px;'><i class='fa fa-address-card'></i> " + params.contactInfo + "</div>";
+       
+          //str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+
+        str += "<hr></div>";
+
+        getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/classified/tpl/json" , function( data ) { 
+          var c = 1;
+          $.each(data.list,function(k,v) { 
+            mylog.log("data list",k,v);
+            if( $('.carousel-first img').attr('src').indexOf(v.name) < 0 ){
+              $(".carousel-inner").append('  <div class="item">'+
+              "   <img class='img-responsive' src='"+v.path+"/"+v.name+"'/>"+
+              ' </div>');
+              $(".carousel-indicators").append('<li data-target="#myCarousel" data-slide-to="'+c+'"></li>');
+              c++;
+            }
+          });
+
+        });
+
+        if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
+          str += '<div class="col-xs-12 text-center">'+
+                    '<div id="myCarousel" class="carousel slide" data-ride="carousel">'+
+                      //<!-- Indicators -->
+                      '<ol class="carousel-indicators">'+
+                      '  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>'+
+                      '</ol>'+
+
+                      //<!-- Wrapper for slides -->'+
+                      '<div class="carousel-inner" role="listbox">'+
+                      '  <div class="item active carousel-first ">'+
+                      "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
+                      '  </div>'+
+                      '</div>'+
+
+                      //<!-- Left and right controls -->'+
+                      '<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">'+
+                      '  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'+
+                      '  <span class="sr-only">Previous</span>'+
+                      '</a>'+
+                      '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">'+
+                      '  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'+
+                      '  <span class="sr-only">Next</span>'+
+                      '</a>'+
+                    '</div>'+
+                    // '<a class="thumb-info" href="'+baseUrl+params.profilImageUrl+'" data-title="" data-lightbox="all">'+
+                    //   "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
+                    // '</a>'+
+                 '</div>';
+
+        if( params.creator == userId )
+        str += '<hr><a href="javascript:elementLib.openForm(\'classified\', null, directory.previewedObj.params );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
+                  '<i class="fa fa-pencil"></i> Modifier mon annonce'+
+              '</a>';
+
+
 
       str += "</div>";
 
-      if( params.creator == userId )
-      str += '<br/><br/><a href="javascript:elementLib.openForm(\'classified\', null, directory.previewedObj.params );" style="font-size:25px;" class="btn btn-default letter-green bold ">'+
-                '<i class="fa fa-pencil"></i> Edit'+
-            '</a>';
 
-      str += "</div>";
+      //str += "<div class='col-xs-1 col-sm-2 col-md-3 pull-right text-left margin-top-15 hidden-xs'></div>";
 
-
-      str += "<div class='col-xs-1 col-xs-offset-1'>"+nav.next+"</div>";
-
-      // ********************************
-      // ADD NEW Btn
-      // ********************************
-      str += '<div class="col-xs-12 text-center"> <br/><br/><a href="javascript:elementLib.openForm(\'classified\');" style="font-size:25px;" class="btn btn-default letter-green bold ">'+
-                '<i class="fa fa-plus-circle"></i> CRÉER UNE ANNONCE'+
-            '</a></div>';
       return str;
     },
 
@@ -828,21 +885,25 @@ var directory = {
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
            var tip = 'Garder en favoris';
-            str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+            str += "<a href='javascript:collection.add2fav(\"classified\",\""+params.id+"\")' class='dirStar star_classified_"+params.id+" btn btn-default btn-sm btn-add-to-directory bg-white tooltips'" + 
                   'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-                      "<i class='fa fa-star'></i>"+ //fa-bookmark fa-rotate-270
-                    "</a>";
+                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"'>"+
+                    "<i class='fa fa star fa-star-o'></i>"+ //fa-bookmark fa-rotate-270
+                  "</a>";
           
         }
 
         if(params.updated != null )
-          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
+          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>publié </span>" + 
+                    params.updated + 
+                  "</div>";
         
         if(params.type == "citoyens") 
             params.url += '.viewer.' + userId;
         if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.url+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + params.imgProfil + "</a>";
+          str += "<a href='"+params.url+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + 
+                    params.imgProfil + 
+                  "</a>";
 
         str += "<div class='padding-10 informations'>";
 
@@ -854,12 +915,13 @@ var directory = {
               str += "</div>";
             }
 
+            var devise = typeof params.devise != "undefined" ? params.devise : "";
             if(typeof params.price != "undefined" && params.price != "")
-            str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + "</div>";
+            str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
          
             if(typeof params.category != "undefined"){
-              str += "<div class='entityType bold'>" + params.section+" > "+params.category;
-                if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+              str += "<div class='entityType'><span class='uppercase bold'>" + params.section + "</span> > " + params.category;
+              if(typeof params.subtype != "undefined") str += " > " + params.subtype;
               str += "</div>";
             }
 
@@ -1144,7 +1206,7 @@ var directory = {
 
       if(params.type == "surveys") params.url = "#survey.entry.id."+params.id;
       else if(params.type == "actions") params.url = "#rooms.action.id."+params.id;
-     
+   
       str = "";  
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
@@ -1301,11 +1363,11 @@ var directory = {
                                     "";
 
                 //mapElements.push(params);
-
+                
                 if(typeof( typeObj[itemType] ) == "undefined")
                     itemType="poi";
                 typeIco = itemType;
-
+                mylog.warn("itemType",itemType,"typeIco",typeIco);
                 if(typeof params.typeOrga != "undefined")
                   typeIco = params.typeOrga;
 
@@ -1319,8 +1381,8 @@ var directory = {
                     params.parentColor = parentObj.color;
                 }
                 if(params.type == "classified" && typeof params.category != "undefined"){
-                  params.ico = typeof classifiedTypes[params.category] != "undefined" ?
-                               "fa-" + classifiedTypes[params.category]["icon"] : "";
+                  params.ico = typeof classified.filters[params.category] != "undefined" ?
+                               "fa-" + classified.filters[params.category]["icon"] : "";
                 }
 
                 params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
@@ -1376,19 +1438,24 @@ var directory = {
 
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
                 
-                mylog.log("template principal",params);
+                mylog.log("template principal",params,params.type);
                 
                   //template principal
                 if(params.type == "cities")
                   str += directory.cityPanelHtml(params);  
-                else if( $.inArray(params.type, ["citoyens","organizations","project"])>=0) 
+                
+                else if( $.inArray(params.type, ["citoyens","organizations","project","poi","place"])>=0) 
                   str += directory.elementPanelHtml(params);  
+                
                 else if(params.type == "events")
                   str += directory.eventPanelHtml(params);  
+                
                 else if(params.type == "surveys" || params.type == "actions")
                     str += directory.roomsPanelHtml(params);  
+                
                 else if(params.type == "classified")
                   str += directory.classifiedPanelHtml(params);
+                
                 else
                   str += directory.defaultPanelHtml(params);
             }
@@ -1422,7 +1489,6 @@ var directory = {
       });
 
       initBtnLink();
-      bindLBHLinks();
       directory.filterList();
       $(directory.elemClass).show();
       //bindTags();
@@ -1467,8 +1533,7 @@ var directory = {
     },
 
     //todo add count on each tag
-    filterTags : function (withSearch,open) 
-    { 
+    filterTags : function (withSearch,open) { 
         directory.tagsT = [];
         $("#listTags").html('');
         if(withSearch){
@@ -1500,6 +1565,33 @@ var directory = {
         //$("#btn-open-tags").append("("+$(".favElBtn").length+")");
     },
     
+    sectionFilter : function (list, dest, what, type ) { 
+      mylog.log("sectionFilter",list,what,dest);
+
+        if( type == "btn" )
+          str = '<label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="typeBtn"><i class="fa fa-chevron-down"></i> '+what.title+' </label>'
+        else
+          str = '<h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">'+
+                '<i class="fa fa-'+what.icon+'"></i> </h4><hr>';
+        
+        $(dest).html(str);
+
+        $.each( list,function(k,o){
+            if( type == "btn" )
+              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'"><a class="btn tagListEl btn-select-type-anc typeBtn '+k+'Btn " data-tag="'+k+'" data-key="'+k+'" href="javascript:;"><i class="fa fa-'+o.icon+'"></i> <br>'+k+'</a></div>'
+            else 
+              str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="'+k+'">'+
+                    '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+k+'</button><br>';
+            if( o.subcat && type != "btn" )
+            {
+              $.each( o.subcat ,function(i,oT){
+                  str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
+                          '<i class="fa fa-angle-right"></i>'+oT+'</button><br class="hidden">';
+              });
+            }
+            $(dest).append(str);
+        });
+    },
     showFilters : function () { 
       if($("#listTags").hasClass("hide")){
         $("#listTags").removeClass("hide");
@@ -1561,8 +1653,7 @@ var directory = {
         $(".my-main-container").scrollTop(0);
     },
 
-    showAll: function(parents,children,path,color) 
-    {
+    showAll: function(parents,children,path,color) {
       //show all
       if(!color)
         color = "text-white";
@@ -1597,7 +1688,7 @@ var directory = {
                   //mylog.log("found");
                   found = 1;
                 }
-
+                
                 if(found)
                     $(this).removeClass('hide');
                 else

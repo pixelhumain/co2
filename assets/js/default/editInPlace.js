@@ -8,23 +8,32 @@ function bindAboutPodElement() {
 			switchModeElement();
 		});		
 
-		$("#changePasswordBtn").click(function () {
-			var urlToSend = baseUrl+'/'+moduleId+'/person/changepassword/id/'+userId+'/mode/initSV';
-			$.blockUI({
-				message : '<div>'+
-							'<div class="changePasswordForm"></div>'+
-						'</div>', 
-				onOverlayClick: $.unblockUI,
-				css: {"text-align": "left", "cursor":"default", "width":"50%", "left":"25%" }
-			});
+		$("#btn-update-password").off().on( "click", function(){
+			var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/person/changepassword",
+				dynForm : {
+					jsonSchema : {
+						title : trad["Change password"],
+						icon : "fa-key",
+						afterSave : function(data){
+							elementLib.closeForm();
+						},
+						properties : {
+							mode : typeObjLib.hidden,
+							userId : typeObjLib.hidden,
+							oldPassword : typeObjLib.password(trad["Old password"]),
+							newPassword : typeObjLib.password("", { required : true, minlength : 8 } ),
+							newPassword2 : typeObjLib.password(trad["Repeat your new password"], {required : true, minlength : 8, equalTo : "#ajaxFormModal #newPassword"})	
+						}
+					}
+				}
+			};
 
-			getAjax('.changePasswordForm',urlToSend,function(){
-
-			//$('.bar_tools_post').hide();
-			//$('.saySomething').hide();
-			},"html");
-			//mylog.log("changePasswordbuttton");
-			//url.loadByHash('#person.changepassword.id.'+userId+'.mode.initSV', false);
+			var dataUpdate = {
+				mode : "changePassword",
+		        userId : userId
+		    };
+			elementLib.openForm(form, null, dataUpdate);
 		});
 
 		$("#downloadProfil").click(function () {
@@ -103,139 +112,16 @@ function bindAboutPodElement() {
 
 	}
 
-	/*function switchModeElement() {
-		mylog.log("-------------"+mode);
-		if(mode == "view"){
-			mode = "update";
-			$(".editProfilLbl").html(" Enregistrer les changements");
-			$("#editElementDetail").addClass("btn-red");
-			if(!emptyAddress)
-				$(".cobtn,.whycobtn,.cobtnHeader,.whycobtnHeader").addClass("hidden");
-		}else{
-			mode ="view";
-			$(".editProfilLbl").html(" Éditer");
-			$("#editElementDetail").removeClass("btn-red");
-			if(emptyAddress)
-				$(".cobtn,.whycobtn,.cobtnHeader,.whycobtnHeader").removeClass("hidden");
-
-		}
-		manageModeContextElement();
-		changeHiddenIconeElement(false);
-		manageDivEditElement();
-	}*/
-
-	/* function manageModeContextElement() {
-		mylog.log("-----------------manageModeContextElement----------------------", mode);
-		listXeditablesContext = [	'#birthDate', '#description', '#shortDescription', '#fax', '#fixe', '#mobile', 
-							'#tags', '#facebookAccount', '#twitterAccount',
-							'#gpplusAccount', '#gitHubAccount', '#skypeAccount', '#telegramAccount', 
-							'#avancement', '#allDay', '#startDate', '#endDate', '#type'];
-		if (mode == "view") {
-			$('.editable-context').editable('toggleDisabled');
-			$.each(listXeditablesContext, function(i,value) {
-				$(value).editable('toggleDisabled');
-			});
-			$("#btn-update-geopos").addClass("hidden");
-			$("#btn-remove-geopos").addClass("hidden");
-			$("#btn-add-geopos").addClass("hidden");
-			$("#btn-update-organizer").addClass("hidden");
-			$("#btn-add-organizer").addClass("hidden");
-			if(!emptyAddress)
-				$("#btn-view-map").removeClass("hidden");
-		} else if (mode == "update") {
-			// Add a pk to make the update process available on X-Editable
-			$('.editable-context').editable('option', 'pk', contextData.id);
-			$('.editable-context').editable('toggleDisabled');
-			$.each(listXeditablesContext, function(i,value) {
-				//add primary key to the x-editable field
-				$(value).editable('option', 'pk', contextData.id);
-				$(value).editable('toggleDisabled');
-			})
-			$("#btn-update-geopos").removeClass("hidden");
-			$("#btn-remove-geopos").removeClass("hidden");
-			$("#btn-add-geopos").removeClass("hidden");
-			$("#btn-view-map").addClass("hidden");
-			$("#btn-update-organizer").removeClass("hidden");
-			$("#btn-add-organizer").removeClass("hidden");
-		}
-	} */
-
-
-
-
-	function manageDivEditElement() {
-		mylog.log("-----------------manageDivEditElement----------------------", mode);
-		listXeditablesDiv = [ '#divName', '#divShortDescription' , '#divTags', "#divAvancement"];
-		if(contextType != "citoyens")
-			listXeditablesDiv.push('#divInformation');
-		
-		if (mode == "view") {
-			$.each(listXeditablesDiv, function(i,value) {
-				$(value).hide();
-			});
-		} else if (mode == "update") {
-			$.each(listXeditablesDiv, function(i,value) {
-				$(value).show();
-			})
-		}
-	}
-
-	/* function manageSocialNetwork(iconObject, value) {
-		mylog.log("-----------------manageSocialNetwork----------------------");
-		tabId2Icon = {"facebookAccount" : "fa-facebook", "twitterAccount" : "fa-twitter", 
-				"gpplusAccount" : "fa-google-plus", "gitHubAccount" : "fa-github", 
-				"skypeAccount" : "fa-skype", "telegramAccount" : "fa-send"}
-
-		var fa = tabId2Icon[iconObject.attr("id")];
-		iconObject.empty();
-		if (value != "") {
-			
-			//else{
-			if(iconObject.attr("id") != "telegramAccount"){
-				iconObject.tooltip({title: value, placement: "bottom"});
-				iconObject.html('<i class="fa '+fa+' fa-blue"></i>');
-			}
-		} 
-
-		if(iconObject.attr("id") == "telegramAccount"){
-			iconObject.tooltip({title: value, placement: "left"});
-			if(speudoTelegram != "")
-				iconObject.html('<i class="fa '+fa+' text-white"></i> '+speudoTelegram);
-			else
-				iconObject.html('<i class="fa '+fa+' text-white"></i> Telegram');
-		}
-	} */
-
-	/*function changeHiddenIconeElementOld(init) { 
-		mylog.log("-----------------changeHiddenIconeElement----------------------");
-		//
-		listIcones = [	".fa_birthDate", ".fa_email", ".fa_telephone_mobile",
-						".fa_telephone",".fa_telephone_fax",".fa_url" , ".fa-file-text-o"];
-
-		listXeditablesId = ['#birthDate',"#email", "#mobile", "#fixe", "#fax","#url", "#licence"];
-		$.each(listIcones, function(i,value) {
-			mylog.log("listIcones", value, listXeditablesId[i]);
-			if($("#contentGeneralInfos "+listXeditablesId[i]).text().length == 0)
-				$(value).addClass("hidden");
-			else
-				$(value).removeClass("hidden"); 
-		});
-		
-	}*/
-
-
 	function changeHiddenFields() { 
 		mylog.log("-----------------changeHiddenFields----------------------");
 		//
-		listIcones = [	"username", "birthDate", "email", "avancement", "url", "fixe",
+		listFields = [	"username", "birthDate", "email", "avancement", "url", "fixe",
 						"mobile","fax", "facebook", "twitter", "gpplus", "gitHub", "skype", "telegram"];
-		//listXeditablesId = ['#birthDate',"#email", "#mobile", "#fixe", "#fax","#url", "#licence"];
-		$.each(listIcones, function(i,value) {
-			mylog.log("listIcones", value, typeof contextData[value]);
+		
+		$.each(listFields, function(i,value) {
+			mylog.log("listFields", value, typeof contextData[value]);
 			if(typeof contextData[value] != "undefined" && contextData[value].length == 0)
-				$("."+value).addClass("hidden");
-			else
-				$("."+value).removeClass("hidden"); 
+				$("."+value).val("<i>"+trad.notSpecified+"<i>");
 		});
 		mylog.log("-----------------changeHiddenFields END----------------------");
 	}
@@ -245,121 +131,6 @@ function bindAboutPodElement() {
 			getAjax(".calendar",baseUrl+"/"+moduleId+"/event/calendarview/id/"+contextData.id +"/pod/1?date=1",null,"html");
 		}
 	}
-
-	/* function returnttags() {
-		mylog.log("------------- returnttags -------------------");
-		//var tags = <?php echo (isset($element["tags"])) ? json_encode(implode(",", $element["tags"])) : "''"; ?>;
-		//var tags = <?php echo (isset($element["tags"])) ? json_encode( $element["tags"]) : "''"; ?>;
-
-		return tags2 ;
-	} */
-
-	/*function returntel() {
-		var tel = "";
-		$(".tel").each(function(){
-			
-			if($(this).text().trim() != "")
-	        {
-	        	if(tel != "")
-	        		tel += ", ";
-
-	        	tel += $(this).text().trim();
-	        }	
-	        	
-	    });
-
-	    mylog.log(tel);
-		return tel ;
-	} */
-	//modification de la position geographique	
-
-	/* function findGeoPosByAddress(){
-		//si la streetAdress n'est pas renseignée
-		if($("#streetAddress").html() == $("#streetAddress").attr("data-emptytext")){
-			//on récupère la valeur du code insee s'il existe
-			var insee = ($("#entity-insee-value").attr("insee-val") != "") ? 
-						 $("#entity-insee-value").attr("insee-val") : "";
-			//si on a un codeInsee, on lance la recherche de position par codeInsee
-			if(insee != "") findGeoposByInsee(insee);
-		//si on a une streetAddress
-		}else{
-			var request = "";
-
-			//recuperation des données de l'addresse
-			var street 			= ($("#streetAddress").html()  != $("#streetAddress").attr("data-emptytext"))  ? $("#streetAddress").html() : "";
-			var address 		= ($("#address").html() 	   != $("#address").attr("data-emptytext")) 	   ? $("#address").html() : "";
-			var addressCountry 	= ($("#addressCountry").html() != $("#addressCountry").attr("data-emptytext")) ? $("#addressCountry").html() : "";
-			
-			//construction de la requete
-			request = addToRequest(request, street);
-			request = addToRequest(request, address);
-			request = addToRequest(request, addressCountry);
-
-			request = transformNominatimUrl(request);
-			request = "?q=" + request;
-			mylog.log(request);
-			findGeoposByNominatim(request);
-		}
-	
-	} */
-
-	//quand la recherche nominatim a fonctionné
-	/*function callbackNominatimSuccess(obj){
-		mylog.log("callbackNominatimSuccess");
-		//si nominatim a trouvé un/des resultats
-		if (obj.length > 0) {
-			//on utilise les coordonnées du premier resultat
-			var coords = L.latLng(obj[0].lat, obj[0].lon);
-			//et on affiche le marker sur la carte à cette position
-			mylog.log("showGeoposFound coords", coords);
-			mylog.dir("showGeoposFound obj", obj);
-
-			//si la donné n'est pas geolocalisé
-			//on lui rajoute les coordonées trouvés
-			//if(typeof contextData["geo"] == "undefined")
-			contextData["geo"] = { "latitude" : obj[0].lat, "longitude" : obj[0].lon };
-
-			showGeoposFound(coords, contextData.id, "organizations", contextData);
-		}
-		//si nominatim n'a pas trouvé de résultat
-		else {
-			//on récupère la valeur du code insee s'il existe
-			var insee = ($("#entity-insee-value").attr("insee-val") != "") ? 
-						 $("#entity-insee-value").attr("insee-val") : "";
-			//si on a un codeInsee, on lance la recherche de position par codeInsee
-			if(insee != "") findGeoposByInsee(insee);
-		}
-	} */
-
-	//quand la recherche par code insee a fonctionné
-	/* function callbackFindByInseeSuccess(obj){
-		mylog.log("callbackFindByInseeSuccess");
-		//si on a bien un résultat
-		if (typeof obj != "undefined" && obj != "") {
-			//récupère les coordonnées
-			var coords = Sig.getCoordinates(obj, "markerSingle");
-			//si on a une geoShape on l'affiche
-			if(typeof obj.geoShape != "undefined") Sig.showPolygon(obj.geoShape);
-			
-			contextData["geo"] = { "latitude" : obj.geo.latitude, "longitude" : obj.geo.longitude };
-			//on affiche le marker sur la carte
-			showGeoposFound(coords, contextData.id, "organizations", contextData);
-		}
-		else {
-			mylog.log("Erreur getlatlngbyinsee vide");
-		}
-	} */
-
-
-	//en cas d'erreur nominatim
-	/* function callbackNominatimError(error){
-		mylog.log("callbackNominatimError", error);
-	}
-
-	//quand la recherche par code insee n'a pas fonctionné
-	function callbackFindByInseeError(){
-		mylog.log("erreur getlatlngbyinsee", error);
-	} */
 
 	function removeAddresses (index){
 
@@ -392,7 +163,7 @@ function bindAboutPodElement() {
 				    	success: function(data){
 					    	if(data.result){
 								toastr.success(data.msg);
-								url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+								url.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					    	}
 					    }
 					});
@@ -437,7 +208,7 @@ function bindAboutPodElement() {
 				    	success: function(data){
 					    	if(data.result){
 								toastr.success(data.msg);
-								url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+								url.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					    	} else {
 					    		toastr.error(data.msg);
 					    	}
@@ -591,7 +362,7 @@ function bindAboutPodElement() {
 
 			if(contextData.type == typeObj.organization.col ){
 				properties.type = typeObjLib.typeOrga;
-				properties.tags = typeObjLib.tags;
+				properties.tags = typeObjLib.tags();
 			}
 
 			if(contextData.type == typeObj.project.col ){
@@ -670,7 +441,7 @@ function bindAboutPodElement() {
 			    		$("#ajaxFormModal #birthDate").remove();
 			    }
 
-			    if(contextData.type == typeObj.organization.col ){
+			    if(contextData.type == typeObj.organization.col || contextData.type == typeObj.event.col){
 					if($("#ajaxFormModal #type").length && $("#ajaxFormModal #type").val() ==  contextData.typeOrga)
 			    		$("#ajaxFormModal #type").remove();
 				}
@@ -680,11 +451,9 @@ function bindAboutPodElement() {
 			    		$("#ajaxFormModal #avancement").remove();
 				}
 
-				if(contextData.type == typeObj.person.col ){
-					if($("#ajaxFormModal #email").length && $("#ajaxFormModal #email").val() == contextData.email)
-			    		$("#ajaxFormModal #email").remove();
-			    }
-
+				if($("#ajaxFormModal #email").length && $("#ajaxFormModal #email").val() == contextData.email)
+			    	$("#ajaxFormModal #email").remove();
+			    
 				if($("#ajaxFormModal #url").length && $("#ajaxFormModal #url").val() == contextData.url)
 		    		$("#ajaxFormModal #url").remove();
 
@@ -706,12 +475,12 @@ function bindAboutPodElement() {
 					if(typeof data.resultGoods.values.name != "undefined"){
 						contextData.name = data.resultGoods.values.name;
 						$("#nameHeader").html(contextData.name);
-						$("#nameMenuLeft").html(contextData.name);
+						$("#nameAbout").html(contextData.name);
 					}
 
 					if(typeof data.resultGoods.values.username != "undefined"){
 						contextData.username = data.resultGoods.values.username;
-						$("#usernameMenuLeft").html(contextData.username);
+						$("#usernameAbout").html(contextData.username);
 					}
 						
 					if(typeof data.resultGoods.values.tags != "undefined"){
@@ -746,50 +515,54 @@ function bindAboutPodElement() {
 							val=100;
 						$('#progressStyle').val(val);
 						$('#labelProgressStyle').html(contextData.avancement);
-						$('#avancementMenuLeft').html(trad["Project maturity"] + " : " + trad[contextData.avancement] );
+						$('#avancementAbout').html(trad["Project maturity"] + " : " + trad[contextData.avancement] );
 					}
 
 					if(typeof data.resultGoods.values.type != "undefined"){
-						contextData.typeOrga = data.resultGoods.values.typeOrga;
-						$("#typeHeader").html(contextData.typeOrga);
-						$("#typeMenuLeft").html(contextData.typeOrga);
+
+						if(contextData.type == typeObj.organization.col )
+							contextData.typeOrga = data.resultGoods.values.typeEvent;
+						else
+							contextData.typeEvent = data.resultGoods.values.typeEvent;
+						//$("#typeHeader").html(data.resultGoods.values.type);
+						$("#typeAbout").html(trad[data.resultGoods.values.type]);
 					}
 
 					if(typeof data.resultGoods.values.email != "undefined"){
 						mylog.log("update email");
 						contextData.email = data.resultGoods.values.email;
-						$("#emailMenuLeft").html(contextData.email);
+						$("#emailAbout").html(contextData.email);
 					}
 
 					if(typeof data.resultGoods.values.url != "undefined"){
 						mylog.log("update url");
 						contextData.url = data.resultGoods.values.url;
-						$("#urlMenuLeft").html(contextData.url);
-						$("#urlMenuLeft").attr("href", url);
+						$("#urlAbout").html(contextData.url);
+						$("#urlAbout").attr("href", contextData.url);
 					}  
 						
 					if(typeof data.resultGoods.values.birthDate != "undefined"){
 						mylog.log("update birthDate");
 						contextData.birthDate = data.resultGoods.values.birthDate;
-						$("#birthDateMenuLeft").html(contextData.birthDate);
+						$("#birthDateAbout").html(moment(contextData.birthDate).local().format("DD MM YYYY"));
 					}
 
 					if(typeof data.resultGoods.values.fixe != "undefined"){
 						mylog.log("update fixe");
 						contextData.fixe = parsePhone(data.resultGoods.values.fixe);
-						$("#fixeMenuLeft").html(str);
+						$("#fixeAbout").html(contextData.fixe);
 					}
 
 					if(typeof data.resultGoods.values.mobile != "undefined"){
 						mylog.log("update mobile");
 						contextData.mobile = parsePhone(data.resultGoods.values.mobile);
-						$("#mobileMenuLeft").html(contextData.mobile);
+						$("#mobileAbout").html(contextData.mobile);
 					}
 
 					if(typeof data.resultGoods.values.fax != "undefined"){
 						mylog.log("update fax");
 						contextData.fax = parsePhone(data.resultGoods.values.fax);
-						$("#faxMenuLeft").html(contextData.fax);
+						$("#faxAbout").html(contextData.fax);
 					}
 				}
 				elementLib.closeForm();
@@ -823,8 +596,9 @@ function bindAboutPodElement() {
 			var beforeSave = null ;
 
 			var afterSave = function(data){
-				$("#description").html(markdownToHtml(data.description));
+				$("#central-container").html(markdownToHtml(data.description));
 				$("#descriptionMarkdown").val(data.description);
+				//smallMenu.open( markdownToHtml(data.description);
 				elementLib.closeForm();		
 			};
 			
@@ -856,6 +630,53 @@ function bindAboutPodElement() {
 			
 			var saveUrl = baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType;
 			elementLib.editDynForm("Modifier la description", "fa-pencil", properties, "markdown", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
+		});
+
+
+		$(".btn-update-descriptions").off().on( "click", function(){
+
+			
+			var properties = {
+				block : typeObjLib.hidden,
+				typeElement : typeObjLib.hidden,
+				isUpdate : typeObjLib.hiddenTrue,
+				shortDescription : 	typeObjLib.shortDescription,
+				description : typeObjLib.description,
+
+			};
+
+			var dataUpdate = {
+				block : "descriptions",
+		        id : contextData.id,
+		        typeElement : contextData.type,
+		        name : contextData.name,
+		        shortDescription : $(".contentInformation #shortDescriptionAbout").html(),
+				description : $("#descriptionMarkdown").val(),	
+			};
+			
+			var onLoads = {
+				markdown : function(){
+					activateMarkdown("#ajaxFormModal #description");
+					bindDesc("#ajaxFormModal");
+				}
+			};
+
+			var beforeSave = null;
+
+			var afterSave = function(data){
+				mylog.dir(data);
+				if(data.result && data.resultGoods.result){shortDescriptionHeader
+					$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
+					$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
+					$(".contentInformation #descriptionAbout").html(markdownToHtml(data.resultGoods.values.description));
+					$("#descriptionMarkdown").val(data.resultGoods.values.description);
+				}
+				elementLib.closeForm();
+				changeHiddenFields();
+			};
+			mylog.log("btn-update-descriptions", properties, dataUpdate);
+			var saveUrl = baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType;
+			elementLib.editDynForm("Modifier les descriptions", "fa-pencil", properties, "markdown", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
 		});
 
 
@@ -926,33 +747,33 @@ function bindAboutPodElement() {
 
 						if(typeof data.resultGoods.values.telegram != "undefined"){
 							contextData.telegram = data.resultGoods.values.telegram.trim();
-							changeNetwork('#facebookMenuLeft', contextData.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.telegram);
+							changeNetwork('#telegramAbout', contextData.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.telegram);
 						}
 
 						if(typeof data.resultGoods.values.facebook != "undefined"){
 							contextData.facebook = data.resultGoods.values.facebook.trim();
 							//var iconNetwork = ((contextData.facebook=="")?"":'<i class="fa fa-facebook"></i>');
-							changeNetwork('#facebookMenuLeft', contextData.facebook, contextData.facebook);
+							changeNetwork('#facebookAbout', contextData.facebook, contextData.facebook);
 						}
 
 						if(typeof data.resultGoods.values.twitter != "undefined"){
 							contextData.twitter = data.resultGoods.values.twitter.trim();
-							changeNetwork('#twitterMenuLeft', contextData.twitter, contextData.twitter);
+							changeNetwork('#twitterAbout', contextData.twitter, contextData.twitter);
 						}
 
 						if(typeof data.resultGoods.values.gitHub != "undefined"){
 							contextData.gitHub = data.resultGoods.values.gitHub.trim();
-							changeNetwork('#gitHubMenuLeft', contextData.gitHub, contextData.gitHub);
+							changeNetwork('#gitHubAbout', contextData.gitHub, contextData.gitHub);
 						}
 
 						if(typeof data.resultGoods.values.skype != "undefined"){
 							contextData.skype = data.resultGoods.values.skype.trim();
-							changeNetwork('#skypeMenuLeft', contextData.skype, contextData.skype);
+							changeNetwork('#skypeAbout', contextData.skype, contextData.skype);
 						}
 
 						if(typeof data.resultGoods.values.gpplus != "undefined"){
 							contextData.gpplus = data.resultGoods.values.gpplus.trim();
-							changeNetwork('#gpplusMenuLeft', contextData.gpplus, contextData.gpplus);
+							changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
 						}
 					}
 					elementLib.closeForm();
@@ -980,3 +801,14 @@ function bindAboutPodElement() {
 		});
 		return str ;
 	}
+
+
+	function bindDesc(parent){
+		$(".maxlengthTextarea").off().keyup(function(){
+			var name = "#" + $(this).attr("id") ;
+			mylog.log(".maxlengthTextarea", parent+" "+name, $(this).attr("id"), $(parent+" "+name).val().length, $(this).val().length);
+			$(parent+" #maxlength"+$(this).attr("id")).html($(parent+" "+name).val().length);
+			maxlengthshortDescription
+		});
+	}
+

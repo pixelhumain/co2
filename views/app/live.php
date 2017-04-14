@@ -17,31 +17,35 @@
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath ,
                                 "type" => @$type,
-                                "page" => "live") ); 
+                                "page" => "live",
+                                "explain"=> "Live public : retrouvez tous les messages publics selon vos lieux favoris") ); 
 ?>
+
 <style>
-	
+	.scope-min-header{
+        float: left;
+        margin-top: 23px;
+        margin-left: 35px;
+    }
+    .main-btn-scopes{
+    	margin-top:0px !important;
+    }
+    #formCreateNewsTemp .form-create-news-container{
+    max-width: inherit !important;
+	}
 </style>
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
-	<?php
-        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
-    ?>
-    
-	<div class="col-lg-1  hidden-md col-sm-1 hidden-xs"></div>
+	<div class="col-md-offset-2 col-md-9 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
+		<?php
+	        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
+	    ?>
+	</div>
 	<div class="col-lg-2 col-md-3 hidden-sm col-xs-12 padding-20 text-right hidden-xs" id="sub-menu-left">
 		
 	</div>
 
-	<div class="col-lg-6 col-md-6 col-sm-6 no-padding margin-top-10">
-		<h4 class="text-dark padding-bottom-5 margin-top-25 text-center">
-			<i class="fa fa-angle-down"></i> Le fil d'actus
-			<i class="fa fa-angle-right hidden fa-title-list"></i> <span class="letter-blue label-category"><i class="fa fa-"></i> </span>
-		</h4>
-		<hr>
-
-		
-
+	<div class="col-lg-8 col-md-8 col-sm-12 no-padding margin-top-10">
 		<div id="newsstream"></div>
 	</div>	
 
@@ -74,7 +78,7 @@ var liveTypeName = { "news":"<i class='fa fa-rss'></i> Les messages",
 
 
 var liveScopeType = "global";
-
+var scrollEnd = false;
 <?php if(@$type && !empty($type)){ ?>
 	searchType = ["<?php echo $type; ?>"];
 <?php }else{ ?>
@@ -114,24 +118,13 @@ jQuery(document).ready(function() {
 	$(".titleNowEvents .btnhidden").hide();
 
 	//init loading in scroll
-    $(window).off().bind("scroll",function(){ 
-	    if(!loadingData && !scrollEnd){
-	          var heightWindow = $("html").height() - $("body").height();
-	          console.log(heightWindow);
-	          if( $(this).scrollTop() >= heightWindow - 400){
-	            //loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
-	            showNewsStream(false);
-	          }
-	    }
-	});
-
+   
     initKInterface();//{"affixTop":10});
     initFreedomInterface();
 
     //KScrollTo(".main-btn-scopes");
 });
 
-//var freedomCategories = <?php //echo json_encode($freedomSections); ?>
 
 function initFreedomInterface(){
 	
@@ -144,11 +137,11 @@ var timeout;
 function startSearch(isFirst){
 	//Modif SBAR
 	//$(".my-main-container").off();
-	if(liveScopeType == "global"){
+	//if(liveScopeType == "global"){
 		showNewsStream(isFirst);
-	}else{
-		showNewsStream(isFirst);//loadStream(0,5);
-	}
+	//}else{
+	//	showNewsStream(isFirst);//loadStream(0,5);
+	//}
 	//loadLiveNow();
 }
 
@@ -161,7 +154,7 @@ function loadStream(indexMin, indexMax){ console.log("LOAD STREAM FREEDOM");
 	//isLive = isLiveBool==true ? "/isLive/true" : "";
 	//var url = "news/index/type/citoyens/id/<?php echo @Yii::app()->session["userId"]; ?>"+isLive+"/date/"+dateLimit+"?isFirst=1&tpl=co2&renderPartial=true";
 		
-	var url = "news/index/type/city/isLive/true/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=1";
+	var url = "news/index/type/city/isLive/true/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=2";
 	$.ajax({ 
         type: "POST",
         url: baseUrl+"/"+moduleId+'/'+url,
@@ -224,7 +217,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 	scrollEnd = false;
 
 	var isFirstParam = isFirst ? "?isFirst=1&tpl=co2" : "?tpl=co2";
-	isFirstParam += "&nbCol=1";
+	isFirstParam += "&nbCol=2";
 	var tagSearch = $('#searchTags').val().split(',');; //$('#searchBarText').val();
 	var levelCommunexionName = { 1 : "CITYKEY",
 	                             2 : "CODE_POSTAL",
@@ -267,7 +260,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		"<span style='font-size:25px;' class='homestead'>"+
 			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
 			"<span class='text-dark'>Chargement en cours ...</span>" + 
-	"</div>";
+		"</div>";
 
 	//loading = "";
 
@@ -275,6 +268,15 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		$("#newsstream").html(loading);
 		ajaxPost("#newsstream",baseUrl+"/"+moduleId+urlCtrl+"/date/0"+isFirstParam,dataNewsSearch, function(news){
 			showTagsScopesMin(".list_tags_scopes");
+			 $(window).bind("scroll",function(){ 
+	    		if(!loadingData && !scrollEnd){
+	         		var heightWindow = $("html").height() - $("body").height();
+	         		if( $(this).scrollTop() >= heightWindow - 400){
+	            		//loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
+	            		showNewsStream(false);
+	          		}
+	    		}
+			});
 			if(loadContent != ''){
 				if(userId){
 					showFormBlock(true);
@@ -282,7 +284,6 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 						loadContent = loadContent.replace("%hash%", "#");
 					$("#get_url").val(loadContent);
 					$("#get_url").trigger("input");
-
 				}
 				else {
 					toastr.error('you must be loggued to post on communecter!');
@@ -293,32 +294,31 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 
 			bindTags();
 
-			$("#formCreateNewsTemp").appendTo("#modal-create-anc #formCreateNews");
-			$("#info-write-msg").html("Conseil : donnez un maximum de détails");
-			$("#info-write-msg").html("Conseil : donnez un maximum de détails");
-			showFormBlock(true);
+			//$("#formCreateNewsTemp").appendTo("#modal-create-anc #formCreateNews");
+			//$("#info-write-msg").html("<?php echo Yii::t("common","Write a public message visible on the wall of selected places") ?>");
+			//$("#info-write-msg").html("Conseil : donnez un maximum de détails");
+			//showFormBlock(true);
 			//$("#formCreateNewsTemp").html("");
 
 	 	},"html");
 	}else{ //data JSON for load next
-		dateLimit=0;currentMonth = null;
-		$(".newsTL").html(loading);
+		//dateLimit=0;currentMonth = null;
+		loadingData = true;
+		$("#newsstream").append(loading);
 		$.ajax({
 		        type: "POST",
-		        url: baseUrl+"/"+moduleId+urlCtrl+"/date/"+dateLimit+"?tpl=co2",
-		       	dataType: "json",
+		        url: baseUrl+"/"+moduleId+urlCtrl+"/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=2",
 		       	data: dataNewsSearch,
 		    	success: function(data){
-			    	//mylog.log("LOAD NEWS BY AJAX");
-			    	//mylog.log(data.news);
-			    	$(".newsTL").html('<div class="spine"></div>');
 					if(data){
-						buildTimeLine (data.news, 0, 5);
-						bindTags();
-						if(typeof(data.limitDate.created) == "object")
-							dateLimit=data.limitDate.created.sec;
-						else
-							dateLimit=data.limitDate.created;
+						$("#newsstream").find(".loader").remove();
+						$("#news-list").append(data);
+						//buildTimeLine (data.news, 0, 5);
+						//bindTags();
+						//if(typeof(data.limitDate.created) == "object")
+						//	dateLimit=data.limitDate.created.sec;
+						//else
+						//	dateLimit=data.limitDate.created;
 					}
 					loadingData = false;
 				},

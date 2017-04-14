@@ -122,11 +122,16 @@ var Login = function() {
 		    	  success: function(data){
 		    		  if(data.result)
 		    		  {
+		    		  	//alert("elementLib.openForm"+elementLib.openFormAfterLogin.type);
 		    		  	var url = requestedUrl;
 		    		  	//mylog.warn(url,", has #"+url.indexOf("#"),"count / : ",url.split("/").length - 1 );
 		    		  	if(backUrl != null){
 		    		  		url.loadByHash(backUrl);
 		    		  		backUrl = null;
+		    		  	} else if( typeof elementLib.openFormAfterLogin != "undefined"){
+		    		  		userId = data.id;
+		    		  		$('#modalLogin').modal("hide");
+		    		  		elementLib.openForm( elementLib.openFormAfterLogin.type, elementLib.openFormAfterLogin.afterLoad, elementLib.openFormAfterLogin.data );
 		    		  	} else if(url && url.indexOf("#") >= 0 ) {
 		    		  		//mylog.log("login 1",url);
 		    		  		//reload to the url initialy requested
@@ -210,7 +215,7 @@ var Login = function() {
 				forgotBtn.start();
 				var params = { 
 					"email" : $("#email2").val(),
-					"type"	: emailType
+					"type"	: "password"
 				};
 		        $.ajax({
 		          type: "POST",
@@ -323,7 +328,8 @@ var Login = function() {
 					    $('#modalRegisterSuccess .btn-default').click(function() {
 					        mylog.log("hide modale and reload");
 					        $('.modal').modal('hide');
-					    	window.location.href = baseUrl+'/#default.live';
+					    	//window.location.href = baseUrl+'/#default.live';
+					    	window.location.href = baseUrl+"/"+moduleId;
 					    	window.location.reload();
 					    });
 		        		//url.loadByHash("#default.directory");

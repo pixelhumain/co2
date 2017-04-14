@@ -69,6 +69,11 @@
             <li><b>1 min 31 sec :</b> Mozilla Firefox</li>
             <li><b>1 min 57 sec :</b> Opera</li>
           </ul>
+
+          <div class="col-md-12 margin-bottom-25">
+            <h5>Copier / Coller l'url de kgougle :</h5>
+            <input type="text" value="http://www.kgougle.nc">
+          </div>
           <iframe width='740' height='480' frameborder='0' allowfullscreen id="iframevideo"
                   src='//player.ooyala.com/static/v4/stable/4.11.13/skin-plugin/iframe.html?ec=Vkazg4dzqp4NzPY7U_vhShMwTKIPJFnt&pbid=69cb820a85749509efca96fb36853ca&pcode=M4azMxOmZFabvRouis6TdYXWR9uR'>
           </iframe>

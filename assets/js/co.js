@@ -368,7 +368,13 @@ function validateConnection(parentType, parentId, childId, childType, linkOption
 		dataType: "json",
 		success: function(data) {
 			if (data.result) {
-				if (typeof callback == "function") callback(parentType, parentId, childId, childType, linkOption);
+				if (typeof callback == "function") 
+					callback(parentType, parentId, childId, childType, linkOption);
+				else{
+					toastr.success(data.msg);
+					url.loadByHash(location.hash);
+				}
+
 			} else {
 				toastr.error(data.msg);
 			}
@@ -530,7 +536,6 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 	}
 }		
 
-
 var CoAllReadyLoad = false;
 var url = {
 	loadableUrls : {
@@ -543,12 +548,40 @@ var url = {
 		"events" : "e",
 		"projects" : "pr",
 		"cities" : "c",
+		"classified":"cl"
 		/*"entry" : "s",
 		"vote" : "v",
 		"action" : "a",
 		"rooms" : "r",*/
-		"classified":"cl"
 	},
+	shortVal : [
+		"p",
+		"poi",
+		"s",
+		"o",
+		"e",
+		"pr",
+		"c",
+		"cl"
+		/*"entry" : "s",
+		"vote" : "v",
+		"action" : "a",
+		"rooms" : "r",*/
+	],
+	shortKey : [
+		"citoyens",
+		"poi" ,
+		"siteurl",
+		"organizations",
+		"events",
+		"projects" ,
+		"cities" ,
+		"classified"
+		/*"entry" : "s",
+		"vote" : "v",
+		"action" : "a",
+		"rooms" : "r",*/
+	],
 	map : function (hash) {
 		hashT = hash.split('.');
 		return {
@@ -566,9 +599,9 @@ var url = {
 	checkAndConvert : function (hash) {
 		hashT = hash.split('_');
 		mylog.log("-------checkAndConvert : ",hash,hashT);
-		pos = $.inArray( hashT[0].substring(1) , Object.values( url.short ) );
+		pos = $.inArray( hashT[0].substring(1) , url.shortVal );
 		if( pos >= 0 ){
-			type = Object.keys( url.short )[pos];
+			type = url.shortKey[pos];
 			hash =  "#page.type."+type+".id."+hashT[1];
 			mylog.log("converted hash : ",hash);
 		} 
@@ -3668,7 +3701,7 @@ function initKInterface(params){ console.log("initKInterface");
 
     bindLBHLinks();
 
-    $(".menu-name-profil").click(function(){
+    $(".btn-show-mainmenu").click(function(){
         $("#dropdown-user").addClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });

@@ -13,21 +13,25 @@
 
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
 	<div class="padding-top-15" id="onepage">
-        <?php $this->renderPartial('../element/profilSocial', 
-                                    array(  "element"=>$element , 
-                                            "page" => "page",
-                                            "edit"=>$edit,
-                                            "openEdition" => $openEdition,
-                                            "linksBtn" => $linksBtn,
-                                            "type" => $type,
-                                            "isLinked" => $isLinked,
-                                            "controller" => $controller,
-                                            "countStrongLinks" => $countStrongLinks,
-                                            "countInvitations" => $countInvitations,
-                                            "countries" => $countries
-                                            ) ); 
-        ?>   
-    </div>
+		<?php 
+			$params = array("element"=>$element , 
+							"page" => "page",
+							"edit"=>$edit,
+							"openEdition" => $openEdition,
+							"linksBtn" => $linksBtn,
+							"type" => $type,
+							"isLinked" => $isLinked,
+							"controller" => $controller,
+							"countStrongLinks" => $countStrongLinks,
+							"countInvitations" => $countInvitations,
+							"countries" => $countries );
+
+            if(@$members) $params["members"] = $members;
+            if(@$invitedMe) $params["invitedMe"] = $invitedMe;
+
+            $this->renderPartial('../element/profilSocial', $params ); 
+		?>
+	</div>
 </div>
 
 
@@ -43,7 +47,7 @@ jQuery(document).ready(function() {
 	initKInterface({"affixTop":0});
 	$("#mainNav").addClass("affix");
 	initPageInterface();
-	// var tpl = '<?php echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
+    // var tpl = '<?php echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
 	// getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
 	// 	initPageInterface();
 	// },"html");
@@ -80,6 +84,13 @@ function initPageInterface(){
     	$(".dropdown-result-global-search").hide();
     });
 
+    $(".tooltips").tooltip();
+   
+    $('.sub-menu-social').affix({
+      offset: {
+          top: 380
+      }
+    });
     //$(".dropdown-result-global-search").hide();
     
 

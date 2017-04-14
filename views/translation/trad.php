@@ -140,6 +140,20 @@ var trad = {
 "New password" : "<?php echo Yii::t("common","New password") ?>",
 "Repeat your new password" : "<?php echo Yii::t("common","Repeat your new password") ?>",
 
+
+"Add members ..." : "<?php echo Yii::t("common","Add members ...") ?>",
+"Among my contacts ..." : "<?php echo Yii::t("common","Among my contacts ...") ?>",
+"Others ..." : "<?php echo Yii::t("common","Others ...") ?>",
+"Close" : "<?php echo Yii::t("common","Close") ?>",
+"Add this contacts" : "<?php echo Yii::t("common","Add this contacts") ?>",
+"Cancel all" : "<?php echo Yii::t("common","Cancel all") ?>",
+"Invite your contacts" : "<?php echo Yii::t("common","Invite your contacts") ?>",
+"Select among my contacts" : "<?php echo Yii::t("common","Select among my contacts") ?>",
+"Research a name or e-mail address..." : "<?php echo Yii::t("common","Research a name or e-mail address...") ?>",
+"Invitation  accept" : "<?php echo Yii::t("common","Invitation  accept") ?>",
+
+
+
 };
 
 var tradCountry = {

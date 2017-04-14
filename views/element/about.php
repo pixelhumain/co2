@@ -66,13 +66,13 @@
 	</div>
 	<div class="panel-body no-padding">
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-			<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+			<div class="col-md-3 col-sm-3 col-xs-3 labelAbout padding-10">
 				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Short description") ?>
 			</div>
 			<div id="shortDescriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10"><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?></div>
 		</div>
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-			<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+			<div class="col-md-3 col-sm-3 col-xs-3 labelAbout padding-10">
 				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Description") ?>
 			</div>
 			<div id="descriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
@@ -81,6 +81,8 @@
 		</div>
 		<input type="hidden" id="descriptionMarkdown" name="descriptionMarkdown" value="<?php echo (!empty($element['description'])) ? $element['description'] : ''; ?>">
 	</div>
+</div>
+<div id="ficheInfo" class="panel panel-white col-lg-8 col-md-12 col-sm-12 no-padding shadow2">
 
 	<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
 		<h4 class="panel-title text-dark pull-left"> 
@@ -247,7 +249,7 @@
 	
 </div>
 
-<div class="no-padding col-lg-12 col-md-12 col-sm-12">
+<div class="no-ing col-lg-4 col-md-12 col-sm-12">
 	<div id="adressesAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding shadow2">
 		<div class="panel-heading border-light padding-15" style="background-color: #dee2e680;">
 			<h4 class="panel-title text-dark"> 

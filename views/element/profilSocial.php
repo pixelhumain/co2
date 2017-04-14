@@ -652,16 +652,13 @@
 			}
 
 
-			//$addLink = (empty($users[Yii::app()->session["userId"]])?false:true);
-		
-			
-				echo "<a href='#page.type.".Person::COLLECTION.".id.".$invitedMe["invitorId"]."' class='lbh text-purple'>".$invitedMe["invitorName"]."</a><span class='text-dark'> vous a invité : ".
-						'<a class="btn btn-xs btn-success tooltips" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.$id.'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Link::IS_INVITING.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
-							'<i class="fa fa-check "></i> '.Yii::t("common",$inviteAccept).
-						'</a> '.
-						' <a class="btn btn-xs btn-danger tooltips" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.$id.'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\'attendees\')" data-placement="bottom" data-original-title="Not interested by the invitation">'.
-							'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
-						'</a>';
+			echo "<a href='#page.type.".Person::COLLECTION.".id.".$invitedMe["invitorId"]."' class='lbh text-purple'>".$invitedMe["invitorName"]."</a><span class='text-dark'> vous a invité : ".
+				'<a class="btn btn-xs btn-success tooltips" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.$id.'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Link::IS_INVITING.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
+					'<i class="fa fa-check "></i> '.Yii::t("common",$inviteAccept).
+				'</a> '.
+				' <a class="btn btn-xs btn-danger tooltips" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.$id.'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\'attendees\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
+					'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
+				'</a>';
 			
 		?>
 	</div>
@@ -764,6 +761,11 @@ $paramsConfidentiality = array( "element" => @$element,
 	"openEdition" => $openEdition,
 );
 $this->renderPartial('../pod/confidentiality', $params );
+
+if( $type != Person::COLLECTION)
+	$this->renderPartial('../element/addMembersFromMyContacts',array("type"=>$type, "parentId" =>(string)$element['_id'], "members"=>@$members));
+
+
 ?>
 
 <script type="text/javascript">
@@ -787,7 +789,6 @@ $this->renderPartial('../pod/confidentiality', $params );
 	
 
 	jQuery(document).ready(function() {
-		initSocial();
 		bindButtonMenu();
 		if(subView!=""){
 			if(subView=="gallery")
@@ -926,6 +927,9 @@ $this->renderPartial('../pod/confidentiality', $params );
 		});
 		
 		//END MAGE CHNGE
+
+		
+		
 	});
 
 	function getCroppingModal(){
@@ -1004,15 +1008,6 @@ $this->renderPartial('../pod/confidentiality', $params );
    		});
 	}
 	
-	function initSocial(){	
-   		$(".tooltips").tooltip();
-
-   		$('.sub-menu-social').affix({
-          offset: {
-              top: 350
-          }});
-	}
-
 	function loadDataDirectory(dataName, dataIcon){
 		showLoader('#central-container');
 		// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
@@ -1283,6 +1278,7 @@ function loadLiveNow () {
 function showLoader(id){
 	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 }
+
 </script>
 
 

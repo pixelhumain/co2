@@ -75,7 +75,7 @@
 				<?php } ?> 
 				<?php echo $siteurl["title"]; ?>
 			</a>
-			<button class="btn btn-xs bg-white btn-edit-url tooltips" title="modifier"
+			<button class="btn btn-xs bg-white btn-edit-url tooltips hidden-xs" title="modifier"
 					data-target="#modalEditUrl" data-toggle="modal" data-placement="right"
 					data-idurl="<?php echo $key; ?>">
 				<i class="fa fa-cog"></i>

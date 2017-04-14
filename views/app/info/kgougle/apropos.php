@@ -135,6 +135,20 @@
         		<img src="<?php echo $urlKgou; ?>" height="35" class="logoKgou"> c'est ossi ...
         	</h1>
         	<hr>
+            <h3 class="letter-blue">
+                <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/radios/radio-ico.png" 
+                     height="50" style="margin-top: -15px;"> 
+                Un poste de radio 
+            </h3>
+            <h4>Pour rester en contact permanent avec le reste du pays...</h4>
+            <p>
+                Retrouvez à tout moment les radios locales, pour suivre l’actualité, se divertir, ou simplement écouter de la musique.
+            </p>
+            <button class="btn btn-link letter-blue" data-target="#modalRadioTool" data-toggle="modal">
+                <i class="fa fa-arrow-circle-right"></i> Afficher la radio
+            </button>
+
+            <hr>
         	<h3 class="letter-blue"><i class="fa fa-star-o fa-2x"></i> <i class="fa fa-angle-righ"></i> La gestion de vos sites favoris</h3>
         	<h4>Cherchez une fois, trouvez pour toujours...</h4>
 			<p>
@@ -143,34 +157,24 @@
 
         	<hr>
         	
-        	<h3 class="letter-blue">
-        		<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/radios/radio-ico.png" height="25"> Un poste de radio 
-        	</h3>
-        	<h4>Pour rester en contact permanent avec le reste du pays...</h4>
-			<p>
-				Retrouvez à tout moment les radios locales, pour suivre l’actualité, se divertir, ou simplement écouter de la musique.
-        	</p>
-        	<button class="btn btn-link letter-blue" data-target="#modalRadioTool" data-toggle="modal">
-        		<i class="fa fa-arrow-circle-right"></i> Afficher la radio
-        	</button>
 
-        	<hr>
         	<h3 class="letter-blue">
         		<i class="fa fa-map fa-2x"></i> Un outil de cartographie 
         	</h3>
         	<h4>Pour se repérer facilement sur le Caillou...</h4>
 			
+            <button class="btn btn-link letter-blue btn-show-map">
+                <i class="fa fa-arrow-circle-right"></i> Afficher la carte
+            </button>
+
         	<hr>
         	<h3 class="letter-blue">
         		<i class="fa fa-newspaper-o fa-2x"></i> Un fil d'actualités
         	</h3>
-        	<h4>Composé des principaux articles des grands médias calédoniens...</h4>
+        	<h4>Une revue de presse des grands médias calédoniens et d’outre-mers</h4>
 			<p>
-				Pour suivre l'actualité locale en direct, à travers les publications de nos médias locaux.<br>
+				Pour suivre en direct l'actualité locale et garder un oeil sur le reste du monde.<br>
         	</p>
-        	<button class="btn btn-link letter-blue btn-show-map">
-        		<i class="fa fa-arrow-circle-right"></i> Afficher la carte
-        	</button>
 
 
         	<!-- --------------------------------------------------------------------------------- -->
@@ -192,7 +196,7 @@
 				A moyen terme, nous souhaitons également proposer d'autres outils numériques innovants, qui participeront à l'amélioration globale des services web disponibles en Nouvelle-Calédonie.
 				<br><br>
 				
-				<a href="" class="letter-yellow">
+				<a href="#info.p.ph" class="letter-yellow">
 					<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/LOGO_PIXEL_HUMAIN.png" height=100> 
 					<b><i class="fa fa-plus-circle"></i> En savoir plus sur notre équipe</b>
 				</a>

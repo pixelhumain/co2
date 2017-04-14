@@ -22,7 +22,7 @@
         "funPlace"      : { "label": "endroit Sympas (skatepark, vue...)","key":"funPlace","icon":"smile-o"},
         "place"         : { "label": "place publique","key":"place","icon":"map-marker"},
         "artPiece"      : { "label": "oeuvres","key":"artPiece","icon":"paint-brush"},
-        "streetArts"    : { "label": "arts de rue","key":"streetArts","icon":"paint-brush},
+        "streetArts"    : { "label": "arts de rue","key":"streetArts","icon":"paint-brush"},
         "openScene"     : { "label": "scène ouverte","key":"openScene","icon":"bullhorn"},
         "stand"         : { "label": "stand","key":"stand","icon":"map-marker"},
         "parking"       : { "label": "Parking","key":"parking","icon":"car"}

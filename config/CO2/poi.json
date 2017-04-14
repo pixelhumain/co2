@@ -19,7 +19,7 @@
         "recoveryCenter": { "label": "ressourcerie","key":"recoveryCenter","icon":"map-marker"},
         "trash"         : { "label": "poubelle","key":"trash","icon":"map-marker"},
         "history"       : { "label": "histoire","key":"history","icon":"map-marker"},
-        "something2See" : { "label": "chose a voir","key":"something2See","icon":"map-marker"},
+        "something2See" : { "label": "chose a voir","key":"something2See","icon":"eye"},
         "funPlace"      : { "label": "endroit Sympas (skatepark, vue...)","key":"funPlace","icon":"map-marker"},
         "place"         : { "label": "place publique","key":"place","icon":"map-marker"},
         "streetArts"    : { "label": "arts de rue","key":"streetArts","icon":"map-marker"},

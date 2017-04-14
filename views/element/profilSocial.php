@@ -779,7 +779,7 @@ if( $type != Person::COLLECTION)
     var params = <?php echo json_encode(@$params); ?>;
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
-    
+    var liveScopeType = "";
     console.log("params", params);
     var subView="<?php echo @$subview; ?>";
     var hashUrlPage="#page.type."+contextType+".id."+contextId;
@@ -789,7 +789,6 @@ if( $type != Person::COLLECTION)
 	
 
 	jQuery(document).ready(function() {
-		initSocial();
 		bindButtonMenu();
 		if(subView!=""){
 			if(subView=="gallery")
@@ -928,6 +927,9 @@ if( $type != Person::COLLECTION)
 		});
 		
 		//END MAGE CHNGE
+
+		
+		
 	});
 
 	function getCroppingModal(){
@@ -1006,15 +1008,6 @@ if( $type != Person::COLLECTION)
    		});
 	}
 	
-	function initSocial(){	
-   		$(".tooltips").tooltip();
-
-   		$('.sub-menu-social').affix({
-          offset: {
-              top: 350
-          }});
-	}
-
 	function loadDataDirectory(dataName, dataIcon){
 		showLoader('#central-container');
 		// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;

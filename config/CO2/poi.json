@@ -14,7 +14,7 @@
         "geoJson"       : { "label": "Url au format geojson ou vers une umap","key":"geoJson","icon":"map-marker"},
         "compostPickup" : { "label": "récolte de composte","key":"compostPickup","icon":"map-marker"},
         "video"         : { "label": "video","key":"video","icon":"map-marker"},
-        "sharedLibrary" : { "label": "bibliothèque partagée","key":"sharedLibrary","icon":"map-marker"},
+        "sharedLibrary" : { "label": "bibliothèque partagée","key":"sharedLibrary","icon":"book"},
         "artPiece"      : { "label": "oeuvres","key":"artPiece","icon":"map-marker"},
         "recoveryCenter": { "label": "ressourcerie","key":"recoveryCenter","icon":"map-marker"},
         "trash"         : { "label": "poubelle","key":"trash","icon":"map-marker"},

@@ -142,7 +142,7 @@
 		</b></small>
 	</span><br><br>
 	<b>Référencer un site <i class="fa fa-angle-right"></i></b> 
-	<a class="btn btn-default btn-success margin-bottom-5 lbh" href="#app.referencement">
+	<a class="btn btn-default btn-success margin-bottom-5 lbh" href="#referencement">
 		<i class="fa fa-plus-circle"></i> Ajouter une URL
 	</a> 
 </div>

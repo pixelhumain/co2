@@ -3670,7 +3670,7 @@ function initKInterface(params){ console.log("initKInterface");
 
     bindLBHLinks();
 
-    $(".menu-name-profil").click(function(){
+    $(".btn-show-mainmenu").click(function(){
         $("#dropdown-user").addClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });

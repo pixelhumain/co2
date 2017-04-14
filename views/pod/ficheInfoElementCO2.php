@@ -147,9 +147,7 @@
 	<?php } ?>
 
 	
-	<li class="">
-		<?php
-		if ( $type != Person::COLLECTION && ($edit==true || $openEdition==true ) ){ 
+	<?php if ( $type != Person::COLLECTION && ($edit==true || $openEdition==true ) ){ 
 			if ($type == Event::COLLECTION){ 
 				$inviteTooltip = Yii::t("event","Invite attendees to the event");
 				$invitetext =  Yii::t("common","Send invitations") ;			
@@ -159,14 +157,19 @@
 			}else if ($type == Project::COLLECTION){ 
 				$inviteTooltip = Yii::t('common','Add a contributor to this project');
 				$invitetext =  Yii::t("common",'Add contributor') ;
-			}
-			echo '<a href="javascript:" class="tooltips" data-placement="bottom" data-original-title="'.$inviteTooltip.'" data-toggle="modal" data-target="#modal-scope"><i class="fa fa-plus"></i> '.$invitetext.'</a>';
-		}
+			} ?>
+			<li class="">
+				<a href="javascript:" class="tooltips" 
+				data-placement="bottom" data-original-title="<?php echo $inviteTooltip; ?>" 
+				data-toggle="modal" data-target="#modal-scope">
+					<i class="fa fa-plus"></i> <?php echo $invitetext; ?>
+				</a>
+			</li>
+			<li><hr></li>
+	<?php }	?>
 
-		?>
 				
-	</li>
-
+	
 	<li class="">
 		<a href="javascript:" class="" id="btn-start-detail">
 			<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","About"); ?>
@@ -184,9 +187,7 @@
 	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
 	<li class=""><a href="javascript:" class=""><i class="fa fa-envelope"></i> Nous contacter</a></li>
 	<?php } ?>
-
-	<li><hr></li>
-
+	             
 
 	<li class="">
 		<a href="javascript:" class="" id="btn-start-gallery">

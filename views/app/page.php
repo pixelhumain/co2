@@ -43,7 +43,7 @@ jQuery(document).ready(function() {
 	initKInterface({"affixTop":0});
 	$("#mainNav").addClass("affix");
 	initPageInterface();
-	// var tpl = '<?php echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
+    // var tpl = '<?php echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
 	// getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
 	// 	initPageInterface();
 	// },"html");
@@ -80,6 +80,13 @@ function initPageInterface(){
     	$(".dropdown-result-global-search").hide();
     });
 
+    $(".tooltips").tooltip();
+   
+    $('.sub-menu-social').affix({
+      offset: {
+          top: 380
+      }
+    });
     //$(".dropdown-result-global-search").hide();
     
 

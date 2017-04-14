@@ -787,7 +787,6 @@ $this->renderPartial('../pod/confidentiality', $params );
 	
 
 	jQuery(document).ready(function() {
-		initSocial();
 		bindButtonMenu();
 		if(subView!=""){
 			if(subView=="gallery")
@@ -926,6 +925,9 @@ $this->renderPartial('../pod/confidentiality', $params );
 		});
 		
 		//END MAGE CHNGE
+
+		
+		
 	});
 
 	function getCroppingModal(){
@@ -1004,15 +1006,6 @@ $this->renderPartial('../pod/confidentiality', $params );
    		});
 	}
 	
-	function initSocial(){	
-   		$(".tooltips").tooltip();
-
-   		$('.sub-menu-social').affix({
-          offset: {
-              top: 350
-          }});
-	}
-
 	function loadDataDirectory(dataName, dataIcon){
 		showLoader('#central-container');
 		// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;

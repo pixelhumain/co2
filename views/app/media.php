@@ -109,10 +109,10 @@
 
 	</div>
 
-	<div class="col-md-2 col-sm-1 hidden-xs no-padding" id="content-media" style="min-height: 500px;">
+	<div class="col-md-1 col-sm-1 hidden-xs no-padding" id="content-media" style="min-height: 500px;">
 	</div>
 
-	<div class="col-md-8 col-sm-10 inline-block no-padding">
+	<div class="col-md-10 col-sm-10 inline-block no-padding">
 		<div class="col-md-12 no-padding text-center" id="timeline-reload"></div>
 		<ul class="timeline inline-block" id="timeline-live">
 			<?php  

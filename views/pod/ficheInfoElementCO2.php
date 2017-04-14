@@ -162,7 +162,6 @@
 			}
 			echo '<a href="javascript:" class="tooltips" data-placement="bottom" data-original-title="'.$inviteTooltip.'" data-toggle="modal" data-target="#modal-scope"><i class="fa fa-plus"></i> '.$invitetext.'</a>';
 		}
-
 		?>
 				
 	</li>
@@ -260,7 +259,6 @@
 		<?php }  
 		} ?>
 
-			
 		<?php if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true))){ ?>
 			<li><hr></li>
 			<li class="">
@@ -281,3 +279,5 @@
 
 	<li><hr></li>
 </ul>
+
+

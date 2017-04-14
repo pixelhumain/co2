@@ -103,7 +103,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 
     .category-search-link h4{
         font-size: 0.9em;

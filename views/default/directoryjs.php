@@ -186,7 +186,7 @@
         
         
         <?php if($typeSelected == "place"){ ?>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="menu-section-place">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center subsub" id="menu-section-place">
           <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
                   data-type="classified" data-type-anc=""  data-key="all">
             <i class="fa fa-circle-o"></i>

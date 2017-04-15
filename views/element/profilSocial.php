@@ -1036,6 +1036,7 @@ if( $type != Person::COLLECTION)
 
 							$("#central-container").html(html);
 							initBtnLink();
+							
 						}else{
 							var nothing = "Aucun";
 							if(dataName == "organizations" || dataName == "collections" || dataName == "follows")

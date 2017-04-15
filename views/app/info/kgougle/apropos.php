@@ -59,7 +59,7 @@
         <div class="col-lg-3 col-md-3 col-sm-4 text-right hidden-xs" id="sub-menu-left">
         	<div class="dropdown">
 				<button class="btn bg-red text-white btn font-blackoutM dropdown-toggle" data-toggle="dropdown" id="btn-onepage-main-menu">
-					<i class="fa fa-bars"></i> KGOUGLE
+					<i class="fa fa-bars"></i> MENU
 				</button>
 				<div class="dropdown-onepage-main-menu font-montserrat" aria-labelledby="btn-onepage-main-menu">
 					<ul class="dropdown-menu arrow_box font-blackoutM letter-red">
@@ -135,6 +135,20 @@
         		<img src="<?php echo $urlKgou; ?>" height="35" class="logoKgou"> c'est ossi ...
         	</h1>
         	<hr>
+            <h3 class="letter-blue">
+                <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/radios/radio-ico.png" 
+                     height="50" style="margin-top: -15px;"> 
+                Un poste de radio 
+            </h3>
+            <h4>Pour rester en contact permanent avec le reste du pays...</h4>
+            <p>
+                Retrouvez à tout moment les radios locales, pour suivre l’actualité, se divertir, ou simplement écouter de la musique.
+            </p>
+            <button class="btn btn-link letter-blue" data-target="#modalRadioTool" data-toggle="modal">
+                <i class="fa fa-arrow-circle-right"></i> Afficher la radio
+            </button>
+
+            <hr>
         	<h3 class="letter-blue"><i class="fa fa-star-o fa-2x"></i> <i class="fa fa-angle-righ"></i> La gestion de vos sites favoris</h3>
         	<h4>Cherchez une fois, trouvez pour toujours...</h4>
 			<p>
@@ -143,34 +157,24 @@
 
         	<hr>
         	
-        	<h3 class="letter-blue">
-        		<i class="fa fa-microphone fa-2x"></i> Un poste de radio 
-        	</h3>
-        	<h4>Pour rester en contact permanent avec le reste du pays...</h4>
-			<p>
-				Retrouvez à tout moment les radios locales, pour suivre l’actualité, se divertir, ou simplement écouter de la musique.
-        	</p>
-        	<!-- <button class="btn btn-link letter-blue" data-target="#modalRadioTool" data-toggle="modal">
-        		<i class="fa fa-arrow-circle-right"></i> Afficher la radio
-        	</button> -->
 
-        	<hr>
         	<h3 class="letter-blue">
         		<i class="fa fa-map fa-2x"></i> Un outil de cartographie 
         	</h3>
         	<h4>Pour se repérer facilement sur le Caillou...</h4>
 			
+            <button class="btn btn-link letter-blue btn-show-map">
+                <i class="fa fa-arrow-circle-right"></i> Afficher la carte
+            </button>
+
         	<hr>
         	<h3 class="letter-blue">
         		<i class="fa fa-newspaper-o fa-2x"></i> Un fil d'actualités
         	</h3>
-        	<h4>Composé des principaux articles des grands médias calédoniens...</h4>
+        	<h4>Une revue de presse des grands médias calédoniens et d’outre-mers</h4>
 			<p>
-				Pour suivre l'actualité locale en direct, à travers les publications de nos médias locaux.<br>
+				Pour suivre en direct l'actualité locale et garder un oeil sur le reste du monde.<br>
         	</p>
-        	<!-- <button class="btn btn-link letter-blue btn-show-map">
-        		<i class="fa fa-arrow-circle-right"></i> Afficher la carte
-        	</button> -->
 
 
         	<!-- --------------------------------------------------------------------------------- -->
@@ -192,7 +196,7 @@
 				A moyen terme, nous souhaitons également proposer d'autres outils numériques innovants, qui participeront à l'amélioration globale des services web disponibles en Nouvelle-Calédonie.
 				<br><br>
 				
-				<a href="" class="letter-yellow">
+				<a href="#info.p.ph" class="letter-yellow">
 					<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/LOGO_PIXEL_HUMAIN.png" height=100> 
 					<b><i class="fa fa-plus-circle"></i> En savoir plus sur notre équipe</b>
 				</a>
@@ -206,11 +210,8 @@
         	</h1>
 
         	<h3 class="letter-blue"><i class="fa fa-cubes fa-2x"></i> <i class="fa fa-angle-righ"></i> Plusieurs nouveautés déjà en préparation</h3>
-        	<h4>Notre imagination est sans limite...</h4>
+        	<!-- <h4>Notre imagination est sans limite...</h4> -->
 			<p>
-				<i class="fa fa-newspaper-o letter-red"></i> <span class="letter-red font-blackoutT">ACTU</span> <b><span class="letter-green">Un fil d’actualité média</span>, regroupant les principaux articles de presse publiés sur internet, issus des grands médias calédoniens.</b> 
-				Pour retrouver toute l’actu du pays, d’hier et d’aujourd’hui, en un seul clic !
-				<br><br>
 				<i class="fa fa-user-circle-o letter-red"></i> <span class="letter-red font-blackoutT">SOCIAL</span> <b><span class="letter-green">Un réseau social indépendant</span>, offrant toutes les fonctionnalités des réseaux les plus connus :</b> <br>Création de compte perso, partages de messages et URL, création de page pour associations, entreprises, groupes, projets, une messagerie privée... 
 				Et bien plus encore ! 
 				<br><br>

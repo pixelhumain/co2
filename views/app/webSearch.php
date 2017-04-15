@@ -9,9 +9,10 @@
 <hr>
 <?php if($category == "Météo"){ ?>
 	<iframe class="col-sm-12 col-md-12 col-xs-12 margin-bottom-20" style="padding:0 15px 0 0;border-radius: 5px;" height="450" 
-			src="https://embed.windytv.com/embed2.html?lat=-21.330&lon=166.069&zoom=7&level=surface&overlay=wind&menu=&message=&marker=&forecast=12&calendar=now&location=coordinates&type=map&actualGrid=&metricWind=kt&metricTemp=%C2%B0C" 
+			src="https://embed.windytv.com/embed2.html?lat=-20.180&lon=165.630&zoom=6&level=surface&overlay=rain&menu=&message=&marker=&forecast=12&calendar=now&location=coordinates&type=map&actualGrid=&metricWind=kt&metricTemp=%C2%B0C"
 			frameborder="0">
 	</iframe> 
+
 	<div class="col-sm-12 col-md-12 col-xs-12 no-padding">
 		<hr>
 	</div>
@@ -74,7 +75,7 @@
 				<?php } ?> 
 				<?php echo $siteurl["title"]; ?>
 			</a>
-			<button class="btn btn-xs bg-white btn-edit-url tooltips" title="modifier"
+			<button class="btn btn-xs bg-white btn-edit-url tooltips hidden-xs" title="modifier"
 					data-target="#modalEditUrl" data-toggle="modal" data-placement="right"
 					data-idurl="<?php echo $key; ?>">
 				<i class="fa fa-cog"></i>

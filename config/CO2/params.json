@@ -128,16 +128,14 @@
 
             "#thing":
                 {"inMenu" : true, 
-                "useHeader" : true, 
+                "useHeader" : false, 
                 "open" : true, 
                 "subdomain" : "thing", 
                 "subdomainName" : "Objets communectés",
                 "hash" : "#thing",
                 "icon" : "database", 
                 "mainTitle" : "Les objets communectés",
-                "placeholderMainSearch" : "Choisir parmis les objets ...",
-                "lblBtnCreate" : "Ajouter un objet",
-                "colorBtnCreate" : "azure"
+                "placeholderMainSearch" : "Choisir parmis les objets ..."
           },
 
             "#rooms":

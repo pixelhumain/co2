@@ -21,6 +21,7 @@ class ThingController extends CommunecterController {
           'scklastestreadings'        => 'citizenToolKit.controllers.thing.GetLastestReadingAction',
           'updatesckdevices'          => 'citizenToolKit.controllers.thing.UpdateSckDevicesAction',
           'manage'                    => 'citizenToolKit.controllers.thing.ManageAction',
+          'getsckdataincodb'          => 'citizenToolKit.controllers.thing.GetSCKDataInCODBAction',
           
         );
 	}

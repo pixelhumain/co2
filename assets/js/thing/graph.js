@@ -8,7 +8,11 @@
 
  function hideGraph(figGraph){ $("#"+figGraph).hide(); }
 
+
+
 //
+
+
 function setSVGForSensor(sensor) {
 
   var svgId = "sensor"+sensor;
@@ -36,7 +40,7 @@ function setSVGForSensor(sensor) {
       domain : {Yn : vYn, Ym : vYm, Xn : vXn, Xm : vXm , domainInitialized : false},
       devices : [],
       divgraphid : figGraph,
-      urlReqApi : "",
+      urlReqApi : ""
   };
 
   //console.dir(objGraph);
@@ -48,13 +52,13 @@ function setSVGForSensor(sensor) {
 
 function setLegend(deviceId,strkCol){
 
-console.log(strockeColorArray);
+//console.log(strockeColorArray);
 
   var idIM='icnmin_'+deviceId; 
   var idTL= 'textdevice_'+deviceId;
  // var stId = "sCol_"+deviceId;
-  console.log(deviceId);
-  console.log(idIM);
+  //console.log(deviceId);
+  //console.log(idIM);
   //console.log(stId);
   var legendILSC="<a href='https://smartcitizen.me/kits/"+deviceId+"' target='_blank'><i class='fa fa-minus' id='"+idIM+"' style='color:"+strkCol+";'></i> SCK device "+deviceId+"</a>";
 
@@ -66,12 +70,12 @@ console.log(strockeColorArray);
 
 }
 
-function showLegendGraph( ){
+/*function showLegendGraph( ){
 
 
-}
+}*/
 
-
+//TODO Prendre un domaine 10% plus grand que les data en Y 5%top et 5 bottom
 function updateTheDomain(xArray,yArray,indexGraphe){
   var yChanged = false;
   var xChanged = false;
@@ -148,21 +152,13 @@ function setStrokeColorForDevice(device) {
   if (strockeColorArray[stId] != null )
   {
     strockeColor = strockeColorArray[stId];
-    //console.log("strockeColor alreadySet: "+strockeColor);
   } else
-  {   // || strockeColorArray["sCol_"+device] ) {
-      strockeColor = "rgb("+Math.floor((Math.random()*220)+1)+","+
-      Math.floor((Math.random()*220)+1)+","+
+  {
+      strockeColor = "rgb("+Math.floor((Math.random()*220)+1)+","+Math.floor((Math.random()*220)+1)+","+
       Math.floor((Math.random()*220)+1)+")";
-      //console.log("new strockeColor :"+strockeColor);
-      //stId = "sCol_"+device ;
-
       strockeColorArray[stId]=strockeColor;
-    //console.log(strockeColorArray);
     setLegend(device,strockeColor);
-
   }
-  
   return strockeColor;
 }
 
@@ -172,12 +168,15 @@ function fillArrayWithObjectTimestampsAndValues(readings){
     function(item){
       var ts = new Date();
       ts.setTime(Date.parse(item[0]));
+      //console.log("ts : ");
+      //console.log(ts);
       ts.setSeconds(0);
       item[1] = +item[1];
       d.push({timestamps : ts, values : item[1]});
     }
   );
   return d;
+
 }
 /**
 @function tracer
@@ -223,10 +222,21 @@ function graphe(device,sensors,readings,svgG){
   
 }
 
-function dataSensorAdaptor(convertedDataRecord){
+function grapheCoDB(data,sensorkey,svgG){
+  var dCOdb = dataSensorAdaptorTimestampsAndValues(data);
+  //prendre le key pour la donné
+  //multiGraphe[svgG].
 
-  var d={};
-  d.temp=[], d.hum=[], d.bat=[], d.panel=[], d.no2=[], d.co=[], d.noise=[], d.nets=[], d.light=[];
+for (var key in dCOdb){
+ //var de = 
+  tracer(de,device,sensors)
+}
+}
+
+function dataSensorAdaptorTimestampsAndValues(convertedDataRecord){
+
+  var dataCOdb={};
+  dataCOdb.temp=[]; dataCOdb.hum=[]; dataCOdb.bat=[]; dataCOdb.panel=[]; dataCOdb.no2=[]; dataCOdb.co=[]; dataCOdb.noise=[]; dataCOdb.nets=[]; dataCOdb.light=[];
   
   convertedDataRecord.forEach( function(item){
 
@@ -244,18 +254,19 @@ function dataSensorAdaptor(convertedDataRecord){
       item.nets =+item.nets;
       item.noise=+item.noise;
       
-      d.temp.push({timestamps : ts, values : item.temp});
-      d.hum.push({timestamps : ts, values : item.hum});
-      d.bat.push({timestamps : ts, values : item.bat});, 
-      d.panel.push({timestamps : ts, values : item.panel});
-      d.no2.push({timestamps : ts, values : item.no2});
-      d.co.push({timestamps : ts, values : item.co});
-      d.noise.push({timestamps : ts, values : item.noise});
-      d.nets.push({timestamps : ts, values : item.nets});
-      d.light.push({timestamps : ts, values : item.light});
+      dataCOdb.temp.push({timestamps : ts, values : item.temp});
+      dataCOdb.hum.push({timestamps : ts, values : item.hum});
+      dataCOdb.bat.push({timestamps : ts, values : item.bat}); 
+      dataCOdb.panel.push({timestamps : ts, values : item.panel});
+      dataCOdb.no2.push({timestamps : ts, values : item.no2});
+      dataCOdb.co.push({timestamps : ts, values : item.co});
+      dataCOdb.noise.push({timestamps : ts, values : item.noise});
+      dataCOdb.nets.push({timestamps : ts, values : item.nets});
+      dataCOdb.light.push({timestamps : ts, values : item.light});
 
-  });
-  return d;
+  }
+  );
+  return dataCOdb;
 }
 
 

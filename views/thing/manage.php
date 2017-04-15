@@ -20,8 +20,13 @@
 
 ?>
 
-<div class="col-xs-12" id="">
-	<div>
+<div class="col-xs-12 container" id="managesck">
+	<div class="col-xs-12">
+		<h3>Pour mettre à jour l'adresse mac avec le deviceId du Smart-Citizen-kit</h3>
+	</div>
+
+	
+	<div class="col-xs-12">
 		<h3>Pour mettre à jour l'adresse mac avec le deviceId du Smart-Citizen-kit</h3>
 	</div>
 	<div class="col-xs-12">
@@ -31,7 +36,7 @@
   				$devices[]=$mdataDevice; ?>
   			<div class='form-group col-sm-12' role='group'>
   				<span id='<?php echo $mdataDevice['_id'] ?>'> 
-  					<label><?php echo $mdataDevice['deviceId'] ?> : </label>
+  					<label>  <?php echo '$mdataDevice['name']'.' '.'$mdataDevice['deviceId']' ?> : </label>
   					<input type='text' name='mac-sck<?php echo $mdataDevice['deviceId']?>' id='mac-sck<?php echo $mdataDevice['deviceId']?>'>  
   					<input class='idMdataDevice' value='<?php echo $mdataDevice['_id'] ?>' readonly>
   				</span>
@@ -54,6 +59,10 @@
 
 function setRowForm(){
 	$("#sckdevicesform")
+}
+
+function validatorMacId(boardId){
+
 }
 
 function updateSCKBoardId(){

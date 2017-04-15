@@ -21,17 +21,25 @@ $communexion = CO2::getCommunexionCookies();
         }
 
 ?>
+<style>
+#indexthing{
+  margin-top: 40px;
+  padding-top: 40px;
 
- 
+}
+  
+</style>
 
 
-<div class="col-xs-12" id="">
+<div class="col-xs-12 container" id="indexthing">
   <div class="panel panel-white">
       <div class="panel-heading text-center border-light">
         <h3 class="panel-title text-blue"> Smart-Citizen-Kit </h3>
         <p>Il y a <?php echo count($boardIds) ?> SCK communectés (BoardId différents, Double push) </p>
         <p>Il y a <?php echo count($deviceIds) ?> SCK Enregistrés </p>
-
+<?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
+        <p> Un administrateur peut gérer les SCK</p>
+   <?php } ?>
       </div>
 
       <div class="panel-body no-padding center">
@@ -77,8 +85,9 @@ $communexion = CO2::getCommunexionCookies();
 <script>
 
   jQuery(document).ready(function() {
-    console.log("Thing : page index");
-   // setTitle("Thing Reading","cog");
+    setTitle("Objets communectés","fa-database");
+    //console.log("Thing : page index");
+  
    //Index.init();
   });
 

@@ -8,23 +8,32 @@ function bindAboutPodElement() {
 			switchModeElement();
 		});		
 
-		$("#changePasswordBtn").click(function () {
-			var urlToSend = baseUrl+'/'+moduleId+'/person/changepassword/id/'+userId+'/mode/initSV';
-			$.blockUI({
-				message : '<div>'+
-							'<div class="changePasswordForm"></div>'+
-						'</div>', 
-				onOverlayClick: $.unblockUI,
-				css: {"text-align": "left", "cursor":"default", "width":"50%", "left":"25%" }
-			});
+		$("#btn-update-password").off().on( "click", function(){
+			var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/person/changepassword",
+				dynForm : {
+					jsonSchema : {
+						title : trad["Change password"],
+						icon : "fa-key",
+						afterSave : function(data){
+							elementLib.closeForm();
+						},
+						properties : {
+							mode : typeObjLib.hidden,
+							userId : typeObjLib.hidden,
+							oldPassword : typeObjLib.password(trad["Old password"]),
+							newPassword : typeObjLib.password("", { required : true, minlength : 8 } ),
+							newPassword2 : typeObjLib.password(trad["Repeat your new password"], {required : true, minlength : 8, equalTo : "#ajaxFormModal #newPassword"})	
+						}
+					}
+				}
+			};
 
-			getAjax('.changePasswordForm',urlToSend,function(){
-
-			//$('.bar_tools_post').hide();
-			//$('.saySomething').hide();
-			},"html");
-			//mylog.log("changePasswordbuttton");
-			//url.loadByHash('#person.changepassword.id.'+userId+'.mode.initSV', false);
+			var dataUpdate = {
+				mode : "changePassword",
+		        userId : userId
+		    };
+			elementLib.openForm(form, null, dataUpdate);
 		});
 
 		$("#downloadProfil").click(function () {
@@ -529,19 +538,19 @@ function bindAboutPodElement() {
 						mylog.log("update url");
 						contextData.url = data.resultGoods.values.url;
 						$("#urlAbout").html(contextData.url);
-						$("#urlAbout").attr("href", url);
+						$("#urlAbout").attr("href", contextData.url);
 					}  
 						
 					if(typeof data.resultGoods.values.birthDate != "undefined"){
 						mylog.log("update birthDate");
 						contextData.birthDate = data.resultGoods.values.birthDate;
-						$("#birthDateAbout").html(contextData.birthDate);
+						$("#birthDateAbout").html(moment(contextData.birthDate).local().format("DD MM YYYY"));
 					}
 
 					if(typeof data.resultGoods.values.fixe != "undefined"){
 						mylog.log("update fixe");
 						contextData.fixe = parsePhone(data.resultGoods.values.fixe);
-						$("#fixeAbout").html(str);
+						$("#fixeAbout").html(contextData.fixe);
 					}
 
 					if(typeof data.resultGoods.values.mobile != "undefined"){
@@ -648,6 +657,7 @@ function bindAboutPodElement() {
 			var onLoads = {
 				markdown : function(){
 					activateMarkdown("#ajaxFormModal #description");
+					bindDesc("#ajaxFormModal");
 				}
 			};
 
@@ -791,3 +801,14 @@ function bindAboutPodElement() {
 		});
 		return str ;
 	}
+
+
+	function bindDesc(parent){
+		$(".maxlengthTextarea").off().keyup(function(){
+			var name = "#" + $(this).attr("id") ;
+			mylog.log(".maxlengthTextarea", parent+" "+name, $(this).attr("id"), $(parent+" "+name).val().length, $(this).val().length);
+			$(parent+" #maxlength"+$(this).attr("id")).html($(parent+" "+name).val().length);
+			maxlengthshortDescription
+		});
+	}
+

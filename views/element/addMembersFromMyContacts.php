@@ -57,7 +57,7 @@
 		margin-right: 0px;
 		padding-left: 10px;
 		padding-right: 10px;
-		height: 52px;
+		/*height: 52px;*/
 		border-radius: 0px;
 		text-align:left;
 		background-color: rgba(255, 255, 255, 0.54);
@@ -167,6 +167,11 @@
 		font-weight:500;
 		color:#8C8C8C !important;
 	}
+
+	#modalDirectoryForm .modal h4 {
+	    font-size : 14px;
+	}
+
 	#modalDirectoryForm .modal #menu-type h4 {
 	    background-color: rgba(35, 83, 96, 0.15);
 		color: #2D6569;
@@ -196,17 +201,17 @@
 </div>
 
 <div id="formSendMailInvite" class="hidden">
-	<div class="text-red"><i class="fa fa-ban"></i> Aucun résultat ne correspond à votre recherche</div>
+	<div class="text-red"><i class="fa fa-ban"></i> <?php echo Yii::t("common","No results match in your search"); ?></div>
 	<hr>
-	<h3 class='text-dark'><i class="fa fa-angle-down"></i> Inviter par mail</h3>
+	<h3 class='text-dark'><i class="fa fa-angle-down"></i> <?php echo Yii::t("common","Invite by mail"); ?></h3>
 	<div id="addMembers" style="line-height:40px; padding:0px;" autocomplete="off" submit='false'>
 		<input type="hidden" id="parentOrganisation" name="parentOrganisation" value="<?php echo (string)$parentId; ?>"/>
 	    <input type="hidden" id="memberId" name="memberId" value=""/>
         <div class="form-group" id="addMemberSection">
 
-        	<input type="radio" value="citoyens" name="memberType" data-fa="user" checked> <i class="fa fa-user"></i> un citoyen
+        	<input type="radio" value="citoyens" name="memberType" data-fa="user" checked> <i class="fa fa-user"></i> <?php echo Yii::t("common","a citizen"); ?>
         	<?php if($type != "events"){ ?>
-        		<input type="radio" value="organizations" name="memberType" data-fa="group" style="margin-left:25px;"> <i class="fa fa-group"></i> une organisation
+        		<input type="radio" value="organizations" name="memberType" data-fa="group" style="margin-left:25px;"> <i class="fa fa-group"></i> <?php echo Yii::t("common","an organization"); ?>
         	<?php } ?>
 			<div class="input-group">
 		      <span class="input-group-addon" id="basic-addon1">
@@ -228,9 +233,9 @@
 		      <select class="member-organization-type form-control text-left" autocomplete="off" id="organizationType" name="organizationType" value=""/>
 		    </div>
 		    <div class="col-md-12 no-padding">
-		    	<span id='isAdminDiv' ><input type="checkbox" id="memberIsAdmin" value="true"> <i class="fa fa-user-secret"></i> Ajouter en tant qu'admin</span>
+		    	<span id='isAdminDiv' ><input type="checkbox" id="memberIsAdmin" value="true"> <i class="fa fa-user-secret"></i> <?php echo Yii::t("common","Add as admin"); ?></span>
 		    	<button class="btn btn-primary pull-right" onclick="sendInvitationMailAddMember()">
-		    		<i class="fa fa-send"></i> Envoyer l'invitation
+		    		<i class="fa fa-send"></i> <?php echo Yii::t("common","Send invitation"); ?>
 		    	</button>
         	</div>
         	<div class="col-md-12 padding-15 text-right" id="loader-send-mail-invite" style="margin-bottom:10px;">
@@ -253,20 +258,20 @@ if(elementType != "<?php echo Event::COLLECTION ?>")
 	contactTypes.push({ name : "organizations", color: "green", icon:"group", label:"Organisations" });
 
 
-var users = <?php echo json_encode(@$users) ?>;
+var members = <?php echo json_encode(@$members) ?>;
 
 var addLinkDynForm = {
 		"inputType" : "scope",
-  		"title1" : "Ajouter des membres ...",
-  		"title2" : "Parmis mes contacts ...",
-  		"title3" : "Autres ...",
-  		"btnCancelTitle" : "Fermer",
-  		"btnSaveTitle" : "Ajouter ces contacts",
-  		"btnResetTitle" : "Annuler tout",
+  		"title1" : trad["Add members ..."],
+  		"title2" : trad["Among my contacts ..."],
+  		"title3" : trad["Others ..."],
+  		"btnCancelTitle" : trad["Close"],
+  		"btnSaveTitle" : trad["Add this contacts"],
+  		"btnResetTitle" : trad["Cancel all"],
 
         "values" : myContactsMembers,
-        "mainTitle" : "Inviter vos contacts",
-        "labelBtnOpenModal" : "<span class='text-dark'><i class='fa fa-group'></i> Sélectionner parmis mes contacts</span>",
+        "mainTitle" : trad["Invite your contacts"],
+        "labelBtnOpenModal" : "<span class='text-dark'><i class='fa fa-group'></i> "+trad["Select among my contacts"]+"</span>",
         "contactTypes" : contactTypes
 };
 
@@ -283,7 +288,7 @@ jQuery(document).ready(function() {
 		$("#select-type-search-all").prop("checked", true);
 		$("#btn-save").removeClass("hidden");
 		$("#list-scroll-type").html('<i class="fa fa-search fa-4x padding-15 center-block text-grey"></i>');
-		$("#search-contact").attr("placeholder", "Recherchez un nom ou une addresse e-mail...");
+		$("#search-contact").attr("placeholder", trad["Research a name or e-mail address..."]);
 		addLinkSearchMode = "all";
 		filterContact($("#search-contact").val());
 	});
@@ -293,11 +298,12 @@ jQuery(document).ready(function() {
 	});
 });
 
-function excludeMembers(contacts, users){
+function excludeMembers(contacts, members){
+	mylog.log("excludeMembers",contacts, members);
 
 	//delete mes contacts qui sont déjà membre
-	if(users != null){
-		$.each(users, function(idUser, value){
+	if(members != null){
+		$.each(members, function(idUser, value){
 			if(typeof value != "undefined"){
 				var type = notEmpty(value["typeSig"]) ? value["typeSig"] : notEmpty(value["type"]) ? value["type"] : null;
 				if(type != null){
@@ -341,6 +347,7 @@ function excludeMembers(contacts, users){
 }
 
 function switchContact(){
+	mylog.log("switchContact");
 	$("#select-type-search-contacts").prop("checked", true);
 	$("#btn-save").removeClass("hidden");
 	$("#search-contact").attr("placeholder", "Recherchez parmis vos contacts...");
@@ -350,6 +357,7 @@ function switchContact(){
 }
 	
 function bindEventScopeModal(){
+	mylog.log("bindEventScopeModal");
 	/* initialisation des fonctionnalités de la modale SCOPE */
 	//parcourt tous les types de contacts
 	$.each(contactTypes, function(key, type){ //mylog.log("BINDEVENT CONTACTTYPES : " + type.name);
@@ -406,7 +414,7 @@ function bindEventScopeModal(){
 
 function bindEventScopeContactsModal(){
 	//initialise la selection d'une checkbox contact au click sur le bouton qui lui correspond
-
+	mylog.log("bindEventScopeContactsModal");
 	$(".btn-chk-contact").click(function(){ 
 		var id = $(this).attr("idcontact"); 
 		var type = $(this).attr("typecontact");
@@ -444,6 +452,7 @@ function bindEventScopeContactsModal(){
 }
 
 function buildModal(fieldObj, idUi){
+	mylog.log("buildModal", fieldObj, idUi);
 	//var fieldClass = " select2TagsInput select2ScopeInput";
     var fieldHTML = "";    		
 	fieldHTML += '<div class="modal fade" id="modal-scope" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
@@ -512,10 +521,10 @@ function buildModal(fieldObj, idUi){
 }
 
 function showMyContactInModalAddMembers(fieldObj, jqElement){
-	mylog.log("showMyContactInModalAddMembers1", fieldObj);
+	mylog.log("showMyContactInModalAddMembers1", fieldObj, jqElement);
     
 	var contacts = fieldObj.values;
-	excludeMembers(contacts, users);
+	excludeMembers(contacts, members);
 	fieldObj.values = contacts;
 
     var fieldHTML = "";
@@ -533,7 +542,7 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 										if(typeof value != "undefined"){
 											var cp = (typeof value.address != "undefined" && typeof value.address.postalCode != "undefined") ? value.address.postalCode : typeof value.cp != "undefined" ? value.cp : "";
 											var city = (typeof value.address != "undefined" && typeof value.address.addressLocality != "undefined") ? value.address.addressLocality : "";
-											var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl + value.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
+											var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl+'/'+moduleId+ value.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
 											var name =  typeof value.name != "undefined" ? value.name : 
 														typeof value.username != "undefined" ? value.username : "";
 											//mylog.log("data contact +++++++++++ "); mylog.dir(value);
@@ -615,7 +624,7 @@ function autoCompleteEmailAddMember(searchValue){
 	$("#list-scroll-type").html("<div class='padding-10'><i class='fa fa-spin fa-refresh'></i> Recherche en cours</div>");
 	$.ajax({
 		type: "POST",
-        url: baseUrl+"/communecter/search/searchmemberautocomplete",
+        url: baseUrl+'/'+moduleId+'/search/searchmemberautocomplete',
         data: data,
         dataType: "json",
         success: function(data){
@@ -640,7 +649,6 @@ function autoCompleteEmailAddMember(searchValue){
         					$(".organization-type").hide();
         				}
         			});
-        			//$("#formSendMailInvite").removeClass("hidden");
         			
         		}else{
 	        		listContact = {"people" : data.citoyens, "organizations" : data.organizations};
@@ -720,12 +728,14 @@ function sendInvitation(){
 	
 	//mylog.log(params);
 	mylog.log("send ajax invite");
-	$.blockUI({
+	/*$.blockUI({
 		message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Processing<br><blockquote><p>la Liberté est la reconnaissance de la nécessité.</p><cite title='Hegel'>Hegel</cite></blockquote></h4>"
-	});
+	});*/
+	processingBlockUi();
+
 	$.ajax({
         type: "POST",
-        url: baseUrl+"/communecter/link/multiconnect",
+        url: baseUrl+'/'+moduleId+'/link/multiconnect',
         data: params,
         dataType: "json",
         success: function(data){
@@ -740,11 +750,10 @@ function sendInvitation(){
         		$.each(data.newMembers, function(k, newMember){
 	        		mylog.log("neewsMens >>>>");
 	        		mylog.log(newMember);
-	        		//setValidationTable(newMember,newMember.childType, true);
-			        mapType = newMember.childType;
+	        		mapType = newMember.childType;
 			        if(newMember.childType=="<?php echo Person::COLLECTION ?>")
 			            mapType="people";
-			        contextMap[mapType].push(newMember);
+			        mapElements.push(newMember);
 				});
 				if(typeof(mapUrl) != "undefined"){
 					if(typeof(mapUrl.detail.load) != "undefined" && mapUrl.detail.load)
@@ -752,9 +761,8 @@ function sendInvitation(){
 					if(typeof(mapUrl.directory.load) != "undefined" && mapUrl.directory.load)
 						mapUrl.directory.load = false;
 				}
-				if(currentView=="detail" || currentView=="directory"){
-					url.loadByHash(location.hash);
-				}
+				url.loadByHash(location.hash);
+				
 				$.unblockUI();
         	}
         	mylog.log(data.result);   
@@ -787,7 +795,7 @@ function sendInvitationMailAddMember(){ mylog.log("sendInvitationMailAddMember")
 
 	$.ajax({
         type: "POST",
-        url: baseUrl+"/communecter/link/connect",
+        url: baseUrl+'/'+moduleId+'/link/connect',
         data: params,
         dataType: "json",
         success: function(data){
@@ -805,7 +813,7 @@ function sendInvitationMailAddMember(){ mylog.log("sendInvitationMailAddMember")
                	mapType = data.newElementType;
                	if(data.newElementType=="<?php echo Person::COLLECTION ?>")
                		mapType="people";
-               	contextMap[mapType].push(data.newElement);
+               	mapElements.push(data.newElement);
                	//Minus 1 on number of invit
                	if ($("#addMembers #memberId").val().length==0){
 	               	var count = parseInt($("#numberOfInvit").data("count")) - 1;

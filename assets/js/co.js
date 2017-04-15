@@ -51,6 +51,7 @@ function checkPoll(){
 		countPoll++;
 	}
 }
+
 function bindRightClicks() { 
 	$.contextMenu({
 	    selector: ".add2fav",
@@ -367,7 +368,13 @@ function validateConnection(parentType, parentId, childId, childType, linkOption
 		dataType: "json",
 		success: function(data) {
 			if (data.result) {
-				if (typeof callback == "function") callback(parentType, parentId, childId, childType, linkOption);
+				if (typeof callback == "function") 
+					callback(parentType, parentId, childId, childType, linkOption);
+				else{
+					toastr.success(data.msg);
+					url.loadByHash(location.hash);
+				}
+
 			} else {
 				toastr.error(data.msg);
 			}
@@ -529,7 +536,6 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 	}
 }		
 
-
 var CoAllReadyLoad = false;
 var url = {
 	loadableUrls : {
@@ -542,12 +548,40 @@ var url = {
 		"events" : "e",
 		"projects" : "pr",
 		"cities" : "c",
+		"classified":"cl"
 		/*"entry" : "s",
 		"vote" : "v",
 		"action" : "a",
 		"rooms" : "r",*/
-		"classified":"cl"
 	},
+	shortVal : [
+		"p",
+		"poi",
+		"s",
+		"o",
+		"e",
+		"pr",
+		"c",
+		"cl"
+		/*"entry" : "s",
+		"vote" : "v",
+		"action" : "a",
+		"rooms" : "r",*/
+	],
+	shortKey : [
+		"citoyens",
+		"poi" ,
+		"siteurl",
+		"organizations",
+		"events",
+		"projects" ,
+		"cities" ,
+		"classified"
+		/*"entry" : "s",
+		"vote" : "v",
+		"action" : "a",
+		"rooms" : "r",*/
+	],
 	map : function (hash) {
 		hashT = hash.split('.');
 		return {
@@ -565,9 +599,9 @@ var url = {
 	checkAndConvert : function (hash) {
 		hashT = hash.split('_');
 		mylog.log("-------checkAndConvert : ",hash,hashT);
-		pos = $.inArray( hashT[0].substring(1) , Object.values( url.short ) );
+		pos = $.inArray( hashT[0].substring(1) , url.shortVal );
 		if( pos >= 0 ){
-			type = Object.keys( url.short )[pos];
+			type = url.shortKey[pos];
 			hash =  "#page.type."+type+".id."+hashT[1];
 			mylog.log("converted hash : ",hash);
 		} 
@@ -1071,13 +1105,13 @@ var smallMenu = {
 		    lazyLoad( moduleUrl+'/js/default/directory.js', null, null );
 	    
 	    //processingBlockUi();
-	    $(smallMenu.destination).html("<i class='fa fa-spin fa-refresh'></i>");
+	    //$(smallMenu.destination).html("<i class='fa fa-spin fa-refresh fa-4x'></i>");
 
 		ajaxPost( null , url, params , function(data)
 		{
 			if(!title1 && notNull(title1) && data.context && data.context.name)
 				title1 = data.context.name;
-			smallMenu.buildHeader( title,icon,color,title1 );
+			var content = smallMenu.buildHeader( title,icon,color,title1 );
 			smallMenu.open( content );
 			if( data.count == 0 )
 				$(".titleSmallMenu").html("<a class='text-white' href='javascript:smallMenu.open();'> <i class='fa fa-th'></i></a> "+	
@@ -1089,8 +1123,6 @@ var smallMenu = {
 		   	$('.searchSmallMenu').off().on("keyup",function() { 
 				directory.search ( ".favSection", $(this).val() );
 		   	});
-		   	if( jsonHelper.notNull( "params.otherCollectionList", "function") )
-		   		params.otherCollectionList();
 		   	//else collection.buildCollectionList( "linkList" ,"#listCollections",function(){ $("#listCollections").html("<h4 class=''>Collections</h4>"); });
 
 		   	if (typeof callback == "function") 
@@ -1123,9 +1155,6 @@ var smallMenu = {
 
 					"<h3 class='titleSmallMenu'> "+
 						title1+"<i class='fa "+icon+" text-"+color+"'></i> "+title+
-						"<div class='col-md-4 pull-right'>"+
-							"<input name='searchSmallMenu' class='form-control searchSmallMenu text-black' placeholder='rechercher' style=''><br/>"+
-						"</div>"+
 					"</h3><hr>"+
 					"<div class='col-md-12 bold sectionFilters'>"+
 						"<a class='text-black bg-white btn btn-link favSectionBtn btn-default' "+
@@ -1139,6 +1168,7 @@ var smallMenu = {
 
 				"<div id='listDirectory' class='col-md-10 no-padding'></div>"+
 				"<div class='hidden-xs col-sm-2 text-left'>"+
+					"<input name='searchSmallMenu' style='border:1px solid red' class='form-control searchSmallMenu text-black' placeholder='rechercher' style=''><br/>"+
 					"<h4 class=''><i class='fa fa-angle-down'></i> Filtres</h4>"+
 					"<a class='btn btn-dark-blue btn-anc-color-blue btn-xs favElBtn favAllBtn text-left' href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'> <i class='fa fa-tags'></i> Tout voir </a><br/>"+
 
@@ -1500,6 +1530,11 @@ function markdownToHtml(str) {
 	return res;
 }
 
+function convertMardownToHtml(text) { 
+	var converter = new showdown.Converter();
+	return converter.makeHtml(text);
+}
+
 
 function activateMarkdown(elem) { 
 	mylog.log("activateMarkdown", elem);
@@ -1507,15 +1542,13 @@ function activateMarkdown(elem) {
 	markdownParams = {
 			savable:false,
 			iconlibrary:'fa',
+			language:'fr',
 			onPreview: function(e) {
 				var previewContent = "";
-			    mylog.log(e.isDirty());
-			    if (e.isDirty()) {
-			    	var converter = new showdown.Converter(),
-			    		text      = e.getContent(),
-			    		previewContent      = converter.makeHtml(text);
+				if (e.isDirty()) {
+			    	previewContent = convertMardownToHtml(e.getContent());
 			    } else {
-			    	previewContent = "Default content";
+			    	previewContent = convertMardownToHtml($(elem).val());
 			    }
 			    return previewContent;
 		  	},
@@ -1536,6 +1569,25 @@ function activateMarkdown(elem) {
 
 			$.getScript( baseUrl+"/plugins/bootstrap-markdown/js/bootstrap-markdown.js", function( data, textStatus, jqxhr ) {
 				mylog.log("HERE", elem);
+
+				$.fn.markdown.messages['fr'] = {
+					'Bold': trad.Bold,
+					'Italic': trad.Italic,
+					'Heading': trad.Heading,
+					'URL/Link': trad['URL/Link'],
+					'Image': trad.Image,
+					'List': trad.List,
+					'Preview': trad.Preview,
+					'strong text': trad['strong text'],
+					'emphasized text': trad['strong text'],
+					'heading text': trad[''],
+					'enter link description here': trad['enter link description here'],
+					'Insert Hyperlink': trad['Insert Hyperlink'],
+					'enter image description here': trad['enter image description here'],
+					'Insert Image Hyperlink': trad['Insert Image Hyperlink'],
+					'enter image title here': trad['enter image title here'],
+					'list text here': trad['list text here']
+				};
 				$(elem).markdown(markdownParams);
 			});
 
@@ -1545,6 +1597,8 @@ function activateMarkdown(elem) {
 		mylog.log("activateMarkdown else");
 		$(elem).markdown(markdownParams);
 	}
+
+	$(elem).before('La syntaxe Mardown utilisé pour la description. Si vous souhaitez <a href="https://michelf.ca/projets/php-markdown/syntaxe/" target="_blank">en savoir plus</a>');
 }
 
 function  firstOptions() { 
@@ -2276,7 +2330,7 @@ var elementLib = {
 			formData.geoPosition = centerLocation.geoPosition;
 			if( elementLocations.length ){
 				$.each( elementLocations,function (i,v) { 
-					if( jsonHelper.notNull( "v.center") )
+					if( typeof v.center != "undefined" )
 						elementLocations.splice(i, 1);
 				});
 				formData.addresses = elementLocations;
@@ -2533,7 +2587,7 @@ var elementLib = {
 		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(elementLib.elementObj.bgClass);
 		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
 		$("#ajax-modal-modal-title").removeClass("text-green").removeClass("text-purple").removeClass("text-orange").removeClass("text-azure");
-		$(".modal-header").removeClass("bg-purple bg-green bg-orange bg-yellow bg-lightblue ").addClass(elementLib.elementObj.titleClass);
+		$(".modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-lightblue ").addClass(elementLib.elementObj.titleClass);
 	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
@@ -2788,7 +2842,8 @@ var typeObjLib = {
     shortDescription : {
         inputType : "textarea",
 		placeholder : "...",
-		label : "Description court"
+		label : "Description courte",
+		rules : { maxlength: 140 }
     },
     tags : function(list) { 
     	tagsL = (list) ? list : tagsList;
@@ -2799,6 +2854,19 @@ var typeObjLib = {
 			label : "Ajouter quelques mots clés"
 		}
 	},
+	password : function  (title, rules) {  
+    	var title = (title) ? title : trad["New password"];
+    	var ph = "";
+    	var rules = (rules) ? rules : { required : true } ;
+	    var res = {
+	    	label : title,
+	    	inputType : "password",
+	    	placeholder : ph,
+	    	rules : rules
+	    }
+	    return res;
+	},
+
 	location : {
 		label :"Localisation",
        inputType : "location"
@@ -2806,20 +2874,23 @@ var typeObjLib = {
     email : {
 		placeholder : "Ajouter un e-mail",
 		inputType : "text",
-		label : "E-mail principal"
+		label : "E-mail principal",
+        rules : { email: true }
 	},
     emailOptionnel : {
 		placeholder : "Email du responsable",
 		inputType : "text",
 		init : function(){
 			$(".emailtext").css("display","none");
-		}
+		},
+        rules : { email: true }
 	},
 	url : {
         inputType :"text",
         "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
         placeholder : "Site web",
-        label : "URL principale"
+        label : "URL principale",
+        rules : { url: true }
     },
     urlOptionnel : {
         inputType :"text",
@@ -2828,7 +2899,8 @@ var typeObjLib = {
         init:function(){
             getMediaFromUrlContent("#url", ".resultGetUrl0",0);
             $(".urltext").css("display","none");
-        }
+        },
+        rules : { url: true }
     },
     urls : {
     	label : "Ajouter des informations libres",
@@ -3048,7 +3120,7 @@ var typeObjLib = {
     	}
     },
     get:function(type){
-    	mylog.log("get", type);
+    	mylog.log("typeObjLib.get", type);
     	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
@@ -3111,16 +3183,16 @@ var typeObj = {
 		            	inputType : "custom",
 		            	html : function() { 
 		            		return "<div class='menuSmallMenu'>"+js_templates.loop( [ 
-			            		{ label : "event", classes:"bg-"+typeObj["event"].color, icon:"fa-"+typeObj["event"].icon, action : "javascript:elementLib.openForm('event')"},
-			            		{ label : "organization", classes:"bg-"+typeObj["organization"].color, icon:"fa-"+typeObj["organization"].icon, action : "javascript:elementLib.openForm('organization')"},
-			            		{ label : "project", classes:"bg-"+typeObj["project"].color, icon:"fa-"+typeObj["project"].icon, action : "javascript:elementLib.openForm('project')"},
-			            		{ label : "poi", classes:"bg-"+typeObj["poi"].color, icon:"fa-"+typeObj["poi"].icon, action : "javascript:elementLib.openForm('poi')"},
-			            		{ label : "entry", classes:"bg-"+typeObj["entry"].color, icon:"fa-"+typeObj["entry"].icon, action : "javascript:elementLib.openForm('entry')"},
-			            		{ label : "action", classes:"bg-"+typeObj["action"].color, icon:"fa-"+typeObj["action"].icon, action : "javascript:elementLib.openForm('action')"},
-			            		{ label : "classified", classes:"bg-"+typeObj["classified"].color, icon:"fa-"+typeObj["classified"].icon, action : "javascript:elementLib.openForm('classified')"},
-			            		{ label : "Documentation", classes:"bg-grey lbh", icon:"fa-book", action : "#default.view.page.index.dir.docs"},
-			            		{ label : "Signaler un bug", classes:"bg-grey lbh", icon:"fa-bug", action : "#news.index.type.pixels"},
-		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-4 "} )+"</div>";
+			            		{ label : "event", classes:"col-xs-12 text-bold bg-"+typeObj["event"].color, icon:"fa-"+typeObj["event"].icon, action : "javascript:elementLib.openForm('event')"},
+			            		{ label : "organization", classes:"col-xs-12 text-bold bg-"+typeObj["organization"].color, icon:"fa-"+typeObj["organization"].icon, action : "javascript:elementLib.openForm('organization')"},
+			            		{ label : "project", classes:"col-xs-12 text-bold bg-"+typeObj["project"].color, icon:"fa-"+typeObj["project"].icon, action : "javascript:elementLib.openForm('project')"},
+			            		{ label : "poi", classes:"col-xs-12 text-bold bg-"+typeObj["poi"].color, icon:"fa-"+typeObj["poi"].icon, action : "javascript:elementLib.openForm('poi')"},
+			            		{ label : "entry", classes:"col-xs-12 text-bold bg-"+typeObj["entry"].color, icon:"fa-"+typeObj["entry"].icon, action : "javascript:elementLib.openForm('entry')"},
+			            		{ label : "action", classes:"col-xs-12 text-bold bg-"+typeObj["actions"].color, icon:"fa-"+typeObj["actions"].icon, action : "javascript:elementLib.openForm('action')"},
+			            		{ label : "classified", classes:"col-xs-12 text-bold bg-"+typeObj["classified"].color, icon:"fa-"+typeObj["classified"].icon, action : "javascript:elementLib.openForm('classified')"},
+			            		{ label : "Documentation", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-book", action : "#default.view.page.index.dir.docs"},
+			            		{ label : "Signaler un bug", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-bug", action : "#news.index.type.pixels"},
+		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-6 "} )+"</div>";
 		            	}
 		            }
 			    }
@@ -3144,7 +3216,7 @@ var typeObj = {
 	"citoyen" : { sameAs:"person" },
 	"citoyens" : { sameAs:"person" },
 	
-	"poi":{  col:"poi",ctrl:"poi",color:"azure",icon:"info-circle"},
+	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle"},
 
 	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
 	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
@@ -3174,7 +3246,7 @@ var typeObj = {
 	"rooms" : {col:"actions",ctrl:"room",color:"azure",icon:"gavel"},
 	"discuss" : {col:"actionRooms",ctrl:"room"},
 	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	"classified":{col:"classified",ctrl:"classified",color:"azure",	icon:"bullhorn",	},
+	"classified":{col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",	},
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
 	"video" : {icon:"video-camera",color:"dark"},
@@ -3265,25 +3337,26 @@ var keyboardNav = {
 	"comma":188,"dash":189,"period":190,"forward slash":191,"grave accent":192,"open bracket":219,"back slash":220,"close braket":221,"single quote":222},
 
 	keyMap : {
-		"112" : function(){ $('#modalMainMenu').modal("show"); },//f1
+		//"112" : function(){ $('#modalMainMenu').modal("show"); },//f1
 		"113" : function(){ if(userId)url.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
-		"114" : function(){ showMap(true); },//f3
+		"114" : function(){ $('#openModal').modal('hide'); showMap(true); },//f3
 		"115" : function(){ elementLib.openForm('themes') },//f4
 		"117" : function(){ console.clear();url.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {
-		"13" : function(){elementLib.openForm('addElement')},//enter : aadd elemetn
-		"65" : function(){elementLib.openForm('action')},//a : actions
-		"66" : function(){ smallMenu.openAjax(baseUrl+'/'+moduleId+'/collections/list','Mes Favoris','fa-star','yellow') },//b best : favoris
-		"67" : function(){elementLib.openForm('classified')},//c : classified
-		"69" : function(){elementLib.openForm('event')}, //e : event
-		"70" : function(){ $(".searchIcon").trigger("click") },//f : find
-		"73" : function(){elementLib.openForm('person')},//i : invite
-		"79" : function(){elementLib.openForm('organization')},//o : orga
-		"80" : function(){elementLib.openForm('project')},//p : project
-		"82" : function(){smallMenu.openAjax(baseUrl+'/'+moduleId+'/person/directory?tpl=json','Mon répertoire','fa-book','red')},//r : annuaire
-		"86" : function(){elementLib.openForm('entry')},//v : votes
-		
+		"13" : function(){$('#openModal').modal('hide');elementLib.openForm('addElement')},//enter : aadd elemetn
+		"61" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show')},//= : votes
+		"65" : function(){$('#openModal').modal('hide');elementLib.openForm('action')},//a : actions
+		"66" : function(){$('#openModal').modal('hide'); smallMenu.destination = "#openModal"; smallMenu.openAjax(baseUrl+'/'+moduleId+'/collections/list','Mes Favoris','fa-star','yellow') },//b best : favoris
+		"67" : function(){$('#openModal').modal('hide');elementLib.openForm('classified')},//c : classified
+		"69" : function(){$('#openModal').modal('hide');elementLib.openForm('event')}, //e : event
+		"70" : function(){$('#openModal').modal('hide'); $(".searchIcon").trigger("click") },//f : find
+		"72" : function(){$('#openModal').modal('hide');smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/help','Help ShortCuts')},//h : help
+		"73" : function(){$('#openModal').modal('hide');elementLib.openForm('person')},//i : invite
+		"79" : function(){$('#openModal').modal('hide');elementLib.openForm('organization')},//o : orga
+		"80" : function(){$('#openModal').modal('hide');elementLib.openForm('project')},//p : project
+		"82" : function(){$('#openModal').modal('hide');smallMenu.openAjax(baseUrl+'/'+moduleId+'/person/directory?tpl=json','Mon répertoire','fa-book','red')},//r : annuaire
+		"86" : function(){$('#openModal').modal('hide');elementLib.openForm('entry')},//v : votes
 	},
 	checkKeycode : function(e) {
 		e.preventDefault();
@@ -3291,6 +3364,7 @@ var keyboardNav = {
 		if (window.event) {keycode = window.event.keyCode;e=event;}
 		else if (e){ keycode = e.which;}
 		//console.log("keycode: ",keycode);
+
 		if(e.ctrlKey && e.altKey && keyboardNav.keyMapCombo[keycode] ){
 			console.warn("keyMapCombo",keycode);//shiftKey ctrlKey altKey
 			keyboardNav.keyMapCombo[keycode]();
@@ -3541,11 +3615,11 @@ var CoSigAllReadyLoad = false;
 
 function KScrollTo(target){ 
 	mylog.log("KScrollTo target", target);
-	if(!$(target)) return;
-
-	$('html, body').stop().animate({
-        scrollTop: $(target).offset().top - 70
-    }, 800, '');
+	if($(target).length>=1){
+		$('html, body').stop().animate({
+	        scrollTop: $(target).offset().top - 70
+	    }, 800, '');
+	}
 }
 
 var timerCloseDropdownUser = false;
@@ -3627,7 +3701,7 @@ function initKInterface(params){ console.log("initKInterface");
 
     bindLBHLinks();
 
-    $(".menu-name-profil").click(function(){
+    $(".btn-show-mainmenu").click(function(){
         $("#dropdown-user").addClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });

@@ -7,33 +7,21 @@
 </button>
 
 <hr>
-	<?php if($category == "Météo"){ ?>
-	<h3 class="text-azure"><i class='fa fa-angle-down'></i> <i class='fa fa-sun-o'></i> Météo Nouméa</h3>
+<?php if($category == "Météo"){ ?>
+	<iframe class="col-sm-12 col-md-12 col-xs-12 margin-bottom-20" style="padding:0 15px 0 0;border-radius: 5px;" height="450" 
+			src="https://embed.windytv.com/embed2.html?lat=-20.180&lon=165.630&zoom=6&level=surface&overlay=rain&menu=&message=&marker=&forecast=12&calendar=now&location=coordinates&type=map&actualGrid=&metricWind=kt&metricTemp=%C2%B0C"
+			frameborder="0">
+	</iframe> 
 
-	<div id="cont_OTU3MTR8NXwzfDV8NHwwMDAwMDB8OXxGRkZGRkZ8Y3wx" class="hidden-xs">
-		<div id="spa_OTU3MTR8NXwzfDV8NHwwMDAwMDB8OXxGRkZGRkZ8Y3wx">
-			<b><a id="a_OTU3MTR8NXwzfDV8NHwwMDAwMDB8OXxGRkZGRkZ8Y3wx" class="hidden" 
-				href="http://www.meteocity.com/france/noumea_v95714/" target="_blank" style="color:#333;text-decoration:none;">
-				Météo Nouméa</a> © <a href="http://www.meteocity.com">meteocity.com</a></b>
-		</div>
-		<script type="text/javascript" src="http://widget.meteocity.com/js/OTU3MTR8NXwzfDV8NHwwMDAwMDB8OXxGRkZGRkZ8Y3wx"></script>
+	<div class="col-sm-12 col-md-12 col-xs-12 no-padding">
+		<hr>
 	</div>
-
-	<div id="cont_OTU3MTR8NXwyfDV8NHwwMDAwMDB8OXxGRkZGRkZ8Y3wx" class="margin-bottom-15 visible-xs">
-		<div id="spa_OTU3MTR8NXwyfDV8NHwwMDAwMDB8OXxGRkZGRkZ8Y3wx">
-			<a id="a_OTU3MTR8NXwyfDV8NHwwMDAwMDB8OXxGRkZGRkZ8Y3wx" 
-				href="http://www.meteocity.com/france/noumea_v95714/" target="_blank" style="color:#333;text-decoration:none;">Météo Nouméa</a> ©<a href="http://www.meteocity.com">meteocity.com</a>
-		</div>
-		<script type="text/javascript" src="http://widget.meteocity.com/js/OTU3MTR8NXwyfDV8NHwwMDAwMDB8OXxGRkZGRkZ8Y3wx"></script>
-	</div>
-
-
-	<?php } ?>
-<h3 id="titleWebSearch" class="margin-bottom-20">
+<?php } ?>
+<h3 id="titleWebSearch"  style="margin:20px 0 0 4px;">
 	<?php echo @$category ? " <small class='letter-blue'><i class='fa' id='fa-category'></i> ".$category."</small>" : ""; ?>
-	<?php echo @$search ? " <small class='letter-blue'> <i class='fa fa-angle-right'></i> ".$search."</small><br>" : "<br>"; ?>
-	
-
+	<?php echo @$search ? " <small class='letter-blue'> <i class='fa fa-search'></i> ".$search."</small><br>" : "<br>"; ?>
+</h3>	
+<h3 style="margin:0 0 20px 0;">
 	<div class="margin-top-5">
 		<i class="fa fa-angle-down"></i> 
 		<?php echo sizeof($siteurls) > 0 ? sizeof($siteurls) : "aucun"; ?> 
@@ -87,7 +75,7 @@
 				<?php } ?> 
 				<?php echo $siteurl["title"]; ?>
 			</a>
-			<button class="btn btn-xs bg-white btn-edit-url tooltips" title="modifier"
+			<button class="btn btn-xs bg-white btn-edit-url tooltips hidden-xs" title="modifier"
 					data-target="#modalEditUrl" data-toggle="modal" data-placement="right"
 					data-idurl="<?php echo $key; ?>">
 				<i class="fa fa-cog"></i>
@@ -155,7 +143,7 @@
 		</b></small>
 	</span><br><br>
 	<b>Référencer un site <i class="fa fa-angle-right"></i></b> 
-	<a class="btn btn-default btn-success margin-bottom-5 lbh" href="#app.referencement">
+	<a class="btn btn-default btn-success margin-bottom-5 lbh" href="#referencement">
 		<i class="fa fa-plus-circle"></i> Ajouter une URL
 	</a> 
 </div>

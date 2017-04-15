@@ -95,7 +95,7 @@
 
 #sub-menu-left.subsub .btn{
   width:95%;    
-  text-align: left;
+  text-align: right;
   background-color: white;
     border-color: white;
   color:#4285f4;
@@ -186,7 +186,7 @@
         
         
         <?php if($typeSelected == "place"){ ?>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="menu-section-place">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center subsub" id="menu-section-place">
           <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
                   data-type="classified" data-type-anc=""  data-key="all">
             <i class="fa fa-circle-o"></i>
@@ -212,8 +212,8 @@
 
         <?php if($typeSelected == "all"){ ?>   
           
-          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
-            <button class="btn text-black bg-dark btn-open-filliaire">
+          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
+            <button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
                 <span class="hidden-xs">Thématiques</span>
             </button><hr class="hidden-xs">
@@ -259,7 +259,7 @@
 
         <?php } else if( $typeSelected == "events" ){?>
 
-          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
+          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
             <button class="btn text-black bg-white btn-directory-type btn-all" data-type-event="" data-type="events">
                 <i class="fa fa-search"></i> 
                 <span class="hidden-xs">Tous</span>
@@ -279,7 +279,7 @@
 
         <?php }else if($typeSelected == "classified"){ ?>
 
-          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub classifiedFilters" id="sub-menu-left">
+          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub classifiedFilters" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
@@ -300,6 +300,11 @@
                     </button><br class="hidden">
                   <?php } ?>
                 <?php } ?>
+            <?php } ?>
+            <?php if( @Yii::app()->session["userId"] ) { ?>
+            <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 text-red" style="margin-left:-5px;" data-keycat="favorites">
+              <i class="fa fa-star  hidden-xs"></i> Favoris
+            </button>
             <?php } ?>
           </div>
          

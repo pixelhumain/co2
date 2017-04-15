@@ -6,7 +6,7 @@ echo CHtml::scriptFile(Yii::app()->request->baseUrl. '/plugins/DataTables/media/
 ?>
 
 <div class="panel panel-white">
-	<div class="panel-heading border-light">
+	<div class="panel-heading border-light col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
 		<h4 class="panel-title">
 			<a href="javascript:;" onclick="applyStateFilter('goods')" class="filtergood btn btn-xs btn-default"><i class="fa fa-check fa-1x text-success"></i>Goods <span class="badge badge-warning"> <?php echo count(@$goods) ?></span></a>
 

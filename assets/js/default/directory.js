@@ -318,6 +318,10 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   function initBtnLink(){ mylog.log("initBtnLink");
       
     $('.tooltips').tooltip();
+    $(".dirStar").each(function(i,el){
+      collection.applyColor($(el).data('type'),$(el).data('id'));
+    });
+    bindLBHLinks();
   	//parcours tous les boutons link pour vérifier si l'entité est déjà dans mon répertoire
   	$.each( $(".followBtn"), function(index, value){
     	var id = $(value).attr("data-id");
@@ -881,12 +885,11 @@ var directory = {
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
            var tip = 'Garder en favoris';
-            str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+            str += "<a href='javascript:collection.add2fav(\"classified\",\""+params.id+"\")' class='dirStar star_classified_"+params.id+" btn btn-default btn-sm btn-add-to-directory bg-white tooltips'" + 
                   'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+
-                  "' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-                      "<i class='fa fa-star'></i>"+ //fa-bookmark fa-rotate-270
-                    "</a>";
+                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"'>"+
+                    "<i class='fa fa star fa-star-o'></i>"+ //fa-bookmark fa-rotate-270
+                  "</a>";
           
         }
 
@@ -1337,7 +1340,7 @@ var directory = {
       return str;
     },
     showResultsDirectoryHtml : function ( data, contentType, size ){ //size == null || min || max
-        mylog.log("START -----------showResultsDirectoryHtml",data, contentType, size)
+        mylog.log("START -----------showResultsDirectoryHtml :" ,data, size)
         var str = "";
 
         directory.colPos = "left";
@@ -1346,7 +1349,7 @@ var directory = {
             itemType=(contentType) ? contentType :params.type;
             
             if( itemType )
-            {
+            { mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
                 mylog.log("itemType",itemType,params.name);
                 //mylog.log("showResultsDirectoryHtml", o);
@@ -1457,17 +1460,18 @@ var directory = {
                   str += directory.defaultPanelHtml(params);
             }
         }); //end each
-        mylog.log("END -----------showResultsDirectoryHtml")
+        mylog.log("END -----------showResultsDirectoryHtml ("+str.length+")")
         return str;
     },
 
     //builds a small sized list
     buildList : function(list) {
       $(".favSectionBtnNew,.favSection").remove();
-
-      $.each( list, function(key,list)
+      console.warn("START >>>>>> buildList",smallMenu.destination + " #listDirectory");
+      
+      $.each( list, function(key,slist)
       {
-        var subContent = directory.showResultsDirectoryHtml ( list, key /*,"min"*/); //min == dark template 
+        var subContent = directory.showResultsDirectoryHtml ( slist, key /*,"min"*/); //min == dark template 
         if( notEmpty(subContent) ){
           favTypes.push(typeObj[key].col);
           
@@ -1486,11 +1490,12 @@ var directory = {
       });
 
       initBtnLink();
-      bindLBHLinks();
       directory.filterList();
       $(directory.elemClass).show();
       //bindTags();
+      console.warn("END >>>>>> buildList");
     },
+
     getWeekDayName : function(numWeek){
       var wdays = new Array("", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche");
       if(typeof wdays[numWeek] != "undefined") return wdays[numWeek];

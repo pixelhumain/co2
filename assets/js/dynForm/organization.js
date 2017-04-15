@@ -21,9 +21,10 @@ dynForm = {
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p class='text-"+typeObj["organization"].color+"'>Faire connaître votre Organisation n'a jamais été aussi simple !<br>" +
-																		  "Créez votre page en quelques secondes,<br>puis rajoutez des détails,<br>selon vos besoins ...<hr>" +
-																		  "</p>",
+                html:"<p class='text-"+typeObj["organization"].color+"'>"+
+                		"Faire connaître votre Organisation n'a jamais été aussi simple !<br>" +
+					    "Créez votre page en quelques secondes,<br>puis rajoutez des détails,<br>selon vos besoins ...<hr>" +
+					 "</p>",
             },
 	        name : typeObjLib.name("organization"),
 	        similarLink : typeObjLib.similarLink,
@@ -36,7 +37,10 @@ dynForm = {
             	label : "En détails",
                 inputType : "custom",
                 html:
-				"<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".emailtext,.descriptiontextarea,.urltext\").slideToggle();activateMarkdown(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> options (email, desc, urls, telephone)</a>",
+				"<a class='btn btn-default text-dark w100p' "+
+					"href='javascript:;' "+
+					"onclick='$(\".emailtext,.descriptiontextarea,.urltext\").slideToggle();activateMarkdown(\"#ajaxFormModal #description\");'>"+
+					"<i class='fa fa-plus'></i> options (email, desc, urls, telephone)</a>",
             },
             email : typeObjLib.emailOptionnel,
 	        description : typeObjLib.description,

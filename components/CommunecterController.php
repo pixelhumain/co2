@@ -75,6 +75,7 @@ class CommunecterController extends Controller
   public $pages = array(
     "admin" => array(
       "index"     => array("href" => "/ph/communecter/admin"),
+      "accueil"     => array("href" => "/ph/communecter/accueil"),
       "directory" => array("href" => "/ph/communecter/admin/directory"),
       "switchto"  => array("href" => "/ph/communecter/admin/switchto"),
       "delete"    => array("href" => "/ph/communecter/admin/delete"),
@@ -457,8 +458,8 @@ class CommunecterController extends Controller
       "media"             => array('href' => "/ph/communecter/app/media",             "public" => true),
       "referencement"     => array('href' => "/ph/communecter/app/referencement",     "public" => true),
       "savereferencement" => array('href' => "/ph/communecter/app/savereferencement", "public" => true),
-      "annonces"          => array('href' => "/ph/communecter/app/annonces",         "public" => true),
-      "live"              => array('href' => "/ph/communecter/app/live",            "public" => true),
+      "annonces"          => array('href' => "/ph/communecter/app/annonces",          "public" => true),
+      "live"              => array('href' => "/ph/communecter/app/live",              "public" => true),
       "agenda"            => array('href' => "/ph/communecter/app/agenda",            "public" => true),
       "mediacrawler"      => array('href' => "/ph/communecter/app/mediacrawler",      "public" => false),
       "page"              => array('href' => "/ph/communecter/app/page",              "public" => true),
@@ -466,6 +467,7 @@ class CommunecterController extends Controller
       "agenda"            => array('href' => "/ph/communecter/app/agenda",            "public" => true),
       "power"             => array('href' => "/ph/communecter/app/power",             "public" => true),
       "superadmin"        => array('href' => "/ph/communecter/app/superadmin",        "public" => false),
+      "admin"             => array('href' => "/ph/communecter/app/admin",      "public" => false),
       "info"              => array('href' => "/ph/communecter/app/info",              "public" => true),
       "city"              => array('href' => "/ph/communecter/app/city",              "public" => false),
       "sendmailformcontact" => array('href' => "/ph/communecter/app/sendmailformcontact", "public" => true),

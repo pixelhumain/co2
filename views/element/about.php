@@ -32,10 +32,58 @@
 	.panel-title{
 		line-height:35px;
 	}
+
+	.md-preview{
+		text-align:left;
+		padding: 0px 10px;
+	}
+
+	.md-editor > textarea {
+		padding: 10px;
+	}
+
+	.descriptiontextarea label{
+		margin-left:10px;
+	}
 </style>
 
+<div class='col-md-12 margin-bottom-15'>
+	<i class="fa fa-info-circle fa-2x"></i><span class='Montserrat' id='name-lbl-title'> A propos</span>
+</div>
 
+<div id="ficheInfo" class="panel panel-white col-lg-12 col-md-12 col-sm-12 no-padding shadow2">
+	
+	<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
+		<h4 class="panel-title text-dark pull-left"> 
+			<i class="fa fa-pencil"></i> <?php echo Yii::t("common","Descriptions") ?>
+		</h4>
+		<?php if($edit==true || $openEdition==true ){?>
+		  	<button class="btn-update-descriptions btn btn-default letter-blue pull-right tooltips" 
+				data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update description") ?>">
+				<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?></b>
+			</button>
+		 <?php } ?>
+	</div>
+	<div class="panel-body no-padding">
+		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
+			<div class="col-md-3 col-sm-3 col-xs-3 labelAbout padding-10">
+				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Short description") ?>
+			</div>
+			<div id="shortDescriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10"><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?></div>
+		</div>
+		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
+			<div class="col-md-3 col-sm-3 col-xs-3 labelAbout padding-10">
+				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Description") ?>
+			</div>
+			<div id="descriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
+				<?php echo (@$element["description"]) ? $element["description"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+			</div>
+		</div>
+		<input type="hidden" id="descriptionMarkdown" name="descriptionMarkdown" value="<?php echo (!empty($element['description'])) ? $element['description'] : ''; ?>">
+	</div>
+</div>
 <div id="ficheInfo" class="panel panel-white col-lg-8 col-md-12 col-sm-12 no-padding shadow2">
+
 	<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
 		<h4 class="panel-title text-dark pull-left"> 
 			<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","General information") ?>
@@ -198,37 +246,10 @@
 				</div>
 			</div>
 	</div>
-	<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
-		<h4 class="panel-title text-dark pull-left"> 
-			<i class="fa fa-pencil"></i> <?php echo Yii::t("common","Descriptions") ?>
-		</h4>
-		<?php if($edit==true || $openEdition==true ){?>
-		  	<button class="btn-update-descriptions btn btn-default letter-blue pull-right tooltips" 
-				data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update description") ?>">
-				<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?></b>
-			</button>
-		 <?php } ?>
-	</div>
-	<div class="panel-body no-padding">
-		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-			<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
-				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Short description") ?>
-			</div>
-			<div id="shortDescriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10"><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?></div>
-		</div>
-		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-			<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
-				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Description") ?>
-			</div>
-			<div id="descriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-				<?php echo (@$element["description"]) ? $element["description"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
-			</div>
-		</div>
-		<input type="hidden" id="descriptionMarkdown" name="descriptionMarkdown" value="<?php echo (!empty($element['description'])) ? $element['description'] : ''; ?>">
-	</div>
+	
 </div>
 
-<div class="col-lg-4 col-md-12 col-sm-12">
+<div class="no-ing col-lg-4 col-md-12 col-sm-12">
 	<div id="adressesAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding shadow2">
 		<div class="panel-heading border-light padding-15" style="background-color: #dee2e680;">
 			<h4 class="panel-title text-dark"> 
@@ -480,6 +501,7 @@
 	});
 
 	function initDate() {//DD/mm/YYYY hh:mm
+		formatDateView = "DD MMMM YYYY" ;
 		if($("#startDateAbout").html() != "")
 	    	$("#startDateAbout").html(moment($("#startDateAbout").html()).local().format(formatDateView));
 	    if($("#endDateAbout").html() != "")

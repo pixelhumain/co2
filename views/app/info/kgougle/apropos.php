@@ -123,7 +123,7 @@
         	<h3 class="letter-blue"><i class="fa fa-database fa-2x"></i> <i class="fa fa-angle-righ"></i> Une base de données co-construite</h3>
         	<h4>En amélioration continue...</h4>
 			<p>
-				Avec près de <b class="letter-green">300 sites répertoriés</b>, vous retrouverez à coup sûr tous les sites les plus utilisés en Nouvelle-Calédonie. <br>
+				Avec près de <b class="letter-green">300 sites répertoriés</b>, vous retrouverez à coup sûr les sites les plus utilisés en Nouvelle-Calédonie. <br>
 				<b>Mais il reste encore beaucoup de sites à ajouter</b> pour compléter le résultats de vos recherches, et rendre ce moteur encore plus puissant…<br><br>
 
 				C’est pourquoi <b class="letter-green">vous pouvez TOUS référencer de nouvelles URL</b> via <a href="#referencement" class="letter-blue" target="_blank"><b>un formulaire de référencement</b></a>, lui aussi simplifié au maximum…<br>
@@ -131,9 +131,7 @@
 
         	</p>
 
-        	<h1 class="letter-red font-blackoutM" id="aussi">
-        		<img src="<?php echo $urlKgou; ?>" height="35" class="logoKgou"> c'est ossi ...
-        	</h1>
+        	
         	<hr>
             <h3 class="letter-blue">
                 <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/radios/radio-ico.png" 
@@ -186,7 +184,7 @@
         	<h3 class="letter-blue"><i class="fa fa-line-chart fa-2x"></i> En amélioration continue, pour le bien commun...</h3>
         	<!-- <h4></h4> -->
 			<p>
-				Kgougle a été mis en place par <a href="" class="letter-yellow"><b>une équipe de développeurs indépendants</b></a>, dans le but de faciliter l’usage d’internet en Nouvelle-Calédonie. Ce moteur de recherche est un premier pas vers une évolution majeure de l'utilisation du web sur le territoire. En offrant un guide d'accès vers l'ensemble des sites web locaux, nous permettons à tous les Calédoniens de naviguer <i>sans se perdre</i>, et donc de prendre en main plus facilement cet outil sur-puissant...
+				Kgougle a été mis en place par <a href="#info.p.ph" class="letter-yellow"><b>une équipe de développeurs indépendants</b></a>, dans le but de faciliter l’usage d’internet en Nouvelle-Calédonie. Ce moteur de recherche est un premier pas vers une évolution majeure de l'utilisation du web sur le territoire. En offrant un guide d'accès vers l'ensemble des sites web locaux, nous permettons à tous les Calédoniens de naviguer <i>sans se perdre</i>, et donc de prendre en main plus facilement cet outil sur-puissant...
 				<br><br>
 				Sur le caillou, internet est un outil encore nouveau, que l’on découvre petit à petit, et que nous tentons d’apprivoiser.<br>
 				Mais internet nous arrive avec une complexité et une immensité, dont nous n’avons pas toujours besoin. 
@@ -234,12 +232,12 @@
 			<p>
 				Le collectif <b class="letter-yellow"><b>PixelHumain</b></b> est réuni depuis ses origines autour d'un objectif commun : créer des outils numériques collaboratifs afin de <b>(re)dynamiser les territoires</b>, en facilitant la <b>communication entre les différents acteurs locaux</b>.<br><br>
 				
-				Dans cet objectif, nous <b>co-construisons</b> depuis plus de 3 ans, une plateforme sociétale dénommée <a href="www.communecter.org" class="letter-red"><b>Communecter.org</b></a>, qui propose un ensemble de fonctionnalités cohérentes aux internautes souhaitant participer plus activement à la <b>vie de leur territoire</b>.<br><br>
+				Dans cet objectif, nous <b>co-construisons</b> depuis plus de 3 ans, une plateforme sociétale dénommée <a href="https://www.communecter.org/" class="letter-red"><b>Communecter.org</b></a>, qui propose un ensemble de fonctionnalités cohérentes aux internautes souhaitant participer plus activement à la <b>vie de leur territoire</b>.<br><br>
 
 				En Nouvelle-Calédonie, certaines particularités propres à ce territoire isolé d'océanie nous ont poussé à adopter une approche légèrement différente de celle que nous suivons depuis nos débuts. Pour répondre au mieux aux <b>besoins réels du pays</b> dans le domaine de l'internet.<br><br>
-				C'est ainsi que KGOUGLE est né : c'est une application issue de la plateforme <a href="www.communecter.org" class="letter-red"><b>Communecter.org</b></a>, adaptée au territoire Calédonien, pour en simplifier l'utilisation et proposer des applications spécifiques.
+				C'est ainsi que KGOUGLE est né : c'est une application issue de la plateforme <a href="https://www.communecter.org/" class="letter-red"><b>Communecter.org</b></a>, adaptée au territoire Calédonien, pour en simplifier l'utilisation et proposer des applications spécifiques.
 				<br><br>
-				Motivé et conseillé par notre développeur calédonien <a href="#info.p.alphatango" class="letter-green"><b>AlphaTango</b></a>, nous espérons faire avancer internet sur le Caillou et en multiplier les usages : d'abord via ce moteur de recherche, pour faciliter votre navigation sur le web d'aujourd'hui, puis par la mise en place d'autres fonctionnalités innovantes déjà inclues dans la plateforme <a href="www.communecter.org" class="letter-red"><b>Communecter.org</b></a>.
+				Motivé et conseillé par notre développeur calédonien <a href="#info.p.alphatango" class="letter-azure"><b>AlphaTango</b></a>, nous espérons faire avancer internet sur le Caillou et en multiplier les usages : d'abord via ce moteur de recherche, pour faciliter votre navigation sur le web d'aujourd'hui, puis par la mise en place d'autres fonctionnalités innovantes.
         	</p>
 
 			

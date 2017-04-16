@@ -16,15 +16,20 @@
     <div class="row padding-20 main-apropos padding-top-15 padding-bottom-50">
 	    
         <div class="col-lg-2 col-md-2 col-sm-2 text-right hidden-xs" id=""> 
-        		<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" class="img-responsive"> 
+        	<a href="https://www.communecter.org/" class="tooltips homestead text-red"  target='_blank'
+        			data-toggle="tooltip" data-placement="right" title="Cliquer pour visiter le site">
+        		<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/main-logo-city.png" class="img-responsive">
+        		<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" class="img-responsive" 
+        			 style="margin-left: -12px;margin-top: 20px;">
+        	</a>  
         	
         </div>
         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
 
-        	<h4 class="pull-left">
+        	<h4 class="pull-left"><i class="fa fa-angle-down"></i>  Le réseau 
         		<a href="https://www.communecter.org/" class="tooltips homestead text-red"  target='_blank'
         			data-toggle="tooltip" data-placement="right" title="Cliquer pour visiter le site">
-        			<i class="fa fa-angle-down"></i> Communecter
+        			Communecter
         		</a> 
         	</h4>
 
@@ -82,7 +87,12 @@
 			</ul>
 			<br><br>
 			La plateforme aborde des sujets d’innovation technique et d’usage social et sociétal. L’objectif est de proposer un réél outil d’experimentation pour les acteurs locaux oeuvrant sur des thématiques d’intérêt général afin d’obtenir des résultats concrets. Le projet regroupe des acteurs de la Recherche et Développement locale (dont des sociétés incubés), le LIM (Laboratoire d’Iinformatique et de Mathématique), des développeurs agréés par le Ministere de la recherche, des acteurs du changement, conscients de l’opportunité que peut leur apporter <span class="letter-red">Communecter</span>.
-
+			<div class="col-md-12 text-center">
+			<a href="https://www.communecter.org/" class="tooltips homestead text-red"  target='_blank'
+    			data-toggle="tooltip" data-placement="top" title="Cliquer pour visiter le site">
+    			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/about.jpg" class="img-responsive inline">
+			</a>
+			</div>
         </div>
 
     </div>

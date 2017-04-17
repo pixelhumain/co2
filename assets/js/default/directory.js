@@ -629,8 +629,9 @@ var directory = {
     // ********************************
     elementPanelHtml : function(params){
       mylog.log("----------- elementPanelHtml",params.type,params.name);
-      str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+      str = "";
+      var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
+      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
         if(userId != null && userId != "" && params.id != userId){
@@ -1313,6 +1314,10 @@ var directory = {
         directory.colPos = "left";
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
+          mylog.log("params", params, typeof params);
+          if(notNull(params["_id"])){
+
+
             itemType=(contentType) ? contentType :params.type;
             
             if( itemType )
@@ -1427,6 +1432,7 @@ var directory = {
                 else
                   str += directory.defaultPanelHtml(params);
             }
+          }
         }); //end each
         mylog.log("END -----------showResultsDirectoryHtml ("+str.length+")")
         return str;

@@ -54,8 +54,19 @@ class CO2 {
             //print_r(Yii::app()->request->cookies);
             $cp = Yii::app()->request->cookies['cpCommunexion'];
             $insee = (string)Yii::app()->request->cookies['inseeCommunexion'];
-            $where = array("postalCodes.postalCode" =>new MongoRegex("/^".$cp."/i"), "insee"=>$insee);
-            $city = PHDB::findOne( City::COLLECTION , $where );
+            $where = array("postalCodes.postalCode" =>new MongoRegex("/^".$cp."/i"));
+            $citiesResult = PHDB::find( City::COLLECTION , $where );
+            //print_r($citiesResult);
+            $cities=array();
+           if(count($citiesResult)>1){
+                foreach($citiesResult as $v){
+                    if($v["insee"]==$insee)
+                        $city=$v;
+                    else
+                        $cities[]=$v["postalCodes"][0]["postalCode"].", ".$v["alternateName"];
+                }
+            } else
+            $city=$citiesResult;
             $alternateName=$city["alternateName"];
             $levelMin="inseeCommunexion";
             $inseeName=$city["alternateName"];
@@ -66,7 +77,8 @@ class CO2 {
                         $levelMin="cpCommunexion";
                         $currentName=$cp;
                         $alternateName=$value["name"];
-                    }
+                    }else
+                        $cities[]=$value["postalCode"].", ".$value["name"];
 
                 }
             }
@@ -75,7 +87,8 @@ class CO2 {
                                             "inseeName" => $inseeName,
                                             "cityCp"    =>Yii::app()->request->cookies['cpCommunexion'],
                                             "depName"   =>@$city["depName"],
-                                            "regionName"=>@$city["regionName"]);
+                                            "regionName"=>@$city["regionName"],
+                                            "cities"=>$cities);
             $communexion["currentLevel"] =  $levelMin;
             $communexion["currentName"] = $currentName ;
             $communexion["currentValue"] =  (string)Yii::app()->request->cookies['communexionValue'];

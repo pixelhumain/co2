@@ -621,8 +621,9 @@ var directory = {
     // ********************************
     elementPanelHtml : function(params){
       mylog.log("----------- elementPanelHtml",params.type,params.name);
-      str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+      str = "";
+      var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
+      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
         if(userId != null && userId != "" && params.id != userId){

@@ -76,7 +76,7 @@ a.btn.btn-github:hover{	color: #4078C0;	border-color: #4078C0;}
 				Email : contact@communecter.org<br>
 				Site Web : <a href="http://www.kgougle.nc">www.kgougle.nc</a><br><br>
 				
-				Responsable editorial : Tristan Goguet<br> 
+				Responsable éditorial : Tristan Goguet<br> 
 				11 rue Joachim du Bellay, Dumbea, Koutio, Nouvelle-Calédonie<br>
 				RIDET : 1 225 812.001<br>
 				Téléphone : 96.53.57<br>

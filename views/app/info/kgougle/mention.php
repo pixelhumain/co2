@@ -70,18 +70,18 @@ a.btn.btn-github:hover{	color: #4078C0;	border-color: #4078C0;}
 			<h3 class=" explainTitle"> Editeur du Site </h3>
 			<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 			<div class="explainDesc">
-				Association Open Atlas<br>
+				<b>Association Open Atlas</b><br>
 				Numéro de SIRET :  513381830<br>
-				Responsable editorial : Tibor Katelbach<br>
 				102a rue pierre payet, 97421, La Réunion<br>
-				Téléphone : 0262343686 - Fax : 0262343686<br>
-				Email : communecter@gmail.com<br>
-				Site Web : <a href="http://www.kgougle.nc">www.kgougle.nc</a>
-				<br><br>
-				<b>Contact local en Nouvelle-Calédonie :</b><br>
-				Tristan Goguet, alias Alpha Tango<br>
-				11 rue Joachim du Bellay, Dumbea, Koutio<br>
-				tango@communecter.org
+				Email : contact@communecter.org<br>
+				Site Web : <a href="http://www.kgougle.nc">www.kgougle.nc</a><br><br>
+				
+				Responsable editorial : Tristan Goguet<br>
+				11 rue Joachim du Bellay, Dumbea, Koutio, Nouvelle-Calédonie<br>
+				RIDET : 1 225 812.001<br>
+				Téléphone : 96.53.57<br>
+				Email : tango@communecter.org<br>
+				
 
 			</div>
 
@@ -95,9 +95,9 @@ a.btn.btn-github:hover{	color: #4078C0;	border-color: #4078C0;}
 			<h3 class=" explainTitle"> Développement </h3>
 			<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 			<div class="explainDesc">
-				Collectif d'indépendant O.R.D<br>
+				<a href="https://www.communecter.org/#organization.detail.id.555eba56c655675cdd65bf19" target="_blank">Collectif d'indépendant O.R.D</a><br>
 				Adresse : 102a rue pierre payet, 97421, La Réunion<br>
-				Site Web : <a href="http://www.oceatoon.com">www.oceatoon.com</a>
+				<!-- Site Web : <a href="http://www.oceatoon.com">www.oceatoon.com</a> -->
 			</div>
 
 			<h3 class=" explainTitle"> Conditions d’utilisation </h3>

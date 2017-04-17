@@ -157,7 +157,7 @@
 			}else if ($type == Project::COLLECTION){ 
 				$inviteTooltip = Yii::t('common','Add a contributor to this project');
 				$invitetext =  Yii::t("common",'Add contributor') ;
-			} ?>
+			} if( @$inviteTooltip && @$invitetext ){?>
 			<li class="">
 				<a href="javascript:" class="tooltips" 
 				data-placement="bottom" data-original-title="<?php echo $inviteTooltip; ?>" 
@@ -166,7 +166,7 @@
 				</a>
 			</li>
 			<li><hr></li>
-	<?php }	?>
+	<?php }}	?>
 				
 	
 	<li class="">

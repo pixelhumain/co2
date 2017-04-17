@@ -1347,6 +1347,10 @@ var directory = {
         directory.colPos = "left";
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
+          mylog.log("params", params, typeof params);
+          if(notNull(params["_id"])){
+
+
             itemType=(contentType) ? contentType :params.type;
             
             if( itemType )
@@ -1460,6 +1464,7 @@ var directory = {
                 else
                   str += directory.defaultPanelHtml(params);
             }
+          }
         }); //end each
         mylog.log("END -----------showResultsDirectoryHtml ("+str.length+")")
         return str;

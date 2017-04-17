@@ -1341,7 +1341,7 @@ var directory = {
       return str;
     },
     showResultsDirectoryHtml : function ( data, contentType, size ){ //size == null || min || max
-        mylog.log("START -----------showResultsDirectoryHtml",data, contentType, size)
+        mylog.log("START -----------showResultsDirectoryHtml :" ,data, size)
         var str = "";
 
         directory.colPos = "left";
@@ -1350,7 +1350,7 @@ var directory = {
             itemType=(contentType) ? contentType :params.type;
             
             if( itemType )
-            {
+            { mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
                 mylog.log("itemType",itemType,params.name);
                 //mylog.log("showResultsDirectoryHtml", o);
@@ -1461,17 +1461,18 @@ var directory = {
                   str += directory.defaultPanelHtml(params);
             }
         }); //end each
-        mylog.log("END -----------showResultsDirectoryHtml")
+        mylog.log("END -----------showResultsDirectoryHtml ("+str.length+")")
         return str;
     },
 
     //builds a small sized list
     buildList : function(list) {
       $(".favSectionBtnNew,.favSection").remove();
-
-      $.each( list, function(key,list)
+      console.warn("START >>>>>> buildList",smallMenu.destination + " #listDirectory");
+      
+      $.each( list, function(key,slist)
       {
-        var subContent = directory.showResultsDirectoryHtml ( list, key /*,"min"*/); //min == dark template 
+        var subContent = directory.showResultsDirectoryHtml ( slist, key /*,"min"*/); //min == dark template 
         if( notEmpty(subContent) ){
           favTypes.push(typeObj[key].col);
           
@@ -1493,7 +1494,9 @@ var directory = {
       directory.filterList();
       $(directory.elemClass).show();
       //bindTags();
+      console.warn("END >>>>>> buildList");
     },
+
     getWeekDayName : function(numWeek){
       var wdays = new Array("", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche");
       if(typeof wdays[numWeek] != "undefined") return wdays[numWeek];

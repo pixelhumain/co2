@@ -93,7 +93,7 @@ var mapElements = new Array();
 
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
-  console.log("autoCompleteSearch 2", typeof callBack, callBack);
+  console.log("START -------- autoCompleteSearch ", typeof callBack, callBack);
 	if(typeof(cityInseeCommunexion) != "undefined"){
 	    var levelCommunexionName = { 1 : "CODE_POSTAL_INSEE",
 	                             2 : "INSEE",
@@ -157,17 +157,25 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         data: data,
         dataType: "json",
         error: function (data){
-             mylog.log("error autocomplete search"); mylog.dir(data);   
+             mylog.log(">>> error autocomplete search"); 
+             mylog.dir(data);   
              $("#dropdown_search").html(data.responseText);  
              //signal que le chargement est terminé
             loadingData = false;     
         },
-        success: function(data){ mylog.log("success autocomplete search"); //mylog.dir(data);
-            if(!data){ toastr.error(data.content); }
-            else
+        success: function(data){ 
+            mylog.log(">>> success autocomplete search"); //mylog.dir(data);
+            if(!data){ 
+              toastr.error(data.content); 
+            } 
+            else 
             {
               var countData = 0;
-            	$.each(data, function(i, v) { if(v.length!=0){ countData++; } });
+            	$.each(data, function(i, v) { 
+                if(v.length!=0){ 
+                  countData++; 
+                } 
+              });
               
               totalData += countData;
             
@@ -182,7 +190,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               str += "<small>";
               if(typeof headerParams != "undefined"){
                 $.each( searchType, function(key, val){
-                  mylog.log("success autocomplete search",val);
+                  mylog.log(">>> each autocomplete search",val);
                   var params = headerParams[val];
                   str += "<span class='text-"+params.color+"'>"+
                             "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
@@ -1363,6 +1371,7 @@ var directory = {
                                     "";
 
                 //mapElements.push(params);
+                //alert("TYPE ----------- "+contentType+":"+params.name);
                 
                 if(typeof( typeObj[itemType] ) == "undefined")
                     itemType="poi";

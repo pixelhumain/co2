@@ -523,7 +523,7 @@ var directory = {
             
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.url+"' data-id='" + params.dataId + "' class='entityLocality lbh add2fav'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -675,7 +675,7 @@ var directory = {
                                  
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.url+"' data-id='" + params.dataId + "'  class='entityLocality lbh add2fav'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -986,25 +986,7 @@ var directory = {
         if(params.updated != null && !params.useMinSize)
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
 
-        params.startDay = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD") : "";
-        params.startMonth = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("MM") : "";
-        params.startYear = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("YYYY") : "";
-        params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("d") : "";
-        params.startTime = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("HH:mm") : "";
-        params.startDate = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
-        
-        params.endDay = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD") : "";
-        params.endMonth = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("MM") : "";
-        params.endYear = notEmpty(params.startDate) ? moment(params.endDate).local().locale("fr").format("YYYY") : "";
-        params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate).local().locale("fr").format("d") : "";
-        params.endTime = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("HH:mm") : "";
-        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
-        
-        params.startDayNum = directory.getWeekDayName(params.startDayNum);
-        params.endDayNum = directory.getWeekDayName(params.endDayNum);
-
-        params.startMonth = directory.getMonthName(params.startMonth);
-        params.endMonth = directory.getMonthName(params.endMonth);
+        var dateFormated = directory.getDateFormated(params);
 
         params.attendees = "";
         var cntP = 0;
@@ -1062,30 +1044,7 @@ var directory = {
         }
 
         str += "<div class='col-md-8 col-sm-8 col-xs-12 margin-top-25'>";
-          
-        var startLbl = (params.endDay != params.startDay) ? "Du" : "";
-        var endTime = (params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
-
-        if(params.startDate != null)
-            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      '<small>'+startLbl+' </small>'+
-                      '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
-                      params.startDay + ' ' + params.startMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.startYear + '</small>' + 
-                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
-                      params.startTime+endTime+"</b></small>"+
-                   '</h3>';
-        
-        if(params.endDay != params.startDay && params.endDate != null && params.startDate != params.endDate)
-            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      "<small>Au </small>"+
-                      '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
-                      params.endDay + ' ' + params.endMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.endYear + '</small>' + 
-                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
-                      params.endTime+"</b></small>"+
-                   '</h3>';
-            
+        str += dateFormated;
         str += "</div>";
 
        
@@ -1714,5 +1673,54 @@ var directory = {
 
     searchFor : function (str) { 
       $(".searchSmallMenu").val(str).trigger("keyup");
-     }
+     },
+
+     getDateFormated: function(params){
+    
+        params.startDay = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD") : "";
+        params.startMonth = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("MM") : "";
+        params.startYear = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("YYYY") : "";
+        params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("d") : "";
+        params.startTime = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("HH:mm") : "";
+        params.startDate = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        
+        params.endDay = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD") : "";
+        params.endMonth = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("MM") : "";
+        params.endYear = notEmpty(params.startDate) ? moment(params.endDate).local().locale("fr").format("YYYY") : "";
+        params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate).local().locale("fr").format("d") : "";
+        params.endTime = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("HH:mm") : "";
+        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        
+        params.startDayNum = directory.getWeekDayName(params.startDayNum);
+        params.endDayNum = directory.getWeekDayName(params.endDayNum);
+
+        params.startMonth = directory.getMonthName(params.startMonth);
+        params.endMonth = directory.getMonthName(params.endMonth);
+        params.color="orange";
+        
+        var startLbl = (params.endDay != params.startDay) ? "Du" : "";
+        var endTime = (params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
+        var str = "";
+        if(params.startDate != null)
+            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                      '<small>'+startLbl+' </small>'+
+                      '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
+                      params.startDay + ' ' + params.startMonth + 
+                      ' <small class="letter-'+params.color+'">' + params.startYear + '</small>' + 
+                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
+                      params.startTime+endTime+"</b></small>"+
+                   '</h3>';
+        
+        if(params.endDay != params.startDay && params.endDate != null && params.startDate != params.endDate)
+            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                      "<small>Au </small>"+
+                      '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
+                      params.endDay + ' ' + params.endMonth + 
+                      ' <small class="letter-'+params.color+'">' + params.endYear + '</small>' + 
+                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
+                      params.endTime+"</b></small>"+
+                   '</h3>';
+            
+        return str;
+  }
 }

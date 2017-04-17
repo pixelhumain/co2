@@ -19,7 +19,7 @@
 }
 .activity-heading{
 position: absolute;
-bottom: 120px;
+top: 255px;
 left: 0px;
 right: 0px;
 background-color: rgba(250,250,250,0.8);
@@ -77,15 +77,12 @@ background-color: rgba(250,250,250,0.8);
     <div class="timeline-panel">
     <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12"></div>
       <?php $classHeading="";
-      $styleHeading="";
-      if(@$srcMainImg != "" && $media["type"] == "activityStream"){ 
-        $classHeading="activity-heading";
-        if($nbCol==2) $styleHeading="style='bottom:170px !important;'" ?>
+      if(@$srcMainImg != "" && $media["type"] == "activityStream"){ $classHeading="activity-heading"; ?>
         <a class="inline-block bg-black activity-image" target="_blank" href="<?php echo @$media["href"]; ?>">
           <img class="img-responsive" src="<?php echo $srcMainImg; ?>" />
         </a>
       <?php } ?>
-      <div class="timeline-heading text-center <?php echo $classHeading; ?>" <?php echo $styleHeading ?>>
+      <div class="timeline-heading text-center <?php echo $classHeading; ?>">
            	<h5 class="text-left srcMedia">
           		<small class="ilyaL">
 

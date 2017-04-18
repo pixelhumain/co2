@@ -53,22 +53,6 @@
                 
             </div>
             
-             <br><br>  
-            <div class="col-xs-6">
-                <h1>SOCIAL</h1>
-                <h2 class="text-left"><a href="https://chat.lescommuns.org" class="text-red " target="_blank">Open CHAT</a></h2>
-                <h2 class="text-dark text-left"><a href="https://twitter.com/communecter" target="_blank">Twitter</a></h2>
-                <h2 class="text-red text-left"><a href="https://mamot.fr" class="text-red " target="_blank">MASTODON</a></h2>
-                <h2 class="text-dark text-left"><a href="https://www.facebook.com/communecter" target="_blank">FB</a></h2>
-                <h2 class="text-dark text-left"><a href="https://github.com/pixelhumain/buildingCommons/blob/master/codeSocialOpenSystem.md" class="text-red " target="_blank">Code Social : Open Système</a></h2>
-            </div>
-
-            <div class="col-xs-6">
-                <h1>Rejoindre</h1>
-                <h2 class="text-red text-right"><a href="https://chat.lescommuns.org/channel/co_dev_open" class="text-red " target="_blank">Rejoindre la dev</a></h2>
-                <h2 class="text-dark text-right"><a href="https://github.com/orgs/pixelhumain" target="_blank">GITHUB</a></h2>
-                <h2 class="text-dark text-right"><a href="https://github.com/pixelhumain/communecter/wiki" class="text-red " target="_blank">WIKI DOCS</a></h2>
-                <h2 class="text-red text-right"><a href="https://github.com/pixelhumain/co2/issues" target="_blank">Déclarer des bugs</a></h2>
-            </div>
+             
 
         </div>

@@ -802,7 +802,8 @@ if( $type != Person::COLLECTION)
 							
 						}else{
 							var nothing = "Aucun";
-							if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
+							if(dataName == "organizations" || dataName == "collections" || 
+								dataName == "follows" || dataName == "dda")
 								nothing = "Aucune";
 
 							var html =  "<div class='col-md-12 margin-bottom-15'>"+

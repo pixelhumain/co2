@@ -849,8 +849,8 @@ if( $type != Person::COLLECTION)
 
 		if(dataName == "urls"){ 
 			html += elementName + " a " + countData+" <b> lien"+s;
-			html += '<a class="tooltips btn btn-xs btn-light-blue " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add"]+'" href="javascript:;" onclick="elementLib.openForm ( \'url\',\'parentUrl\')">';
-	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add"]+'</a>' ;  
+			html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="elementLib.openForm ( \'url\',\'parentUrl\')">';
+	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
 		}
 
 		return html;
@@ -989,10 +989,8 @@ if( $type != Person::COLLECTION)
 				});
 			}
 			toogleNotif(false);
-
 			$("#central-container").html(html);
 			initBtnLink();
-			
 		}else{
 			var nothing = "Aucun";
 			if(dataName == "organizations" || dataName == "collections" || dataName == "follows")

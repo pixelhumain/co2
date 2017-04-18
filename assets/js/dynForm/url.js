@@ -13,7 +13,8 @@ dynForm = {
 			}
 	    },
 	    afterSave : function(){
-	    	url.loadByHash(location.hash);
+			elementLib.closeForm();
+		    url.loadByHash( location.hash );
 	    },
 	    properties : {
 	    	info : {

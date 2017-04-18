@@ -1175,29 +1175,20 @@ var directory = {
         mylog.log("-----------urlPanelHtml", params);
         str = "";  
         str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 searchEntityContainer'>";
+          str += '<a href="'+params.url+'" target="_blank" class="text-dark tooltips"'+
+                    'data-toggle="tooltip" data-placement="top" data-original-title="'+params.url+'" >';
             str += "<div class='searchEntity'>";
-                str += "<div class='padding-10 informations'>";
-                  str += "<div class='entityRight no-padding'>";
-                    
-                    str += '<a href="'+params.url+'" target="_blank" class="text-dark">';
-                    str += '  <span class="text-dark">'+params.title;
-                      str += ' <br/><span class="text-extra-small">'+params.type+'</span>';
-                      str += ' </span>';
-                     str += '</a>';
-    
-              str += "</div>";
+              
+                str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
+                  str += '<h4 class="panel-title text-dark pull-left">'+params.title+'</h4>';
+                //str += "</div>";
+                //str += "<div class='panel-body no-padding'>";
+                    str += '<br/><span class="" style="font-size: 11px !important;">'+params.type+'</span>';
+                str += "</div>";
+            
             str += "</div>";
-          str += "</div>";
-
-          str += "</div>";
-          return str;
-    },
-    // ********************************
-    // URL TITLE PANEL
-    // ********************************
-    urlTitleHtml : function(){
-        mylog.log("-----------urlPanelHtml", params);
-        str = "";
+          str += '</a>';
+        str += "</div>";
         return str;
     },
     // ********************************

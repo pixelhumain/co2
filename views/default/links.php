@@ -24,6 +24,7 @@
                 <h2 class="text-left"><a href="default/view/page/keywords/dir/docs|panels" class="lbhp">MOTs CLEFS</a></h2>
                 <h2 class="text-left"><a href="default/view/page/about/dir/docs|panels" class="lbhp">A propos</a></h2>
                 <h2 class="text-left"><a href="default/view/page/history/dir/docs|panels" class="lbhp">Histoire</a></h2>
+                <h2 class="text-left"><a href="default/view/page/5w/dir/docs|panels" class="lbhp"> W W W W W </a></h2>
             </div>
             <div class="col-xs-4">
                 <h1><span class="text-red">CO</span>NSTRUIRE</h1>
@@ -36,7 +37,7 @@
                 <h1><span class="text-red">CO</span>LLABORER</h1>
                 <h2 class="text-left"><a href="default/view/page/mention/dir/docs|panels" class="lbhp ">mention</a></h2>
                 <h2 class="text-left"><a href="default/view/page/peopleTalk/dir/docs|panels" class="lbhp ">people talk</a></h2>
-                <h2 class="text-left"><a href="default/view/page/policies/dir/docs|panels" class="lbhp ">Règles</a></h2>
+                <h2 class="text-left"><a href="default/view/page/policies/dir/docs|panels" class="lbhp ">éthique</a></h2>
                 <h2 class="text-left"><a href="default/view/page/prices/dir/docs|panels" class="lbhp ">Prix</a></h2>
             </div>
             

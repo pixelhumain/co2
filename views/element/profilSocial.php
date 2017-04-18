@@ -623,48 +623,48 @@ if( $type != Person::COLLECTION)
 									        $("#banniere_photoAdd").submit();
 										});
 										$("#banniere_photoAdd").off().on('submit',(function(e) {
-			//alert(moduleId);
-			if(debug)mylog.log("id2", contextId);
-			$(".banniere_isSubmit").val("true");
-			e.preventDefault();
-			console.log(cropResult);
-			var fd = new FormData(document.getElementById("banniere_photoAdd"));
-			fd.append("parentId", contextId);
-			fd.append("parentType", contextType);
-			fd.append("formOrigin", "banniere");
-			fd.append("contentKey", "banniere");
-			fd.append("cropW", cropResult.cropW);
-			fd.append("cropH", cropResult.cropH);
-			fd.append("cropX", cropResult.cropX);
-			fd.append("cropY", cropResult.cropY);
-			//var formData = new FormData(this);
-						//console.log("formdata",formData);
-			/*formData.files= document.getElementById("banniere_change").files;
-			formData.crop= cropResult;
-			formData.parentId= contextId;
-			formData.parentType= contextType;
-			formData.formOrigin= "banniere";*/
-			//console.log(formData);
-			// Attach file
-			//formData.append('image', $('input[type=banniere]')[0].files[0]); 
-			$.ajax({
-				url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/banniere",
-				type: "POST",
-				data: fd,
-				contentType: false,
-				cache: false, 
-				processData: false,
-				dataType: "json",
-				success: function(data){
-			        if(data.result){
-			        	newBanniere='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
-			        	$("#contentBanniere").html(newBanniere);
-			        	$.unblockUI();
-			        	//$("#uploadScropResizeAndSaveImage").hide();
-			    	}
-			    }
-			});
-		}));
+											//alert(moduleId);
+											if(debug)mylog.log("id2", contextId);
+											$(".banniere_isSubmit").val("true");
+											e.preventDefault();
+											console.log(cropResult);
+											var fd = new FormData(document.getElementById("banniere_photoAdd"));
+											fd.append("parentId", contextId);
+											fd.append("parentType", contextType);
+											fd.append("formOrigin", "banniere");
+											fd.append("contentKey", "banniere");
+											fd.append("cropW", cropResult.cropW);
+											fd.append("cropH", cropResult.cropH);
+											fd.append("cropX", cropResult.cropX);
+											fd.append("cropY", cropResult.cropY);
+											//var formData = new FormData(this);
+														//console.log("formdata",formData);
+											/*formData.files= document.getElementById("banniere_change").files;
+											formData.crop= cropResult;
+											formData.parentId= contextId;
+											formData.parentType= contextType;
+											formData.formOrigin= "banniere";*/
+											//console.log(formData);
+											// Attach file
+											//formData.append('image', $('input[type=banniere]')[0].files[0]); 
+											$.ajax({
+												url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/banniere",
+												type: "POST",
+												data: fd,
+												contentType: false,
+												cache: false, 
+												processData: false,
+												dataType: "json",
+												success: function(data){
+											        if(data.result){
+											        	newBanniere='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
+											        	$("#contentBanniere").html(newBanniere);
+											        	$.unblockUI();
+											        	//$("#uploadScropResizeAndSaveImage").hide();
+											    	}
+											    }
+											});
+										}));
 									}, 300);
 								}
        						 	else

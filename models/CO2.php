@@ -58,15 +58,15 @@ class CO2 {
             $citiesResult = PHDB::find( City::COLLECTION , $where );
             //print_r($citiesResult);
             $cities=array();
-           if(count($citiesResult)>1){
+           //if(count($citiesResult)>1){
                 foreach($citiesResult as $v){
                     if($v["insee"]==$insee)
                         $city=$v;
                     else
                         $cities[]=$v["postalCodes"][0]["postalCode"].", ".$v["alternateName"];
                 }
-            } else
-            $city=$citiesResult;
+            //} else
+            //$city=$citiesResult;
             $alternateName=$city["alternateName"];
             $levelMin="inseeCommunexion";
             $inseeName=$city["alternateName"];

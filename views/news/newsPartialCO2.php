@@ -255,8 +255,10 @@ background-color: rgba(250,250,250,0.8);
               //}
              }
         } });
-      tags = '<div class="pull-left"><i class="fa fa-tags text-red"></i> '+tags+'</div>';
-      $("#newsTagsScope"+e).append(tags);
+      if(tags!=""){
+        tags = '<div class="pull-left margin-top-5">'+tags+'</div>';
+        $("#newsTagsScope"+e).append(tags);
+      }
     }
     var author = typeof v.author != "undefined" ? v.author : null;
     if(((author != null && typeof author.address != "undefined") || v.type == "activityStream") && v.scope.type == "public"){
@@ -276,27 +278,27 @@ background-color: rgba(250,250,250,0.8);
                   
                 name += (value.addressLocality != "" && value.addressLocality != null) ? value.addressLocality : "";
                 if(countScope<maxScope)
-                  scopes += "<span class='label label-danger'>" + name + "</span> ";
+                  scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> " + name + "</span> ";
               });
               if(typeof(v.scope.departements) != "undefined")
               $.each(v.scope.departements, function(key, value){ countScope++;
                 if(countScope<maxScope)
-                  scopes += "<span class='label label-danger'>"+value.name + "</span> ";
+                  scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+value.name + "</span> ";
               });
               if(typeof(v.scope.regions) != "undefined")
               $.each(v.scope.regions, function(key, value){ countScope++;
                 if(countScope<maxScope)
-                  scopes += "<span class='label label-danger'>"+value.name + "</span> ";
+                  scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+value.name + "</span> ";
               });
           }else  { //activityStream
             if (typeof(v.scope.address) != "undefined" && v.scope != null && v.scope.address != null &&  v.scope.address.addressLocality != "Unknown") {
               postalCode=((v.scope.address.postalCode)?v.scope.address.postalCode+" , " : "");
               city=v.scope.address.addressLocality;
-              scopes += "<span class='label label-danger'>"+postalCode+city+"</span> ";
+              scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+postalCode+city+"</span> ";
             }
           }
          if(scopes != ""){
-            scopes = '<div class="pull-right" style="margin: 5px 0px;"><i class="fa fa-bullseye"></i> '+scopes+'</div>';
+            scopes = '<div class="pull-right" style="margin: 5px 0px;">'+scopes+'</div>';
             $("#newsTagsScope"+e).append(scopes);
          }
         }

@@ -812,3 +812,37 @@ function bindAboutPodElement() {
 		});
 	}
 
+
+	function updateUrl(ind, title, url, type) {
+		//var url = urls[ind] ;
+		var params = {
+			title : title,
+			type : type,
+			url : url,
+			index : ind
+		}
+		mylog.log("params",params);
+		elementLib.openForm( 'url','parentUrl', params);
+	}
+
+	function removeUrl(ind) {
+		param = new Object;
+    	param.name = "urls";
+    	param.value = {index : ind};
+    	param.pk = contextData.id;
+		param.type = contextData.type;
+		$.ajax({
+	        type: "POST",
+	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
+	        data: param,
+	       	dataType: "json",
+	    	success: function(data){
+	    		mylog.log("data", data);
+		    	if(data.result){
+					toastr.success(data.msg);
+					url.loadByHash(location.hash);
+		    	}
+		    }
+		});
+	}
+

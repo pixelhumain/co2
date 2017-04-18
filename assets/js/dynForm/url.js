@@ -45,7 +45,8 @@ dynForm = {
             parentType : {
 	            inputType : "hidden",
             	rules : { required : true },
-	        }
+	        },
+	        index : typeObjLib.hidden
 	    }
 	}
 };

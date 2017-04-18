@@ -10,10 +10,10 @@ var floopContactTypes = [	{ name : "projects", 		color: "purple"	, icon:"lightbu
 							{ name : "people",  		color: "yellow"	, icon:"user"			},
 							{ name : "organizations", 	color: "green" 	, icon:"group"			}];
 							
-var openPanelType = { 	"people" 		 : "person",
-						"organizations"  : "organization",
-						"projects" 	 	 : "project",
-						"events" 		 : "event",
+var openPanelType = { 	"people" 		 : "citoyens",
+						"organizations"  : "organizations",
+						"projects" 	 	 : "projects",
+						"events" 		 : "events",
 					};
 
 var tooltips_lbl = { 	"people" 		  : "Ajouter quelqu'un à votre répertoire.",
@@ -36,11 +36,11 @@ function buildListContactHtml(contacts, myId){
 
 	floopContacts = contacts;
 	
-	var HTML = 			'<div class="floopHeader bg-dark">'+
+	var HTML = 			'<div class="floopHeader bg-white">'+
 							'<a href="#person.directory.id.'+userId+'?tpl=directory2" '+
 								'class="text-white pull-left lbh" style="color:white !important;">'+
 								//t("My directory")+
-								'<i class="fa fa-bookmark fa-rotate-270" style="margin-right:15px;"></i> '+
+								'<i class="fa fa-bookmark fa-rotate-270 text-dark" style="margin-right:15px;"></i> '+
 							'</a>'+
 							'<div id="floopScrollByType" class="pull-left"></div>' +
 							'<button id="btnFloopClose"><i class="fa fa-times"></i></button>' +
@@ -118,7 +118,7 @@ function getFloopItem(id, type, value){
 		defaultImg="citoyens";
 	var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl + value.profilThumbImageUrl : assetPath + "/images/thumb/default_"+defaultImg+".png";
 	var id = (typeof value._id != "undefined" && typeof value._id.$id != "undefined") ? value._id.$id : id;
-	var path = "#"+openPanelType[type.name]+".detail.id."+id;
+	var path = "#page.type."+openPanelType[type.name]+".id."+id;
 	var elementClass = oldElement ? "oldFloopDrawer"+type.name : "";
 	var elementStyle = oldElement ? "display:none" : ""; 
 

@@ -24,6 +24,7 @@ var trad = {
 "alreadyreportedabuse": "<?php echo Yii::t("common","You already reported this news as abuse") ?>" ,
 "askreasonreportabuse": "<?php echo Yii::t("common", "You are going to declare an abuse : please fill the reason")?>",
 "delete": "<?php echo Yii::t("common", "Delete")?>", 
+"update": "<?php echo Yii::t("common", "Update")?>", 
 "updatepublication": "<?php echo Yii::t("common", "Update publication")?>",
 "reportanabuse": "<?php echo Yii::t("common", "Report an abuse")?>",
 "You are not following" : "<?php echo Yii::t("common", "You are not following")?>",

@@ -78,7 +78,7 @@
 
           "#place":
                 {"inMenu" : true, 
-                "useHeader" : false, 
+                "useHeader" : true, 
                 "open" : true, 
                 "subdomain" : "place", 
                 "subdomainName" : "Lieux",

@@ -23,6 +23,7 @@
     if(@$type=="events")    { $page = "agenda"; }
     if(@$type=="classified"){ $page = "annonces"; }
     if(@$type=="vote")      { $page = "power"; }
+    if(@$type=="place")     { $page = "place"; }
 
     if(@$type=="cities")    { $lblCreate = ""; }
 

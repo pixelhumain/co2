@@ -51,21 +51,47 @@ class CO2 {
         }        
 
         if(isset( Yii::app()->request->cookies['cpCommunexion'] )){
+            //print_r(Yii::app()->request->cookies);
             $cp = Yii::app()->request->cookies['cpCommunexion'];
             $insee = (string)Yii::app()->request->cookies['inseeCommunexion'];
-            $where = array("postalCodes.postalCode" =>new MongoRegex("/^".$cp."/i"), "insee"=>$insee);
-            
-            $city = PHDB::findOne( City::COLLECTION , $where );
-            $communexion["values"] = array( "cityName"  =>$city["alternateName"],
+            $where = array("postalCodes.postalCode" =>new MongoRegex("/^".$cp."/i"));
+            $citiesResult = PHDB::find( City::COLLECTION , $where );
+            //print_r($citiesResult);
+            $cities=array();
+           //if(count($citiesResult)>1){
+            foreach($citiesResult as $v){
+                if($v["insee"]==$insee)
+                    $city=$v;
+                else
+                    $cities[]=$v["postalCodes"][0]["postalCode"].", ".$v["alternateName"];
+            }
+            //} else
+            //$city=$citiesResult;
+            $alternateName=$city["alternateName"];
+            $levelMin="inseeCommunexion";
+            $inseeName=$city["alternateName"];
+            $currentName=(string)Yii::app()->request->cookies['communexionName'];
+            if(count($city["postalCodes"])>1){
+                foreach($city["postalCodes"] as $value){
+                    if($value["postalCode"]==$cp){
+                        $levelMin="cpCommunexion";
+                        $currentName=$cp;
+                        $alternateName=$value["name"];
+                    }else
+                        $cities[]=$value["postalCode"].", ".$value["name"];
+
+                }
+            }
+            $communexion["values"] = array( "cityName"  =>$alternateName,
                                             "cityKey"   => City::getUnikey($city),
+                                            "inseeName" => $inseeName,
                                             "cityCp"    =>Yii::app()->request->cookies['cpCommunexion'],
                                             "depName"   =>@$city["depName"],
-                                            "regionName"=>@$city["regionName"]);
-            
-            $communexion["currentLevel"] =  (string)Yii::app()->request->cookies['communexionLevel'];
-            $communexion["currentName"] =  (string)Yii::app()->request->cookies['communexionName'];
+                                            "regionName"=>@$city["regionName"],
+                                            "cities"=>$cities);
+            $communexion["currentLevel"] =  $levelMin;
+            $communexion["currentName"] = $currentName ;
             $communexion["currentValue"] =  (string)Yii::app()->request->cookies['communexionValue'];
-
             //return $communexion;           
         }
 

@@ -169,7 +169,7 @@
 				<?php 
 					if(@$element["url"]){
 						//If there is no http:// in the url
-						if (!preg_match("~^(?:f|ht)tps?://~i", $element["url"]) ) $scheme = 'http://';
+						$scheme = ( (!preg_match("~^(?:f|ht)tps?://~i", $element["url"]) ) ? 'http://' : "" ) ;
 					 	echo '<a href="'.$scheme.$element['url'].'" target="_blank" id="urlWebAbout" style="cursor:pointer;">'.$element["url"].'</a>';
 					}else
 						echo '<i>'.Yii::t("common","Not specified").'</i>'; ?>

@@ -24,6 +24,7 @@ var trad = {
 "alreadyreportedabuse": "<?php echo Yii::t("common","You already reported this news as abuse") ?>" ,
 "askreasonreportabuse": "<?php echo Yii::t("common", "You are going to declare an abuse : please fill the reason")?>",
 "delete": "<?php echo Yii::t("common", "Delete")?>", 
+"update": "<?php echo Yii::t("common", "Update")?>", 
 "updatepublication": "<?php echo Yii::t("common", "Update publication")?>",
 "reportanabuse": "<?php echo Yii::t("common", "Report an abuse")?>",
 "You are not following" : "<?php echo Yii::t("common", "You are not following")?>",
@@ -151,7 +152,8 @@ var trad = {
 "Select among my contacts" : "<?php echo Yii::t("common","Select among my contacts") ?>",
 "Research a name or e-mail address..." : "<?php echo Yii::t("common","Research a name or e-mail address...") ?>",
 "Invitation  accept" : "<?php echo Yii::t("common","Invitation  accept") ?>",
-
+"Wait for confirmation" : "<?php echo Yii::t("common","Wait for confirmation") ?>",
+"Add Link" : "<?php echo Yii::t("common","Add Link") ?>",
 
 
 };

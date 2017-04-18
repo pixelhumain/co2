@@ -1,8 +1,9 @@
+<?php $this->renderPartial('../docs/panels/menuLink',array("url"=>"default/view/page/links")); ?>
 <div class="panel-heading border-light center text-dark partition-white radius-10">
 	<span class="panel-title homestead"> <i class='fa fa-heart  faa-pulse animated fa-3x  '></i> <span style="font-size: 48px">PHILOSOPHY</span></span>
 </div>
 <div class="space20"></div>
-<div class="keywordList"></div>
+<div class="keywordList col-xs-6 col-xs-offset-3"></div>
 
 <script type="text/javascript">
 

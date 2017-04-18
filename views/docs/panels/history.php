@@ -1,3 +1,5 @@
+<?php $this->renderPartial('../docs/panels/menuLink',array("url"=>"default/view/page/links")); ?>
+
 <div class="panel-heading border-light center text-dark partition-white radius-10 ">
 	<span class="panel-title homestead"> <i class='fa fa-clock-o faa-pulse animated fa-3x  '></i> <span style="font-size: 48px">WHERE WE'RE GOING</span></span>
 </div>
@@ -101,7 +103,7 @@ jQuery(document).ready(function()
 		icon = (obj.icon) ? obj.icon : "fa-tag" ;
 		color = (obj.color) ? obj.color : "#E33551" ;
 		$(".keywordList").append(
-		'<div class="col-md-4 col-sm-12"><div class="panel panel-white">'+
+		'<div class="col-sm-12"><div class="panel panel-white">'+
 			'<div class="panel-heading border-light ">'+
 				'<span class="panel-title homestead"> <i class="fa '+icon+' faa-pulse animated-hover fa-2x"></i> <span style="font-size: 35px; color:'+color+';"> '+obj.title.toUpperCase()+'</span></span>'+
 				'<br/>'+obj.date+

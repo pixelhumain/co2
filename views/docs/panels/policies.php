@@ -1,9 +1,16 @@
+<?php $this->renderPartial('../docs/panels/menuLink',array("url"=>"default/view/page/links")); ?>
+
 <div class="panel-heading border-light center text-dark partition-white radius-10">
 	<span class="panel-title homestead"> <i class='fa fa-legal   fa-3x  '></i> <span style="font-size: 48px">WE ARE :  </span></span>
 </div>
 <div class="space20"></div>
 <div class="keywordList"></div>
-
+<style type="text/css">
+	.keypan{
+		height: 235px;
+		border: 1px solid #ddd
+	}
+</style>
 <script type="text/javascript">
 
 var keywords = [
@@ -20,7 +27,7 @@ var keywords = [
 		"body":"You have ."
 	},
 	{
-		"title":"1st RULE is there is no rule but...",
+		"title":"1st RULE is respect...",
 		"body":"Respect others"+
 			"<br/>No insulting"+
 			"<br/>No ..."+
@@ -75,16 +82,14 @@ jQuery(document).ready(function()
 		icon = (obj.icon) ? obj.icon : "fa-legal" ;
 		color = (obj.color) ? obj.color : "#E33551" ;
 		$(".keywordList").append(
-		'<div class="panel panel-white">'+
+		'<div class="col-xs-4"><div class="keypan panel panel-white">'+
 			'<div class="panel-heading border-light ">'+
 				'<span class="panel-title homestead"> <i class="fa '+icon+'  fa-2x"></i> <span style="font-size: 35px; color:'+color+';"> '+obj.title.toUpperCase()+'</span></span>'+
 			'</div>'+
 			'<div class="panel-body">'+
-				'<blockquote class="space20">'+
 					obj.body+
-				 "</blockquote>"+
 			"</div>"+
-		"</div>");
+		"</div></div>");
 	 });
 });
 

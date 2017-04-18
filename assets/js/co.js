@@ -1215,8 +1215,9 @@ var smallMenu = {
 				html = "<div style='margin-bottom:50px'><a href='"+p+"' class='lbhp text-dark'><i class='fa fa-2x fa-arrow-circle-left'></i> PREV </a> "+
 						" <a href='"+n+"' class='lbhp text-dark'> NEXT <i class='fa fa-2x fa-arrow-circle-right'></i></a></div>";
 				$(dest).prepend(html);
-				bindLBHLinks();
+				
 			}
+			bindLBHLinks();
 		 },"html" );
 	},
 	//content Loader can go into a block
@@ -1256,7 +1257,7 @@ var smallMenu = {
 				if(content)
 					$("#openModal div.modal-content div.container").html(content);
 				else 
-					$("#openModal div.modal-content div.container").html("");
+					$("#openModal div.modal-content div.container").html("<i class='fa fa-spin fa-refresh fa-4x'></i>");
 			}
 
 			$(".blockPage").addClass(smallMenu.destination.slice(1));
@@ -1366,7 +1367,8 @@ function  bindLBHLinks() {
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 	    url.loadByHash( h );
-	})
+	});
+	//open any url in a modal window
 	$(".lbhp").off().on("click",function(e) {
 		e.preventDefault();
 		mylog.warn("***************************************");
@@ -1376,8 +1378,11 @@ function  bindLBHLinks() {
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 		if( $(this).data("modalshow") )
 			smallMenu.open ( directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
-		else 
-	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url.convertToPath(h) ,"","blockUI",h);
+		else {
+			url = (h.indexOf("#") ==0 ) ? url.convertToPath(h) : h;
+	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
+	    	//smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url ,"","blockUI",h);
+		}
 	})
 }
 
@@ -3354,9 +3359,9 @@ var keyboardNav = {
 		"67" : function(){$('#openModal').modal('hide');elementLib.openForm('classified')},//c : classified
 		"69" : function(){$('#openModal').modal('hide');elementLib.openForm('event')}, //e : event
 		"70" : function(){$('#openModal').modal('hide'); $(".searchIcon").trigger("click") },//f : find
-		"72" : function(){ modalSwitcher('/default/view/page/help') },//h : help
+		"72" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/help') },//h : help
 		"73" : function(){$('#openModal').modal('hide');elementLib.openForm('person')},//i : invite
-		"76" : function(){ modalSwitcher('/default/view/page/links')},//l : links and infos
+		"76" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/links')},//l : links and infos
 		"79" : function(){$('#openModal').modal('hide');elementLib.openForm('organization')},//o : orga
 		"80" : function(){$('#openModal').modal('hide');elementLib.openForm('project')},//p : project
 		"82" : function(){$('#openModal').modal('hide');smallMenu.openAjax(baseUrl+'/'+moduleId+'/person/directory?tpl=json','Mon répertoire','fa-book','red')},//r : annuaire
@@ -3378,11 +3383,6 @@ var keyboardNav = {
 			keyboardNav.keyMap[keycode]();
 		}
 	}
-}
-
-function modalSwitcher(url) { 
-	console.log("modalSwitcher",url);
-	smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+url)
 }
 
 function cityKeyPart(unikey, part){

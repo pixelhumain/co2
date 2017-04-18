@@ -99,6 +99,7 @@ var scrollEnd = false;
 
 var loadContent = '<?php echo @$_GET["content"]; ?>';
 var dataNewsSearch = {};
+var	dateLimit=0;
 jQuery(document).ready(function() {
 
 	$(".subsub").hide();

@@ -193,6 +193,12 @@
 			<i class="fa fa-camera"></i> <?php echo Yii::t("common","Gallery"); ?>
 		</a>
 	</li>
+
+	<li class="">
+		<a href="javascript:" class="" id="btn-start-urls">
+			<i class="fa fa-external-link"></i> <?php echo Yii::t("common","Urls"); ?>
+		</a>
+	</li>
 	
 	<li><hr></li>
 	<?php if($type != Person::COLLECTION || 

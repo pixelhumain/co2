@@ -631,8 +631,9 @@ var directory = {
       mylog.log("----------- elementPanelHtml",params.type,params.name);
       str = "";
       var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
+      var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" '>";
-      str +=    "<div class='searchEntity'>";
+      str +=    '<div class="searchEntity" >';
 
         if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
@@ -653,7 +654,7 @@ var directory = {
         if(typeof params.size == "undefined" || params.size == "max")
           str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
 
-        str += "<div class='padding-10 informations'>";
+        str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
         str += "<div class='entityRight no-padding'>";
 
@@ -700,6 +701,7 @@ var directory = {
       str += "</div>";
       return str;
     },
+
     // ********************************
     // CALCULATE NEXT PREVIOUS 
     // ********************************
@@ -1208,6 +1210,38 @@ var directory = {
               return str;
     },
     // ********************************
+    // URL DIRECTORY PANEL
+    // ********************************
+    urlPanelHtml : function(params){
+        mylog.log("-----------urlPanelHtml", params);
+        str = "";  
+        str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 searchEntityContainer'>";
+            str += "<div class='searchEntity'>";
+                str += "<div class='padding-10 informations'>";
+                  str += "<div class='entityRight no-padding'>";
+                    
+                    str += '<a href="'+params.url+'" target="_blank" class="text-dark">';
+                    str += '  <span class="text-dark">'+params.title;
+                      str += ' <br/><span class="text-extra-small">'+params.type+'</span>';
+                      str += ' </span>';
+                     str += '</a>';
+    
+              str += "</div>";
+            str += "</div>";
+          str += "</div>";
+
+          str += "</div>";
+          return str;
+    },
+    // ********************************
+    // URL TITLE PANEL
+    // ********************************
+    urlTitleHtml : function(){
+        mylog.log("-----------urlPanelHtml", params);
+        str = "";
+        return str;
+    },
+    // ********************************
     // ROOMS DIRECTORY PANEL
     // ********************************
     roomsPanelHtml : function(params){
@@ -1348,8 +1382,8 @@ var directory = {
       str += "</div>";
       return str;
     },
-    showResultsDirectoryHtml : function ( data, contentType, size ){ //size == null || min || max
-        mylog.log("START -----------showResultsDirectoryHtml :" ,data, size)
+    showResultsDirectoryHtml : function ( data, contentType, size){ //size == null || min || max
+        mylog.log("START -----------showResultsDirectoryHtml :" ,data, size, contentType)
         var str = "";
 
         directory.colPos = "left";
@@ -1360,9 +1394,9 @@ var directory = {
 
 
             itemType=(contentType) ? contentType :params.type;
-            
-            if( itemType )
-            { mylog.warn("TYPE -----------"+contentType);
+            mylog.log("itemType",itemType);
+            if( itemType ){ 
+                mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
                 mylog.log("itemType",itemType,params.name);
                 //mylog.log("showResultsDirectoryHtml", o);
@@ -1452,7 +1486,7 @@ var directory = {
 
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
                 
-                mylog.log("template principal",params,params.type);
+                mylog.log("template principal",params,params.type, itemType);
                 
                   //template principal
                 if(params.type == "cities")
@@ -1469,10 +1503,14 @@ var directory = {
                 
                 else if(params.type == "classified")
                   str += directory.classifiedPanelHtml(params);
-                
+
                 else
                   str += directory.defaultPanelHtml(params);
             }
+
+          }else{
+            if(contentType == "urls")
+                  str += directory.urlPanelHtml(params);
           }
         }); //end each
         mylog.log("END -----------showResultsDirectoryHtml ("+str.length+")")

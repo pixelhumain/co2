@@ -151,7 +151,8 @@ var trad = {
 "Select among my contacts" : "<?php echo Yii::t("common","Select among my contacts") ?>",
 "Research a name or e-mail address..." : "<?php echo Yii::t("common","Research a name or e-mail address...") ?>",
 "Invitation  accept" : "<?php echo Yii::t("common","Invitation  accept") ?>",
-
+"Wait for confirmation" : "<?php echo Yii::t("common","Wait for confirmation") ?>",
+"Add" : "<?php echo Yii::t("common","Add",null,Yii::app()->controller->module->id) ?>",
 
 
 };

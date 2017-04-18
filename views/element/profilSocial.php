@@ -1006,6 +1006,12 @@ if( $type != Person::COLLECTION)
    			$("#subsubMenuLeft a").removeClass("active");
    			$(this).addClass("active");
    		});
+
+   		$("#btn-start-urls").click(function(){
+			history.pushState(null, "New Title", hashUrlPage+".view.detail");
+			loadUrls();
+		});
+
 	}
 	
 	function loadDataDirectory(dataName, dataIcon){
@@ -1017,6 +1023,7 @@ if( $type != Person::COLLECTION)
 						var n=0;
 						$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
 						if(n>0){
+
 							var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
 											getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
 										"<hr></div>";
@@ -1055,6 +1062,7 @@ if( $type != Person::COLLECTION)
 	}
 
 	function getLabelTitleDir(dataName, dataIcon, countData, n){
+		mylog.log("bgetLabelTitleDir", dataName, dataIcon, countData, n)
 		var elementName = "<span class='Montserrat' id='name-lbl-title'>"+$("#nameHeader .name-header").html()+"</span>";
 		
 		var s = (n>1) ? "s" : "";
@@ -1082,6 +1090,12 @@ if( $type != Person::COLLECTION)
 		if(dataName == "needs"){ html += countData+" <b>besoin"+s+"</b> de " + elementName; }
 
 		if(dataName == "dda"){ html += countData+" <b>proposition"+s+"</b> de " + elementName; }
+
+		if(dataName == "urls"){ 
+			html += elementName + " a " + countData+" <b> lien"+s;
+			html += '<a class="tooltips btn btn-xs btn-light-blue " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add"]+'" href="javascript:;" onclick="elementLib.openForm ( \'url\',\'parentUrl\')">';
+	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add"]+'</a>' ;  
+		}
 
 		return html;
 	}
@@ -1181,6 +1195,62 @@ if( $type != Person::COLLECTION)
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
 	}
 
+	/*function loadUrls(){
+		toogleNotif(false);
+		smallMenu.openAjax(baseUrl+'/'+moduleId+'/element/geturls/type/'+contextData.type+'/id/'+contextData.id+'?tpl=json','Urls','fa-external-link','dark');
+		bindLBHLinks();
+	}*/
+
+	function loadUrls(){
+		showLoader('#central-container');
+		// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
+		getAjax('', baseUrl+'/'+moduleId+'/element/geturls/type/'+contextData.type+
+					'/id/'+contextData.id,
+					function(data){ 
+						afficheContenaire(data, "urls", "external-link", "urls");
+					}
+		,"html");
+	}
+
+	function afficheContenaire(data, dataName, dataIcon, contextType){ 
+		mylog.log("afficheContenaire",data, dataName, dataIcon, contextType)
+		var n=0;
+		$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
+		if(n>0){
+
+			var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
+							getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
+						"<hr></div>";
+
+			if(dataName != "collections"){
+				html += directory.showResultsDirectoryHtml(data, contextType);
+			}else{
+				$.each(data, function(col, val){
+					html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
+					$.each(val.list, function(key, elements){ 
+						html += directory.showResultsDirectoryHtml(elements, key);
+					});
+				});
+			}
+			toogleNotif(false);
+
+			$("#central-container").html(html);
+			initBtnLink();
+			
+		}else{
+			var nothing = "Aucun";
+			if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
+				nothing = "Aucune";
+
+			var html =  "<div class='col-md-12 margin-bottom-15'>"+
+							getLabelTitleDir(dataName, dataIcon, nothing, n)+
+						"</div>";
+			$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
+													"<i class='fa fa-ban'></i> Aucune donnée"+
+												"</span>");
+			toogleNotif(false);
+		}
+	}
 	
 	function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
 		loadingData = true;

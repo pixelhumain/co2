@@ -893,11 +893,11 @@ function saveNews(){
 
 	var validation = {
 		submitHandler : function(form) {
-			showPanel("box-login");
+			//showPanel("box-login");
+			$('#modalLogin').modal("show");
 		}
 	};
-
-	if(userId != null){
+	if(userId != null && userId != ""){
 		validation = {
 			errorElement : "span", // contain the error msg in a span tag
 			errorClass : 'help-block',
@@ -1065,7 +1065,6 @@ function saveNews(){
 			}
 		};
 	}
-
 	formNews.submit(function(e) { e.preventDefault }).validate(validation);
 }
 

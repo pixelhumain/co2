@@ -17,7 +17,7 @@ class AdminpublicController extends CommunecterController {
 	{
 		return array(
 		// captcha action renders the CAPTCHA image displayed on the contact page
-		'index'   				=> 'citizenToolKit.controllers.adminpublic.IndexAction',
+		//'index'   				=> 'citizenToolKit.controllers.adminpublic.IndexAction',
 		'createfile' => 'citizenToolKit.controllers.adminpublic.CreateFileAction',
 		'adddata' => 'citizenToolKit.controllers.adminpublic.AddDataAction',
 	    'adddataindb' => 'citizenToolKit.controllers.adminpublic.AddDataInDbAction',
@@ -28,9 +28,9 @@ class AdminpublicController extends CommunecterController {
 		);
 	}
 
-	public function actionIndexpublic(){
+	public function actionIndex(){
 		CO2Stat::incNbLoad("co2-admin");   
         $params = array();
-        echo $this->renderPartial("createfile", $params, true);
+        echo $this->renderPartial("index", $params, true);
 	}
 }

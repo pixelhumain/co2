@@ -206,64 +206,6 @@ jQuery(document).ready(function() {
     location.hash = "#web";
 });
 
-function initWebInterface(){
-    $("#main-btn-start-search, .menu-btn-start-search").click(function(){
-        var search = $("#main-search-bar").val();
-        currentCategory = "";
-        startWebSearch(search, currentCategory);
-    });
-
-    $("#second-search-bar").keyup(function(e){
-        $("#main-search-bar").val($("#second-search-bar").val());
-        $("#input-search-map").val($("#second-search-bar").val());
-        if(e.keyCode == 13){
-            var search = $(this).val();
-            currentCategory = "";
-            startWebSearch(search, currentCategory);
-         }
-    });
-    $("#main-search-bar").keyup(function(e){
-        $("#second-search-bar").val($("#main-search-bar").val());
-        $("#input-search-map").val($("#main-search-bar").val());
-        if(e.keyCode == 13){
-            var search = $(this).val();
-            currentCategory = "";
-            startWebSearch(search, currentCategory);
-         }
-    });
-    $("#input-search-map").keyup(function(e){
-        $("#second-search-bar").val($("#input-search-map").val());
-        $("#main-search-bar").val($("#input-search-map").val());
-        if(e.keyCode == 13){
-            var search = $(this).val();
-            currentCategory = "";
-            startWebSearch(search, currentCategory);
-         }
-    });
-
-    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
-        var search = $("#input-search-map").val();    
-        currentCategory = "";
-        startWebSearch(search, currentCategory);
-    });
-
-   $("#modalFavorites .btn-favory").click(function(){
-        var id = $(this).data("idfav");
-        deleteFavorites(id);
-   });
-
-   $(".menu-btn-back-category").click(function(){
-        KScrollTo("#section-fav");
-   });
-
-   $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@#\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
-
-   if($("#mainNav .btn-show-map").css("display") == "none"){
-        $("#main-search-bar").focus(function(e){
-            KScrollTo("#main-search-bar");
-        });
-   }
-}
 
 
 </script>

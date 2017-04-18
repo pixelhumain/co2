@@ -93,7 +93,7 @@ var mapElements = new Array();
 
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
-  console.log("autoCompleteSearch 2", typeof callBack, callBack);
+  console.log("START -------- autoCompleteSearch ", typeof callBack, callBack);
 	if(typeof(cityInseeCommunexion) != "undefined"){
 	    var levelCommunexionName = { 1 : "CODE_POSTAL_INSEE",
 	                             2 : "INSEE",
@@ -157,17 +157,25 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         data: data,
         dataType: "json",
         error: function (data){
-             mylog.log("error autocomplete search"); mylog.dir(data);   
+             mylog.log(">>> error autocomplete search"); 
+             mylog.dir(data);   
              $("#dropdown_search").html(data.responseText);  
              //signal que le chargement est terminé
             loadingData = false;     
         },
-        success: function(data){ mylog.log("success autocomplete search"); //mylog.dir(data);
-            if(!data){ toastr.error(data.content); }
-            else
+        success: function(data){ 
+            mylog.log(">>> success autocomplete search"); //mylog.dir(data);
+            if(!data){ 
+              toastr.error(data.content); 
+            } 
+            else 
             {
               var countData = 0;
-            	$.each(data, function(i, v) { if(v.length!=0){ countData++; } });
+            	$.each(data, function(i, v) { 
+                if(v.length!=0){ 
+                  countData++; 
+                } 
+              });
               
               totalData += countData;
             
@@ -182,7 +190,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               str += "<small>";
               if(typeof headerParams != "undefined"){
                 $.each( searchType, function(key, val){
-                  mylog.log("success autocomplete search",val);
+                  mylog.log(">>> each autocomplete search",val);
                   var params = headerParams[val];
                   str += "<span class='text-"+params.color+"'>"+
                             "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
@@ -515,7 +523,7 @@ var directory = {
             
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.url+"' data-id='" + params.dataId + "' class='entityLocality lbh add2fav'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -621,9 +629,11 @@ var directory = {
     // ********************************
     elementPanelHtml : function(params){
       mylog.log("----------- elementPanelHtml",params.type,params.name);
-      str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
-      str +=    "<div class='searchEntity'>";
+      str = "";
+      var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
+      var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
+      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" '>";
+      str +=    '<div class="searchEntity" >';
 
         if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
@@ -644,7 +654,7 @@ var directory = {
         if(typeof params.size == "undefined" || params.size == "max")
           str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
 
-        str += "<div class='padding-10 informations'>";
+        str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
         str += "<div class='entityRight no-padding'>";
 
@@ -667,7 +677,7 @@ var directory = {
                                  
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.url+"' data-id='" + params.dataId + "'  class='entityLocality lbh add2fav'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -691,6 +701,7 @@ var directory = {
       str += "</div>";
       return str;
     },
+
     // ********************************
     // CALCULATE NEXT PREVIOUS 
     // ********************************
@@ -978,25 +989,7 @@ var directory = {
         if(params.updated != null && !params.useMinSize)
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
 
-        params.startDay = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD") : "";
-        params.startMonth = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("MM") : "";
-        params.startYear = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("YYYY") : "";
-        params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("d") : "";
-        params.startTime = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("HH:mm") : "";
-        params.startDate = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
-        
-        params.endDay = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD") : "";
-        params.endMonth = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("MM") : "";
-        params.endYear = notEmpty(params.startDate) ? moment(params.endDate).local().locale("fr").format("YYYY") : "";
-        params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate).local().locale("fr").format("d") : "";
-        params.endTime = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("HH:mm") : "";
-        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
-        
-        params.startDayNum = directory.getWeekDayName(params.startDayNum);
-        params.endDayNum = directory.getWeekDayName(params.endDayNum);
-
-        params.startMonth = directory.getMonthName(params.startMonth);
-        params.endMonth = directory.getMonthName(params.endMonth);
+        var dateFormated = directory.getDateFormated(params);
 
         params.attendees = "";
         var cntP = 0;
@@ -1054,30 +1047,7 @@ var directory = {
         }
 
         str += "<div class='col-md-8 col-sm-8 col-xs-12 margin-top-25'>";
-          
-        var startLbl = (params.endDay != params.startDay) ? "Du" : "";
-        var endTime = (params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
-
-        if(params.startDate != null)
-            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      '<small>'+startLbl+' </small>'+
-                      '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
-                      params.startDay + ' ' + params.startMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.startYear + '</small>' + 
-                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
-                      params.startTime+endTime+"</b></small>"+
-                   '</h3>';
-        
-        if(params.endDay != params.startDay && params.endDate != null && params.startDate != params.endDate)
-            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      "<small>Au </small>"+
-                      '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
-                      params.endDay + ' ' + params.endMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.endYear + '</small>' + 
-                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
-                      params.endTime+"</b></small>"+
-                   '</h3>';
-            
+        str += dateFormated;
         str += "</div>";
 
        
@@ -1197,6 +1167,40 @@ var directory = {
 
               str += "</div>";
               return str;
+    },
+    // ********************************
+    // URL DIRECTORY PANEL
+    // ********************************
+    urlPanelHtml : function(params, key){
+		mylog.log("-----------urlPanelHtml", params);
+		str = "";  
+		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10'>";
+			str += "<div class='searchEntity'>";
+				str += '<ul class="nav navbar-nav btn-params-directory">';
+					str += '<li class="text-left">';
+						str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
+								'class="bg-white tooltips" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
+							str += '<i class="fa fa-pencil"></i>';
+						str += '</a>';
+					str += '</li>';
+					str += '<li class="text-left">';
+						str += '<a href="javascript:;" onclick="removeUrl(\''+key+'\');" class="bg-white tooltips" '+
+								'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+							str += '<i class="fa fa-trash"></i>';
+						str += '</a>';
+					str += '</li>';
+				str += '</ul>';
+
+				str += '<a href="'+params.url+'" target="_blank" class="text-dark tooltips col-xs-8"'+
+						'data-toggle="tooltip" data-placement="top" data-original-title="'+params.url+'" >';
+					str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
+						str += '<h4 class="panel-title text-dark pull-left">'+params.title+'</h4>';
+						str += '<br/><span class="" style="font-size: 11px !important;">'+params.type+'</span>';
+					str += "</div>";
+				str += '</a>';
+			str += "</div>";
+		str += "</div>";
+		return str;
     },
     // ********************************
     // ROOMS DIRECTORY PANEL
@@ -1339,17 +1343,21 @@ var directory = {
       str += "</div>";
       return str;
     },
-    showResultsDirectoryHtml : function ( data, contentType, size ){ //size == null || min || max
-        mylog.log("START -----------showResultsDirectoryHtml",data, contentType, size)
+    showResultsDirectoryHtml : function ( data, contentType, size){ //size == null || min || max
+        mylog.log("START -----------showResultsDirectoryHtml :" ,data, size, contentType)
         var str = "";
 
         directory.colPos = "left";
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
+          mylog.log("params", params, typeof params);
+          if(notNull(params["_id"])){
+
+
             itemType=(contentType) ? contentType :params.type;
-            
-            if( itemType )
-            {
+            mylog.log("itemType",itemType);
+            if( itemType ){ 
+                mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
                 mylog.log("itemType",itemType,params.name);
                 //mylog.log("showResultsDirectoryHtml", o);
@@ -1363,6 +1371,7 @@ var directory = {
                                     "";
 
                 //mapElements.push(params);
+                //alert("TYPE ----------- "+contentType+":"+params.name);
                 
                 if(typeof( typeObj[itemType] ) == "undefined")
                     itemType="poi";
@@ -1438,7 +1447,7 @@ var directory = {
 
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
                 
-                mylog.log("template principal",params,params.type);
+                mylog.log("template principal",params,params.type, itemType);
                 
                   //template principal
                 if(params.type == "cities")
@@ -1455,22 +1464,28 @@ var directory = {
                 
                 else if(params.type == "classified")
                   str += directory.classifiedPanelHtml(params);
-                
+
                 else
                   str += directory.defaultPanelHtml(params);
             }
+
+          }else{
+            if(contentType == "urls")
+                  str += directory.urlPanelHtml(params, i);
+          }
         }); //end each
-        mylog.log("END -----------showResultsDirectoryHtml")
+        mylog.log("END -----------showResultsDirectoryHtml ("+str.length+")")
         return str;
     },
 
     //builds a small sized list
     buildList : function(list) {
       $(".favSectionBtnNew,.favSection").remove();
-
-      $.each( list, function(key,list)
+      console.warn("START >>>>>> buildList",smallMenu.destination + " #listDirectory");
+      
+      $.each( list, function(key,slist)
       {
-        var subContent = directory.showResultsDirectoryHtml ( list, key /*,"min"*/); //min == dark template 
+        var subContent = directory.showResultsDirectoryHtml ( slist, key /*,"min"*/); //min == dark template 
         if( notEmpty(subContent) ){
           favTypes.push(typeObj[key].col);
           
@@ -1492,7 +1507,9 @@ var directory = {
       directory.filterList();
       $(directory.elemClass).show();
       //bindTags();
+      console.warn("END >>>>>> buildList");
     },
+
     getWeekDayName : function(numWeek){
       var wdays = new Array("", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche");
       if(typeof wdays[numWeek] != "undefined") return wdays[numWeek];
@@ -1702,5 +1719,54 @@ var directory = {
 
     searchFor : function (str) { 
       $(".searchSmallMenu").val(str).trigger("keyup");
-     }
+     },
+
+     getDateFormated: function(params){
+    
+        params.startDay = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD") : "";
+        params.startMonth = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("MM") : "";
+        params.startYear = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("YYYY") : "";
+        params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("d") : "";
+        params.startTime = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("HH:mm") : "";
+        params.startDate = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        
+        params.endDay = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD") : "";
+        params.endMonth = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("MM") : "";
+        params.endYear = notEmpty(params.startDate) ? moment(params.endDate).local().locale("fr").format("YYYY") : "";
+        params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate).local().locale("fr").format("d") : "";
+        params.endTime = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("HH:mm") : "";
+        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        
+        params.startDayNum = directory.getWeekDayName(params.startDayNum);
+        params.endDayNum = directory.getWeekDayName(params.endDayNum);
+
+        params.startMonth = directory.getMonthName(params.startMonth);
+        params.endMonth = directory.getMonthName(params.endMonth);
+        params.color="orange";
+        
+        var startLbl = (params.endDay != params.startDay) ? "Du" : "";
+        var endTime = (params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
+        var str = "";
+        if(params.startDate != null)
+            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                      '<small>'+startLbl+' </small>'+
+                      '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
+                      params.startDay + ' ' + params.startMonth + 
+                      ' <small class="letter-'+params.color+'">' + params.startYear + '</small>' + 
+                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
+                      params.startTime+endTime+"</b></small>"+
+                   '</h3>';
+        
+        if(params.endDay != params.startDay && params.endDate != null && params.startDate != params.endDate)
+            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                      "<small>Au </small>"+
+                      '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
+                      params.endDay + ' ' + params.endMonth + 
+                      ' <small class="letter-'+params.color+'">' + params.endYear + '</small>' + 
+                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
+                      params.endTime+"</b></small>"+
+                   '</h3>';
+            
+        return str;
+  }
 }

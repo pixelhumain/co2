@@ -1,7 +1,12 @@
 <style>
 .activity-image{
-  max-height: 350px;
+  width: 100%;
+  height: 300px;
   overflow-y: hidden;
+}
+.activity-image img{
+  min-width:100%;
+  min-height: 100%;
 }
 .text-large{
   font-size: 16px;
@@ -14,10 +19,13 @@
 }
 .activity-heading{
 position: absolute;
-bottom: 120px;
+top: 255px;
 left: 0px;
 right: 0px;
 background-color: rgba(250,250,250,0.8);
+}
+.text-xss{
+  font-size:12px;
 }
 </style>
 <?php 
@@ -67,7 +75,7 @@ background-color: rgba(250,250,250,0.8);
   <li class="<?php echo $class; ?>" id="news<?php echo $key ?>">
     <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip"></i></a></div>
     <div class="timeline-panel">
-
+    <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12"></div>
       <?php $classHeading="";
       if(@$srcMainImg != "" && $media["type"] == "activityStream"){ $classHeading="activity-heading"; ?>
         <a class="inline-block bg-black activity-image" target="_blank" href="<?php echo @$media["href"]; ?>">
@@ -223,6 +231,77 @@ background-color: rgba(250,250,250,0.8);
     var contentKey = "<?php echo Document::IMG_SLIDER; ?>";
     jQuery(document).ready(function() {
       $.each(news, function(e,v){
+        tags = "", 
+        scopes = "",
+        tagsClass = "",
+        scopeClass = "";
+        if( "object" == typeof v.tags && v.tags )
+        {
+          var countTag = 0;
+          var maxTag = 5;
+          $.each( v.tags , function(i,tag){ if(countTag < maxTag){
+            if(tag != ""){
+              countTag++;
+              tagsClass += tag+" ";
+        
+              /*tags += "<span class='label tag_item_map_list tag' data-val='"+tag+"'>#"+tag+"</span> ";
+              if( $.inArray(tag, contextScopesTags.tags)  == -1 && tag != undefined && tag != "undefined" && tag != "" ){
+                contextScopesTags.tags.push(tag);*/
+        
+            //  tags += "<span class='label tag_item_map_list tag' data-tag-value='"+tag+"'>#"+tag+"</span> ";
+              //if( $.inArray(tag, v.tags)  == -1 && tag != undefined && tag != "undefined" && tag != "" ){
+                ///*contextMap.tags*/ v.tags.push(tag);
+                tags += ' <a href="javascript:;" class="filter btn no-padding" data-filter=".'+tag+'"><span class="text-red text-xss">#'+tag+'</span></a>';
+              //}
+             }
+        } });
+      if(tags!=""){
+        tags = '<div class="pull-left margin-top-5">'+tags+'</div>';
+        $("#newsTagsScope"+e).append(tags);
+      }
+    }
+    var author = typeof v.author != "undefined" ? v.author : null;
+    if(((author != null && typeof author.address != "undefined") || v.type == "activityStream") && v.scope.type == "public"){
+          postalCode = "";
+          city = "";
+          if(v.type != "activityStream"){
+            var countScope = 0;
+              var maxScope = 6;
+              if(typeof(v.scope.cities) != "undefined")
+                 $.each(v.scope.cities, function(key, value){ countScope++;
+                var name = "";
+                if (typeof(value.postalCode) != "undefined") {
+                  name += value.postalCode;
+                }
+
+                if(name != "") name += ", " ;
+                  
+                name += (value.addressLocality != "" && value.addressLocality != null) ? value.addressLocality : "";
+                if(countScope<maxScope)
+                  scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> " + name + "</span> ";
+              });
+              if(typeof(v.scope.departements) != "undefined")
+              $.each(v.scope.departements, function(key, value){ countScope++;
+                if(countScope<maxScope)
+                  scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+value.name + "</span> ";
+              });
+              if(typeof(v.scope.regions) != "undefined")
+              $.each(v.scope.regions, function(key, value){ countScope++;
+                if(countScope<maxScope)
+                  scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+value.name + "</span> ";
+              });
+          }else  { //activityStream
+            if (typeof(v.scope.address) != "undefined" && v.scope != null && v.scope.address != null &&  v.scope.address.addressLocality != "Unknown") {
+              postalCode=((v.scope.address.postalCode)?v.scope.address.postalCode+" , " : "");
+              city=v.scope.address.addressLocality;
+              scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+postalCode+city+"</span> ";
+            }
+          }
+         if(scopes != ""){
+            scopes = '<div class="pull-right" style="margin: 5px 0px;">'+scopes+'</div>';
+            $("#newsTagsScope"+e).append(scopes);
+         }
+        }
         if(v.type == "activityStream"){
           //if(v.object.type=="events" || v.object.type=="needs"){
             console.log(v.object);
@@ -273,10 +352,8 @@ background-color: rgba(250,250,250,0.8);
 
         if(actionController=="save"){
           if($("#news-list").children().eq(0).hasClass("timeline-inverted")){
-            alert("has");
             $("#news"+e).removeClass("timeline-inverted");
           }else{
-            alert("hasnt");
             $("#news"+e).addClass("timeline-inverted");
           }
         }

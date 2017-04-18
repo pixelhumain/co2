@@ -17,10 +17,11 @@ class ElementController extends CommunecterController {
       return array(
           'updatefield' 				  => 'citizenToolKit.controllers.element.UpdateFieldAction',
           'updatefields' 				  => 'citizenToolKit.controllers.element.UpdateFieldsAction',
-          'updateblock'          => 'citizenToolKit.controllers.element.UpdateBlockAction',
+          'updateblock'           => 'citizenToolKit.controllers.element.UpdateBlockAction',
           'updatesettings'        => 'citizenToolKit.controllers.element.UpdateSettingsAction',
           'detail'                => 'citizenToolKit.controllers.element.DetailAction',
           'getalllinks'           => 'citizenToolKit.controllers.element.GetAllLinksAction',
+          'geturls'               => 'citizenToolKit.controllers.element.GetUrlsAction',
           'directory'             => 'citizenToolKit.controllers.element.DirectoryAction',
           'addmembers'            => 'citizenToolKit.controllers.element.AddMembersAction',
           'aroundme'              => 'citizenToolKit.controllers.element.AroundMeAction',

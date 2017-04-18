@@ -186,7 +186,7 @@
         
         
         <?php if($typeSelected == "place"){ ?>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="menu-section-place">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center subsub" id="menu-section-place">
           <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
                   data-type="classified" data-type-anc=""  data-key="all">
             <i class="fa fa-circle-o"></i>
@@ -389,8 +389,7 @@
         <?php } 
 
         $col = ( !in_array($typeSelected, array("classified","events","vote","all","place") )) ? 10 : 8; ?>
-        <div class="col-md-<?php echo $col ?> col-sm-<?php echo $col ?>
-        <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search"></div>
+        <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
 
       <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
       

@@ -501,7 +501,7 @@ class CommunecterController extends Controller
     if( Yii::app()->controller->id == "admin" && !Yii::app()->session[ "userIsAdmin" ] )
       throw new CHttpException(403,Yii::t('error','Unauthorized Access.'));
 
-    if( Yii::app()->controller->id == "adminpublic" && ( !Yii::app()->session[ "userIsAdmin" ] || !Yii::app()->session[ "userIsAdminPublic" ] ) )
+    if( Yii::app()->controller->id == "adminpublic" && ( !Yii::app()->session[ "userIsAdmin" ] && !Yii::app()->session[ "userIsAdminPublic" ] ) )
       throw new CHttpException(403,Yii::t('error','Unauthorized Access.'));
 
     $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];

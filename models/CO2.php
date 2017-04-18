@@ -59,12 +59,12 @@ class CO2 {
             //print_r($citiesResult);
             $cities=array();
            //if(count($citiesResult)>1){
-                foreach($citiesResult as $v){
-                    if($v["insee"]==$insee)
-                        $city=$v;
-                    else
-                        $cities[]=$v["postalCodes"][0]["postalCode"].", ".$v["alternateName"];
-                }
+            foreach($citiesResult as $v){
+                if($v["insee"]==$insee)
+                    $city=$v;
+                else
+                    $cities[]=$v["postalCodes"][0]["postalCode"].", ".$v["alternateName"];
+            }
             //} else
             //$city=$citiesResult;
             $alternateName=$city["alternateName"];

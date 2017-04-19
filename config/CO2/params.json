@@ -132,7 +132,7 @@
                 "open" : true, 
                 "subdomain" : "thing", 
                 "subdomainName" : "Objets communectés",
-                "hash" : "#thing",
+                "hash" : "#app.thing",
                 "icon" : "database", 
                 "mainTitle" : "Les objets communectés",
                 "placeholderMainSearch" : "Choisir parmis les objets ..."

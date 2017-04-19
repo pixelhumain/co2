@@ -1,7 +1,7 @@
 # Thing
-Au delà des Smart-Citizen-Kit, thing pourrrait permettre d'intégrer les objets connecté à CO2.
+Au delà des Smart-Citizen-Kit, thing pourrrait permettre d'intégrer les objets connecté à CO2, COPI.
 
-Un point d'entrée est disponible à coté du bouton "actus", il est nommé "Objet connectés" (on peut renommer en IoT ou Objets Connectés), l'icone est un database.
+Un point d'entrée est disponible à coté du bouton "actus", il est nommé "Objets communectés" (on peut renommer en IoT), l'icone est un database.
 
 ## Smart-Citizen-Kit
 La view index permet d'accéder 

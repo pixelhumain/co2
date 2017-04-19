@@ -1,0 +1,42 @@
+{
+    "sections" : {
+        "smartcitizen" : {
+            "label":"Smart-Citizen-Kit",           
+            "key" : "smartCitizen",  
+            "icon" : "thermometer-three-quarters",
+            "section":1,
+            "color":"azure",
+            "filter" : "sckFilters"
+        },
+        "COPI": {
+            "label":"COPI",      
+            "key" : "copi",     
+            "icon" : "clone",
+            "section":2,
+            "color":"azure",
+            "filter" : "copiFilters"
+        }    
+    },
+    "sckFilters": { 
+        "Dernieres-Mesures" :  {  
+            "icon" : "clock-o",
+            "subcat" : [ "Tous" , "Temperature" , "Humidité" , "Lumière" , "CO" , "NO2" , "Bruit" , "Nets", "Batterie" , "PV" ]
+        },
+        "Graphes" : {   
+            "icon" : "line-chart",
+            "subcat" : [ "Data-from-API" , "Data-from-CO-DB" ]
+        },
+        "Gestion-SCK" : {
+            "icon" : "database",
+            "forAdmin" : "true",
+            "subcat" : ["Avec compte smartcitizen", "Sans compte smartcitizen"]
+        }
+    },
+    "copiFilters": {
+        "Voir-tous" : {
+            "icon" : "cloud",
+            "subcat" : [ ]
+        }
+    }
+
+}

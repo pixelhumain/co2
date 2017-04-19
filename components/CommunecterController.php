@@ -474,17 +474,19 @@ class CommunecterController extends Controller
       "checkurlexists" => array('href' => "/ph/communecter/app/checkurlexists", "public" => true),
       "rooms" => array('href' => "/ph/communecter/app/rooms", "public" => true),
       "survey" => array('href' => "/ph/communecter/app/survey", "public" => true),
+      "thing" => array('href' => "/ph/communecter/app/thing", "public" => true),
     ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick")
     ),
     "thing" => array(
-      "index"             => array('href' => "/ph/communecter/thing/index", "public" => true ),
+      //"index"             => array('href' => "/ph/communecter/thing/index", "public" => true ),
       "graph"             => array('href' => "/ph/communecter/thing/graph", "public" => true ),
       "scklastestreadings"  => array('href' => "/ph/communecter/thing/scklastestreadings", "public" => true ),
       "updatesckdevices"  => array('href' => "/ph/communecter/thing/updatesckdevices", "public" => true ),
       "manage"          => array('href' => "/ph/communecter/thing/manage","public"=>true),
       "getsckdataincodb" => array('href' => "/ph/communecter/thing/getsckdataincodb","public"=>true),
+      "deletesckdataincodb" => array('href' => "/ph/communecter/thing/deletesckdataincodb","public"=>true),
     ),
   );
 

@@ -263,6 +263,31 @@ class AppController extends CommunecterController {
         Rest::json($res);
         exit;
     }
+    
+    public function actionThing(){
+        $thingActions=array('graph','scklastestreadings','updatesckdevices','manage','getsckdataincodb','deletesckdataincodb');
+        $thingAction=null;
+        $params = (!empty($_GET))? $_GET : $_POST ;
+        if(count($params)>0){
+            foreach ($params as $key => $value ) {
+                if(in_array($key, $thingActions)){
+                    $thingAction=$key;
+                    unset($params[$key]);
+                    break;
+                }
+            }
+        }
+        CO2Stat::incNbLoad("co2-thing");
 
+        //$controller=$this->getController();
+        //if(Yii::app()->request->isAjaxRequest ){
+        if(empty($thingAction)){
+            echo $this->renderPartial("thing",$params,true);
+        }else{
+            //echo $controllers->renderPartial("thing".".".$thingAction,$params,true);
+            }
+        //} else { 
+          //  $this->render("thing",$params); }
+    }
     
 }

@@ -132,7 +132,11 @@ foreach ($devicesMongoRes as $mdataDevice) {
     background-color: #fefefe;
 
   }
+#graph-container{
+  margin-top: 40px;
+  padding-top: 40px;
 
+}
   
 
 </style>

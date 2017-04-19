@@ -164,7 +164,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             loadingData = false;     
         },
         success: function(data){ 
-            mylog.log(">>> success autocomplete search"); //mylog.dir(data);
+            mylog.log(">>> success autocomplete search", data); //mylog.dir(data);
             if(!data){ 
               toastr.error(data.content); 
             } 
@@ -1351,7 +1351,7 @@ var directory = {
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
           mylog.log("params", params, typeof params);
-          if(notNull(params["_id"])){
+          if(notNull(params["_id"]) || notNull(params["id"]) ){
 
 
             itemType=(contentType) ? contentType :params.type;

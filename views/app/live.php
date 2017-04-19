@@ -33,6 +33,18 @@
     #formCreateNewsTemp .form-create-news-container{
     max-width: inherit !important;
 	}
+	.item-globalscope-checker.inactive{
+        color:#DBBCC1 !important;
+        border-bottom:0px;
+        margin(top:-6px;)
+    }
+    .item-globalscope-checker:hover,
+    .item-globalscope-checker:active,
+    .item-globalscope-checker:focus{
+        color:#e6344d !important;
+        border-bottom:1px solid #e6344d;
+        text-decoration: none !important;
+    }
 </style>
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
@@ -86,6 +98,8 @@ var scrollEnd = false;
 <?php } ?>
 
 var loadContent = '<?php echo @$_GET["content"]; ?>';
+var dataNewsSearch = {};
+var	dateLimit=0;
 jQuery(document).ready(function() {
 
 	$(".subsub").hide();
@@ -96,12 +110,12 @@ jQuery(document).ready(function() {
 	else liveType = ", la boite à outils citoyenne connectée " + liveType;
 
 	setTitle("Communecter" + liveType, "<i class='fa fa-heartbeat '></i>");
-	
+	initFilterLive();
 	//showTagsScopesMin("#list_tags_scopes");
 	<?php if(@$lockCityKey){ ?>
 		lockScopeOnCityKey("<?php echo $lockCityKey; ?>");
 	<?php }else{ ?>
-		rebuildSearchScopeInput();
+		//rebuildSearchScopeInput();
 	<?php } ?>
     $("#btn-slidup-scopetags").click(function(){
       slidupScopetagsMin();
@@ -121,10 +135,24 @@ jQuery(document).ready(function() {
    
     initKInterface();//{"affixTop":10});
     initFreedomInterface();
-
-    //KScrollTo(".main-btn-scopes");
+    $(".btn-decommunecter").click(function(){
+		activateGlobalCommunexion(false);
+  	});
+  	//KScrollTo(".main-btn-scopes");
 });
+function initFilterLive(){
+	dataNewsSearch = {
+	      "searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
+	      "searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
+	      "searchLocalityDEPARTEMENT" : $('#searchLocalityDEPARTEMENT').val().split(','),
+	      "searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
 
+	};
+	console.log(dataNewsSearch);
+    dataNewsSearch.tagSearch = $('#searchTags').val().split(',');
+    dataNewsSearch.searchType = searchType; 
+    dataNewsSearch.textSearch = $('#main-search-bar').val();
+ }   
 
 function initFreedomInterface(){
 	
@@ -138,7 +166,15 @@ function startSearch(isFirst){
 	//Modif SBAR
 	//$(".my-main-container").off();
 	//if(liveScopeType == "global"){
-		showNewsStream(isFirst);
+	dateLimit=0;
+	isFirst=true;
+	showNewsStream(isFirst);
+	$(".start-new-communexion").click(function(){  
+        setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
+                                 $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
+                                  $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
+        activateGlobalCommunexion(true);
+	});
 	//}else{
 	//	showNewsStream(isFirst);//loadStream(0,5);
 	//}
@@ -215,10 +251,8 @@ function loadLiveNow () {
 function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 
 	scrollEnd = false;
-
 	var isFirstParam = isFirst ? "?isFirst=1&tpl=co2" : "?tpl=co2";
 	isFirstParam += "&nbCol=2";
-	var tagSearch = $('#searchTags').val().split(',');; //$('#searchBarText').val();
 	var levelCommunexionName = { 1 : "CITYKEY",
 	                             2 : "CODE_POSTAL",
 	                             3 : "DEPARTEMENT",
@@ -237,20 +271,6 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		urlCtrl = "/news/index/type/citoyens/id/<?php echo @Yii::app()->session["userId"]; ?>/isLive/true";
 	}
 	<?php } ?>*/
-	
-	var dataNewsSearch = {};
-	if(liveScopeType == "global")
-		dataNewsSearch = {
-	      "searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
-	      "searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-	      "searchLocalityDEPARTEMENT" : $('#searchLocalityDEPARTEMENT').val().split(','),
-	      "searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
-
-	    };
-
-    dataNewsSearch.tagSearch = tagSearch;
-    dataNewsSearch.searchType = searchType; 
-    dataNewsSearch.textSearch = $('#main-search-bar').val();
        
     //dataNewsSearch.type = thisType;
     //var myParent = <?php echo json_encode(@$parent)?>;
@@ -305,6 +325,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		//dateLimit=0;currentMonth = null;
 		loadingData = true;
 		$("#newsstream").append(loading);
+		console.log("dataSearch",dataNewsSearch);
 		$.ajax({
 		        type: "POST",
 		        url: baseUrl+"/"+moduleId+urlCtrl+"/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=2",

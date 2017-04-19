@@ -78,7 +78,7 @@
 
           "#place":
                 {"inMenu" : true, 
-                "useHeader" : false, 
+                "useHeader" : true, 
                 "open" : true, 
                 "subdomain" : "place", 
                 "subdomainName" : "Lieux",
@@ -185,6 +185,7 @@
 			"mainTitle" : "Partie Admin Public",
 			"placeholderMainSearch" : "Admin Public ..."
 		}
+
 	  }
   
   }

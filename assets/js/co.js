@@ -539,48 +539,74 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 var CoAllReadyLoad = false;
 var url = {
 	loadableUrls : {
+		"#event.calendarview" : {title:"EVENT CALENDAR ", icon : "calendar"},
+		"#city.opendata" : {title:'STATISTICS ', icon : 'line-chart' },
+	    "#person.telegram" : {title:'CONTACT PERSON VIA TELEGRAM ', icon : 'send' },
+	    "#event.detail" : {aliasParam: "#element.detail.type.events.id.$id", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
+	    "#poi.detail" : {aliasParam: "#element.detail.type.poi.id.$id", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
+	    "#project.detail" : {aliasParam: "#element.detail.type.projects.id.$id", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
+	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
+	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
+	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
+	    "#news.detail" : {title:'NEWS DETAIL ', icon : 'rss' },
+	    "#news.index.type" : {title:'NEWS INDEX ', icon : 'rss', menuId:"menu-btn-news-network","urlExtraParam":"isFirst=1" },
+	    "#need.detail" : {title:'NEED DETAIL ', icon : 'cubes' },
+	    "#need.addneedsv" : {title:'NEED DETAIL ', icon : 'cubes' },
+	    "#city.creategraph" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
+	    "#city.graphcity" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
+	    "#city.statisticPopulation" : {title:'CITY ', icon : 'university' },
+	    "#news" : {title:'NEWS ', icon : 'rss'},
+	    "#survey" : {title:'VOTE LOCAL ', icon : 'legal'},
+	    "#rooms.index.type.cities" : {title:'ACTION ROOMS ', icon : 'cubes', menuId:"btn-citizen-council-commun"},
+	    "#rooms.editroom" : {title:'ADD A ROOM ', icon : 'plus', action:function(){ editRoomSV ();	}},
+		"#rooms" : {title:'ACTION ROOMS ', icon : 'cubes'},
+	    "#element.aroundme" : {title:"Around me" , icon : 'crosshairs', menuId:"menu-btn-around-me"},
+	    "#element.notifications" : {title:'DETAIL ENTITY', icon : 'legal'},
+	    "#person.settings" : {title:'DETAIL ENTITY', icon : 'legal'},
+		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
+	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
+	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
+	    "#admin.checkgeocodage" : {title:'CHECKGEOCODAGE ', icon : 'download'},
+	    "#admin.openagenda" : {title:'OPENAGENDA ', icon : 'download'},
+	    "#admin.adddata" : {title:'ADDDATA ', icon : 'download'},
+	    "#admin.importdata" : {title:'IMPORT DATA ', icon : 'download'},
+	    "#admin.index" : {title:'IMPORT DATA ', icon : 'download'},
+	    "#admin.cities" : {title:'CITIES ', icon : 'university'},
+	    "#admin.sourceadmin" : {title:'SOURCE ADMIN', icon : 'download'},
+	    "#admin.checkcities" : {title:'SOURCE ADMIN', icon : 'download'},
+	    "#admin.directory" : {title:'IMPORT DATA ', icon : 'download'},
+	    "#admin.mailerrordashboard" : {title:'MAIL ERROR ', icon : 'download'},
+	    "#admin.moderate" : {title:'MODERATE ', icon : 'download'},
+	    "#admin.createfile" : {title:'IMPORT DATA', icon : 'download'},
+		"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus'},
+	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download'},
+	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download'},
+	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download'},
+	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
+	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
+	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
+	    "#default.agenda" : {title:'COMMUNECTED AGENDA ', icon : 'calendar', menuId:"menu-btn-agenda"},
+		"#default.home" : {title:'COMMUNECTED HOME ', icon : 'home',"menu":"homeShortcuts"},
+		"#default.apropos" : {title:'COMMUNECTED HOME ', icon : 'star',"menu":"homeShortcuts"},
+		"#default.twostepregister" : {title:'TWO STEP REGISTER', icon : 'home', "menu":"homeShortcuts"},
+		"#default.view.page" : {title:'Découvrir', icon : 'file-o'},
+		//"#home" : {"alias":"#default.home"},
+	    "#stat.chartglobal" : {title:'STATISTICS ', icon : 'bar-chart'},
+	    "#stat.chartlogs" : {title:'STATISTICS ', icon : 'bar-chart'},
+	    "#network.savoir" : {title:"En savoir plus" , icon : 'plus'},
+	    "#default.live" : {title:"FLUX'Direct" , icon : 'heartbeat', menuId:"menu-btn-live"},
+		"#default.login" : {title:'COMMUNECTED AGENDA ', icon : 'calendar'},
+		"#showTagOnMap.tag" : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showTagOnMap(hash.split('.')[2])	} },
+		"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
+		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
+		"#opendata" : {"alias":"#data.index"},
+		"#search" : { "title":'SEARCH AND FIND', "icon" : 'map-search', "hash" : "#default.directory", "preaction":function( hash ){ return searchByHash(hash);} },
 	},
-	short : {
-		"citoyens" : "p",
-		"poi" : "poi",
-		"siteurl":"s",
-		"organizations" : "o",
-		"events" : "e",
-		"projects" : "pr",
-		"cities" : "c",
-		"classified":"cl"
-		/*"entry" : "s",
-		"vote" : "v",
-		"action" : "a",
-		"rooms" : "r",*/
-	},
-	shortVal : [
-		"p",
-		"poi",
-		"s",
-		"o",
-		"e",
-		"pr",
-		"c",
-		"cl"
-		/*"entry" : "s",
-		"vote" : "v",
-		"action" : "a",
-		"rooms" : "r",*/
+	shortVal : ["p","poi","s","o","e","pr","c","cl"
+		/* "s","v","a", "r",*/
 	],
-	shortKey : [
-		"citoyens",
-		"poi" ,
-		"siteurl",
-		"organizations",
-		"events",
-		"projects" ,
-		"cities" ,
-		"classified"
-		/*"entry" : "s",
-		"vote" : "v",
-		"action" : "a",
-		"rooms" : "r",*/
+	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"
+		/*"entry","vote" ,"action" ,"rooms" */
 	],
 	map : function (hash) {
 		hashT = hash.split('.');
@@ -612,7 +638,7 @@ var url = {
 		mylog.log("jsController",hash);
 		res = false;
 		$(".menuShortcuts").addClass("hide");
-		mylog.log("url.loadableUrls", url.loadableUrls);
+		//mylog.log("url.loadableUrls", url.loadableUrls);
 		$.each( url.loadableUrls, function(urlIndex,urlObj)
 		{
 			//mylog.log("replaceAndShow2",urlIndex);
@@ -638,7 +664,7 @@ var url = {
 									alias = alias.replace("$"+v, paramId);
 								}
 							});
-						});		
+						});
 						endPoint = url.jsController(alias);	
 						return false;
 					} 
@@ -666,7 +692,7 @@ var url = {
 							extraParams=extraParams.replace( "#","%hash%" );
 						}
 						path = url.convertToPath(hash);
-						showAjaxPanel( '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res );
+						showAjaxPanel( '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res,endPoint );
 						
 						if(endPoint.menu)
 							$("."+endPoint.menu).removeClass("hide");
@@ -932,14 +958,15 @@ function  processingBlockUi() {
 	$.blockUI({ message :  msg });
 	bindLBHLinks();
 }
-function showAjaxPanel (url,title,icon, mapEnd) { 
-	mylog.log("showAjaxPanel",url,"TITLE",title);
+function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
+	mylog.log("showAjaxPanel",url,"TITLE",title,urlObj);	
+	var dest = ( typeof urlObj == "undefined" || ( typeof urlObj.useHeader != "undefined" ) ) ? themeObj.mainContainer : "#content-social" ;
 	hideScrollTop = false;
 
 	showNotif(false);
 			
 	setTimeout(function(){
-		$(themeObj.mainContainer).html("");
+		$(dest).html("");
 		$(".hover-info,.hover-info2").hide();
 		processingBlockUi();
 		showMap(false);
@@ -954,8 +981,13 @@ function showAjaxPanel (url,title,icon, mapEnd) {
 	showTopMenu(true);
 	userIdBefore = userId;
 	setTimeout(function(){
-		 getAjax(themeObj.mainContainer, baseUrl+'/'+moduleId+url, function(data){ 
+		 getAjax(dest, baseUrl+'/'+moduleId+url, function(data){ 
 			
+			if( dest != themeObj.mainContainer ){
+				moduleMenu = $(".main-menu-app").html();
+				$(".intro-text").html(moduleMenu);
+				$(".main-menu-app").css("margin-bottom","0px");
+			}
 			//initNotifications(); 
 			
 			$(".modal-backdrop").hide();
@@ -972,7 +1004,7 @@ function showAjaxPanel (url,title,icon, mapEnd) {
         		uploadObj.type = contextData.type;
         		uploadObj.id = contextData.id;
         	}
-        	if(debug){
+        	/*if(debug){
         		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
         			if(prevDbAccessCount == 0){
         				dbAccessCount = parseInt(data);
@@ -986,18 +1018,18 @@ function showAjaxPanel (url,title,icon, mapEnd) {
         			//$(".dbAccessBtn").remove();
         			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
         		},null);
-        	}
+        	}*/
 
 		},"html");
 	}, 400);
 }
-prevDbAccessCount = 0; 
+/*prevDbAccessCount = 0; 
 function clearDbAccess() { 
 	getAjax(null, baseUrl+'/'+moduleId+"/log/clear", function(data){ 
 		$(".dbAccessBtn").remove();
 		prevDbAccessCount = 0; 
 	});
-}
+}*/
 /* ****************
 visualize all tagged elements on a map
 **************/
@@ -1193,14 +1225,14 @@ var smallMenu = {
 	//opens any html without post processing
 	openAjaxHTML : function  (url,title,type,nextPrev) { 
 		smallMenu.open("",type );
-		dest = (type == "blockUI") ? ".blockContent" : "#openModal .modal-content .container" ;
+		var dest = (type == "blockUI") ? ".blockContent" : "#openModal .modal-content .container" ;
 		getAjax( dest , url , function () { 
 			
 			//next and previous btn to nav from preview to preview
 			if(nextPrev){
 				var p = 0;
 				var n = 0;
-				var  found = false;
+				var found = false;
 				var l = $( '.searchEntityContainer .container-img-profil' ).length;
 				$.each( $( '.searchEntityContainer .container-img-profil' ), function(i,val){
 					if(found){
@@ -1215,8 +1247,9 @@ var smallMenu = {
 				html = "<div style='margin-bottom:50px'><a href='"+p+"' class='lbhp text-dark'><i class='fa fa-2x fa-arrow-circle-left'></i> PREV </a> "+
 						" <a href='"+n+"' class='lbhp text-dark'> NEXT <i class='fa fa-2x fa-arrow-circle-right'></i></a></div>";
 				$(dest).prepend(html);
-				bindLBHLinks();
+				
 			}
+			bindLBHLinks();
 		 },"html" );
 	},
 	//content Loader can go into a block
@@ -1251,9 +1284,12 @@ var smallMenu = {
 				  message: content
 				});
 			} else{//open inside a boostrap modal 
-				$("#openModal").modal("show");
+				if(!$("#openModal").hasClass('in'))
+					$("#openModal").modal("show");
 				if(content)
 					$("#openModal div.modal-content div.container").html(content);
+				else 
+					$("#openModal div.modal-content div.container").html("<i class='fa fa-spin fa-refresh fa-4x'></i>");
 			}
 
 			$(".blockPage").addClass(smallMenu.destination.slice(1));
@@ -1363,7 +1399,8 @@ function  bindLBHLinks() {
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 	    url.loadByHash( h );
-	})
+	});
+	//open any url in a modal window
 	$(".lbhp").off().on("click",function(e) {
 		e.preventDefault();
 		mylog.warn("***************************************");
@@ -1373,8 +1410,11 @@ function  bindLBHLinks() {
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 		if( $(this).data("modalshow") )
 			smallMenu.open ( directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
-		else 
-	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url.convertToPath(h) ,"","blockUI",h);
+		else {
+			url = (h.indexOf("#") == 0 ) ? url.convertToPath(h) : h;
+	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
+	    	//smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url ,"","blockUI",h);
+		}
 	})
 }
 
@@ -3344,15 +3384,16 @@ var keyboardNav = {
 		"117" : function(){ console.clear();url.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {
-		"13" : function(){$('#openModal').modal('hide');elementLib.openForm('addElement')},//enter : aadd elemetn
-		"61" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show')},//= : votes
+		"13" : function(){$('#openModal').modal('hide');elementLib.openForm('addElement')},//enter : add elements
+		"61" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show')},//= : add elements
 		"65" : function(){$('#openModal').modal('hide');elementLib.openForm('action')},//a : actions
 		"66" : function(){$('#openModal').modal('hide'); smallMenu.destination = "#openModal"; smallMenu.openAjax(baseUrl+'/'+moduleId+'/collections/list','Mes Favoris','fa-star','yellow') },//b best : favoris
 		"67" : function(){$('#openModal').modal('hide');elementLib.openForm('classified')},//c : classified
 		"69" : function(){$('#openModal').modal('hide');elementLib.openForm('event')}, //e : event
 		"70" : function(){$('#openModal').modal('hide'); $(".searchIcon").trigger("click") },//f : find
-		"72" : function(){$('#openModal').modal('hide');smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/help','Help ShortCuts')},//h : help
+		"72" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/help') },//h : help
 		"73" : function(){$('#openModal').modal('hide');elementLib.openForm('person')},//i : invite
+		"76" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/links')},//l : links and infos
 		"79" : function(){$('#openModal').modal('hide');elementLib.openForm('organization')},//o : orga
 		"80" : function(){$('#openModal').modal('hide');elementLib.openForm('project')},//p : project
 		"82" : function(){$('#openModal').modal('hide');smallMenu.openAjax(baseUrl+'/'+moduleId+'/person/directory?tpl=json','Mon répertoire','fa-book','red')},//r : annuaire
@@ -3375,7 +3416,6 @@ var keyboardNav = {
 		}
 	}
 }
-
 
 function cityKeyPart(unikey, part){
 	var s = unikey.indexOf("_");

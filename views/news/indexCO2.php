@@ -116,6 +116,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
                                                        "contextParentId" => $contextParentId,
                                                        "contextParentType" => $contextParentType,
                                                        "canManageNews" => @$canManageNews,
+                                                       "isLive" => @$isLive,
                                                        "isFirst"=>true)); ?>
 
 </ul>

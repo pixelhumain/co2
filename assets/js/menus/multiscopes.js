@@ -365,8 +365,7 @@ function setGlobalScope(scopeValue, scopeName, scopeType,
 		}
 		//rebuildSearchScopeInput();
 		//activateGlobalCommunexion(true);
-		
-		startSearch(0, indexStepInit, searchCallback);
+		//startSearch(0, indexStepInit, searchCallback);
 		//loadByHash(location.hash);
 }
 

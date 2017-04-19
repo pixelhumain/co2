@@ -299,10 +299,10 @@ jQuery(document).ready(function() {
 });
 
 function excludeMembers(contacts, members){
-	mylog.log("excludeMembers",contacts, members);
+	mylog.log("excludeMembers",contacts, members, notEmpty(contacts), notNull(contacts));
 
 	//delete mes contacts qui sont déjà membre
-	if(members != null){
+	if(members != null && notNull(contacts) && contacts.length > 0){
 		$.each(members, function(idUser, value){
 			if(typeof value != "undefined"){
 				var type = notEmpty(value["typeSig"]) ? value["typeSig"] : notEmpty(value["type"]) ? value["type"] : null;
@@ -332,17 +332,19 @@ function excludeMembers(contacts, members){
 	if(elementType != "<?php echo Event::COLLECTION ?>" && elementType != "<?php echo Project::COLLECTION ?>"){
 		typeElt = elementType ;
 		if(elementType == "citoyens") typeElt = "people" ;
-		$.each(contacts[typeElt], function(key, contact){ 
-			if(typeof contact != "undefined"){
-				if(notEmpty(contact)){
-					var contactId = notEmpty(contact["_id"]) ? contact["_id"]["$id"] : notEmpty(contact["id"]) ? contact["id"] : null;
-					if(contactId == elementId){
-						delete contacts[typeElt][key];
-						return;
+		if(notNull(contacts) && notEmpty(contacts[typeElt])){
+			$.each(contacts[typeElt], function(key, contact){ 
+				if(typeof contact != "undefined"){
+					if(notEmpty(contact)){
+						var contactId = notEmpty(contact["_id"]) ? contact["_id"]["$id"] : notEmpty(contact["id"]) ? contact["id"] : null;
+						if(contactId == elementId){
+							delete contacts[typeElt][key];
+							return;
+						}
 					}
 				}
-			}
-		});
+			});
+		}
 	}
 }
 
@@ -523,13 +525,14 @@ function buildModal(fieldObj, idUi){
 function showMyContactInModalAddMembers(fieldObj, jqElement){
 	mylog.log("showMyContactInModalAddMembers1", fieldObj, jqElement);
     
-	var contacts = fieldObj.values;
+	var contacts = (notNull(fieldObj.values) ? fieldObj.values : new Array() );
 	excludeMembers(contacts, members);
 	fieldObj.values = contacts;
 
     var fieldHTML = "";
    
 	$.each(fieldObj.contactTypes, function(key, type){
+		mylog.log("fieldObj.contactTypes", key, type, typeof type);
 	fieldHTML += 			'<div class="panel panel-default" id="scroll-type-'+type.name+'">  '+	
 								'<div class="panel-heading">'+
 									'<h4 class="text-'+type.color+'"><i class="fa fa-'+type.icon+'"></i> '+type.label+'</h4>'+			

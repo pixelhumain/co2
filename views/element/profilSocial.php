@@ -53,252 +53,7 @@
     if(@Yii::app()->params["front"]) $front = Yii::app()->params["front"];
 ?>
 <style>
-	.header{
-		position: absolute;
-		width:100%;
-		height:300px;
-	}
-	.social-main-container, #central-container{
-		background-color: #f8f8f8;
-		min-height:1200px;
-	}
-
-	#shortDescription *{
-		font-size:0px !important;
-	}
-
-	iframe.wysihtml5-sandbox{
-		border:1px solid lightgrey!important;
-		padding:10px!important;
-	}
-
-	section#timeline-social{
-		/*position: absolute;*/
-		/*top:300px;*/
-	}
-
-	.profilSocial{
-		/*position: absolute;
-		top:0px;*/
-	}
-	.sub-menu-social{
-		margin-top:-15px;
-		background-color: white;
-		border-top: 1px solid #ccc !important;
-		border-bottom: 1px solid #ccc !important;
-	}
-	.sub-menu-social button{
-		background-color: #fff;
-		border: 1px solid #ccc !important;
-		border-top: 0px !important;
-		border-bottom: 0px !important;
-		height:45px;
-		margin-top: 0px;
-		border-radius: 0px !important;
-	}
-	footer{
-        /*position: absolute!important;*/
-        bottom: 0px;
-    }
-
-    #small_profil{
-    	font-weight: 300;
-    	text-transform: none;
-    	font-size:13px;
-    	margin-top:4px;
-    }
-
-
-#central-container .bg-dark {
-    color: white !important;
-    background-color: #3C5665 !important;
-}
-#central-container .bg-red{
-    background-color:#E33551 !important;
-    color:white!important;
-}
-#central-container .bg-blue{
-    background-color: #5f8295 !important;
-    color:white!important;
-}
-#central-container .bg-green{
-    background-color:#93C020 !important;
-    color:white!important;
-}
-#central-container .bg-orange{
-    background-color:#FFA200 !important;
-    color:white!important;
-}
-#central-container .bg-yellow{
-    background-color:#FFC600 !important;
-    color:white!important;
-}
-#central-container .bg-purple{
-    background-color:#8C5AA1 !important;
-    color:white!important;
-}
-#central-container #dropdown_search{
-	min-height:500px;
-    margin-top:30px;
-}
-#central-container .row.headerDirectory{
-    margin-top: 20px;
-    display: none;
-}
-#central-container p {
-    font-size: 13px;
-}
-
-#listCollections .text-white{
-  color:black!important;
-}
-
-.notif-column .alert{
-	font-size:12px;
-	border:none!important;
-	border-radius: 0px;
-}
-.notif-column a .fa-times{
-	margin-left:-5px;
-}
-
-<?php 
-    $btnAnc = array("blue"      =>array("color1"=>"#ea4335", 
-                                        "color2"=>"#ea4335"),
-                    );
-?>
-
-<?php foreach($btnAnc as $color => $params){ ?>
-.btn-anc-color-<?php echo $color; ?>{
-    background-color: transparent;
-    border-color: transparent;
-    color: <?php echo $params["color1"]; ?>!important;
-}
-
-.btn-anc-color-<?php echo $color; ?>:hover{
-    background-color:transparent!important;
-    color:<?php echo $params["color1"]; ?>!important;
-}
-.btn-anc-color-<?php echo $color; ?>.active{ 
-    background-color:#fff!important;
-    color:<?php echo $params["color1"]; ?>!important;
-    border-color: <?php echo $params["color1"]; ?>!important;
-}
-.btn-anc-color-<?php echo $color; ?>.active:hover{
-    background-color: #fff;
-    color: <?php echo $params["color1"]; ?>;
-}
-
-.favElBtn, .favAllBtn{
-  padding: 5px 8px;
-  font-weight: 800;
-  margin-bottom:5px;
-}
-.menu-params{
-	position: absolute;
-	top: 60px;
-	left: -25px;
-}
-
-#main-name-element{
-	/*background-color: white;
-	border-radius:50px;
-	padding:10px;
-	padding-right: 22px;*/
-}
-#second-name-element{
-  margin-top:5px;
-}
-#uploadScropResizeAndSaveImage{
-	/*position:absolute;
-	top:0px;
-	bottom: 0px;
-	left:0px;
-	right: 0px;
-	background-color: rgba(1,1,1,0.8);
-	padding-top: 150px;
-	padding-left: 50px;*/
-}
-#banniere_photoAdd{
-	position:absolute;
-	z-index: 1000;
-}
-
-<?php } ?>
-
-
-.pastille-type-element{
-    border-radius: 50px;
-    height: 20px;
-    width: 20px;
-    color: white;
-    text-align: center;
-    padding-top: 10px;
-    margin-right: 10px;
-    margin: 5px;
-}
-.name-header{
-	line-height: 30px;
-	font-size: 20px;
-	text-transform: none;
-}
-#shortDescriptionHeader{
-	white-space: pre-line;
-	font-size: 16px;
-	line-height: 19px;
-}
-.contentHeaderInformation{
-	background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 50%);
-    padding: 35px 0px;
-    position: absolute;
-    bottom: 0px;
-}
-#col-banniere{
-	min-height:280px;
-}
-#fileuploadContainer{
-	box-shadow: 0px 0px 5px 0px grey;
-}
-
-.sub-menu-social.affix {
-    top: 81px !important;
-    position: fixed;
-    right: 0;
-    z-index: 10;
-    width:100%!important;
-    -webkit-box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.5);
-	-moz-box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.5);
-	box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.5);
-}
-
-#fileuploadContainer{
-	box-shadow: 1px -1px 3px 0px #969696;
-}
-
-.identity-min{
-	display: none;
-}
-.identity-min .pastille-type-element{
-	margin-top:12px;
-}
-.sub-menu-social.affix .identity-min{
-	display: inline;
-}
-
-#name-lbl-title{
-	text-decoration: none;
-	font-weight: 800;
-	font-size:20px;
-}
-.labelTitleDir{
-	font-size: 18px;
-}/*
-#div-select-create{
-	-webkit-box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
-	-moz-box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
-	box-shadow: 0px 1px 5px -2px rgba(0,0,0,0.5);
-	display: none;
-}*/
+	
 
 
 <?php if($typeItem != "citoyens"){ ?>
@@ -307,21 +62,6 @@
 	}
 <?php } ?>
 
-
-@media (max-width: 768px) {
-
-	#shortDescriptionHeader{
-		font-size: 13px;
-		line-height: 17px;
-	}
-}
-
-
-.divInvited {
-	border: 1px solid #ccc !important;
-	padding: 5px;
-	background-color: blanchedalmond;
-}
 </style>
 	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
@@ -336,6 +76,13 @@
 	    </button>
 	    <?php } ?>
         <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-left no-padding" id="col-banniere">
+        	
+        	<?php if($type==Event::COLLECTION){ ?>
+        	<div class="col-xs-9 col-sm-6 col-md-5 col-lg-5 margin-right-15 margin-top-25 section-date pull-right">
+        		
+        	</div>
+        	<?php } ?>
+
         	<?php 
 				$thumbAuthor =  @$element['profilImageUrl'] ? 
                   Yii::app()->createUrl('/'.@$element['profilImageUrl']) 
@@ -364,6 +111,8 @@
 			-->
 			<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation">	
 				
+
+	        	
 
 	        	<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
 	        		
@@ -813,6 +562,8 @@ if( $type != Person::COLLECTION)
 			loadNewsStream(true);
 
 		KScrollTo("#topPosKScroll");
+		initDateHeaderPage(element);
+
 		//IMAGE CHANGE//
 		$("#uploadScropResizeAndSaveImage .close-modal").click(function(){
 			$.unblockUI();
@@ -872,48 +623,48 @@ if( $type != Person::COLLECTION)
 									        $("#banniere_photoAdd").submit();
 										});
 										$("#banniere_photoAdd").off().on('submit',(function(e) {
-			//alert(moduleId);
-			if(debug)mylog.log("id2", contextId);
-			$(".banniere_isSubmit").val("true");
-			e.preventDefault();
-			console.log(cropResult);
-			var fd = new FormData(document.getElementById("banniere_photoAdd"));
-			fd.append("parentId", contextId);
-			fd.append("parentType", contextType);
-			fd.append("formOrigin", "banniere");
-			fd.append("contentKey", "banniere");
-			fd.append("cropW", cropResult.cropW);
-			fd.append("cropH", cropResult.cropH);
-			fd.append("cropX", cropResult.cropX);
-			fd.append("cropY", cropResult.cropY);
-			//var formData = new FormData(this);
-						//console.log("formdata",formData);
-			/*formData.files= document.getElementById("banniere_change").files;
-			formData.crop= cropResult;
-			formData.parentId= contextId;
-			formData.parentType= contextType;
-			formData.formOrigin= "banniere";*/
-			//console.log(formData);
-			// Attach file
-			//formData.append('image', $('input[type=banniere]')[0].files[0]); 
-			$.ajax({
-				url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/banniere",
-				type: "POST",
-				data: fd,
-				contentType: false,
-				cache: false, 
-				processData: false,
-				dataType: "json",
-				success: function(data){
-			        if(data.result){
-			        	newBanniere='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
-			        	$("#contentBanniere").html(newBanniere);
-			        	$.unblockUI();
-			        	//$("#uploadScropResizeAndSaveImage").hide();
-			    	}
-			    }
-			});
-		}));
+											//alert(moduleId);
+											if(debug)mylog.log("id2", contextId);
+											$(".banniere_isSubmit").val("true");
+											e.preventDefault();
+											console.log(cropResult);
+											var fd = new FormData(document.getElementById("banniere_photoAdd"));
+											fd.append("parentId", contextId);
+											fd.append("parentType", contextType);
+											fd.append("formOrigin", "banniere");
+											fd.append("contentKey", "banniere");
+											fd.append("cropW", cropResult.cropW);
+											fd.append("cropH", cropResult.cropH);
+											fd.append("cropX", cropResult.cropX);
+											fd.append("cropY", cropResult.cropY);
+											//var formData = new FormData(this);
+														//console.log("formdata",formData);
+											/*formData.files= document.getElementById("banniere_change").files;
+											formData.crop= cropResult;
+											formData.parentId= contextId;
+											formData.parentType= contextType;
+											formData.formOrigin= "banniere";*/
+											//console.log(formData);
+											// Attach file
+											//formData.append('image', $('input[type=banniere]')[0].files[0]); 
+											$.ajax({
+												url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/banniere",
+												type: "POST",
+												data: fd,
+												contentType: false,
+												cache: false, 
+												processData: false,
+												dataType: "json",
+												success: function(data){
+											        if(data.result){
+											        	newBanniere='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
+											        	$("#contentBanniere").html(newBanniere);
+											        	$.unblockUI();
+											        	//$("#uploadScropResizeAndSaveImage").hide();
+											    	}
+											    }
+											});
+										}));
 									}, 300);
 								}
        						 	else
@@ -931,6 +682,11 @@ if( $type != Person::COLLECTION)
 		
 		
 	});
+
+	function initDateHeaderPage(params){
+		var str = directory.getDateFormated(params);
+		$(".section-date").html(str);
+	}
 
 	function getCroppingModal(){
 		
@@ -1006,6 +762,12 @@ if( $type != Person::COLLECTION)
    			$("#subsubMenuLeft a").removeClass("active");
    			$(this).addClass("active");
    		});
+
+   		$("#btn-start-urls").click(function(){
+			history.pushState(null, "New Title", hashUrlPage+".view.detail");
+			loadUrls();
+		});
+
 	}
 	
 	function loadDataDirectory(dataName, dataIcon){
@@ -1017,6 +779,7 @@ if( $type != Person::COLLECTION)
 						var n=0;
 						$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
 						if(n>0){
+
 							var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
 											getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
 										"<hr></div>";
@@ -1039,7 +802,8 @@ if( $type != Person::COLLECTION)
 							
 						}else{
 							var nothing = "Aucun";
-							if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
+							if(dataName == "organizations" || dataName == "collections" || 
+								dataName == "follows" || dataName == "dda")
 								nothing = "Aucune";
 
 							var html =  "<div class='col-md-12 margin-bottom-15'>"+
@@ -1055,6 +819,7 @@ if( $type != Person::COLLECTION)
 	}
 
 	function getLabelTitleDir(dataName, dataIcon, countData, n){
+		mylog.log("bgetLabelTitleDir", dataName, dataIcon, countData, n)
 		var elementName = "<span class='Montserrat' id='name-lbl-title'>"+$("#nameHeader .name-header").html()+"</span>";
 		
 		var s = (n>1) ? "s" : "";
@@ -1082,6 +847,12 @@ if( $type != Person::COLLECTION)
 		if(dataName == "needs"){ html += countData+" <b>besoin"+s+"</b> de " + elementName; }
 
 		if(dataName == "dda"){ html += countData+" <b>proposition"+s+"</b> de " + elementName; }
+
+		if(dataName == "urls"){ 
+			html += elementName + " a " + countData+" <b> lien"+s;
+			html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="elementLib.openForm ( \'url\',\'parentUrl\')">';
+	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
+		}
 
 		return html;
 	}
@@ -1181,6 +952,60 @@ if( $type != Person::COLLECTION)
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
 	}
 
+	/*function loadUrls(){
+		toogleNotif(false);
+		smallMenu.openAjax(baseUrl+'/'+moduleId+'/element/geturls/type/'+contextData.type+'/id/'+contextData.id+'?tpl=json','Urls','fa-external-link','dark');
+		bindLBHLinks();
+	}*/
+
+	function loadUrls(){
+		showLoader('#central-container');
+		// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
+		getAjax('', baseUrl+'/'+moduleId+'/element/geturls/type/'+contextData.type+
+					'/id/'+contextData.id,
+					function(data){ 
+						afficheContenaire(data, "urls", "external-link", "urls");
+					}
+		,"html");
+	}
+
+	function afficheContenaire(data, dataName, dataIcon, contextType){ 
+		mylog.log("afficheContenaire",data, dataName, dataIcon, contextType)
+		var n=0;
+		$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
+		if(n>0){
+
+			var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
+							getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
+						"<hr></div>";
+
+			if(dataName != "collections"){
+				html += directory.showResultsDirectoryHtml(data, contextType);
+			}else{
+				$.each(data, function(col, val){
+					html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
+					$.each(val.list, function(key, elements){ 
+						html += directory.showResultsDirectoryHtml(elements, key);
+					});
+				});
+			}
+			toogleNotif(false);
+			$("#central-container").html(html);
+			initBtnLink();
+		}else{
+			var nothing = "Aucun";
+			if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
+				nothing = "Aucune";
+
+			var html =  "<div class='col-md-12 margin-bottom-15'>"+
+							getLabelTitleDir(dataName, dataIcon, nothing, n)+
+						"</div>";
+			$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
+													"<i class='fa fa-ban'></i> Aucune donnée"+
+												"</span>");
+			toogleNotif(false);
+		}
+	}
 	
 	function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
 		loadingData = true;

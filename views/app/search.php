@@ -146,11 +146,10 @@
         color: white !important;
         background-color: #2C3E50;
     }
-
 </style>
 
 
-<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
+<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow page-content" id="content-social" style="min-height:700px;">
 
     <?php if(@$type=="events"){ ?>
     <div class="col-md-12 no-padding calendar"></div>

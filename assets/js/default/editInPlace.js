@@ -276,7 +276,7 @@ function bindAboutPodElement() {
 						icon : "fa-key",
 						onLoads : {
 							initWhen : function(){
-								if(notNull(element.allDay) && element.allDay == true)
+								if(notNull(contextData.allDay) && contextData.allDay == true)
 									$("#ajaxFormModal #allDay").attr("checked");
 							}
 						},
@@ -295,16 +295,16 @@ function bindAboutPodElement() {
 							mylog.dir(data);
 							if(data.result && data.resultGoods.result){
 								if(typeof data.resultGoods.values.allDay != "undefined"){
-									element.allDay = data.resultGoods.values.allDay;
-									$("#contentGeneralInfos #allDay").html(element.allDay);
+									contextData.allDay = data.resultGoods.values.allDay;
+									$("#contentGeneralInfos #allDay").html(contextData.allDay);
 								}  
 								if(typeof data.resultGoods.values.endDate != "undefined"){
-									element.startDate = data.resultGoods.values.startDate;
-									$("#contentGeneralInfos #startDate").html(moment(element.startDate).local().format(formatDateView));
+									contextData.startDate = data.resultGoods.values.startDate;
+									$("#contentGeneralInfos #startDate").html(moment(contextData.startDate).local().format(formatDateView));
 								}  
 								if(typeof data.resultGoods.values.endDate != "undefined"){
-									element.endDate = data.resultGoods.values.endDate;
-									$("#contentGeneralInfos #endDate").html(moment(element.endDate).local().format(formatDateView));
+									contextData.endDate = data.resultGoods.values.endDate;
+									$("#contentGeneralInfos #endDate").html(moment(contextData.endDate).local().format(formatDateView));
 								}  
 								updateCalendar();
 							}
@@ -321,7 +321,7 @@ function bindAboutPodElement() {
 				}
 			};
 
-			if(element.type == "<?php echo Event::COLLECTION; ?>"){
+			if(contextData.type == "<?php echo Event::COLLECTION; ?>"){
 				form.dynForm.jsonSchema.properties.allDay = typeObjLib.allDay;
 			}
 
@@ -330,15 +330,15 @@ function bindAboutPodElement() {
 
 			var dataUpdate = {
 				block : "when",
-		        id : element.id,
+		        id : contextData.id,
 		        typeElement : contextData.type,
 			};
 			
-			if(notEmpty(element.startDate))
-				dataUpdate.startDate = moment(element.startDate).local().format(formatDatedynForm);
+			if(notEmpty(contextData.startDate))
+				dataUpdate.startDate = moment(contextData.startDate).local().format(formatDatedynForm);
 
-			if(notEmpty(element.endDate))
-				dataUpdate.endDate = moment(element.endDate).local().format(formatDatedynForm);
+			if(notEmpty(contextData.endDate))
+				dataUpdate.endDate = moment(contextData.endDate).local().format(formatDatedynForm);
 
 			mylog.log("btn-update-when", form, dataUpdate);
 			elementLib.openForm(form, "initWhen", dataUpdate);
@@ -368,21 +368,21 @@ function bindAboutPodElement() {
 							if(data.result && data.resultGoods.result){
 
 								if(typeof data.resultGoods.values.name != "undefined"){
-									element.name = data.resultGoods.values.name;
-									$("#nameHeader").html(element.name);
-									$("#nameAbout").html(element.name);
+									contextData.name = data.resultGoods.values.name;
+									$("#nameHeader").html(contextData.name);
+									$("#nameAbout").html(contextData.name);
 								}
 
 								if(typeof data.resultGoods.values.username != "undefined"){
-									element.username = data.resultGoods.values.username;
-									$("#usernameAbout").html(element.username);
+									contextData.username = data.resultGoods.values.username;
+									$("#usernameAbout").html(contextData.username);
 								}
 									
 								if(typeof data.resultGoods.values.tags != "undefined"){
-									element.tags = data.resultGoods.values.tags;
+									contextData.tags = data.resultGoods.values.tags;
 									var str = "";
 									if($('#divTagsHeader').length){
-										$.each(element.tags, function (key, tag){
+										$.each(contextData.tags, function (key, tag){
 											str +=	'<div class="tag label label-danger pull-right" data-val="'+tag+'">'+
 														'<i class="fa fa-tag"></i>'+tag+
 													'</div>';
@@ -394,70 +394,70 @@ function bindAboutPodElement() {
 								}
 
 								if(typeof data.resultGoods.values.avancement != "undefined"){
-									element.avancement = data.resultGoods.values.avancement.trim();
+									contextData.avancement = data.resultGoods.values.avancement.trim();
 									val=0;
-							    	if(element.avancement=="idea")
+							    	if(contextData.avancement=="idea")
 										val=5;
-									else if(element.avancement=="concept")
+									else if(contextData.avancement=="concept")
 										val=20;
-									else if (element.avancement== "started")
+									else if (contextData.avancement== "started")
 										val=40;
-									else if (element.avancement == "development")
+									else if (contextData.avancement == "development")
 										val=60;
-									else if (element.avancement == "testing")
+									else if (contextData.avancement == "testing")
 										val=80;
-									else if (element.avancement == "mature")
+									else if (contextData.avancement == "mature")
 										val=100;
 									$('#progressStyle').val(val);
-									$('#labelProgressStyle').html(element.avancement);
-									$('#avancementAbout').html(trad["Project maturity"] + " : " + trad[element.avancement] );
+									$('#labelProgressStyle').html(contextData.avancement);
+									$('#avancementAbout').html(trad["Project maturity"] + " : " + trad[contextData.avancement] );
 								}
 
 								if(typeof data.resultGoods.values.type != "undefined"){
 
-									if(element.type == typeObj.organization.col )
-										element.typeOrga = data.resultGoods.values.typeEvent;
+									if(contextData.type == typeObj.organization.col )
+										contextData.typeOrga = data.resultGoods.values.typeEvent;
 									else
-										element.typeEvent = data.resultGoods.values.typeEvent;
+										contextData.typeEvent = data.resultGoods.values.typeEvent;
 									//$("#typeHeader").html(data.resultGoods.values.type);
 									$("#typeAbout").html(trad[data.resultGoods.values.type]);
 								}
 
 								if(typeof data.resultGoods.values.email != "undefined"){
 									mylog.log("update email");
-									element.email = data.resultGoods.values.email;
-									$("#emailAbout").html(element.email);
+									contextData.email = data.resultGoods.values.email;
+									$("#emailAbout").html(contextData.email);
 								}
 
 								if(typeof data.resultGoods.values.url != "undefined"){
 									mylog.log("update url");
-									element.url = data.resultGoods.values.url;
-									$("#urlAbout").html(element.url);
-									$("#urlAbout").attr("href", element.url);
+									contextData.url = data.resultGoods.values.url;
+									$("#urlAbout").html(contextData.url);
+									$("#urlAbout").attr("href", contextData.url);
 								}  
 									
 								if(typeof data.resultGoods.values.birthDate != "undefined"){
 									mylog.log("update birthDate");
-									element.birthDate = data.resultGoods.values.birthDate;
-									$("#birthDateAbout").html(moment(element.birthDate).local().format("DD MM YYYY"));
+									contextData.birthDate = data.resultGoods.values.birthDate;
+									$("#birthDateAbout").html(moment(contextData.birthDate).local().format("DD MM YYYY"));
 								}
 
 								if(typeof data.resultGoods.values.fixe != "undefined"){
 									mylog.log("update fixe");
-									element.fixe = parsePhone(data.resultGoods.values.fixe);
-									$("#fixeAbout").html(element.fixe);
+									contextData.fixe = parsePhone(data.resultGoods.values.fixe);
+									$("#fixeAbout").html(contextData.fixe);
 								}
 
 								if(typeof data.resultGoods.values.mobile != "undefined"){
 									mylog.log("update mobile");
-									element.mobile = parsePhone(data.resultGoods.values.mobile);
-									$("#mobileAbout").html(element.mobile);
+									contextData.mobile = parsePhone(data.resultGoods.values.mobile);
+									$("#mobileAbout").html(contextData.mobile);
 								}
 
 								if(typeof data.resultGoods.values.fax != "undefined"){
 									mylog.log("update fax");
-									element.fax = parsePhone(data.resultGoods.values.fax);
-									$("#faxAbout").html(element.fax);
+									contextData.fax = parsePhone(data.resultGoods.values.fax);
+									$("#faxAbout").html(contextData.fax);
 								}
 							}
 							elementLib.closeForm();
@@ -465,7 +465,7 @@ function bindAboutPodElement() {
 						},
 						properties : {
 							block : typeObjLib.hidden,
-							name : typeObjLib.name(element.type),
+							name : typeObjLib.name(contextData.type),
 							typeElement : typeObjLib.hidden,
 							isUpdate : typeObjLib.hiddenTrue
 						}
@@ -473,21 +473,21 @@ function bindAboutPodElement() {
 				}
 			};
 
-			if(element.type == typeObj.person.col ){
+			if(contextData.type == typeObj.person.col ){
 				form.dynForm.jsonSchema.properties.username = typeObjLib.username;
 				form.dynForm.jsonSchema.properties.birthDate = typeObjLib.birthDate;
 			}
 
-			if(element.type == typeObj.organization.col ){
+			if(contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.type = typeObjLib.typeOrga;
 				form.dynForm.jsonSchema.properties.tags = typeObjLib.tags();
 			}
 
-			if(element.type == typeObj.project.col ){
+			if(contextData.type == typeObj.project.col ){
 				form.dynForm.jsonSchema.properties.avancement = typeObjLib.avancementProject;
 			}
 
-			if(element.type == typeObj.person.col || element.type == typeObj.organization.col ){
+			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.email = typeObjLib.email;
 				
 			}
@@ -498,42 +498,42 @@ function bindAboutPodElement() {
 
 			var dataUpdate = {
 				block : "info",
-		        id : element.id,
+		        id : contextData.id,
 		        typeElement : contextData.type,
-		        name : element.name,	
+		        name : contextData.name,	
 			};
 			
-			if(notNull(element.tags) && element.tags.length > 0)
-				dataUpdate.tags = element.tags;
+			if(notNull(contextData.tags) && contextData.tags.length > 0)
+				dataUpdate.tags = contextData.tags;
 
-			if(element.type == typeObj.person.col ){
-				if(notNull(element.tags) && element.username.length > 0)
-					dataUpdate.username = element.username;
-				if(notEmpty(element.birthDate))
-					dataUpdate.birthDate = element.birthDate;
-			}
-
-			if(element.type == typeObj.organization.col ){
-				if(notEmpty(element.typeOrga))
-					dataUpdate.type = element.typeOrga;
-			}
-			if(element.type == typeObj.project.col ){
-				if(notEmpty(element.avancement))
-					dataUpdate.avancement = element.avancement;
-			}
-			if(element.type == typeObj.person.col || element.type == typeObj.organization.col ){
-				if(notEmpty(element.email)) 
-					dataUpdate.email = element.email;
+			if(contextData.type == typeObj.person.col ){
+				if(notNull(contextData.tags) && contextData.username.length > 0)
+					dataUpdate.username = contextData.username;
+				if(notEmpty(contextData.birthDate))
+					dataUpdate.birthDate = contextData.birthDate;
 			}
 
-			if(notEmpty(element.url)) 
-				dataUpdate.url = element.url;
-			if(notEmpty(element.fixe))
-				dataUpdate.fixe = element.fixe;
-			if(notEmpty(element.mobile))
-				dataUpdate.mobile = element.mobile;
-			if(notEmpty(element.fax))
-				dataUpdate.fax = element.fax;
+			if(contextData.type == typeObj.organization.col ){
+				if(notEmpty(contextData.typeOrga))
+					dataUpdate.type = contextData.typeOrga;
+			}
+			if(contextData.type == typeObj.project.col ){
+				if(notEmpty(contextData.avancement))
+					dataUpdate.avancement = contextData.avancement;
+			}
+			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
+				if(notEmpty(contextData.email)) 
+					dataUpdate.email = contextData.email;
+			}
+
+			if(notEmpty(contextData.url)) 
+				dataUpdate.url = contextData.url;
+			if(notEmpty(contextData.fixe))
+				dataUpdate.fixe = contextData.fixe;
+			if(notEmpty(contextData.mobile))
+				dataUpdate.mobile = contextData.mobile;
+			if(notEmpty(contextData.fax))
+				dataUpdate.fax = contextData.fax;
 
 			mylog.log("dataUpdate", dataUpdate);
 			elementLib.openForm(form, "initUpdateInfo", dataUpdate);
@@ -577,9 +577,9 @@ function bindAboutPodElement() {
 
 			var dataUpdate = {
 				block : "descriptions",
-		        id : element.id,
+		        id : contextData.id,
 		        typeElement : contextData.type,
-		        name : element.name,
+		        name : contextData.name,
 		        shortDescription : $(".contentInformation #shortDescriptionAbout").html(),
 				description : $("#descriptionMarkdown").val(),	
 			};
@@ -589,7 +589,7 @@ function bindAboutPodElement() {
 
 
 		$(".btn-update-network").off().on( "click", function(){
-			if(element.type == typeObj.person.col ){
+			if(contextData.type == typeObj.person.col ){
 				var form = {
 					saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
 					dynForm : {
@@ -605,33 +605,33 @@ function bindAboutPodElement() {
 								if(data.result && data.resultGoods.result){
 
 									if(typeof data.resultGoods.values.telegram != "undefined"){
-										element.telegram = data.resultGoods.values.telegram.trim();
-										changeNetwork('#telegramAbout', element.telegram, 'https://web.telegram.org/#/im?p=@'+element.telegram);
+										contextData.telegram = data.resultGoods.values.telegram.trim();
+										changeNetwork('#telegramAbout', contextData.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.telegram);
 									}
 
 									if(typeof data.resultGoods.values.facebook != "undefined"){
-										element.facebook = data.resultGoods.values.facebook.trim();
-										changeNetwork('#facebookAbout', element.facebook, element.facebook);
+										contextData.facebook = data.resultGoods.values.facebook.trim();
+										changeNetwork('#facebookAbout', contextData.facebook, contextData.facebook);
 									}
 
 									if(typeof data.resultGoods.values.twitter != "undefined"){
-										element.twitter = data.resultGoods.values.twitter.trim();
-										changeNetwork('#twitterAbout', element.twitter, element.twitter);
+										contextData.twitter = data.resultGoods.values.twitter.trim();
+										changeNetwork('#twitterAbout', contextData.twitter, contextData.twitter);
 									}
 
 									if(typeof data.resultGoods.values.gitHub != "undefined"){
-										element.gitHub = data.resultGoods.values.gitHub.trim();
-										changeNetwork('#gitHubAbout', element.gitHub, element.gitHub);
+										contextData.gitHub = data.resultGoods.values.gitHub.trim();
+										changeNetwork('#gitHubAbout', contextData.gitHub, contextData.gitHub);
 									}
 
 									if(typeof data.resultGoods.values.skype != "undefined"){
-										element.skype = data.resultGoods.values.skype.trim();
-										changeNetwork('#skypeAbout', element.skype, element.skype);
+										contextData.skype = data.resultGoods.values.skype.trim();
+										changeNetwork('#skypeAbout', contextData.skype, contextData.skype);
 									}
 
 									if(typeof data.resultGoods.values.gpplus != "undefined"){
-										element.gpplus = data.resultGoods.values.gpplus.trim();
-										changeNetwork('#gpplusAbout', element.gpplus, element.gpplus);
+										contextData.gpplus = data.resultGoods.values.gpplus.trim();
+										changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
 									}
 								}
 								elementLib.closeForm();
@@ -654,22 +654,22 @@ function bindAboutPodElement() {
 
 				var dataUpdate = {
 					block : "network",
-			        id : element.id,
+			        id : contextData.id,
 			        typeElement : contextData.type,
 				};
 
-				if(notEmpty(element.twitter))
-					dataUpdate.twitter = element.twitter;
-				if(notEmpty(element.gpplus))
-					dataUpdate.gpplus = element.gpplus;
-				if(notEmpty(element.gitHub))
-					dataUpdate.gitHub = element.gitHub;
-				if(notEmpty(element.skype))
-					dataUpdate.skype = element.skype;
-				if(notEmpty(element.telegram))
-					dataUpdate.telegram = element.telegram;
-				if(notEmpty(element.facebook))
-					dataUpdate.facebook = element.facebook;
+				if(notEmpty(contextData.twitter))
+					dataUpdate.twitter = contextData.twitter;
+				if(notEmpty(contextData.gpplus))
+					dataUpdate.gpplus = contextData.gpplus;
+				if(notEmpty(contextData.gitHub))
+					dataUpdate.gitHub = contextData.gitHub;
+				if(notEmpty(contextData.skype))
+					dataUpdate.skype = contextData.skype;
+				if(notEmpty(contextData.telegram))
+					dataUpdate.telegram = contextData.telegram;
+				if(notEmpty(contextData.facebook))
+					dataUpdate.facebook = contextData.facebook;
 
 				elementLib.openForm(form, null, dataUpdate);
 

@@ -30,42 +30,6 @@
 <div id="mainFormReferencement">
 	<section id="portfolio">
         <div class="container">
-            <?php if(!isset(Yii::app()->session["userId"])){ ?>
-            <div class="row hidden">
-                <div class="col-lg-12 text-center">
-                    <h2 class="text-blue">
-                        <i class="fa fa-user-o"></i><br>
-                        Authentification
-                    </h2>
-                    <hr class="angle-down">
-                    <div class="col-md-8 col-md-offset-2">
-                		<div class="form-group">
-                			<span>
-	                			<small>Pour des raisons de sécurité, vous devez vous identifier sur le réseau Kgougle<br>pour bénéficier d'un référencement immédiat (sans délais).<br><br>
-	                			<strong>Il est possible de continuer sans vous identifier.</strong><br>
-	                			Le référencement anonyme est soumis à l'approbation des administrateurs du réseau Kgougle, <br>dans un délais de 7 jours, afin d'éviter tout abus.<br>
-	                			<a href="#k.cgu" class="lbh"><u>Lire les conditions général de référencement</u></a>
-	                			</small>
-                			</span>
-						</div>
-                	</div>              	
-                </div>
-                <div class="col-md-4 col-md-offset-4 text-center"  style="margin-bottom:100px;">
-                	<h4>connexion<br><i class="fa fa-angle-down"></i></h4>
-				    <input type="text" class="form-control" placeholder="e-mail"><br>
-				    <input type="password" class="form-control" placeholder="mot de passe"><br>
-				    <input type="text" class="form-control hidden show-subscribe" placeholder="mot de passe (confirmation)"><br class="hidden show-subscribe">
-				    <input type="text" class="form-control hidden show-subscribe" placeholder="Nom d'utilisateur"><br class="hidden show-subscribe">
-				    <button class="btn btn-success pull-right hidden show-subscribe"><i class="fa fa-plus"></i> Je m'inscris</button> 
-				    <button class="btn btn-danger pull-right hidden show-subscribe" id="btn-cancel-subscribe" style="margin-right:10px;"><i class="fa fa-times"></i> Annuler</button> 
-				    <button class="btn btn-success pull-right hidden-subscribe"><i class="fa fa-sign-in"></i> Connexion</button> 
-				    <button class="btn pull-left btn-xs hidden-subscribe" id="btn-start-subscribe"><i class="fa fa-plus"></i> Je veux m'inscrire</button> 
-				    <div class="col-md-12">
-				    	<hr><button class="btn btn-default" id="btn-start-anonymous"><i class="fa fa-user-secret"></i> Continuer sans identifiant</button>
-				    </div>
-       			</div>
-            </div>
-            <?php } ?>
             
             <div class="row" style="min-height:800px;" id="refStart">
             	<div class="col-lg-12 text-center">
@@ -192,10 +156,13 @@
                 	<label class="text-white">(soumis à l'approbation des administrateurs sous 7 jours)</label>
                     <hr>
                     <label class="text-white">
-                    Les informations fournies à propos de cette URL seront examinées par les administrateurs du réseau avant d'être publiées, afin d'éviter tout abus et de garantir la pertinance des résultats de recherches.
+                    Les informations fournies à propos de cette URL seront examinées par les administrateurs du réseau avant d'être publiées, afin d'éviter tout abus et de garantir la pertinence des résultats de recherches.
                     </label>
                     <hr>
-                    <label class="text-white">Seront automatiquement refusés :<br>les sites web à caractère violent, ou pornographique</label>
+                    <label class="text-white">
+                    Les sites internationaux sont tolérés à condition d'être pertinent pour une large majorité des internautes Calédoniens.
+                    </label><hr>
+                    <label class="text-white">Seront automatiquement refusés :<br>les sites web à caractère violent, ou pornographique.</label>
                 </div>
             </div>
         </div>
@@ -290,7 +257,7 @@ jQuery(document).ready(function() {
     	var cityLat = $(this).data("city-lat");
     	var cityLng = $(this).data("city-lng");
 
-    	$("#h4-name-city, #form-street, #btn-find-position").show();
+    	$("#h4-name-city, #form-street, #btn-find-position, #name-city-selected").show();
     	$("#name-city-selected").html(cityName + ", " + cityCp);
 
     	coordinatesPreLoadedFormMap = [cityLat, cityLng];

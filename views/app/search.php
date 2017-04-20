@@ -157,6 +157,41 @@
     .btn-directory-type.bg-white {
         background-color: #F2F2F2 !important;
     }
+
+    .colonne {
+      display:table-cell;
+      padding:10px;
+    }
+
+    .logo_interop {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        max-height: 100px;
+        width: auto;
+        height: auto;
+    }
+    .lien_interop {
+        margin-bottom: 20px;
+    }
+    
+    .lien_interop_single {
+        max-height: 134px;
+    }
+
+    .colonne {
+        display:table-cell;
+        padding:25px;
+    }
+
+    .disptable {
+        display:table;
+    }
+
+    .one_opendasoft_item {
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
 </style>
 
 
@@ -251,7 +286,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" height="50" class="inline margin-top-25 margin-bottom-5"><br>
-                    
                     <h3 class="letter-red no-margin hidden-xs">
                         <small class="text-dark">Un réseau social <span class="letter-red">citoyen</span>, au service du <span class="letter-red">bien commun</span></small>
                     </h3><br>

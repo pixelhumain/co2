@@ -472,6 +472,9 @@ class CommunecterController extends Controller
     "export" => array(
       "index"             => array('href' => "ph/communecter/export/index",            "public" => true),
       ),
+    "datasets" => array(
+      "index"             => array('href' => "ph/communecter/datesets/index",            "public" => true),
+      ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick"),
     

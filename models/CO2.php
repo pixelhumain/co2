@@ -62,6 +62,7 @@ class CO2 {
                                             "insee" => @$city["insee"],
                                             "region" => @$city["region"],
                                             "dep" => @$city["dep"],
+                                            "geoShape" => @$city["geoShape"],
                                             "cityCp"    =>Yii::app()->request->cookies['cpCommunexion'],
                                             "depName"   =>@$city["depName"],
                                             "regionName"=>@$city["regionName"]);

@@ -267,116 +267,234 @@ function bindAboutPodElement() {
 
 		$("#btn-update-when").off().on( "click", function(){
 
-			var properties = {
-				block : typeObjLib.hidden,
-				typeElement : typeObjLib.hidden,
-				isUpdate : typeObjLib.hiddenTrue	
+
+			var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
+				dynForm : {
+					jsonSchema : {
+						title : trad["Change password"],
+						icon : "fa-key",
+						onLoads : {
+							initWhen : function(){
+								if(notNull(contextData.allDay) && contextData.allDay == true)
+									$("#ajaxFormModal #allDay").attr("checked");
+							}
+						},
+						beforeSave : function(){
+							mylog.log("beforeSave");
+					    	removeFieldUpdateDynForm(contextData.type);
+
+					    	var allDay = $("#ajaxFormModal #allDay").is(':checked');
+					    	var dateformat = "DD/MM/YYYY";
+					    	if (! allDay) 
+					    		var dateformat = "DD/MM/YYYY HH:mm" ;
+					    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format());
+							$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format());
+					    },
+						afterSave : function(data){
+							mylog.dir(data);
+							if(data.result && data.resultGoods.result){
+								if(typeof data.resultGoods.values.allDay != "undefined"){
+									contextData.allDay = data.resultGoods.values.allDay;
+									$("#contentGeneralInfos #allDay").html(contextData.allDay);
+								}  
+								if(typeof data.resultGoods.values.endDate != "undefined"){
+									contextData.startDate = data.resultGoods.values.startDate;
+									$("#contentGeneralInfos #startDate").html(moment(contextData.startDate).local().format(formatDateView));
+								}  
+								if(typeof data.resultGoods.values.endDate != "undefined"){
+									contextData.endDate = data.resultGoods.values.endDate;
+									$("#contentGeneralInfos #endDate").html(moment(contextData.endDate).local().format(formatDateView));
+								}  
+								updateCalendar();
+							}
+							elementLib.closeForm();
+						},
+						properties : {
+							block : typeObjLib.hidden,
+							typeElement : typeObjLib.hidden,
+							isUpdate : typeObjLib.hiddenTrue,
+							startDate : typeObjLib.startDateInput,
+							endDate : typeObjLib.endDateInput,
+						}
+					}
+				}
 			};
 
 			if(contextData.type == "<?php echo Event::COLLECTION; ?>"){
-				properties.allDay = typeObjLib.allDay;
+				form.dynForm.jsonSchema.properties.allDay = typeObjLib.allDay;
 			}
 
-			properties.startDate = typeObjLib.startDateInput;
-			properties.endDate = typeObjLib.endDateInput;
-			
+			form.dynForm.jsonSchema.properties.startDate = typeObjLib.startDateInput;
+			form.dynForm.jsonSchema.properties.endDate = typeObjLib.endDateInput;
+
 			var dataUpdate = {
 				block : "when",
 		        id : contextData.id,
 		        typeElement : contextData.type,
 			};
 			
-			if(contextData.startDate.length > 0)
+			if(notEmpty(contextData.startDate))
 				dataUpdate.startDate = moment(contextData.startDate).local().format(formatDatedynForm);
 
-			if(contextData.endDate.length > 0)
+			if(notEmpty(contextData.endDate))
 				dataUpdate.endDate = moment(contextData.endDate).local().format(formatDatedynForm);
 
-			mylog.log("dataUpdate", dataUpdate);
-
-			var onLoads = {
-				initWhen : function(){
-					if(typeof contextData.allDay != "undefined" && contextData.allDay == "true")
-						$("#ajaxFormModal #allDay").attr("checked");
-				}
-			};
-
-			var beforeSave = function(){
-				mylog.log("beforeSave");
-		    	if($("#ajaxFormModal #allDay").length && $("#ajaxFormModal #allDay").val() == contextData.allDay)
-		    		$("#ajaxFormModal #allDay").remove();
-
-		    	if($("#ajaxFormModal #startDate").length && $("#ajaxFormModal #startDate").val() ==  contextData.startDate)
-		    		$("#ajaxFormModal #startDate").remove();
-
-		    	if($("#ajaxFormModal #endDate").length && $("#ajaxFormModal #endDate").val() ==  contextData.endDate)
-		    		$("#ajaxFormModal #endDate").remove();
-
-		    	var allDay = $("#ajaxFormModal #allDay").is(':checked');
-		    	var dateformat = "DD/MM/YYYY";
-		    	if (! allDay) 
-		    		var dateformat = "DD/MM/YYYY HH:mm" ;
-		    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format());
-				$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format());
-		    };
-
-			var afterSave = function(data){
-				mylog.dir(data);
-				if(data.result && data.resultGoods.result){
-					if(typeof data.resultGoods.values.allDay != "undefined"){
-						contextData.allDay = data.resultGoods.values.allDay;
-						$("#contentGeneralInfos #allDay").html(contextData.allDay);
-					}  
-					if(typeof data.resultGoods.values.endDate != "undefined"){
-						contextData.startDate = data.resultGoods.values.startDate;
-						$("#contentGeneralInfos #startDate").html(moment(contextData.startDate).local().format(formatDateView));
-					}  
-					if(typeof data.resultGoods.values.endDate != "undefined"){
-						contextData.endDate = data.resultGoods.values.endDate;
-						$("#contentGeneralInfos #endDate").html(moment(contextData.endDate).local().format(formatDateView));
-					}  
-					updateCalendar();
-				}
-				elementLib.closeForm();
-			};
-			
-			var saveUrl = baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType;
-			elementLib.editDynForm("Modifier les dates", "fa-calendar", properties, "initWhen", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
+			mylog.log("btn-update-when", form, dataUpdate);
+			elementLib.openForm(form, "initWhen", dataUpdate);
 		});
 
 
 		$(".btn-update-info").off().on( "click", function(){
 
-			mylog.log("btn-update-info");
-			var properties = {
-				block : typeObjLib.hidden,
-				name : typeObjLib.name(contextData.type),
-				typeElement : typeObjLib.hidden,
-				isUpdate : typeObjLib.hiddenTrue		
+			var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
+				dynForm : {
+					jsonSchema : {
+						title : trad["Change password"],
+						icon : "fa-key",
+						onLoads : {
+							initUpdateInfo : function(){
+								mylog.log("initUpdateInfo");
+								$(".emailtext").slideToggle();
+							}
+						},
+						beforeSave : function(){
+							mylog.log("beforeSave");
+							removeFieldUpdateDynForm(contextData.type);
+					    },
+						afterSave : function(data){
+							mylog.dir(data);
+							if(data.result && data.resultGoods.result){
+
+								if(typeof data.resultGoods.values.name != "undefined"){
+									contextData.name = data.resultGoods.values.name;
+									$("#nameHeader").html(contextData.name);
+									$("#nameAbout").html(contextData.name);
+								}
+
+								if(typeof data.resultGoods.values.username != "undefined"){
+									contextData.username = data.resultGoods.values.username;
+									$("#usernameAbout").html(contextData.username);
+								}
+									
+								if(typeof data.resultGoods.values.tags != "undefined"){
+									contextData.tags = data.resultGoods.values.tags;
+									var str = "";
+									if($('#divTagsHeader').length){
+										$.each(contextData.tags, function (key, tag){
+											str +=	'<div class="tag label label-danger pull-right" data-val="'+tag+'">'+
+														'<i class="fa fa-tag"></i>'+tag+
+													'</div>';
+											if(typeof globalTheme == "undefined" || globalTheme != "network")
+												addTagToMultitag(tag);
+										});
+									}
+									$('#divTagsHeader').html(str);
+								}
+
+								if(typeof data.resultGoods.values.avancement != "undefined"){
+									contextData.avancement = data.resultGoods.values.avancement.trim();
+									val=0;
+							    	if(contextData.avancement=="idea")
+										val=5;
+									else if(contextData.avancement=="concept")
+										val=20;
+									else if (contextData.avancement== "started")
+										val=40;
+									else if (contextData.avancement == "development")
+										val=60;
+									else if (contextData.avancement == "testing")
+										val=80;
+									else if (contextData.avancement == "mature")
+										val=100;
+									$('#progressStyle').val(val);
+									$('#labelProgressStyle').html(contextData.avancement);
+									$('#avancementAbout').html(trad["Project maturity"] + " : " + trad[contextData.avancement] );
+								}
+
+								if(typeof data.resultGoods.values.type != "undefined"){
+
+									if(contextData.type == typeObj.organization.col )
+										contextData.typeOrga = data.resultGoods.values.typeEvent;
+									else
+										contextData.typeEvent = data.resultGoods.values.typeEvent;
+									//$("#typeHeader").html(data.resultGoods.values.type);
+									$("#typeAbout").html(trad[data.resultGoods.values.type]);
+								}
+
+								if(typeof data.resultGoods.values.email != "undefined"){
+									mylog.log("update email");
+									contextData.email = data.resultGoods.values.email;
+									$("#emailAbout").html(contextData.email);
+								}
+
+								if(typeof data.resultGoods.values.url != "undefined"){
+									mylog.log("update url");
+									contextData.url = data.resultGoods.values.url;
+									$("#urlAbout").html(contextData.url);
+									$("#urlAbout").attr("href", contextData.url);
+								}  
+									
+								if(typeof data.resultGoods.values.birthDate != "undefined"){
+									mylog.log("update birthDate");
+									contextData.birthDate = data.resultGoods.values.birthDate;
+									$("#birthDateAbout").html(moment(contextData.birthDate).local().format("DD MM YYYY"));
+								}
+
+								if(typeof data.resultGoods.values.fixe != "undefined"){
+									mylog.log("update fixe");
+									contextData.fixe = parsePhone(data.resultGoods.values.fixe);
+									$("#fixeAbout").html(contextData.fixe);
+								}
+
+								if(typeof data.resultGoods.values.mobile != "undefined"){
+									mylog.log("update mobile");
+									contextData.mobile = parsePhone(data.resultGoods.values.mobile);
+									$("#mobileAbout").html(contextData.mobile);
+								}
+
+								if(typeof data.resultGoods.values.fax != "undefined"){
+									mylog.log("update fax");
+									contextData.fax = parsePhone(data.resultGoods.values.fax);
+									$("#faxAbout").html(contextData.fax);
+								}
+							}
+							elementLib.closeForm();
+							changeHiddenFields();
+						},
+						properties : {
+							block : typeObjLib.hidden,
+							name : typeObjLib.name(contextData.type),
+							typeElement : typeObjLib.hidden,
+							isUpdate : typeObjLib.hiddenTrue
+						}
+					}
+				}
 			};
 
 			if(contextData.type == typeObj.person.col ){
-				properties.username = typeObjLib.username;
-				properties.birthDate = typeObjLib.birthDate;
+				form.dynForm.jsonSchema.properties.username = typeObjLib.username;
+				form.dynForm.jsonSchema.properties.birthDate = typeObjLib.birthDate;
 			}
 
 			if(contextData.type == typeObj.organization.col ){
-				properties.type = typeObjLib.typeOrga;
-				properties.tags = typeObjLib.tags();
+				form.dynForm.jsonSchema.properties.type = typeObjLib.typeOrga;
+				form.dynForm.jsonSchema.properties.tags = typeObjLib.tags();
 			}
 
 			if(contextData.type == typeObj.project.col ){
-				properties.avancement = typeObjLib.avancementProject;
+				form.dynForm.jsonSchema.properties.avancement = typeObjLib.avancementProject;
 			}
 
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
-				properties.email = typeObjLib.email;
+				form.dynForm.jsonSchema.properties.email = typeObjLib.email;
 				
 			}
-			properties.url = typeObjLib.url;
-			properties.fixe= typeObjLib.phone;
-			properties.mobile= typeObjLib.mobile;
-			properties.fax= typeObjLib.fax;
+			form.dynForm.jsonSchema.properties.url = typeObjLib.url;
+			form.dynForm.jsonSchema.properties.fixe= typeObjLib.phone;
+			form.dynForm.jsonSchema.properties.mobile= typeObjLib.mobile;
+			form.dynForm.jsonSchema.properties.fax= typeObjLib.fax;
 
 			var dataUpdate = {
 				block : "info",
@@ -385,264 +503,76 @@ function bindAboutPodElement() {
 		        name : contextData.name,	
 			};
 			
-			if(contextData.tags.length > 0)
+			if(notNull(contextData.tags) && contextData.tags.length > 0)
 				dataUpdate.tags = contextData.tags;
 
 			if(contextData.type == typeObj.person.col ){
-				if(contextData.username.length > 0)
+				if(notNull(contextData.tags) && contextData.username.length > 0)
 					dataUpdate.username = contextData.username;
-				if(contextData.birthDate.length > 0)
+				if(notEmpty(contextData.birthDate))
 					dataUpdate.birthDate = contextData.birthDate;
 			}
 
 			if(contextData.type == typeObj.organization.col ){
-				if(contextData.typeOrga.length > 0)
+				if(notEmpty(contextData.typeOrga))
 					dataUpdate.type = contextData.typeOrga;
 			}
 			if(contextData.type == typeObj.project.col ){
-				if(contextData.avancement.length > 0)
+				if(notEmpty(contextData.avancement))
 					dataUpdate.avancement = contextData.avancement;
 			}
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
-				if(contextData.email != "") 
+				if(notEmpty(contextData.email)) 
 					dataUpdate.email = contextData.email;
 			}
 
-			if(contextData.url != "") 
+			if(notEmpty(contextData.url)) 
 				dataUpdate.url = contextData.url;
-			if(contextData.fixe.length > 0)
+			if(notEmpty(contextData.fixe))
 				dataUpdate.fixe = contextData.fixe;
-			if(contextData.mobile.length > 0)
+			if(notEmpty(contextData.mobile))
 				dataUpdate.mobile = contextData.mobile;
-			if(contextData.fax.length > 0)
+			if(notEmpty(contextData.fax))
 				dataUpdate.fax = contextData.fax;
 
 			mylog.log("dataUpdate", dataUpdate);
-
-			var onLoads = {
-				initUpdateInfo : function(){
-					mylog.log("initUpdateInfo");
-					$(".emailtext").slideToggle();
-				}
-			};
-
-			var beforeSave = function(){
-				mylog.log("beforeSave");
-		    	if($("#ajaxFormModal #name").length && $("#ajaxFormModal #name").val() == contextData.name)
-		    		$("#ajaxFormModal #name").remove();
-
-		    	if($("#ajaxFormModal #tags").length && $("#ajaxFormModal #tags").val() ==  contextData.tags)
-		    		$("#ajaxFormModal #tags").remove();
-
-		    	if(contextData.type == typeObj.person.col ){
-			    	if($("#ajaxFormModal #username").length && $("#ajaxFormModal #username").val() == contextData.username)
-			    		$("#ajaxFormModal #username").remove();
-			    	if($("#ajaxFormModal #birthDate").length && $("#ajaxFormModal #birthDate").val() ==  contextData.birthDate)
-			    		$("#ajaxFormModal #birthDate").remove();
-			    }
-
-			    if(contextData.type == typeObj.organization.col || contextData.type == typeObj.event.col){
-					if($("#ajaxFormModal #type").length && $("#ajaxFormModal #type").val() ==  contextData.typeOrga)
-			    		$("#ajaxFormModal #type").remove();
-				}
-
-				if(contextData.type == typeObj.project.col ){
-					if($("#ajaxFormModal #avancement").length && $("#ajaxFormModal #avancement").val() ==  contextData.avancement)
-			    		$("#ajaxFormModal #avancement").remove();
-				}
-
-				if($("#ajaxFormModal #email").length && $("#ajaxFormModal #email").val() == contextData.email)
-			    	$("#ajaxFormModal #email").remove();
-			    
-				if($("#ajaxFormModal #url").length && $("#ajaxFormModal #url").val() == contextData.url)
-		    		$("#ajaxFormModal #url").remove();
-
-		    	if($("#ajaxFormModal #fixe").length && $("#ajaxFormModal #fixe").val() ==  contextData.fixe)
-		    		$("#ajaxFormModal #fixe").remove();
-		    	
-		    	if($("#ajaxFormModal #mobile").length && $("#ajaxFormModal #mobile").val() == contextData.mobile)
-		    		$("#ajaxFormModal #mobile").remove();
-
-		    	if($("#ajaxFormModal #fax").length && $("#ajaxFormModal #fax").val() ==  contextData.fax)
-		    		$("#ajaxFormModal #fax").remove();
-
-		    };
-
-			var afterSave = function(data){
-				mylog.dir(data);
-				if(data.result && data.resultGoods.result){
-
-					if(typeof data.resultGoods.values.name != "undefined"){
-						contextData.name = data.resultGoods.values.name;
-						$("#nameHeader").html(contextData.name);
-						$("#nameAbout").html(contextData.name);
-					}
-
-					if(typeof data.resultGoods.values.username != "undefined"){
-						contextData.username = data.resultGoods.values.username;
-						$("#usernameAbout").html(contextData.username);
-					}
-						
-					if(typeof data.resultGoods.values.tags != "undefined"){
-						contextData.tags = data.resultGoods.values.tags;
-						var str = "";
-						if($('#divTagsHeader').length){
-							$.each(contextData.tags, function (key, tag){
-								str +=	'<div class="tag label label-danger pull-right" data-val="'+tag+'">'+
-											'<i class="fa fa-tag"></i>'+tag+
-										'</div>';
-								if(typeof globalTheme == "undefined" || globalTheme != "network")
-									addTagToMultitag(tag);
-							});
-						}
-						$('#divTagsHeader').html(str);
-					}
-
-					if(typeof data.resultGoods.values.avancement != "undefined"){
-						contextData.avancement = data.resultGoods.values.avancement.trim();
-						val=0;
-				    	if(contextData.avancement=="idea")
-							val=5;
-						else if(contextData.avancement=="concept")
-							val=20;
-						else if (contextData.avancement== "started")
-							val=40;
-						else if (contextData.avancement == "development")
-							val=60;
-						else if (contextData.avancement == "testing")
-							val=80;
-						else if (contextData.avancement == "mature")
-							val=100;
-						$('#progressStyle').val(val);
-						$('#labelProgressStyle').html(contextData.avancement);
-						$('#avancementAbout').html(trad["Project maturity"] + " : " + trad[contextData.avancement] );
-					}
-
-					if(typeof data.resultGoods.values.type != "undefined"){
-
-						if(contextData.type == typeObj.organization.col )
-							contextData.typeOrga = data.resultGoods.values.typeEvent;
-						else
-							contextData.typeEvent = data.resultGoods.values.typeEvent;
-						//$("#typeHeader").html(data.resultGoods.values.type);
-						$("#typeAbout").html(trad[data.resultGoods.values.type]);
-					}
-
-					if(typeof data.resultGoods.values.email != "undefined"){
-						mylog.log("update email");
-						contextData.email = data.resultGoods.values.email;
-						$("#emailAbout").html(contextData.email);
-					}
-
-					if(typeof data.resultGoods.values.url != "undefined"){
-						mylog.log("update url");
-						contextData.url = data.resultGoods.values.url;
-						$("#urlAbout").html(contextData.url);
-						$("#urlAbout").attr("href", contextData.url);
-					}  
-						
-					if(typeof data.resultGoods.values.birthDate != "undefined"){
-						mylog.log("update birthDate");
-						contextData.birthDate = data.resultGoods.values.birthDate;
-						$("#birthDateAbout").html(moment(contextData.birthDate).local().format("DD MM YYYY"));
-					}
-
-					if(typeof data.resultGoods.values.fixe != "undefined"){
-						mylog.log("update fixe");
-						contextData.fixe = parsePhone(data.resultGoods.values.fixe);
-						$("#fixeAbout").html(contextData.fixe);
-					}
-
-					if(typeof data.resultGoods.values.mobile != "undefined"){
-						mylog.log("update mobile");
-						contextData.mobile = parsePhone(data.resultGoods.values.mobile);
-						$("#mobileAbout").html(contextData.mobile);
-					}
-
-					if(typeof data.resultGoods.values.fax != "undefined"){
-						mylog.log("update fax");
-						contextData.fax = parsePhone(data.resultGoods.values.fax);
-						$("#faxAbout").html(contextData.fax);
-					}
-				}
-				elementLib.closeForm();
-				changeHiddenFields();
-			};
-			
-			var saveUrl = baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType;
-			elementLib.editDynForm("Modifier les coordonnées", "fa-pencil", properties, "", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
+			elementLib.openForm(form, "initUpdateInfo", dataUpdate);
 		});
-
-		$(".btn-update-desc").off().on( "click", function(){
-			var dataUpdate = { value : $("#descriptionMarkdown").val() } ;
-			var properties = {
-				value : typeObjLib.description,
-				pk : {
-		            inputType : "hidden",
-		            value : contextData.id
-		        },
-				name: {
-		            inputType : "hidden",
-		            value : "description"
-		        }
-			};
-
-			var onLoads = {
-				markdown : function(){
-					mylog.log("#btn-update-desc #ajaxFormModal #description");
-					activateMarkdown("#ajaxFormModal #value");
-				}
-			};
-			var beforeSave = null ;
-
-			var afterSave = function(data){
-				$("#central-container").html(markdownToHtml(data.description));
-				$("#descriptionMarkdown").val(data.description);
-				//smallMenu.open( markdownToHtml(data.description);
-				elementLib.closeForm();		
-			};
-			
-			var saveUrl = baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType;
-			elementLib.editDynForm("Modifier la description", "fa-pencil", properties, "markdown", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
-		});
-
-		$(".btn-update-shortDesc").off().on( "click", function(){
-			var dataUpdate = { value : $("#shortDescriptionHeader").html() } ;
-			var properties = {
-				value : typeObjLib.shortDescription,
-				pk : {
-		            inputType : "hidden",
-		            value : contextData.id
-		        },
-				name: {
-		            inputType : "hidden",
-		            value : "shortDescription"
-		        }
-			};
-
-			var onLoads = null;
-			var beforeSave = null ;
-
-			var afterSave = function(data){
-				$("#shortDescriptionHeader").html(data.shortDescription);
-				elementLib.closeForm();		
-			};
-			
-			var saveUrl = baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType;
-			elementLib.editDynForm("Modifier la description", "fa-pencil", properties, "markdown", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
-		});
-
 
 		$(".btn-update-descriptions").off().on( "click", function(){
 
-			
-			var properties = {
-				block : typeObjLib.hidden,
-				typeElement : typeObjLib.hidden,
-				isUpdate : typeObjLib.hiddenTrue,
-				shortDescription : 	typeObjLib.shortDescription,
-				description : typeObjLib.description,
-
+			var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
+				dynForm : {
+					jsonSchema : {
+						title : trad["Change password"],
+						icon : "fa-key",
+						onLoads : {
+							markdown : function(){
+								activateMarkdown("#ajaxFormModal #description");
+								bindDesc("#ajaxFormModal");
+							}
+						},
+						afterSave : function(data){
+							mylog.dir(data);
+							if(data.result && data.resultGoods.result){shortDescriptionHeader
+								$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
+								$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
+								$(".contentInformation #descriptionAbout").html(markdownToHtml(data.resultGoods.values.description));
+								$("#descriptionMarkdown").val(data.resultGoods.values.description);
+							}
+							elementLib.closeForm();
+							changeHiddenFields();
+						},
+						properties : {
+							block : typeObjLib.hidden,
+							typeElement : typeObjLib.hidden,
+							isUpdate : typeObjLib.hiddenTrue,
+							shortDescription : 	typeObjLib.shortDescription,
+							description : typeObjLib.description,
+						}
+					}
+				}
 			};
 
 			var dataUpdate = {
@@ -653,135 +583,96 @@ function bindAboutPodElement() {
 		        shortDescription : $(".contentInformation #shortDescriptionAbout").html(),
 				description : $("#descriptionMarkdown").val(),	
 			};
-			
-			var onLoads = {
-				markdown : function(){
-					activateMarkdown("#ajaxFormModal #description");
-					bindDesc("#ajaxFormModal");
-				}
-			};
 
-			var beforeSave = null;
-
-			var afterSave = function(data){
-				mylog.dir(data);
-				if(data.result && data.resultGoods.result){shortDescriptionHeader
-					$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
-					$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
-					$(".contentInformation #descriptionAbout").html(markdownToHtml(data.resultGoods.values.description));
-					$("#descriptionMarkdown").val(data.resultGoods.values.description);
-				}
-				elementLib.closeForm();
-				changeHiddenFields();
-			};
-			mylog.log("btn-update-descriptions", properties, dataUpdate);
-			var saveUrl = baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType;
-			elementLib.editDynForm("Modifier les descriptions", "fa-pencil", properties, "markdown", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
+			elementLib.openForm(form, "markdown", dataUpdate);
 		});
 
 
 		$(".btn-update-network").off().on( "click", function(){
 			if(contextData.type == typeObj.person.col ){
-				var properties = {
-					block : typeObjLib.hidden,
-					typeElement : typeObjLib.hidden,
-					isUpdate : typeObjLib.hiddenTrue,
-					telegram : typeObjLib.telegram,
-					skype : typeObjLib.skype,
-					gitHub : typeObjLib.github,
-					gpplus : typeObjLib.googleplus,
-			        twitter : typeObjLib.twitter,
-			        facebook : typeObjLib.facebook
-				}
+				var form = {
+					saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
+					dynForm : {
+						jsonSchema : {
+							title : trad["Change password"],
+							icon : "fa-key",
+							beforeSave : function(){
+								mylog.log("beforeSave");
+						    	removeFieldUpdateDynForm(contextData.type);
+						    },
+							afterSave : function(data){
+								mylog.dir(data);
+								if(data.result && data.resultGoods.result){
+
+									if(typeof data.resultGoods.values.telegram != "undefined"){
+										contextData.telegram = data.resultGoods.values.telegram.trim();
+										changeNetwork('#telegramAbout', contextData.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.telegram);
+									}
+
+									if(typeof data.resultGoods.values.facebook != "undefined"){
+										contextData.facebook = data.resultGoods.values.facebook.trim();
+										changeNetwork('#facebookAbout', contextData.facebook, contextData.facebook);
+									}
+
+									if(typeof data.resultGoods.values.twitter != "undefined"){
+										contextData.twitter = data.resultGoods.values.twitter.trim();
+										changeNetwork('#twitterAbout', contextData.twitter, contextData.twitter);
+									}
+
+									if(typeof data.resultGoods.values.gitHub != "undefined"){
+										contextData.gitHub = data.resultGoods.values.gitHub.trim();
+										changeNetwork('#gitHubAbout', contextData.gitHub, contextData.gitHub);
+									}
+
+									if(typeof data.resultGoods.values.skype != "undefined"){
+										contextData.skype = data.resultGoods.values.skype.trim();
+										changeNetwork('#skypeAbout', contextData.skype, contextData.skype);
+									}
+
+									if(typeof data.resultGoods.values.gpplus != "undefined"){
+										contextData.gpplus = data.resultGoods.values.gpplus.trim();
+										changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
+									}
+								}
+								elementLib.closeForm();
+								changeHiddenFields();
+							},
+							properties : {
+								block : typeObjLib.hidden,
+								typeElement : typeObjLib.hidden,
+								isUpdate : typeObjLib.hiddenTrue,
+								telegram : typeObjLib.telegram,
+								skype : typeObjLib.skype,
+								gitHub : typeObjLib.github,
+								gpplus : typeObjLib.googleplus,
+						        twitter : typeObjLib.twitter,
+						        facebook : typeObjLib.facebook
+							}
+						}
+					}
+				};
 
 				var dataUpdate = {
 					block : "network",
 			        id : contextData.id,
 			        typeElement : contextData.type,
 				};
-				
-				if(contextData.twitter.length > 0)
+
+				if(notEmpty(contextData.twitter))
 					dataUpdate.twitter = contextData.twitter;
-				if(contextData.gpplus.length > 0)
+				if(notEmpty(contextData.gpplus))
 					dataUpdate.gpplus = contextData.gpplus;
-				if(contextData.gitHub.length > 0)
+				if(notEmpty(contextData.gitHub))
 					dataUpdate.gitHub = contextData.gitHub;
-				if(contextData.skype.length > 0)
+				if(notEmpty(contextData.skype))
 					dataUpdate.skype = contextData.skype;
-				if(contextData.telegram.length > 0)
+				if(notEmpty(contextData.telegram))
 					dataUpdate.telegram = contextData.telegram;
-				if(contextData.facebook.length > 0)
+				if(notEmpty(contextData.facebook))
 					dataUpdate.facebook = contextData.facebook;
 
+				elementLib.openForm(form, null, dataUpdate);
 
-				mylog.log("dataUpdate", dataUpdate);
-
-				var onLoads = null;
-
-				
-				var beforeSave = function(){
-					mylog.log("beforeSave");
-			    	
-			    	if($("#ajaxFormModal #telegram").length && $("#ajaxFormModal #telegram").val() ==  contextData.telegram)
-			    		$("#ajaxFormModal #telegram").remove();
-
-			    	if($("#ajaxFormModal #gitHub").length && $("#ajaxFormModal #gitHub").val() == contextData.gitHub)
-			    		$("#ajaxFormModal #gitHub").remove();
-
-			    	if($("#ajaxFormModal #skype").length && $("#ajaxFormModal #skype").val() ==  contextData.skype)
-			    		$("#ajaxFormModal #skype").remove();
-
-			    	if($("#ajaxFormModal #twitter").length && $("#ajaxFormModal #twitter").val() ==  contextData.twitter)
-			    		$("#ajaxFormModal #twitter").remove();
-
-			    	if($("#ajaxFormModal #facebook").length && $("#ajaxFormModal #facebook").val() ==  contextData.facebook)
-			    		$("#ajaxFormModal #facebook").remove();
-
-			    	if($("#ajaxFormModal #gpplus").length && $("#ajaxFormModal #gpplus").val() ==  contextData.gpplus)
-			    		$("#ajaxFormModal #gpplus").remove();
-			    };
-
-				var afterSave = function(data){
-					mylog.dir(data);
-					if(data.result && data.resultGoods.result){
-
-						if(typeof data.resultGoods.values.telegram != "undefined"){
-							contextData.telegram = data.resultGoods.values.telegram.trim();
-							changeNetwork('#telegramAbout', contextData.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.telegram);
-						}
-
-						if(typeof data.resultGoods.values.facebook != "undefined"){
-							contextData.facebook = data.resultGoods.values.facebook.trim();
-							//var iconNetwork = ((contextData.facebook=="")?"":'<i class="fa fa-facebook"></i>');
-							changeNetwork('#facebookAbout', contextData.facebook, contextData.facebook);
-						}
-
-						if(typeof data.resultGoods.values.twitter != "undefined"){
-							contextData.twitter = data.resultGoods.values.twitter.trim();
-							changeNetwork('#twitterAbout', contextData.twitter, contextData.twitter);
-						}
-
-						if(typeof data.resultGoods.values.gitHub != "undefined"){
-							contextData.gitHub = data.resultGoods.values.gitHub.trim();
-							changeNetwork('#gitHubAbout', contextData.gitHub, contextData.gitHub);
-						}
-
-						if(typeof data.resultGoods.values.skype != "undefined"){
-							contextData.skype = data.resultGoods.values.skype.trim();
-							changeNetwork('#skypeAbout', contextData.skype, contextData.skype);
-						}
-
-						if(typeof data.resultGoods.values.gpplus != "undefined"){
-							contextData.gpplus = data.resultGoods.values.gpplus.trim();
-							changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
-						}
-					}
-					elementLib.closeForm();
-					changeHiddenFields();
-				};
-				
-				var saveUrl = baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType;
-				elementLib.editDynForm("Modifier vos comptes", "fa-pencil", properties, "", dataUpdate, saveUrl, onLoads, beforeSave, afterSave);
 			}
 		});
 	}
@@ -845,4 +736,29 @@ function bindAboutPodElement() {
 		    }
 		});
 	}
+
+
+	function removeFieldUpdateDynForm(collection){
+		var fieldsElement = [ 	"name", "tags", "email", "url", "fixe", "mobile", "fax", 
+								"telegram", "gitHub", "skype", "twitter", "facebook", "gpplus"];
+		var fieldsPerson = ["username",  "birthDate"];
+		var fieldsProject = [ "avancement", "startDate", "endDate" ];
+		var fieldsOrga = [ "type" ];
+		var fieldsEvent = [ "type", "allDay", "startDate", "endDate"];
+
+		if(collection == typeObj.person.col)
+			fieldsElement.concat(fieldsPerson);
+		else if(collection == typeObj.project.col)
+			fieldsElement.concat(fieldsProject);
+		else if(collection == typeObj.organization.col)
+			fieldsElement.concat(fieldsOrga)
+		else if(collection == typeObj.event.col)
+			fieldsElement.concat(fieldsEvent);
+		
+		$.each(fieldsElement, function(key, val){ 
+			if($("#ajaxFormModal #"+val).length && notNull(element[val]) && $("#ajaxFormModal #"+val).val() == element[val])
+				$("#ajaxFormModal #"+val).remove();
+		});
+	}
+
 

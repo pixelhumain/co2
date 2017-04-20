@@ -354,19 +354,19 @@
 	    	$params = array(    "element" => @$element, 
                                 "type" => @$type, 
                                 "edit" => @$edit,
-                                "countries" => @$countries,
-                                "controller" => $controller,
+                                //"countries" => @$countries,
+                                //"controller" => $controller,
                                 "openEdition" => $openEdition,
-                                "countStrongLinks" => $countStrongLinks,
-                                "countLowLinks" => @$countLowLinks,
-                                "countInvitations"=> $countInvitations,
-                                "linksBtn"=> @$linksBtn
+                                //"countStrongLinks" => $countStrongLinks,
+                                //"countLowLinks" => @$countLowLinks,
+                                //"countInvitations"=> $countInvitations,
+                                //"linksBtn"=> @$linksBtn
                                 );
 
-	    	if(@$members) $params["members"] = $members;
+	    	/*if(@$members) $params["members"] = $members;
 	    	if(@$events) $params["events"] = $events;
 	    	if(@$needs) $params["needs"] = $needs;
-	    	if(@$projects) $params["projects"] = $projects;
+	    	if(@$projects) $params["projects"] = $projects;*/
 
 	    	$this->renderPartial('../pod/ficheInfoElementCO2', $params ); 
 	    ?>
@@ -519,19 +519,22 @@ if( $type != Person::COLLECTION)
 
 <script type="text/javascript">
 
-	var element = <?php echo json_encode(@$element); ?>;
-    var elementName = "<?php echo @$element["name"]; ?>";
-    var contextType = "<?php echo @$type; ?>";
-    var contextId = "<?php echo @(string)$element['_id'] ?>";
-    var contextData = { "id":contextId, "type":contextType };
-    var members = <?php echo json_encode(@$members); ?>;
+	//var element = <?php echo json_encode(Element::getElementForJS(@$element)); ?>;
+    //var elementName = "<?php //echo @$element["name"]; ?>";
+    //var contextType = "<?php //echo @$type; ?>";
+    //var contextId = "<?php //echo @(string)$element['_id'] ?>";
+    //var contextData = { "id":contextId, "type":contextType };
+    var contextData = <?php echo json_encode(Element::getElementForJS(@$element)); ?>;
+
+    //var members = <?php echo json_encode(@$members); ?>;
     var params = <?php echo json_encode(@$params); ?>;
+    console.log("params", params);
+
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
     var liveScopeType = "";
-    console.log("params", params);
     var subView="<?php echo @$subview; ?>";
-    var hashUrlPage="#page.type."+contextType+".id."+contextId;
+    var hashUrlPage="#page.type."+contextData.type+".id."+contextData.id;
     var cropResult;
 
     var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
@@ -562,12 +565,13 @@ if( $type != Person::COLLECTION)
 			loadNewsStream(true);
 
 		KScrollTo("#topPosKScroll");
-		initDateHeaderPage(element);
+		initDateHeaderPage(contextData);
 
 		//IMAGE CHANGE//
 		$("#uploadScropResizeAndSaveImage .close-modal").click(function(){
 			$.unblockUI();
 		});
+
 		$("#banniere_element").click(function(event){
   			if (!$(event.target).is('input')) {
   					$(this).find("input[name='banniere']").trigger('click');
@@ -577,7 +581,7 @@ if( $type != Person::COLLECTION)
 		
 		$('#banniere_change').off().on('change.bs.fileinput', function () {
 			setTimeout(function(){
-				var files=document.getElementById("banniere_change").files;
+				var files = document.getElementById("banniere_change").files;
 				if (files[0].size > 2097152)
 					toastr.warning("Please reduce your image before to 2Mo");
 				else {
@@ -624,13 +628,13 @@ if( $type != Person::COLLECTION)
 										});
 										$("#banniere_photoAdd").off().on('submit',(function(e) {
 											//alert(moduleId);
-											if(debug)mylog.log("id2", contextId);
+											if(debug)mylog.log("id2", contextData.id);
 											$(".banniere_isSubmit").val("true");
 											e.preventDefault();
 											console.log(cropResult);
 											var fd = new FormData(document.getElementById("banniere_photoAdd"));
-											fd.append("parentId", contextId);
-											fd.append("parentType", contextType);
+											fd.append("parentId", contextData.id);
+											fd.append("parentType", contextData.type);
 											fd.append("formOrigin", "banniere");
 											fd.append("contentKey", "banniere");
 											fd.append("cropW", cropResult.cropW);
@@ -641,14 +645,14 @@ if( $type != Person::COLLECTION)
 														//console.log("formdata",formData);
 											/*formData.files= document.getElementById("banniere_change").files;
 											formData.crop= cropResult;
-											formData.parentId= contextId;
-											formData.parentType= contextType;
+											formData.parentId= contextData.id;
+											formData.parentType= contextData.type;
 											formData.formOrigin= "banniere";*/
 											//console.log(formData);
 											// Attach file
 											//formData.append('image', $('input[type=banniere]')[0].files[0]); 
 											$.ajax({
-												url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/banniere",
+												url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextData.type+"/ownerId/"+contextData.id+"/input/banniere",
 												type: "POST",
 												data: fd,
 												contentType: false,
@@ -680,7 +684,7 @@ if( $type != Person::COLLECTION)
 		//END MAGE CHNGE
 
 		
-		
+		//Sig.showMapElements(Sig.map, mapElements);
 	});
 
 	function initDateHeaderPage(params){
@@ -701,7 +705,7 @@ if( $type != Person::COLLECTION)
 			loadNewsStream(true);
 		});
 		$("#btn-start-mystream").click(function(){
-			if(contextType=="citoyens" && userId==contextId)
+			if(contextData.type=="citoyens" && userId==contextData.id)
 				history.pushState(null, "New Title", hashUrlPage+".view.mystream");
 			else
 				history.pushState(null, "New Title", hashUrlPage);
@@ -871,7 +875,7 @@ if( $type != Person::COLLECTION)
 
 		toogleNotif(true);
 
-		var url = "news/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>"+isLive+"/date/"+dateLimit+
+		var url = "news/index/type/"+typeItem+"/id/"+contextData.id+isLive+"/date/"+dateLimit+
 				  "?isFirst=1&tpl=co2&renderPartial=true";
 		
 		showLoader('#central-container');
@@ -891,7 +895,7 @@ if( $type != Person::COLLECTION)
 	}
 	function loadGallery(){
 		toogleNotif(false);
-		var url = "gallery/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
+		var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id;
 		
 		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
@@ -900,7 +904,7 @@ if( $type != Person::COLLECTION)
 	}
 	function loadChart(id){
 		toogleNotif(false);
-		var url = "chart/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>/chart/"+id;
+		var url = "chart/index/type/"+typeItem+"/id/"+contextData.id+"/chart/"+id;
 		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
@@ -908,7 +912,7 @@ if( $type != Person::COLLECTION)
 	}
 	function loadNotifications(){
 		toogleNotif(false);
-		var url = "element/notifications/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
+		var url = "element/notifications/type/"+typeItem+"/id/"+contextData.id;
 		
 		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
@@ -917,7 +921,7 @@ if( $type != Person::COLLECTION)
 	}
 	function loadHistoryActivity(){
 		toogleNotif(false);
-		var url = "pod/activitylist/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
+		var url = "pod/activitylist/type/"+typeItem+"/id/"+contextData.id;
 		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
@@ -931,7 +935,7 @@ if( $type != Person::COLLECTION)
 	}
 	function loadEditChart(){
 		toogleNotif(false);
-		var url = "chart/addchartsv/type/"+contextType+"/id/"+contextId;
+		var url = "chart/addchartsv/type/"+contextData.type+"/id/"+contextData.id;
 		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
@@ -1016,7 +1020,7 @@ if( $type != Person::COLLECTION)
 		if(typeof dateLimit == "undefined") dateLimit = 0;
 
 		isLive = isLiveBool==true ? "/isLive/true" : "";
-		var url = "news/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>"+isLive+"/date/"+dateLimit+"?tpl=co2&renderPartial=true";
+		var url = "news/index/type/"+typeItem+"/id/"+contextData.id+isLive+"/date/"+dateLimit+"?tpl=co2&renderPartial=true";
 		$.ajax({ 
 	        type: "POST",
 	        url: baseUrl+"/"+moduleId+'/'+url,
@@ -1064,8 +1068,9 @@ if( $type != Person::COLLECTION)
 
 
 
-function loadLiveNow () { 
-	var dep = element["address"]["depName"];
+function loadLiveNow () {
+	mylog.log("loadLiveNow");
+	var dep = ( ( notNull(contextData["address"])  && notNull(contextData["address"]["depName"]) ) ? contextData["address"]["depName"] : "");
 
 	/*typeof element != "undefined" ? 
 			  typeof element["address"] != "undefined" ? 

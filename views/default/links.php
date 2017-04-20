@@ -24,17 +24,22 @@
                 <h2 class="text-left"><a href="default/view/page/keywords/dir/docs|panels" class="lbhp">MOTs CLEFS</a></h2>
                 <h2 class="text-left"><a href="default/view/page/about/dir/docs|panels" class="lbhp">A propos</a></h2>
                 <h2 class="text-left"><a href="default/view/page/history/dir/docs|panels" class="lbhp">Histoire</a></h2>
+                <h2 class="text-left"><a href="default/view/page/explain/dir/docs|panels" class="lbhp"> FAQ </a></h2>
                 <h2 class="text-left"><a href="default/view/page/5w/dir/docs|panels" class="lbhp"> W W W W W </a></h2>
             </div>
             <div class="col-xs-4">
                 <h1><span class="text-red">CO</span>NSTRUIRE</h1>
                 <h2 class="text-left"><a href="default/view/page/roadmap/dir/docs|panels" class="lbhp">ROADMAP</a></h2>
+                <h2 class="text-left"><a href="default/view/page/smarterre/dir/docs|comprendre" class="lbhp ">Smarterre</a></h2>
                 <h2 class="text-left"><a href="#default.view.page.index.dir.docs" data-dismiss="modal" class="lbh">DOCS</a></h2>
-                <h2 class="text-left"><a href="default/view/page/partners/dir/docs|panels" class="lbhp ">PARTENAIRES</a></h2>
+                <h2 class="text-left"><a href="#modal.default.view.page.index.dir.docs" data-dismiss="modal" class="lbh">MODOCS</a></h2>
+                <h2 class="text-left"><a href="default/view/page/partners/dir/docs|panels" class="lbhp ">Communauté</a></h2>
                 <h2 class="text-left"><a href="default/view/page/contact/dir/docs|panels" class="lbhp ">CONTACT</a></h2>
+
             </div>
             <div class="col-xs-4">
                 <h1><span class="text-red">CO</span>LLABORER</h1>
+                <h2 class="text-left"><a href="default/view/page/openatlas/dir/docs|panels" class="lbhp ">Asso Open Atlas</a></h2>
                 <h2 class="text-left"><a href="default/view/page/mention/dir/docs|panels" class="lbhp ">mention</a></h2>
                 <h2 class="text-left"><a href="default/view/page/peopleTalk/dir/docs|panels" class="lbhp ">people talk</a></h2>
                 <h2 class="text-left"><a href="default/view/page/policies/dir/docs|panels" class="lbhp ">éthique</a></h2>
@@ -44,6 +49,7 @@
             <div class="col-xs-12"  style="margin-top:50px">
                 <div class="col-xs-6">
                     <h1><span class="text-red">CO</span>DER</h1>
+                    <h2 class="text-right"><a href="api" target="_blank" >API</a></h2>
                     <h2 class="text-right"><a href="default/view/page/help/dir/docs|panels" class="lbhp">HELP</a></h2>
                     <h2 class="text-right"><a href="https://chat.lescommuns.org/channel/co_dev_open" target="_blank">Rejoindre la dev</a></h2>
                     <h2 class="text-right"><a href="https://github.com/orgs/pixelhumain" target="_blank">GITHUB</a></h2>
@@ -77,15 +83,15 @@
 
             <div class="col-xs-12"  style="margin-top:50px">
                 <div class="col-xs-4">
-                    <h1><span class="text-red">CO</span>LIBérer</h1>
-                </div>
-
-                <div class="col-xs-4">
                     <h1><span class="text-red">CO</span>MMUNS</h1>
                 </div>
 
                 <div class="col-xs-4">
-                    <h1><span class="text-red">CO</span>NSTITUER</h1>
+                    <h1><span class="text-red">CO</span>MMUNAUTé</h1>
+                </div>
+
+                <div class="col-xs-4">
+                    <h1><span class="text-red">CO</span>MMUNES</h1>
                 </div>
             </div>
         </div>

@@ -377,4 +377,3 @@ function hideNewLiveFeedForm(){
 }
 
 </script>
-</script>

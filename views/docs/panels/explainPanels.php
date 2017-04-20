@@ -1,6 +1,6 @@
 
 
-	<div class="explainCommunectMe <?php echo $class?> hide">
+	<div class="explainCommunectMe <?php echo $class?> col-xs-4">
 		
 		<h1 class="homestead explainTitle blue "><i class="fa fa-home"></i> Communectez-moi</h1>
 		<center class="caretExplain blue"><i class="fa fa-caret-down"></i><br/></center>
@@ -20,7 +20,7 @@
 		</div>
 	</div>
 
-	<div class="explainDirectory <?php echo $class?> hide">
+	<div class="explainDirectory <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle"><i class="fa fa-connectdevelop"></i> Outil de recherche</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -44,14 +44,14 @@
 		</div>
 	</div>
 
-	<div class="explainMyDirectory <?php echo $class?> hide">
+	<div class="explainMyDirectory <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Mon Répertoire </h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
 		</div>
 	</div>
 
-	<div class="explainNews <?php echo $class?> hide">
+	<div class="explainNews <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle"><i class="fa fa-rss"></i> L'actualité Locale </h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -67,7 +67,7 @@
 		</div>
 	</div>
 
-	<div class="explainAgenda <?php echo $class?> hide">
+	<div class="explainAgenda <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle"><i class="fa fa-calendar"></i> Les événements Locaux</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -82,7 +82,7 @@
 		</div>
 	</div>
 
-	<div class="explainOrganization <?php echo $class?> hide">
+	<div class="explainOrganization <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Des organisations locales</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -95,7 +95,7 @@
 		</div>
 	</div>
 
-	<div class="explainCommune <?php echo $class?> hide">
+	<div class="explainCommune <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Les Communes</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -112,7 +112,7 @@
 		</div>
 	</div>
 	
-	<div class="explainCommuneJoin <?php echo $class?> hide">
+	<div class="explainCommuneJoin <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Devenir une Commune adhérente</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -127,7 +127,7 @@
 		</div>
 	</div>
 
-	<div class="explainCommuns <?php echo $class?> hide">
+	<div class="explainCommuns <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Les Biens Communs</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -137,7 +137,7 @@
 		</div>
 	</div>
 
-	<div class="explainHelpUs <?php echo $class?> hide">
+	<div class="explainHelpUs <?php echo $class?> col-xs-4">
 
 		<h1 class="homestead explainTitle"><i class="fa fa-bullhorn"></i> Pour un meilleur outil </h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
@@ -153,7 +153,7 @@
 	</div>
 
 
-	<div class="explainConnect <?php echo $class?> hide">
+	<div class="explainConnect <?php echo $class?> col-xs-4">
 
 		<h1 class="homestead explainTitle"><i class="fa fa-sign-in"></i> Se connecter</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
@@ -170,7 +170,7 @@
 	</div>
 
 
-	<div class="explainRegister <?php echo $class?> hide">
+	<div class="explainRegister <?php echo $class?> col-xs-4">
 
 		<h1 class="homestead explainTitle"><i class="fa fa-plus-circle"></i> S'inscrire</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
@@ -189,7 +189,7 @@
 		</div>
 	</div>
 
-	<div class="explainLinking <?php echo $class?> hide">
+	<div class="explainLinking <?php echo $class?> col-xs-4">
 
 		<h1 class="homestead explainTitle">Créer du lien localement</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
@@ -202,56 +202,56 @@
 		</div>
 	</div>
 
-	<div class="explainAssociatif <?php echo $class?> hide">
+	<div class="explainAssociatif <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Associatif</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
 			Donner aux associations une vitrine et un outil de valorisation de leurs actions. Utiliser un outil de cartographie des compétence au sein d’un groupe...
 		</div>
 	</div>
-	<div class="explainEconomie <?php echo $class?> hide">
+	<div class="explainEconomie <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Economie</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
 			Référencement des entreprises et des compétences locales. La valorisation des circuits courts de distribution favorise l'économie locale...
 		</div>
 	</div>
-	<div class="explainTerritoire <?php echo $class?> hide">
+	<div class="explainTerritoire <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Territoire</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
 			Cartographie des compétences, des ressources, des projets, des acteurs d’un territoire, d’un groupe, d’une association ou d’une entreprise...
 		</div>
 	</div>
-	<div class="explainTourisme <?php echo $class?> hide"> 
+	<div class="explainTourisme <?php echo $class?> col-xs-4"> 
 		<h1 class="homestead explainTitle">Tourisme</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc"> 
 			Les habitants d’une commune sont ceux qui la connaissent et la valorisent le mieux ...
 		</div>
 	</div>
-	<div class="explainAlimentation <?php echo $class?> hide">
+	<div class="explainAlimentation <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Alimentation</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
 			Liens étroits avec les associations locales (permaculture…), créations de projets de fermes pédagogiques...
 		</div>
 	</div>
-	<div class="explainAgriculture <?php echo $class?> hide">
+	<div class="explainAgriculture <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Agriculture</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
 			Mise en évidence des producteurs locaux, potager à la maison, création de projets de maraîchages collectifs / jardins participatifs ...
 		</div>
 	</div>
-	<div class="explainCulture <?php echo $class?> hide">
+	<div class="explainCulture <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Culture</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
 			Partage d'informations sur l'animation du territoire, création d'événements, échanges de services (ex : cours de guitare contre des cours de chant) ...
 		</div>
 	</div>
-	<div class="explainEmploi <?php echo $class?> hide">
+	<div class="explainEmploi <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Emploi</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -259,7 +259,7 @@
 		</div>
 	</div>
 
-<div class="explainOpendata <?php echo $class?> hide">
+<div class="explainOpendata <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Opendata</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -273,7 +273,7 @@
 		</div>
 	</div>
 
-	<div class="explainCartographiedeReseau <?php echo $class?> hide">
+	<div class="explainCartographiedeReseau <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Cartographie de Réseau</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -285,7 +285,7 @@
 		</div>
 	</div>
 
-	<div class="explainDemoPart <?php echo $class?> hide">
+	<div class="explainDemoPart <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Démocratie Participative</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -295,7 +295,7 @@
 		</div>
 	</div>
 
-	<div class="explainCommunecter <?php echo $class?> hide">
+	<div class="explainCommunecter <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Communecter</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -305,7 +305,7 @@
 		</div>
 	</div>
 	
-	<div class="explainOpenSource <?php echo $class?> hide">
+	<div class="explainOpenSource <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle blue">Opensource</h1>
 		<center class="caretExplain blue"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -317,7 +317,7 @@
 		</div>
 	</div>
 
-	<div class="explainProxicity <?php echo $class?> hide">
+	<div class="explainProxicity <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Proxicité</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -327,7 +327,7 @@
 		</div>
 	</div>
 
-	<div class="explainCodeLogiciel <?php echo $class?> hide">
+	<div class="explainCodeLogiciel <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Code Logiciel</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -337,7 +337,7 @@
 		</div>
 	</div>
 
-	<div class="explainConnectedTerritory <?php echo $class?> hide">
+	<div class="explainConnectedTerritory <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle blue">Territoire Connecté</h1>
 		<center class="caretExplain blue"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -347,7 +347,7 @@
 		</div>
 	</div>
 
-	<div class="explainLocalActors <?php echo $class?> hide">
+	<div class="explainLocalActors <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Acteurs Locaux</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -357,7 +357,7 @@
 		</div>
 	</div>
 
-	<div class="explainCollabEco <?php echo $class?> hide">
+	<div class="explainCollabEco <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Economie collaborative</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -369,7 +369,7 @@
 		</div>
 	</div>
 
-	<div class="explainCitoyens <?php echo $class?> hide">
+	<div class="explainCitoyens <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Citoyens</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -379,7 +379,7 @@
 		</div>
 	</div>
 
-	<div class="explainAssociation <?php echo $class?> hide">
+	<div class="explainAssociation <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Associations</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -389,7 +389,7 @@
 		</div>
 	</div>
 
-	<div class="explainSocietyNetwork <?php echo $class?> hide">
+	<div class="explainSocietyNetwork <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle blue">Réseau sociétal</h1>
 		<center class="caretExplain blue"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -405,7 +405,7 @@
 		</div>
 	</div>
 
-	<div class="explainCTK <?php echo $class?> hide">
+	<div class="explainCTK <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle blue">Citizen Tool Kit</h1>
 		<center class="caretExplain blue"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -418,7 +418,7 @@
 		</div>
 	</div>
 
-	<div class="explainCodeSocial <?php echo $class?> hide">
+	<div class="explainCodeSocial <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Code Social</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -447,7 +447,7 @@
 		</div>
 	</div>
 
-	<div class="explainGlocal <?php echo $class?> hide">
+	<div class="explainGlocal <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Glocal</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -457,7 +457,7 @@
 		</div>
 	</div>
 
-	<div class="explainCommunecteur <?php echo $class?> hide">
+	<div class="explainCommunecteur <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle blue">Communecteur</h1>
 		<center class="caretExplain blue"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -485,7 +485,7 @@
 		</div>
 	</div>
 	
-	<div class="explainOpenAtlas <?php echo $class?> hide">
+	<div class="explainOpenAtlas <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle blue">L'association Open Atlas</h1>
 		<center class="caretExplain blue"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -514,7 +514,7 @@
 		</div>
 	</div>
 
-	<div class="explainDeveloper <?php echo $class?> hide">
+	<div class="explainDeveloper <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Developpeurs</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -525,7 +525,7 @@
 	</div>
 
 
-	<div class="explainEditor <?php echo $class?> hide">
+	<div class="explainEditor <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Editeur</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -535,7 +535,7 @@
 		</div>
 	</div>
 
-	<div class="explainDesigner <?php echo $class?> hide">
+	<div class="explainDesigner <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Designeurs et Artistes</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -546,7 +546,7 @@
 		</div>
 	</div>
 
-	<div class="explainContributor <?php echo $class?> hide">
+	<div class="explainContributor <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Contributeur</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -557,7 +557,7 @@
 		</div>
 	</div>
 	
-	<div class="explainCommunectorDocs <?php echo $class?> hide">
+	<div class="explainCommunectorDocs <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Boite à Outil Communecteur</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -583,7 +583,7 @@
 		</div>
 	</div>
 
-	<div class="explainMOAC <?php echo $class?> hide">
+	<div class="explainMOAC <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">M.O.A.C<br/>Massifs Offline ou Online Apéros Citoyens</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -594,7 +594,7 @@
 		</div>
 	</div>
 
-	<div class="explainCrowdfundingLetters <?php echo $class?> hide">
+	<div class="explainCrowdfundingLetters <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">CrowdFunding letter Collection</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -609,7 +609,7 @@
 		</div>
 	</div>
 
-	<div class="explainGamification <?php echo $class?> hide">
+	<div class="explainGamification <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle"> Gamification (ou ludification) Citoyenne </h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -619,7 +619,7 @@
 		</div>
 	</div>
 
-	<div class="explainPixelHumain <?php echo $class?> hide">
+	<div class="explainPixelHumain <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle blue">Pixel Humain</h1>
 		<center class="caretExplain blue"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -634,7 +634,7 @@
 		</div>
 	</div>
 
-	<div class="explainBeta <?php echo $class?> hide">
+	<div class="explainBeta <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle">Version Béta</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -647,7 +647,7 @@
 		</div>
 	</div>
 
-	<div class="explainRoadMap <?php echo $class?> hide">
+	<div class="explainRoadMap <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle blue"> <i class="fa fa-sitemap"></i> Roadmap</h1>
 		<center class="caretExplain blue"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -713,7 +713,7 @@
 		</div>
 	</div>
 
-	<div class="explainODB <?php echo $class?> hide">
+	<div class="explainODB <?php echo $class?> col-xs-4">
 		<h1 class="homestead explainTitle"> ODB : Open dataBase</h1>
 		<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">
@@ -731,7 +731,7 @@
 		</div>
 	</div>
 
-	<div class="explainTransition <?php echo $class?> hide">
+	<div class="explainTransition <?php echo $class?> col-xs-4">
 			<h1 class="homestead explainTitle">Transition</h1>
 			<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 			<div class="explainDesc">
@@ -750,7 +750,7 @@
 		</div>
 	</div>
 
-	<div class="explainYourData <?php echo $class?> hide">
+	<div class="explainYourData <?php echo $class?> col-xs-4">
 			<h1 class="homestead explainTitle">Vos Données</h1>
 			<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 			<div class="explainDesc">
@@ -762,7 +762,7 @@
 		</div>
 	</div>
 
-	<div class="explainSurveys <?php echo $class?> hide">
+	<div class="explainSurveys <?php echo $class?> col-xs-4">
 			<h1 class="homestead explainTitle">Sondage, Propositions</h1>
 			<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 			<div class="explainDesc">
@@ -793,7 +793,7 @@
 		</div>
 	</div>
 
-	<div class="explainActions <?php echo $class?> hide">
+	<div class="explainActions <?php echo $class?> col-xs-4">
 			<h1 class="homestead explainTitle">Actions</h1>
 			<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 			<div class="explainDesc">
@@ -813,7 +813,7 @@
 		</div>
 	</div>
 
-	<div class="qrCodeExplain <?php echo $class?> hide">
+	<div class="qrCodeExplain <?php echo $class?> col-xs-4">
 			<h1 class="homestead explainTitle">QR CODES</h1>
 			<center class="caretExplain"><i class="fa fa-caret-down"></i><br/></center>
 			<div class="explainDesc">

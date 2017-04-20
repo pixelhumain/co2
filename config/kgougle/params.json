@@ -30,11 +30,11 @@
                   "mainTitle" : "Référencer une page",
                   "placeholderMainSearch" : ""},
 
-      	"#media":
+      	"#actu":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
                   "open" : true,
-                  "subdomain" : "media", 
+                  "subdomain" : "actu", 
                   "subdomainName" : "Actu",
                   "hash" : "#app.media",
                   "icon" : "newspaper-o", 

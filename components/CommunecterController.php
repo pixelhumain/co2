@@ -487,7 +487,7 @@ class CommunecterController extends Controller
       "updatesckdevices"  => array('href' => "/ph/communecter/thing/updatesckdevices", "public" => true ),
       "manage"          => array('href' => "/ph/communecter/thing/manage","public"=>true),
       "getsckdataincodb" => array('href' => "/ph/communecter/thing/getsckdataincodb","public"=>true),
-      "deletesckdataincodb" => array('href' => "/ph/communecter/thing/deletesckdataincodb","public"=>true),
+      "synthetizesckdata" => array('href' => "/ph/communecter/thing/synthetizesckdata","public"=>true),
     ),
   );
 

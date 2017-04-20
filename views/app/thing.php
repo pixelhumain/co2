@@ -49,7 +49,7 @@ $communexion = CO2::getCommunexionCookies();
 #sub-menu-left.subsub{
   min-width: 180px;
 }
-#page #dropdown_search{
+#page #dropdown_thing{
   min-height:500px;
         /*margin-top:30px;*/
 }
@@ -72,12 +72,11 @@ $communexion = CO2::getCommunexionCookies();
 
 </style>
 
-<div class="col-md-12 col-sm-12 col-xs-12 container bg-white no-padding shadow" id="thing" style="min-height:700px;">
-<?php var_dump($_GET) ?>
+<div class="col-md-12 col-sm-12 col-xs-12 container bg-white no-padding shadow" id="content-thing" style="min-height:700px;">
 
-  <div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
-   <div class="col-lg-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub thingFilters" id="sub-menu-left">
+ <div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page">
+  <div class="col-lg-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub thingFilters" id="sub-menu-left">
     <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
               <i class="fa fa-object-group"></i> Objets CO2
     </h4>
@@ -94,7 +93,7 @@ $communexion = CO2::getCommunexionCookies();
         } 
         else {$setbutton=false;}
         if (is_array($action) && $setbutton==true){ ?>
-         <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+         <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 " style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
           <i class="fa fa-<?php echo @$action["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
          </button><br>
          <?php foreach ($action["subcat"] as $key2 => $action2) { ?>
@@ -113,7 +112,7 @@ $communexion = CO2::getCommunexionCookies();
     <?php 
       $currentSection = 1;
       foreach ($thing["sections"] as $key => $section) { ?>
-        <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
+        <div class="col-md-3 col-sm-4 col-xs-6 no-padding">
         <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
           data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>"       data-type="thing"
           style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
@@ -123,8 +122,9 @@ $communexion = CO2::getCommunexionCookies();
     <?php } ?>
     <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
   </div>
-  
-     
+  <div class="col-sm-10" id="dropdown_thing"></div>
+ 
+ </div>    
 </div>
 
 
@@ -158,19 +158,21 @@ function bindLeftMenuFilters () {
         $(".keycat").addClass("hidden");
         $(this).addClass("active");
 
+
         section = $(this).data("type-anc");
         sectionKey = $(this).data("key");
         //alert("section : " + section);
 
-        if( sectionKey == "forsale" || sectionKey == "forrent"){
-            $("#section-price").show(200);
-            KScrollTo("#section-price");
+        if( sectionKey == "smartCitizen"){
+          //$(".btn-select-category-1[data-categ= ]");
+            
+            KScrollTo("#dropdown_thing");
         }
         else {
             $("#section-price").hide();
             $("#priceMin").val("");
             $("#priceMax").val("");
-            KScrollTo("#dropdown_search");
+            KScrollTo("#dropdown_thing");
         }
 
         /*

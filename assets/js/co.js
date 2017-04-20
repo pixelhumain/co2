@@ -600,7 +600,14 @@ var url = {
 		"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
 		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
 		"#opendata" : {"alias":"#data.index"},
+		"#thing.graph" : {title:'GRAPH IOT', icon : 'fa-line-chart'},
+		"#thing.manage" : {title:'MANAGE IOT', icon : 'fa-database'},
+		"#thing.updatesckdevices" : {title:'UPDATE SCK', icon : 'fa-database'},
+		"#thing.scklastestreadings" : {title:'LASTEST READING SCK', icon : 'fa-database'},
+		"#thing.getsckdataincodb" : {title:'DATA RECORD SCK', icon : 'fa-database'},
+		"#thing.synthetizesckdata" : {title:'SYNTHETIZE RECORD SCK', icon : 'fa-database'},
 		"#search" : { "title":'SEARCH AND FIND', "icon" : 'map-search', "hash" : "#default.directory", "preaction":function( hash ){ return searchByHash(hash);} },
+		
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"
 		/* "s","v","a", "r",*/
@@ -960,7 +967,8 @@ function  processingBlockUi() {
 }
 function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
 	mylog.log("showAjaxPanel",url,"TITLE",title,urlObj);	
-	var dest = ( typeof urlObj == "undefined" || ( typeof urlObj.useHeader != "undefined" ) ) ? themeObj.mainContainer : "#content-social" ;
+	//var dest = ( typeof urlObj == "undefined" || ( typeof urlObj.useHeader != "undefined" ) ) ? themeObj.mainContainer : "#content-social" ;
+	var dest =themeObj.mainContainer;
 	hideScrollTop = false;
 
 	showNotif(false);

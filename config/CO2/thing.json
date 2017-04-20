@@ -8,8 +8,8 @@
             "color":"azure",
             "filter" : "sckFilters"
         },
-        "COPI": {
-            "label":"COPI",      
+        "CO PI": {
+            "label":"CO PI",      
             "key" : "copi",     
             "icon" : "clone",
             "section":2,

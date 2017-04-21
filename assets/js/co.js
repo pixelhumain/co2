@@ -968,8 +968,8 @@ function  processingBlockUi() {
 function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
 	mylog.log("showAjaxPanel",url,"TITLE",title,urlObj);	
 
-	var dest = ( typeof urlObj == "undefined" || ( typeof urlObj.useHeader != "undefined" ) ) ? themeObj.mainContainer : ".page-content" ;
-	//var dest = themeObj.mainContainer;
+	//var dest = ( typeof urlObj == "undefined" || ( typeof urlObj.useHeader != "undefined" ) ) ? themeObj.mainContainer : ".page-content" ;
+	var dest = themeObj.mainContainer;
 	hideScrollTop = false;
 
 	showNotif(false);

@@ -102,7 +102,7 @@ var tagsFilterListHTML = "";
 var scopesFilterListHTML = "";
 function buildTimeLine (news, indexMin, indexMax)
 {
-	mylog.log("-----------------buildTimeLine----------------------");
+	mylog.log("-----------------buildTimeLine Editable Test----------------------");
 	if (dateLimit==0){
 		//$(".newsTL").html('<div class="spine"></div>');
 		$(".newsFeedNews, #backToTop, #footerDropdown").remove();

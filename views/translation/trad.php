@@ -79,6 +79,7 @@ var trad = {
 "events":"<?php echo Yii::t("common","events"); ?>",
 "people":"<?php echo Yii::t("common","people"); ?>",
 "citoyens":"<?php echo Yii::t("common","citoyens"); ?>",
+"person":"<?php echo Yii::t("common","person"); ?>",
 "followers":"<?php echo Yii::t("common","followers"); ?>",
 "address" : "<?php echo Yii::t("common","Address") ?>",
 "classified" : "<?php echo Yii::t("common","classified") ?>",

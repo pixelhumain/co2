@@ -1203,6 +1203,40 @@ var directory = {
 		return str;
     },
     // ********************************
+    // Contact DIRECTORY PANEL
+    // ********************************
+    contactPanelHtml : function(params, key){
+    	mylog.log("-----------contactPanelHtml", params);
+	    str = "";  
+	    /*str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10'>";
+	      str += "<div class='searchEntity'>";
+	        str += '<ul class="nav navbar-nav btn-params-directory">';
+	          str += '<li class="text-left">';
+	            str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
+	                'class="bg-white tooltips" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
+	              str += '<i class="fa fa-pencil"></i>';
+	            str += '</a>';
+	          str += '</li>';
+	          str += '<li class="text-left">';
+	            str += '<a href="javascript:;" onclick="removeUrl(\''+key+'\');" class="bg-white tooltips" '+
+	                'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+	              str += '<i class="fa fa-trash"></i>';
+	            str += '</a>';
+	          str += '</li>';
+	        str += '</ul>';
+
+	        str += '<a href="'+params.url+'" target="_blank" class="text-dark tooltips col-xs-8"'+
+	            'data-toggle="tooltip" data-placement="top" data-original-title="'+params.url+'" >';
+	          str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
+	            str += '<h4 class="panel-title text-dark pull-left">'+params.title+'</h4>';
+	            str += '<br/><span class="" style="font-size: 11px !important;">'+params.type+'</span>';
+	          str += "</div>";
+	        str += '</a>';
+	      str += "</div>";
+	    str += "</div>";*/
+	    return str;
+    },
+    // ********************************
     // ROOMS DIRECTORY PANEL
     // ********************************
     roomsPanelHtml : function(params){
@@ -1471,7 +1505,9 @@ var directory = {
 
           }else{
             if(contentType == "urls")
-                  str += directory.urlPanelHtml(params, i);
+                str += directory.urlPanelHtml(params, i);
+            if(contentType == "contacts")
+                str += directory.contactPanelHtml(params, i);
           }
         }); //end each
         mylog.log("END -----------showResultsDirectoryHtml ("+str.length+")")

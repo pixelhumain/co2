@@ -29,8 +29,7 @@ class AppController extends CommunecterController {
 
 
 	public function actionIndex(){
-        var_dump("expression");
-		$CO2DomainName = isset( Yii::app()->params["CO2DomainName"]) ? 
+        $CO2DomainName = isset( Yii::app()->params["CO2DomainName"]) ? 
 								Yii::app()->params["CO2DomainName"] : "CO2";
 
         Yii::app()->theme = "CO2";

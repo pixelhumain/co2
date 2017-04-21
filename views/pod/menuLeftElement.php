@@ -36,7 +36,7 @@
 	$cssAnsScriptFilesModule = array(
 		//Data helper
 		'/js/dataHelpers.js',
-		'/js/postalCode.js',
+		//'/js/postalCode.js',
 		'/js/activityHistory.js',
 		'/js/news/index.js',
 		'/js/default/editInPlace.js',
@@ -184,7 +184,7 @@
 	<?php } ?>
 
 	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
-	<li class=""><a href="javascript:" class=""><i class="fa fa-envelope"></i> Nous contacter</a></li>
+	<li class=""><a href="javascript:" id="btn-start-contacts" class=""><i class="fa fa-envelope"></i> Nous contacter</a></li>
 	<?php } ?>
 	             
 

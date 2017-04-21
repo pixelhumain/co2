@@ -368,7 +368,7 @@
 	    	if(@$needs) $params["needs"] = $needs;
 	    	if(@$projects) $params["projects"] = $projects;*/
 
-	    	$this->renderPartial('../pod/ficheInfoElementCO2', $params ); 
+	    	$this->renderPartial('../pod/menuLeftElement', $params ); 
 	    ?>
 
 		
@@ -533,7 +533,7 @@ if( $type != Person::COLLECTION)
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
     var liveScopeType = "";
-    var subView="<?php echo @$subview; ?>";
+    var subView="<?php echo @$_GET['view']; ?>";
     var hashUrlPage="#page.type."+contextData.type+".id."+contextData.id;
     var cropResult;
 
@@ -561,6 +561,10 @@ if( $type != Person::COLLECTION)
 				loadEditChart();
 			else if(subView=="detail")
 				loadDetail();
+			else if(subView=="urls")
+				loadUrls();
+			else if(subView=="contacts")
+				loadContacts();
 		} else
 			loadNewsStream(true);
 
@@ -768,8 +772,13 @@ if( $type != Person::COLLECTION)
    		});
 
    		$("#btn-start-urls").click(function(){
-			history.pushState(null, "New Title", hashUrlPage+".view.detail");
+			history.pushState(null, "New Title", hashUrlPage+".view.urls");
 			loadUrls();
+		});
+
+   		$("#btn-start-contacts").click(function(){
+			history.pushState(null, "New Title", hashUrlPage+".view.contacts");
+			loadContacts();
 		});
 
 	}
@@ -792,32 +801,38 @@ if( $type != Person::COLLECTION)
 		var s = (n>1) ? "s" : "";
 		var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
 		if(dataName == "follows")	{ html += elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
-		if(dataName == "followers")	{ html += countData + " <b>abonné"+s+"</b> à " + elementName; }
-		if(dataName == "members")	{ html += elementName + " est composé de " + countData + " <b>membre"+s+"</b>"; }
-		if(dataName == "attendees")	{ html += countData + " <b>invité"+s+"</b> à l'événement " + elementName; }
-		if(dataName == "contributors")	{ html += countData + " <b>contributeur"+s+"</b> au projet " + elementName; }
+		else if(dataName == "followers")	{ html += countData + " <b>abonné"+s+"</b> à " + elementName; }
+		else if(dataName == "members")	{ html += elementName + " est composé de " + countData + " <b>membre"+s+"</b>"; }
+		else if(dataName == "attendees")	{ html += countData + " <b>invité"+s+"</b> à l'événement " + elementName; }
+		else if(dataName == "contributors")	{ html += countData + " <b>contributeur"+s+"</b> au projet " + elementName; }
 		
-		if(dataName == "events"){ 
+		else if(dataName == "events"){ 
 			if(type == "events"){
 				html += elementName + " est composé de " + countData+" <b> sous-événement"+s; 
 			}else{
 				html += elementName + " participe à " + countData+" <b> événement"+s; 
 			}
 		}
-		if(dataName == "organizations")	{ html += elementName + " est membre de " + countData+" <b>organisation"+s; }
-		if(dataName == "projects")		{ html += elementName + " contribue à " + countData+" <b>projet"+s }
+		else if(dataName == "organizations")	{ html += elementName + " est membre de " + countData+" <b>organisation"+s; }
+		else if(dataName == "projects")		{ html += elementName + " contribue à " + countData+" <b>projet"+s }
 
-		if(dataName == "collections"){ html += countData+" <b>collection"+s+"</b> de " + elementName; }
-		if(dataName == "poi"){ html += countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
-		if(dataName == "classified"){ html += countData+" <b>annonce"+s+"</b> créée"+s+" par " + elementName; }
+		else if(dataName == "collections"){ html += countData+" <b>collection"+s+"</b> de " + elementName; }
+		else if(dataName == "poi"){ html += countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
+		else if(dataName == "classified"){ html += countData+" <b>annonce"+s+"</b> créée"+s+" par " + elementName; }
 
-		if(dataName == "needs"){ html += countData+" <b>besoin"+s+"</b> de " + elementName; }
+		else if(dataName == "needs"){ html += countData+" <b>besoin"+s+"</b> de " + elementName; }
 
-		if(dataName == "dda"){ html += countData+" <b>proposition"+s+"</b> de " + elementName; }
+		else if(dataName == "dda"){ html += countData+" <b>proposition"+s+"</b> de " + elementName; }
 
-		if(dataName == "urls"){ 
+		else if(dataName == "urls"){ 
 			html += elementName + " a " + countData+" <b> lien"+s;
 			html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="elementLib.openForm ( \'url\',\'parentUrl\')">';
+	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
+		}
+
+		else if(dataName == "contacts"){ 
+			html += elementName + " a " + countData+" <b> point de contact"+s;
+			html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="elementLib.openForm ( \'contactPoint\',\'contact\')">';
 	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
 		}
 
@@ -932,6 +947,17 @@ if( $type != Person::COLLECTION)
 					'/id/'+contextData.id,
 					function(data){ 
 						displayInTheContainer(data, "urls", "external-link", "urls");
+					}
+		,"html");
+	}
+
+	function loadContacts(){
+		showLoader('#central-container');
+		// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
+		getAjax('', baseUrl+'/'+moduleId+'/element/getcontacts/type/'+contextData.type+
+					'/id/'+contextData.id,
+					function(data){ 
+						displayInTheContainer(data, "contacts", "envelope", "contacts");
 					}
 		,"html");
 	}

@@ -519,12 +519,12 @@ if( $type != Person::COLLECTION)
 
 <script type="text/javascript">
 
-	//var element = <?php echo json_encode(Element::getElementForJS(@$element)); ?>;
+	//var element = <?php //echo json_encode(Element::getElementForJS(@$element)); ?>;
     //var elementName = "<?php //echo @$element["name"]; ?>";
     //var contextType = "<?php //echo @$type; ?>";
     //var contextId = "<?php //echo @(string)$element['_id'] ?>";
     //var contextData = { "id":contextId, "type":contextType };
-    var contextData = <?php echo json_encode(Element::getElementForJS(@$element)); ?>;
+    var contextData = <?php echo json_encode(Element::getElementForJS(@$element, @$type)); ?>;
 
     //var members = <?php echo json_encode(@$members); ?>;
     var params = <?php echo json_encode(@$params); ?>;

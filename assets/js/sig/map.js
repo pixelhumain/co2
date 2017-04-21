@@ -730,7 +730,8 @@
 				if(len >= 1){
 					$.each(data, function (key, value){ //mylog.log("type SIG ?"); mylog.dir(value);
 						var oneData = value;
-						if((value.typeSig == "news" || 
+						if( notEmpty(value) &&
+							(value.typeSig == "news" || 
 							value.typeSig == "idea" || 
 							value.typeSig == "question" || 
 							value.typeSig == "announce" || 

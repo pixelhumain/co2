@@ -183,13 +183,9 @@
 				<div id="fixeAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
 					<?php
 						$fixe = '<i>'.Yii::t("common","Not specified").'</i>';;
-						if( !empty($element["telephone"]["fixe"])){
-							$fixe = "";
-							foreach ($element["telephone"]["fixe"] as $key => $num) {
-								$fixe .= ($fixe != "") ? ", ".trim($num) : trim($num);
-							}
-							
-						}	
+						if( !empty($element["telephone"]["fixe"]))
+							$fixe = ArrayHelper::arrayToString($element["telephone"]["fixe"]);
+						
 						echo $fixe;
 					?>	
 				</div>
@@ -201,13 +197,8 @@
 				<div id="mobileAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
 					<?php
 						$mobile = '<i>'.Yii::t("common","Not specified").'</i>';;
-						if( !empty($element["telephone"]["mobile"])){
-							$mobile = "";
-							foreach ($element["telephone"]["mobile"] as $key => $num) {
-								$mobile .= ($mobile != "") ? ", ".trim($num) : trim($num);
-							}
-							
-						}	
+						if( !empty($element["telephone"]["mobile"]))
+							$mobile = ArrayHelper::arrayToString($element["telephone"]["mobile"]);	
 						echo $mobile;
 					?>	
 				</div>
@@ -220,11 +211,7 @@
 					<?php
 						$fax = '<i>'.Yii::t("common","Not specified").'</i>';
 						if( !empty($element["telephone"]["fax"])){
-							$fax = "";
-							foreach ($element["telephone"]["fax"] as $key => $num) {
-								$fax .= ($fax != "") ? ", ".trim($num) : trim($num);
-							}
-						}	
+							$fax = ArrayHelper::arrayToString($element["telephone"]["fax"]);		
 						echo $fax;
 					?>
 				</div>

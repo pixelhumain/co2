@@ -3737,7 +3737,11 @@ function initKInterface(params){ console.log("initKInterface");
 
 
     $(".btn-show-map").off().click(function(){
-    	showMap();
+    	if(notEmpty(contextData) &&  location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+			getContextDataLinks()
+		else
+			showMap();
+		
     });
 
     bindLBHLinks();
@@ -3769,6 +3773,28 @@ function initKInterface(params){ console.log("initKInterface");
 
     KScrollTo(".main-container");
 
+}
+
+function getContextDataLinks(){
+	mylog.log("getContextDataLinks");
+	$.ajax({
+		type: "POST",
+		url: baseUrl+'/'+moduleId+"/element/getalllinks/type/"+contextData.type+"/id/"+contextData.id,
+		dataType: "json",
+		success: function(data){
+			mylog.log("getContextDataLinks data", data);
+			Sig.restartMap();
+			Sig.showMapElements(Sig.map, data);
+			showMap();
+		},
+		error: function (error) {
+			mylog.log("getContextDataLinks error findGeoposByInsee", error);
+			Sig.restartMap();
+			callbackFindByInseeError(error);
+			showMap();	
+		}
+			
+	});
 }
 
 $(document).ready(function() { 

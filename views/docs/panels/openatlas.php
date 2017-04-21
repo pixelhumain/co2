@@ -27,7 +27,7 @@
 
 <style type="text/css">
 	.keypane{
-		height: 280px;
+		height: 325px;
 		text-align: left
 	}
 </style>
@@ -40,13 +40,26 @@
 <div class="col-xs-4 keypane">
 	<h1><i class="text-red fa fa-cube"></i> PIXEL HUMAIN </h1>
 	<div>
-		Un collectif de 
-		<br/>Innovation au service des biens communs
-		<br/><u><a class="text-white" href="#" onclick="toastr.error('TODO : ajax form load form')"><i class="fa fa-mail"></i> Contact Us </a> </u>
-		<br/>Respectant un CODE SOCIAL ET LOGICIEL ouvert
-		<br/>Open Source, Semantique et Interopérable
-		<br/>PIxel Humain was not yet crowdfunded but has many fans all around the world. 
-		<br/>It is developed by open R & D by contributions of great minds across the globe.
+		Un collectif d'acteurs oeuvrant pour les communs
+		<br>l'ancien nom de communecter
+		<br>Innovation au service des biens communs
+		<br><u><a class="text-white" href="#" onclick="toastr.error('TODO : ajax form load form')"><i class="fa fa-mail"></i> Contact Us </a> </u>
+		<br>Respectant un CODE SOCIAL ET LOGICIEL ouvert
+		<br>Open Source, Semantique et Interopérable
+		<br>Le Lien entre le réél et le virtuel
+	</div>
+</div>
+
+<div class="col-xs-4 keypane">
+	<h1><img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" height=50> Communecter </h1>
+	<div>
+		Un Réseau Sociétale Libre et Open Source 
+		<br>un dispositif de réseau sociétal local catalyseur d'une synergie régionale, collective et solidaire reliant tous types d’acteurs (Entreprises, Associations, Collectivités et citoyens), tous domaines et objectifs confondus.
+		<br>La plateforme est un service d'aide à la population pour améliorer la valorisation des acteurs locaux pour produire un térritoire connecté.
+		<br>Un outil de communication entre citoyens et collectivités.
+		<br>Un outil de production et de visualisation d'open data pour mieux analyser et décider sur un térritoire.
+		<br>Une boite outil citoyenne pour encourager , faciliter et dynamiser l'implication citoyenne.
+		<br>le CTK : Citizen Tool Kit , Un socle technique et modulaire pour construire toutes sorte d'outils citoyens et administratifs spécialisés
 	</div>
 </div>
 
@@ -137,6 +150,6 @@
 	<h1><i class="text-red fa fa-book"></i> COopedia</h1>
 	<div>
 		R&D : Augmenter Wikipedia avec un référencement et une inteorpérabilité avec CO
-		<br/> Terrapedia : wikipedia territorial ouvert et contributif 
+		<br> Terrapedia : wikipedia territorial ouvert et contributif 
 	</div>
 </div>

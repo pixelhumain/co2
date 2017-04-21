@@ -769,7 +769,7 @@ var url = {
 		//alert("url.loadByHash"+hash);
 	    mylog.warn("url.loadByHash",hash,back);
 	    if( url.jsController(hash) ){
-	    	mylog.log("url.loadByHash >>> jsController",hash);
+	    	mylog.log("url.loadByHash >>> hash found",hash);
 	    }
 	    else if( hash.indexOf("#panel") >= 0 ){
 	    	panelName = hash.substr(7);
@@ -885,7 +885,7 @@ function markdownToHtml (str) {
 
 function checkMenu(urlObj, hash){
 	mylog.log("checkMenu *******************", hash);
-	mylog.dir(urlObj);
+	//mylog.dir(urlObj);
 	$(".menu-button-left").removeClass("selected");
 	if(typeof urlObj.menuId != "undefined"){ mylog.log($("#"+urlObj.menuId).data("hash"));
 		if($("#"+urlObj.menuId).attr("href") == hash)
@@ -967,8 +967,8 @@ function  processingBlockUi() {
 }
 function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
 	//alert("showAjaxPanel"+url);
-	mylog.log("showAjaxPanel",url,"TITLE",title,urlObj);	
-	var dest = ( typeof urlObj == "undefined" || ( typeof urlObj.useHeader != "undefined" ) ) ? themeObj.mainContainer : ".page-content" ;
+	mylog.log("showAjaxPanel",url,urlObj);	
+	var dest = ( typeof urlObj == "undefined" || ( typeof urlObj.useHeader != "undefined" ) ) ? themeObj.mainContainer : ".pageContent" ;
 	//var dest = themeObj.mainContainer;
 	hideScrollTop = false;
 //alert("showAjaxPanel"+dest);
@@ -990,13 +990,13 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 	showTopMenu(true);
 	userIdBefore = userId;
 	setTimeout(function(){
+		if( $(dest).length )
+		{
 		 getAjax(dest, baseUrl+'/'+moduleId+url, function(data){ 
 			
-			if( dest != themeObj.mainContainer ){
-				moduleMenu = $(".main-menu-app").html();
-				$(".intro-text").html(moduleMenu);
-				$(".main-menu-app").css("margin-bottom","0px");
-			}
+			if( dest != themeObj.mainContainer )
+				$("#subModuleTitle").html("");
+
 			//initNotifications(); 
 			
 			$(".modal-backdrop").hide();
@@ -1028,8 +1028,9 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
         			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
         		},null);
         	}*/
-
-		},"html");
+         },"html");
+		} else 
+			console.error( 'showAjaxPanel', themeObj.mainContainer, "doesn't exist" );
 	}, 400);
 }
 /*prevDbAccessCount = 0; 

@@ -687,6 +687,7 @@ function voteCheckAction(idVote, newsObj) {
 }
 
 function manageModeContext(id) {
+	mylog.log("manageModeContext");
 	listXeditables = [/*'#newsContent'+id,*/ '#newsTitle'+id];
 	if (mode == "view") {
 		//$('.editable-project').editable('toggleDisabled');
@@ -705,6 +706,7 @@ function manageModeContext(id) {
 }
 
 function initXEditable() {
+	mylog.log("initXEditable");
 	$.fn.editable.defaults.mode = 'inline';
 	$('.editable-news').editable({
     	url: baseUrl+"/"+moduleId+"/news/updatefield", //this url will not be used for creating new job, it is only for update

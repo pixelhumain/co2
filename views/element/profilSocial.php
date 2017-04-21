@@ -780,44 +780,7 @@ if( $type != Person::COLLECTION)
 		getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 					'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 					function(data){ 
-						var n=0;
-						$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
-						if(n>0){
-
-							var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
-											getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
-										"<hr></div>";
-
-							if(dataName != "collections"){
-								html += directory.showResultsDirectoryHtml(data);
-							}else{
-								$.each(data, function(col, val){
-									html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
-									$.each(val.list, function(key, elements){ 
-										html += directory.showResultsDirectoryHtml(elements, key);
-									});
-								});
-								
-							}
-							toogleNotif(false);
-
-							$("#central-container").html(html);
-							initBtnLink();
-							
-						}else{
-							var nothing = "Aucun";
-							if(dataName == "organizations" || dataName == "collections" || 
-								dataName == "follows" || dataName == "dda")
-								nothing = "Aucune";
-
-							var html =  "<div class='col-md-12 margin-bottom-15'>"+
-											getLabelTitleDir(dataName, dataIcon, nothing, n)+
-										"</div>";
-							$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
-																	"<i class='fa fa-ban'></i> Aucune donnée"+
-																"</span>");
-							toogleNotif(false);
-						}
+						displayInTheContainer(data, dataName, dataIcon);
 					}
 		,"html");
 	}
@@ -968,13 +931,13 @@ if( $type != Person::COLLECTION)
 		getAjax('', baseUrl+'/'+moduleId+'/element/geturls/type/'+contextData.type+
 					'/id/'+contextData.id,
 					function(data){ 
-						afficheContenaire(data, "urls", "external-link", "urls");
+						displayInTheContainer(data, "urls", "external-link", "urls");
 					}
 		,"html");
 	}
 
-	function afficheContenaire(data, dataName, dataIcon, contextType){ 
-		mylog.log("afficheContenaire",data, dataName, dataIcon, contextType)
+	function displayInTheContainer(data, dataName, dataIcon, contextType){ 
+		mylog.log("displayInTheContainer",data, dataName, dataIcon, contextType)
 		var n=0;
 		$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
 		if(n>0){

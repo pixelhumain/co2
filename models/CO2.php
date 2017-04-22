@@ -59,29 +59,31 @@ class CO2 {
             //print_r($citiesResult);
             $cities=array();
            //if(count($citiesResult)>1){
+            $levelMin="inseeCommunexion";
             foreach($citiesResult as $v){
-                if($v["insee"]==$insee)
+                if($v["insee"]==$insee){
                     $city=$v;
-                else
+                    $alternateName=$v["alternateName"];
+                    $inseeName=$v["alternateName"];
+                    if(count($city["postalCodes"])>1){
+                        $cities=[];
+                        $levelMin="cpCommunexion";
+                        foreach($city["postalCodes"] as $value){
+                            if($value["postalCode"]==$cp){
+                                $currentName=$cp;
+                                $alternateName=$value["name"];
+                                $cities[]=$value["postalCode"].", ".$value["name"];
+                            }else
+                                $cities[]=$value["postalCode"].", ".$value["name"];
+                        }
+                    }
+                }
+                else if($levelMin=="inseeCommunexion")
                     $cities[]=$v["postalCodes"][0]["postalCode"].", ".$v["alternateName"];
             }
             //} else
             //$city=$citiesResult;
-            $alternateName=$city["alternateName"];
-            $levelMin="inseeCommunexion";
-            $inseeName=$city["alternateName"];
             $currentName=(string)Yii::app()->request->cookies['communexionName'];
-            if(count($city["postalCodes"])>1){
-                foreach($city["postalCodes"] as $value){
-                    if($value["postalCode"]==$cp){
-                        $levelMin="cpCommunexion";
-                        $currentName=$cp;
-                        $alternateName=$value["name"];
-                    }else
-                        $cities[]=$value["postalCode"].", ".$value["name"];
-
-                }
-            }
             $communexion["values"] = array( "cityName"  =>$alternateName,
                                             "cityKey"   => City::getUnikey($city),
                                             "inseeName" => $inseeName,

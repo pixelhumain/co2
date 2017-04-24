@@ -102,7 +102,7 @@ var tagsFilterListHTML = "";
 var scopesFilterListHTML = "";
 function buildTimeLine (news, indexMin, indexMax)
 {
-	mylog.log("-----------------buildTimeLine----------------------");
+	mylog.log("-----------------buildTimeLine Editable Test----------------------");
 	if (dateLimit==0){
 		//$(".newsTL").html('<div class="spine"></div>');
 		$(".newsFeedNews, #backToTop, #footerDropdown").remove();
@@ -943,6 +943,7 @@ function saveNews(){
 
 			},
 			submitHandler : function(form) {
+				$("#btn-submit-form").prop('disabled', true);
 				$("#btn-submit-form i").removeClass("fa-arrow-circle-right").addClass("fa-circle-o-notch fa-spin");
 				successHandler2.show();
 				errorHandler2.hide();
@@ -1033,6 +1034,11 @@ function saveNews(){
 			    .done(function (data) {
 		    		if(data)
 		    		{
+		    			$("#form-news #get_url").val("");
+ 						$('textarea.mention').mentionsInput('reset');
+ 						$("#form-news #results").html("").hide();
+ 						$("#form-news #tags").select2('val', "");
+ 						showFormBlock(false);
 		    			$("#news-list").prepend(data);
 		    			//if the news is post in a different month than last news and current month
 		    			/*if(data.object.date.sec) {
@@ -1053,14 +1059,16 @@ function saveNews(){
 		    		}
 		    		else 
 		    		{
-		    			$.unblockUI();
+		    			//$.unblockUI();
 						toastr.error(data.msg);
 		    		}
 		    		$("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+					$("#btn-submit-form").prop('disabled', false);
 					return false;
 			    }).fail(function(){
 				   toastr.error("Something went wrong, contact your admin"); 
 				   $("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+				   $("#btn-submit-form").prop('disabled', false);
 			    });
 			}
 		};

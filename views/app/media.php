@@ -16,7 +16,7 @@
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
-                                "page" => "media") ); 
+                                "page" => "actu") ); 
 ?>
 
 <style>

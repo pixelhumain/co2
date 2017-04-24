@@ -6,7 +6,9 @@ function bindAboutPodElement() {
 		
 		$("#editElementDetail").on("click", function(){
 			switchModeElement();
-		});		
+		});
+
+					
 
 		$("#btn-update-password").off().on( "click", function(){
 			var form = {

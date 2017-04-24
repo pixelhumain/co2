@@ -1208,8 +1208,8 @@ var directory = {
     contactPanelHtml : function(params, key){
     	mylog.log("-----------contactPanelHtml", params);
 	    str = "";  
-	    str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10'>";
-			str += "<div class='searchEntity'>";
+	    str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 '>";
+			str += "<div class='searchEntity contactPanelHtml'>";
 				str += '<ul class="nav navbar-nav btn-params-directory">';
 					str += '<li class="text-left">';
 						str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
@@ -1225,7 +1225,12 @@ var directory = {
 					str += '</li>';
 				str += '</ul>';
 				str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
-					str += (notEmpty(params.name) ? '<h4 class="panel-title text-dark pull-left">'+params.name+'</h4><br/>' : '');
+					if(notEmpty(params.idContact)){
+						str += '<a href="#page.type.citoyens.id.'+params.idContact+'" class="lbh" >';
+						str += (notEmpty(params.name) ? '<h4 class="panel-title text-dark pull-left">'+params.name+'</h4><br/>' : '')+'</a>';
+					}
+					else
+						str += (notEmpty(params.name) ? '<h4 class="panel-title text-dark pull-left">'+params.name+'</h4><br/>' : '');
 					str += (notEmpty(params.role) ? '<span class="" style="font-size: 11px !important;">'+params.role+'</span><br/>' : '');
 					str += (notEmpty(params.email) ? '<span class="" style="font-size: 11px !important;">'+params.email+'</span><br/>' : '');
 					str += (notEmpty(params.telephone) ? '<span class="" style="font-size: 11px !important;">'+params.telephone+'</span>' : '');

@@ -609,4 +609,3 @@ function hideNewLiveFeedForm(){
 }
 
 </script>
-</script>

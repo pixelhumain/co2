@@ -2752,11 +2752,11 @@ var uploadObj = {
 };
 
 var typeObjLib = {
-	name :function(type) { 
+	name :function(type, rules, addElement) { 
 		var inputObj = {
 	    	placeholder : "... ",
 	        inputType : "text",
-	        rules : { required : true }
+	        rules : ( notEmpty(rules) ? rules : { required : true } )
 	    };
 	    if(type){
 	    	inputObj.label = "Nom de votre " + trad[type]+" ";
@@ -2768,7 +2768,7 @@ var typeObjLib = {
 	    	inputObj.init = function(){
 	        	$("#ajaxFormModal #name ").off().on("blur",function(){
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
-	            		globalSearch($(this).val(),[ typeObjLib.get(type).col ] );
+	            		globalSearch($(this).val(),[ typeObjLib.get(type).col ], addElement );
 	        	});
 	        }
 	    }else{

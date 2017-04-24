@@ -21,7 +21,7 @@ dynForm = {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Si vous voulez ajouter un nouveau contact de façon à faciliter les échanges</p>",
             },
-            name : typeObjLib.name("citoyens"),
+            name : typeObjLib.name("citoyens", {}, true),
 	        similarLink : typeObjLib.similarLink,
 	        email : typeObjLib.email,
 	        role :{

@@ -693,12 +693,9 @@ var url = {
 						if(pathT[0] == "modal"){
 							path = path.substring(5);
 							alert(baseUrl+'/'+moduleId+path);
-							url.loadByHash("#search",function  () { 
-								smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+path);
-							})
+							smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+path);
 						} else
 							showAjaxPanel( '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res,endPoint );
-						
 						
 						if(endPoint.menu)
 							$("."+endPoint.menu).removeClass("hide");
@@ -967,11 +964,12 @@ function  processingBlockUi() {
 }
 function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
 	//alert("showAjaxPanel"+url);
-	mylog.log("showAjaxPanel",url,urlObj);	
-	var dest = ( typeof urlObj == "undefined" || ( typeof urlObj.useHeader != "undefined" ) ) ? themeObj.mainContainer : ".pageContent" ;
+	
+	var dest = ( typeof urlObj == "undefined" || typeof urlObj.useHeader != "undefined" ) ? themeObj.mainContainer : ".pageContent" ;
+	mylog.log("showAjaxPanel",url,urlObj,dest);	
 	//var dest = themeObj.mainContainer;
 	hideScrollTop = false;
-//alert("showAjaxPanel"+dest);
+	//alert("showAjaxPanel"+dest);
 	showNotif(false);
 			
 	setTimeout(function(){
@@ -995,7 +993,7 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 		 getAjax(dest, baseUrl+'/'+moduleId+url, function(data){ 
 			
 			if( dest != themeObj.mainContainer )
-				$("#subModuleTitle").html("");
+				$(".subModuleTitle").html("");
 
 			//initNotifications(); 
 			
@@ -1030,7 +1028,7 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
         	}*/
          },"html");
 		} else 
-			console.error( 'showAjaxPanel', themeObj.mainContainer, "doesn't exist" );
+			console.error( 'showAjaxPanel', dest, "doesn't exist" );
 	}, 400);
 }
 /*prevDbAccessCount = 0; 

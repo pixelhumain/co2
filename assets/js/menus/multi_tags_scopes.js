@@ -50,7 +50,7 @@
         //html +=     "</span>";
         html += "</div>";
         $(htmlId).html(html);
-        if(typeof actionOnSetGlobalScope != "undefined" && actionOnSetGlobalScope=="save"){
+        if(actionOnSetGlobalScope=="save"){
             scopeHtml='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
                             'data-toggle="tooltip" data-placement="top" title="Communecter avec '+communexion.currentName+'" '+
                             'data-scope-value="'+communexion.values.cityKey+'" '+
@@ -71,7 +71,7 @@
                         '<div class="scope-min-header list_tags_scopes hidden-xs text-left ellipsis">'+
                             html+
                         '</div>';
-            $("#scopeListContainer").html(scopeHtml);
+            $("#scopeListContainerForm").html(scopeHtml);
         }
         multiTagScopeLbl();
         bindCommunexionScopeEvents();

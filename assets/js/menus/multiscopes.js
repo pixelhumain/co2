@@ -157,7 +157,7 @@ function showScopeInMultiscope(scopeValue){ //mylog.log("showScopeInMultiscope()
 		$("#multi-scope-list-"+scope.type).append(html);
 		$("#multi-scope-list-"+scope.type).show();
 		if(actionOnSetGlobalScope=="save")
-			$("#scopeListContainer").html(html);
+			$("#scopeListContainerForm").html(html);
 		//$(".item-scope-checker").off().click(function(){alert(); toogleScopeMultiscope( $(this).data("scope-value")) });
 		$(".item-scope-deleter").off().click(function(){ deleteScopeInMultiscope( $(this).data("scope-value")); });
 		//showMsgInfoMultiScope("Le scope a bien été ajouté", "success");

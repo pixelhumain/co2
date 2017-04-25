@@ -321,10 +321,10 @@ function bindEventNews(){
 		}
 	});
 
-	$(".form-create-news-container #get_url").keyup(function(){
+	/*$(".form-create-news-container #get_url").keyup(function(){
 		if($(this).val() != "")
 			showFormBlock(true);	
-	});
+	});*/
 	$(".form-create-news-container #get_url").focusout(function(){
 		//if($(this).val() == "")// && location.hash.indexOf("#default.live")!=0)
 			//showFormBlock(false);	
@@ -645,7 +645,7 @@ function showFormBlock(bool){
             				$(".getFormLive").html();
 			}
 			actionOnSetGlobalScope="save";
-			$("#scopeListContainer").append(scopeHtml);
+			$("#scopeListContainerForm").append(scopeHtml);
 			$("#container-scope-filter").hide();
 			bindCommunexionScopeEvents();
 		}
@@ -673,8 +673,9 @@ function showFormBlock(bool){
 		//if(isLiveGlobal())
 		//	multiTagScopeLbl("search");
 		actionOnSetGlobalScope="filter";
-		$("#scopeListContainer").html("");
+		$("#scopeListContainerForm").html("");
 		$("#container-scope-filter").show();
+		//SCOPE DIV//
 		$('.extract_url').hide();
 		$(".form-create-news-container #falseInput").show();
 		
@@ -1032,6 +1033,7 @@ function saveNews(){
 				    newNews.searchLocalityCODE_POSTAL = $('#searchLocalityCODE_POSTAL').val().split(',');
 				    newNews.searchLocalityDEPARTEMENT = $('#searchLocalityDEPARTEMENT').val().split(',');
 				    newNews.searchLocalityREGION = $('#searchLocalityREGION').val().split(',');
+				    newNews.searchLocalityLEVEL = $('#searchLocalityLEVEL').val();
 
 				    	
 			    }
@@ -1316,7 +1318,6 @@ function getMediaImages(o,newsId,authorId,targetName){
 			}
 		}
 	}
-	mylog.log(html);
 	return html;
 }
 function deleteImage(id,name,hideMsg,communevent){

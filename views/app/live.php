@@ -48,7 +48,7 @@
 </style>
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
-	<div class="col-md-offset-2 col-md-9 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
+	<div id="container-scope-filter" class="col-md-offset-2 col-md-9 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
 		<?php
 	        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
 	    ?>
@@ -100,6 +100,7 @@ var scrollEnd = false;
 var loadContent = '<?php echo @$_GET["content"]; ?>';
 var dataNewsSearch = {};
 var	dateLimit=0;
+var actionOnSetGlobalScope="filter";
 jQuery(document).ready(function() {
 
 	$(".subsub").hide();
@@ -125,7 +126,7 @@ jQuery(document).ready(function() {
     });
 		
 	
-    $('.tooltips').tooltip();
+    
     searchPage = true;
 	startSearch(true);
 
@@ -135,11 +136,30 @@ jQuery(document).ready(function() {
    
     initKInterface();//{"affixTop":10});
     initFreedomInterface();
-    $(".btn-decommunecter").click(function(){
-		activateGlobalCommunexion(false);
-  	});
-  	//KScrollTo(".main-btn-scopes");
+    
+    //KScrollTo(".main-btn-scopes");
 });
+/*function bindCommunexionScopeEvents(){
+	$(".btn-decommunecter").off().click(function(){
+		activateGlobalCommunexion(false);
+		showTagsScopesMin();
+        rebuildSearchScopeInput();
+        $('.tooltips').tooltip(); 
+  	});
+  	$(".item-globalscope-checker").off().click(function(){  
+            $(".item-globalscope-checker").addClass("inactive");
+            $(this).removeClass("inactive");
+
+            mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
+            setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
+                             $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"), 
+                             $(this).data("region-communexion"), $(this).data("country-communexion"), actionOnSetGlobalScope ) ;
+    });
+
+    $(".start-new-communexion").off().click(function(){  
+        activateGlobalCommunexion(true);
+    });
+}*/
 function initFilterLive(){
 	dataNewsSearch = {
 	      "searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
@@ -169,12 +189,12 @@ function startSearch(isFirst){
 	dateLimit=0;
 	isFirst=true;
 	showNewsStream(isFirst);
-	$(".start-new-communexion").click(function(){  
+	/*$(".start-new-communexion").click(function(){  
         setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
                                  $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
-                                  $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
+                                  $(this).data("region-communexion"), $(this).data("country-communexion"),actionOnSetGlobalScope) ;
         activateGlobalCommunexion(true);
-	});
+	});*/
 	//}else{
 	//	showNewsStream(isFirst);//loadStream(0,5);
 	//}
@@ -182,7 +202,7 @@ function startSearch(isFirst){
 }
 
 
-function loadStream(indexMin, indexMax){ console.log("LOAD STREAM FREEDOM");
+/*function loadStream(indexMin, indexMax){ console.log("LOAD STREAM FREEDOM");
 	loadingData = true;
 	currentIndexMin = indexMin;
 	currentIndexMax = indexMax;
@@ -245,8 +265,8 @@ function loadLiveNow () {
         	$('.titleNowEvents').addClass("hidden");
         else
         	$('.titleNowEvents').removeClass("hidden");
-     } , "html" );*/
-}
+     } , "html" );
+}*/
 
 function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 

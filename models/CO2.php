@@ -83,15 +83,18 @@ class CO2 {
             }
             //} else
             //$city=$citiesResult;
+            //print_r(Yii::app()->request->cookies);
+            $cityKey=$city["country"]."_".$insee."-".$cp;
             $currentName=(string)Yii::app()->request->cookies['communexionName'];
             $communexion["values"] = array( "cityName"  =>$alternateName,
-                                            "cityKey"   => City::getUnikey($city),
+                                            "cityKey"   => $cityKey,
                                             "inseeName" => $inseeName,
                                             "cityCp"    =>Yii::app()->request->cookies['cpCommunexion'],
                                             "depName"   =>@$city["depName"],
                                             "regionName"=>@$city["regionName"],
                                             "cities"=>$cities);
-            $communexion["currentLevel"] =  $levelMin;
+            $communexion["currentLevel"] =  (string)Yii::app()->request->cookies['communexionType'];
+            $communexion["levelMinCommunexion"] =  $levelMin;
             $communexion["currentName"] = $currentName ;
             $communexion["currentValue"] =  (string)Yii::app()->request->cookies['communexionValue'];
             //return $communexion;           

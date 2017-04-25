@@ -60,6 +60,7 @@ function startSearch(indexMin, indexMax, callBack){
         if(levelCommunexion == 4) locality = inseeCommunexion;
         if(levelCommunexion == 5) locality = "";
       } 
+      console.log("locality",locality);
       autoCompleteSearch(name, locality, indexMin, indexMax, callBack);
     }  
 }
@@ -117,6 +118,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       "searchLocalityCODE_POSTAL" : ($('#searchLocalityCODE_POSTAL').length ) ? $('#searchLocalityCODE_POSTAL').val().split(',') : [], 
       "searchLocalityDEPARTEMENT" : ($('#searchLocalityDEPARTEMENT').length ) ?  $('#searchLocalityDEPARTEMENT').val().split(',') : [],
       "searchLocalityREGION" : ($('#searchLocalityREGION').length ) ? $('#searchLocalityREGION').val().split(',') : [],
+      "searchLocalityLEVEL" : ($('#searchLocalityLEVEL').length ) ? $('#searchLocalityLEVEL').val() : [],
       "searchBy" : levelCommunexionName[levelCommunexion], 
       "indexMin" : indexMin, 
       "indexMax" : indexMax
@@ -267,12 +269,12 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 //active les link lbh
                 bindLBHLinks();
 
-                 $(".start-new-communexion").click(function(){  
+                 /*$(".start-new-communexion").click(function(){  
                     setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
                                      $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
                                       $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
                     activateGlobalCommunexion(true);
-                });
+                });*/
 
 
                 $.unblockUI();

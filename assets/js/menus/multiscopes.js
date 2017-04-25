@@ -242,6 +242,7 @@ function showMsgInfoMultiScope(msg, type){
 
 function rebuildSearchScopeInput()
 { console.log("rebuildSearchScopeInput");
+	$("#searchLocalityLEVEL").val("");
 	/*****************************************************************************************/
 	searchLocalityCITYKEYs = "";
 	$.each($('.item-scope-city'), function(key, value){

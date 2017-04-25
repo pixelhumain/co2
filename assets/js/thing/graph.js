@@ -222,12 +222,13 @@ function graphe(device,sensors,readings,svgG){
   
 }
 
-function grapheCoDB(data,sensorkey,svgG){
+function grapheCoDB(data,sensorkey){
   var dCOdb = dataSensorAdaptorTimestampsAndValues(data);
   //prendre le key pour la donné
   //multiGraphe[svgG].
 
 for (var key in dCOdb){
+  strkCol = setStrokeColorForDevice(device);
  //var de = 
   tracer(de,device,sensors)
 }

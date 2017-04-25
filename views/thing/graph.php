@@ -83,7 +83,10 @@ foreach ($devicesMongoRes as $mdataDevice) {
 //$this->renderPartial("./thingMap");
 
 //print_r($devices);
-
+/*
+if( Yii::app()->request->isAjaxRequest ){
+  echo "<br/>"."Ajax";
+}*/
 
 ?>
 
@@ -118,6 +121,9 @@ foreach ($devicesMongoRes as $mdataDevice) {
     padding: 20px;
     margin: 20px
   }
+  #header-graph{
+
+  }
 
 
   .grid .tick {
@@ -132,47 +138,46 @@ foreach ($devicesMongoRes as $mdataDevice) {
     background-color: #fefefe;
 
   }
-#graph-container{
-  margin-top: 40px;
-  padding-top: 40px;
-
-}
+  <?php if(!(Yii::app()->request->isAjaxRequest) ){ ?>
+  #graph-container{
+    margin-top: 40px;
+    padding-top: 40px;
+  }
+<?php }?>
   
 
 </style>
     
-  <div class="padding-top-15 col-md-12 col-sm-12 col-xs-12 container" id="graph-container">
-  <section class="header col-sm-12">
-    <form class="form-inline col-sm-12"> 
-      <span class="form-group col-sm-12">
+  <div class="col-md-12 col-sm-12 col-xs-12 container" id="graph-container">
+  <section class="header col-sm-12 col-xs-12 no-padding" id="header-graph">
+    <form class="form-inline col-sm-12 col-xs-12"> 
+      <div class="form-group col-sm-12 col-xs-12">
         <span class="btn-toolbar col-sm-12 col-xs-12" role="toolbar" aria-label="choixgraph" id="btngraphs" name="btngraphs">
           <div class="btn-group " role="group" aria-label="choixmesuressensors">
             <button type="button" class="btn btn-default btnchoixgraph" id="btn1" title="Température et humidité" value="1"> 
-              <i class="fa fa-thermometer-half"></i> <span class="hidden-sm hidden-xs"> Température et humidité </span> </button>
+              <i class="fa fa-thermometer-half"></i> <span class="hidden-sm hidden-xs">Température et humidité </span> </button>
             <button type="button" class="btn btn-default btnchoixgraph" title="Énergies : Batterie et PV" value="2"> 
-              <i class="fa fa-battery-full" ></i> <span class="hidden-sm hidden-xs"> Énergies</span> </button>
+              <i class="fa fa-battery-full" ></i> <span class="hidden-sm hidden-xs">Énergies</span> </button>
             <button type="button" class="btn btn-default btnchoixgraph" title="Luminosité" value="3"> 
-              <i class="fa fa-sun-o" ></i> <span class="hidden-sm hidden-xs"> Luminosité</span> </button>
+              <i class="fa fa-sun-o" ></i> <span class="hidden-sm hidden-xs">Luminosité</span> </button>
             <button type="button" class="btn btn-default btnchoixgraph" title="Gaz : CO et NO2" value="4"> 
               <i class="fa fa-cloud"> </i> <span class="hidden-sm hidden-xs">CO et NO2 </span> </button>
             <button type="button" class="btn btn-default btnchoixgraph" title="Bruit" value="5"> 
               <i class="fa fa-volume-up" ></i> <span class="hidden-sm hidden-xs">Bruit et nets</span> </button>
             <button type="button" class="btn btn-default btnchoixgraph" title="Tous les graphes" value="6"> 
-              <i class="fa fa-check-square"></i> <span class="hidden-sm hidden-xs" >Tous les graphes</span> </button>
+              <i class="fa fa-check-square"></i> <span class="hidden-sm hidden-xs" >Tous</span> </button>
           </div>
         </span>
-      </span>
+      </div>
 
-      <span class="btn-toolbar pull-right" role="group" aria-label="choixtimeoffset" name="btnchoix">
+      <div class="btn-toolbar form-group " role="group" aria-label="choixtimeoffset" name="btnchoix">
         <button class="btn btn-default" id="btnchoixtimeoffset" type="button" title="timeoffset" value="0">
         <i class="fa fa-clock-o" id="ibtntimeoffset"></i><span class="hidden-sm hidden-xs"> Heure locale </span> </button>
         <button class="btn btn-default" id="btntest" type="button" title="test" value="1">
         <i class="fa fa-clock-o" id="ibtntest"></i><span class="hidden-sm hidden-xs"> Test </span> </button>
 
-      </span>
-      <!--span class="btn-toolbar pull-right" role="group" aria-label="autreaction">
-        <button class="pull-right btn btn-default" type='button' onclick="showSCKDeviceOnMap('<?php //echo $country; echo "','"; echo $postalCode; ?>')" title="Voir les devices sur la carte"><i class="fa fa-globe"></i> </button>
-      </span-->
+      </div>
+
 
         <!-- <select class="hide control-select col-xs-11 col-sm-8 form-control" name="">
           <option class="form-control" value="1">Température et humidité</option> 
@@ -208,10 +213,10 @@ foreach ($devicesMongoRes as $mdataDevice) {
       </div>
     </form>
   </section>
-  <section class="body center col-sm-12" > 
+  <section class="body center col-sm-12 col-xs-12 no-padding" > 
     <div class="col-xs-12" id="graphs"> </div>
   </section>
-  <section class="footer center col-sm-12" id="legend-graph">
+  <section class="footer center col-sm-12 no-padding" id="legend-graph">
     <div class="col-sm-12 col-md-8"> 
       <label class="col-xs-12 col-sm-3">Légende</label> 
         <div class="col-xs-12 col-sm-5" id="legend"></div>
@@ -419,6 +424,8 @@ var sensorsProcessed = 0;
       
       var svgG = setSVGForSensor(sensorId); //index pour les params du graphe sensor
 
+      
+
     for ( var i = 0; i< listDevice.length ; i++) {
       var urlReq="<?php echo Thing::URL_API_SC ?>/devices/"+listDevice[i]+"/readings?sensor_id="+sensorId+"&"+tRollup+"&from="+dXnISO+"&to="+dXmISO;
       var sensorkey = "";
@@ -457,6 +464,7 @@ var sensorsProcessed = 0;
 
   if(sensorsProcessed===array.length){
           console.log('all sensorIds done');
+
         }
  
  }); //call

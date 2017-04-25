@@ -269,10 +269,13 @@ class AppController extends CommunecterController {
         
 
         CO2Stat::incNbLoad("co2-thing");
-        if(Yii::app()->request->isAjaxRequest ){
+       /*if(Yii::app()->request->isAjaxRequest ){
             echo $this->renderPartial("thing",$params,true);
         }else{
-          $this->render("thing",$params); 
-        }
+          $this->render("thing",$params);
+          
+        }*/
+
+        echo $this->renderPartial("thing", $params, true);
     }
 }

@@ -15,9 +15,9 @@ $deviceIds= Thing::getDistinctDeviceId();
 
 $communexion = CO2::getCommunexionCookies();
         if($communexion["state"] == false){
-
+          //$postalCode= " " ;
         }else{
-
+          //$postalCode=$cpCommunexion;
         }
 
 ?>
@@ -93,11 +93,11 @@ $communexion = CO2::getCommunexionCookies();
         } 
         else {$setbutton=false;}
         if (is_array($action) && $setbutton==true){ ?>
-         <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 " style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
-          <i class="fa fa-<?php echo @$action["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
-         </button><br>
+         <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 hidden btn-select-<?php echo @$action["key"]; ?>" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>" data-section="<?php echo @$action["key"]; ?>" data-page="<?php echo @$action["page"]; ?>">
+          <i class="fa fa-<?php echo @$action["icon"]; ?> hidden-xs"></i> <?php echo $action['label']; ?>
+         </button>
          <?php foreach ($action["subcat"] as $key2 => $action2) { ?>
-          <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $action2; ?>">
+          <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?> btn-<?php echo @$action["key"]; ?>" data-categ="<?php echo $key; ?>" data-key="<?php echo @$action["key"]; ?>" data-key2="<?php echo $key2; ?>">
            <i class="fa fa-angle-right"></i> <?php echo $action2; ?>
           </button><br class="hidden">
          <?php } 
@@ -114,15 +114,15 @@ $communexion = CO2::getCommunexionCookies();
       foreach ($thing["sections"] as $key => $section) { ?>
         <div class="col-md-3 col-sm-4 col-xs-6 no-padding">
         <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
-          data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>"       data-type="thing"
+          data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" data-type="thing"
           style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
-          <i class="fa fa-<?php echo @$section["icon"]; ?> fa-2x hidden-xs"></i> <?php echo @$section["label"]; ?>
+          <i class="fa fa-<?php echo @$section["icon"]; ?> fa-2x"></i> <span class="hidden-xs"><?php echo @$section["label"]; ?></span>
         </button>
         </div>
     <?php } ?>
     <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
   </div>
-  <div class="col-sm-10" id="dropdown_thing"></div>
+  <div class="col-sm-7 col-lg-8 col-md-7" id="dropdown_thing"></div>
  
  </div>    
 </div>
@@ -131,15 +131,109 @@ $communexion = CO2::getCommunexionCookies();
 <?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"thing")); ?>
 
 <script>
-
-  jQuery(document).ready(function() {
-    initKInterface({"affixTop":0});
-
-
-    /*----------------------------- */
+/*----------------------------- */
+var alReady=false;
 var section = "";
 var classType = "";
 var classSubType = "";
+
+var smartCitizenSelector = { 
+  "Dernieres-Mesures" : [ "lastreading", [ "all" , "temp" , "hum" , "light" , "co" , "no2" , "noise" , "nets", "bat" , "pv" ]],  
+  "Graphes" : ["graph-data",[ "data-from-api-sc" , "data-from-communecter" ]], 
+  "Gestion-SCK" :[ "sck-maj",[ "sck-maj-principal", "sck-maj-secondaire" ]] 
+};
+
+function getpageSCK(viewsThing){ 
+
+  if (alReady==false) {
+   getAjax('#dropdown_thing',baseUrl+'/'+moduleId+"/thing/"+viewsThing, function(){
+     alReady=true;
+     setTimeout(function(){alReady=false; },3000 );
+     },"html"); 
+  }
+
+}
+
+
+function getpageCOPI(viewsCopi){
+  //todo pour les CO-PI ;
+  $("#dropdown_thing").html("<h3> COPI (Vide actuellement) <h3> <p> Ici vous avez accès au pages concernant les COPIs <p> ");
+
+}
+
+function bindLeftMenuFilters () { 
+
+    $(".btn-select-type-anc").off().on("click", function()
+    {   
+        section = $(this).data("type-anc");
+        sectionKey = $(this).data("key");
+
+        $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
+        $(".keycat").addClass("hidden");
+        $(".btn-select-category-1").addClass("hidden");
+        $(".btn-select-"+sectionKey).removeClass("hidden");
+        $(this).addClass("active");
+
+        KScrollTo("#dropdown_thing");
+        
+        if( sectionKey == "smartCitizen"){
+          $("#dropdown_thing").html("<h3> Smart-Citizen-Kit<h3> <p> Ici vous avez accès aux pages concernant les kits configurer en double push<p> ");   
+        }else{
+          $("#dropdown_thing").html("<h3> COPI (Vide actuellement) <h3> <p> Ici vous avez accès au pages concernant les COPIs <p> ");
+        }
+        
+    });
+
+    $(".btn-select-category-1").off().on("click", function(){
+
+        $(".btn-select-category-1").removeClass("active");
+        $(this).addClass("active");
+
+        var classType = $(this).data("keycat");
+        var page = $(this).data("page");
+        mylog.log("classType : "+classType);
+        sectionKey = $(this).data("section");
+
+        $(".keycat").addClass("hidden");
+        $(".keycat-"+classType).removeClass("hidden");   
+
+        if(sectionKey=="smartCitizen") {
+          getpageSCK(page); 
+        }else{
+          getpageCOPI(page);
+        }
+ 
+    });
+
+    $(".keycat").off().on("click", function(){
+
+      $(".keycat").removeClass("active");
+      $(this).addClass("active");
+      var classSubType = $(this).data("keycat");
+
+      var classType = $(this).data("categ");
+      var key2 = $(this).data("key2");
+      idToShow = smartCitizenSelector[classType][1][key2];
+      classToHide = smartCitizenSelector[classType][0];
+
+      mylog.log("idToShow : "+idToShow+"classToHide : "+classToHide) ;
+      $("."+classToHide).addClass('hidden');
+
+      $("#"+idToShow).removeClass('hidden');
+
+    });
+
+ }
+
+
+jQuery(document).ready(function() {
+    initKInterface({"affixTop":0});
+    bindLeftMenuFilters();
+
+  /*var postalCode=<?php //echo $postalCode ?>;
+    mylog.log("communexion postalCode : ");
+    mylog.log(postalCode);*/
+
 /*function initClassifiedInterface(){ return;
     classified.currentLeftFilters = null;
     $('#menu-section-'+typeInit).removeClass("hidden");
@@ -148,121 +242,14 @@ var classSubType = "";
     });    
 }*/
 
-function bindLeftMenuFilters () { 
-
-    $(".btn-select-type-anc").off().on("click", function()
-    {    
-        searchType = [ typeInit ];
-        indexStepInit = 100;
-        $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
-        $(".keycat").addClass("hidden");
-        $(this).addClass("active");
-
-
-        section = $(this).data("type-anc");
-        sectionKey = $(this).data("key");
-        //alert("section : " + section);
-
-        if( sectionKey == "smartCitizen"){
-          //$(".btn-select-category-1[data-categ= ]");
-            
-            KScrollTo("#dropdown_thing");
-        }
-        else {
-            $("#section-price").hide();
-            $("#priceMin").val("");
-            $("#priceMax").val("");
-            KScrollTo("#dropdown_thing");
-        }
-
-        /*
-        if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
-            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
-            //$(".subsub").show(300);
-            $('#searchTags').val(section);
-            //KScrollTo("#section-price");
-            startSearch(0, indexStepInit, searchCallback); 
-        } */
-        /*if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
-            //alert('build left menu'+classified.sections[sectionKey].filters);
-            classified.currentLeftFilters = classified.sections[sectionKey].filters;
-            var filters = classified[ classified.currentLeftFilters ]; 
-            var what = { title : classified.sections[sectionKey].label, 
-                         icon : classified.sections[sectionKey].icon }
-            directory.sectionFilter( filters, ".classifiedFilters",what);
-            bindLeftMenuFilters ();
-            
-        }
-        else if(classified.currentLeftFilters != null) {
-            //alert('rebuild original'); 
-            var what = { title : classified.sections[sectionKey].label, 
-                         icon : classified.sections[sectionKey].icon }
-            directory.sectionFilter( classified.filters, ".classifiedFilters",what);
-            bindLeftMenuFilters ();
-            classified.currentLeftFilters = null;
-        }
-
-        $('#searchTags').val(section);
-        //KScrollTo(".top-page");
-        startSearch(0, indexStepInit, searchCallback); 
-
-
-        if(typeof classified.sections[sectionKey] != "undefined") {
-            $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]);
-            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+classified.sections[sectionKey]["color"])
-            $(".fa-title-list").removeClass("hidden");
-        }*/
-    });
-
-    $(".btn-select-category-1").off().on("click", function(){
-        searchType = [ typeInit ];
-        $(".btn-select-category-1").removeClass("active");
-        $(this).addClass("active");
-
-        var classType = $(this).data("keycat");
-        $(".keycat").addClass("hidden");
-        $(".keycat-"+classType).removeClass("hidden");   
-
-        //alert("classType : "+classType);
-
-        $('#searchTags').val(section+","+classType);
-        startSearch(0, indexStepInit, searchCallback);  
-    });
-
-    $(".keycat").off().on("click", function(){
-
-        searchType = [ typeInit ];
-        $(".keycat").removeClass("active");
-        $(this).addClass("active");
-        var classSubType = $(this).data("keycat");
-        var classType = $(this).data("categ");
-        //alert("classSubType : "+classSubType);
-        $('#searchTags').val(section+","+classType+","+classSubType);
-        KScrollTo("#menu-section-classified");
-        startSearch(0, indexStepInit, searchCallback);  
-    });
-
-
-    $("#btn-create-classified").off().on("click", function(){
-         elementLib.openForm('classified');
-    });
-
-    $("#priceMin").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
-    $("#priceMax").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
-
-    $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
-
- }
-
-
 /* -------------------------*/
   
-    setTitle("Objets communectés","fa-database");
+    setTitle("Gestion SCK","fa-database");
     //console.log("Thing : page index");
   
    //Index.init();
 
-   //getAjax('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/main",function(){//todo des trucs },"html"); 
+   //getAjax('#central-container' ,baseUrl+'/'+moduleId+"/thing/graph",function(){//todo des trucs },"html"); 
   });
 
 </script>

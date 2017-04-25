@@ -1,7 +1,8 @@
 {
     "sections" : {
         "smartcitizen" : {
-            "label":"Smart-Citizen-Kit",           
+            "label":"Smart-Citizen-Kit",   
+            "labelshort" : "SCK",         
             "key" : "smartCitizen",  
             "icon" : "thermometer-three-quarters",
             "section":1,
@@ -18,23 +19,35 @@
         }    
     },
     "sckFilters": { 
-        "Dernieres-Mesures" :  {  
+        "Dernieres-Mesures" :  { 
+            "page" : "scklastestreadings",
+            "label" :"Dernières Mesures", 
             "icon" : "clock-o",
+            "key" : "smartCitizen",
             "subcat" : [ "Tous" , "Temperature" , "Humidité" , "Lumière" , "CO" , "NO2" , "Bruit" , "Nets", "Batterie" , "PV" ]
         },
-        "Graphes" : {   
+        "Graphes" : { 
+            "page" : "graph",  
             "icon" : "line-chart",
-            "subcat" : [ "Data-from-API" , "Data-from-CO-DB" ]
+            "label" :"Graphes",
+            "key" : "smartCitizen",
+            "subcat" : [ "Données depuis API" , "Données depuis Communecter" ]
         },
         "Gestion-SCK" : {
+            "page" : "manage",
             "icon" : "database",
+            "label" :"Gestion SCK",
+            "key" : "smartCitizen",
             "forAdmin" : "true",
-            "subcat" : ["Avec compte smartcitizen", "Sans compte smartcitizen"]
+            "subcat" : [ "Avec compte smartcitizen", "Sans compte smartcitizen" ]
         }
     },
     "copiFilters": {
         "Voir-tous" : {
+            "page": "copi",
             "icon" : "cloud",
+            "label" :"Copi All",
+            "key" : "copi",
             "subcat" : [ ]
         }
     }

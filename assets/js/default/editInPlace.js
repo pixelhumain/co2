@@ -165,7 +165,7 @@ function bindAboutPodElement() {
 				    	success: function(data){
 					    	if(data.result){
 								toastr.success(data.msg);
-								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
+								urlCtrl.loadByHash(location.hash);
 					    	}
 					    }
 					});

@@ -361,6 +361,7 @@ class CommunecterController extends Controller
       "multiconnect"           => array("href" => "/ph/communecter/link/multiconnect"),
       "follow"           => array("href" => "/ph/communecter/link/follow"),
       "validate"          => array("href" => "/ph/communecter/link/validate"),
+      "share"          => array("href" => "/ph/communecter/link/share"),
     ),
     "document" => array(
       "resized"             => array("href"=> "/ph/communecter/document/resized", "public" => true),

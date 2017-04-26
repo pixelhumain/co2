@@ -428,6 +428,44 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 			});
 		}
    	});
+
+
+    $(".btn-share").click(function(){
+
+      formData = new Object();
+      formData.parentId = $(this).attr("data-id");
+      formData.childId = userId;
+      formData.childType = personCOLLECTION;
+      formData.connectType =  "share";
+      var type = $(this).attr("data-type");
+      var name = $(this).attr("data-name");
+      var id = $(this).attr("data-id");
+      //traduction du type pour le floopDrawer
+      var typeOrigine = typeObjLib.get(type).col;
+      if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
+      formData.parentType = typeOrigine;
+      if(type == "person") type = "people";
+      else type = typeObjLib.get(type).col;
+
+      $.ajax({
+        type: "POST",
+        url: baseUrl+"/"+moduleId+"/link/share",
+        data : formData,
+        dataType: "json",
+        success: function(data){
+          if ( data && data.result ) {
+            $(thiselement).html("<i class='fa fa-chain'></i>");
+            $(thiselement).attr("data-ownerlink","follow");
+            $(thiselement).attr("data-original-title", (type == "events") ? "Participer" : "Suivre");
+            removeFloopEntity(data.parentId, type);
+            toastr.success(trad["You are not following"]+data.parentEntity.name);
+          } else {
+             toastr.error("You leave succesfully");
+          }
+        }
+      });
+    });
+
    	//on click sur les boutons link
     // $(".btn-tag").click(function(){
     //   setSearchValue($(this).html());
@@ -642,7 +680,7 @@ var directory = {
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
            tip = (type == "events") ? "Participer" : 'Suivre';
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-                  'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+                  ' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
                   " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
                       "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
                     "</a>";          
@@ -1009,10 +1047,22 @@ var directory = {
 
         params.attendees = "<hr class='margin-top-10 margin-bottom-10'>";
         
-        params.attendees += "<button id='btn-participate' class='text-dark btn btn-link no-padding'><i class='fa fa-street-view'></i> Je participe</button>";
-        params.attendees += "<button id='btn-interested' class='text-dark btn btn-link no-padding margin-left-10'><i class='fa fa-thumbs-up'></i> Ça m'intéresse</button>";
-        params.attendees += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10'> <i class='fa fa-share'></i> Partager</button>";
-      
+        isFollowed=false;
+          if(typeof params.isFollowed != "undefined" ) isFollowed=true;
+          
+        if(userId != null && userId != "" && params.id != userId){
+          // params.attendees += "<button id='btn-participate' class='text-dark btn btn-link followBtn no-padding'"+
+          //                     " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"'"+
+          //                     " data-isFollowed='"+isFollowed+"'>"+
+          //                     "<i class='fa fa-street-view'></i> Je participe</button>";
+          isShared = false;
+          // params.attendees += "<button id='btn-interested' class='text-dark btn btn-link no-padding margin-left-10'><i class='fa fa-thumbs-up'></i> Ça m'intéresse</button>";
+          params.attendees += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10 btn-share'"+
+                              " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"' "+//data-name='"+params.name+"'"+
+                              " data-isShared='"+isShared+"'>"+
+                              "<i class='fa fa-share'></i> Partager</button>";
+        }
+
         params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
                                     "data-toggle='tooltip' data-placement='bottom' data-original-title='participant(s)'>" + 
                               cntP + " <i class='fa fa-street-view'></i>"+
@@ -1037,8 +1087,6 @@ var directory = {
                 '</div>';
         
         if(userId != null && userId != "" && params.id != userId){
-          isFollowed=false;
-          if(typeof params.isFollowed != "undefined" ) isFollowed=true;
           var tip = "Ça m'intéresse";
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
                       'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
@@ -1761,6 +1809,45 @@ var directory = {
     searchFor : function (str) { 
       $(".searchSmallMenu").val(str).trigger("keyup");
      },
+     //ex : #search:bretagneTelecom:all
+  //#search:#fablab
+  //#search:#fablab:all:map
+   searchByHash :function(hash) 
+  { 
+    mylog.log("searchByHash *******************", hash);
+    if($("#modalMainMenu").hasClass('in'))
+      $("#modalMainMenu").modal("hide");
+
+    var mapEnd = false;
+    var searchT = hash.split(':');
+    // 1 : is the search term
+    var search = searchT[1]; 
+    scopeBtn = null;
+    // 2 : is the scope
+    if( searchT.length > 2 )
+    {
+      if( searchT[2] == "all" )
+        scopeBtn = ".btn-scope-niv-5" ;
+      else if( searchT[2] == "region" )
+        scopeBtn = ".btn-scope-niv-4" ;
+      else if( searchT[2] == "dep" )
+        scopeBtn = ".btn-scope-niv-3" ;
+      else if( searchT[2] == "quartier" )
+        scopeBtn = ".btn-scope-niv-2" ;
+    }
+    mylog.log("search : "+search,searchT, scopeBtn);
+    search.replace( "#","" );
+    alert(search.substring(1)); 
+    $('#searchTags').val(search);
+    startSearch();
+
+    /*if( scopeBtn )
+      $(scopeBtn).trigger("click"); */
+
+    /*if( searchT.length > 3 && searchT[3] == "map" )
+      mapEnd = true;
+    return mapEnd;*/
+  },
 
      getDateFormated: function(params){
     

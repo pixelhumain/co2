@@ -100,7 +100,7 @@ var scrollEnd = false;
 var loadContent = '<?php echo @$_GET["content"]; ?>';
 var dataNewsSearch = {};
 var	dateLimit=0;
-var actionOnSetGlobalScope="filter";
+//var scrollEnd = false;
 jQuery(document).ready(function() {
 
 	$(".subsub").hide();
@@ -111,14 +111,9 @@ jQuery(document).ready(function() {
 	else liveType = ", la boite à outils citoyenne connectée " + liveType;
 
 	setTitle("Communecter" + liveType, "<i class='fa fa-heartbeat '></i>");
-	initFilterLive();
+	//initFilterLive();
 	//showTagsScopesMin("#list_tags_scopes");
-	<?php if(@$lockCityKey){ ?>
-		lockScopeOnCityKey("<?php echo $lockCityKey; ?>");
-	<?php }else{ ?>
-		//rebuildSearchScopeInput();
-	<?php } ?>
-    $("#btn-slidup-scopetags").click(function(){
+	$("#btn-slidup-scopetags").click(function(){
       slidupScopetagsMin();
     });
 	$('#btn-start-search').click(function(e){
@@ -160,7 +155,7 @@ jQuery(document).ready(function() {
         activateGlobalCommunexion(true);
     });
 }*/
-function initFilterLive(){
+/*function initFilterLive(){
 	dataNewsSearch = {
 	      "searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
 	      "searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
@@ -172,7 +167,7 @@ function initFilterLive(){
     dataNewsSearch.tagSearch = $('#searchTags').val().split(',');
     dataNewsSearch.searchType = searchType; 
     dataNewsSearch.textSearch = $('#main-search-bar').val();
- }   
+ }   */
 
 function initFreedomInterface(){
 	
@@ -269,15 +264,13 @@ function loadLiveNow () {
 }*/
 
 function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
-
-	scrollEnd = false;
 	var isFirstParam = isFirst ? "?isFirst=1&tpl=co2" : "?tpl=co2";
 	isFirstParam += "&nbCol=2";
-	var levelCommunexionName = { 1 : "CITYKEY",
+	/*var levelCommunexionName = { 1 : "CITYKEY",
 	                             2 : "CODE_POSTAL",
 	                             3 : "DEPARTEMENT",
 	                             4 : "REGION"
-	                           };
+	                           };*/
 	
 	var thisType="ko";
 	var urlCtrl = ""
@@ -285,6 +278,21 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		thisType = "city";
 		urlCtrl = "/news/index/type/city/isLive/true";
 	}
+	 var dataSearch = {
+      //"name" : name, 
+      "locality" : "",//locality, 
+      "searchType" : searchType, 
+      "textSearch" : $('#main-search-bar').val(),
+      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] , //is an array
+      "searchLocalityCITYKEY" : ($('#searchLocalityCITYKEY').length ) ? $('#searchLocalityCITYKEY').val().split(',') : [],
+      "searchLocalityCODE_POSTAL" : ($('#searchLocalityCODE_POSTAL').length ) ? $('#searchLocalityCODE_POSTAL').val().split(',') : [], 
+      "searchLocalityDEPARTEMENT" : ($('#searchLocalityDEPARTEMENT').length ) ?  $('#searchLocalityDEPARTEMENT').val().split(',') : [],
+      "searchLocalityREGION" : ($('#searchLocalityREGION').length ) ? $('#searchLocalityREGION').val().split(',') : [],
+      "searchLocalityLEVEL" : ($('#searchLocalityLEVEL').length ) ? $('#searchLocalityLEVEL').val() : [],
+      //"searchBy" : levelCommunexionName[levelCommunexion], 
+      //"indexMin" : indexMin, 
+      //"indexMax" : indexMax
+    };
 	/*<?php if(@Yii::app()->session["userId"]){ ?>
 	else if(liveScopeType == "community"){
 		thisType = "citoyens";
@@ -306,8 +314,8 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 
 	if(isFirst){ //render HTML for 1st load
 		$("#newsstream").html(loading);
-		ajaxPost("#newsstream",baseUrl+"/"+moduleId+urlCtrl+"/date/0"+isFirstParam,dataNewsSearch, function(news){
-			showTagsScopesMin(".list_tags_scopes");
+		ajaxPost("#newsstream",baseUrl+"/"+moduleId+urlCtrl+"/date/0"+isFirstParam,dataSearch, function(news){
+			//showTagsScopesMin(".list_tags_scopes");
 			 $(window).bind("scroll",function(){ 
 	    		if(!loadingData && !scrollEnd){
 	         		var heightWindow = $("html").height() - $("body").height();
@@ -319,7 +327,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 			});
 			if(loadContent != ''){
 				if(userId){
-					showFormBlock(true);
+					//showFormBlock(true);
 					if(loadContent.indexOf("%hash%"))
 						loadContent = loadContent.replace("%hash%", "#");
 					$("#get_url").val(loadContent);
@@ -329,8 +337,8 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 					toastr.error('you must be loggued to post on communecter!');
 				}
 			}
-			else
-				showFormBlock(false);
+			//else
+			//	showFormBlock(false);
 
 			bindTags();
 
@@ -345,11 +353,11 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		//dateLimit=0;currentMonth = null;
 		loadingData = true;
 		$("#newsstream").append(loading);
-		console.log("dataSearch",dataNewsSearch);
+		console.log("data",dataSearch);
 		$.ajax({
 		        type: "POST",
 		        url: baseUrl+"/"+moduleId+urlCtrl+"/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=2",
-		       	data: dataNewsSearch,
+		       	data: dataSearch,
 		    	success: function(data){
 					if(data){
 						$("#newsstream").find(".loader").remove();

@@ -49,6 +49,9 @@
 
 </style>
 
+
+
+
 <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-left no-padding" id="col-banniere">
         	
 	<?php if($type==Event::COLLECTION){ ?>
@@ -141,113 +144,120 @@
 
 <script>
 jQuery(document).ready(function() {
+
+	//IMAGE CHANGE//
+	$("#uploadScropResizeAndSaveImage .close-modal").click(function(){
+		$.unblockUI();
+	});
+
+
 	$("#banniere_element").click(function(event){
-  			if (!$(event.target).is('input')) {
-  					$(this).find("input[name='banniere']").trigger('click');
-  			}
-			//$('#'+contentId+'_avatar').trigger("click");		
-		});
-		
-		$('#banniere_change').off().on('change.bs.fileinput', function () {
-			setTimeout(function(){
-				var files = document.getElementById("banniere_change").files;
-				if (files[0].size > 2097152)
-					toastr.warning("Please reduce your image before to 2Mo");
-				else {
-					for (var i = 0; i < files.length; i++) {           
-				        var file = files[i];
-				       	var imageType = /image.*/;     
-				        if (!file.type.match(imageType)) {
-				            continue;
-				        }           
-				        var img=document.getElementById("cropImage");            
-				        img.file = file;    
-				        var reader = new FileReader();
-				        reader.onload = (function(aImg) { 
-				        	var image = new Image();
-   							image.src = reader.result;
-   							img.src = reader.result;
-   							image.onload = function() {
-       							// access image size here 
-       						 	var imgWidth=this.width;
-       						 	var imgHeight=this.height;
-       							if(imgWidth>=1000 && imgHeight>=500){
-	               					$.blockUI({ 
-	               						message: $('div#uploadScropResizeAndSaveImage'), 
-	               						css: {cursor:null,padding: '0px !important'}
-	               					}); 
-	               					$("#uploadScropResizeAndSaveImage").parent().css("padding-top", "0px !important");
-									//$("#uploadScropResizeAndSaveImage").html(html);
-									setTimeout(function(){
-										var crop = $('#cropImage').cropbox({width: 1300,
-											height: 400,
-											zoomIn:true,
-											zoomOut:true}, function() {
-												cropResult=this.result;
-												console.log(cropResult);
-										}).on('cropbox', function(e, crop) {
-											cropResult=crop;
-							        		console.log('crop window: ', crop);
-							        
-										});
-										$(".saveBanniere").click(function(){
-									        //console.log(cropResult);
-									        //var cropResult=cropResult;
-									        $("#banniere_photoAdd").submit();
-										});
-										$("#banniere_photoAdd").off().on('submit',(function(e) {
-											//alert(moduleId);
-											if(debug)mylog.log("id2", contextData.id);
-											$(".banniere_isSubmit").val("true");
-											e.preventDefault();
+			if (!$(event.target).is('input')) {
+					$(this).find("input[name='banniere']").trigger('click');
+			}
+		//$('#'+contentId+'_avatar').trigger("click");		
+	});
+	
+	$('#banniere_change').off().on('change.bs.fileinput', function () {
+		setTimeout(function(){
+			var files = document.getElementById("banniere_change").files;
+			if (files[0].size > 2097152)
+				toastr.warning("Please reduce your image before to 2Mo");
+			else {
+				for (var i = 0; i < files.length; i++) {           
+			        var file = files[i];
+			       	var imageType = /image.*/;     
+			        if (!file.type.match(imageType)) {
+			            continue;
+			        }           
+			        var img=document.getElementById("cropImage");            
+			        img.file = file;    
+			        var reader = new FileReader();
+			        reader.onload = (function(aImg) { 
+			        	var image = new Image();
+							image.src = reader.result;
+							img.src = reader.result;
+							image.onload = function() {
+   							// access image size here 
+   						 	var imgWidth=this.width;
+   						 	var imgHeight=this.height;
+   							if(imgWidth>=1000 && imgHeight>=500){
+               					$.blockUI({ 
+               						message: $('div#uploadScropResizeAndSaveImage'), 
+               						css: {cursor:null,padding: '0px !important'}
+               					}); 
+               					$("#uploadScropResizeAndSaveImage").parent().css("padding-top", "0px !important");
+								//$("#uploadScropResizeAndSaveImage").html(html);
+								setTimeout(function(){
+									var crop = $('#cropImage').cropbox({width: 1300,
+										height: 400,
+										zoomIn:true,
+										zoomOut:true}, function() {
+											cropResult=this.result;
 											console.log(cropResult);
-											var fd = new FormData(document.getElementById("banniere_photoAdd"));
-											fd.append("parentId", contextData.id);
-											fd.append("parentType", contextData.type);
-											fd.append("formOrigin", "banniere");
-											fd.append("contentKey", "banniere");
-											fd.append("cropW", cropResult.cropW);
-											fd.append("cropH", cropResult.cropH);
-											fd.append("cropX", cropResult.cropX);
-											fd.append("cropY", cropResult.cropY);
-											//var formData = new FormData(this);
-														//console.log("formdata",formData);
-											/*formData.files= document.getElementById("banniere_change").files;
-											formData.crop= cropResult;
-											formData.parentId= contextData.id;
-											formData.parentType= contextData.type;
-											formData.formOrigin= "banniere";*/
-											//console.log(formData);
-											// Attach file
-											//formData.append('image', $('input[type=banniere]')[0].files[0]); 
-											$.ajax({
-												url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextData.type+"/ownerId/"+contextData.id+"/input/banniere",
-												type: "POST",
-												data: fd,
-												contentType: false,
-												cache: false, 
-												processData: false,
-												dataType: "json",
-												success: function(data){
-											        if(data.result){
-											        	newBanniere='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
-											        	$("#contentBanniere").html(newBanniere);
-											        	$.unblockUI();
-											        	//$("#uploadScropResizeAndSaveImage").hide();
-											    	}
-											    }
-											});
-										}));
-									}, 300);
-								}
-       						 	else
-       						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
-  							};
-				        });
-				        reader.readAsDataURL(file);
-				    }  
-				}
-			}, 400);
-		});
+									}).on('cropbox', function(e, crop) {
+										cropResult=crop;
+						        		console.log('crop window: ', crop);
+						        
+									});
+									$(".saveBanniere").click(function(){
+								        //console.log(cropResult);
+								        //var cropResult=cropResult;
+								        $("#banniere_photoAdd").submit();
+									});
+									$("#banniere_photoAdd").off().on('submit',(function(e) {
+										//alert(moduleId);
+										if(debug)mylog.log("id2", contextData.id);
+										$(".banniere_isSubmit").val("true");
+										e.preventDefault();
+										console.log(cropResult);
+										var fd = new FormData(document.getElementById("banniere_photoAdd"));
+										fd.append("parentId", contextData.id);
+										fd.append("parentType", contextData.type);
+										fd.append("formOrigin", "banniere");
+										fd.append("contentKey", "banniere");
+										fd.append("cropW", cropResult.cropW);
+										fd.append("cropH", cropResult.cropH);
+										fd.append("cropX", cropResult.cropX);
+										fd.append("cropY", cropResult.cropY);
+										//var formData = new FormData(this);
+													//console.log("formdata",formData);
+										/*formData.files= document.getElementById("banniere_change").files;
+										formData.crop= cropResult;
+										formData.parentId= contextData.id;
+										formData.parentType= contextData.type;
+										formData.formOrigin= "banniere";*/
+										//console.log(formData);
+										// Attach file
+										//formData.append('image', $('input[type=banniere]')[0].files[0]); 
+										$.ajax({
+											url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextData.type+"/ownerId/"+contextData.id+"/input/banniere",
+											type: "POST",
+											data: fd,
+											contentType: false,
+											cache: false, 
+											processData: false,
+											dataType: "json",
+											success: function(data){
+										        if(data.result){
+										        	newBanniere='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
+										        	$("#contentBanniere").html(newBanniere);
+										        	$.unblockUI();
+										        	//$("#uploadScropResizeAndSaveImage").hide();
+										    	}
+										    }
+										});
+									}));
+								}, 300);
+							}
+   						 	else
+   						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
+							};
+			        });
+			        reader.readAsDataURL(file);
+			    }  
+			}
+		}, 400);
+	});
 });
 </script>

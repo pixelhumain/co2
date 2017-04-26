@@ -210,7 +210,7 @@
 				<div id="faxAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
 					<?php
 						$fax = '<i>'.Yii::t("common","Not specified").'</i>';
-						if( !empty($element["telephone"]["fax"])){
+						if( !empty($element["telephone"]["fax"]))
 							$fax = ArrayHelper::arrayToString($element["telephone"]["fax"]);		
 						echo $fax;
 					?>

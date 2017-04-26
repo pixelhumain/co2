@@ -640,7 +640,7 @@ var directory = {
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
            tip = (type == "events") ? "Participer" : 'Suivre';
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-                  'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+                  ' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
                   " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
                       "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
                     "</a>";          
@@ -1007,10 +1007,19 @@ var directory = {
 
         params.attendees = "<hr class='margin-top-10 margin-bottom-10'>";
         
-        params.attendees += "<button id='btn-participate' class='text-dark btn btn-link no-padding'><i class='fa fa-street-view'></i> Je participe</button>";
-        params.attendees += "<button id='btn-interested' class='text-dark btn btn-link no-padding margin-left-10'><i class='fa fa-thumbs-up'></i> Ça m'intéresse</button>";
-        params.attendees += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10'> <i class='fa fa-share'></i> Partager</button>";
-      
+        isFollowed=false;
+          if(typeof params.isFollowed != "undefined" ) isFollowed=true;
+          
+        if(userId != null && userId != "" && params.id != userId){
+          // params.attendees += "<button id='btn-participate' class='text-dark btn btn-link followBtn no-padding'"+
+          //                     " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"'"+
+          //                     " data-isFollowed='"+isFollowed+"'>"+
+          //                     "<i class='fa fa-street-view'></i> Je participe</button>";
+
+          // params.attendees += "<button id='btn-interested' class='text-dark btn btn-link no-padding margin-left-10'><i class='fa fa-thumbs-up'></i> Ça m'intéresse</button>";
+          params.attendees += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10'> <i class='fa fa-share'></i> Partager</button>";
+        }
+
         params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
                                     "data-toggle='tooltip' data-placement='bottom' data-original-title='participant(s)'>" + 
                               cntP + " <i class='fa fa-street-view'></i>"+
@@ -1035,8 +1044,6 @@ var directory = {
                 '</div>';
         
         if(userId != null && userId != "" && params.id != userId){
-          isFollowed=false;
-          if(typeof params.isFollowed != "undefined" ) isFollowed=true;
           var tip = "Ça m'intéresse";
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
                       'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+

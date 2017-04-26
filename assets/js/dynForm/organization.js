@@ -28,12 +28,15 @@ dynForm = {
             },
 	        name : typeObjLib.name("organization"),
 	        similarLink : typeObjLib.similarLink,
-	        type : typeObjLib.typeOrga,
-            role : typeObjLib.role,
+	        type : typeObjLib.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true }),
+            role : typeObjLib.inputSelect(	"Votre rôle",
+            								"Quel est votre rôle ?", 
+            								{ admin : trad.administrator, member : trad.member, creator : trad.justCitizen }, 
+            								{ required : true } ),
             tags : typeObjLib.tags(),
             location : typeObjLib.location,
 	        image : typeObjLib.image( "#organization.detail.id."+uploadObj.id ),
-            formshowers : {
+            /*formshowers : {
             	label : "En détails",
                 inputType : "custom",
                 html:
@@ -41,21 +44,14 @@ dynForm = {
 					"href='javascript:;' "+
 					"onclick='$(\".emailtext,.descriptiontextarea,.urltext\").slideToggle();activateMarkdown(\"#ajaxFormModal #description\");'>"+
 					"<i class='fa fa-plus'></i> options (email, desc, urls, telephone)</a>",
-            },
-            email : typeObjLib.emailOptionnel,
-	        description : typeObjLib.description,
-            url : typeObjLib.url,
-	        /*telephone : {
-	        	placeholder : "Téléphne",
-	            inputType : "text",
-	            init : function(){
-	            	$(".telephonetext").css("display","none");
-	            }
-	        },*/
-            "preferences[publicFields]" : typeObjLib.hiddenArray,
-            "preferences[privateFields]" : typeObjLib.hiddenArray,
-            "preferences[isOpenData]" : typeObjLib.hiddenTrue,
-            "preferences[isOpenEdition]" : typeObjLib.hiddenTrue
+            },*/
+            email : typeObjLib.email(),
+	        shortDescription : typeObjLib.textarea("Description courte", "...",{ maxlength: 140 }),
+	        url : typeObjLib.inputUrl(),
+            "preferences[publicFields]" : typeObjLib.inputHidden([]),
+            "preferences[privateFields]" : typeObjLib.inputHidden([]),
+            "preferences[isOpenData]" : typeObjLib.inputHidden(true),
+            "preferences[isOpenEdition]" : typeObjLib.inputHidden(true)
 	    }
 	}
 };

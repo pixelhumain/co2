@@ -2684,7 +2684,7 @@ var elementLib = {
 			        	elementLib.elementObj.dynForm.jsonSchema.beforeSave();
 
 			        var afterSave = ( typeof elementLib.elementObj.dynForm.jsonSchema.afterSave == "function") ? elementLib.elementObj.dynForm.jsonSchema.afterSave : null;
-
+			        mylog.log("onSave", elementLib.elementObj.saveUrl);
 			        if( elementLib.elementObj.save )
 			        	elementLib.elementObj.save("#ajaxFormModal");
 			        else if(elementLib.elementObj.saveUrl)
@@ -2759,12 +2759,13 @@ var uploadObj = {
 };
 
 var typeObjLib = {
-	inputText :function(label, placeholder, rules) { 
+	inputText :function(label, placeholder, rules, custom) { 
 		var inputObj = {
 			label : label,
 	    	placeholder : ( notEmpty(placeholder) ? placeholder : "... " ),
 	        inputType : "text",
-	        rules : ( notEmpty(rules) ? rules : {} )
+	        rules : ( notEmpty(rules) ? rules : {} ),
+	        custom : ( notEmpty(custom) ? custom : "" )
 	    };
 	    mylog.log("inputText ", inputObj);
     	return inputObj;
@@ -2794,17 +2795,6 @@ var typeObjLib = {
 	    mylog.log("typeObjLib ", inputObj);
     	return inputObj;
     },
-    /*nameOrganiser : {
-    	placeholder : "Nom",
-        inputType : "text",
-        rules : {required : true},
-        init : function(){
-        	$("#ajaxFormModal #name ").off().on("blur",function(){
-        		if($("#ajaxFormModal #name ").val().length > 3 )
-        			globalSearch($(this).val(),["projects", "events", "organizations"]);
-        	});
-        }
-    },*/
     username : {
     	placeholder : "username",
         inputType : "text",
@@ -2831,33 +2821,16 @@ var typeObjLib = {
         inputType : "custom",
         html:"<div id='similarLink'><div id='listSameName'></div></div>",
     },
-    type :function  (title,list,notRequired) {  
-    	var title = (title) ? title : "Type";
-    	var list = (list) ? list : eventTypes;
-	    var res = {
-	    	label : title,
-	    	inputType : "select",
-	    	placeholder : title,
-	    	rules : { required : true },
-	    	options : list
-	    }
-	    if(notRequired == false)
-	    	delete res.rules;
-	    return res;
+    inputSelect :function(label, placeholder, list, rules) { 
+		var inputObj = {
+			inputType : "select",
+			label : ( notEmpty(label) ? label : "" ),
+			placeholder : ( notEmpty(placeholder) ? placeholder : "Choisir" ),
+			options : ( notEmpty(list) ? list : [] ),
+			rules : ( notEmpty(rules) ? rules : {} )
+		};
+		return inputObj;
 	},
-    typeOrga :{
-    	label : "Type d'organisation",
-    	inputType : "select",
-    	placeholder : "Type d'organisation",
-    	rules : { required : true },
-    	options : organizationTypes
-    },
-   	avancementProject :{
-   		label : "L'avancement du project",
-    	inputType : "select",
-    	placeholder : "Avancement du projet",
-    	options : avancementProject
-    },
     imageAddPhoto : {
     	inputType : "uploader",
     	showUploadBtn : true,
@@ -2884,30 +2857,15 @@ var typeObjLib = {
 		    	}
     	}
     },
-    descriptionOptionnel : {
-        inputType : "textarea",
-		placeholder : "...",
-		init : function(){
-        	$(".descriptiontextarea").css("display","none");
-        },
-		label : "Description optionnelle"
-    },
-    texte : {
-        inputType : "textarea",
-		placeholder : "Votre message ...",
-		label : "Votre message"
-    },
-    description : {
-        inputType : "textarea",
-		placeholder : "...",
-		label : "Description principale"
-    },
-    shortDescription : {
-        inputType : "textarea",
-		placeholder : "...",
-		label : "Description courte",
-		rules : { maxlength: 140 }
-    },
+    textarea :function (label,placeholder,rules) {  
+    	var inputObj = {
+    		inputType : "textarea",
+	    	label : ( notEmpty(label) ? label : "Votre message ..." ),
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "Votre message ..." ),
+	    	rules : ( notEmpty(rules) ? rules : { } )
+	    } ;
+	    return inputObj;
+	},
     tags : function(list) { 
     	tagsL = (list) ? list : tagsList;
     	return {
@@ -2929,42 +2887,49 @@ var typeObjLib = {
 	    }
 	    return res;
 	},
-
+    price :function(label, placeholder, rules, custom) { 
+		var inputObj = typeObjLib.inputText("Prix", "Prix ...") ;
+	    inputObj.init = function(){
+    		$('input#price').filter_input({regex:'[0-9]'});
+      	};
+    	return inputObj;
+    },
+    email :function (label,placeholder,rules) {  
+    	var inputObj = {
+    		inputType : "text",
+	    	label : ( notEmpty(label) ? label : "E-mail principal" ),
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "exemple@mail.com" ),
+	    	rules : ( notEmpty(rules) ? rules : { email: true } )
+	    }
+	    return inputObj;
+	},
+	emailOptionnel :function (label,placeholder,rules) {  
+    	var inputObj = typeObjLib.email(label, placeholder, rules);
+    	inputObj.init = function(){
+			$(".emailtext").css("display","none");
+		};
+	    return inputObj;
+	},
 	location : {
 		label :"Localisation",
        inputType : "location"
     },
-    email : {
-		placeholder : "Ajouter un e-mail",
-		inputType : "text",
-		label : "E-mail principal",
-        rules : { email: true }
+    inputUrl :function (label,placeholder,rules, custom) {  
+    	label = ( notEmpty(label) ? label : "URL principale" );
+    	placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
+    	rules = ( notEmpty(rules) ? rules : { url: true } );
+    	custom = ( notEmpty(custom) ? custom : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>" );
+	    var inputObj = typeObjLib.inputText(label, placeholder, rules, custom);
+	    return inputObj;
 	},
-    emailOptionnel : {
-		placeholder : "Email du responsable",
-		inputType : "text",
-		init : function(){
-			$(".emailtext").css("display","none");
-		},
-        rules : { email: true }
-	},
-	url : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        placeholder : "Site web",
-        label : "URL principale",
-        rules : { url: true }
-    },
-    urlOptionnel : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        placeholder : "url, lien, adresse web",
-        init:function(){
+	inputUrlOptionnel :function (label, placeholder,rules, custom) {  
+    	var inputObj = typeObjLib.inputUrl(label, placeholder, rules, custom);
+    	inputObj.init = function(){
             getMediaFromUrlContent("#url", ".resultGetUrl0",0);
             $(".urltext").css("display","none");
-        },
-        rules : { url: true }
-    },
+        };
+	    return inputObj;
+	},
     urls : {
     	label : "Ajouter des informations libres",
     	placeholder : "informations / urls ...",
@@ -3049,76 +3014,18 @@ var typeObjLib = {
         	duringDates: ["#startDateParent","#endDateParent","La date de fin"]
 	    }
     },
-    telegram : {
-        inputType :"text",
-        label : "Votre Speudo Telegram",
-        placeholder : "Votre Speudo Telegram"
-    },
-    skype : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Skype",
-        placeholder : "Lien vers Skype"
-    },
-    facebook : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Facebook",
-        placeholder : "Lien vers Facebook"
-    },
-    github : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Git Hub",
-        placeholder : "Lien vers Git Hub"
-    },
-    googleplus : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Google Plus",
-        placeholder : "Lien vers Google Plus"
-    },
-    twitter : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Twitter",
-        placeholder : "Lien vers Twitter"
-    },
     birthDate : {
         inputType : "date",
         label : "Date d'anniversaire",
         placeholder: "Date d'anniversaire"
     },
-    phone :{
-      	inputType : "text",
-      	label : "Fixe",
-      	placeholder : "Saisir les numéros de téléphone séparer par une virgule"
-    },
-    mobile :{
-      	inputType : "text",
-      	label : "Mobile",
-      	placeholder : "Saisir les numéros de portable séparer par une virgule"
-    },
-    fax :{
-      	inputType : "text",
-      	label : "Fax",
-      	placeholder : "Saisir les numéros de fax séparer par une virgule"
-    },
-    price :{
-      	inputType : "price",
-      	label : "Prix",
-      	placeholder : "Prix ...",
-      	init : function(){
-    		$('input#price').filter_input({regex:'[0-9]'});
-      	}
-    },
-    contactInfo :{
-      	inputType : "text",
-      	label : "Coordonnées",
-      	placeholder : "n° tel, addresse email ..."
-    },
-    hidden :{
-      	inputType : "hidden"
+    dateEnd :{
+    	inputType : "date",
+    	placeholder : "Fin de la période de vote",
+    	rules : { 
+    		required : true,
+    		greaterThanNow : ["DD/MM/YYYY"]
+    	}
     },
     inviteSearch : {
     	inputType : "searchInvite",
@@ -3144,43 +3051,11 @@ var typeObjLib = {
         	$(".invitedUserEmailtext").css("display","none");	 
         }
     },
-    list :{
-    	inputType : "select",
-    	placeholder : "Type du point d'intérêt",
-    	options : poiTypes
-    },
-    poiTypes :{
-    	inputType : "select",
-    	placeholder : "Type du point d'intérêt",
-    	options : poiTypes
-    },
-    role :{
-    	label :"Votre rôle",
-    	inputType : "select",
-    	placeholder : "Quel est votre rôle ?",
-    	rules : { required : true },
-    	//value : "admin",
-    	options : {
-    		admin : trad.administrator,
-			member : trad.member,
-			creator : trad.justCitizen
-    	}
-    },
-    hiddenArray : {
-       inputType : "hidden",
-        value : []
-    },
-    hiddenTrue : {
-       inputType : "hidden",
-        value : true
-    },
-    dateEnd :{
-    	inputType : "date",
-    	placeholder : "Fin de la période de vote",
-    	rules : { 
-    		required : true,
-    		greaterThanNow : ["DD/MM/YYYY"]
-    	}
+    inputHidden :function(value, rules) { 
+		var inputObj = { inputType : "hidden"};
+		if( notNull(value) ) inputObj.value = value ;
+		if( notNull(rules) ) inputObj.rules = rules ;
+    	return inputObj;
     },
     get:function(type){
     	mylog.log("typeObjLib.get", type);
@@ -3313,7 +3188,7 @@ var typeObj = {
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
 	"video" : {icon:"video-camera",color:"dark"},
-	"formContact" : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user"},
+	"formContact" : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
 };
 
 var documents = {

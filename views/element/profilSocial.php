@@ -62,8 +62,7 @@
 	}
 <?php } ?>
 
-</style>
-<?php //$this->renderPartial('../default/formContact'); ?>	
+</style>	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->

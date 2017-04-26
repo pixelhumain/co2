@@ -141,7 +141,8 @@ dynForm = {
             subtype : typeObjLib.hidden,
             name : typeObjLib.name("place"),
 	        image : typeObjLib.image( "#place.detail.id."+uploadObj.id ),
-            description : typeObjLib.description,
+            //description : typeObjLib.description,
+            description : typeObjLib.textarea("Description", "..."),
             location : typeObjLib.location,
             tags :typeObjLib.tags(),
             formshowers : {

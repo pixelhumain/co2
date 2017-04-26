@@ -89,7 +89,8 @@ dynForm = {
             type : typeObjLib.hidden,
 	        name : typeObjLib.name("poi"),
 	        image : typeObjLib.image(),
-            description : typeObjLib.description,
+            //description : typeObjLib.description,
+            description : typeObjLib.textarea("Description", "..."),
             location : typeObjLib.location,
             tags :typeObjLib.tags(),
             formshowers : {
@@ -98,8 +99,8 @@ dynForm = {
                 html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
             },
             urls : typeObjLib.urlsOptionnel,
-            parentId : typeObjLib.hidden,
-            parentType : typeObjLib.hidden,
+            parentId : typeObjLib.inputHidden(),
+            parentType : typeObjLib.inputHidden(),
 	    }
 	}
 };

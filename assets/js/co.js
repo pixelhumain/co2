@@ -538,6 +538,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 
 var CoAllReadyLoad = false;
 var url = {
+	afterLoad : null,
 	loadableUrls : {
 		"#modal." : {title:'OPEN in Modal'},
 		"#event.calendarview" : {title:"EVENT CALENDAR ", icon : "calendar"},
@@ -598,7 +599,6 @@ var url = {
 		"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
 		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
 		"#opendata" : {"alias":"#data.index"},
-		//"#search" : { "title":'SEARCH AND FIND', "icon" : 'map-search', "hash" : "#default.directory", "preaction":function( hash ){ return searchByHash(hash);} },
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
 	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
@@ -841,38 +841,6 @@ function setTitle(str, icon, topTitle,keywords,shortDesc) { mylog.log("setTitle"
 		$('meta[name="description"]').attr("content","Communecter : Connecter à sa commune, inter connecter les communs, un réseau sociétal pour un citoyen connecté et acteur au centre de sa société.");
 }
 
-//ex : #search:bretagneTelecom:all
-//#search:#fablab
-//#search:#fablab:all:map
-function searchByHash (hash) 
-{ 
-	var mapEnd = false;
-	var searchT = hash.split(':');
-	// 1 : is the search term
-	var search = searchT[1]; 
-	scopeBtn = null;
-	// 2 : is the scope
-	if( searchT.length > 2 )
-	{
-		if( searchT[2] == "all" )
-			scopeBtn = ".btn-scope-niv-5" ;
-		else if( searchT[2] == "region" )
-			scopeBtn = ".btn-scope-niv-4" ;
-		else if( searchT[2] == "dep" )
-			scopeBtn = ".btn-scope-niv-3" ;
-		else if( searchT[2] == "quartier" )
-			scopeBtn = ".btn-scope-niv-2" ;
-	}
-	mylog.log("search : "+search,searchT, scopeBtn);
-	$(".input-global-search").val(search);
-	//startGlobalSearch();
-	if( scopeBtn )
-		$(scopeBtn).trigger("click"); 
-
-	if( searchT.length > 3 && searchT[3] == "map" )
-		mapEnd = true;
-	return mapEnd;
-}
 
 function markdownToHtml (str) { 
 	var converter = new showdown.Converter(),
@@ -966,7 +934,7 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 	//alert("showAjaxPanel"+url);
 	
 	var dest = ( typeof urlObj == "undefined" || typeof urlObj.useHeader != "undefined" ) ? themeObj.mainContainer : ".pageContent" ;
-	mylog.log("showAjaxPanel",url,urlObj,dest);	
+	mylog.log("showAjaxPanel", url, urlObj,dest,url.afterLoad );	
 	//var dest = themeObj.mainContainer;
 	hideScrollTop = false;
 	//alert("showAjaxPanel"+dest);
@@ -1010,6 +978,11 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
     		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
         		uploadObj.type = contextData.type;
         		uploadObj.id = contextData.id;
+        	}
+
+        	if( typeof url.afterLoad == "function") {
+        		url.afterLoad();
+        		url.afterLoad = null;
         	}
         	/*if(debug){
         		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
@@ -1791,111 +1764,6 @@ function globalSearch(searchValue,types,autre){
 }*/
 
 
-var elementLocation = null;
-var centerLocation = null;
-var elementLocations = [];
-var elementPostalCode = null;
-var elementPostalCodes = [];
-var countLocation = 0;
-var countPostalCode = 0;
-function copyMapForm2Dynform(locationObj) { 
-	//if(!elementLocation)
-	//	elementLocation = [];
-	mylog.log("locationObj", locationObj);
-	elementLocation = locationObj;
-	mylog.log("elementLocation", elementLocation);
-	elementLocations.push(elementLocation);
-	mylog.log("elementLocations", elementLocations);
-	if(!centerLocation || locationObj.center == true){
-		centerLocation = elementLocation;
-		elementLocation.center = true;
-	}
-	mylog.dir(elementLocations);
-	//elementLocation.push(positionObj);
-}
-
-function addLocationToForm(locationObj)
-{
-	mylog.warn("---------------addLocationToForm----------------");
-	mylog.dir(locationObj);
-	var strHTML = "";
-	if( locationObj.address.addressCountry)
-		strHTML += locationObj.address.addressCountry;
-	if( locationObj.address.postalCode)
-		strHTML += " ,"+locationObj.address.postalCode;
-	if( locationObj.address.addressLocality)
-		strHTML += " ,"+locationObj.address.addressLocality;
-	if( locationObj.address.streetAddress)
-		strHTML += " ,"+locationObj.address.streetAddress;
-	var btnSuccess = "";
-	var locCenter = "";
-	if( countLocation == 0){
-		btnSuccess = "btn-success";
-		locCenter = "<span class='lblcentre'>(localité centrale)</span>";
-	}
-	
-	strHTML = "<a href='javascript:removeLocation("+countLocation+")' class=' locationEl"+countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
-			  "<span class='locationEl"+countLocation+" locel text-azure'>"+strHTML+"</span> "+
-			  "<a href='javascript:setAsCenter("+countLocation+")' class='centers center"+countLocation+" locationEl"+countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
-	$(".locationlocation").prepend(strHTML);
-	countLocation++;
-}
-
-function copyPCForm2Dynform(postalCodeObj) { 
-	mylog.warn("---------------copyPCForm2Dynform----------------");
-	mylog.log("postalCodeObj", postalCodeObj);
-	elementPostalCode = postalCodeObj;
-	mylog.log("elementPostalCode", elementPostalCode);
-	elementPostalCodes.push(elementPostalCode);
-	mylog.log("elementPostalCodes", elementPostalCodes);
-	mylog.dir(elementPostalCodes);
-	//elementPostalCode.push(positionObj);
-}
-
-function addPostalCodeToForm(postalCodeObj)
-{
-	mylog.warn("---------------addPostalCodeToForm----------------");
-	mylog.dir(postalCodeObj);
-	var strHTML = "";
-	if( postalCodeObj.postalCode)
-		strHTML += postalCodeObj.postalCode;
-	if( postalCodeObj.name)
-		strHTML += " ,"+postalCodeObj.name;
-	if( postalCodeObj.latitude)
-		strHTML += " ,("+postalCodeObj.latitude;
-	if( postalCodeObj.longitude)
-		strHTML += " / "+postalCodeObj.longitude+")";
-	
-	strHTML = "<a href='javascript:removeLocation("+countPostalCode+")' class=' locationEl"+countPostalCode+" btn'> <i class='text-red fa fa-times'></i></a>"+
-			  "<span class='locationEl"+countPostalCode+" locel text-azure'>"+strHTML+"</span> <br/>";
-	$(".postalcodepostalcode").prepend(strHTML);
-	countPostalCode++;
-}
-
-
-function removeLocation(ix){
-	mylog.log("removeLocation", ix, elementLocations);
-	elementLocation = null;
-	elementLocations.splice(ix,1);
-	//TODO check if this center then apply on first
-	//$(".locationEl"+countLocation).remove();
-	$(".locationEl"+ix).remove();
-}
-
-function setAsCenter(ix){
-
-	$(".centers").removeClass('btn-success');
-	$(".lblcentre").remove();
-	$.each(elementLocations,function(i, v) { 
-		if( v.center)
-			delete v.center;
-	})
-	$(".centers").removeClass('btn-success');
-	$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>(localité centrale)</span>");
-	centerLocation = elementLocations[ix];
-	elementLocations[ix].center = true;
-}
-
 function notEmpty(val){
 	return typeof val != "undefined"
 			&& val != null
@@ -2132,13 +2000,6 @@ function myContactLabel (type,id) {
 	return null;
 }
 
-
-function shadowOnHeader() {
-	var y = $(".my-main-container").scrollTop(); 
-    if (y > 0) {  $('.main-top-menu').addClass('shadow'); }
-    else { $('.main-top-menu').removeClass('shadow'); }
-}
-
 function autoCompleteInviteSearch(search){
 	mylog.log("autoCompleteInviteSearch2", search);
 	if (search.length < 3) { return }
@@ -2361,9 +2222,9 @@ var collection = {
 };
 
 /* *********************************
-			ELEMENTS
+			ELEMENT FORM 
 ********************************** */
-
+//TODO : rename element Form
 var elementLib = {
 	elementObj : null,
 	formatData : function (formData, collection,ctrl) { 
@@ -2741,6 +2602,114 @@ var elementLib = {
 		elementLib.openForm(form, fct, data);
 	}
 }
+
+/* *********************************
+			LOCATION
+********************************** */
+//TODO move to elementForm
+var elementLocation = null;
+var centerLocation = null;
+var elementLocations = [];
+var elementPostalCode = null;
+var elementPostalCodes = [];
+var countLocation = 0;
+var countPostalCode = 0;
+function copyMapForm2Dynform(locationObj) { 
+	//if(!elementLocation)
+	//	elementLocation = [];
+	mylog.log("locationObj", locationObj);
+	elementLocation = locationObj;
+	mylog.log("elementLocation", elementLocation);
+	elementLocations.push(elementLocation);
+	mylog.log("elementLocations", elementLocations);
+	if(!centerLocation || locationObj.center == true){
+		centerLocation = elementLocation;
+		elementLocation.center = true;
+	}
+	mylog.dir(elementLocations);
+	//elementLocation.push(positionObj);
+}
+
+function addLocationToForm(locationObj){
+	mylog.warn("---------------addLocationToForm----------------");
+	mylog.dir(locationObj);
+	var strHTML = "";
+	if( locationObj.address.addressCountry)
+		strHTML += locationObj.address.addressCountry;
+	if( locationObj.address.postalCode)
+		strHTML += " ,"+locationObj.address.postalCode;
+	if( locationObj.address.addressLocality)
+		strHTML += " ,"+locationObj.address.addressLocality;
+	if( locationObj.address.streetAddress)
+		strHTML += " ,"+locationObj.address.streetAddress;
+	var btnSuccess = "";
+	var locCenter = "";
+	if( countLocation == 0){
+		btnSuccess = "btn-success";
+		locCenter = "<span class='lblcentre'>(localité centrale)</span>";
+	}
+	
+	strHTML = "<a href='javascript:removeLocation("+countLocation+")' class=' locationEl"+countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
+			  "<span class='locationEl"+countLocation+" locel text-azure'>"+strHTML+"</span> "+
+			  "<a href='javascript:setAsCenter("+countLocation+")' class='centers center"+countLocation+" locationEl"+countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
+	$(".locationlocation").prepend(strHTML);
+	countLocation++;
+}
+
+function copyPCForm2Dynform(postalCodeObj) { 
+	mylog.warn("---------------copyPCForm2Dynform----------------");
+	mylog.log("postalCodeObj", postalCodeObj);
+	elementPostalCode = postalCodeObj;
+	mylog.log("elementPostalCode", elementPostalCode);
+	elementPostalCodes.push(elementPostalCode);
+	mylog.log("elementPostalCodes", elementPostalCodes);
+	mylog.dir(elementPostalCodes);
+	//elementPostalCode.push(positionObj);
+}
+
+function addPostalCodeToForm(postalCodeObj){
+	mylog.warn("---------------addPostalCodeToForm----------------");
+	mylog.dir(postalCodeObj);
+	var strHTML = "";
+	if( postalCodeObj.postalCode)
+		strHTML += postalCodeObj.postalCode;
+	if( postalCodeObj.name)
+		strHTML += " ,"+postalCodeObj.name;
+	if( postalCodeObj.latitude)
+		strHTML += " ,("+postalCodeObj.latitude;
+	if( postalCodeObj.longitude)
+		strHTML += " / "+postalCodeObj.longitude+")";
+	
+	strHTML = "<a href='javascript:removeLocation("+countPostalCode+")' class=' locationEl"+countPostalCode+" btn'> <i class='text-red fa fa-times'></i></a>"+
+			  "<span class='locationEl"+countPostalCode+" locel text-azure'>"+strHTML+"</span> <br/>";
+	$(".postalcodepostalcode").prepend(strHTML);
+	countPostalCode++;
+}
+
+function removeLocation(ix){
+	mylog.log("removeLocation", ix, elementLocations);
+	elementLocation = null;
+	elementLocations.splice(ix,1);
+	//TODO check if this center then apply on first
+	//$(".locationEl"+countLocation).remove();
+	$(".locationEl"+ix).remove();
+}
+
+function setAsCenter(ix){
+
+	$(".centers").removeClass('btn-success');
+	$(".lblcentre").remove();
+	$.each(elementLocations,function(i, v) { 
+		if( v.center)
+			delete v.center;
+	})
+	$(".centers").removeClass('btn-success');
+	$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>(localité centrale)</span>");
+	centerLocation = elementLocations[ix];
+	elementLocations[ix].center = true;
+}
+
+/* ********************************** */
 
 
 /* *********************************
@@ -3423,17 +3392,6 @@ var keyboardNav = {
 			keyboardNav.keyMap[keycode]();
 		}
 	}
-}
-
-function cityKeyPart(unikey, part){
-	var s = unikey.indexOf("_");
-	var e = unikey.indexOf("-");
-	var len = unikey.length;
-	if(e < 0) e = len;
-	if(part == "insee") return unikey.substr(s+1, e - s-1);
-	if(part == "cp" && unikey.indexOf("-") < 0) return "";
-	if(part == "cp") return unikey.substr(e+1, len);
-	if(part == "country") return unikey.substr(e+1, len);
 }
 
 //*********************************************************************************

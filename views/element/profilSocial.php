@@ -200,17 +200,20 @@
 		</div>
 		
 		<div class="btn-group pull-right">
+
+		  	
 			<?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
 			  <button type="button" class="btn btn-default bold">
 			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
 			  </button>
 			<?php } ?>
-		  <?php if($element["_id"] == Yii::app()->session["userId"] && 
-		  			Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
-		  <button type="button" class="btn btn-default bold" id="btn-superadmin">
-		  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
-		  </button>
-		  <?php } ?>
+			  <?php if($element["_id"] == Yii::app()->session["userId"] && 
+			  			Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
+			  <button type="button" class="btn btn-default bold" id="btn-superadmin">
+			  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
+			  </button>
+			  <?php } ?>
+
 
 		</div>
 
@@ -219,56 +222,64 @@
 		<div class="btn-group pull-right">
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
-				<button type="button" class="btn btn-default bold">
-		  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo Yii::t("common", "Settings"); ?></span>
-		  		</button>
-		  		<ul class="dropdown-menu arrow_box menu-params">			
-	  				<li class="text-left">
-		               	<a href="javascript:;" id="editConfidentialityBtn" class="bg-white">
-		                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
-		                </a>
-		            </li>
-					<li>
-						<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
-							<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?>
-						</a>
-					</li>
-
-		  			<?php if($type !=Person::COLLECTION){ ?>
+					<button type="button" class="btn btn-default bold">
+			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo Yii::t("common", "Settings"); ?></span>
+			  		</button>
+			  		<ul class="dropdown-menu arrow_box menu-params">			
 		  				<li class="text-left">
-							<a href="javascript:;" id="btn-show-activity">
-								<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
-							</a>
-						</li>
-			  			<li class="text-left">
-			               	<a href="javascript:;" class="bg-white text-red">
-			                    <i class="fa fa-trash"></i> 
-			                    <?php echo Yii::t("common", "Delete {what}", 
-			                    					array("{what}"=> 
-			                    						Yii::t("common","this ".Element::getControlerByCollection($type)))); 
-			                    ?>
+			               	<a href="javascript:;" id="editConfidentialityBtn" class="bg-white">
+			                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
 			                </a>
 			            </li>
-		            <?php } else { ?>
-						<li class="text-left">
-							<a href='javascript:' id="downloadProfil">
-								<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
+						<li>
+							<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
+								<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?>
 							</a>
 						</li>
-						<li class="text-left">
-			               	<a href='javascript:;' id="btn-update-password" class='text-red'>
-								<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
-							</a>
-			            </li>
-		            <?php } ?>
-		            
-		  		</ul>
+
+			  			<?php if($type !=Person::COLLECTION){ ?>
+			  				<li class="text-left">
+								<a href="javascript:;" id="btn-show-activity">
+									<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
+								</a>
+							</li>
+				  			<li class="text-left">
+				               	<a href="javascript:;" class="bg-white text-red">
+				                    <i class="fa fa-trash"></i> 
+				                    <?php echo Yii::t("common", "Delete {what}", 
+				                    					array("{what}"=> 
+				                    						Yii::t("common","this ".Element::getControlerByCollection($type)))); 
+				                    ?>
+				                </a>
+				            </li>
+			            <?php } else { ?>
+							<li class="text-left">
+								<a href='javascript:' id="downloadProfil">
+									<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
+								</a>
+							</li>
+							<li class="text-left">
+				               	<a href='javascript:;' id="btn-update-password" class='text-red'>
+									<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
+								</a>
+				            </li>
+			            <?php } ?>
+			            
+			  		</ul>
 		  		</li>
 		  	</ul>
 		</div>
 		<?php } ?>
 
-		
+	  	<?php if(isset(Yii::app()->session["userId"])){ ?>
+			<div class="btn-group pull-right">
+			  	<button 	class='btn btn-default bold btn-share pull-right'
+	                    	data-ownerlink='share' data-id='<?php echo $element["_id"]; ?>' data-type='<?php echo $typeItem; ?>' 
+	                    	data-isShared='false'>
+	                    	<i class='fa fa-share'></i> Partager
+	          	</button>
+	        </div>
+	    <?php } ?>
 
 	</div>
 
@@ -520,6 +531,42 @@ if( $type != Person::COLLECTION)
 			history.pushState(null, "New Title", hashUrlPage+".view.contacts");
 			loadContacts();
 		});
+
+		$(".btn-share").click(function(){
+
+		      formData = new Object();
+		      formData.parentId = $(this).attr("data-id");
+		      formData.childId = userId;
+		      formData.childType = personCOLLECTION;
+		      formData.connectType =  "share";
+		      var type = $(this).attr("data-type");
+		      var name = $(this).attr("data-name");
+		      var id = $(this).attr("data-id");
+		      //traduction du type pour le floopDrawer
+		      var typeOrigine = typeObjLib.get(type).col;
+		      if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
+		      formData.parentType = typeOrigine;
+		      if(type == "person") type = "people";
+		      else type = typeObjLib.get(type).col;
+
+		      $.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+"/link/share",
+		        data : formData,
+		        dataType: "json",
+		        success: function(data){
+		          if ( data && data.result ) {
+		            $(thiselement).html("<i class='fa fa-chain'></i>");
+		            $(thiselement).attr("data-ownerlink","follow");
+		            $(thiselement).attr("data-original-title", (type == "events") ? "Participer" : "Suivre");
+		            removeFloopEntity(data.parentId, type);
+		            toastr.success(trad["You are not following"]+data.parentEntity.name);
+		          } else {
+		             toastr.error("You leave succesfully");
+		          }
+		        }
+		      });
+		    });
 
 	}
 	

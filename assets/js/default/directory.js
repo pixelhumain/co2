@@ -428,6 +428,44 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 			});
 		}
    	});
+
+
+    $(".btn-share").click(function(){
+
+      formData = new Object();
+      formData.parentId = $(this).attr("data-id");
+      formData.childId = userId;
+      formData.childType = personCOLLECTION;
+      formData.connectType =  "share";
+      var type = $(this).attr("data-type");
+      var name = $(this).attr("data-name");
+      var id = $(this).attr("data-id");
+      //traduction du type pour le floopDrawer
+      var typeOrigine = typeObjLib.get(type).col;
+      if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
+      formData.parentType = typeOrigine;
+      if(type == "person") type = "people";
+      else type = typeObjLib.get(type).col;
+
+      $.ajax({
+        type: "POST",
+        url: baseUrl+"/"+moduleId+"/link/share",
+        data : formData,
+        dataType: "json",
+        success: function(data){
+          if ( data && data.result ) {
+            $(thiselement).html("<i class='fa fa-chain'></i>");
+            $(thiselement).attr("data-ownerlink","follow");
+            $(thiselement).attr("data-original-title", (type == "events") ? "Participer" : "Suivre");
+            removeFloopEntity(data.parentId, type);
+            toastr.success(trad["You are not following"]+data.parentEntity.name);
+          } else {
+             toastr.error("You leave succesfully");
+          }
+        }
+      });
+    });
+
    	//on click sur les boutons link
     // $(".btn-tag").click(function(){
     //   setSearchValue($(this).html());
@@ -1017,9 +1055,12 @@ var directory = {
           //                     " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"'"+
           //                     " data-isFollowed='"+isFollowed+"'>"+
           //                     "<i class='fa fa-street-view'></i> Je participe</button>";
-
+          isShared = false;
           // params.attendees += "<button id='btn-interested' class='text-dark btn btn-link no-padding margin-left-10'><i class='fa fa-thumbs-up'></i> Ça m'intéresse</button>";
-          params.attendees += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10'> <i class='fa fa-share'></i> Partager</button>";
+          params.attendees += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10 btn-share'"+
+                              " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"' "+//data-name='"+params.name+"'"+
+                              " data-isShared='"+isShared+"'>"+
+                              "<i class='fa fa-share'></i> Partager</button>";
         }
 
         params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+

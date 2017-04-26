@@ -149,7 +149,7 @@
 </style>
 
 
-<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow page-content" id="content-social" style="min-height:700px;">
+<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow pageContent" id="content-social" style="min-height:700px;">
 
     <?php if(@$type=="events"){ ?>
     <div class="col-md-12 no-padding calendar"></div>
@@ -193,7 +193,7 @@
 
         </div>
 
-        <div class="col-md-10 col-sm-10 col-xs-12 padding-5">
+        <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
         <?php
             $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
         ?>
@@ -497,9 +497,10 @@ jQuery(document).ready(function() {
         elementLib.openForm(type);
     });
 
-    $(".btn-decommunecter").click(function(){
+    /*$(".btn-decommunecter").click(function(){
+        alert();
         activateGlobalCommunexion(false);
-    });
+    });*/
 
     if(page == "annonces" || page == "agenda" || page == "power"){
         setTimeout(function(){

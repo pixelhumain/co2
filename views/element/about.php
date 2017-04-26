@@ -2,7 +2,7 @@
 	$cssAnsScriptFilesModule = array(
 		//Data helper
 		'/js/dataHelpers.js',
-		//'/js/postalCode.js',
+		'/js/postalCode.js',
 		'/js/default/editInPlace.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
@@ -182,7 +182,7 @@
 				</div>
 				<div id="fixeAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
 					<?php
-						$fixe = '<i>'.Yii::t("common","Not specified").'</i>';;
+						$fixe = '<i>'.Yii::t("common","Not specified").'</i>';
 						if( !empty($element["telephone"]["fixe"]))
 							$fixe = ArrayHelper::arrayToString($element["telephone"]["fixe"]);
 						
@@ -196,7 +196,7 @@
 				</div>
 				<div id="mobileAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
 					<?php
-						$mobile = '<i>'.Yii::t("common","Not specified").'</i>';;
+						$mobile = '<i>'.Yii::t("common","Not specified").'</i>';
 						if( !empty($element["telephone"]["mobile"]))
 							$mobile = ArrayHelper::arrayToString($element["telephone"]["mobile"]);	
 						echo $mobile;
@@ -210,7 +210,7 @@
 				<div id="faxAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
 					<?php
 						$fax = '<i>'.Yii::t("common","Not specified").'</i>';
-						if( !empty($element["telephone"]["fax"]))
+						if( !empty($element["telephone"]["fax"]) )
 							$fax = ArrayHelper::arrayToString($element["telephone"]["fax"]);		
 						echo $fax;
 					?>

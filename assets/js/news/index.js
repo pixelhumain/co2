@@ -1,5 +1,5 @@
 function isLiveGlobal(){
-	return (location.hash.indexOf("#default.live") == 0 || location.hash.indexOf("#city.detail") == 0);
+	return (location.hash.indexOf("#live") == 0 || location.hash.indexOf("#city.detail") == 0);
 	return typeof liveScopeType != "undefined";// && liveScopeType == "global";
 }
 /*
@@ -321,10 +321,10 @@ function bindEventNews(){
 		}
 	});
 
-	$(".form-create-news-container #get_url").keyup(function(){
+	/*$(".form-create-news-container #get_url").keyup(function(){
 		if($(this).val() != "")
 			showFormBlock(true);	
-	});
+	});*/
 	$(".form-create-news-container #get_url").focusout(function(){
 		//if($(this).val() == "")// && location.hash.indexOf("#default.live")!=0)
 			//showFormBlock(false);	
@@ -616,7 +616,43 @@ function showFormBlock(bool){
 		$(".form-create-news-container .publiccheckbox").show("fast");
 		$(".form-create-news-container .tools_bar").show("fast");
 		$(".form-create-news-container .scopescope").show("fast");
-		multiTagScopeLbl("send");
+		/////multiTagScopeLbl("send");
+		if(isLiveGlobal()){
+			scopeHtml='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
+            				'data-toggle="tooltip" data-placement="top" title="Communecter avec '+communexion.currentName+'" '+
+           					'data-scope-value="'+communexion.values.cityKey+'" '+
+            				'data-scope-name="'+communexion.values.cityName+'" '+
+            				'data-scope-type="city" '+
+            				'id="btn-my-co">'+
+            				'<i class="fa fa-university"></i>'+
+            			'</a>'+
+            			'<h5 class="pull-left letter-red" style="margin-bottom: -8px;margin-top: 14px;">'+
+                            '<a class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-10 margin-right-10" '+ 
+                                'data-target="#modalScopes" data-toggle="modal" '+
+                                'data-toggle="tooltip" data-placement="top" '+ 
+                                'title="Sélectionner des lieux de recherche">'+
+                                '<img src="'+themeUrl+'/assets/img/cible3.png" height=25>'+
+                            '</a>'+ 
+                            'Selectionner les endroits de publications <i class="fa fa-angle-right"></i>'+ 
+                        '</h5>'+
+                        '<div class="scope-min-header list_tags_scopes hidden-xs text-left ellipsis">'+
+            				$(".scope-min-header").html()+
+            			'</div>';
+			if(globalCommunexion){
+				scopeHtml='<a class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Quitter la communexion">'+
+                			'<i class="fa fa-sign-in"></i>'+
+            				'</a>'+
+            				$(".getFormLive").html();
+			}
+			actionOnSetGlobalScope="save";
+			$("#scopeListContainerForm").append(scopeHtml);
+			$("#container-scope-filter").hide();
+			bindCommunexionScopeEvents();
+		}
+		//$("#lbl-my-scopes").html("<i class='fa fa-angle-down'></i> Sélectionnez les lieux de destination");
+		//$("#lbl-my-tags").html("<i class='fa fa-angle-down'></i> Sélectionner des tags<span class='hidden-xs'> pour définir le contenu de votre message</span>");
+		//$("br.visible-in-form").show();
+		///////
 		$('.extract_url').show();
 		$(".form-create-news-container #falseInput").hide();
 		$('#get_url').focus();
@@ -634,8 +670,12 @@ function showFormBlock(bool){
 		$(".form-create-news-container .publiccheckbox").hide();
 		$(".form-create-news-container .tools_bar").hide();
 		$(".form-create-news-container .scopescope").hide();
-		if(isLiveGlobal())
-			multiTagScopeLbl("search");
+		//if(isLiveGlobal())
+		//	multiTagScopeLbl("search");
+		actionOnSetGlobalScope="filter";
+		$("#scopeListContainerForm").html("");
+		$("#container-scope-filter").show();
+		//SCOPE DIV//
 		$('.extract_url').hide();
 		$(".form-create-news-container #falseInput").show();
 		
@@ -993,6 +1033,7 @@ function saveNews(){
 				    newNews.searchLocalityCODE_POSTAL = $('#searchLocalityCODE_POSTAL').val().split(',');
 				    newNews.searchLocalityDEPARTEMENT = $('#searchLocalityDEPARTEMENT').val().split(',');
 				    newNews.searchLocalityREGION = $('#searchLocalityREGION').val().split(',');
+				    newNews.searchLocalityLEVEL = $('#searchLocalityLEVEL').val();
 
 				    	
 			    }
@@ -1277,7 +1318,6 @@ function getMediaImages(o,newsId,authorId,targetName){
 			}
 		}
 	}
-	mylog.log(html);
 	return html;
 }
 function deleteImage(id,name,hideMsg,communevent){

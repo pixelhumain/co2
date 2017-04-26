@@ -126,7 +126,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 
 
   var loadingData = false;
-  var scrollEnd = false;
+  //var scrollEnd = false;
   var currentIndexMin = 0;
   var currentIndexMax = 10;
   var isLive = true;

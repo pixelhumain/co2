@@ -13,6 +13,6 @@ return array(
 	"Share a thought, an idea, a link" => "Partagez une pensée, une idée, un lien",
 	"In a few words" => "En quelques mots",
 	"Details" => "Détail",
-	"Please write something" => "message vide"
+	"Please write something" => "message vide",
 );
 ?>

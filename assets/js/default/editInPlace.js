@@ -1,12 +1,14 @@
 function bindAboutPodElement() {
 		$("#editGeoPosition").click(function(){
-			Sig.startModifyGeoposition(contextData.id, contextType, contextData);
+			Sig.startModifyGeoposition(contextData.id, contextData.type, contextData);
 			showMap(true);
 		});
 		
 		$("#editElementDetail").on("click", function(){
 			switchModeElement();
-		});		
+		});
+
+					
 
 		$("#btn-update-password").off().on( "click", function(){
 			var form = {
@@ -64,7 +66,7 @@ function bindAboutPodElement() {
 	    	param = new Object;
 	    	param.type = $(this).attr("type");
 	    	param.value = $(this).attr("value");
-	    	param.typeEntity = contextType;
+	    	param.typeEntity = contextData.type;
 	    	param.idEntity = contextData.id;
 			$.ajax({
 		        type: "POST",
@@ -87,7 +89,7 @@ function bindAboutPodElement() {
 		    	param.pk = contextData.id;
 				$.ajax({
 			        type: "POST",
-			        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
+			        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
 			        data: param,
 			       	dataType: "json",
 			    	success: function(data){
@@ -157,7 +159,7 @@ function bindAboutPodElement() {
 					param.pk = contextData.id;
 					$.ajax({
 				        type: "POST",
-				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
+				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
 				        data: param,
 				       	dataType: "json",
 				    	success: function(data){
@@ -202,7 +204,7 @@ function bindAboutPodElement() {
 					param.pk = contextData.id;
 					$.ajax({
 				        type: "POST",
-				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
+				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
 				        data: param,
 				       	dataType: "json",
 				    	success: function(data){
@@ -269,7 +271,7 @@ function bindAboutPodElement() {
 
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
@@ -348,7 +350,7 @@ function bindAboutPodElement() {
 		$(".btn-update-info").off().on( "click", function(){
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
@@ -542,7 +544,7 @@ function bindAboutPodElement() {
 		$(".btn-update-descriptions").off().on( "click", function(){
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
@@ -591,7 +593,7 @@ function bindAboutPodElement() {
 		$(".btn-update-network").off().on( "click", function(){
 			if(contextData.type == typeObj.person.col ){
 				var form = {
-					saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
+					saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
 					dynForm : {
 						jsonSchema : {
 							title : trad["Change password"],
@@ -724,7 +726,7 @@ function bindAboutPodElement() {
 		param.type = contextData.type;
 		$.ajax({
 	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
+	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
 	        data: param,
 	       	dataType: "json",
 	    	success: function(data){

@@ -48,7 +48,7 @@
 </style>
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
-	<div class="col-md-offset-2 col-md-9 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
+	<div id="container-scope-filter" class="col-md-offset-2 col-md-9 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
 		<?php
 	        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
 	    ?>
@@ -100,6 +100,7 @@ var scrollEnd = false;
 var loadContent = '<?php echo @$_GET["content"]; ?>';
 var dataNewsSearch = {};
 var	dateLimit=0;
+//var scrollEnd = false;
 jQuery(document).ready(function() {
 
 	$(".subsub").hide();
@@ -110,14 +111,9 @@ jQuery(document).ready(function() {
 	else liveType = ", la boite à outils citoyenne connectée " + liveType;
 
 	setTitle("Communecter" + liveType, "<i class='fa fa-heartbeat '></i>");
-	initFilterLive();
+	//initFilterLive();
 	//showTagsScopesMin("#list_tags_scopes");
-	<?php if(@$lockCityKey){ ?>
-		lockScopeOnCityKey("<?php echo $lockCityKey; ?>");
-	<?php }else{ ?>
-		//rebuildSearchScopeInput();
-	<?php } ?>
-    $("#btn-slidup-scopetags").click(function(){
+	$("#btn-slidup-scopetags").click(function(){
       slidupScopetagsMin();
     });
 	$('#btn-start-search').click(function(e){
@@ -125,7 +121,7 @@ jQuery(document).ready(function() {
     });
 		
 	
-    $('.tooltips').tooltip();
+    
     searchPage = true;
 	startSearch(true);
 
@@ -135,12 +131,31 @@ jQuery(document).ready(function() {
    
     initKInterface();//{"affixTop":10});
     initFreedomInterface();
-    $(".btn-decommunecter").click(function(){
-		activateGlobalCommunexion(false);
-  	});
-  	//KScrollTo(".main-btn-scopes");
+    
+    //KScrollTo(".main-btn-scopes");
 });
-function initFilterLive(){
+/*function bindCommunexionScopeEvents(){
+	$(".btn-decommunecter").off().click(function(){
+		activateGlobalCommunexion(false);
+		showTagsScopesMin();
+        rebuildSearchScopeInput();
+        $('.tooltips').tooltip(); 
+  	});
+  	$(".item-globalscope-checker").off().click(function(){  
+            $(".item-globalscope-checker").addClass("inactive");
+            $(this).removeClass("inactive");
+
+            mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
+            setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
+                             $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"), 
+                             $(this).data("region-communexion"), $(this).data("country-communexion"), actionOnSetGlobalScope ) ;
+    });
+
+    $(".start-new-communexion").off().click(function(){  
+        activateGlobalCommunexion(true);
+    });
+}*/
+/*function initFilterLive(){
 	dataNewsSearch = {
 	      "searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
 	      "searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
@@ -152,7 +167,7 @@ function initFilterLive(){
     dataNewsSearch.tagSearch = $('#searchTags').val().split(',');
     dataNewsSearch.searchType = searchType; 
     dataNewsSearch.textSearch = $('#main-search-bar').val();
- }   
+ }   */
 
 function initFreedomInterface(){
 	
@@ -169,12 +184,12 @@ function startSearch(isFirst){
 	dateLimit=0;
 	isFirst=true;
 	showNewsStream(isFirst);
-	$(".start-new-communexion").click(function(){  
+	/*$(".start-new-communexion").click(function(){  
         setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
                                  $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
-                                  $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
+                                  $(this).data("region-communexion"), $(this).data("country-communexion"),actionOnSetGlobalScope) ;
         activateGlobalCommunexion(true);
-	});
+	});*/
 	//}else{
 	//	showNewsStream(isFirst);//loadStream(0,5);
 	//}
@@ -182,7 +197,7 @@ function startSearch(isFirst){
 }
 
 
-function loadStream(indexMin, indexMax){ console.log("LOAD STREAM FREEDOM");
+/*function loadStream(indexMin, indexMax){ console.log("LOAD STREAM FREEDOM");
 	loadingData = true;
 	currentIndexMin = indexMin;
 	currentIndexMax = indexMax;
@@ -245,19 +260,17 @@ function loadLiveNow () {
         	$('.titleNowEvents').addClass("hidden");
         else
         	$('.titleNowEvents').removeClass("hidden");
-     } , "html" );*/
-}
+     } , "html" );
+}*/
 
 function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
-
-	scrollEnd = false;
 	var isFirstParam = isFirst ? "?isFirst=1&tpl=co2" : "?tpl=co2";
 	isFirstParam += "&nbCol=2";
-	var levelCommunexionName = { 1 : "CITYKEY",
+	/*var levelCommunexionName = { 1 : "CITYKEY",
 	                             2 : "CODE_POSTAL",
 	                             3 : "DEPARTEMENT",
 	                             4 : "REGION"
-	                           };
+	                           };*/
 	
 	var thisType="ko";
 	var urlCtrl = ""
@@ -265,6 +278,21 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		thisType = "city";
 		urlCtrl = "/news/index/type/city/isLive/true";
 	}
+	 var dataSearch = {
+      //"name" : name, 
+      "locality" : "",//locality, 
+      "searchType" : searchType, 
+      "textSearch" : $('#main-search-bar').val(),
+      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] , //is an array
+      "searchLocalityCITYKEY" : ($('#searchLocalityCITYKEY').length ) ? $('#searchLocalityCITYKEY').val().split(',') : [],
+      "searchLocalityCODE_POSTAL" : ($('#searchLocalityCODE_POSTAL').length ) ? $('#searchLocalityCODE_POSTAL').val().split(',') : [], 
+      "searchLocalityDEPARTEMENT" : ($('#searchLocalityDEPARTEMENT').length ) ?  $('#searchLocalityDEPARTEMENT').val().split(',') : [],
+      "searchLocalityREGION" : ($('#searchLocalityREGION').length ) ? $('#searchLocalityREGION').val().split(',') : [],
+      "searchLocalityLEVEL" : ($('#searchLocalityLEVEL').length ) ? $('#searchLocalityLEVEL').val() : [],
+      //"searchBy" : levelCommunexionName[levelCommunexion], 
+      //"indexMin" : indexMin, 
+      //"indexMax" : indexMax
+    };
 	/*<?php if(@Yii::app()->session["userId"]){ ?>
 	else if(liveScopeType == "community"){
 		thisType = "citoyens";
@@ -286,8 +314,8 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 
 	if(isFirst){ //render HTML for 1st load
 		$("#newsstream").html(loading);
-		ajaxPost("#newsstream",baseUrl+"/"+moduleId+urlCtrl+"/date/0"+isFirstParam,dataNewsSearch, function(news){
-			showTagsScopesMin(".list_tags_scopes");
+		ajaxPost("#newsstream",baseUrl+"/"+moduleId+urlCtrl+"/date/0"+isFirstParam,dataSearch, function(news){
+			//showTagsScopesMin(".list_tags_scopes");
 			 $(window).bind("scroll",function(){ 
 	    		if(!loadingData && !scrollEnd){
 	         		var heightWindow = $("html").height() - $("body").height();
@@ -299,7 +327,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 			});
 			if(loadContent != ''){
 				if(userId){
-					showFormBlock(true);
+					//showFormBlock(true);
 					if(loadContent.indexOf("%hash%"))
 						loadContent = loadContent.replace("%hash%", "#");
 					$("#get_url").val(loadContent);
@@ -309,8 +337,8 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 					toastr.error('you must be loggued to post on communecter!');
 				}
 			}
-			else
-				showFormBlock(false);
+			//else
+			//	showFormBlock(false);
 
 			bindTags();
 
@@ -325,11 +353,11 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		//dateLimit=0;currentMonth = null;
 		loadingData = true;
 		$("#newsstream").append(loading);
-		console.log("dataSearch",dataNewsSearch);
+		console.log("data",dataSearch);
 		$.ajax({
 		        type: "POST",
 		        url: baseUrl+"/"+moduleId+urlCtrl+"/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=2",
-		       	data: dataNewsSearch,
+		       	data: dataSearch,
 		    	success: function(data){
 					if(data){
 						$("#newsstream").find(".loader").remove();

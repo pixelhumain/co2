@@ -34,15 +34,20 @@ background-color: rgba(250,250,250,0.8);
 .addMargin{
   margin-top: 50px !important;
 }
+#noMoreNews{
+  position: absolute;
+  bottom: -55px;
+  font-size: 20px !important;
+  left: 0px;
+  right: 0px;
+}
 </style>
 <?php 
   $timezone = "";// @$timezone ? $timezone : 'Pacific/Noumea';
   $pair = @$pair ? $pair : false;
   $nbCol = @$nbCol ? $nbCol : 2;
  //echo $nbCol;
-  if(sizeof($news)==0){
-      echo "<div class=''><i class='fa fa-ban'> No more news</i></div>";
-  }
+  
 
    // var_dump($news);exit;
 		foreach($news as $key => $media){ 
@@ -102,7 +107,7 @@ background-color: rgba(250,250,250,0.8);
                   <?php if(@$media["type"]=="activityStream") { ?>
                     <?php $iconColor = Element::getColorIcon($media["object"]["type"]) ? 
                                        Element::getColorIcon($media["object"]["type"]) : ""; ?>
-                    <i class="fa fa-plus-circle"></i> a créé un 
+                    <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news","verb ".$media["verb"]); ?> un 
                     <span class="text-<?php echo @$iconColor; ?>">
                       <?php echo Yii::t("common", @$media["object"]["type"]); ?>
                     </span>
@@ -184,8 +189,10 @@ background-color: rgba(250,250,250,0.8);
     </div>
   </li>
 
-<?php } ?>
-
+  <?php } ?>
+  <?php if(sizeof($news)==0 || sizeof($news) < 6){
+      echo "<div id='noMoreNews' class='text-center'><i class='fa fa-ban'> ".Yii::t("common", "No more news")."</i></div>";
+  } ?>
   <script type="text/javascript">
     var news=<?php echo json_encode($news) ?>;
     var canPostNews = <?php echo json_encode(@$canPostNews) ?>;
@@ -196,7 +203,10 @@ background-color: rgba(250,250,250,0.8);
     var docType="<?php echo Document::DOC_TYPE_IMAGE; ?>";
     var months = ["<?php echo Yii::t('common','january') ?>", "<?php echo Yii::t('common','febuary') ?>", "<?php echo Yii::t('common','march') ?>", "<?php echo Yii::t('common','april') ?>", "<?php echo Yii::t('common','may') ?>", "<?php echo Yii::t('common','june') ?>", "<?php echo Yii::t('common','july') ?>", "<?php echo Yii::t('common','august') ?>", "<?php echo Yii::t('common','september') ?>", "<?php echo Yii::t('common','october') ?>", "<?php echo Yii::t('common','november') ?>", "<?php echo Yii::t('common','december') ?>"];
     var contentKey = "<?php echo Document::IMG_SLIDER; ?>";
+    var scrollEnd=false;
     jQuery(document).ready(function() {
+      if($("#noMoreNews").length)
+        scrollEnd=true;
       $.each(news, function(e,v){
         tags = "", 
         scopes = "",
@@ -227,36 +237,37 @@ background-color: rgba(250,250,250,0.8);
             $("#newsTagsScope"+e).append(tags);
           }
         }
-      var author = typeof v.author != "undefined" ? v.author : null;
-      if(((author != null && typeof author.address != "undefined") || v.type == "activityStream") && v.scope.type == "public"){
+      //var author = typeof v.author != "undefined" ? v.author : null;
+      if(v.scope.type == "public"){
             postalCode = "";
             city = "";
             if(v.type != "activityStream"){
-              var countScope = 0;
+                var countScope = 0;
                 var maxScope = 6;
-                if(typeof(v.scope.cities) != "undefined")
-                   $.each(v.scope.cities, function(key, value){ countScope++;
-                  var name = "";
-                  if (typeof(value.postalCode) != "undefined") {
-                    name += value.postalCode;
-                  }
-
-                  if(name != "") name += ", " ;
-                    
-                  name += (value.addressLocality != "" && value.addressLocality != null) ? value.addressLocality : "";
-                  if(countScope<maxScope)
-                    scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> " + name + "</span> ";
-                });
-                if(typeof(v.scope.departements) != "undefined")
-                $.each(v.scope.departements, function(key, value){ countScope++;
-                  if(countScope<maxScope)
-                    scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+value.name + "</span> ";
-                });
-                if(typeof(v.scope.regions) != "undefined")
-                $.each(v.scope.regions, function(key, value){ countScope++;
-                  if(countScope<maxScope)
-                    scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+value.name + "</span> ";
-                });
+                if(typeof(v.scope.cities) != "undefined"){
+                  $.each(v.scope.cities, function(key, value){ countScope++;
+                    var name = "";
+                    if (typeof(value.postalCode) != "undefined") {
+                      name += value.postalCode;
+                    }
+                    if(name != "") name += ", " ;
+                    name += (value.addressLocality != "" && value.addressLocality != null) ? value.addressLocality : "";
+                    if(countScope<maxScope)
+                      scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> " + name + "</span> ";
+                  });
+                }
+                if(typeof(v.scope.departements) != "undefined"){
+                  $.each(v.scope.departements, function(key, value){ countScope++;
+                    if(countScope<maxScope)
+                      scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+value.name + "</span> ";
+                  });
+                }
+                if(typeof(v.scope.regions) != "undefined"){
+                  $.each(v.scope.regions, function(key, value){ countScope++;
+                    if(countScope<maxScope)
+                      scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+value.name + "</span> ";
+                  });
+                }
             }else  { //activityStream
               if (typeof(v.scope.address) != "undefined" && v.scope != null && v.scope.address != null &&  v.scope.address.addressLocality != "Unknown") {
                 postalCode=((v.scope.address.postalCode)?v.scope.address.postalCode+" , " : "");
@@ -268,7 +279,7 @@ background-color: rgba(250,250,250,0.8);
               scopes = '<div class="pull-right" style="margin: 5px 0px;">'+scopes+'</div>';
               $("#newsTagsScope"+e).append(scopes);
            }
-          }
+        }
         if(v.type == "activityStream"){
           //if(v.object.type=="events" || v.object.type=="needs"){
             console.log(v.object);

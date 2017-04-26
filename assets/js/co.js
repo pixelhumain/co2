@@ -2728,6 +2728,16 @@ var uploadObj = {
 };
 
 var typeObjLib = {
+	inputText :function(label, placeholder, rules) { 
+		var inputObj = {
+			label : label,
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "... " ),
+	        inputType : "text",
+	        rules : ( notEmpty(rules) ? rules : {} )
+	    };
+	    mylog.log("inputText ", inputObj);
+    	return inputObj;
+    },
 	name :function(type, rules, addElement) { 
 		var inputObj = {
 	    	placeholder : "... ",
@@ -2850,6 +2860,11 @@ var typeObjLib = {
         	$(".descriptiontextarea").css("display","none");
         },
 		label : "Description optionnelle"
+    },
+    texte : {
+        inputType : "textarea",
+		placeholder : "Votre message ...",
+		label : "Votre message"
     },
     description : {
         inputType : "textarea",
@@ -3267,6 +3282,7 @@ var typeObj = {
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
 	"video" : {icon:"video-camera",color:"dark"},
+	"formContact" : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user"},
 };
 
 var documents = {

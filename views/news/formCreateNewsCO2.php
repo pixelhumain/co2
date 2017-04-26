@@ -325,7 +325,7 @@
       </div>
       <div class="form-actions no-padding" style="display: block;">
         
-        <div id="scopeListContainer" class="list_tags_scopes col-md-12 no-padding margin-bottom-10"></div>
+        <div id="scopeListContainerForm" class="list_tags_scopes col-md-12 no-padding margin-bottom-10"></div>
 
         <div class="col-md-12 no-padding">
           <hr class="submit">

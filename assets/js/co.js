@@ -3,22 +3,22 @@ var prevStep = 0;
 var steps = ["explain1","live","explain2","event","explain3","orga","explain4","project","explain5","person"];
 var slides = {
 	explain1 : function() { showDefinition("explainCommunectMe")},
-	live : function() { url.loadByHash("#default.live")},
+	live : function() { urlCtrl.loadByHash("#default.live")},
 	explain2 : function() { showDefinition("explainCartographiedeReseau")},
-	event : function() { url.loadByHash("#event.detail.id.57bb4078f6ca47cb6c8b457d")}, 
+	event : function() { urlCtrl.loadByHash("#event.detail.id.57bb4078f6ca47cb6c8b457d")}, 
 	explain3 : function() { showDefinition("explainDemoPart")},
-	orga : function() { url.loadByHash("#organization.detail.id.57553776f6ca47b37da93c2d")}, 
+	orga : function() { urlCtrl.loadByHash("#organization.detail.id.57553776f6ca47b37da93c2d")}, 
 	explain4 : function() { showDefinition("explainCommunecter")},
-	project : function() { url.loadByHash("#project.detail.id.56c1a474f6ca47a8378b45ef")},
+	project : function() { urlCtrl.loadByHash("#project.detail.id.56c1a474f6ca47a8378b45ef")},
 	explain5 : function() { showDefinition("explainProxicity")},
-	person : function() { url.loadByHash("#person.detail.id.54eda798f6b95cb404000903")} 
+	person : function() { urlCtrl.loadByHash("#person.detail.id.54eda798f6b95cb404000903")} 
 };
 
 function runslide(cmd)
 {
 	if(cmd == 0){
 		prevStep = null;
-		url.loadByHash("#default.live");
+		urlCtrl.loadByHash("#default.live");
 	}
 
 	if( prevStep != null ){
@@ -192,7 +192,7 @@ function updateField(type,id,name,value,reload){
 		if(data.result) {
         	toastr.success(data.msg);
         	if(reload)
-        		url.loadByHash(location.hash);
+        		urlCtrl.loadByHash(location.hash);
 		}
         else
         	toastr.error(data.msg);  
@@ -332,7 +332,7 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 								if (typeof callback == "function") 
 									callback();
 								else
-									url.loadByHash(location.hash);
+									urlCtrl.loadByHash(location.hash);
 							} else {
 							   toastr.error("You leave succesfully");
 							}
@@ -372,7 +372,7 @@ function validateConnection(parentType, parentId, childId, childType, linkOption
 					callback(parentType, parentId, childId, childType, linkOption);
 				else{
 					toastr.success(data.msg);
-					url.loadByHash(location.hash);
+					urlCtrl.loadByHash(location.hash);
 				}
 
 			} else {
@@ -402,7 +402,7 @@ function follow(parentType, parentId, childId, childType, callback){
 				if (typeof callback == "function") 
 					callback();
 				else
-					url.loadByHash(location.hash);
+					urlCtrl.loadByHash(location.hash);
 			}
 			else
 				toastr.error(data.msg);
@@ -462,7 +462,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 									if(data.result){
 										addFloopEntity(data.parent["_id"]["$id"], data.parentType, data.parent);
 										toastr.success(data.msg);	
-										url.loadByHash(location.hash);
+										urlCtrl.loadByHash(location.hash);
 									}
 									else{
 										if(typeof(data.type)!="undefined" && data.type=="info")
@@ -511,7 +511,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 									if(data.result){
 										addFloopEntity(data.parent["_id"]["$id"], data.parentType, data.parent);
 										toastr.success(data.msg);	
-										url.loadByHash(location.hash);
+										urlCtrl.loadByHash(location.hash);
 									}
 									else{
 										if(typeof(data.type)!="undefined" && data.type=="info")
@@ -537,7 +537,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 }		
 
 var CoAllReadyLoad = false;
-var url = {
+var urlCtrl = {
 	afterLoad : null,
 	loadableUrls : {
 		"#modal." : {title:'OPEN in Modal'},
@@ -619,34 +619,34 @@ var url = {
 	checkAndConvert : function (hash) {
 		hashT = hash.split('_');
 		mylog.log("-------checkAndConvert : ",hash,hashT);
-		pos = $.inArray( hashT[0].substring(1) , url.shortVal );
+		pos = $.inArray( hashT[0].substring(1) , urlCtrl.shortVal );
 		if( pos >= 0 ){
-			type = url.shortKey[pos];
+			type = urlCtrl.shortKey[pos];
 			hash =  "#page.type."+type+".id."+hashT[1];
 			mylog.log("converted hash : ",hash);
 		} 
 		return hash;
 	},
 	jsController : function (hash){
-		hash = url.checkAndConvert(hash);
+		hash = urlCtrl.checkAndConvert(hash);
 		//alert("jsController"+hash);
 		mylog.log("jsController",hash);
 		res = false;
 		$(".menuShortcuts").addClass("hide");
-		//mylog.log("url.loadableUrls", url.loadableUrls);
-		$.each( url.loadableUrls, function(urlIndex,urlObj)
+		//mylog.log("urlCtrl.loadableUrls", urlCtrl.loadableUrls);
+		$.each( urlCtrl.loadableUrls, function(urlIndex,urlObj)
 		{
 			//mylog.log("replaceAndShow2",urlIndex);
 			if( hash.indexOf(urlIndex) >= 0 )
 			{
 				checkMenu(urlObj, hash);
 			
-				endPoint = url.loadableUrls[urlIndex];
+				endPoint = urlCtrl.loadableUrls[urlIndex];
 				mylog.log("jsController 2",endPoint,"login",endPoint.login,endPoint.hash );
 				if( typeof endPoint.login == undefined || !endPoint.login || ( endPoint.login && userId ) ){
 					//alises are renaming of urls example default.home could be #home
 					if( endPoint.alias ){
-						endPoint = url.jsController(endPoint.alias);
+						endPoint = urlCtrl.jsController(endPoint.alias);
 						return false;
 					} 
 					if( endPoint.aliasParam ){
@@ -660,7 +660,7 @@ var url = {
 								}
 							});
 						});
-						endPoint = url.jsController(alias);	
+						endPoint = urlCtrl.jsController(alias);	
 						return false;
 					} 
 					// an action can be connected to a url, and executed
@@ -686,7 +686,7 @@ var url = {
 						if(extraParams.indexOf("#") >= 0){
 							extraParams=extraParams.replace( "#","%hash%" );
 						}
-						path = url.convertToPath(hash);
+						path = urlCtrl.convertToPath(hash);
 						pathT = path.split('/');
 						//open path in a modal (#openModal)
 						
@@ -763,15 +763,15 @@ var url = {
 		searchPage = false;
 		
 
-		//alert("url.loadByHash"+hash);
-	    mylog.warn("url.loadByHash",hash,back);
-	    if( url.jsController(hash) ){
-	    	mylog.log("url.loadByHash >>> hash found",hash);
+		//alert("urlCtrl.loadByHash"+hash);
+	    mylog.warn("urlCtrl.loadByHash",hash,back);
+	    if( urlCtrl.jsController(hash) ){
+	    	mylog.log("urlCtrl.loadByHash >>> hash found",hash);
 	    }
 	    else if( hash.indexOf("#panel") >= 0 ){
 	    	panelName = hash.substr(7);
 	    	if( (panelName == "box-login" || panelName == "box-register") && userId != "" && userId != null ){
-	    		url.loadByHash("#default.home");
+	    		urlCtrl.loadByHash("#default.home");
 	    		return false;
 	    	} else if(panelName == "box-add")
 	            title = 'ADD SOMETHING TO MY NETWORK';
@@ -810,6 +810,124 @@ var url = {
 		}*/
 	}
 }
+
+/* ****************
+Generic non-ajax panel loading process 
+**************/
+function showPanel(box,callback){ 
+	$(".my-main-container").scrollTop(0);
+
+  	$(".box").hide(200);
+  	showNotif(false);
+  	
+  	if(isMapEnd) showMap(false);
+			
+	mylog.log("showPanel");
+	//showTopMenu(false);
+	$(themeObj.mainContainer).animate({ top: -1500, opacity:0 }, 500 );
+
+	$("."+box).show(500);
+
+	if (typeof callback == "function") {
+		callback();
+	}
+}
+
+/* ****************
+Generic ajax panel loading process 
+loads any REST Url endpoint returning HTML into the content section
+also switches the global Title and Icon
+**************/
+
+function  processingBlockUi() { 
+	msg = '<h4 style="font-weight:300" class=" text-dark padding-10"><i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...</h4>';
+	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
+		msg = themeObj.blockUi.processingMsg;
+	$.blockUI({ message :  msg });
+	bindLBHLinks();
+}
+function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
+	//alert("showAjaxPanel"+url);
+	
+	var dest = ( typeof urlObj == "undefined" || typeof urlObj.useHeader != "undefined" ) ? themeObj.mainContainer : ".pageContent" ;
+	mylog.log("showAjaxPanel", url, urlObj,dest,urlCtrl.afterLoad );	
+	//var dest = themeObj.mainContainer;
+	hideScrollTop = false;
+	//alert("showAjaxPanel"+dest);
+	showNotif(false);
+			
+	setTimeout(function(){
+		$(dest).html("");
+		$(".hover-info,.hover-info2").hide();
+		processingBlockUi();
+		showMap(false);
+	}, 200);
+
+	$(".box").hide(200);
+	//showPanel('box-ajax');
+	icon = (icon) ? " <i class='fa fa-"+icon+"'></i> " : "";
+	$(".panelTitle").html(icon+title).fadeIn();
+	mylog.log("GETAJAX",icon+title);
+	
+	showTopMenu(true);
+	userIdBefore = userId;
+	setTimeout(function(){
+		if( $(dest).length )
+		{
+		 getAjax(dest, baseUrl+'/'+moduleId+url, function(data){ 
+			
+			if( dest != themeObj.mainContainer )
+				$(".subModuleTitle").html("");
+
+			//initNotifications(); 
+			
+			$(".modal-backdrop").hide();
+			bindExplainLinks();
+			bindTags();
+			bindLBHLinks();
+
+			$.unblockUI();
+
+			if(mapEnd)
+				showMap(true);
+
+    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
+        		uploadObj.type = contextData.type;
+        		uploadObj.id = contextData.id;
+        	}
+        	mylog.log("9999",urlCtrl.afterLoad);
+        	if( typeof urlCtrl.afterLoad == "function") {
+        		alert("urlCtrl.afterLoad");
+        		urlCtrl.afterLoad();
+        		urlCtrl.afterLoad = null;
+        	}
+        	/*if(debug){
+        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
+        			if(prevDbAccessCount == 0){
+        				dbAccessCount = parseInt(data);
+        				prevDbAccessCount = dbAccessCount;
+        			} else {
+        				dbAccessCount = parseInt(data)-prevDbAccessCount;
+        				prevDbAccessCount = parseInt(data);
+        			}
+        			//console.error('dbaccess:'+prevDbAccessCount);
+        			
+        			//$(".dbAccessBtn").remove();
+        			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
+        		},null);
+        	}*/
+         },"html");
+		} else 
+			console.error( 'showAjaxPanel', dest, "doesn't exist" );
+	}, 400);
+}
+/*prevDbAccessCount = 0; 
+function clearDbAccess() { 
+	getAjax(null, baseUrl+'/'+moduleId+"/log/clear", function(data){ 
+		$(".dbAccessBtn").remove();
+		prevDbAccessCount = 0; 
+	});
+}*/
 
 function decodeHtml(str) {
 	mylog.log("decodeHtml", str);
@@ -895,122 +1013,7 @@ function _checkLoggued() {
 	});
 }
 
-/* ****************
-Generic non-ajax panel loading process 
-**************/
-function showPanel(box,callback){ 
-	$(".my-main-container").scrollTop(0);
 
-  	$(".box").hide(200);
-  	showNotif(false);
-  	
-  	if(isMapEnd) showMap(false);
-			
-	mylog.log("showPanel");
-	//showTopMenu(false);
-	$(themeObj.mainContainer).animate({ top: -1500, opacity:0 }, 500 );
-
-	$("."+box).show(500);
-
-	if (typeof callback == "function") {
-		callback();
-	}
-}
-
-/* ****************
-Generic ajax panel loading process 
-loads any REST Url endpoint returning HTML into the content section
-also switches the global Title and Icon
-**************/
-
-function  processingBlockUi() { 
-	msg = '<h4 style="font-weight:300" class=" text-dark padding-10"><i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...</h4>';
-	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
-		msg = themeObj.blockUi.processingMsg;
-	$.blockUI({ message :  msg });
-	bindLBHLinks();
-}
-function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
-	//alert("showAjaxPanel"+url);
-	
-	var dest = ( typeof urlObj == "undefined" || typeof urlObj.useHeader != "undefined" ) ? themeObj.mainContainer : ".pageContent" ;
-	mylog.log("showAjaxPanel", url, urlObj,dest,url.afterLoad );	
-	//var dest = themeObj.mainContainer;
-	hideScrollTop = false;
-	//alert("showAjaxPanel"+dest);
-	showNotif(false);
-			
-	setTimeout(function(){
-		$(dest).html("");
-		$(".hover-info,.hover-info2").hide();
-		processingBlockUi();
-		showMap(false);
-	}, 200);
-
-	$(".box").hide(200);
-	//showPanel('box-ajax');
-	icon = (icon) ? " <i class='fa fa-"+icon+"'></i> " : "";
-	$(".panelTitle").html(icon+title).fadeIn();
-	mylog.log("GETAJAX",icon+title);
-	
-	showTopMenu(true);
-	userIdBefore = userId;
-	setTimeout(function(){
-		if( $(dest).length )
-		{
-		 getAjax(dest, baseUrl+'/'+moduleId+url, function(data){ 
-			
-			if( dest != themeObj.mainContainer )
-				$(".subModuleTitle").html("");
-
-			//initNotifications(); 
-			
-			$(".modal-backdrop").hide();
-			bindExplainLinks();
-			bindTags();
-			bindLBHLinks();
-
-			$.unblockUI();
-
-			if(mapEnd)
-				showMap(true);
-
-    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
-        		uploadObj.type = contextData.type;
-        		uploadObj.id = contextData.id;
-        	}
-
-        	if( typeof url.afterLoad == "function") {
-        		url.afterLoad();
-        		url.afterLoad = null;
-        	}
-        	/*if(debug){
-        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
-        			if(prevDbAccessCount == 0){
-        				dbAccessCount = parseInt(data);
-        				prevDbAccessCount = dbAccessCount;
-        			} else {
-        				dbAccessCount = parseInt(data)-prevDbAccessCount;
-        				prevDbAccessCount = parseInt(data);
-        			}
-        			//console.error('dbaccess:'+prevDbAccessCount);
-        			
-        			//$(".dbAccessBtn").remove();
-        			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
-        		},null);
-        	}*/
-         },"html");
-		} else 
-			console.error( 'showAjaxPanel', dest, "doesn't exist" );
-	}, 400);
-}
-/*prevDbAccessCount = 0; 
-function clearDbAccess() { 
-	getAjax(null, baseUrl+'/'+moduleId+"/log/clear", function(data){ 
-		$(".dbAccessBtn").remove();
-		prevDbAccessCount = 0; 
-	});
-}*/
 /* ****************
 visualize all tagged elements on a map
 **************/
@@ -1055,7 +1058,7 @@ function showTagOnMap (tag) {
 	          }
 	 	});
 
-	//url.loadByHash('#project.detail.id.56c1a474f6ca47a8378b45ef',null,true);
+	//urlCtrl.loadByHash('#project.detail.id.56c1a474f6ca47a8378b45ef',null,true);
 	//Sig.showFilterOnMap(tag);
 }
 
@@ -1379,7 +1382,7 @@ function  bindLBHLinks() {
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-	    url.loadByHash( h );
+	    urlCtrl.loadByHash( h );
 	});
 	//open any url in a modal window
 	$(".lbhp").off().on("click",function(e) {
@@ -1392,7 +1395,7 @@ function  bindLBHLinks() {
 		if( $(this).data("modalshow") )
 			smallMenu.open ( directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
 		else {
-			url = (h.indexOf("#") == 0 ) ? url.convertToPath(h) : h;
+			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
 	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
 	    	//smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url ,"","blockUI",h);
 		}
@@ -2385,9 +2388,9 @@ var elementLib = {
 	            	else{
 						elementLib.closeForm();
 		                if(data.url)
-		                	url.loadByHash( data.url );
+		                	urlCtrl.loadByHash( data.url );
 		                else if(data.id)
-			        		url.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 					}
 	            }
 	    	}
@@ -2808,7 +2811,7 @@ var typeObjLib = {
     		{
         		$('#trigger-upload').click(function() {
 		        	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-		        	url.loadByHash(location.hash);
+		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
         	},500);
@@ -2822,7 +2825,7 @@ var typeObjLib = {
 	    	afterUploadComplete : function(){
 		    	elementLib.closeForm();
 		    	//alert(gotoUrl+uploadObj.id);
-	            url.loadByHash( gotoUrl );	
+	            urlCtrl.loadByHash( gotoUrl );	
 		    	}
     	}
     },
@@ -3027,7 +3030,7 @@ var typeObjLib = {
     	return inputObj;
     },
     get:function(type){
-    	mylog.log("typeObjLib.get", type);
+    	//mylog.log("typeObjLib.get", type);
     	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
@@ -3039,7 +3042,7 @@ var typeObjLib = {
     	return obj;
     },
     deepGet:function(type){
-    	mylog.log("get", type);
+    	//mylog.log("get", type);
     	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
@@ -3246,10 +3249,10 @@ var keyboardNav = {
 
 	keyMap : {
 		//"112" : function(){ $('#modalMainMenu').modal("show"); },//f1
-		"113" : function(){ if(userId)url.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
+		"113" : function(){ if(userId)urlCtrl.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
 		"114" : function(){ $('#openModal').modal('hide'); showMap(true); },//f3
 		"115" : function(){ elementLib.openForm('themes') },//f4
-		"117" : function(){ console.clear();url.loadByHash(location.hash) },//f6
+		"117" : function(){ console.clear();urlCtrl.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {
 		"13" : function(){$('#openModal').modal('hide');elementLib.openForm('addElement')},//enter : add elements
@@ -3560,10 +3563,10 @@ function initKInterface(params){ console.log("initKInterface");
     });
 
     $("#btn-sethome").click(function(){
-    	url.loadByHash("#info.p.sethome")
+    	urlCtrl.loadByHash("#info.p.sethome")
     });
     $("#btn-apropos").click(function(){
-    	url.loadByHash("#info.p.apropos")
+    	urlCtrl.loadByHash("#info.p.apropos")
     });
 
     var affixTop = 300;

@@ -1087,7 +1087,7 @@ function saveNews(){
 		    				
 		    				//if we need a month space to insert the news
 		    				if ( !$( "#"+'month'+monthSection.getMonth()+''+monthSection.getFullYear()).length ) {
-								url.loadByHash(location.hash);
+								urlCtrl.loadByHash(location.hash);
 		    				}
 						}
 						
@@ -1198,7 +1198,7 @@ function initFormImages(){
 }
 function addMoreSpace(){
 	bootbox.dialog({
-	message: "You have attempt the limit of 20Mo of images for this "+contextParentType+"<br/>Please choose one of those  two solutions beyond:<br/>Delete images in the <a href='javascript:;' onclick='bootbox.hideAll();url.loadByHash(\"#gallery.index.id."+contextParentId+".type."+contextParentType+"\")'>photo gallery</a> <br/><br/>OR<br/><br/> Subscribe 12€ to the NGO Open Atlas which takes in charge communecter.org on <a href='https://www.helloasso.com/associations/open-atlas' target='_blank'>helloAsso</a> for 20Mo more. <br/><br/>Effectively, stocking images represents a cost for us and donate to the NGO will demonstrate your contribution the project and to the common we built together",
+	message: "You have attempt the limit of 20Mo of images for this "+contextParentType+"<br/>Please choose one of those  two solutions beyond:<br/>Delete images in the <a href='javascript:;' onclick='bootbox.hideAll();urlCtrl.loadByHash(\"#gallery.index.id."+contextParentId+".type."+contextParentType+"\")'>photo gallery</a> <br/><br/>OR<br/><br/> Subscribe 12€ to the NGO Open Atlas which takes in charge communecter.org on <a href='https://www.helloasso.com/associations/open-atlas' target='_blank'>helloAsso</a> for 20Mo more. <br/><br/>Effectively, stocking images represents a cost for us and donate to the NGO will demonstrate your contribution the project and to the common we built together",
   title: "Limit of <color class='red'>20 Mo</color> overhead"
   });
 }

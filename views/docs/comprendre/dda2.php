@@ -130,7 +130,7 @@ var contentData = {
 			class : "bg-dark pull-left"
 		},
 		{
-			href : "javascript:url.loadByHash(\'#default.view.page.dda.dir.docs\');",
+			href : "javascript:urlCtrl.loadByHash(\'#default.view.page.dda.dir.docs\');",
 			labrl : "Events <i class='fa fa-arrow-right'></i>",
 			class : "bg-red pull-right"
 		}

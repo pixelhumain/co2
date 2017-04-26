@@ -171,7 +171,7 @@
         $.each(allDayEvents, function(key, dayEvents){
 
           if (typeof dayEvents === "object") {
-              var action = 'url.loadByHash("#event.detail.id.'+dayEvents.id+'");';
+              var action = 'urlCtrl.loadByHash("#event.detail.id.'+dayEvents.id+'");';
               var item = "<li>";
               var imgProfil = "<span class='badge bg-orange'></span>";
               if (typeof dayEvents.thumb_url != "undefined" && dayEvents.thumb_url != "") {

@@ -389,7 +389,7 @@ function bindEventScopeModal(){
 
 	$("#btn-cancel").click(function(){
 		if(newMemberInCommunity && (currentView=="detail" || currentView=="directory")) {
-			url.loadByHash(location.hash);
+			urlCtrl.loadByHash(location.hash);
 		}
 	});
 	$("#btn-save").click(function(){
@@ -764,7 +764,7 @@ function sendInvitation(){
 					if(typeof(mapUrl.directory.load) != "undefined" && mapUrl.directory.load)
 						mapUrl.directory.load = false;
 				}
-				url.loadByHash(location.hash);
+				urlCtrl.loadByHash(location.hash);
 				
 				$.unblockUI();
         	}

@@ -19,7 +19,7 @@ typeObjLib.image :function(str) {
 	    	afterUploadComplete : function(){
 		    	elementLib.closeForm();
 		    	//alert(gotoUrl+uploadObj.id);
-	            url.loadByHash( gotoUrl+uploadObj.id );	
+	            urlCtrl.loadByHash( gotoUrl+uploadObj.id );	
 		    	}
     	}
     },
@@ -48,7 +48,7 @@ afterSave : function(){
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
 		    	elementLib.closeForm();
-		    	url.loadByHash( location.hash );	
+		    	urlCtrl.loadByHash( location.hash );	
 		    }
 	    },
 ```

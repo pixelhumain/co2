@@ -244,11 +244,11 @@ function editEntrySV () {
                   if(data.result){
                     window.myVotesList = null;
                     if( data.surveyId && data.surveyId["$id"] )
-                      url.loadByHash( "#survey.entry.id."+data.surveyId["$id"] );
+                      urlCtrl.loadByHash( "#survey.entry.id."+data.surveyId["$id"] );
                     else if( $("#editEntryContainer #id").val() != "" )
-                      url.loadByHash( "#survey.entry.survey."+data.parentId+".id."+$("#editEntryContainer #id").val() );
+                      urlCtrl.loadByHash( "#survey.entry.survey."+data.parentId+".id."+$("#editEntryContainer #id").val() );
                     else
-                      url.loadByHash( "#survey.entries.id."+data.parentId );
+                      urlCtrl.loadByHash( "#survey.entries.id."+data.parentId );
                     $("#ajaxFormEntry").html('');
                   }
                   else {

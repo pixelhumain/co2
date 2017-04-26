@@ -467,7 +467,7 @@
 										$(".visible-communected").hide();
 									}
 									toastr.success(data.msg);
-									url.loadByHash("#page.type."+contextData.type+".id."+contextData.id);
+									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id);
 
 						    	}
 						    }

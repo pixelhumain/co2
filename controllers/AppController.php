@@ -22,7 +22,7 @@ class AppController extends CommunecterController {
 	        'savereferencement' => 'citizenToolKit.controllers.app.SaveReferencementAction',
 	        'mediacrawler'  	=> 'citizenToolKit.controllers.app.MediaCrawlerAction',
             //'superadmin'        => 'citizenToolKit.controllers.app.SuperAdminAction',
-            'sendmailformcontact' => 'citizenToolKit.controllers.app.SendMailFormContactAction',
+            //'sendmailformcontact' => 'citizenToolKit.controllers.app.SendMailFormContactAction',
             'checkurlexists' => 'citizenToolKit.controllers.app.CheckUrlExistsAction',
 	    );
 	}

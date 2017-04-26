@@ -50,7 +50,7 @@ dynForm = {
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
 		    	elementLib.closeForm();
-		    	url.loadByHash( location.hash );	
+		    	urlCtrl.loadByHash( location.hash );	
 		    }
 	    },
 	    actions : {
@@ -152,7 +152,7 @@ dynForm = {
 	            	});
 	            }
             },
-            section : typeObjLib.hidden,
+            section : typeObjLib.inputHidden(),
 	        typeBtn :{
                 label : "Dans quelle catégorie souhaitez-vous publier votre annonce ? ",
 	            inputType : "tagList",
@@ -163,21 +163,21 @@ dynForm = {
                 	elementLib.elementObj.dynForm.jsonSchema.actions.initTypeBtn();
 	            }
             },
-            type : typeObjLib.hidden,
+            type : typeObjLib.inputHidden(),
             subtypeSection : {
                 inputType : "custom",
                 html:"<div class='subtypeSection'></div>"
             },
-            subtype : typeObjLib.hidden,
-            price : typeObjLib.price,
+            subtype : typeObjLib.inputHidden(),
+            price : typeObjLib.price(),
             name : typeObjLib.name("classified"),
-            description : typeObjLib.description,
+            description : typeObjLib.textarea("Description", "..."),
             image : typeObjLib.image(),
-            contactInfo : typeObjLib.contactInfo,
+            contactInfo : typeObjLib.inputText("Coordonnées", "n° tel, addresse email ..."),
             location : typeObjLib.location,
             tags : typeObjLib.tags(),
-            parentId : typeObjLib.hidden,
-            parentType : typeObjLib.hidden,
+            parentId : typeObjLib.inputHidden(),
+            parentType : typeObjLib.inputHidden(),
 	    }
 	}
 };

@@ -1,23 +1,40 @@
 dynForm = {
-    jsonSchema : {
-	    title : "Ajouter un contact",
+	    jsonSchema : {
+	    title : "Envoyer un email",
 	    icon : "user",
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un contact depuis un element existant
-	    	"initUser" : function(){
+	    	"init" : function(){
+
+	    		function filterFormContact() {
+					$('#ajaxFormModal #emailSender').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'});
+					$('#ajaxFormModal #names').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'});
+					$('#ajaxFormModal #contentMsg').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'});
+					$('#ajaxFormModal #subject').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'});
+					$("#ajaxFormModal #captcha").realperson({length: 4});
+				}
+
+				function initRealPerson() {
+					lazyLoad(	themeUrl+"/assets/vendor/jquery_realperson_captcha/jquery.realperson.min.js",
+								themeUrl+"/assets/vendor/jquery_realperson_captcha/jquery.realperson.css", 
+								filterFormContact, true);
+				}
+
 	    		if( notEmpty(userConnected) ) {
 	    			if( notEmpty(userConnected.email) ) 
-	    				$("#ajaxFormModal #email").val( userConnected.email );
+	    				$("#ajaxFormModal #emailSender").val( userConnected.email );
 	    			if( notEmpty(userConnected.name) ) 
-	    				$("#ajaxFormModal #name").val( userConnected.name ); 
-	    		} 
-					
+	    				$("#ajaxFormModal #names").val( userConnected.name ); 
+	    		}
+
+				lazyLoad( themeUrl+"/assets/vendor/jquery_realperson_captcha/jquery.plugin.js",null, initRealPerson, true );
+				
 			}
 	    },
 	    beforeSave : function(){
-	    	elementLib.closeForm();	
-	    	url.loadByHash(location.hash);
+	    	$("#ajaxFormModal #captchaUserVal").val($("#ajaxFormModal #captcha").val());
+	        $("#ajaxFormModal #captchaHash").val($("#ajaxFormModal #captcha").realperson('getHash'));
 	    },
 	    afterSave : function(){
 	    	elementLib.closeForm();
@@ -25,17 +42,17 @@ dynForm = {
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p><i class='fa fa-info-circle'></i> Si vous voulez ajouter un nouveau contact de façon à faciliter les échanges</p>",
+                html:"<p><i class='fa fa-info-circle'></i> Envoyer un mail</p>",
             },
-            name : typeObjLib.inputText("Nom / Prénom", "Comment vous appelez vous", { required : true }),
-            //name : typeObjLib.name(),
-            email : typeObjLib.email,
-	        role :{
-				inputType : "text",
-				placeholder : "C'est à quel sujet",
-				label : "Objet de votre message"
+            names : typeObjLib.inputText("Nom / Prénom", "Comment vous appelez vous", { required : true }),
+            emailSender : typeObjLib.inputText("Votre addresse e-mail", "votre addresse e-mail : exemple@mail.com", { required : true, email : true }),
+	        subject : typeObjLib.inputText("Objet de votre message", "C'est à quel sujet", { required : true } ),
+	        contentMsg : typeObjLib.textarea(null, null, { required : true }),
+	        captcha :{
+				inputType : "captcha"
             },
-	        message : typeObjLib.texte
+	        captchaUserVal : typeObjLib.inputHidden(),
+            captchaHash :typeObjLib.inputHidden()
 	    }
 	}
 };

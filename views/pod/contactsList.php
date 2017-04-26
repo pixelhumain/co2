@@ -161,7 +161,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 	    		mylog.log("data", data);
 		    	if(data.result){
 					toastr.success(data.msg);
-					url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+					urlCtrl.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
 		    	}
 		    }
 		});

@@ -13,12 +13,12 @@
 </thead><tbody>
 <tr>
 	<td>runScript</td>
-	<td>url.loadByHash('#person.logout')</td>
+	<td>urlCtrl.loadByHash('#person.logout')</td>
 	<td></td>
 </tr>
 <tr>
 	<td>runScript</td>
-	<td>url.loadByHash('#default.home')</td>
+	<td>urlCtrl.loadByHash('#default.home')</td>
 	<td></td>
 </tr>
 <tr>

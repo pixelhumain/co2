@@ -600,7 +600,7 @@ function sendReferencement(){
                     $("#mainFormReferencement").hide();
                     $("#url-validated").html(urlValidated)
                     $("#section-thanks").removeClass("hidden");
-                    //url.loadByHash("#web");
+                    //urlCtrl.loadByHash("#web");
 	    		}
                 //else toastr.error("Une erreur est survenue pendant le référencement");
 	    		

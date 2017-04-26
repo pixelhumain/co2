@@ -247,7 +247,7 @@
 
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 labelAbout padding-10">
 				<span><i class="fa fa-home"></i></span> <?php echo Yii::t("common", "Main locality") ?>
-				<?php if (@$element["address"]["codeInsee"] && !empty($element["address"]["codeInsee"]) && $edit==true || $openEdition==true ){ 
+				<?php if (!empty($element["address"]["codeInsee"]) && !empty($element["address"]["codeInsee"]) && $edit==true || $openEdition==true ){ 
 					echo '<a href="javascript:;" id="btn-remove-geopos" class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Remove Locality").'">
 								<i class="fa text-red fa-trash-o"></i>
 							</a> 
@@ -467,7 +467,7 @@
 										$(".visible-communected").hide();
 									}
 									toastr.success(data.msg);
-									url.loadByHash("#page.type."+contextData.type+".id."+contextData.id);
+									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id);
 
 						    	}
 						    }

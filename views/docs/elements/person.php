@@ -5,7 +5,7 @@
 		            Yii::t( "common", 'Organisation Documentation'),
 		            Yii::t( "common", 'Organisation'), 
 		            'chevron-circle-right',
-		            "url.loadByHash('#default.view.page.organisation.dir.docs')","closeActionBtn",null);
+		            "urlCtrl.loadByHash('#default.view.page.organisation.dir.docs')","closeActionBtn",null);
 		$this->renderPartial('../default/panels/toolbar');
 	}
 ?>

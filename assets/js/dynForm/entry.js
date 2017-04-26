@@ -20,7 +20,7 @@ dynForm = {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Une proposition sert à discuter et demander l'avis d'une communauté sur une idée ou une question donnée</p>",
             },
-	        id : typeObjLib.hidden,
+	        id : typeObjLib.inputHidden(),
             survey :{
             	inputType : "select",
             	placeholder : "Choisir une thématique ?",
@@ -65,7 +65,7 @@ dynForm = {
             	custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
             },
             name : typeObjLib.name,
-            message : typeObjLib.description,
+            message : typeObjLib.textarea("Description", "..."),
             dateEnd : typeObjLib.dateEnd,
             tags : typeObjLib.tags(),
             formshowers : {
@@ -74,18 +74,12 @@ dynForm = {
                 html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options ( urls)</a>",
             },
             urls : typeObjLib.urls,
-            email:{
-            	inputType : "hidden",
-            	value : (userId!=null && userConnected!=null) ? userConnected.email : ""
-            },
-            organizer:{
-            	inputType : "hidden",
-            	value : "currentUser"
-            },
-            type : {
-            	inputType : "hidden",
-            	value : "entry"
-            }
+            email: typeObjLib.inputHidden( ( (userId!=null && userConnected!=null) ? userConnected.email : "") ),
+            organizer : typeObjLib.inputHidden("currentUser"),
+            type : typeObjLib.inputHidden("entry")
+            
+            
+            
 	    }
 	}
 };

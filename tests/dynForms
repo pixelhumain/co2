@@ -178,7 +178,7 @@
 </tr>
 <tr>
 	<td>runScript</td>
-	<td>url.loadByHash('#organization.detail.id.57f533a6f6ca47db6a8b456e')</td>
+	<td>urlCtrl.loadByHash('#organization.detail.id.57f533a6f6ca47db6a8b456e')</td>
 	<td></td>
 </tr>
 <tr>
@@ -238,7 +238,7 @@
 </tr>
 <tr>
 	<td>runScript</td>
-	<td>url.loadByHash('#organization.detail.id.57f533a6f6ca47db6a8b456e')</td>
+	<td>urlCtrl.loadByHash('#organization.detail.id.57f533a6f6ca47db6a8b456e')</td>
 	<td></td>
 </tr>
 <tr>
@@ -283,7 +283,7 @@
 </tr>
 <tr>
 	<td>runScript</td>
-	<td>url.loadByHash('#organization.detail.id.57f533a6f6ca47db6a8b456e')</td>
+	<td>urlCtrl.loadByHash('#organization.detail.id.57f533a6f6ca47db6a8b456e')</td>
 	<td></td>
 </tr>
 <tr>
@@ -333,7 +333,7 @@
 </tr>
 <tr>
 	<td>runScript</td>
-	<td>url.loadByHash('#organization.detail.id.57f533a6f6ca47db6a8b456e')</td>
+	<td>urlCtrl.loadByHash('#organization.detail.id.57f533a6f6ca47db6a8b456e')</td>
 	<td></td>
 </tr>
 <tr>
@@ -398,7 +398,7 @@
 </tr>
 <tr>
 	<td>runScript</td>
-	<td>url.loadByHash('#organization.detail.id.57f533a6f6ca47db6a8b456e')</td>
+	<td>urlCtrl.loadByHash('#organization.detail.id.57f533a6f6ca47db6a8b456e')</td>
 	<td></td>
 </tr>
 <tr>

@@ -119,7 +119,7 @@ function runEventFormValidation(el) {
 		        	$("#newEventId").val(data.id["$id"]);
 		        	mylog.log(data);
 	        		addFloopEntity(data.id["$id"], "events", data.event);
-	        		url.loadByHash("#event.detail.id."+data.id["$id"]);
+	        		urlCtrl.loadByHash("#event.detail.id."+data.id["$id"]);
 						
 				} else {
 		           toastr.error(data.msg);
@@ -231,7 +231,7 @@ function runProjectFormValidation(el) {
 		        	$.unblockUI();
 		        	//mylog.dir(data);
 	        		addFloopEntity(data.id.$id, "projects", newProject);
-	        		url.loadByHash("#project.detail.id."+data.id.$id);
+	        		urlCtrl.loadByHash("#project.detail.id."+data.id.$id);
 	      	} else {
 		           $.unblockUI();
 		           toastr.error(data.msg);

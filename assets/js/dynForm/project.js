@@ -19,7 +19,7 @@ dynForm = {
 				    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 				    else {
 				    	elementLib.closeForm();
-				    	url.loadByHash( location.hash );	
+				    	urlCtrl.loadByHash( location.hash );	
 				    }
 			    },
 			    beforeSave : function(){
@@ -34,22 +34,22 @@ dynForm = {
 							  "</p>",
 		            },
 			        name : typeObjLib.name("project"),
-		            parentType : typeObjLib.hidden,
-		            parentId : typeObjLib.hidden,
+		            parentType : typeObjLib.inputHidden(),
+		            parentId : typeObjLib.inputHidden(),
 		            image : typeObjLib.image("#project.detail.id."+uploadObj.id),
 		            location : typeObjLib.location,
 		            tags :typeObjLib.tags(),
+		            shortDescription : typeObjLib.textarea("Description courte", "...",{ maxlength: 140 }),
 		            formshowers : {
 		            	label : "En détails",
 		                inputType : "custom",
 		                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> options (desc, urls)</a>",
 		            },
-			        description : typeObjLib.descriptionOptionnel,
-		            url : typeObjLib.urlOptionnel,
-		            "preferences[publicFields]" : typeObjLib.hiddenArray,
-		            "preferences[privateFields]" :typeObjLib.hiddenArray,
-		            "preferences[isOpenData]" : typeObjLib.hiddenTrue,
-		            "preferences[isOpenEdition]" : typeObjLib.hiddenTrue
+		            url : typeObjLib.inputUrlOptionnel(),
+		            "preferences[publicFields]" : typeObjLib.inputHidden([]),
+		            "preferences[privateFields]" : typeObjLib.inputHidden([]),
+		            "preferences[isOpenData]" : typeObjLib.inputHidden(true),
+		            "preferences[isOpenEdition]" : typeObjLib.inputHidden(true)
 			    }
 			}
 		};

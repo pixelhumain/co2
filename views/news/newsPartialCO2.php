@@ -107,7 +107,7 @@ background-color: rgba(250,250,250,0.8);
                   <?php if(@$media["type"]=="activityStream") { ?>
                     <?php $iconColor = Element::getColorIcon($media["object"]["type"]) ? 
                                        Element::getColorIcon($media["object"]["type"]) : ""; ?>
-                    <i class="fa fa-plus-circle"></i> a créé un 
+                    <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news","verb ".$media["verb"]); ?> un 
                     <span class="text-<?php echo @$iconColor; ?>">
                       <?php echo Yii::t("common", @$media["object"]["type"]); ?>
                     </span>

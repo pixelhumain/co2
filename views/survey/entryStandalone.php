@@ -84,9 +84,9 @@
                     "fromView" => "survey.entry",
                     "faTitle" => "gavel",
                     "colorTitle" => "azure",
-                    "textTitle" => "<a class='text-dark btn' href='javascript:url.loadByHash(\"#rooms.index.type.$parentType.id.$parentId.tab.2\")'><i class='fa fa-gavel'></i> ".Yii::t("rooms","Decide", null, Yii::app()->controller->module->id)."</a>".
+                    "textTitle" => "<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#rooms.index.type.$parentType.id.$parentId.tab.2\")'><i class='fa fa-gavel'></i> ".Yii::t("rooms","Decide", null, Yii::app()->controller->module->id)."</a>".
                     				" / ".
-                    				"<a class='text-dark btn' href='javascript:url.loadByHash(\"#survey.entries.id.".$survey["survey"]."\")'><i class='fa fa-th'></i> ".$nameList."</a>".$extraBtn
+                    				"<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#survey.entries.id.".$survey["survey"]."\")'><i class='fa fa-th'></i> ".$nameList."</a>".$extraBtn
                       
                     )); 
 		echo '<div class="col-md-12 panel-white padding-15" id="room-container">';
@@ -470,7 +470,7 @@ function addaction(id,action)
 				        	saveComment(params.comment);
 				        } 
 				      	ajaxPost(null,'<?php echo Yii::app()->createUrl($this->module->id."/survey/addaction")?>',params,function(data){
-				        	url.loadByHash(location.hash);
+				        	urlCtrl.loadByHash(location.hash);
 				      	});
 					}
 				}
@@ -586,7 +586,7 @@ function move( type,destId ){
 		        success: function(data){
 		          if(data.result){
 		            toastr.success(data.msg);
-		            url.loadByHash(data.url);
+		            urlCtrl.loadByHash(data.url);
 		          } else {
 		            toastr.error(data.msg);
 		            if(data.action == "login")

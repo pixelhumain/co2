@@ -26,7 +26,7 @@ $this->renderPartial("../docs/assets");
     <div class="item active">
       <div class="panel panel-white user-list ">
           <div class="panel-heading border-light">
-            <a class="btn-chapter" href="javascript:url.loadByHash('#default.view.page.presentation.dir.docs');">
+            <a class="btn-chapter" href="javascript:urlCtrl.loadByHash('#default.view.page.presentation.dir.docs');">
               <h4 class="panel-title homestead text-red"><i class="fa fa-tv"></i> Présentation</h4>
             </a>
           </div> 
@@ -60,10 +60,10 @@ $this->renderPartial("../docs/assets");
 </div>
 
 <!-- Left and right CHAPTER controls -->
-<a href="javascript:url.loadByHash('#default.view.page.modules.dir.docs')" class="homestead text-extra-large bg-red pull-left tooltips radius-5 padding-10 homestead pull-left btn-carousel-previous">
+<a href="javascript:urlCtrl.loadByHash('#default.view.page.modules.dir.docs')" class="homestead text-extra-large bg-red pull-left tooltips radius-5 padding-10 homestead pull-left btn-carousel-previous">
 	<i class="fa fa-arrow-left"></i> Modules
 </a>
-<a href="javascript:url.loadByHash('#default.view.page.communication.dir.docs')"  class="homestead text-extra-large bg-red pull-right tooltips radius-5 padding-10 homestead btn-carousel-next">
+<a href="javascript:urlCtrl.loadByHash('#default.view.page.communication.dir.docs')"  class="homestead text-extra-large bg-red pull-right tooltips radius-5 padding-10 homestead btn-carousel-next">
 	Communication <i class="fa fa-arrow-right"></i>
 </a>
 

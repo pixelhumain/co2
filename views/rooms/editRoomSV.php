@@ -114,13 +114,13 @@ function editRoomSV (roomObj) {
                   mylog.log("SUCCESS SAVE ROOM :");
                   mylog.dir(data);
                     if( data.newInfos.type == "<?php echo ActionRoom::TYPE_DISCUSS ?>" )
-                      url.loadByHash("#comment.index.type.actionRooms.id."+data.newInfos["_id"]["$id"]);
+                      urlCtrl.loadByHash("#comment.index.type.actionRooms.id."+data.newInfos["_id"]["$id"]);
                     else if(data.newInfos.type == "<?php echo ActionRoom::TYPE_FRAMAPAD ?>" )
-                      url.loadByHash("#rooms.external.id."+data.newInfos["_id"]["$id"]);
+                      urlCtrl.loadByHash("#rooms.external.id."+data.newInfos["_id"]["$id"]);
                     else if( data.newInfos.type == "<?php echo ActionRoom::TYPE_ACTIONS ?>")
-                      url.loadByHash("#rooms.actions.id."+data.newInfos["_id"]["$id"]);
+                      urlCtrl.loadByHash("#rooms.actions.id."+data.newInfos["_id"]["$id"]);
                     else 
-                      url.loadByHash("#survey.entries.id."+data.newInfos["_id"]["$id"]);
+                      urlCtrl.loadByHash("#survey.entries.id."+data.newInfos["_id"]["$id"]);
                     //rooms.index.type.<?php echo (isset($_GET['type'])) ? $_GET['type'] : '' ?>.id.<?php echo (isset($_GET['id'])) ? $_GET['id'] : '' ?>");
                     $("#modal-create-room").modal("toogle");
                 }

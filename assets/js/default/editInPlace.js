@@ -165,7 +165,7 @@ function bindAboutPodElement() {
 				    	success: function(data){
 					    	if(data.result){
 								toastr.success(data.msg);
-								url.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
+								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					    	}
 					    }
 					});
@@ -210,7 +210,7 @@ function bindAboutPodElement() {
 				    	success: function(data){
 					    	if(data.result){
 								toastr.success(data.msg);
-								url.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
+								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					    	} else {
 					    		toastr.error(data.msg);
 					    	}
@@ -733,7 +733,7 @@ function bindAboutPodElement() {
 	    		mylog.log("data", data);
 		    	if(data.result){
 					toastr.success(data.msg);
-					url.loadByHash(location.hash);
+					urlCtrl.loadByHash(location.hash);
 		    	}
 		    }
 		});

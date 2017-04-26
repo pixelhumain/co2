@@ -17,7 +17,7 @@ dynForm = {
 	    },
 	    beforeSave : function(){
 	    	elementLib.closeForm();	
-	    	url.loadByHash(location.hash);
+	    	urlCtrl.loadByHash(location.hash);
 	    },
 	    afterSave : function(){
 	    	elementLib.closeForm();

@@ -126,7 +126,7 @@ var Login = function() {
 		    		  	var url = requestedUrl;
 		    		  	//mylog.warn(url,", has #"+url.indexOf("#"),"count / : ",url.split("/").length - 1 );
 		    		  	if(backUrl != null){
-		    		  		url.loadByHash(backUrl);
+		    		  		urlCtrl.loadByHash(backUrl);
 		    		  		backUrl = null;
 		    		  	} else if( typeof elementLib.openFormAfterLogin != "undefined"){
 		    		  		userId = data.id;
@@ -332,7 +332,7 @@ var Login = function() {
 					    	window.location.href = baseUrl+"/"+moduleId;
 					    	window.location.reload();
 					    });
-		        		//url.loadByHash("#default.directory");
+		        		//urlCtrl.loadByHash("#default.directory");
 		    		  }
 		    		  else {
 						$('.registerResult').html(data.msg);

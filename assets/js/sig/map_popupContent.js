@@ -50,7 +50,7 @@
 			if(type == "entry") 		url = "#survey.entry.id."+id;
 			if(type == "action") 		url = "#rooms.action.id."+id;
 			
-			onclick = 'url.loadByHash("'+url+'");';
+			onclick = 'urlCtrl.loadByHash("'+url+'");';
 			
 			if(typeof TPL_IFRAME != "undefined" && TPL_IFRAME==true){
 				url = "https://www.communecter.org/"+url;
@@ -277,7 +277,7 @@
 			}
 				
 
-			popupContent += '<button class="btn btn-sm btn-info btn-more col-md-12" onclick="' + "url.loadByHash('#')"+"><i class='fa fa-hand-pointer-o'></i> en savoir +";
+			popupContent += '<button class="btn btn-sm btn-info btn-more col-md-12" onclick="' + "urlCtrl.loadByHash('#')"+"><i class='fa fa-hand-pointer-o'></i> en savoir +";
 			popupContent += '</button>';
 
 			return popupContent;
@@ -342,7 +342,7 @@
 				var nbCpByInsee = data["countCpByInsee"];
 				var cityInsee = data["cityInsee"];
 			}
-			var showAjaxPanel = 'url.loadByHash("#city.detail.insee.'+insee+'.postalCode.'+cp+'");'
+			var showAjaxPanel = 'urlCtrl.loadByHash("#city.detail.insee.'+insee+'.postalCode.'+cp+'");'
 			var popupContent = '<div class="pod-local-actors" style="display:inline-block; width:100%;">' +
 									"<h4 class='panel-title text-red homestead'>"+
 										"<i class='fa fa-university'></i> "+city+

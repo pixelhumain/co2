@@ -19,7 +19,7 @@ dynForm = {
 				    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 				    else {
 				    	elementLib.closeForm();
-				    	url.loadByHash( location.hash );	
+				    	urlCtrl.loadByHash( location.hash );	
 				    }
 			    },
 			    beforeSave : function(){

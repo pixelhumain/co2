@@ -455,10 +455,12 @@ if( $type != Person::COLLECTION)
 			loadAdminDashboard();
 		});
 		$("#btn-start-newsstream").click(function(){
+			$(".ssmla").removeClass('active');
 			history.pushState(null, "New Title", hashUrlPage);
 			loadNewsStream(true);
 		});
 		$("#btn-start-mystream").click(function(){
+			$(".ssmla").removeClass('active');
 			if(contextData.type=="citoyens" && userId==contextData.id)
 				history.pushState(null, "New Title", hashUrlPage+".view.mystream");
 			else
@@ -471,6 +473,7 @@ if( $type != Person::COLLECTION)
 			loadGallery();
 		});
 		$("#btn-start-notifications").click(function(){
+			$(".ssmla").removeClass('active');
 			history.pushState(null, "New Title", hashUrlPage+".view.notifications");
 			//location.search="?view=notifications";
 			loadNotifications();

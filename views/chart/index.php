@@ -26,7 +26,6 @@ $titleChart = array( "commons" => Yii::t("chart","Chart of commons"),
 	display: inline-block;*/
 }
 </style>
-<div class="row" id="chartPad">
 	<div class="panel-body">
 		<div class="col-md-6 col-sm-6 col-xs-12 pull-right margin-10 panel shadow2">
 			<canvas id="myChart" width="" height=""></canvas>
@@ -57,7 +56,6 @@ $titleChart = array( "commons" => Yii::t("chart","Chart of commons"),
 			}
 		 ?>
 	</div>
-</div>
 
 <script type="text/javascript">
 var properties=<?php echo json_encode(@$properties); ?> ;

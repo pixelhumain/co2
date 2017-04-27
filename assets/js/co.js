@@ -1112,9 +1112,9 @@ var smallMenu = {
 	//the url must return a list like userConnected.list
 	openAjax : function  (url,title,icon,color,title1,params,callback) 
 	{ 
-		if( typeof directory == "undefined" )
+		/*if( typeof directory == "undefined" )
 		    lazyLoad( moduleUrl+'/js/default/directory.js', null, null );
-	    
+	    */
 	    //processingBlockUi();
 	    //$(smallMenu.destination).html("<i class='fa fa-spin fa-refresh fa-4x'></i>");
 

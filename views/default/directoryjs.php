@@ -1,12 +1,12 @@
 <?php 
- $cssAnsScriptFilesModule = array(
-    '/js/default/directory.js',
+ /*$cssAnsScriptFilesModule = array(
+    //'/js/default/directory.js',
   );
-  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+  //HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
   HtmlHelper::registerCssAndScriptsFiles( array('/css/default/directory.css', ) , 
                                           Yii::app()->theme->baseUrl. '/assets');
-
+*/
 ?>  
   <style>
 

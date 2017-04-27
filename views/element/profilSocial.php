@@ -62,8 +62,7 @@
 	}
 <?php } ?>
 
-</style>
-<?php //$this->renderPartial('../default/formContact'); ?>	
+</style>	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
@@ -490,7 +489,7 @@ if( $type != Person::COLLECTION)
 		$(".open-confidentiality").click(function(){
 			mylog.log("open-confidentiality");
 			toogleNotif(false);
-			smallMenu.open( markdownToHtml($("#descriptionMarkdown").val()));
+			smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").val()));
 			bindLBHLinks();
 		});
 	

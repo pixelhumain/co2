@@ -1281,7 +1281,7 @@ var directory = {
 					else
 						str += (notEmpty(params.name) ? '<h4 class="panel-title text-dark pull-left">'+params.name+'</h4><br/>' : '');
 					str += (notEmpty(params.role) ? '<span class="" style="font-size: 11px !important;">'+params.role+'</span><br/>' : '');
-					str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="elementLib.openForm(\'formContact\', \'initUser\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
+					str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="elementLib.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
 					str += (notEmpty(params.telephone) ? '<span class="" style="font-size: 11px !important;">'+params.telephone+'</span>' : '');
 				str += "</div>";
 			str += "</div>";

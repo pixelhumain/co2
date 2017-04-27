@@ -897,7 +897,7 @@ function updateLocalityElement(){
 							}
 							Sig.restartMap();
 							Sig.showMapElements(Sig.map, contextMap);
-							urlCtrl.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+							urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 						}else{
 
 							changeMenuCommunextion(locality);

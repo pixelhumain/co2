@@ -544,9 +544,10 @@ var urlCtrl = {
 		"#event.calendarview" : {title:"EVENT CALENDAR ", icon : "calendar"},
 		"#city.opendata" : {title:'STATISTICS ', icon : 'line-chart' },
 	    "#person.telegram" : {title:'CONTACT PERSON VIA TELEGRAM ', icon : 'send' },
-	    "#event.detail" : {aliasParam: "#element.detail.type.events.id.$id", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
-	    "#poi.detail" : {aliasParam: "#element.detail.type.poi.id.$id", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
-	    "#project.detail" : {aliasParam: "#element.detail.type.projects.id.$id", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
+	    "#event.detail" : {aliasParam: "#page.type.events.id.$id", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
+	    "#poi.detail" : {aliasParam: "#page.type.poi.id.$id", params: ["id"],title:'POI DETAIL ', icon : 'calendar' },
+	    "#organization.detail" : {aliasParam: "#page.type.organizations.id.$id", params: ["id"],title:'ORGANIZATION DETAIL ', icon : 'users' },
+	    "#project.detail" : {aliasParam: "#page.type.projects.id.$id", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
 	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
@@ -895,9 +896,9 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
         		uploadObj.type = contextData.type;
         		uploadObj.id = contextData.id;
         	}
-        	mylog.log("9999",urlCtrl.afterLoad);
+        	
         	if( typeof urlCtrl.afterLoad == "function") {
-        		alert("urlCtrl.afterLoad");
+        		mylog.log("9999999999999999999999999999", searchType, $('#searchTags').val() );
         		urlCtrl.afterLoad();
         		urlCtrl.afterLoad = null;
         	}

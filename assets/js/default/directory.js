@@ -10,6 +10,8 @@ var timeout = null;
 var searchType = '';
 var searchSType = '';
 
+//alert("d.js");
+
 var translate = {"organizations":"Organisations",
                  "projects":"Projets",
                  "events":"Événements",

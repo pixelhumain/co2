@@ -286,7 +286,7 @@ var dataHelper = {
 			result.push(newColonnes);
 		});
 		return result;
-	}
+	},
 
 	markdownToHtml : function (str) { 
 		var converter = new showdown.Converter();

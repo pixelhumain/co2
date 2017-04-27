@@ -52,10 +52,11 @@
         $(htmlId).html(html);
         if(actionOnSetGlobalScope=="save"){
             scopeHtml='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-                            'data-toggle="tooltip" data-placement="top" title="Communecter avec '+communexion.currentName+'" '+
-                            'data-scope-value="'+communexion.values.cityKey+'" '+
-                            'data-scope-name="'+communexion.values.cityName+'" '+
-                            'data-scope-type="city" '+
+                            'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
+                            'data-scope-value="'+$.cookie('communexionValue')+'" '+
+                            'data-scope-name="'+$.cookie('communexionName')+'" '+
+                            'data-scope-level="'+$.cookie('communexionLevel')+'" '+
+                            'data-scope-type="'+$.cookie('communexionType')+'" '+
                             'id="btn-my-co">'+
                             '<i class="fa fa-university"></i>'+
                         '</a>'+

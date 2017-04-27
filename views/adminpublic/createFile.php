@@ -557,7 +557,7 @@ function stepTwo(){
 	if(typeFile == "json" || typeFile == "js" || typeFile == "geojson")
 		params["file"] = file ;
 	else
-		file = csvToArray(csvFile, $("#selectSeparateur").val(), $("#selectSeparateurText").val())
+		file = dataHelper.csvToArray(csvFile, $("#selectSeparateur").val(), $("#selectSeparateurText").val())
 
 	$.ajax({
         type: 'POST',

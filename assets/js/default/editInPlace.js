@@ -549,7 +549,7 @@ function bindAboutPodElement() {
 						icon : "fa-key",
 						onLoads : {
 							markdown : function(){
-								activateMarkdown("#ajaxFormModal #description");
+								dataHelper.activateMarkdown("#ajaxFormModal #description");
 								bindDesc("#ajaxFormModal");
 							}
 						},
@@ -558,7 +558,7 @@ function bindAboutPodElement() {
 							if(data.result && data.resultGoods.result){shortDescriptionHeader
 								$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
 								$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
-								$(".contentInformation #descriptionAbout").html(markdownToHtml(data.resultGoods.values.description));
+								$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
 								$("#descriptionMarkdown").val(data.resultGoods.values.description);
 							}
 							elementLib.closeForm();

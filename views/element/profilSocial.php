@@ -489,7 +489,7 @@ if( $type != Person::COLLECTION)
 		$(".open-confidentiality").click(function(){
 			mylog.log("open-confidentiality");
 			toogleNotif(false);
-			smallMenu.open( markdownToHtml($("#descriptionMarkdown").val()));
+			smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").val()));
 			bindLBHLinks();
 		});
 	

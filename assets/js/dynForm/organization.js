@@ -36,15 +36,6 @@ dynForm = {
             tags : typeObjLib.tags(),
             location : typeObjLib.location,
 	        image : typeObjLib.image( "#organization.detail.id."+uploadObj.id ),
-            /*formshowers : {
-            	label : "En détails",
-                inputType : "custom",
-                html:
-				"<a class='btn btn-default text-dark w100p' "+
-					"href='javascript:;' "+
-					"onclick='$(\".emailtext,.descriptiontextarea,.urltext\").slideToggle();activateMarkdown(\"#ajaxFormModal #description\");'>"+
-					"<i class='fa fa-plus'></i> options (email, desc, urls, telephone)</a>",
-            },*/
             email : typeObjLib.email(),
 	        shortDescription : typeObjLib.textarea("Description courte", "...",{ maxlength: 140 }),
 	        url : typeObjLib.inputUrl(),

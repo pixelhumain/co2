@@ -528,7 +528,7 @@
 		mylog.log("inintDescs");
 		descHtmlToMarkdown();
 		mylog.log("after");
-		$("#descriptionAbout").html(markdownToHtml($("#descriptionMarkdown").val()));
+		$("#descriptionAbout").html(dataHelper.markdownToHtml($("#descriptionMarkdown").val()));
 	}
 
 </script>

@@ -960,12 +960,6 @@ function setTitle(str, icon, topTitle,keywords,shortDesc) { mylog.log("setTitle"
 }
 
 
-function markdownToHtml (str) { 
-	var converter = new showdown.Converter(),
-	res = converter.makeHtml(str);
-	return res;
-}
-
 function checkMenu(urlObj, hash){
 	mylog.log("checkMenu *******************", hash);
 	//mylog.dir(urlObj);
@@ -1546,84 +1540,7 @@ function activateSummernote(elem) {
 		});
 	}
 }
-function markdownToHtml(str) { 
-	mylog.log("markdownToHtml", str);
-	var converter = new showdown.Converter();
-	var res = converter.makeHtml(str)
-	mylog.log("rest", res);
-	return res;
-}
 
-function convertMardownToHtml(text) { 
-	var converter = new showdown.Converter();
-	return converter.makeHtml(text);
-}
-
-
-function activateMarkdown(elem) { 
-	mylog.log("activateMarkdown", elem);
-
-	markdownParams = {
-			savable:false,
-			iconlibrary:'fa',
-			language:'fr',
-			onPreview: function(e) {
-				var previewContent = "";
-				if (e.isDirty()) {
-			    	previewContent = convertMardownToHtml(e.getContent());
-			    } else {
-			    	previewContent = convertMardownToHtml($(elem).val());
-			    }
-			    return previewContent;
-		  	},
-		  	onSave: function(e) {
-		  		mylog.log(e);
-		  	},
-		}
-
-	if( !$('script[src="'+baseUrl+'/plugins/bootstrap-markdown/js/bootstrap-markdown.js"]').length ){
-		mylog.log("activateMarkdown if");
-
-		$("<link/>", {
-		   rel: "stylesheet",
-		   type: "text/css",
-		   href: baseUrl+"/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css"
-		}).appendTo("head");
-		$.getScript( baseUrl+"/plugins/showdown/showdown.min.js", function( data, textStatus, jqxhr ) {
-
-			$.getScript( baseUrl+"/plugins/bootstrap-markdown/js/bootstrap-markdown.js", function( data, textStatus, jqxhr ) {
-				mylog.log("HERE", elem);
-
-				$.fn.markdown.messages['fr'] = {
-					'Bold': trad.Bold,
-					'Italic': trad.Italic,
-					'Heading': trad.Heading,
-					'URL/Link': trad['URL/Link'],
-					'Image': trad.Image,
-					'List': trad.List,
-					'Preview': trad.Preview,
-					'strong text': trad['strong text'],
-					'emphasized text': trad['strong text'],
-					'heading text': trad[''],
-					'enter link description here': trad['enter link description here'],
-					'Insert Hyperlink': trad['Insert Hyperlink'],
-					'enter image description here': trad['enter image description here'],
-					'Insert Image Hyperlink': trad['Insert Image Hyperlink'],
-					'enter image title here': trad['enter image title here'],
-					'list text here': trad['list text here']
-				};
-				$(elem).markdown(markdownParams);
-			});
-
-
-		});
-	} else {
-		mylog.log("activateMarkdown else");
-		$(elem).markdown(markdownParams);
-	}
-
-	$(elem).before('La syntaxe Mardown utilisé pour la description. Si vous souhaitez <a href="https://michelf.ca/projets/php-markdown/syntaxe/" target="_blank">en savoir plus</a>');
-}
 
 function  firstOptions() { 
 	var res = {

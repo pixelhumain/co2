@@ -619,10 +619,11 @@ function showFormBlock(bool){
 		/////multiTagScopeLbl("send");
 		if(isLiveGlobal()){
 			scopeHtml='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-            				'data-toggle="tooltip" data-placement="top" title="Communecter avec '+communexion.currentName+'" '+
-           					'data-scope-value="'+communexion.values.cityKey+'" '+
-            				'data-scope-name="'+communexion.values.cityName+'" '+
-            				'data-scope-type="city" '+
+            				'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
+                        	'data-scope-value="'+$.cookie('communexionValue')+'" '+
+                        	'data-scope-name="'+$.cookie('communexionName')+'" '+
+                        	'data-scope-level="'+$.cookie('communexionLevel')+'" '+
+                        	'data-scope-type="'+$.cookie('communexionType')+'" '+
             				'id="btn-my-co">'+
             				'<i class="fa fa-university"></i>'+
             			'</a>'+
@@ -646,6 +647,8 @@ function showFormBlock(bool){
 			}
 			actionOnSetGlobalScope="save";
 			$("#scopeListContainerForm").append(scopeHtml);
+			$(".item-globalscope-checker:last-child").trigger("click").removeClass("inactive");
+            $(".item-globalscope-checker").attr('disabled', true);
 			$("#container-scope-filter").hide();
 			bindCommunexionScopeEvents();
 		}
@@ -675,6 +678,7 @@ function showFormBlock(bool){
 		actionOnSetGlobalScope="filter";
 		$("#scopeListContainerForm").html("");
 		$("#container-scope-filter").show();
+		$(".item-globalscope-checker").prop('disabled', false);
 		//SCOPE DIV//
 		$('.extract_url').hide();
 		$(".form-create-news-container #falseInput").show();
@@ -1028,14 +1032,22 @@ function saveNews(){
 				}
 				
 				if($('#searchLocalityCITYKEY') && isLiveGlobal() && liveScopeType=="global" ){
-					
-					newNews.searchLocalityCITYKEY = $('#searchLocalityCITYKEY').val().split(',');
-				    newNews.searchLocalityCODE_POSTAL = $('#searchLocalityCODE_POSTAL').val().split(',');
-				    newNews.searchLocalityDEPARTEMENT = $('#searchLocalityDEPARTEMENT').val().split(',');
-				    newNews.searchLocalityREGION = $('#searchLocalityREGION').val().split(',');
-				    newNews.searchLocalityLEVEL = $('#searchLocalityLEVEL').val();
+					if(globalCommunexion){
 
-				    	
+						if($('#searchLocalityCITYKEY').val()!="")
+							cpInseeKey=$('#searchLocalityCITYKEY').val().split("_");
+						else
+							cpInseeKey=$('#searchLocalityCODE_POSTAL').val().split("_");
+						cpInseeKey=cpInseeKey[1].split("-");
+						newNews.codeInsee=cpInseeKey[0];
+						newNews.postalCode=cpInseeKey[1];
+					}else{
+						newNews.searchLocalityCITYKEY = $('#searchLocalityCITYKEY').val().split(',');
+				    	newNews.searchLocalityCODE_POSTAL = $('#searchLocalityCODE_POSTAL').val().split(',');
+				    	newNews.searchLocalityDEPARTEMENT = $('#searchLocalityDEPARTEMENT').val().split(',');
+				    	newNews.searchLocalityREGION = $('#searchLocalityREGION').val().split(',');
+				    	newNews.searchLocalityLEVEL = $('#searchLocalityLEVEL').val();
+					}	
 			    }
 
 			    if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));

@@ -413,8 +413,7 @@ if( $type != Person::COLLECTION)
 			else if(subView=="notifications")
 				loadNotifications();
 			else if(subView.indexOf("chart") >= 0){
-				id=subView.split("chart");
-				loadChart(id[1]);
+				loadChart();
 			}
 			else if(subView=="mystream")
 				loadNewsStream(false);
@@ -479,10 +478,8 @@ if( $type != Person::COLLECTION)
 			loadNotifications();
 		});
 		$(".btn-start-chart").click(function(){
-			id=$(this).data("value");
-			history.pushState(null, "New Title", hashUrlPage+".view.chart"+id);
-			//location.search="?view=chart&id="+id;
-			loadChart(id);
+			history.pushState(null, "New Title", hashUrlPage+".view.chart");
+			loadChart();
 		});
 		$("#btn-show-activity").click(function(){
 			history.pushState(null, "New Title", hashUrlPage+".view.history");
@@ -669,9 +666,9 @@ if( $type != Person::COLLECTION)
 			null,
 			function(){},"html");
 	}
-	function loadChart(id){
+	function loadChart(){
 		toogleNotif(false);
-		var url = "chart/index/type/"+typeItem+"/id/"+contextData.id+"/chart/"+id;
+		var url = "chart/header/type/"+typeItem+"/id/"+contextData.id;
 		showLoader('#central-container');
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,

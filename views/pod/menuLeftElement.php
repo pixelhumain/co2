@@ -175,13 +175,16 @@
 		</a>
 	</li>	
 
-	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
-	<li class="">
-		<a href="javascript:" class="ssmla edit-chart">
-			<i class="fa fa-heartbeat"></i> <?php echo Yii::t("chart", "Nos valeurs"/*"Values and Cultures"*/) ?>
-		</a>
-	</li>
-	<?php } ?>
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ 
+		if(@$element["properties"] && @$element["properties"]["chart"]) 
+			$countChart=count($element["properties"]["chart"]); 
+		if(@$countChart || $edit || $openEdition){ ?>
+			<li class="">
+				<a href="javascript:" class="ssmla <?php if(@$countChart) echo "btn-start-chart"; else echo "edit-chart"; ?>">
+					<i class="fa fa-heartbeat"></i> <?php echo Yii::t("chart", "Our values"); if(@$countChart) echo " (".$countChart.")" ?>
+				</a>
+			</li>
+	<?php } } ?>
 
 	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
 	<li class=""><a href="javascript:" id="btn-start-contacts" class="ssmla"><i class="fa fa-envelope"></i> Nous contacter</a></li>

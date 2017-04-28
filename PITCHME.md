@@ -1,6 +1,6 @@
 ---?image=assets/bg.jpg
 # Communecter 
-![Logo](assets/images/Communecter-32x32.svg)
+![Logo](assets/images/COmmunecter-Banniere.jpg)
 
 ## Connecté à sa Commune
 ## Connecter les communs

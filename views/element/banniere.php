@@ -57,6 +57,13 @@
 	<?php if($type==Event::COLLECTION){ ?>
 	<div class="col-xs-9 col-sm-6 col-md-5 col-lg-5 margin-right-15 margin-top-25 section-date pull-right"></div>
 	<?php } ?>
+	<div class="margin-right-15 margin-top-25 section-address pull-right">
+		<?php 
+			echo @$element["address"]["postalCode"] ? "<i class='fa fa-map-marker'></i> ".$element["address"]["postalCode"] : "";
+			echo @$element["address"]["postalCode"] && @$element["address"]["addressLocality"] ? ", ".$element["address"]["addressLocality"] : "";
+		?>
+	</div>
+	
 
 	<?php 
 		$thumbAuthor =  @$element['profilImageUrl'] ? 

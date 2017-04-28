@@ -897,7 +897,7 @@ function updateLocalityElement(){
 							}
 							Sig.restartMap();
 							Sig.showMapElements(Sig.map, contextMap);
-							url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+							urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 						}else{
 
 							changeMenuCommunextion(locality);
@@ -909,18 +909,18 @@ function updateLocalityElement(){
 							var urlPage = window.location.href ;
 							$('.showIfCommucted').removeClass("hidden");
 							if(urlPage.indexOf("#page.type.citoyens.id."+userId) == -1) {
-								url.loadByHash("#page.type.citoyens.id."+userId+".view.detail");
+								urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.detail");
 							}else{
 								Sig.restartMap();
 								Sig.showMapElements(Sig.map, contextMap);
-								url.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
+								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 							}
 
 						}
 					}else{
 						initData();
 						toastr.success(data.msg);
-						url.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
+						urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					}
 					
 		    	}else{

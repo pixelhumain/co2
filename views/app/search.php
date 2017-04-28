@@ -6,7 +6,6 @@
   HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
   
   $cssAnsScriptFilesModule = array(
-    '/js/default/directory.js',
     '/js/default/responsive-calendar.js',
   );
   HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
@@ -126,6 +125,11 @@
 
     .btn-directory-type.bg-white {
         background-color: #F2F2F2 !important;
+    }
+
+    .btn-directory-type.active {
+        background-color: #2C3E50 !important;
+        color : white;
     }
 
     .searchEntityContainer.pull-right.classified{
@@ -399,6 +403,9 @@ jQuery(document).ready(function() {
             loadingData = false;
             startSearch(0, indexStepInit, searchCallback);
             KScrollTo("#content-social");
+
+            $(".btn-directory-type").removeClass("active");
+            $(this).addClass("active");
         });
 
         $(".btn-open-filliaire").click(function(){
@@ -413,7 +420,8 @@ jQuery(document).ready(function() {
         bindLeftMenuFilters();
 
         //console.log("init Scroll");
-        $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
+        $(window).bind("scroll",function(){  
+            mylog.log("test scroll", scrollEnd);
             if(!loadingData && !scrollEnd && !isMapEnd){
                   var heightWindow = $("html").height() - $("body").height();
                   if( $(this).scrollTop() >= heightWindow - 400){

@@ -5,7 +5,7 @@ dynForm = {
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	"subEvent" : function(){
+	    	sub : function(){
 	    		//alert(contextData.type);
 	    		if(contextData.type == "events"){
 	    			$("#ajaxFormModal #parentId").removeClass('hidden');
@@ -15,7 +15,7 @@ dynForm = {
 	    			else if ( contextData && contextData.id ){
 		    			$("#ajaxFormModal #parentId").val( contextData.id );
 	    			}
-	    			
+	    			//$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
 	    			if( contextData && contextData.type )
 	    				$("#ajaxFormModal #parentType").val( contextData.type ); 
 
@@ -46,7 +46,7 @@ dynForm = {
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
 		    	elementLib.closeForm();
-		    	url.loadByHash( location.hash );	
+		    	urlCtrl.loadByHash( location.hash );	
 		    }
 	    },
 	    beforeSave : function(){
@@ -98,8 +98,8 @@ dynForm = {
 	            	});
 	            }
             },
-	        organizerType : typeObjLib.hidden,
-	        parentId :{
+	        organizerType : typeObjLib.inputHidden(),
+	         parentId :{
             	inputType : "select",
             	class : "hidden",
             	placeholder : "Fait parti d'un évènement ?",
@@ -140,33 +140,25 @@ dynForm = {
 	            	});
 	            }
             },
-            parentType : typeObjLib.hidden,
-	        type : typeObjLib.type ("Type d\'évènement",eventTypes),
+            parentType : typeObjLib.inputHidden(),
+	        type : typeObjLib.inputSelect("Type d\'évènement",null,eventTypes, { required : true }),
 	        image : typeObjLib.image( "#event.detail.id." ),
             allDay : typeObjLib.allDay,
             startDate : typeObjLib.startDateInput,
             endDate : typeObjLib.endDateInput,
             location : typeObjLib.location,
             tags : typeObjLib.tags(),
-            /*public : {
-            	inputType : "hidden",
-            	"switch" : {
-            		"onText" : "Privé",
-            		"offText" : "Public",
-            		"labelText":"Type"
-            	}
-            },*/
+            shortDescription : typeObjLib.textarea("Description courte", "...",{ maxlength: 140 }),
             formshowers : {
             	label : "En détails",
                 inputType : "custom",
                 html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> options (desc, urls)</a>",
             },
-	        description : typeObjLib.descriptionOptionnel,
-            url : typeObjLib.urlOptionnel,
-            "preferences[publicFields]" : typeObjLib.hiddenArray,
-            "preferences[privateFields]" : typeObjLib.hiddenArray,
-            "preferences[isOpenData]" :  typeObjLib.hiddenTrue,
-            "preferences[isOpenEdition]" :  typeObjLib.hiddenTrue,
+	        url : typeObjLib.inputUrlOptionnel(),
+            "preferences[publicFields]" :  typeObjLib.inputHidden([]),
+            "preferences[privateFields]" : typeObjLib.inputHidden([]),
+            "preferences[isOpenData]" :  typeObjLib.inputHidden(true),
+            "preferences[isOpenEdition]" :  typeObjLib.inputHidden(true)
 	    }
 	}
 };

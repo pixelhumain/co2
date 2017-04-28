@@ -333,6 +333,7 @@ class CommunecterController extends Controller
     "chart" => array(
 	    "addchartsv"      => array("href" => "/ph/communecter/chart/addchartsv"),
 		  "index"      => array("href" => "/ph/communecter/chart/index"),
+      "header"      => array("href" => "/ph/communecter/chart/header"),
 		  "editchart"       => array("href" => "/ph/communecter/chart/editchart"),
 		  "get"       => array("href" => "/ph/communecter/chart/get"),
     ),

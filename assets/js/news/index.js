@@ -619,10 +619,11 @@ function showFormBlock(bool){
 		/////multiTagScopeLbl("send");
 		if(isLiveGlobal()){
 			scopeHtml='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-            				'data-toggle="tooltip" data-placement="top" title="Communecter avec '+communexion.currentName+'" '+
-           					'data-scope-value="'+communexion.values.cityKey+'" '+
-            				'data-scope-name="'+communexion.values.cityName+'" '+
-            				'data-scope-type="city" '+
+            				'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
+                        	'data-scope-value="'+$.cookie('communexionValue')+'" '+
+                        	'data-scope-name="'+$.cookie('communexionName')+'" '+
+                        	'data-scope-level="'+$.cookie('communexionLevel')+'" '+
+                        	'data-scope-type="'+$.cookie('communexionType')+'" '+
             				'id="btn-my-co">'+
             				'<i class="fa fa-university"></i>'+
             			'</a>'+
@@ -646,6 +647,8 @@ function showFormBlock(bool){
 			}
 			actionOnSetGlobalScope="save";
 			$("#scopeListContainerForm").append(scopeHtml);
+			$(".item-globalscope-checker:last-child").trigger("click").removeClass("inactive");
+            $(".item-globalscope-checker").attr('disabled', true);
 			$("#container-scope-filter").hide();
 			bindCommunexionScopeEvents();
 		}
@@ -675,6 +678,7 @@ function showFormBlock(bool){
 		actionOnSetGlobalScope="filter";
 		$("#scopeListContainerForm").html("");
 		$("#container-scope-filter").show();
+		$(".item-globalscope-checker").prop('disabled', false);
 		//SCOPE DIV//
 		$('.extract_url').hide();
 		$(".form-create-news-container #falseInput").show();
@@ -1028,14 +1032,22 @@ function saveNews(){
 				}
 				
 				if($('#searchLocalityCITYKEY') && isLiveGlobal() && liveScopeType=="global" ){
-					
-					newNews.searchLocalityCITYKEY = $('#searchLocalityCITYKEY').val().split(',');
-				    newNews.searchLocalityCODE_POSTAL = $('#searchLocalityCODE_POSTAL').val().split(',');
-				    newNews.searchLocalityDEPARTEMENT = $('#searchLocalityDEPARTEMENT').val().split(',');
-				    newNews.searchLocalityREGION = $('#searchLocalityREGION').val().split(',');
-				    newNews.searchLocalityLEVEL = $('#searchLocalityLEVEL').val();
+					if(globalCommunexion){
 
-				    	
+						if($('#searchLocalityCITYKEY').val()!="")
+							cpInseeKey=$('#searchLocalityCITYKEY').val().split("_");
+						else
+							cpInseeKey=$('#searchLocalityCODE_POSTAL').val().split("_");
+						cpInseeKey=cpInseeKey[1].split("-");
+						newNews.codeInsee=cpInseeKey[0];
+						newNews.postalCode=cpInseeKey[1];
+					}else{
+						newNews.searchLocalityCITYKEY = $('#searchLocalityCITYKEY').val().split(',');
+				    	newNews.searchLocalityCODE_POSTAL = $('#searchLocalityCODE_POSTAL').val().split(',');
+				    	newNews.searchLocalityDEPARTEMENT = $('#searchLocalityDEPARTEMENT').val().split(',');
+				    	newNews.searchLocalityREGION = $('#searchLocalityREGION').val().split(',');
+				    	newNews.searchLocalityLEVEL = $('#searchLocalityLEVEL').val();
+					}	
 			    }
 
 			    if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));
@@ -1087,7 +1099,7 @@ function saveNews(){
 		    				
 		    				//if we need a month space to insert the news
 		    				if ( !$( "#"+'month'+monthSection.getMonth()+''+monthSection.getFullYear()).length ) {
-								url.loadByHash(location.hash);
+								urlCtrl.loadByHash(location.hash);
 		    				}
 						}
 						
@@ -1198,7 +1210,7 @@ function initFormImages(){
 }
 function addMoreSpace(){
 	bootbox.dialog({
-	message: "You have attempt the limit of 20Mo of images for this "+contextParentType+"<br/>Please choose one of those  two solutions beyond:<br/>Delete images in the <a href='javascript:;' onclick='bootbox.hideAll();url.loadByHash(\"#gallery.index.id."+contextParentId+".type."+contextParentType+"\")'>photo gallery</a> <br/><br/>OR<br/><br/> Subscribe 12€ to the NGO Open Atlas which takes in charge communecter.org on <a href='https://www.helloasso.com/associations/open-atlas' target='_blank'>helloAsso</a> for 20Mo more. <br/><br/>Effectively, stocking images represents a cost for us and donate to the NGO will demonstrate your contribution the project and to the common we built together",
+	message: "You have attempt the limit of 20Mo of images for this "+contextParentType+"<br/>Please choose one of those  two solutions beyond:<br/>Delete images in the <a href='javascript:;' onclick='bootbox.hideAll();urlCtrl.loadByHash(\"#gallery.index.id."+contextParentId+".type."+contextParentType+"\")'>photo gallery</a> <br/><br/>OR<br/><br/> Subscribe 12€ to the NGO Open Atlas which takes in charge communecter.org on <a href='https://www.helloasso.com/associations/open-atlas' target='_blank'>helloAsso</a> for 20Mo more. <br/><br/>Effectively, stocking images represents a cost for us and donate to the NGO will demonstrate your contribution the project and to the common we built together",
   title: "Limit of <color class='red'>20 Mo</color> overhead"
   });
 }

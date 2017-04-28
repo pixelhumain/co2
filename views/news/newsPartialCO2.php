@@ -22,7 +22,7 @@
       } else{
          $thumbAuthor =  @$media['author']['profilThumbImageUrl'] ? 
                       Yii::app()->createUrl('/'.@$media['author']['profilThumbImageUrl']) 
-                      : @$imgDefault;
+                      : $this->module->assetsUrl."/images/news/profile_default_l.png";
           $nameAuthor=@$media["author"]["name"];  
           $authorType=Person::COLLECTION;
           $authorId=@$media["author"]["id"];           

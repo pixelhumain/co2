@@ -83,10 +83,10 @@ function initNotifications(){
 	  mylog.log("click notification main-top-menu");
       showNotif();
     });
-    $('.my-main-container .btn-menu-notif').off().click(function(){
+    /*$('.my-main-container .btn-menu-notif').off().click(function(){
 	  mylog.log("click notification my-main-container");
       showNotif();
-    });
+    });*/
 }
 function showNotif(show){
 	if(typeof show == "undefined"){

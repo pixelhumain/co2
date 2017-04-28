@@ -180,7 +180,6 @@ function initForm(){ console.log("initForm initForm");
   },500);
 
   initTags();
-  initCommentsTools(news);
   //activateMarkdown("#form-news #get_url");
   //Sig.restartMap();
   //Sig.showMapElements(Sig.map, news);

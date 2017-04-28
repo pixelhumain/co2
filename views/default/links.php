@@ -113,6 +113,7 @@
                     <h2><a href="default/view/page/help" class="lbhp">Shortcuts</a></h2>
                     <h2><a href="https://vimeo.com/133636468" target="_blank">Video 2016</a></h2>
                     <h2><a href="https://vimeo.com/74212373" target="_blank">Video 2014</a></h2>
+                    <h2><a href="default/view/page/slideshow/dir/docs|panels" class="lbhp ">SlideShow</a></h2>
                 </div>
 
                 <div class="col-xs-6">

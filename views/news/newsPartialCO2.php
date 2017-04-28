@@ -22,7 +22,7 @@
       } else{
          $thumbAuthor =  @$media['author']['profilThumbImageUrl'] ? 
                       Yii::app()->createUrl('/'.@$media['author']['profilThumbImageUrl']) 
-                      : @$imgDefault;
+                      : $this->module->assetsUrl."/images/news/profile_default_l.png";
           $nameAuthor=@$media["author"]["name"];  
           $authorType=Person::COLLECTION;
           $authorId=@$media["author"]["id"];           
@@ -43,6 +43,7 @@
   <li class="<?php echo $class; ?> list-news" id="news<?php echo $key ?>">
     <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip"></i></a></div>
     <div class="timeline-panel">
+    <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12"></div>
       <?php $classHeading="";
       if(@$srcMainImg != "" && $media["type"] == "activityStream"){ $classHeading="activity-heading"; ?>
         <a class="inline-block bg-black activity-image" target="_blank" href="<?php echo @$media["href"]; ?>">
@@ -58,7 +59,7 @@
                 <?php }else{ $pluriel = " pluriel"; } ?>
 
                 <div class="pull-left padding-5" style="line-height: 15px;">
-                  <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh">
+                  <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh pull-left">
                     <?php echo @$nameAuthor; ?>
                   </a>
                   <?php if(@$media["sharedBy"]){ ?>
@@ -153,10 +154,9 @@
             </h5>
           </div>
           <div class="timeline-body padding-10 col-md-12 text-left">
+            <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent" ></div>
             <!-- <h4><a target="_blank" href="<?php echo @$media["href"]; ?>"><?php echo @$media["title"]; ?></a></h4> -->
             <div id="newsActivityStream<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent" ></div>
-            <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent" ></div>
-            <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12 no-padding"></div>
     
           </div>
 
@@ -211,7 +211,7 @@
     jQuery(document).ready(function() {
       if($("#noMoreNews").length)
         scrollEnd=true;
-      
+      initCommentsTools(news);
       $.each(news, function(e,v){
         tags = "", 
         scopes = "",
@@ -226,16 +226,7 @@
             if(tag != ""){
               countTag++;
               tagsClass += tag+" ";
-        
-              /*tags += "<span class='label tag_item_map_list tag' data-val='"+tag+"'>#"+tag+"</span> ";
-              if( $.inArray(tag, contextScopesTags.tags)  == -1 && tag != undefined && tag != "undefined" && tag != "" ){
-                contextScopesTags.tags.push(tag);*/
-        
-            //  tags += "<span class='label tag_item_map_list tag' data-tag-value='"+tag+"'>#"+tag+"</span> ";
-              //if( $.inArray(tag, v.tags)  == -1 && tag != undefined && tag != "undefined" && tag != "" ){
-                ///*contextMap.tags*/ v.tags.push(tag);
                 tags += ' <a href="javascript:;" class="filter btn no-padding" data-filter=".'+tag+'"><span class="text-red text-xss">#'+tag+'</span></a>';
-              //}
              }
           } });
 
@@ -316,10 +307,6 @@
             else 
               if(typeof v.scope != "undefined" && typeof v.scope.address != "undefined")
               objectLocality=v.scope.address.addressLocality;
-       
-            //var hour = (startDate.getHours() < 10) ?  "0"+startDate.getHours() : startDate.getHours();
-            //var min = (startDate.getMinutes() < 10) ?  "0"+startDate.getMinutes() : startDate.getMinutes();
-            //var dateStr = day + ' ' + month + ' ' + year + ' ' + hour + ':' + min;
             activityHtml = '<a href="#page.type.'+v.object.type+'.id.'+v.object.id+'" '+
                             'class="lbh col-md-12 col-sm-12 col-xs-12 no-padding">';
 
@@ -398,9 +385,9 @@
       <?php } ?>
 
 
-    <?php if(sizeof($news)==0){ ?>
-        scrollEnd = true;
-      <?php } ?>
+      <?php if(sizeof($news)==0){ ?>
+          scrollEnd = true;
+        <?php } ?>
     });
 
   </script>

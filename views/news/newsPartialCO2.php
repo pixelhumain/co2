@@ -211,7 +211,7 @@
     jQuery(document).ready(function() {
       if($("#noMoreNews").length)
         scrollEnd=true;
-      
+      initCommentsTools(news);
       $.each(news, function(e,v){
         tags = "", 
         scopes = "",
@@ -226,16 +226,7 @@
             if(tag != ""){
               countTag++;
               tagsClass += tag+" ";
-        
-              /*tags += "<span class='label tag_item_map_list tag' data-val='"+tag+"'>#"+tag+"</span> ";
-              if( $.inArray(tag, contextScopesTags.tags)  == -1 && tag != undefined && tag != "undefined" && tag != "" ){
-                contextScopesTags.tags.push(tag);*/
-        
-            //  tags += "<span class='label tag_item_map_list tag' data-tag-value='"+tag+"'>#"+tag+"</span> ";
-              //if( $.inArray(tag, v.tags)  == -1 && tag != undefined && tag != "undefined" && tag != "" ){
-                ///*contextMap.tags*/ v.tags.push(tag);
                 tags += ' <a href="javascript:;" class="filter btn no-padding" data-filter=".'+tag+'"><span class="text-red text-xss">#'+tag+'</span></a>';
-              //}
              }
           } });
 
@@ -316,10 +307,6 @@
             else 
               if(typeof v.scope != "undefined" && typeof v.scope.address != "undefined")
               objectLocality=v.scope.address.addressLocality;
-       
-            //var hour = (startDate.getHours() < 10) ?  "0"+startDate.getHours() : startDate.getHours();
-            //var min = (startDate.getMinutes() < 10) ?  "0"+startDate.getMinutes() : startDate.getMinutes();
-            //var dateStr = day + ' ' + month + ' ' + year + ' ' + hour + ':' + min;
             activityHtml = '<a href="#page.type.'+v.object.type+'.id.'+v.object.id+'" '+
                             'class="lbh col-md-12 col-sm-12 col-xs-12 no-padding">';
 
@@ -398,9 +385,9 @@
       <?php } ?>
 
 
-    <?php if(sizeof($news)==0){ ?>
-        scrollEnd = true;
-      <?php } ?>
+      <?php if(sizeof($news)==0){ ?>
+          scrollEnd = true;
+        <?php } ?>
     });
 
   </script>

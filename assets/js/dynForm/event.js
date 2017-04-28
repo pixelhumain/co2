@@ -5,7 +5,7 @@ dynForm = {
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	"subEvent" : function(){
+	    	sub : function(){
 	    		//alert(contextData.type);
 	    		if(contextData.type == "events"){
 	    			$("#ajaxFormModal #parentId").removeClass('hidden');
@@ -15,7 +15,7 @@ dynForm = {
 	    			else if ( contextData && contextData.id ){
 		    			$("#ajaxFormModal #parentId").val( contextData.id );
 	    			}
-	    			
+	    			//$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
 	    			if( contextData && contextData.type )
 	    				$("#ajaxFormModal #parentType").val( contextData.type ); 
 

@@ -2153,9 +2153,22 @@ var collection = {
 /* *********************************
 			ELEMENT FORM 
 ********************************** */
-//TODO : rename element Form
+//TODO : rename dynFormObj
 var elementLib = {
 	elementObj : null,
+	//rules to show hide submit btn, used anwhere on blur and can be 
+	//completed by specific rules on dynForm Obj
+	//ex : elementLib.elementObj.dynForm.jsonSchema.canSubmitIf
+	canSubmitIf : function () { 
+    	var valid = true;
+    	//on peut ajouter des regles dans la map definition 
+    	if(	jsonHelper.notNull("elementLib.elementObj.dynForm.jsonSchema.canSubmitIf", "function") )
+    		valid = elementLib.elementObj.dynForm.jsonSchema.canSubmitIf();
+    	if( $('#ajaxFormModal #name').val() != "" && valid )
+    		$('#btn-submit-form').show();
+    	else 
+    		$('#btn-submit-form').hide();
+    },
 	formatData : function (formData, collection,ctrl) { 
 		mylog.warn("----------- formatData",formData, collection,ctrl);
 		formData.collection = collection;
@@ -2668,7 +2681,7 @@ var typeObjLib = {
 	    mylog.log("inputText ", inputObj);
     	return inputObj;
     },
-	name :function(type, rules, addElement) { 
+	name :function(type, rules, addElement, extraOnBlur) { 
 		var inputObj = {
 	    	placeholder : "... ",
 	        inputType : "text",
@@ -2685,6 +2698,8 @@ var typeObjLib = {
 	        	$("#ajaxFormModal #name ").off().on("blur",function(){
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
 	            		globalSearch($(this).val(),[ typeObjLib.get(type).col ], addElement );
+	            	
+	            	elementLib.canSubmitIf();
 	        	});
 	        }
 	    }else{

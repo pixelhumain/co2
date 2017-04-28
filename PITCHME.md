@@ -1,8 +1,8 @@
-# Come In and Act
+# Communecter 
 ![Logo](assets/images/CO.png)
 
-## Comme un acte Positif
-### Comme une ect 
+## Connecté à sa Commune
+## Connecter les communs
 
 
 --- 

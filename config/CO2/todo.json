@@ -1,0 +1,29 @@
+"#power":
+  	{"inMenu" : true, 
+    "useHeader" : true, 
+    "open" : true, 
+    "subdomain" : "power", 
+    "subdomainName" : "Démocratie",
+    "hash":"#app.power",
+    "icon" : "comments", 
+    "mainTitle" : "Espace d'expression démocratique",
+    "placeholderMainSearch" : "rechercher parmis les propositions ...",
+    "lblBtnCreate" : "Faire une proposition",
+    "colorBtnCreate" : "azure"
+},
+
+"#place":
+    {"inMenu" : true, 
+    "useHeader" : true, 
+    "open" : true, 
+    "subdomain" : "place", 
+    "subdomainName" : "Lieux",
+    "hash" : "#app.search.type.place",
+    "icon" : "map-marker", 
+    "mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
+    "placeholderMainSearch" : "Rechercher un lieu ...",
+    "lblBtnCreate" : "Ajouter un lieu",
+    "colorBtnCreate" : "green"
+},
+
+

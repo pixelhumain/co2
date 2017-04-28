@@ -6,7 +6,6 @@
   HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
   
   $cssAnsScriptFilesModule = array(
-    '/js/default/directory.js',
     '/js/default/responsive-calendar.js',
   );
   HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
@@ -128,6 +127,11 @@
         background-color: #F2F2F2 !important;
     }
 
+    .btn-directory-type.active {
+        background-color: #2C3E50 !important;
+        color : white;
+    }
+
     .searchEntityContainer.pull-right.classified{
         clear: right;
     }
@@ -149,7 +153,7 @@
 </style>
 
 
-<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow page-content" id="content-social" style="min-height:700px;">
+<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow pageContent" id="content-social" style="min-height:700px;">
 
     <?php if(@$type=="events"){ ?>
     <div class="col-md-12 no-padding calendar"></div>
@@ -193,7 +197,7 @@
 
         </div>
 
-        <div class="col-md-10 col-sm-10 col-xs-12 padding-5">
+        <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
         <?php
             $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
         ?>
@@ -399,6 +403,9 @@ jQuery(document).ready(function() {
             loadingData = false;
             startSearch(0, indexStepInit, searchCallback);
             KScrollTo("#content-social");
+
+            $(".btn-directory-type").removeClass("active");
+            $(this).addClass("active");
         });
 
         $(".btn-open-filliaire").click(function(){
@@ -413,7 +420,8 @@ jQuery(document).ready(function() {
         bindLeftMenuFilters();
 
         //console.log("init Scroll");
-        $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
+        $(window).bind("scroll",function(){  
+            mylog.log("test scroll", scrollEnd);
             if(!loadingData && !scrollEnd && !isMapEnd){
                   var heightWindow = $("html").height() - $("body").height();
                   if( $(this).scrollTop() >= heightWindow - 400){
@@ -497,9 +505,10 @@ jQuery(document).ready(function() {
         elementLib.openForm(type);
     });
 
-    $(".btn-decommunecter").click(function(){
+    /*$(".btn-decommunecter").click(function(){
+        alert();
         activateGlobalCommunexion(false);
-    });
+    });*/
 
     if(page == "annonces" || page == "agenda" || page == "power"){
         setTimeout(function(){

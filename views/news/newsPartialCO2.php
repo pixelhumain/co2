@@ -27,15 +27,27 @@ background-color: rgba(250,250,250,0.8);
 .text-xss{
   font-size:12px;
 }
+.settingsNews{
+  margin:7px;
+  color: #777;
+}
+.addMargin{
+  margin-top: 50px !important;
+}
+#noMoreNews{
+  position: absolute;
+  bottom: -55px;
+  font-size: 20px !important;
+  left: 0px;
+  right: 0px;
+}
 </style>
 <?php 
   $timezone = "";// @$timezone ? $timezone : 'Pacific/Noumea';
   $pair = @$pair ? $pair : false;
   $nbCol = @$nbCol ? $nbCol : 2;
  //echo $nbCol;
-  if(sizeof($news)==0){
-      echo "<div class='padding-15'><i class='fa fa-ban'></i>";
-  }
+  
 
    // var_dump($news);exit;
 		foreach($news as $key => $media){ 
@@ -72,7 +84,7 @@ background-color: rgba(250,250,250,0.8);
 	?>
 
   
-  <li class="<?php echo $class; ?>" id="news<?php echo $key ?>">
+  <li class="<?php echo $class; ?> list-news" id="news<?php echo $key ?>">
     <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip"></i></a></div>
     <div class="timeline-panel">
     <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12"></div>
@@ -84,47 +96,10 @@ background-color: rgba(250,250,250,0.8);
       <?php } ?>
       <div class="timeline-heading text-center <?php echo $classHeading; ?>">
            	<h5 class="text-left srcMedia">
-          		<small class="ilyaL">
-
-                <img class="pull-right img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
-                <div class="pull-right padding-5">
-                  <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh"><?php echo $nameAuthor ?></a><br>
-                  <span class="margin-top-5">
-                  <?php if(@$media["type"]=="news") { ?>
-                    <i class="fa fa-pencil-square"></i> a publié un message
-                  <?php } ?>
-                  <?php if(@$media["type"]=="activityStream") { ?>
-                    <?php $iconColor = Element::getColorIcon($media["object"]["type"]) ? 
-                                       Element::getColorIcon($media["object"]["type"]) : ""; ?>
-                    <i class="fa fa-plus-circle"></i> a créé un 
-                    <span class="text-<?php echo @$iconColor; ?>">
-                      <?php echo Yii::t("common", @$media["object"]["type"]); ?>
-                    </span>
-                  <?php } ?>
-                  <?php if(@$media["scope"] && @$media["scope"]["type"]){
-                    if($media["scope"]["type"]=="public"){
-                      $scopeIcon="globe";
-                      $scopeTooltip =Yii::t("common","Visible to all and posted on the city's wall");
-                    } 
-                    else if (@$media["scope"]["type"]=="restricted"){
-                      $scopeIcon="connectdevelop";
-                      $scopeTooltip= Yii::t("common","Visible to all on this wall and published on this network");
-                    }else{
-                      $scopeIcon="lock";
-                      $scopeTooltip= Yii::t("common","Private view");
-                    } ?>
-                     <strong> • </strong>  <i class='fa fa-<?php echo $scopeIcon ?> tooltips' data-toggle='tooltip' data-placement='bottom' data-original-title='<?php echo $scopeTooltip ?>'></i>
-                  <?php } ?>
-                  </span>
-                </div>
-
-              </small>
-
-          	  <small class="ilyaR">
-
+          	  <small>
                 <img class="pull-left img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
-                <div class="pull-left padding-5">
-                  <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh"><?php echo @$nameAuthor; ?></a><br>
+                <div class="pull-left padding-5" style="line-height: 15px;">
+                  <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh pull-left"><?php echo @$nameAuthor; ?></a><br>
                   <span class="margin-top-5">
                   <?php if(@$media["type"]=="news") { ?>
                     <i class="fa fa-pencil-square"></i> a publié un message
@@ -132,7 +107,7 @@ background-color: rgba(250,250,250,0.8);
                   <?php if(@$media["type"]=="activityStream") { ?>
                     <?php $iconColor = Element::getColorIcon($media["object"]["type"]) ? 
                                        Element::getColorIcon($media["object"]["type"]) : ""; ?>
-                    <i class="fa fa-plus-circle"></i> a créé un 
+                    <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news","verb ".$media["verb"]); ?> un 
                     <span class="text-<?php echo @$iconColor; ?>">
                       <?php echo Yii::t("common", @$media["object"]["type"]); ?>
                     </span>
@@ -149,17 +124,14 @@ background-color: rgba(250,250,250,0.8);
                       $scopeIcon="lock";
                       $scopeTooltip= Yii::t("common","Private view");
                     } ?>
-                     <strong> • </strong>  <i class='fa fa-<?php echo $scopeIcon ?> tooltips' data-toggle='tooltip' data-placement='bottom' data-original-title='<?php echo $scopeTooltip ?>'></i>
+                     <strong> • </strong>  <i class='fa fa-<?php echo $scopeIcon ?> tooltips margin-right-5' data-toggle='tooltip' data-placement='bottom' data-original-title='<?php echo $scopeTooltip ?>'></i>
                   <?php } ?>
                   </span>
                 </div>
                 
               </small>  
-              <?php if (@Yii::app()->session["userId"]){ 
-                if($class=="timeline-inverted"){}
-                ?>
-                  
-                  <div class="btn dropdown pull-right padding-5">
+              <?php if (@Yii::app()->session["userId"]){ ?>
+                  <div class="btn dropdown pull-right no-padding settingsNews">
                     <strong> • </strong> 
                     <a class="dropdown-toggle" type="button" data-toggle="dropdown" style="color:#8b91a0;">
                       <i class="fa fa-cog"></i>  <i class="fa fa-angle-down"></i>
@@ -178,7 +150,7 @@ background-color: rgba(250,250,250,0.8);
                     </ul>
                   </div>
                   <?php } ?>
-              <a href="javascript:;" target="_blank" class="link-read-media margin-top-10 hidden-xs img-circle">
+              <a href="javascript:;" target="_blank" class="link-read-media margin-top-10 hidden-xs img-circle pull-right">
                 <small>
                   <i class="fa fa-clock-o"></i> 
                   <?php echo Translate::pastTime(date($media["created"]->sec), "timestamp", $timezone); ?>
@@ -217,8 +189,10 @@ background-color: rgba(250,250,250,0.8);
     </div>
   </li>
 
-<?php } ?>
-
+  <?php } ?>
+  <?php if(sizeof($news)==0 || sizeof($news) < 6){
+      echo "<div id='noMoreNews' class='text-center'><i class='fa fa-ban'> ".Yii::t("common", "No more news")."</i></div>";
+  } ?>
   <script type="text/javascript">
     var news=<?php echo json_encode($news) ?>;
     var canPostNews = <?php echo json_encode(@$canPostNews) ?>;
@@ -229,7 +203,10 @@ background-color: rgba(250,250,250,0.8);
     var docType="<?php echo Document::DOC_TYPE_IMAGE; ?>";
     var months = ["<?php echo Yii::t('common','january') ?>", "<?php echo Yii::t('common','febuary') ?>", "<?php echo Yii::t('common','march') ?>", "<?php echo Yii::t('common','april') ?>", "<?php echo Yii::t('common','may') ?>", "<?php echo Yii::t('common','june') ?>", "<?php echo Yii::t('common','july') ?>", "<?php echo Yii::t('common','august') ?>", "<?php echo Yii::t('common','september') ?>", "<?php echo Yii::t('common','october') ?>", "<?php echo Yii::t('common','november') ?>", "<?php echo Yii::t('common','december') ?>"];
     var contentKey = "<?php echo Document::IMG_SLIDER; ?>";
+    var scrollEnd=false;
     jQuery(document).ready(function() {
+      if($("#noMoreNews").length)
+        scrollEnd=true;
       $.each(news, function(e,v){
         tags = "", 
         scopes = "",
@@ -254,53 +231,54 @@ background-color: rgba(250,250,250,0.8);
                 tags += ' <a href="javascript:;" class="filter btn no-padding" data-filter=".'+tag+'"><span class="text-red text-xss">#'+tag+'</span></a>';
               //}
              }
-        } });
-      if(tags!=""){
-        tags = '<div class="pull-left margin-top-5">'+tags+'</div>';
-        $("#newsTagsScope"+e).append(tags);
-      }
-    }
-    var author = typeof v.author != "undefined" ? v.author : null;
-    if(((author != null && typeof author.address != "undefined") || v.type == "activityStream") && v.scope.type == "public"){
-          postalCode = "";
-          city = "";
-          if(v.type != "activityStream"){
-            var countScope = 0;
-              var maxScope = 6;
-              if(typeof(v.scope.cities) != "undefined")
-                 $.each(v.scope.cities, function(key, value){ countScope++;
-                var name = "";
-                if (typeof(value.postalCode) != "undefined") {
-                  name += value.postalCode;
-                }
-
-                if(name != "") name += ", " ;
-                  
-                name += (value.addressLocality != "" && value.addressLocality != null) ? value.addressLocality : "";
-                if(countScope<maxScope)
-                  scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> " + name + "</span> ";
-              });
-              if(typeof(v.scope.departements) != "undefined")
-              $.each(v.scope.departements, function(key, value){ countScope++;
-                if(countScope<maxScope)
-                  scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+value.name + "</span> ";
-              });
-              if(typeof(v.scope.regions) != "undefined")
-              $.each(v.scope.regions, function(key, value){ countScope++;
-                if(countScope<maxScope)
-                  scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+value.name + "</span> ";
-              });
-          }else  { //activityStream
-            if (typeof(v.scope.address) != "undefined" && v.scope != null && v.scope.address != null &&  v.scope.address.addressLocality != "Unknown") {
-              postalCode=((v.scope.address.postalCode)?v.scope.address.postalCode+" , " : "");
-              city=v.scope.address.addressLocality;
-              scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+postalCode+city+"</span> ";
-            }
+          } });
+          if(tags!=""){
+            tags = '<div class="pull-left margin-top-5">'+tags+'</div>';
+            $("#newsTagsScope"+e).append(tags);
           }
-         if(scopes != ""){
-            scopes = '<div class="pull-right" style="margin: 5px 0px;">'+scopes+'</div>';
-            $("#newsTagsScope"+e).append(scopes);
-         }
+        }
+      //var author = typeof v.author != "undefined" ? v.author : null;
+      if(v.scope.type == "public"){
+            postalCode = "";
+            city = "";
+            if(v.type != "activityStream"){
+                var countScope = 0;
+                var maxScope = 6;
+                if(typeof(v.scope.cities) != "undefined"){
+                  $.each(v.scope.cities, function(key, value){ countScope++;
+                    var name = "";
+                    if (typeof(value.postalCode) != "undefined") {
+                      name += value.postalCode;
+                    }
+                    if(name != "") name += ", " ;
+                    name += (value.addressLocality != "" && value.addressLocality != null) ? value.addressLocality : "";
+                    if(countScope<maxScope)
+                      scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> " + name + "</span> ";
+                  });
+                }
+                if(typeof(v.scope.departements) != "undefined"){
+                  $.each(v.scope.departements, function(key, value){ countScope++;
+                    if(countScope<maxScope)
+                      scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+value.name + "</span> ";
+                  });
+                }
+                if(typeof(v.scope.regions) != "undefined"){
+                  $.each(v.scope.regions, function(key, value){ countScope++;
+                    if(countScope<maxScope)
+                      scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+value.name + "</span> ";
+                  });
+                }
+            }else  { //activityStream
+              if (typeof(v.scope.address) != "undefined" && v.scope != null && v.scope.address != null &&  v.scope.address.addressLocality != "Unknown") {
+                postalCode=((v.scope.address.postalCode)?v.scope.address.postalCode+" , " : "");
+                city=v.scope.address.addressLocality;
+                scopes += "<span class='label label-danger'><i class='fa fa-bullseye'></i> "+postalCode+city+"</span> ";
+              }
+            }
+           if(scopes != ""){
+              scopes = '<div class="pull-right" style="margin: 5px 0px;">'+scopes+'</div>';
+              $("#newsTagsScope"+e).append(scopes);
+           }
         }
         if(v.type == "activityStream"){
           //if(v.object.type=="events" || v.object.type=="needs"){
@@ -349,13 +327,20 @@ background-color: rgba(250,250,250,0.8);
                 '</a>';
           $("#newsActivityStream"+e).html(activityHtml);
         }
-
+        // CSS DESIGN NEWS ORGANIZATION
+        var currentOffset=$("#news"+e).offset();
+        var prevOffset=$("#news"+e).prevAll(".list-news").offset();
+        if(typeof prevOffset != "undefined"){
+          if(currentOffset.top>=(prevOffset.top-20) && currentOffset.top<=(prevOffset.top+20))
+             $("#news"+e).addClass("addMargin");
+        }
         if(actionController=="save"){
-          if($("#news-list").children().eq(0).hasClass("timeline-inverted")){
+          $("#news"+e).nextAll(".list-news").first().addClass("addMargin");
+          if($("#news"+e).nextAll(".list-news").first().hasClass("timeline-inverted"))
             $("#news"+e).removeClass("timeline-inverted");
-          }else{
+          else
             $("#news"+e).addClass("timeline-inverted");
-          }
+          
         }
         if("undefined" != typeof v.text && $){
           textHtml="";

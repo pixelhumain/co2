@@ -36,8 +36,11 @@ dynForm = {
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
 		    	elementLib.closeForm();	
-		    	url.loadByHash( location.hash );
+		    	urlCtrl.loadByHash( location.hash );
 		    }
+	    },
+	    canSubmitIf : function () { 
+	    	 return ( $("#ajaxFormModal #type").val() ) ? true : false ;
 	    },
 	    actions : {
 	    	clear : function() {
@@ -77,19 +80,21 @@ dynForm = {
 	            		$(".typeBtntagList").show();
 	            		$(".sectionBtn").removeClass("active btn-dark-blue text-white");
 	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
-	            		$("#ajaxFormModal #section").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+	            		$("#ajaxFormModal #type").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
 						//$(".sectionBtn:not(.active)").hide();
 						
 						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
 						$(".sectionBtntagList").hide();
-						$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").show();
+						$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
+						elementLib.canSubmitIf();
 	            	});
 	            }
             },
-            type : typeObjLib.hidden,
+            type : typeObjLib.inputHidden(),
 	        name : typeObjLib.name("poi"),
 	        image : typeObjLib.image(),
-            description : typeObjLib.description,
+            //description : typeObjLib.description,
+            description : typeObjLib.textarea("Description", "..."),
             location : typeObjLib.location,
             tags :typeObjLib.tags(),
             formshowers : {
@@ -98,8 +103,8 @@ dynForm = {
                 html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
             },
             urls : typeObjLib.urlsOptionnel,
-            parentId : typeObjLib.hidden,
-            parentType : typeObjLib.hidden,
+            parentId : typeObjLib.inputHidden(),
+            parentType : typeObjLib.inputHidden(),
 	    }
 	}
 };

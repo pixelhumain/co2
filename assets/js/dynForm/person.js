@@ -11,18 +11,9 @@ dynForm =  {
             inviteSearch : typeObjLib.inviteSearch,
 	        /*invitedUserName : typeObjLib.invitedUserName,
 	        invitedUserEmail : typeObjLib.invitedUserEmail,*/
-	        "preferences[publicFields]" : {
-               inputType : "hidden",
-                value : []
-            },
-            "preferences[privateFields]" : {
-               inputType : "hidden",
-                value : []
-            },
-            "preferences[isOpenData]" : {
-               inputType : "hidden",
-                value : false
-            },
+	       "preferences[publicFields]" : typeObjLib.inputHidden([]),
+            "preferences[privateFields]" : typeObjLib.inputHidden([]),
+            "preferences[isOpenData]" : typeObjLib.inputHidden(false)
 	    }
 	}
 };

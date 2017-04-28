@@ -5,15 +5,15 @@ dynForm = {
 	    type : "object",	    
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	subPoi : function(){
+	    	sub : function(){
 	    		if(contextData.type && contextData.id ){
     				$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
+	    			$("#ajax-modal-modal-title").html( $("#ajax-modal-modal-title").html()+" sur "+contextData.name );
 	    		}
-	    		
 	    	},
 	    	onload : function(){
-	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
+	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
 	    	},
 	    	/*,
 	    	loadData : function(data){
@@ -50,9 +50,15 @@ dynForm = {
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
 		    	elementLib.closeForm();
-		    	url.loadByHash( location.hash );	
+		    	urlCtrl.loadByHash( location.hash );	
 		    }
 	    },
+	    /*canSubmitIf : function () { 
+	    	if( $("#ajaxFormModal #section").val() && $("#ajaxFormModal #type").val() &&  $("#ajaxFormModal #subtype").val() )
+	    		return true;
+	    	else 
+	    		return false;
+	    },*/
 	    actions : {
 	    	clear : function() {
 	    		
@@ -63,7 +69,8 @@ dynForm = {
 	    		$(".typeBtntagList").hide(); 
 	    		$(".subtypeSection").html("");
 	    		$(".subtypeSectioncustom").show();
-	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
+	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
+	    		$("#btn-submit-form").hide(); 
 	    	}, 
 	    	initTypeBtn : function () { 
 	    		$(".typeBtn").off().on("click",function(){
@@ -79,7 +86,8 @@ dynForm = {
             		$("#ajaxFormModal #subtype").val("");
             		fieldHTML = "";
             		var filt = (classified.currentLeftFilters != null ) ? classified[classified.currentLeftFilters] : classified.filters; 
-            		if(filt[ $(this).data('key') ]["subcat"].length >= 1){
+            		if(filt[ $(this).data('key') ]["subcat"].length >= 1)
+            		{
 	            		$.each(filt[ $(this).data('key') ]["subcat"], function(k,v) { 
 	            			fieldHTML += '<div class="col-md-6 padding-5">'+
 	    									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>' +
@@ -95,14 +103,15 @@ dynForm = {
 		            		$( ".subtypeBtn" ).removeClass("active");
 		            		$(this).addClass("active");
 		            		$("#ajaxFormModal #subtype").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
-		            		$(".nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
+		            		$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
 		            		//$(".subtypeBtn:not(.active)").hide();
 
 		            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+" > "+$(".subtypeBtn.active").data('tag')+"</h4>" );
 		            		$(".subtypeSectioncustom").hide();
+		            		elementLib.canSubmitIf();
 						});
 	            	} else {
-	            		$(".nametext, .descriptiontextarea, .priceprice, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
+	            		$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
 	            	}
             	});
 	    	}
@@ -152,7 +161,7 @@ dynForm = {
 	            	});
 	            }
             },
-            section : typeObjLib.hidden,
+            section : typeObjLib.inputHidden(),
 	        typeBtn :{
                 label : "Dans quelle catégorie souhaitez-vous publier votre annonce ? ",
 	            inputType : "tagList",
@@ -163,21 +172,21 @@ dynForm = {
                 	elementLib.elementObj.dynForm.jsonSchema.actions.initTypeBtn();
 	            }
             },
-            type : typeObjLib.hidden,
+            type : typeObjLib.inputHidden(),
             subtypeSection : {
                 inputType : "custom",
                 html:"<div class='subtypeSection'></div>"
             },
-            subtype : typeObjLib.hidden,
-            price : typeObjLib.price,
-            name : typeObjLib.name("classified"),
-            description : typeObjLib.description,
+            subtype : typeObjLib.inputHidden(),
+            price : typeObjLib.price(),
+            name : typeObjLib.name( "classified" ) ,
+            description : typeObjLib.textarea("Description", "..."),
             image : typeObjLib.image(),
-            contactInfo : typeObjLib.contactInfo,
+            contactInfo : typeObjLib.inputText("Coordonnées", "n° tel, addresse email ..."),
             location : typeObjLib.location,
             tags : typeObjLib.tags(),
-            parentId : typeObjLib.hidden,
-            parentType : typeObjLib.hidden,
+            parentId : typeObjLib.inputHidden(),
+            parentType : typeObjLib.inputHidden(),
 	    }
 	}
 };

@@ -20,12 +20,14 @@ class LinkController extends CommunecterController {
 	        "removerole"		=> 'citizenToolKit.controllers.link.RemoveRoleAction',
 			'removecontributor' => 'citizenToolKit.controllers.link.RemoveContributorAction',
 			'disconnect' 		=> 'citizenToolKit.controllers.link.DisconnectAction',
+			
 			//New Actions
 			'connect' 			=> 'citizenToolKit.controllers.link.ConnectAction',
-			'multiconnect' 			=> 'citizenToolKit.controllers.link.MultiConnectAction',
+			'multiconnect' 		=> 'citizenToolKit.controllers.link.MultiConnectAction',
 			'follow' 			=> 'citizenToolKit.controllers.link.FollowAction',
 			'validate' 			=> 'citizenToolKit.controllers.link.ValidateAction',
 			'favorite' 			=> 'citizenToolKit.controllers.link.FavoriteAction',
+			'share' 			=> 'citizenToolKit.controllers.link.ShareAction',
 	    );
 	}
 }

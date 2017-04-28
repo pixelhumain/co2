@@ -22,7 +22,7 @@ class AppController extends CommunecterController {
 	        'savereferencement' => 'citizenToolKit.controllers.app.SaveReferencementAction',
 	        'mediacrawler'  	=> 'citizenToolKit.controllers.app.MediaCrawlerAction',
             //'superadmin'        => 'citizenToolKit.controllers.app.SuperAdminAction',
-            'sendmailformcontact' => 'citizenToolKit.controllers.app.SendMailFormContactAction',
+            //'sendmailformcontact' => 'citizenToolKit.controllers.app.SendMailFormContactAction',
             'checkurlexists' => 'citizenToolKit.controllers.app.CheckUrlExistsAction',
 	    );
 	}
@@ -72,8 +72,6 @@ class AppController extends CommunecterController {
     	$params = array("myWebFavorites"=>$myWebFavorites);
     	echo $this->renderPartial("web", $params, true);
     }
-
-
 
     public function actionReferencement(){ //kgougle
     	CO2Stat::incNbLoad("co2-referencement");
@@ -128,7 +126,6 @@ class AppController extends CommunecterController {
 
 
     public function actionSearch($type=null){
-        var_dump("header(string)3");
         CO2Stat::incNbLoad("co2-search");   
         $params = array("type" => @$type );
         echo $this->renderPartial("search", $params, true);

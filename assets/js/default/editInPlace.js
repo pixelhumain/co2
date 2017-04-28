@@ -1,12 +1,14 @@
 function bindAboutPodElement() {
 		$("#editGeoPosition").click(function(){
-			Sig.startModifyGeoposition(contextData.id, contextType, contextData);
+			Sig.startModifyGeoposition(contextData.id, contextData.type, contextData);
 			showMap(true);
 		});
 		
 		$("#editElementDetail").on("click", function(){
 			switchModeElement();
-		});		
+		});
+
+					
 
 		$("#btn-update-password").off().on( "click", function(){
 			var form = {
@@ -19,8 +21,8 @@ function bindAboutPodElement() {
 							elementLib.closeForm();
 						},
 						properties : {
-							mode : typeObjLib.hidden,
-							userId : typeObjLib.hidden,
+							mode : typeObjLib.inputHidden(),
+							userId : typeObjLib.inputHidden(),
 							oldPassword : typeObjLib.password(trad["Old password"]),
 							newPassword : typeObjLib.password("", { required : true, minlength : 8 } ),
 							newPassword2 : typeObjLib.password(trad["Repeat your new password"], {required : true, minlength : 8, equalTo : "#ajaxFormModal #newPassword"})	
@@ -64,7 +66,7 @@ function bindAboutPodElement() {
 	    	param = new Object;
 	    	param.type = $(this).attr("type");
 	    	param.value = $(this).attr("value");
-	    	param.typeEntity = contextType;
+	    	param.typeEntity = contextData.type;
 	    	param.idEntity = contextData.id;
 			$.ajax({
 		        type: "POST",
@@ -87,7 +89,7 @@ function bindAboutPodElement() {
 		    	param.pk = contextData.id;
 				$.ajax({
 			        type: "POST",
-			        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
+			        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
 			        data: param,
 			       	dataType: "json",
 			    	success: function(data){
@@ -157,13 +159,13 @@ function bindAboutPodElement() {
 					param.pk = contextData.id;
 					$.ajax({
 				        type: "POST",
-				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
+				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
 				        data: param,
 				       	dataType: "json",
 				    	success: function(data){
 					    	if(data.result){
 								toastr.success(data.msg);
-								url.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
+								urlCtrl.loadByHash(location.hash);
 					    	}
 					    }
 					});
@@ -202,13 +204,13 @@ function bindAboutPodElement() {
 					param.pk = contextData.id;
 					$.ajax({
 				        type: "POST",
-				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
+				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
 				        data: param,
 				       	dataType: "json",
 				    	success: function(data){
 					    	if(data.result){
 								toastr.success(data.msg);
-								url.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
+								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					    	} else {
 					    		toastr.error(data.msg);
 					    	}
@@ -269,7 +271,7 @@ function bindAboutPodElement() {
 
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
@@ -311,11 +313,9 @@ function bindAboutPodElement() {
 							elementLib.closeForm();
 						},
 						properties : {
-							block : typeObjLib.hidden,
-							typeElement : typeObjLib.hidden,
-							isUpdate : typeObjLib.hiddenTrue,
-							startDate : typeObjLib.startDateInput,
-							endDate : typeObjLib.endDateInput,
+							block : typeObjLib.inputHidden(),
+							typeElement : typeObjLib.inputHidden(),
+							isUpdate : typeObjLib.inputHidden(true)
 						}
 					}
 				}
@@ -348,7 +348,7 @@ function bindAboutPodElement() {
 		$(".btn-update-info").off().on( "click", function(){
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
@@ -464,10 +464,10 @@ function bindAboutPodElement() {
 							changeHiddenFields();
 						},
 						properties : {
-							block : typeObjLib.hidden,
+							block : typeObjLib.inputHidden(),
 							name : typeObjLib.name(contextData.type),
-							typeElement : typeObjLib.hidden,
-							isUpdate : typeObjLib.hiddenTrue
+							typeElement : typeObjLib.inputHidden(),
+							isUpdate : typeObjLib.inputHidden(true)
 						}
 					}
 				}
@@ -479,22 +479,22 @@ function bindAboutPodElement() {
 			}
 
 			if(contextData.type == typeObj.organization.col ){
-				form.dynForm.jsonSchema.properties.type = typeObjLib.typeOrga;
+				form.dynForm.jsonSchema.properties.type = typeObjLib.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
 				form.dynForm.jsonSchema.properties.tags = typeObjLib.tags();
 			}
 
 			if(contextData.type == typeObj.project.col ){
-				form.dynForm.jsonSchema.properties.avancement = typeObjLib.avancementProject;
+				form.dynForm.jsonSchema.properties.avancement = typeObjLib.inputSelect("L'avancement du project", "Avancement du projet", avancementProject);
 			}
 
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
-				form.dynForm.jsonSchema.properties.email = typeObjLib.email;
-				
+				form.dynForm.jsonSchema.properties.email = typeObjLib.email();
 			}
-			form.dynForm.jsonSchema.properties.url = typeObjLib.url;
-			form.dynForm.jsonSchema.properties.fixe= typeObjLib.phone;
-			form.dynForm.jsonSchema.properties.mobile= typeObjLib.mobile;
-			form.dynForm.jsonSchema.properties.fax= typeObjLib.fax;
+
+			form.dynForm.jsonSchema.properties.url = typeObjLib.inputUrl();
+			form.dynForm.jsonSchema.properties.fixe= typeObjLib.inputText("Fixe","Saisir les numéros de téléphone séparer par une virgule");
+			form.dynForm.jsonSchema.properties.mobile= typeObjLib.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
+			form.dynForm.jsonSchema.properties.fax= typeObjLib.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
 
 			var dataUpdate = {
 				block : "info",
@@ -542,14 +542,14 @@ function bindAboutPodElement() {
 		$(".btn-update-descriptions").off().on( "click", function(){
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
 						icon : "fa-key",
 						onLoads : {
 							markdown : function(){
-								activateMarkdown("#ajaxFormModal #description");
+								dataHelper.activateMarkdown("#ajaxFormModal #description");
 								bindDesc("#ajaxFormModal");
 							}
 						},
@@ -558,18 +558,18 @@ function bindAboutPodElement() {
 							if(data.result && data.resultGoods.result){shortDescriptionHeader
 								$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
 								$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
-								$(".contentInformation #descriptionAbout").html(markdownToHtml(data.resultGoods.values.description));
+								$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
 								$("#descriptionMarkdown").val(data.resultGoods.values.description);
 							}
 							elementLib.closeForm();
 							changeHiddenFields();
 						},
 						properties : {
-							block : typeObjLib.hidden,
-							typeElement : typeObjLib.hidden,
-							isUpdate : typeObjLib.hiddenTrue,
-							shortDescription : 	typeObjLib.shortDescription,
-							description : typeObjLib.description,
+							block : typeObjLib.inputHidden(),
+							typeElement : typeObjLib.inputHidden(),
+							isUpdate : typeObjLib.inputHidden(true),
+							shortDescription : 	typeObjLib.textarea("Description courte", "...",{ maxlength: 140 }),
+							description : typeObjLib.textarea("Description longue", "..."),
 						}
 					}
 				}
@@ -591,7 +591,7 @@ function bindAboutPodElement() {
 		$(".btn-update-network").off().on( "click", function(){
 			if(contextData.type == typeObj.person.col ){
 				var form = {
-					saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextType,
+					saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
 					dynForm : {
 						jsonSchema : {
 							title : trad["Change password"],
@@ -637,16 +637,17 @@ function bindAboutPodElement() {
 								elementLib.closeForm();
 								changeHiddenFields();
 							},
+
 							properties : {
-								block : typeObjLib.hidden,
-								typeElement : typeObjLib.hidden,
-								isUpdate : typeObjLib.hiddenTrue,
-								telegram : typeObjLib.telegram,
-								skype : typeObjLib.skype,
-								gitHub : typeObjLib.github,
-								gpplus : typeObjLib.googleplus,
-						        twitter : typeObjLib.twitter,
-						        facebook : typeObjLib.facebook
+								block : typeObjLib.inputHidden(),
+								typeElement : typeObjLib.inputHidden(),
+								isUpdate : typeObjLib.inputHidden(true),
+								telegram : typeObjLib.inputText("Votre Speudo Telegram","Votre Speudo Telegram"),
+								skype : typeObjLib.inputUrl("Lien vers Skype"),
+								gitHub : typeObjLib.inputUrl("Lien vers Git Hub"), 
+								gpplus : typeObjLib.inputUrl("Lien vers Google Plus"),
+						        twitter : typeObjLib.inputUrl("Lien vers Twitter"),
+						        facebook :  typeObjLib.inputUrl("Lien vers Facebook"),
 							}
 						}
 					}
@@ -724,14 +725,14 @@ function bindAboutPodElement() {
 		param.type = contextData.type;
 		$.ajax({
 	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
+	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
 	        data: param,
 	       	dataType: "json",
 	    	success: function(data){
 	    		mylog.log("data", data);
 		    	if(data.result){
 					toastr.success(data.msg);
-					url.loadByHash(location.hash);
+					urlCtrl.loadByHash(location.hash);
 		    	}
 		    }
 		});

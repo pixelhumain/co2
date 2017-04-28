@@ -99,7 +99,7 @@ a h1.text-azure:hover{
 </div>
 
 <div id="endOfRoom">
-	<a href='javascript:url.loadByHash("#rooms.index.type.organizations.id.<?php echo (String) $parentId; ?>")'>
+	<a href='javascript:urlCtrl.loadByHash("#rooms.index.type.organizations.id.<?php echo (String) $parentId; ?>")'>
 		<i class='fa fa-sign-in'></i> Entrer dans l'espace coopératif 
 	</a>
 </div>
@@ -131,8 +131,8 @@ a h1.text-azure:hover{
 			        	$attr = 'room';
 			        }
 			        $onclick = 'showRoom(\''.$typeNew.'\', \''.(string)$value["_id"].'\')';
-			        if(@$value["type"] == "entry") $onclick = 'url.loadByHash(\'#survey.entry.id.'.(string)$value["_id"].'\')';
-			        if(@$value["type"] == "action") $onclick = 'url.loadByHash(\'#room.action.id.'.(string)$value["_id"].'\')';
+			        if(@$value["type"] == "entry") $onclick = 'urlCtrl.loadByHash(\'#survey.entry.id.'.(string)$value["_id"].'\')';
+			        if(@$value["type"] == "action") $onclick = 'urlCtrl.loadByHash(\'#room.action.id.'.(string)$value["_id"].'\')';
 			        if(@$fromView == "entity.detail") $onclick = 'loadRoom(\''.$typeNew.'\', \''.(string)$value["_id"].'\')';
 			        
 			        $updated = (@$value["updated"]) ? "<span class='text-extra-small fromNowDDA'>(".DateHelper::fromNow($value["updated"]).")</span>" : "";
@@ -214,7 +214,7 @@ function loadRoom(type, id){
 				}
 
 	var thiHash = "#"+mapUrl[type]["hash"]+".id."+id;
-	url.loadByHash(thiHash);
+	urlCtrl.loadByHash(thiHash);
 }
 
 <?php } ?>

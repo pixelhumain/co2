@@ -14,30 +14,22 @@ dynForm = {
 	    },
 	    afterSave : function(){
 	    	elementLib.closeForm();	
-	    	url.loadByHash(location.hash);
+	    	urlCtrl.loadByHash(location.hash);
 	    },
 	    properties : {
 	    	info : {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Si vous voulez ajouter un nouveau contact de façon à faciliter les échanges</p>",
             },
-            name : typeObjLib.name("citoyens"),
+            name : typeObjLib.name("citoyens", {}, true),
 	        similarLink : typeObjLib.similarLink,
 	        email : typeObjLib.email,
-	        role :{
-				inputType : "text",
-				placeholder : "Role du contact",
-				label : "Role du contact"
-            },
-	        phone :{
-				inputType : "text",
-				placeholder : "Téléphone du contact",
-				label : "Téléphone du contact"
-            },
-            idContact : typeObjLib.hidden,
-            parentId :typeObjLib.hidden,
-            parentType : typeObjLib.hidden,
-	        index : typeObjLib.hidden
+	        role : typeObjLib.inputText("Role du contact", "Role du contact"),
+	        phone : typeObjLib.inputText("Téléphone du contact", "Téléphone du contact"),
+            idContact : typeObjLib.inputHidden(),
+            parentId :typeObjLib.inputHidden(),
+            parentType : typeObjLib.inputHidden(),
+	        index : typeObjLib.inputHidden()
 	    }
 	}
 };

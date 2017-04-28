@@ -69,6 +69,10 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 .chooseTypeForm{
 	margin-left:45px;
 }
+textarea.form-control{
+	height: inherit !important;
+	min-height: 200px !important; 
+}
 </style>
 <div id="editProjectChart">
 	<div class="noteWrap col-md-12 col-sm-12 col-xs-12 bg-white">
@@ -511,7 +515,7 @@ function knobInit(){
 				        surveyObj : surveyObj,
 				        surveyValues : propertiesCommons,
 				        onLoad : function(){
-					        $(".description1, .description2, .description3, .description4, .description5, .description6").focus().autogrow({vertical: true, horizontal: false});
+					        //$(".description1, .description2, .description3, .description4, .description5, .description6").focus().autogrow({vertical: true, horizontal: false});
 				        },
 				        onSave : function(params) {
 							//console.dir( $(params.surveyId).serializeFormJSON() );

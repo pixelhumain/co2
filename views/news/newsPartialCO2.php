@@ -43,6 +43,7 @@
   <li class="<?php echo $class; ?> list-news" id="news<?php echo $key ?>">
     <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip"></i></a></div>
     <div class="timeline-panel">
+    <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12"></div>
       <?php $classHeading="";
       if(@$srcMainImg != "" && $media["type"] == "activityStream"){ $classHeading="activity-heading"; ?>
         <a class="inline-block bg-black activity-image" target="_blank" href="<?php echo @$media["href"]; ?>">
@@ -58,7 +59,7 @@
                 <?php }else{ $pluriel = " pluriel"; } ?>
 
                 <div class="pull-left padding-5" style="line-height: 15px;">
-                  <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh">
+                  <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh pull-left">
                     <?php echo @$nameAuthor; ?>
                   </a>
                   <?php if(@$media["sharedBy"]){ ?>
@@ -153,10 +154,9 @@
             </h5>
           </div>
           <div class="timeline-body padding-10 col-md-12 text-left">
+            <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent" ></div>
             <!-- <h4><a target="_blank" href="<?php echo @$media["href"]; ?>"><?php echo @$media["title"]; ?></a></h4> -->
             <div id="newsActivityStream<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent" ></div>
-            <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent" ></div>
-            <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12 no-padding"></div>
     
           </div>
 

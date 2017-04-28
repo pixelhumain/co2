@@ -1,4 +1,4 @@
-# Communecter 
+# COmmunecter 
 ![Logo](assets/images/COmmunecter-Banniere.jpg)
 
 ## Connecté à sa Commune

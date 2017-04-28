@@ -21,10 +21,16 @@
 $params = CO2::getThemeParams();
  
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+    
+    $isAjaxR=(Yii::app()->request->isAjaxRequest);
+    if($isAjaxR){
+
+
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath ,
                                 "page" => "thing") );
+    }
 ?>
 
 <!--?php
@@ -44,26 +50,38 @@ $params = CO2::getThemeParams();
 ?-->
 <?php
 //(Page en chantier)
+
+$communexion = CO2::getCommunexionCookies();
+//var_dump($communexion);
+        if($communexion["state"] == false){
+          //$postalCode= " " ;
+        }else{
+         $depName = (!empty($communexion['values.depName'])) ? $communexion['values.depName']: null;
+         //$cityName = (!empty($communexion['values.cityName']))? $communexion['values.cityName']: null;
+         $regionName = (!empty($communexion['values.regionName'])) ? $communexion['values.regionName'] : null;
+         //$cp = (!empty($communexion['values.cityCp.value']))? $cp = $communexion['values.cityCp.value']: null;
+
+         $devices = Thing::getSCKDevicesByLocality(null, $regionName, $depName); // $cityName, $cp, null);
+        }
+/*
+if(!empty($devices)){$deviceId = reset($devices)['deviceId'];
+
+  }
+  */
 if(empty($device) || !isset($device)){$device=0; }
 
 
-$sckdevicemdata = Thing::getSCKDeviceMdata(array("type"=>Thing::SCK_TYPE, "deviceId"=> strval($device)));
+//$sckdevicemdata = Thing::getSCKDeviceMdata(Thing::COLLECTION,array("type"=>Thing::SCK_TYPE, "deviceId"=> strval($deviceId)));
 //print_r($sckdevicemdata);
+/*
 echo "</br>\n";
-$sckmeasurements = Thing::getSCKDeviceMdata(array("type"=>"sckMeasurements"))["sckMeasurements"];
+$sckmeasurements = Thing::getSCKDeviceMdata(Thing::COLLECTION,array("type"=>"sckMeasurements"))["sckMeasurements"];
 //print_r($sckmeasurements);
 //boardId et deviceId namepoi
 $boardId=$sckdevicemdata["boardId"];
-echo "</br>\n";
 //echo $boardId;
 
 $record = Thing::getConvertedRercord($sckdevicemdata["boardId"],true,"2017-02-28");
-
-$lRecordInDB = current($record);
-echo "l record in DB current :</br>\n";
-print_r($lRecordInDB);
-
-echo "</br>\n";
 //$json = file_get_contents("https://api.smartcitizen.me/v0/devices/". $deviceId);
 
 //$lastReadDevice = json_decode($json ,true);
@@ -75,7 +93,6 @@ $sensors = $lReadingsAPI["sensors"];//
 //print_r($sensors2);
 //$sensors= $lastReadDevice["data"]["sensors"];
 //print_r($sensors);
-
 
 ?>
 
@@ -122,6 +139,9 @@ $sensors = $lReadingsAPI["sensors"];//
 
 	</div>
 
+<?php if(!$isAjaxR ){ ?>
+<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"thing")); ?>
+<?php } ?>
 
 
 <script>
@@ -180,8 +200,11 @@ function getDeviceReadings(){
 */  
 
   jQuery(document).ready(function() {
+    initKInterface({"affixTop":0});
 
     //$("#deviceSelector").append("option")
+    devices =  <?php echo json_encode($devices); ?>;
+    
 
 
 

@@ -10,8 +10,8 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
 //tu auras "states":true si ta communexion est activée
 //pour récupérer les valeurs de communexion tu a juste à faire ça : CO2::getCommunexionCookies();
-$boardIds = Thing::getDistinctBoardId();
-$deviceIds= Thing::getDistinctDeviceId();
+//$boardIds = Thing::getDistinctBoardId();
+//$deviceIds= Thing::getDistinctDeviceId();
 
 $communexion = CO2::getCommunexionCookies();
         if($communexion["state"] == false){
@@ -19,7 +19,7 @@ $communexion = CO2::getCommunexionCookies();
         }else{
           //$postalCode=$cpCommunexion;
         }
-
+$this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type));
 ?>
 <style>
 
@@ -43,7 +43,7 @@ $communexion = CO2::getCommunexionCookies();
   width:95%;    
   text-align: left;
   background-color: white;
-    border-color: white;
+  border-color: white;
   color:#4285f4;
 }
 #sub-menu-left.subsub{
@@ -60,13 +60,33 @@ $communexion = CO2::getCommunexionCookies();
 #page p {
   font-size: 13px;
 }
+.breadcrum-communexion{ 
+    margin-top:25px;
+}
+
+.breadcrum-communexion .item-globalscope-checker{
+    border-bottom:1px solid #e6344d;
+}
+.item-globalscope-checker.inactive{
+    color:#DBBCC1 !important;
+    border-bottom:0px;
+    margin(top:-6px;)
+}
+.item-globalscope-checker:hover,
+.item-globalscope-checker:active,
+.item-globalscope-checker:focus{
+    color:#e6344d !important;
+    border-bottom:1px solid #e6344d;
+    text-decoration: none !important;
+}
+
 .keycat:hover,
 .keycat.active,
 .btn-select-category-1:hover,
 .btn-select-category-1.active{
   background-color: #2C3E50!important;
-    color: #fff!important;
-    border-color:transparent!important;
+  color: #fff!important;
+  border-color:transparent!important;
 }
 
 
@@ -74,41 +94,13 @@ $communexion = CO2::getCommunexionCookies();
 
 <div class="col-md-12 col-sm-12 col-xs-12 container bg-white no-padding shadow" id="content-thing" style="min-height:700px;">
 
+ <div class="padding-5" id="page">
+ <?php $thing = CO2::getContextList("thing"); ?>
 
- <div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page">
-  <div class="col-lg-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub thingFilters" id="sub-menu-left">
-    <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
-              <i class="fa fa-object-group"></i> Objets CO2
+  <div id="menu-section-thing" class="row col-xs-12 col-md-12 col-sm-12 text-center subsub">
+    <h4 class="padding-10 letter-azure label-category col-md-3 col-sm-3 hidden-xs" id="title-menu-section">
+      <i class="fa fa-object-group"></i> <span id="title-sub-thing">Objets CO2 </span> 
     </h4>
-    <hr>
-    <?php 
-     $thing = CO2::getContextList("thing");
-     foreach ($thing as $key1 => $filters) {
-      if(strpos($key1,"Filters")!=false){
-        if (is_array($filters)) {
-        foreach ($filters as $key => $action) { 
-        //$setbutton=false;
-        if(!isset($action["forAdmin"]) || (isset($action["forAdmin"])&& $action["forAdmin"]=="true" &&  Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) ) ){ 
-          $setbutton=true;
-        } 
-        else {$setbutton=false;}
-        if (is_array($action) && $setbutton==true){ ?>
-         <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 hidden btn-select-<?php echo @$action["key"]; ?>" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>" data-section="<?php echo @$action["key"]; ?>" data-page="<?php echo @$action["page"]; ?>">
-          <i class="fa fa-<?php echo @$action["icon"]; ?> hidden-xs"></i> <?php echo $action['label']; ?>
-         </button>
-         <?php foreach ($action["subcat"] as $key2 => $action2) { ?>
-          <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?> btn-<?php echo @$action["key"]; ?>" data-categ="<?php echo $key; ?>" data-key="<?php echo @$action["key"]; ?>" data-key2="<?php echo $key2; ?>">
-           <i class="fa fa-angle-right"></i> <?php echo $action2; ?>
-          </button><br class="hidden">
-         <?php } 
-        } 
-        }
-       } 
-       }
-       }
-    ?>
-  </div>
-  <div id="menu-section-thing" class="col-lg-10 col-md-9 col-sm-9 col-xs-12 text-center subsub">
     <?php 
       $currentSection = 1;
       foreach ($thing["sections"] as $key => $section) { ?>
@@ -116,14 +108,50 @@ $communexion = CO2::getCommunexionCookies();
         <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
           data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" data-type="thing"
           style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
-          <i class="fa fa-<?php echo @$section["icon"]; ?> fa-2x"></i> <span class="hidden-xs"><?php echo @$section["label"]; ?></span>
+          <i class="fa fa-<?php echo @$section["icon"]; ?> fa-2x"></i> <span class=""><?php echo @$section["label"]; ?></span>
         </button>
         </div>
     <?php } ?>
     <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
   </div>
-  <div class="col-sm-7 col-lg-8 col-md-7" id="dropdown_thing"></div>
- 
+  <div class="row ">
+    <div class="col-md-3 col-sm-3 col-xs-12 margin-top-15 text-right subsub thingFilters" id="sub-menu-left">
+      <?php 
+       //$thing = CO2::getContextList("thing");
+       foreach ($thing as $key1 => $filters) {
+        if(strpos($key1,"Filters")!=false){
+          if (is_array($filters)) {
+          foreach ($filters as $key => $action) { 
+          //$setbutton=false;
+          if(!isset($action["forAdmin"]) || (isset($action["forAdmin"])&& $action["forAdmin"]=="true" &&  Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) ) ){ 
+            $setbutton=true;
+          } 
+          else {$setbutton=false;}
+          if (is_array($action) && $setbutton==true){ ?>
+           <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 hidden btn-select-<?php echo @$action["key"]; ?>" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>" data-section="<?php echo @$action["key"]; ?>" data-page="<?php echo @$action["page"]; ?>">
+            <i class="fa fa-<?php echo @$action["icon"]; ?>"></i> <?php echo $action['label']; ?>
+           </button>
+           <?php foreach ($action["subcat"] as $key2 => $action2) { ?>
+            <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?> btn-<?php echo @$action["key"]; ?>" data-categ="<?php echo $key; ?>" data-key="<?php echo @$action["key"]; ?>" data-key2="<?php echo $key2; ?>">
+             <i class="fa fa-angle-right"></i> <?php echo $action2; ?>
+            </button><br class="hidden">
+           <?php } 
+          } 
+          }
+         } 
+         }
+         }
+      ?>
+    </div>
+    <div class="col-sm-7 col-md-7 col-xs-12 " id="dropdown_thing"></div>
+  </div>
+
+
+  
+ <!-- col-sm-push-3 col-md-push-3 col-lg-push-2 
+col-lg-push-2 col-md-push-3 col-sm-push-3 
+col-lg-pull-10 col-md-pull-9 col-sm-pull-9
+ -->
  </div>    
 </div>
 
@@ -145,12 +173,12 @@ var smartCitizenSelector = {
 
 function getpageSCK(viewsThing){ 
 
-  if (alReady==false) {
+  
    getAjax('#dropdown_thing',baseUrl+'/'+moduleId+"/thing/"+viewsThing, function(){
      alReady=true;
-     setTimeout(function(){alReady=false; },3000 );
+     setTimeout(function(){alReady=false; },2000 );
      },"html"); 
-  }
+  
 
 }
 
@@ -185,6 +213,7 @@ function bindLeftMenuFilters () {
     });
 
     $(".btn-select-category-1").off().on("click", function(){
+      if (alReady==false) {
 
         $(".btn-select-category-1").removeClass("active");
         $(this).addClass("active");
@@ -193,8 +222,10 @@ function bindLeftMenuFilters () {
         var page = $(this).data("page");
         mylog.log("classType : "+classType);
         sectionKey = $(this).data("section");
+        $("#title-menu-section").text(classType);
 
         $(".keycat").addClass("hidden");
+        $(".keycat").removeClass("active");
         $(".keycat-"+classType).removeClass("hidden");   
 
         if(sectionKey=="smartCitizen") {
@@ -202,7 +233,8 @@ function bindLeftMenuFilters () {
         }else{
           getpageCOPI(page);
         }
- 
+      
+      }
     });
 
     $(".keycat").off().on("click", function(){
@@ -229,6 +261,7 @@ function bindLeftMenuFilters () {
 jQuery(document).ready(function() {
     initKInterface({"affixTop":0});
     bindLeftMenuFilters();
+    //communexion=<?php //echo json_encode($communexion); ?>;
 
   /*var postalCode=<?php //echo $postalCode ?>;
     mylog.log("communexion postalCode : ");

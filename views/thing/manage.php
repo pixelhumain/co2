@@ -16,7 +16,7 @@
 ?>
 
 <?php 
-	$devicesMongoRes = Thing::getSCKDevicesByCountryAndCP($country);
+	$devicesMongoRes = Thing::getSCKDevicesByCountryAndCP();
 
 	$isAjaxR=(Yii::app()->request->isAjaxRequest);
 
@@ -41,7 +41,7 @@
 <div class="col-xs-12 container" id="managesck">
 	
 	<div class="col-xs-12 <?php if($isAjaxR){echo 'hidden';}?> sck-maj" id="sck-maj-principal">
-		<h4>Pour Mettre à jour les métadatas de la base communecter</h4>
+		<h4>Mettre à jour les métadatas de la base communecter</h4>
 		<p>Si vous avez un compte <a href="https://smartcitizen.me" target='_blank'>smartcitizen.me</a> vous pourrez mettre à jours les adresse mac de vos kit qui sont communectés (double push). Utiliser le token smarticitizen, pour plus d'information sur l'authentification et le token voir la page <a href="http://developer.smartcitizen.me/#authentication" target='_blank'>developper.smartcitizen.me</a>.</p>
 
 		<form name="formwithauth" class="form-inline col-sm-12" id="formupdatewithauth" action="javascript:updateSCKMetadata()">
@@ -58,26 +58,12 @@
 
 	
 	<div class="col-xs-12 <?php if($isAjaxR){echo 'hidden';}?> sck-maj" id="sck-maj-secondaire">
-		<h4>Pour mettre à jour l'adresse mac avec le deviceId du Smart-Citizen-kit</h4>
+		<h4>Ajouter les adresses mac des Smart-Citizen-kit</h4>
 		<p> </p>
 		<form name="formboardid" class="form-inline col-sm-12" id="formboardid" action="javascript:updateSCKBoardId()"> 
-		  <?php foreach ($devicesMongoRes as $mdataDevice) {
-			if($mdataDevice["boardId"]=="[FILTERED]"){
-  				//$devices[]=$mdataDevice; 
-  				?>
-  			<div class='form-group col-sm-12' role='group'>
-  				<span id='<?php echo $mdataDevice['_id'] ?>'> 
-  					<label class="col-sm-6 col-xs-12">Le kit <a href='https://smartcitizen.me/kits/<?php echo $mdataDevice["deviceId"];?>' target='_blank'> <?php echo $mdataDevice["name"];?> (deviceId : <?php echo $mdataDevice["deviceId"];?>)</a></label>
-  					<span class="col-sm-6 col-xs-12" id=" ">
-  					<input type='text' class="deviceids form-control" name='mac-sck-<?php echo $mdataDevice['deviceId']?>' id='mac-sck-<?php echo $mdataDevice['deviceId']?>' value="">  
-  					<input class='idMdataDevice hide' name='idmeta<?php echo $mdataDevice['deviceId']?>' value='<?php echo $mdataDevice['_id'] ?>' readonly>
-  					<i class="fa fa-check hidden "> </i>
-  					</span>
-  				</span>
-  			</div>
-  			<?php } 
-		  }?>
-		 <input id="btnudpateboardid" type="submit" value="Mettre à jour">
+		  
+		<!-- ici le code manquant-->
+
 		</form>
 	</div>
 
@@ -89,12 +75,6 @@
 
 
 <script>
-
-
-
-function setRowForm(){
-	//$("#formboardid")
-}
 
 patternMacId = /([0-9a-f]{2}[:-]){5}([0-9a-f]{2})$/;
 /*
@@ -153,7 +133,7 @@ function updateSCKBoardId(){
       error : function (data) {mylog.log("Error : ajax not success"); }
       }).done(function() {
        //mylog.log('post done');
-       });
+      });
 
 
 }
@@ -180,7 +160,15 @@ function updateSCKMetadata(){
       dataType: "json",
       crossDomain: true,
       success: function (data) {
-      	
+   
+
+		$("#btn-updatesck").removeClass("btn-warning");
+		$("#btn-updatesck").addClass("btn-success");
+
+      },
+      error : function (data) {mylog.log("Error : ajax not success"); }
+  	}).done(function(data) { 
+
       	textres="";
       
 		if(notNull(data.devicesmetadata.elementsAlreadyUpdate) && data.devicesmetadata.elementsAlreadyUpdate>0 ){
@@ -193,31 +181,31 @@ function updateSCKMetadata(){
 			textres+= '<p> Nombres d\'élements non mis à jour : '+ data.devicesmetadata.elementsBad+ '</p>';
 		}
 		
-		if(data.APIMetadata.length>0){ 
-			data.APIMetadata.each(
-				function(item){
+		if( notNull(data.APIMetadata) && data.APIMetadata.length>0){ 
+			data.APIMetadata.forEach(
+				function(item,index){
 				mylog.log("méta API maj : ");
 				textres+= '<p> Metadata API mis à jour : '+item+' .</p>' ;
 			});
 		}
 
 		$("#resultat-update").html(textres);
-		$("#btn-updatesck").removeClass("btn-warning");
-		$("#btn-updatesck").addClass("btn-success");
 
-      },
-      error : function (data) {mylog.log("Error : ajax not success"); }
-  	}).done(function() { $("#resultat-update").removeClass("hidden"); });
+  		$("#resultat-update").removeClass("hidden"); 
+  		$("#btn-updatesck").addClass("btn-success");
+
+	});
 
 }
 
 
 
 jQuery(document).ready(function() {
+	initKInterface({"affixTop":0});
 
 devicesMongoRes = <?php echo json_encode($devicesMongoRes); ?> ;
 
-	mylog.log(devicesMongoRes);
+	//mylog.log(devicesMongoRes);
 
 	/*
 	$("#btn-updatesck").off().on("click",function(){ 

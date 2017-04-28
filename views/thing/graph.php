@@ -255,7 +255,7 @@ $("#period").text("Graphe sur "+nbDays+" jours, "+tRollup);
   //Variable pour d3 et svg
  multiGraphe = [], strockeColorArray={};
  
- svgwidth = 800, svgheight = 450; //16:9
+ svgwidth = 530, svgheight = 300; //16:9
  gmargin = {top: 20, right: 30, bottom: 30, left: 40};
  gwidth = +svgwidth - gmargin.left - gmargin.right;
  gheight = +svgheight - gmargin.top - gmargin.bottom;
@@ -386,7 +386,7 @@ jQuery(document).ready(function() {
   initKInterface({"affixTop":0});
   $("#mainNav").addClass("affix");
 
-  initPageInterface();
+ //initPageInterface();
 
   contextDevicesMap = <?php echo json_encode($sigDevicesForContextMap,true);?>;
 

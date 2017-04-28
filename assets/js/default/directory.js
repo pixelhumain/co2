@@ -431,9 +431,17 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 		}
    	});
 
+    initBtnShare();
 
-    $(".btn-share").click(function(){
+   	//on click sur les boutons link
+    // $(".btn-tag").click(function(){
+    //   setSearchValue($(this).html());
+    // });
+  }
 
+  function initBtnShare(){
+    $(".btn-share").off().click(function(){
+      var thiselement = this;
       formData = new Object();
       formData.parentId = $(this).attr("data-id");
       formData.childId = userId;
@@ -455,25 +463,14 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         data : formData,
         dataType: "json",
         success: function(data){
-          if ( data && data.result ) {
-            $(thiselement).html("<i class='fa fa-chain'></i>");
-            $(thiselement).attr("data-ownerlink","follow");
-            $(thiselement).attr("data-original-title", (type == "events") ? "Participer" : "Suivre");
-            removeFloopEntity(data.parentId, type);
-            toastr.success(trad["You are not following"]+data.parentEntity.name);
-          } else {
-             toastr.error("You leave succesfully");
-          }
+          $(thiselement).html("<i class='fa fa-share'></i> Partagé");
+          $(thiselement).attr("data-original-title", "Vous avez partagé ça avec votre réseau");
+          $(thiselement).removeClass("text-dark").addClass("letter-green");
+          toastr.success("Vous avez partagé ça avec votre réseau");  
         }
       });
     });
-
-   	//on click sur les boutons link
-    // $(".btn-tag").click(function(){
-    //   setSearchValue($(this).html());
-    // });
   }
-
 
 
   function setSearchValue(value){
@@ -1878,7 +1875,7 @@ var directory = {
         var endTime = (params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
         var str = "";
         if(params.startDate != null)
-            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+            str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       '<small>'+startLbl+' </small>'+
                       '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
                       params.startDay + ' ' + params.startMonth + 
@@ -1888,7 +1885,7 @@ var directory = {
                    '</h3>';
         
         if(params.endDay != params.startDay && params.endDate != null && params.startDate != params.endDate)
-            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+            str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       "<small>Au </small>"+
                       '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
                       params.endDay + ' ' + params.endMonth + 

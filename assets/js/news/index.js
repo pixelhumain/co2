@@ -175,10 +175,10 @@ function buildTimeLine (news, indexMin, indexMax)
 							"<div id='newFeedForm"+"' class='timeline_element partition-white no-padding newsFeedForm' style='min-width:85%;'></div>"+
 						"</div>";
 				}
-				msg = "<div class='newsFeed newsFeedNews'><i class='fa fa-ban'></i> Aucun message ne correspond à vos critères de recherche.</div>";
+				msg = "<li class='newsFeed newsFeedNews'><i class='fa fa-ban'></i> Aucun message ne correspond à vos critères de recherche.</li>";
 			}
 			else{
-				msg = "<div class='newsFeed newsFeedNews'><i class='fa fa-ban'></i> Aucun message sur ce journal.</div>";
+				msg = "<li class='newsFeed newsFeedNews'><i class='fa fa-ban'></i> Aucun message sur ce journal.</li>";
 			}
 			scrollEnd = true;
 			 // newsTLLine = '<div class="date_separator" id="'+'month'+date.getMonth()+date.getFullYear()+'" data-appear-top-offset="-400">'+
@@ -193,7 +193,7 @@ function buildTimeLine (news, indexMin, indexMax)
 
 			titleHTML = '<div class="date_separator" id="backToTop" data-appear-top-offset="-400" style="height:150px;">'+
 						'<a href="javascript:;" onclick="smoothScroll(\'0px\');" title="retour en haut de page">'+
-							'<span style="height:inherit;" class="homestead bg-"><i class="fa fa-ban"></i> ' + trad["nomorenews"] + '<br/><i class="fa fa-arrow-circle-o-up fa-2x"></i> </span>'+
+							'<span style="height:inherit;" class=""><i class="fa fa-ban"></i> ' + trad["nomorenews"] + '<br/><i class="fa fa-arrow-circle-o-up fa-2x"></i> </span>'+
 						'</a>'+
 					'</div>';//
 			$(".newsTL").append(titleHTML);

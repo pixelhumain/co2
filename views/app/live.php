@@ -100,6 +100,8 @@ var scrollEnd = false;
 var loadContent = '<?php echo @$_GET["content"]; ?>';
 var dataNewsSearch = {};
 var	dateLimit=0;
+
+var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 //var scrollEnd = false;
 jQuery(document).ready(function() {
 

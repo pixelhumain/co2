@@ -143,9 +143,9 @@
                 <small>
                   <i class="fa fa-clock-o"></i> 
                   <?php if(@$media["type"] == "activityStream" && @$media["verb"] == ActStr::TYPE_ACTIVITY_SHARE) 
-                        echo Translate::pastTime(date($media["updated"]->sec), "timestamp", $timezone); 
+                        echo Translate::pastTime(date(@$media["updated"]->sec), "timestamp", $timezone); 
                         else
-                        echo Translate::pastTime(date($media["created"]->sec), "timestamp", $timezone); 
+                        echo Translate::pastTime(date(@$media["created"]->sec), "timestamp", $timezone); 
                   ?>
                 </small>
 

@@ -164,9 +164,6 @@
 		  <button type="button" class="btn btn-default bold" id="btn-start-newsstream">
 		  		<i class="fa fa-rss"></i> Fil d'actu<span class="hidden-sm">alité</span>s
 		  </button>
-		  <button type="button" class="btn btn-default bold" id="btn-start-livestream">
-		  		<i class="fa fa-rss"></i> En live
-		  </button>
 
 		  <?php } else {
 		  		  $iconNewsPaper="rss"; 

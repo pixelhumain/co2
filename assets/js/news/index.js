@@ -1,5 +1,5 @@
 function isLiveGlobal(){
-	return (location.hash.indexOf("#default.live") == 0 || location.hash.indexOf("#city.detail") == 0);
+	return (location.hash.indexOf("#live") == 0 || location.hash.indexOf("#city.detail") == 0);
 	return typeof liveScopeType != "undefined";// && liveScopeType == "global";
 }
 /*
@@ -321,10 +321,10 @@ function bindEventNews(){
 		}
 	});
 
-	$(".form-create-news-container #get_url").keyup(function(){
+	/*$(".form-create-news-container #get_url").keyup(function(){
 		if($(this).val() != "")
 			showFormBlock(true);	
-	});
+	});*/
 	$(".form-create-news-container #get_url").focusout(function(){
 		//if($(this).val() == "")// && location.hash.indexOf("#default.live")!=0)
 			//showFormBlock(false);	
@@ -616,7 +616,46 @@ function showFormBlock(bool){
 		$(".form-create-news-container .publiccheckbox").show("fast");
 		$(".form-create-news-container .tools_bar").show("fast");
 		$(".form-create-news-container .scopescope").show("fast");
-		multiTagScopeLbl("send");
+		/////multiTagScopeLbl("send");
+		if(isLiveGlobal()){
+			scopeHtml='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
+            				'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
+                        	'data-scope-value="'+$.cookie('communexionValue')+'" '+
+                        	'data-scope-name="'+$.cookie('communexionName')+'" '+
+                        	'data-scope-level="'+$.cookie('communexionLevel')+'" '+
+                        	'data-scope-type="'+$.cookie('communexionType')+'" '+
+            				'id="btn-my-co">'+
+            				'<i class="fa fa-university"></i>'+
+            			'</a>'+
+            			'<h5 class="pull-left letter-red" style="margin-bottom: -8px;margin-top: 14px;">'+
+                            '<a class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-10 margin-right-10" '+ 
+                                'data-target="#modalScopes" data-toggle="modal" '+
+                                'data-toggle="tooltip" data-placement="top" '+ 
+                                'title="Sélectionner des lieux de recherche">'+
+                                '<img src="'+themeUrl+'/assets/img/cible3.png" height=25>'+
+                            '</a>'+ 
+                            'Selectionner les endroits de publications <i class="fa fa-angle-right"></i>'+ 
+                        '</h5>'+
+                        '<div class="scope-min-header list_tags_scopes hidden-xs text-left ellipsis">'+
+            				$(".scope-min-header").html()+
+            			'</div>';
+			if(globalCommunexion){
+				scopeHtml='<a class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Quitter la communexion">'+
+                			'<i class="fa fa-sign-in"></i>'+
+            				'</a>'+
+            				$(".getFormLive").html();
+			}
+			actionOnSetGlobalScope="save";
+			$("#scopeListContainerForm").append(scopeHtml);
+			$(".item-globalscope-checker:last-child").trigger("click").removeClass("inactive");
+            $(".item-globalscope-checker").attr('disabled', true);
+			$("#container-scope-filter").hide();
+			bindCommunexionScopeEvents();
+		}
+		//$("#lbl-my-scopes").html("<i class='fa fa-angle-down'></i> Sélectionnez les lieux de destination");
+		//$("#lbl-my-tags").html("<i class='fa fa-angle-down'></i> Sélectionner des tags<span class='hidden-xs'> pour définir le contenu de votre message</span>");
+		//$("br.visible-in-form").show();
+		///////
 		$('.extract_url').show();
 		$(".form-create-news-container #falseInput").hide();
 		$('#get_url').focus();
@@ -634,8 +673,13 @@ function showFormBlock(bool){
 		$(".form-create-news-container .publiccheckbox").hide();
 		$(".form-create-news-container .tools_bar").hide();
 		$(".form-create-news-container .scopescope").hide();
-		if(isLiveGlobal())
-			multiTagScopeLbl("search");
+		//if(isLiveGlobal())
+		//	multiTagScopeLbl("search");
+		actionOnSetGlobalScope="filter";
+		$("#scopeListContainerForm").html("");
+		$("#container-scope-filter").show();
+		$(".item-globalscope-checker").prop('disabled', false);
+		//SCOPE DIV//
 		$('.extract_url').hide();
 		$(".form-create-news-container #falseInput").show();
 		
@@ -943,6 +987,7 @@ function saveNews(){
 
 			},
 			submitHandler : function(form) {
+				$("#btn-submit-form").prop('disabled', true);
 				$("#btn-submit-form i").removeClass("fa-arrow-circle-right").addClass("fa-circle-o-notch fa-spin");
 				successHandler2.show();
 				errorHandler2.hide();
@@ -987,13 +1032,22 @@ function saveNews(){
 				}
 				
 				if($('#searchLocalityCITYKEY') && isLiveGlobal() && liveScopeType=="global" ){
-					
-					newNews.searchLocalityCITYKEY = $('#searchLocalityCITYKEY').val().split(',');
-				    newNews.searchLocalityCODE_POSTAL = $('#searchLocalityCODE_POSTAL').val().split(',');
-				    newNews.searchLocalityDEPARTEMENT = $('#searchLocalityDEPARTEMENT').val().split(',');
-				    newNews.searchLocalityREGION = $('#searchLocalityREGION').val().split(',');
+					if(globalCommunexion){
 
-				    	
+						if($('#searchLocalityCITYKEY').val()!="")
+							cpInseeKey=$('#searchLocalityCITYKEY').val().split("_");
+						else
+							cpInseeKey=$('#searchLocalityCODE_POSTAL').val().split("_");
+						cpInseeKey=cpInseeKey[1].split("-");
+						newNews.codeInsee=cpInseeKey[0];
+						newNews.postalCode=cpInseeKey[1];
+					}else{
+						newNews.searchLocalityCITYKEY = $('#searchLocalityCITYKEY').val().split(',');
+				    	newNews.searchLocalityCODE_POSTAL = $('#searchLocalityCODE_POSTAL').val().split(',');
+				    	newNews.searchLocalityDEPARTEMENT = $('#searchLocalityDEPARTEMENT').val().split(',');
+				    	newNews.searchLocalityREGION = $('#searchLocalityREGION').val().split(',');
+				    	newNews.searchLocalityLEVEL = $('#searchLocalityLEVEL').val();
+					}	
 			    }
 
 			    if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));
@@ -1033,6 +1087,11 @@ function saveNews(){
 			    .done(function (data) {
 		    		if(data)
 		    		{
+		    			$("#form-news #get_url").val("");
+ 						$('textarea.mention').mentionsInput('reset');
+ 						$("#form-news #results").html("").hide();
+ 						$("#form-news #tags").select2('val', "");
+ 						showFormBlock(false);
 		    			$("#news-list").prepend(data);
 		    			//if the news is post in a different month than last news and current month
 		    			/*if(data.object.date.sec) {
@@ -1040,7 +1099,7 @@ function saveNews(){
 		    				
 		    				//if we need a month space to insert the news
 		    				if ( !$( "#"+'month'+monthSection.getMonth()+''+monthSection.getFullYear()).length ) {
-								url.loadByHash(location.hash);
+								urlCtrl.loadByHash(location.hash);
 		    				}
 						}
 						
@@ -1053,14 +1112,16 @@ function saveNews(){
 		    		}
 		    		else 
 		    		{
-		    			$.unblockUI();
+		    			//$.unblockUI();
 						toastr.error(data.msg);
 		    		}
 		    		$("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+					$("#btn-submit-form").prop('disabled', false);
 					return false;
 			    }).fail(function(){
 				   toastr.error("Something went wrong, contact your admin"); 
 				   $("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+				   $("#btn-submit-form").prop('disabled', false);
 			    });
 			}
 		};
@@ -1149,7 +1210,7 @@ function initFormImages(){
 }
 function addMoreSpace(){
 	bootbox.dialog({
-	message: "You have attempt the limit of 20Mo of images for this "+contextParentType+"<br/>Please choose one of those  two solutions beyond:<br/>Delete images in the <a href='javascript:;' onclick='bootbox.hideAll();url.loadByHash(\"#gallery.index.id."+contextParentId+".type."+contextParentType+"\")'>photo gallery</a> <br/><br/>OR<br/><br/> Subscribe 12€ to the NGO Open Atlas which takes in charge communecter.org on <a href='https://www.helloasso.com/associations/open-atlas' target='_blank'>helloAsso</a> for 20Mo more. <br/><br/>Effectively, stocking images represents a cost for us and donate to the NGO will demonstrate your contribution the project and to the common we built together",
+	message: "You have attempt the limit of 20Mo of images for this "+contextParentType+"<br/>Please choose one of those  two solutions beyond:<br/>Delete images in the <a href='javascript:;' onclick='bootbox.hideAll();urlCtrl.loadByHash(\"#gallery.index.id."+contextParentId+".type."+contextParentType+"\")'>photo gallery</a> <br/><br/>OR<br/><br/> Subscribe 12€ to the NGO Open Atlas which takes in charge communecter.org on <a href='https://www.helloasso.com/associations/open-atlas' target='_blank'>helloAsso</a> for 20Mo more. <br/><br/>Effectively, stocking images represents a cost for us and donate to the NGO will demonstrate your contribution the project and to the common we built together",
   title: "Limit of <color class='red'>20 Mo</color> overhead"
   });
 }
@@ -1269,7 +1330,6 @@ function getMediaImages(o,newsId,authorId,targetName){
 			}
 		}
 	}
-	mylog.log(html);
 	return html;
 }
 function deleteImage(id,name,hideMsg,communevent){

@@ -59,37 +59,42 @@ class CO2 {
             //print_r($citiesResult);
             $cities=array();
            //if(count($citiesResult)>1){
+            $levelMin="inseeCommunexion";
             foreach($citiesResult as $v){
-                if($v["insee"]==$insee)
+                if($v["insee"]==$insee){
                     $city=$v;
-                else
+                    $alternateName=$v["alternateName"];
+                    $inseeName=$v["alternateName"];
+                    if(count($city["postalCodes"])>1){
+                        $cities=[];
+                        $levelMin="cpCommunexion";
+                        foreach($city["postalCodes"] as $value){
+                            if($value["postalCode"]==$cp){
+                                $currentName=$cp;
+                                $alternateName=$value["name"];
+                                $cities[]=$value["postalCode"].", ".$value["name"];
+                            }else
+                                $cities[]=$value["postalCode"].", ".$value["name"];
+                        }
+                    }
+                }
+                else if($levelMin=="inseeCommunexion")
                     $cities[]=$v["postalCodes"][0]["postalCode"].", ".$v["alternateName"];
             }
             //} else
             //$city=$citiesResult;
-            $alternateName=$city["alternateName"];
-            $levelMin="inseeCommunexion";
-            $inseeName=$city["alternateName"];
+            //print_r(Yii::app()->request->cookies);
+            $cityKey=$city["country"]."_".$insee."-".$cp;
             $currentName=(string)Yii::app()->request->cookies['communexionName'];
-            if(count($city["postalCodes"])>1){
-                foreach($city["postalCodes"] as $value){
-                    if($value["postalCode"]==$cp){
-                        $levelMin="cpCommunexion";
-                        $currentName=$cp;
-                        $alternateName=$value["name"];
-                    }else
-                        $cities[]=$value["postalCode"].", ".$value["name"];
-
-                }
-            }
             $communexion["values"] = array( "cityName"  =>$alternateName,
-                                            "cityKey"   => City::getUnikey($city),
+                                            "cityKey"   => $cityKey,
                                             "inseeName" => $inseeName,
                                             "cityCp"    =>Yii::app()->request->cookies['cpCommunexion'],
                                             "depName"   =>@$city["depName"],
                                             "regionName"=>@$city["regionName"],
                                             "cities"=>$cities);
-            $communexion["currentLevel"] =  $levelMin;
+            $communexion["currentLevel"] =  (string)Yii::app()->request->cookies['communexionType'];
+            $communexion["levelMinCommunexion"] =  $levelMin;
             $communexion["currentName"] = $currentName ;
             $communexion["currentValue"] =  (string)Yii::app()->request->cookies['communexionValue'];
             //return $communexion;           

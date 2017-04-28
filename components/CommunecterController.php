@@ -333,6 +333,7 @@ class CommunecterController extends Controller
     "chart" => array(
 	    "addchartsv"      => array("href" => "/ph/communecter/chart/addchartsv"),
 		  "index"      => array("href" => "/ph/communecter/chart/index"),
+      "header"      => array("href" => "/ph/communecter/chart/header"),
 		  "editchart"       => array("href" => "/ph/communecter/chart/editchart"),
 		  "get"       => array("href" => "/ph/communecter/chart/get"),
     ),
@@ -361,6 +362,7 @@ class CommunecterController extends Controller
       "multiconnect"           => array("href" => "/ph/communecter/link/multiconnect"),
       "follow"           => array("href" => "/ph/communecter/link/follow"),
       "validate"          => array("href" => "/ph/communecter/link/validate"),
+      "share"          => array("href" => "/ph/communecter/link/share"),
     ),
     "document" => array(
       "resized"             => array("href"=> "/ph/communecter/document/resized", "public" => true),

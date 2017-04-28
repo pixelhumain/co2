@@ -4,7 +4,6 @@ function scopeExists(scopeValue){
 }
 
 function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId); mylog.dir(myMultiScopes);
-	
 	hideSearchResults();
 	if(userId != null && userId != ""){
 		if(!notEmpty(myMultiScopes)) myMultiScopes = {};
@@ -28,10 +27,11 @@ function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId);
 	rebuildSearchScopeInput();
 	saveCookieMultiscope();
 }
-function saveCookieMultiscope(){  mylog.log("saveCookieMultiscope", typeof myMultiScopes, myMultiScopes);
+function saveCookieMultiscope(){ 
+	mylog.log("saveCookieMultiscope", typeof myMultiScopes, myMultiScopes);
 	$.cookie('multiscopes',   	JSON.stringify(myMultiScopes), { expires: 365, path: location.pathname });
 	/*if(location.hash.indexOf("#city.detail")==0)
-		url.loadByHash("#default.live");*/
+		urlCtrl.loadByHash("#default.live");*/
 }
 
 function autocompleteMultiScope(){
@@ -100,8 +100,9 @@ function loadMultiScopes(){
 	$.each(myMultiScopes, function(key, value){
 		showScopeInMultiscope(key);
 	});
+	bindCommunexionScopeEvents();
 	showCountScope();
-	saveCookieMultiscope()
+	saveCookieMultiscope();
 }
 function showCountScope(){
 	var count = 0; 
@@ -118,7 +119,7 @@ function showCountScope(){
 		$("#multi-scope-list-"+value).hide();
 	});
 	$(".scope-count").html(count);
-	showTagsScopesMin(".list_tags_scopes");
+	//showTagsScopesMin(".list_tags_scopes");
 	showEmptyMsg();
 }
 function selectAllScopes(select){
@@ -155,7 +156,9 @@ function showScopeInMultiscope(scopeValue){ //mylog.log("showScopeInMultiscope()
 		'</span>';
 		$("#multi-scope-list-"+scope.type).append(html);
 		$("#multi-scope-list-"+scope.type).show();
-		$(".item-scope-checker").off().click(function(){ toogleScopeMultiscope( $(this).data("scope-value")) });
+		if(actionOnSetGlobalScope=="save")
+			$("#scopeListContainerForm").html(html);
+		//$(".item-scope-checker").off().click(function(){alert(); toogleScopeMultiscope( $(this).data("scope-value")) });
 		$(".item-scope-deleter").off().click(function(){ deleteScopeInMultiscope( $(this).data("scope-value")); });
 		//showMsgInfoMultiScope("Le scope a bien été ajouté", "success");
 	}else{
@@ -191,14 +194,14 @@ function deleteScopeInMultiscope(scopeValue){ //mylog.log("deleteScopeInMultisco
 	//mylog.dir(myMultiScopes);
 }
 
-function toogleScopeMultiscope(scopeValue, selected){ mylog.log("toogleScopeMultiscope(scopeValue)", scopeValue);
+function toogleScopeMultiscope(scopeValue){ mylog.log("toogleScopeMultiscope(scopeValue)", scopeValue);
 	if(scopeExists(scopeValue)){
 		myMultiScopes[scopeValue].active = !myMultiScopes[scopeValue].active;
 		
 		if(typeof selected == "undefined") saveMultiScope();
 		else myMultiScopes[scopeValue].active = selected;
 		
-		if(myMultiScopes[scopeValue].active){
+		/*if(myMultiScopes[scopeValue].active){
 			$("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
 			$("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-check-circle");
 			$("[data-scope-value='"+scopeValue+"'].item-scope-input").removeClass("disabled");
@@ -206,7 +209,7 @@ function toogleScopeMultiscope(scopeValue, selected){ mylog.log("toogleScopeMult
 			$("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-circle-o");
 			$("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-check-circle");
 			$("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
-		}
+		}*/
 		console.log("before rebuildSearchScopeInput from toogleScope");
 		rebuildSearchScopeInput();
 	}else{
@@ -239,6 +242,7 @@ function showMsgInfoMultiScope(msg, type){
 
 function rebuildSearchScopeInput()
 { console.log("rebuildSearchScopeInput");
+	$("#searchLocalityLEVEL").val("");
 	/*****************************************************************************************/
 	searchLocalityCITYKEYs = "";
 	$.each($('.item-scope-city'), function(key, value){
@@ -327,32 +331,30 @@ function openDropdownMultiscope(){
 	setTimeout(function(){ $("#dropdown-content-multi-scope").addClass('open'); }, 300);
 }
 
-
-
-function setGlobalScope(scopeValue, scopeName, scopeType,
+function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 						  inseeCommunexion, cityNameCommunexion, cpCommunexion, 
 						  regionNameCommunexion, countryCommunexion){  
-	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType,
+	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel,
 			  inseeCommunexion, cityNameCommunexion, cpCommunexion, regionNameCommunexion, countryCommunexion);
 	if(scopeValue == "") return;
 	//if(!scopeExists(scopeValue)){ //mylog.log("adding", scopeValue);
-		myMultiScopes[scopeValue] = { name: scopeName, active: true, type: scopeType };
+		//myMultiScopes[scopeValue] = { name: scopeName, active: true, type: scopeType };
 		mylog.log("myMultiScopes", myMultiScopes, indexStepInit);
-
 		$("#searchLocalityCITYKEY").val("");
 		$("#searchLocalityCODE_POSTAL").val("");
 		$("#searchLocalityDEPARTEMENT").val("");
 		$("#searchLocalityREGION").val("");
-
-		if(scopeType == "city") $("#searchLocalityCITYKEY").val(scopeValue);
+		if(scopeType == "city") {$("#searchLocalityCITYKEY").val(scopeValue);} 
 		if(scopeType == "cp") $("#searchLocalityCODE_POSTAL").val(scopeValue);
 		if(scopeType == "dep") $("#searchLocalityDEPARTEMENT").val(scopeValue);
 		if(scopeType == "region") $("#searchLocalityREGION").val(scopeValue);
-
+		$("#searchLocalityLEVEL").val(scopeLevel);
 		$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
 		$.cookie('communexionType', scopeType, { expires: 365, path: location.pathname });
 		$.cookie('communexionValue', scopeValue, { expires: 365, path: location.pathname });
 		$.cookie('communexionName', scopeName, { expires: 365, path: location.pathname });
+		$.cookie('communexionLevel', scopeLevel, { expires: 365, path: location.pathname });
+		//$.cookie('currentLevel', scopeType, { expires: 365, path: location.pathname });
 	
 		if(inseeCommunexion != null){
 			$.cookie('inseeCommunexion',   		inseeCommunexion,  		{ expires: 365, path: location.pathname });
@@ -361,7 +363,8 @@ function setGlobalScope(scopeValue, scopeName, scopeType,
 			$.cookie('regionNameCommunexion',   regionNameCommunexion,  { expires: 365, path: location.pathname });
 			$.cookie('countryCommunexion',   	countryCommunexion,  	{ expires: 365, path: location.pathname });
 		}else{
-			startSearch(0, indexStepInit, searchCallback);
+			if(actionOnSetGlobalScope == "filter")
+				startSearch(0, indexStepInit, searchCallback);
 		}
 		//rebuildSearchScopeInput();
 		//activateGlobalCommunexion(true);
@@ -371,13 +374,3 @@ function setGlobalScope(scopeValue, scopeName, scopeType,
 
 //vision city : scoping global for all applications
 //levelCO == city cp dep region
-function activateGlobalCommunexion(active){  mylog.log("activateGlobalCommunexion", active);
-	$.cookie('communexionActivated', active, { expires: 365, path: location.pathname });
-
-	if(location.hash == "#search.type.cities")
-		url.loadByHash("#search");
-	else
-		url.loadByHash(location.hash);
-	/*if(location.hash.indexOf("#city.detail")==0)
-		loadByHash("#default.live");*/
-}

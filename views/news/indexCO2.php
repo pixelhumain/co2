@@ -3,14 +3,14 @@ $cssAnsScriptFilesModule = array(
   '/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css',
   '/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/wysiwyg-color.css',
   '/plugins/bootstrap-datetimepicker/css/datetimepicker.css',
-  '/plugins/x-editable/css/bootstrap-editable.css',
+  //'/plugins/x-editable/css/bootstrap-editable.css',
   '/plugins/select2/select2.css',
   //X-editable...
   '/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
-  '/plugins/x-editable/js/bootstrap-editable.js' , 
-  '/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min.js' , 
-  '/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5.js' , 
-  '/plugins/wysihtml5/wysihtml5.js',
+//  '/plugins/x-editable/js/bootstrap-editable.js' , 
+  //'/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min.js' , 
+  //'/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5.js' , 
+  //'/plugins/wysihtml5/wysihtml5.js',
   '/plugins/jquery.scrollTo/jquery.scrollTo.min.js',
   '/plugins/ScrollToFixed/jquery-scrolltofixed-min.js',
   '/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js',
@@ -90,7 +90,6 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
   white-space: pre-line; 
 }
 </style>
-
 <div class="col-md-12 col-sm-12 no-padding margin-bottom-15" style="<?php if(!@isLive){ ?>padding-left:25px!important;<?php } ?>">
   <?php //var_dump($params); 
         $params = array(
@@ -126,7 +125,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 
 
   var loadingData = false;
-  var scrollEnd = false;
+  //var scrollEnd = false;
   var currentIndexMin = 0;
   var currentIndexMax = 10;
   var isLive = true;

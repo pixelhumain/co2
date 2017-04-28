@@ -5,7 +5,7 @@
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
 	$cssAnsScriptFiles = array(
-	    '/assets/css/notifications.css',
+	    '/assets/css/default/notifications.css'
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->baseUrl); 
 ?>

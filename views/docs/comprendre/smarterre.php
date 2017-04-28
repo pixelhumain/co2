@@ -1,4 +1,4 @@
-
+<?php $this->renderPartial('../docs/panels/menuLink',array("url"=>"default/view/page/links")); ?>
 <div class="panel-heading border-light center text-dark partition-white radius-10">
     <span class=" text-red homestead tpl_title"> SmarTerre</span>
     <br/>

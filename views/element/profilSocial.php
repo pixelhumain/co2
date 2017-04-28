@@ -1,5 +1,3 @@
-
-
 <?php 
 
 	$cssAnsScriptFilesModule = array(
@@ -18,16 +16,14 @@
 				'/css/default/directory.css',	
 				'/js/comments.js',
 			  ) , 
-		Yii::app()->theme->baseUrl. '/assets');
-		$cssAnsScriptFilesTheme = array(
-		
-"/plugins/jquery-cropbox/jquery.cropbox.css",
-"/plugins/jquery-cropbox/jquery.cropbox.js",
+	Yii::app()->theme->baseUrl. '/assets');
 
+	$cssAnsScriptFilesTheme = array(
+		"/plugins/jquery-cropbox/jquery.cropbox.css",
+		"/plugins/jquery-cropbox/jquery.cropbox.js",
 	);
-	//if ($type == Project::COLLECTION)
-	//	array_push($cssAnsScriptFilesTheme, "/assets/plugins/Chart.js/Chart.min.js");
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
+	
 	$id = $_GET['id'];
 	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 
@@ -112,7 +108,7 @@
 								<?php if(false && @Yii::app()->session["userId"]){ ?>
 								<div class="blockUsername">
 								    <!--<h2 class="text-left">
-									    <?php //echo @$element["name"]; ?><!-- <br>
+									    <?php //echo @$element["name"]; ?><!- - <br>
 									    <small>
 									    	<?php if(@$element["address"] && @$element["address"]["addressLocality"]) {
 					                				echo "<i class='fa fa-university'></i> ".$element["address"]["addressLocality"];
@@ -167,6 +163,9 @@
     	  ?>
 		  <button type="button" class="btn btn-default bold" id="btn-start-newsstream">
 		  		<i class="fa fa-rss"></i> Fil d'actu<span class="hidden-sm">alité</span>s
+		  </button>
+		  <button type="button" class="btn btn-default bold" id="btn-start-livestream">
+		  		<i class="fa fa-rss"></i> En live
 		  </button>
 
 		  <?php } else {
@@ -270,7 +269,7 @@
 		</div>
 		<?php } ?>
 
-	  	<?php if(isset(Yii::app()->session["userId"])){ ?>
+	  	<?php if(isset(Yii::app()->session["userId"]) && $typeItem!=Person::COLLECTION){ ?>
 			<div class="btn-group pull-right">
 			  	<button 	class='btn btn-default bold btn-share pull-right'
 	                    	data-ownerlink='share' data-id='<?php echo $element["_id"]; ?>' data-type='<?php echo $typeItem; ?>' 
@@ -348,8 +347,35 @@
 	</div>
 	<?php } ?>
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding" style="margin-top: -10px;">
-	
-		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-50" id="central-container">
+		
+		<?php   $classDescH=""; 
+				$classBtnDescH="<i class='fa fa-angle-up'></i> masquer"; 
+				$marginCentral="";
+				if(!@$element["description"] || @$linksBtn["isFollowing"]==true || @$linksBtn["isMember"]==true){
+					$classDescH="hidden"; 
+					$classBtnDescH="<i class='fa fa-angle-down'></i> afficher la description"; 
+				}
+
+				if($typeItem != Person::COLLECTION){ 
+		?>
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:45px;">
+			<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
+				<b><i class="fa fa-angle-down"></i> <i class="fa fa-info-circle"></i> Description principale</b>
+				<hr><?php echo 	@$element["description"] && @$element["description"]!="" ? 
+								@$element["description"] : 
+								"<span class='label label-info'>Aucune description enregistrée</span>"; ?>
+			</span>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<button class="btn btn-default btn-xs pull-right margin-right-15" id="btn-hide-desc">
+				<?php echo $classBtnDescH; ?>
+			</button>
+			<br>
+			<hr>
+		</div>
+		<?php }else{ $marginCentral="50"; } ?>
+
+	    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-<?php echo $marginCentral; ?>" id="central-container">
 		</div>
 
 		<?php $this->renderPartial('../pod/qrcode',array(
@@ -362,7 +388,8 @@
 																"tel" => @$tel,
 																"img"=>@$element['profilThumbImageUrl']));
 																?>
-		<div class="col-md-3 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
+
+		<div class="col-md-3 col-lg-3 hidden-sm hidden-xs margin-top-<?php echo $marginCentral; ?>" id="notif-column">
 		</div>
 
 	</section>
@@ -401,12 +428,17 @@ if( $type != Person::COLLECTION)
     var subView="<?php echo @$_GET['view']; ?>";
     var hashUrlPage="#page.type."+contextData.type+".id."+contextData.id;
     var cropResult;
+    var idObjectShared = new Array();
 
     var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 	
 
 	jQuery(document).ready(function() {
 		bindButtonMenu();
+
+		if(typeof contextData.name !="undefined")
+		setTitle("", "", contextData.name);
+
 		if(subView!=""){
 			if(subView=="gallery")
 				loadGallery()
@@ -531,41 +563,17 @@ if( $type != Person::COLLECTION)
 			loadContacts();
 		});
 
-		$(".btn-share").click(function(){
+		$("#btn-hide-desc").click(function(){
+			if($("#desc-event").hasClass("hidden")){
+				$("#desc-event").removeClass("hidden");
+				$("#btn-hide-desc").html("<i class='fa fa-angle-up'></i> masquer");
+			}else{
+				$("#desc-event").addClass("hidden");
+				$("#btn-hide-desc").html("<i class='fa fa-angle-down'></i> afficher la description");
+			}
+		});
 
-		      formData = new Object();
-		      formData.parentId = $(this).attr("data-id");
-		      formData.childId = userId;
-		      formData.childType = personCOLLECTION;
-		      formData.connectType =  "share";
-		      var type = $(this).attr("data-type");
-		      var name = $(this).attr("data-name");
-		      var id = $(this).attr("data-id");
-		      //traduction du type pour le floopDrawer
-		      var typeOrigine = typeObjLib.get(type).col;
-		      if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
-		      formData.parentType = typeOrigine;
-		      if(type == "person") type = "people";
-		      else type = typeObjLib.get(type).col;
-
-		      $.ajax({
-		        type: "POST",
-		        url: baseUrl+"/"+moduleId+"/link/share",
-		        data : formData,
-		        dataType: "json",
-		        success: function(data){
-		          if ( data && data.result ) {
-		            $(thiselement).html("<i class='fa fa-chain'></i>");
-		            $(thiselement).attr("data-ownerlink","follow");
-		            $(thiselement).attr("data-original-title", (type == "events") ? "Participer" : "Suivre");
-		            removeFloopEntity(data.parentId, type);
-		            toastr.success(trad["You are not following"]+data.parentEntity.name);
-		          } else {
-		             toastr.error("You leave succesfully");
-		          }
-		        }
-		      });
-		    });
+		initBtnShare();
 
 	}
 	
@@ -646,7 +654,7 @@ if( $type != Person::COLLECTION)
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){ 
-				loadLiveNow();
+				if(typeItem=="citoyens") loadLiveNow();
 	            $(window).bind("scroll",function(){ 
 				    if(!loadingData && !scrollEnd && colNotifOpen){
 				          var heightWindow = $("html").height() - $("body").height();

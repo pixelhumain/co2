@@ -1,56 +1,12 @@
 <style>
-.activity-image{
-  width: 100%;
-  height: 300px;
-  overflow-y: hidden;
-}
-.activity-image img{
-  min-width:100%;
-  min-height: 100%;
-}
-.text-large{
-  font-size: 16px;
-}
-.text-bold{
-  font-weight: 700;
-}
-.activity-title{
-  font-size: 20px;
-}
-.activity-heading{
-position: absolute;
-top: 255px;
-left: 0px;
-right: 0px;
-background-color: rgba(250,250,250,0.8);
-}
-.text-xss{
-  font-size:12px;
-}
-.settingsNews{
-  margin:7px;
-  color: #777;
-}
-.addMargin{
-  margin-top: 50px !important;
-}
-#noMoreNews{
-  position: absolute;
-  bottom: -55px;
-  font-size: 20px !important;
-  left: 0px;
-  right: 0px;
-}
+
 </style>
 <?php 
   $timezone = "";// @$timezone ? $timezone : 'Pacific/Noumea';
   $pair = @$pair ? $pair : false;
   $nbCol = @$nbCol ? $nbCol : 2;
- //echo $nbCol;
   
-
-   // var_dump($news);exit;
-		foreach($news as $key => $media){ 
+	foreach($news as $key => $media){ 
 			$class = $pair || ($nbCol == 1) ? "timeline-inverted" : "";
 			$pair = !$pair;
       // Author name and thumb
@@ -87,7 +43,6 @@ background-color: rgba(250,250,250,0.8);
   <li class="<?php echo $class; ?> list-news" id="news<?php echo $key ?>">
     <div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip"></i></a></div>
     <div class="timeline-panel">
-    <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12"></div>
       <?php $classHeading="";
       if(@$srcMainImg != "" && $media["type"] == "activityStream"){ $classHeading="activity-heading"; ?>
         <a class="inline-block bg-black activity-image" target="_blank" href="<?php echo @$media["href"]; ?>">
@@ -97,20 +52,54 @@ background-color: rgba(250,250,250,0.8);
       <div class="timeline-heading text-center <?php echo $classHeading; ?>">
            	<h5 class="text-left srcMedia">
           	  <small>
-                <img class="pull-left img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
+                <?php $pluriel = ""; ?>
+                <?php if(!@$media["sharedBy"]){ ?>
+                  <img class="pull-left img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
+                <?php }else{ $pluriel = " pluriel"; } ?>
+
                 <div class="pull-left padding-5" style="line-height: 15px;">
-                  <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh pull-left"><?php echo @$nameAuthor; ?></a><br>
+                  <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh">
+                    <?php echo @$nameAuthor; ?>
+                  </a>
+                  <?php if(@$media["sharedBy"]){ ?>
+                    <?php foreach ($media["sharedBy"] as $keyS => $share) { ?>
+                        <?php if($keyS < 2){ ?>
+                          <?php if($keyS < sizeof($media["sharedBy"])-1){ ?>, 
+                          <?php }else if(sizeof($media["sharedBy"]) > 0){ ?> et <?php } ?>
+
+                          <a href="#page.type.<?php echo @$share["type"]; ?>.id.<?php echo @$share["id"] ?>" class="lbh">
+                            <?php echo @$share["name"]; ?>
+                          </a>
+                        <?php }else if($keyS == 2){ ?>
+                          et <?php echo sizeof($media["sharedBy"]) - 2; ?> autres personnes
+                        <?php } ?>
+                    <?php } ?>
+                  <?php } ?>
+                  <br>
+
                   <span class="margin-top-5">
                   <?php if(@$media["type"]=="news") { ?>
-                    <i class="fa fa-pencil-square"></i> a publié un message
+                    <i class="fa fa-pencil-square"></i> a publié 
+                    <a href="#page.type.<?php echo @$media["type"]; ?>.id.<?php echo @$media["_id"]; ?>" class="lbh">
+                      un message
+                    </a>
                   <?php } ?>
+
                   <?php if(@$media["type"]=="activityStream") { ?>
-                    <?php $iconColor = Element::getColorIcon($media["object"]["type"]) ? 
-                                       Element::getColorIcon($media["object"]["type"]) : ""; ?>
-                    <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news","verb ".$media["verb"]); ?> un 
+                    <?php $iconColor = @Element::getColorIcon($media["object"]["type"]); ?>
+                    <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news","verb ".$media["verb"].$pluriel); ?> 
                     <span class="text-<?php echo @$iconColor; ?>">
-                      <?php echo Yii::t("common", @$media["object"]["type"]); ?>
-                    </span>
+                      <a href="#page.type.<?php echo @$media["object"]["type"]; ?>.id.<?php echo @$media["object"]["id"]; ?>" 
+                         class="lbh">
+                        <?php echo Yii::t("news", "displayShared-".@$media["object"]["type"]); ?>
+                      </a>
+                    </span> 
+                    <?php if(@$media["object"]["type"] == "news"){ ?>
+                    de <a href="page.type.citoyens.<?php echo @$media["object"]["authorId"]; ?>" 
+                          class="lbh text-<?php echo @$iconColor; ?>">
+                      <?php echo @$media["object"]["authorName"]; ?>
+                      </a>
+                    <?php } ?>
                   <?php } ?>
                    <?php if(@$media["scope"] && @$media["scope"]["type"]){
                     if($media["scope"]["type"]=="public"){
@@ -153,7 +142,11 @@ background-color: rgba(250,250,250,0.8);
               <a href="javascript:;" target="_blank" class="link-read-media margin-top-10 hidden-xs img-circle pull-right">
                 <small>
                   <i class="fa fa-clock-o"></i> 
-                  <?php echo Translate::pastTime(date($media["created"]->sec), "timestamp", $timezone); ?>
+                  <?php if(@$media["type"] == "activityStream" && @$media["verb"] == ActStr::TYPE_ACTIVITY_SHARE) 
+                        echo Translate::pastTime(date($media["updated"]->sec), "timestamp", $timezone); 
+                        else
+                        echo Translate::pastTime(date($media["created"]->sec), "timestamp", $timezone); 
+                  ?>
                 </small>
 
               </a>
@@ -163,6 +156,8 @@ background-color: rgba(250,250,250,0.8);
             <!-- <h4><a target="_blank" href="<?php echo @$media["href"]; ?>"><?php echo @$media["title"]; ?></a></h4> -->
             <div id="newsActivityStream<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent" ></div>
             <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent" ></div>
+            <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12 no-padding"></div>
+    
           </div>
 
           <?php if(@$srcMainImg != "" && $media["type"] != "activityStream"){ ?>
@@ -190,10 +185,17 @@ background-color: rgba(250,250,250,0.8);
   </li>
 
   <?php } ?>
-  <?php if(sizeof($news)==0 || sizeof($news) < 6){
-      echo "<div id='noMoreNews' class='text-center'><i class='fa fa-ban'> ".Yii::t("common", "No more news")."</i></div>";
+
+  <?php if(@$isFirst == true && sizeof($news)==0){ ?>
+      <li id='noMoreNews' class='text-left padding-15'>
+        <i class='fa fa-ban'></i>
+        Aucune actualité
+      </li>
+  <?php }else if(sizeof($news)==0 || sizeof($news) < 6 && @$actionController != "save"){
+      echo "<li id='noMoreNews' class='text-left'><i class='fa fa-ban'></i> ".Yii::t("common", "No more news")."</li>";
   } ?>
   <script type="text/javascript">
+
     var news=<?php echo json_encode($news) ?>;
     var canPostNews = <?php echo json_encode(@$canPostNews) ?>;
     var canManageNews = <?php echo json_encode(@$canManageNews) ?>;
@@ -204,14 +206,18 @@ background-color: rgba(250,250,250,0.8);
     var months = ["<?php echo Yii::t('common','january') ?>", "<?php echo Yii::t('common','febuary') ?>", "<?php echo Yii::t('common','march') ?>", "<?php echo Yii::t('common','april') ?>", "<?php echo Yii::t('common','may') ?>", "<?php echo Yii::t('common','june') ?>", "<?php echo Yii::t('common','july') ?>", "<?php echo Yii::t('common','august') ?>", "<?php echo Yii::t('common','september') ?>", "<?php echo Yii::t('common','october') ?>", "<?php echo Yii::t('common','november') ?>", "<?php echo Yii::t('common','december') ?>"];
     var contentKey = "<?php echo Document::IMG_SLIDER; ?>";
     var scrollEnd=false;
+    var nbCol = "<?php echo $nbCol; ?>";
+
     jQuery(document).ready(function() {
       if($("#noMoreNews").length)
         scrollEnd=true;
+      
       $.each(news, function(e,v){
         tags = "", 
         scopes = "",
         tagsClass = "",
         scopeClass = "";
+
         if( "object" == typeof v.tags && v.tags )
         {
           var countTag = 0;
@@ -232,13 +238,14 @@ background-color: rgba(250,250,250,0.8);
               //}
              }
           } });
+
           if(tags!=""){
             tags = '<div class="pull-left margin-top-5">'+tags+'</div>';
             $("#newsTagsScope"+e).append(tags);
           }
         }
-      //var author = typeof v.author != "undefined" ? v.author : null;
-      if(v.scope.type == "public"){
+        //var author = typeof v.author != "undefined" ? v.author : null;
+        if(typeof v.scope != "undefined" && v.scope.type == "public"){
             postalCode = "";
             city = "";
             if(v.type != "activityStream"){
@@ -280,7 +287,8 @@ background-color: rgba(250,250,250,0.8);
               $("#newsTagsScope"+e).append(scopes);
            }
         }
-        if(v.type == "activityStream"){
+            
+        if(v.type == "activityStream"){ 
           //if(v.object.type=="events" || v.object.type=="needs"){
             console.log(v.object);
             if(v.startDate && v.endDate){
@@ -301,32 +309,42 @@ background-color: rgba(250,250,250,0.8);
               var endMonth = months[endDate.getMonth()];
               var endDay = (endDate.getDate() < 10) ?  "0"+endDate.getDate() : endDate.getDate();
             }
+
             var objectLocality = "";
             if (v.object.type=="needs")
               objectLocality=v.target.address.addressLocality;
             else 
-              if(typeof v.scope != "undefined")
+              if(typeof v.scope != "undefined" && typeof v.scope.address != "undefined")
               objectLocality=v.scope.address.addressLocality;
        
             //var hour = (startDate.getHours() < 10) ?  "0"+startDate.getHours() : startDate.getHours();
             //var min = (startDate.getMinutes() < 10) ?  "0"+startDate.getMinutes() : startDate.getMinutes();
             //var dateStr = day + ' ' + month + ' ' + year + ' ' + hour + ':' + min;
-            activityHtml = '<a href="#page.type.'+v.object.type+'.id.'+v.object.id+'" class="lbh col-md-12 col-sm-12 col-xs-12 no-padding">';
+            activityHtml = '<a href="#page.type.'+v.object.type+'.id.'+v.object.id+'" '+
+                            'class="lbh col-md-12 col-sm-12 col-xs-12 no-padding">';
+
             if (typeof(startDay)!="undefined"){
-              activityHtml += '<div class="col-md-3 col-sm-3 col-xs-3 no-padding text-center">'+
+              activityHtml += 
+                  '<div class="col-md-3 col-sm-3 col-xs-3 no-padding text-center">'+
                     '<span class="text-large text-red text-bold light-text no-margin">'+startDay+'</span><br/><span class="text-dark light-text no-margin" style="font-variant:small-caps;">'+startMonth+'</span>'+
                   '</div>';
             }
+            if(typeof v.name != "undefined" && v.name != null && v.name != "")
             activityHtml +=  '<div class="col-md-9  col-sm-9 col-xs-9 no-padding">'+
-                    '<span class="text-dark light-text activity-title no-margin">'+v.name+'</span><br/>';
+                                '<span class="text-dark light-text activity-title no-margin">'+v.name+'</span><br/>';
+
             if (typeof(startDay)!= "undefined" && typeof(endDay) != "undefined"){ 
-            activityHtml +=    '<span style="color: #8b91a0 !important;"><i class="fa fa-calendar"></i> '+startDay+' '+startMonth+' • '+endDay+' '+endMonth+' • ';
+            activityHtml +=    '<span style="color: #8b91a0 !important;"><i class="fa fa-calendar"></i> '+
+                                  startDay+' '+startMonth+' • '+endDay+' '+endMonth+' • ';
             }
+            if(objectLocality != "")
             activityHtml +=    '<i class="fa fa-map-marker"></i> '+objectLocality+'</span>'+
-                  '</div>'+
-                '</a>';
+                              '</div>'+
+                          '</a>';
+
           $("#newsActivityStream"+e).html(activityHtml);
         }
+
         // CSS DESIGN NEWS ORGANIZATION
         var currentOffset=$("#news"+e).offset();
         var prevOffset=$("#news"+e).prevAll(".list-news").offset();
@@ -335,19 +353,21 @@ background-color: rgba(250,250,250,0.8);
              $("#news"+e).addClass("addMargin");
         }
         if(actionController=="save"){
-          $("#news"+e).nextAll(".list-news").first().addClass("addMargin");
-          if($("#news"+e).nextAll(".list-news").first().hasClass("timeline-inverted"))
-            $("#news"+e).removeClass("timeline-inverted");
-          else
-            $("#news"+e).addClass("timeline-inverted");
-          
+          //$("#news"+e).nextAll(".list-news").first().addClass("addMargin");
+          if(nbCol == 2){
+            if($("#news"+e).nextAll(".list-news").first().hasClass("timeline-inverted"))
+              $("#news"+e).removeClass("timeline-inverted");
+            else
+              $("#news"+e).addClass("timeline-inverted");
+          }
+          initCommentsTools(new Array(v));
         }
-        if("undefined" != typeof v.text && $){
+        if("undefined" != typeof v.text){
           textHtml="";
           textNews="";
            if(v.text.length > 0)
               textNews=checkAndCutLongString(v.text,500,v._id.$id);
-      //Check if @mentions return text with link
+            //Check if @mentions return text with link
             if(typeof(v.mentions) != "undefined")
               textNews = addMentionInText(textNews,v.mentions);
           textHtml='<span class="timeline_text no-padding text-black" >'+textNews+'</span>';

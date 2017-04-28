@@ -269,7 +269,7 @@
 		</div>
 		<?php } ?>
 
-	  	<?php if(isset(Yii::app()->session["userId"])){ ?>
+	  	<?php if(isset(Yii::app()->session["userId"]) && $typeItem!=Person::COLLECTION){ ?>
 			<div class="btn-group pull-right">
 			  	<button 	class='btn btn-default bold btn-share pull-right'
 	                    	data-ownerlink='share' data-id='<?php echo $element["_id"]; ?>' data-type='<?php echo $typeItem; ?>' 
@@ -435,6 +435,10 @@ if( $type != Person::COLLECTION)
 
 	jQuery(document).ready(function() {
 		bindButtonMenu();
+
+		if(typeof contextData.name !="undefined")
+		setTitle("", "", contextData.name);
+
 		if(subView!=""){
 			if(subView=="gallery")
 				loadGallery()
@@ -650,7 +654,7 @@ if( $type != Person::COLLECTION)
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){ 
-				loadLiveNow();
+				if(typeItem=="citoyens") loadLiveNow();
 	            $(window).bind("scroll",function(){ 
 				    if(!loadingData && !scrollEnd && colNotifOpen){
 				          var heightWindow = $("html").height() - $("body").height();

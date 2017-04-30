@@ -391,19 +391,25 @@
 
 	</section>
 </div>	
+
 <?php 
-$paramsConfidentiality = array( "element" => @$element, 
-	"type" => @$type, 
-	"edit" => @$edit,
-	"controller" => $controller,
-	"openEdition" => $openEdition,
-);
-$this->renderPartial('../pod/confidentiality', $params );
-
-if( $type != Person::COLLECTION)
-	$this->renderPartial('../element/addMembersFromMyContacts',array("type"=>$type, "parentId" =>(string)$element['_id'], "members"=>@$members));
+	$this->renderPartial('../pod/confidentiality',
+			array(  "element" => @$element, 
+					"type" => @$type, 
+					"edit" => @$edit,
+					"controller" => $controller,
+					"openEdition" => $openEdition,
+				) );
 
 
+	if( $type != Person::COLLECTION)
+		$this->renderPartial('../element/addMembersFromMyContacts',
+				array(	"type"=>$type, 
+						"parentId" =>(string)$element['_id'], 
+						"members"=>@$members));
+
+
+	
 ?>
 
 <script type="text/javascript">
@@ -429,7 +435,6 @@ if( $type != Person::COLLECTION)
 
     var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 	
-
 	jQuery(document).ready(function() {
 		bindButtonMenu();
 
@@ -638,29 +643,35 @@ if( $type != Person::COLLECTION)
 	}
 
 	function loadNewsStream(isLiveBool){
+
+		KScrollTo("#profil_imgPreview");
+		
 		isLive = isLiveBool==true ? "/isLive/true" : ""; 
 		dateLimit = 0;
 		scrollEnd = false;
-
+		loadingData = true;
 		toogleNotif(true);
 
 		var url = "news/index/type/"+typeItem+"/id/"+contextData.id+isLive+"/date/"+dateLimit+
 				  "?isFirst=1&tpl=co2&renderPartial=true";
 		
-		showLoader('#central-container');
-		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
-			null,
-			function(){ 
-				if(typeItem=="citoyens") loadLiveNow();
-	            $(window).bind("scroll",function(){ 
-				    if(!loadingData && !scrollEnd && colNotifOpen){
-				          var heightWindow = $("html").height() - $("body").height();
-				          if( $(this).scrollTop() >= heightWindow - 400){
-				            loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep, isLiveBool);
-				          }
-				    }
-				});
-		},"html");
+		setTimeout(function(){ //attend que le scroll retourn en haut (kscrollto)
+			showLoader('#central-container');
+			ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+				null,
+				function(){ 
+					if(typeItem=="citoyens") loadLiveNow();
+		            $(window).bind("scroll",function(){ 
+					    if(!loadingData && !scrollEnd && colNotifOpen){
+					          var heightWindow = $("html").height() - $("body").height();
+					          if( $(this).scrollTop() >= heightWindow - 400){
+					            loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep, isLiveBool);
+					          }
+					    }
+					});
+					loadingData = false;
+			},"html");
+		}, 700);
 	}
 	function loadGallery(){
 		toogleNotif(false);

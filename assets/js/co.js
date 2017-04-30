@@ -3452,7 +3452,7 @@ function KScrollTo(target){
 	if($(target).length>=1){
 		$('html, body').stop().animate({
 	        scrollTop: $(target).offset().top - 70
-	    }, 800, '');
+	    }, 500, '');
 	}
 }
 

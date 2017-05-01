@@ -120,7 +120,7 @@ function initPageInterface(){
    
     $('.sub-menu-social').affix({
       offset: {
-          top: 380
+          top: 320
       }
     });
     //$(".dropdown-result-global-search").hide();

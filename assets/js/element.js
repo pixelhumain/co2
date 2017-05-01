@@ -241,6 +241,8 @@ function runProjectFormValidation(el) {
 	});
 };
 
+
+/*
 Element 
 	type : poi
 	$res = Element::insert($_POST, $id,$type);
@@ -256,4 +258,4 @@ Orga
 Event
 	$res = Event::saveEvent($_POST);
 	$newEvent = self::getAndCheckEvent($params);
-Person 
+Person */

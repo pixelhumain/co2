@@ -127,10 +127,10 @@
         background-color: #F2F2F2 !important;
     }
 
-    .btn-directory-type.active {
+    /*##content-social .btn-directory-type.active {
         background-color: #2C3E50 !important;
         color : white;
-    }
+    }*/
 
     .searchEntityContainer.pull-right.classified{
         clear: right;

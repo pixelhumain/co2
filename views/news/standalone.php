@@ -28,7 +28,12 @@
 </style>
 
 <div class="row bg-white">
-<div class="container margin-top-70">
+
+  <div class="col-xs-12 margin-top-70">
+    <h3 class="text-center"><i class="fa fa-newspaper-o"></i> Message</h3><hr>
+  </div>
+
+<div class="container">
 	<ul class="timeline inline-block" id="news-list">
 	<?php $this->renderPartial('../news/newsPartialCO2', 
 								array("news"=>array($element), 
@@ -42,7 +47,11 @@
 	var news=<?php echo json_encode($element); ?>;
 
 	jQuery(document).ready(function() {	
-		initCommentsTools(new Array(news));
+      var text = news.text.substr(0,30);
+      if(news.text.length>30) text+="...";
+      setTitle("", "", text);
+      
+		  initCommentsTools(new Array(news));
 	  	$(".timeline_text").html(news.text);
 	  	showCommentsTools(news["_id"]['$id']);
 	});

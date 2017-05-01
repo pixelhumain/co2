@@ -403,7 +403,6 @@
 
 
 	$cssAnsScriptFilesModule = array(
-		//'/js/news/newsHtml.js',
 		'/js/default/profilSocial.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);

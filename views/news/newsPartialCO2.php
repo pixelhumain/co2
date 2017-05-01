@@ -65,6 +65,7 @@
                               "authorType"=>$authorType,
                               "nameAuthor"=>@$nameAuthor,
                               "authorId"=>$authorId,
+                              "contextId"=>@$contextParentId,
                               "timezone"=>$timezone,
                               "thumbAuthor"=>@$thumbAuthor
                           ) 

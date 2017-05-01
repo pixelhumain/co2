@@ -11,10 +11,10 @@ var formInMap = {
 	NE_dep : "",
 	NE_region : "",
 
-	PC_postalCode : "",
+	/*PC_postalCode : "",
 	PC_name : "",
 	PC_latitude : "",
-	PC_longitude : "",
+	PC_longitude : "",*/
 
 	typeSearchInternational : "",
 	formType : "",
@@ -645,7 +645,7 @@ var formInMap = {
 		if(formInMap.addressesIndex)
 			locality["addressesIndex"] = formInMap.addressesIndex ;
 		
-		if(typeof globalTheme == "undefined" || globalTheme != "network"){
+		/*if(typeof globalTheme == "undefined" || globalTheme != "network"){
 			currentScopeType = "city";
 			addScopeToMultiscope(locality.unikey, locality.address.addressLocality);
 			
@@ -657,7 +657,7 @@ var formInMap = {
 			
 			currentScopeType = "region";
 			addScopeToMultiscope(locality.address.regionName, locality.address.regionName);
-		}
+		} */
 		var params = new Object;
 		params.name = ((formInMap.addressesIndex)?"addresses":"locality");
 		params.value = locality;

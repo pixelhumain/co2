@@ -486,7 +486,7 @@ jQuery(document).ready(function() {
         currentKFormType = $(this).data("ktype");
         var type = $(this).data("type");
         setTimeout(function(){
-                    elementLib.openForm(type);
+                    dyFObj.openForm(type);
                  },500);
         
     });
@@ -502,7 +502,7 @@ jQuery(document).ready(function() {
 
         if(type=="events") type="event";
         if(type=="vote") type="entry";
-        elementLib.openForm(type);
+        dyFObj.openForm(type);
     });
 
     /*$(".btn-decommunecter").click(function(){
@@ -518,7 +518,7 @@ jQuery(document).ready(function() {
     $(".tooltips").tooltip();
 
     //currentKFormType = "Group";
-    //elementLib.openForm ("organization");
+    //dyFObj.openForm ("organization");
 });
 
 
@@ -547,7 +547,7 @@ function initClassifiedInterface(){ return;
     classified.currentLeftFilters = null;
     $('#menu-section-'+typeInit).removeClass("hidden");
     $("#btn-create-classified").click(function(){
-         elementLib.openForm('classified');
+         dyFObj.openForm('classified');
     });    
 }
 
@@ -645,7 +645,7 @@ function bindLeftMenuFilters () {
 
 
     $("#btn-create-classified").off().on("click", function(){
-         elementLib.openForm('classified');
+         dyFObj.openForm('classified');
     });
 
     $("#priceMin").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 

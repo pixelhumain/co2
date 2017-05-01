@@ -39,13 +39,13 @@ dynForm = {
 	    	}
 	    },
 	    beforeBuild : function(){
-	    	elementLib.setMongoId('events');
+	    	dyFObj.setMongoId('events');
 	    },
 	    afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
-		    	elementLib.closeForm();
+		    	dyFObj.closeForm();
 		    	urlCtrl.loadByHash( location.hash );	
 		    }
 	    },

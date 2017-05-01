@@ -19,7 +19,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 	    		<i class="fa fa-plus"></i> Ajouter un besoin
 	    	</a>
 
-	    	<button onclick="elementLib.openForm('ressource','sub')" class="btn btn-default letter-blue margin-top-5">
+	    	<button onclick="dyFObj.openForm('ressource','sub')" class="btn btn-default letter-blue margin-top-5">
 				<b><i class="fa fa-plus"></i> Ajouter une ressource </b>
 			</button>
 		</div>

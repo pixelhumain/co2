@@ -17,7 +17,7 @@ dyFoInputs.image :function(str) {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
-		    	elementLib.closeForm();
+		    	dyFObj.closeForm();
 		    	//alert(gotoUrl+uploadObj.id);
 	            urlCtrl.loadByHash( gotoUrl+uploadObj.id );	
 		    	}
@@ -39,7 +39,7 @@ var uploadObj = {
 - this information is generated when open the dynForm 
 ```
 beforeBuild : function(){
-	    	elementLib.setMongoId('classified');
+	    	dyFObj.setMongoId('classified');
 	    },
 
 //this launches the image upload process 
@@ -47,7 +47,7 @@ afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
-		    	elementLib.closeForm();
+		    	dyFObj.closeForm();
 		    	urlCtrl.loadByHash( location.hash );	
 		    }
 	    },

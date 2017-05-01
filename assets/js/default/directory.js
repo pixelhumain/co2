@@ -946,7 +946,7 @@ var directory = {
                  '</div>';
 
         if( params.creator == userId )
-        str += '<hr><a href="javascript:elementLib.openForm(\'classified\', null, directory.previewedObj.params );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
+        str += '<hr><a href="javascript:dyFObj.openForm(\'classified\', null, directory.previewedObj.params );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
                   '<i class="fa fa-pencil"></i> Modifier mon annonce'+
               '</a>';
 
@@ -1325,7 +1325,7 @@ var directory = {
 					else
 						str += (notEmpty(params.name) ? '<h4 class="panel-title text-dark pull-left">'+params.name+'</h4><br/>' : '');
 					str += (notEmpty(params.role) ? '<span class="" style="font-size: 11px !important;">'+params.role+'</span><br/>' : '');
-					str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="elementLib.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
+					str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="dyFObj.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
 					str += (notEmpty(params.telephone) ? '<span class="" style="font-size: 11px !important;">'+params.telephone+'</span>' : '');
 				str += "</div>";
 			str += "</div>";

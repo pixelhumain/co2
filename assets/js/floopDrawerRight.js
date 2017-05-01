@@ -56,10 +56,10 @@ function buildListContactHtml(contacts, myId){
 							//si aucun élément, on affiche pas cette section
 							//if(n > 0){
 							var urlBtnAdd = "";
-							if(type.name == "people") 		 urlBtnAdd = "elementLib.openForm( 'person')";
-							if(type.name == "organizations") urlBtnAdd = "elementLib.openForm( 'organization')";
-							if(type.name == "events") 		 urlBtnAdd = "elementLib.openForm( 'event')";
-							if(type.name == "projects") 	 urlBtnAdd = "elementLib.openForm( 'project')";
+							if(type.name == "people") 		 urlBtnAdd = "dyFObj.openForm( 'person')";
+							if(type.name == "organizations") urlBtnAdd = "dyFObj.openForm( 'organization')";
+							if(type.name == "events") 		 urlBtnAdd = "dyFObj.openForm( 'event')";
+							if(type.name == "projects") 	 urlBtnAdd = "dyFObj.openForm( 'project')";
 
 							floopTypeUsed.push(type);
 

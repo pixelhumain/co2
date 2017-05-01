@@ -2148,16 +2148,16 @@ var collection = {
 			ELEMENT FORM 
 ********************************** */
 //TODO : rename dynFormObj
-var elementLib = {
+var dyFObj = {
 	elementObj : null,
 	//rules to show hide submit btn, used anwhere on blur and can be 
 	//completed by specific rules on dynForm Obj
-	//ex : elementLib.elementObj.dynForm.jsonSchema.canSubmitIf
+	//ex : dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf
 	canSubmitIf : function () { 
     	var valid = true;
     	//on peut ajouter des regles dans la map definition 
-    	if(	jsonHelper.notNull("elementLib.elementObj.dynForm.jsonSchema.canSubmitIf", "function") )
-    		valid = elementLib.elementObj.dynForm.jsonSchema.canSubmitIf();
+    	if(	jsonHelper.notNull("dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf", "function") )
+    		valid = dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf();
     	if( $('#ajaxFormModal #name').val() != "" && valid )
     		$('#btn-submit-form').show();
     	else 
@@ -2256,7 +2256,7 @@ var elementLib = {
 		mylog.warn("---------------- saveElement",formId,collection,ctrl,saveUrl,afterSave );
 		formData = $(formId).serializeFormJSON();
 		mylog.log("before",formData);
-		formData = elementLib.formatData(formData,collection,ctrl);
+		formData = dyFObj.formatData(formData,collection,ctrl);
 		formData.medias = [];
 		$(".resultGetUrl").each(function(){
 			if($(this).html() != ""){
@@ -2319,7 +2319,7 @@ var elementLib = {
 	            	if (typeof afterSave == "function") 
 	            		afterSave(data);
 	            	else{
-						elementLib.closeForm();
+						dyFObj.closeForm();
 		                if(data.url)
 		                	urlCtrl.loadByHash( data.url );
 		                else if(data.id)
@@ -2356,7 +2356,7 @@ var elementLib = {
 				if( jsonHelper.notNull("themeObj.dynForm.editElementPOI","function") )
 					themeObj.dynForm.editElementPOI(type,data);
 
-				elementLib.openForm( dyFoInputs.get(type).ctrl ,null, data.map);
+				dyFObj.openForm( dyFoInputs.get(type).ctrl ,null, data.map);
 	        } else {
 	           toastr.error("something went wrong!! please try again.");
 	        }
@@ -2378,11 +2378,11 @@ var elementLib = {
 	    if(userId)
 		{
 			formType = type;
-			elementLib.getDynFormObj(type, function() { 
-				elementLib.starBuild(afterLoad,data);
+			dyFObj.getDynFormObj(type, function() { 
+				dyFObj.starBuild(afterLoad,data);
 			},afterLoad, data);
 		} else {
-			elementLib.openFormAfterLogin = {
+			dyFObj.openFormAfterLogin = {
 				type : type, 
 				afterLoad : afterLoad,
 				data : data
@@ -2400,14 +2400,14 @@ var elementLib = {
 		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
 		if(typeof type == "object"){
 			mylog.log(" object directly Loaded : ", type);
-			elementLib.elementObj = type;
+			dyFObj.elementObj = type;
 			if( notNull(type.col) ) uploadObj.type = type.col;
     		callback(type, afterLoad, data);
 		}else if( jsonHelper.notNull( "typeObj."+type+".dynForm" , "object") ){
 			mylog.log(" typeObj Loaded : ", type);
-			elementLib.elementObj = dyFoInputs.get(type);
+			dyFObj.elementObj = dyFoInputs.get(type);
 			if( notNull(dyFoInputs.get(type).col) ) uploadObj.type = dyFoInputs.get(type).col;
-    		callback( elementLib.elementObj, afterLoad, data );
+    		callback( dyFObj.elementObj, afterLoad, data );
 		}else {
 			//TODO : pouvoir surchargé le dossier dynform dans le theme
 			//via themeObj.dynForm.folder overload
@@ -2418,7 +2418,7 @@ var elementLib = {
 					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+dyFoInputs.get(type).ctrl+'.js');
 					mylog.dir(dynForm);
 				  	dyFoInputs.get(type).dynForm = dynForm;
-					elementLib.elementObj = dyFoInputs.get(type);
+					dyFObj.elementObj = dyFoInputs.get(type);
 					if( notNull(dyFoInputs.get(type).col) ) uploadObj.type = dyFoInputs.get(type).col;
     				callback( afterLoad, data );
 			});
@@ -2427,12 +2427,12 @@ var elementLib = {
 	//prepare information for the modal panel 
 	//and launches the build process
 	starBuild : function  (afterLoad, data) {
-		mylog.warn("------------ starBuild",elementLib.elementObj, afterLoad, data);
-		mylog.dir(elementLib.elementObj);
-		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(elementLib.elementObj.bgClass);
+		mylog.warn("------------ starBuild",dyFObj.elementObj, afterLoad, data);
+		mylog.dir(dyFObj.elementObj);
+		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(dyFObj.elementObj.bgClass);
 		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
 		$("#ajax-modal-modal-title").removeClass("text-green").removeClass("text-purple").removeClass("text-orange").removeClass("text-azure");
-		$(".modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-lightblue ").addClass(elementLib.elementObj.titleClass);
+		$(".modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-lightblue ").addClass(dyFObj.elementObj.titleClass);
 	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
@@ -2444,50 +2444,50 @@ var elementLib = {
 	  	$('#ajax-modal').modal("show");
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
-	  	elementLib.buildDynForm(afterLoad, data);
+	  	dyFObj.buildDynForm(afterLoad, data);
 	},
 	buildDynForm : function (afterLoad,data) { 
-		mylog.warn("--------------- buildDynForm", elementLib.elementObj, afterLoad,data);
+		mylog.warn("--------------- buildDynForm", dyFObj.elementObj, afterLoad,data);
 		if(userId)
 		{
 			var form = $.dynForm({
 			      formId : "#ajax-modal-modal-body #ajaxFormModal",
-			      formObj : elementLib.elementObj.dynForm,
+			      formObj : dyFObj.elementObj.dynForm,
 			      formValues : data,
 			      beforeBuild : function  () {
-			      	if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.beforeBuild","function") )
-				        	elementLib.elementObj.dynForm.jsonSchema.beforeBuild();
+			      	if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.beforeBuild","function") )
+				        	dyFObj.elementObj.dynForm.jsonSchema.beforeBuild();
 			      },
 			      onLoad : function  () {
 			      	if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
-			      		themeObj.dynForm.onLoadPanel(elementLib.elementObj);
+			      		themeObj.dynForm.onLoadPanel(dyFObj.elementObj);
 			      	} else {
-				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+elementLib.elementObj.dynForm.jsonSchema.icon+"'></i> "+elementLib.elementObj.dynForm.jsonSchema.title);
+				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj.elementObj.dynForm.jsonSchema.icon+"'></i> "+dyFObj.elementObj.dynForm.jsonSchema.title);
 				        $("#ajax-modal-modal-body").append("<div class='space20'></div>");
-				        //alert(afterLoad+"|"+typeof elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
+				        //alert(afterLoad+"|"+typeof dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
 			    	}
 			        
-			        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
-			        	elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
+			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
+			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
 			        //incase we need a second global post process
-			        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
-			        	elementLib.elementObj.dynForm.jsonSchema.onLoads.onload();
+			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
+			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload();
 				    
 			        bindLBHLinks();
 			      },
 			      onSave : function(){
 
-			      	if( typeof elementLib.elementObj.dynForm.jsonSchema.beforeSave == "function")
-			        	elementLib.elementObj.dynForm.jsonSchema.beforeSave();
+			      	if( typeof dyFObj.elementObj.dynForm.jsonSchema.beforeSave == "function")
+			        	dyFObj.elementObj.dynForm.jsonSchema.beforeSave();
 
-			        var afterSave = ( typeof elementLib.elementObj.dynForm.jsonSchema.afterSave == "function") ? elementLib.elementObj.dynForm.jsonSchema.afterSave : null;
-			        mylog.log("onSave", elementLib.elementObj.saveUrl);
-			        if( elementLib.elementObj.save )
-			        	elementLib.elementObj.save("#ajaxFormModal");
-			        else if(elementLib.elementObj.saveUrl)
-			        	elementLib.saveElement("#ajaxFormModal",elementLib.elementObj.col,elementLib.elementObj.ctrl,elementLib.elementObj.saveUrl,afterSave);
+			        var afterSave = ( typeof dyFObj.elementObj.dynForm.jsonSchema.afterSave == "function") ? dyFObj.elementObj.dynForm.jsonSchema.afterSave : null;
+			        mylog.log("onSave", dyFObj.elementObj.saveUrl);
+			        if( dyFObj.elementObj.save )
+			        	dyFObj.elementObj.save("#ajaxFormModal");
+			        else if(dyFObj.elementObj.saveUrl)
+			        	dyFObj.saveElement("#ajaxFormModal",dyFObj.elementObj.col,dyFObj.elementObj.ctrl,dyFObj.elementObj.saveUrl,afterSave);
 			        else
-			        	elementLib.saveElement("#ajaxFormModal",elementLib.elementObj.col,elementLib.elementObj.ctrl,null,afterSave);
+			        	dyFObj.saveElement("#ajaxFormModal",dyFObj.elementObj.col,dyFObj.elementObj.ctrl,null,afterSave);
 			        return false;
 			    }
 			});
@@ -2535,7 +2535,7 @@ var elementLib = {
 
 		mylog.dir(form);
 
-		elementLib.openForm(form, fct, data);
+		dyFObj.openForm(form, fct, data);
 	}
 }
 
@@ -2693,7 +2693,7 @@ var dyFoInputs = {
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
 	            		globalSearch($(this).val(),[ dyFoInputs.get(type).col ], addElement );
 	            	
-	            	elementLib.canSubmitIf();
+	            	dyFObj.canSubmitIf();
 	        	});
 	        }
 	    }else{
@@ -2758,7 +2758,7 @@ var dyFoInputs = {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
-		    	elementLib.closeForm();
+		    	dyFObj.closeForm();
 		    	//alert(gotoUrl+uploadObj.id);
 	            urlCtrl.loadByHash( gotoUrl );	
 		    	}
@@ -3028,13 +3028,13 @@ var typeObj = {
 		            	inputType : "custom",
 		            	html : function() { 
 		            		return "<div class='menuSmallMenu'>"+js_templates.loop( [ 
-			            		{ label : "event", classes:"col-xs-12 text-bold bg-"+typeObj["event"].color, icon:"fa-"+typeObj["event"].icon, action : "javascript:elementLib.openForm('event')"},
-			            		{ label : "organization", classes:"col-xs-12 text-bold bg-"+typeObj["organization"].color, icon:"fa-"+typeObj["organization"].icon, action : "javascript:elementLib.openForm('organization')"},
-			            		{ label : "project", classes:"col-xs-12 text-bold bg-"+typeObj["project"].color, icon:"fa-"+typeObj["project"].icon, action : "javascript:elementLib.openForm('project')"},
-			            		{ label : "poi", classes:"col-xs-12 text-bold bg-"+typeObj["poi"].color, icon:"fa-"+typeObj["poi"].icon, action : "javascript:elementLib.openForm('poi')"},
-			            		{ label : "entry", classes:"col-xs-12 text-bold bg-"+typeObj["entry"].color, icon:"fa-"+typeObj["entry"].icon, action : "javascript:elementLib.openForm('entry')"},
-			            		{ label : "action", classes:"col-xs-12 text-bold bg-"+typeObj["actions"].color, icon:"fa-"+typeObj["actions"].icon, action : "javascript:elementLib.openForm('action')"},
-			            		{ label : "classified", classes:"col-xs-12 text-bold bg-"+typeObj["classified"].color, icon:"fa-"+typeObj["classified"].icon, action : "javascript:elementLib.openForm('classified')"},
+			            		{ label : "event", classes:"col-xs-12 text-bold bg-"+typeObj["event"].color, icon:"fa-"+typeObj["event"].icon, action : "javascript:dyFObj.openForm('event')"},
+			            		{ label : "organization", classes:"col-xs-12 text-bold bg-"+typeObj["organization"].color, icon:"fa-"+typeObj["organization"].icon, action : "javascript:dyFObj.openForm('organization')"},
+			            		{ label : "project", classes:"col-xs-12 text-bold bg-"+typeObj["project"].color, icon:"fa-"+typeObj["project"].icon, action : "javascript:dyFObj.openForm('project')"},
+			            		{ label : "poi", classes:"col-xs-12 text-bold bg-"+typeObj["poi"].color, icon:"fa-"+typeObj["poi"].icon, action : "javascript:dyFObj.openForm('poi')"},
+			            		{ label : "entry", classes:"col-xs-12 text-bold bg-"+typeObj["entry"].color, icon:"fa-"+typeObj["entry"].icon, action : "javascript:dyFObj.openForm('entry')"},
+			            		{ label : "action", classes:"col-xs-12 text-bold bg-"+typeObj["actions"].color, icon:"fa-"+typeObj["actions"].icon, action : "javascript:dyFObj.openForm('action')"},
+			            		{ label : "classified", classes:"col-xs-12 text-bold bg-"+typeObj["classified"].color, icon:"fa-"+typeObj["classified"].icon, action : "javascript:dyFObj.openForm('classified')"},
 			            		{ label : "Documentation", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-book", action : "#default.view.page.index.dir.docs"},
 			            		{ label : "Signaler un bug", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-bug", action : "#news.index.type.pixels"},
 		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-6 "} )+"</div>";
@@ -3187,24 +3187,24 @@ var keyboardNav = {
 		//"112" : function(){ $('#modalMainMenu').modal("show"); },//f1
 		"113" : function(){ if(userId)urlCtrl.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
 		"114" : function(){ $('#openModal').modal('hide'); showMap(true); },//f3
-		"115" : function(){ elementLib.openForm('themes') },//f4
+		"115" : function(){ dyFObj.openForm('themes') },//f4
 		"117" : function(){ console.clear();urlCtrl.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {
-		"13" : function(){$('#openModal').modal('hide');elementLib.openForm('addElement')},//enter : add elements
+		"13" : function(){$('#openModal').modal('hide');dyFObj.openForm('addElement')},//enter : add elements
 		"61" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show')},//= : add elements
-		"65" : function(){$('#openModal').modal('hide');elementLib.openForm('action')},//a : actions
+		"65" : function(){$('#openModal').modal('hide');dyFObj.openForm('action')},//a : actions
 		"66" : function(){$('#openModal').modal('hide'); smallMenu.destination = "#openModal"; smallMenu.openAjax(baseUrl+'/'+moduleId+'/collections/list','Mes Favoris','fa-star','yellow') },//b best : favoris
-		"67" : function(){$('#openModal').modal('hide');elementLib.openForm('classified')},//c : classified
-		"69" : function(){$('#openModal').modal('hide');elementLib.openForm('event')}, //e : event
+		"67" : function(){$('#openModal').modal('hide');dyFObj.openForm('classified')},//c : classified
+		"69" : function(){$('#openModal').modal('hide');dyFObj.openForm('event')}, //e : event
 		"70" : function(){$('#openModal').modal('hide'); $(".searchIcon").trigger("click") },//f : find
 		"72" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/help') },//h : help
-		"73" : function(){$('#openModal').modal('hide');elementLib.openForm('person')},//i : invite
+		"73" : function(){$('#openModal').modal('hide');dyFObj.openForm('person')},//i : invite
 		"76" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/links')},//l : links and infos
-		"79" : function(){$('#openModal').modal('hide');elementLib.openForm('organization')},//o : orga
-		"80" : function(){$('#openModal').modal('hide');elementLib.openForm('project')},//p : project
+		"79" : function(){$('#openModal').modal('hide');dyFObj.openForm('organization')},//o : orga
+		"80" : function(){$('#openModal').modal('hide');dyFObj.openForm('project')},//p : project
 		"82" : function(){$('#openModal').modal('hide');smallMenu.openAjax(baseUrl+'/'+moduleId+'/person/directory?tpl=json','Mon répertoire','fa-book','red')},//r : annuaire
-		"86" : function(){$('#openModal').modal('hide');elementLib.openForm('entry')},//v : votes
+		"86" : function(){$('#openModal').modal('hide');dyFObj.openForm('entry')},//v : votes
 	},
 	checkKeycode : function(e) {
 		e.preventDefault();
@@ -3406,7 +3406,7 @@ var album = {
 			    	$(".addPhotoBtn").click(function() { 
 			    		uploadObj.type = type;
 			    		uploadObj.id = id;
-						elementLib.openForm("addPhoto");
+						dyFObj.openForm("addPhoto");
 			    	});
 			    	album.delete();
 			    });

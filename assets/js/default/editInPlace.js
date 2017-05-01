@@ -18,7 +18,7 @@ function bindAboutPodElement() {
 						title : trad["Change password"],
 						icon : "fa-key",
 						afterSave : function(data){
-							elementLib.closeForm();
+							dyFObj.closeForm();
 						},
 						properties : {
 							mode : dyFoInputs.inputHidden(),
@@ -35,7 +35,7 @@ function bindAboutPodElement() {
 				mode : "changePassword",
 		        userId : userId
 		    };
-			elementLib.openForm(form, null, dataUpdate);
+			dyFObj.openForm(form, null, dataUpdate);
 		});
 
 		$("#downloadProfil").click(function () {
@@ -310,7 +310,7 @@ function bindAboutPodElement() {
 								}  
 								updateCalendar();
 							}
-							elementLib.closeForm();
+							dyFObj.closeForm();
 						},
 						properties : {
 							block : dyFoInputs.inputHidden(),
@@ -341,7 +341,7 @@ function bindAboutPodElement() {
 				dataUpdate.endDate = moment(contextData.endDate).local().format(formatDatedynForm);
 
 			mylog.log("btn-update-when", form, dataUpdate);
-			elementLib.openForm(form, "initWhen", dataUpdate);
+			dyFObj.openForm(form, "initWhen", dataUpdate);
 		});
 
 
@@ -460,7 +460,7 @@ function bindAboutPodElement() {
 									$("#faxAbout").html(contextData.fax);
 								}
 							}
-							elementLib.closeForm();
+							dyFObj.closeForm();
 							changeHiddenFields();
 						},
 						properties : {
@@ -536,7 +536,7 @@ function bindAboutPodElement() {
 				dataUpdate.fax = contextData.fax;
 
 			mylog.log("dataUpdate", dataUpdate);
-			elementLib.openForm(form, "initUpdateInfo", dataUpdate);
+			dyFObj.openForm(form, "initUpdateInfo", dataUpdate);
 		});
 
 		$(".btn-update-descriptions").off().on( "click", function(){
@@ -561,7 +561,7 @@ function bindAboutPodElement() {
 								$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
 								$("#descriptionMarkdown").val(data.resultGoods.values.description);
 							}
-							elementLib.closeForm();
+							dyFObj.closeForm();
 							changeHiddenFields();
 						},
 						properties : {
@@ -584,7 +584,7 @@ function bindAboutPodElement() {
 				description : $("#descriptionMarkdown").val(),	
 			};
 
-			elementLib.openForm(form, "markdown", dataUpdate);
+			dyFObj.openForm(form, "markdown", dataUpdate);
 		});
 
 
@@ -634,7 +634,7 @@ function bindAboutPodElement() {
 										changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
 									}
 								}
-								elementLib.closeForm();
+								dyFObj.closeForm();
 								changeHiddenFields();
 							},
 
@@ -672,7 +672,7 @@ function bindAboutPodElement() {
 				if(notEmpty(contextData.facebook))
 					dataUpdate.facebook = contextData.facebook;
 
-				elementLib.openForm(form, null, dataUpdate);
+				dyFObj.openForm(form, null, dataUpdate);
 
 			}
 		});
@@ -714,7 +714,7 @@ function bindAboutPodElement() {
 			index : ind
 		}
 		mylog.log("params",params);
-		elementLib.openForm( 'url','parentUrl', params);
+		dyFObj.openForm( 'url','parentUrl', params);
 	}
 
 	function removeUrl(ind) {

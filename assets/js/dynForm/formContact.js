@@ -37,7 +37,7 @@ dynForm = {
 	        $("#ajaxFormModal #captchaHash").val($("#ajaxFormModal #captcha").realperson('getHash'));
 	    },
 	    afterSave : function(){
-	    	elementLib.closeForm();
+	    	dyFObj.closeForm();
 	    },
 	    properties : {
 	    	info : {

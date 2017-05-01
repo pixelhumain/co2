@@ -13,7 +13,7 @@ dynForm = {
 			}
 	    },
 	    afterSave : function(){
-	    	elementLib.closeForm();	
+	    	dyFObj.closeForm();	
 	    	urlCtrl.loadByHash(location.hash);
 	    },
 	    properties : {

@@ -4,7 +4,7 @@ dynForm = {
 	    icon : "group",
 	    type : "object",
 	    beforeBuild : function(){
-	    	elementLib.setMongoId('organizations');
+	    	dyFObj.setMongoId('organizations');
 	    },
 	    beforeSave : function(){
 	    	if (typeof $("#ajaxFormModal #description").code === 'function' ) 
@@ -14,7 +14,7 @@ dynForm = {
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
-		    	elementLib.closeForm();
+		    	dyFObj.closeForm();
 		    	urlCtrl.loadByHash( location.hash );	
 		    }
 	    },

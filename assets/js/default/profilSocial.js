@@ -146,13 +146,13 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 
 	else if(dataName == "urls"){ 
 		html += elementName + " a " + countData+" <b> lien"+s;
-		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="elementLib.openForm ( \'url\',\'parentUrl\')">';
+		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'parentUrl\')">';
     	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
 	}
 
 	else if(dataName == "contacts"){ 
 		html += elementName + " a " + countData+" <b> point de contact"+s;
-		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="elementLib.openForm ( \'contactPoint\',\'contact\')">';
+		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
     	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
 	}
 

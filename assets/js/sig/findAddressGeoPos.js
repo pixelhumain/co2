@@ -384,7 +384,9 @@ function addResultsInForm(commonGeoObj, countryCode){
 		$('[name="newElement_lng"]').val($(this).data("lng"));
 		formInMap.NE_lat = $(this).data("lat");
 		formInMap.NE_lng = $(this).data("lng");
+		formInMap.showWarningGeo(false);
 		formInMap.initHtml();
+
 	});
 }
 

@@ -4,7 +4,7 @@ dynForm = {
 	    icon : "group",
 	    type : "object",
 	    beforeBuild : function(){
-	    	elementLib.setMongoId('organizations');
+	    	dyFObj.setMongoId('organizations');
 	    },
 	    beforeSave : function(){
 	    	if (typeof $("#ajaxFormModal #description").code === 'function' ) 
@@ -14,7 +14,7 @@ dynForm = {
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
-		    	elementLib.closeForm();
+		    	dyFObj.closeForm();
 		    	urlCtrl.loadByHash( location.hash );	
 		    }
 	    },
@@ -26,23 +26,23 @@ dynForm = {
 					    "Créez votre page en quelques secondes,<br>puis rajoutez des détails,<br>selon vos besoins ...<hr>" +
 					 "</p>",
             },
-	        name : typeObjLib.name("organization"),
-	        similarLink : typeObjLib.similarLink,
-	        type : typeObjLib.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true }),
-            role : typeObjLib.inputSelect(	"Votre rôle",
+	        name : dyFInputs.name("organization"),
+	        similarLink : dyFInputs.similarLink,
+	        type : dyFInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true }),
+            role : dyFInputs.inputSelect(	"Votre rôle",
             								"Quel est votre rôle ?", 
             								{ admin : trad.administrator, member : trad.member, creator : trad.justCitizen }, 
             								{ required : true } ),
-            tags : typeObjLib.tags(),
-            location : typeObjLib.location,
-	        image : typeObjLib.image( "#organization.detail.id."+uploadObj.id ),
-            email : typeObjLib.email(),
-	        shortDescription : typeObjLib.textarea("Description courte", "...",{ maxlength: 140 }),
-	        url : typeObjLib.inputUrl(),
-            "preferences[publicFields]" : typeObjLib.inputHidden([]),
-            "preferences[privateFields]" : typeObjLib.inputHidden([]),
-            "preferences[isOpenData]" : typeObjLib.inputHidden(true),
-            "preferences[isOpenEdition]" : typeObjLib.inputHidden(true)
+            tags : dyFInputs.tags(),
+            location : dyFInputs.location,
+	        image : dyFInputs.image( "#organization.detail.id."+uploadObj.id ),
+            email : dyFInputs.email(),
+	        shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
+	        url : dyFInputs.inputUrl(),
+            "preferences[publicFields]" : dyFInputs.inputHidden([]),
+            "preferences[privateFields]" : dyFInputs.inputHidden([]),
+            "preferences[isOpenData]" : dyFInputs.inputHidden(true),
+            "preferences[isOpenEdition]" : dyFInputs.inputHidden(true)
 	    }
 	}
 };

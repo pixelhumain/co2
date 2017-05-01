@@ -73,7 +73,7 @@ var formInMap = {
 			$('[name="newElement_lng"]').val(formInMap.NE_lng);
 			$('[name="newElement_city"]').val(formInMap.NE_city);
 			$('[name="newElement_cp"]').val(formInMap.NE_cp);
-			$('[name="newElement_streetAddress"]').val(formInMap.NE_street.trim());
+			$('[name="newElement_street"]').val(formInMap.NE_street.trim());
 			$('[name="newElement_dep"]').val(formInMap.NE_dep);
 			$('[name="newElement_region"]').val(formInMap.NE_region);*/
 			formInMap.initHtml();
@@ -136,12 +136,6 @@ var formInMap = {
 			formInMap.NE_city = "";
 			formInMap.NE_cp = "";
 			formInMap.NE_street = "";
-			/*$('[name="newElement_insee"]').val(formInMap.NE_insee);
-			$('[name="newElement_city"]').val(formInMap.NE_city);
-			$('[name="newElement_cp"]').val(formInMap.NE_cp);
-			$('[name="newElement_streetAddress"]').val(formInMap.NE_street);
-			$('[name="newElement_dep"]').val(formInMap.NE_dep);
-			$('[name="newElement_region"]').val(formInMap.NE_region);*/
 
 			formInMap.initHtml();
 
@@ -165,8 +159,10 @@ var formInMap = {
 			if($('[name="newElement_city"]').val().length > 0){
 				formInMap.NE_city = $('[name="newElement_city"]').val();
 				formInMap.changeSelectCountrytim();
+
 				if(notNull(formInMap.timeoutAddCity)) 
 					clearTimeout(formInMap.timeoutAddCity);
+
 				formInMap.timeoutAddCity = setTimeout(function(){ 
 					formInMap.autocompleteFormAddress("locality", $('[name="newElement_city"]').val()); 
 				}, 500);
@@ -202,22 +198,24 @@ var formInMap = {
 		});
 
 		// ---------------- newElement_streetAddress
-		$('[name="newElement_streetAddress"]').focus(function(){
+		/*$('[name="newElement_street"]').focus(function(){
 			$("#dropdown-newElement_streetAddress-found").show();
-		});
+		});*/
 
 		$("#newElement_btnSearchAddress").click(function(){
 			$(".dropdown-menu").hide();
-			searchAdressNewElement();
+			formInMap.searchAdressNewElement();
 		});
 
-		$('[name="newElement_streetAddress"]').keyup(function(){ 
-			$("#dropdown-newElement_streetAddress-found").show();
+		$('[name="newElement_street"]').keyup(function(){ 
+			//$("#dropdown-newElement_streetAddress-found").show();
+			formInMap.showWarningGeo( ( ( $('[name="newElement_street"]').val().length > 0 ) ? true : false ) );
+			/*formInMap.btnValideDisable(true);
 			if(notNull(formInMap.timeoutAddCity)) 
 					clearTimeout(formInMap.timeoutAddCity);
 			formInMap.timeoutAddCity = setTimeout(function(){ 
 				formInMap.searchAdressNewElement(); 
-			}, 2000);
+			}, 2000);*/
 			
 		});
 
@@ -261,17 +259,6 @@ var formInMap = {
 		});
 
 		$("#newElement_btnCancelAddress").click(function(){
-			/*$('[name="newElement_insee"]').val("");
-			$('[name="newElement_lat"]').val("");
-			$('[name="newElement_lng"]').val("");
-			$('[name="newElement_city"]').val("");
-			$('[name="newElement_cp"]').val("");
-			$('[name="newElement_dep"]').val("");
-			$('[name="newElement_region"]').val("");
-			formInMap.NE_insee = ""; 
-			formInMap.NE_lat =  ""; 
-			formInMap.NE_lng =""; 
-			formInMap.NE_city = ""; formInMap.NE_cp = "";*/
 			formInMap.initVarNE();
 			formInMap.initHtml();
 			formInMap.backToForm(true);
@@ -304,9 +291,9 @@ var formInMap = {
 			
 		});*/
 
-		/*$('[name="newElement_streetAddress"]').keyup(function(){ 
+		/*$('[name="newElement_street"]').keyup(function(){ 
 			$("#dropdown-cp-found").show();
-			formInMap.NE_street = $('[name="newElement_streetAddress"]').val().trim();
+			formInMap.NE_street = $('[name="newElement_street"]').val().trim();
 		});
 
 		$('[name="newElement_cp"]').focusout(function(){
@@ -507,13 +494,7 @@ var formInMap = {
 
 	add : function(complete, data, inseeGeoSHapes){
 		mylog.log("add", complete, data, inseeGeoSHapes);
-		/*$('[name="newElement_insee"]').val(data.data("insee"));
-		$('[name="newElement_lat"]').val(data.data("lat"));
-		$('[name="newElement_lng"]').val(data.data("lng"));
-		$('[name="newElement_city"]').val(data.data("city"));
-		$('[name="newElement_dep"]').val(data.data("dep"));
-		$('[name="newElement_region"]').val(data.data("region"));*/
-
+		
 		formInMap.NE_insee = data.data("insee");
 		formInMap.NE_lat = data.data("lat");
 		formInMap.NE_lng = data.data("lng");
@@ -524,7 +505,7 @@ var formInMap = {
 
 		if(complete == true){
 			//$('[name="newElement_cp"]').val(data.data("cp"));
-			//$('#postalcode_sumery_value').html(data.data("cp"));
+			//$('#cp_sumery_value').html(data.data("cp"));
 			formInMap.NE_cp = data.data("cp");
 		}else{
 			uncomplete = true;
@@ -553,31 +534,18 @@ var formInMap = {
 
 
 		//formInMap.updateSummeryLocality(data);
-		$("#newElement_btnValidateAddress").prop('disabled', (complete == true ? false : true));
+		formInMap.btnValideDisable( (complete == true ? false : true) );
 		$("#divStreetAddress").removeClass("hidden");
 	},
-
-	/*updateSummeryLocality : function (data){
-		mylog.log("updateSummeryLocality",data);
-		$('#insee_sumery_value').html(data.data("insee"));
-		$('#lat_sumery_value').html(data.data("lat"));
-		$('#lng_sumery_value').html(data.data("lng"));
-		$('#city_sumery_value').html(data.data("city"));
-		$('#dep_sumery_value').html(data.data("dep"));
-		$('#region_sumery_value').html(data.data("region"));
-		$('#country_sumery_value').html(data.data("country"));
-		$('#postalcode_sumery_value').html(data.data("cp"));
-	},*/
-
 
 	searchAdressNewElement : function(){ 
 		mylog.log("searchAdressNewElement");
 		var providerName = "";
 		var requestPart = "";
 
-		var street 	= ($('[name="newElement_streetAddress"]').val()  != "") ? $('[name="newElement_streetAddress"]').val() : "";
+		var street 	= ($('[name="newElement_street"]').val()  != "") ? $('[name="newElement_street"]').val() : "";
 		/*var city 	= ($('#city_sumery_value').html() 	   	  	 != "") ? $('#city_sumery_value').html() : "";
-		var cp 		= ($('#postalcode_sumery_value').html() 			 != "") ? $('#postalcode_sumery_value').html() : "";
+		var cp 		= ($('#cp_sumery_value').html() 			 != "") ? $('#cp_sumery_value').html() : "";
 		var countryCode = ($('#country_sumery_value').html() 	 != "") ? $('#country_sumery_value').html() : "";*/
 
 		var city 	= formInMap.NE_city;
@@ -585,7 +553,7 @@ var formInMap = {
 		var countryCode = formInMap.NE_country;
 
 
-		if($('[name="newElement_streetAddress"]').val() != ""){
+		if($('[name="newElement_street"]').val() != ""){
 			providerName = "nominatim";
 			formInMap.typeSearchInternational = "address";
 			//construction de la requete
@@ -601,22 +569,22 @@ var formInMap = {
 			}
 		}
 
-		formInMap.NE_street = $('[name="newElement_streetAddress"]').val();
+		formInMap.NE_street = $('[name="newElement_street"]').val();
 
 		$("#dropdown-newElement_streetAddress-found").html("<li><a href='javascript:'><i class='fa fa-spin fa-refresh'></i> recherche en cours</a></li>");
 		$("#dropdown-newElement_streetAddress-found").show();
-
+		mylog.log("countryCode", countryCode);
 		if(countryCode == "NC"){
-			mylog.log("countryCode", countryCode);
 			countryCode = formInMap.changeCountryForNominatim(countryCode);
 			mylog.log("countryCode", countryCode);
 			callNominatim(requestPart, countryCode);
 		}else{
-			mylog.log("countryCode", countryCode);
 			countryCode = formInMap.changeCountryForNominatim(countryCode);
 			mylog.log("countryCode", countryCode);
 			callDataGouv(requestPart, countryCode);
 		}
+		
+		formInMap.btnValideDisable(false);
 	},
 
 	// Pour effectuer une recherche a la Réunion avec Nominatim, il faut choisir le code de la France, pas celui de la Réunion
@@ -636,30 +604,9 @@ var formInMap = {
 		if(formInMap.modePostalCode == false ){
 			if(formInMap.updateLocality == false ){
 				if(notEmpty($("[name='newElement_lat']").val())){
-					/*locationObj = {
-						address : {
-							"@type" : "PostalAddress",
-							addressCountry : $('#country_sumery_value').html(),
-							streetAddress : $('#street_sumery_value').html(),
-							addressLocality : $('#city_sumery_value').html(),
-							postalCode : $('#postalcode_sumery_value').html(),
-							codeInsee : $('#insee_sumery_value').html(),
-							depName : $('#dep_sumery_value').html(),
-							regionName : $('#region_sumery_value').html()
-						},
-						geo : {
-							"@type" : "GeoCoordinates",
-							latitude : $('#lat_sumery_value').html(),
-							longitude : $('#lng_sumery_value').html()
-						},
-						geoPosition : {
-							"type" : "Point",
-							"coordinates" : [ parseFloat($('#lng_sumery_value').html()), parseFloat($('#lat_sumery_value').html()) ]
-						}
-					};*/
-					locationObj = formInMap.createLocalityObj();
-					copyMapForm2Dynform(locationObj);
-					addLocationToForm(locationObj);
+					locObj = formInMap.createLocalityObj();
+					dyFInputs.locObj.copyMapForm2Dynform(locObj);
+					dyFInputs.locObj.addLocationToForm(locObj);
 				}
 				$("#form-street").val($('#street_sumery_value').html());
 				showMap(false);
@@ -681,8 +628,8 @@ var formInMap = {
 					latitude : $("[name='newPC_lat']").val(),
 					longitude : $("[name='newPC_lon']").val()
 				};
-				copyPCForm2Dynform(postalCodeObj);
-				addPostalCodeToForm(postalCodeObj);
+				dyFInputs.locObj.copyMapForm2Dynform(postalCodeObj);
+				dyFInputs.locObj.addLocationToForm(postalCodeObj);
 			}
 			showMap(false);
 			Sig.clearMap();
@@ -693,31 +640,7 @@ var formInMap = {
 
 	updateLocalityElement : function(){
 		mylog.log("updateLocalityElement");
-		/*var unikey = formInMap.NE_country + "_" + formInMap.NE_insee + "-" + formInMap.NE_cp; 
-		var locality = {
-			address : {
-				"@type" : "PostalAddress",
-				codeInsee : formInMap.NE_insee,
-				streetAddress : formInMap.NE_street.trim(),
-				postalCode : formInMap.NE_cp,
-				addressLocality : formInMap.NE_city,
-				depName : formInMap.NE_dep,
-				regionName : formInMap.NE_region,
-				addressCountry : formInMap.NE_country
-			},
-			geo : {
-				"@type" : "GeoCoordinates",
-				latitude : formInMap.NE_lat,
-				longitude : formInMap.NE_lng
-			},
-			geoPosition : {
-				"type" : "Point",
-				"coordinates" : [ parseFloat($("[name='newElement_lng']").val()), parseFloat($("[name='newElement_lat']").val()) ]
-			},
-			unikey : unikey
-		};*/
-
-		locality = formInMap.createLocalityObj(true);
+		var locality = formInMap.createLocalityObj(true);
 
 		if(formInMap.addressesIndex)
 			locality["addressesIndex"] = formInMap.addressesIndex ;
@@ -866,10 +789,10 @@ var formInMap = {
 	},
 
 	initHtml : function(){
-		$('[name="newElement_insee"]').val(formInMap.NE_insee);
+		/*$('[name="newElement_insee"]').val(formInMap.NE_insee);
 		$('[name="newElement_city"]').val(formInMap.NE_city);
 		$('[name="newElement_cp"]').val(formInMap.NE_cp);
-		$('[name="newElement_streetAddress"]').val(formInMap.NE_street.trim());
+		$('[name="newElement_street"]').val(formInMap.NE_street.trim());
 		$('[name="newElement_dep"]').val(formInMap.NE_dep);
 		$('[name="newElement_region"]').val(formInMap.NE_region);
 		$('[name="newElement_lat"]').val(formInMap.NE_lat);
@@ -882,8 +805,19 @@ var formInMap = {
 		$('#dep_sumery_value').html(formInMap.NE_dep);
 		$('#region_sumery_value').html(formInMap.NE_region);
 		$('#country_sumery_value').html(formInMap.NE_country);
-		$('#postalcode_sumery_value').html(formInMap.NE_cp);
-		$('#street_sumery_value').html(formInMap.NE_street.trim());
+		$('#cp_sumery_value').html(formInMap.NE_cp);
+		$('#street_sumery_value').html(formInMap.NE_street.trim());*/
+
+		var fieldsLocality = ["insee", "lat", "lng", "city", "dep", "region", "country", "cp", "street"]
+
+		$.each(fieldsLocality, function(key, value){
+			$('#'+value+'_sumery_value').html(formInMap["NE_"+value]);
+			$('[name="newElement_'+value+'"]').val(formInMap["NE_"+value]);
+			if(formInMap["NE_"+value] != "")
+				$('#'+value+'_sumery').removeClass("hidden");
+			else
+				$('#'+value+'_sumery').addClass("hidden");
+		});
 	},
 
 	initVarNE : function(){
@@ -941,25 +875,25 @@ var formInMap = {
 
 
 	getDepAndRegion : function(){
-		if(typeof NE_dep == "undefined" || NE_dep == "" || typeof NE_region == "undefined" || NE_region == ""){
+		if(typeof formInMap.NE_dep == "undefined" || formInMap.NE_dep == "" || typeof formInMap.NE_region == "undefined" || formInMap.NE_region == ""){
 			$.ajax({
 		        type: "POST",
 		        url: baseUrl+"/"+moduleId+"/city/getDepAndRegion/",
-		        data: {insee : NE_insee},
+		        data: {insee : formInMap.NE_insee},
 		       	dataType: "json",
 		    	success: function(data){
 		    		mylog.log("getDepAndRegion", data);
 			    	
 			    	if(data.depName){
-			    		NE_dep = data.depName;
+			    		formInMap.NE_dep = data.depName;
 			    	}else{
-			    		NE_dep = "";
+			    		formInMap.NE_dep = "";
 			    	}
 
 			    	if(data.regionName){
-			    		NE_region = data.regionName;
+			    		formInMap.NE_region = data.regionName;
 					}else{
-			    		NE_region = "";
+			    		formInMap.NE_region = "";
 			    	}
 			    }
 			});
@@ -968,25 +902,59 @@ var formInMap = {
 
 
 	changeSelectCountrytim : function(){
-		mylog.log("NE_cp.substring(0, 3)",NE_cp.substring(0, 3));
+		mylog.log("changeSelectCountrytim", formInMap.NE_country);
+		mylog.log("formInMap.NE_cp.substring(0, 3)");
 		countryFR = ["FR","GP","MQ","GF","RE","PM","YT"];
 
-		if(countryFR.indexOf($('[name="newElement_country"]').val()) != -1){
-			if(NE_cp.substring(0, 3) == "971")
+		if(countryFR.indexOf(formInMap.NE_country) != -1){
+			var name = $('[name="newElement_city"]').val();
+			if(name.substring(0, 3) == "971")
 				$('[name="newElement_country"]').val("GP");
-			else if(NE_cp.substring(0, 3) == "972")
+			else if(name.substring(0, 3) == "972")
 				$('[name="newElement_country"]').val("MQ");
-			else if(NE_cp.substring(0, 3) == "973")
+			else if(name.substring(0, 3) == "973")
 				$('[name="newElement_country"]').val("GF");
-			else if(NE_cp.substring(0, 3) == "974")
+			else if(name.substring(0, 3) == "974")
 				$('[name="newElement_country"]').val("RE");
-			else if(NE_cp.substring(0, 3) == "975")
+			else if(name.substring(0, 3) == "975")
 				$('[name="newElement_country"]').val("PM");
-			else if(NE_cp.substring(0, 3) == "976")
+			else if(name.substring(0, 3) == "976")
 				$('[name="newElement_country"]').val("YT");
 			else
 				$('[name="newElement_country"]').val("FR");
 		}
 	},
+
+	btnValideDisable : function(bool){
+		$("#newElement_btnValidateAddress").prop('disabled', bool);
+	},
+
+	showWarningGeo : function(bool){
+		mylog.log("showWarningGeo");
+		if(bool == true){
+			$("#alertGeo").removeClass("hidden");
+			$("#newElement_btnSearchAddress").removeClass("btn-default");
+			$("#newElement_btnSearchAddress").addClass("btn-warning");
+		}else{
+			$("#alertGeo").addClass("hidden");
+			$("#newElement_btnSearchAddress").removeClass("btn-warning");
+			$("#newElement_btnSearchAddress").addClass("btn-default");
+		}
+		
+	},
+
+
+
+	/*updateSummeryLocality : function (data){
+		mylog.log("updateSummeryLocality",data);
+		$('#insee_sumery_value').html(data.data("insee"));
+		$('#lat_sumery_value').html(data.data("lat"));
+		$('#lng_sumery_value').html(data.data("lng"));
+		$('#city_sumery_value').html(data.data("city"));
+		$('#dep_sumery_value').html(data.data("dep"));
+		$('#region_sumery_value').html(data.data("region"));
+		$('#country_sumery_value').html(data.data("country"));
+		$('#cp_sumery_value').html(data.data("cp"));
+	},*/
 
 };

@@ -39,13 +39,13 @@ dynForm = {
 	    	}
 	    },
 	    beforeBuild : function(){
-	    	elementLib.setMongoId('events');
+	    	dyFObj.setMongoId('events');
 	    },
 	    afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
-		    	elementLib.closeForm();
+		    	dyFObj.closeForm();
 		    	urlCtrl.loadByHash( location.hash );	
 		    }
 	    },
@@ -72,15 +72,15 @@ dynForm = {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Si vous voulez créer un nouvel évènement de façon à le rendre plus visible : c'est le bon endroit !!<br>Vous pouvez inviter des participants, planifier des sous évènements, publier des actus lors de l'évènement...</p>",
             },
-            name : typeObjLib.name("event"),
-	        similarLink : typeObjLib.similarLink,
+            name : dyFInputs.name("event"),
+	        similarLink : dyFInputs.similarLink,
 	        organizerId :{
 	        	rules : { required : true },
             	inputType : "select",
             	placeholder : "Qui organise ?",
             	rules : { required : true },
             	options : firstOptions(),
-            	"groupOptions" : myAdminList( ["organizations","projects"] ),
+            	groupOptions : myAdminList( ["organizations","projects"] ),
 	            init : function(){
 	            	$("#ajaxFormModal #organizerId").off().on("change",function(){
 	            		
@@ -97,68 +97,7 @@ dynForm = {
 	            		$("#ajaxFormModal #organizerType").val( organizerType );
 	            	});
 	            }
-            },
-	        organizerType : typeObjLib.inputHidden(),
-	         parentId :{
-            	inputType : "select",
-            	class : "hidden",
-            	placeholder : "Fait parti d'un évènement ?",
-            	options : {
-            		"":"Pas de Parent"
-            	},
-            	"groupOptions" : myAdminList( ["events"] ),
-            	init : function(){ console.log("init ParentId");
-	            	$("#ajaxFormModal #parentId").off().on("change",function(){
-	            		console.log("on change ParentId");
-	            		parentId = $(this).val();
-	            		startDateParent = "2000/01/01 00:00";
-	            		endDateParent = "2100/01/01 00:00";
-	            		if( parentId != "" ){
-	            			//Search in the current context
-	            			if (typeof contextData != "undefined") {
-	            				if (contextData.type == "events" && contextData.id == parentId) {
-	            					mylog.warn("event found in contextData : ",contextData.startDate+"|"+contextData.endDate);
-		            				startDateParent = contextData.startDate;
-		            				endDateParent = contextData.endDate
-	            				}
-	            			}
-	            			//Search in my contacts list
-	            			if(typeof myContacts != "undefined") {
-		            			$.each(myContacts.events,function (i,evObj) { 
-		            				if( evObj["_id"]["$id"] == parentId){
-		            					mylog.warn("event found in my contact list: ",evObj.startDate+"|"+evObj.endDate);
-		            					startDateParent = evObj.startDate;
-		            					endDateParent = evObj.endDate
-			    					}
-		            			});
-		            		}
-		            		$("#startDateParent").val(startDateParent);
-		            		$("#endDateParent").val(endDateParent);
-		            		$("#parentstartDate").html("<i class='fa fa-warning'></i> Date de début de l'événement parent : "+moment( startDateParent ).format('DD/MM/YYYY HH:mm'));
-			    			$("#parentendDate").html("<i class='fa fa-warning'></i> Date de fin de l'événement parent : "+moment( endDateParent ).format('DD/MM/YYYY HH:mm'));
-	            		}
-	            	});
-	            }
-            },
-            parentType : typeObjLib.inputHidden(),
-	        type : typeObjLib.inputSelect("Type d\'évènement",null,eventTypes, { required : true }),
-	        image : typeObjLib.image( "#event.detail.id." ),
-            allDay : typeObjLib.allDay,
-            startDate : typeObjLib.startDateInput,
-            endDate : typeObjLib.endDateInput,
-            location : typeObjLib.location,
-            tags : typeObjLib.tags(),
-            shortDescription : typeObjLib.textarea("Description courte", "...",{ maxlength: 140 }),
-            formshowers : {
-            	label : "En détails",
-                inputType : "custom",
-                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> options (desc, urls)</a>",
-            },
-	        url : typeObjLib.inputUrlOptionnel(),
-            "preferences[publicFields]" :  typeObjLib.inputHidden([]),
-            "preferences[privateFields]" : typeObjLib.inputHidden([]),
-            "preferences[isOpenData]" :  typeObjLib.inputHidden(true),
-            "preferences[isOpenEdition]" :  typeObjLib.inputHidden(true)
+            }
 	    }
 	}
 };

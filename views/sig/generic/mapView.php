@@ -97,14 +97,13 @@
 			<div id="right_tool_map_locality" class="hidden">
 			<!-- 	HEADER -->
 				<div class="right_tool_map_header">	
-					<span class="right_tool_map_header_title">Ajouter une adresse</span>
-				</div>
-
-				<!-- 	LIST ELEMENT -->
-				<div class='form-group inline-block padding-15 form-in-map'>
+					<!-- <span class="right_tool_map_header_title">Ajouter une adresse</span> -->
 					<h3 class='margin-top-5'>
 						<i class='fa fa-angle-down'></i> <i class='fa fa-home'></i> Adresse
 					</h3>
+				</div>
+				<!-- 	LIST ELEMENT -->
+				<div class='form-group inline-block padding-15 form-in-map'>
 					<div class='text-dark margin-top-5 hidden-xs'>
 						<i class='fa fa-circle'></i> Indiquez une adresse pour un placement automatique
 					</div>
@@ -139,31 +138,34 @@
 						</ul>
 			  		</div>-->
 			  		<div id='divStreetAddress' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
-						<input class='form-group col-md-9 col-xs-9' type='text' style='margin-right:-3px;' name='newElement_streetAddress' placeholder='(n° rue) + Adresse'>
+						<input class='form-group col-md-9 col-xs-9' type='text' style='margin-right:-3px;' name='newElement_street' placeholder='(n° rue) + Adresse'>
 						<button class='col-md-3 col-xs-3 btn btn-default' style='padding:3px;border-radius:0 4px 4px 0;' type='text' id='newElement_btnSearchAddress'><i class='fa fa-search'></i></button>
 					</div>
-					<div class='dropdown pull-left col-md-12 col-xs-12 no-padding'> 
+					<div class='dropdown pull-left col-xs-12 no-padding'> 
 				  		<ul class='dropdown-menu' id='dropdown-newElement_streetAddress-found'>
 				  			<li><a href='javascript:' class='disabled'>Rechercher en cours</a></li>
 				  		</ul>
 					</div>
-					<div id='sumery' class='text-dark col-md-12 no-padding'>
-						
-						<div id='country_sumery' class='col-md-6'>
-							<span>Country :</span>
-							<span id='country_sumery_value'></span>
+					<div id="alertGeo" class="alert alert-warning col-xs-12 hidden" style='margin-bottom: 0px;'>
+					  <strong>Warning!</strong> Indicates a warning that might need attention.
+					</div>
+					<div id='sumery' class='text-dark col-xs-12 no-padding'>
+						<h4>Récapitulatif de l'adresse : </h4>
+						<div id='street_sumery' class='col-xs-12'>
+							<span>street :</span>
+							<span id='street_sumery_value'></span>
 						</div>
-						<div id='city_sumery' class='col-md-6'>
+						<div id='cp_sumery' class='col-xs-12'>
+							<span>Postal Code :</span>
+							<span id='cp_sumery_value'></span>
+						</div>
+						<div id='city_sumery' class='col-xs-12'>
 							<span>City :</span>
 							<span id='city_sumery_value'></span>
 						</div>
-						<div id='postalcode_sumery' class='col-md-6'>
-							<span>Postal Code :</span>
-							<span id='postalcode_sumery_value'></span>
-						</div>
-						<div id='street_sumery' class='col-md-6'>
-							<span>street :</span>
-							<span id='street_sumery_value'></span>
+						<div id='country_sumery' class='col-xs-12'>
+							<span>Country :</span>
+							<span id='country_sumery_value'></span>
 						</div>
 						<!--
 						<div id='insee_sumery' class='col-md-6'>
@@ -186,21 +188,19 @@
 							<span>Longitude :</span>
 							<span id='lng_sumery_value'></span>
 						</div> -->
+						<input type='hidden' name='newElement_insee'>
+						<input type='hidden' name='newElement_lat'>
+						<input type='hidden' name='newElement_lng'>
+						<input type='hidden' name='newElement_dep'>
+						<input type='hidden' name='newElement_region'>
+						<hr class='col-md-12'>
+						<button class='col-md-8 btn btn-success pull-right' type='text' id='newElement_btnValidateAddress' disabled='disabled'><i class='fa fa-check'></i> Valider <span class='hidden-xs'>l'adresse et la position</span></button>
+						<button class='col-md-3 btn btn-danger pull-right' type='text' id='newElement_btnCancelAddress' style='margin-right:5px;'><i class='fa fa-times'></i> Annuler</button>
 					</div>
-					<input type='hidden' name='newElement_insee'>
-					<input type='hidden' name='newElement_lat'>
-					<input type='hidden' name='newElement_lng'>
-					<input type='hidden' name='newElement_dep'>
-					<input type='hidden' name='newElement_region'>
-					<hr class='col-md-12 col-xs-12'>
-					
-					
-					
 				</div>
-				<label id="lbl-chk-scope">
-					<button class='col-md-8 btn btn-success pull-right' type='text' id='newElement_btnValidateAddress' disabled='disabled'><i class='fa fa-check'></i> Valider <span class='hidden-xs'>l'adresse et la position</span></button>
-					<button class='col-md-3 btn btn-danger pull-right' type='text' id='newElement_btnCancelAddress' style='margin-right:5px;'><i class='fa fa-times'></i> Annuler</button>
-				</label>
+				<!-- <label id="lbl-chk-scope"> -->
+					
+				<!-- </label> -->
 			</div>
 
 		</div>

@@ -643,15 +643,15 @@
 										"<span id='insee_sumery_value'></span>"+
 									"</div>"+
 									"<div id='dep_sumery' class='col-xs-12'>"+
-										"<span>Departement :</span>"+
+										"<span>Departement :</span> "+
 										"<span id='dep_sumery_value'></span>"+
 									"</div>"+
 									"<div id='region_sumery' class='col-xs-12'>"+
-										"<span>Région :</span>"+
+										"<span>Région :</span> "+
 										"<span id='region_sumery_value'></span>"+
 									"</div>"+
 									"<div id='lat_sumery' class='col-xs-12'>"+
-										"<span>Latitude / Longitude :</span>"+
+										"<span>Latitude / Longitude :</span> "+
 										"<span id='lat_sumery_value'></span> / "+
 										"<span id='lng_sumery_value'></span>"+
 									"</div>"+

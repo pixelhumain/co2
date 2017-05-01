@@ -17,14 +17,14 @@ dynForm = {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Une url.</p>",
             },
-            urls : typeObjLib.urls,
-            type : typeObjLib.inputSelect("Type du point d'intérêt", null, poiTypes),
-	        name :  typeObjLib.name,
-            description : typeObjLib.descriptionOptionnel ,
-            location : typeObjLib.location,
-            tags : typeObjLib.tags(),
-            parentId :typeObjLib.inputHidden(),
-            parentType : typeObjLib.inputHidden(),
+            urls : dyFInputs.urls,
+            type : dyFInputs.inputSelect("Type du point d'intérêt", null, poiTypes),
+	        name :  dyFInputs.name,
+            description : dyFInputs.descriptionOptionnel ,
+            location : dyFInputs.location,
+            tags : dyFInputs.tags(),
+            parentId :dyFInputs.inputHidden(),
+            parentType : dyFInputs.inputHidden(),
 	    }
 	}
 };

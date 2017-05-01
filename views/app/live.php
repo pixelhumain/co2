@@ -1,8 +1,10 @@
 <?php 
 
-	HtmlHelper::registerCssAndScriptsFiles( array('/css/timeline2.css','/css/news/index.css',
-		
-											) , Yii::app()->theme->baseUrl. '/assets');
+	HtmlHelper::registerCssAndScriptsFiles( 
+			array('/css/timeline2.css',
+				  '/css/news/index.css',
+				  '/css/default/directory.css',	
+				) , Yii::app()->theme->baseUrl. '/assets');
 
 
 	$cssAnsScriptFilesModule = array(
@@ -100,6 +102,8 @@ var scrollEnd = false;
 var loadContent = '<?php echo @$_GET["content"]; ?>';
 var dataNewsSearch = {};
 var	dateLimit=0;
+
+var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 //var scrollEnd = false;
 jQuery(document).ready(function() {
 

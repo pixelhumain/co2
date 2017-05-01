@@ -544,9 +544,10 @@ var urlCtrl = {
 		"#event.calendarview" : {title:"EVENT CALENDAR ", icon : "calendar"},
 		"#city.opendata" : {title:'STATISTICS ', icon : 'line-chart' },
 	    "#person.telegram" : {title:'CONTACT PERSON VIA TELEGRAM ', icon : 'send' },
-	    "#event.detail" : {aliasParam: "#element.detail.type.events.id.$id", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
-	    "#poi.detail" : {aliasParam: "#element.detail.type.poi.id.$id", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
-	    "#project.detail" : {aliasParam: "#element.detail.type.projects.id.$id", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
+	    "#event.detail" : {aliasParam: "#page.type.events.id.$id", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
+	    "#poi.detail" : {aliasParam: "#page.type.poi.id.$id", params: ["id"],title:'POI DETAIL ', icon : 'calendar' },
+	    "#organization.detail" : {aliasParam: "#page.type.organizations.id.$id", params: ["id"],title:'ORGANIZATION DETAIL ', icon : 'users' },
+	    "#project.detail" : {aliasParam: "#page.type.projects.id.$id", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
 	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
@@ -895,9 +896,9 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
         		uploadObj.type = contextData.type;
         		uploadObj.id = contextData.id;
         	}
-        	mylog.log("9999",urlCtrl.afterLoad);
+        	
         	if( typeof urlCtrl.afterLoad == "function") {
-        		alert("urlCtrl.afterLoad");
+        		mylog.log("9999999999999999999999999999", searchType, $('#searchTags').val() );
         		urlCtrl.afterLoad();
         		urlCtrl.afterLoad = null;
         	}
@@ -1111,9 +1112,9 @@ var smallMenu = {
 	//the url must return a list like userConnected.list
 	openAjax : function  (url,title,icon,color,title1,params,callback) 
 	{ 
-		if( typeof directory == "undefined" )
+		/*if( typeof directory == "undefined" )
 		    lazyLoad( moduleUrl+'/js/default/directory.js', null, null );
-	    
+	    */
 	    //processingBlockUi();
 	    //$(smallMenu.destination).html("<i class='fa fa-spin fa-refresh fa-4x'></i>");
 
@@ -2144,9 +2145,22 @@ var collection = {
 /* *********************************
 			ELEMENT FORM 
 ********************************** */
-//TODO : rename element Form
+//TODO : rename dynFormObj
 var elementLib = {
 	elementObj : null,
+	//rules to show hide submit btn, used anwhere on blur and can be 
+	//completed by specific rules on dynForm Obj
+	//ex : elementLib.elementObj.dynForm.jsonSchema.canSubmitIf
+	canSubmitIf : function () { 
+    	var valid = true;
+    	//on peut ajouter des regles dans la map definition 
+    	if(	jsonHelper.notNull("elementLib.elementObj.dynForm.jsonSchema.canSubmitIf", "function") )
+    		valid = elementLib.elementObj.dynForm.jsonSchema.canSubmitIf();
+    	if( $('#ajaxFormModal #name').val() != "" && valid )
+    		$('#btn-submit-form').show();
+    	else 
+    		$('#btn-submit-form').hide();
+    },
 	formatData : function (formData, collection,ctrl) { 
 		mylog.warn("----------- formatData",formData, collection,ctrl);
 		formData.collection = collection;
@@ -2659,7 +2673,7 @@ var typeObjLib = {
 	    mylog.log("inputText ", inputObj);
     	return inputObj;
     },
-	name :function(type, rules, addElement) { 
+	name :function(type, rules, addElement, extraOnBlur) { 
 		var inputObj = {
 	    	placeholder : "... ",
 	        inputType : "text",
@@ -2676,6 +2690,8 @@ var typeObjLib = {
 	        	$("#ajaxFormModal #name ").off().on("blur",function(){
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
 	            		globalSearch($(this).val(),[ typeObjLib.get(type).col ], addElement );
+	            	
+	            	elementLib.canSubmitIf();
 	        	});
 	        }
 	    }else{
@@ -3078,6 +3094,7 @@ var typeObj = {
 	"default" : {icon:"arrow-circle-right",color:"dark"},
 	"video" : {icon:"video-camera",color:"dark"},
 	"formContact" : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
+	"news" : { col : "news" }, 
 };
 
 var documents = {
@@ -3435,7 +3452,7 @@ function KScrollTo(target){
 	if($(target).length>=1){
 		$('html, body').stop().animate({
 	        scrollTop: $(target).offset().top - 70
-	    }, 800, '');
+	    }, 500, '');
 	}
 }
 

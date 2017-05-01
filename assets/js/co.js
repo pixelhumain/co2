@@ -2003,7 +2003,7 @@ function updateLocalityEntities(addressesIndex, addressesLocality){
 	mylog.warn("updateLocalityEntities");
 	$("#ajax-modal").modal("hide");
 	showMap(true);
-	if(typeof initUpdateLocality != "undefined"){
+	if(typeof formInMap.initUpdateLocality != "undefined"){
 		var address = contextData.address ;
 		var geo = contextData.geo ;
 		if(addressesLocality && addressesIndex){
@@ -2014,7 +2014,7 @@ function updateLocalityEntities(addressesIndex, addressesLocality){
 			geo = null ;
 		}
 		mylog.log(address, geo, contextData.type, addressesIndex);
-		initUpdateLocality(address, geo, contextData.type, addressesIndex); 
+		formInMap.initUpdateLocality(address, geo, contextData.type, addressesIndex); 
 	}
 }
 

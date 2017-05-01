@@ -40,60 +40,171 @@
 
 	<?php if($sigParams['useRightList']){ ?>
 		<div id="right_tool_map" class="hidden-xs hidden-sm">
-
+			<div id="right_tool_map_search" class="">
 			<!-- 	HEADER -->
-			<div class="right_tool_map_header">
-				<?php if($sigParams['usePanel']){ ?>
-				<div class="btn-group btn-group-lg dropdown  pull-right" id="btn-tags">
-					<button type="button" class="btn btn-map dropdown-toggle" id="btn-panel" data-toggle="dropdown">
-						<i class="fa fa-tags"></i>
-					</button>
-					<ul class="dropdown-menu panel_map pull-right" id="panel_map" role="menu" aria-labelledby="panel_map">
-					    <h3 class="title_panel_map"><i class="fa fa-angle-down"></i> Filtrer les résultats par tags</h3>
-						<button class='item_panel_map' id='item_panel_map_all'>
-							<i class='fa fa-star'></i> Tous
+				<div class="right_tool_map_header">
+					<?php if($sigParams['usePanel']){ ?>
+					<div class="btn-group btn-group-lg dropdown  pull-right" id="btn-tags">
+						<button type="button" class="btn btn-map dropdown-toggle" id="btn-panel" data-toggle="dropdown">
+							<i class="fa fa-tags"></i>
 						</button>
-					</ul>
-				</div>	
-			<?php } ?>
-			<?php if($sigParams['useFilterType']){ ?>
-				<div class="btn-group btn-group-lg dropdown  pull-right" id="btn-filter">
-					<button type="button" class="btn btn-map dropdown-toggle" id="btn-filters" data-toggle="dropdown">
-						<i class="fa fa-filter"></i>
-					</button>
-					<ul class="dropdown-menu panel_map" id="panel_filter" role="menu" aria-labelledby="panel_filter">
-					    <h3 class="title_panel_map"><i class="fa fa-angle-down"></i> Filtrer les résultats par types</h3>
-						<button class='item_panel_map' id='item_panel_filter_all'>
-							<i class='fa fa-star'></i> Tous
+						<ul class="dropdown-menu panel_map pull-right" id="panel_map" role="menu" aria-labelledby="panel_map">
+						    <h3 class="title_panel_map"><i class="fa fa-angle-down"></i> Filtrer les résultats par tags</h3>
+							<button class='item_panel_map' id='item_panel_map_all'>
+								<i class='fa fa-star'></i> Tous
+							</button>
+						</ul>
+					</div>	
+				<?php } ?>
+				<?php if($sigParams['useFilterType']){ ?>
+					<div class="btn-group btn-group-lg dropdown  pull-right" id="btn-filter">
+						<button type="button" class="btn btn-map dropdown-toggle" id="btn-filters" data-toggle="dropdown">
+							<i class="fa fa-filter"></i>
 						</button>
-					</ul>
+						<ul class="dropdown-menu panel_map" id="panel_filter" role="menu" aria-labelledby="panel_filter">
+						    <h3 class="title_panel_map"><i class="fa fa-angle-down"></i> Filtrer les résultats par types</h3>
+							<button class='item_panel_map' id='item_panel_filter_all'>
+								<i class='fa fa-star'></i> Tous
+							</button>
+						</ul>
+					</div>
+				<?php } ?>	
+				<span class="right_tool_map_header_title">Résultats</span>
+					<span class="right_tool_map_header_info">935 / 1034</span>
+					
 				</div>
-			<?php } ?>	
-			<span class="right_tool_map_header_title">Résultats</span>
-				<span class="right_tool_map_header_info">935 / 1034</span>
 				
+				<!-- 	PSEUDO SEARCH -->
+				<div id="map_pseudo_filters">
+					<input class="form-control date-range active" type="text" id="input_name_filter" placeholder="filtrer par nom ...">
+				</div>
+				<!-- 	PSEUDO SEARCH -->
+
+				<!-- 	LIST ELEMENT -->
+				<div id="liste_map_element"></div>
+
+				<label id="lbl-chk-scope">
+					<nav>
+					  <ul class="pagination pagination-sm" id="pagination"></ul>
+					</nav>
+				</label>
+
+				<!-- <label id="lbl-chk-scope" class="hidden">
+					<input style="" value="" style="margin-left:0px;" type="checkbox" id="chk-scope"> Filtrer dans la zone visible
+				</label> -->
 			</div>
-			
-			<!-- 	PSEUDO SEARCH -->
-			<div id="map_pseudo_filters">
-				<input class="form-control date-range active" type="text" id="input_name_filter" placeholder="filtrer par nom ...">
+
+			<div id="right_tool_map_locality" class="hidden">
+			<!-- 	HEADER -->
+				<div class="right_tool_map_header">	
+					<span class="right_tool_map_header_title">Ajouter une adresse</span>
+				</div>
+
+				<!-- 	LIST ELEMENT -->
+				<div class='form-group inline-block padding-15 form-in-map'>
+					<h3 class='margin-top-5'>
+						<i class='fa fa-angle-down'></i> <i class='fa fa-home'></i> Adresse
+					</h3>
+					<div class='text-dark margin-top-5 hidden-xs'>
+						<i class='fa fa-circle'></i> Indiquez une adresse pour un placement automatique
+					</div>
+					<div class='text-dark margin-top-5 hidden-xs'>
+						<i class='fa fa-circle'></i> Déplacez l'icon avec la souris pour un placement plus précis
+					</div>
+					<hr class='col-md-12'>
+					<select class='form-group col-xs-12' name='newElement_country' id='newElement_country'>
+						<?php
+							echo "<option value=''>".Yii::t("common","Choose a country")."</option>";
+							foreach ( OpenData::$phCountries as $key => $value) {
+								echo "<option value='".$key."'>".$value."</option>";
+							}
+						?>
+					</select>
+					<div id='divCity' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
+				  		<input class='form-group col-md-12 col-xs-12' type='text' name='newElement_city' placeholder='Ville, village, commune, code postal'>
+						<ul class='dropdown-menu col-md-12 col-xs-12' id='dropdown-newElement_locality-found'>
+							<li><a href='javascript:' class='disabled'>Rechercher une ville, un village, une commune</a></li>
+						</ul>
+			  		</div>
+					<!--<div id='divCity' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
+				  		<input class='form-group col-md-12 col-xs-12' type='text' name='newElement_city' placeholder='Ville, village, commune'>
+						<ul class='dropdown-menu col-md-12 col-xs-12' id='dropdown-newElement_city-found'>
+							<li><a href='javascript:' class='disabled'>Rechercher une ville, un village, une commune</a></li>
+						</ul>
+			  		</div>
+					<div id='divPostalCode' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
+				  		<input class='form-group col-md-12 col-xs-12' type='text' name='newElement_cp' placeholder='Code postal'>
+						<ul class='dropdown-menu' id='dropdown-newElement_cp-found'>
+							<li><a href='javascript:' class='disabled'>Rechercher un code postal</a></li>
+						</ul>
+			  		</div>-->
+			  		<div id='divStreetAddress' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
+						<input class='form-group col-md-9 col-xs-9' type='text' style='margin-right:-3px;' name='newElement_streetAddress' placeholder='(n° rue) + Adresse'>
+						<button class='col-md-3 col-xs-3 btn btn-default' style='padding:3px;border-radius:0 4px 4px 0;' type='text' id='newElement_btnSearchAddress'><i class='fa fa-search'></i></button>
+					</div>
+					<div class='dropdown pull-left col-md-12 col-xs-12 no-padding'> 
+				  		<ul class='dropdown-menu' id='dropdown-newElement_streetAddress-found'>
+				  			<li><a href='javascript:' class='disabled'>Rechercher en cours</a></li>
+				  		</ul>
+					</div>
+					<div id='sumery' class='text-dark col-md-12 no-padding'>
+						
+						<div id='country_sumery' class='col-md-6'>
+							<span>Country :</span>
+							<span id='country_sumery_value'></span>
+						</div>
+						<div id='city_sumery' class='col-md-6'>
+							<span>City :</span>
+							<span id='city_sumery_value'></span>
+						</div>
+						<div id='postalcode_sumery' class='col-md-6'>
+							<span>Postal Code :</span>
+							<span id='postalcode_sumery_value'></span>
+						</div>
+						<div id='street_sumery' class='col-md-6'>
+							<span>street :</span>
+							<span id='street_sumery_value'></span>
+						</div>
+						<!--
+						<div id='insee_sumery' class='col-md-6'>
+							<span>Insee :</span>
+							<span id='insee_sumery_value'></span>
+						</div>
+						<div id='dep_sumery' class='col-md-6'>
+							<span>Departement :</span>
+							<span id='dep_sumery_value'></span>
+						</div>
+						<div id='region_sumery' class='col-md-6'>
+							<span>Région :</span>
+							<span id='region_sumery_value'></span>
+						</div>
+						<div id='lat_sumery' class='col-md-6'>
+							<span>Latitude :</span>
+							<span id='lat_sumery_value'></span>
+						</div>
+						<div id='lng_sumery' class='col-md-6'>
+							<span>Longitude :</span>
+							<span id='lng_sumery_value'></span>
+						</div> -->
+					</div>
+					<input type='hidden' name='newElement_insee'>
+					<input type='hidden' name='newElement_lat'>
+					<input type='hidden' name='newElement_lng'>
+					<input type='hidden' name='newElement_dep'>
+					<input type='hidden' name='newElement_region'>
+					<hr class='col-md-12 col-xs-12'>
+					
+					
+					
+				</div>
+				<label id="lbl-chk-scope">
+					<button class='col-md-8 btn btn-success pull-right' type='text' id='newElement_btnValidateAddress' disabled='disabled'><i class='fa fa-check'></i> Valider <span class='hidden-xs'>l'adresse et la position</span></button>
+					<button class='col-md-3 btn btn-danger pull-right' type='text' id='newElement_btnCancelAddress' style='margin-right:5px;'><i class='fa fa-times'></i> Annuler</button>
+				</label>
 			</div>
-			<!-- 	PSEUDO SEARCH -->
-
-			<!-- 	LIST ELEMENT -->
-			<div id="liste_map_element"></div>
-
-			<label id="lbl-chk-scope">
-				<nav>
-				  <ul class="pagination pagination-sm" id="pagination"></ul>
-				</nav>
-			</label>
-
-			<!-- <label id="lbl-chk-scope" class="hidden">
-				<input style="" value="" style="margin-left:0px;" type="checkbox" id="chk-scope"> Filtrer dans la zone visible
-			</label> -->
 
 		</div>
+		
 		<div id="modalItemNotLocated" class="modal fade" role="dialog">
 			  <div class="modal-dialog">
 

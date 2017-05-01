@@ -263,7 +263,7 @@ function getCommonGeoObject(objs, providerName){
 
 		commonObj = addCoordinates(commonObj, obj, providerName);
 		commonObj["type"] = "addressEntity";
-		commonObj["typeSig"] = formType;
+		commonObj["typeSig"] = formInMap.formType;
 		commonObj["name"] = getFullAddress(commonObj);
 
 		if(typeof commonObj["postalCode"] != "undefined" && commonObj["postalCode"].indexOf(";") >= 0){
@@ -382,9 +382,11 @@ function addResultsInForm(commonGeoObj, countryCode){
 		$("#dropdown-newElement_streetAddress-found").hide();
 		$('[name="newElement_lat"]').val($(this).data("lat"));
 		$('[name="newElement_lng"]').val($(this).data("lng"));
-		NE_lat = $(this).data("lat");
-		NE_lng = $(this).data("lng");
-		updateHtmlInseeLatLon();
+		formInMap.NE_lat = $(this).data("lat");
+		formInMap.NE_lng = $(this).data("lng");
+		formInMap.showWarningGeo(false);
+		formInMap.initHtml();
+
 	});
 }
 

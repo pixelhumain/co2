@@ -18,14 +18,14 @@ function bindAboutPodElement() {
 						title : trad["Change password"],
 						icon : "fa-key",
 						afterSave : function(data){
-							elementLib.closeForm();
+							dyFObj.closeForm();
 						},
 						properties : {
-							mode : typeObjLib.inputHidden(),
-							userId : typeObjLib.inputHidden(),
-							oldPassword : typeObjLib.password(trad["Old password"]),
-							newPassword : typeObjLib.password("", { required : true, minlength : 8 } ),
-							newPassword2 : typeObjLib.password(trad["Repeat your new password"], {required : true, minlength : 8, equalTo : "#ajaxFormModal #newPassword"})	
+							mode : dyFInputs.inputHidden(),
+							userId : dyFInputs.inputHidden(),
+							oldPassword : dyFInputs.password(trad["Old password"]),
+							newPassword : dyFInputs.password("", { required : true, minlength : 8 } ),
+							newPassword2 : dyFInputs.password(trad["Repeat your new password"], {required : true, minlength : 8, equalTo : "#ajaxFormModal #newPassword"})	
 						}
 					}
 				}
@@ -35,7 +35,7 @@ function bindAboutPodElement() {
 				mode : "changePassword",
 		        userId : userId
 		    };
-			elementLib.openForm(form, null, dataUpdate);
+			dyFObj.openForm(form, null, dataUpdate);
 		});
 
 		$("#downloadProfil").click(function () {
@@ -310,23 +310,23 @@ function bindAboutPodElement() {
 								}  
 								updateCalendar();
 							}
-							elementLib.closeForm();
+							dyFObj.closeForm();
 						},
 						properties : {
-							block : typeObjLib.inputHidden(),
-							typeElement : typeObjLib.inputHidden(),
-							isUpdate : typeObjLib.inputHidden(true)
+							block : dyFInputs.inputHidden(),
+							typeElement : dyFInputs.inputHidden(),
+							isUpdate : dyFInputs.inputHidden(true)
 						}
 					}
 				}
 			};
 
 			if(contextData.type == "<?php echo Event::COLLECTION; ?>"){
-				form.dynForm.jsonSchema.properties.allDay = typeObjLib.allDay;
+				form.dynForm.jsonSchema.properties.allDay = dyFInputs.allDay;
 			}
 
-			form.dynForm.jsonSchema.properties.startDate = typeObjLib.startDateInput;
-			form.dynForm.jsonSchema.properties.endDate = typeObjLib.endDateInput;
+			form.dynForm.jsonSchema.properties.startDate = dyFInputs.startDateInput;
+			form.dynForm.jsonSchema.properties.endDate = dyFInputs.endDateInput;
 
 			var dataUpdate = {
 				block : "when",
@@ -341,7 +341,7 @@ function bindAboutPodElement() {
 				dataUpdate.endDate = moment(contextData.endDate).local().format(formatDatedynForm);
 
 			mylog.log("btn-update-when", form, dataUpdate);
-			elementLib.openForm(form, "initWhen", dataUpdate);
+			dyFObj.openForm(form, "initWhen", dataUpdate);
 		});
 
 
@@ -460,41 +460,41 @@ function bindAboutPodElement() {
 									$("#faxAbout").html(contextData.fax);
 								}
 							}
-							elementLib.closeForm();
+							dyFObj.closeForm();
 							changeHiddenFields();
 						},
 						properties : {
-							block : typeObjLib.inputHidden(),
-							name : typeObjLib.name(contextData.type),
-							typeElement : typeObjLib.inputHidden(),
-							isUpdate : typeObjLib.inputHidden(true)
+							block : dyFInputs.inputHidden(),
+							name : dyFInputs.name(contextData.type),
+							typeElement : dyFInputs.inputHidden(),
+							isUpdate : dyFInputs.inputHidden(true)
 						}
 					}
 				}
 			};
 
 			if(contextData.type == typeObj.person.col ){
-				form.dynForm.jsonSchema.properties.username = typeObjLib.username;
-				form.dynForm.jsonSchema.properties.birthDate = typeObjLib.birthDate;
+				form.dynForm.jsonSchema.properties.username = dyFInputs.username;
+				form.dynForm.jsonSchema.properties.birthDate = dyFInputs.birthDate;
 			}
 
 			if(contextData.type == typeObj.organization.col ){
-				form.dynForm.jsonSchema.properties.type = typeObjLib.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
-				form.dynForm.jsonSchema.properties.tags = typeObjLib.tags();
+				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
+				form.dynForm.jsonSchema.properties.tags = dyFInputs.tags();
 			}
 
 			if(contextData.type == typeObj.project.col ){
-				form.dynForm.jsonSchema.properties.avancement = typeObjLib.inputSelect("L'avancement du project", "Avancement du projet", avancementProject);
+				form.dynForm.jsonSchema.properties.avancement = dyFInputs.inputSelect("L'avancement du project", "Avancement du projet", avancementProject);
 			}
 
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
-				form.dynForm.jsonSchema.properties.email = typeObjLib.email();
+				form.dynForm.jsonSchema.properties.email = dyFInputs.email();
 			}
 
-			form.dynForm.jsonSchema.properties.url = typeObjLib.inputUrl();
-			form.dynForm.jsonSchema.properties.fixe= typeObjLib.inputText("Fixe","Saisir les numéros de téléphone séparer par une virgule");
-			form.dynForm.jsonSchema.properties.mobile= typeObjLib.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
-			form.dynForm.jsonSchema.properties.fax= typeObjLib.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
+			form.dynForm.jsonSchema.properties.url = dyFInputs.inputUrl();
+			form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText("Fixe","Saisir les numéros de téléphone séparer par une virgule");
+			form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
+			form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
 
 			var dataUpdate = {
 				block : "info",
@@ -536,7 +536,7 @@ function bindAboutPodElement() {
 				dataUpdate.fax = contextData.fax;
 
 			mylog.log("dataUpdate", dataUpdate);
-			elementLib.openForm(form, "initUpdateInfo", dataUpdate);
+			dyFObj.openForm(form, "initUpdateInfo", dataUpdate);
 		});
 
 		$(".btn-update-descriptions").off().on( "click", function(){
@@ -561,15 +561,15 @@ function bindAboutPodElement() {
 								$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
 								$("#descriptionMarkdown").val(data.resultGoods.values.description);
 							}
-							elementLib.closeForm();
+							dyFObj.closeForm();
 							changeHiddenFields();
 						},
 						properties : {
-							block : typeObjLib.inputHidden(),
-							typeElement : typeObjLib.inputHidden(),
-							isUpdate : typeObjLib.inputHidden(true),
-							shortDescription : 	typeObjLib.textarea("Description courte", "...",{ maxlength: 140 }),
-							description : typeObjLib.textarea("Description longue", "..."),
+							block : dyFInputs.inputHidden(),
+							typeElement : dyFInputs.inputHidden(),
+							isUpdate : dyFInputs.inputHidden(true),
+							shortDescription : 	dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
+							description : dyFInputs.textarea("Description longue", "..."),
 						}
 					}
 				}
@@ -584,7 +584,7 @@ function bindAboutPodElement() {
 				description : $("#descriptionMarkdown").val(),	
 			};
 
-			elementLib.openForm(form, "markdown", dataUpdate);
+			dyFObj.openForm(form, "markdown", dataUpdate);
 		});
 
 
@@ -634,20 +634,20 @@ function bindAboutPodElement() {
 										changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
 									}
 								}
-								elementLib.closeForm();
+								dyFObj.closeForm();
 								changeHiddenFields();
 							},
 
 							properties : {
-								block : typeObjLib.inputHidden(),
-								typeElement : typeObjLib.inputHidden(),
-								isUpdate : typeObjLib.inputHidden(true),
-								telegram : typeObjLib.inputText("Votre Speudo Telegram","Votre Speudo Telegram"),
-								skype : typeObjLib.inputUrl("Lien vers Skype"),
-								gitHub : typeObjLib.inputUrl("Lien vers Git Hub"), 
-								gpplus : typeObjLib.inputUrl("Lien vers Google Plus"),
-						        twitter : typeObjLib.inputUrl("Lien vers Twitter"),
-						        facebook :  typeObjLib.inputUrl("Lien vers Facebook"),
+								block : dyFInputs.inputHidden(),
+								typeElement : dyFInputs.inputHidden(),
+								isUpdate : dyFInputs.inputHidden(true),
+								telegram : dyFInputs.inputText("Votre Speudo Telegram","Votre Speudo Telegram"),
+								skype : dyFInputs.inputUrl("Lien vers Skype"),
+								gitHub : dyFInputs.inputUrl("Lien vers Git Hub"), 
+								gpplus : dyFInputs.inputUrl("Lien vers Google Plus"),
+						        twitter : dyFInputs.inputUrl("Lien vers Twitter"),
+						        facebook :  dyFInputs.inputUrl("Lien vers Facebook"),
 							}
 						}
 					}
@@ -672,7 +672,7 @@ function bindAboutPodElement() {
 				if(notEmpty(contextData.facebook))
 					dataUpdate.facebook = contextData.facebook;
 
-				elementLib.openForm(form, null, dataUpdate);
+				dyFObj.openForm(form, null, dataUpdate);
 
 			}
 		});
@@ -714,7 +714,7 @@ function bindAboutPodElement() {
 			index : ind
 		}
 		mylog.log("params",params);
-		elementLib.openForm( 'url','parentUrl', params);
+		dyFObj.openForm( 'url','parentUrl', params);
 	}
 
 	function removeUrl(ind) {

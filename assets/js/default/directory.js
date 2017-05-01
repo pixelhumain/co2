@@ -340,7 +340,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    		var type = $(value).attr("data-type");
       mylog.log("error type :", type);
    		if(type == "person") type = "people";
-   		else type = typeObjLib.get(type).col;
+   		else type = dyFInputs.get(type).col;
       //mylog.log("#floopItem-"+type+"-"+id);
    		if($("#floopItem-"+type+"-"+id).length){
    			//mylog.log("I FOLLOW THIS");
@@ -380,11 +380,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    		var name = $(this).attr("data-name");
    		var id = $(this).attr("data-id");
    		//traduction du type pour le floopDrawer
-   		var typeOrigine = typeObjLib.get(type).col;
+   		var typeOrigine = dyFInputs.get(type).col;
       if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
    		formData.parentType = typeOrigine;
    		if(type == "person") type = "people";
-   		else type = typeObjLib.get(type).col;
+   		else type = dyFInputs.get(type).col;
 
 		var thiselement = this;
 		$(this).html("<i class='fa fa-spin fa-circle-o-notch text-azure'></i>");
@@ -492,11 +492,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       var id = $(thiselement).attr("data-id");
       
       //traduction du type pour le floopDrawer
-      var typeOrigine = typeObjLib.get(type).col;
+      var typeOrigine = dyFInputs.get(type).col;
       if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
       formData.parentType = typeOrigine;
       if(type == "person") type = "people";
-      else type = typeObjLib.get(type).col;
+      else type = dyFInputs.get(type).col;
 
       $.ajax({
         type: "POST",
@@ -635,7 +635,7 @@ var directory = {
                 var typeIcoParent = params.parentRoom.parentObj.typeSig;
                 //mylog.log("typeIcoParent", params.parentRoom);
 
-                var p = typeObjLib.get(typeIcoParent);
+                var p = dyFInputs.get(typeIcoParent);
                 params.icoParent = p.icon;
                 params.colorParent = p.color;
 
@@ -946,7 +946,7 @@ var directory = {
                  '</div>';
 
         if( params.creator == userId )
-        str += '<hr><a href="javascript:elementLib.openForm(\'classified\', null, directory.previewedObj.params );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
+        str += '<hr><a href="javascript:dyFObj.openForm(\'classified\', null, directory.previewedObj.params );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
                   '<i class="fa fa-pencil"></i> Modifier mon annonce'+
               '</a>';
 
@@ -1325,7 +1325,7 @@ var directory = {
 					else
 						str += (notEmpty(params.name) ? '<h4 class="panel-title text-dark pull-left">'+params.name+'</h4><br/>' : '');
 					str += (notEmpty(params.role) ? '<span class="" style="font-size: 11px !important;">'+params.role+'</span><br/>' : '');
-					str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="elementLib.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
+					str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="dyFObj.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
 					str += (notEmpty(params.telephone) ? '<span class="" style="font-size: 11px !important;">'+params.telephone+'</span>' : '');
 				str += "</div>";
 			str += "</div>";
@@ -1422,7 +1422,7 @@ var directory = {
                 var typeIcoParent = params.parentRoom.parentObj.typeSig;
                 //mylog.log("typeIcoParent", params.parentRoom);
 
-                var p = typeObjLib.get(typeIcoParent);
+                var p = dyFInputs.get(typeIcoParent);
                 params.icoParent = p.icon;
                 params.colorParent = p.color;
 
@@ -1513,12 +1513,12 @@ var directory = {
                 if(typeof params.typeOrga != "undefined")
                   typeIco = params.typeOrga;
 
-                var obj = (typeObjLib.get(typeIco)) ? typeObjLib.get(typeIco) : typeObj["default"] ;
+                var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
                 params.ico =  "fa-"+obj.icon;
                 params.color = obj.color;
                 if(params.parentType){
                     if(directory.dirLog) mylog.log("params.parentType",params.parentType);
-                    var parentObj = (typeObjLib.get(params.parentType)) ? typeObjLib.get(params.parentType) : typeObj["default"] ;
+                    var parentObj = (dyFInputs.get(params.parentType)) ? dyFInputs.get(params.parentType) : typeObj["default"] ;
                     params.parentIcon = "fa-"+parentObj.icon;
                     params.parentColor = parentObj.color;
                 }
@@ -1539,8 +1539,8 @@ var directory = {
                 if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
                     params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>";
 
-                if(typeObjLib.get(itemType) && 
-                    typeObjLib.get(itemType).col == "poi" && 
+                if(dyFInputs.get(itemType) && 
+                    dyFInputs.get(itemType).col == "poi" && 
                     typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
                 params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
 
@@ -1553,7 +1553,7 @@ var directory = {
                 }
                 params.fullLocality = params.postalCode + " " + params.cityName;
 
-                params.type = typeObjLib.get(itemType).col;
+                params.type = dyFInputs.get(itemType).col;
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 

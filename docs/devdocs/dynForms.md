@@ -2,7 +2,7 @@
 > builds forms on the fly based on a json opbject description
 > many input types are available 
 
-## typeObjLib
+## dyFInputs
 > is a generic list of types definitions
 anyone can neverthe less create their own definition
 
@@ -11,13 +11,13 @@ Upload Process in dynforms
 - uses (FineUploader)[https://fineuploader.com/] instance  
 -generic definition
 ```
-typeObjLib.image :function(str) { 
+dyFInputs.image :function(str) { 
     	gotoUrl = (str) ? str : location.hash;
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
-		    	elementLib.closeForm();
+		    	dyFObj.closeForm();
 		    	//alert(gotoUrl+uploadObj.id);
 	            urlCtrl.loadByHash( gotoUrl+uploadObj.id );	
 		    	}
@@ -39,7 +39,7 @@ var uploadObj = {
 - this information is generated when open the dynForm 
 ```
 beforeBuild : function(){
-	    	elementLib.setMongoId('classified');
+	    	dyFObj.setMongoId('classified');
 	    },
 
 //this launches the image upload process 
@@ -47,7 +47,7 @@ afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
-		    	elementLib.closeForm();
+		    	dyFObj.closeForm();
 		    	urlCtrl.loadByHash( location.hash );	
 		    }
 	    },

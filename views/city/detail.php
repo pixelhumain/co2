@@ -254,7 +254,7 @@ $this->renderPartial('../default/panels/toolbar');
                     */?>
                 </div>
                 <div class="space20"></div>
-                <a href="javascript:elementLib.openForm(zonesDynForm)" class="btn btn-default">Zones</a>
+                <a href="javascript:dyFObj.openForm(zonesDynForm)" class="btn btn-default">Zones</a>
                 <a href="javascript:cityFinderObj.finder('city','<?php echo $city["name"];?>')" class="btn btn-default">Filiaires locales</a>  <a href="javascript:cityFinderObj.finder('departement','<?php echo @$city["depName"];?>')" class="btn btn-default">Filiaires département</a>  <a href="javascript:cityFinderObj.finder('region','<?php echo @$city["regionName"];?>')" class="btn btn-default">Filiaires région</a> 
         <!--       </div>
             </div>

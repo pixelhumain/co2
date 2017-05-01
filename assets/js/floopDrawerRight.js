@@ -48,7 +48,7 @@ function buildListContactHtml(contacts, myId){
 						'</div>';
 		HTML += 		'<div class="floopScroll">' ;
 							
-							$.each(floopContactTypes, function(key, type){
+						$.each(floopContactTypes, function(key, type){
 
 							var n=0;
 							//compte le nombre d'élément à afficher
@@ -95,7 +95,7 @@ function buildListContactHtml(contacts, myId){
 									'</div>'+	
 								'</div>'+
 							'</div>';
-							});									
+						});									
 		HTML += 		'</div>' +
 						'</div>'+
 					  '</div>' +

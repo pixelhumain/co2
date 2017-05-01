@@ -1563,14 +1563,16 @@ function myAdminList (ctypes) {
 		$.each( ctypes, function(i,ctype) {
 			var connectionType = connectionTypes[ctype];
 			myList[ ctype ] = { label: ctype, options:{} };
-			if(typeof myContacts != "undefined" && myContacts != null)
-			$.each( myContacts[ ctype ],function(id,elemObj){
-				//mylog.log(ctype+"-"+id+"-"+elemObj.name);
-				if( elemObj.links && elemObj.links[connectionType] && elemObj.links[connectionType][userId] && elemObj.links[connectionType][userId].isAdmin) {
-					//mylog.warn(ctype+"-"+id+"-"+elemObj.name);
-					myList[ ctype ]["options"][ elemObj["_id"]["$id"] ] = elemObj.name;
-				}
-			});
+			if( notNull(myContacts) ){
+				mylog.log("myAdminList",ctype,connectionType,myContacts[ ctype ]);
+				$.each( myContacts[ ctype ],function(id,elemObj){
+					mylog.log("myAdminList",ctype,id,elemObj.name);
+					if( elemObj.links && elemObj.links[connectionType] && elemObj.links[connectionType][userId] && elemObj.links[connectionType][userId].isAdmin) {
+						mylog.warn("myAdminList2",ctype+"-"+id+"-"+elemObj.name);
+						myList[ ctype ]["options"][ elemObj["_id"]["$id"] ] = elemObj.name;
+					}
+				});
+			}
 		});
 		mylog.dir(myList);
 	}

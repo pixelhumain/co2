@@ -53,12 +53,12 @@ dynForm = {
 		    	urlCtrl.loadByHash( location.hash );	
 		    }
 	    },
-	    /*canSubmitIf : function () { 
+	    canSubmitIf : function () { 
 	    	if( $("#ajaxFormModal #section").val() && $("#ajaxFormModal #type").val() &&  $("#ajaxFormModal #subtype").val() )
 	    		return true;
 	    	else 
 	    		return false;
-	    },*/
+	    },
 	    actions : {
 	    	clear : function() {
 	    		

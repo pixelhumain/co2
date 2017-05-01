@@ -2168,17 +2168,17 @@ var dyFObj = {
 		formData.collection = collection;
 		formData.key = ctrl;
 		
-		if(elementLocation){
+		if(dyFInputs.locationObj.elementLocation){
 			//formData.multiscopes = elementLocation;
-			formData.address = centerLocation.address;
-			formData.geo = centerLocation.geo;
-			formData.geoPosition = centerLocation.geoPosition;
-			if( elementLocations.length ){
-				$.each( elementLocations,function (i,v) { 
+			formData.address = dyFInputs.locationObj.centerLocation.address;
+			formData.geo = dyFInputs.locationObj.centerLocation.geo;
+			formData.geoPosition = dyFInputs.locationObj.centerLocation.geoPosition;
+			if( dyFInputs.locationObj.elementLocations.length ){
+				$.each( dyFInputs.locationObj.elementLocations,function (i,v) { 
 					if( typeof v.center != "undefined" )
-						elementLocations.splice(i, 1);
+						dyFInputs.locationObj.elementLocations.splice(i, 1);
 				});
-				formData.addresses = elementLocations;
+				formData.addresses = dyFInputs.locationObj.elementLocations;
 			}
 		}
 		
@@ -2370,9 +2370,9 @@ var dyFObj = {
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
 	    //global variables clean up
-	    elementLocation = null;
-	    elementLocations = [];
-	    centerLocation = null;
+	    dyFInputs.locationObj.elementLocation = null;
+	    dyFInputs.locationObj.elementLocations = [];
+	    dyFInputs.locationObj.centerLocation = null;
 	    updateLocality = false;
 	    //initKSpec();
 	    if(userId)
@@ -2538,115 +2538,6 @@ var dyFObj = {
 		dyFObj.openForm(form, fct, data);
 	}
 }
-
-/* *********************************
-			LOCATION
-********************************** */
-//TODO move to elementForm
-var elementLocation = null;
-var centerLocation = null;
-var elementLocations = [];
-var elementPostalCode = null;
-var elementPostalCodes = [];
-var countLocation = 0;
-var countPostalCode = 0;
-function copyMapForm2Dynform(locationObj) { 
-	//if(!elementLocation)
-	//	elementLocation = [];
-	mylog.log("locationObj", locationObj);
-	elementLocation = locationObj;
-	mylog.log("elementLocation", elementLocation);
-	elementLocations.push(elementLocation);
-	mylog.log("elementLocations", elementLocations);
-	if(!centerLocation || locationObj.center == true){
-		centerLocation = elementLocation;
-		elementLocation.center = true;
-	}
-	mylog.dir(elementLocations);
-	//elementLocation.push(positionObj);
-}
-
-function addLocationToForm(locationObj){
-	mylog.warn("---------------addLocationToForm----------------");
-	mylog.dir(locationObj);
-	var strHTML = "";
-	if( locationObj.address.addressCountry)
-		strHTML += locationObj.address.addressCountry;
-	if( locationObj.address.postalCode)
-		strHTML += " ,"+locationObj.address.postalCode;
-	if( locationObj.address.addressLocality)
-		strHTML += " ,"+locationObj.address.addressLocality;
-	if( locationObj.address.streetAddress)
-		strHTML += " ,"+locationObj.address.streetAddress;
-	var btnSuccess = "";
-	var locCenter = "";
-	if( countLocation == 0){
-		btnSuccess = "btn-success";
-		locCenter = "<span class='lblcentre'>(localité centrale)</span>";
-	}
-	
-	strHTML = "<a href='javascript:removeLocation("+countLocation+")' class=' locationEl"+countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
-			  "<span class='locationEl"+countLocation+" locel text-azure'>"+strHTML+"</span> "+
-			  "<a href='javascript:setAsCenter("+countLocation+")' class='centers center"+countLocation+" locationEl"+countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
-	$(".locationlocation").prepend(strHTML);
-	countLocation++;
-}
-
-function copyPCForm2Dynform(postalCodeObj) { 
-	mylog.warn("---------------copyPCForm2Dynform----------------");
-	mylog.log("postalCodeObj", postalCodeObj);
-	elementPostalCode = postalCodeObj;
-	mylog.log("elementPostalCode", elementPostalCode);
-	elementPostalCodes.push(elementPostalCode);
-	mylog.log("elementPostalCodes", elementPostalCodes);
-	mylog.dir(elementPostalCodes);
-	//elementPostalCode.push(positionObj);
-}
-
-function addPostalCodeToForm(postalCodeObj){
-	mylog.warn("---------------addPostalCodeToForm----------------");
-	mylog.dir(postalCodeObj);
-	var strHTML = "";
-	if( postalCodeObj.postalCode)
-		strHTML += postalCodeObj.postalCode;
-	if( postalCodeObj.name)
-		strHTML += " ,"+postalCodeObj.name;
-	if( postalCodeObj.latitude)
-		strHTML += " ,("+postalCodeObj.latitude;
-	if( postalCodeObj.longitude)
-		strHTML += " / "+postalCodeObj.longitude+")";
-	
-	strHTML = "<a href='javascript:removeLocation("+countPostalCode+")' class=' locationEl"+countPostalCode+" btn'> <i class='text-red fa fa-times'></i></a>"+
-			  "<span class='locationEl"+countPostalCode+" locel text-azure'>"+strHTML+"</span> <br/>";
-	$(".postalcodepostalcode").prepend(strHTML);
-	countPostalCode++;
-}
-
-function removeLocation(ix){
-	mylog.log("removeLocation", ix, elementLocations);
-	elementLocation = null;
-	elementLocations.splice(ix,1);
-	//TODO check if this center then apply on first
-	//$(".locationEl"+countLocation).remove();
-	$(".locationEl"+ix).remove();
-}
-
-function setAsCenter(ix){
-
-	$(".centers").removeClass('btn-success');
-	$(".lblcentre").remove();
-	$.each(elementLocations,function(i, v) { 
-		if( v.center)
-			delete v.center;
-	})
-	$(".centers").removeClass('btn-success');
-	$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>(localité centrale)</span>");
-	centerLocation = elementLocations[ix];
-	elementLocations[ix].center = true;
-}
-
-/* ********************************** */
-
 
 /* *********************************
 			DYNFORM SPEC TYPE OBJ
@@ -2820,6 +2711,108 @@ var dyFInputs = {
 	location : {
 		label :"Localisation",
        inputType : "location"
+    },
+    locationObj : {
+    	/* *********************************
+					LOCATION
+		********************************** */
+		//TODO move to elementForm
+		elementLocation : null,
+		centerLocation : null,
+		elementLocations : [],
+		elementPostalCode : null,
+		elementPostalCodes : [],
+		countLocation : 0,
+		countPostalCode : 0,
+		copyMapForm2Dynform : function (locObj) { 
+			//if(!elementLocation)
+			//	elementLocation = [];
+			mylog.log("locationObj", locObj);
+			dyFInputs.locationObj.elementLocation = locObj;
+			mylog.log("elementLocation", dyFInputs.locationObj.elementLocation);
+			dyFInputs.locationObj.elementLocations.push(dyFInputs.locationObj.elementLocation);
+			mylog.log("dyFInputs.locationObj.elementLocations", dyFInputs.locationObj.elementLocations);
+			if(!dyFInputs.locationObj.centerLocation || locationObj.center == true){
+				dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocation;
+				dyFInputs.locationObj.elementLocation.center = true;
+			}
+			mylog.dir(dyFInputs.locationObj.elementLocations);
+			//elementLocation.push(positionObj);
+		},
+		addLocationToForm : function (locObj){
+			mylog.warn("---------------addLocationToForm----------------");
+			mylog.dir(locObj);
+			var strHTML = "";
+			if( locObj.address.addressCountry)
+				strHTML += locObj.address.addressCountry;
+			if( locObj.address.postalCode)
+				strHTML += " ,"+locObj.address.postalCode;
+			if( locObj.address.addressLocality)
+				strHTML += " ,"+locObj.address.addressLocality;
+			if( locObj.address.streetAddress)
+				strHTML += " ,"+locObj.address.streetAddress;
+			var btnSuccess = "";
+			var locCenter = "";
+			if( dyFInputs.locationObj.countLocation == 0){
+				btnSuccess = "btn-success";
+				locCenter = "<span class='lblcentre'>(localité centrale)</span>";
+			}
+			
+			strHTML = "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+")' class=' locationEl"+dyFInputs.locationObj.countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
+					  "<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
+					  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
+			$(".locationlocation").prepend(strHTML);
+			dyFInputs.locationObj.countLocation++;
+		},
+		copyPCForm2Dynform : function (postalCodeObj) { 
+			mylog.warn("---------------copyPCForm2Dynform----------------");
+			mylog.log("postalCodeObj", postalCodeObj);
+			dyFInputs.locationObj.elementPostalCode = postalCodeObj;
+			mylog.log("elementPostalCode", dyFInputs.locationObj.elementPostalCode);
+			dyFInputs.locationObj.elementPostalCodes.push(dyFInputs.locationObj.elementPostalCode);
+			mylog.log("elementPostalCodes", dyFInputs.locationObj.elementPostalCodes);
+			mylog.dir(dyFInputs.locationObj.elementPostalCodes);
+			//elementPostalCode.push(positionObj);
+		},
+		addPostalCodeToForm : function (postalCodeObj){
+			mylog.warn("---------------addPostalCodeToForm----------------");
+			mylog.dir(postalCodeObj);
+			var strHTML = "";
+			if( postalCodeObj.postalCode)
+				strHTML += postalCodeObj.postalCode;
+			if( postalCodeObj.name)
+				strHTML += " ,"+postalCodeObj.name;
+			if( postalCodeObj.latitude)
+				strHTML += " ,("+postalCodeObj.latitude;
+			if( postalCodeObj.longitude)
+				strHTML += " / "+postalCodeObj.longitude+")";
+			
+			strHTML = "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countPostalCode+")' class=' locationEl"+dyFInputs.locationObj.countPostalCode+" btn'> <i class='text-red fa fa-times'></i></a>"+
+					  "<span class='locationEl"+dyFInputs.locationObj.countPostalCode+" locel text-azure'>"+strHTML+"</span> <br/>";
+			$(".postalcodepostalcode").prepend(strHTML);
+			dyFInputs.locationObj.countPostalCode++;
+		},
+		removeLocation : function (ix){
+			mylog.log("dyFInputs.locationObj.removeLocation", ix, dyFInputs.locationObj.elementLocations);
+			dyFInputs.locationObj.elementLocation = null;
+			dyFInputs.locationObj.elementLocations.splice(ix,1);
+			//TODO check if this center then apply on first
+			//$(".locationEl"+dyFInputs.locationObj.countLocation).remove();
+			$(".locationEl"+ix).remove();
+		},
+		setAsCenter : function (ix){
+
+			$(".centers").removeClass('btn-success');
+			$(".lblcentre").remove();
+			$.each(dyFInputs.locationObj.elementLocations,function(i, v) { 
+				if( v.center)
+					delete v.center;
+			})
+			$(".centers").removeClass('btn-success');
+			$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>(localité centrale)</span>");
+			dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocations[ix];
+			dyFInputs.locationObj.elementLocations[ix].center = true;
+		}
     },
     inputUrl :function (label,placeholder,rules, custom) {  
     	label = ( notEmpty(label) ? label : "URL principale" );

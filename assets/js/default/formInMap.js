@@ -665,7 +665,7 @@ function backToForm(cancel){
 	if(modePostalCode == false ){
 		if(updateLocality == false ){
 			if(notEmpty($("[name='newElement_lat']").val())){
-				locationObj = {
+				locObj = {
 					address : {
 						"@type" : "PostalAddress",
 						addressCountry : $("[name='newElement_country']").val(),
@@ -686,8 +686,8 @@ function backToForm(cancel){
 						"coordinates" : [ parseFloat($("[name='newElement_lng']").val()), parseFloat($("[name='newElement_lat']").val()) ]
 					}
 				};
-				copyMapForm2Dynform(locationObj);
-				addLocationToForm(locationObj);
+				dyFInputs.locObj.copyMapForm2Dynform(locObj);
+				dyFInputs.locObj.addLocationToForm(locObj);
 			}
 			$("#form-street").val($("[name='newElement_streetAddress']").val());
 			showMap(false);

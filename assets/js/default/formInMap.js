@@ -567,7 +567,7 @@ var formInMap = {
 		$('#region_sumery_value').html(data.data("region"));
 		$('#country_sumery_value').html(data.data("country"));
 		$('#postalcode_sumery_value').html(data.data("cp"));
-	}, */
+	},*/
 
 
 	searchAdressNewElement : function(){ 

@@ -841,7 +841,6 @@ var directory = {
       // ********************************
       // NEXT PREVIOUS 
       // ********************************
-      var nav = directory.findNextPrev(hash);
       str += "<div class='col-xs-6 col-sm-2 col-md-3 pull-left text-right'></div>";
       //str += "<div class='col-xs-6 col-sm-2 col-md-3 pull-right text-left visible-xs'>"+nav.next+"</div>";
       // ********************************
@@ -866,6 +865,10 @@ var directory = {
               str += "</div><hr>";
             }
 
+          if(typeof hash != "undefined"){
+            var nav = directory.findNextPrev(hash);
+          
+      
           if(typeof params.name != "undefined" && params.name != "")
               str += "<div class='bold text-black' style='font-size:20px;'>"+ 
                         "<div class='col-md-8 col-sm-8 col-xs-7 no-padding margin-top-10'>"+params.name + "</div>" +
@@ -875,13 +878,14 @@ var directory = {
                         "</div>" +
                         "<br>"+
                     "</div>";
+          }
 
           if(typeof params.description != "undefined" && params.description != "")
               str += "<div class='col-md-12 col-sm-12 col-xs-12 no-padding pull-left'><hr>" + params.description + "<hr></div>";
 
          
           var thisLocality = "";
-          if(params.fullLocality != "" && params.fullLocality != " ")
+          if(typeof params.fullLocality != "undefined" && params.fullLocality != "" && params.fullLocality != " ")
                thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
                                 "<i class='fa fa-home'></i> " + params.fullLocality + 
                               "</a>";

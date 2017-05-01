@@ -25,7 +25,7 @@
         z-index: 1051;
     }
 
-    .modal-content{
+    #modal-share .modal-content{
         top: 150px;
         padding-bottom:10px!important;
     }

@@ -281,13 +281,13 @@
 
 	<?php } ?>
 
-	<li class="">
+	<!-- <li class="">
 		<a href="javascript:" class="ssmla load-data-directory" data-type-dir="dda" data-icon="gavel">
 			<i class="fa fa-gavel"></i> <?php echo Yii::t("common","Cooperative space"); ?>
 		</a>
 	</li>
 
-	<li><hr></li>
+	<li><hr></li> -->
 </ul>
 
 

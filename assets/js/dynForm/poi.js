@@ -90,21 +90,21 @@ dynForm = {
 	            	});
 	            }
             },
-            type : dyFoInputs.inputHidden(),
-	        name : dyFoInputs.name("poi"),
-	        image : dyFoInputs.image(),
-            //description : dyFoInputs.description,
-            description : dyFoInputs.textarea("Description", "..."),
-            location : dyFoInputs.location,
-            tags :dyFoInputs.tags(),
+            type : dyFInputs.inputHidden(),
+	        name : dyFInputs.name("poi"),
+	        image : dyFInputs.image(),
+            //description : dyFInputs.description,
+            description : dyFInputs.textarea("Description", "..."),
+            location : dyFInputs.location,
+            tags :dyFInputs.tags(),
             formshowers : {
             	label : "En détails",
                 inputType : "custom",
                 html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
             },
-            urls : dyFoInputs.urlsOptionnel,
-            parentId : dyFoInputs.inputHidden(),
-            parentType : dyFoInputs.inputHidden(),
+            urls : dyFInputs.urlsOptionnel,
+            parentId : dyFInputs.inputHidden(),
+            parentType : dyFInputs.inputHidden(),
 	    }
 	}
 };

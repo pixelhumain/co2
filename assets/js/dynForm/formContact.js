@@ -44,15 +44,15 @@ dynForm = {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Envoyer un mail</p>",
             },
-            names : dyFoInputs.inputText("Nom / Prénom", "Comment vous appelez vous", { required : true }),
-            emailSender : dyFoInputs.inputText("Votre addresse e-mail", "votre addresse e-mail : exemple@mail.com", { required : true, email : true }),
-	        subject : dyFoInputs.inputText("Objet de votre message", "C'est à quel sujet", { required : true } ),
-	        contentMsg : dyFoInputs.textarea(null, null, { required : true }),
+            names : dyFInputs.inputText("Nom / Prénom", "Comment vous appelez vous", { required : true }),
+            emailSender : dyFInputs.inputText("Votre addresse e-mail", "votre addresse e-mail : exemple@mail.com", { required : true, email : true }),
+	        subject : dyFInputs.inputText("Objet de votre message", "C'est à quel sujet", { required : true } ),
+	        contentMsg : dyFInputs.textarea(null, null, { required : true }),
 	        captcha :{
 				inputType : "captcha"
             },
-	        captchaUserVal : dyFoInputs.inputHidden(),
-            captchaHash :dyFoInputs.inputHidden()
+	        captchaUserVal : dyFInputs.inputHidden(),
+            captchaHash :dyFInputs.inputHidden()
 	    }
 	}
 };

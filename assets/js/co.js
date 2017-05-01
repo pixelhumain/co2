@@ -1487,7 +1487,7 @@ maybe movebale into Element.js
 function  buildQRCode(type,id) { 
 		
 	$(".qrCode").qrcode({
-	    text: baseUrl+"/#"+dyFoInputs.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
+	    text: baseUrl+"/#"+dyFInputs.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
 	    render: 'image',
 		minVersion: 8,
 	    maxVersion: 40,
@@ -2356,7 +2356,7 @@ var dyFObj = {
 				if( jsonHelper.notNull("themeObj.dynForm.editElementPOI","function") )
 					themeObj.dynForm.editElementPOI(type,data);
 
-				dyFObj.openForm( dyFoInputs.get(type).ctrl ,null, data.map);
+				dyFObj.openForm( dyFInputs.get(type).ctrl ,null, data.map);
 	        } else {
 	           toastr.error("something went wrong!! please try again.");
 	        }
@@ -2405,8 +2405,8 @@ var dyFObj = {
     		callback(type, afterLoad, data);
 		}else if( jsonHelper.notNull( "typeObj."+type+".dynForm" , "object") ){
 			mylog.log(" typeObj Loaded : ", type);
-			dyFObj.elementObj = dyFoInputs.get(type);
-			if( notNull(dyFoInputs.get(type).col) ) uploadObj.type = dyFoInputs.get(type).col;
+			dyFObj.elementObj = dyFInputs.get(type);
+			if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
     		callback( dyFObj.elementObj, afterLoad, data );
 		}else {
 			//TODO : pouvoir surchargé le dossier dynform dans le theme
@@ -2415,11 +2415,11 @@ var dyFObj = {
 			lazyLoad( dfPath+type+'.js', 
 				null,
 				function() { 
-					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+dyFoInputs.get(type).ctrl+'.js');
+					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+dyFInputs.get(type).ctrl+'.js');
 					mylog.dir(dynForm);
-				  	dyFoInputs.get(type).dynForm = dynForm;
-					dyFObj.elementObj = dyFoInputs.get(type);
-					if( notNull(dyFoInputs.get(type).col) ) uploadObj.type = dyFoInputs.get(type).col;
+				  	dyFInputs.get(type).dynForm = dynForm;
+					dyFObj.elementObj = dyFInputs.get(type);
+					if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
     				callback( afterLoad, data );
 			});
 		}
@@ -2663,7 +2663,7 @@ var uploadObj = {
 	}
 };
 
-var dyFoInputs = {
+var dyFInputs = {
 	inputText :function(label, placeholder, rules, custom) { 
 		var inputObj = {
 			label : label,
@@ -2691,7 +2691,7 @@ var dyFoInputs = {
 	    	inputObj.init = function(){
 	        	$("#ajaxFormModal #name ").off().on("blur",function(){
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
-	            		globalSearch($(this).val(),[ dyFoInputs.get(type).col ], addElement );
+	            		globalSearch($(this).val(),[ dyFInputs.get(type).col ], addElement );
 	            	
 	            	dyFObj.canSubmitIf();
 	        	});
@@ -2699,7 +2699,7 @@ var dyFoInputs = {
 	    }else{
 	    	inputObj.label = "Nom ";
 	    }
-	    mylog.log("dyFoInputs ", inputObj);
+	    mylog.log("dyFInputs ", inputObj);
     	return inputObj;
     },
     username : {
@@ -2795,7 +2795,7 @@ var dyFoInputs = {
 	    return res;
 	},
     price :function(label, placeholder, rules, custom) { 
-		var inputObj = dyFoInputs.inputText("Prix", "Prix ...") ;
+		var inputObj = dyFInputs.inputText("Prix", "Prix ...") ;
 	    inputObj.init = function(){
     		$('input#price').filter_input({regex:'[0-9]'});
       	};
@@ -2811,7 +2811,7 @@ var dyFoInputs = {
 	    return inputObj;
 	},
 	emailOptionnel :function (label,placeholder,rules) {  
-    	var inputObj = dyFoInputs.email(label, placeholder, rules);
+    	var inputObj = dyFInputs.email(label, placeholder, rules);
     	inputObj.init = function(){
 			$(".emailtext").css("display","none");
 		};
@@ -2826,11 +2826,11 @@ var dyFoInputs = {
     	placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
     	rules = ( notEmpty(rules) ? rules : { url: true } );
     	custom = ( notEmpty(custom) ? custom : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>" );
-	    var inputObj = dyFoInputs.inputText(label, placeholder, rules, custom);
+	    var inputObj = dyFInputs.inputText(label, placeholder, rules, custom);
 	    return inputObj;
 	},
 	inputUrlOptionnel :function (label, placeholder,rules, custom) {  
-    	var inputObj = dyFoInputs.inputUrl(label, placeholder, rules, custom);
+    	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
     	inputObj.init = function(){
             getMediaFromUrlContent("#url", ".resultGetUrl0",0);
             $(".urltext").css("display","none");
@@ -2965,7 +2965,7 @@ var dyFoInputs = {
     	return inputObj;
     },
     get:function(type){
-    	//mylog.log("dyFoInputs.get", type);
+    	//mylog.log("dyFInputs.get", type);
     	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
@@ -3050,7 +3050,7 @@ var typeObj = {
 			    icon : "question-cirecle-o",
 			    noSubmitBtns : true,
 			    properties : {
-			    	image : dyFoInputs.imageAddPhoto
+			    	image : dyFInputs.imageAddPhoto
 			    }
 			}
 		}},

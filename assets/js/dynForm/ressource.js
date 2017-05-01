@@ -88,7 +88,7 @@ dynForm = {
 	            	});
 	            }
             },
-            section : dyFoInputs.inputHidden(),
+            section : dyFInputs.inputHidden(),
 	        typeBtn :{
                 label : "Type de ressource ? ",
 	            inputType : "tagList",
@@ -133,25 +133,25 @@ dynForm = {
 	            	});
 	            }
             },
-            type : dyFoInputs.inputHidden(),
+            type : dyFInputs.inputHidden(),
             subtypeSection : {
                 inputType : "custom",
                 html:"<div class='subtypeSection'></div>"
             },
-            subtype : dyFoInputs.inputHidden(),
-            name : dyFoInputs.name("ressource"),
-	        image : dyFoInputs.image( "#ressource.detail.id."+uploadObj.id ),
-            description : dyFoInputs.textarea("Description", "..."),
-            location : dyFoInputs.location,
-            tags :dyFoInputs.tags(),
+            subtype : dyFInputs.inputHidden(),
+            name : dyFInputs.name("ressource"),
+	        image : dyFInputs.image( "#ressource.detail.id."+uploadObj.id ),
+            description : dyFInputs.textarea("Description", "..."),
+            location : dyFInputs.location,
+            tags :dyFInputs.tags(),
             formshowers : {
             	label : "En détails",
                 inputType : "custom",
                 html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
             },
-            urls : dyFoInputs.urlsOptionnel,
-            parentId : dyFoInputs.inputHidden(),
-            parentType : dyFoInputs.inputHidden(),
+            urls : dyFInputs.urlsOptionnel,
+            parentId : dyFInputs.inputHidden(),
+            parentType : dyFInputs.inputHidden(),
 	    }
 	}
 };

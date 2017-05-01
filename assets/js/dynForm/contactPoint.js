@@ -21,15 +21,15 @@ dynForm = {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Si vous voulez ajouter un nouveau contact de façon à faciliter les échanges</p>",
             },
-            name : dyFoInputs.name("citoyens", {}, true),
-	        similarLink : dyFoInputs.similarLink,
-	        email : dyFoInputs.email,
-	        role : dyFoInputs.inputText("Role du contact", "Role du contact"),
-	        phone : dyFoInputs.inputText("Téléphone du contact", "Téléphone du contact"),
-            idContact : dyFoInputs.inputHidden(),
-            parentId :dyFoInputs.inputHidden(),
-            parentType : dyFoInputs.inputHidden(),
-	        index : dyFoInputs.inputHidden()
+            name : dyFInputs.name("citoyens", {}, true),
+	        similarLink : dyFInputs.similarLink,
+	        email : dyFInputs.email,
+	        role : dyFInputs.inputText("Role du contact", "Role du contact"),
+	        phone : dyFInputs.inputText("Téléphone du contact", "Téléphone du contact"),
+            idContact : dyFInputs.inputHidden(),
+            parentId :dyFInputs.inputHidden(),
+            parentType : dyFInputs.inputHidden(),
+	        index : dyFInputs.inputHidden()
 	    }
 	}
 };

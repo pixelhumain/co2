@@ -362,7 +362,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
     $.each($(".followBtn"), function(index, value){
       var id = $(value).attr("data-id");
       var type = $(value).attr("data-type");
-	  type = dyFoInputs.get(type).col;
+	  type = dyFInputs.get(type).col;
 
       //mylog.log("#floopItem-"+type+"-"+id);
       if($("#floopItem-"+type+"-"+id).length){

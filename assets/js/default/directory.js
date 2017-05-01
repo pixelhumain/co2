@@ -340,7 +340,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    		var type = $(value).attr("data-type");
       mylog.log("error type :", type);
    		if(type == "person") type = "people";
-   		else type = dyFoInputs.get(type).col;
+   		else type = dyFInputs.get(type).col;
       //mylog.log("#floopItem-"+type+"-"+id);
    		if($("#floopItem-"+type+"-"+id).length){
    			//mylog.log("I FOLLOW THIS");
@@ -380,11 +380,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    		var name = $(this).attr("data-name");
    		var id = $(this).attr("data-id");
    		//traduction du type pour le floopDrawer
-   		var typeOrigine = dyFoInputs.get(type).col;
+   		var typeOrigine = dyFInputs.get(type).col;
       if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
    		formData.parentType = typeOrigine;
    		if(type == "person") type = "people";
-   		else type = dyFoInputs.get(type).col;
+   		else type = dyFInputs.get(type).col;
 
 		var thiselement = this;
 		$(this).html("<i class='fa fa-spin fa-circle-o-notch text-azure'></i>");
@@ -492,11 +492,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       var id = $(thiselement).attr("data-id");
       
       //traduction du type pour le floopDrawer
-      var typeOrigine = dyFoInputs.get(type).col;
+      var typeOrigine = dyFInputs.get(type).col;
       if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
       formData.parentType = typeOrigine;
       if(type == "person") type = "people";
-      else type = dyFoInputs.get(type).col;
+      else type = dyFInputs.get(type).col;
 
       $.ajax({
         type: "POST",
@@ -635,7 +635,7 @@ var directory = {
                 var typeIcoParent = params.parentRoom.parentObj.typeSig;
                 //mylog.log("typeIcoParent", params.parentRoom);
 
-                var p = dyFoInputs.get(typeIcoParent);
+                var p = dyFInputs.get(typeIcoParent);
                 params.icoParent = p.icon;
                 params.colorParent = p.color;
 
@@ -1422,7 +1422,7 @@ var directory = {
                 var typeIcoParent = params.parentRoom.parentObj.typeSig;
                 //mylog.log("typeIcoParent", params.parentRoom);
 
-                var p = dyFoInputs.get(typeIcoParent);
+                var p = dyFInputs.get(typeIcoParent);
                 params.icoParent = p.icon;
                 params.colorParent = p.color;
 
@@ -1513,12 +1513,12 @@ var directory = {
                 if(typeof params.typeOrga != "undefined")
                   typeIco = params.typeOrga;
 
-                var obj = (dyFoInputs.get(typeIco)) ? dyFoInputs.get(typeIco) : typeObj["default"] ;
+                var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
                 params.ico =  "fa-"+obj.icon;
                 params.color = obj.color;
                 if(params.parentType){
                     if(directory.dirLog) mylog.log("params.parentType",params.parentType);
-                    var parentObj = (dyFoInputs.get(params.parentType)) ? dyFoInputs.get(params.parentType) : typeObj["default"] ;
+                    var parentObj = (dyFInputs.get(params.parentType)) ? dyFInputs.get(params.parentType) : typeObj["default"] ;
                     params.parentIcon = "fa-"+parentObj.icon;
                     params.parentColor = parentObj.color;
                 }
@@ -1539,8 +1539,8 @@ var directory = {
                 if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
                     params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>";
 
-                if(dyFoInputs.get(itemType) && 
-                    dyFoInputs.get(itemType).col == "poi" && 
+                if(dyFInputs.get(itemType) && 
+                    dyFInputs.get(itemType).col == "poi" && 
                     typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
                 params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
 
@@ -1553,7 +1553,7 @@ var directory = {
                 }
                 params.fullLocality = params.postalCode + " " + params.cityName;
 
-                params.type = dyFoInputs.get(itemType).col;
+                params.type = dyFInputs.get(itemType).col;
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 

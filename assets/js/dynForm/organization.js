@@ -26,23 +26,23 @@ dynForm = {
 					    "Créez votre page en quelques secondes,<br>puis rajoutez des détails,<br>selon vos besoins ...<hr>" +
 					 "</p>",
             },
-	        name : dyFoInputs.name("organization"),
-	        similarLink : dyFoInputs.similarLink,
-	        type : dyFoInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true }),
-            role : dyFoInputs.inputSelect(	"Votre rôle",
+	        name : dyFInputs.name("organization"),
+	        similarLink : dyFInputs.similarLink,
+	        type : dyFInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true }),
+            role : dyFInputs.inputSelect(	"Votre rôle",
             								"Quel est votre rôle ?", 
             								{ admin : trad.administrator, member : trad.member, creator : trad.justCitizen }, 
             								{ required : true } ),
-            tags : dyFoInputs.tags(),
-            location : dyFoInputs.location,
-	        image : dyFoInputs.image( "#organization.detail.id."+uploadObj.id ),
-            email : dyFoInputs.email(),
-	        shortDescription : dyFoInputs.textarea("Description courte", "...",{ maxlength: 140 }),
-	        url : dyFoInputs.inputUrl(),
-            "preferences[publicFields]" : dyFoInputs.inputHidden([]),
-            "preferences[privateFields]" : dyFoInputs.inputHidden([]),
-            "preferences[isOpenData]" : dyFoInputs.inputHidden(true),
-            "preferences[isOpenEdition]" : dyFoInputs.inputHidden(true)
+            tags : dyFInputs.tags(),
+            location : dyFInputs.location,
+	        image : dyFInputs.image( "#organization.detail.id."+uploadObj.id ),
+            email : dyFInputs.email(),
+	        shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
+	        url : dyFInputs.inputUrl(),
+            "preferences[publicFields]" : dyFInputs.inputHidden([]),
+            "preferences[privateFields]" : dyFInputs.inputHidden([]),
+            "preferences[isOpenData]" : dyFInputs.inputHidden(true),
+            "preferences[isOpenEdition]" : dyFInputs.inputHidden(true)
 	    }
 	}
 };

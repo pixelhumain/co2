@@ -2,7 +2,7 @@
 > builds forms on the fly based on a json opbject description
 > many input types are available 
 
-## typeObjLib
+## dyFoInputs
 > is a generic list of types definitions
 anyone can neverthe less create their own definition
 
@@ -11,7 +11,7 @@ Upload Process in dynforms
 - uses (FineUploader)[https://fineuploader.com/] instance  
 -generic definition
 ```
-typeObjLib.image :function(str) { 
+dyFoInputs.image :function(str) { 
     	gotoUrl = (str) ? str : location.hash;
     	return {
 	    	inputType : "uploader",

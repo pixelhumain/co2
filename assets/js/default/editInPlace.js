@@ -21,11 +21,11 @@ function bindAboutPodElement() {
 							elementLib.closeForm();
 						},
 						properties : {
-							mode : typeObjLib.inputHidden(),
-							userId : typeObjLib.inputHidden(),
-							oldPassword : typeObjLib.password(trad["Old password"]),
-							newPassword : typeObjLib.password("", { required : true, minlength : 8 } ),
-							newPassword2 : typeObjLib.password(trad["Repeat your new password"], {required : true, minlength : 8, equalTo : "#ajaxFormModal #newPassword"})	
+							mode : dyFoInputs.inputHidden(),
+							userId : dyFoInputs.inputHidden(),
+							oldPassword : dyFoInputs.password(trad["Old password"]),
+							newPassword : dyFoInputs.password("", { required : true, minlength : 8 } ),
+							newPassword2 : dyFoInputs.password(trad["Repeat your new password"], {required : true, minlength : 8, equalTo : "#ajaxFormModal #newPassword"})	
 						}
 					}
 				}
@@ -313,20 +313,20 @@ function bindAboutPodElement() {
 							elementLib.closeForm();
 						},
 						properties : {
-							block : typeObjLib.inputHidden(),
-							typeElement : typeObjLib.inputHidden(),
-							isUpdate : typeObjLib.inputHidden(true)
+							block : dyFoInputs.inputHidden(),
+							typeElement : dyFoInputs.inputHidden(),
+							isUpdate : dyFoInputs.inputHidden(true)
 						}
 					}
 				}
 			};
 
 			if(contextData.type == "<?php echo Event::COLLECTION; ?>"){
-				form.dynForm.jsonSchema.properties.allDay = typeObjLib.allDay;
+				form.dynForm.jsonSchema.properties.allDay = dyFoInputs.allDay;
 			}
 
-			form.dynForm.jsonSchema.properties.startDate = typeObjLib.startDateInput;
-			form.dynForm.jsonSchema.properties.endDate = typeObjLib.endDateInput;
+			form.dynForm.jsonSchema.properties.startDate = dyFoInputs.startDateInput;
+			form.dynForm.jsonSchema.properties.endDate = dyFoInputs.endDateInput;
 
 			var dataUpdate = {
 				block : "when",
@@ -464,37 +464,37 @@ function bindAboutPodElement() {
 							changeHiddenFields();
 						},
 						properties : {
-							block : typeObjLib.inputHidden(),
-							name : typeObjLib.name(contextData.type),
-							typeElement : typeObjLib.inputHidden(),
-							isUpdate : typeObjLib.inputHidden(true)
+							block : dyFoInputs.inputHidden(),
+							name : dyFoInputs.name(contextData.type),
+							typeElement : dyFoInputs.inputHidden(),
+							isUpdate : dyFoInputs.inputHidden(true)
 						}
 					}
 				}
 			};
 
 			if(contextData.type == typeObj.person.col ){
-				form.dynForm.jsonSchema.properties.username = typeObjLib.username;
-				form.dynForm.jsonSchema.properties.birthDate = typeObjLib.birthDate;
+				form.dynForm.jsonSchema.properties.username = dyFoInputs.username;
+				form.dynForm.jsonSchema.properties.birthDate = dyFoInputs.birthDate;
 			}
 
 			if(contextData.type == typeObj.organization.col ){
-				form.dynForm.jsonSchema.properties.type = typeObjLib.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
-				form.dynForm.jsonSchema.properties.tags = typeObjLib.tags();
+				form.dynForm.jsonSchema.properties.type = dyFoInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
+				form.dynForm.jsonSchema.properties.tags = dyFoInputs.tags();
 			}
 
 			if(contextData.type == typeObj.project.col ){
-				form.dynForm.jsonSchema.properties.avancement = typeObjLib.inputSelect("L'avancement du project", "Avancement du projet", avancementProject);
+				form.dynForm.jsonSchema.properties.avancement = dyFoInputs.inputSelect("L'avancement du project", "Avancement du projet", avancementProject);
 			}
 
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
-				form.dynForm.jsonSchema.properties.email = typeObjLib.email();
+				form.dynForm.jsonSchema.properties.email = dyFoInputs.email();
 			}
 
-			form.dynForm.jsonSchema.properties.url = typeObjLib.inputUrl();
-			form.dynForm.jsonSchema.properties.fixe= typeObjLib.inputText("Fixe","Saisir les numéros de téléphone séparer par une virgule");
-			form.dynForm.jsonSchema.properties.mobile= typeObjLib.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
-			form.dynForm.jsonSchema.properties.fax= typeObjLib.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
+			form.dynForm.jsonSchema.properties.url = dyFoInputs.inputUrl();
+			form.dynForm.jsonSchema.properties.fixe= dyFoInputs.inputText("Fixe","Saisir les numéros de téléphone séparer par une virgule");
+			form.dynForm.jsonSchema.properties.mobile= dyFoInputs.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
+			form.dynForm.jsonSchema.properties.fax= dyFoInputs.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
 
 			var dataUpdate = {
 				block : "info",
@@ -565,11 +565,11 @@ function bindAboutPodElement() {
 							changeHiddenFields();
 						},
 						properties : {
-							block : typeObjLib.inputHidden(),
-							typeElement : typeObjLib.inputHidden(),
-							isUpdate : typeObjLib.inputHidden(true),
-							shortDescription : 	typeObjLib.textarea("Description courte", "...",{ maxlength: 140 }),
-							description : typeObjLib.textarea("Description longue", "..."),
+							block : dyFoInputs.inputHidden(),
+							typeElement : dyFoInputs.inputHidden(),
+							isUpdate : dyFoInputs.inputHidden(true),
+							shortDescription : 	dyFoInputs.textarea("Description courte", "...",{ maxlength: 140 }),
+							description : dyFoInputs.textarea("Description longue", "..."),
 						}
 					}
 				}
@@ -639,15 +639,15 @@ function bindAboutPodElement() {
 							},
 
 							properties : {
-								block : typeObjLib.inputHidden(),
-								typeElement : typeObjLib.inputHidden(),
-								isUpdate : typeObjLib.inputHidden(true),
-								telegram : typeObjLib.inputText("Votre Speudo Telegram","Votre Speudo Telegram"),
-								skype : typeObjLib.inputUrl("Lien vers Skype"),
-								gitHub : typeObjLib.inputUrl("Lien vers Git Hub"), 
-								gpplus : typeObjLib.inputUrl("Lien vers Google Plus"),
-						        twitter : typeObjLib.inputUrl("Lien vers Twitter"),
-						        facebook :  typeObjLib.inputUrl("Lien vers Facebook"),
+								block : dyFoInputs.inputHidden(),
+								typeElement : dyFoInputs.inputHidden(),
+								isUpdate : dyFoInputs.inputHidden(true),
+								telegram : dyFoInputs.inputText("Votre Speudo Telegram","Votre Speudo Telegram"),
+								skype : dyFoInputs.inputUrl("Lien vers Skype"),
+								gitHub : dyFoInputs.inputUrl("Lien vers Git Hub"), 
+								gpplus : dyFoInputs.inputUrl("Lien vers Google Plus"),
+						        twitter : dyFoInputs.inputUrl("Lien vers Twitter"),
+						        facebook :  dyFoInputs.inputUrl("Lien vers Facebook"),
 							}
 						}
 					}

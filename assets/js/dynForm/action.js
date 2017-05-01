@@ -19,7 +19,7 @@ dynForm = {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Une Action permet de faire avancer votre projet ou le fonctionnement de votre association</p>",
             },
-	        id : typeObjLib.inputHidden(""),
+	        id : dyFoInputs.inputHidden(""),
             room :{
             	inputType : "select",
             	placeholder : "Choisir une thématique ?",
@@ -55,8 +55,8 @@ dynForm = {
             	},
             	custom : "<br/><span class='text-small'>Choisir l'espace où s'ajoutera votre action parmi vos organisations et projets<br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet  </span>"
             },
-            name : typeObjLib.name,
-            message : typeObjLib.textarea("Description", "..."),
+            name : dyFoInputs.name,
+            message : dyFoInputs.textarea("Description", "..."),
             startDate :{
               inputType : "date",
               placeholder : "Date de début"
@@ -65,18 +65,18 @@ dynForm = {
               inputType : "date",
               placeholder : "Date de fin"
             },
-         	tags : typeObjLib.tags(),
+         	tags : dyFoInputs.tags(),
             formshowers : {
                 label : "En détails",
                 inputType : "custom",
                 html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
             },
-            urls : typeObjLib.urls,
-            email : typeObjLib.inputHidden( ( (userId!=null && userConnected != null) ? userConnected.email : "" ) ),
-            organizer: typeObjLib.inputHidden( "currentUser" ),
-            type : typeObjLib.inputHidden( "action" ),
-            parentId : typeObjLib.inputHidden( userId ),
-            parentType :  typeObjLib.inputHidden( "citoyens" ),
+            urls : dyFoInputs.urls,
+            email : dyFoInputs.inputHidden( ( (userId!=null && userConnected != null) ? userConnected.email : "" ) ),
+            organizer: dyFoInputs.inputHidden( "currentUser" ),
+            type : dyFoInputs.inputHidden( "action" ),
+            parentId : dyFoInputs.inputHidden( userId ),
+            parentType :  dyFoInputs.inputHidden( "citoyens" ),
 	    }
 	}
 };

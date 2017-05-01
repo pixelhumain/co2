@@ -1487,7 +1487,7 @@ maybe movebale into Element.js
 function  buildQRCode(type,id) { 
 		
 	$(".qrCode").qrcode({
-	    text: baseUrl+"/#"+typeObjLib.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
+	    text: baseUrl+"/#"+dyFoInputs.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
 	    render: 'image',
 		minVersion: 8,
 	    maxVersion: 40,
@@ -2356,7 +2356,7 @@ var elementLib = {
 				if( jsonHelper.notNull("themeObj.dynForm.editElementPOI","function") )
 					themeObj.dynForm.editElementPOI(type,data);
 
-				elementLib.openForm( typeObjLib.get(type).ctrl ,null, data.map);
+				elementLib.openForm( dyFoInputs.get(type).ctrl ,null, data.map);
 	        } else {
 	           toastr.error("something went wrong!! please try again.");
 	        }
@@ -2405,8 +2405,8 @@ var elementLib = {
     		callback(type, afterLoad, data);
 		}else if( jsonHelper.notNull( "typeObj."+type+".dynForm" , "object") ){
 			mylog.log(" typeObj Loaded : ", type);
-			elementLib.elementObj = typeObjLib.get(type);
-			if( notNull(typeObjLib.get(type).col) ) uploadObj.type = typeObjLib.get(type).col;
+			elementLib.elementObj = dyFoInputs.get(type);
+			if( notNull(dyFoInputs.get(type).col) ) uploadObj.type = dyFoInputs.get(type).col;
     		callback( elementLib.elementObj, afterLoad, data );
 		}else {
 			//TODO : pouvoir surchargé le dossier dynform dans le theme
@@ -2415,11 +2415,11 @@ var elementLib = {
 			lazyLoad( dfPath+type+'.js', 
 				null,
 				function() { 
-					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+typeObjLib.get(type).ctrl+'.js');
+					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+dyFoInputs.get(type).ctrl+'.js');
 					mylog.dir(dynForm);
-				  	typeObjLib.get(type).dynForm = dynForm;
-					elementLib.elementObj = typeObjLib.get(type);
-					if( notNull(typeObjLib.get(type).col) ) uploadObj.type = typeObjLib.get(type).col;
+				  	dyFoInputs.get(type).dynForm = dynForm;
+					elementLib.elementObj = dyFoInputs.get(type);
+					if( notNull(dyFoInputs.get(type).col) ) uploadObj.type = dyFoInputs.get(type).col;
     				callback( afterLoad, data );
 			});
 		}
@@ -2663,7 +2663,7 @@ var uploadObj = {
 	}
 };
 
-var typeObjLib = {
+var dyFoInputs = {
 	inputText :function(label, placeholder, rules, custom) { 
 		var inputObj = {
 			label : label,
@@ -2691,7 +2691,7 @@ var typeObjLib = {
 	    	inputObj.init = function(){
 	        	$("#ajaxFormModal #name ").off().on("blur",function(){
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
-	            		globalSearch($(this).val(),[ typeObjLib.get(type).col ], addElement );
+	            		globalSearch($(this).val(),[ dyFoInputs.get(type).col ], addElement );
 	            	
 	            	elementLib.canSubmitIf();
 	        	});
@@ -2699,7 +2699,7 @@ var typeObjLib = {
 	    }else{
 	    	inputObj.label = "Nom ";
 	    }
-	    mylog.log("typeObjLib ", inputObj);
+	    mylog.log("dyFoInputs ", inputObj);
     	return inputObj;
     },
     username : {
@@ -2795,7 +2795,7 @@ var typeObjLib = {
 	    return res;
 	},
     price :function(label, placeholder, rules, custom) { 
-		var inputObj = typeObjLib.inputText("Prix", "Prix ...") ;
+		var inputObj = dyFoInputs.inputText("Prix", "Prix ...") ;
 	    inputObj.init = function(){
     		$('input#price').filter_input({regex:'[0-9]'});
       	};
@@ -2811,7 +2811,7 @@ var typeObjLib = {
 	    return inputObj;
 	},
 	emailOptionnel :function (label,placeholder,rules) {  
-    	var inputObj = typeObjLib.email(label, placeholder, rules);
+    	var inputObj = dyFoInputs.email(label, placeholder, rules);
     	inputObj.init = function(){
 			$(".emailtext").css("display","none");
 		};
@@ -2826,11 +2826,11 @@ var typeObjLib = {
     	placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
     	rules = ( notEmpty(rules) ? rules : { url: true } );
     	custom = ( notEmpty(custom) ? custom : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>" );
-	    var inputObj = typeObjLib.inputText(label, placeholder, rules, custom);
+	    var inputObj = dyFoInputs.inputText(label, placeholder, rules, custom);
 	    return inputObj;
 	},
 	inputUrlOptionnel :function (label, placeholder,rules, custom) {  
-    	var inputObj = typeObjLib.inputUrl(label, placeholder, rules, custom);
+    	var inputObj = dyFoInputs.inputUrl(label, placeholder, rules, custom);
     	inputObj.init = function(){
             getMediaFromUrlContent("#url", ".resultGetUrl0",0);
             $(".urltext").css("display","none");
@@ -2965,7 +2965,7 @@ var typeObjLib = {
     	return inputObj;
     },
     get:function(type){
-    	//mylog.log("typeObjLib.get", type);
+    	//mylog.log("dyFoInputs.get", type);
     	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
@@ -3050,7 +3050,7 @@ var typeObj = {
 			    icon : "question-cirecle-o",
 			    noSubmitBtns : true,
 			    properties : {
-			    	image : typeObjLib.imageAddPhoto
+			    	image : dyFoInputs.imageAddPhoto
 			    }
 			}
 		}},

@@ -88,7 +88,7 @@ dynForm = {
 	            	});
 	            }
             },
-            section : typeObjLib.hidden,
+            section : dyFoInputs.hidden,
 	        typeBtn :{
                 label : "Type de lieu ? ",
 	            inputType : "tagList",
@@ -133,26 +133,26 @@ dynForm = {
 	            	});
 	            }
             },
-            type : typeObjLib.hidden,
+            type : dyFoInputs.hidden,
             subtypeSection : {
                 inputType : "custom",
                 html:"<div class='subtypeSection'></div>"
             },
-            subtype : typeObjLib.hidden,
-            name : typeObjLib.name("place"),
-	        image : typeObjLib.image( "#place.detail.id."+uploadObj.id ),
-            //description : typeObjLib.description,
-            description : typeObjLib.textarea("Description", "..."),
-            location : typeObjLib.location,
-            tags :typeObjLib.tags(),
+            subtype : dyFoInputs.hidden,
+            name : dyFoInputs.name("place"),
+	        image : dyFoInputs.image( "#place.detail.id."+uploadObj.id ),
+            //description : dyFoInputs.description,
+            description : dyFoInputs.textarea("Description", "..."),
+            location : dyFoInputs.location,
+            tags :dyFoInputs.tags(),
             formshowers : {
             	label : "En détails",
                 inputType : "custom",
                 html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
             },
-            urls : typeObjLib.urlsOptionnel,
-            parentId : typeObjLib.hidden,
-            parentType : typeObjLib.hidden,
+            urls : dyFoInputs.urlsOptionnel,
+            parentId : dyFoInputs.hidden,
+            parentType : dyFoInputs.hidden,
 	    }
 	}
 };

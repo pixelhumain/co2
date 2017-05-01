@@ -161,7 +161,7 @@ dynForm = {
 	            	});
 	            }
             },
-            section : typeObjLib.inputHidden(),
+            section : dyFoInputs.inputHidden(),
 	        typeBtn :{
                 label : "Dans quelle catégorie souhaitez-vous publier votre annonce ? ",
 	            inputType : "tagList",
@@ -172,21 +172,21 @@ dynForm = {
                 	elementLib.elementObj.dynForm.jsonSchema.actions.initTypeBtn();
 	            }
             },
-            type : typeObjLib.inputHidden(),
+            type : dyFoInputs.inputHidden(),
             subtypeSection : {
                 inputType : "custom",
                 html:"<div class='subtypeSection'></div>"
             },
-            subtype : typeObjLib.inputHidden(),
-            price : typeObjLib.price(),
-            name : typeObjLib.name( "classified" ) ,
-            description : typeObjLib.textarea("Description", "..."),
-            image : typeObjLib.image(),
-            contactInfo : typeObjLib.inputText("Coordonnées", "n° tel, addresse email ..."),
-            location : typeObjLib.location,
-            tags : typeObjLib.tags(),
-            parentId : typeObjLib.inputHidden(),
-            parentType : typeObjLib.inputHidden(),
+            subtype : dyFoInputs.inputHidden(),
+            price : dyFoInputs.price(),
+            name : dyFoInputs.name( "classified" ) ,
+            description : dyFoInputs.textarea("Description", "..."),
+            image : dyFoInputs.image(),
+            contactInfo : dyFoInputs.inputText("Coordonnées", "n° tel, addresse email ..."),
+            location : dyFoInputs.location,
+            tags : dyFoInputs.tags(),
+            parentId : dyFoInputs.inputHidden(),
+            parentType : dyFoInputs.inputHidden(),
 	    }
 	}
 };

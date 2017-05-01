@@ -21,11 +21,11 @@ dynForm = {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Si vous voulez ajouter un nouveau contact de façon a facilité les échanges</p>",
             },
-            title : typeObjLib.inputText("Nom", "Titre de l'URL", { required : true }),
-	        url : typeObjLib.inputText("URL du lien", "URL du lien", { required : true, url : true }),
-            type : typeObjLib.inputSelect("Type de l'URL", "Choisir un type", urlTypes, { required : true }),
-            parentId : typeObjLib.inputHidden(null, { required : true }),
-            parentType : typeObjLib.inputHidden(null, { required : true })
+            title : dyFoInputs.inputText("Nom", "Titre de l'URL", { required : true }),
+	        url : dyFoInputs.inputText("URL du lien", "URL du lien", { required : true, url : true }),
+            type : dyFoInputs.inputSelect("Type de l'URL", "Choisir un type", urlTypes, { required : true }),
+            parentId : dyFoInputs.inputHidden(null, { required : true }),
+            parentType : dyFoInputs.inputHidden(null, { required : true })
 	    }
 	}
 };

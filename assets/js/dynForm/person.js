@@ -8,12 +8,12 @@ dynForm =  {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Si vous voulez inviter quelqu'un à rejoindre Communecter ...</p>",
             },
-            inviteSearch : typeObjLib.inviteSearch,
-	        /*invitedUserName : typeObjLib.invitedUserName,
-	        invitedUserEmail : typeObjLib.invitedUserEmail,*/
-	       "preferences[publicFields]" : typeObjLib.inputHidden([]),
-            "preferences[privateFields]" : typeObjLib.inputHidden([]),
-            "preferences[isOpenData]" : typeObjLib.inputHidden(false)
+            inviteSearch : dyFoInputs.inviteSearch,
+	        /*invitedUserName : dyFoInputs.invitedUserName,
+	        invitedUserEmail : dyFoInputs.invitedUserEmail,*/
+	       "preferences[publicFields]" : dyFoInputs.inputHidden([]),
+            "preferences[privateFields]" : dyFoInputs.inputHidden([]),
+            "preferences[isOpenData]" : dyFoInputs.inputHidden(false)
 	    }
 	}
 };

@@ -72,8 +72,8 @@ dynForm = {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Si vous voulez créer un nouvel évènement de façon à le rendre plus visible : c'est le bon endroit !!<br>Vous pouvez inviter des participants, planifier des sous évènements, publier des actus lors de l'évènement...</p>",
             },
-            name : typeObjLib.name("event"),
-	        similarLink : typeObjLib.similarLink,
+            name : dyFoInputs.name("event"),
+	        similarLink : dyFoInputs.similarLink,
 	        organizerId :{
 	        	rules : { required : true },
             	inputType : "select",

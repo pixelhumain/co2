@@ -605,8 +605,8 @@ var formInMap = {
 			if(formInMap.updateLocality == false ){
 				if(notEmpty($("[name='newElement_lat']").val())){
 					locObj = formInMap.createLocalityObj();
-					dyFInputs.locObj.copyMapForm2Dynform(locObj);
-					dyFInputs.locObj.addLocationToForm(locObj);
+					dyFInputs.locationObj.copyMapForm2Dynform(locObj);
+					dyFInputs.locationObj.addLocationToForm(locObj);
 				}
 				$("#form-street").val($('#street_sumery_value').html());
 				showMap(false);
@@ -628,8 +628,8 @@ var formInMap = {
 					latitude : $("[name='newPC_lat']").val(),
 					longitude : $("[name='newPC_lon']").val()
 				};
-				dyFInputs.locObj.copyMapForm2Dynform(postalCodeObj);
-				dyFInputs.locObj.addLocationToForm(postalCodeObj);
+				dyFInputs.locationObj.copyMapForm2Dynform(postalCodeObj);
+				dyFInputs.locationObj.addLocationToForm(postalCodeObj);
 			}
 			showMap(false);
 			Sig.clearMap();

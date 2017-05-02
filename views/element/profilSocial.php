@@ -332,7 +332,6 @@
 				' <a class="btn btn-xs btn-danger tooltips" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.$id.'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\'attendees\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
 					'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
 				'</a>';
-			
 		?>
 	</div>
 	<?php } ?>
@@ -398,8 +397,8 @@
 	if( $type != Person::COLLECTION)
 		$this->renderPartial('../element/addMembersFromMyContacts',
 				array(	"type"=>$type, 
-						"parentId" =>(string)$element['_id'], 
-						"members"=>@$members));
+						"parentId" => (string)$element['_id'], 
+						"members" => @$members));
 
 
 	$cssAnsScriptFilesModule = array(

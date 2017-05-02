@@ -59,6 +59,8 @@ function startSearch(indexMin, indexMax, callBack){
         if(levelCommunexion == 3) locality = inseeCommunexion;
         if(levelCommunexion == 4) locality = inseeCommunexion;
         if(levelCommunexion == 5) locality = "";
+
+        mylog.log("Locality : ", locality);
       } 
       autoCompleteSearch(name, locality, indexMin, indexMax, callBack);
     }  
@@ -93,7 +95,8 @@ var mapElements = new Array();
 
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
-  console.log("autoCompleteSearch 2", typeof callBack, callBack);
+  console.log("autoCompleteSearch 2 ",locality, typeof callBack, callBack);
+
 	if(typeof(cityInseeCommunexion) != "undefined"){
 	    var levelCommunexionName = { 1 : "CODE_POSTAL_INSEE",
 	                             2 : "INSEE",
@@ -146,7 +149,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     
     if(isMapEnd)
       $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> chargement en cours");
-   
+         
     mylog.dir(data);
     //alert();
     $.ajax({
@@ -303,7 +306,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             }
             
             if(typeof callBack == "function")
-                callBack();
+              callBack();
         }
     });
 
@@ -444,7 +447,7 @@ var directory = {
     multiScopesT :[],
 
     defaultPanelHtml : function(params){
-      mylog.log("----------- defaultPanelHtml",params.type,params.name);
+      mylog.log("----------- defaultPanelHtml",params, params.type,params.name, params.url);
       str = "";  
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
@@ -613,9 +616,7 @@ var directory = {
       mylog.log("----------- elementPanelHtml",params.type,params.name);
       str = "";  
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
-      str +=    "<div class='searchEntity'>";
-
-      
+      str +=    "<div class='searchEntity'>";      
 
         if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
@@ -1348,19 +1349,28 @@ var directory = {
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
-                //params.url = '#page.type.'+params.type+'.id.' + params.id;
                 params.url = '#page.type.'+params.type+'.id.' + params.id;
                 if(type == "poi")    
                     url = '#element.detail.type.poi.id.' + id;
 
                 params.onclick = 'url.loadByHash("' + url + '");';
 
-                params.tags = "";
+                mylog.log('TEST NEW PARAMS');
+                mylog.log(params.type);
+                mylog.log(params.source.insertOrign);
+
+                if( (params.type == "poi") && (params.source.insertOrign == "import") ) {
+                    mylog.log("ON CHANGE LA VALUE DE L'URL ! "); 
+                    params.url = "https://datanova.laposte.fr/explore/embed/dataset/laposte_poincont/table/?disjunctive.nature_juridique&disjunctive.code_postal&disjunctive.localite&disjunctive.code_insee&q=01878A&static=false&datasetcard=true";
+                }
+
+
+                // params.tags = "";
                 params.elTagsList = "";
                 if(typeof params.tags != "undefined" && params.tags != null){
                 $.each(params.tags, function(key, value){
                   if(value != ""){
-                    params.tags +=   "<a href='javascript:' class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value)+"'>#" + value + "</a> ";
+                    params.tags +=   "<a href='javascript:' class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value)+"'> #" + value + "</a> ";
                     params.elTagsList += slugify(value)+" ";
                   }
 

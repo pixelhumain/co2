@@ -201,6 +201,11 @@ class AppController extends CommunecterController {
             $element = Classified::getById($id);
         }
 
+        if(@$element["parentId"] && @$element["parentType"])
+            $element['parent'] = Element::getByTypeAndId( $element["parentType"], $element["parentId"]);
+        if(@$element["organizerId"] && @$element["organizerType"])
+            $element['organizer'] = Element::getByTypeAndId( $element["organizerType"], $element["organizerId"]);
+
         $params = array("id" => @$id,
                         "type" => @$type,
                         "view" => @$view,

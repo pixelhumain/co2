@@ -49,13 +49,17 @@
 
 </style>
 
-
-
-
 <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-left no-padding" id="col-banniere">
         	
 	<?php if($type==Event::COLLECTION){ ?>
-	<div class="col-xs-9 col-sm-6 col-md-5 col-lg-5 margin-right-15 margin-top-25 section-date pull-right"></div>
+	<div class="col-xs-9 col-sm-6 col-md-5 col-lg-5 margin-right-15 margin-top-25 section-date pull-right">
+		<?php if(@$element['parent']){ ?>
+		<div style="font-size: 14px;font-weight: none;">
+			PARENT : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/>
+			<?php } ?>
+			ORGANISEUR : <a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" class="lbh"> <i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> <?php  echo $element['organizer']['name']; ?></a>
+		</div>
+	</div>
 	<?php } ?>
 	
 	<?php if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"]){ ?>

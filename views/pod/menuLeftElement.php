@@ -216,6 +216,13 @@
 		</li>
 		<?php } ?>
 		
+		<li class="">
+			<a href="javascript:" class="ssmla capitalize load-data-directory" 
+				data-type-dir="<?php echo @Element::$connectTypes[$type]; ?>" data-icon="link">
+				<i class="fa fa-users"></i> <?php echo Yii::t("common",@Element::$connectTypes[$type]); ?>
+			</a>
+		</li>
+		
 		<?php if($type != Person::COLLECTION ) { ?>
 		<li class="">
 			<a href="javascript:" class="ssmla capitalize load-data-directory" 
@@ -225,12 +232,7 @@
 		</li>
 		<?php } ?>
 		
-		<li class="">
-			<a href="javascript:" class="ssmla capitalize load-data-directory" 
-				data-type-dir="<?php echo @Element::$connectTypes[$type]; ?>" data-icon="link">
-				<i class="fa fa-link"></i> <?php echo Yii::t("common",@Element::$connectTypes[$type]); ?>
-			</a>
-		</li>
+		
 
 		<?php if ($type==Person::COLLECTION){ ?>
 			<li class="">

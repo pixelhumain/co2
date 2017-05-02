@@ -97,7 +97,68 @@ dynForm = {
 	            		$("#ajaxFormModal #organizerType").val( organizerType );
 	            	});
 	            }
-            }
+            },
+	        organizerType : dyFInputs.inputHidden(),
+	         parentId :{
+            	inputType : "select",
+            	class : "hidden",
+            	placeholder : "Fait parti d'un évènement ?",
+            	options : {
+            		"":"Pas de Parent"
+            	},
+            	"groupOptions" : myAdminList( ["events"] ),
+            	init : function(){ console.log("init ParentId");
+	            	$("#ajaxFormModal #parentId").off().on("change",function(){
+	            		console.log("on change ParentId");
+	            		parentId = $(this).val();
+	            		startDateParent = "2000/01/01 00:00";
+	            		endDateParent = "2100/01/01 00:00";
+	            		if( parentId != "" ){
+	            			//Search in the current context
+	            			if (typeof contextData != "undefined") {
+	            				if (contextData.type == "events" && contextData.id == parentId) {
+	            					mylog.warn("event found in contextData : ",contextData.startDate+"|"+contextData.endDate);
+		            				startDateParent = contextData.startDate;
+		            				endDateParent = contextData.endDate
+	            				}
+	            			}
+	            			//Search in my contacts list
+	            			if(typeof myContacts != "undefined") {
+		            			$.each(myContacts.events,function (i,evObj) { 
+		            				if( evObj["_id"]["$id"] == parentId){
+		            					mylog.warn("event found in my contact list: ",evObj.startDate+"|"+evObj.endDate);
+		            					startDateParent = evObj.startDate;
+		            					endDateParent = evObj.endDate
+			    					}
+		            			});
+		            		}
+		            		$("#startDateParent").val(startDateParent);
+		            		$("#endDateParent").val(endDateParent);
+		            		$("#parentstartDate").html("<i class='fa fa-warning'></i> Date de début de l'événement parent : "+moment( startDateParent ).format('DD/MM/YYYY HH:mm'));
+			    			$("#parentendDate").html("<i class='fa fa-warning'></i> Date de fin de l'événement parent : "+moment( endDateParent ).format('DD/MM/YYYY HH:mm'));
+	            		}
+	            	});
+	            }
+            },
+            parentType : dyFInputs.inputHidden(),
+	        type : dyFInputs.inputSelect("Type d\'évènement",null,eventTypes, { required : true }),
+	        image : dyFInputs.image( "#event.detail.id." ),
+            allDay : dyFInputs.allDay,
+            startDate : dyFInputs.startDateInput,
+            endDate : dyFInputs.endDateInput,
+            location : dyFInputs.location,
+            tags : dyFInputs.tags(),
+            shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
+            formshowers : {
+            	label : "En détails",
+                inputType : "custom",
+                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> options (desc, urls)</a>",
+            },
+	        url : dyFInputs.inputUrlOptionnel(),
+            "preferences[publicFields]" :  dyFInputs.inputHidden([]),
+            "preferences[privateFields]" : dyFInputs.inputHidden([]),
+            "preferences[isOpenData]" :  dyFInputs.inputHidden(true),
+            "preferences[isOpenEdition]" :  dyFInputs.inputHidden(true)
 	    }
 	}
 };

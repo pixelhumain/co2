@@ -162,7 +162,7 @@ var trad = {
 "Insee" : "<?php echo Yii::t("common","Insee") ?>",
 "level3" : "<?php echo Yii::t("common","level3") ?>",
 "level4" : "<?php echo Yii::t("common","level4") ?>",
-"latlgn" : "<?php echo Yii::t("common","latlgn") ?>",
+"latlng" : "<?php echo Yii::t("common","latlng") ?>",
 "streetFormInMap" : "<?php echo Yii::t("common","streetFormInMap") ?>",
 };
 

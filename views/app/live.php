@@ -121,13 +121,13 @@ jQuery(document).ready(function() {
       slidupScopetagsMin();
     });
 	$('#btn-start-search').click(function(e){
-		startSearch(false);
+		startNewsSearch(false);
     });
 		
 	
     
     searchPage = true;
-	startSearch(true);
+	startNewsSearch(true);
 
 	$(".titleNowEvents .btnhidden").hide();
 
@@ -181,7 +181,7 @@ function initFreedomInterface(){
 }
 
 var timeout;
-function startSearch(isFirst){
+function startNewsSearch(isFirst){
 	//Modif SBAR
 	//$(".my-main-container").off();
 	//if(liveScopeType == "global"){

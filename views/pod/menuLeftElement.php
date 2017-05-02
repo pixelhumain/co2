@@ -216,6 +216,15 @@
 		</li>
 		<?php } ?>
 		
+		<?php if($type != Person::COLLECTION ) { ?>
+		<li class="">
+			<a href="javascript:" class="ssmla capitalize load-data-directory" 
+				data-type-dir="followers" data-icon="link">
+				<i class="fa fa-link"></i> <?php echo Yii::t("common","followers"); ?>
+			</a>
+		</li>
+		<?php } ?>
+		
 		<li class="">
 			<a href="javascript:" class="ssmla capitalize load-data-directory" 
 				data-type-dir="<?php echo @Element::$connectTypes[$type]; ?>" data-icon="link">
@@ -246,7 +255,7 @@
 				</a>
 			</li>
 			<?php }  ?>
-			<?php if ($type==Person::COLLECTION || $type==Project::COLLECTION){ ?>
+			<?php if ($type==Person::COLLECTION || $type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="projects" data-icon="lightbulb-o">
 					<i class="fa fa-lightbulb-o"></i>  <?php echo Yii::t("common","Projects"); ?>

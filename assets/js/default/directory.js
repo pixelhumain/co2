@@ -865,20 +865,20 @@ var directory = {
               str += "</div><hr>";
             }
 
-          if(typeof hash != "undefined"){
+         //if(typeof hash != "undefined"){
             var nav = directory.findNextPrev(hash);
-          
-      
-          if(typeof params.name != "undefined" && params.name != "")
+            if(typeof params.name != "undefined" && params.name != "")
               str += "<div class='bold text-black' style='font-size:20px;'>"+ 
-                        "<div class='col-md-8 col-sm-8 col-xs-7 no-padding margin-top-10'>"+params.name + "</div>" +
-                        "<div class='col-md-4 col-sm-4 col-xs-5 no-padding'>"+ 
-                        nav.next+
-                        nav.prev+
-                        "</div>" +
-                        "<br>"+
-                    "</div>";
-          }
+                        "<div class='col-md-8 col-sm-8 col-xs-7 no-padding margin-top-10'>"+params.name + "</div>";
+                        if(typeof hash != "undefined"){ 
+                          str +=  "<div class='col-md-4 col-sm-4 col-xs-5 no-padding'>"+ 
+                                    nav.next+
+                                    nav.prev+
+                                  "</div>";
+                        }
+              str +=    "<br>"+
+                     "</div>";
+         // }
 
           if(typeof params.description != "undefined" && params.description != "")
               str += "<div class='col-md-12 col-sm-12 col-xs-12 no-padding pull-left'><hr>" + params.description + "<hr></div>";

@@ -39,12 +39,12 @@
   <div class="timeline-heading text-center <?php echo $classHeading; ?>">
        	<h5 class="text-left srcMedia">
       	  <small>
-            <?php $pluriel = ""; ?>
+            <?php $pluriel = ""; //var_dump($media); ?>
             <?php if(!@$media["sharedBy"]){ ?>
               <img class="pull-left img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
             <?php }else{ $pluriel = " pluriel"; } ?>
 
-            <div class="pull-left padding-5" style="line-height: 15px;">
+            <div class="pull-left padding-5 col-md-6 col-sm-6" style="line-height: 15px;">
               <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh pull-left">
                 <?php echo @$nameAuthor; ?>
               </a>
@@ -71,7 +71,8 @@
                   un message
                 </a>
               <?php } ?>
-
+              
+               
               <?php if(@$media["type"]=="activityStream") { ?>
                 <?php $iconColor = @Element::getColorIcon($media["object"]["type"]); ?>
                 <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news","verb ".$media["verb"].$pluriel); ?> 
@@ -82,12 +83,21 @@
                   </a>
                 </span> 
                 <?php if(@$media["object"]["type"] == "news"){ ?>
-                de <a href="page.type.citoyens.<?php echo @$media["object"]["authorId"]; ?>" 
+                de <a href="#page.type.<?php echo @$media["object"]["authorType"]; ?>.id.<?php echo @$media["object"]["authorId"]; ?>" 
                       class="lbh text-<?php echo @$iconColor; ?>">
                   <?php echo @$media["object"]["authorName"]; ?>
                   </a>
                 <?php } ?>
               <?php } ?>
+
+              <?php if(@$media["target"]["id"] != @$authorId && @$media["target"]["id"] != @$contextId) { ?>
+                sur le mur de 
+                <a href="#page.type.<?php echo @$media["target"]["type"]; ?>.id.<?php echo @$media["target"]["id"]; ?>" 
+                        class="lbh">
+                        <?php echo @$media["target"]["name"]; ?>
+                </a>
+              <?php } ?>
+
                <?php if(@$media["scope"] && @$media["scope"]["type"]){
                 if($media["scope"]["type"]=="public"){
                   $scopeIcon="globe";

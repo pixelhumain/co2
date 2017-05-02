@@ -40,7 +40,7 @@ function buildListContactHtml(contacts, myId){
 							'<a href="#person.directory.id.'+userId+'?tpl=directory2" '+
 								'class="text-white pull-left lbh" style="color:white !important;">'+
 								//t("My directory")+
-								'<i class="fa fa-bookmark fa-rotate-270 text-dark" style="margin-right:15px;"></i> '+
+								'<i class="fa fa-link text-dark" style="margin-right:15px;"></i> '+
 							'</a>'+
 							'<div id="floopScrollByType" class="pull-left"></div>' +
 							'<button id="btnFloopClose"><i class="fa fa-times"></i></button>' +

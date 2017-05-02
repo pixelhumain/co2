@@ -11,6 +11,8 @@ var formInMap = {
 	NE_dep : "",
 	NE_region : "",
 
+	geoShape : "",
+
 	/*PC_postalCode : "",
 	PC_name : "",
 	PC_latitude : "",
@@ -59,6 +61,7 @@ var formInMap = {
 		Sig.markerFindPlace.openPopup(); 
 		Sig.markerFindPlace.dragging.enable();
 		Sig.centerPopupMarker(coordinates, 12);
+		
 
 		$('[name="newElement_country"]').val(formInMap.NE_country);
 
@@ -105,6 +108,7 @@ var formInMap = {
 				formInMap.addressesIndex = index ;
 			formInMap.initDropdown();
 			formInMap.getDepAndRegion();
+			formInMap.getDetailCity();
 		}else{
 			formInMap.initVarNE();
 			if(index)
@@ -592,9 +596,9 @@ var formInMap = {
 		$(".visible-communected").show();
 	},
 
-	initDropdown : function(){
-		$("#dropdown-newElement_cp-found").html("<li><a href='javascript:' class='disabled'>Rechercher un code postal</a></li>");
-		$("#dropdown-newElement_city-found").html("<li><a href='javascript:' class='disabled'>Rechercher une ville, un village, une commune</a></li>");
+	initDropdown : function(){ 
+		$("#dropdown-newElement_cp-found").html("<li><a href='javascript:' class='disabled'>"+trad['Currently researching']+"</a></li>");
+		$("#dropdown-newElement_city-found").html("<li><a href='javascript:' class='disabled'>"+trad['Search a city, a town or a postal code'] +"</a></li>");
 	},
 
 	initData : function(){
@@ -616,10 +620,16 @@ var formInMap = {
 		var fieldsLocality = ["insee", "lat", "lng", "city", "dep", "region", "country", "cp", "street"]
 
 		$.each(fieldsLocality, function(key, value){
-			$('#'+value+'_sumery_value').html(formInMap["NE_"+value]);
 			$('[name="newElement_'+value+'"]').val(formInMap["NE_"+value]);
-			if(formInMap["NE_"+value] != "")
+			if(value == "country")
+				$('#'+value+'_sumery_value').html(tradCountry[ formInMap["NE_"+value] ]);
+			else
+				$('#'+value+'_sumery_value').html(formInMap["NE_"+value]);
+				
+
+			if(formInMap["NE_"+value] != ""){
 				$('#'+value+'_sumery').removeClass("hidden");
+			}
 			else
 				$('#'+value+'_sumery').addClass("hidden");
 		});
@@ -763,6 +773,30 @@ var formInMap = {
 			$("#map-loading-data").removeClass("hidden");
 		}
 	},
+
+	getDetailCity : function(){
+		mylog.log("getDetailCity");
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"/"+moduleId+"/city/detailforminmap/",
+			data: {insee : formInMap.NE_insee},
+			dataType: "json",
+			success: function(data){
+				formInMap.geoShape = data.geoShape;
+				formInMap.displayGeoShape();
+			}
+		});
+	},
+
+	displayGeoShape : function(){
+		mylog.log("displayGeoShape");
+		var geoShape = Sig.inversePolygon(formInMap.geoShape.coordinates[0]);
+		Sig.showPolygon(geoShape);
+		setTimeout(function(){
+			Sig.map.fitBounds(geoShape);
+			Sig.map.invalidateSize();
+		}, 1500);
+	}
 
 
 

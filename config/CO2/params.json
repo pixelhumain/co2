@@ -110,6 +110,19 @@
                 "icon" : "university", 
                 "mainTitle" : "Communexion activée",
                 "placeholderMainSearch" : "rechercher ..."
+          },
+
+            "#interoperability":
+            {
+            "inMenu" : false, 
+            "useHeader" : true, 
+            "open" : true, 
+            "subdomain" : "interoperability", 
+            "subdomainName" : "Intéropérabilité",
+            "hash" : "#app.interoperability",
+            "icon" : "database", 
+            "mainTitle" : "Module d'intéropérabilité",
+            "placeholderMainSearch" : "Rechercher dans les données venus d'ailleurs ..."
           }
       
 	  }

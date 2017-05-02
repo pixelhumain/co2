@@ -23,7 +23,10 @@
         /*margin-left:80px;*/
         padding-bottom:50px;
     }
-    
+    #sub-menu-left {
+        margin-top: 207px;
+        text-align: right;
+    }
 <?php 
     $btnAnc = array("blue"      =>array("color1"=>"#4285f4", 
                                         "color2"=>"#1c6df5"),
@@ -86,6 +89,11 @@
     max-height: 50px;
     overflow: hidden;
 }
+
+#sub-menu-left{
+    margin-top: 207px;
+    text-align: right;
+}
 @media screen and (max-width: 1024px) {
     #mainCategories .portfolio .portfolio-item{
         height: 110px;
@@ -95,7 +103,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 
     .category-search-link h4{
         font-size: 0.9em;
@@ -103,8 +111,10 @@
     #mainCategories h3{
         font-size: 1.3em;
     }
-    .navbar-header{
-        padding: 2px 10px;
+    #sub-menu-left {
+        margin-top: 5px;
+        padding:15px;
+        text-align: left;
     }
 }
 </style>
@@ -121,7 +131,7 @@
      <i class='fa fa-angle-right'></i> A propos
 </button>
 
-<section class="padding-top-10 text-center margin-bottom-10" id="section-fav">
+<section class="padding-top-10 text-center margin-bottom-10 hidden-xs" id="section-fav">
     <?php if(false){ ?>
     <a href="#media" target="_blank" class="tooltips btn-fast-access" data-placement="bottom" data-toggle="tooltip" 
        title="Aller sur KgougleActu"><i class="fa fa-newspaper-o fa-2 padding-10 text-dark"></i></a> 
@@ -173,7 +183,7 @@
 </section>
 
 <section class="no-padding hidden" id="sectionSearchResults">
-    <div class="row">
+    <div class="row padding-10">
         <div class="col-md-2 col-sm-2 text-right" id="sub-menu-left"></div>
         <div class="col-md-7 col-sm-9 col-lg-8" id="searchResults"></div>
         <div class="col-md-2 col-sm-1 text-left" id="sub-menu-right"></div>
@@ -196,59 +206,6 @@ jQuery(document).ready(function() {
     location.hash = "#web";
 });
 
-function initWebInterface(){
-    $("#main-btn-start-search, .menu-btn-start-search").click(function(){
-        var search = $("#main-search-bar").val();
-        currentCategory = "";
-        startWebSearch(search, currentCategory);
-    });
-
-    $("#second-search-bar").keyup(function(e){
-        $("#main-search-bar").val($("#second-search-bar").val());
-        $("#input-search-map").val($("#second-search-bar").val());
-        if(e.keyCode == 13){
-            var search = $(this).val();
-            currentCategory = "";
-            startWebSearch(search, currentCategory);
-         }
-    });
-    $("#main-search-bar").keyup(function(e){
-        $("#second-search-bar").val($("#main-search-bar").val());
-        $("#input-search-map").val($("#main-search-bar").val());
-        if(e.keyCode == 13){
-            var search = $(this).val();
-            currentCategory = "";
-            startWebSearch(search, currentCategory);
-         }
-    });
-    $("#input-search-map").keyup(function(e){
-        $("#second-search-bar").val($("#input-search-map").val());
-        $("#main-search-bar").val($("#input-search-map").val());
-        if(e.keyCode == 13){
-            var search = $(this).val();
-            currentCategory = "";
-            startWebSearch(search, currentCategory);
-         }
-    });
-
-    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
-        var search = $("#input-search-map").val();    
-        currentCategory = "";
-        startWebSearch(search, currentCategory);
-    });
-
-   $("#modalFavorites .btn-favory").click(function(){
-        var id = $(this).data("idfav");
-        deleteFavorites(id);
-   });
-
-   $(".menu-btn-back-category").click(function(){
-        KScrollTo("#section-fav");
-   });
-
-   $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@#\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
-    
-}
 
 
 </script>

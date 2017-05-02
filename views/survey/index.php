@@ -33,8 +33,8 @@
             "faTitle" => "gavel",
             "colorTitle" => "azure",
             "textTitle" => 
-              "<a class='text-dark btn' href='javascript:url.loadByHash(\"#rooms.index.type.$parentType.id.$parentId.tab.2\")'><i class='fa fa-gavel'></i> ".Yii::t("rooms","Decide", null, Yii::app()->controller->module->id)."</a>"." / ".
-              "<a class='text-dark btn' href='javascript:url.loadByHash(\"#survey.entries.id.".(string)$where["survey"]["_id"]."\")'><i class='fa fa-th'></i> ".$nameList."</a>".$extraBtn 
+              "<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#rooms.index.type.$parentType.id.$parentId.tab.2\")'><i class='fa fa-gavel'></i> ".Yii::t("rooms","Decide", null, Yii::app()->controller->module->id)."</a>"." / ".
+              "<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#survey.entries.id.".(string)$where["survey"]["_id"]."\")'><i class='fa fa-th'></i> ".$nameList."</a>".$extraBtn 
                           
     )); 
     echo '<div class="col-md-12 panel-white padding-15" id="room-container">';
@@ -418,7 +418,7 @@
               $parentColor = "red";
           }
           //$parentTitle = '<a href="'.Yii::app()->createUrl("/communecter/".$parentCtrler."/dashboard/id/".$id).'">'.$parent["name"]."</a>'s ";
-          $byInfo = "by <a href='javascript:url.loadByHash(\"#".$parentCtrler.".detail.id.".$entry["parentId"]."\")'><i class='fa fa-".$parentIcon."'></i></a>";
+          $byInfo = "by <a href='javascript:urlCtrl.loadByHash(\"#".$parentCtrler.".detail.id.".$entry["parentId"]."\")'><i class='fa fa-".$parentIcon."'></i></a>";
         }
 
         $contextType = ( $entry["type"] == Survey::TYPE_ENTRY ) ? Survey::COLLECTION : Survey::PARENT_COLLECTION;
@@ -427,7 +427,7 @@
         $closeBtn = "";
         $isClosed = "";
         $stateLbl = "<i class='fa fa-gavel'></i> ".Yii::t('rooms', "VOTE", null, Yii::app()->controller->module->id);
-        $mainClick = 'url.loadByHash("#survey.entry.id.'.(string)$entry["_id"].'")';
+        $mainClick = 'urlCtrl.loadByHash("#survey.entry.id.'.(string)$entry["_id"].'")';
         $titleIcon = 'gavel';
         if( Yii::app()->session["userEmail"] == $entry["email"] && (!isset($entry["dateEnd"]) || $entry["dateEnd"] > time() ) && $entry["type"] == Survey::TYPE_ENTRY ) 
           $closeBtn = "<a class='btn btn-xs pull-right' href='javascript:;' style='margin-right:5px;'".
@@ -471,7 +471,7 @@
         }
 
         if( !$surveyIsClosed && !$surveyHasVoted && !$isArchived )        
-        $leftLinks = "<button onclick=".'"url.loadByHash(\''.$btnUrl.'\')"'." class='col-xs-12 btn btn-default homestead text-red pull-left' style='font-size:20px;'> ".$btnLbl."</button>";
+        $leftLinks = "<button onclick=".'"urlCtrl.loadByHash(\''.$btnUrl.'\')"'." class='col-xs-12 btn btn-default homestead text-red pull-left' style='font-size:20px;'> ".$btnLbl."</button>";
         else{
           $btnRead = '<button onclick="showRoom(\'entry\', \''.(string)$entry["_id"].'\')"'." class='btn btn-lg btn-default homestead pull-right text-bold tooltips' ".
                   ' data-toggle="tooltip" data-placement="left" title="Afficher les détails"'.
@@ -483,7 +483,7 @@
         }
 
         // if( $surveyHasVoted || $surveyIsClosed) 
-        // $btnRead = "<button onclick=".'"url.loadByHash(\'#survey.entry.id.'.(string)$entry["_id"].'\')"'." class='btn btn-lg btn-default homestead pull-right text-bold tooltips' ".
+        // $btnRead = "<button onclick=".'"urlCtrl.loadByHash(\'#survey.entry.id.'.(string)$entry["_id"].'\')"'." class='btn btn-lg btn-default homestead pull-right text-bold tooltips' ".
         //           ' data-toggle="tooltip" data-placement="left" title="Afficher les détails"'.
         //           " style='margin-top: -2px;margin-right: -5px;margin-bottom: -1px;'><i class='fa fa-angle-right'></i></button>"; //$voteLinksAndInfos["links"];
 
@@ -643,7 +643,7 @@
                     <br>Référencez et partagez <b>une par une</b>,
                     <br>les propositions qui concernent cet espace
                     <br><br>
-                    <button class="btn btn-success" onclick='elementLib.openForm("entry","sub")''>
+                    <button class="btn btn-success" onclick='dyFObj.openForm("entry","sub")''>
                       <i class="fa fa-plus"></i> Ajouter une proposition
                     </button>
                   </blockquote>
@@ -825,7 +825,7 @@ function toogleTags(){
       
       mylog.log("type", type);
       if(type == "edit") 
-        url.loadByHash(url);
+        urlCtrl.loadByHash(url);
       else 
         readEntrySV (data,type);
       
@@ -959,7 +959,7 @@ function archive(collection,id){
              "value":"<?php echo ( @$where["survey"]["status"] != ActionRoom::STATE_ARCHIVED ) ? ActionRoom::STATE_ARCHIVED : "" ?>",
           };
           ajaxPost(null,'<?php echo Yii::app()->createUrl(Yii::app()->controller->module->id."/element/updatefield")?>',params,function(data){
-            url.loadByHash(window.location.hash);
+            urlCtrl.loadByHash(window.location.hash);
           });
       } else {
         $("."+clickedVoteObject).removeClass("faa-bounce animated");

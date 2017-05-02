@@ -254,7 +254,7 @@ $this->renderPartial('../default/panels/toolbar');
                     */?>
                 </div>
                 <div class="space20"></div>
-                <a href="javascript:elementLib.openForm(zonesDynForm)" class="btn btn-default">Zones</a>
+                <a href="javascript:dyFObj.openForm(zonesDynForm)" class="btn btn-default">Zones</a>
                 <a href="javascript:cityFinderObj.finder('city','<?php echo $city["name"];?>')" class="btn btn-default">Filiaires locales</a>  <a href="javascript:cityFinderObj.finder('departement','<?php echo @$city["depName"];?>')" class="btn btn-default">Filiaires département</a>  <a href="javascript:cityFinderObj.finder('region','<?php echo @$city["regionName"];?>')" class="btn btn-default">Filiaires région</a> 
         <!--       </div>
             </div>
@@ -308,13 +308,13 @@ $this->renderPartial('../default/panels/toolbar');
                     </a>
                     
                     <?php /*
-                    <div class="text-prune" onclick='url.loadByHash("#city.directory?tpl=directory2&type=organizations&insee=<?php echo $city["insee"]; ?>");'>
+                    <div class="text-prune" onclick='urlCtrl.loadByHash("#city.directory?tpl=directory2&type=organizations&insee=<?php echo $city["insee"]; ?>");'>
                       <i class="fa fa-male"></i><i class="fa fa-male"></i><i class="fa fa-male"></i><?php echo strtolower (Yii::t("common", "GROUPES")); ?>
                       <?php $cnt=0;foreach($organizations as $orga){if($orga["type"]==Organization::TYPE_GROUP )$cnt++;} ?>
                       <span class="badge bg-prune"><?php echo $cnt;?></span>
                     </div>
 
-                    <div class="text-azure" onclick='url.loadByHash("#city.directory?tpl=directory2&type=organizations&insee=<?php echo $city["insee"]; ?>");'>
+                    <div class="text-azure" onclick='urlCtrl.loadByHash("#city.directory?tpl=directory2&type=organizations&insee=<?php echo $city["insee"]; ?>");'>
                       <i class="fa fa-industry"></i> <?php echo strtolower (Yii::t("common", "ENTREPRISES")); ?>
                       <?php $cnt=0;foreach($organizations as $orga){ if($orga["type"] == Organization::TYPE_BUSINESS )$cnt++; } ?>
                       <span class="badge bg-azure"><?php echo $cnt;?></span>
@@ -457,7 +457,7 @@ jQuery(document).ready(function() {
 
   $('#selectRoom').change(function(){
     if($('#selectRoom').val() != "")
-      url.loadByHash($('#selectRoom').val());
+      urlCtrl.loadByHash($('#selectRoom').val());
       
   });
   

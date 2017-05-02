@@ -12,14 +12,14 @@ dynForm = {
 			    	}
 			    },
 			    beforeBuild : function(){
-			    	elementLib.setMongoId('projects');
+			    	dyFObj.setMongoId('projects');
 			    },
 			    afterSave : function(){
 					if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 				    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 				    else {
-				    	elementLib.closeForm();
-				    	url.loadByHash( location.hash );	
+				    	dyFObj.closeForm();
+				    	urlCtrl.loadByHash( location.hash );	
 				    }
 			    },
 			    beforeSave : function(){
@@ -33,23 +33,23 @@ dynForm = {
 							  "Créez votre page en quelques secondes,<br>et complétez les informations plus tard, selon vos besoins<hr>" +
 							  "</p>",
 		            },
-			        name : typeObjLib.name("project"),
-		            parentType : typeObjLib.hidden,
-		            parentId : typeObjLib.hidden,
-		            image : typeObjLib.image("#project.detail.id."+uploadObj.id),
-		            location : typeObjLib.location,
-		            tags :typeObjLib.tags(),
+			        name : dyFInputs.name("project"),
+		            parentType : dyFInputs.inputHidden(),
+		            parentId : dyFInputs.inputHidden(),
+		            image : dyFInputs.image("#project.detail.id."+uploadObj.id),
+		            location : dyFInputs.location,
+		            tags :dyFInputs.tags(),
+		            shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
 		            formshowers : {
 		            	label : "En détails",
 		                inputType : "custom",
 		                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> options (desc, urls)</a>",
 		            },
-			        description : typeObjLib.descriptionOptionnel,
-		            url : typeObjLib.urlOptionnel,
-		            "preferences[publicFields]" : typeObjLib.hiddenArray,
-		            "preferences[privateFields]" :typeObjLib.hiddenArray,
-		            "preferences[isOpenData]" : typeObjLib.hiddenTrue,
-		            "preferences[isOpenEdition]" : typeObjLib.hiddenTrue
+		            url : dyFInputs.inputUrlOptionnel(),
+		            "preferences[publicFields]" : dyFInputs.inputHidden([]),
+		            "preferences[privateFields]" : dyFInputs.inputHidden([]),
+		            "preferences[isOpenData]" : dyFInputs.inputHidden(true),
+		            "preferences[isOpenEdition]" : dyFInputs.inputHidden(true)
 			    }
 			}
 		};

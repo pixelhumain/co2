@@ -33,6 +33,7 @@
 
 			//mémorise les éléments
 			this.Sig.elementsMap = new Array();
+			this.Sig.preloadElementsMap = {};
 
 			//##
 			//créer un marker sur la carte, en fonction de sa position géographique
@@ -690,6 +691,16 @@
 			this.Sig.showMapElements = function(thisMap, data)
 			{
 				mylog.warn("--------------- showMapElements ---------------------");
+				
+				//si la carte n'est pas chargée
+				//on mémorise les données et on les affichera avec le prochain showMap
+				if(CoSigAllReadyLoad != true) {
+					console.log("showMapElements CoSigAllReadyLoad false -> save data", data);
+					Sig.preloadElementsMap = data;
+					return;
+		 		}
+
+				mylog.warn("--------------- showMapElements ---------------------", data);
 				//mylog.log(data);
 				if(data == null) return;
 
@@ -719,7 +730,8 @@
 				if(len >= 1){
 					$.each(data, function (key, value){ //mylog.log("type SIG ?"); mylog.dir(value);
 						var oneData = value;
-						if((value.typeSig == "news" || 
+						if( notEmpty(value) &&
+							(value.typeSig == "news" || 
 							value.typeSig == "idea" || 
 							value.typeSig == "question" || 
 							value.typeSig == "announce" || 
@@ -912,6 +924,7 @@
 			
 			//rafraichi les tiles après le redimentionnement du mapCanvas
 			map.invalidateSize(false);
+			CoSigAllReadyLoad = true;
 			return map;
 		};
 
@@ -966,7 +979,7 @@
 		this.Sig.modifLocalityContextMap = function(contextMap, element, type)
 	 	{
 	 		
-			mylog.warn("--------------- addContextMap ---------------------", contextMap, element, type);
+			mylog.log("--------------- modifLocalityContextMap ---------------------", contextMap, element, type);
 
 			if(typeof contextMap[type] == "undefined")
 				contextMap[type] = [];

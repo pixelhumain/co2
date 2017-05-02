@@ -675,14 +675,14 @@ SigLoader.getSigFindPlace = function (Sig){
     				Sig.myPosition.position.latitude = latitude;
     				Sig.myPosition.position.longitude = longitude;
     				if(location.hash != "#default.twostepregister"){ 
-    					url.loadByHash(location.hash);
+    					urlCtrl.loadByHash(location.hash);
 	    			}else{
 	    				achiveTSRAddress();
 	    			}
     			}
     			else{
     				//recharge la fiche info ouverte
-    				url.loadByHash(location.hash);
+    				urlCtrl.loadByHash(location.hash);
     			}
 
     			Sig.map.removeLayer(Sig.markerModifyPosition);

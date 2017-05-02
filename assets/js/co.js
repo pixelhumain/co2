@@ -3,22 +3,22 @@ var prevStep = 0;
 var steps = ["explain1","live","explain2","event","explain3","orga","explain4","project","explain5","person"];
 var slides = {
 	explain1 : function() { showDefinition("explainCommunectMe")},
-	live : function() { url.loadByHash("#default.live")},
+	live : function() { urlCtrl.loadByHash("#default.live")},
 	explain2 : function() { showDefinition("explainCartographiedeReseau")},
-	event : function() { url.loadByHash("#event.detail.id.57bb4078f6ca47cb6c8b457d")}, 
+	event : function() { urlCtrl.loadByHash("#event.detail.id.57bb4078f6ca47cb6c8b457d")}, 
 	explain3 : function() { showDefinition("explainDemoPart")},
-	orga : function() { url.loadByHash("#organization.detail.id.57553776f6ca47b37da93c2d")}, 
+	orga : function() { urlCtrl.loadByHash("#organization.detail.id.57553776f6ca47b37da93c2d")}, 
 	explain4 : function() { showDefinition("explainCommunecter")},
-	project : function() { url.loadByHash("#project.detail.id.56c1a474f6ca47a8378b45ef")},
+	project : function() { urlCtrl.loadByHash("#project.detail.id.56c1a474f6ca47a8378b45ef")},
 	explain5 : function() { showDefinition("explainProxicity")},
-	person : function() { url.loadByHash("#person.detail.id.54eda798f6b95cb404000903")} 
+	person : function() { urlCtrl.loadByHash("#person.detail.id.54eda798f6b95cb404000903")} 
 };
 
 function runslide(cmd)
 {
 	if(cmd == 0){
 		prevStep = null;
-		url.loadByHash("#default.live");
+		urlCtrl.loadByHash("#default.live");
 	}
 
 	if( prevStep != null ){
@@ -51,6 +51,7 @@ function checkPoll(){
 		countPoll++;
 	}
 }
+
 function bindRightClicks() { 
 	$.contextMenu({
 	    selector: ".add2fav",
@@ -191,7 +192,7 @@ function updateField(type,id,name,value,reload){
 		if(data.result) {
         	toastr.success(data.msg);
         	if(reload)
-        		url.loadByHash(location.hash);
+        		urlCtrl.loadByHash(location.hash);
 		}
         else
         	toastr.error(data.msg);  
@@ -331,7 +332,7 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 								if (typeof callback == "function") 
 									callback();
 								else
-									url.loadByHash(location.hash);
+									urlCtrl.loadByHash(location.hash);
 							} else {
 							   toastr.error("You leave succesfully");
 							}
@@ -367,7 +368,13 @@ function validateConnection(parentType, parentId, childId, childType, linkOption
 		dataType: "json",
 		success: function(data) {
 			if (data.result) {
-				if (typeof callback == "function") callback(parentType, parentId, childId, childType, linkOption);
+				if (typeof callback == "function") 
+					callback(parentType, parentId, childId, childType, linkOption);
+				else{
+					toastr.success(data.msg);
+					urlCtrl.loadByHash(location.hash);
+				}
+
 			} else {
 				toastr.error(data.msg);
 			}
@@ -395,7 +402,7 @@ function follow(parentType, parentId, childId, childType, callback){
 				if (typeof callback == "function") 
 					callback();
 				else
-					url.loadByHash(location.hash);
+					urlCtrl.loadByHash(location.hash);
 			}
 			else
 				toastr.error(data.msg);
@@ -455,7 +462,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 									if(data.result){
 										addFloopEntity(data.parent["_id"]["$id"], data.parentType, data.parent);
 										toastr.success(data.msg);	
-										url.loadByHash(location.hash);
+										urlCtrl.loadByHash(location.hash);
 									}
 									else{
 										if(typeof(data.type)!="undefined" && data.type=="info")
@@ -504,7 +511,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 									if(data.result){
 										addFloopEntity(data.parent["_id"]["$id"], data.parentType, data.parent);
 										toastr.success(data.msg);	
-										url.loadByHash(location.hash);
+										urlCtrl.loadByHash(location.hash);
 									}
 									else{
 										if(typeof(data.type)!="undefined" && data.type=="info")
@@ -529,24 +536,73 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 	}
 }		
 
-
 var CoAllReadyLoad = false;
-var url = {
-	loadableUrls : {},
-	short : {
-		"citoyens" : "p",
-		"poi" : "poi",
-		"siteurl":"s",
-		"organizations" : "o",
-		"events" : "e",
-		"projects" : "pr",
-		"cities" : "c",
-		/*"entry" : "s",
-		"vote" : "v",
-		"action" : "a",
-		"rooms" : "r",*/
-		"classified":"cl"
+var urlCtrl = {
+	afterLoad : null,
+	loadableUrls : {
+		"#modal." : {title:'OPEN in Modal'},
+		"#event.calendarview" : {title:"EVENT CALENDAR ", icon : "calendar"},
+		"#city.opendata" : {title:'STATISTICS ', icon : 'line-chart' },
+	    "#person.telegram" : {title:'CONTACT PERSON VIA TELEGRAM ', icon : 'send' },
+	    "#event.detail" : {aliasParam: "#page.type.events.id.$id", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
+	    "#poi.detail" : {aliasParam: "#page.type.poi.id.$id", params: ["id"],title:'POI DETAIL ', icon : 'calendar' },
+	    "#organization.detail" : {aliasParam: "#page.type.organizations.id.$id", params: ["id"],title:'ORGANIZATION DETAIL ', icon : 'users' },
+	    "#project.detail" : {aliasParam: "#page.type.projects.id.$id", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
+	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
+	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
+	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
+	    "#news.detail" : {title:'NEWS DETAIL ', icon : 'rss' },
+	    "#news.index.type" : {title:'NEWS INDEX ', icon : 'rss', menuId:"menu-btn-news-network","urlExtraParam":"isFirst=1" },
+	    "#need.detail" : {title:'NEED DETAIL ', icon : 'cubes' },
+	    "#need.addneedsv" : {title:'NEED DETAIL ', icon : 'cubes' },
+	    "#city.creategraph" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
+	    "#city.graphcity" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
+	    "#city.statisticPopulation" : {title:'CITY ', icon : 'university' },
+	    "#news" : {title:'NEWS ', icon : 'rss'},
+	    "#rooms.index.type.cities" : {title:'ACTION ROOMS ', icon : 'cubes', menuId:"btn-citizen-council-commun"},
+	    "#rooms.editroom" : {title:'ADD A ROOM ', icon : 'plus', action:function(){ editRoomSV ();	}},
+		"#element.aroundme" : {title:"Around me" , icon : 'crosshairs', menuId:"menu-btn-around-me"},
+	    "#element.notifications" : {title:'DETAIL ENTITY', icon : 'legal'},
+	    "#person.settings" : {title:'DETAIL ENTITY', icon : 'legal'},
+		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
+	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
+	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
+	    "#admin.checkgeocodage" : {title:'CHECKGEOCODAGE ', icon : 'download'},
+	    "#admin.openagenda" : {title:'OPENAGENDA ', icon : 'download'},
+	    "#admin.adddata" : {title:'ADDDATA ', icon : 'download'},
+	    "#admin.importdata" : {title:'IMPORT DATA ', icon : 'download'},
+	    "#admin.index" : {title:'IMPORT DATA ', icon : 'download'},
+	    "#admin.cities" : {title:'CITIES ', icon : 'university'},
+	    "#admin.sourceadmin" : {title:'SOURCE ADMIN', icon : 'download'},
+	    "#admin.checkcities" : {title:'SOURCE ADMIN', icon : 'download'},
+	    "#admin.directory" : {title:'IMPORT DATA ', icon : 'download'},
+	    "#admin.mailerrordashboard" : {title:'MAIL ERROR ', icon : 'download'},
+	    "#admin.moderate" : {title:'MODERATE ', icon : 'download'},
+	    "#admin.createfile" : {title:'IMPORT DATA', icon : 'download'},
+		"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus'},
+	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download'},
+	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download'},
+	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download'},
+	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
+	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
+	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
+	    "#default.agenda" : {title:'COMMUNECTED AGENDA ', icon : 'calendar', menuId:"menu-btn-agenda"},
+		"#default.home" : {title:'COMMUNECTED HOME ', icon : 'home',"menu":"homeShortcuts"},
+		"#default.apropos" : {title:'COMMUNECTED HOME ', icon : 'star',"menu":"homeShortcuts"},
+		"#default.twostepregister" : {title:'TWO STEP REGISTER', icon : 'home', "menu":"homeShortcuts"},
+		"#default.view.page" : {title:'Découvrir', icon : 'file-o'},
+		//"#home" : {"alias":"#default.home"},
+	    "#stat.chartglobal" : {title:'STATISTICS ', icon : 'bar-chart'},
+	    "#stat.chartlogs" : {title:'STATISTICS ', icon : 'bar-chart'},
+	    "#default.live" : {title:"FLUX'Direct" , icon : 'heartbeat', menuId:"menu-btn-live"},
+		"#default.login" : {title:'COMMUNECTED AGENDA ', icon : 'calendar'},
+		"#showTagOnMap.tag" : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showTagOnMap(hash.split('.')[2])	} },
+		"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
+		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
+		"#opendata" : {"alias":"#data.index"},
 	},
+	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
+	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
 	map : function (hash) {
 		hashT = hash.split('.');
 		return {
@@ -564,33 +620,34 @@ var url = {
 	checkAndConvert : function (hash) {
 		hashT = hash.split('_');
 		mylog.log("-------checkAndConvert : ",hash,hashT);
-		pos = $.inArray( hashT[0].substring(1) , Object.values( url.short ) );
+		pos = $.inArray( hashT[0].substring(1) , urlCtrl.shortVal );
 		if( pos >= 0 ){
-			type = Object.keys( url.short )[pos];
+			type = urlCtrl.shortKey[pos];
 			hash =  "#page.type."+type+".id."+hashT[1];
 			mylog.log("converted hash : ",hash);
 		} 
 		return hash;
 	},
 	jsController : function (hash){
-		hash = url.checkAndConvert(hash);
+		hash = urlCtrl.checkAndConvert(hash);
+		//alert("jsController"+hash);
 		mylog.log("jsController",hash);
 		res = false;
 		$(".menuShortcuts").addClass("hide");
-		mylog.log("url.loadableUrls", url.loadableUrls);
-		$.each( url.loadableUrls, function(urlIndex,urlObj)
+		//mylog.log("urlCtrl.loadableUrls", urlCtrl.loadableUrls);
+		$.each( urlCtrl.loadableUrls, function(urlIndex,urlObj)
 		{
 			//mylog.log("replaceAndShow2",urlIndex);
 			if( hash.indexOf(urlIndex) >= 0 )
 			{
 				checkMenu(urlObj, hash);
 			
-				endPoint = url.loadableUrls[urlIndex];
+				endPoint = urlCtrl.loadableUrls[urlIndex];
 				mylog.log("jsController 2",endPoint,"login",endPoint.login,endPoint.hash );
 				if( typeof endPoint.login == undefined || !endPoint.login || ( endPoint.login && userId ) ){
 					//alises are renaming of urls example default.home could be #home
 					if( endPoint.alias ){
-						endPoint = url.jsController(endPoint.alias);
+						endPoint = urlCtrl.jsController(endPoint.alias);
 						return false;
 					} 
 					if( endPoint.aliasParam ){
@@ -603,8 +660,8 @@ var url = {
 									alias = alias.replace("$"+v, paramId);
 								}
 							});
-						});		
-						endPoint = url.jsController(alias);	
+						});
+						endPoint = urlCtrl.jsController(alias);	
 						return false;
 					} 
 					// an action can be connected to a url, and executed
@@ -630,12 +687,20 @@ var url = {
 						if(extraParams.indexOf("#") >= 0){
 							extraParams=extraParams.replace( "#","%hash%" );
 						}
-						path = url.convertToPath(hash);
-						showAjaxPanel( '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res );
+						path = urlCtrl.convertToPath(hash);
+						pathT = path.split('/');
+						//open path in a modal (#openModal)
+						
+						if(pathT[0] == "modal"){
+							path = path.substring(5);
+							alert(baseUrl+'/'+moduleId+path);
+							smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+path);
+						} else
+							showAjaxPanel( '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res,endPoint );
 						
 						if(endPoint.menu)
 							$("."+endPoint.menu).removeClass("hide");
-					}
+					} 
 					res = true;
 					return false;
 				} else {
@@ -644,7 +709,8 @@ var url = {
 					resetUnlogguedTopBar();
 					res = true;
 				}
-			}
+			} /*else 
+				alert("hash not found");*/
 		});
 		return res;
 	},
@@ -652,6 +718,7 @@ var url = {
 	//back sert juste a differencier un load avec le back btn
 	//ne sert plus, juste a savoir d'ou vient drait l'appel
 	loadByHash : function ( hash , back ) {
+		//alert("loadByHash"+hash);
 		/* court circuit du lbh pour changer le type du directory si on est déjà sur une page directory */
 		// mylog.log("IS DIRECTORY ? ", 
 		// 			hash.indexOf("#default.directory"), 
@@ -697,15 +764,15 @@ var url = {
 		searchPage = false;
 		
 
-		//alert("url.loadByHash"+hash);
-	    mylog.warn("url.loadByHash",hash,back);
-	    if( url.jsController(hash) ){
-	    	mylog.log("url.loadByHash >>> jsController",hash);
+		//alert("urlCtrl.loadByHash"+hash);
+	    mylog.warn("urlCtrl.loadByHash",hash,back);
+	    if( urlCtrl.jsController(hash) ){
+	    	mylog.log("urlCtrl.loadByHash >>> hash found",hash);
 	    }
 	    else if( hash.indexOf("#panel") >= 0 ){
 	    	panelName = hash.substr(7);
 	    	if( (panelName == "box-login" || panelName == "box-register") && userId != "" && userId != null ){
-	    		url.loadByHash("#default.home");
+	    		urlCtrl.loadByHash("#default.home");
 	    		return false;
 	    	} else if(panelName == "box-add")
 	            title = 'ADD SOMETHING TO MY NETWORK';
@@ -733,18 +800,135 @@ var url = {
 		        hashT = hash.split(".");
 		        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ADD NEED '+typesLabels[hashT[3]],'cubes' );
 		} */
-
 	    else 
 	        showAjaxPanel( '/app/index', 'Home','home' );
 
 	    location.hash = hash;
 
-	    /*if(!back){
-	    	history.replaceState( { "hash" :location.hash} , null, location.hash ); //changes the history.state
-		    mylog.warn("replaceState history.state",history.state);
+	    /*if(typeof back == "function"){
+	    	alert("back");
+	    	back();
 		}*/
 	}
 }
+
+/* ****************
+Generic non-ajax panel loading process 
+**************/
+function showPanel(box,callback){ 
+	$(".my-main-container").scrollTop(0);
+
+  	$(".box").hide(200);
+  	showNotif(false);
+  	
+  	if(isMapEnd) showMap(false);
+			
+	mylog.log("showPanel");
+	//showTopMenu(false);
+	$(themeObj.mainContainer).animate({ top: -1500, opacity:0 }, 500 );
+
+	$("."+box).show(500);
+
+	if (typeof callback == "function") {
+		callback();
+	}
+}
+
+/* ****************
+Generic ajax panel loading process 
+loads any REST Url endpoint returning HTML into the content section
+also switches the global Title and Icon
+**************/
+
+function  processingBlockUi() { 
+	msg = '<h4 style="font-weight:300" class=" text-dark padding-10"><i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...</h4>';
+	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
+		msg = themeObj.blockUi.processingMsg;
+	$.blockUI({ message :  msg });
+	bindLBHLinks();
+}
+function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
+	//alert("showAjaxPanel"+url);
+	
+	var dest = ( typeof urlObj == "undefined" || typeof urlObj.useHeader != "undefined" ) ? themeObj.mainContainer : ".pageContent" ;
+	mylog.log("showAjaxPanel", url, urlObj,dest,urlCtrl.afterLoad );	
+	//var dest = themeObj.mainContainer;
+	hideScrollTop = false;
+	//alert("showAjaxPanel"+dest);
+	showNotif(false);
+			
+	setTimeout(function(){
+		$(dest).html("");
+		$(".hover-info,.hover-info2").hide();
+		processingBlockUi();
+		showMap(false);
+	}, 200);
+
+	$(".box").hide(200);
+	//showPanel('box-ajax');
+	icon = (icon) ? " <i class='fa fa-"+icon+"'></i> " : "";
+	$(".panelTitle").html(icon+title).fadeIn();
+	mylog.log("GETAJAX",icon+title);
+	
+	showTopMenu(true);
+	userIdBefore = userId;
+	setTimeout(function(){
+		if( $(dest).length )
+		{
+		 getAjax(dest, baseUrl+'/'+moduleId+url, function(data){ 
+			
+			if( dest != themeObj.mainContainer )
+				$(".subModuleTitle").html("");
+
+			//initNotifications(); 
+			
+			$(".modal-backdrop").hide();
+			bindExplainLinks();
+			bindTags();
+			bindLBHLinks();
+
+			$.unblockUI();
+
+			if(mapEnd)
+				showMap(true);
+
+    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
+        		uploadObj.type = contextData.type;
+        		uploadObj.id = contextData.id;
+        	}
+        	
+        	if( typeof urlCtrl.afterLoad == "function") {
+        		mylog.log("9999999999999999999999999999", searchType, $('#searchTags').val() );
+        		urlCtrl.afterLoad();
+        		urlCtrl.afterLoad = null;
+        	}
+        	/*if(debug){
+        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
+        			if(prevDbAccessCount == 0){
+        				dbAccessCount = parseInt(data);
+        				prevDbAccessCount = dbAccessCount;
+        			} else {
+        				dbAccessCount = parseInt(data)-prevDbAccessCount;
+        				prevDbAccessCount = parseInt(data);
+        			}
+        			//console.error('dbaccess:'+prevDbAccessCount);
+        			
+        			//$(".dbAccessBtn").remove();
+        			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
+        		},null);
+        	}*/
+         },"html");
+		} else 
+			console.error( 'showAjaxPanel', dest, "doesn't exist" );
+	}, 400);
+}
+/*prevDbAccessCount = 0; 
+function clearDbAccess() { 
+	getAjax(null, baseUrl+'/'+moduleId+"/log/clear", function(data){ 
+		$(".dbAccessBtn").remove();
+		prevDbAccessCount = 0; 
+	});
+}*/
 
 function decodeHtml(str) {
 	mylog.log("decodeHtml", str);
@@ -776,48 +960,10 @@ function setTitle(str, icon, topTitle,keywords,shortDesc) { mylog.log("setTitle"
 		$('meta[name="description"]').attr("content","Communecter : Connecter à sa commune, inter connecter les communs, un réseau sociétal pour un citoyen connecté et acteur au centre de sa société.");
 }
 
-//ex : #search:bretagneTelecom:all
-//#search:#fablab
-//#search:#fablab:all:map
-function searchByHash (hash) 
-{ 
-	var mapEnd = false;
-	var searchT = hash.split(':');
-	// 1 : is the search term
-	var search = searchT[1]; 
-	scopeBtn = null;
-	// 2 : is the scope
-	if( searchT.length > 2 )
-	{
-		if( searchT[2] == "all" )
-			scopeBtn = ".btn-scope-niv-5" ;
-		else if( searchT[2] == "region" )
-			scopeBtn = ".btn-scope-niv-4" ;
-		else if( searchT[2] == "dep" )
-			scopeBtn = ".btn-scope-niv-3" ;
-		else if( searchT[2] == "quartier" )
-			scopeBtn = ".btn-scope-niv-2" ;
-	}
-	mylog.log("search : "+search,searchT, scopeBtn);
-	$(".input-global-search").val(search);
-	//startGlobalSearch();
-	if( scopeBtn )
-		$(scopeBtn).trigger("click"); 
-
-	if( searchT.length > 3 && searchT[3] == "map" )
-		mapEnd = true;
-	return mapEnd;
-}
-
-function markdownToHtml (str) { 
-	var converter = new showdown.Converter(),
-	res = converter.makeHtml(str);
-	return res;
-}
 
 function checkMenu(urlObj, hash){
 	mylog.log("checkMenu *******************", hash);
-	mylog.dir(urlObj);
+	//mylog.dir(urlObj);
 	$(".menu-button-left").removeClass("selected");
 	if(typeof urlObj.menuId != "undefined"){ mylog.log($("#"+urlObj.menuId).data("hash"));
 		if($("#"+urlObj.menuId).attr("href") == hash)
@@ -862,107 +1008,7 @@ function _checkLoggued() {
 	});
 }
 
-/* ****************
-Generic non-ajax panel loading process 
-**************/
-function showPanel(box,callback){ 
-	$(".my-main-container").scrollTop(0);
 
-  	$(".box").hide(200);
-  	showNotif(false);
-  	
-  	if(isMapEnd) showMap(false);
-			
-	mylog.log("showPanel");
-	//showTopMenu(false);
-	$(themeObj.mainContainer).animate({ top: -1500, opacity:0 }, 500 );
-
-	$("."+box).show(500);
-
-	if (typeof callback == "function") {
-		callback();
-	}
-}
-
-/* ****************
-Generic ajax panel loading process 
-loads any REST Url endpoint returning HTML into the content section
-also switches the global Title and Icon
-**************/
-
-function  processingBlockUi() { 
-	msg = '<h4 style="font-weight:300" class=" text-dark padding-10"><i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...</h4>';
-	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
-		msg = themeObj.blockUi.processingMsg;
-	$.blockUI({ message :  msg });
-	bindLBHLinks();
-}
-function showAjaxPanel (url,title,icon, mapEnd) { 
-	mylog.log("showAjaxPanel",url,"TITLE",title);
-	hideScrollTop = false;
-
-	showNotif(false);
-			
-	setTimeout(function(){
-		$(themeObj.mainContainer).html("");
-		$(".hover-info,.hover-info2").hide();
-		processingBlockUi();
-		showMap(false);
-	}, 200);
-
-	$(".box").hide(200);
-	//showPanel('box-ajax');
-	icon = (icon) ? " <i class='fa fa-"+icon+"'></i> " : "";
-	$(".panelTitle").html(icon+title).fadeIn();
-	mylog.log("GETAJAX",icon+title);
-	
-	showTopMenu(true);
-	userIdBefore = userId;
-	setTimeout(function(){
-		 getAjax(themeObj.mainContainer, baseUrl+'/'+moduleId+url, function(data){ 
-			
-			//initNotifications(); 
-			
-			$(".modal-backdrop").hide();
-			bindExplainLinks();
-			bindTags();
-			bindLBHLinks();
-
-			$.unblockUI();
-
-			if(mapEnd)
-				showMap(true);
-
-    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
-        		uploadObj.type = contextData.type;
-        		uploadObj.id = contextData.id;
-        	}
-        	if(debug){
-        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
-        			if(prevDbAccessCount == 0){
-        				dbAccessCount = parseInt(data);
-        				prevDbAccessCount = dbAccessCount;
-        			} else {
-        				dbAccessCount = parseInt(data)-prevDbAccessCount;
-        				prevDbAccessCount = parseInt(data);
-        			}
-        			//console.error('dbaccess:'+prevDbAccessCount);
-        			
-        			//$(".dbAccessBtn").remove();
-        			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
-        		},null);
-        	}
-
-		},"html");
-	}, 400);
-}
-prevDbAccessCount = 0; 
-function clearDbAccess() { 
-	getAjax(null, baseUrl+'/'+moduleId+"/log/clear", function(data){ 
-		$(".dbAccessBtn").remove();
-		prevDbAccessCount = 0; 
-	});
-}
 /* ****************
 visualize all tagged elements on a map
 **************/
@@ -1007,7 +1053,7 @@ function showTagOnMap (tag) {
 	          }
 	 	});
 
-	//url.loadByHash('#project.detail.id.56c1a474f6ca47a8378b45ef',null,true);
+	//urlCtrl.loadByHash('#project.detail.id.56c1a474f6ca47a8378b45ef',null,true);
 	//Sig.showFilterOnMap(tag);
 }
 
@@ -1066,17 +1112,17 @@ var smallMenu = {
 	//the url must return a list like userConnected.list
 	openAjax : function  (url,title,icon,color,title1,params,callback) 
 	{ 
-		if( typeof directory == "undefined" )
+		/*if( typeof directory == "undefined" )
 		    lazyLoad( moduleUrl+'/js/default/directory.js', null, null );
-	    
+	    */
 	    //processingBlockUi();
-	    $(smallMenu.destination).html("<i class='fa fa-spin fa-refresh'></i>");
+	    //$(smallMenu.destination).html("<i class='fa fa-spin fa-refresh fa-4x'></i>");
 
 		ajaxPost( null , url, params , function(data)
 		{
 			if(!title1 && notNull(title1) && data.context && data.context.name)
 				title1 = data.context.name;
-			smallMenu.buildHeader( title,icon,color,title1 );
+			var content = smallMenu.buildHeader( title,icon,color,title1 );
 			smallMenu.open( content );
 			if( data.count == 0 )
 				$(".titleSmallMenu").html("<a class='text-white' href='javascript:smallMenu.open();'> <i class='fa fa-th'></i></a> "+	
@@ -1088,8 +1134,6 @@ var smallMenu = {
 		   	$('.searchSmallMenu').off().on("keyup",function() { 
 				directory.search ( ".favSection", $(this).val() );
 		   	});
-		   	if( jsonHelper.notNull( "params.otherCollectionList", "function") )
-		   		params.otherCollectionList();
 		   	//else collection.buildCollectionList( "linkList" ,"#listCollections",function(){ $("#listCollections").html("<h4 class=''>Collections</h4>"); });
 
 		   	if (typeof callback == "function") 
@@ -1122,9 +1166,6 @@ var smallMenu = {
 
 					"<h3 class='titleSmallMenu'> "+
 						title1+"<i class='fa "+icon+" text-"+color+"'></i> "+title+
-						"<div class='col-md-4 pull-right'>"+
-							"<input name='searchSmallMenu' class='form-control searchSmallMenu text-black' placeholder='rechercher' style=''><br/>"+
-						"</div>"+
 					"</h3><hr>"+
 					"<div class='col-md-12 bold sectionFilters'>"+
 						"<a class='text-black bg-white btn btn-link favSectionBtn btn-default' "+
@@ -1138,6 +1179,7 @@ var smallMenu = {
 
 				"<div id='listDirectory' class='col-md-10 no-padding'></div>"+
 				"<div class='hidden-xs col-sm-2 text-left'>"+
+					"<input name='searchSmallMenu' style='border:1px solid red' class='form-control searchSmallMenu text-black' placeholder='rechercher' style=''><br/>"+
 					"<h4 class=''><i class='fa fa-angle-down'></i> Filtres</h4>"+
 					"<a class='btn btn-dark-blue btn-anc-color-blue btn-xs favElBtn favAllBtn text-left' href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'> <i class='fa fa-tags'></i> Tout voir </a><br/>"+
 
@@ -1162,14 +1204,14 @@ var smallMenu = {
 	//opens any html without post processing
 	openAjaxHTML : function  (url,title,type,nextPrev) { 
 		smallMenu.open("",type );
-		dest = (type == "blockUI") ? ".blockContent" : "#openModal .modal-content .container" ;
+		var dest = (type == "blockUI") ? ".blockContent" : "#openModal .modal-content .container" ;
 		getAjax( dest , url , function () { 
 			
 			//next and previous btn to nav from preview to preview
 			if(nextPrev){
 				var p = 0;
 				var n = 0;
-				var  found = false;
+				var found = false;
 				var l = $( '.searchEntityContainer .container-img-profil' ).length;
 				$.each( $( '.searchEntityContainer .container-img-profil' ), function(i,val){
 					if(found){
@@ -1184,8 +1226,9 @@ var smallMenu = {
 				html = "<div style='margin-bottom:50px'><a href='"+p+"' class='lbhp text-dark'><i class='fa fa-2x fa-arrow-circle-left'></i> PREV </a> "+
 						" <a href='"+n+"' class='lbhp text-dark'> NEXT <i class='fa fa-2x fa-arrow-circle-right'></i></a></div>";
 				$(dest).prepend(html);
-				bindLBHLinks();
+				
 			}
+			bindLBHLinks();
 		 },"html" );
 	},
 	//content Loader can go into a block
@@ -1220,9 +1263,12 @@ var smallMenu = {
 				  message: content
 				});
 			} else{//open inside a boostrap modal 
-				$("#openModal").modal("show");
+				if(!$("#openModal").hasClass('in'))
+					$("#openModal").modal("show");
 				if(content)
 					$("#openModal div.modal-content div.container").html(content);
+				else 
+					$("#openModal div.modal-content div.container").html("<i class='fa fa-spin fa-refresh fa-4x'></i>");
 			}
 
 			$(".blockPage").addClass(smallMenu.destination.slice(1));
@@ -1331,8 +1377,9 @@ function  bindLBHLinks() {
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-	    url.loadByHash( h );
-	})
+	    urlCtrl.loadByHash( h );
+	});
+	//open any url in a modal window
 	$(".lbhp").off().on("click",function(e) {
 		e.preventDefault();
 		mylog.warn("***************************************");
@@ -1342,8 +1389,11 @@ function  bindLBHLinks() {
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 		if( $(this).data("modalshow") )
 			smallMenu.open ( directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
-		else 
-	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url.convertToPath(h) ,"","blockUI",h);
+		else {
+			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
+	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
+	    	//smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url ,"","blockUI",h);
+		}
 	})
 }
 
@@ -1437,7 +1487,7 @@ maybe movebale into Element.js
 function  buildQRCode(type,id) { 
 		
 	$(".qrCode").qrcode({
-	    text: baseUrl+"/#"+typeObjLib.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
+	    text: baseUrl+"/#"+dyFInputs.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
 	    render: 'image',
 		minVersion: 8,
 	    maxVersion: 40,
@@ -1491,60 +1541,7 @@ function activateSummernote(elem) {
 		});
 	}
 }
-function markdownToHtml(str) { 
-	mylog.log("markdownToHtml", str);
-	var converter = new showdown.Converter();
-	var res = converter.makeHtml(str)
-	mylog.log("rest", res);
-	return res;
-}
 
-
-function activateMarkdown(elem) { 
-	mylog.log("activateMarkdown", elem);
-
-	markdownParams = {
-			savable:false,
-			iconlibrary:'fa',
-			onPreview: function(e) {
-				var previewContent = "";
-			    mylog.log(e.isDirty());
-			    if (e.isDirty()) {
-			    	var converter = new showdown.Converter(),
-			    		text      = e.getContent(),
-			    		previewContent      = converter.makeHtml(text);
-			    } else {
-			    	previewContent = "Default content";
-			    }
-			    return previewContent;
-		  	},
-		  	onSave: function(e) {
-		  		mylog.log(e);
-		  	},
-		}
-
-	if( !$('script[src="'+baseUrl+'/plugins/bootstrap-markdown/js/bootstrap-markdown.js"]').length ){
-		mylog.log("activateMarkdown if");
-
-		$("<link/>", {
-		   rel: "stylesheet",
-		   type: "text/css",
-		   href: baseUrl+"/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css"
-		}).appendTo("head");
-		$.getScript( baseUrl+"/plugins/showdown/showdown.min.js", function( data, textStatus, jqxhr ) {
-
-			$.getScript( baseUrl+"/plugins/bootstrap-markdown/js/bootstrap-markdown.js", function( data, textStatus, jqxhr ) {
-				mylog.log("HERE", elem);
-				$(elem).markdown(markdownParams);
-			});
-
-
-		});
-	} else {
-		mylog.log("activateMarkdown else");
-		$(elem).markdown(markdownParams);
-	}
-}
 
 function  firstOptions() { 
 	var res = {
@@ -1566,14 +1563,16 @@ function myAdminList (ctypes) {
 		$.each( ctypes, function(i,ctype) {
 			var connectionType = connectionTypes[ctype];
 			myList[ ctype ] = { label: ctype, options:{} };
-			if(typeof myContacts != "undefined" && myContacts != null)
-			$.each( myContacts[ ctype ],function(id,elemObj){
-				//mylog.log(ctype+"-"+id+"-"+elemObj.name);
-				if( elemObj.links && elemObj.links[connectionType] && elemObj.links[connectionType][userId] && elemObj.links[connectionType][userId].isAdmin) {
-					//mylog.warn(ctype+"-"+id+"-"+elemObj.name);
-					myList[ ctype ]["options"][ elemObj["_id"]["$id"] ] = elemObj.name;
-				}
-			});
+			if( notNull(myContacts) ){
+				mylog.log("myAdminList",ctype,connectionType,myContacts[ ctype ]);
+				$.each( myContacts[ ctype ],function(id,elemObj){
+					mylog.log("myAdminList",ctype,id,elemObj.name);
+					if( elemObj.links && elemObj.links[connectionType] && elemObj.links[connectionType][userId] && elemObj.links[connectionType][userId].isAdmin) {
+						mylog.warn("myAdminList2",ctype+"-"+id+"-"+elemObj.name);
+						myList[ ctype ]["options"][ elemObj["_id"]["$id"] ] = elemObj.name;
+					}
+				});
+			}
 		});
 		mylog.dir(myList);
 	}
@@ -1687,111 +1686,6 @@ function globalSearch(searchValue,types,autre){
  	});
 }*/
 
-
-var elementLocation = null;
-var centerLocation = null;
-var elementLocations = [];
-var elementPostalCode = null;
-var elementPostalCodes = [];
-var countLocation = 0;
-var countPostalCode = 0;
-function copyMapForm2Dynform(locationObj) { 
-	//if(!elementLocation)
-	//	elementLocation = [];
-	mylog.log("locationObj", locationObj);
-	elementLocation = locationObj;
-	mylog.log("elementLocation", elementLocation);
-	elementLocations.push(elementLocation);
-	mylog.log("elementLocations", elementLocations);
-	if(!centerLocation || locationObj.center == true){
-		centerLocation = elementLocation;
-		elementLocation.center = true;
-	}
-	mylog.dir(elementLocations);
-	//elementLocation.push(positionObj);
-}
-
-function addLocationToForm(locationObj)
-{
-	mylog.warn("---------------addLocationToForm----------------");
-	mylog.dir(locationObj);
-	var strHTML = "";
-	if( locationObj.address.addressCountry)
-		strHTML += locationObj.address.addressCountry;
-	if( locationObj.address.postalCode)
-		strHTML += " ,"+locationObj.address.postalCode;
-	if( locationObj.address.addressLocality)
-		strHTML += " ,"+locationObj.address.addressLocality;
-	if( locationObj.address.streetAddress)
-		strHTML += " ,"+locationObj.address.streetAddress;
-	var btnSuccess = "";
-	var locCenter = "";
-	if( countLocation == 0){
-		btnSuccess = "btn-success";
-		locCenter = "<span class='lblcentre'>(localité centrale)</span>";
-	}
-	
-	strHTML = "<a href='javascript:removeLocation("+countLocation+")' class=' locationEl"+countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
-			  "<span class='locationEl"+countLocation+" locel text-azure'>"+strHTML+"</span> "+
-			  "<a href='javascript:setAsCenter("+countLocation+")' class='centers center"+countLocation+" locationEl"+countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
-	$(".locationlocation").prepend(strHTML);
-	countLocation++;
-}
-
-function copyPCForm2Dynform(postalCodeObj) { 
-	mylog.warn("---------------copyPCForm2Dynform----------------");
-	mylog.log("postalCodeObj", postalCodeObj);
-	elementPostalCode = postalCodeObj;
-	mylog.log("elementPostalCode", elementPostalCode);
-	elementPostalCodes.push(elementPostalCode);
-	mylog.log("elementPostalCodes", elementPostalCodes);
-	mylog.dir(elementPostalCodes);
-	//elementPostalCode.push(positionObj);
-}
-
-function addPostalCodeToForm(postalCodeObj)
-{
-	mylog.warn("---------------addPostalCodeToForm----------------");
-	mylog.dir(postalCodeObj);
-	var strHTML = "";
-	if( postalCodeObj.postalCode)
-		strHTML += postalCodeObj.postalCode;
-	if( postalCodeObj.name)
-		strHTML += " ,"+postalCodeObj.name;
-	if( postalCodeObj.latitude)
-		strHTML += " ,("+postalCodeObj.latitude;
-	if( postalCodeObj.longitude)
-		strHTML += " / "+postalCodeObj.longitude+")";
-	
-	strHTML = "<a href='javascript:removeLocation("+countPostalCode+")' class=' locationEl"+countPostalCode+" btn'> <i class='text-red fa fa-times'></i></a>"+
-			  "<span class='locationEl"+countPostalCode+" locel text-azure'>"+strHTML+"</span> <br/>";
-	$(".postalcodepostalcode").prepend(strHTML);
-	countPostalCode++;
-}
-
-
-function removeLocation(ix){
-	mylog.log("removeLocation", ix, elementLocations);
-	elementLocation = null;
-	elementLocations.splice(ix,1);
-	//TODO check if this center then apply on first
-	//$(".locationEl"+countLocation).remove();
-	$(".locationEl"+ix).remove();
-}
-
-function setAsCenter(ix){
-
-	$(".centers").removeClass('btn-success');
-	$(".lblcentre").remove();
-	$.each(elementLocations,function(i, v) { 
-		if( v.center)
-			delete v.center;
-	})
-	$(".centers").removeClass('btn-success');
-	$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>(localité centrale)</span>");
-	centerLocation = elementLocations[ix];
-	elementLocations[ix].center = true;
-}
 
 function notEmpty(val){
 	return typeof val != "undefined"
@@ -2029,13 +1923,6 @@ function myContactLabel (type,id) {
 	return null;
 }
 
-
-function shadowOnHeader() {
-	var y = $(".my-main-container").scrollTop(); 
-    if (y > 0) {  $('.main-top-menu').addClass('shadow'); }
-    else { $('.main-top-menu').removeClass('shadow'); }
-}
-
 function autoCompleteInviteSearch(search){
 	mylog.log("autoCompleteInviteSearch2", search);
 	if (search.length < 3) { return }
@@ -2119,7 +2006,7 @@ function updateLocalityEntities(addressesIndex, addressesLocality){
 	mylog.warn("updateLocalityEntities");
 	$("#ajax-modal").modal("hide");
 	showMap(true);
-	if(typeof initUpdateLocality != "undefined"){
+	if(typeof formInMap.initUpdateLocality != "undefined"){
 		var address = contextData.address ;
 		var geo = contextData.geo ;
 		if(addressesLocality && addressesIndex){
@@ -2130,7 +2017,7 @@ function updateLocalityEntities(addressesIndex, addressesLocality){
 			geo = null ;
 		}
 		mylog.log(address, geo, contextData.type, addressesIndex);
-		initUpdateLocality(address, geo, contextData.type, addressesIndex); 
+		formInMap.initUpdateLocality(address, geo, contextData.type, addressesIndex); 
 	}
 }
 
@@ -2258,27 +2145,54 @@ var collection = {
 };
 
 /* *********************************
-			ELEMENTS
+			DYNFORM SPEC TYPE OBJ
 ********************************** */
+var contextData = null;
+var dynForm = null;
+var uploadObj = {
+	type : null,
+	id : null,
+	folder : "communecter", //on force pour pas casser toutes les vielles images
+	set : function(type,id){
+		uploadObj.type = type;
+		uploadObj.id = id;
+	}
+};
 
-var elementLib = {
+var dyFObj = {
 	elementObj : null,
+	//rules to show hide submit btn, used anwhere on blur and can be 
+	//completed by specific rules on dynForm Obj
+	//ex : dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf
+	canSubmitIf : function () { 
+    	var valid = true;
+    	//on peut ajouter des regles dans la map definition 
+    	if(	jsonHelper.notNull("dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf", "function") )
+    		valid = dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf();
+    	if( $('#ajaxFormModal #name').length == 0 || $('#ajaxFormModal #name').val() != "" && valid )
+    		$('#btn-submit-form').show();
+    	else 
+    		$('#btn-submit-form').hide();
+//tmp
+$('#btn-submit-form').show();
+
+    },
 	formatData : function (formData, collection,ctrl) { 
 		mylog.warn("----------- formatData",formData, collection,ctrl);
 		formData.collection = collection;
 		formData.key = ctrl;
 		
-		if(elementLocation){
+		if(dyFInputs.locationObj.elementLocation){
 			//formData.multiscopes = elementLocation;
-			formData.address = centerLocation.address;
-			formData.geo = centerLocation.geo;
-			formData.geoPosition = centerLocation.geoPosition;
-			if( elementLocations.length ){
-				$.each( elementLocations,function (i,v) { 
-					if( jsonHelper.notNull( "v.center") )
-						elementLocations.splice(i, 1);
+			formData.address = dyFInputs.locationObj.centerLocation.address;
+			formData.geo = dyFInputs.locationObj.centerLocation.geo;
+			formData.geoPosition = dyFInputs.locationObj.centerLocation.geoPosition;
+			if( dyFInputs.locationObj.elementLocations.length ){
+				$.each( dyFInputs.locationObj.elementLocations,function (i,v) { 
+					if( typeof v.center != "undefined" )
+						dyFInputs.locationObj.elementLocations.splice(i, 1);
 				});
-				formData.addresses = elementLocations;
+				formData.addresses = dyFInputs.locationObj.elementLocations;
 			}
 		}
 		
@@ -2356,7 +2270,7 @@ var elementLib = {
 		mylog.warn("---------------- saveElement",formId,collection,ctrl,saveUrl,afterSave );
 		formData = $(formId).serializeFormJSON();
 		mylog.log("before",formData);
-		formData = elementLib.formatData(formData,collection,ctrl);
+		formData = dyFObj.formatData(formData,collection,ctrl);
 		formData.medias = [];
 		$(".resultGetUrl").each(function(){
 			if($(this).html() != ""){
@@ -2419,11 +2333,11 @@ var elementLib = {
 	            	if (typeof afterSave == "function") 
 	            		afterSave(data);
 	            	else{
-						elementLib.closeForm();
+						dyFObj.closeForm();
 		                if(data.url)
-		                	url.loadByHash( data.url );
+		                	urlCtrl.loadByHash( data.url );
 		                else if(data.id)
-			        		url.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 					}
 	            }
 	    	}
@@ -2456,7 +2370,7 @@ var elementLib = {
 				if( jsonHelper.notNull("themeObj.dynForm.editElementPOI","function") )
 					themeObj.dynForm.editElementPOI(type,data);
 
-				elementLib.openForm( typeObjLib.get(type).ctrl ,null, data.map);
+				dyFObj.openForm( dyFInputs.get(type).ctrl ,null, data.map);
 	        } else {
 	           toastr.error("something went wrong!! please try again.");
 	        }
@@ -2470,18 +2384,23 @@ var elementLib = {
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
 	    //global variables clean up
-	    elementLocation = null;
-	    elementLocations = [];
-	    centerLocation = null;
+	    dyFInputs.locationObj.elementLocation = null;
+	    dyFInputs.locationObj.elementLocations = [];
+	    dyFInputs.locationObj.centerLocation = null;
 	    updateLocality = false;
 	    //initKSpec();
 	    if(userId)
 		{
 			formType = type;
-			elementLib.getDynFormObj(type, function() { 
-				elementLib.starBuild(afterLoad,data);
+			dyFObj.getDynFormObj(type, function() { 
+				dyFObj.starBuild(afterLoad,data);
 			},afterLoad, data);
 		} else {
+			dyFObj.openFormAfterLogin = {
+				type : type, 
+				afterLoad : afterLoad,
+				data : data
+			};
 			toastr.error("Vous devez être connecté pour afficher les formulaires de création");
 			$('#modalLogin').modal("show");
 		}
@@ -2495,14 +2414,14 @@ var elementLib = {
 		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
 		if(typeof type == "object"){
 			mylog.log(" object directly Loaded : ", type);
-			elementLib.elementObj = type;
+			dyFObj.elementObj = type;
 			if( notNull(type.col) ) uploadObj.type = type.col;
     		callback(type, afterLoad, data);
 		}else if( jsonHelper.notNull( "typeObj."+type+".dynForm" , "object") ){
 			mylog.log(" typeObj Loaded : ", type);
-			elementLib.elementObj = typeObjLib.get(type);
-			if( notNull(typeObjLib.get(type).col) ) uploadObj.type = typeObjLib.get(type).col;
-    		callback( elementLib.elementObj, afterLoad, data );
+			dyFObj.elementObj = dyFInputs.get(type);
+			if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
+    		callback( dyFObj.elementObj, afterLoad, data );
 		}else {
 			//TODO : pouvoir surchargé le dossier dynform dans le theme
 			//via themeObj.dynForm.folder overload
@@ -2510,11 +2429,11 @@ var elementLib = {
 			lazyLoad( dfPath+type+'.js', 
 				null,
 				function() { 
-					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+typeObjLib.get(type).ctrl+'.js');
+					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+dyFInputs.get(type).ctrl+'.js');
 					mylog.dir(dynForm);
-				  	typeObjLib.get(type).dynForm = dynForm;
-					elementLib.elementObj = typeObjLib.get(type);
-					if( notNull(typeObjLib.get(type).col) ) uploadObj.type = typeObjLib.get(type).col;
+				  	dyFInputs.get(type).dynForm = dynForm;
+					dyFObj.elementObj = dyFInputs.get(type);
+					if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
     				callback( afterLoad, data );
 			});
 		}
@@ -2522,12 +2441,12 @@ var elementLib = {
 	//prepare information for the modal panel 
 	//and launches the build process
 	starBuild : function  (afterLoad, data) {
-		mylog.warn("------------ starBuild",elementLib.elementObj, afterLoad, data);
-		mylog.dir(elementLib.elementObj);
-		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(elementLib.elementObj.bgClass);
+		mylog.warn("------------ starBuild",dyFObj.elementObj, afterLoad, data);
+		mylog.dir(dyFObj.elementObj);
+		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(dyFObj.elementObj.bgClass);
 		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
 		$("#ajax-modal-modal-title").removeClass("text-green").removeClass("text-purple").removeClass("text-orange").removeClass("text-azure");
-		$(".modal-header").removeClass("bg-purple bg-green bg-orange bg-yellow bg-lightblue ").addClass(elementLib.elementObj.titleClass);
+		$(".modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-lightblue ").addClass(dyFObj.elementObj.titleClass);
 	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
@@ -2539,50 +2458,50 @@ var elementLib = {
 	  	$('#ajax-modal').modal("show");
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
-	  	elementLib.buildDynForm(afterLoad, data);
+	  	dyFObj.buildDynForm(afterLoad, data);
 	},
 	buildDynForm : function (afterLoad,data) { 
-		mylog.warn("--------------- buildDynForm", elementLib.elementObj, afterLoad,data);
+		mylog.warn("--------------- buildDynForm", dyFObj.elementObj, afterLoad,data);
 		if(userId)
 		{
 			var form = $.dynForm({
 			      formId : "#ajax-modal-modal-body #ajaxFormModal",
-			      formObj : elementLib.elementObj.dynForm,
+			      formObj : dyFObj.elementObj.dynForm,
 			      formValues : data,
 			      beforeBuild : function  () {
-			      	if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.beforeBuild","function") )
-				        	elementLib.elementObj.dynForm.jsonSchema.beforeBuild();
+			      	if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.beforeBuild","function") )
+				        	dyFObj.elementObj.dynForm.jsonSchema.beforeBuild();
 			      },
 			      onLoad : function  () {
 			      	if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
-			      		themeObj.dynForm.onLoadPanel(elementLib.elementObj);
+			      		themeObj.dynForm.onLoadPanel(dyFObj.elementObj);
 			      	} else {
-				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+elementLib.elementObj.dynForm.jsonSchema.icon+"'></i> "+elementLib.elementObj.dynForm.jsonSchema.title);
+				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj.elementObj.dynForm.jsonSchema.icon+"'></i> "+dyFObj.elementObj.dynForm.jsonSchema.title);
 				        $("#ajax-modal-modal-body").append("<div class='space20'></div>");
-				        //alert(afterLoad+"|"+typeof elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
+				        //alert(afterLoad+"|"+typeof dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
 			    	}
 			        
-			        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
-			        	elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
+			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
+			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
 			        //incase we need a second global post process
-			        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
-			        	elementLib.elementObj.dynForm.jsonSchema.onLoads.onload();
+			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
+			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload();
 				    
 			        bindLBHLinks();
 			      },
 			      onSave : function(){
 
-			      	if( typeof elementLib.elementObj.dynForm.jsonSchema.beforeSave == "function")
-			        	elementLib.elementObj.dynForm.jsonSchema.beforeSave();
+			      	if( typeof dyFObj.elementObj.dynForm.jsonSchema.beforeSave == "function")
+			        	dyFObj.elementObj.dynForm.jsonSchema.beforeSave();
 
-			        var afterSave = ( typeof elementLib.elementObj.dynForm.jsonSchema.afterSave == "function") ? elementLib.elementObj.dynForm.jsonSchema.afterSave : null;
-
-			        if( elementLib.elementObj.save )
-			        	elementLib.elementObj.save("#ajaxFormModal");
-			        else if(elementLib.elementObj.saveUrl)
-			        	elementLib.saveElement("#ajaxFormModal",elementLib.elementObj.col,elementLib.elementObj.ctrl,elementLib.elementObj.saveUrl,afterSave);
+			        var afterSave = ( typeof dyFObj.elementObj.dynForm.jsonSchema.afterSave == "function") ? dyFObj.elementObj.dynForm.jsonSchema.afterSave : null;
+			        mylog.log("onSave", dyFObj.elementObj.saveUrl);
+			        if( dyFObj.elementObj.save )
+			        	dyFObj.elementObj.save("#ajaxFormModal");
+			        else if(dyFObj.elementObj.saveUrl)
+			        	dyFObj.saveElement("#ajaxFormModal",dyFObj.elementObj.col,dyFObj.elementObj.ctrl,dyFObj.elementObj.saveUrl,afterSave);
 			        else
-			        	elementLib.saveElement("#ajaxFormModal",elementLib.elementObj.col,elementLib.elementObj.ctrl,null,afterSave);
+			        	dyFObj.saveElement("#ajaxFormModal",dyFObj.elementObj.col,dyFObj.elementObj.ctrl,null,afterSave);
 			        return false;
 			    }
 			});
@@ -2630,32 +2549,27 @@ var elementLib = {
 
 		mylog.dir(form);
 
-		elementLib.openForm(form, fct, data);
+		dyFObj.openForm(form, fct, data);
 	}
 }
-
-
-/* *********************************
-			DYNFORM SPEC TYPE OBJ
-********************************** */
-var contextData = null;
-var dynForm = null;
-var uploadObj = {
-	type : null,
-	id : null,
-	folder : "communecter", //on force pour pas casser toutes les vielles images
-	set : function(type,id){
-		uploadObj.type = type;
-		uploadObj.id = id;
-	}
-};
-
-var typeObjLib = {
-	name :function(type) { 
+//TODO : refactor into dyfObj.inputs
+var dyFInputs = {
+	inputText :function(label, placeholder, rules, custom) { 
+		var inputObj = {
+			label : label,
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "... " ),
+	        inputType : "text",
+	        rules : ( notEmpty(rules) ? rules : {} ),
+	        custom : ( notEmpty(custom) ? custom : "" )
+	    };
+	    mylog.log("inputText ", inputObj);
+    	return inputObj;
+    },
+	name :function(type, rules, addElement, extraOnBlur) { 
 		var inputObj = {
 	    	placeholder : "... ",
 	        inputType : "text",
-	        rules : { required : true }
+	        rules : ( notEmpty(rules) ? rules : { required : true } )
 	    };
 	    if(type){
 	    	inputObj.label = "Nom de votre " + trad[type]+" ";
@@ -2667,26 +2581,17 @@ var typeObjLib = {
 	    	inputObj.init = function(){
 	        	$("#ajaxFormModal #name ").off().on("blur",function(){
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
-	            		globalSearch($(this).val(),[ typeObjLib.get(type).col ] );
+	            		globalSearch($(this).val(),[ dyFInputs.get(type).col ], addElement );
+	            	
+	            	dyFObj.canSubmitIf();
 	        	});
 	        }
 	    }else{
 	    	inputObj.label = "Nom ";
 	    }
-	    mylog.log("typeObjLib ", inputObj);
+	    mylog.log("dyFInputs ", inputObj);
     	return inputObj;
     },
-    /*nameOrganiser : {
-    	placeholder : "Nom",
-        inputType : "text",
-        rules : {required : true},
-        init : function(){
-        	$("#ajaxFormModal #name ").off().on("blur",function(){
-        		if($("#ajaxFormModal #name ").val().length > 3 )
-        			globalSearch($(this).val(),["projects", "events", "organizations"]);
-        	});
-        }
-    },*/
     username : {
     	placeholder : "username",
         inputType : "text",
@@ -2713,32 +2618,16 @@ var typeObjLib = {
         inputType : "custom",
         html:"<div id='similarLink'><div id='listSameName'></div></div>",
     },
-    type :function  (title,list,notRequired) {  
-    	var title = (title) ? title : "Type";
-    	var list = (list) ? list : eventTypes;
-	    var res = {
-	    	label : title,
-	    	inputType : "select",
-	    	placeholder : title,
-	    	rules : { required : true },
-	    	options : list
-	    }
-	    if(notRequired == false)
-	    	delete res.rules;
-	    return res;
+    inputSelect :function(label, placeholder, list, rules) { 
+		var inputObj = {
+			inputType : "select",
+			label : ( notEmpty(label) ? label : "" ),
+			placeholder : ( notEmpty(placeholder) ? placeholder : "Choisir" ),
+			options : ( notEmpty(list) ? list : [] ),
+			rules : ( notEmpty(rules) ? rules : {} )
+		};
+		return inputObj;
 	},
-    typeOrga :{
-    	label : "Type d'organisation",
-    	inputType : "select",
-    	placeholder : "Type d'organisation",
-    	rules : { required : true },
-    	options : organizationTypes
-    },
-   	avancementProject :{
-    	inputType : "select",
-    	placeholder : "Avancement du projet",
-    	options : avancementProject
-    },
     imageAddPhoto : {
     	inputType : "uploader",
     	showUploadBtn : true,
@@ -2747,42 +2636,33 @@ var typeObjLib = {
     		{
         		$('#trigger-upload').click(function() {
 		        	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-		        	url.loadByHash(location.hash);
+		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
         	},500);
     	}
     },
     image :function(str) { 
-    	gotoUrl = (str) ? str : location.hash;
+    	gotoUrl = (str) ? str+uploadObj.id : location.hash;
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
-		    	elementLib.closeForm();
+		    	dyFObj.closeForm();
 		    	//alert(gotoUrl+uploadObj.id);
-	            url.loadByHash( gotoUrl+uploadObj.id );	
+	            urlCtrl.loadByHash( gotoUrl );	
 		    	}
     	}
     },
-    descriptionOptionnel : {
-        inputType : "textarea",
-		placeholder : "...",
-		init : function(){
-        	$(".descriptiontextarea").css("display","none");
-        },
-		label : "Description optionnelle"
-    },
-    description : {
-        inputType : "textarea",
-		placeholder : "...",
-		label : "Description principale"
-    },
-    shortDescription : {
-        inputType : "textarea",
-		placeholder : "...",
-		label : "Description court"
-    },
+    textarea :function (label,placeholder,rules) {  
+    	var inputObj = {
+    		inputType : "textarea",
+	    	label : ( notEmpty(label) ? label : "Votre message ..." ),
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "Votre message ..." ),
+	    	rules : ( notEmpty(rules) ? rules : { } )
+	    } ;
+	    return inputObj;
+	},
     tags : function(list) { 
     	tagsL = (list) ? list : tagsList;
     	return {
@@ -2792,37 +2672,163 @@ var typeObjLib = {
 			label : "Ajouter quelques mots clés"
 		}
 	},
+	password : function  (title, rules) {  
+    	var title = (title) ? title : trad["New password"];
+    	var ph = "";
+    	var rules = (rules) ? rules : { required : true } ;
+	    var res = {
+	    	label : title,
+	    	inputType : "password",
+	    	placeholder : ph,
+	    	rules : rules
+	    }
+	    return res;
+	},
+    price :function(label, placeholder, rules, custom) { 
+		var inputObj = dyFInputs.inputText("Prix", "Prix ...") ;
+	    inputObj.init = function(){
+    		$('input#price').filter_input({regex:'[0-9]'});
+      	};
+    	return inputObj;
+    },
+    email :function (label,placeholder,rules) {  
+    	var inputObj = {
+    		inputType : "text",
+	    	label : ( notEmpty(label) ? label : "E-mail principal" ),
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "exemple@mail.com" ),
+	    	rules : ( notEmpty(rules) ? rules : { email: true } )
+	    }
+	    return inputObj;
+	},
+	emailOptionnel :function (label,placeholder,rules) {  
+    	var inputObj = dyFInputs.email(label, placeholder, rules);
+    	inputObj.init = function(){
+			$(".emailtext").css("display","none");
+		};
+	    return inputObj;
+	},
 	location : {
 		label :"Localisation",
        inputType : "location"
     },
-    email : {
-		placeholder : "Ajouter un e-mail",
-		inputType : "text",
-		label : "E-mail principal"
-	},
-    emailOptionnel : {
-		placeholder : "Email du responsable",
-		inputType : "text",
-		init : function(){
-			$(".emailtext").css("display","none");
+    locationObj : {
+    	/* *********************************
+					LOCATION
+		********************************** */
+		//TODO move to elementForm
+		elementLocation : null,
+		centerLocation : null,
+		elementLocations : [],
+		elementPostalCode : null,
+		elementPostalCodes : [],
+		countLocation : 0,
+		countPostalCode : 0,
+		copyMapForm2Dynform : function (locObj) { 
+			//if(!elementLocation)
+			//	elementLocation = [];
+			mylog.log("locationObj", locObj);
+			dyFInputs.locationObj.elementLocation = locObj;
+			mylog.log("elementLocation", dyFInputs.locationObj.elementLocation);
+			dyFInputs.locationObj.elementLocations.push(dyFInputs.locationObj.elementLocation);
+			mylog.log("dyFInputs.locationObj.elementLocations", dyFInputs.locationObj.elementLocations);
+			if(!dyFInputs.locationObj.centerLocation || locationObj.center == true){
+				dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocation;
+				dyFInputs.locationObj.elementLocation.center = true;
+			}
+			mylog.dir(dyFInputs.locationObj.elementLocations);
+			//elementLocation.push(positionObj);
+		},
+		addLocationToForm : function (locObj){
+			mylog.warn("---------------addLocationToForm----------------");
+			mylog.dir(locObj);
+			var strHTML = "";
+			if( locObj.address.addressCountry)
+				strHTML += locObj.address.addressCountry;
+			if( locObj.address.postalCode)
+				strHTML += " ,"+locObj.address.postalCode;
+			if( locObj.address.addressLocality)
+				strHTML += " ,"+locObj.address.addressLocality;
+			if( locObj.address.streetAddress)
+				strHTML += " ,"+locObj.address.streetAddress;
+			var btnSuccess = "";
+			var locCenter = "";
+			if( dyFInputs.locationObj.countLocation == 0){
+				btnSuccess = "btn-success";
+				locCenter = "<span class='lblcentre'>(localité centrale)</span>";
+			}
+			
+			strHTML = "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+")' class=' locationEl"+dyFInputs.locationObj.countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
+					  "<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
+					  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
+			$(".locationlocation").prepend(strHTML);
+			dyFInputs.locationObj.countLocation++;
+		},
+		copyPCForm2Dynform : function (postalCodeObj) { 
+			mylog.warn("---------------copyPCForm2Dynform----------------");
+			mylog.log("postalCodeObj", postalCodeObj);
+			dyFInputs.locationObj.elementPostalCode = postalCodeObj;
+			mylog.log("elementPostalCode", dyFInputs.locationObj.elementPostalCode);
+			dyFInputs.locationObj.elementPostalCodes.push(dyFInputs.locationObj.elementPostalCode);
+			mylog.log("elementPostalCodes", dyFInputs.locationObj.elementPostalCodes);
+			mylog.dir(dyFInputs.locationObj.elementPostalCodes);
+			//elementPostalCode.push(positionObj);
+		},
+		addPostalCodeToForm : function (postalCodeObj){
+			mylog.warn("---------------addPostalCodeToForm----------------");
+			mylog.dir(postalCodeObj);
+			var strHTML = "";
+			if( postalCodeObj.postalCode)
+				strHTML += postalCodeObj.postalCode;
+			if( postalCodeObj.name)
+				strHTML += " ,"+postalCodeObj.name;
+			if( postalCodeObj.latitude)
+				strHTML += " ,("+postalCodeObj.latitude;
+			if( postalCodeObj.longitude)
+				strHTML += " / "+postalCodeObj.longitude+")";
+			
+			strHTML = "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countPostalCode+")' class=' locationEl"+dyFInputs.locationObj.countPostalCode+" btn'> <i class='text-red fa fa-times'></i></a>"+
+					  "<span class='locationEl"+dyFInputs.locationObj.countPostalCode+" locel text-azure'>"+strHTML+"</span> <br/>";
+			$(".postalcodepostalcode").prepend(strHTML);
+			dyFInputs.locationObj.countPostalCode++;
+		},
+		removeLocation : function (ix){
+			mylog.log("dyFInputs.locationObj.removeLocation", ix, dyFInputs.locationObj.elementLocations);
+			dyFInputs.locationObj.elementLocation = null;
+			dyFInputs.locationObj.elementLocations.splice(ix,1);
+			//TODO check if this center then apply on first
+			//$(".locationEl"+dyFInputs.locationObj.countLocation).remove();
+			$(".locationEl"+ix).remove();
+		},
+		setAsCenter : function (ix){
+
+			$(".centers").removeClass('btn-success');
+			$(".lblcentre").remove();
+			$.each(dyFInputs.locationObj.elementLocations,function(i, v) { 
+				if( v.center)
+					delete v.center;
+			})
+			$(".centers").removeClass('btn-success');
+			$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>(localité centrale)</span>");
+			dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocations[ix];
+			dyFInputs.locationObj.elementLocations[ix].center = true;
 		}
-	},
-	url : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        placeholder : "Site web",
-        label : "URL principale"
     },
-    urlOptionnel : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        placeholder : "url, lien, adresse web",
-        init:function(){
+    inputUrl :function (label,placeholder,rules, custom) {  
+    	label = ( notEmpty(label) ? label : "URL principale" );
+    	placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
+    	rules = ( notEmpty(rules) ? rules : { url: true } );
+    	custom = ( notEmpty(custom) ? custom : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>" );
+	    var inputObj = dyFInputs.inputText(label, placeholder, rules, custom);
+	    return inputObj;
+	},
+	inputUrlOptionnel :function (label, placeholder,rules, custom) {  
+    	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
+    	inputObj.init = function(){
             getMediaFromUrlContent("#url", ".resultGetUrl0",0);
             $(".urltext").css("display","none");
-        }
-    },
+        };
+	    return inputObj;
+	},
     urls : {
     	label : "Ajouter des informations libres",
     	placeholder : "informations / urls ...",
@@ -2903,77 +2909,22 @@ var typeObjLib = {
         label : "Date de fin",
         rules : { 
         	required : true,
-        	greaterThan: ["#ajaxFormModal #startDateInput","la date de début"],
+        	greaterThan: ["#ajaxFormModal #startDate","la date de début"],
         	duringDates: ["#startDateParent","#endDateParent","La date de fin"]
 	    }
-    },
-    telegram : {
-        inputType :"text",
-        label : "Votre Speudo Telegram",
-        placeholder : "Votre Speudo Telegram"
-    },
-    skype : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Skype",
-        placeholder : "Lien vers Skype"
-    },
-    facebook : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Facebook",
-        placeholder : "Lien vers Facebook"
-    },
-    github : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Git Hub",
-        placeholder : "Lien vers Git Hub"
-    },
-    googleplus : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Google Plus",
-        placeholder : "Lien vers Google Plus"
-    },
-    twitter : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Twitter",
-        placeholder : "Lien vers Twitter"
     },
     birthDate : {
         inputType : "date",
         label : "Date d'anniversaire",
         placeholder: "Date d'anniversaire"
     },
-    phone :{
-      	inputType : "text",
-      	label : "Fixe",
-      	placeholder : "Saisir les numéros de téléphone séparer par une virgule"
-    },
-    mobile :{
-      	inputType : "text",
-      	label : "Mobile",
-      	placeholder : "Saisir les numéros de portable séparer par une virgule"
-    },
-    fax :{
-      	inputType : "text",
-      	label : "Fax",
-      	placeholder : "Saisir les numéros de fax séparer par une virgule"
-    },
-    price :{
-      	inputType : "text",
-      	label : "Prix",
-      	placeholder : "Prix ..."
-    },
-    contactInfo :{
-      	inputType : "text",
-      	label : "Coordonnées",
-      	placeholder : "n° tel, addresse email ..."
-    },
-    hidden :{
-      	inputType : "hidden"
+    dateEnd :{
+    	inputType : "date",
+    	placeholder : "Fin de la période de vote",
+    	rules : { 
+    		required : true,
+    		greaterThanNow : ["DD/MM/YYYY"]
+    	}
     },
     inviteSearch : {
     	inputType : "searchInvite",
@@ -2999,48 +2950,39 @@ var typeObjLib = {
         	$(".invitedUserEmailtext").css("display","none");	 
         }
     },
-    poiTypes :{
-    	inputType : "select",
-    	placeholder : "Type du point d'intérêt",
-    	options : poiTypes
-    },
-    role :{
-    	label :"Votre rôle",
-    	inputType : "select",
-    	placeholder : "Quel est votre rôle ?",
-    	rules : { required : true },
-    	//value : "admin",
-    	options : {
-    		admin : trad.administrator,
-			member : trad.member,
-			creator : trad.justCitizen
-    	}
-    },
-    hiddenArray : {
-       inputType : "hidden",
-        value : []
-    },
-    hiddenTrue : {
-       inputType : "hidden",
-        value : true
-    },
-    dateEnd :{
-    	inputType : "date",
-    	placeholder : "Fin de la période de vote",
-    	rules : { 
-    		required : true,
-    		greaterThanNow : ["DD/MM/YYYY"]
-    	}
+    inputHidden :function(value, rules) { 
+		var inputObj = { inputType : "hidden"};
+		if( notNull(value) ) inputObj.value = value ;
+		if( notNull(rules) ) inputObj.rules = rules ;
+    	return inputObj;
     },
     get:function(type){
-    	mylog.log("get", type);
+    	//mylog.log("dyFInputs.get", type);
+    	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
-    			return typeObj[ typeObj[type].sameAs ];
+    			obj = typeObj[ typeObj[type].sameAs ];
     		} else
-    			return typeObj[type];
-    	}else 
-    		return null;
+    			obj = typeObj[type];
+    		obj.name = (trad[type]) ? trad[type] : type;
+    	}
+    	return obj;
+    },
+    deepGet:function(type){
+    	//mylog.log("get", type);
+    	var obj = null;
+    	if( jsonHelper.notNull("typeObj."+type)){
+    		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
+    			obj = typeObj[ typeObj[type].sameAs ];
+    		} else
+    			obj = typeObj[type];
+    		obj.name = (trad[type]) ? trad[type] : type;
+    	} else {
+    		//calculate only once
+    		//get list of all keys and sub keys
+    		//return corresponding map
+    	}
+    	return obj;
     }
 };
 
@@ -3078,16 +3020,16 @@ var typeObj = {
 		            	inputType : "custom",
 		            	html : function() { 
 		            		return "<div class='menuSmallMenu'>"+js_templates.loop( [ 
-			            		{ label : "event", classes:"bg-"+typeObj["event"].color, icon:"fa-"+typeObj["event"].icon, action : "javascript:elementLib.openForm('event')"},
-			            		{ label : "organization", classes:"bg-"+typeObj["organization"].color, icon:"fa-"+typeObj["organization"].icon, action : "javascript:elementLib.openForm('organization')"},
-			            		{ label : "project", classes:"bg-"+typeObj["project"].color, icon:"fa-"+typeObj["project"].icon, action : "javascript:elementLib.openForm('project')"},
-			            		{ label : "poi", classes:"bg-"+typeObj["poi"].color, icon:"fa-"+typeObj["poi"].icon, action : "javascript:elementLib.openForm('poi')"},
-			            		{ label : "entry", classes:"bg-"+typeObj["entry"].color, icon:"fa-"+typeObj["entry"].icon, action : "javascript:elementLib.openForm('entry')"},
-			            		{ label : "action", classes:"bg-"+typeObj["action"].color, icon:"fa-"+typeObj["action"].icon, action : "javascript:elementLib.openForm('action')"},
-			            		{ label : "classified", classes:"bg-"+typeObj["classified"].color, icon:"fa-"+typeObj["classified"].icon, action : "javascript:elementLib.openForm('classified')"},
-			            		{ label : "Documentation", classes:"bg-grey lbh", icon:"fa-book", action : "#default.view.page.index.dir.docs"},
-			            		{ label : "Signaler un bug", classes:"bg-grey lbh", icon:"fa-bug", action : "#news.index.type.pixels"},
-		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-4 "} )+"</div>";
+			            		{ label : "event", classes:"col-xs-12 text-bold bg-"+typeObj["event"].color, icon:"fa-"+typeObj["event"].icon, action : "javascript:dyFObj.openForm('event')"},
+			            		{ label : "organization", classes:"col-xs-12 text-bold bg-"+typeObj["organization"].color, icon:"fa-"+typeObj["organization"].icon, action : "javascript:dyFObj.openForm('organization')"},
+			            		{ label : "project", classes:"col-xs-12 text-bold bg-"+typeObj["project"].color, icon:"fa-"+typeObj["project"].icon, action : "javascript:dyFObj.openForm('project')"},
+			            		{ label : "poi", classes:"col-xs-12 text-bold bg-"+typeObj["poi"].color, icon:"fa-"+typeObj["poi"].icon, action : "javascript:dyFObj.openForm('poi')"},
+			            		{ label : "entry", classes:"col-xs-12 text-bold bg-"+typeObj["entry"].color, icon:"fa-"+typeObj["entry"].icon, action : "javascript:dyFObj.openForm('entry')"},
+			            		{ label : "action", classes:"col-xs-12 text-bold bg-"+typeObj["actions"].color, icon:"fa-"+typeObj["actions"].icon, action : "javascript:dyFObj.openForm('action')"},
+			            		{ label : "classified", classes:"col-xs-12 text-bold bg-"+typeObj["classified"].color, icon:"fa-"+typeObj["classified"].icon, action : "javascript:dyFObj.openForm('classified')"},
+			            		{ label : "Documentation", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-book", action : "#default.view.page.index.dir.docs"},
+			            		{ label : "Signaler un bug", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-bug", action : "#news.index.type.pixels"},
+		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-6 "} )+"</div>";
 		            	}
 		            }
 			    }
@@ -3100,24 +3042,33 @@ var typeObj = {
 			    icon : "question-cirecle-o",
 			    noSubmitBtns : true,
 			    properties : {
-			    	image : typeObjLib.imageAddPhoto
+			    	image : dyFInputs.imageAddPhoto
 			    }
 			}
 		}},
+	
 	"person" : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
 	"persons" : { sameAs:"person" },
 	"people" : { sameAs:"person" },
 	"citoyen" : { sameAs:"person" },
 	"citoyens" : { sameAs:"person" },
-	"poi":{  col:"poi",ctrl:"poi",color:"azure",	icon:"info-circle"},
+	
+	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle"},
+
+	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
+	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
+	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
+	
+	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
+
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
 	"organizations" : {sameAs:"organization"},
-	"LocalBusiness" : {color: "azure",icon: "industry"},
+	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
 	"NGO" : {sameAs:"organization"},
 	"Association" : {sameAs:"organization"},
-	"GovernmentOrganization" : {color: "green",icon: "circle-o"},
-	"Group" : {	color: "turq",icon: "circle-o"},
+	"GovernmentOrganization" : {col:"organizations",color: "green",icon: "circle-o"},
+	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
 	"events" : {sameAs:"event"},
 	"project" : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
@@ -3132,10 +3083,12 @@ var typeObj = {
 	"rooms" : {col:"actions",ctrl:"room",color:"azure",icon:"gavel"},
 	"discuss" : {col:"actionRooms",ctrl:"room"},
 	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	"classified":{col:"classified",ctrl:"classified",color:"azure",	icon:"bullhorn",	},
+	"classified":{col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",	},
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
 	"video" : {icon:"video-camera",color:"dark"},
+	"formContact" : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
+	"news" : { col : "news" }, 
 };
 
 var documents = {
@@ -3223,25 +3176,27 @@ var keyboardNav = {
 	"comma":188,"dash":189,"period":190,"forward slash":191,"grave accent":192,"open bracket":219,"back slash":220,"close braket":221,"single quote":222},
 
 	keyMap : {
-		"112" : function(){ $('#modalMainMenu').modal("show"); },//f1
-		"113" : function(){ if(userId)url.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
-		"114" : function(){ showMap(true); },//f3
-		"115" : function(){ elementLib.openForm('themes') },//f4
-		"117" : function(){ console.clear();url.loadByHash(location.hash) },//f6
+		//"112" : function(){ $('#modalMainMenu').modal("show"); },//f1
+		"113" : function(){ if(userId)urlCtrl.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
+		"114" : function(){ $('#openModal').modal('hide'); showMap(true); },//f3
+		"115" : function(){ dyFObj.openForm('themes') },//f4
+		"117" : function(){ console.clear();urlCtrl.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {
-		"13" : function(){elementLib.openForm('addElement')},//enter : aadd elemetn
-		"65" : function(){elementLib.openForm('action')},//a : actions
-		"66" : function(){ smallMenu.openAjax(baseUrl+'/'+moduleId+'/collections/list','Mes Favoris','fa-star','yellow') },//b best : favoris
-		"67" : function(){elementLib.openForm('classified')},//c : classified
-		"69" : function(){elementLib.openForm('event')}, //e : event
-		"70" : function(){ $(".searchIcon").trigger("click") },//f : find
-		"73" : function(){elementLib.openForm('person')},//i : invite
-		"79" : function(){elementLib.openForm('organization')},//o : orga
-		"80" : function(){elementLib.openForm('project')},//p : project
-		"82" : function(){smallMenu.openAjax(baseUrl+'/'+moduleId+'/person/directory?tpl=json','Mon répertoire','fa-book','red')},//r : annuaire
-		"86" : function(){elementLib.openForm('entry')},//v : votes
-		
+		"13" : function(){$('#openModal').modal('hide');dyFObj.openForm('addElement')},//enter : add elements
+		"61" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show')},//= : add elements
+		"65" : function(){$('#openModal').modal('hide');dyFObj.openForm('action')},//a : actions
+		"66" : function(){$('#openModal').modal('hide'); smallMenu.destination = "#openModal"; smallMenu.openAjax(baseUrl+'/'+moduleId+'/collections/list','Mes Favoris','fa-star','yellow') },//b best : favoris
+		"67" : function(){$('#openModal').modal('hide');dyFObj.openForm('classified')},//c : classified
+		"69" : function(){$('#openModal').modal('hide');dyFObj.openForm('event')}, //e : event
+		"70" : function(){$('#openModal').modal('hide'); $(".searchIcon").trigger("click") },//f : find
+		"72" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/help') },//h : help
+		"73" : function(){$('#openModal').modal('hide');dyFObj.openForm('person')},//i : invite
+		"76" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/links')},//l : links and infos
+		"79" : function(){$('#openModal').modal('hide');dyFObj.openForm('organization')},//o : orga
+		"80" : function(){$('#openModal').modal('hide');dyFObj.openForm('project')},//p : project
+		"82" : function(){$('#openModal').modal('hide');smallMenu.openAjax(baseUrl+'/'+moduleId+'/person/directory?tpl=json','Mon répertoire','fa-book','red')},//r : annuaire
+		"86" : function(){$('#openModal').modal('hide');dyFObj.openForm('entry')},//v : votes
 	},
 	checkKeycode : function(e) {
 		e.preventDefault();
@@ -3249,6 +3204,7 @@ var keyboardNav = {
 		if (window.event) {keycode = window.event.keyCode;e=event;}
 		else if (e){ keycode = e.which;}
 		//console.log("keycode: ",keycode);
+
 		if(e.ctrlKey && e.altKey && keyboardNav.keyMapCombo[keycode] ){
 			console.warn("keyMapCombo",keycode);//shiftKey ctrlKey altKey
 			keyboardNav.keyMapCombo[keycode]();
@@ -3258,18 +3214,6 @@ var keyboardNav = {
 			keyboardNav.keyMap[keycode]();
 		}
 	}
-}
-
-
-function cityKeyPart(unikey, part){
-	var s = unikey.indexOf("_");
-	var e = unikey.indexOf("-");
-	var len = unikey.length;
-	if(e < 0) e = len;
-	if(part == "insee") return unikey.substr(s+1, e - s-1);
-	if(part == "cp" && unikey.indexOf("-") < 0) return "";
-	if(part == "cp") return unikey.substr(e+1, len);
-	if(part == "country") return unikey.substr(e+1, len);
 }
 
 //*********************************************************************************
@@ -3454,7 +3398,7 @@ var album = {
 			    	$(".addPhotoBtn").click(function() { 
 			    		uploadObj.type = type;
 			    		uploadObj.id = id;
-						elementLib.openForm("addPhoto");
+						dyFObj.openForm("addPhoto");
 			    	});
 			    	album.delete();
 			    });
@@ -3498,12 +3442,12 @@ var CoSigAllReadyLoad = false;
 //ne sert plus, juste a savoir d'ou vient drait l'appel
 
 function KScrollTo(target){ 
-	mylog.log("target", target);
-	if(!$(target)) return;
-
-	$('html, body').stop().animate({
-        scrollTop: $(target).offset().top - 70
-    }, 800, '');
+	mylog.log("KScrollTo target", target);
+	if($(target).length>=1){
+		$('html, body').stop().animate({
+	        scrollTop: $(target).offset().top - 70
+	    }, 500, '');
+	}
 }
 
 var timerCloseDropdownUser = false;
@@ -3547,10 +3491,10 @@ function initKInterface(params){ console.log("initKInterface");
     });
 
     $("#btn-sethome").click(function(){
-    	url.loadByHash("#info.p.sethome")
+    	urlCtrl.loadByHash("#info.p.sethome")
     });
     $("#btn-apropos").click(function(){
-    	url.loadByHash("#info.p.apropos")
+    	urlCtrl.loadByHash("#info.p.apropos")
     });
 
     var affixTop = 300;
@@ -3580,26 +3524,20 @@ function initKInterface(params){ console.log("initKInterface");
 
 
     $(".btn-show-map").off().click(function(){
-    	showMap();
+    	if(notEmpty(contextData) &&  location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+			getContextDataLinks()
+		else
+			showMap();
+		
     });
 
     bindLBHLinks();
 
-    $(".menu-name-profil").click(function(){
+    $(".btn-show-mainmenu").click(function(){
         $("#dropdown-user").addClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });
-    // $(".menu-name-profil #menu-thumb-profil, "+
-    //   ".menu-name-profil #menu-name-profil").mouseleave(function(){
-    //   	timerCloseDropdownUser=true;
-    //     setTimeout(function(){
-    //     	if(timerCloseDropdownUser==true)
-    //     	$("#dropdown-user").removeClass("open");
-    //     },1000);
-    // });
-    // $("#dropdown-user").mouseenter(function(){
-    // 	timerCloseDropdownUser = false;
-    // });
+    
     $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
         $("#dropdown-user").removeClass("open");
     });
@@ -3609,15 +3547,41 @@ function initKInterface(params){ console.log("initKInterface");
     });
 
     $(".tooltips").tooltip();
-      
-    setTimeout(function(){ 
-      mapBg = Sig.loadMap("mapCanvas", initSigParams);
-      Sig.showIcoLoading(false);
-      CoSigAllReadyLoad = true;
-    }, 3000);
+    
+    //sur mobile la carto est désactivée car non fonctionnelle pour le moment
+    //(pb pour manipuler la carte open/close etc)
+ //    if($("#mainNav .btn-show-map").css("display") != "none"){
+	//     setTimeout(function(){ 
+	//       mapBg = Sig.loadMap("mapCanvas", initSigParams);
+	//       Sig.showIcoLoading(false);
+	//       CoSigAllReadyLoad = true;
+	//     }, 3000);
+	// }
 
     KScrollTo(".main-container");
 
+}
+
+function getContextDataLinks(){
+	mylog.log("getContextDataLinks");
+	$.ajax({
+		type: "POST",
+		url: baseUrl+'/'+moduleId+"/element/getalllinks/type/"+contextData.type+"/id/"+contextData.id,
+		dataType: "json",
+		success: function(data){
+			mylog.log("getContextDataLinks data", data);
+			Sig.restartMap();
+			Sig.showMapElements(Sig.map, data);
+			showMap();
+		},
+		error: function (error) {
+			mylog.log("getContextDataLinks error findGeoposByInsee", error);
+			Sig.restartMap();
+			callbackFindByInseeError(error);
+			showMap();	
+		}
+			
+	});
 }
 
 $(document).ready(function() { 

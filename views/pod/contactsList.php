@@ -13,7 +13,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 	</div>
 	<div class="panel-tools">
 		<?php if(( @$authorised || @$openEdition) && !isset($noAddLink) && isset(Yii::app()->session["userId"]) ) { ?>
-			<a class="tooltips btn btn-xs btn-light-blue " data-placement="top" data-toggle="tooltip" data-original-title="<?php echo Yii::t("common","Add",null,Yii::app()->controller->module->id) ?>" href="javascript:;" onclick="elementLib.openForm ( 'contactPoint','contact')">
+			<a class="tooltips btn btn-xs btn-light-blue " data-placement="top" data-toggle="tooltip" data-original-title="<?php echo Yii::t("common","Add",null,Yii::app()->controller->module->id) ?>" href="javascript:;" onclick="dyFObj.openForm ( 'contactPoint','contact')">
 	    		<i class="fa fa-plus"></i> <?php echo Yii::t("common","Add") ?>
 	    	</a>
 		<?php } ?>
@@ -143,7 +143,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 		}
 		
 		console.dir(dataUpdate);
-		elementLib.openForm ('contactPoint','contact', dataUpdate);
+		dyFObj.openForm ('contactPoint','contact', dataUpdate);
 	}
 
 	function removeContact(ind) {
@@ -161,7 +161,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 	    		mylog.log("data", data);
 		    	if(data.result){
 					toastr.success(data.msg);
-					url.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
+					urlCtrl.loadByHash("#"+contextData.controller+".detail.id."+contextData.id);
 		    	}
 		    }
 		});

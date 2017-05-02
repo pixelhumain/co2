@@ -13,16 +13,19 @@
 		overflow-y: hidden;
 	}
 	.fileupload-preview .thumbnail, .fileupload-new .thumbnail{
-		min-height: 250px;
-    	line-height: 250px;
+		/*min-height: 250px;*/
+    	/*line-height: 250px;*/
     	background-color: black;
+	}
+	.fileupload-preview.thumbnail, .fileupload-new.thumbnail {
+   		border: 3px solid white !important;
 	}
 	.fileupload, .fileupload-preview.thumbnail, .fileupload-new .thumbnail, .fileupload-new .thumbnail img, .fileupload-preview.thumbnail img{
 		padding : 0px;
 		margin:0px !important;
 		transition: none !important;
 		border-radius: 0px !important;
-		min-height: 250px;
+		/*min-height: 250px;*/
 		width:100%;
 	}
 
@@ -153,7 +156,6 @@
 			if($("."+contentId+"_isSubmit").val()== "true" ){
 				setTimeout(function(){
 					if(resize){
-						alert();
 						$(".fileupload-preview img").css("height", parseInt($("#"+contentId+"_fileUpload").css("width"))*45/100+"px");
 						$(".fileupload-preview img").css("width", "auto");
 					}

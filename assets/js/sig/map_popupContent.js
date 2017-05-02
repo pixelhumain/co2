@@ -50,7 +50,7 @@
 			if(type == "entry") 		url = "#survey.entry.id."+id;
 			if(type == "action") 		url = "#rooms.action.id."+id;
 			
-			onclick = 'url.loadByHash("'+url+'");';
+			onclick = 'urlCtrl.loadByHash("'+url+'");';
 			
 			if(typeof TPL_IFRAME != "undefined" && TPL_IFRAME==true){
 				url = "https://www.communecter.org/"+url;
@@ -277,7 +277,7 @@
 			}
 				
 
-			popupContent += '<button class="btn btn-sm btn-info btn-more col-md-12" onclick="' + "url.loadByHash('#')"+"><i class='fa fa-hand-pointer-o'></i> en savoir +";
+			popupContent += '<button class="btn btn-sm btn-info btn-more col-md-12" onclick="' + "urlCtrl.loadByHash('#')"+"><i class='fa fa-hand-pointer-o'></i> en savoir +";
 			popupContent += '</button>';
 
 			return popupContent;
@@ -342,7 +342,7 @@
 				var nbCpByInsee = data["countCpByInsee"];
 				var cityInsee = data["cityInsee"];
 			}
-			var showAjaxPanel = 'url.loadByHash("#city.detail.insee.'+insee+'.postalCode.'+cp+'");'
+			var showAjaxPanel = 'urlCtrl.loadByHash("#city.detail.insee.'+insee+'.postalCode.'+cp+'");'
 			var popupContent = '<div class="pod-local-actors" style="display:inline-block; width:100%;">' +
 									"<h4 class='panel-title text-red homestead'>"+
 										"<i class='fa fa-university'></i> "+city+
@@ -593,7 +593,7 @@
 									"<button class='col-md-3 btn btn-danger pull-right' type='text' id='newElement_btnCancelAddress' style='margin-right:5px;'><i class='fa fa-times'></i> Annuler</button>"+
 									
 								"</div>";
-
+			popupContent = "" ;
 			return popupContent;
 		};
 
@@ -629,6 +629,35 @@
 									"<button class='col-md-3 btn btn-danger pull-right' type='text' id='newPC_btnCancelPC' style='margin-right:5px;'><i class='fa fa-times'></i> Annuler</button>"+
 								"</div>";
 
+			return popupContent;
+		};
+
+
+		Sig.getPopupInfoAddress = function(){
+			var popupContent = 	"<style>@media screen and (min-width: 768px) {.leaflet-popup-content{width:400px!important;}}" +
+								"</style>"+
+								"<div class='form-group inline-block padding-15 form-in-map'>"+
+									"<div class='col-xs-12'>"+
+										"<h4>"+trad['City Informations']+"</h4>"+
+									"</div>"+
+									"<div id='insee_sumery' class='col-xs-12'>"+
+										"<span>"+trad['Insee']+" :</span> "+
+										"<span id='insee_sumery_value'></span>"+
+									"</div>"+
+									"<div id='dep_sumery' class='col-xs-12'>"+
+										"<span>"+trad['level4']+" :</span> "+
+										"<span id='dep_sumery_value'></span>"+
+									"</div>"+
+									"<div id='region_sumery' class='col-xs-12'>"+
+										"<span>"+trad['level3']+" :</span> "+
+										"<span id='region_sumery_value'></span>"+
+									"</div>"+
+									"<div id='lat_sumery' class='col-xs-12'>"+
+										"<span>"+trad['latlng']+" :</span> "+
+										"<span id='lat_sumery_value'></span> / "+
+										"<span id='lng_sumery_value'></span>"+
+									"</div>"+
+								"</div>";
 			return popupContent;
 		};
 

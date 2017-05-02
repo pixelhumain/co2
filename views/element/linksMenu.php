@@ -18,9 +18,6 @@
 .menu-linksBtn li{
 	font-size:12px !important;
 }
-.profilSocial .username{
-	padding: 2px 0px 0px !important;
-}
 .blockUsername .dropdown-menu li{
 	text-shadow: none !important;
 	color: #333;
@@ -45,7 +42,7 @@
 }
 </style>
 <?php
-	if(@$linksBtn["followBtn"] && ($elementType!= Person::COLLECTION && $elementId!=Yii::app()->session["userId"])){
+	if(@$linksBtn["followBtn"]){
  		if(@$linksBtn["isFollowing"]){ 
  ?>
 		<ul class="nav navbar-nav">
@@ -121,20 +118,33 @@
 		}
 	}
 ?>
+
 <?php if ($elementType!= Person::COLLECTION && $elementId!=Yii::app()->session["userId"]){ ?>
-<a href="javascript:collection.add2fav('<?php echo $elementType ?>','<?php echo $elementId ?>')"  class="btn-o menu-linksBtn"><i class="fa fa-star"></i> <?php echo Yii::t("common","Favorites"); ?></a>
+<a href="javascript:collection.add2fav('<?php echo $elementType ?>','<?php echo $elementId ?>')"  
+	class="btn-o menu-linksBtn"><i class="fa fa-star"></i> <?php echo Yii::t("common","Favorites"); ?></a>
 <?php } ?>
 <ul class="nav navbar-nav pull-right">
 	<li class="dropdown">
-		<a href="#" class="dropdown-toggle littleActions" data-toggle="dropdown"><span class="fa fa-ellipsis-v pull-left"></span></a>
+		<a href="#" class="dropdown-toggle littleActions" data-toggle="dropdown">
+			<span class="fa fa-ellipsis-v pull-left"></span>
+		</a>
 		<ul class="dropdown-menu pull-right">
-			<li><a href="#">Video Call <i class="fa fa-video-camera"></i></a></li>
+			<li>
+				<a href="javascript:;" id="btn-show-activity">
+					<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
+					<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?></a>
+			</li>
+			<!--<li><a href="#">Video Call <i class="fa fa-video-camera"></i></a></li>
 			<li><a href="#">Poke <i class="fa fa-hand-o-right"></i></a></li>
 			<li><a href="#">Report <i class="fa fa-bug"></i></a></li>
-			<li><a href="#">Block <i class="fa fa-lock"></i></a></li>
-			</ul>
+			<li><a href="#">Block <i class="fa fa-lock"></i></a></li>-->
+		</ul>
 	</li>
-</ul>		    
+</ul>	  
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		$('ul.nav li.dropdown').hover(function() {

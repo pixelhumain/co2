@@ -2,15 +2,12 @@
 echo CHtml::scriptFile(Yii::app()->request->baseUrl. '/plugins/DataTables/media/js/jquery.dataTables.min.1.10.4.js');
 echo CHtml::cssFile(Yii::app()->request->baseUrl. '/plugins/DataTables/media/css/DT_bootstrap.css');
 echo CHtml::scriptFile(Yii::app()->request->baseUrl. '/plugins/DataTables/media/js/DT_bootstrap.js');
-/*
-TKA : doesn't work , produces empty /ph urls causing issues
 
-$cssAnsScriptFilesModule = array(
-	'/plugins/DataTables/media/css/DT_bootstrap.css',
-	'/plugins/DataTables/media/js/jquery.dataTables.min.1.10.4.js',
-	'/plugins/DataTables/media/js/DT_bootstrap.js'
-);
-HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule);*/
+$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+    //header + menu
+    $this->renderPartial($layoutPath.'header', 
+                        array(  "layoutPath"=>$layoutPath , 
+                                "page" => "admin") ); 
 ?>
 
 <div class="panel panel-white">
@@ -208,7 +205,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule);*/
 							$strHTML .= '<td class="center">';
 							if( !empty($actions) && Yii::app()->session["userIsAdmin"] ) 
 								$strHTML .= '<div class="btn-group">'.
-											'<a href="#" data-toggle="dropdown" class="btn btn-red dropdown-toggle btn-sm"><i class="fa fa-cog"></i> <span class="caret"></span></a>'.
+											'<a href="#" data-toggle="dropdown" class="btn btn-danger dropdown-toggle btn-sm"><i class="fa fa-cog"></i> <span class="caret"></span></a>'.
 											'<ul class="dropdown-menu pull-right dropdown-dark" role="menu">'.
 												$actions.
 											'</ul></div>';

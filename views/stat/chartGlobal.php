@@ -1,6 +1,10 @@
 <?php
     $cs = Yii::app()->getClientScript();
-
+    $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+    //header + menu
+    $this->renderPartial($layoutPath.'header', 
+                        array(  "layoutPath"=>$layoutPath , 
+                                "page" => "admin") );
     Menu::statistics();
     $this->renderPartial('../default/panels/toolbar'); 
 ?>

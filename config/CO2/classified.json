@@ -1,0 +1,251 @@
+{
+    "sections" : {
+        "sharing": {
+            "label":"Partager", 
+            "labelFront":"À partager",      
+            "key" : "sharing",     
+            "icon" : "exchange",               
+            "section":2, 
+            "color":"azure"
+        },
+        "donation": {
+            "label":"Donner",   
+            "labelFront":"À donner",        
+            "key" : "donation",     
+            "icon" : "gift",                    
+            "section":2, 
+            "color":"azure"
+        },
+
+        "forsale": {
+            "label":"Vendre",  
+            "labelFront":"À vendre",            
+            "key" : "forsale",     
+            "icon" : "money",                  
+            "section":3, 
+            "color":"azure"
+        },
+
+        "forrent": {
+            "label":"Louer",   
+            "labelFront":"À louer",            
+            "key" : "forrent",    
+            "icon" : "external-link",          
+            "section":3, 
+            "color":"azure"
+        },
+
+
+        "lookingfor" : {
+            "label":"Besoin", 
+            "labelFront":"À la recherche",   
+            "key" : "lookingfor",  
+            "icon" : "eye",                    
+            "section":4, 
+            "color":"azure"
+        },
+
+        "job": {
+            "label":"Emplois", 
+            "labelFront":"Offres d'emplois",      
+            "key" : "job",         
+            "icon" : "briefcase",              
+            "section":5, 
+            "color":"azure",
+            "filters" : "jobFilters"
+        }
+
+    },
+    "filters" : {
+        "Technologie" : 
+            {   "icon" : "laptop",
+                "subcat" : ["TV / Vidéo", "Informatique", "Tablettes", "Téléphonie", "Appareils photos", "Appareil audio"]
+            }, 
+         
+         "Immobilier" : 
+            {   "icon" : "building",
+                "subcat" : ["Maison", "Appartement", "Terrain", "Parking", "Bureaux"]
+            }, 
+         
+         "Véhicules" : 
+            {   "icon" : "car",
+                "subcat" : 
+                [   "Voiture", 
+                    "SUV", 
+                    "4x4", 
+                    "Utilitaire", 
+                    "Moto", 
+                    "Scooter", 
+                    "Bateau", 
+                    "Voiturette", 
+                    "Vélos",
+                    "Équipement véhicule",
+                    "Équipement 2 roues",
+                    "Équipement bateau",
+                    "Équipement vélo"
+                ]
+            }, 
+
+         "Maison" :  
+            {   "icon" : "home",
+                "subcat" : 
+                [    "Electroménager",
+                     "Mobilier", 
+                     "Équipement bébé", 
+                     "Animaux", 
+                     "Divers"
+                ]
+            },
+
+         "Loisirs" :  
+            {   "icon" : "smile-o",
+                "subcat" : 
+                [    "Sports", 
+                     "Instrument musique", 
+                     "Sonorisation", 
+                     "CD / DVD",
+                     "Jouet", 
+                     "Jeux de société", 
+                     "Livres / BD", 
+                     "Collections", 
+                     "Bricolages", 
+                     "Jardinage", 
+                     "Art / Déco", 
+                     "Modélisme", 
+                     "Puériculture", 
+                     "Animaux", 
+                     "Divers"
+                ]
+            },
+
+        "Mode" : 
+            {   "icon" : "shopping-bag",
+                "subcat" :  
+                [    "Vêtements", 
+                     "Chaussures", 
+                     "Accessoires", 
+                     "Montres", 
+                     "Bijoux"
+                ]
+            }
+    },
+    "jobFilters" : {
+        "Achats-Comptabilité-Gestion" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Arts-Artisanat" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Banque-Assurance" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Bâtiment-Travaux_Publics" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Commerce-Vente" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Communication-Multimédia" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Conseil-Etudes" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Direction_Entreprise" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Espaces_Naturels" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Agriculture" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Pêche" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Soins_aux_animaux" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Hôtellerie" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Restauration" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Tourisme" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Animation" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Immobilier" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Industrie" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Informatique-Télécommunication" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Installation-Maintenance" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Marketing-Stratégie_Commerciale" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Ressources_Humaines" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Santé" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Secrétariat-Assistanat" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Services_à_la_personne" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Services_à_la_collectivité" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Spectacle" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Sport" : {
+            "icon":"user",
+            "subcat" : []
+        },
+        "Transport-Logistique" : {
+            "icon":"user",
+            "subcat" : []
+        }
+    }
+    
+}

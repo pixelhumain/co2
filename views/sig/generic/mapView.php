@@ -98,8 +98,8 @@
 			<!-- 	HEADER -->
 				<div class="right_tool_map_header">	
 					<!-- <span class="right_tool_map_header_title">Ajouter une adresse</span> -->
-					<h3 class='margin-top-5'>
-						<i class='fa fa-angle-down'></i> <i class='fa fa-home'></i> Adresse
+					<h3 class='margin-top-5 padding-10'>
+						<i class='fa fa-home'></i><span id="title-formInMap">Adresse</span>
 					</h3>
 				</div>
 				<!-- 	LIST ELEMENT -->
@@ -121,28 +121,16 @@
 					</select>
 					<div id='divCity' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
 				  		<input class='form-group col-md-12 col-xs-12' type='text' name='newElement_city' placeholder='Ville, village, commune, code postal'>
-						<ul class='dropdown-menu col-md-12 col-xs-12' id='dropdown-newElement_locality-found'>
+						<ul class='dropdown-menu col-md-12 col-xs-12' id='dropdown-newElement_locality-found' style="margin-top: -15px; background-color : #ea9d13;">
 							<li><a href='javascript:' class='disabled'>Rechercher une ville, un village, une commune</a></li>
 						</ul>
 			  		</div>
-					<!--<div id='divCity' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
-				  		<input class='form-group col-md-12 col-xs-12' type='text' name='newElement_city' placeholder='Ville, village, commune'>
-						<ul class='dropdown-menu col-md-12 col-xs-12' id='dropdown-newElement_city-found'>
-							<li><a href='javascript:' class='disabled'>Rechercher une ville, un village, une commune</a></li>
-						</ul>
-			  		</div>
-					<div id='divPostalCode' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
-				  		<input class='form-group col-md-12 col-xs-12' type='text' name='newElement_cp' placeholder='Code postal'>
-						<ul class='dropdown-menu' id='dropdown-newElement_cp-found'>
-							<li><a href='javascript:' class='disabled'>Rechercher un code postal</a></li>
-						</ul>
-			  		</div>-->
-			  		<div id='divStreetAddress' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
+					<div id='divStreetAddress' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
 						<input class='form-group col-md-9 col-xs-9' type='text' style='margin-right:-3px;' name='newElement_street' placeholder='(n° rue) + Adresse'>
 						<button class='col-md-3 col-xs-3 btn btn-default' style='padding:3px;border-radius:0 4px 4px 0;' type='text' id='newElement_btnSearchAddress'><i class='fa fa-search'></i></button>
 					</div>
 					<div class='dropdown pull-left col-xs-12 no-padding'> 
-				  		<ul class='dropdown-menu' id='dropdown-newElement_streetAddress-found'>
+				  		<ul class='dropdown-menu' id='dropdown-newElement_streetAddress-found' style="margin-top: -15px; background-color : #ea9d13;">
 				  			<li><a href='javascript:' class='disabled'>Rechercher en cours</a></li>
 				  		</ul>
 					</div>

@@ -4,7 +4,7 @@
     width: 100% !important;
     margin-top:20px;
     max-height: 450px !important;
-    margin-bottom: 0px !important;
+    margin-bottom: 15px !important;
 }
 .timeline-body .btn-share{
   display: none;
@@ -257,12 +257,12 @@
         }
         if(actionController=="save"){
           //$("#news"+e).nextAll(".list-news").first().addClass("addMargin");
-          if(nbCol == 2){
-            if($("#news"+e).nextAll(".list-news").first().hasClass("timeline-inverted"))
-              $("#news"+e).removeClass("timeline-inverted");
-            else
-              $("#news"+e).addClass("timeline-inverted");
-          }
+          // if(nbCol == 2){
+          //   if($("#news"+e).nextAll(".list-news").first().hasClass("timeline-inverted"))
+          //     $("#news"+e).removeClass("timeline-inverted");
+          //   else
+          //     $("#news"+e).addClass("timeline-inverted");
+          // }
           initCommentsTools(new Array(v));
         }
         // if("undefined" != typeof v.text){

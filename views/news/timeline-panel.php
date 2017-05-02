@@ -6,7 +6,7 @@
           if(@$media["scope"]) 
           foreach (array("cities", "departements", "regions") as $s) {
             if(@$media["scope"][$s])
-            foreach ($media["scope"][$s] as $key => $scopes) {
+            foreach ($media["scope"][$s] as $keyy => $scopes) {
               foreach ($scopes as $k => $v) {
                 foreach (array("postalCode", "addressLocality", "name") as $kk => $s) {
                   if(@$k == $s && $v != ""){ 
@@ -156,7 +156,7 @@
     </div>
     <?php } ?>
     <?php if(@$media["tags"]) 
-          foreach ($media["tags"] as $key => $tag) { 
+          foreach ($media["tags"] as $keyy => $tag) { 
             if($tag != "") { ?>
             <a href="javascript:;" class="filter btn no-padding" data-filter=".'+tag+'">
               <span class="text-red">#<?php echo $tag; ?></span>

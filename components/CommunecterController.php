@@ -468,12 +468,16 @@ class CommunecterController extends Controller
       "city"              => array('href' => "/ph/communecter/app/city",              "public" => false),
       "sendmailformcontact" => array('href' => "/ph/communecter/app/sendmailformcontact", "public" => true),
       "checkurlexists" => array('href' => "/ph/communecter/app/checkurlexists", "public" => true),
+      "interoperability"  => array('href' => "/ph/communecter/app/interoperability",   "public" => false),
       ),
     "export" => array(
       "index"             => array('href' => "ph/communecter/export/index",            "public" => true),
       ),
     "datasets" => array(
       "index"             => array('href' => "ph/communecter/datesets/index",            "public" => true),
+      ),
+    "interoperability" => array(
+      "index"              => array('href' => 'ph/communecter/interoperability/index',  "public" => true),
       ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick"),

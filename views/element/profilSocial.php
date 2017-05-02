@@ -40,7 +40,6 @@
     $iconColor = Element::getColorIcon($typeItemHead) ? Element::getColorIcon($typeItemHead) : "";
 
     $useBorderElement = false;
-
     if(@Yii::app()->params["front"]) $front = Yii::app()->params["front"];
 ?>
 <style>

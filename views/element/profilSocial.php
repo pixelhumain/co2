@@ -66,7 +66,6 @@
 	    </button>
 	    <?php } ?>
         
-
         <?php 
 	    	$this->renderPartial('../element/banniere', 
 			        			array(	"iconColor"=>$iconColor,
@@ -81,6 +80,9 @@
 			        					"openEdition" => @$openEdition) 
 			        			); 
 		?>
+		
+
+
 
 	    <div class="col-md-3 col-sm-3 col-xs-3 no-padding" style="bottom:-31px; position: absolute;">
 					<?php if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))

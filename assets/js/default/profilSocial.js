@@ -1,6 +1,6 @@
 function initDateHeaderPage(params){
 	var str = directory.getDateFormated(params);
-	$(".section-date").html(str);
+	$(".section-date").prepend(str);
 }
 
 function getCroppingModal(){

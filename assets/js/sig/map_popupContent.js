@@ -637,21 +637,23 @@
 			var popupContent = 	"<style>@media screen and (min-width: 768px) {.leaflet-popup-content{width:400px!important;}}" +
 								"</style>"+
 								"<div class='form-group inline-block padding-15 form-in-map'>"+
-									"<h4>Informations sur la commune</h4>"+
+									"<div class='col-xs-12'>"+
+										"<h4>"+trad['City Informations']+"</h4>"+
+									"</div>"+
 									"<div id='insee_sumery' class='col-xs-12'>"+
-										"<span>Insee :</span> "+
+										"<span>"+trad['Insee']+" :</span> "+
 										"<span id='insee_sumery_value'></span>"+
 									"</div>"+
 									"<div id='dep_sumery' class='col-xs-12'>"+
-										"<span>Departement :</span> "+
+										"<span>"+trad['level4']+" :</span> "+
 										"<span id='dep_sumery_value'></span>"+
 									"</div>"+
 									"<div id='region_sumery' class='col-xs-12'>"+
-										"<span>Région :</span> "+
+										"<span>"+trad['level3']+" :</span> "+
 										"<span id='region_sumery_value'></span>"+
 									"</div>"+
 									"<div id='lat_sumery' class='col-xs-12'>"+
-										"<span>Latitude / Longitude :</span> "+
+										"<span>"+trad['latlng']+" :</span> "+
 										"<span id='lat_sumery_value'></span> / "+
 										"<span id='lng_sumery_value'></span>"+
 									"</div>"+

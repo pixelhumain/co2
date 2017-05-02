@@ -7,111 +7,6 @@ function bindAboutPodElement() {
 		$("#editElementDetail").on("click", function(){
 			switchModeElement();
 		});
-
-					
-
-		$("#btn-update-password").off().on( "click", function(){
-			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/person/changepassword",
-				dynForm : {
-					jsonSchema : {
-						title : trad["Change password"],
-						icon : "fa-key",
-						afterSave : function(data){
-							dyFObj.closeForm();
-						},
-						properties : {
-							mode : dyFInputs.inputHidden(),
-							userId : dyFInputs.inputHidden(),
-							oldPassword : dyFInputs.password(trad["Old password"]),
-							newPassword : dyFInputs.password("", { required : true, minlength : 8 } ),
-							newPassword2 : dyFInputs.password(trad["Repeat your new password"], {required : true, minlength : 8, equalTo : "#ajaxFormModal #newPassword"})	
-						}
-					}
-				}
-			};
-
-			var dataUpdate = {
-				mode : "changePassword",
-		        userId : userId
-		    };
-			dyFObj.openForm(form, null, dataUpdate);
-		});
-
-		$("#downloadProfil").click(function () {
-			$.ajax({
-				url: baseUrl + "/communecter/data/get/type/citoyens/id/"+contextData.id ,
-				type: 'POST',
-				dataType: 'json',
-				async:false,
-				crossDomain:true,
-				complete: function () {},
-				success: function (obj){
-					mylog.log("obj", obj);
-					$("<a/>", {
-					    "download": "profil.json",
-					    "href" : "data:application/json," + encodeURIComponent(JSON.stringify(obj))
-					  }).appendTo("body")
-					  .click(function() {
-					    $(this).remove()
-					  })[0].click() ;
-				},
-				error: function (error) {
-					
-				}
-			});
-		});
-
-	    $(".confidentialitySettings").click(function(){
-	    	param = new Object;
-	    	param.type = $(this).attr("type");
-	    	param.value = $(this).attr("value");
-	    	param.typeEntity = contextData.type;
-	    	param.idEntity = contextData.id;
-			$.ajax({
-		        type: "POST",
-		        url: baseUrl+"/"+moduleId+"/element/updatesettings",
-		        data: param,
-		       	dataType: "json",
-		    	success: function(data){
-			    	toastr.success(data.msg);
-			    }
-			});
-		});
-
-		$("#editConfidentialityBtn").on("click", function(){
-	    	mylog.log("confidentiality", seePreferences);
-	    	$("#modal-confidentiality").modal("show");
-	    	if(seePreferences=="true"){
-	    		param = new Object;
-		    	param.name = "seePreferences";
-		    	param.value = false;
-		    	param.pk = contextData.id;
-				$.ajax({
-			        type: "POST",
-			        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-			        data: param,
-			       	dataType: "json",
-			    	success: function(data){
-				    	//toastr.success(data.msg);
-				    	if(data.result){
-							$("#divSeePreferencesHeader").addClass("hidden");
-							$('#editConfidentialityBtn').removeClass("btn-red");
-				    	}
-				    }
-				});
-	    	}
-	    	
-	    });
-
-		$(".panel-btn-confidentiality .btn").click(function(){
-			var type = $(this).attr("type");
-			var value = $(this).attr("value");
-			$(".btn-group-"+type + " .btn").removeClass("active");
-			$(this).addClass("active");
-		});
-
-
 	}
 
 	function changeHiddenFields() { 
@@ -480,12 +375,13 @@ function bindAboutPodElement() {
 
 			if(contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
-				form.dynForm.jsonSchema.properties.tags = dyFInputs.tags();
 			}
 
 			if(contextData.type == typeObj.project.col ){
 				form.dynForm.jsonSchema.properties.avancement = dyFInputs.inputSelect("L'avancement du project", "Avancement du projet", avancementProject);
 			}
+
+			form.dynForm.jsonSchema.properties.tags = dyFInputs.tags();
 
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.email = dyFInputs.email();

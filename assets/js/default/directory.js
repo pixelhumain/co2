@@ -1562,7 +1562,7 @@ var directory = {
 
                 //params.url = '#page.type.'+params.type+'.id.' + params.id;
                 params.url = '#page.type.'+params.type+'.id.' + params.id;
-                if(type == "poi")    
+                if(params.type == "poi")    
                     params.url = '#element.detail.type.poi.id.' + id;
 
                 params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';

@@ -338,7 +338,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   	$.each( $(".followBtn"), function(index, value){
     	var id = $(value).attr("data-id");
    		var type = $(value).attr("data-type");
-      mylog.log("error type :", type);
+      //mylog.log("error type :", type);
    		if(type == "person") type = "people";
    		else type = dyFInputs.get(type).col;
       //mylog.log("#floopItem-"+type+"-"+id);
@@ -551,7 +551,7 @@ var directory = {
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
           if(params.type!="cities" && params.type!="poi" && params.type!="surveys" && params.type!="actions" ){
-            tip = (type == "events") ? "Participer" : 'Suivre';
+            tip = (params.type == "events") ? "Participer" : 'Suivre';
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
                   'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
                   " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+

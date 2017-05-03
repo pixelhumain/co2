@@ -115,6 +115,7 @@ var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 jQuery(document).ready(function() {
 
 	$(".subsub").hide();
+	setTitle("", "", "Live");
 
 	var liveType = "<?php echo (@$type && !empty($type)) ? $type : ''; ?>";
 	if(typeof liveTypeName[liveType] != "undefined") 

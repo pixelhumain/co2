@@ -27,7 +27,7 @@
 		// SHOWDOWN
 		'/plugins/showdown/showdown.min.js',
 		//MARKDOWN
-		//'/plugins/to-markdown/to-markdown.js',
+		'/plugins/to-markdown/to-markdown.js',
 
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
@@ -102,16 +102,18 @@
 				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Short description") ?>
 			</div>
 			<div id="shortDescriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10"><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?></div>
+			<span id="shortDescriptionAboutEdit" name="shortDescriptionAboutEdit"  class="col-xs-12 hidden" ><?php echo (!empty($element["shortDescription"])) ? $element["shortDescription"] : ""; ?></span>
 		</div>
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 			<div class="col-md-3 col-sm-3 col-xs-3 labelAbout padding-10">
 				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Description") ?>
 			</div>
-			<div id="descriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
+			<div id="descriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10" 
+					style="word-wrap: break-word; overflow:hidden;">
 				<?php echo (@$element["description"]) ? $element["description"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 			</div>
 		</div>
-		<input type="hidden" id="descriptionMarkdown" name="descriptionMarkdown" value="<?php echo (!empty($element['description'])) ? $element['description'] : ''; ?>">
+		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="col-xs-12 hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
 	</div>
 </div>
 <div id="ficheInfo" class="panel panel-white col-lg-8 col-md-12 col-sm-12 no-padding shadow2">
@@ -497,6 +499,12 @@
 										//MenuSmall
 										$(".hide-communected").show();
 										$(".visible-communected").hide();
+										//COOKIES
+										$.cookie('communexionActivated', false, { expires: 365, path: location.pathname });
+										$.cookie('communexionType', false, { expires: 365, path: location.pathname });
+    									$.cookie('communexionValue', false, { expires: 365, path: location.pathname });
+    									$.cookie('communexionName', false, { expires: 365, path: location.pathname });
+    									$.cookie('communexionLevel', false, { expires: 365, path: location.pathname });
 									}
 									toastr.success(data.msg);
 									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id);
@@ -530,25 +538,41 @@
 
 	function descHtmlToMarkdown() {
 		mylog.log("htmlToMarkdown");
-		if(typeof contextData.descriptionHTML != "undefined" && contextData.descriptionHTML == "1"){
-			if($("#descriptionAbout").html() != ""){
-				var descToMarkdown = toMarkdown($("#descriptionMarkdown").val()) ;
+		if(typeof contextData.descriptionHTML != "undefined" && contextData.descriptionHTML == true) {
+			mylog.log("htmlToMarkdown");
+			if( $("#descriptionAbout").html() != "" ){
+				var paramSpan = {
+				  filter: ['span'],
+				  replacement: function(innerHTML, node) {
+				    return innerHTML;
+				  }
+				}
+				var paramDiv = {
+				  filter: ['div'],
+				  replacement: function(innerHTML, node) {
+				    return innerHTML;
+				  }
+				}
+				mylog.log("htmlToMarkdown2");
+				var converters = { converters: [paramSpan, paramDiv] };
+				var descToMarkdown = toMarkdown( $("#descriptionAbout").html(), converters ) ;
 				mylog.log("descToMarkdown", descToMarkdown);
-	    		$("#descriptionMarkdown").html(descToMarkdown);
+				$("descriptionMarkdown").html(descToMarkdown);
 				var param = new Object;
 				param.name = "description";
 				param.value = descToMarkdown;
 				param.id = contextData.id;
 				param.typeElement = contextData.type;
 				param.block = "toMarkdown";
-	    		$.ajax({
+				$.ajax({
 			        type: "POST",
-			       	url : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
+			       	url : baseUrl+"/"+moduleId+"/element/updateblock/",
 			        data: param,
 			       	dataType: "json",
 			    	success: function(data){
 			    		mylog.log("here");
 				    	toastr.success(data.msg);
+				    	
 				    }
 				});
 				mylog.log("param", param);
@@ -558,9 +582,12 @@
 
 	function inintDescs() {
 		mylog.log("inintDescs");
-		descHtmlToMarkdown();
+		if(edit == true || openEdition== true)
+			descHtmlToMarkdown();
 		mylog.log("after");
-		$("#descriptionAbout").html(dataHelper.markdownToHtml($("#descriptionMarkdown").val()));
+		$("#descriptionAbout").html(dataHelper.markdownToHtml($("#descriptionMarkdown").html()));
 	}
+
+	
 
 </script>

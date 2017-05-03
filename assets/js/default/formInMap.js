@@ -79,8 +79,8 @@ var formInMap = {
 		}
 
 		Sig.markerFindPlace.on('dragend', function(){
-			NE_lat = Sig.markerFindPlace.getLatLng().lat;
-			NE_lng = Sig.markerFindPlace.getLatLng().lng;
+			formInMap.NE_lat = Sig.markerFindPlace.getLatLng().lat;
+			formInMap.NE_lng = Sig.markerFindPlace.getLatLng().lng;
 			Sig.markerFindPlace.openPopup();
 		});
 
@@ -152,7 +152,7 @@ var formInMap = {
 		// ---------------- newElement_city
 		$('[name="newElement_city"]').keyup(function(){ 
 			$("#dropdown-city-found").show();
-			if($('[name="newElement_city"]').val().length > 0){
+			if($('[name="newElement_city"]').val().length > 1){
 				formInMap.NE_city = $('[name="newElement_city"]').val();
 				formInMap.changeSelectCountrytim();
 
@@ -719,9 +719,9 @@ var formInMap = {
 	changeSelectCountrytim : function(){
 		mylog.log("changeSelectCountrytim", formInMap.NE_country);
 		mylog.log("formInMap.NE_cp.substring(0, 3)");
-		countryFR = ["FR","GP","MQ","GF","RE","PM","YT"];
-
-		if(countryFR.indexOf(formInMap.NE_country) != -1){
+		var countryFR = ["FR","GP","MQ","GF","RE","PM","YT"];
+		var regexNumber = new RegExp("[1-9]+") ;
+		if(countryFR.indexOf(formInMap.NE_country) != -1 && regexNumber.test(formInMap.NE_country) ) {
 			var name = $('[name="newElement_city"]').val();
 			if(name.substring(0, 3) == "971")
 				$('[name="newElement_country"]').val("GP");

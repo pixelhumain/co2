@@ -154,7 +154,8 @@ var trad = {
 "Research a name or e-mail address..." : "<?php echo Yii::t("common","Research a name or e-mail address...") ?>",
 "Invitation  accept" : "<?php echo Yii::t("common","Invitation  accept") ?>",
 "Wait for confirmation" : "<?php echo Yii::t("common","Wait for confirmation") ?>",
-"Add Link" : "<?php echo Yii::t("common","Add Link") ?>",
+"Add Link" : "<?php echo Yii::t("common","Add link") ?>",
+"Add contact" : "<?php echo Yii::t("common","Add contact") ?>",
 'Search a city, a town or a postal code' : "<?php echo Yii::t("common","Search a city, a town or a postal code") ?>",
 'Currently researching' : "<?php echo Yii::t("common","Currently researching") ?>",
 'City Informations' : "<?php echo Yii::t("common","City Informations") ?>",
@@ -162,7 +163,7 @@ var trad = {
 "Insee" : "<?php echo Yii::t("common","Insee") ?>",
 "level3" : "<?php echo Yii::t("common","level3") ?>",
 "level4" : "<?php echo Yii::t("common","level4") ?>",
-"latlgn" : "<?php echo Yii::t("common","latlgn") ?>",
+"latlng" : "<?php echo Yii::t("common","latlng") ?>",
 "streetFormInMap" : "<?php echo Yii::t("common","streetFormInMap") ?>",
 };
 

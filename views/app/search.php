@@ -16,7 +16,6 @@
     $params = CO2::getThemeParams();
 
     $page = "search";
-
     if(!@$type){  $type = "all"; }
 
     if(@$type=="events")    { $page = "agenda"; }

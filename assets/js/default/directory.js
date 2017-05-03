@@ -1126,8 +1126,9 @@ var directory = {
 
            
         //if(params.imgProfil.indexOf("fa-2x")<0)
+        var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" sous évennement(s)"  : "" ; 
         str += '<div class="col-xs-12 col-sm-4 col-md-4 no-padding">'+
-                  '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+            
+                  '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+  
                 '</div>';
         
         if(userId != null && userId != "" && params.id != userId){
@@ -1141,7 +1142,7 @@ var directory = {
         }
 
         str += "<div class='col-md-8 col-sm-8 col-xs-12 margin-top-25'>";
-        str += dateFormated;
+        str += dateFormated+countSubEvents;
         str += "</div>";
 
        
@@ -1154,8 +1155,9 @@ var directory = {
                 str += "<img class='pull-left img-responsive' src='"+baseUrl+params.organizerObj.profilThumbImageUrl+"' height='50'/>";
                 
             }            
+            elem = dyFInputs.get(params.organizerObj.type);
             str += "<h5 class='no-margin padding-top-5'><small>Organisé par</small></h5>";
-            str += "<small class='entityOrganizerName'>"+params.organizerObj.name+"</small>";
+            str += "<a href='#page.type."+elem.col+".id."+params.organizerObj["_id"]["$id"]+"' class='lbh' > <small class='entityOrganizerName'>"+params.organizerObj.name+"</small></a>";
           str += "</div>";
 
         }
@@ -1177,7 +1179,8 @@ var directory = {
                         eventTypes[params.typeEvent] : 
                         trad["event"]) : 
                         trad["event"];
-
+                               
+        //console.log("??????????????????",Object.keys(params));
         str += "<h5 class='text-dark lbh add2fav no-margin'>"+
                   "<i class='fa fa-reply fa-rotate-180'></i> " + typeEvent + thisLocality +
                "</h5>";
@@ -1265,7 +1268,8 @@ var directory = {
     // URL DIRECTORY PANEL
     // ********************************
     urlPanelHtml : function(params, key){
-		if(directory.dirLog) mylog.log("-----------urlPanelHtml", params);
+		//if(directory.dirLog) 
+      mylog.log("-----------urlPanelHtml", params, key);
 		str = "";  
 		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10'>";
 			str += "<div class='searchEntity'>";

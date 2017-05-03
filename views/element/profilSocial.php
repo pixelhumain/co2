@@ -51,7 +51,6 @@
 		display: none;
 	}
 <?php } ?>
-
 </style>	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
@@ -100,8 +99,7 @@
 								<!--<img class="img-responsive" alt="" 
 									 src="<?php echo @$element['profilMediumImageUrl'] ? 
 									 		Yii::app()->createUrl('/'.@$element['profilMediumImageUrl']) : $imgDefault; ?>">-->
-								
-								<?php if(false && @Yii::app()->session["userId"]){ ?>
+								<?php if(@Yii::app()->session["userId"]){ ?>
 								<div class="blockUsername">
 								    <!--<h2 class="text-left">
 									    <?php //echo @$element["name"]; ?><!- - <br>
@@ -115,14 +113,15 @@
 					                		?>
 					                	</small>
 				                	</h2>-->
-				                	<?php $this->renderPartial('../element/linksMenu', 
+				                	
+					                	<?php $this->renderPartial('../element/linksMenu', 
 				                			array("linksBtn"=>$linksBtn,
 				                					"elementId"=>(string)$element["_id"],
 				                					"elementType"=>$type,
 				                					"elementName"=> $element["name"],
 				                					"openEdition" => $openEdition) 
 				                			); 
-				                	?>
+				                		?>
 								    <!-- <p><i class="fa fa-briefcase"></i> Web Design and Development.</p> -->
 								</div>
 								<?php } ?>

@@ -87,7 +87,6 @@
 			</a>
 		</div>
 		<?php }; ?>
-
 	</form>
 	<div id="contentBanniere" class="col-md-12 col-sm-12 col-xs-12 no-padding">
 		<?php if (@$element["profilBanniereUrl"] && !empty($element["profilBanniereUrl"])){ ?> 
@@ -97,22 +96,6 @@
 	
 	<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation">	
     	<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
-    		
-    		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-padding margin-bottom-10">
-				<?php if(@Yii::app()->session["userId"]){ ?>
-				<div class="btn-group pull-left padding-top-5">
-				    <?php $this->renderPartial('../element/linksMenu', 
-		        			array("linksBtn"=>$linksBtn,
-		        					"elementId"=>(string)$element["_id"],
-		        					"elementType"=>$type,
-		        					"elementName"=> $element["name"],
-		        					"openEdition" => $openEdition) 
-		        			); 
-		        	?>
-				</div>
-				<?php } ?>
-			</div>
-
 			<h4 class="text-left padding-left-15 pull-left no-margin" id="main-name-element">
 				<span id="nameHeader">
 					<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left">
@@ -122,7 +105,6 @@
 				</span>	
 			</h4>					
 		</div>
-
 		<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 pull-right">
 			<span class="pull-left text-white" id="shortDescriptionHeader">
 				<?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
@@ -137,23 +119,22 @@
 <div id="uploadScropResizeAndSaveImage" style="display:none;padding:0px 60px;">
 	<!--<img src='' id="previewBanniere"/>-->
 	<div class="close-modal" data-dismiss="modal"><div class="lr"><div class="rl"></div></div></div>
-		<div class="col-lg-12">
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" class="inline margin-top-25 margin-bottom-5" height="50">
-	        <br>
-		</div>
-		<div class="modal-header text-dark">
-			<h3 class="modal-title text-center" id="ajax-modal-modal-title"><i class="fa fa-crop"></i> <?php echo Yii::t("common","Resize and crop your image to render a beautiful banniere") ?></h3>
-		</div>
-		<div class="panel-body">
-			<div class='col-md-offset-1' id='cropContainer'>
-				<img src='' id='cropImage' class='' style=''/>
-				<div class='col-md-12'>
-					<input type='submit' class='btn btn-success text-white imageCrop saveBanniere'/>
-				</div>
+	<div class="col-lg-12">
+		<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" class="inline margin-top-25 margin-bottom-5" height="50">
+        <br>
+	</div>
+	<div class="modal-header text-dark">
+		<h3 class="modal-title text-center" id="ajax-modal-modal-title"><i class="fa fa-crop"></i> <?php echo Yii::t("common","Resize and crop your image to render a beautiful banniere") ?></h3>
+	</div>
+	<div class="panel-body">
+		<div class='col-md-offset-1' id='cropContainer'>
+			<img src='' id='cropImage' class='' style=''/>
+			<div class='col-md-12'>
+				<input type='submit' class='btn btn-success text-white imageCrop saveBanniere'/>
 			</div>
 		</div>
 	</div>
-
+</div>
 
 <script>
 jQuery(document).ready(function() {

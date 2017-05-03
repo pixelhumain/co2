@@ -27,14 +27,13 @@
 		// SHOWDOWN
 		'/plugins/showdown/showdown.min.js',
 		//MARKDOWN
-		//'/plugins/to-markdown/to-markdown.js',
+		'/plugins/to-markdown/to-markdown.js',
 
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	$cssAnsScriptFilesModule = array(
 		//Data helper
 		'/js/dataHelpers.js',
-		'/js/postalCode.js',
 		'/js/default/editInPlace.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
@@ -43,6 +42,9 @@
 <style type="text/css">
 	.valueAbout{
 		border-left: 1px solid #dbdbdb;
+	}
+	#shortDescriptionAbout, #descriptionAbout{
+		white-space: pre-line;
 	}
 	.contentInformation{
 		border-bottom: 1px solid #dbdbdb;
@@ -87,7 +89,7 @@
 	
 	<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
 		<h4 class="panel-title text-dark pull-left"> 
-			<i class="fa fa-pencil"></i> <?php echo Yii::t("common","Descriptions") ?>
+			<i class="fa fa-file-text-o"></i> <?php echo Yii::t("common","Descriptions") ?>
 		</h4>
 		<?php if($edit==true || $openEdition==true ){?>
 		  	<button class="btn-update-descriptions btn btn-default letter-blue pull-right tooltips" 
@@ -99,26 +101,28 @@
 	<div class="panel-body no-padding">
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 			<div class="col-md-3 col-sm-3 col-xs-3 labelAbout padding-10">
-				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Short description") ?>
+				<span><i class="fa fa-quote-left"></i></span> <?php echo Yii::t("common", "Short description") ?>
 			</div>
 			<div id="shortDescriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10"><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?></div>
+			<span id="shortDescriptionAboutEdit" name="shortDescriptionAboutEdit"  class="col-xs-12 hidden" ><?php echo (!empty($element["shortDescription"])) ? $element["shortDescription"] : ""; ?></span>
 		</div>
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 			<div class="col-md-3 col-sm-3 col-xs-3 labelAbout padding-10">
-				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Description") ?>
+				<span><i class="fa fa-paragraph"></i></span> <?php echo Yii::t("common", "Description") ?>
 			</div>
-			<div id="descriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
+			<div id="descriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10" 
+					style="word-wrap: break-word; overflow:hidden;">
 				<?php echo (@$element["description"]) ? $element["description"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 			</div>
 		</div>
-		<input type="hidden" id="descriptionMarkdown" name="descriptionMarkdown" value="<?php echo (!empty($element['description'])) ? $element['description'] : ''; ?>">
+		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="col-xs-12 hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
 	</div>
 </div>
 <div id="ficheInfo" class="panel panel-white col-lg-8 col-md-12 col-sm-12 no-padding shadow2">
 
 	<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
 		<h4 class="panel-title text-dark pull-left"> 
-			<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","General information") ?>
+			<i class="fa fa-address-card-o"></i> <?php echo Yii::t("common","General information") ?>
 		</h4>
 		<?php if($edit==true || $openEdition==true ){?>
 			<button class="btn-update-info btn btn-default letter-blue pull-right tooltips" 
@@ -269,6 +273,43 @@
 </div>
 
 <div class="no-ing col-lg-4 col-md-12 col-sm-12">
+<?php if($type==Event::COLLECTION || $type==Project::COLLECTION){ ?>
+		<div id="socialAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding shadow2">
+			<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
+				<h4 class="panel-title text-dark pull-left"> 
+					<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common","When"); ?>
+				</h4>
+				<?php if($edit==true || $openEdition==true ){?>
+					<button class="btn-update-network btn btn-default letter-blue pull-right tooltips" 
+						data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update network") ?>">
+						<b><i class="fa fa-pencil"></i></b>
+					</button>
+				<?php } ?>
+			</div>
+			<div class="panel-body no-padding">
+				<?php if($type==Event::COLLECTION){ ?> 
+				<div class="col-md-12 col-sm-12 col-xs-12 contentInformation padding-10">
+					<span><?php echo Yii::t("common","All day")?> : </span> 
+					<span id="allDayAbout" class="" >
+						<?php echo (isset($element["allDay"]) ? Yii::t("common","Yes") : Yii::t("common","No") ); ?>
+					</span>
+				</div>
+				<?php } ?>
+
+					<div id="divStartDate" class="col-md-12 col-sm-12 col-xs-12 contentInformation padding-10">
+						<span><?php echo Yii::t("common","FromDate") ?> </span><span id="startDateAbout" class="" ><?php echo (isset($element["startDate"]) ? $element["startDate"] : "" ); ?></span>
+					</div>
+					<div id="divEndDate"  class="col-md-12 col-sm-12 col-xs-12 contentInformation padding-10">
+						<span><?php echo Yii::t("common","To") ?></span> <span id="endDateAbout" class=""><?php echo (isset($element["endDate"]) ? $element["endDate"] : "" ); ?></span> 
+					</div>
+					<div id="divNoDate" class="col-md-12 col-sm-12 col-xs-12 contentInformation padding-10">
+						<span>Pas de date</span>
+					</div>
+				
+			</div>	
+	    </div>  
+	<?php } ?>
+
 	<div id="adressesAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding shadow2">
 		<div class="panel-heading border-light padding-15" style="background-color: #dee2e680;">
 			<h4 class="panel-title text-dark"> 
@@ -420,7 +461,14 @@
 
 
 <script type="text/javascript">
-	
+
+	var formatDateView = "DD MMMM YYYY à HH:mm" ;
+	var formatDatedynForm = "DD/MM/YYYY HH:mm" ;
+	if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php echo Project::COLLECTION; ?>" ) {
+		formatDateView = "DD MMMM YYYY" ;
+		formatDatedynForm = "DD/MM/YYYY" ;
+	}
+
 	jQuery(document).ready(function() {
 		bindDynFormEditable();
 		initDate();
@@ -497,6 +545,12 @@
 										//MenuSmall
 										$(".hide-communected").show();
 										$(".visible-communected").hide();
+										//COOKIES
+										$.cookie('communexionActivated', false, { expires: 365, path: location.pathname });
+										$.cookie('communexionType', false, { expires: 365, path: location.pathname });
+    									$.cookie('communexionValue', false, { expires: 365, path: location.pathname });
+    									$.cookie('communexionName', false, { expires: 365, path: location.pathname });
+    									$.cookie('communexionLevel', false, { expires: 365, path: location.pathname });
 									}
 									toastr.success(data.msg);
 									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id);
@@ -520,35 +574,69 @@
 	});
 
 	function initDate() {//DD/mm/YYYY hh:mm
-		formatDateView = "DD MMMM YYYY" ;
+		moment.locale('fr');
+		if( typeof contextData.startDate != "undefined" && contextData.startDate != "" ){
+			$("#divStartDate").removeClass("hidden");
+			$("#divNoDate").addClass("hidden");
+		}
+		else{
+			$("#divStartDate").addClass("hidden");
+			$("#divNoDate").removeClass("hidden");
+		}
+
+		if( typeof contextData.endDate != "undefined" && contextData.endDate != "" )
+			$("#divEndDate").removeClass("hidden");
+		else
+			$("#divEndDate").addClass("hidden");
+
+
 		if($("#startDateAbout").html() != "")
 	    	$("#startDateAbout").html(moment($("#startDateAbout").html()).local().format(formatDateView));
 	    if($("#endDateAbout").html() != "")
 	    	$("#endDateAbout").html(moment($("#endDateAbout").html()).local().format(formatDateView));
+
+	    if($("#birthDate").html() != "")
+	    	$("#birthDate").html(moment($("#birthDate").html()).local().format("DD/MM/YYYY"));
 	    $('#dateTimezone').attr('data-original-title', "Fuseau horaire : GMT " + moment().local().format("Z"));
 	}
 
 	function descHtmlToMarkdown() {
 		mylog.log("htmlToMarkdown");
-		if(typeof contextData.descriptionHTML != "undefined" && contextData.descriptionHTML == "1"){
-			if($("#descriptionAbout").html() != ""){
-				var descToMarkdown = toMarkdown($("#descriptionMarkdown").val()) ;
+		if(typeof contextData.descriptionHTML != "undefined" && contextData.descriptionHTML == true) {
+			mylog.log("htmlToMarkdown");
+			if( $("#descriptionAbout").html() != "" ){
+				var paramSpan = {
+				  filter: ['span'],
+				  replacement: function(innerHTML, node) {
+				    return innerHTML;
+				  }
+				}
+				var paramDiv = {
+				  filter: ['div'],
+				  replacement: function(innerHTML, node) {
+				    return innerHTML;
+				  }
+				}
+				mylog.log("htmlToMarkdown2");
+				var converters = { converters: [paramSpan, paramDiv] };
+				var descToMarkdown = toMarkdown( $("#descriptionAbout").html(), converters ) ;
 				mylog.log("descToMarkdown", descToMarkdown);
-	    		$("#descriptionMarkdown").html(descToMarkdown);
+				$("descriptionMarkdown").html(descToMarkdown);
 				var param = new Object;
 				param.name = "description";
 				param.value = descToMarkdown;
 				param.id = contextData.id;
 				param.typeElement = contextData.type;
 				param.block = "toMarkdown";
-	    		$.ajax({
+				$.ajax({
 			        type: "POST",
-			       	url : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
+			       	url : baseUrl+"/"+moduleId+"/element/updateblock/",
 			        data: param,
 			       	dataType: "json",
 			    	success: function(data){
 			    		mylog.log("here");
 				    	toastr.success(data.msg);
+				    	
 				    }
 				});
 				mylog.log("param", param);
@@ -558,9 +646,12 @@
 
 	function inintDescs() {
 		mylog.log("inintDescs");
-		descHtmlToMarkdown();
+		if(edit == true || openEdition== true)
+			descHtmlToMarkdown();
 		mylog.log("after");
-		$("#descriptionAbout").html(dataHelper.markdownToHtml($("#descriptionMarkdown").val()));
+		$("#descriptionAbout").html(dataHelper.markdownToHtml($("#descriptionMarkdown").html()));
 	}
+
+	
 
 </script>

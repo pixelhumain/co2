@@ -2145,9 +2145,20 @@ var collection = {
 };
 
 /* *********************************
-			ELEMENT FORM 
+			DYNFORM SPEC TYPE OBJ
 ********************************** */
-//TODO : rename dynFormObj
+var contextData = null;
+var dynForm = null;
+var uploadObj = {
+	type : null,
+	id : null,
+	folder : "communecter", //on force pour pas casser toutes les vielles images
+	set : function(type,id){
+		uploadObj.type = type;
+		uploadObj.id = id;
+	}
+};
+
 var dyFObj = {
 	elementObj : null,
 	//rules to show hide submit btn, used anwhere on blur and can be 
@@ -2158,10 +2169,12 @@ var dyFObj = {
     	//on peut ajouter des regles dans la map definition 
     	if(	jsonHelper.notNull("dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf", "function") )
     		valid = dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf();
-    	if( $('#ajaxFormModal #name').val() != "" && valid )
+    	if( $('#ajaxFormModal #name').length == 0 || $('#ajaxFormModal #name').val() != "" && valid )
     		$('#btn-submit-form').show();
     	else 
     		$('#btn-submit-form').hide();
+		//tmp
+		$('#btn-submit-form').show();
     },
 	formatData : function (formData, collection,ctrl) { 
 		mylog.warn("----------- formatData",formData, collection,ctrl);
@@ -2538,22 +2551,7 @@ var dyFObj = {
 		dyFObj.openForm(form, fct, data);
 	}
 }
-
-/* *********************************
-			DYNFORM SPEC TYPE OBJ
-********************************** */
-var contextData = null;
-var dynForm = null;
-var uploadObj = {
-	type : null,
-	id : null,
-	folder : "communecter", //on force pour pas casser toutes les vielles images
-	set : function(type,id){
-		uploadObj.type = type;
-		uploadObj.id = id;
-	}
-};
-
+//TODO : refactor into dyfObj.inputs
 var dyFInputs = {
 	inputText :function(label, placeholder, rules, custom) { 
 		var inputObj = {
@@ -2910,7 +2908,7 @@ var dyFInputs = {
         label : "Date de fin",
         rules : { 
         	required : true,
-        	greaterThan: ["#ajaxFormModal #startDateInput","la date de début"],
+        	greaterThan: ["#ajaxFormModal #startDate","la date de début"],
         	duringDates: ["#startDateParent","#endDateParent","La date de fin"]
 	    }
     },
@@ -3065,11 +3063,11 @@ var typeObj = {
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
 	"organizations" : {sameAs:"organization"},
-	"LocalBusiness" : {color: "azure",icon: "industry"},
+	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
 	"NGO" : {sameAs:"organization"},
 	"Association" : {sameAs:"organization"},
-	"GovernmentOrganization" : {color: "green",icon: "circle-o"},
-	"Group" : {	color: "turq",icon: "circle-o"},
+	"GovernmentOrganization" : {col:"organizations",color: "green",icon: "circle-o"},
+	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
 	"events" : {sameAs:"event"},
 	"project" : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
@@ -3184,7 +3182,8 @@ var keyboardNav = {
 		"117" : function(){ console.clear();urlCtrl.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {
-		"13" : function(){$('#openModal').modal('hide');dyFObj.openForm('addElement')},//enter : add elements
+		"13" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show');//dyFObj.openForm('addElement')
+						  },//enter : add elements
 		"61" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show')},//= : add elements
 		"65" : function(){$('#openModal').modal('hide');dyFObj.openForm('action')},//a : actions
 		"66" : function(){$('#openModal').modal('hide'); smallMenu.destination = "#openModal"; smallMenu.openAjax(baseUrl+'/'+moduleId+'/collections/list','Mes Favoris','fa-star','yellow') },//b best : favoris

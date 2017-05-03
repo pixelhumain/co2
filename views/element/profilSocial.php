@@ -40,7 +40,6 @@
     $iconColor = Element::getColorIcon($typeItemHead) ? Element::getColorIcon($typeItemHead) : "";
 
     $useBorderElement = false;
-
     if(@Yii::app()->params["front"]) $front = Yii::app()->params["front"];
 ?>
 <style>
@@ -52,7 +51,6 @@
 		display: none;
 	}
 <?php } ?>
-
 </style>	
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
@@ -66,9 +64,8 @@
 	    </button>
 	    <?php } ?>
         
-
         <?php 
-	    	$this->renderPartial('../element/banniere', 
+	    	$this->renderPartial('../element/banner', 
 			        			array(	"iconColor"=>$iconColor,
 			        					"icon"=>$icon,
 			        					"type"=>$type,
@@ -81,6 +78,9 @@
 			        					"openEdition" => @$openEdition) 
 			        			); 
 		?>
+		
+
+
 
 	    <div class="col-md-3 col-sm-3 col-xs-3 no-padding" style="bottom:-31px; position: absolute;">
 					<?php if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
@@ -99,8 +99,7 @@
 								<!--<img class="img-responsive" alt="" 
 									 src="<?php echo @$element['profilMediumImageUrl'] ? 
 									 		Yii::app()->createUrl('/'.@$element['profilMediumImageUrl']) : $imgDefault; ?>">-->
-								
-								<?php if(false && @Yii::app()->session["userId"]){ ?>
+								<?php if(@Yii::app()->session["userId"]){ ?>
 								<div class="blockUsername">
 								    <!--<h2 class="text-left">
 									    <?php //echo @$element["name"]; ?><!- - <br>
@@ -114,14 +113,15 @@
 					                		?>
 					                	</small>
 				                	</h2>-->
-				                	<?php $this->renderPartial('../element/linksMenu', 
+				                	
+					                	<?php $this->renderPartial('../element/linksMenu', 
 				                			array("linksBtn"=>$linksBtn,
 				                					"elementId"=>(string)$element["_id"],
 				                					"elementType"=>$type,
 				                					"elementName"=> $element["name"],
 				                					"openEdition" => $openEdition) 
 				                			); 
-				                	?>
+				                		?>
 								    <!-- <p><i class="fa fa-briefcase"></i> Web Design and Development.</p> -->
 								</div>
 								<?php } ?>
@@ -332,7 +332,6 @@
 				' <a class="btn btn-xs btn-danger tooltips" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.$id.'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\'attendees\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
 					'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
 				'</a>';
-			
 		?>
 	</div>
 	<?php } ?>
@@ -398,8 +397,8 @@
 	if( $type != Person::COLLECTION)
 		$this->renderPartial('../element/addMembersFromMyContacts',
 				array(	"type"=>$type, 
-						"parentId" =>(string)$element['_id'], 
-						"members"=>@$members));
+						"parentId" => (string)$element['_id'], 
+						"members" => @$members));
 
 
 	$cssAnsScriptFilesModule = array(
@@ -411,11 +410,11 @@
 
 <script type="text/javascript">
 
-	var contextData = <?php echo json_encode(Element::getElementForJS(@$element, @$type)); ?>;
+	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>;
 
     var params = <?php echo json_encode(@$params); ?>;
-    //console.log("params", params);
-
+    var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false ); 
+	var openEdition = ( ( '<?php echo (@$openEdition == true); ?>' == "1") ? true : false );
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
     var liveScopeType = "";

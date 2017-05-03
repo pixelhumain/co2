@@ -99,60 +99,60 @@
 				<div class="right_tool_map_header">	
 					<!-- <span class="right_tool_map_header_title">Ajouter une adresse</span> -->
 					<h3 class='margin-top-5 padding-10'>
-						<i class='fa fa-home'></i><span id="title-formInMap">Adresse</span>
+						<i class='fa fa-home'></i><span id="title-formInMap"><?php echo Yii::t("common", "Address") ; ?></span>
 					</h3>
 				</div>
 				<!-- 	LIST ELEMENT -->
 				<div class='form-group inline-block padding-15 form-in-map'>
 					<div class='text-dark margin-top-5 hidden-xs'>
-						<i class='fa fa-circle'></i> Indiquez une adresse pour un placement automatique
+						<i class='fa fa-circle'></i> <?php echo Yii::t("common", "Enter an address for automatic placement") ; ?>
 					</div>
 					<div class='text-dark margin-top-5 hidden-xs'>
-						<i class='fa fa-circle'></i> Déplacez l'icon avec la souris pour un placement plus précis
+						<i class='fa fa-circle'></i> <?php echo Yii::t("common", "Move the icon with the mouse for a more precise placement") ; ?>
 					</div>
 					<hr class='col-md-12'>
 					<select class='form-group col-xs-12' name='newElement_country' id='newElement_country'>
 						<?php
-							echo "<option value=''>".Yii::t("common","Choose a country")."</option>";
+							echo "<option value=''>".Yii::t("common", "Choose a country")."</option>";
 							foreach ( OpenData::$phCountries as $key => $value) {
 								echo "<option value='".$key."'>".$value."</option>";
 							}
 						?>
 					</select>
 					<div id='divCity' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
-				  		<input class='form-group col-md-12 col-xs-12' type='text' name='newElement_city' placeholder='Ville, village, commune, code postal'>
+				  		<input class='form-group col-md-12 col-xs-12' type='text' name='newElement_city' placeholder='<?php echo Yii::t("common", "Search a city, a town or a postal code") ; ?>'>
 						<ul class='dropdown-menu col-md-12 col-xs-12' id='dropdown-newElement_locality-found' style="margin-top: -15px; background-color : #ea9d13;">
-							<li><a href='javascript:' class='disabled'>Rechercher une ville, un village, une commune</a></li>
+							<li><a href='javascript:' class='disabled'><?php echo Yii::t("common", "Search a city, a town or a postal code") ; ?></a></li>
 						</ul>
 			  		</div>
 					<div id='divStreetAddress' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
-						<input class='form-group col-md-9 col-xs-9' type='text' style='margin-right:-3px;' name='newElement_street' placeholder='(n° rue) + Adresse'>
+						<input class='form-group col-md-9 col-xs-9' type='text' style='margin-right:-3px;' name='newElement_street' placeholder='<?php echo Yii::t("common", "streetFormInMap"); ?>'>
 						<button class='col-md-3 col-xs-3 btn btn-default' style='padding:3px;border-radius:0 4px 4px 0;' type='text' id='newElement_btnSearchAddress'><i class='fa fa-search'></i></button>
 					</div>
 					<div class='dropdown pull-left col-xs-12 no-padding'> 
 				  		<ul class='dropdown-menu' id='dropdown-newElement_streetAddress-found' style="margin-top: -15px; background-color : #ea9d13;">
-				  			<li><a href='javascript:' class='disabled'>Rechercher en cours</a></li>
+				  			<li><a href='javascript:' class='disabled'><?php echo Yii::t("common", "Currently researching") ; ?></a></li>
 				  		</ul>
 					</div>
 					<div id="alertGeo" class="alert alert-warning col-xs-12 hidden" style='margin-bottom: 0px;'>
-					  <strong>Warning!</strong> Indicates a warning that might need attention.
+					  <strong><?php echo Yii::t("common", "Warning"); ?>!</strong> <?php echo Yii::t("common", "Do not forget to geolocate your address.") ; ?>
 					</div>
 					<div id='sumery' class='text-dark col-xs-12 no-padding'>
-						<h4>Récapitulatif de l'adresse : </h4>
+						<h4><?php echo Yii::t("common", "Address Summary"); ?> : </h4>
 						<div id='street_sumery' class='col-xs-12'>
-							<span>street :</span>
+							<span><?php echo Yii::t("common", "streetFormInMap"); ?> :</span>
 							<span id='street_sumery_value'></span>
 						</div>
 						<div id='cp_sumery' class='col-xs-12'>
-							<span>Postal Code :</span>
+							<span><?php echo Yii::t("common", "Postal code"); ?> :</span>
 							<span id='cp_sumery_value'></span>
 						</div>
 						<div id='city_sumery' class='col-xs-12'>
-							<span>City :</span>
+							<span><?php echo Yii::t("common", "City"); ?> :</span>
 							<span id='city_sumery_value'></span>
 						</div>
 						<div id='country_sumery' class='col-xs-12'>
-							<span>Country :</span>
+							<span><?php echo Yii::t("common", "Country"); ?> :</span>
 							<span id='country_sumery_value'></span>
 						</div>
 						<!--
@@ -182,8 +182,8 @@
 						<input type='hidden' name='newElement_dep'>
 						<input type='hidden' name='newElement_region'>
 						<hr class='col-md-12'>
-						<button class='col-md-8 btn btn-success pull-right' type='text' id='newElement_btnValidateAddress' disabled='disabled'><i class='fa fa-check'></i> Valider <span class='hidden-xs'>l'adresse et la position</span></button>
-						<button class='col-md-3 btn btn-danger pull-right' type='text' id='newElement_btnCancelAddress' style='margin-right:5px;'><i class='fa fa-times'></i> Annuler</button>
+						<button class='col-md-8 btn btn-success pull-right' type='text' id='newElement_btnValidateAddress' disabled='disabled'><i class='fa fa-check'></i> <?php echo Yii::t("common", "ValideFormInMap"); ?></button>
+						<button class='col-md-3 btn btn-danger pull-right' type='text' id='newElement_btnCancelAddress' style='margin-right:5px;'><i class='fa fa-times'></i> <?php echo Yii::t("common", "Cancel"); ?></button>
 					</div>
 				</div>
 				<!-- <label id="lbl-chk-scope"> -->

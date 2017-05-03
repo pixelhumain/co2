@@ -166,7 +166,7 @@ function bindAboutPodElement() {
 
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
@@ -243,7 +243,7 @@ function bindAboutPodElement() {
 		$(".btn-update-info").off().on( "click", function(){
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
@@ -438,7 +438,7 @@ function bindAboutPodElement() {
 		$(".btn-update-descriptions").off().on( "click", function(){
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
@@ -451,11 +451,12 @@ function bindAboutPodElement() {
 						},
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){shortDescriptionHeader
+							if(data.result && data.resultGoods.result){
 								$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
+								$(".contentInformation #shortDescriptionAboutEdit").html(data.resultGoods.values.shortDescription);
 								$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
 								$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
-								$("#descriptionMarkdown").val(data.resultGoods.values.description);
+								$("#descriptionMarkdown").html(data.resultGoods.values.description);
 							}
 							dyFObj.closeForm();
 							changeHiddenFields();
@@ -476,8 +477,8 @@ function bindAboutPodElement() {
 		        id : contextData.id,
 		        typeElement : contextData.type,
 		        name : contextData.name,
-		        shortDescription : $(".contentInformation #shortDescriptionAbout").html(),
-				description : $("#descriptionMarkdown").val(),	
+		        shortDescription : $(".contentInformation #shortDescriptionAboutEdit").html(),
+				description : $("#descriptionMarkdown").html(),	
 			};
 
 			dyFObj.openForm(form, "markdown", dataUpdate);
@@ -487,7 +488,7 @@ function bindAboutPodElement() {
 		$(".btn-update-network").off().on( "click", function(){
 			if(contextData.type == typeObj.person.col ){
 				var form = {
-					saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
+					saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 					dynForm : {
 						jsonSchema : {
 							title : trad["Change password"],
@@ -602,7 +603,7 @@ function bindAboutPodElement() {
 
 
 	function updateUrl(ind, title, url, type) {
-		//var url = urls[ind] ;
+		mylog.log("updateUrl", ind, title, url, type)
 		var params = {
 			title : title,
 			type : type,

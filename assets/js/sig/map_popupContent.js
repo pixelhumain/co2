@@ -8,6 +8,7 @@
 		//##
 		//création du contenu de la popup d'un data
 		Sig.getPopup = function(data){
+			mylog.log("getPopup", data)
 			if(typeof(data.typeSig) != "undefined" && data.typeSig == "news"){
 				return this.getPopupSimpleNews(data);
 			}else if(typeof(data.typeSig) != "undefined" && data.typeSig == "city"){
@@ -45,7 +46,7 @@
 			var icon = 'fa-'+ this.getIcoByType(data);
 
 			var onclick = "";
-			var url = '#'+typeElement+'.detail.id.'+id;
+			var url = '#page.type.'+type+'.id.'+id;
 
 			if(type == "entry") 		url = "#survey.entry.id."+id;
 			if(type == "action") 		url = "#rooms.action.id."+id;
@@ -406,6 +407,7 @@
 		};
 
 		Sig.getPopupContactsInformation = function(data){
+			//mylog.log("getPopupContactsInformation data", data);
 			var popupContent = "";
 			//Website URL
 			if (typeof data["url"] != "undefined" && data["url"] != null)
@@ -637,21 +639,23 @@
 			var popupContent = 	"<style>@media screen and (min-width: 768px) {.leaflet-popup-content{width:400px!important;}}" +
 								"</style>"+
 								"<div class='form-group inline-block padding-15 form-in-map'>"+
-									"<h4>Informations sur la commune</h4>"+
+									"<div class='col-xs-12'>"+
+										"<h4>"+trad['City Informations']+"</h4>"+
+									"</div>"+
 									"<div id='insee_sumery' class='col-xs-12'>"+
-										"<span>Insee :</span> "+
+										"<span>"+trad['Insee']+" :</span> "+
 										"<span id='insee_sumery_value'></span>"+
 									"</div>"+
 									"<div id='dep_sumery' class='col-xs-12'>"+
-										"<span>Departement :</span> "+
+										"<span>"+trad['level4']+" :</span> "+
 										"<span id='dep_sumery_value'></span>"+
 									"</div>"+
 									"<div id='region_sumery' class='col-xs-12'>"+
-										"<span>Région :</span> "+
+										"<span>"+trad['level3']+" :</span> "+
 										"<span id='region_sumery_value'></span>"+
 									"</div>"+
 									"<div id='lat_sumery' class='col-xs-12'>"+
-										"<span>Latitude / Longitude :</span> "+
+										"<span>"+trad['latlng']+" :</span> "+
 										"<span id='lat_sumery_value'></span> / "+
 										"<span id='lng_sumery_value'></span>"+
 									"</div>"+

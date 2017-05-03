@@ -16,7 +16,6 @@
     $params = CO2::getThemeParams();
 
     $page = "search";
-
     if(!@$type){  $type = "all"; }
 
     if(@$type=="events")    { $page = "agenda"; }
@@ -527,7 +526,7 @@ function initTypeSearch(typeInit){
 
     if(typeInit == "all") {
         searchType = ["persons", "organizations", "projects"];
-        if($('#main-search-bar').val() != "") searchType.push("cities");
+        //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
 
         indexStepInit = 30;
     }

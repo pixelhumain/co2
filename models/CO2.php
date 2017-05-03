@@ -49,7 +49,6 @@ class CO2 {
                   (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
             $communexion["state"] = true;
         }        
-
         if(@Yii::app()->request->cookies['cpCommunexion'] && !empty(Yii::app()->request->cookies['cpCommunexion']->value)){
             $cp = (string)Yii::app()->request->cookies['cpCommunexion'];
             $insee = (string)Yii::app()->request->cookies['inseeCommunexion'];
@@ -88,7 +87,7 @@ class CO2 {
                                             "regionName"=>@$city["regionName"],
                                             "cities"=>$cities);
             $communexion["levelMinCommunexion"] =  $levelMin;
-            if($currentName!=""){
+            if($currentName!="" && $currentName != "false"){
                 $communexion["currentLevel"] =  (string)Yii::app()->request->cookies['communexionType'];
                 $communexion["currentName"] = $currentName;
                 $communexion["currentValue"] =  (string)Yii::app()->request->cookies['communexionValue'];
@@ -101,6 +100,11 @@ class CO2 {
                     $communexion["currentLevel"] =  "city";
                 //return $communexion;           
             }
+        }else{
+            $communexion["levelMinCommunexion"] =  false;
+            $communexion["currentLevel"] =  false;
+            $communexion["currentName"] = false;
+            $communexion["currentValue"] =  false;
         }
 
         

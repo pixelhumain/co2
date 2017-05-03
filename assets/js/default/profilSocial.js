@@ -1,6 +1,6 @@
 function initDateHeaderPage(params){
 	var str = directory.getDateFormated(params);
-	$(".section-date").html(str);
+	$(".section-date").prepend(str);
 }
 
 function getCroppingModal(){
@@ -246,12 +246,18 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	else if(dataName == "dda"){ html += countData+" <b>proposition"+s+"</b> de " + elementName; }
 
 	else if(dataName == "urls"){ 
-		html += elementName + " a " + countData+" <b> lien"+s;
+		var str = " a " + countData;
+		if(countData == "Aucun")
+			str = " n'a aucun";
+		html += elementName + str+" <b> lien"+s;
 		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'parentUrl\')">';
     	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
 	}
 
-	else if(dataName == "contacts"){ 
+	else if(dataName == "contacts"){
+		var str = " a " + countData;
+		if(countData == "Aucun")
+			str = " n'a aucun";
 		html += elementName + " a " + countData+" <b> point de contact"+s;
 		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
     	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  

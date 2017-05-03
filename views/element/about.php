@@ -43,6 +43,9 @@
 	.valueAbout{
 		border-left: 1px solid #dbdbdb;
 	}
+	#shortDescriptionAbout, #descriptionAbout{
+		white-space: pre-line;
+	}
 	.contentInformation{
 		border-bottom: 1px solid #dbdbdb;
 	}
@@ -86,7 +89,7 @@
 	
 	<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
 		<h4 class="panel-title text-dark pull-left"> 
-			<i class="fa fa-pencil"></i> <?php echo Yii::t("common","Descriptions") ?>
+			<i class="fa fa-file-text-o"></i> <?php echo Yii::t("common","Descriptions") ?>
 		</h4>
 		<?php if($edit==true || $openEdition==true ){?>
 		  	<button class="btn-update-descriptions btn btn-default letter-blue pull-right tooltips" 
@@ -98,14 +101,14 @@
 	<div class="panel-body no-padding">
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 			<div class="col-md-3 col-sm-3 col-xs-3 labelAbout padding-10">
-				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Short description") ?>
+				<span><i class="fa fa-quote-left"></i></span> <?php echo Yii::t("common", "Short description") ?>
 			</div>
 			<div id="shortDescriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10"><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?></div>
 			<span id="shortDescriptionAboutEdit" name="shortDescriptionAboutEdit"  class="col-xs-12 hidden" ><?php echo (!empty($element["shortDescription"])) ? $element["shortDescription"] : ""; ?></span>
 		</div>
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 			<div class="col-md-3 col-sm-3 col-xs-3 labelAbout padding-10">
-				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Description") ?>
+				<span><i class="fa fa-paragraph"></i></span> <?php echo Yii::t("common", "Description") ?>
 			</div>
 			<div id="descriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10" 
 					style="word-wrap: break-word; overflow:hidden;">
@@ -119,7 +122,7 @@
 
 	<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
 		<h4 class="panel-title text-dark pull-left"> 
-			<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","General information") ?>
+			<i class="fa fa-address-card-o"></i> <?php echo Yii::t("common","General information") ?>
 		</h4>
 		<?php if($edit==true || $openEdition==true ){?>
 			<button class="btn-update-info btn btn-default letter-blue pull-right tooltips" 

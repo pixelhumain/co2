@@ -33,14 +33,14 @@
 		padding-top: 0px !important;
 	} 
 
-	#banniere_element:hover{
+	#banner_element:hover{
 	    color: #0095FF;
 	    background-color: white;
 	    border:1px solid #0095FF;
 	    border-radius: 3px;
 	    margin-right: 2px;
 	}
-	#banniere_element{
+	#banner_element{
 	    background-color: #0095FF;
 	    color: white;
 	    border-radius: 3px;
@@ -49,7 +49,7 @@
 
 </style>
 
-<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-left no-padding" id="col-banniere">
+<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-left no-padding" id="col-banner">
         	
 	<?php if($type==Event::COLLECTION){ ?>
 	<div class="col-xs-9 col-sm-6 col-md-5 col-lg-5 margin-right-15 margin-top-25 section-date pull-right">
@@ -76,21 +76,25 @@
           Yii::app()->createUrl('/'.@$element['profilImageUrl']) 
           : "";
 	?>
-	<form  method="post" id="banniere_photoAdd" enctype="multipart/form-data">
+	<form  method="post" id="banner_photoAdd" enctype="multipart/form-data">
 		<?php
-		if(@Yii::app()->session["userId"] && ((@$edit && $edit) || (@$openEdition && $openEdition))){ ?>
-		<div class="user-image-buttons padding-10">
-			<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="banniere_element" >
-				<span class="fileupload-new"><i class="fa fa-plus"></i> <span class="hidden-xs"> Banniere</span></span>
-				<input type="file" accept=".gif, .jpg, .png" name="banniere" id="banniere_change" class="hide">
-				<input class="banniere_isSubmit hidden" value="true"/>
+		if(@Yii::app()->session["userId"] && ((@$edit && $edit) || (@$openEdition && $openEdition))){ 
+			if (@$element["profilBannereUrl"] && !empty($element["profilBannereUrl"])) $editBtn=true;
+			else $editBtn=false;
+		?>
+		<div class="user-image-buttons padding-10" style="position: absolute;z-index: 100;">
+			<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="banner_element" >
+				<span class="fileupload-new">
+					<i class="fa fa-<?php if($editBtn) echo "pencil"; else echo "plus"?>"></i> <span class="hidden-xs"> <?php if($editBtn) echo Yii::t("common","Edit banner"); else echo Yii::t("common","Add a banner") ?></span></span>
+				<input type="file" accept=".gif, .jpg, .png" name="banner" id="banner_change" class="hide">
+				<input class="banner_isSubmit hidden" value="true"/>
 			</a>
 		</div>
 		<?php }; ?>
 	</form>
-	<div id="contentBanniere" class="col-md-12 col-sm-12 col-xs-12 no-padding">
-		<?php if (@$element["profilBanniereUrl"] && !empty($element["profilBanniereUrl"])){ ?> 
-			<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="<?php echo Yii::app()->createUrl('/'.$element["profilBanniereUrl"]) ?>">
+	<div id="contentBanner" class="col-md-12 col-sm-12 col-xs-12 no-padding">
+		<?php if (@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])){ ?> 
+			<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="<?php echo Yii::app()->createUrl('/'.$element["profilBannerUrl"]) ?>">
 		<?php } ?>
 	</div>
 	
@@ -124,13 +128,13 @@
         <br>
 	</div>
 	<div class="modal-header text-dark">
-		<h3 class="modal-title text-center" id="ajax-modal-modal-title"><i class="fa fa-crop"></i> <?php echo Yii::t("common","Resize and crop your image to render a beautiful banniere") ?></h3>
+		<h3 class="modal-title text-center" id="ajax-modal-modal-title"><i class="fa fa-crop"></i> <?php echo Yii::t("common","Resize and crop your image to render a beautiful banner") ?></h3>
 	</div>
 	<div class="panel-body">
 		<div class='col-md-offset-1' id='cropContainer'>
 			<img src='' id='cropImage' class='' style=''/>
 			<div class='col-md-12'>
-				<input type='submit' class='btn btn-success text-white imageCrop saveBanniere'/>
+				<input type='submit' class='btn btn-success text-white imageCrop saveBanner'/>
 			</div>
 		</div>
 	</div>
@@ -145,16 +149,16 @@ jQuery(document).ready(function() {
 	});
 
 
-	$("#banniere_element").click(function(event){
+	$("#banner_element").click(function(event){
 			if (!$(event.target).is('input')) {
-					$(this).find("input[name='banniere']").trigger('click');
+					$(this).find("input[name='banner']").trigger('click');
 			}
 		//$('#'+contentId+'_avatar').trigger("click");		
 	});
 	
-	$('#banniere_change').off().on('change.bs.fileinput', function () {
+	$('#banner_change').off().on('change.bs.fileinput', function () {
 		setTimeout(function(){
-			var files = document.getElementById("banniere_change").files;
+			var files = document.getElementById("banner_change").files;
 			if (files[0].size > 2097152)
 				toastr.warning("Please reduce your image before to 2Mo");
 			else {
@@ -194,22 +198,22 @@ jQuery(document).ready(function() {
 						        		console.log('crop window: ', crop);
 						        
 									});
-									$(".saveBanniere").click(function(){
+									$(".saveBanner").click(function(){
 								        //console.log(cropResult);
 								        //var cropResult=cropResult;
-								        $("#banniere_photoAdd").submit();
+								        $("#banner_photoAdd").submit();
 									});
-									$("#banniere_photoAdd").off().on('submit',(function(e) {
+									$("#banner_photoAdd").off().on('submit',(function(e) {
 										//alert(moduleId);
 										if(debug)mylog.log("id2", contextData.id);
-										$(".banniere_isSubmit").val("true");
+										$(".banner_isSubmit").val("true");
 										e.preventDefault();
 										console.log(cropResult);
-										var fd = new FormData(document.getElementById("banniere_photoAdd"));
+										var fd = new FormData(document.getElementById("banner_photoAdd"));
 										fd.append("parentId", contextData.id);
 										fd.append("parentType", contextData.type);
-										fd.append("formOrigin", "banniere");
-										fd.append("contentKey", "banniere");
+										fd.append("formOrigin", "banner");
+										fd.append("contentKey", "banner");
 										fd.append("cropW", cropResult.cropW);
 										fd.append("cropH", cropResult.cropH);
 										fd.append("cropX", cropResult.cropX);
@@ -225,7 +229,7 @@ jQuery(document).ready(function() {
 										// Attach file
 										//formData.append('image', $('input[type=banniere]')[0].files[0]); 
 										$.ajax({
-											url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextData.type+"/ownerId/"+contextData.id+"/input/banniere",
+											url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextData.type+"/ownerId/"+contextData.id+"/input/banner",
 											type: "POST",
 											data: fd,
 											contentType: false,
@@ -234,8 +238,8 @@ jQuery(document).ready(function() {
 											dataType: "json",
 											success: function(data){
 										        if(data.result){
-										        	newBanniere='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
-										        	$("#contentBanniere").html(newBanniere);
+										        	newBanner='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
+										        	$("#contentBanner").html(newBanner);
 										        	$.unblockUI();
 										        	//$("#uploadScropResizeAndSaveImage").hide();
 										    	}

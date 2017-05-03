@@ -65,7 +65,7 @@
 	    <?php } ?>
         
         <?php 
-	    	$this->renderPartial('../element/banniere', 
+	    	$this->renderPartial('../element/banner', 
 			        			array(	"iconColor"=>$iconColor,
 			        					"icon"=>$icon,
 			        					"type"=>$type,

@@ -75,6 +75,7 @@ dynForm = {
             name : dyFInputs.name("event"),
 	        similarLink : dyFInputs.similarLink,
 	        organizerId :{
+	        	label : "Qui organise cet événement ?",
 	        	rules : { required : true },
             	inputType : "select",
             	placeholder : "Qui organise ?",

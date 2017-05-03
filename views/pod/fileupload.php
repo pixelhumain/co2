@@ -91,9 +91,12 @@
 				</div>
 				<div class="fileupload-preview fileupload-exists thumbnail container-fluid" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_imgNewPreview"></div>
 				<?php
-				if(@Yii::app()->session["userId"] && ((@$editMode && $editMode) || (@$openEdition && $openEdition))){ ?>
+				if(@Yii::app()->session["userId"] && ((@$editMode && $editMode) || (@$openEdition && $openEdition))){ 
+					if($image!="") $editBtn=true; else $editBtn=false;
+				?>
 				<div class="user-image-buttons">
-					<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="profil_photoAddBtn" ><span class="fileupload-new"><i class="fa fa-plus"></i> <span class="hidden-xs">Photo</span></span>
+					<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="profil_photoAddBtn" ><span class="fileupload-new">
+						<i class="fa fa-<?php if($editBtn) echo "pencil"; else echo "plus"?>"></i> <span class="hidden-xs"><?php if($editBtn) echo Yii::t("common","Edit photo"); else echo Yii::t("common","Add a photo") ?></span></span>
 						<input type="file" accept=".gif, .jpg, .png" name="avatar" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_avatar" class="hide">
 						<input class="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_isSubmit hidden" value="true"/>
 					</a>

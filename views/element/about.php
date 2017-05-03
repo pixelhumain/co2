@@ -34,7 +34,6 @@
 	$cssAnsScriptFilesModule = array(
 		//Data helper
 		'/js/dataHelpers.js',
-		'/js/postalCode.js',
 		'/js/default/editInPlace.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);

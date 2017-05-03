@@ -8,6 +8,7 @@
 		//##
 		//création du contenu de la popup d'un data
 		Sig.getPopup = function(data){
+			mylog.log("getPopup", data)
 			if(typeof(data.typeSig) != "undefined" && data.typeSig == "news"){
 				return this.getPopupSimpleNews(data);
 			}else if(typeof(data.typeSig) != "undefined" && data.typeSig == "city"){
@@ -45,7 +46,7 @@
 			var icon = 'fa-'+ this.getIcoByType(data);
 
 			var onclick = "";
-			var url = '#'+typeElement+'.detail.id.'+id;
+			var url = '#page.type.'+type+'.id.'+id;
 
 			if(type == "entry") 		url = "#survey.entry.id."+id;
 			if(type == "action") 		url = "#rooms.action.id."+id;
@@ -406,6 +407,7 @@
 		};
 
 		Sig.getPopupContactsInformation = function(data){
+			//mylog.log("getPopupContactsInformation data", data);
 			var popupContent = "";
 			//Website URL
 			if (typeof data["url"] != "undefined" && data["url"] != null)

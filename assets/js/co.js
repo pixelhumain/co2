@@ -3066,7 +3066,7 @@ var typeObj = {
 	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
 	"NGO" : {sameAs:"organization"},
 	"Association" : {sameAs:"organization"},
-	"GovernmentOrganization" : {col:"organizations",color: "green",icon: "circle-o"},
+	"GovernmentOrganization" : {sameAs:"organization"},
 	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
 	"events" : {sameAs:"event"},

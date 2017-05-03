@@ -3182,7 +3182,8 @@ var keyboardNav = {
 		"117" : function(){ console.clear();urlCtrl.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {
-		"13" : function(){$('#openModal').modal('hide');dyFObj.openForm('addElement')},//enter : add elements
+		"13" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show');//dyFObj.openForm('addElement')
+						  },//enter : add elements
 		"61" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show')},//= : add elements
 		"65" : function(){$('#openModal').modal('hide');dyFObj.openForm('action')},//a : actions
 		"66" : function(){$('#openModal').modal('hide'); smallMenu.destination = "#openModal"; smallMenu.openAjax(baseUrl+'/'+moduleId+'/collections/list','Mes Favoris','fa-star','yellow') },//b best : favoris

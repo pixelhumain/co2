@@ -410,7 +410,7 @@
 
 <script type="text/javascript">
 
-	var contextData = <?php echo json_encode(Element::getElementForJS(@$element, @$type)); ?>;
+	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>;
 
     var params = <?php echo json_encode(@$params); ?>;
     var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false ); 

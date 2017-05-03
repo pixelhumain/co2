@@ -30,7 +30,6 @@ $titleChart = array( "commons" => Yii::t("chart","Chart of commons"),
 		<div class="col-md-6 col-sm-6 col-xs-12 pull-right margin-10 panel shadow2">
 			<canvas id="myChart" width="" height=""></canvas>
 		</div>
-		<h2 class="panel-title text-left margin-bottom-10"><?php echo $titleChart[$chartKey] ?></h2>
 		<?php
 			$inc=0; 
 			foreach($properties as $key => $value){ ?>
@@ -233,9 +232,9 @@ function chartInit(dataProperties){
 	// This will get the first returned node in the jQuery collection.
 	myNewChart = new Chart(ctx).Radar(data, options);
 	console.log(myNewChart);
-	document.getElementById("#myChart").onclick = function(evt){
+	/*document.getElementById("#myChart").onclick = function(evt){
 	    var activePoints = myNewChart.getPointsAtEvent(evt);
-	    /* this is where we check if event has keys which means is not empty space */       
+	    /* this is where we check if event has keys which means is not empty space      
 	    if(Object.keys(activePoints).length > 0)
 	    {
 	        var label = activePoints[0]["label"];
@@ -243,9 +242,9 @@ function chartInit(dataProperties){
 	        $(".descriptionLabel").addClass("hide");
 	        $(".description"+label).removeClass("hide");
 	        //var url = "http://example.com/?label=" + label + "&value=" + value
-	        /* process your url ... */
+	        /* process your url ... 
 	    }
-	};
+	};*/
 }
 
 

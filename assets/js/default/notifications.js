@@ -165,7 +165,7 @@ function buildNotifications(list, element)
 //		element="Element";
 //	mylog.info("buildNotifications"+element+"()");
 	mylog.log(typeof list);
-	//$(".notifList").html("");
+	$(".notifList"+element).html("");
 	if(typeof list != "undefined" && typeof list == "object"){
 		$.each( list , function( notifKey , notifObj )
 		{
@@ -173,13 +173,16 @@ function buildNotifications(list, element)
 			//convert url to hash for loadByHash
 			url = "#"+url.replace(/\//g, ".");
 			//var moment = require('moment');
-			moment.lang('fr');
+			momentNotif=notifObj.timeAgo;
+			/*moment.lang('fr');
 			if(typeof notifObj.updated != "undefined")
 				momentNotif=moment(new Date( parseInt(notifObj.updated.sec)*1000 )).fromNow();
 			else if(typeof notifObj.created != "undefined")
 				momentNotif=moment(new Date( parseInt(notifObj.created.sec)*1000 )).fromNow();
-			else if(typeof notifObj.timestamp != "undefined")
-				momentNotif=moment(new Date( parseInt(notifObj.timestamp.sec)*1000 )).fromNow();
+			else
+				momentNotif="";*/ 
+			//if(typeof notifObj.timestamp != "undefined")
+			//	momentNotif=moment(new Date( parseInt(notifObj.timestamp.sec)*1000 )).fromNow();
 			var icon = (typeof notifObj.notify != "undefined") ? notifObj.notify.icon : "fa-bell";
 			var displayName = (typeof notifObj.notify != "undefined") ? notifObj.notify.displayName : "Undefined notification";
 			//console.log(notifObj);

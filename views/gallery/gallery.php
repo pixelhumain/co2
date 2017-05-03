@@ -80,7 +80,7 @@ if( isset($parent) ){
 					<ul class="nav nav-pills">
 						<?php  if( Authorisation::canParticipate( Yii::app()->session['userId'], $itemType, $itemId ) ) {  ?>
 						<li>
-							<a class="btn btn-default" href="javascript:elementLib.openForm('addPhoto')">
+							<a class="btn btn-default" href="javascript:dyFObj.openForm('addPhoto')">
 								<i class="fa fa-upload"></i> <?php echo Yii::t("common","Add Photos"); ?>
 							</a>
 						</li>
@@ -103,7 +103,7 @@ if( isset($parent) ){
 
 var images;
 var tabButton = [];
-var mapButton = {"media": "Media", "slider": "Album", "profil" : "Profil", "banniere" : "Banniere", "logo" : "Logo"};
+var mapButton = {"media": "Media", "slider": "Album", "profil" : "Profil", "banner" : "Banner", "logo" : "Logo"};
 var itemId = "<?php echo $itemId; ?>";
 var itemType = "<?php echo $itemType; ?>";
 

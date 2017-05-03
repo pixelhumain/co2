@@ -16,7 +16,6 @@
     $params = CO2::getThemeParams();
 
     $page = "search";
-
     if(!@$type){  $type = "all"; }
 
     if(@$type=="events")    { $page = "agenda"; }
@@ -127,10 +126,10 @@
         background-color: #F2F2F2 !important;
     }
 
-    .btn-directory-type.active {
+    /*##content-social .btn-directory-type.active {
         background-color: #2C3E50 !important;
         color : white;
-    }
+    }*/
 
     .searchEntityContainer.pull-right.classified{
         clear: right;
@@ -486,7 +485,7 @@ jQuery(document).ready(function() {
         currentKFormType = $(this).data("ktype");
         var type = $(this).data("type");
         setTimeout(function(){
-                    elementLib.openForm(type);
+                    dyFObj.openForm(type);
                  },500);
         
     });
@@ -502,7 +501,7 @@ jQuery(document).ready(function() {
 
         if(type=="events") type="event";
         if(type=="vote") type="entry";
-        elementLib.openForm(type);
+        dyFObj.openForm(type);
     });
 
     /*$(".btn-decommunecter").click(function(){
@@ -518,7 +517,7 @@ jQuery(document).ready(function() {
     $(".tooltips").tooltip();
 
     //currentKFormType = "Group";
-    //elementLib.openForm ("organization");
+    //dyFObj.openForm ("organization");
 });
 
 
@@ -527,7 +526,7 @@ function initTypeSearch(typeInit){
 
     if(typeInit == "all") {
         searchType = ["persons", "organizations", "projects"];
-        if($('#main-search-bar').val() != "") searchType.push("cities");
+        //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
 
         indexStepInit = 30;
     }
@@ -547,7 +546,7 @@ function initClassifiedInterface(){ return;
     classified.currentLeftFilters = null;
     $('#menu-section-'+typeInit).removeClass("hidden");
     $("#btn-create-classified").click(function(){
-         elementLib.openForm('classified');
+         dyFObj.openForm('classified');
     });    
 }
 
@@ -645,7 +644,7 @@ function bindLeftMenuFilters () {
 
 
     $("#btn-create-classified").off().on("click", function(){
-         elementLib.openForm('classified');
+         dyFObj.openForm('classified');
     });
 
     $("#priceMin").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 

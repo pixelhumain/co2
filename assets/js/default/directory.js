@@ -340,7 +340,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    		var type = $(value).attr("data-type");
       mylog.log("error type :", type);
    		if(type == "person") type = "people";
-   		else type = typeObjLib.get(type).col;
+   		else type = dyFInputs.get(type).col;
       //mylog.log("#floopItem-"+type+"-"+id);
    		if($("#floopItem-"+type+"-"+id).length){
    			//mylog.log("I FOLLOW THIS");
@@ -380,11 +380,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    		var name = $(this).attr("data-name");
    		var id = $(this).attr("data-id");
    		//traduction du type pour le floopDrawer
-   		var typeOrigine = typeObjLib.get(type).col;
+   		var typeOrigine = dyFInputs.get(type).col;
       if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
    		formData.parentType = typeOrigine;
    		if(type == "person") type = "people";
-   		else type = typeObjLib.get(type).col;
+   		else type = dyFInputs.get(type).col;
 
 		var thiselement = this;
 		$(this).html("<i class='fa fa-spin fa-circle-o-notch text-azure'></i>");
@@ -431,42 +431,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 		}
    	});
 
-
-    $(".btn-share").click(function(){
-
-      formData = new Object();
-      formData.parentId = $(this).attr("data-id");
-      formData.childId = userId;
-      formData.childType = personCOLLECTION;
-      formData.connectType =  "share";
-      var type = $(this).attr("data-type");
-      var name = $(this).attr("data-name");
-      var id = $(this).attr("data-id");
-      //traduction du type pour le floopDrawer
-      var typeOrigine = typeObjLib.get(type).col;
-      if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
-      formData.parentType = typeOrigine;
-      if(type == "person") type = "people";
-      else type = typeObjLib.get(type).col;
-
-      $.ajax({
-        type: "POST",
-        url: baseUrl+"/"+moduleId+"/link/share",
-        data : formData,
-        dataType: "json",
-        success: function(data){
-          if ( data && data.result ) {
-            $(thiselement).html("<i class='fa fa-chain'></i>");
-            $(thiselement).attr("data-ownerlink","follow");
-            $(thiselement).attr("data-original-title", (type == "events") ? "Participer" : "Suivre");
-            removeFloopEntity(data.parentId, type);
-            toastr.success(trad["You are not following"]+data.parentEntity.name);
-          } else {
-             toastr.error("You leave succesfully");
-          }
-        }
-      });
-    });
+    initBtnShare();
 
    	//on click sur les boutons link
     // $(".btn-tag").click(function(){
@@ -475,6 +440,75 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   }
 
 
+  function initBtnShare(){
+    console.log("init btn-share ");
+    $(".btn-share").off().click(function(){
+      var thiselement = this;
+
+      var type = $(thiselement).attr("data-type");
+      var id = $(thiselement).attr("data-id");
+      
+      $("#modal-share").modal("show");
+      
+      //$("#modal-share #htmlElementToShare").html("test");
+      console.log("initBtnShare "+type+" - "+id);
+      //$("#news-list li#"+type+id).html("bébé");
+      var html = "";
+      
+      if($("#news-list li#"+type+id + " .timeline-panel").length > 0)
+        html = $("#news-list li#"+type+id + " .timeline-panel").html();
+      //console.log("TO #modal-share : "+html+" "+typeof html);
+      
+      if($(".timeline-body #newsActivityStream"+id).length > 0)
+        html = $(".timeline-body #newsActivityStream"+id).html();
+      
+      if(html == "" && $(".searchEntity#entity"+id).length > 0) 
+        html = "<div class='searchEntity'>"+$(".searchEntity#entity"+id).html()+"</div>";
+
+      if(html == "" && type !="news" && type!="activityStream" && typeof contextData != "undefined"){
+        html = directory.showResultsDirectoryHtml(new Array(contextData), type);
+      } 
+      
+      $("#modal-share #htmlElementToShare").html(html);
+      $("#modal-share #btn-share-it").attr("data-id", id);
+      $("#modal-share #btn-share-it").attr("data-type", type);
+      $("#modal-share #btn-share-it").off().click(function(){
+        shareIt("#modal-share #btn-share-it");
+      });
+    
+      //smallMenu.openAjaxHTML(baseUrl+"/"+moduleId+"/page/type/news/id/"+id, "title");
+
+      //shareIt(thiselement);
+    });
+  }
+
+  function shareIt(thiselement){
+      formData = new Object();
+      formData.parentId = $(thiselement).attr("data-id");
+      formData.childId = userId;
+      formData.childType = personCOLLECTION;
+      formData.connectType =  "share";
+      var type = $(thiselement).attr("data-type");
+      var id = $(thiselement).attr("data-id");
+      
+      //traduction du type pour le floopDrawer
+      var typeOrigine = dyFInputs.get(type).col;
+      if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
+      formData.parentType = typeOrigine;
+      if(type == "person") type = "people";
+      else type = dyFInputs.get(type).col;
+
+      $.ajax({
+        type: "POST",
+        url: baseUrl+"/"+moduleId+"/link/share",
+        data : formData,
+        dataType: "json",
+        success: function(data){
+          $(thiselement).attr("data-original-title", "Vous avez partagé ça avec votre réseau");
+          toastr.success("Vous avez partagé ce contenu avec votre réseau");  
+        }
+      });
+  }
 
   function setSearchValue(value){
     $("#searchBarText").val(value);
@@ -507,7 +541,7 @@ var directory = {
       if(directory.dirLog) mylog.log("----------- defaultPanelHtml",params.type,params.name);
       str = "";  
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
-      str +=    "<div class='searchEntity'>";
+      str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
       if(params.itemType!="city" && (params.useMinSize))
           str += "<div class='imgHover'>" + params.imgProfil + "</div>"+
@@ -601,7 +635,7 @@ var directory = {
                 var typeIcoParent = params.parentRoom.parentObj.typeSig;
                 //mylog.log("typeIcoParent", params.parentRoom);
 
-                var p = typeObjLib.get(typeIcoParent);
+                var p = dyFInputs.get(typeIcoParent);
                 params.icoParent = p.icon;
                 params.colorParent = p.color;
 
@@ -642,7 +676,7 @@ var directory = {
 
             str += "<div class='entityDescription'>" + params.description + "</div>";
          
-            str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+            str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
 
             if(params.useMinSize){
               if(params.startDate != null)
@@ -675,7 +709,7 @@ var directory = {
       var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
       var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" '>";
-      str +=    '<div class="searchEntity" >';
+      str +=    '<div class="searchEntity" id="entity'+params.id+'">';
 
         if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
@@ -807,7 +841,6 @@ var directory = {
       // ********************************
       // NEXT PREVIOUS 
       // ********************************
-      var nav = directory.findNextPrev(hash);
       str += "<div class='col-xs-6 col-sm-2 col-md-3 pull-left text-right'></div>";
       //str += "<div class='col-xs-6 col-sm-2 col-md-3 pull-right text-left visible-xs'>"+nav.next+"</div>";
       // ********************************
@@ -832,22 +865,27 @@ var directory = {
               str += "</div><hr>";
             }
 
-          if(typeof params.name != "undefined" && params.name != "")
+         //if(typeof hash != "undefined"){
+            var nav = directory.findNextPrev(hash);
+            if(typeof params.name != "undefined" && params.name != "")
               str += "<div class='bold text-black' style='font-size:20px;'>"+ 
-                        "<div class='col-md-8 col-sm-8 col-xs-7 no-padding margin-top-10'>"+params.name + "</div>" +
-                        "<div class='col-md-4 col-sm-4 col-xs-5 no-padding'>"+ 
-                        nav.next+
-                        nav.prev+
-                        "</div>" +
-                        "<br>"+
-                    "</div>";
+                        "<div class='col-md-8 col-sm-8 col-xs-7 no-padding margin-top-10'>"+params.name + "</div>";
+                        if(typeof hash != "undefined"){ 
+                          str +=  "<div class='col-md-4 col-sm-4 col-xs-5 no-padding'>"+ 
+                                    nav.next+
+                                    nav.prev+
+                                  "</div>";
+                        }
+              str +=    "<br>"+
+                     "</div>";
+         // }
 
           if(typeof params.description != "undefined" && params.description != "")
               str += "<div class='col-md-12 col-sm-12 col-xs-12 no-padding pull-left'><hr>" + params.description + "<hr></div>";
 
          
           var thisLocality = "";
-          if(params.fullLocality != "" && params.fullLocality != " ")
+          if(typeof params.fullLocality != "undefined" && params.fullLocality != "" && params.fullLocality != " ")
                thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
                                 "<i class='fa fa-home'></i> " + params.fullLocality + 
                               "</a>";
@@ -908,7 +946,7 @@ var directory = {
                  '</div>';
 
         if( params.creator == userId )
-        str += '<hr><a href="javascript:elementLib.openForm(\'classified\', null, directory.previewedObj.params );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
+        str += '<hr><a href="javascript:dyFObj.openForm(\'classified\', null, directory.previewedObj.params );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
                   '<i class="fa fa-pencil"></i> Modifier mon annonce'+
               '</a>';
 
@@ -930,7 +968,7 @@ var directory = {
 
       str = "";  
       str += "<div class='col-lg-6 col-md-12 pull- col-sm-12 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
-      str +=    "<div class='searchEntity'>";
+      str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
       
      // directory.colPos = directory.colPos == "left" ? "right" : "left";
        
@@ -968,6 +1006,11 @@ var directory = {
               str += "</div>";
             }
 
+            str += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10 btn-share pull-right'"+
+                              " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"'>"+
+                              "<i class='fa fa-share'></i> Partager</button>";
+
+
             var devise = typeof params.devise != "undefined" ? params.devise : "";
             if(typeof params.price != "undefined" && params.price != "")
             str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
@@ -1004,6 +1047,7 @@ var directory = {
          
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
 
+            
             if(params.startDate != null)
             str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
             if(params.endDate != null)
@@ -1023,7 +1067,7 @@ var directory = {
       if(directory.dirLog) mylog.log("-----------eventPanelHtml", params);
       str = "";  
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
-      str +=    "<div class='searchEntity'>";
+      str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
         if(params.updated != null && params.updated.indexOf("il y a")>=0)
             params.updated = "En ce moment";
@@ -1082,8 +1126,9 @@ var directory = {
 
            
         //if(params.imgProfil.indexOf("fa-2x")<0)
+        var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" sous évennement(s)"  : "" ; 
         str += '<div class="col-xs-12 col-sm-4 col-md-4 no-padding">'+
-                  '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+            
+                  '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+  
                 '</div>';
         
         if(userId != null && userId != "" && params.id != userId){
@@ -1097,7 +1142,7 @@ var directory = {
         }
 
         str += "<div class='col-md-8 col-sm-8 col-xs-12 margin-top-25'>";
-        str += dateFormated;
+        str += dateFormated+countSubEvents;
         str += "</div>";
 
        
@@ -1110,8 +1155,9 @@ var directory = {
                 str += "<img class='pull-left img-responsive' src='"+baseUrl+params.organizerObj.profilThumbImageUrl+"' height='50'/>";
                 
             }            
+            elem = dyFInputs.get(params.organizerObj.type);
             str += "<h5 class='no-margin padding-top-5'><small>Organisé par</small></h5>";
-            str += "<small class='entityOrganizerName'>"+params.organizerObj.name+"</small>";
+            str += "<a href='#page.type."+elem.col+".id."+params.organizerObj["_id"]["$id"]+"' class='lbh' > <small class='entityOrganizerName'>"+params.organizerObj.name+"</small></a>";
           str += "</div>";
 
         }
@@ -1133,7 +1179,8 @@ var directory = {
                         eventTypes[params.typeEvent] : 
                         trad["event"]) : 
                         trad["event"];
-
+                               
+        //console.log("??????????????????",Object.keys(params));
         str += "<h5 class='text-dark lbh add2fav no-margin'>"+
                   "<i class='fa fa-reply fa-rotate-180'></i> " + typeEvent + thisLocality +
                "</h5>";
@@ -1146,7 +1193,7 @@ var directory = {
         str +=    "<div class='entityDescription margin-bottom-10'>" + 
                     params.description + 
                   "</div>";
-        str +=    "<div class='margin-bottom-10'>" + 
+        str +=    "<div class='margin-bottom-10 col-md-12 no-padding'>" + 
                     params.attendees + 
                     //"<button class='btn btn-link no-padding margin-right-10 pull-right'><i class='fa fa-link'></i> Je participe</button>";
           
@@ -1221,7 +1268,8 @@ var directory = {
     // URL DIRECTORY PANEL
     // ********************************
     urlPanelHtml : function(params, key){
-		if(directory.dirLog) mylog.log("-----------urlPanelHtml", params);
+		//if(directory.dirLog) 
+      mylog.log("-----------urlPanelHtml", params, key);
 		str = "";  
 		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10'>";
 			str += "<div class='searchEntity'>";
@@ -1281,7 +1329,7 @@ var directory = {
 					else
 						str += (notEmpty(params.name) ? '<h4 class="panel-title text-dark pull-left">'+params.name+'</h4><br/>' : '');
 					str += (notEmpty(params.role) ? '<span class="" style="font-size: 11px !important;">'+params.role+'</span><br/>' : '');
-					str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="elementLib.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
+					str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="dyFObj.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
 					str += (notEmpty(params.telephone) ? '<span class="" style="font-size: 11px !important;">'+params.telephone+'</span>' : '');
 				str += "</div>";
 			str += "</div>";
@@ -1378,7 +1426,7 @@ var directory = {
                 var typeIcoParent = params.parentRoom.parentObj.typeSig;
                 //mylog.log("typeIcoParent", params.parentRoom);
 
-                var p = typeObjLib.get(typeIcoParent);
+                var p = dyFInputs.get(typeIcoParent);
                 params.icoParent = p.icon;
                 params.colorParent = p.color;
 
@@ -1469,12 +1517,12 @@ var directory = {
                 if(typeof params.typeOrga != "undefined")
                   typeIco = params.typeOrga;
 
-                var obj = (typeObjLib.get(typeIco)) ? typeObjLib.get(typeIco) : typeObj["default"] ;
+                var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
                 params.ico =  "fa-"+obj.icon;
                 params.color = obj.color;
                 if(params.parentType){
                     if(directory.dirLog) mylog.log("params.parentType",params.parentType);
-                    var parentObj = (typeObjLib.get(params.parentType)) ? typeObjLib.get(params.parentType) : typeObj["default"] ;
+                    var parentObj = (dyFInputs.get(params.parentType)) ? dyFInputs.get(params.parentType) : typeObj["default"] ;
                     params.parentIcon = "fa-"+parentObj.icon;
                     params.parentColor = parentObj.color;
                 }
@@ -1495,8 +1543,8 @@ var directory = {
                 if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
                     params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>";
 
-                if(typeObjLib.get(itemType) && 
-                    typeObjLib.get(itemType).col == "poi" && 
+                if(dyFInputs.get(itemType) && 
+                    dyFInputs.get(itemType).col == "poi" && 
                     typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
                 params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
 
@@ -1509,13 +1557,13 @@ var directory = {
                 }
                 params.fullLocality = params.postalCode + " " + params.cityName;
 
-                params.type = typeObjLib.get(itemType).col;
+                params.type = dyFInputs.get(itemType).col;
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
                 //params.url = '#page.type.'+params.type+'.id.' + params.id;
                 params.url = '#page.type.'+params.type+'.id.' + params.id;
-                if(type == "poi")    
+                if(params.type == "poi")    
                     params.url = '#element.detail.type.poi.id.' + id;
 
                 params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
@@ -1524,7 +1572,7 @@ var directory = {
                 var thisTags = "";
                 if(typeof params.tags != "undefined" && params.tags != null){
                   $.each(params.tags, function(key, value){
-                    if(value != ""){
+                    if(typeof value != "undefined" && value != "" && value != "undefined"){
                       thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value)+"'>#" + value + "</span> ";
                       params.elTagsList += slugify(value)+" ";
                     }
@@ -1878,7 +1926,7 @@ var directory = {
         var endTime = (params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
         var str = "";
         if(params.startDate != null)
-            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+            str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       '<small>'+startLbl+' </small>'+
                       '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
                       params.startDay + ' ' + params.startMonth + 
@@ -1888,7 +1936,7 @@ var directory = {
                    '</h3>';
         
         if(params.endDay != params.startDay && params.endDate != null && params.startDate != params.endDate)
-            str += '<h3 class="text-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+            str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       "<small>Au </small>"+
                       '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
                       params.endDay + ' ' + params.endMonth + 

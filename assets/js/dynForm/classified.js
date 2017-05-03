@@ -25,7 +25,7 @@ dynForm = {
 		    },*/
 	    },
 	    beforeBuild : function(){
-	    	elementLib.setMongoId('classified');
+	    	dyFObj.setMongoId('classified');
 	    },
 	    beforeSave : function(){
 	    	var tagAndTypes = ( $("#ajaxFormModal #tags").val() != "" ) ? $("#ajaxFormModal #tags").val()+"," : "" ;
@@ -49,16 +49,16 @@ dynForm = {
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
-		    	elementLib.closeForm();
+		    	dyFObj.closeForm();
 		    	urlCtrl.loadByHash( location.hash );	
 		    }
 	    },
-	    /*canSubmitIf : function () { 
+	    canSubmitIf : function () { 
 	    	if( $("#ajaxFormModal #section").val() && $("#ajaxFormModal #type").val() &&  $("#ajaxFormModal #subtype").val() )
 	    		return true;
 	    	else 
 	    		return false;
-	    },*/
+	    },
 	    actions : {
 	    	clear : function() {
 	    		
@@ -79,7 +79,7 @@ dynForm = {
             		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
             		$("#ajaxFormModal #type").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
             		
-            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a>  "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+"</h4>" );
+            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a>  "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+"</h4>" );
             		$(".typeBtntagList").hide();
 
             		//$(".typeBtn:not(.active)").hide();
@@ -106,9 +106,9 @@ dynForm = {
 		            		$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
 		            		//$(".subtypeBtn:not(.active)").hide();
 
-		            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+" > "+$(".subtypeBtn.active").data('tag')+"</h4>" );
+		            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+" > "+$(".subtypeBtn.active").data('tag')+"</h4>" );
 		            		$(".subtypeSectioncustom").hide();
-		            		elementLib.canSubmitIf();
+		            		dyFObj.canSubmitIf();
 						});
 	            	} else {
 	            		$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
@@ -148,20 +148,20 @@ dynForm = {
 				            classified.currentLeftFilters = classified.sections[sectionKey].filters;
 				            var filters = classified[classified.currentLeftFilters]; 
 				            directory.sectionFilter( filters, ".typeBtntagList",what,'btn');
-				            elementLib.elementObj.dynForm.jsonSchema.actions.initTypeBtn();
+				            dyFObj.elementObj.dynForm.jsonSchema.actions.initTypeBtn();
 				        }
 				        else if( classified.currentLeftFilters != null ) {
 				            //alert('rebuild common list'); 
 				            directory.sectionFilter( classified.filters, ".typeBtntagList",what,'btn');
-				            elementLib.elementObj.dynForm.jsonSchema.actions.initTypeBtn()
+				            dyFObj.elementObj.dynForm.jsonSchema.actions.initTypeBtn()
 				            classified.currentLeftFilters = null;
 				        }
-						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
+						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
 						$(".sectionBtntagList").hide();
 	            	});
 	            }
             },
-            section : typeObjLib.inputHidden(),
+            section : dyFInputs.inputHidden(),
 	        typeBtn :{
                 label : "Dans quelle catégorie souhaitez-vous publier votre annonce ? ",
 	            inputType : "tagList",
@@ -169,24 +169,24 @@ dynForm = {
                 list : classified.filters,
                 init : function(){
                 	classified.currentLeftFilters = null;
-                	elementLib.elementObj.dynForm.jsonSchema.actions.initTypeBtn();
+                	dyFObj.elementObj.dynForm.jsonSchema.actions.initTypeBtn();
 	            }
             },
-            type : typeObjLib.inputHidden(),
+            type : dyFInputs.inputHidden(),
             subtypeSection : {
                 inputType : "custom",
                 html:"<div class='subtypeSection'></div>"
             },
-            subtype : typeObjLib.inputHidden(),
-            price : typeObjLib.price(),
-            name : typeObjLib.name( "classified" ) ,
-            description : typeObjLib.textarea("Description", "..."),
-            image : typeObjLib.image(),
-            contactInfo : typeObjLib.inputText("Coordonnées", "n° tel, addresse email ..."),
-            location : typeObjLib.location,
-            tags : typeObjLib.tags(),
-            parentId : typeObjLib.inputHidden(),
-            parentType : typeObjLib.inputHidden(),
+            subtype : dyFInputs.inputHidden(),
+            price : dyFInputs.price(),
+            name : dyFInputs.name( "classified" ) ,
+            description : dyFInputs.textarea("Description", "..."),
+            image : dyFInputs.image(),
+            contactInfo : dyFInputs.inputText("Coordonnées", "n° tel, addresse email ..."),
+            location : dyFInputs.location,
+            tags : dyFInputs.tags(),
+            parentId : dyFInputs.inputHidden(),
+            parentType : dyFInputs.inputHidden(),
 	    }
 	}
 };

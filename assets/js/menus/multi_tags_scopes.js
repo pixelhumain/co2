@@ -1,8 +1,14 @@
 
  function showTagsScopesMin(htmlId){
         htmlId=".scope-min-header";
-        //if(typeof actionOnSetGlobalScope != "undefined" && actionOnSetGlobalScope=="save"){
-        scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
+        var numberOfScope = 0;
+        if(typeof myMultiScopes != "undefined"){
+            $.each(myMultiScopes, function(key, value){
+                numberOfScope++;
+            })  ;
+        }
+        if($.cookie('communexionName') != "false"){
+            scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
                         'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
                         'data-scope-value="'+$.cookie('communexionValue')+'" '+
                         'data-scope-name="'+$.cookie('communexionName')+'" '+
@@ -10,16 +16,31 @@
                         'data-scope-type="'+$.cookie('communexionType')+'" '+
                         'id="btn-my-co">'+
                         '<i class="fa fa-university"></i>'+
-                    '</button>'+
-                    '<h5 class="pull-left letter-red" style="margin-bottom: -8px;margin-top: 14px;">'+
+                    '</button>';
+        }else{
+            scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips" onclick="communecterUser();" '+
+                        'data-toggle="tooltip" data-placement="top" title="Communectez-vous" '+
+                        'id="btn-my-co">'+
+                        '<i class="fa fa-university"></i>'+
+                    '</button>';
+        }
+        scopeHtml+='<h5 class="pull-left letter-red" style="margin-bottom: -8px;margin-top: 14px;">'+
                         '<button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-10 margin-right-10" '+ 
                             'data-target="#modalScopes" data-toggle="modal" '+
                             'data-toggle="tooltip" data-placement="top" '+ 
                             'title="Sélectionner des lieux de recherche">'+
                             '<img src="'+themeUrl+'/assets/img/cible3.png" height=25>'+
-                        '</button>'+ 
-                        'recherche ciblée <i class="fa fa-angle-right"></i>'+ 
-                    '</h5>'+
+                        '</button>';
+                        if(numberOfScope > 0){
+                            scopeHtml+= 'recherche ciblée <i class="fa fa-angle-right"></i>';
+                        } else{
+                            scopeHtml+= '<span id="helpMultiScope" class="toggle-scope-dropdown">'+
+                                           '<a href="javascript:" data-target="#modalScopes" data-toggle="modal" class="letter-red">'+
+                                                '<i class="fa fa-plus"></i> Ajouter des filtres géographiques ?'+
+                                            '</a>'+
+                                        '</span>';
+                        }
+        scopeHtml+= '</h5>'+
                     '<div class="scope-min-header list_tags_scopes hidden-xs text-left ellipsis">'+
                     '</div>';
         $("#container-scope-filter").html(scopeHtml);
@@ -30,24 +51,17 @@
 
         
         html = "<div class='list-select-scopes'>";
-        
-        var numberOfScope = 0;
-        if(typeof myMultiScopes != "undefined")
-        $.each(myMultiScopes, function(key, value){
-            numberOfScope++;
-            var disabled = value.active == false ? "disabled" : "";
-            if(typeof value.name == "undefined") value.name = key;
-            html +=     "<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
-                            "class='text-red "+disabled+" item-scope-checker item-scope-input margin-right-10' data-scope-value='"+ key + "'>" + 
-                            "<i class='fa fa-check-circle'></i> " + value.name + 
-                        "</span> ";
-        });
-        // if (numberOfScope == 0) {
-        //     html +=     '<span id="helpMultiScope" class="toggle-scope-dropdown" style="padding-left:0px">'+
-        //                     '<a href="javascript:"> Ajouter des filtres géographiques ?</a>'+
-        //                 '</span>';
-        // }
-        //html +=     "</span>";
+        if(numberOfScope > 0){
+            $.each(myMultiScopes, function(key, value){
+                numberOfScope++;
+                var disabled = value.active == false ? "disabled" : "";
+                if(typeof value.name == "undefined") value.name = key;
+                html +=     "<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
+                                "class='text-red "+disabled+" item-scope-checker item-scope-input margin-right-10' data-scope-value='"+ key + "'>" + 
+                                "<i class='fa fa-check-circle'></i> " + value.name + 
+                            "</span> ";
+            });
+        }
         html += "</div>";
         $(htmlId).html(html);
         if(actionOnSetGlobalScope=="save"){

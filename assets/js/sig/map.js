@@ -517,6 +517,7 @@
 			this.Sig.showOneElementOnMap = function(thisData, thisMap){
 				//mylog.warn("--------------- showOneElementOnMap ---------------------");
 				//mylog.dir(thisData);
+				//mylog.log("showOneElementOnMap ---------------------", thisData);
 				//var objectId = thisData._id ? thisData._id.$id.toString() : null;
 				var objectId = this.getObjectId(thisData);
 							
@@ -690,7 +691,7 @@
 
 			this.Sig.showMapElements = function(thisMap, data)
 			{
-				mylog.warn("--------------- showMapElements ---------------------");
+				//mylog.warn("--------------- showMapElements ---------------------");
 				
 				//si la carte n'est pas chargée
 				//on mémorise les données et on les affichera avec le prochain showMap
@@ -700,7 +701,7 @@
 					return;
 		 		}
 
-				mylog.warn("--------------- showMapElements ---------------------", data);
+				//mylog.warn("--------------- showMapElements ---------------------", data);
 				//mylog.log(data);
 				if(data == null) return;
 
@@ -930,6 +931,7 @@
 
 		//show a modal when an item in the right list has no geoLocation on the map
 		this.Sig.showModalItemNotLocated = function(data){
+			mylog.log("showModalItemNotLocated", data)
 			$("#modalItemNotLocated").modal('show');
 			$("#modalItemNotLocated .modal-body").html("<i class='fa fa-spin fa-reload'></i>");
 

@@ -14,22 +14,54 @@
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
 	<div class="padding-top-15" id="onepage">
 		<?php 
-			$params = array("element"=>$element , 
-							"page" => "page",
-							"edit"=>$edit,
-							"openEdition" => $openEdition,
-							"linksBtn" => $linksBtn,
-							"type" => $type,
-							"isLinked" => $isLinked,
-							"controller" => $controller,
-							"countStrongLinks" => $countStrongLinks,
-							"countInvitations" => $countInvitations,
-							"countries" => $countries );
+        
+            if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
+               $type == Project::COLLECTION || $type == Organization::COLLECTION ){
+    			$params = array("element"=>$element , 
+    							"page" => "page",
+    							"edit"=>$edit,
+    							"openEdition" => $openEdition,
+    							"linksBtn" => $linksBtn,
+    							"type" => $type,
+    							"isLinked" => $isLinked,
+    							"controller" => $controller,
+    							"countStrongLinks" => $countStrongLinks,
+    							"countInvitations" => $countInvitations,
+    							"countries" => $countries );
 
-            if(@$members) $params["members"] = $members;
-            if(@$invitedMe) $params["invitedMe"] = $invitedMe;
+                if(@$members) $params["members"] = $members;
+                if(@$invitedMe) $params["invitedMe"] = $invitedMe;
 
-            $this->renderPartial('../element/profilSocial', $params ); 
+                $this->renderPartial('../element/profilSocial', $params ); 
+            }
+
+
+            if($type == News::COLLECTION){
+                $params = array("element"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
+
+                if(@$members) $params["members"] = $members;
+                if(@$invitedMe) $params["invitedMe"] = $invitedMe;
+
+                $this->renderPartial('../news/standalone', $params ); 
+            }
+
+
+            if($type == Classified::COLLECTION){
+                $params = array("element"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
+
+                if(@$members) $params["members"] = $members;
+                if(@$invitedMe) $params["invitedMe"] = $invitedMe;
+
+                $this->renderPartial('../classified/standalone', $params ); 
+            }
 		?>
 	</div>
 </div>
@@ -88,7 +120,7 @@ function initPageInterface(){
    
     $('.sub-menu-social').affix({
       offset: {
-          top: 380
+          top: 320
       }
     });
     //$(".dropdown-result-global-search").hide();

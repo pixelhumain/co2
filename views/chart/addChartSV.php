@@ -1,20 +1,10 @@
 <?php 
 $cssAnsScriptFilesTheme = array(
-//Select2
-
-	//autosize
-	//Select2
-	//'/plugins/select2/select2.css',
-	//'/plugins/select2/select2.min.js',
-	//autosize
-	//'/plugins/autosize/jquery.autosize.min.js',
 	'/plugins/jQuery-Knob/js/jquery.knob.js',
-//	'/plugins/jquery.dynForm.js',
 	'/plugins/jQuery-Smart-Wizard/js/jquery.smartWizard.js',
 	'/plugins/jquery-validation/dist/jquery.validate.min.js',
 	'/js/jsonHelper.js',
 	'/plugins/jquery.dynSurvey/jquery.dynSurvey.js',
-	//'/assets/js/ui-sliders.js',
 );
 
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->request->baseUrl);
@@ -46,6 +36,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 .property-description{
 	width: 100%;
 	height:200px;
+	padding:5px;
 }
 .stepFormChart{
 	background-color: #8b91a0;
@@ -76,7 +67,8 @@ textarea.form-control{
 </style>
 <div id="editProjectChart">
 	<div class="noteWrap col-md-12 col-sm-12 col-xs-12 bg-white">
-		<!-- <button class="btn btn-primary escapeForm"><i class="fa fa-sign-out"></i>Sortir des formulaires</button> -->
+
+		<button class="btn btn-primary escapeForm btn-start-chart <?php if ((!@$properties["commons"] ||  (@$properties["commons"] && empty($properties["commons"]))) && (!@$properties["open"] ||  (@$properties["open"] && empty($properties["open"]))) ) echo "hide";  ?>"><i class="fa fa-sign-out"></i>Sortir des formulaires</button> 
 		<h3 style="font-variant:small-caps;"><span class="stepFormChart">1</span><?php echo Yii::t("chart","Choose which kind of form to complete") ?></h3>
 		
 		<span style="font-style:italic; margin-left:45px;" class="text-right">Indicatif : <i class="fa fa-circle text-green"></i> <span class="text-green">Actif</span>   <i class="fa fa-circle text-orange"></i> <span class="text-orange">A modifier</span>    <i class="fa fa-circle"></i> Non rempli</span><br/>
@@ -204,7 +196,7 @@ textarea.form-control{
 									<div class="flexslider" style="margin-top:35px;">
 								<div id="infoPodOrga" class="padding-10">
 									<blockquote> 
-										<i class="fa fa-puzzle-piece fa-2x text-blue"></i>	<?php echo Yii::t("project","Add<br/>A new<br/>Property",null,Yii::app()->controller->module->id) ?>
+										<i class="fa fa-puzzle-piece fa-2x text-blue"></i>	<?php echo Yii::t("chart","Add<br/>A new<br/>Property") ?>
 										<br/>
 										<a href="#" class="addProperties" style="display: inline; opacity: 1; left: 0px;">
 											<i class="fa fa-plus"></i> <?php echo Yii::t("common","ADD"); ?>
@@ -253,19 +245,13 @@ jQuery(document).ready(function() {
 	   knobInit(); 
 	   removeChartProperty();
     });
-	bindprojectSubViewchart();
+    $(".btn-start-chart").click(function(){
+		history.pushState(null, "New Title", hashUrlPage+".view.chart");
+		loadChart();
+	});
+	//bindprojectSubViewchart();
 	runChartFormValidation();
 	removeChartProperty();
-	$(".escapeForm").click(function(){
-		loadByHash("#element.detail.type.<?php echo $parentType ?>.id.<?php echo $parentId ?>");
-	});
-	/*!
-	  Non-Sucking Autogrow 1.1.1
-	  license: MIT
-	  author: Roman Pushkin
-	  https://github.com/ro31337/jquery.ns-autogrow
-	*/
-	
 });
 function runChartFormValidation() {
 	var formChart = $('.form-chart');
@@ -308,55 +294,51 @@ function runChartFormValidation() {
 		submitHandler : function(form) {
 			successHandler2.show();
 			errorHandler2.hide();
-			newChart = {};
+			var newChart = {};
 			newChart["open"] = {};
 			nbProperties=0;
 			$('.form-property').each(function(){
 				valueProperties = $(this).find(".property-value").val();
 				descriptionProperties = $(this).find(".property-description").val();
-				if($(this).find(".property-value").attr("name") == "newProjectProperty"){
-					nameProperties=$(this).find(".newLabelProperty").val();
-					//alert(nameProperties);
-					if(nameProperties.length){
+				if(valueProperties !=0 || descriptionProperties!=""){
+					if($(this).find(".property-value").attr("name") == "newProjectProperty"){
+						nameProperties=$(this).find(".newLabelProperty").val();
+						//alert(nameProperties);
+						if(nameProperties.length){
+							newChart["open"][nameProperties]={};
+							newProperties={"description": descriptionProperties, "value": valueProperties};
+							//newProperties={"label" : nameProperties , "value" : valueProperties};
+							newChart["open"][nameProperties]=newProperties;
+							nbProperties++;
+						}
+					}
+					else{
+						nameProperties = $(this).find(".property-value").attr("name");
 						newChart["open"][nameProperties]={};
+						newProperties = new Object;
 						newProperties={"description": descriptionProperties, "value": valueProperties};
-						//newProperties={"label" : nameProperties , "value" : valueProperties};
 						newChart["open"][nameProperties]=newProperties;
 						nbProperties++;
 					}
 				}
-				else{
-					nameProperties = $(this).find(".property-value").attr("name");
-					newChart["open"][nameProperties]={};
-					newProperties = new Object;
-					newProperties={"description": descriptionProperties, "value": valueProperties};
-					newChart["open"][nameProperties]=newProperties;
-					nbProperties++;
-				}
 			});
+			if(nbProperties == 0){
+					newChart="open";
+			}
 			console.log(newChart);
 			//mockjax simulates an ajax call
 			$.ajax({
 		        type: "POST",
 		        url: baseUrl+"/"+moduleId+'/chart/editchart',
 		        dataType : "json",
-		        data:{properties : newChart, id : parentId, type : parentType},
+		        data: {properties : newChart, id : parentId, type : parentType},
 				type:"POST",
 		    })
 		    .done(function (data,myNewChart) 
 		    {
 			   if (data.result==true) {   
-		        	toastr.success("<?php echo Yii::t("chart",substr($parentType,0,-1).'\'s properties succesfully update') ?>");
+		        	toastr.success("<?php echo Yii::t("chart",ucfirst(substr($parentType,0,-1)).'&#146;s values well updated') ?>");
 		        	$.unblockUI();
-		        	//loadByHash("#element.detail.type.<?php echo $parentType ?>.id.<?php echo $parentId ?>");
-//					openMainPanelFromPanel( '/project/detail/id/'+projectId, 'Project : <?php if(@$projectName) echo addslashes($projectName) ?>',"fa-lightbulb-o", projectId );
-	//////// LAST FROM DEVELOPMENT ////////////////
-		        	/*var chartToLoad=true;
-		        	showElementPad("detail");
-		        	if(typeof updateChart != "undefined" && typeof updateChart == "function"){
-			        	updateChart(data.properties, data.properties.length);
-			        }*/
-	//////// ENND LAST FROM DEVELOPMENT /////////////
 		        } else {
 		           toastr.error('Something Went Wrong');
 		        }
@@ -365,39 +347,12 @@ function runChartFormValidation() {
 	});
 };
 
-function bindprojectSubViewchart() {	
-	/*$(".edit-chart").off().on("click", function() {
-		subViewElement = $(this);
-		subViewContent = subViewElement.attr('href');
-		$.subview({
-			content : subViewContent,
-			onShow : function() {
-				editChart();
-			},
-			onHide : function() {
-				hideEditChart();
-			},
-			onSave: function() {
-				$(".form-chart").submit();
-			}
-		});
-	});
-	$(".close-subview-button").off().on("click", function(e) {
-		$(".close-subviews").trigger("click");
-		e.prinviteDefault();
-	});*/
-};
-
-/*var subViewElement, subViewContent, subViewIndex;
-function hideEditChart() {
-	openMainPanelFromPanel( '/project/detail/id/'+projectId, 'Project : <?php if(@$projectName) echo addslashes($projectName) ?>',"fa-lightbulb-o", projectId );
-};*/
 // enables the edit form 
-function editChart() {
+/*function editChart() {
 	$(".close-chart-edit").off().on("click", function() {
 		$(".back-subviews").trigger("click");
 	});
-};
+};*/
 function addNewProperties(){
 	$newProperty='<div class="col-md-12 form-property no-padding">'+
 				'<h4 style="text-align:center;width:200px;">Nouvelle propriété</h4>'+
@@ -415,20 +370,7 @@ function addNewProperties(){
 				'</div>';
 	return $newProperty;
 }
-/*function updateNewKnob(){
-	$(".newLabelProperty").each(function(){
-		nameProperty=$(this).val();
-		valueProperty=$(this).parent().find(".project-property").val();
-		replaceNewProperty='<div class="col-md-4 form-property">'+
-								'<div class="removeProperty hide">'+
-									'<span class="glyphicon glyphicon-remove"></span>'+
-								'</div>'+
-								'<h4 style="text-align:center;width:200px;">'+nameProperty+'</h4>'+
-								'<input class="knob project-property" name="'+nameProperty+'" value="'+valueProperty+'" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">'+
-							'</div>';
-		$(this).parent().replaceWith(replaceNewProperty);
-	});
-}*/
+
 function removeChartProperty(){
 	$(".form-property").mouseenter(function(){
 		$(this).addClass("borderHover").find(".removeProperty").removeClass("hide");
@@ -540,12 +482,7 @@ function knobInit(){
 				        	  data: {properties:result, id: parentId, type: parentType},
 				              dataType: "json"
 				        	}).done( function(data){
-				                toastr.success("<?php echo Yii::t("chart", "Project chart well updated") ?>");
-				                //loadByHash("#element.detail.type."+parentType+".id."+parentId);
-				               // if( afterDynBuildSave && typeof afterDynBuildSave == "function" )
-				                 //   afterDynBuildSave(data.map,data.id);
-				                console.info('saved successfully !');
-				
+				        		toastr.success("<?php echo Yii::t("chart",ucfirst(substr($parentType,0,-1)).'&#146;s values well updated') ?>");
 				        	});
 						},
 				        collection : "commonsChart",

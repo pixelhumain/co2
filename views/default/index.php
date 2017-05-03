@@ -14,6 +14,7 @@ on garde les librairies specifique au module dans le module
 		'/js/floopDrawerRight.js',
 		'/js/sig/geoloc.js',
 		'/js/default/formInMap.js',
+		//'/js/default/formInMapOld.js',
 		'/js/default/globalsearch.js',
 		'/js/sig/findAddressGeoPos.js',
 		'/js/jquery.filter_input.js',

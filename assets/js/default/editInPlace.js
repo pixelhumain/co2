@@ -452,7 +452,7 @@ function bindAboutPodElement() {
 						afterSave : function(data){
 							mylog.dir(data);
 							if(data.result && data.resultGoods.result){shortDescriptionHeader
-								$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
+								$(".contentInformation #shortDescriptionAboutEdit").html(data.resultGoods.values.shortDescription);
 								$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
 								$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
 								$("#descriptionMarkdown").html(data.resultGoods.values.description);
@@ -476,7 +476,7 @@ function bindAboutPodElement() {
 		        id : contextData.id,
 		        typeElement : contextData.type,
 		        name : contextData.name,
-		        shortDescription : $(".contentInformation #shortDescriptionAbout").html(),
+		        shortDescription : $(".contentInformation #shortDescriptionAboutEdit").html(),
 				description : $("#descriptionMarkdown").html(),	
 			};
 

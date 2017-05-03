@@ -1,10 +1,4 @@
 
-<?php
-  // if($type != City::CONTROLLER && $type != "pixels" && !@$_GET["renderPartial"])
-  //   $this->renderPartial('../pod/headerEntity', 
-  //     array("entity"=>$parent, "type" => $type, "viewer" => @$viewer, 
-  //         "firstView" => @$firstView, "openEdition" => @$openEdition, "edit" => $edit)); 
-?>
 <style>
   .tools_bar{
         border-bottom: 1px solid #E6E8E8;
@@ -280,45 +274,9 @@
     //$this->renderPartial('../default/panels/toolbar'); 
   }
 ?>
-
-
 <!-- <div id="newLiveFeedForm" class="col-xs-12 no-padding margin-bottom-10"></div> -->
 <div id="formCreateNewsTemp" style="float: none;" class="center-block">
   <div class='no-padding form-create-news-container col-sm-12'>
-
-  <?php if(false) { ?>
-    <div class="col-xs-12" style="margin-top: 10px; margin-bottom: 10px; margin-left: 0px;padding: 0px 10px;"  id="list_type_news">
-      
-      <div class="btn-group btn-group-sm inline-block" id="menu-type-news">
-        <button class="btn btn-default btn-type-news tooltips text-dark active" 
-            data-toggle="tooltip" data-placement="top" title="Messages" data-type="news">
-          <i class="fa fa-check-circle-o search_news hidden"></i> <i class="fa fa-rss"></i> 
-          <span class="hidden-xs hidden-sm hidden-md">Message</span>
-        </button>
-        <button class="btn btn-default btn-type-news tooltips text-dark" 
-            data-toggle="tooltip" data-placement="top" title="Idée" data-type="idea">
-          <i class="fa fa-circle-o search_organizations hidden"></i> <i class="fa fa-info-circle"></i> 
-          <span class="hidden-xs hidden-sm hidden-md">Idée</span>
-        </button>
-        <button class="btn btn-default btn-type-news tooltips text-dark" 
-            data-toggle="tooltip" data-placement="top" title="Question" data-type="question">
-          <i class="fa fa-circle-o search_projects hidden"></i> <i class="fa fa-question-circle"></i> 
-          <span class="hidden-xs hidden-sm hidden-md">Question</span>
-        </button>
-        <button class="btn btn-default btn-type-news tooltips text-dark" 
-            data-toggle="tooltip" data-placement="top" title="Annonce" data-type="announce">
-          <i class="fa fa-circle-o search_events hidden"></i> <i class="fa fa-ticket"></i> 
-          <span class="hidden-xs hidden-sm hidden-md">Annonce</span>
-        </button>
-        <button class="btn btn-default btn-type-news tooltips text-dark" 
-            data-toggle="tooltip" data-placement="top" title="Information" data-type="information">
-          <i class="fa fa-circle-o search_needs hidden"></i> <i class="fa fa-newspaper-o"></i> 
-          <span class="hidden-xs hidden-sm hidden-md">Information</span>
-        </button>
-      </div>
-
-    </div>
-  <?php } ?>
 
     <div class='padding-10 partition-light no-margin text-left header-form-create-news' style="margin-bottom:-40px !important;">
       <i class='fa fa-angle-down'></i> <i class="fa fa-file-text-o"></i> <span id="info-write-msg"><?php echo $textForm; ?></span>
@@ -367,7 +325,7 @@
       </div>
       <div class="form-actions no-padding" style="display: block;">
         
-        <div id="scopeListContainer" class="list_tags_scopes col-md-12 no-padding margin-bottom-10"></div>
+        <div id="scopeListContainerForm" class="list_tags_scopes col-md-12 no-padding margin-bottom-10"></div>
 
         <div class="col-md-12 no-padding">
           <hr class="submit">

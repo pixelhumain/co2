@@ -76,15 +76,15 @@ function bindEventMenu(){
 
 	$('.btn-menu0').click( function(e){ 
 		if(location.hash != "#default.twostepregister")
-			url.loadByHash("#default.home");
+			urlCtrl.loadByHash("#default.home");
 		else
-			url.loadByHash("#default.twostepregister");
+			urlCtrl.loadByHash("#default.twostepregister");
 	} );
 
     $('.btn-menu2')
     .click(function(e){ 
     	if(location.hash != "#default.directory" || isMapEnd == false) 
-    		url.loadByHash("#default.directory"); 
+    		urlCtrl.loadByHash("#default.directory"); 
     	else showMap(false);  
     })
     .mouseenter(function(e){ 
@@ -97,7 +97,7 @@ function bindEventMenu(){
     $('.btn-menu3')
     .click(function(e){ 
     	if(location.hash != "#default.agenda" || isMapEnd == false) 
-    		url.loadByHash("#default.agenda"); 
+    		urlCtrl.loadByHash("#default.agenda"); 
     	else showMap(false);  
     })
     .mouseenter(function(e){ 
@@ -110,7 +110,7 @@ function bindEventMenu(){
     $('.btn-menu4')
     .click(function(e){ 
     	if(location.hash != "#default.news" || isMapEnd == false) 
-    		url.loadByHash("#default.news"); 
+    		urlCtrl.loadByHash("#default.news"); 
     	else showMap(false);  
     })
     .mouseenter(function(e){ 
@@ -122,8 +122,8 @@ function bindEventMenu(){
 
 
 
-   // $('.btn-menu3').click(function(e){ url.loadByHash("#default.agenda"); 		 }).mouseenter(function(e){ toggle(".explainAgenda",".explain")});
-   //$('.btn-menu4').click(function(e){ url.loadByHash("#default.news");	 }).mouseenter(function(e){ toggle(".explainNews",".explain")} );
+   // $('.btn-menu3').click(function(e){ urlCtrl.loadByHash("#default.agenda"); 		 }).mouseenter(function(e){ toggle(".explainAgenda",".explain")});
+   //$('.btn-menu4').click(function(e){ urlCtrl.loadByHash("#default.news");	 }).mouseenter(function(e){ toggle(".explainNews",".explain")} );
     $('.btn-menu5').click(function(e){ 
     	showFloopDrawer(true);	 		 
     })
@@ -207,7 +207,7 @@ function bindEventMenu(){
     $(".btn-geoloc-auto").click(function(e){
 		//mylog.log("cookie", $.cookie('inseeCommunexion'));
     	if($.cookie('inseeCommunexion')){
-    		//url.loadByHash("#city.detail.insee." + $.cookie('inseeCommunexion')+ ".postalCode." + $.cookie('cpCommunexion'));
+    		//urlCtrl.loadByHash("#city.detail.insee." + $.cookie('inseeCommunexion')+ ".postalCode." + $.cookie('cpCommunexion'));
     	}else{
     		if(geolocHTML5Done == false){
 				//$(".search-loader").html("<i class='fa fa-spin fa-circle-o-notch'></i> Géolocalisation en cours ...");		

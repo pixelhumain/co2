@@ -2,8 +2,13 @@
 echo CHtml::scriptFile(Yii::app()->request->baseUrl. '/plugins/DataTables/media/js/jquery.dataTables.min.1.10.4.js');
 echo CHtml::cssFile(Yii::app()->request->baseUrl. '/plugins/DataTables/media/css/DT_bootstrap.css');
 echo CHtml::scriptFile(Yii::app()->request->baseUrl. '/plugins/DataTables/media/js/DT_bootstrap.js');
+$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+//header + menu
+$this->renderPartial($layoutPath.'header', 
+                    array(  "layoutPath"=>$layoutPath , 
+                            "page" => "admin") );
 ?>
-<div class="panel panel-white">
+<div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
 	<div class="panel-body">
 		<div>	
 			<table class="table table-striped table-bordered table-hover directoryTable">

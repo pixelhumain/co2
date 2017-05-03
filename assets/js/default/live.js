@@ -13,7 +13,7 @@ function startSearch(isFirst){
 
 function loadLiveNow () { 
 
-
+mylog.log("loadLiveNow 2");
     var searchParams = {
       "name":$('.input-global-search').val(),
       "tpl":"/pod/nowList",

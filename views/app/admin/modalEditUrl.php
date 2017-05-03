@@ -235,14 +235,14 @@ jQuery(document).ready(function() {
 
         formType = "url";
         coordinatesPreLoadedFormMap = [cityLat, cityLng];
-        showMarkerNewElement();
+        formInMap.showMarkerNewElement();
         preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "");
 
         $("#btn-find-position").off().click(function(){
             showMap(true);
 
             if(Sig.markerFindPlace == null)
-                showMarkerNewElement();
+                formInMap.showMarkerNewElement();
     
             var street = $("#form-street").val();
             preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, street);

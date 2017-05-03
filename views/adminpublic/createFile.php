@@ -12,6 +12,12 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule,Yii::app()->requ
 
 
 $userId = Yii::app()->session["userId"] ;
+
+$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+//header + menu
+$this->renderPartial($layoutPath.'header', 
+                    array(  "layoutPath"=>$layoutPath , 
+                            "page" => "admin") ); 
 ?>
 
 <style>
@@ -58,22 +64,28 @@ $userId = Yii::app()->session["userId"] ;
 	.nbFile{
 	    font-size: 18px;
 	}
+
+	.divJsonClass{
+		height: 300px;
+	}
 </style>
-<div class="panel panel-white">
+<div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
 
 	<!-- HEADER -->
-	<div class="col-md-12 center bg-azure-light-3 menu-step-tsr section-tsr center">
-		<div class="homestead text-white selected" id="menu-step-1">
-			<i class="fa fa-2x fa-circle"></i><br/><?php echo Yii::t("common", "Source"); ?>
+	<center>
+		<div class="col-md-12 center bg-azure-light-3 menu-step-tsr section-tsr center">
+			<div class="homestead text-white selected" id="menu-step-1">
+				<i class="fa fa-2x fa-circle"></i><br/><?php echo Yii::t("common", "Source"); ?>
+			</div>
+			<div class="homestead text-white" id="menu-step-2">
+				<i class="fa fa-2x fa-circle-o"></i><br/><?php echo Yii::t("common", "Link"); ?>
+				
+			</div>
+			<div class="homestead text-white" id="menu-step-3">
+				<i class="fa fa-2x fa-circle-o"></i><br/><?php echo Yii::t("common", "Visualisation"); ?>
+			</div>
 		</div>
-		<div class="homestead text-white" id="menu-step-2">
-			<i class="fa fa-2x fa-circle-o"></i><br/><?php echo Yii::t("common", "Link"); ?>
-			
-		</div>
-		<div class="homestead text-white" id="menu-step-3">
-			<i class="fa fa-2x fa-circle-o"></i><br/><?php echo Yii::t("common", "Visualisation"); ?>
-		</div>
-	</div>
+	</center>
 
 	<!-- SOURCE -->
 	<div class="col-sm-12 block-step-tsr section-tsr" id="menu-step-source">
@@ -227,11 +239,8 @@ $userId = Yii::app()->session["userId"] ;
 			</label>
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<div id="divJsonImport" class="panel-scroll height-300">
 						<input type="hidden" id="jsonImport" value="">
-					    <div class="col-sm-12" id="divJsonImportView"></div>
-					    
-					</div>
+					    <div class="col-sm-12" style="max-height : 300px ;overflow-y: auto" id="divJsonImportView"></div>
 				</div>
 			</div>
 			<div class="col-sm-12 center">
@@ -245,10 +254,9 @@ $userId = Yii::app()->session["userId"] ;
 			</label>
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<div id="divJsonError" class="panel-scroll height-300">
-						<input type="hidden" id="jsonError" value="">
-					    <div class="col-sm-12" id="divJsonErrorView"></div>
-					</div>
+					<input type="hidden" id="jsonError" value="">
+					   <div class="col-sm-12" id="divJsonErrorView" style="max-height : 300px ;overflow-y: auto"></div>
+					
 				</div>
 			</div>
 			<div class="col-sm-12 col-xs-12 center">
@@ -549,7 +557,7 @@ function stepTwo(){
 	if(typeFile == "json" || typeFile == "js" || typeFile == "geojson")
 		params["file"] = file ;
 	else
-		file = csvToArray(csvFile, $("#selectSeparateur").val(), $("#selectSeparateurText").val())
+		file = dataHelper.csvToArray(csvFile, $("#selectSeparateur").val(), $("#selectSeparateurText").val())
 
 	$.ajax({
         type: 'POST',

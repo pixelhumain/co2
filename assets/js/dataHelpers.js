@@ -258,3 +258,111 @@ function getFullTextCountry(codeCountry){
 	return countries[codeCountry];
 	else return "";
 }
+
+
+
+
+
+var dataHelper = {
+
+	csvToArray : function (csv, separateur, separateurText){
+		var lines = csv.split("\n");			
+		var result = [];
+		$.each(lines, function(key, value){
+			var colonnes = value.split(separateur);
+			var newColonnes = [];
+			$.each(colonnes, function(keyCol, valueCol){
+				if(typeof separateurText == "undefined" || separateurText =="")
+					newColonnes.push(valueCol);
+				else{
+					if(valueCol.charAt(0) == separateurText && valueCol.charAt(valueCol.length-1) == separateurText){
+						var elt = valueCol.substr(1,valueCol.length-2);
+						newColonnes.push(elt);
+					}else{
+						newColonnes.push(valueCol);
+					}
+				}
+			});
+			result.push(newColonnes);
+		});
+		return result;
+	},
+
+	markdownToHtml : function (str) { 
+		var converter = new showdown.Converter();
+		var res = converter.makeHtml(str)
+		return res;
+	},
+
+	convertMardownToHtml : function (text) { 
+		var converter = new showdown.Converter();
+		return converter.makeHtml(text);
+	},
+
+
+	activateMarkdown : function (elem) { 
+		mylog.log("activateMarkdown", elem);
+
+		markdownParams = {
+			savable:false,
+			iconlibrary:'fa',
+			language:'fr',
+			onPreview: function(e) {
+				var previewContent = "";
+				if (e.isDirty()) {
+					previewContent = dataHelper.convertMardownToHtml(e.getContent());
+				} else {
+					previewContent = dataHelper.convertMardownToHtml($(elem).val());
+				}
+				return previewContent;
+			},
+			onSave: function(e) {
+				mylog.log(e);
+			}
+		}
+
+		if( !$('script[src="'+baseUrl+'/plugins/bootstrap-markdown/js/bootstrap-markdown.js"]').length ){
+			mylog.log("activateMarkdown if");
+
+			$("<link/>", {
+			   rel: "stylesheet",
+			   type: "text/css",
+			   href: baseUrl+"/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css"
+			}).appendTo("head");
+			$.getScript( baseUrl+"/plugins/showdown/showdown.min.js", function( data, textStatus, jqxhr ) {
+
+				$.getScript( baseUrl+"/plugins/bootstrap-markdown/js/bootstrap-markdown.js", function( data, textStatus, jqxhr ) {
+					mylog.log("HERE", elem);
+
+					$.fn.markdown.messages['fr'] = {
+						'Bold': trad.Bold,
+						'Italic': trad.Italic,
+						'Heading': trad.Heading,
+						'URL/Link': trad['URL/Link'],
+						'Image': trad.Image,
+						'List': trad.List,
+						'Preview': trad.Preview,
+						'strong text': trad['strong text'],
+						'emphasized text': trad['strong text'],
+						'heading text': trad[''],
+						'enter link description here': trad['enter link description here'],
+						'Insert Hyperlink': trad['Insert Hyperlink'],
+						'enter image description here': trad['enter image description here'],
+						'Insert Image Hyperlink': trad['Insert Image Hyperlink'],
+						'enter image title here': trad['enter image title here'],
+						'list text here': trad['list text here']
+					};
+					$(elem).markdown(markdownParams);
+				});
+
+
+			});
+		} else {
+			mylog.log("activateMarkdown else");
+			$(elem).markdown(markdownParams);
+		}
+
+		$(elem).before('La syntaxe Mardown utilisé pour la description. Si vous souhaitez <a href="https://michelf.ca/projets/php-markdown/syntaxe/" target="_blank">en savoir plus</a>');
+	}
+
+}

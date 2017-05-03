@@ -43,10 +43,10 @@
                             <div class="col-md-2 padding-5"></div>
                             <div class="col-md-2 text-center padding-5">
                             <?php 
-                                    $freedomTags = CO2::getContextList("freedomSections");
+                                    $freedomTags = CO2::getContextList("classified");
                                     $currentSection = 1;
                                     $align="right";
-                                    foreach ($freedomTags as $key => $tag) { ?>
+                                    foreach ($freedomTags["sections"] as $key => $tag) { ?>
                                         <?php if($currentSection > 1){ ?>
                                             <?php if($tag["section"] > $currentSection){ 
                                                     $currentSection++; 
@@ -75,8 +75,8 @@
                                 <i class="fa fa-angle-down"></i> Sélectionnez une catégorie<br><br>
                             </h4>
                             <div class="col-md-2 text-<?php $align="left"; echo $align; ?> padding-5 hidden">
-                            <?php $categories = CO2::getContextList("classifiedCategories");
-                                  foreach ($categories as $key => $cat) {
+                            <?php $classified = CO2::getContextList("classified");
+                                  foreach ($classified['filters'] as $key => $cat) {
                             ?>
                                     <?php if(is_array($cat)) { ?>
                                         </div>

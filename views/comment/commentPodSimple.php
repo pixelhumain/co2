@@ -148,7 +148,7 @@
 						<span class="pull-left content-comment">						
 							<span class="text-black">
 								<span class="text-dark"><strong><?php echo $comment["author"]["name"]; ?></strong></span> 
-								<span class="text-comment <?php echo (@$comment['reportAbuseCount']&&$comment['reportAbuseCount']>=5)?'text-red-light':'' ?>">
+								<span class="text-comment <?php echo (@$comment['reportAbuseCount']&&$comment['reportAbuseCount']>=5)?'text-red-light-moderation':'' ?>">
 									<?php echo $comment["text"]; ?>
 								</span>
 							</span><br>
@@ -177,7 +177,7 @@
 										data-voted="<?php echo $iVoted!='' ? 'true' : 'false'; ?>"
 										data-id="<?php echo $comment["_id"]; ?>" data-countcomment="<?php echo $voteUpCount; ?>"
 										data-toggle="tooltip" data-placement="top" title="J'aime">
-										<span class="count"><?php echo @$voteUpCount; ?></span> 
+										<span class="countC"><?php echo @$voteUpCount; ?></span> 
 										<i class='fa fa-thumbs-up'></i>
 									</a> 
 									<a  href="javascript:"
@@ -185,7 +185,7 @@
 										data-voted="<?php echo $iVoted!='' ? 'true' : 'false'; ?>"
 										data-id="<?php echo $comment["_id"]; ?>" data-countcomment="<?php echo @$voteDownCount; ?>"
 										data-toggle="tooltip" data-placement="top" title="Je n'aime pas">
-										<span class="count"><?php echo @$voteDownCount; ?></span> 
+										<span class="countC"><?php echo @$voteDownCount; ?></span> 
 										<i class='fa fa-thumbs-down'></i>
 									</a>
 									
@@ -195,7 +195,7 @@
 										data-voted="<?php echo $iVoted!='' ? 'true' : 'false'; ?>"
 										data-id="<?php echo $comment["_id"]; ?>" data-countcomment="<?php echo @$reportAbuseCount; ?>"
 										data-toggle="tooltip" data-placement="top" title="Signaler un abus">
-										<span class="count"><?php echo $reportAbuseCount; ?></span> 
+										<span class="countC"><?php echo $reportAbuseCount; ?></span> 
 										<i class='fa fa-flag'></i>
 									</a>
 									<?php } ?>
@@ -207,7 +207,7 @@
 											data-voted="<?php echo $iVoted!='' ? 'true' : 'false'; ?>"
 											data-id="<?php echo $comment["_id"]; ?>" data-countcomment="<?php echo @$reportAcommentbuseCount; ?>"
 											data-toggle="tooltip" data-placement="top" title="Signaler un abus">
-											<span class="count"><?php echo $reportAbuseCount; ?></span> 
+											<span class="countC"><?php echo $reportAbuseCount; ?></span> 
 											<i class='fa fa-flag'></i>
 										</a>
 										<?php } ?>
@@ -708,7 +708,7 @@
 			var count = $(action+"[data-id='"+commentId+"']").data("countcomment");
 			mylog.log("count 1", count);
 			$(action+"[data-id='"+commentId+"']").data("countcomment", count-1);
-			$(action+"[data-id='"+commentId+"'] .count").html(count-1);
+			$(action+"[data-id='"+commentId+"'] .countC").html(count-1);
 		}
 		else{ //set
 			mylog.log("disableOtherAction 2", method);
@@ -722,7 +722,7 @@
 
 			var count = $(action+"[data-id='"+commentId+"']").data("countcomment");
 			$(action+"[data-id='"+commentId+"']").data("countcomment", count+1);
-			$(action+"[data-id='"+commentId+"'] .count").html(count+1);
+			$(action+"[data-id='"+commentId+"'] .countC").html(count+1);
 		}
 	}
 

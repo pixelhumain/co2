@@ -20,7 +20,7 @@ dynForm = {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Une proposition sert à discuter et demander l'avis d'une communauté sur une idée ou une question donnée</p>",
             },
-	        id : typeObjLib.hidden,
+	        id : dyFInputs.inputHidden(),
             survey :{
             	inputType : "select",
             	placeholder : "Choisir une thématique ?",
@@ -64,28 +64,22 @@ dynForm = {
             	},
             	custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
             },
-            name : typeObjLib.name,
-            message : typeObjLib.description,
-            dateEnd : typeObjLib.dateEnd,
-            tags : typeObjLib.tags(),
+            name : dyFInputs.name,
+            message : dyFInputs.textarea("Description", "..."),
+            dateEnd : dyFInputs.dateEnd,
+            tags : dyFInputs.tags(),
             formshowers : {
             	label : "En détails",
                 inputType : "custom",
                 html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options ( urls)</a>",
             },
-            urls : typeObjLib.urls,
-            email:{
-            	inputType : "hidden",
-            	value : (userId!=null && userConnected!=null) ? userConnected.email : ""
-            },
-            organizer:{
-            	inputType : "hidden",
-            	value : "currentUser"
-            },
-            type : {
-            	inputType : "hidden",
-            	value : "entry"
-            }
+            urls : dyFInputs.urls,
+            email: dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userConnected.email : "") ),
+            organizer : dyFInputs.inputHidden("currentUser"),
+            type : dyFInputs.inputHidden("entry")
+            
+            
+            
 	    }
 	}
 };

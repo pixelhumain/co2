@@ -14,10 +14,8 @@ class AdminController extends CommunecterController {
 	    return parent::beforeAction($action);
 	}
 
-	public function actions()
-	{
+	public function actions(){
 	    return array(
-	        'index'       => 'citizenToolKit.controllers.admin.IndexAction',
 	        'directory'   => 'citizenToolKit.controllers.admin.DirectoryAction',
 	        'mailerrordashboard'   => 'citizenToolKit.controllers.admin.MailErrorDashboardAction',
 	        'switchto'    => 'citizenToolKit.controllers.admin.SwitchtoAction',
@@ -47,4 +45,12 @@ class AdminController extends CommunecterController {
 			'cities' => 'citizenToolKit.controllers.admin.CitiesAction'
 	    );
 	}
+
+
+    public function actionIndex(){
+		CO2Stat::incNbLoad("co2-admin");   
+        $params = array();
+        echo $this->renderPartial("index", $params, true);
+	}
+	
 }

@@ -6,7 +6,6 @@
   HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
   
   $cssAnsScriptFilesModule = array(
-    '/js/default/directory.js',
     '/js/default/responsive-calendar.js',
   );
   HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
@@ -23,6 +22,7 @@
     if(@$type=="events")    { $page = "agenda"; }
     if(@$type=="classified"){ $page = "annonces"; }
     if(@$type=="vote")      { $page = "power"; }
+    if(@$type=="place")     { $page = "place"; }
 
     if(@$type=="cities")    { $lblCreate = ""; }
 
@@ -36,38 +36,7 @@
 ?>
 
 <style>
-    #page .bg-dark {
-        color: white !important;
-        background-color: #3C5665 !important;
-    }
-    #page .bg-red{
-        background-color:#E33551 !important;
-        color:white!important;
-    }
-    #page .bg-blue{
-        background-color: #5f8295 !important;
-        color:white!important;
-    }
-    #page .bg-green{
-        background-color:#93C020 !important;
-        color:white!important;
-    }
-    #page .bg-orange{
-        background-color:#FFA200 !important;
-        color:white!important;
-    }
-    #page .bg-yellow{
-        background-color:#FFC600 !important;
-        color:white!important;
-    }
-    #page .bg-turq{
-        background-color: #229296 !important;
-        color:white!important;
-    }
-    #page .bg-purple{
-        background-color:#8C5AA1 !important;
-        color:white!important;
-    }
+    
     #page #dropdown_search{
     	min-height:500px;
         /*margin-top:30px;*/
@@ -158,6 +127,7 @@
         background-color: #F2F2F2 !important;
     }
 
+/*<<<<<<< HEAD
     .colonne {
       display:table-cell;
       padding:10px;
@@ -191,11 +161,35 @@
         padding: 10px;
         margin-top: 5px;
         margin-bottom: 5px;
+=======*/
+    /*##content-social .btn-directory-type.active {
+        background-color: #2C3E50 !important;
+        color : white;
+    }*/
+
+    .searchEntityContainer.pull-right.classified{
+        clear: right;
     }
+    .searchEntityContainer.pull-left.classified{
+        clear: left;
+    }
+
+    .carousel-inner > .item > img.img-responsive{
+        display: inline !important;
+        max-height: 400px !important;
+    }
+
+    .btn-select-type-anc.active,
+    .btn-select-type-anc:active,
+    .btn-select-type-anc:focus{
+        color: white !important;
+        background-color: #2C3E50;
+/*>>>>>>> 1a127a579d0916d37794941247f60f455d001496
+*/    }
 </style>
 
 
-<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
+<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow pageContent" id="content-social" style="min-height:700px;">
 
     <?php if(@$type=="events"){ ?>
     <div class="col-md-12 no-padding calendar"></div>
@@ -239,7 +233,7 @@
 
         </div>
 
-        <div class="col-md-10 col-sm-10 col-xs-12 padding-5">
+        <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
         <?php
             $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
         ?>
@@ -315,7 +309,7 @@
                         </h4>
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="NGO" data-type="organization"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-green"><i class="fa fa-group padding-bottom-10"></i><br>
                                     <span class="font-light"> Association</span>
                                 </h2>
@@ -334,7 +328,7 @@
                         </a>
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="LocalBusiness" data-type="organization"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-azure"><i class="fa fa-industry padding-bottom-10"></i><br>
                                     <span class="font-light"> Entreprise</span>
                                 </h2>
@@ -353,7 +347,7 @@
                         </a>
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="Group" data-type="organization"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-turq"><i class="fa fa-circle-o padding-bottom-10"></i><br>
                                     <span class="font-light"> Groupe</span>
                                 </h2>
@@ -373,7 +367,7 @@
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" 
                             data-ktype="project" data-type="project"
                             date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-left">
+                            <div class="modal-body text-center">
                                 <h2 class="text-purple"><i class="fa fa-lightbulb-o padding-bottom-10"></i><br>
                                     <span class="font-light"> Projet</span>
                                 </h2>
@@ -392,7 +386,7 @@
 
                         <div class="col-md-12 col-sm-12 col-xs-12 text-center">
                             <hr>
-                            <a href="javascript:" style="font-size: 13px;" type="button" class="" data-dismiss="modal"><i class="fa fa-times"></i> Retour</a>
+                            <a href="javascript:" style="font-size: 13px;" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Retour</a>
                         </div>
 
                     </div>
@@ -439,23 +433,30 @@ jQuery(document).ready(function() {
             }
 
             initTypeSearch(typeD);
-
+            mylog.log("search.php",searchType);
             setHeaderDirectory(typeD);
             loadingData = false;
             startSearch(0, indexStepInit, searchCallback);
             KScrollTo("#content-social");
+
+            $(".btn-directory-type").removeClass("active");
+            $(this).addClass("active");
         });
 
         $(".btn-open-filliaire").click(function(){
             KScrollTo("#content-social");
         });
          
-        <?php if(@$type == "classified"){ ?>
+         //anny double section filter directory
+        <?php if(@$type == "classified" || @$type == "place"  ){ ?>
             initClassifiedInterface();
         <?php } ?>
 
+        bindLeftMenuFilters();
+
         //console.log("init Scroll");
-        $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
+        $(window).bind("scroll",function(){  
+            mylog.log("test scroll", scrollEnd);
             if(!loadingData && !scrollEnd && !isMapEnd){
                   var heightWindow = $("html").height() - $("body").height();
                   if( $(this).scrollTop() >= heightWindow - 400){
@@ -520,7 +521,7 @@ jQuery(document).ready(function() {
         currentKFormType = $(this).data("ktype");
         var type = $(this).data("type");
         setTimeout(function(){
-                    elementLib.openForm(type);
+                    dyFObj.openForm(type);
                  },500);
         
     });
@@ -528,22 +529,31 @@ jQuery(document).ready(function() {
     $(".main-btn-create").click(function(){
         currentKFormType = $(this).data("ktype");
         var type = $(this).data("type");
+
+        if(type=="all"){
+            $("#dash-create-modal").modal("show");
+            return;
+        }
+
         if(type=="events") type="event";
         if(type=="vote") type="entry";
-        elementLib.openForm(type);
+        dyFObj.openForm(type);
     });
 
-    $(".btn-decommunecter").click(function(){
+    /*$(".btn-decommunecter").click(function(){
+        alert();
         activateGlobalCommunexion(false);
-    });
+    });*/
 
-    setTimeout(function(){
-        KScrollTo("#content-social");  
-    }, 2000);
+    if(page == "annonces" || page == "agenda" || page == "power"){
+        setTimeout(function(){
+            KScrollTo("#content-social");  
+        }, 1000);
+    }
     $(".tooltips").tooltip();
 
     //currentKFormType = "Group";
-    //elementLib.openForm ("organization");
+    //dyFObj.openForm ("organization");
 });
 
 
@@ -562,23 +572,25 @@ function initTypeSearch(typeInit){
     }
 }
 
-<?php 
-    if(@$type == "classified"){
-    $freedomSections = CO2::getContextList("freedomSections");
-?>
-var freedomCategories = <?php echo json_encode($freedomSections); ?>
-<?php } ?>
-
+/* -------------------------
+CLASSIFIED
+----------------------------- */
 var section = "";
 var classType = "";
 var classSubType = "";
-function initClassifiedInterface(){
+function initClassifiedInterface(){ return;
+    classified.currentLeftFilters = null;
+    $('#menu-section-'+typeInit).removeClass("hidden");
+    $("#btn-create-classified").click(function(){
+         dyFObj.openForm('classified');
+    });    
+}
 
-    $('#menu-section-classified').removeClass("hidden");
+function bindLeftMenuFilters () { 
 
-    $(".btn-select-type-anc").click( function()
+    $(".btn-select-type-anc").off().on("click", function()
     {    
-        searchType = [ "classified" ];
+        searchType = [ typeInit ];
         indexStepInit = 100;
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
         $(".keycat").addClass("hidden");
@@ -587,23 +599,59 @@ function initClassifiedInterface(){
         section = $(this).data("type-anc");
         sectionKey = $(this).data("key");
         //alert("section : " + section);
+
+        if( sectionKey == "forsale" || sectionKey == "forrent"){
+            $("#section-price").show(200);
+            KScrollTo("#section-price");
+        }
+        else {
+            $("#section-price").hide();
+            $("#priceMin").val("");
+            $("#priceMax").val("");
+            KScrollTo("#dropdown_search");
+        }
+
+        /*
         if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
             sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
             //$(".subsub").show(300);
             $('#searchTags').val(section);
-            //KScrollTo(".top-page");
+            //KScrollTo("#section-price");
             startSearch(0, indexStepInit, searchCallback); 
-        } 
+        } */
+        if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
+            //alert('build left menu'+classified.sections[sectionKey].filters);
+            classified.currentLeftFilters = classified.sections[sectionKey].filters;
+            var filters = classified[ classified.currentLeftFilters ]; 
+            var what = { title : classified.sections[sectionKey].label, 
+                         icon : classified.sections[sectionKey].icon }
+            directory.sectionFilter( filters, ".classifiedFilters",what);
+            bindLeftMenuFilters ();
+            
+        }
+        else if(classified.currentLeftFilters != null) {
+            //alert('rebuild original'); 
+            var what = { title : classified.sections[sectionKey].label, 
+                         icon : classified.sections[sectionKey].icon }
+            directory.sectionFilter( classified.filters, ".classifiedFilters",what);
+            bindLeftMenuFilters ();
+            classified.currentLeftFilters = null;
+        }
 
-        if(typeof freedomCategories[sectionKey] != "undefined") {
-            $(".label-category").html("<i class='fa fa-"+ freedomCategories[sectionKey]["icon"] + "'></i> " + freedomCategories[sectionKey]["label"]);
-            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+freedomCategories[sectionKey]["color"])
+        $('#searchTags').val(section);
+        //KScrollTo(".top-page");
+        startSearch(0, indexStepInit, searchCallback); 
+
+
+        if(typeof classified.sections[sectionKey] != "undefined") {
+            $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]);
+            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+classified.sections[sectionKey]["color"])
             $(".fa-title-list").removeClass("hidden");
         }
     });
 
-    $(".btn-select-category-1").click(function(){
-        searchType = [ "classified" ];
+    $(".btn-select-category-1").off().on("click", function(){
+        searchType = [ typeInit ];
         $(".btn-select-category-1").removeClass("active");
         $(this).addClass("active");
 
@@ -611,31 +659,47 @@ function initClassifiedInterface(){
         $(".keycat").addClass("hidden");
         $(".keycat-"+classType).removeClass("hidden");   
 
-        ////alert("classType : "+classType);
+        //alert("classType : "+classType);
 
         $('#searchTags').val(section+","+classType);
         startSearch(0, indexStepInit, searchCallback);  
     });
 
-    $(".keycat").click(function(){
+    $(".keycat").off().on("click", function(){
 
-        searchType = [ "classified" ];
+        searchType = [ typeInit ];
         $(".keycat").removeClass("active");
         $(this).addClass("active");
         var classSubType = $(this).data("keycat");
         var classType = $(this).data("categ");
         //alert("classSubType : "+classSubType);
         $('#searchTags').val(section+","+classType+","+classSubType);
+        KScrollTo("#menu-section-classified");
         startSearch(0, indexStepInit, searchCallback);  
     });
 
-    $("#btn-create-classified").click(function(){
-         elementLib.openForm('classified');
+
+    $("#btn-create-classified").off().on("click", function(){
+         dyFObj.openForm('classified');
     });
 
-    
-}
+    $("#priceMin").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
+    $("#priceMax").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
 
+    $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
+
+ }
+
+
+/* -------------------------
+END CLASSIFIED
+----------------------------- */
+
+
+
+/* -------------------------
+AGENDA
+----------------------------- */
 
 <?php if(@$type == "events"){ ?>
 var calendarInit = false;
@@ -693,5 +757,10 @@ function showResultInCalendar(mapElements){
 }
 
 <?php } ?>
+
+
+/* -------------------------
+END AGENDA
+----------------------------- */
 
 </script>

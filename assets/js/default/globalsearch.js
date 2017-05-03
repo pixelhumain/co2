@@ -144,14 +144,14 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                   var url = (notEmpty(o.type) && notEmpty(id)) ? 
                             '#page.type.'+o.type+'.id.' + id : "";
 
-                  //var onclick = 'url.loadByHash("#' + type + '.detail.id.' + id + '");';
+                  //var onclick = 'urlCtrl.loadByHash("#' + type + '.detail.id.' + id + '");';
                   var onclickCp = "";
                   var target = " target='_blank'";
                   var dataId = "";
                   if(type == "city"){
                     //url = "javascript:"; //#main-col-search";
                     url = '#co2.city.insee.' + insee + '.postalCode.'+postalCode; //"'+o.name.replace("'", "\'")+'");';
-                    //onclickCp = 'url.loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'";';
+                    //onclickCp = 'urlCtrl.loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'";';
                     //target = "";
                     dataId = o.name; //.replace("'", "\'");
                   }
@@ -220,7 +220,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               //ajout du footer   
               str += '<div class="text-center" id="footerDropdownGS">';
               str += "<label class='text-dark'>" + totalDataGSMSG + "</label><br/>";
-              str += '<a href="#co2.social" class="btn btn-default btn-sm" id="btnShowMoreResultGS">'+
+              str += '<a href="#social" class="btn btn-default btn-sm" id="btnShowMoreResultGS">'+
                         '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> Recherche étendue'+
                       '</a>';
               str += '</div>';
@@ -253,7 +253,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
             Sig.showMapElements(Sig.map, mapElementsGS);
           }
 
-          //$("#footerDropdownGS").append("<br><a class='btn btn-default' href='javascript:' onclick='url.loadByHash("+'"#default.directory"'+")'><i class='fa fa-plus'></i></a>");
+          //$("#footerDropdownGS").append("<br><a class='btn btn-default' href='javascript:' onclick='urlCtrl.loadByHash("+'"#default.directory"'+")'><i class='fa fa-plus'></i></a>");
         }
     });
 

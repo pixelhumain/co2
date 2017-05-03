@@ -53,11 +53,11 @@ a h1.text-azure:hover{
 	?>
 </div>
 
-<div id="endOfRoom">
-	<a href='javascript:url.loadByHash("#rooms.index.type.<?php echo (String) $parentType; ?>.id.<?php echo (String) $parentId; ?>")'>
+<!--<div id="endOfRoom">
+	<a href='javascript:urlCtrl.loadByHash("#rooms.index.type.<?php echo (String) $parentType; ?>.id.<?php echo (String) $parentId; ?>")'>
 		<i class='fa fa-sign-in'></i> Entrer dans l'espace coopératif 
 	</a>
-</div>
+</div>-->
 <?php 
 	function createAccordionMenu($elements, $index, $title, $emptyMsg){
 	
@@ -65,7 +65,7 @@ a h1.text-azure:hover{
 	
 	echo '<div class="panel panel-default">';
 
-	echo    '<div class="panel-heading bg-dark">
+	/*echo    '<div class="panel-heading bg-dark">
 		      <div class="panel-title">
 		        <a data-toggle="collapse" data-parent="#accordion" href="#collapse'.$index.'" class="show-menu-co">
 		        	<i class="fa fa-angle-down hide-on-reduce-menu"></i> <span class="hide-on-reduce-menu">'.$title.'</span>
@@ -73,7 +73,7 @@ a h1.text-azure:hover{
 		        </a>
 		      </div>
 		      
-		    </div>';
+		    </div>';*/
 
 	echo 	'<div id="collapse'.$index.'" class="panel-collapse collapse '.$in.'">';
 
@@ -88,7 +88,7 @@ a h1.text-azure:hover{
 			        }
 			        $elemObj = Element::getElementSpecsByType (@$value["type"]);
 
-			        $onclick = (@$elemObj["hash"]) ? 'url.loadByHash(\'#'.$elemObj["hash"].(string)$value["_id"].'\')' : "toastr.success('no hash available');";
+			        $onclick = (@$elemObj["hash"]) ? 'urlCtrl.loadByHash(\'#'.$elemObj["hash"].(string)$value["_id"].'\')' : "toastr.success('no hash available');";
 			        $icon = (@$elemObj["icon"]) ? $elemObj["icon"] : "question-circle";
 			        $pod = ($count = PHDB::count($col,array($attr =>(string)$value["_id"]))) ? "<span class='badge badge-success pull-right'>".PHDB::count($col,array($attr =>(string)$value["_id"]))."</span>" : "";
 					echo '<div class="panel-body hide-on-reduce-menu">'.
@@ -152,7 +152,7 @@ function loadRoom(type, id){
 				}
 
 	var thiHash = "#"+mapUrl[type]["hash"]+".id."+id;
-	url.loadByHash(thiHash);
+	urlCtrl.loadByHash(thiHash);
 }
 <?php } ?>
 </script>

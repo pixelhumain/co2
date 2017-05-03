@@ -74,6 +74,9 @@
 	else if ($contentType == Person::COLLECTION){
 		$tooltips = "La communauté de cette personne";						
 	}
+	else if ($contentType == Place::COLLECTION){
+		$tooltips = "La communauté de ce lieu";						
+	}
 
 
 	$addLink = (empty($users[Yii::app()->session["userId"]])?false:true);

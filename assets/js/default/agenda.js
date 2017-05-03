@@ -174,7 +174,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
                   type = typeObj[o.type].ctrl;
                   //if(type=="citoyen") type = "person";
                   var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
-                  var onclick = 'url.loadByHash("#' + type + '.detail.id.' + id + '");';
+                  var onclick = 'urlCtrl.loadByHash("#' + type + '.detail.id.' + id + '");';
                   var onclickCp = "";
                   var target = " target='_blank'";
                   var dataId = "";
@@ -362,7 +362,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
     $.each($(".followBtn"), function(index, value){
       var id = $(value).attr("data-id");
       var type = $(value).attr("data-type");
-	  type = typeObjLib.get(type).col;
+	  type = dyFInputs.get(type).col;
 
       //mylog.log("#floopItem-"+type+"-"+id);
       if($("#floopItem-"+type+"-"+id).length){

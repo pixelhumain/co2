@@ -1,15 +1,15 @@
 
 	<div class="panel panel-white user-list">
-		<div class="panel-heading border-light bg-azure">
+		<!--<div class="panel-heading border-light bg-azure">
 			<h4 class="panel-title"><i class="fa fa-map-marker"></i> Points d'intérêt</h4>		
 		</div> 
 		<div class="panel-tools">
-			<a  href="javascript:;" onclick="elementLib.openForm('poi','subPoi')" 
+			<a  href="javascript:;" onclick="dyFObj.openForm('poi','subPoi')" 
 				class="btn btn-xs btn-default tooltips" data-placement="bottom" 
 				data-original-title="<?php echo Yii::t("common","Add") ?>" >
 					<i class="fa fa-plus"></i> <?php echo Yii::t("common","Add") ?>
 			</a>
-		</div>
+		</div>-->
 		<div class="panel-scroll height-230 ps-container">
 			<div class="padding-10">
 			
@@ -17,7 +17,7 @@
 			if(empty($pois)){ ?>
 				<div class="padding-10">
 					<blockquote class="no-margin">
-					<?php echo Yii::t("common","Ajouter des points d'interets à cet élément");  ?>
+					<?php echo Yii::t("common","Add points of interests to {what}", array("{what}"=>Yii::t("common","this ".Element::getControlerByCollection($parentType))));  ?>
 					</blockquote>
 				</div>
 			<?php }
@@ -54,7 +54,7 @@
 						
 						
 						
-						<div class="padding-10 poiPanel poi<?php echo InflectorHelper::slugify($p["name"])?> hide">
+						<div class="padding-10 poiPanel poi<?php echo InflectorHelper::slugify($p["name"])?> hide" style="padding-bottom: 30px !important;">
 
 							<?php 
 							if(@$p["description"]){ ?>
@@ -150,6 +150,6 @@
 	        var btnClick = $(this);
 	        var id = $(this).data("id");
 	        var type = $(this).data("type");
-	        elementLib.editElement(type,id);
+	        dyFObj.editElement(type,id);
 		});
 	</script>

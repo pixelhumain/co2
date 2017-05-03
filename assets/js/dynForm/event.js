@@ -39,13 +39,13 @@ dynForm = {
 	    	}
 	    },
 	    beforeBuild : function(){
-	    	elementLib.setMongoId('events');
+	    	dyFObj.setMongoId('events');
 	    },
 	    afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
-		    	elementLib.closeForm();
+		    	dyFObj.closeForm();
 		    	urlCtrl.loadByHash( location.hash );	
 		    }
 	    },
@@ -72,15 +72,16 @@ dynForm = {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Si vous voulez créer un nouvel évènement de façon à le rendre plus visible : c'est le bon endroit !!<br>Vous pouvez inviter des participants, planifier des sous évènements, publier des actus lors de l'évènement...</p>",
             },
-            name : typeObjLib.name("event"),
-	        similarLink : typeObjLib.similarLink,
+            name : dyFInputs.name("event"),
+	        similarLink : dyFInputs.similarLink,
 	        organizerId :{
+	        	label : "Qui organise cet événement ?",
 	        	rules : { required : true },
             	inputType : "select",
             	placeholder : "Qui organise ?",
             	rules : { required : true },
             	options : firstOptions(),
-            	"groupOptions" : myAdminList( ["organizations","projects"] ),
+            	groupOptions : myAdminList( ["organizations","projects"] ),
 	            init : function(){
 	            	$("#ajaxFormModal #organizerId").off().on("change",function(){
 	            		
@@ -98,7 +99,7 @@ dynForm = {
 	            	});
 	            }
             },
-	        organizerType : typeObjLib.inputHidden(),
+	        organizerType : dyFInputs.inputHidden(),
 	         parentId :{
             	inputType : "select",
             	class : "hidden",
@@ -140,25 +141,25 @@ dynForm = {
 	            	});
 	            }
             },
-            parentType : typeObjLib.inputHidden(),
-	        type : typeObjLib.inputSelect("Type d\'évènement",null,eventTypes, { required : true }),
-	        image : typeObjLib.image( "#event.detail.id." ),
-            allDay : typeObjLib.allDay,
-            startDate : typeObjLib.startDateInput,
-            endDate : typeObjLib.endDateInput,
-            location : typeObjLib.location,
-            tags : typeObjLib.tags(),
-            shortDescription : typeObjLib.textarea("Description courte", "...",{ maxlength: 140 }),
+            parentType : dyFInputs.inputHidden(),
+	        type : dyFInputs.inputSelect("Type d\'évènement",null,eventTypes, { required : true }),
+	        image : dyFInputs.image( "#event.detail.id." ),
+            allDay : dyFInputs.allDay,
+            startDate : dyFInputs.startDateInput,
+            endDate : dyFInputs.endDateInput,
+            location : dyFInputs.location,
+            tags : dyFInputs.tags(),
+            shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
             formshowers : {
             	label : "En détails",
                 inputType : "custom",
                 html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> options (desc, urls)</a>",
             },
-	        url : typeObjLib.inputUrlOptionnel(),
-            "preferences[publicFields]" :  typeObjLib.inputHidden([]),
-            "preferences[privateFields]" : typeObjLib.inputHidden([]),
-            "preferences[isOpenData]" :  typeObjLib.inputHidden(true),
-            "preferences[isOpenEdition]" :  typeObjLib.inputHidden(true)
+	        url : dyFInputs.inputUrlOptionnel(),
+            "preferences[publicFields]" :  dyFInputs.inputHidden([]),
+            "preferences[privateFields]" : dyFInputs.inputHidden([]),
+            "preferences[isOpenData]" :  dyFInputs.inputHidden(true),
+            "preferences[isOpenEdition]" :  dyFInputs.inputHidden(true)
 	    }
 	}
 };

@@ -7,111 +7,6 @@ function bindAboutPodElement() {
 		$("#editElementDetail").on("click", function(){
 			switchModeElement();
 		});
-
-					
-
-		$("#btn-update-password").off().on( "click", function(){
-			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/person/changepassword",
-				dynForm : {
-					jsonSchema : {
-						title : trad["Change password"],
-						icon : "fa-key",
-						afterSave : function(data){
-							elementLib.closeForm();
-						},
-						properties : {
-							mode : typeObjLib.inputHidden(),
-							userId : typeObjLib.inputHidden(),
-							oldPassword : typeObjLib.password(trad["Old password"]),
-							newPassword : typeObjLib.password("", { required : true, minlength : 8 } ),
-							newPassword2 : typeObjLib.password(trad["Repeat your new password"], {required : true, minlength : 8, equalTo : "#ajaxFormModal #newPassword"})	
-						}
-					}
-				}
-			};
-
-			var dataUpdate = {
-				mode : "changePassword",
-		        userId : userId
-		    };
-			elementLib.openForm(form, null, dataUpdate);
-		});
-
-		$("#downloadProfil").click(function () {
-			$.ajax({
-				url: baseUrl + "/communecter/data/get/type/citoyens/id/"+contextData.id ,
-				type: 'POST',
-				dataType: 'json',
-				async:false,
-				crossDomain:true,
-				complete: function () {},
-				success: function (obj){
-					mylog.log("obj", obj);
-					$("<a/>", {
-					    "download": "profil.json",
-					    "href" : "data:application/json," + encodeURIComponent(JSON.stringify(obj))
-					  }).appendTo("body")
-					  .click(function() {
-					    $(this).remove()
-					  })[0].click() ;
-				},
-				error: function (error) {
-					
-				}
-			});
-		});
-
-	    $(".confidentialitySettings").click(function(){
-	    	param = new Object;
-	    	param.type = $(this).attr("type");
-	    	param.value = $(this).attr("value");
-	    	param.typeEntity = contextData.type;
-	    	param.idEntity = contextData.id;
-			$.ajax({
-		        type: "POST",
-		        url: baseUrl+"/"+moduleId+"/element/updatesettings",
-		        data: param,
-		       	dataType: "json",
-		    	success: function(data){
-			    	toastr.success(data.msg);
-			    }
-			});
-		});
-
-		$("#editConfidentialityBtn").on("click", function(){
-	    	mylog.log("confidentiality", seePreferences);
-	    	$("#modal-confidentiality").modal("show");
-	    	if(seePreferences=="true"){
-	    		param = new Object;
-		    	param.name = "seePreferences";
-		    	param.value = false;
-		    	param.pk = contextData.id;
-				$.ajax({
-			        type: "POST",
-			        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-			        data: param,
-			       	dataType: "json",
-			    	success: function(data){
-				    	//toastr.success(data.msg);
-				    	if(data.result){
-							$("#divSeePreferencesHeader").addClass("hidden");
-							$('#editConfidentialityBtn').removeClass("btn-red");
-				    	}
-				    }
-				});
-	    	}
-	    	
-	    });
-
-		$(".panel-btn-confidentiality .btn").click(function(){
-			var type = $(this).attr("type");
-			var value = $(this).attr("value");
-			$(".btn-group-"+type + " .btn").removeClass("active");
-			$(this).addClass("active");
-		});
-
-
 	}
 
 	function changeHiddenFields() { 
@@ -271,7 +166,7 @@ function bindAboutPodElement() {
 
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
@@ -310,23 +205,23 @@ function bindAboutPodElement() {
 								}  
 								updateCalendar();
 							}
-							elementLib.closeForm();
+							dyFObj.closeForm();
 						},
 						properties : {
-							block : typeObjLib.inputHidden(),
-							typeElement : typeObjLib.inputHidden(),
-							isUpdate : typeObjLib.inputHidden(true)
+							block : dyFInputs.inputHidden(),
+							typeElement : dyFInputs.inputHidden(),
+							isUpdate : dyFInputs.inputHidden(true)
 						}
 					}
 				}
 			};
 
 			if(contextData.type == "<?php echo Event::COLLECTION; ?>"){
-				form.dynForm.jsonSchema.properties.allDay = typeObjLib.allDay;
+				form.dynForm.jsonSchema.properties.allDay = dyFInputs.allDay;
 			}
 
-			form.dynForm.jsonSchema.properties.startDate = typeObjLib.startDateInput;
-			form.dynForm.jsonSchema.properties.endDate = typeObjLib.endDateInput;
+			form.dynForm.jsonSchema.properties.startDate = dyFInputs.startDateInput;
+			form.dynForm.jsonSchema.properties.endDate = dyFInputs.endDateInput;
 
 			var dataUpdate = {
 				block : "when",
@@ -341,14 +236,14 @@ function bindAboutPodElement() {
 				dataUpdate.endDate = moment(contextData.endDate).local().format(formatDatedynForm);
 
 			mylog.log("btn-update-when", form, dataUpdate);
-			elementLib.openForm(form, "initWhen", dataUpdate);
+			dyFObj.openForm(form, "initWhen", dataUpdate);
 		});
 
 
 		$(".btn-update-info").off().on( "click", function(){
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
@@ -460,41 +355,42 @@ function bindAboutPodElement() {
 									$("#faxAbout").html(contextData.fax);
 								}
 							}
-							elementLib.closeForm();
+							dyFObj.closeForm();
 							changeHiddenFields();
 						},
 						properties : {
-							block : typeObjLib.inputHidden(),
-							name : typeObjLib.name(contextData.type),
-							typeElement : typeObjLib.inputHidden(),
-							isUpdate : typeObjLib.inputHidden(true)
+							block : dyFInputs.inputHidden(),
+							name : dyFInputs.name(contextData.type),
+							typeElement : dyFInputs.inputHidden(),
+							isUpdate : dyFInputs.inputHidden(true)
 						}
 					}
 				}
 			};
 
 			if(contextData.type == typeObj.person.col ){
-				form.dynForm.jsonSchema.properties.username = typeObjLib.username;
-				form.dynForm.jsonSchema.properties.birthDate = typeObjLib.birthDate;
+				form.dynForm.jsonSchema.properties.username = dyFInputs.username;
+				form.dynForm.jsonSchema.properties.birthDate = dyFInputs.birthDate;
 			}
 
 			if(contextData.type == typeObj.organization.col ){
-				form.dynForm.jsonSchema.properties.type = typeObjLib.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
-				form.dynForm.jsonSchema.properties.tags = typeObjLib.tags();
+				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
 			}
 
 			if(contextData.type == typeObj.project.col ){
-				form.dynForm.jsonSchema.properties.avancement = typeObjLib.inputSelect("L'avancement du project", "Avancement du projet", avancementProject);
+				form.dynForm.jsonSchema.properties.avancement = dyFInputs.inputSelect("L'avancement du project", "Avancement du projet", avancementProject);
 			}
+
+			form.dynForm.jsonSchema.properties.tags = dyFInputs.tags();
 
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
-				form.dynForm.jsonSchema.properties.email = typeObjLib.email();
+				form.dynForm.jsonSchema.properties.email = dyFInputs.email();
 			}
 
-			form.dynForm.jsonSchema.properties.url = typeObjLib.inputUrl();
-			form.dynForm.jsonSchema.properties.fixe= typeObjLib.inputText("Fixe","Saisir les numéros de téléphone séparer par une virgule");
-			form.dynForm.jsonSchema.properties.mobile= typeObjLib.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
-			form.dynForm.jsonSchema.properties.fax= typeObjLib.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
+			form.dynForm.jsonSchema.properties.url = dyFInputs.inputUrl();
+			form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText("Fixe","Saisir les numéros de téléphone séparer par une virgule");
+			form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
+			form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
 
 			var dataUpdate = {
 				block : "info",
@@ -536,13 +432,13 @@ function bindAboutPodElement() {
 				dataUpdate.fax = contextData.fax;
 
 			mylog.log("dataUpdate", dataUpdate);
-			elementLib.openForm(form, "initUpdateInfo", dataUpdate);
+			dyFObj.openForm(form, "initUpdateInfo", dataUpdate);
 		});
 
 		$(".btn-update-descriptions").off().on( "click", function(){
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
@@ -555,21 +451,22 @@ function bindAboutPodElement() {
 						},
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){shortDescriptionHeader
+							if(data.result && data.resultGoods.result){
 								$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
+								$(".contentInformation #shortDescriptionAboutEdit").html(data.resultGoods.values.shortDescription);
 								$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
 								$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
-								$("#descriptionMarkdown").val(data.resultGoods.values.description);
+								$("#descriptionMarkdown").html(data.resultGoods.values.description);
 							}
-							elementLib.closeForm();
+							dyFObj.closeForm();
 							changeHiddenFields();
 						},
 						properties : {
-							block : typeObjLib.inputHidden(),
-							typeElement : typeObjLib.inputHidden(),
-							isUpdate : typeObjLib.inputHidden(true),
-							shortDescription : 	typeObjLib.textarea("Description courte", "...",{ maxlength: 140 }),
-							description : typeObjLib.textarea("Description longue", "..."),
+							block : dyFInputs.inputHidden(),
+							typeElement : dyFInputs.inputHidden(),
+							isUpdate : dyFInputs.inputHidden(true),
+							shortDescription : 	dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
+							description : dyFInputs.textarea("Description longue", "..."),
 						}
 					}
 				}
@@ -580,18 +477,18 @@ function bindAboutPodElement() {
 		        id : contextData.id,
 		        typeElement : contextData.type,
 		        name : contextData.name,
-		        shortDescription : $(".contentInformation #shortDescriptionAbout").html(),
-				description : $("#descriptionMarkdown").val(),	
+		        shortDescription : $(".contentInformation #shortDescriptionAboutEdit").html(),
+				description : $("#descriptionMarkdown").html(),	
 			};
 
-			elementLib.openForm(form, "markdown", dataUpdate);
+			dyFObj.openForm(form, "markdown", dataUpdate);
 		});
 
 
 		$(".btn-update-network").off().on( "click", function(){
 			if(contextData.type == typeObj.person.col ){
 				var form = {
-					saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
+					saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 					dynForm : {
 						jsonSchema : {
 							title : trad["Change password"],
@@ -634,20 +531,20 @@ function bindAboutPodElement() {
 										changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
 									}
 								}
-								elementLib.closeForm();
+								dyFObj.closeForm();
 								changeHiddenFields();
 							},
 
 							properties : {
-								block : typeObjLib.inputHidden(),
-								typeElement : typeObjLib.inputHidden(),
-								isUpdate : typeObjLib.inputHidden(true),
-								telegram : typeObjLib.inputText("Votre Speudo Telegram","Votre Speudo Telegram"),
-								skype : typeObjLib.inputUrl("Lien vers Skype"),
-								gitHub : typeObjLib.inputUrl("Lien vers Git Hub"), 
-								gpplus : typeObjLib.inputUrl("Lien vers Google Plus"),
-						        twitter : typeObjLib.inputUrl("Lien vers Twitter"),
-						        facebook :  typeObjLib.inputUrl("Lien vers Facebook"),
+								block : dyFInputs.inputHidden(),
+								typeElement : dyFInputs.inputHidden(),
+								isUpdate : dyFInputs.inputHidden(true),
+								telegram : dyFInputs.inputText("Votre Speudo Telegram","Votre Speudo Telegram"),
+								skype : dyFInputs.inputUrl("Lien vers Skype"),
+								gitHub : dyFInputs.inputUrl("Lien vers Git Hub"), 
+								gpplus : dyFInputs.inputUrl("Lien vers Google Plus"),
+						        twitter : dyFInputs.inputUrl("Lien vers Twitter"),
+						        facebook :  dyFInputs.inputUrl("Lien vers Facebook"),
 							}
 						}
 					}
@@ -672,7 +569,7 @@ function bindAboutPodElement() {
 				if(notEmpty(contextData.facebook))
 					dataUpdate.facebook = contextData.facebook;
 
-				elementLib.openForm(form, null, dataUpdate);
+				dyFObj.openForm(form, null, dataUpdate);
 
 			}
 		});
@@ -706,7 +603,7 @@ function bindAboutPodElement() {
 
 
 	function updateUrl(ind, title, url, type) {
-		//var url = urls[ind] ;
+		mylog.log("updateUrl", ind, title, url, type)
 		var params = {
 			title : title,
 			type : type,
@@ -714,7 +611,7 @@ function bindAboutPodElement() {
 			index : ind
 		}
 		mylog.log("params",params);
-		elementLib.openForm( 'url','parentUrl', params);
+		dyFObj.openForm( 'url','parentUrl', params);
 	}
 
 	function removeUrl(ind) {

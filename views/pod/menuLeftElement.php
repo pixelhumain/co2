@@ -5,38 +5,37 @@
 		//'/plugins/x-editable/js/bootstrap-editable.js' , 
 
 		//DatePicker
-		'/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
-		'/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js' ,
-		'/plugins/bootstrap-datepicker/css/datepicker.css',
-			'/plugins/jquery.qrcode/jquery-qrcode.min.js',
+		//'/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
+		//'/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js' ,
+		//'/plugins/bootstrap-datepicker/css/datepicker.css',
+		//	'/plugins/jquery.qrcode/jquery-qrcode.min.js',
 		//DateTime Picker
-		'/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
-		'/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js' , 
-		'/plugins/bootstrap-datetimepicker/css/datetimepicker.css',
+		//'/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
+		//'/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js' , 
+		//'/plugins/bootstrap-datetimepicker/css/datetimepicker.css',
 		//Wysihtml5
-		'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5.css',
-		'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5-editor.css',
-		'/plugins/wysihtml5/bootstrap3-wysihtml5/wysihtml5x-toolbar.min.js',
-		'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5.min.js',
-		'/plugins/wysihtml5/wysihtml5.js',
+		//'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5.css',
+		//'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5-editor.css',
+		//'/plugins/wysihtml5/bootstrap3-wysihtml5/wysihtml5x-toolbar.min.js',
+		//'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5.min.js',
+		//'/plugins/wysihtml5/wysihtml5.js',
 		
 		//SELECT2
-		'/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
-		'/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js' ,
+		//'/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
+		//'/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js' ,
 
 		// SHOWDOWN
-		'/plugins/showdown/showdown.min.js',
+		//'/plugins/showdown/showdown.min.js',
 		//MARKDOWN
-		'/plugins/to-markdown/to-markdown.js',
+		//'/plugins/to-markdown/to-markdown.js',
 
 	);
 	//if ($type == Project::COLLECTION)
 	//	array_push($cssAnsScriptFilesTheme, "/assets/plugins/Chart.js/Chart.min.js");
-	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
+	//HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	$cssAnsScriptFilesModule = array(
 		//Data helper
 		'/js/dataHelpers.js',
-		//'/js/postalCode.js',
 		'/js/activityHistory.js',
 		'/js/news/index.js',
 		'/js/default/editInPlace.js',
@@ -219,9 +218,20 @@
 		<li class="">
 			<a href="javascript:" class="ssmla capitalize load-data-directory" 
 				data-type-dir="<?php echo @Element::$connectTypes[$type]; ?>" data-icon="link">
-				<i class="fa fa-link"></i> <?php echo Yii::t("common",@Element::$connectTypes[$type]); ?>
+				<i class="fa fa-users"></i> <?php echo Yii::t("common",@Element::$connectTypes[$type]); ?>
 			</a>
 		</li>
+		
+		<?php if($type != Person::COLLECTION ) { ?>
+		<li class="">
+			<a href="javascript:" class="ssmla capitalize load-data-directory" 
+				data-type-dir="followers" data-icon="link">
+				<i class="fa fa-link"></i> <?php echo Yii::t("common","followers"); ?>
+			</a>
+		</li>
+		<?php } ?>
+		
+		
 
 		<?php if ($type==Person::COLLECTION){ ?>
 			<li class="">
@@ -246,7 +256,7 @@
 				</a>
 			</li>
 			<?php }  ?>
-			<?php if ($type==Person::COLLECTION || $type==Project::COLLECTION){ ?>
+			<?php if ($type==Person::COLLECTION || $type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="projects" data-icon="lightbulb-o">
 					<i class="fa fa-lightbulb-o"></i>  <?php echo Yii::t("common","Projects"); ?>
@@ -281,13 +291,13 @@
 
 	<?php } ?>
 
-	<li class="">
+	<!-- <li class="">
 		<a href="javascript:" class="ssmla load-data-directory" data-type-dir="dda" data-icon="gavel">
 			<i class="fa fa-gavel"></i> <?php echo Yii::t("common","Cooperative space"); ?>
 		</a>
 	</li>
 
-	<li><hr></li>
+	<li><hr></li> -->
 </ul>
 
 

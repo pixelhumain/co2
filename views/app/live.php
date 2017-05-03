@@ -1,8 +1,10 @@
 <?php 
 
-	HtmlHelper::registerCssAndScriptsFiles( array('/css/timeline2.css','/css/news/index.css',
-		
-											) , Yii::app()->theme->baseUrl. '/assets');
+	HtmlHelper::registerCssAndScriptsFiles( 
+			array('/css/timeline2.css',
+				  '/css/news/index.css',
+				  '/css/default/directory.css',	
+				) , Yii::app()->theme->baseUrl. '/assets');
 
 
 	$cssAnsScriptFilesModule = array(
@@ -45,32 +47,39 @@
         border-bottom:1px solid #e6344d;
         text-decoration: none !important;
     }
+    #noMoreNews {
+	    position: relative;
+	    padding: 0px 40px;
+	    bottom: 0px;
+	    width: 100%;
+		text-align: center;
+		background: white;
+	}
 </style>
-
+<div class="row padding-10 bg-white">
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
-	<div id="container-scope-filter" class="col-md-offset-2 col-md-9 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
+	<div id="container-scope-filter" class="col-md-offset-1 col-md-11 col-lg-offset-1 col-lg-11 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
 		<?php
 	        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
 	    ?>
 	</div>
-	<div class="col-lg-2 col-md-3 hidden-sm col-xs-12 padding-20 text-right hidden-xs" id="sub-menu-left">
-		
-	</div>
 
-	<div class="col-lg-8 col-md-8 col-sm-12 no-padding margin-top-10">
+	<div class="col-lg-1 col-md-1 hidden-sm hidden-xs text-right hidden-xs" id="sub-menu-left"></div>
+
+	<div class="col-lg-10 col-md-10 col-sm-12 margin-top-10">
 		<div id="newsstream"></div>
 	</div>	
 
-	<div class="pull-right col-lg-3 col-md-3 col-sm-4 hidden-xs padding-20 margin-top-50" id="nowList">
+	<!-- <div class="pull-right col-lg-3 col-md-3 col-sm-4 hidden-xs padding-20 margin-top-50" id="nowList">
 	
-	</div>
+	</div> -->
 </div>
-
+</div>
 
 
 <?php //$this->renderPartial('../news/modalCreateAnc'); ?>
 
-<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"annonces")); ?>
+<?php //$this->renderPartial($layoutPath.'footer', array("subdomain"=>"annonces")); ?>
 
 <script type="text/javascript" >
 
@@ -100,6 +109,8 @@ var scrollEnd = false;
 var loadContent = '<?php echo @$_GET["content"]; ?>';
 var dataNewsSearch = {};
 var	dateLimit=0;
+
+var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 //var scrollEnd = false;
 jQuery(document).ready(function() {
 
@@ -117,13 +128,13 @@ jQuery(document).ready(function() {
       slidupScopetagsMin();
     });
 	$('#btn-start-search').click(function(e){
-		startSearch(false);
+		startNewsSearch(false);
     });
 		
 	
     
     searchPage = true;
-	startSearch(true);
+	startNewsSearch(true);
 
 	$(".titleNowEvents .btnhidden").hide();
 
@@ -134,6 +145,45 @@ jQuery(document).ready(function() {
     
     //KScrollTo(".main-btn-scopes");
 });
+
+function initLiveInterface(){
+	$("#main-btn-start-search, .menu-btn-start-search").click(function(){
+        var search = $("#main-search-bar").val();
+        startWebSearch(search, currentCategory);
+    });
+
+    $("#second-search-bar").keyup(function(e){
+        $("#main-search-bar").val($("#second-search-bar").val());
+        $("#input-search-map").val($("#second-search-bar").val());
+        if(e.keyCode == 13){
+            var search = $(this).val();
+            startWebSearch(search, currentCategory);
+         }
+    });
+    $("#main-search-bar").keyup(function(e){
+        $("#second-search-bar").val($("#main-search-bar").val());
+        $("#input-search-map").val($("#main-search-bar").val());
+        if(e.keyCode == 13){
+            var search = $(this).val();
+            startWebSearch(search, currentCategory);
+         }
+    });
+    $("#input-search-map").keyup(function(e){
+        $("#second-search-bar").val($("#input-search-map").val());
+        $("#main-search-bar").val($("#input-search-map").val());
+        if(e.keyCode == 13){
+            var search = $(this).val();
+            startWebSearch(search, currentCategory);
+         }
+    });
+
+    $("#menu-map-btn-start-search").click(function(){
+        var search = $("#input-search-map").val();
+        startWebSearch(search, currentCategory);
+    });
+}
+
+
 /*function bindCommunexionScopeEvents(){
 	$(".btn-decommunecter").off().click(function(){
 		activateGlobalCommunexion(false);
@@ -177,7 +227,7 @@ function initFreedomInterface(){
 }
 
 var timeout;
-function startSearch(isFirst){
+function startNewsSearch(isFirst){
 	//Modif SBAR
 	//$(".my-main-container").off();
 	//if(liveScopeType == "global"){

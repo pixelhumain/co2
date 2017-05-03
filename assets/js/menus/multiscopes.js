@@ -363,8 +363,12 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 			$.cookie('regionNameCommunexion',   regionNameCommunexion,  { expires: 365, path: location.pathname });
 			$.cookie('countryCommunexion',   	countryCommunexion,  	{ expires: 365, path: location.pathname });
 		}else{
-			if(actionOnSetGlobalScope == "filter")
-				startSearch(0, indexStepInit, searchCallback);
+			if(actionOnSetGlobalScope == "filter"){
+				if(location.hash.indexOf("#live") > 0)
+                	startNewsSearch(true);
+            	else
+					startSearch(0, indexStepInit, searchCallback);
+			}
 		}
 		//rebuildSearchScopeInput();
 		//activateGlobalCommunexion(true);

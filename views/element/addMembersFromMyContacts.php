@@ -248,7 +248,7 @@
 <script type="text/javascript">
 var elementType = "<?php echo $type; ?>";
 var elementId = "<?php echo $parentId; ?>"
-var myContactsMembers = getFloopContacts(); //""; <?php //echo json_encode($myContacts) ?>
+var myContactsMembers = $.extend( true, {}, myContacts );
 var listContact = new Array();
 var newMemberInCommunity = false;
 
@@ -261,18 +261,17 @@ if(elementType != "<?php echo Event::COLLECTION ?>")
 var members = <?php echo json_encode(@$members) ?>;
 
 var addLinkDynForm = {
-		"inputType" : "scope",
-  		"title1" : trad["Add members ..."],
-  		"title2" : trad["Among my contacts ..."],
-  		"title3" : trad["Others ..."],
-  		"btnCancelTitle" : trad["Close"],
-  		"btnSaveTitle" : trad["Add this contacts"],
-  		"btnResetTitle" : trad["Cancel all"],
-
-        "values" : myContactsMembers,
-        "mainTitle" : trad["Invite your contacts"],
-        "labelBtnOpenModal" : "<span class='text-dark'><i class='fa fa-group'></i> "+trad["Select among my contacts"]+"</span>",
-        "contactTypes" : contactTypes
+		inputType : "scope",
+  		title1 : trad["Add members ..."],
+  		title2 : trad["Among my contacts ..."],
+  		title3 : trad["Others ..."],
+  		btnCancelTitle : trad["Close"],
+  		btnSaveTitle : trad["Add this contacts"],
+  		btnResetTitle : trad["Cancel all"],
+        values : myContactsMembers,
+        mainTitle : trad["Invite your contacts"],
+        labelBtnOpenModal : "<span class='text-dark'><i class='fa fa-group'></i> "+trad["Select among my contacts"]+"</span>",
+        contactTypes : contactTypes
 };
 
 var addLinkSearchMode = "contacts";
@@ -545,7 +544,7 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 										if(typeof value != "undefined"){
 											var cp = (typeof value.address != "undefined" && typeof value.address.postalCode != "undefined") ? value.address.postalCode : typeof value.cp != "undefined" ? value.cp : "";
 											var city = (typeof value.address != "undefined" && typeof value.address.addressLocality != "undefined") ? value.address.addressLocality : "";
-											var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl+'/'+moduleId+ value.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
+											var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl+'/'+ value.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
 											var name =  typeof value.name != "undefined" ? value.name : 
 														typeof value.username != "undefined" ? value.username : "";
 											//mylog.log("data contact +++++++++++ "); mylog.dir(value);

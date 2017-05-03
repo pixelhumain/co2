@@ -4,7 +4,6 @@
 	font-size: 14px !important;
 	text-transform: none !important;
 	border:none !important;
-	border-right:1px solid rgba(255, 255, 255, 0.5) !important;
 	margin:0px !important;
 	border-radius: 0px !important;
 	float: left;
@@ -39,6 +38,16 @@
 .littleActions{
 	padding-top: 10px !important;
 	padding-bottom: 20px !important; 
+}
+.no-border-right{
+	border-right: inherit;
+}
+.blockUsername{
+	position: absolute;
+	bottom: 3px;
+	left: 3px;
+	right: 3px;
+	background-color: rgba(0, 0, 0, 0.2);
 }
 </style>
 <?php
@@ -118,12 +127,12 @@
 		}
 	}
 ?>
-<!--
+
 <?php if ($elementType!= Person::COLLECTION && $elementId!=Yii::app()->session["userId"]){ ?>
 <a href="javascript:collection.add2fav('<?php echo $elementType ?>','<?php echo $elementId ?>')"  
-	class="btn-o menu-linksBtn"><i class="fa fa-star"></i> <?php echo Yii::t("common","Favorites"); ?></a>
+	class="btn-o menu-linksBtn no-border-right"><i class="fa fa-star"></i> <?php echo Yii::t("common","Favorites"); ?></a>
 <?php } ?>
-<ul class="nav navbar-nav pull-right">
+<!--<ul class="nav navbar-nav pull-right">
 	<li class="dropdown">
 		<a href="#" class="dropdown-toggle littleActions" data-toggle="dropdown">
 			<span class="fa fa-ellipsis-v pull-left"></span>
@@ -141,11 +150,10 @@
 			<!--<li><a href="#">Video Call <i class="fa fa-video-camera"></i></a></li>
 			<li><a href="#">Poke <i class="fa fa-hand-o-right"></i></a></li>
 			<li><a href="#">Report <i class="fa fa-bug"></i></a></li>
-			<li><a href="#">Block <i class="fa fa-lock"></i></a></li>- ->
+			<li><a href="#">Block <i class="fa fa-lock"></i></a></li>
 		</ul>
 	</li>
-</ul>	
--->	    
+</ul>	  -->
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		$('ul.nav li.dropdown').hover(function() {

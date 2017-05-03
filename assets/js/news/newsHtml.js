@@ -752,7 +752,12 @@ function checkAndCutLongString(text,limitLength,idNews){
 		allText=text;
 		text=text.substring(0,limitLength);
 		if(limitLength==500){
-			text += "<span class='removeReadNews'> ...<br><a href='javascript:;' onclick='blankNews(\""+idNews+"\")'>Lire la suite</a></span><div class='allText' style='display:none;'>"+allText+"</div>";
+			text += "<span class='removeReadNews'> ...<br>"+
+						"<a href='#page.type.news.id."+idNews+"' class='btn btn-xs btn-default margin-top-10' target='_blank'>"+
+							"Lire la suite"+
+						"</a>"+
+					"</span>"+
+					"<div class='allText' style='display:none;'>"+allText+"</div>";
 		}else{
 			text += " ..."
 		}

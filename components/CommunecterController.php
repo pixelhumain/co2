@@ -142,6 +142,7 @@ class CommunecterController extends Controller
     "city"=> array(
       "index"               => array("href" => "/ph/communecter/city/index", "public" => true),
       "detail"              => array("href" => "/ph/communecter/city/detail", "public" => true),
+      "detailforminmap"     => array("href" => "/ph/communecter/city/detailforminmap", "public" => true),
       "dashboard"           => array("href" => "/ph/communecter/city/dashboard", "public" => true), 
       "directory"           => array("href" => "/ph/communecter/city/directory", "public" => true, 
                                      "title"=>"City Directory", "subTitle"=>"Find Local Actors and Actions : People, Organizations, Events"),

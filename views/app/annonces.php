@@ -385,7 +385,7 @@ function initFreedomInterface(){
 	});
 
 	$("#btn-create-classified").click(function(){
-		 elementLib.openForm('classified');
+		 dyFObj.openForm('classified');
 	});
 
 	initFormImages();

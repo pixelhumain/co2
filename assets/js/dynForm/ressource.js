@@ -36,13 +36,13 @@ dynForm = {
 		    }
 	    },
 	    beforeBuild : function(){
-	    	elementLib.setMongoId('ressource');
+	    	dyFObj.setMongoId('ressource');
 	    },
 		afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
-		    	elementLib.closeForm();	
+		    	dyFObj.closeForm();	
 		    	urlCtrl.loadByHash( location.hash );
 		    }
 	    },
@@ -83,12 +83,12 @@ dynForm = {
 	            		$("#ajaxFormModal #section").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
 						//$(".sectionBtn:not(.active)").hide();
 						
-						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
+						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
 						$(".sectionBtntagList").hide();
 	            	});
 	            }
             },
-            section : typeObjLib.inputHidden(),
+            section : dyFInputs.inputHidden(),
 	        typeBtn :{
                 label : "Type de ressource ? ",
 	            inputType : "tagList",
@@ -102,7 +102,7 @@ dynForm = {
 	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
 	            		$("#ajaxFormModal #type").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
 	            		
-	            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a>  "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+"</h4>" );
+	            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a>  "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+"</h4>" );
 	            		$(".typeBtntagList").hide();
 
 	            		//$(".typeBtn:not(.active)").hide();
@@ -127,31 +127,31 @@ dynForm = {
 		            		$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
 		            		//$(".subtypeBtn:not(.active)").hide();
 
-		            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+" > "+$(".subtypeBtn.active").data('tag')+"</h4>" );
+		            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+" > "+$(".subtypeBtn.active").data('tag')+"</h4>" );
 		            		$(".subtypeSectioncustom").hide();
 						});
 	            	});
 	            }
             },
-            type : typeObjLib.inputHidden(),
+            type : dyFInputs.inputHidden(),
             subtypeSection : {
                 inputType : "custom",
                 html:"<div class='subtypeSection'></div>"
             },
-            subtype : typeObjLib.inputHidden(),
-            name : typeObjLib.name("ressource"),
-	        image : typeObjLib.image( "#ressource.detail.id."+uploadObj.id ),
-            description : typeObjLib.textarea("Description", "..."),
-            location : typeObjLib.location,
-            tags :typeObjLib.tags(),
+            subtype : dyFInputs.inputHidden(),
+            name : dyFInputs.name("ressource"),
+	        image : dyFInputs.image( "#ressource.detail.id."+uploadObj.id ),
+            description : dyFInputs.textarea("Description", "..."),
+            location : dyFInputs.location,
+            tags :dyFInputs.tags(),
             formshowers : {
             	label : "En détails",
                 inputType : "custom",
                 html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
             },
-            urls : typeObjLib.urlsOptionnel,
-            parentId : typeObjLib.inputHidden(),
-            parentType : typeObjLib.inputHidden(),
+            urls : dyFInputs.urlsOptionnel,
+            parentId : dyFInputs.inputHidden(),
+            parentType : dyFInputs.inputHidden(),
 	    }
 	}
 };

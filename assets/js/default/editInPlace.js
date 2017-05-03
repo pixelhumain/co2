@@ -451,7 +451,8 @@ function bindAboutPodElement() {
 						},
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){shortDescriptionHeader
+							if(data.result && data.resultGoods.result){
+								$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
 								$(".contentInformation #shortDescriptionAboutEdit").html(data.resultGoods.values.shortDescription);
 								$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
 								$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));

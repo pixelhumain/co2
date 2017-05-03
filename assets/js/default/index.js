@@ -569,6 +569,7 @@ function selectScopeLevelCommunexion(level){
 	if(typeof startSearch == "function")
 	startSearch();
 }
+
 function setCookies(path){ mylog.log("setCookies", path);
 	//if(false){
 		$.cookie('inseeCommunexion',   	inseeCommunexion,  	{ expires: 365, path: path });
@@ -580,5 +581,26 @@ function setCookies(path){ mylog.log("setCookies", path);
 			$.cookie('nbCpbyInseeCommunexion',   	nbCpbyInseeCommunexion,  	{ expires: 365, path: path });
 			$.cookie('cityInseeCommunexion',   	cityInseeCommunexion,  	{ expires: 365, path: path });
 		}
+
+
+		// TODO 
+
+		/*
+
+		CO2.php
+		breadcrum_communexion.php
+
+		$communexion["state"] = true; Mettre a false si romve addresse
+
+
+		Si communexionLevel == cpCommunexion
+			communexionType = "cp"
+		Sinon 
+			communexionType = "city"
+		*/
+		$.cookie('communexionType', communexion.currentLevel, { expires: 365, path: location.pathname });
+        $.cookie('communexionValue', communexion.currentValue, { expires: 365, path: location.pathname });
+        $.cookie('communexionName', communexion.currentName, { expires: 365, path: location.pathname });
+        $.cookie('communexionLevel', communexion.levelMinCommunexion, { expires: 365, path: location.pathname });
 	//}
 }

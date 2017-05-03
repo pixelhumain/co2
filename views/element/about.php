@@ -270,6 +270,43 @@
 </div>
 
 <div class="no-ing col-lg-4 col-md-12 col-sm-12">
+<?php if($type==Event::COLLECTION || $type==Project::COLLECTION){ ?>
+		<div id="socialAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding shadow2">
+			<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
+				<h4 class="panel-title text-dark pull-left"> 
+					<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common","When"); ?>
+				</h4>
+				<?php if($edit==true || $openEdition==true ){?>
+					<button class="btn-update-network btn btn-default letter-blue pull-right tooltips" 
+						data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update network") ?>">
+						<b><i class="fa fa-pencil"></i></b>
+					</button>
+				<?php } ?>
+			</div>
+			<div class="panel-body no-padding">
+				<?php if($type==Event::COLLECTION){ ?> 
+				<div class="col-md-12 col-sm-12 col-xs-12 contentInformation padding-10">
+					<span><?php echo Yii::t("common","All day")?> : </span> 
+					<span id="allDayAbout" class="" >
+						<?php echo (isset($element["allDay"]) ? Yii::t("common","Yes") : Yii::t("common","No") ); ?>
+					</span>
+				</div>
+				<?php } ?>
+
+					<div id="divStartDate" class="col-md-12 col-sm-12 col-xs-12 contentInformation padding-10">
+						<span><?php echo Yii::t("common","FromDate") ?> </span><span id="startDateAbout" class="" ><?php echo (isset($element["startDate"]) ? $element["startDate"] : "" ); ?></span>
+					</div>
+					<div id="divEndDate"  class="col-md-12 col-sm-12 col-xs-12 contentInformation padding-10">
+						<span><?php echo Yii::t("common","To") ?></span> <span id="endDateAbout" class=""><?php echo (isset($element["endDate"]) ? $element["endDate"] : "" ); ?></span> 
+					</div>
+					<div id="divNoDate" class="col-md-12 col-sm-12 col-xs-12 contentInformation padding-10">
+						<span>Pas de date</span>
+					</div>
+				
+			</div>	
+	    </div>  
+	<?php } ?>
+
 	<div id="adressesAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding shadow2">
 		<div class="panel-heading border-light padding-15" style="background-color: #dee2e680;">
 			<h4 class="panel-title text-dark"> 
@@ -421,7 +458,14 @@
 
 
 <script type="text/javascript">
-	
+
+	var formatDateView = "DD MMMM YYYY à HH:mm" ;
+	var formatDatedynForm = "DD/MM/YYYY HH:mm" ;
+	if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php echo Project::COLLECTION; ?>" ) {
+		formatDateView = "DD MMMM YYYY" ;
+		formatDatedynForm = "DD/MM/YYYY" ;
+	}
+
 	jQuery(document).ready(function() {
 		bindDynFormEditable();
 		initDate();
@@ -527,11 +571,29 @@
 	});
 
 	function initDate() {//DD/mm/YYYY hh:mm
-		formatDateView = "DD MMMM YYYY" ;
+		moment.locale('fr');
+		if( typeof contextData.startDate != "undefined" && contextData.startDate != "" ){
+			$("#divStartDate").removeClass("hidden");
+			$("#divNoDate").addClass("hidden");
+		}
+		else{
+			$("#divStartDate").addClass("hidden");
+			$("#divNoDate").removeClass("hidden");
+		}
+
+		if( typeof contextData.endDate != "undefined" && contextData.endDate != "" )
+			$("#divEndDate").removeClass("hidden");
+		else
+			$("#divEndDate").addClass("hidden");
+
+
 		if($("#startDateAbout").html() != "")
 	    	$("#startDateAbout").html(moment($("#startDateAbout").html()).local().format(formatDateView));
 	    if($("#endDateAbout").html() != "")
 	    	$("#endDateAbout").html(moment($("#endDateAbout").html()).local().format(formatDateView));
+
+	    if($("#birthDate").html() != "")
+	    	$("#birthDate").html(moment($("#birthDate").html()).local().format("DD/MM/YYYY"));
 	    $('#dateTimezone').attr('data-original-title', "Fuseau horaire : GMT " + moment().local().format("Z"));
 	}
 

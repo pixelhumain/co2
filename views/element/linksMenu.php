@@ -4,7 +4,6 @@
 	font-size: 14px !important;
 	text-transform: none !important;
 	border:none !important;
-	border-right:1px solid rgba(255, 255, 255, 0.5) !important;
 	margin:0px !important;
 	border-radius: 0px !important;
 	float: left;

@@ -79,8 +79,8 @@ var formInMap = {
 		}
 
 		Sig.markerFindPlace.on('dragend', function(){
-			NE_lat = Sig.markerFindPlace.getLatLng().lat;
-			NE_lng = Sig.markerFindPlace.getLatLng().lng;
+			formInMap.NE_lat = Sig.markerFindPlace.getLatLng().lat;
+			formInMap.NE_lng = Sig.markerFindPlace.getLatLng().lng;
 			Sig.markerFindPlace.openPopup();
 		});
 

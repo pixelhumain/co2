@@ -414,8 +414,8 @@
 	var contextData = <?php echo json_encode(Element::getElementForJS(@$element, @$type)); ?>;
 
     var params = <?php echo json_encode(@$params); ?>;
-    //console.log("params", params);
-
+    var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false ); 
+	var openEdition = ( ( '<?php echo (@$openEdition == true); ?>' == "1") ? true : false );
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
     var liveScopeType = "";

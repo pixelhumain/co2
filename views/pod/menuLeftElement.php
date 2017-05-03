@@ -36,7 +36,6 @@
 	$cssAnsScriptFilesModule = array(
 		//Data helper
 		'/js/dataHelpers.js',
-		//'/js/postalCode.js',
 		'/js/activityHistory.js',
 		'/js/news/index.js',
 		'/js/default/editInPlace.js',

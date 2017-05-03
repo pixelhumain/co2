@@ -105,7 +105,6 @@ class CO2 {
             $communexion["currentLevel"] =  false;
             $communexion["currentName"] = false;
             $communexion["currentValue"] =  false;
-           
         }
 
         

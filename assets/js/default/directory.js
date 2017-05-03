@@ -1268,7 +1268,8 @@ var directory = {
     // URL DIRECTORY PANEL
     // ********************************
     urlPanelHtml : function(params, key){
-		if(directory.dirLog) mylog.log("-----------urlPanelHtml", params);
+		//if(directory.dirLog) 
+      mylog.log("-----------urlPanelHtml", params, key);
 		str = "";  
 		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10'>";
 			str += "<div class='searchEntity'>";

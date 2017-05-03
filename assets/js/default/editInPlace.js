@@ -602,7 +602,7 @@ function bindAboutPodElement() {
 
 
 	function updateUrl(ind, title, url, type) {
-		//var url = urls[ind] ;
+		mylog.log("updateUrl", ind, title, url, type)
 		var params = {
 			title : title,
 			type : type,

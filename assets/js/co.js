@@ -2173,9 +2173,8 @@ var dyFObj = {
     		$('#btn-submit-form').show();
     	else 
     		$('#btn-submit-form').hide();
-//tmp
-$('#btn-submit-form').show();
-
+		//tmp
+		$('#btn-submit-form').show();
     },
 	formatData : function (formData, collection,ctrl) { 
 		mylog.warn("----------- formatData",formData, collection,ctrl);

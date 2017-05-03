@@ -20,17 +20,16 @@
 
 $params = CO2::getThemeParams();
  
-    $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
-    
-    $isAjaxR=(Yii::app()->request->isAjaxRequest);
-    if($isAjaxR){
+$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+  
+$isAjaxR=(Yii::app()->request->isAjaxRequest);
+if(!$isAjaxR){
 
-
-    //header + menu
-    $this->renderPartial($layoutPath.'header', 
-                        array(  "layoutPath"=>$layoutPath ,
-                                "page" => "thing") );
-    }
+  //header + menu
+  $this->renderPartial($layoutPath.'header', 
+                    array(  "layoutPath"=>$layoutPath ,
+                            "page" => "thing") );
+}
 ?>
 
 <!--?php
@@ -52,24 +51,66 @@ $params = CO2::getThemeParams();
 //(Page en chantier)
 
 $communexion = CO2::getCommunexionCookies();
-//var_dump($communexion);
-        if($communexion["state"] == false){
-          //$postalCode= " " ;
-        }else{
-         $depName = (!empty($communexion['values.depName'])) ? $communexion['values.depName']: null;
-         //$cityName = (!empty($communexion['values.cityName']))? $communexion['values.cityName']: null;
-         $regionName = (!empty($communexion['values.regionName'])) ? $communexion['values.regionName'] : null;
-         //$cp = (!empty($communexion['values.cityCp.value']))? $cp = $communexion['values.cityCp.value']: null;
 
-         $devices = Thing::getSCKDevicesByLocality(null, $regionName, $depName); // $cityName, $cp, null);
-        }
+$sckInfo=array('boardIdFiltered'=>0,'sensorsCheck'=>false, 'sckSensors'=>false, 'notInCODB'=>array());
+
+$devices  = array();
+$lastesRecordsCODB=array();
+
+$country=null;  $regionName=null; $depName=null;  $cityName = null;
+
+if($communexion["state"] == false){
+  $country='RE';
+}else {
+  $depName  = (!empty($communexion['values']['depName']))   ?   $communexion['values']['depName']: null;
+  $cityName = (!empty($communexion['values']['cityName']))  ?   $communexion['values']['cityName']: null;
+  $regionName=(!empty($communexion['values']['regionName']))?   $communexion['values']['regionName']: null;
+}
+
+$devices = Thing::getSCKDevicesByLocality($country, $regionName, $depName, $cityName, null, null);
+
+foreach ($devices as $id => $device) {
+  
+  if($device['boardId']=='[FILTERED]'){
+    $sckInfo['boardIdFiltered']++;
+  }else{
+    //TODO ou Amelioration : Envoyé un message resultat pour signaler les boardId (device) qui ne sont pas dans la base communecter (pas double push)
+    $lastesRecordsCODB[$device['deviceId']] = Thing::getLastestRecordsInDB($device['boardId']);
+    if(empty($lastesRecordsCODB[$device['deviceId']])){
+      $sckInfo['notInCODB'][$device['deviceId']]=true;
+    }else{
+
+      # code ...
+
+    }
+    if(isset($device['sensor'])&& $sensorsCheck==false){
+        $sckInfo['sensorsCheck']=true;
+        $sensors = $device['sensors'];
+    }
+
+  }
+  
+}
+$sckMdataSensors = (Thing::getSCKDeviceMdata(Thing::COLLECTION_METADATA,array("type"=>'sckSensors')));
+
+$sckInfo['sckSensors']=settype($sckMdataSensors,'array' );
+
+if(!empty($sensors)){
+  var_dump($sensors);
+
+  foreach ($sensors as $sensor) {
+
+    # code...
+  }
+
+}
+
+
 /*
 if(!empty($devices)){$deviceId = reset($devices)['deviceId'];
 
   }
   */
-if(empty($device) || !isset($device)){$device=0; }
-
 
 //$sckdevicemdata = Thing::getSCKDeviceMdata(Thing::COLLECTION,array("type"=>Thing::SCK_TYPE, "deviceId"=> strval($deviceId)));
 //print_r($sckdevicemdata);
@@ -93,28 +134,30 @@ $sensors = $lReadingsAPI["sensors"];//
 //print_r($sensors2);
 //$sensors= $lastReadDevice["data"]["sensors"];
 //print_r($sensors);
+// var_dump($devices);
+echo '<br>';
+var_dump($lastesRecordsCODB);
+echo '<br>';
+//var_dump($sensors);
+
 
 ?>
 
-<div class="col-sm-12 col-md-10 container">
-  <section class="col-sm-12 row">
-	 <h3 class="text-blue">Dernières mesures Smart-Citizen-Kits</h3>
-	 <form class="form-inline"> 
-        <div class="form-group col-sm-12">
-          <!--label for="select" class="col-xs-12 col-sm-3 control-label">Choix des device</label>
-          <select class="control-select col-xs-11 col-sm-8" name="device" id="deviceSelector" multiple="multiple">
-          	<option value="0" id="opemptydevice">Aucun Smartcitizen ici</option>
-
-            <option value="4162">4162 (boardId)</option>
-            <option value="4151">4151 (boardId)</option>
-          </select-->
-          <!--button class="pull-right btn btn-default" type='button' id="btn-refresh"><i class="fa fa-refresh"></i></button-->
-        </div>
-     </form>
-
+<div class="col-sm-12 col-md-12 container">
+  <div class="col-sm-12 row">
+	 <h4 class="text-blue col-md-3 col-sm-3 col-xs-12" id='h-title'>
+   <i class='fa ' id='h-title-icon' ></i> <span class='hidden-xs' id='h-title-text'> </span></h4>
+	 <div class="col-md-3 col-sm-4 col-xs-12" id='h-sensorunit'> 
+    <span class="col-md-6 col-xs-7" id='h-sensor'> </span> <span class="col-md-4 col-xs-5" id='h-unit'> </span> 
+        
    </div>
-  </section>
+   <div class="col-md-6 col-sm-7 hidden-xs" class="h-desc">
+   </div>
+  </div>
+
+  </div>
 </div>
+
 <section class="col-sm-12 row" id="sectiontable">
   <div class="col-md-10 table-responsive">
 	<table id="tableau" class="table table-bordered table-striped table-condensed">
@@ -146,7 +189,7 @@ $sensors = $lReadingsAPI["sensors"];//
 
 <script>
 
-
+var urlReq="<?php echo Thing::URL_API_SC ?>/devices/";
 
 function getDeviceReadings(){
   
@@ -203,7 +246,7 @@ function getDeviceReadings(){
     initKInterface({"affixTop":0});
 
     //$("#deviceSelector").append("option")
-    devices =  <?php echo json_encode($devices); ?>;
+   // devices =  <?php // echo json_encode($devices); ?>;
     
 
 

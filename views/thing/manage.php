@@ -62,7 +62,27 @@
 		<p> </p>
 		<form name="formboardid" class="form-inline col-sm-12" id="formboardid" action="javascript:updateSCKBoardId()"> 
 		  
-		<!-- ici le code manquant-->
+		<?php 
+	      foreach ($devicesMongoRes as $mdataDevice) {
+	      if($mdataDevice["boardId"]=="[FILTERED]"){
+	          //$devices[]=$mdataDevice; 
+	          ?>
+	        <div class='form-group col-sm-12' role='group'>
+	          <span id='<?php echo $mdataDevice['_id'] ?>'> 
+	            <label class="col-sm-6 col-xs-12">Le kit 
+	              <a href='https://smartcitizen.me/kits/<?php echo $mdataDevice["deviceId"];?>' 
+	              target='_blank'> <?php echo $mdataDevice["name"];?> (deviceId : <?php echo $mdataDevice["deviceId"];?>)</a>
+	            </label>
+	            <span class="col-sm-6 col-xs-12" id=" ">
+	            <input type='text' class="deviceids form-control" name='mac-sck-<?php echo $mdataDevice['deviceId']?>' id='mac-sck-<?php echo $mdataDevice['deviceId']?>' value="">  
+	            <input class='idMdataDevice hide' name='idmeta<?php echo $mdataDevice['deviceId']?>' value='<?php echo $mdataDevice['_id'] ?>' readonly>
+	            <i class="fa fa-check hidden "> </i>
+	            </span>
+	          </span>
+	        </div>
+	        <?php } 
+	      }?>
+     	  <input id="btnudpateboardid" type="submit" value="Mettre à jour">
 
 		</form>
 	</div>
@@ -76,7 +96,7 @@
 
 <script>
 
-patternMacId = /([0-9a-f]{2}[:-]){5}([0-9a-f]{2})$/;
+patternMacId = /([0-9a-f]{2}[:-]){5}([0-9a-f]{2})/;
 /*
 $.each( userConnected.collections, function (col,list) { 
 	        		btns[col] = { 

@@ -1007,6 +1007,7 @@ function getAjaxFiche(url, breadcrumLevel){
     urlHash=urlHash+"&isFirst=1";
   }
   url= "/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
+
   $("#repertory").hide( 700 );
   $(".main-menu-left").hide( 700 );
   $("#ficheInfoDetail").show( 700 );
@@ -1015,11 +1016,15 @@ function getAjaxFiche(url, breadcrumLevel){
     message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
   });
 
-  getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?network='+networkParams, function(){
+  var urlNet = baseUrl+'/'+moduleId+"/app"+url+'?network='+networkParams ;
+
+  mylog.log("urlNet", baseUrl, moduleId, url);
+
+  getAjax('#ficheInfoDetail', urlNet, function(){
     $.unblockUI();
-    console.log(contextData);
+    //mylog.log(contextData);
     //Construct breadcrumb
-    if(breadcrumLevel != false){
+    if(breadcrumLevel != false && typeof contextData != "undefined" && contextData != null){
       $html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
       $("#breadcrum").append($html);
 		}

@@ -3066,7 +3066,7 @@ var typeObj = {
 	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
 	"NGO" : {sameAs:"organization"},
 	"Association" : {sameAs:"organization"},
-	"GovernmentOrganization" : {col:"organizations",color: "green",icon: "circle-o"},
+	"GovernmentOrganization" : {sameAs:"organization"},
 	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
 	"events" : {sameAs:"event"},
@@ -3182,7 +3182,8 @@ var keyboardNav = {
 		"117" : function(){ console.clear();urlCtrl.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {
-		"13" : function(){$('#openModal').modal('hide');dyFObj.openForm('addElement')},//enter : add elements
+		"13" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show');//dyFObj.openForm('addElement')
+						  },//enter : add elements
 		"61" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show')},//= : add elements
 		"65" : function(){$('#openModal').modal('hide');dyFObj.openForm('action')},//a : actions
 		"66" : function(){$('#openModal').modal('hide'); smallMenu.destination = "#openModal"; smallMenu.openAjax(baseUrl+'/'+moduleId+'/collections/list','Mes Favoris','fa-star','yellow') },//b best : favoris
@@ -3485,7 +3486,39 @@ function initKInterface(params){ console.log("initKInterface");
             $('.navbar-toggle:visible').click();
     });
 
-   $(".logout").click(function(){
+    $(".openModalSelectCreate").click(function(){
+        $("#selectCreate").modal("show");
+        showFloopDrawer(false);
+        showNotif(false);
+    });
+
+    $(".btn-open-floopdrawer").click(function(){ 
+        showNotif(false);
+        $("#dropdown-user").removeClass("open");
+        showFloopDrawer(true);
+    });
+    $("#floopDrawerDirectory").mouseleave(function(){ 
+        showFloopDrawer(false);
+    });
+
+
+    $(".btn-show-mainmenu").click(function(){
+        showFloopDrawer(false);
+        showNotif(false);
+        $("#dropdown-user").addClass("open");
+        //clearTimeout(timerCloseDropdownUser);
+    });
+    
+    $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
+        $("#dropdown-user").removeClass("open");
+    });
+
+    $("header .container").mouseenter(function(){ 
+    	$("#dropdown-user").removeClass("open");
+    });
+
+
+    $(".logout").click(function(){
     	window.location.href=baseUrl+"/co2/person/logout";
     });
 
@@ -3531,19 +3564,6 @@ function initKInterface(params){ console.log("initKInterface");
     });
 
     bindLBHLinks();
-
-    $(".btn-show-mainmenu").click(function(){
-        $("#dropdown-user").addClass("open");
-        //clearTimeout(timerCloseDropdownUser);
-    });
-    
-    $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
-        $("#dropdown-user").removeClass("open");
-    });
-
-    $("header .container").mouseenter(function(){ 
-    	$("#dropdown-user").removeClass("open");
-    });
 
     $(".tooltips").tooltip();
     

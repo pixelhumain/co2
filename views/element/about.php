@@ -567,12 +567,14 @@
 										//MenuSmall
 										$(".hide-communected").show();
 										$(".visible-communected").hide();
+
+										$(".communecter-btn").removeClass("hidden");
 										//COOKIES
-										$.cookie('communexionActivated', false, { expires: 365, path: location.pathname });
+										/*$.cookie('communexionActivated', false, { expires: 365, path: location.pathname });
 										$.cookie('communexionType', false, { expires: 365, path: location.pathname });
     									$.cookie('communexionValue', false, { expires: 365, path: location.pathname });
     									$.cookie('communexionName', false, { expires: 365, path: location.pathname });
-    									$.cookie('communexionLevel', false, { expires: 365, path: location.pathname });
+    									$.cookie('communexionLevel', false, { expires: 365, path: location.pathname });*/
 									}
 									toastr.success(data.msg);
 									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id);

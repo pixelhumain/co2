@@ -52,7 +52,11 @@
       setTitle("", "", text);
       
 		  initCommentsTools(new Array(news));
-	  	$(".timeline_text").html(news.text);
+      if(typeof news.mentions != "undefined")
+        text = addMentionInText(news.text,news.mentions);
+	    else text = news.text;
+    	
+      $(".timeline_text").html(text);
 	  	showCommentsTools(news["_id"]['$id']);
 	});
 

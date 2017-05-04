@@ -328,6 +328,44 @@
                                 </div>
                             </div>
                         </a>
+                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="GovernmentOrganization" data-type="organization"
+                            date-target="#modalMainMenu" data-dismiss="modal">
+                            <div class="modal-body text-center">
+                                <h2 class="text-green"><i class="fa fa-university padding-bottom-10"></i><br>
+                                    <span class="font-light"> Service public</span>
+                                </h2>
+                                
+                                <div class="col-md-12 no-padding text-center hidden-xs">
+                                    <h5>Découvrez tout vos droits et ceux qui les portes
+                                        <small class="hidden-xs" style="text-transform: none;"><br>
+                                            Les services public portent nos droits.<br>
+                                            On ne sait jamais quand on pourrait en avoir,<br> 
+                                            c'est important tout retrouver sur notre plateforme citoyenne.
+                                        </small>
+                                    </h5>
+                                    <button class="btn btn-default text-green margin-bottom-15"><i class="fa fa-plus-circle"></i> Créer ma page</button>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" 
+                            data-ktype="event" data-type="event"
+                            date-target="#modalMainMenu" data-dismiss="modal">
+                            <div class="modal-body text-center">
+                                <h2 class="text-orange"><i class="fa fa-calendar padding-bottom-10"></i><br>
+                                    <span class="font-light"> Évènement</span>
+                                </h2>
+                                
+                                <div class="col-md-12 no-padding text-center hidden-xs">
+                                    <h5>Ce sont les petites initiatives<br>qui donnent naissance aux projets hors du commun
+                                        <small class="hidden-xs" style="text-transform: none;"><br>
+                                            N'hésitez jamais à faire connaître vos évènement.<br>
+                                            Communiquez les massivement  !
+                                        </small>
+                                    </h5>
+                                    <button class="btn btn-default text-orange margin-bottom-15"><i class="fa fa-plus-circle"></i> Créer ma page</button>
+                                </div>
+                            </div>
+                        </a>
                         <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" 
                             data-ktype="project" data-type="project"
                             date-target="#modalMainMenu" data-dismiss="modal">
@@ -526,7 +564,7 @@ function initTypeSearch(typeInit){
 
     if(typeInit == "all") {
         searchType = ["persons", "organizations", "projects"];
-        if($('#main-search-bar').val() != "") searchType.push("cities");
+        //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
 
         indexStepInit = 30;
     }

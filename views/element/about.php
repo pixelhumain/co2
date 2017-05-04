@@ -79,6 +79,11 @@
 	.descriptiontextarea label{
 		margin-left:10px;
 	}
+	@media (min-width: 1200px) {
+		.no-ing{
+			padding-left: 15px !important;
+		}
+	}
 </style>
 
 <div class='col-md-12 margin-bottom-15'>
@@ -100,19 +105,27 @@
 	</div>
 	<div class="panel-body no-padding">
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-			<div class="col-md-3 col-sm-3 col-xs-3 labelAbout padding-10">
+			<div class="col-md-3 col-sm-3 col-xs-3 hidden-xs labelAbout padding-10">
 				<span><i class="fa fa-quote-left"></i></span> <?php echo Yii::t("common", "Short description") ?>
 			</div>
-			<div id="shortDescriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10"><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?></div>
+			<div id="shortDescriptionAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+				<span class="visible-xs col-xs-12 no-padding">
+					<i class="fa fa-quote-left"></i> <?php echo Yii::t("common", "Short description") ?>:
+				</span><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+			</div>
 			<span id="shortDescriptionAboutEdit" name="shortDescriptionAboutEdit"  class="col-xs-12 hidden" ><?php echo (!empty($element["shortDescription"])) ? $element["shortDescription"] : ""; ?></span>
 		</div>
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-			<div class="col-md-3 col-sm-3 col-xs-3 labelAbout padding-10">
+			<div class="col-md-3 col-sm-3 col-xs-3 hidden-xs labelAbout padding-10">
 				<span><i class="fa fa-paragraph"></i></span> <?php echo Yii::t("common", "Description") ?>
 			</div>
-			<div id="descriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10" 
+			<div class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10" 
 					style="word-wrap: break-word; overflow:hidden;">
-				<?php echo (@$element["description"]) ? $element["description"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+				<span class="visible-xs col-xs-12 no-padding">
+					<i class="fa fa-paragraph"></i> <?php echo Yii::t("common", "Description") ?>:
+				</span>
+				<div id="descriptionAbout"><?php echo (@$element["description"]) ? $element["description"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+				</div>
 			</div>
 		</div>
 		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="col-xs-12 hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
@@ -133,40 +146,40 @@
 	</div>
 	<div class="panel-body no-padding">
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-			<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+			<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Name") ?>
 			</div>
-			<div id="nameAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-				<?php echo $element["name"]; ?>
+			<div id="nameAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+				<span class="visible-xs pull-left margin-right-5"><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Name") ?> :</span> <?php echo $element["name"]; ?>
 			</div>
 		</div>
 		<?php if($type==Project::COLLECTION && @$avancement){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-cycle"></i></span> <?php echo Yii::t("project","Project maturity"); ?>
 				</div>
-				<div  id="avancementAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-					<?php echo (@$avancement) ? Yii::t("project",$avancement) : '<i>'.Yii::t("common","Not specified").'</i>' ?>
+				<div  id="avancementAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-cycle"></i> <?php echo Yii::t("project","Project maturity"); ?> :</span><?php echo (@$avancement) ? Yii::t("project",$avancement) : '<i>'.Yii::t("common","Not specified").'</i>' ?>
 				</div>
 			</div>
 		<?php } ?>
 
 		<?php if($type==Person::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-user-secret"></i></span> <?php echo Yii::t("common","Username"); ?>
 				</div>
-				<div id="usernameAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-					<?php echo (@$element["username"]) ? $element["username"] : '<i>'.Yii::t("common","Not specified").'</i>' ?>
+				<div id="usernameAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-user-secret"></i></span> <?php echo Yii::t("common","Username"); ?> :</span><?php echo (@$element["username"]) ? $element["username"] : '<i>'.Yii::t("common","Not specified").'</i>' ?>
 				</div>
 			</div>
 		<?php if(Preference::showPreference($element, $type, "birthDate", Yii::app()->session["userId"])){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-birthday-cake"></i></span> <?php echo Yii::t("person","Birth date"); ?>
 				</div>
-				<div id="birthDateAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-					<?php echo (@$element["birthDate"]) ? date("d/m/Y", strtotime($element["birthDate"]))  : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+				<div id="birthDateAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-birthday-cake"></i> <?php echo Yii::t("person","Birth date"); ?> :</span><?php echo (@$element["birthDate"]) ? date("d/m/Y", strtotime($element["birthDate"]))  : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 				</div>
 			</div>
 		<?php }
@@ -175,11 +188,11 @@
 
  		if($type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
  				<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-					<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+					<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 						<span><i class="fa fa-angle-right"></i></span><?php echo Yii::t("common", "Type"); ?> 
 					</div>
-					<div id="typeAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-						<?php echo (@$element["type"]) ? Yii::t("common", $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+					<div id="typeAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span><?php echo (@$element["type"]) ? Yii::t("common", $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 					</div>
 				</div>
 		<?php }
@@ -188,20 +201,20 @@
 				Preference::showPreference($element, $type, "email", Yii::app()->session["userId"]) ) || 
 		  	$type!=Person::COLLECTION ) { ?>
 		  	<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-envelope"></i></span> <?php echo Yii::t("common","E-mail"); ?>
 				</div>
-				<div id="emailAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-					<?php echo (@$element["email"]) ? $element["email"]  : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+				<div id="emailAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-envelope"></i> <?php echo Yii::t("common","E-mail"); ?> :</span><?php echo (@$element["email"]) ? $element["email"]  : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 				</div>
 			</div>
 		<?php } ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-desktop"></i></span> <?php echo Yii::t("common","Website URL"); ?>
 				</div>
-				<div id="webAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-
+				<div id="webAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-desktop"></i> <?php echo Yii::t("common","Website URL"); ?> :</span>
 				<?php 
 					if(@$element["url"]){
 						//If there is no http:// in the url
@@ -213,11 +226,11 @@
 			</div>
 		<?php  if($type==Organization::COLLECTION || $type==Person::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-phone"></i></span> <?php echo Yii::t("common","Phone"); ?>
 				</div>
-				<div id="fixeAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-					<?php
+				<div id="fixeAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-phone"></i> <?php echo Yii::t("common","Phone"); ?> :</span><?php
 						$fixe = '<i>'.Yii::t("common","Not specified").'</i>';
 						if( !empty($element["telephone"]["fixe"]))
 							$fixe = ArrayHelper::arrayToString($element["telephone"]["fixe"]);
@@ -227,10 +240,13 @@
 				</div>
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-mobile"></i></span> <?php echo Yii::t("common","Mobile"); ?>
 				</div>
-				<div id="mobileAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
+				<div id="mobileAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5">
+						<i class="fa fa-mobile"></i> <?php echo Yii::t("common","Mobile"); ?> :
+					</span>
 					<?php
 						$mobile = '<i>'.Yii::t("common","Not specified").'</i>';
 						if( !empty($element["telephone"]["mobile"]))
@@ -240,10 +256,13 @@
 				</div>
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-fax"></i></span> <?php echo Yii::t("common","Fax"); ?>
 				</div>
-				<div id="faxAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
+				<div id="faxAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5">
+						<i class="fa fa-fax"></i> <?php echo Yii::t("common","Fax"); ?> :
+					</span>
 					<?php
 						$fax = '<i>'.Yii::t("common","Not specified").'</i>';
 						if( !empty($element["telephone"]["fax"]) )
@@ -255,10 +274,13 @@
 		<?php } ?>
 
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-desktop"></i></span> <?php echo Yii::t("common","Tags"); ?>
 				</div>
-				<div id="tagsAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
+				<div id="tagsAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5">
+						<i class="fa fa-desktop"></i> <?php echo Yii::t("common","Tags"); ?> :
+					</span>
 					<?php 	if(!empty($element["tags"])){
 								foreach ($element["tags"]  as $key => $tag) { 
 		        					echo '<span class="badge letter-red bg-white">'.$tag.'</span>';
@@ -272,7 +294,7 @@
 	
 </div>
 
-<div class="no-ing col-lg-4 col-md-12 col-sm-12">
+<div class="no-ing col-lg-4 col-md-12 col-sm-12 col-xs-12 no-padding">
 <?php if($type==Event::COLLECTION || $type==Project::COLLECTION){ ?>
 		<div id="socialAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding shadow2">
 			<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">

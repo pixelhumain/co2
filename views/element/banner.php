@@ -121,7 +121,7 @@
 	
 	<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation">	
     	<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
-			<h4 class="text-left padding-left-15 pull-left no-margin" id="main-name-element">
+			<h4 class="text-left padding-left-15 pull-left no-margin">
 				<span id="nameHeader">
 					<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left">
 						<!--<i class="fa fa-<?php echo $icon; ?>"></i>--> 

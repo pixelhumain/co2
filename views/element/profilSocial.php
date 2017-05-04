@@ -192,11 +192,12 @@
 		<div class="btn-group pull-right">
 
 		  	
-			<?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
+			<?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ /* ?>
 			  <button type="button" class="btn btn-default bold">
 			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
 			  </button>
-			<?php } ?>
+			<?php */ } ?>
+
 			  <?php if($element["_id"] == Yii::app()->session["userId"] && 
 			  			Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
 			  <button type="button" class="btn btn-default bold" id="btn-superadmin">

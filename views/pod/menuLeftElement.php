@@ -131,20 +131,70 @@
 		width: 25px;
 		text-align: center;
 	}
+	.containInvitation .btn-accept{
+		border-radius:3px !important;
+		color: white;
+		background-color: #71CE4E;
+		padding: 5px 10px;
+		margin-top: 5px;
+	}
+	.containInvitation .btn-accept:hover{
+		color: #71CE4E !important;
+		background-color: white;
+		border: 1px solid #71CE4E;
+	}
+	.containInvitation .btn-accept i{
+		font-size:12px;
+	}
+	.containInvitation .btn-refuse{
+		border-radius:3px !important;
+		color: white;
+		background-color: #E33551;
+		padding: 5px 10px;
+	margin-top: 5px;
+	}
+	.containInvitation .btn-refuse:hover{
+		color: #E33551 !important;
+		background-color: white;
+		border: 1px solid #E33551;
+	}
+	.containInvitation .btn-refuse i{
+		font-size:12px;
+	}
 </style>
-
+<?php
+		if(@$invitedMe && !empty($invitedMe)){
+			$inviteRefuse="Refuse";
+			$inviteAccept="Accept";
+			$tooltipAccept="Join this ".Element::getControlerByCollection($type);
+			if ($type == Event::COLLECTION){
+				$inviteRefuse="Not interested";
+				$inviteAccept="I go";
+			}
+			echo "<div class='no-padding containInvitation' style='border-bottom: 1px solid lightgray;margin-bottom:10px !important;'>".
+				"<div class='padding-5'>".
+					"<a href='#page.type.".Person::COLLECTION.".id.".$invitedMe["invitorId"]."' class='lbh'>".$invitedMe["invitorName"]."</a><span class='text-dark'> vous a invité: <br/>".
+					'<a class="btn btn-xs tooltips btn-accept" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.(string)$element["_id"].'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Link::IS_INVITING.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
+						'<i class="fa fa-check "></i> '.Yii::t("common",$inviteAccept).
+					'</a>'.
+					'<a class="btn btn-xs tooltips btn-refuse margin-left-5" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.(string)$element["_id"].'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\'attendees\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
+						'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
+					'</a>'.
+				"</div>".
+			"</div>";
+		}
+	?>
 
 <ul id="subsubMenuLeft">
 
     <?php if(@$element["tags"]){  ?>
-	<li class="">
+	<!--<li class="">
 		<?php foreach ($element["tags"] as $key => $tag) { ?>
 		<span class="badge letter-red bg-white"><?php echo $tag; ?></span>
 		<?php } ?>
 	</li>
-	<li><br><hr></li>
+	<li><br><hr></li>-->
 	<?php } ?>
-
 	
 	<?php if ( $type != Person::COLLECTION && ($edit==true || $openEdition==true ) ){ 
 			if ($type == Event::COLLECTION){ 

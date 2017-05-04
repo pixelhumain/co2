@@ -273,7 +273,7 @@
 	</div>
 
 	
-	<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial" style="margin-top:65px;">  
+	<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial" style="margin-top:40px;">  
 		
 	    <?php 
 	    	$params = array(    "element" => @$element, 
@@ -281,6 +281,7 @@
                                 "edit" => @$edit,
                                 //"countries" => @$countries,
                                 //"controller" => $controller,
+                                "invitedMe" => @$invitedMe,
                                 "openEdition" => $openEdition,
                                 //"countStrongLinks" => $countStrongLinks,
                                 //"countLowLinks" => @$countLowLinks,
@@ -296,46 +297,6 @@
 	    	$this->renderPartial('../pod/menuLeftElement', $params ); 
 	    ?>
 	</div>
-
-	<?php if(@$invitedMe && !empty($invitedMe)){ ?>
-	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-9 divInvited">
-		<?php 
-			
-			$inviteRefuse="Refuse";
-			$inviteAccept="Accept";
-			$tooltipAccept="Join this ".Element::getControlerByCollection($type);
-			if ($type == Project::COLLECTION){ 
-				$tooltips = "La communauté du projet";
-			}
-			else if ($type == Organization::COLLECTION){
-				$tooltips = "La communauté de l'organisation";							
-			}
-			else if ($type == Event::COLLECTION){
-				$parentRedirect = "event";
-				$inviteRefuse="Not interested";
-				$inviteAccept="I go";
-				$tooltipAccept="Go to the event";
-				$tooltips = "La communauté de l'évènement";						
-			}
-			else if ($type == Person::COLLECTION){
-				$tooltips = "La communauté de cette personne";						
-			}
-			else if ($type == Place::COLLECTION){
-				$tooltips = "La communauté de ce lieu";						
-			}
-
-
-			echo "<a href='#page.type.".Person::COLLECTION.".id.".$invitedMe["invitorId"]."' class='lbh text-purple'>".$invitedMe["invitorName"]."</a><span class='text-dark'> vous a invité : ".
-				'<a class="btn btn-xs btn-success tooltips" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.$id.'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Link::IS_INVITING.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
-					'<i class="fa fa-check "></i> '.Yii::t("common",$inviteAccept).
-				'</a> '.
-				' <a class="btn btn-xs btn-danger tooltips" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.$id.'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\'attendees\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
-					'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
-				'</a>';
-		?>
-	</div>
-	<?php } ?>
-
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding" style="margin-top: -10px;">
 		
 		<?php   $classDescH=""; 

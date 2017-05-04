@@ -169,7 +169,7 @@
 		  		<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper"); ?>
 		  </button>
 
-		  <?php if((@Yii::app()->session["userId"] && $isLinked==true) || @Yii::app()->session["userId"] == $element["_id"]){ ?>
+		  <?php if(@Yii::app()->session["userId"] == $element["_id"]){ ?>
 		  <button type="button" class="btn btn-default bold" id="btn-start-notifications">
 		  	<i class="fa fa-bell"></i> 
 		  	<span class="hidden-xs hidden-sm">
@@ -192,13 +192,12 @@
 		<div class="btn-group pull-right">
 
 		  	
-			<?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
-			  <button type="button" class="btn btn-default bold">
+			<?php if($element["_id"] == Yii::app()->session["userId"] && 
+			  			Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
+			    <button type="button" class="btn btn-default bold lbh" data-hash="#admin">
 			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
 			  </button>
-			<?php } ?>
-			  <?php if($element["_id"] == Yii::app()->session["userId"] && 
-			  			Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
+			
 			  <button type="button" class="btn btn-default bold" id="btn-superadmin">
 			  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
 			  </button>

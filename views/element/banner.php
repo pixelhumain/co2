@@ -46,11 +46,41 @@
 	    border-radius: 3px;
 	    margin-right: 2px;
 	}
-
+	.header-address{
+		font-size: 14px;
+		padding-left: 5px;
+	}
 </style>
 
 <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-left no-padding" id="col-banner">
-        	
+    <div class="section-badges pull-right">
+			<div class="no-padding">
+				<?php 
+				if(!empty($element["badges"])){?>
+					<?php if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
+						<div class="badgePH pull-left" data-title="OPENDATA">
+							<span class="pull-left tooltips" data-toggle="tooltip" data-placement="bottom" title="Les données sont ouvertes." style="font-size: 15px; line-height: 30px;">
+								<span class="fa-stack opendata" style="width:20px">
+									<i class="fa fa-database main fa-stack-1x" style="font-size: 20px;"></i>
+									<i class="fa fa-share-alt  mainTop fa-stack-1x text-white" style="text-shadow: 0px 0px 2px rgb(15,15,15);"></i>
+								</span> 
+								<?php echo Yii::t("common","Open data") ?>
+							</span>
+						</div>
+				<?php } 
+				} ?>
+			</div>
+
+			<div class="no-padding">
+				<?php 
+				if ($openEdition == true) { ?>
+					<div class="badgePH pull-left" data-title="OPENEDITION">
+						<span class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="Tous les utilisateurs ont la possibilité de participer / modifier les informations." style="font-size: 15px; line-height: 30px;"><i class="fa fa-creative-commons" style="font-size: 20px;"></i> <?php echo Yii::t("common","Open edition") ?></span>
+					</div>
+				<?php } ?>
+				
+			</div>
+    </div>
 	<?php if($type==Event::COLLECTION){ ?>
 	<div class="col-xs-9 col-sm-6 col-md-5 col-lg-5 margin-right-15 margin-top-25 section-date pull-right">
 		<?php if(@$element['parent']){ ?>
@@ -59,15 +89,6 @@
 			<?php } ?>
 			ORGANISEUR : <a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" class="lbh"> <i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> <?php  echo $element['organizer']['name']; ?></a>
 		</div>
-	</div>
-	<?php } ?>
-	
-	<?php if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"]){ ?>
-	<div class="margin-right-15 margin-top-25 section-address pull-right">
-		<?php 
-			echo @$element["address"]["postalCode"] ? "<i class='fa fa-map-marker'></i> ".$element["address"]["postalCode"] : "";
-			echo @$element["address"]["postalCode"] && @$element["address"]["addressLocality"] ? ", ".$element["address"]["addressLocality"] : "";
-		?>
 	</div>
 	<?php } ?>
 
@@ -106,12 +127,44 @@
 						<!--<i class="fa fa-<?php echo $icon; ?>"></i>--> 
 					</div>
 					<div class="name-header pull-left"><?php echo @$element["name"]; ?></div>
-				</span>	
+				</span>
+				<?php if(($type==Organization::COLLECTION || $type==Event::COLLECTION) && @$element["type"]){ ?>
+					<span id="typeHeader" class="margin-left-10 pull-left">
+						<i class="fa fa-x fa-angle-right pull-left"></i>
+						<div class="type-header pull-left">
+					 	<?php echo Yii::t("common", $element["type"]) ?>
+					 	</div>
+					</span>
+			<?php } ?>
 			</h4>					
 		</div>
+		<?php 
+		if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]){ ?>
+			<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 pull-right margin-bottom-5">
+			<?php if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"]){ ?>
+				<div class="header-address badge letter-white bg-red margin-left-5 pull-left">
+					<?php 
+						echo @$element["address"]["postalCode"] ? "<i class='fa fa-map-marker'></i> ".$element["address"]["postalCode"] : "";
+						echo @$element["address"]["postalCode"] && @$element["address"]["addressLocality"] ? ", ".$element["address"]["addressLocality"] : "";
+					?>
+				</div>
+				<?php if(@$element["tags"]){ ?>
+					<span class="margin-right-10 margin-left-10 text-white pull-left" style="font-size: 10px;line-height: 20px;"><i class="fa fa-circle-o"></i></span>
+				<?php } ?>
+			<?php } 
+			if(@$element["tags"]){ ?>
+				<div class="header-tags pull-left">
+				<?php foreach ($element["tags"] as $key => $tag) { ?>
+					<span class="badge letter-red bg-white" style="vertical-align: top;">#<?php echo $tag; ?></span>
+					<?php } ?>
+				</li>
+				</div>
+			<?php } ?>
+			</div>
+		<?php } ?>
+		
 		<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 pull-right">
-			<span class="pull-left text-white" id="shortDescriptionHeader">
-				<?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
+			<span class="pull-left text-white" id="shortDescriptionHeader"><?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
 			</span>	
 		</div>
 		<div class="pull-right col-sm-3 col-md-3" style=""></div>		

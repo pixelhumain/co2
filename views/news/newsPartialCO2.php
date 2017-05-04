@@ -113,17 +113,30 @@
       initCommentsTools(news);
       $.each(news, function(e,v){
         if(typeof v.object != "undefined"){ 
-          if($("#newsActivityStream"+v.object.id).length>0){
-            //$("#news-list li#news"+v.object.id).remove();
-            console.log("CLEAN", "#news-list li#activityStream"+e, v.object.id);
-            $("#news-list li#news"+v.object.id).html("CLEAN");
-            //$("#news-list li#activityStream"+v.object.id).html("CLEAN");
-            //$("#news-list li#activityStream"+e).html("CLEAN");
+          
+
+          
+          if($(".newsActivityStream"+v.object.id).length>0){
+           // console.log("CLEAN2", "#news-list li#news"+v.object.id, "len", 
+           //   $(".newsActivityStream"+v.object.id).length, $("#news"+v.object.id).length);
+
+            $("#news"+v.object.id).remove();
+            //$("#news"+v.object.id).append("CLEAN2");//console.log("xxzz", v);
           }
+
+          $(".newsActivityStream"+v.object.id).each(function(b, ob){
+            if(b>0) {
+              var parent = $(ob).parent().parent().parent();
+              parent.remove();
+              //parent.append("CLEAN1");
+              //console.log("CLEAN1", ".newsActivityStream"+v.object.id);
+            }
+          });
+
 
           if(v.object.type != "news"){
             var html = directory.showResultsDirectoryHtml(new Array(v.object), v.object.type);
-            $("#newsActivityStream"+v.object.id).html(html);
+            $(".newsActivityStream"+v.object.id).html(html);
           }
         }
       });

@@ -100,6 +100,10 @@ function showNotif(show){
     	markAllAsSeen(false,"");
     }
 	else 	 $('#notificationPanelSearch').hide("fast");
+
+	
+	$("#dropdown-user").removeClass("open");
+    showFloopDrawer(false);
 }
 
 function checkScroll(){

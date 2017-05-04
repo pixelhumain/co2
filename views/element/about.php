@@ -275,11 +275,11 @@
 
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
-					<span><i class="fa fa-desktop"></i></span> <?php echo Yii::t("common","Tags"); ?>
+					<span><i class="fa fa-hashtag"></i></span> <?php echo Yii::t("common","Tags"); ?>
 				</div>
 				<div id="tagsAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
 					<span class="visible-xs pull-left margin-right-5">
-						<i class="fa fa-desktop"></i> <?php echo Yii::t("common","Tags"); ?> :
+						<i class="fa fa-hashtag"></i> <?php echo Yii::t("common","Tags"); ?> :
 					</span>
 					<?php 	if(!empty($element["tags"])){
 								foreach ($element["tags"]  as $key => $tag) { 

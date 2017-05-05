@@ -1,5 +1,6 @@
 <style>
 .menu-linksBtn{
+	text-shadow: 1px 1px 1px rgb(0,0,0);
 	padding: 5px 10px !important;
 	font-size: 14px !important;
 	text-transform: none !important;
@@ -47,7 +48,7 @@
 	bottom: 3px;
 	left: 3px;
 	right: 3px;
-	background-color: rgba(0, 0, 0, 0.2);
+	background-color: rgba(0, 0, 0, 0.5);
 }
 </style>
 <?php
@@ -81,7 +82,11 @@
 				<i class="fa fa-link"></i> <?php echo Yii::t("common","Be {what}", array("{what}"=> Yii::t("common",$linksBtn["connectAs"]))); ?> 
 			</a>
 <?php 
-		} else {
+		} else if(@$linksBtn[Link::IS_INVITING]){ ?>
+			<a href="javascript:;" class="btn-o menu-linksBtn"> 
+				<i class="fa fa-send"></i> <?php echo Yii::t("common","Inviting")."..."; ?> 
+			</a>
+		<?php } else {
 			$labelBtn=Yii::t("common","Already {what}", array("{what}"=>Yii::t("common",$linksBtn["connectAs"])));
 			if(@$linksBtn[Link::TO_BE_VALIDATED]){
 				$labelBtn=Yii::t("common","Waiting");

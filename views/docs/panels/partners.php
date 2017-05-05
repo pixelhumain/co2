@@ -85,6 +85,12 @@ var keywords = [
 	},
 	{
 		"icon" : "fa-users",
+		"title": "FABLAB BARCELONA",
+		"link" : "http://fablabbcn.org/",
+		"img" : "http://www.makertour.fr/wp-content/uploads/2016/07/Fablab-Barcelona-Logo.png",
+	},	
+	{
+		"icon" : "fa-users",
 		"title": "La Myne",
 		"link" : "http://www.lamyne.org",
 		"img" : "http://www.lamyne.org/img/lamyne-logo.png",

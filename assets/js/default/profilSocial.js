@@ -6,18 +6,33 @@ function initDateHeaderPage(params){
 function getCroppingModal(){
 	
 }
-
+function menuLeftShow(){
+	if($("#menu-left-container").hasClass("hidden-xs"))
+		$("#menu-left-container").removeClass("hidden-xs");
+	else
+		$("#menu-left-container").addClass("hidden-xs");
+}
+function responsiveMenuLeft(menuTop){
+	if($(window).width()<768)
+		menuLeftShow();
+	if(menuTop){
+		if($(window).width()>768)
+			$(".ssmla").removeClass('active');
+	}
+}
 function bindButtonMenu(){
 	$("#btn-superadmin").click(function(){
 		loadAdminDashboard();
 	});
-	$("#btn-start-newsstream").click(function(){
-		$(".ssmla").removeClass('active');
+	$(".btn-start-newsstream").click(function(){
+		//$(".ssmla").removeClass('active');
+		responsiveMenuLeft(true);
 		history.pushState(null, "New Title", hashUrlPage);
 		loadNewsStream(true);
 	});
-	$("#btn-start-mystream").click(function(){
-		$(".ssmla").removeClass('active');
+	$(".btn-start-mystream").click(function(){
+		//$(".ssmla").removeClass('active');
+		responsiveMenuLeft(true);
 		if(contextData.type=="citoyens" && userId==contextData.id)
 			history.pushState(null, "New Title", hashUrlPage+".view.mystream");
 		else
@@ -25,26 +40,31 @@ function bindButtonMenu(){
 		loadNewsStream(false);
 	});
 	$("#btn-start-gallery").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.gallery");
 		//location.search="?view=gallery";
 		loadGallery();
 	});
-	$("#btn-start-notifications").click(function(){
-		$(".ssmla").removeClass('active');
+	$(".btn-start-notifications").click(function(){
+		//$(".ssmla").removeClass('active');
+		responsiveMenuLeft(true);
 		history.pushState(null, "New Title", hashUrlPage+".view.notifications");
 		//location.search="?view=notifications";
 		loadNotifications();
 	});
 	$(".btn-start-chart").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.chart");
 		loadChart();
 	});
 	$("#btn-show-activity").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.history");
 		loadHistoryActivity();
 	});
 	
 	$(".open-confidentiality").click(function(){
+		responsiveMenuLeft();
 		mylog.log("open-confidentiality");
 		toogleNotif(false);
 		smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").val()));
@@ -52,39 +72,46 @@ function bindButtonMenu(){
 	});
 
 	$(".open-directory").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.directory");
 		loadDirectory();
 	});
 	$(".edit-chart").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.editChart");
 		loadEditChart();
 	});
 	$(".btn-open-collection").click(function(){
+		responsiveMenuLeft();
 		toogleNotif(false);
 	});
 
 	$("#btn-start-detail").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.detail");
 		loadDetail();
 	});
 
 	$(".load-data-directory").click(function(){
-			var dataName = $(this).data("type-dir");
-			console.log(".load-data-directory", dataName);
-			loadDataDirectory(dataName, $(this).data("icon"));
-		});
+		responsiveMenuLeft();
+		var dataName = $(this).data("type-dir");
+		console.log(".load-data-directory", dataName);
+		loadDataDirectory(dataName, $(this).data("icon"));
+	});
 		
-		$("#subsubMenuLeft a").click(function(){
-			$("#subsubMenuLeft a").removeClass("active");
-			$(this).addClass("active");
-		});
+	$("#subsubMenuLeft a").click(function(){
+		$("#subsubMenuLeft a").removeClass("active");
+		$(this).addClass("active");
+	});
 
-		$("#btn-start-urls").click(function(){
+	$("#btn-start-urls").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.urls");
 		loadUrls();
 	});
 
-		$("#btn-start-contacts").click(function(){
+	$("#btn-start-contacts").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.contacts");
 		loadContacts();
 	});

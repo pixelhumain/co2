@@ -604,6 +604,10 @@ var urlCtrl = {
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
 	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
 	map : function (hash) {
+		if(typeof hash == "undefined") return { hash : "#",
+												type : "",
+												id : ""
+											};
 		hashT = hash.split('.');
 		return {
 			hash : hash,

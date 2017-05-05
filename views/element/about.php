@@ -301,7 +301,7 @@
 					<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common","When"); ?>
 				</h4>
 				<?php if($edit==true || $openEdition==true ){?>
-					<button class="btn-update-network btn btn-default letter-blue pull-right tooltips" 
+					<button class="btn-update-when btn btn-default letter-blue pull-right tooltips" 
 						data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update network") ?>">
 						<b><i class="fa fa-pencil"></i></b>
 					</button>

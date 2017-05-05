@@ -656,7 +656,7 @@ function bindAboutPodElement() {
 			fieldsElement.concat(fieldsEvent);
 		
 		$.each(fieldsElement, function(key, val){ 
-			if($("#ajaxFormModal #"+val).length && notNull(element[val]) && $("#ajaxFormModal #"+val).val() == element[val])
+			if($("#ajaxFormModal #"+val).length && notNull(contextData[val]) && $("#ajaxFormModal #"+val).val() == contextData[val])
 				$("#ajaxFormModal #"+val).remove();
 		});
 	}

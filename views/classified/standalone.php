@@ -1,6 +1,6 @@
 
 <div class="row bg-white">
-	<div class="margin-top-70 margin-bottom-50">
+	<div class="margin-top-70 margin-bottom-50 inline-block">
 		<div class="col-xs-12">
 			<h3 class="text-center"><i class="fa fa-bullhorn"></i> Annonce</h3><hr>
 		</div>

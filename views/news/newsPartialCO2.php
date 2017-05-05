@@ -5,6 +5,7 @@
     margin-top:20px;
     max-height: 450px !important;
     margin-bottom: 15px !important;
+    min-height: unset !important;
 }
 .timeline-body .btn-share{
   display: none;

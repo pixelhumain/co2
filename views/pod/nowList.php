@@ -74,11 +74,29 @@
     .el-nowList:hover .elemt_date {
         width: 80%;
     }
+
+    .previewLocalActivity{
+        width: 600px;
+        float: right;
+        background-color: white;
+        padding:25px 15px;
+        margin-bottom:5px;
+        -webkit-box-shadow: 0px 0px 15px -5px rgba(0,0,0,0.6);
+        -moz-box-shadow: 0px 0px 15px -5px rgba(0,0,0,0.6);
+        box-shadow: 0px 0px 15px -5px rgba(0,0,0,0.6);
+    }
+
+    .previewLocalActivity .searchEntityContainer{
+        width:100%!important;
+        margin:0px!important;
+        min-height: 170px !important;
+        max-height: unset !important;
+    }
 </style>
 <div class="col-xs-12 no-padding col-nowList"  data-tpl="pod.nowList">
-    <h6 class="no-margin">
-        <i class="fa fa-cog letter-red"></i> <i class="fa fa-bell"></i> Mon activité locale<br>
-        <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope; ?></small>
+    <h6 class="no-margin" style="font-size:11px">
+        <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> Mon activité locale<br>
+         <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope; ?></small>
     </h6>
     <hr class="margin-5 margin-bottom-10">
 
@@ -96,7 +114,7 @@
         //echo "class:".$class;
     ?>
     <a href="#page.type.<?php echo @$v["type"] ?>.id.<?php echo (@$v["_id"]?$v["_id"]:@$v["id"]); ?>"  
-        class="lbh shadow2 border-left-<?php echo @$specs["text-color"]?> margin-bottom-5 col-xs-12 no-padding el-nowList <?php echo $type?> <?php echo $class; ?>">
+        class="shadow2 border-left-<?php echo @$specs["text-color"]?> margin-bottom-5 col-xs-12 no-padding el-nowList <?php echo $type?> <?php echo $class; ?>" data-type="<?php echo @$v["type"] ?>" data-id="<?php echo (@$v["_id"]?$v["_id"]:@$v["id"]); ?>">
         <div class="pull-left no-padding cnt-img">
             <div class="add2fav elemt_img">
                 <img src="<?php echo $img ?>" class="pull-left">
@@ -130,17 +148,50 @@
             <?php //if( @$v["creator"] ) echo ">".Element::getLink( Person::COLLECTION,@$v["creator"] )?>
         </div>
     </a>
+    <div class="previewLocalActivity hidden" id='localActivity<?php echo @$v["type"] ?><?php echo (@$v["_id"]?$v["_id"]:@$v["id"]); ?>'>
+    </div>
     <?php } ?>
 </div>
 
 <script type="text/javascript" >
 
+var localActivity = <?php echo json_encode($result); ?>;
+
 jQuery(document).ready(function() {
+    console.log("LIVENOW", localActivity);
     // $(".elemt_date").each(function() {
     //     var elementTime = $(this).children(".dateTZ").attr("data-time");
     //     var elementDate = new Date(elementTime * 1000);
     //     $(this).children(".dateTZ").text(elementDate.toLocaleDateString() + " " + elementDate.toLocaleTimeString());
     // });
+
+    $(".el-nowList").click(function(){
+        var id = $(this).data("id");
+        var type = $(this).data("type");
+        console.log("try open", id, type);
+        var data = "";
+        $.each(localActivity, function(key, value){
+            if(key==id) data = value;
+        });
+        console.log("try open data", data);
+
+        $(".el-nowList").removeClass("hidden");
+        $(this).addClass("hidden");
+        $(".previewLocalActivity").addClass("hidden");
+        $(".previewLocalActivity").html("");
+        
+        if(data!=""){
+            var html = directory.showResultsDirectoryHtml(new Array(data), type);
+            console.log("try open html", html);
+            $("#localActivity"+type+id).html(html);
+            $("#localActivity"+type+id).removeClass("hidden");
+            $("#localActivity"+type+id).off().mouseleave(function(){
+                $(this).addClass("hidden").html("");
+            });
+            bindLBHLinks();
+            initBtnShare();
+        }
+    });
 });
 
 function enlargeNow() { 

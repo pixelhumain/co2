@@ -565,7 +565,7 @@ var directory = {
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
 
         if(params.itemType!="city" && (typeof params.size == "undefined" || params.size == "max"))
-          str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
+          str += "<a href='"+params.hash+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
 
         str += "<div class='padding-10 informations'>";
 
@@ -578,7 +578,7 @@ var directory = {
             
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.hash+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
               str += "</div>";
             }
           }  
@@ -593,13 +593,13 @@ var directory = {
                       "</a>";
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
                       iconFaReply + params.name + 
                    "</a>";
             
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+"' data-id='" + params.dataId + "' class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "' class='entityLocality lbh add2fav'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -686,7 +686,7 @@ var directory = {
               
               if(typeof params.size == "undefined" || params.size == "max"){
                 str += "<div class='entityCenter no-padding'>";
-                str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                str +=    "<a href='"+params.hash+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
                 str += "</div>";
               }
             }  
@@ -726,9 +726,9 @@ var directory = {
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
         
         if(params.type == "citoyens") 
-            params.url += '.viewer.' + userId;
+            params.hash += '.viewer.' + userId;
         if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.url+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
+          str += "<a href='"+params.hash+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
 
         str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
@@ -736,12 +736,12 @@ var directory = {
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.url+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.hash+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
               str += "</div>";
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
                       iconFaReply + params.name + 
                    "</a>";   
 
@@ -753,7 +753,7 @@ var directory = {
                                  
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+"' data-id='" + params.dataId + "'  class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality lbh add2fav'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -886,7 +886,7 @@ var directory = {
          
           var thisLocality = "";
           if(typeof params.fullLocality != "undefined" && params.fullLocality != "" && params.fullLocality != " ")
-               thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
+               thisLocality = "<a href='"+params.hash+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
                                 "<i class='fa fa-home'></i> " + params.fullLocality + 
                               "</a>";
           //else thisLocality = "<br>";
@@ -990,9 +990,9 @@ var directory = {
                   "</div>";
         
         if(params.type == "citoyens") 
-            params.url += '.viewer.' + userId;
+            params.hash += '.viewer.' + userId;
         if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.url+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + 
+          str += "<a href='"+params.hash+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + 
                     params.imgProfil + 
                   "</a>";
 
@@ -1002,7 +1002,7 @@ var directory = {
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.url+"' class='lbhp add2fav' data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.hash+"' class='lbhp add2fav' data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
               str += "</div>";
             }
 
@@ -1022,7 +1022,7 @@ var directory = {
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbhp add2fav'  data-modalshow='"+params.id+"'>"+
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbhp add2fav'  data-modalshow='"+params.id+"'>"+
                       iconFaReply + params.name + 
                    "</a>";  
        
@@ -1034,7 +1034,7 @@ var directory = {
 
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
+                 thisLocality = "<a href='"+params.hash+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             //else thisLocality = "<br>";
@@ -1128,7 +1128,7 @@ var directory = {
         //if(params.imgProfil.indexOf("fa-2x")<0)
         var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" sous évennement(s)"  : "" ; 
         str += '<div class="col-xs-12 col-sm-4 col-md-4 no-padding">'+
-                  '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+  
+                  '<a href="'+params.hash+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+  
                 '</div>';
         
         if(userId != null && userId != "" && params.id != userId){
@@ -1185,7 +1185,7 @@ var directory = {
                   "<i class='fa fa-reply fa-rotate-180'></i> " + typeEvent + thisLocality +
                "</h5>";
 
-        str += "<a href='"+params.url+"' class='entityName text-dark lbh add2fav'>"+
+        str += "<a href='"+params.hash+"' class='entityName text-dark lbh add2fav'>"+
                   params.name + 
                "</a>";
         
@@ -1224,8 +1224,8 @@ var directory = {
                       
                     str += "<div class='entityRight no-padding'>";
                     
-                    //params.url = "#city.detail.insee."+params.insee+".postalCode."+params.cp;           
-                    params.url = ""; //#main-col-search";
+                    //params.hash = "#city.detail.insee."+params.insee+".postalCode."+params.cp;           
+                    params.hash = ""; //#main-col-search";
                     params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
                     params.onclickCp = 'setScopeValue($(this));';
                     params.target = "";
@@ -1287,7 +1287,6 @@ var directory = {
 						str += '</a>';
 					str += '</li>';
 				str += '</ul>';
-
 				str += '<a href="'+params.url+'" target="_blank" class="text-dark tooltips col-xs-8"'+
 						'data-toggle="tooltip" data-placement="top" data-original-title="'+params.url+'" >';
 					str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
@@ -1342,8 +1341,8 @@ var directory = {
     roomsPanelHtml : function(params){
       if(directory.dirLog) mylog.log("-----------roomsPanelHtml");
 
-      if(params.type == "surveys") params.url = "#survey.entry.id."+params.id;
-      else if(params.type == "actions") params.url = "#rooms.action.id."+params.id;
+      if(params.type == "surveys") params.hash = "#survey.entry.id."+params.id;
+      else if(params.type == "actions") params.hash = "#rooms.action.id."+params.id;
    
       str = "";  
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
@@ -1382,7 +1381,7 @@ var directory = {
         }
         var w = (params.startDate != null) ? "8" : "12"
             str += '<div class="col-xs-'+w+'">'+
-                '<a href="'+params.url+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+
+                '<a href="'+params.hash+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+
             '</div>'+
         '</div>';
         
@@ -1397,13 +1396,13 @@ var directory = {
                       "</a>";
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.url+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
                       iconFaReply + params.name + 
                    "</a>";
             
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.url+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.hash+'\' data-id="' + params.dataId + '"' + "  class='entityLocality lbh add2fav'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -1562,11 +1561,11 @@ var directory = {
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
                 //params.url = '#page.type.'+params.type+'.id.' + params.id;
-                params.url = '#page.type.'+params.type+'.id.' + params.id;
+                params.hash = '#page.type.'+params.type+'.id.' + params.id;
                 if(params.type == "poi")    
-                    params.url = '#element.detail.type.poi.id.' + id;
+                    params.hash = '#element.detail.type.poi.id.' + id;
 
-                params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
+                params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';
 
                 params.elTagsList = "";
                 var thisTags = "";

@@ -520,6 +520,7 @@ var formInMap = {
 							// CO2 
 							$("#detailAddress").html(formInMap.seenAddress(locality.address.streetAddress, locality.address.postalCode, locality.address.addressLocality, locality.address.addressCountry, locality.address.codeInsee));
 							$(".cobtn,.whycobtn").hide();
+							$(".communecter-btn").addClass("hidden");
 
 							toastr.success(data.msg);
 							formInMap.initData();
@@ -571,7 +572,10 @@ var formInMap = {
 			cityNameCommunexion = locality.address.addressLocality ;
 			cpCommunexion = locality.address.postalCode ;
 			countryCommunexion = locality.address.addressCountry ;
-			setCookies("/");
+			//setCookies("/");
+			setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
+						  inseeCommunexion, cityNameCommunexion, cpCommunexion, 
+						  regionNameCommunexion, countryCommunexion);
 			formInMap.initData();
 			formInMap.hiddenHtmlMap(false);
 		}
@@ -580,7 +584,7 @@ var formInMap = {
 
 	changeMenuCommunextion : function(locality){
 		//Menu Left
-		$("#btn-geoloc-auto-menu").attr("href", "#city.detail.insee."+locality.address.codeInsee+".postalCode."+locality.address.postalCode);
+		/*$("#btn-geoloc-auto-menu").attr("href", "#city.detail.insee."+locality.address.codeInsee+".postalCode."+locality.address.postalCode);
 		$('#btn-geoloc-auto-menu > span.lbl-btn-menu').html(locality.address.addressLocality);
 		$("#btn-geoloc-auto-menu").attr("onclick", "");
 		$("#btn-geoloc-auto-menu").addClass("lbh");
@@ -593,7 +597,9 @@ var formInMap = {
 		$(".msg-scope-co").html("<i class='fa fa-home'></i> Vous êtes communecté à " + locality.address.addressLocality);
 		//MenuSmall
 		$(".hide-communected").hide();
-		$(".visible-communected").show();
+		$(".visible-communected").show();*/
+
+		
 	},
 
 	initDropdown : function(){ 

@@ -55,7 +55,7 @@
 	$visibleXsLinks="";
 	if(@$linksBtn["followBtn"]){
  		if(@$linksBtn["isFollowing"]){ 
- 			$statusXsMenu=Yii::t("common","You are following {which}",array("{which}"=>Yii::t("common","of this".Element::getControlerByCollection($elementType))));
+ 			$statusXsMenu=Yii::t("common","You are following {which}",array("{which}"=>Yii::t("common","this".Element::getControlerByCollection($elementType))));
  			$visibleXsLinks.='<li class="text-left visible-xs">'.
 				               	'<a href="javascript:;" class="bg-white text-red" '.
 				               		'onclick="disconnectTo(\''.$elementType.'\',\''.$elementId.'\',\''.Yii::app()->session["userId"].'\',\''.Person  ::COLLECTION.'\',\'followers\')">'.

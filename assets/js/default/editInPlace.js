@@ -538,10 +538,9 @@ function bindAboutPodElement() {
 							properties : {
 								block : dyFInputs.inputHidden(),
 								typeElement : dyFInputs.inputHidden(),
-								isUpdate : dyFInputs.inputHidden(true),
-								telegram : dyFInputs.inputText("Votre Speudo Telegram","Votre Speudo Telegram"),
+								isUpdate : dyFInputs.inputHidden(true), 
 								skype : dyFInputs.inputUrl("Lien vers Skype"),
-								gitHub : dyFInputs.inputUrl("Lien vers Git Hub"), 
+								github : dyFInputs.inputUrl("Lien vers Git Hub"), 
 								gpplus : dyFInputs.inputUrl("Lien vers Google Plus"),
 						        twitter : dyFInputs.inputUrl("Lien vers Twitter"),
 						        facebook :  dyFInputs.inputUrl("Lien vers Facebook"),
@@ -549,6 +548,10 @@ function bindAboutPodElement() {
 						}
 					}
 				};
+
+				if(contextData.type == typeObj.person.col ){
+					form.dynForm.jsonSchema.properties.telegram = dyFInputs.inputText("Votre Speudo Telegram","Votre Speudo Telegram");
+				}
 
 				var dataUpdate = {
 					block : "network",

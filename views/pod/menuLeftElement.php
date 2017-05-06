@@ -201,6 +201,7 @@
 			<a href="javascript:" class="letter-green ssmla"  
 				data-toggle="modal" data-target="#selectCreate">
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php echo Yii::t("common", "Create") ?>
+		  	</a>
 		</li>
 		<?php if($type != Person::COLLECTION){
 			if ($type == Event::COLLECTION){ 

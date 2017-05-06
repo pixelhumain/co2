@@ -84,17 +84,6 @@
 			
 		</div>
     </div>
-	<?php if($type==Event::COLLECTION){ ?>
-	<div class="col-xs-9 col-sm-6 col-md-5 col-lg-5 margin-right-15 margin-top-25 section-date pull-right">
-		<div style="font-size: 14px;font-weight: none;">
-			<?php if(@$element['parent']){ ?>
-			PARENT : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/>
-			<?php } ?>
-			ORGANISEUR : <a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" class="lbh"> <i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> <?php  echo $element['organizer']['name']; ?></a>
-		</div>
-	</div>
-	<?php } ?>
-
 	<?php 
 		$thumbAuthor =  @$element['profilImageUrl'] ? 
           Yii::app()->createUrl('/'.@$element['profilImageUrl']) 
@@ -170,6 +159,17 @@
 			<span class="pull-left text-white" id="shortDescriptionHeader"><?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
 			</span>	
 		</div>
+		<?php if($type==Event::COLLECTION){ ?>
+			<div class="section-date pull-right">
+			<div style="font-size: 14px;font-weight: none;">
+			<?php if(@$element['parent']){ ?>
+			<?php echo Yii::t("common","Created by") ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/>
+			<?php } ?>
+			<?php echo Yii::t("common","Organized by") ?> : <a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" class="lbh"> <i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> <?php  echo $element['organizer']['name']; ?></a>
+		</div>
+	</div>
+	<?php } ?>
+
 		<div class="pull-right col-sm-3 col-md-3" style=""></div>		
 	</div>
 </div>

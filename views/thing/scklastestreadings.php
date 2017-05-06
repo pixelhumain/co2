@@ -49,17 +49,18 @@ if(!$isAjaxR){
 ?-->
 <?php
 //(Page en chantier)
-
 $communexion = CO2::getCommunexionCookies();
 
 $sckInfo=array('boardIdFiltered'=>0,'sensorsCheck'=>false, 'sckSensors'=>false, 'notInCODB'=>array());
 
 $devices  = array();
 $lastesRecordsCODB=array();
+$sensors= array();
 
 $country=null;  $regionName=null; $depName=null;  $cityName = null;
 
 if($communexion["state"] == false){
+
   $country='RE';
 }else {
   $depName  = (!empty($communexion['values']['depName']))   ?   $communexion['values']['depName']: null;
@@ -68,6 +69,13 @@ if($communexion["state"] == false){
 }
 
 $devices = Thing::getSCKDevicesByLocality($country, $regionName, $depName, $cityName, null, null);
+// Le type doit etre unique pour getSCKDeviceMdata findOne prend la première ocurrence :
+$sckMdataSensors = (array) (Thing::getSCKDeviceMdata(Thing::COLLECTION_METADATA,array("type"=>"sckSensors")));
+//var_dump($devices);
+//$sckInfo['sckSensors']=settype($sckMdataSensors,'array' );
+//echo '<br>';
+$sckSensors=$sckMdataSensors['sckSensors'];
+$deviceByLocality = array();
 
 foreach ($devices as $id => $device) {
   
@@ -75,36 +83,62 @@ foreach ($devices as $id => $device) {
     $sckInfo['boardIdFiltered']++;
   }else{
     //TODO ou Amelioration : Envoyé un message resultat pour signaler les boardId (device) qui ne sont pas dans la base communecter (pas double push)
-    $lastesRecordsCODB[$device['deviceId']] = Thing::getLastestRecordsInDB($device['boardId']);
-    if(empty($lastesRecordsCODB[$device['deviceId']])){
-      $sckInfo['notInCODB'][$device['deviceId']]=true;
-    }else{
-
-      # code ...
-
-    }
-    if(isset($device['sensor'])&& $sensorsCheck==false){
+    /* TODO : mettre des description de sensor pour différente version de kit 1.1 1.2 ...etc... 
+    * Utiliser device['kit'] pour la version sckSensors et measurement
+    */
+    if(isset($device['sensors']) && !empty($device['sensors']) && $sckInfo['sensorsCheck']==false){
         $sckInfo['sensorsCheck']=true;
         $sensors = $device['sensors'];
+        //$array
+//var_dump($sckSensors);
+        foreach ($sensors as $key => $sensor) {
+          foreach ($sckSensors as $sckSensor) {
+            //var_dump($sckSensor);
+            if($sckSensor['id'] == $sensor['id']){
+              if(!empty($sckSensor['measurement']))
+                $sensors[$key]['measurement']=$sckSensor['measurement']; 
+              break;
+            } 
+          }
+        }
+        //echo '<br>';
+        //var_dump($sensors);
+    }
+
+    if(isset($device['address'])){
+
+      $newDevice= array("deviceId"=>$device['deviceId'],"name"=>$device['name'],"boardId"=>$device['boardId'],
+          "sensors"=>array(),"timestamp"=>$device['timestamp'],"geo"=>$device['geo'],"latestCODB"=>array() ); // TODO ? : ajouter kit ? 
+      $newSensor=array();
+
+      $lastesRecordsCODB[$device['deviceId']] = Thing::getLastestRecordsInDB($device['boardId']);
+      if(empty($lastesRecordsCODB[$device['deviceId']])){
+        $sckInfo['notInCODB'][$device['deviceId']]=true;
+        //unset($lastesRecordsCODB[$device['deviceId']]);
+        //unset($devices[$id]);
+      }else{
+        $newDevice['latestCODB']=$lastesRecordsCODB[$device['deviceId']];
+      }
+//Voir l'utilité :
+      foreach ($device['sensors'] as $key => $nsensor) {
+        $newSensor[$nsensor['id']] = $device['sensors'][$key];
+        unset($newSensor[$nsensor['id']]['id'],$newSensor[$nsensor['id']]['ancestry'],$newSensor[$nsensor['id']]['created_at']);
+        unset($newSensor[$nsensor['id']]['updated_at'], $newSensor[$nsensor['id']]['uuid']);  
+      }
+      $newDevice['sensors']=$newSensor;
+//
+
+      if(isset($device['address']['addressLocality'])){
+        $deviceByLocality[$device['address']['addressLocality']][$id]=$newDevice;
+
+      }else if(isset($device['address']['postalCode'])){
+        $deviceByLocality[$device['address']['postalCode']][$id]=$newDevice;
+      }
     }
 
   }
   
 }
-$sckMdataSensors = (Thing::getSCKDeviceMdata(Thing::COLLECTION_METADATA,array("type"=>'sckSensors')));
-
-$sckInfo['sckSensors']=settype($sckMdataSensors,'array' );
-
-if(!empty($sensors)){
-  var_dump($sensors);
-
-  foreach ($sensors as $sensor) {
-
-    # code...
-  }
-
-}
-
 
 /*
 if(!empty($devices)){$deviceId = reset($devices)['deviceId'];
@@ -129,34 +163,123 @@ $record = Thing::getConvertedRercord($sckdevicemdata["boardId"],true,"2017-02-28
 /*$lReadingsAPI = Thing::getLastedReadViaAPI($device);
 $sensors = $lReadingsAPI["sensors"];//
 */
-
-
-//print_r($sensors2);
 //$sensors= $lastReadDevice["data"]["sensors"];
-//print_r($sensors);
-// var_dump($devices);
-echo '<br>';
-var_dump($lastesRecordsCODB);
-echo '<br>';
-//var_dump($sensors);
 
 
 ?>
 
+
+<style type="text/css">
+  .row-codb{
+    background-color: #edfeed;
+
+  }
+
+</style>
+
 <div class="col-sm-12 col-md-12 container">
-  <div class="col-sm-12 row">
-	 <h4 class="text-blue col-md-3 col-sm-3 col-xs-12" id='h-title'>
-   <i class='fa ' id='h-title-icon' ></i> <span class='hidden-xs' id='h-title-text'> </span></h4>
-	 <div class="col-md-3 col-sm-4 col-xs-12" id='h-sensorunit'> 
-    <span class="col-md-6 col-xs-7" id='h-sensor'> </span> <span class="col-md-4 col-xs-5" id='h-unit'> </span> 
-        
-   </div>
-   <div class="col-md-6 col-sm-7 hidden-xs" class="h-desc">
+
+<?php 
+if(!empty($sensors)){
+  foreach ($sensors as $sensor) {
+    $itemSckSensor=array();
+
+?>
+  <div class="col-sm-12 no-padding no-margin"  id="sensor-<?php echo $sensor['id']?>">
+  <div class="row col-sm-12">
+   <h4 class="text-blue col-md-4 col-sm-4 col-xs-12" id='h-title-<?php echo $sensor['id']?>'>
+   <i class='fa ' id='h-title-icon-<?php echo $sensor['id']?>' ></i> <span class='' id='h-title-text-<?php echo $sensor['id']?>'> <?php echo $sensor['measurement']['name'] ?> </span> </h4>
+   
+   <div class="col-md-8 col-sm-8 hidden-xs" class="h-desc-<?php echo $sensor['id']?>">
+
+   <?php echo $sensor['measurement']['description'] ?>
+
    </div>
   </div>
 
+  <?php 
+  foreach ($deviceByLocality as $locality => $listdevices) {
+  ?>
+  <div class="row col-sm-12 no-padding no-margin">
+  <h5 class="text-green no-padding no-margin">
+    <span class="col-md-3 col-sm-3 col-xs-12">Ville</span>
+    <span class="col-md-4 col-sm-4 col-xs-12">Nom du SCK <span class="hidden-xs"> | Capteur</span></span>
+    <span class="col-md-3 col-sm-3 col-xs-12">Timestamp</span>
+    <span class="col-md-2 col-sm-2 col-xs-12">Valeur (<?php echo $sensor['unit'] ?>)</span>
+    
+  </h5>
+  
   </div>
-</div>
+  <div class="row col-sm-12 no-padding no-margin">
+    
+    <h5 class="col-md-3 col-sm-3 col-xs-12 title-<?php echo $locality ?>"> <?php echo $locality ?> </h5>
+
+    <div class="row col-md-9 col-sm-9 col-xs-12 no-padding no-margin " >
+    <?php 
+    foreach ($listdevices as $ndevice) {
+      ?>
+      <div class="row col-sm-12 col-md-12 no-padding no-margin">
+        <div class="col-sm-5 col-md-5 no-padding no-margin">
+          <h6 class="col-sm-12 col-md-12"><?php echo $ndevice['name'] ?> <span class="hidden-xs">| <?php echo $ndevice['sensors'][$sensor['id']]['name'] ?></span>
+          </h6>
+        </div>
+        <div class="col-sm-7 col-md-7 no-padding no-margin">
+
+          <div class="row col-md-12 col-sm-12 row-codb no-padding no-margin">
+          <?php 
+            $fromCOdb=(empty($ndevice['latestCODB']))? false : true;
+            $latestInfo=($fromCOdb)? "latestCODB" : "lastUpdatePOI" ;
+           ?>
+
+            <div class="col-md-7 col-sm-7 no-padding no-margin text-center" title="<?php echo $latestInfo?>">
+           
+            <?php 
+            if($fromCOdb){
+              echo $ndevice['latestCODB']['timestamp'];
+            }else{
+              echo $ndevice['timestamp'];
+            }
+            ?>
+        
+            </div>
+
+            <div  class="col-md-5 col-sm-5 no-padding no-margin text-center" title="<?php echo $latestInfo?>">
+         
+            <?php 
+            if($fromCOdb){
+              echo $ndevice['latestCODB'][$sensor['measurement']['name']];
+            }else{
+              echo $ndevice['sensors'][$sensor['id']]['value'] ;
+            }
+            ?>
+   
+            </div>
+          
+          </div>
+        
+
+
+        
+        
+        <div  class="row col-sm-12 col-md-12 row-api no-padding no-margin " id="row-api-sensor<?php echo $sensor['id']."-device".$ndevice['deviceId'] ?>" ></div>
+       </div>
+      </div>
+    <?php
+    } ?>
+    </div>
+
+  </div>
+  <?php 
+  }
+  ?>
+
+  </div>
+
+<?php
+  }
+
+} ?>
+  
 
 <section class="col-sm-12 row" id="sectiontable">
   <div class="col-md-10 table-responsive">
@@ -167,7 +290,9 @@ echo '<br>';
    			<!--th>id</th><th>name</th><th>value API</th><th>value CO</th><th>unit</th><th class="hide description">description</th-->
    		 </tr>
    		</thead>
-   		<tbody id="tbody"> 	</tbody>
+   		<tbody id="tbody"> 
+
+      </tbody>
    	</table>
   </div>
 </section>
@@ -181,6 +306,7 @@ echo '<br>';
 			<!-- pour Test fonction js -->
 
 	</div>
+</div>
 
 <?php if(!$isAjaxR ){ ?>
 <?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"thing")); ?>
@@ -258,4 +384,3 @@ function getDeviceReadings(){
 
 
 </script>
-

@@ -57,37 +57,37 @@
 
 <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-left no-padding" id="col-banner">
     <div class="section-badges pull-right">
-			<div class="no-padding">
-				<?php 
-				if(!empty($element["badges"])){?>
-					<?php if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
-						<div class="badgePH pull-left" data-title="OPENDATA">
-							<span class="pull-left tooltips" data-toggle="tooltip" data-placement="bottom" title="Les données sont ouvertes." style="font-size: 15px; line-height: 30px;">
-								<span class="fa-stack opendata" style="width:20px">
-									<i class="fa fa-database main fa-stack-1x" style="font-size: 20px;"></i>
-									<i class="fa fa-share-alt  mainTop fa-stack-1x text-white" style="text-shadow: 0px 0px 2px rgb(15,15,15);"></i>
-								</span> 
-								<?php echo Yii::t("common","Open data") ?>
-							</span>
-						</div>
-				<?php } 
-				} ?>
-			</div>
-
-			<div class="no-padding">
-				<?php 
-				if ($openEdition == true) { ?>
-					<div class="badgePH pull-left" data-title="OPENEDITION">
-						<span class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="Tous les utilisateurs ont la possibilité de participer / modifier les informations." style="font-size: 15px; line-height: 30px;"><i class="fa fa-creative-commons" style="font-size: 20px;"></i> <?php echo Yii::t("common","Open edition") ?></span>
+		<div class="no-padding">
+			<?php 
+			if(!empty($element["badges"])){?>
+				<?php if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
+					<div class="badgePH pull-left" data-title="OPENDATA">
+						<span class="pull-left tooltips" data-toggle="tooltip" data-placement="bottom" title="Les données sont ouvertes." style="font-size: 15px; line-height: 30px;">
+							<span class="fa-stack opendata" style="width:20px">
+								<i class="fa fa-database main fa-stack-1x" style="font-size: 20px;"></i>
+								<i class="fa fa-share-alt  mainTop fa-stack-1x text-white" style="text-shadow: 0px 0px 2px rgb(15,15,15);"></i>
+							</span> 
+							<?php echo Yii::t("common","Open data") ?>
+						</span>
 					</div>
-				<?php } ?>
-				
-			</div>
+			<?php } 
+			} ?>
+		</div>
+
+		<div class="no-padding">
+			<?php 
+			if ($openEdition == true) { ?>
+				<div class="badgePH pull-left" data-title="OPENEDITION">
+					<span class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="Tous les utilisateurs ont la possibilité de participer / modifier les informations." style="font-size: 15px; line-height: 30px;"><i class="fa fa-creative-commons" style="font-size: 20px;"></i> <?php echo Yii::t("common","Open edition") ?></span>
+				</div>
+			<?php } ?>
+			
+		</div>
     </div>
 	<?php if($type==Event::COLLECTION){ ?>
 	<div class="col-xs-9 col-sm-6 col-md-5 col-lg-5 margin-right-15 margin-top-25 section-date pull-right">
-		<?php if(@$element['parent']){ ?>
 		<div style="font-size: 14px;font-weight: none;">
+			<?php if(@$element['parent']){ ?>
 			PARENT : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/>
 			<?php } ?>
 			ORGANISEUR : <a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" class="lbh"> <i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> <?php  echo $element['organizer']['name']; ?></a>

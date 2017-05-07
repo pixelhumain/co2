@@ -403,7 +403,7 @@
 			else if(subView=="history")
 				loadHistoryActivity();
 			else if(subView=="directory")
-				loadDirectory();
+				loadDataDirectory("<?php echo @$_GET['dir']; ?>");
 			else if(subView=="editChart")
 				loadEditChart();
 			else if(subView=="detail")

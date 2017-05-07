@@ -252,7 +252,8 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	if(dataName == "follows")	{ html += elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
 	else if(dataName == "followers")	{ html += countData + " <b>abonné"+s+"</b> à " + elementName; }
 	else if(dataName == "members")	{ html += elementName + " est composé de " + countData + " <b>membre"+s+"</b>"; }
-	else if(dataName == "attendees")	{ html += countData + " <b>invité"+s+"</b> à l'événement " + elementName; }
+	else if(dataName == "attendees")	{ html += countData + " <b>Participant"+s+"</b> à l'événement " + elementName; }
+	else if(dataName == "guests")	{ html += countData + " <b>Invité"+s+"</b> sur " + elementName; }
 	else if(dataName == "contributors")	{ html += countData + " <b>contributeur"+s+"</b> au projet " + elementName; }
 	
 	else if(dataName == "events"){ 

@@ -196,7 +196,7 @@
 	<li><br><hr></li>-->
 	<?php } ?>
 	
-	<?php if ($edit==true || $openEdition==true){ ?>
+	<?php if (($edit==true || $openEdition==true) && @Yii::app()->session["userId"]){ ?>
 		<li class="visible-xs">
 			<a href="javascript:" class="letter-green ssmla"  
 				data-toggle="modal" data-target="#selectCreate">
@@ -303,12 +303,12 @@
 		
 		<li class="">
 			<a href="javascript:" class="ssmla capitalize load-data-directory" 
-				data-type-dir="<?php echo @Element::$connectTypes[$type]; ?>" data-icon="link">
+				data-type-dir="<?php echo @Element::$connectTypes[$type]; ?>" data-icon="users">
 				<i class="fa fa-users"></i> <?php echo Yii::t("common",@Element::$connectTypes[$type]); ?>
 			</a>
 		</li>
 		
-		<?php if($type != Person::COLLECTION ) { ?>
+		<?php if($type != Person::COLLECTION && $type != Event::COLLECTION) { ?>
 		<li class="">
 			<a href="javascript:" class="ssmla capitalize load-data-directory" 
 				data-type-dir="followers" data-icon="link">
@@ -316,7 +316,14 @@
 			</a>
 		</li>
 		<?php } ?>
-		
+		<?php if($type != Person::COLLECTION) { ?>
+		<li class="">
+			<a href="javascript:" class="ssmla capitalize load-data-directory" 
+				data-type-dir="guests" data-icon="send">
+				<i class="fa fa-send"></i> <?php echo Yii::t("common","Guests"); ?>
+			</a>
+		</li>
+		<?php } ?>
 		
 
 		<?php if ($type==Person::COLLECTION){ ?>

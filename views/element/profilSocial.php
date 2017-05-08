@@ -181,44 +181,7 @@
 		  <?php } ?>
 		</div>
 		
-		<!--<div class="btn-group pull-right">
-
-		  	<button type="button" class="btn btn-default" onclick="showDefinition('qrCodeContainerCl',true)">
-				<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?>
-	  		</button>
-	  		<?php 
-	  			$address = (@$element["address"]["streetAddress"]) ? $element["address"]["streetAddress"] : "";
-				$address2 = (@$element["address"]["postalCode"]) ? $element["address"]["postalCode"] : "";
-				if(isset(OpenData::$phCountries[ @$element["address"]["addressCountry"] ]))
-				$address2 .= (@$element["address"]["addressCountry"] && @OpenData::$phCountries[ $element["address"]["addressCountry"] ]) ? ", ".OpenData::$phCountries[ $element["address"]["addressCountry"] ] : "";
-				
-				$tel = "";
-				if( @$organization["telephone"]["fixe"]){
-					foreach ($organization["telephone"]["fixe"] as $key => $num) {
-						$tel .= ($tel != "") ? ", ".$num : $num;
-					}
-				}
-	  			$this->renderPartial('../pod/qrcode',array( "type" => @$element['type'],
-															"name" => @$element['name'],
-															"address" => $address,
-															"address2" => $address2,
-															"email" => @$element['email'],
-															"url" => @$element["url"],
-															"tel" => $tel,
-															"img"=>@$element['profilThumbImageUrl']));?>
-			<?php if($element["_id"] == Yii::app()->session["userId"] && 
-			  			Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
-			    <button type="button" class="btn btn-default bold lbh" data-hash="#admin">
-			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
-			  </button>
-			
-			  <button type="button" class="btn btn-default bold" id="btn-superadmin">
-			  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
-			  </button>
-			  <?php } ?>
-
-
-		</div>-->
+		
 		<div class="btn-group pull-right" id="paramsMenu">
 			<ul class="nav navbar-nav">
 				<li class="dropdown">

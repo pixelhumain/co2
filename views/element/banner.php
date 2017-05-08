@@ -53,14 +53,15 @@
 </style>
 
 <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-left no-padding" id="col-banner">
+    <?php if(!empty($element["badges"]) || $openEdition == true ){ ?>
     <div class="section-badges pull-right">
 			<div class="no-padding">
 				<?php 
 				if(!empty($element["badges"])){?>
 					<?php if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
 						<div class="badgePH pull-left" data-title="OPENDATA">
-							<span class="pull-left tooltips" data-toggle="tooltip" data-placement="bottom" title="Les données sont ouvertes." style="font-size: 15px; line-height: 30px;">
-								<span class="fa-stack opendata" style="width:20px">
+							<span class="pull-left tooltips" data-toggle="tooltip" data-placement="left" title="Les données sont ouvertes." style="font-size: 13px; line-height: 30px;">
+								<span class="fa-stack opendata" style="width:17px">
 									<i class="fa fa-database main fa-stack-1x" style="font-size: 20px;"></i>
 									<i class="fa fa-share-alt  mainTop fa-stack-1x text-white" style="text-shadow: 0px 0px 2px rgb(15,15,15);"></i>
 								</span> 
@@ -75,12 +76,13 @@
 				<?php 
 				if ($openEdition == true) { ?>
 					<div class="badgePH pull-left" data-title="OPENEDITION">
-						<span class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="Tous les utilisateurs ont la possibilité de participer / modifier les informations." style="font-size: 15px; line-height: 30px;"><i class="fa fa-creative-commons" style="font-size: 20px;"></i> <?php echo Yii::t("common","Open edition") ?></span>
+						<span class="pull-right tooltips" data-toggle="tooltip" data-placement="left" title="Tous les utilisateurs ont la possibilité de participer / modifier les informations." style="font-size: 13px; line-height: 30px;"><i class="fa fa-creative-commons" style="font-size: 17px;"></i> <?php echo Yii::t("common","Open edition") ?></span>
 					</div>
 				<?php } ?>
 				
 			</div>
     </div>
+	<?php } ?>
 	<?php if($type==Event::COLLECTION){ ?>
 	<div class="col-xs-9 col-sm-6 col-md-5 col-lg-5 margin-right-15 margin-top-25 section-date pull-right">
 		<?php if(@$element['parent']){ ?>

@@ -86,19 +86,21 @@
 
 
 	    <div class="col-md-3 col-sm-3 hidden-xs no-padding" style="bottom:-31px; position: absolute;">
-		<?php if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
-			$images=$element["profilMediumImageUrl"];
-		else 
-			$images="";	
-			$this->renderPartial('../pod/fileupload', array(  "itemId" => (string) $element["_id"],
-														  "type" => $type,
-														  "resize" => false,
-														  "contentId" => Document::IMG_PROFIL,
-														  "show" => true,
-														  "editMode" => $edit,
-														  "image" => $images,
-														  "openEdition" => $openEdition) ); 
-														  ?>
+		<?php 	if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
+					 $images=$element["profilMediumImageUrl"];
+				else $images="";	
+				
+				$this->renderPartial('../pod/fileupload', 
+								array("itemId" => (string) $element["_id"],
+									  "type" => $type,
+									  "resize" => false,
+									  "contentId" => Document::IMG_PROFIL,
+									  "show" => true,
+									  "editMode" => $edit,
+									  "image" => $images,
+									  "openEdition" => $openEdition) ); 
+		?>
+
 			<?php if(@Yii::app()->session["userId"]){ ?>
 			<div class="blockUsername">
                 	<?php $this->renderPartial('../element/linksMenu', 
@@ -201,7 +203,8 @@
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
 					<button type="button" class="btn btn-default bold">
-			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo Yii::t("common", "Settings"); ?></span>
+			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md">
+			  			<?php echo Yii::t("common", "Settings"); ?></span>
 			  		</button>
 			  		<ul class="dropdown-menu arrow_box menu-params">
 	                	<?php $this->renderPartial('../element/linksMenu', 

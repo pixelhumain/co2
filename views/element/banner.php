@@ -55,51 +55,67 @@
 	}
 </style>
 
+<?php 
+	$thumbAuthor =  @$element['profilImageUrl'] ? 
+    Yii::app()->createUrl('/'.@$element['profilImageUrl']) : "";
+?>
+
 <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-left no-padding" id="col-banner">
+    
     <?php if(!empty($element["badges"]) || $openEdition == true ){ ?>
     <div class="section-badges pull-right">
-			<div class="no-padding">
-				<?php 
-				if(!empty($element["badges"])){?>
-					<?php if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
-						<div class="badgePH pull-left" data-title="OPENDATA">
-							<span class="pull-left tooltips" data-toggle="tooltip" data-placement="left" title="Les données sont ouvertes." style="font-size: 13px; line-height: 30px;">
-								<span class="fa-stack opendata" style="width:17px">
-									<i class="fa fa-database main fa-stack-1x" style="font-size: 20px;"></i>
-									<i class="fa fa-share-alt  mainTop fa-stack-1x text-white" style="text-shadow: 0px 0px 2px rgb(15,15,15);"></i>
-								</span> 
-								<?php echo Yii::t("common","Open data") ?>
-							</span>
-						</div>
-				<?php } 
-				} ?>
-			</div>
-
-			<div class="no-padding">
-				<?php 
-				if ($openEdition == true) { ?>
-					<div class="badgePH pull-left" data-title="OPENEDITION">
-						<span class="pull-right tooltips" data-toggle="tooltip" data-placement="left" title="Tous les utilisateurs ont la possibilité de participer / modifier les informations." style="font-size: 13px; line-height: 30px;"><i class="fa fa-creative-commons" style="font-size: 17px;"></i> <?php echo Yii::t("common","Open edition") ?></span>
+		<div class="no-padding">
+			<?php if(!empty($element["badges"])){?>
+				<?php if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
+					<div class="badgePH pull-left" data-title="OPENDATA">
+						<span class="pull-left tooltips" data-toggle="tooltip" data-placement="left" 
+							  title="Les données sont ouvertes." style="font-size: 13px; line-height: 30px;">
+							<span class="fa-stack opendata" style="width:17px">
+								<i class="fa fa-database main fa-stack-1x" style="font-size: 20px;"></i>
+								<i class="fa fa-share-alt  mainTop fa-stack-1x text-white" 
+									style="text-shadow: 0px 0px 2px rgb(15,15,15);"></i>
+							</span> 
+							<?php echo Yii::t("common","Open data") ?>
+						</span>
 					</div>
-				<?php } ?>
-				
-			</div>
+			<?php } 
+			} ?>
+		</div>
+
+		<div class="no-padding">
+			<?php if ($openEdition == true) { ?>
+				<div class="badgePH pull-left" data-title="OPENEDITION">
+					<span class="pull-right tooltips" data-toggle="tooltip" data-placement="left" 
+							title="Tous les utilisateurs ont la possibilité de participer / modifier les informations." 
+							style="font-size: 13px; line-height: 30px;">
+						<i class="fa fa-creative-commons" style="font-size: 17px;"></i> 
+						<?php echo Yii::t("common","Open edition") ?>
+					</span>
+				</div>
+			<?php } ?>
+		</div>
     </div>
 	<?php } ?>
+
 	<?php if($type==Event::COLLECTION){ ?>
 	<div class="col-xs-9 col-sm-6 col-md-5 col-lg-5 margin-right-15 margin-top-25 section-date pull-right">
 		<?php if(@$element['parent']){ ?>
 		<div style="font-size: 14px;font-weight: none;">
-			PARENT : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/>
-			<?php } ?>
-			
+			PARENT : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" 
+			class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/>
 		</div>
+		<?php } ?>
+		<?php if(@$element['organizerType'] && @$element['organizerId']){ ?>
+			<?php echo Yii::t("common","Organized by"); ?> : 
+			<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" 
+				class="lbh"> 
+				<i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> 
+					<?php  echo $element['organizer']['name']; ?>
+			</a>
+		<?php } ?>
     </div>
-	<?php 
-		$thumbAuthor =  @$element['profilImageUrl'] ? 
-          Yii::app()->createUrl('/'.@$element['profilImageUrl']) 
-          : "";
-	?>
+	<?php } ?>
+
 	<form  method="post" id="banner_photoAdd" enctype="multipart/form-data">
 		<?php
 		if(@Yii::app()->session["userId"] && ((@$edit && $edit) || (@$openEdition && $openEdition))){ 
@@ -109,20 +125,27 @@
 		<div class="user-image-buttons padding-10" style="position: absolute;z-index: 100;">
 			<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="banner_element" >
 				<span class="fileupload-new">
-					<i class="fa fa-<?php if($editBtn) echo "pencil"; else echo "plus"?>"></i> <span class="hidden-xs"> <?php if($editBtn) echo Yii::t("common","Edit banner"); else echo Yii::t("common","Add a banner") ?></span></span>
+					<i class="fa fa-<?php if($editBtn) echo "pencil"; else echo "plus"?>"></i> 
+					<span class="hidden-xs"> 
+					<?php if($editBtn) echo Yii::t("common","Edit banner"); else echo Yii::t("common","Add a banner") ?>
+					</span>
+				</span>
 				<input type="file" accept=".gif, .jpg, .png" name="banner" id="banner_change" class="hide">
 				<input class="banner_isSubmit hidden" value="true"/>
 			</a>
 		</div>
 		<?php }; ?>
 	</form>
+
 	<div id="contentBanner" class="col-md-12 col-sm-12 col-xs-12 no-padding">
 		<?php if (@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])){ ?> 
-			<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="<?php echo Yii::app()->createUrl('/'.$element["profilBannerUrl"]) ?>">
+			<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" 
+				src="<?php echo Yii::app()->createUrl('/'.$element["profilBannerUrl"]) ?>">
 		<?php } ?>
 	</div>
 	
 	<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation <?php if(@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])) echo "backgroundHeaderInformation" ?>">	
+    	
     	<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
 			<h4 class="text-left padding-left-15 pull-left no-margin">
 				<span id="nameHeader">
@@ -135,67 +158,83 @@
 					<span id="typeHeader" class="margin-left-10 pull-left">
 						<i class="fa fa-x fa-angle-right pull-left"></i>
 						<div class="type-header pull-left">
-					 	<?php echo Yii::t("common", $element["type"]) ?>
+					 		<?php echo Yii::t("common", $element["type"]) ?>
 					 	</div>
 					</span>
-			<?php } ?>
+				<?php } ?>
 			</h4>					
 		</div>
-		<?php 
-		if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]){ ?>
+
+		<?php if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]){ ?>
 			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 pull-right margin-bottom-5">
 			<?php if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"]){ ?>
 				<div class="header-address badge letter-white bg-red margin-left-5 pull-left">
-					<?php 
-						echo @$element["address"]["postalCode"] ? "<i class='fa fa-map-marker'></i> ".$element["address"]["postalCode"] : "";
-						echo @$element["address"]["postalCode"] && @$element["address"]["addressLocality"] ? ", ".$element["address"]["addressLocality"] : "";
+					<?php echo @$element["address"]["postalCode"] ? 
+								"<i class='fa fa-map-marker'></i> ".$element["address"]["postalCode"] : "";
+
+						  echo @$element["address"]["postalCode"] && @$element["address"]["addressLocality"] ? 
+								", ".$element["address"]["addressLocality"] : "";
 					?>
 				</div>
 				<?php if(@$element["tags"]){ ?>
-					<span class="margin-right-10 margin-left-10 text-white pull-left" style="font-size: 10px;line-height: 20px;"><i class="fa fa-circle-o"></i></span>
+					<span class="margin-right-10 margin-left-10 text-white pull-left" style="font-size: 10px;line-height: 20px;">
+						<i class="fa fa-circle-o"></i>
+					</span>
 				<?php } ?>
-			<?php } 
-			if(@$element["tags"]){ ?>
+			<?php } ?>
+			<?php if(@$element["tags"]){ ?>
 				<div class="header-tags pull-left">
 				<?php foreach ($element["tags"] as $key => $tag) { ?>
 					<span class="badge letter-red bg-white" style="vertical-align: top;">#<?php echo $tag; ?></span>
-					<?php } ?>
-				</li>
+				<?php } ?>
 				</div>
 			<?php } ?>
 			</div>
 		<?php } ?>
 		
 		<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 pull-right">
-			<span class="pull-left text-white" id="shortDescriptionHeader"><?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
+			<span class="pull-left text-white" id="shortDescriptionHeader">
+				<?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
 			</span>	
 		</div>
-		<?php if($type==Event::COLLECTION){ ?>
-			<div class="section-date pull-right">
-			<div style="font-size: 14px;font-weight: none;">
-			<?php if(@$element['parent']){ ?>
-			<?php echo Yii::t("common","Planned on") ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/>
-			<?php } ?>
-			<?php echo Yii::t("common","Organized by") ?> : <a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" class="lbh"> <i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> <?php  echo $element['organizer']['name']; ?></a>
-		</div>
-	</div>
-	<?php } ?>
 
-		<div class="pull-right col-sm-3 col-md-3" style=""></div>		
+		<?php if($type==Event::COLLECTION && false){ ?>
+			<div class="section-date pull-right">
+				<div style="font-size: 14px;font-weight: none;">
+					<?php if(@$element['parent']){ ?>
+						<?php echo Yii::t("common","Planned on") ?> : 
+						<a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" 
+							class="lbh"> 
+							<i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?>
+						</a><br/>
+					<?php } ?>
+					<?php if(@$element['organizerType'] && @$element['organizerId']){ ?>
+						<?php echo Yii::t("common","Organized by"); ?> : 
+						<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" 
+							class="lbh"> 
+							<i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> 
+								<?php  echo $element['organizer']['name']; ?>
+						</a>
+					<?php } ?>
+				</div>
+			</div>
+		<?php } ?>
 	</div>
+
+	<div class="pull-right col-sm-3 col-md-3" style=""></div>
 </div>
 
-
-
 <div id="uploadScropResizeAndSaveImage" style="display:none;padding:0px 60px;">
-	<!--<img src='' id="previewBanniere"/>-->
 	<div class="close-modal" data-dismiss="modal"><div class="lr"><div class="rl"></div></div></div>
 	<div class="col-lg-12">
-		<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" class="inline margin-top-25 margin-bottom-5" height="50">
+		<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" 
+			 class="inline margin-top-25 margin-bottom-5" height="50">
         <br>
 	</div>
 	<div class="modal-header text-dark">
-		<h3 class="modal-title text-center" id="ajax-modal-modal-title"><i class="fa fa-crop"></i> <?php echo Yii::t("common","Resize and crop your image to render a beautiful banner") ?></h3>
+		<h3 class="modal-title text-center" id="ajax-modal-modal-title">
+			<i class="fa fa-crop"></i> <?php echo Yii::t("common","Resize and crop your image to render a beautiful banner") ?>
+		</h3>
 	</div>
 	<div class="panel-body">
 		<div class='col-md-offset-1' id='cropContainer'>

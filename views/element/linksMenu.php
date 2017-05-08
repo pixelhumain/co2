@@ -59,7 +59,7 @@
  			$visibleXsLinks.='<li class="text-left visible-xs">'.
 				               	'<a href="javascript:;" class="bg-white text-red" '.
 				               		'onclick="disconnectTo(\''.$elementType.'\',\''.$elementId.'\',\''.Yii::app()->session["userId"].'\',\''.Person  ::COLLECTION.'\',\'followers\')">'.
-				                    '<i class="fa fa-sign-out"> '.Yii::t("common", "Don't follow this page").
+				                    '<i class="fa fa-sign-out"></i> '.Yii::t("common", "Don't follow this page").
 				                '</a>'.
 			            	'</li>';
  ?>
@@ -95,7 +95,7 @@
 			$visibleXsLinks.='<li class="text-left visible-xs">'.
 				               	'<a href="javascript:;" class="bg-white" '.
 				               		'onclick="connectTo(\''.$elementType.'\',\''.$elementId.'\',\''.Yii::app()->session["userId"].'\',\''.Person  ::COLLECTION.'\',\''.$linksBtn["connectAs"].'\')">'.
-				                    '<i class="fa fa-link"> '.Yii::t("common","Be {what}", array("{what}"=> Yii::t("common",$linksBtn["connectAs"]))).
+				                    '<i class="fa fa-link"></i> '.Yii::t("common","Be {what}", array("{what}"=> Yii::t("common",$linksBtn["connectAs"]))).
 				                '</a>'.
 			            	'</li>';
 ?>

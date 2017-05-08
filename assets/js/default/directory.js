@@ -1155,6 +1155,7 @@ var directory = {
                 str += "<img class='pull-left img-responsive' src='"+baseUrl+params.organizerObj.profilThumbImageUrl+"' height='50'/>";
                 
             }            
+            console.log("typeDYN",params.organizerObj.type, params.organizerObj);
             elem = dyFInputs.get(params.organizerObj.type);
             str += "<h5 class='no-margin padding-top-5'><small>Organisé par</small></h5>";
             str += "<a href='#page.type."+elem.col+".id."+params.organizerObj["_id"]["$id"]+"' class='lbh' > <small class='entityOrganizerName'>"+params.organizerObj.name+"</small></a>";

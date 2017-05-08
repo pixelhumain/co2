@@ -122,7 +122,7 @@
     	  	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 			$thumbAuthor =  @$element['profilThumbImageUrl'] ? 
 		                      Yii::app()->createUrl('/'.@$element['profilThumbImageUrl']) 
-		                      : "";
+		                      : $this->module->assetsUrl.'/images/thumbnail-default.jpg';
     	  ?>
     	  <button type="button" class="btn btn-default bold menu-left-min visible-xs" onclick="menuLeftShow();">
 		  		<i class="fa fa-bars"></i>

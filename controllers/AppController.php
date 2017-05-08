@@ -186,7 +186,7 @@ class AppController extends CommunecterController {
     }
 
 
-	public function actionPage($type, $id, $view=null){
+	public function actionPage($type, $id, $view=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
         
         if( $type == Person::COLLECTION  || $type == Event::COLLECTION || 
@@ -209,6 +209,7 @@ class AppController extends CommunecterController {
         $params = array("id" => @$id,
                         "type" => @$type,
                         "view" => @$view,
+                        "dir" => @$dir,
                         "subdomain" => "page",
                         "mainTitle" => "Page perso",
                         "placeholderMainSearch" => "",

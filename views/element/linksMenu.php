@@ -180,15 +180,18 @@
 	<a href="javascript:collection.add2fav('<?php echo $elementType ?>','<?php echo $elementId ?>')"  
 	class="btn-o menu-linksBtn no-border-right <?php if(@$xsView) echo "hidden"; ?>"><i class="fa fa-star"></i> <?php echo Yii::t("common","Favorites"); ?></a>
 <?php } ?>
-<li role="separator" class="divider visible-xs"></li>
-<?php if(@$statusXsMenu){ ?>
-    <li class="text-left noHover visible-xs">
-        <span style="font-size: 10px; font-style: italic; padding:3px 20px;"><?php echo $statusXsMenu; ?></span>
-    </li>
+<!-- View in menu params // visible only on xs -->
+<?php if(@$xsView){ ?>
+	<li role="separator" class="divider visible-xs"></li>
+	<?php if(@$statusXsMenu){ ?>
+	    <li class="text-left noHover visible-xs">
+	        <span style="font-size: 10px; font-style: italic; padding:3px 20px;"><?php echo $statusXsMenu; ?></span>
+	    </li>
+	<?php } ?>
+	<?php echo $visibleXsLinks;?>
+	<li role="separator" class="divider visible-xs"></li>
 <?php } ?>
-<?php echo $visibleXsLinks;?>
-<li role="separator" class="divider visible-xs"></li>
-
+<!-- End of xs generated -->
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		$('ul.nav li.dropdown').hover(function() {

@@ -59,11 +59,12 @@
  			$visibleXsLinks.='<li class="text-left visible-xs">'.
 				               	'<a href="javascript:;" class="bg-white text-red" '.
 				               		'onclick="disconnectTo(\''.$elementType.'\',\''.$elementId.'\',\''.Yii::app()->session["userId"].'\',\''.Person  ::COLLECTION.'\',\'followers\')">'.
-				                    '<i class="fa fa-sign-out"> '.Yii::t("common", "Don't follow this page").
+				                    '<i class="fa fa-sign-out"></i> '.Yii::t("common", "Don't follow this page").
 				                '</a>'.
 			            	'</li>';
  ?>
-		<ul class="nav navbar-nav <?php if(@$xsView) echo "hidden"; ?>">
+ 		<?php if(!@$xsView){ ?>
+		<ul class="nav navbar-nav hidden-xs">
 				<li class="dropdown">
 					<a href="javascript:;" class="btn-o menu-btn-follow menu-linksBtn hidden-xs" data-toggle="dropdown">
 						<i class="fa fa-rss"></i> <?php echo Yii::t("common","Following") ?> <i class="fa fa-chevron-down"></i>
@@ -77,16 +78,19 @@
 		            </ul>
           	</li>
         </ul>
+        <?php } ?>
 <?php 
 		}else{ 
 			$visibleXsLinks.='<li class="text-left visible-xs">'.
 				               	'<a href="javascript:;" class="bg-white" '.
 				               		'onclick="follow(\''.$elementType.'\',\''.$elementId.'\',\''.Yii::app()->session["userId"].'\',\''.Person  ::COLLECTION.'\')">'.
-				                    '<i class="fa fa-rss"> '.Yii::t("common", "Follow this page").
+				                    '<i class="fa fa-rss"></i> '.Yii::t("common", "Follow this page").
 				                '</a>'.
 			            	'</li>';
 			?>
-			<a href="javascript:;" class="btn-o menu-linksBtn <?php if(@$xsView) echo "hidden"; ?>" onclick="follow('<?php echo $elementType ?>','<?php echo $elementId ?>','<?php echo Yii::app()->session["userId"] ?>','<?php echo Person  ::COLLECTION ?>')"> <i class="fa fa-rss"></i> <?php echo Yii::t("common","Follow") ?> </a>
+			<?php if(!@$xsView){ ?>
+			<a href="javascript:;" class="btn-o menu-linksBtn hidden-xs" onclick="follow('<?php echo $elementType ?>','<?php echo $elementId ?>','<?php echo Yii::app()->session["userId"] ?>','<?php echo Person  ::COLLECTION ?>')"> <i class="fa fa-rss"></i> <?php echo Yii::t("common","Follow") ?> </a>
+			<?php } ?>
 <?php 
 		}
 	}
@@ -95,20 +99,24 @@
 			$visibleXsLinks.='<li class="text-left visible-xs">'.
 				               	'<a href="javascript:;" class="bg-white" '.
 				               		'onclick="connectTo(\''.$elementType.'\',\''.$elementId.'\',\''.Yii::app()->session["userId"].'\',\''.Person  ::COLLECTION.'\',\''.$linksBtn["connectAs"].'\')">'.
-				                    '<i class="fa fa-link"> '.Yii::t("common","Be {what}", array("{what}"=> Yii::t("common",$linksBtn["connectAs"]))).
+				                    '<i class="fa fa-link"></i> '.Yii::t("common","Be {what}", array("{what}"=> Yii::t("common",$linksBtn["connectAs"]))).
 				                '</a>'.
 			            	'</li>';
 ?>
-			<a href="javascript:;" class="btn-o menu-linksBtn <?php if(@$xsView) echo "hidden"; ?>" onclick="connectTo('<?php echo $elementType ?>','<?php echo $elementId ?>','<?php echo Yii::app()->session["userId"] ?>','<?php echo Person  ::COLLECTION ?>','<?php echo $linksBtn["connectAs"] ?>','<?php echo addslashes($elementName)?>')"> 
+		<?php if(!@$xsView){ ?>
+			<a href="javascript:;" class="btn-o menu-linksBtn hidden-xs" onclick="connectTo('<?php echo $elementType ?>','<?php echo $elementId ?>','<?php echo Yii::app()->session["userId"] ?>','<?php echo Person  ::COLLECTION ?>','<?php echo $linksBtn["connectAs"] ?>','<?php echo addslashes($elementName)?>')"> 
 				<i class="fa fa-link"></i> <?php echo Yii::t("common","Be {what}", array("{what}"=> Yii::t("common",$linksBtn["connectAs"]))); ?> 
 			</a>
+		<?php } ?>
 <?php 
 		} else if(@$linksBtn[Link::IS_INVITING]){ 
 			$statusXsMenu=Yii::t("common","Your are inviting to join {what}", array("{what}"=>Yii::t("common","the ".Element::getControlerByCollection($elementType))));
 		?>
-			<a href="javascript:;" class="btn-o menu-linksBtn <?php if(@$xsView) echo "hidden"; ?>"> 
+			<?php if(!@$xsView){ ?>
+			<a href="javascript:;" class="btn-o menu-linksBtn hidden-xs"> 
 				<i class="fa fa-send"></i> <?php echo Yii::t("common","Inviting")."..."; ?> 
 			</a>
+			<?php } ?>
 		<?php } else {
 			$labelBtn=Yii::t("common","Already {what}", array("{what}"=>Yii::t("common",$linksBtn["connectAs"])));
 			$statusXsMenu=Yii::t("common","You are {what} of {which}", array("{what}"=>Yii::t("common",$linksBtn["connectAs"]),"{which}"=>Yii::t("common","this ".Element::getControlerByCollection($elementType))));
@@ -150,12 +158,14 @@
 				                '</a>'.
 			            	'</li>';
 			            ?>
-			            <li class="text-left">
-			               	<a href="javascript:;" class="bg-white" onclick="connectTo('<?php echo $elementType ?>','<?php echo $elementId ?>','<?php echo Yii::app()->session["userId"] ?>','<?php echo Person  ::COLLECTION ?>','admin','<?php echo addslashes($elementName)?>')">
-			                    <i class="fa fa-user-plus"></i><?php echo Yii::t("common", "Become administrator"); ?>
-			                </a>
-			            </li>
-			            <?php } 
+			            	<?php if(!@$xsView){ ?>
+				            <li class="text-left hidden-xs">
+				               	<a href="javascript:;" class="bg-white" onclick="connectTo('<?php echo $elementType ?>','<?php echo $elementId ?>','<?php echo Yii::app()->session["userId"] ?>','<?php echo Person  ::COLLECTION ?>','admin','<?php echo addslashes($elementName)?>')">
+				                    <i class="fa fa-user-plus"></i><?php echo Yii::t("common", "Become administrator"); ?>
+				                </a>
+				            </li>
+				            <?php } ?>
+				        <?php } 
 			            	$visibleXsLinks.='<li class="text-left visible-xs">'.
 				               	'<a href="javascript:;" class="bg-white text-red" '.
 				               		'onclick="disconnectTo(\''.$elementType.'\',\''.$elementId.'\',\''.Yii::app()->session["userId"].'\',\''.Person  ::COLLECTION.'\',\''.$linksBtn["connectType"].'\')">'.
@@ -163,11 +173,13 @@
 				                '</a>'.
 			            	'</li>';
 			            ?>
-			            <li class="text-left">
+			            <?php if(!@$xsView){ ?>
+			            <li class="text-left hidden-xs">
 			               	<a href="javascript:;" class="bg-white text-red hidden-xs" onclick="disconnectTo('<?php echo $elementType ?>','<?php echo $elementId ?>','<?php echo Yii::app()->session["userId"] ?>','<?php echo Person  ::COLLECTION ?>','<?php echo $linksBtn["connectType"] ?>')">
 			                    <i class="fa fa-sign-out"></i><?php echo Yii::t("common", "Leave this page"); ?>
 			                </a>
 			            </li>
+			            <?php } ?>
 			        </ul>
 			    </li>
 			</ul>

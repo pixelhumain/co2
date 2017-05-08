@@ -194,14 +194,16 @@
 
 
 		</div>-->
-
-
-		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 		<div class="btn-group pull-right" id="paramsMenu">
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
 					<button type="button" class="btn btn-default bold">
-			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo Yii::t("common", "Settings"); ?></span>
+						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm"><?php echo Yii::t("common", "Settings"); ?>
+			  			<?php }else{ ?>
+			  			<i class="fa fa-plus"></i> <span class="hidden-xs hidden-sm"><?php echo Yii::t("common", "More"); ?>
+			  			<?php } ?>
+			  			</span>
 			  		</button>
 			  		<ul class="dropdown-menu arrow_box menu-params">
 	                	<?php $this->renderPartial('../element/linksMenu', 
@@ -212,12 +214,14 @@
 	            					"openEdition" => $openEdition,
 	            					"xsView"=>true) 
 	            			); 
-	            		?>		
+	            		?>
+	            		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 		  				<li class="text-left">
 			               	<a href="javascript:;" id="editConfidentialityBtn" class="bg-white">
 			                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
 			                </a>
 			            </li>
+			            <?php } ?>
 						<li>
 							<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
 								<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?>
@@ -230,6 +234,7 @@
 									<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
 								</a>
 							</li>
+							<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 				  			<li class="text-left">
 				               	<a href="javascript:;" class="bg-white text-red">
 				                    <i class="fa fa-trash"></i> 
@@ -239,7 +244,9 @@
 				                    ?>
 				                </a>
 				            </li>
+				            <?php } ?>
 			            <?php } else { ?>
+			            	<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 							<li class="text-left">
 								<a href='javascript:' id="downloadProfil">
 									<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
@@ -250,13 +257,13 @@
 									<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
 								</a>
 				            </li>
+				            <?php } ?>
 			            <?php } ?>
 			            
 			  		</ul>
 		  		</li>
 		  	</ul>
 		</div>
-		<?php } ?>
 
 	  	<?php if(isset(Yii::app()->session["userId"]) && $typeItem!=Person::COLLECTION){ ?>
 			<div class="btn-group pull-right">

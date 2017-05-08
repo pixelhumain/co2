@@ -16,7 +16,6 @@
 	$cssAnsScriptFilesTheme = array(
 		"/plugins/jquery-cropbox/jquery.cropbox.css",
 		"/plugins/jquery-cropbox/jquery.cropbox.js",
-		'/plugins/jquery.qrcode/jquery-qrcode.min.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	
@@ -175,42 +174,21 @@
 
 
 		  <?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
-		  <button type="button" class="btn btn-default bold letter-green hidden-xs" data-target="#selectCreate" data-toggle="modal">
+		  <button type="button" class="btn btn-default bold letter-green hidden-xs" 
+		  			data-target="#selectCreate" data-toggle="modal" style="border-right:0px!important;">
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
 		  </button>
 		  <?php } ?>
 		</div>
 		
-		<!--<div class="btn-group pull-right">
+		<div class="btn-group pull-right">
 
-		  	<button type="button" class="btn btn-default" onclick="showDefinition('qrCodeContainerCl',true)">
-				<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?>
-	  		</button>
-	  		<?php 
-	  			$address = (@$element["address"]["streetAddress"]) ? $element["address"]["streetAddress"] : "";
-				$address2 = (@$element["address"]["postalCode"]) ? $element["address"]["postalCode"] : "";
-				if(isset(OpenData::$phCountries[ @$element["address"]["addressCountry"] ]))
-				$address2 .= (@$element["address"]["addressCountry"] && @OpenData::$phCountries[ $element["address"]["addressCountry"] ]) ? ", ".OpenData::$phCountries[ $element["address"]["addressCountry"] ] : "";
-				
-				$tel = "";
-				if( @$organization["telephone"]["fixe"]){
-					foreach ($organization["telephone"]["fixe"] as $key => $num) {
-						$tel .= ($tel != "") ? ", ".$num : $num;
-					}
-				}
-	  			$this->renderPartial('../pod/qrcode',array( "type" => @$element['type'],
-															"name" => @$element['name'],
-															"address" => $address,
-															"address2" => $address2,
-															"email" => @$element['email'],
-															"url" => @$element["url"],
-															"tel" => $tel,
-															"img"=>@$element['profilThumbImageUrl']));?>
+		  	
 			<?php if($element["_id"] == Yii::app()->session["userId"] && 
 			  			Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
-			    <button type="button" class="btn btn-default bold lbh" data-hash="#admin">
+			  <!--<button type="button" class="btn btn-default bold lbh" data-hash="#admin">
 			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
-			  </button>
+			  </button>-->
 			
 			  <button type="button" class="btn btn-default bold" id="btn-superadmin">
 			  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
@@ -218,7 +196,7 @@
 			  <?php } ?>
 
 
-		</div>-->
+		</div>
 
 
 		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
@@ -226,8 +204,8 @@
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
 					<button type="button" class="btn btn-default bold">
-			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md">
-			  			<?php echo Yii::t("common", "Settings"); ?></span>
+			  			<i class="fa fa-chevron-down"></i> <span class="hidden-xs hidden-sm hidden-md">
+			  			<?php //echo Yii::t("common", "Settings"); ?></span>
 			  		</button>
 			  		<ul class="dropdown-menu arrow_box menu-params">
 	                	<?php $this->renderPartial('../element/linksMenu', 
@@ -286,7 +264,7 @@
 
 	  	<?php if(isset(Yii::app()->session["userId"]) && $typeItem!=Person::COLLECTION){ ?>
 			<div class="btn-group pull-right">
-			  	<button 	class='btn btn-default bold btn-share pull-right'
+			  	<button 	class='btn btn-default bold btn-share pull-right  letter-green' style="border:0px!important;"
 	                    	data-ownerlink='share' data-id='<?php echo $element["_id"]; ?>' data-type='<?php echo $typeItem; ?>' 
 	                    	data-isShared='false'>
 	                    	<i class='fa fa-share'></i> <span class="hidden-xs">Partager</span>
@@ -443,7 +421,6 @@
 
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
-		buildQRCode("<?php echo Element::getControlerByCollection(@$type)?>","<?php echo (string)$element["_id"]?>");
 		//Sig.showMapElements(Sig.map, mapElements);
 	});
 

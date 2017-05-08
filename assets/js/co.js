@@ -1068,14 +1068,14 @@ function showDefinition( id,copySection ){
 
 	setTimeout(function(){
 		mylog.log("showDefinition",id,copySection);
-		$(".hover-info,.hover-info2").hide();
-		$( themeObj.mainContainer ).animate({ opacity:0.3 }, 400 );
+		
+		//$( themeObj.mainContainer ).animate({ opacity:0.3 }, 400 );
 		
 		if(copySection){
 			contentHTML = $("."+id).html();
 			if(copySection != true)
 				contentHTML = copySection;
-			$(".hover-info2").css("display" , "inline").html( contentHTML );
+			smallMenu.open(contentHTML);
 			bindExplainLinks()	
 		}
 		else {

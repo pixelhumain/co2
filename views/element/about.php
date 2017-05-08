@@ -109,8 +109,7 @@
 				<span><i class="fa fa-quote-left"></i></span> <?php echo Yii::t("common", "Short description") ?>
 			</div>
 			<div id="shortDescriptionAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-				<span class="visible-xs col-xs-12 no-padding">
-					<i class="fa fa-quote-left"></i> <?php echo Yii::t("common", "Short description") ?>:
+				<span class="visible-xs col-xs-12 no-padding"><i class="fa fa-quote-left"></i> <?php echo Yii::t("common", "Short description") ?>:
 				</span><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 			</div>
 			<span id="shortDescriptionAboutEdit" name="shortDescriptionAboutEdit"  class="col-xs-12 hidden" ><?php echo (!empty($element["shortDescription"])) ? $element["shortDescription"] : ""; ?></span>
@@ -302,7 +301,7 @@
 					<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common","When"); ?>
 				</h4>
 				<?php if($edit==true || $openEdition==true ){?>
-					<button class="btn-update-network btn btn-default letter-blue pull-right tooltips" 
+					<button class="btn-update-when btn btn-default letter-blue pull-right tooltips" 
 						data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update network") ?>">
 						<b><i class="fa fa-pencil"></i></b>
 					</button>

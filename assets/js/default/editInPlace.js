@@ -486,92 +486,94 @@ function bindAboutPodElement() {
 
 
 		$(".btn-update-network").off().on( "click", function(){
-			if(contextData.type == typeObj.person.col ){
-				var form = {
-					saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
-					dynForm : {
-						jsonSchema : {
-							title : trad["Change password"],
-							icon : "fa-key",
-							beforeSave : function(){
-								mylog.log("beforeSave");
-						    	removeFieldUpdateDynForm(contextData.type);
-						    },
-							afterSave : function(data){
-								mylog.dir(data);
-								if(data.result && data.resultGoods.result){
+			var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
+				dynForm : {
+					jsonSchema : {
+						title : trad["Change password"],
+						icon : "fa-key",
+						beforeSave : function(){
+							mylog.log("beforeSave");
+					    	removeFieldUpdateDynForm(contextData.type);
+					    },
+						afterSave : function(data){
+							mylog.dir(data);
+							if(data.result && data.resultGoods.result){
 
-									if(typeof data.resultGoods.values.telegram != "undefined"){
-										contextData.telegram = data.resultGoods.values.telegram.trim();
-										changeNetwork('#telegramAbout', contextData.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.telegram);
-									}
-
-									if(typeof data.resultGoods.values.facebook != "undefined"){
-										contextData.facebook = data.resultGoods.values.facebook.trim();
-										changeNetwork('#facebookAbout', contextData.facebook, contextData.facebook);
-									}
-
-									if(typeof data.resultGoods.values.twitter != "undefined"){
-										contextData.twitter = data.resultGoods.values.twitter.trim();
-										changeNetwork('#twitterAbout', contextData.twitter, contextData.twitter);
-									}
-
-									if(typeof data.resultGoods.values.gitHub != "undefined"){
-										contextData.gitHub = data.resultGoods.values.gitHub.trim();
-										changeNetwork('#gitHubAbout', contextData.gitHub, contextData.gitHub);
-									}
-
-									if(typeof data.resultGoods.values.skype != "undefined"){
-										contextData.skype = data.resultGoods.values.skype.trim();
-										changeNetwork('#skypeAbout', contextData.skype, contextData.skype);
-									}
-
-									if(typeof data.resultGoods.values.gpplus != "undefined"){
-										contextData.gpplus = data.resultGoods.values.gpplus.trim();
-										changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
-									}
+								if(typeof data.resultGoods.values.telegram != "undefined"){
+									contextData.telegram = data.resultGoods.values.telegram.trim();
+									changeNetwork('#telegramAbout', contextData.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.telegram);
 								}
-								dyFObj.closeForm();
-								changeHiddenFields();
-							},
 
-							properties : {
-								block : dyFInputs.inputHidden(),
-								typeElement : dyFInputs.inputHidden(),
-								isUpdate : dyFInputs.inputHidden(true),
-								telegram : dyFInputs.inputText("Votre Speudo Telegram","Votre Speudo Telegram"),
-								skype : dyFInputs.inputUrl("Lien vers Skype"),
-								gitHub : dyFInputs.inputUrl("Lien vers Git Hub"), 
-								gpplus : dyFInputs.inputUrl("Lien vers Google Plus"),
-						        twitter : dyFInputs.inputUrl("Lien vers Twitter"),
-						        facebook :  dyFInputs.inputUrl("Lien vers Facebook"),
+								if(typeof data.resultGoods.values.facebook != "undefined"){
+									contextData.facebook = data.resultGoods.values.facebook.trim();
+									changeNetwork('#facebookAbout', contextData.facebook, contextData.facebook);
+								}
+
+								if(typeof data.resultGoods.values.twitter != "undefined"){
+									contextData.twitter = data.resultGoods.values.twitter.trim();
+									changeNetwork('#twitterAbout', contextData.twitter, contextData.twitter);
+								}
+
+								if(typeof data.resultGoods.values.gitHub != "undefined"){
+									contextData.gitHub = data.resultGoods.values.gitHub.trim();
+									changeNetwork('#gitHubAbout', contextData.gitHub, contextData.gitHub);
+								}
+
+								if(typeof data.resultGoods.values.skype != "undefined"){
+									contextData.skype = data.resultGoods.values.skype.trim();
+									changeNetwork('#skypeAbout', contextData.skype, contextData.skype);
+								}
+
+								if(typeof data.resultGoods.values.gpplus != "undefined"){
+									contextData.gpplus = data.resultGoods.values.gpplus.trim();
+									changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
+								}
 							}
+							dyFObj.closeForm();
+							changeHiddenFields();
+						},
+
+						properties : {
+							block : dyFInputs.inputHidden(),
+							typeElement : dyFInputs.inputHidden(),
+							isUpdate : dyFInputs.inputHidden(true), 
+							skype : dyFInputs.inputUrl("Lien vers Skype"),
+							github : dyFInputs.inputUrl("Lien vers Git Hub"), 
+							gpplus : dyFInputs.inputUrl("Lien vers Google Plus"),
+					        twitter : dyFInputs.inputUrl("Lien vers Twitter"),
+					        facebook :  dyFInputs.inputUrl("Lien vers Facebook"),
 						}
 					}
-				};
+				}
+			};
 
-				var dataUpdate = {
-					block : "network",
-			        id : contextData.id,
-			        typeElement : contextData.type,
-				};
-
-				if(notEmpty(contextData.twitter))
-					dataUpdate.twitter = contextData.twitter;
-				if(notEmpty(contextData.gpplus))
-					dataUpdate.gpplus = contextData.gpplus;
-				if(notEmpty(contextData.gitHub))
-					dataUpdate.gitHub = contextData.gitHub;
-				if(notEmpty(contextData.skype))
-					dataUpdate.skype = contextData.skype;
-				if(notEmpty(contextData.telegram))
-					dataUpdate.telegram = contextData.telegram;
-				if(notEmpty(contextData.facebook))
-					dataUpdate.facebook = contextData.facebook;
-
-				dyFObj.openForm(form, null, dataUpdate);
-
+			if(contextData.type == typeObj.person.col ){
+				form.dynForm.jsonSchema.properties.telegram = dyFInputs.inputText("Votre Speudo Telegram","Votre Speudo Telegram");
 			}
+
+			var dataUpdate = {
+				block : "network",
+		        id : contextData.id,
+		        typeElement : contextData.type,
+			};
+
+			if(notEmpty(contextData.twitter))
+				dataUpdate.twitter = contextData.twitter;
+			if(notEmpty(contextData.gpplus))
+				dataUpdate.gpplus = contextData.gpplus;
+			if(notEmpty(contextData.gitHub))
+				dataUpdate.gitHub = contextData.gitHub;
+			if(notEmpty(contextData.skype))
+				dataUpdate.skype = contextData.skype;
+			if(notEmpty(contextData.telegram))
+				dataUpdate.telegram = contextData.telegram;
+			if(notEmpty(contextData.facebook))
+				dataUpdate.facebook = contextData.facebook;
+
+			dyFObj.openForm(form, null, dataUpdate);
+
+			
 		});
 	}
 
@@ -654,7 +656,7 @@ function bindAboutPodElement() {
 			fieldsElement.concat(fieldsEvent);
 		
 		$.each(fieldsElement, function(key, val){ 
-			if($("#ajaxFormModal #"+val).length && notNull(element[val]) && $("#ajaxFormModal #"+val).val() == element[val])
+			if($("#ajaxFormModal #"+val).length && notNull(contextData[val]) && $("#ajaxFormModal #"+val).val() == contextData[val])
 				$("#ajaxFormModal #"+val).remove();
 		});
 	}

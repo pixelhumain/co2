@@ -50,17 +50,21 @@
 		font-size: 14px;
 		padding-left: 5px;
 	}
+	#contentBanner img{
+		min-height:280px;
+	}
 </style>
 
 <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-left no-padding" id="col-banner">
+    <?php if(!empty($element["badges"]) || $openEdition == true ){ ?>
     <div class="section-badges pull-right">
 			<div class="no-padding">
 				<?php 
 				if(!empty($element["badges"])){?>
 					<?php if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
 						<div class="badgePH pull-left" data-title="OPENDATA">
-							<span class="pull-left tooltips" data-toggle="tooltip" data-placement="bottom" title="Les données sont ouvertes." style="font-size: 15px; line-height: 30px;">
-								<span class="fa-stack opendata" style="width:20px">
+							<span class="pull-left tooltips" data-toggle="tooltip" data-placement="left" title="Les données sont ouvertes." style="font-size: 13px; line-height: 30px;">
+								<span class="fa-stack opendata" style="width:17px">
 									<i class="fa fa-database main fa-stack-1x" style="font-size: 20px;"></i>
 									<i class="fa fa-share-alt  mainTop fa-stack-1x text-white" style="text-shadow: 0px 0px 2px rgb(15,15,15);"></i>
 								</span> 
@@ -75,23 +79,22 @@
 				<?php 
 				if ($openEdition == true) { ?>
 					<div class="badgePH pull-left" data-title="OPENEDITION">
-						<span class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="Tous les utilisateurs ont la possibilité de participer / modifier les informations." style="font-size: 15px; line-height: 30px;"><i class="fa fa-creative-commons" style="font-size: 20px;"></i> <?php echo Yii::t("common","Open edition") ?></span>
+						<span class="pull-right tooltips" data-toggle="tooltip" data-placement="left" title="Tous les utilisateurs ont la possibilité de participer / modifier les informations." style="font-size: 13px; line-height: 30px;"><i class="fa fa-creative-commons" style="font-size: 17px;"></i> <?php echo Yii::t("common","Open edition") ?></span>
 					</div>
 				<?php } ?>
 				
 			</div>
     </div>
+	<?php } ?>
 	<?php if($type==Event::COLLECTION){ ?>
 	<div class="col-xs-9 col-sm-6 col-md-5 col-lg-5 margin-right-15 margin-top-25 section-date pull-right">
 		<?php if(@$element['parent']){ ?>
 		<div style="font-size: 14px;font-weight: none;">
 			PARENT : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/>
 			<?php } ?>
-			ORGANISEUR : <a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" class="lbh"> <i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> <?php  echo $element['organizer']['name']; ?></a>
+			
 		</div>
-	</div>
-	<?php } ?>
-
+    </div>
 	<?php 
 		$thumbAuthor =  @$element['profilImageUrl'] ? 
           Yii::app()->createUrl('/'.@$element['profilImageUrl']) 
@@ -119,8 +122,8 @@
 		<?php } ?>
 	</div>
 	
-	<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation">	
-    	<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
+	<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation <?php if(@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])) echo "backgroundHeaderInformation" ?>">	
+    	<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
 			<h4 class="text-left padding-left-15 pull-left no-margin">
 				<span id="nameHeader">
 					<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left">
@@ -140,7 +143,7 @@
 		</div>
 		<?php 
 		if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]){ ?>
-			<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 pull-right margin-bottom-5">
+			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 pull-right margin-bottom-5">
 			<?php if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"]){ ?>
 				<div class="header-address badge letter-white bg-red margin-left-5 pull-left">
 					<?php 
@@ -163,10 +166,21 @@
 			</div>
 		<?php } ?>
 		
-		<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 pull-right">
+		<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 pull-right">
 			<span class="pull-left text-white" id="shortDescriptionHeader"><?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
 			</span>	
 		</div>
+		<?php if($type==Event::COLLECTION){ ?>
+			<div class="section-date pull-right">
+			<div style="font-size: 14px;font-weight: none;">
+			<?php if(@$element['parent']){ ?>
+			<?php echo Yii::t("common","Planned on") ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/>
+			<?php } ?>
+			<?php echo Yii::t("common","Organized by") ?> : <a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" class="lbh"> <i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> <?php  echo $element['organizer']['name']; ?></a>
+		</div>
+	</div>
+	<?php } ?>
+
 		<div class="pull-right col-sm-3 col-md-3" style=""></div>		
 	</div>
 </div>
@@ -240,8 +254,9 @@ jQuery(document).ready(function() {
                					$("#uploadScropResizeAndSaveImage").parent().css("padding-top", "0px !important");
 								//$("#uploadScropResizeAndSaveImage").html(html);
 								setTimeout(function(){
-									var crop = $('#cropImage').cropbox({width: 1300,
-										height: 400,
+									var parentWidth=$("#cropContainer").width();
+									var crop = $('#cropImage').cropbox({width: parentWidth,
+										//height: 400,
 										zoomIn:true,
 										zoomOut:true}, function() {
 											cropResult=this.result;
@@ -293,6 +308,7 @@ jQuery(document).ready(function() {
 										        if(data.result){
 										        	newBanner='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
 										        	$("#contentBanner").html(newBanner);
+										        	$(".contentHeaderInformation").addClass("backgroundHeaderInformation");
 										        	$.unblockUI();
 										        	//$("#uploadScropResizeAndSaveImage").hide();
 										    	}

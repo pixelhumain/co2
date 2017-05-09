@@ -190,7 +190,7 @@ function initForm(){ console.log("initForm initForm");
     $.each(myContacts["people"], function (key,value){
       if(typeof(value) != "undefined" ){
         avatar="";
-        console.log(value);
+        //console.log(value);
           if(value.profilThumbImageUrl!="")
           avatar = baseUrl+value.profilThumbImageUrl;
           object = new Object;

@@ -549,6 +549,11 @@ var urlCtrl = {
 	    "#organization.detail" : {aliasParam: "#page.type.organizations.id.$id", params: ["id"],title:'ORGANIZATION DETAIL ', icon : 'users' },
 	    "#project.detail" : {aliasParam: "#page.type.projects.id.$id", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
 	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
+	    "#event.directory" : {aliasParam: "#page.type.events.id.$id.view.directory.dir.attendees", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
+	    "#organization.directory" : {aliasParam: "#page.type.organizations.id.$id.view.directory.dir.members", params: ["id"],title:'ORGANIZATION DETAIL ', icon : 'users' },
+	    "#project.directory" : {aliasParam: "#page.type.projects.id.$id.view.directory.dir.contributors", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
+	    "#news.detail" : {aliasParam: "#page.type.news.id.$id", params: ["id"], title:'NEWS', icon : 'rss' },
+	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
 	    "#news.detail" : {title:'NEWS DETAIL ', icon : 'rss' },
@@ -612,6 +617,10 @@ var urlCtrl = {
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
 	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
 	map : function (hash) {
+		if(typeof hash == "undefined") return { hash : "#",
+												type : "",
+												id : ""
+											};
 		hashT = hash.split('.');
 		return {
 			hash : hash,
@@ -1072,14 +1081,14 @@ function showDefinition( id,copySection ){
 
 	setTimeout(function(){
 		mylog.log("showDefinition",id,copySection);
-		$(".hover-info,.hover-info2").hide();
-		$( themeObj.mainContainer ).animate({ opacity:0.3 }, 400 );
+		
+		//$( themeObj.mainContainer ).animate({ opacity:0.3 }, 400 );
 		
 		if(copySection){
 			contentHTML = $("."+id).html();
 			if(copySection != true)
 				contentHTML = copySection;
-			$(".hover-info2").css("display" , "inline").html( contentHTML );
+			smallMenu.open(contentHTML);
 			bindExplainLinks()	
 		}
 		else {
@@ -2579,7 +2588,7 @@ var dyFInputs = {
 	        rules : ( notEmpty(rules) ? rules : { required : true } )
 	    };
 	    if(type){
-	    	inputObj.label = "Nom de votre " + trad[type]+" ";
+	    	inputObj.label = "Nom de votre " + trad[dyFInputs.get(type).ctrl]+" ";
 	    	if(type=="classified") 
 	    		inputObj.label = "Titre de votre " + trad[type]+" ";
 
@@ -2896,8 +2905,8 @@ var dyFInputs = {
     				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
 					endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
     			}
-			    if (startDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(startDate);
-				if (endDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(endDate);
+			    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
+				if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
     		}
     	}
     },
@@ -3074,7 +3083,7 @@ var typeObj = {
 	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
 	"NGO" : {sameAs:"organization"},
 	"Association" : {sameAs:"organization"},
-	"GovernmentOrganization" : {col:"organizations",color: "green",icon: "circle-o"},
+	"GovernmentOrganization" : {sameAs:"organization"},
 	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
 	"events" : {sameAs:"event"},
@@ -3494,7 +3503,39 @@ function initKInterface(params){ console.log("initKInterface");
             $('.navbar-toggle:visible').click();
     });
 
-   $(".logout").click(function(){
+    $(".openModalSelectCreate").click(function(){
+        $("#selectCreate").modal("show");
+        showFloopDrawer(false);
+        showNotif(false);
+    });
+
+    $(".btn-open-floopdrawer").click(function(){ 
+        showNotif(false);
+        $("#dropdown-user").removeClass("open");
+        showFloopDrawer(true);
+    });
+    $("#floopDrawerDirectory").mouseleave(function(){ 
+        showFloopDrawer(false);
+    });
+
+
+    $(".btn-show-mainmenu").click(function(){
+        showFloopDrawer(false);
+        showNotif(false);
+        $("#dropdown-user").addClass("open");
+        //clearTimeout(timerCloseDropdownUser);
+    });
+    
+    $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
+        $("#dropdown-user").removeClass("open");
+    });
+
+    $("header .container").mouseenter(function(){ 
+    	$("#dropdown-user").removeClass("open");
+    });
+
+
+    $(".logout").click(function(){
     	window.location.href=baseUrl+"/co2/person/logout";
     });
 
@@ -3532,27 +3573,15 @@ function initKInterface(params){ console.log("initKInterface");
 
 
     $(".btn-show-map").off().click(function(){
-    	if(notEmpty(contextData) &&  location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+    	if(typeof formInMap != "undefined" && formInMap.actived == true)
+			formInMap.cancel();
+    	else if(notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
 			getContextDataLinks()
 		else
 			showMap();
-		
     });
 
     bindLBHLinks();
-
-    $(".btn-show-mainmenu").click(function(){
-        $("#dropdown-user").addClass("open");
-        //clearTimeout(timerCloseDropdownUser);
-    });
-    
-    $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
-        $("#dropdown-user").removeClass("open");
-    });
-
-    $("header .container").mouseenter(function(){ 
-    	$("#dropdown-user").removeClass("open");
-    });
 
     $(".tooltips").tooltip();
     

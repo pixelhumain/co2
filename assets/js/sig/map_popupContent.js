@@ -8,7 +8,7 @@
 		//##
 		//création du contenu de la popup d'un data
 		Sig.getPopup = function(data){
-			mylog.log("getPopup", data)
+			//mylog.log("getPopup", data)
 			if(typeof(data.typeSig) != "undefined" && data.typeSig == "news"){
 				return this.getPopupSimpleNews(data);
 			}else if(typeof(data.typeSig) != "undefined" && data.typeSig == "city"){

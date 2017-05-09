@@ -131,43 +131,129 @@
 		width: 25px;
 		text-align: center;
 	}
+	.containInvitation .btn-accept{
+		border-radius:3px !important;
+		color: white;
+		background-color: #71CE4E;
+		padding: 5px 10px;
+		margin-top: 5px;
+	}
+	.containInvitation .btn-accept:hover{
+		color: #71CE4E !important;
+		background-color: white;
+		border: 1px solid #71CE4E;
+	}
+	.containInvitation .btn-accept i{
+		font-size:12px;
+	}
+	.containInvitation .btn-refuse{
+		border-radius:3px !important;
+		color: white;
+		background-color: #E33551;
+		padding: 5px 10px;
+	margin-top: 5px;
+	}
+	.containInvitation .btn-refuse:hover{
+		color: #E33551 !important;
+		background-color: white;
+		border: 1px solid #E33551;
+	}
+	.containInvitation .btn-refuse i{
+		font-size:12px;
+	}
 </style>
-
+<?php
+		if(@$invitedMe && !empty($invitedMe)){
+			$inviteRefuse="Refuse";
+			$inviteAccept="Accept";
+			$tooltipAccept="Join this ".Element::getControlerByCollection($type);
+			if ($type == Event::COLLECTION){
+				$inviteRefuse="Not interested";
+				$inviteAccept="I go";
+			}
+			echo "<div class='no-padding containInvitation' style='border-bottom: 1px solid lightgray;margin-bottom:10px !important;'>".
+				"<div class='padding-5'>".
+					"<a href='#page.type.".Person::COLLECTION.".id.".$invitedMe["invitorId"]."' class='lbh'>".$invitedMe["invitorName"]."</a><span class='text-dark'> vous a invité: <br/>".
+					'<a class="btn btn-xs tooltips btn-accept" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.(string)$element["_id"].'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Link::IS_INVITING.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
+						'<i class="fa fa-check "></i> '.Yii::t("common",$inviteAccept).
+					'</a>'.
+					'<a class="btn btn-xs tooltips btn-refuse margin-left-5" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.(string)$element["_id"].'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\'attendees\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
+						'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
+					'</a>'.
+				"</div>".
+			"</div>";
+		}
+	?>
 
 <ul id="subsubMenuLeft">
 
     <?php if(@$element["tags"]){  ?>
-	<li class="">
+	<!--<li class="">
 		<?php foreach ($element["tags"] as $key => $tag) { ?>
 		<span class="badge letter-red bg-white"><?php echo $tag; ?></span>
 		<?php } ?>
 	</li>
-	<li><br><hr></li>
+	<li><br><hr></li>-->
 	<?php } ?>
-
 	
-	<?php if ( $type != Person::COLLECTION && ($edit==true || $openEdition==true ) ){ 
+	<?php if (($edit==true || $openEdition==true) && @Yii::app()->session["userId"]){ ?>
+		<li class="visible-xs">
+			<a href="javascript:" class="letter-green ssmla"  
+				data-toggle="modal" data-target="#selectCreate">
+		  		<i class="fa fa-plus-circle fa-2x"></i> <?php echo Yii::t("common", "Create") ?>
+		  	</a>
+		</li>
+		<?php if($type != Person::COLLECTION){
 			if ($type == Event::COLLECTION){ 
-				$inviteTooltip = Yii::t("event","Invite attendees to the event");
-				$invitetext =  Yii::t("common","Send invitations") ;			
+				$inviteTooltip = Yii::t("common","Invite attendees to the event");
+				$invitetext =  Yii::t("common","Invite attendees") ;			
 			}else if ($type == Organization::COLLECTION){ 
-				$inviteTooltip = Yii::t('common','Add a member to this organization');
-				$invitetext =  Yii::t("common",'Add member') ;
+				$inviteTooltip = Yii::t('common','Invite personnes to the organization');
+				$invitetext =  Yii::t("common",'Invite members') ;
 			}else if ($type == Project::COLLECTION){ 
-				$inviteTooltip = Yii::t('common','Add a contributor to this project');
-				$invitetext =  Yii::t("common",'Add contributor') ;
+				$inviteTooltip = Yii::t('common','Invite contributors to the project');
+				$invitetext =  Yii::t("common",'Invite contributors') ;
 			} if( @$inviteTooltip && @$invitetext ){?>
 			<li class="">
 				<a href="javascript:" class="tooltips ssmla" 
-				data-placement="bottom" data-original-title="<?php echo $inviteTooltip; ?>" 
+				data-placement="bottom" data-original-title="<?php echo Yii::t("common","Invite people {what}",array("{what}"=>Yii::t("common","to the ".Element::getControlerByCollection($type)))); ?>" 
 				data-toggle="modal" data-target="#modal-scope">
-					<i class="fa fa-plus"></i> <?php echo $invitetext; ?>
+					<i class="fa fa-send"></i> <?php echo Yii::t("common","Invite people"); ?>
 				</a>
 			</li>
 			<li><hr></li>
-	<?php }}	?>
-				
-	
+	<?php }}}	?>
+	<?php if(@Yii::app()->session["userId"] && 
+		 $type==Person::COLLECTION && 
+		 (string)$element["_id"]==Yii::app()->session["userId"]){ 
+
+		$iconNewsPaper="user-circle"; 
+	?>
+	<li class="visible-xs">
+		<a href="javascript:" class="ssmla btn-start-newsstream">	
+			<i class="fa fa-rss"></i> Fil d'actualités
+		</a>
+	</li>
+
+	<?php } else {
+			$iconNewsPaper="rss"; 
+		}
+	?>
+	<li class="visible-xs">
+		<a href="javascript:" class="ssmla btn-start-mystream">		
+		  	<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper"); ?>
+		</a>
+	</li>
+	<?php if((@Yii::app()->session["userId"] && $isLinked==true) || @Yii::app()->session["userId"] == $element["_id"]){ ?>
+		<li class="visible-xs">
+			<a href="javascript:" class="ssmla btn-start-notifications">
+		  	<i class="fa fa-bell"></i><?php if (@Yii::app()->session["userId"] == $element["_id"]) echo "Mes n"; else echo "N"; ?>otifications
+		  	<span class="badge notifications-countElement <?php if(!@$countNotifElement || (@$countNotifElement && $countNotifElement=="0")) echo 'badge-transparent hide'; else echo 'badge-success'; ?>">
+		  		<?php echo @$countNotifElement ?>
+		  	</span>
+		  	</a>
+		</li>
+	<?php } ?>
 	<li class="">
 		<a href="javascript:" class="ssmla" id="btn-start-detail">
 			<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","About"); ?>
@@ -217,12 +303,12 @@
 		
 		<li class="">
 			<a href="javascript:" class="ssmla capitalize load-data-directory" 
-				data-type-dir="<?php echo @Element::$connectTypes[$type]; ?>" data-icon="link">
+				data-type-dir="<?php echo @Element::$connectTypes[$type]; ?>" data-icon="users">
 				<i class="fa fa-users"></i> <?php echo Yii::t("common",@Element::$connectTypes[$type]); ?>
 			</a>
 		</li>
 		
-		<?php if($type != Person::COLLECTION ) { ?>
+		<?php if($type != Person::COLLECTION && $type != Event::COLLECTION) { ?>
 		<li class="">
 			<a href="javascript:" class="ssmla capitalize load-data-directory" 
 				data-type-dir="followers" data-icon="link">
@@ -230,7 +316,14 @@
 			</a>
 		</li>
 		<?php } ?>
-		
+		<?php if($type != Person::COLLECTION) { ?>
+		<li class="">
+			<a href="javascript:" class="ssmla capitalize load-data-directory" 
+				data-type-dir="guests" data-icon="send">
+				<i class="fa fa-send"></i> <?php echo Yii::t("common","Guests"); ?>
+			</a>
+		</li>
+		<?php } ?>
 		
 
 		<?php if ($type==Person::COLLECTION){ ?>

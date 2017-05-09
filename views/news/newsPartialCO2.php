@@ -5,6 +5,7 @@
     margin-top:20px;
     max-height: 450px !important;
     margin-bottom: 15px !important;
+    min-height: unset !important;
 }
 .timeline-body .btn-share{
   display: none;
@@ -53,7 +54,8 @@
 	?>
 
   
-  <li class="<?php echo $class; ?> list-news" id="<?php echo @$media["type"] ?><?php echo $key ?>">
+  <li class="<?php echo $class; ?> list-news" 
+      id="<?php echo @$media["type"]; ?><?php echo $key; ?>">
     <div class="timeline-badge primary">
       <a><i class="glyphicon glyphicon-record" rel="tooltip"></i></a>
     </div>
@@ -110,19 +112,32 @@
         scrollEnd=true;
       
       initCommentsTools(news);
-      console.log("cleaning test ?");
-      $.each(news, function(e,v){ //console.log("cleaning test", v);
+      $.each(news, function(e,v){
         if(typeof v.object != "undefined"){ 
-          if($("#newsActivityStream"+v.object.id).length>0){
-            //console.log("cleaning id",v.object.id, $("#newsActivityStream"+v.object.id).length);
-            $("#news-list li#news"+v.object.id).remove();
-            //$("#news-list li#news"+v.object.id).html("CLEAN");
+          
+
+          
+          if($(".newsActivityStream"+v.object.id).length>0){
+           // console.log("CLEAN2", "#news-list li#news"+v.object.id, "len", 
+           //   $(".newsActivityStream"+v.object.id).length, $("#news"+v.object.id).length);
+
+            $("#news"+v.object.id).remove();
+            //$("#news"+v.object.id).append("CLEAN2");//console.log("xxzz", v);
           }
 
+          $(".newsActivityStream"+v.object.id).each(function(b, ob){
+            if(b>0) {
+              var parent = $(ob).parent().parent().parent();
+              parent.remove();
+              //parent.append("CLEAN1");
+              //console.log("CLEAN1", ".newsActivityStream"+v.object.id);
+            }
+          });
+
+
           if(v.object.type != "news"){
-            //console.log("load directory element !",v.object.id);
             var html = directory.showResultsDirectoryHtml(new Array(v.object), v.object.type);
-            $("#newsActivityStream"+v.object.id).html(html);
+            $(".newsActivityStream"+v.object.id).html(html);
           }
         }
       });
@@ -194,8 +209,8 @@
               $("#newsTagsScope"+e).append(scopes);
            }
         }
- */           
-       /* if(v.type == "activityStream"){ 
+ 
+  if(v.type == "activityStream"){ 
           //if(v.object.type=="events" || v.object.type=="needs"){
             console.log(v.object);
             if(v.startDate && v.endDate){
@@ -265,17 +280,31 @@
           // }
           initCommentsTools(new Array(v));
         }
-        // if("undefined" != typeof v.text){
-        //   textHtml="";
-        //   textNews="";
-        //    if(v.text.length > 0)
-        //       textNews=checkAndCutLongString(v.text,500,v._id.$id);
-        //     //Check if @mentions return text with link
-        //     if(typeof(v.mentions) != "undefined")
-        //       textNews = addMentionInText(textNews,v.mentions);
-        //   textHtml='<span class="timeline_text no-padding text-black" >'+textNews+'</span>';
-        //   $("#newsContent"+e).html(textHtml);
-        // }
+        if("undefined" != typeof v.text){
+          textHtml="";
+          textNews=v.text;
+           if(v.text.length > 0)
+              textNews=checkAndCutLongString(v.text,500,v._id.$id);
+            //Check if @mentions return text with link
+            if(typeof(v.mentions) != "undefined")
+              textNews = addMentionInText(textNews,v.mentions);
+          textHtml='<span class="timeline_text no-padding text-black" >'+textNews+'</span>';
+          $("#newsContent"+e).html(textHtml);
+
+          $(".btn-showmorenews").off().click(function(){
+            var newsid = $(this).data("newsid");
+             console.log("hasClass ?", $("#newsContent"+newsid+" .timeline_text span.endtext").hasClass("hidden"));
+            if($("#newsContent"+newsid+" .timeline_text span.endtext").hasClass("hidden")){
+                $("#newsContent"+newsid+" .timeline_text span.endtext").removeClass("hidden");
+                $("#newsContent"+newsid+" .timeline_text span.ppp").addClass("hidden");
+                $(this).html("réduire le texte");
+            }else{
+                $("#newsContent"+newsid+" .timeline_text span.endtext").addClass("hidden");
+                $("#newsContent"+newsid+" .timeline_text span.ppp").removeClass("hidden");
+                $(this).html("Lire la suite");
+            }
+          });
+        }
         if("undefined" != typeof v.media){
           if(typeof(v.media.type)=="undefined" || v.media.type=="url_content"){
             if("object" != typeof v.media)
@@ -285,7 +314,7 @@
               //// Fonction générant l'html
           } else if (v.media.type=="gallery_images")
             media=getMediaImages(v.media,e,v.author.id,v.target.name);
-          $("#result"+e).append(media);
+          $("#result"+e).html(media);
         }
         bindLBHLinks();
       });

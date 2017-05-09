@@ -701,7 +701,7 @@
 					return;
 		 		}
 
-				//mylog.warn("--------------- showMapElements ---------------------", data);
+				mylog.log("--------------- showMapElements ---------------------", data);
 				//mylog.log(data);
 				if(data == null) return;
 

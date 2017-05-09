@@ -1,4 +1,5 @@
 var formInMap = {
+	actived : false,
 	timeoutAddCity : null,
 	NE_insee : "",
 	NE_lat : "",
@@ -13,11 +14,6 @@ var formInMap = {
 
 	geoShape : "",
 
-	/*PC_postalCode : "",
-	PC_name : "",
-	PC_latitude : "",
-	PC_longitude : "",*/
-
 	typeSearchInternational : "",
 	formType : "",
 	updateLocality : false,
@@ -29,8 +25,9 @@ var formInMap = {
 
 
 	showMarkerNewElement : function(modePC){
-		mylog.log("showMarkerNewElement");
+		mylog.log("forminmap showMarkerNewElement");
 		Sig.clearMap();
+		formInMap.actived = true ;
 		formInMap.hiddenHtmlMap(true);
 
 		if(typeof Sig.myMarker != "undefined") 
@@ -242,10 +239,7 @@ var formInMap = {
 		});
 
 		$("#newElement_btnCancelAddress").click(function(){
-			formInMap.initVarNE();
-			formInMap.initHtml();
-			formInMap.hiddenHtmlMap(false);
-			formInMap.backToForm(true);
+			formInMap.cancel();
 		});
 	},
 
@@ -428,6 +422,7 @@ var formInMap = {
 
 	backToForm : function(cancel){
 		mylog.log("backToForm");
+		formInMap.actived = false ;
 		if(formInMap.modePostalCode == false ){
 			if(formInMap.updateLocality == false ){
 				if(notEmpty($("[name='newElement_lat']").val())){
@@ -520,6 +515,7 @@ var formInMap = {
 							// CO2 
 							$("#detailAddress").html(formInMap.seenAddress(locality.address.streetAddress, locality.address.postalCode, locality.address.addressLocality, locality.address.addressCountry, locality.address.codeInsee));
 							$(".cobtn,.whycobtn").hide();
+							$(".communecter-btn").addClass("hidden");
 
 							toastr.success(data.msg);
 							formInMap.initData();
@@ -571,7 +567,10 @@ var formInMap = {
 			cityNameCommunexion = locality.address.addressLocality ;
 			cpCommunexion = locality.address.postalCode ;
 			countryCommunexion = locality.address.addressCountry ;
-			setCookies("/");
+			//setCookies("/");
+			setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
+						  inseeCommunexion, cityNameCommunexion, cpCommunexion, 
+						  regionNameCommunexion, countryCommunexion);
 			formInMap.initData();
 			formInMap.hiddenHtmlMap(false);
 		}
@@ -580,7 +579,7 @@ var formInMap = {
 
 	changeMenuCommunextion : function(locality){
 		//Menu Left
-		$("#btn-geoloc-auto-menu").attr("href", "#city.detail.insee."+locality.address.codeInsee+".postalCode."+locality.address.postalCode);
+		/*$("#btn-geoloc-auto-menu").attr("href", "#city.detail.insee."+locality.address.codeInsee+".postalCode."+locality.address.postalCode);
 		$('#btn-geoloc-auto-menu > span.lbl-btn-menu').html(locality.address.addressLocality);
 		$("#btn-geoloc-auto-menu").attr("onclick", "");
 		$("#btn-geoloc-auto-menu").addClass("lbh");
@@ -593,7 +592,9 @@ var formInMap = {
 		$(".msg-scope-co").html("<i class='fa fa-home'></i> Vous êtes communecté à " + locality.address.addressLocality);
 		//MenuSmall
 		$(".hide-communected").hide();
-		$(".visible-communected").show();
+		$(".visible-communected").show();*/
+
+		
 	},
 
 	initDropdown : function(){ 
@@ -796,20 +797,13 @@ var formInMap = {
 			Sig.map.fitBounds(geoShape);
 			Sig.map.invalidateSize();
 		}, 1500);
+	},
+
+	cancel : function(){
+		formInMap.initVarNE();
+		formInMap.initHtml();
+		formInMap.hiddenHtmlMap(false);
+		formInMap.backToForm(true);
 	}
-
-
-
-	/*updateSummeryLocality : function (data){
-		mylog.log("updateSummeryLocality",data);
-		$('#insee_sumery_value').html(data.data("insee"));
-		$('#lat_sumery_value').html(data.data("lat"));
-		$('#lng_sumery_value').html(data.data("lng"));
-		$('#city_sumery_value').html(data.data("city"));
-		$('#dep_sumery_value').html(data.data("dep"));
-		$('#region_sumery_value').html(data.data("region"));
-		$('#country_sumery_value').html(data.data("country"));
-		$('#cp_sumery_value').html(data.data("cp"));
-	},*/
 
 };

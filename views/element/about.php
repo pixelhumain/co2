@@ -1,36 +1,4 @@
-<?php 
-	$cssAnsScriptFilesTheme = array(
-		//X-editable
-		//'/plugins/x-editable/css/bootstrap-editable.css',
-		//'/plugins/x-editable/js/bootstrap-editable.js' , 
-
-		//DatePicker
-		//'/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
-		//'/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js' ,
-		//'/plugins/bootstrap-datepicker/css/datepicker.css',
-		//	'/plugins/jquery.qrcode/jquery-qrcode.min.js',
-		//DateTime Picker
-		//'/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
-		//'/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js' , 
-		//'/plugins/bootstrap-datetimepicker/css/datetimepicker.css',
-		//Wysihtml5
-		//'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5.css',
-		//'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5-editor.css',
-		//'/plugins/wysihtml5/bootstrap3-wysihtml5/wysihtml5x-toolbar.min.js',
-		//'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5.min.js',
-		//'/plugins/wysihtml5/wysihtml5.js',
-		
-		//SELECT2
-		//'/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
-		//'/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js' ,
-
-		// SHOWDOWN
-		'/plugins/showdown/showdown.min.js',
-		//MARKDOWN
-		'/plugins/to-markdown/to-markdown.js',
-
-	);
-	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
+<?php
 	$cssAnsScriptFilesModule = array(
 		//Data helper
 		'/js/dataHelpers.js',
@@ -79,6 +47,11 @@
 	.descriptiontextarea label{
 		margin-left:10px;
 	}
+	@media (min-width: 1200px) {
+		.no-ing{
+			padding-left: 15px !important;
+		}
+	}
 </style>
 
 <div class='col-md-12 margin-bottom-15'>
@@ -100,22 +73,28 @@
 	</div>
 	<div class="panel-body no-padding">
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-			<div class="col-md-3 col-sm-3 col-xs-3 labelAbout padding-10">
+			<div class="col-md-3 col-sm-3 col-xs-3 hidden-xs labelAbout padding-10">
 				<span><i class="fa fa-quote-left"></i></span> <?php echo Yii::t("common", "Short description") ?>
 			</div>
-			<div id="shortDescriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10"><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?></div>
+			<div id="shortDescriptionAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+				<span class="visible-xs col-xs-12 no-padding"><i class="fa fa-quote-left"></i> <?php echo Yii::t("common", "Short description") ?>:
+				</span><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+			</div>
 			<span id="shortDescriptionAboutEdit" name="shortDescriptionAboutEdit"  class="col-xs-12 hidden" ><?php echo (!empty($element["shortDescription"])) ? $element["shortDescription"] : ""; ?></span>
 		</div>
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-			<div class="col-md-3 col-sm-3 col-xs-3 labelAbout padding-10">
+			<div class="col-md-3 col-sm-3 col-xs-3 hidden-xs labelAbout padding-10">
 				<span><i class="fa fa-paragraph"></i></span> <?php echo Yii::t("common", "Description") ?>
 			</div>
-			<div id="descriptionAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10" 
+			<div class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10" 
 					style="word-wrap: break-word; overflow:hidden;">
-				<?php echo (@$element["description"]) ? $element["description"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+				<span class="visible-xs col-xs-12 no-padding">
+					<i class="fa fa-paragraph"></i> <?php echo Yii::t("common", "Description") ?>:
+				</span>
+				<div id="descriptionAbout"><?php echo (@$element["description"]) ? $element["description"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+				</div>
 			</div>
 		</div>
-		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="col-xs-12 hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
 	</div>
 </div>
 <div id="ficheInfo" class="panel panel-white col-lg-8 col-md-12 col-sm-12 no-padding shadow2">
@@ -133,40 +112,40 @@
 	</div>
 	<div class="panel-body no-padding">
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-			<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+			<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 				<span><i class="fa fa-pencil"></i></span> <?php echo Yii::t("common", "Name") ?>
 			</div>
-			<div id="nameAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-				<?php echo $element["name"]; ?>
+			<div id="nameAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+				<span class="visible-xs pull-left margin-right-5"><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Name") ?> :</span> <?php echo $element["name"]; ?>
 			</div>
 		</div>
 		<?php if($type==Project::COLLECTION && @$avancement){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-cycle"></i></span> <?php echo Yii::t("project","Project maturity"); ?>
 				</div>
-				<div  id="avancementAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-					<?php echo (@$avancement) ? Yii::t("project",$avancement) : '<i>'.Yii::t("common","Not specified").'</i>' ?>
+				<div  id="avancementAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-cycle"></i> <?php echo Yii::t("project","Project maturity"); ?> :</span><?php echo (@$avancement) ? Yii::t("project",$avancement) : '<i>'.Yii::t("common","Not specified").'</i>' ?>
 				</div>
 			</div>
 		<?php } ?>
 
 		<?php if($type==Person::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-user-secret"></i></span> <?php echo Yii::t("common","Username"); ?>
 				</div>
-				<div id="usernameAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-					<?php echo (@$element["username"]) ? $element["username"] : '<i>'.Yii::t("common","Not specified").'</i>' ?>
+				<div id="usernameAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-user-secret"></i><?php echo Yii::t("common","Username"); ?> :</span><?php echo (@$element["username"]) ? $element["username"] : '<i>'.Yii::t("common","Not specified").'</i>' ?>
 				</div>
 			</div>
 		<?php if(Preference::showPreference($element, $type, "birthDate", Yii::app()->session["userId"])){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-birthday-cake"></i></span> <?php echo Yii::t("person","Birth date"); ?>
 				</div>
-				<div id="birthDateAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-					<?php echo (@$element["birthDate"]) ? date("d/m/Y", strtotime($element["birthDate"]))  : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+				<div id="birthDateAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-birthday-cake"></i> <?php echo Yii::t("person","Birth date"); ?> :</span><?php echo (@$element["birthDate"]) ? date("d/m/Y", strtotime($element["birthDate"]))  : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 				</div>
 			</div>
 		<?php }
@@ -175,11 +154,11 @@
 
  		if($type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
  				<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-					<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+					<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 						<span><i class="fa fa-angle-right"></i></span><?php echo Yii::t("common", "Type"); ?> 
 					</div>
-					<div id="typeAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-						<?php echo (@$element["type"]) ? Yii::t("common", $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+					<div id="typeAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span><?php echo (@$element["type"]) ? Yii::t("common", $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 					</div>
 				</div>
 		<?php }
@@ -188,20 +167,20 @@
 				Preference::showPreference($element, $type, "email", Yii::app()->session["userId"]) ) || 
 		  	$type!=Person::COLLECTION ) { ?>
 		  	<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-envelope"></i></span> <?php echo Yii::t("common","E-mail"); ?>
 				</div>
-				<div id="emailAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-					<?php echo (@$element["email"]) ? $element["email"]  : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+				<div id="emailAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-envelope"></i> <?php echo Yii::t("common","E-mail"); ?> :</span><?php echo (@$element["email"]) ? $element["email"]  : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 				</div>
 			</div>
 		<?php } ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-desktop"></i></span> <?php echo Yii::t("common","Website URL"); ?>
 				</div>
-				<div id="webAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-
+				<div id="webAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-desktop"></i> <?php echo Yii::t("common","Website URL"); ?> :</span>
 				<?php 
 					if(@$element["url"]){
 						//If there is no http:// in the url
@@ -213,11 +192,11 @@
 			</div>
 		<?php  if($type==Organization::COLLECTION || $type==Person::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-phone"></i></span> <?php echo Yii::t("common","Phone"); ?>
 				</div>
-				<div id="fixeAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
-					<?php
+				<div id="fixeAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-phone"></i> <?php echo Yii::t("common","Phone"); ?> :</span><?php
 						$fixe = '<i>'.Yii::t("common","Not specified").'</i>';
 						if( !empty($element["telephone"]["fixe"]))
 							$fixe = ArrayHelper::arrayToString($element["telephone"]["fixe"]);
@@ -227,10 +206,13 @@
 				</div>
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-mobile"></i></span> <?php echo Yii::t("common","Mobile"); ?>
 				</div>
-				<div id="mobileAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
+				<div id="mobileAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5">
+						<i class="fa fa-mobile"></i> <?php echo Yii::t("common","Mobile"); ?> :
+					</span>
 					<?php
 						$mobile = '<i>'.Yii::t("common","Not specified").'</i>';
 						if( !empty($element["telephone"]["mobile"]))
@@ -240,10 +222,13 @@
 				</div>
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-fax"></i></span> <?php echo Yii::t("common","Fax"); ?>
 				</div>
-				<div id="faxAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
+				<div id="faxAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5">
+						<i class="fa fa-fax"></i> <?php echo Yii::t("common","Fax"); ?> :
+					</span>
 					<?php
 						$fax = '<i>'.Yii::t("common","Not specified").'</i>';
 						if( !empty($element["telephone"]["fax"]) )
@@ -255,10 +240,13 @@
 		<?php } ?>
 
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 labelAbout padding-10">
-					<span><i class="fa fa-desktop"></i></span> <?php echo Yii::t("common","Tags"); ?>
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
+					<span><i class="fa fa-hashtag"></i></span> <?php echo Yii::t("common","Tags"); ?>
 				</div>
-				<div id="tagsAbout" class="col-md-8 col-sm-8 col-xs-8 valueAbout padding-10">
+				<div id="tagsAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5">
+						<i class="fa fa-hashtag"></i> <?php echo Yii::t("common","Tags"); ?> :
+					</span>
 					<?php 	if(!empty($element["tags"])){
 								foreach ($element["tags"]  as $key => $tag) { 
 		        					echo '<span class="badge letter-red bg-white">'.$tag.'</span>';
@@ -272,7 +260,7 @@
 	
 </div>
 
-<div class="no-ing col-lg-4 col-md-12 col-sm-12">
+<div class="no-ing col-lg-4 col-md-12 col-sm-12 col-xs-12 no-padding">
 <?php if($type==Event::COLLECTION || $type==Project::COLLECTION){ ?>
 		<div id="socialAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding shadow2">
 			<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
@@ -280,7 +268,7 @@
 					<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common","When"); ?>
 				</h4>
 				<?php if($edit==true || $openEdition==true ){?>
-					<button class="btn-update-network btn btn-default letter-blue pull-right tooltips" 
+					<button class="btn-update-when btn btn-default letter-blue pull-right tooltips" 
 						data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update network") ?>">
 						<b><i class="fa fa-pencil"></i></b>
 					</button>
@@ -320,11 +308,11 @@
 
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 labelAbout padding-10">
 				<span><i class="fa fa-home"></i></span> <?php echo Yii::t("common", "Main locality") ?>
-				<?php if (!empty($element["address"]["codeInsee"]) && !empty($element["address"]["codeInsee"]) && $edit==true || $openEdition==true ){ 
+				<?php if (!empty($element["address"]["codeInsee"]) && ( $edit==true || $openEdition==true ) ) { 
 					echo '<a href="javascript:;" id="btn-remove-geopos" class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Remove Locality").'">
 								<i class="fa text-red fa-trash-o"></i>
 							</a> 
-							<a href="javascript:;" id="btn-update-geopos" class="pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Update Locality").'" >
+							<a href="javascript:;" class="btn-update-geopos pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Update Locality").'" >
 								<i class="fa text-red fa-map-marker"></i>
 							</a> ';	
 				} ?>
@@ -347,7 +335,7 @@
 					 				: "").
 					 			'</span>';
 					echo $address;
-					if(empty($element["address"]["codeInsee"]) && $type==Person::COLLECTION && $edit==true) {
+					if( empty($element["address"]["codeInsee"]) && Yii::app()->session["userId"] == (String) $element["_id"]) {
 						echo '<a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.Yii::t("common", "Connect to your city").'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe" >'. Yii::t("common", "Why ?").'</a>';
 					}
 			}else
@@ -389,7 +377,7 @@
 		<?php } ?>
 		<div class="text-right padding-10">
 			<?php if(empty($element["address"]) && $type!=Person::COLLECTION && ($edit==true || $openEdition==true )){ ?>
-				<b><a href="javascript:;" class="btn btn-default letter-blue margin-top-5 addresses" id="btn-update-geopos">
+				<b><a href="javascript:;" class="btn btn-default letter-blue margin-top-5 addresses btn-update-geopos">
 					<i class="fa fa-map-marker"></i>
 					<span class="hidden-sm"><?php echo Yii::t("common","Add a primary address") ; ?></span>
 				</a></b>
@@ -483,7 +471,7 @@
 			communecterUser();				
 		});
 
-		$("#btn-update-geopos").click(function(){
+		$(".btn-update-geopos").click(function(){
 			updateLocalityEntities();
 		});
 
@@ -545,15 +533,17 @@
 										//MenuSmall
 										$(".hide-communected").show();
 										$(".visible-communected").hide();
+
+										$(".communecter-btn").removeClass("hidden");
 										//COOKIES
-										$.cookie('communexionActivated', false, { expires: 365, path: location.pathname });
+										/*$.cookie('communexionActivated', false, { expires: 365, path: location.pathname });
 										$.cookie('communexionType', false, { expires: 365, path: location.pathname });
     									$.cookie('communexionValue', false, { expires: 365, path: location.pathname });
     									$.cookie('communexionName', false, { expires: 365, path: location.pathname });
-    									$.cookie('communexionLevel', false, { expires: 365, path: location.pathname });
+    									$.cookie('communexionLevel', false, { expires: 365, path: location.pathname });*/
 									}
 									toastr.success(data.msg);
-									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id);
+									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 
 						    	}
 						    }
@@ -600,57 +590,7 @@
 	    $('#dateTimezone').attr('data-original-title', "Fuseau horaire : GMT " + moment().local().format("Z"));
 	}
 
-	function descHtmlToMarkdown() {
-		mylog.log("htmlToMarkdown");
-		if(typeof contextData.descriptionHTML != "undefined" && contextData.descriptionHTML == true) {
-			mylog.log("htmlToMarkdown");
-			if( $("#descriptionAbout").html() != "" ){
-				var paramSpan = {
-				  filter: ['span'],
-				  replacement: function(innerHTML, node) {
-				    return innerHTML;
-				  }
-				}
-				var paramDiv = {
-				  filter: ['div'],
-				  replacement: function(innerHTML, node) {
-				    return innerHTML;
-				  }
-				}
-				mylog.log("htmlToMarkdown2");
-				var converters = { converters: [paramSpan, paramDiv] };
-				var descToMarkdown = toMarkdown( $("#descriptionAbout").html(), converters ) ;
-				mylog.log("descToMarkdown", descToMarkdown);
-				$("descriptionMarkdown").html(descToMarkdown);
-				var param = new Object;
-				param.name = "description";
-				param.value = descToMarkdown;
-				param.id = contextData.id;
-				param.typeElement = contextData.type;
-				param.block = "toMarkdown";
-				$.ajax({
-			        type: "POST",
-			       	url : baseUrl+"/"+moduleId+"/element/updateblock/",
-			        data: param,
-			       	dataType: "json",
-			    	success: function(data){
-			    		mylog.log("here");
-				    	toastr.success(data.msg);
-				    	
-				    }
-				});
-				mylog.log("param", param);
-			}
-		}
-	}
-
-	function inintDescs() {
-		mylog.log("inintDescs");
-		if(edit == true || openEdition== true)
-			descHtmlToMarkdown();
-		mylog.log("after");
-		$("#descriptionAbout").html(dataHelper.markdownToHtml($("#descriptionMarkdown").html()));
-	}
+	
 
 	
 

@@ -1337,5 +1337,9 @@ class DatamigrationController extends CommunecterController {
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
+	public function actionCookie(){
+		Person::updateCookieCommunexion("58294e5894ef47900dc7cd9e", null);
+	}
+
 }
 

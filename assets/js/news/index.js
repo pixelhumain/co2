@@ -119,7 +119,7 @@ function buildTimeLine (news, indexMin, indexMax)
 	//mylog.log(news);
 	$.each( news , function(key,newsObj)
 	{
-		console.log(newsObj);
+		//console.log(newsObj);
 		if(newsObj.created)
 		{
 			if(typeof(newsObj.created) == "object")
@@ -1064,7 +1064,7 @@ function saveNews(){
 				//plugins/showdown/showdown.min.js
 				//plugins/showdown/showdown.min.js // bootstrap-markdown
 				// example in editInPlace.js /assets/js/
-				console.log(newNews.text);
+				//console.log(newNews.text);
 				//alert(newNews.text);
 				if($('#authorIsTarget').length && $('#authorIsTarget').val()==1)
 					newNews.targetIsAuthor = true;

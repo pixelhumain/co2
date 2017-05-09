@@ -21,7 +21,7 @@ class AppController extends CommunecterController {
 	        'live'    			=> 'citizenToolKit.controllers.app.LiveAction',
 	        'savereferencement' => 'citizenToolKit.controllers.app.SaveReferencementAction',
 	        'mediacrawler'  	=> 'citizenToolKit.controllers.app.MediaCrawlerAction',
-            //'superadmin'        => 'citizenToolKit.controllers.app.SuperAdminAction',
+            'superadmin'        => 'citizenToolKit.controllers.app.SuperAdminAction',
             //'sendmailformcontact' => 'citizenToolKit.controllers.app.SendMailFormContactAction',
             'checkurlexists' => 'citizenToolKit.controllers.app.CheckUrlExistsAction',
 	    );
@@ -187,7 +187,7 @@ class AppController extends CommunecterController {
     }
 
 
-	public function actionPage($type, $id, $view=null){
+	public function actionPage($type, $id, $view=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
         
         if( $type == Person::COLLECTION  || $type == Event::COLLECTION || 
@@ -210,6 +210,7 @@ class AppController extends CommunecterController {
         $params = array("id" => @$id,
                         "type" => @$type,
                         "view" => @$view,
+                        "dir" => @$dir,
                         "subdomain" => "page",
                         "mainTitle" => "Page perso",
                         "placeholderMainSearch" => "",

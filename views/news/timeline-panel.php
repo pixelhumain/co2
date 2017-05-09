@@ -152,7 +152,8 @@
 
   <div class="timeline-body  col-md-12 text-left margin-bottom-10">
     <?php if(!empty(@$media["text"])){ ?>
-    <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent no-padding"><?php echo $media["text"]; ?>
+    <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent no-padding">
+      <?php echo $media["text"]; ?>
     </div>
     <?php } ?>
     <?php if(@$media["tags"]) 
@@ -172,8 +173,8 @@
       <!-- <h4><a target="_blank" href="<?php echo @$media["href"]; ?>"><?php echo @$media["title"]; ?></a></h4> -->
     
       <?php if(!empty(@$media["object"])){ ?>
-      <div id="newsActivityStream<?php echo $media["object"]["id"]; ?>" data-pk="<?php echo $key ?>" 
-           class="col-md-12 no-padding margin-bottom-10" 
+      <div id="" data-pk="<?php echo $key ?>" 
+           class="col-md-12 no-padding margin-bottom-10 newsActivityStream<?php echo $media["object"]["id"]; ?>" 
                 <?php if(@$media["object"]["type"] == "news"){ ?>style="border:1px solid #E3E3E3;"<?php } ?>>
         <?php 
              if(@$media["object"]["type"] == "news")

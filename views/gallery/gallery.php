@@ -113,7 +113,6 @@ var contextName = "<?php echo addslashes(@$contextName); ?>";
 var contextIcon = "<?php echo $contextIcon; ?>";
 jQuery(document).ready(function() {
  	activeMenuElement("gallery");
-	setTitle("Galerie photos de " + contextName,contextIcon);
 	initGrid();
 	$(".portfolio-item").mouseenter(function(){
 		$(this).find(".tools.tools-bottom").show();

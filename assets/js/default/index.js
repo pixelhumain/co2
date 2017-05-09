@@ -100,6 +100,10 @@ function showNotif(show){
     	markAllAsSeen(false,"");
     }
 	else 	 $('#notificationPanelSearch').hide("fast");
+
+	
+	$("#dropdown-user").removeClass("open");
+    showFloopDrawer(false);
 }
 
 function checkScroll(){
@@ -597,10 +601,10 @@ function setCookies(path){ mylog.log("setCookies", path);
 			communexionType = "cp"
 		Sinon 
 			communexionType = "city"
-		*/
+		
 		$.cookie('communexionType', communexion.currentLevel, { expires: 365, path: location.pathname });
         $.cookie('communexionValue', communexion.currentValue, { expires: 365, path: location.pathname });
         $.cookie('communexionName', communexion.currentName, { expires: 365, path: location.pathname });
-        $.cookie('communexionLevel', communexion.levelMinCommunexion, { expires: 365, path: location.pathname });
+        $.cookie('communexionLevel', communexion.levelMinCommunexion, { expires: 365, path: location.pathname });*/
 	//}
 }

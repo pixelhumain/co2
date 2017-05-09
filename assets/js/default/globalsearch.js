@@ -220,7 +220,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               //ajout du footer   
               str += '<div class="text-center" id="footerDropdownGS">';
               str += "<label class='text-dark'>" + totalDataGSMSG + "</label><br/>";
-              str += '<a href="#social" class="btn btn-default btn-sm" id="btnShowMoreResultGS">'+
+              str += '<a href="#search" class="btn btn-default btn-sm lbh" id="btnShowMoreResultGS">'+
                         '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> Recherche étendue'+
                       '</a>';
               str += '</div>';

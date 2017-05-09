@@ -487,13 +487,12 @@ class CommunecterController extends Controller
       ),
     "interoperability" => array(
       "index"              => array('href' => 'ph/communecter/interoperability/index',  "public" => true),
+      "get"              => array('href' => 'ph/communecter/interoperability/get',  "public" => true),
       ),
-      "rooms" => array('href' => "/ph/communecter/app/rooms", "public" => true),
-      "survey" => array('href' => "/ph/communecter/app/survey", "public" => true),
-    ),
+    "rooms" => array('href' => "/ph/communecter/app/rooms", "public" => true),
+    "survey" => array('href' => "/ph/communecter/app/survey", "public" => true),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick"),
-    
 
     ),
   );

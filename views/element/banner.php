@@ -164,13 +164,14 @@
 					</span>
 				<?php } ?>
 			<?php } ?>
-			<?php if(@$element["tags"]){ ?>
-				<div class="header-tags pull-left">
-				<?php foreach ($element["tags"] as $key => $tag) { ?>
+			<div class="header-tags pull-left">
+			<?php 
+			if(@$element["tags"]){ 
+				foreach ($element["tags"] as $key => $tag) { ?>
 					<span class="badge letter-red bg-white" style="vertical-align: top;">#<?php echo $tag; ?></span>
-				<?php } ?>
-				</div>
-			<?php } ?>
+				<?php } 
+			} ?>
+			</div>
 			</div>
 		<?php } ?>
 		

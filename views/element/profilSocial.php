@@ -10,12 +10,16 @@
 				'/css/default/directory.css',	
 				'/js/comments.js',
 				'/css/profilSocial.css',
-				) , 
+		) , 
 	Yii::app()->theme->baseUrl. '/assets');
 
 	$cssAnsScriptFilesTheme = array(
 		"/plugins/jquery-cropbox/jquery.cropbox.css",
 		"/plugins/jquery-cropbox/jquery.cropbox.js",
+		// SHOWDOWN
+		'/plugins/showdown/showdown.min.js',
+		//MARKDOWN
+		'/plugins/to-markdown/to-markdown.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	
@@ -330,9 +334,12 @@
 				<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
 					<b><i class="fa fa-angle-down"></i> 
 					<i class="fa fa-info-circle"></i> Description principale</b>
-					<hr><?php echo 	@$element["description"] && @$element["description"]!="" ? 
+					<hr>
+					<span id="descProfilsocial">
+						<?php echo 	@$element["description"] && @$element["description"]!="" ? 
 									@$element["description"] : 
 									"<span class='label label-info'>Aucune description enregistrée</span>"; ?>
+					</span>
 				</span>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
@@ -343,6 +350,8 @@
 				<hr>
 			</div>
 		<?php }else{ $marginCentral="50"; } ?>
+		<!-- Permet de faire le convertion en HTML -->
+		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
 
 	    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-<?php echo $marginCentral; ?>" id="central-container">
 		</div>
@@ -405,7 +414,7 @@
 	
 	jQuery(document).ready(function() {
 		bindButtonMenu();
-
+		inintDescs();
 		if(typeof contextData.name !="undefined")
 		setTitle("", "", contextData.name);
 

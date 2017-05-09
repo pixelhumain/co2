@@ -1,36 +1,4 @@
-<?php 
-	$cssAnsScriptFilesTheme = array(
-		//X-editable
-		//'/plugins/x-editable/css/bootstrap-editable.css',
-		//'/plugins/x-editable/js/bootstrap-editable.js' , 
-
-		//DatePicker
-		//'/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
-		//'/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js' ,
-		//'/plugins/bootstrap-datepicker/css/datepicker.css',
-		//	'/plugins/jquery.qrcode/jquery-qrcode.min.js',
-		//DateTime Picker
-		//'/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
-		//'/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js' , 
-		//'/plugins/bootstrap-datetimepicker/css/datetimepicker.css',
-		//Wysihtml5
-		//'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5.css',
-		//'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5-editor.css',
-		//'/plugins/wysihtml5/bootstrap3-wysihtml5/wysihtml5x-toolbar.min.js',
-		//'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5.min.js',
-		//'/plugins/wysihtml5/wysihtml5.js',
-		
-		//SELECT2
-		//'/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
-		//'/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js' ,
-
-		// SHOWDOWN
-		'/plugins/showdown/showdown.min.js',
-		//MARKDOWN
-		'/plugins/to-markdown/to-markdown.js',
-
-	);
-	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
+<?php
 	$cssAnsScriptFilesModule = array(
 		//Data helper
 		'/js/dataHelpers.js',
@@ -127,7 +95,6 @@
 				</div>
 			</div>
 		</div>
-		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="col-xs-12 hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
 	</div>
 </div>
 <div id="ficheInfo" class="panel panel-white col-lg-8 col-md-12 col-sm-12 no-padding shadow2">
@@ -623,57 +590,7 @@
 	    $('#dateTimezone').attr('data-original-title', "Fuseau horaire : GMT " + moment().local().format("Z"));
 	}
 
-	function descHtmlToMarkdown() {
-		mylog.log("htmlToMarkdown");
-		if(typeof contextData.descriptionHTML != "undefined" && contextData.descriptionHTML == true) {
-			mylog.log("htmlToMarkdown");
-			if( $("#descriptionAbout").html() != "" ){
-				var paramSpan = {
-				  filter: ['span'],
-				  replacement: function(innerHTML, node) {
-				    return innerHTML;
-				  }
-				}
-				var paramDiv = {
-				  filter: ['div'],
-				  replacement: function(innerHTML, node) {
-				    return innerHTML;
-				  }
-				}
-				mylog.log("htmlToMarkdown2");
-				var converters = { converters: [paramSpan, paramDiv] };
-				var descToMarkdown = toMarkdown( $("#descriptionAbout").html(), converters ) ;
-				mylog.log("descToMarkdown", descToMarkdown);
-				$("descriptionMarkdown").html(descToMarkdown);
-				var param = new Object;
-				param.name = "description";
-				param.value = descToMarkdown;
-				param.id = contextData.id;
-				param.typeElement = contextData.type;
-				param.block = "toMarkdown";
-				$.ajax({
-			        type: "POST",
-			       	url : baseUrl+"/"+moduleId+"/element/updateblock/",
-			        data: param,
-			       	dataType: "json",
-			    	success: function(data){
-			    		mylog.log("here");
-				    	toastr.success(data.msg);
-				    	
-				    }
-				});
-				mylog.log("param", param);
-			}
-		}
-	}
-
-	function inintDescs() {
-		mylog.log("inintDescs");
-		if(edit == true || openEdition== true)
-			descHtmlToMarkdown();
-		mylog.log("after");
-		$("#descriptionAbout").html(dataHelper.markdownToHtml($("#descriptionMarkdown").html()));
-	}
+	
 
 	
 

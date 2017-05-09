@@ -548,3 +548,57 @@ function loadLiveNow () {
 function showLoader(id){
 	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 }
+
+function descHtmlToMarkdown() {
+	mylog.log("htmlToMarkdown");
+	if(typeof contextData.descriptionHTML != "undefined" && contextData.descriptionHTML == true) {
+		mylog.log("htmlToMarkdown");
+		if( $("#descriptionAbout").html() != "" ){
+			var paramSpan = {
+			  filter: ['span'],
+			  replacement: function(innerHTML, node) {
+			    return innerHTML;
+			  }
+			}
+			var paramDiv = {
+			  filter: ['div'],
+			  replacement: function(innerHTML, node) {
+			    return innerHTML;
+			  }
+			}
+			mylog.log("htmlToMarkdown2");
+			var converters = { converters: [paramSpan, paramDiv] };
+			var descToMarkdown = toMarkdown( $("#descriptionMarkdown").html(), converters ) ;
+			mylog.log("descToMarkdown", descToMarkdown);
+			$("descriptionMarkdown").html(descToMarkdown);
+			var param = new Object;
+			param.name = "description";
+			param.value = descToMarkdown;
+			param.id = contextData.id;
+			param.typeElement = contextData.type;
+			param.block = "toMarkdown";
+			$.ajax({
+		        type: "POST",
+		       	url : baseUrl+"/"+moduleId+"/element/updateblock/",
+		        data: param,
+		       	dataType: "json",
+		    	success: function(data){
+		    		mylog.log("here");
+			    	//toastr.success(data.msg);
+			    	
+			    }
+			});
+			mylog.log("param", param);
+		}
+	}
+}
+
+function inintDescs() {
+	mylog.log("inintDescs");
+	if(edit == true || openEdition== true)
+		descHtmlToMarkdown();
+	mylog.log("after");
+	var descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
+	$("#descriptionAbout").html(descHtml);
+	$("#descProfilsocial").html(descHtml);
+}

@@ -24,7 +24,7 @@ function bindAboutPodElement() {
 	}
 
 	function updateCalendar() {
-		if(contextData.type == EVENT_COLLECTION){
+		if(contextData.type == typeObj.event.col){
 			getAjax(".calendar",baseUrl+"/"+moduleId+"/event/calendarview/id/"+contextData.id +"/pod/1?date=1",null,"html");
 		}
 	}
@@ -162,7 +162,7 @@ function bindAboutPodElement() {
 
 	function bindDynFormEditable(){
 
-		$("#btn-update-when").off().on( "click", function(){
+		$(".btn-update-when").off().on( "click", function(){
 
 
 			var form = {
@@ -174,7 +174,8 @@ function bindAboutPodElement() {
 						onLoads : {
 							initWhen : function(){
 								if(notNull(contextData.allDay) && contextData.allDay == true)
-									$("#ajaxFormModal #allDay").attr("checked");
+									$("#ajaxFormModal #allDay").bootstrapSwitch('state', true, true);
+								
 							}
 						},
 						beforeSave : function(){
@@ -202,9 +203,11 @@ function bindAboutPodElement() {
 								if(typeof data.resultGoods.values.endDate != "undefined"){
 									contextData.endDate = data.resultGoods.values.endDate;
 									$("#contentGeneralInfos #endDate").html(moment(contextData.endDate).local().format(formatDateView));
-								}  
+								}
+								initDateHeaderPage(contextData);
 								updateCalendar();
 							}
+							urlCtrl.loadByHash(location.hash);
 							dyFObj.closeForm();
 						},
 						properties : {
@@ -216,7 +219,7 @@ function bindAboutPodElement() {
 				}
 			};
 
-			if(contextData.type == "<?php echo Event::COLLECTION; ?>"){
+			if(contextData.type == typeObj.event.col){
 				form.dynForm.jsonSchema.properties.allDay = dyFInputs.allDay;
 			}
 
@@ -229,11 +232,11 @@ function bindAboutPodElement() {
 		        typeElement : contextData.type,
 			};
 			
-			if(notEmpty(contextData.startDate))
-				dataUpdate.startDate = moment(contextData.startDate).local().format(formatDatedynForm);
+			if(notEmpty(contextData.startDateDB))
+				dataUpdate.startDate = moment(contextData.startDateDB).local().format(formatDatedynForm);
 
-			if(notEmpty(contextData.endDate))
-				dataUpdate.endDate = moment(contextData.endDate).local().format(formatDatedynForm);
+			if(notEmpty(contextData.endDateDB))
+				dataUpdate.endDate = moment(contextData.endDateDB).local().format(formatDatedynForm);
 
 			mylog.log("btn-update-when", form, dataUpdate);
 			dyFObj.openForm(form, "initWhen", dataUpdate);
@@ -377,6 +380,10 @@ function bindAboutPodElement() {
 				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
 			}
 
+			if(contextData.type == typeObj.event.col ){
+				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'événement", "Type d'événement", eventTypes, { required : true });
+			}
+
 			if(contextData.type == typeObj.project.col ){
 				form.dynForm.jsonSchema.properties.avancement = dyFInputs.inputSelect("L'avancement du project", "Avancement du projet", avancementProject);
 			}
@@ -413,6 +420,12 @@ function bindAboutPodElement() {
 				if(notEmpty(contextData.typeOrga))
 					dataUpdate.type = contextData.typeOrga;
 			}
+
+			if(contextData.type == typeObj.event.col ){
+				if(notEmpty(contextData.typeEvent))
+					dataUpdate.type = contextData.typeEvent;
+			}
+
 			if(contextData.type == typeObj.project.col ){
 				if(notEmpty(contextData.avancement))
 					dataUpdate.avancement = contextData.avancement;

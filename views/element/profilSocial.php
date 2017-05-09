@@ -398,7 +398,7 @@
 
 <script type="text/javascript">
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
-
+	mylog.log("init contextData", contextData);
     var params = <?php echo json_encode(@$params); ?>;
     var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false ); 
 	var openEdition = ( ( '<?php echo (@$openEdition == true); ?>' == "1") ? true : false );

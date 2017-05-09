@@ -182,19 +182,18 @@
 		</div>
 		
 		<div class="btn-group pull-right">
-
-		  	
+	  	
 			<?php if($element["_id"] == Yii::app()->session["userId"] && 
 			  			Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
 			  <!--<button type="button" class="btn btn-default bold lbh" data-hash="#admin">
 			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
 			  </button>-->
 			
-			  <button type="button" class="btn btn-default bold" id="btn-superadmin">
+			  <button type="button" class="btn btn-default bold tooltips" data-placement="left" 
+						data-original-title="super admin" id="btn-superadmin">
 			  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
 			  </button>
 			  <?php } ?>
-
 
 		</div>
 
@@ -203,13 +202,16 @@
 		<div class="btn-group pull-right" id="paramsMenu">
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
-					<button type="button" class="btn btn-default bold">
+					<!-- <button type="button" class="btn btn-default bold">
 						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm"><?php echo Yii::t("common", "Settings"); ?>
 			  			<?php }else{ ?>
 			  			<i class="fa fa-plus"></i> <span class="hidden-xs hidden-sm"><?php echo Yii::t("common", "More"); ?>
 			  			<?php } ?>
 			  			</span>
+			  		</button> -->
+			  		<button type="button" class="btn btn-default bold">
+						<i class="fa fa-chevron-down"></i>
 			  		</button>
 			  		<ul class="dropdown-menu arrow_box menu-params">
 	                	<?php $this->renderPartial('../element/linksMenu', 
@@ -270,6 +272,7 @@
 		  		</li>
 		  	</ul>
 		</div>
+	    <?php } ?>
 
 	  	<?php if(isset(Yii::app()->session["userId"]) && $typeItem!=Person::COLLECTION){ ?>
 			<div class="btn-group pull-right">
@@ -283,8 +286,8 @@
 	</div>
 
 	
-	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial hidden-xs" style="margin-top:40px;">  
-		
+	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial hidden-xs" 
+			style="margin-top:40px;">  		
 	    <?php 
 	    	$params = array(    "element" => @$element, 
                                 "type" => @$type, 
@@ -309,40 +312,42 @@
 	    	$this->renderPartial('../pod/menuLeftElement', $params ); 
 	    ?>
 	</div>
+
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section"">
 		
 		<?php   $classDescH=""; 
 				$classBtnDescH="<i class='fa fa-angle-up'></i> masquer"; 
 				$marginCentral="";
-				if(!@$element["description"] || @$linksBtn["isFollowing"]==true || @$linksBtn["isMember"]==true){
+				if(!@$element["description"] || @$linksBtn["isFollowing"]==true || 
+					@$linksBtn["isMember"]==true){
 					$classDescH="hidden"; 
 					$classBtnDescH="<i class='fa fa-angle-down'></i> afficher la description"; 
 				}
 
-				if($typeItem != Person::COLLECTION){ 
+		if($typeItem != Person::COLLECTION){ 
 		?>
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:45px;">
-			<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
-				<b><i class="fa fa-angle-down"></i> <i class="fa fa-info-circle"></i> Description principale</b>
-				<hr><?php echo 	@$element["description"] && @$element["description"]!="" ? 
-								@$element["description"] : 
-								"<span class='label label-info'>Aucune description enregistrée</span>"; ?>
-			</span>
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
-			<button class="btn btn-default btn-xs pull-right margin-right-15" id="btn-hide-desc">
-				<?php echo $classBtnDescH; ?>
-			</button>
-			<br>
-			<hr>
-		</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:45px;">
+				<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
+					<b><i class="fa fa-angle-down"></i> 
+					<i class="fa fa-info-circle"></i> Description principale</b>
+					<hr><?php echo 	@$element["description"] && @$element["description"]!="" ? 
+									@$element["description"] : 
+									"<span class='label label-info'>Aucune description enregistrée</span>"; ?>
+				</span>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
+				<button class="btn btn-default btn-xs pull-right margin-right-15" id="btn-hide-desc">
+					<?php echo $classBtnDescH; ?>
+				</button>
+				<br>
+				<hr>
+			</div>
 		<?php }else{ $marginCentral="50"; } ?>
 
 	    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-<?php echo $marginCentral; ?>" id="central-container">
 		</div>
 
-		<?php $this->renderPartial('../pod/qrcode',array(
-																"type" => @$type,
+		<?php $this->renderPartial('../pod/qrcode',array(		"type" => @$type,
 																"name" => @$element['name'],
 																"address" => @$address,
 																"address2" => @$address2,
@@ -352,7 +357,8 @@
 																"img"=>@$element['profilThumbImageUrl']));
 																?>
 
-		<div class="col-md-3 col-lg-3 hidden-sm hidden-xs margin-top-<?php echo $marginCentral; ?>" id="notif-column">
+		<div class="col-md-3 col-lg-3 hidden-sm hidden-xs margin-top-<?php echo $marginCentral; ?>" 
+			 id="notif-column">
 		</div>
 	</section>
 </div>	

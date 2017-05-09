@@ -62,40 +62,6 @@
 
 <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-left no-padding" id="col-banner">
     
-    <?php if(!empty($element["badges"]) || $openEdition == true ){ ?>
-    <div class="section-badges pull-right">
-		<div class="no-padding">
-			<?php if(!empty($element["badges"])){?>
-				<?php if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
-					<div class="badgePH pull-left" data-title="OPENDATA">
-						<span class="pull-left tooltips" data-toggle="tooltip" data-placement="left" 
-							  title="Les données sont ouvertes." style="font-size: 13px; line-height: 30px;">
-							<span class="fa-stack opendata" style="width:17px">
-								<i class="fa fa-database main fa-stack-1x" style="font-size: 20px;"></i>
-								<i class="fa fa-share-alt  mainTop fa-stack-1x text-white" 
-									style="text-shadow: 0px 0px 2px rgb(15,15,15);"></i>
-							</span> 
-							<?php echo Yii::t("common","Open data") ?>
-						</span>
-					</div>
-			<?php } 
-			} ?>
-		</div>
-
-		<div class="no-padding">
-			<?php if ($openEdition == true) { ?>
-				<div class="badgePH pull-left" data-title="OPENEDITION">
-					<span class="pull-right tooltips" data-toggle="tooltip" data-placement="left" 
-							title="Tous les utilisateurs ont la possibilité de participer / modifier les informations." 
-							style="font-size: 13px; line-height: 30px;">
-						<i class="fa fa-creative-commons" style="font-size: 17px;"></i> 
-						<?php echo Yii::t("common","Open edition") ?>
-					</span>
-				</div>
-			<?php } ?>
-		</div>
-    </div>
-	<?php } ?>
 
 	<form  method="post" id="banner_photoAdd" enctype="multipart/form-data">
 		<?php
@@ -125,14 +91,49 @@
 		<?php } ?>
 	</div>
 	
+	<?php if(!empty($element["badges"]) || $openEdition == true ){ ?>
+    <div class="section-badges pull-right">
+		<div class="no-padding">
+			<?php if(!empty($element["badges"])){?>
+				<?php if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
+					<div class="badgePH pull-left" data-title="OPENDATA">
+						<span class="pull-left tooltips" data-toggle="tooltip" data-placement="left" 
+							  title="Les données sont ouvertes." style="font-size: 13px; line-height: 30px;">
+							<span class="fa-stack opendata" style="width:17px">
+								<i class="fa fa-database main fa-stack-1x" style="font-size: 20px;"></i>
+								<i class="fa fa-share-alt  mainTop fa-stack-1x text-white" 
+									style="text-shadow: 0px 0px 2px rgb(15,15,15);"></i>
+							</span> 
+							<?php echo Yii::t("common","Open data") ?>
+						</span>
+					</div>
+			<?php } 
+			} ?>
+
+			<?php if ($openEdition == true) { ?>
+				<div class="badgePH pull-left margin-left-15" data-title="OPENEDITION">
+					<span class="pull-right tooltips" data-toggle="tooltip" data-placement="left" 
+							title="Tous les utilisateurs ont la possibilité de participer / modifier les informations." 
+							style="font-size: 13px; line-height: 30px;">
+						<i class="fa fa-creative-commons" style="font-size: 17px;"></i> 
+						<?php echo Yii::t("common","Open edition") ?>
+					</span>
+				</div>
+			<?php } ?>
+		</div>
+    </div>
+	<?php } ?>
+
+
 	<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation <?php if(@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])) echo "backgroundHeaderInformation" ?>">	
     	
     	<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
 			<h4 class="text-left padding-left-15 pull-left no-margin">
 				<span id="nameHeader">
 					<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left">
-						<!--<i class="fa fa-<?php echo $icon; ?>"></i>--> 
+						
 					</div>
+					<i class="fa fa-<?php echo $icon; ?> pull-left margin-top-5"></i> 
 					<div class="name-header pull-left"><?php echo @$element["name"]; ?></div>
 				</span>
 				<?php if(($type==Organization::COLLECTION || $type==Event::COLLECTION) && @$element["type"]){ ?>
@@ -174,8 +175,7 @@
 		<?php } ?>
 		
 		<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 pull-right">
-			<span class="pull-left text-white" id="shortDescriptionHeader">
-				<?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
+			<span class="pull-left text-white" id="shortDescriptionHeader"><?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
 			</span>	
 		</div>
 

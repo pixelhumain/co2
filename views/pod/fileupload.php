@@ -1,88 +1,11 @@
-<style>
-	
-	#fileuploadContainer{
-		position: relative;
-		width: 100%;
-		background-color: transparent;
-	}
-	.fileupload-new .thumbnail, .fileupload-exists .thumbnail{
-		height: auto;
-	}
-	.fileupload-new, .fileupload-preview{
-		max-height: 250px;
-		overflow-y: hidden;
-	}
-	.fileupload-preview .thumbnail, .fileupload-new .thumbnail{
-		/*min-height: 250px;*/
-    	/*line-height: 250px;*/
-    	background-color: black;
-	}
-	.fileupload-preview.thumbnail, .fileupload-new.thumbnail {
-   		border: 3px solid white !important;
-	}
-	.fileupload, .fileupload-preview.thumbnail, .fileupload-new .thumbnail, .fileupload-new .thumbnail img, .fileupload-preview.thumbnail img{
-		padding : 0px;
-		margin:0px !important;
-		transition: none !important;
-		border-radius: 0px !important;
-		/*min-height: 250px;*/
-		width:100%;
-	}
+<?php 
 
-	.photoUploading{
-		position: absolute;
-		width: 100%;
-		display: none;
-		top:35%;
-		left: 0%;
-		opacity: 0.4;
-    	filter: alpha(opacity=40); /* For IE8 and earlier */
-	}
-	.fileupload-preview img{
-		max-height:100%; 
-	}
+	HtmlHelper::registerCssAndScriptsFiles( 
+		array(  '/css/default/upload_img.css',
+				) , 
+	Yii::app()->theme->baseUrl. '/assets');
+?>
 
-	#profil_imgPreview, #slider_imgPreview{
-		background-color:#E7EBEF;
-		background-color: transparent !important;
-		border: 0;
-	}
-	.user-image .user-image-buttons {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  display: none;
-}
-.user-image .user-image-buttons a.fileupload-new:hover{
-    color: #0095FF;
-    background-color: white;
-    border:1px solid #0095FF;
-    border-radius: 3px;
-    margin-right: 2px;
-}
-.user-image .user-image-buttons a.fileupload-new{
-    background-color: #0095FF;
-    color: white;
-    border-radius: 3px;
-    margin-right: 2px;
-}
-.user-image .user-image-buttons .btn-red:hover{
-    color: #ea4335;
-    background-color: white;
-    border:1px solid red;
-    border-radius: 3px;
-    margin-right: 2px;
-}
-.user-image .user-image-buttons .btn-red{
-    background-color: #ea4335;
-    color: white;
-    border-radius: 3px;
-    margin-right: 2px;
-}
-.user-image:hover .user-image-buttons {
-  display: block;
-}
-</style>
 	<div class="center" id="fileuploadContainer">
 		<form  method="post" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_photoAdd" enctype="multipart/form-data">
 		<div class="fileupload fileupload-new" data-provides="fileupload" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_fileUpload">
@@ -91,7 +14,9 @@
 				</div>
 				<div class="fileupload-preview fileupload-exists thumbnail container-fluid" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_imgNewPreview"></div>
 				<?php
-				if(@Yii::app()->session["userId"] && ((@$editMode && $editMode) || (@$openEdition && $openEdition))){ 
+				if(@Yii::app()->session["userId"] && ((@$editMode && $editMode) || 
+					(@$openEdition && $openEdition))){ 
+
 					if($image!="") $editBtn=true; else $editBtn=false;
 				?>
 				<div class="user-image-buttons">
@@ -109,7 +34,7 @@
 						<i class="fa fa-spinner fa-spin fa-5x"></i>
 					</div>
 				</div>
-				<?php }; ?>
+				<?php } ?>
 			</div>
 		</div>
 		</form>
@@ -117,7 +42,6 @@
 
 
 <script type="text/javascript">
-	
 	
 	jQuery(document).ready(function() {
 		var id = "<?php echo $itemId ?>";
@@ -389,9 +313,5 @@
 		}
 		
 	});
-
-	
-
-
 	
 </script>

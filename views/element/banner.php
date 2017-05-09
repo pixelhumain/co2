@@ -112,12 +112,14 @@
 
 			<?php if ($openEdition == true) { ?>
 				<div class="badgePH pull-left margin-left-15" data-title="OPENEDITION">
+					<a href="javascript:;" class="btn-show-activity">
 					<span class="pull-right tooltips" data-toggle="tooltip" data-placement="left" 
 							title="Tous les utilisateurs ont la possibilité de participer / modifier les informations." 
 							style="font-size: 13px; line-height: 30px;">
 						<i class="fa fa-creative-commons" style="font-size: 17px;"></i> 
 						<?php echo Yii::t("common","Open edition") ?>
 					</span>
+					</a>
 				</div>
 			<?php } ?>
 		</div>

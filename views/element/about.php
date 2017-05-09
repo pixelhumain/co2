@@ -341,11 +341,11 @@
 
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 labelAbout padding-10">
 				<span><i class="fa fa-home"></i></span> <?php echo Yii::t("common", "Main locality") ?>
-				<?php if (!empty($element["address"]["codeInsee"]) && !empty($element["address"]["codeInsee"]) && $edit==true || $openEdition==true ){ 
+				<?php if (!empty($element["address"]["codeInsee"]) && ( $edit==true || $openEdition==true ) ) { 
 					echo '<a href="javascript:;" id="btn-remove-geopos" class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Remove Locality").'">
 								<i class="fa text-red fa-trash-o"></i>
 							</a> 
-							<a href="javascript:;" id="btn-update-geopos" class="pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Update Locality").'" >
+							<a href="javascript:;" class="btn-update-geopos pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Update Locality").'" >
 								<i class="fa text-red fa-map-marker"></i>
 							</a> ';	
 				} ?>
@@ -368,7 +368,7 @@
 					 				: "").
 					 			'</span>';
 					echo $address;
-					if(empty($element["address"]["codeInsee"]) && $type==Person::COLLECTION && $edit==true) {
+					if( empty($element["address"]["codeInsee"]) && Yii::app()->session["userId"] == (String) $element["_id"]) {
 						echo '<a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.Yii::t("common", "Connect to your city").'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe" >'. Yii::t("common", "Why ?").'</a>';
 					}
 			}else
@@ -410,7 +410,7 @@
 		<?php } ?>
 		<div class="text-right padding-10">
 			<?php if(empty($element["address"]) && $type!=Person::COLLECTION && ($edit==true || $openEdition==true )){ ?>
-				<b><a href="javascript:;" class="btn btn-default letter-blue margin-top-5 addresses" id="btn-update-geopos">
+				<b><a href="javascript:;" class="btn btn-default letter-blue margin-top-5 addresses btn-update-geopos">
 					<i class="fa fa-map-marker"></i>
 					<span class="hidden-sm"><?php echo Yii::t("common","Add a primary address") ; ?></span>
 				</a></b>
@@ -504,7 +504,7 @@
 			communecterUser();				
 		});
 
-		$("#btn-update-geopos").click(function(){
+		$(".btn-update-geopos").click(function(){
 			updateLocalityEntities();
 		});
 
@@ -576,7 +576,7 @@
     									$.cookie('communexionLevel', false, { expires: 365, path: location.pathname });*/
 									}
 									toastr.success(data.msg);
-									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id);
+									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 
 						    	}
 						    }

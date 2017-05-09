@@ -406,10 +406,11 @@ jQuery(document).ready(function() {
 
 
 var sensorsProcessed = 0;
-
+console.log(sckSensorIds);
 // fait un graphe par sensor et trace tous les devices sur le même graphe sensor
  sckSensorIds.forEach(function (item,index,array){ 
     sensorsProcessed++;
+    console.log(item);
 
     for( var e in item) {
 

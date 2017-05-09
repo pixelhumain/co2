@@ -1,28 +1,18 @@
 <?php 
-  /*$cssAnsScriptFilesModule = array(
-      //'/plugins/d3/d3.v3.min.js',
-      //'/plugins/d3/c3.min.js',
-      //'/plugins/d3/c3.min.css',
-      '/plugins/d3/d3.v4.min.js',
-      //DatePicker
-      '/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
-      '/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js' ,
-      '/plugins/bootstrap-datepicker/css/datepicker.css',
-  
-      //DateTime Picker
-      '/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
-      '/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js' , 
-      '/plugins/bootstrap-datetimepicker/css/datetimepicker.css',
+  $cssAnsScriptFilesModule = array(
+     
 
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->request->baseUrl);
-    */
+    
+  //$cs = Yii::app()->getClientScript();
 
 $params = CO2::getThemeParams();
  
 $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
   
 $isAjaxR=(Yii::app()->request->isAjaxRequest);
+
 if(!$isAjaxR){
 
   //header + menu
@@ -30,25 +20,7 @@ if(!$isAjaxR){
                     array(  "layoutPath"=>$layoutPath ,
                             "page" => "thing") );
 }
-?>
 
-<!--?php
-	$cs = Yii::app()->getClientScript();
-	// if(!Yii::app()->request->isAjaxRequest)
-	// {
-	  	/*$cssAnsScriptFilesModule = array(
-	  		'/plugins/d3/d3.v3.min.js',
-        '/plugins/d3/c3.min.js',
-        '/plugins/d3/c3.min.css',
-        '/plugins/d3/d3.v4.min.js',
-
-	  	);*/
-	  	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->request->baseUrl);
-  	// }
-
-?-->
-<?php
-//(Page en chantier)
 $communexion = CO2::getCommunexionCookies();
 
 $sckInfo=array('boardIdFiltered'=>0,'sensorsCheck'=>false, 'sckSensors'=>false, 'notInCODB'=>array());
@@ -69,11 +41,10 @@ if($communexion["state"] == false){
 }
 
 $devices = Thing::getSCKDevicesByLocality($country, $regionName, $depName, $cityName, null, null);
+
 // Le type doit etre unique pour getSCKDeviceMdata findOne prend la première ocurrence :
 $sckMdataSensors = (array) (Thing::getSCKDeviceMdata(Thing::COLLECTION_METADATA,array("type"=>"sckSensors")));
-//var_dump($devices);
-//$sckInfo['sckSensors']=settype($sckMdataSensors,'array' );
-//echo '<br>';
+
 $sckSensors=$sckMdataSensors['sckSensors'];
 $deviceByLocality = array();
 
@@ -89,8 +60,7 @@ foreach ($devices as $id => $device) {
     if(isset($device['sensors']) && !empty($device['sensors']) && $sckInfo['sensorsCheck']==false){
         $sckInfo['sensorsCheck']=true;
         $sensors = $device['sensors'];
-        //$array
-//var_dump($sckSensors);
+
         foreach ($sensors as $key => $sensor) {
           foreach ($sckSensors as $sckSensor) {
             //var_dump($sckSensor);
@@ -101,11 +71,11 @@ foreach ($devices as $id => $device) {
             } 
           }
         }
-        //echo '<br>';
-        //var_dump($sensors);
+
     }
 
     if(isset($device['address'])){
+      
 
       $newDevice= array("deviceId"=>$device['deviceId'],"name"=>$device['name'],"boardId"=>$device['boardId'],
           "sensors"=>array(),"timestamp"=>$device['timestamp'],"geo"=>$device['geo'],"latestCODB"=>array() ); // TODO ? : ajouter kit ? 
@@ -140,34 +110,7 @@ foreach ($devices as $id => $device) {
   
 }
 
-/*
-if(!empty($devices)){$deviceId = reset($devices)['deviceId'];
-
-  }
-  */
-
-//$sckdevicemdata = Thing::getSCKDeviceMdata(Thing::COLLECTION,array("type"=>Thing::SCK_TYPE, "deviceId"=> strval($deviceId)));
-//print_r($sckdevicemdata);
-/*
-echo "</br>\n";
-$sckmeasurements = Thing::getSCKDeviceMdata(Thing::COLLECTION,array("type"=>"sckMeasurements"))["sckMeasurements"];
-//print_r($sckmeasurements);
-//boardId et deviceId namepoi
-$boardId=$sckdevicemdata["boardId"];
-//echo $boardId;
-
-$record = Thing::getConvertedRercord($sckdevicemdata["boardId"],true,"2017-02-28");
-//$json = file_get_contents("https://api.smartcitizen.me/v0/devices/". $deviceId);
-
-//$lastReadDevice = json_decode($json ,true);
-/*$lReadingsAPI = Thing::getLastedReadViaAPI($device);
-$sensors = $lReadingsAPI["sensors"];//
-*/
-//$sensors= $lastReadDevice["data"]["sensors"];
-
-
 ?>
-
 
 <style type="text/css">
   .row-codb{
@@ -193,28 +136,30 @@ if(!empty($sensors)){
    <div class="col-md-8 col-sm-8 hidden-xs" class="h-desc-<?php echo $sensor['id']?>">
 
    <?php echo $sensor['measurement']['description'] ?>
-
+ 
    </div>
   </div>
 
+  <div class="row col-sm-12 no-padding no-margin">
+  <h5 class="text-green no-padding no-margin">
+    <span class="col-md-2 col-sm-2 col-xs-12">Ville</span>
+    <span class="col-md-4 col-sm-4 col-xs-12">Nom du SCK <span class="hidden-xs"> | Capteur</span></span>
+    <span class="col-md-4 col-sm-4 col-xs-12 text-center">Timestamp</span>
+    <span class="col-md-2 col-sm-2 col-xs-12 no-padding no-margin">Val<span class="hidden-xs no-padding no-margin">eur</span>(<?php echo $sensor['unit'] ?>)</span>
+    
+  </h5>
+    
+  </div>
+ 
   <?php 
   foreach ($deviceByLocality as $locality => $listdevices) {
   ?>
-  <div class="row col-sm-12 no-padding no-margin">
-  <h5 class="text-green no-padding no-margin">
-    <span class="col-md-3 col-sm-3 col-xs-12">Ville</span>
-    <span class="col-md-4 col-sm-4 col-xs-12">Nom du SCK <span class="hidden-xs"> | Capteur</span></span>
-    <span class="col-md-3 col-sm-3 col-xs-12">Timestamp</span>
-    <span class="col-md-2 col-sm-2 col-xs-12">Valeur (<?php echo $sensor['unit'] ?>)</span>
-    
-  </h5>
   
-  </div>
   <div class="row col-sm-12 no-padding no-margin">
     
-    <h5 class="col-md-3 col-sm-3 col-xs-12 title-<?php echo $locality ?>"> <?php echo $locality ?> </h5>
+    <h5 class="col-md-2 col-sm-2 col-xs-12 title-<?php echo $locality ?>"> <?php echo $locality ?> </h5>
 
-    <div class="row col-md-9 col-sm-9 col-xs-12 no-padding no-margin " >
+    <div class="row col-md-10 col-sm-10 col-xs-12 no-padding no-margin " >
     <?php 
     foreach ($listdevices as $ndevice) {
       ?>
@@ -232,155 +177,138 @@ if(!empty($sensors)){
            ?>
 
             <div class="col-md-7 col-sm-7 no-padding no-margin text-center" title="<?php echo $latestInfo?>">
-           
-            <?php 
-            if($fromCOdb){
-              echo $ndevice['latestCODB']['timestamp'];
-            }else{
-              echo $ndevice['timestamp'];
-            }
-            ?>
-        
+              <?php 
+              if($fromCOdb){
+                if(!empty($ndevice['latestCODB']['timestamp']))
+                  echo $ndevice['latestCODB']['timestamp'];
+              }else{
+                if(!empty($ndevice['timestamp']))
+                  echo $ndevice['timestamp'];
+              }
+              ?>
             </div>
 
             <div  class="col-md-5 col-sm-5 no-padding no-margin text-center" title="<?php echo $latestInfo?>">
-         
-            <?php 
-            if($fromCOdb){
-              echo $ndevice['latestCODB'][$sensor['measurement']['name']];
-            }else{
-              echo $ndevice['sensors'][$sensor['id']]['value'] ;
-            }
-            ?>
-   
+              <?php 
+              if($fromCOdb){
+                if(!empty($ndevice['latestCODB'][$sensor['measurement']['name']]))
+                  echo round($ndevice['latestCODB'][$sensor['measurement']['name']],3);
+              }else{
+                if (!empty($ndevice['sensors'][$sensor['id']]['value']))
+                  echo round($ndevice['sensors'][$sensor['id']]['value'],3) ;
+              }
+              ?>
             </div>
-          
           </div>
-        
 
+          <div  class="row col-sm-12 col-md-12 row-api no-padding no-margin hidden" id="row-api-sensor<?php echo $sensor['id']."-device".$ndevice['deviceId'] ?>" >
+          <div class="col-md-7 col-sm-7 no-padding no-margin text-center" id="api-timestamp-sensor<?php echo $sensor['id']."-device".$ndevice['deviceId'] ?>" title="obtenue par api.smartcitizen.me" >
+            
+          </div>
+          <div class="col-md-5 col-sm-5 no-padding no-margin text-center" id="api-value-sensor<?php echo $sensor['id']."-device".$ndevice['deviceId'] ?>"  title="obtenue par api.smartcitizen.me" >
+            
+          </div>
 
-        
-        
-        <div  class="row col-sm-12 col-md-12 row-api no-padding no-margin " id="row-api-sensor<?php echo $sensor['id']."-device".$ndevice['deviceId'] ?>" ></div>
+        </div>
        </div>
       </div>
     <?php
-    } ?>
+    } //fin foreach listdevice
+    ?>
     </div>
 
   </div>
   <?php 
-  }
+  } // fin foreach devicebylocality
   ?>
 
   </div>
+  <hr class="col-md-12 col-sm-12 col-xs-12 no-padding">
+  <br>
 
 <?php
-  }
+  } // fin foreach sensor
 
-} ?>
+} 
+?>
   
-
-<section class="col-sm-12 row" id="sectiontable">
-  <div class="col-md-10 table-responsive">
-	<table id="tableau" class="table table-bordered table-striped table-condensed">
- 		<caption><h4 id="tablecaption"></h4></caption>
-   		<thead>
-   		 <tr id="trh">
-   			<!--th>id</th><th>name</th><th>value API</th><th>value CO</th><th>unit</th><th class="hide description">description</th-->
-   		 </tr>
-   		</thead>
-   		<tbody id="tbody"> 
-
-      </tbody>
-   	</table>
-  </div>
-</section>
-
-	<div id="resphp">
-<!-- pour Test fonction php -->
-
-	</div>
-
-	<div id="resjs"> 
-			<!-- pour Test fonction js -->
-
-	</div>
 </div>
 
 <?php if(!$isAjaxR ){ ?>
 <?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"thing")); ?>
 <?php } ?>
 
-
 <script>
+var deviceByLocality=<?php echo json_encode($deviceByLocality) ; ?>; 
 
 var urlReq="<?php echo Thing::URL_API_SC ?>/devices/";
 
-function getDeviceReadings(){
-  
-  //var device = parseInt($("#deviceSelector").val());
-  //console.log(device);
-  //hideAllGraph();
-  /*
-  $.ajax({
+jQuery(document).ready(function() {
+  initKInterface({"affixTop":0});
 
+  console.log(deviceByLocality);
+  for(var v in deviceByLocality){
+    // for chaque ville (si plusieur ville)
+    for(var id in deviceByLocality[v]){
+      mylog.log(deviceByLocality[v][id].deviceId);
+      getDeviceReadings(deviceByLocality[v][id].deviceId);
+
+    }
+
+  }
+ 
+  setTitle("Dernières mesures","cog");
+
+});
+
+
+function getDeviceReadings(deviceId) {
+  if(notNull(deviceId)){
+    $.ajax({
       type: 'GET',
-      url: urlReq,
+      url: urlReq+deviceId,
       dataType: "json",
       crossDomain: true,
       success: function (data) {
-        //console.dir(data);
-
+        //mylog.log(data); //resultat de la requete à l'api
+        if(data.id==deviceId){
+          sensors = data.data.sensors;
+          thetimestamp = data.data.recorded_at;
+          sensors.forEach(function(item, index){
+            sensorId = item.id;
+            //value = Math.round(item.value*1000)/1000;
+            value = +(Math.round(item.value + "e+3")  + "e-3");
+            $("#api-timestamp-sensor"+sensorId+"-device"+deviceId).text(thetimestamp);
+            $("#api-value-sensor"+sensorId+"-device"+deviceId).text(value);
+            $("#row-api-sensor"+sensorId+"-device"+deviceId).removeClass("hidden");
+          });
+        }
         },
-      error: function (data) { console.log("Error : ajax not success"); 
-      //console.log(data); 
+      error: function (data) { 
+        mylog.log("Error : ajax not success"); 
       }
 
-      }).done(function() {  });
-  */
-   
+    }).done(function() { mylog.log("ajax api.smartcitizen.me done");  });
+  } 
 } 
 
-/*
-	var sensors = <?php //echo json_encode($sensors); ?>;
 
-	var tbody = document.getElementById("tbody");
-	
-	sensors.forEach( function(item){ 
-    
-		var ligne=[item.id,item.name,item.value,item.value,item.unit,item.description];
-		var tr = document.createElement("tr");
-		tbody.appendChild(tr);
-
-		for (var i=0;i<ligne.length;i++){
-		var td = document.createElement("td");
-		td.innerHTML=ligne[i].toString();
+/* var sensors = <?php //echo json_encode($sensors); ?>;
+  var tbody = document.getElementById("tbody");
+  sensors.forEach( function(item){ 
+    var ligne=[item.id,item.name,item.value,item.value,item.unit,item.description];
+    var tr = document.createElement("tr");
+    tbody.appendChild(tr);
+    for (var i=0;i<ligne.length;i++){
+    var td = document.createElement("td");
+    td.innerHTML=ligne[i].toString();
     if(i==ligne.length-1){
       td.setAttribute("class","hide description"); 
       //td.setAttribute("id","" )
     }
-		tr.appendChild(td);
-		}
-		tbody.appendChild(tr);
-
-	});
-
-*/  
-
-  jQuery(document).ready(function() {
-    initKInterface({"affixTop":0});
-
-    //$("#deviceSelector").append("option")
-   // devices =  <?php // echo json_encode($devices); ?>;
-    
-
-
-
-    setTitle("Dernières mesures","cog");
-   //Index.init();
-  });
-
-
+    tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }); */ 
 
 </script>

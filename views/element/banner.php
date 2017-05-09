@@ -97,25 +97,6 @@
     </div>
 	<?php } ?>
 
-	<?php if($type==Event::COLLECTION){ ?>
-	<div class="col-xs-9 col-sm-6 col-md-5 col-lg-5 margin-right-15 margin-top-25 section-date pull-right">
-		<?php if(@$element['parent']){ ?>
-		<div style="font-size: 14px;font-weight: none;">
-			PARENT : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" 
-			class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/>
-		</div>
-		<?php } ?>
-		<?php if(@$element['organizerType'] && @$element['organizerId']){ ?>
-			<?php echo Yii::t("common","Organized by"); ?> : 
-			<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" 
-				class="lbh"> 
-				<i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> 
-					<?php  echo $element['organizer']['name']; ?>
-			</a>
-		<?php } ?>
-    </div>
-	<?php } ?>
-
 	<form  method="post" id="banner_photoAdd" enctype="multipart/form-data">
 		<?php
 		if(@Yii::app()->session["userId"] && ((@$edit && $edit) || (@$openEdition && $openEdition))){ 
@@ -219,6 +200,23 @@
 				</div>
 			</div>
 		<?php } ?>
+		<?php if($type==Event::COLLECTION){ ?>
+	<div class="section-date pull-right">
+		<div style="font-size: 14px;font-weight: none;">
+		<?php if(@$element['parent']){ ?>
+			<?php echo Yii::t("common","Planned on") ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/> 
+		<?php } ?>
+		<?php if(@$element['organizerType'] && @$element['organizerId']){ ?>
+			<?php echo Yii::t("common","Organized by"); ?> : 
+			<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" 
+				class="lbh"> 
+				<i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> 
+					<?php  echo $element['organizer']['name']; ?>
+			</a>
+		<?php } ?>
+		</div>
+    </div>
+	<?php } ?>
 	</div>
 
 	<div class="pull-right col-sm-3 col-md-3" style=""></div>

@@ -541,7 +541,7 @@ var directory = {
     colPos: "left",
 
     defaultPanelHtml : function(params){
-      // mylog.log("----------- defaultPanelHtml",params, params.type,params.name, params.url);
+      mylog.log("----------- defaultPanelHtml",params, params.type,params.name, params.url);
       if(directory.dirLog) mylog.log("----------- defaultPanelHtml",params.type,params.name);
       str = "";  
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
@@ -1491,8 +1491,16 @@ var directory = {
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
           if(directory.dirLog) mylog.log("params", params, typeof params);
-          if(notNull(params["_id"]) || notNull(params["id"]) ){
 
+          if (typeof(params.id) == "undefined") {
+            params['id'] = Math.random();
+            params['type'] = "poi";
+          }
+
+          mylog.log("params", params, typeof params);
+          mylog.log("params", params["name"] , params.name, params.id, params["id"], typeof params["id"]);
+
+          if(notNull(params["_id"]) || notNull(params["id"])){
 
             itemType=(contentType) ? contentType :params.type;
             if(directory.dirLog) mylog.log("itemType",itemType);
@@ -1504,6 +1512,7 @@ var directory = {
                 var typeIco = i;
                 params.size = size;
                 params.id = getObjectId(params);
+                mylog.log(params.id);
                 params.name = notEmpty(params.name) ? params.name : "";
                 params.description = notEmpty(params.shortDescription) ? params.shortDescription : 
                                     (notEmpty(params.message)) ? params.message : 
@@ -1513,8 +1522,10 @@ var directory = {
                 //mapElements.push(params);
                 //alert("TYPE ----------- "+contentType+":"+params.name);
                 
-                if(typeof( typeObj[itemType] ) == "undefined")
-                    itemType="poi";
+                if(typeof( typeObj[itemType] ) == "undefined") {
+                  itemType="poi";
+                }
+
                 typeIco = itemType;
                 if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
                 if(typeof params.typeOrga != "undefined")
@@ -1564,17 +1575,32 @@ var directory = {
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
-                params.url = '#page.type.'+params.type+'.id.' + params.id;
-                if(params.type == "poi")    
+                if( (params.type == "poi") && (params.source.insertOrign == "import") ) {
+                  var interop_type = getTypeInteropData(params.source.key);
+                  params.url = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.url);
+                  params.ico = getIconForInteropElements(interop_type);
+                  params.color = getIconColorForInteropElements(interop_type);
+                  // params.htmlIco ="<i class='fa fa-"+ params.ico +" fa-2x bg-"+params.color+"'></i>";
+                  params.htmlIco = getImageIcoForInteropElements(interop_type);
+                  if (typeof(params.tags) !== "undefined") {
+                    params.tags.push(interop_type);
+                  } else {
+                    params.tags = [];
+                    params.tags.push(interop_type);
+                  }
+                } else if (typeof(params.url) == "undefined") {
+
+                  params.url = '#page.type.'+params.type+'.id.' + params.id;
+                  if(params.type == "poi") {
+                    if (typeof(id) == "undefined") {
+                      id = null;
+                    }
                     params.url = '#element.detail.type.poi.id.' + id;
+                  }   
+
+                }              
 
                 params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
-
-                if( (params.type == "poi") && (params.source.insertOrign == "import") ) {
-                    mylog.log("ON CHANGE LA VALUE DE L'URL ! "); 
-                    params.url = "https://datanova.laposte.fr/explore/embed/dataset/laposte_poincont/table/?disjunctive.nature_juridique&disjunctive.code_postal&disjunctive.localite&disjunctive.code_insee&q=01878A&static=false&datasetcard=true";
-                }
-
 
                 // params.tags = "";
                 params.elTagsList = "";
@@ -1594,6 +1620,7 @@ var directory = {
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
                 
                 if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);
+                mylog.log("template principal",params,params.type, itemType);
                 
                   //template principal
                 if(params.type == "cities")
@@ -1613,6 +1640,7 @@ var directory = {
 
                 else
                   str += directory.defaultPanelHtml(params);
+                
             }
 
           }else{

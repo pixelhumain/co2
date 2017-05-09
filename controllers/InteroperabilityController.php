@@ -14,6 +14,7 @@ class InteroperabilityController extends CommunecterController {
       'datagouv'        => 'citizenToolKit.controllers.interoperability.DatagouvAction',
       'osm'  => 'citizenToolKit.controllers.interoperability.OsmAction',
       'ods'     => 'citizenToolKit.controllers.interoperability.OdsAction',
+      'get' => 'citizenToolKit.controllers.interoperability.GetAction',
     );
   }
 }

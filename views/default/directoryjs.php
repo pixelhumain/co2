@@ -434,15 +434,12 @@ var headerParams = {
   "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
   "cities"        : { color: "red",     icon: "university",   name: "communes" },
   "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
-<<<<<<< HEAD
-  "wikidata"    : { color: "lightblue2",   icon: "bullhorn",   name: "Wikidata" },
+  "wikidata"    : { color: "lightblue2",   icon: "group",   name: "Wikidata" },
   "datagouv"    : { color: "lightblue2",   icon: "bullhorn",   name: "DataGouv" },
   "osm"    : { color: "lightblue2",   icon: "bullhorn",   name: "Open Street Map" },
-  "ods"    : { color: "lightblue2",   icon: "bullhorn",   name: "OpenDatasoft" }
-=======
+  "ods"    : { color: "lightblue2",   icon: "bullhorn",   name: "OpenDatasoft" },
   "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
->>>>>>> 1a127a579d0916d37794941247f60f455d001496
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )

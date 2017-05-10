@@ -165,7 +165,7 @@
 
 		if( (	$type==Person::COLLECTION && 
 				Preference::showPreference($element, $type, "email", Yii::app()->session["userId"]) ) || 
-		  	$type!=Person::COLLECTION ) { ?>
+		  	$type == Organization::COLLECTION ) { ?>
 		  	<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-envelope"></i></span> <?php echo Yii::t("common","E-mail"); ?>

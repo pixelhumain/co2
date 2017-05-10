@@ -279,7 +279,7 @@ function bindAboutPodElement() {
 								if(typeof data.resultGoods.values.tags != "undefined"){
 									contextData.tags = data.resultGoods.values.tags;
 									var strHeader = "";
-									var strAbout = "";
+									var strAbout = trad["notSpecified"];
 									if($('.header-tags').length){
 										$.each(contextData.tags, function (key, tag){
 											/*str +=	'<div class="tag label label-danger pull-right" data-val="'+tag+'">'+
@@ -293,6 +293,16 @@ function bindAboutPodElement() {
 									}
 									$('.header-tags').html(strHeader);
 									$('#tagsAbout').html(strAbout);
+									if(strHeader == "" && typeof contextData.address != "undefined")
+										$('.header-address-tags').addClass("hidden");
+									else
+										$('.header-address-tags').removeClass("hidden");
+
+									if(strHeader == "")
+										$('#separateurTag').addClass("hidden");
+									else
+										$('#separateurTag').removeClass("hidden");
+
 								}
 
 								if(typeof data.resultGoods.values.avancement != "undefined"){
@@ -448,7 +458,6 @@ function bindAboutPodElement() {
 			if(notEmpty(contextData.url)) 
 				dataUpdate.url = contextData.url;
 			
-
 			mylog.log("dataUpdate", dataUpdate);
 			dyFObj.openForm(form, "initUpdateInfo", dataUpdate);
 		});

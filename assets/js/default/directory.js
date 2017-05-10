@@ -1540,8 +1540,8 @@ var directory = {
                 if(!params.useMinSize)
                     params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
 
-                if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
-                    params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>";
+                if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
+                    params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
 
                 if(dyFInputs.get(itemType) && 
                     dyFInputs.get(itemType).col == "poi" && 

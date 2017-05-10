@@ -495,6 +495,7 @@ var formInMap = {
 		    		mylog.log("data", data);
 			    	
 			    	if(data.result){
+			    		mylog.log("locality data.result", data);
 			    		var inMap = true ;
 			    		//if(data.firstCitizen == true)
 			    		//	getAjax(null, baseUrl+'/'+moduleId+'/rooms/index/type/cities/id/'+locality.unikey, null,"norender");
@@ -530,15 +531,18 @@ var formInMap = {
 									contextMap = Sig.modifLocalityContextMap(contextMap, contextData, typeMap);
 								}
 								Sig.restartMap();
-								Sig.showMapElements(Sig.map, contextMap);
+								//Sig.showMapElements(Sig.map, contextMap);
 								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 							}else{
 								formInMap.changeMenuCommunextion(locality);
 								currentUser.addressCountry = locality.address.addressCountry;
 								currentUser.postalCode = locality.address.postalCode;
 								currentUser.codeInsee = locality.address.codeInsee;
-								Sig.myPosition.position.latitude = locality.geo.latitude;
-								Sig.myPosition.position.longitude = locality.geo.longitude;
+								if(typeof Sig.myPosition != "undefined"){
+									Sig.myPosition.position.latitude = locality.geo.latitude;
+									Sig.myPosition.position.longitude = locality.geo.longitude;
+								}
+								
 								var urlPage = window.location.href ;
 								$('.showIfCommucted').removeClass("hidden");
 
@@ -546,11 +550,12 @@ var formInMap = {
 									urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.detail");
 								}else{
 									Sig.restartMap();
-									Sig.showMapElements(Sig.map, contextMap);
+									//Sig.showMapElements(Sig.map, contextMap);
 									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 								}
 							}
 						}else{
+							mylog.log("addressesIndex");
 							formInMap.initData();
 							toastr.success(data.msg);
 							urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
@@ -561,7 +566,7 @@ var formInMap = {
 			    	}
 			    }
 			});
-		}else{
+		}/*else{
 			formInMap.changeMenuCommunextion(locality);
 			inseeCommunexion = locality.address.codeInsee ;
 			cityNameCommunexion = locality.address.addressLocality ;
@@ -573,7 +578,8 @@ var formInMap = {
 						  regionNameCommunexion, countryCommunexion);
 			formInMap.initData();
 			formInMap.hiddenHtmlMap(false);
-		}
+			urlCtrl.loadByHash("#search");
+		}*/
 		
 	},
 

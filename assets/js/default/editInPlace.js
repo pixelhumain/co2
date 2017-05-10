@@ -382,9 +382,7 @@ function bindAboutPodElement() {
 
 			if(contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
-			}
-
-			if(contextData.type == typeObj.event.col ){
+			}else if(contextData.type == typeObj.event.col ){
 				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'événement", "Type d'événement", eventTypes, { required : true });
 			}
 
@@ -422,12 +420,14 @@ function bindAboutPodElement() {
 
 			if(contextData.type == typeObj.organization.col ){
 				if(notEmpty(contextData.typeOrga))
-					dataUpdate.type = contextData.typeOrga;
+					currentKFormType = contextData.typeOrga;
+					//dataUpdate.type = contextData.typeOrga;
 			}
 
 			if(contextData.type == typeObj.event.col ){
 				if(notEmpty(contextData.typeEvent))
-					dataUpdate.type = contextData.typeEvent;
+					currentKFormType = contextData.typeEvent;
+					//dataUpdate.type = contextData.typeEvent;
 			}
 
 			if(contextData.type == typeObj.project.col ){

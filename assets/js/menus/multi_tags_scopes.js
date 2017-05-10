@@ -7,23 +7,27 @@
                 numberOfScope++;
             })  ;
         }
-        if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false"){
-            scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-                        'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
-                        'data-scope-value="'+$.cookie('communexionValue')+'" '+
-                        'data-scope-name="'+$.cookie('communexionName')+'" '+
-                        'data-scope-level="'+$.cookie('communexionLevel')+'" '+
-                        'data-scope-type="'+$.cookie('communexionType')+'" '+
-                        'id="btn-my-co">'+
-                        '<i class="fa fa-university"></i>'+
-                    '</button>';
-        }else{
-            scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips" onclick="communecterUser();" '+
-                        'data-toggle="tooltip" data-placement="top" title="Communectez-vous" '+
-                        'id="btn-my-co">'+
-                        '<i class="fa fa-university"></i>'+
-                    '</button>';
+        scopeHtml="";
+        if(typeof userConnected != "undefined" && userConnected != null ){
+             if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false"){
+                scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
+                            'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
+                            'data-scope-value="'+$.cookie('communexionValue')+'" '+
+                            'data-scope-name="'+$.cookie('communexionName')+'" '+
+                            'data-scope-level="'+$.cookie('communexionLevel')+'" '+
+                            'data-scope-type="'+$.cookie('communexionType')+'" '+
+                            'id="btn-my-co">'+
+                            '<i class="fa fa-university"></i>'+
+                        '</button>';
+            }else{
+                scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips" onclick="communecterUser();" '+
+                            'data-toggle="tooltip" data-placement="top" title="Communectez-vous" '+
+                            'id="btn-my-co">'+
+                            '<i class="fa fa-university"></i>'+
+                        '</button>';
+            }
         }
+       
         scopeHtml+='<h5 class="pull-left letter-red" style="margin-bottom: -8px;margin-top: 14px;">'+
                         '<button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-10 margin-right-10" '+ 
                             'data-target="#modalScopes" data-toggle="modal" '+

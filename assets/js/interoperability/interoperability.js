@@ -1663,6 +1663,8 @@ function getImageIcoForInteropElements(type_elt) {
         icon_image = "<img width=100 style='margin-top:20px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-wikidata.png'>";
     } else if (type_elt == "datagouv") {
         icon_image = "<img width=100 style='margin-top:20px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/data-gouv-logo.png'>";
+    } else if (type_elt == "poleemploi") {
+        icon_image = "<img width=100 style='margin-top:20px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo_pole_emploi.png'>";
     } else {
         icon_image = "<img width=100 style='margin-top:20px;' src='http://127.0.0.1/"+moduleUrl+"'>";
     }

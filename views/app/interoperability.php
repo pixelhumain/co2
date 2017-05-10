@@ -292,6 +292,10 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
             <img width=70 src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo-laposte.png'> 
             <span class="hidden-xs">La poste</span>
         </button><br class="hidden-xs">
+        <button id="btn-pole-emploi" class="btn text-blue btn-directory-type" data-type="pole_emploi">
+            <img width=50 src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo_pole_emploi.png'> 
+            <span class="hidden-xs">Pôle emploi</span>
+        </button><br class="hidden-xs">
         <hr class="hidden-xs">
     </div> 
     <div id="dropdown_search" class="col-md-8 col-sm-8 col-xs-10 padding-10"></div>
@@ -331,7 +335,8 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
         "datagouv"    : { color: "red",   icon: "bullhorn",   name: "DataGouv" },
         "osm"    : { color: "green",   icon: "bullhorn",   name: "Open Street Map" },
         "ods"    : { color: "azure",   icon: "bullhorn",   name: "OpenDatasoft" },
-        "datanova"    : { color: "yellow",   icon: "bullhorn",   name: "Datanova" }
+        "datanova"    : { color: "yellow",   icon: "bullhorn",   name: "Datanova" },
+        "pole_emploi" : { color: "blue",   icon: "bullhorn",   name: "Pole emploi" }
     }
 
     if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
@@ -574,7 +579,7 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
                     url_interop = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
                 }
             } 
-        } else { // communexion.state = false
+        } else { // communexion.state == false
 
             scope_value = getScopeValue();
 
@@ -596,6 +601,8 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
                         url_interop = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
                     } else if (typeD == "datanova") {
                         url_interop = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+                    } else if (typeD == "pole_emploi") {
+                        url_interop = "http://127.0.0.1/ph/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+city_data.insee+"%27%20LIMIT%20"+endNow;
                     } else if (typeD = "all_interop") {
                         all_interop_url = [];
                         url_interop = "http://127.0.0.1/ph/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+city_data.wikidataID+".json";
@@ -607,6 +614,8 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
                         url_interop = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
                         all_interop_url.push(url_interop);
                         url_interop = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+                        all_interop_url.push(url_interop);
+                        url_interop = "http://127.0.0.1/ph/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+city_data.insee+"%27%20LIMIT%20"+endNow;
                         all_interop_url.push(url_interop); 
 
                         // mylog.log('On apelle la fonction StartSearch avec un tableau d\'url');
@@ -856,7 +865,6 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
             } else {
                 part_data = [];
             }
-            
 
             mylog.log('PART_DATA POUR CHAQUE INTEROP RESEARCH : ', part_data);
 
@@ -868,7 +876,7 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
 
                 if (searchTags == "") {
                     if (text_search_name == "") {
-                        var nb_of_return = 4;
+                        var nb_of_return = 5;
                     } else {
                         var nb_of_return = 3;
                     }
@@ -1173,6 +1181,10 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
         } else if (type == "datanova") {
             $(".moduleTitle").append(
                 "<img width=200 style='margin-top:20px;' src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo-laposte.png'>"
+            );
+        } else if (type == "pole_emploi") {
+            $(".moduleTitle").append(
+                "<img width=100 style='margin-top:20px;' src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo_pole_emploi.png'>"
             );
         }
     }

@@ -57,7 +57,7 @@ function bindButtonMenu(){
 		history.pushState(null, "New Title", hashUrlPage+".view.chart");
 		loadChart();
 	});
-	$("#btn-show-activity").click(function(){
+	$(".btn-show-activity").click(function(){
 		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.history");
 		loadHistoryActivity();

@@ -112,12 +112,14 @@
 
 			<?php if ($openEdition == true) { ?>
 				<div class="badgePH pull-left margin-left-15" data-title="OPENEDITION">
+					<a href="javascript:;" class="btn-show-activity">
 					<span class="pull-right tooltips" data-toggle="tooltip" data-placement="left" 
 							title="Tous les utilisateurs ont la possibilité de participer / modifier les informations." 
 							style="font-size: 13px; line-height: 30px;">
 						<i class="fa fa-creative-commons" style="font-size: 17px;"></i> 
 						<?php echo Yii::t("common","Open edition") ?>
 					</span>
+					</a>
 				</div>
 			<?php } ?>
 		</div>
@@ -164,13 +166,14 @@
 					</span>
 				<?php } ?>
 			<?php } ?>
-			<?php if(@$element["tags"]){ ?>
-				<div class="header-tags pull-left">
-				<?php foreach ($element["tags"] as $key => $tag) { ?>
+			<div class="header-tags pull-left">
+			<?php 
+			if(@$element["tags"]){ 
+				foreach ($element["tags"] as $key => $tag) { ?>
 					<span class="badge letter-red bg-white" style="vertical-align: top;">#<?php echo $tag; ?></span>
-				<?php } ?>
-				</div>
-			<?php } ?>
+				<?php } 
+			} ?>
+			</div>
 			</div>
 		<?php } ?>
 		

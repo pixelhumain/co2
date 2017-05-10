@@ -1,4 +1,5 @@
 var formInMap = {
+	actived : false,
 	timeoutAddCity : null,
 	NE_insee : "",
 	NE_lat : "",
@@ -13,11 +14,6 @@ var formInMap = {
 
 	geoShape : "",
 
-	/*PC_postalCode : "",
-	PC_name : "",
-	PC_latitude : "",
-	PC_longitude : "",*/
-
 	typeSearchInternational : "",
 	formType : "",
 	updateLocality : false,
@@ -29,8 +25,9 @@ var formInMap = {
 
 
 	showMarkerNewElement : function(modePC){
-		mylog.log("showMarkerNewElement");
+		mylog.log("forminmap showMarkerNewElement");
 		Sig.clearMap();
+		formInMap.actived = true ;
 		formInMap.hiddenHtmlMap(true);
 
 		if(typeof Sig.myMarker != "undefined") 
@@ -242,10 +239,7 @@ var formInMap = {
 		});
 
 		$("#newElement_btnCancelAddress").click(function(){
-			formInMap.initVarNE();
-			formInMap.initHtml();
-			formInMap.hiddenHtmlMap(false);
-			formInMap.backToForm(true);
+			formInMap.cancel();
 		});
 	},
 
@@ -428,6 +422,7 @@ var formInMap = {
 
 	backToForm : function(cancel){
 		mylog.log("backToForm");
+		formInMap.actived = false ;
 		if(formInMap.modePostalCode == false ){
 			if(formInMap.updateLocality == false ){
 				if(notEmpty($("[name='newElement_lat']").val())){
@@ -500,6 +495,7 @@ var formInMap = {
 		    		mylog.log("data", data);
 			    	
 			    	if(data.result){
+			    		mylog.log("locality data.result", data);
 			    		var inMap = true ;
 			    		//if(data.firstCitizen == true)
 			    		//	getAjax(null, baseUrl+'/'+moduleId+'/rooms/index/type/cities/id/'+locality.unikey, null,"norender");
@@ -535,15 +531,18 @@ var formInMap = {
 									contextMap = Sig.modifLocalityContextMap(contextMap, contextData, typeMap);
 								}
 								Sig.restartMap();
-								Sig.showMapElements(Sig.map, contextMap);
+								//Sig.showMapElements(Sig.map, contextMap);
 								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 							}else{
 								formInMap.changeMenuCommunextion(locality);
 								currentUser.addressCountry = locality.address.addressCountry;
 								currentUser.postalCode = locality.address.postalCode;
 								currentUser.codeInsee = locality.address.codeInsee;
-								Sig.myPosition.position.latitude = locality.geo.latitude;
-								Sig.myPosition.position.longitude = locality.geo.longitude;
+								if(typeof Sig.myPosition != "undefined"){
+									Sig.myPosition.position.latitude = locality.geo.latitude;
+									Sig.myPosition.position.longitude = locality.geo.longitude;
+								}
+								
 								var urlPage = window.location.href ;
 								$('.showIfCommucted').removeClass("hidden");
 
@@ -551,11 +550,12 @@ var formInMap = {
 									urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.detail");
 								}else{
 									Sig.restartMap();
-									Sig.showMapElements(Sig.map, contextMap);
+									//Sig.showMapElements(Sig.map, contextMap);
 									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 								}
 							}
 						}else{
+							mylog.log("addressesIndex");
 							formInMap.initData();
 							toastr.success(data.msg);
 							urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
@@ -566,7 +566,7 @@ var formInMap = {
 			    	}
 			    }
 			});
-		}else{
+		}/*else{
 			formInMap.changeMenuCommunextion(locality);
 			inseeCommunexion = locality.address.codeInsee ;
 			cityNameCommunexion = locality.address.addressLocality ;
@@ -578,7 +578,8 @@ var formInMap = {
 						  regionNameCommunexion, countryCommunexion);
 			formInMap.initData();
 			formInMap.hiddenHtmlMap(false);
-		}
+			urlCtrl.loadByHash("#search");
+		}*/
 		
 	},
 
@@ -802,20 +803,13 @@ var formInMap = {
 			Sig.map.fitBounds(geoShape);
 			Sig.map.invalidateSize();
 		}, 1500);
+	},
+
+	cancel : function(){
+		formInMap.initVarNE();
+		formInMap.initHtml();
+		formInMap.hiddenHtmlMap(false);
+		formInMap.backToForm(true);
 	}
-
-
-
-	/*updateSummeryLocality : function (data){
-		mylog.log("updateSummeryLocality",data);
-		$('#insee_sumery_value').html(data.data("insee"));
-		$('#lat_sumery_value').html(data.data("lat"));
-		$('#lng_sumery_value').html(data.data("lng"));
-		$('#city_sumery_value').html(data.data("city"));
-		$('#dep_sumery_value').html(data.data("dep"));
-		$('#region_sumery_value').html(data.data("region"));
-		$('#country_sumery_value').html(data.data("country"));
-		$('#cp_sumery_value').html(data.data("cp"));
-	},*/
 
 };

@@ -201,22 +201,20 @@
 
 		</div>
 
-
-		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 		<div class="btn-group pull-right" id="paramsMenu">
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
-					<!-- <button type="button" class="btn btn-default bold">
+					<button type="button" class="btn btn-default bold">
 						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm"><?php echo Yii::t("common", "Settings"); ?>
 			  			<?php }else{ ?>
-			  			<i class="fa fa-plus"></i> <span class="hidden-xs hidden-sm"><?php echo Yii::t("common", "More"); ?>
+			  			<i class="fa fa-chevron-down"></i>
 			  			<?php } ?>
 			  			</span>
-			  		</button> -->
-			  		<button type="button" class="btn btn-default bold">
+			  		</button> 
+			  		<!--<button type="button" class="btn btn-default bold">
 						<i class="fa fa-chevron-down"></i>
-			  		</button>
+			  		</button>-->
 			  		<ul class="dropdown-menu arrow_box menu-params">
 	                	<?php $this->renderPartial('../element/linksMenu', 
 	            			array("linksBtn"=>$linksBtn,
@@ -242,7 +240,7 @@
 
 			  			<?php if($type !=Person::COLLECTION){ ?>
 			  				<li class="text-left">
-								<a href="javascript:;" id="btn-show-activity">
+								<a href="javascript:;" class="btn-show-activity">
 									<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
 								</a>
 							</li>
@@ -271,12 +269,10 @@
 				            </li>
 				            <?php } ?>
 			            <?php } ?>
-			            
 			  		</ul>
 		  		</li>
 		  	</ul>
 		</div>
-	    <?php } ?>
 
 	  	<?php if(isset(Yii::app()->session["userId"]) && $typeItem!=Person::COLLECTION){ ?>
 			<div class="btn-group pull-right">
@@ -398,7 +394,7 @@
 
 <script type="text/javascript">
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
-
+	mylog.log("init contextData", contextData);
     var params = <?php echo json_encode(@$params); ?>;
     var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false ); 
 	var openEdition = ( ( '<?php echo (@$openEdition == true); ?>' == "1") ? true : false );

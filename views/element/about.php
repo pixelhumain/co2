@@ -136,7 +136,7 @@
 					<span><i class="fa fa-user-secret"></i></span> <?php echo Yii::t("common","Username"); ?>
 				</div>
 				<div id="usernameAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-user-secret"></i></span> <?php echo Yii::t("common","Username"); ?> :</span><?php echo (@$element["username"]) ? $element["username"] : '<i>'.Yii::t("common","Not specified").'</i>' ?>
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-user-secret"></i><?php echo Yii::t("common","Username"); ?> :</span><?php echo (@$element["username"]) ? $element["username"] : '<i>'.Yii::t("common","Not specified").'</i>' ?>
 				</div>
 			</div>
 		<?php if(Preference::showPreference($element, $type, "birthDate", Yii::app()->session["userId"])){ ?>

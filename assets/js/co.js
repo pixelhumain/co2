@@ -549,6 +549,11 @@ var urlCtrl = {
 	    "#organization.detail" : {aliasParam: "#page.type.organizations.id.$id", params: ["id"],title:'ORGANIZATION DETAIL ', icon : 'users' },
 	    "#project.detail" : {aliasParam: "#page.type.projects.id.$id", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
 	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
+	    "#event.directory" : {aliasParam: "#page.type.events.id.$id.view.directory.dir.attendees", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
+	    "#organization.directory" : {aliasParam: "#page.type.organizations.id.$id.view.directory.dir.members", params: ["id"],title:'ORGANIZATION DETAIL ', icon : 'users' },
+	    "#project.directory" : {aliasParam: "#page.type.projects.id.$id.view.directory.dir.contributors", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
+	    "#news.detail" : {aliasParam: "#page.type.news.id.$id", params: ["id"], title:'NEWS', icon : 'rss' },
+	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
 	    "#news.detail" : {title:'NEWS DETAIL ', icon : 'rss' },
@@ -2575,7 +2580,7 @@ var dyFInputs = {
 	        rules : ( notEmpty(rules) ? rules : { required : true } )
 	    };
 	    if(type){
-	    	inputObj.label = "Nom de votre " + trad[type]+" ";
+	    	inputObj.label = "Nom de votre " + trad[dyFInputs.get(type).ctrl]+" ";
 	    	if(type=="classified") 
 	    		inputObj.label = "Titre de votre " + trad[type]+" ";
 
@@ -2892,8 +2897,8 @@ var dyFInputs = {
     				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
 					endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
     			}
-			    if (startDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(startDate);
-				if (endDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(endDate);
+			    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
+				if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
     		}
     	}
     },
@@ -3560,11 +3565,12 @@ function initKInterface(params){ console.log("initKInterface");
 
 
     $(".btn-show-map").off().click(function(){
-    	if(notEmpty(contextData) &&  location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+    	if(typeof formInMap != "undefined" && formInMap.actived == true)
+			formInMap.cancel();
+    	else if(notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
 			getContextDataLinks()
 		else
 			showMap();
-		
     });
 
     bindLBHLinks();

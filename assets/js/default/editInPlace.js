@@ -24,7 +24,7 @@ function bindAboutPodElement() {
 	}
 
 	function updateCalendar() {
-		if(contextData.type == EVENT_COLLECTION){
+		if(contextData.type == typeObj.event.col){
 			getAjax(".calendar",baseUrl+"/"+moduleId+"/event/calendarview/id/"+contextData.id +"/pod/1?date=1",null,"html");
 		}
 	}
@@ -162,7 +162,7 @@ function bindAboutPodElement() {
 
 	function bindDynFormEditable(){
 
-		$("#btn-update-when").off().on( "click", function(){
+		$(".btn-update-when").off().on( "click", function(){
 
 
 			var form = {
@@ -174,7 +174,8 @@ function bindAboutPodElement() {
 						onLoads : {
 							initWhen : function(){
 								if(notNull(contextData.allDay) && contextData.allDay == true)
-									$("#ajaxFormModal #allDay").attr("checked");
+									$("#ajaxFormModal #allDay").bootstrapSwitch('state', true, true);
+								
 							}
 						},
 						beforeSave : function(){
@@ -202,9 +203,11 @@ function bindAboutPodElement() {
 								if(typeof data.resultGoods.values.endDate != "undefined"){
 									contextData.endDate = data.resultGoods.values.endDate;
 									$("#contentGeneralInfos #endDate").html(moment(contextData.endDate).local().format(formatDateView));
-								}  
+								}
+								initDateHeaderPage(contextData);
 								updateCalendar();
 							}
+							urlCtrl.loadByHash(location.hash);
 							dyFObj.closeForm();
 						},
 						properties : {
@@ -216,7 +219,7 @@ function bindAboutPodElement() {
 				}
 			};
 
-			if(contextData.type == "<?php echo Event::COLLECTION; ?>"){
+			if(contextData.type == typeObj.event.col){
 				form.dynForm.jsonSchema.properties.allDay = dyFInputs.allDay;
 			}
 
@@ -229,11 +232,11 @@ function bindAboutPodElement() {
 		        typeElement : contextData.type,
 			};
 			
-			if(notEmpty(contextData.startDate))
-				dataUpdate.startDate = moment(contextData.startDate).local().format(formatDatedynForm);
+			if(notEmpty(contextData.startDateDB))
+				dataUpdate.startDate = moment(contextData.startDateDB).local().format(formatDatedynForm);
 
-			if(notEmpty(contextData.endDate))
-				dataUpdate.endDate = moment(contextData.endDate).local().format(formatDatedynForm);
+			if(notEmpty(contextData.endDateDB))
+				dataUpdate.endDate = moment(contextData.endDateDB).local().format(formatDatedynForm);
 
 			mylog.log("btn-update-when", form, dataUpdate);
 			dyFObj.openForm(form, "initWhen", dataUpdate);
@@ -275,17 +278,21 @@ function bindAboutPodElement() {
 									
 								if(typeof data.resultGoods.values.tags != "undefined"){
 									contextData.tags = data.resultGoods.values.tags;
-									var str = "";
-									if($('#divTagsHeader').length){
+									var strHeader = "";
+									var strAbout = "";
+									if($('.header-tags').length){
 										$.each(contextData.tags, function (key, tag){
-											str +=	'<div class="tag label label-danger pull-right" data-val="'+tag+'">'+
+											/*str +=	'<div class="tag label label-danger pull-right" data-val="'+tag+'">'+
 														'<i class="fa fa-tag"></i>'+tag+
-													'</div>';
-											if(typeof globalTheme == "undefined" || globalTheme != "network")
-												addTagToMultitag(tag);
+													'</div>';*/
+											strHeader += '<span class="badge letter-red bg-white" style="vertical-align: top;">#'+tag+'</span>';
+											/*if(typeof globalTheme == "undefined" || globalTheme != "network")
+												addTagToMultitag(tag);*/
+											strAbout +=	'<span class="badge letter-red bg-white">'+tag+'</span>';
 										});
 									}
-									$('#divTagsHeader').html(str);
+									$('.header-tags').html(strHeader);
+									$('#tagsAbout').html(strAbout);
 								}
 
 								if(typeof data.resultGoods.values.avancement != "undefined"){
@@ -369,12 +376,14 @@ function bindAboutPodElement() {
 			};
 
 			if(contextData.type == typeObj.person.col ){
-				form.dynForm.jsonSchema.properties.username = dyFInputs.username;
+				form.dynForm.jsonSchema.properties.username = dyFInputs.inputText("Username", "Username", { required : true });
 				form.dynForm.jsonSchema.properties.birthDate = dyFInputs.birthDate;
 			}
 
 			if(contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
+			}else if(contextData.type == typeObj.event.col ){
+				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'événement", "Type d'événement", eventTypes, { required : true });
 			}
 
 			if(contextData.type == typeObj.project.col ){
@@ -385,13 +394,13 @@ function bindAboutPodElement() {
 
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.email = dyFInputs.email();
+				form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText("Fixe","Saisir les numéros de téléphone séparer par une virgule");
+				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
+				form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
 			}
 
 			form.dynForm.jsonSchema.properties.url = dyFInputs.inputUrl();
-			form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText("Fixe","Saisir les numéros de téléphone séparer par une virgule");
-			form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
-			form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
-
+			
 			var dataUpdate = {
 				block : "info",
 		        id : contextData.id,
@@ -411,8 +420,16 @@ function bindAboutPodElement() {
 
 			if(contextData.type == typeObj.organization.col ){
 				if(notEmpty(contextData.typeOrga))
-					dataUpdate.type = contextData.typeOrga;
+					currentKFormType = contextData.typeOrga;
+					//dataUpdate.type = contextData.typeOrga;
 			}
+
+			if(contextData.type == typeObj.event.col ){
+				if(notEmpty(contextData.typeEvent))
+					currentKFormType = contextData.typeEvent;
+					//dataUpdate.type = contextData.typeEvent;
+			}
+
 			if(contextData.type == typeObj.project.col ){
 				if(notEmpty(contextData.avancement))
 					dataUpdate.avancement = contextData.avancement;
@@ -420,16 +437,17 @@ function bindAboutPodElement() {
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				if(notEmpty(contextData.email)) 
 					dataUpdate.email = contextData.email;
+				if(notEmpty(contextData.fixe))
+					dataUpdate.fixe = contextData.fixe;
+				if(notEmpty(contextData.mobile))
+					dataUpdate.mobile = contextData.mobile;
+				if(notEmpty(contextData.fax))
+					dataUpdate.fax = contextData.fax;
 			}
 
 			if(notEmpty(contextData.url)) 
 				dataUpdate.url = contextData.url;
-			if(notEmpty(contextData.fixe))
-				dataUpdate.fixe = contextData.fixe;
-			if(notEmpty(contextData.mobile))
-				dataUpdate.mobile = contextData.mobile;
-			if(notEmpty(contextData.fax))
-				dataUpdate.fax = contextData.fax;
+			
 
 			mylog.log("dataUpdate", dataUpdate);
 			dyFObj.openForm(form, "initUpdateInfo", dataUpdate);
@@ -639,6 +657,7 @@ function bindAboutPodElement() {
 
 
 	function removeFieldUpdateDynForm(collection){
+		mylog.log("------------------------ removeFieldUpdateDynForm", collection);
 		var fieldsElement = [ 	"name", "tags", "email", "url", "fixe", "mobile", "fax", 
 								"telegram", "gitHub", "skype", "twitter", "facebook", "gpplus"];
 		var fieldsPerson = ["username",  "birthDate"];
@@ -647,15 +666,17 @@ function bindAboutPodElement() {
 		var fieldsEvent = [ "type", "allDay", "startDate", "endDate"];
 
 		if(collection == typeObj.person.col)
-			fieldsElement.concat(fieldsPerson);
+			fieldsElement = fieldsElement.concat(fieldsPerson);
 		else if(collection == typeObj.project.col)
-			fieldsElement.concat(fieldsProject);
+			fieldsElement = fieldsElement.concat(fieldsProject);
 		else if(collection == typeObj.organization.col)
-			fieldsElement.concat(fieldsOrga)
+			fieldsElement = fieldsElement.concat(fieldsOrga)
 		else if(collection == typeObj.event.col)
-			fieldsElement.concat(fieldsEvent);
-		
+			fieldsElement = fieldsElement.concat(fieldsEvent);
 		$.each(fieldsElement, function(key, val){ 
+			mylog.log("#ajaxFormModal #"+val);
+			mylog.log("notNull(contextData[val])", notNull(contextData[val]));
+			mylog.log($("#ajaxFormModal #"+val).val(), "==", contextData[val]);
 			if($("#ajaxFormModal #"+val).length && notNull(contextData[val]) && $("#ajaxFormModal #"+val).val() == contextData[val])
 				$("#ajaxFormModal #"+val).remove();
 		});

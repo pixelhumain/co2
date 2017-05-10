@@ -1901,6 +1901,7 @@ var directory = {
 
      getDateFormated: function(params){
     
+        params.startDateDB = notEmpty(params.startDate) ? params.startDate : null;
         params.startDay = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD") : "";
         params.startMonth = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("MM") : "";
         params.startYear = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("YYYY") : "";
@@ -1908,6 +1909,7 @@ var directory = {
         params.startTime = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("HH:mm") : "";
         params.startDate = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
         
+        params.endDateDB = notEmpty(params.endDate) ? params.endDate: null;
         params.endDay = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD") : "";
         params.endMonth = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("MM") : "";
         params.endYear = notEmpty(params.startDate) ? moment(params.endDate).local().locale("fr").format("YYYY") : "";

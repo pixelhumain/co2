@@ -152,8 +152,8 @@
 
   <div class="timeline-body  col-md-12 text-left margin-bottom-10">
     <?php if(!empty(@$media["text"])){ ?>
-    <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent no-padding">
-      <?php echo $media["text"]; ?>
+    <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" 
+         class="newsContent no-padding"><?php echo $media["text"]; ?>
     </div>
     <?php } ?>
     <?php if(@$media["tags"]) 

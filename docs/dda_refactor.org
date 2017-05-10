@@ -1,0 +1,105 @@
+
+Application "Démocratie" ~= DDA
+-------------------------------
+
+*** Chaque commune dispose d'un "conseil citoyen".
+
+*** Un "conseil citoyen" est un espace destiné à co-écrire les lois d'un pays, dans notre cas : la France.
+(applicable pour n'importe quel pays).
+
+*** Chaque citoyens peut proposer des lois, et participer à l'écriture, la correction, et l'amélioration des lois proposées par les autres citoyens.
+
+*** Chaque citoyens peut voter pour les lois qui lui conviennent, et voter contre celles qui ne lui conviennent pas.
+
+*** Pour valider une loi, il faut qu'elle obtienne une majorité de suffrage favorable
+
+*** Voter == 
+		Je valide cette proposition de loi
+		ou
+		J'invalide cette proposition de loi
+
+		==
+		Valider cette proposition ?
+		Oui (pour)
+		Non, invalidé (contre)
+
+Loi = articlesDeLoi + Amendements
+
+*** Amendement : def Wikipedia :
+Un amendement est une modification, soumise au vote d'une assemblée, en vue de corriger, compléter ou annuler tout ou une partie d'un projet de loi en cours de délibération ou d'une loi pré-existante.
+
+
+********
+*** Par quoi commencer ? Quelles lois ? Quels thèmes traiter ? etc...
+********
+Avant toute chose, il me semble qu'il faut commencer par (ré)écrire le texte fondateur sur lequel repose toutes les autres lois : la constitution. 
+Je propose que le premier texte co-écrit sur communecter soit une nouvelle constitution, pour une 6eme république.
+Si nous réussissons à co-écrire ce textes, nous serons capables d'écrire tous les autres textes de lois dont nous aurons besoins.
+Les lois dépendent de la constitution.
+
+
+
+********
+*** Votations des lois et application des résultats :
+********
+
+COMMUNE > DEPARTEMENT > REGION > PAYS
+
+*** 
+Les lois sont proposées au niveau local : la commune. Dans le conseil citoyen des communes.
+
+*** 
+Lorsqu'une proposition de loi est adoptée dans une commune, elle est automatiquement soumise à un nouveau vote, au niveau départemental, dans le conseil citoyen du département de la commune initiale.
+
+*** 
+Si le conseil citoyen départemental approuve à nouveau la proposition de loi, celle-ci est officiellement validée, et légitimement applicable à l'ensemble des communes du département en question. Si elle est réfusée, elle n'est pas valide et donc innaplicable sauf dans la commune initiale qui l'avait validée, si la commune seule est en mesure d'en assurer l'application, et que cela n'entre pas en conflit avec les lois des cercles citoyens* supérieurs.
+
+*** 
+Lorsqu'une proposition de loi est validée au niveau départemental, elle est automatiquement soumise à un nouveau vote, au niveau régional, avec les mêmes règles qu'au niveau inférieur, de même pour le niveau Pays.
+
+
+*** 
+De cette façon, on réparti la masse de proposition à traiter équitablement sur tout le territoire,
+en partant du principe qu'une proposition de loi est toujours liée à un contexte local favorable à sa venue, et que par conséquent, les gens situés à proximité sur le même territoire sont les plus à même de juger de la pertinence d'une proposition.
+
+*** 
+De cette façon, nous encourageons également les gens à se préocuper d'abord à leur contexte territorial, avant de s'occuper de celui des autres. En respect avec l'adage "penser global, agir local".
+On a beaucoup de problème en commun sur tous nos territoires, mais on essaie d'abord de régler ceux de son territoire. 
+Si chacun fait sa part au niveau local, on n'aura plus qu'à afiner les lois aux niveaux département, région, et pays, pour armoniser les textes et les rendres applicables à des contextes territoriaux plus étendus si besoin.
+
+
+*** 
+Pour résumer : on part de la base (les communes), puis on étend progressivement la zone de progression des propositions de lois.
+Une loi progresse sur le territoire à travers 4 niveaux (+ après refactor) : commune, dep, region, pays
+
+
+*** Note : On peut imaginer différents comportement possibles, dans le cas où une proposition est rejetée au niveau régional, reste-t-elle en vigueur au niveau départemental ? c'est probablement une  question fondamentale à laquelle je n'ai pas de réponse définitive aujourd'hui.
+
+*** Comment on construit une loi ?
+
+
+On choisi un(ou plusieurs) thème(s) : santé, energie, climat, Culture, Animation, Biodiversité, Economie sociale et solidaire, etc...
+On écrit sa proposition
+On valide
+=> la proposition est publiée dans mon conseil citoyen communal.
+=> mes voisins votes
+  => la proposition est acceptée
+    => la proposition concerne seulement ma commune ?
+      => oui : fin du process
+      => non : envoi automatique au département
+  => la proposition est refusée : fin du process
+
+
+Menu gauche :
+* En ce moment
+* J'ai voté pour
+* J'ai voté contre
+* Adoptées
+* Refusées
+
+Menu gauche secondaire : choix des thèmes (résultats croisés avec menu de gauche)
+* Thèmes
+*** santé
+*** energie
+*** culture
+*** climat

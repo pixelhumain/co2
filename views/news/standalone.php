@@ -51,7 +51,9 @@
       if(news.text.length>30) text+="...";
       setTitle("", "", text);
       
-		  initCommentsTools(new Array(news));
+		  <?php if(isset(Yii::app()->session["userId"])) { ?>
+        initCommentsTools(new Array(news));
+      <?php } ?>
       if(typeof news.mentions != "undefined")
         text = addMentionInText(news.text,news.mentions);
 	    else text = news.text;

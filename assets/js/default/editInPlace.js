@@ -673,11 +673,31 @@ function bindAboutPodElement() {
 			fieldsElement = fieldsElement.concat(fieldsOrga)
 		else if(collection == typeObj.event.col)
 			fieldsElement = fieldsElement.concat(fieldsEvent);
+		var valCD = "";
 		$.each(fieldsElement, function(key, val){ 
-			mylog.log("#ajaxFormModal #"+val);
-			mylog.log("notNull(contextData[val])", notNull(contextData[val]));
-			mylog.log($("#ajaxFormModal #"+val).val(), "==", contextData[val]);
-			if($("#ajaxFormModal #"+val).length && notNull(contextData[val]) && $("#ajaxFormModal #"+val).val() == contextData[val])
+
+			valCD = val;
+			if(val == "type" && collection == typeObj.organization.col)
+				valCD = "typeOrga";
+			else if(val == "type" && collection == typeObj.event.col)
+				valCD = "typeEvent";
+
+			mylog.log("#ajaxFormModal #"+val, $("#ajaxFormModal #"+val).length);
+			if($("#ajaxFormModal #"+val).length)
+				mylog.log($("#ajaxFormModal #"+val).val().trim(), $("#ajaxFormModal #"+val).val().trim().length);
+			mylog.log("contextData[valCD]", valCD , contextData[valCD], typeof contextData[valCD]);
+			mylog.log($("#ajaxFormModal #"+val).val(), "==", contextData[valCD]);
+
+			if(	$("#ajaxFormModal #"+val).length && 
+				( 	( 	typeof contextData[valCD] != "undefined" && 
+						contextData[valCD] != null && 
+						$("#ajaxFormModal #"+val).val() == contextData[valCD] 
+					) ||  
+					( 	( 	typeof contextData[valCD] == "undefined" || 
+							contextData[valCD] == null ) && 
+						$("#ajaxFormModal #"+val).val().trim().length == 0 ) 
+				) 
+			)
 				$("#ajaxFormModal #"+val).remove();
 		});
 	}

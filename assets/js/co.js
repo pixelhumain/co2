@@ -553,6 +553,7 @@ var urlCtrl = {
 	    "#organization.directory" : {aliasParam: "#page.type.organizations.id.$id.view.directory.dir.members", params: ["id"],title:'ORGANIZATION DETAIL ', icon : 'users' },
 	    "#project.directory" : {aliasParam: "#page.type.projects.id.$id.view.directory.dir.contributors", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
 	    "#news.detail" : {aliasParam: "#page.type.news.id.$id", params: ["id"], title:'NEWS', icon : 'rss' },
+	    "#news.index" : {aliasParam: "#page.type.$type.id.$id", params: ["type","id"], title:'NEWS', icon : 'rss' },
 	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
@@ -563,7 +564,6 @@ var urlCtrl = {
 	    "#city.creategraph" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
 	    "#city.graphcity" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
 	    "#city.statisticPopulation" : {title:'CITY ', icon : 'university' },
-	    "#news" : {title:'NEWS ', icon : 'rss'},
 	    "#rooms.index.type.cities" : {title:'ACTION ROOMS ', icon : 'cubes', menuId:"btn-citizen-council-commun"},
 	    "#rooms.editroom" : {title:'ADD A ROOM ', icon : 'plus', action:function(){ editRoomSV ();	}},
 		"#element.aroundme" : {title:"Around me" , icon : 'crosshairs', menuId:"menu-btn-around-me"},
@@ -2855,8 +2855,61 @@ var dyFInputs = {
         	$(".urlsarray").css("display","none");	
         }
     },
-    allDay : {
+    allDay : function(checked){
+
+    	var inputObj = {
+    		inputType : "checkbox",
+	    	checked : ( notEmpty(checked) ? checked : "" ),
+	    	init : function(){
+	        	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
+	        		mylog.log("toto",$("#ajaxFormModal #allDay").val());
+	        	})
+	        },
+	    	"switch" : {
+	    		"onText" : "Oui",
+	    		"offText" : "Non",
+	    		"labelText":"Toute la journée",
+	    		"onChange" : function(){
+	    			var allDay = $("#ajaxFormModal #allDay").is(':checked');
+	    			var startDate = "";
+	    			var endDate = "";
+	    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
+	    			if (allDay) {
+	    				$(".dateTimeInput").addClass("dateInput");
+	    				$(".dateTimeInput").removeClass("dateTimeInput");
+	    				$('.dateInput').datetimepicker('destroy');
+	    				$(".dateInput").datetimepicker({ 
+					        autoclose: true,
+					        lang: "fr",
+					        format: "d/m/Y",
+					        timepicker:false
+					    });
+					    startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
+					    endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
+	    			} else {
+	    				$(".dateInput").addClass("dateTimeInput");
+	    				$(".dateInput").removeClass("dateInput");
+	    				$('.dateTimeInput').datetimepicker('destroy');
+	    				$(".dateTimeInput").datetimepicker({ 
+		       				weekStart: 1,
+							step: 15,
+							lang: 'fr',
+							format: 'd/m/Y H:i'
+					    });
+					    
+	    				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
+						endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
+	    			}
+				    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
+					if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
+	    		}
+		    }
+    	};
+    	return inputObj;
+    },
+   /* allDay : {
     	inputType : "checkbox",
+    	checked : true,
     	init : function(){
         	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
         		mylog.log("toto",$("#ajaxFormModal #allDay").val());
@@ -2901,7 +2954,7 @@ var dyFInputs = {
 				if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
     		}
     	}
-    },
+    },*/
     startDateInput : {
         inputType : "datetime",
         placeholder: "Date de début",

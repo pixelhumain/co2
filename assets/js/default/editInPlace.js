@@ -357,7 +357,6 @@ function bindAboutPodElement() {
 									}else{
 										$("#webAbout").html("<i>"+trad["notSpecified"]+"</i>");
 									}
-									
 								}  
 									
 								if(typeof data.resultGoods.values.birthDate != "undefined"){

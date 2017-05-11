@@ -504,6 +504,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         data : formData,
         dataType: "json",
         success: function(data){
+          $("#modal-share #htmlElementToShare").html("");
           $(thiselement).attr("data-original-title", "Vous avez partagé ça avec votre réseau");
           toastr.success("Vous avez partagé ce contenu avec votre réseau");  
         }
@@ -1488,7 +1489,7 @@ var directory = {
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
           if(directory.dirLog) mylog.log("params", params, typeof params);
-          if(notNull(params["_id"]) || notNull(params["id"]) ){
+          if(params["_id"] != null || params["id"] != null){
 
 
             itemType=(contentType) ? contentType :params.type;

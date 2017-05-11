@@ -1578,10 +1578,10 @@ var directory = {
                 if( (params.type == "poi") && (params.source.insertOrign == "import") ) {
                   var interop_type = getTypeInteropData(params.source.key);
                   params.url = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.url);
-                  params.ico = getIconForInteropElements(interop_type);
+                  // params.ico = getIconForInteropElements(interop_type);
                   params.color = getIconColorForInteropElements(interop_type);
-                  // params.htmlIco ="<i class='fa fa-"+ params.ico +" fa-2x bg-"+params.color+"'></i>";
                   params.htmlIco = getImageIcoForInteropElements(interop_type);
+                  params.type = "poi.interop."+interop_type;
                   if (typeof(params.tags) !== "undefined") {
                     params.tags.push(interop_type);
                   } else {

@@ -355,13 +355,8 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
             activateGlobalCommunexion(false);
         });
 
-        // $("#to_be_continued").click(function() {
-        //     startSearchInterop(currentIndexMin+indexStep, currentIndexMax+indexStep);
-        // });
-
         $(".btn-directory-type").click(function(){
             typeD = $(this).data("type");
-
             putInteropImageOnTitle(typeD);
             initTypeSearchInterop();
             startSearchInterop(0, indexStepInit);
@@ -383,20 +378,11 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
             $.each(filliaireCategories[fKey]["tags"], function(key, tag){
                 addTagToMultitag(tag);
             });
-            console.log("myMultiTags", myMultiTags);
-
-            // $("#select_activity").val("-1");
 
             initTypeSearchInterop(type);
 
             startSearchInterop(0, indexStepInit);
             KScrollTo("#container-result-interop_search");
-
-            if (typeD == "ods") {
-            changeValueSelectByThemeForActivityAndTheme();
-            } else if (typeD == "osm") {
-            changeValueSelectByThemeOSM();
-            }
         });  
 
         $("#main-btn-start-search-interop").click(function() {
@@ -406,16 +392,6 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
             KScrollTo("#container-result-interop_search");
 
         });
-
-        // $(".item-scope-input").on("click",function(){ 
-        //     initTypeSearchInterop();
-        //     startSearchInterop(0, indexStepInit);
-        // });
-
-        // if (searchTags !== "") {
-        //     $("#tags_select").html('<option value="amenity">amenity</option>');
-        //     changeValueSelectByTheme();
-        // }
 
         $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
             if(!loadingData && !scrollEnd && !isMapEnd){
@@ -445,7 +421,6 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
         endNow= 30;
 
         loadingData = false; 
-        // initTypeSearch(type);
 
         var indexStepInit = 100;
     	var indexStep = indexStepInit;
@@ -494,91 +469,67 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
 
             if ( (searchTags == "") && (typeof typeD !== "undefined") ){
 
-                if (text_search_name == "") {
-
-                    if (typeD == "wikidata") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+communexion.values.wikidataID+".json";
-                    } else if (typeD == "datagouv") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/datagouv?url=https://www.data.gouv.fr/api/1/spatial/zone/fr/town/"+communexion.values.inseeCode+"/datasets";
-                    } else if (typeD == "osm") {
-                        url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"](poly:"'+geoShape+'");out%20'+endNow+';';
-                    } else if (typeD == "ods") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-                    } else if (typeD == "datanova") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-                    }
-                } else { // text_search_name !== ""
-
-                    if (typeD == "wikidata") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+communexion.values.wikidataID+".json&text_filter="+text_search_name;
-                    } else if (typeD == "datagouv") {
-
-                    } else if (typeD == "osm") {
-                        url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'",i](poly:"'+geoShape+'");out%20'+endNow+';';
-                    } else if (typeD == "ods") {
-                        url_interop = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&q="+text_search_name+"&sort=datemaj&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine";
-                    } else if (typeD == "datanova") {
-
-                    }
-                } 
-            } 
-            else if (typeof typeD !== "undefined") { //searchTags == ""
-
-                if (typeD == "ods") {
-
-                    libelle_activity = "";
-
-                    $.each(activity_array, function(index, value) {
-                        if (searchTags == index) {
-                            $.each(activity_array, function(index, value) {
-                                if (searchTags == index) {
-                                    $.each(value, function(index2, value2) {
-                                        libelle_activity += "&refine.libapen[]="+value2;
-                                    });
-                                }
-                            });
-                            if (libelle_activity == "") {
-                                libelle_activity = "&refine.libapen[]=NO AVAILABLE ACTIVITY";
-                            }
-                        }
-                    });
-
-                    libelle_activity += "&disjunctive.libapen=true";
-
-                    url_interop = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=libapen&rows=30&start="+startNow+"&geofilter.polygon="+geofilter+libelle_activity;
-                }  
-                else if (typeD == "osm") {
-
-                    theme_array = getThemeArray();
-
-                    amenity_filter = "";
-
-                    $.each(theme_array, function(index, value) {
-                        if (searchTags == index) {
-                            $.each(value, function(index2, value2) {
-                                if (value.length > 0) {
-                                    amenity_filter += "|" + value2;
-                                }
-                            });
-                        }
-                    });
-
-                    if (amenity_filter !== "") {
-                        amenity_filter = amenity_filter.substring(1);
-                        if (text_search_name == "") {
-                            url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
-                        } else {
-                            url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'"]["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
-                        }
-                    } else {
-                        url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"="NIMPORTEQUOI"](poly:"'+geoShape+'");out%20'+endNow+';';
-                    }
-                } else if (typeD == "wikidata") {
-                    url_interop = "http://127.0.0.1/ph/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+communexion.values.wikidataID+".json";
+                if (typeD == "wikidata") {
+                    var url_interop = getUrlInteropForWiki(communexion.values.wikidataID);
+                } else if (typeD == "datagouv") {
+                    var url_interop = getUrlInteropForDatagouv(communexion.values.inseeCode);
+                } else if (typeD == "osm") {
+                    var url_interop = getUrlInteropForOsm(geoShape);
+                } else if (typeD == "ods") {
+                    var url_interop  = getUrlInteropForOds(geofilter);
                 } else if (typeD == "datanova") {
-                    url_interop = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+                    var url_interop = getUrlInteropForDatanova(geofilter);
+                } else if (typeD == "pole_emploi") {
+                    var url_interop = getUrlInteropForPoleEmploi(communexion.values.inseeCode);
+                } else if (typeD = "all_interop") {
+                    all_interop_url = [];
+
+                    var url_interop = getUrlInteropForWiki(communexion.values.wikidataID);
+                    all_interop_url.push(url_interop);
+                    
+                    var url_interop = getUrlInteropForDatagouv(communexion.values.inseeCode);
+                    all_interop_url.push(url_interop);
+                    
+                    var url_interop = getUrlInteropForOsm(geoShape);
+                    all_interop_url.push(url_interop);          
+                    
+                    var url_interop  = getUrlInteropForOds(geofilter);
+                    all_interop_url.push(url_interop);
+                   
+                    var url_interop = getUrlInteropForDatanova(geofilter);
+                    all_interop_url.push(url_interop);
+                   
+                    var url_interop = getUrlInteropForPoleEmploi(communexion.values.inseeCode);
+                    all_interop_url.push(url_interop);                       
                 }
             } 
+            else if (typeof typeD !== "undefined") { //searchTags !== ""
+
+                if (typeD == "ods") {
+                    libelle_activity = getLibelleActivity();
+                    var url_interop = getUrlInteropForOds(geofilter, libelle_activity);
+                }  
+                else if (typeD == "osm") {
+                    amenity_filter = getAmenityFilter();
+                    var url_interop = getUrlInteropForOsm(geoShape, amenity_filter);
+                } else if (typeD == "pole_emploi") {
+                    rome_letters = getRomeActivityCodeFromThematic(searchTags);
+                    var url_interop = getUrlInteropForPoleEmploi(communexion.values.inseeCode, rome_letters);
+                } else if (typeD == "all_interop") {
+
+                    amenity_filter = getAmenityFilter();
+                    var url_interop = getUrlInteropForOsm(geoShape, amenity_filter);
+                    all_interop_url.push(url_interop);
+
+                    libelle_activity = getLibelleActivity();
+                    var url_interop = getUrlInteropForOds(geofilter, libelle_activity);
+                    all_interop_url.push(url_interop);
+
+                    rome_letters = getRomeActivityCodeFromThematic(searchTags);
+                    var url_interop = getUrlInteropForPoleEmploi(communexion.values.inseeCode, rome_letters);
+                    all_interop_url.push(url_interop);
+                }
+            }  
         } else { // communexion.state == false
 
             scope_value = getScopeValue();
@@ -589,177 +540,73 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
 
             if ( (searchTags == "") && (typeof typeD !== "undefined") ){
 
-                if (text_search_name == "") {
+                if (typeD == "wikidata") {
+                    var url_interop = getUrlInteropForWiki(city_data.wikidataID);
+                } else if (typeD == "datagouv") {
+                    var url_interop = getUrlInteropForDatagouv(city_data.insee);
+                } else if (typeD == "osm") {
+                    var url_interop = getUrlInteropForOsm(geoShape);
+                } else if (typeD == "ods") {
+                    var url_interop  = getUrlInteropForOds(geofilter);
+                } else if (typeD == "datanova") {
+                    var url_interop = getUrlInteropForDatanova(geofilter);
+                } else if (typeD == "pole_emploi") {
+                    var url_interop = getUrlInteropForPoleEmploi(city_data.insee);
+                } else if (typeD = "all_interop") {
+                    all_interop_url = [];
+                    
+                    var url_interop = getUrlInteropForWiki(city_data.wikidataID);
+                    all_interop_url.push(url_interop);
 
-                    if (typeD == "wikidata") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+city_data.wikidataID+".json";
-                    } else if (typeD == "datagouv") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/datagouv?url=https://www.data.gouv.fr/api/1/spatial/zone/fr/town/"+city_data.insee+"/datasets";
-                    } else if (typeD == "osm") {
-                        url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"](poly:"'+geoShape+'");out%20'+endNow+';';
-                    } else if (typeD == "ods") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-                    } else if (typeD == "datanova") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-                    } else if (typeD == "pole_emploi") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+city_data.insee+"%27%20LIMIT%20"+endNow;
-                    } else if (typeD = "all_interop") {
-                        all_interop_url = [];
-                        url_interop = "http://127.0.0.1/ph/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+city_data.wikidataID+".json";
-                        all_interop_url.push(url_interop);
-                        url_interop = "http://127.0.0.1/ph/api/convert/datagouv?url=https://www.data.gouv.fr/api/1/spatial/zone/fr/town/"+city_data.insee+"/datasets";
-                        all_interop_url.push(url_interop);
-                        url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"](poly:"'+geoShape+'");out%20'+endNow+';';
-                        all_interop_url.push(url_interop);          
-                        url_interop = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-                        all_interop_url.push(url_interop);
-                        url_interop = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-                        all_interop_url.push(url_interop);
-                        url_interop = "http://127.0.0.1/ph/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+city_data.insee+"%27%20LIMIT%20"+endNow;
-                        all_interop_url.push(url_interop); 
+                    var url_interop = getUrlInteropForOsm(geoShape);
+                    all_interop_url.push(url_interop);          
+                    
+                    var url_interop  = getUrlInteropForOds(geofilter);
+                    all_interop_url.push(url_interop);
+                   
+                    var url_interop = getUrlInteropForDatanova(geofilter);
+                    all_interop_url.push(url_interop);
 
-                        // mylog.log('On apelle la fonction StartSearch avec un tableau d\'url');
-                        // getInteropResults(all_interop_url);                       
-                    }
-                } else { // on fait une recherche textuelle
-                    if (typeD == "wikidata") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+city_data.wikidataID+".json&text_filter="+text_search_name;
-                    } else if (typeD == "datagouv") {
-                        // url_interop = "http://127.0.0.1/ph/api/convert/datagouv?url=https://www.data.gouv.fr/api/1/spatial/zone/fr/town/"+city_data.insee+"/datasets";
-                    } else if (typeD == "osm") {
-                        url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'",i](poly:"'+geoShape+'");out%20'+endNow+';';
-                    } else if (typeD == "ods") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&q="+text_search_name+"&sort=datemaj&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-                    } else if (typeD == "datanova") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&q="+text_search_name+"&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-                    } else if (typeD == "all_interop") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+city_data.wikidataID+".json&text_filter="+text_search_name;
+                    if (text_search_name == "") {
+
+                        var url_interop = getUrlInteropForDatagouv(city_data.insee);
                         all_interop_url.push(url_interop);
-                        url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'",i](poly:"'+geoShape+'");out%20'+endNow+';';
-                        all_interop_url.push(url_interop);
-                        url_interop = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&q="+text_search_name+"&sort=datemaj&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-                        all_interop_url.push(url_interop);
-                        url_interop = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&q="+text_search_name+"&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-                        all_interop_url.push(url_interop);
-                    }
+
+                        var url_interop = getUrlInteropForPoleEmploi(city_data.insee);
+                        all_interop_url.push(url_interop);    
+                    }                   
                 }
             } 
             else if (typeof typeD !== "undefined") { //searchTags !== ""
 
                 if (typeD == "ods") {
-
-                    libelle_activity = "";
-
-                    $.each(activity_array, function(index, value) {
-                        if (searchTags == index) {
-                            $.each(activity_array, function(index, value) {
-                                if (searchTags == index) {
-                                    $.each(value, function(index2, value2) {
-                                        libelle_activity += "&refine.libapen[]="+value2;
-                                    });
-                                }
-                            });
-                            if (libelle_activity == "") {
-                                libelle_activity = "&refine.libapen[]=NO AVAILABLE ACTIVITY";
-                            }
-                        }
-                    });
-
-                    libelle_activity += "&disjunctive.libapen=true";
-
-                    if (text_search_name == "") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=libapen&rows=30&start="+startNow+"&geofilter.polygon="+geofilter+libelle_activity;
-                    } else {
-                        url_interop = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=libapen&q="+text_search_name+"&rows=30&start="+startNow+"&geofilter.polygon="+geofilter+libelle_activity;
-                    }                   
+                    libelle_activity = getLibelleActivity();
+                    var url_interop = getUrlInteropForOds(geofilter, libelle_activity);
                 }  
                 else if (typeD == "osm") {
-
-                    theme_array = getThemeArray();
-
-                    amenity_filter = "";
-
-                    $.each(theme_array, function(index, value) {
-                        if (searchTags == index) {
-                            $.each(value, function(index2, value2) {
-                                if (value.length > 0) {
-                                    amenity_filter += "|" + value2;
-                                }
-                            });
-                        }
-                    });
-
-                    if (amenity_filter !== "") {
-                        amenity_filter = amenity_filter.substring(1);
-                        if (text_search_name == "") {
-                            url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
-                        } else {
-                            url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'"]["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
-                        }
-                    } else {
-                        url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"="NIMPORTEQUOI"](poly:"'+geoShape+'");out%20'+endNow+';';
-                    }
-                } else if (typeD == "datanova") {
-                    url_interop = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+                    amenity_filter = getAmenityFilter();
+                    var url_interop = getUrlInteropForOsm(geoShape, amenity_filter);
+                } else if (typeD == "pole_emploi") {
+                    rome_letters = getRomeActivityCodeFromThematic(searchTags);
+                    var url_interop = getUrlInteropForPoleEmploi(city_data.insee, rome_letters);
                 } else if (typeD == "all_interop") {
 
-                    theme_array = getThemeArray();
-
-                    amenity_filter = "";
-
-                    $.each(theme_array, function(index, value) {
-                        if (searchTags == index) {
-                            $.each(value, function(index2, value2) {
-                                if (value.length > 0) {
-                                    amenity_filter += "|" + value2;
-                                }
-                            });
-                        }
-                    });
-
-                    if (amenity_filter !== "") {
-                        amenity_filter = amenity_filter.substring(1);
-                        if (text_search_name == "") {
-                            url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
-                        } else {
-                            url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'"]["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
-                        }
-                    } else {
-                        url_interop = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"="NIMPORTEQUOI"](poly:"'+geoShape+'");out%20'+endNow+';';
-                    }
-
+                    amenity_filter = getAmenityFilter();
+                    var url_interop = getUrlInteropForOsm(geoShape, amenity_filter);
                     all_interop_url.push(url_interop);
 
-                    libelle_activity = "";
-
-                    $.each(activity_array, function(index, value) {
-                        if (searchTags == index) {
-                            $.each(activity_array, function(index, value) {
-                                if (searchTags == index) {
-                                    $.each(value, function(index2, value2) {
-                                        libelle_activity += "&refine.libapen[]="+value2;
-                                    });
-                                }
-                            });
-                            if (libelle_activity == "") {
-                                libelle_activity = "&refine.libapen[]=NO AVAILABLE ACTIVITY";
-                            }
-                        }
-                    });
-
-                    libelle_activity += "&disjunctive.libapen=true";
+                    libelle_activity = getLibelleActivity();
+                    var url_interop = getUrlInteropForOds(geofilter, libelle_activity);
+                    all_interop_url.push(url_interop);
 
                     if (text_search_name == "") {
-                        url_interop = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=libapen&rows=30&start="+startNow+"&geofilter.polygon="+geofilter+libelle_activity;
-                    } else {
-                        url_interop = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=libapen&q="+text_search_name+"&rows=30&start="+startNow+"&geofilter.polygon="+geofilter+libelle_activity;
-                    }   
-                    all_interop_url.push(url_interop);
+                        rome_letters = getRomeActivityCodeFromThematic(searchTags);
+                        var url_interop = getUrlInteropForPoleEmploi(city_data.insee, rome_letters);
+                        all_interop_url.push(url_interop);
+                    }
                 }
- 
             }  
         }
-        
         return url_interop;
     }
 
@@ -769,7 +616,7 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
 
         if (typeof(typeD) == "undefined") {
             // toastr.error("Pas de type de directory selectionné");
-            return;
+            typeD = "wikidata";
         }
 
 	    indexStep = indexStepInit;
@@ -778,8 +625,8 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
 	    
 	    // if(name == "" && searchType.indexOf("cities") > -1) return;  
 
-	    if(typeof indexMin == "undefined") indexMin = 0;
-	    if(typeof indexMax == "undefined") indexMax = indexStep;
+	    // if(typeof indexMin == "undefined") indexMin = 0;
+	    // if(typeof indexMax == "undefined") indexMax = indexStep;
 
 	    currentIndexMin = indexMin;
 	    currentIndexMax = indexMax;
@@ -812,11 +659,10 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
 	      } 
 	    }  
 
-        url_interop = getUrlForInteropResearch();
+        var url_interop = getUrlForInteropResearch();
         if (all_interop_url.length > 0 ) {
             all_interop_data = [];
             $.each(all_interop_url,function(index, value) {
-                mylog.log('URL IN INTEROP ARRAY URL', value);
                 getInteropResults(value);
             });
         } else {
@@ -824,7 +670,7 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
         }
     }
 
-    function getInteropResults(urlInterop) {
+    function getInteropResults(url_interop) {
 
     	mylog.log("nouvelle url à passer dans l'auro complete : ", url_interop);
 
@@ -834,6 +680,8 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
 	    $(".btn-start-search").html(str);
 	    $(".btn-start-search").addClass("bg-azure");
 	    $(".btn-start-search").removeClass("bg-dark");
+
+        mylog.log("L INDEX MIN EST EGAL A : ", indexMin);
 	    
 	    if(indexMin > 0)
 	    $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
@@ -846,7 +694,7 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
 
     	$.ajax({
         type: "POST",
-        url: urlInterop,
+        url: url_interop,
         dataType: "json",
         error: function (data){
             mylog.log("error autocomplete INTEROP search"); mylog.dir(data);     
@@ -854,6 +702,8 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
             loadingData = false;     
         },
         success: function(data){ mylog.log("success autocomplete INTEROP search", data); //mylog.dir(data);
+
+            all_data_for_map = [];
 
             if (data.length > 0) {
                 if ((data[0]["source"]["key"] == "convert_ods") || (data[0]["source"]["key"] == "convert_datanova")) {
@@ -882,6 +732,8 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
                     }
                 } else {
                     if (text_search_name == "") {
+                        var nb_of_return = 2;
+                    } else {
                         var nb_of_return = 1;
                     }
                 }
@@ -911,7 +763,6 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
                         countData++;
                     });
                 }
-            	
 
                 totalData += countData;
             
@@ -1014,6 +865,29 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
                         } 
                     }
 
+                    indexMin = startNow;
+                    indexMax = endNow;
+
+                    if (typeD == "all_interop") {
+                        $.each(all_interop_data, function(index, value) {
+
+                            if (typeof(value.geo) !== "undefined")  {
+                                createAndPushItemForMap(value);
+                            } 
+                        });
+                    } else {
+                        $.each(part_data, function(index, value) {
+                            createAndPushItemForMap(value);
+                        });
+                    }
+
+                    if (typeD == "datagouv") {
+                        contextTestMap = [];
+                    }
+
+                    Sig.showMapElements(Sig.map, contextTestMap);
+
+
                     $('.add2fav').attr('target', '_blank');
                     //remet l'icon "loupe" du bouton search
                     $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
@@ -1058,42 +932,12 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
             // if( typeof page != "undefined" && page == "agenda" && typeof showResultInCalendar != "undefined")
             //   showResultInCalendar(data);
 
-            $.each(part_data, function(index,value) {
-                value.id = value.name;
-            });
+            // $.each(part_data, function(index,value) {
+            //     value.id = value.name;
+            // });
 
             if(mapElements.length==0) mapElements = part_data;
-            else $.extend(mapElements, part_data);
-
-            $.each(part_data, function(index, value) {
-                // new_item_id = parseFloat(value.geo.latitude) + parseFloat(value.geo.longitude);
-                new_item_id = Math.random(); 
-                new_item_id = new_item_id.toString(); 
-                new_item_id = new_item_id.replace('\.', '');
-                new_item_id = parseInt(new_item_id);
-                item = {
-                    "_id": {
-                        "$id" : new_item_id,
-                    },
-                    "geo": {
-                        "@type": "GeoCoordinates",
-                        "latitude": value.geo.latitude,
-                        "longitude": value.geo.longitude,
-                    },
-                    "name" : value.name,
-                    "typeSig" : "poi",
-                }
-                contextTestMap.push(item);
-            });
-
-            if (typeD == "datagouv") {
-                contextTestMap = [];
-            }
-
-            Sig.showMapElements(Sig.map, contextTestMap);
-
-            indexMin = startNow;
-            indexMax = endNow;
+            else $.extend(mapElements, part_data);            
 
             // if (part_data.length < 30) {
             //     $("#btnShowMoreResult").addClass("hidden");
@@ -1189,14 +1033,149 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
         }
     }
 
-    function getAllInteropResult(interop_url_array) {
+    function createAndPushItemForMap(value) {
 
-        startSearchInterop();
-        // $.each(interop_url_array, function(index, value) {
-        //     mylog.log('On lance la fonction avec cette url', value);
-        //     getInteropResults(value);
-        // });
+        var new_item_id = Math.random(); 
+        var new_item_id = new_item_id.toString(); 
+        var new_item_id = new_item_id.replace('\.', '');
+        var new_item_id = parseInt(new_item_id);
+        var item = {
+            "_id": {
+                "$id" : new_item_id,
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": value.geo.latitude,
+                "longitude": value.geo.longitude,
+            },
+            "name" : value.name,
+            "typeSig" : value.type,
+            "url" : value.url,
+        }
+        contextTestMap.push(item);
+    }
 
-        // getInteropResults();
+    function getAmenityFilter() {
+
+        theme_array = getThemeArray();
+
+        amenity_filter = "";
+
+        $.each(theme_array, function(index, value) {
+            if (searchTags == index) {
+                $.each(value, function(index2, value2) {
+                    if (value.length > 0) {
+                        amenity_filter += "|" + value2;
+                    }
+                });
+            }
+        });
+
+        amenity_filter = amenity_filter.substring(1);
+
+        return amenity_filter;
+    }
+
+    function getLibelleActivity() {
+
+        libelle_activity = "";
+
+        $.each(activity_array, function(index, value) {
+            if (searchTags == index) {
+                $.each(activity_array, function(index, value) {
+                    if (searchTags == index) {
+                        $.each(value, function(index2, value2) {
+                            libelle_activity += "&refine.libapen[]="+value2;
+                        });
+                    }
+                });
+                if (libelle_activity == "") {
+                    libelle_activity = "&refine.libapen[]=NO AVAILABLE ACTIVITY";
+                }
+            }
+        });
+
+        libelle_activity += "&disjunctive.libapen=true";
+
+        return libelle_activity;
+    }
+
+    function getUrlInteropForWiki(wikidataID) {
+
+        if (text_search_name == "") {
+            var url_wiki = "http://127.0.0.1/ph/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+wikidataID+".json";
+        } else {
+            var url_wiki = "http://127.0.0.1/ph/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+wikidataID+".json&text_filter="+text_search_name;
+        }
+
+        return url_wiki;
+    }
+
+    function getUrlInteropForDatagouv(insee) {
+
+        var url_datagouv = "http://127.0.0.1/ph/api/convert/datagouv?url=https://www.data.gouv.fr/api/1/spatial/zone/fr/town/"+insee+"/datasets";
+
+        return url_datagouv;
+    }
+
+    function getUrlInteropForOsm(geoShape, amenity_filter = null) {
+
+        if (amenity_filter == null) {
+            if (text_search_name == "") {
+                var url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"](poly:"'+geoShape+'");out%20'+endNow+';';
+            } else {
+                var url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'",i](poly:"'+geoShape+'");out%20'+endNow+';';
+            }
+        } else {
+
+            if (amenity_filter == "") {
+                var url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"="NIMPORTEQUOI"](poly:"'+geoShape+'");out%20'+endNow+';';
+            } else {
+                if (text_search_name == "") {
+                    var url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
+                } else {
+                    var url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'"]["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
+                }
+            }
+        }                         
+
+        return url_osm;
+    }
+
+    function getUrlInteropForOds(geofilter, filter = null) {
+
+        if (text_search_name == "") {
+            var url_ods = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+        } else {
+            url_ods = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&q="+text_search_name+"&sort=datemaj&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+        }
+
+        if (filter !== null) {
+            url_ods = url_ods + filter;
+        }
+
+        return url_ods;
+    }
+
+    function getUrlInteropForDatanova(geofilter) {
+
+        if (text_search_name == "") {
+            var url_datanova = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+        } else {
+            var url_datanova = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&q="+text_search_name+"rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+        }
+
+        return url_datanova;
+    }
+
+    function getUrlInteropForPoleEmploi(insee, filter = null) {
+
+        if (filter == null) {
+            var url_pole_emploi = "http://127.0.0.1/ph/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+insee+"%27%20LIMIT%20"+endNow;
+        } else {
+            url_pole_emploi = "http://127.0.0.1/ph/api/convert/poleemploi?rome_activity="+filter+"&url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+insee+"%27%20LIMIT%20"+endNow;
+        }
+
+        return url_pole_emploi;
     }
 </script>

@@ -1179,6 +1179,39 @@ function getActivityArray() {
 
 }
 
+function getRomeActivityCodeFromThematic(thematic) {
+
+    if (thematic == "commun") {
+        rome_activity_letter = null;
+    } else if (thematic == "déchets") {
+        rome_activity_letter = null;        
+    } else if (thematic == "agriculture,alimentation") {
+        rome_activity_letter = "A";
+    } else if (thematic == "santé") {
+        rome_activity_letter = "J";      
+    } else if (thematic == "aménagement,transport,construction") {
+        rome_activity_letter = "F,G,I,N"; 
+    } else if (thematic == "éducation,petite Enfance") {
+        rome_activity_letter = null;        
+    } else if (thematic == "citoyenneté") {
+        rome_activity_letter = "K";       
+    } else if (thematic == "ess,economie social solidaire") {
+        rome_activity_letter = "M,C,D";     
+    } else if (thematic == "energie,climat") {
+        rome_activity_letter = "H";     
+    } else if (thematic == "culture,animation") {
+        rome_activity_letter = "B,L";
+    } else if (thematic == "biodiversité") {
+        rome_activity_letter = null;       
+    } else if (thematic == "numérique,tic,internet") {
+        rome_activity_letter = "E";      
+    } else if (thematic == "autres") {
+        rome_activity_letter = null;     
+    }
+
+    return rome_activity_letter;
+}
+
 function osmResultSearch(list_tags, all_data) {
 
     contextOmsElt = [];
@@ -1672,4 +1705,26 @@ function getImageIcoForInteropElements(type_elt) {
     return icon_image;
 
 }
+
+function getimgProfilPathForInteropDataOnMap(type_elt) {
+
+    var imgProfilPath;
+
+    if (type_elt == "poi.interop.datanova") {
+        var imgProfilPath = "http://127.0.0.1/"+moduleUrl+"/images/logos/logo-laposte.png";
+    } else if (type_elt == "poi.interop.wiki") {
+        var imgProfilPath = "http://127.0.0.1/"+moduleUrl+"/images/logos/logo-wikidata.png";
+    } else if (type_elt == "poi.interop.datagouv") {
+        var imgProfilPath = "http://127.0.0.1/"+moduleUrl+"/images/logos/data-gouv-logo.png";
+    } else if (type_elt == "poi.interop.poleemploi") {
+        var imgProfilPath = "http://127.0.0.1/"+moduleUrl+"/images/logos/logo_pole_emploi.png";
+    } else if (type_elt == "poi.interop.osm") {
+        var imgProfilPath = "http://127.0.0.1/"+moduleUrl+"/images/logos/OSM-logo.png";
+    } else if (type_elt == "poi.interop.ods") {
+        var imgProfilPath = "http://127.0.0.1/"+moduleUrl+"/images/logos/opendata-soft-logo.png";
+    }
+    return imgProfilPath;
+}
+
+
 

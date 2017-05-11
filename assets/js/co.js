@@ -596,7 +596,7 @@ var urlCtrl = {
 		"#default.apropos" : {title:'COMMUNECTED HOME ', icon : 'star',"menu":"homeShortcuts"},
 		"#default.twostepregister" : {title:'TWO STEP REGISTER', icon : 'home', "menu":"homeShortcuts"},
 		"#default.view.page" : {title:'Découvrir', icon : 'file-o'},
-		//"#home" : {"alias":"#default.home"},
+		"#home" : {"alias":"#default.home"},
 	    "#stat.chartglobal" : {title:'STATISTICS ', icon : 'bar-chart'},
 	    "#stat.chartlogs" : {title:'STATISTICS ', icon : 'bar-chart'},
 	    "#default.live" : {title:"FLUX'Direct" , icon : 'heartbeat', menuId:"menu-btn-live"},

@@ -94,7 +94,7 @@
                 <?php } ?>
               <?php } ?>
 
-              <?php if(@$media["target"]["id"] != @$authorId && @$media["target"]["id"] != @$contextId) { ?>
+              <?php if(@$media["target"]["id"] != @$authorId && @$media["target"]["id"] != @$contextId && @$media["verb"] != "create") { ?>
                 sur le mur de 
                 <a href="#page.type.<?php echo @$media["target"]["type"]; ?>.id.<?php echo @$media["target"]["id"]; ?>" 
                         class="lbh">

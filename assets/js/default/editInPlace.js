@@ -212,7 +212,7 @@ function bindAboutPodElement() {
 								initDateHeaderPage(contextData);
 								updateCalendar();
 							}*/
-							
+
 							urlCtrl.loadByHash(location.hash);
 							dyFObj.closeForm();
 						},
@@ -351,9 +351,13 @@ function bindAboutPodElement() {
 
 								if(typeof data.resultGoods.values.url != "undefined"){
 									mylog.log("update url");
-									contextData.url = data.resultGoods.values.url;
-									$("#urlAbout").html(contextData.url);
-									$("#urlAbout").attr("href", contextData.url);
+									contextData.url = data.resultGoods.values.url.trim();
+									if(contextData.url != "" ){
+										$("#webAbout").html('<a href="'+contextData.url+'" target="_blank" id="urlWebAbout" style="cursor:pointer;">'+contextData.url+'</a>');
+									}else{
+										$("#webAbout").html("<i>"+trad["notSpecified"]+"</i>");
+									}
+									
 								}  
 									
 								if(typeof data.resultGoods.values.birthDate != "undefined"){

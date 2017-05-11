@@ -787,7 +787,12 @@ var urlCtrl = {
 	            title = 'ADD SOMETHING TO MY NETWORK';
 	        else
 	            title = "WELCOM MUNECT HEY !!!";
-	        showPanel(panelName,null,title);
+	        if(panelName == "box-login")
+				$('#modalLogin').modal("show");
+			else if(panelName == "box-register")
+				$('#modalRegister').modal("show");
+			else
+	       		showPanel(panelName,null,title);
 	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
 	        hashT = hash.split(".");
 	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
@@ -832,12 +837,11 @@ function showPanel(box,callback){
   	
   	if(isMapEnd) showMap(false);
 			
-	mylog.log("showPanel");
+	mylog.log("showPanel",box);
 	//showTopMenu(false);
 	$(themeObj.mainContainer).animate({ top: -1500, opacity:0 }, 500 );
 
 	$("."+box).show(500);
-
 	if (typeof callback == "function") {
 		callback();
 	}

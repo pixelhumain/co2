@@ -292,6 +292,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
               //quand la recherche est terminé, on remet la couleur normal du bouton search
     	        $(".btn-start-search").removeClass("bg-azure");
+              $("#btn-my-co").removeClass("hidden");
         	  }
 
             //si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché

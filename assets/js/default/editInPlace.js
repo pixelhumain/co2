@@ -173,16 +173,21 @@ function bindAboutPodElement() {
 						icon : "fa-key",
 						onLoads : {
 							initWhen : function(){
-								if(notNull(contextData.allDay) && contextData.allDay == true)
+								/*if(notNull(contextData.allDay) && contextData.allDay == true)
 									$("#ajaxFormModal #allDay").bootstrapSwitch('state', true, true);
+
+								if(typeof contextData.allDay != "undefined" && contextData.allDay == "true")
+									$("#ajaxFormModal #allDay").attr("checked");*/
 								
 							}
 						},
 						beforeSave : function(){
 							mylog.log("beforeSave");
+							var allDay = $("#ajaxFormModal #allDay").is(':checked');
+							$("#ajaxFormModal #allDayHidden").val(allDay);
 					    	removeFieldUpdateDynForm(contextData.type);
-
-					    	var allDay = $("#ajaxFormModal #allDay").is(':checked');
+					    	
+					    	
 					    	var dateformat = "DD/MM/YYYY";
 					    	if (! allDay) 
 					    		var dateformat = "DD/MM/YYYY HH:mm" ;
@@ -191,10 +196,10 @@ function bindAboutPodElement() {
 					    },
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){
+							/*if(data.result && data.resultGoods.result){
 								if(typeof data.resultGoods.values.allDay != "undefined"){
 									contextData.allDay = data.resultGoods.values.allDay;
-									$("#contentGeneralInfos #allDay").html(contextData.allDay);
+									$("#contentGeneralInfos #allDayAbout").html(contextData.allDay);
 								}  
 								if(typeof data.resultGoods.values.endDate != "undefined"){
 									contextData.startDate = data.resultGoods.values.startDate;
@@ -206,7 +211,8 @@ function bindAboutPodElement() {
 								}
 								initDateHeaderPage(contextData);
 								updateCalendar();
-							}
+							}*/
+							
 							urlCtrl.loadByHash(location.hash);
 							dyFObj.closeForm();
 						},
@@ -220,7 +226,9 @@ function bindAboutPodElement() {
 			};
 
 			if(contextData.type == typeObj.event.col){
-				form.dynForm.jsonSchema.properties.allDay = dyFInputs.allDay;
+				var checked = (notNull(contextData.allDay) && contextData.allDay == true) ?  true : false ;
+				form.dynForm.jsonSchema.properties.allDay = dyFInputs.allDay(checked);
+				form.dynForm.jsonSchema.properties.allDayHidden = dyFInputs.inputHidden(checked);
 			}
 
 			form.dynForm.jsonSchema.properties.startDate = dyFInputs.startDateInput;
@@ -293,7 +301,7 @@ function bindAboutPodElement() {
 									}
 									$('.header-tags').html(strHeader);
 									$('#tagsAbout').html(strAbout);
-									if(strHeader == "" && typeof contextData.address != "undefined")
+									if(strHeader == "" && typeof contextData.address == "undefined")
 										$('.header-address-tags').addClass("hidden");
 									else
 										$('.header-address-tags').removeClass("hidden");
@@ -351,7 +359,7 @@ function bindAboutPodElement() {
 								if(typeof data.resultGoods.values.birthDate != "undefined"){
 									mylog.log("update birthDate");
 									contextData.birthDate = data.resultGoods.values.birthDate;
-									$("#birthDateAbout").html(moment(contextData.birthDate).local().format("DD MM YYYY"));
+									$("#birthDateAbout").html(moment(contextData.birthDate).local().format("DD/MM/YYYY"));
 								}
 
 								if(typeof data.resultGoods.values.fixe != "undefined"){
@@ -422,10 +430,10 @@ function bindAboutPodElement() {
 				dataUpdate.tags = contextData.tags;
 
 			if(contextData.type == typeObj.person.col ){
-				if(notNull(contextData.tags) && contextData.username.length > 0)
+				if(notNull(contextData.username) && contextData.username.length > 0)
 					dataUpdate.username = contextData.username;
 				if(notEmpty(contextData.birthDate))
-					dataUpdate.birthDate = contextData.birthDate;
+					dataUpdate.birthDate = moment(contextData.birthDate).local().format("DD/MM/YYYY");
 			}
 
 			if(contextData.type == typeObj.organization.col ){
@@ -672,7 +680,7 @@ function bindAboutPodElement() {
 		var fieldsPerson = ["username",  "birthDate"];
 		var fieldsProject = [ "avancement", "startDate", "endDate" ];
 		var fieldsOrga = [ "type" ];
-		var fieldsEvent = [ "type", "allDay", "startDate", "endDate"];
+		var fieldsEvent = [ "type", "startDate", "endDate"];
 
 		if(collection == typeObj.person.col)
 			fieldsElement = fieldsElement.concat(fieldsPerson);
@@ -691,12 +699,6 @@ function bindAboutPodElement() {
 			else if(val == "type" && collection == typeObj.event.col)
 				valCD = "typeEvent";
 
-			mylog.log("#ajaxFormModal #"+val, $("#ajaxFormModal #"+val).length);
-			if($("#ajaxFormModal #"+val).length)
-				mylog.log($("#ajaxFormModal #"+val).val().trim(), $("#ajaxFormModal #"+val).val().trim().length);
-			mylog.log("contextData[valCD]", valCD , contextData[valCD], typeof contextData[valCD]);
-			mylog.log($("#ajaxFormModal #"+val).val(), "==", contextData[valCD]);
-
 			if(	$("#ajaxFormModal #"+val).length && 
 				( 	( 	typeof contextData[valCD] != "undefined" && 
 						contextData[valCD] != null && 
@@ -706,8 +708,14 @@ function bindAboutPodElement() {
 							contextData[valCD] == null ) && 
 						$("#ajaxFormModal #"+val).val().trim().length == 0 ) 
 				) 
-			)
+			){
 				$("#ajaxFormModal #"+val).remove();
+			}
+			else if(val == "birthDate"){
+				var dateformat = "DD/MM/YYYY";
+			    $("#ajaxFormModal #"+val).val( moment( $("#ajaxFormModal #"+val).val(), dateformat).format());
+			}
+
 		});
 	}
 

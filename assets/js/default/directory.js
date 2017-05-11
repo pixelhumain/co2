@@ -1924,28 +1924,37 @@ var directory = {
         params.endMonth = directory.getMonthName(params.endMonth);
         params.color="orange";
         
+
         var startLbl = (params.endDay != params.startDay) ? "Du" : "";
         var endTime = (params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
+        mylog.log("params.allDay", !notEmpty(params.allDay), params.allDay);
+       
+        
         var str = "";
         if(params.startDate != null)
             str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       '<small>'+startLbl+' </small>'+
                       '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
                       params.startDay + ' ' + params.startMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.startYear + '</small>' + 
-                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
-                      params.startTime+endTime+"</b></small>"+
-                   '</h3>';
+                      ' <small class="letter-'+params.color+'">' + params.startYear + '</small>';
+                      if(!notNull(params.allDay) || params.allDay != true){
+                        str +=  ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> '+
+                                  params.startTime+endTime+"</b></small>";
+                      }
+                      
+            str +=  '</h3>';
         
         if(params.endDay != params.startDay && params.endDate != null && params.startDate != params.endDate)
             str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       "<small>Au </small>"+
                       '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
                       params.endDay + ' ' + params.endMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.endYear + '</small>' + 
-                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
-                      params.endTime+"</b></small>"+
-                   '</h3>';
+                      ' <small class="letter-'+params.color+'">' + params.endYear + '</small>';
+                      if(!notNull(params.allDay) || params.allDay != true){
+                        str += ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
+                                params.endTime+"</b></small>";
+                      }
+                str +=  '</h3>';
             
         return str;
   }

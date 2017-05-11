@@ -2855,8 +2855,61 @@ var dyFInputs = {
         	$(".urlsarray").css("display","none");	
         }
     },
-    allDay : {
+    allDay : function(checked){
+
+    	var inputObj = {
+    		inputType : "checkbox",
+	    	checked : ( notEmpty(checked) ? checked : "" ),
+	    	init : function(){
+	        	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
+	        		mylog.log("toto",$("#ajaxFormModal #allDay").val());
+	        	})
+	        },
+	    	"switch" : {
+	    		"onText" : "Oui",
+	    		"offText" : "Non",
+	    		"labelText":"Toute la journée",
+	    		"onChange" : function(){
+	    			var allDay = $("#ajaxFormModal #allDay").is(':checked');
+	    			var startDate = "";
+	    			var endDate = "";
+	    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
+	    			if (allDay) {
+	    				$(".dateTimeInput").addClass("dateInput");
+	    				$(".dateTimeInput").removeClass("dateTimeInput");
+	    				$('.dateInput').datetimepicker('destroy');
+	    				$(".dateInput").datetimepicker({ 
+					        autoclose: true,
+					        lang: "fr",
+					        format: "d/m/Y",
+					        timepicker:false
+					    });
+					    startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
+					    endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
+	    			} else {
+	    				$(".dateInput").addClass("dateTimeInput");
+	    				$(".dateInput").removeClass("dateInput");
+	    				$('.dateTimeInput').datetimepicker('destroy');
+	    				$(".dateTimeInput").datetimepicker({ 
+		       				weekStart: 1,
+							step: 15,
+							lang: 'fr',
+							format: 'd/m/Y H:i'
+					    });
+					    
+	    				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
+						endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
+	    			}
+				    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
+					if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
+	    		}
+		    }
+    	};
+    	return inputObj;
+    },
+   /* allDay : {
     	inputType : "checkbox",
+    	checked : true,
     	init : function(){
         	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
         		mylog.log("toto",$("#ajaxFormModal #allDay").val());
@@ -2901,7 +2954,7 @@ var dyFInputs = {
 				if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
     		}
     	}
-    },
+    },*/
     startDateInput : {
         inputType : "datetime",
         placeholder: "Date de début",

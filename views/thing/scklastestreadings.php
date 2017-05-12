@@ -126,9 +126,10 @@ foreach ($devices as $id => $device) {
 if(!empty($sensors)){
   foreach ($sensors as $sensor) {
     $itemSckSensor=array();
-
+// TODO : faire une div avec les boutons selection pour la page standalone
+// remplir une variable avec tous les boutons et l'utilisé en js pour l'afficher si standalone class des bouton mm que ce dans thing
 ?>
-  <div class="col-sm-12 no-padding no-margin"  id="sensor-<?php echo $sensor['id']?>">
+  <div class="col-sm-12 no-padding no-margin reading hidden" id="sensor-<?php echo $sensor['id']?>">
   <div class="row col-sm-12">
    <h4 class="text-blue col-md-4 col-sm-4 col-xs-12" id='h-title-<?php echo $sensor['id']?>'>
    <i class='fa ' id='h-title-icon-<?php echo $sensor['id']?>' ></i> <span class='' id='h-title-text-<?php echo $sensor['id']?>'> <?php echo $sensor['measurement']['name'] ?> </span> </h4>
@@ -221,10 +222,8 @@ if(!empty($sensors)){
   <?php 
   } // fin foreach devicebylocality
   ?>
-
+    <hr class="col-md-12 col-sm-12 col-xs-12 no-padding ">
   </div>
-  <hr class="col-md-12 col-sm-12 col-xs-12 no-padding">
-  <br>
 
 <?php
   } // fin foreach sensor
@@ -239,6 +238,9 @@ if(!empty($sensors)){
 <?php } ?>
 
 <script>
+//en correspondance avec subcat dans le fichier thing.json
+var subcatscktoshow = [{"Temperature et humidité" : ["temp", "hum" ] }, {"Gaz":["co", "no2"]}, {"Lumière":["lum"]} , {"Bruit":["noise"]} , {"Nets" :["nets"]}, {"Énergie":["bat","pv"]}, {"Tous": ["all"]}];
+
 var deviceByLocality=<?php echo json_encode($deviceByLocality) ; ?>; 
 
 var urlReq="<?php echo Thing::URL_API_SC ?>/devices/";
@@ -256,6 +258,8 @@ jQuery(document).ready(function() {
     }
 
   }
+
+  
  
   setTitle("Dernières mesures","cog");
 
@@ -293,7 +297,8 @@ function getDeviceReadings(deviceId) {
 } 
 
 
-/* var sensors = <?php //echo json_encode($sensors); ?>;
+/* Première version en tableau (tous étaient créé coté client)
+  var sensors = <?php //echo json_encode($sensors); ?>;
   var tbody = document.getElementById("tbody");
   sensors.forEach( function(item){ 
     var ligne=[item.id,item.name,item.value,item.value,item.unit,item.description];

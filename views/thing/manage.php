@@ -97,24 +97,6 @@
 <script>
 
 patternMacId = /([0-9a-f]{2}[:-]){5}([0-9a-f]{2})/;
-/*
-$.each( userConnected.collections, function (col,list) { 
-	        		btns[col] = { 
-			        	name: function($element, key, item){ 
-		        			var str = "Ajouter à "+col;
-		        			//console.log(col,what,id);
-		        			if( notNull( userConnected.collections[col]) && notNull( userConnected.collections[col][what] ) && notNull( userConnected.collections[col][what][id]) ) 
-		        				str = "Retirer de "+col;
-		        			return str; 
-		        		},
-			        	icon: "fa-folder-open", 
-			        	callback: function(key, opt){ 
-				        	if( notNull( what )&& notNull( id ) ){
-					        	collection.add2fav( what,id,col );
-							}
-			        	}
-			    	}
-	        	});*/
 
 function updateSCKBoardId(){
 
@@ -223,7 +205,7 @@ function updateSCKMetadata(){
 jQuery(document).ready(function() {
 	initKInterface({"affixTop":0});
 
-devicesMongoRes = <?php echo json_encode($devicesMongoRes); ?> ;
+	devicesMongoRes = <?php echo json_encode($devicesMongoRes); ?> ;
 
 	//mylog.log(devicesMongoRes);
 
@@ -233,10 +215,7 @@ devicesMongoRes = <?php echo json_encode($devicesMongoRes); ?> ;
 		updateSCKMetadata(); });
 	*/
 	
-
-
-
-  setTitle("Manage","fa-database");
+  setTitle("Gestion SCK","fa-database");
 
   });
 

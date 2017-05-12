@@ -51,7 +51,7 @@ $sigDevicesForContextMap = array();
 $infoSensors=array();
 
 $infoSensorsDeviceOk=false;
-//todo : mutiliser les pois en objet sig, au lieu de construire des objets 
+//todo : utiliser les pois en objet sig, au lieu de construire des objets 
 foreach ($devicesMongoRes as $mdataDevice) {
 
   $devices[]=$mdataDevice;
@@ -149,21 +149,21 @@ if( Yii::app()->request->isAjaxRequest ){
 </style>
     
   <div class="col-md-12 col-sm-12 col-xs-12 container" id="graph-container">
-  <section class="header col-sm-12 col-xs-12 no-padding" id="header-graph">
+  <section class="header col-sm-12 col-xs-12 no-padding no-margin" id="header-graph">
     <form class="form-inline col-sm-12 col-xs-12"> 
       <div class="form-group col-sm-12 col-xs-12">
-        <span class="btn-toolbar col-sm-12 col-xs-12" role="toolbar" aria-label="choixgraph" id="btngraphs" name="btngraphs">
-          <div class="btn-group " role="group" aria-label="choixmesuressensors">
-            <button type="button" class="btn btn-default btnchoixgraph" id="btn1" title="Température et humidité" value="1"> 
-              <i class="fa fa-thermometer-half"></i> <span class="hidden-sm hidden-xs">Température et humidité </span> </button>
+        <span class="btn-toolbar col-sm-12 col-xs-12 no-padding no-margin" role="toolbar" aria-label="choixgraph" id="btngraphs" name="btngraphs">
+          <div class="btn-group no-padding no-margin" role="group" aria-label="choixmesuressensors">
+            <button type="button" class="btn btn-default btnchoixgraph " id="btn1" title="Température et humidité" value="1"> 
+              <i class="fa fa-thermometer-half"></i> <span class="hidden-sm hidden-xs">Température | humidité</span> </button>
             <button type="button" class="btn btn-default btnchoixgraph" title="Énergies : Batterie et PV" value="2"> 
               <i class="fa fa-battery-full" ></i> <span class="hidden-sm hidden-xs">Énergies</span> </button>
             <button type="button" class="btn btn-default btnchoixgraph" title="Luminosité" value="3"> 
               <i class="fa fa-sun-o" ></i> <span class="hidden-sm hidden-xs">Luminosité</span> </button>
             <button type="button" class="btn btn-default btnchoixgraph" title="Gaz : CO et NO2" value="4"> 
-              <i class="fa fa-cloud"> </i> <span class="hidden-sm hidden-xs">CO et NO2 </span> </button>
+              <i class="fa fa-cloud"> </i> <span class="hidden-sm hidden-xs">CO | NO2 </span> </button>
             <button type="button" class="btn btn-default btnchoixgraph" title="Bruit" value="5"> 
-              <i class="fa fa-volume-up" ></i> <span class="hidden-sm hidden-xs">Bruit et nets</span> </button>
+              <i class="fa fa-volume-up" ></i> <span class="hidden-sm hidden-xs">Bruit | nets</span> </button>
             <button type="button" class="btn btn-default btnchoixgraph" title="Tous les graphes" value="6"> 
               <i class="fa fa-check-square"></i> <span class="hidden-sm hidden-xs" >Tous</span> </button>
           </div>
@@ -294,7 +294,7 @@ devices.forEach(function(device){
 //var listDevice = <?php //echo json_encode($deviceIds) ?>;
 //console.log(listDevice);
 
-// TODO : recuperer les sensor id pour chaque device par lastest readings API SC
+// TODO : recuperer les sensor id pour chaque device par lastest readings API SC cad les donné de la base COmmunecter POI
 var sckSensorIds = [{bat : 17}, {hum : 13},{temp : 12},{no2 : 15}, { co: 16}, {noise : 7}, {solarPV : 18},{ambLight : 14 }, {nets : 21}]; 
 
 

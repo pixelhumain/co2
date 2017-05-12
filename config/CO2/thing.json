@@ -7,7 +7,9 @@
             "icon" : "thermometer-three-quarters",
             "section":1,
             "color":"azure",
-            "filter" : "sckFilters"
+            "filter" : "sckFilters",
+            "active" : true
+
         },
         "CO PI": {
             "label":"CO PI",      
@@ -15,7 +17,8 @@
             "icon" : "clone",
             "section":2,
             "color":"azure",
-            "filter" : "copiFilters"
+            "filter" : "copiFilters",
+            "active": false
         }    
     },
     "sckFilters": { 
@@ -24,7 +27,7 @@
             "label" :"Dernières Mesures", 
             "icon" : "clock-o",
             "key" : "smartCitizen",
-            "subcat" : [ "Tous" , "Temperature" , "Humidité" , "Lumière" , "CO" , "NO2" , "Bruit" , "Nets", "Batterie" , "PV" ]
+            "subcat" : [ "Temperature et humidité" , "Gaz", "Lumière" , "Bruit" , "Nets", "Énergie", "Tous" ]
         },
         "Graphes" : { 
             "page" : "graph",  

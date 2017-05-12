@@ -2399,7 +2399,7 @@ var dyFObj = {
 	    //initKSpec();
 	    if(userId)
 		{
-			formType = type;
+			formInMap.formType = type;
 			dyFObj.getDynFormObj(type, function() { 
 				dyFObj.starBuild(afterLoad,data);
 			},afterLoad, data);
@@ -2651,7 +2651,9 @@ var dyFInputs = {
     	}
     },
     image :function(str) { 
+    	mylog.log("str", str) ;
     	gotoUrl = (str) ? str+uploadObj.id : location.hash;
+    	mylog.log("gotoUrl", gotoUrl) ;
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
@@ -2659,7 +2661,7 @@ var dyFInputs = {
 		    	dyFObj.closeForm();
 		    	//alert(gotoUrl+uploadObj.id);
 	            urlCtrl.loadByHash( gotoUrl );	
-		    	}
+		    }
     	}
     },
     textarea :function (label,placeholder,rules) {  

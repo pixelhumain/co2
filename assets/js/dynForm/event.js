@@ -104,10 +104,10 @@ dynForm = {
 	            }
             },
 	        organizerType : dyFInputs.inputHidden(),
-	         parentId :{
+	        parentId :{
 	         	label : "Fait parti d'un évènement ?",
             	inputType : "select",
-            	class : "hidden",
+            	class : "",
             	placeholder : "Fait parti d'un évènement ?",
             	options : {
             		"":"Pas de Parent"

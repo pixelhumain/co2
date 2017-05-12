@@ -3626,8 +3626,8 @@ function initKInterface(params){ console.log("initKInterface");
     $(".btn-show-map").off().click(function(){
     	if(typeof formInMap != "undefined" && formInMap.actived == true)
 			formInMap.cancel();
-    	else if(notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
-			getContextDataLinks()
+    	else if(isMapEnd == true && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+			getContextDataLinks();
 		else
 			showMap();
     });

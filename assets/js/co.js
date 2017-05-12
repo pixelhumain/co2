@@ -1959,7 +1959,6 @@ function autoCompleteInviteSearch(search){
 		"searchMode" : "personOnly"
 	};
 	
-	
 	ajaxPost("", moduleId+'/search/searchmemberautocomplete', data,
 		function (data){
 			mylog.log(data);
@@ -2351,18 +2350,21 @@ var dyFObj = {
 	            		if(typeof data.resultErrors != "undefined" && typeof data.resultErrors.msg != "undefined")
 	            			toastr.error(data.resultErrors.msg);
 	            	}
-
-	            	if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
-			        	addFloopEntity(data.id, collection, data.map);
-
-	            	if (typeof afterSave == "function") 
+	            	// mylog.log("data.id", data.id, data.url);
+	            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
+			        	addLocationToFormloopEntity(data.id, collection, data.map);*/
+			        if (typeof afterSave == "function"){
 	            		afterSave(data);
+	            		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+	            	}
 	            	else{
 						dyFObj.closeForm();
-		                if(data.url)
+		                if(data.url){
 		                	urlCtrl.loadByHash( data.url );
-		                else if(data.id)
+		                }
+		                else if(data.id){
 			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+		                }
 					}
 	            }
 	    	}

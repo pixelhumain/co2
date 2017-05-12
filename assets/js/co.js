@@ -553,6 +553,7 @@ var urlCtrl = {
 	    "#organization.directory" : {aliasParam: "#page.type.organizations.id.$id.view.directory.dir.members", params: ["id"],title:'ORGANIZATION DETAIL ', icon : 'users' },
 	    "#project.directory" : {aliasParam: "#page.type.projects.id.$id.view.directory.dir.contributors", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
 	    "#news.detail" : {aliasParam: "#page.type.news.id.$id", params: ["id"], title:'NEWS', icon : 'rss' },
+	    "#news.index" : {aliasParam: "#page.type.$type.id.$id", params: ["type","id"], title:'NEWS', icon : 'rss' },
 	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
@@ -563,7 +564,6 @@ var urlCtrl = {
 	    "#city.creategraph" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
 	    "#city.graphcity" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
 	    "#city.statisticPopulation" : {title:'CITY ', icon : 'university' },
-	    "#news" : {title:'NEWS ', icon : 'rss'},
 	    "#rooms.index.type.cities" : {title:'ACTION ROOMS ', icon : 'cubes', menuId:"btn-citizen-council-commun"},
 	    "#rooms.editroom" : {title:'ADD A ROOM ', icon : 'plus', action:function(){ editRoomSV ();	}},
 		"#element.aroundme" : {title:"Around me" , icon : 'crosshairs', menuId:"menu-btn-around-me"},
@@ -596,7 +596,7 @@ var urlCtrl = {
 		"#default.apropos" : {title:'COMMUNECTED HOME ', icon : 'star',"menu":"homeShortcuts"},
 		"#default.twostepregister" : {title:'TWO STEP REGISTER', icon : 'home', "menu":"homeShortcuts"},
 		"#default.view.page" : {title:'Découvrir', icon : 'file-o'},
-		//"#home" : {"alias":"#default.home"},
+		"#home" : {"alias":"#default.home"},
 	    "#stat.chartglobal" : {title:'STATISTICS ', icon : 'bar-chart'},
 	    "#stat.chartlogs" : {title:'STATISTICS ', icon : 'bar-chart'},
 	    "#default.live" : {title:"FLUX'Direct" , icon : 'heartbeat', menuId:"menu-btn-live"},
@@ -795,7 +795,12 @@ var urlCtrl = {
 	            title = 'ADD SOMETHING TO MY NETWORK';
 	        else
 	            title = "WELCOM MUNECT HEY !!!";
-	        showPanel(panelName,null,title);
+	        if(panelName == "box-login")
+				$('#modalLogin').modal("show");
+			else if(panelName == "box-register")
+				$('#modalRegister').modal("show");
+			else
+	       		showPanel(panelName,null,title);
 	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
 	        hashT = hash.split(".");
 	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
@@ -840,12 +845,11 @@ function showPanel(box,callback){
   	
   	if(isMapEnd) showMap(false);
 			
-	mylog.log("showPanel");
+	mylog.log("showPanel",box);
 	//showTopMenu(false);
 	$(themeObj.mainContainer).animate({ top: -1500, opacity:0 }, 500 );
 
 	$("."+box).show(500);
-
 	if (typeof callback == "function") {
 		callback();
 	}
@@ -1940,6 +1944,19 @@ function myContactLabel (type,id) {
 	return null;
 }
 
+function inMyContacts (type,id) { 
+	var res = false ;
+	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
+		$.each( myContacts[type], function( key,val ){
+			if( id == val["_id"]["$id"] ){
+				res = true;
+				return ;
+			}
+		});
+	}
+	return res;
+}
+
 function autoCompleteInviteSearch(search){
 	mylog.log("autoCompleteInviteSearch2", search);
 	if (search.length < 3) { return }
@@ -1949,7 +1966,6 @@ function autoCompleteInviteSearch(search){
 		"search" : search,
 		"searchMode" : "personOnly"
 	};
-	
 	
 	ajaxPost("", moduleId+'/search/searchmemberautocomplete', data,
 		function (data){
@@ -2169,7 +2185,7 @@ var dynForm = null;
 var uploadObj = {
 	type : null,
 	id : null,
-	folder : "communecter", //on force pour pas casser toutes les vielles images
+	folder : moduleId, //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
 		uploadObj.id = id;
@@ -2342,18 +2358,21 @@ var dyFObj = {
 	            		if(typeof data.resultErrors != "undefined" && typeof data.resultErrors.msg != "undefined")
 	            			toastr.error(data.resultErrors.msg);
 	            	}
-
-	            	if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
-			        	addFloopEntity(data.id, collection, data.map);
-
-	            	if (typeof afterSave == "function") 
+	            	// mylog.log("data.id", data.id, data.url);
+	            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
+			        	addLocationToFormloopEntity(data.id, collection, data.map);*/
+			        if (typeof afterSave == "function"){
 	            		afterSave(data);
+	            		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+	            	}
 	            	else{
 						dyFObj.closeForm();
-		                if(data.url)
+		                if(data.url){
 		                	urlCtrl.loadByHash( data.url );
-		                else if(data.id)
+		                }
+		                else if(data.id){
 			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+		                }
 					}
 	            }
 	    	}
@@ -2407,7 +2426,7 @@ var dyFObj = {
 	    //initKSpec();
 	    if(userId)
 		{
-			formType = type;
+			formInMap.formType = type;
 			dyFObj.getDynFormObj(type, function() { 
 				dyFObj.starBuild(afterLoad,data);
 			},afterLoad, data);
@@ -2659,7 +2678,9 @@ var dyFInputs = {
     	}
     },
     image :function(str) { 
+    	mylog.log("str", str) ;
     	gotoUrl = (str) ? str+uploadObj.id : location.hash;
+    	mylog.log("gotoUrl", gotoUrl) ;
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
@@ -2667,7 +2688,7 @@ var dyFInputs = {
 		    	dyFObj.closeForm();
 		    	//alert(gotoUrl+uploadObj.id);
 	            urlCtrl.loadByHash( gotoUrl );	
-		    	}
+		    }
     	}
     },
     textarea :function (label,placeholder,rules) {  
@@ -2863,8 +2884,61 @@ var dyFInputs = {
         	$(".urlsarray").css("display","none");	
         }
     },
-    allDay : {
+    allDay : function(checked){
+
+    	var inputObj = {
+    		inputType : "checkbox",
+	    	checked : ( notEmpty(checked) ? checked : "" ),
+	    	init : function(){
+	        	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
+	        		mylog.log("toto",$("#ajaxFormModal #allDay").val());
+	        	})
+	        },
+	    	"switch" : {
+	    		"onText" : "Oui",
+	    		"offText" : "Non",
+	    		"labelText":"Toute la journée",
+	    		"onChange" : function(){
+	    			var allDay = $("#ajaxFormModal #allDay").is(':checked');
+	    			var startDate = "";
+	    			var endDate = "";
+	    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
+	    			if (allDay) {
+	    				$(".dateTimeInput").addClass("dateInput");
+	    				$(".dateTimeInput").removeClass("dateTimeInput");
+	    				$('.dateInput').datetimepicker('destroy');
+	    				$(".dateInput").datetimepicker({ 
+					        autoclose: true,
+					        lang: "fr",
+					        format: "d/m/Y",
+					        timepicker:false
+					    });
+					    startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
+					    endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
+	    			} else {
+	    				$(".dateInput").addClass("dateTimeInput");
+	    				$(".dateInput").removeClass("dateInput");
+	    				$('.dateTimeInput').datetimepicker('destroy');
+	    				$(".dateTimeInput").datetimepicker({ 
+		       				weekStart: 1,
+							step: 15,
+							lang: 'fr',
+							format: 'd/m/Y H:i'
+					    });
+					    
+	    				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
+						endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
+	    			}
+				    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
+					if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
+	    		}
+		    }
+    	};
+    	return inputObj;
+    },
+   /* allDay : {
     	inputType : "checkbox",
+    	checked : true,
     	init : function(){
         	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
         		mylog.log("toto",$("#ajaxFormModal #allDay").val());
@@ -2909,7 +2983,7 @@ var dyFInputs = {
 				if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
     		}
     	}
-    },
+    },*/
     startDateInput : {
         inputType : "datetime",
         placeholder: "Date de début",
@@ -3575,8 +3649,8 @@ function initKInterface(params){ console.log("initKInterface");
     $(".btn-show-map").off().click(function(){
     	if(typeof formInMap != "undefined" && formInMap.actived == true)
 			formInMap.cancel();
-    	else if(notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
-			getContextDataLinks()
+    	else if(isMapEnd == true && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+			getContextDataLinks();
 		else
 			showMap();
     });

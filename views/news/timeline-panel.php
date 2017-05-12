@@ -44,21 +44,25 @@
               <img class="pull-left img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
             <?php }else{ $pluriel = " pluriel"; } ?>
 
-            <div class="pull-left padding-5 col-md-6 col-sm-6" style="line-height: 15px;">
-              <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh pull-left">
+            <div class="pull-left padding-5 col-md-7 col-sm-7" style="line-height: 15px;">
+              <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh">
                 <?php echo @$nameAuthor; ?>
               </a>
               <?php if(@$media["sharedBy"]){ ?>
                 <?php foreach ($media["sharedBy"] as $keyS => $share) { ?>
-                    <?php if($keyS < 2){ ?>
+                    
+                      <?php if(@$nameAuthor==@$share["name"] && sizeof($media["sharedBy"]) == 1){ $pluriel = ""; } ?>
+                      
+                      <?php if($keyS < 2 && @$nameAuthor!=@$share["name"]){ ?>
+ 
                       <?php if($keyS < sizeof($media["sharedBy"])-1){ ?>, 
-                      <?php }else if(sizeof($media["sharedBy"]) > 0){ ?> et <?php } ?>
+                      <?php }else if(sizeof($media["sharedBy"]) > 0){ echo Yii::t("common", "and"); }  ?>
 
-                      <a href="#page.type.<?php echo @$share["type"]; ?>.id.<?php echo @$share["id"] ?>" class="lbh">
+                       <a href="#page.type.<?php echo @$share["type"]; ?>.id.<?php echo @$share["id"] ?>" class="lbh">
                         <?php echo @$share["name"]; ?>
-                      </a>
+                      </a> 
                     <?php }else if($keyS == 2){ ?>
-                      et <?php echo sizeof($media["sharedBy"]) - 2; ?> autres personnes
+                      <?php echo Yii::t("common", "and"); ?> <?php echo sizeof($media["sharedBy"]) - 2; ?> autres personnes
                     <?php } ?>
                 <?php } ?>
               <?php } ?>
@@ -90,7 +94,7 @@
                 <?php } ?>
               <?php } ?>
 
-              <?php if(@$media["target"]["id"] != @$authorId && @$media["target"]["id"] != @$contextId) { ?>
+              <?php if(@$media["target"]["id"] != @$authorId && @$media["target"]["id"] != @$contextId && @$media["verb"] != "create") { ?>
                 sur le mur de 
                 <a href="#page.type.<?php echo @$media["target"]["type"]; ?>.id.<?php echo @$media["target"]["id"]; ?>" 
                         class="lbh">
@@ -152,8 +156,8 @@
 
   <div class="timeline-body  col-md-12 text-left margin-bottom-10">
     <?php if(!empty(@$media["text"])){ ?>
-    <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" class="newsContent no-padding">
-      <?php echo $media["text"]; ?>
+    <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" 
+         class="newsContent no-padding"><?php echo $media["text"]; ?>
     </div>
     <?php } ?>
     <?php if(@$media["tags"]) 

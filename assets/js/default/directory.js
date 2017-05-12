@@ -292,6 +292,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
               //quand la recherche est terminé, on remet la couleur normal du bouton search
     	        $(".btn-start-search").removeClass("bg-azure");
+              $("#btn-my-co").removeClass("hidden");
         	  }
 
             //si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
@@ -504,6 +505,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         data : formData,
         dataType: "json",
         success: function(data){
+          $("#modal-share #htmlElementToShare").html("");
           $(thiselement).attr("data-original-title", "Vous avez partagé ça avec votre réseau");
           toastr.success("Vous avez partagé ce contenu avec votre réseau");  
         }
@@ -703,24 +705,26 @@ var directory = {
     // ********************************
     //  ELEMENT DIRECTORY PANEL
     // ********************************
-    elementPanelHtml : function(params){
-      if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name);
-      str = "";
-      var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
-      var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" '>";
-      str +=    '<div class="searchEntity" id="entity'+params.id+'">';
-
-        if(userId != null && userId != "" && params.id != userId){
-          isFollowed=false;
-          if(typeof params.isFollowed != "undefined" ) isFollowed=true;
-           tip = (type == "events") ? "Participer" : 'Suivre';
-            str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-                  ' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-                      "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-                    "</a>";          
-        }
+	elementPanelHtml : function(params){
+		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name);
+		mylog.log("----------- elementPanelHtml",params.type,params.name, params);
+		str = "";
+		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
+		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
+		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" '>";
+		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
+		mylog.log("inMyContacts",inMyContacts(params.type, params.name));
+		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) ){
+			isFollowed=false;
+			if(typeof params.isFollowed != "undefined" ) 
+				isFollowed=true;
+			tip = (params.type == "events") ? "Participer" : 'Suivre';
+			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+			' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+			" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+			"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
+			"</a>";          
+		}
 
         if(params.updated != null )
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
@@ -1131,7 +1135,7 @@ var directory = {
                   '<a href="'+params.hash+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+  
                 '</div>';
         
-        if(userId != null && userId != "" && params.id != userId){
+        if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id)){
           var tip = "Ça m'intéresse";
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
                       'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
@@ -1488,7 +1492,7 @@ var directory = {
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
           if(directory.dirLog) mylog.log("params", params, typeof params);
-          if(notNull(params["_id"]) || notNull(params["id"]) ){
+          if(params["_id"] != null || params["id"] != null){
 
 
             itemType=(contentType) ? contentType :params.type;
@@ -1540,8 +1544,8 @@ var directory = {
                 if(!params.useMinSize)
                     params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
 
-                if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
-                    params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>";
+                if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
+                    params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
 
                 if(dyFInputs.get(itemType) && 
                     dyFInputs.get(itemType).col == "poi" && 
@@ -1924,28 +1928,37 @@ var directory = {
         params.endMonth = directory.getMonthName(params.endMonth);
         params.color="orange";
         
+
         var startLbl = (params.endDay != params.startDay) ? "Du" : "";
         var endTime = (params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
+        mylog.log("params.allDay", !notEmpty(params.allDay), params.allDay);
+       
+        
         var str = "";
         if(params.startDate != null)
             str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       '<small>'+startLbl+' </small>'+
                       '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
                       params.startDay + ' ' + params.startMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.startYear + '</small>' + 
-                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
-                      params.startTime+endTime+"</b></small>"+
-                   '</h3>';
+                      ' <small class="letter-'+params.color+'">' + params.startYear + '</small>';
+                      if(!notNull(params.allDay) || params.allDay != true){
+                        str +=  ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> '+
+                                  params.startTime+endTime+"</b></small>";
+                      }
+                      
+            str +=  '</h3>';
         
         if(params.endDay != params.startDay && params.endDate != null && params.startDate != params.endDate)
             str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       "<small>Au </small>"+
                       '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
                       params.endDay + ' ' + params.endMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.endYear + '</small>' + 
-                      ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
-                      params.endTime+"</b></small>"+
-                   '</h3>';
+                      ' <small class="letter-'+params.color+'">' + params.endYear + '</small>';
+                      if(!notNull(params.allDay) || params.allDay != true){
+                        str += ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
+                                params.endTime+"</b></small>";
+                      }
+            str +=  '</h3>';
             
         return str;
   }

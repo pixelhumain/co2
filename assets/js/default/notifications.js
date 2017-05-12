@@ -171,6 +171,10 @@ function buildNotifications(list, element)
 		{
 			var url = (typeof notifObj.notify != "undefined") ? notifObj.notify.url : "#";
 			//convert url to hash for loadByHash
+			if(url.indexOf("communecter/")>0){
+				url=url.split("communecter/");
+				url=url[1];	
+			}
 			url = "#"+url.replace(/\//g, ".");
 			//var moment = require('moment');
 			momentNotif=notifObj.timeAgo;

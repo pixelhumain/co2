@@ -574,9 +574,10 @@ function selectScopeLevelCommunexion(level){
 	startSearch();
 }
 
-function setCookies(path){ mylog.log("setCookies", path);
+function setCookies(path){ 
+	mylog.log("setCookies", path);
 	//if(false){
-		$.cookie('inseeCommunexion',   	inseeCommunexion,  	{ expires: 365, path: path });
+	/*	$.cookie('inseeCommunexion',   	inseeCommunexion,  	{ expires: 365, path: path });
 		$.cookie('cityNameCommunexion', cityNameCommunexion,{ expires: 365, path: path });
 		$.cookie('cpCommunexion',   	cpCommunexion,  	{ expires: 365, path: path });		
 		$.cookie('regionNameCommunexion',   regionNameCommunexion,  { expires: 365, path: path });
@@ -606,5 +607,5 @@ function setCookies(path){ mylog.log("setCookies", path);
         $.cookie('communexionValue', communexion.currentValue, { expires: 365, path: location.pathname });
         $.cookie('communexionName', communexion.currentName, { expires: 365, path: location.pathname });
         $.cookie('communexionLevel', communexion.levelMinCommunexion, { expires: 365, path: location.pathname });*/
-	//}
+	//}*/
 }

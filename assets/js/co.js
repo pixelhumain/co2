@@ -1936,6 +1936,19 @@ function myContactLabel (type,id) {
 	return null;
 }
 
+function inMyContacts (type,id) { 
+	var res = false ;
+	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
+		$.each( myContacts[type], function( key,val ){
+			if( id == val["_id"]["$id"] ){
+				res = true;
+				return ;
+			}
+		});
+	}
+	return res;
+}
+
 function autoCompleteInviteSearch(search){
 	mylog.log("autoCompleteInviteSearch2", search);
 	if (search.length < 3) { return }

@@ -185,6 +185,7 @@
 
 		<?php if($type==Event::COLLECTION && false){ ?>
 			<div class="section-date pull-right">
+				
 				<div style="font-size: 14px;font-weight: none;">
 					<?php if(@$element['parent']){ ?>
 						<?php echo Yii::t("common","Planned on") ?> : 
@@ -206,6 +207,7 @@
 		<?php } ?>
 		<?php if($type==Event::COLLECTION){ ?>
 	<div class="section-date pull-right">
+		<div class="header-banner"  style="font-size: 14px;font-weight: none;"></div>
 		<div style="font-size: 14px;font-weight: none;">
 		<?php if(@$element['parent']){ ?>
 			<?php echo Yii::t("common","Planned on") ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/> 

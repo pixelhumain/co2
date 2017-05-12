@@ -705,24 +705,26 @@ var directory = {
     // ********************************
     //  ELEMENT DIRECTORY PANEL
     // ********************************
-    elementPanelHtml : function(params){
-      if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name);
-      str = "";
-      var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
-      var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" '>";
-      str +=    '<div class="searchEntity" id="entity'+params.id+'">';
-
-        if(userId != null && userId != "" && params.id != userId){
-          isFollowed=false;
-          if(typeof params.isFollowed != "undefined" ) isFollowed=true;
-           tip = (params.type == "events") ? "Participer" : 'Suivre';
-            str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-                  ' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-                      "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-                    "</a>";          
-        }
+	elementPanelHtml : function(params){
+		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name);
+		mylog.log("----------- elementPanelHtml",params.type,params.name, params);
+		str = "";
+		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
+		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
+		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" '>";
+		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
+		mylog.log("inMyContacts",inMyContacts(params.type, params.name));
+		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) ){
+			isFollowed=false;
+			if(typeof params.isFollowed != "undefined" ) 
+				isFollowed=true;
+			tip = (params.type == "events") ? "Participer" : 'Suivre';
+			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+			' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+			" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+			"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
+			"</a>";          
+		}
 
         if(params.updated != null )
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
@@ -1133,7 +1135,7 @@ var directory = {
                   '<a href="'+params.hash+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+  
                 '</div>';
         
-        if(userId != null && userId != "" && params.id != userId){
+        if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id)){
           var tip = "Ça m'intéresse";
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
                       'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
@@ -1956,7 +1958,7 @@ var directory = {
                         str += ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
                                 params.endTime+"</b></small>";
                       }
-                str +=  '</h3>';
+            str +=  '</h3>';
             
         return str;
   }

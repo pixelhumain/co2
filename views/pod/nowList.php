@@ -1,7 +1,7 @@
 
 <div class="col-xs-12 no-padding col-nowList"  data-tpl="pod.nowList">
 
-    <?php if(!@$scope || @$scope==""){ ?>
+    <?php if((!@$scope || @$scope=="") && $open==false){ ?>
 
         <h6 class="no-margin" style="font-size:12px">
             <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> Activité territoriale<br>
@@ -33,7 +33,7 @@
              </span>
         </h5>
     <?php } else { ?>
-        <h6 class="no-margin" style="font-size:12px">
+        <h6 class="no-margin header-nowList" style="font-size:12px">
             <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> Activité territoriale<br>
              <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope; ?></small>
         </h6>

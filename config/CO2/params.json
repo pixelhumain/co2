@@ -6,10 +6,24 @@
 	"pages" : 
 		{
 		  "#app.index":
-			 	 {"redirect":"search"},
+			 	 {"redirect":"welcome"},
 			  
-			"#search":
-			  	{"inMenu" : true, 
+	        "#welcome":
+                {"inMenu" : false, 
+                "useHeader" : false, 
+                "open" : true, 
+                "subdomain" : "welcome", 
+                "subdomainName" : "Accueil",
+                "hash" : "#app.welcome",
+                "icon" : "home", 
+                "mainTitle" : "Réseau sociétal <span class='text-red'>territorial</span>",
+                "placeholderMainSearch" : "Rechercher quelque chose ...",
+                "lblBtnCreate" : "Créer quelque chose",
+                "colorBtnCreate" : "green"
+          },
+
+          "#search":
+                {"inMenu" : true, 
                 "useHeader" : true, 
                 "open" : true, 
                 "subdomain" : "search", 

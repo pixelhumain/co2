@@ -165,7 +165,7 @@
 
 		if( (	$type==Person::COLLECTION && 
 				Preference::showPreference($element, $type, "email", Yii::app()->session["userId"]) ) || 
-		  	$type!=Person::COLLECTION ) { ?>
+		  	$type == Organization::COLLECTION ) { ?>
 		  	<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-envelope"></i></span> <?php echo Yii::t("common","E-mail"); ?>
@@ -264,9 +264,11 @@
 <?php if($type==Event::COLLECTION || $type==Project::COLLECTION){ ?>
 		<div id="socialAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding shadow2">
 			<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
-				<h4 class="panel-title text-dark pull-left"> 
-					<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common","When"); ?>
-				</h4>
+				<a id="dateTimezone" href="javascript:;" class="tooltips text-dark" data-original-title="" data-toggle="tooltip" data-placement="right">
+					<h4 class="panel-title text-dark pull-left"> 
+						<i class="fa fa-clock-o"></i> <?php echo Yii::t("common","When"); ?>
+					</h4>
+				</a>
 				<?php if($edit==true || $openEdition==true ){?>
 					<button class="btn-update-when btn btn-default letter-blue pull-right tooltips" 
 						data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update network") ?>">
@@ -535,12 +537,6 @@
 										$(".visible-communected").hide();
 
 										$(".communecter-btn").removeClass("hidden");
-										//COOKIES
-										/*$.cookie('communexionActivated', false, { expires: 365, path: location.pathname });
-										$.cookie('communexionType', false, { expires: 365, path: location.pathname });
-    									$.cookie('communexionValue', false, { expires: 365, path: location.pathname });
-    									$.cookie('communexionName', false, { expires: 365, path: location.pathname });
-    									$.cookie('communexionLevel', false, { expires: 365, path: location.pathname });*/
 									}
 									toastr.success(data.msg);
 									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
@@ -564,7 +560,7 @@
 	});
 
 	function initDate() {//DD/mm/YYYY hh:mm
-		moment.locale('fr');
+		//moment.locale('fr');
 		if( typeof contextData.startDate != "undefined" && contextData.startDate != "" ){
 			$("#divStartDate").removeClass("hidden");
 			$("#divNoDate").addClass("hidden");
@@ -581,12 +577,12 @@
 
 
 		if($("#startDateAbout").html() != "")
-	    	$("#startDateAbout").html(moment($("#startDateAbout").html()).local().format(formatDateView));
+	    	$("#startDateAbout").html(moment($("#startDateAbout").html()).local().locale("fr").format(formatDateView));
 	    if($("#endDateAbout").html() != "")
-	    	$("#endDateAbout").html(moment($("#endDateAbout").html()).local().format(formatDateView));
+	    	$("#endDateAbout").html(moment($("#endDateAbout").html()).local().locale("fr").format(formatDateView));
 
 	    if($("#birthDate").html() != "")
-	    	$("#birthDate").html(moment($("#birthDate").html()).local().format("DD/MM/YYYY"));
+	    	$("#birthDate").html(moment($("#birthDate").html()).local().locale("fr").format("DD/MM/YYYY"));
 	    $('#dateTimezone').attr('data-original-title', "Fuseau horaire : GMT " + moment().local().format("Z"));
 	}
 

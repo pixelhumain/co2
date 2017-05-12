@@ -149,33 +149,34 @@
 			</h4>					
 		</div>
 
-		<?php if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]){ ?>
-			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 pull-right margin-bottom-5">
-			<?php if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"]){ ?>
-				<div class="header-address badge letter-white bg-red margin-left-5 pull-left">
-					<?php echo @$element["address"]["postalCode"] ? 
-								"<i class='fa fa-map-marker'></i> ".$element["address"]["postalCode"] : "";
+		<?php 
+			$classAddress = ( (@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]) ? "" : "hidden" );
+		//if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]){ ?>
+			<div class="header-address-tags col-xs-12 col-sm-9 col-md-9 col-lg-9 pull-right margin-bottom-5 <?php echo $classAddress ; ?>">
+				<?php if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"]){ ?>
+					<div class="header-address badge letter-white bg-red margin-left-5 pull-left">
+						<?php echo @$element["address"]["postalCode"] ? 
+									"<i class='fa fa-map-marker'></i> ".$element["address"]["postalCode"] : "";
 
-						  echo @$element["address"]["postalCode"] && @$element["address"]["addressLocality"] ? 
-								", ".$element["address"]["addressLocality"] : "";
-					?>
-				</div>
-				<?php if(@$element["tags"]){ ?>
-					<span class="margin-right-10 margin-left-10 text-white pull-left" style="font-size: 10px;line-height: 20px;">
-						<i class="fa fa-circle-o"></i>
-					</span>
+							  echo @$element["address"]["postalCode"] && @$element["address"]["addressLocality"] ? 
+									", ".$element["address"]["addressLocality"] : "";
+						?>
+					</div>
+					<?php $classCircleO = (!empty($element["tags"]) ? "" : "hidden" ); ?>
+						<span id="separateurTag" class="margin-right-10 margin-left-10 text-white pull-left <?php echo $classCircleO ; ?>" style="font-size: 10px;line-height: 20px;">
+							<i class="fa fa-circle-o"></i>
+						</span>
+					
 				<?php } ?>
-			<?php } ?>
-			<div class="header-tags pull-left">
-			<?php 
-			if(@$element["tags"]){ 
-				foreach ($element["tags"] as $key => $tag) { ?>
-					<span class="badge letter-red bg-white" style="vertical-align: top;">#<?php echo $tag; ?></span>
-				<?php } 
-			} ?>
+				<div class="header-tags pull-left">
+				<?php 
+				if(@$element["tags"]){ 
+					foreach ($element["tags"] as $key => $tag) { ?>
+						<span class="badge letter-red bg-white" style="vertical-align: top;">#<?php echo $tag; ?></span>
+					<?php } 
+				} ?>
+				</div>
 			</div>
-			</div>
-		<?php } ?>
 		
 		<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 pull-right">
 			<span class="pull-left text-white" id="shortDescriptionHeader"><?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
@@ -184,6 +185,7 @@
 
 		<?php if($type==Event::COLLECTION && false){ ?>
 			<div class="section-date pull-right">
+				
 				<div style="font-size: 14px;font-weight: none;">
 					<?php if(@$element['parent']){ ?>
 						<?php echo Yii::t("common","Planned on") ?> : 
@@ -205,6 +207,7 @@
 		<?php } ?>
 		<?php if($type==Event::COLLECTION){ ?>
 	<div class="section-date pull-right">
+		<div class="header-banner"  style="font-size: 14px;font-weight: none;"></div>
 		<div style="font-size: 14px;font-weight: none;">
 		<?php if(@$element['parent']){ ?>
 			<?php echo Yii::t("common","Planned on") ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/> 

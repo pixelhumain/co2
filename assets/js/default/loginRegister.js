@@ -87,11 +87,11 @@ var Login = function() {
 	var runLoginValidator = function() {
 		var form = $('.form-login');
 		var loginBtn = null;
-		Ladda.bind('.loginBtn', {
+		/*Ladda.bind('.loginBtn', {
 	        callback: function (instance) {
 	            loginBtn = instance;
 	        }
-	    });
+	    });*/
 		form.submit(function(e){e.preventDefault() });
 		var errorHandler = $('.errorHandler', form);
 		
@@ -109,7 +109,8 @@ var Login = function() {
 			submitHandler : function(form) {
 				errorHandler.hide();
 				$(".alert").hide();
-				loginBtn.start();
+				//loginBtn.start();
+				$(".loginBtn").find(".fa").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
 				var params = { 
 				   "email" : $("#email-login").val(), 
                    "pwd" : $("#password-login").val()
@@ -177,20 +178,23 @@ var Login = function() {
 		    		  		$('.loginResult').html(msg);
 							$('.loginResult').show();
 		    		  	}
-						loginBtn.stop();
+		    		  	$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
+						//loginBtn.stop();
 		    		  }
 		    	  },
 		    	  error: function(data) {
+		    	  	$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
 		    	  	toastr.error("Something went really bad : contact your administrator !");
-		    	  	loginBtn.stop();
+		    	  	//loginBtn.stop();
 		    	  },
 		    	  dataType: "json"
 		    	});
 			    return false; // required to block normal submit since you used ajax
 			},
 			invalidHandler : function(event, validator) {//display error alert on form submit
+				$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
 				errorHandler.show();
-				loginBtn.stop();
+				//loginBtn.stop();
 			}
 		});
 	};

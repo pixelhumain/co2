@@ -350,18 +350,18 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 		if(scopeType == "region") $("#searchLocalityREGION").val(scopeValue);
 		$("#searchLocalityLEVEL").val(scopeLevel);
 		$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
-		$.cookie('communexionType', scopeType, { expires: 365, path: location.pathname });
-		$.cookie('communexionValue', scopeValue, { expires: 365, path: location.pathname });
-		$.cookie('communexionName', scopeName, { expires: 365, path: location.pathname });
-		$.cookie('communexionLevel', scopeLevel, { expires: 365, path: location.pathname });
-		//$.cookie('currentLevel', scopeType, { expires: 365, path: location.pathname });
+		$.cookie('communexionType', scopeType, { expires: 365, path: "/" });
+		$.cookie('communexionValue', scopeValue, { expires: 365, path: "/" });
+		$.cookie('communexionName', scopeName, { expires: 365, path: "/" });
+		$.cookie('communexionLevel', scopeLevel, { expires: 365, path: "/" });
+		//$.cookie('currentLevel', scopeType, { expires: 365, path: "/" });
 	
 		if(inseeCommunexion != null){
-			$.cookie('inseeCommunexion',   		inseeCommunexion,  		{ expires: 365, path: location.pathname });
-			$.cookie('cityNameCommunexion', 	cityNameCommunexion,	{ expires: 365, path: location.pathname });
-			$.cookie('cpCommunexion',   		cpCommunexion,  		{ expires: 365, path: location.pathname });		
-			$.cookie('regionNameCommunexion',   regionNameCommunexion,  { expires: 365, path: location.pathname });
-			$.cookie('countryCommunexion',   	countryCommunexion,  	{ expires: 365, path: location.pathname });
+			$.cookie('inseeCommunexion',   		inseeCommunexion,  		{ expires: 365, path: "/" });
+			$.cookie('cityNameCommunexion', 	cityNameCommunexion,	{ expires: 365, path: "/" });
+			$.cookie('cpCommunexion',   		cpCommunexion,  		{ expires: 365, path: "/" });		
+			//$.cookie('regionNameCommunexion',   regionNameCommunexion,  { expires: 365, path: "/" });
+			//$.cookie('countryCommunexion',   	countryCommunexion,  	{ expires: 365, path: "/" });
 		}else{
 			if(actionOnSetGlobalScope == "filter"){
 				if(location.hash.indexOf("#live") > 0)

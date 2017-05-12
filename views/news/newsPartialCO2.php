@@ -25,7 +25,7 @@
 			$pair = !$pair;
       // Author name and thumb
       //print_r($media);
-      if(@$media["targetIsAuthor"]){   
+      if(@$media["targetIsAuthor"] || $media["type"]=="activityStream"){   
           if(@$media["target"]["profilThumbImageUrl"] && $media["target"]["profilThumbImageUrl"] != "")
             $thumbAuthor = Yii::app()->createUrl('/'.$media["target"]["profilThumbImageUrl"]);
           else
@@ -73,13 +73,15 @@
                           ) 
                       ); 
       ?>
+      <?php if(isset(Yii::app()->session["userId"])) { ?>
       <div class="timeline-footer pull-left col-md-12 col-sm-12 col-xs-12 padding-top-5">
           <!-- <a class="btn-comment-media" data-media-id="<?php //echo $media["_id"]; ?>"><i class="fa fa-comment"></i> Commenter</a> -->
           <!-- <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
           <a><i class="glyphicon glyphicon-share"></i></a> -->
           <div class="col-md-12 pull-left padding-5" id="footer-media-<?php echo @$media["_id"]; ?>"></div>
           <div class="col-md-12 no-padding pull-left margin-top-10" id="commentContent<?php echo @$media["_id"]; ?>"></div>
-      </div>
+      </div>     
+      <?php } ?>
     </div>
   </li>
 
@@ -111,7 +113,9 @@
       if($("#noMoreNews").length)
         scrollEnd=true;
       
-      initCommentsTools(news);
+      <?php if(isset(Yii::app()->session["userId"])) { ?>
+        initCommentsTools(news);
+      <?php } ?>
       $.each(news, function(e,v){
         if(typeof v.object != "undefined"){ 
           
@@ -264,11 +268,11 @@
         }*/
 
         // CSS DESIGN NEWS ORGANIZATION
-        var currentOffset=$("#news"+e).offset();
-        var prevOffset=$("#news"+e).prevAll(".list-news").offset();
+        var currentOffset=$("#"+v.type+e).offset();
+        var prevOffset=$("#"+v.type+e).prevAll(".list-news").offset();
         if(typeof prevOffset != "undefined"){
           if(currentOffset.top>=(prevOffset.top-20) && currentOffset.top<=(prevOffset.top+20))
-             $("#news"+e).addClass("addMargin");
+             $("#"+v.type+e).addClass("addMargin");
         }
         if(actionController=="save"){
           //$("#news"+e).nextAll(".list-news").first().addClass("addMargin");

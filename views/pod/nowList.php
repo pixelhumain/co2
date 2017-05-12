@@ -34,7 +34,7 @@
         </h5>
     <?php } else { ?>
         <h6 class="no-margin" style="font-size:12px">
-            <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> Activité terrritoriale<br>
+            <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> Activité territoriale<br>
              <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope; ?></small>
         </h6>
         <hr class="margin-5 margin-bottom-10">

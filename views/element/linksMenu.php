@@ -55,7 +55,7 @@
 	$visibleXsLinks="";
 	if(@$linksBtn["followBtn"]){
  		if(@$linksBtn["isFollowing"]){ 
- 			$statusXsMenu=Yii::t("common","You are following {which}",array("{which}"=>Yii::t("common","this".Element::getControlerByCollection($elementType))));
+ 			$statusXsMenu=Yii::t("common","You are following {which}",array("{which}"=>Yii::t("common","this ".Element::getControlerByCollection($elementType))));
  			$visibleXsLinks.='<li class="text-left visible-xs">'.
 				               	'<a href="javascript:;" class="bg-white text-red" '.
 				               		'onclick="disconnectTo(\''.$elementType.'\',\''.$elementId.'\',\''.Yii::app()->session["userId"].'\',\''.Person  ::COLLECTION.'\',\'followers\')">'.
@@ -71,8 +71,8 @@
 					</a>
 			        <ul class="dropdown-menu">
 		                <li class="text-left">
-		                    <a href="javascript:;" class="bg-white" onclick="disconnectTo('<?php echo $elementType ?>','<?php echo $elementId ?>','<?php echo Yii::app()->session["userId"] ?>','<?php echo Person  ::COLLECTION ?>','followers')">
-		                        <?php echo Yii::t("common", "Don't follow this page"); ?>
+		                    <a href="javascript:;" class="bg-white text-red" onclick="disconnectTo('<?php echo $elementType ?>','<?php echo $elementId ?>','<?php echo Yii::app()->session["userId"] ?>','<?php echo Person  ::COLLECTION ?>','followers')">
+		                        <i class="fa fa-sign-out"></i><?php echo Yii::t("common", "Don't follow this page"); ?>
 		                    </a>
 		                </li>
 		            </ul>

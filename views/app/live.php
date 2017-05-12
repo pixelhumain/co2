@@ -11,6 +11,7 @@
 		'/js/news/index.js',
 		'/js/news/autosize.js',
 		'/js/news/newsHtml.js',
+		'/js/default/directory.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 

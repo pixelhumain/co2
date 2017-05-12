@@ -25,7 +25,7 @@
 			$pair = !$pair;
       // Author name and thumb
       //print_r($media);
-      if(@$media["targetIsAuthor"]){   
+      if(@$media["targetIsAuthor"] || $media["type"]=="activityStream"){   
           if(@$media["target"]["profilThumbImageUrl"] && $media["target"]["profilThumbImageUrl"] != "")
             $thumbAuthor = Yii::app()->createUrl('/'.$media["target"]["profilThumbImageUrl"]);
           else

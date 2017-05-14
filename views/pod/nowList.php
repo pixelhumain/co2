@@ -1,8 +1,15 @@
-
+<style> 
+    hr.angle-down::after {
+        background-color: #e6344d;
+    }
+    hr.angle-down{
+        border-color: #e6344d;
+    }
+</style>
 <div class="col-xs-12 no-padding col-nowList"  data-tpl="pod.nowList">
 
-    <?php if((!@$scope || @$scope=="") && $open==false){ ?>
-
+    <?php if((!@$scope || @$scope=="") && $open==false ){ ?>
+        <?php if($type="citoyens" && $id==@Yii::app()->session["userId"]){ ?>
         <h6 class="no-margin" style="font-size:12px">
             <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> Activité territoriale<br>
              <small class="text-red"><i class="fa fa-map-marker"></i> Vous n'êtes pas communecté</small>
@@ -32,12 +39,14 @@
              <a class="col-md-6 padding-5 text-center" href=""><i class="fa fa-newspaper-o"></i><br>live</a></small>
              </span>
         </h5>
+        <?php } ?>
     <?php } else { ?>
         <h6 class="no-margin header-nowList" style="font-size:12px">
             <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> Activité territoriale<br>
              <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope; ?></small>
         </h6>
-        <hr class="margin-5 margin-bottom-10">
+        <hr class="angle-down">
+        <!-- <hr class="margin-5 margin-bottom-10"> -->
 
         <?php foreach ($result as $key => $v) { 
             $specs = Element::getElementSpecsByType(@$v["type"]);
@@ -56,12 +65,12 @@
             class="shadow2 border-left-<?php echo @$specs["text-color"]?> margin-bottom-5 col-xs-12 no-padding el-nowList <?php echo $type?> <?php echo $class; ?>" data-type="<?php echo @$v["type"] ?>" data-id="<?php echo (@$v["_id"]?$v["_id"]:@$v["id"]); ?>">
             <div class="pull-left no-padding cnt-img">
                 <div class="add2fav elemt_img">
-                    <img src="<?php echo $img ?>" class="pull-left">
+                    <img src="<?php echo $img ?>" class="pull-left hidden-xs">
                 </div>
             </div>
             <div class="pull-left elemt_name elipsis">
                 <i class="fa fa-<?php echo $specs["icon"]?> text-<?php echo @$specs["text-color"]?>"></i> 
-                <span class="hidden-xs hidden-sm"><?php echo $v["name"]; ?></span>
+                <span class=""><?php echo $v["name"]; ?></span>
                 <?php 
                 $id = null;
                 if(@$v["_id"])
@@ -70,7 +79,7 @@
                     $id = $v["id"];
                 //echo ($type) ? Element::getLink(@$type."s",$id) : "no type"; //echo @$type;?>
             </div><br>
-            <div class="hidden-xs hidden-sm elemt_date pull-left text-left elipsis">
+            <div class="elemt_date pull-left text-left elipsis">
                 <span class="dateTZ">
                     <?php echo @$v["updatedLbl"];?>
                     <?php if(@$v["price"]) echo " | <span class='text-azure'>" .@$v["price"].' '.@$v["devise"].'</span>';?> 

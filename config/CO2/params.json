@@ -15,7 +15,7 @@
                 "subdomain" : "welcome", 
                 "subdomainName" : "Accueil",
                 "hash" : "#app.welcome",
-                "icon" : "home", 
+                "icon" : "", 
                 "mainTitle" : "Réseau sociétal <span class='text-red'>territorial</span>",
                 "placeholderMainSearch" : "Rechercher quelque chose ...",
                 "lblBtnCreate" : "Créer quelque chose",

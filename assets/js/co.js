@@ -3524,7 +3524,8 @@ function initKInterface(params){ console.log("initKInterface");
 	$(window).resize(function(){
       resizeInterface();
     });
-
+	resizeInterface();
+	
     //jQuery for page scrolling feature - requires jQuery Easing plugin
     $('.page-scroll a').bind('click', function(event) {
         var $anchor = $(this);

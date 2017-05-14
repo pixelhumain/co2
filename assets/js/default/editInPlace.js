@@ -163,30 +163,17 @@ function bindAboutPodElement() {
 	function bindDynFormEditable(){
 
 		$(".btn-update-when").off().on( "click", function(){
-
-
 			var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
 						icon : "fa-key",
-						onLoads : {
-							initWhen : function(){
-								/*if(notNull(contextData.allDay) && contextData.allDay == true)
-									$("#ajaxFormModal #allDay").bootstrapSwitch('state', true, true);
-
-								if(typeof contextData.allDay != "undefined" && contextData.allDay == "true")
-									$("#ajaxFormModal #allDay").attr("checked");*/
-								
-							}
-						},
 						beforeSave : function(){
 							mylog.log("beforeSave");
 							var allDay = $("#ajaxFormModal #allDay").is(':checked');
 							$("#ajaxFormModal #allDayHidden").val(allDay);
 					    	removeFieldUpdateDynForm(contextData.type);
-					    	
 					    	
 					    	var dateformat = "DD/MM/YYYY";
 					    	if (! allDay) 
@@ -196,24 +183,27 @@ function bindAboutPodElement() {
 					    },
 						afterSave : function(data){
 							mylog.dir(data);
-							/*if(data.result && data.resultGoods.result){
+							if(data.result && data.resultGoods.result){
 								if(typeof data.resultGoods.values.allDay != "undefined"){
 									contextData.allDay = data.resultGoods.values.allDay;
-									$("#contentGeneralInfos #allDayAbout").html(contextData.allDay);
+									$("#allDayAbout").html(contextData.allDay);
 								}  
-								if(typeof data.resultGoods.values.endDate != "undefined"){
+								if(typeof data.resultGoods.values.startDate != "undefined"){
 									contextData.startDate = data.resultGoods.values.startDate;
-									$("#contentGeneralInfos #startDate").html(moment(contextData.startDate).local().format(formatDateView));
+									$("#startDateAbout").html(moment(contextData.startDate).local().locale("fr").format(formatDateView));
+									//$("#startDateAbout").html(directory.returnDate(contextData.startDate, formatDateView));
 								}  
 								if(typeof data.resultGoods.values.endDate != "undefined"){
 									contextData.endDate = data.resultGoods.values.endDate;
-									$("#contentGeneralInfos #endDate").html(moment(contextData.endDate).local().format(formatDateView));
+									$("#endDateAbout").html(moment(contextData.endDate).local().locale("fr").format(formatDateView));
+									//$("#endDateAbout").html(directory.returnDate(contextData.endDate, formatDateView));
 								}
 								initDateHeaderPage(contextData);
+								initDate();
 								updateCalendar();
-							}*/
+							}
 
-							urlCtrl.loadByHash(location.hash);
+							//urlCtrl.loadByHash(location.hash);
 							dyFObj.closeForm();
 						},
 						properties : {

@@ -1936,6 +1936,19 @@ function myContactLabel (type,id) {
 	return null;
 }
 
+function inMyContacts (type,id) { 
+	var res = false ;
+	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
+		$.each( myContacts[type], function( key,val ){
+			if( id == val["_id"]["$id"] ){
+				res = true;
+				return ;
+			}
+		});
+	}
+	return res;
+}
+
 function autoCompleteInviteSearch(search){
 	mylog.log("autoCompleteInviteSearch2", search);
 	if (search.length < 3) { return }
@@ -1945,7 +1958,6 @@ function autoCompleteInviteSearch(search){
 		"search" : search,
 		"searchMode" : "personOnly"
 	};
-	
 	
 	ajaxPost("", moduleId+'/search/searchmemberautocomplete', data,
 		function (data){
@@ -2338,18 +2350,21 @@ var dyFObj = {
 	            		if(typeof data.resultErrors != "undefined" && typeof data.resultErrors.msg != "undefined")
 	            			toastr.error(data.resultErrors.msg);
 	            	}
-
-	            	if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
-			        	addFloopEntity(data.id, collection, data.map);
-
-	            	if (typeof afterSave == "function") 
+	            	// mylog.log("data.id", data.id, data.url);
+	            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
+			        	addLocationToFormloopEntity(data.id, collection, data.map);*/
+			        if (typeof afterSave == "function"){
 	            		afterSave(data);
+	            		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+	            	}
 	            	else{
 						dyFObj.closeForm();
-		                if(data.url)
+		                if(data.url){
 		                	urlCtrl.loadByHash( data.url );
-		                else if(data.id)
+		                }
+		                else if(data.id){
 			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+		                }
 					}
 	            }
 	    	}
@@ -2403,7 +2418,7 @@ var dyFObj = {
 	    //initKSpec();
 	    if(userId)
 		{
-			formType = type;
+			formInMap.formType = type;
 			dyFObj.getDynFormObj(type, function() { 
 				dyFObj.starBuild(afterLoad,data);
 			},afterLoad, data);
@@ -2655,7 +2670,9 @@ var dyFInputs = {
     	}
     },
     image :function(str) { 
+    	mylog.log("str", str) ;
     	gotoUrl = (str) ? str+uploadObj.id : location.hash;
+    	mylog.log("gotoUrl", gotoUrl) ;
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
@@ -2663,7 +2680,7 @@ var dyFInputs = {
 		    	dyFObj.closeForm();
 		    	//alert(gotoUrl+uploadObj.id);
 	            urlCtrl.loadByHash( gotoUrl );	
-		    	}
+		    }
     	}
     },
     textarea :function (label,placeholder,rules) {  
@@ -3625,8 +3642,8 @@ function initKInterface(params){ console.log("initKInterface");
     $(".btn-show-map").off().click(function(){
     	if(typeof formInMap != "undefined" && formInMap.actived == true)
 			formInMap.cancel();
-    	else if(notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
-			getContextDataLinks()
+    	else if(isMapEnd == true && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+			getContextDataLinks();
 		else
 			showMap();
     });

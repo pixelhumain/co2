@@ -232,9 +232,7 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
-<!-- <h5>Recherche thématique<br><i class='fa fa-chevron-down'></i></h5> -->
 <?php $filliaireCategories = CO2::getContextList("filliaireCategories"); 
-      //var_dump($categories); exit;
       foreach ($filliaireCategories as $key => $cat) { 
   ?>
       <?php if(is_array($cat)) { ?>
@@ -299,9 +297,6 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
         <hr class="hidden-xs">
     </div> 
     <div id="dropdown_search" class="col-md-8 col-sm-8 col-xs-10 padding-10"></div>
-    <!-- <div class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"><select style="margin-bottom: 10px;" class="form-control hidden" id="select_activity"></select></div>
-    <select class="form-control hidden" id="tags_select"></select> -->
-    <!-- <div class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"><select style="margin-bottom: 10px;" class="form-control hidden" id="tags_value"></select></div> -->
     <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
 </div>  
 
@@ -310,9 +305,6 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     <div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
 </div>
-
-<!-- <div id="param_search" class="col-md-8 col-sm-8 col-xs-10 padding-10"><strong><center>Ici vous pourrez intéropérez avec la donnée venus d'ailleurs.
-En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez paramètres de la recherche que vous souhaitez spécifié</center></strong></div> -->
 
 <?php
 
@@ -324,13 +316,11 @@ En cliquant sur l'un des boutons dans le menu à gauche vous pourez détaillez p
 
     var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
     searchTags = $("#searchTags").val();
-    // geoShape = getGeoShapeForOsm();
-    // geofilter = getGeofilterPolygon();
     activity_array = getActivityArray();
 
     var headerParams = {
         // "poi"           : { color: "black",   icon: "map-marker",   name: "points d'intérêts" },
-        // "all_interop"    : { color: "black",   icon: "bullhorn",   name: "All" },
+        // "all_interop"    : { color: "black",   icon: "bullhorn",   name: "all" },
         "wikidata"    : { color: "grey",   icon: "group",   name: "Wikidata" },
         "datagouv"    : { color: "red",   icon: "bullhorn",   name: "DataGouv" },
         "osm"    : { color: "green",   icon: "bullhorn",   name: "Open Street Map" },

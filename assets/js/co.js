@@ -505,7 +505,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
                             $.ajax({
 								type: "POST",
 								url: baseUrl+"/"+moduleId+"/link/connect",
-								data: formData,
+								data: formData,	
 								dataType: "json",
 								success: function(data) {
 									if(data.result){
@@ -600,6 +600,8 @@ var urlCtrl = {
 		"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
 		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
 		"#opendata" : {"alias":"#data.index"},
+		"#interoperability.copedia" : {title:'COPEDIA', icon : 'fa-folder-open-o'},
+
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
 	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],

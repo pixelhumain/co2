@@ -488,6 +488,7 @@ class CommunecterController extends Controller
     "interoperability" => array(
       "index"              => array('href' => 'ph/communecter/interoperability/index',  "public" => true),
       "get"              => array('href' => 'ph/communecter/interoperability/get',  "public" => true),
+      "copedia"              => array('href' => 'ph/communecter/interoperability/copedia',  "public" => true),
       ),
     "rooms" => array('href' => "/ph/communecter/app/rooms", "public" => true),
     "survey" => array('href' => "/ph/communecter/app/survey", "public" => true),

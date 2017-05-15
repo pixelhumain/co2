@@ -1627,7 +1627,6 @@ function getUrlForInteropDirectoryElements(type_elt, id, url_elt) {
     }
 
     return url_directory_elt;
-
 }
 
 function getTypeInteropData(type_convert) {

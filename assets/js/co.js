@@ -1258,7 +1258,7 @@ var smallMenu = {
 				$.blockUI({ 
 					//title : 'Welcome to your page', 
 					message : (content) ? content : "<div class='blockContent'></div>",
-					onOverlayClick: $.unblockUI,
+					onOverlayClick: $.unblockUI(),
 			        css: { 
 			         //border: '10px solid black', 
 			         //margin : "50px",

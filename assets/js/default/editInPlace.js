@@ -409,8 +409,8 @@ function bindAboutPodElement() {
 				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
 				form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
 			}
-
-			form.dynForm.jsonSchema.properties.url = dyFInputs.inputUrl();
+			if(contextData.type != typeObj.poi.col) 
+				form.dynForm.jsonSchema.properties.url = dyFInputs.inputUrl();
 			
 			var dataUpdate = {
 				block : "info",
@@ -445,6 +445,7 @@ function bindAboutPodElement() {
 				if(notEmpty(contextData.avancement))
 					dataUpdate.avancement = contextData.avancement;
 			}
+			
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				if(notEmpty(contextData.email)) 
 					dataUpdate.email = contextData.email;
@@ -455,8 +456,8 @@ function bindAboutPodElement() {
 				if(notEmpty(contextData.fax))
 					dataUpdate.fax = contextData.fax;
 			}
-
-			if(notEmpty(contextData.url)) 
+			
+			if(contextData.type != typeObj.poi.col && notEmpty(contextData.url)) 
 				dataUpdate.url = contextData.url;
 			
 			mylog.log("dataUpdate", dataUpdate);

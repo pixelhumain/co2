@@ -193,18 +193,28 @@ class AppController extends CommunecterController {
             $type == Project::COLLECTION || $type == Organization::COLLECTION )    
             $element = Element::getByTypeAndId($type, $id);
 
-        if($type == News::COLLECTION){
+        else if($type == News::COLLECTION){
             $element = News::getById($id);
         }
 
-        if($type == Classified::COLLECTION){
+        else if($type == Classified::COLLECTION){
             $element = Classified::getById($id);
+        }
+        else if($type == Poi::COLLECTION){
+            $element = Poi::getById($id);
         }
 
         if(@$element["parentId"] && @$element["parentType"])
             $element['parent'] = Element::getByTypeAndId( $element["parentType"], $element["parentId"]);
         if(@$element["organizerId"] && @$element["organizerType"])
             $element['organizer'] = Element::getByTypeAndId( $element["organizerType"], $element["organizerId"]);
+
+        /*if($type == Poi::COLLECTION){
+            $type = $element["parentType"];
+            $id = $element["parentId"];
+            $view = "directory";
+            $dir = "poi";
+        }*/
 
         $params = array("id" => @$id,
                         "type" => @$type,

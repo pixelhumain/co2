@@ -295,7 +295,7 @@ function connectPerson(connectUserId, callback)
 
 
 function disconnectTo(parentType,parentId,childId,childType,connectType, callback) {
-	var messageBox = trad["removeconnection"];
+	var messageBox = trad["removeconnection"+parentType];
 	$(".disconnectBtnIcon").removeClass("fa-unlink").addClass("fa-spinner fa-spin");
 	var formData = {
 		"childId" : childId,
@@ -332,7 +332,7 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 								if (typeof callback == "function") 
 									callback();
 								else
-									urlCtrl.loadByHash(location.hash);
+									urlCtrl.loadByHash("#page.type.citoyens.id."+userId);
 							} else {
 							   toastr.error("You leave succesfully");
 							}

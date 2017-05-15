@@ -1,0 +1,66 @@
+{
+	"sections" : {
+        "competition": {"label":"Compétition",      
+            "key" : "competition",     
+            "icon" : "trophy",               
+            "section":2, 
+            "color":"azure"
+        },
+    	"concert": {
+            "label":"Concert", 			
+            "key" : "concert", 	
+            "icon" : "microphone", 					
+            "section":2, 
+            "color":"azure"
+        },
+
+        "concours": {
+            "label":"Concours",            
+            "key" : "concours",     
+            "icon" : "graduation-cap",                  
+            "section":3, 
+            "color":"azure"
+        },
+
+        "exposition": {
+            "label":"Exposition",             
+            "key" : "exposition",    
+            "icon" : "universal-access",          
+            "section":3, 
+            "color":"azure"
+        },
+
+
+        "festival" : {
+            "label":"Festival",  
+            "key" : "festival",  
+            "icon" : "beer",                    
+            "section":4, 
+            "color":"azure"
+        },
+
+        "getTogether": {
+            "label":"Rencontre",     
+            "key" : "getTogether",         
+            "icon" : "group",              
+            "section":5, 
+            "color":"azure"
+        },
+
+        "market": {
+            "label":"Marché",     
+            "key" : "market",         
+            "icon" : "shopping-basket",              
+            "section":5, 
+            "color":"azure"
+        },
+
+        "meeting": {
+            "label":"Réunion",     
+            "key" : "meeting",         
+            "icon" : "handshake-o",              
+            "section":5, 
+            "color":"azure"
+        }
+    }
+}

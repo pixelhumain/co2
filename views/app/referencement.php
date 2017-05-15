@@ -1,6 +1,6 @@
 <?php 
 
-	HtmlHelper::registerCssAndScriptsFiles( array('/js/default/formInMap.js') , $this->module->assetsUrl);
+	//HtmlHelper::registerCssAndScriptsFiles( array('/js/default/formInMap.js') , $this->module->assetsUrl);
 
     HtmlHelper::registerCssAndScriptsFiles( 
         array(  '/css/referencement.css',) , 

@@ -349,7 +349,7 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
             typeD = $(this).data("type");
             putInteropImageOnTitle(typeD);
             initTypeSearchInterop();
-            startSearchInterop(0, indexStepInit);
+            startSearchInterop(0, 30);
             KScrollTo("#container-result-interop_search");
         });
 
@@ -371,14 +371,14 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
             initTypeSearchInterop(type);
 
-            startSearchInterop(0, indexStepInit);
+            startSearchInterop(0, 30);
             KScrollTo("#container-result-interop_search");
         });  
 
         $("#main-btn-start-search-interop").click(function() {
 
             initTypeSearchInterop();
-            startSearchInterop(0, indexStepInit);
+            startSearchInterop(0, 30);
             KScrollTo("#container-result-interop_search");
 
         });
@@ -412,8 +412,8 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
         loadingData = false; 
 
-        var indexStepInit = 100;
-    	var indexStep = indexStepInit;
+        // var indexStepInit = 100;
+    	var indexStep = 30;
     	var currentIndexMin = 0;
     	var currentIndexMax = indexStep;
     	var totalData = 0;
@@ -433,6 +433,8 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     function initTypeSearchInterop(){
 
         contextTestMap = [];
+
+        scrollEnd = false;
 
         all_interop_data = [];
 
@@ -609,7 +611,7 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
             typeD = "wikidata";
         }
 
-	    indexStep = indexStepInit;
+	    indexStep = 30;
 
 		text_search_name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
 	    
@@ -792,6 +794,8 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
                 str += "</h4>";
                 str += "<hr style='float:left; width:100%;'/>";
                 str += "</div>";
+
+                mylog.log("ON APELLE LE SHOW DIRECTORY RESULT");
 
                 if (typeD == "all_interop") {
                     str += directory.showResultsDirectoryHtml(all_interop_data);

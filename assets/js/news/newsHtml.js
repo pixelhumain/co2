@@ -750,14 +750,18 @@ function initXEditable() {
 function checkAndCutLongString(text,limitLength,idNews){
 	if(text.length > limitLength){
 		allText=text;
-		text=text.substring(0,limitLength);
+		text=text.substring(0,limitLength)+
+				"<span class='ppp'> ...</span>"+
+				"<span class='endtext hidden'>"+text.substring(limitLength, text.length)+"</span>";
+
 		if(limitLength==500){
-			text += "<span class='removeReadNews'> ...<br>"+
-						"<a href='#page.type.news.id."+idNews+"' class='btn btn-xs btn-default margin-top-10' target='_blank'>"+
+			text += //"<span class='removeReadNews'> ...
+						"<br>"+
+						"<button class='btn btn-xs btn-link letter-blue margin-top-10 btn-showmorenews' data-newsid='"+idNews+"' target='_blank'>"+
 							"Lire la suite"+
-						"</a>"+
-					"</span>"+
-					"<div class='allText' style='display:none;'>"+allText+"</div>";
+						"</button>"+
+					"</span>";
+					// "<div class='allText' style='display:none;'>"+allText+"</div>";
 		}else{
 			text += " ..."
 		}

@@ -1,23 +1,39 @@
 function initDateHeaderPage(params){
 	var str = directory.getDateFormated(params);
-	$(".section-date").prepend(str);
+	//$(".section-date").prepend(str);
+	$(".header-banner").html(str);
 }
 
 function getCroppingModal(){
 	
 }
-
+function menuLeftShow(){
+	if($("#menu-left-container").hasClass("hidden-xs"))
+		$("#menu-left-container").removeClass("hidden-xs");
+	else
+		$("#menu-left-container").addClass("hidden-xs");
+}
+function responsiveMenuLeft(menuTop){
+	if($(window).width()<768)
+		menuLeftShow();
+	if(menuTop){
+		if($(window).width()>768)
+			$(".ssmla").removeClass('active');
+	}
+}
 function bindButtonMenu(){
 	$("#btn-superadmin").click(function(){
 		loadAdminDashboard();
 	});
-	$("#btn-start-newsstream").click(function(){
-		$(".ssmla").removeClass('active');
+	$(".btn-start-newsstream").click(function(){
+		//$(".ssmla").removeClass('active');
+		responsiveMenuLeft(true);
 		history.pushState(null, "New Title", hashUrlPage);
 		loadNewsStream(true);
 	});
-	$("#btn-start-mystream").click(function(){
-		$(".ssmla").removeClass('active');
+	$(".btn-start-mystream").click(function(){
+		//$(".ssmla").removeClass('active');
+		responsiveMenuLeft(true);
 		if(contextData.type=="citoyens" && userId==contextData.id)
 			history.pushState(null, "New Title", hashUrlPage+".view.mystream");
 		else
@@ -25,26 +41,31 @@ function bindButtonMenu(){
 		loadNewsStream(false);
 	});
 	$("#btn-start-gallery").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.gallery");
 		//location.search="?view=gallery";
 		loadGallery();
 	});
-	$("#btn-start-notifications").click(function(){
-		$(".ssmla").removeClass('active');
+	$(".btn-start-notifications").click(function(){
+		//$(".ssmla").removeClass('active');
+		responsiveMenuLeft(true);
 		history.pushState(null, "New Title", hashUrlPage+".view.notifications");
 		//location.search="?view=notifications";
 		loadNotifications();
 	});
 	$(".btn-start-chart").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.chart");
 		loadChart();
 	});
-	$("#btn-show-activity").click(function(){
+	$(".btn-show-activity").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.history");
 		loadHistoryActivity();
 	});
 	
 	$(".open-confidentiality").click(function(){
+		responsiveMenuLeft();
 		mylog.log("open-confidentiality");
 		toogleNotif(false);
 		smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").val()));
@@ -52,39 +73,46 @@ function bindButtonMenu(){
 	});
 
 	$(".open-directory").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.directory");
 		loadDirectory();
 	});
 	$(".edit-chart").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.editChart");
 		loadEditChart();
 	});
 	$(".btn-open-collection").click(function(){
+		responsiveMenuLeft();
 		toogleNotif(false);
 	});
 
 	$("#btn-start-detail").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.detail");
 		loadDetail();
 	});
 
 	$(".load-data-directory").click(function(){
-			var dataName = $(this).data("type-dir");
-			console.log(".load-data-directory", dataName);
-			loadDataDirectory(dataName, $(this).data("icon"));
-		});
+		responsiveMenuLeft();
+		var dataName = $(this).data("type-dir");
+		console.log(".load-data-directory", dataName);
+		loadDataDirectory(dataName, $(this).data("icon"));
+	});
 		
-		$("#subsubMenuLeft a").click(function(){
-			$("#subsubMenuLeft a").removeClass("active");
-			$(this).addClass("active");
-		});
+	$("#subsubMenuLeft a").click(function(){
+		$("#subsubMenuLeft a").removeClass("active");
+		$(this).addClass("active");
+	});
 
-		$("#btn-start-urls").click(function(){
+	$("#btn-start-urls").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.urls");
 		loadUrls();
 	});
 
-		$("#btn-start-contacts").click(function(){
+	$("#btn-start-contacts").click(function(){
+		responsiveMenuLeft();
 		history.pushState(null, "New Title", hashUrlPage+".view.contacts");
 		loadContacts();
 	});
@@ -206,6 +234,7 @@ function bindButtonMenu(){
 
 function loadDataDirectory(dataName, dataIcon){
 	showLoader('#central-container');
+	history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
 	// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
@@ -224,7 +253,8 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	if(dataName == "follows")	{ html += elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
 	else if(dataName == "followers")	{ html += countData + " <b>abonné"+s+"</b> à " + elementName; }
 	else if(dataName == "members")	{ html += elementName + " est composé de " + countData + " <b>membre"+s+"</b>"; }
-	else if(dataName == "attendees")	{ html += countData + " <b>invité"+s+"</b> à l'événement " + elementName; }
+	else if(dataName == "attendees")	{ html += countData + " <b>Participant"+s+"</b> à l'événement " + elementName; }
+	else if(dataName == "guests")	{ html += countData + " <b>Invité"+s+"</b> sur " + elementName; }
 	else if(dataName == "contributors")	{ html += countData + " <b>contributeur"+s+"</b> au projet " + elementName; }
 	
 	else if(dataName == "events"){ 
@@ -246,12 +276,18 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	else if(dataName == "dda"){ html += countData+" <b>proposition"+s+"</b> de " + elementName; }
 
 	else if(dataName == "urls"){ 
-		html += elementName + " a " + countData+" <b> lien"+s;
+		var str = " a " + countData;
+		if(countData == "Aucun")
+			str = " n'a aucun";
+		html += elementName + str+" <b> lien"+s;
 		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'parentUrl\')">';
     	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
 	}
 
-	else if(dataName == "contacts"){ 
+	else if(dataName == "contacts"){
+		var str = " a " + countData;
+		if(countData == "Aucun")
+			str = " n'a aucun";
 		html += elementName + " a " + countData+" <b> point de contact"+s;
 		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
     	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
@@ -512,4 +548,58 @@ function loadLiveNow () {
 
 function showLoader(id){
 	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
+}
+
+function descHtmlToMarkdown() {
+	mylog.log("htmlToMarkdown");
+	if(typeof contextData.descriptionHTML != "undefined" && contextData.descriptionHTML == true) {
+		mylog.log("htmlToMarkdown");
+		if( $("#descriptionAbout").html() != "" ){
+			var paramSpan = {
+			  filter: ['span'],
+			  replacement: function(innerHTML, node) {
+			    return innerHTML;
+			  }
+			}
+			var paramDiv = {
+			  filter: ['div'],
+			  replacement: function(innerHTML, node) {
+			    return innerHTML;
+			  }
+			}
+			mylog.log("htmlToMarkdown2");
+			var converters = { converters: [paramSpan, paramDiv] };
+			var descToMarkdown = toMarkdown( $("#descriptionMarkdown").html(), converters ) ;
+			mylog.log("descToMarkdown", descToMarkdown);
+			$("descriptionMarkdown").html(descToMarkdown);
+			var param = new Object;
+			param.name = "description";
+			param.value = descToMarkdown;
+			param.id = contextData.id;
+			param.typeElement = contextData.type;
+			param.block = "toMarkdown";
+			$.ajax({
+		        type: "POST",
+		       	url : baseUrl+"/"+moduleId+"/element/updateblock/",
+		        data: param,
+		       	dataType: "json",
+		    	success: function(data){
+		    		mylog.log("here");
+			    	//toastr.success(data.msg);
+			    	
+			    }
+			});
+			mylog.log("param", param);
+		}
+	}
+}
+
+function inintDescs() {
+	mylog.log("inintDescs");
+	if(edit == true || openEdition== true)
+		descHtmlToMarkdown();
+	mylog.log("after");
+	var descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
+	$("#descriptionAbout").html(descHtml);
+	$("#descProfilsocial").html(descHtml);
 }

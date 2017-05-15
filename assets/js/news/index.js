@@ -119,7 +119,7 @@ function buildTimeLine (news, indexMin, indexMax)
 	//mylog.log(news);
 	$.each( news , function(key,newsObj)
 	{
-		console.log(newsObj);
+		//console.log(newsObj);
 		if(newsObj.created)
 		{
 			if(typeof(newsObj.created) == "object")
@@ -618,16 +618,20 @@ function showFormBlock(bool){
 		$(".form-create-news-container .scopescope").show("fast");
 		/////multiTagScopeLbl("send");
 		if(isLiveGlobal()){
-			scopeHtml='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-            				'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
-                        	'data-scope-value="'+$.cookie('communexionValue')+'" '+
-                        	'data-scope-name="'+$.cookie('communexionName')+'" '+
-                        	'data-scope-level="'+$.cookie('communexionLevel')+'" '+
-                        	'data-scope-type="'+$.cookie('communexionType')+'" '+
-            				'id="btn-my-co">'+
-            				'<i class="fa fa-university"></i>'+
-            			'</a>'+
-            			'<h5 class="pull-left letter-red" style="margin-bottom: -8px;margin-top: 14px;">'+
+			scopeHtml ="";
+
+			if(typeof userConnected != "undefined" && userConnected != null ){
+				scopeHtml +='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
+	            				'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
+	                        	'data-scope-value="'+$.cookie('communexionValue')+'" '+
+	                        	'data-scope-name="'+$.cookie('communexionName')+'" '+
+	                        	'data-scope-level="'+$.cookie('communexionLevel')+'" '+
+	                        	'data-scope-type="'+$.cookie('communexionType')+'" '+
+	            				'id="btn-my-co">'+
+	            				'<i class="fa fa-university"></i>'+
+	            			'</a>';
+	        }
+            scopeHtml +='<h5 class="pull-left letter-red" style="margin-bottom: -8px;margin-top: 14px;">'+
                             '<a class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-10 margin-right-10" '+ 
                                 'data-target="#modalScopes" data-toggle="modal" '+
                                 'data-toggle="tooltip" data-placement="top" '+ 
@@ -1064,7 +1068,7 @@ function saveNews(){
 				//plugins/showdown/showdown.min.js
 				//plugins/showdown/showdown.min.js // bootstrap-markdown
 				// example in editInPlace.js /assets/js/
-				console.log(newNews.text);
+				//console.log(newNews.text);
 				//alert(newNews.text);
 				if($('#authorIsTarget').length && $('#authorIsTarget').val()==1)
 					newNews.targetIsAuthor = true;

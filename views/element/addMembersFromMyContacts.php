@@ -749,21 +749,22 @@ function sendInvitation(){
         	else {
         		toastr.success(data.msg);
         		mylog.log(data);
-        		$.each(data.newMembers, function(k, newMember){
+        		/*$.each(data.newMembers, function(k, newMember){
 	        		mylog.log("neewsMens >>>>");
 	        		mylog.log(newMember);
 	        		mapType = newMember.childType;
 			        if(newMember.childType=="<?php echo Person::COLLECTION ?>")
 			            mapType="people";
 			        mapElements.push(newMember);
-				});
+				});*/
 				if(typeof(mapUrl) != "undefined"){
 					if(typeof(mapUrl.detail.load) != "undefined" && mapUrl.detail.load)
 						mapUrl.detail.load = false;
 					if(typeof(mapUrl.directory.load) != "undefined" && mapUrl.directory.load)
 						mapUrl.directory.load = false;
 				}
-				urlCtrl.loadByHash(location.hash);
+				loadDataDirectory("guests", "send");
+				//urlCtrl.loadByHash(location.hash);
 				
 				$.unblockUI();
         	}

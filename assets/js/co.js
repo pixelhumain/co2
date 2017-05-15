@@ -549,6 +549,12 @@ var urlCtrl = {
 	    "#organization.detail" : {aliasParam: "#page.type.organizations.id.$id", params: ["id"],title:'ORGANIZATION DETAIL ', icon : 'users' },
 	    "#project.detail" : {aliasParam: "#page.type.projects.id.$id", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
 	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
+	    "#event.directory" : {aliasParam: "#page.type.events.id.$id.view.directory.dir.attendees", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
+	    "#organization.directory" : {aliasParam: "#page.type.organizations.id.$id.view.directory.dir.members", params: ["id"],title:'ORGANIZATION DETAIL ', icon : 'users' },
+	    "#project.directory" : {aliasParam: "#page.type.projects.id.$id.view.directory.dir.contributors", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
+	    "#news.detail" : {aliasParam: "#page.type.news.id.$id", params: ["id"], title:'NEWS', icon : 'rss' },
+	    "#news.index" : {aliasParam: "#page.type.$type.id.$id", params: ["type","id"], title:'NEWS', icon : 'rss' },
+	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
 	    "#news.detail" : {title:'NEWS DETAIL ', icon : 'rss' },
@@ -558,7 +564,6 @@ var urlCtrl = {
 	    "#city.creategraph" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
 	    "#city.graphcity" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
 	    "#city.statisticPopulation" : {title:'CITY ', icon : 'university' },
-	    "#news" : {title:'NEWS ', icon : 'rss'},
 	    "#rooms.index.type.cities" : {title:'ACTION ROOMS ', icon : 'cubes', menuId:"btn-citizen-council-commun"},
 	    "#rooms.editroom" : {title:'ADD A ROOM ', icon : 'plus', action:function(){ editRoomSV ();	}},
 		"#element.aroundme" : {title:"Around me" , icon : 'crosshairs', menuId:"menu-btn-around-me"},
@@ -591,7 +596,7 @@ var urlCtrl = {
 		"#default.apropos" : {title:'COMMUNECTED HOME ', icon : 'star',"menu":"homeShortcuts"},
 		"#default.twostepregister" : {title:'TWO STEP REGISTER', icon : 'home', "menu":"homeShortcuts"},
 		"#default.view.page" : {title:'Découvrir', icon : 'file-o'},
-		//"#home" : {"alias":"#default.home"},
+		"#home" : {"alias":"#default.home"},
 	    "#stat.chartglobal" : {title:'STATISTICS ', icon : 'bar-chart'},
 	    "#stat.chartlogs" : {title:'STATISTICS ', icon : 'bar-chart'},
 	    "#default.live" : {title:"FLUX'Direct" , icon : 'heartbeat', menuId:"menu-btn-live"},
@@ -604,6 +609,10 @@ var urlCtrl = {
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
 	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
 	map : function (hash) {
+		if(typeof hash == "undefined") return { hash : "#",
+												type : "",
+												id : ""
+											};
 		hashT = hash.split('.');
 		return {
 			hash : hash,
@@ -778,7 +787,12 @@ var urlCtrl = {
 	            title = 'ADD SOMETHING TO MY NETWORK';
 	        else
 	            title = "WELCOM MUNECT HEY !!!";
-	        showPanel(panelName,null,title);
+	        if(panelName == "box-login")
+				$('#modalLogin').modal("show");
+			else if(panelName == "box-register")
+				$('#modalRegister').modal("show");
+			else
+	       		showPanel(panelName,null,title);
 	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
 	        hashT = hash.split(".");
 	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
@@ -823,12 +837,11 @@ function showPanel(box,callback){
   	
   	if(isMapEnd) showMap(false);
 			
-	mylog.log("showPanel");
+	mylog.log("showPanel",box);
 	//showTopMenu(false);
 	$(themeObj.mainContainer).animate({ top: -1500, opacity:0 }, 500 );
 
 	$("."+box).show(500);
-
 	if (typeof callback == "function") {
 		callback();
 	}
@@ -1064,14 +1077,14 @@ function showDefinition( id,copySection ){
 
 	setTimeout(function(){
 		mylog.log("showDefinition",id,copySection);
-		$(".hover-info,.hover-info2").hide();
-		$( themeObj.mainContainer ).animate({ opacity:0.3 }, 400 );
+		
+		//$( themeObj.mainContainer ).animate({ opacity:0.3 }, 400 );
 		
 		if(copySection){
 			contentHTML = $("."+id).html();
 			if(copySection != true)
 				contentHTML = copySection;
-			$(".hover-info2").css("display" , "inline").html( contentHTML );
+			smallMenu.open(contentHTML);
 			bindExplainLinks()	
 		}
 		else {
@@ -1923,6 +1936,19 @@ function myContactLabel (type,id) {
 	return null;
 }
 
+function inMyContacts (type,id) { 
+	var res = false ;
+	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
+		$.each( myContacts[type], function( key,val ){
+			if( id == val["_id"]["$id"] ){
+				res = true;
+				return ;
+			}
+		});
+	}
+	return res;
+}
+
 function autoCompleteInviteSearch(search){
 	mylog.log("autoCompleteInviteSearch2", search);
 	if (search.length < 3) { return }
@@ -1932,7 +1958,6 @@ function autoCompleteInviteSearch(search){
 		"search" : search,
 		"searchMode" : "personOnly"
 	};
-	
 	
 	ajaxPost("", moduleId+'/search/searchmemberautocomplete', data,
 		function (data){
@@ -2152,7 +2177,7 @@ var dynForm = null;
 var uploadObj = {
 	type : null,
 	id : null,
-	folder : "communecter", //on force pour pas casser toutes les vielles images
+	folder : moduleId, //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
 		uploadObj.id = id;
@@ -2173,9 +2198,8 @@ var dyFObj = {
     		$('#btn-submit-form').show();
     	else 
     		$('#btn-submit-form').hide();
-//tmp
-$('#btn-submit-form').show();
-
+		//tmp
+		$('#btn-submit-form').show();
     },
 	formatData : function (formData, collection,ctrl) { 
 		mylog.warn("----------- formatData",formData, collection,ctrl);
@@ -2326,18 +2350,21 @@ $('#btn-submit-form').show();
 	            		if(typeof data.resultErrors != "undefined" && typeof data.resultErrors.msg != "undefined")
 	            			toastr.error(data.resultErrors.msg);
 	            	}
-
-	            	if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
-			        	addFloopEntity(data.id, collection, data.map);
-
-	            	if (typeof afterSave == "function") 
+	            	// mylog.log("data.id", data.id, data.url);
+	            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
+			        	addLocationToFormloopEntity(data.id, collection, data.map);*/
+			        if (typeof afterSave == "function"){
 	            		afterSave(data);
+	            		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+	            	}
 	            	else{
 						dyFObj.closeForm();
-		                if(data.url)
+		                if(data.url){
 		                	urlCtrl.loadByHash( data.url );
-		                else if(data.id)
+		                }
+		                else if(data.id){
 			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+		                }
 					}
 	            }
 	    	}
@@ -2391,7 +2418,7 @@ $('#btn-submit-form').show();
 	    //initKSpec();
 	    if(userId)
 		{
-			formType = type;
+			formInMap.formType = type;
 			dyFObj.getDynFormObj(type, function() { 
 				dyFObj.starBuild(afterLoad,data);
 			},afterLoad, data);
@@ -2572,7 +2599,7 @@ var dyFInputs = {
 	        rules : ( notEmpty(rules) ? rules : { required : true } )
 	    };
 	    if(type){
-	    	inputObj.label = "Nom de votre " + trad[type]+" ";
+	    	inputObj.label = "Nom de votre " + trad[dyFInputs.get(type).ctrl]+" ";
 	    	if(type=="classified") 
 	    		inputObj.label = "Titre de votre " + trad[type]+" ";
 
@@ -2643,7 +2670,9 @@ var dyFInputs = {
     	}
     },
     image :function(str) { 
+    	mylog.log("str", str) ;
     	gotoUrl = (str) ? str+uploadObj.id : location.hash;
+    	mylog.log("gotoUrl", gotoUrl) ;
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
@@ -2651,7 +2680,7 @@ var dyFInputs = {
 		    	dyFObj.closeForm();
 		    	//alert(gotoUrl+uploadObj.id);
 	            urlCtrl.loadByHash( gotoUrl );	
-		    	}
+		    }
     	}
     },
     textarea :function (label,placeholder,rules) {  
@@ -2847,8 +2876,61 @@ var dyFInputs = {
         	$(".urlsarray").css("display","none");	
         }
     },
-    allDay : {
+    allDay : function(checked){
+
+    	var inputObj = {
+    		inputType : "checkbox",
+	    	checked : ( notEmpty(checked) ? checked : "" ),
+	    	init : function(){
+	        	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
+	        		mylog.log("toto",$("#ajaxFormModal #allDay").val());
+	        	})
+	        },
+	    	"switch" : {
+	    		"onText" : "Oui",
+	    		"offText" : "Non",
+	    		"labelText":"Toute la journée",
+	    		"onChange" : function(){
+	    			var allDay = $("#ajaxFormModal #allDay").is(':checked');
+	    			var startDate = "";
+	    			var endDate = "";
+	    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
+	    			if (allDay) {
+	    				$(".dateTimeInput").addClass("dateInput");
+	    				$(".dateTimeInput").removeClass("dateTimeInput");
+	    				$('.dateInput').datetimepicker('destroy');
+	    				$(".dateInput").datetimepicker({ 
+					        autoclose: true,
+					        lang: "fr",
+					        format: "d/m/Y",
+					        timepicker:false
+					    });
+					    startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
+					    endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
+	    			} else {
+	    				$(".dateInput").addClass("dateTimeInput");
+	    				$(".dateInput").removeClass("dateInput");
+	    				$('.dateTimeInput').datetimepicker('destroy');
+	    				$(".dateTimeInput").datetimepicker({ 
+		       				weekStart: 1,
+							step: 15,
+							lang: 'fr',
+							format: 'd/m/Y H:i'
+					    });
+					    
+	    				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
+						endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
+	    			}
+				    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
+					if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
+	    		}
+		    }
+    	};
+    	return inputObj;
+    },
+   /* allDay : {
     	inputType : "checkbox",
+    	checked : true,
     	init : function(){
         	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
         		mylog.log("toto",$("#ajaxFormModal #allDay").val());
@@ -2889,11 +2971,11 @@ var dyFInputs = {
     				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
 					endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
     			}
-			    if (startDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(startDate);
-				if (endDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(endDate);
+			    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
+				if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
     		}
     	}
-    },
+    },*/
     startDateInput : {
         inputType : "datetime",
         placeholder: "Date de début",
@@ -3067,7 +3149,7 @@ var typeObj = {
 	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
 	"NGO" : {sameAs:"organization"},
 	"Association" : {sameAs:"organization"},
-	"GovernmentOrganization" : {col:"organizations",color: "green",icon: "circle-o"},
+	"GovernmentOrganization" : {sameAs:"organization",color: "red",icon: "university"},
 	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
 	"events" : {sameAs:"event"},
@@ -3183,7 +3265,8 @@ var keyboardNav = {
 		"117" : function(){ console.clear();urlCtrl.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {
-		"13" : function(){$('#openModal').modal('hide');dyFObj.openForm('addElement')},//enter : add elements
+		"13" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show');//dyFObj.openForm('addElement')
+						  },//enter : add elements
 		"61" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show')},//= : add elements
 		"65" : function(){$('#openModal').modal('hide');dyFObj.openForm('action')},//a : actions
 		"66" : function(){$('#openModal').modal('hide'); smallMenu.destination = "#openModal"; smallMenu.openAjax(baseUrl+'/'+moduleId+'/collections/list','Mes Favoris','fa-star','yellow') },//b best : favoris
@@ -3458,7 +3541,8 @@ function initKInterface(params){ console.log("initKInterface");
 	$(window).resize(function(){
       resizeInterface();
     });
-
+	resizeInterface();
+	
     //jQuery for page scrolling feature - requires jQuery Easing plugin
     $('.page-scroll a').bind('click', function(event) {
         var $anchor = $(this);
@@ -3486,7 +3570,39 @@ function initKInterface(params){ console.log("initKInterface");
             $('.navbar-toggle:visible').click();
     });
 
-   $(".logout").click(function(){
+    $(".openModalSelectCreate").click(function(){
+        $("#selectCreate").modal("show");
+        showFloopDrawer(false);
+        showNotif(false);
+    });
+
+    $(".btn-open-floopdrawer").click(function(){ 
+        showNotif(false);
+        $("#dropdown-user").removeClass("open");
+        showFloopDrawer(true);
+    });
+    $("#floopDrawerDirectory").mouseleave(function(){ 
+        showFloopDrawer(false);
+    });
+
+
+    $(".btn-show-mainmenu").click(function(){
+        showFloopDrawer(false);
+        showNotif(false);
+        $("#dropdown-user").addClass("open");
+        //clearTimeout(timerCloseDropdownUser);
+    });
+    
+    $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
+        $("#dropdown-user").removeClass("open");
+    });
+
+    $("header .container").mouseenter(function(){ 
+    	$("#dropdown-user").removeClass("open");
+    });
+
+
+    $(".logout").click(function(){
     	window.location.href=baseUrl+"/co2/person/logout";
     });
 
@@ -3524,27 +3640,15 @@ function initKInterface(params){ console.log("initKInterface");
 
 
     $(".btn-show-map").off().click(function(){
-    	if(notEmpty(contextData) &&  location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
-			getContextDataLinks()
+    	if(typeof formInMap != "undefined" && formInMap.actived == true)
+			formInMap.cancel();
+    	else if(isMapEnd == true && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+			getContextDataLinks();
 		else
 			showMap();
-		
     });
 
     bindLBHLinks();
-
-    $(".btn-show-mainmenu").click(function(){
-        $("#dropdown-user").addClass("open");
-        //clearTimeout(timerCloseDropdownUser);
-    });
-    
-    $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
-        $("#dropdown-user").removeClass("open");
-    });
-
-    $("header .container").mouseenter(function(){ 
-    	$("#dropdown-user").removeClass("open");
-    });
 
     $(".tooltips").tooltip();
     

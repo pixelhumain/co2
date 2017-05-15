@@ -121,7 +121,7 @@
 					</select>
 					<div id='divCity' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
 				  		<input class='form-group col-md-12 col-xs-12' type='text' name='newElement_city' placeholder='<?php echo Yii::t("common", "Search a city, a town or a postal code") ; ?>'>
-						<ul class='dropdown-menu col-md-12 col-xs-12' id='dropdown-newElement_locality-found' style="margin-top: -15px; background-color : #ea9d13;">
+						<ul class='dropdown-menu col-md-12 col-xs-12' id='dropdown-newElement_locality-found' style="margin-top: -15px; background-color : #ea9d13; max-height : 300px ; overflow-y: auto">
 							<li><a href='javascript:' class='disabled'><?php echo Yii::t("common", "Search a city, a town or a postal code") ; ?></a></li>
 						</ul>
 			  		</div>
@@ -130,7 +130,7 @@
 						<button class='col-md-3 col-xs-3 btn btn-default' style='padding:3px;border-radius:0 4px 4px 0;' type='text' id='newElement_btnSearchAddress'><i class='fa fa-search'></i></button>
 					</div>
 					<div class='dropdown pull-left col-xs-12 no-padding'> 
-				  		<ul class='dropdown-menu' id='dropdown-newElement_streetAddress-found' style="margin-top: -15px; background-color : #ea9d13;">
+				  		<ul class='dropdown-menu' id='dropdown-newElement_streetAddress-found' style="margin-top: -15px; background-color : #ea9d13; max-height : 300px ; overflow-y: auto">
 				  			<li><a href='javascript:' class='disabled'><?php echo Yii::t("common", "Currently researching") ; ?></a></li>
 				  		</ul>
 					</div>

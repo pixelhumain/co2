@@ -240,23 +240,11 @@
             <button class="btn text-purple btn-directory-type" data-type="projects">
                 <i class="fa fa-lightbulb-o"></i> 
                 <span class="hidden-xs">Projets</span>
-            </button><br class="hidden-xs">
-            <button class="btn text-grey btn-directory-type" data-type="wikidata">
-                <i class="fa fa-wikipedia-w"></i> 
-                <span class="hidden-xs">Wikidata</span>
-            </button><br class="hidden-xs">
-            <button class="btn text-red btn-directory-type" data-type="datagouv">
-                <i class="fa fa-database"></i> 
-                <span class="hidden-xs">DataGouv</span>
-            </button><br class="hidden-xs">
-            <button class="btn text-green btn-directory-type" data-type="osm">
-                <i class="fa fa-map"></i> 
-                <span class="hidden-xs">Open Stret Map</span>
-            </button><br class="hidden-xs">
-            <button class="btn cyan btn-directory-type" data-type="ods">
-                <i class="fa fa-folder-open-o"></i> 
-                <span class="hidden-xs">OpenDatasoft</span>
-            </button><br class="hidden-xs">
+            </button><hr class="hidden-xs">
+            <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
+                <i class="fa fa-university"></i> 
+                <span class="hidden-xs">Services publics</span>
+            </button>
             <hr class="hidden-sm hidden-md hidden-lg">
           </div>
         
@@ -434,15 +422,9 @@ var headerParams = {
   "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
   "cities"        : { color: "red",     icon: "university",   name: "communes" },
   "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
-<<<<<<< HEAD
-  "wikidata"    : { color: "lightblue2",   icon: "bullhorn",   name: "Wikidata" },
-  "datagouv"    : { color: "lightblue2",   icon: "bullhorn",   name: "DataGouv" },
-  "osm"    : { color: "lightblue2",   icon: "bullhorn",   name: "Open Street Map" },
-  "ods"    : { color: "lightblue2",   icon: "bullhorn",   name: "OpenDatasoft" }
-=======
   "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
->>>>>>> 1a127a579d0916d37794941247f60f455d001496
+  "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )

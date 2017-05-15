@@ -24,6 +24,7 @@ dynForm = {
             title : dyFInputs.inputText("Nom", "Titre de l'URL", { required : true }),
 	        url : dyFInputs.inputText("URL du lien", "URL du lien", { required : true, url : true }),
             type : dyFInputs.inputSelect("Type de l'URL", "Choisir un type", urlTypes, { required : true }),
+            index : dyFInputs.inputHidden(),
             parentId : dyFInputs.inputHidden(null, { required : true }),
             parentType : dyFInputs.inputHidden(null, { required : true })
 	    }

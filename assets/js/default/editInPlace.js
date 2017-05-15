@@ -24,7 +24,7 @@ function bindAboutPodElement() {
 	}
 
 	function updateCalendar() {
-		if(contextData.type == EVENT_COLLECTION){
+		if(contextData.type == typeObj.event.col){
 			getAjax(".calendar",baseUrl+"/"+moduleId+"/event/calendarview/id/"+contextData.id +"/pod/1?date=1",null,"html");
 		}
 	}
@@ -162,26 +162,19 @@ function bindAboutPodElement() {
 
 	function bindDynFormEditable(){
 
-		$("#btn-update-when").off().on( "click", function(){
-
-
+		$(".btn-update-when").off().on( "click", function(){
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
 						icon : "fa-key",
-						onLoads : {
-							initWhen : function(){
-								if(notNull(contextData.allDay) && contextData.allDay == true)
-									$("#ajaxFormModal #allDay").attr("checked");
-							}
-						},
 						beforeSave : function(){
 							mylog.log("beforeSave");
+							var allDay = $("#ajaxFormModal #allDay").is(':checked');
+							$("#ajaxFormModal #allDayHidden").val(allDay);
 					    	removeFieldUpdateDynForm(contextData.type);
-
-					    	var allDay = $("#ajaxFormModal #allDay").is(':checked');
+					    	
 					    	var dateformat = "DD/MM/YYYY";
 					    	if (! allDay) 
 					    		var dateformat = "DD/MM/YYYY HH:mm" ;
@@ -193,18 +186,24 @@ function bindAboutPodElement() {
 							if(data.result && data.resultGoods.result){
 								if(typeof data.resultGoods.values.allDay != "undefined"){
 									contextData.allDay = data.resultGoods.values.allDay;
-									$("#contentGeneralInfos #allDay").html(contextData.allDay);
+									$("#allDayAbout").html(contextData.allDay);
 								}  
-								if(typeof data.resultGoods.values.endDate != "undefined"){
+								if(typeof data.resultGoods.values.startDate != "undefined"){
 									contextData.startDate = data.resultGoods.values.startDate;
-									$("#contentGeneralInfos #startDate").html(moment(contextData.startDate).local().format(formatDateView));
+									$("#startDateAbout").html(moment(contextData.startDate).local().locale("fr").format(formatDateView));
+									//$("#startDateAbout").html(directory.returnDate(contextData.startDate, formatDateView));
 								}  
 								if(typeof data.resultGoods.values.endDate != "undefined"){
 									contextData.endDate = data.resultGoods.values.endDate;
-									$("#contentGeneralInfos #endDate").html(moment(contextData.endDate).local().format(formatDateView));
-								}  
+									$("#endDateAbout").html(moment(contextData.endDate).local().locale("fr").format(formatDateView));
+									//$("#endDateAbout").html(directory.returnDate(contextData.endDate, formatDateView));
+								}
+								initDateHeaderPage(contextData);
+								initDate();
 								updateCalendar();
 							}
+
+							//urlCtrl.loadByHash(location.hash);
 							dyFObj.closeForm();
 						},
 						properties : {
@@ -216,8 +215,10 @@ function bindAboutPodElement() {
 				}
 			};
 
-			if(contextData.type == "<?php echo Event::COLLECTION; ?>"){
-				form.dynForm.jsonSchema.properties.allDay = dyFInputs.allDay;
+			if(contextData.type == typeObj.event.col){
+				var checked = (notNull(contextData.allDay) && contextData.allDay == true) ?  true : false ;
+				form.dynForm.jsonSchema.properties.allDay = dyFInputs.allDay(checked);
+				form.dynForm.jsonSchema.properties.allDayHidden = dyFInputs.inputHidden(checked);
 			}
 
 			form.dynForm.jsonSchema.properties.startDate = dyFInputs.startDateInput;
@@ -229,11 +230,11 @@ function bindAboutPodElement() {
 		        typeElement : contextData.type,
 			};
 			
-			if(notEmpty(contextData.startDate))
-				dataUpdate.startDate = moment(contextData.startDate).local().format(formatDatedynForm);
+			if(notEmpty(contextData.startDateDB))
+				dataUpdate.startDate = moment(contextData.startDateDB).local().format(formatDatedynForm);
 
-			if(notEmpty(contextData.endDate))
-				dataUpdate.endDate = moment(contextData.endDate).local().format(formatDatedynForm);
+			if(notEmpty(contextData.endDateDB))
+				dataUpdate.endDate = moment(contextData.endDateDB).local().format(formatDatedynForm);
 
 			mylog.log("btn-update-when", form, dataUpdate);
 			dyFObj.openForm(form, "initWhen", dataUpdate);
@@ -243,7 +244,7 @@ function bindAboutPodElement() {
 		$(".btn-update-info").off().on( "click", function(){
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
@@ -275,17 +276,31 @@ function bindAboutPodElement() {
 									
 								if(typeof data.resultGoods.values.tags != "undefined"){
 									contextData.tags = data.resultGoods.values.tags;
-									var str = "";
-									if($('#divTagsHeader').length){
+									var strHeader = "";
+									var strAbout = trad["notSpecified"];
+									if($('.header-tags').length){
 										$.each(contextData.tags, function (key, tag){
-											str +=	'<div class="tag label label-danger pull-right" data-val="'+tag+'">'+
+											/*str +=	'<div class="tag label label-danger pull-right" data-val="'+tag+'">'+
 														'<i class="fa fa-tag"></i>'+tag+
-													'</div>';
-											if(typeof globalTheme == "undefined" || globalTheme != "network")
-												addTagToMultitag(tag);
+													'</div>';*/
+											strHeader += '<span class="badge letter-red bg-white" style="vertical-align: top;">#'+tag+'</span>';
+											/*if(typeof globalTheme == "undefined" || globalTheme != "network")
+												addTagToMultitag(tag);*/
+											strAbout +=	'<span class="badge letter-red bg-white">'+tag+'</span>';
 										});
 									}
-									$('#divTagsHeader').html(str);
+									$('.header-tags').html(strHeader);
+									$('#tagsAbout').html(strAbout);
+									if(strHeader == "" && typeof contextData.address == "undefined")
+										$('.header-address-tags').addClass("hidden");
+									else
+										$('.header-address-tags').removeClass("hidden");
+
+									if(strHeader == "")
+										$('#separateurTag').addClass("hidden");
+									else
+										$('#separateurTag').removeClass("hidden");
+
 								}
 
 								if(typeof data.resultGoods.values.avancement != "undefined"){
@@ -326,15 +341,18 @@ function bindAboutPodElement() {
 
 								if(typeof data.resultGoods.values.url != "undefined"){
 									mylog.log("update url");
-									contextData.url = data.resultGoods.values.url;
-									$("#urlAbout").html(contextData.url);
-									$("#urlAbout").attr("href", contextData.url);
+									contextData.url = data.resultGoods.values.url.trim();
+									if(contextData.url != "" ){
+										$("#webAbout").html('<a href="'+contextData.url+'" target="_blank" id="urlWebAbout" style="cursor:pointer;">'+contextData.url+'</a>');
+									}else{
+										$("#webAbout").html("<i>"+trad["notSpecified"]+"</i>");
+									}
 								}  
 									
 								if(typeof data.resultGoods.values.birthDate != "undefined"){
 									mylog.log("update birthDate");
 									contextData.birthDate = data.resultGoods.values.birthDate;
-									$("#birthDateAbout").html(moment(contextData.birthDate).local().format("DD MM YYYY"));
+									$("#birthDateAbout").html(moment(contextData.birthDate).local().format("DD/MM/YYYY"));
 								}
 
 								if(typeof data.resultGoods.values.fixe != "undefined"){
@@ -369,12 +387,14 @@ function bindAboutPodElement() {
 			};
 
 			if(contextData.type == typeObj.person.col ){
-				form.dynForm.jsonSchema.properties.username = dyFInputs.username;
+				form.dynForm.jsonSchema.properties.username = dyFInputs.inputText("Username", "Username", { required : true });
 				form.dynForm.jsonSchema.properties.birthDate = dyFInputs.birthDate;
 			}
 
 			if(contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
+			}else if(contextData.type == typeObj.event.col ){
+				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'événement", "Type d'événement", eventTypes, { required : true });
 			}
 
 			if(contextData.type == typeObj.project.col ){
@@ -385,13 +405,13 @@ function bindAboutPodElement() {
 
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.email = dyFInputs.email();
+				form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText("Fixe","Saisir les numéros de téléphone séparer par une virgule");
+				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
+				form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
 			}
 
 			form.dynForm.jsonSchema.properties.url = dyFInputs.inputUrl();
-			form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText("Fixe","Saisir les numéros de téléphone séparer par une virgule");
-			form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
-			form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
-
+			
 			var dataUpdate = {
 				block : "info",
 		        id : contextData.id,
@@ -403,16 +423,24 @@ function bindAboutPodElement() {
 				dataUpdate.tags = contextData.tags;
 
 			if(contextData.type == typeObj.person.col ){
-				if(notNull(contextData.tags) && contextData.username.length > 0)
+				if(notNull(contextData.username) && contextData.username.length > 0)
 					dataUpdate.username = contextData.username;
 				if(notEmpty(contextData.birthDate))
-					dataUpdate.birthDate = contextData.birthDate;
+					dataUpdate.birthDate = moment(contextData.birthDate).local().format("DD/MM/YYYY");
 			}
 
 			if(contextData.type == typeObj.organization.col ){
 				if(notEmpty(contextData.typeOrga))
-					dataUpdate.type = contextData.typeOrga;
+					currentKFormType = contextData.typeOrga;
+					//dataUpdate.type = contextData.typeOrga;
 			}
+
+			if(contextData.type == typeObj.event.col ){
+				if(notEmpty(contextData.typeEvent))
+					currentKFormType = contextData.typeEvent;
+					//dataUpdate.type = contextData.typeEvent;
+			}
+
 			if(contextData.type == typeObj.project.col ){
 				if(notEmpty(contextData.avancement))
 					dataUpdate.avancement = contextData.avancement;
@@ -420,17 +448,17 @@ function bindAboutPodElement() {
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				if(notEmpty(contextData.email)) 
 					dataUpdate.email = contextData.email;
+				if(notEmpty(contextData.fixe))
+					dataUpdate.fixe = contextData.fixe;
+				if(notEmpty(contextData.mobile))
+					dataUpdate.mobile = contextData.mobile;
+				if(notEmpty(contextData.fax))
+					dataUpdate.fax = contextData.fax;
 			}
 
 			if(notEmpty(contextData.url)) 
 				dataUpdate.url = contextData.url;
-			if(notEmpty(contextData.fixe))
-				dataUpdate.fixe = contextData.fixe;
-			if(notEmpty(contextData.mobile))
-				dataUpdate.mobile = contextData.mobile;
-			if(notEmpty(contextData.fax))
-				dataUpdate.fax = contextData.fax;
-
+			
 			mylog.log("dataUpdate", dataUpdate);
 			dyFObj.openForm(form, "initUpdateInfo", dataUpdate);
 		});
@@ -438,7 +466,7 @@ function bindAboutPodElement() {
 		$(".btn-update-descriptions").off().on( "click", function(){
 
 			var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
 						title : trad["Change password"],
@@ -451,11 +479,12 @@ function bindAboutPodElement() {
 						},
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){shortDescriptionHeader
+							if(data.result && data.resultGoods.result){
 								$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
+								$(".contentInformation #shortDescriptionAboutEdit").html(data.resultGoods.values.shortDescription);
 								$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
 								$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
-								$("#descriptionMarkdown").val(data.resultGoods.values.description);
+								$("#descriptionMarkdown").html(data.resultGoods.values.description);
 							}
 							dyFObj.closeForm();
 							changeHiddenFields();
@@ -476,8 +505,8 @@ function bindAboutPodElement() {
 		        id : contextData.id,
 		        typeElement : contextData.type,
 		        name : contextData.name,
-		        shortDescription : $(".contentInformation #shortDescriptionAbout").html(),
-				description : $("#descriptionMarkdown").val(),	
+		        shortDescription : $(".contentInformation #shortDescriptionAboutEdit").html(),
+				description : $("#descriptionMarkdown").html(),	
 			};
 
 			dyFObj.openForm(form, "markdown", dataUpdate);
@@ -485,92 +514,94 @@ function bindAboutPodElement() {
 
 
 		$(".btn-update-network").off().on( "click", function(){
-			if(contextData.type == typeObj.person.col ){
-				var form = {
-					saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/type/"+contextData.type,
-					dynForm : {
-						jsonSchema : {
-							title : trad["Change password"],
-							icon : "fa-key",
-							beforeSave : function(){
-								mylog.log("beforeSave");
-						    	removeFieldUpdateDynForm(contextData.type);
-						    },
-							afterSave : function(data){
-								mylog.dir(data);
-								if(data.result && data.resultGoods.result){
+			var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
+				dynForm : {
+					jsonSchema : {
+						title : trad["Change password"],
+						icon : "fa-key",
+						beforeSave : function(){
+							mylog.log("beforeSave");
+					    	removeFieldUpdateDynForm(contextData.type);
+					    },
+						afterSave : function(data){
+							mylog.dir(data);
+							if(data.result && data.resultGoods.result){
 
-									if(typeof data.resultGoods.values.telegram != "undefined"){
-										contextData.telegram = data.resultGoods.values.telegram.trim();
-										changeNetwork('#telegramAbout', contextData.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.telegram);
-									}
-
-									if(typeof data.resultGoods.values.facebook != "undefined"){
-										contextData.facebook = data.resultGoods.values.facebook.trim();
-										changeNetwork('#facebookAbout', contextData.facebook, contextData.facebook);
-									}
-
-									if(typeof data.resultGoods.values.twitter != "undefined"){
-										contextData.twitter = data.resultGoods.values.twitter.trim();
-										changeNetwork('#twitterAbout', contextData.twitter, contextData.twitter);
-									}
-
-									if(typeof data.resultGoods.values.gitHub != "undefined"){
-										contextData.gitHub = data.resultGoods.values.gitHub.trim();
-										changeNetwork('#gitHubAbout', contextData.gitHub, contextData.gitHub);
-									}
-
-									if(typeof data.resultGoods.values.skype != "undefined"){
-										contextData.skype = data.resultGoods.values.skype.trim();
-										changeNetwork('#skypeAbout', contextData.skype, contextData.skype);
-									}
-
-									if(typeof data.resultGoods.values.gpplus != "undefined"){
-										contextData.gpplus = data.resultGoods.values.gpplus.trim();
-										changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
-									}
+								if(typeof data.resultGoods.values.telegram != "undefined"){
+									contextData.telegram = data.resultGoods.values.telegram.trim();
+									changeNetwork('#telegramAbout', contextData.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.telegram);
 								}
-								dyFObj.closeForm();
-								changeHiddenFields();
-							},
 
-							properties : {
-								block : dyFInputs.inputHidden(),
-								typeElement : dyFInputs.inputHidden(),
-								isUpdate : dyFInputs.inputHidden(true),
-								telegram : dyFInputs.inputText("Votre Speudo Telegram","Votre Speudo Telegram"),
-								skype : dyFInputs.inputUrl("Lien vers Skype"),
-								gitHub : dyFInputs.inputUrl("Lien vers Git Hub"), 
-								gpplus : dyFInputs.inputUrl("Lien vers Google Plus"),
-						        twitter : dyFInputs.inputUrl("Lien vers Twitter"),
-						        facebook :  dyFInputs.inputUrl("Lien vers Facebook"),
+								if(typeof data.resultGoods.values.facebook != "undefined"){
+									contextData.facebook = data.resultGoods.values.facebook.trim();
+									changeNetwork('#facebookAbout', contextData.facebook, contextData.facebook);
+								}
+
+								if(typeof data.resultGoods.values.twitter != "undefined"){
+									contextData.twitter = data.resultGoods.values.twitter.trim();
+									changeNetwork('#twitterAbout', contextData.twitter, contextData.twitter);
+								}
+
+								if(typeof data.resultGoods.values.gitHub != "undefined"){
+									contextData.gitHub = data.resultGoods.values.gitHub.trim();
+									changeNetwork('#gitHubAbout', contextData.gitHub, contextData.gitHub);
+								}
+
+								if(typeof data.resultGoods.values.skype != "undefined"){
+									contextData.skype = data.resultGoods.values.skype.trim();
+									changeNetwork('#skypeAbout', contextData.skype, contextData.skype);
+								}
+
+								if(typeof data.resultGoods.values.gpplus != "undefined"){
+									contextData.gpplus = data.resultGoods.values.gpplus.trim();
+									changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
+								}
 							}
+							dyFObj.closeForm();
+							changeHiddenFields();
+						},
+
+						properties : {
+							block : dyFInputs.inputHidden(),
+							typeElement : dyFInputs.inputHidden(),
+							isUpdate : dyFInputs.inputHidden(true), 
+							skype : dyFInputs.inputUrl("Lien vers Skype"),
+							github : dyFInputs.inputUrl("Lien vers Git Hub"), 
+							gpplus : dyFInputs.inputUrl("Lien vers Google Plus"),
+					        twitter : dyFInputs.inputUrl("Lien vers Twitter"),
+					        facebook :  dyFInputs.inputUrl("Lien vers Facebook"),
 						}
 					}
-				};
+				}
+			};
 
-				var dataUpdate = {
-					block : "network",
-			        id : contextData.id,
-			        typeElement : contextData.type,
-				};
-
-				if(notEmpty(contextData.twitter))
-					dataUpdate.twitter = contextData.twitter;
-				if(notEmpty(contextData.gpplus))
-					dataUpdate.gpplus = contextData.gpplus;
-				if(notEmpty(contextData.gitHub))
-					dataUpdate.gitHub = contextData.gitHub;
-				if(notEmpty(contextData.skype))
-					dataUpdate.skype = contextData.skype;
-				if(notEmpty(contextData.telegram))
-					dataUpdate.telegram = contextData.telegram;
-				if(notEmpty(contextData.facebook))
-					dataUpdate.facebook = contextData.facebook;
-
-				dyFObj.openForm(form, null, dataUpdate);
-
+			if(contextData.type == typeObj.person.col ){
+				form.dynForm.jsonSchema.properties.telegram = dyFInputs.inputText("Votre Speudo Telegram","Votre Speudo Telegram");
 			}
+
+			var dataUpdate = {
+				block : "network",
+		        id : contextData.id,
+		        typeElement : contextData.type,
+			};
+
+			if(notEmpty(contextData.twitter))
+				dataUpdate.twitter = contextData.twitter;
+			if(notEmpty(contextData.gpplus))
+				dataUpdate.gpplus = contextData.gpplus;
+			if(notEmpty(contextData.gitHub))
+				dataUpdate.gitHub = contextData.gitHub;
+			if(notEmpty(contextData.skype))
+				dataUpdate.skype = contextData.skype;
+			if(notEmpty(contextData.telegram))
+				dataUpdate.telegram = contextData.telegram;
+			if(notEmpty(contextData.facebook))
+				dataUpdate.facebook = contextData.facebook;
+
+			dyFObj.openForm(form, null, dataUpdate);
+
+			
 		});
 	}
 
@@ -602,7 +633,7 @@ function bindAboutPodElement() {
 
 
 	function updateUrl(ind, title, url, type) {
-		//var url = urls[ind] ;
+		mylog.log("updateUrl", ind, title, url, type)
 		var params = {
 			title : title,
 			type : type,
@@ -636,25 +667,48 @@ function bindAboutPodElement() {
 
 
 	function removeFieldUpdateDynForm(collection){
+		mylog.log("------------------------ removeFieldUpdateDynForm", collection);
 		var fieldsElement = [ 	"name", "tags", "email", "url", "fixe", "mobile", "fax", 
 								"telegram", "gitHub", "skype", "twitter", "facebook", "gpplus"];
 		var fieldsPerson = ["username",  "birthDate"];
 		var fieldsProject = [ "avancement", "startDate", "endDate" ];
 		var fieldsOrga = [ "type" ];
-		var fieldsEvent = [ "type", "allDay", "startDate", "endDate"];
+		var fieldsEvent = [ "type", "startDate", "endDate"];
 
 		if(collection == typeObj.person.col)
-			fieldsElement.concat(fieldsPerson);
+			fieldsElement = fieldsElement.concat(fieldsPerson);
 		else if(collection == typeObj.project.col)
-			fieldsElement.concat(fieldsProject);
+			fieldsElement = fieldsElement.concat(fieldsProject);
 		else if(collection == typeObj.organization.col)
-			fieldsElement.concat(fieldsOrga)
+			fieldsElement = fieldsElement.concat(fieldsOrga)
 		else if(collection == typeObj.event.col)
-			fieldsElement.concat(fieldsEvent);
-		
+			fieldsElement = fieldsElement.concat(fieldsEvent);
+		var valCD = "";
 		$.each(fieldsElement, function(key, val){ 
-			if($("#ajaxFormModal #"+val).length && notNull(element[val]) && $("#ajaxFormModal #"+val).val() == element[val])
+
+			valCD = val;
+			if(val == "type" && collection == typeObj.organization.col)
+				valCD = "typeOrga";
+			else if(val == "type" && collection == typeObj.event.col)
+				valCD = "typeEvent";
+
+			if(	$("#ajaxFormModal #"+val).length && 
+				( 	( 	typeof contextData[valCD] != "undefined" && 
+						contextData[valCD] != null && 
+						$("#ajaxFormModal #"+val).val() == contextData[valCD] 
+					) ||  
+					( 	( 	typeof contextData[valCD] == "undefined" || 
+							contextData[valCD] == null ) && 
+						$("#ajaxFormModal #"+val).val().trim().length == 0 ) 
+				) 
+			){
 				$("#ajaxFormModal #"+val).remove();
+			}
+			else if(val == "birthDate"){
+				var dateformat = "DD/MM/YYYY";
+			    $("#ajaxFormModal #"+val).val( moment( $("#ajaxFormModal #"+val).val(), dateformat).format());
+			}
+
 		});
 	}
 

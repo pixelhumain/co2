@@ -21,23 +21,23 @@ class AppController extends CommunecterController {
 	        'live'    			=> 'citizenToolKit.controllers.app.LiveAction',
 	        'savereferencement' => 'citizenToolKit.controllers.app.SaveReferencementAction',
 	        'mediacrawler'  	=> 'citizenToolKit.controllers.app.MediaCrawlerAction',
-            //'superadmin'        => 'citizenToolKit.controllers.app.SuperAdminAction',
+            'superadmin'        => 'citizenToolKit.controllers.app.SuperAdminAction',
             //'sendmailformcontact' => 'citizenToolKit.controllers.app.SendMailFormContactAction',
             'checkurlexists' => 'citizenToolKit.controllers.app.CheckUrlExistsAction',
 	    );
 	}
 
 
-	public function actionIndex(){
+    public function actionIndex(){
         $CO2DomainName = isset( Yii::app()->params["CO2DomainName"]) ? 
-								Yii::app()->params["CO2DomainName"] : "CO2";
+                                Yii::app()->params["CO2DomainName"] : "CO2";
 
         Yii::app()->theme = "CO2";
         Yii::app()->session["theme"] = "CO2";
         $params = CO2::getThemeParams();
         
         $hash = $params["pages"]["#app.index"]["redirect"];
-    	
+        
         $params = array("type" => @$type );
 
         if(!@$hash || @$hash=="") $hash="search";
@@ -45,8 +45,16 @@ class AppController extends CommunecterController {
         if(@$hash == "web"){
             self::actionWeb();
         }else{
-    	   echo $this->renderPartial($hash, $params, true);
-	    }
+           echo $this->renderPartial($hash, $params, true);
+        }
+    }
+
+
+    public function actionWelcome(){
+        //CO2Stat::incNbLoad("co2-welcome");
+
+        $params = array();
+        echo $this->renderPartial("welcome", $params, true);
     }
 
 
@@ -186,7 +194,7 @@ class AppController extends CommunecterController {
     }
 
 
-	public function actionPage($type, $id, $view=null){
+	public function actionPage($type, $id, $view=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
         
         if( $type == Person::COLLECTION  || $type == Event::COLLECTION || 
@@ -209,6 +217,7 @@ class AppController extends CommunecterController {
         $params = array("id" => @$id,
                         "type" => @$type,
                         "view" => @$view,
+                        "dir" => @$dir,
                         "subdomain" => "page",
                         "mainTitle" => "Page perso",
                         "placeholderMainSearch" => "",

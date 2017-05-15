@@ -103,7 +103,7 @@ if( isset($parent) ){
 
 var images;
 var tabButton = [];
-var mapButton = {"media": "Media", "slider": "Album", "profil" : "Profil", "banniere" : "Banniere", "logo" : "Logo"};
+var mapButton = {"media": "Media", "slider": "Album", "profil" : "Profil", "banner" : "Banner", "logo" : "Logo"};
 var itemId = "<?php echo $itemId; ?>";
 var itemType = "<?php echo $itemType; ?>";
 
@@ -113,7 +113,6 @@ var contextName = "<?php echo addslashes(@$contextName); ?>";
 var contextIcon = "<?php echo $contextIcon; ?>";
 jQuery(document).ready(function() {
  	activeMenuElement("gallery");
-	setTitle("Galerie photos de " + contextName,contextIcon);
 	initGrid();
 	$(".portfolio-item").mouseenter(function(){
 		$(this).find(".tools.tools-bottom").show();

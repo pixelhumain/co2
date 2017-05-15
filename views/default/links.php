@@ -68,6 +68,7 @@
                 <h1><span class="text-red">CO</span>MMUNECTER</h1>
                 <h2><a href="javascript:;"" data-target="#modalMainMenu" data-toggle="modal">Chercher</a></h2>
                 <h2><a href="javascript:;"" data-target="#selectCreate" data-toggle="modal"><span class="text-red">CO</span>NTRibuer</a></h2>
+                <h2><a href="https://ello.co/wtf/policies/rules/" target="_blank">10 <span class="text-red">CO</span>MMANDEMENTS</a></h2>
             </div>
             
             <div class="col-xs-12"  style="margin-top:50px">
@@ -97,7 +98,7 @@
                     <h2><a href="default/view/page/partners/dir/docs|panels?type=crowdfunder" class="lbhp ">Crowdfunder</a></h2>
                     <h2><a href="default/view/page/partners/dir/docs|panels?type=thinker" class="lbhp ">Thinkers</a></h2>
                     <h2><a href="default/view/page/partners/dir/docs|panels?type=communector" class="lbhp "><span class="text-red">CO</span>mmunecteur Locale</a></h2>
-
+                    <h2><a href="default/view/page/partners/dir/docs|panels?type=partner" class="lbhp ">E<span class="text-red">CO</span> System</a></h2>
                 </div>
 
                 <div class="col-xs-4">
@@ -114,6 +115,7 @@
                     <h2><a href="https://vimeo.com/133636468" target="_blank">Video 2016</a></h2>
                     <h2><a href="https://vimeo.com/74212373" target="_blank">Video 2014</a></h2>
                     <h2><a href="default/view/page/slideshow/dir/docs|panels" class="lbhp ">SlideShow</a></h2>
+                    <!--<h2><a href="javascript:alert('')">CO SHOP</a></h2>-->
                 </div>
 
                 <div class="col-xs-6">

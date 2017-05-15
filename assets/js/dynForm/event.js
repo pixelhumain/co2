@@ -15,6 +15,10 @@ dynForm = {
 	    			else if ( contextData && contextData.id ){
 		    			$("#ajaxFormModal #parentId").val( contextData.id );
 	    			}
+
+	    			if ( contextData && contextData.id ){
+		    			$("#ajaxFormModal #organizerId").val( contextData.organizerId );
+	    			}
 	    			//$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
 	    			if( contextData && contextData.type )
 	    				$("#ajaxFormModal #parentType").val( contextData.type ); 
@@ -75,6 +79,7 @@ dynForm = {
             name : dyFInputs.name("event"),
 	        similarLink : dyFInputs.similarLink,
 	        organizerId :{
+	        	label : "Qui organise cet événement ?",
 	        	rules : { required : true },
             	inputType : "select",
             	placeholder : "Qui organise ?",
@@ -99,9 +104,10 @@ dynForm = {
 	            }
             },
 	        organizerType : dyFInputs.inputHidden(),
-	         parentId :{
+	        parentId :{
+	         	label : "Fait parti d'un évènement ?",
             	inputType : "select",
-            	class : "hidden",
+            	class : "",
             	placeholder : "Fait parti d'un évènement ?",
             	options : {
             		"":"Pas de Parent"
@@ -143,7 +149,7 @@ dynForm = {
             parentType : dyFInputs.inputHidden(),
 	        type : dyFInputs.inputSelect("Type d\'évènement",null,eventTypes, { required : true }),
 	        image : dyFInputs.image( "#event.detail.id." ),
-            allDay : dyFInputs.allDay,
+            allDay : dyFInputs.allDay(),
             startDate : dyFInputs.startDateInput,
             endDate : dyFInputs.endDateInput,
             location : dyFInputs.location,

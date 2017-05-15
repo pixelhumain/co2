@@ -1,4 +1,21 @@
-
+/////////////////////////////////////////////////////////////////////////////
+/////////// BASH ET MIGRATION A PREVOIR POUR LA MISE EN PRODUCTION ///////// 
+///////////////////////////////////////////////////////////////////////////
+[] IMAGES
+ => Renommer le dossier /upload/communecter/ en /upload/co2/
+[] Chart
+**** Bash de reprise des data dans les chart des projets
+/communecter/datamigration/RefactorChartProjectData
+[] Notifications
+**** Bash de reprise des data dans notifications 
+****** Create notify.id as object with isUnread and isUnseen
+/communecter/datamigration/UpOldNotifications
+[] News
+**** Bash of object.type inbstead of object.objectType on news(!!!important with notification reactor!!!!)
+ph/communecter/datamigration/ObjectObjectTypeNewsToObjectType
+/////////////////////////////////////////////////////////////////////////////
+////////////////////// END BASH ET MIGRATION /////////////////////////////// 
+///////////////////////////////////////////////////////////////////////////
 * ************************************************************    
 * Evolutions / New Features
 * ************************************************************   

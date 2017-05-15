@@ -1273,35 +1273,35 @@ var directory = {
     // URL DIRECTORY PANEL
     // ********************************
     urlPanelHtml : function(params, key){
-		//if(directory.dirLog) 
+		  //if(directory.dirLog) 
       mylog.log("-----------urlPanelHtml", params, key);
-		str = "";  
-		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10'>";
-			str += "<div class='searchEntity'>";
-				str += '<ul class="nav navbar-nav btn-params-directory">';
-					str += '<li class="text-left">';
-						str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
-								'class="bg-white tooltips" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
-							str += '<i class="fa fa-pencil"></i>';
-						str += '</a>';
-					str += '</li>';
-					str += '<li class="text-left">';
-						str += '<a href="javascript:;" onclick="removeUrl(\''+key+'\');" class="bg-white tooltips" '+
-								'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
-							str += '<i class="fa fa-trash"></i>';
-						str += '</a>';
-					str += '</li>';
-				str += '</ul>';
-				str += '<a href="'+params.url+'" target="_blank" class="text-dark tooltips col-xs-8"'+
-						'data-toggle="tooltip" data-placement="top" data-original-title="'+params.url+'" >';
-					str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
-						str += '<h4 class="panel-title text-dark pull-left">'+params.title+'</h4>';
-						str += '<br/><span class="" style="font-size: 11px !important;">'+params.type+'</span>';
-					str += "</div>";
-				str += '</a>';
-			str += "</div>";
-		str += "</div>";
-		return str;
+  		str = "";  
+  		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10'>";
+  			str += "<div class='searchEntity'>";
+  				str += '<ul class="nav navbar-nav btn-params-directory">';
+  					str += '<li class="text-left">';
+  						str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
+  								'class="bg-white tooltips" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
+  							str += '<i class="fa fa-pencil"></i>';
+  						str += '</a>';
+  					str += '</li>';
+  					str += '<li class="text-left">';
+  						str += '<a href="javascript:;" onclick="removeUrl(\''+key+'\');" class="bg-white tooltips" '+
+  								'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+  							str += '<i class="fa fa-trash"></i>';
+  						str += '</a>';
+  					str += '</li>';
+  				str += '</ul>';
+  				str += '<a href="'+params.url+'" target="_blank" class="text-dark tooltips col-xs-8"'+
+  						'data-toggle="tooltip" data-placement="top" data-original-title="'+params.url+'" >';
+  					str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
+  						str += '<h4 class="panel-title text-dark pull-left">'+params.title+'</h4>';
+  						str += '<br/><span class="" style="font-size: 11px !important;">'+params.type+'</span>';
+  					str += "</div>";
+  				str += '</a>';
+  			str += "</div>";
+  		str += "</div>";
+  		return str;
     },
     // ********************************
     // Contact DIRECTORY PANEL
@@ -1483,9 +1483,9 @@ var directory = {
     },
     dirLog : false,
     showResultsDirectoryHtml : function ( data, contentType, size){ //size == null || min || max
-        mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
-        mylog.log(" data", data,"size",  size, "contentType", contentType)
-        mylog.log(" dirLog",directory.dirLog);
+        //mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
+        //mylog.log(" data", data,"size",  size, "contentType", contentType)
+        //mylog.log(" dirLog",directory.dirLog);
         var str = "";
 
         directory.colPos = "left";
@@ -1501,7 +1501,7 @@ var directory = {
                 if(directory.dirLog) mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
                 if(directory.dirLog) mylog.log("itemType",itemType,params.name);
-                //mylog.log("showResultsDirectoryHtml", o);
+                
                 var typeIco = i;
                 params.size = size;
                 params.id = getObjectId(params);
@@ -1568,7 +1568,7 @@ var directory = {
                 //params.url = '#page.type.'+params.type+'.id.' + params.id;
                 params.hash = '#page.type.'+params.type+'.id.' + params.id;
                 if(params.type == "poi")    
-                    params.hash = '#element.detail.type.poi.id.' + id;
+                    params.hash = '#element.detail.type.poi.id.' + params.id;
 
                 params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';
 

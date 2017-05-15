@@ -240,6 +240,10 @@
             <button class="btn text-purple btn-directory-type" data-type="projects">
                 <i class="fa fa-lightbulb-o"></i> 
                 <span class="hidden-xs">Projets</span>
+            </button><hr class="hidden-xs">
+            <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
+                <i class="fa fa-university"></i> 
+                <span class="hidden-xs">Services publics</span>
             </button>
             <hr class="hidden-sm hidden-md hidden-lg">
           </div>
@@ -420,6 +424,8 @@ var headerParams = {
   "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
   "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
+  "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
+  
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )

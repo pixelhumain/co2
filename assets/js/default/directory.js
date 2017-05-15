@@ -1487,24 +1487,30 @@ var directory = {
     },
     dirLog : false,
     showResultsDirectoryHtml : function ( data, contentType, size){ //size == null || min || max
-        //mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
+        mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
         //mylog.log(" data", data,"size",  size, "contentType", contentType)
         //mylog.log(" dirLog",directory.dirLog);
         var str = "";
 
         directory.colPos = "left";
+
+        mylog.log("LE DIRECTORY : ", directory);
+        mylog.log("LE PARAM DATA : ", data, typeof(data));
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
           if(directory.dirLog) mylog.log("params", params, typeof params);
 
-          if(params["_id"] != null || params["id"] != null){
+          mylog.log("params", params, typeof params);
 
-          if (typeof(params.id) == "undefined") {
+          // if(params["_id"] != null || params["id"] != null){
+          if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) {
+            params['id'] = params['_id'];
+          } else if (typeof(params.id) == "undefined") {
             params['id'] = Math.random();
             params['type'] = "poi";
           }
+          // }
 
-          mylog.log("params", params, typeof params);
           mylog.log("params", params["name"] , params.name, params.id, params["id"], typeof params["id"]);
 
           if(notNull(params["_id"]) || notNull(params["id"])){
@@ -1585,7 +1591,8 @@ var directory = {
 // <<<<<<< HEAD
                 if( (params.type == "poi") && (params.source.insertOrign == "import") ) {
                   var interop_type = getTypeInteropData(params.source.key);
-                  params.hash = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.hash);
+                  params.url = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.url);
+                  params.hash = params.url;
                   params.color = getIconColorForInteropElements(interop_type);
                   params.htmlIco = getImageIcoForInteropElements(interop_type);
                   params.type = "poi.interop."+interop_type;
@@ -1597,23 +1604,11 @@ var directory = {
                   }
                 } else if (typeof(params.url) == "undefined") {
 
+                  params.url = '#page.type.'+params.type+'.id.' + params.id;
                   params.hash = '#page.type.'+params.type+'.id.' + params.id;
-                  if(params.type == "poi") {
-                    if (typeof(id) == "undefined") {
-                      id = null;
-                    }
-                    params.hash = '#element.detail.type.poi.id.' + id;
-                  }   
-// =======
-                //params.url = '#page.type.'+params.type+'.id.' + params.id;
-                // params.hash = '#page.type.'+params.type+'.id.' + params.id;
-                // if(params.type == "poi")    
-                //     params.hash = '#element.detail.type.poi.id.' + params.id;
-
-                // params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';
-// >>>>>>> pixelhumain-development
-
-                }              
+                  if(params.type == "poi")    
+                      params.hash = '#element.detail.type.poi.id.' + params.id;
+                }
 
                 params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
 

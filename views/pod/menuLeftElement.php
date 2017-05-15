@@ -171,20 +171,20 @@
 		</li>
 		<?php if($type != Person::COLLECTION){
 			if ($type == Event::COLLECTION){ 
-				$inviteTooltip = Yii::t("common","Invite attendees to the event");
-				$invitetext =  Yii::t("common","Invite attendees") ;			
+				$inviteLink = "people";
+				$inviteText =  Yii::t("common","Invite people") ;			
 			}else if ($type == Organization::COLLECTION){ 
-				$inviteTooltip = Yii::t('common','Invite personnes to the organization');
-				$invitetext =  Yii::t("common",'Invite members') ;
+				$inviteLink = "members";
+				$inviteText =  Yii::t("common",'Invite members') ;
 			}else if ($type == Project::COLLECTION){ 
-				$inviteTooltip = Yii::t('common','Invite contributors to the project');
-				$invitetext =  Yii::t("common",'Invite contributors') ;
-			} if( @$inviteTooltip && @$invitetext ){?>
+				$inviteLink = "contributors";
+				$inviteText =  Yii::t("common",'Invite contributors') ;
+			} if( @$inviteLink && @$inviteText ){?>
 			<li class="">
 				<a href="javascript:" class="tooltips ssmla" 
-				data-placement="bottom" data-original-title="<?php echo Yii::t("common","Invite people {what}",array("{what}"=>Yii::t("common","to the ".Element::getControlerByCollection($type)))); ?>" 
+				data-placement="bottom" data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common","to the ".Element::getControlerByCollection($type)))); ?>" 
 				data-toggle="modal" data-target="#modal-scope">
-					<i class="fa fa-send"></i> <?php echo Yii::t("common","Invite people"); ?>
+					<i class="fa fa-send"></i> <?php echo $inviteText ?>
 				</a>
 			</li>
 			<li><hr></li>

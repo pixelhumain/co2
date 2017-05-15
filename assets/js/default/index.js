@@ -59,7 +59,7 @@ function startNewCommunexion(country){
 
 function resizeInterface()
 {
-  //mylog.log("resize");
+  mylog.log("resize");
   var height = $("#mapCanvasBg").height() - 55;
   $("#ajaxSV").css({"minHeight" : height});
   //$("#menu-container").css({"minHeight" : height});
@@ -100,6 +100,10 @@ function showNotif(show){
     	markAllAsSeen(false,"");
     }
 	else 	 $('#notificationPanelSearch').hide("fast");
+
+	
+	$("#dropdown-user").removeClass("open");
+    showFloopDrawer(false);
 }
 
 function checkScroll(){
@@ -569,9 +573,11 @@ function selectScopeLevelCommunexion(level){
 	if(typeof startSearch == "function")
 	startSearch();
 }
-function setCookies(path){ mylog.log("setCookies", path);
+
+function setCookies(path){ 
+	mylog.log("setCookies", path);
 	//if(false){
-		$.cookie('inseeCommunexion',   	inseeCommunexion,  	{ expires: 365, path: path });
+	/*	$.cookie('inseeCommunexion',   	inseeCommunexion,  	{ expires: 365, path: path });
 		$.cookie('cityNameCommunexion', cityNameCommunexion,{ expires: 365, path: path });
 		$.cookie('cpCommunexion',   	cpCommunexion,  	{ expires: 365, path: path });		
 		$.cookie('regionNameCommunexion',   regionNameCommunexion,  { expires: 365, path: path });
@@ -580,5 +586,26 @@ function setCookies(path){ mylog.log("setCookies", path);
 			$.cookie('nbCpbyInseeCommunexion',   	nbCpbyInseeCommunexion,  	{ expires: 365, path: path });
 			$.cookie('cityInseeCommunexion',   	cityInseeCommunexion,  	{ expires: 365, path: path });
 		}
-	//}
+
+
+		// TODO 
+
+		/*
+
+		CO2.php
+		breadcrum_communexion.php
+
+		$communexion["state"] = true; Mettre a false si romve addresse
+
+
+		Si communexionLevel == cpCommunexion
+			communexionType = "cp"
+		Sinon 
+			communexionType = "city"
+		
+		$.cookie('communexionType', communexion.currentLevel, { expires: 365, path: location.pathname });
+        $.cookie('communexionValue', communexion.currentValue, { expires: 365, path: location.pathname });
+        $.cookie('communexionName', communexion.currentName, { expires: 365, path: location.pathname });
+        $.cookie('communexionLevel', communexion.levelMinCommunexion, { expires: 365, path: location.pathname });*/
+	//}*/
 }

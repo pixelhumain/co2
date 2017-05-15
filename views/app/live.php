@@ -11,6 +11,7 @@
 		'/js/news/index.js',
 		'/js/news/autosize.js',
 		'/js/news/newsHtml.js',
+		'/js/default/directory.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
@@ -115,6 +116,7 @@ var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 jQuery(document).ready(function() {
 
 	$(".subsub").hide();
+	setTitle("", "", "Live");
 
 	var liveType = "<?php echo (@$type && !empty($type)) ? $type : ''; ?>";
 	if(typeof liveTypeName[liveType] != "undefined") 

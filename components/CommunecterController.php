@@ -456,6 +456,7 @@ class CommunecterController extends Controller
       "getdatadetail"       => array("href" => "/ph/communecter/element/getdatadetail"),
     ),
     "app" => array(
+      "welcome"             => array('href' => "/ph/communecter/app/welcome",         "public" => true),
       "index"             => array('href' => "/ph/communecter/app/index",             "public" => true),
       "web"               => array('href' => "/ph/communecter/app/web",               "public" => true),
       "websearch"         => array('href' => "/ph/communecter/app/websearch",         "public" => true),

@@ -240,23 +240,11 @@
             <button class="btn text-purple btn-directory-type" data-type="projects">
                 <i class="fa fa-lightbulb-o"></i> 
                 <span class="hidden-xs">Projets</span>
-            </button><br class="hidden-xs">
-            <button class="btn text-grey btn-directory-type" data-type="wikidata">
-                <i class="fa fa-wikipedia-w"></i> 
-                <span class="hidden-xs">Wikidata</span>
-            </button><br class="hidden-xs">
-            <button class="btn text-red btn-directory-type" data-type="datagouv">
-                <i class="fa fa-database"></i> 
-                <span class="hidden-xs">DataGouv</span>
-            </button><br class="hidden-xs">
-            <button class="btn text-green btn-directory-type" data-type="osm">
-                <i class="fa fa-map"></i> 
-                <span class="hidden-xs">Open Stret Map</span>
-            </button><br class="hidden-xs">
-            <button class="btn cyan btn-directory-type" data-type="ods">
-                <i class="fa fa-folder-open-o"></i> 
-                <span class="hidden-xs">OpenDatasoft</span>
-            </button><br class="hidden-xs">
+            </button><hr class="hidden-xs">
+            <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
+                <i class="fa fa-university"></i> 
+                <span class="hidden-xs">Services publics</span>
+            </button>
             <hr class="hidden-sm hidden-md hidden-lg">
           </div>
         
@@ -440,6 +428,9 @@ var headerParams = {
   "ods"    : { color: "lightblue2",   icon: "bullhorn",   name: "OpenDatasoft" },
   "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
+  "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
+  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
+  "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )

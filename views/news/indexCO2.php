@@ -128,7 +128,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
   //var scrollEnd = false;
   var currentIndexMin = 0;
   var currentIndexMax = 10;
-  var isLive = true;
+  var isLive = <?php echo json_encode(@$isLive) ?>;
 
   var indexStep = currentIndexMax;
   var dateLimit = 0;  

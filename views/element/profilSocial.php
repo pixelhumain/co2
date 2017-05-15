@@ -48,7 +48,13 @@
 ?>
 <style>
 	
-
+ 	hr.angle-down::after {
+        display: none;
+    }
+    hr.angle-down{
+        border-top: 0px solid #ccc;
+        margin-bottom:10px!important;
+    }
 
 <?php if($typeItem != "citoyens"){ ?>
 	.section-create-page{

@@ -59,7 +59,7 @@ function startNewCommunexion(country){
 
 function resizeInterface()
 {
-  //mylog.log("resize");
+  mylog.log("resize");
   var height = $("#mapCanvasBg").height() - 55;
   $("#ajaxSV").css({"minHeight" : height});
   //$("#menu-container").css({"minHeight" : height});

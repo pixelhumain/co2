@@ -1258,7 +1258,7 @@ var smallMenu = {
 				$.blockUI({ 
 					//title : 'Welcome to your page', 
 					message : (content) ? content : "<div class='blockContent'></div>",
-					onOverlayClick: $.unblockUI,
+					onOverlayClick: $.unblockUI(),
 			        css: { 
 			         //border: '10px solid black', 
 			         //margin : "50px",
@@ -3149,7 +3149,7 @@ var typeObj = {
 	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
 	"NGO" : {sameAs:"organization"},
 	"Association" : {sameAs:"organization"},
-	"GovernmentOrganization" : {sameAs:"organization"},
+	"GovernmentOrganization" : {sameAs:"organization",color: "red",icon: "university"},
 	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
 	"events" : {sameAs:"event"},
@@ -3541,7 +3541,8 @@ function initKInterface(params){ console.log("initKInterface");
 	$(window).resize(function(){
       resizeInterface();
     });
-
+	resizeInterface();
+	
     //jQuery for page scrolling feature - requires jQuery Easing plugin
     $('.page-scroll a').bind('click', function(event) {
         var $anchor = $(this);

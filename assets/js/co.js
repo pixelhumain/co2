@@ -638,6 +638,7 @@ var urlCtrl = {
 		return hash;
 	},
 	jsController : function (hash){
+		mylog.log("jsController", hash);
 		hash = urlCtrl.checkAndConvert(hash);
 		//alert("jsController"+hash);
 		mylog.log("jsController",hash);
@@ -732,6 +733,7 @@ var urlCtrl = {
 		// mylog.log("IS DIRECTORY ? ", 
 		// 			hash.indexOf("#default.directory"), 
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
+		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
 			if( hash.indexOf("#network") >= 0 &&
 				location.hash.indexOf("#network") >= 0 || hash=="#" || hash==""){ 
@@ -2357,12 +2359,15 @@ var dyFObj = {
 	            		afterSave(data);
 	            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 	            	}
+	            	mylog.log("here")
 	            	//else{
 						dyFObj.closeForm();
 		                if(data.url){
+		                	mylog.log("urlReload data.url", data.url);
 		                	urlCtrl.loadByHash( data.url );
 		                }
 		                else if(data.id){
+		                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
 			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 		                }
 					//}
@@ -3642,7 +3647,7 @@ function initKInterface(params){ console.log("initKInterface");
     $(".btn-show-map").off().click(function(){
     	if(typeof formInMap != "undefined" && formInMap.actived == true)
 			formInMap.cancel();
-    	else if(isMapEnd == true && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+    	else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
 			getContextDataLinks();
 		else
 			showMap();
@@ -3754,10 +3759,10 @@ function test(params, itemType){
 
     //params.url = '#page.type.'+params.type+'.id.' + params.id;
     params.hash = '#page.type.'+params.type+'.id.' + params.id;
-    if(params.type == "poi")    
+   /* if(params.type == "poi")    
         params.hash = '#element.detail.type.poi.id.' + id;
 
-    params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';
+    params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';*/
 
     params.elTagsList = "";
     var thisTags = "";

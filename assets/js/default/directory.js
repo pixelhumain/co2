@@ -1567,8 +1567,8 @@ var directory = {
 
                 //params.url = '#page.type.'+params.type+'.id.' + params.id;
                 params.hash = '#page.type.'+params.type+'.id.' + params.id;
-                if(params.type == "poi")    
-                    params.hash = '#element.detail.type.poi.id.' + params.id;
+                /*if(params.type == "poi")    
+                    params.hash = '#element.detail.type.poi.id.' + params.id;*/
 
                 params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';
 

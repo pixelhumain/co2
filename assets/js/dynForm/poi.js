@@ -5,10 +5,10 @@ dynForm = {
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	subPoi : function(){
+	    	sub : function(){
 	    		if(contextData.type && contextData.id )
 	    		{
-    				$('#ajaxFormModal #parentId').val(contextData.id);
+	    			$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 	    		}
 	    	},

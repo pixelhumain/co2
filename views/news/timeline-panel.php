@@ -167,7 +167,7 @@
          class="newsContent no-padding"><?php echo $media["text"]; ?>
     </div>
     <?php } ?>
-    <?php if(@$media["tags"]) 
+    <?php if(@$media["tags"] && @$media["type"] != "activityStream") 
           foreach ($media["tags"] as $keyy => $tag) { 
             if($tag != "") { ?>
             <a href="javascript:;" class="filter btn no-padding" data-filter=".'+tag+'">

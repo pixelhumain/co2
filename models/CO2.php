@@ -56,6 +56,7 @@ class CO2 {
             $citiesResult = PHDB::find( City::COLLECTION , $where );
             $cities=array();
             $levelMin="inseeCommunexion";
+            
             foreach($citiesResult as $v){
                 if($v["insee"]==$insee){
                     $city=$v;

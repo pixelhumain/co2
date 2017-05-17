@@ -271,12 +271,12 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 //active les link lbh
                 bindLBHLinks();
 
-                 /*$(".start-new-communexion").click(function(){  
-                    setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
+                 $(".start-new-communexion").click(function(){  
+                    setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
                                      $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
                                       $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
                     activateGlobalCommunexion(true);
-                });*/
+                });
 
 
                 $.unblockUI();
@@ -1225,7 +1225,6 @@ var directory = {
                   str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
 
                 str += "<div class='padding-10 informations'>";
-
                       
                     str += "<div class='entityRight no-padding'>";
                     
@@ -1244,21 +1243,21 @@ var directory = {
                                         "</span>";
                     else thisLocality = "<br>";
                     
-                      var citykey = params.country + "_" + params.insee + "-" + params.cp;
-                      //$city["country"]."_".$city["insee"]."-".$city["cp"];
-                     
-                      thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
-                                      "data-scope-value='" + citykey + "' " + 
-                                      "data-scope-name='" + params.name + "' " + 
-                                      "data-scope-type='city' " + 
-                                      "data-insee-communexion='" + params.insee + "' "+ 
-                                      "data-name-communexion='" + params.name + "' "+ 
-                                      "data-cp-communexion='" + params.cp + "' "+ 
-                                      "data-region-communexion='" + params.regionName + "' "+ 
-                                      "data-country-communexion='" + params.country + "' "+ 
-                                      ">"+
-                                          "<i class='fa fa-angle-right'></i> Communecter" + 
-                                      "</button>";
+                    var citykey = params.country + "_" + params.insee + "-" + params.cp;
+                    //$city["country"]."_".$city["insee"]."-".$city["cp"];
+                   
+                    thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
+                                    "data-scope-value='" + citykey + "' " + 
+                                    "data-scope-name='" + params.name + "' " + 
+                                    "data-scope-type='city' " + 
+                                    "data-insee-communexion='" + params.insee + "' "+ 
+                                    "data-name-communexion='" + params.name + "' "+ 
+                                    "data-cp-communexion='" + params.cp + "' "+ 
+                                    "data-region-communexion='" + params.regionName + "' "+ 
+                                    "data-country-communexion='" + params.country + "' "+ 
+                                    ">"+
+                                        "<i class='fa fa-angle-right'></i> Communecter" + 
+                                    "</button>";
 
                     str += thisLocality;
                     

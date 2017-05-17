@@ -332,11 +332,14 @@ function openDropdownMultiscope(){
 }
 
 function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
-						  inseeCommunexion, cityNameCommunexion, cpCommunexion, 
-						  regionNameCommunexion, countryCommunexion){  
+						inseeCommunexion, cityNameCommunexion, cpCommunexion, 
+						regionNameCommunexion, countryCommunexion){  
+
 	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel,
 			  inseeCommunexion, cityNameCommunexion, cpCommunexion, regionNameCommunexion, countryCommunexion);
+
 	if(scopeValue == "") return;
+	
 	//if(!scopeExists(scopeValue)){ //mylog.log("adding", scopeValue);
 		//myMultiScopes[scopeValue] = { name: scopeName, active: true, type: scopeType };
 		mylog.log("myMultiScopes", myMultiScopes, indexStepInit);

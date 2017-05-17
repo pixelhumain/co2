@@ -196,10 +196,12 @@
 
         </div>
 
-        <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
-        <?php
-            $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
+        <?php //var_dump(Yii::app()->request->cookies['communexionActivated']);
+              //var_dump(CO2::getCommunexionCookies()); 
         ?>
+
+        <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
+            <?php $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
         </div>
     <?php } ?>
 

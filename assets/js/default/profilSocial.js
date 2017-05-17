@@ -210,7 +210,6 @@ function bindButtonMenu(){
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
-			    	//toastr.success(data.msg);
 			    	if(data.result){
 						$("#divSeePreferencesHeader").addClass("hidden");
 						$('#editConfidentialityBtn').removeClass("btn-red");

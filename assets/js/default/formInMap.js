@@ -159,6 +159,7 @@ var formInMap = {
 				formInMap.timeoutAddCity = setTimeout(function(){ 
 					formInMap.autocompleteFormAddress("locality", $('[name="newElement_city"]').val()); 
 				}, 500);
+
 			}
 		});
 

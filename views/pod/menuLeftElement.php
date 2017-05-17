@@ -1,38 +1,4 @@
 <?php 
-	$cssAnsScriptFilesTheme = array(
-		//X-editable
-		//'/plugins/x-editable/css/bootstrap-editable.css',
-		//'/plugins/x-editable/js/bootstrap-editable.js' , 
-
-		//DatePicker
-		//'/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' ,
-		//'/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js' ,
-		//'/plugins/bootstrap-datepicker/css/datepicker.css',
-		//	'/plugins/jquery.qrcode/jquery-qrcode.min.js',
-		//DateTime Picker
-		//'/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
-		//'/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js' , 
-		//'/plugins/bootstrap-datetimepicker/css/datetimepicker.css',
-		//Wysihtml5
-		//'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5.css',
-		//'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5-editor.css',
-		//'/plugins/wysihtml5/bootstrap3-wysihtml5/wysihtml5x-toolbar.min.js',
-		//'/plugins/wysihtml5/bootstrap3-wysihtml5/bootstrap3-wysihtml5.min.js',
-		//'/plugins/wysihtml5/wysihtml5.js',
-		
-		//SELECT2
-		//'/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
-		//'/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js' ,
-
-		// SHOWDOWN
-		//'/plugins/showdown/showdown.min.js',
-		//MARKDOWN
-		//'/plugins/to-markdown/to-markdown.js',
-
-	);
-	//if ($type == Project::COLLECTION)
-	//	array_push($cssAnsScriptFilesTheme, "/assets/plugins/Chart.js/Chart.min.js");
-	//HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	$cssAnsScriptFilesModule = array(
 		//Data helper
 		'/js/dataHelpers.js',
@@ -205,20 +171,20 @@
 		</li>
 		<?php if($type != Person::COLLECTION){
 			if ($type == Event::COLLECTION){ 
-				$inviteTooltip = Yii::t("common","Invite attendees to the event");
-				$invitetext =  Yii::t("common","Invite attendees") ;			
+				$inviteLink = "people";
+				$inviteText =  Yii::t("common","Invite people") ;			
 			}else if ($type == Organization::COLLECTION){ 
-				$inviteTooltip = Yii::t('common','Invite personnes to the organization');
-				$invitetext =  Yii::t("common",'Invite members') ;
+				$inviteLink = "members";
+				$inviteText =  Yii::t("common",'Invite members') ;
 			}else if ($type == Project::COLLECTION){ 
-				$inviteTooltip = Yii::t('common','Invite contributors to the project');
-				$invitetext =  Yii::t("common",'Invite contributors') ;
-			} if( @$inviteTooltip && @$invitetext ){?>
+				$inviteLink = "contributors";
+				$inviteText =  Yii::t("common",'Invite contributors') ;
+			} if( @$inviteLink && @$inviteText ){?>
 			<li class="">
 				<a href="javascript:" class="tooltips ssmla" 
-				data-placement="bottom" data-original-title="<?php echo Yii::t("common","Invite people {what}",array("{what}"=>Yii::t("common","to the ".Element::getControlerByCollection($type)))); ?>" 
+				data-placement="bottom" data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common","to the ".Element::getControlerByCollection($type)))); ?>" 
 				data-toggle="modal" data-target="#modal-scope">
-					<i class="fa fa-send"></i> <?php echo Yii::t("common","Invite people"); ?>
+					<i class="fa fa-send"></i> <?php echo $inviteText ?>
 				</a>
 			</li>
 			<li><hr></li>
@@ -282,6 +248,7 @@
 		</a>
 	</li>
 
+	
 	<li class="">
 		<a href="javascript:" class="ssmla" id="btn-start-urls">
 			<i class="fa fa-external-link"></i> <?php echo Yii::t("common","Urls"); ?>
@@ -289,8 +256,9 @@
 	</li>
 	
 	<li><hr></li>
-	<?php if($type != Person::COLLECTION || 
-			 Preference::showPreference( $element, $type, "directory", Yii::app()->session["userId"]) ) { ?>
+	<?php if(	$type != Poi::COLLECTION 
+				&& ( 	$type != Person::COLLECTION || 
+			 			Preference::showPreference( $element, $type, "directory", Yii::app()->session["userId"]) ) ) { ?>
 
 		<?php if($type == Person::COLLECTION ) { ?>
 		<li class="">

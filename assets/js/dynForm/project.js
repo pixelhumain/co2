@@ -14,14 +14,17 @@ dynForm = {
 			    beforeBuild : function(){
 			    	dyFObj.setMongoId('projects');
 			    },
-			    afterSave : function(){
+			    afterSave : function(urlReload){
 					if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 ){
 				    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 					}
-				    else {
+				   /* else {
 				    	dyFObj.closeForm();
-				    	urlCtrl.loadByHash( location.hash );	
 				    }
+				    if(typeof urlReload != "undefined")
+				    	urlCtrl.loadByHash( location.hash );
+				    else
+				    	urlCtrl.loadByHash(urlReload);*/
 			    },
 			    beforeSave : function(){
 			    	if( typeof $("#ajaxFormModal #description").code === 'function' ) 

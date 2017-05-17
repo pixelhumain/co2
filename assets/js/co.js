@@ -295,7 +295,7 @@ function connectPerson(connectUserId, callback)
 
 
 function disconnectTo(parentType,parentId,childId,childType,connectType, callback) {
-	var messageBox = trad["removeconnection"];
+	var messageBox = trad["removeconnection"+parentType];
 	$(".disconnectBtnIcon").removeClass("fa-unlink").addClass("fa-spinner fa-spin");
 	var formData = {
 		"childId" : childId,
@@ -332,7 +332,7 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 								if (typeof callback == "function") 
 									callback();
 								else
-									urlCtrl.loadByHash(location.hash);
+									urlCtrl.loadByHash("#page.type.citoyens.id."+userId);
 							} else {
 							   toastr.error("You leave succesfully");
 							}
@@ -638,6 +638,7 @@ var urlCtrl = {
 		return hash;
 	},
 	jsController : function (hash){
+		mylog.log("jsController", hash);
 		hash = urlCtrl.checkAndConvert(hash);
 		//alert("jsController"+hash);
 		mylog.log("jsController",hash);
@@ -732,6 +733,7 @@ var urlCtrl = {
 		// mylog.log("IS DIRECTORY ? ", 
 		// 			hash.indexOf("#default.directory"), 
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
+		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
 			if( hash.indexOf("#network") >= 0 &&
 				location.hash.indexOf("#network") >= 0 || hash=="#" || hash==""){ 
@@ -2355,17 +2357,20 @@ var dyFObj = {
 			        	addLocationToFormloopEntity(data.id, collection, data.map);*/
 			        if (typeof afterSave == "function"){
 	            		afterSave(data);
-	            		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+	            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 	            	}
-	            	else{
+	            	mylog.log("here")
+	            	//else{
 						dyFObj.closeForm();
 		                if(data.url){
+		                	mylog.log("urlReload data.url", data.url);
 		                	urlCtrl.loadByHash( data.url );
 		                }
 		                else if(data.id){
+		                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
 			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 		                }
-					}
+					//}
 	            }
 	    	}
 	    });
@@ -3642,7 +3647,7 @@ function initKInterface(params){ console.log("initKInterface");
     $(".btn-show-map").off().click(function(){
     	if(typeof formInMap != "undefined" && formInMap.actived == true)
 			formInMap.cancel();
-    	else if(isMapEnd == true && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+    	else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
 			getContextDataLinks();
 		else
 			showMap();
@@ -3686,6 +3691,94 @@ function getContextDataLinks(){
 		}
 			
 	});
+}
+
+function test(params, itemType){
+	var typeIco = i;
+    params.size = size;
+    params.id = getObjectId(params);
+    params.name = notEmpty(params.name) ? params.name : "";
+    params.description = notEmpty(params.shortDescription) ? params.shortDescription : 
+                        (notEmpty(params.message)) ? params.message : 
+                        (notEmpty(params.description)) ? params.description : 
+                        "";
+
+    //mapElements.push(params);
+    //alert("TYPE ----------- "+contentType+":"+params.name);
+    
+    if(typeof( typeObj[itemType] ) == "undefined")
+        itemType="poi";
+    typeIco = itemType;
+    if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
+    if(typeof params.typeOrga != "undefined")
+      typeIco = params.typeOrga;
+
+    var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
+    params.ico =  "fa-"+obj.icon;
+    params.color = obj.color;
+    if(params.parentType){
+        if(directory.dirLog) mylog.log("params.parentType",params.parentType);
+        var parentObj = (dyFInputs.get(params.parentType)) ? dyFInputs.get(params.parentType) : typeObj["default"] ;
+        params.parentIcon = "fa-"+parentObj.icon;
+        params.parentColor = parentObj.color;
+    }
+    if(params.type == "classified" && typeof params.category != "undefined"){
+      params.ico = typeof classified.filters[params.category] != "undefined" ?
+                   "fa-" + classified.filters[params.category]["icon"] : "";
+    }
+
+    params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
+
+    // var urlImg = "/upload/communecter/color.jpg";
+    // params.profilImageUrl = urlImg;
+    params.useMinSize = typeof size != "undefined" && size == "min";
+    params.imgProfil = ""; 
+    if(!params.useMinSize)
+        params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
+
+    if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
+        params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
+
+    if(dyFInputs.get(itemType) && 
+        dyFInputs.get(itemType).col == "poi" && 
+        typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
+    params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
+
+    params.insee = params.insee ? params.insee : "";
+    params.postalCode = "", params.city="",params.cityName="";
+    if (params.address != null) {
+        params.city = params.address.addressLocality;
+        params.postalCode = params.cp ? params.cp : params.address.postalCode ? params.address.postalCode : "";
+        params.cityName = params.address.addressLocality ? params.address.addressLocality : "";
+    }
+    params.fullLocality = params.postalCode + " " + params.cityName;
+
+    params.type = dyFInputs.get(itemType).col;
+    params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
+                  '#page.type.'+params.parentType+'.id.' + params.parentId : "";
+
+    //params.url = '#page.type.'+params.type+'.id.' + params.id;
+    params.hash = '#page.type.'+params.type+'.id.' + params.id;
+   /* if(params.type == "poi")    
+        params.hash = '#element.detail.type.poi.id.' + id;
+
+    params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';*/
+
+    params.elTagsList = "";
+    var thisTags = "";
+    if(typeof params.tags != "undefined" && params.tags != null){
+      $.each(params.tags, function(key, value){
+        if(typeof value != "undefined" && value != "" && value != "undefined"){
+          thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value)+"'>#" + value + "</span> ";
+          params.elTagsList += slugify(value)+" ";
+        }
+      });
+      params.tagsLbl = thisTags;
+    }else{
+      params.tagsLbl = "";
+    }
+
+    params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
 }
 
 $(document).ready(function() { 

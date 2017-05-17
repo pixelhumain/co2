@@ -208,8 +208,7 @@
 
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
-
-    <?php if(@$type=="all"){ ?>
+    <?php if(@$type=="all" && !empty(Yii::app()->session["userId"]) ){ ?>
     <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
         <!-- <hr style="margin-bottom:-20px;"> -->
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 

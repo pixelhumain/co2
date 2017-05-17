@@ -102,8 +102,10 @@
                               class="lbh">
                               <?php echo @$media["target"]["name"]; ?>
                       </a>
-                <?php }else if(@$media["target"]["id"] == @$contextId){ ?>
+                <?php }else if(@$media["target"]["id"] == @$contextId && @$contextId == Yii::app()->session["userId"] ){ ?>
                     sur votre mur
+                <?php }else if(@$media["target"]["id"] == @$contextId && @$contextId != Yii::app()->session["userId"] ){ ?>
+                    sur ce mur
                 <?php } ?>
               <?php } ?>
 

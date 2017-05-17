@@ -271,11 +271,17 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 //active les link lbh
                 bindLBHLinks();
 
-                 $(".start-new-communexion").click(function(){  
+                $(".start-new-communexion").click(function(){  
                     setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
                                      $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
                                       $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
                     activateGlobalCommunexion(true);
+                    if($("#communexionNameHome").length){
+                    	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à '+$(this).data("name-communexion")+'</span>');
+                    	$("#main-search-bar").val("");
+                    	$("#info_co").removeClass("hidden");
+						$("#dropdown_search").html("");
+                    }
                 });
 
 

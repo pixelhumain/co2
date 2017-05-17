@@ -460,8 +460,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         html = $("#news-list li#"+type+id + " .timeline-panel").html();
       //console.log("TO #modal-share : "+html+" "+typeof html);
       
-      if($(".timeline-body #newsActivityStream"+id).length > 0)
-        html = $(".timeline-body #newsActivityStream"+id).html();
+      if($(".timeline-body .newsActivityStream"+id).length > 0)
+        html = $(".timeline-body .newsActivityStream"+id).html();
       
       if(html == "" && $(".searchEntity#entity"+id).length > 0) 
         html = "<div class='searchEntity'>"+$(".searchEntity#entity"+id).html()+"</div>";

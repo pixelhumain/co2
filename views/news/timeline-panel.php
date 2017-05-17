@@ -94,12 +94,17 @@
                 <?php } ?>
               <?php } ?>
 
-              <?php if(@$media["target"]["id"] != @$authorId && @$media["target"]["id"] != @$contextId && @$media["verb"] != "create") { ?>
-                sur le mur de 
-                <a href="#page.type.<?php echo @$media["target"]["type"]; ?>.id.<?php echo @$media["target"]["id"]; ?>" 
-                        class="lbh">
-                        <?php echo @$media["target"]["name"]; ?>
-                </a>
+              <?php if(@$media["target"]["id"] != @$authorId && 
+                       @$media["verb"] != "create") { ?>
+                <?php if(@$media["target"]["id"] != @$contextId){ ?>
+                      sur le mur de 
+                      <a href="#page.type.<?php echo @$media["target"]["type"]; ?>.id.<?php echo @$media["target"]["id"]; ?>" 
+                              class="lbh">
+                              <?php echo @$media["target"]["name"]; ?>
+                      </a>
+                <?php }else if(@$media["target"]["id"] == @$contextId){ ?>
+                    sur votre mur
+                <?php } ?>
               <?php } ?>
 
                <?php if(@$media["scope"] && @$media["scope"]["type"]){

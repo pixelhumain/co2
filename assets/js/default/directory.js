@@ -454,6 +454,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
       var type = $(thiselement).attr("data-type");
       var id = $(thiselement).attr("data-id");
+      var authorType = $(thiselement).attr("data-author-type");
+      var authorId = $(thiselement).attr("data-author-id");
       
       $("#modal-share").modal("show");
       
@@ -479,6 +481,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       $("#modal-share #htmlElementToShare").html(html);
       $("#modal-share #btn-share-it").attr("data-id", id);
       $("#modal-share #btn-share-it").attr("data-type", type);
+      $("#modal-share #btn-share-it").attr("data-author-type", authorType);
+      $("#modal-share #btn-share-it").attr("data-author-id", authorId);
       $("#modal-share #btn-share-it").off().click(function(){
         shareIt("#modal-share #btn-share-it");
       });
@@ -492,8 +496,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   function shareIt(thiselement){
       formData = new Object();
       formData.parentId = $(thiselement).attr("data-id");
-      formData.childId = userId;
-      formData.childType = personCOLLECTION;
+      formData.shareAuthorId = userId;
+      formData.shareAuthorType = personCOLLECTION;
+      formData.authorIdNews = $(thiselement).attr("data-author-id");
+      formData.authorTypeNews = $(thiselement).attr("data-author-type");
+      formData.text=$("#msg-share").val();
       formData.connectType =  "share";
       var type = $(thiselement).attr("data-type");
       var id = $(thiselement).attr("data-id");

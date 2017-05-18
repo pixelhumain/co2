@@ -25,22 +25,7 @@
 			$pair = !$pair;
       // Author name and thumb
       //print_r($media);
-      if(@$media["targetIsAuthor"] || $media["type"]=="activityStream"){   
-          if(@$media["target"]["profilThumbImageUrl"] && $media["target"]["profilThumbImageUrl"] != "")
-            $thumbAuthor = Yii::app()->createUrl('/'.$media["target"]["profilThumbImageUrl"]);
-          else
-            $thumbAuthor = $this->module->assetsUrl."/images/thumb/default_".$media["target"]["type"].".png";
-          $nameAuthor=$media["target"]["name"];
-          $authorType=$media["target"]["type"];
-          $authorId=$media["target"]["id"];
-      } else{
-         $thumbAuthor =  @$media['author']['profilThumbImageUrl'] ? 
-                      Yii::app()->createUrl('/'.@$media['author']['profilThumbImageUrl']) 
-                      : $this->module->assetsUrl."/images/news/profile_default_l.png";
-          $nameAuthor=@$media["author"]["name"];  
-          $authorType=Person::COLLECTION;
-          $authorId=@$media["author"]["id"];           
-      }
+      
       $srcMainImg = "";              
       if(@$media["media"]["images"] && $media["media"]["type"] != "gallery_images")
         $srcMainImg = Yii::app()->createUrl("upload/".
@@ -64,12 +49,8 @@
           $this->renderPartial('../news/timeline-panel', 
                       array(  "key"=>$key,
                               "media"=>$media,
-                              "authorType"=>$authorType,
-                              "nameAuthor"=>@$nameAuthor,
-                              "authorId"=>$authorId,
                               "contextId"=>@$contextParentId,
-                              "timezone"=>$timezone,
-                              "thumbAuthor"=>@$thumbAuthor
+                              "timezone"=>$timezone
                           ) 
                       ); 
       ?>
@@ -138,11 +119,15 @@
             }
           });
 
-
-          if(v.object.type != "news"){
+          if(typeof v.object.activity!="undefined"){
+            var html = directory.showResultsDirectoryHtml(new Array(v.object.object), v.object.activity.type);
+            $(".newsActivityStream"+v.object.activity.id).html(html);
+          }
+          else if(v.object.type != "news"){
             var html = directory.showResultsDirectoryHtml(new Array(v.object), v.object.type);
             $(".newsActivityStream"+v.object.id).html(html);
           }
+
         }
       });
 
@@ -293,18 +278,18 @@
             if(typeof(v.mentions) != "undefined")
               textNews = addMentionInText(textNews,v.mentions);
           textHtml='<span class="timeline_text no-padding text-black" >'+textNews+'</span>';
-          $("#newsContent"+e).html(textHtml);
+          $(".newsContent"+e).html(textHtml);
 
           $(".btn-showmorenews").off().click(function(){
             var newsid = $(this).data("newsid");
-             console.log("hasClass ?", $("#newsContent"+newsid+" .timeline_text span.endtext").hasClass("hidden"));
-            if($("#newsContent"+newsid+" .timeline_text span.endtext").hasClass("hidden")){
-                $("#newsContent"+newsid+" .timeline_text span.endtext").removeClass("hidden");
-                $("#newsContent"+newsid+" .timeline_text span.ppp").addClass("hidden");
+             console.log("hasClass ?", $(".newsContent"+newsid+" .timeline_text span.endtext").hasClass("hidden"));
+            if($(".newsContent"+newsid+" .timeline_text span.endtext").hasClass("hidden")){
+                $(".newsContent"+newsid+" .timeline_text span.endtext").removeClass("hidden");
+                $(".newsContent"+newsid+" .timeline_text span.ppp").addClass("hidden");
                 $(this).html("réduire le texte");
             }else{
-                $("#newsContent"+newsid+" .timeline_text span.endtext").addClass("hidden");
-                $("#newsContent"+newsid+" .timeline_text span.ppp").removeClass("hidden");
+                $(".newsContent"+newsid+" .timeline_text span.endtext").addClass("hidden");
+                $(".newsContent"+newsid+" .timeline_text span.ppp").removeClass("hidden");
                 $(this).html("Lire la suite");
             }
           });

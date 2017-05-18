@@ -40,30 +40,50 @@
        	<h5 class="text-left srcMedia">
       	  <small>
             <?php $pluriel = ""; //var_dump($media); ?>
-            <?php if(!@$media["sharedBy"]){ ?>
+            <?php if(@$media["sharedBy"]) $pluriel = " pluriel"; ?>
+            <!-- Get Author news / activity -->
+            <?php if(@$media["targetIsAuhtor"] || $media["type"]=="activityStream"){
+                    if(@$media["target"]["profilThumbImageUrl"] && $media["target"]["profilThumbImageUrl"] != "")
+                      $thumbAuthor = Yii::app()->createUrl('/'.$media["target"]["profilThumbImageUrl"]);
+                    else
+                      $thumbAuthor = $this->module->assetsUrl."/images/thumb/default_".$media["target"]["type"].".png";
+          
+                    $authorName=$media["target"]["name"];
+                    $authorId=$media["target"]["id"];
+                    $authorType=$media["target"]["type"];
+                  } else{
+                    $thumbAuthor =  @$media['author']['profilThumbImageUrl'] ? 
+                      Yii::app()->createUrl('/'.@$media['author']['profilThumbImageUrl']) 
+                      : $this->module->assetsUrl."/images/news/profile_default_l.png";
+                    $authorName=$media["target"]["name"];
+                    $authorId=$media["target"]["id"];
+                    $authorType=$media["target"]["type"];
+                  }
+            ?>
+            <?php if(!@$media["verb"] || $media["verb"]!="share"){ ?>
               <img class="pull-left img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
-            <?php }else{ $pluriel = " pluriel"; } ?>
-
+            <?php } ?>
             <div class="pull-left padding-5 col-md-7 col-sm-7" style="line-height: 15px;">
               <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh">
-                <?php echo @$nameAuthor; ?>
+                <?php echo @$authorName; ?>
               </a>
               <?php if(@$media["sharedBy"]){ ?>
-                <?php foreach ($media["sharedBy"] as $keyS => $share) { ?>
+
+                <?php $i=0; foreach ($media["sharedBy"] as $keyS => $share) { ?>
                     
                       <?php if(@$nameAuthor==@$share["name"] && sizeof($media["sharedBy"]) == 1){ $pluriel = ""; } ?>
                       
-                      <?php if($keyS < 2 && @$nameAuthor!=@$share["name"]){ ?>
+                      <?php if($i < 2 && @$nameAuthor!=@$share["name"]){ ?>
  
-                      <?php if($keyS < sizeof($media["sharedBy"])-1){ ?>, 
+                      <?php if($i < sizeof($media["sharedBy"])-1){ ?>, 
                       <?php }else if(sizeof($media["sharedBy"]) > 0){ echo Yii::t("common", "and"); }  ?>
 
-                       <a href="#page.type.<?php echo @$share["type"]; ?>.id.<?php echo @$share["id"] ?>" class="lbh">
+                       <a href="#page.type.<?php echo @$share["type"]; ?>.id.<?php echo $keyS ?>" class="lbh">
                         <?php echo @$share["name"]; ?>
                       </a> 
-                    <?php }else if($keyS == 2){ ?>
+                    <?php }else if($i == 2){ ?>
                       <?php echo Yii::t("common", "and"); ?> <?php echo sizeof($media["sharedBy"]) - 2; ?> autres personnes
-                    <?php } ?>
+                    <?php } $i++; ?>
                 <?php } ?>
               <?php } ?>
               <br>
@@ -86,12 +106,21 @@
                     <?php echo Yii::t("news", "displayShared-".@$media["object"]["type"]); ?>
                   </a>
                 </span> 
-                <?php if(@$media["object"]["type"] == "news"){ ?>
-                de <a href="#page.type.<?php echo @$media["object"]["authorType"]; ?>.id.<?php echo @$media["object"]["authorId"]; ?>" 
+                <!-- Share object --> 
+                <?php    if(@$media["object"]["targetIsAuhtor"]){
+                      $objectAuthorName=@$media["object"]["target"]["name"];
+                      $objectAuthorId=@$media["object"]["target"]["id"];
+                      $objectAuthorType=@$media["object"]["target"]["type"];
+                    } else {
+                      $objectAuthorName=@$media["object"]["author"]["name"];
+                      $objectAuthorId=@$media["object"]["target"]["id"];
+                      $objectAuthorType=Person::COLLECTION;
+                    }
+                ?>
+                de <a href="#page.type.<?php echo @$objectAuthorType ?>.id.<?php echo @$objectAuthorId; ?>" 
                       class="lbh text-<?php echo @$iconColor; ?>">
-                  <?php echo @$media["object"]["authorName"]; ?>
+                  <?php echo @$objectAuthorName ?>
                   </a>
-                <?php } ?>
               <?php } ?>
 
               <?php if(@$media["target"]["id"] != @$authorId && 
@@ -127,7 +156,7 @@
             </div>
             
           </small>  
-          <?php if (@Yii::app()->session["userId"]){ ?>
+          <?php if (@Yii::app()->session["userId"] && (!@$media["verb"] || ($media["verb"]=="share" && !@$media["sharedBy"]))){ ?>
               <div class="btn dropdown pull-right no-padding settingsNews">
                 <strong> • </strong> 
                 <a class="dropdown-toggle" type="button" data-toggle="dropdown" style="color:#8b91a0;">
@@ -147,6 +176,7 @@
                 </ul>
               </div>
               <?php } ?>
+          <?php if(!@$media["verb"] || ($media["verb"]=="share" && !@$media["sharedBy"])){ ?>
           <span class="margin-top-10 margin-bottom-10 hidden-xs pull-right">
             <small>
               <i class="fa fa-clock-o"></i> 
@@ -156,15 +186,15 @@
                     echo Translate::pastTime(date(@$media["created"]->sec), "timestamp", $timezone); 
               ?>
             </small>
-
           </span>
+          <?php } ?>
         </h5>
   </div>
 
   <div class="timeline-body  col-md-12 text-left margin-bottom-10">
-    <?php if(!empty(@$media["text"])){ ?>
+    <?php if(!empty(@$media["text"]) && !@$media["sharedBy"]){ ?>
     <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" 
-         class="newsContent no-padding"><?php echo $media["text"]; ?>
+         class="newsContent no-padding newsContent<?php echo $key ?>"><?php echo $media["text"]; ?>
     </div>
     <?php } ?>
     <?php if(@$media["tags"] && @$media["type"] != "activityStream") 
@@ -183,26 +213,74 @@
         
       <!-- <h4><a target="_blank" href="<?php echo @$media["href"]; ?>"><?php echo @$media["title"]; ?></a></h4> -->
     
-      <?php if(!empty(@$media["object"])){ ?>
-      <div id="" data-pk="<?php echo $key ?>" 
-           class="col-md-12 no-padding margin-bottom-10 newsActivityStream<?php echo $media["object"]["id"]; ?>" 
-                <?php if(@$media["object"]["type"] == "news"){ ?>style="border:1px solid #E3E3E3;"<?php } ?>>
-        <?php 
-             if(@$media["object"]["type"] == "news")
-             $this->renderPartial('../news/timeline-panel', 
-                        array(  "key"=>$media["object"]["id"],
-                                "media"=>$media["object"],
-                                "nameAuthor"=>@$media["object"]["authorName"] ? $media["object"]["authorName"] : "",
-                                "authorType"=>@$media["object"]["authorType"] ? $media["object"]["authorType"] : "citoyens",
-                                "authorId"=>@$media["object"]["authorId"],
-                                "timezone"=>$timezone,
-                                "thumbAuthor"=>@$media["object"]["author"]["profilThumbImageUrl"] ? 
-                                                $media["object"]["author"]["profilThumbImageUrl"] : "",
-                            ) 
-                        ); 
-        ?>  
-      </div>
-
+      <?php if(!empty(@$media["object"])){
+          $objectId=$media["object"]["id"];
+          if(@$media["object"]["activity"])
+            $objectId=$media["object"]["activity"]["id"];
+       ?>
+        <div id="" data-pk="<?php echo $key ?>" 
+             class="col-md-12 no-padding margin-bottom-10 newsActivityStream<?php echo $objectId; ?>">
+          <?php 
+               if(@$media["object"]["type"] == "news" && !@$media["object"]["activity"])
+                 $this->renderPartial('../news/timeline-panel', 
+                          array(  "key"=>$media["object"]["id"],
+                                  "media"=>$media["object"],
+                                  "timezone"=>$timezone
+                              ) 
+                          ); 
+          ?>  
+        </div>
+        <?php if(@$media["sharedBy"]){ 
+          //IF THERE ARE MORE THAN ONE SHARE
+          ?>
+        <div class="contentSharedBy">
+          <?php 
+          $share=array("id"=>$key, 
+              "type"=> "news", 
+              "targetIsAuhtor"=>true,
+              "author"=>$media["author"],
+              "created"=>$media["created"],
+              "target"=>array(
+                "id"=>$authorId,
+                "type"=>$authorType,
+                "profilThumbImageUrl"=>$media["author"]["profilThumbImageUrl"], 
+                "name"=>$authorName
+              ),
+              "text"=>@$media["text"]
+            );
+            $this->renderPartial('../news/timeline-panel',
+              array(  "key"=>$key,
+                    "media"=>$share,
+                    "timezone"=>$timezone) 
+            );
+          foreach($media["sharedBy"] as $e => $value){
+            $share=array("id"=>$key, 
+              "type"=> "news", 
+              "targetIsAuhtor"=>true,
+              "author"=>array(),
+              "created"=>$value["date"],
+              "target"=>array(
+                "id"=>$e,
+                "type"=>$value["type"],
+                "profilThumbImageUrl"=>$value["profilThumbImageUrl"], 
+                "name"=>$value["name"]
+              ),
+              "text"=>@$value["text"]
+            );
+            if(@$value["author"])
+              $authorShared=array("id"=>$e["author"],"type"=> Person::COLLECTION);
+            else
+              $authorShared=array("id"=>$e,"type"=> Person::COLLECTION);
+            array_push($share["author"],$authorShared);
+            $this->renderPartial('../news/timeline-panel',
+              array(  "key"=>$key,
+                    "media"=>$share,
+                    "timezone"=>$timezone
+                ) 
+              ); 
+          } ?>
+        </div>
+        <?php } ?>
       <?php } ?>
     <?php } ?>
   </div>

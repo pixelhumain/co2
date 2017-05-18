@@ -456,6 +456,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       var id = $(thiselement).attr("data-id");
       var authorType = $(thiselement).attr("data-author-type");
       var authorId = $(thiselement).attr("data-author-id");
+      var activityType = $(thiselement).attr("data-activity-type");
+      var activityId = $(thiselement).attr("data-activity-id");
       
       $("#modal-share").modal("show");
       
@@ -464,17 +466,22 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       //$("#news-list li#"+type+id).html("bébé");
       var html = "";
       
-      if($("#news-list li#"+type+id + " .timeline-panel").length > 0)
+      if($("#news-list li#"+type+id + " .timeline-panel").length > 0){
+        alert("timeline");
         html = $("#news-list li#"+type+id + " .timeline-panel").html();
+      }
       //console.log("TO #modal-share : "+html+" "+typeof html);
-      
-      if($(".timeline-body .newsActivityStream"+id).length > 0)
-        html = $(".timeline-body .newsActivityStream"+id).html();
-      
-      if(html == "" && $(".searchEntity#entity"+id).length > 0) 
-        html = "<div class='searchEntity'>"+$(".searchEntity#entity"+id).html()+"</div>";
+      if($(".timeline-body .newsActivityStream"+activityId).length > 0){
+        alert("activity");
+        html = $(".timeline-body .newsActivityStream"+activityId).html();
+      }
+      if(html == "" && $(".searchEntity#entity"+id).length > 0){
+        alert("searchEntity")
+        html = "<div class='searchEntity'>"+$(".searchEntity#entity"+activityId).html()+"</div>";
+      }
 
       if(html == "" && type !="news" && type!="activityStream" && typeof contextData != "undefined"){
+        alert("contextData");
         html = directory.showResultsDirectoryHtml(new Array(contextData), type);
       } 
       
@@ -483,6 +490,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       $("#modal-share #btn-share-it").attr("data-type", type);
       $("#modal-share #btn-share-it").attr("data-author-type", authorType);
       $("#modal-share #btn-share-it").attr("data-author-id", authorId);
+      $("#modal-share #btn-share-it").attr("data-activity-id", activityId);
+      $("#modal-share #btn-share-it").attr("data-activity-type", activityType);
       $("#modal-share #btn-share-it").off().click(function(){
         shareIt("#modal-share #btn-share-it");
       });
@@ -500,6 +509,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       formData.shareAuthorType = personCOLLECTION;
       formData.authorIdNews = $(thiselement).attr("data-author-id");
       formData.authorTypeNews = $(thiselement).attr("data-author-type");
+      formData.activityIdShare = $(thiselement).attr("data-activity-id");
+      formData.activityTypeShare= $(thiselement).attr("data-activity-type");
       formData.text=$("#msg-share").val();
       formData.connectType =  "share";
       var type = $(thiselement).attr("data-type");

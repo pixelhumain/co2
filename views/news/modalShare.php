@@ -95,7 +95,13 @@
             <div class="col-xs-12">
                 <hr>
                 <button class="btn btn-success pull-right margin-left-5" id="btn-share-it" data-dismiss="modal"
-                        data-ownerlink='share' data-id='' data-type='' data-auhtor-id='' data-auhtor-type=''>
+                        data-ownerlink='share' 
+                        data-id='' 
+                        data-type='' 
+                        data-auhtor-id='' 
+                        data-auhtor-type=''
+                        data-activity-id=''
+                        data-activity-type=''>
                 <i class="fa fa-share"></i> Partager
                 </button>
                 <button class="btn btn-default pull-right" data-dismiss="modal">

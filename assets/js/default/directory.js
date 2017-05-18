@@ -507,7 +507,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
       $.ajax({
         type: "POST",
-        url: baseUrl+"/"+moduleId+"/link/share",
+        url: baseUrl+"/"+moduleId+"/news/share",
         data : formData,
         dataType: "json",
         success: function(data){

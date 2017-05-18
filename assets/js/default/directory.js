@@ -271,16 +271,18 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 //active les link lbh
                 bindLBHLinks();
 
+                //only on homepage
                 $(".start-new-communexion").click(function(){  
                     setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
                                      $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
                                       $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
                     activateGlobalCommunexion(true);
                     if($("#communexionNameHome").length){
-                    	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à '+$(this).data("name-communexion")+'</span>');
+                    	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+$(this).data("name-communexion")+'</span></span>');
                     	$("#main-search-bar").val("");
-                    	$("#info_co").removeClass("hidden");
-						$("#dropdown_search").html("");
+                    	$(".info_co, .input_co").addClass("hidden");
+                      $("#change_co").removeClass("hidden");
+						          $("#dropdown_search").html("");
                     }
                 });
 

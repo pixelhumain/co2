@@ -219,7 +219,7 @@
             $objectId=$media["object"]["activity"]["id"];
        ?>
         <div id="" data-pk="<?php echo $key ?>" 
-             class="col-md-12 no-padding margin-bottom-10 newsActivityStream<?php echo $objectId; ?>">
+             class="col-md-12 no-padding margin-bottom-10 newsActivityStream<?php echo $objectId; ?> shadow2 margin-top-10">
           <?php 
                if(@$media["object"]["type"] == "news" && !@$media["object"]["activity"])
                  $this->renderPartial('../news/timeline-panel', 

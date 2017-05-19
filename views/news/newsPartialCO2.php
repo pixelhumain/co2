@@ -26,16 +26,16 @@
       // Author name and thumb
       //print_r($media);
       
-      $srcMainImg = "";              
-      if(@$media["media"]["images"] && $media["media"]["type"] != "gallery_images")
-        $srcMainImg = Yii::app()->createUrl("upload/".
-                                            Yii::app()->controller->module->id."/".
-                                            $media["media"]["images"][0]["folder"].'/'.
-                                            $media["media"]["images"][0]["name"]);
+      //$srcMainImg = "";              
+      //if(@$media["media"]["images"] && $media["media"]["type"] != "gallery_images")
+       // $srcMainImg = Yii::app()->createUrl("upload/".
+         //                                   Yii::app()->controller->module->id."/".
+           //                                 $media["media"]["images"][0]["folder"].'/'.
+             //                               $media["media"]["images"][0]["name"]);
 
 
-      if(@$media["imageBackground"])
-        $srcMainImg = Yii::app()->createUrl($media["imageBackground"]);
+      //if(@$media["imageBackground"])
+        //$srcMainImg = Yii::app()->createUrl($media["imageBackground"]);
 	?>
 
   
@@ -120,7 +120,7 @@
           });
 
           if(typeof v.object.activity!="undefined"){
-            var html = directory.showResultsDirectoryHtml(new Array(v.object.object), v.object.activity.type);
+            var html = directory.showResultsDirectoryHtml(new Array(v.object.activity), v.object.activity.type);
             $(".newsActivityStream"+v.object.activity.id).html(html);
           }
           else if(v.object.type != "news"){

@@ -40,9 +40,11 @@
        	<h5 class="text-left srcMedia">
       	  <small>
             <?php $pluriel = ""; //var_dump($media); ?>
-            <?php if(@$media["sharedBy"]) $pluriel = " pluriel"; ?>
+            <?php //if(@$media["sharedBy"]) $pluriel = " pluriel"; ?>
             <!-- Get Author news / activity -->
-            <?php if(@$media["targetIsAuhtor"] || $media["type"]=="activityStream"){
+            <?php 
+              if(!@$media["verb"] || $media["verb"]!="share"){
+                  if(@$media["targetIsAuhtor"] || $media["type"]=="activityStream"){
                     if(@$media["target"]["profilThumbImageUrl"] && $media["target"]["profilThumbImageUrl"] != "")
                       $thumbAuthor = Yii::app()->createUrl('/'.$media["target"]["profilThumbImageUrl"]);
                     else
@@ -55,33 +57,44 @@
                     $thumbAuthor =  @$media['author']['profilThumbImageUrl'] ? 
                       Yii::app()->createUrl('/'.@$media['author']['profilThumbImageUrl']) 
                       : $this->module->assetsUrl."/images/news/profile_default_l.png";
-                    $authorName=$media["target"]["name"];
-                    $authorId=$media["target"]["id"];
-                    $authorType=$media["target"]["type"];
+                    $authorName=$media["author"]["name"];
+                    $authorId=$media["author"]["id"];
+                    $authorType=Person::COLLECTION;
                   }
-            ?>
-            <?php if(!@$media["verb"] || $media["verb"]!="share"){ ?>
+              ?>
               <img class="pull-left img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
-            <?php } ?>
-            <div class="pull-left padding-5 col-md-7 col-sm-7" style="line-height: 15px;">
-              <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh">
+            
+              <div class="pull-left padding-5 col-md-7 col-sm-7" style="line-height: 15px;">
+               <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh">
                 <?php echo @$authorName; ?>
-              </a>
-              <?php if(@$media["sharedBy"]){ ?>
-
-                <?php $i=0; foreach ($media["sharedBy"] as $keyS => $share) { ?>
-                    
-                      <?php if(@$nameAuthor==@$share["name"] && sizeof($media["sharedBy"]) == 1){ $pluriel = ""; } ?>
+                </a>
+              <?php } ?>
+              <?php if(@$media["sharedBy"]){ 
+                  $countShareBy=count($media["sharedBy"]); 
+                  if($countShareBy>1){ ?>
+                    <div class="pull-left padding-5 col-md-7 col-sm-7" style="line-height: 15px;">
+                  <?php }
+                  $i=0; 
+                  foreach ($media["sharedBy"] as $keyS => $share) { ?>
+                      <?php if(@$nameAuthor==@$share["name"] && $countShareBy == 1){ $pluriel = ""; } ?>
                       
-                      <?php if($i < 2 && @$nameAuthor!=@$share["name"]){ ?>
+                      <?php if($i < 3 && @$nameAuthor!=@$share["name"]){ ?>
  
-                      <?php if($i < sizeof($media["sharedBy"])-1){ ?>, 
-                      <?php }else if(sizeof($media["sharedBy"]) > 0){ echo Yii::t("common", "and"); }  ?>
-
+                      <?php if($i < $countShareBy-1){ ?>, 
+                      <?php }else if($countShareBy > 1){ echo Yii::t("common", "and"); }  ?>
+                      <?php if($countShareBy==1){ 
+                          if(@$share["profilThumbImageUrl"] && $share["profilThumbImageUrl"] != "")
+                            $thumbAuthor = Yii::app()->createUrl('/'.$share["profilThumbImageUrl"]);
+                          else
+                            $thumbAuthor = $this->module->assetsUrl."/images/thumb/default_".$share["type"].".png";
+                          ?>
+                          <img class="pull-left img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
+                          <div class="pull-left padding-5 col-md-7 col-sm-7" style="line-height: 15px;">
+                        <?php } ?>
                        <a href="#page.type.<?php echo @$share["type"]; ?>.id.<?php echo $keyS ?>" class="lbh">
                         <?php echo @$share["name"]; ?>
                       </a> 
-                    <?php }else if($i == 2){ ?>
+                    <?php }else if($i == 3){ ?>
                       <?php echo Yii::t("common", "and"); ?> <?php echo sizeof($media["sharedBy"]) - 2; ?> autres personnes
                     <?php } $i++; ?>
                 <?php } ?>
@@ -103,25 +116,37 @@
                 <span class="text-<?php echo @$iconColor; ?>">
                   <a href="#page.type.<?php echo @$media["object"]["type"]; ?>.id.<?php echo @$media["object"]["id"]; ?>" 
                      class="lbh">
-                    <?php echo Yii::t("news", "displayShared-".@$media["object"]["type"]); ?>
+                    <?php 
+                      $pronom="a";
+                      if(@$media["object"] && @$media["object"]["activity"])
+                        $objectTypeShare=$media["object"]["activity"]["type"]; 
+                      else
+                        $objectTypeShare=$media["object"]["type"]; 
+                      if(in_array($objectTypeShare,[Organization::COLLECTION,Event::COLLECTION]))
+                        $pronom="an";
+                      echo Yii::t("common", $pronom." ".Element::getControlerByCollection($objectTypeShare));
+                    ?>
+                            
                   </a>
                 </span> 
                 <!-- Share object --> 
-                <?php    if(@$media["object"]["targetIsAuhtor"]){
-                      $objectAuthorName=@$media["object"]["target"]["name"];
-                      $objectAuthorId=@$media["object"]["target"]["id"];
-                      $objectAuthorType=@$media["object"]["target"]["type"];
-                    } else {
-                      $objectAuthorName=@$media["object"]["author"]["name"];
-                      $objectAuthorId=@$media["object"]["target"]["id"];
-                      $objectAuthorType=Person::COLLECTION;
-                    }
-                ?>
-                de <a href="#page.type.<?php echo @$objectAuthorType ?>.id.<?php echo @$objectAuthorId; ?>" 
-                      class="lbh text-<?php echo @$iconColor; ?>">
-                  <?php echo @$objectAuthorName ?>
-                  </a>
-              <?php } ?>
+                <?php   
+                  if($media["verb"]=="share"){ 
+                    if(@$media["object"]["targetIsAuhtor"] || $media["type"]=="activityStream"){
+                        $objectAuthorName=@$media["object"]["target"]["name"];
+                        $objectAuthorId=@$media["object"]["target"]["id"];
+                        $objectAuthorType=@$media["object"]["target"]["type"];
+                      } else {
+                        $objectAuthorName=@$media["object"]["author"]["name"];
+                        $objectAuthorId=@$media["object"]["auhtor"]["id"];
+                        $objectAuthorType=Person::COLLECTION;
+                      }
+                  ?>
+                  de <a href="#page.type.<?php echo @$objectAuthorType ?>.id.<?php echo @$objectAuthorId; ?>" 
+                        class="lbh text-<?php echo @$iconColor; ?>">
+                    <?php echo @$objectAuthorName ?>
+                    </a>
+                <?php } } ?>
 
               <?php if(@$media["target"]["id"] != @$authorId && 
                        @$media["verb"] != "create") { ?>
@@ -219,7 +244,7 @@
             $objectId=$media["object"]["activity"]["id"];
        ?>
         <div id="" data-pk="<?php echo $key ?>" 
-             class="col-md-12 no-padding margin-bottom-10 newsActivityStream<?php echo $objectId; ?> shadow2 margin-top-10">
+             class="col-md-12 no-padding margin-bottom-10 newsActivityStream<?php echo $objectId; ?> margin-top-10">
           <?php 
                if(@$media["object"]["type"] == "news" && !@$media["object"]["activity"])
                  $this->renderPartial('../news/timeline-panel', 
@@ -230,30 +255,11 @@
                           ); 
           ?>  
         </div>
-        <?php if(@$media["sharedBy"]){ 
+        <?php if(@$media["sharedBy"] && count($media["sharedBy"])>1){ 
           //IF THERE ARE MORE THAN ONE SHARE
           ?>
         <div class="contentSharedBy">
-          <?php 
-          $share=array("id"=>$key, 
-              "type"=> "news", 
-              "targetIsAuhtor"=>true,
-              "author"=>$media["author"],
-              "created"=>$media["created"],
-              "target"=>array(
-                "id"=>$authorId,
-                "type"=>$authorType,
-                "profilThumbImageUrl"=>$media["author"]["profilThumbImageUrl"], 
-                "name"=>$authorName
-              ),
-              "text"=>@$media["text"]
-            );
-            $this->renderPartial('../news/timeline-panel',
-              array(  "key"=>$key,
-                    "media"=>$share,
-                    "timezone"=>$timezone) 
-            );
-          foreach($media["sharedBy"] as $e => $value){
+          <?php foreach($media["sharedBy"] as $e => $value){
             $share=array("id"=>$key, 
               "type"=> "news", 
               "targetIsAuhtor"=>true,
@@ -265,20 +271,25 @@
                 "profilThumbImageUrl"=>$value["profilThumbImageUrl"], 
                 "name"=>$value["name"]
               ),
-              "text"=>@$value["text"]
+              "text"=>@$value["text"],
+              "sharedByDesign"=>true
             );
             if(@$value["author"])
               $authorShared=array("id"=>$e["author"],"type"=> Person::COLLECTION);
             else
               $authorShared=array("id"=>$e,"type"=> Person::COLLECTION);
             array_push($share["author"],$authorShared);
-            $this->renderPartial('../news/timeline-panel',
+            ?> 
+            <div class="shadow2">
+            <?php $this->renderPartial('../news/timeline-panel',
               array(  "key"=>$key,
                     "media"=>$share,
-                    "timezone"=>$timezone
+                    "timezone"=>$timezone,
+                    "sharedByDesign"=>true
                 ) 
-              ); 
-          } ?>
+              ); ?>
+              </div>
+          <?php } ?>
         </div>
         <?php } ?>
       <?php } ?>

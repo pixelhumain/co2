@@ -18,13 +18,6 @@ dynForm = {
 					if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 ){
 				    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 					}
-				   /* else {
-				    	dyFObj.closeForm();
-				    }
-				    if(typeof urlReload != "undefined")
-				    	urlCtrl.loadByHash( location.hash );
-				    else
-				    	urlCtrl.loadByHash(urlReload);*/
 			    },
 			    beforeSave : function(){
 			    	if( typeof $("#ajaxFormModal #description").code === 'function' ) 

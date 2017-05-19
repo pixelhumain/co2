@@ -43,7 +43,7 @@
             <?php //if(@$media["sharedBy"]) $pluriel = " pluriel"; ?>
             <!-- Get Author news / activity -->
             <?php 
-              if(!@$media["verb"] || $media["verb"]!="share"){
+              if(!@$media["verb"] || (@$media["verb"] && $media["verb"]!="share")){
                   if(@$media["targetIsAuhtor"] || $media["type"]=="activityStream"){
                     if(@$media["target"]["profilThumbImageUrl"] && $media["target"]["profilThumbImageUrl"] != "")
                       $thumbAuthor = Yii::app()->createUrl('/'.$media["target"]["profilThumbImageUrl"]);
@@ -72,7 +72,7 @@
               <?php if(@$media["sharedBy"]){ 
                   $countShareBy=count($media["sharedBy"]); 
                   if($countShareBy>1){ ?>
-                    <div class="pull-left padding-5 col-md-7 col-sm-7" style="line-height: 15px;">
+                    <div class="pull-left padding-5 col-md-12 col-sm-12" style="line-height: 15px;">
                   <?php }
                   $i=0; 
                   foreach ($media["sharedBy"] as $keyS => $share) { ?>
@@ -80,8 +80,8 @@
                       
                       <?php if($i < 3 && @$nameAuthor!=@$share["name"]){ ?>
  
-                      <?php if($i < $countShareBy-1){ ?>, 
-                      <?php }else if($countShareBy > 1){ echo Yii::t("common", "and"); }  ?>
+                      <?php if($i > 0 && $i < $countShareBy-1){ ?>, 
+                      <?php }else if($i>0 && $countShareBy > 1){ echo Yii::t("common", "and"); }  ?>
                       <?php if($countShareBy==1){ 
                           if(@$share["profilThumbImageUrl"] && $share["profilThumbImageUrl"] != "")
                             $thumbAuthor = Yii::app()->createUrl('/'.$share["profilThumbImageUrl"]);
@@ -92,7 +92,7 @@
                           <div class="pull-left padding-5 col-md-7 col-sm-7" style="line-height: 15px;">
                         <?php } ?>
                        <a href="#page.type.<?php echo @$share["type"]; ?>.id.<?php echo $keyS ?>" class="lbh">
-                        <?php echo @$share["name"]; ?>
+                        <?php if($i==0) echo ucfirst(@$share["name"]); else echo @$share["name"]; ?>
                       </a> 
                     <?php }else if($i == 3){ ?>
                       <?php echo Yii::t("common", "and"); ?> <?php echo sizeof($media["sharedBy"]) - 2; ?> autres personnes
@@ -111,8 +111,17 @@
               
                
               <?php if(@$media["type"]=="activityStream") { ?>
-                <?php $iconColor = @Element::getColorIcon($media["object"]["type"]); ?>
-                <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news","verb ".$media["verb"].$pluriel); ?> 
+                <?php $iconColor = @Element::getColorIcon($media["object"]["type"]); 
+                    if($media["verb"]=="create")
+                      $tradVerb="created";
+                    else if($media["verb"]=="share"){
+                      if(count($media["sharedBy"])>1)
+                        $tradVerb="have shared";
+                      else
+                        $tradVerb="shared";
+                    }
+                ?>
+                <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news", $tradVerb); ?> 
                 <span class="text-<?php echo @$iconColor; ?>">
                   <a href="#page.type.<?php echo @$media["object"]["type"]; ?>.id.<?php echo @$media["object"]["id"]; ?>" 
                      class="lbh">
@@ -217,9 +226,13 @@
   </div>
 
   <div class="timeline-body  col-md-12 text-left margin-bottom-10">
-    <?php if(!empty(@$media["text"]) && !@$media["sharedBy"]){ ?>
+    <?php if(!empty(@$media["text"]) || (@$media["sharedBy"] && count($media["sharedBy"])==1 && !empty(@$media["sharedBy"][0]["text"]))){ 
+        $text=@$media["text"];
+        if(@$media["sharedBy"])
+          $text=$media["sharedBy"][0]["text"];
+      ?>
     <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" 
-         class="newsContent no-padding newsContent<?php echo $key ?>"><?php echo $media["text"]; ?>
+         class="newsContent no-padding newsContent<?php echo $key ?>"><?php echo $text; ?>
     </div>
     <?php } ?>
     <?php if(@$media["tags"] && @$media["type"] != "activityStream") 
@@ -258,7 +271,7 @@
         <?php if(@$media["sharedBy"] && count($media["sharedBy"])>1){ 
           //IF THERE ARE MORE THAN ONE SHARE
           ?>
-        <div class="contentSharedBy">
+        <div class="contentSharedBy col-md-12 col-sm-12 col-xs-12">
           <?php foreach($media["sharedBy"] as $e => $value){
             $share=array("id"=>$key, 
               "type"=> "news", 
@@ -280,7 +293,7 @@
               $authorShared=array("id"=>$e,"type"=> Person::COLLECTION);
             array_push($share["author"],$authorShared);
             ?> 
-            <div class="shadow2">
+            <div class="shadow2 col-md-12 col-sm-12 col-xs-12">
             <?php $this->renderPartial('../news/timeline-panel',
               array(  "key"=>$key,
                     "media"=>$share,

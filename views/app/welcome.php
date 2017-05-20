@@ -8,6 +8,7 @@
                             )
                         );
     $cssAnsScriptFiles = array(
+     '/assets/css/welcome.css',
      '/assets/css/profilSocial.css',
      '/assets/css/default/directory.css',
     //  '/assets/css/referencement.css'

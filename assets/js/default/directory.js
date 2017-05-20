@@ -279,7 +279,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                     activateGlobalCommunexion(true);
                     if($("#communexionNameHome").length){
                     	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+$(this).data("name-communexion")+'</span></span>');
-                    	$("#main-search-bar").val("");
+                    	$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
+                      $("#main-search-bar").val("");
                     	$(".info_co, .input_co").addClass("hidden");
                       $("#change_co").removeClass("hidden");
 						          $("#dropdown_search").html("");

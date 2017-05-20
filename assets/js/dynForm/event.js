@@ -48,11 +48,7 @@ dynForm = {
 	    afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-		    else {
-		    	dyFObj.closeForm();
-		    	urlCtrl.loadByHash( location.hash );	
-		    }
-	    },
+		},
 	    beforeSave : function(){
 	    	//alert("onBeforeSave");
 	    	

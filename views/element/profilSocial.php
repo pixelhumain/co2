@@ -61,7 +61,11 @@
 		display: none;
 	}
 <?php } ?>
-</style>	
+</style>
+
+<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
+<?php if (@$deletePending && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal'); ?>
+
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
@@ -250,9 +254,9 @@
 									<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
 								</a>
 							</li>
-							<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+							<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) { ?>
 				  			<li class="text-left">
-				               	<a href="javascript:;" class="bg-white text-red">
+				               	<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">
 				                    <i class="fa fa-trash"></i> 
 				                    <?php echo Yii::t("common", "Delete {what}", 
 				                    					array("{what}"=> 

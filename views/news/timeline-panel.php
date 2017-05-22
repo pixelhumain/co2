@@ -1,33 +1,52 @@
-
+<?php $shareLabel=array(
+  "verb-create" => "created",
+  "verb-share" => "shared",
+  "verb-share-pluriel" => "have shared",
+  "displayShared-news"      => "a news",
+  "displayShared-projects"    => "a project",
+  "displayShared-organizations"   => "an organization",
+  "displayShared-events"      => "an event",
+  "displayShared-classified"    => "an announce",
+); ?>
   
   <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12">
     
     <?php $count = 0; $allScope = "";
-          if(@$media["scope"]) 
+      if(@$media["scope"]) {
+        $scopeSpan="";
+        if($media["type"]=="news"){
           foreach (array("cities", "departements", "regions") as $s) {
             if(@$media["scope"][$s])
             foreach ($media["scope"][$s] as $keyy => $scopes) {
               foreach ($scopes as $k => $v) {
                 foreach (array("postalCode", "addressLocality", "name") as $kk => $s) {
                   if(@$k == $s && $v != ""){ 
-                    if($count<3){ ?>
-                    <span class='label label-danger pull-right margin-left-5 margin-top-10'>
-                      <i class='fa fa-bullseye'></i> <?php echo $v; ?>
-                    </span>
-    <?php           }else{ $allScope .= " ".$v; }  $count++; 
+                    if($count<3){
+                     $scopeSpan.="<span class='label label-danger pull-right margin-left-5 margin-top-10'>
+                      <i class='fa fa-bullseye'></i> ".$v."</span>";
+                    }else{ $allScope .= " ".$v; }  $count++; 
                   }
                 }
               }
             }
-          } 
-    ?>
-    <?php if($count >=3){ ?>
-      <span class='label text-red pull-right margin-left-5 margin-top-10 tooltips' 
+          }
+        }else{
+          if (@$media["scope"]["address"]) {
+              $postalCode=(@$media["scope"]["address"]["postalCode"])?$media["scope"]["address"]["postalCode"].", " : "";
+              $city=$media["scope"]["address"]["addressLocality"]; 
+              $scopeSpan="<span class='label label-danger pull-right margin-left-5 margin-top-10'><i class='fa fa-bullseye'></i> ".$postalCode.$city."</span>"; 
+          }
+        }
+        if($count >3){ ?>
+          <span class='label text-red pull-right margin-left-5 margin-top-10 tooltips' 
             data-title="<?php echo $allScope; ?>" data-toogle="tooltip">
-        <i class='fa fa-plus'></i> <?php echo $count-3;?>
-      </span>
-    <?php } ?>
-  </div>
+            <i class='fa fa-plus'></i> <?php echo $count-3;?> autres
+          </span>
+        <?php } 
+        echo $scopeSpan;
+      }
+    ?>
+    </div>
   
   <?php $classHeading="";
   if(@$srcMainImg != "" && $media["type"] == "activityStream"){ $classHeading="activity-heading"; ?>
@@ -50,11 +69,11 @@
                 count(@$media["sharedBy"])==1) &&
                 ($media["sharedBy"][0]["id"] == @$authorId)) ){ 
                   $pluriel = ""; 
-              }else{ $pluriel = " pluriel"; } ?>
+              }else{ $pluriel = "-pluriel"; } ?>
 
             <img class="pull-left img-circle" 
-                   src="<?php echo @$media["lastAuthorShare"]["profilThumbImageUrl"] ? 
-                                    $media["lastAuthorShare"]["profilThumbImageUrl"] :
+                   src="<?php echo (@$media["lastAuthorShare"]["profilThumbImageUrl"] && @$media["lastAuthorShare"]["profilThumbImageUrl"]=="")? 
+                                    Yii::app()->createUrl($media["lastAuthorShare"]["profilThumbImageUrl"]) :
                                     @$thumbAuthor; ?>" 
                    height=40>
 
@@ -113,11 +132,11 @@
                
               <?php if(@$media["type"]=="activityStream") { ?>
                 <?php $iconColor = @Element::getColorIcon($media["object"]["type"]); ?>
-                <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news","verb ".$media["verb"].$pluriel); ?> 
+                <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news",$shareLabel["verb-".$media["verb"].$pluriel]); ?> 
                 <span class="text-<?php echo @$iconColor; ?>">
                   <a href="#page.type.<?php echo @$media["object"]["type"]; ?>.id.<?php echo @$media["object"]["id"]; ?>" 
                      class="lbh">
-                    <?php echo Yii::t("news", "displayShared-".@$media["object"]["type"]); ?>
+                    <?php echo Yii::t("common", $shareLabel["displayShared-".@$media["object"]["type"]]); ?>
                   </a>
                 </span> 
                 <?php if(@$media["object"]["type"] == "news"){ ?>

@@ -735,10 +735,13 @@ var urlCtrl = {
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
 		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
+			mylog.log("globalTheme", globalTheme);
 			if( hash.indexOf("#network") >= 0 &&
 				location.hash.indexOf("#network") >= 0 || hash=="#" || hash==""){ 
+				mylog.log("network");
 			}
 			else{
+				mylog.log("network2");
 				count=$(".breadcrumAnchor").length;
 				//case on reload view
 				if(count==0)

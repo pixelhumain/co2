@@ -217,7 +217,6 @@ function bindButtonMenu(){
 			    }
 			});
     	}
-    	
     });
 
 	$(".panel-btn-confidentiality .btn").click(function(){

@@ -896,7 +896,7 @@ function loadServerFilters(types,tags){
 
 function breadcrumGuide(level, url){
 	newLevel=$(".breadcrumAnchor").length;
-
+	mylog.log("breadcrumGuide", newLevel, level, url);
 	if(level==0){
 		reverseToRepertory();
 	}
@@ -922,6 +922,8 @@ function breadcrumGuide(level, url){
 
 
 function getAjaxFiche(url, breadcrumLevel){
+
+	mylog.log("getAjaxFiche", url, breadcrumLevel);
 	$("#ficheInfoDetail").empty();
 	if(location.hash == ""){
 		history.pushState(null, "New Title", url);
@@ -938,9 +940,9 @@ function getAjaxFiche(url, breadcrumLevel){
 
 	isEntityView=true;
 	allReadyLoad = true;
-	location.hash = url;
+	//location.hash = url;
 	urlHash=url;
-
+	mylog.log("urlHash", urlHash);
 	if( urlHash.indexOf("type") < 0 && 
 		urlHash.indexOf("default.view") < 0 && 
 		urlHash.indexOf("gallery") < 0 && 
@@ -962,15 +964,19 @@ function getAjaxFiche(url, breadcrumLevel){
 	if(urlHash.indexOf("news") >= 0){
 		urlHash=urlHash+"&isFirst=1";
 	}
-
-	url= "/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
+	mylog.log("urlHash2", urlHash);
+	url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
+	mylog.log("url", url);
 	$("#repertory").hide( 700 );
 	$(".main-menu-left").hide( 700 );
 	$("#ficheInfoDetail").show( 700 );
 	$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
+	
 	$.blockUI({
 		message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
 	});
+
+	mylog.log("networkParams", networkParams);
 
 	getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?network='+networkParams, function(){
 		$.unblockUI();
@@ -1284,4 +1290,80 @@ function addTabMap(element, tab){
 		tab.push(element);
 	return tab;
 }
+
+
+function isLinks(element, id){
+	mylog.log("isLinks", element, id);
+	var res = false ;
+	mylog.log("rolesActived", rolesActived);
+	if(rolesActived.length){
+		$.each(rolesActived,function(k,v){
+			mylog.log(v, element);
+			if(v == "creator" && element.creator == id){
+					res = true ;
+					return true;
+				
+			}else if(	v == "admin" && 
+						element.links != null &&
+						typeof element.links["members"] != "undefined" && 
+						typeof element.links["members"][id] != "undefined" && 
+						typeof element.links["members"][id].isAdmin != "undefined" && 
+						element.links["members"][id].isAdmin == true){
+				res = true ;
+				return true;
+			}else if(	element.links != null && 
+						typeof element.links != "undefined" && 
+						typeof element.links[ v ] != "undefined" && 
+						typeof element.links[ v ][id] != "undefined" ){
+				res = true ;
+				return true;
+			}
+		});
+	}
+	return res ;
+}
+
+function filterTags(tags){
+	mylog.log("filterTags", tags);
+	if(typeof tags != "undefined" ){
+		str = '<div class="panel-heading">'+
+	          '<h4 class="panel-title" onclick="manageCollapse(\'tags\', \'false\')">'+
+	            '<a data-toggle="collapse" href="#tags" style="color:#719FAB" data-label="tags">Tous les tags'+ 
+	              '<i class="fa fa-chevron-right right" aria-hidden="true" id="fa_tags"></i>'+
+	            '</a>'+
+	          '</h4>'+
+	        '</div>'+
+	        '<div id="list_tags" class="panel-collapse collapse">'+
+	          '<ul class="list-group no-margin">';
+	          		$.each(tags,function(k,v){
+	          			 str += '<li class="list-group-item"><input type="checkbox" class="checkbox tagFilterAuto" value="'+k+'" data-parent="tags" data-label="'+k+'"/>'+k+' (' +v+ ')</li>'
+	          		});
+	        str +=  '</ul> </div>';
+
+	    $("#divTagsMenu").append(str);
+    }
+}
+
+
+function filterType(types){
+	mylog.log("filterType", types);
+	if(typeof tags != "undefined" ){
+		str = '<div class="panel-heading">'+
+	          '<h4 class="panel-title" onclick="manageCollapse(\'types\', \'false\')">'+
+	            '<a data-toggle="collapse" href="#types" style="color:#719FAB" data-label="types">Tous les types'+ 
+	              '<i class="fa fa-chevron-right right" aria-hidden="true" id="fa_tags"></i>'+
+	            '</a>'+
+	          '</h4>'+
+	        '</div>'+
+	        '<div id="list_types" class="panel-collapse collapse">'+
+	          '<ul class="list-group no-margin">';
+	          		$.each(types,function(k,v){
+	          			 str += '<li class="list-group-item"><input type="checkbox" class="checkbox typeFilterAuto" value="'+k+'" data-parent="types" data-label="'+k+'"/>'+trad[k]+' (' +v+ ')</li>'
+	          		});
+	        str +=  '</ul> </div>';
+
+	    $("#divTypesMenu").append(str);
+	}
+}
+
 </script>

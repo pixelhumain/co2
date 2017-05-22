@@ -41,7 +41,7 @@
       	  <small>
             <?php 
               $pluriel = ""; 
-              if(@$media["lastAuthorShare"]["profilThumbImageUrl"]=="") 
+              if(@$media["lastAuthorShare"] && @$media["lastAuthorShare"]["profilThumbImageUrl"]=="") 
                 $media["lastAuthorShare"]["profilThumbImageUrl"] = 
                   $this->module->assetsUrl."/images/thumb/default_".$media["lastAuthorShare"]["type"].".png"; 
 
@@ -184,11 +184,11 @@
           <span class="margin-top-10 margin-bottom-10 hidden-xs pull-right">
             <small>
               <i class="fa fa-clock-o"></i> 
-              <?php //var_dump(@$media);
-                    if(@$media["type"] == "activityStream" && @$media["verb"] == ActStr::TYPE_ACTIVITY_SHARE) 
+              <?php //var_dump(@$media["updated"]);
+                   // if(@$media["type"] == "activityStream" && @$media["verb"] == ActStr::TYPE_ACTIVITY_SHARE) 
                     echo Translate::pastTime(date(@$media["updated"]->sec), "timestamp", $timezone); 
-                    else
-                    echo Translate::pastTime(date(@$media["created"]->sec), "timestamp", $timezone); 
+                    //else
+                    //echo Translate::pastTime(date(@$media["created"]->sec), "timestamp", $timezone); 
               ?>
             </small>
 

@@ -612,6 +612,30 @@ db.organizations.find().forEach(function(doc){
     } 
 });
 
+TANGO - 22/05/2017
+---------------------------------------------------
+batch refactor news for SHARE
+---------------------------------------------------
+
+db.news.find({}).forEach(function(doc){ 
+    if(typeof doc.targetIsAuthor !="undefined" && doc.targetIsAuthor == "true"){
+        db.news.update({"_id":doc._id},{'$set':
+        {'sharedBy':[
+            {'id': doc.target.id,
+             'type':doc.target.type,
+             'updated': doc.created 
+            }]
+        }})
+    }else{
+        db.news.update({"_id":doc._id},{'$set':
+        {'sharedBy':[
+            {'id': doc.author,
+             'type':'citoyens',
+             'updated': doc.created 
+            }]
+        }})
+     }
+})
 
 
 ---------------------------------------------------

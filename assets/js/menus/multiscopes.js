@@ -368,11 +368,11 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 		}else{
 			console.log("communexion hash:", location.hash);
 			if(actionOnSetGlobalScope == "filter"){
-				if(location.hash.indexOf("#live") > 0)
+				if(location.hash.indexOf("#live") >= 0)
                 	startNewsSearch(true);
             	else if(location.hash != "")
 					startSearch(0, indexStepInit, searchCallback);
-				else loadLiveNow();
+				//else loadLiveNow();
 			}
 		}
 		//rebuildSearchScopeInput();

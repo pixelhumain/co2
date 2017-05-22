@@ -29,7 +29,12 @@ function bindCommunexionScopeEvents(){
             interval = setInterval(function(){ 
                 if(sec == 1){
                     if(actionOnSetGlobalScope=="filter"){
-                      startSearch(0, indexStepInit); 
+                        if(location.hash.indexOf("#live") >= 0){
+                            startNewsSearch(true)
+                        }
+                        else{
+                            startSearch(0, indexStepInit); 
+                        }
                     }
                     clearInterval(interval);
                 }
@@ -64,15 +69,14 @@ function activateGlobalCommunexion(active){  mylog.log("activateGlobalCommunexio
     }
     else{
         headerHtml='<a href="#web" class="menu-btn-back-category" data-target="#modalMainMenu" data-toggle="modal">'+
-                '<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" height="60" class="inline margin-bottom-15">'+
+                '<img src="'+themeUrl+'/assets/img/CO2r.png" height="60" class="inline margin-bottom-15">'+
                 '</a>';
         saveCookieMultiscope();
         //rebuildSearchScopeInput();
         showTagsScopesMin();
         if(actionOnSetGlobalScope=="filter"){
-            if(location.hash.indexOf("#live") > 0){
+            if(location.hash.indexOf("#live") >=0)
                 startNewsSearch(true);
-            }
             else
                 startSearch(0, indexStepInit);
         }

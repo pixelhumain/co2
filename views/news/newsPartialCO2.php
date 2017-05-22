@@ -118,7 +118,7 @@
       <?php } ?>
 
       $.each(news, function(e,v){
-
+        console.log(v);
         if(typeof v._id.$id != "undefined")
         if($(".newsActivityStream"+v._id.$id).length>0){
            $("#news"+v._id.$id).remove();

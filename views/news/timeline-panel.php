@@ -12,31 +12,41 @@
   <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12">
     
     <?php $count = 0; $allScope = "";
-          if(@$media["scope"]) 
+      if(@$media["scope"]) {
+        $scopeSpan="";
+        if($media["type"]=="news"){
           foreach (array("cities", "departements", "regions") as $s) {
             if(@$media["scope"][$s])
             foreach ($media["scope"][$s] as $keyy => $scopes) {
               foreach ($scopes as $k => $v) {
                 foreach (array("postalCode", "addressLocality", "name") as $kk => $s) {
                   if(@$k == $s && $v != ""){ 
-                    if($count<3){ ?>
-                    <span class='label label-danger pull-right margin-left-5 margin-top-10'>
-                      <i class='fa fa-bullseye'></i> <?php echo $v; ?>
-                    </span>
-    <?php           }else{ $allScope .= " ".$v; }  $count++; 
+                    if($count<3){
+                     $scopeSpan.="<span class='label label-danger pull-right margin-left-5 margin-top-10'>
+                      <i class='fa fa-bullseye'></i> ".$v."</span>";
+                    }else{ $allScope .= " ".$v; }  $count++; 
                   }
                 }
               }
             }
-          } 
-    ?>
-    <?php if($count >=3){ ?>
-      <span class='label text-red pull-right margin-left-5 margin-top-10 tooltips' 
+          }
+        }else{
+          if (@$media["scope"]["address"]) {
+              $postalCode=(@$media["scope"]["address"]["postalCode"])?$media["scope"]["address"]["postalCode"].", " : "";
+              $city=$media["scope"]["address"]["addressLocality"]; 
+              $scopeSpan="<span class='label label-danger pull-right margin-left-5 margin-top-10'><i class='fa fa-bullseye'></i> ".$postalCode.$city."</span>"; 
+          }
+        }
+        if($count >3){ ?>
+          <span class='label text-red pull-right margin-left-5 margin-top-10 tooltips' 
             data-title="<?php echo $allScope; ?>" data-toogle="tooltip">
-        <i class='fa fa-plus'></i> <?php echo $count-3;?>
-      </span>
-    <?php } ?>
-  </div>
+            <i class='fa fa-plus'></i> <?php echo $count-3;?> autres
+          </span>
+        <?php } 
+        echo $scopeSpan;
+      }
+    ?>
+    </div>
   
   <?php $classHeading="";
   if(@$srcMainImg != "" && $media["type"] == "activityStream"){ $classHeading="activity-heading"; ?>

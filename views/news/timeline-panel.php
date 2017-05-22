@@ -39,30 +39,64 @@
   <div class="timeline-heading text-center <?php echo $classHeading; ?>">
        	<h5 class="text-left srcMedia">
       	  <small>
-            <?php $pluriel = ""; //var_dump($media); ?>
-            <?php if(!@$media["sharedBy"]){ ?>
-              <img class="pull-left img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
-            <?php }else{ $pluriel = " pluriel"; } ?>
+            <?php 
+              $pluriel = ""; 
+              if(@$media["lastAuthorShare"]["profilThumbImageUrl"]=="") 
+                $media["lastAuthorShare"]["profilThumbImageUrl"] = 
+                  $this->module->assetsUrl."/images/thumb/default_".$media["lastAuthorShare"]["type"].".png"; 
+
+              if(empty(@$media["sharedBy"]) || !@$media["lastAuthorShare"] ||
+               (($media["sharedBy"][0]["id"] == @$media["lastAuthorShare"]["id"] && 
+                count(@$media["sharedBy"])==1) &&
+                ($media["sharedBy"][0]["id"] == @$authorId)) ){ 
+                  $pluriel = ""; 
+              }else{ $pluriel = " pluriel"; } ?>
+
+            <img class="pull-left img-circle" 
+                   src="<?php echo @$media["lastAuthorShare"]["profilThumbImageUrl"] ? 
+                                    $media["lastAuthorShare"]["profilThumbImageUrl"] :
+                                    @$thumbAuthor; ?>" 
+                   height=40>
 
             <div class="pull-left padding-5 col-md-7 col-sm-7" style="line-height: 15px;">
+              <?php if(@$media["lastAuthorShare"]){ ?>
+                <a href="#page.type.<?php echo $media["lastAuthorShare"]["type"] ?>.id.<?php echo $media["lastAuthorShare"]["id"] ?>" class="lbh">
+                  <?php echo @$media["lastAuthorShare"]["name"]; ?>
+                </a> 
+              <?php } ?>
+
+              <?php  if(@$media["lastAuthorShare"]["name"] && @$media["lastAuthorShare"]["name"]!=@$nameAuthor){ ?>
+              <?php echo Yii::t("common", "and"); ?> 
+              <?php } ?>
+              
+              <?php  if(@$media["lastAuthorShare"]["name"]!=@$nameAuthor){ ?>
               <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh">
                 <?php echo @$nameAuthor; ?>
               </a>
-              <?php if(@$media["sharedBy"]){ ?>
+              <?php } ?>
+
+              <?php //var_dump(@$media["sharedBy"]); 
+                if(@$media["sharedBy"]){ ?>
                 <?php foreach ($media["sharedBy"] as $keyS => $share) { ?>
                     
                       <?php if(@$nameAuthor==@$share["name"] && sizeof($media["sharedBy"]) == 1){ $pluriel = ""; } ?>
                       
-                      <?php if($keyS < 2 && @$nameAuthor!=@$share["name"]){ ?>
+                      <?php if($keyS < 2 && 
+                               @$nameAuthor!=@$share["name"] &&
+                               @$media["lastAuthorShare"]["name"]!=@$share["name"]){ ?>
  
                       <?php if($keyS < sizeof($media["sharedBy"])-1){ ?>, 
                       <?php }else if(sizeof($media["sharedBy"]) > 0){ echo Yii::t("common", "and"); }  ?>
 
-                       <a href="#page.type.<?php echo @$share["type"]; ?>.id.<?php echo @$share["id"] ?>" class="lbh">
+                       <a href="#page.type.<?php echo @$share["type"]; ?>.id.<?php echo @$share["id"] ?>" 
+                          class="lbh">
                         <?php echo @$share["name"]; ?>
                       </a> 
                     <?php }else if($keyS == 2){ ?>
-                      <?php echo Yii::t("common", "and"); ?> <?php echo sizeof($media["sharedBy"]) - 2; ?> autres personnes
+                      <?php echo Yii::t("common", "and"); ?> 
+                      <?php echo sizeof($media["sharedBy"]) - 2; ?> 
+                      <?php $s = sizeof($media["sharedBy"]) - 2 > 1 ? "s" : ""; ?> 
+                      autre<?php echo $s; ?> personne<?php echo $s; ?>
                     <?php } ?>
                 <?php } ?>
               <?php } ?>
@@ -97,15 +131,15 @@
               <?php if(@$media["target"]["id"] != @$authorId && 
                        @$media["verb"] != "create") { ?>
                 <?php if(@$media["target"]["id"] != @$contextId){ ?>
-                      sur le mur de 
+                      dans le journal de 
                       <a href="#page.type.<?php echo @$media["target"]["type"]; ?>.id.<?php echo @$media["target"]["id"]; ?>" 
                               class="lbh">
                               <?php echo @$media["target"]["name"]; ?>
                       </a>
                 <?php }else if(@$media["target"]["id"] == @$contextId && @$contextId == Yii::app()->session["userId"] ){ ?>
-                    sur votre mur
+                    dans votre journal
                 <?php }else if(@$media["target"]["id"] == @$contextId && @$contextId != Yii::app()->session["userId"] ){ ?>
-                    sur ce mur
+                    dans ce journal
                 <?php } ?>
               <?php } ?>
 
@@ -150,7 +184,8 @@
           <span class="margin-top-10 margin-bottom-10 hidden-xs pull-right">
             <small>
               <i class="fa fa-clock-o"></i> 
-              <?php if(@$media["type"] == "activityStream" && @$media["verb"] == ActStr::TYPE_ACTIVITY_SHARE) 
+              <?php //var_dump(@$media);
+                    if(@$media["type"] == "activityStream" && @$media["verb"] == ActStr::TYPE_ACTIVITY_SHARE) 
                     echo Translate::pastTime(date(@$media["updated"]->sec), "timestamp", $timezone); 
                     else
                     echo Translate::pastTime(date(@$media["created"]->sec), "timestamp", $timezone); 
@@ -162,11 +197,17 @@
   </div>
 
   <div class="timeline-body  col-md-12 text-left margin-bottom-10">
-    <?php if(!empty(@$media["text"])){ ?>
-    <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" 
-         class="newsContent no-padding"><?php echo $media["text"]; ?>
-    </div>
+    <?php if(!empty(@$media["comment"])){ ?>
+      <span class=""><?php echo $media["comment"]; ?>
+      </span>
     <?php } ?>
+    
+    <?php if(!empty(@$media["text"])){ ?>
+      <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" 
+           class="newsContent no-padding"><?php echo $media["text"]; ?>
+      </div>
+    <?php } ?>
+
     <?php if(@$media["tags"] && @$media["type"] != "activityStream") 
           foreach ($media["tags"] as $keyy => $tag) { 
             if($tag != "") { ?>

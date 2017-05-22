@@ -501,6 +501,10 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       var type = $(thiselement).attr("data-type");
       var id = $(thiselement).attr("data-id");
       
+      var comment = $("#msg-share").val();
+      formData.comment = comment;
+      $("#msg-share").val("");
+      
       //traduction du type pour le floopDrawer
       var typeOrigine = dyFInputs.get(type).col;
       if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
@@ -510,7 +514,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
       $.ajax({
         type: "POST",
-        url: baseUrl+"/"+moduleId+"/link/share",
+        url: baseUrl+"/"+moduleId+"/news/share",
         data : formData,
         dataType: "json",
         success: function(data){

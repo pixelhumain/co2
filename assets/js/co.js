@@ -2358,9 +2358,7 @@ var dyFObj = {
 			        if (typeof afterSave == "function"){
 	            		afterSave(data);
 	            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
-	            	}
-	            	mylog.log("here")
-	            	//else{
+	            	} else {
 						dyFObj.closeForm();
 		                if(data.url){
 		                	mylog.log("urlReload data.url", data.url);
@@ -2370,7 +2368,7 @@ var dyFObj = {
 		                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
 			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 		                }
-					//}
+					}
 	            }
 	    	}
 	    });

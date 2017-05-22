@@ -6,6 +6,13 @@
         border-color: #e6344d;
     }
 </style>
+
+<?php if(empty($result) && !@Yii::app()->session["userId"]){ ?>
+    <h4 class="text-dark text-center">
+        Aucune donnée relative à votre communexion n'a été trouvée
+    </h4>
+<?php } ?>
+
 <div class="col-xs-12 no-padding col-nowList"  data-tpl="pod.nowList">
 
     <?php if((!@$scope || @$scope=="") && $open==false ){ ?>

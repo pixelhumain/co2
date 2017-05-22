@@ -271,11 +271,20 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 //active les link lbh
                 bindLBHLinks();
 
-                 $(".start-new-communexion").click(function(){  
+                //only on homepage
+                $(".start-new-communexion").click(function(){  
                     setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
                                      $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
                                       $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
                     activateGlobalCommunexion(true);
+                    if($("#communexionNameHome").length){
+                    	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+$(this).data("name-communexion")+'</span></span>');
+                    	$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
+                      $("#main-search-bar").val("");
+                    	$(".info_co, .input_co").addClass("hidden");
+                      $("#change_co").removeClass("hidden");
+						          $("#dropdown_search").html("");
+                    }
                 });
 
 
@@ -492,6 +501,10 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       var type = $(thiselement).attr("data-type");
       var id = $(thiselement).attr("data-id");
       
+      var comment = $("#msg-share").val();
+      formData.comment = comment;
+      $("#msg-share").val("");
+      
       //traduction du type pour le floopDrawer
       var typeOrigine = dyFInputs.get(type).col;
       if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
@@ -501,7 +514,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
       $.ajax({
         type: "POST",
-        url: baseUrl+"/"+moduleId+"/link/share",
+        url: baseUrl+"/"+moduleId+"/news/share",
         data : formData,
         dataType: "json",
         success: function(data){

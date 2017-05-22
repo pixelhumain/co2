@@ -217,13 +217,6 @@ class AppController extends CommunecterController {
         if(@$element["organizerId"] && @$element["organizerType"])
             $element['organizer'] = Element::getByTypeAndId( $element["organizerType"], $element["organizerId"]);
 
-        /*if($type == Poi::COLLECTION){
-            $type = $element["parentType"];
-            $id = $element["parentId"];
-            $view = "directory";
-            $dir = "poi";
-        }*/
-
         $params = array("id" => @$id,
                         "type" => @$type,
                         "view" => @$view,

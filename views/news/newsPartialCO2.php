@@ -98,6 +98,7 @@
   <script type="text/javascript">
 
     var news=<?php echo json_encode($news) ?>;
+   // updateNews=updateNews.concat(array(1,2,3));
     var canPostNews = <?php echo json_encode(@$canPostNews) ?>;
     var canManageNews = <?php echo json_encode(@$canManageNews) ?>;
     var actionController = <?php echo json_encode(@$actionController) ?>;
@@ -118,6 +119,8 @@
       <?php } ?>
 
       $.each(news, function(e,v){
+        updateNews[e]= v;
+       // updateNews.e=v;
         console.log(v);
         if(typeof v._id.$id != "undefined")
         if($(".newsActivityStream"+v._id.$id).length>0){

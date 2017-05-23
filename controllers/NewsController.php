@@ -22,6 +22,7 @@ class NewsController extends CommunecterController {
 	        'save'     		=> 'citizenToolKit.controllers.news.SaveAction',
 	        'delete'     	=> 'citizenToolKit.controllers.news.DeleteAction',
 	        'updatefield'   => 'citizenToolKit.controllers.news.UpdateFieldAction',
+	        'update'   => 'citizenToolKit.controllers.news.UpdateAction',
 			'share' 		=> 'citizenToolKit.controllers.news.ShareAction',
 	        'extractprocess' => array (
 	            'class'   => 'ext.extract-url-content.ExtractProcessAction',

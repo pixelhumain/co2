@@ -196,7 +196,7 @@
                   <li>
                     <a href="javascript:;" class="deleteNews" onclick="deleteNews('<?php echo $key ?>', $(this))" data-id="'<?php echo $key ?>"><small><i class="fa fa-times"></i> <?php echo Yii::t("common", "Delete")?></small></a></li>
                     <?php if (@$media["type"] != "activityStream" && @$media["author"]["id"]==Yii::app()->session["userId"]){ ?>
-                      <li><a href="javascript:" class="modifyNews" onclick="modifyNews('<?php echo $key ?>')" data-id="<?php echo $key ?>"><small><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Update publication")?></small></a></li>
+                      <li><a href="javascript:" class="modifyNews" onclick="modifyNews('<?php echo $key ?>','<?php echo $media["type"] ?>')" data-id="<?php echo $key ?>"><small><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Update publication")?></small></a></li>
                     <?php }
                 } ?> 
                 <?php if (!@$media["reportAbuse"] || (@$media["reportAbuse"] && !@$media["reportAbuse"][@Yii::app()->session["userId"]])) { ?>
@@ -284,7 +284,7 @@
             frameborder="0" allowfullscreen></iframe>
   <?php } ?>
   <?php if(@$media["media"]){ ?>
-    <div id="result<?php echo $key ?>" class="bg-white results col-sm-12"></div>
+    <div id="result<?php echo $key ?>" class="bg-white results padding-15"></div>
   <?php } ?>
 
 

@@ -343,8 +343,10 @@ function smoothScroll(scroolTo){
 	$(".my-main-container").scrollTo(scroolTo,500,{over:-0.6});
 }
 
-function modifyNews(idNews){
+function modifyNews(idNews,typeNews){
 	//switchModeEdit(id);
+	var idNewsUpdate=idNews;
+	var typeNewsUpdate=typeNews;
 	if($('.newsContent[data-pk="'+idNews+'"] .allText').length)
 		var commentContent = $('.newsContent[data-pk="'+idNews+'"] .allText').html();
 	else
@@ -355,9 +357,19 @@ function modifyNews(idNews){
 	if(notEmpty(commentTitle))
 		message += "<input type='text' id='textarea-edit-title"+idNews+"' class='form-control margin-bottom-5' style='text-align:left;' placeholder='Titre du message' value='"+commentTitle+"'>";
 	 	
-	 	message += "<div id='container-txtarea-news-"+idNews+"'>";
-		message += 	"<textarea id='textarea-edit-news"+idNews+"' class='form-control newsContentEdit' placeholder='modifier votre message'>"+commentContent+"</textarea>"+
+	 	message += "<div id='container-txtarea-news-"+idNews+"' class='updateMention'>";
+		message += 	"<textarea id='textarea-edit-news"+idNews+"' class='form-control newsContentEdit newsTextUpdate get-url-input' placeholder='modifier votre message'>"+commentContent+"</textarea>"+
+				   	"<div id='resultsUpdate' class='bg-white results col-sm-12'>";
+				   	if(typeof updateNews[idNews]["media"] != "undefined")
+				   		message += getMediaCommonHtml(updateNews[idNews]["media"],"save");
+		message +="</div>"+
+					'<div class="form-group tagstags col-sm-12 no-padding">'+
+          				'<input id="tagsUpdate" type="" data-type="select2" name="tags" placeholder="#Tags" value="" style="width:100%;">'+       
+      				"</div>"+
 				   "</div>";
+	
+
+
 	var boxComment = bootbox.dialog({
 	  message: message,
 	  title: 'Modifier votre publication',
@@ -373,12 +385,92 @@ function modifyNews(idNews){
 	      label: "Enregistrer",
 	      className: "btn-success",
 	      callback: function() {
-	      	updateNews(idNews,$("#textarea-edit-news"+idNews).val(), "newsContent");
+	      	$('textarea.mention').mentionsInput('getMentions', function(data) {
+      			mentionsInput=data;
+    		});
+    		newNews = new Object;
+    		newNews.idNews = idNews;
+			if($("#resultsUpdate").html() != ""){
+				newNews.media=new Object;	
+				if($("#resultsUpdate .type").val()=="url_content"){
+					newNews.media.type=$("#resultsUpdate .type").val();
+					if($("#resultsUpdate .name").length)
+						newNews.media.name=$("#resultsUpdate .name").val();
+					if($("#resultsUpdate .description").length)
+						newNews.media.description=$("#resultsUpdate .description").val();
+					newNews.media.content=new Object;
+					newNews.media.content.type=$("#resultsUpdate .media_type").val(),
+					newNews.media.content.url=$("#resultsUpdate .url").val(),
+					newNews.media.content.image=$("#resultsUpdate .img_link").val();
+					if($("#resultsUpdate .size_img").length)
+						newNews.media.content.imageSize=$("#resultsUpdate .size_img").val();
+					if($("#resultsUpdate .video_link_value").length)
+						newNews.media.content.videoLink=$("#resultsUpdate .video_link_value").val();
+				}
+				else{
+					newNews.media.type=$("#resultsUpdate .type").val(),
+					newNews.media.countImages=$("#resultsUpdate .count_images").val(),
+					newNews.media.images=[];
+					$(".imagesNews").each(function(){
+						newNews.media.images.push($(this).val());	
+					});
+				}
+			}
+			if ($("#tagsUpdate").val() != ""){
+				newNews.tags = $("#tagsUpdate").val().split(",");	
+			}
+		    //if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));	
+			newNews.text =$(".newsTextUpdate").val();
+			$.ajax({
+			        type: "POST",
+			        url: baseUrl+"/"+moduleId+"/news/update?tpl=co2",
+			        //dataType: "json",
+			        data: newNews,
+					type: "POST",
+			    })
+			    .done(function (data) {
+		    		if(data)
+		    		{
+		    			console.log(data);
+		    			$("#"+typeNewsUpdate+idNewsUpdate).replaceWith(data);
+		    			bindEventNews();
+		    			//if the news is post in a different month than last news and current month
+		    			/*if(data.object.date.sec) {
+		    				var monthSection = new Date( parseInt(data.object.date.sec)*1000 );
+		    				
+		    				//if we need a month space to insert the news
+		    				if ( !$( "#"+'month'+monthSection.getMonth()+''+monthSection.getFullYear()).length ) {
+								urlCtrl.loadByHash(location.hash);
+		    				}
+						}
+						
+						if( 'undefined' != typeof updateNews && typeof updateNews == "function" ){
+							insertNews(data.object);
+						}
+						$("#get_url").height(50);
+						$.unblockUI();*/
+						toastr.success("Votre publication a bien été modifié");
+						return true;
+		    		}
+		    		else 
+		    		{
+		    			//$.unblockUI();
+						toastr.error(data.msg);
+		    		}
+		    		$("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+					$("#btn-submit-form").prop('disabled', false);
+					return false;
+			    }).fail(function(){
+				   toastr.error("Something went wrong, contact your admin"); 
+				   $("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+				   $("#btn-submit-form").prop('disabled', false);
+			    });
+	      	/*updateNews(idNews,$("#textarea-edit-news"+idNews).val(), "newsContent");
 	      	if(notEmpty($("#textarea-edit-title"+idNews).val()))
-	      		updateNews(idNews,$("#textarea-edit-title"+idNews).val(), "name");
+	      		updateNews(idNews,$("#textarea-edit-title"+idNews).val(), "name");*/
 
-	      	toastr.success("Votre message a bien été modifié");
-			return true;
+	      	
+			//return true;
 	      }
 	    },
 	  }
@@ -386,7 +478,7 @@ function modifyNews(idNews){
 
 	boxComment.on("shown.bs.modal", function() {
 	  $.unblockUI();
-	  bindEventTextAreaNews('#textarea-edit-news'+idNews, idNews);
+	  bindEventTextAreaNews('#textarea-edit-news'+idNews, idNews, updateNews[idNews]);
 	});
 
 	boxComment.on("hide.bs.modal", function() {
@@ -400,21 +492,99 @@ function updateNews(idNews, newText, type){
 	$(classe2+'[data-pk="'+idNews+'"] .timeline_'+classe1).html(newText);
 }
 
-function bindEventTextAreaNews(idTextArea, idNews/*, isAnswer, parentCommentId*/){
-
+function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommentId*/){
+	getMediaFromUrlContent(idTextArea,"#resultsUpdate",1);
 	//$(idTextArea).css('height', "34px");
 	//$("#container-txtarea-news-"+idNews).css('height', "34px");
-	autosize($(idTextArea));
+	$(idTextArea).mentionsInput({
+    onDataRequest:function (mode, query, callback) {
+        if(stopMention)
+          return false;
+      	//$.each(data.mentions,function(e,v){
+      	//	mentionsContact.push(v);
+      	//});
+        var data = mentionsContact;
+        data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+      callback.call(this, data);
 
+        var search = {"search" : query};
+        $.ajax({
+        type: "POST",
+            url: baseUrl+"/"+moduleId+"/search/searchmemberautocomplete",
+            data: search,
+            dataType: "json",
+            success: function(retdata){
+              if(!retdata){
+                toastr.error(retdata.content);
+              }else{
+                //mylog.log(retdata);
+                data = [];
+                for(var key in retdata){
+                  for (var id in retdata[key]){
+                    avatar="";
+                    if(retdata[key][id].profilThumbImageUrl!="")
+                      avatar = baseUrl+retdata[key][id].profilThumbImageUrl;
+                    object = new Object;
+                    object.id = id;
+                    object.name = retdata[key][id].name;
+                    object.avatar = avatar;
+                    object.type = key;
+                    var findInLocal = _.findWhere(mentionsContact, {
+                  name: retdata[key][id].name, 
+                  type: key
+                }); 
+                if(typeof(findInLocal) == "undefined")
+                  mentionsContact.push(object);
+                }
+                }
+                data=mentionsContact;
+                //mylog.log(data);
+              data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+            callback.call(this, data);
+            mylog.log(callback);
+            }
+        } 
+      })
+    },
+    "defaultValue":data.mentions
+    });
+	$(".removeMediaUrl").click(function(){
+        $trigger=$(this).parents().eq(1).find(className);
+	    $this.parents().eq(nbParent).find(appendClassName).empty().hide();
+	    //$trigger.trigger("input");
+	});
+							
+	autosize($(idTextArea));
+	textNews=data.text;
+	/*if(typeof data.mentions){
+		$.each(data.mentions, function( index, value ){
+		//	$(idTextArea).mentionsInput('addMention', value.name);
+	   		mentionsContactarray = textNews.split(value.value);
+	   		mylog.log(array);
+	   		textNews=array[0]+
+	   					"@"+value.name+
+	   				array[1];
+	   					
+		});
+	}*/
+	$(idTextArea).val(textNews);
+	/*if(typeof data.mentions){
+		$.each(data.mentions, function( index, value ){
+	
+	$(idTextArea).mentionsInput("addMention",value);
+}); }*/
+	$(idTextArea).mentionsInput("update", data.mentions);
 	$(idTextArea).on('keyup ', function(e){
 		var heightTxtArea = $(idTextArea).css("height");
     	$("#container-txtarea-news-"+idNews).css('height', heightTxtArea);
 	});
-
 	$(idTextArea).bind ("input propertychange", function(e){
 		var heightTxtArea = $(idTextArea).css("height");
     	$("#container-txtarea-news-"+idNews).css('height', heightTxtArea);
 	});
+  	$('#tagsUpdate').select2({tags:tagsNews});
+  	$("#tagsUpdate").select2('val', data.tags);
+	
 }
 
 function deleteNews(id, $this){
@@ -1098,6 +1268,7 @@ function saveNews(){
  						$("#form-news #tags").select2('val', "");
  						showFormBlock(false);
 		    			$("#news-list").prepend(data);
+		    			bindEventNews();
 		    			//if the news is post in a different month than last news and current month
 		    			/*if(data.object.date.sec) {
 		    				var monthSection = new Date( parseInt(data.object.date.sec)*1000 );

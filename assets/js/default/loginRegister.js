@@ -331,18 +331,21 @@ var Login = function() {
 						$("#password3").val("");
 						$("#passwordAgain").val("");
 						$('#agree').prop('checked', false);
-		    		  	toastr.success(data.msg);
 		    		  	
-		    		  	$("#modalRegisterSuccessContent").html("<h3><i class='fa fa-smile-o fa-4x text-green'></i><br><br> "+data.msg+"</h3>");
-		    		  	$("#modalRegisterSuccess").modal({ show: 'true' }); 
-		    		  	// Hide modal if "Okay" is pressed
-					    $('#modalRegisterSuccess .btn-default').click(function() {
-					        mylog.log("hide modale and reload");
-					        $('.modal').modal('hide');
-					    	//window.location.href = baseUrl+'/#default.live';
-					    	window.location.href = baseUrl+"/"+moduleId;
-					    	window.location.reload();
-					    });
+		    		  	if(typeof data.invitedBy != undefined && data.invitedBy != "")
+		    		  		toastr.success(data.msg);
+		    		  	else{
+		    		  		$("#modalRegisterSuccessContent").html("<h3><i class='fa fa-smile-o fa-4x text-green'></i><br><br> "+data.msg+"</h3>");
+			    		  	$("#modalRegisterSuccess").modal({ show: 'true' }); 
+			    		  	// Hide modal if "Okay" is pressed
+						    $('#modalRegisterSuccess .btn-default').click(function() {
+						        mylog.log("hide modale and reload");
+						        $('.modal').modal('hide');
+						    	//window.location.href = baseUrl+'/#default.live';
+						    	window.location.href = baseUrl+"/"+moduleId;
+						    	window.location.reload();
+						    });
+		    		  	}
 		        		//urlCtrl.loadByHash("#default.directory");
 		    		  }
 		    		  else {

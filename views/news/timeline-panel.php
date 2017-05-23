@@ -66,13 +66,15 @@
 
               if(empty(@$media["sharedBy"]) || !@$media["lastAuthorShare"] ||
                (($media["sharedBy"][0]["id"] == @$media["lastAuthorShare"]["id"] && 
-                count(@$media["sharedBy"])==1) &&
-                ($media["sharedBy"][0]["id"] == @$authorId)) ){ 
+                count(@$media["sharedBy"])<=1) &&
+                ($media["sharedBy"][0]["id"] == @$authorId)) 
+               ){ 
                   $pluriel = ""; 
               }else{ $pluriel = "-pluriel"; } ?>
 
             <img class="pull-left img-circle" 
-                   src="<?php echo (@$media["lastAuthorShare"]["profilThumbImageUrl"] && @$media["lastAuthorShare"]["profilThumbImageUrl"]=="")? 
+                   src="<?php echo (@$media["lastAuthorShare"]["profilThumbImageUrl"] && 
+                                    @$media["lastAuthorShare"]["profilThumbImageUrl"]!="")? 
                                     Yii::app()->createUrl($media["lastAuthorShare"]["profilThumbImageUrl"]) :
                                     @$thumbAuthor; ?>" 
                    height=40>
@@ -98,7 +100,7 @@
                 if(@$media["sharedBy"]){ ?>
                 <?php foreach ($media["sharedBy"] as $keyS => $share) { ?>
                     
-                      <?php if(@$nameAuthor==@$share["name"] && sizeof($media["sharedBy"]) == 1){ $pluriel = ""; } ?>
+                      <?php //if(@$nameAuthor==@$share["name"] && sizeof($media["sharedBy"]) == 1){ $pluriel = ""; } ?>
                       
                       <?php if($keyS < 2 && 
                                @$nameAuthor!=@$share["name"] &&

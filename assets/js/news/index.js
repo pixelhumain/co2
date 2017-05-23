@@ -1098,6 +1098,7 @@ function saveNews(){
  						$("#form-news #tags").select2('val', "");
  						showFormBlock(false);
 		    			$("#news-list").prepend(data);
+		    			bindEventNews();
 		    			//if the news is post in a different month than last news and current month
 		    			/*if(data.object.date.sec) {
 		    				var monthSection = new Date( parseInt(data.object.date.sec)*1000 );

@@ -424,6 +424,11 @@
 		if(typeof contextData.name !="undefined")
 		setTitle("", "", contextData.name);
 
+		if( contextData.type == "events")
+			$(".createProjectBtn").hide()
+		else 
+			$(".createProjectBtn").show()
+
 		if(subView!=""){
 			if(subView=="gallery")
 				loadGallery()

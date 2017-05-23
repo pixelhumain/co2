@@ -155,6 +155,9 @@
   top: 1px !important;
   padding:0 !important;
 }
+.updateMention .mentions-input-box .mentions{ 
+  padding:10px 5px !important;
+}
 </style>
 <?php 
   $isLive = isset($_GET["isLive"]) ? true : false;
@@ -309,7 +312,7 @@
       <div class="extract_url">
         <div class="padding-10 bg-white">
           <img class="loading_indicator" src="<?php echo $this->module->assetsUrl ?>/images/news/ajax-loader.gif">
-          <textarea id="get_url" placeholder="Exprimez-vous ..." class=" get_url_input form-control textarea mention" style="border:none;background:transparent !important" name="getUrl" spellcheck="false" ></textarea>
+          <textarea id="get_url" placeholder="Exprimez-vous ..." class="get_url_input form-control textarea mention" style="border:none;background:transparent !important" name="getUrl" spellcheck="false" ></textarea>
           <ul class="dropdown-menu" id="dropdown_search" style="">
           </ul>
 

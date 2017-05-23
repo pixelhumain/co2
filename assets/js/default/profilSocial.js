@@ -155,6 +155,39 @@ function bindButtonMenu(){
 		dyFObj.openForm(form, null, dataUpdate);
 	});
 
+	//window select open form type (selectCreate)
+	$(".btn-open-form").click(function(){
+        var typeForm = $(this).data("form-type");
+        mylog.log("test", $(this).data("form-subtype")),
+        currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
+        //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
+        if(contextData && contextData.type && contextData.id )
+            dyFObj.openForm(typeForm,"sub");
+        else
+            dyFObj.openForm(typeForm);
+    });
+
+    $("#div-select-create").mouseleave(function(){
+    	$("#div-select-create").hide(200);
+    	//$(".central-section").show();    	
+    });
+
+    $("#open-select-create").click(function(){
+
+		//$(".central-section").hide();
+    	$("#div-select-create").show(200);
+    	setTimeout(function(){
+    		//KScrollTo("#div-select-create");
+    		$('html, body').stop().animate({
+		        scrollTop: $("#div-select-create").offset().top - 300
+		    }, 300, '');
+    	}, 500);
+    });
+    
+    $("#div-select-create").hide();
+    $("#div-select-create").removeClass("hidden");
+
+
 	$("#downloadProfil").click(function () {
 		$.ajax({
 			url: baseUrl + "/communecter/data/get/type/citoyens/id/"+contextData.id ,

@@ -62,7 +62,10 @@
               $pluriel = ""; 
               if(@$media["lastAuthorShare"] && @$media["lastAuthorShare"]["profilThumbImageUrl"]=="") 
                 $media["lastAuthorShare"]["profilThumbImageUrl"] = 
-                  $this->module->assetsUrl."/images/thumb/default_".$media["lastAuthorShare"]["type"].".png"; 
+                  $this->module->assetsUrl."/images/thumb/default_".$media["lastAuthorShare"]["type"].".png";
+              else if(@$media["lastAuthorShare"]["profilThumbImageUrl"]!="")
+                $media["lastAuthorShare"]["profilThumbImageUrl"] = 
+                  Yii::app()->createUrl($media["lastAuthorShare"]["profilThumbImageUrl"]) ;
 
               if(empty(@$media["sharedBy"]) || !@$media["lastAuthorShare"] ||
                (($media["sharedBy"][0]["id"] == @$media["lastAuthorShare"]["id"] && 
@@ -74,8 +77,8 @@
 
             <img class="pull-left img-circle" 
                    src="<?php echo (@$media["lastAuthorShare"]["profilThumbImageUrl"] && 
-                                    @$media["lastAuthorShare"]["profilThumbImageUrl"]!="")? 
-                                    Yii::app()->createUrl($media["lastAuthorShare"]["profilThumbImageUrl"]) :
+                                    @$media["lastAuthorShare"]["profilThumbImageUrl"]!="") ? 
+                                    $media["lastAuthorShare"]["profilThumbImageUrl"] :
                                     @$thumbAuthor; ?>" 
                    height=40>
 

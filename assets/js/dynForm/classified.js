@@ -53,10 +53,10 @@ dynForm = {
 	    afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-		    /*else {
+		    else {
 		    	dyFObj.closeForm();
 		    	urlCtrl.loadByHash( location.hash );	
-		    }*/
+		    }
 	    },
 	    canSubmitIf : function () { 
 	    	if( $("#ajaxFormModal #section").val() && $("#ajaxFormModal #type").val() &&  $("#ajaxFormModal #subtype").val() )

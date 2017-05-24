@@ -735,10 +735,13 @@ var urlCtrl = {
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
 		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
+			mylog.log("globalTheme", globalTheme);
 			if( hash.indexOf("#network") >= 0 &&
 				location.hash.indexOf("#network") >= 0 || hash=="#" || hash==""){ 
+				mylog.log("network");
 			}
 			else{
+				mylog.log("network2");
 				count=$(".breadcrumAnchor").length;
 				//case on reload view
 				if(count==0)
@@ -781,7 +784,9 @@ var urlCtrl = {
 	    	mylog.log("urlCtrl.loadByHash >>> hash found",hash);
 	    }
 	    else if( hash.indexOf("#panel") >= 0 ){
+
 	    	panelName = hash.substr(7);
+	    	mylog.log("panelName",panelName);
 	    	if( (panelName == "box-login" || panelName == "box-register") && userId != "" && userId != null ){
 	    		urlCtrl.loadByHash("#default.home");
 	    		return false;
@@ -789,10 +794,14 @@ var urlCtrl = {
 	            title = 'ADD SOMETHING TO MY NETWORK';
 	        else
 	            title = "WELCOM MUNECT HEY !!!";
-	        if(panelName == "box-login")
+	        if(panelName == "box-login"){
 				$('#modalLogin').modal("show");
-			else if(panelName == "box-register")
+				$.unblockUI();
+	        }
+			else if(panelName == "box-register"){
 				$('#modalRegister').modal("show");
+				$.unblockUI();
+			}
 			else
 	       		showPanel(panelName,null,title);
 	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){

@@ -133,7 +133,7 @@
 			//récupère le nom de l'icon en fonction du type de marker souhaité
 			this.Sig.getIcoMarkerMap = function(thisData)
 			{
-				mylog.warn("--------------- getIcoMarker *** ---------------------");
+				//mylog.warn("--------------- getIcoMarker *** ---------------------");
 				//mylog.log(thisData);
 				if(typeof thisData.author != "undefined") thisData = thisData.author;
 

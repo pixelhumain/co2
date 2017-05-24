@@ -152,15 +152,6 @@
 	?>
 
 <ul id="subsubMenuLeft">
-
-    <?php if(@$element["tags"]){  ?>
-	<!--<li class="">
-		<?php foreach ($element["tags"] as $key => $tag) { ?>
-		<span class="badge letter-red bg-white"><?php echo $tag; ?></span>
-		<?php } ?>
-	</li>
-	<li><br><hr></li>-->
-	<?php } ?>
 	
 	<?php if (($edit==true || $openEdition==true) && @Yii::app()->session["userId"]){ ?>
 		<li class="visible-xs">
@@ -197,7 +188,7 @@
 	?>
 	<li class="visible-xs">
 		<a href="javascript:" class="ssmla btn-start-newsstream">	
-			<i class="fa fa-rss"></i> Fil d'actualités
+			<i class="fa fa-rss"></i> <?php echo Yii::app()->theme->baseUrl ; ?> Fil d'actualités
 		</a>
 	</li>
 

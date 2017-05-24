@@ -1,5 +1,4 @@
 <?php 
-
 	HtmlHelper::registerCssAndScriptsFiles( 
 		array(  '/css/onepage.css',
 				'/vendor/colorpicker/js/colorpicker.js',
@@ -12,6 +11,8 @@
 				'/css/profilSocial.css',
 		) , 
 	Yii::app()->theme->baseUrl. '/assets');
+
+
 
 	$cssAnsScriptFilesTheme = array(
 		"/plugins/jquery-cropbox/jquery.cropbox.css",

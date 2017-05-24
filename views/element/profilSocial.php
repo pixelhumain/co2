@@ -68,6 +68,23 @@
 		display: none;
 	}
 <?php } ?>
+
+
+#ajax-modal .modal-content{
+	background-color: rgba(0,0,0,0.6);
+}
+#ajax-modal .container{
+	background-color: white;
+	border-radius: 4px;
+}
+#ajax-modal.portfolio-modal{
+	background-color: transparent;
+}
+#ajax-modal .close-modal .lr,
+#ajax-modal .close-modal .rl{
+	background-color: white;
+}
+
 </style>
 
 <?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
@@ -194,7 +211,8 @@
 		  <?php } ?>
 
 
-		  <?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
+		  <?php if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
+		  			($type==Person::COLLECTION && (string)$element["_id"]==@Yii::app()->session["userId"])){ ?>
 		  <button type="button" class="btn btn-default bold letter-green hidden-xs" 
 		  		  id="open-select-create" style="border-right:0px!important;">
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
@@ -336,9 +354,11 @@
 	       
 	       <button class="btn btn-link pull-right"><i class="fa fa-times"></i></button>
 	       
-	       <h4 class="text-center margin-top-15" style="">
-	       	<i class="fa fa-plus-circle"></i> Publier du contenu sur cette page<br>
-	       	<small>Que souhaitez-vous publier ?</small>
+	       <h4 class="text-center margin-top-15" style=""><img class="img-circle" src="<?php echo $thumbAuthor; ?>" height=30 width=30 style="margin-top:-10px;">
+	       	<span class="name-header"><?PHP echo @$element["name"]; ?></span>
+	       <br>
+	       	<i class="fa fa-plus-circle"></i> Publier du contenu sur cette page
+	       <br><small>Que souhaitez-vous publier ?</small>
 	       </h4>
 
 	        <div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
@@ -376,7 +396,6 @@
 
 			<div class="section-create-page">
 	        
-
 	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GROUP; ?>"  data-dismiss="modal"
 	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 letter-turq">
 	                <h6><i class="fa fa-group fa-2x bg-turq"></i><br> Groupe</h6>

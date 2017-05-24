@@ -160,6 +160,7 @@ function bindButtonMenu(){
         var typeForm = $(this).data("form-type");
         mylog.log("test", $(this).data("form-subtype")),
         currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
+
         //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
         if(contextData && contextData.type && contextData.id )
             dyFObj.openForm(typeForm,"sub");

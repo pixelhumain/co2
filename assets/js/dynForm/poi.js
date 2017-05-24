@@ -6,6 +6,13 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	sub : function(){
+	    		$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+						  					  .addClass("bg-green-poi");
+    		 	
+    		 	$("#ajax-modal-modal-title").html(
+    		 		$("#ajax-modal-modal-title").html()+
+    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
+
 	    		if(contextData.type && contextData.id )
 	    		{
 	    			$('#ajaxFormModal #parentId').val(contextData.id);

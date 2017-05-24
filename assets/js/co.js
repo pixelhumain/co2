@@ -735,10 +735,13 @@ var urlCtrl = {
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
 		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
+			mylog.log("globalTheme", globalTheme);
 			if( hash.indexOf("#network") >= 0 &&
 				location.hash.indexOf("#network") >= 0 || hash=="#" || hash==""){ 
+				mylog.log("network");
 			}
 			else{
+				mylog.log("network2");
 				count=$(".breadcrumAnchor").length;
 				//case on reload view
 				if(count==0)
@@ -781,7 +784,9 @@ var urlCtrl = {
 	    	mylog.log("urlCtrl.loadByHash >>> hash found",hash);
 	    }
 	    else if( hash.indexOf("#panel") >= 0 ){
+
 	    	panelName = hash.substr(7);
+	    	mylog.log("panelName",panelName);
 	    	if( (panelName == "box-login" || panelName == "box-register") && userId != "" && userId != null ){
 	    		urlCtrl.loadByHash("#default.home");
 	    		return false;
@@ -789,10 +794,14 @@ var urlCtrl = {
 	            title = 'ADD SOMETHING TO MY NETWORK';
 	        else
 	            title = "WELCOM MUNECT HEY !!!";
-	        if(panelName == "box-login")
+	        if(panelName == "box-login"){
 				$('#modalLogin').modal("show");
-			else if(panelName == "box-register")
+				$.unblockUI();
+	        }
+			else if(panelName == "box-register"){
 				$('#modalRegister').modal("show");
+				$.unblockUI();
+			}
 			else
 	       		showPanel(panelName,null,title);
 	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
@@ -2473,10 +2482,13 @@ var dyFObj = {
 	starBuild : function  (afterLoad, data) {
 		mylog.warn("------------ starBuild",dyFObj.elementObj, afterLoad, data);
 		mylog.dir(dyFObj.elementObj);
-		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(dyFObj.elementObj.bgClass);
+		$("#ajax-modal .modal-header").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA");//.addClass(dyFObj.elementObj.bgClass);
 		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
-		$("#ajax-modal-modal-title").removeClass("text-green").removeClass("text-purple").removeClass("text-orange").removeClass("text-azure");
-		$(".modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-lightblue ").addClass(dyFObj.elementObj.titleClass);
+		$("#ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
+
+		$("#ajax-modal .modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-blue bg-turq")
+									  .addClass(dyFObj.elementObj.titleClass);
+
 	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
@@ -3178,7 +3190,7 @@ var typeObj = {
 
 var documents = {
 	saveImages : function (contextType, contextId,contentKey){
-		alert("saveImages"+contextType+contextId);
+		//alert("saveImages"+contextType+contextId);
 		$.ajax({
 			url : baseUrl+"/"+moduleId+"/document/"+uploadUrl+"dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/dynform",
 			type: "POST",

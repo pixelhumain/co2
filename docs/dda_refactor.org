@@ -130,18 +130,18 @@ Une loi progresse sur le territoire à travers 4 niveaux (ou + après refactor) 
   - Un texte est automatiquement abrogé (passe à l'état refusé) si le total des votes en cours est redescendu en dessous du seuil de la majorité 
   (61,8% ou moins ? pour éviter que ca clignote autour de la limite. Par exemple 60% ou 55%. ou mieux : 61.80 - 6.18 = 55.62)
 
-  - Une notification est envoyé à tous les citoyens concernés par cette abrogation (en fonction du niveau atteint par la proposition)
+  - Une notification est envoyée à tous les citoyens concernés par cette abrogation (en fonction du niveau atteint par la proposition)
 
 
 
 *** Comment on crée une proposition de loi ?
 
-- On choisi un(ou plusieurs) thème(s) - les thèmes pourraient être équivalents à différents ministères, et nous serions tous ministres :p : 
-  santé, energie, climat, Culture, Animation, Biodiversité, Economie sociale et solidaire, etc...
+- On choisi un(ou plusieurs) thème(s) - les thèmes pourraient être équivalents à différents ministères, et nous serions tous ministres :p
+  Santé, Energie, Climat, Culture, Animation, Biodiversité, Economie sociale et solidaire, etc...
 
 - On écrit sa proposition
 - On définit le niveau final à atteindre (commune, departement, region, pays)
-- On définit une list de tag pour décrire le contenu de la proposition
+- On définit une liste de tags pour décrire le contenu de la proposition
 - On enregistre
 
 => la proposition est publiée dans mon conseil citoyen communal en premier.
@@ -234,7 +234,7 @@ La constituante ne pourrait débuter véritablement qu'une fois le préambule va
   On peut seulement en écrire un nouveau, le soumettre au vote, et dans le cas où ce nouveau préambule est accepté : 
   trouver des gentils codeurs pour l'implémenter (mais pas nous) sur un autre système.
 
-  > Une fois le process lancé, on ne peut pas modifier les règles de votes (ou autres) tous les mois... c'est impossible à gérer (et à comprendre).
+  > Une fois le process lancé, on ne peut pas modifier les règles de votes (ou autres) tous les mois... sinon c'est impossible à gérer (et à comprendre).
 
 * > Ou alors, il faut que l'équipe de dev ait un droit de véto (avec justification obligatoire, et éventuellement une séance de vote réservé aux dev)
     
@@ -244,4 +244,20 @@ La constituante ne pourrait débuter véritablement qu'une fois le préambule va
 
   je trouve ça intéressant de savoir combien de personnes sont prêtes à manifester leur désaprobation.
   En faisant le ratio entre NB-mailContre / NB-inscrits, on aura une idée de la légitimité de notre démarche.
+  Le but étant d'avoir un maximum de légitimité si on arrive à co-écrire une nouvelle constitution de A à Z, 
+  pour avoir le maximum de poid pour la faire officialiser : cad faire en sorte que cette nouvelle constitution devienne la nouvelle constitution officielle
+  du peuple Français, et qu'elle soit la référence pour toutes nos institutions 
+  (ce qui n'arrivera jamais sans un mouvement insurectonnel/révolutionnaire utilisant probablement la force, 
+  mais surtout sans une nouvelle constitution écrite et prête à être mise en place).
+
+  Il n'y aura une 6eme république que si nous réussissons à co-écrire une nouvelle constitution. C'est une étape incontournable...
+  
+  Tant que nous restons dans la 5eme république, les changements que nous souhaitons voir se produire dans la société (solidarité, écologie, conso locale, etc) 
+  n'ont que très peu de chance de se produire. Seule une nouvelle constitution pourra créer l'élan suffisant pour d'attaquer à l'ampleur de la tâche.
+
+  Il ne peut pas y avoir de véritable démocratie (participative/directe) dans la 5eme république.
+
+
+
+
 

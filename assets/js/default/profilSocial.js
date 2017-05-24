@@ -173,6 +173,11 @@ function bindButtonMenu(){
     	//$(".central-section").show();    	
     });
 
+    $("#btn-close-select-create").click(function(){
+    	$("#div-select-create").hide(200);
+    	//$(".central-section").show();    	
+    });
+
     $("#open-select-create").click(function(){
 
 		//$(".central-section").hide();

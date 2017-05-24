@@ -91,6 +91,9 @@
     .links-create-element .btn-create-elem{
         margin-top:25px;
     }
+    .links-create-element a.btn-create-elem:hover{
+        text-decoration: none;
+    }
 
     .subtitle-search{
         display: none;

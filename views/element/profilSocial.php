@@ -351,9 +351,13 @@
 		 id="div-select-create">
 		<div class="col-md-12 col-sm-12 col-xs-12 padding-15 shadow2 bg-white ">
 	       
-	       <button class="btn btn-link pull-right"><i class="fa fa-times"></i></button>
+	       
 	       
 	       <h4 class="text-center margin-top-15" style=""><img class="img-circle" src="<?php echo $thumbAuthor; ?>" height=30 width=30 style="margin-top:-10px;">
+	       	<a class="btn btn-link pull-right text-dark" id="btn-close-select-create" style="margin-top:-10px;">
+	       		<i class="fa fa-times-circle fa-2x"></i>
+	       	</a>
+	       
 	       	<span class="name-header"><?PHP echo @$element["name"]; ?></span>
 	       <br>
 	       	<i class="fa fa-plus-circle"></i> Publier du contenu sur cette page
@@ -397,7 +401,7 @@
 	        
 	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GROUP; ?>"  data-dismiss="modal"
 	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 letter-turq">
-	                <h6><i class="fa fa-group fa-2x bg-turq"></i><br> Groupe</h6>
+	                <h6><i class="fa fa-circle-o fa-2x bg-turq"></i><br> Groupe</h6>
 	                <small>Créer un groupe<br>Partager vos centres d'intêrets<br>Discuter Communiquer S'amuser</small>
 	            </button>
 

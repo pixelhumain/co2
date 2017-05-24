@@ -141,6 +141,9 @@ function addTooltips(){
 
 
 function bindNetwork(){
+
+	$('#btn-toogle-map').click(function(e){ showMapNetwork(); });
+	
 	$('.reset').on('click', function() {
 		mylog.log(".reset");
 		$('.tagFilter').removeClass('active');

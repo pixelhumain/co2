@@ -8,7 +8,12 @@ dynForm = {
 			    	"sub" : function(){
 			    			$("#ajaxFormModal #parentId").val( contextData.id );
 			    		 	$("#ajaxFormModal #parentType").val( contextData.type ); 
-			    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
+			    		 	$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+									  					  .addClass("bg-purple");
+			    		 	
+			    		 	$("#ajax-modal-modal-title").html(
+			    		 		$("#ajax-modal-modal-title").html()+
+			    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
 			    	}
 			    },
 			    beforeBuild : function(){

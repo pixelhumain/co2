@@ -3,6 +3,21 @@ dynForm = {
 	    title : trad.addOrganization,
 	    icon : "group",
 	    type : "object",
+	    onLoads : {
+	    	//pour creer un subevnt depuis un event existant
+	    	sub : function(){
+	    		if(contextData.type && contextData.id ){
+    				$('#ajaxFormModal #parentId').val(contextData.id);
+	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
+	    			$("#ajax-modal .modal-header").removeClass("bg-purple bg-green-poi bg-orange bg-yellow bg-url");
+							 //  					  .addClass("bg-green");
+	    		 	
+	    		 	$("#ajax-modal-modal-title").html(
+	    		 		$("#ajax-modal-modal-title").html()+
+	    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
+	    		}
+	    	},
+	    },
 	    beforeBuild : function(){
 	    	dyFObj.setMongoId('organizations');
 	    },

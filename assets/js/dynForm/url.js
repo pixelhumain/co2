@@ -4,6 +4,14 @@ dynForm = {
 	    icon : "link",
 	    type : "object",
 	    onLoads : {
+	    	sub : function(){
+    			$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+						  					  .addClass("bg-url");
+    		 	
+    		 	$("#ajax-modal-modal-title").html(
+    		 		$("#ajax-modal-modal-title").html()+
+    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
+    		},
 	    	//pour creer un contact depuis un element existant
 	    	"parentUrl" : function(){
 	    		if( contextData && contextData.id )

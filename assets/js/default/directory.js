@@ -271,12 +271,21 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 //active les link lbh
                 bindLBHLinks();
 
-                 /*$(".start-new-communexion").click(function(){  
-                    setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
+                //only on homepage
+                $(".start-new-communexion").click(function(){  
+                    setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
                                      $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
                                       $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
                     activateGlobalCommunexion(true);
-                });*/
+                    if($("#communexionNameHome").length){
+                    	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+$(this).data("name-communexion")+'</span></span>');
+                    	$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
+                      $("#main-search-bar").val("");
+                    	$(".info_co, .input_co").addClass("hidden");
+                      $("#change_co").removeClass("hidden");
+						          $("#dropdown_search").html("");
+                    }
+                });
 
 
                 $.unblockUI();
@@ -460,8 +469,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         html = $("#news-list li#"+type+id + " .timeline-panel").html();
       //console.log("TO #modal-share : "+html+" "+typeof html);
       
-      if($(".timeline-body #newsActivityStream"+id).length > 0)
-        html = $(".timeline-body #newsActivityStream"+id).html();
+      if($(".timeline-body .newsActivityStream"+id).length > 0)
+        html = $(".timeline-body .newsActivityStream"+id).html();
       
       if(html == "" && $(".searchEntity#entity"+id).length > 0) 
         html = "<div class='searchEntity'>"+$(".searchEntity#entity"+id).html()+"</div>";
@@ -492,6 +501,10 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       var type = $(thiselement).attr("data-type");
       var id = $(thiselement).attr("data-id");
       
+      var comment = $("#msg-share").val();
+      formData.comment = comment;
+      $("#msg-share").val("");
+      
       //traduction du type pour le floopDrawer
       var typeOrigine = dyFInputs.get(type).col;
       if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
@@ -501,7 +514,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
       $.ajax({
         type: "POST",
-        url: baseUrl+"/"+moduleId+"/link/share",
+        url: baseUrl+"/"+moduleId+"/news/share",
         data : formData,
         dataType: "json",
         success: function(data){
@@ -1225,7 +1238,6 @@ var directory = {
                   str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
 
                 str += "<div class='padding-10 informations'>";
-
                       
                     str += "<div class='entityRight no-padding'>";
                     
@@ -1244,21 +1256,21 @@ var directory = {
                                         "</span>";
                     else thisLocality = "<br>";
                     
-                      var citykey = params.country + "_" + params.insee + "-" + params.cp;
-                      //$city["country"]."_".$city["insee"]."-".$city["cp"];
-                     
-                      thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
-                                      "data-scope-value='" + citykey + "' " + 
-                                      "data-scope-name='" + params.name + "' " + 
-                                      "data-scope-type='city' " + 
-                                      "data-insee-communexion='" + params.insee + "' "+ 
-                                      "data-name-communexion='" + params.name + "' "+ 
-                                      "data-cp-communexion='" + params.cp + "' "+ 
-                                      "data-region-communexion='" + params.regionName + "' "+ 
-                                      "data-country-communexion='" + params.country + "' "+ 
-                                      ">"+
-                                          "<i class='fa fa-angle-right'></i> Communecter" + 
-                                      "</button>";
+                    var citykey = params.country + "_" + params.insee + "-" + params.cp;
+                    //$city["country"]."_".$city["insee"]."-".$city["cp"];
+                   
+                    thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
+                                    "data-scope-value='" + citykey + "' " + 
+                                    "data-scope-name='" + params.name + "' " + 
+                                    "data-scope-type='city' " + 
+                                    "data-insee-communexion='" + params.insee + "' "+ 
+                                    "data-name-communexion='" + params.name + "' "+ 
+                                    "data-cp-communexion='" + params.cp + "' "+ 
+                                    "data-region-communexion='" + params.regionName + "' "+ 
+                                    "data-country-communexion='" + params.country + "' "+ 
+                                    ">"+
+                                        "<i class='fa fa-angle-right'></i> Communecter" + 
+                                    "</button>";
 
                     str += thisLocality;
                     
@@ -1273,35 +1285,35 @@ var directory = {
     // URL DIRECTORY PANEL
     // ********************************
     urlPanelHtml : function(params, key){
-		//if(directory.dirLog) 
+		  //if(directory.dirLog) 
       mylog.log("-----------urlPanelHtml", params, key);
-		str = "";  
-		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10'>";
-			str += "<div class='searchEntity'>";
-				str += '<ul class="nav navbar-nav btn-params-directory">';
-					str += '<li class="text-left">';
-						str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
-								'class="bg-white tooltips" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
-							str += '<i class="fa fa-pencil"></i>';
-						str += '</a>';
-					str += '</li>';
-					str += '<li class="text-left">';
-						str += '<a href="javascript:;" onclick="removeUrl(\''+key+'\');" class="bg-white tooltips" '+
-								'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
-							str += '<i class="fa fa-trash"></i>';
-						str += '</a>';
-					str += '</li>';
-				str += '</ul>';
-				str += '<a href="'+params.url+'" target="_blank" class="text-dark tooltips col-xs-8"'+
-						'data-toggle="tooltip" data-placement="top" data-original-title="'+params.url+'" >';
-					str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
-						str += '<h4 class="panel-title text-dark pull-left">'+params.title+'</h4>';
-						str += '<br/><span class="" style="font-size: 11px !important;">'+params.type+'</span>';
-					str += "</div>";
-				str += '</a>';
-			str += "</div>";
-		str += "</div>";
-		return str;
+  		str = "";  
+  		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10'>";
+  			str += "<div class='searchEntity'>";
+  				str += '<ul class="nav navbar-nav btn-params-directory">';
+  					str += '<li class="text-left">';
+  						str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
+  								'class="bg-white tooltips" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
+  							str += '<i class="fa fa-pencil"></i>';
+  						str += '</a>';
+  					str += '</li>';
+  					str += '<li class="text-left">';
+  						str += '<a href="javascript:;" onclick="removeUrl(\''+key+'\');" class="bg-white tooltips" '+
+  								'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+  							str += '<i class="fa fa-trash"></i>';
+  						str += '</a>';
+  					str += '</li>';
+  				str += '</ul>';
+  				str += '<a href="'+params.url+'" target="_blank" class="text-dark tooltips col-xs-8"'+
+  						'data-toggle="tooltip" data-placement="top" data-original-title="'+params.url+'" >';
+  					str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
+  						str += '<h4 class="panel-title text-dark pull-left">'+params.title+'</h4>';
+  						str += '<br/><span class="" style="font-size: 11px !important;">'+params.type+'</span>';
+  					str += "</div>";
+  				str += '</a>';
+  			str += "</div>";
+  		str += "</div>";
+  		return str;
     },
     // ********************************
     // Contact DIRECTORY PANEL
@@ -1483,9 +1495,9 @@ var directory = {
     },
     dirLog : false,
     showResultsDirectoryHtml : function ( data, contentType, size){ //size == null || min || max
-        mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
-        mylog.log(" data", data,"size",  size, "contentType", contentType)
-        mylog.log(" dirLog",directory.dirLog);
+        //mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
+        //mylog.log(" data", data,"size",  size, "contentType", contentType)
+        //mylog.log(" dirLog",directory.dirLog);
         var str = "";
 
         directory.colPos = "left";
@@ -1501,7 +1513,7 @@ var directory = {
                 if(directory.dirLog) mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
                 if(directory.dirLog) mylog.log("itemType",itemType,params.name);
-                //mylog.log("showResultsDirectoryHtml", o);
+                
                 var typeIco = i;
                 params.size = size;
                 params.id = getObjectId(params);
@@ -1567,8 +1579,8 @@ var directory = {
 
                 //params.url = '#page.type.'+params.type+'.id.' + params.id;
                 params.hash = '#page.type.'+params.type+'.id.' + params.id;
-                if(params.type == "poi")    
-                    params.hash = '#element.detail.type.poi.id.' + id;
+                /*if(params.type == "poi")    
+                    params.hash = '#element.detail.type.poi.id.' + params.id;*/
 
                 params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';
 

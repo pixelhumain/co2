@@ -48,6 +48,7 @@ class CO2 {
         if(isset( Yii::app()->request->cookies['communexionActivated'] ) && 
                   (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
             $communexion["state"] = true;
+        echo "oui";
         }        
         if(@Yii::app()->request->cookies['cpCommunexion'] && !empty(Yii::app()->request->cookies['cpCommunexion']->value)){
             $cp = (string)Yii::app()->request->cookies['cpCommunexion'];
@@ -56,6 +57,7 @@ class CO2 {
             $citiesResult = PHDB::find( City::COLLECTION , $where );
             $cities=array();
             $levelMin="inseeCommunexion";
+            
             foreach($citiesResult as $v){
                 if($v["insee"]==$insee){
                     $city=$v;

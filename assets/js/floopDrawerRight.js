@@ -37,11 +37,11 @@ function buildListContactHtml(contacts, myId){
 	floopContacts = contacts;
 	
 	var HTML = 			'<div class="floopHeader bg-white">'+
-							'<a href="#person.directory.id.'+userId+'?tpl=directory2" '+
-								'class="text-white pull-left lbh" style="color:white !important;">'+
+							//'<a href="#person.directory.id.'+userId+'?tpl=directory2" '+
+							//	'class="text-white pull-left lbh" style="color:white !important;">'+
 								//t("My directory")+
-								'<i class="fa fa-link text-dark" style="margin-right:15px;"></i> '+
-							'</a>'+
+								'<i class="fa fa-link pull-left text-dark" style="margin-right:15px;margin-top:4px;"></i> '+
+							//'</a>'+
 							'<div id="floopScrollByType" class="pull-left"></div>' +
 							'<button id="btnFloopClose"><i class="fa fa-times"></i></button>' +
 							

@@ -5,10 +5,17 @@ dynForm = {
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	subPoi : function(){
+	    	sub : function(){
+	    		$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+						  					  .addClass("bg-green-poi");
+    		 	
+    		 	$("#ajax-modal-modal-title").html(
+    		 		$("#ajax-modal-modal-title").html()+
+    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
+
 	    		if(contextData.type && contextData.id )
 	    		{
-    				$('#ajaxFormModal #parentId').val(contextData.id);
+	    			$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 	    		}
 	    	},
@@ -34,10 +41,10 @@ dynForm = {
 		afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-		    else {
-		    	dyFObj.closeForm();	
-		    	urlCtrl.loadByHash( location.hash );
-		    }
+		    else { 
+	          dyFObj.closeForm(); 
+	          urlCtrl.loadByHash( location.hash );
+	        }
 	    },
 	    canSubmitIf : function () { 
 	    	 return ( $("#ajaxFormModal #type").val() ) ? true : false ;

@@ -175,6 +175,8 @@
 				</div>
 			</div>
 		<?php } ?>
+
+		<?php if($type!=Poi::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-desktop"></i></span> <?php echo Yii::t("common","Website URL"); ?>
@@ -190,6 +192,7 @@
 						echo '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 				</div>
 			</div>
+		<?php } ?>
 		<?php  if($type==Organization::COLLECTION || $type==Person::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
@@ -392,7 +395,10 @@
 			<?php } ?>						
 		</div>
 	</div>
-	<?php 
+
+	<?php
+
+	if($type!=Poi::COLLECTION){ 
 		$skype = (!empty($element["socialNetwork"]["skype"])? $element["socialNetwork"]["skype"]:"javascript:;") ;
 		$telegram =  (!empty($element["socialNetwork"]["telegram"])? "https://web.telegram.org/#/im?p=@".$element["socialNetwork"]["telegram"]:"javascript:;") ;
 		$facebook = (!empty($element["socialNetwork"]["facebook"])? $element["socialNetwork"]["facebook"]:"javascript:;") ;
@@ -446,7 +452,8 @@
 			</div>
 			<?php } ?>
 		</div>	
-    </div>  
+    </div> 
+    <?php } ?> 
 </div>
 
 

@@ -174,8 +174,10 @@ class CommunecterController extends Controller
       "detail"    => array( "href" => "/ph/communecter/news/detail"),
       "delete"    => array( "href" => "/ph/communecter/news/delete"),
       "updatefield"    => array( "href" => "/ph/communecter/news/updatefield"),
+      "update"    => array( "href" => "/ph/communecter/news/update"),
       "extractprocess" => array( "href" => "/ph/communecter/news/extractprocess"),
       "moderate" => array( "href" => "/ph/communecter/news/moderate"),
+      "share"          => array("href" => "/ph/communecter/news/share"),
     ),
     "search"=> array(
       "getmemberautocomplete" => array("href" => "/ph/communecter/search/getmemberautocomplete"),
@@ -363,7 +365,6 @@ class CommunecterController extends Controller
       "multiconnect"           => array("href" => "/ph/communecter/link/multiconnect"),
       "follow"           => array("href" => "/ph/communecter/link/follow"),
       "validate"          => array("href" => "/ph/communecter/link/validate"),
-      "share"          => array("href" => "/ph/communecter/link/share"),
     ),
     "document" => array(
       "resized"             => array("href"=> "/ph/communecter/document/resized", "public" => true),
@@ -456,6 +457,7 @@ class CommunecterController extends Controller
       "getdatadetail"       => array("href" => "/ph/communecter/element/getdatadetail"),
     ),
     "app" => array(
+      "welcome"             => array('href' => "/ph/communecter/app/welcome",         "public" => true),
       "index"             => array('href' => "/ph/communecter/app/index",             "public" => true),
       "web"               => array('href' => "/ph/communecter/app/web",               "public" => true),
       "websearch"         => array('href' => "/ph/communecter/app/websearch",         "public" => true),

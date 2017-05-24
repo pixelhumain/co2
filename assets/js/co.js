@@ -295,7 +295,7 @@ function connectPerson(connectUserId, callback)
 
 
 function disconnectTo(parentType,parentId,childId,childType,connectType, callback) {
-	var messageBox = trad["removeconnection"];
+	var messageBox = trad["removeconnection"+parentType];
 	$(".disconnectBtnIcon").removeClass("fa-unlink").addClass("fa-spinner fa-spin");
 	var formData = {
 		"childId" : childId,
@@ -332,7 +332,7 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 								if (typeof callback == "function") 
 									callback();
 								else
-									urlCtrl.loadByHash(location.hash);
+									urlCtrl.loadByHash("#page.type.citoyens.id."+userId);
 							} else {
 							   toastr.error("You leave succesfully");
 							}
@@ -646,6 +646,7 @@ var urlCtrl = {
 		return hash;
 	},
 	jsController : function (hash){
+		mylog.log("jsController", hash);
 		hash = urlCtrl.checkAndConvert(hash);
 		//alert("jsController"+hash);
 		mylog.log("jsController",hash);
@@ -740,11 +741,15 @@ var urlCtrl = {
 		// mylog.log("IS DIRECTORY ? ", 
 		// 			hash.indexOf("#default.directory"), 
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
+		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
+			mylog.log("globalTheme", globalTheme);
 			if( hash.indexOf("#network") >= 0 &&
 				location.hash.indexOf("#network") >= 0 || hash=="#" || hash==""){ 
+				mylog.log("network");
 			}
 			else{
+				mylog.log("network2");
 				count=$(".breadcrumAnchor").length;
 				//case on reload view
 				if(count==0)
@@ -787,7 +792,9 @@ var urlCtrl = {
 	    	mylog.log("urlCtrl.loadByHash >>> hash found",hash);
 	    }
 	    else if( hash.indexOf("#panel") >= 0 ){
+
 	    	panelName = hash.substr(7);
+	    	mylog.log("panelName",panelName);
 	    	if( (panelName == "box-login" || panelName == "box-register") && userId != "" && userId != null ){
 	    		urlCtrl.loadByHash("#default.home");
 	    		return false;
@@ -795,10 +802,14 @@ var urlCtrl = {
 	            title = 'ADD SOMETHING TO MY NETWORK';
 	        else
 	            title = "WELCOM MUNECT HEY !!!";
-	        if(panelName == "box-login")
+	        if(panelName == "box-login"){
 				$('#modalLogin').modal("show");
-			else if(panelName == "box-register")
+				$.unblockUI();
+	        }
+			else if(panelName == "box-register"){
 				$('#modalRegister').modal("show");
+				$.unblockUI();
+			}
 			else
 	       		showPanel(panelName,null,title);
 	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
@@ -1266,7 +1277,7 @@ var smallMenu = {
 				$.blockUI({ 
 					//title : 'Welcome to your page', 
 					message : (content) ? content : "<div class='blockContent'></div>",
-					onOverlayClick: $.unblockUI,
+					onOverlayClick: $.unblockUI(),
 			        css: { 
 			         //border: '10px solid black', 
 			         //margin : "50px",
@@ -1767,7 +1778,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 	        var match_url = new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
 	        if (match_url.test(getUrl.val())) 
 	        {
-		        mylog.log(getUrl.val().match(match_url));
+		        //mylog.log(getUrl.val().match(match_url));
 		        if(lastUrl != getUrl.val().match(match_url)[0]){
 			       // alert(lastUrl+"///"+getUrl.val().match(match_url)[0]);
 		        	var extracted_url = getUrl.val().match(match_url)[0]; //extracted first url from text filed
@@ -2363,14 +2374,15 @@ var dyFObj = {
 			        	addLocationToFormloopEntity(data.id, collection, data.map);*/
 			        if (typeof afterSave == "function"){
 	            		afterSave(data);
-	            		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
-	            	}
-	            	else{
+	            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+	            	} else {
 						dyFObj.closeForm();
 		                if(data.url){
+		                	mylog.log("urlReload data.url", data.url);
 		                	urlCtrl.loadByHash( data.url );
 		                }
 		                else if(data.id){
+		                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
 			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 		                }
 					}
@@ -2478,10 +2490,13 @@ var dyFObj = {
 	starBuild : function  (afterLoad, data) {
 		mylog.warn("------------ starBuild",dyFObj.elementObj, afterLoad, data);
 		mylog.dir(dyFObj.elementObj);
-		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(dyFObj.elementObj.bgClass);
+		$("#ajax-modal .modal-header").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA");//.addClass(dyFObj.elementObj.bgClass);
 		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
-		$("#ajax-modal-modal-title").removeClass("text-green").removeClass("text-purple").removeClass("text-orange").removeClass("text-azure");
-		$(".modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-lightblue ").addClass(dyFObj.elementObj.titleClass);
+		$("#ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
+
+		$("#ajax-modal .modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-blue bg-turq")
+									  .addClass(dyFObj.elementObj.titleClass);
+
 	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
@@ -3155,9 +3170,9 @@ var typeObj = {
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
 	"organizations" : {sameAs:"organization"},
 	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
-	"NGO" : {sameAs:"organization"},
-	"Association" : {sameAs:"organization"},
-	"GovernmentOrganization" : {sameAs:"organization"},
+	"NGO" : {sameAs:"organization", color:"green"},
+	"Association" : {sameAs:"organization", color:"green", icon: "group"},
+	"GovernmentOrganization" : {sameAs:"organization",color: "red",icon: "university"},
 	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
 	"events" : {sameAs:"event"},
@@ -3183,7 +3198,7 @@ var typeObj = {
 
 var documents = {
 	saveImages : function (contextType, contextId,contentKey){
-		alert("saveImages"+contextType+contextId);
+		//alert("saveImages"+contextType+contextId);
 		$.ajax({
 			url : baseUrl+"/"+moduleId+"/document/"+uploadUrl+"dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/dynform",
 			type: "POST",
@@ -3549,7 +3564,8 @@ function initKInterface(params){ console.log("initKInterface");
 	$(window).resize(function(){
       resizeInterface();
     });
-
+	resizeInterface();
+	
     //jQuery for page scrolling feature - requires jQuery Easing plugin
     $('.page-scroll a').bind('click', function(event) {
         var $anchor = $(this);
@@ -3649,7 +3665,7 @@ function initKInterface(params){ console.log("initKInterface");
     $(".btn-show-map").off().click(function(){
     	if(typeof formInMap != "undefined" && formInMap.actived == true)
 			formInMap.cancel();
-    	else if(isMapEnd == true && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+    	else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
 			getContextDataLinks();
 		else
 			showMap();
@@ -3693,6 +3709,94 @@ function getContextDataLinks(){
 		}
 			
 	});
+}
+
+function test(params, itemType){
+	var typeIco = i;
+    params.size = size;
+    params.id = getObjectId(params);
+    params.name = notEmpty(params.name) ? params.name : "";
+    params.description = notEmpty(params.shortDescription) ? params.shortDescription : 
+                        (notEmpty(params.message)) ? params.message : 
+                        (notEmpty(params.description)) ? params.description : 
+                        "";
+
+    //mapElements.push(params);
+    //alert("TYPE ----------- "+contentType+":"+params.name);
+    
+    if(typeof( typeObj[itemType] ) == "undefined")
+        itemType="poi";
+    typeIco = itemType;
+    if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
+    if(typeof params.typeOrga != "undefined")
+      typeIco = params.typeOrga;
+
+    var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
+    params.ico =  "fa-"+obj.icon;
+    params.color = obj.color;
+    if(params.parentType){
+        if(directory.dirLog) mylog.log("params.parentType",params.parentType);
+        var parentObj = (dyFInputs.get(params.parentType)) ? dyFInputs.get(params.parentType) : typeObj["default"] ;
+        params.parentIcon = "fa-"+parentObj.icon;
+        params.parentColor = parentObj.color;
+    }
+    if(params.type == "classified" && typeof params.category != "undefined"){
+      params.ico = typeof classified.filters[params.category] != "undefined" ?
+                   "fa-" + classified.filters[params.category]["icon"] : "";
+    }
+
+    params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
+
+    // var urlImg = "/upload/communecter/color.jpg";
+    // params.profilImageUrl = urlImg;
+    params.useMinSize = typeof size != "undefined" && size == "min";
+    params.imgProfil = ""; 
+    if(!params.useMinSize)
+        params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
+
+    if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
+        params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
+
+    if(dyFInputs.get(itemType) && 
+        dyFInputs.get(itemType).col == "poi" && 
+        typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
+    params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
+
+    params.insee = params.insee ? params.insee : "";
+    params.postalCode = "", params.city="",params.cityName="";
+    if (params.address != null) {
+        params.city = params.address.addressLocality;
+        params.postalCode = params.cp ? params.cp : params.address.postalCode ? params.address.postalCode : "";
+        params.cityName = params.address.addressLocality ? params.address.addressLocality : "";
+    }
+    params.fullLocality = params.postalCode + " " + params.cityName;
+
+    params.type = dyFInputs.get(itemType).col;
+    params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
+                  '#page.type.'+params.parentType+'.id.' + params.parentId : "";
+
+    //params.url = '#page.type.'+params.type+'.id.' + params.id;
+    params.hash = '#page.type.'+params.type+'.id.' + params.id;
+   /* if(params.type == "poi")    
+        params.hash = '#element.detail.type.poi.id.' + id;
+
+    params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';*/
+
+    params.elTagsList = "";
+    var thisTags = "";
+    if(typeof params.tags != "undefined" && params.tags != null){
+      $.each(params.tags, function(key, value){
+        if(typeof value != "undefined" && value != "" && value != "undefined"){
+          thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value)+"'>#" + value + "</span> ";
+          params.elTagsList += slugify(value)+" ";
+        }
+      });
+      params.tagsLbl = thisTags;
+    }else{
+      params.tagsLbl = "";
+    }
+
+    params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
 }
 
 $(document).ready(function() { 

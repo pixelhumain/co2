@@ -111,16 +111,26 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
 
               //parcours la liste des résultats de la recherche
               $.each(data, function(i, o) {
+                console.log(o);
                 mylog.log("globalsearch res : ", o);
                   var typeIco = i;
                   var ico = "fa-"+typeObj["default"].icon;
                   var color = mapColorIconTop["default"];
 
                   mapElementsGS.push(o);
+                  if(typeof( typeObj[o.type] ) == "undefined")
+                    itemType="poi";
+                    typeIco = o.type;
+                  //if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
+                  if(typeof o.typeOrga != "undefined")
+                    typeIco = o.typeOrga;
 
-                  typeIco = o.type;
-                  ico = ("undefined" != typeof typeObj[typeIco]) ? "fa-"+typeObj[typeIco].icon : "fa-"+typeObj["default"].icon;
-                  color = ("undefined" != typeof mapColorIconTop[typeIco]) ? mapColorIconTop[typeIco] : mapColorIconTop["default"];
+                  var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
+                  ico =  "fa-"+obj.icon;
+                  color = obj.color;
+                  //typeIco = o.type;
+                  //ico = ("undefined" != typeof typeObj[typeIco]) ? "fa-"+typeObj[typeIco].icon : "fa-"+typeObj["default"].icon;
+                  //color = ("undefined" != typeof mapColorIconTop[typeIco]) ? mapColorIconTop[typeIco] : mapColorIconTop["default"];
                   
                   htmlIco ="<i class='fa "+ ico +" fa-2x bg-"+color+"'></i>";
                   if("undefined" != typeof o.profilThumbImageUrl && o.profilThumbImageUrl != ""){

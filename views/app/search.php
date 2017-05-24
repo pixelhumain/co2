@@ -91,6 +91,9 @@
     .links-create-element .btn-create-elem{
         margin-top:25px;
     }
+    .links-create-element a.btn-create-elem:hover{
+        text-decoration: none;
+    }
 
     .subtitle-search{
         display: none;
@@ -196,18 +199,19 @@
 
         </div>
 
-        <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
-        <?php
-            $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
+        <?php //var_dump(Yii::app()->request->cookies['communexionActivated']);
+              //var_dump(CO2::getCommunexionCookies()); 
         ?>
+
+        <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
+            <?php $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
         </div>
     <?php } ?>
 
 
 	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
 
-
-    <?php if(@$type=="all"){ ?>
+    <?php if(@$type=="all" && !empty(Yii::app()->session["userId"]) ){ ?>
     <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
         <!-- <hr style="margin-bottom:-20px;"> -->
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 

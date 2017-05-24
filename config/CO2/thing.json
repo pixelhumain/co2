@@ -41,7 +41,7 @@
             "icon" : "database",
             "label" :"Gestion SCK",
             "key" : "smartCitizen",
-            "forAdmin" : "true",
+            "forAdmin" : true,
             "subcat" : [ "Avec compte smartcitizen", "Sans compte smartcitizen" ]
         }
     },

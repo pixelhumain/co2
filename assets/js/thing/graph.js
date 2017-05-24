@@ -1,53 +1,49 @@
+//Author Danzal
+function showAllGraph(){ $(".graphs").show(); }
+function showGraph(figGraph){ $("#"+figGraph).show(); }
+function hideAllGraph(){ $(".graphs").hide(); }
+function hideGraph(figGraph){ $("#"+figGraph).hide(); }
 
-// Fonctions pour cacher et montrer les graphe
- function showAllGraph(){ $(".graphs").show(); }
-
- function showGraph(figGraph){ $("#"+figGraph).show(); }
-
- function hideAllGraph(){ $(".graphs").hide(); }
-
- function hideGraph(figGraph){ $("#"+figGraph).hide(); }
-
-
-
-//
-
-
+function mytester(data){
+	mylog.log("mytester");
+	mylog.log("data in mytester : ");
+	mylog.log(data);
+	return "return From mytester";
+}
 function setSVGForSensor(sensor) {
 
-  var svgId = "sensor"+sensor;
-  var figGraph = "graphe_"+sensor;
-  var gId = svgId+"_g";
-  //console.log(svgId);
+	var svgId = "sensor"+sensor;
+	var figGraph = "graphe_"+sensor;
+	var gId = svgId+"_g";
 
-  var svgObj = d3.select("#"+figGraph)
-      .append("svg").attr("width",svgwidth).attr("height",svgheight)
-      .attr("viewBox","0 0 "+svgwidth+" "+svgheight)
-      .attr("preserveAspectRatio","xMidYMid meet")
-      .attr("class","col-sm-12 svggraph")
-      .attr("id", svgId);   //.style("visibility","hidden");
-  var g = svgObj.append("g").attr("transform", "translate(" + gmargin.left + "," + gmargin.top + ")").attr("id", gId);
+	var svgObj = d3.select("#"+figGraph)
+		.append("svg").attr("width",svgwidth).attr("height",svgheight)
+		.attr("viewBox","0 0 "+svgwidth+" "+svgheight)
+		.attr("preserveAspectRatio","xMidYMid meet")
+		.attr("class","col-sm-12 svggraph")
+		.attr("id", svgId);   //.style("visibility","hidden");
+	var g = svgObj.append("g").attr("transform", "translate(" + gmargin.left + "," + gmargin.top + ")").attr("id", gId);
 
-  var captionSensor =  d3.select("#"+figGraph).append("figcaption").text("Graph of sensor "+infoSensors[svgId].name+" ("+infoSensors[svgId].description+")");
+	var captionSensor =  d3.select("#"+figGraph).append("figcaption").text("Graph of sensor "+infoSensors[svgId].name+" ("+infoSensors[svgId].description+")");
 
-  var objGraph = {svgid : svgId, 
-        svg : svgObj,
-        mesure : {description :  "", unit : "" }, 
-        dimension : { width : +gwidth, 
-              height : +gheight, 
-              margin : gmargin },
-      gid : gId , 
-      domain : {Yn : vYn, Ym : vYm, Xn : vXn, Xm : vXm , domainInitialized : false},
-      devices : [],
-      divgraphid : figGraph,
-      urlReqApi : ""
-  };
+	var objGraph = {svgid : svgId, 
+			svg : svgObj,
+			mesure : {description :  "", unit : "" }, 
+			dimension : { width : +gwidth, 
+				    height : +gheight, 
+				    margin : gmargin },
+			gid : gId , 
+			domain : {Yn : vYn, Ym : vYm, Xn : vXn, Xm : vXm , domainInitialized : false},
+			devices : [],
+			divgraphid : figGraph,
+			urlReqApi : ""
+	};
 
-  //console.dir(objGraph);
-   //Voir si on peu ce passer de la mise en tableau
-   var indexObjGraphe = (multiGraphe.push(objGraph)) - 1 ;
-   //console.log(indexObjGraphe);
-  return indexObjGraphe; 
+	//console.dir(objGraph);
+	//Voir si on peu ce passer de la mise en tableau
+	var indexObjGraphe = (multiGraphe.push(objGraph)) - 1 ;
+	//console.log(indexObjGraphe);
+	return indexObjGraphe; 
 }
 
 function setLegend(deviceId,strkCol){
@@ -99,7 +95,7 @@ function updateTheDomain(xArray,yArray,indexGraphe){
   if( xChanged == true || multiGraphe[indexGraphe].domain.domainInitialized == false ) {
     x.domain([multiGraphe[indexGraphe].domain.Xn,multiGraphe[indexGraphe].domain.Xm]);
     multiGraphe[indexGraphe].domain.domainInitialized=true;
-    }
+  }
 
 }
 
@@ -120,12 +116,12 @@ function setAxisXY(indexGraphe,sensorkey){
       .attr("class", "theAxis")
       .attr("transform", "translate(0," + gheight + ")")
       .call(d3.axisBottom(x))
-      /*
-      .append("text")
-      .attr("fill","#000")
-      .attr("x", gwidth)
-      .attr("text-anchor","end")
-      .text("time")*/
+      /// *
+//      .append("text")
+//      .attr("fill","#000")
+//      .attr("x", gwidth)
+//      .attr("text-anchor","end")
+//      .text("time")
       ;
 
     var sensorkunit = sensorkey+" "+infoSensors[multiGraphe[indexGraphe].svgid].unit ;
@@ -148,40 +144,36 @@ function setAxisXY(indexGraphe,sensorkey){
 //TODO : réglé le pb de color utiliser find dans array 
 function setStrokeColorForDevice(device) {
 
-  var stId = "sCol_"+device;
-  if (strockeColorArray[stId] != null )
-  {
-    strockeColor = strockeColorArray[stId];
-  } else
-  {
-      strockeColor = "rgb("+Math.floor((Math.random()*220)+1)+","+Math.floor((Math.random()*220)+1)+","+
-      Math.floor((Math.random()*220)+1)+")";
-      strockeColorArray[stId]=strockeColor;
-    setLegend(device,strockeColor);
-  }
-  return strockeColor;
+	var stId = "sCol_"+device;
+	if (strockeColorArray[stId] != null ) {
+		var strockeColor = strockeColorArray[stId];
+	}else{
+		var strockeColor = "rgb("+Math.floor((Math.random()*220)+1)+","+Math.floor((Math.random()*220)+1)+","+Math.floor((Math.random()*220)+1)+")";
+		strockeColorArray[stId]=strockeColor;
+		setLegend(device,strockeColor);
+	}
+	return strockeColor;
 }
 
 function fillArrayWithObjectTimestampsAndValues(readings){
-  var d=[];
-  readings.forEach(
-    function(item){
-      var ts = new Date();
-      ts.setTime(Date.parse(item[0]));
-      //console.log("ts : ");
-      //console.log(ts);
-      ts.setSeconds(0);
-      item[1] = +item[1];
-      d.push({timestamps : ts, values : item[1]});
-    }
-  );
-  return d;
-
+	var d=[];
+	readings.forEach(
+	function(item){
+		var ts = new Date();
+		ts.setTime(Date.parse(item[0]));
+		//console.log("ts : ");
+		//console.log(ts);
+		ts.setSeconds(0);
+		item[1] = +item[1];
+		d.push({timestamps : ts, values : item[1]});
+	}
+	);
+	return d;
 }
-/**
-@function tracer
-@strockeColor 
-*/
+///**
+//@function tracer
+//@strockeColor 
+//* /
 function tracer(da,device,sensor,strokeColor="blue", indexGraphe,strokeWidth=1.5){
   
   var g = d3.select("#"+multiGraphe[indexGraphe].gid);
@@ -198,124 +190,87 @@ function tracer(da,device,sensor,strokeColor="blue", indexGraphe,strokeWidth=1.5
         .attr("stroke-linecap", "round")
         .attr("stroke-width", strokeWidth)
         .attr("d", line);
-/*
-      g.append("text")
-      .datum(function(d){ return {id: d.id, value: d.values[d.values.length - 1]}; })
-      .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
-      .attr("x", 3)
-      .attr("dy", "0.35em")
-      .style("font", "10px sans-serif")
-      .text(function(d) { return d.id; });*/
+//
+//      g.append("text")
+  //    .datum(function(d){ return {id: d.id, value: d.values[d.values.length - 1]}; })
+    //  .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
+      //.attr("x", 3)
+//      .attr("dy", "0.35em")
+  //    .style("font", "10px sans-serif")
+    //  .text(function(d) { return d.id; });
 }
 
 function graphe(device,sensors,readings,svgG){
 
-  var de = fillArrayWithObjectTimestampsAndValues(readings);
+	var de = fillArrayWithObjectTimestampsAndValues(readings);
+
+	var xMinMax = d3.extent(de, function(d){return d.timestamps;});
+	var yMinMax = d3.extent(de, function(d){return d.values;});
+
+	updateTheDomain(xMinMax,yMinMax,svgG);
+	var strkCol = setStrokeColorForDevice(device);
+
+	tracer(de,device,sensors,strkCol,svgG);
   
-    var xMinMax = d3.extent(de, function(d){return d.timestamps;});
-    var yMinMax = d3.extent(de, function(d){return d.values;});
-
-    updateTheDomain(xMinMax,yMinMax,svgG);
-    strkCol = setStrokeColorForDevice(device);
-
-  tracer(de,device,sensors,strkCol,svgG);
-  
 }
 
-function grapheCoDB(data,sensorkey){
-  var dCOdb = dataSensorAdaptorTimestampsAndValues(data);
-  //prendre le key pour la donné
-  //multiGraphe[svgG].
+function grapheCoDB(data,device) {
+	var dCOdb = dataSensorAdaptorTimestampsAndValues(data);
+	mylog.log(dCOdb);
+	var strkCol = setStrokeColorForDevice(device);
+	for (var key in dCOdb){
+		//mylog.log("dCOdb[key] :"+dCOdb[key]+"\n key "+key);
+	/*
+		var xMinMax = d3.extent(dCOdb[key], function(d){return d.timestamps;});
+		var yMinMax = d3.extent(dCOdb[key], function(d){return d.values;});
+		mylog.log("xMinMax : " +xMinMax + "; yMinMax :"+ yMinMax);
+		updateTheDomain(xMinMax,yMinMax,i);
+		tracer(dCOdb[key],device,sckSensorIds[0][key],strkCol,i);
+	*/
+		for (var i = 0 ; i < (multiGraphe.length - 1); i++) {
 
-for (var key in dCOdb){
-  strkCol = setStrokeColorForDevice(device);
- //var de = 
-  tracer(de,device,sensors)
+			if(multiGraphe[i].svgid=="sensor"+sckSensorIds[0][key]){
+				var xMinMax = d3.extent(dCOdb[key], function(d){return d.timestamps;});
+				var yMinMax = d3.extent(dCOdb[key], function(d){return d.values;});
+				mylog.log("xMinMax : " +xMinMax + "; yMinMax :"+ yMinMax);
+				updateTheDomain(xMinMax,yMinMax,i);
+				tracer(dCOdb[key],device,sckSensorIds[0][key],strkCol,i);
+				break;
+			}
+		}
+	}
 }
-}
+
 
 function dataSensorAdaptorTimestampsAndValues(convertedDataRecord){
 
-  var dataCOdb={};
-  dataCOdb.temp=[]; dataCOdb.hum=[]; dataCOdb.bat=[]; dataCOdb.panel=[]; dataCOdb.no2=[]; dataCOdb.co=[]; dataCOdb.noise=[]; dataCOdb.nets=[]; dataCOdb.light=[];
-  
-  convertedDataRecord.forEach( function(item){
+	var dataCOdb={temp : [], hum : [], bat: [], panel : [], no2 : [], panel : [], co : [], noise : [], nets : [], light : []};
+	convertedDataRecord.forEach( function(item){
+		var ts = new Date();
+		ts.setTime(Date.parse(item.timestamp));
+		ts.setSeconds(0);
 
-      var ts = new Date();
-      ts.setTime(Date.parse(item.timestamp));
-      ts.setSeconds(0);
+		item.temp =+item.temp;
+		item.hum  =+item.hum;
+		item.bat  =+item.bat;
+		item.panel=+item.panel;
+		item.co   =+item.co;
+		item.no2  =+item.no2;
+		item.light=+item.light;
+		item.nets =+item.nets;
+		item.noise=+item.noise;
 
-      item.temp =+item.temp;
-      item.hum  =+item.hum;
-      item.bat  =+item.bat;
-      item.panel=+item.panel;
-      item.co   =+item.co;
-      item.no2  =+item.no2;
-      item.light=+item.light;
-      item.nets =+item.nets;
-      item.noise=+item.noise;
-      
-      dataCOdb.temp.push({timestamps : ts, values : item.temp});
-      dataCOdb.hum.push({timestamps : ts, values : item.hum});
-      dataCOdb.bat.push({timestamps : ts, values : item.bat}); 
-      dataCOdb.panel.push({timestamps : ts, values : item.panel});
-      dataCOdb.no2.push({timestamps : ts, values : item.no2});
-      dataCOdb.co.push({timestamps : ts, values : item.co});
-      dataCOdb.noise.push({timestamps : ts, values : item.noise});
-      dataCOdb.nets.push({timestamps : ts, values : item.nets});
-      dataCOdb.light.push({timestamps : ts, values : item.light});
+		dataCOdb.temp.push({timestamps : ts, values : item.temp});
+		dataCOdb.hum.push({timestamps : ts, values : item.hum});
+		dataCOdb.bat.push({timestamps : ts, values : item.bat}); 
+		dataCOdb.panel.push({timestamps : ts, values : item.panel});
+		dataCOdb.no2.push({timestamps : ts, values : item.no2});
+		dataCOdb.co.push({timestamps : ts, values : item.co});
+		dataCOdb.noise.push({timestamps : ts, values : item.noise});
+		dataCOdb.nets.push({timestamps : ts, values : item.nets});
+		dataCOdb.light.push({timestamps : ts, values : item.light});
 
-  }
-  );
-  return dataCOdb;
+	}
+	);
+	return dataCOdb;
 }
-
-
-
-/*
-function showSCKDeviceOnMap(country,cp){
-  console.log("montrer sur la carte");
-  //console.log(country+" "+cp);
-
-
-  
-  //console.log(contextDeviceMap);
-  //mapThing = Sig.loadMap('mapCanvas');
-  //Sig.showMapElements(Sig.map, contextDeviceMap); 
-  showMap(true);
-  //$('#ajax-modal').modal("hide");
-
-}
-
-  $( function() {
-    var dateFormat = "mm/dd/yy",
-      from = $( "#from" )
-        .datepicker({
-          defaultDate: "+1w",
-          changeMonth: true,
-          numberOfMonths: 3
-        })
-        .on( "change", function() {
-          to.datepicker( "option", "minDate", getDate( this ) );
-        }),
-      to = $( "#to" ).datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        numberOfMonths: 3
-      })
-      .on( "change", function() {
-        from.datepicker( "option", "maxDate", getDate( this ) );
-      });
- 
-    function getDate( element ) {
-      var date;
-      try {
-        date = $.datepicker.parseDate( dateFormat, element.value );
-      } catch( error ) {
-        date = null;
-      }
- 
-      return date;
-    }
-  } );
-*/

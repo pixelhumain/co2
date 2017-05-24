@@ -15,7 +15,7 @@ dynForm = {
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else { 
 	          dyFObj.closeForm(); 
-	          urlCtrl.loadByHash( '#page.type.'+uploadObj.type+'.id.'+uploadObj.id );
+	          urlCtrl.loadByHash( '#page.type.organizations.id.'+uploadObj.id );
 	        }
 	    },
 	    properties : {

@@ -332,11 +332,14 @@ function openDropdownMultiscope(){
 }
 
 function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
-						  inseeCommunexion, cityNameCommunexion, cpCommunexion, 
-						  regionNameCommunexion, countryCommunexion){  
+						inseeCommunexion, cityNameCommunexion, cpCommunexion, 
+						regionNameCommunexion, countryCommunexion){  
+
 	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel,
 			  inseeCommunexion, cityNameCommunexion, cpCommunexion, regionNameCommunexion, countryCommunexion);
+
 	if(scopeValue == "") return;
+	
 	//if(!scopeExists(scopeValue)){ //mylog.log("adding", scopeValue);
 		//myMultiScopes[scopeValue] = { name: scopeName, active: true, type: scopeType };
 		mylog.log("myMultiScopes", myMultiScopes, indexStepInit);
@@ -363,11 +366,13 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 			//$.cookie('regionNameCommunexion',   regionNameCommunexion,  { expires: 365, path: "/" });
 			//$.cookie('countryCommunexion',   	countryCommunexion,  	{ expires: 365, path: "/" });
 		}else{
+			console.log("communexion hash:", location.hash);
 			if(actionOnSetGlobalScope == "filter"){
-				if(location.hash.indexOf("#live") > 0)
+				if(location.hash.indexOf("#live") >= 0)
                 	startNewsSearch(true);
-            	else
+            	else if(location.hash != "")
 					startSearch(0, indexStepInit, searchCallback);
+				//else loadLiveNow();
 			}
 		}
 		//rebuildSearchScopeInput();

@@ -28,16 +28,16 @@ class AppController extends CommunecterController {
 	}
 
 
-	public function actionIndex(){
+    public function actionIndex(){
         $CO2DomainName = isset( Yii::app()->params["CO2DomainName"]) ? 
-								Yii::app()->params["CO2DomainName"] : "CO2";
+                                Yii::app()->params["CO2DomainName"] : "CO2";
 
         Yii::app()->theme = "CO2";
         Yii::app()->session["theme"] = "CO2";
         $params = CO2::getThemeParams();
         
         $hash = $params["pages"]["#app.index"]["redirect"];
-    	
+        
         $params = array("type" => @$type );
 
         if(!@$hash || @$hash=="") $hash="search";
@@ -45,8 +45,16 @@ class AppController extends CommunecterController {
         if(@$hash == "web"){
             self::actionWeb();
         }else{
-    	   echo $this->renderPartial($hash, $params, true);
-	    }
+           echo $this->renderPartial($hash, $params, true);
+        }
+    }
+
+
+    public function actionWelcome(){
+        //CO2Stat::incNbLoad("co2-welcome");
+
+        $params = array();
+        echo $this->renderPartial("welcome", $params, true);
     }
 
 
@@ -193,12 +201,15 @@ class AppController extends CommunecterController {
             $type == Project::COLLECTION || $type == Organization::COLLECTION )    
             $element = Element::getByTypeAndId($type, $id);
 
-        if($type == News::COLLECTION){
+        else if($type == News::COLLECTION){
             $element = News::getById($id);
         }
 
-        if($type == Classified::COLLECTION){
+        else if($type == Classified::COLLECTION){
             $element = Classified::getById($id);
+        }
+        else if($type == Poi::COLLECTION){
+            $element = Poi::getById($id);
         }
 
         if(@$element["parentId"] && @$element["parentType"])

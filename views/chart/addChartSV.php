@@ -75,20 +75,20 @@ textarea.form-control{
 		
 		<div class="chooseTypeForm margin-top-50 text-center">
 			<div class="col-md-12">
-				<p>Explication sur le role de ce formulaire, et de l'importance </p>
+				<p><?php echo Yii::t("chart","These forms are here to show the values {what} in order to give an overview about organization, manage and life {what}",array("{what}"=> Yii::t("common","of the ".Element::getControlerByCollection($parentType)))) ?></p>
 			</div>
 			<div class="col-md-6">
 				<a id="btncommons" href="javascript:;" onclick="switchTypeChart('commons')" class="btn <?php if (isset($properties["commons"]) && !empty($properties["commons"])) echo "text-orange" ?>">
 					<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Commons") ?>
 				</a>
-				<p>Explication de ce qu'on entend par "bien commun" pour qu'on soit bien tous d'accord  sur la définition de ce terme + explication sur l'action de "choisir un type de formulaire"</p>
+				<p><?php echo Yii::t("chart","Define {what} as a common. It means to manage one or several resources openly and transparently whitout appropriating it",array("{what}"=>Yii::t("common","this ".Element::getControlerByCollection($parentType)))) ?></p>
 
 			</div>
 			<div class="col-md-6">
 				<a id="btnopen" href="javascript:;" onclick="switchTypeChart('open')" class="btn <?php if (isset($properties["open"]) && !empty($properties["open"])) echo "text-orange" ?>">
 					<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Open") ?>
 				</a>
-				<p>Explication de ce qu'on entend par "libre" pour qu'on soit bien tous d'accord  sur la définition de ce terme + explication sur l'action de "choisir un type de formulaire"</p>
+				<p><?php echo Yii::t("chart","Indicate the values {what} openly defining its properties and describing them",array("{what}"=> Yii::t("common", "of the ".Element::getControlerByCollection($parentType)))) ?></p>
 			</div>
 		</div>
 

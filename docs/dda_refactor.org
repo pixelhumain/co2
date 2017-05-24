@@ -2,41 +2,65 @@
 Application "Démocratie" ~= DDA
 -------------------------------
 
-*** Chaque commune dispose d'un "conseil citoyen".
 
-*** Un "conseil citoyen" est un espace destiné à co-écrire les lois d'un pays, dans notre cas : la France.
+-------------------------------
+Démocratie : le pouvoir au peuple, pour le peuple, par le peuple
+-------------------------------
+- La démocratie c'est n'est pas élir ses maîtres, c'est voter ses lois.
+----------------------------
+
+
+----------------------------
+*** La démocratie communectée :
+----------------------------
+
+*** Dans Communecter, chaque commune dispose d'un "conseil citoyen".
+
+*** Dans Communecter, un "conseil citoyen" est un espace destiné à co-écrire les lois d'un pays, dans notre cas : la France.
 (applicable pour n'importe quel pays).
 
-*** Chaque citoyens peut proposer des lois, et participer à l'écriture, la correction, et l'amélioration des lois proposées par les autres citoyens.
+*** Chaque citoyens peut proposer des lois, et participer à l'écriture, la correction, l'amélioration, et le vote des lois proposées par les autres citoyens.
 
-*** Chaque citoyens peut voter pour les lois qui lui conviennent, et voter contre celles qui ne lui conviennent pas.
+*** Chaque citoyens peut voter -pour- les lois qui lui conviennent, et -voter- contre celles qui ne lui conviennent pas (+ vote blanc pris en compte).
 
-*** Pour valider une loi, il faut qu'elle obtienne une majorité de suffrage favorable
+*** Pour valider une loi, il faut qu'elle obtienne une majorité de suffrages favorables dans un temps donnée (ma proposition : 1 mois)
+=> règle de la majorité : à définir
+  => ma proposition : une proposition doit obtenir un minimum de 61.8% des suffrages favorables pour être validée.
+  => pourquoi 61.8 ? le nombre d'or : 0.618 
+      - http://villemin.gerard.free.fr/Wwwgvmm/Geometri/NbOrDebu.htm
+      - https://fr.wikipedia.org/wiki/Nombre_d%27or
+    => il faut garder une marge d'erreur suffisante pour faire face aux spécificités des votes en ligne :
+      => tout le monde ne peut pas voter à chaque fois qu'il le pourrait
+      => tout le monde peut tricher (voter avec plusieurs comptes - dans un sens comme dans l'autre)
+    => il faut donc éviter la majorité à 50% qui est trop aléatoire (49 je perd, 51 je gagne (1 pastis))
 
-*** Voter == 
-		Je valide cette proposition de loi
+
+*** Sur Communecter, voter signifie == 
+		- Je valide cette proposition de loi
 		ou
-		J'invalide cette proposition de loi
+		- J'invalide cette proposition de loi
+    ou
+    - Vote blanc
 
 		==
 		Valider cette proposition ?
-		Oui (pour)
-		Non, invalidé (contre)
+		- Oui (pour)
+		- Non, invalider (contre)
+    - Blanc
 
-Loi = articlesDeLoi + Amendements
+
+
+
+*** Sur Communecter, une loi c'est quoi ? 
+------------------------------------------------
+Loi = array(articlesDeLoi) + array(Amendements)
+------------------------------------------------
+
+*** Une loi est composées de plusieurs articles.
+*** Chaque article est soumis aux propositions d'amendements des autres utilisateurs
 
 *** Amendement : def Wikipedia :
 Un amendement est une modification, soumise au vote d'une assemblée, en vue de corriger, compléter ou annuler tout ou une partie d'un projet de loi en cours de délibération ou d'une loi pré-existante.
-
-
-********
-*** Par quoi commencer ? Quelles lois ? Quels thèmes traiter ? etc...
-********
-Avant toute chose, il me semble qu'il faut commencer par (ré)écrire le texte fondateur sur lequel repose toutes les autres lois : la constitution. 
-Je propose que le premier texte co-écrit sur communecter soit une nouvelle constitution, pour une 6eme république.
-Si nous réussissons à co-écrire ce textes, nous serons capables d'écrire tous les autres textes de lois dont nous aurons besoins.
-Les lois dépendent de la constitution.
-
 
 
 ********
@@ -46,49 +70,94 @@ Les lois dépendent de la constitution.
 COMMUNE > DEPARTEMENT > REGION > PAYS
 
 *** 
-Les lois sont proposées au niveau local : la commune. Dans le conseil citoyen des communes.
+Les lois sont toujours proposées d'abord au niveau local : la commune. Dans le conseil citoyen des communes.
 
 *** 
-Lorsqu'une proposition de loi est adoptée dans une commune, elle est automatiquement soumise à un nouveau vote, au niveau départemental, dans le conseil citoyen du département de la commune initiale.
+Lorsqu'une proposition de loi est adoptée dans une commune, elle est automatiquement soumise à un nouveau vote, au niveau départemental, 
+dans le conseil citoyen du département de la commune initiale.
 
 *** 
-Si le conseil citoyen départemental approuve à nouveau la proposition de loi, celle-ci est officiellement validée, et légitimement applicable à l'ensemble des communes du département en question. Si elle est réfusée, elle n'est pas valide et donc innaplicable sauf dans la commune initiale qui l'avait validée, si la commune seule est en mesure d'en assurer l'application, et que cela n'entre pas en conflit avec les lois des cercles citoyens* supérieurs.
+Si le conseil citoyen départemental approuve à nouveau la proposition de loi, celle-ci est officiellement validée, 
+et légitimement applicable à l'ensemble des communes du département en question.
+
+Si elle est réfusée, elle n'est pas valide et donc innaplicable sauf dans la commune initiale qui l'avait validée, 
+si la commune est en mesure d'en assurer seule l'application, et que cela n'entre pas en conflit avec les lois des niveaux supérieurs.
 
 *** 
-Lorsqu'une proposition de loi est validée au niveau départemental, elle est automatiquement soumise à un nouveau vote, au niveau régional, avec les mêmes règles qu'au niveau inférieur, de même pour le niveau Pays.
-
+Lorsqu'une proposition de loi est validée au niveau départemental, elle est automatiquement soumise à un nouveau vote, au niveau régional, 
+avec les mêmes règles qu'au niveau inférieur, de même pour le niveau Pays.
 
 *** 
 De cette façon, on réparti la masse de proposition à traiter équitablement sur tout le territoire,
-en partant du principe qu'une proposition de loi est toujours liée à un contexte local favorable à sa venue, et que par conséquent, les gens situés à proximité sur le même territoire sont les plus à même de juger de la pertinence d'une proposition.
+en partant du principe qu'une proposition de loi est toujours liée à un contexte local favorable à sa venue, et que par conséquent, 
+les gens situés à proximité sur le même territoire sont les plus à même de juger de la pertinence d'une proposition.
 
 *** 
-De cette façon, nous encourageons également les gens à se préocuper d'abord à leur contexte territorial, avant de s'occuper de celui des autres. En respect avec l'adage "penser global, agir local".
+De cette façon, nous encourageons également les gens à se préocuper d'abord à leur contexte territorial, avant de s'occuper de celui des autres. 
+En respect avec l'adage "penser global, agir local".
+
 On a beaucoup de problème en commun sur tous nos territoires, mais on essaie d'abord de régler ceux de son territoire. 
-Si chacun fait sa part au niveau local, on n'aura plus qu'à afiner les lois aux niveaux département, région, et pays, pour armoniser les textes et les rendres applicables à des contextes territoriaux plus étendus si besoin.
+Si chacun fait sa part au niveau local, on n'aura plus qu'à afiner et mutualiser les lois aux niveaux département, région, et pays, 
+pour armoniser les textes et les rendres applicables à des contextes territoriaux plus étendus si besoin.
 
 
-*** 
-Pour résumer : on part de la base (les communes), puis on étend progressivement la zone de progression des propositions de lois.
-Une loi progresse sur le territoire à travers 4 niveaux (+ après refactor) : commune, dep, region, pays
+*** AUTRE AVANTAGE DE CE SYSTEME :
+Pas besoin de tirage au sort, puisque tout le monde peut y participer en même temps.
+
+*** EN RÉSUMÉ
+Pour résumer : on part de la base (les communes), puis on étend progressivement la zone de progression de lois.
+Une loi progresse sur le territoire à travers 4 niveaux (ou + après refactor) : commune, dep, region, pays
 
 
-*** Note : On peut imaginer différents comportement possibles, dans le cas où une proposition est rejetée au niveau régional, reste-t-elle en vigueur au niveau départemental ? c'est probablement une  question fondamentale à laquelle je n'ai pas de réponse définitive aujourd'hui.
-
-*** Comment on construit une loi ?
+*** Note : On peut imaginer différents comportement possibles, dans le cas où une proposition est rejetée au niveau régional (par exemple), reste-t-elle en vigueur au niveau départemental ? je n'ai pas de réponse définitive aujourd'hui.
 
 
-On choisi un(ou plusieurs) thème(s) : santé, energie, climat, Culture, Animation, Biodiversité, Economie sociale et solidaire, etc...
-On écrit sa proposition
-On valide
-=> la proposition est publiée dans mon conseil citoyen communal.
+
+********
+*** Abrogation d'une loi (préalablement adoptée)
+********
+
+*** Lorsqu'une loi est adoptée, elle n'est jamais adoptée définitivement :
+  - Tout le monde peut proposer son abrogation (suppression du texte, soumis au vote) 
+  et son remplacement (écriture d'un nouveau texte pour remplacer le texte abrogé)
+
+  - La procédure d'abrogation ne peut être lancé que si un nombre suffisant de citoyen le demande 
+  (1% 2% 5% 20% des votants ?)
+
+  - Tous les citoyens qui n'ont pas encore voté (mais qui en ont le droit) peuvent toujours voter 
+  (pour / contre / blanc).
+
+  - Un texte est automatiquement abrogé (passe à l'état refusé) si le total des votes en cours est redescendu en dessous du seuil de la majorité 
+  (61,8% ou moins ? pour éviter que ca clignote autour de la limite. Par exemple 60% ou 55%. ou mieux : 61.80 - 6.18 = 55.62)
+
+  - Une notification est envoyée à tous les citoyens concernés par cette abrogation (en fonction du niveau atteint par la proposition)
+
+
+
+*** Comment on crée une proposition de loi ?
+
+- On choisi un(ou plusieurs) thème(s) - les thèmes pourraient être équivalents à différents ministères, et nous serions tous ministres :p
+  Santé, Energie, Climat, Culture, Animation, Biodiversité, Economie sociale et solidaire, etc...
+
+- On écrit sa proposition
+- On définit le niveau final à atteindre (commune, departement, region, pays)
+- On définit une liste de tags pour décrire le contenu de la proposition
+- On enregistre
+
+=> la proposition est publiée dans mon conseil citoyen communal en premier.
 => mes voisins votes
   => la proposition est acceptée
     => la proposition concerne seulement ma commune ?
       => oui : fin du process
-      => non : envoi automatique au département
+      => non : envoi automatique au département (et ainsi de suite aux niveaux supérieurs jusqu'au niveau final)
   => la proposition est refusée : fin du process
 
+
+
+*** Comment on accède aux propositions de loi ?
+****************************************
+INTERFACE DE NAVIGATION:
+****************************************
 
 Menu gauche :
 * En ce moment
@@ -103,3 +172,92 @@ Menu gauche secondaire : choix des thèmes (résultats croisés avec menu de gau
 *** energie
 *** culture
 *** climat
+*** etc ...
+
+
+
+
+
+********
+* MISE EN OEUVRE / UTILISATION / CONCRETEMENT KESKON FAIT AVEC CA ?
+********
+*** Par quoi commencer ? Quelles lois ? Quels thèmes traiter ? etc...
+********
+Avant toute chose, il me semble qu'il faut commencer par (ré)écrire le texte fondateur sur lequel repose toutes les autres lois : la constitution. 
+Je propose que le premier texte co-écrit sur communecter soit une nouvelle constitution, pour une 6eme république.
+
+Si nous réussissons à co-écrire ce textes, nous serons capables d'écrire tous les autres textes de lois dont nous aurons besoins.
+
+Les lois dépendent de la constitution, donc il est logique de commencer par réécrire une constitution.
+Sinon, toutes les lois réécrites resteront soumise à la constitution actuelle, et seront donc en quelques sortes faussées dès le départ.
+
+La constitution est là pour définir le fonctionnement de l'Etat, notamment la façon dont sont votées les lois, 
+et pour définir ses principes fondateurs inviolables. ex : le droit au travail, le droit au logement, l'égalité homme/femme, etc
+
+La constitution définit le socle commun de la société.
+Les lois suivantes ne font que découler des principes définis dans la constitution. 
+Il faut donc la réécrire en premier.
+
+
+*** La constituante
+Dans le cas où nous décidons de commencer par la procédure de (ré)écriture de la constitution,
+le processus d'écriture et de vote sera le même que celui décrit précédemment.
+
+Cependant, la constitution étant un texte commun, concernant l'ensemble des citoyens du territoire, 
+il me semble qu'il faudrait utiliser uniquement le "niveau PAYS" pour la constituante.
+
+Si nous utilisons le même parcours avec tous les niveaux, en commençant par les communes, 
+nous risquons de nous retrouver avec énormément de doublons (propositions similaires) 
+qui seront difficiles à départager une fois arrivé au niveau PAYS.
+
+Il me semble donc qu'il faut tout mettre en commun dès le départ
+  - déjà pour gagner du temps (1 mois par niveau)
+  - et pour éviter les doublons dans les propositions
+    -> si j'ai lu une proposition similaire à celle que je voulais faire : 
+       je n'ajouterai pas ma proposition, puisque je pourrai proposer un amendement.
+
+
+Dans le cas d'une constituante, nous serons obligés d'en écrire les premiers articles,
+une sorte de préambule à la constitution, pour définir les règles de fonctionnement de l'application.
+
+Ce préambule pourrait être soumis à ses propres règles de fonctionnement pour être définitivement validé (ou non) avant lancer la constituante.
+
+La constituante ne pourrait débuter véritablement qu'une fois le préambule validé par le vote, et éventuellment modifié par amendements.
+
+* Question > est-il possible de modifier le préambule de la constitution une fois qu'il a été validé ?
+  Il faut peut être une procédure spéciale.
+  Parce que les dev doivent être en mesure d'apporter les corrections dans le code (ça ne se fait pas en un claquement de doigt).
+  Il faut pouvoir assurer à tout moment la cohérence entre le texte voté, et l'état du système en production.
+  Et il faut vérifier que le texte validé est réalisable techniquement.
+
+* Je propose > on ne peut plus toucher au préambule à partir du moment où il aura été validé une première fois, après votes et amendements.
+  On peut seulement en écrire un nouveau, le soumettre au vote, et dans le cas où ce nouveau préambule est accepté : 
+  trouver des gentils codeurs pour l'implémenter (mais pas nous) sur un autre système.
+
+  > Une fois le process lancé, on ne peut pas modifier les règles de votes (ou autres) tous les mois... sinon c'est impossible à gérer (et à comprendre).
+
+* > Ou alors, il faut que l'équipe de dev ait un droit de véto (avec justification obligatoire, et éventuellement une séance de vote réservé aux dev)
+    
+* Je propose aussi : que l'on puisse signaler son désacord avec le préambule en signant par email. 
+  En considérant que le nombre d'inscrits sur le réseau est égal au nombre de personnes qui valident notre préambule, 
+  on pourra avoir une idée de la popularité du système qu'on propose.
+
+  je trouve ça intéressant de savoir combien de personnes sont prêtes à manifester leur désaprobation.
+  En faisant le ratio entre NB-mailContre / NB-inscrits, on aura une idée de la légitimité de notre démarche.
+  Le but étant d'avoir un maximum de légitimité si on arrive à co-écrire une nouvelle constitution de A à Z, 
+  pour avoir le maximum de poid pour la faire officialiser : cad faire en sorte que cette nouvelle constitution devienne la nouvelle constitution officielle
+  du peuple Français, et qu'elle soit la référence pour toutes nos institutions 
+  (ce qui n'arrivera jamais sans un mouvement insurectonnel/révolutionnaire utilisant probablement la force, 
+  mais surtout sans une nouvelle constitution écrite et prête à être mise en place).
+
+  Il n'y aura une 6eme république que si nous réussissons à co-écrire une nouvelle constitution. C'est une étape incontournable...
+  
+  Tant que nous restons dans la 5eme république, les changements que nous souhaitons voir se produire dans la société (solidarité, écologie, conso locale, etc) 
+  n'ont que très peu de chance de se produire. Seule une nouvelle constitution pourra créer l'élan suffisant pour d'attaquer à l'ampleur de la tâche.
+
+  Il ne peut pas y avoir de véritable démocratie (participative/directe) dans la 5eme république.
+
+
+
+
+

@@ -71,7 +71,10 @@ var formInMap = {
 			formInMap.initHtml();
 			$("#newElement_btnValidateAddress").prop('disabled', (formInMap.NE_insee==""?true:false));
 			if(formInMap.NE_insee != ""){
-				$("#divStreetAddress").removeClass("hidden");
+				if(userId == "")
+					$("#divStreetAddress").addClass("hidden");
+				else
+					$("#divStreetAddress").removeClass("hidden");
 			}
 		}
 
@@ -82,7 +85,10 @@ var formInMap = {
 		});
 
 		formInMap.bindFormInMap();
-
+		if(userId == "")
+			$("#divStreetAddress").addClass("hidden");
+		else
+			$("#divStreetAddress").removeClass("hidden");
 		$("#right_tool_map_locality").removeClass("hidden");
 		$("#right_tool_map_search").addClass("hidden");
 
@@ -159,6 +165,7 @@ var formInMap = {
 				formInMap.timeoutAddCity = setTimeout(function(){ 
 					formInMap.autocompleteFormAddress("locality", $('[name="newElement_city"]').val()); 
 				}, 500);
+
 			}
 		});
 
@@ -360,7 +367,11 @@ var formInMap = {
 
 		//formInMap.updateSummeryLocality(data);
 		formInMap.btnValideDisable( (complete == true ? false : true) );
-		$("#divStreetAddress").removeClass("hidden");
+
+		if(userId == "")
+			$("#divStreetAddress").addClass("hidden");
+		else
+			$("#divStreetAddress").removeClass("hidden");
 	},
 
 	searchAdressNewElement : function(){ 
@@ -493,7 +504,6 @@ var formInMap = {
 						contextData.geo = locality.geo;
 			    		contextData.geoPosition = locality.geoPosition;
 			    		
-
 						formInMap.hiddenHtmlMap(false);
 						formInMap.initData();
 
@@ -527,6 +537,17 @@ var formInMap = {
 			    	}
 			    }
 			});
+		} else {
+			mylog.log("locality communexion", locality)
+			$.cookie("inseeCommunexion", locality.address.codeInsee, { expires: 365, path : "/" });
+    		$.cookie("cpCommunexion", locality.address.postalCode, { expires: 365, path : "/" });
+    		$.cookie("cityNameCommunexion", locality.address.addressLocality , { expires: 365, path : "/" });
+    		$.cookie("communexionActivated", false, { expires: 365, path : "/" });
+    		$.cookie("communexionValue", locality.address.addressCountry+"_"+locality.address.codeInsee+"-"+locality.address.postalCode, { expires: 365, path : "/" });
+    		$.cookie("communexionName", locality.address.addressLocality, { expires: 365, path : "/" });
+			$.cookie("communexionType", "cp", { expires: 365, path : "/" });
+    		$.cookie("communexionLevel", "cpCommunexion", { expires: 365, path : "/" });
+    		urlCtrl.loadByHash(location.hash);
 		}
 		
 	},

@@ -62,7 +62,17 @@
 		display: none;
 	}
 <?php } ?>
-</style>	
+
+<?php if($typeItem == "events"){ ?>
+	.hide-event{
+		display: none;
+	}
+<?php } ?>
+</style>
+
+<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
+<?php if (@$deletePending && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal'); ?>
+
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
@@ -186,7 +196,7 @@
 
 		  <?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
 		  <button type="button" class="btn btn-default bold letter-green hidden-xs" 
-		  			data-target="#selectCreate" data-toggle="modal" style="border-right:0px!important;">
+		  		  id="open-select-create" style="border-right:0px!important;">
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
 		  </button>
 		  <?php } ?>
@@ -251,9 +261,9 @@
 									<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
 								</a>
 							</li>
-							<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+							<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) { ?>
 				  			<li class="text-left">
-				               	<a href="javascript:;" class="bg-white text-red">
+				               	<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">
 				                    <i class="fa fa-trash"></i> 
 				                    <?php echo Yii::t("common", "Delete {what}", 
 				                    					array("{what}"=> 
@@ -320,7 +330,83 @@
 	    ?>
 	</div>
 
-	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section"">
+	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-9 padding-50 margin-top-50 links-main-menu hidden" 
+		 id="div-select-create">
+		<div class="col-md-12 col-sm-12 col-xs-12 padding-15 shadow2 bg-white ">
+	       
+	       <button class="btn btn-link pull-right"><i class="fa fa-times"></i></button>
+	       
+	       <h4 class="text-center margin-top-15" style="">
+	       	<i class="fa fa-plus-circle"></i> Publier du contenu sur cette page<br>
+	       	<small>Que souhaitez-vous publier ?</small>
+	       </h4>
+
+	        <div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
+
+	        <button data-form-type="event"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-orange">
+	            <h6><i class="fa fa-calendar fa-2x bg-orange"></i><br> Événement</h6>
+	            <small>Faire connaitre un événement<br>Inviter des participants<br>Informer votre réseau</small>
+	        </button>
+	        <button data-form-type="classified"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure hide-event">
+	            <h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> Annonce</h6>
+	            <small>Publier une petite annonce<br>Partager Donner Vendre Louer<br>Matériel Immobilier Emploi</small>
+	        </button>
+
+	        <button data-form-type="poi"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green-poi">
+	            <h6><i class="fa fa-map-marker fa-2x bg-green-poi"></i><br> Point d'intérêt</h6>
+	            <small>Faire connaître un lieu intéressant<br>Contribuer à la carte collaborative<br>Valoriser son territoire</small>
+	        </button>
+
+	        
+	        <button data-form-type="url" data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-url">
+	            <h6><i class="fa fa-link fa-2x bg-url"></i><br> URL</h6>
+	            <small>Partager une addresse web<br>Vos sites favoris<br>Des info importantes...</small>
+	        </button>
+
+
+	        <button data-form-type="project"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-purple hide-event">
+	            <h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> Projet</h6>
+	            <small>Faire connaitre votre projet<br>Trouver du soutien<br>Construire une communauté</small>
+	        </button>
+
+			<div class="section-create-page">
+	        
+
+	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GROUP; ?>"  data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 letter-turq">
+	                <h6><i class="fa fa-group fa-2x bg-turq"></i><br> Groupe</h6>
+	                <small>Créer un groupe<br>Partager vos centres d'intêrets<br>Discuter Communiquer S'amuser</small>
+	            </button>
+
+	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_NGO; ?>"  data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green">
+	                <h6><i class="fa fa-group fa-2x bg-green"></i><br> Association</h6>
+	                <small>Faire connaitre votre association<br>Gérer les adhérents<br>Partager votre actualité</small>
+	            </button>
+	            
+	            
+	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_BUSINESS; ?>"  data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure">
+	                <h6><i class="fa fa-industry fa-2x bg-azure"></i><br> Entreprise</h6>
+	                <small>Faire connaitre votre entreprise<br>Trouver de nouveaux clients<br>Gérer vos contacts</small>
+	            </button>
+
+	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GOV; ?>"  
+	                    data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-red">
+	                <h6><i class="fa fa-university fa-2x bg-red"></i><br> Service public</h6>
+	                <small>Mairies, scolaires, etc...<br>Partager votre actualité<br>Partager des événements</small>
+	            </button>
+
+	        </div>
+	    </div>
+    </div>
+	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section pull-right">
 		
 		<?php   $classDescH=""; 
 				$classBtnDescH="<i class='fa fa-angle-up'></i> masquer"; 
@@ -420,6 +506,11 @@
 		inintDescs();
 		if(typeof contextData.name !="undefined")
 		setTitle("", "", contextData.name);
+
+		if( contextData.type == "events")
+			$(".createProjectBtn").hide()
+		else 
+			$(".createProjectBtn").show()
 
 		if(subView!=""){
 			if(subView=="gallery")

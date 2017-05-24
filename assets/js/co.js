@@ -1770,7 +1770,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 	        var match_url = new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
 	        if (match_url.test(getUrl.val())) 
 	        {
-		        mylog.log(getUrl.val().match(match_url));
+		        //mylog.log(getUrl.val().match(match_url));
 		        if(lastUrl != getUrl.val().match(match_url)[0]){
 			       // alert(lastUrl+"///"+getUrl.val().match(match_url)[0]);
 		        	var extracted_url = getUrl.val().match(match_url)[0]; //extracted first url from text filed
@@ -2367,9 +2367,7 @@ var dyFObj = {
 			        if (typeof afterSave == "function"){
 	            		afterSave(data);
 	            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
-	            	}
-	            	mylog.log("here")
-	            	//else{
+	            	} else {
 						dyFObj.closeForm();
 		                if(data.url){
 		                	mylog.log("urlReload data.url", data.url);
@@ -2379,7 +2377,7 @@ var dyFObj = {
 		                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
 			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 		                }
-					//}
+					}
 	            }
 	    	}
 	    });

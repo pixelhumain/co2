@@ -90,6 +90,9 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
   white-space: pre-line; 
 }
 </style>
+<script type="text/javascript" >
+var updateNews= new Object;
+</script>
 <div class="col-md-12 col-sm-12 no-padding margin-bottom-15" style="<?php if(!@isLive){ ?>padding-left:25px!important;<?php } ?>">
   <?php //var_dump($params); 
         $params = array(
@@ -117,13 +120,10 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
                                                        "canManageNews" => @$canManageNews,
                                                        "isLive" => @$isLive,
                                                        "isFirst"=>true)); ?>
-
 </ul>
 
 <script type="text/javascript" >
   var news = <?php echo json_encode($news); ?>;
-
-
   var loadingData = false;
   //var scrollEnd = false;
   var currentIndexMin = 0;
@@ -150,7 +150,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 
   var mentionsContact = [];
   var stopMention = false;
-
+  var tagsNews = <?php echo json_encode($tags); ?>;
 
 console.log("NEWS", news);
 jQuery(document).ready(function() {
@@ -267,12 +267,12 @@ function initForm(){ console.log("initForm initForm");
 }
 
 function initTags(){
-  if(contextParentType=="pixels"){
+  /*if(contextParentType=="pixels"){
     tagsNews=["bug","idea"];
   }
   else {
     tagsNews = <?php echo json_encode($tags); ?>;
-  }
+  }*/
   /////// A réintégrer pour la version last
   var $scrollElement = $(".my-main-container");
 

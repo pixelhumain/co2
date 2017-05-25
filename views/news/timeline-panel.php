@@ -192,9 +192,11 @@
                   <i class="fa fa-cog"></i>  <i class="fa fa-angle-down"></i>
                 </a>
                 <ul class="dropdown-menu">
-                <?php if (@$media["author"]["id"]==Yii::app()->session["userId"] || (@$canManageNews && $canManageNews)){ ?>
+                <?php if (@$media["author"]["id"]==Yii::app()->session["userId"] 
+                            || (@$media["sharedBy"] && in_array(Yii::app()->session["userId"],array_column($media["sharedBy"],"id")))
+                           || (@$canManageNews && $canManageNews)){ ?>
                   <li>
-                    <a href="javascript:;" class="deleteNews" onclick="deleteNews('<?php echo $key ?>', $(this))" data-id="'<?php echo $key ?>"><small><i class="fa fa-times"></i> <?php echo Yii::t("common", "Delete")?></small></a></li>
+                    <a href="javascript:;" class="deleteNews" onclick="deleteNews('<?php echo $key ?>', '<?php echo $media["type"] ?>', $(this))" data-id="'<?php echo $key ?>"><small><i class="fa fa-times"></i> <?php echo Yii::t("common", "Delete")?></small></a></li>
                     <?php if (@$media["type"] != "activityStream" /*&& @$media["author"]["id"]==Yii::app()->session["userId"]*/){ ?>
                       <li><a href="javascript:" class="modifyNews" onclick="modifyNews('<?php echo $key ?>','<?php echo $media["type"] ?>')" data-id="<?php echo $key ?>"><small><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Update publication")?></small></a></li>
                     <?php }

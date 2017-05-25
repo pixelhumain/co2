@@ -590,7 +590,7 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
 	
 }
 
-function deleteNews(id, $this){
+function deleteNews(id, type, $this){
 	//var $this=$(this);
 	bootbox.confirm(trad["suretodeletenews"], 
 		function(result) {
@@ -611,11 +611,19 @@ function deleteNews(id, $this){
 			        type: "POST",
 			        url: baseUrl+"/"+moduleId+"/news/delete/id/"+id,
 					dataType: "json",
-					//data: {"newsId": idNews},
+					data: {"isLive": isLive},
 		        	success: function(data){
-			        	if (data) {               
-							toastr.success(trad["successdeletenews"] + "!!");
-							$("#news"+id).fadeOut();
+			        	if (data) {  
+			        		if(typeof data.result != "undefined"){    
+			        			if(typeof data.share != "undefined")
+			        				toastr.success("Votre partage a été supprimé avec succès!!");
+			        			else         
+									toastr.success(trad["successdeletenews"] + "!!");
+								$("#"+type+id).fadeOut();
+							} else {
+								toastr.success("Votre partage a été supprimé avec succès!!");
+								$("#"+type+id).replaceWith(data);
+							}
 							/*liParent=$this.parents().eq(4);
 							if (typeof(offset) != "undefined")
 								offset.top = offset.top-liParent.height();

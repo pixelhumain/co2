@@ -385,7 +385,7 @@ function modifyNews(idNews,typeNews){
 	      label: "Enregistrer",
 	      className: "btn-success",
 	      callback: function() {
-	      	$('textarea.mention').mentionsInput('getMentions', function(data) {
+	      	$('.newsTextUpdate').mentionsInput('getMentions', function(data) {
       			mentionsInput=data;
     		});
     		newNews = new Object;
@@ -418,6 +418,9 @@ function modifyNews(idNews,typeNews){
 			}
 			if ($("#tagsUpdate").val() != ""){
 				newNews.tags = $("#tagsUpdate").val().split(",");	
+			}
+			if (mentionsInput.length != 0){
+				newNews.mentions=mentionsInput;
 			}
 		    //if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));	
 			newNews.text =$(".newsTextUpdate").val();
@@ -549,8 +552,8 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
     "defaultValue":data.mentions
     });
 	$(".removeMediaUrl").click(function(){
-        $trigger=$(this).parents().eq(1).find(className);
-	    $this.parents().eq(nbParent).find(appendClassName).empty().hide();
+        $trigger=$(this).parents().eq(1).find(idTextArea);
+	    $(idTextArea).parents().eq(1).find("#resultsUpdate").empty().hide();
 	    //$trigger.trigger("input");
 	});
 							

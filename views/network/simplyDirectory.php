@@ -73,6 +73,7 @@ jQuery(document).ready(function() {
 	bindLBHLinks();
 	addTooltips();
 	bindNetwork();
+
 	if(location.hash == "" || location.hash == "#network.simplydirectory")
 		showMapNetwork(true);
 	else
@@ -81,12 +82,6 @@ jQuery(document).ready(function() {
 	$(".main-menu-left.inSig").hide();
 	$("#right_tool_map").removeClass("hidden-sm").hide( 700 );
 
-	var btnSearch = '<div class="btn-group btn-group-lg tooltips" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Recherche par nom">'+
-					'<button type="button" class="btn btn-map " id="btn-search">'+
-					'<i class="fa fa-chevron-left"></i></button>'+
-				'</div>';
-	$("#btn-back").parent().replaceWith(btnSearch);
-	
 	topMenuActivated = true;
 	hideScrollTop = true;
 	checkScroll();
@@ -123,6 +118,13 @@ function initVar(){
 		nwVar[v] = ( ( typeof networkJson.request[v] != "undefined" && $.isArray(networkJson.request[v]) ) ? networkJson.request[v] : [] );
 		nwVar["all"+v] = ( ( typeof networkJson.request[v] != "undefined" && $.isArray(networkJson.request[v]) ) ? networkJson.request[v] : [] );
 	});
+
+
+	var btnSearch = '<div class="btn-group btn-group-lg tooltips" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Recherche par nom">'+
+					'<button type="button" class="btn btn-map " id="btn-search">'+
+					'<i class="fa fa-chevron-left"></i></button>'+
+				'</div>';
+	$("#btn-back").parent().replaceWith(btnSearch);
 }
 
 
@@ -141,7 +143,7 @@ function addTooltips(){
 
 
 function bindNetwork(){
-
+	mylog.log("bindNetwork");
 	$('#btn-toogle-map').click(function(e){ showMapNetwork(); });
 	
 	$('.reset').on('click', function() {
@@ -164,6 +166,7 @@ function bindNetwork(){
 
 
 	$("#btn-search").click(function(){
+		mylog.log("#btn-search", $("#right_tool_map").is(":visible"));
 		if(!$("#right_tool_map").is(":visible")){
 			$("#right_tool_map").show( 700 );
 			$("#btn-search").find("i").removeClass("fa-chevron-left").addClass("fa-chevron-right");
@@ -175,6 +178,7 @@ function bindNetwork(){
 	});
 
 	$('#btn-menu-launch').click(function(){
+		mylog.log("#btn-menu-launch", $(this).hasClass("active"));
 		if(!$(this).hasClass("active")){
 			$(this).addClass("active");
 			$(".main-menu-left").show();
@@ -189,6 +193,7 @@ function bindNetwork(){
 	});
 	
 	$(".showHideMoreTitleMap").click(function(){
+		mylog.log(".showHideMoreTitleMap");
 		if($(this).find("i").hasClass("fa-angle-down")){
 			$(".contentShortInformationMap").show("slow");
 			$(".contentTitleMap").addClass("active");	
@@ -215,6 +220,7 @@ function bindNetwork(){
 	// $('#dropdown_params').show();
 	
 	$('#dropdown_paramsBtn').click(function(event){
+		mylog.log("#dropdown_paramsBtn");
 		event.preventDefault();
 		if($('#dropdown_paramsBtn').hasClass('active')){
 			$('#dropdown_params').fadeOut();
@@ -235,6 +241,7 @@ function bindNetwork(){
 	/***** CHANGE THE VIEW GRID OR LIST *****/
 	$('#grid').hide();
 	$('#list').click(function(event){
+		mylog.log("#list");
 		event.preventDefault();
 		$('#dropdown_search .item').addClass('list-group-item');
 		$('.entityTop').removeClass('row');
@@ -248,6 +255,7 @@ function bindNetwork(){
 	});
 
 	$('#grid').click(function(event){
+		mylog.log("#grid");
 		event.preventDefault();
 		$('#dropdown_search .item').removeClass('list-group-item');
 		$('#dropdown_search .item').addClass('grid-group-item');
@@ -263,14 +271,14 @@ function bindNetwork(){
 }
 
 function showMapNetwork(show){
-	mylog.log("showMapNetwork", show);
+	mylog.log("showMapNetwork", show, isMapEnd);
 	mylog.log("typeof SIG : ", typeof Sig);
 
 	if(typeof Sig == "undefined") show = false;
 
 	if( typeof show == "undefined") 
 		show = !isMapEnd;
-
+	mylog.log("show", show);
 	if(show){
 		isMapEnd =true;
 		showNotif(false);
@@ -293,7 +301,9 @@ function showMapNetwork(show){
 			opacity:0,
 		}, 'slow' );
 
-		setTimeout(function(){ $(".my-main-container").hide(); }, 1000);
+		setTimeout(function(){ 
+			$(".my-main-container").hide();
+		}, 1000);
 		var timer = setTimeout("Sig.constructUI()", 1000);
 
 	}else{
@@ -310,9 +320,11 @@ function showMapNetwork(show){
 			top: 50,
 			opacity:1
 		}, 'slow' );
-		setTimeout(function(){ $(".my-main-container").show();
-			if(!$('#ficheInfoDetail').is(":visible"))
-			$(".main-menu-left").show( 700 );
+
+		setTimeout(function(){ 
+			$(".my-main-container").show();
+			if(!$('.main-menu-left').is(":visible"))
+				$(".main-menu-left").show( 700 );
 		}, 100);
 
 		if(typeof Sig != "undefined" && Sig.currentMarkerPopupOpen != null){
@@ -994,6 +1006,7 @@ function getAjaxFiche(url, breadcrumLevel){
 
 
 function reverseToRepertory(){
+	mylog.log("reverseToRepertory", isMapEnd);
 	if(isMapEnd)
 		showMapNetwork();
 	
@@ -1001,6 +1014,7 @@ function reverseToRepertory(){
 	$("#ficheInfoDetail").hide( 700 );
 	$(".main-col-search").removeClass("col-md-12 col-sm-12").addClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3");
 	$("#repertory").show( 700 );
+	mylog.log(".main-menu-left");
 	$(".main-menu-left").show( 700 );
 	// $(".panel-group .panel-default").fadeIn();
 	// $(".panel-group .panel-back").hide();

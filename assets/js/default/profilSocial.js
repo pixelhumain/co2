@@ -322,7 +322,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + str+" <b> lien"+s;
-		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'parentUrl\')">';
+		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
     	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
 	}
 

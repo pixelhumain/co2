@@ -475,7 +475,7 @@ function bindAboutPodElement() {
 						onLoads : {
 							markdown : function(){
 								dataHelper.activateMarkdown("#ajaxFormModal #description");
-								bindDesc("#ajaxFormModal");
+								//bindDesc("#ajaxFormModal");
 							}
 						},
 						afterSave : function(data){
@@ -623,14 +623,14 @@ function bindAboutPodElement() {
 	}
 
 
-	function bindDesc(parent){
+	/*function bindDesc(parent){
 		$(".maxlengthTextarea").off().keyup(function(){
 			var name = "#" + $(this).attr("id") ;
 			mylog.log(".maxlengthTextarea", parent+" "+name, $(this).attr("id"), $(parent+" "+name).val().length, $(this).val().length);
 			$(parent+" #maxlength"+$(this).attr("id")).html($(parent+" "+name).val().length);
 			maxlengthshortDescription
 		});
-	}
+	}*/
 
 
 	function updateUrl(ind, title, url, type) {

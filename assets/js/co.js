@@ -2704,7 +2704,18 @@ var dyFInputs = {
     		inputType : "textarea",
 	    	label : ( notEmpty(label) ? label : "Votre message ..." ),
 	    	placeholder : ( notEmpty(placeholder) ? placeholder : "Votre message ..." ),
-	    	rules : ( notEmpty(rules) ? rules : { } )
+	    	rules : ( notEmpty(rules) ? rules : { } ),
+	    	init : function(){
+	    		mylog.log("textarea init");
+	    		if($(".maxlengthTextarea").length){
+	    			mylog.log("textarea init2");
+	    			$(".maxlengthTextarea").off().keyup(function(){
+						var name = "#" + $(this).attr("id") ;
+						mylog.log(".maxlengthTextarea", "#ajaxFormModal "+name, $(this).attr("id"), $("#ajaxFormModal "+name).val().length, $(this).val().length);
+						$("#ajaxFormModal #maxlength"+$(this).attr("id")).html($("#ajaxFormModal "+name).val().length);
+					});
+	    		}
+	        }
 	    } ;
 	    return inputObj;
 	},

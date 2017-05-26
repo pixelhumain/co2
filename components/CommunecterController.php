@@ -455,6 +455,7 @@ class CommunecterController extends Controller
       "notifications"       => array("href" => "/ph/communecter/element/notifications"),
       "about"               => array("href" => "/ph/communecter/element/about"),
       "getdatadetail"       => array("href" => "/ph/communecter/element/getdatadetail"),
+      "stopdelete"          => array("href" => "/ph/communecter/element/stopdelete"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/communecter/app/welcome",         "public" => true),

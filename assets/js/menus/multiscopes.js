@@ -100,7 +100,7 @@ function loadMultiScopes(){
 	$.each(myMultiScopes, function(key, value){
 		showScopeInMultiscope(key);
 	});
-	bindCommunexionScopeEvents();
+	//bindCommunexionScopeEvents();
 	showCountScope();
 	saveCookieMultiscope();
 }
@@ -175,9 +175,12 @@ function addScopeToMultiscope(scopeValue, scopeName){
 	if(scopeValue == "") return;
 	if(!scopeExists(scopeValue)){ //mylog.log("adding", scopeValue);
 		myMultiScopes[scopeValue] = { name: scopeName, active: true, type: currentScopeType };
+		//alert();
 		showScopeInMultiscope(scopeValue);
 		$("#input-add-multi-scope").val("");
 		saveMultiScope();
+		showTagsScopesMin();
+		bindCommunexionScopeEvents();
 	}else{
 		showMsgInfoMultiScope("Ce lieu est déjà dans votre liste", "info");
 	}

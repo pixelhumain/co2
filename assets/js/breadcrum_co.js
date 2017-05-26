@@ -11,43 +11,43 @@ function bindCommunexionScopeEvents(){
                          $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"), 
                          $(this).data("region-communexion"), $(this).data("country-communexion")) ;
     });
-    $(".item-scope-input").click(function(){ 
-            scopeValue=$(this).data("scope-value");
-            if($(this).hasClass("disabled")){
-                $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
-                $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-check-circle");
-                $("[data-scope-value='"+scopeValue+"'].item-scope-input").removeClass("disabled");
-            }else{
-                $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-circle-o");
-                $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-check-circle");
-                $("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
-            }
-            toogleScopeMultiscope( $(this).data("scope-value") );
-            $("#footerDropdown").html("<i class='fa fa-circle'></i> <i class='fa fa-circle'></i> <i class='fa fa-circle'></i><hr style='margin-top: 34px;'>");
-            var sec = 3;
-            if(typeof interval != "undefined") clearInterval(interval);
-            interval = setInterval(function(){ 
-                if(sec == 1){
-                    if(actionOnSetGlobalScope=="filter"){
-                        if(location.hash.indexOf("#live") >= 0){
-                            startNewsSearch(true)
-                        }
-                        else{
-                            startSearch(0, indexStepInit); 
-                        }
+    $(".item-scope-input").off().on("click", function(){ 
+        scopeValue=$(this).data("scope-value");
+        if($(this).hasClass("disabled")){
+            $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
+            $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-check-circle");
+            $("[data-scope-value='"+scopeValue+"'].item-scope-input").removeClass("disabled");
+        }else{
+            $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-circle-o");
+            $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-check-circle");
+            $("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
+        }
+        toogleScopeMultiscope( $(this).data("scope-value") );
+        $("#footerDropdown").html("<i class='fa fa-circle'></i> <i class='fa fa-circle'></i> <i class='fa fa-circle'></i><hr style='margin-top: 34px;'>");
+        var sec = 3;
+        if(typeof interval != "undefined") clearInterval(interval);
+        interval = setInterval(function(){ 
+            if(sec == 1){
+                if(actionOnSetGlobalScope=="filter"){
+                    if(location.hash.indexOf("#live") >= 0){
+                        startNewsSearch(true)
                     }
-                    clearInterval(interval);
+                    else{
+                        startSearch(0, indexStepInit); 
+                    }
                 }
-                else{
-                    sec--;
-                    var str = "";
-                    for(n=0;n<sec;n++) str += "<i class='fa fa-circle'></i> ";
-                    str += "<hr style='margin-top: 34px;'>";
-                    $("#footerDropdown").html(str);
-                }
-            }, 800);
-            checkScopeMax();
-        });
+                clearInterval(interval);
+            }
+            else{
+                sec--;
+                var str = "";
+                for(n=0;n<sec;n++) str += "<i class='fa fa-circle'></i> ";
+                str += "<hr style='margin-top: 34px;'>";
+                $("#footerDropdown").html(str);
+            }
+        }, 800);
+        checkScopeMax();
+    });
 
     $(".start-new-communexion").click(function(){  
         if (typeof $.cookie('communexionName') !== 'undefined'){
@@ -57,7 +57,7 @@ function bindCommunexionScopeEvents(){
         }
     });
 }
-function activateGlobalCommunexion(active){  mylog.log("activateGlobalCommunexion", active);
+function activateGlobalCommunexion(active, firstLoad){  mylog.log("activateGlobalCommunexion", active);
     $.cookie('communexionActivated', active, { expires: 365, path: "/" });
     globalCommunexion=active;
     if(active){
@@ -79,8 +79,8 @@ function activateGlobalCommunexion(active){  mylog.log("activateGlobalCommunexio
         if(actionOnSetGlobalScope=="filter"){
             if(location.hash.indexOf("#live") >=0)
                 startNewsSearch(true);
-            else
-                startSearch(0, indexStepInit);
+            else if(!firstLoad)
+                startSearch(0, indexStepInit,searchCallback);
         }
     }
     $("#main-scope-name").html(headerHtml);
@@ -156,7 +156,7 @@ function getBreadcrumCommunexion(){
                     'data-scope-type="city" '+
                     'data-scope-level="'+communexion.levelMinCommunexion+'" '+
                     'data-toggle="tooltip" data-placement="bottom" data-original-title="'+tips+'"'+'>'+
-                    '<i class="fa fa-angle-right"></i>  '+communexion.values.inseeName+' (<?php echo Yii::t("common","all city") ?>)'+
+                    '<i class="fa fa-angle-right"></i>  '+communexion.values.inseeName+' (toute la ville)'+
                 '</button>'+
                 '<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
                     'class="btn btn-link text-red item-globalscope-checker homestead ';

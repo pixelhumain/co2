@@ -93,7 +93,7 @@
             $("#scopeListContainerForm").html(scopeHtml);
         }
         multiTagScopeLbl();
-        bindCommunexionScopeEvents();
+        //bindCommunexionScopeEvents();
         
         $(".toggle-scope-dropdown").click(function(){ //mylog.log("toogle");
             if(!$("#dropdown-content-multi-scope").hasClass('open'))

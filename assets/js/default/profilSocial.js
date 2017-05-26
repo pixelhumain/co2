@@ -331,8 +331,14 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + " a " + countData+" <b> point de contact"+s;
-		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
-    	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
+		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Contact"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
+    	html +=	'<i class="fa fa-plus"></i> '+trad["Add Contact"]+'</a>' ;  
+	}
+
+	if( $.inArray( ["events","projects","organizations","poi","classified","collections"] , dataName ) >= 0 ){
+		var elemSpec = dyFInputs.get(dataName);
+		html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \''+elemSpec.ctrl+'\',\'sub\')">';
+    	html +=	'<i class="fa fa-plus"></i> Ajouter '+trad[ elemSpec.ctrl ]+'</a>' ;  
 	}
 
 	return html;

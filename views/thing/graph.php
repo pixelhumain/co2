@@ -203,8 +203,8 @@ var svgG;
 
 //var timeOffset=<?php //echo timezone_offset_get(DATE_ISO8601) ?>
 
-//var nbDays=<?php //echo $nbDays ?>;
-var nbDays=20;
+var nbDays=<?php echo $nbDays ?>;
+//var nbDays=20;
 if(nbDays>0 && nbDays<=2){
  	tRollup = "rollup=30m"; //10
  	coRollup = 30;
@@ -269,7 +269,7 @@ for ( device in devicemongoGraph ){
 //mylog.log(listDevice);
 
 // TODO : recuperer les sensor id pour chaque device par lastest readings API SC cad les donné de la base COmmunecter POI
-var sckSensorIds = [{bat : 17},{hum : 13},{temp : 12},{no2 : 15},{ co: 16},{noise : 7},{panel : 18},{light : 14 },{nets : 21}]; 
+var sckSensorIds = {bat : 17, hum : 13, temp : 12,no2 : 15,  co: 16, noise : 7, panel : 18, light : 14 , nets : 21}; 
 
 var infoSensors = <?php echo json_encode($infoSensors); ?>;
 
@@ -290,26 +290,23 @@ jQuery(document).ready( function() {
 */
 	var sensorsProcessed = 0;  
 
-	sckSensorIds.forEach( function(item,index,array){
-		sensorsProcessed++;
-		mylog.log(" -- sckSensorIds.forEach(function(item,index,array){ } ); -");
+	for (var keySens in sckSensorIds ) {	//forEach( function(item,index,array){
+		mylog.log(" -- sckSensorIds");
 		
-		for( var it in item) {
-			var sensorId = item[it];
-			mylog.log(sensorId);
-			var nametitle= "graphe_"+sensorId;
-			var grapheTitle = d3.select("#graphs")
-				.append("figure").attr("id",nametitle)
-				.attr("class","col-xs-12 graphs");
+		//for( var it in item) {
+		var sensorId = sckSensorIds[keySens];  // item[it];
+		mylog.log(sensorId);
+		var nametitle= "graphe_"+sensorId;
+		var grapheTitle = d3.select("#graphs")
+			.append("figure").attr("id",nametitle)
+			.attr("class","col-xs-12 graphs");
 
-			$("#"+nametitle).hide();
-			svgG = setSVGForSensor(sensorId); //index pour les params du graphe sensor
-		} 
+		$("#"+nametitle).hide();
+		svgG = setSVGForSensor(sensorId); //index pour les params du graphe sensor
+		//} 
+	} //);
+	mylog.log('sensorsProcessed : all sensorIds done');
 
-		if(sensorsProcessed===array.length){
-			mylog.log('sensorsProcessed : all sensorIds done');
-		}
-	});
 
 	var deviceProcessed=0;
 
@@ -339,11 +336,14 @@ jQuery(document).ready( function() {
 		}).done(function() { 
 			deviceProcessed++; 
 			if (lengthOfdevicemongoGraph== deviceProcessed){
-				sckSensorIds.forEach( function(item,index){
-					mylog.log(' sckSensorIds forEach2 item : '+item+" index : "+index );
+				var index=0;
+				for(var keySens in sckSensorIds){
+				//sckSensorIds.forEach( function(item,index){
+					
 					mylog.log("infoSensors[multiGraphe[index].svgid] : "+infoSensors[multiGraphe[index].svgid]);
-					setAxisXY(index,infoSensors[multiGraphe[index].svgid]); 
-				});
+					setAxisXY(index,keySens);
+					index++; 
+				} //);
 			}
 		 });
 

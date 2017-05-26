@@ -215,28 +215,28 @@ function graphe(device,sensors,readings,svgG){
 }
 
 function grapheCoDB(data,device) {
+	mylog.log(" ---------- grapheCoDB ------------");
 	var dCOdb = dataSensorAdaptorTimestampsAndValues(data);
-	mylog.log(dCOdb);
+	//mylog.log(dCOdb);
 	var strkCol = setStrokeColorForDevice(device);
 	for (var key in dCOdb){
-		//mylog.log("dCOdb[key] :"+dCOdb[key]+"\n key "+key);
-	/*
-		var xMinMax = d3.extent(dCOdb[key], function(d){return d.timestamps;});
-		var yMinMax = d3.extent(dCOdb[key], function(d){return d.values;});
-		mylog.log("xMinMax : " +xMinMax + "; yMinMax :"+ yMinMax);
-		updateTheDomain(xMinMax,yMinMax,i);
-		tracer(dCOdb[key],device,sckSensorIds[0][key],strkCol,i);
-	*/
-		for (var i = 0 ; i < (multiGraphe.length - 1); i++) {
 
-			if(multiGraphe[i].svgid=="sensor"+sckSensorIds[0][key]){
+		mylog.log("sckSensorIds[key] : " + sckSensorIds[key]);
+	/*
+		tracer(dCOdb[key],device,sckSensorIds[0][key],strkCol,i);
+	*/	var i=0;
+		for (var key2 in multiGraphe ) {
+			i++;
+			if(multiGraphe[key2].svgid=="sensor"+sckSensorIds[key] ){
 				var xMinMax = d3.extent(dCOdb[key], function(d){return d.timestamps;});
 				var yMinMax = d3.extent(dCOdb[key], function(d){return d.values;});
 				mylog.log("xMinMax : " +xMinMax + "; yMinMax :"+ yMinMax);
-				updateTheDomain(xMinMax,yMinMax,i);
-				tracer(dCOdb[key],device,sckSensorIds[0][key],strkCol,i);
+				updateTheDomain(xMinMax,yMinMax,key2);
+
+				tracer(dCOdb[key], device, sckSensorIds[key],strkCol,key2);
 				break;
 			}
+			
 		}
 	}
 }

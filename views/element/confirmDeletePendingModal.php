@@ -39,7 +39,7 @@
 	    	success: function(data){
 		    	if(data.result){
 					toastr.success(data.msg);
-					loadByHash(location.hash);
+					urlCtrl.loadByHash(location.hash);
 		    	}else{
 		    		toastr.error(data.msg);
 		    	}
@@ -50,5 +50,5 @@
 		});
 	});
 
-	$("#modal-confirm-delete-pending").modal();
+	$("#modal-confirm-delete-pending").modal("show");
 </script>

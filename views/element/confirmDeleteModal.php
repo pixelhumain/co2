@@ -39,7 +39,7 @@
 	    	success: function(data){
 		    	if(data.result){
 					toastr.success(data.msg);
-					loadByHash("#default.live");
+					urlCtrl.loadByHash("#search");
 		    	}else{
 		    		toastr.error(data.msg);
 		    	}

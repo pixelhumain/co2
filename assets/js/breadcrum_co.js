@@ -66,6 +66,7 @@ function activateGlobalCommunexion(active){  mylog.log("activateGlobalCommunexio
         $("#container-scope-filter").html(getBreadcrumCommunexion());
         if(actionOnSetGlobalScope=="save")
             $("#scopeListContainerForm").html(getBreadcrumCommunexion());
+        bindCommunexionScopeEvents();
     }
     else{
         headerHtml='<a href="#web" class="menu-btn-back-category" data-target="#modalMainMenu" data-toggle="modal">'+
@@ -74,6 +75,7 @@ function activateGlobalCommunexion(active){  mylog.log("activateGlobalCommunexio
         saveCookieMultiscope();
         //rebuildSearchScopeInput();
         showTagsScopesMin();
+        bindCommunexionScopeEvents();
         if(actionOnSetGlobalScope=="filter"){
             if(location.hash.indexOf("#live") >=0)
                 startNewsSearch(true);
@@ -82,7 +84,6 @@ function activateGlobalCommunexion(active){  mylog.log("activateGlobalCommunexio
         }
     }
     $("#main-scope-name").html(headerHtml);
-    bindCommunexionScopeEvents();
     $('.tooltips').tooltip();
 }
 function getBreadcrumCommunexion(){

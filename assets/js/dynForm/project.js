@@ -22,7 +22,10 @@ dynForm = {
 			    afterSave : function(urlReload){
 					if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 ){
 				    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-					}
+					} else { 
+			          	dyFObj.closeForm(); 
+			          	urlCtrl.loadByHash( '#page.type.projects.id.'+uploadObj.id );
+			        }
 			    },
 			    beforeSave : function(){
 			    	if( typeof $("#ajaxFormModal #description").code === 'function' ) 
@@ -38,7 +41,7 @@ dynForm = {
 			        name : dyFInputs.name("project"),
 		            parentType : dyFInputs.inputHidden(),
 		            parentId : dyFInputs.inputHidden(),
-		            image : dyFInputs.image("#project.detail.id."+uploadObj.id),
+		            image : dyFInputs.image("#page.type.projects.id."+uploadObj.id),
 		            location : dyFInputs.location,
 		            tags :dyFInputs.tags(),
 		            shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),

@@ -142,7 +142,7 @@
 					<span id="typeHeader" class="margin-left-10 pull-left">
 						<i class="fa fa-x fa-angle-right pull-left"></i>
 						<div class="type-header pull-left">
-					 		<?php echo Yii::t("common", $element["type"]) ?>
+					 		<?php echo Yii::t("event", $element["type"]) ?>
 					 	</div>
 					</span>
 				<?php } ?>

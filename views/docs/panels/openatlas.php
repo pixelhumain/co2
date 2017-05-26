@@ -22,16 +22,6 @@
 	<br><br>
 	Au quotidien, Open Atlas fonctionne grâce à la présence permanente des développeurs, des commoners, et des acteurs sur le terrain, le meilleur moyen de les contacter est <a href="chat.lescommuns.org" target="_blank">ici</a>  .
 	<br>Numéro siret : 513 381 830 00019
-
-	<br><br><br>
-	<span class="bold">
-	<br>1. We believe in an open exchange. 
-	<br>2. We believe in the power of participation. 
-	<br>3. We believe in rapid prototyping.
-	<br>4. We believe in meritocracy. 
-	<br>5. We believe in community
-	</span>
-	<br><a href="http://www.framablog.org/index.php/post/2011/09/28/the-open-source-way" target="_blanck">the-open-source-way</a>
 </div>
 
 

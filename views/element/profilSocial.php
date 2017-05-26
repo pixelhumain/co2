@@ -21,6 +21,7 @@
 		'/plugins/showdown/showdown.min.js',
 		//MARKDOWN
 		'/plugins/to-markdown/to-markdown.js',
+		'/plugins/jquery.qrcode/jquery-qrcode.min.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	
@@ -563,6 +564,8 @@
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
 		//Sig.showMapElements(Sig.map, mapElements);
+		var elemSpec = dyFInputs.get("<?php echo $type?>");
+		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");
 	});
 
 

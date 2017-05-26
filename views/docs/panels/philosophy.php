@@ -3,7 +3,7 @@
 	<span class="panel-title homestead"> <i class='fa fa-heart  faa-pulse animated fa-3x  '></i> <span style="font-size: 48px">PHILOSOPHY</span></span>
 </div>
 <div class="space20"></div>
-<div class="keywordList col-xs-6 col-xs-offset-3"></div>
+<div class="keywordList"></div>
 
 <script type="text/javascript">
 
@@ -16,6 +16,18 @@ var keywords = [
 			"<br>Voir la société par les communs"+
 			"<br>Experimentons un autre vision du système"+
 			"<br>Le système peut il fonctionner autrement"
+	},
+	{
+		"icon" : "fa-code",
+		"title":"Open source",
+		"body":'<span class="bold">'+
+			'<br>1. We believe in an open exchange. '+
+			'<br>2. We believe in the power of participation. '+
+			'<br>3. We believe in rapid prototyping.'+
+			'<br>4. We believe in meritocracy. '+
+			'<br>5. We believe in community'+
+			'</span>'+
+			'<br><a class="btn btn-default" href="http://www.framablog.org/index.php/post/2011/09/28/the-open-source-way" target="_blanck">the-open-source-way</a>'
 	},
 	{
 		"icon" : "fa-lightbulb-o",
@@ -45,7 +57,7 @@ jQuery(document).ready(function()
 		icon = (obj.icon) ? obj.icon : "fa-tag" ;
 		color = (obj.color) ? obj.color : "#E33551" ;
 		$(".keywordList").append(
-		'<div class="panel panel-white">'+
+		'<div class="col-xs-4 panel-white">'+
 			'<div class="panel-heading border-light ">'+
 				'<span class="panel-title homestead"> <i class="fa '+icon+'  fa-2x"></i> <span style="font-size: 35px; color:'+color+';"> '+obj.title.toUpperCase()+'</span></span>'+
 			'</div>'+

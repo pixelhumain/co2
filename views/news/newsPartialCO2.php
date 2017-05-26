@@ -69,7 +69,8 @@
                               "authorId"=>$authorId,
                               "contextId"=>@$contextParentId,
                               "timezone"=>$timezone,
-                              "thumbAuthor"=>@$thumbAuthor
+                              "thumbAuthor"=>@$thumbAuthor,
+                              "canManageNews"=> @$canManageNews
                           ) 
                       ); 
       ?>

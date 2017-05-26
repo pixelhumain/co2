@@ -9,7 +9,7 @@ dynForm = {
 	    		if(contextData.type && contextData.id ){
     				$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
-	    			$("#ajax-modal .modal-header").removeClass("bg-purple bg-green-poi bg-orange bg-yellow bg-url");
+	    			$("#ajax-modal .modal-header").removeClass("bg-purple bg-green bg-green-poi bg-orange bg-yellow bg-url");
 							 //  					  .addClass("bg-green");
 	    		 	
 	    		 	$("#ajax-modal-modal-title").html(
@@ -37,7 +37,7 @@ dynForm = {
 	    	info : {
                 inputType : "custom",
                 html:"<p class='text-"+typeObj["organization"].color+"'>"+
-                		"Faire connaître votre Organisation n'a jamais été aussi simple !<br>" +
+                		//"Faire connaître votre Organisation n'a jamais été aussi simple !<br>" +
 					    "Créez votre page en quelques secondes,<br>puis rajoutez des détails,<br>selon vos besoins ...<hr>" +
 					 "</p>",
             },

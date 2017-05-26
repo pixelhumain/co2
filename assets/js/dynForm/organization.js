@@ -50,7 +50,7 @@ dynForm = {
             								{ required : true } ),
             tags : dyFInputs.tags(),
             location : dyFInputs.location,
-	        image : dyFInputs.image( "#organization.detail.id."+uploadObj.id ),
+	        image : dyFInputs.image( "#page.type.organizations.id."+uploadObj.id ),
             email : dyFInputs.email(),
 	        shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
 	        url : dyFInputs.inputUrl(),

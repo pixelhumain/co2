@@ -6,6 +6,8 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	sub : function(){
+
+	    		
     			$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 						  					  .addClass("bg-orange");
     		 	
@@ -154,7 +156,7 @@ dynForm = {
             },
             parentType : dyFInputs.inputHidden(),
 	        type : dyFInputs.inputSelect("Type d\'évènement",null,eventTypes, { required : true }),
-	        image : dyFInputs.image( "#event.detail.id." ),
+	        image : dyFInputs.image( "#page.type.events.id."+uploadObj.id ),
             allDay : dyFInputs.allDay(),
             startDate : dyFInputs.startDateInput,
             endDate : dyFInputs.endDateInput,

@@ -38,7 +38,7 @@ function checkPoll(){
 	if(userId){
 		_checkLoggued();
 		if(typeof refreshNotifications != "undefined")
-		refreshNotifications();
+		refreshNotifications(userId,"citoyens","");
 	}
 	
 	//according to the loaded page 

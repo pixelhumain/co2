@@ -335,7 +335,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
     	html +=	'<i class="fa fa-plus"></i> '+trad["Add Contact"]+'</a>' ;  
 	}
 
-	if( $.inArray( ["events","projects","organizations","poi","classified","collections"] , dataName ) ){
+	if( $.inArray( ["events","projects","organizations","poi","classified","collections"] , dataName ) >= 0 ){
 		var elemSpec = dyFInputs.get(dataName);
 		html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \''+elemSpec.ctrl+'\',\'sub\')">';
     	html +=	'<i class="fa fa-plus"></i> Ajouter '+trad[ elemSpec.ctrl ]+'</a>' ;  

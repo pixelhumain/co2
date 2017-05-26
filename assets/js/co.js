@@ -38,7 +38,7 @@ function checkPoll(){
 	if(userId){
 		_checkLoggued();
 		if(typeof refreshNotifications != "undefined")
-		refreshNotifications();
+		refreshNotifications(userId,"citoyens","");
 	}
 	
 	//according to the loaded page 
@@ -2196,6 +2196,7 @@ var dynForm = null;
 var uploadObj = {
 	type : null,
 	id : null,
+	isSub : false,
 	folder : moduleId, //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
@@ -2523,13 +2524,13 @@ var dyFObj = {
 				        	dyFObj.elementObj.dynForm.jsonSchema.beforeBuild();
 			      },
 			      onLoad : function  () {
-			      	if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
+			      	/*if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
 			      		themeObj.dynForm.onLoadPanel(dyFObj.elementObj);
-			      	} else {
+			      	} else {*/
 				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj.elementObj.dynForm.jsonSchema.icon+"'></i> "+dyFObj.elementObj.dynForm.jsonSchema.title);
 				        $("#ajax-modal-modal-body").append("<div class='space20'></div>");
 				        //alert(afterLoad+"|"+typeof dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
-			    	}
+			    	//}
 			        
 			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
 			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
@@ -2694,7 +2695,7 @@ var dyFInputs = {
     },
     image :function(str) { 
     	mylog.log("str", str) ;
-    	gotoUrl = (str) ? str+uploadObj.id : location.hash;
+    	gotoUrl = (str) ? str : location.hash;
     	mylog.log("gotoUrl", gotoUrl) ;
     	return {
 	    	inputType : "uploader",
@@ -2711,7 +2712,18 @@ var dyFInputs = {
     		inputType : "textarea",
 	    	label : ( notEmpty(label) ? label : "Votre message ..." ),
 	    	placeholder : ( notEmpty(placeholder) ? placeholder : "Votre message ..." ),
-	    	rules : ( notEmpty(rules) ? rules : { } )
+	    	rules : ( notEmpty(rules) ? rules : { } ),
+	    	init : function(){
+	    		mylog.log("textarea init");
+	    		if($(".maxlengthTextarea").length){
+	    			mylog.log("textarea init2");
+	    			$(".maxlengthTextarea").off().keyup(function(){
+						var name = "#" + $(this).attr("id") ;
+						mylog.log(".maxlengthTextarea", "#ajaxFormModal "+name, $(this).attr("id"), $("#ajaxFormModal "+name).val().length, $(this).val().length);
+						$("#ajaxFormModal #maxlength"+$(this).attr("id")).html($("#ajaxFormModal "+name).val().length);
+					});
+	    		}
+	        }
 	    } ;
 	    return inputObj;
 	},

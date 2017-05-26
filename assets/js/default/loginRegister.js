@@ -11,6 +11,7 @@ function userValidatedActions() {
 		$(".errorHandler").hide();
 		$('.pendingProcess').show();
 		$('.form-register #registerName').val(name);
+		$('.form-register #isInvitation').val(true);
 		$('#email3').prop('disabled', true);
 		$('#inviteCodeLink').hide();
 	}
@@ -314,7 +315,8 @@ var Login = function() {
                    "pendingUserId" : pendingUserId,
                    "mode" : REGISTER_MODE_TWO_STEPS
                 };
-                
+                if($('.form-register #isInvitation').val())
+                	params.isInvitation=true;
                 if( $("#inviteCode").val() )
 			      params.inviteCode = $("#inviteCode").val();
 
@@ -331,9 +333,14 @@ var Login = function() {
 						$("#password3").val("");
 						$("#passwordAgain").val("");
 						$('#agree').prop('checked', false);
-		    		  	
-		    		  	if(typeof data.invitedBy != undefined && data.invitedBy != "")
+		    		  	console.log(data);
+		    		  	if(typeof data.isInvitation != "undefined" && data.isInvitation){
 		    		  		toastr.success(data.msg);
+		    		  		history.pushState(null, "New Title",'#page.type.citoyens.id.'+data.id);
+		    		  		//window.location.href = baseUrl+'#page.type.citoyens.id.'+data.id;
+		        			window.location.reload();
+
+		    		  	}
 		    		  	else{
 		    		  		$("#modalRegisterSuccessContent").html("<h3><i class='fa fa-smile-o fa-4x text-green'></i><br><br> "+data.msg+"</h3>");
 			    		  	$("#modalRegisterSuccess").modal({ show: 'true' }); 

@@ -21,6 +21,7 @@
 		'/plugins/showdown/showdown.min.js',
 		//MARKDOWN
 		'/plugins/to-markdown/to-markdown.js',
+		'/plugins/jquery.qrcode/jquery-qrcode.min.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	
@@ -88,7 +89,9 @@
 </style>
 
 <?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
-<?php if (@$deletePending && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal'); ?>
+<?php 
+	error_log("Can delete : ".Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"]));
+	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal'); ?>
 
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
@@ -563,6 +566,8 @@
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
 		//Sig.showMapElements(Sig.map, mapElements);
+		var elemSpec = dyFInputs.get("<?php echo $type?>");
+		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");
 	});
 
 

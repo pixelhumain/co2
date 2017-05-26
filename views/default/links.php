@@ -30,6 +30,7 @@
             <div class="col-xs-4">
                 <h1><span class="text-red">CO</span>NSTRUIRE</h1>
                 <h2><a href="default/view/page/roadmap/dir/docs|panels" class="lbhp">ROADMAP</a></h2>
+                <h2><a href="default/view/page/openatlas/dir/docs|panels" class="lbhp ">Projets</a></h2>
                 <h2><a href="default/view/page/smarterre/dir/docs|comprendre" class="lbhp ">Smarterre</a></h2>
                 <h2><a href="#default.view.page.index.dir.docs" data-dismiss="modal" class="lbh">D<span class="text-red">OC</span>S</a></h2>
                 <h2><a href="default/view/page/contact/dir/docs|panels" class="lbhp "><span class="text-red">CO</span>NTACT</a></h2>

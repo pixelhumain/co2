@@ -278,7 +278,8 @@ function bindAboutPodElement() {
 									contextData.tags = data.resultGoods.values.tags;
 									var strHeader = "";
 									var strAbout = trad["notSpecified"];
-									if($('.header-tags').length){
+									if($('.header-tags').length && typeof contextData.tags != "undefined" && contextData.tags.length > 0){
+										strAbout = "" ;
 										$.each(contextData.tags, function (key, tag){
 											/*str +=	'<div class="tag label label-danger pull-right" data-val="'+tag+'">'+
 														'<i class="fa fa-tag"></i>'+tag+
@@ -326,11 +327,12 @@ function bindAboutPodElement() {
 								if(typeof data.resultGoods.values.type != "undefined"){
 
 									if(contextData.type == typeObj.organization.col )
-										contextData.typeOrga = data.resultGoods.values.typeEvent;
+										contextData.typeOrga = data.resultGoods.values.type;
 									else
-										contextData.typeEvent = data.resultGoods.values.typeEvent;
+										contextData.typeEvent = data.resultGoods.values.type;
 									//$("#typeHeader").html(data.resultGoods.values.type);
 									$("#typeAbout").html(trad[data.resultGoods.values.type]);
+									$("#typeHeader .type-header").html(trad[data.resultGoods.values.type]);
 								}
 
 								if(typeof data.resultGoods.values.email != "undefined"){
@@ -431,14 +433,12 @@ function bindAboutPodElement() {
 
 			if(contextData.type == typeObj.organization.col ){
 				if(notEmpty(contextData.typeOrga))
-					currentKFormType = contextData.typeOrga;
-					//dataUpdate.type = contextData.typeOrga;
+					dataUpdate.type = contextData.typeOrga;
 			}
 
 			if(contextData.type == typeObj.event.col ){
 				if(notEmpty(contextData.typeEvent))
-					currentKFormType = contextData.typeEvent;
-					//dataUpdate.type = contextData.typeEvent;
+					dataUpdate.type = contextData.typeEvent;
 			}
 
 			if(contextData.type == typeObj.project.col ){
@@ -475,7 +475,7 @@ function bindAboutPodElement() {
 						onLoads : {
 							markdown : function(){
 								dataHelper.activateMarkdown("#ajaxFormModal #description");
-								bindDesc("#ajaxFormModal");
+								//bindDesc("#ajaxFormModal");
 							}
 						},
 						afterSave : function(data){
@@ -623,14 +623,14 @@ function bindAboutPodElement() {
 	}
 
 
-	function bindDesc(parent){
+	/*function bindDesc(parent){
 		$(".maxlengthTextarea").off().keyup(function(){
 			var name = "#" + $(this).attr("id") ;
 			mylog.log(".maxlengthTextarea", parent+" "+name, $(this).attr("id"), $(parent+" "+name).val().length, $(this).val().length);
 			$(parent+" #maxlength"+$(this).attr("id")).html($(parent+" "+name).val().length);
 			maxlengthshortDescription
 		});
-	}
+	}*/
 
 
 	function updateUrl(ind, title, url, type) {

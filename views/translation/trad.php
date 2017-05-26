@@ -172,6 +172,20 @@ var trad = {
 "level4" : "<?php echo Yii::t("common","level4") ?>",
 "latlng" : "<?php echo Yii::t("common","latlng") ?>",
 "streetFormInMap" : "<?php echo Yii::t("common","streetFormInMap") ?>",
+
+"concours" :"<?php echo Yii::t("event","Concours") ?>",
+"festival" :"<?php echo Yii::t("event","Festival") ?>",
+"market" :"<?php echo Yii::t("event","Marché") ?>",
+"others" :"<?php echo Yii::t("event","Autres") ?>",
+"concert" :"<?php echo Yii::t("event","Concert") ?>",
+"exposition" :"<?php echo Yii::t("event","Exposition") ?>",
+"getTogether" :"<?php echo Yii::t("event","Rencontre") ?>",
+"meeting" :"<?php echo Yii::t("event","Réunion") ?>",
+"competition" :"<?php echo Yii::t("event","Compétition") ?>",
+"course" :"<?php echo Yii::t("event","Formation") ?>",
+"workshop" :"<?php echo Yii::t("event","Atelier") ?>",
+"conference" :"<?php echo Yii::t("event","Conférence") ?>",
+"debate" :"<?php echo Yii::t("event","Débat") ?>",
 };
 
 var tradCountry = {

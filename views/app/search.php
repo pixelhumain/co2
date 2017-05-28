@@ -398,21 +398,6 @@ jQuery(document).ready(function() {
 });
 
 
-function initTypeSearch(typeInit){
-    //var defaultType = $("#main-btn-start-search").data("type");
-
-    if(typeInit == "all") {
-        searchType = ["persons", "organizations", "projects"];
-        //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
-
-        indexStepInit = 30;
-    }
-    else{
-        searchType = [ typeInit ];
-        indexStepInit = 100;
-    }
-}
-
 /* -------------------------
 CLASSIFIED
 ----------------------------- */

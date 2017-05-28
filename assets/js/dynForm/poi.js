@@ -41,9 +41,11 @@ dynForm = {
 		afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-		    else { 
-	          dyFObj.closeForm(); 
-	          urlCtrl.loadByHash( location.hash );
+		    else 
+		    { 
+		        dyFObj.closeForm(); 
+		        var hashDest = (contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.poi" : location.hash;
+		        urlCtrl.loadByHash( hashDest );
 	        }
 	    },
 	    canSubmitIf : function () { 

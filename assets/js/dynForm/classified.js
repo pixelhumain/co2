@@ -55,7 +55,8 @@ dynForm = {
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
 		    	dyFObj.closeForm();
-		    	urlCtrl.loadByHash( location.hash );	
+			    var hashDest = (contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.classified" : location.hash;
+		        urlCtrl.loadByHash( hashDest );
 		    }
 	    },
 	    canSubmitIf : function () { 

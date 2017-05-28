@@ -6,7 +6,7 @@ Application "Démocratie" ~= DDA
 -------------------------------
 Démocratie : le pouvoir au peuple, pour le peuple, par le peuple
 -------------------------------
-- La démocratie c'est n'est pas élir ses maîtres, c'est voter ses lois.
+- La démocratie ce n'est pas élire ses maîtres, c'est voter ses lois.
 ----------------------------
 
 
@@ -17,7 +17,7 @@ Démocratie : le pouvoir au peuple, pour le peuple, par le peuple
 *** Dans Communecter, chaque commune dispose d'un "conseil citoyen".
 
 *** Dans Communecter, un "conseil citoyen" est un espace destiné à co-écrire les lois d'un pays, dans notre cas : la France.
-(applicable pour n'importe quel pays).
+(applicable pour n'importe quel pays). C'est aussi un espace de dialogue avec les élus locaux (tant qu'il y en a)
 
 *** Chaque citoyens peut proposer des lois, et participer à l'écriture, la correction, l'amélioration, et le vote des lois proposées par les autres citoyens.
 

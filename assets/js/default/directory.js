@@ -9,7 +9,6 @@ var totalData = 0;
 var timeout = null;
 var searchType = '';
 var searchSType = '';
-
 //alert("d.js");
 
 var translate = {"organizations":"Organisations",
@@ -79,6 +78,20 @@ function addSearchType(type){
     //$(".search_"+type).removeClass("active"); //fa-circle-o");
     $(".search_"+type).addClass("active"); //fa-check-circle-o");
   }
+}
+function initTypeSearch(typeInit){
+    //var defaultType = $("#main-btn-start-search").data("type");
+
+    if(typeInit == "all") {
+        searchType = ["persons", "organizations", "projects"];
+        //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
+
+        indexStepInit = 30;
+    }
+    else{
+        searchType = [ typeInit ];
+        indexStepInit = 100;
+    }
 }
 
 

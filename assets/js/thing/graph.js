@@ -10,7 +10,7 @@ function mytester(data){
 	mylog.log(data);
 	return "return From mytester";
 }
-function setSVGForSensor(sensor) {
+function setSVGForSensor(sensor,sensorKey) {
 
 	var svgId = "sensor"+sensor;
 	var figGraph = "graphe_"+sensor;
@@ -26,7 +26,7 @@ function setSVGForSensor(sensor) {
 
 	var captionSensor =  d3.select("#"+figGraph).append("figcaption").text("Graph of sensor "+infoSensors[svgId].name+" ("+infoSensors[svgId].description+")");
 
-	var objGraph = {svgid : svgId, 
+	multiGraphe[sensorKey] = {svgid : svgId, 
 			svg : svgObj,
 			mesure : {description :  "", unit : "" }, 
 			dimension : { width : +gwidth, 
@@ -39,11 +39,23 @@ function setSVGForSensor(sensor) {
 			urlReqApi : ""
 	};
 
-	//console.dir(objGraph);
-	//Voir si on peu ce passer de la mise en tableau
-	var indexObjGraphe = (multiGraphe.push(objGraph)) - 1 ;
-	//console.log(indexObjGraphe);
-	return indexObjGraphe; 
+	mylog.log('multiGraphe['+sensorKey+'] : ');
+	mylog.log(multiGraphe[sensorKey]);
+/* ancien code 
+	var objGraph =  {svgid : svgId, 
+			svg : svgObj,
+			mesure : {description :  "", unit : "" }, 
+			dimension : { width : +gwidth, 
+				    height : +gheight, 
+				    margin : gmargin },
+			gid : gId , 
+			domain : {Yn : vYn, Ym : vYm, Xn : vXn, Xm : vXm , domainInitialized : false},
+			devices : [],
+			divgraphid : figGraph,
+			urlReqApi : ""
+	};
+*/	
+//console.dir(objGraph);
 }
 
 function setLegend(deviceId,strkCol){
@@ -72,41 +84,41 @@ function setLegend(deviceId,strkCol){
 }*/
 
 //TODO Prendre un domaine 10% plus grand que les data en Y 5%top et 5 bottom
-function updateTheDomain(xArray,yArray,indexGraphe){
+function updateTheDomain(xArray,yArray,sensorKey){
   var yChanged = false;
   var xChanged = false;
-  var Yn = multiGraphe[indexGraphe].domain.Yn;
-  var Ym = multiGraphe[indexGraphe].domain.Ym;
-  var Xn = multiGraphe[indexGraphe].domain.Xn;
-  var Xm = multiGraphe[indexGraphe].domain.Xm;
+  var Yn = multiGraphe[sensorKey].domain.Yn;
+  var Ym = multiGraphe[sensorKey].domain.Ym;
+  var Xn = multiGraphe[sensorKey].domain.Xn;
+  var Xm = multiGraphe[sensorKey].domain.Xm;
  
   if( yArray[0] < Yn || Yn == 0) {
-      multiGraphe[indexGraphe].domain.Yn = yArray[0]; yChanged = true; } //min
+      multiGraphe[sensorKey].domain.Yn = yArray[0]; yChanged = true; } //min
   if( yArray[1] > Ym || Yn == 0) { 
-      multiGraphe[indexGraphe].domain.Ym = yArray[1]; yChanged = true; } //max
-  if( yChanged == true || multiGraphe[indexGraphe].domain.domainInitialized == false ) { 
-    y.domain([multiGraphe[indexGraphe].domain.Yn,multiGraphe[indexGraphe].domain.Ym]); }
+      multiGraphe[sensorKey].domain.Ym = yArray[1]; yChanged = true; } //max
+  if( yChanged == true || multiGraphe[sensorKey].domain.domainInitialized == false ) { 
+    y.domain([multiGraphe[sensorKey].domain.Yn,multiGraphe[sensorKey].domain.Ym]); }
 
   if(xArray[0].valueOf() < Xn.valueOf() ){ 
-    multiGraphe[indexGraphe].domain.Xn = xArray[0]; xChanged = true;}
+    multiGraphe[sensorKey].domain.Xn = xArray[0]; xChanged = true;}
   if(xArray[1].valueOf() > Xm.valueOf() ){ 
-    multiGraphe[indexGraphe].domain.Xm = xArray[1]; xChanged = true;}
+    multiGraphe[sensorKey].domain.Xm = xArray[1]; xChanged = true;}
 
-  if( xChanged == true || multiGraphe[indexGraphe].domain.domainInitialized == false ) {
-    x.domain([multiGraphe[indexGraphe].domain.Xn,multiGraphe[indexGraphe].domain.Xm]);
-    multiGraphe[indexGraphe].domain.domainInitialized=true;
+  if( xChanged == true || multiGraphe[sensorKey].domain.domainInitialized == false ) {
+    x.domain([multiGraphe[sensorKey].domain.Xn,multiGraphe[sensorKey].domain.Xm]);
+    multiGraphe[sensorKey].domain.domainInitialized=true;
   }
 
 }
 
-function setAxisXY(indexGraphe,sensorkey){
-  //console.log(indexGraphe);
+function setAxisXY(sensorKey,sensorkey){
+  //console.log(sensorKey);
 
-  var gId = multiGraphe[indexGraphe].gid;
+  var gId = multiGraphe[sensorKey].gid;
   var g = d3.select("#"+gId);
-  var xAxisId="xAxis"+ multiGraphe[indexGraphe].svgid; 
-  var yAxisId="yAxis"+ multiGraphe[indexGraphe].svgid; 
-  var height = multiGraphe[indexGraphe].dimension.height;
+  var xAxisId="xAxis"+ multiGraphe[sensorKey].svgid; 
+  var yAxisId="yAxis"+ multiGraphe[sensorKey].svgid; 
+  var height = multiGraphe[sensorKey].dimension.height;
 
   d3.select("#"+xAxisId).remove();    // TODO refaire la selection sur le graphe sensor
   d3.select("#"+yAxisId).remove();
@@ -124,7 +136,7 @@ function setAxisXY(indexGraphe,sensorkey){
 //      .text("time")
       ;
 
-    var sensorkunit = sensorkey+" "+infoSensors[multiGraphe[indexGraphe].svgid].unit ;
+    var sensorkunit = sensorkey+" "+infoSensors[multiGraphe[sensorKey].svgid].unit ;
     //console.log(sensorkunit);
     g.append("g")
       .attr("id", yAxisId)
@@ -174,11 +186,11 @@ function fillArrayWithObjectTimestampsAndValues(readings){
 //@function tracer
 //@strockeColor 
 //* /
-function tracer(da,device,sensor,strokeColor="blue", indexGraphe,strokeWidth=1.5){
+function tracer(da,device,sensor,strokeColor="blue", sensorKey,strokeWidth=1.5){
   
-  var g = d3.select("#"+multiGraphe[indexGraphe].gid);
+  var g = d3.select("#"+multiGraphe[sensorKey].gid);
 
-  var gpathId = "gpId_"+device+multiGraphe[indexGraphe].svgid; //ex : gpId_4162sensor17
+  var gpathId = "gpId_"+device+multiGraphe[sensorKey].svgid; //ex : gpId_4162sensor17
   var graphClassSensor = "gcs_"+sensor;
       g.append("path")
         .datum(da)
@@ -214,17 +226,31 @@ function graphe(device,sensors,readings,svgG){
   
 }
 
-function grapheCoDB(data,device) {
+function grapheCoDB(data,device,boardId) {
 	mylog.log(" ---------- grapheCoDB ------------");
 	var dCOdb = dataSensorAdaptorTimestampsAndValues(data);
+	//var dCOdbF = dataSensorAdaptorTimestampsAndValuesWithForLoop(data);
+
+	for(keyS in dCOdb){
+		dataSensors[keyS][device]=dCOdb[keyS];
+			//dataSensors[keyS].id;
+
+
+	} 
+		
+	//y.domain([ 
+	//	d3.min(dataSensors, function()
+
+
 	//mylog.log(dCOdb);
 	var strkCol = setStrokeColorForDevice(device);
+	/*
 	for (var key in dCOdb){
-
-		mylog.log("sckSensorIds[key] : " + sckSensorIds[key]);
 	/*
 		tracer(dCOdb[key],device,sckSensorIds[0][key],strkCol,i);
-	*/	var i=0;
+	*/	
+	/*
+		var i=0;
 		for (var key2 in multiGraphe ) {
 			i++;
 			if(multiGraphe[key2].svgid=="sensor"+sckSensorIds[key] ){
@@ -233,17 +259,49 @@ function grapheCoDB(data,device) {
 				mylog.log("xMinMax : " +xMinMax + "; yMinMax :"+ yMinMax);
 				updateTheDomain(xMinMax,yMinMax,key2);
 
-				tracer(dCOdb[key], device, sckSensorIds[key],strkCol,key2);
+				tracer(dCOdb[key], device, sckSensorIds[key].id, strkCol,key2);
 				break;
 			}
 			
 		}
-	}
+	}*/
 }
 
+function dataSensorAdaptorTimestampsAndValuesWithForLoop(convertedDataRecord){
+console.time("dataSensorAdaptWithForLoop");
+	var dataCOdb={temp : [], hum : [], bat: [], panel : [], no2 : [], panel : [], co : [], noise : [], nets : [], light : []};
+
+	for(var dataC in convertedDataRecord){
+		var ts = new Date();
+		ts.setTime(Date.parse(convertedDataRecord[dataC].timestamp));
+		ts.setSeconds(0);
+
+		convertedDataRecord[dataC].temp =+convertedDataRecord[dataC].temp;
+		convertedDataRecord[dataC].hum  =+convertedDataRecord[dataC].hum;
+		convertedDataRecord[dataC].bat  =+convertedDataRecord[dataC].bat;
+		convertedDataRecord[dataC].panel=+convertedDataRecord[dataC].panel;
+		convertedDataRecord[dataC].co   =+convertedDataRecord[dataC].co;
+		convertedDataRecord[dataC].no2  =+convertedDataRecord[dataC].no2;
+		convertedDataRecord[dataC].light=+convertedDataRecord[dataC].light;
+		convertedDataRecord[dataC].nets =+convertedDataRecord[dataC].nets;
+		convertedDataRecord[dataC].noise=+convertedDataRecord[dataC].noise;
+
+		dataCOdb.temp.push({timestamps : ts, values : convertedDataRecord[dataC].temp});
+		dataCOdb.hum.push({timestamps : ts, values : convertedDataRecord[dataC].hum});
+		dataCOdb.bat.push({timestamps : ts, values : convertedDataRecord[dataC].bat}); 
+		dataCOdb.panel.push({timestamps : ts, values : convertedDataRecord[dataC].panel});
+		dataCOdb.no2.push({timestamps : ts, values : convertedDataRecord[dataC].no2});
+		dataCOdb.co.push({timestamps : ts, values : convertedDataRecord[dataC].co});
+		dataCOdb.noise.push({timestamps : ts, values : convertedDataRecord[dataC].noise});
+		dataCOdb.nets.push({timestamps : ts, values : convertedDataRecord[dataC].nets});
+		dataCOdb.light.push({timestamps : ts, values : convertedDataRecord[dataC].light});
+	}
+	console.timeEnd("dataSensorAdaptWithForLoop");
+	return dataCOdb;
+}
 
 function dataSensorAdaptorTimestampsAndValues(convertedDataRecord){
-
+	console.time("dataSensorAdaptWithForEach");
 	var dataCOdb={temp : [], hum : [], bat: [], panel : [], no2 : [], panel : [], co : [], noise : [], nets : [], light : []};
 	convertedDataRecord.forEach( function(item){
 		var ts = new Date();
@@ -269,8 +327,9 @@ function dataSensorAdaptorTimestampsAndValues(convertedDataRecord){
 		dataCOdb.noise.push({timestamps : ts, values : item.noise});
 		dataCOdb.nets.push({timestamps : ts, values : item.nets});
 		dataCOdb.light.push({timestamps : ts, values : item.light});
-
 	}
 	);
+	console.timeEnd("dataSensorAdaptWithForEach");
 	return dataCOdb;
 }
+

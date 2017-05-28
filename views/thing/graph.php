@@ -203,8 +203,8 @@ var svgG;
 
 //var timeOffset=<?php //echo timezone_offset_get(DATE_ISO8601) ?>
 
-var nbDays=<?php echo $nbDays ?>;
-//var nbDays=20;
+//var nbDays=<?php //echo $nbDays ?>;
+var nbDays=40;
 if(nbDays>0 && nbDays<=2){
  	tRollup = "rollup=30m"; //10
  	coRollup = 30;
@@ -223,7 +223,7 @@ $("#period").text("Graphe sur "+nbDays+" jours, "+tRollup);
 
 
 //Variable pour d3 et svg
-var multiGraphe = [];
+var multiGraphe = {};
 var strockeColorArray={};
 
 var svgwidth = 530, svgheight = 300; //16:9
@@ -241,14 +241,16 @@ var line = d3.line()
 	.x(function(d) { return x(d.timestamps); })
 	.y(function(d) { return y(d.values); });
 
-var vXn = new Date();
-var vXm = new Date();
+var vXn = new Date("2017-04-10"); // 2017-05-03
+var vXm = new Date("2017-04-10");
 vXn.setDate((vXn.getDate()-nbDays));
 var dXmISO = vXm.toISOString();
 var dXnISO = vXn.toISOString();
 var timeOffset = vXn.getTimezoneOffset(); // RE : -240
 var vYn = 0; //min
 var vYm = 1;
+
+
 
 //Variable SCK 
 //var listDevice = ["2531","4162","4151"];//,"4139","3151", "3188", "3422", "4122", "1693", "3208", "4164"];// 
@@ -261,15 +263,18 @@ var listDevice = [];
 
 var lengthOfdevicemongoGraph=0;
 for ( device in devicemongoGraph ){
-	lengthOfdevicemongoGraph++;
-	listDevice.push(devicemongoGraph[device].deviceId);
+	//lengthOfdevicemongoGraph++; // pour avoir la taille rapidement
+	listDevice.push({deviceId : devicemongoGraph[device].deviceId, boardId : devicemongoGraph[device].boardId });
 };
 
 //var listDevice = <?php //echo json_encode($deviceIds) ?>;
 //mylog.log(listDevice);
 
 // TODO : recuperer les sensor id pour chaque device par lastest readings API SC cad les donné de la base COmmunecter POI
-var sckSensorIds = {bat : 17, hum : 13, temp : 12,no2 : 15,  co: 16, noise : 7, panel : 18, light : 14 , nets : 21}; 
+//var sckSensorIds = {bat : 17, hum : 13, temp : 12,no2 : 15,  co: 16, noise : 7, panel : 18, light : 14 , nets : 21}; 
+
+var dataSensors = { bat : { id : 17}, hum :{ id : 13}, temp :{ id : 12} ,no2 : { id :15},
+	co:{ id : 16}, noise :{ id : 7}, panel :{ id : 18}, light :{ id : 14} , nets : { id :21} }; 
 
 var infoSensors = <?php echo json_encode($infoSensors); ?>;
 
@@ -279,7 +284,7 @@ jQuery(document).ready( function() {
 	//initPageInterface();
 	setTitle("<span id='main-title-menu'>Graphes</span>","line-chart","Graphes");
 	$("#mainNav").addClass("affix");
-/* TODO remplacer par les poi pour sig
+/* TODO remplacer par les poi pour sig ( mettre dans la page thing )
 	var contextDevicesMap = <?php //echo json_encode($sigDevicesForContextMap,true);?>;
 	//chargement la carte
 	if(CoSigAllReadyLoad){
@@ -290,11 +295,9 @@ jQuery(document).ready( function() {
 */
 	var sensorsProcessed = 0;  
 
-	for (var keySens in sckSensorIds ) {	//forEach( function(item,index,array){
-		mylog.log(" -- sckSensorIds");
-		
+	for (var keySens in dataSensors ) {	//forEach( function(item,index,array){
 		//for( var it in item) {
-		var sensorId = sckSensorIds[keySens];  // item[it];
+		var sensorId = dataSensors[keySens].id;  // item[it];
 		mylog.log(sensorId);
 		var nametitle= "graphe_"+sensorId;
 		var grapheTitle = d3.select("#graphs")
@@ -302,56 +305,86 @@ jQuery(document).ready( function() {
 			.attr("class","col-xs-12 graphs");
 
 		$("#"+nametitle).hide();
-		svgG = setSVGForSensor(sensorId); //index pour les params du graphe sensor
+		setSVGForSensor(sensorId, keySens); //index pour les params du graphe sensor
 		//} 
 	} //);
-	mylog.log('sensorsProcessed : all sensorIds done');
-
+	mylog.log('setSVGForSensor done');
 
 	var deviceProcessed=0;
-
-	for (idMgoSCK in devicemongoGraph) {
+//	var boardIdTest = "00:06:66:2a:02:a0"; 
+	var boardIds = [];
+	var urlReqCODB = baseUrl+'/'+moduleId+"/thing/getsckdataincodb"; //?start="+dXnISO+"&end="+dXmISO+"&rollupMin="+coRollup;
 	
+	listDevice.forEach( function(item) { if(item.boardId!="[FILTERED]"){ boardIds.push(item.boardId); } });
 		
-		//devicemongoGraph[idMgoSCK].boardId;
-		//devicemongoGraph[idMgoSCK].deviceId;
+	mylog.log("boardIds : ");
+	mylog.log(boardIds);
+	mylog.log("listDevice : ");
+	mylog.log(listDevice);
 
-		urlReqCODB = baseUrl+'/'+moduleId+"/thing/getsckdataincodb?boardId="+devicemongoGraph[idMgoSCK].boardId+"&start="+dXnISO+"&end="+dXmISO+"&rollupMin="+coRollup;
-		
+	testAjax=true;
+	if(testAjax) {
+		console.time("ajaxRequestToCODB");
 		$.ajax({
 			type: 'GET',
 			url: urlReqCODB,
 			dataType: "json",
+			data: { start : dXnISO, end : dXmISO, rollupMin: coRollup,
+				listBoardIds : JSON.stringify(boardIds) // si une seul requete
+				//boardId : devicemongoGraph[idMgoSCK].boardId // si en plusieurs requete.
+				}, 
+			context : { listDevice: listDevice},
 			crossDomain: true,
 			success: function (data) {
-				mylog.log("ajax GET : success -------  urlReqCODB :" + urlReqCODB );
-				if(data.length>0){
-					grapheCoDB(data, devicemongoGraph[idMgoSCK].deviceId);
+				
+				mylog.log(" -- ajax success-- " );
+	
+				var deviceForBoardId={};
+				for (d in listDevice ){
+					deviceForBoardId[listDevice[d].boardId]=listDevice[d].deviceId;
+				}
+				mylog.log("deviceForBoardId : ");
+				mylog.log(deviceForBoardId);
+				if(notNull(data) ){
+					for(var bId in data){
+						//; //bId : boardId 
+						grapheCoDB(data[bId], deviceForBoardId[bId]);
+					}
+
+					
 				}
 			 },
-			error: function (data) { mylog.log("Error : ajax not success"); 
-			//mylog.log(data); 
+			error: function (data) { mylog.log("Error : ajax not success -- "); 
+				mylog.log(data); 
 			}
 
 		}).done(function() { 
+			mylog.log(" -- ajax Done-- " );
 			deviceProcessed++; 
-			if (lengthOfdevicemongoGraph== deviceProcessed){
+
+			console.timeEnd("ajaxRequestToCODB");
+
+			if (listDevice.length == deviceProcessed ){
+				mylog.log( "deviceProcessed : "+deviceProcessed);
+			//	console.timeEnd("ajaxRequestToCODB"); //si plusieurs requete
+				/*
 				var index=0;
-				for(var keySens in sckSensorIds){
+				for(var keySens in dataSensors){
 				//sckSensorIds.forEach( function(item,index){
-					
-					mylog.log("infoSensors[multiGraphe[index].svgid] : "+infoSensors[multiGraphe[index].svgid]);
 					setAxisXY(index,keySens);
 					index++; 
 				} //);
+				*/
 			}
+	
 		 });
+	} // fin if forTest	
 
-	}
+	//} //fin if si plusieurs requete
+	//} //fin for si plusieurs requetes ajax
 
 	
-	mylog.log('all device done');
-	/*
+	/* sensorKey pour multigraphe
 	sckSensorIds.forEach( function(item,index){
 		mylog.log(' sckSensorIds forEach2 item : '+item+" index : "+index );
 		mylog.log("infoSensors[multiGraphe[index].svgid] : "+infoSensors[multiGraphe[index].svgid]);
@@ -363,13 +396,13 @@ jQuery(document).ready( function() {
 	if(true==false) { // desactivé ppour test
 
 		// fait un graphe par sensor et trace tous les devices sur le même graphe sensor
-		sckSensorIds.forEach(function (item,index,array){ 
+		dataSensors.forEach(function (item,index,array){ 
 			
 			mylog.log(item);
 
 			for( var e in item) {
 
-				var sensorId = item[e];
+				var sensorId = item[e].id;
 /*
 				var nametitle= "graphe_"+sensorId;
 				var grapheTitle = d3.select("#graphs")
@@ -378,9 +411,9 @@ jQuery(document).ready( function() {
 				$("#"+nametitle).hide();
 */
 				//var svgG = setSVGForSensor(sensorId); //index pour les params du graphe sensor
-
+// revoir ça : 
 				for ( var i = 0; i< listDevice.length ; i++) {
-					var urlReq="<?php //echo Thing::URL_API_SC ?>/devices/"+listDevice[i]+"/readings?sensor_id="+sensorId+"&"+tRollup+"&from="+dXnISO+"&to="+dXmISO;
+					var urlReq="<?php //echo Thing::URL_API_SC ?>/devices/"+listDevice[i].deviceId+"/readings?sensor_id="+sensorId+"&"+tRollup+"&from="+dXnISO+"&to="+dXmISO;
 					var sensorkey = "";
 
 					//mylog.log(urlReq);
@@ -394,15 +427,9 @@ jQuery(document).ready( function() {
 						crossDomain: true,
 						success: function (data) {
 							//console.dir(data);
-							var dRead = data;
-							var readings = dRead.readings;
-							var device = dRead.device_id;
-							var sensor = dRead.sensor_id;
-							sensorkey= dRead.sensor_key;
-
-							if (readings.length>=1){
-								//mylog.log(device);
-								graphe(device,sensor,readings,svgG);
+							sensorkey = data.sensor_key;
+							if (data.readings.length>=1){
+								graphe(data.device_id, data.sensor_id, data.readings,svgG);
 							}
 						},
 						error: function (data) { mylog.log("Error : ajax not success"); //mylog.log(data); 

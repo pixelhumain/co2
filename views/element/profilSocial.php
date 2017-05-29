@@ -90,7 +90,6 @@
 
 <?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
 <?php 
-	error_log("Can delete : ".Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"]));
 	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal'); ?>
 
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->

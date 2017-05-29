@@ -501,6 +501,8 @@
 					"edit" => @$edit,
 					"controller" => $controller,
 					"openEdition" => $openEdition,
+					"follows"=>@$follows,
+					"listFollowsId"=>@$listFollowsId
 				) );
 
 

@@ -47,19 +47,22 @@
 	var news=<?php echo json_encode($element); ?>;
 
 	jQuery(document).ready(function() {	
+    if(typeof news.text != "undefined"){
       var text = news.text.substr(0,30);
       if(news.text.length>30) text+="...";
       setTitle("", "", text);
-      
-		  <?php if(isset(Yii::app()->session["userId"])) { ?>
-        initCommentsTools(new Array(news));
-      <?php } ?>
+
       if(typeof news.mentions != "undefined")
         text = addMentionInText(news.text,news.mentions);
-	    else text = news.text;
-    	
-      $(".timeline_text").html(text);
-	  	showCommentsTools(news["_id"]['$id']);
+      else text = news.text;
+    }
+
+	  <?php if(isset(Yii::app()->session["userId"])) { ?>
+      initCommentsTools(new Array(news));
+    <?php } ?>
+    
+    $(".timeline_text").html(text);
+  	showCommentsTools(news["_id"]['$id']);
 	});
 
 </script>

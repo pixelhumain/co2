@@ -14,7 +14,7 @@
 ----------------------------------------------------
 * Version 0.2
 
-**@Rapha
+** @Rapha
 *** change le type des telephones de object en array
 /co2/datamigration/ChangePhoneObjectToArray
 

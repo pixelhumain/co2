@@ -96,7 +96,7 @@ function bindButtonMenu(){
 	$(".load-data-directory").click(function(){
 		responsiveMenuLeft();
 		var dataName = $(this).data("type-dir");
-		console.log(".load-data-directory", dataName);
+		mylog.log(".load-data-directory", dataName);
 		loadDataDirectory(dataName, $(this).data("icon"));
 	});
 		
@@ -509,7 +509,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType){
 	}
 }
 
-function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
+function loadStream(indexMin, indexMax, isLiveBool){ mylog.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
 	loadingData = true;
 	currentIndexMin = indexMin;
 	currentIndexMax = indexMax;

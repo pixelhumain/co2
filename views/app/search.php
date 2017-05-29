@@ -111,7 +111,7 @@
     .item-globalscope-checker.inactive{
         color:#DBBCC1 !important;
         border-bottom:0px;
-        margin(top:-6px;)
+        /*margin-top:-6px;*/
     }
     .item-globalscope-checker:hover,
     .item-globalscope-checker:active,
@@ -397,21 +397,6 @@ jQuery(document).ready(function() {
     //dyFObj.openForm ("organization");
 });
 
-
-function initTypeSearch(typeInit){
-    //var defaultType = $("#main-btn-start-search").data("type");
-
-    if(typeInit == "all") {
-        searchType = ["persons", "organizations", "projects"];
-        //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
-
-        indexStepInit = 30;
-    }
-    else{
-        searchType = [ typeInit ];
-        indexStepInit = 100;
-    }
-}
 
 /* -------------------------
 CLASSIFIED

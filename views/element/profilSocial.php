@@ -539,7 +539,7 @@
 
 		if(subView!=""){
 			if(subView=="gallery")
-				loadGallery()
+				loadGallery();
 			else if(subView=="notifications")
 				loadNotifications();
 			else if(subView.indexOf("chart") >= 0){

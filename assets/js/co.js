@@ -38,7 +38,7 @@ function checkPoll(){
 	if(userId){
 		_checkLoggued();
 		if(typeof refreshNotifications != "undefined")
-		refreshNotifications();
+		refreshNotifications(userId,"citoyens","");
 	}
 	
 	//according to the loaded page 
@@ -2787,7 +2787,7 @@ var dyFInputs = {
 			mylog.log("elementLocation", dyFInputs.locationObj.elementLocation);
 			dyFInputs.locationObj.elementLocations.push(dyFInputs.locationObj.elementLocation);
 			mylog.log("dyFInputs.locationObj.elementLocations", dyFInputs.locationObj.elementLocations);
-			if(!dyFInputs.locationObj.centerLocation || locationObj.center == true){
+			if(!dyFInputs.locationObj.centerLocation || dyFInputs.locationObj.centerLocation.center == true){
 				dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocation;
 				dyFInputs.locationObj.elementLocation.center = true;
 			}

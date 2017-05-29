@@ -9,7 +9,6 @@ var totalData = 0;
 var timeout = null;
 var searchType = '';
 var searchSType = '';
-
 //alert("d.js");
 
 var translate = {"organizations":"Organisations",
@@ -79,6 +78,20 @@ function addSearchType(type){
     //$(".search_"+type).removeClass("active"); //fa-circle-o");
     $(".search_"+type).addClass("active"); //fa-check-circle-o");
   }
+}
+function initTypeSearch(typeInit){
+    //var defaultType = $("#main-btn-start-search").data("type");
+
+    if(typeInit == "all") {
+        searchType = ["persons", "organizations", "projects"];
+        //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
+
+        indexStepInit = 30;
+    }
+    else{
+        searchType = [ typeInit ];
+        indexStepInit = 100;
+    }
 }
 
 
@@ -750,6 +763,8 @@ var directory = {
         str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
         str += "<div class='entityRight no-padding'>";
+
+        str += this.getAdminToolBar(params);
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
@@ -1632,7 +1647,19 @@ var directory = {
         mylog.log("END -----------showResultsDirectoryHtml ("+str.length+" html caracters generated)")
         return str;
     },
-
+    getAdminToolBar : function(element){
+      console.log("getAdminToolBar", element);
+      var html = 
+        "<div class='col-md-12 padding-5' style='margin-top:-50px;'>"+
+          "<button class='btn btn-default btn-xs'>"+
+            "<i class='fa fa-chain'></i> Btn admin"+
+          "</button> "+
+          "<button class='btn btn-default btn-xs'>"+
+            "<i class='fa fa-chain'></i> Btn admin"+
+          "</button> "+
+        "</div>";
+      return html;
+    },
     //builds a small sized list
     buildList : function(list) {
       $(".favSectionBtnNew,.favSection").remove();

@@ -496,6 +496,14 @@
 					"openEdition" => $openEdition,
 				) );
 
+	$this->renderPartial('../person/invite',
+			array(  "element" => @$element, 
+					"type" => @$type, 
+					"edit" => @$edit,
+					"controller" => $controller,
+					"openEdition" => $openEdition,
+				) );
+
 
 	if( $type != Person::COLLECTION)
 		$this->renderPartial('../element/addMembersFromMyContacts',
@@ -521,7 +529,8 @@
     var typeItem = "<?php echo $typeItem; ?>";
     var liveScopeType = "";
     var subView="<?php echo @$_GET['view']; ?>";
-    var hashUrlPage="#page.type."+contextData.type+".id."+contextData.id;
+
+    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?network="+networkParams : "" )+"#page.type."+contextData.type+".id."+contextData.id;
     var cropResult;
     var idObjectShared = new Array();
 
@@ -531,7 +540,7 @@
 		bindButtonMenu();
 		inintDescs();
 		if(typeof contextData.name !="undefined")
-		setTitle("", "", contextData.name);
+			setTitle("", "", contextData.name);
 
 		if( contextData.type == "events")
 			$(".createProjectBtn").hide()

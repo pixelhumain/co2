@@ -241,10 +241,10 @@
     $iconBegin= "connectdevelop";
     $headerName= "Journal de l'événement";//.$contextName;
     $topTitle = "Journal de l'événement";//.$contextName;
-    if(@$canManageNews && $canManageNews==true)
+    //if(@$canManageNews && $canManageNews==true)
       $textForm = Yii::t("common","Post a message in the wall of")." ".$contextName.", ".Yii::t("common","publicly shared or to this community");
-    else
-      $textForm = Yii::t("common","Write a private message to")." ".$contextName;
+    //else
+      //$textForm = Yii::t("common","Write a private message to")." ".$contextName;
 
   }
 

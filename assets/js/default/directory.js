@@ -764,6 +764,8 @@ var directory = {
 
         str += "<div class='entityRight no-padding'>";
 
+        str += this.getAdminToolBar(params);
+
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
               str +=    "<a href='"+params.hash+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
@@ -1645,7 +1647,19 @@ var directory = {
         mylog.log("END -----------showResultsDirectoryHtml ("+str.length+" html caracters generated)")
         return str;
     },
-
+    getAdminToolBar : function(element){
+      console.log("getAdminToolBar", element);
+      var html = 
+        "<div class='col-md-12 padding-5' style='margin-top:-50px;'>"+
+          "<button class='btn btn-default btn-xs'>"+
+            "<i class='fa fa-chain'></i> Btn admin"+
+          "</button> "+
+          "<button class='btn btn-default btn-xs'>"+
+            "<i class='fa fa-chain'></i> Btn admin"+
+          "</button> "+
+        "</div>";
+      return html;
+    },
     //builds a small sized list
     buildList : function(list) {
       $(".favSectionBtnNew,.favSection").remove();

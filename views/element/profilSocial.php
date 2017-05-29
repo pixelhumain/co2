@@ -90,7 +90,6 @@
 
 <?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
 <?php 
-	error_log("Can delete : ".Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"]));
 	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal'); ?>
 
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
@@ -496,6 +495,14 @@
 					"openEdition" => $openEdition,
 				) );
 
+	$this->renderPartial('../person/invite',
+			array(  "element" => @$element, 
+					"type" => @$type, 
+					"edit" => @$edit,
+					"controller" => $controller,
+					"openEdition" => $openEdition,
+				) );
+
 
 	if( $type != Person::COLLECTION)
 		$this->renderPartial('../element/addMembersFromMyContacts',
@@ -521,7 +528,8 @@
     var typeItem = "<?php echo $typeItem; ?>";
     var liveScopeType = "";
     var subView="<?php echo @$_GET['view']; ?>";
-    var hashUrlPage="#page.type."+contextData.type+".id."+contextData.id;
+
+    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?network="+networkParams : "" )+"#page.type."+contextData.type+".id."+contextData.id;
     var cropResult;
     var idObjectShared = new Array();
 
@@ -531,7 +539,7 @@
 		bindButtonMenu();
 		inintDescs();
 		if(typeof contextData.name !="undefined")
-		setTitle("", "", contextData.name);
+			setTitle("", "", contextData.name);
 
 		if( contextData.type == "events")
 			$(".createProjectBtn").hide()
@@ -540,7 +548,7 @@
 
 		if(subView!=""){
 			if(subView=="gallery")
-				loadGallery()
+				loadGallery();
 			else if(subView=="notifications")
 				loadNotifications();
 			else if(subView.indexOf("chart") >= 0){

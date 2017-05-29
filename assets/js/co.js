@@ -569,6 +569,7 @@ var urlCtrl = {
 		"#element.aroundme" : {title:"Around me" , icon : 'crosshairs', menuId:"menu-btn-around-me"},
 	    "#element.notifications" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#person.settings" : {title:'DETAIL ENTITY', icon : 'legal'},
+	    "#person.invite" : {title:'DETAIL ENTITY', icon : 'legal'},
 		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
 	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
@@ -761,6 +762,7 @@ var urlCtrl = {
 			setHeaderDirectory(type);
 			loadingData = false;
 			startSearch(0, indexStepInit, ( notNull(searchCallback) ) ? searchCallback : null );
+			mylog.log("testnetwork hash 2", hash);
 			location.hash = hash;
 			return;
 		}
@@ -827,7 +829,7 @@ var urlCtrl = {
 		} */
 	    else 
 	        showAjaxPanel( '/app/index', 'Home','home' );
-
+	    mylog.log("testnetwork hash", hash);
 	    location.hash = hash;
 
 	    /*if(typeof back == "function"){

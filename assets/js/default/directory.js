@@ -9,7 +9,6 @@ var totalData = 0;
 var timeout = null;
 var searchType = '';
 var searchSType = '';
-
 //alert("d.js");
 
 var translate = {"organizations":"Organisations",
@@ -79,6 +78,20 @@ function addSearchType(type){
     //$(".search_"+type).removeClass("active"); //fa-circle-o");
     $(".search_"+type).addClass("active"); //fa-check-circle-o");
   }
+}
+function initTypeSearch(typeInit){
+    //var defaultType = $("#main-btn-start-search").data("type");
+
+    if(typeInit == "all") {
+        searchType = ["persons", "organizations", "projects"];
+        //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
+
+        indexStepInit = 30;
+    }
+    else{
+        searchType = [ typeInit ];
+        indexStepInit = 100;
+    }
 }
 
 
@@ -751,6 +764,8 @@ var directory = {
 
         str += "<div class='entityRight no-padding'>";
 
+        str += this.getAdminToolBar(params);
+
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
               str +=    "<a href='"+params.hash+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
@@ -1287,33 +1302,37 @@ var directory = {
     urlPanelHtml : function(params, key){
 		  //if(directory.dirLog) 
       mylog.log("-----------urlPanelHtml", params, key);
-  		str = "";  
-  		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10'>";
-  			str += "<div class='searchEntity'>";
-  				str += '<ul class="nav navbar-nav btn-params-directory">';
-  					str += '<li class="text-left">';
-  						str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
-  								'class="bg-white tooltips" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
-  							str += '<i class="fa fa-pencil"></i>';
-  						str += '</a>';
-  					str += '</li>';
-  					str += '<li class="text-left">';
-  						str += '<a href="javascript:;" onclick="removeUrl(\''+key+'\');" class="bg-white tooltips" '+
-  								'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
-  							str += '<i class="fa fa-trash"></i>';
-  						str += '</a>';
-  					str += '</li>';
-  				str += '</ul>';
-  				str += '<a href="'+params.url+'" target="_blank" class="text-dark tooltips col-xs-8"'+
-  						'data-toggle="tooltip" data-placement="top" data-original-title="'+params.url+'" >';
-  					str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
-  						str += '<h4 class="panel-title text-dark pull-left">'+params.title+'</h4>';
-  						str += '<br/><span class="" style="font-size: 11px !important;">'+params.type+'</span>';
-  					str += "</div>";
-  				str += '</a>';
-  			str += "</div>";
-  		str += "</div>";
-  		return str;
+  		if(directory.dirLog) mylog.log("-----------contactPanelHtml", params);
+        str = "";  
+        str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 '>";
+        str += "<div class='searchEntity contactPanelHtml'>";
+          str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
+            str += '<a href="'+params.url+'" target="_blank" class="text-dark tooltips col-xs-8"'+
+              'data-toggle="tooltip" data-placement="top" data-original-title="'+params.url+'" >';
+              str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
+                str += '<h4 class="panel-title text-dark pull-left">'+params.title+'</h4>';
+                str += '<br/><span class="" style="font-size: 11px !important;">'+urlTypes[params.type]+'</span>';
+              str += "</div>";
+            str += '</a>';
+          str += "</div>";
+        str += '<ul class="nav navbar-nav pull-right margin-5">';
+            str += '<li class="text-left">';
+              str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
+              'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
+                str += '<i class="fa fa-pencil"></i>';
+              str += '</a>';
+            str += '</li>';
+            str += '<li class="text-left">';
+              str += '<a href="javascript:;"  onclick="removeUrl(\''+key+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
+              'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+                str += '<i class="fa fa-trash"></i>';
+              str += '</a>';
+            str += '</li>';
+          str += '</ul>';
+        str += "</div>";  
+      str += "</div>";
+      return str;
+    
     },
     // ********************************
     // Contact DIRECTORY PANEL
@@ -1323,20 +1342,6 @@ var directory = {
 	    str = "";  
 	    str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 '>";
 			str += "<div class='searchEntity contactPanelHtml'>";
-				str += '<ul class="nav navbar-nav btn-params-directory">';
-					str += '<li class="text-left">';
-						str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
-						'class="bg-white tooltips" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
-							str += '<i class="fa fa-pencil"></i>';
-						str += '</a>';
-					str += '</li>';
-					str += '<li class="text-left">';
-						str += '<a href="javascript:;" onclick="removeUrl(\''+key+'\');" class="bg-white tooltips" '+
-						'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
-							str += '<i class="fa fa-trash"></i>';
-						str += '</a>';
-					str += '</li>';
-				str += '</ul>';
 				str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
 					if(notEmpty(params.idContact)){
 						str += '<a href="#page.type.citoyens.id.'+params.idContact+'" class="lbh" >';
@@ -1348,7 +1353,21 @@ var directory = {
 					str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="dyFObj.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
 					str += (notEmpty(params.telephone) ? '<span class="" style="font-size: 11px !important;">'+params.telephone+'</span>' : '');
 				str += "</div>";
-			str += "</div>";
+			str += '<ul class="nav navbar-nav pull-right margin-5">';
+          str += '<li class="text-left">';
+            str += '<a href="javascript:;" onclick="updateContact(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
+            'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
+              str += '<i class="fa fa-pencil"></i>';
+            str += '</a>';
+          str += '</li>';
+          str += '<li class="text-left">';
+            str += '<a href="javascript:;" onclick="removeContact(\''+key+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
+            'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+              str += '<i class="fa fa-trash"></i>';
+            str += '</a>';
+          str += '</li>';
+        str += '</ul>';
+      str += "</div>";  
 		str += "</div>";
 		return str;
     },
@@ -1632,7 +1651,20 @@ var directory = {
         mylog.log("END -----------showResultsDirectoryHtml ("+str.length+" html caracters generated)")
         return str;
     },
-
+    getAdminToolBar : function(element){
+      console.log("getAdminToolBar", element);
+      return "";
+      var html = 
+        "<div class='col-md-12 padding-5' style='margin-top:-50px;'>"+
+          "<button class='btn btn-default btn-xs'>"+
+            "<i class='fa fa-chain'></i> Btn admin"+
+          "</button> "+
+          "<button class='btn btn-default btn-xs'>"+
+            "<i class='fa fa-chain'></i> Btn admin"+
+          "</button> "+
+        "</div>";
+      return html;
+    },
     //builds a small sized list
     buildList : function(list) {
       $(".favSectionBtnNew,.favSection").remove();

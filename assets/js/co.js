@@ -38,7 +38,7 @@ function checkPoll(){
 	if(userId){
 		_checkLoggued();
 		if(typeof refreshNotifications != "undefined")
-		refreshNotifications();
+		refreshNotifications(userId,"citoyens","");
 	}
 	
 	//according to the loaded page 
@@ -569,6 +569,7 @@ var urlCtrl = {
 		"#element.aroundme" : {title:"Around me" , icon : 'crosshairs', menuId:"menu-btn-around-me"},
 	    "#element.notifications" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#person.settings" : {title:'DETAIL ENTITY', icon : 'legal'},
+	    "#person.invite" : {title:'DETAIL ENTITY', icon : 'legal'},
 		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
 	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
@@ -761,6 +762,7 @@ var urlCtrl = {
 			setHeaderDirectory(type);
 			loadingData = false;
 			startSearch(0, indexStepInit, ( notNull(searchCallback) ) ? searchCallback : null );
+			mylog.log("testnetwork hash 2", hash);
 			location.hash = hash;
 			return;
 		}
@@ -827,7 +829,7 @@ var urlCtrl = {
 		} */
 	    else 
 	        showAjaxPanel( '/app/index', 'Home','home' );
-
+	    mylog.log("testnetwork hash", hash);
 	    location.hash = hash;
 
 	    /*if(typeof back == "function"){
@@ -2704,7 +2706,18 @@ var dyFInputs = {
     		inputType : "textarea",
 	    	label : ( notEmpty(label) ? label : "Votre message ..." ),
 	    	placeholder : ( notEmpty(placeholder) ? placeholder : "Votre message ..." ),
-	    	rules : ( notEmpty(rules) ? rules : { } )
+	    	rules : ( notEmpty(rules) ? rules : { } ),
+	    	init : function(){
+	    		mylog.log("textarea init");
+	    		if($(".maxlengthTextarea").length){
+	    			mylog.log("textarea init2");
+	    			$(".maxlengthTextarea").off().keyup(function(){
+						var name = "#" + $(this).attr("id") ;
+						mylog.log(".maxlengthTextarea", "#ajaxFormModal "+name, $(this).attr("id"), $("#ajaxFormModal "+name).val().length, $(this).val().length);
+						$("#ajaxFormModal #maxlength"+$(this).attr("id")).html($("#ajaxFormModal "+name).val().length);
+					});
+	    		}
+	        }
 	    } ;
 	    return inputObj;
 	},
@@ -2743,6 +2756,7 @@ var dyFInputs = {
 	    	placeholder : ( notEmpty(placeholder) ? placeholder : "exemple@mail.com" ),
 	    	rules : ( notEmpty(rules) ? rules : { email: true } )
 	    }
+	    console.log("create form input email", inputObj);
 	    return inputObj;
 	},
 	emailOptionnel :function (label,placeholder,rules) {  
@@ -2776,7 +2790,7 @@ var dyFInputs = {
 			mylog.log("elementLocation", dyFInputs.locationObj.elementLocation);
 			dyFInputs.locationObj.elementLocations.push(dyFInputs.locationObj.elementLocation);
 			mylog.log("dyFInputs.locationObj.elementLocations", dyFInputs.locationObj.elementLocations);
-			if(!dyFInputs.locationObj.centerLocation || locationObj.center == true){
+			if(!dyFInputs.locationObj.centerLocation || dyFInputs.locationObj.centerLocation.center == true){
 				dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocation;
 				dyFInputs.locationObj.elementLocation.center = true;
 			}

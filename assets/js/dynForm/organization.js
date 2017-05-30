@@ -9,7 +9,7 @@ dynForm = {
 	    		if(contextData.type && contextData.id ){
     				$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
-	    			$("#ajax-modal .modal-header").removeClass("bg-purple bg-green bg-green-poi bg-orange bg-yellow bg-url");
+	    			$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-green bg-green-poi bg-orange bg-yellow bg-url");
 							 //  					  .addClass("bg-green");
 	    		 	
 	    		 	$("#ajax-modal-modal-title").html(

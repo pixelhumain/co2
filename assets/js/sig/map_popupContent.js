@@ -36,18 +36,20 @@
 			var icons = '<i class="fa fa-'+ ico + ' fa-'+ color +'"></i>';
 			
 			var typeElement = type;
-			if(type == "people") 		typeElement = "person";
-			if(type == "citoyens") 		typeElement = "person";
+			if(type == "people") 		typeElement = "citoyens";
+			if(type == "citoyens") 		typeElement = "citoyens";
 			if(type == "organizations") typeElement = "organization";
 			if(type == "events") 		typeElement = "event";
 			if(type == "projects") 		typeElement = "project";
-			//mylog.log("type", type);
+			//mylog.log("type", type, "typeElement", typeElement);
 			
 			var icon = 'fa-'+ this.getIcoByType(data);
 
 			var onclick = "";
-			var url = '#page.type.'+type+'.id.'+id;
-
+			var url = '#page.type.'+typeElement+'.id.'+id;
+			//mylog.log("url", url);
+			//mylog.log("------");
+			
 			if(type == "entry") 		url = "#survey.entry.id."+id;
 			if(type == "action") 		url = "#rooms.action.id."+id;
 			
@@ -223,14 +225,14 @@
 
 			//var type = data.typeSig;
 			var typeElement = "";
-			if(type == "people") 		typeElement = "person";
+			if(type == "people") 		{ typeElement = "person"; people = "citoyens"; };
 			if(type == "citoyens") 		typeElement = "person";
 			if(type == "organizations") typeElement = "organization";
 			if(type == "events") 		typeElement = "event";
 			if(type == "projects") 		typeElement = "project";
 			if(type == "news") 			typeElement = "news";
 			
-			var url = '/'+typeElement+'/detail/id/'+id;
+			var url = '/'+type+'/detail/id/'+id;
 			if(typeElement == "news") url = '/'+typeElement+'/latest/id/'+id;
 			
 			var title = data.typeSig + ' : ' + data.name;

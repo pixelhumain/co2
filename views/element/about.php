@@ -158,7 +158,7 @@
 						<span><i class="fa fa-angle-right"></i></span><?php echo Yii::t("common", "Type"); ?> 
 					</div>
 					<div id="typeAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span><?php echo (@$element["type"]) ? Yii::t("common", $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span><?php echo (@$element["type"]) ? Yii::t("event", $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 					</div>
 				</div>
 		<?php }
@@ -341,7 +341,9 @@
 					 			'</span>';
 					echo $address;
 					if( empty($element["address"]["codeInsee"]) && Yii::app()->session["userId"] == (String) $element["_id"]) {
-						echo '<a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.Yii::t("common", "Connect to your city").'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe" >'. Yii::t("common", "Why ?").'</a>';
+						echo '<br><a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.
+								Yii::t("common", "Connect to your city").'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe">'. 
+								Yii::t("common", "Why ?").'</a>';
 					}
 			}else
 				echo '<i>'.Yii::t("common","Not specified").'</i>';

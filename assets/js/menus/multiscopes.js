@@ -100,7 +100,7 @@ function loadMultiScopes(){
 	$.each(myMultiScopes, function(key, value){
 		showScopeInMultiscope(key);
 	});
-	bindCommunexionScopeEvents();
+	//bindCommunexionScopeEvents();
 	showCountScope();
 	saveCookieMultiscope();
 }
@@ -158,7 +158,7 @@ function showScopeInMultiscope(scopeValue){ //mylog.log("showScopeInMultiscope()
 		$("#multi-scope-list-"+scope.type).show();
 		if(actionOnSetGlobalScope=="save")
 			$("#scopeListContainerForm").html(html);
-		//$(".item-scope-checker").off().click(function(){alert(); toogleScopeMultiscope( $(this).data("scope-value")) });
+		$(".item-scope-checker").off().click(function(){ toogleScopeMultiscope( $(this).data("scope-value")) });
 		$(".item-scope-deleter").off().click(function(){ deleteScopeInMultiscope( $(this).data("scope-value")); });
 		//showMsgInfoMultiScope("Le scope a bien été ajouté", "success");
 	}else{
@@ -175,9 +175,12 @@ function addScopeToMultiscope(scopeValue, scopeName){
 	if(scopeValue == "") return;
 	if(!scopeExists(scopeValue)){ //mylog.log("adding", scopeValue);
 		myMultiScopes[scopeValue] = { name: scopeName, active: true, type: currentScopeType };
+		//alert();
 		showScopeInMultiscope(scopeValue);
 		$("#input-add-multi-scope").val("");
 		saveMultiScope();
+		showTagsScopesMin();
+		bindCommunexionScopeEvents();
 	}else{
 		showMsgInfoMultiScope("Ce lieu est déjà dans votre liste", "info");
 	}

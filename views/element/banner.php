@@ -130,6 +130,9 @@
 	<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation <?php if(@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])) echo "backgroundHeaderInformation" ?>">	
     	
     	<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
+			<?php if (@$element["status"] == "deletePending") { ?> 
+				<h4 class="text-left padding-left-15 pull-left no-margin letter-red">En cours de suppression</h4>
+			<?php } ?>
 			<h4 class="text-left padding-left-15 pull-left no-margin">
 				<span id="nameHeader">
 					<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left">

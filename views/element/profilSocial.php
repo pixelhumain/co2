@@ -89,7 +89,8 @@
 </style>
 
 <?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
-<?php if (@$deletePending && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal'); ?>
+<?php 
+	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal'); ?>
 
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
@@ -212,7 +213,8 @@
 		  <?php } ?>
 
 
-		  <?php if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
+		  <?php if(@Yii::app()->session["userId"])
+		  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
 		  			($type==Person::COLLECTION && (string)$element["_id"]==@Yii::app()->session["userId"])){ ?>
 		  <button type="button" class="btn btn-default bold letter-green hidden-xs" 
 		  		  id="open-select-create" style="border-right:0px!important;">
@@ -443,7 +445,7 @@
 
 		if($typeItem != Person::COLLECTION){ 
 		?>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:45px;">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:20px;">
 				<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
 					<b><i class="fa fa-angle-down"></i> 
 					<i class="fa fa-info-circle"></i> Description principale</b>
@@ -456,7 +458,7 @@
 				</span>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
-				<button class="btn btn-default btn-xs pull-right margin-right-15" id="btn-hide-desc">
+				<button class="btn btn-link btn-xs pull-right" id="btn-hide-desc">
 					<?php echo $classBtnDescH; ?>
 				</button>
 				<br>
@@ -464,7 +466,9 @@
 			</div>
 		<?php }else{ $marginCentral="50"; } ?>
 		<!-- Permet de faire le convertion en HTML -->
-		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
+		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" >
+			<?php echo (!empty($element["description"])) ? $element["description"] : ""; ?>
+		</span>
 
 	    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-<?php echo $marginCentral; ?>" id="central-container">
 		</div>
@@ -483,6 +487,12 @@
 			 id="notif-column">
 		</div>
 	</section>
+
+	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding form-contact-mail pull-right">
+		<?php 	$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+				//$this->renderPartial($layoutPath.'forms.'.Yii::app()->params["CO2DomainName"].'.formContact'); 
+		?>
+	</section>
 </div>	
 
 <?php 
@@ -493,7 +503,6 @@
 					"controller" => $controller,
 					"openEdition" => $openEdition,
 				) );
-
 
 	if( $type != Person::COLLECTION)
 		$this->renderPartial('../element/addMembersFromMyContacts',
@@ -519,7 +528,8 @@
     var typeItem = "<?php echo $typeItem; ?>";
     var liveScopeType = "";
     var subView="<?php echo @$_GET['view']; ?>";
-    var hashUrlPage="#page.type."+contextData.type+".id."+contextData.id;
+
+    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?network="+networkParams : "" )+"#page.type."+contextData.type+".id."+contextData.id;
     var cropResult;
     var idObjectShared = new Array();
 
@@ -529,7 +539,7 @@
 		bindButtonMenu();
 		inintDescs();
 		if(typeof contextData.name !="undefined")
-		setTitle("", "", contextData.name);
+			setTitle("", "", contextData.name);
 
 		if( contextData.type == "events")
 			$(".createProjectBtn").hide()
@@ -538,7 +548,7 @@
 
 		if(subView!=""){
 			if(subView=="gallery")
-				loadGallery()
+				loadGallery();
 			else if(subView=="notifications")
 				loadNotifications();
 			else if(subView.indexOf("chart") >= 0){

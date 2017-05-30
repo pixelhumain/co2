@@ -352,11 +352,19 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   function initBtnAdmin(){ mylog.log("initBtnAdmin")
     $(".disconnectConnection").click(function(){
       var $this=$(this); 
-      disconnectTo($this.data("type"),
-        $this.data("id"), 
-        contextData.id, contextData.type, $this.data("connection"),function() {
+      disconnectTo(contextData.type,
+        contextData.id, 
+        $this.data("id"), $this.data("type"), $this.data("connection"),function() {
           $this.parents().eq($this.data("parent-hide")).fadeOut();   
         });
+    });
+    $(".acceptAsBtn").off().on("click",function () {
+      validateConnection(contextData.type, contextData.id, $(this).data("id"), $(this).data("type"), $(this).data("connect-validation"), 
+        function() {
+          toastr.success("Validation is well registered");
+          loadByHash(location.hash);
+        }
+      );
     });
   }
 
@@ -1679,6 +1687,30 @@ var directory = {
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='5'>"+
             "<i class='fa fa-unlink'></i> Annuler ce lien"+
+          "</button> ";
+      }
+      if(data.edit=="members" || data.edit=="contributors"){
+        if(typeof data.statusLink["toBeValidated"] != "undefined" && typeof data.statusLink["isAdminPending"] == "undefined"){
+          html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='toBeValidated' data-parent-hide='4'>"+
+            "<i class='fa fa-user'></i> Accepter comme "+data.edit.substring(0,data.edit.length-1);
+          "</button> ";
+        }else if(typeof data.statusLink["isAdminPending"] != "undefined"){
+          html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='isAdminPending' data-parent-hide='4'>"+
+            "<i class='fa fa-user-plus'></i> Accepter comme admin";
+          "</button> ";
+        }
+        if(typeof data.statusLink["isAdmin"] == "undefined"){
+          html +='<button class="btn btn-default btn-xs" '+
+                   'onclick="connectTo(\''+contextData.type+'\',\''+contextData.id+'\', \''+data.id+'\', \''+data.type+'\', \'admin\',\'\',\'true\')">'+
+                            '<i class="fa fa-user-plus"></i> Ajouter comme admin'+
+                          '</button>';
+        }
+        if(typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined")
+          html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='4'>"+
+            "<i class='fa fa-unlink'></i> Supprimer ce "+data.edit.substring(0,data.edit.length-1);
           "</button> ";
       }
       html+="</div>";

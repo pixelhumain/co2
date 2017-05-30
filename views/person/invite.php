@@ -455,14 +455,13 @@ var tabObject = [];
 
 var listFollows = <?php echo json_encode(@$follows) ?>;
 var listFollowsId = <?php echo json_encode(@$listFollowsId) ?>;
-mylog.log("listFollowsazaza", listFollows);
+mylog.log("listFollows", listFollows);
 
 
 jQuery(document).ready(function() {
  	initSubView();
  	bindInviteSubViewInvites();
  	runinviteFormValidation();
-
  	setTitle("Inviter quelqu'un","<i class='fa fa-plus'></i> <i class='fa fa-user'></i>");
 });
 

@@ -510,8 +510,11 @@
 						"parentId" => (string)$element['_id'], 
 						"members" => @$members));
 
-
-	$cssAnsScriptFilesModule = array(
+?>
+<script type="text/javascript">
+	
+</script>
+<?php	$cssAnsScriptFilesModule = array(
 		'/js/default/profilSocial.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
@@ -521,14 +524,13 @@
 <script type="text/javascript">
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
 	mylog.log("init contextData", contextData);
-    var params = <?php echo json_encode(@$params); ?>;
-    var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false ); 
+    var params = <?php echo json_encode(@$params); ?>; 
+    var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false );
 	var openEdition = ( ( '<?php echo (@$openEdition == true); ?>' == "1") ? true : false );
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
     var liveScopeType = "";
     var subView="<?php echo @$_GET['view']; ?>";
-
     var hashUrlPage= ( (typeof networkParams != "undefined") ? "?network="+networkParams : "" )+"#page.type."+contextData.type+".id."+contextData.id;
     var cropResult;
     var idObjectShared = new Array();
@@ -559,7 +561,7 @@
 			else if(subView=="history")
 				loadHistoryActivity();
 			else if(subView=="directory")
-				loadDataDirectory("<?php echo @$_GET['dir']; ?>");
+				loadDataDirectory("<?php echo @$_GET['dir']; ?>",null,edit);
 			else if(subView=="editChart")
 				loadEditChart();
 			else if(subView=="detail")

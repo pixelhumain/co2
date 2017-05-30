@@ -349,6 +349,16 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
   }
 
+  function initBtnAdmin(){ mylog.log("initBtnAdmin")
+    $(".disconnectConnection").click(function(){
+      var $this=$(this); 
+      disconnectTo($this.data("type"),
+        $this.data("id"), 
+        contextData.id, contextData.type, $this.data("connection"),function() {
+          $this.parents().eq($this.data("parent-hide")).fadeOut();   
+        });
+    });
+  }
 
   function initBtnLink(){ mylog.log("initBtnLink");
       
@@ -757,14 +767,15 @@ var directory = {
         
         if(params.type == "citoyens") 
             params.hash += '.viewer.' + userId;
-        if(typeof params.size == "undefined" || params.size == "max")
+       // if(typeof params.size == "undefined" || params.size == "max")
           str += "<a href='"+params.hash+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
 
         str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
         str += "<div class='entityRight no-padding'>";
-
-        str += this.getAdminToolBar(params);
+        if(typeof params.edit  != "undefined")
+          str += this.getAdminToolBar(params);
+         
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
@@ -1140,7 +1151,11 @@ var directory = {
                               " data-isShared='"+isShared+"'>"+
                               "<i class='fa fa-share'></i> Partager</button>";
         }
-
+        if(typeof params.edit  != "undefined"){
+          params.attendees += "<button class='text-dark btn btn-link no-padding margin-left-10 disconnectConnection'"+
+                              " data-id='"+params.id+"' data-type='"+params.type+"' data-connection='"+params.edit+"' data-parent-hide='4'>"+
+                              "<i class='fa fa-unlink'></i> Ne plus participer</button>";
+        }
         params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
                                     "data-toggle='tooltip' data-placement='bottom' data-original-title='participant(s)'>" + 
                               cntP + " <i class='fa fa-street-view'></i>"+
@@ -1513,7 +1528,7 @@ var directory = {
       return str;
     },
     dirLog : false,
-    showResultsDirectoryHtml : function ( data, contentType, size){ //size == null || min || max
+    showResultsDirectoryHtml : function ( data, contentType, size, edit){ //size == null || min || max
         //mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
         //mylog.log(" data", data,"size",  size, "contentType", contentType)
         //mylog.log(" dirLog",directory.dirLog);
@@ -1544,7 +1559,8 @@ var directory = {
 
                 //mapElements.push(params);
                 //alert("TYPE ----------- "+contentType+":"+params.name);
-                
+                if(typeof edit != "undefined" && edit != false)
+                  params.edit=edit;
                 if(typeof( typeObj[itemType] ) == "undefined")
                     itemType="poi";
                 typeIco = itemType;
@@ -1625,7 +1641,7 @@ var directory = {
                 if(params.type == "cities")
                   str += directory.cityPanelHtml(params);  
                 
-                else if( $.inArray(params.type, ["citoyens","organizations","project","poi","place"])>=0) 
+                else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","place"])>=0) 
                   str += directory.elementPanelHtml(params);  
                 
                 else if(params.type == "events")
@@ -1651,18 +1667,21 @@ var directory = {
         mylog.log("END -----------showResultsDirectoryHtml ("+str.length+" html caracters generated)")
         return str;
     },
-    getAdminToolBar : function(element){
-      console.log("getAdminToolBar", element);
-      return "";
-      var html = 
-        "<div class='col-md-12 padding-5' style='margin-top:-50px;'>"+
-          "<button class='btn btn-default btn-xs'>"+
-            "<i class='fa fa-chain'></i> Btn admin"+
-          "</button> "+
-          "<button class='btn btn-default btn-xs'>"+
-            "<i class='fa fa-chain'></i> Btn admin"+
-          "</button> "+
-        "</div>";
+    getAdminToolBar : function(data){
+      var html = "<div class='col-md-12 padding-5' style='margin-top:-50px;'>";
+      if(data.edit=="follows"){
+          html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='4'>"+
+            "<i class='fa fa-unlink'></i> Ne plus suivre"+
+          "</button> ";
+      }
+      if(data.edit=="organizations" || data.edit=="projects"){
+          html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='5'>"+
+            "<i class='fa fa-unlink'></i> Annuler ce lien"+
+          "</button> ";
+      }
+      html+="</div>";
       return html;
     },
     //builds a small sized list

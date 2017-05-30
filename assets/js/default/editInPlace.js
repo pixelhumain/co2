@@ -646,7 +646,7 @@ function bindAboutPodElement() {
 
 
 	function updateUrl(ind, title, url, type) {
-		mylog.log("updateUrl", ind, title, url, type)
+		mylog.log("updateUrl", ind, title, url, type);
 		var params = {
 			title : title,
 			type : type,
@@ -657,9 +657,48 @@ function bindAboutPodElement() {
 		dyFObj.openForm( 'url','parentUrl', params);
 	}
 
+
+	function updateContact(ind, name, email, role, telephone) {
+		mylog.log("updateContact", ind, name, email, role, telephone);
+		dataUpdate = { index : ind } ;
+		if(name != "undefined")
+			dataUpdate.name = name;
+		if(email != "undefined")
+			dataUpdate.email = email;
+		if(role != "undefined")
+			dataUpdate.role = role;
+		if(telephone != "undefined")
+			dataUpdate.phone = telephone;
+		mylog.log("dataUpdate", dataUpdate);
+		dyFObj.openForm ('contactPoint','contact', dataUpdate);
+	}
+
 	function removeUrl(ind) {
 		param = new Object;
     	param.name = "urls";
+    	param.value = {index : ind};
+    	param.pk = contextData.id;
+		param.type = contextData.type;
+		$.ajax({
+	        type: "POST",
+	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+	        data: param,
+	       	dataType: "json",
+	    	success: function(data){
+	    		mylog.log("data", data);
+		    	if(data.result){
+					toastr.success(data.msg);
+					urlCtrl.loadByHash(location.hash);
+		    	}
+		    }
+		});
+	}
+
+	
+
+	function removeContact(ind) {
+		param = new Object;
+    	param.name = "contacts";
     	param.value = {index : ind};
     	param.pk = contextData.id;
 		param.type = contextData.type;

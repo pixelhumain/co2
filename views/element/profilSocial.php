@@ -495,15 +495,6 @@
 					"openEdition" => $openEdition,
 				) );
 
-	$this->renderPartial('../person/invite',
-			array(  "element" => @$element, 
-					"type" => @$type, 
-					"edit" => @$edit,
-					"controller" => $controller,
-					"openEdition" => $openEdition,
-				) );
-
-
 	if( $type != Person::COLLECTION)
 		$this->renderPartial('../element/addMembersFromMyContacts',
 				array(	"type"=>$type, 

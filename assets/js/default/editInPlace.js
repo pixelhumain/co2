@@ -247,12 +247,14 @@ function bindAboutPodElement() {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
-						title : trad["Change password"],
+						title : trad["Update general information"],
 						icon : "fa-key",
 						onLoads : {
 							initUpdateInfo : function(){
 								mylog.log("initUpdateInfo");
 								$(".emailtext").slideToggle();
+								$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  					  .addClass("bg-dark");
 							}
 						},
 						beforeSave : function(){
@@ -470,11 +472,14 @@ function bindAboutPodElement() {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
-						title : trad["Change password"],
+						title : trad["Update description"],
 						icon : "fa-key",
 						onLoads : {
+							
 							markdown : function(){
 								dataHelper.activateMarkdown("#ajaxFormModal #description");
+								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  					  .addClass("bg-dark");
 								//bindDesc("#ajaxFormModal");
 							}
 						},
@@ -519,8 +524,15 @@ function bindAboutPodElement() {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
-						title : trad["Change password"],
+						title : trad["Update network"],
 						icon : "fa-key",
+						onLoads : {
+							sub : function(){
+								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  				  .addClass("bg-dark");
+								//bindDesc("#ajaxFormModal");
+							}
+						},
 						beforeSave : function(){
 							mylog.log("beforeSave");
 					    	removeFieldUpdateDynForm(contextData.type);

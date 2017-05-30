@@ -213,7 +213,8 @@
 		  <?php } ?>
 
 
-		  <?php if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
+		  <?php if(@Yii::app()->session["userId"])
+		  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
 		  			($type==Person::COLLECTION && (string)$element["_id"]==@Yii::app()->session["userId"])){ ?>
 		  <button type="button" class="btn btn-default bold letter-green hidden-xs" 
 		  		  id="open-select-create" style="border-right:0px!important;">
@@ -444,7 +445,7 @@
 
 		if($typeItem != Person::COLLECTION){ 
 		?>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:45px;">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:20px;">
 				<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
 					<b><i class="fa fa-angle-down"></i> 
 					<i class="fa fa-info-circle"></i> Description principale</b>
@@ -457,7 +458,7 @@
 				</span>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
-				<button class="btn btn-default btn-xs pull-right margin-right-15" id="btn-hide-desc">
+				<button class="btn btn-link btn-xs pull-right" id="btn-hide-desc">
 					<?php echo $classBtnDescH; ?>
 				</button>
 				<br>
@@ -465,7 +466,9 @@
 			</div>
 		<?php }else{ $marginCentral="50"; } ?>
 		<!-- Permet de faire le convertion en HTML -->
-		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
+		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" >
+			<?php echo (!empty($element["description"])) ? $element["description"] : ""; ?>
+		</span>
 
 	    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-<?php echo $marginCentral; ?>" id="central-container">
 		</div>

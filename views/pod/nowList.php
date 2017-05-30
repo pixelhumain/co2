@@ -116,11 +116,18 @@ var localActivity = <?php echo json_encode($result); ?>;
 
 jQuery(document).ready(function() {
     console.log("LIVENOW", localActivity);
+    $.each(localActivity, function(key, data){
+        if(typeof data.geo != "undefined" && data.geo.latitude == "")
+        console.log("LIVENOW geo", data.geo, data);
+    });
     // $(".elemt_date").each(function() {
     //     var elementTime = $(this).children(".dateTZ").attr("data-time");
     //     var elementDate = new Date(elementTime * 1000);
     //     $(this).children(".dateTZ").text(elementDate.toLocaleDateString() + " " + elementDate.toLocaleTimeString());
     // });
+    Sig.showMapElements(Sig.map, localActivity);
+    $('#mapLegende').html("<i class='fa fa-clock-o'></i> Activité local en direct");
+    $('#mapLegende').show();
 
     $(".el-nowList").click(function(){
         var id = $(this).data("id");

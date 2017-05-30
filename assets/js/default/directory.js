@@ -1649,6 +1649,7 @@ var directory = {
     },
     getAdminToolBar : function(element){
       console.log("getAdminToolBar", element);
+      return "";
       var html = 
         "<div class='col-md-12 padding-5' style='margin-top:-50px;'>"+
           "<button class='btn btn-default btn-xs'>"+

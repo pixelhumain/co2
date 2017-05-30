@@ -445,7 +445,6 @@ input.form-control{
 //var userId = "<?php echo Yii::app()->session["userId"]; ?>";
 var googleID = "<?php echo Yii::app()->params['google']['client_id']; ?>";
 var keyApp = "<?php echo Yii::app()->params['google']['keyAPP']; ?>";
-//var currentUser = <?php echo json_encode($currentUser) ?>;
 //var tags;
 
 var listMails = [];
@@ -454,8 +453,8 @@ var subViewElement, subViewContent;
 var timeout;
 var tabObject = [];
 
-var listFollows = <?php echo json_encode($follows) ?>;
-var listFollowsId = <?php echo json_encode($listFollowsId) ?>;
+var listFollows = <?php echo json_encode(@$follows) ?>;
+var listFollowsId = <?php echo json_encode(@$listFollowsId) ?>;
 mylog.log("listFollowsazaza", listFollows);
 
 

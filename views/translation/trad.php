@@ -186,6 +186,10 @@ var trad = {
 "workshop" :"<?php echo Yii::t("event","Atelier") ?>",
 "conference" :"<?php echo Yii::t("event","Conférence") ?>",
 "debate" :"<?php echo Yii::t("event","Débat") ?>",
+
+"Update description" : "<?php echo Yii::t("common", "Update description") ?>",
+"Update network" : "<?php echo Yii::t("common", "Update network") ?>",
+"Update general information" : "<?php echo Yii::t("common", "Update general information") ?>",
 };
 
 var tradCountry = {

@@ -2518,13 +2518,12 @@ var dyFObj = {
 				        	dyFObj.elementObj.dynForm.jsonSchema.beforeBuild();
 			      },
 			      onLoad : function  () {
-			      	/*if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
+			      	if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
 			      		themeObj.dynForm.onLoadPanel(dyFObj.elementObj);
-			      	} else {*/
+			      	} else {
 				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj.elementObj.dynForm.jsonSchema.icon+"'></i> "+dyFObj.elementObj.dynForm.jsonSchema.title);
-				        $("#ajax-modal-modal-body").append("<div class='space20'></div>");
 				        //alert(afterLoad+"|"+typeof dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
-			    	//}
+			    	}
 			        
 			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
 			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
@@ -3177,7 +3176,7 @@ var typeObj = {
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
 	"organizations" : {sameAs:"organization"},
 	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
-	"NGO" : {sameAs:"organization", color:"green"},
+	"NGO" : {sameAs:"organization", color:"green", icon:"users"},
 	"Association" : {sameAs:"organization", color:"green", icon: "group"},
 	"GovernmentOrganization" : {sameAs:"organization",color: "red",icon: "university"},
 	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},

@@ -287,7 +287,7 @@ function loadDataDirectory(dataName, dataIcon){
 }
 
 function getLabelTitleDir(dataName, dataIcon, countData, n){
-	mylog.log("bgetLabelTitleDir", dataName, dataIcon, countData, n)
+	mylog.log("bgetLabelTitleDir", dataName, dataIcon, countData, n, trad);
 	var elementName = "<span class='Montserrat' id='name-lbl-title'>"+$("#nameHeader .name-header").html()+"</span>";
 	
 	var s = (n>1) ? "s" : "";
@@ -323,7 +323,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 			str = " n'a aucun";
 		html += elementName + str+" <b> lien"+s;
 		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
-    	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
+    	html +=	'<i class="fa fa-plus"></i> '+trad["Add link"]+'</a>' ;  
 	}
 
 	else if(dataName == "contacts"){
@@ -332,7 +332,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 			str = " n'a aucun";
 		html += elementName + " a " + countData+" <b> point de contact"+s;
 		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Contact"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
-    	html +=	'<i class="fa fa-plus"></i> '+trad["Add Contact"]+'</a>' ;  
+    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ;  
 	}
 
 	if( $.inArray( ["events","projects","organizations","poi","classified","collections"] , dataName ) >= 0 ){

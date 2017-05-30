@@ -30,7 +30,9 @@ dynForm = {
 		    },*/
 	    },
 	    beforeBuild : function(){
-	    	dyFObj.setMongoId('classified');
+	    	dyFObj.setMongoId('classified',function(){
+	    		uploadObj.gotoUrl = (contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.classified" : location.hash;
+	    	});
 	    },
 	    beforeSave : function(){
 	    	var tagAndTypes = ( $("#ajaxFormModal #tags").val() != "" ) ? $("#ajaxFormModal #tags").val()+"," : "" ;
@@ -55,8 +57,7 @@ dynForm = {
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
 		    	dyFObj.closeForm();
-			    var hashDest = (contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.classified" : location.hash;
-		        urlCtrl.loadByHash( hashDest );
+			    urlCtrl.loadByHash( uploadObj.gotoUrl );
 		    }
 	    },
 	    canSubmitIf : function () { 

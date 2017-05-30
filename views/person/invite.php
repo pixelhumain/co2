@@ -153,13 +153,21 @@ input.form-control{
 	}
 
 </style>
-
 <?php 
-$this->renderPartial('../default/panels/toolbar'); 
+	//HtmlHelper::registerCssAndScriptsFiles( array('', ) , Yii::app()->theme->baseUrl. '/assets');
+	//$cssAnsScriptFilesModule = array('');
+	//HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+
+    $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+    //header + menu
+    $this->renderPartial($layoutPath.'header', 
+                        array(  "layoutPath"=>$layoutPath , 
+                                "page" => "page") ); 
 ?>
-<!-- <div class="modal fade" role="dialog" id="modal-invite">
-	<div class="modal-dialog">
-		<div class="modal-content"> -->
+
+
+<div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
+	<div class="padding-top-15" id="onepage">
 			<div id="newInvite">
 				<?php   
 			  		if (@Yii::app()->params['betaTest']) { 
@@ -409,9 +417,9 @@ $this->renderPartial('../default/panels/toolbar');
 						</div>
 					</div>
 			</div>
-<!-- 		</div>
+ 		
 	</div>
-</div> -->
+</div>
 <?php
 
 
@@ -447,14 +455,13 @@ var tabObject = [];
 
 var listFollows = <?php echo json_encode(@$follows) ?>;
 var listFollowsId = <?php echo json_encode(@$listFollowsId) ?>;
-mylog.log("listFollowsazaza", listFollows);
+mylog.log("listFollows", listFollows);
 
 
 jQuery(document).ready(function() {
  	initSubView();
  	bindInviteSubViewInvites();
  	runinviteFormValidation();
-
  	setTitle("Inviter quelqu'un","<i class='fa fa-plus'></i> <i class='fa fa-user'></i>");
 });
 
@@ -878,7 +885,7 @@ function autoCompleteInviteSearch(search){
 	
 	ajaxPost("", '<?php echo Yii::app()->getRequest()->getBaseUrl(true).'/'.$this->module->id?>/search/searchmemberautocomplete', data,
 		function (data){
-			var str = "<li class='li-dropdown-scope'><a href='javascript:newInvitation()'>Pas trouvé ? Lancer une invitation à rejoindre votre réseau !</li>";
+			var str = "<li class='li-dropdown-scope'><a href='#' onclick='newInvitation()'>Pas trouvé ? Lancer une invitation à rejoindre votre réseau !</li>";
 			var compt = 0;
 			var city, postalCode = "";
 			$.each(data["citoyens"], function(k, v) { 
@@ -896,7 +903,7 @@ function autoCompleteInviteSearch(search){
 	 					postalCode = v.address.postalCode;
 	 				}
 	  				str += 	"<li class='li-dropdown-scope'>" +
-	  						"<a href='javascript:setInviteInput("+compt+")'>"+htmlIco+" "+v.name ;
+	  						"<a href='#' onclick='setInviteInput("+compt+");'>"+htmlIco+" "+v.name ;
 
 	  				if(typeof postalCode != "undefined")
 	  					str += "<br/>"+postalCode+" "+city;
@@ -914,7 +921,7 @@ function autoCompleteInviteSearch(search){
 }
 
 function setInviteInput(num){
-	mylog.log(num);
+	mylog.log("setInviteInput", num);
 	var person = tabObject[num];
 	var personId = person["id"];
 	mylog.log(person, personId);

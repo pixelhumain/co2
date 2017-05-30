@@ -2696,7 +2696,7 @@ var dyFInputs = {
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	dyFObj.closeForm();
-		    	//alert(gotoUrl+uploadObj.id);
+		    	alert("image"+gotoUrl);
 	            urlCtrl.loadByHash( gotoUrl );	
 		    }
     	}

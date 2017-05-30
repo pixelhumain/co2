@@ -23,7 +23,7 @@ dynForm = {
             },
             name : dyFInputs.name("citoyens", {}, true),
 	        similarLink : dyFInputs.similarLink,
-	        email : dyFInputs.email,
+	        email : dyFInputs.email("E-mail principal", "exemple@mail.com"),
 	        role : dyFInputs.inputText("Role du contact", "Role du contact"),
 	        phone : dyFInputs.inputText("Téléphone du contact", "Téléphone du contact"),
             idContact : dyFInputs.inputHidden(),

@@ -1338,20 +1338,6 @@ var directory = {
 	    str = "";  
 	    str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 '>";
 			str += "<div class='searchEntity contactPanelHtml'>";
-				str += '<ul class="nav navbar-nav btn-params-directory">';
-					str += '<li class="text-left">';
-						str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
-						'class="bg-white tooltips" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
-							str += '<i class="fa fa-pencil"></i>';
-						str += '</a>';
-					str += '</li>';
-					str += '<li class="text-left">';
-						str += '<a href="javascript:;" onclick="removeUrl(\''+key+'\');" class="bg-white tooltips" '+
-						'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
-							str += '<i class="fa fa-trash"></i>';
-						str += '</a>';
-					str += '</li>';
-				str += '</ul>';
 				str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
 					if(notEmpty(params.idContact)){
 						str += '<a href="#page.type.citoyens.id.'+params.idContact+'" class="lbh" >';
@@ -1363,7 +1349,21 @@ var directory = {
 					str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="dyFObj.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
 					str += (notEmpty(params.telephone) ? '<span class="" style="font-size: 11px !important;">'+params.telephone+'</span>' : '');
 				str += "</div>";
-			str += "</div>";
+			str += '<ul class="nav navbar-nav pull-right margin-5">';
+          str += '<li class="text-left">';
+            str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
+            'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
+              str += '<i class="fa fa-pencil"></i>';
+            str += '</a>';
+          str += '</li>';
+          str += '<li class="text-left">';
+            str += '<a href="javascript:;" onclick="removeUrl(\''+key+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
+            'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+              str += '<i class="fa fa-trash"></i>';
+            str += '</a>';
+          str += '</li>';
+        str += '</ul>';
+      str += "</div>";  
 		str += "</div>";
 		return str;
     },

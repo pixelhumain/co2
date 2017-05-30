@@ -2756,6 +2756,7 @@ var dyFInputs = {
 	    	placeholder : ( notEmpty(placeholder) ? placeholder : "exemple@mail.com" ),
 	    	rules : ( notEmpty(rules) ? rules : { email: true } )
 	    }
+	    console.log("create form input email", inputObj);
 	    return inputObj;
 	},
 	emailOptionnel :function (label,placeholder,rules) {  

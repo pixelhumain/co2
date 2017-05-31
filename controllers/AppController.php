@@ -320,9 +320,9 @@ class AppController extends CommunecterController {
             $idReceiver = $_POST["idReceiver"];
 
             if( @$element && !empty($element) && 
-                !empty(@$element["contacts"]) && 
-                !empty(@$element["contacts"][$idReceiver]) && 
-                !empty(@$element["contacts"][$idReceiver]["email"]) ){
+                !empty($element["contacts"]) && 
+                !empty($element["contacts"][$idReceiver]) && 
+                !empty($element["contacts"][$idReceiver]["email"]) ){
                 
                 $emailReceiver = $element["contacts"][$idReceiver]["email"];
                 error_log("EMAIL FOUND : ".$emailReceiver);

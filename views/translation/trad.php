@@ -9,8 +9,8 @@ var trad = {
 "removeconnection" : "<?php echo Yii::t("common","Are you sure you want to remove this connection") ?>",
 "removeconnectionevents" : "<?php echo Yii::t("common","Are you sure to not participate to this event") ?>",
 "removeconnectionorganizations" : "<?php echo Yii::t("common","Are you sure to remove the link with this organization") ?>",
-"removeconnectionprojects" : "<?php echo Yii::t("common","Are you sure you to remove the link with this project") ?>",
-"removeconnectioncitoyens" : "<?php echo Yii::t("common","Are you sure you to remove this follows") ?>",
+"removeconnectionprojects" : "<?php echo Yii::t("common","Are you sure to remove the link with this project") ?>",
+"removeconnectioncitoyens" : "<?php echo Yii::t("common","Are you sure to remove this follows") ?>",
 "asmember" : "<?php echo Yii::t("common", "as member") ?>",
 "ascontributor" : "<?php echo Yii::t("common", "as contributor") ?>",
 "asadmin" : "<?php echo Yii::t("common", "as admin") ?>",
@@ -97,6 +97,7 @@ var trad = {
 "place" : "<?php echo Yii::t("common","Places") ?>",
 "ressource" : "<?php echo Yii::t("common","Ressource") ?>",
 "poi" : "<?php echo Yii::t("common","Point of interest") ?>",
+"contactPoint" : "<?php echo Yii::t("common","contact") ?>",
 
 "Technologie" : "Technologie",
 "Immobilier" : "Immobilier",

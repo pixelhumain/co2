@@ -1353,19 +1353,32 @@ var directory = {
 					str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="dyFObj.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
 					str += (notEmpty(params.telephone) ? '<span class="" style="font-size: 11px !important;">'+params.telephone+'</span>' : '');
 				str += "</div>";
-			str += '<ul class="nav navbar-nav pull-right margin-5">';
-          str += '<li class="text-left">';
-            str += '<a href="javascript:;" onclick="updateContact(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
-            'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
-              str += '<i class="fa fa-pencil"></i>';
-            str += '</a>';
-          str += '</li>';
-          str += '<li class="text-left">';
-            str += '<a href="javascript:;" onclick="removeContact(\''+key+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
-            'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+			str += '<ul class="nav navbar-nav margin-5 col-md-12">';
+          if(notEmpty(params.email)){
+            str += '<li class="text-left pull-left">';
+              str += '<a href="javascript:;" class="tooltips btn btn-default btn-sm openFormContact" '+
+                             'data-id-receiver="'+key +'" '+
+                             'data-email="'+(notEmpty(params.email) ? params.email : "") +'" '+
+                             'data-name="'+(notEmpty(params.name) ? params.name : "") +'">';
+                str += '<i class="fa fa-envelope"></i> Envoyer un e-mail';
+              str += '</a>';
+            str += '</li>';
+          }
+          str += '<li class="text-red pull-right">';
+            str += '<a href="javascript:;" onclick="removeContact(\''+key+'\');" '+
+                      'class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
+                      'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
               str += '<i class="fa fa-trash"></i>';
             str += '</a>';
           str += '</li>';
+          str += '<li class="text-left pull-right">';
+            str += '<a href="javascript:;" onclick="updateContact(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
+                      'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" '+
+                      'data-original-title="'+trad["update"]+'" >';
+              str += '<i class="fa fa-pencil"></i>';
+            str += '</a>';
+          str += '</li>';
+          
         str += '</ul>';
       str += "</div>";  
 		str += "</div>";

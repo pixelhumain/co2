@@ -229,7 +229,12 @@
 	<?php } } ?>
 
 	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
-	<li class=""><a href="javascript:" id="btn-start-contacts" class="ssmla"><i class="fa fa-envelope"></i> Nous contacter</a></li>
+	<li class="">
+		<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
+			id="btn-start-contacts" class="ssmla">
+			<i class="fa fa-envelope"></i> Nous contacter
+		</a>
+	</li>
 	<?php } ?>
 	             
 

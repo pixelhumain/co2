@@ -2690,17 +2690,17 @@ var dyFInputs = {
     	}
     },
     image :function() { 
-    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
+    	
     	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
     		uploadObj.gotoUrl = location.hash ;
-    	mylog.log( "gotoUrl" , uploadObj.gotoUrl ) ;
+    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
 
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	dyFObj.closeForm();
-		    	alert( "image upload then goto : "+uploadObj.gotoUrl );
+		    	//alert( "image upload then goto : "+uploadObj.gotoUrl );
 	            urlCtrl.loadByHash( uploadObj.gotoUrl );	
 		    }
     	}

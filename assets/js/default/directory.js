@@ -362,8 +362,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     	var id = $(value).attr("data-id");
    		var type = $(value).attr("data-type");
       //mylog.log("error type :", type);
-   		if(type == "person") type = "people";
-   		else type = dyFInputs.get(type).col;
+   		type = (type == "person") ? "people" : dyFInputs.get(type).col;
       //mylog.log("#floopItem-"+type+"-"+id);
    		if($("#floopItem-"+type+"-"+id).length){
    			//mylog.log("I FOLLOW THIS");
@@ -406,8 +405,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    		var typeOrigine = dyFInputs.get(type).col;
       if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
    		formData.parentType = typeOrigine;
-   		if(type == "person") type = "people";
-   		else type = dyFInputs.get(type).col;
+      mylog.log("followBtn",type);
+   		type = (type == "person") ? "people" : dyFInputs.get(type).col;
 
 		var thiselement = this;
 		$(this).html("<i class='fa fa-spin fa-circle-o-notch text-azure'></i>");

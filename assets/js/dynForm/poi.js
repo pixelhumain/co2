@@ -20,7 +20,7 @@ dynForm = {
 	    		}
 	    	},
 	    	onload : function(){
-	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();
 	    	},
 	    },
 	    beforeSave : function(){
@@ -62,7 +62,7 @@ dynForm = {
 	    		$(".typeBtntagList").hide(); 
 	    		$(".subtypeSection").html("");
 	    		$(".subtypeSectioncustom").show();
-	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();
 	    	}
 	    },
 	    properties : {
@@ -95,7 +95,7 @@ dynForm = {
 						
 						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
 						$(".sectionBtntagList").hide();
-						$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
+						$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags").show();
 						dyFObj.canSubmitIf();
 	            	});
 	            }
@@ -107,12 +107,7 @@ dynForm = {
             description : dyFInputs.textarea("Description", "..."),
             location : dyFInputs.location,
             tags :dyFInputs.tags(),
-            formshowers : {
-            	label : "En détails",
-                inputType : "custom",
-                html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
-            },
-            urls : dyFInputs.urlsOptionnel,
+            urls : dyFInputs.urls,
             parentId : dyFInputs.inputHidden(),
             parentType : dyFInputs.inputHidden(),
 	    }

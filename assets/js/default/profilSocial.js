@@ -97,7 +97,7 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		var dataName = $(this).data("type-dir");
 		mylog.log(".load-data-directory", dataName);
-		loadDataDirectory(dataName, $(this).data("icon"));
+		loadDataDirectory(dataName, $(this).data("icon"),edit);
 	});
 		
 	$("#subsubMenuLeft a").click(function(){
@@ -274,20 +274,22 @@ function bindButtonMenu(){
 
 }
 
-function loadDataDirectory(dataName, dataIcon){
+function loadDataDirectory(dataName, dataIcon, edit){
 	showLoader('#central-container');
 	history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
 	// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 				function(data){ 
-					displayInTheContainer(data, dataName, dataIcon);
+					if(typeof edit != "undefined" && edit)
+						edit=dataName;
+					displayInTheContainer(data, dataName, dataIcon, "", edit);
 				}
 	,"html");
 }
 
 function getLabelTitleDir(dataName, dataIcon, countData, n){
-	mylog.log("bgetLabelTitleDir", dataName, dataIcon, countData, n)
+	mylog.log("bgetLabelTitleDir", dataName, dataIcon, countData, n, trad);
 	var elementName = "<span class='Montserrat' id='name-lbl-title'>"+$("#nameHeader .name-header").html()+"</span>";
 	
 	var s = (n>1) ? "s" : "";
@@ -322,8 +324,8 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + str+" <b> lien"+s;
-		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
-    	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
+		html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
+    	html +=	'<i class="fa fa-plus"></i> '+trad["Add link"]+'</a>' ;  
 	}
 
 	else if(dataName == "contacts"){
@@ -331,13 +333,15 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + " a " + countData+" <b> point de contact"+s;
-		html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Contact"]+'" href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
-    	html +=	'<i class="fa fa-plus"></i> '+trad["Add Contact"]+'</a>' ;  
+		html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
+    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ; 
+
+
 	}
 
-	if( $.inArray( ["events","projects","organizations","poi","classified","collections"] , dataName ) >= 0 ){
+	if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
 		var elemSpec = dyFInputs.get(dataName);
-		html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \''+elemSpec.ctrl+'\',\'sub\')">';
+		html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \''+elemSpec.ctrl+'\',\'sub\')">';
     	html +=	'<i class="fa fa-plus"></i> Ajouter '+trad[ elemSpec.ctrl ]+'</a>' ;  
 	}
 
@@ -467,12 +471,33 @@ function loadContacts(){
 				'/id/'+contextData.id,
 				function(data){ 
 					displayInTheContainer(data, "contacts", "envelope", "contacts");
+					$(".openFormContact").click(function(){
+			    		var idReceiver = $(this).data("id-receiver");
+			    		var idReceiverParent = contextData.id;
+			    		var typeReceiverParent = contextData.type;
+			    		
+			    		var contactMail = $(this).data("email");
+			    		var contactName = $(this).data("name");
+			    		//console.log('contactMail', contactMail);
+			    		$("#formContact .contact-email").html(contactMail);
+			    		$("#formContact #contact-name").html(contactName);
+			    		
+			    		$("#formContact #form-control").val("");
+			    		
+			    		$("#formContact #idReceiver").val(idReceiver);
+			    		$("#formContact #idReceiverParent").val(idReceiverParent);
+			    		$("#formContact #typeReceiverParent").val(typeReceiverParent);
+			    		
+			    		$("#conf-fail-mail, #conf-send-mail, #form-fail").addClass("hidden");
+        				$("#form-group-contact").removeClass("hidden");
+			    		$("#formContact").modal("show");
+			    	});
 				}
 	,"html");
 }
 
-function displayInTheContainer(data, dataName, dataIcon, contextType){ 
-	mylog.log("displayInTheContainer",data, dataName, dataIcon, contextType)
+function displayInTheContainer(data, dataName, dataIcon, contextType, edit){ 
+	mylog.log("displayInTheContainer",data, dataName, dataIcon, contextType, edit)
 	var n=0;
 	$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
 	if(n>0){
@@ -482,7 +507,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType){
 					"<hr></div>";
 
 		if(dataName != "collections"){
-			html += directory.showResultsDirectoryHtml(data, contextType);
+			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){
 				html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
@@ -494,6 +519,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType){
 		toogleNotif(false);
 		$("#central-container").html(html);
 		initBtnLink();
+		initBtnAdmin();
 	}else{
 		var nothing = "Aucun";
 		if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
@@ -564,8 +590,6 @@ function toogleNotif(open){
 	colNotifOpen = open;
 }
 
-
-
 function loadLiveNow () {
 	mylog.log("loadLiveNow");
 	var dep = ( ( notNull(contextData["address"])  && notNull(contextData["address"]["depName"]) ) ? 
@@ -592,7 +616,6 @@ function loadLiveNow () {
 			        bindLBHLinks();
      } , "html" );
 }
-
 
 function showLoader(id){
 	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");

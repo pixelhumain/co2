@@ -569,6 +569,7 @@ var urlCtrl = {
 		"#element.aroundme" : {title:"Around me" , icon : 'crosshairs', menuId:"menu-btn-around-me"},
 	    "#element.notifications" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#person.settings" : {title:'DETAIL ENTITY', icon : 'legal'},
+	    "#person.invite" : {title:'DETAIL ENTITY', icon : 'legal'},
 		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
 	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
@@ -761,6 +762,7 @@ var urlCtrl = {
 			setHeaderDirectory(type);
 			loadingData = false;
 			startSearch(0, indexStepInit, ( notNull(searchCallback) ) ? searchCallback : null );
+			mylog.log("testnetwork hash 2", hash);
 			location.hash = hash;
 			return;
 		}
@@ -827,7 +829,7 @@ var urlCtrl = {
 		} */
 	    else 
 	        showAjaxPanel( '/app/index', 'Home','home' );
-
+	    mylog.log("testnetwork hash", hash);
 	    location.hash = hash;
 
 	    /*if(typeof back == "function"){
@@ -2188,6 +2190,7 @@ var dynForm = null;
 var uploadObj = {
 	type : null,
 	id : null,
+	gotoUrl : null,
 	isSub : false,
 	folder : moduleId, //on force pour pas casser toutes les vielles images
 	set : function(type,id){
@@ -2516,13 +2519,12 @@ var dyFObj = {
 				        	dyFObj.elementObj.dynForm.jsonSchema.beforeBuild();
 			      },
 			      onLoad : function  () {
-			      	/*if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
+			      	if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
 			      		themeObj.dynForm.onLoadPanel(dyFObj.elementObj);
-			      	} else {*/
+			      	} else {
 				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj.elementObj.dynForm.jsonSchema.icon+"'></i> "+dyFObj.elementObj.dynForm.jsonSchema.title);
-				        $("#ajax-modal-modal-body").append("<div class='space20'></div>");
 				        //alert(afterLoad+"|"+typeof dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
-			    	//}
+			    	}
 			        
 			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
 			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
@@ -2556,13 +2558,15 @@ var dyFObj = {
 	},
 
 	//generate Id for upload feature of this element 
-	setMongoId : function(type) { 
+	setMongoId : function(type,callback) { 
 		uploadObj.type = type;
 		if( !$("#ajaxFormModal #id").val() )
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
 				uploadObj.id = data.id;
 				$("#ajaxFormModal #id").val(data.id)
+				if( typeof callback === "function" )
+                	callback();
 			});
 		}
 	},
@@ -2685,17 +2689,19 @@ var dyFInputs = {
         	},500);
     	}
     },
-    image :function(str) { 
-    	mylog.log("str", str) ;
-    	gotoUrl = (str) ? str : location.hash;
-    	mylog.log("gotoUrl", gotoUrl) ;
+    image :function() { 
+    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
+    	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
+    		uploadObj.gotoUrl = location.hash ;
+    	mylog.log( "gotoUrl" , uploadObj.gotoUrl ) ;
+
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	dyFObj.closeForm();
-		    	//alert(gotoUrl+uploadObj.id);
-	            urlCtrl.loadByHash( gotoUrl );	
+		    	alert( "image upload then goto : "+uploadObj.gotoUrl );
+	            urlCtrl.loadByHash( uploadObj.gotoUrl );	
 		    }
     	}
     },
@@ -2754,6 +2760,7 @@ var dyFInputs = {
 	    	placeholder : ( notEmpty(placeholder) ? placeholder : "exemple@mail.com" ),
 	    	rules : ( notEmpty(rules) ? rules : { email: true } )
 	    }
+	    console.log("create form input email", inputObj);
 	    return inputObj;
 	},
 	emailOptionnel :function (label,placeholder,rules) {  
@@ -3174,7 +3181,7 @@ var typeObj = {
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
 	"organizations" : {sameAs:"organization"},
 	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
-	"NGO" : {sameAs:"organization", color:"green"},
+	"NGO" : {sameAs:"organization", color:"green", icon:"users"},
 	"Association" : {sameAs:"organization", color:"green", icon: "group"},
 	"GovernmentOrganization" : {sameAs:"organization",color: "red",icon: "university"},
 	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},

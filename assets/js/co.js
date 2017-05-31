@@ -3074,6 +3074,10 @@ var dyFInputs = {
     },
     get:function(type){
     	//mylog.log("dyFInputs.get", type);
+    	if( type == "undefined" ){
+    		toastr.error("type can't be undefined");
+    		return null;
+    	}
     	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
@@ -3081,23 +3085,23 @@ var dyFInputs = {
     		} else
     			obj = typeObj[type];
     		obj.name = (trad[type]) ? trad[type] : type;
+    	}
+    	if( obj === null ){
+    		obj = dyFInputs.deepGet(type);
+    		if( obj )
+    			obj = dyFInputs.get( obj.col )
     	}
     	return obj;
     },
     deepGet:function(type){
     	//mylog.log("get", type);
     	var obj = null;
-    	if( jsonHelper.notNull("typeObj."+type)){
-    		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
-    			obj = typeObj[ typeObj[type].sameAs ];
-    		} else
-    			obj = typeObj[type];
-    		obj.name = (trad[type]) ? trad[type] : type;
-    	} else {
-    		//calculate only once
-    		//get list of all keys and sub keys
-    		//return corresponding map
-    	}
+    	$.each( typeObj,function(k,o) { 
+    		if( o.types && ( $.inArray( type,  o.types )>=0 ) ){
+    			obj = o;
+    			return false;
+    		}
+    	});
     	return obj;
     }
 };
@@ -3169,12 +3173,14 @@ var typeObj = {
 	"citoyen" : { sameAs:"person" },
 	"citoyens" : { sameAs:"person" },
 	
-	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle"},
+	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle",
+			types:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+				   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
+				   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
 
 	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
 	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
 	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
-	
 	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
 
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
@@ -3202,7 +3208,7 @@ var typeObj = {
 	"classified":{col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",	},
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
-	"video" : {icon:"video-camera",color:"dark"},
+	//"video" : {icon:"video-camera",color:"dark"},
 	"formContact" : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
 	"news" : { col : "news" }, 
 };

@@ -380,6 +380,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     	var id = $(value).attr("data-id");
    		var type = $(value).attr("data-type");
       //mylog.log("error type :", type);
+
    		type = (type == "person") ? "people" : dyFInputs.get(type).col;
       //mylog.log("#floopItem-"+type+"-"+id);
    		if($("#floopItem-"+type+"-"+id).length){
@@ -581,7 +582,7 @@ var directory = {
     multiScopesT :[],
 
     colPos: "left",
-
+    dirLog : false,
     defaultPanelHtml : function(params){
       if(directory.dirLog) mylog.log("----------- defaultPanelHtml",params.type,params.name);
       str = "";  
@@ -757,7 +758,8 @@ var directory = {
 		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" '>";
 		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
 		mylog.log("inMyContacts",inMyContacts(params.type, params.name));
-		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) ){
+    var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;
+		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn ){
 			isFollowed=false;
 			if(typeof params.isFollowed != "undefined" ) 
 				isFollowed=true;
@@ -1547,7 +1549,6 @@ var directory = {
       str += "</div>";
       return str;
     },
-    dirLog : false,
     showResultsDirectoryHtml : function ( data, contentType, size, edit){ //size == null || min || max
         //mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
         //mylog.log(" data", data,"size",  size, "contentType", contentType)
@@ -1566,7 +1567,7 @@ var directory = {
             if( itemType ){ 
                 if(directory.dirLog) mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
-                if(directory.dirLog) mylog.log("itemType",itemType,params.name);
+                if(directory.dirLog) mylog.log("itemType",itemType,"name",params.name,"dyFInputs.get( itemType )",dyFInputs.get( itemType ));
                 
                 var typeIco = i;
                 params.size = size;
@@ -1580,11 +1581,13 @@ var directory = {
                 //mapElements.push(params);
                 //alert("TYPE ----------- "+contentType+":"+params.name);
                 if(typeof edit != "undefined" && edit != false)
-                  params.edit=edit;
-                if(typeof( typeObj[itemType] ) == "undefined")
+                  params.edit = edit;
+                
+                if( dyFInputs.get( itemType ) == null)
                     itemType="poi";
                 typeIco = itemType;
                 if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
+
                 if(typeof params.typeOrga != "undefined")
                   typeIco = params.typeOrga;
 

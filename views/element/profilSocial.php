@@ -71,18 +71,23 @@
 <?php } ?>
 
 
-#ajax-modal .modal-content{
+#ajax-modal .modal-content,
+#formContact .modal-content{
 	background-color: rgba(0,0,0,0.6);
 }
-#ajax-modal .container{
+#ajax-modal .container,
+#formContact .container{
 	background-color: white;
 	border-radius: 4px;
 }
-#ajax-modal.portfolio-modal{
+#ajax-modal.portfolio-modal,
+#formContact.portfolio-modal {
 	background-color: transparent;
 }
 #ajax-modal .close-modal .lr,
-#ajax-modal .close-modal .rl{
+#ajax-modal .close-modal .rl,
+#formContact .close-modal .lr,
+#formContact .close-modal .rl{
 	background-color: white;
 }
 
@@ -90,7 +95,7 @@
 
 <?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
 <?php 
-	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal'); ?>
+	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
 
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
@@ -355,8 +360,6 @@
 		 id="div-select-create">
 		<div class="col-md-12 col-sm-12 col-xs-12 padding-15 shadow2 bg-white ">
 	       
-	       
-	       
 	       <h4 class="text-center margin-top-15" style=""><img class="img-circle" src="<?php echo $thumbAuthor; ?>" height=30 width=30 style="margin-top:-10px;">
 	       	<a class="btn btn-link pull-right text-dark" id="btn-close-select-create" style="margin-top:-10px;">
 	       		<i class="fa fa-times-circle fa-2x"></i>
@@ -398,7 +401,13 @@
 	        <button data-form-type="project"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-purple hide-event">
 	            <h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> Projet</h6>
-	            <small>Faire connaitre votre projet<br>Trouver du soutien<br>Construire une communauté</small>
+	            <small>Faire connaitre un projet<br>Trouver du soutien<br>Construire une communauté</small>
+	        </button>
+
+			<button data-form-type="contact"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-blue hide-citoyens">
+	            <h6><i class="fa fa-envelope fa-2x bg-blue"></i><br> Contact</h6>
+	            <small>Définir les rôles de chacun<br>Faciliter la communication<br>Interne et externe</small>
 	        </button>
 
 			<div class="section-create-page">
@@ -432,6 +441,8 @@
 	        </div>
 	    </div>
     </div>
+
+
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section pull-right">
 		
 		<?php   $classDescH=""; 
@@ -488,11 +499,12 @@
 		</div>
 	</section>
 
-	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding form-contact-mail pull-right">
+	<!-- <section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding form-contact-mail pull-right"> -->
 		<?php 	$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
-				//$this->renderPartial($layoutPath.'forms.'.Yii::app()->params["CO2DomainName"].'.formContact'); 
+				$this->renderPartial($layoutPath.'forms.'.Yii::app()->params["CO2DomainName"].'.formContact', 
+									array("element"=>@$element)); 
 		?>
-	</section>
+	<!-- </section> -->
 </div>	
 
 <?php 

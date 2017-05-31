@@ -97,7 +97,7 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		var dataName = $(this).data("type-dir");
 		mylog.log(".load-data-directory", dataName);
-		loadDataDirectory(dataName, $(this).data("icon"));
+		loadDataDirectory(dataName, $(this).data("icon"),edit);
 	});
 		
 	$("#subsubMenuLeft a").click(function(){
@@ -274,14 +274,16 @@ function bindButtonMenu(){
 
 }
 
-function loadDataDirectory(dataName, dataIcon){
+function loadDataDirectory(dataName, dataIcon, edit){
 	showLoader('#central-container');
 	history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
 	// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 				function(data){ 
-					displayInTheContainer(data, dataName, dataIcon);
+					if(typeof edit != "undefined" && edit)
+						edit=dataName;
+					displayInTheContainer(data, dataName, dataIcon, "", edit);
 				}
 	,"html");
 }
@@ -494,8 +496,8 @@ function loadContacts(){
 	,"html");
 }
 
-function displayInTheContainer(data, dataName, dataIcon, contextType){ 
-	mylog.log("displayInTheContainer",data, dataName, dataIcon, contextType)
+function displayInTheContainer(data, dataName, dataIcon, contextType, edit){ 
+	mylog.log("displayInTheContainer",data, dataName, dataIcon, contextType, edit)
 	var n=0;
 	$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
 	if(n>0){
@@ -505,7 +507,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType){
 					"<hr></div>";
 
 		if(dataName != "collections"){
-			html += directory.showResultsDirectoryHtml(data, contextType);
+			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){
 				html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
@@ -517,6 +519,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType){
 		toogleNotif(false);
 		$("#central-container").html(html);
 		initBtnLink();
+		initBtnAdmin();
 	}else{
 		var nothing = "Aucun";
 		if(dataName == "organizations" || dataName == "collections" || dataName == "follows")

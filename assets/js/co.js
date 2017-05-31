@@ -2190,6 +2190,7 @@ var dynForm = null;
 var uploadObj = {
 	type : null,
 	id : null,
+	gotoUrl : null,
 	isSub : false,
 	folder : moduleId, //on force pour pas casser toutes les vielles images
 	set : function(type,id){
@@ -2557,13 +2558,15 @@ var dyFObj = {
 	},
 
 	//generate Id for upload feature of this element 
-	setMongoId : function(type) { 
+	setMongoId : function(type,callback) { 
 		uploadObj.type = type;
 		if( !$("#ajaxFormModal #id").val() )
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
 				uploadObj.id = data.id;
 				$("#ajaxFormModal #id").val(data.id)
+				if( typeof callback === "function" )
+                	callback();
 			});
 		}
 	},
@@ -2686,17 +2689,19 @@ var dyFInputs = {
         	},500);
     	}
     },
-    image :function(str) { 
-    	mylog.log("str", str) ;
-    	gotoUrl = (str) ? str : location.hash;
-    	mylog.log("gotoUrl", gotoUrl) ;
+    image :function() { 
+    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
+    	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
+    		uploadObj.gotoUrl = location.hash ;
+    	mylog.log( "gotoUrl" , uploadObj.gotoUrl ) ;
+
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	dyFObj.closeForm();
-		    	//alert(gotoUrl+uploadObj.id);
-	            urlCtrl.loadByHash( gotoUrl );	
+		    	alert( "image upload then goto : "+uploadObj.gotoUrl );
+	            urlCtrl.loadByHash( uploadObj.gotoUrl );	
 		    }
     	}
     },

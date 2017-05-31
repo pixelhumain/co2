@@ -36,7 +36,9 @@ dynForm = {
 		    }
 	    },
 	    beforeBuild : function(){
-	    	dyFObj.setMongoId('poi');
+	    	dyFObj.setMongoId('poi',function(){
+	    		uploadObj.gotoUrl = (contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.poi" : location.hash;
+	    	});
 	    },
 		afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
@@ -44,8 +46,7 @@ dynForm = {
 		    else 
 		    { 
 		        dyFObj.closeForm(); 
-		        var hashDest = (contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.poi" : location.hash;
-		        urlCtrl.loadByHash( hashDest );
+		        urlCtrl.loadByHash( uploadObj.gotoUrl );
 	        }
 	    },
 	    canSubmitIf : function () { 

@@ -39,7 +39,10 @@ dynForm = {
 	    	},
 	    },
 	    beforeBuild : function(){
-	    	dyFObj.setMongoId('organizations');
+	    	dyFObj.setMongoId('organizations', function(){
+	    		uploadObj.gotoUrl = '#page.type.organizations.id.'+uploadObj.id;
+	    	});
+	    	
 	    },
 	    beforeSave : function(){
 	    	if (typeof $("#ajaxFormModal #description").code === 'function' ) 
@@ -50,7 +53,7 @@ dynForm = {
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else { 
 	          dyFObj.closeForm(); 
-	          urlCtrl.loadByHash( '#page.type.organizations.id.'+uploadObj.id );
+	          urlCtrl.loadByHash( uploadObj.gotoUrl );
 	        }
 	    },
 	    properties : {
@@ -70,7 +73,7 @@ dynForm = {
             								{ required : true } ),
             tags : dyFInputs.tags(),
             location : dyFInputs.location,
-	        image : dyFInputs.image( "#page.type.organizations.id."+uploadObj.id ),
+	        image : dyFInputs.image(),
             email : dyFInputs.email(),
 	        shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
 	        url : dyFInputs.inputUrl(),

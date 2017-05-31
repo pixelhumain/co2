@@ -10,7 +10,9 @@
       </div>
       <div class="modal-body text-dark">
         <p>
-        	<?php echo Yii::t('common',"This element is in status 'delete pending'. It will be deleted in {nbDaysBeforeDelete} days.", array("{nbDaysBeforeDelete}"=>Element::NB_DAY_BEFORE_DELETE)) ;?>
+        	<?php 
+
+        		echo Yii::t('common',"This element is in status 'delete pending'. It will be deleted in {nbDaysBeforeDelete} days.", array("{nbDaysBeforeDelete}"=>Element::NB_DAY_BEFORE_DELETE)) ;?>
         </p>
         <br>
         <?php 

@@ -13,6 +13,15 @@
         	<?php echo Yii::t('common',"This element is in status 'delete pending'. It will be deleted in {nbDaysBeforeDelete} days.", array("{nbDaysBeforeDelete}"=>Element::NB_DAY_BEFORE_DELETE)) ;?>
         </p>
         <br>
+        <?php 
+        	$who = Person::getById($element["userAskingToDelete"]);
+        	$when = date("d/m/Y H:i:s", $element["statusDate"]->sec);
+        	echo Yii::t('common',"<b>{who}</b> ask to delete this element on {when}.", array("{who}" => $who["name"], "{when}" => $when));?>
+        <br>
+        <?php if (!empty($element["reasonDelete"])) 
+        		echo Yii::t('common',"For the following reason : <i>{why}</i>", array("{why}" => $element["reasonDelete"]));?>
+        <br>
+        <br>
         <?php echo Yii::t('common',"As an admin of this element, if you think it's a mistake you can stop the process.") ;?>
         <br>
         <?php echo Yii::t('common',"Do you want to stop the delete process of this element ?") ;?>

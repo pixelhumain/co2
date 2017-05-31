@@ -349,6 +349,24 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
   }
 
+  function initBtnAdmin(){ mylog.log("initBtnAdmin")
+    $(".disconnectConnection").click(function(){
+      var $this=$(this); 
+      disconnectTo(contextData.type,
+        contextData.id, 
+        $this.data("id"), $this.data("type"), $this.data("connection"),function() {
+          $this.parents().eq($this.data("parent-hide")).fadeOut();   
+        });
+    });
+    $(".acceptAsBtn").off().on("click",function () {
+      validateConnection(contextData.type, contextData.id, $(this).data("id"), $(this).data("type"), $(this).data("connect-validation"), 
+        function() {
+          toastr.success("Validation is well registered");
+          loadByHash(location.hash);
+        }
+      );
+    });
+  }
 
   function initBtnLink(){ mylog.log("initBtnLink");
       
@@ -756,14 +774,15 @@ var directory = {
         
         if(params.type == "citoyens") 
             params.hash += '.viewer.' + userId;
-        if(typeof params.size == "undefined" || params.size == "max")
+       // if(typeof params.size == "undefined" || params.size == "max")
           str += "<a href='"+params.hash+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
 
         str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
         str += "<div class='entityRight no-padding'>";
-
-        str += this.getAdminToolBar(params);
+        if(typeof params.edit  != "undefined")
+          str += this.getAdminToolBar(params);
+         
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
@@ -1139,7 +1158,11 @@ var directory = {
                               " data-isShared='"+isShared+"'>"+
                               "<i class='fa fa-share'></i> Partager</button>";
         }
-
+        if(typeof params.edit  != "undefined"){
+          params.attendees += "<button class='text-dark btn btn-link no-padding margin-left-10 disconnectConnection'"+
+                              " data-id='"+params.id+"' data-type='"+params.type+"' data-connection='"+params.edit+"' data-parent-hide='4'>"+
+                              "<i class='fa fa-unlink'></i> Ne plus participer</button>";
+        }
         params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
                                     "data-toggle='tooltip' data-placement='bottom' data-original-title='participant(s)'>" + 
                               cntP + " <i class='fa fa-street-view'></i>"+
@@ -1352,19 +1375,32 @@ var directory = {
 					str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="dyFObj.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
 					str += (notEmpty(params.telephone) ? '<span class="" style="font-size: 11px !important;">'+params.telephone+'</span>' : '');
 				str += "</div>";
-			str += '<ul class="nav navbar-nav pull-right margin-5">';
-          str += '<li class="text-left">';
-            str += '<a href="javascript:;" onclick="updateContact(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
-            'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
-              str += '<i class="fa fa-pencil"></i>';
-            str += '</a>';
-          str += '</li>';
-          str += '<li class="text-left">';
-            str += '<a href="javascript:;" onclick="removeContact(\''+key+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
-            'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+			str += '<ul class="nav navbar-nav margin-5 col-md-12">';
+          if(notEmpty(params.email)){
+            str += '<li class="text-left pull-left">';
+              str += '<a href="javascript:;" class="tooltips btn btn-default btn-sm openFormContact" '+
+                             'data-id-receiver="'+key +'" '+
+                             'data-email="'+(notEmpty(params.email) ? params.email : "") +'" '+
+                             'data-name="'+(notEmpty(params.name) ? params.name : "") +'">';
+                str += '<i class="fa fa-envelope"></i> Envoyer un e-mail';
+              str += '</a>';
+            str += '</li>';
+          }
+          str += '<li class="text-red pull-right">';
+            str += '<a href="javascript:;" onclick="removeContact(\''+key+'\');" '+
+                      'class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
+                      'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
               str += '<i class="fa fa-trash"></i>';
             str += '</a>';
           str += '</li>';
+          str += '<li class="text-left pull-right">';
+            str += '<a href="javascript:;" onclick="updateContact(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
+                      'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" '+
+                      'data-original-title="'+trad["update"]+'" >';
+              str += '<i class="fa fa-pencil"></i>';
+            str += '</a>';
+          str += '</li>';
+          
         str += '</ul>';
       str += "</div>";  
 		str += "</div>";
@@ -1512,7 +1548,7 @@ var directory = {
       return str;
     },
     dirLog : false,
-    showResultsDirectoryHtml : function ( data, contentType, size){ //size == null || min || max
+    showResultsDirectoryHtml : function ( data, contentType, size, edit){ //size == null || min || max
         //mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
         //mylog.log(" data", data,"size",  size, "contentType", contentType)
         //mylog.log(" dirLog",directory.dirLog);
@@ -1543,7 +1579,8 @@ var directory = {
 
                 //mapElements.push(params);
                 //alert("TYPE ----------- "+contentType+":"+params.name);
-                
+                if(typeof edit != "undefined" && edit != false)
+                  params.edit=edit;
                 if(typeof( typeObj[itemType] ) == "undefined")
                     itemType="poi";
                 typeIco = itemType;
@@ -1624,7 +1661,7 @@ var directory = {
                 if(params.type == "cities")
                   str += directory.cityPanelHtml(params);  
                 
-                else if( $.inArray(params.type, ["citoyens","organizations","project","poi","place"])>=0) 
+                else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","place"])>=0) 
                   str += directory.elementPanelHtml(params);  
                 
                 else if(params.type == "events")
@@ -1650,18 +1687,45 @@ var directory = {
         mylog.log("END -----------showResultsDirectoryHtml ("+str.length+" html caracters generated)")
         return str;
     },
-    getAdminToolBar : function(element){
-      console.log("getAdminToolBar", element);
-      return "";
-      var html = 
-        "<div class='col-md-12 padding-5' style='margin-top:-50px;'>"+
-          "<button class='btn btn-default btn-xs'>"+
-            "<i class='fa fa-chain'></i> Btn admin"+
-          "</button> "+
-          "<button class='btn btn-default btn-xs'>"+
-            "<i class='fa fa-chain'></i> Btn admin"+
-          "</button> "+
-        "</div>";
+    getAdminToolBar : function(data){
+      var html = "<div class='col-md-12 padding-5' style='margin-top:-50px;'>";
+      if(data.edit=="follows"){
+          html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='4'>"+
+            "<i class='fa fa-unlink'></i> Ne plus suivre"+
+          "</button> ";
+      }
+      if(data.edit=="organizations" || data.edit=="projects"){
+          html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='5'>"+
+            "<i class='fa fa-unlink'></i> Annuler ce lien"+
+          "</button> ";
+      }
+      if(data.edit=="members" || data.edit=="contributors"){
+        if(typeof data.statusLink["toBeValidated"] != "undefined" && typeof data.statusLink["isAdminPending"] == "undefined"){
+          html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='toBeValidated' data-parent-hide='4'>"+
+            "<i class='fa fa-user'></i> Accepter comme "+data.edit.substring(0,data.edit.length-1);
+          "</button> ";
+        }else if(typeof data.statusLink["isAdminPending"] != "undefined"){
+          html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='isAdminPending' data-parent-hide='4'>"+
+            "<i class='fa fa-user-plus'></i> Accepter comme admin";
+          "</button> ";
+        }
+        if(typeof data.statusLink["isAdmin"] == "undefined"){
+          html +='<button class="btn btn-default btn-xs" '+
+                   'onclick="connectTo(\''+contextData.type+'\',\''+contextData.id+'\', \''+data.id+'\', \''+data.type+'\', \'admin\',\'\',\'true\')">'+
+                            '<i class="fa fa-user-plus"></i> Ajouter comme admin'+
+                          '</button>';
+        }
+        if(typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined")
+          html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='4'>"+
+            "<i class='fa fa-unlink'></i> Supprimer ce "+data.edit.substring(0,data.edit.length-1);
+          "</button> ";
+      }
+      html+="</div>";
       return html;
     },
     //builds a small sized list

@@ -479,6 +479,7 @@ class CommunecterController extends Controller
       "info"              => array('href' => "/ph/communecter/app/info",              "public" => true),
       "city"              => array('href' => "/ph/communecter/app/city",              "public" => false),
       "sendmailformcontact" => array('href' => "/ph/communecter/app/sendmailformcontact", "public" => true),
+      "sendmailformcontactprivate" => array('href' => "/ph/communecter/app/sendmailformcontactprivate", "public" => true),
       "checkurlexists" => array('href' => "/ph/communecter/app/checkurlexists", "public" => true),
       "rooms" => array('href' => "/ph/communecter/app/rooms", "public" => true),
       "survey" => array('href' => "/ph/communecter/app/survey", "public" => true),

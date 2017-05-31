@@ -10,6 +10,7 @@ var trad = {
 "removeconnectionevents" : "<?php echo Yii::t("common","Are you sure to not participate to this event") ?>",
 "removeconnectionorganizations" : "<?php echo Yii::t("common","Are you sure to remove the link with this organization") ?>",
 "removeconnectionprojects" : "<?php echo Yii::t("common","Are you sure you to remove the link with this project") ?>",
+"removeconnectioncitoyens" : "<?php echo Yii::t("common","Are you sure you to remove this follows") ?>",
 "asmember" : "<?php echo Yii::t("common", "as member") ?>",
 "ascontributor" : "<?php echo Yii::t("common", "as contributor") ?>",
 "asadmin" : "<?php echo Yii::t("common", "as admin") ?>",

@@ -34,7 +34,7 @@
             "icon" : "line-chart",
             "label" :"Graphes",
             "key" : "smartCitizen",
-            "subcat" : [ "Données depuis API" , "Données depuis Communecter" ]
+            "subcat" : [ "Données Communecter", "Données API SmartCitizen" ]
         },
         "Gestion-SCK" : {
             "page" : "manage",

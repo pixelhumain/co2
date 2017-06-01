@@ -13,12 +13,19 @@ $cssAnsScriptFilesModule = array('/js/thing/graph.js', );
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule , $this->module->assetsUrl);
 
 $params = CO2::getThemeParams();
+$isAjax=null;
 
-$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
-//header + menu
-$this->renderPartial($layoutPath.'header',
-	array(  "layoutPath"=>$layoutPath ,
-		"page" => "thing") ); 
+if(!(Yii::app()->request->isAjaxRequest) ){
+	$isAjax=false;
+	$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+	//header + menu
+	$this->renderPartial($layoutPath.'header',
+		array(  "layoutPath"=>$layoutPath ,
+			"page" => "thing") ); 
+
+
+}else $isAjax=true;
+
 ?>
 
 <!--link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
@@ -28,8 +35,8 @@ $this->renderPartial($layoutPath.'header',
 </script-->
 
 <?php
-if(empty($nbDays) || !isset($nbDays) || $nbDays==0 ){$nbDays=10;}
-else if ($nbDays>31) { $nbDays=31; }
+if(empty($nbDays) || !isset($nbDays) || $nbDays==0 ){$nbDays=7;}
+else if ($nbDays>90) { $nbDays=90; }
 if(empty($country) || !isset($country)){$country='RE';}
 if(empty($postalCode) || !isset($postalCode)){$postalCode='0';} 
 else if (is_int($postalCode)){$postalCode=strval($postalCode);}
@@ -46,6 +53,7 @@ $infoSensorsDeviceOk=false;
 
 //todo : utiliser les pois en objet sig, au lieu de construire des objets 
 foreach ($devicesMongoRes as $mdataDevice) {
+	$mdataDevice["typeSig"]='poi.'.Thing::SCK_TYPE;
 	//$devices[]=$mdataDevice;
 	$sigDevicesForContextMap[]= array('geo' => $mdataDevice['geo'], 'typeSig'=>'poi.'.Thing::SCK_TYPE,
 		'name'=> "sck".$mdataDevice['deviceId'], '_id'=>$mdataDevice['_id'], 'type'=>Thing::SCK_TYPE, 
@@ -119,10 +127,10 @@ overflow: scroll;
 	background-color: #fefefe;
 
 }
-<?php if(!(Yii::app()->request->isAjaxRequest) ){ ?>
+<?php if(!$isAjax ){ ?>
 #graph-container{
-	margin-top: 40px;
-	padding-top: 40px;
+	margin-top: 60px;
+	padding-top: 60px;
 }
 <?php }?>
 </style>
@@ -130,10 +138,10 @@ overflow: scroll;
 <div class="col-md-12 col-sm-12 col-xs-12 container" id="graph-container">
 	<section class="header col-sm-12 col-xs-12 no-padding no-margin" id="header-graph">
 		<form class="form-inline col-sm-12 col-xs-12"> 
-			<div class="form-group col-sm-12 col-xs-12">
-				<span class="btn-toolbar col-sm-12 col-xs-12 no-padding no-margin" role="toolbar" aria-label="choixgraph" id="btngraphs" name="btngraphs">
-					<div class="btn-group no-padding no-margin" role="group" aria-label="choixmesuressensors">
-						<button type="button" class="btn btn-default btnchoixgraph " id="btn1" title="Température et humidité" value="1"> 
+			<div class="center form-group col-sm-12 col-xs-12">
+				<div class="btn-toolbar col-sm-12 col-xs-12 no-padding no-margin" role="toolbar" aria-label="choixgraph" id="btngraphs" name="btngraphs">
+					<span class="btn-group no-padding no-margin col-sm-12" role="group" aria-label="choixmesuressensors">
+						<button type="button" class="btn btn-default btnchoixgraph " id="btnTempAndHum" title="Température et humidité" value="1"> 
 						 	<i class="fa fa-thermometer-half"></i> <span class="hidden-sm hidden-xs">Température | humidité</span> </button>
 						<button type="button" class="btn btn-default btnchoixgraph" title="Énergies : Batterie et PV" value="2"> 
 						 	<i class="fa fa-battery-full" ></i> <span class="hidden-sm hidden-xs">Énergies</span> </button>
@@ -145,49 +153,59 @@ overflow: scroll;
 						 	<i class="fa fa-volume-up" ></i> <span class="hidden-sm hidden-xs">Bruit | nets</span> </button>
 						<button type="button" class="btn btn-default btnchoixgraph" title="Tous les graphes" value="6"> 
 						 	<i class="fa fa-check-square"></i> <span class="hidden-sm hidden-xs" >Tous</span> </button>
-					</div>
-				</span>
+					</span>
+				</div>
 			</div>
-			<div class="btn-toolbar form-group " role="group" aria-label="choixtimeoffset" name="btnchoix">
+			<div class="center btn-toolbar col-sm-12 form-group <?php echo 'hidden'; ?> " role="group" aria-label="choixtimeoffset" name="btnchoix">
 				<button class="btn btn-default" id="btnchoixtimeoffset" type="button" title="timeoffset" value="0">
 					<i class="fa fa-clock-o" id="ibtntimeoffset"></i><span class="hidden-sm hidden-xs"> Heure locale </span> </button>
 				<button class="btn btn-default" id="btntest" type="button" title="test" value="1">
 					<i class="fa fa-clock-o" id="ibtntest"></i><span class="hidden-sm hidden-xs"> Test </span> </button>
 			</div>
-			<p><?php echo $this->module->assetsUrl ; ?></p>
+
+			<div class="center btn-toolbar col-sm-12 form-group <?php if($isAjax){ echo 'hidden';} ?>" role="group" aria-label="choixsource" name="btnchoixsource"><span class="col-xs-12 col-md-3"> Source des données : </span>
+				<span class="btn-group no-padding no-margin col-xs-12 col-md-9" role="group">
+				<button class="btn btn-default btngraphsource" id="btndcodb" type="button" title="timeoffset" value="0">
+					<i class="fa fa-database" id="ibtndcodb"></i><span class="hidden-sm hidden-xs"> Communecter DB </span> </button>
+				<button class="btn btn-default btngraphsource" id="btndapisc" type="button" title="test" value="1">
+					<i class="fa fa-cloud-download" id="ibtndapisc"></i><span class="hidden-sm hidden-xs"> Depuis API smartcitizen </span> </button>
+				<button class="btn btn-default btngraphsource" id="btnbothsource" type="button" title="test" value="2">
+					<i class="fa fa-clone" id="ibtnbothsource"></i><span class="hidden-sm hidden-xs"> Comparaison des graphes </span> </button>
+				</span>
+			</div>
 
 			<div class="form-group col-sm-12">
 		      
-			    <!--<div class="hide no-all-day-range">
+			    <!--<div class="no-all-day-range">
 			        <span class="input-icon">
 			          <input type="text" class="event-range-date form-control" name="eventRangeDate" placeholder="Range date"/>
 			          <i class="fa fa-clock-o"></i> 
 			        </span>
 			    </div>
-			    <div class="hide all-day-range">
+			    <div class="all-day-range">
 			        <span class="input-icon">
 			          <input type="text" class="event-range-date form-control" name="ad_eventRangeDate" placeholder="Range date"/>
 			          <i class="fa fa-calendar"></i> 
 			        </span>
 			    </div>-->
 			    <!-- TODO faire un selecteur de nombre de jours qui fait un get avec graph?nbDay=x -->
-				<label class="col-sm-12" id="period"> </label>
-				<label class="hide col-xs-12 col-sm-3 control-label" for="from">Période</label>
-				<span class="hide input-group col-xs-12 col-sm-8">
-					<input class="form-group" type="text" id="from" name="from"> 
-					<input class="form-group" type="text" id="to" name="to">
+				<label class="hide col-sm-12" id="period"> </label>
+				<label class="col-xs-12 col-sm-3 control-label" for="from">Période</label>
+				<span class="input-group col-xs-12 col-sm-8">
+					<input class="form-group" type="text" id="datePickerFrom" name="datefrom"> 
+					<input class="form-group" type="text" id="datePickerTo" name="dateto">
 				</span>
 			</div>
 		</form>
 	</section>
 	<section class="body center col-sm-12 col-xs-12 no-padding" > 
-		<div class="col-xs-12" id="graphs"> 
+		<div class="col-xs-12 no-padding" id="graphs"> 
 		</div>
 	</section>
-	<section class="footer center col-sm-12 no-padding" id="legend-graph">
-		<div class="col-sm-12 col-md-8"> 
+	<section class="footer center col-sm-12 col-md-10 no-padding hidden" id="legend-graph">
+		<div class="col-sm-12 col-md-10"> 
 			<label class="col-xs-12 col-sm-3">Légende</label> 
-			<div class="col-xs-12 col-sm-5" id="legend"></div>
+			<div class="col-xs-12 col-sm-7" id="legend"></div>
 		</div>
 	</section>
 </div>
@@ -197,37 +215,40 @@ overflow: scroll;
 <script>
 
 //variable globale :
-var tRollup = "rollup=2h";
-var coRollup = 120;
+var tRollup = "24h";
+var coRollup = 1440;
 var svgG;
 
 //var timeOffset=<?php //echo timezone_offset_get(DATE_ISO8601) ?>
 
-//var nbDays=<?php //echo $nbDays ?>;
-var nbDays=40;
+var nbDays=<?php echo $nbDays ?>;
+//var nbDays=10;
 if(nbDays>0 && nbDays<=2){
- 	tRollup = "rollup=30m"; //10
- 	coRollup = 30;
+ 	tRollup = "10m"; //10
+ 	coRollup = 10;
 }else if (nbDays>2 && nbDays<=7 ){
-	tRollup = "rollup=40m";
-	coRollup = 40;
-}else if (nbDays>7 && nbDays<=14) {
-	tRollup = "rollup=60m";
+	tRollup = "60m";
 	coRollup = 60;
+}else if (nbDays>7 && nbDays<=14) {
+	tRollup = "120m";
+	coRollup = 120;
+}else if(nbDays>14 && nbDays<= 30) {
+	tRollup = "12h";
+	coRollup = 720;
 }
 
-$("#period").text("Graphe sur "+nbDays+" jours, "+tRollup);
+$("#period").text("Graphe sur "+nbDays+" jours, rollup : "+tRollup);
+//
 //mylog.log();
 
 //svglegend={lwidth: 200, lheight: 100, };
-
 
 //Variable pour d3 et svg
 var multiGraphe = {};
 var strockeColorArray={};
 
-var svgwidth = 530, svgheight = 300; //16:9
-var gmargin = {top: 20, right: 30, bottom: 30, left: 40};
+var svgwidth = 500, svgheight = 285; //16:9
+var gmargin = {top: 20, right: 30, bottom: 30, left: 50};
 var gwidth = +svgwidth - gmargin.left - gmargin.right;
 var gheight = +svgheight - gmargin.top - gmargin.bottom;
 
@@ -241,16 +262,14 @@ var line = d3.line()
 	.x(function(d) { return x(d.timestamps); })
 	.y(function(d) { return y(d.values); });
 
-var vXn = new Date("2017-04-10"); // 2017-05-03
-var vXm = new Date("2017-04-10");
+var vXn = new Date("2017-03-20"); // 2017-05-03
+var vXm = new Date("2017-03-20");
 vXn.setDate((vXn.getDate()-nbDays));
 var dXmISO = vXm.toISOString();
 var dXnISO = vXn.toISOString();
 var timeOffset = vXn.getTimezoneOffset(); // RE : -240
 var vYn = 0; //min
 var vYm = 1;
-
-
 
 //Variable SCK 
 //var listDevice = ["2531","4162","4151"];//,"4139","3151", "3188", "3422", "4122", "1693", "3208", "4164"];// 
@@ -260,13 +279,20 @@ var devicemongoGraph=<?php echo json_encode($devicesMongoRes); ?>;
 //mylog.log(devices);
 
 var listDevice = [];
+var dCOdb = {};
+var dAPIsc = {};
+var graphReady= {dCOdb: false, dAPIsc : false};
+var min={} ; //null;
+var max={} ; //null;
 
-var lengthOfdevicemongoGraph=0;
-for ( device in devicemongoGraph ){
-	//lengthOfdevicemongoGraph++; // pour avoir la taille rapidement
+
+for (var device in devicemongoGraph ){
+	lengthOflistDevice++; // pour avoir la taille rapidement
 	listDevice.push({deviceId : devicemongoGraph[device].deviceId, boardId : devicemongoGraph[device].boardId });
 };
+var lengthOflistDevice=listDevice.length;
 
+var deviceForBoardId={};
 //var listDevice = <?php //echo json_encode($deviceIds) ?>;
 //mylog.log(listDevice);
 
@@ -277,6 +303,15 @@ var dataSensors = { bat : { id : 17}, hum :{ id : 13}, temp :{ id : 12} ,no2 : {
 	co:{ id : 16}, noise :{ id : 7}, panel :{ id : 18}, light :{ id : 14} , nets : { id :21} }; 
 
 var infoSensors = <?php echo json_encode($infoSensors); ?>;
+var compteurAjaxAPIsc=0;
+var compteurDevices={};
+var lengthOfdataSensors=0;
+
+var boardIds = [];
+var urlReqCODB = baseUrl+'/'+moduleId+"/thing/getsckdataincodb"; //?start="+dXnISO+"&end="+dXmISO+"&rollupMin="+coRollup;
+var urlReqAPIsc="<?php echo Thing::URL_API_SC ?>/devices/";//+item.deviceId+"/readings";
+var contextDevicesMap = <?php echo json_encode($sigDevicesForContextMap,true);?>;
+//var contextDevicesMap = <?php// echo json_encode( $devicesMongoRes ,true);?>
 
 jQuery(document).ready( function() {
 
@@ -284,209 +319,114 @@ jQuery(document).ready( function() {
 	//initPageInterface();
 	setTitle("<span id='main-title-menu'>Graphes</span>","line-chart","Graphes");
 	$("#mainNav").addClass("affix");
-/* TODO remplacer par les poi pour sig ( mettre dans la page thing )
-	var contextDevicesMap = <?php //echo json_encode($sigDevicesForContextMap,true);?>;
+
+
+/* TODO remplacer par les poi pour sig ( mettre dans la page thing )*/
+	
 	//chargement la carte
 	if(CoSigAllReadyLoad){
 		Sig.showMapElements(Sig.map, contextDevicesMap);
 	}else{
 		setTimeout(function(){ Sig.showMapElements(Sig.map, contextDevicesMap); }, 3000);
 	}
-*/
-	var sensorsProcessed = 0;  
+	
+	//$("#legend-graph").hide();
 
 	for (var keySens in dataSensors ) {	//forEach( function(item,index,array){
-		//for( var it in item) {
+		lengthOfdataSensors++;
+		min[keySens]=null;
+		max[keySens]=null;
+		
 		var sensorId = dataSensors[keySens].id;  // item[it];
-		mylog.log(sensorId);
 		var nametitle= "graphe_"+sensorId;
 		var grapheTitle = d3.select("#graphs")
 			.append("figure").attr("id",nametitle)
-			.attr("class","col-xs-12 graphs");
+			.attr("class","col-xs-12 no-padding graphs");
 
 		$("#"+nametitle).hide();
-		setSVGForSensor(sensorId, keySens); //index pour les params du graphe sensor
-		//} 
-	} //);
-	mylog.log('setSVGForSensor done');
+		setSVGForSensor(sensorId, keySens); 
+	} 
 
-	var deviceProcessed=0;
-//	var boardIdTest = "00:06:66:2a:02:a0"; 
-	var boardIds = [];
-	var urlReqCODB = baseUrl+'/'+moduleId+"/thing/getsckdataincodb"; //?start="+dXnISO+"&end="+dXmISO+"&rollupMin="+coRollup;
-	
-	listDevice.forEach( function(item) { if(item.boardId!="[FILTERED]"){ boardIds.push(item.boardId); } });
-		
-	mylog.log("boardIds : ");
-	mylog.log(boardIds);
+	//$(".svggraph").hide();
+	mylog.log('set SVG All Sensor done');
+
+	//	var boardIdTest = "00:06:66:2a:02:a0"; 
+
+	listDevice.forEach( function(item) { 
+		dAPIsc[item.deviceId]={temp : [], hum : [], bat: [], panel : [], no2 : [], panel : [], co : [], noise : [], nets : [], light : []};
+		deviceForBoardId[item.boardId]=item.deviceId;
+		setStrokeColorAndLegendForDevice(item.deviceId);
+		if(item.boardId!="[FILTERED]"){ boardIds.push(item.boardId); }
+	});
+
 	mylog.log("listDevice : ");
 	mylog.log(listDevice);
 
-	testAjax=true;
-	if(testAjax) {
-		console.time("ajaxRequestToCODB");
-		$.ajax({
-			type: 'GET',
-			url: urlReqCODB,
-			dataType: "json",
-			data: { start : dXnISO, end : dXmISO, rollupMin: coRollup,
-				listBoardIds : JSON.stringify(boardIds) // si une seul requete
-				//boardId : devicemongoGraph[idMgoSCK].boardId // si en plusieurs requete.
-				}, 
-			context : { listDevice: listDevice},
-			crossDomain: true,
-			success: function (data) {
-				
-				mylog.log(" -- ajax success-- " );
-	
-				var deviceForBoardId={};
-				for (d in listDevice ){
-					deviceForBoardId[listDevice[d].boardId]=listDevice[d].deviceId;
-				}
-				mylog.log("deviceForBoardId : ");
-				mylog.log(deviceForBoardId);
-				if(notNull(data) ){
-					for(var bId in data){
-						//; //bId : boardId 
-						grapheCoDB(data[bId], deviceForBoardId[bId]);
-					}
 
-					
-				}
-			 },
-			error: function (data) { mylog.log("Error : ajax not success -- "); 
-				mylog.log(data); 
-			}
+	$("#datePickerFrom").datepicker({ gotoCurrent: true,
+		maxDate: -1, dateFormat: "yy-mm-dd",
+		onSelect: function(date){ vXn.setDate(date); graphReady.dCOdb=false; graphReady.dAPIsc=false; } });
+	$("#datePickerTo").datepicker({ gotoCurrent: true,
+		maxDate: 0, dateFormat: "yy-mm-dd",
+		onSelect: function(date){ vXm.setDate(date); graphReady.dCOdb=false; graphReady.dAPIsc=false; } });
+	$("#datePickerFrom").datepicker("option", "dateFormat", "yy-mm-dd");
+	$("#datePickerTo").datepicker("option", "dateFormat", "yy-mm-dd");
+	$("#datePickerFrom").datepicker("setDate", vXn);
+	$("#datePickerTo").datepicker("setDate",  vXm);
 
-		}).done(function() { 
-			mylog.log(" -- ajax Done-- " );
-			deviceProcessed++; 
 
-			console.timeEnd("ajaxRequestToCODB");
 
-			if (listDevice.length == deviceProcessed ){
-				mylog.log( "deviceProcessed : "+deviceProcessed);
-			//	console.timeEnd("ajaxRequestToCODB"); //si plusieurs requete
-				/*
-				var index=0;
-				for(var keySens in dataSensors){
-				//sckSensorIds.forEach( function(item,index){
-					setAxisXY(index,keySens);
-					index++; 
-				} //);
-				*/
-			}
-	
-		 });
-	} // fin if forTest	
-
-	//} //fin if si plusieurs requete
-	//} //fin for si plusieurs requetes ajax
-
-	
-	/* sensorKey pour multigraphe
-	sckSensorIds.forEach( function(item,index){
-		mylog.log(' sckSensorIds forEach2 item : '+item+" index : "+index );
-		mylog.log("infoSensors[multiGraphe[index].svgid] : "+infoSensors[multiGraphe[index].svgid]);
-		setAxisXY(index,infoSensors[multiGraphe[index].svgid]); 
-	});
-	*/
-
-	 // if(devicemongoGraph.length>0){
-	if(true==false) { // desactivé ppour test
-
-		// fait un graphe par sensor et trace tous les devices sur le même graphe sensor
-		dataSensors.forEach(function (item,index,array){ 
-			
-			mylog.log(item);
-
-			for( var e in item) {
-
-				var sensorId = item[e].id;
-/*
-				var nametitle= "graphe_"+sensorId;
-				var grapheTitle = d3.select("#graphs")
-					.append("figure").attr("id",nametitle)
-					.attr("class","col-xs-12 graphs");
-				$("#"+nametitle).hide();
-*/
-				//var svgG = setSVGForSensor(sensorId); //index pour les params du graphe sensor
-// revoir ça : 
-				for ( var i = 0; i< listDevice.length ; i++) {
-					var urlReq="<?php //echo Thing::URL_API_SC ?>/devices/"+listDevice[i].deviceId+"/readings?sensor_id="+sensorId+"&"+tRollup+"&from="+dXnISO+"&to="+dXmISO;
-					var sensorkey = "";
-
-					//mylog.log(urlReq);
-
-					$.ajax({
-
-						//exemple api GET https://api.smartcitizen.me/v0/devices/1616/readings?sensor_id=7&rollup=4h&from=2015-07-28&to=2015-07-30
-						type: 'GET',
-						url: urlReq,
-						dataType: "json",
-						crossDomain: true,
-						success: function (data) {
-							//console.dir(data);
-							sensorkey = data.sensor_key;
-							if (data.readings.length>=1){
-								graphe(data.device_id, data.sensor_id, data.readings,svgG);
-							}
-						},
-						error: function (data) { mylog.log("Error : ajax not success"); //mylog.log(data); 
-						}
-						}).done(function() { setAxisXY(svgG,sensorkey); });
-				}
-
-			}
-			
-		}); //call
+	$(".btngraphsource").click( function(){
+		var value = $(this).val();
+		$(".btngraphsource").removeClass("active");
+		$(this).addClass("active");
+		mylog.log(" value btn :"+value);
+		//$.datepicker.parseDate( "yy-mm-dd",  );
+		
+		showHideChart( value);
 	}
+	);
 
-	$("#btn1").click().attr("clicked");
-	//showSensor();   
+	$(".btnchoixgraph").click(function(){
+		var value = $(this).val();
+		$(".btnchoixgraph").removeClass("active");
+		$(this).addClass("active");
+		//mylog.log(value);
 
-	$("#btntest").click(function(){
-		mylog.log("*** bouton test function ****");
+		hideAllGraph();
+		var list=[];
+		switch(value) {
+			case "1": //temp et hum
+				list.push(12,13);
+				break;
+			case "2": //energie : batt et solarPV
+				list.push(17,18);
+				break;
+			case "3": //lum
+				list.push(14);
+				break;
+			case "4": //co no2
+				list.push(15,16);
+				break; 
+			case "5": //bruit : noise et nets
+				list.push(7,21);
+				break;
+			case "6":
+				showAllGraph();
+				break;
+			//default:
+			//  list.push(12,13);
+			//  break;
+		} 
+		for(var s=0;s<list.length; s++){
+			var figGraph = "graphe_"+list[s];
+			showGraph(figGraph);
+		}
 	});
 
-});
 
-$(".btnchoixgraph").click(function(){
-	var value = $(this).val();
-	$(".btnchoixgraph").removeClass("active");
-	$(this).addClass("active");
-	//mylog.log(value);
+}); //fin jQuery ( document)
 
-	hideAllGraph();
-	var list=[];
-	switch(value) {
-	case "1": //temp et hum
-		list.push(12,13);
-		break;
-	case "2": //energie : batt et solarPV
-		list.push(17,18);
-		break;
-	case "3": //lum
-		list.push(14);
-		break;
-	case "4": //co no2
-		list.push(15,16);
-		break; 
-	case "5": //bruit : noise et nets
-		list.push(7,21);
-		break;
-	case "6":
-		showAllGraph();
-		break;
-	//default:
-	//  list.push(12,13);
-	//  break;
-	} 
-	for(var s=0;s<list.length; s++){
-		var figGraph = "graphe_"+list[s];
-		showGraph(figGraph);
-	}
-});
 
 function initPageInterface(){
 
@@ -519,4 +459,104 @@ function initPageInterface(){
     });
 }
 
+
+function setGraphFromAPIsmartcitizen() {
+	//$.blockUI({ message : '<span class="homestead"><i class="fa fa-spinner fa-circle-o-noch"></i> Chargement des données en cours ...</span>' });
+	// fait un graphe par sensor et trace tous les devices sur le même graphe sensor
+	mylog.log("--- processGraphAPI ---");
+
+	for(var keySens in dataSensors){
+		var sensorId = dataSensors[keySens].id;
+		compteurDevices[keySens]=0;
+
+		listDevice.forEach( function (item) {
+			///?sensor_id="+sensorId+"&"+tRollup+"&from="+dXnISO+"&to="+dXmISO;
+			//exemple api GET https://api.smartcitizen.me/v0/devices/1616/readings?sensor_id=7&rollup=4h&from=2015-07-28&to=2015-07-30
+			var deviceId = item.deviceId;
+			var urlReqSC=urlReqAPIsc+deviceId+"/readings";
+
+			$.ajax({
+				type: 'GET',
+				url: urlReqSC,
+				dataType: "json",
+				data : {sensor_id : sensorId, rollup: tRollup, from: dXnISO, to: dXmISO},
+				crossDomain: true,
+				context : { keySens: keySens, deviceId: deviceId , lengthOflistDevice : lengthOflistDevice },
+				success: function (data) {
+
+					var ks = $(this)[0].keySens;
+					var dvice=$(this)[0].deviceId;
+					mylog.log(data);
+
+					if (data.readings.length>=1){
+						fillArrayWithObjectTimestampsAndValues(data.readings, dvice, ks);
+					}
+				},
+				error: function (dErr) {
+				 	mylog.log("Error : ajax not success"); 
+					//mylog.log(dErr); 
+					mylog.log( "error sensor : "+$(this)[0].keySens+" device :"+$(this)[0].deviceId);
+				},
+				complete : function( ) {
+					mylog.log("Complete ajax ");
+					var ks = $(this)[0].keySens;
+					var dvice=$(this)[0].deviceId;
+					if(++compteurDevices[ks] >= (lengthOflistDevice)){
+						mylog.log( "--compteurDevices - "+ks+" : "+dvice);
+						grapheOneSensor(ks, "dAPIsc",false);
+					}
+				}	
+			});
+		}); //forEach
+	} // for
+} 
+
+function setGraphFromCoDB () {
+	console.time("ajaxRequestToCODB");
+	//$.blockUI({ message : '<span class="homestead"><i class="fa fa-spinner fa-circle-o-noch"></i> Chargement des données en cours ...</span>' });
+
+	$.ajax({
+		type: 'GET',
+		url: urlReqCODB,
+		dataType: "json",
+		data: { start : dXnISO, end : dXmISO, rollupMin: coRollup,
+			listBoardIds : JSON.stringify(boardIds) }, 
+		context : { listDevice: listDevice},
+		success: function (dCO) {
+			mylog.log(" -- ajax success-- " );
+			if(notNull(dCO) ){
+				mylog.log("--deviceForBoardId in ajax- ");
+				mylog.log(deviceForBoardId);
+
+				for( var bId in dCO){
+					mylog.log("---- boardIds ---- "+ bId);
+					if(dCO[bId].length>0 ){
+						
+						var deviceId = deviceForBoardId[bId];
+						dataSensorAdaptorTimestampsAndValues(dCO[bId],deviceId );
+					}
+				}
+			}
+		},
+		error: function (data) { mylog.log("Error : ajax not success -- "); 
+			mylog.log(data); 
+		}
+
+	}).done(function() { 
+		mylog.log(" -- ajax Done-- " );
+		console.timeEnd("ajaxRequestToCODB");
+
+		for(var ks in multiGraphe ){
+			grapheOneSensor(ks,"dCOdb",false);
+		}
+	});
+}
+
+
+
+
+
+
+
+mylog.log("------------ jusqu'ici tous va bien pour graph !! ----------------");
 </script>

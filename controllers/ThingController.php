@@ -22,7 +22,7 @@ class ThingController extends CommunecterController {
           'updatesckdevices'          => 'citizenToolKit.controllers.thing.UpdateSckDevicesAction',
           'manage'                    => 'citizenToolKit.controllers.thing.ManageAction',
           'getsckdataincodb'          => 'citizenToolKit.controllers.thing.GetSCKDataInCODBAction',
-          'synthetizesckdata'       => 'citizenToolKit.controllers.thing.SynthetizeSCKDataInCODBAction',
+          'synthetizesckdata'         => 'citizenToolKit.controllers.thing.SynthetizeSCKDataInCODBAction',
           
         );
 	}

@@ -164,7 +164,7 @@ var sectionKey="";
 
 var smartCitizenSelector = { 
   "Dernieres-Mesures" : [ "lastreading", [ "all" , "temp" , "hum" , "light" , "co" , "no2" , "noise" , "nets", "bat" , "pv" ]],  
-  "Graphes" : ["graph-data",[ "data-from-api-sc" , "data-from-communecter" ]], 
+  "Graphes" : [".chart_graph",[ ".dCOdb", ".dAPIsc" ]], 
   "Gestion-SCK" :[ "sck-maj",[ "sck-maj-principal", "sck-maj-secondaire" ]] 
 };
 
@@ -193,7 +193,8 @@ function getpageSCK(viewsThing){
 			setTimeout(function(){ alReady=false; }, 2000 );
 			$("#dropdown_thing").html(data);
 		},
-		error:function(data){ mylog.log("Error : ajax not success"); }
+		error:function(data){ mylog.log("Error : ajax not success");
+			mylog.log(data); }
 		}).done(function(){ 
 			pageReady=true;
 			activeFirst("menu-keycat-"+viewsThing,"keycat" );
@@ -202,7 +203,7 @@ function getpageSCK(viewsThing){
 
 function getpageCOPI(viewsCopi){
 	//todo pour les CO-PI ;
-	$("#dropdown_thing").html("<h3> COPI (Vide actuellement) <h3> <p> Ici vous avez accès au pages concernant les COPIs <p> ");
+	$("#dropdown_thing").html("<h3> COPI (Vide actuellement) <h3> <p> Ici vous avez accès aux pages concernant les COPIs <p> ");
 }
 
 function bindLeftMenuFilters () { 
@@ -220,7 +221,7 @@ function bindLeftMenuFilters () {
 		KScrollTo("#dropdown_thing");
 
 		if( sectionKey == "smartCitizen"){
-			$("#dropdown_thing").html("<h3> Smart-Citizen-Kit<h3> <p> Ici vous avez accès aux pages concernant les kits configurer en double push<p> ");   
+			$("#dropdown_thing").html("<h3> Smart-Citizen-Kit<h3> <p>Ici vous avez accès aux pages concernant les kits déclarés dans Communecter<p> ");   
 		}else{
 			$("#dropdown_thing").html("<h3> COPI (Vide actuellement) <h3> <p> Ici vous avez accès au pages concernant les COPIs <p> ");
 		}
@@ -259,13 +260,16 @@ function bindLeftMenuFilters () {
 		var key2 = $(this).data("key2");
 		mylog.log('classType : '+classType+' classSubType : '+classSubType+' key2 :'+key2);
 
-		if(classType!="Dernieres-Mesures"){
-			var idToShow = smartCitizenSelector[classType][1][key2];
-			var classToHide = smartCitizenSelector[classType][0];
-			$("."+classToHide).addClass('hidden');
-			$("#"+idToShow).removeClass('hidden');
-		}else{
+		var toShow = smartCitizenSelector[classType][1][key2];
+		var toHide = smartCitizenSelector[classType][0];
+
+		if(classType=="Gestion-SCK"){
+			$("."+toHide).addClass('hidden');
+			$("#"+toShow).removeClass('hidden');
+		}else if (classType=="Dernieres-Mesures") {
 			keycatButton(classType, key2); // pour la page dernière mesure
+		} else if(classType=="Graphes"){
+			showHideChart(key2);
 		}
 	});
 }

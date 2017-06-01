@@ -12,11 +12,11 @@
                                 "page" => "thing") ); 
 
 
-	if(empty($country) || !isset($country)){$country='RE';}
+	if(empty($country)){$country='RE';}
 ?>
 
 <?php 
-	$devicesMongoRes = Thing::getSCKDevicesByLocality();
+	$devicesMongoRes = Thing::getSCKDevicesByLocality($country);
 
 	$isAjaxR=(Yii::app()->request->isAjaxRequest);
 
@@ -37,6 +37,8 @@
 <?php if(!$isAjaxR ){ ?>
 	<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"thing")); ?>
 <?php } ?>
+
+
 
 <div class="col-xs-12 container" id="managesck">
 	<div class="col-xs-12 <?php if($isAjaxR){echo 'hidden';}?> sck-maj" id="sck-maj-principal">

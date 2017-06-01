@@ -260,7 +260,7 @@ function grapheOneSensor(keySens,source, redraw) {
 }
 
 function fillArrayWithObjectTimestampsAndValues(readings, deviceid, sensorkey){
-	mylog.log("- fillArrayWithObjectTimestampsAndValues(readings, device, sensorkey) ");
+	mylog.log("- fillArrayWithObjectTimestampsAndValues - ");
 
 	dAPIsc[deviceid][sensorkey] = readings.map(
 		function(item){
@@ -276,7 +276,6 @@ function fillArrayWithObjectTimestampsAndValues(readings, deviceid, sensorkey){
 
 function dataSensorAdaptorTimestampsAndValues(convertedDataRecord,device){
 	mylog.log("--dataSensorAdaptorTimestampsAndValues--");
-	console.time("dataSensorAdaptWithForEach");
 	var dataCOdb={temp : [], hum : [], bat: [], panel : [], no2 : [], panel : [], co : [], noise : [], nets : [], light : []};
 	convertedDataRecord.forEach( function(item){
 		var ts = new Date();
@@ -305,7 +304,6 @@ function dataSensorAdaptorTimestampsAndValues(convertedDataRecord,device){
 
 	}
 	);
-	console.timeEnd("dataSensorAdaptWithForEach");
 	dCOdb[device]=dataCOdb;
 
 	for (ks in multiGraphe){

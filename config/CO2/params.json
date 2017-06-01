@@ -171,7 +171,8 @@
 			"hash" : "#app.thing",
 			"icon" : "database", 
 			"mainTitle" : "Les objets communectés",
-        },
+			"placeholderMainSearch" : "Les objets communectés ..."
+        }
 
 	}
 

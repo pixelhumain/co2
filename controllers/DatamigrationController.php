@@ -1337,8 +1337,44 @@ class DatamigrationController extends CommunecterController {
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
-	public function actionCookie(){
-		Person::updateCookieCommunexion("58294e5894ef47900dc7cd9e", null);
+	public function actionChangePhoneObjectToArray(){
+		$types = array(Person::COLLECTION, Organization::COLLECTION);
+		$nbelement = 0 ;
+		foreach ($types as $keyType => $type) {
+			$elements = PHDB::find($type, array("telephone" => array('$exists' => 1)));
+			if(!empty($elements)){
+				foreach (@$elements as $keyElt => $elt) {
+					if(!empty($elt["name"])){
+						$nbelement ++ ;
+						$elt["modifiedByBatch"][] = array("ChangePhoneObjectToArray" => new MongoDate(time()));
+						
+						if(!empty($elt["telephone"]["fixe"])) {
+							$elt["telephone"]["fixe"] = json_decode(json_encode($elt["telephone"]["fixe"]), true);
+						}
+
+						if(!empty($elt["telephone"]["mobile"])){
+							$elt["telephone"]["fixe"] = json_decode(json_encode($elt["telephone"]["mobile"]), true);
+						}
+
+						if(!empty($elt["telephone"]["fax"]) ){
+							$elt["telephone"]["fax"] = json_decode(json_encode($elt["telephone"]["fax"]), true);
+						}
+
+						try {
+							$res = PHDB::update( $type, 
+						  		array("_id"=>new MongoId($keyElt)),
+	                        	array('$set' => array(	"telephone" => $elt["telephone"],
+	                        							"modifiedByBatch" => $elt["modifiedByBatch"])));
+						} catch (MongoWriteConcernException $e) {
+							echo("Erreur à la mise à jour de l'élément ".$type." avec l'id ".$keyElt);
+							die();
+						}
+						echo "Elt mis a jour : ".$type." et l'id ".$keyElt."<br>" ;
+					}
+				}
+			}
+		}		
+		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
 }

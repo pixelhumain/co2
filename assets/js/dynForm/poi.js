@@ -6,7 +6,7 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	sub : function(){
-	    		$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+	    		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 						  					  .addClass("bg-green-poi");
     		 	
     		 	$("#ajax-modal-modal-title").html(
@@ -20,7 +20,7 @@ dynForm = {
 	    		}
 	    	},
 	    	onload : function(){
-	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();
 	    	},
 	    },
 	    beforeSave : function(){
@@ -36,7 +36,9 @@ dynForm = {
 		    }
 	    },
 	    beforeBuild : function(){
-	    	dyFObj.setMongoId('poi');
+	    	dyFObj.setMongoId('poi',function(){
+	    		uploadObj.gotoUrl = (contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.poi" : location.hash;
+	    	});
 	    },
 		afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
@@ -44,8 +46,7 @@ dynForm = {
 		    else 
 		    { 
 		        dyFObj.closeForm(); 
-		        var hashDest = (contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.poi" : location.hash;
-		        urlCtrl.loadByHash( hashDest );
+		        urlCtrl.loadByHash( uploadObj.gotoUrl );
 	        }
 	    },
 	    canSubmitIf : function () { 
@@ -61,7 +62,7 @@ dynForm = {
 	    		$(".typeBtntagList").hide(); 
 	    		$(".subtypeSection").html("");
 	    		$(".subtypeSectioncustom").show();
-	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();
 	    	}
 	    },
 	    properties : {
@@ -94,7 +95,7 @@ dynForm = {
 						
 						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
 						$(".sectionBtntagList").hide();
-						$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
+						$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags").show();
 						dyFObj.canSubmitIf();
 	            	});
 	            }
@@ -106,12 +107,7 @@ dynForm = {
             description : dyFInputs.textarea("Description", "..."),
             location : dyFInputs.location,
             tags :dyFInputs.tags(),
-            formshowers : {
-            	label : "En détails",
-                inputType : "custom",
-                html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
-            },
-            urls : dyFInputs.urlsOptionnel,
+            urls : dyFInputs.urls,
             parentId : dyFInputs.inputHidden(),
             parentType : dyFInputs.inputHidden(),
 	    }

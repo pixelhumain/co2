@@ -111,7 +111,7 @@
     .item-globalscope-checker.inactive{
         color:#DBBCC1 !important;
         border-bottom:0px;
-        margin(top:-6px;)
+        /*margin-top:-6px;*/
     }
     .item-globalscope-checker:hover,
     .item-globalscope-checker:active,

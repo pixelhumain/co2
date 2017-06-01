@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body text-dark">
         <p>
-        	<?php echo Yii::t('common',"Are you sure you want to delete this element ? </br> The element will be deleted : it will not be referenced in all their projects or events. But these last ones will not be deleted. <span class=\"text-red\">Warning:</span> this action can not be cancelled") ;?>
+        	<?php echo Yii::t('common',"Are you sure you want to delete this element ? </br> The element will be deleted : it will not be referenced in all their projects or events. But these last ones will not be deleted. <span class=\"text-red\">Warning:</span> this action can be cancelled only by an administrator") ;?>
         </p>
         <br>
         	<?php echo Yii::t('common','You can add bellow the reason why you want to delete this element :') ;?>
@@ -39,7 +39,11 @@
 	    	success: function(data){
 		    	if(data.result){
 					toastr.success(data.msg);
-					urlCtrl.loadByHash("#search");
+					console.log("Retour de delete : "+data.status);
+					if (data.status == "deleted") 
+						urlCtrl.loadByHash("#search");
+					else 
+						urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id);
 		    	}else{
 		    		toastr.error(data.msg);
 		    	}

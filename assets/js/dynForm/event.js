@@ -8,7 +8,7 @@ dynForm = {
 	    	sub : function(){
 
 	    		
-    			$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+    			$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 						  					  .addClass("bg-orange");
     		 	
     		 	$("#ajax-modal-modal-title").html(
@@ -51,14 +51,16 @@ dynForm = {
 	    	}
 	    },
 	    beforeBuild : function(){
-	    	dyFObj.setMongoId('events');
+	    	dyFObj.setMongoId('events',function(){
+	    		uploadObj.gotoUrl = '#page.type.events.id.'+uploadObj.id;
+	    	});
 	    },
 	    afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else { 
 	          dyFObj.closeForm(); 
-	          urlCtrl.loadByHash( '#page.type.events.id.'+uploadObj.id );
+	          urlCtrl.loadByHash( uploadObj.gotoUrl);
 	        }
 		},
 	    beforeSave : function(){
@@ -156,7 +158,7 @@ dynForm = {
             },
             parentType : dyFInputs.inputHidden(),
 	        type : dyFInputs.inputSelect("Type d\'évènement",null,eventTypes, { required : true }),
-	        image : dyFInputs.image( "#page.type.events.id."+uploadObj.id ),
+	        image : dyFInputs.image( ),
             allDay : dyFInputs.allDay(),
             startDate : dyFInputs.startDateInput,
             endDate : dyFInputs.endDateInput,

@@ -323,7 +323,7 @@ function showMapNetwork(show){
 
 		setTimeout(function(){ 
 			$(".my-main-container").show();
-			if(!$('.main-menu-left').is(":visible"))
+			if( !$('.main-menu-left').is(":visible") && location.hash.indexOf("#page") == -1 )
 				$(".main-menu-left").show( 700 );
 		}, 100);
 
@@ -402,11 +402,12 @@ function startSearchSimply(indexMin, indexMax){
 
 function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	mylog.log("autoCompleteSearchSimply", name, locality, indexMin, indexMax);
-	var levelCommunexionName = { 1 : "INSEE",
-							 2 : "CODE_POSTAL_INSEE",
-							 3 : "DEPARTEMENT",
-							 4 : "REGION"
-						   };
+	var levelCommunexionName = { 
+		1 : "INSEE",
+		2 : "CODE_POSTAL_INSEE",
+		3 : "DEPARTEMENT",
+		4 : "REGION"
+	};
 	var searchBy = levelCommunexionName[levelCommunexion];
 	// searchBy = "NAME";
 	/*mylog.log("searchLocalityNAME : ",nwVar.searchLocalityNAME);
@@ -439,43 +440,42 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 					  searchTagsSimply[keyNet].push(valueTags);
 					});
 				}
-			}  
+			}
 		});
 	});
 
 	mylog.log("searchTagsSimply", searchTagsSimply);
 
 	var data = {
-	  "name" : name,
-	  "locality" : "xxxx",
-	  "searchType" : nwVar.allsearchType,
-	  "searchTag" : searchTagGlobal,
-	  "filtreTag" : searchTagsSimply,
-	  "searchLocalityNAME" : nwVar.searchLocalityNAME,
-	  "searchLocalityCODE_POSTAL_INSEE" : nwVar.searchLocalityCODE_POSTAL_INSEE,
-	  "searchLocalityDEPARTEMENT" : nwVar.searchLocalityDEPARTEMENT,
-	  "searchLocalityINSEE" : nwVar.searchLocalityINSEE,
-	  "searchLocalityREGION" : nwVar.searchLocalityREGION,
-	  "searchBy" : searchBy,
-	  "indexMin" : indexMin,
-	  "indexMax" : indexMax,
-	  //"sourceKey" : sourceKey,
-	  "mainTag" : nwVar.mainTag,
-	  "searchPrefTag" : searchPrefTag,
-	  
+		"name" : name,
+		"locality" : "xxxx",
+		"searchType" : nwVar.allsearchType,
+		"searchTag" : searchTagGlobal,
+		"filtreTag" : searchTagsSimply,
+		"searchLocalityNAME" : nwVar.searchLocalityNAME,
+		"searchLocalityCODE_POSTAL_INSEE" : nwVar.searchLocalityCODE_POSTAL_INSEE,
+		"searchLocalityDEPARTEMENT" : nwVar.searchLocalityDEPARTEMENT,
+		"searchLocalityINSEE" : nwVar.searchLocalityINSEE,
+		"searchLocalityREGION" : nwVar.searchLocalityREGION,
+		"searchBy" : searchBy,
+		"indexMin" : indexMin,
+		"indexMax" : indexMax,
+		//"sourceKey" : sourceKey,
+		"mainTag" : nwVar.mainTag,
+		"searchPrefTag" : searchPrefTag,
 	};
 
 	if(typeof networkJson.request.sourceKey != "undefined")
-	  data.sourceKey = networkJson.request.sourceKey;
+		data.sourceKey = networkJson.request.sourceKey;
 
 	if(typeof networkJson.filter.paramsFiltre != "undefined")
-	  data.paramsFiltre = networkJson.filter.paramsFiltre;
+		data.paramsFiltre = networkJson.filter.paramsFiltre;
 
 	if(userConnected != null && typeof userConnected.roles.superAdmin != "undefined" && userConnected.roles.superAdmin == true)
-	  data.disabled = true;
+		data.disabled = true;
 
 	if(typeof seeDisable != "undefined" && seeDisable == true)
-	  data.seeDisable = true;
+		data.seeDisable = true;
 
 	//console.log("loadingData true");
 	loadingData = true;
@@ -516,7 +516,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 					totalData += countData;
 					if(typeof networkJson.request.oneElement != "undefined" && networkJson.request.oneElement == true){
 						filterTags(data.filters.tags);
-						filterType(data.filters.types)
+						filterType(data.filters.types);
 					}else{
 						$("#divRolesMenu").addClass("hidden");
 					}
@@ -741,7 +741,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 					} //end else (str=="")
 
 					//signal que le chargement est terminé
-					// console.log("loadingData false");
+					mylog.log("test");
 					loadingData = false;
 
 					if( typeof networkJson.mode != "undefined" && networkJson.mode == "client" ){
@@ -938,7 +938,7 @@ function breadcrumGuide(level, url){
 
 function getAjaxFiche(url, breadcrumLevel){
 
-	mylog.log("getAjaxFiche", url, breadcrumLevel);
+	mylog.log("getAjaxFiche Network", url, breadcrumLevel);
 	$("#ficheInfoDetail").empty();
 	if(location.hash == ""){
 		history.pushState(null, "New Title", url);

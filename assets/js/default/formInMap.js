@@ -22,6 +22,7 @@ var formInMap = {
 	uncomplete : false,
 
 	modePostalCode : false,
+	bindActived : false,
 
 
 	showMarkerNewElement : function(modePC){
@@ -84,7 +85,9 @@ var formInMap = {
 			Sig.markerFindPlace.openPopup();
 		});
 
-		formInMap.bindFormInMap();
+		if(formInMap.bindActived == false)
+			formInMap.bindFormInMap();
+
 		if(userId == "")
 			$("#divStreetAddress").addClass("hidden");
 		else
@@ -208,6 +211,7 @@ var formInMap = {
 
 
 		$("#newElement_btnValidateAddress").click(function(){
+			mylog.log("#newElement_btnValidateAddress");
 			/*if(notEmpty(formInMap.saveCities[formInMap.NE_insee])){
 				var obj = { city : formInMap.saveCities[formInMap.NE_insee] }
 				obj.city.geoShape = 1;
@@ -248,6 +252,8 @@ var formInMap = {
 		$("#newElement_btnCancelAddress").click(function(){
 			formInMap.cancel();
 		});
+
+		formInMap.bindActived = true ;
 	},
 
 
@@ -432,12 +438,13 @@ var formInMap = {
 	},
 
 	backToForm : function(cancel){
-		mylog.log("backToForm");
+		mylog.log("backToForm 2");
 		formInMap.actived = false ;
 		if(formInMap.modePostalCode == false ){
 			if(formInMap.updateLocality == false ){
 				if(notEmpty($("[name='newElement_lat']").val())){
 					locObj = formInMap.createLocalityObj();
+					mylog.log("forminmap copyMapForm2Dynform");
 					dyFInputs.locationObj.copyMapForm2Dynform(locObj);
 					dyFInputs.locationObj.addLocationToForm(locObj);
 				}
@@ -461,6 +468,7 @@ var formInMap = {
 					latitude : $("[name='newPC_lat']").val(),
 					longitude : $("[name='newPC_lon']").val()
 				};
+				mylog.log("forminmap copyMapForm2Dynform 2");
 				dyFInputs.locationObj.copyMapForm2Dynform(postalCodeObj);
 				dyFInputs.locationObj.addLocationToForm(postalCodeObj);
 			}

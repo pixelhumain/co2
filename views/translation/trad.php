@@ -9,7 +9,8 @@ var trad = {
 "removeconnection" : "<?php echo Yii::t("common","Are you sure you want to remove this connection") ?>",
 "removeconnectionevents" : "<?php echo Yii::t("common","Are you sure to not participate to this event") ?>",
 "removeconnectionorganizations" : "<?php echo Yii::t("common","Are you sure to remove the link with this organization") ?>",
-"removeconnectionprojects" : "<?php echo Yii::t("common","Are you sure you to remove the link with this project") ?>",
+"removeconnectionprojects" : "<?php echo Yii::t("common","Are you sure to remove the link with this project") ?>",
+"removeconnectioncitoyens" : "<?php echo Yii::t("common","Are you sure to remove this follows") ?>",
 "asmember" : "<?php echo Yii::t("common", "as member") ?>",
 "ascontributor" : "<?php echo Yii::t("common", "as contributor") ?>",
 "asadmin" : "<?php echo Yii::t("common", "as admin") ?>",
@@ -57,11 +58,14 @@ var trad = {
 "justCitizen" : "<?php echo Yii::t("common","Just a citizen wanting to give visibility to it :)") ?>",
 
 "addProject" : "<?php echo Yii::t("common","Add a Project") ?>",
+"addproject" : "<?php echo Yii::t("common","Add a Project") ?>",
 "addEvent" : "<?php echo Yii::t("common","Add an Event") ?>",
+"addevent" : "<?php echo Yii::t("common","Add an Event") ?>",
 "addOrganization" : "<?php echo Yii::t("common","Add an Organization") ?>",
 "addLocalBusiness" : "<?php echo Yii::t("common","Add a company") ?>",
 "addGovernmentOrganization" : "<?php echo Yii::t("common","Add a Governemental Organization") ?>",
 "addAssociation" : "<?php echo Yii::t("common","Add an association") ?>",
+"addNGO" : "<?php echo Yii::t("common","Add an association") ?>",
 "addGroup" : "<?php echo Yii::t("common","Add a group") ?>",
 "chooseCountry" : "<?php echo Yii::t("common","Choose a country") ?>",
 "LoginFirst" : "<?php echo Yii::t("common","Please Login First") ?>",
@@ -93,6 +97,7 @@ var trad = {
 "place" : "<?php echo Yii::t("common","Places") ?>",
 "ressource" : "<?php echo Yii::t("common","Ressource") ?>",
 "poi" : "<?php echo Yii::t("common","Point of interest") ?>",
+"contactPoint" : "<?php echo Yii::t("common","contact") ?>",
 
 "Technologie" : "Technologie",
 "Immobilier" : "Immobilier",
@@ -161,7 +166,7 @@ var trad = {
 "Research a name or e-mail address..." : "<?php echo Yii::t("common","Research a name or e-mail address...") ?>",
 "Invitation  accept" : "<?php echo Yii::t("common","Invitation  accept") ?>",
 "Wait for confirmation" : "<?php echo Yii::t("common","Wait for confirmation") ?>",
-"Add Link" : "<?php echo Yii::t("common","Add link") ?>",
+"Add link" : "<?php echo Yii::t("common","Add link") ?>",
 "Add contact" : "<?php echo Yii::t("common","Add contact") ?>",
 'Search a city, a town or a postal code' : "<?php echo Yii::t("common","Search a city, a town or a postal code") ?>",
 'Currently researching' : "<?php echo Yii::t("common","Currently researching") ?>",
@@ -186,6 +191,10 @@ var trad = {
 "workshop" :"<?php echo Yii::t("event","Atelier") ?>",
 "conference" :"<?php echo Yii::t("event","Conférence") ?>",
 "debate" :"<?php echo Yii::t("event","Débat") ?>",
+
+"Update description" : "<?php echo Yii::t("common", "Update description") ?>",
+"Update network" : "<?php echo Yii::t("common", "Update network") ?>",
+"Update general information" : "<?php echo Yii::t("common", "Update general information") ?>",
 };
 
 var tradCountry = {

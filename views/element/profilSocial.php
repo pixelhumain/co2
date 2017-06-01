@@ -71,18 +71,23 @@
 <?php } ?>
 
 
-#ajax-modal .modal-content{
+#ajax-modal .modal-content,
+#formContact .modal-content{
 	background-color: rgba(0,0,0,0.6);
 }
-#ajax-modal .container{
+#ajax-modal .container,
+#formContact .container{
 	background-color: white;
 	border-radius: 4px;
 }
-#ajax-modal.portfolio-modal{
+#ajax-modal.portfolio-modal,
+#formContact.portfolio-modal {
 	background-color: transparent;
 }
 #ajax-modal .close-modal .lr,
-#ajax-modal .close-modal .rl{
+#ajax-modal .close-modal .rl,
+#formContact .close-modal .lr,
+#formContact .close-modal .rl{
 	background-color: white;
 }
 
@@ -90,8 +95,7 @@
 
 <?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
 <?php 
-	error_log("Can delete : ".Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"]));
-	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal'); ?>
+	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
 
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
@@ -214,7 +218,8 @@
 		  <?php } ?>
 
 
-		  <?php if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
+		  <?php if(@Yii::app()->session["userId"])
+		  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
 		  			($type==Person::COLLECTION && (string)$element["_id"]==@Yii::app()->session["userId"])){ ?>
 		  <button type="button" class="btn btn-default bold letter-green hidden-xs" 
 		  		  id="open-select-create" style="border-right:0px!important;">
@@ -355,8 +360,6 @@
 		 id="div-select-create">
 		<div class="col-md-12 col-sm-12 col-xs-12 padding-15 shadow2 bg-white ">
 	       
-	       
-	       
 	       <h4 class="text-center margin-top-15" style=""><img class="img-circle" src="<?php echo $thumbAuthor; ?>" height=30 width=30 style="margin-top:-10px;">
 	       	<a class="btn btn-link pull-right text-dark" id="btn-close-select-create" style="margin-top:-10px;">
 	       		<i class="fa fa-times-circle fa-2x"></i>
@@ -398,7 +401,13 @@
 	        <button data-form-type="project"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-purple hide-event">
 	            <h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> Projet</h6>
-	            <small>Faire connaitre votre projet<br>Trouver du soutien<br>Construire une communauté</small>
+	            <small>Faire connaitre un projet<br>Trouver du soutien<br>Construire une communauté</small>
+	        </button>
+
+			<button data-form-type="contact"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-blue hide-citoyens">
+	            <h6><i class="fa fa-envelope fa-2x bg-blue"></i><br> Contact</h6>
+	            <small>Définir les rôles de chacun<br>Faciliter la communication<br>Interne et externe</small>
 	        </button>
 
 			<div class="section-create-page">
@@ -432,6 +441,8 @@
 	        </div>
 	    </div>
     </div>
+
+
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section pull-right">
 		
 		<?php   $classDescH=""; 
@@ -445,7 +456,7 @@
 
 		if($typeItem != Person::COLLECTION){ 
 		?>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:45px;">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:20px;">
 				<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
 					<b><i class="fa fa-angle-down"></i> 
 					<i class="fa fa-info-circle"></i> Description principale</b>
@@ -458,7 +469,7 @@
 				</span>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
-				<button class="btn btn-default btn-xs pull-right margin-right-15" id="btn-hide-desc">
+				<button class="btn btn-link btn-xs pull-right" id="btn-hide-desc">
 					<?php echo $classBtnDescH; ?>
 				</button>
 				<br>
@@ -466,7 +477,9 @@
 			</div>
 		<?php }else{ $marginCentral="50"; } ?>
 		<!-- Permet de faire le convertion en HTML -->
-		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
+		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" >
+			<?php echo (!empty($element["description"])) ? $element["description"] : ""; ?>
+		</span>
 
 	    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-<?php echo $marginCentral; ?>" id="central-container">
 		</div>
@@ -485,6 +498,13 @@
 			 id="notif-column">
 		</div>
 	</section>
+
+	<!-- <section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding form-contact-mail pull-right"> -->
+		<?php 	$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+				$this->renderPartial($layoutPath.'forms.'.Yii::app()->params["CO2DomainName"].'.formContact', 
+									array("element"=>@$element)); 
+		?>
+	<!-- </section> -->
 </div>	
 
 <?php 
@@ -496,15 +516,17 @@
 					"openEdition" => $openEdition,
 				) );
 
-
 	if( $type != Person::COLLECTION)
 		$this->renderPartial('../element/addMembersFromMyContacts',
 				array(	"type"=>$type, 
 						"parentId" => (string)$element['_id'], 
 						"members" => @$members));
 
-
-	$cssAnsScriptFilesModule = array(
+?>
+<script type="text/javascript">
+	
+</script>
+<?php	$cssAnsScriptFilesModule = array(
 		'/js/default/profilSocial.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
@@ -514,14 +536,14 @@
 <script type="text/javascript">
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
 	mylog.log("init contextData", contextData);
-    var params = <?php echo json_encode(@$params); ?>;
-    var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false ); 
+    var params = <?php echo json_encode(@$params); ?>; 
+    var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false );
 	var openEdition = ( ( '<?php echo (@$openEdition == true); ?>' == "1") ? true : false );
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
     var liveScopeType = "";
     var subView="<?php echo @$_GET['view']; ?>";
-    var hashUrlPage="#page.type."+contextData.type+".id."+contextData.id;
+    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?network="+networkParams : "" )+"#page.type."+contextData.type+".id."+contextData.id;
     var cropResult;
     var idObjectShared = new Array();
 
@@ -531,7 +553,7 @@
 		bindButtonMenu();
 		inintDescs();
 		if(typeof contextData.name !="undefined")
-		setTitle("", "", contextData.name);
+			setTitle("", "", contextData.name);
 
 		if( contextData.type == "events")
 			$(".createProjectBtn").hide()
@@ -540,7 +562,7 @@
 
 		if(subView!=""){
 			if(subView=="gallery")
-				loadGallery()
+				loadGallery();
 			else if(subView=="notifications")
 				loadNotifications();
 			else if(subView.indexOf("chart") >= 0){
@@ -551,7 +573,7 @@
 			else if(subView=="history")
 				loadHistoryActivity();
 			else if(subView=="directory")
-				loadDataDirectory("<?php echo @$_GET['dir']; ?>");
+				loadDataDirectory("<?php echo @$_GET['dir']; ?>",null,edit);
 			else if(subView=="editChart")
 				loadEditChart();
 			else if(subView=="detail")

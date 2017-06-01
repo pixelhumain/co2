@@ -247,12 +247,14 @@ function bindAboutPodElement() {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
-						title : trad["Change password"],
+						title : trad["Update general information"],
 						icon : "fa-key",
 						onLoads : {
 							initUpdateInfo : function(){
 								mylog.log("initUpdateInfo");
 								$(".emailtext").slideToggle();
+								$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  					  .addClass("bg-dark");
 							}
 						},
 						beforeSave : function(){
@@ -470,11 +472,14 @@ function bindAboutPodElement() {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
-						title : trad["Change password"],
+						title : trad["Update description"],
 						icon : "fa-key",
 						onLoads : {
+							
 							markdown : function(){
 								dataHelper.activateMarkdown("#ajaxFormModal #description");
+								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  					  .addClass("bg-dark");
 								//bindDesc("#ajaxFormModal");
 							}
 						},
@@ -519,8 +524,15 @@ function bindAboutPodElement() {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
-						title : trad["Change password"],
+						title : trad["Update network"],
 						icon : "fa-key",
+						onLoads : {
+							sub : function(){
+								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  				  .addClass("bg-dark");
+								//bindDesc("#ajaxFormModal");
+							}
+						},
 						beforeSave : function(){
 							mylog.log("beforeSave");
 					    	removeFieldUpdateDynForm(contextData.type);
@@ -634,7 +646,7 @@ function bindAboutPodElement() {
 
 
 	function updateUrl(ind, title, url, type) {
-		mylog.log("updateUrl", ind, title, url, type)
+		mylog.log("updateUrl", ind, title, url, type);
 		var params = {
 			title : title,
 			type : type,
@@ -645,9 +657,48 @@ function bindAboutPodElement() {
 		dyFObj.openForm( 'url','parentUrl', params);
 	}
 
+
+	function updateContact(ind, name, email, role, telephone) {
+		mylog.log("updateContact", ind, name, email, role, telephone);
+		dataUpdate = { index : ind } ;
+		if(name != "undefined")
+			dataUpdate.name = name;
+		if(email != "undefined")
+			dataUpdate.email = email;
+		if(role != "undefined")
+			dataUpdate.role = role;
+		if(telephone != "undefined")
+			dataUpdate.phone = telephone;
+		mylog.log("dataUpdate", dataUpdate);
+		dyFObj.openForm ('contactPoint','contact', dataUpdate);
+	}
+
 	function removeUrl(ind) {
 		param = new Object;
     	param.name = "urls";
+    	param.value = {index : ind};
+    	param.pk = contextData.id;
+		param.type = contextData.type;
+		$.ajax({
+	        type: "POST",
+	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+	        data: param,
+	       	dataType: "json",
+	    	success: function(data){
+	    		mylog.log("data", data);
+		    	if(data.result){
+					toastr.success(data.msg);
+					urlCtrl.loadByHash(location.hash);
+		    	}
+		    }
+		});
+	}
+
+	
+
+	function removeContact(ind) {
+		param = new Object;
+    	param.name = "contacts";
     	param.value = {index : ind};
     	param.pk = contextData.id;
 		param.type = contextData.type;

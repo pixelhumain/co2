@@ -6,20 +6,43 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	sub : function(){
+
+	    		//console.log("onLoads Sub currentKFormType", currentKFormType, contextData, contextData.id);
+                var typeName = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? trad["add"+currentKFormType] : elementObj.dynForm.jsonSchema.title;
+                var typeIcon = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? typeObj[currentKFormType].icon : elementObj.dynForm.jsonSchema.icon;
+	            
+
+                $("#ajax-modal-modal-title").html(
+                        "<i class='fa fa-"+typeIcon+"'></i> "+typeName);
+                
+                $("#ajax-modal .modal-header").removeClass("bg-dark bg-red bg-purple bg-green bg-green-poi bg-orange bg-turq bg-yellow bg-url");
+				$("#ajax-modal .infocustom p").removeClass("text-dark text-red text-purple text-green text-green-poi text-orange text-turq text-yellow text-url");
+
+                if(typeof currentKFormType != "undefined" && typeObj[currentKFormType] && typeObj[currentKFormType].color){
+                    $("#ajax-modal .modal-header").addClass("bg-"+typeObj[currentKFormType].color);
+                    $("#ajax-modal .infocustom p").addClass("text-"+typeObj[currentKFormType].color);
+                }else{
+                	$("#ajax-modal .modal-header").addClass("bg-dark");
+                    $("#ajax-modal .infocustom p").addClass("text-dark");
+                }
+
 	    		if(contextData.type && contextData.id ){
+	    			//console.log("HERE WE ARE");
     				$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
-	    			$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-green bg-green-poi bg-orange bg-yellow bg-url");
-							 //  					  .addClass("bg-green");
-	    		 	
-	    		 	$("#ajax-modal-modal-title").html(
-	    		 		$("#ajax-modal-modal-title").html()+
-	    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
+
+	    		 	$("#ajax-modal-modal-title").append(
+	    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+
+	    		 														contextData.name+
+	    		 														"</span></small>" );
 	    		}
 	    	},
 	    },
 	    beforeBuild : function(){
-	    	dyFObj.setMongoId('organizations');
+	    	dyFObj.setMongoId('organizations', function(){
+	    		uploadObj.gotoUrl = '#page.type.organizations.id.'+uploadObj.id;
+	    	});
+	    	
 	    },
 	    beforeSave : function(){
 	    	if (typeof $("#ajaxFormModal #description").code === 'function' ) 
@@ -30,7 +53,7 @@ dynForm = {
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else { 
 	          dyFObj.closeForm(); 
-	          urlCtrl.loadByHash( '#page.type.organizations.id.'+uploadObj.id );
+	          urlCtrl.loadByHash( uploadObj.gotoUrl );
 	        }
 	    },
 	    properties : {
@@ -50,7 +73,7 @@ dynForm = {
             								{ required : true } ),
             tags : dyFInputs.tags(),
             location : dyFInputs.location,
-	        image : dyFInputs.image( "#page.type.organizations.id."+uploadObj.id ),
+	        image : dyFInputs.image(),
             email : dyFInputs.email(),
 	        shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
 	        url : dyFInputs.inputUrl(),

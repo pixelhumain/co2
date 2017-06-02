@@ -2190,6 +2190,7 @@ var dynForm = null;
 var uploadObj = {
 	type : null,
 	id : null,
+	gotoUrl : null,
 	isSub : false,
 	folder : moduleId, //on force pour pas casser toutes les vielles images
 	set : function(type,id){
@@ -2519,13 +2520,12 @@ var dyFObj = {
 				        	dyFObj.elementObj.dynForm.jsonSchema.beforeBuild();
 			      },
 			      onLoad : function  () {
-			      	/*if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
+			      	if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
 			      		themeObj.dynForm.onLoadPanel(dyFObj.elementObj);
-			      	} else {*/
+			      	} else {
 				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj.elementObj.dynForm.jsonSchema.icon+"'></i> "+dyFObj.elementObj.dynForm.jsonSchema.title);
-				        $("#ajax-modal-modal-body").append("<div class='space20'></div>");
 				        //alert(afterLoad+"|"+typeof dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
-			    	//}
+			    	}
 			        
 			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
 			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
@@ -2559,7 +2559,7 @@ var dyFObj = {
 	},
 
 	//generate Id for upload feature of this element 
-	setMongoId : function(type) { 
+	setMongoId : function(type,callback) { 
 		uploadObj.type = type;
 		if( !$("#ajaxFormModal #id").val() )
 		{
@@ -2567,6 +2567,8 @@ var dyFObj = {
 				mylog.log("setMongoId uploadObj.id", data.id);
 				uploadObj.id = data.id;
 				$("#ajaxFormModal #id").val(data.id)
+				if( typeof callback === "function" )
+                	callback();
 			});
 		}
 	},
@@ -2698,17 +2700,19 @@ var dyFInputs = {
         	},500);
     	}
     },
-    image :function(str) { 
-    	mylog.log("str", str) ;
-    	gotoUrl = (str) ? str : location.hash;
-    	mylog.log("gotoUrl", gotoUrl) ;
+    image :function() { 
+    	
+    	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
+    		uploadObj.gotoUrl = location.hash ;
+    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
+
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	dyFObj.closeForm();
-		    	mylog.log("gotoUrl 2", gotoUrl) ;
-	            urlCtrl.loadByHash( gotoUrl );	
+				//alert( "image upload then goto : "+uploadObj.gotoUrl );
+	            urlCtrl.loadByHash( uploadObj.gotoUrl );	
 		    }
     	}
     },
@@ -3073,6 +3077,10 @@ var dyFInputs = {
     },
     get:function(type){
     	//mylog.log("dyFInputs.get", type);
+    	if( type == "undefined" ){
+    		toastr.error("type can't be undefined");
+    		return null;
+    	}
     	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
@@ -3080,23 +3088,23 @@ var dyFInputs = {
     		} else
     			obj = typeObj[type];
     		obj.name = (trad[type]) ? trad[type] : type;
+    	}
+    	if( obj === null ){
+    		obj = dyFInputs.deepGet(type);
+    		if( obj )
+    			obj = dyFInputs.get( obj.col )
     	}
     	return obj;
     },
     deepGet:function(type){
     	//mylog.log("get", type);
     	var obj = null;
-    	if( jsonHelper.notNull("typeObj."+type)){
-    		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
-    			obj = typeObj[ typeObj[type].sameAs ];
-    		} else
-    			obj = typeObj[type];
-    		obj.name = (trad[type]) ? trad[type] : type;
-    	} else {
-    		//calculate only once
-    		//get list of all keys and sub keys
-    		//return corresponding map
-    	}
+    	$.each( typeObj,function(k,o) { 
+    		if( o.types && ( $.inArray( type,  o.types )>=0 ) ){
+    			obj = o;
+    			return false;
+    		}
+    	});
     	return obj;
     }
 };
@@ -3168,19 +3176,21 @@ var typeObj = {
 	"citoyen" : { sameAs:"person" },
 	"citoyens" : { sameAs:"person" },
 	
-	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle"},
+	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle",
+			types:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+				   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
+				   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
 
 	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
 	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
 	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
-	
 	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
 
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
 	"organizations" : {sameAs:"organization"},
 	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
-	"NGO" : {sameAs:"organization", color:"green"},
+	"NGO" : {sameAs:"organization", color:"green", icon:"users"},
 	"Association" : {sameAs:"organization", color:"green", icon: "group"},
 	"GovernmentOrganization" : {sameAs:"organization",color: "red",icon: "university"},
 	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
@@ -3201,7 +3211,7 @@ var typeObj = {
 	"classified":{col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",	},
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
-	"video" : {icon:"video-camera",color:"dark"},
+	//"video" : {icon:"video-camera",color:"dark"},
 	"formContact" : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
 	"news" : { col : "news" }, 
 };

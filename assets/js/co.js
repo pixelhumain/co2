@@ -1604,10 +1604,20 @@ function myAdminList (ctypes) {
 	}
 	return myList;
 }
+function escapeHtml(string) {
+	var entityMap = {
+	    '"': '&quot;',
+    	"'": '&#39;',
+	};
+    return String(string).replace(/["']/g, function (s) {
+        return entityMap[s];
+    });
+} 
 
 function addContact(id, name){
+	mylog.log("addContact", id, escapeHtml(name));
 	$("#idContact").val(id);
-	$("#listSameName").html("<i class='fa fa-check text-success'></i> Vous avez sélectionner : "+ name);
+	$("#listSameName").html("<i class='fa fa-check text-success'></i> Vous avez sélectionner : "+  escapeHtml(name));
 	$("#name").val(name);
 }
 

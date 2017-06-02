@@ -492,6 +492,9 @@ function loadContacts(){
 			    		//console.log('contactMail', contactMail);
 			    		$("#formContact .contact-email").html(contactMail);
 			    		$("#formContact #contact-name").html(contactName);
+
+			    		$("#formContact #emailSender").val(userConnected.email);
+			    		$("#formContact #name").val(userConnected.name);
 			    		
 			    		$("#formContact #form-control").val("");
 			    		

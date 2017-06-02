@@ -504,7 +504,7 @@
 					"openEdition" => $openEdition,
 				) );
 
-	if( $type != Person::COLLECTION)
+	//if( $type != Person::COLLECTION)
 		$this->renderPartial('../element/addMembersFromMyContacts',
 				array(	"type"=>$type, 
 						"parentId" => (string)$element['_id'], 

@@ -258,6 +258,11 @@ function bindButtonMenu(){
     	}
     });
 
+    $("#inviteBtn").on("click", function(){
+    	mylog.log("invite");
+    	$("#modal-invite").modal("show");
+    });
+
     $("#btn-delete-element").on("click", function(){
     	mylog.log("Delete Element");
     	$("#modal-delete-element").modal("show");

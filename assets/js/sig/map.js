@@ -470,8 +470,13 @@
 
 				if( typeof thisData.geo !== "undefined" && thisData.geo != null && typeof thisData.geo.longitude !== "undefined"){
 					
-					if(typeof thisData['geo'].latitude == "undefined" || thisData['geo'].latitude == null) return false;
-					if(typeof thisData['geo'].longitude == "undefined" || thisData['geo'].longitude == null) return null;
+					if(typeof thisData['geo'].latitude == "undefined" || 
+					   thisData['geo'].latitude == null || 
+					   thisData['geo'].latitude == "") return false;
+
+					if(typeof thisData['geo'].longitude == "undefined" || 
+					   thisData['geo'].longitude == null || 
+					   thisData['geo'].longitude == "") return null;
 						
 					if(type == "markerSingle"){
 						return new Array (thisData['geo'].latitude, thisData['geo'].longitude);

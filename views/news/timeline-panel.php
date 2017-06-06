@@ -1,33 +1,52 @@
-
+<?php $shareLabel=array(
+  "verb-create" => "created",
+  "verb-share" => "shared",
+  "verb-share-pluriel" => "have shared",
+  "displayShared-news"      => "a news",
+  "displayShared-projects"    => "a project",
+  "displayShared-organizations"   => "an organization",
+  "displayShared-events"      => "an event",
+  "displayShared-classified"    => "an announce",
+); ?>
   
   <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12">
     
     <?php $count = 0; $allScope = "";
-          if(@$media["scope"]) 
+      if(@$media["scope"]) {
+        $scopeSpan="";
+        if($media["type"]=="news"){
           foreach (array("cities", "departements", "regions") as $s) {
             if(@$media["scope"][$s])
             foreach ($media["scope"][$s] as $keyy => $scopes) {
               foreach ($scopes as $k => $v) {
                 foreach (array("postalCode", "addressLocality", "name") as $kk => $s) {
                   if(@$k == $s && $v != ""){ 
-                    if($count<3){ ?>
-                    <span class='label label-danger pull-right margin-left-5 margin-top-10'>
-                      <i class='fa fa-bullseye'></i> <?php echo $v; ?>
-                    </span>
-    <?php           }else{ $allScope .= " ".$v; }  $count++; 
+                    if($count<3){
+                     $scopeSpan.="<span class='label label-danger pull-right margin-left-5 margin-top-10'>
+                      <i class='fa fa-bullseye'></i> ".$v."</span>";
+                    }else{ $allScope .= " ".$v; }  $count++; 
                   }
                 }
               }
             }
-          } 
-    ?>
-    <?php if($count >=3){ ?>
-      <span class='label text-red pull-right margin-left-5 margin-top-10 tooltips' 
+          }
+        }else{
+          if (@$media["scope"]["address"]) {
+              $postalCode=(@$media["scope"]["address"]["postalCode"])?$media["scope"]["address"]["postalCode"].", " : "";
+              $city=$media["scope"]["address"]["addressLocality"]; 
+              $scopeSpan="<span class='label label-danger pull-right margin-left-5 margin-top-10'><i class='fa fa-bullseye'></i> ".$postalCode.$city."</span>"; 
+          }
+        }
+        if($count >3){ ?>
+          <span class='label text-red pull-right margin-left-5 margin-top-10 tooltips' 
             data-title="<?php echo $allScope; ?>" data-toogle="tooltip">
-        <i class='fa fa-plus'></i> <?php echo $count-3;?>
-      </span>
-    <?php } ?>
-  </div>
+            <i class='fa fa-plus'></i> <?php echo $count-3;?> autres
+          </span>
+        <?php } 
+        echo $scopeSpan;
+      }
+    ?>
+    </div>
   
   <?php $classHeading="";
   if(@$srcMainImg != "" && $media["type"] == "activityStream"){ $classHeading="activity-heading"; ?>
@@ -39,30 +58,69 @@
   <div class="timeline-heading text-center <?php echo $classHeading; ?>">
        	<h5 class="text-left srcMedia">
       	  <small>
-            <?php $pluriel = ""; //var_dump($media); ?>
-            <?php if(!@$media["sharedBy"]){ ?>
-              <img class="pull-left img-circle" src="<?php echo @$thumbAuthor; ?>" height=40>
-            <?php }else{ $pluriel = " pluriel"; } ?>
+            <?php 
+              $pluriel = ""; 
+              if(@$media["lastAuthorShare"] && @$media["lastAuthorShare"]["profilThumbImageUrl"]=="") 
+                $media["lastAuthorShare"]["profilThumbImageUrl"] = 
+                  $this->module->assetsUrl."/images/thumb/default_".$media["lastAuthorShare"]["type"].".png";
+              else if(@$media["lastAuthorShare"]["profilThumbImageUrl"]!="")
+                $media["lastAuthorShare"]["profilThumbImageUrl"] = 
+                  Yii::app()->createUrl($media["lastAuthorShare"]["profilThumbImageUrl"]) ;
+
+              if(empty(@$media["sharedBy"]) || !@$media["lastAuthorShare"] ||
+               (($media["sharedBy"][0]["id"] == @$media["lastAuthorShare"]["id"] && 
+                count(@$media["sharedBy"])<=1) &&
+                ($media["sharedBy"][0]["id"] == @$authorId)) 
+               ){ 
+                  $pluriel = ""; 
+              }else{ $pluriel = "-pluriel"; } ?>
+
+            <img class="pull-left img-circle" 
+                   src="<?php echo (@$media["lastAuthorShare"]["profilThumbImageUrl"] && 
+                                    @$media["lastAuthorShare"]["profilThumbImageUrl"]!="") ? 
+                                    $media["lastAuthorShare"]["profilThumbImageUrl"] :
+                                    @$thumbAuthor; ?>" 
+                   height=40>
 
             <div class="pull-left padding-5 col-md-7 col-sm-7" style="line-height: 15px;">
+              <?php if(@$media["lastAuthorShare"]){ ?>
+                <a href="#page.type.<?php echo $media["lastAuthorShare"]["type"] ?>.id.<?php echo $media["lastAuthorShare"]["id"] ?>" class="lbh">
+                  <?php echo @$media["lastAuthorShare"]["name"]; ?>
+                </a> 
+              <?php } ?>
+
+              <?php  if(@$media["lastAuthorShare"]["name"] && @$media["lastAuthorShare"]["name"]!=@$nameAuthor){ ?>
+              <?php echo Yii::t("common", "and"); ?> 
+              <?php } ?>
+              
+              <?php  if(@$media["lastAuthorShare"]["name"]!=@$nameAuthor){ ?>
               <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh">
                 <?php echo @$nameAuthor; ?>
               </a>
-              <?php if(@$media["sharedBy"]){ ?>
+              <?php } ?>
+
+              <?php //var_dump(@$media["sharedBy"]); 
+                if(@$media["sharedBy"]){ ?>
                 <?php foreach ($media["sharedBy"] as $keyS => $share) { ?>
                     
-                      <?php if(@$nameAuthor==@$share["name"] && sizeof($media["sharedBy"]) == 1){ $pluriel = ""; } ?>
+                      <?php //if(@$nameAuthor==@$share["name"] && sizeof($media["sharedBy"]) == 1){ $pluriel = ""; } ?>
                       
-                      <?php if($keyS < 2 && @$nameAuthor!=@$share["name"]){ ?>
+                      <?php if($keyS < 2 && 
+                               @$nameAuthor!=@$share["name"] &&
+                               @$media["lastAuthorShare"]["name"]!=@$share["name"]){ ?>
  
                       <?php if($keyS < sizeof($media["sharedBy"])-1){ ?>, 
                       <?php }else if(sizeof($media["sharedBy"]) > 0){ echo Yii::t("common", "and"); }  ?>
 
-                       <a href="#page.type.<?php echo @$share["type"]; ?>.id.<?php echo @$share["id"] ?>" class="lbh">
+                       <a href="#page.type.<?php echo @$share["type"]; ?>.id.<?php echo @$share["id"] ?>" 
+                          class="lbh">
                         <?php echo @$share["name"]; ?>
                       </a> 
                     <?php }else if($keyS == 2){ ?>
-                      <?php echo Yii::t("common", "and"); ?> <?php echo sizeof($media["sharedBy"]) - 2; ?> autres personnes
+                      <?php echo Yii::t("common", "and"); ?> 
+                      <?php echo sizeof($media["sharedBy"]) - 2; ?> 
+                      <?php $s = sizeof($media["sharedBy"]) - 2 > 1 ? "s" : ""; ?> 
+                      autre<?php echo $s; ?> personne<?php echo $s; ?>
                     <?php } ?>
                 <?php } ?>
               <?php } ?>
@@ -79,11 +137,11 @@
                
               <?php if(@$media["type"]=="activityStream") { ?>
                 <?php $iconColor = @Element::getColorIcon($media["object"]["type"]); ?>
-                <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news","verb ".$media["verb"].$pluriel); ?> 
+                <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news",$shareLabel["verb-".$media["verb"].$pluriel]); ?> 
                 <span class="text-<?php echo @$iconColor; ?>">
                   <a href="#page.type.<?php echo @$media["object"]["type"]; ?>.id.<?php echo @$media["object"]["id"]; ?>" 
                      class="lbh">
-                    <?php echo Yii::t("news", "displayShared-".@$media["object"]["type"]); ?>
+                    <?php echo Yii::t("common", $shareLabel["displayShared-".@$media["object"]["type"]]); ?>
                   </a>
                 </span> 
                 <?php if(@$media["object"]["type"] == "news"){ ?>
@@ -94,12 +152,19 @@
                 <?php } ?>
               <?php } ?>
 
-              <?php if(@$media["target"]["id"] != @$authorId && @$media["target"]["id"] != @$contextId && @$media["verb"] != "create") { ?>
-                sur le mur de 
-                <a href="#page.type.<?php echo @$media["target"]["type"]; ?>.id.<?php echo @$media["target"]["id"]; ?>" 
-                        class="lbh">
-                        <?php echo @$media["target"]["name"]; ?>
-                </a>
+              <?php if(@$media["target"]["id"] != @$authorId && 
+                       @$media["verb"] != "create") { ?>
+                <?php if(@$media["target"]["id"] != @$contextId){ ?>
+                      dans le journal de 
+                      <a href="#page.type.<?php echo @$media["target"]["type"]; ?>.id.<?php echo @$media["target"]["id"]; ?>" 
+                              class="lbh">
+                              <?php echo @$media["target"]["name"]; ?>
+                      </a>
+                <?php }else if(@$media["target"]["id"] == @$contextId && @$contextId == Yii::app()->session["userId"] ){ ?>
+                    dans votre journal
+                <?php }else if(@$media["target"]["id"] == @$contextId && @$contextId != Yii::app()->session["userId"] ){ ?>
+                    dans ce journal
+                <?php } ?>
               <?php } ?>
 
                <?php if(@$media["scope"] && @$media["scope"]["type"]){
@@ -127,11 +192,13 @@
                   <i class="fa fa-cog"></i>  <i class="fa fa-angle-down"></i>
                 </a>
                 <ul class="dropdown-menu">
-                <?php if (@$media["author"]["id"]==Yii::app()->session["userId"] || (@$canManageNews && $canManageNews)){ ?>
+                <?php if (@$media["author"]["id"]==Yii::app()->session["userId"] 
+                            || (@$media["sharedBy"] && in_array(Yii::app()->session["userId"],array_column($media["sharedBy"],"id")))
+                           || (@$canManageNews && $canManageNews)){ ?>
                   <li>
-                    <a href="javascript:;" class="deleteNews" onclick="deleteNews('<?php echo $key ?>', $(this))" data-id="'<?php echo $key ?>"><small><i class="fa fa-times"></i> <?php echo Yii::t("common", "Delete")?></small></a></li>
-                    <?php if (@$media["type"] != "activityStream" && @$media["author"]["id"]==Yii::app()->session["userId"]){ ?>
-                      <li><a href="javascript:" class="modifyNews" onclick="modifyNews('<?php echo $key ?>')" data-id="<?php echo $key ?>"><small><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Update publication")?></small></a></li>
+                    <a href="javascript:;" class="deleteNews" onclick="deleteNews('<?php echo $key ?>', '<?php echo $media["type"] ?>', $(this))" data-id="'<?php echo $key ?>"><small><i class="fa fa-times"></i> <?php echo Yii::t("common", "Delete")?></small></a></li>
+                    <?php if (@$media["type"] != "activityStream" /*&& @$media["author"]["id"]==Yii::app()->session["userId"]*/){ ?>
+                      <li><a href="javascript:" class="modifyNews" onclick="modifyNews('<?php echo $key ?>','<?php echo $media["type"] ?>')" data-id="<?php echo $key ?>"><small><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Update publication")?></small></a></li>
                     <?php }
                 } ?> 
                 <?php if (!@$media["reportAbuse"] || (@$media["reportAbuse"] && !@$media["reportAbuse"][@Yii::app()->session["userId"]])) { ?>
@@ -143,10 +210,11 @@
           <span class="margin-top-10 margin-bottom-10 hidden-xs pull-right">
             <small>
               <i class="fa fa-clock-o"></i> 
-              <?php if(@$media["type"] == "activityStream" && @$media["verb"] == ActStr::TYPE_ACTIVITY_SHARE) 
+              <?php //var_dump(@$media["updated"]);
+                   // if(@$media["type"] == "activityStream" && @$media["verb"] == ActStr::TYPE_ACTIVITY_SHARE) 
                     echo Translate::pastTime(date(@$media["updated"]->sec), "timestamp", $timezone); 
-                    else
-                    echo Translate::pastTime(date(@$media["created"]->sec), "timestamp", $timezone); 
+                    //else
+                    //echo Translate::pastTime(date(@$media["created"]->sec), "timestamp", $timezone); 
               ?>
             </small>
 
@@ -155,12 +223,18 @@
   </div>
 
   <div class="timeline-body  col-md-12 text-left margin-bottom-10">
-    <?php if(!empty(@$media["text"])){ ?>
-    <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" 
-         class="newsContent no-padding"><?php echo $media["text"]; ?>
-    </div>
+    <?php if(!empty(@$media["comment"])){ ?>
+      <span class=""><?php echo $media["comment"]; ?>
+      </span>
     <?php } ?>
-    <?php if(@$media["tags"]) 
+    
+    <?php if(!empty(@$media["text"])){ ?>
+      <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" 
+           class="newsContent no-padding"><?php echo $media["text"]; ?>
+      </div>
+    <?php } ?>
+
+    <?php if(@$media["tags"] && @$media["type"] != "activityStream") 
           foreach ($media["tags"] as $keyy => $tag) { 
             if($tag != "") { ?>
             <a href="javascript:;" class="filter btn no-padding" data-filter=".'+tag+'">
@@ -212,7 +286,7 @@
             frameborder="0" allowfullscreen></iframe>
   <?php } ?>
   <?php if(@$media["media"]){ ?>
-    <div id="result<?php echo $key ?>" class="bg-white results col-sm-12"></div>
+    <div id="result<?php echo $key ?>" class="bg-white results padding-15"></div>
   <?php } ?>
 
 

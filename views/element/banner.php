@@ -130,6 +130,9 @@
 	<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation <?php if(@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])) echo "backgroundHeaderInformation" ?>">	
     	
     	<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
+			<?php if (@$element["status"] == "deletePending") { ?> 
+				<h4 class="text-left padding-left-15 pull-left no-margin letter-red">En cours de suppression</h4><br>
+			<?php } ?>
 			<h4 class="text-left padding-left-15 pull-left no-margin">
 				<span id="nameHeader">
 					<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left">
@@ -205,23 +208,25 @@
 				</div>
 			</div>
 		<?php } ?>
-		<?php if($type==Event::COLLECTION){ ?>
-	<div class="section-date pull-right">
-		<div class="header-banner"  style="font-size: 14px;font-weight: none;"></div>
-		<div style="font-size: 14px;font-weight: none;">
-		<?php if(@$element['parent']){ ?>
-			<?php echo Yii::t("common","Planned on") ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/> 
-		<?php } ?>
-		<?php if(@$element['organizerType'] && @$element['organizerId']){ ?>
-			<?php echo Yii::t("common","Organized by"); ?> : 
-			<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" 
-				class="lbh"> 
-				<i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> 
-					<?php  echo $element['organizer']['name']; ?>
-			</a>
-		<?php } ?>
-		</div>
-    </div>
+	<?php if($type==Event::COLLECTION || $type==Poi::COLLECTION){ ?>
+		<div class="section-date pull-right">
+			<?php if($type==Event::COLLECTION){ ?>
+				<div class="header-banner"  style="font-size: 14px;font-weight: none;"></div>
+			<?php } ?>
+			<div style="font-size: 14px;font-weight: none;">
+			<?php if(@$element['parent']){ ?>
+				<?php echo Yii::t("common","Planned on") ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/> 
+			<?php } ?>
+			<?php if(@$element['organizerType'] && @$element['organizerId']){ ?>
+				<?php echo Yii::t("common","Organized by"); ?> : 
+				<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" 
+					class="lbh"> 
+					<i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> 
+						<?php  echo $element['organizer']['name']; ?>
+				</a>
+			<?php } ?>
+			</div>
+	    </div>
 	<?php } ?>
 	</div>
 

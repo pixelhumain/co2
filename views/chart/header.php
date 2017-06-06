@@ -24,7 +24,7 @@
 		<a id="btncommons" href="javascript:;" onclick="switchTypeChartView('commons')" class="btnChart <?php if (@$commonsView) echo "text-green" ?>">
 			<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Commons") ?>
 		</a>
-		<p>Explication de ce qu'on entend par "bien commun" pour qu'on soit bien tous d'accord  sur la définition de ce terme + explication sur l'action de "choisir un type de formulaire"</p>
+		<p><?php echo Yii::t("chart","{what} that manages one or several resources openly and transparently whitout appropriating it",array("{what}"=>ucfirst(Yii::t("common",Element::getControlerByCollection($parentType))))) ?></p>
 	</div>
 	<?php } ?>
 	<?php if(@$openView){ ?>
@@ -32,7 +32,7 @@
 		<a id="btnopen" href="javascript:;" onclick="switchTypeChartView('open')" class="btnChart <?php if (!@$commonsView) echo "text-green" ?>">
 			<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Open") ?>
 		</a>
-		<p>Explication de ce qu'on entend par "libre" pour qu'on soit bien tous d'accord  sur la définition de ce terme + explication sur l'action de "choisir un type de formulaire"</p>
+		<p><?php echo Yii::t("chart","{what} that shows its values openly adding few properties and describing them",array("{what}"=>ucfirst(Yii::t("common",Element::getControlerByCollection($parentType))))) ?></p>
 	</div>
 	<?php } ?>
 	<?php if(!@$openView || !@$commonsView){ ?>
@@ -65,7 +65,7 @@ jQuery(document).ready(function() {
 function switchTypeChartView(str){
 	//$(".btn-group i").removeClass("fa-check-circle-o");
 	//$(".btn-group i").addClass("fa-circle-thin");
-	$(".headerChart .btn").removeClass("text-green");
+	$(".headerChart .btnChart").removeClass("text-green");
 	$(".headerChart #btn"+str).addClass("text-green");
 	var url = "chart/index/type/"+contextType+"/id/"+contextId+"/chart/"+str;
 	showLoader('#chartPad');

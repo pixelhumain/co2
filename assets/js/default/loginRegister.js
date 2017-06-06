@@ -11,6 +11,7 @@ function userValidatedActions() {
 		$(".errorHandler").hide();
 		$('.pendingProcess').show();
 		$('.form-register #registerName').val(name);
+		$('.form-register #isInvitation').val(true);
 		$('#email3').prop('disabled', true);
 		$('#inviteCodeLink').hide();
 	}
@@ -314,7 +315,8 @@ var Login = function() {
                    "pendingUserId" : pendingUserId,
                    "mode" : REGISTER_MODE_TWO_STEPS
                 };
-                
+                if($('.form-register #isInvitation').val())
+                	params.isInvitation=true;
                 if( $("#inviteCode").val() )
 			      params.inviteCode = $("#inviteCode").val();
 
@@ -325,17 +327,32 @@ var Login = function() {
 		    	  success: function(data){
 		    		  if(data.result) {
 		    		  	createBtn.stop();
+						$("#registerName").val("");
+						$("#username").val("");
+						$("#email3").val("");
+						$("#password3").val("");
+						$("#passwordAgain").val("");
+						$('#agree').prop('checked', false);
+		    		  	console.log(data);
+		    		  	if(typeof data.isInvitation != "undefined" && data.isInvitation){
+		    		  		toastr.success(data.msg);
+		    		  		history.pushState(null, "New Title",'#page.type.citoyens.id.'+data.id);
+		    		  		//window.location.href = baseUrl+'#page.type.citoyens.id.'+data.id;
+		        			window.location.reload();
 
-		    		  	$("#modalRegisterSuccessContent").html("<h3><i class='fa fa-smile-o fa-4x text-green'></i><br><br> "+data.msg+"</h3>");
-		    		  	$("#modalRegisterSuccess").modal({ show: 'true' }); 
-		    		  	// Hide modal if "Okay" is pressed
-					    $('#modalRegisterSuccess .btn-default').click(function() {
-					        mylog.log("hide modale and reload");
-					        $('.modal').modal('hide');
-					    	//window.location.href = baseUrl+'/#default.live';
-					    	window.location.href = baseUrl+"/"+moduleId;
-					    	window.location.reload();
-					    });
+		    		  	}
+		    		  	else{
+		    		  		$("#modalRegisterSuccessContent").html("<h3><i class='fa fa-smile-o fa-4x text-green'></i><br><br> "+data.msg+"</h3>");
+			    		  	$("#modalRegisterSuccess").modal({ show: 'true' }); 
+			    		  	// Hide modal if "Okay" is pressed
+						    $('#modalRegisterSuccess .btn-default').click(function() {
+						        mylog.log("hide modale and reload");
+						        $('.modal').modal('hide');
+						    	//window.location.href = baseUrl+'/#default.live';
+						    	window.location.href = baseUrl+"/"+moduleId;
+						    	window.location.reload();
+						    });
+		    		  	}
 		        		//urlCtrl.loadByHash("#default.directory");
 		    		  }
 		    		  else {

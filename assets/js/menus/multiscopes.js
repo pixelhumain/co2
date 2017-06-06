@@ -100,7 +100,7 @@ function loadMultiScopes(){
 	$.each(myMultiScopes, function(key, value){
 		showScopeInMultiscope(key);
 	});
-	bindCommunexionScopeEvents();
+	//bindCommunexionScopeEvents();
 	showCountScope();
 	saveCookieMultiscope();
 }
@@ -158,7 +158,7 @@ function showScopeInMultiscope(scopeValue){ //mylog.log("showScopeInMultiscope()
 		$("#multi-scope-list-"+scope.type).show();
 		if(actionOnSetGlobalScope=="save")
 			$("#scopeListContainerForm").html(html);
-		//$(".item-scope-checker").off().click(function(){alert(); toogleScopeMultiscope( $(this).data("scope-value")) });
+		$(".item-scope-checker").off().click(function(){ toogleScopeMultiscope( $(this).data("scope-value")) });
 		$(".item-scope-deleter").off().click(function(){ deleteScopeInMultiscope( $(this).data("scope-value")); });
 		//showMsgInfoMultiScope("Le scope a bien été ajouté", "success");
 	}else{
@@ -175,9 +175,12 @@ function addScopeToMultiscope(scopeValue, scopeName){
 	if(scopeValue == "") return;
 	if(!scopeExists(scopeValue)){ //mylog.log("adding", scopeValue);
 		myMultiScopes[scopeValue] = { name: scopeName, active: true, type: currentScopeType };
+		//alert();
 		showScopeInMultiscope(scopeValue);
 		$("#input-add-multi-scope").val("");
 		saveMultiScope();
+		showTagsScopesMin();
+		bindCommunexionScopeEvents();
 	}else{
 		showMsgInfoMultiScope("Ce lieu est déjà dans votre liste", "info");
 	}
@@ -332,11 +335,14 @@ function openDropdownMultiscope(){
 }
 
 function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
-						  inseeCommunexion, cityNameCommunexion, cpCommunexion, 
-						  regionNameCommunexion, countryCommunexion){  
+						inseeCommunexion, cityNameCommunexion, cpCommunexion, 
+						regionNameCommunexion, countryCommunexion){  
+
 	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel,
 			  inseeCommunexion, cityNameCommunexion, cpCommunexion, regionNameCommunexion, countryCommunexion);
+
 	if(scopeValue == "") return;
+	
 	//if(!scopeExists(scopeValue)){ //mylog.log("adding", scopeValue);
 		//myMultiScopes[scopeValue] = { name: scopeName, active: true, type: scopeType };
 		mylog.log("myMultiScopes", myMultiScopes, indexStepInit);
@@ -363,11 +369,13 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 			//$.cookie('regionNameCommunexion',   regionNameCommunexion,  { expires: 365, path: "/" });
 			//$.cookie('countryCommunexion',   	countryCommunexion,  	{ expires: 365, path: "/" });
 		}else{
+			console.log("communexion hash:", location.hash);
 			if(actionOnSetGlobalScope == "filter"){
-				if(location.hash.indexOf("#live") > 0)
+				if(location.hash.indexOf("#live") >= 0)
                 	startNewsSearch(true);
-            	else
+            	else if(location.hash != "")
 					startSearch(0, indexStepInit, searchCallback);
+				//else loadLiveNow();
 			}
 		}
 		//rebuildSearchScopeInput();

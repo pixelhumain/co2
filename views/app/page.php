@@ -16,7 +16,7 @@
 		<?php 
         
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
-               $type == Project::COLLECTION || $type == Organization::COLLECTION ){
+               $type == Project::COLLECTION || $type == Organization::COLLECTION || $type == Poi::COLLECTION){
     			$params = array("element"=>$element , 
     							"page" => "page",
     							"edit"=>$edit,

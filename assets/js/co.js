@@ -38,7 +38,7 @@ function checkPoll(){
 	if(userId){
 		_checkLoggued();
 		if(typeof refreshNotifications != "undefined")
-		refreshNotifications();
+		refreshNotifications(userId,"citoyens","");
 	}
 	
 	//according to the loaded page 
@@ -295,7 +295,7 @@ function connectPerson(connectUserId, callback)
 
 
 function disconnectTo(parentType,parentId,childId,childType,connectType, callback) {
-	var messageBox = trad["removeconnection"];
+	var messageBox = trad["removeconnection"+parentType];
 	$(".disconnectBtnIcon").removeClass("fa-unlink").addClass("fa-spinner fa-spin");
 	var formData = {
 		"childId" : childId,
@@ -332,7 +332,7 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 								if (typeof callback == "function") 
 									callback();
 								else
-									urlCtrl.loadByHash(location.hash);
+									urlCtrl.loadByHash("#page.type.citoyens.id."+userId);
 							} else {
 							   toastr.error("You leave succesfully");
 							}
@@ -569,6 +569,7 @@ var urlCtrl = {
 		"#element.aroundme" : {title:"Around me" , icon : 'crosshairs', menuId:"menu-btn-around-me"},
 	    "#element.notifications" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#person.settings" : {title:'DETAIL ENTITY', icon : 'legal'},
+	    "#person.invite" : {title:'DETAIL ENTITY', icon : 'legal'},
 		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
 	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
@@ -642,6 +643,7 @@ var urlCtrl = {
 		return hash;
 	},
 	jsController : function (hash){
+		mylog.log("jsController", hash);
 		hash = urlCtrl.checkAndConvert(hash);
 		//alert("jsController"+hash);
 		mylog.log("jsController",hash);
@@ -736,11 +738,15 @@ var urlCtrl = {
 		// mylog.log("IS DIRECTORY ? ", 
 		// 			hash.indexOf("#default.directory"), 
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
+		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
+			mylog.log("globalTheme", globalTheme);
 			if( hash.indexOf("#network") >= 0 &&
 				location.hash.indexOf("#network") >= 0 || hash=="#" || hash==""){ 
+				mylog.log("network");
 			}
 			else{
+				mylog.log("network2");
 				count=$(".breadcrumAnchor").length;
 				//case on reload view
 				if(count==0)
@@ -760,6 +766,7 @@ var urlCtrl = {
 			setHeaderDirectory(type);
 			loadingData = false;
 			startSearch(0, indexStepInit, ( notNull(searchCallback) ) ? searchCallback : null );
+			mylog.log("testnetwork hash 2", hash);
 			location.hash = hash;
 			return;
 		}
@@ -783,7 +790,9 @@ var urlCtrl = {
 	    	mylog.log("urlCtrl.loadByHash >>> hash found",hash);
 	    }
 	    else if( hash.indexOf("#panel") >= 0 ){
+
 	    	panelName = hash.substr(7);
+	    	mylog.log("panelName",panelName);
 	    	if( (panelName == "box-login" || panelName == "box-register") && userId != "" && userId != null ){
 	    		urlCtrl.loadByHash("#default.home");
 	    		return false;
@@ -791,10 +800,14 @@ var urlCtrl = {
 	            title = 'ADD SOMETHING TO MY NETWORK';
 	        else
 	            title = "WELCOM MUNECT HEY !!!";
-	        if(panelName == "box-login")
+	        if(panelName == "box-login"){
 				$('#modalLogin').modal("show");
-			else if(panelName == "box-register")
+				$.unblockUI();
+	        }
+			else if(panelName == "box-register"){
 				$('#modalRegister').modal("show");
+				$.unblockUI();
+			}
 			else
 	       		showPanel(panelName,null,title);
 	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
@@ -820,7 +833,7 @@ var urlCtrl = {
 		} */
 	    else 
 	        showAjaxPanel( '/app/index', 'Home','home' );
-
+	    mylog.log("testnetwork hash", hash);
 	    location.hash = hash;
 
 	    /*if(typeof back == "function"){
@@ -1262,7 +1275,7 @@ var smallMenu = {
 				$.blockUI({ 
 					//title : 'Welcome to your page', 
 					message : (content) ? content : "<div class='blockContent'></div>",
-					onOverlayClick: $.unblockUI,
+					onOverlayClick: $.unblockUI(),
 			        css: { 
 			         //border: '10px solid black', 
 			         //margin : "50px",
@@ -1763,7 +1776,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 	        var match_url = new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
 	        if (match_url.test(getUrl.val())) 
 	        {
-		        mylog.log(getUrl.val().match(match_url));
+		        //mylog.log(getUrl.val().match(match_url));
 		        if(lastUrl != getUrl.val().match(match_url)[0]){
 			       // alert(lastUrl+"///"+getUrl.val().match(match_url)[0]);
 		        	var extracted_url = getUrl.val().match(match_url)[0]; //extracted first url from text filed
@@ -2181,9 +2194,12 @@ var dynForm = null;
 var uploadObj = {
 	type : null,
 	id : null,
+	gotoUrl : null,
+	isSub : false,
 	folder : moduleId, //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
+		mylog.log("set uploadObj.id", id);
 		uploadObj.id = id;
 	}
 };
@@ -2359,14 +2375,15 @@ var dyFObj = {
 			        	addLocationToFormloopEntity(data.id, collection, data.map);*/
 			        if (typeof afterSave == "function"){
 	            		afterSave(data);
-	            		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
-	            	}
-	            	else{
+	            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+	            	} else {
 						dyFObj.closeForm();
 		                if(data.url){
+		                	mylog.log("urlReload data.url", data.url);
 		                	urlCtrl.loadByHash( data.url );
 		                }
 		                else if(data.id){
+		                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
 			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 		                }
 					}
@@ -2474,10 +2491,13 @@ var dyFObj = {
 	starBuild : function  (afterLoad, data) {
 		mylog.warn("------------ starBuild",dyFObj.elementObj, afterLoad, data);
 		mylog.dir(dyFObj.elementObj);
-		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(dyFObj.elementObj.bgClass);
+		$("#ajax-modal .modal-header").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA");//.addClass(dyFObj.elementObj.bgClass);
 		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
-		$("#ajax-modal-modal-title").removeClass("text-green").removeClass("text-purple").removeClass("text-orange").removeClass("text-azure");
-		$(".modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-lightblue ").addClass(dyFObj.elementObj.titleClass);
+		$("#ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
+
+		$("#ajax-modal .modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-blue bg-turq")
+									  .addClass(dyFObj.elementObj.titleClass);
+
 	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
@@ -2508,7 +2528,6 @@ var dyFObj = {
 			      		themeObj.dynForm.onLoadPanel(dyFObj.elementObj);
 			      	} else {
 				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj.elementObj.dynForm.jsonSchema.icon+"'></i> "+dyFObj.elementObj.dynForm.jsonSchema.title);
-				        $("#ajax-modal-modal-body").append("<div class='space20'></div>");
 				        //alert(afterLoad+"|"+typeof dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
 			    	}
 			        
@@ -2544,13 +2563,16 @@ var dyFObj = {
 	},
 
 	//generate Id for upload feature of this element 
-	setMongoId : function(type) { 
+	setMongoId : function(type,callback) { 
 		uploadObj.type = type;
 		if( !$("#ajaxFormModal #id").val() )
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
+				mylog.log("setMongoId uploadObj.id", data.id);
 				uploadObj.id = data.id;
 				$("#ajaxFormModal #id").val(data.id)
+				if( typeof callback === "function" )
+                	callback();
 			});
 		}
 	},
@@ -2659,6 +2681,15 @@ var dyFInputs = {
 		};
 		return inputObj;
 	},
+	tags : function(list) { 
+    	tagsL = (list) ? list : tagsList;
+    	return {
+			inputType : "tags",
+			placeholder : "Mots clés",
+			values : tagsL,
+			label : "Ajouter quelques mots clés"
+		}
+	},
     imageAddPhoto : {
     	inputType : "uploader",
     	showUploadBtn : true,
@@ -2673,17 +2704,19 @@ var dyFInputs = {
         	},500);
     	}
     },
-    image :function(str) { 
-    	mylog.log("str", str) ;
-    	gotoUrl = (str) ? str+uploadObj.id : location.hash;
-    	mylog.log("gotoUrl", gotoUrl) ;
+    image :function() { 
+    	
+    	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
+    		uploadObj.gotoUrl = location.hash ;
+    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
+
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	dyFObj.closeForm();
-		    	//alert(gotoUrl+uploadObj.id);
-	            urlCtrl.loadByHash( gotoUrl );	
+				//alert( "image upload then goto : "+uploadObj.gotoUrl );
+	            urlCtrl.loadByHash( uploadObj.gotoUrl );	
 		    }
     	}
     },
@@ -2692,19 +2725,22 @@ var dyFInputs = {
     		inputType : "textarea",
 	    	label : ( notEmpty(label) ? label : "Votre message ..." ),
 	    	placeholder : ( notEmpty(placeholder) ? placeholder : "Votre message ..." ),
-	    	rules : ( notEmpty(rules) ? rules : { } )
+	    	rules : ( notEmpty(rules) ? rules : { } ),
+	    	init : function(){
+	    		mylog.log("textarea init");
+	    		if($(".maxlengthTextarea").length){
+	    			mylog.log("textarea init2");
+	    			$(".maxlengthTextarea").off().keyup(function(){
+						var name = "#" + $(this).attr("id") ;
+						mylog.log(".maxlengthTextarea", "#ajaxFormModal "+name, $(this).attr("id"), $("#ajaxFormModal "+name).val().length, $(this).val().length);
+						$("#ajaxFormModal #maxlength"+$(this).attr("id")).html($("#ajaxFormModal "+name).val().length);
+					});
+	    		}
+	        }
 	    } ;
 	    return inputObj;
 	},
-    tags : function(list) { 
-    	tagsL = (list) ? list : tagsList;
-    	return {
-			inputType : "tags",
-			placeholder : "Mots clés",
-			values : tagsL,
-			label : "Ajouter quelques mots clés"
-		}
-	},
+
 	password : function  (title, rules) {  
     	var title = (title) ? title : trad["New password"];
     	var ph = "";
@@ -2731,6 +2767,7 @@ var dyFInputs = {
 	    	placeholder : ( notEmpty(placeholder) ? placeholder : "exemple@mail.com" ),
 	    	rules : ( notEmpty(rules) ? rules : { email: true } )
 	    }
+	    console.log("create form input email", inputObj);
 	    return inputObj;
 	},
 	emailOptionnel :function (label,placeholder,rules) {  
@@ -2764,7 +2801,7 @@ var dyFInputs = {
 			mylog.log("elementLocation", dyFInputs.locationObj.elementLocation);
 			dyFInputs.locationObj.elementLocations.push(dyFInputs.locationObj.elementLocation);
 			mylog.log("dyFInputs.locationObj.elementLocations", dyFInputs.locationObj.elementLocations);
-			if(!dyFInputs.locationObj.centerLocation || locationObj.center == true){
+			if(!dyFInputs.locationObj.centerLocation || dyFInputs.locationObj.centerLocation.center == true){
 				dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocation;
 				dyFInputs.locationObj.elementLocation.center = true;
 			}
@@ -3050,6 +3087,10 @@ var dyFInputs = {
     },
     get:function(type){
     	//mylog.log("dyFInputs.get", type);
+    	if( type == "undefined" ){
+    		toastr.error("type can't be undefined");
+    		return null;
+    	}
     	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
@@ -3057,23 +3098,23 @@ var dyFInputs = {
     		} else
     			obj = typeObj[type];
     		obj.name = (trad[type]) ? trad[type] : type;
+    	}
+    	if( obj === null ){
+    		obj = dyFInputs.deepGet(type);
+    		if( obj )
+    			obj = dyFInputs.get( obj.col )
     	}
     	return obj;
     },
     deepGet:function(type){
     	//mylog.log("get", type);
     	var obj = null;
-    	if( jsonHelper.notNull("typeObj."+type)){
-    		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
-    			obj = typeObj[ typeObj[type].sameAs ];
-    		} else
-    			obj = typeObj[type];
-    		obj.name = (trad[type]) ? trad[type] : type;
-    	} else {
-    		//calculate only once
-    		//get list of all keys and sub keys
-    		//return corresponding map
-    	}
+    	$.each( typeObj,function(k,o) { 
+    		if( o.types && ( $.inArray( type,  o.types )>=0 ) ){
+    			obj = o;
+    			return false;
+    		}
+    	});
     	return obj;
     }
 };
@@ -3145,20 +3186,22 @@ var typeObj = {
 	"citoyen" : { sameAs:"person" },
 	"citoyens" : { sameAs:"person" },
 	
-	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle"},
+	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle",
+			types:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+				   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
+				   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
 
 	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
 	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
 	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
-	
 	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
 
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
 	"organizations" : {sameAs:"organization"},
 	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
-	"NGO" : {sameAs:"organization"},
-	"Association" : {sameAs:"organization"},
+	"NGO" : {sameAs:"organization", color:"green", icon:"users"},
+	"Association" : {sameAs:"organization", color:"green", icon: "group"},
 	"GovernmentOrganization" : {sameAs:"organization",color: "red",icon: "university"},
 	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
@@ -3178,14 +3221,14 @@ var typeObj = {
 	"classified":{col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",	},
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
-	"video" : {icon:"video-camera",color:"dark"},
+	//"video" : {icon:"video-camera",color:"dark"},
 	"formContact" : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
 	"news" : { col : "news" }, 
 };
 
 var documents = {
 	saveImages : function (contextType, contextId,contentKey){
-		alert("saveImages"+contextType+contextId);
+		//alert("saveImages"+contextType+contextId);
 		$.ajax({
 			url : baseUrl+"/"+moduleId+"/document/"+uploadUrl+"dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/dynform",
 			type: "POST",
@@ -3652,7 +3695,7 @@ function initKInterface(params){ console.log("initKInterface");
     $(".btn-show-map").off().click(function(){
     	if(typeof formInMap != "undefined" && formInMap.actived == true)
 			formInMap.cancel();
-    	else if(isMapEnd == true && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+    	else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
 			getContextDataLinks();
 		else
 			showMap();
@@ -3696,6 +3739,94 @@ function getContextDataLinks(){
 		}
 			
 	});
+}
+
+function test(params, itemType){
+	var typeIco = i;
+    params.size = size;
+    params.id = getObjectId(params);
+    params.name = notEmpty(params.name) ? params.name : "";
+    params.description = notEmpty(params.shortDescription) ? params.shortDescription : 
+                        (notEmpty(params.message)) ? params.message : 
+                        (notEmpty(params.description)) ? params.description : 
+                        "";
+
+    //mapElements.push(params);
+    //alert("TYPE ----------- "+contentType+":"+params.name);
+    
+    if(typeof( typeObj[itemType] ) == "undefined")
+        itemType="poi";
+    typeIco = itemType;
+    if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
+    if(typeof params.typeOrga != "undefined")
+      typeIco = params.typeOrga;
+
+    var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
+    params.ico =  "fa-"+obj.icon;
+    params.color = obj.color;
+    if(params.parentType){
+        if(directory.dirLog) mylog.log("params.parentType",params.parentType);
+        var parentObj = (dyFInputs.get(params.parentType)) ? dyFInputs.get(params.parentType) : typeObj["default"] ;
+        params.parentIcon = "fa-"+parentObj.icon;
+        params.parentColor = parentObj.color;
+    }
+    if(params.type == "classified" && typeof params.category != "undefined"){
+      params.ico = typeof classified.filters[params.category] != "undefined" ?
+                   "fa-" + classified.filters[params.category]["icon"] : "";
+    }
+
+    params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
+
+    // var urlImg = "/upload/communecter/color.jpg";
+    // params.profilImageUrl = urlImg;
+    params.useMinSize = typeof size != "undefined" && size == "min";
+    params.imgProfil = ""; 
+    if(!params.useMinSize)
+        params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
+
+    if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
+        params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
+
+    if(dyFInputs.get(itemType) && 
+        dyFInputs.get(itemType).col == "poi" && 
+        typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
+    params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
+
+    params.insee = params.insee ? params.insee : "";
+    params.postalCode = "", params.city="",params.cityName="";
+    if (params.address != null) {
+        params.city = params.address.addressLocality;
+        params.postalCode = params.cp ? params.cp : params.address.postalCode ? params.address.postalCode : "";
+        params.cityName = params.address.addressLocality ? params.address.addressLocality : "";
+    }
+    params.fullLocality = params.postalCode + " " + params.cityName;
+
+    params.type = dyFInputs.get(itemType).col;
+    params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
+                  '#page.type.'+params.parentType+'.id.' + params.parentId : "";
+
+    //params.url = '#page.type.'+params.type+'.id.' + params.id;
+    params.hash = '#page.type.'+params.type+'.id.' + params.id;
+   /* if(params.type == "poi")    
+        params.hash = '#element.detail.type.poi.id.' + id;
+
+    params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';*/
+
+    params.elTagsList = "";
+    var thisTags = "";
+    if(typeof params.tags != "undefined" && params.tags != null){
+      $.each(params.tags, function(key, value){
+        if(typeof value != "undefined" && value != "" && value != "undefined"){
+          thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value)+"'>#" + value + "</span> ";
+          params.elTagsList += slugify(value)+" ";
+        }
+      });
+      params.tagsLbl = thisTags;
+    }else{
+      params.tagsLbl = "";
+    }
+
+    params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
 }
 
 $(document).ready(function() { 

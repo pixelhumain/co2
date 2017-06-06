@@ -8,7 +8,7 @@
             })  ;
         }
         scopeHtml="";
-        if(typeof userConnected != "undefined" && userConnected != null ){
+        //if(typeof userConnected != "undefined" && userConnected != null ){
              if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false"){
                 scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
                             'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
@@ -26,7 +26,7 @@
                             '<i class="fa fa-university"></i>'+
                         '</button>';
             }
-        }
+        //}
        
         scopeHtml+='<h5 class="pull-left letter-red" style="margin-bottom: -8px;margin-top: 14px;">'+
                         '<button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-10 margin-right-10" '+ 
@@ -93,7 +93,7 @@
             $("#scopeListContainerForm").html(scopeHtml);
         }
         multiTagScopeLbl();
-        bindCommunexionScopeEvents();
+        //bindCommunexionScopeEvents();
         
         $(".toggle-scope-dropdown").click(function(){ //mylog.log("toogle");
             if(!$("#dropdown-content-multi-scope").hasClass('open'))

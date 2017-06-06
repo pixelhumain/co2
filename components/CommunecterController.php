@@ -174,8 +174,10 @@ class CommunecterController extends Controller
       "detail"    => array( "href" => "/ph/communecter/news/detail"),
       "delete"    => array( "href" => "/ph/communecter/news/delete"),
       "updatefield"    => array( "href" => "/ph/communecter/news/updatefield"),
+      "update"    => array( "href" => "/ph/communecter/news/update"),
       "extractprocess" => array( "href" => "/ph/communecter/news/extractprocess"),
       "moderate" => array( "href" => "/ph/communecter/news/moderate"),
+      "share"          => array("href" => "/ph/communecter/news/share"),
     ),
     "search"=> array(
       "getmemberautocomplete" => array("href" => "/ph/communecter/search/getmemberautocomplete"),
@@ -269,6 +271,7 @@ class CommunecterController extends Controller
         
 
         "get"      => array("href" => "/ph/communecter/person/get"),
+        "getcontactsbymails"      => array("href" => "/ph/communecter/person/getcontactsbymails"),
     ),
     "organization"=> array(
       "addorganizationform" => array("href" => "/ph/communecter/organization/addorganizationform",
@@ -363,7 +366,6 @@ class CommunecterController extends Controller
       "multiconnect"           => array("href" => "/ph/communecter/link/multiconnect"),
       "follow"           => array("href" => "/ph/communecter/link/follow"),
       "validate"          => array("href" => "/ph/communecter/link/validate"),
-      "share"          => array("href" => "/ph/communecter/link/share"),
     ),
     "document" => array(
       "resized"             => array("href"=> "/ph/communecter/document/resized", "public" => true),
@@ -454,6 +456,7 @@ class CommunecterController extends Controller
       "notifications"       => array("href" => "/ph/communecter/element/notifications"),
       "about"               => array("href" => "/ph/communecter/element/about"),
       "getdatadetail"       => array("href" => "/ph/communecter/element/getdatadetail"),
+      "stopdelete"          => array("href" => "/ph/communecter/element/stopdelete"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/communecter/app/welcome",         "public" => true),
@@ -477,6 +480,7 @@ class CommunecterController extends Controller
       "info"              => array('href' => "/ph/communecter/app/info",              "public" => true),
       "city"              => array('href' => "/ph/communecter/app/city",              "public" => false),
       "sendmailformcontact" => array('href' => "/ph/communecter/app/sendmailformcontact", "public" => true),
+      "sendmailformcontactprivate" => array('href' => "/ph/communecter/app/sendmailformcontactprivate", "public" => true),
       "checkurlexists" => array('href' => "/ph/communecter/app/checkurlexists", "public" => true),
       "interoperability"  => array('href' => "/ph/communecter/app/interoperability",   "public" => false),
       ),
@@ -499,7 +503,6 @@ class CommunecterController extends Controller
     "survey" => array('href' => "/ph/communecter/app/survey", "public" => true),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick"),
-
     ),
   );
 

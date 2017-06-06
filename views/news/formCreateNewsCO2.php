@@ -155,6 +155,9 @@
   top: 1px !important;
   padding:0 !important;
 }
+.updateMention .mentions-input-box .mentions{ 
+  padding:10px 5px !important;
+}
 </style>
 <?php 
   $isLive = isset($_GET["isLive"]) ? true : false;
@@ -164,22 +167,20 @@
   $imgProfil = $this->module->assetsUrl . "/images/news/profile_default_l.png"; 
   $textForm = Yii::t("common","Write a public message visible on the wall of selected places");
   if( isset($type) && $type == Organization::COLLECTION && isset($parent) ){
-    Menu::organization( $parent );
-    //$thisOrga = Organization::getById($parent["_id"]);
-    $contextName = addslashes($parent["name"]);
+    $contextName = $parent["name"];
     $contextIcon = "users";
     $contextTitle = Yii::t("common","Participants");
     $restricted = Yii::t("common","Visible to all on this wall and published on community's network");
     $titleRestricted = "Restreint";
     $private = Yii::t("common","Visible only to the members"); 
     $titlePrivate = "Privé";
-    $scopeBegin= ucfirst(Yii::t("common", "private"));  
+    $scopeBegin= ucfirst(Yii::t("common", "my network"));  
     $public = true;
-    $iconBegin= "lock";
+    $iconBegin= "connectdevelop";
     $headerName= "Journal de l'organisation";//.$contextName;
     $topTitle= "Journal de l'organisation";//.$contextName;
     if(@$canManageNews && $canManageNews==true)
-      $textForm = Yii::t("common","Post a message in the wall of")." ".$contextName.", ".Yii::t("common","publicly shared or this community");
+      $textForm = Yii::t("common","Post a message in the wall of")." ".$contextName.", ".Yii::t("common","publicly shared or to this community");
     else
       $textForm = Yii::t("common","Write a private message to")." ".$contextName;
   }
@@ -188,7 +189,7 @@
       //Visible de tous sur
       //Menu::person($parent);
     
-      $contextName =addslashes($parent["name"]);
+      $contextName =$parent["name"];
       $contextIcon = "<i class='fa fa-circle text-yellow'></i> <i class='fa fa-user text-dark'></i> ";
       $contextTitle =  Yii::t("common", "DIRECTORY of")." ".$contextName;
       if(@Yii::app()->session["userId"] && $contextParentId==Yii::app()->session["userId"]){
@@ -217,14 +218,13 @@
     $iconBegin= "connectdevelop";
   }
   else if( isset($type) && $type == Project::COLLECTION && isset($parent) ){
-    //Menu::project( $parent );
-    $contextName = addslashes($parent["name"]);
+    $contextName = $parent["name"];
     $contextIcon = "lightbulb-o";
     $contextTitle = Yii::t("common", "Contributors of project");
     $restricted = Yii::t("common","Visible to all on this wall and published on community's network");
     $private = Yii::t("common","Visible only to the project's contributors"); 
-    $scopeBegin= ucfirst(Yii::t("common", "private"));  
-    $iconBegin= "lock";
+    $scopeBegin= ucfirst(Yii::t("common", "my network"));  
+    $iconBegin= "connectdevelop";
     $public = true;
     $headerName= "Journal du projet";//.$contextName;
     $topTitle = "Journal du projet";//.$contextName;
@@ -233,8 +233,7 @@
     else
       $textForm = Yii::t("common","Write a private message to")." ".$contextName;
   }else if( isset($type) && $type == Event::COLLECTION && isset($parent) ){
-  //  Menu::event( $parent );
-    $contextName = addslashes($parent["name"]);
+    $contextName = $parent["name"];
     $contextIcon = "calendar";
     $contextTitle = Yii::t("common", "Contributors of event");
     $restricted = Yii::t("common","Visible to all on this wall and published on community's network");
@@ -242,10 +241,10 @@
     $iconBegin= "connectdevelop";
     $headerName= "Journal de l'événement";//.$contextName;
     $topTitle = "Journal de l'événement";//.$contextName;
-    if(@$canManageNews && $canManageNews==true)
+    //if(@$canManageNews && $canManageNews==true)
       $textForm = Yii::t("common","Post a message in the wall of")." ".$contextName.", ".Yii::t("common","publicly shared or to this community");
-    else
-      $textForm = Yii::t("common","Write a private message to")." ".$contextName;
+    //else
+      //$textForm = Yii::t("common","Write a private message to")." ".$contextName;
 
   }
 
@@ -313,7 +312,7 @@
       <div class="extract_url">
         <div class="padding-10 bg-white">
           <img class="loading_indicator" src="<?php echo $this->module->assetsUrl ?>/images/news/ajax-loader.gif">
-          <textarea id="get_url" placeholder="Exprimez-vous ..." class=" get_url_input form-control textarea mention" style="border:none;background:transparent !important" name="getUrl" spellcheck="false" ></textarea>
+          <textarea id="get_url" placeholder="Exprimez-vous ..." class="get_url_input form-control textarea mention" style="border:none;background:transparent !important" name="getUrl" spellcheck="false" ></textarea>
           <ul class="dropdown-menu" id="dropdown_search" style="">
           </ul>
 
@@ -327,7 +326,7 @@
         
         <div id="scopeListContainerForm" class="list_tags_scopes col-md-12 no-padding margin-bottom-10"></div>
 
-        <div class="col-md-12 no-padding">
+        <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
           <hr class="submit">
           
           <button id="btn-submit-form" type="submit" class="btn btn-success pull-right">Envoyer <i class="fa fa-arrow-circle-right"></i></button>
@@ -405,7 +404,7 @@
             </li>
             <li>
               <a href="javascript:;" class="targetIsAuthor" data-value="0"><h4 class="list-group-item-heading">
-                <?php if(@ Yii::app()->session["user"]["profilThumbImageUrl"]){ ?>
+                <?php if(@Yii::app()->session["user"]["profilThumbImageUrl"]){ ?>
                 <img height=20 width=20 src='<?php echo Yii::app()->getRequest()->getBaseUrl(true).Yii::app()->session["user"]["profilThumbImageUrl"]; ?>'>
                 <?php } else {  ?>
                   <img height=20 width=20 src='<?php echo $this->module->assetsUrl.'/images/thumb/default_citoyens.png' ?>'>  
@@ -423,23 +422,12 @@
 
 
         <?php if($type=="city"){ ?>
-          <?php /* ?>
-          <input type="hidden" name="cityInsee" value=""/>
-          <input type="hidden" id="cityPostalCode" name="cityPostalCode" value=""/>
-          <p class="text-xs hidden-xs" style="position:absolute;bottom:20px;"><?php echo Yii::t("news","News sent to") ?>:</p> 
-          <div class="badge cityBadge" style="position:absolute;bottom:10px;">
-          </div><?php */ ?>
           <input type="hidden" name="scope" value="public"/>
         <?php } ?>
-                  
-        
         <?php if((@$canManageNews && $canManageNews=="true") || (
             @Yii::app()->session["userId"] && 
             $contextParentType==Person::COLLECTION && Yii::app()->session["userId"]==$contextParentId)){ ?>
-        
-            <?php if($contextParentType==Organization::COLLECTION || $contextParentType==Project::COLLECTION){ ?>
-              <input type="hidden" name="scope" value="private"/>
-            <?php } else if($contextParentType==Event::COLLECTION || $contextParentType==Person::COLLECTION){ ?>
+            <?php if(in_array($contextParentType,array(Event::COLLECTION,Person::COLLECTION,Project::COLLECTION,Organization::COLLECTION))){ ?>
               <input type="hidden" name="scope" value="restricted"/>
             <?php } else { ?>
             <input type="hidden" name="scope" value="public"/>

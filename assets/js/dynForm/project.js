@@ -8,20 +8,26 @@ dynForm = {
 			    	"sub" : function(){
 			    			$("#ajaxFormModal #parentId").val( contextData.id );
 			    		 	$("#ajaxFormModal #parentType").val( contextData.type ); 
-			    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
+			    		 	$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+									  					  .addClass("bg-purple");
+			    		 	
+			    		 	$("#ajax-modal-modal-title").html(
+			    		 		$("#ajax-modal-modal-title").html()+
+			    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
 			    	}
 			    },
 			    beforeBuild : function(){
-			    	dyFObj.setMongoId('projects');
+			    	dyFObj.setMongoId('projects', function(){
+			    		uploadObj.gotoUrl = '#page.type.projects.id.'+uploadObj.id;
+			    	});
 			    },
-			    afterSave : function(){
+			    afterSave : function(urlReload){
 					if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 ){
 				    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-					}
-				    else {
-				    	dyFObj.closeForm();
-				    	urlCtrl.loadByHash( location.hash );	
-				    }
+					} else { 
+			          	dyFObj.closeForm(); 
+			          	urlCtrl.loadByHash( uploadObj.gotoUrl );
+			        }
 			    },
 			    beforeSave : function(){
 			    	if( typeof $("#ajaxFormModal #description").code === 'function' ) 
@@ -37,7 +43,7 @@ dynForm = {
 			        name : dyFInputs.name("project"),
 		            parentType : dyFInputs.inputHidden(),
 		            parentId : dyFInputs.inputHidden(),
-		            image : dyFInputs.image("#project.detail.id."+uploadObj.id),
+		            image : dyFInputs.image(),
 		            location : dyFInputs.location,
 		            tags :dyFInputs.tags(),
 		            shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),

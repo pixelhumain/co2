@@ -606,6 +606,8 @@ var urlCtrl = {
 		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
 		"#opendata" : {"alias":"#data.index"},
 		"#interoperability.copedia" : {title:'COPEDIA', icon : 'fa-folder-open-o'},
+		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o'},
+
 
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
@@ -2878,6 +2880,12 @@ var dyFInputs = {
         	$(".urlsarray").css("display","none");	
         }
     },
+    // latitude : function() {
+
+    // },
+    // longitude : function() {
+
+    // },
     allDay : function(checked){
 
     	var inputObj = {

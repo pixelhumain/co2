@@ -159,7 +159,6 @@ function bindAboutPodElement() {
         return fieldHTML;
 	}
 
-
 	function bindDynFormEditable(){
 
 		$(".btn-update-when").off().on( "click", function(){

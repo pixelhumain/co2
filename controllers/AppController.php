@@ -229,9 +229,8 @@ class AppController extends CommunecterController {
 	}
 
     public function actionInteroperability(){
-        $params=array();
         CO2Stat::incNbLoad("co2-interoberability");
-        echo $this->renderPartial("interoperability", $params, true);
+        echo $this->renderPartial("interoperability", array(), true);
     } 
 
     public function actionInfo($p){

@@ -1588,23 +1588,21 @@ var directory = {
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
-// <<<<<<< HEAD
-                if( (params.type == "poi") && (params.source.insertOrign == "import") ) {
+                if( params.type == "poi" && params.source.insertOrign == "import") {
                   var interop_type = getTypeInteropData(params.source.key);
-                  params.url = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.url);
-                  params.hash = params.url;
+                  params.hash = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.url);
+                  params.url = params.hash;
                   params.color = getIconColorForInteropElements(interop_type);
                   params.htmlIco = getImageIcoForInteropElements(interop_type);
                   params.type = "poi.interop."+interop_type;
-                  if (typeof(params.tags) !== "undefined") {
-                    params.tags.push(interop_type);
-                  } else {
-                    params.tags = [];
-                    params.tags.push(interop_type);
-                  }
-                } else if (typeof(params.url) == "undefined") {
+                  
 
-                  params.url = '#page.type.'+params.type+'.id.' + params.id;
+                  if (typeof params.tags == "undefined") 
+                    params.tags = [];
+                  
+                  params.tags.push(interop_type);
+                } else {
+
                   params.hash = '#page.type.'+params.type+'.id.' + params.id;
                   if(params.type == "poi")    
                       params.hash = '#element.detail.type.poi.id.' + params.id;

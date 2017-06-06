@@ -381,6 +381,10 @@
 											"poi.interop.ods" 	: { ico : "folder-open", color : "yellow" 	},
 											"poi.interop.datanova" 	: { ico : "folder-open", color : "yellow" 	},
 											"poi.interop.poleemploi" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.educ_etab" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.educ_struct" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.educ_membre" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.educ_ecole" 	: { ico : "folder-open", color : "yellow" 	},
 
 											"entry" 			: { ico : "gavel", color : "azure" 	},
 											"action" 			: { ico : "cogs", color : "lightblue2" 	},

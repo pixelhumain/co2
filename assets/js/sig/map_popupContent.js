@@ -50,10 +50,10 @@
 
 			if(type == "entry") 		url = "#survey.entry.id."+id;
 			if(type == "action") 		url = "#rooms.action.id."+id;
-
-			//TO DO Fonction pour mettre une bonne url pour les interop data
 			
 			onclick = 'urlCtrl.loadByHash("'+url+'");';
+
+			// mylog.log('LA DATA POUR LA MAP', data);
 
 			if (type.substr(0,11) == "poi.interop") {
 				var icons = '<i class="fa fa-folder-open fa-'+ color +'"></i>';

@@ -11,7 +11,7 @@ $cssAnsScriptFilesModule = array(
 
 $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
-    $this->renderPartial($layoutPath.'header',
+$this->renderPartial($layoutPath.'header',
           array( "layoutPath"=>$layoutPath, 
             "page" => "interoperability") ); 
 ?>
@@ -66,18 +66,6 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
         padding-top:15px;
     }
 
-    /*.homestead{
-        font-family:unset!important;
-    }*/
-    /*
-    .main-btn-scopes{
-        position: absolute;
-        top: 85px;
-        left: 18px;
-        z-index: 10;
-        border-radius: 0 50%;
-    }*/
-
     .btn-create-page{
         margin-top:0px;
         z-index: 10;
@@ -108,8 +96,6 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
     .subtitle-search{
         display: none;
-        /*width: 100%;
-        text-align: center;*/
     }
        
     .breadcrum-communexion{ 
@@ -175,47 +161,46 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
         margin-bottom: 5px;
     }
 
-.favElBtn, .favAllBtn{
-  padding: 5px 8px;
-  font-weight: 300;
-  margin-bottom:5px;
-}
-#searchBarTextJS{
-  margin-bottom: 15px;
-}
-.btn-open-filliaire{
-  font-weight: 700;
-  text-transform: uppercase;
-  background-color: #3C5665 !important;
-  color: white;
-}
+    .favElBtn, .favAllBtn{
+      padding: 5px 8px;
+      font-weight: 300;
+      margin-bottom:5px;
+    }
+    #searchBarTextJS{
+      margin-bottom: 15px;
+    }
+    .btn-open-filliaire{
+      font-weight: 700;
+      text-transform: uppercase;
+      background-color: #3C5665 !important;
+      color: white;
+    }
 
-#col-btn-type-directory .btn-directory-type,
-#sub-menu-left .btn-select-type-anc{
-  margin-bottom:5px;
-  /*font-weight: 700;*/
-  text-transform: uppercase;
-  background-color: transparent;
-}
+    #col-btn-type-directory .btn-directory-type,
+    #sub-menu-left .btn-select-type-anc{
+      margin-bottom:5px;
+      /*font-weight: 700;*/
+      text-transform: uppercase;
+      background-color: transparent;
+    }
 
-#col-btn-type-directory .btn-directory-type .btn-all{
-  /*background-color: #F2F2F2;*/
-}
+    #col-btn-type-directory .btn-directory-type .btn-all{
+      /*background-color: #F2F2F2;*/
+    }
 
-.btn-select-filliaire:hover{
-  background-color: #F2F2F2;
-}
-@media (max-width: 768px) {
-  #col-btn-type-directory{
-    text-align: center!important;
-  }
-}
-
+    .btn-select-filliaire:hover{
+      background-color: #F2F2F2;
+    }
+    @media (max-width: 768px) {
+      #col-btn-type-directory{
+        text-align: center!important;
+      }
+    }
 
 </style>
 
 <div class="input-group col-md-6 col-md-offset-3" id="main-input-group" style="margin-bottom:15px;">
-    <input class="form-control" id="main-search-bar" placeholder="Rechercher une page ..." type="text">
+    <input class="form-control" id="main-search-bar" placeholder="<?php echo Yii::t("common", "Search a page ...");?>" type="text">
     <span class="input-group-addon bg-white" id="main-search-bar-addon">
         <i class="fa fa-search"></i>
     </span>
@@ -227,9 +212,7 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     </button>
 </div>
 
-<?php     $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
-
-
+<?php $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
 <?php $filliaireCategories = CO2::getContextList("filliaireCategories"); 
@@ -256,7 +239,6 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 </div>
 
 <div id="all_activity" class="hidden col-sm-12 col-md-12 hidden-xs hidden-sm text-left"></div>
-
 
 <div id="container-result-interop_search" class="container-result-search col-xs-12">
 
@@ -295,6 +277,23 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
             <span class="hidden-xs">Pôle emploi</span>
         </button><br class="hidden-xs">
         <hr class="hidden-xs">
+        <button id="btn-eco-doct" class="btn text-blue btn-directory-type" data-type="eco_doct">
+            <img width=50 src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo_open_data_educ.jpg'> 
+            <span class="hidden-xs">Ecoles doct</span>
+        </button><br class="hidden-xs">
+        <button id="btn-membres-univ" class="btn text-blue btn-directory-type" data-type="membres_univ">
+            <img width=50 src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo_open_data_educ.jpg'> 
+            <span class="hidden-xs">Membres univ.</span>
+        </button><br class="hidden-xs">
+        <button id="btn-struc-recherche" class="btn text-blue btn-directory-type" data-type="struct_recherche">
+            <img width=50 src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo_open_data_educ.jpg'> 
+            <span class="hidden-xs">Struc. recherche</span>
+        </button><br class="hidden-xs">
+        <button id="btn-etab-recherche" class="btn text-blue btn-directory-type" data-type="etab_recherche">
+            <img width=50 src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo_open_data_educ.jpg'> 
+            <span class="hidden-xs">Etab. recherche</span>
+        </button><br class="hidden-xs">
+        <hr class="hidden-xs">
     </div> 
     <div id="dropdown_search" class="col-md-8 col-sm-8 col-xs-10 padding-10"></div>
     <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
@@ -316,17 +315,22 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
     var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
     searchTags = $("#searchTags").val();
-    activity_array = getActivityArray();
+
+    var all_interop_data = [];
+    var city_data = {};
 
     var headerParams = {
-        // "poi"           : { color: "black",   icon: "map-marker",   name: "points d'intérêts" },
-        // "all_interop"    : { color: "black",   icon: "bullhorn",   name: "all" },
         "wikidata"    : { color: "grey",   icon: "group",   name: "Wikidata" },
         "datagouv"    : { color: "red",   icon: "bullhorn",   name: "DataGouv" },
         "osm"    : { color: "green",   icon: "bullhorn",   name: "Open Street Map" },
         "ods"    : { color: "azure",   icon: "bullhorn",   name: "OpenDatasoft" },
         "datanova"    : { color: "yellow",   icon: "bullhorn",   name: "Datanova" },
-        "pole_emploi" : { color: "blue",   icon: "bullhorn",   name: "Pole emploi" }
+        "pole_emploi" : { color: "blue",   icon: "bullhorn",   name: "Pole emploi" },
+        "etab_recherche" : { color: "blue",   icon: "bullhorn",   name: "Etablissement impliqués dans la recherche" },
+        "eco_doct" : { color: "blue",   icon: "bullhorn",   name: "Ecole doctorales accrédité" },
+        "membres_univ" : { color: "blue",   icon: "bullhorn",   name: "Membres des universités de France" },
+        "struct_recherche" : { color: "blue",   icon: "bullhorn",   name: "Structures de recherche" },
+
     }
 
     if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
@@ -346,6 +350,8 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
         });
 
         $(".btn-directory-type").click(function(){
+
+        	mylog.log('LE TYPE DE DIRECTORY SOUHAITE : ', $(this).data("type") );
             typeD = $(this).data("type");
             putInteropImageOnTitle(typeD);
             initTypeSearchInterop();
@@ -387,16 +393,11 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
             if(!loadingData && !scrollEnd && !isMapEnd){
     		    var heightWindow = $("html").height() - $("body").height();
     		    if( $(this).scrollTop() >= heightWindow - 400){
-                    if (typeD !== "all_interop") {
-                        if (part_data.length == 30) {
-                            scrollEnd = true;
-                            mylog.log("ON RELANCE LA RECHERCHE AVEC LE SCROLL",scrollEnd);
-                            startSearchInterop(currentIndexMin+indexStep, currentIndexMax+indexStep);
-                        } 
-                    } else {
-                        scrollEnd = true;
-                        nb_of_strop = 0;
-                        mylog.log("ON RELANCE LA RECHERCHE AVEC LE SCROLL MAIS EN VOULANT TOUS LES INTEROP DATA");
+    		    	if (typeD == "all_interop" )
+                    	nb_of_stop = 0;
+
+                    if ( (typeD !== "all_interop" && part_data.length == 30) || typeD == "all_interop" ) {
+                    	scrollEnd = true;
                         startSearchInterop(currentIndexMin+indexStep, currentIndexMax+indexStep);
                     }
     		    }
@@ -412,7 +413,6 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
         loadingData = false; 
 
-        // var indexStepInit = 100;
     	var indexStep = 30;
     	var currentIndexMin = 0;
     	var currentIndexMax = indexStep;
@@ -441,7 +441,7 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
         all_interop_url = [];
 
         totalData = 0;
-        nb_of_strop = 0;
+        nb_of_stop = 0;
 
         startNow = 0;
         endNow = 30;
@@ -453,152 +453,108 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     function getUrlForInteropResearch(indexMin, indexMax) {
 
         all_interop_url = [];
+        var url_interop = "";
 
         if (communexion.state == true) {
-
-            var geoShape = getGeoShapeForOsm(communexion.values.geoShape);
+        	var geoShape = getGeoShapeForOsm(communexion.values.geoShape);
             var geofilter = getGeofilterPolygon(communexion.values.geoShape);
-
-            if ( (searchTags == "") && (typeof typeD !== "undefined") ){
-
-                if (typeD == "wikidata") {
-                    var url_interop = getUrlInteropForWiki(communexion.values.wikidataID);
-                } else if (typeD == "datagouv") {
-                    var url_interop = getUrlInteropForDatagouv(communexion.values.inseeCode);
-                } else if (typeD == "osm") {
-                    var url_interop = getUrlInteropForOsm(geoShape);
-                } else if (typeD == "ods") {
-                    var url_interop  = getUrlInteropForOds(geofilter);
-                } else if (typeD == "datanova") {
-                    var url_interop = getUrlInteropForDatanova(geofilter);
-                } else if (typeD == "pole_emploi") {
-                    var url_interop = getUrlInteropForPoleEmploi(communexion.values.inseeCode);
-                } else if (typeD = "all_interop") {
-                    all_interop_url = [];
-
-                    var url_interop = getUrlInteropForWiki(communexion.values.wikidataID);
-                    all_interop_url.push(url_interop);
-                    
-                    var url_interop = getUrlInteropForDatagouv(communexion.values.inseeCode);
-                    all_interop_url.push(url_interop);
-                    
-                    var url_interop = getUrlInteropForOsm(geoShape);
-                    all_interop_url.push(url_interop);          
-                    
-                    var url_interop  = getUrlInteropForOds(geofilter);
-                    all_interop_url.push(url_interop);
-                   
-                    var url_interop = getUrlInteropForDatanova(geofilter);
-                    all_interop_url.push(url_interop);
-                   
-                    var url_interop = getUrlInteropForPoleEmploi(communexion.values.inseeCode);
-                    all_interop_url.push(url_interop);                       
-                }
-            } 
-            else if (typeof typeD !== "undefined") { //searchTags !== ""
-
-                if (typeD == "ods") {
-                    libelle_activity = getLibelleActivity();
-                    var url_interop = getUrlInteropForOds(geofilter, libelle_activity);
-                }  
-                else if (typeD == "osm") {
-                    amenity_filter = getAmenityFilter();
-                    var url_interop = getUrlInteropForOsm(geoShape, amenity_filter);
-                } else if (typeD == "pole_emploi") {
-                    rome_letters = getRomeActivityCodeFromThematic(searchTags);
-                    var url_interop = getUrlInteropForPoleEmploi(communexion.values.inseeCode, rome_letters);
-                } else if (typeD == "all_interop") {
-
-                    amenity_filter = getAmenityFilter();
-                    var url_interop = getUrlInteropForOsm(geoShape, amenity_filter);
-                    all_interop_url.push(url_interop);
-
-                    libelle_activity = getLibelleActivity();
-                    var url_interop = getUrlInteropForOds(geofilter, libelle_activity);
-                    all_interop_url.push(url_interop);
-
-                    rome_letters = getRomeActivityCodeFromThematic(searchTags);
-                    var url_interop = getUrlInteropForPoleEmploi(communexion.values.inseeCode, rome_letters);
-                    all_interop_url.push(url_interop);
-                }
-            }  
-        } else { // communexion.state == false
-
-            scope_value = getScopeValue();
-
+            var city_wikidataID = communexion.values.wikidataID;
+            var city_insee = communexion.values.inseeCode;
+        } else {
+        	scope_value = getScopeValue();
             getCityDataByInsee(scope_value);
+
             var geoShape = getGeoShapeForOsm(city_data.geoShape);
             var geofilter = getGeofilterPolygon(city_data.geoShape);
-
-            if ( (searchTags == "") && (typeof typeD !== "undefined") ){
-
-                if (typeD == "wikidata") {
-                    var url_interop = getUrlInteropForWiki(city_data.wikidataID);
-                } else if (typeD == "datagouv") {
-                    var url_interop = getUrlInteropForDatagouv(city_data.insee);
-                } else if (typeD == "osm") {
-                    var url_interop = getUrlInteropForOsm(geoShape);
-                } else if (typeD == "ods") {
-                    var url_interop  = getUrlInteropForOds(geofilter);
-                } else if (typeD == "datanova") {
-                    var url_interop = getUrlInteropForDatanova(geofilter);
-                } else if (typeD == "pole_emploi") {
-                    var url_interop = getUrlInteropForPoleEmploi(city_data.insee);
-                } else if (typeD = "all_interop") {
-                    all_interop_url = [];
-                    
-                    var url_interop = getUrlInteropForWiki(city_data.wikidataID);
-                    all_interop_url.push(url_interop);
-
-                    var url_interop = getUrlInteropForOsm(geoShape);
-                    all_interop_url.push(url_interop);          
-                    
-                    var url_interop  = getUrlInteropForOds(geofilter);
-                    all_interop_url.push(url_interop);
-                   
-                    var url_interop = getUrlInteropForDatanova(geofilter);
-                    all_interop_url.push(url_interop);
-
-                    if (text_search_name == "") {
-
-                        var url_interop = getUrlInteropForDatagouv(city_data.insee);
-                        all_interop_url.push(url_interop);
-
-                        var url_interop = getUrlInteropForPoleEmploi(city_data.insee);
-                        all_interop_url.push(url_interop);    
-                    }                   
-                }
-            } 
-            else if (typeof typeD !== "undefined") { //searchTags !== ""
-
-                if (typeD == "ods") {
-                    libelle_activity = getLibelleActivity();
-                    var url_interop = getUrlInteropForOds(geofilter, libelle_activity);
-                }  
-                else if (typeD == "osm") {
-                    amenity_filter = getAmenityFilter();
-                    var url_interop = getUrlInteropForOsm(geoShape, amenity_filter);
-                } else if (typeD == "pole_emploi") {
-                    rome_letters = getRomeActivityCodeFromThematic(searchTags);
-                    var url_interop = getUrlInteropForPoleEmploi(city_data.insee, rome_letters);
-                } else if (typeD == "all_interop") {
-
-                    amenity_filter = getAmenityFilter();
-                    var url_interop = getUrlInteropForOsm(geoShape, amenity_filter);
-                    all_interop_url.push(url_interop);
-
-                    libelle_activity = getLibelleActivity();
-                    var url_interop = getUrlInteropForOds(geofilter, libelle_activity);
-                    all_interop_url.push(url_interop);
-
-                    if (text_search_name == "") {
-                        rome_letters = getRomeActivityCodeFromThematic(searchTags);
-                        var url_interop = getUrlInteropForPoleEmploi(city_data.insee, rome_letters);
-                        all_interop_url.push(url_interop);
-                    }
-                }
-            }  
+            var city_wikidataID = city_data.wikidataID;
+            var city_insee = city_data.insee;
         }
+
+        mylog.log("LE NOUVEAU GEOSHAPE  : ", geoShape);
+
+        if (searchTags !== "") {
+        	var libelle_activity = getLibelleActivity();
+            var amenity_filter = getAmenityFilter();
+            var rome_letters = getRomeActivityCodeFromThematic(searchTags);
+        } else {
+        	var libelle_activity = null;
+            var amenity_filter = null;
+            var rome_letters = null;
+        }
+
+        if (typeD !== "undefined") {
+	        if (typeD == "wikidata") {
+	            url_interop = getUrlInteropForWiki(city_wikidataID);
+	        } else if (typeD == "datagouv") {
+	            url_interop = getUrlInteropForDatagouv(city_insee);
+	        } else if (typeD == "osm") {
+	            url_interop = getUrlInteropForOsm(geoShape, amenity_filter);
+	        } else if (typeD == "ods") {
+	            url_interop  = getUrlInteropForOds(geofilter, libelle_activity);
+	        } else if (typeD == "datanova") {
+	            url_interop = getUrlInteropForDatanova(geofilter);
+	        } else if (typeD == "pole_emploi") {
+	            url_interop = getUrlInteropForPoleEmploi(city_insee, rome_letters);
+	        } else if (typeD == "membres_univ") {
+	        	url_interop = getUrlInteropForEducMembre(geofilter);
+	        } else if (typeD == "etab_recherche") {
+	        	url_interop = getUrlInteropForEducEtab(geofilter);
+	        } else if (typeD == "eco_doct") {
+	        	url_interop = getUrlInteropForEducEcole(geofilter);
+	        } else if (typeD == "struct_recherche") {
+	        	url_interop = getUrlInteropForEducStruct(geofilter);
+	        }
+
+	        else if (typeD == "all_interop") {
+	            all_interop_url = [];
+	            if (searchTags == "") {
+	            	url_interop = getUrlInteropForWiki(city_wikidataID);
+		            all_interop_url.push(url_interop);
+
+		            url_interop = getUrlInteropForDatagouv(city_insee);
+		            all_interop_url.push(url_interop);
+
+		            url_interop = getUrlInteropForOsm(geoShape, amenity_filter);
+		            all_interop_url.push(url_interop);
+
+		            url_interop  = getUrlInteropForOds(geofilter, libelle_activity);
+		            all_interop_url.push(url_interop);
+
+		            url_interop = getUrlInteropForDatanova(geofilter);
+		            all_interop_url.push(url_interop);
+  
+		            url_interop = getUrlInteropForEducMembre(geofilter);
+					all_interop_url.push(url_interop);
+
+					url_interop = getUrlInteropForEducEtab(geofilter);
+					all_interop_url.push(url_interop);
+
+					url_interop = getUrlInteropForEducEcole(geofilter);
+					all_interop_url.push(url_interop);
+
+					url_interop = getUrlInteropForEducStruct(geofilter);
+					all_interop_url.push(url_interop);
+
+		            if (text_search_name == "") {
+			            url_interop = getUrlInteropForPoleEmploi(city_insee, rome_letters);
+			            all_interop_url.push(url_interop);     
+		            }
+	            } else {
+	            	url_interop = getUrlInteropForOsm(geoShape, amenity_filter);
+		            all_interop_url.push(url_interop);
+
+		            url_interop  = getUrlInteropForOds(geofilter, libelle_activity);
+		            all_interop_url.push(url_interop);
+
+	 				if (text_search_name == "") {
+			            url_interop = getUrlInteropForPoleEmploi(city_insee, rome_letters);
+			            all_interop_url.push(url_interop);     
+		            }
+	            }                
+	        }
+        }
+
+        mylog.log('URL INTEROP', url_interop);
         return url_interop;
     }
 
@@ -685,313 +641,290 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 	    }
 
     	$.ajax({
-        type: "POST",
-        url: url_interop,
-        dataType: "json",
-        error: function (data){
-            mylog.log("error autocomplete INTEROP search"); mylog.dir(data);     
-            //signal que le chargement est terminé
-            loadingData = false;     
-        },
-        success: function(data){ mylog.log("success autocomplete INTEROP search", data); //mylog.dir(data);
+	        type: "POST",
+	        url: url_interop,
+	        dataType: "json",
+	        error: function (data){
+	            mylog.log("error autocomplete INTEROP search"); mylog.dir(data);     
+	            //signal que le chargement est terminé
+	            loadingData = false;     
+	        },
+	        success: function(data){ mylog.log("success autocomplete INTEROP search", data); //mylog.dir(data);
 
-            all_data_for_map = [];
+	        	toastr.success("Une partie des données est arrivé");
 
-            if (data.length > 0) {
-                if ((data[0]["source"]["key"] == "convert_ods") || (data[0]["source"]["key"] == "convert_datanova")) {
-                    mylog.log('CE SONT LES DATA DE ODS OU DATANOVA');
-                    part_data = data;
-                } else {
-                    part_data = data.slice(startNow, endNow);
-                }
-            } else {
-                part_data = [];
-            }
+	            all_data_for_map = [];
 
-            mylog.log('PART_DATA POUR CHAQUE INTEROP RESEARCH : ', part_data);
+	            if (data.length > 0) {
+	                if (data[0]["source"]["key"] == "convert_ods" || data[0]["source"]["key"] == "convert_datanova" || data[0]["source"]["key"] == "convert_educ_struct" || data[0]["source"]["key"] == "convert_educ_etab" || data[0]["source"]["key"] == "convert_educ_membre" || data[0]["source"]["key"] == "convert_educ_ecole") {
+	                    part_data = data;
+	                } else {
+	                    part_data = data.slice(startNow, endNow);
+	                }
+	            } else {
+	                part_data = [];
+	            }
 
-            $.each(part_data,function(index,value) {
-                all_interop_data.push(value);
-            });
+	            mylog.log('PART_DATA POUR CHAQUE INTEROP RESEARCH : ', part_data);
 
-            if (typeD == "all_interop") {
+	            $.each(part_data,function(index,value) {
+	                all_interop_data.push(value);
+	            });
 
-                if (searchTags == "") {
-                    if (text_search_name == "") {
-                        var nb_of_return = 5;
-                    } else {
-                        var nb_of_return = 3;
-                    }
-                } else {
-                    if (text_search_name == "") {
-                        var nb_of_return = 2;
-                    } else {
-                        var nb_of_return = 1;
-                    }
-                }
+	            // if (typeD == "all_interop") {
+	                // if (searchTags == "") {
+	                //     if (text_search_name == "") {
+	                //         var nb_of_return = 9;
+	                //     } else {
+	                //         var nb_of_return = 8;
+	                //     }
+	                // } else {
+	                //     if (text_search_name == "") {
+	                //         var nb_of_return = 2;
+	                //     } else {
+	                //         var nb_of_return = 1;
+	                //     }
+	                // }
 
-                if (nb_of_strop < nb_of_return) {
-                    nb_of_strop++;
-                    return;
-                } else {
-                    mylog.log("Il ne faut plus faire de return");
-                }
-            }
+	                // if (nb_of_stop < nb_of_return) {
+	                //     nb_of_stop++;
+	                //     return;
+	                // } else {
+	                //     mylog.log("Il ne faut plus faire de return");
+	                // }
+	            // }
 
-            startNow = startNow + 30;
-            endNow = endNow + 30;
+	            startNow = startNow + 30;
+	            endNow = endNow + 30;
 
-            if(!part_data){ toastr.error(part_data.content); }
-            else
-            {
-                countData = 0;
+	            if(!part_data){ toastr.error(part_data.content); }
+	            else {
+	                countData = 0;
 
-                if (typeD !== "all_interop") {
-                    $.each(part_data, function(i, v) { 
-                        countData++; 
-                    });
-                } else {
-                    $.each(all_interop_data, function(index, value) {
-                        countData++;
-                    });
-                }
+	                // if (typeD !== "all_interop") {
+	                //     $.each(part_data, function(i, v) { 
+	                //         countData++; 
+	                //     });
+	                // } else {
+	                //     $.each(all_interop_data, function(index, value) {
+	                //         countData++;
+	                //     });
+	                // }
 
-                totalData += countData;
-            
-                str = "";
-                var city, postalCode = "";
+	                $.each(part_data, function(i, v) { 
+	                    countData++; 
+	                });
 
-                //parcours la liste des résultats de la recherche
-                //mylog.dir(data);
-                str += '<div class="col-md-12 text-left" id="nb_results_search">';
-                str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+
-                        "<i class='fa fa-angle-down'></i> " + totalData + " résultats ";
-                str += "<small>";
-                if(typeof headerParams != "undefined"){
-                    searchType = [];
-                    if (typeD == "all_interop") {
-                        $.each(headerParams, function(index, value) {
-                            searchType.push(index);
-                        });
-                    } else {
-                        searchType.push(typeD);
-                    }
-                    $.each(searchType, function(key, val){
-                        mylog.log(headerParams[val]);
-                        var params = headerParams[val];
-                        str += "<span class='text-"+params.color+"'>"+
-                                "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
-                              "</span> ";
-                    });//console.log("myMultiTags", myMultiTags);
-                    $.each(myMultiTags, function(key, val){
-                        var params = headerParams[val];
-                        str += "<span class='text-dark hidden-xs pull-right'>"+
-                                "#"+key+
-                              "</span> ";
-                    });
-                }
-                str += "</small>";
-                str += "</h4>";
-                str += "<hr style='float:left; width:100%;'/>";
-                str += "</div>";
+	                totalData += countData;
+	            
+	                str = "";
+	                var city, postalCode = "";
 
-                mylog.log("ON APELLE LE SHOW DIRECTORY RESULT");
+	                //parcours la liste des résultats de la recherche
+	                //mylog.dir(data);
+	                str += '<div class="col-md-12 text-left" id="nb_results_search">';
+	                str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+
+	                        "<i class='fa fa-angle-down'></i> " + totalData + " résultats ";
+	                str += "<small>";
+	                if(typeof headerParams != "undefined"){
+	                    searchType = [];
+	                    if (typeD == "all_interop") {
+	                        $.each(headerParams, function(index, value) {
+	                            searchType.push(index);
+	                        });
+	                    } else {
+	                        searchType.push(typeD);
+	                    }
+	                    $.each(searchType, function(key, val){
+	                        mylog.log(headerParams[val]);
+	                        var params = headerParams[val];
+	                        str += "<span class='text-"+params.color+"'>"+
+	                                "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
+	                              "</span> ";
+	                    });//console.log("myMultiTags", myMultiTags);
+	                    $.each(myMultiTags, function(key, val){
+	                        var params = headerParams[val];
+	                        str += "<span class='text-dark hidden-xs pull-right'>"+
+	                                "#"+key+
+	                              "</span> ";
+	                    });
+	                }
+	                str += "</small>";
+	                str += "</h4>";
+	                str += "<hr style='float:left; width:100%;'/>";
+	                str += "</div>";
 
-                if (typeD == "all_interop") {
-                    str += directory.showResultsDirectoryHtml(all_interop_data);
-                } else {
-                    str += directory.showResultsDirectoryHtml(part_data);
-                }
-              
-                if(str == "") { 
-                    $.unblockUI();
-                    showMap(false);
-                    $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
-                    if(indexMin == 0){
-                        //ajout du footer   
-                        var msg = "<i class='fa fa-ban'></i> Aucun résultat";    
-                        if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
-                        str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
-                        str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
-                        str += "</div>";
-                        $("#dropdown_search").html(str);
-                        $("#searchBarText").focus();
-                    } 
-                }
-                else
-                {       
-                    //ajout du footer      	
-                    str += '<div class="pull-left col-md-12 text-center" id="footerDropdown" style="width:100%;">';
-                    str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " résultats</h3>";
-                    //str += '<span class="" id="">Complétez votre recherche pour un résultat plus précis</span></center><br/>';
-                    str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
-                    str += "</div>";
+	                mylog.log("ON APELLE LE SHOW DIRECTORY RESULT");
 
-                    //si on n'est pas sur une première recherche (chargement de la suite des résultat)
-                    if(indexMin > 0){
+	                // if (typeD == "all_interop") {
+	                //     str += directory.showResultsDirectoryHtml(all_interop_data);
+	                // } else {
+	                //     str += directory.showResultsDirectoryHtml(part_data);
+	                // }
 
-                        mylog.log("ON CHARGE LA SUITE DES RESULTATS");
+	                mylog.log("LE NOMBRE D'ELEMENT DANS LE PART_DATA", Object.keys(part_data).length);
 
-                        //on supprime l'ancien bouton "afficher plus de résultat"
-                        $("#btnShowMoreResult").remove();
-                        //on supprimer le footer (avec nb résultats)
-                        $("#footerDropdown").remove();
+	                if ((Object.keys(part_data).length > 0 && typeD == "all_interop") || (typeD !== "all_interop") ){
+		                str += directory.showResultsDirectoryHtml(part_data);
+	                
+	              
+		                if(str == "") { 
+		                    $.unblockUI();
+		                    showMap(false);
+		                    $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
+		                    if(indexMin == 0){
+		                        //ajout du footer   
+		                        var msg = "<i class='fa fa-ban'></i> Aucun résultat";    
+		                        if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
+		                        str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
+		                        str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
+		                        str += "</div>";
+		                        $("#dropdown_search").html(str);
+		                        $("#searchBarText").focus();
+		                    } 
+		                }
+		                else
+		                {       
+		                    //ajout du footer      	
+		                    str += '<div class="pull-left col-md-12 text-center" id="footerDropdown" style="width:100%;">';
+		                    str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " résultats</h3>";
+		                    //str += '<span class="" id="">Complétez votre recherche pour un résultat plus précis</span></center><br/>';
+		                    str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
+		                    str += "</div>";
 
-                        //on calcul la valeur du nouveau scrollTop
-                        var heightContainer = $(".main-container")[0].scrollHeight - 180;
-                        //on affiche le résultat à l'écran
-                        $("#dropdown_search").append(str);
-                        //on scroll pour afficher le premier résultat de la dernière recherche
-                        $(".my-main-container").animate({"scrollTop" : heightContainer}, 1700);
-                        //$(".my-main-container").scrollTop(heightContainer);
+		                    //si on n'est pas sur une première recherche (chargement de la suite des résultat)
+		                    if(indexMin > 0){
 
-                    //si on est sur une première recherche
-                    }else{
-                        //on affiche le résultat à l'écran
-                        mylog.log("ON CHARGE LES PREMIERS RESULTATS");
+		                        mylog.log("ON CHARGE LA SUITE DES RESULTATS");
 
-                        $("#dropdown_search").html(str);
+		                        //on supprime l'ancien bouton "afficher plus de résultat"
+		                        $("#btnShowMoreResult").remove();
+		                        //on supprimer le footer (avec nb résultats)
+		                        $("#footerDropdown").remove();
 
-                        if(typeof myMultiTags != "undefined"){
-                            $.each(myMultiTags, function(key, value){ //mylog.log("binding bold "+key);
-                                $("[data-tag-value='"+key+"'].btn-tag").addClass("bold");
-                            });
-                        } 
-                    }
+		                        //on calcul la valeur du nouveau scrollTop
+		                        var heightContainer = $(".main-container")[0].scrollHeight - 180;
+		                        //on affiche le résultat à l'écran
+		                        $("#dropdown_search").append(str);
+		                        //on scroll pour afficher le premier résultat de la dernière recherche
+		                        $(".my-main-container").animate({"scrollTop" : heightContainer}, 1700);
+		                        //$(".my-main-container").scrollTop(heightContainer);
 
-                    indexMin = startNow;
-                    indexMax = endNow;
+		                    //si on est sur une première recherche
+		                    }else{
+		                        //on affiche le résultat à l'écran
+		                        mylog.log("ON CHARGE LES PREMIERS RESULTATS");
 
-                    if (typeD == "all_interop") {
-                        $.each(all_interop_data, function(index, value) {
+		                        $("#dropdown_search").html(str);
 
-                            if (typeof(value.geo) !== "undefined")  {
-                                createAndPushItemForMap(value);
-                            } 
-                        });
-                    } else {
-                        $.each(part_data, function(index, value) {
-                            createAndPushItemForMap(value);
-                        });
-                    }
+		                        if(typeof myMultiTags != "undefined"){
+		                            $.each(myMultiTags, function(key, value){ //mylog.log("binding bold "+key);
+		                                $("[data-tag-value='"+key+"'].btn-tag").addClass("bold");
+		                            });
+		                        } 
+		                    }
 
-                    if (typeD == "datagouv") {
-                        contextTestMap = [];
-                    }
+		                    indexMin = startNow;
+		                    indexMax = endNow;
 
-                    Sig.showMapElements(Sig.map, contextTestMap);
+		                    // if (typeD == "all_interop") {
+		                    //     $.each(all_interop_data, function(index, value) {
+		                    //         if (typeof(value.geo) !== "undefined")  {
+		                    //             createAndPushItemForMap(value);
+		                    //         } 
+		                    //     });
+		                    // } else {
+		                        $.each(part_data, function(index, value) {
+		                            createAndPushItemForMap(value);
+		                        });
+		                    // }
+
+		                    if (typeD == "datagouv") {
+		                        contextTestMap = [];
+		                    }
+
+		                    Sig.showMapElements(Sig.map, contextTestMap);
 
 
-                    $('.add2fav').attr('target', '_blank');
-                    //remet l'icon "loupe" du bouton search
-                    $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
-                    //active les link lbh
-                    // bindLBHLinks();
+		                    $('.add2fav').attr('target', '_blank');
+		                    //remet l'icon "loupe" du bouton search
+		                    $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
+		                    //active les link lbh
+		                    // bindLBHLinks();
 
-                    $(".start-new-communexion").click(function(){  
-                        setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
-                        $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
-                        $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
-                        activateGlobalCommunexion(true);
-                    });
+		                    $(".start-new-communexion").click(function(){  
+		                        setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
+		                        $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
+		                        $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
+		                        activateGlobalCommunexion(true);
+		                    });
 
-                    $.unblockUI();
-                    $("#map-loading-data").html("");
+		                    $.unblockUI();
+		                    $("#map-loading-data").html("");
 
-                    //initialise les boutons pour garder une entité dans Mon répertoire (boutons links)
-                    // initBtnLink();
-                } //end else (str=="")
+		                    //initialise les boutons pour garder une entité dans Mon répertoire (boutons links)
+		                    // initBtnLink();
+		                } //end else (str=="")
 
-                //signal que le chargement est terminé
-                loadingData = false;
+		                //signal que le chargement est terminé
+		                loadingData = false;
 
-                //quand la recherche est terminé, on remet la couleur normal du bouton search
-                $(".btn-start-search").removeClass("bg-azure");
-        	}
+		                //quand la recherche est terminé, on remet la couleur normal du bouton search
+		                $(".btn-start-search").removeClass("bg-azure");
+		        	}
 
-            //si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
-            //mylog.log("SHOW MORE ?", countData, indexStep);
+		            //si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
+		            //mylog.log("SHOW MORE ?", countData, indexStep);
 
-            if(countData < 30){
-                $("#btnShowMoreResult").remove(); 
-                scrollEnd = true;
-            }else{
-                scrollEnd = false;
-            }
+		            if(countData < 30){
+		                $("#btnShowMoreResult").remove(); 
+		                scrollEnd = true;
+		            }else{
+		                scrollEnd = false;
+		            }
 
-            if(typeof searchCallback == "function") {
-                searchCallback();
-            }
+		            if(typeof searchCallback == "function") {
+		                searchCallback();
+		            }
 
-            // if( typeof page != "undefined" && page == "agenda" && typeof showResultInCalendar != "undefined")
-            //   showResultInCalendar(data);
+		            // if( typeof page != "undefined" && page == "agenda" && typeof showResultInCalendar != "undefined")
+		            //   showResultInCalendar(data);
 
-            // $.each(part_data, function(index,value) {
-            //     value.id = value.name;
-            // });
+		            // $.each(part_data, function(index,value) {
+		            //     value.id = value.name;
+		            // });
 
-            if(mapElements.length==0) mapElements = part_data;
-            else $.extend(mapElements, part_data);            
+		            if(mapElements.length==0) mapElements = part_data;
+		            else $.extend(mapElements, part_data);     
+		        } 
 
-            // if (part_data.length < 30) {
-            //     $("#btnShowMoreResult").addClass("hidden");
-            //     return;
-            // }
+	            // if (part_data.length < 30) {
+	            //     $("#btnShowMoreResult").addClass("hidden");
+	            //     return;
+	            // }
 
-            // $.each(mapElements, function(index, value) {
-            //     new_item_id = parseFloat(value.geo.latitude) + parseFloat(value.geo.longitude);
-            //     new_item_id = new_item_id.toString();
-            //     new_item_id = new_item_id.replace('\.', '');
-            //     new_item_id = parseInt(new_item_id);
+	            // $.each(mapElements, function(index, value) {
+	            //     new_item_id = parseFloat(value.geo.latitude) + parseFloat(value.geo.longitude);
+	            //     new_item_id = new_item_id.toString();
+	            //     new_item_id = new_item_id.replace('\.', '');
+	            //     new_item_id = parseInt(new_item_id);
 
-            //     value._id = {};
-            //     value._id.$id = new_item_id;
+	            //     value._id = {};
+	            //     value._id.$id = new_item_id;
 
-            // });
-            
-            // affiche les éléments sur la carte
-            // if(CoSigAllReadyLoad)
-            // Sig.showMapElements(Sig.map, mapElements);
-            // else{
-            //   setTimeout(function(){ 
-            //     Sig.showMapElements(Sig.map, mapElements);
-            //   }, 3000);
-            // }
-            }
+	            // });
+	            
+	            // affiche les éléments sur la carte
+	            // if(CoSigAllReadyLoad)
+	            // Sig.showMapElements(Sig.map, mapElements);
+	            // else{
+	            //   setTimeout(function(){ 
+	            //     Sig.showMapElements(Sig.map, mapElements);
+	            //   }, 3000);
+	            // }
+	        }
         });
 	}
-
-    function getCityDataByInsee(insee) {
-
-        $.ajax({
-            type: "GET",
-            url: baseUrl + "/co2/interoperability/get/insee/"+insee,
-            async: false,
-            success: function(data){ mylog.log("succes get CityDataByInsee", data); //mylog.dir(data);
-                // city_data = data;
-                $.each(data, function(index, value) {
-                    city_data = value;
-                });
-            }
-        });
-
-        return city_data;
-    }
-
-    function getScopeValue() {
-
-        $.each(myMultiScopes, function(index, value) {
-            if (value.active == true) {
-                if (index.indexOf("_") > 0) {
-                    scope_value = index;
-                } else {
-                    scope_value = value.name;
-                }
-            }
-        });
-
-        return scope_value;
-    }
 
     function putInteropImageOnTitle(type) {
 
@@ -1000,31 +933,23 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
             ' Module d\'intéropérabilité'
         );
 
+        var urlImg = "<img width=100 style='margin-top:20px;' src='<?php echo $this->module->assetsUrl; ?>";
+
         if (type == "wikidata") {
-            $(".moduleTitle").append(
-                "<img width=100 style='margin-top:20px;' src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo-wikidata.png'>"
-            );
+           	urlImg += "/images/logos/logo-wikidata.png'>";
         } else if (type == "datagouv") {
-            $(".moduleTitle").append(
-                "<img width=100 style='margin-top:20px;' src='<?php echo $this->module->assetsUrl; ?>/images/logos/data-gouv-logo.png'>" 
-            );
+           	urlImg += "/images/logos/data-gouv-logo.png'>";
         } else if (type == "osm") {
-            $(".moduleTitle").append(
-                "<img width=100 style='margin-top:20px;' src='<?php echo $this->module->assetsUrl; ?>/images/logos/OSM-logo.png'>"
-            );
+        	urlImg += "/images/logos/OSM-logo.png'>";
         } else if (type == "ods") {
-            $(".moduleTitle").append(
-                "<img width=100 style='margin-top:20px;' src='<?php echo $this->module->assetsUrl; ?>/images/logos/opendata-soft-logo.png'>"
-            );
+            urlImg += "/images/logos/opendata-soft-logo.png'>";
         } else if (type == "datanova") {
-            $(".moduleTitle").append(
-                "<img width=200 style='margin-top:20px;' src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo-laposte.png'>"
-            );
+            urlImg += "/images/logos/logo-laposte.png'>";
         } else if (type == "pole_emploi") {
-            $(".moduleTitle").append(
-                "<img width=100 style='margin-top:20px;' src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo_pole_emploi.png'>"
-            );
-        }
+            urlImg += "/images/logos/logo_pole_emploi.png'>";
+		}
+
+		$(".moduleTitle").append(urlImg);
     }
 
     function createAndPushItemForMap(value) {
@@ -1051,9 +976,9 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
     function getAmenityFilter() {
 
-        theme_array = getThemeArray();
+        var theme_array = getThemeArray();
 
-        amenity_filter = "";
+        var amenity_filter = "";
 
         $.each(theme_array, function(index, value) {
             if (searchTags == index) {
@@ -1072,104 +997,24 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
     function getLibelleActivity() {
 
-        libelle_activity = "";
+        var activity_array = getActivityArray();
+
+        var libelle_activity = "";
 
         $.each(activity_array, function(index, value) {
             if (searchTags == index) {
-                $.each(activity_array, function(index, value) {
-                    if (searchTags == index) {
-                        $.each(value, function(index2, value2) {
-                            libelle_activity += "&refine.libapen[]="+value2;
-                        });
-                    }
+                $.each(value, function(index2, value2) {
+                    libelle_activity += "&refine.libapen[]="+value2;
                 });
-                if (libelle_activity == "") {
-                    libelle_activity = "&refine.libapen[]=NO AVAILABLE ACTIVITY";
-                }
             }
         });
+        if (libelle_activity == "") {
+            libelle_activity = "&refine.libapen[]=NO AVAILABLE ACTIVITY";
+        }
 
         libelle_activity += "&disjunctive.libapen=true";
 
         return libelle_activity;
     }
 
-    function getUrlInteropForWiki(wikidataID) {
-
-        if (text_search_name == "") {
-            var url_wiki = "http://127.0.0.1/ph/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+wikidataID+".json";
-        } else {
-            var url_wiki = "http://127.0.0.1/ph/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+wikidataID+".json&text_filter="+text_search_name;
-        }
-
-        return url_wiki;
-    }
-
-    function getUrlInteropForDatagouv(insee) {
-
-        var url_datagouv = "http://127.0.0.1/ph/api/convert/datagouv?url=https://www.data.gouv.fr/api/1/spatial/zone/fr/town/"+insee+"/datasets";
-
-        return url_datagouv;
-    }
-
-    function getUrlInteropForOsm(geoShape, amenity_filter = null) {
-
-        if (amenity_filter == null) {
-            if (text_search_name == "") {
-                var url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"](poly:"'+geoShape+'");out%20'+endNow+';';
-            } else {
-                var url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'",i](poly:"'+geoShape+'");out%20'+endNow+';';
-            }
-        } else {
-
-            if (amenity_filter == "") {
-                var url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"="NIMPORTEQUOI"](poly:"'+geoShape+'");out%20'+endNow+';';
-            } else {
-                if (text_search_name == "") {
-                    var url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
-                } else {
-                    var url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'"]["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
-                }
-            }
-        }                         
-
-        return url_osm;
-    }
-
-    function getUrlInteropForOds(geofilter, filter = null) {
-
-        if (text_search_name == "") {
-            var url_ods = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-        } else {
-            url_ods = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&q="+text_search_name+"&sort=datemaj&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-        }
-
-        if (filter !== null) {
-            url_ods = url_ods + filter;
-        }
-
-        return url_ods;
-    }
-
-    function getUrlInteropForDatanova(geofilter) {
-
-        if (text_search_name == "") {
-            var url_datanova = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-        } else {
-            var url_datanova = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&q="+text_search_name+"rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
-        }
-
-        return url_datanova;
-    }
-
-    function getUrlInteropForPoleEmploi(insee, filter = null) {
-
-        if (filter == null) {
-            var url_pole_emploi = "http://127.0.0.1/ph/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+insee+"%27%20LIMIT%20"+endNow;
-        } else {
-            url_pole_emploi = "http://127.0.0.1/ph/api/convert/poleemploi?rome_activity="+filter+"&url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+insee+"%27%20LIMIT%20"+endNow;
-        }
-
-        return url_pole_emploi;
-    }
 </script>

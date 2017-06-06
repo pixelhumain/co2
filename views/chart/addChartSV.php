@@ -3,7 +3,7 @@ $cssAnsScriptFilesTheme = array(
 	'/plugins/jQuery-Knob/js/jquery.knob.js',
 	'/plugins/jQuery-Smart-Wizard/js/jquery.smartWizard.js',
 	'/plugins/jquery-validation/dist/jquery.validate.min.js',
-	'/js/jsonHelper.js',
+//	'/js/jsonHelper.js',
 	'/plugins/jquery.dynSurvey/jquery.dynSurvey.js',
 );
 

@@ -495,7 +495,7 @@ class CommunecterController extends Controller
       ),
       "rooms" => array('href' => "/ph/communecter/app/rooms", "public" => true),
       "survey" => array('href' => "/ph/communecter/app/survey", "public" => true),
-    ),
+    // ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick"),
     

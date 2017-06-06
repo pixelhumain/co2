@@ -13,6 +13,13 @@
 ----------------------------------------------------
 ----------------------------------------------------
 * Version 0.2
+
+** @Rapha
+*** ajout des geoShape au ville qui en ont pas
+/co2/datamigration/AddGeoShapeMissing
+*** change le type des telephones de object en array
+/co2/datamigration/ChangePhoneObjectToArray
+
 ** @Bouboule : 
 **** Bash de reprise des data dans les chart des projets
 /communecter/datamigration/RefactorChartProjectData
@@ -612,6 +619,30 @@ db.organizations.find().forEach(function(doc){
     } 
 });
 
+TANGO - 22/05/2017
+---------------------------------------------------
+batch refactor news for SHARE
+---------------------------------------------------
+
+db.news.find({}).forEach(function(doc){ 
+    if(typeof doc.targetIsAuthor !="undefined" && doc.targetIsAuthor == "true"){
+        db.news.update({"_id":doc._id},{'$set':
+        {'sharedBy':[
+            {'id': doc.target.id,
+             'type':doc.target.type,
+             'updated': doc.created 
+            }]
+        }})
+    }else{
+        db.news.update({"_id":doc._id},{'$set':
+        {'sharedBy':[
+            {'id': doc.author,
+             'type':'citoyens',
+             'updated': doc.created 
+            }]
+        }})
+     }
+})
 
 
 ---------------------------------------------------

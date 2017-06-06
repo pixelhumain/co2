@@ -36,15 +36,17 @@ dynForm = {
 		    }
 	    },
 	    beforeBuild : function(){
-	    	dyFObj.setMongoId('ressource');
+	    	dyFObj.setMongoId('ressource', function(){
+	    		uploadObj.gotoUrl = '#page.type.ressource.id.'+uploadObj.id;
+	    	});
 	    },
 		afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-		    else {
-		    	dyFObj.closeForm();	
-		    	urlCtrl.loadByHash( location.hash );
-		    }
+		    else { 
+	          dyFObj.closeForm(); 
+	          urlCtrl.loadByHash( uploadObj.gotoUrl );
+	        }
 	    },
 	    actions : {
 	    	clear : function() {
@@ -140,7 +142,7 @@ dynForm = {
             },
             subtype : dyFInputs.inputHidden(),
             name : dyFInputs.name("ressource"),
-	        image : dyFInputs.image( "#ressource.detail.id."+uploadObj.id ),
+	        image : dyFInputs.image(),
             description : dyFInputs.textarea("Description", "..."),
             location : dyFInputs.location,
             tags :dyFInputs.tags(),

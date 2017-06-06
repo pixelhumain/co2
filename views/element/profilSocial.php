@@ -1,5 +1,4 @@
 <?php 
-
 	HtmlHelper::registerCssAndScriptsFiles( 
 		array(  '/css/onepage.css',
 				'/vendor/colorpicker/js/colorpicker.js',
@@ -13,6 +12,8 @@
 		) , 
 	Yii::app()->theme->baseUrl. '/assets');
 
+
+
 	$cssAnsScriptFilesTheme = array(
 		"/plugins/jquery-cropbox/jquery.cropbox.css",
 		"/plugins/jquery-cropbox/jquery.cropbox.js",
@@ -20,6 +21,7 @@
 		'/plugins/showdown/showdown.min.js',
 		//MARKDOWN
 		'/plugins/to-markdown/to-markdown.js',
+		'/plugins/jquery.qrcode/jquery-qrcode.min.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	
@@ -61,7 +63,40 @@
 		display: none;
 	}
 <?php } ?>
-</style>	
+
+<?php if($typeItem == "events"){ ?>
+	.hide-event{
+		display: none;
+	}
+<?php } ?>
+
+
+#ajax-modal .modal-content,
+#formContact .modal-content{
+	background-color: rgba(0,0,0,0.6);
+}
+#ajax-modal .container,
+#formContact .container{
+	background-color: white;
+	border-radius: 4px;
+}
+#ajax-modal.portfolio-modal,
+#formContact.portfolio-modal {
+	background-color: transparent;
+}
+#ajax-modal .close-modal .lr,
+#ajax-modal .close-modal .rl,
+#formContact .close-modal .lr,
+#formContact .close-modal .rl{
+	background-color: white;
+}
+
+</style>
+
+<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
+<?php 
+	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
+
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
@@ -183,9 +218,11 @@
 		  <?php } ?>
 
 
-		  <?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
+		  <?php if(@Yii::app()->session["userId"])
+		  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
+		  			($type==Person::COLLECTION && (string)$element["_id"]==@Yii::app()->session["userId"])){ ?>
 		  <button type="button" class="btn btn-default bold letter-green hidden-xs" 
-		  			data-target="#selectCreate" data-toggle="modal" style="border-right:0px!important;">
+		  		  id="open-select-create" style="border-right:0px!important;">
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
 		  </button>
 		  <?php } ?>
@@ -250,9 +287,9 @@
 									<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
 								</a>
 							</li>
-							<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+							<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) { ?>
 				  			<li class="text-left">
-				               	<a href="javascript:;" class="bg-white text-red">
+				               	<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">
 				                    <i class="fa fa-trash"></i> 
 				                    <?php echo Yii::t("common", "Delete {what}", 
 				                    					array("{what}"=> 
@@ -319,7 +356,94 @@
 	    ?>
 	</div>
 
-	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section"">
+	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-9 padding-50 margin-top-50 links-main-menu hidden" 
+		 id="div-select-create">
+		<div class="col-md-12 col-sm-12 col-xs-12 padding-15 shadow2 bg-white ">
+	       
+	       <h4 class="text-center margin-top-15" style=""><img class="img-circle" src="<?php echo $thumbAuthor; ?>" height=30 width=30 style="margin-top:-10px;">
+	       	<a class="btn btn-link pull-right text-dark" id="btn-close-select-create" style="margin-top:-10px;">
+	       		<i class="fa fa-times-circle fa-2x"></i>
+	       	</a>
+	       
+	       	<span class="name-header"><?PHP echo @$element["name"]; ?></span>
+	       <br>
+	       	<i class="fa fa-plus-circle"></i> Publier du contenu sur cette page
+	       <br><small>Que souhaitez-vous publier ?</small>
+	       </h4>
+
+	        <div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
+
+	        <button data-form-type="event"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-orange">
+	            <h6><i class="fa fa-calendar fa-2x bg-orange"></i><br> Événement</h6>
+	            <small>Faire connaitre un événement<br>Inviter des participants<br>Informer votre réseau</small>
+	        </button>
+	        <button data-form-type="classified"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure hide-event">
+	            <h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> Annonce</h6>
+	            <small>Publier une petite annonce<br>Partager Donner Vendre Louer<br>Matériel Immobilier Emploi</small>
+	        </button>
+
+	        <button data-form-type="poi"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green-poi">
+	            <h6><i class="fa fa-map-marker fa-2x bg-green-poi"></i><br> Point d'intérêt</h6>
+	            <small>Faire connaître un lieu intéressant<br>Contribuer à la carte collaborative<br>Valoriser son territoire</small>
+	        </button>
+
+	        
+	        <button data-form-type="url" data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-url">
+	            <h6><i class="fa fa-link fa-2x bg-url"></i><br> URL</h6>
+	            <small>Partager une addresse web<br>Vos sites favoris<br>Des info importantes...</small>
+	        </button>
+
+
+	        <button data-form-type="project"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-purple hide-event">
+	            <h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> Projet</h6>
+	            <small>Faire connaitre un projet<br>Trouver du soutien<br>Construire une communauté</small>
+	        </button>
+
+			<button data-form-type="contact"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-blue hide-citoyens">
+	            <h6><i class="fa fa-envelope fa-2x bg-blue"></i><br> Contact</h6>
+	            <small>Définir les rôles de chacun<br>Faciliter la communication<br>Interne et externe</small>
+	        </button>
+
+			<div class="section-create-page">
+	        
+	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GROUP; ?>"  data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 letter-turq">
+	                <h6><i class="fa fa-circle-o fa-2x bg-turq"></i><br> Groupe</h6>
+	                <small>Créer un groupe<br>Partager vos centres d'intêrets<br>Discuter Communiquer S'amuser</small>
+	            </button>
+
+	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_NGO; ?>"  data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green">
+	                <h6><i class="fa fa-group fa-2x bg-green"></i><br> Association</h6>
+	                <small>Faire connaitre votre association<br>Gérer les adhérents<br>Partager votre actualité</small>
+	            </button>
+	            
+	            
+	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_BUSINESS; ?>"  data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure">
+	                <h6><i class="fa fa-industry fa-2x bg-azure"></i><br> Entreprise</h6>
+	                <small>Faire connaitre votre entreprise<br>Trouver de nouveaux clients<br>Gérer vos contacts</small>
+	            </button>
+
+	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GOV; ?>"  
+	                    data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-red">
+	                <h6><i class="fa fa-university fa-2x bg-red"></i><br> Service public</h6>
+	                <small>Mairies, scolaires, etc...<br>Partager votre actualité<br>Partager des événements</small>
+	            </button>
+
+	        </div>
+	    </div>
+    </div>
+
+
+	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section pull-right">
 		
 		<?php   $classDescH=""; 
 				$classBtnDescH="<i class='fa fa-angle-up'></i> masquer"; 
@@ -332,7 +456,7 @@
 
 		if($typeItem != Person::COLLECTION){ 
 		?>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:45px;">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:20px;">
 				<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
 					<b><i class="fa fa-angle-down"></i> 
 					<i class="fa fa-info-circle"></i> Description principale</b>
@@ -345,7 +469,7 @@
 				</span>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
-				<button class="btn btn-default btn-xs pull-right margin-right-15" id="btn-hide-desc">
+				<button class="btn btn-link btn-xs pull-right" id="btn-hide-desc">
 					<?php echo $classBtnDescH; ?>
 				</button>
 				<br>
@@ -353,7 +477,9 @@
 			</div>
 		<?php }else{ $marginCentral="50"; } ?>
 		<!-- Permet de faire le convertion en HTML -->
-		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
+		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" >
+			<?php echo (!empty($element["description"])) ? $element["description"] : ""; ?>
+		</span>
 
 	    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-<?php echo $marginCentral; ?>" id="central-container">
 		</div>
@@ -372,6 +498,13 @@
 			 id="notif-column">
 		</div>
 	</section>
+
+	<!-- <section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding form-contact-mail pull-right"> -->
+		<?php 	$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+				$this->renderPartial($layoutPath.'forms.'.Yii::app()->params["CO2DomainName"].'.formContact', 
+									array("element"=>@$element)); 
+		?>
+	<!-- </section> -->
 </div>	
 
 <?php 
@@ -383,15 +516,17 @@
 					"openEdition" => $openEdition,
 				) );
 
-
-	if( $type != Person::COLLECTION)
+	//if( $type != Person::COLLECTION)
 		$this->renderPartial('../element/addMembersFromMyContacts',
 				array(	"type"=>$type, 
 						"parentId" => (string)$element['_id'], 
 						"members" => @$members));
 
-
-	$cssAnsScriptFilesModule = array(
+?>
+<script type="text/javascript">
+	
+</script>
+<?php	$cssAnsScriptFilesModule = array(
 		'/js/default/profilSocial.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
@@ -401,14 +536,14 @@
 <script type="text/javascript">
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
 	mylog.log("init contextData", contextData);
-    var params = <?php echo json_encode(@$params); ?>;
-    var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false ); 
+    var params = <?php echo json_encode(@$params); ?>; 
+    var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false );
 	var openEdition = ( ( '<?php echo (@$openEdition == true); ?>' == "1") ? true : false );
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
     var liveScopeType = "";
     var subView="<?php echo @$_GET['view']; ?>";
-    var hashUrlPage="#page.type."+contextData.type+".id."+contextData.id;
+    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?network="+networkParams : "" )+"#page.type."+contextData.type+".id."+contextData.id;
     var cropResult;
     var idObjectShared = new Array();
 
@@ -418,11 +553,16 @@
 		bindButtonMenu();
 		inintDescs();
 		if(typeof contextData.name !="undefined")
-		setTitle("", "", contextData.name);
+			setTitle("", "", contextData.name);
+
+		if( contextData.type == "events")
+			$(".createProjectBtn").hide()
+		else 
+			$(".createProjectBtn").show()
 
 		if(subView!=""){
 			if(subView=="gallery")
-				loadGallery()
+				loadGallery();
 			else if(subView=="notifications")
 				loadNotifications();
 			else if(subView.indexOf("chart") >= 0){
@@ -433,7 +573,7 @@
 			else if(subView=="history")
 				loadHistoryActivity();
 			else if(subView=="directory")
-				loadDataDirectory("<?php echo @$_GET['dir']; ?>");
+				loadDataDirectory("<?php echo @$_GET['dir']; ?>",null,edit);
 			else if(subView=="editChart")
 				loadEditChart();
 			else if(subView=="detail")
@@ -448,6 +588,8 @@
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
 		//Sig.showMapElements(Sig.map, mapElements);
+		var elemSpec = dyFInputs.get("<?php echo $type?>");
+		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");
 	});
 
 

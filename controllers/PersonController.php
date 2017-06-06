@@ -58,6 +58,8 @@ class PersonController extends CommunecterController {
           "updatemultiscope"   => 'citizenToolKit.controllers.person.UpdateMultiScopeAction',
           "sendinvitationagain"=> 'citizenToolKit.controllers.person.SendInvitationAgainAction',
           'get'                => 'citizenToolKit.controllers.person.GetAction',
+          'getcontactsbymails'                => 'citizenToolKit.controllers.person.GetContactsByMailsAction',
+          
 
 	    );
 	}

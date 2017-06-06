@@ -194,6 +194,34 @@
 	.btn-is-admin.selected.isAdmin a{
 		color:#5cb85c!important;
 	}
+
+	.dropdown-menu-invite{
+		top:31px;
+	}
+
+
+	#listEmailGrid  .item_map_list{
+		padding:10px 10px 10px 0px !important; 
+		margin-top:0px;
+		text-decoration:none;
+		background-color:white;
+		border: 1px solid rgba(0, 0, 0, 0.08); /*rgba(93, 93, 93, 0.15);*/
+		/*text-align: center;*/
+	}
+	#listEmailGrid  .item_map_list_blue{
+		background-color:rgba(0, 0, 0, 0.08);
+		padding:10px 10px 10px 0px !important; 
+		margin-top:0px;
+		text-decoration:none;
+		border: 1px solid rgba(0, 0, 0, 0.08); /*rgba(93, 93, 93, 0.15);*/
+		/*text-align: center;*/
+	}
+	#listEmailGrid .item_map_list .left-col .thumbnail-profil{
+		width: 75px;
+		height: 75px;
+	}
+
+
 </style>
 
 <div id="addMembers">
@@ -254,6 +282,9 @@ var newMemberInCommunity = false;
 
 var contactTypes = [{ name : "people", color: "yellow", icon:"user", label:"Citoyens" }];
 
+var csvval = [];
+var listMails = {};
+
 if(elementType != "<?php echo Event::COLLECTION ?>")
 	contactTypes.push({ name : "organizations", color: "green", icon:"group", label:"Organisations" });
 
@@ -261,23 +292,39 @@ if(elementType != "<?php echo Event::COLLECTION ?>")
 var members = <?php echo json_encode(@$members) ?>;
 
 var addLinkDynForm = {
-		inputType : "scope",
-  		title1 : trad["Add members ..."],
-  		title2 : trad["Among my contacts ..."],
-  		title3 : trad["Others ..."],
-  		btnCancelTitle : trad["Close"],
-  		btnSaveTitle : trad["Add this contacts"],
-  		btnResetTitle : trad["Cancel all"],
-        values : myContactsMembers,
-        mainTitle : trad["Invite your contacts"],
-        labelBtnOpenModal : "<span class='text-dark'><i class='fa fa-group'></i> "+trad["Select among my contacts"]+"</span>",
-        contactTypes : contactTypes
+	inputType : "scope",
+	title1 : trad["Add members ..."],
+	title2 : trad["Among my contacts ..."],
+	title3 : trad["Others ..."],
+	btnCancelTitle : trad["Close"],
+	btnSaveTitle : trad["Add this contacts"],
+	btnResetTitle : trad["Cancel all"],
+	values : myContactsMembers,
+	mainTitle : trad["Invite your contacts"],
+	labelBtnOpenModal : "<span class='text-dark'><i class='fa fa-group'></i> "+trad["Select among my contacts"]+"</span>",
+	contactTypes : contactTypes
+};
+
+var addLinkDynFormInvite = {
+	inputType : "scope",
+	title1 : trad["Invite your contacts"],
+	title2 : trad["Among my contacts ..."],
+	title3 : trad["Others ..."],
+	btnCancelTitle : trad["Close"],
+	btnSaveTitle : trad["Add this contacts"],
+	btnResetTitle : trad["Cancel all"],
+	values : myContactsMembers,
+	mainTitle : trad["Invite your contacts"],
+	labelBtnOpenModal : "<span class='text-dark'><i class='fa fa-group'></i> "+trad["Select among my contacts"]+"</span>",
+	contactTypes : contactTypes
 };
 
 var addLinkSearchMode = "contacts";
 jQuery(document).ready(function() {
-	
-	buildModal(addLinkDynForm, "modalDirectoryForm");
+	if(elementType != "citoyens")
+		buildModal(addLinkDynForm, "modalDirectoryForm");
+	else
+		buildModalInvite(addLinkDynFormInvite, "modalDirectoryForm");
 
 	$("#select-type-search-contacts, #a-select-type-search-contacts").click(function(){
 		switchContact();
@@ -295,6 +342,7 @@ jQuery(document).ready(function() {
 	$.each(organizationTypes, function(k, v) {
    		$(".member-organization-type").append($("<option />").val(k).text(v));
 	});
+	bindInvite();
 });
 
 function excludeMembers(contacts, members){
@@ -355,6 +403,327 @@ function switchContact(){
 	showMyContactInModalAddMembers(addLinkDynForm, "#list-scroll-type");
 	addLinkSearchMode = "contacts";
 	filterContact($("#search-contact").val());
+}
+
+function bindInvite(){
+
+	$("#btn-save-invite").off().on('click', function()
+	{
+		if(listMails.length == 0)
+    		toastr.error("Veuillez sélectionner une adresse mail.");
+    	else{
+    		var nameUtil = "" ;
+    		mylog.log("listMails", listMails);
+    		$.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+'/person/follows',
+		        dataType : "json",
+		        data: {
+		        	parentId : $("#parentId").val(),
+		        	listMails : listMails,
+		        	msgEmail : $("#textmail").val(),
+		        	gmail : true
+		        },
+				type:"POST",
+		    })
+		    .done(function (data){
+		    	$.unblockUI();
+		        if (data &&  data.result) {               
+		        	toastr.success('L\'invitation a été envoyée avec succès!');
+		        	mylog.log(data);
+		        	$.each(data.data, function(key, elt) {
+		        		addFloopEntity(elt.invitedUser.id, <?php echo Person::COLLECTION ?>, elt.invitedUser);
+		        	});
+		        	
+		        	$('#inviteSearch').val("");
+					backToSearch();
+		        } else {
+		        	$.unblockUI();
+					toastr.error(data.msg);
+		        }
+		    });
+    	}
+  	});
+
+	$(".invite-search").click(function(){
+		var section = $(this).data("section");
+		mylog.log("section", section);
+		var listSections = [ "all", "gmail", "gplus", "file", "saisir"];
+		$.each(listSections, function(key, type){
+			if(type != section)
+				$("#div-invite-search-"+type).addClass("hidden");
+		});
+		$("#div-invite-search-"+section).removeClass("hidden");
+		$("#listEmailGrid").html("");
+		$("#countContacts").addClass("hidden");
+	});
+
+	$('#inviteSearch').keyup(function(e){
+	    var search = $('#inviteSearch').val();
+	    if(search.length>2){
+	    	clearTimeout(timeout);
+			timeout = setTimeout('autoCompleteInviteSearch2("'+encodeURI(search)+'")', 500); 
+		 }else{
+		 	$("#div-invite-search-all #dropdown_searchInvite").css({"display" : "none" });	
+		 }	
+	});
+
+	$(".connectBtn").off().on("click", function() {
+			var thiselement = this;
+			follow("<?php echo Person::COLLECTION ?>", $('#newInvite #inviteId').val(), userId, "<?php echo Person::COLLECTION ?>", function(){
+			mylog.log('callback connectPerson');
+			$(thiselement).children().removeClass("fa-spinner fa-spin").addClass("fa-link");			
+			$('.disconnectBtn').show();
+			$('.connectBtn').hide();
+			//TODO add in myContacts
+				//listFollowsId.push($("#newInvite #inviteId").val());
+
+			$('#inviteSearch').val("");
+			
+		});
+	});
+
+	$(".disconnectBtn").off().on("click", function() {
+		var thiselement = this;
+		var idToDisconnect = $('#newInvite #inviteId').val();
+		var typeToDisconnect = "<?php echo Person::COLLECTION ?>";
+		var nameToDisconnect = $("#newInvite #ficheName").text();
+		disconnectTo("<?php echo Person::COLLECTION ?>",idToDisconnect,userId,"<?php echo Person::COLLECTION ?>",'followers',function() {
+			mylog.log('callback disconnectPerson');
+			$(thiselement).children().removeClass("fa-spinner fa-spin").addClass("fa-unlink");
+			//// Find and remove item from an array
+			//TODO Remove in myContacts
+			// var i = listFollowsId.indexOf(idToDisconnect);
+			// if(i != -1) {
+			// 	listFollowsId.splice(i, 1);
+			// }
+			// mylog.log(listFollowsId);
+			$('.disconnectBtn').hide();
+			$('.connectBtn').show();
+			$('#inviteSearch').val("");
+			
+			
+		});
+	});
+
+	$("#submitAfficher").off().on("click", function() {
+		var mails = $("#textareaMails").val().split(/[\s\n;]+/);
+		checkAndGetMails(mails);
+	});
+	
+
+	$(".form-importFile #fileEmail").change(function(e) {
+		$("#list-contact").html("");
+    	$("#listEmailGrid").html("");
+		var ext = $(".form-importFile input#fileEmail").val().split(".").pop().toLowerCase();
+		if($.inArray(ext, ["csv"]) == -1) {
+			alert('Upload CSV');
+			return false;
+		} 
+		
+		if (e.target.files != undefined) {
+			var reader = new FileReader();
+			mylog.log("reader", reader);
+			
+			reader.onload = function(e) {
+				csvval = e.target.result.split("\n");
+				checkAndGetMails(csvval);
+			};
+			reader.readAsText(e.target.files.item(0));
+		}else{
+			toastr.error("Nous n'avons pas réussie à lire votre fichier.")
+		}
+		return false;
+	});
+}
+
+function checkAndGetMails(mails){
+	$.ajax({
+		type: "POST",
+		url: baseUrl+'/'+moduleId+'/person/getcontactsbymails',
+		data: { mailsList : mails },
+		dataType: "json",
+		success: function(data){
+			mylog.log("getcontactsbymails data", data, data.length);
+			var nbContact = 0 ;
+			var text2 = "" ;
+			var idMail = ""
+			$.each(mails, function(keyMails, valueMails){
+				mylog.log("valueMails", valueMails);
+				nbContact++;
+				idMail = "contact"+nbContact ;
+				text2 += '<li id="'+idMail+'" class="item_map_list col-xs-12" style="display: inline-block;">'+
+							'<div class="col-xs-1"><input id="checkbox'+idMail+'" class="checkboxList" data-id="'+idMail+'" data-mail="'+valueMails+'" data-name="" type="checkbox"></div>'+
+							'<label class="col-xs-11" for="checkbox'+idMail+'">'+
+								'<a href="javascript:;" onclick="checkedMail(\''+idMail+'\', \''+valueMails+'\',  \'\');">';
+					if(typeof data[valueMails] != "undefined" && data[valueMails] != null){
+						text2 += '<div class="">'+
+									'<img src="'+baseUrl+data[valueMails].profilThumbImageUrl+'" alt="image" width="40" height="40" />'+
+									' <span class="text-xss" > '+data[valueMails].name+' : '+ valueMails.trim() + '</span>'+
+								'</div>';
+					}else{
+						text2 += '<div class="">'+
+									'<span class="text-xss" > '+ valueMails.trim() + '</span><br/>'+
+								'</div>';
+					}
+				text2 += '</a></label></li>';
+			});
+			$("#listEmailGrid").html(text2);
+			$("#nbContacts").html(0);
+			$("#allContacts").html(nbContact);
+			$("#countContacts").removeClass("hidden");
+			bind2();
+		}
+	});
+}
+
+function bind2() {
+	$(".checkboxList").change(function() {
+		checkedMail($(this).data("id"), $(this).data("mail"), $(this).data("name"));
+	});
+};
+
+function checkedMail(id, mail, name) {
+	mylog.log("checkedMail", id, mail, name, typeof listMails[mail]);
+	if( typeof listMails[mail] != "undefined" ){
+		$( "#"+id ).removeClass("item_map_list_blue");
+		$( "#"+id ).addClass("item_map_list");
+		$("#checkbox"+id).prop("checked", false);
+		delete(listMails[mail]);
+	}else{
+		$( "#"+id ).removeClass("item_map_list");
+		$( "#"+id ).addClass("item_map_list_blue");
+		$("#checkbox"+id).prop("checked", true);
+		listMails[mail] = name ;
+	}
+	$("#nbContacts").html(Object.keys(listMails).length);
+};
+
+
+function autoCompleteInviteSearch2(search){
+	if (search.length < 3) { return }
+	tabObject = [];
+
+	var data = { 
+		"search" : search,
+		"searchMode" : "personOnly"
+	};
+	
+	
+	ajaxPost("", '<?php echo Yii::app()->getRequest()->getBaseUrl(true).'/'.$this->module->id?>/search/searchmemberautocomplete', data,
+		function (data){
+			var str = "<li class='li-dropdown-scope'><a href='javascript:;' onclick='newInvitation()'>Pas trouvé ? Lancer une invitation à rejoindre votre réseau !</li>";
+			var compt = 0;
+			var city, postalCode = "";
+			$.each(data["citoyens"], function(k, v) { 
+				city = "";
+				mylog.log(v);
+				postalCode = "";
+				var htmlIco ="<i class='fa fa-user fa-2x'></i>"
+				if(v.id != userId) {
+					tabObject.push(v);
+	 				if(v.profilImageUrl != ""){
+	 					var htmlIco= "<img width='50' height='50' alt='image' class='img-circle' src='"+baseUrl+v.profilImageUrl+"'/>"
+	 				}
+	 				if (v.address != null) {
+	 					city = v.address.addressLocality;
+	 					postalCode = v.address.postalCode;
+	 				}
+	  				str += 	"<li class='li-dropdown-scope'>" +
+	  						"<a href='#' onclick='setInviteInput("+compt+");'>"+htmlIco+" "+v.name ;
+
+	  				if(typeof postalCode != "undefined")
+	  					str += "<br/>"+postalCode+" "+city;
+	  					//str += "<span class='city-search'> "+postalCode+" "+city+"</span>" ;
+	  				str += "</a></li>";
+
+	  				compt++;
+  				}
+			});
+			
+			$("#div-invite-search-all #dropdown_searchInvite").html(str);
+			$("#div-invite-search-all #dropdown_searchInvite").css({"display" : "inline" });
+		}
+	);	
+}
+
+function setInviteInput(num){
+	mylog.log("setInviteInput", num);
+	var person = tabObject[num];
+	var personId = person["id"];
+	mylog.log(person, personId);
+	
+	$('#div-invite-search-all #inviteName').val(person["name"]);
+	$('#div-invite-search-all #inviteId').val(personId);
+	$("#div-invite-search-all #ficheUser-ficheName").text(person["name"]);
+	
+	if (person.address != null) {
+		//Address : CP + Locality
+		$("#div-invite-search-all #ficheUser-address").text(((typeof person.address.postalCode == "undefined")?trad["UnknownLocality"]:person.address.postalCode+" ")+person.address.addressLocality);
+	}
+	
+	if (person.email != null) {
+		//Email
+		$("#div-invite-search-all #ficheUser-email").text(person.email);
+	}
+	//Tags
+	var tagsStr = "";
+	if( "object" == typeof person.tags && person.tags ) {
+		$.each( person.tags , function(i,tag){
+			tagsStr += "<span class='label label-inverse'>"+tag+"</span> ";
+		});
+	} else {
+		tagsStr += "<span class='label label-inverse'>No Tag</span> ";
+	}
+	$("#div-invite-search-all #ficheUser-tags").html('<div class="pull-left"><i class="fa fa-tags"></i> '+tagsStr+'</div>');
+	$(".photoInvited").empty();
+	if (person["profilImageUrl"] != "") {
+		$(".photoInvited").html("<img class='img-responsive' src='"+baseUrl+person["profilImageUrl"]+"' />");
+	} else {
+		$(".photoInvited").html("<span><i class='fa fa-user_circled' style='font-size: 10em;'></i></span>");
+	}
+
+	//Pending
+	if (person.pending == true) {
+		$(".pending").show();
+	} else {
+		$(".pending").hide();
+	}
+
+	//Already in the network of the current user
+	;
+	//if (listFollowsId.indexOf(personId) != -1) {
+	if (inMyContacts("people",personId) == true) {
+		$('.disconnectBtn').show();
+		$('.connectBtn').hide();
+	} else {
+		$('.disconnectBtn').hide();
+		$('.connectBtn').show();
+	}
+
+	//Show / Hide steps
+	$("#div-invite-search-all #dropdown_searchInvite").css({"display" : "none" });
+	$("#div-invite-search-all #step3").addClass("hidden");
+	$("#div-invite-search-all #ficheUser").removeClass("hidden");
+
+}
+
+function newInvitation(){
+	$("#div-invite-search-all #dropdown_searchInvite").css({"display" : "none" });
+	$("#div-invite-search-all #ficheUser").addClass("hidden");
+	$("#div-invite-search-all #step3").removeClass("hidden");
+	
+	$('#div-invite-search-all #inviteId').val("");
+	var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+	if(emailReg.test( $("#div-invite-search-all #inviteSearch").val() )){
+		$('#div-invite-search-all #inviteEmail').val( $("#div-invite-search-all #inviteSearch").val());
+		$("#div-invite-search-all #inviteName").val("");
+	}else{
+		$("#div-invite-search-all #inviteName").val($("#div-invite-search-all #inviteSearch").val());
+		$("#div-invite-search-all #inviteEmail").val("");
+	}
+
+	$("#inviteText").val("<?php echo Yii::t("person","Hello, \\nCome and meet me on that website!\\nAn email, your town and you are connected to your city!\\nYou can see everything that happens in your city and act for the commons."); ?>");
 }
 	
 function bindEventScopeModal(){
@@ -518,6 +887,159 @@ function buildModal(fieldObj, idUi){
 	else $('body').prepend("<div id='"+idUi+"'>"+fieldHTML+"</div>");
 
 	showMyContactInModalAddMembers(fieldObj, "#list-scroll-type");
+	bindEventScopeModal();
+}
+
+
+function buildModalInvite(fieldObj, idUi){
+	mylog.log("buildModal", fieldObj, idUi);
+	//var fieldClass = " select2TagsInput select2ScopeInput";
+    var fieldHTML = "";    		
+	fieldHTML += '<div class="modal fade" id="modal-scope" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
+				  '<div class="modal-dialog">'+
+				    '<div class="modal-content">'+
+				      '<div class="modal-header">'+
+				        //'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'+
+				        // '<input type="text" id="search-contact" class="form-control pull-right" placeholder="Recherchez parmis vos contacts...">' +
+						'<div class="col-xs-6" ><h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> '+fieldObj.title1+'</h4></div>'+
+						'<div class="col-xs-6 hidden" id="countContacts" ><h4 class="modal-title pull-right"><span id="nbContacts"></span> / <span id="allContacts"></span> contacts selectionnées</h4></div>'+
+				      '</div>'+
+				      '<div class="modal-body">'+
+					      '<div class="row no-padding bg-light">'+
+					      	'<div class="col-md-4 col-sm-4 no-padding">'+
+						        '<div class="panel panel-default">  '+	
+									'<div class="panel-body no-padding">'+
+										'<div class="list-group" id="menu-type">';
+	fieldHTML +=							'<ul class="col-xs-6 col-sm-12 col-md-12 no-margin no-padding select-population">' + 
+												'<h4 class="text-dark"> '+	
+													'<input type="radio" id="invite-search-all" name="select-type-search" class="invite-search" data-section="all" value="contacts" checked="checked"> '+
+													'<label for="invite-search-all" class="text-dark">Recherche</label>'+
+												'</h4>'+
+											'</ul>';
+	// fieldHTML +=							'<ul class="col-xs-6 col-sm-12 col-md-12 no-margin no-padding select-population">' + 
+	// 											'<h4 class="text-dark"> '+	
+	// 												'<input type="radio" id="invite-search-gmail" name="select-type-search" class="invite-search" data-section="gmail" value="contacts"> '+
+	// 												'<label for="invite-search-gmail" class="text-dark">Gmail</label>'+
+	// 											'</h4>'+
+	// 										'</ul>' ;
+	// fieldHTML +=							'<ul class="col-xs-6 col-sm-12 col-md-12 no-margin no-padding select-population">' + 
+	// 											'<h4 class="text-dark"> '+	
+	// 												'<input type="radio" id="invite-search-gplus" name="select-type-search" class="invite-search" data-section="gplus" value="contacts"> '+
+	// 												'<label for="invite-search-gplus" class="text-dark">Google +</label>'+
+	// 											'</h4>'+
+	// 										'</ul>' ;
+	fieldHTML +=							'<ul class="col-xs-6 col-sm-12 col-md-12 no-margin no-padding select-population">' + 
+												'<h4 class="text-dark"> '+	
+													'<input type="radio" id="invite-search-file" name="select-type-search" class="invite-search" data-section="file" value="contacts"> '+
+													'<label for="invite-search-file" class="text-dark">Import de fichier</label>'+
+												'</h4>'+
+											'</ul>' ;
+	fieldHTML +=							'<ul class="col-xs-6 col-sm-12 col-md-12 no-margin no-padding select-population">' + 
+												'<h4 class="text-dark"> '+	
+													'<input type="radio" id="invite-search-saisir" name="select-type-search" class="invite-search" data-section="saisir" value="contacts"> '+
+													'<label for="invite-search-saisir" class="text-dark">Saisir</label>'+
+												'</h4>'+
+											'</ul>' +
+										'</div>'+
+									'</div>'+
+								'</div>' +
+					      	'</div>'+
+					      	'<div class="no-padding pull-right col-md-8 col-sm-8 col-xs-12 bg-white" id="list-scroll-type">'+
+								'<div id="div-invite-search-all" class="">'+
+									'<input class="invite-searchInput form-control text-left" placeholder="Un nom, un e-mail ..." autocomplete = "off" id="inviteSearch" name="inviteSearch" value="">' +
+						        		'<ul class="dropdown-menu dropdown-menu-invite" id="dropdown_searchInvite" style="">' +
+											'<li class="li-dropdown-scope">-</li>' +
+										'</ul>' +
+									'</input>' +
+									'<hr>'+
+									'<div class="form-group hidden" id="ficheUser">'+
+										'<div class="col-md-5 text-center">'+
+											'<div class="photoInvited text-center">'+
+											'</div>'+
+											'<a class="pending btn btn-xs btn-red tooltips" data-toggle="tooltip" data-placement="bottom" title="This user has been already invited but has not connected yet.">Pending User</a>'+
+										'</div>'+
+										'<div class="col-md-7">'+
+											'<a href="javascript:;" class="connectBtn btn btn-lg tooltips " data-placement="top" data-original-title="Follow this person" ><i class=" connectBtnIcon fa fa-link "></i> Follow this person</a>'+
+											'<a href="javascript:;" class="disconnectBtn btn btn-lg tooltips " data-placement="top" data-original-title="Unfollow this person" ><i class=" disconnectBtnIcon fa fa-unlink "></i> Unfollow this person</a>'+
+											'<hr>'+
+											'<h4 id="ficheUser-ficheName" name="ficheUser-ficheName"></h4>'+
+											'<span id="ficheUser-email" name="ficheUser-email" ></span><br><br>'+
+											'<span id="ficheUser-address" name="ficheUser-address" ></span><br><br>'+
+											'<span id="ficheUser-tags" name="ficheUser-tags" ></span><br>'+
+										'</div>'+
+									'</div>'+
+									'<div class="row hidden" id="step3">'+
+										'<div class="row margin-bottom-10">'+
+											'<div class="col-md-1 col-md-offset-1" id="iconUser">'+	
+									           	'<i class="fa fa-user fa-2x"></i>'+
+									       	'</div>'+
+									       '	<div class="col-md-9">'+
+												'<input class="invite-name form-control" placeholder="Name" id="inviteName" name="inviteName" value="" />'+
+											'</div>'+
+										'</div>'+
+										'<div class="row margin-bottom-10">'+
+											'<div class="col-md-1 col-md-offset-1">'+	
+								           		'<i class="fa fa-envelope-o fa-2x"></i>'+
+								           	'</div>'+
+						    	        	'<div class="col-md-9">'+
+												'<input class="invite-email form-control" placeholder="Email" id="inviteEmail" name="inviteEmail" value="" />'+
+											'</div>'+
+										'</div>'+
+										'<div class="row margin-bottom-10">'+
+											'<div class="col-md-1 col-md-offset-1">	'+
+								           		'<i class="fa fa-align-justify fa-2x"></i>'+
+								           	'</div>'+
+						    	        	'<div class="col-md-9">'+
+												'<textarea class="invite-text form-control" id="inviteText" name="inviteText" rows="4" />'+
+											'</div>'+
+										'</div>'+
+										'<div class="row margin-bottom-10">'+
+											'<div class="col-md-11">'+
+												'<div class="form-group">'+
+										    	    '<button class="btn bg-dark pull-right" id="btnInviteNew" >Inviter</button> '+
+										    		'<button class="btn btn-danger pull-right btnCancel" style="margin-right:10px;" id="btnCancelStep3" >Annuler</button>'+
+										    	'</div>'+
+										    '</div>'+
+									   ' </div>'+
+									'</div>'+
+								'</div>' +
+								'<div id="div-invite-search-gmail" class="hidden">'+
+									'Inviter vos contacts Gmail' +
+								'</div>' +
+								'<div id="div-invite-search-gplus" class="hidden">'+
+									'Publier sur Google +, pour inviter vos amis a rejoindre Communecter' +
+								'</div>' +
+								'<div id="div-invite-search-file" class="hidden">'+
+									'<form class="form-importFile">'+
+										'<div class="col-xs-12">'+
+											'Fichier (CSV) : <input type="file" id="fileEmail" name="fileEmail" accept=".csv">'+
+										'</div>'+
+									'</form><br/><hr/><br/>' +
+								'</div>' +
+								'<div id="div-invite-search-saisir" class="hidden">'+
+									'<form class="form-writeMails">'+
+										'<div class="col-xs-12">'+
+											'<textarea id="textareaMails" class="form-control col-xs-12" rows="5"></textarea>'+
+											'<a href="javascript:" class="btn btn-succes col-xs-12" id="submitAfficher">Vérification</a>'+
+										'</div>'+
+									'</form>'+
+								'</div>'+
+								'<div id="listEmailGrid" class="margin-bottom-10"></div>'+
+					      	'</div>' +
+						'</div>'+
+					  '</div>'+
+				      '<div class="modal-footer">'+
+				      	'<button id="btn-reset-scope" type="button" class="btn btn-default btn-sm pull-left"><i class="fa fa-repeat"></i> '+fieldObj.btnResetTitle+'</button>'+
+				      	'<button id="btn-cancel" type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> '+fieldObj.btnCancelTitle+'</button>'+
+				      	'<button id="btn-save-invite" type="button" class="btn btn-success btn-sm" data-dismiss="modal"><i class="fa fa-check"></i> '+fieldObj.btnSaveTitle+'</button>'+
+				      '</div>'+
+				    '</div><!-- /.modal-content -->'+
+				  '</div><!-- /.modal-dialog -->';
+
+	if($("body #"+idUi).length > 0) $("body #"+idUi).html(fieldHTML);
+	else $('body').prepend("<div id='"+idUi+"'>"+fieldHTML+"</div>");
+
+	//showMyContactInModalAddMembers(fieldObj, "#list-scroll-type");
 	bindEventScopeModal();
 }
 

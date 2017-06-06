@@ -69,7 +69,8 @@
                               "authorId"=>$authorId,
                               "contextId"=>@$contextParentId,
                               "timezone"=>$timezone,
-                              "thumbAuthor"=>@$thumbAuthor
+                              "thumbAuthor"=>@$thumbAuthor,
+                              "canManageNews"=> @$canManageNews
                           ) 
                       ); 
       ?>
@@ -98,6 +99,7 @@
   <script type="text/javascript">
 
     var news=<?php echo json_encode($news) ?>;
+   // updateNews=updateNews.concat(array(1,2,3));
     var canPostNews = <?php echo json_encode(@$canPostNews) ?>;
     var canManageNews = <?php echo json_encode(@$canManageNews) ?>;
     var actionController = <?php echo json_encode(@$actionController) ?>;
@@ -116,14 +118,21 @@
       <?php if(isset(Yii::app()->session["userId"])) { ?>
         initCommentsTools(news);
       <?php } ?>
-      $.each(news, function(e,v){
-        if(typeof v.object != "undefined"){ 
-          
 
-          
+      $.each(news, function(e,v){
+        updateNews[e]= v;
+       // updateNews.e=v;
+        console.log(v);
+        if(typeof v._id.$id != "undefined")
+        if($(".newsActivityStream"+v._id.$id).length>0){
+           $("#news"+v._id.$id).remove();
+           //$("#news"+v._id.$id).append("CLEAN2");//console.log("xxzz", v);
+        }
+
+        if(typeof v.object != "undefined"){ 
           if($(".newsActivityStream"+v.object.id).length>0){
            // console.log("CLEAN2", "#news-list li#news"+v.object.id, "len", 
-           //   $(".newsActivityStream"+v.object.id).length, $("#news"+v.object.id).length);
+           // $(".newsActivityStream"+v.object.id).length, $("#news"+v.object.id).length);
 
             $("#news"+v.object.id).remove();
             //$("#news"+v.object.id).append("CLEAN2");//console.log("xxzz", v);
@@ -144,6 +153,7 @@
             $(".newsActivityStream"+v.object.id).html(html);
           }
         }
+
       });
 
       $.each(news, function(e,v){

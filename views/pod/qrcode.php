@@ -6,12 +6,12 @@
 
 	<div class="col-xs-12 col-sm-5 col-sm-offset-1" >
 		<h3 class="pull-left homestead text-red">Cartes de visites </h3>
-		<div class="row center">
+		<div class="col-xs-12 center">
 			<div  style="border:1px dashed #666; width:400px;min-height:160px;padding:5px;margin:5px;">
 				
-				<img class="pull-left" width="150" src="<?php echo $img ?>">
+				<img class=" col-xs-5 img-responsive" src="<?php echo $img ?>">
 
-				<ul class="pull-left" style="list-style: none;margin-top:10px;">
+				<ul class="col-xs-7" style="list-style: none;margin-top:10px;">
 					<?php echo (@$type && @OpenData::$elementTypes[$type]) ? 
 						"<li class='btn btn-sm'>".OpenData::$elementTypes[$type]."</li>" : '' ?>
 					<?php echo (@$name) ? "<li class='bold'>".$name."</li>" : '' ?>
@@ -27,12 +27,12 @@
 
 	<div class="col-xs-12 col-sm-5 " >
 		<h3 class="pull-left homestead text-red">Cartes de visites connectée</h3>
-		<div class="row center">
+		<div class="col-xs-12 center">
 			<div style="border:1px dashed #666; width:400px;min-height:160px;padding:5px;margin:5px;">
 				
-				<div  class="pull-left qrCode"> </div>
+				<div  class="col-xs-5 qrCode"> </div>
 					
-				<ul class="pull-left" style="list-style: none;margin-top:10px;">
+				<ul class="col-xs-7" style="list-style: none;margin-top:10px;">
 					<?php echo (@$type && @OpenData::$elementTypes[$type]) ? 
 						"<li class='btn btn-sm'>".OpenData::$elementTypes[$type]."</li>" : '' ?>
 					<?php echo (@$name) ? "<li class='bold'>".$name."</li>" : '' ?>
@@ -43,9 +43,9 @@
 					<?php echo (@$tel) ? "<li>".$tel."</li>" : '' ?>m
 				</ul>
 			</div>
-		</div>
-		<div class="space20"></div>
-		<div class="row">
+		</div> 
+
+		<div class="col-xs-12">
 			<span class="text-red"><i class="fa fa-warning "></i> Ce QR Code devient interactif avec l'application <a href="https://play.google.com/store/apps/details?id=org.communevent.meteor.pixelhumain&ah=lVN3mXqHKQjIOg3qHn0YzhiUebc&hl=fr" target="_blank">COMOBI</a></span>
 		</div>
 		<br/>

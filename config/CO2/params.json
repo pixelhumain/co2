@@ -1,123 +1,116 @@
 {
-  "title" : "app",
-  "metaImg" : "/assets/img/CO.png",
-  "metaDesc" : "Réseau sociétal citoyen",
-      
-	"pages" : 
-		{
-		  "#app.index":
-			 	 {"redirect":"welcome"},
-			  
-	        "#welcome":
-                {"inMenu" : false, 
-                "useHeader" : false, 
-                "open" : true, 
-                "subdomain" : "welcome", 
-                "subdomainName" : "Accueil",
-                "hash" : "#app.welcome",
-                "icon" : "", 
-                "mainTitle" : "Réseau sociétal <span class='text-red'>territorial</span>",
-                "placeholderMainSearch" : "Rechercher quelque chose ...",
-                "lblBtnCreate" : "Créer quelque chose",
-                "colorBtnCreate" : "green"
-          },
+	"title" : "app",
+	"metaImg" : "/assets/img/CO.png",
+	"metaDesc" : "Réseau sociétal citoyen",
 
-          "#search":
-                {"inMenu" : true, 
-                "useHeader" : true, 
-                "open" : true, 
-                "subdomain" : "search", 
-                "subdomainName" : "Recherche",
-                "hash" : "#app.search",
-                "icon" : "search", 
-                "mainTitle" : "Moteur de recherche <span class='text-red'>territorial</span>",
-                "placeholderMainSearch" : "Rechercher une page ...",
-                "lblBtnCreate" : "Créer une page",
-                "colorBtnCreate" : "green"
-          },
+	"pages" : {
+		"#app.index": {"redirect":"welcome"},
 
-		    "#annonces":
-			  	{"inMenu" : true, 
-                "useHeader" : true, 
-                "open" : true, 
-                "subdomain" : "annonces", 
-                "subdomainName" : "Annonces",
-                "hash" : "#app.annonces",
-                "icon" : "bullhorn", 
-                "mainTitle" : "Petites annonces",
-                "placeholderMainSearch" : "rechercher parmis les annonces  ...",
-                "lblBtnCreate" : "Publier une annonce",
-                "colorBtnCreate" : "azure"
-          },
+		"#welcome": {
+			"inMenu" : false, 
+			"useHeader" : false, 
+			"open" : true, 
+			"subdomain" : "welcome", 
+			"subdomainName" : "Accueil",
+			"hash" : "#app.welcome",
+			"icon" : "", 
+			"mainTitle" : "Réseau sociétal <span class='text-red'>territorial</span>",
+			"placeholderMainSearch" : "Rechercher quelque chose ...",
+			"lblBtnCreate" : "Créer quelque chose",
+			"colorBtnCreate" : "green"
+		},
 
-			"#agenda":
-                {"inMenu" : true, 
-                "useHeader" : true, 
-                "open" : true, 
-                "subdomain" : "agenda", 
-                "subdomainName" : "Agenda",
-                "hash":"#app.agenda",
-                "icon" : "calendar", 
-                "mainTitle" : "L'agenda <span class='text-red'>C</span>Ommun",
-                "placeholderMainSearch" : "rechercher un événement ...",
-                "lblBtnCreate" : "Créer un événement",
-                "colorBtnCreate" : "orange"
-          },
+		"#search": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "search", 
+			"subdomainName" : "Recherche",
+			"hash" : "#app.search",
+			"icon" : "search", 
+			"mainTitle" : "Moteur de recherche <span class='text-red'>territorial</span>",
+			"placeholderMainSearch" : "Rechercher une page ...",
+			"lblBtnCreate" : "Créer une page",
+			"colorBtnCreate" : "green"
+		},
 
-			
+		"#annonces": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "annonces", 
+			"subdomainName" : "Annonces",
+			"hash" : "#app.annonces",
+			"icon" : "bullhorn", 
+			"mainTitle" : "Petites annonces",
+			"placeholderMainSearch" : "rechercher parmis les annonces  ...",
+			"lblBtnCreate" : "Publier une annonce",
+			"colorBtnCreate" : "azure"
+		},
 
-            "#live":
-                {"inMenu" : true, 
-                "useHeader" : true, 
-                "open" : true, 
-                "subdomain" : "live", 
-                "subdomainName" : "Live",
-                "hash":"#app.live",
-                "icon" : "newspaper-o", 
-                "mainTitle" : "Le fil d'actualité <span class='text-red'>CO</span>mmun",
-                "placeholderMainSearch" : "rechercher parmis les messages ..."
-          },
+		"#agenda": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "agenda", 
+			"subdomainName" : "Agenda",
+			"hash":"#app.agenda",
+			"icon" : "calendar", 
+			"mainTitle" : "L'agenda <span class='text-red'>C</span>Ommun",
+			"placeholderMainSearch" : "rechercher un événement ...",
+			"lblBtnCreate" : "Créer un événement",
+			"colorBtnCreate" : "orange"
+		},
 
-          
+		"#live": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "live", 
+			"subdomainName" : "Live",
+			"hash":"#app.live",
+			"icon" : "newspaper-o", 
+			"mainTitle" : "Le fil d'actualité <span class='text-red'>CO</span>mmun",
+			"placeholderMainSearch" : "rechercher parmis les messages ..."
+		},
 
-			"#page":
-			  	{"inMenu" : false, 
-                "useHeader" : false, 
-                "open" : true, 
-                "subdomain" : "page", 
-                "subdomainName" : "page",
-                "hash":"#app.page",
-                "icon" : "", 
-                "mainTitle" : "Le réseau social à effet de sert",
-                "placeholderMainSearch" : "rechercher ..."
-          },
+		"#page": {
+			"inMenu" : false, 
+			"useHeader" : false, 
+			"open" : true, 
+			"subdomain" : "page", 
+			"subdomainName" : "page",
+			"hash":"#app.page",
+			"icon" : "", 
+			"mainTitle" : "Le réseau social à effet de sert",
+			"placeholderMainSearch" : "rechercher ..."
+		},
 
-            "#info":
-                {"inMenu" : false, 
-                "useHeader" : false, 
-                "open" : true, 
-                "subdomain" : "apropos", 
-                "subdomainName" : "Info",
-                "hash":"#app.info",
-                "icon" : "search", 
-                "mainTitle" : "Le réseau social à effet de sert",
-                "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
-          },
+		"#info": {
+			"inMenu" : false, 
+			"useHeader" : false, 
+			"open" : true, 
+			"subdomain" : "apropos", 
+			"subdomainName" : "Info",
+			"hash":"#app.info",
+			"icon" : "search", 
+			"mainTitle" : "Le réseau social à effet de sert",
+			"placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
+		},
 
-            "#city":
-                {"inMenu" : false, 
-                "useHeader" : false,
-                "open" : true,  
-                "subdomain" : "city", 
-                "subdomainName" : "City",
-                "hash":"#app.city",
-                "icon" : "university", 
-                "mainTitle" : "Communexion activée",
-                "placeholderMainSearch" : "rechercher ..."
-          },
+		"#city": {
+			"inMenu" : false, 
+			"useHeader" : false,
+			"open" : true,  
+			"subdomain" : "city", 
+			"subdomainName" : "City",
+			"hash":"#app.city",
+			"icon" : "university", 
+			"mainTitle" : "Communexion activée",
+			"placeholderMainSearch" : "rechercher ..."
+		},
 
-            "#interoperability":
-            {
+		"#interoperability": {
             "inMenu" : false, 
             "useHeader" : true, 
             "open" : true, 
@@ -127,32 +120,33 @@
             "icon" : "database", 
             "mainTitle" : "Module d'intéropérabilité",
             "placeholderMainSearch" : "Rechercher dans les données venus d'ailleurs ..."
-          },
-      
-          "#rooms":
-                {"inMenu" : false, 
-                "useHeader" : false,
-                "open" : true,  
-                "subdomain" : "rooms", 
-                "subdomainName" : "rooms",
-                "hash":"#app.rooms",
-                "icon" : "university", 
-                "mainTitle" : "Communexion activée",
-                "placeholderMainSearch" : "rechercher ..."
-          },
-          "#survey":
-                {"inMenu" : false, 
-                "useHeader" : false,
-                "open" : true,  
-                "subdomain" : "city", 
-                "subdomainName" : "City",
-                "hash":"#app.survey",
-                "icon" : "university", 
-                "mainTitle" : "Communexion activée",
-                "placeholderMainSearch" : "rechercher ..."
-          },
+        },
 
-          "#admin": {
+		"#rooms": {
+			"inMenu" : false, 
+			"useHeader" : false,
+			"open" : true,  
+			"subdomain" : "rooms", 
+			"subdomainName" : "rooms",
+			"hash":"#app.rooms",
+			"icon" : "university", 
+			"mainTitle" : "Communexion activée",
+			"placeholderMainSearch" : "rechercher ..."
+		},
+
+		"#survey": {
+			"inMenu" : false, 
+			"useHeader" : false,
+			"open" : true,  
+			"subdomain" : "city", 
+			"subdomainName" : "City",
+			"hash":"#app.survey",
+			"icon" : "university", 
+			"mainTitle" : "Communexion activée",
+			"placeholderMainSearch" : "rechercher ..."
+		},
+
+		"#admin": {
 			"inMenu" : false, 
 			"useHeader" : true, 
 			"open" : false, 
@@ -175,8 +169,5 @@
 			"mainTitle" : "Partie Admin Public",
 			"placeholderMainSearch" : "Admin Public ..."
 		}
-
-  
-  }
-
-
+	}
+}

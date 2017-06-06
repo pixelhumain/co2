@@ -145,13 +145,13 @@ jQuery(document).ready(function() {
 	$(".searchIcon").attr("title","Mode Recherche ciblé (ne concerne que cette page)");*/
     $('.tooltips').tooltip();
     searchPage = true;
-	startSearch(true);
+	startNewsSearch(true);
 	$(".titleNowEvents .btnhidden").hide();
 });
 
 
 var timeout;
-function startSearch(isFirst){
+function startNewsSearch(isFirst){
 	//Modif SBAR
 	//$(".my-main-container").off();
 	if(liveScopeType == "global"){

@@ -158,7 +158,7 @@
 						<span><i class="fa fa-angle-right"></i></span><?php echo Yii::t("common", "Type"); ?> 
 					</div>
 					<div id="typeAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span><?php echo (@$element["type"]) ? Yii::t("common", $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span><?php echo (@$element["type"]) ? Yii::t("event", $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 					</div>
 				</div>
 		<?php }
@@ -175,6 +175,8 @@
 				</div>
 			</div>
 		<?php } ?>
+
+		<?php if($type!=Poi::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-desktop"></i></span> <?php echo Yii::t("common","Website URL"); ?>
@@ -190,6 +192,7 @@
 						echo '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 				</div>
 			</div>
+		<?php } ?>
 		<?php  if($type==Organization::COLLECTION || $type==Person::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
@@ -338,7 +341,9 @@
 					 			'</span>';
 					echo $address;
 					if( empty($element["address"]["codeInsee"]) && Yii::app()->session["userId"] == (String) $element["_id"]) {
-						echo '<a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.Yii::t("common", "Connect to your city").'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe" >'. Yii::t("common", "Why ?").'</a>';
+						echo '<br><a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.
+								Yii::t("common", "Connect to your city").'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe">'. 
+								Yii::t("common", "Why ?").'</a>';
 					}
 			}else
 				echo '<i>'.Yii::t("common","Not specified").'</i>';
@@ -392,7 +397,10 @@
 			<?php } ?>						
 		</div>
 	</div>
-	<?php 
+
+	<?php
+
+	if($type!=Poi::COLLECTION){ 
 		$skype = (!empty($element["socialNetwork"]["skype"])? $element["socialNetwork"]["skype"]:"javascript:;") ;
 		$telegram =  (!empty($element["socialNetwork"]["telegram"])? "https://web.telegram.org/#/im?p=@".$element["socialNetwork"]["telegram"]:"javascript:;") ;
 		$facebook = (!empty($element["socialNetwork"]["facebook"])? $element["socialNetwork"]["facebook"]:"javascript:;") ;
@@ -446,7 +454,8 @@
 			</div>
 			<?php } ?>
 		</div>	
-    </div>  
+    </div> 
+    <?php } ?> 
 </div>
 
 

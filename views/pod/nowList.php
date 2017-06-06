@@ -6,6 +6,13 @@
         border-color: #e6344d;
     }
 </style>
+
+<?php if(empty($result) && !@Yii::app()->session["userId"]){ ?>
+    <h4 class="text-dark text-center">
+        Aucune donnée relative à votre communexion n'a été trouvée
+    </h4>
+<?php } ?>
+
 <div class="col-xs-12 no-padding col-nowList"  data-tpl="pod.nowList">
 
     <?php if((!@$scope || @$scope=="") && $open==false ){ ?>
@@ -109,11 +116,18 @@ var localActivity = <?php echo json_encode($result); ?>;
 
 jQuery(document).ready(function() {
     console.log("LIVENOW", localActivity);
+    $.each(localActivity, function(key, data){
+        if(typeof data.geo != "undefined" && data.geo.latitude == "")
+        console.log("LIVENOW geo", data.geo, data);
+    });
     // $(".elemt_date").each(function() {
     //     var elementTime = $(this).children(".dateTZ").attr("data-time");
     //     var elementDate = new Date(elementTime * 1000);
     //     $(this).children(".dateTZ").text(elementDate.toLocaleDateString() + " " + elementDate.toLocaleTimeString());
     // });
+    Sig.showMapElements(Sig.map, localActivity);
+    $('#mapLegende').html("<i class='fa fa-clock-o'></i> Activité local en direct");
+    $('#mapLegende').show();
 
     $(".el-nowList").click(function(){
         var id = $(this).data("id");

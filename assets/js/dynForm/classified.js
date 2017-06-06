@@ -9,7 +9,12 @@ dynForm = {
 	    		if(contextData.type && contextData.id ){
     				$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
-	    			$("#ajax-modal-modal-title").html( $("#ajax-modal-modal-title").html()+" sur "+contextData.name );
+	    			$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+							  					  .addClass("bg-azure");
+	    		 	
+	    		 	$("#ajax-modal-modal-title").html(
+	    		 		$("#ajax-modal-modal-title").html()+
+	    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
 	    		}
 	    	},
 	    	onload : function(){
@@ -25,7 +30,9 @@ dynForm = {
 		    },*/
 	    },
 	    beforeBuild : function(){
-	    	dyFObj.setMongoId('classified');
+	    	dyFObj.setMongoId('classified',function(){
+	    		uploadObj.gotoUrl = (contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.classified" : location.hash;
+	    	});
 	    },
 	    beforeSave : function(){
 	    	var tagAndTypes = ( $("#ajaxFormModal #tags").val() != "" ) ? $("#ajaxFormModal #tags").val()+"," : "" ;
@@ -50,7 +57,7 @@ dynForm = {
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
 		    	dyFObj.closeForm();
-		    	urlCtrl.loadByHash( location.hash );	
+			    urlCtrl.loadByHash( uploadObj.gotoUrl );
 		    }
 	    },
 	    canSubmitIf : function () { 

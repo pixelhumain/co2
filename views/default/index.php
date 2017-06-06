@@ -18,6 +18,7 @@ on garde les librairies specifique au module dans le module
 		'/js/default/globalsearch.js',
 		'/js/sig/findAddressGeoPos.js',
 		'/js/jquery.filter_input.js',
+		'/js/breadcrum_co.js',
 
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);

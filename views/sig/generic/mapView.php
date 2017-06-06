@@ -39,8 +39,8 @@
 	<div class="bg-main-menu bgpixeltree_sig"></div>
 
 	<?php if($sigParams['useRightList']){ ?>
-		<div id="right_tool_map" class="hidden-xs hidden-sm">
-			<div id="right_tool_map_search" class="">
+		<div id="right_tool_map">
+			<div id="right_tool_map_search" class="hidden-xs hidden-sm">
 			<!-- 	HEADER -->
 				<div class="right_tool_map_header">
 					<?php if($sigParams['usePanel']){ ?>
@@ -70,7 +70,7 @@
 					</div>
 				<?php } ?>	
 				<span class="right_tool_map_header_title">Résultats</span>
-					<span class="right_tool_map_header_info">935 / 1034</span>
+					<span class="right_tool_map_header_info"> / </span>
 					
 				</div>
 				

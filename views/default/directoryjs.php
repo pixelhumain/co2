@@ -305,9 +305,10 @@
                   <?php } ?>
                 <?php } ?>
             <?php } ?>
-            <?php if( @Yii::app()->session["userId"] ) { ?>
-            <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 text-red" style="margin-left:-5px;" data-keycat="favorites">
-              <i class="fa fa-star  hidden-xs"></i> Favoris
+            <?php if( @Yii::app()->session["userId"] ) { ?> 
+            <hr>
+            <button class="btn btn-default margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="favorites">
+              <span class="text-red"><i class="fa fa-star hidden-xs"></i> MES FAVORIS</span>
             </button>
             <?php } ?>
           </div>

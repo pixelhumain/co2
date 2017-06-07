@@ -15,6 +15,8 @@
 * Version 0.2
 
 ** @Rapha
+*** ajout des geoShape au ville qui en ont pas
+/co2/datamigration/AddGeoShapeMissing
 *** change le type des telephones de object en array
 /co2/datamigration/ChangePhoneObjectToArray
 

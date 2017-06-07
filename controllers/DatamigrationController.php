@@ -1377,5 +1377,37 @@ class DatamigrationController extends CommunecterController {
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
+	public function actionAddGeoShapeMissing(){
+		$cities = PHDB::find(City::COLLECTION, array("geoShape" => array('$exists' => 0)));
+
+		foreach ($cities as $key => $city) {
+			$name = str_replace(" ", "+", trim($city["name"]));
+			$url = "http://nominatim.openstreetmap.org/search?format=json&addressdetails=1&city=".$name."&countrycodes=FR&polygon_geojson=1&extratags=1" ;
+			$nominatim = json_decode(file_get_contents($url), true);
+			$find = false ;
+			if(!empty($nominatim)){
+				foreach ($nominatim as $key => $value) {
+					if($value["osm_type"] == "relation" && !empty($value["geojson"]) && $find == false){
+						echo $city["insee"]." : ". $city["name"]." : ".$value["osm_id"]."<br/>";
+						$find = true ;
+
+						$city["modifiedByBatch"][] = array("AddGeoShapeMissing" => new MongoDate(time()));
+						try {
+							$res = PHDB::update( City::COLLECTION, 
+						  		array("_id"=>new MongoId((String)$city["_id"])),
+	                        	array('$set' => array(	"geoShape" => $value["geojson"],
+	                        							"osmID" => $value["osm_id"],
+	                        							"modifiedByBatch" => $city["modifiedByBatch"])));
+						} catch (MongoWriteConcernException $e) {
+							echo("Erreur à la mise à jour de l'élément ".City::COLLECTION." avec l'id ".$key);
+							die();
+						}
+					}
+				}
+			}
+		}
+	}
+
+
 }
 

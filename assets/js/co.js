@@ -2195,6 +2195,7 @@ var uploadObj = {
 	folder : moduleId, //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
+		mylog.log("set uploadObj.id", id);
 		uploadObj.id = id;
 	}
 };
@@ -2563,6 +2564,7 @@ var dyFObj = {
 		if( !$("#ajaxFormModal #id").val() )
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
+				mylog.log("setMongoId uploadObj.id", data.id);
 				uploadObj.id = data.id;
 				$("#ajaxFormModal #id").val(data.id)
 				if( typeof callback === "function" )
@@ -2675,6 +2677,15 @@ var dyFInputs = {
 		};
 		return inputObj;
 	},
+	tags : function(list) { 
+    	tagsL = (list) ? list : tagsList;
+    	return {
+			inputType : "tags",
+			placeholder : "Mots clés",
+			values : tagsL,
+			label : "Ajouter quelques mots clés"
+		}
+	},
     imageAddPhoto : {
     	inputType : "uploader",
     	showUploadBtn : true,
@@ -2700,7 +2711,7 @@ var dyFInputs = {
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	dyFObj.closeForm();
-		    	//alert( "image upload then goto : "+uploadObj.gotoUrl );
+				//alert( "image upload then goto : "+uploadObj.gotoUrl );
 	            urlCtrl.loadByHash( uploadObj.gotoUrl );	
 		    }
     	}
@@ -2725,15 +2736,7 @@ var dyFInputs = {
 	    } ;
 	    return inputObj;
 	},
-    tags : function(list) { 
-    	tagsL = (list) ? list : tagsList;
-    	return {
-			inputType : "tags",
-			placeholder : "Mots clés",
-			values : tagsL,
-			label : "Ajouter quelques mots clés"
-		}
-	},
+
 	password : function  (title, rules) {  
     	var title = (title) ? title : trad["New password"];
     	var ph = "";

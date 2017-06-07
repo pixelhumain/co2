@@ -413,34 +413,37 @@ function bindInvite(){
     		toastr.error("Veuillez sélectionner une adresse mail.");
     	else{
     		var nameUtil = "" ;
+    		var textmail = "Bonjour, J'ai découvert un réseau sociétal citoyen appelé \"Communecter - être connecter à sa commune\". Tu peux agir concrétement autour de chez toi et découvrir ce qui s'y passe. Viens rejoindre le réseau sur communecter.org.";
     		mylog.log("listMails", listMails);
     		$.ajax({
 		        type: "POST",
 		        url: baseUrl+"/"+moduleId+'/person/follows',
 		        dataType : "json",
 		        data: {
-		        	parentId : $("#parentId").val(),
+		        	//parentId : $("#parentId").val(),
 		        	listMails : listMails,
-		        	msgEmail : $("#textmail").val(),
-		        	gmail : true
+		        	msgEmail : textmail,
+		        	//gmail : false
 		        },
 				type:"POST",
+				success: function(data){ 
+					if (data &&  data.result) {               
+			        	toastr.success('L\'invitation a été envoyée avec succès!');
+			        	mylog.log(data);
+			        	$.each(data.data, function(key, elt) {
+			        		addFloopEntity(elt.invitedUser.id, <?php echo Person::COLLECTION ?>, elt.invitedUser);
+			        	});
+			        	$('#inviteSearch').val("");
+						//backToSearch();
+			        } else {
+			        	$.unblockUI();
+						toastr.error(data.msg);
+			        }
+				}
 		    })
 		    .done(function (data){
 		    	$.unblockUI();
-		        if (data &&  data.result) {               
-		        	toastr.success('L\'invitation a été envoyée avec succès!');
-		        	mylog.log(data);
-		        	$.each(data.data, function(key, elt) {
-		        		addFloopEntity(elt.invitedUser.id, <?php echo Person::COLLECTION ?>, elt.invitedUser);
-		        	});
-		        	
-		        	$('#inviteSearch').val("");
-					backToSearch();
-		        } else {
-		        	$.unblockUI();
-					toastr.error(data.msg);
-		        }
+		        
 		    });
     	}
   	});
@@ -496,7 +499,7 @@ function bindInvite(){
 			// var i = listFollowsId.indexOf(idToDisconnect);
 			// if(i != -1) {
 			// 	listFollowsId.splice(i, 1);
-			// }
+			// }textmail
 			// mylog.log(listFollowsId);
 			$('.disconnectBtn').hide();
 			$('.connectBtn').show();
@@ -556,7 +559,7 @@ function checkAndGetMails(mails){
 							'<div class="col-xs-1"><input id="checkbox'+idMail+'" class="checkboxList" data-id="'+idMail+'" data-mail="'+valueMails+'" data-name="" type="checkbox"></div>'+
 							'<label class="col-xs-11" for="checkbox'+idMail+'">'+
 								'<a href="javascript:;" onclick="checkedMail(\''+idMail+'\', \''+valueMails+'\',  \'\');">';
-					if(typeof data[valueMails] != "undefined" && data[valueMails] != null){
+					if(typeof data[valueMails] != "undefined" && data[valueMails] != null && typeof data[valueMails].profilThumbImageUrl != "undefined"){
 						text2 += '<div class="">'+
 									'<img src="'+baseUrl+data[valueMails].profilThumbImageUrl+'" alt="image" width="40" height="40" />'+
 									' <span class="text-xss" > '+data[valueMails].name+' : '+ valueMails.trim() + '</span>'+

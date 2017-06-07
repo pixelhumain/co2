@@ -1691,7 +1691,7 @@ var directory = {
         return str;
     },
     getAdminToolBar : function(data){
-      var html = "<div class='col-md-12 padding-5' style='margin-top:-50px;'>";
+      var html = "<div class='adminToolBar'>";
       if(data.edit=="follows"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='4'>"+

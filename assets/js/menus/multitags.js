@@ -244,3 +244,10 @@ function showTagSuggestion(tagValue, tagSpec){ //mylog.log("showTagSuggestion()"
 	
 	
 }
+
+function resetMyTags(){ 
+	myMultiTags = {}; 
+	saveMultiTag(); 
+	startSearch(0, indexStepInit);
+	$('#sub-menu-filliaire').addClass('hidden');
+}

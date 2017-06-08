@@ -529,8 +529,10 @@ jQuery(document).ready(function() {
   $(".btn-open-filliaire").click(function(){
       if($("#sub-menu-filliaire").hasClass("hidden"))
         $("#sub-menu-filliaire").removeClass("hidden");
-      else
+      else{
         $("#sub-menu-filliaire").addClass("hidden");
+        resetMyTags();
+      }
   });
 
   $(".btn-select-filliaire").click(function(){

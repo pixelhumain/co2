@@ -95,7 +95,6 @@ var Login = function() {
 	    });*/
 		form.submit(function(e){e.preventDefault() });
 		var errorHandler = $('.errorHandler', form);
-		
 		form.validate({
 			rules : {
 				email : {
@@ -113,8 +112,8 @@ var Login = function() {
 				//loginBtn.start();
 				$(".loginBtn").find(".fa").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
 				var params = { 
-				   "email" : $("#email-login").val(), 
-                   "pwd" : $("#password-login").val()
+				   "email" : ( $("#email-login-welcome").length ? $("#email-login-welcome").val() : $("#email-login").val() ), 
+                   "pwd" : ( $("#password-login-welcome").length ? $("#password-login-welcome").val() : $("#password-login").val() )
                 };
 			      
 		    	$.ajax({

@@ -1381,7 +1381,8 @@ var directory = {
     // Contact DIRECTORY PANEL
     // ********************************
     contactPanelHtml : function(params, key){
-    	if(directory.dirLog) mylog.log("-----------contactPanelHtml", params);
+    	if(directory.dirLog) mylog.log("-----------contactPanelHtml", params, openEdition);
+      mylog.log("-----------contactPanelHtml", params, openEdition);
 	    str = "";  
 	    str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 '>";
 			str += "<div class='searchEntity contactPanelHtml'>";
@@ -1409,20 +1410,22 @@ var directory = {
                 str += '</a>';
               str += '</li>';
             }
-            str += '<li class="text-red pull-right">';
-              str += '<a href="javascript:;" onclick="removeContact(\''+key+'\');" '+
-                        'class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
-                        'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
-                str += '<i class="fa fa-trash"></i>';
-              str += '</a>';
-            str += '</li>';
-            str += '<li class="text-left pull-right">';
-              str += '<a href="javascript:;" onclick="updateContact(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
-                        'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" '+
-                        'data-original-title="'+trad["update"]+'" >';
-                str += '<i class="fa fa-pencil"></i>';
-              str += '</a>';
-            str += '</li>';
+            if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ) {
+              str += '<li class="text-red pull-right">';
+                str += '<a href="javascript:;" onclick="removeContact(\''+key+'\');" '+
+                          'class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
+                          'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+                  str += '<i class="fa fa-trash"></i>';
+                str += '</a>';
+              str += '</li>';
+              str += '<li class="text-left pull-right">';
+                str += '<a href="javascript:;" onclick="updateContact(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
+                          'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" '+
+                          'data-original-title="'+trad["update"]+'" >';
+                  str += '<i class="fa fa-pencil"></i>';
+                str += '</a>';
+              str += '</li>';
+            }
             
         str += '</ul>';
       }

@@ -349,7 +349,20 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
   }
 
-  function initBtnAdmin(){ mylog.log("initBtnAdmin")
+  function initBtnAdmin(){ 
+    $(".adminToolBar").each(function(){
+      if($(this).children('button').length == 0){
+        $(this).parent().find(".adminIconDirectory").remove();
+        $(this).remove();
+      }
+    });
+    $(".adminIconDirectory, .container-img-profil").mouseenter(function(){
+      $(this).parent().find(".adminToolBar").show();
+    });
+    $(".adminToolBar").mouseleave(function(){
+      $(this).hide();
+    });
+    mylog.log("initBtnAdmin")
     $(".disconnectConnection").click(function(){
       var $this=$(this); 
       disconnectTo(contextData.type,
@@ -759,8 +772,12 @@ var directory = {
 		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
 		mylog.log("inMyContacts",inMyContacts(params.type, params.name));
     var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;
-		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn ){
+    if(typeof params.edit  != "undefined")
+          str += this.getAdminToolBar(params);
+        
+		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){
 			isFollowed=false;
+
 			if(typeof params.isFollowed != "undefined" ) 
 				isFollowed=true;
 			tip = (params.type == "events") ? "Participer" : 'Suivre';
@@ -781,10 +798,7 @@ var directory = {
 
         str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
-        str += "<div class='entityRight no-padding'>";
-        if(typeof params.edit  != "undefined")
-          str += this.getAdminToolBar(params);
-         
+        str += "<div class='entityRight no-padding'>"; 
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
@@ -796,6 +810,12 @@ var directory = {
             str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
                       iconFaReply + params.name + 
                    "</a>";   
+            if(typeof(params.statusLink)!="undefined"){
+              if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined")
+                str+="<span class='text-red'>Administrateur</span>";
+              if(typeof(params.statusLink.toBeValidated)!="undefined" || typeof(params.statusLink.isAdminPending)!="undefined")
+                str+="<span class='text-red'>En attente de validation</span>";
+            }
 
             if( params.section ){
               str += "<div class='entityType bold'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
@@ -1693,40 +1713,44 @@ var directory = {
         return str;
     },
     getAdminToolBar : function(data){
-      var html = "<div class='col-md-12 padding-5' style='margin-top:-50px;'>";
+
+      var html = "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips adminIconDirectory'>"+
+       "<i class='fa fa-cog'></i>"+ //fa-bookmark fa-rotate-270
+       "</a>";
+      html+="<div class='adminToolBar'>";
       if(data.edit=="follows"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='4'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'>"+
             "<i class='fa fa-unlink'></i> Ne plus suivre"+
           "</button> ";
       }
       if(data.edit=="organizations" || data.edit=="projects"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='5'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='3'>"+
             "<i class='fa fa-unlink'></i> Annuler ce lien"+
           "</button> ";
       }
       if(data.edit=="members" || data.edit=="contributors"){
-        if(typeof data.statusLink["toBeValidated"] != "undefined" && typeof data.statusLink["isAdminPending"] == "undefined"){
+        if(data.type!="organizations" && typeof data.statusLink["toBeValidated"] != "undefined" && typeof data.statusLink["isAdminPending"] == "undefined"){
           html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='toBeValidated' data-parent-hide='4'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='toBeValidated' data-parent-hide='2'>"+
             "<i class='fa fa-user'></i> Accepter comme "+data.edit.substring(0,data.edit.length-1);
           "</button> ";
-        }else if(typeof data.statusLink["isAdminPending"] != "undefined"){
+        }else if(data.type!="organizations" && typeof data.statusLink["isAdminPending"] != "undefined"){
           html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='isAdminPending' data-parent-hide='4'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='isAdminPending' data-parent-hide='2'>"+
             "<i class='fa fa-user-plus'></i> Accepter comme admin";
           "</button> ";
         }
-        if(typeof data.statusLink["isAdmin"] == "undefined"){
+        if(data.type!="organizations" && typeof data.statusLink["isAdmin"] == "undefined"){
           html +='<button class="btn btn-default btn-xs" '+
                    'onclick="connectTo(\''+contextData.type+'\',\''+contextData.id+'\', \''+data.id+'\', \''+data.type+'\', \'admin\',\'\',\'true\')">'+
                             '<i class="fa fa-user-plus"></i> Ajouter comme admin'+
                           '</button>';
         }
-        if(typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined")
+        if(data.type=="organizations" || (typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined"))
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='4'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'>"+
             "<i class='fa fa-unlink'></i> Supprimer ce "+data.edit.substring(0,data.edit.length-1);
           "</button> ";
       }

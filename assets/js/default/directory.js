@@ -1355,6 +1355,7 @@ var directory = {
               str += '<br/><a href="'+params.url+'" target="_blank" class="text-dark">'+params.url+'</a>';
               str += '<br/><span class="" style="font-size: 11px !important;">'+urlTypes[params.type]+'</span>';
           str += "</div>";
+        if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ) {
         str += '<ul class="nav navbar-nav margin-5 col-md-12">';
 
             str += '<li class="text-red pull-right">';
@@ -1372,6 +1373,7 @@ var directory = {
             str += '</li>';
             
           str += '</ul>';
+        }
         str += "</div>";  
       str += "</div>";
       return str;

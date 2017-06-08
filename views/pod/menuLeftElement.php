@@ -164,13 +164,16 @@
 				if ($type == Event::COLLECTION ){ 
 					$inviteLink = "people";
 					$inviteText =  Yii::t("common","Invite people") ;			
-				}else if ($type == Organization::COLLECTION || $type == Person::COLLECTION) { 
+				}else if ($type == Organization::COLLECTION) { 
 					$inviteLink = "members";
 					$inviteText =  Yii::t("common",'Invite members') ;
 				}else if ($type == Project::COLLECTION ){ 
 					$inviteLink = "contributors";
 					$inviteText =  Yii::t("common",'Invite contributors') ;
-				} 
+				}else if ($type == Person::COLLECTION) { 
+					$inviteLink = "members";
+					$inviteText =  Yii::t("common",'Invite people') ;
+				}
 
 				if( @$inviteLink && @$inviteText ){?>
 				<li class="">

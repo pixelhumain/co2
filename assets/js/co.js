@@ -1621,7 +1621,7 @@ function addContact(id, name){
 	$("#name").val(name);
 }
 
-function globalSearch(searchValue,types,autre){
+function globalSearch(searchValue,types,contact){
 	
 	searchType = (types) ? types : ["organizations", "projects", "events", "needs", "citoyens"];
 
@@ -1669,8 +1669,9 @@ function globalSearch(searchValue,types,autre){
 					var htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
 				}
 				
-				if(autre == true){
-					str += 	"<a href='javascript:;' onclick='addContact( \""+elem.id+"\",\""+elem.name+"\" );' class='autre btn btn-xs btn-default w50p text-left padding-5 text-blue' >"+
+				if(contact == true){
+					elem.name = escapeHtml(elem.name);
+					str += 	"<a href='javascript:;' onclick='addContact( \""+elem.id+"\",\""+elem.name+"\" );' class='btn btn-xs btn-default w50p text-left padding-5 text-blue' >"+
 								"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
 							"</a>";
 					msg = "Verifiez si le contact est dans Communecter";

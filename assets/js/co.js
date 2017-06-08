@@ -3111,7 +3111,7 @@ var dyFInputs = {
     	//mylog.log("get", type);
     	var obj = null;
     	$.each( typeObj,function(k,o) { 
-    		if( o.types && ( $.inArray( type,  o.types )>=0 ) ){
+    		if( o.subTypes && ( $.inArray( type,  o.subTypes )>=0 ) ){
     			obj = o;
     			return false;
     		}
@@ -3188,7 +3188,7 @@ var typeObj = {
 	"citoyens" : { sameAs:"person" },
 	
 	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle",
-			types:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+			subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
 				   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
 				   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
 

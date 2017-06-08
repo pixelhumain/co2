@@ -121,13 +121,6 @@ var keywords = [
         "image" : "<?php echo $this->module->assetsUrl; ?>/images/testamonials/hafid.png"
     },
     {
-        "name" : "Julien Cantoni",
-        "project" : "P2P Foundation",
-        "url" : "http://p2pfoundation.net/",
-        "comment" : "Communecter peut faire partie des alternatives aux plateformes propriétaires qui se sont développées ces dernières années. Inclusive, équitable, interopérable, efficace, soutenable, glocale, voilà les promesses de communecter ! Nous attendons son déploiement avec impatience !",
-        "image" : "<?php echo $this->module->assetsUrl; ?>/images/testamonials/julien.png"
-    },
-    {
         "name" : "Francis Morel",
         "project" : "Practishare",
         "url" : "https://practishare.wordpress.com/",

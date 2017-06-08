@@ -213,12 +213,17 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                             "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
                           "</span> ";
                 });//console.log("myMultiTags", myMultiTags);
+                
                 $.each(myMultiTags, function(key, val){
                   var params = headerParams[val];
                   str += "<span class='text-dark hidden-xs pull-right'>"+
                             "#"+key+
                           "</span> ";
                 });
+
+                if( Object.keys(myMultiTags).length > 0 )
+                  str += "<a href='javascript:;' class='pull-right' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
+                
               }
               str += "</small>";
               str += "</h4>";
@@ -597,7 +602,7 @@ var directory = {
     colPos: "left",
     dirLog : false,
     defaultPanelHtml : function(params){
-      if(directory.dirLog) mylog.log("----------- defaultPanelHtml",params.type,params.name);
+      mylog.log("----------- defaultPanelHtml",params.type,params.name);
       str = "";  
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
@@ -619,12 +624,11 @@ var directory = {
           }
         }
 
-
         if(params.updated != null && !params.useMinSize)
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
 
         if(params.itemType!="city" && (typeof params.size == "undefined" || params.size == "max"))
-          str += "<a href='"+params.hash+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
+          str += "<a href='"+params.hash+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + params.imgProfil + "</a>";
 
         str += "<div class='padding-10 informations'>";
 
@@ -637,7 +641,7 @@ var directory = {
             
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.hash+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.hash+"' class='lbhp add2fav'  data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
               str += "</div>";
             }
           }  
@@ -646,19 +650,19 @@ var directory = {
                              
               
             if(notEmpty(params.parent) && notEmpty(params.parent.name))
-              str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbh add2fav text-light-weight margin-bottom-5'>" +
+              str += "<a href='"+urlParent+"' class='entityName text-"+params.parentColor+" lbhp add2fav   data-modalshow='"+params.id+"'text-light-weight margin-bottom-5'>" +
                         "<i class='fa "+params.parentIcon+"'></i> "
                         + params.parent.name + 
                       "</a>";
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbhp add2fav'  data-modalshow='"+params.id+"'>"+
                       iconFaReply + params.name + 
                    "</a>";
             
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "' class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "' class='entityLocality lbhp add2fav'  data-modalshow='"+params.id+"'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -689,7 +693,7 @@ var directory = {
               params.parentIco = "";
               if(type == "surveys"){ params.parentUrl = "#survey.entries.id."+params.survey; params.parentIco = "archive"; }
               else if(type == "actions") {params.parentUrl = "#rooms.actions.id."+params.room;params.parentIco = "cogs";}
-              str += "<div class='entityDescription text-dark'><i class='fa fa-" + params.parentIco + "'></i><a href='" + params.parentUrl + "' class='lbh add2fav'> " + params.parentRoom.name + "</a></div>";
+              str += "<div class='entityDescription text-dark'><i class='fa fa-" + params.parentIco + "'></i><a href='" + params.parentUrl + "' class='lbhp add2fav'  data-modalshow='"+params.id+"'> " + params.parentRoom.name + "</a></div>";
               if(notEmpty(params.parentRoom.parentObj)){
                 var typeIcoParent = params.parentRoom.parentObj.typeSig;
                 //mylog.log("typeIcoParent", params.parentRoom);
@@ -745,7 +749,7 @@ var directory = {
               
               if(typeof params.size == "undefined" || params.size == "max"){
                 str += "<div class='entityCenter no-padding'>";
-                str +=    "<a href='"+params.hash+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+                str +=    "<a href='"+params.hash+"' class='lbhp add2fav'  data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
                 str += "</div>";
               }
             }  

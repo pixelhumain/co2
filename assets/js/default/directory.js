@@ -354,7 +354,20 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
   }
 
-  function initBtnAdmin(){ mylog.log("initBtnAdmin")
+  function initBtnAdmin(){ 
+    $(".adminToolBar").each(function(){
+      if($(this).children('button').length == 0){
+        $(this).parent().find(".adminIconDirectory").remove();
+        $(this).remove();
+      }
+    });
+    $(".adminIconDirectory, .container-img-profil").mouseenter(function(){
+      $(this).parent().find(".adminToolBar").show();
+    });
+    $(".adminToolBar").mouseleave(function(){
+      $(this).hide();
+    });
+    mylog.log("initBtnAdmin")
     $(".disconnectConnection").click(function(){
       var $this=$(this); 
       disconnectTo(contextData.type,
@@ -763,8 +776,12 @@ var directory = {
 		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
 		mylog.log("inMyContacts",inMyContacts(params.type, params.name));
     var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;
-		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn ){
+    if(typeof params.edit  != "undefined")
+          str += this.getAdminToolBar(params);
+        
+		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){
 			isFollowed=false;
+
 			if(typeof params.isFollowed != "undefined" ) 
 				isFollowed=true;
 			tip = (params.type == "events") ? "Participer" : 'Suivre';
@@ -785,10 +802,7 @@ var directory = {
 
         str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
-        str += "<div class='entityRight no-padding'>";
-        if(typeof params.edit  != "undefined")
-          str += this.getAdminToolBar(params);
-         
+        str += "<div class='entityRight no-padding'>"; 
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
@@ -800,6 +814,12 @@ var directory = {
             str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
                       iconFaReply + params.name + 
                    "</a>";   
+            if(typeof(params.statusLink)!="undefined"){
+              if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined")
+                str+="<span class='text-red'>Administrateur</span>";
+              if(typeof(params.statusLink.toBeValidated)!="undefined" || typeof(params.statusLink.isAdminPending)!="undefined")
+                str+="<span class='text-red'>En attente de validation</span>";
+            }
 
             if( params.section ){
               str += "<div class='entityType bold'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
@@ -1335,28 +1355,29 @@ var directory = {
         str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 '>";
         str += "<div class='searchEntity contactPanelHtml'>";
           str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
-            str += '<a href="'+params.url+'" target="_blank" class="text-dark tooltips col-xs-8"'+
-              'data-toggle="tooltip" data-placement="top" data-original-title="'+params.url+'" >';
-              str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
-                str += '<h4 class="panel-title text-dark pull-left">'+params.title+'</h4>';
-                str += '<br/><span class="" style="font-size: 11px !important;">'+urlTypes[params.type]+'</span>';
-              str += "</div>";
-            str += '</a>';
+              str += '<h4 class="panel-title text-dark pull-left">'+params.title+'</h4>';
+              str += '<br/><a href="'+params.url+'" target="_blank" class="text-dark">'+params.url+'</a>';
+              str += '<br/><span class="" style="font-size: 11px !important;">'+urlTypes[params.type]+'</span>';
           str += "</div>";
-        str += '<ul class="nav navbar-nav pull-right margin-5">';
-            str += '<li class="text-left">';
-              str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
-              'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
-                str += '<i class="fa fa-pencil"></i>';
-              str += '</a>';
-            str += '</li>';
-            str += '<li class="text-left">';
+        if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ) {
+        str += '<ul class="nav navbar-nav margin-5 col-md-12">';
+
+            str += '<li class="text-red pull-right">';
               str += '<a href="javascript:;"  onclick="removeUrl(\''+key+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
               'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
                 str += '<i class="fa fa-trash"></i>';
               str += '</a>';
             str += '</li>';
+
+            str += '<li class="text-red pull-right">';
+              str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
+              'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
+                str += '<i class="fa fa-pencil"></i>';
+              str += '</a>';
+            str += '</li>';
+            
           str += '</ul>';
+        }
         str += "</div>";  
       str += "</div>";
       return str;
@@ -1366,7 +1387,8 @@ var directory = {
     // Contact DIRECTORY PANEL
     // ********************************
     contactPanelHtml : function(params, key){
-    	if(directory.dirLog) mylog.log("-----------contactPanelHtml", params);
+    	if(directory.dirLog) mylog.log("-----------contactPanelHtml", params, openEdition);
+      mylog.log("-----------contactPanelHtml", params, openEdition);
 	    str = "";  
 	    str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 '>";
 			str += "<div class='searchEntity contactPanelHtml'>";
@@ -1378,36 +1400,41 @@ var directory = {
 					else
 						str += (notEmpty(params.name) ? '<h4 class="panel-title text-dark pull-left">'+params.name+'</h4><br/>' : '');
 					str += (notEmpty(params.role) ? '<span class="" style="font-size: 11px !important;">'+params.role+'</span><br/>' : '');
-					str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="dyFObj.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
+					//str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="dyFObj.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
+          str += (notEmpty(params.email) ? '<span class="" style="font-size: 11px !important;">'+params.email+'</span><br/>' : '');
 					str += (notEmpty(params.telephone) ? '<span class="" style="font-size: 11px !important;">'+params.telephone+'</span>' : '');
 				str += "</div>";
-			str += '<ul class="nav navbar-nav margin-5 col-md-12">';
-          if(notEmpty(params.email)){
-            str += '<li class="text-left pull-left">';
-              str += '<a href="javascript:;" class="tooltips btn btn-default btn-sm openFormContact" '+
-                             'data-id-receiver="'+key +'" '+
-                             'data-email="'+(notEmpty(params.email) ? params.email : "") +'" '+
-                             'data-name="'+(notEmpty(params.name) ? params.name : "") +'">';
-                str += '<i class="fa fa-envelope"></i> Envoyer un e-mail';
-              str += '</a>';
-            str += '</li>';
-          }
-          str += '<li class="text-red pull-right">';
-            str += '<a href="javascript:;" onclick="removeContact(\''+key+'\');" '+
-                      'class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
-                      'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
-              str += '<i class="fa fa-trash"></i>';
-            str += '</a>';
-          str += '</li>';
-          str += '<li class="text-left pull-right">';
-            str += '<a href="javascript:;" onclick="updateContact(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
-                      'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" '+
-                      'data-original-title="'+trad["update"]+'" >';
-              str += '<i class="fa fa-pencil"></i>';
-            str += '</a>';
-          str += '</li>';
-          
+      if(typeof userId != "undefined" && userId != ""){
+  			str += '<ul class="nav navbar-nav margin-5 col-md-12">';
+            if(notEmpty(params.email)){
+              str += '<li class="text-left pull-left">';
+                str += '<a href="javascript:;" class="tooltips btn btn-default btn-sm openFormContact" '+
+                               'data-id-receiver="'+key +'" '+
+                               'data-email="'+(notEmpty(params.email) ? params.email : "") +'" '+
+                               'data-name="'+(notEmpty(params.name) ? params.name : "") +'">';
+                  str += '<i class="fa fa-envelope"></i> Envoyer un e-mail';
+                str += '</a>';
+              str += '</li>';
+            }
+            if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ) {
+              str += '<li class="text-red pull-right">';
+                str += '<a href="javascript:;" onclick="removeContact(\''+key+'\');" '+
+                          'class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
+                          'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+                  str += '<i class="fa fa-trash"></i>';
+                str += '</a>';
+              str += '</li>';
+              str += '<li class="text-left pull-right">';
+                str += '<a href="javascript:;" onclick="updateContact(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
+                          'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" '+
+                          'data-original-title="'+trad["update"]+'" >';
+                  str += '<i class="fa fa-pencil"></i>';
+                str += '</a>';
+              str += '</li>';
+            }
+            
         str += '</ul>';
+      }
       str += "</div>";  
 		str += "</div>";
 		return str;
@@ -1695,40 +1722,44 @@ var directory = {
         return str;
     },
     getAdminToolBar : function(data){
-      var html = "<div class='col-md-12 padding-5' style='margin-top:-50px;'>";
+
+      var html = "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips adminIconDirectory'>"+
+       "<i class='fa fa-cog'></i>"+ //fa-bookmark fa-rotate-270
+       "</a>";
+      html+="<div class='adminToolBar'>";
       if(data.edit=="follows"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='4'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'>"+
             "<i class='fa fa-unlink'></i> Ne plus suivre"+
           "</button> ";
       }
       if(data.edit=="organizations" || data.edit=="projects"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='5'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='3'>"+
             "<i class='fa fa-unlink'></i> Annuler ce lien"+
           "</button> ";
       }
       if(data.edit=="members" || data.edit=="contributors"){
-        if(typeof data.statusLink["toBeValidated"] != "undefined" && typeof data.statusLink["isAdminPending"] == "undefined"){
+        if(data.type!="organizations" && typeof data.statusLink["toBeValidated"] != "undefined" && typeof data.statusLink["isAdminPending"] == "undefined"){
           html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='toBeValidated' data-parent-hide='4'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='toBeValidated' data-parent-hide='2'>"+
             "<i class='fa fa-user'></i> Accepter comme "+data.edit.substring(0,data.edit.length-1);
           "</button> ";
-        }else if(typeof data.statusLink["isAdminPending"] != "undefined"){
+        }else if(data.type!="organizations" && typeof data.statusLink["isAdminPending"] != "undefined"){
           html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='isAdminPending' data-parent-hide='4'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='isAdminPending' data-parent-hide='2'>"+
             "<i class='fa fa-user-plus'></i> Accepter comme admin";
           "</button> ";
         }
-        if(typeof data.statusLink["isAdmin"] == "undefined"){
+        if(data.type!="organizations" && typeof data.statusLink["isAdmin"] == "undefined"){
           html +='<button class="btn btn-default btn-xs" '+
                    'onclick="connectTo(\''+contextData.type+'\',\''+contextData.id+'\', \''+data.id+'\', \''+data.type+'\', \'admin\',\'\',\'true\')">'+
                             '<i class="fa fa-user-plus"></i> Ajouter comme admin'+
                           '</button>';
         }
-        if(typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined")
+        if(data.type=="organizations" || (typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined"))
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='4'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'>"+
             "<i class='fa fa-unlink'></i> Supprimer ce "+data.edit.substring(0,data.edit.length-1);
           "</button> ";
       }

@@ -95,7 +95,6 @@ var Login = function() {
 	    });*/
 		form.submit(function(e){e.preventDefault() });
 		var errorHandler = $('.errorHandler', form);
-		
 		form.validate({
 			rules : {
 				email : {
@@ -113,8 +112,8 @@ var Login = function() {
 				//loginBtn.start();
 				$(".loginBtn").find(".fa").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
 				var params = { 
-				   "email" : $("#email-login").val(), 
-                   "pwd" : $("#password-login").val()
+				   "email" : ( $("#email-login-welcome").length ? $("#email-login-welcome").val() : $("#email-login").val() ), 
+                   "pwd" : ( $("#password-login-welcome").length ? $("#password-login-welcome").val() : $("#password-login").val() )
                 };
 			      
 		    	$.ajax({
@@ -134,11 +133,11 @@ var Login = function() {
 		    		  		userId = data.id;
 		    		  		$('#modalLogin').modal("hide");
 		    		  		dyFObj.openForm( dyFObj.openFormAfterLogin.type, dyFObj.openFormAfterLogin.afterLoad, dyFObj.openFormAfterLogin.data );
-		    		  	} else if(url && url.indexOf("#") >= 0 ) {
+		    		  	} /*else if(url && url.indexOf("#") >= 0 ) {
 		    		  		//mylog.log("login 1",url);
 		    		  		//reload to the url initialy requested
 		    		  		window.location.href = url;
-		        		} else {
+		        		} */ else {
 		        			if( url.split("/").length - 1 <= 3 ) {
 		        				//mylog.log("login 2",baseUrl+'#default.home');
 		        				//classic use case wherever you login from if not notifications/get/not/id...

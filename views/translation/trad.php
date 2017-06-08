@@ -33,6 +33,8 @@ var trad = {
 "reportanabuse": "<?php echo Yii::t("common", "Report an abuse")?>",
 "You are not following" : "<?php echo Yii::t("common", "You are not following")?>",
 "suretodeletenews" : "<?php echo Yii::t("common","Are you sure you want to delete this news") ?>",
+"suretodeletecontact" : "<?php echo Yii::t("common","Are you sure you want to delete this contact") ?>",
+"suretodeletelink" : "<?php echo Yii::t("common","Are you sure you want to delete this link") ?>",
 "successdeletenews":"<?php echo Yii::t("common","News has been successfully delated") ?>",
 "successsavenews":"<?php echo Yii::t("common","News added successfully!") ?>",
 "nomorenews":"<?php echo Yii::t("common","No more news") ?>",

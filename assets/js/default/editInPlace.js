@@ -674,46 +674,85 @@ function bindAboutPodElement() {
 	}
 
 	function removeUrl(ind) {
-		param = new Object;
-    	param.name = "urls";
-    	param.value = {index : ind};
-    	param.pk = contextData.id;
-		param.type = contextData.type;
-		$.ajax({
-	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-	        data: param,
-	       	dataType: "json",
-	    	success: function(data){
-	    		mylog.log("data", data);
-		    	if(data.result){
-					toastr.success(data.msg);
-					urlCtrl.loadByHash(location.hash);
-		    	}
-		    }
+		bootbox.confirm({
+			message: trad["suretodeletelink"]+"<span class='text-red'></span>",
+			buttons: {
+				confirm: {
+					label: trad["yes"],
+					className: 'btn-success'
+				},
+				cancel: {
+					label: trad["no"],
+					className: 'btn-danger'
+				}
+			},
+			callback: function (result) {
+				if (!result) {
+					return;
+				} else {
+					param = new Object;
+			    	param.name = "urls";
+			    	param.value = {index : ind};
+			    	param.pk = contextData.id;
+					param.type = contextData.type;
+					$.ajax({
+				        type: "POST",
+				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+				        data: param,
+				       	dataType: "json",
+				    	success: function(data){
+				    		mylog.log("data", data);
+					    	if(data.result){
+								toastr.success(data.msg);
+								urlCtrl.loadByHash(location.hash);
+					    	}
+					    }
+					});
+				}
+			}
 		});
+		
 	}
 
 	
 
 	function removeContact(ind) {
-		param = new Object;
-    	param.name = "contacts";
-    	param.value = {index : ind};
-    	param.pk = contextData.id;
-		param.type = contextData.type;
-		$.ajax({
-	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-	        data: param,
-	       	dataType: "json",
-	    	success: function(data){
-	    		mylog.log("data", data);
-		    	if(data.result){
-					toastr.success(data.msg);
-					urlCtrl.loadByHash(location.hash);
-		    	}
-		    }
+		bootbox.confirm({
+			message: trad["suretodeletecontact"]+"<span class='text-red'></span>",
+			buttons: {
+				confirm: {
+					label: trad["yes"],
+					className: 'btn-success'
+				},
+				cancel: {
+					label: trad["no"],
+					className: 'btn-danger'
+				}
+			},
+			callback: function (result) {
+				if (!result) {
+					return;
+				} else {
+					param = new Object;
+			    	param.name = "contacts";
+			    	param.value = {index : ind};
+			    	param.pk = contextData.id;
+					param.type = contextData.type;
+					$.ajax({
+				        type: "POST",
+				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+				        data: param,
+				       	dataType: "json",
+				    	success: function(data){
+				    		mylog.log("data", data);
+					    	if(data.result){
+								toastr.success(data.msg);
+								urlCtrl.loadByHash(location.hash);
+					    	}
+					    }
+					});
+				}
+			}
 		});
 	}
 

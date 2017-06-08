@@ -839,12 +839,12 @@ var directory = {
             str += "<div class='entityDescription'>" + params.description + "</div>";
          
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
-
+            /*
               if(params.startDate != null)
               str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
               if(params.endDate != null)
               str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
-              
+              */
               
           str += "</div>";
         str += "</div>";

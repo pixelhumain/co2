@@ -213,7 +213,8 @@
 		}, function() {
   			$(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
 		});
-		if(typeof userConnected.collections !="undefined" 
+		if(typeof userConnected !="undefined" && userConnected!=null
+			&& typeof userConnected.collections !="undefined" 
 			&& typeof userConnected.collections.favorites !="undefined"
 			&& typeof userConnected.collections.favorites[elementType] !="undefined"
 			&& typeof userConnected.collections.favorites[elementType][elementId] !="undefined"

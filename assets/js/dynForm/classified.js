@@ -63,7 +63,7 @@ dynForm = {
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
 		    	dyFObj.closeForm();
-			    urlCtrl.loadByHash( uploadObj.gotoUrl );
+			    urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 		    }
 	    },
 	    canSubmitIf : function () { 

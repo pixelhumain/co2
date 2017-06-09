@@ -50,7 +50,7 @@ dynForm = {
 		    else 
 		    { 
 		        dyFObj.closeForm(); 
-		        urlCtrl.loadByHash( uploadObj.gotoUrl );
+		        urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 	        }
 	    },
 	    canSubmitIf : function () { 

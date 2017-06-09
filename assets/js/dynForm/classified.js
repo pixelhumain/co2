@@ -17,8 +17,13 @@ dynForm = {
 	    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
 	    		}
 	    	},
-	    	onload : function(){
-	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+	    	onload : function(data){
+	    		if(data && data.section && data.type && data.subtype ){
+	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+data.section+" > "+data.type+" > "+data.subtype+"</h4>" );
+					$(".sectionBtntagList").hide();
+					$(".typeBtntagList").hide();
+	    		} else
+	    			$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
 	    	},
 	    	/*,
 	    	loadData : function(data){

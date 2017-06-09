@@ -2569,7 +2569,7 @@ var dyFObj = {
 			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
 			        //incase we need a second global post process
 			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
-			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload();
+			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload(data);
 				    
 			        bindLBHLinks();
 			      },

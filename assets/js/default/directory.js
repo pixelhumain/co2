@@ -999,37 +999,37 @@ var directory = {
 
         if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
           str += '<div class="col-xs-12 text-center">'+
-                    '<div id="myCarousel" class="carousel slide" data-ride="carousel">'+
-                      //<!-- Indicators -->
-                      '<ol class="carousel-indicators">'+
-                      '  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>'+
-                      '</ol>'+
+            '<div id="myCarousel" class="carousel slide" data-ride="carousel">'+
+              //<!-- Indicators -->
+              '<ol class="carousel-indicators">'+
+              '  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>'+
+              '</ol>'+
 
-                      //<!-- Wrapper for slides -->'+
-                      '<div class="carousel-inner" role="listbox">'+
-                      '  <div class="item active carousel-first ">'+
-                      "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
-                      '  </div>'+
-                      '</div>'+
+              //<!-- Wrapper for slides -->'+
+              '<div class="carousel-inner" role="listbox">'+
+              '  <div class="item active carousel-first ">'+
+              "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
+              '  </div>'+
+              '</div>'+
 
-                      //<!-- Left and right controls -->'+
-                      '<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">'+
-                      '  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'+
-                      '  <span class="sr-only">Previous</span>'+
-                      '</a>'+
-                      '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">'+
-                      '  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'+
-                      '  <span class="sr-only">Next</span>'+
-                      '</a>'+
-                    '</div>'+
-                    // '<a class="thumb-info" href="'+baseUrl+params.profilImageUrl+'" data-title="" data-lightbox="all">'+
-                    //   "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
-                    // '</a>'+
-                 '</div>';
+              //<!-- Left and right controls -->'+
+              '<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">'+
+              '  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'+
+              '  <span class="sr-only">Previous</span>'+
+              '</a>'+
+              '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">'+
+              '  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'+
+              '  <span class="sr-only">Next</span>'+
+              '</a>'+
+            '</div>'+
+            // '<a class="thumb-info" href="'+baseUrl+params.profilImageUrl+'" data-title="" data-lightbox="all">'+
+            //   "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
+            // '</a>'+
+        '</div>';
 
         if( params.creator == userId )
-        str += '<hr><a href="javascript:dyFObj.openForm(\'classified\', null, directory.previewedObj.params );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
-                  '<i class="fa fa-pencil"></i> Modifier mon annonce'+
+        str += '<hr><a href="javascript:dyFObj.editElement(\''+params.type+'\', \''+params.id+'\' );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
+                  '<i class="fa fa-pencil"></i> Modifier cet élément'+
               '</a>';
 
 

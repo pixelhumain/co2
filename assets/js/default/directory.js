@@ -334,7 +334,6 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             if( typeof page != "undefined" && page == "agenda" && typeof showResultInCalendar != "undefined")
               showResultInCalendar(data);
 
-            alert("autoCompleteSearch");
 
             if(mapElements.length==0) mapElements = data;
             else $.extend(mapElements, data);

@@ -525,9 +525,14 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		}else{
 			$.each(data, function(col, val){
 				html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
-				$.each(val.list, function(key, elements){ 
-					html += directory.showResultsDirectoryHtml(elements, key);
-				});
+				console.log("list", val);
+				if(val.count==0)
+					html +="<span class='col-md-12 col-sm-12 col-xs-12 text-dark margin-bottom-20'>Aucun élément dans cette collection</span>";
+				else{
+					$.each(val.list, function(key, elements){ 
+						html += directory.showResultsDirectoryHtml(elements, key);
+					});
+				}
 			});
 		}
 		toogleNotif(false);

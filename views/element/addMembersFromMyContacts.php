@@ -890,7 +890,10 @@ function sendInvitation(){
 					if(typeof(mapUrl.directory.load) != "undefined" && mapUrl.directory.load)
 						mapUrl.directory.load = false;
 				}
-				loadDataDirectory("guests", "send");
+				if(data.onlyOrganization)
+					loadDataDirectory("members", "users");
+				else
+					loadDataDirectory("guests", "send");
 				//urlCtrl.loadByHash(location.hash);
 				
 				$.unblockUI();

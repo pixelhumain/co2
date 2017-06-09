@@ -1244,7 +1244,7 @@ var directory = {
         }
         
 
-        str += "<div class='col-md-8 col-sm-8 col-xs-12 entityRight padding-top-10 margin-top-10' style='border-top: 1px solid rgba(0,0,0,0.2);'>";
+        str += "<div class='col-md-8 col-sm-8 col-xs-12 entityRight padding-top-10 margin-top-10 pull-right' style='border-top: 1px solid rgba(0,0,0,0.2);'>";
 
         var thisLocality = "";
         if(params.fullLocality != "" && params.fullLocality != " ")

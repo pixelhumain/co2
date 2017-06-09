@@ -2766,7 +2766,7 @@ var dyFInputs = {
     price :function(label, placeholder, rules, custom) { 
 		var inputObj = dyFInputs.inputText("Prix", "Prix ...") ;
 	    inputObj.init = function(){
-    		$('input#price').filter_input({regex:'[0-9]*\.[0-9]*'});
+    		$('input#price').filter_input({regex:'[0-9]'});
       	};
     	return inputObj;
     },
@@ -3222,7 +3222,8 @@ var typeObj = {
 	"rooms" : {col:"actions",ctrl:"room",color:"azure",icon:"gavel"},
 	"discuss" : {col:"actionRooms",ctrl:"room"},
 	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	"classified":{col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",	},
+	"classified":{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
+				   subTypes : ["Technologie","Immobilier","Véhicules","Maison","Loisirs","Mode"]	},
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
 	//"video" : {icon:"video-camera",color:"dark"},

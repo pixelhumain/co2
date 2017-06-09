@@ -334,6 +334,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             if( typeof page != "undefined" && page == "agenda" && typeof showResultInCalendar != "undefined")
               showResultInCalendar(data);
 
+            alert("autoCompleteSearch");
+
             if(mapElements.length==0) mapElements = data;
             else $.extend(mapElements, data);
             
@@ -795,10 +797,11 @@ var directory = {
         if(params.updated != null )
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
         
+        var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' " : " lbh'";
         if(params.type == "citoyens") 
             params.hash += '.viewer.' + userId;
        // if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.hash+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
+          str += "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+">" + params.imgProfil + "</a>";
 
         str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
@@ -806,12 +809,12 @@ var directory = {
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.hash+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.hash+"' class='add2fav "+linkAction+">" + params.htmlIco + "</a>";
               str += "</div>";
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark add2fav "+linkAction+">"+
                       iconFaReply + params.name + 
                    "</a>";   
             if(typeof(params.statusLink)!="undefined"){
@@ -829,7 +832,7 @@ var directory = {
                                  
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality add2fav "+linkAction+">"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -897,12 +900,12 @@ var directory = {
     previewedObj : null,
     preview : function(params,hash){
 
-        
+      mylog.log("----------- preview",params,params.name, hash);
       directory.previewedObj = {
           hash : hash,
           params : params
       };
-      mylog.log("----------- preview",params,params.name, hash);
+      
 
       str = '';
       // '<div class="row">'+
@@ -976,7 +979,7 @@ var directory = {
 
         str += "<hr></div>";
 
-        getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/classified/tpl/json" , function( data ) { 
+        getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/"+params.type+"/tpl/json" , function( data ) { 
           var c = 1;
           $.each(data.list,function(k,v) { 
             mylog.log("data list",k,v);
@@ -1594,7 +1597,7 @@ var directory = {
 
 
             itemType=(contentType) ? contentType :params.type;
-            if(directory.dirLog) mylog.log("itemType",itemType);
+            mylog.log("itemType",itemType);
             if( itemType ){ 
                 if(directory.dirLog) mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
@@ -1614,8 +1617,8 @@ var directory = {
                 if(typeof edit != "undefined" && edit != false)
                   params.edit = edit;
                 
-                if( dyFInputs.get( itemType ) == null)
-                    itemType="poi";
+                /*if( dyFInputs.get( itemType ) == null)
+                    itemType="poi";*/
                 typeIco = itemType;
                 if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
 
@@ -1705,7 +1708,10 @@ var directory = {
                     str += directory.roomsPanelHtml(params);  
                 
                 else if(params.type == "classified")
-                  str += directory.classifiedPanelHtml(params);
+                  if(contextData != null)
+                    str += directory.elementPanelHtml(params);  
+                  else
+                    str += directory.classifiedPanelHtml(params);
 
                 else
                   str += directory.defaultPanelHtml(params);

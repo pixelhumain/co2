@@ -344,18 +344,19 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 
 	}
 
-	if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
-		if(dataName == "collections"){
-			html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
-	    	html +=	'<i class="fa fa-plus"></i> Ajouter Collection</a>' ; 
+	if( openEdition || edit ){
+		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
+			if(dataName == "collections"){
+				html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
+		    	html +=	'<i class="fa fa-plus"></i> Ajouter Collection</a>' ; 
+			}
+			else {
+				var elemSpec = dyFInputs.get(dataName);
+				html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \''+elemSpec.ctrl+'\',\'sub\')">';
+		    	html +=	'<i class="fa fa-plus"></i> Ajouter '+trad[ elemSpec.ctrl ]+'</a>' ;  
+		    }
 		}
-		else {
-			var elemSpec = dyFInputs.get(dataName);
-			html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \''+elemSpec.ctrl+'\',\'sub\')">';
-	    	html +=	'<i class="fa fa-plus"></i> Ajouter '+trad[ elemSpec.ctrl ]+'</a>' ;  
-	    }
 	}
-
 	return html;
 }
 
@@ -519,7 +520,12 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
 						getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
 					"<hr></div>";
-
+		
+		
+		mapElements = new Array();
+		if(mapElements.length==0) mapElements = data;
+        else $.extend(mapElements, data);
+		
 		if(dataName != "collections"){
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{

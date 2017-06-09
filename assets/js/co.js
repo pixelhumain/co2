@@ -382,6 +382,7 @@ function validateConnection(parentType, parentId, childId, childType, linkOption
 	});  
 }
 function follow(parentType, parentId, childId, childType, callback){
+	mylog.log("follow",parentType, parentId, childId, childType, callback);
 	$(".followBtn").removeClass("fa-link").addClass("fa-spinner fa-spin");
 	var formData = {
 		"childId" : childId,

@@ -1047,7 +1047,7 @@ function bindInvite(){
 
 	$(".connectBtn").off().on("click", function() {
 			var thiselement = this;
-			follow("<?php echo Person::COLLECTION ?>", $('#newInvite #inviteId').val(), userId, "<?php echo Person::COLLECTION ?>", function(){
+			follow(typeObj.person.col, $('#div-invite-search-all #inviteId').val(), userId, typeObj.person.col, function(){
 			mylog.log('callback connectPerson');
 			$(thiselement).children().removeClass("fa-spinner fa-spin").addClass("fa-link");			
 			$('.disconnectBtn').show();
@@ -1062,10 +1062,9 @@ function bindInvite(){
 
 	$(".disconnectBtn").off().on("click", function() {
 		var thiselement = this;
-		var idToDisconnect = $('#newInvite #inviteId').val();
+		var idToDisconnect = $('#div-invite-search-all #inviteId').val();
 		var typeToDisconnect = "<?php echo Person::COLLECTION ?>";
-		var nameToDisconnect = $("#newInvite #ficheName").text();
-		disconnectTo("<?php echo Person::COLLECTION ?>",idToDisconnect,userId,"<?php echo Person::COLLECTION ?>",'followers',function() {
+		disconnectTo(typeObj.person.col,idToDisconnect,userId,typeObj.person.col,'followers',function() {
 			mylog.log('callback disconnectPerson');
 			$(thiselement).children().removeClass("fa-spinner fa-spin").addClass("fa-unlink");
 			//// Find and remove item from an array
@@ -1215,7 +1214,7 @@ function autoCompleteInviteSearch2(search){
 	 					postalCode = v.address.postalCode;
 	 				}
 	  				str += 	"<li class='li-dropdown-scope'>" +
-	  						"<a href='#' onclick='setInviteInput("+compt+");'>"+htmlIco+" "+v.name ;
+	  						"<a href='javascript:;' onclick='setInviteInput("+compt+");'>"+htmlIco+" "+v.name ;
 
 	  				if(typeof postalCode != "undefined")
 	  					str += "<br/>"+postalCode+" "+city;
@@ -1305,6 +1304,7 @@ function buildModalInvite(fieldObj, idUi){
 											'<a href="javascript:;" class="disconnectBtn btn btn-lg tooltips " data-placement="top" data-original-title="Unfollow this person" ><i class=" disconnectBtnIcon fa fa-unlink "></i> Unfollow this person</a>'+
 											'<hr>'+
 											'<h4 id="ficheUser-ficheName" name="ficheUser-ficheName"></h4>'+
+											'<input id="inviteId" name="inviteId" type="hidden" value="">'+
 											'<span id="ficheUser-email" name="ficheUser-email" ></span><br><br>'+
 											'<span id="ficheUser-address" name="ficheUser-address" ></span><br><br>'+
 											'<span id="ficheUser-tags" name="ficheUser-tags" ></span><br>'+

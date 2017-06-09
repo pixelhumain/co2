@@ -2766,7 +2766,7 @@ var dyFInputs = {
     price :function(label, placeholder, rules, custom) { 
 		var inputObj = dyFInputs.inputText("Prix", "Prix ...") ;
 	    inputObj.init = function(){
-    		$('input#price').filter_input({regex:'[0-9]'});
+    		$('input#price').filter_input({regex:'[0-9]*\.[0-9]*'});
       	};
     	return inputObj;
     },

@@ -98,8 +98,12 @@ Liste des notifications déjà lues => #370 #453
 * ************************************************************    
 * Version 0.2  : en cours
 * ************************************************************  
-** @Tib 
-  [ ] bug notragora
+** @Tib
+  [ ] dynform : apostrophe dans les nom des suggestions 
+  [ ] ouvrir POI dans PREVIEW
+  [ ] classifieds
+    [ ] from search : to citoyen classifieds, instead of search classified 
+  [X] bug notragora
   [X] email communecter 
   [ ] tiers lieux ressources
     [ ] créer directement le lieux from create 

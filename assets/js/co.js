@@ -2422,6 +2422,8 @@ var dyFObj = {
 		                }
 					}
 	            }
+	            uploadObj.type = null;
+	    		uploadObj.id = null;
 	    	}
 	    });
 	},
@@ -2429,10 +2431,14 @@ var dyFObj = {
 		$('#ajax-modal').modal("hide");
 	    //clear the unecessary DOM 
 	    $("#ajaxFormModal").html(''); 
+	   	uploadObj.type = null;
+	    uploadObj.id = null;
 	},
 	editElement : function (type,id){
 		mylog.warn("--------------- editElement ",type,id);
 		//get ajax of the elemetn content
+		uploadObj.type = type;
+		uploadObj.id = id;
 		$.ajax({
 	        type: "GET",
 	        url: baseUrl+"/"+moduleId+"/element/get/type/"+type+"/id/"+id,
@@ -2449,9 +2455,6 @@ var dyFObj = {
 				mylog.dir(data);
 				console.log(data);
 				
-				if( jsonHelper.notNull("themeObj.dynForm.editElementPOI","function") )
-					themeObj.dynForm.editElementPOI(type,data);
-
 				dyFObj.openForm( dyFInputs.get(type).ctrl ,null, data.map);
 	        } else {
 	           toastr.error("something went wrong!! please try again.");
@@ -2599,7 +2602,7 @@ var dyFObj = {
 	//generate Id for upload feature of this element 
 	setMongoId : function(type,callback) { 
 		uploadObj.type = type;
-		if( !$("#ajaxFormModal #id").val() )
+		if( !$("#ajaxFormModal #id").val() && uploadObj.id == null )
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
 				mylog.log("setMongoId uploadObj.id", data.id);

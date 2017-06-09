@@ -1614,13 +1614,14 @@ function escapeHtml(string) {
     });
 } 
 
-function addContact(id, name){
-	mylog.log("addContact", id, escapeHtml(name));
+function fillContactFields(id){
+	name = cotmp[id].name;
+	mylog.log("fillContactFields", id, name );
 	$("#idContact").val(id);
 	$("#listSameName").html("<i class='fa fa-check text-success'></i> Vous avez sélectionner : "+  escapeHtml(name));
 	$("#name").val(name);
 }
-
+var cotmp = {};
 function globalSearch(searchValue,types,contact){
 	
 	searchType = (types) ? types : ["organizations", "projects", "events", "needs", "citoyens"];
@@ -1649,6 +1650,7 @@ function globalSearch(searchValue,types,contact){
  			var compt = 0;
  			var msg = "Verifiez si cet élément n'existe pas déjà";
  			$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
+ 			cotmp = {};
  			$.each(data, function(id, elem) {
   				mylog.log(elem);
   				city = "";
@@ -1665,18 +1667,19 @@ function globalSearch(searchValue,types,contact){
 					if( notEmpty( city ) && notEmpty( postalCode ) )
 					where = ' ('+postalCode+" "+city+")";
 				}
+				var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
 				if("undefined" != typeof elem.profilImageUrl && elem.profilImageUrl != ""){
 					var htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
 				}
 				
 				if(contact == true){
-					elem.name = escapeHtml(elem.name);
-					str += 	"<a href='javascript:;' onclick='addContact( \""+elem.id+"\",\""+elem.name+"\" );' class='btn btn-xs btn-default w50p text-left padding-5 text-blue' >"+
+					cotmp[id] = {id:id, name : elem.name};
+					str += 	"<a href='javascript:;' onclick='fillContactFields( \""+id+"\" );' class='col-sm-12 col-sm-3 btn btn-xs btn-default w50p text-left padding-5' >"+
 								"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
 							"</a>";
 					msg = "Verifiez si le contact est dans Communecter";
 				}else{
-					str += 	"<a target='_blank' href='#"+ elem.type +".detail.id."+ elem.id +"' class='btn btn-xs btn-default w50p text-left padding-5 text-blue' >"+
+					str += 	"<a target='_blank' href='#page.type."+ elem.type +".id."+ id +"' class='btn btn-xs btn-danger w50p text-left padding-5 margin-5' style='height:42px' >"+
 							"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
 						"</a>";
 				}

@@ -569,9 +569,12 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         data : formData,
         dataType: "json",
         success: function(data){
-          $("#modal-share #htmlElementToShare").html("");
-          $(thiselement).attr("data-original-title", "Vous avez partagé ça avec votre réseau");
-          toastr.success("Vous avez partagé ce contenu avec votre réseau");  
+          if(data.result){
+            console.log(data);
+            $("#modal-share #htmlElementToShare").html("");
+            $(thiselement).attr("data-original-title", "Vous avez partagé ça avec votre réseau");
+            toastr.success(data.msg);
+          }  
         }
       });
   }

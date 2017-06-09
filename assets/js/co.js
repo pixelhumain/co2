@@ -57,11 +57,19 @@ function bindRightClicks() {
 	    selector: ".add2fav",
         build: function($trigger, e) {
         	if(userId){
-        		var validElems = ["#element","#organization","#project","#event","#person","#element","#survey","#rooms"];
+        		var validElems = ["#element", "#page","#organization","#project","#event","#person","#element","#survey","#rooms"];
         		href = $trigger[0].hash.split(".");
         		if($.inArray(href[0],validElems) >=0 ){
-		        	var what = ( href[0] == "#element" ) ? href[3] : typeObj[ href[0].substring(1) ].col; 
-					var	id = ( href[0] == "#element" ) ? href[5] : href[3];
+        			if(href[0] == "#element"){
+		        		var what = href[3]; 
+						var	id = href[5];
+					}else if (href[0] == "#page"){
+						var what = href[2]; 
+						var	id = href[4];
+					}else{
+						var what = typeObj[ href[0].substring(1) ].col; 
+						var	id =  href[3];
+					}
 				}
 				//console.log(href,href[0],what,id);
 				var btns = {
@@ -76,14 +84,17 @@ function bindRightClicks() {
 	        	$.each( userConnected.collections, function (col,list) { 
 	        		btns[col] = { 
 			        	name: function($element, key, item){ 
-		        			var str = "Ajouter à "+col;
+			        		nameCol=col;
+			        		if(col=="favorites")
+			        			nameCol="mes favoris";
+		        			var str = "Ajouter à "+nameCol;
 		        			//console.log(col,what,id);
 		        			if( notNull( userConnected.collections[col]) && notNull( userConnected.collections[col][what] ) && notNull( userConnected.collections[col][what][id]) ) 
-		        				str = "Retirer de "+col;
+		        				str = "Retirer de "+nameCol;
 		        			return str; 
 		        		},
 			        	icon: "fa-folder-open", 
-			        	callback: function(key, opt){ 
+			        	callback: function(key, opt){
 				        	if( notNull( what )&& notNull( id ) ){
 					        	collection.add2fav( what,id,col );
 							}
@@ -2114,6 +2125,9 @@ var collection = {
 					console.warn(params.action);
 					if(data.result){
 						toastr.success(data.msg);
+						if(location.hash.indexOf("#page") >=0){
+							loadDataDirectory("collections", "star");
+						}
 						//if no type defined we are on user
 						//TODO : else add on the contextMap
 						if( typeof type == "undefined" && action == "new"){
@@ -2157,11 +2171,21 @@ var collection = {
 				console.warn(params.action,collection,what,id);
 				if(data.result){
 					if(data.list == '$unset'){
-						$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
-						delete userConnected.collections[collection][what][id];
+						if(location.hash.indexOf("#page") >=0){
+							$(".favorisMenu").removeClass("text-yellow");
+							$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o');
+						}else{
+							$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
+							delete userConnected.collections[collection][what][id];
+						}
 					}
 					else{
-						$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
+						if(location.hash.indexOf("#page") >=0){
+							$(".favorisMenu").addClass("text-yellow");
+							$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star');
+						}
+						else
+							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
 						if(!userConnected.collections)
 							userConnected.collections = {};
 						if(!userConnected.collections[collection])

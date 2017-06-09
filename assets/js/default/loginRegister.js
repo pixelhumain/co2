@@ -150,8 +150,9 @@ var Login = function() {
 		        			}
 		        			else {
 		        				mylog.log("login 3 reload", data);
+		        				history.pushState(null, "New Title",'#page.type.citoyens.id.'+data.id);
 		        				//for urls like notifications/get/not/id...
-		        				window.location.href = baseUrl+'/co2#page.type.citoyens.id.'+data.id;
+		        				//window.location.href = baseUrl+'/co2#page.type.citoyens.id.'+data.id;
 		        				window.location.reload();
 		        			}
 		        		}

@@ -190,7 +190,7 @@
 
 <?php if ($elementType!= Person::COLLECTION && $elementId!=Yii::app()->session["userId"]){ ?>
 	<a href="javascript:collection.add2fav('<?php echo $elementType ?>','<?php echo $elementId ?>')"  
-	class="btn-o menu-linksBtn no-border-right <?php if(@$xsView) echo "hidden"; ?> favorisMenu"><i class="fa fa-star"></i> <?php echo Yii::t("common","Favorites"); ?></a>
+	class="btn-o menu-linksBtn no-border-right <?php if(@$xsView) echo "hidden"; ?> favorisMenu"><i class="fa fa-star-o"></i> <?php echo Yii::t("common","Favorites"); ?></a>
 <?php } ?>
 <!-- View in menu params // visible only on xs -->
 <?php if(@$xsView){ ?>
@@ -220,6 +220,7 @@
 			&& typeof userConnected.collections.favorites[elementType][elementId] !="undefined"
 			&& $(".favorisMenu").length){
 			$(".favorisMenu").addClass("text-yellow");
+			$(".favorisMenu").children("i").removeClass("fa-star-o").addClass("fa-star");
 
 		}
 

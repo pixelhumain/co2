@@ -45,7 +45,7 @@
                                         '</span>';
                         }
         scopeHtml+= '</h5>'+
-                    '<div class="scope-min-header list_tags_scopes hidden-xs text-left ellipsis">'+
+                    '<div class="scope-min-header list_tags_scopes text-left ellipsis">'+
                     '</div>';
         $("#container-scope-filter").html(scopeHtml);
         //}

@@ -19,8 +19,12 @@ dynForm = {
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 	    		}
 	    	},
-	    	onload : function(){
-	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();
+	    	onload : function(data){
+	    		if(data && data.type){
+	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+data.type+"</h4>");
+					$(".sectionBtntagList").hide();
+	    		} else
+	    			$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();
 	    	},
 	    },
 	    beforeSave : function(){
@@ -46,7 +50,7 @@ dynForm = {
 		    else 
 		    { 
 		        dyFObj.closeForm(); 
-		        urlCtrl.loadByHash( uploadObj.gotoUrl );
+		        urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 	        }
 	    },
 	    canSubmitIf : function () { 

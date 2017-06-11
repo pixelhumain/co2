@@ -241,8 +241,6 @@ function showTagSuggestion(tagValue, tagSpec){ //mylog.log("showTagSuggestion()"
 		html = "";
 		//showMsgInfoMultiTag("showTagInMultitag error : ce tag n'existe pas - " + tagValue, "danger");
 	}
-	
-	
 }
 
 function resetMyTags(){ 

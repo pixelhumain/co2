@@ -334,6 +334,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             if( typeof page != "undefined" && page == "agenda" && typeof showResultInCalendar != "undefined")
               showResultInCalendar(data);
 
+
             if(mapElements.length==0) mapElements = data;
             else $.extend(mapElements, data);
             
@@ -567,9 +568,12 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         data : formData,
         dataType: "json",
         success: function(data){
-          $("#modal-share #htmlElementToShare").html("");
-          $(thiselement).attr("data-original-title", "Vous avez partagé ça avec votre réseau");
-          toastr.success("Vous avez partagé ce contenu avec votre réseau");  
+          if(data.result){
+            console.log(data);
+            $("#modal-share #htmlElementToShare").html("");
+            $(thiselement).attr("data-original-title", "Vous avez partagé ça avec votre réseau");
+            toastr.success(data.msg);
+          }  
         }
       });
   }
@@ -795,10 +799,11 @@ var directory = {
         if(params.updated != null )
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
         
+        var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' " : " lbh'";
         if(params.type == "citoyens") 
             params.hash += '.viewer.' + userId;
        // if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.hash+"' class='container-img-profil lbh add2fav'>" + params.imgProfil + "</a>";
+          str += "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+">" + params.imgProfil + "</a>";
 
         str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
@@ -806,12 +811,12 @@ var directory = {
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.hash+"' class='lbh add2fav'>" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.hash+"' class='add2fav "+linkAction+">" + params.htmlIco + "</a>";
               str += "</div>";
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark add2fav "+linkAction+">"+
                       iconFaReply + params.name + 
                    "</a>";   
             if(typeof(params.statusLink)!="undefined"){
@@ -829,7 +834,7 @@ var directory = {
                                  
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality lbh add2fav'>"+
+                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality add2fav "+linkAction+">"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -839,12 +844,12 @@ var directory = {
             str += "<div class='entityDescription'>" + params.description + "</div>";
          
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
-
+            /*
               if(params.startDate != null)
               str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
               if(params.endDate != null)
               str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
-              
+              */
               
           str += "</div>";
         str += "</div>";
@@ -897,12 +902,12 @@ var directory = {
     previewedObj : null,
     preview : function(params,hash){
 
-        
+      mylog.log("----------- preview",params,params.name, hash);
       directory.previewedObj = {
           hash : hash,
           params : params
       };
-      mylog.log("----------- preview",params,params.name, hash);
+      
 
       str = '';
       // '<div class="row">'+
@@ -976,7 +981,7 @@ var directory = {
 
         str += "<hr></div>";
 
-        getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/classified/tpl/json" , function( data ) { 
+        getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/"+params.type+"/tpl/json" , function( data ) { 
           var c = 1;
           $.each(data.list,function(k,v) { 
             mylog.log("data list",k,v);
@@ -993,37 +998,37 @@ var directory = {
 
         if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
           str += '<div class="col-xs-12 text-center">'+
-                    '<div id="myCarousel" class="carousel slide" data-ride="carousel">'+
-                      //<!-- Indicators -->
-                      '<ol class="carousel-indicators">'+
-                      '  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>'+
-                      '</ol>'+
+            '<div id="myCarousel" class="carousel slide" data-ride="carousel">'+
+              //<!-- Indicators -->
+              '<ol class="carousel-indicators">'+
+              '  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>'+
+              '</ol>'+
 
-                      //<!-- Wrapper for slides -->'+
-                      '<div class="carousel-inner" role="listbox">'+
-                      '  <div class="item active carousel-first ">'+
-                      "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
-                      '  </div>'+
-                      '</div>'+
+              //<!-- Wrapper for slides -->'+
+              '<div class="carousel-inner" role="listbox">'+
+              '  <div class="item active carousel-first ">'+
+              "   <img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
+              '  </div>'+
+              '</div>'+
 
-                      //<!-- Left and right controls -->'+
-                      '<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">'+
-                      '  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'+
-                      '  <span class="sr-only">Previous</span>'+
-                      '</a>'+
-                      '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">'+
-                      '  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'+
-                      '  <span class="sr-only">Next</span>'+
-                      '</a>'+
-                    '</div>'+
-                    // '<a class="thumb-info" href="'+baseUrl+params.profilImageUrl+'" data-title="" data-lightbox="all">'+
-                    //   "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
-                    // '</a>'+
-                 '</div>';
+              //<!-- Left and right controls -->'+
+              '<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">'+
+              '  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'+
+              '  <span class="sr-only">Previous</span>'+
+              '</a>'+
+              '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">'+
+              '  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'+
+              '  <span class="sr-only">Next</span>'+
+              '</a>'+
+            '</div>'+
+            // '<a class="thumb-info" href="'+baseUrl+params.profilImageUrl+'" data-title="" data-lightbox="all">'+
+            //   "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
+            // '</a>'+
+        '</div>';
 
         if( params.creator == userId )
-        str += '<hr><a href="javascript:dyFObj.openForm(\'classified\', null, directory.previewedObj.params );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
-                  '<i class="fa fa-pencil"></i> Modifier mon annonce'+
+        str += '<hr><a href="javascript:dyFObj.editElement(\''+params.type+'\', \''+params.id+'\' );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
+                  '<i class="fa fa-pencil"></i> Modifier cet élément'+
               '</a>';
 
 
@@ -1594,7 +1599,7 @@ var directory = {
 
 
             itemType=(contentType) ? contentType :params.type;
-            if(directory.dirLog) mylog.log("itemType",itemType);
+            mylog.log("itemType",itemType);
             if( itemType ){ 
                 if(directory.dirLog) mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
@@ -1614,8 +1619,8 @@ var directory = {
                 if(typeof edit != "undefined" && edit != false)
                   params.edit = edit;
                 
-                if( dyFInputs.get( itemType ) == null)
-                    itemType="poi";
+                /*if( dyFInputs.get( itemType ) == null)
+                    itemType="poi";*/
                 typeIco = itemType;
                 if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
 
@@ -1705,7 +1710,10 @@ var directory = {
                     str += directory.roomsPanelHtml(params);  
                 
                 else if(params.type == "classified")
-                  str += directory.classifiedPanelHtml(params);
+                  if(contextData != null)
+                    str += directory.elementPanelHtml(params);  
+                  else
+                    str += directory.classifiedPanelHtml(params);
 
                 else
                   str += directory.defaultPanelHtml(params);

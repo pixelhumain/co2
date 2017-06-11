@@ -500,8 +500,8 @@ function bindEventScopeModal(){
 			}
 			//mylog.log("click btn scroll type : "+type.name+ " " + $("#scroll-type-"+type.name).position().top);
 			$('#list-scroll-type').animate({
-	         scrollTop: $('#list-scroll-type').scrollTop() + $("#scroll-type-"+type.name).position().top 
-	         }, 400);
+				scrollTop: $('#list-scroll-type').scrollTop() + $("#scroll-type-"+type.name).position().top 
+			}, 400);
 		});
 		//initialisation des boutons pour selectionner toutes les checkbox d'un type de contact
 		$("#chk-all-type"+type.name).click(function(){
@@ -890,7 +890,10 @@ function sendInvitation(){
 					if(typeof(mapUrl.directory.load) != "undefined" && mapUrl.directory.load)
 						mapUrl.directory.load = false;
 				}
-				loadDataDirectory("guests", "send");
+				if(data.onlyOrganization)
+					loadDataDirectory("members", "users");
+				else
+					loadDataDirectory("guests", "send");
 				//urlCtrl.loadByHash(location.hash);
 				
 				$.unblockUI();

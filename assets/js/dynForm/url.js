@@ -27,7 +27,7 @@ dynForm = {
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p><i class='fa fa-info-circle'></i> Si vous voulez ajouter un nouveau contact de façon a facilité les échanges</p>",
+                html:"<p><i class='fa fa-info-circle'></i> Vous souhaitez partager des liens internet lié à votre élément, remplissez le formulaire ci dessous.</p>",
             },
             title : dyFInputs.inputText("Nom", "Titre de l'URL", { required : true }),
 	        url : dyFInputs.inputText("URL du lien", "URL du lien", { required : true, url : true }),

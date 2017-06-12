@@ -665,7 +665,7 @@ function bindAboutPodElement() {
 			index : ind
 		}
 		mylog.log("params",params);
-		dyFObj.openForm( 'url','parentUrl', params);
+		dyFObj.openForm( 'url','sub', params);
 	}
 
 

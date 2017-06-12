@@ -1357,11 +1357,19 @@ var directory = {
       mylog.log("-----------urlPanelHtml", params, key);
   		if(directory.dirLog) mylog.log("-----------contactPanelHtml", params);
         str = "";  
-        str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 '>";
+        str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
         str += "<div class='searchEntity contactPanelHtml'>";
           str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
-              str += '<h4 class="panel-title text-dark pull-left">'+params.title+'</h4>';
-              str += '<br/><a href="'+params.url+'" target="_blank" class="text-dark">'+params.url+'</a>';
+          if(params.title.length > 20){
+            str += '<h4 class="panel-title text-dark pull-left tooltips"' + 
+                        'data-toggle="tooltip" data-placement="bottom" data-original-title="'+params.title+'">'+
+                        params.title.substring(0,20)+'...</h4>';
+          }else{
+            str += '<h4 class="panel-title text-dark pull-left">'+ params.title+'</h4>';
+          }35
+              str += '<br/><a href="'+params.url+'" target="_blank" class="text-dark">'
+              str += ((params.url.length > 65) ? params.url.substring(0,65)+'...' : params.url)+'</a>';             
+              
               str += '<br/><span class="" style="font-size: 11px !important;">'+urlTypes[params.type]+'</span>';
           str += "</div>";
         if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ) {

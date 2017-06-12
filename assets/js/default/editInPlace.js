@@ -161,14 +161,21 @@ function bindAboutPodElement() {
 
 
 	function bindDynFormEditable(){
-
 		$(".btn-update-when").off().on( "click", function(){
 			var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
-						title : trad["Change password"],
+
+						title : trad["Update date"],
 						icon : "fa-key",
+						onLoads : {
+							initUpdateWhen : function(){
+								mylog.log("initUpdateInfo");
+								$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  					  .addClass("bg-dark");
+							}
+						},
 						beforeSave : function(){
 							mylog.log("beforeSave");
 							var allDay = $("#ajaxFormModal #allDay").is(':checked');
@@ -241,7 +248,7 @@ function bindAboutPodElement() {
 				dataUpdate.endDate = moment(contextData.endDateDB).local().format(formatDatedynForm);
 
 			mylog.log("btn-update-when", form, dataUpdate, formatDatedynForm);
-			dyFObj.openForm(form, "initWhen", dataUpdate);
+			dyFObj.openForm(form, "initUpdateWhen", dataUpdate);
 		});
 
 

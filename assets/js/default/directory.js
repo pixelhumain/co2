@@ -2114,5 +2114,5 @@ var directory = {
             str +=  '</h3>';
             
         return str;
-  }
+  },
 }

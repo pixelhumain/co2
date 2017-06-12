@@ -25,6 +25,7 @@ function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId);
 	}
 	showCountScope();
 	rebuildSearchScopeInput();
+	setTimeout(function(){ rebuildSearchScopeInput() }, 1000);
 	saveCookieMultiscope();
 }
 function saveCookieMultiscope(){ 

@@ -307,10 +307,10 @@ var Login = function() {
 				errorHandler3.hide();
 				createBtn.start();
 				var params = { 
-				   "name" : $('.form-register #registerName').val(),
-				   "username" : $(".form-register #username").val(),
-				   "email" : $(".form-register #email3").val(),
-                   "pwd" : $(".form-register #password3").val(),
+				   "name" : ($('.form-register #registerName-welcome').val() ? $('.form-register #registerName-welcome').val() : $('.form-register #registerName').val() ),
+				   "username" : ($('.form-register #username-welcome').val() ? $('.form-register #username-welcome').val() : $(".form-register #username").val()),
+				   "email" : ($('.form-register #email3-welcome').val() ? $('.form-register #email3-welcome').val()  :$(".form-register #email3").val()),
+                   "pwd" : ($('.form-register #password3-welcome').val() ? $('.form-register #password3-welcome').val() : $(".form-register #password3").val()),
                    "app" : moduleId, //"$this->module->id"
                    "pendingUserId" : pendingUserId,
                    "mode" : REGISTER_MODE_TWO_STEPS
@@ -333,6 +333,12 @@ var Login = function() {
 						$("#password3").val("");
 						$("#passwordAgain").val("");
 						$('#agree').prop('checked', false);
+						$("#registerName-welcome").val("");
+						$("#username-welcome").val("");
+						$("#email3-welcome").val("");
+						$("#password3-welcome").val("");
+						$("#passwordAgain-welcome").val("");
+						$('#agree-welcome').prop('checked', false);
 		    		  	console.log(data);
 		    		  	if(typeof data.isInvitation != "undefined" && data.isInvitation){
 		    		  		toastr.success(data.msg);

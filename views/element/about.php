@@ -584,11 +584,10 @@
 		else
 			$("#divEndDate").addClass("hidden");
 
-
 		if($("#startDateAbout").html() != "")
-	    	$("#startDateAbout").html(moment($("#startDateAbout").html()).local().locale("fr").format(formatDateView));
+	    	$("#startDateAbout").html(moment(contextData.startDateDB).local().locale("fr").format(formatDateView));
 	    if($("#endDateAbout").html() != "")
-	    	$("#endDateAbout").html(moment($("#endDateAbout").html()).local().locale("fr").format(formatDateView));
+	    	$("#endDateAbout").html(moment( contextData.endDateDB).local().locale("fr").format(formatDateView));
 
 	    if($("#birthDate").html() != "")
 	    	$("#birthDate").html(moment($("#birthDate").html()).local().locale("fr").format("DD/MM/YYYY"));

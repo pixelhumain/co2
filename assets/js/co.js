@@ -897,6 +897,7 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 			
 	setTimeout(function(){
 		$(dest).html("");
+		mylog.log("here", $(dest).length );	
 		$(".hover-info,.hover-info2").hide();
 		processingBlockUi();
 		showMap(false);
@@ -3055,24 +3056,31 @@ var dyFInputs = {
     		}
     	}
     },*/
-    startDateInput : {
-        inputType : "datetime",
-        placeholder: "Date de début",
-        label : "Date de début",
-        rules : { 
-        	required : true,
-        	duringDates: ["#startDateParent","#endDateParent","La date de début"]
-    	}
-    },
-    endDateInput : {
-        inputType : "datetime",
-        placeholder: "Date de fin",
-        label : "Date de fin",
-        rules : { 
-        	required : true,
-        	greaterThan: ["#ajaxFormModal #startDate","la date de début"],
-        	duringDates: ["#startDateParent","#endDateParent","La date de fin"]
+    startDateInput : function(typeDate){
+    	mylog.log('startDateInput', typeDate);
+    	var inputObj = {
+	        inputType : ( notEmpty(typeDate) ? typeDate : "datetime" ),
+	        placeholder: "Date de début",
+	        label : "Date de début",
+	        rules : { 
+	        	required : true,
+	        	duringDates: ["#startDateParent","#endDateParent","La date de début"]
+	    	}
 	    }
+    	return inputObj;
+    },
+    endDateInput : function(typeDate){
+    	var inputObj = {
+	        inputType : ( notEmpty(typeDate) ? typeDate : "datetime" ),
+	        placeholder: "Date de fin",
+	        label : "Date de fin",
+	        rules : { 
+	        	required : true,
+	        	greaterThan: ["#ajaxFormModal #startDate","la date de début"],
+	        	duringDates: ["#startDateParent","#endDateParent","La date de fin"]
+		    }
+	    }
+    	return inputObj;
     },
     birthDate : {
         inputType : "date",

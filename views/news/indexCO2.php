@@ -93,7 +93,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 <script type="text/javascript" >
 var updateNews= new Object;
 </script>
-<div class="col-md-12 col-sm-12 no-padding margin-bottom-15" style="<?php if(!@isLive){ ?>padding-left:25px!important;<?php } ?>">
+<div class="col-md-12 col-sm-12 col-xs-12 no-padding margin-bottom-15" style="<?php if(!@isLive){ ?>padding-left:25px!important;<?php } ?>">
   <?php //var_dump($params); 
         $params = array(
                   "type" => $type,

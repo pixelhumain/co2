@@ -251,13 +251,29 @@
         <?php } else if( $typeSelected == "vote" ){?>
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
-            <button class="btn text-black bg-azure btn-directory-type" data-type="vote">
-              <i class="fa fa-gavel"></i> 
-              <span class="hidden-xs">Propositions</span>
-            </button>
-            <button class="btn text-black bg-azure btn-directory-type" data-type="actions">
-              <i class="fa fa-cogs"></i> 
-              <span class="hidden-xs">Actions</span>
+            <button class="btn text-white bg-dark btn-open-filliaire">
+                <i class="fa fa-th"></i> 
+                <span class="hidden-xs">Thématiques</span>
+            </button><hr class="hidden-xs">
+            <button class="btn text-azure btn-link btn-directory-type" data-type="vote">
+              <i class="fa fa-clock-o"></i> 
+              <span class="hidden-xs">En ce moment</span>
+            </button><hr>
+            <button class="btn letter-green btn-link btn-directory-type" data-type="actions">
+              <i class="fa fa-thumbs-o-up"></i> 
+              <span class="hidden-xs">J'ai voté pour</span>
+            </button><br>
+            <button class="btn text-red btn-link btn-directory-type" data-type="actions">
+              <i class="fa fa-thumbs-o-down"></i> 
+              <span class="hidden-xs">J'ai voté contre</span>
+            </button><hr>
+            <button class="btn letter-green btn-link btn-directory-type" data-type="actions">
+              <i class="fa fa-check"></i> 
+              <span class="hidden-xs">Adoptées</span>
+            </button><br>
+            <button class="btn text-red btn-link btn-directory-type" data-type="actions">
+              <i class="fa fa-times"></i> 
+              <span class="hidden-xs">Refusées</span>
             </button>
           </div>
 
@@ -419,7 +435,7 @@ var headerParams = {
   "Group"         : { color: "black",   icon: "circle-o",     name: "Groupes" },
   "projects"      : { color: "purple",  icon: "lightbulb-o",  name: "projets" },
   "events"        : { color: "orange",  icon: "calendar",     name: "événements" },
-  "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions, Questions, Votes" },
+  "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions" },
   "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
   "cities"        : { color: "red",     icon: "university",   name: "communes" },
   "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },

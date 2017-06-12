@@ -67,7 +67,7 @@
 
 	<div class="col-lg-1 col-md-1 hidden-sm hidden-xs text-right hidden-xs" id="sub-menu-left"></div>
 
-	<div class="col-lg-10 col-md-10 col-sm-12 margin-top-10">
+	<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12 margin-top-10">
 		<div id="newsstream"></div>
 	</div>	
 

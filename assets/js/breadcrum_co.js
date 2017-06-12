@@ -93,7 +93,7 @@ function getBreadcrumCommunexion(){
             tips+=v+" / ";
         });
     }
-    htmlCommunexion='<div class="breadcrum-communexion hidden-xs col-md-12">';
+    htmlCommunexion='<div class="breadcrum-communexion col-md-12">';
     if(actionOnSetGlobalScope=="filter"){
         htmlCommunexion+='<button class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="Quitter la communexion">'+
             '<i class="fa fa-times"></i>'+

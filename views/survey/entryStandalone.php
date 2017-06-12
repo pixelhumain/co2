@@ -55,10 +55,17 @@
 
 <?php 
 	//ca sert a quoi ce doublon ?
-	$survey = Survey::getById($survey["_id"]);
-	$room = ActionRoom::getById($survey["survey"]);
-	$parentType = $room["parentType"];
-	$parentId = $room["parentId"];
+	if(@$survey["survey"]){
+		$survey = Survey::getById($survey["_id"]);
+		$room = ActionRoom::getById($survey["survey"]);
+		$parentType = $room["parentType"];
+		$parentId = $room["parentId"];
+	}else{
+		$parentType = $survey["organizerType"];
+		$parentId = $survey["organizerId"];
+		$room = Element::getByTypeAndId($parentType, $parentId);
+	}
+
 	$nameParentTitle = "";
 	if($parentType == Organization::COLLECTION && isset($parentId)){
 		$orga = Organization::getById($parentId);
@@ -74,13 +81,13 @@
 	  '</a>' 
 	  : '';
   
-  if(!isset($_GET["renderPartial"])){
-		$this->renderPartial('../rooms/header',array(   
+  	if(!isset($_GET["renderPartial"])){
+		/*$this->renderPartial('../rooms/header',array(   
 					"archived"=> (@$room["status"] == ActionRoom::STATE_ARCHIVED) , 
-        			"parent" => $parent, 
-                    "parentId" => $parentId, 
-                    "parentType" => $parentType, 
-                    "parentSpace" => $parentSpace,
+        			"parent" => @$parent, 
+                    "parentId" => @$parentId, 
+                    "parentType" => @$parentType, 
+                    "parentSpace" => @$parentSpace,
                     "fromView" => "survey.entry",
                     "faTitle" => "gavel",
                     "colorTitle" => "azure",
@@ -89,11 +96,11 @@
                     				"<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#survey.entries.id.".$survey["survey"]."\")'><i class='fa fa-th'></i> ".$nameList."</a>".$extraBtn
                       
                     )); 
-		echo '<div class="col-md-12 panel-white padding-15" id="room-container">';
+		echo '<div class="col-md-12 panel-white padding-15" id="room-container">';*/
 	  }
 ?>
 
-<div class="row vote-row contentProposal" >
+<div class="padding-25 margin-top-25 row vote-row contentProposal bg-white" >
 
 	<div class="col-md-12">
 		<!-- start: REGISTER BOX -->
@@ -101,7 +108,7 @@
 			<h1 class="text-dark" style="font-size: 17px;margin-top: 20px;">
 				<i class="fa fa-angle-down"></i> 
 				<span class="homestead"><i class="fa fa-archive"></i> Espace de décision :</span>
-				<a href="javascript:showRoom('vote', '<?php echo $survey["survey"]; ?>')">
+				<a href="javascript:showRoom('vote', '<?php echo @$survey["survey"]; ?>')">
 					<?php echo $room["name"]; ?>
 				</a>
 				<hr>
@@ -177,7 +184,7 @@
 											  "resize" => false,
 											  "contentId" => Document::IMG_PROFIL,
 											  "editMode" => Authorisation::canEditItem(Yii::app()->session['userId'],Survey::COLLECTION,$survey["_id"],$parentType,$parentId),
-											  "image" => $images)); 
+											  "image" => @$images)); 
 				
 				if(isset( Yii::app()->session["userId"]) && false)
 				{
@@ -335,11 +342,11 @@
       <div class="modal-body no-padding">
       	<div class="panel-body" id="form-edit-entry">
 			<?php 
-				$params = array(
+				/*$params = array(
 			    	"survey" => $survey, //la proposition actuelle
 			        "roomId" => $survey["survey"] //id de la room
 			    );
-				$this->renderPartial('../survey/editEntrySV', $params); 
+				$this->renderPartial('../survey/editEntrySV', $params); */
 			?>
 		</div>
 		
@@ -361,7 +368,7 @@
 
 <script type="text/javascript">
 clickedVoteObject = null;
-var images = <?php echo json_encode($images) ?>;
+var images = <?php echo json_encode(@$images) ?>;
 var mode = "view";
 var itemId = "<?php echo $survey["_id"] ?>";
 var endDate = "<?php echo date("d/m/Y",@$survey["dateEnd"]) ?>";
@@ -376,10 +383,10 @@ jQuery(document).ready(function() {
 	
   	$('#form-edit-entry #btn-submit-form').addClass("hidden");
 
-  	$(".commentPod").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
-	getAjax(".commentPod",baseUrl+"/"+moduleId+"/comment/index/type/surveys/id/<?php echo $survey['_id'] ?>",
-		function(){  $(".commentCount").html( $(".nbComments").html() ); 
-	},"html");
+ //  	$(".commentPod").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
+	// getAjax(".commentPod",baseUrl+"/"+moduleId+"/comment/index/type/surveys/id/<?php echo $survey['_id'] ?>",
+	// 	function(){  $(".commentCount").html( $(".nbComments").html() ); 
+	// },"html");
 
 	$(".explainLink").click(function() {
 		showDefinition( $(this).data("id") );

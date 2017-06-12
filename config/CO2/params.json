@@ -103,7 +103,7 @@
 		},
 
         "#power": {
-            "inMenu" : true, 
+            "inMenu" : false, 
             "useHeader" : true, 
             "open" : false, 
             "subdomain" : "power", 

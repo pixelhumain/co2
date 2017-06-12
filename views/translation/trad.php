@@ -197,6 +197,7 @@ var trad = {
 "Update description" : "<?php echo Yii::t("common", "Update description") ?>",
 "Update network" : "<?php echo Yii::t("common", "Update network") ?>",
 "Update general information" : "<?php echo Yii::t("common", "Update general information") ?>",
+"Update date" : "<?php echo Yii::t("common", "Update date") ?>",
 
 "link"          : "<?php echo Yii::t("common", "link") ?>",
 "tool"          : "<?php echo Yii::t("common", "tool") ?>",

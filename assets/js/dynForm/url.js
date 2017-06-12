@@ -16,9 +16,7 @@ dynForm = {
 					$("#ajaxFormModal #parentId").val( contextData.id );
     			if( contextData && contextData.type )
     				$("#ajaxFormModal #parentType").val( contextData.type ); 
-
-
-    		}
+    		},
 	    },
 	    afterSave : function(){
 			dyFObj.closeForm();

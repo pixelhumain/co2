@@ -161,14 +161,21 @@ function bindAboutPodElement() {
 
 
 	function bindDynFormEditable(){
-
 		$(".btn-update-when").off().on( "click", function(){
 			var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
-						title : trad["Change password"],
+
+						title : trad["Update date"],
 						icon : "fa-key",
+						onLoads : {
+							initUpdateWhen : function(){
+								mylog.log("initUpdateInfo");
+								$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  					  .addClass("bg-dark");
+							}
+						},
 						beforeSave : function(){
 							mylog.log("beforeSave");
 							var allDay = $("#ajaxFormModal #allDay").is(':checked');
@@ -176,7 +183,7 @@ function bindAboutPodElement() {
 					    	removeFieldUpdateDynForm(contextData.type);
 					    	
 					    	var dateformat = "DD/MM/YYYY";
-					    	if (! allDay) 
+					    	if (! allDay && contextData.type == typeObj.event.col) 
 					    		var dateformat = "DD/MM/YYYY HH:mm" ;
 					    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format());
 							$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format());
@@ -190,12 +197,12 @@ function bindAboutPodElement() {
 								}  
 								if(typeof data.resultGoods.values.startDate != "undefined"){
 									contextData.startDate = data.resultGoods.values.startDate;
-									$("#startDateAbout").html(moment(contextData.startDate).local().locale("fr").format(formatDateView));
+									//$("#startDateAbout").html(moment(contextData.startDate).local().locale("fr").format(formatDateView));
 									//$("#startDateAbout").html(directory.returnDate(contextData.startDate, formatDateView));
 								}  
 								if(typeof data.resultGoods.values.endDate != "undefined"){
 									contextData.endDate = data.resultGoods.values.endDate;
-									$("#endDateAbout").html(moment(contextData.endDate).local().locale("fr").format(formatDateView));
+									//$("#endDateAbout").html(moment(contextData.endDate).local().locale("fr").format(formatDateView));
 									//$("#endDateAbout").html(directory.returnDate(contextData.endDate, formatDateView));
 								}
 								initDateHeaderPage(contextData);
@@ -214,15 +221,19 @@ function bindAboutPodElement() {
 					}
 				}
 			};
-
+			var typeDate = "date";
 			if(contextData.type == typeObj.event.col){
 				var checked = (notNull(contextData.allDay) && contextData.allDay == true) ?  true : false ;
 				form.dynForm.jsonSchema.properties.allDay = dyFInputs.allDay(checked);
 				form.dynForm.jsonSchema.properties.allDayHidden = dyFInputs.inputHidden(checked);
+				if(checked == true )
+					type = "datetime";
+				
 			}
-
-			form.dynForm.jsonSchema.properties.startDate = dyFInputs.startDateInput;
-			form.dynForm.jsonSchema.properties.endDate = dyFInputs.endDateInput;
+			
+			
+			form.dynForm.jsonSchema.properties.startDate = dyFInputs.startDateInput(typeDate);
+			form.dynForm.jsonSchema.properties.endDate = dyFInputs.endDateInput(typeDate);
 
 			var dataUpdate = {
 				block : "when",
@@ -236,8 +247,8 @@ function bindAboutPodElement() {
 			if(notEmpty(contextData.endDateDB))
 				dataUpdate.endDate = moment(contextData.endDateDB).local().format(formatDatedynForm);
 
-			mylog.log("btn-update-when", form, dataUpdate);
-			dyFObj.openForm(form, "initWhen", dataUpdate);
+			mylog.log("btn-update-when", form, dataUpdate, formatDatedynForm);
+			dyFObj.openForm(form, "initUpdateWhen", dataUpdate);
 		});
 
 
@@ -654,7 +665,7 @@ function bindAboutPodElement() {
 			index : ind
 		}
 		mylog.log("params",params);
-		dyFObj.openForm( 'url','parentUrl', params);
+		dyFObj.openForm( 'url','sub', params);
 	}
 
 

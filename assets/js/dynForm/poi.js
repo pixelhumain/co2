@@ -19,8 +19,12 @@ dynForm = {
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 	    		}
 	    	},
-	    	onload : function(){
-	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+	    	onload : function(data){
+	    		if(data && data.type){
+	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+data.type+"</h4>");
+					$(".sectionBtntagList").hide();
+	    		} else
+	    			$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();
 	    	},
 	    },
 	    beforeSave : function(){
@@ -46,7 +50,7 @@ dynForm = {
 		    else 
 		    { 
 		        dyFObj.closeForm(); 
-		        urlCtrl.loadByHash( uploadObj.gotoUrl );
+		        urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 	        }
 	    },
 	    canSubmitIf : function () { 
@@ -62,7 +66,7 @@ dynForm = {
 	    		$(".typeBtntagList").hide(); 
 	    		$(".subtypeSection").html("");
 	    		$(".subtypeSectioncustom").show();
-	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();
 	    	}
 	    },
 	    properties : {
@@ -95,7 +99,7 @@ dynForm = {
 						
 						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
 						$(".sectionBtntagList").hide();
-						$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
+						$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags").show();
 						dyFObj.canSubmitIf();
 	            	});
 	            }
@@ -107,12 +111,7 @@ dynForm = {
             description : dyFInputs.textarea("Description", "..."),
             location : dyFInputs.location,
             tags :dyFInputs.tags(),
-            formshowers : {
-            	label : "En détails",
-                inputType : "custom",
-                html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
-            },
-            urls : dyFInputs.urlsOptionnel,
+            urls : dyFInputs.urls,
             parentId : dyFInputs.inputHidden(),
             parentType : dyFInputs.inputHidden(),
 	    }

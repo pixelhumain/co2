@@ -324,16 +324,16 @@ class AppController extends CommunecterController {
             $idReceiver = $_POST["idReceiver"];
 
             if( @$element && !empty($element) && 
-                !empty(@$element["contacts"]) && 
-                !empty(@$element["contacts"][$idReceiver]) && 
-                !empty(@$element["contacts"][$idReceiver]["email"]) ){
+                !empty($element["contacts"]) && 
+                !empty($element["contacts"][$idReceiver]) && 
+                !empty($element["contacts"][$idReceiver]["email"]) ){
                 
                 $emailReceiver = $element["contacts"][$idReceiver]["email"];
                 error_log("EMAIL FOUND : ".$emailReceiver);
 
-                //if(!empty(@$emailReceiver))
-                //Mail::sendMailFormContactPrivate($_POST["emailSender"], $_POST["names"], $_POST["subject"], 
-                //                                 $_POST["contentMsg"], $emailReceiver);
+                if(!empty(@$emailReceiver))
+                    Mail::sendMailFormContactPrivate($_POST["emailSender"], $_POST["names"], $_POST["subject"], 
+                                                 $_POST["contentMsg"], $emailReceiver);
                 
                 $res = array("res"=>true, "captcha"=>true);  
                 Rest::json($res); exit;

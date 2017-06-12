@@ -143,7 +143,7 @@
 					'<a class="btn btn-xs tooltips btn-accept" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.(string)$element["_id"].'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Link::IS_INVITING.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
 						'<i class="fa fa-check "></i> '.Yii::t("common",$inviteAccept).
 					'</a>'.
-					'<a class="btn btn-xs tooltips btn-refuse margin-left-5" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.(string)$element["_id"].'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\'attendees\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
+					'<a class="btn btn-xs tooltips btn-refuse margin-left-5" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.(string)$element["_id"].'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Element::$connectTypes[$type].'\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
 						'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
 					'</a>'.
 				"</div>".
@@ -153,33 +153,46 @@
 
 <ul id="subsubMenuLeft">
 	
-	<?php if (($edit==true || $openEdition==true) && @Yii::app()->session["userId"]){ ?>
+<?php if (($edit==true || $openEdition==true) && @Yii::app()->session["userId"]){ ?>
 		<li class="visible-xs">
 			<a href="javascript:" class="letter-green ssmla"  
 				data-toggle="modal" data-target="#selectCreate">
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php echo Yii::t("common", "Create") ?>
 		  	</a>
 		</li>
-		<?php if($type != Person::COLLECTION){
-			if ($type == Event::COLLECTION){ 
-				$inviteLink = "people";
-				$inviteText =  Yii::t("common","Invite people") ;			
-			}else if ($type == Organization::COLLECTION){ 
-				$inviteLink = "members";
-				$inviteText =  Yii::t("common",'Invite members') ;
-			}else if ($type == Project::COLLECTION){ 
-				$inviteLink = "contributors";
-				$inviteText =  Yii::t("common",'Invite contributors') ;
-			} if( @$inviteLink && @$inviteText ){?>
-			<li class="">
-				<a href="javascript:" class="tooltips ssmla" 
-				data-placement="bottom" data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common","to the ".Element::getControlerByCollection($type)))); ?>" 
-				data-toggle="modal" data-target="#modal-scope">
-					<i class="fa fa-send"></i> <?php echo $inviteText ?>
-				</a>
-			</li>
-			<li><hr></li>
-	<?php }}}	?>
+	<?php //if($type != Person::COLLECTION){
+				if ($type == Event::COLLECTION ){ 
+					$inviteLink = "people";
+					$inviteText =  Yii::t("common","Invite people") ;			
+				}else if ($type == Organization::COLLECTION) { 
+					$inviteLink = "members";
+					$inviteText =  Yii::t("common",'Invite members') ;
+				}else if ($type == Project::COLLECTION ){ 
+					$inviteLink = "contributors";
+					$inviteText =  Yii::t("common",'Invite contributors') ;
+				}else if ($type == Person::COLLECTION) { 
+					$inviteLink = "members";
+					$inviteText =  Yii::t("common",'Invite people') ;
+				}
+
+				if( @$inviteLink && @$inviteText ){?>
+				<li class="">
+					<a href="javascript:" class="tooltips ssmla" 
+					data-placement="bottom" data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common","to the ".Element::getControlerByCollection($type)))); ?>" 
+					data-toggle="modal" data-target="#modal-scope">
+						<i class="fa fa-send"></i> <?php echo $inviteText ?>
+					</a>
+				</li>
+				<li><hr></li>
+		<?php }
+			//}else{
+				?>
+				<!-- <a href="javascript:;" id="inviteBtn" class="bg-white">
+					<i class="fa fa-cogs"></i> <?php //echo Yii::t("common", "Invite"); ?>
+				</a> -->
+				<?php
+			//}
+	}	?>
 	<?php if(@Yii::app()->session["userId"] && 
 		 $type==Person::COLLECTION && 
 		 (string)$element["_id"]==Yii::app()->session["userId"]){ 

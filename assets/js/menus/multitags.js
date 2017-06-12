@@ -241,6 +241,11 @@ function showTagSuggestion(tagValue, tagSpec){ //mylog.log("showTagSuggestion()"
 		html = "";
 		//showMsgInfoMultiTag("showTagInMultitag error : ce tag n'existe pas - " + tagValue, "danger");
 	}
-	
-	
+}
+
+function resetMyTags(){ 
+	myMultiTags = {}; 
+	saveMultiTag(); 
+	startSearch(0, indexStepInit);
+	$('#sub-menu-filliaire').addClass('hidden');
 }

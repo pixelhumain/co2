@@ -57,11 +57,19 @@ function bindRightClicks() {
 	    selector: ".add2fav",
         build: function($trigger, e) {
         	if(userId){
-        		var validElems = ["#element","#organization","#project","#event","#person","#element","#survey","#rooms"];
+        		var validElems = ["#element", "#page","#organization","#project","#event","#person","#element","#survey","#rooms"];
         		href = $trigger[0].hash.split(".");
         		if($.inArray(href[0],validElems) >=0 ){
-		        	var what = ( href[0] == "#element" ) ? href[3] : typeObj[ href[0].substring(1) ].col; 
-					var	id = ( href[0] == "#element" ) ? href[5] : href[3];
+        			if(href[0] == "#element"){
+		        		var what = href[3]; 
+						var	id = href[5];
+					}else if (href[0] == "#page"){
+						var what = href[2]; 
+						var	id = href[4];
+					}else{
+						var what = typeObj[ href[0].substring(1) ].col; 
+						var	id =  href[3];
+					}
 				}
 				//console.log(href,href[0],what,id);
 				var btns = {
@@ -76,14 +84,17 @@ function bindRightClicks() {
 	        	$.each( userConnected.collections, function (col,list) { 
 	        		btns[col] = { 
 			        	name: function($element, key, item){ 
-		        			var str = "Ajouter à "+col;
+			        		nameCol=col;
+			        		if(col=="favorites")
+			        			nameCol="mes favoris";
+		        			var str = "Ajouter à "+nameCol;
 		        			//console.log(col,what,id);
 		        			if( notNull( userConnected.collections[col]) && notNull( userConnected.collections[col][what] ) && notNull( userConnected.collections[col][what][id]) ) 
-		        				str = "Retirer de "+col;
+		        				str = "Retirer de "+nameCol;
 		        			return str; 
 		        		},
 			        	icon: "fa-folder-open", 
-			        	callback: function(key, opt){ 
+			        	callback: function(key, opt){
 				        	if( notNull( what )&& notNull( id ) ){
 					        	collection.add2fav( what,id,col );
 							}
@@ -1604,14 +1615,25 @@ function myAdminList (ctypes) {
 	}
 	return myList;
 }
+function escapeHtml(string) {
+	var entityMap = {
+	    '"': '&quot;',
+    	"'": '&#39;',
+	};
+    return String(string).replace(/["']/g, function (s) {
+        return entityMap[s];
+    });
+} 
 
-function addContact(id, name){
+function fillContactFields(id){
+	name = cotmp[id].name;
+	mylog.log("fillContactFields", id, name );
 	$("#idContact").val(id);
-	$("#listSameName").html("<i class='fa fa-check text-success'></i> Vous avez sélectionner : "+ name);
+	$("#listSameName").html("<i class='fa fa-check text-success'></i> Vous avez sélectionner : "+  escapeHtml(name));
 	$("#name").val(name);
 }
-
-function globalSearch(searchValue,types,autre){
+var cotmp = {};
+function globalSearch(searchValue,types,contact){
 	
 	searchType = (types) ? types : ["organizations", "projects", "events", "needs", "citoyens"];
 
@@ -1639,6 +1661,7 @@ function globalSearch(searchValue,types,autre){
  			var compt = 0;
  			var msg = "Verifiez si cet élément n'existe pas déjà";
  			$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
+ 			cotmp = {};
  			$.each(data, function(id, elem) {
   				mylog.log(elem);
   				city = "";
@@ -1655,17 +1678,19 @@ function globalSearch(searchValue,types,autre){
 					if( notEmpty( city ) && notEmpty( postalCode ) )
 					where = ' ('+postalCode+" "+city+")";
 				}
+				var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
 				if("undefined" != typeof elem.profilImageUrl && elem.profilImageUrl != ""){
 					var htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
 				}
 				
-				if(autre == true){
-					str += 	"<a href='javascript:;' onclick='addContact( \""+elem.id+"\",\""+elem.name+"\" );' class='autre btn btn-xs btn-default w50p text-left padding-5 text-blue' >"+
+				if(contact == true){
+					cotmp[id] = {id:id, name : elem.name};
+					str += 	"<a href='javascript:;' onclick='fillContactFields( \""+id+"\" );' class='col-sm-12 col-sm-3 btn btn-xs btn-default w50p text-left padding-5' >"+
 								"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
 							"</a>";
 					msg = "Verifiez si le contact est dans Communecter";
 				}else{
-					str += 	"<a target='_blank' href='#"+ elem.type +".detail.id."+ elem.id +"' class='btn btn-xs btn-default w50p text-left padding-5 text-blue' >"+
+					str += 	"<a target='_blank' href='#page.type."+ elem.type +".id."+ id +"' class='btn btn-xs btn-danger w50p text-left padding-5 margin-5' style='height:42px' >"+
 							"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
 						"</a>";
 				}
@@ -2100,6 +2125,9 @@ var collection = {
 					console.warn(params.action);
 					if(data.result){
 						toastr.success(data.msg);
+						if(location.hash.indexOf("#page") >=0){
+							loadDataDirectory("collections", "star");
+						}
 						//if no type defined we are on user
 						//TODO : else add on the contextMap
 						if( typeof type == "undefined" && action == "new"){
@@ -2143,11 +2171,21 @@ var collection = {
 				console.warn(params.action,collection,what,id);
 				if(data.result){
 					if(data.list == '$unset'){
-						$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
-						delete userConnected.collections[collection][what][id];
+						if(location.hash.indexOf("#page") >=0){
+							$(".favorisMenu").removeClass("text-yellow");
+							$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o');
+						}else{
+							$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
+							delete userConnected.collections[collection][what][id];
+						}
 					}
 					else{
-						$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
+						if(location.hash.indexOf("#page") >=0){
+							$(".favorisMenu").addClass("text-yellow");
+							$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star');
+						}
+						else
+							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
 						if(!userConnected.collections)
 							userConnected.collections = {};
 						if(!userConnected.collections[collection])
@@ -2195,6 +2233,7 @@ var uploadObj = {
 	folder : moduleId, //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
+		mylog.log("set uploadObj.id", id);
 		uploadObj.id = id;
 	}
 };
@@ -2383,6 +2422,8 @@ var dyFObj = {
 		                }
 					}
 	            }
+	            uploadObj.type = null;
+	    		uploadObj.id = null;
 	    	}
 	    });
 	},
@@ -2390,10 +2431,14 @@ var dyFObj = {
 		$('#ajax-modal').modal("hide");
 	    //clear the unecessary DOM 
 	    $("#ajaxFormModal").html(''); 
+	   	uploadObj.type = null;
+	    uploadObj.id = null;
 	},
 	editElement : function (type,id){
 		mylog.warn("--------------- editElement ",type,id);
 		//get ajax of the elemetn content
+		uploadObj.type = type;
+		uploadObj.id = id;
 		$.ajax({
 	        type: "GET",
 	        url: baseUrl+"/"+moduleId+"/element/get/type/"+type+"/id/"+id,
@@ -2410,9 +2455,6 @@ var dyFObj = {
 				mylog.dir(data);
 				console.log(data);
 				
-				if( jsonHelper.notNull("themeObj.dynForm.editElementPOI","function") )
-					themeObj.dynForm.editElementPOI(type,data);
-
 				dyFObj.openForm( dyFInputs.get(type).ctrl ,null, data.map);
 	        } else {
 	           toastr.error("something went wrong!! please try again.");
@@ -2530,7 +2572,7 @@ var dyFObj = {
 			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
 			        //incase we need a second global post process
 			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
-			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload();
+			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload(data);
 				    
 			        bindLBHLinks();
 			      },
@@ -2560,9 +2602,10 @@ var dyFObj = {
 	//generate Id for upload feature of this element 
 	setMongoId : function(type,callback) { 
 		uploadObj.type = type;
-		if( !$("#ajaxFormModal #id").val() )
+		if( !$("#ajaxFormModal #id").val() && uploadObj.id == null )
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
+				mylog.log("setMongoId uploadObj.id", data.id);
 				uploadObj.id = data.id;
 				$("#ajaxFormModal #id").val(data.id)
 				if( typeof callback === "function" )
@@ -2675,6 +2718,15 @@ var dyFInputs = {
 		};
 		return inputObj;
 	},
+	tags : function(list) { 
+    	tagsL = (list) ? list : tagsList;
+    	return {
+			inputType : "tags",
+			placeholder : "Mots clés",
+			values : tagsL,
+			label : "Ajouter quelques mots clés"
+		}
+	},
     imageAddPhoto : {
     	inputType : "uploader",
     	showUploadBtn : true,
@@ -2690,17 +2742,17 @@ var dyFInputs = {
     	}
     },
     image :function() { 
-    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
+    	
     	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
     		uploadObj.gotoUrl = location.hash ;
-    	mylog.log( "gotoUrl" , uploadObj.gotoUrl ) ;
+    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
 
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	dyFObj.closeForm();
-		    	alert( "image upload then goto : "+uploadObj.gotoUrl );
+				//alert( "image upload then goto : "+uploadObj.gotoUrl );
 	            urlCtrl.loadByHash( uploadObj.gotoUrl );	
 		    }
     	}
@@ -2725,15 +2777,7 @@ var dyFInputs = {
 	    } ;
 	    return inputObj;
 	},
-    tags : function(list) { 
-    	tagsL = (list) ? list : tagsList;
-    	return {
-			inputType : "tags",
-			placeholder : "Mots clés",
-			values : tagsL,
-			label : "Ajouter quelques mots clés"
-		}
-	},
+
 	password : function  (title, rules) {  
     	var title = (title) ? title : trad["New password"];
     	var ph = "";
@@ -3074,6 +3118,10 @@ var dyFInputs = {
     },
     get:function(type){
     	//mylog.log("dyFInputs.get", type);
+    	if( type == "undefined" ){
+    		toastr.error("type can't be undefined");
+    		return null;
+    	}
     	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
@@ -3081,23 +3129,23 @@ var dyFInputs = {
     		} else
     			obj = typeObj[type];
     		obj.name = (trad[type]) ? trad[type] : type;
+    	}
+    	if( obj === null ){
+    		obj = dyFInputs.deepGet(type);
+    		if( obj )
+    			obj = dyFInputs.get( obj.col )
     	}
     	return obj;
     },
     deepGet:function(type){
     	//mylog.log("get", type);
     	var obj = null;
-    	if( jsonHelper.notNull("typeObj."+type)){
-    		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
-    			obj = typeObj[ typeObj[type].sameAs ];
-    		} else
-    			obj = typeObj[type];
-    		obj.name = (trad[type]) ? trad[type] : type;
-    	} else {
-    		//calculate only once
-    		//get list of all keys and sub keys
-    		//return corresponding map
-    	}
+    	$.each( typeObj,function(k,o) { 
+    		if( o.subTypes && ( $.inArray( type,  o.subTypes )>=0 ) ){
+    			obj = o;
+    			return false;
+    		}
+    	});
     	return obj;
     }
 };
@@ -3169,12 +3217,14 @@ var typeObj = {
 	"citoyen" : { sameAs:"person" },
 	"citoyens" : { sameAs:"person" },
 	
-	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle"},
+	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle",
+			subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+				   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
+				   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
 
 	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
 	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
 	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
-	
 	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
 
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
@@ -3199,10 +3249,11 @@ var typeObj = {
 	"rooms" : {col:"actions",ctrl:"room",color:"azure",icon:"gavel"},
 	"discuss" : {col:"actionRooms",ctrl:"room"},
 	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	"classified":{col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",	},
+	"classified":{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
+				   subTypes : ["Technologie","Immobilier","Véhicules","Maison","Loisirs","Mode"]	},
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
-	"video" : {icon:"video-camera",color:"dark"},
+	//"video" : {icon:"video-camera",color:"dark"},
 	"formContact" : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
 	"news" : { col : "news" }, 
 };

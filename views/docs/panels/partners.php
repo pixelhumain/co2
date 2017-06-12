@@ -289,6 +289,13 @@ var keywords = [
 		"avatar":"https://www.communecter.org/upload/communecter/citoyens/586793ff40bb4ee620947c30/medium/IMG20170221133431.jpg?_=1492717390",
 		"class" : "builder"
 	},
+	{
+		"icon" : "fa-user",
+		"title": "Tom Baumert",
+		"co" : "57e5256640bb4eff07c4c9d6",
+		"avatar":"https://www.communecter.org/upload/communecter/citoyens/57e5256640bb4eff07c4c9d6/medium/profil.jpg?_=1496302667",
+		"class" : "builder"
+	},
 	/* **************************************
 	*
 	*	Devs
@@ -425,6 +432,13 @@ var keywords = [
 		"title": "Open Agenda",
 		"link" : "https://openagenda.com",
 		"class" : "interoperate"
+	},
+	{
+		"icon" : "fa-usb",
+		"title": "smart Citizen",
+		"link" : "https://smartcitizen.me",
+		"class" : "interoperate",
+		"img" : "http://2012.cities.io/wp-content/uploads/2014/06/SmartCitizen_logo.png",
 	},
 
 /* **************************************

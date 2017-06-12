@@ -9,7 +9,7 @@
         }
         scopeHtml="";
         //if(typeof userConnected != "undefined" && userConnected != null ){
-             if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false"){
+             if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false" && communexion.state){
                 scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
                             'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
                             'data-scope-value="'+$.cookie('communexionValue')+'" '+
@@ -45,7 +45,7 @@
                                         '</span>';
                         }
         scopeHtml+= '</h5>'+
-                    '<div class="scope-min-header list_tags_scopes hidden-xs text-left ellipsis">'+
+                    '<div class="scope-min-header list_tags_scopes text-left ellipsis">'+
                     '</div>';
         $("#container-scope-filter").html(scopeHtml);
         //}

@@ -38,9 +38,9 @@
 			var typeElement = type;
 			if(type == "people") 		typeElement = "citoyens";
 			if(type == "citoyens") 		typeElement = "citoyens";
-			if(type == "organizations") typeElement = "organization";
-			if(type == "events") 		typeElement = "event";
-			if(type == "projects") 		typeElement = "project";
+			if(type == "organization") typeElement = "organizations";
+			if(type == "event") 		typeElement = "events";
+			if(type == "project") 		typeElement = "projects";
 			//mylog.log("type", type, "typeElement", typeElement);
 			
 			var icon = 'fa-'+ this.getIcoByType(data);

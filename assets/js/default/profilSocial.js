@@ -258,6 +258,11 @@ function bindButtonMenu(){
     	}
     });
 
+    $("#inviteBtn").on("click", function(){
+    	mylog.log("invite");
+    	$("#modal-invite").modal("show");
+    });
+
     $("#btn-delete-element").on("click", function(){
     	mylog.log("Delete Element");
     	$("#modal-delete-element").modal("show");
@@ -339,12 +344,19 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 
 	}
 
-	if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
-		var elemSpec = dyFInputs.get(dataName);
-		html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \''+elemSpec.ctrl+'\',\'sub\')">';
-    	html +=	'<i class="fa fa-plus"></i> Ajouter '+trad[ elemSpec.ctrl ]+'</a>' ;  
+	if( openEdition || edit ){
+		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
+			if(dataName == "collections"){
+				html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
+		    	html +=	'<i class="fa fa-plus"></i> Ajouter Collection</a>' ; 
+			}
+			else {
+				var elemSpec = dyFInputs.get(dataName);
+				html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \''+elemSpec.ctrl+'\',\'sub\')">';
+		    	html +=	'<i class="fa fa-plus"></i> Ajouter '+trad[ elemSpec.ctrl ]+'</a>' ;  
+		    }
+		}
 	}
-
 	return html;
 }
 
@@ -481,6 +493,9 @@ function loadContacts(){
 			    		//console.log('contactMail', contactMail);
 			    		$("#formContact .contact-email").html(contactMail);
 			    		$("#formContact #contact-name").html(contactName);
+
+			    		$("#formContact #emailSender").val(userConnected.email);
+			    		$("#formContact #name").val(userConnected.name);
 			    		
 			    		$("#formContact #form-control").val("");
 			    		
@@ -505,15 +520,25 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
 						getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
 					"<hr></div>";
-
+		
+		
+		mapElements = new Array();
+		if(mapElements.length==0) mapElements = data;
+        else $.extend(mapElements, data);
+		
 		if(dataName != "collections"){
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){
 				html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
-				$.each(val.list, function(key, elements){ 
-					html += directory.showResultsDirectoryHtml(elements, key);
-				});
+				console.log("list", val);
+				if(val.count==0)
+					html +="<span class='col-md-12 col-sm-12 col-xs-12 text-dark margin-bottom-20'>Aucun élément dans cette collection</span>";
+				else{
+					$.each(val.list, function(key, elements){ 
+						html += directory.showResultsDirectoryHtml(elements, key);
+					});
+				}
 			});
 		}
 		toogleNotif(false);

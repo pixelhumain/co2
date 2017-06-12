@@ -610,7 +610,7 @@ function deleteNews(id, type, $this){
 				$.ajax({
 			        type: "POST",
 			        url: baseUrl+"/"+moduleId+"/news/delete/id/"+id,
-					dataType: "json",
+					//dataType: "json",
 					data: {"isLive": isLive},
 		        	success: function(data){
 			        	if (data) {  

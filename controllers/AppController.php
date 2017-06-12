@@ -184,19 +184,20 @@ class AppController extends CommunecterController {
         echo $this->renderPartial("admin", $params, true);
     }
 
-    public function actionRooms($type,$id){
+    public function actionRooms($type,$id){ exit;
         CO2Stat::incNbLoad("co2-rooms");    
         $params = array("id" => @$id,
                         "type" => @$type
                         );
-        print_r($params);
+        //print_r($params);
         echo $this->renderPartial("rooms", $params, true);
     }
 
 
 	public function actionPage($type, $id, $view=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
-        
+        //var_dump($type); exit;
+            
         if( $type == Person::COLLECTION  || $type == Event::COLLECTION || 
             $type == Project::COLLECTION || $type == Organization::COLLECTION )    
             $element = Element::getByTypeAndId($type, $id);
@@ -210,6 +211,9 @@ class AppController extends CommunecterController {
         }
         else if($type == Poi::COLLECTION){
             $element = Poi::getById($id);
+        }
+        else if($type == Survey::COLLECTION){
+            $element = Survey::getById($id);
         }
 
         if(@$element["parentId"] && @$element["parentType"])

@@ -49,7 +49,6 @@
                 $this->renderPartial('../news/standalone', $params ); 
             }
 
-
             if($type == Classified::COLLECTION){
                 $params = array("element"=>$element , 
                                 "page" => "page",
@@ -61,6 +60,16 @@
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
 
                 $this->renderPartial('../classified/standalone', $params ); 
+            }
+
+            if($type == Survey::COLLECTION){
+                $params = array("survey"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
+
+                $this->renderPartial('../survey/entryStandalone', $params ); 
             }
 		?>
 	</div>

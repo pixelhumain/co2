@@ -1413,15 +1413,15 @@ var directory = {
     roomsPanelHtml : function(params){
       if(directory.dirLog) mylog.log("-----------roomsPanelHtml");
 
-      if(params.type == "surveys") params.hash = "#survey.entry.id."+params.id;
-      else if(params.type == "actions") params.hash = "#rooms.action.id."+params.id;
+      if(params.type == "surveys") params.hash = "#page.type.surveys.id."+params.id;
+      //else if(params.type == "actions") params.hash = "#rooms.action.id."+params.id;
    
       str = "";  
-      str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-xs-6 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
       
-        if(userId != null && userId != "" && params.id != userId){
+       /* if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
           tip = (type == "events") ? "Participer" : 'Suivre';
@@ -1431,7 +1431,7 @@ var directory = {
                       "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
                     "</a>";
         }
-
+*/
         if(params.updated != null && !params.useMinSize)
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
 
@@ -1452,10 +1452,10 @@ var directory = {
             str += '</div>';
         }
         var w = (params.startDate != null) ? "8" : "12"
-            str += '<div class="col-xs-'+w+'">'+
-                '<a href="'+params.hash+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+
-            '</div>'+
-        '</div>';
+            //str += '<div class="col-xs-'+w+'">'+
+            //    '<a href="'+params.hash+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+
+            //'</div>'+
+       str +=  '</div>';
         
         str += "<div class='padding-10 informations'>";
 
@@ -1468,7 +1468,7 @@ var directory = {
                       "</a>";
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbh add2fav'>"+
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbh add2fav margin-top-15'>"+
                       iconFaReply + params.name + 
                    "</a>";
             

@@ -90,7 +90,7 @@ dynForm = {
 	            		
             		$(".typeBtn").removeClass("active btn-dark-blue text-white");
             		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
-            		$("#ajaxFormModal #type").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+            		$("#ajaxFormModal #type").val( ( $(this).hasClass('active') ) ? $(this).data('key') : "" );
             		
             		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a>  "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+"</h4>" );
             		$(".typeBtntagList").hide();
@@ -115,7 +115,7 @@ dynForm = {
 		            	{
 		            		$( ".subtypeBtn" ).removeClass("active");
 		            		$(this).addClass("active");
-		            		$("#ajaxFormModal #subtype").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+		            		$("#ajaxFormModal #subtype").val( ( $(this).hasClass('active') ) ? $(this).data('key') : "" );
 		            		$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
 		            		//$(".subtypeBtn:not(.active)").hide();
 
@@ -150,7 +150,7 @@ dynForm = {
 	            		$(".typeBtntagList").show();
 	            		$(".sectionBtn").removeClass("active btn-dark-blue text-white");
 	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
-	            		$("#ajaxFormModal #section").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+	            		$("#ajaxFormModal #section").val( ( $(this).hasClass('active') ) ? $(this).data('key') : "" );
 						//$(".sectionBtn:not(.active)").hide();
 						var sectionKey = $(this).data('key');
 						//alert(sectionKey);

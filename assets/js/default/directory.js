@@ -1355,6 +1355,7 @@ var directory = {
     urlPanelHtml : function(params, key){
 		  //if(directory.dirLog) 
       mylog.log("-----------urlPanelHtml", params, key);
+      params.title = escapeHtml(params.title);
   		if(directory.dirLog) mylog.log("-----------contactPanelHtml", params);
         str = "";  
         str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";

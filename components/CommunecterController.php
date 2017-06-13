@@ -103,6 +103,7 @@ class CommunecterController extends Controller
       "createfile" => array("href" => "/ph/communecter/admin/createfile"),
       "mailerrordashboard" => array("href" => "/ph/communecter/admin/mailerrordashboard"),
       "cities" => array("href" => "/ph/communecter/admin/cities"),
+
     ),
     
     "adminpublic" => array(
@@ -114,7 +115,8 @@ class CommunecterController extends Controller
       "assigndata"    => array("href" => "/ph/communecter/adminpublic/assigndata"),
       "getdatabyurl"   => array("href" => "/ph/communecter/adminpublic/getdatabyurl"),
       "previewdata"    => array("href" => "/ph/communecter/adminpublic/previewdata"),
-      
+      "interopproposed"    => array("href" => "/ph/communecter/adminpublic/interopproposed"),
+
     ),
     "collections" => array(
       "add"    => array("href" => "/ph/communecter/collections/add"),

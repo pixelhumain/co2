@@ -589,6 +589,7 @@ var urlCtrl = {
 	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download'},
 	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download'},
 	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download'},
+	   	"#adminpublic.interopproposed" : {title : 'INTEROP PROPOSED', icon : 'download', 'useHeader' : true},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
@@ -607,7 +608,7 @@ var urlCtrl = {
 		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
 		"#opendata" : {"alias":"#data.index"},
 		"#interoperability.copedia" : {title:'COPEDIA', icon : 'fa-folder-open-o'},
-		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o'},
+		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o','useHeader' : true},
 
 
 	},
@@ -705,7 +706,6 @@ var urlCtrl = {
 						path = urlCtrl.convertToPath(hash);
 						pathT = path.split('/');
 						//open path in a modal (#openModal)
-						
 						if(pathT[0] == "modal"){
 							path = path.substring(5);
 							alert(baseUrl+'/'+moduleId+path);
@@ -879,7 +879,6 @@ function  processingBlockUi() {
 }
 function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
 	//alert("showAjaxPanel"+url);
-	
 	var dest = ( typeof urlObj == "undefined" || typeof urlObj.useHeader != "undefined" ) ? themeObj.mainContainer : ".pageContent" ;
 	mylog.log("showAjaxPanel", url, urlObj,dest,urlCtrl.afterLoad );	
 	//var dest = themeObj.mainContainer;

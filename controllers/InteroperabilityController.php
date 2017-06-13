@@ -19,6 +19,7 @@ class InteroperabilityController extends CommunecterController {
       'co-osm-push-tag' => 'citizenToolKit.controllers.interoperability.OSMPushTagAction',
       'wikitoco' => 'citizenToolKit.controllers.interoperability.WikiToCoAction',
       'pushtypewikidata' => 'citizenToolKit.controllers.interoperability.PushTypeWikidataAction',
+      'proposeopendatasource' => 'citizenToolKit.controllers.interoperability.ProposeOpenDataSourceAction',
     );
   }
 }

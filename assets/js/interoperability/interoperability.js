@@ -1179,6 +1179,38 @@ function getActivityArray() {
 
 }
 
+function getAllValueForTagAmenityOSM(){
+
+    var list_tags_amenity = {};
+
+    list_tags_amenity["Sustenance"] = [];
+    list_tags_amenity["Sustenance"].push("restaurant", "pub", "fast_food", "food_court", "ice_cream", "bar", "bbq", "biergarten", "cafe", "food_court", "ice_cream", "marketplace","drinking_water");
+
+
+    list_tags_amenity["Education"] = [];
+    list_tags_amenity["Education"].push("school", "university", "college", "kindergarten", "childcare", "music_school", "driving_school", "language_school");
+
+
+    list_tags_amenity["Transport"] = [];
+    list_tags_amenity["Transport"].push("bicycle_parking", "bicycle_repair_station", "bicycle_rental", "boat_sharing", "bus_station", "car_rental", "car_sharing", "car_wash", "charging_station", "fuel", "ferry_terminal", "grit_bin", "motorcycle_parking", "parking", "parking_entrance", "parking_space", "taxi");
+
+    list_tags_amenity["Financier"] = [];
+    list_tags_amenity["Financier"].push("atm", "bank", "bureau_de_change");
+
+
+    list_tags_amenity["Santé"] = [];
+    list_tags_amenity["Santé"].push("doctors", "pharmacy", "veterinary", "hospital", "baby_hatch", "clinic", "nursing_home", "social_facility");
+
+
+    list_tags_amenity["Divertissement, Art et Culture"] = [];
+    list_tags_amenity["Divertissement, Art et Culture"].push("theatre", "cinema", "library", "arts_centre", "brothel", "stripclub", "swingerclub", "casino", "community_centre", "fountain", "gambling", "nightclub", "planetarium", "studio");
+
+    list_tags_amenity["Autres"] = [];
+    list_tags_amenity["Autres"].push("animal_boarding", "animal_shelter", "baking_oven", "bench", "clock", "courthouse", "coworking_space", "crematorium", "crypt", "dive_centre", "dojo", "embassy", "fire_station", "game_feeding", "grave_yard", "hunting_stand", "internet_cafe", "marketplace", "photo_booth", "place_of_worship", "police", "post_box", "post_office", "prison", "ranger_station", "recycling", "rescue_station", "sanitary_dump_station", "shelter", "shower", "table", "telephone", "toilets", "townhall", "vending_machine", "waste_basket", "waste_disposal", "waste_transfert_station", "watering_place", "water_point");
+
+    return list_tags_amenity;
+}
+
 function getAllValueForTagPlaceOSM() {
 
     var list_tags_place = {};
@@ -1216,6 +1248,50 @@ function getAllValueForTagLeisureOSM() {
     list_tags_leisure["Loisirs"] = [];
     list_tags_leisure["Loisirs"].push("adult_gaming_centre", "amusement_arcade", "beach_resort", "bandstant", "bird_hide", "common", "dance", "disc_golf_tour", "dog_park", "escape_game", "firepit", "fishing", "fitness_centre", "garden", "golfcourt", "hackerspace", "horse_riding", "ice_rink", "marina", "miniature_golf", "nature_reserve", "park", "picnic_table", "pitch","playground", "slipway", "sports_centre", "stadium", "summer_camp", "swimming_area" , "swimming_pool", "track", "water_park", "wildhide_life");
 
+    return list_tags_leisure;
+}
+
+function getAllValueForTagShopOSM() {
+
+    var list_tags_shop = {};
+
+    list_tags_shop["Nouriture, Boissons"] = [];
+    list_tags_shop["Nouriture, Boissons"].push("alcohol" , "bakery", "beverages", "brewing_supplies", "butcher", "cheese", "chocolate", "coffee", "confectionery", "convenience", "deli", "dairy", "farm", "greengrocer", "ice_cream", "pasta", "pastry", "seafood", "spices", "tea");
+
+    list_tags_shop["Magasin général, super et hyper marché"] = [];
+    list_tags_shop["Magasin général, super et hyper marché"].push("department_store", "general", "kiosk", "mall", "supermarket");
+
+    list_tags_shop["Vêtement, Chaussure, Accessoires"] = [];
+    list_tags_shop["Vêtement, Chaussure, Accessoires"].push("baby_goods", "bag", "boutique", "clothes", "fabric", "fashion", "jewelry", "leather", "sewing", "shoes", "tailor", "watches");
+
+    list_tags_shop["Magasin Discount, de charité"] = [];
+    list_tags_shop["Magasin Discount, de charité"].push("charity", "second_hand", "variety_store");
+
+    list_tags_shop["Santé et beauté"] = [];
+    list_tags_shop["Santé et beauté"].push("beauty", "chemist", "cosmetics", "erotic", "hairdresser", "hairdresser_supply", "hearing_aids", "herbalist", "massage", "medical_supply", "nutrition_supplements", "optician", "perfumery", "tatoo");
+
+    list_tags_shop["Do-it-yourself, household, building materials, gardening"] = [];
+    list_tags_shop["Do-it-yourself, household, building materials, gardening"].push("agrarian", "bathroom_furnishing", "doityourself", "electrical", "energy", "fireplace" , "florist", " garden_centre", " garden_furniture" , "gas", " glaziery", "hardware", " houseware" , "locksmith", "paint", "security", "trade");
+
+    list_tags_shop["Furniture and interior"] = [];
+    list_tags_shop["Furniture and interior"].push("antiques", "bed", "candles", "carpet", "curtain" , "furniture", " interior_decoration" , "kitchen", "lamps", "tiles", " window_blind");
+
+    list_tags_shop["Electronics"] = [];
+    list_tags_shop["Electronics"].push(" computer" , "electronics", "hifi", "mobile_phone", "radiotechnics" , "vacuum_cleaner");
+
+    list_tags_shop["Outdoors and sport, vehicles"] = [];
+    list_tags_shop["Outdoors and sport, vehicles"].push("atv", "bicycle", "car", "car_repair", "car_parts", "fuel", "fishing", "free_flying", "hunting", "motorcycle", "outdoor", "scuba_diving", "sports", "swimming_pool" , "tyres");
+
+    list_tags_shop["Art, music, hobbies"] = [];
+    list_tags_shop["Art, music, hobbies"].push("art", "collector", "craft", "frame", "games", "model", "music", "musical_instrument", "photo", "camera", "trophy", "video", "video_games");
+
+    list_tags_shop["Stationery, gifts, books, newspapers"] = [];
+    list_tags_shop["Stationery, gifts, books, newspapers"].push("anime", "book", "gift", "lottery", "newsagent", "stationery", "ticket");
+
+    list_tags_shop["Autres"] = [];
+    list_tags_shop["Autres"].push("bookmaker", "copyshop", "dry_cleaning", "e-cigarette", "funeral_directors", "laundry", "money_lender", "party", "pawnbroker", "pet", "pyrotechnics", "religion", "tobacco", "toys", "travel_agency", "vacant", "weapons");
+
+    return list_tags_shop;
 }
 
 function getRomeActivityCodeFromThematic(thematic) {

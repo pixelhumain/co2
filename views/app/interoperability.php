@@ -131,6 +131,8 @@ $this->renderPartial($layoutPath.'header',
       padding:10px;
     }
 
+
+
     .logo_interop {
         margin-top: 10px;
         margin-bottom: 10px;
@@ -240,7 +242,7 @@ $this->renderPartial($layoutPath.'header',
 
 <div id="all_activity" class="hidden col-sm-12 col-md-12 hidden-xs hidden-sm text-left"></div>
 
-<div id="container-result-interop_search" class="container-result-search col-xs-12">
+<div id="container-result-interop_search" class="container-result-search col-xs-12 bg-white">
 
     <div class="col-sm-2 col-md-2 col-xs-12 text-right pull-left margin-top-15 no-padding" id="col-btn-type-directory">
         <button class="btn text-black bg-dark btn-open-filliaire">
@@ -344,6 +346,8 @@ $this->renderPartial($layoutPath.'header',
 	jQuery(document).ready(function() {
         initKInterface({"affixTop":320}); 
         typeD = "wikidata";
+
+        $('.moduleTitle').append('<br/><a href="javascript:OpenDynFormForProposeOpenData()">Vous avez des données Open Data que vous souhaiteriez incorporez dans Communecter ? N\'attendez plus ! Proposez vous même vos sources de données libres et faites les valoriser !!!</a>');
 
         $(".btn-decommunecter").click(function(){
             activateGlobalCommunexion(false);
@@ -570,21 +574,10 @@ $this->renderPartial($layoutPath.'header',
 	    indexStep = 30;
 
 		text_search_name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
-	    
-	    // if(name == "" && searchType.indexOf("cities") > -1) return;  
-
-	    // if(typeof indexMin == "undefined") indexMin = 0;
-	    // if(typeof indexMax == "undefined") indexMax = indexStep;
 
 	    currentIndexMin = indexMin;
 	    currentIndexMax = indexMax;
 
-	    // if(indexMin == 0 && indexMax == indexStep) {
-	    //   totalData = 0;
-	    //   mapElements = new Array(); 
-	    // }
-	    // else{ if(scrollEnd) return; }
-	    
 	    if(name.length>=3 || name.length == 0)
 	    {
 	      var locality = "";
@@ -647,10 +640,10 @@ $this->renderPartial($layoutPath.'header',
 	        error: function (data){
 	            mylog.log("error autocomplete INTEROP search"); mylog.dir(data);     
 	            //signal que le chargement est terminé
-	            loadingData = false;     
+	            loadingData = false;  
+                $('#dropdown_search').html("<h1>LA REQUETE N'A PAS ABOUTIE !!! VERIFIEZ VOTRE CONNEXION ...  </h1>");   
 	        },
-	        success: function(data){ mylog.log("success autocomplete INTEROP search", data); //mylog.dir(data);
-
+	        success: function(data){ mylog.log("success autocomplete INTEROP search", data); 
 	        	toastr.success("Une partie des données est arrivé");
 
 	            all_data_for_map = [];
@@ -671,45 +664,12 @@ $this->renderPartial($layoutPath.'header',
 	                all_interop_data.push(value);
 	            });
 
-	            // if (typeD == "all_interop") {
-	                // if (searchTags == "") {
-	                //     if (text_search_name == "") {
-	                //         var nb_of_return = 9;
-	                //     } else {
-	                //         var nb_of_return = 8;
-	                //     }
-	                // } else {
-	                //     if (text_search_name == "") {
-	                //         var nb_of_return = 2;
-	                //     } else {
-	                //         var nb_of_return = 1;
-	                //     }
-	                // }
-
-	                // if (nb_of_stop < nb_of_return) {
-	                //     nb_of_stop++;
-	                //     return;
-	                // } else {
-	                //     mylog.log("Il ne faut plus faire de return");
-	                // }
-	            // }
-
 	            startNow = startNow + 30;
 	            endNow = endNow + 30;
 
 	            if(!part_data){ toastr.error(part_data.content); }
 	            else {
 	                countData = 0;
-
-	                // if (typeD !== "all_interop") {
-	                //     $.each(part_data, function(i, v) { 
-	                //         countData++; 
-	                //     });
-	                // } else {
-	                //     $.each(all_interop_data, function(index, value) {
-	                //         countData++;
-	                //     });
-	                // }
 
 	                $.each(part_data, function(i, v) { 
 	                    countData++; 
@@ -753,14 +713,6 @@ $this->renderPartial($layoutPath.'header',
 	                str += "</h4>";
 	                str += "<hr style='float:left; width:100%;'/>";
 	                str += "</div>";
-
-	                mylog.log("ON APELLE LE SHOW DIRECTORY RESULT");
-
-	                // if (typeD == "all_interop") {
-	                //     str += directory.showResultsDirectoryHtml(all_interop_data);
-	                // } else {
-	                //     str += directory.showResultsDirectoryHtml(part_data);
-	                // }
 
 	                mylog.log("LE NOMBRE D'ELEMENT DANS LE PART_DATA", Object.keys(part_data).length);
 
@@ -827,17 +779,9 @@ $this->renderPartial($layoutPath.'header',
 		                    indexMin = startNow;
 		                    indexMax = endNow;
 
-		                    // if (typeD == "all_interop") {
-		                    //     $.each(all_interop_data, function(index, value) {
-		                    //         if (typeof(value.geo) !== "undefined")  {
-		                    //             createAndPushItemForMap(value);
-		                    //         } 
-		                    //     });
-		                    // } else {
-		                        $.each(part_data, function(index, value) {
-		                            createAndPushItemForMap(value);
-		                        });
-		                    // }
+	                        $.each(part_data, function(index, value) {
+	                            createAndPushItemForMap(value);
+	                        });
 
 		                    if (typeD == "datagouv") {
 		                        contextTestMap = [];
@@ -873,9 +817,6 @@ $this->renderPartial($layoutPath.'header',
 		                $(".btn-start-search").removeClass("bg-azure");
 		        	}
 
-		            //si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
-		            //mylog.log("SHOW MORE ?", countData, indexStep);
-
 		            if(countData < 30){
 		                $("#btnShowMoreResult").remove(); 
 		                scrollEnd = true;
@@ -887,41 +828,9 @@ $this->renderPartial($layoutPath.'header',
 		                searchCallback();
 		            }
 
-		            // if( typeof page != "undefined" && page == "agenda" && typeof showResultInCalendar != "undefined")
-		            //   showResultInCalendar(data);
-
-		            // $.each(part_data, function(index,value) {
-		            //     value.id = value.name;
-		            // });
-
 		            if(mapElements.length==0) mapElements = part_data;
 		            else $.extend(mapElements, part_data);     
 		        } 
-
-	            // if (part_data.length < 30) {
-	            //     $("#btnShowMoreResult").addClass("hidden");
-	            //     return;
-	            // }
-
-	            // $.each(mapElements, function(index, value) {
-	            //     new_item_id = parseFloat(value.geo.latitude) + parseFloat(value.geo.longitude);
-	            //     new_item_id = new_item_id.toString();
-	            //     new_item_id = new_item_id.replace('\.', '');
-	            //     new_item_id = parseInt(new_item_id);
-
-	            //     value._id = {};
-	            //     value._id.$id = new_item_id;
-
-	            // });
-	            
-	            // affiche les éléments sur la carte
-	            // if(CoSigAllReadyLoad)
-	            // Sig.showMapElements(Sig.map, mapElements);
-	            // else{
-	            //   setTimeout(function(){ 
-	            //     Sig.showMapElements(Sig.map, mapElements);
-	            //   }, 3000);
-	            // }
 	        }
         });
 	}
@@ -930,7 +839,7 @@ $this->renderPartial($layoutPath.'header',
 
         $(".moduleTitle").html(
             '<i class="fa fa-database"></i>' +
-            ' Module d\'intéropérabilité'
+            ' Module d\'intéropérabilité <br/>' 
         );
 
         var urlImg = "<img width=100 style='margin-top:20px;' src='<?php echo $this->module->assetsUrl; ?>";
@@ -1016,5 +925,32 @@ $this->renderPartial($layoutPath.'header',
 
         return libelle_activity;
     }
+
+    function OpenDynFormForProposeOpenData(mapping = null) {
+
+        var form = {
+            saveUrl : baseUrl+"/"+moduleId+"/interoperability/proposeopendatasource",
+            icon : "group",
+            type : "object",
+            dynForm : {
+                jsonSchema : {
+                    title : "Proposez vos sources Open Data",
+                    icon : "fa-group",
+                    afterSave : function(data){
+                        mylog.log("ON LANCE L'AFTER SAVE", data);
+                        dyFObj.closeForm();   
+                    },
+                    properties : {
+                        url : dyFInputs.inputUrl("L'url de la source de donnée"),
+                        description : dyFInputs.textarea("Présentez rapidement les valeurs de votre source"),
+                    }
+                }
+            }
+        };
+
+        dyFObj.openForm(form, null, mapping);
+
+        $(".modal-header").addClass("bg-dark");
+    }    
 
 </script>

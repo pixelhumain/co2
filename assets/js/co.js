@@ -2233,6 +2233,7 @@ var uploadObj = {
 	gotoUrl : null,
 	isSub : false,
 	update  : false,
+	contentKey:"profil",
 	folder : moduleId, //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
@@ -2479,6 +2480,10 @@ var dyFObj = {
 	    $.unblockUI();
 	    $("#openModal").modal("hide");
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
+	    uploadObj.contentKey="profil";
+	    if(type=="addPhoto")
+	    	uploadObj.contentKey="slider";
+
 	    mylog.dir(data);
 	    //global variables clean up
 	    dyFInputs.locationObj.elementLocation = null;
@@ -3221,13 +3226,15 @@ var typeObj = {
 			}
 		}	},
 	"addPhoto":{ 
+		icon:"upload",
+		color:"dark",
 		dynForm : {
 		    jsonSchema : {
-			    title : "Uploader une image ?",
-			    icon : "question-cirecle-o",
+			    title : "Ajouter des images à l'album ?",
+			    icon : "upload",
 			    noSubmitBtns : true,
 			    properties : {
-			    	image : dyFInputs.imageAddPhoto
+			    	image : dyFInputs.imageAddPhoto,
 			    }
 			}
 		}},

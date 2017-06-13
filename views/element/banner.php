@@ -345,7 +345,7 @@ jQuery(document).ready(function() {
 										// Attach file
 										//formData.append('image', $('input[type=banniere]')[0].files[0]); 
 										$.ajax({
-											url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextData.type+"/ownerId/"+contextData.id+"/input/banner",
+											url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/communecter/folder/"+contextData.type+"/ownerId/"+contextData.id+"/input/banner",
 											type: "POST",
 											data: fd,
 											contentType: false,

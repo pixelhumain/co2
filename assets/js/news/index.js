@@ -1343,7 +1343,7 @@ function initFormImages(){
 						"id":contextParentId,
 						"type":contextParentType,
 						"folder":contextParentType+"/"+contextParentId+"/album",
-						"moduleId":moduleId,
+						"moduleId":"communecter",
 						"name" : data.name , 
 						"date" : new Date() , 
 						"size" : data.size ,
@@ -1525,7 +1525,7 @@ function deleteImage(id,name,hideMsg,communevent){
 	else
 		path="album";
 	$.ajax({
-			url : baseUrl+"/"+moduleId+"/document/delete/dir/"+moduleId+"/type/"+contextParentType+"/parentId/"+contextParentId,			
+			url : baseUrl+"/"+moduleId+"/document/delete/dir/communecter/type/"+contextParentType+"/parentId/"+contextParentId,			
 			type: "POST",
 			data: {"name": name, "parentId": contextParentId, "parentType": contextParentType, "path" : path, "docId" : id},
 			dataType: "json",

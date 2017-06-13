@@ -2242,7 +2242,7 @@ var uploadObj = {
 	isSub : false,
 	update  : false,
 	contentKey:"profil",
-	folder : moduleId, //on force pour pas casser toutes les vielles images
+	folder : "communecter", //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
 		mylog.log("set uploadObj.id", id);

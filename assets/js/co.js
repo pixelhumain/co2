@@ -2232,6 +2232,7 @@ var uploadObj = {
 	id : null,
 	gotoUrl : null,
 	isSub : false,
+	update  : false,
 	folder : moduleId, //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
@@ -2442,12 +2443,14 @@ var dyFObj = {
 	    $("#ajaxFormModal").html(''); 
 	   	uploadObj.type = null;
 	    uploadObj.id = null;
+	    uploadObj.update = false;
 	},
 	editElement : function (type,id){
 		mylog.warn("--------------- editElement ",type,id);
 		//get ajax of the elemetn content
 		uploadObj.type = type;
 		uploadObj.id = id;
+		uploadObj.update = true;
 		$.ajax({
 	        type: "GET",
 	        url: baseUrl+"/"+moduleId+"/element/get/type/"+type+"/id/"+id,
@@ -2611,7 +2614,8 @@ var dyFObj = {
 	//generate Id for upload feature of this element 
 	setMongoId : function(type,callback) { 
 		uploadObj.type = type;
-		if( !$("#ajaxFormModal #id").val() && uploadObj.id == null )
+		mylog.warn("uploadObj ",uploadObj);
+		if( !$("#ajaxFormModal #id").val() && !uploadObj.update )
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
 				mylog.log("setMongoId uploadObj.id", data.id);
@@ -2762,7 +2766,7 @@ var dyFInputs = {
 	    	afterUploadComplete : function(){
 		    	dyFObj.closeForm();
 				//alert( "image upload then goto : "+uploadObj.gotoUrl );
-	            urlCtrl.loadByHash( uploadObj.gotoUrl );	
+	            urlCtrl.loadByHash( uploadObj.gotoUrl );
 		    }
     	}
     },
@@ -3363,7 +3367,7 @@ var keyboardNav = {
 		//"112" : function(){ $('#modalMainMenu').modal("show"); },//f1
 		"113" : function(){ if(userId)urlCtrl.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
 		"114" : function(){ $('#openModal').modal('hide'); showMap(true); },//f3
-		"115" : function(){ dyFObj.openForm('themes') },//f4
+		//"115" : function(){ dyFObj.openForm('themes') },//f4
 		"117" : function(){ console.clear();urlCtrl.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {

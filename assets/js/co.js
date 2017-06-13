@@ -599,8 +599,8 @@ var urlCtrl = {
 	    "#admin.createfile" : {title:'IMPORT DATA', icon : 'download'},
 		"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus'},
 	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download'},
-	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : false},
-	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download'},
+	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : true},
+	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : true},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
@@ -2265,7 +2265,7 @@ var dyFObj = {
 		formData.key = ctrl;
 		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj);
 		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj.elementLocations);
-		if(dyFInputs.locationObj.elementLocations){
+		if(dyFInputs.locationObj.centerLocation){
 			//formData.multiscopes = elementLocation;
 			mylog.warn("here--- -------- centerLocation",dyFInputs.locationObj.centerLocation);
 			formData.address = dyFInputs.locationObj.centerLocation.address;

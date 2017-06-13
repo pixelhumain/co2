@@ -523,9 +523,7 @@
 						"members" => @$members));
 
 ?>
-<script type="text/javascript">
-	
-</script>
+
 <?php	$cssAnsScriptFilesModule = array(
 		'/js/default/profilSocial.js',
 	);

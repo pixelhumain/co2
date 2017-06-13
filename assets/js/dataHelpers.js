@@ -290,7 +290,7 @@ var dataHelper = {
 
 	markdownToHtml : function (str) { 
 		var converter = new showdown.Converter();
-		var res = converter.makeHtml(str)
+		var res = converter.makeHtml(str);
 		return res;
 	},
 

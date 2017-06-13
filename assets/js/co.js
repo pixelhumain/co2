@@ -599,7 +599,7 @@ var urlCtrl = {
 	    "#admin.createfile" : {title:'IMPORT DATA', icon : 'download'},
 		"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus'},
 	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download'},
-	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download'},
+	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : false},
 	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download'},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},

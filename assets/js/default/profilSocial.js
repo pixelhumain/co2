@@ -68,7 +68,7 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		mylog.log("open-confidentiality");
 		toogleNotif(false);
-		smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").val()));
+		smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").html()));
 		bindLBHLinks();
 	});
 
@@ -695,7 +695,9 @@ function inintDescs() {
 	if(edit == true || openEdition== true)
 		descHtmlToMarkdown();
 	mylog.log("after");
+	mylog.log("inintDescs", $("#descriptionMarkdown").html());
 	var descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
 	$("#descriptionAbout").html(descHtml);
 	$("#descProfilsocial").html(descHtml);
+	mylog.log("descHtml", descHtml);
 }

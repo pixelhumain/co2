@@ -530,7 +530,10 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){
-				html += "<h4 class='col-md-12 col-sm-12 col-xs-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
+				colName=col;
+				if(col=="favorites")
+					colName="favoris";
+				html += "<h4 class='col-md-12 col-sm-12 col-xs-12'><i class='fa fa-star'></i> "+colName+"<hr></h4>";
 				console.log("list", val);
 				if(val.count==0)
 					html +="<span class='col-md-12 col-sm-12 col-xs-12 text-dark margin-bottom-20'>Aucun élément dans cette collection</span>";

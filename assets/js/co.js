@@ -2174,8 +2174,12 @@ var collection = {
 				if(data.result){
 					if(data.list == '$unset'){
 						if(location.hash.indexOf("#page") >=0){
-							$(".favorisMenu").removeClass("text-yellow");
-							$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o');
+							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){
+								loadDataDirectory("collections", "star");
+							}else{
+								$(".favorisMenu").removeClass("text-yellow");
+								$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o');
+							}
 						}else{
 							$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
 							delete userConnected.collections[collection][what][id];
@@ -2183,8 +2187,12 @@ var collection = {
 					}
 					else{
 						if(location.hash.indexOf("#page") >=0){
-							$(".favorisMenu").addClass("text-yellow");
-							$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star');
+							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){
+								loadDataDirectory("collections", "star");
+							}else{
+								$(".favorisMenu").addClass("text-yellow");
+								$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star');
+							}
 						}
 						else
 							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
@@ -3892,5 +3900,6 @@ function test(params, itemType){
 $(document).ready(function() { 
 	setTimeout( function () { checkPoll() }, 10000);
 	document.onkeyup = keyboardNav.checkKeycode;
-	bindRightClicks();
+	if(notNull(userId) && userId!="")
+		bindRightClicks();
 });

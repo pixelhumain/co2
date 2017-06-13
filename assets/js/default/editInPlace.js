@@ -610,18 +610,18 @@ function bindAboutPodElement() {
 		        typeElement : contextData.type,
 			};
 
-			if(notEmpty(contextData.twitter))
-				dataUpdate.twitter = contextData.twitter;
-			if(notEmpty(contextData.gpplus))
-				dataUpdate.gpplus = contextData.gpplus;
-			if(notEmpty(contextData.gitHub))
-				dataUpdate.gitHub = contextData.gitHub;
-			if(notEmpty(contextData.skype))
-				dataUpdate.skype = contextData.skype;
-			if(notEmpty(contextData.telegram))
-				dataUpdate.telegram = contextData.telegram;
-			if(notEmpty(contextData.facebook))
-				dataUpdate.facebook = contextData.facebook;
+			if(notEmpty(contextData.socialNetwork.twitter))
+				dataUpdate.twitter = contextData.socialNetwork.twitter;
+			if(notEmpty(contextData.socialNetwork.gpplus))
+				dataUpdate.gpplus = contextData.socialNetwork.gpplus;
+			if(notEmpty(contextData.socialNetwork.gitHub))
+				dataUpdate.gitHub = contextData.socialNetwork.gitHub;
+			if(notEmpty(contextData.socialNetwork.skype))
+				dataUpdate.skype = contextData.socialNetwork.skype;
+			if(notEmpty(contextData.socialNetwork.telegram))
+				dataUpdate.telegram = contextData.socialNetwork.telegram;
+			if(notEmpty(contextData.socialNetwork.facebook))
+				dataUpdate.facebook = contextData.socialNetwork.facebook;
 
 			dyFObj.openForm(form, null, dataUpdate);
 

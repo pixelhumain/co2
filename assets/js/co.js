@@ -2262,16 +2262,23 @@ var dyFObj = {
 		mylog.warn("----------- formatData",formData, collection,ctrl);
 		formData.collection = collection;
 		formData.key = ctrl;
-		
-		if(dyFInputs.locationObj.elementLocation){
+		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj);
+		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj.elementLocations);
+		if(dyFInputs.locationObj.elementLocations){
 			//formData.multiscopes = elementLocation;
+			mylog.warn("here--- -------- centerLocation",dyFInputs.locationObj.centerLocation);
 			formData.address = dyFInputs.locationObj.centerLocation.address;
 			formData.geo = dyFInputs.locationObj.centerLocation.geo;
 			formData.geoPosition = dyFInputs.locationObj.centerLocation.geoPosition;
 			if( dyFInputs.locationObj.elementLocations.length ){
 				$.each( dyFInputs.locationObj.elementLocations,function (i,v) { 
-					if( typeof v.center != "undefined" )
+					mylog.log("elementLocations v", v);
+					if(typeof v != "undefined" && typeof v.center != "undefined" ){
+						// formData.address = dyFInputs.locationObj.elementLocations.address;
+						// formData.geo = dyFInputs.locationObj.elementLocations.geo;
+						// formData.geoPosition = dyFInputs.locationObj.elementLocations.geoPosition;
 						dyFInputs.locationObj.elementLocations.splice(i, 1);
+					}
 				});
 				formData.addresses = dyFInputs.locationObj.elementLocations;
 			}
@@ -2844,7 +2851,8 @@ var dyFInputs = {
 			mylog.log("elementLocation", dyFInputs.locationObj.elementLocation);
 			dyFInputs.locationObj.elementLocations.push(dyFInputs.locationObj.elementLocation);
 			mylog.log("dyFInputs.locationObj.elementLocations", dyFInputs.locationObj.elementLocations);
-			if(!dyFInputs.locationObj.centerLocation || dyFInputs.locationObj.centerLocation.center == true){
+			mylog.log("dyFInputs.locationObj.centerLocation", dyFInputs.locationObj.centerLocation);
+			if(!dyFInputs.locationObj.centerLocation /*|| dyFInputs.locationObj.elementLocation.center == true*/){
 				dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocation;
 				dyFInputs.locationObj.elementLocation.center = true;
 			}

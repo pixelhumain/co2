@@ -63,7 +63,7 @@ function resizeInterface()
   var height = $("#mapCanvasBg").height() - 55;
   $("#ajaxSV").css({"minHeight" : height});
   //$("#menu-container").css({"minHeight" : height});
-  var heightDif = $("#search-contact").height() + $("#floopHeader").height() + 60 /* top */ + 0 /* bottom */;
+  var heightDif = $("#search-contact").height() + $("#floopHeader").height() + 80 /* top */ + 0 /* bottom */;
   var menuTopHeight = $("#mainNav").height();// - $(".toolbar").height();
   
   //mylog.log("heightDif", heightDif);

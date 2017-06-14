@@ -63,6 +63,7 @@ var trad = {
 "addproject" : "<?php echo Yii::t("common","Add a Project") ?>",
 "addEvent" : "<?php echo Yii::t("common","Add an Event") ?>",
 "addevent" : "<?php echo Yii::t("common","Add an Event") ?>",
+"addorganization" : "<?php echo Yii::t("common","Add an Organization") ?>",
 "addOrganization" : "<?php echo Yii::t("common","Add an Organization") ?>",
 "addLocalBusiness" : "<?php echo Yii::t("common","Add a company") ?>",
 "addGovernmentOrganization" : "<?php echo Yii::t("common","Add a Governemental Organization") ?>",

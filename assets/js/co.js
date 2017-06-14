@@ -2764,6 +2764,12 @@ var dyFInputs = {
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
+
+		        $("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+						  					  .addClass("bg-dark");
+    		 	
+    		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
+    		 	
         	},500);
     	}
     },

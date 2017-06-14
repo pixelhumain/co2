@@ -127,7 +127,7 @@
 			$("#"+contentId+"_imgPreview").addClass("hidden");
 			$.ajax({
 				//url: baseUrl+"/"+moduleId+"/api/saveUserImages/type/"+type+"/id/"+id+"/contentKey/"+contentKey+"/user/<?php echo Yii::app()->session["userId"]?>",
-				url : baseUrl+"/"+moduleId+"/document/<?php echo Yii::app()->params['uploadUrl'] ?>dir/"+moduleId+"/folder/"+type+"/ownerId/"+id+"/input/avatar",
+				url : baseUrl+"/"+moduleId+"/document/<?php echo Yii::app()->params['uploadUrl'] ?>dir/communecter/folder/"+type+"/ownerId/"+id+"/input/avatar",
 				type: "POST",
 				data: new FormData(this),
 				contentType: false,
@@ -142,7 +142,7 @@
 						  		"id":id,
 						  		"type":type,
 						  		"folder":type+"/"+id,
-						  		"moduleId":moduleId,
+						  		"moduleId":"communecter",
 						  		"author" : "<?php echo (isset(Yii::app()->session['userId'])) ? Yii::app()->session['userId'] : 'unknown'?>"  , 
 						  		"name" : data.name , 
 						  		"date" : new Date() , 

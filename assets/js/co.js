@@ -599,8 +599,8 @@ var urlCtrl = {
 	    "#admin.createfile" : {title:'IMPORT DATA', icon : 'download'},
 		"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus'},
 	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download'},
-	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download'},
-	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download'},
+	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : true},
+	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : true},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
@@ -2174,8 +2174,12 @@ var collection = {
 				if(data.result){
 					if(data.list == '$unset'){
 						if(location.hash.indexOf("#page") >=0){
-							$(".favorisMenu").removeClass("text-yellow");
-							$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o');
+							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){
+								loadDataDirectory("collections", "star");
+							}else{
+								$(".favorisMenu").removeClass("text-yellow");
+								$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o');
+							}
 						}else{
 							$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
 							delete userConnected.collections[collection][what][id];
@@ -2183,8 +2187,12 @@ var collection = {
 					}
 					else{
 						if(location.hash.indexOf("#page") >=0){
-							$(".favorisMenu").addClass("text-yellow");
-							$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star');
+							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){
+								loadDataDirectory("collections", "star");
+							}else{
+								$(".favorisMenu").addClass("text-yellow");
+								$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star');
+							}
 						}
 						else
 							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
@@ -2232,7 +2240,9 @@ var uploadObj = {
 	id : null,
 	gotoUrl : null,
 	isSub : false,
-	folder : moduleId, //on force pour pas casser toutes les vielles images
+	update  : false,
+	contentKey:"profil",
+	folder : "communecter", //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
 		mylog.log("set uploadObj.id", id);
@@ -2261,16 +2271,23 @@ var dyFObj = {
 		mylog.warn("----------- formatData",formData, collection,ctrl);
 		formData.collection = collection;
 		formData.key = ctrl;
-		
-		if(dyFInputs.locationObj.elementLocation){
+		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj);
+		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj.elementLocations);
+		if(dyFInputs.locationObj.centerLocation){
 			//formData.multiscopes = elementLocation;
+			mylog.warn("here--- -------- centerLocation",dyFInputs.locationObj.centerLocation);
 			formData.address = dyFInputs.locationObj.centerLocation.address;
 			formData.geo = dyFInputs.locationObj.centerLocation.geo;
 			formData.geoPosition = dyFInputs.locationObj.centerLocation.geoPosition;
 			if( dyFInputs.locationObj.elementLocations.length ){
 				$.each( dyFInputs.locationObj.elementLocations,function (i,v) { 
-					if( typeof v.center != "undefined" )
+					mylog.log("elementLocations v", v);
+					if(typeof v != "undefined" && typeof v.center != "undefined" ){
+						// formData.address = dyFInputs.locationObj.elementLocations.address;
+						// formData.geo = dyFInputs.locationObj.elementLocations.geo;
+						// formData.geoPosition = dyFInputs.locationObj.elementLocations.geoPosition;
 						dyFInputs.locationObj.elementLocations.splice(i, 1);
+					}
 				});
 				formData.addresses = dyFInputs.locationObj.elementLocations;
 			}
@@ -2435,12 +2452,14 @@ var dyFObj = {
 	    $("#ajaxFormModal").html(''); 
 	   	uploadObj.type = null;
 	    uploadObj.id = null;
+	    uploadObj.update = false;
 	},
 	editElement : function (type,id){
 		mylog.warn("--------------- editElement ",type,id);
 		//get ajax of the elemetn content
 		uploadObj.type = type;
 		uploadObj.id = id;
+		uploadObj.update = true;
 		$.ajax({
 	        type: "GET",
 	        url: baseUrl+"/"+moduleId+"/element/get/type/"+type+"/id/"+id,
@@ -2469,6 +2488,10 @@ var dyFObj = {
 	    $.unblockUI();
 	    $("#openModal").modal("hide");
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
+	    uploadObj.contentKey="profil";
+	    if(type=="addPhoto")
+	    	uploadObj.contentKey="slider";
+
 	    mylog.dir(data);
 	    //global variables clean up
 	    dyFInputs.locationObj.elementLocation = null;
@@ -2604,7 +2627,8 @@ var dyFObj = {
 	//generate Id for upload feature of this element 
 	setMongoId : function(type,callback) { 
 		uploadObj.type = type;
-		if( !$("#ajaxFormModal #id").val() && uploadObj.id == null )
+		mylog.warn("uploadObj ",uploadObj);
+		if( !$("#ajaxFormModal #id").val() && !uploadObj.update )
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
 				mylog.log("setMongoId uploadObj.id", data.id);
@@ -2740,6 +2764,12 @@ var dyFInputs = {
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
+
+		        $("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+						  					  .addClass("bg-dark");
+    		 	
+    		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
+    		 	
         	},500);
     	}
     },
@@ -2755,7 +2785,7 @@ var dyFInputs = {
 	    	afterUploadComplete : function(){
 		    	dyFObj.closeForm();
 				//alert( "image upload then goto : "+uploadObj.gotoUrl );
-	            urlCtrl.loadByHash( uploadObj.gotoUrl );	
+	            urlCtrl.loadByHash( uploadObj.gotoUrl );
 		    }
     	}
     },
@@ -2840,7 +2870,8 @@ var dyFInputs = {
 			mylog.log("elementLocation", dyFInputs.locationObj.elementLocation);
 			dyFInputs.locationObj.elementLocations.push(dyFInputs.locationObj.elementLocation);
 			mylog.log("dyFInputs.locationObj.elementLocations", dyFInputs.locationObj.elementLocations);
-			if(!dyFInputs.locationObj.centerLocation || dyFInputs.locationObj.centerLocation.center == true){
+			mylog.log("dyFInputs.locationObj.centerLocation", dyFInputs.locationObj.centerLocation);
+			if(!dyFInputs.locationObj.centerLocation /*|| dyFInputs.locationObj.elementLocation.center == true*/){
 				dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocation;
 				dyFInputs.locationObj.elementLocation.center = true;
 			}
@@ -2854,22 +2885,37 @@ var dyFInputs = {
 			if( locObj.address.addressCountry)
 				strHTML += locObj.address.addressCountry;
 			if( locObj.address.postalCode)
-				strHTML += " ,"+locObj.address.postalCode;
+				strHTML += ", "+locObj.address.postalCode;
 			if( locObj.address.addressLocality)
-				strHTML += " ,"+locObj.address.addressLocality;
+				strHTML += ", "+locObj.address.addressLocality;
 			if( locObj.address.streetAddress)
-				strHTML += " ,"+locObj.address.streetAddress;
+				strHTML += ", "+locObj.address.streetAddress;
 			var btnSuccess = "";
 			var locCenter = "";
 			if( dyFInputs.locationObj.countLocation == 0){
 				btnSuccess = "btn-success";
-				locCenter = "<span class='lblcentre'>(localité centrale)</span>";
+				locCenter = "<span class='lblcentre'> addresse principale</span>";
 			}
 			
-			strHTML = "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+")' class=' locationEl"+dyFInputs.locationObj.countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
-					  "<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
-					  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
-			$(".locationlocation").prepend(strHTML);
+			strHTML = 
+				"<div class='col-md-12 col-sm-12 col-xs-12 text-left shadow2 padding-15 margin-top-15 margin-bottom-15'>" +
+					"<span class='pull-left locationEl"+dyFInputs.locationObj.countLocation+" locel text-red bold'>"+
+						"<i class='fa fa-home fa-2x'></i> "+
+						strHTML+
+					"</span> "+
+
+					"<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+")' "+
+						"class=' locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+
+						"<i class='fa fa-times'></i> Effacer"+
+					"</a>"+
+
+					"<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' "+
+						"class='margin-right-5 centers pull-right center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm "+btnSuccess+"'> "+
+						"<i class='fa fa-map-marker'></i> "+locCenter+
+					"</a>" +
+					
+				"</div>";
+			$(".locationlocation").append(strHTML);
 			dyFInputs.locationObj.countLocation++;
 		},
 		copyPCForm2Dynform : function (postalCodeObj) { 
@@ -2917,7 +2963,7 @@ var dyFInputs = {
 					delete v.center;
 			})
 			$(".centers").removeClass('btn-success');
-			$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>(localité centrale)</span>");
+			$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'> addresse principale</span>");
 			dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocations[ix];
 			dyFInputs.locationObj.elementLocations[ix].center = true;
 		}
@@ -3209,13 +3255,15 @@ var typeObj = {
 			}
 		}	},
 	"addPhoto":{ 
+		icon:"upload",
+		color:"dark",
 		dynForm : {
 		    jsonSchema : {
-			    title : "Uploader une image ?",
-			    icon : "question-cirecle-o",
+			    title : "Ajouter des images à l'album ?",
+			    icon : "upload",
 			    noSubmitBtns : true,
 			    properties : {
-			    	image : dyFInputs.imageAddPhoto
+			    	image : dyFInputs.imageAddPhoto,
 			    }
 			}
 		}},
@@ -3355,7 +3403,7 @@ var keyboardNav = {
 		//"112" : function(){ $('#modalMainMenu').modal("show"); },//f1
 		"113" : function(){ if(userId)urlCtrl.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
 		"114" : function(){ $('#openModal').modal('hide'); showMap(true); },//f3
-		"115" : function(){ dyFObj.openForm('themes') },//f4
+		//"115" : function(){ dyFObj.openForm('themes') },//f4
 		"117" : function(){ console.clear();urlCtrl.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {
@@ -3873,5 +3921,6 @@ function test(params, itemType){
 $(document).ready(function() { 
 	setTimeout( function () { checkPoll() }, 10000);
 	document.onkeyup = keyboardNav.checkKeycode;
-	bindRightClicks();
+	if(notNull(userId) && userId!="")
+		bindRightClicks();
 });

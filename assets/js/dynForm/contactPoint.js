@@ -19,7 +19,7 @@ dynForm = {
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p><i class='fa fa-info-circle'></i> Si vous voulez ajouter un nouveau contact de façon à faciliter les échanges</p>",
+                html:"<p><i class='fa fa-info-circle'></i> Facilitez les rencontres en indiquant les coordonnées des personnes en lien avec cette page</p>",
             },
             name : dyFInputs.name("citoyens", {}, true),
 	        similarLink : dyFInputs.similarLink,

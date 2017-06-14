@@ -71,9 +71,9 @@ function buildListContactHtml(contacts, myId){
 										//'</button>' +		
 										'<i class="fa fa-'+type.icon+'"></i> <span class="">'+t('My '+type.name)+"</span>";
 										if(myId != ""){
-		HTML += 						'<button onclick="'+urlBtnAdd+'" class="tooltips btn btn-default btn-sm pull-right btn_shortcut_add text-'+type.color+'" data-placement="left" data-original-title="'+tooltips_lbl[type.name]+'">'+
-											'<i class="fa fa-plus"></i>'+
-										'</button>';
+		//HTML += 						'<button onclick="'+urlBtnAdd+'" class="tooltips btn btn-default btn-sm pull-right btn_shortcut_add text-'+type.color+'" data-placement="left" data-original-title="'+tooltips_lbl[type.name]+'">'+
+		//									'<i class="fa fa-plus"></i>'+
+		//								'</button>';
 											if (type.name == "events" || type.name == "projects") {
 		HTML += 						'<button onclick="showHideOldElements(\''+type.name+'\')" class="tooltips btn btn-default btn-sm pull-right btn_shortcut_add text-'+type.color+'" data-placement="left" data-original-title="'+tooltips_lbl[type.name+'History']+'">'+
 											'<i class="fa fa-history"></i>'+

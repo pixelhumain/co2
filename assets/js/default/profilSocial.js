@@ -68,7 +68,7 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		mylog.log("open-confidentiality");
 		toogleNotif(false);
-		smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").val()));
+		smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").html()));
 		bindLBHLinks();
 	});
 
@@ -155,18 +155,7 @@ function bindButtonMenu(){
 		dyFObj.openForm(form, null, dataUpdate);
 	});
 
-	//window select open form type (selectCreate)
-	$(".btn-open-form").click(function(){
-        var typeForm = $(this).data("form-type");
-        mylog.log("test", $(this).data("form-subtype")),
-        currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
-
-        //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
-        if(contextData && contextData.type && contextData.id )
-            dyFObj.openForm(typeForm,"sub");
-        else
-            dyFObj.openForm(typeForm);
-    });
+	bindButtonOpenForm();
 
     $("#div-select-create").mouseleave(function(){
     	$("#div-select-create").hide(200);
@@ -279,6 +268,21 @@ function bindButtonMenu(){
 
 }
 
+function bindButtonOpenForm(){
+	//window select open form type (selectCreate)
+	$(".btn-open-form").click(function(){
+        var typeForm = $(this).data("form-type");
+        mylog.log("test", $(this).data("form-subtype")),
+        currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
+
+        //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
+        if(contextData && contextData.type && contextData.id )
+            dyFObj.openForm(typeForm,"sub");
+        else
+            dyFObj.openForm(typeForm);
+    });
+}
+
 function loadDataDirectory(dataName, dataIcon, edit){
 	showLoader('#central-container');
 	history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
@@ -347,13 +351,13 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	if( openEdition || edit ){
 		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
 			if(dataName == "collections"){
-				html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
-		    	html +=	'<i class="fa fa-plus"></i> Ajouter Collection</a>' ; 
+				html += '<a class="tooltips btn btn-sm btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
+		    	html +=	'<i class="fa fa-plus"></i> Créer une nouvelle collection</a>' ; 
 			}
 			else {
 				var elemSpec = dyFInputs.get(dataName);
-				html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \''+elemSpec.ctrl+'\',\'sub\')">';
-		    	html +=	'<i class="fa fa-plus"></i> Ajouter '+trad[ elemSpec.ctrl ]+'</a>' ;  
+				html += '<button class="tooltips btn btn-sm btn-success pull-right btn-open-form" data-form-type="'+elemSpec.ctrl+'">';
+		    	html +=	'<i class="fa fa-plus"></i> Créer '+trad[ elemSpec.ctrl ]+'</button>' ;  
 		    }
 		}
 	}
@@ -530,7 +534,10 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){
-				html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
+				colName=col;
+				if(col=="favorites")
+					colName="favoris";
+				html += "<h4 class='col-md-12 col-sm-12 col-xs-12'><i class='fa fa-star'></i> "+colName+"<hr></h4>";
 				console.log("list", val);
 				if(val.count==0)
 					html +="<span class='col-md-12 col-sm-12 col-xs-12 text-dark margin-bottom-20'>Aucun élément dans cette collection</span>";
@@ -545,6 +552,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		$("#central-container").html(html);
 		initBtnLink();
 		initBtnAdmin();
+		bindButtonOpenForm();
 	}else{
 		var nothing = "Aucun";
 		if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
@@ -695,7 +703,9 @@ function inintDescs() {
 	if(edit == true || openEdition== true)
 		descHtmlToMarkdown();
 	mylog.log("after");
+	mylog.log("inintDescs", $("#descriptionMarkdown").html());
 	var descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
 	$("#descriptionAbout").html(descHtml);
 	$("#descProfilsocial").html(descHtml);
+	mylog.log("descHtml", descHtml);
 }

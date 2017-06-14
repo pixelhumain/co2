@@ -8,21 +8,12 @@ dynForm =  {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Si vous voulez inviter quelqu'un à rejoindre Communecter ...</p>",
             },
-            inviteSearch : typeObjLib.inviteSearch,
-	        /*invitedUserName : typeObjLib.invitedUserName,
-	        invitedUserEmail : typeObjLib.invitedUserEmail,*/
-	        "preferences[publicFields]" : {
-               inputType : "hidden",
-                value : []
-            },
-            "preferences[privateFields]" : {
-               inputType : "hidden",
-                value : []
-            },
-            "preferences[isOpenData]" : {
-               inputType : "hidden",
-                value : false
-            },
+            inviteSearch : dyFInputs.inviteSearch,
+	        /*invitedUserName : dyFInputs.invitedUserName,
+	        invitedUserEmail : dyFInputs.invitedUserEmail,*/
+	       "preferences[publicFields]" : dyFInputs.inputHidden([]),
+            "preferences[privateFields]" : dyFInputs.inputHidden([]),
+            "preferences[isOpenData]" : dyFInputs.inputHidden(false)
 	    }
 	}
 };

@@ -33,6 +33,7 @@
 
 			//mémorise les éléments
 			this.Sig.elementsMap = new Array();
+			this.Sig.preloadElementsMap = {};
 
 			//##
 			//créer un marker sur la carte, en fonction de sa position géographique
@@ -464,8 +465,13 @@
 
 				if( typeof thisData.geo !== "undefined" && thisData.geo != null && typeof thisData.geo.longitude !== "undefined"){
 					
-					if(typeof thisData['geo'].latitude == "undefined" || thisData['geo'].latitude == null) return false;
-					if(typeof thisData['geo'].longitude == "undefined" || thisData['geo'].longitude == null) return null;
+					if(typeof thisData['geo'].latitude == "undefined" || 
+					   thisData['geo'].latitude == null || 
+					   thisData['geo'].latitude == "") return false;
+
+					if(typeof thisData['geo'].longitude == "undefined" || 
+					   thisData['geo'].longitude == null || 
+					   thisData['geo'].longitude == "") return null;
 						
 					if(type == "markerSingle"){
 						return new Array (thisData['geo'].latitude, thisData['geo'].longitude);
@@ -516,6 +522,7 @@
 			this.Sig.showOneElementOnMap = function(thisData, thisMap){
 				//mylog.warn("--------------- showOneElementOnMap ---------------------");
 				//mylog.dir(thisData);
+				//mylog.log("showOneElementOnMap ---------------------", thisData);
 				//var objectId = thisData._id ? thisData._id.$id.toString() : null;
 				var objectId = this.getObjectId(thisData);
 							
@@ -689,7 +696,17 @@
 
 			this.Sig.showMapElements = function(thisMap, data)
 			{
-				mylog.warn("--------------- showMapElements ---------------------");
+				//mylog.warn("--------------- showMapElements ---------------------");
+				
+				//si la carte n'est pas chargée
+				//on mémorise les données et on les affichera avec le prochain showMap
+				if(CoSigAllReadyLoad != true) {
+					console.log("showMapElements CoSigAllReadyLoad false -> save data", data);
+					Sig.preloadElementsMap = data;
+					return;
+		 		}
+
+				mylog.log("--------------- showMapElements ---------------------", data);
 				//mylog.log(data);
 				if(data == null) return;
 
@@ -719,7 +736,8 @@
 				if(len >= 1){
 					$.each(data, function (key, value){ //mylog.log("type SIG ?"); mylog.dir(value);
 						var oneData = value;
-						if((value.typeSig == "news" || 
+						if( notEmpty(value) &&
+							(value.typeSig == "news" || 
 							value.typeSig == "idea" || 
 							value.typeSig == "question" || 
 							value.typeSig == "announce" || 
@@ -912,11 +930,13 @@
 			
 			//rafraichi les tiles après le redimentionnement du mapCanvas
 			map.invalidateSize(false);
+			CoSigAllReadyLoad = true;
 			return map;
 		};
 
 		//show a modal when an item in the right list has no geoLocation on the map
 		this.Sig.showModalItemNotLocated = function(data){
+			mylog.log("showModalItemNotLocated", data)
 			$("#modalItemNotLocated").modal('show');
 			$("#modalItemNotLocated .modal-body").html("<i class='fa fa-spin fa-reload'></i>");
 
@@ -966,7 +986,7 @@
 		this.Sig.modifLocalityContextMap = function(contextMap, element, type)
 	 	{
 	 		
-			mylog.warn("--------------- addContextMap ---------------------", contextMap, element, type);
+			mylog.log("--------------- modifLocalityContextMap ---------------------", contextMap, element, type);
 
 			if(typeof contextMap[type] == "undefined")
 				contextMap[type] = [];

@@ -1,97 +1,81 @@
-
-* ************************************************************    
-* Refontes CO2
-* ************************************************************   
-
-[ ] Eclater Communecter.js
-  [ ] sortir var typeObj
-  [ ] sortir var collection
-  [ ] sortir var documents
-  [ ] sortir var keyboardNav
-  [ ] sortir var js_templates
-  [ ] sortir var album
-  [ ] sortir var elementLib
-  [ ] sortir var loadableUrls
-
-
-* ************************************************************    
-* Paramètrage CO2
-* ************************************************************   
-[X] Créer des fichiers JSON pour définir les parametres du theme selon le nom de domaine
-[X] Créer des fichiers JSON pour définir les listes de tag contextuelles 
-  [X] Application PRO
-
-
-* ************************************************************    
-* MEP KGOUGLE
-* ************************************************************  
-[ ] Finir le formulaire de contact par mail
-[ ] CGU
-[X] Favicon
-
-
-
+/////////////////////////////////////////////////////////////////////////////
+/////////// BASH ET MIGRATION A PREVOIR POUR LA MISE EN PRODUCTION ///////// 
+///////////////////////////////////////////////////////////////////////////
+[] IMAGES
+ => Renommer le dossier /upload/communecter/ en /upload/co2/
+[] Chart
+**** Bash de reprise des data dans les chart des projets
+/communecter/datamigration/RefactorChartProjectData
+[] Notifications
+**** Bash de reprise des data dans notifications 
+****** Create notify.id as object with isUnread and isUnseen
+/communecter/datamigration/UpOldNotifications
+[] News
+**** Bash of object.type inbstead of object.objectType on news(!!!important with notification reactor!!!!)
+ph/communecter/datamigration/ObjectObjectTypeNewsToObjectType
+/////////////////////////////////////////////////////////////////////////////
+////////////////////// END BASH ET MIGRATION /////////////////////////////// 
+///////////////////////////////////////////////////////////////////////////
 * ************************************************************    
 * Evolutions / New Features
 * ************************************************************   
-[X] Mettre en ligne Kgougle :::Sylvain
 
-RECHERCHE (&AGENDA  &POWER) :::ALL  (1J)
-[ ] Finir et valider la page de recherche
-  [ ] Recherche Element
-
+AGENDA
   [ ] Recherche Agenda
     [ ] afficher seulement les jours du mois en cours == hide before and after
     [ ] ajouter un bouton "+" sur chaque jour, pour préselectionner la date d'un event que l'on veut créer
     [X] dans le formulaire event, il manque le type de l'événement
-    [ ] rajouter la recherche par type d'event
+    [X] rajouter la recherche par type d'event
     [ ] dans le calendrier : afficher de couleurs différentes les événements selon si l'on est invité, intéressé, ou créateur/admin
     [X] tpl event : il manque l'identité de l'organisateur, s'il y en a un
     [X] et peut être le nombre de personne "intéressé", "participants", "invités"
 
-  [ ] Recherche DDA
 
-
-DASHBOARD
-[ ] 
-
-ANNONCES :::Tib :::Tango (5J)
-[ ] Finir le système de petites annonces
-  [ ] Système de Mot Clé Contextuel
+ANNONCES :::Tib :::Tango
+  [X] Système de Mot Clé Contextuel
   [ ] Finir DynForm Annonce
+    [ ] Gérer les devises du prix / pays (Euro, CFP)
   [ ] template Annonce
     [X] Mise en avant du prix
     [X] Photos 
-    [ ] gallerie ?
-  [ ] Sytème de réponse "ça m'intéresse", pour répondre à une annonce
-    [ ] Message privée ?
-    [ ] Coordonnées
-    [ ] Notification Mail
+    [ ] Finir tpl preview
+      [ ] gallerie
   [ ] Système de recherche par prix (à ajouter au globalautocomplete) 
+  [ ] Redirection vers la page annonce apres SAVE
+  [ ] pouvoir faire une RAZ de tous les filtres
+  [X] wording (donner / à donner etc)
+  [ ] Gestion des annonces favorites ?
 
-CITIES :::Rapha :::Tib (10J)
+CITIES :::Rapha :::Tib
 [ ] Réintégrer les City  :::Rapha
   [ ] Filiaires thématiques   :::Tib
   [ ] Espace info commune
   [ ] 
 
 PAGE PROFIL PERSO :::ALL
-[ ] Finir les pages perso :::ALL
   [ ] Paramètres de confidentialité / autres paramètres :::Rapha
   [ ] Nouveau système de notifications :::Clem
   [ ] Edition des données perso :::Rapha
-  [ ] Option Follow / Favoris / Devenir membre / etc :::Tango
+  [ ] Option Follow / Favoris / Devenir membre / etc :::Clem
   [ ] Refactor Directory - Communauté / Collection :::Tango :::Tib
   [ ] Messagerie privée / RocketChat :::Tib
-  [ ] Besoins / Need pour orga&projets
+  [X] Besoins / Need pour orga&projets
   [ ] Pouvoir partager les news (in / out) :::
+  [ ] Système de partage d'element dans les news (annonces, events, etc) :::CLem
+  [ ] Ajouter un onglet "mon agenda"
   [ ] Finir les OnePages :::Tango (5J)
+  
+  [ ] Details
+    [ ] 
 
 DDA
 [ ] Refonte DDA :::Tango :::Tib
   [ ] Unifier Discusion/Vote/Action ?
   [ ] Constituante ?
-  [ ] Rev Rev Revolution ?
 
-PUB
-[ ] Faire le système de publicité sur Kgougle :::Tango
+ADMIN 
+[ ] rétablir le module Admin
+
+
+[ ] Rédiger les filtre dans classified.json
+[ ] Faire le menu de gauche des pages elements

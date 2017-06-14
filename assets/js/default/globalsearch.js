@@ -111,16 +111,26 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
 
               //parcours la liste des résultats de la recherche
               $.each(data, function(i, o) {
+                console.log(o);
                 mylog.log("globalsearch res : ", o);
                   var typeIco = i;
                   var ico = "fa-"+typeObj["default"].icon;
                   var color = mapColorIconTop["default"];
 
                   mapElementsGS.push(o);
+                  if(typeof( typeObj[o.type] ) == "undefined")
+                    itemType="poi";
+                    typeIco = o.type;
+                  //if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
+                  if(typeof o.typeOrga != "undefined")
+                    typeIco = o.typeOrga;
 
-                  typeIco = o.type;
-                  ico = ("undefined" != typeof typeObj[typeIco]) ? "fa-"+typeObj[typeIco].icon : "fa-"+typeObj["default"].icon;
-                  color = ("undefined" != typeof mapColorIconTop[typeIco]) ? mapColorIconTop[typeIco] : mapColorIconTop["default"];
+                  var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
+                  ico =  "fa-"+obj.icon;
+                  color = obj.color;
+                  //typeIco = o.type;
+                  //ico = ("undefined" != typeof typeObj[typeIco]) ? "fa-"+typeObj[typeIco].icon : "fa-"+typeObj["default"].icon;
+                  //color = ("undefined" != typeof mapColorIconTop[typeIco]) ? mapColorIconTop[typeIco] : mapColorIconTop["default"];
                   
                   htmlIco ="<i class='fa "+ ico +" fa-2x bg-"+color+"'></i>";
                   if("undefined" != typeof o.profilThumbImageUrl && o.profilThumbImageUrl != ""){
@@ -139,19 +149,19 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                   var id = getObjectId(o);
                   var insee = o.insee ? o.insee : "";
                   type = o.type;
-                  if(type=="citoyen") type = "person";
+                  if(type=="citoyens") type = "person";
                   //var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
                   var url = (notEmpty(o.type) && notEmpty(id)) ? 
-                            '#co2.page.type.'+o.type+'.id.' + id : "";
+                            '#page.type.'+o.type+'.id.' + id : "";
 
-                  //var onclick = 'url.loadByHash("#' + type + '.detail.id.' + id + '");';
+                  //var onclick = 'urlCtrl.loadByHash("#' + type + '.detail.id.' + id + '");';
                   var onclickCp = "";
                   var target = " target='_blank'";
                   var dataId = "";
                   if(type == "city"){
                     //url = "javascript:"; //#main-col-search";
                     url = '#co2.city.insee.' + insee + '.postalCode.'+postalCode; //"'+o.name.replace("'", "\'")+'");';
-                    //onclickCp = 'url.loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'";';
+                    //onclickCp = 'urlCtrl.loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'";';
                     //target = "";
                     dataId = o.name; //.replace("'", "\'");
                   }
@@ -220,7 +230,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               //ajout du footer   
               str += '<div class="text-center" id="footerDropdownGS">';
               str += "<label class='text-dark'>" + totalDataGSMSG + "</label><br/>";
-              str += '<a href="#co2.social" class="btn btn-default btn-sm" id="btnShowMoreResultGS">'+
+              str += '<a href="#search" class="btn btn-default btn-sm lbh" id="btnShowMoreResultGS">'+
                         '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> Recherche étendue'+
                       '</a>';
               str += '</div>';
@@ -253,7 +263,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
             Sig.showMapElements(Sig.map, mapElementsGS);
           }
 
-          //$("#footerDropdownGS").append("<br><a class='btn btn-default' href='javascript:' onclick='url.loadByHash("+'"#default.directory"'+")'><i class='fa fa-plus'></i></a>");
+          //$("#footerDropdownGS").append("<br><a class='btn btn-default' href='javascript:' onclick='urlCtrl.loadByHash("+'"#default.directory"'+")'><i class='fa fa-plus'></i></a>");
         }
     });
 

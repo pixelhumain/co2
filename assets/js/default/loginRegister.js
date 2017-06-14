@@ -11,6 +11,7 @@ function userValidatedActions() {
 		$(".errorHandler").hide();
 		$('.pendingProcess').show();
 		$('.form-register #registerName').val(name);
+		$('.form-register #isInvitation').val(true);
 		$('#email3').prop('disabled', true);
 		$('#inviteCodeLink').hide();
 	}
@@ -87,14 +88,13 @@ var Login = function() {
 	var runLoginValidator = function() {
 		var form = $('.form-login');
 		var loginBtn = null;
-		Ladda.bind('.loginBtn', {
+		/*Ladda.bind('.loginBtn', {
 	        callback: function (instance) {
 	            loginBtn = instance;
 	        }
-	    });
+	    });*/
 		form.submit(function(e){e.preventDefault() });
 		var errorHandler = $('.errorHandler', form);
-		
 		form.validate({
 			rules : {
 				email : {
@@ -109,10 +109,11 @@ var Login = function() {
 			submitHandler : function(form) {
 				errorHandler.hide();
 				$(".alert").hide();
-				loginBtn.start();
+				//loginBtn.start();
+				$(".loginBtn").find(".fa").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
 				var params = { 
-				   "email" : $("#email-login").val(), 
-                   "pwd" : $("#password-login").val()
+				   "email" : ( $("#email-login-welcome").length ? $("#email-login-welcome").val() : $("#email-login").val() ), 
+                   "pwd" : ( $("#password-login-welcome").length ? $("#password-login-welcome").val() : $("#password-login").val() )
                 };
 			      
 		    	$.ajax({
@@ -122,21 +123,21 @@ var Login = function() {
 		    	  success: function(data){
 		    		  if(data.result)
 		    		  {
-		    		  	alert("elementLib.openForm"+elementLib.openFormAfterLogin.type);
+		    		  	//alert("dyFObj.openForm"+dyFObj.openFormAfterLogin.type);
 		    		  	var url = requestedUrl;
 		    		  	//mylog.warn(url,", has #"+url.indexOf("#"),"count / : ",url.split("/").length - 1 );
 		    		  	if(backUrl != null){
-		    		  		url.loadByHash(backUrl);
+		    		  		urlCtrl.loadByHash(backUrl);
 		    		  		backUrl = null;
-		    		  	} else if( typeof elementLib.openFormAfterLogin != "undefined"){
+		    		  	} else if( typeof dyFObj.openFormAfterLogin != "undefined"){
 		    		  		userId = data.id;
 		    		  		$('#modalLogin').modal("hide");
-		    		  		elementLib.openForm( elementLib.openFormAfterLogin.type, elementLib.openFormAfterLogin.afterLoad, elementLib.openFormAfterLogin.data );
-		    		  	} else if(url && url.indexOf("#") >= 0 ) {
+		    		  		dyFObj.openForm( dyFObj.openFormAfterLogin.type, dyFObj.openFormAfterLogin.afterLoad, dyFObj.openFormAfterLogin.data );
+		    		  	} /*else if(url && url.indexOf("#") >= 0 ) {
 		    		  		//mylog.log("login 1",url);
 		    		  		//reload to the url initialy requested
 		    		  		window.location.href = url;
-		        		} else {
+		        		} */ else {
 		        			if( url.split("/").length - 1 <= 3 ) {
 		        				//mylog.log("login 2",baseUrl+'#default.home');
 		        				//classic use case wherever you login from if not notifications/get/not/id...
@@ -149,8 +150,9 @@ var Login = function() {
 		        			}
 		        			else {
 		        				mylog.log("login 3 reload", data);
+		        				history.pushState(null, "New Title",'#page.type.citoyens.id.'+data.id);
 		        				//for urls like notifications/get/not/id...
-		        				window.location.href = baseUrl+'/co2#page.type.citoyens.id.'+data.id;
+		        				//window.location.href = baseUrl+'/co2#page.type.citoyens.id.'+data.id;
 		        				window.location.reload();
 		        			}
 		        		}
@@ -177,20 +179,23 @@ var Login = function() {
 		    		  		$('.loginResult').html(msg);
 							$('.loginResult').show();
 		    		  	}
-						loginBtn.stop();
+		    		  	$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
+						//loginBtn.stop();
 		    		  }
 		    	  },
 		    	  error: function(data) {
+		    	  	$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
 		    	  	toastr.error("Something went really bad : contact your administrator !");
-		    	  	loginBtn.stop();
+		    	  	//loginBtn.stop();
 		    	  },
 		    	  dataType: "json"
 		    	});
 			    return false; // required to block normal submit since you used ajax
 			},
 			invalidHandler : function(event, validator) {//display error alert on form submit
+				$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
 				errorHandler.show();
-				loginBtn.stop();
+				//loginBtn.stop();
 			}
 		});
 	};
@@ -215,7 +220,7 @@ var Login = function() {
 				forgotBtn.start();
 				var params = { 
 					"email" : $("#email2").val(),
-					"type"	: emailType
+					"type"	: "password"
 				};
 		        $.ajax({
 		          type: "POST",
@@ -302,15 +307,16 @@ var Login = function() {
 				errorHandler3.hide();
 				createBtn.start();
 				var params = { 
-				   "name" : $('.form-register #registerName').val(),
-				   "username" : $(".form-register #username").val(),
-				   "email" : $(".form-register #email3").val(),
-                   "pwd" : $(".form-register #password3").val(),
+				   "name" : ($('.form-register #registerName-welcome').val() ? $('.form-register #registerName-welcome').val() : $('.form-register #registerName').val() ),
+				   "username" : ($('.form-register #username-welcome').val() ? $('.form-register #username-welcome').val() : $(".form-register #username").val()),
+				   "email" : ($('.form-register #email3-welcome').val() ? $('.form-register #email3-welcome').val()  :$(".form-register #email3").val()),
+                   "pwd" : ($('.form-register #password3-welcome').val() ? $('.form-register #password3-welcome').val() : $(".form-register #password3").val()),
                    "app" : moduleId, //"$this->module->id"
                    "pendingUserId" : pendingUserId,
                    "mode" : REGISTER_MODE_TWO_STEPS
                 };
-                
+                if($('.form-register #isInvitation').val())
+                	params.isInvitation=true;
                 if( $("#inviteCode").val() )
 			      params.inviteCode = $("#inviteCode").val();
 
@@ -321,17 +327,39 @@ var Login = function() {
 		    	  success: function(data){
 		    		  if(data.result) {
 		    		  	createBtn.stop();
+						$("#registerName").val("");
+						$("#username").val("");
+						$("#email3").val("");
+						$("#password3").val("");
+						$("#passwordAgain").val("");
+						$('#agree').prop('checked', false);
+						$("#registerName-welcome").val("");
+						$("#username-welcome").val("");
+						$("#email3-welcome").val("");
+						$("#password3-welcome").val("");
+						$("#passwordAgain-welcome").val("");
+						$('#agree-welcome').prop('checked', false);
+		    		  	console.log(data);
+		    		  	if(typeof data.isInvitation != "undefined" && data.isInvitation){
+		    		  		toastr.success(data.msg);
+		    		  		history.pushState(null, "New Title",'#page.type.citoyens.id.'+data.id);
+		    		  		//window.location.href = baseUrl+'#page.type.citoyens.id.'+data.id;
+		        			window.location.reload();
 
-		    		  	$("#modalRegisterSuccessContent").html("<h3><i class='fa fa-smile-o fa-4x text-green'></i><br><br> "+data.msg+"</h3>");
-		    		  	$("#modalRegisterSuccess").modal({ show: 'true' }); 
-		    		  	// Hide modal if "Okay" is pressed
-					    $('#modalRegisterSuccess .btn-default').click(function() {
-					        mylog.log("hide modale and reload");
-					        $('.modal').modal('hide');
-					    	window.location.href = baseUrl+'/#default.live';
-					    	window.location.reload();
-					    });
-		        		//url.loadByHash("#default.directory");
+		    		  	}
+		    		  	else{
+		    		  		$("#modalRegisterSuccessContent").html("<h3><i class='fa fa-smile-o fa-4x text-green'></i><br><br> "+data.msg+"</h3>");
+			    		  	$("#modalRegisterSuccess").modal({ show: 'true' }); 
+			    		  	// Hide modal if "Okay" is pressed
+						    $('#modalRegisterSuccess .btn-default').click(function() {
+						        mylog.log("hide modale and reload");
+						        $('.modal').modal('hide');
+						    	//window.location.href = baseUrl+'/#default.live';
+						    	window.location.href = baseUrl+"/"+moduleId;
+						    	window.location.reload();
+						    });
+		    		  	}
+		        		//urlCtrl.loadByHash("#default.directory");
 		    		  }
 		    		  else {
 						$('.registerResult').html(data.msg);

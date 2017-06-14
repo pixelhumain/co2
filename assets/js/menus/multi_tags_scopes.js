@@ -1,60 +1,99 @@
 
  function showTagsScopesMin(htmlId){
         htmlId=".scope-min-header";
-
+        var numberOfScope = 0;
+        if(typeof myMultiScopes != "undefined"){
+            $.each(myMultiScopes, function(key, value){
+                numberOfScope++;
+            })  ;
+        }
+        scopeHtml="";
+        //if(typeof userConnected != "undefined" && userConnected != null ){
+             if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false" && communexion.state){
+                scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
+                            'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
+                            'data-scope-value="'+$.cookie('communexionValue')+'" '+
+                            'data-scope-name="'+$.cookie('communexionName')+'" '+
+                            'data-scope-level="'+$.cookie('communexionLevel')+'" '+
+                            'data-scope-type="'+$.cookie('communexionType')+'" '+
+                            'id="btn-my-co">'+
+                            '<i class="fa fa-university"></i>'+
+                        '</button>';
+            }else{
+                scopeHtml='<button class="pull-left hidden btn btn-link bg-white text-red tooltips" onclick="communecterUser();" '+
+                            'data-toggle="tooltip" data-placement="top" title="Communectez-vous" '+
+                            'id="btn-my-co">'+
+                            '<i class="fa fa-university"></i>'+
+                        '</button>';
+            }
+        //}
+       
+        scopeHtml+='<h5 class="pull-left letter-red" style="margin-bottom: -8px;margin-top: 14px;">'+
+                        '<button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-10 margin-right-10" '+ 
+                            'data-target="#modalScopes" data-toggle="modal" '+
+                            'data-toggle="tooltip" data-placement="top" '+ 
+                            'title="Sélectionner des lieux de recherche">'+
+                            '<img src="'+themeUrl+'/assets/img/cible3.png" height=25>'+
+                        '</button>';
+                        if(numberOfScope > 0){
+                            scopeHtml+= 'recherche ciblée <i class="fa fa-angle-right"></i>';
+                        } else{
+                            scopeHtml+= '<span id="helpMultiScope" class="toggle-scope-dropdown">'+
+                                           '<a href="javascript:" data-target="#modalScopes" data-toggle="modal" class="letter-red">'+
+                                                '<i class="fa fa-plus"></i> Ajouter des filtres géographiques ?'+
+                                            '</a>'+
+                                        '</span>';
+                        }
+        scopeHtml+= '</h5>'+
+                    '<div class="scope-min-header list_tags_scopes text-left ellipsis">'+
+                    '</div>';
+        $("#container-scope-filter").html(scopeHtml);
+        //}
         /************** SCOPES **************/
         var iconSelectScope = "<i class='fa fa-circle-o'></i>";
         var scopeSelected = false;
 
         
         html = "<div class='list-select-scopes'>";
-        
-        var numberOfScope = 0;
-        if(typeof myMultiScopes != "undefined")
-        $.each(myMultiScopes, function(key, value){
-            numberOfScope++;
-            var disabled = value.active == false ? "disabled" : "";
-            if(typeof value.name == "undefined") value.name = key;
-            html +=     "<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
-                            "class='text-red "+disabled+" item-scope-checker margin-right-10' data-scope-value='"+ key + "'>" + 
-                            "<i class='fa fa-check-circle'></i> " + value.name + 
-                        "</span> ";
-        });
-        // if (numberOfScope == 0) {
-        //     html +=     '<span id="helpMultiScope" class="toggle-scope-dropdown" style="padding-left:0px">'+
-        //                     '<a href="javascript:"> Ajouter des filtres géographiques ?</a>'+
-        //                 '</span>';
-        // }
-        //html +=     "</span>";
+        if(numberOfScope > 0){
+            $.each(myMultiScopes, function(key, value){
+                numberOfScope++;
+                var disabled = value.active == false ? "disabled" : "";
+                if(typeof value.name == "undefined") value.name = key;
+                html +=     "<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
+                                "class='text-red "+disabled+" item-scope-checker item-scope-input margin-right-10' data-scope-value='"+ key + "'>" + 
+                                "<i class='fa fa-check-circle'></i> " + value.name + 
+                            "</span> ";
+            });
+        }
         html += "</div>";
-
         $(htmlId).html(html);
+        if(actionOnSetGlobalScope=="save"){
+            scopeHtml='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
+                            'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
+                            'data-scope-value="'+$.cookie('communexionValue')+'" '+
+                            'data-scope-name="'+$.cookie('communexionName')+'" '+
+                            'data-scope-level="'+$.cookie('communexionLevel')+'" '+
+                            'data-scope-type="'+$.cookie('communexionType')+'" '+
+                            'id="btn-my-co">'+
+                            '<i class="fa fa-university"></i>'+
+                        '</a>'+
+                        '<h5 class="pull-left letter-red" style="margin-bottom: -8px;margin-top: 14px;">'+
+                            '<a class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-10 margin-right-10" '+ 
+                                'data-target="#modalScopes" data-toggle="modal" '+
+                                'data-toggle="tooltip" data-placement="top" '+ 
+                                'title="Sélectionner des lieux de recherche">'+
+                                '<img src="'+themeUrl+'/assets/img/cible3.png" height=25>'+
+                            '</a>'+ 
+                            'Selectionner les endroits de publications <i class="fa fa-angle-right"></i>'+ 
+                        '</h5>'+
+                        '<div class="scope-min-header list_tags_scopes hidden-xs text-left ellipsis">'+
+                            html+
+                        '</div>';
+            $("#scopeListContainerForm").html(scopeHtml);
+        }
         multiTagScopeLbl();
-
-        $(".item-scope-checker").off().click(function(){ 
-            toogleScopeMultiscope( $(this).data("scope-value") );
-            $("#footerDropdown").html("<i class='fa fa-circle'></i> <i class='fa fa-circle'></i> <i class='fa fa-circle'></i><hr style='margin-top: 34px;'>");
-            var sec = 3;
-            if(typeof interval != "undefined") clearInterval(interval);
-            interval = setInterval(function(){ 
-            	if(sec == 1){
-            		startSearch(0, indexStepInit); 
-            		clearInterval(interval);
-            	}
-            	else{
-            		sec--;
-            		var str = "";
-            		for(n=0;n<sec;n++) str += "<i class='fa fa-circle'></i> ";
-            		str += "<hr style='margin-top: 34px;'>";
-            		$("#footerDropdown").html(str);
-            	}
-            }, 800);
-
-            //if(!loadingScope)
-            	//setTimeout(function(){ startSearch(0, indexStepInit); }, 300);
-       
-            checkScopeMax();
-        });
+        //bindCommunexionScopeEvents();
         
         $(".toggle-scope-dropdown").click(function(){ //mylog.log("toogle");
             if(!$("#dropdown-content-multi-scope").hasClass('open'))

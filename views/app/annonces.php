@@ -178,9 +178,9 @@
 			<i class="fa fa-plus"></i> Publier une annonce
 		</button><hr>
 		<?php 
-				$freedomSections = CO2::getContextList("freedomSections");
+				$classified = CO2::getContextList("classified");
 				$currentSection = 1;
-				foreach ($freedomSections as $key => $section) { ?>
+				foreach ($classified["sections"] as $key => $section) { ?>
 					<?php if($section["section"] > $currentSection){ $currentSection++; ?>
 					<hr>
 					<?php } ?>
@@ -200,8 +200,8 @@
 			<i class="fa fa-money"></i> A vendre
 		</h4>
 		<hr>
-		<?php $categories = CO2::getContextList("classifiedCategories"); 
-			  foreach ($categories as $key => $cat) {
+		<?php 
+			  foreach ($classified["filters"] as $key => $cat) {
 		?>
 				<?php if(is_array($cat)) { ?>
 					<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
@@ -347,7 +347,7 @@ jQuery(document).ready(function() {
 	
 });
 
-var freedomCategories = <?php echo json_encode($freedomSections); ?>
+var freedomCategories = <?php echo json_encode($classified["sections"]); ?>
 
 function initFreedomInterface(){
 	$(".btn-select-type-anc").click(function(){
@@ -385,7 +385,7 @@ function initFreedomInterface(){
 	});
 
 	$("#btn-create-classified").click(function(){
-		 elementLib.openForm('classified');
+		 dyFObj.openForm('classified');
 	});
 
 	initFormImages();
@@ -608,5 +608,4 @@ function hideNewLiveFeedForm(){
 	showFormBlock(false);
 }
 
-</script>
 </script>

@@ -12,7 +12,7 @@ function bindNotifEvents(element){
 		setTimeout(function(){
           //  elem.addClass("read");
             //elem.removeClass('animated bounceOutRight');
-            url.loadByHash(hash);
+            urlCtrl.loadByHash(hash);
             //notifCount();
         }, 200);
 	});
@@ -163,23 +163,30 @@ function buildNotifications(list, element)
 	//element="";
 //	if(isPodView)
 //		element="Element";
-	mylog.info("buildNotifications"+element+"()");
+//	mylog.info("buildNotifications"+element+"()");
 	mylog.log(typeof list);
-	//$(".notifList").html("");
+	$(".notifList"+element).html("");
 	if(typeof list != "undefined" && typeof list == "object"){
 		$.each( list , function( notifKey , notifObj )
 		{
 			var url = (typeof notifObj.notify != "undefined") ? notifObj.notify.url : "#";
 			//convert url to hash for loadByHash
+			if(url.indexOf("communecter/")>0){
+				url=url.split("communecter/");
+				url=url[1];	
+			}
 			url = "#"+url.replace(/\//g, ".");
 			//var moment = require('moment');
-			moment.lang('fr');
+			momentNotif=notifObj.timeAgo;
+			/*moment.lang('fr');
 			if(typeof notifObj.updated != "undefined")
 				momentNotif=moment(new Date( parseInt(notifObj.updated.sec)*1000 )).fromNow();
 			else if(typeof notifObj.created != "undefined")
 				momentNotif=moment(new Date( parseInt(notifObj.created.sec)*1000 )).fromNow();
-			else if(typeof notifObj.timestamp != "undefined")
-				momentNotif=moment(new Date( parseInt(notifObj.timestamp.sec)*1000 )).fromNow();
+			else
+				momentNotif="";*/ 
+			//if(typeof notifObj.timestamp != "undefined")
+			//	momentNotif=moment(new Date( parseInt(notifObj.timestamp.sec)*1000 )).fromNow();
 			var icon = (typeof notifObj.notify != "undefined") ? notifObj.notify.icon : "fa-bell";
 			var displayName = (typeof notifObj.notify != "undefined") ? notifObj.notify.displayName : "Undefined notification";
 			//console.log(notifObj);
@@ -226,7 +233,7 @@ function notifCount(upNotifUnseen, element)
 	var countNotifUnseen = countNotif-countNotifSeen;
 	if(upNotifUnseen)
 		countNotifUnseen=0;
-	mylog.log(" !!!! notifCount", countNotif);
+	mylog.log(" !!!! notifCount", countNotif, "element :",element);
 	$(".notifCount").html( countNotif );
 	if(countNotif == 0)
 		$(".notifList"+element).html("<li><i class='fa fa-ban'></i> No more notifications for the moment</li>");

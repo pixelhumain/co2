@@ -21,7 +21,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 	</div>
 	<div class="panel-tools">
 		<?php if( @$authorised || $openEdition && isset(Yii::app()->session["userId"]) ) { ?>
-			<a href="javascript:elementLib.openForm('project','sub')" class="btn btn-xs btn-light-blue tooltips" data-toggle="tooltip" data-placement="top" title="Add a project" alt="Add a project"><i class="fa fa-plus"></i> Créer un nouveau projet</a>
+			<a href="javascript:dyFObj.openForm('project','sub')" class="btn btn-xs btn-light-blue tooltips" data-toggle="tooltip" data-placement="top" title="Add a project" alt="Add a project"><i class="fa fa-plus"></i> Créer un nouveau projet</a>
 		<?php  } ?>
 			<a id="showHideOldProject" class="tooltips btn btn-xs btn-light-blue" href="javascript:;" data-placement="top" data-toggle="tooltip" data-original-title="<?php echo Yii::t("project","Display/Hide old projects",null,Yii::app()->controller->module->id) ?>" onclick="toogleOldProject()">
 	    		
@@ -29,7 +29,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 	    	</a>
 	</div>
 	<div class="panel-body no-padding">
-		<div class="panel-scroll height-230 ps-container">			
+		<div class="panel-scroll height-230 ps-container" style="overflow-y: scroll;">			
 			<?php 
 			$nbOldProjects = 0;
 			$nbProjectsVisible = 0;
@@ -76,11 +76,10 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 						</div>
 						</td>
 					</tr>
+			<?php } ?>
 				</tbody>
 			</table>
-			<?php
-				}}
-			?>
+			<?php } ?>
 			<?php if(isset($projects) && count($projects) > 0 ){ ?>
 				<div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 230px; display: inherit;"><div class="ps-scrollbar-y" style="top: 11px; height: 200px;"></div></div>
 			<?php } ?>

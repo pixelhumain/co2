@@ -98,8 +98,18 @@ Liste des notifications déjà lues => #370 #453
 * ************************************************************    
 * Version 0.2  : en cours
 * ************************************************************  
-** @Tib 
-  [ ] bug notragora
+** @Tib
+[ ] on previews , activate keyboard navigation
+[X] personne.annonce > n'ouvre pas preview
+[X] ouvrir POI dans PREVIEW
+[ ] je peux ajouter une annonce sur un autre user ????
+[ ] ajouté POI sur all elements
+[X] Modifier annonce pour un citoyen formulaire pas afficher [[https://github.com/pixelhumain/co2/issues/213]]
+[ ] annonces url standalone
+  [ ] dynform : apostrophe dans les nom des suggestions 
+  [ ] not loggued > open dynform > login > opens dynform > should reload top bar as well 
+
+  [X] bug notragora
   [X] email communecter 
   [ ] tiers lieux ressources
     [ ] créer directement le lieux from create 
@@ -123,9 +133,11 @@ Liste des notifications déjà lues => #370 #453
     [X] top level types
     [X] differents filtre apr section
     [ ] mes annonces
-    [ ] annonce leaner : faire un script pour vider la DB 
+    [ ] annonce cleaner : faire un script pour vider la DB 
       [ ] durée d'une annonces 
       [ ] avertir avant le clean , btn relance l'annonce
+    [ ] add something on a section > click > add section is pre-set
+    
   * bugs
     [ ] dynSurvey photos
   [ ] module clean up communecter to CO2 : clear deprecated views
@@ -190,7 +202,7 @@ Liste des notifications déjà lues => #370 #453
   [.2] finir la belgique => #1259
   * DynForm
   [ ] Refactor DynForm
-    [X] typeObjLib
+    [X] dyFInputs
     [ ] Refactor Editable
       [ ] Organiser a géré
       [ ] Nettoyer le code inutile
@@ -961,7 +973,7 @@ Liste des notifications déjà lues => #370 #453
     [ ] script devlog pour ajouter updated sur les anciennes data 
     [ ] reparer le click du milieu
         - en mettant simplement notre hash dans le href
-    [ ] refactor links.url.loadByHash + chemin dans href
+    [ ] refactor links.urlCtrl.loadByHash + chemin dans href
     [ ] search and filter tag engine
     [ ] wisiwig sur les desc de form create
     [ ] markdown editor sur les desc de form create using bootstrap-markdown ex : in projectsv.php

@@ -1,11 +1,12 @@
 <?php
-	$cssAnsScriptFilesModule = array(
-	'/plugins/mixitup/src/jquery.mixitup.js',
-	);
+$cssAnsScriptFilesModule = array(
+'/plugins/mixitup/src/jquery.mixitup.js',
+);
 HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->request->baseUrl);
-	$cssAnsScriptFilesModule = array(
-	'/js/pages-gallery.js',
-	);
+
+$cssAnsScriptFilesModule = array(
+'/js/pages-gallery.js',
+);
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule,Yii::app()->theme->baseUrl."/assets");
 
 $contextIcon = "photo";
@@ -67,6 +68,11 @@ if( isset($parent) ){
 	}
 </style>
 <div class="row" id="galleryPad">
+
+	<div class='col-xs-12 margin-bottom-15'>
+		<i class="fa fa-camera fa-2x"></i><span class='Montserrat' id='name-lbl-title'> Gallerie photos</span>
+	</div>
+
 	<div class="col-xs-12">
 		<div class="panel panel-white">
 			<div class="panel-body">
@@ -74,11 +80,13 @@ if( isset($parent) ){
 					<ul class="nav nav-pills">
 						<?php  if( Authorisation::canParticipate( Yii::app()->session['userId'], $itemType, $itemId ) ) {  ?>
 						<li>
-							<a class="btn btn-danger" href="javascript:elementLib.openForm('addPhoto')"><i class="fa fa-upload"></i> <?php echo Yii::t("common","Add Photos"); ?></a>
+							<a class="btn btn-default" href="javascript:dyFObj.openForm('addPhoto')">
+								<i class="fa fa-upload"></i> <?php echo Yii::t("common","Add Photos"); ?>
+							</a>
 						</li>
 						<?php  }  ?>
 						<li class="filter active" data-filter="all">
-							<a href="#"><?php echo Yii::t("common","Show All"); ?></a>
+							<a href="javascript:;" class="btn btn-default"><?php echo Yii::t("common","Show All"); ?></a>
 						</li>
 					</ul>
 				</div>
@@ -95,7 +103,7 @@ if( isset($parent) ){
 
 var images;
 var tabButton = [];
-var mapButton = {"media": "Media", "slider": "Album", "profil" : "Profil", "banniere" : "Banniere", "logo" : "Logo"};
+var mapButton = {"media": "Media", "slider": "Album", "profil" : "Profil", "banner" : "Banner", "logo" : "Logo"};
 var itemId = "<?php echo $itemId; ?>";
 var itemType = "<?php echo $itemType; ?>";
 
@@ -105,7 +113,6 @@ var contextName = "<?php echo addslashes(@$contextName); ?>";
 var contextIcon = "<?php echo $contextIcon; ?>";
 jQuery(document).ready(function() {
  	activeMenuElement("gallery");
-	setTitle("Galerie photos de " + contextName,contextIcon);
 	initGrid();
 	$(".portfolio-item").mouseenter(function(){
 		$(this).find(".tools.tools-bottom").show();
@@ -124,7 +131,7 @@ function initGrid(){
 			if($.inArray(k, tabButton)==-1){
 				tabButton.push(k);
 				var liHtml = '<li class="filter" data-filter=".'+k+'">'+
-								'<a href="#">' + mapButton[k] + '</a>'+
+								'<a href="javascript:;">' + mapButton[k] + '</a>'+
 							 '</li>';
 				$(".nav-pills").append(liHtml);
 			}
@@ -191,14 +198,16 @@ function bindBtnGallery(){
 			var path=key;
 //		var path = $(this).data("path");
 		e.preventDefault();
-		bootbox.confirm("<?php echo Yii::t('common','Are you sure you want to delete') ?> <span class='text-red'>"+$(this).data("name")+"</span> ?", 
+		bootbox.confirm("<?php echo Yii::t('common','Are you sure you want to delete') ?> <span class='text-red'>"+
+						$(this).data("name")+"</span> ?", 
 			function(result) {
 				if(result){
 					$.ajax({
 						url: baseUrl+"/"+moduleId+"/document/delete/dir/"+moduleId+"/type/"+itemType+"/parentId/"+itemId,
 						type: "POST",
 						dataType : "json",
-						data: {"name": imageName, "parentId": itemId, "docId":imageId, "parentType": itemType, "path" : path, "source":"gallery"},
+						data: {"name": imageName, "parentId": itemId, "docId":imageId, 
+							  "parentType": itemType, "path" : path, "source":"gallery"},
 						success: function(data){
 							if(data.result){
 								$("#"+imageId).remove();
@@ -207,9 +216,9 @@ function bindBtnGallery(){
 								toastr.error(data.error)
 							}
 						}
-					})
+					});
 				}
-			})
-	})
+			});
+	});
 }
 </script>

@@ -1,0 +1,28 @@
+{
+    "common": {
+        "label":"Commun",           
+        "key" : "common",  
+        "icon" : "circle-o"
+    },
+    "public": {
+        "label":"Public",      
+        "key" : "public",     
+        "icon" : "users"
+    },
+	"private": {
+        "label":"Privée", 			
+        "key" : "private", 	
+        "icon" : "lock"
+    },
+    "urban": {
+        "label":"Urbain",           
+        "key" : "urban",  
+        "icon" : "building-o"
+    },
+    "rural": {
+        "label":"Rural",           
+        "key" : "rural",  
+        "icon" : "tree"
+    }
+    
+}

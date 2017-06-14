@@ -1,4 +1,27 @@
-var peopleTalk = [
+<?php $this->renderPartial('../docs/panels/menuLink',array("url"=>"default/view/page/links")); ?>
+
+<div class="panel-heading border-light center text-dark partition-white radius-10">
+    <span class="panel-title homestead"> <i class='fa fa-comments faa-pulse animated fa-3x  '></i> <span style="font-size: 48px">People Talk</span></span>
+</div>
+
+<div class="keywordList"></div>
+
+<style type="text/css">
+.keywordList{
+    margin-top:50px; 
+}
+.keypan{
+    height: 300px;
+    border: 1px solid #ddd;
+    margin-bottom: 50px;
+}
+.keypan img{
+    position: relative;
+    top: -30px;
+}
+</style>
+<script type="text/javascript">
+var keywords = [
     {
         "name" : "Ludovic NARAYANIN ",
         "project" : "DataRocks",
@@ -98,13 +121,6 @@ var peopleTalk = [
         "image" : "<?php echo $this->module->assetsUrl; ?>/images/testamonials/hafid.png"
     },
     {
-        "name" : "Julien Cantoni",
-        "project" : "P2P Foundation",
-        "url" : "http://p2pfoundation.net/",
-        "comment" : "Communecter peut faire partie des alternatives aux plateformes propriétaires qui se sont développées ces dernières années. Inclusive, équitable, interopérable, efficace, soutenable, glocale, voilà les promesses de communecter ! Nous attendons son déploiement avec impatience !",
-        "image" : "<?php echo $this->module->assetsUrl; ?>/images/testamonials/julien.png"
-    },
-    {
         "name" : "Francis Morel",
         "project" : "Practishare",
         "url" : "https://practishare.wordpress.com/",
@@ -189,3 +205,24 @@ var peopleTalk = [
         "image" : "<?php echo $this->module->assetsUrl; ?>/images/testamonials/pierre.png"
     },
 ];
+
+jQuery(document).ready(function() 
+{
+    $(".keywordList").html('');
+    $.each(keywords,function(i,obj) { 
+        icon = (obj.icon) ? obj.icon : "fa-tag" ;
+        color = (obj.color) ? obj.color : "#E33551" ;
+        $(".keywordList").append(
+        '<div class="col-xs-3"><div class="keypan panel panel-white">'+
+            '<div class="panel-heading border-light ">'+
+                '<span class="panel-title ">'+
+                '<img class="img-circle" width="50" height="50" src="'+obj.image+'"/> '+
+                '<span style="font-size: 25px; "> <br/>'+obj.name.toUpperCase()+'</span>'+
+                        '<a href="'+obj.url+'" target="_blank" style="font-size: 18px; "><br/>'+obj.project.toUpperCase()+'</a>'+
+                        '<span style="font-size: 14px; "><br/>'+obj.comment+'</span>'+
+                        '</span>'+
+            '</div></div></div>');
+     });
+});
+
+</script>

@@ -59,11 +59,11 @@ function startNewCommunexion(country){
 
 function resizeInterface()
 {
-  //mylog.log("resize");
+  mylog.log("resize");
   var height = $("#mapCanvasBg").height() - 55;
   $("#ajaxSV").css({"minHeight" : height});
   //$("#menu-container").css({"minHeight" : height});
-  var heightDif = $("#search-contact").height() + $("#floopHeader").height() + 60 /* top */ + 0 /* bottom */;
+  var heightDif = $("#search-contact").height() + $("#floopHeader").height() + 80 /* top */ + 0 /* bottom */;
   var menuTopHeight = $("#mainNav").height();// - $(".toolbar").height();
   
   //mylog.log("heightDif", heightDif);
@@ -83,10 +83,10 @@ function initNotifications(){
 	  mylog.log("click notification main-top-menu");
       showNotif();
     });
-    $('.my-main-container .btn-menu-notif').off().click(function(){
+    /*$('.my-main-container .btn-menu-notif').off().click(function(){
 	  mylog.log("click notification my-main-container");
       showNotif();
-    });
+    });*/
 }
 function showNotif(show){
 	if(typeof show == "undefined"){
@@ -100,6 +100,10 @@ function showNotif(show){
     	markAllAsSeen(false,"");
     }
 	else 	 $('#notificationPanelSearch').hide("fast");
+
+	
+	$("#dropdown-user").removeClass("open");
+    showFloopDrawer(false);
 }
 
 function checkScroll(){
@@ -114,8 +118,15 @@ var currentScrollTop = 0;
 var isMapEnd = false;
 function showMap(show)
 {
-
-  if(mapBg == null) return;
+	if(show != false && CoSigAllReadyLoad == false){
+		console.log("showMap", show, "elementsMap", Sig.preloadElementsMap);
+		mapBg = Sig.loadMap("mapCanvas", initSigParams);
+	    Sig.showIcoLoading(false);
+	    Sig.showMapElements(Sig.map, Sig.preloadElementsMap);
+	}
+	//alert("hello showMap " + CoSigAllReadyLoad);
+	
+    if(mapBg == null) return;
 
 	//if(typeof Sig == "undefined") { alert("Pas de SIG"); return; } 
 	mylog.log("typeof SIG : ", typeof Sig);
@@ -249,7 +260,7 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 		
 		$("#btn-geoloc-auto-menu .fa-crosshairs").attr("data-original-title", cityNameCommunexion);
 		$("#btn-geoloc-auto-menu .fa-crosshairs").attr("title", cityNameCommunexion);
-		$("#btn-geoloc-auto-menu").off(); //click(function(){ url.loadByHash("#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion) });
+		$("#btn-geoloc-auto-menu").off(); //click(function(){ urlCtrl.loadByHash("#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion) });
 		$("#btn-geoloc-auto-menu").attr("href", '#city.detail.insee.' + inseeCommunexion+'.'+'postalCode.'+cpCommunexion);
 		$("#btn-geoloc-auto-menu").data("hash", "#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion);
 		//mylog.log("HASHHHHHHHHHHHHHHHHHHHH", $("#btn-geoloc-auto-menu").data("hash"));
@@ -272,14 +283,14 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
   		
   		if(!userId)
   		$(".btn-geoloc-auto").attr("onclick", 
-  			"url.loadByHash('#rooms.index.type.cities.id.' + countryCommunexion + '_'+ inseeCommunexion + '-'+ cpCommunexion)");
+  			"urlCtrl.loadByHash('#rooms.index.type.cities.id.' + countryCommunexion + '_'+ inseeCommunexion + '-'+ cpCommunexion)");
 
   		
 		Sig.clearMap();
 		mylog.log("hash city ? ", location.hash.indexOf("#default.city"));
 		if(location.hash == "#default.home"){
 			//showLocalActorsCityCommunexion();
-			url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+			urlCtrl.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 		}else
 		if(location.hash == "#default.directory"){
 			startSearch();
@@ -294,7 +305,7 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 		if(location.hash.indexOf("#city.detail") >= 0) {
 			//showLocalActorsCityCommunexion();
 			if(location.hash != "#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion){
-				url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+				urlCtrl.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 			}else{
 				$("#btn-communecter").html("<i class='fa fa-check'></i> COMMUNECTÉ");
 	    		$("#btn-communecter").attr("onclick", "");
@@ -313,14 +324,14 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 			showTwoStep("load-conf-communexion");
 			setCookies();
 			$(".btn-param-postal-code").attr("data-original-title", cityNameCommunexion + " en détail");
-			//$(".btn-param-postal-code").attr("onclick", "url.loadByHash('#city.detail.insee."+inseeCommunexion+"')");
+			//$(".btn-param-postal-code").attr("onclick", "urlCtrl.loadByHash('#city.detail.insee."+inseeCommunexion+"')");
 			$(".search-loader").html("<i class='fa fa-check'></i> Vous êtes communecté : " + cityNameCommunexion + ', ' + cpCommunexion);
 			$(".lbl-btn-menu-name-city .lbl-btn-menu").html(cityNameCommunexion);
 			setTimeout(function(){ achiveTSRAddress(); /*showTwoStep("street");*/  }, 2000);
 			//showMap(false);
 		}else{
 			//showLocalActorsCityCommunexion();
-			url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+			urlCtrl.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 		}
 	}
 	
@@ -329,7 +340,7 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 
 function showLocalActorsCityCommunexion(){
 
-	url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+	urlCtrl.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 	return;
 
 	mylog.log("showLocalActorsCityCommunexion");
@@ -449,7 +460,7 @@ function toogleCommunexion(init){ //this = jQuery Element
     $("#searchBarPostalCode").val(cityNameCommunexion);
 
     if(inseeCommunexion != "")
-    $(".search-loader").html("<i class='fa fa-check'></i> Vous êtes communecté à " + cityNameCommunexion + ', ' + cpCommunexion);
+    	$(".search-loader").html("<i class='fa fa-check'></i> Vous êtes communecté à " + cityNameCommunexion + ', ' + cpCommunexion);
 				
    // $("#searchBarPostalCode").animate({"width" : "0px !important", "padding-left" : "51px !important;"}, 200);
     //$(".lbl-scope-list").html("<i class='fa fa-check'></i> " + cityNameCommunexion.toLowerCase() + ", " + cpCommunexion);
@@ -562,9 +573,11 @@ function selectScopeLevelCommunexion(level){
 	if(typeof startSearch == "function")
 	startSearch();
 }
-function setCookies(path){ mylog.log("setCookies", path);
+
+function setCookies(path){ 
+	mylog.log("setCookies", path);
 	//if(false){
-		$.cookie('inseeCommunexion',   	inseeCommunexion,  	{ expires: 365, path: path });
+	/*	$.cookie('inseeCommunexion',   	inseeCommunexion,  	{ expires: 365, path: path });
 		$.cookie('cityNameCommunexion', cityNameCommunexion,{ expires: 365, path: path });
 		$.cookie('cpCommunexion',   	cpCommunexion,  	{ expires: 365, path: path });		
 		$.cookie('regionNameCommunexion',   regionNameCommunexion,  { expires: 365, path: path });
@@ -573,5 +586,26 @@ function setCookies(path){ mylog.log("setCookies", path);
 			$.cookie('nbCpbyInseeCommunexion',   	nbCpbyInseeCommunexion,  	{ expires: 365, path: path });
 			$.cookie('cityInseeCommunexion',   	cityInseeCommunexion,  	{ expires: 365, path: path });
 		}
-	//}
+
+
+		// TODO 
+
+		/*
+
+		CO2.php
+		breadcrum_communexion.php
+
+		$communexion["state"] = true; Mettre a false si romve addresse
+
+
+		Si communexionLevel == cpCommunexion
+			communexionType = "cp"
+		Sinon 
+			communexionType = "city"
+		
+		$.cookie('communexionType', communexion.currentLevel, { expires: 365, path: location.pathname });
+        $.cookie('communexionValue', communexion.currentValue, { expires: 365, path: location.pathname });
+        $.cookie('communexionName', communexion.currentName, { expires: 365, path: location.pathname });
+        $.cookie('communexionLevel', communexion.levelMinCommunexion, { expires: 365, path: location.pathname });*/
+	//}*/
 }

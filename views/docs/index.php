@@ -8,7 +8,6 @@ $this->renderPartial("../docs/assets");
 </style>
 <div class="col-sm-12 ">
 	<div class="panel-heading border-light center text-dark partition-white radius-10 getDocHeader">
-	    <span class=" text-red homestead tpl_title"><i class="fa fa-binoculars"></i> Documentation</span>
 	    <br/>
 	    <?php if(@$_GET["network"]){
 			$this->renderPartial("../docs/network/".$_GET["network"]); 
@@ -203,7 +202,8 @@ $this->renderPartial("../docs/assets");
 
 <script type="text/javascript">
 jQuery(document).ready(function() {
-  setTitle("<span class='text-red'>Commune<span class='text-dark'>cter</span> : la doc</span>","connectdevelop", "Communecter : La Doc");
+  	setTitle("<span class='text-red'>Commune<span class='text-dark'>cter</span> : la doc</span>","connectdevelop", "Communecter : La Doc");
+	$(".moduleTitle").html('<span class=" text-red homestead tpl_title"><i class="fa fa-binoculars"></i> Documentation</span>')
 });
 </script>
 

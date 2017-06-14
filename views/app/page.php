@@ -12,7 +12,67 @@
 
 
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
-	<div class="padding-top-15" id="onepage"></div>
+	<div class="padding-top-15" id="onepage">
+		<?php 
+        
+            if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
+               $type == Project::COLLECTION || $type == Organization::COLLECTION || $type == Poi::COLLECTION){
+    			$params = array("element"=>$element , 
+    							"page" => "page",
+    							"edit"=>$edit,
+    							"openEdition" => $openEdition,
+    							"linksBtn" => $linksBtn,
+    							"type" => $type,
+    							"isLinked" => $isLinked,
+    							"controller" => $controller,
+    							"countStrongLinks" => $countStrongLinks,
+    							"countInvitations" => $countInvitations,
+    							"countries" => $countries );
+
+                if(@$members) $params["members"] = $members;
+                if(@$invitedMe) $params["invitedMe"] = $invitedMe;
+
+                $this->renderPartial('../element/profilSocial', $params ); 
+            }
+
+
+            if($type == News::COLLECTION){
+                $params = array("element"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
+
+                if(@$members) $params["members"] = $members;
+                if(@$invitedMe) $params["invitedMe"] = $invitedMe;
+
+                $this->renderPartial('../news/standalone', $params ); 
+            }
+
+            if($type == Classified::COLLECTION){
+                $params = array("element"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
+
+                if(@$members) $params["members"] = $members;
+                if(@$invitedMe) $params["invitedMe"] = $invitedMe;
+
+                $this->renderPartial('../classified/standalone', $params ); 
+            }
+
+            if($type == Survey::COLLECTION){
+                $params = array("survey"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
+
+                $this->renderPartial('../survey/entryStandalone', $params ); 
+            }
+		?>
+	</div>
 </div>
 
 
@@ -20,17 +80,18 @@
 
 var type = "<?php echo $type; ?>";
 var id = "<?php echo $id; ?>";
+var view = "<?php echo @$view; ?>";
 var indexStepGS = 20;
 
 jQuery(document).ready(function() {
 	
 	initKInterface({"affixTop":0});
 	$("#mainNav").addClass("affix");
-	
-	var tpl = '<?php echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
-	getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"?tpl="+tpl,function(){ 
-		initPageInterface();
-	},"html");
+	initPageInterface();
+    // var tpl = '<?php echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
+	// getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
+	// 	initPageInterface();
+	// },"html");
 });
 
 
@@ -42,14 +103,14 @@ function initPageInterface(){
         startGlobalSearch(0, indexStepGS);
     });
 
-    $("#second-search-bar").keyup(function(e){
+    $("#second-search-bar").keyup(function(e){ console.log("keyup #second-search-bar");
         $("#input-search-map").val($("#second-search-bar").val());
         if(e.keyCode == 13){
             startGlobalSearch(0, indexStepGS);
          }
     });
     
-    $("#input-search-map").keyup(function(e){
+    $("#input-search-map").keyup(function(e){ console.log("keyup #input-search-map");
         $("#second-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
             startGlobalSearch(0, indexStepGS);
@@ -64,6 +125,13 @@ function initPageInterface(){
     	$(".dropdown-result-global-search").hide();
     });
 
+    $(".tooltips").tooltip();
+   
+    $('.sub-menu-social').affix({
+      offset: {
+          top: 320
+      }
+    });
     //$(".dropdown-result-global-search").hide();
     
 

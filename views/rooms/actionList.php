@@ -526,7 +526,7 @@ border: 1px solid #E4E4E4;
                   <br>Référencez et partagez <b>une par une</b>,
                   <br>les tâches qui concernent cet espace
                   <br><br>
-                  <button class="btn btn-success" onclick='elementLib.openForm("action","sub"); $(".datepicker").css("zIndex","12000");'>
+                  <button class="btn btn-success" onclick='dyFObj.openForm("action","sub"); $(".datepicker").css("zIndex","12000");'>
                     <i class="fa fa-plus"></i> Ajouter une action
                   </button>
                 </blockquote>
@@ -725,7 +725,7 @@ function reduceInfo(){
       
       mylog.log("type", type);
       if(type == "edit") 
-        url.loadByHash(url);
+        urlCtrl.loadByHash(url);
       else 
         readEntrySV (data,type);
       
@@ -824,7 +824,7 @@ function archive(collection,id){
              "value":"<?php echo ( @$room["status"] != ActionRoom::STATE_ARCHIVED ) ? ActionRoom::STATE_ARCHIVED : "" ?>",
           };
           ajaxPost(null,'<?php echo Yii::app()->createUrl(Yii::app()->controller->module->id."/element/updatefield")?>',params,function(data){
-            url.loadByHash(window.location.hash);
+            urlCtrl.loadByHash(window.location.hash);
           });
       } else {
         $("."+clickedVoteObject).removeClass("faa-bounce animated");

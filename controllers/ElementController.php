@@ -17,10 +17,12 @@ class ElementController extends CommunecterController {
       return array(
           'updatefield' 				  => 'citizenToolKit.controllers.element.UpdateFieldAction',
           'updatefields' 				  => 'citizenToolKit.controllers.element.UpdateFieldsAction',
-          'updateblock'          => 'citizenToolKit.controllers.element.UpdateBlockAction',
+          'updateblock'           => 'citizenToolKit.controllers.element.UpdateBlockAction',
           'updatesettings'        => 'citizenToolKit.controllers.element.UpdateSettingsAction',
           'detail'                => 'citizenToolKit.controllers.element.DetailAction',
           'getalllinks'           => 'citizenToolKit.controllers.element.GetAllLinksAction',
+          'geturls'               => 'citizenToolKit.controllers.element.GetUrlsAction',
+          'getcontacts'           => 'citizenToolKit.controllers.element.GetContactsAction',
           'directory'             => 'citizenToolKit.controllers.element.DirectoryAction',
           'addmembers'            => 'citizenToolKit.controllers.element.AddMembersAction',
           'aroundme'              => 'citizenToolKit.controllers.element.AroundMeAction',
@@ -31,6 +33,9 @@ class ElementController extends CommunecterController {
           'delete'                => 'citizenToolKit.controllers.element.DeleteAction',
           'get'                   => 'citizenToolKit.controllers.element.GetAction',
           'notifications'         => 'citizenToolKit.controllers.element.NotificationsAction',
+          'about'                 => 'citizenToolKit.controllers.element.AboutAction',
+          'getdatadetail'         => 'citizenToolKit.controllers.element.GetDataDetailAction',
+          'stopdelete'            => 'citizenToolKit.controllers.element.StopDeleteAction',
       );
   }
 }

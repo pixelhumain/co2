@@ -1,8 +1,8 @@
 <?php 
  $cssAnsScriptFilesModule = array(
-    '/js/default/directory.js',
+    //'/js/default/directory.js',
   );
-  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+  //HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
   HtmlHelper::registerCssAndScriptsFiles( array('/css/default/directory.css', ) , 
                                           Yii::app()->theme->baseUrl. '/assets');
@@ -95,7 +95,7 @@
 
 #sub-menu-left.subsub .btn{
   width:95%;    
-  text-align: left;
+  text-align: right;
   background-color: white;
     border-color: white;
   color:#4285f4;
@@ -184,39 +184,18 @@
           <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
         </div>
         
-        <?php if($typeSelected == "classified"){ ?>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="menu-section-classified">
+        
+        <?php if($typeSelected == "place"){ ?>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center subsub" id="menu-section-place">
           <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
                   data-type="classified" data-type-anc=""  data-key="all">
             <i class="fa fa-circle-o"></i>
             <span class="hidden-xs hidden-sm"> Tous </span>
           </button> -->
           <?php 
-              $sections = CO2::getContextList("freedomSections");
+              $place = CO2::getContextList("place");
               $currentSection = 1;
-              foreach ($sections as $key => $section) { ?>
-                <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
-                  <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
-                          data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
-                          data-type="classified"
-                          style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
-                    <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["label"]; ?>
-                  </button>
-                </div>
-          <?php } ?>  
-          <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> 
-        </div>
-        <?php } else if($typeSelected == "place"){ ?>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="menu-section-place">
-          <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
-                  data-type="classified" data-type-anc=""  data-key="all">
-            <i class="fa fa-circle-o"></i>
-            <span class="hidden-xs hidden-sm"> Tous </span>
-          </button> -->
-          <?php 
-              $sections = CO2::getContextList("place");
-              $currentSection = 1;
-              foreach ($sections["sections"] as $key => $section) { ?>
+              foreach ($place["sections"] as $key => $section) { ?>
                 <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
                   <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
                           data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
@@ -230,10 +209,11 @@
         </div>
         <?php } ?>
 
+
         <?php if($typeSelected == "all"){ ?>   
           
-          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
-            <button class="btn text-black bg-dark btn-open-filliaire">
+          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
+            <button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
                 <span class="hidden-xs">Thématiques</span>
             </button><hr class="hidden-xs">
@@ -260,6 +240,10 @@
             <button class="btn text-purple btn-directory-type" data-type="projects">
                 <i class="fa fa-lightbulb-o"></i> 
                 <span class="hidden-xs">Projets</span>
+            </button><hr class="hidden-xs">
+            <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
+                <i class="fa fa-university"></i> 
+                <span class="hidden-xs">Services publics</span>
             </button>
             <hr class="hidden-sm hidden-md hidden-lg">
           </div>
@@ -267,19 +251,35 @@
         <?php } else if( $typeSelected == "vote" ){?>
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
-            <button class="btn text-black bg-azure btn-directory-type" data-type="vote">
-              <i class="fa fa-gavel"></i> 
-              <span class="hidden-xs">Propositions</span>
-            </button>
-            <button class="btn text-black bg-azure btn-directory-type" data-type="actions">
-              <i class="fa fa-cogs"></i> 
-              <span class="hidden-xs">Actions</span>
+            <button class="btn text-white bg-dark btn-open-filliaire">
+                <i class="fa fa-th"></i> 
+                <span class="hidden-xs">Thématiques</span>
+            </button><hr class="hidden-xs">
+            <button class="btn text-azure btn-link btn-directory-type" data-type="vote">
+              <i class="fa fa-clock-o"></i> 
+              <span class="hidden-xs">En ce moment</span>
+            </button><hr>
+            <button class="btn letter-green btn-link btn-directory-type" data-type="actions">
+              <i class="fa fa-thumbs-o-up"></i> 
+              <span class="hidden-xs">J'ai voté pour</span>
+            </button><br>
+            <button class="btn text-red btn-link btn-directory-type" data-type="actions">
+              <i class="fa fa-thumbs-o-down"></i> 
+              <span class="hidden-xs">J'ai voté contre</span>
+            </button><hr>
+            <button class="btn letter-green btn-link btn-directory-type" data-type="actions">
+              <i class="fa fa-check"></i> 
+              <span class="hidden-xs">Adoptées</span>
+            </button><br>
+            <button class="btn text-red btn-link btn-directory-type" data-type="actions">
+              <i class="fa fa-times"></i> 
+              <span class="hidden-xs">Refusées</span>
             </button>
           </div>
 
         <?php } else if( $typeSelected == "events" ){?>
 
-          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
+          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
             <button class="btn text-black bg-white btn-directory-type btn-all" data-type-event="" data-type="events">
                 <i class="fa fa-search"></i> 
                 <span class="hidden-xs">Tous</span>
@@ -294,21 +294,21 @@
                       <?php echo $cat; ?>
                     </button><br class="hidden-xs">
                   <?php //} ?>
-                </button>
               <?php } ?>
           </div>
 
         <?php }else if($typeSelected == "classified"){ ?>
 
-          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub" id="sub-menu-left">
+          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub classifiedFilters" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
               <i class="fa fa-money"></i> A vendre
             </h4>
             <hr>
-            <?php $categories = CO2::getContextList("classifiedCategories"); 
-                foreach ($categories as $key => $cat) {
+            <?php 
+                $classified = CO2::getContextList("classified");
+                foreach ($classified['filters'] as $key => $cat) {
             ?>
                 <?php if(is_array($cat)) { ?>
                   <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
@@ -320,10 +320,68 @@
                     </button><br class="hidden">
                   <?php } ?>
                 <?php } ?>
-              </button>
+            <?php } ?>
+            <?php if( @Yii::app()->session["userId"] ) { ?> 
+            <hr>
+            <button class="btn btn-default margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="favorites">
+              <span class="text-red"><i class="fa fa-star hidden-xs"></i> MES FAVORIS</span>
+            </button>
             <?php } ?>
           </div>
-        
+         
+          <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 text-center subsub" id="menu-section-classified">
+            <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
+                    data-type="classified" data-type-anc=""  data-key="all">
+              <i class="fa fa-circle-o"></i>
+              <span class="hidden-xs hidden-sm"> Tous </span>
+            </button> -->
+            <?php 
+                $currentSection = 1;
+                foreach ($classified["sections"] as $key => $section) { ?>
+                  <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
+                    <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
+                            data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
+                            data-type="classified"
+                            style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
+                      <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["label"]; ?>
+                    </button>
+                  </div>
+            <?php } ?>  
+             <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
+          </div>
+
+          <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 padding-top-10" id="section-price">
+          
+            <div class="form-group col-md-4 col-sm-4 col-xs-6">
+              <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
+                <i class="fa fa-chevron-down"></i> Prix min
+              </label>
+              <input type="text" id="priceMin" name="priceMin" class="form-control" placeholder="prix min"/>
+            </div>
+
+            <div class="form-group col-md-4 col-sm-4 col-xs-6">
+              <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
+                <i class="fa fa-chevron-down"></i> Prix max
+              </label>
+              <input type="text" id="priceMax" name="priceMax" class="form-control col-md-5" placeholder="prix max"/>
+            </div>
+            
+            <div class="form-group col-md-4 col-sm-4 col-xs-12">
+              <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
+                <i class="fa fa-money"></i> Devise
+              </label>
+              <select class="form-control" name="devise" id="devise" style="">
+                <option class="bold" value="€">euro €</option>
+                <option class="bold" value="$">dollars $</option>
+                <option class="bold" value="CFP">CFP</option>
+              </select>
+            </div>
+
+            <hr class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding" id="before-section-result"> 
+          
+          </div>
+          <!-- </div> -->
+
         <?php } 
         else if($typeSelected == "place"){ ?>
 
@@ -333,8 +391,8 @@
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
               <i class="fa fa-money"></i> Lieux           </h4>
             <hr>
-            <?php $categories = CO2::getContextList("place"); 
-                foreach ($categories["filters"] as $key => $cat) {
+            <?php 
+                foreach ($place["filters"] as $key => $cat) {
             ?>
                 <?php if(is_array($cat)) { ?>
                   <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
@@ -352,8 +410,7 @@
         <?php } 
 
         $col = ( !in_array($typeSelected, array("classified","events","vote","all","place") )) ? 10 : 8; ?>
-        <div class="col-md-<?php echo $col ?> col-sm-<?php echo $col ?>
-        <div class="col-md-8 col-sm-8 col-xs-10 padding-10" id="dropdown_search"></div>
+        <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
 
       <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
       
@@ -378,12 +435,14 @@ var headerParams = {
   "Group"         : { color: "black",   icon: "circle-o",     name: "Groupes" },
   "projects"      : { color: "purple",  icon: "lightbulb-o",  name: "projets" },
   "events"        : { color: "orange",  icon: "calendar",     name: "événements" },
-  "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions, Questions, Votes" },
+  "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions" },
   "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
   "cities"        : { color: "red",     icon: "university",   name: "communes" },
   "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
   "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
+  "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
+  
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
@@ -486,8 +545,10 @@ jQuery(document).ready(function() {
   $(".btn-open-filliaire").click(function(){
       if($("#sub-menu-filliaire").hasClass("hidden"))
         $("#sub-menu-filliaire").removeClass("hidden");
-      else
+      else{
         $("#sub-menu-filliaire").addClass("hidden");
+        resetMyTags();
+      }
   });
 
   $(".btn-select-filliaire").click(function(){

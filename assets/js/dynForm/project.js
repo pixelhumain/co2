@@ -8,19 +8,26 @@ dynForm = {
 			    	"sub" : function(){
 			    			$("#ajaxFormModal #parentId").val( contextData.id );
 			    		 	$("#ajaxFormModal #parentType").val( contextData.type ); 
-			    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
+			    		 	$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+									  					  .addClass("bg-purple");
+			    		 	
+			    		 	$("#ajax-modal-modal-title").html(
+			    		 		$("#ajax-modal-modal-title").html()+
+			    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
 			    	}
 			    },
 			    beforeBuild : function(){
-			    	elementLib.setMongoId('projects');
+			    	dyFObj.setMongoId('projects', function(){
+			    		uploadObj.gotoUrl = '#page.type.projects.id.'+uploadObj.id;
+			    	});
 			    },
-			    afterSave : function(){
-					if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
+			    afterSave : function(urlReload){
+					if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 ){
 				    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-				    else {
-				    	elementLib.closeForm();
-				    	url.loadByHash( location.hash );	
-				    }
+					} else { 
+			          	dyFObj.closeForm(); 
+			          	urlCtrl.loadByHash( uploadObj.gotoUrl );
+			        }
 			    },
 			    beforeSave : function(){
 			    	if( typeof $("#ajaxFormModal #description").code === 'function' ) 
@@ -33,23 +40,23 @@ dynForm = {
 							  "Créez votre page en quelques secondes,<br>et complétez les informations plus tard, selon vos besoins<hr>" +
 							  "</p>",
 		            },
-			        name : typeObjLib.name("project"),
-		            parentType : typeObjLib.hidden,
-		            parentId : typeObjLib.hidden,
-		            image : typeObjLib.image("#project.detail.id."+uploadObj.id),
-		            location : typeObjLib.location,
-		            tags :typeObjLib.tags(),
+			        name : dyFInputs.name("project"),
+		            parentType : dyFInputs.inputHidden(),
+		            parentId : dyFInputs.inputHidden(),
+		            image : dyFInputs.image(),
+		            location : dyFInputs.location,
+		            tags :dyFInputs.tags(),
+		            shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
 		            formshowers : {
 		            	label : "En détails",
 		                inputType : "custom",
 		                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> options (desc, urls)</a>",
 		            },
-			        description : typeObjLib.descriptionOptionnel,
-		            url : typeObjLib.urlOptionnel,
-		            "preferences[publicFields]" : typeObjLib.hiddenArray,
-		            "preferences[privateFields]" :typeObjLib.hiddenArray,
-		            "preferences[isOpenData]" : typeObjLib.hiddenTrue,
-		            "preferences[isOpenEdition]" : typeObjLib.hiddenTrue
+		            url : dyFInputs.inputUrlOptionnel(),
+		            "preferences[publicFields]" : dyFInputs.inputHidden([]),
+		            "preferences[privateFields]" : dyFInputs.inputHidden([]),
+		            "preferences[isOpenData]" : dyFInputs.inputHidden(true),
+		            "preferences[isOpenEdition]" : dyFInputs.inputHidden(true)
 			    }
 			}
 		};

@@ -10,10 +10,10 @@ var floopContactTypes = [	{ name : "projects", 		color: "purple"	, icon:"lightbu
 							{ name : "people",  		color: "yellow"	, icon:"user"			},
 							{ name : "organizations", 	color: "green" 	, icon:"group"			}];
 							
-var openPanelType = { 	"people" 		 : "person",
-						"organizations"  : "organization",
-						"projects" 	 	 : "project",
-						"events" 		 : "event",
+var openPanelType = { 	"people" 		 : "citoyens",
+						"organizations"  : "organizations",
+						"projects" 	 	 : "projects",
+						"events" 		 : "events",
 					};
 
 var tooltips_lbl = { 	"people" 		  : "Ajouter quelqu'un à votre répertoire.",
@@ -36,19 +36,19 @@ function buildListContactHtml(contacts, myId){
 
 	floopContacts = contacts;
 	
-	var HTML = 			'<div class="floopHeader bg-dark">'+
-							'<a href="#person.directory.id.'+userId+'?tpl=directory2" '+
-								'class="text-white pull-left lbh" style="color:white !important;">'+
+	var HTML = 			'<div class="floopHeader bg-white">'+
+							//'<a href="#person.directory.id.'+userId+'?tpl=directory2" '+
+							//	'class="text-white pull-left lbh" style="color:white !important;">'+
 								//t("My directory")+
-								'<i class="fa fa-bookmark fa-rotate-270" style="margin-right:15px;"></i> '+
-							'</a>'+
+								'<i class="fa fa-link pull-left text-dark" style="margin-right:15px;margin-top:4px;"></i> '+
+							//'</a>'+
 							'<div id="floopScrollByType" class="pull-left"></div>' +
 							'<button id="btnFloopClose"><i class="fa fa-times"></i></button>' +
 							
 						'</div>';
 		HTML += 		'<div class="floopScroll">' ;
 							
-							$.each(floopContactTypes, function(key, type){
+						$.each(floopContactTypes, function(key, type){
 
 							var n=0;
 							//compte le nombre d'élément à afficher
@@ -56,10 +56,10 @@ function buildListContactHtml(contacts, myId){
 							//si aucun élément, on affiche pas cette section
 							//if(n > 0){
 							var urlBtnAdd = "";
-							if(type.name == "people") 		 urlBtnAdd = "elementLib.openForm( 'person')";
-							if(type.name == "organizations") urlBtnAdd = "elementLib.openForm( 'organization')";
-							if(type.name == "events") 		 urlBtnAdd = "elementLib.openForm( 'event')";
-							if(type.name == "projects") 	 urlBtnAdd = "elementLib.openForm( 'project')";
+							if(type.name == "people") 		 urlBtnAdd = "dyFObj.openForm( 'person')";
+							if(type.name == "organizations") urlBtnAdd = "dyFObj.openForm( 'organization')";
+							if(type.name == "events") 		 urlBtnAdd = "dyFObj.openForm( 'event')";
+							if(type.name == "projects") 	 urlBtnAdd = "dyFObj.openForm( 'project')";
 
 							floopTypeUsed.push(type);
 
@@ -71,9 +71,9 @@ function buildListContactHtml(contacts, myId){
 										//'</button>' +		
 										'<i class="fa fa-'+type.icon+'"></i> <span class="">'+t('My '+type.name)+"</span>";
 										if(myId != ""){
-		HTML += 						'<button onclick="'+urlBtnAdd+'" class="tooltips btn btn-default btn-sm pull-right btn_shortcut_add text-'+type.color+'" data-placement="left" data-original-title="'+tooltips_lbl[type.name]+'">'+
-											'<i class="fa fa-plus"></i>'+
-										'</button>';
+		//HTML += 						'<button onclick="'+urlBtnAdd+'" class="tooltips btn btn-default btn-sm pull-right btn_shortcut_add text-'+type.color+'" data-placement="left" data-original-title="'+tooltips_lbl[type.name]+'">'+
+		//									'<i class="fa fa-plus"></i>'+
+		//								'</button>';
 											if (type.name == "events" || type.name == "projects") {
 		HTML += 						'<button onclick="showHideOldElements(\''+type.name+'\')" class="tooltips btn btn-default btn-sm pull-right btn_shortcut_add text-'+type.color+'" data-placement="left" data-original-title="'+tooltips_lbl[type.name+'History']+'">'+
 											'<i class="fa fa-history"></i>'+
@@ -95,7 +95,7 @@ function buildListContactHtml(contacts, myId){
 									'</div>'+	
 								'</div>'+
 							'</div>';
-							});									
+						});									
 		HTML += 		'</div>' +
 						'</div>'+
 					  '</div>' +
@@ -118,7 +118,7 @@ function getFloopItem(id, type, value){
 		defaultImg="citoyens";
 	var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl + value.profilThumbImageUrl : assetPath + "/images/thumb/default_"+defaultImg+".png";
 	var id = (typeof value._id != "undefined" && typeof value._id.$id != "undefined") ? value._id.$id : id;
-	var path = "#"+openPanelType[type.name]+".detail.id."+id;
+	var path = "#page.type."+openPanelType[type.name]+".id."+id;
 	var elementClass = oldElement ? "oldFloopDrawer"+type.name : "";
 	var elementStyle = oldElement ? "display:none" : ""; 
 

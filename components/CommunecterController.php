@@ -75,6 +75,7 @@ class CommunecterController extends Controller
   public $pages = array(
     "admin" => array(
       "index"     => array("href" => "/ph/communecter/admin"),
+      "accueil"     => array("href" => "/ph/communecter/accueil"),
       "directory" => array("href" => "/ph/communecter/admin/directory"),
       "switchto"  => array("href" => "/ph/communecter/admin/switchto"),
       "delete"    => array("href" => "/ph/communecter/admin/delete"),
@@ -141,6 +142,7 @@ class CommunecterController extends Controller
     "city"=> array(
       "index"               => array("href" => "/ph/communecter/city/index", "public" => true),
       "detail"              => array("href" => "/ph/communecter/city/detail", "public" => true),
+      "detailforminmap"     => array("href" => "/ph/communecter/city/detailforminmap", "public" => true),
       "dashboard"           => array("href" => "/ph/communecter/city/dashboard", "public" => true), 
       "directory"           => array("href" => "/ph/communecter/city/directory", "public" => true, 
                                      "title"=>"City Directory", "subTitle"=>"Find Local Actors and Actions : People, Organizations, Events"),
@@ -172,8 +174,10 @@ class CommunecterController extends Controller
       "detail"    => array( "href" => "/ph/communecter/news/detail"),
       "delete"    => array( "href" => "/ph/communecter/news/delete"),
       "updatefield"    => array( "href" => "/ph/communecter/news/updatefield"),
+      "update"    => array( "href" => "/ph/communecter/news/update"),
       "extractprocess" => array( "href" => "/ph/communecter/news/extractprocess"),
       "moderate" => array( "href" => "/ph/communecter/news/moderate"),
+      "share"          => array("href" => "/ph/communecter/news/share"),
     ),
     "search"=> array(
       "getmemberautocomplete" => array("href" => "/ph/communecter/search/getmemberautocomplete"),
@@ -267,6 +271,7 @@ class CommunecterController extends Controller
         
 
         "get"      => array("href" => "/ph/communecter/person/get"),
+        "getcontactsbymails"      => array("href" => "/ph/communecter/person/getcontactsbymails"),
     ),
     "organization"=> array(
       "addorganizationform" => array("href" => "/ph/communecter/organization/addorganizationform",
@@ -332,6 +337,7 @@ class CommunecterController extends Controller
     "chart" => array(
 	    "addchartsv"      => array("href" => "/ph/communecter/chart/addchartsv"),
 		  "index"      => array("href" => "/ph/communecter/chart/index"),
+      "header"      => array("href" => "/ph/communecter/chart/header"),
 		  "editchart"       => array("href" => "/ph/communecter/chart/editchart"),
 		  "get"       => array("href" => "/ph/communecter/chart/get"),
     ),
@@ -432,9 +438,11 @@ class CommunecterController extends Controller
       "updatesettings"      => array('href' => "/ph/communecter/element/updatesettings"),
       "updatefield"         => array("href" => "/ph/communecter/element/updatefield"),
       "updatefields"        => array("href" => "/ph/communecter/element/updatefields"),
-      "updateblock"        => array("href" => "/ph/communecter/element/updateblock"),
+      "updateblock"         => array("href" => "/ph/communecter/element/updateblock"),
       "detail"              => array("href" => "/ph/communecter/element/detail", "public" => true),
       "getalllinks"         => array("href" => "/ph/communecter/element/getalllinks"),
+      "geturls"             => array("href" => "/ph/communecter/element/geturls"),
+      "getcontacts"         => array("href" => "/ph/communecter/element/getcontacts"),
       "simply"              => array("href" => "/ph/communecter/element/simply", "public" => true),
       "directory"           => array("href" => "/ph/communecter/element/directory", "public" => true),
       "directory2"          => array("href" => "/ph/communecter/element/directory2", "public" => true),
@@ -446,8 +454,12 @@ class CommunecterController extends Controller
       "get"                 => array("href" => "/ph/communecter/element/get"),
       "delete"              => array("href" => "/ph/communecter/element/delete"),
       "notifications"       => array("href" => "/ph/communecter/element/notifications"),
+      "about"               => array("href" => "/ph/communecter/element/about"),
+      "getdatadetail"       => array("href" => "/ph/communecter/element/getdatadetail"),
+      "stopdelete"          => array("href" => "/ph/communecter/element/stopdelete"),
     ),
     "app" => array(
+      "welcome"             => array('href' => "/ph/communecter/app/welcome",         "public" => true),
       "index"             => array('href' => "/ph/communecter/app/index",             "public" => true),
       "web"               => array('href' => "/ph/communecter/app/web",               "public" => true),
       "websearch"         => array('href' => "/ph/communecter/app/websearch",         "public" => true),
@@ -455,8 +467,8 @@ class CommunecterController extends Controller
       "media"             => array('href' => "/ph/communecter/app/media",             "public" => true),
       "referencement"     => array('href' => "/ph/communecter/app/referencement",     "public" => true),
       "savereferencement" => array('href' => "/ph/communecter/app/savereferencement", "public" => true),
-      "annonces"          => array('href' => "/ph/communecter/app/annonces",         "public" => true),
-      "live"              => array('href' => "/ph/communecter/app/live",            "public" => true),
+      "annonces"          => array('href' => "/ph/communecter/app/annonces",          "public" => true),
+      "live"              => array('href' => "/ph/communecter/app/live",              "public" => true),
       "agenda"            => array('href' => "/ph/communecter/app/agenda",            "public" => true),
       "mediacrawler"      => array('href' => "/ph/communecter/app/mediacrawler",      "public" => false),
       "page"              => array('href' => "/ph/communecter/app/page",              "public" => true),
@@ -464,11 +476,15 @@ class CommunecterController extends Controller
       "agenda"            => array('href' => "/ph/communecter/app/agenda",            "public" => true),
       "power"             => array('href' => "/ph/communecter/app/power",             "public" => true),
       "superadmin"        => array('href' => "/ph/communecter/app/superadmin",        "public" => false),
+      "admin"             => array('href' => "/ph/communecter/app/admin",      "public" => false),
       "info"              => array('href' => "/ph/communecter/app/info",              "public" => true),
       "city"              => array('href' => "/ph/communecter/app/city",              "public" => false),
       "sendmailformcontact" => array('href' => "/ph/communecter/app/sendmailformcontact", "public" => true),
+      "sendmailformcontactprivate" => array('href' => "/ph/communecter/app/sendmailformcontactprivate", "public" => true),
       "checkurlexists" => array('href' => "/ph/communecter/app/checkurlexists", "public" => true),
-      ),
+      "rooms" => array('href' => "/ph/communecter/app/rooms", "public" => true),
+      "survey" => array('href' => "/ph/communecter/app/survey", "public" => true),
+    ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick")
     ),
@@ -493,6 +509,10 @@ class CommunecterController extends Controller
     //managed public and private sections through a url manager
     if( Yii::app()->controller->id == "admin" && !Yii::app()->session[ "userIsAdmin" ] )
       throw new CHttpException(403,Yii::t('error','Unauthorized Access.'));
+
+    if( Yii::app()->controller->id == "adminpublic" && ( !Yii::app()->session[ "userIsAdmin" ] && !Yii::app()->session[ "userIsAdminPublic" ] ) )
+      throw new CHttpException(403,Yii::t('error','Unauthorized Access.'));
+
     $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];
     $pagesWithoutLogin = array(
                             //Login Page

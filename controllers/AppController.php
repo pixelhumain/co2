@@ -22,23 +22,22 @@ class AppController extends CommunecterController {
 	        'savereferencement' => 'citizenToolKit.controllers.app.SaveReferencementAction',
 	        'mediacrawler'  	=> 'citizenToolKit.controllers.app.MediaCrawlerAction',
             'superadmin'        => 'citizenToolKit.controllers.app.SuperAdminAction',
-            'sendmailformcontact' => 'citizenToolKit.controllers.app.SendMailFormContactAction',
+            //'sendmailformcontact' => 'citizenToolKit.controllers.app.SendMailFormContactAction',
             'checkurlexists' => 'citizenToolKit.controllers.app.CheckUrlExistsAction',
-            
 	    );
 	}
 
 
-	public function actionIndex(){
-		$CO2DomainName = isset( Yii::app()->params["CO2DomainName"]) ? 
-								Yii::app()->params["CO2DomainName"] : "CO2";
+    public function actionIndex(){
+        $CO2DomainName = isset( Yii::app()->params["CO2DomainName"]) ? 
+                                Yii::app()->params["CO2DomainName"] : "CO2";
 
         Yii::app()->theme = "CO2";
         Yii::app()->session["theme"] = "CO2";
         $params = CO2::getThemeParams();
         
         $hash = $params["pages"]["#app.index"]["redirect"];
-    	
+        
         $params = array("type" => @$type );
 
         if(!@$hash || @$hash=="") $hash="search";
@@ -46,8 +45,16 @@ class AppController extends CommunecterController {
         if(@$hash == "web"){
             self::actionWeb();
         }else{
-    	   echo $this->renderPartial($hash, $params, true);
-	    }
+           echo $this->renderPartial($hash, $params, true);
+        }
+    }
+
+
+    public function actionWelcome(){
+        //CO2Stat::incNbLoad("co2-welcome");
+
+        $params = array();
+        echo $this->renderPartial("welcome", $params, true);
     }
 
 
@@ -72,8 +79,6 @@ class AppController extends CommunecterController {
     	$params = array("myWebFavorites"=>$myWebFavorites);
     	echo $this->renderPartial("web", $params, true);
     }
-
-
 
     public function actionReferencement(){ //kgougle
     	CO2Stat::incNbLoad("co2-referencement");
@@ -116,7 +121,7 @@ class AppController extends CommunecterController {
         //var_dump($query);// exit;
     	$medias = PHDB::findAndSortAndLimitAndIndex("media", $query, array("date"=>-1) , $indexStep, $indexMin);
     	
-        $params = array("medias" => $medias );
+        $params = array("medias" => $medias, "indexMin" => @$indexMin, "indexMax" => @$indexMax );
 
         CO2Stat::incNbLoad("co2-live");
 
@@ -161,15 +166,11 @@ class AppController extends CommunecterController {
         echo $this->renderPartial("live", $params, true);
     }
 
-
-
 	public function actionAgenda(){
 		CO2Stat::incNbLoad("co2-agenda");	
         $params = array("type" => "events");
     	echo $this->renderPartial("search", $params, true);
 	}
-
-
 
 	public function actionPower(){
 		CO2Stat::incNbLoad("co2-power");	
@@ -177,15 +178,60 @@ class AppController extends CommunecterController {
     	echo $this->renderPartial("search", $params, true);
 	}
 
+    public function actionAdmin(){
+        CO2Stat::incNbLoad("co2-admin");   
+        $params = array();
+        echo $this->renderPartial("admin", $params, true);
+    }
 
-	public function actionPage($type, $id){
+    public function actionRooms($type,$id){ exit;
+        CO2Stat::incNbLoad("co2-rooms");    
+        $params = array("id" => @$id,
+                        "type" => @$type
+                        );
+        //print_r($params);
+        echo $this->renderPartial("rooms", $params, true);
+    }
+
+
+	public function actionPage($type, $id, $view=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
+        //var_dump($type); exit;
+            
+        if( $type == Person::COLLECTION  || $type == Event::COLLECTION || 
+            $type == Project::COLLECTION || $type == Organization::COLLECTION )    
+            $element = Element::getByTypeAndId($type, $id);
+
+        else if($type == News::COLLECTION){
+            $element = News::getById($id);
+        }
+
+        else if($type == Classified::COLLECTION){
+            $element = Classified::getById($id);
+        }
+        else if($type == Poi::COLLECTION){
+            $element = Poi::getById($id);
+        }
+        else if($type == Survey::COLLECTION){
+            $element = Survey::getById($id);
+        }
+
+        if(@$element["parentId"] && @$element["parentType"])
+            $element['parent'] = Element::getByTypeAndId( $element["parentType"], $element["parentId"]);
+        if(@$element["organizerId"] && @$element["organizerType"])
+            $element['organizer'] = Element::getByTypeAndId( $element["organizerType"], $element["organizerId"]);
+
         $params = array("id" => @$id,
                         "type" => @$type,
+                        "view" => @$view,
+                        "dir" => @$dir,
                         "subdomain" => "page",
                         "mainTitle" => "Page perso",
-                        "placeholderMainSearch" => "");
+                        "placeholderMainSearch" => "",
+                        "element" => $element);
 
+        $params = Element::getInfoDetail($params, $element, $type, $id);
+        
     	echo $this->renderPartial("page", $params, true);
 	}
 
@@ -201,4 +247,106 @@ class AppController extends CommunecterController {
         
         echo $this->renderPartial("city", array("insee"=> $insee, "postalCode" => $postalCode), true);
     }
+
+
+    public function actionSendMailFormContact(){
+        function rpHash($value) { 
+            $hash = 5381; 
+            $value = strtoupper($value); 
+            for($i = 0; $i < strlen($value); $i++) { 
+                $hash = (leftShift32($hash, 5) + $hash) + ord(substr($value, $i)); 
+            } 
+            return $hash; 
+        } 
+         
+        // Perform a 32bit left shift 
+        function leftShift32($number, $steps) { 
+            // convert to binary (string) 
+            $binary = decbin($number); 
+            // left-pad with 0's if necessary 
+            $binary = str_pad($binary, 32, "0", STR_PAD_LEFT); 
+            // left shift manually 
+            $binary = $binary.str_repeat("0", $steps); 
+            // get the last 32 bits 
+            $binary = substr($binary, strlen($binary) - 32); 
+            // if it's a positive number return it 
+            // otherwise return the 2's complement 
+            return ($binary{0} == "0" ? bindec($binary) : 
+                -(pow(2, 31) - bindec(substr($binary, 1)))); 
+        } 
+
+       
+        if (rpHash($_POST['captchaUserVal']) == $_POST['captchaHash']){
+            Mail::sendMailFormContact($_POST["emailSender"], $_POST["names"], $_POST["subject"], $_POST["contentMsg"]);
+            
+            $res = array("res"=>true, "captcha"=>true);  
+            Rest::json($res); exit;
+        }else{
+            $res = array("res"=>false, "captcha"=>false, "msg"=>"Code de sécurité incorrecte");  
+            Rest::json($res); exit;
+        }
+
+        $res = array("res"=>false, "msg"=>"Une erreur inconnue est survenue. Sorry", "telalpha"=>"96.53.57");  
+        Rest::json($res);
+        exit;
+    }
+
+    public function actionSendMailFormContactPrivate(){
+        function rpHash($value) { 
+            $hash = 5381; 
+            $value = strtoupper($value); 
+            for($i = 0; $i < strlen($value); $i++) { 
+                $hash = (leftShift32($hash, 5) + $hash) + ord(substr($value, $i)); 
+            } 
+            return $hash; 
+        } 
+         
+        // Perform a 32bit left shift 
+        function leftShift32($number, $steps) { 
+            // convert to binary (string) 
+            $binary = decbin($number); 
+            // left-pad with 0's if necessary 
+            $binary = str_pad($binary, 32, "0", STR_PAD_LEFT); 
+            // left shift manually 
+            $binary = $binary.str_repeat("0", $steps); 
+            // get the last 32 bits 
+            $binary = substr($binary, strlen($binary) - 32); 
+            // if it's a positive number return it 
+            // otherwise return the 2's complement 
+            return ($binary{0} == "0" ? bindec($binary) : 
+                -(pow(2, 31) - bindec(substr($binary, 1)))); 
+        } 
+
+       
+        if (rpHash($_POST['captchaUserVal']) == $_POST['captchaHash']){
+
+            $element = Element::getByTypeAndId($_POST["typeReceiverParent"], $_POST["idReceiverParent"]);
+            $idReceiver = $_POST["idReceiver"];
+
+            if( @$element && !empty($element) && 
+                !empty($element["contacts"]) && 
+                !empty($element["contacts"][$idReceiver]) && 
+                !empty($element["contacts"][$idReceiver]["email"]) ){
+                
+                $emailReceiver = $element["contacts"][$idReceiver]["email"];
+                error_log("EMAIL FOUND : ".$emailReceiver);
+
+                if(!empty($emailReceiver))
+                    Mail::sendMailFormContactPrivate($_POST["emailSender"], $_POST["names"], $_POST["subject"], 
+                                                 $_POST["contentMsg"], $emailReceiver);
+                
+                $res = array("res"=>true, "captcha"=>true);  
+                Rest::json($res); exit;
+            }
+        }else{
+            $res = array("res"=>false, "captcha"=>false, "msg"=>"Code de sécurité incorrecte");  
+            Rest::json($res); exit;
+        }
+
+        $res = array("res"=>false, "msg"=>"Une erreur inconnue est survenue. Sorry", "telalpha"=>"96.53.57");  
+        Rest::json($res);
+        exit;
+    }
+
+    
 }

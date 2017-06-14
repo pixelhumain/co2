@@ -338,7 +338,7 @@ function buildLineHTML(newsObj,idSession,update)
 			authorId=newsObj.author.id;
 		else
 			authorId=newsObj.author._id.$id;
-			urlTarget = 'href="#person.detail.id.'+authorId+'" onclick="url.loadByHash(\'#person.detail.id.'+authorId+'\')"';
+			urlTarget = 'href="#person.detail.id.'+authorId+'" onclick="urlCtrl.loadByHash(\'#person.detail.id.'+authorId+'\')"';
 		if (newsObj.author.name.length > 25)
 			nameAuthor = newsObj.author.name.substr(0,25)+"...";
 		else
@@ -527,7 +527,7 @@ function buildHtmlUrlAndActionObject(obj){
 			titleAction = "a créé un besoin";
 		}
 
-		url = 'href="#'+redirectTypeUrl+'.detail.id.'+id+'" onclick="url.loadByHash(\'#'+redirectTypeUrl+'.detail.id.'+id+'\')"';
+		url = 'href="#'+redirectTypeUrl+'.detail.id.'+id+'" onclick="urlCtrl.loadByHash(\'#'+redirectTypeUrl+'.detail.id.'+id+'\')"';
 	}
 	object=new Object;
 	object.url= url,
@@ -687,6 +687,7 @@ function voteCheckAction(idVote, newsObj) {
 }
 
 function manageModeContext(id) {
+	mylog.log("manageModeContext");
 	listXeditables = [/*'#newsContent'+id,*/ '#newsTitle'+id];
 	if (mode == "view") {
 		//$('.editable-project').editable('toggleDisabled');
@@ -705,6 +706,7 @@ function manageModeContext(id) {
 }
 
 function initXEditable() {
+	mylog.log("initXEditable");
 	$.fn.editable.defaults.mode = 'inline';
 	$('.editable-news').editable({
     	url: baseUrl+"/"+moduleId+"/news/updatefield", //this url will not be used for creating new job, it is only for update
@@ -748,9 +750,18 @@ function initXEditable() {
 function checkAndCutLongString(text,limitLength,idNews){
 	if(text.length > limitLength){
 		allText=text;
-		text=text.substring(0,limitLength);
+		text=text.substring(0,limitLength)+
+				"<span class='ppp'> ...</span>"+
+				"<span class='endtext hidden'>"+text.substring(limitLength, text.length)+"</span>";
+
 		if(limitLength==500){
-			text += "<span class='removeReadNews'> ...<br><a href='javascript:;' onclick='blankNews(\""+idNews+"\")'>Lire la suite</a></span><div class='allText' style='display:none;'>"+allText+"</div>";
+			text += //"<span class='removeReadNews'> ...
+						"<br>"+
+						"<button class='btn btn-xs btn-link letter-blue margin-top-10 btn-showmorenews' data-newsid='"+idNews+"' target='_blank'>"+
+							"Lire la suite"+
+						"</button>"+
+					"</span>";
+					// "<div class='allText' style='display:none;'>"+allText+"</div>";
 		}else{
 			text += " ..."
 		}
@@ -933,7 +944,7 @@ function addMentionInText(textNews,mentions){
    		else
    			controler = "person"; 
    		textNews=array[0]+
-   					"<span onclick='url.loadByHash(\"#"+controler+".detail.id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+   					"<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
    						value.name+
    					"</span>"+
    				array[1];

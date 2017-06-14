@@ -13,6 +13,15 @@
 ----------------------------------------------------
 ----------------------------------------------------
 * Version 0.2
+
+** @Rapha
+*** initialise les multiscopes
+/co2/datamigration/InitMultiScope
+*** ajout des geoShape au ville qui en ont pas
+/co2/datamigration/AddGeoShapeMissing
+*** change le type des telephones de object en array
+/co2/datamigration/ChangePhoneObjectToArray
+
 ** @Bouboule : 
 **** Bash de reprise des data dans les chart des projets
 /communecter/datamigration/RefactorChartProjectData
@@ -26,6 +35,31 @@ ph/communecter/datamigration/ObjectObjectTypeNewsToObjectType
 * Version 0.17
 ** @Rapha : Ajout un attribu descriptionHtml = true
 /communecter/datamigration/DescInHtml
+
+* Hot fix 0.16.3
+** @Rapha : Corrige les mauvais types des organisations
+db.organizations.find({$and: [ { type :  { $ne: "NGO" } }, { type :  { $ne: "Group" } } , { type :  { $ne: "LocalBusiness" } }, { type :  { $ne: "GovernmentOrganization" } } ] }
+).forEach(function(doc)
+{
+  if(typeof doc.type != "undefined"){
+    if(doc.type == "Entreprise" )
+      db.organizations.update({"_id":doc._id},{'$set':{'type': 'LocalBusiness'}});
+
+    if(doc.type == "Association" )
+      db.organizations.update({"_id":doc._id},{'$set':{'type': 'NGO'}});
+
+    if(doc.type == "Groupe Gouvernemental" )
+      db.organizations.update({"_id":doc._id},{'$set':{'type': 'GovernmentOrganization'}});
+
+    if(doc.type == "Groupe" )
+      db.organizations.update({"_id":doc._id},{'$set':{'type': 'Group'}});
+
+    print( '"'+doc.name+'" => '+ doc.type ); 
+  }else{
+    db.organizations.update({"_id":doc._id},{'$set':{'type': 'Group'}});
+    print( '"'+doc.name+'" => else' ); 
+  }
+});
 
 
 * Hot Fix 0.16.1
@@ -587,6 +621,30 @@ db.organizations.find().forEach(function(doc){
     } 
 });
 
+TANGO - 22/05/2017
+---------------------------------------------------
+batch refactor news for SHARE
+---------------------------------------------------
+
+db.news.find({}).forEach(function(doc){ 
+    if(typeof doc.targetIsAuthor !="undefined" && doc.targetIsAuthor == "true"){
+        db.news.update({"_id":doc._id},{'$set':
+        {'sharedBy':[
+            {'id': doc.target.id,
+             'type':doc.target.type,
+             'updated': doc.created 
+            }]
+        }})
+    }else{
+        db.news.update({"_id":doc._id},{'$set':
+        {'sharedBy':[
+            {'id': doc.author,
+             'type':'citoyens',
+             'updated': doc.created 
+            }]
+        }})
+     }
+})
 
 
 ---------------------------------------------------

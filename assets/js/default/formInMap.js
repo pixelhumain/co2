@@ -449,6 +449,7 @@ var formInMap = {
 					dyFInputs.locationObj.addLocationToForm(locObj);
 				}
 				$("#form-street").val($('#street_sumery_value').html());
+				$(".locationBtn").html("<i class='fa fa-home'></i> Adresse secondaire");
 				showMap(false);
 				Sig.clearMap();
 				if(location.hash != "#referencement" && location.hash != "#web")

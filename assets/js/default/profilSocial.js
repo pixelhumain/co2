@@ -68,7 +68,7 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		mylog.log("open-confidentiality");
 		toogleNotif(false);
-		smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").val()));
+		smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").html()));
 		bindLBHLinks();
 	});
 
@@ -530,7 +530,10 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){
-				html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
+				colName=col;
+				if(col=="favorites")
+					colName="favoris";
+				html += "<h4 class='col-md-12 col-sm-12 col-xs-12'><i class='fa fa-star'></i> "+colName+"<hr></h4>";
 				console.log("list", val);
 				if(val.count==0)
 					html +="<span class='col-md-12 col-sm-12 col-xs-12 text-dark margin-bottom-20'>Aucun élément dans cette collection</span>";
@@ -695,7 +698,9 @@ function inintDescs() {
 	if(edit == true || openEdition== true)
 		descHtmlToMarkdown();
 	mylog.log("after");
+	mylog.log("inintDescs", $("#descriptionMarkdown").html());
 	var descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
 	$("#descriptionAbout").html(descHtml);
 	$("#descProfilsocial").html(descHtml);
+	mylog.log("descHtml", descHtml);
 }

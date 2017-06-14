@@ -404,7 +404,7 @@
 	            <small>Faire connaitre un projet<br>Trouver du soutien<br>Construire une communauté</small>
 	        </button>
 
-			<button data-form-type="contact"  data-dismiss="modal"
+			<button data-form-type="contactPoint"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-blue hide-citoyens">
 	            <h6><i class="fa fa-envelope fa-2x bg-blue"></i><br> Contact</h6>
 	            <small>Définir les rôles de chacun<br>Faciliter la communication<br>Interne et externe</small>
@@ -559,6 +559,9 @@
 			$(".createProjectBtn").hide()
 		else 
 			$(".createProjectBtn").show()
+
+		$(".hide-"+contextData.type).hide();
+		
 
 		if(subView!=""){
 			if(subView=="gallery")

@@ -2854,22 +2854,37 @@ var dyFInputs = {
 			if( locObj.address.addressCountry)
 				strHTML += locObj.address.addressCountry;
 			if( locObj.address.postalCode)
-				strHTML += " ,"+locObj.address.postalCode;
+				strHTML += ", "+locObj.address.postalCode;
 			if( locObj.address.addressLocality)
-				strHTML += " ,"+locObj.address.addressLocality;
+				strHTML += ", "+locObj.address.addressLocality;
 			if( locObj.address.streetAddress)
-				strHTML += " ,"+locObj.address.streetAddress;
+				strHTML += ", "+locObj.address.streetAddress;
 			var btnSuccess = "";
 			var locCenter = "";
 			if( dyFInputs.locationObj.countLocation == 0){
 				btnSuccess = "btn-success";
-				locCenter = "<span class='lblcentre'>(localité centrale)</span>";
+				locCenter = "<span class='lblcentre'> addresse principale</span>";
 			}
 			
-			strHTML = "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+")' class=' locationEl"+dyFInputs.locationObj.countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
-					  "<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
-					  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
-			$(".locationlocation").prepend(strHTML);
+			strHTML = 
+				"<div class='col-md-12 col-sm-12 col-xs-12 text-left shadow2 padding-15 margin-top-15 margin-bottom-15'>" +
+					"<span class='pull-left locationEl"+dyFInputs.locationObj.countLocation+" locel text-red bold'>"+
+						"<i class='fa fa-home fa-2x'></i> "+
+						strHTML+
+					"</span> "+
+
+					"<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+")' "+
+						"class=' locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+
+						"<i class='fa fa-times'></i> Effacer"+
+					"</a>"+
+
+					"<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' "+
+						"class='margin-right-5 centers pull-right center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm "+btnSuccess+"'> "+
+						"<i class='fa fa-map-marker'></i> "+locCenter+
+					"</a>" +
+					
+				"</div>";
+			$(".locationlocation").append(strHTML);
 			dyFInputs.locationObj.countLocation++;
 		},
 		copyPCForm2Dynform : function (postalCodeObj) { 
@@ -2917,7 +2932,7 @@ var dyFInputs = {
 					delete v.center;
 			})
 			$(".centers").removeClass('btn-success');
-			$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>(localité centrale)</span>");
+			$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'> addresse principale</span>");
 			dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocations[ix];
 			dyFInputs.locationObj.elementLocations[ix].center = true;
 		}

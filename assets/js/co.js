@@ -1671,7 +1671,7 @@ function globalSearch(searchValue,types,contact){
 				var htmlIco ="<i class='fa fa-users'></i>";
 				if(elem.type){
 					typeIco = elem.type;
-					htmlIco ="<i class='fa fa-"+typeObj[elem.type].icon +"'></i>";
+					htmlIco ="<i class='fa fa-"+dyFInputs.get(elem.type).icon +"'></i>";
 				}
 				where = "";
 				if (elem.address != null) {
@@ -1788,7 +1788,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
             //replace thmubnail position text
             $("#total_imgs").html((img_arr_pos) +' of '+ total_images);
         }
-    });
+    }); 
     var getUrl  = $(className); //url to extract from text field
     var appendClassName = appendClassName;
     getUrl.bind("input keyup",function(e) { //user types url in text field        

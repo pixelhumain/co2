@@ -331,7 +331,7 @@ class AppController extends CommunecterController {
                 $emailReceiver = $element["contacts"][$idReceiver]["email"];
                 error_log("EMAIL FOUND : ".$emailReceiver);
 
-                if(!empty(@$emailReceiver))
+                if(!empty($emailReceiver))
                     Mail::sendMailFormContactPrivate($_POST["emailSender"], $_POST["names"], $_POST["subject"], 
                                                  $_POST["contentMsg"], $emailReceiver);
                 

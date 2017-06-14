@@ -258,7 +258,7 @@ var Login = function() {
 		});
 	};
 
-	var runRegisterValidator = function() { console.log("runRegisterValidator");
+	var runRegisterValidator = function() { console.log("runRegisterValidator!");
 		var form3 = $('.form-register');
 		var errorHandler3 = $('.errorHandler', form3);
 		var createBtn = null;

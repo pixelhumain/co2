@@ -530,6 +530,7 @@
 ?>
 
 <script type="text/javascript">
+	
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
 	mylog.log("init contextData", contextData);
     var params = <?php echo json_encode(@$params); ?>; 

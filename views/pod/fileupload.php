@@ -44,8 +44,9 @@
 <script type="text/javascript">
 	
 	jQuery(document).ready(function() {
+		
 		var id = "<?php echo $itemId ?>";
-		//var sliderKey = "<?php echo Document::IMG_SLIDER; ?>";
+		//var sliderKey = "<?php// echo Document::IMG_SLIDER; ?>";
 		var editFile = <?php echo ($editMode) ? 'true':'false'; ?>;
 		var type = "<?php echo $type ?>";
 		var contentId = "<?php echo Document::IMG_PROFIL ?>";

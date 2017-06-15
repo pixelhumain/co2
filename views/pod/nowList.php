@@ -5,6 +5,9 @@
     hr.angle-down{
         border-color: #e6344d;
     }
+    .el-nowList{
+        cursor: pointer;
+    }
 </style>
 
 <?php if(empty($result) && !@Yii::app()->session["userId"]){ ?>
@@ -49,7 +52,7 @@
         <?php } ?>
     <?php } else { ?>
         <h6 class="no-margin header-nowList" style="font-size:12px">
-            <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> Activité territoriale !<br>
+            <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> Activité territoriale<br>
              <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope; ?></small>
         </h6>
         <hr class="angle-down">
@@ -68,8 +71,9 @@
                 $class = "no-img";
             //echo "class:".$class;
         ?>
-        <a href="#page.type.<?php echo @$v["type"] ?>.id.<?php echo (@$v["_id"]?$v["_id"]:@$v["id"]); ?>"  
-            class="shadow2 border-left-<?php echo @$specs["text-color"]?> margin-bottom-5 col-xs-12 no-padding el-nowList <?php echo $type?> <?php echo $class; ?>" data-type="<?php echo @$v["type"] ?>" data-id="<?php echo (@$v["_id"]?$v["_id"]:@$v["id"]); ?>">
+        <!-- <a href="#page.type.<?php echo @$v["type"] ?>.id.<?php echo (@$v["_id"]?$v["_id"]:@$v["id"]); ?>"  -->
+
+        <div class="shadow2 border-left-<?php echo @$specs["text-color"]?> margin-bottom-5 col-xs-12 no-padding el-nowList <?php echo $type?> <?php echo $class; ?>" data-type="<?php echo @$v["type"] ?>" data-id="<?php echo (@$v["_id"]?$v["_id"]:@$v["id"]); ?>">
             <div class="pull-left no-padding cnt-img">
                 <div class="add2fav elemt_img">
                     <img src="<?php echo $img ?>" class="pull-left hidden-xs">
@@ -102,7 +106,7 @@
 
                 <?php //if( @$v["creator"] ) echo ">".Element::getLink( Person::COLLECTION,@$v["creator"] )?>
             </div>
-        </a>
+        </div>
         <div class="previewLocalActivity hidden" id='localActivity<?php echo @$v["type"] ?><?php echo (@$v["_id"]?$v["_id"]:@$v["id"]); ?>'>
         </div>
         <?php } ?>
@@ -155,6 +159,7 @@ jQuery(document).ready(function() {
             bindLBHLinks();
             initBtnShare();
         }
+
     });
 
     $(".btn-communecter").click(function(){

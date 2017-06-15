@@ -4,12 +4,22 @@ dynForm = {
 	    icon : "user",
 	    type : "object",
 	    onLoads : {
+	    	"sub" : function(){
+
+    		 	
+	    	},
 	    	//pour creer un contact depuis un element existant
 	    	"contact" : function(){
 	    		if( contextData && contextData.id )
 					$("#ajaxFormModal #parentId").val( contextData.id );
     			if( contextData && contextData.type )
     				$("#ajaxFormModal #parentType").val( contextData.type ); 
+				
+				console.log("input name ? ", $('#ajaxFormModal #name').length);
+				$('#ajaxFormModal #name').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'});
+				$('#ajaxFormModal #email').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'});
+				$('#ajaxFormModal #role').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'});
+				$('#ajaxFormModal #telephone').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'});
 			}
 	    },
 	    afterSave : function(){

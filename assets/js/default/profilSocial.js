@@ -7,6 +7,7 @@ function initDateHeaderPage(params){
 function getCroppingModal(){
 	
 }
+
 function menuLeftShow(){
 	if($("#menu-left-container").hasClass("hidden-xs"))
 		$("#menu-left-container").removeClass("hidden-xs");
@@ -28,39 +29,48 @@ function bindButtonMenu(){
 	$(".btn-start-newsstream").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
-		history.pushState(null, "New Title", hashUrlPage);
+		location.hash=hashUrlPage
+		//history.pushState(null, "New Title", hashUrlPage);
 		loadNewsStream(true);
 	});
 	$(".btn-start-mystream").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
-		if(contextData.type=="citoyens" && userId==contextData.id)
-			history.pushState(null, "New Title", hashUrlPage+".view.mystream");
-		else
-			history.pushState(null, "New Title", hashUrlPage);
+		if(contextData.type=="citoyens" && userId==contextData.id){
+			location.hash=hashUrlPage+".view.mystream";
+			//history.pushState(null, "New Title", hashUrlPage+".view.mystream");
+		}
+		else{
+			location.hash=hashUrlPage;
+			//history.pushState(null, "New Title", hashUrlPage);
+		}
 		loadNewsStream(false);
 	});
 	$("#btn-start-gallery").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.gallery");
+		location.hash=hashUrlPage+".view.gallery";
+		//history.pushState(null, "New Title", hashUrlPage+".view.gallery");
 		//location.search="?view=gallery";
 		loadGallery();
 	});
 	$(".btn-start-notifications").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
-		history.pushState(null, "New Title", hashUrlPage+".view.notifications");
+		location.hash=hashUrlPage+".view.notifications";
+		//history.pushState(null, "New Title", hashUrlPage+".view.notifications");
 		//location.search="?view=notifications";
 		loadNotifications();
 	});
 	$(".btn-start-chart").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.chart");
+		location.hash=hashUrlPage+".view.chart";
+		//history.pushState(null, "New Title", hashUrlPage+".view.chart");
 		loadChart();
 	});
 	$(".btn-show-activity").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.history");
+		location.hash=hashUrlPage+".view.history";
+		//history.pushState(null, "New Title", hashUrlPage+".view.history");
 		loadHistoryActivity();
 	});
 	
@@ -68,7 +78,7 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		mylog.log("open-confidentiality");
 		toogleNotif(false);
-		smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").val()));
+		smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").html()));
 		bindLBHLinks();
 	});
 
@@ -79,7 +89,8 @@ function bindButtonMenu(){
 	});
 	$(".edit-chart").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.editChart");
+		location.hash=hashUrlPage+".view.editChart";
+		//history.pushState(null, "New Title", hashUrlPage+".view.editChart");
 		loadEditChart();
 	});
 	$(".btn-open-collection").click(function(){
@@ -89,7 +100,8 @@ function bindButtonMenu(){
 
 	$("#btn-start-detail").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.detail");
+		location.hash=hashUrlPage+".view.detail";
+		//history.pushState(null, "New Title", hashUrlPage+".view.detail");
 		loadDetail();
 	});
 
@@ -107,13 +119,15 @@ function bindButtonMenu(){
 
 	$("#btn-start-urls").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.urls");
+		location.hash=hashUrlPage+".view.urls";
+		//history.pushState(null, "New Title", hashUrlPage+".view.urls");
 		loadUrls();
 	});
 
 	$("#btn-start-contacts").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.contacts");
+		location.hash=hashUrlPage+".view.contacts";
+		//history.pushState(null, "New Title", hashUrlPage+".view.contacts");
 		loadContacts();
 	});
 
@@ -155,18 +169,7 @@ function bindButtonMenu(){
 		dyFObj.openForm(form, null, dataUpdate);
 	});
 
-	//window select open form type (selectCreate)
-	$(".btn-open-form").click(function(){
-        var typeForm = $(this).data("form-type");
-        mylog.log("test", $(this).data("form-subtype")),
-        currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
-
-        //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
-        if(contextData && contextData.type && contextData.id )
-            dyFObj.openForm(typeForm,"sub");
-        else
-            dyFObj.openForm(typeForm);
-    });
+	bindButtonOpenForm();
 
     $("#div-select-create").mouseleave(function(){
     	$("#div-select-create").hide(200);
@@ -258,6 +261,11 @@ function bindButtonMenu(){
     	}
     });
 
+    $("#inviteBtn").on("click", function(){
+    	mylog.log("invite");
+    	$("#modal-invite").modal("show");
+    });
+
     $("#btn-delete-element").on("click", function(){
     	mylog.log("Delete Element");
     	$("#modal-delete-element").modal("show");
@@ -274,16 +282,33 @@ function bindButtonMenu(){
 
 }
 
+function bindButtonOpenForm(){
+	//window select open form type (selectCreate)
+	$(".btn-open-form").click(function(){
+        var typeForm = $(this).data("form-type");
+        mylog.log("test", $(this).data("form-subtype")),
+        currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
+
+        //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
+        if(contextData && contextData.type && contextData.id )
+            dyFObj.openForm(typeForm,"sub");
+        else
+            dyFObj.openForm(typeForm);
+    });
+}
+
 function loadDataDirectory(dataName, dataIcon, edit){
 	showLoader('#central-container');
-	history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
+	location.hash=hashUrlPage+".view.directory.dir."+dataName;
+	//history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
 	// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 				function(data){ 
+					var type = dataName == "poi" ? dataName : null;
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
-					displayInTheContainer(data, dataName, dataIcon, "", edit);
+					displayInTheContainer(data, dataName, dataIcon, type, edit);
 				}
 	,"html");
 }
@@ -339,18 +364,19 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 
 	}
 
-	if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
-		if(dataName == "collections"){
-			html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
-	    	html +=	'<i class="fa fa-plus"></i> Ajouter Collection</a>' ; 
+	if( openEdition || edit ){
+		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
+			if(dataName == "collections"){
+				html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
+		    	html +=	'<i class="fa fa-plus"></i> Créer une nouvelle collection</a>' ; 
+			}
+			else {
+				var elemSpec = dyFInputs.get(dataName);
+				html += '<button class="tooltips btn btn-sm btn-success pull-right btn-open-form" data-form-type="'+elemSpec.ctrl+'">';
+		    	html +=	'<i class="fa fa-plus"></i> Créer '+trad[ elemSpec.ctrl ]+'</button>' ;  
+		    }
 		}
-		else {
-			var elemSpec = dyFInputs.get(dataName);
-			html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \''+elemSpec.ctrl+'\',\'sub\')">';
-	    	html +=	'<i class="fa fa-plus"></i> Ajouter '+trad[ elemSpec.ctrl ]+'</a>' ;  
-	    }
 	}
-
 	return html;
 }
 
@@ -392,7 +418,30 @@ function loadNewsStream(isLiveBool){
 		},"html");
 	}, 700);
 }
-
+function loadSettings(){
+	mylog.log("confidentiality", seePreferences);
+	loadNewsStream(true);
+	history.pushState(null, "New Title", hashUrlPage);
+	$("#modal-confidentiality").modal("show");
+	if(seePreferences=="true"){
+		param = new Object;
+    	param.name = "seePreferences";
+    	param.value = false;
+    	param.pk = contextData.id;
+		$.ajax({
+	        type: "POST",
+	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+	        data: param,
+	       	dataType: "json",
+	    	success: function(data){
+		    	if(data.result){
+					$("#divSeePreferencesHeader").addClass("hidden");
+					$('#editConfidentialityBtn').removeClass("btn-red");
+		    	}
+		    }
+		});
+	}
+}
 function loadGallery(){
 	toogleNotif(false);
 	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id;
@@ -487,6 +536,9 @@ function loadContacts(){
 			    		//console.log('contactMail', contactMail);
 			    		$("#formContact .contact-email").html(contactMail);
 			    		$("#formContact #contact-name").html(contactName);
+
+			    		$("#formContact #emailSender").val(userConnected.email);
+			    		$("#formContact #name").val(userConnected.name);
 			    		
 			    		$("#formContact #form-control").val("");
 			    		
@@ -507,25 +559,42 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	var n=0;
 	$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
 	if(n>0){
-
+		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 		var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
-						getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
+						thisTitle+
 					"<hr></div>";
-
+		
+		
+		mapElements = new Array();
+		if(mapElements.length==0) mapElements = data;
+        else $.extend(mapElements, data);
+		
 		if(dataName != "collections"){
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){
-				html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
-				$.each(val.list, function(key, elements){ 
-					html += directory.showResultsDirectoryHtml(elements, key);
-				});
+				colName=col;
+				if(col=="favorites")
+					colName="favoris";
+				html += "<h4 class='col-md-12 col-sm-12 col-xs-12'><i class='fa fa-star'></i> "+colName+"<hr></h4>";
+				console.log("list", val);
+				if(val.count==0)
+					html +="<span class='col-md-12 col-sm-12 col-xs-12 text-dark margin-bottom-20'>Aucun élément dans cette collection</span>";
+				else{
+					$.each(val.list, function(key, elements){ 
+						html += directory.showResultsDirectoryHtml(elements, key);
+					});
+				}
 			});
 		}
 		toogleNotif(false);
 		$("#central-container").html(html);
 		initBtnLink();
 		initBtnAdmin();
+		bindButtonOpenForm();
+		
+		Sig.showMapElements(Sig.map, data, "", thisTitle);
+    
 	}else{
 		var nothing = "Aucun";
 		if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
@@ -539,6 +608,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 											"</span>");
 		toogleNotif(false);
 	}
+
 }
 
 function loadStream(indexMin, indexMax, isLiveBool){ mylog.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
@@ -676,7 +746,13 @@ function inintDescs() {
 	if(edit == true || openEdition== true)
 		descHtmlToMarkdown();
 	mylog.log("after");
-	var descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
+	mylog.log("inintDescs", $("#descriptionMarkdown").html());
+	var descHtml = "<i>"+trad["notSpecified"]+"</i>";
+	if($("#descriptionMarkdown").html().length > 0){
+		descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
+	}
+	
 	$("#descriptionAbout").html(descHtml);
 	$("#descProfilsocial").html(descHtml);
+	mylog.log("descHtml", descHtml);
 }

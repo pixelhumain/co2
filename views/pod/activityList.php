@@ -97,17 +97,18 @@ $countries= OpenData::getCountriesList();
 									|| $value["object"]["displayName"]=="telephone.mobile" 
 										|| $value["object"]["displayName"]=="telephone.fixe"
 											|| $value["object"]["displayName"]=="tags"){
-							foreach ($value["object"]["displayValue"] as $key => $tel) {
-								if($key > 0)
-									echo ", ";
-								echo $tel;
-							}
+							if(@$value["object"]["displayValue"]){
+								foreach ($value["object"]["displayValue"] as $key => $tel) {
+									if($key > 0)
+										echo ", ";
+									echo $tel;
+								}
+							} else 
+								echo "champs vidés";
 						} else if (@$value["object"]["displayName"] == "organizer") {
-							if ($value["object"]["displayValue"]["organizerType"] == "dontKnow") {
-								$organizer = "";
-							} else {
+							$organizer = "";
+							if (@$value["object"]["displayValue"] && $value["object"]["displayValue"]["organizerType"] != "dontKnow")
 								$organizer = Element::getInfos(@$value["object"]["displayValue"]["organizerType"], @$value["object"]["displayValue"]["organizerId"]);	
-							}
 							echo empty($organizer["name"]) ? "Inconnu" : @$value["object"]["displayValue"]["organizerType"]." / ".$organizer["name"];
 						} else if (@$value["object"]["displayName"] == "contacts") {
 							if (empty($value["object"]["displayValue"]) || $value["object"]["displayValue"] == "dontKnow") {
@@ -125,8 +126,10 @@ $countries= OpenData::getCountriesList();
 							if(isset($contacts["tel"]))
 								echo " ".Yii::t("common", "Phone")." : ".$contacts["tel"];
 						
-						} else if (!empty($value["object"]["displayValue"]) )
+						} else if(@$value["object"]["displayValue"] && !empty($value["object"]["displayValue"]) )
 							echo Yii::t("common",$value["object"]["displayValue"]);
+						else
+							echo "supprimé";
 						
 							
 						echo "</span>"

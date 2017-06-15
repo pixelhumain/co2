@@ -98,8 +98,18 @@ Liste des notifications déjà lues => #370 #453
 * ************************************************************    
 * Version 0.2  : en cours
 * ************************************************************  
-** @Tib 
-  [ ] bug notragora
+** @Tib
+[ ] on previews , activate keyboard navigation
+[X] personne.annonce > n'ouvre pas preview
+[X] ouvrir POI dans PREVIEW
+[ ] je peux ajouter une annonce sur un autre user ????
+[ ] ajouté POI sur all elements
+[X] Modifier annonce pour un citoyen formulaire pas afficher [[https://github.com/pixelhumain/co2/issues/213]]
+[ ] annonces url standalone
+  [ ] dynform : apostrophe dans les nom des suggestions 
+  [ ] not loggued > open dynform > login > opens dynform > should reload top bar as well 
+
+  [X] bug notragora
   [X] email communecter 
   [ ] tiers lieux ressources
     [ ] créer directement le lieux from create 

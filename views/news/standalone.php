@@ -8,13 +8,13 @@
     $cssAnsScriptFilesModule = array(
       // '/css/news/newsSV.css',
       '/js/comments.js',
-      '/css/news/index.css',	
+      '/css/news/index.css',
+      '/css/default/directory.css',	
 	  '/css/timeline2.css',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule,Yii::app()->theme->baseUrl."/assets");
 
 ?>
-
 <style>
     .timeline > li{
       width:100%;

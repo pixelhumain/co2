@@ -382,8 +382,8 @@
 											"markerPlace" 		: { ico : "map-marker", color : "red" 	},
 											"me" 				: { ico : "map-marker", color : "blue" 	},
 
-											"poi" 				: { ico : "info-circle", color : "dark" 	},
-											"poi.video" 		: { ico : "video-camera", color : "dark" 	},
+											"poi" 				: { ico : "map-marker", color : "green-poi" 	},
+											"poi.video" 		: { ico : "video-camera", color : "green-poi" 	},
 
 											"entry" 			: { ico : "gavel", color : "azure" 	},
 											"action" 			: { ico : "cogs", color : "lightblue2" 	},

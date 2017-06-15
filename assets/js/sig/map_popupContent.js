@@ -33,14 +33,14 @@
 			var ico = this.getIcoByType(data);
 			var color = this.getIcoColorByType(data);
 			var imgProfilPath =  Sig.getThumbProfil(data);
-			var icons = '<i class="fa fa-'+ ico + ' fa-'+ color +'"></i>';
+			var icons = '<i class="fa fa-'+ ico + ' text-'+ color +'"></i>';
 			
 			var typeElement = type;
 			if(type == "people") 		typeElement = "citoyens";
 			if(type == "citoyens") 		typeElement = "citoyens";
-			if(type == "organizations") typeElement = "organization";
-			if(type == "events") 		typeElement = "event";
-			if(type == "projects") 		typeElement = "project";
+			if(type == "organization") typeElement = "organizations";
+			if(type == "event") 		typeElement = "events";
+			if(type == "project") 		typeElement = "projects";
 			//mylog.log("type", type, "typeElement", typeElement);
 			
 			var icon = 'fa-'+ this.getIcoByType(data);

@@ -19,8 +19,12 @@ dynForm = {
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 	    		}
 	    	},
-	    	onload : function(){
-	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();
+	    	onload : function(data){
+	    		if(data && data.type){
+	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+data.type+"</h4>");
+					$(".sectionBtntagList").hide();
+	    		} else
+	    			$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();
 	    	},
 	    },
 	    beforeSave : function(){
@@ -37,7 +41,7 @@ dynForm = {
 	    },
 	    beforeBuild : function(){
 	    	dyFObj.setMongoId('poi',function(){
-	    		uploadObj.gotoUrl = (contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.poi" : location.hash;
+	    		uploadObj.gotoUrl = (contextData != null && contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.poi" : location.hash;
 	    	});
 	    },
 		afterSave : function(){
@@ -46,7 +50,7 @@ dynForm = {
 		    else 
 		    { 
 		        dyFObj.closeForm(); 
-		        urlCtrl.loadByHash( uploadObj.gotoUrl );
+		        urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 	        }
 	    },
 	    canSubmitIf : function () { 
@@ -90,7 +94,7 @@ dynForm = {
 	            		$(".typeBtntagList").show();
 	            		$(".sectionBtn").removeClass("active btn-dark-blue text-white");
 	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
-	            		$("#ajaxFormModal #type").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+	            		$("#ajaxFormModal #type").val( ( $(this).hasClass('active') ) ? $(this).data('key') : "" );
 						//$(".sectionBtn:not(.active)").hide();
 						
 						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");

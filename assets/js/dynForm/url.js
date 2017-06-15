@@ -16,9 +16,7 @@ dynForm = {
 					$("#ajaxFormModal #parentId").val( contextData.id );
     			if( contextData && contextData.type )
     				$("#ajaxFormModal #parentType").val( contextData.type ); 
-
-
-    		}
+    		},
 	    },
 	    afterSave : function(){
 			dyFObj.closeForm();
@@ -27,7 +25,7 @@ dynForm = {
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p><i class='fa fa-info-circle'></i> Si vous voulez ajouter un nouveau contact de façon a facilité les échanges</p>",
+                html:"<p><i class='fa fa-info-circle'></i> Partagez des liens qui vous intéresse, pour les rendre accessibles à tous.</p>",
             },
             title : dyFInputs.inputText("Nom", "Titre de l'URL", { required : true }),
 	        url : dyFInputs.inputText("URL du lien", "URL du lien", { required : true, url : true }),

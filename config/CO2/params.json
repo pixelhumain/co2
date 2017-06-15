@@ -102,17 +102,32 @@
 			"placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
 		},
 
-		"#city": {
-			"inMenu" : false, 
-			"useHeader" : false,
-			"open" : true,  
-			"subdomain" : "city", 
-			"subdomainName" : "City",
-			"hash":"#app.city",
-			"icon" : "university", 
-			"mainTitle" : "Communexion activée",
-			"placeholderMainSearch" : "rechercher ..."
-		},
+        "#power": {
+            "inMenu" : false, 
+            "useHeader" : true, 
+            "open" : false, 
+            "subdomain" : "power", 
+            "subdomainName" : "Power",
+            "hash":"#app.power",
+            "icon" : "hand-rock-o", 
+            "mainTitle" : "CO-démocratie",
+            "placeholderMainSearch" : "Rechercher ...",
+            "lblBtnCreate" : "Faire une proposition",
+            "colorBtnCreate" : "azure"
+        },
+
+
+        "#city": {
+            "inMenu" : false, 
+            "useHeader" : false,
+            "open" : true,  
+            "subdomain" : "city", 
+            "subdomainName" : "City",
+            "hash":"#app.city",
+            "icon" : "university", 
+            "mainTitle" : "Communexion activée",
+            "placeholderMainSearch" : "rechercher ..."
+        },
 
 		"#rooms": {
 			"inMenu" : false, 

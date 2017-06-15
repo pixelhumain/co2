@@ -404,7 +404,30 @@ function loadNewsStream(isLiveBool){
 		},"html");
 	}, 700);
 }
-
+function loadSettings(){
+	mylog.log("confidentiality", seePreferences);
+	loadNewsStream(true);
+	history.pushState(null, "New Title", hashUrlPage);
+	$("#modal-confidentiality").modal("show");
+	if(seePreferences=="true"){
+		param = new Object;
+    	param.name = "seePreferences";
+    	param.value = false;
+    	param.pk = contextData.id;
+		$.ajax({
+	        type: "POST",
+	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+	        data: param,
+	       	dataType: "json",
+	    	success: function(data){
+		    	if(data.result){
+					$("#divSeePreferencesHeader").addClass("hidden");
+					$('#editConfidentialityBtn').removeClass("btn-red");
+		    	}
+		    }
+		});
+	}
+}
 function loadGallery(){
 	toogleNotif(false);
 	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id;

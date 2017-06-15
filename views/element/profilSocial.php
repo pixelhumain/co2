@@ -582,6 +582,8 @@
 				loadUrls();
 			else if(subView=="contacts")
 				loadContacts();
+			else if(subView=="settings")
+				loadSettings();
 		} else
 			loadNewsStream(true);
 

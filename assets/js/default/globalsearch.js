@@ -71,7 +71,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
     $(".dropdown-result-global-search").html(
       "<h5 class='text-dark center padding-15'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</h5>");
       
-
+    showIsLoading(true);
     $.ajax({
       type: "POST",
           url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
@@ -260,7 +260,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
           if(isMapEnd){
             //affiche les éléments sur la carte
             showDropDownGS(false);
-            Sig.showMapElements(Sig.map, mapElementsGS);
+            Sig.showMapElements(Sig.map, mapElementsGS, "globe", "Recherche globale");
           }
 
           //$("#footerDropdownGS").append("<br><a class='btn btn-default' href='javascript:' onclick='urlCtrl.loadByHash("+'"#default.directory"'+")'><i class='fa fa-plus'></i></a>");

@@ -3755,8 +3755,8 @@ function initKInterface(params){ console.log("initKInterface");
     $(".btn-show-map").off().click(function(){
     	if(typeof formInMap != "undefined" && formInMap.actived == true)
 			formInMap.cancel();
-    	else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
-			getContextDataLinks();
+    	//else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+		//	getContextDataLinks();
 		else
 			showMap();
     });
@@ -3788,14 +3788,14 @@ function getContextDataLinks(){
 		success: function(data){
 			mylog.log("getContextDataLinks data", data);
 			Sig.restartMap();
-			Sig.showMapElements(Sig.map, data);
-			showMap();
+			Sig.showMapElements(Sig.map, data, "link", "La communauté de <b>"+contextData.name+"</b>");
+			//showMap();
 		},
 		error: function (error) {
 			mylog.log("getContextDataLinks error findGeoposByInsee", error);
 			Sig.restartMap();
 			callbackFindByInseeError(error);
-			showMap();	
+			//showMap();	
 		}
 			
 	});

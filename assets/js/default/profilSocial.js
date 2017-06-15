@@ -7,6 +7,7 @@ function initDateHeaderPage(params){
 function getCroppingModal(){
 	
 }
+
 function menuLeftShow(){
 	if($("#menu-left-container").hasClass("hidden-xs"))
 		$("#menu-left-container").removeClass("hidden-xs");
@@ -352,7 +353,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	if( openEdition || edit ){
 		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
 			if(dataName == "collections"){
-				html += '<a class="tooltips btn btn-sm btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
+				html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
 		    	html +=	'<i class="fa fa-plus"></i> Créer une nouvelle collection</a>' ; 
 			}
 			else {
@@ -521,9 +522,9 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	var n=0;
 	$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
 	if(n>0){
-
+		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 		var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
-						getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
+						thisTitle+
 					"<hr></div>";
 		
 		
@@ -554,6 +555,9 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		initBtnLink();
 		initBtnAdmin();
 		bindButtonOpenForm();
+		
+		Sig.showMapElements(Sig.map, data, "", thisTitle);
+    
 	}else{
 		var nothing = "Aucun";
 		if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
@@ -567,6 +571,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 											"</span>");
 		toogleNotif(false);
 	}
+
 }
 
 function loadStream(indexMin, indexMax, isLiveBool){ mylog.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow

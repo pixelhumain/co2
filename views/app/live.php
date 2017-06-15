@@ -144,6 +144,8 @@ jQuery(document).ready(function() {
     initKInterface();//{"affixTop":10});
     initFreedomInterface();
     
+    Sig.restartMap(Sig.map);
+
     //KScrollTo(".main-btn-scopes");
 });
 

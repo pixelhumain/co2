@@ -33,7 +33,7 @@
 			var ico = this.getIcoByType(data);
 			var color = this.getIcoColorByType(data);
 			var imgProfilPath =  Sig.getThumbProfil(data);
-			var icons = '<i class="fa fa-'+ ico + ' fa-'+ color +'"></i>';
+			var icons = '<i class="fa fa-'+ ico + ' text-'+ color +'"></i>';
 			
 			var typeElement = type;
 			if(type == "people") 		typeElement = "citoyens";

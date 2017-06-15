@@ -257,7 +257,6 @@
 
 <script>
 jQuery(document).ready(function() {
-
 	//IMAGE CHANGE//
 	$("#uploadScropResizeAndSaveImage .close-modal").click(function(){
 		$.unblockUI();

@@ -445,14 +445,14 @@
 
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section pull-right">
 		
-		<?php   $classDescH=""; 
-				$classBtnDescH="<i class='fa fa-angle-up'></i> masquer"; 
+		<?php   //$classDescH=""; 
+				//$classBtnDescH="<i class='fa fa-angle-up'></i> masquer"; 
 				$marginCentral="";
-				if(!@$element["description"] || @$linksBtn["isFollowing"]==true || 
-					@$linksBtn["isMember"]==true){
+				//if(!@$element["description"] || @$linksBtn["isFollowing"]==true || 
+				//	@$linksBtn["isMember"]==true){
 					$classDescH="hidden"; 
 					$classBtnDescH="<i class='fa fa-angle-down'></i> afficher la description"; 
-				}
+				//}
 
 		if($typeItem != Person::COLLECTION){ 
 		?>
@@ -530,6 +530,7 @@
 ?>
 
 <script type="text/javascript">
+	
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
 	mylog.log("init contextData", contextData);
     var params = <?php echo json_encode(@$params); ?>; 

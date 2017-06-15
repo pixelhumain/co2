@@ -31,11 +31,11 @@ dynForm = {
 	    			if( contextData && contextData.type )
 	    				$("#ajaxFormModal #parentType").val( contextData.type ); 
 
-	    			if(contextData.startDate && contextData.endDate ){
-	    				$("#ajaxFormModal").after("<input type='hidden' id='startDateParent' value='"+contextData.startDate+"'/>"+
-	    										  "<input type='hidden' id='endDateParent' value='"+contextData.endDate+"'/>");
-	    				$("#ajaxFormModal #startDate").after("<span id='parentstartDate'><i class='fa fa-warning'></i> date début du parent : "+moment( contextData.startDate).format('DD/MM/YYYY HH:mm')+"</span>");
-	    				$("#ajaxFormModal #endDate").after("<span id='parentendDate'><i class='fa fa-warning'></i> date de fin du parent : "+moment( contextData.endDate).format('DD/MM/YYYY HH:mm')+"</span>");
+	    			if(contextData.startDateDB && contextData.endDateDB){
+	    				$("#ajaxFormModal").after("<input type='hidden' id='startDateParent' value='"+contextData.startDateDB+"'/>"+
+	    										  "<input type='hidden' id='endDateParent' value='"+contextData.endDateDB+"'/>");
+	    				$("#ajaxFormModal #startDate").after("<span id='parentstartDate'><i class='fa fa-warning'></i> date début du parent : "+moment( contextData.startDateDB).format('DD/MM/YYYY HH:mm')+"</span>");
+	    				$("#ajaxFormModal #endDate").after("<span id='parentendDate'><i class='fa fa-warning'></i> date de fin du parent : "+moment( contextData.endDateDB).format('DD/MM/YYYY HH:mm')+"</span>");
 	    			}
 	    			//alert($("#ajaxFormModal #parentId").val() +" | "+$("#ajaxFormModal #parentType").val());
 	    		}

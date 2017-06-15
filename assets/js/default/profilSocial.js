@@ -290,9 +290,10 @@ function loadDataDirectory(dataName, dataIcon, edit){
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 				function(data){ 
+					var type = dataName == "poi" ? dataName : null;
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
-					displayInTheContainer(data, dataName, dataIcon, "", edit);
+					displayInTheContainer(data, dataName, dataIcon, type, edit);
 				}
 	,"html");
 }
@@ -704,7 +705,11 @@ function inintDescs() {
 		descHtmlToMarkdown();
 	mylog.log("after");
 	mylog.log("inintDescs", $("#descriptionMarkdown").html());
-	var descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
+	var descHtml = "<i>"+trad["notSpecified"]+"</i>";
+	if($("#descriptionMarkdown").html().length > 0){
+		descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
+	}
+	
 	$("#descriptionAbout").html(descHtml);
 	$("#descProfilsocial").html(descHtml);
 	mylog.log("descHtml", descHtml);

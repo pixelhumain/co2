@@ -221,13 +221,15 @@ function bindAboutPodElement() {
 					}
 				}
 			};
+
 			var typeDate = "date";
 			if(contextData.type == typeObj.event.col){
 				var checked = (notNull(contextData.allDay) && contextData.allDay == true) ?  true : false ;
 				form.dynForm.jsonSchema.properties.allDay = dyFInputs.allDay(checked);
 				form.dynForm.jsonSchema.properties.allDayHidden = dyFInputs.inputHidden(checked);
-				if(checked == true )
-					type = "datetime";
+				mylog.log("allDay", checked)
+				if(checked == false )
+					typeDate = "datetime";
 				
 			}
 			
@@ -553,33 +555,33 @@ function bindAboutPodElement() {
 							if(data.result && data.resultGoods.result){
 
 								if(typeof data.resultGoods.values.telegram != "undefined"){
-									contextData.telegram = data.resultGoods.values.telegram.trim();
-									changeNetwork('#telegramAbout', contextData.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.telegram);
+									contextData.socialNetwork.telegram = data.resultGoods.values.telegram.trim();
+									changeNetwork('#telegramAbout', contextData.socialNetwork.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.socialNetwork.telegram);
 								}
 
 								if(typeof data.resultGoods.values.facebook != "undefined"){
-									contextData.facebook = data.resultGoods.values.facebook.trim();
-									changeNetwork('#facebookAbout', contextData.facebook, contextData.facebook);
+									contextData.socialNetwork.facebook = data.resultGoods.values.facebook.trim();
+									changeNetwork('#facebookAbout', contextData.socialNetwork.facebook, contextData.socialNetwork.facebook);
 								}
 
 								if(typeof data.resultGoods.values.twitter != "undefined"){
-									contextData.twitter = data.resultGoods.values.twitter.trim();
-									changeNetwork('#twitterAbout', contextData.twitter, contextData.twitter);
+									contextData.socialNetwork.twitter = data.resultGoods.values.twitter.trim();
+									changeNetwork('#twitterAbout', contextData.socialNetwork.twitter, contextData.socialNetwork.twitter);
 								}
 
 								if(typeof data.resultGoods.values.gitHub != "undefined"){
-									contextData.gitHub = data.resultGoods.values.gitHub.trim();
-									changeNetwork('#gitHubAbout', contextData.gitHub, contextData.gitHub);
+									contextData.socialNetwork.gitHub = data.resultGoods.values.gitHub.trim();
+									changeNetwork('#gitHubAbout', contextData.socialNetwork.gitHub, contextData.socialNetwork.gitHub);
 								}
 
 								if(typeof data.resultGoods.values.skype != "undefined"){
-									contextData.skype = data.resultGoods.values.skype.trim();
-									changeNetwork('#skypeAbout', contextData.skype, contextData.skype);
+									contextData.socialNetwork.skype = data.resultGoods.values.skype.trim();
+									changeNetwork('#skypeAbout', contextData.socialNetwork.skype, contextData.socialNetwork.skype);
 								}
 
 								if(typeof data.resultGoods.values.gpplus != "undefined"){
-									contextData.gpplus = data.resultGoods.values.gpplus.trim();
-									changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
+									contextData.socialNetwork.gpplus = data.resultGoods.values.gpplus.trim();
+									changeNetwork('#gpplusAbout', contextData.socialNetwork.gpplus, contextData.socialNetwork.gpplus);
 								}
 							}
 							dyFObj.closeForm();
@@ -591,7 +593,7 @@ function bindAboutPodElement() {
 							typeElement : dyFInputs.inputHidden(),
 							isUpdate : dyFInputs.inputHidden(true), 
 							skype : dyFInputs.inputUrl("Lien vers Skype"),
-							github : dyFInputs.inputUrl("Lien vers Git Hub"), 
+							gitHub : dyFInputs.inputUrl("Lien vers Git Hub"), 
 							gpplus : dyFInputs.inputUrl("Lien vers Google Plus"),
 					        twitter : dyFInputs.inputUrl("Lien vers Twitter"),
 					        facebook :  dyFInputs.inputUrl("Lien vers Facebook"),
@@ -610,17 +612,17 @@ function bindAboutPodElement() {
 		        typeElement : contextData.type,
 			};
 
-			if(notEmpty(contextData.socialNetwork.twitter))
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.twitter))
 				dataUpdate.twitter = contextData.socialNetwork.twitter;
-			if(notEmpty(contextData.socialNetwork.gpplus))
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.gpplus))
 				dataUpdate.gpplus = contextData.socialNetwork.gpplus;
-			if(notEmpty(contextData.socialNetwork.gitHub))
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.gitHub))
 				dataUpdate.gitHub = contextData.socialNetwork.gitHub;
-			if(notEmpty(contextData.socialNetwork.skype))
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.skype))
 				dataUpdate.skype = contextData.socialNetwork.skype;
-			if(notEmpty(contextData.socialNetwork.telegram))
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.telegram))
 				dataUpdate.telegram = contextData.socialNetwork.telegram;
-			if(notEmpty(contextData.socialNetwork.facebook))
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.facebook))
 				dataUpdate.facebook = contextData.socialNetwork.facebook;
 
 			dyFObj.openForm(form, null, dataUpdate);

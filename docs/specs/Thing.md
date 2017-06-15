@@ -17,7 +17,7 @@ Le kit pourrait être utilisé exclusivement avec Communecter, un serveur de tem
 
 #### Firmware 
 Le firmware sck double push a été développé par Nicolas Grondin en s'inspirant des débuts de travaux de Jean Daniel CAZAL (Stagiaire). 
-Nicolas Grondin a par la suite amélioré la gestion de la FIFO (écriture et lectur en EEPROM) et la stabilité du firmware. 
+Nicolas Grondin a par la suite amélioré la gestion de la FIFO (écriture et lecture en EEPROM) et la stabilité du firmware. 
 Avec le double push nous devons choisir une période d'envoi des enregistrements adéquat pour ne pas surcharger la base de données, pour l'instant ce "time update" est de 5 minutes (300 secondes). 
 
 #### Coté serveur

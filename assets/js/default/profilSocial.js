@@ -710,7 +710,11 @@ function inintDescs() {
 		descHtmlToMarkdown();
 	mylog.log("after");
 	mylog.log("inintDescs", $("#descriptionMarkdown").html());
-	var descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
+	var descHtml = "<i>"+trad["notSpecified"]+"</i>";
+	if($("#descriptionMarkdown").html().length > 0){
+		descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
+	}
+	
 	$("#descriptionAbout").html(descHtml);
 	$("#descProfilsocial").html(descHtml);
 	mylog.log("descHtml", descHtml);

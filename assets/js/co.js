@@ -1410,7 +1410,7 @@ function  bindExplainLinks() {
 }
 
 function  bindLBHLinks() { 
-	$(".lbh").off().on("click",function(e) {  		
+	$(".lbh").unbind("click").on("click",function(e) {  		
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
@@ -1419,7 +1419,7 @@ function  bindLBHLinks() {
 	    urlCtrl.loadByHash( h );
 	});
 	//open any url in a modal window
-	$(".lbhp").off().on("click",function(e) {
+	$(".lbhp").unbind("click").on("click",function(e) {
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
@@ -2264,7 +2264,7 @@ var dyFObj = {
 		formData.key = ctrl;
 		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj);
 		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj.elementLocations);
-		if(dyFInputs.locationObj.elementLocations){
+		if(dyFInputs.locationObj.centerLocation){
 			//formData.multiscopes = elementLocation;
 			mylog.warn("here--- -------- centerLocation",dyFInputs.locationObj.centerLocation);
 			formData.address = dyFInputs.locationObj.centerLocation.address;
@@ -2751,13 +2751,10 @@ var dyFInputs = {
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
-
-
-		        $("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+				$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 						  					  .addClass("bg-dark");
     		 	
     		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
-
         	},500);
     	}
     },
@@ -2994,6 +2991,7 @@ var dyFInputs = {
 	    			var startDate = "";
 	    			var endDate = "";
 	    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
+	    			
 	    			if (allDay) {
 	    				$(".dateTimeInput").addClass("dateInput");
 	    				$(".dateTimeInput").removeClass("dateTimeInput");

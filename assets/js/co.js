@@ -2751,6 +2751,10 @@ var dyFInputs = {
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
+				$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+						  					  .addClass("bg-dark");
+    		 	
+    		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
         	},500);
     	}
     },
@@ -3239,7 +3243,7 @@ var typeObj = {
 	"citoyen" : { sameAs:"person" },
 	"citoyens" : { sameAs:"person" },
 	
-	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle",
+	"poi":{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
 			subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
 				   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
 				   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },

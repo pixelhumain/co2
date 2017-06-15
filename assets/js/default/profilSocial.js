@@ -290,9 +290,10 @@ function loadDataDirectory(dataName, dataIcon, edit){
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 				function(data){ 
+					var type = dataName == "poi" ? dataName : null;
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
-					displayInTheContainer(data, dataName, dataIcon, "", edit);
+					displayInTheContainer(data, dataName, dataIcon, type, edit);
 				}
 	,"html");
 }

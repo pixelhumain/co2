@@ -79,7 +79,7 @@
 			<div id="shortDescriptionAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
 				<span class="visible-xs col-xs-12 no-padding"><i class="fa fa-quote-left"></i> <?php echo Yii::t("common", "Short description") ?>: </span><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 			</div>
-			<span id="shortDescriptionAboutEdit" name="shortDescriptionAboutEdit"  class="col-xs-12 hidden" ><?php echo (!empty($element["shortDescription"])) ? $element["shortDescription"] : ""; ?></span>
+			<span id="shortDescriptionAboutEdit" name="shortDescriptionAboutEdit"  class="hidden" ><?php echo (!empty($element["shortDescription"])) ? $element["shortDescription"] : ""; ?></span>
 		</div>
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 			<div class="col-md-3 col-sm-3 col-xs-3 hidden-xs labelAbout padding-10">

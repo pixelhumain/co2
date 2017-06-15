@@ -2264,7 +2264,7 @@ var dyFObj = {
 		formData.key = ctrl;
 		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj);
 		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj.elementLocations);
-		if(dyFInputs.locationObj.elementLocations){
+		if(dyFInputs.locationObj.centerLocation){
 			//formData.multiscopes = elementLocation;
 			mylog.warn("here--- -------- centerLocation",dyFInputs.locationObj.centerLocation);
 			formData.address = dyFInputs.locationObj.centerLocation.address;

@@ -29,39 +29,48 @@ function bindButtonMenu(){
 	$(".btn-start-newsstream").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
-		history.pushState(null, "New Title", hashUrlPage);
+		location.hash=hashUrlPage
+		//history.pushState(null, "New Title", hashUrlPage);
 		loadNewsStream(true);
 	});
 	$(".btn-start-mystream").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
-		if(contextData.type=="citoyens" && userId==contextData.id)
-			history.pushState(null, "New Title", hashUrlPage+".view.mystream");
-		else
-			history.pushState(null, "New Title", hashUrlPage);
+		if(contextData.type=="citoyens" && userId==contextData.id){
+			location.hash=hashUrlPage+".view.mystream";
+			//history.pushState(null, "New Title", hashUrlPage+".view.mystream");
+		}
+		else{
+			location.hash=hashUrlPage;
+			//history.pushState(null, "New Title", hashUrlPage);
+		}
 		loadNewsStream(false);
 	});
 	$("#btn-start-gallery").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.gallery");
+		location.hash=hashUrlPage+".view.gallery";
+		//history.pushState(null, "New Title", hashUrlPage+".view.gallery");
 		//location.search="?view=gallery";
 		loadGallery();
 	});
 	$(".btn-start-notifications").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
-		history.pushState(null, "New Title", hashUrlPage+".view.notifications");
+		location.hash=hashUrlPage+".view.notifications";
+		//history.pushState(null, "New Title", hashUrlPage+".view.notifications");
 		//location.search="?view=notifications";
 		loadNotifications();
 	});
 	$(".btn-start-chart").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.chart");
+		location.hash=hashUrlPage+".view.chart";
+		//history.pushState(null, "New Title", hashUrlPage+".view.chart");
 		loadChart();
 	});
 	$(".btn-show-activity").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.history");
+		location.hash=hashUrlPage+".view.history";
+		//history.pushState(null, "New Title", hashUrlPage+".view.history");
 		loadHistoryActivity();
 	});
 	
@@ -80,7 +89,8 @@ function bindButtonMenu(){
 	});
 	$(".edit-chart").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.editChart");
+		location.hash=hashUrlPage+".view.editChart";
+		//history.pushState(null, "New Title", hashUrlPage+".view.editChart");
 		loadEditChart();
 	});
 	$(".btn-open-collection").click(function(){
@@ -90,7 +100,8 @@ function bindButtonMenu(){
 
 	$("#btn-start-detail").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.detail");
+		location.hash=hashUrlPage+".view.detail";
+		//history.pushState(null, "New Title", hashUrlPage+".view.detail");
 		loadDetail();
 	});
 
@@ -108,13 +119,15 @@ function bindButtonMenu(){
 
 	$("#btn-start-urls").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.urls");
+		location.hash=hashUrlPage+".view.urls";
+		//history.pushState(null, "New Title", hashUrlPage+".view.urls");
 		loadUrls();
 	});
 
 	$("#btn-start-contacts").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.contacts");
+		location.hash=hashUrlPage+".view.contacts";
+		//history.pushState(null, "New Title", hashUrlPage+".view.contacts");
 		loadContacts();
 	});
 
@@ -286,7 +299,8 @@ function bindButtonOpenForm(){
 
 function loadDataDirectory(dataName, dataIcon, edit){
 	showLoader('#central-container');
-	history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
+	location.hash=hashUrlPage+".view.directory.dir."+dataName;
+	//history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
 	// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',

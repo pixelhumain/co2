@@ -6,7 +6,13 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	sub : function(){
-
+				
+				if(typeof currentKFormType == "undefined" || currentKFormType == "" || 
+				  currentKFormType == "null" || currentKFormType == null){
+					currentKFormType = "organization";
+				}else{
+					$("#ajaxFormModal .typeselect").addClass("hidden");
+				}
 	    		//console.log("onLoads Sub currentKFormType", currentKFormType, contextData, contextData.id);
                 var typeName = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? trad["add"+currentKFormType] : elementObj.dynForm.jsonSchema.title;
                 var typeIcon = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? typeObj[currentKFormType].icon : elementObj.dynForm.jsonSchema.icon;

@@ -49,7 +49,6 @@
                 $this->renderPartial('../news/standalone', $params ); 
             }
 
-
             if($type == Classified::COLLECTION){
                 $params = array("element"=>$element , 
                                 "page" => "page",
@@ -61,6 +60,16 @@
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
 
                 $this->renderPartial('../classified/standalone', $params ); 
+            }
+
+            if($type == Survey::COLLECTION){
+                $params = array("survey"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
+
+                $this->renderPartial('../survey/entryStandalone', $params ); 
             }
 		?>
 	</div>
@@ -79,7 +88,7 @@ jQuery(document).ready(function() {
 	initKInterface({"affixTop":0});
 	$("#mainNav").addClass("affix");
 	initPageInterface();
-    // var tpl = '<?php echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
+    // var tpl = '<?php //echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
 	// getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
 	// 	initPageInterface();
 	// },"html");

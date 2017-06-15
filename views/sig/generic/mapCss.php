@@ -175,7 +175,7 @@
 		position: fixed;
 		top: 70px;
 		left: 70px;
-		width: 22%;
+		max-width: 50%;
 		min-width: 200px;
 		max-height: 100px;
 		background-color: rgba(26, 33, 38, 0.93);

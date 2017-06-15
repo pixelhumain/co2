@@ -271,6 +271,7 @@ class CommunecterController extends Controller
         
 
         "get"      => array("href" => "/ph/communecter/person/get"),
+        "getcontactsbymails"      => array("href" => "/ph/communecter/person/getcontactsbymails"),
     ),
     "organization"=> array(
       "addorganizationform" => array("href" => "/ph/communecter/organization/addorganizationform",

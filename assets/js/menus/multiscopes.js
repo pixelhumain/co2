@@ -25,6 +25,7 @@ function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId);
 	}
 	showCountScope();
 	rebuildSearchScopeInput();
+	setTimeout(function(){ rebuildSearchScopeInput() }, 1000);
 	saveCookieMultiscope();
 }
 function saveCookieMultiscope(){ 
@@ -214,7 +215,8 @@ function toogleScopeMultiscope(scopeValue){ mylog.log("toogleScopeMultiscope(sco
 			$("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
 		}*/
 		console.log("before rebuildSearchScopeInput from toogleScope");
-		rebuildSearchScopeInput();
+		 //rebuildSearchScopeInput();
+		 setTimeout(function(){ rebuildSearchScopeInput() }, 1000);
 	}else{
 		//showMsgInfoMultiScope("Ce scope n'existe pas", "danger");
 	}

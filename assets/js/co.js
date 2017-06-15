@@ -57,11 +57,19 @@ function bindRightClicks() {
 	    selector: ".add2fav",
         build: function($trigger, e) {
         	if(userId){
-        		var validElems = ["#element","#organization","#project","#event","#person","#element","#survey","#rooms"];
+        		var validElems = ["#element", "#page","#organization","#project","#event","#person","#element","#survey","#rooms"];
         		href = $trigger[0].hash.split(".");
         		if($.inArray(href[0],validElems) >=0 ){
-		        	var what = ( href[0] == "#element" ) ? href[3] : typeObj[ href[0].substring(1) ].col; 
-					var	id = ( href[0] == "#element" ) ? href[5] : href[3];
+        			if(href[0] == "#element"){
+		        		var what = href[3]; 
+						var	id = href[5];
+					}else if (href[0] == "#page"){
+						var what = href[2]; 
+						var	id = href[4];
+					}else{
+						var what = typeObj[ href[0].substring(1) ].col; 
+						var	id =  href[3];
+					}
 				}
 				//console.log(href,href[0],what,id);
 				var btns = {
@@ -76,14 +84,17 @@ function bindRightClicks() {
 	        	$.each( userConnected.collections, function (col,list) { 
 	        		btns[col] = { 
 			        	name: function($element, key, item){ 
-		        			var str = "Ajouter à "+col;
+			        		nameCol=col;
+			        		if(col=="favorites")
+			        			nameCol="mes favoris";
+		        			var str = "Ajouter à "+nameCol;
 		        			//console.log(col,what,id);
 		        			if( notNull( userConnected.collections[col]) && notNull( userConnected.collections[col][what] ) && notNull( userConnected.collections[col][what][id]) ) 
-		        				str = "Retirer de "+col;
+		        				str = "Retirer de "+nameCol;
 		        			return str; 
 		        		},
 			        	icon: "fa-folder-open", 
-			        	callback: function(key, opt){ 
+			        	callback: function(key, opt){
 				        	if( notNull( what )&& notNull( id ) ){
 					        	collection.add2fav( what,id,col );
 							}
@@ -382,6 +393,7 @@ function validateConnection(parentType, parentId, childId, childType, linkOption
 	});  
 }
 function follow(parentType, parentId, childId, childType, callback){
+	mylog.log("follow",parentType, parentId, childId, childType, callback);
 	$(".followBtn").removeClass("fa-link").addClass("fa-spinner fa-spin");
 	var formData = {
 		"childId" : childId,
@@ -587,7 +599,7 @@ var urlCtrl = {
 	    "#admin.createfile" : {title:'IMPORT DATA', icon : 'download'},
 		"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus'},
 	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download'},
-	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download'},
+	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : false},
 	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download'},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
@@ -893,6 +905,7 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 			
 	setTimeout(function(){
 		$(dest).html("");
+		mylog.log("here", $(dest).length );	
 		$(".hover-info,.hover-info2").hide();
 		processingBlockUi();
 		showMap(false);
@@ -1405,7 +1418,7 @@ function  bindExplainLinks() {
 }
 
 function  bindLBHLinks() { 
-	$(".lbh").off().on("click",function(e) {  		
+	$(".lbh").unbind("click").on("click",function(e) {  		
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
@@ -1414,7 +1427,7 @@ function  bindLBHLinks() {
 	    urlCtrl.loadByHash( h );
 	});
 	//open any url in a modal window
-	$(".lbhp").off().on("click",function(e) {
+	$(".lbhp").unbind("click").on("click",function(e) {
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
@@ -1612,14 +1625,25 @@ function myAdminList (ctypes) {
 	}
 	return myList;
 }
+function escapeHtml(string) {
+	var entityMap = {
+	    '"': '&quot;',
+    	"'": '&#39;',
+	};
+    return String(string).replace(/["']/g, function (s) {
+        return entityMap[s];
+    });
+} 
 
-function addContact(id, name){
+function fillContactFields(id){
+	name = cotmp[id].name;
+	mylog.log("fillContactFields", id, name );
 	$("#idContact").val(id);
-	$("#listSameName").html("<i class='fa fa-check text-success'></i> Vous avez sélectionner : "+ name);
+	$("#listSameName").html("<i class='fa fa-check text-success'></i> Vous avez sélectionner : "+  escapeHtml(name));
 	$("#name").val(name);
 }
-
-function globalSearch(searchValue,types,autre){
+var cotmp = {};
+function globalSearch(searchValue,types,contact){
 	
 	searchType = (types) ? types : ["organizations", "projects", "events", "needs", "citoyens"];
 
@@ -1647,6 +1671,7 @@ function globalSearch(searchValue,types,autre){
  			var compt = 0;
  			var msg = "Verifiez si cet élément n'existe pas déjà";
  			$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
+ 			cotmp = {};
  			$.each(data, function(id, elem) {
   				mylog.log(elem);
   				city = "";
@@ -1663,17 +1688,19 @@ function globalSearch(searchValue,types,autre){
 					if( notEmpty( city ) && notEmpty( postalCode ) )
 					where = ' ('+postalCode+" "+city+")";
 				}
+				var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
 				if("undefined" != typeof elem.profilImageUrl && elem.profilImageUrl != ""){
 					var htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
 				}
 				
-				if(autre == true){
-					str += 	"<a href='javascript:;' onclick='addContact( \""+elem.id+"\",\""+elem.name+"\" );' class='autre btn btn-xs btn-default w50p text-left padding-5 text-blue' >"+
+				if(contact == true){
+					cotmp[id] = {id:id, name : elem.name};
+					str += 	"<a href='javascript:;' onclick='fillContactFields( \""+id+"\" );' class='col-sm-12 col-sm-3 btn btn-xs btn-default w50p text-left padding-5' >"+
 								"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
 							"</a>";
 					msg = "Verifiez si le contact est dans Communecter";
 				}else{
-					str += 	"<a target='_blank' href='#"+ elem.type +".detail.id."+ elem.id +"' class='btn btn-xs btn-default w50p text-left padding-5 text-blue' >"+
+					str += 	"<a target='_blank' href='#page.type."+ elem.type +".id."+ id +"' class='btn btn-xs btn-danger w50p text-left padding-5 margin-5' style='height:42px' >"+
 							"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
 						"</a>";
 				}
@@ -2108,6 +2135,9 @@ var collection = {
 					console.warn(params.action);
 					if(data.result){
 						toastr.success(data.msg);
+						if(location.hash.indexOf("#page") >=0){
+							loadDataDirectory("collections", "star");
+						}
 						//if no type defined we are on user
 						//TODO : else add on the contextMap
 						if( typeof type == "undefined" && action == "new"){
@@ -2151,11 +2181,21 @@ var collection = {
 				console.warn(params.action,collection,what,id);
 				if(data.result){
 					if(data.list == '$unset'){
-						$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
-						delete userConnected.collections[collection][what][id];
+						if(location.hash.indexOf("#page") >=0){
+							$(".favorisMenu").removeClass("text-yellow");
+							$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o');
+						}else{
+							$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
+							delete userConnected.collections[collection][what][id];
+						}
 					}
 					else{
-						$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
+						if(location.hash.indexOf("#page") >=0){
+							$(".favorisMenu").addClass("text-yellow");
+							$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star');
+						}
+						else
+							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
 						if(!userConnected.collections)
 							userConnected.collections = {};
 						if(!userConnected.collections[collection])
@@ -2200,9 +2240,11 @@ var uploadObj = {
 	id : null,
 	gotoUrl : null,
 	isSub : false,
+	update  : false,
 	folder : moduleId, //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
+		mylog.log("set uploadObj.id", id);
 		uploadObj.id = id;
 	}
 };
@@ -2228,16 +2270,23 @@ var dyFObj = {
 		mylog.warn("----------- formatData",formData, collection,ctrl);
 		formData.collection = collection;
 		formData.key = ctrl;
-		
-		if(dyFInputs.locationObj.elementLocation){
+		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj);
+		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj.elementLocations);
+		if(dyFInputs.locationObj.centerLocation){
 			//formData.multiscopes = elementLocation;
+			mylog.warn("here--- -------- centerLocation",dyFInputs.locationObj.centerLocation);
 			formData.address = dyFInputs.locationObj.centerLocation.address;
 			formData.geo = dyFInputs.locationObj.centerLocation.geo;
 			formData.geoPosition = dyFInputs.locationObj.centerLocation.geoPosition;
 			if( dyFInputs.locationObj.elementLocations.length ){
 				$.each( dyFInputs.locationObj.elementLocations,function (i,v) { 
-					if( typeof v.center != "undefined" )
+					mylog.log("elementLocations v", v);
+					if(typeof v != "undefined" && typeof v.center != "undefined" ){
+						// formData.address = dyFInputs.locationObj.elementLocations.address;
+						// formData.geo = dyFInputs.locationObj.elementLocations.geo;
+						// formData.geoPosition = dyFInputs.locationObj.elementLocations.geoPosition;
 						dyFInputs.locationObj.elementLocations.splice(i, 1);
+					}
 				});
 				formData.addresses = dyFInputs.locationObj.elementLocations;
 			}
@@ -2391,6 +2440,8 @@ var dyFObj = {
 		                }
 					}
 	            }
+	            uploadObj.type = null;
+	    		uploadObj.id = null;
 	    	}
 	    });
 	},
@@ -2398,10 +2449,16 @@ var dyFObj = {
 		$('#ajax-modal').modal("hide");
 	    //clear the unecessary DOM 
 	    $("#ajaxFormModal").html(''); 
+	   	uploadObj.type = null;
+	    uploadObj.id = null;
+	    uploadObj.update = false;
 	},
 	editElement : function (type,id){
 		mylog.warn("--------------- editElement ",type,id);
 		//get ajax of the elemetn content
+		uploadObj.type = type;
+		uploadObj.id = id;
+		uploadObj.update = true;
 		$.ajax({
 	        type: "GET",
 	        url: baseUrl+"/"+moduleId+"/element/get/type/"+type+"/id/"+id,
@@ -2418,9 +2475,6 @@ var dyFObj = {
 				mylog.dir(data);
 				console.log(data);
 				
-				if( jsonHelper.notNull("themeObj.dynForm.editElementPOI","function") )
-					themeObj.dynForm.editElementPOI(type,data);
-
 				dyFObj.openForm( dyFInputs.get(type).ctrl ,null, data.map);
 	        } else {
 	           toastr.error("something went wrong!! please try again.");
@@ -2538,7 +2592,7 @@ var dyFObj = {
 			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
 			        //incase we need a second global post process
 			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
-			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload();
+			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload(data);
 				    
 			        bindLBHLinks();
 			      },
@@ -2568,9 +2622,11 @@ var dyFObj = {
 	//generate Id for upload feature of this element 
 	setMongoId : function(type,callback) { 
 		uploadObj.type = type;
-		if( !$("#ajaxFormModal #id").val() )
+		mylog.warn("uploadObj ",uploadObj);
+		if( !$("#ajaxFormModal #id").val() && !uploadObj.update )
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
+				mylog.log("setMongoId uploadObj.id", data.id);
 				uploadObj.id = data.id;
 				$("#ajaxFormModal #id").val(data.id)
 				if( typeof callback === "function" )
@@ -2683,6 +2739,15 @@ var dyFInputs = {
 		};
 		return inputObj;
 	},
+	tags : function(list) { 
+    	tagsL = (list) ? list : tagsList;
+    	return {
+			inputType : "tags",
+			placeholder : "Mots clés",
+			values : tagsL,
+			label : "Ajouter quelques mots clés"
+		}
+	},
     imageAddPhoto : {
     	inputType : "uploader",
     	showUploadBtn : true,
@@ -2694,6 +2759,10 @@ var dyFInputs = {
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
+				$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+						  					  .addClass("bg-dark");
+    		 	
+    		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
         	},500);
     	}
     },
@@ -2708,8 +2777,8 @@ var dyFInputs = {
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
 		    	dyFObj.closeForm();
-		    	//alert( "image upload then goto : "+uploadObj.gotoUrl );
-	            urlCtrl.loadByHash( uploadObj.gotoUrl );	
+				//alert( "image upload then goto : "+uploadObj.gotoUrl );
+	            urlCtrl.loadByHash( uploadObj.gotoUrl );
 		    }
     	}
     },
@@ -2733,15 +2802,7 @@ var dyFInputs = {
 	    } ;
 	    return inputObj;
 	},
-    tags : function(list) { 
-    	tagsL = (list) ? list : tagsList;
-    	return {
-			inputType : "tags",
-			placeholder : "Mots clés",
-			values : tagsL,
-			label : "Ajouter quelques mots clés"
-		}
-	},
+
 	password : function  (title, rules) {  
     	var title = (title) ? title : trad["New password"];
     	var ph = "";
@@ -2802,7 +2863,8 @@ var dyFInputs = {
 			mylog.log("elementLocation", dyFInputs.locationObj.elementLocation);
 			dyFInputs.locationObj.elementLocations.push(dyFInputs.locationObj.elementLocation);
 			mylog.log("dyFInputs.locationObj.elementLocations", dyFInputs.locationObj.elementLocations);
-			if(!dyFInputs.locationObj.centerLocation || dyFInputs.locationObj.centerLocation.center == true){
+			mylog.log("dyFInputs.locationObj.centerLocation", dyFInputs.locationObj.centerLocation);
+			if(!dyFInputs.locationObj.centerLocation /*|| dyFInputs.locationObj.elementLocation.center == true*/){
 				dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocation;
 				dyFInputs.locationObj.elementLocation.center = true;
 			}
@@ -2937,6 +2999,7 @@ var dyFInputs = {
 	    			var startDate = "";
 	    			var endDate = "";
 	    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
+	    			
 	    			if (allDay) {
 	    				$(".dateTimeInput").addClass("dateInput");
 	    				$(".dateTimeInput").removeClass("dateTimeInput");
@@ -3018,24 +3081,31 @@ var dyFInputs = {
     		}
     	}
     },*/
-    startDateInput : {
-        inputType : "datetime",
-        placeholder: "Date de début",
-        label : "Date de début",
-        rules : { 
-        	required : true,
-        	duringDates: ["#startDateParent","#endDateParent","La date de début"]
-    	}
-    },
-    endDateInput : {
-        inputType : "datetime",
-        placeholder: "Date de fin",
-        label : "Date de fin",
-        rules : { 
-        	required : true,
-        	greaterThan: ["#ajaxFormModal #startDate","la date de début"],
-        	duringDates: ["#startDateParent","#endDateParent","La date de fin"]
+    startDateInput : function(typeDate){
+    	mylog.log('startDateInput', typeDate);
+    	var inputObj = {
+	        inputType : ( notEmpty(typeDate) ? typeDate : "datetime" ),
+	        placeholder: "Date de début",
+	        label : "Date de début",
+	        rules : { 
+	        	required : true,
+	        	duringDates: ["#startDateParent","#endDateParent","La date de début"]
+	    	}
 	    }
+    	return inputObj;
+    },
+    endDateInput : function(typeDate){
+    	var inputObj = {
+	        inputType : ( notEmpty(typeDate) ? typeDate : "datetime" ),
+	        placeholder: "Date de fin",
+	        label : "Date de fin",
+	        rules : { 
+	        	required : true,
+	        	greaterThan: ["#ajaxFormModal #startDate","la date de début"],
+	        	duringDates: ["#startDateParent","#endDateParent","La date de fin"]
+		    }
+	    }
+    	return inputObj;
     },
     birthDate : {
         inputType : "date",
@@ -3105,7 +3175,7 @@ var dyFInputs = {
     	//mylog.log("get", type);
     	var obj = null;
     	$.each( typeObj,function(k,o) { 
-    		if( o.types && ( $.inArray( type,  o.types )>=0 ) ){
+    		if( o.subTypes && ( $.inArray( type,  o.subTypes )>=0 ) ){
     			obj = o;
     			return false;
     		}
@@ -3181,8 +3251,8 @@ var typeObj = {
 	"citoyen" : { sameAs:"person" },
 	"citoyens" : { sameAs:"person" },
 	
-	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle",
-			types:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+	"poi":{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
+			subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
 				   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
 				   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
 
@@ -3213,7 +3283,8 @@ var typeObj = {
 	"rooms" : {col:"actions",ctrl:"room",color:"azure",icon:"gavel"},
 	"discuss" : {col:"actionRooms",ctrl:"room"},
 	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	"classified":{col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",	},
+	"classified":{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
+				   subTypes : ["Technologie","Immobilier","Véhicules","Maison","Loisirs","Mode"]	},
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
 	//"video" : {icon:"video-camera",color:"dark"},
@@ -3309,7 +3380,7 @@ var keyboardNav = {
 		//"112" : function(){ $('#modalMainMenu').modal("show"); },//f1
 		"113" : function(){ if(userId)urlCtrl.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
 		"114" : function(){ $('#openModal').modal('hide'); showMap(true); },//f3
-		"115" : function(){ dyFObj.openForm('themes') },//f4
+		//"115" : function(){ dyFObj.openForm('themes') },//f4
 		"117" : function(){ console.clear();urlCtrl.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {
@@ -3690,8 +3761,8 @@ function initKInterface(params){ console.log("initKInterface");
     $(".btn-show-map").off().click(function(){
     	if(typeof formInMap != "undefined" && formInMap.actived == true)
 			formInMap.cancel();
-    	else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
-			getContextDataLinks();
+    	//else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+		//	getContextDataLinks();
 		else
 			showMap();
     });
@@ -3723,14 +3794,14 @@ function getContextDataLinks(){
 		success: function(data){
 			mylog.log("getContextDataLinks data", data);
 			Sig.restartMap();
-			Sig.showMapElements(Sig.map, data);
-			showMap();
+			Sig.showMapElements(Sig.map, data, "link", "La communauté de <b>"+contextData.name+"</b>");
+			//showMap();
 		},
 		error: function (error) {
 			mylog.log("getContextDataLinks error findGeoposByInsee", error);
 			Sig.restartMap();
 			callbackFindByInseeError(error);
-			showMap();	
+			//showMap();	
 		}
 			
 	});

@@ -161,14 +161,21 @@ function bindAboutPodElement() {
 
 
 	function bindDynFormEditable(){
-
 		$(".btn-update-when").off().on( "click", function(){
 			var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
-						title : trad["Change password"],
+
+						title : trad["Update date"],
 						icon : "fa-key",
+						onLoads : {
+							initUpdateWhen : function(){
+								mylog.log("initUpdateInfo");
+								$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  					  .addClass("bg-dark");
+							}
+						},
 						beforeSave : function(){
 							mylog.log("beforeSave");
 							var allDay = $("#ajaxFormModal #allDay").is(':checked');
@@ -176,7 +183,7 @@ function bindAboutPodElement() {
 					    	removeFieldUpdateDynForm(contextData.type);
 					    	
 					    	var dateformat = "DD/MM/YYYY";
-					    	if (! allDay) 
+					    	if (! allDay && contextData.type == typeObj.event.col) 
 					    		var dateformat = "DD/MM/YYYY HH:mm" ;
 					    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format());
 							$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format());
@@ -190,12 +197,12 @@ function bindAboutPodElement() {
 								}  
 								if(typeof data.resultGoods.values.startDate != "undefined"){
 									contextData.startDate = data.resultGoods.values.startDate;
-									$("#startDateAbout").html(moment(contextData.startDate).local().locale("fr").format(formatDateView));
+									//$("#startDateAbout").html(moment(contextData.startDate).local().locale("fr").format(formatDateView));
 									//$("#startDateAbout").html(directory.returnDate(contextData.startDate, formatDateView));
 								}  
 								if(typeof data.resultGoods.values.endDate != "undefined"){
 									contextData.endDate = data.resultGoods.values.endDate;
-									$("#endDateAbout").html(moment(contextData.endDate).local().locale("fr").format(formatDateView));
+									//$("#endDateAbout").html(moment(contextData.endDate).local().locale("fr").format(formatDateView));
 									//$("#endDateAbout").html(directory.returnDate(contextData.endDate, formatDateView));
 								}
 								initDateHeaderPage(contextData);
@@ -215,14 +222,20 @@ function bindAboutPodElement() {
 				}
 			};
 
+			var typeDate = "date";
 			if(contextData.type == typeObj.event.col){
 				var checked = (notNull(contextData.allDay) && contextData.allDay == true) ?  true : false ;
 				form.dynForm.jsonSchema.properties.allDay = dyFInputs.allDay(checked);
 				form.dynForm.jsonSchema.properties.allDayHidden = dyFInputs.inputHidden(checked);
+				mylog.log("allDay", checked)
+				if(checked == false )
+					typeDate = "datetime";
+				
 			}
-
-			form.dynForm.jsonSchema.properties.startDate = dyFInputs.startDateInput;
-			form.dynForm.jsonSchema.properties.endDate = dyFInputs.endDateInput;
+			
+			
+			form.dynForm.jsonSchema.properties.startDate = dyFInputs.startDateInput(typeDate);
+			form.dynForm.jsonSchema.properties.endDate = dyFInputs.endDateInput(typeDate);
 
 			var dataUpdate = {
 				block : "when",
@@ -236,8 +249,8 @@ function bindAboutPodElement() {
 			if(notEmpty(contextData.endDateDB))
 				dataUpdate.endDate = moment(contextData.endDateDB).local().format(formatDatedynForm);
 
-			mylog.log("btn-update-when", form, dataUpdate);
-			dyFObj.openForm(form, "initWhen", dataUpdate);
+			mylog.log("btn-update-when", form, dataUpdate, formatDatedynForm);
+			dyFObj.openForm(form, "initUpdateWhen", dataUpdate);
 		});
 
 
@@ -542,33 +555,33 @@ function bindAboutPodElement() {
 							if(data.result && data.resultGoods.result){
 
 								if(typeof data.resultGoods.values.telegram != "undefined"){
-									contextData.telegram = data.resultGoods.values.telegram.trim();
-									changeNetwork('#telegramAbout', contextData.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.telegram);
+									contextData.socialNetwork.telegram = data.resultGoods.values.telegram.trim();
+									changeNetwork('#telegramAbout', contextData.socialNetwork.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.socialNetwork.telegram);
 								}
 
 								if(typeof data.resultGoods.values.facebook != "undefined"){
-									contextData.facebook = data.resultGoods.values.facebook.trim();
-									changeNetwork('#facebookAbout', contextData.facebook, contextData.facebook);
+									contextData.socialNetwork.facebook = data.resultGoods.values.facebook.trim();
+									changeNetwork('#facebookAbout', contextData.socialNetwork.facebook, contextData.socialNetwork.facebook);
 								}
 
 								if(typeof data.resultGoods.values.twitter != "undefined"){
-									contextData.twitter = data.resultGoods.values.twitter.trim();
-									changeNetwork('#twitterAbout', contextData.twitter, contextData.twitter);
+									contextData.socialNetwork.twitter = data.resultGoods.values.twitter.trim();
+									changeNetwork('#twitterAbout', contextData.socialNetwork.twitter, contextData.socialNetwork.twitter);
 								}
 
 								if(typeof data.resultGoods.values.gitHub != "undefined"){
-									contextData.gitHub = data.resultGoods.values.gitHub.trim();
-									changeNetwork('#gitHubAbout', contextData.gitHub, contextData.gitHub);
+									contextData.socialNetwork.gitHub = data.resultGoods.values.gitHub.trim();
+									changeNetwork('#gitHubAbout', contextData.socialNetwork.gitHub, contextData.socialNetwork.gitHub);
 								}
 
 								if(typeof data.resultGoods.values.skype != "undefined"){
-									contextData.skype = data.resultGoods.values.skype.trim();
-									changeNetwork('#skypeAbout', contextData.skype, contextData.skype);
+									contextData.socialNetwork.skype = data.resultGoods.values.skype.trim();
+									changeNetwork('#skypeAbout', contextData.socialNetwork.skype, contextData.socialNetwork.skype);
 								}
 
 								if(typeof data.resultGoods.values.gpplus != "undefined"){
-									contextData.gpplus = data.resultGoods.values.gpplus.trim();
-									changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
+									contextData.socialNetwork.gpplus = data.resultGoods.values.gpplus.trim();
+									changeNetwork('#gpplusAbout', contextData.socialNetwork.gpplus, contextData.socialNetwork.gpplus);
 								}
 							}
 							dyFObj.closeForm();
@@ -580,7 +593,7 @@ function bindAboutPodElement() {
 							typeElement : dyFInputs.inputHidden(),
 							isUpdate : dyFInputs.inputHidden(true), 
 							skype : dyFInputs.inputUrl("Lien vers Skype"),
-							github : dyFInputs.inputUrl("Lien vers Git Hub"), 
+							gitHub : dyFInputs.inputUrl("Lien vers Git Hub"), 
 							gpplus : dyFInputs.inputUrl("Lien vers Google Plus"),
 					        twitter : dyFInputs.inputUrl("Lien vers Twitter"),
 					        facebook :  dyFInputs.inputUrl("Lien vers Facebook"),
@@ -599,18 +612,18 @@ function bindAboutPodElement() {
 		        typeElement : contextData.type,
 			};
 
-			if(notEmpty(contextData.twitter))
-				dataUpdate.twitter = contextData.twitter;
-			if(notEmpty(contextData.gpplus))
-				dataUpdate.gpplus = contextData.gpplus;
-			if(notEmpty(contextData.gitHub))
-				dataUpdate.gitHub = contextData.gitHub;
-			if(notEmpty(contextData.skype))
-				dataUpdate.skype = contextData.skype;
-			if(notEmpty(contextData.telegram))
-				dataUpdate.telegram = contextData.telegram;
-			if(notEmpty(contextData.facebook))
-				dataUpdate.facebook = contextData.facebook;
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.twitter))
+				dataUpdate.twitter = contextData.socialNetwork.twitter;
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.gpplus))
+				dataUpdate.gpplus = contextData.socialNetwork.gpplus;
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.gitHub))
+				dataUpdate.gitHub = contextData.socialNetwork.gitHub;
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.skype))
+				dataUpdate.skype = contextData.socialNetwork.skype;
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.telegram))
+				dataUpdate.telegram = contextData.socialNetwork.telegram;
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.facebook))
+				dataUpdate.facebook = contextData.socialNetwork.facebook;
 
 			dyFObj.openForm(form, null, dataUpdate);
 
@@ -654,7 +667,7 @@ function bindAboutPodElement() {
 			index : ind
 		}
 		mylog.log("params",params);
-		dyFObj.openForm( 'url','parentUrl', params);
+		dyFObj.openForm( 'url','sub', params);
 	}
 
 
@@ -674,46 +687,85 @@ function bindAboutPodElement() {
 	}
 
 	function removeUrl(ind) {
-		param = new Object;
-    	param.name = "urls";
-    	param.value = {index : ind};
-    	param.pk = contextData.id;
-		param.type = contextData.type;
-		$.ajax({
-	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-	        data: param,
-	       	dataType: "json",
-	    	success: function(data){
-	    		mylog.log("data", data);
-		    	if(data.result){
-					toastr.success(data.msg);
-					urlCtrl.loadByHash(location.hash);
-		    	}
-		    }
+		bootbox.confirm({
+			message: trad["suretodeletelink"]+"<span class='text-red'></span>",
+			buttons: {
+				confirm: {
+					label: trad["yes"],
+					className: 'btn-success'
+				},
+				cancel: {
+					label: trad["no"],
+					className: 'btn-danger'
+				}
+			},
+			callback: function (result) {
+				if (!result) {
+					return;
+				} else {
+					param = new Object;
+			    	param.name = "urls";
+			    	param.value = {index : ind};
+			    	param.pk = contextData.id;
+					param.type = contextData.type;
+					$.ajax({
+				        type: "POST",
+				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+				        data: param,
+				       	dataType: "json",
+				    	success: function(data){
+				    		mylog.log("data", data);
+					    	if(data.result){
+								toastr.success(data.msg);
+								urlCtrl.loadByHash(location.hash);
+					    	}
+					    }
+					});
+				}
+			}
 		});
+		
 	}
 
 	
 
 	function removeContact(ind) {
-		param = new Object;
-    	param.name = "contacts";
-    	param.value = {index : ind};
-    	param.pk = contextData.id;
-		param.type = contextData.type;
-		$.ajax({
-	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-	        data: param,
-	       	dataType: "json",
-	    	success: function(data){
-	    		mylog.log("data", data);
-		    	if(data.result){
-					toastr.success(data.msg);
-					urlCtrl.loadByHash(location.hash);
-		    	}
-		    }
+		bootbox.confirm({
+			message: trad["suretodeletecontact"]+"<span class='text-red'></span>",
+			buttons: {
+				confirm: {
+					label: trad["yes"],
+					className: 'btn-success'
+				},
+				cancel: {
+					label: trad["no"],
+					className: 'btn-danger'
+				}
+			},
+			callback: function (result) {
+				if (!result) {
+					return;
+				} else {
+					param = new Object;
+			    	param.name = "contacts";
+			    	param.value = {index : ind};
+			    	param.pk = contextData.id;
+					param.type = contextData.type;
+					$.ajax({
+				        type: "POST",
+				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+				        data: param,
+				       	dataType: "json",
+				    	success: function(data){
+				    		mylog.log("data", data);
+					    	if(data.result){
+								toastr.success(data.msg);
+								urlCtrl.loadByHash(location.hash);
+					    	}
+					    }
+					});
+				}
+			}
 		});
 	}
 

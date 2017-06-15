@@ -86,7 +86,7 @@ if( isset($parent) ){
 						</li>
 						<?php  }  ?>
 						<li class="filter active" data-filter="all">
-							<a href="#" class="btn btn-default"><?php echo Yii::t("common","Show All"); ?></a>
+							<a href="javascript:;" class="btn btn-default"><?php echo Yii::t("common","Show All"); ?></a>
 						</li>
 					</ul>
 				</div>
@@ -131,7 +131,7 @@ function initGrid(){
 			if($.inArray(k, tabButton)==-1){
 				tabButton.push(k);
 				var liHtml = '<li class="filter" data-filter=".'+k+'">'+
-								'<a href="#">' + mapButton[k] + '</a>'+
+								'<a href="javascript:;">' + mapButton[k] + '</a>'+
 							 '</li>';
 				$(".nav-pills").append(liHtml);
 			}

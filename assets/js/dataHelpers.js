@@ -269,28 +269,34 @@ var dataHelper = {
 		var lines = csv.split("\n");			
 		var result = [];
 		$.each(lines, function(key, value){
-			var colonnes = value.split(separateur);
-			var newColonnes = [];
-			$.each(colonnes, function(keyCol, valueCol){
-				if(typeof separateurText == "undefined" || separateurText =="")
-					newColonnes.push(valueCol);
-				else{
-					if(valueCol.charAt(0) == separateurText && valueCol.charAt(valueCol.length-1) == separateurText){
-						var elt = valueCol.substr(1,valueCol.length-2);
-						newColonnes.push(elt);
-					}else{
+			if(value.length > 0){
+				var colonnes = value.split(separateur);
+				var newColonnes = [];
+				$.each(colonnes, function(keyCol, valueCol){
+					
+					if(typeof separateurText == "undefined" || separateurText =="")
 						newColonnes.push(valueCol);
+					else{
+						if(valueCol.charAt(0) == separateurText && valueCol.charAt(valueCol.length-1) == separateurText){
+							var elt = valueCol.substr(1,valueCol.length-2);
+							newColonnes.push(elt);
+						}else{
+							newColonnes.push(valueCol);
+						}
 					}
-				}
-			});
-			result.push(newColonnes);
+					
+					
+				});
+				result.push(newColonnes);
+			}
+			
 		});
 		return result;
 	},
 
 	markdownToHtml : function (str) { 
 		var converter = new showdown.Converter();
-		var res = converter.makeHtml(str)
+		var res = converter.makeHtml(str);
 		return res;
 	},
 

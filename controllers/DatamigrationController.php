@@ -1377,5 +1377,103 @@ class DatamigrationController extends CommunecterController {
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
+	public function actionAddGeoShapeMissing(){
+		$cities = PHDB::find(City::COLLECTION, array("geoShape" => array('$exists' => 0)));
+
+		foreach ($cities as $key => $city) {
+			$name = str_replace(" ", "+", trim($city["name"]));
+			$url = "http://nominatim.openstreetmap.org/search?format=json&addressdetails=1&city=".$name."&countrycodes=FR&polygon_geojson=1&extratags=1" ;
+			$nominatim = json_decode(file_get_contents($url), true);
+			$find = false ;
+			if(!empty($nominatim)){
+				foreach ($nominatim as $key => $value) {
+					if($value["osm_type"] == "relation" && !empty($value["geojson"]) && $find == false){
+						echo $city["insee"]." : ". $city["name"]." : ".$value["osm_id"]."<br/>";
+						$find = true ;
+
+						$city["modifiedByBatch"][] = array("AddGeoShapeMissing" => new MongoDate(time()));
+						try {
+							$res = PHDB::update( City::COLLECTION, 
+						  		array("_id"=>new MongoId((String)$city["_id"])),
+	                        	array('$set' => array(	"geoShape" => $value["geojson"],
+	                        							"osmID" => $value["osm_id"],
+	                        							"modifiedByBatch" => $city["modifiedByBatch"])));
+						} catch (MongoWriteConcernException $e) {
+							echo("Erreur à la mise à jour de l'élément ".City::COLLECTION." avec l'id ".$key);
+							die();
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	public function actionChangePrefObjectToArray(){
+		$types = array(Person::COLLECTION);
+		$nbelement = 0 ;
+		foreach ($types as $keyType => $type) {
+			$elements = PHDB::find($type, array("preferences" => array('$exists' => 1)));
+			if(!empty($elements)){
+				foreach (@$elements as $keyElt => $elt) {
+					if(!empty($elt["name"])){
+						$nbelement ++ ;
+						$elt["modifiedByBatch"][] = array("ChangePrefObjectToArray" => new MongoDate(time()));
+						
+						if(!empty($elt["preferences"]["publicFields"])) {
+							$elt["preferences"]["publicFields"] = json_decode(json_encode($elt["preferences"]["publicFields"]), true);
+						}
+
+						if(!empty($elt["preferences"]["privateFields"])){
+							$elt["preferences"]["privateFields"] = json_decode(json_encode($elt["preferences"]["privateFields"]), true);
+						}
+
+						try {
+							$res = PHDB::update( $type, 
+						  		array("_id"=>new MongoId($keyElt)),
+	                        	array('$set' => array(	"preferences" => $elt["preferences"],
+	                        							"modifiedByBatch" => $elt["modifiedByBatch"])));
+						} catch (MongoWriteConcernException $e) {
+							echo("Erreur à la mise à jour de l'élément ".$type." avec l'id ".$keyElt);
+							die();
+						}
+						echo "Elt mis a jour : ".$type." et l'id ".$keyElt."<br>" ;
+					}
+				}
+			}
+		}		
+		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+	}
+
+	public function actionInitMultiScope(){
+		$types = array(Person::COLLECTION);
+		$nbelement = 0 ;
+		foreach ($types as $keyType => $type) {
+			$elements = PHDB::find($type, array("multiscopes" => array('$exists' => 1)));
+			if(!empty($elements)){
+				foreach (@$elements as $keyElt => $elt) {
+					if(!empty($elt["name"])){
+						$nbelement ++ ;
+						$elt["modifiedByBatch"][] = array("InitMultiScope" => new MongoDate(time()));
+						
+						try {
+							$res = PHDB::update( $type, 
+						  		array("_id"=>new MongoId($keyElt)),
+	                        	array(	'$unset' 	=> array(	"multiscopes" => null),
+	                        			'$set' 		=> array(	"modifiedByBatch" => $elt["modifiedByBatch"])));
+						} catch (MongoWriteConcernException $e) {
+							echo("Erreur à la mise à jour de l'élément ".$type." avec l'id ".$keyElt);
+							die();
+						}
+						echo "Elt mis a jour : ".$type." et l'id ".$keyElt."<br>" ;
+					}
+				}
+			}
+		}		
+		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+	}
+
+
+
 }
 

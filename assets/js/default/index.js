@@ -63,7 +63,7 @@ function resizeInterface()
   var height = $("#mapCanvasBg").height() - 55;
   $("#ajaxSV").css({"minHeight" : height});
   //$("#menu-container").css({"minHeight" : height});
-  var heightDif = $("#search-contact").height() + $("#floopHeader").height() + 60 /* top */ + 0 /* bottom */;
+  var heightDif = $("#search-contact").height() + $("#floopHeader").height() + 80 /* top */ + 0 /* bottom */;
   var menuTopHeight = $("#mainNav").height();// - $(".toolbar").height();
   
   //mylog.log("heightDif", heightDif);
@@ -122,9 +122,8 @@ function showMap(show)
 		console.log("showMap", show, "elementsMap", Sig.preloadElementsMap);
 		mapBg = Sig.loadMap("mapCanvas", initSigParams);
 	    Sig.showIcoLoading(false);
-	    Sig.showMapElements(Sig.map, Sig.preloadElementsMap);
+	    Sig.showMapElements(Sig.map, Sig.preloadElementsMap, Sig.preloadIconLegende, Sig.preloadTextLegende);
 	}
-	//alert("hello showMap " + CoSigAllReadyLoad);
 	
     if(mapBg == null) return;
 
@@ -176,7 +175,7 @@ function showMap(show)
 		
 	}else{
 		isMapEnd = false;
-		hideMapLegende();
+		//hideMapLegende();
 
 		var iconMap = "map-marker";
 		if(typeof ICON_MAP_MENU_TOP != "undefined") iconMap = ICON_MAP_MENU_TOP;

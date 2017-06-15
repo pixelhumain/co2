@@ -404,7 +404,7 @@
 	            <small>Faire connaitre un projet<br>Trouver du soutien<br>Construire une communauté</small>
 	        </button>
 
-			<button data-form-type="contact"  data-dismiss="modal"
+			<button data-form-type="contactPoint"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-blue hide-citoyens">
 	            <h6><i class="fa fa-envelope fa-2x bg-blue"></i><br> Contact</h6>
 	            <small>Définir les rôles de chacun<br>Faciliter la communication<br>Interne et externe</small>
@@ -445,14 +445,14 @@
 
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section pull-right">
 		
-		<?php   $classDescH=""; 
-				$classBtnDescH="<i class='fa fa-angle-up'></i> masquer"; 
+		<?php   //$classDescH=""; 
+				//$classBtnDescH="<i class='fa fa-angle-up'></i> masquer"; 
 				$marginCentral="";
-				if(!@$element["description"] || @$linksBtn["isFollowing"]==true || 
-					@$linksBtn["isMember"]==true){
+				//if(!@$element["description"] || @$linksBtn["isFollowing"]==true || 
+				//	@$linksBtn["isMember"]==true){
 					$classDescH="hidden"; 
 					$classBtnDescH="<i class='fa fa-angle-down'></i> afficher la description"; 
-				}
+				//}
 
 		if($typeItem != Person::COLLECTION){ 
 		?>
@@ -477,9 +477,7 @@
 			</div>
 		<?php }else{ $marginCentral="50"; } ?>
 		<!-- Permet de faire le convertion en HTML -->
-		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" >
-			<?php echo (!empty($element["description"])) ? $element["description"] : ""; ?>
-		</span>
+		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
 
 	    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-<?php echo $marginCentral; ?>" id="central-container">
 		</div>
@@ -516,16 +514,14 @@
 					"openEdition" => $openEdition,
 				) );
 
-	if( $type != Person::COLLECTION)
+	//if( $type != Person::COLLECTION)
 		$this->renderPartial('../element/addMembersFromMyContacts',
 				array(	"type"=>$type, 
 						"parentId" => (string)$element['_id'], 
 						"members" => @$members));
 
 ?>
-<script type="text/javascript">
-	
-</script>
+
 <?php	$cssAnsScriptFilesModule = array(
 		'/js/default/profilSocial.js',
 	);
@@ -534,6 +530,7 @@
 ?>
 
 <script type="text/javascript">
+	
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
 	mylog.log("init contextData", contextData);
     var params = <?php echo json_encode(@$params); ?>; 
@@ -548,7 +545,7 @@
     var idObjectShared = new Array();
 
     var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
-	
+	var dirHash="<?php echo @$_GET['dir']; ?>";
 	jQuery(document).ready(function() {
 		bindButtonMenu();
 		inintDescs();
@@ -560,37 +557,43 @@
 		else 
 			$(".createProjectBtn").show()
 
-		if(subView!=""){
-			if(subView=="gallery")
-				loadGallery();
-			else if(subView=="notifications")
-				loadNotifications();
-			else if(subView.indexOf("chart") >= 0){
-				loadChart();
-			}
-			else if(subView=="mystream")
-				loadNewsStream(false);
-			else if(subView=="history")
-				loadHistoryActivity();
-			else if(subView=="directory")
-				loadDataDirectory("<?php echo @$_GET['dir']; ?>",null,edit);
-			else if(subView=="editChart")
-				loadEditChart();
-			else if(subView=="detail")
-				loadDetail();
-			else if(subView=="urls")
-				loadUrls();
-			else if(subView=="contacts")
-				loadContacts();
-		} else
-			loadNewsStream(true);
-
+		$(".hide-"+contextData.type).hide();
+		getProfilSubview(subView,dirHash);
+		
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
+		getContextDataLinks();
 		//Sig.showMapElements(Sig.map, mapElements);
 		var elemSpec = dyFInputs.get("<?php echo $type?>");
 		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");
 	});
-
+	function getProfilSubview(sub, dir){
+		if(sub!=""){
+			if(sub=="gallery")
+				loadGallery();
+			else if(sub=="notifications")
+				loadNotifications();
+			else if(sub.indexOf("chart") >= 0){
+				loadChart();
+			}
+			else if(sub=="mystream")
+				loadNewsStream(false);
+			else if(sub=="history")
+				loadHistoryActivity();
+			else if(sub=="directory")
+				loadDataDirectory(dir,null,edit);
+			else if(sub=="editChart")
+				loadEditChart();
+			else if(sub=="detail")
+				loadDetail();
+			else if(sub=="urls")
+				loadUrls();
+			else if(sub=="contacts")
+				loadContacts();
+			else if(sub=="settings")
+				loadSettings();
+		} else
+			loadNewsStream(true);
+	}
 
 </script>

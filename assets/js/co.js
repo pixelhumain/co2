@@ -1410,7 +1410,7 @@ function  bindExplainLinks() {
 }
 
 function  bindLBHLinks() { 
-	$(".lbh").off().on("click",function(e) {  		
+	$(".lbh")..unbind("click").on("click",function(e) {  		
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
@@ -1419,7 +1419,7 @@ function  bindLBHLinks() {
 	    urlCtrl.loadByHash( h );
 	});
 	//open any url in a modal window
-	$(".lbhp").off().on("click",function(e) {
+	$(".lbhp")..unbind("click").on("click",function(e) {
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));

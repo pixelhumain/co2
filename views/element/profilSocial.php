@@ -445,14 +445,14 @@
 
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section pull-right">
 		
-		<?php   $classDescH=""; 
-				$classBtnDescH="<i class='fa fa-angle-up'></i> masquer"; 
+		<?php   //$classDescH=""; 
+				//$classBtnDescH="<i class='fa fa-angle-up'></i> masquer"; 
 				$marginCentral="";
-				if(!@$element["description"] || @$linksBtn["isFollowing"]==true || 
-					@$linksBtn["isMember"]==true){
+				//if(!@$element["description"] || @$linksBtn["isFollowing"]==true || 
+				//	@$linksBtn["isMember"]==true){
 					$classDescH="hidden"; 
 					$classBtnDescH="<i class='fa fa-angle-down'></i> afficher la description"; 
-				}
+				//}
 
 		if($typeItem != Person::COLLECTION){ 
 		?>
@@ -530,6 +530,7 @@
 ?>
 
 <script type="text/javascript">
+	
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
 	mylog.log("init contextData", contextData);
     var params = <?php echo json_encode(@$params); ?>; 
@@ -544,7 +545,7 @@
     var idObjectShared = new Array();
 
     var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
-	
+	var dirHash="<?php echo @$_GET['dir']; ?>";
 	jQuery(document).ready(function() {
 		bindButtonMenu();
 		inintDescs();
@@ -557,39 +558,42 @@
 			$(".createProjectBtn").show()
 
 		$(".hide-"+contextData.type).hide();
+		getProfilSubview(subView,dirHash);
 		
-
-		if(subView!=""){
-			if(subView=="gallery")
-				loadGallery();
-			else if(subView=="notifications")
-				loadNotifications();
-			else if(subView.indexOf("chart") >= 0){
-				loadChart();
-			}
-			else if(subView=="mystream")
-				loadNewsStream(false);
-			else if(subView=="history")
-				loadHistoryActivity();
-			else if(subView=="directory")
-				loadDataDirectory("<?php echo @$_GET['dir']; ?>",null,edit);
-			else if(subView=="editChart")
-				loadEditChart();
-			else if(subView=="detail")
-				loadDetail();
-			else if(subView=="urls")
-				loadUrls();
-			else if(subView=="contacts")
-				loadContacts();
-		} else
-			loadNewsStream(true);
-
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
+		getContextDataLinks();
 		//Sig.showMapElements(Sig.map, mapElements);
 		var elemSpec = dyFInputs.get("<?php echo $type?>");
 		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");
 	});
-
+	function getProfilSubview(sub, dir){
+		if(sub!=""){
+			if(sub=="gallery")
+				loadGallery();
+			else if(sub=="notifications")
+				loadNotifications();
+			else if(sub.indexOf("chart") >= 0){
+				loadChart();
+			}
+			else if(sub=="mystream")
+				loadNewsStream(false);
+			else if(sub=="history")
+				loadHistoryActivity();
+			else if(sub=="directory")
+				loadDataDirectory(dir,null,edit);
+			else if(sub=="editChart")
+				loadEditChart();
+			else if(sub=="detail")
+				loadDetail();
+			else if(sub=="urls")
+				loadUrls();
+			else if(sub=="contacts")
+				loadContacts();
+			else if(sub=="settings")
+				loadSettings();
+		} else
+			loadNewsStream(true);
+	}
 
 </script>

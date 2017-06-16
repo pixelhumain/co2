@@ -321,7 +321,7 @@ function bindAddData(){
   		$.ajax({
 	        type: 'POST',
 	        data: params,
-	        url: baseUrl+'/communecter/adminpublic/adddataindb/',
+	        url: baseUrl+'/'+moduleId+'/adminpublic/adddataindb/',
 	        dataType : 'json',
 	        success: function(data){
 	        	console.log("data",data);
@@ -332,9 +332,9 @@ function bindAddData(){
 		        		chaine += "<tr>" +
 		        					"<td>"+value2.name+"</td>"+
 		        					"<td>"+value2.info+"</td>"+
-		        					"<td>"+baseUrl+value2.url+"</td>"+
+		        					"<td>"+(notNull(value2.url) ? baseUrl+value2.url : "")+"</td>"+
 		        					"<td>"+value2.type+"</td>"+
-		        					"<td>"+value2.id+"</td>"+
+		        					"<td>"+(notNull(value2.id) ? baseUrl+value2.id : "")+"</td>"+
 		        				"</tr>";
 		        		csv += "\n";
 		        		csv += '"'+value2.name+'";"'+value2.info+'";"'+baseUrl+value2.url+'";"'+value2.type+'";"'+value2.id+'";' ;

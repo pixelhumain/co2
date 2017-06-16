@@ -21,6 +21,7 @@ function startSearch(indexMin, indexMax, callBack){
     console.log("startSearch 1", typeof callBack, callBack, loadingData);
     if(loadingData) return;
     loadingData = true;
+    showIsLoading(true);
     
     //mylog.log("loadingData true");
     indexStep = indexStepInit;
@@ -339,14 +340,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             else $.extend(mapElements, data);
             
             //affiche les éléments sur la carte
-            if(CoSigAllReadyLoad)
-            Sig.showMapElements(Sig.map, mapElements);
-            else{
-              setTimeout(function(){ 
-                Sig.showMapElements(Sig.map, mapElements);
-              }, 3000);
-            }
-            
+            Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
+                        
             if(typeof callBack == "function")
                 callBack();
         }
@@ -490,6 +485,12 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 			});
 		}
    	});
+
+
+    $(".btn-update-contact").click(function(){ console.log("editContact");
+      updateContact($(this).data("contact-key"),$(this).data("contact-name"), $(this).data("contact-email"), 
+                   $(this).data("contact-role"),$(this).data("contact-telephone"));
+    });
 
     initBtnShare();
 
@@ -809,7 +810,7 @@ var directory = {
 
         str += "<div class='entityRight no-padding'>"; 
 
-            if(typeof params.size == "undefined" || params.size == "max"){
+            if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
               str +=    "<a href='"+params.hash+"' class='add2fav "+linkAction+">" + params.htmlIco + "</a>";
               str += "</div>";
@@ -1413,10 +1414,10 @@ var directory = {
 					}
 					else
 						str += (notEmpty(params.name) ? '<h4 class="panel-title text-dark pull-left">'+params.name+'</h4><br/>' : '');
-					str += (notEmpty(params.role) ? '<span class="" style="font-size: 11px !important;">'+params.role+'</span><br/>' : '');
+					str += (notEmpty(params.role) ? '<span class="" style="font-size: 13px !important;">'+params.role+'</span><br/>' : '');
 					//str += (notEmpty(params.email) ? '<a href="javascript:;" onclick="dyFObj.openForm(\'formContact\', \'init\')" style="font-size: 11px !important;">'+params.email+'</a><br/>' : '');
-          str += (notEmpty(params.email) ? '<span class="" style="font-size: 11px !important;">'+params.email+'</span><br/>' : '');
-					str += (notEmpty(params.telephone) ? '<span class="" style="font-size: 11px !important;">'+params.telephone+'</span>' : '');
+          str += (notEmpty(params.email) ? '<span class="" style="font-size: 12px !important;">'+params.email+'</span><br/>' : '');
+					str += (notEmpty(params.telephone) ? '<span class="" style="font-size: 12px !important;">'+params.telephone+'</span>' : '');
 				str += "</div>";
       if(typeof userId != "undefined" && userId != ""){
   			str += '<ul class="nav navbar-nav margin-5 col-md-12">';
@@ -1439,8 +1440,15 @@ var directory = {
                 str += '</a>';
               str += '</li>';
               str += '<li class="text-left pull-right">';
-                str += '<a href="javascript:;" onclick="updateContact(\''+key+'\', \''+params.name+'\',  \''+params.email+'\', \''+params.role+'\', \''+params.telephone+'\');" ' +
-                          'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" '+
+            
+              str += '<a href="javascript:" ' +
+                          'class="bg-white tooltips btn btn-link btn-sm btn-update-contact" '+
+                          
+                          'data-contact-key="'+key+'" data-contact-name="'+params.name+'" '+
+                          'data-contact-email="'+params.email+'" data-contact-role="'+params.role+'" '+
+                          'data-contact-telephone="'+params.telephone+'"'+
+                          
+                          'data-toggle="tooltip" data-placement="top" '+
                           'data-original-title="'+trad["update"]+'" >';
                   str += '<i class="fa fa-pencil"></i>';
                 str += '</a>';

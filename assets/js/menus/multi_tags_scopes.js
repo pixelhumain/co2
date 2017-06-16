@@ -20,11 +20,13 @@
                             '<i class="fa fa-university"></i>'+
                         '</button>';
             }else{
-                scopeHtml='<button class="pull-left hidden btn btn-link bg-white text-red tooltips" onclick="communecterUser();" '+
+                if(userId!=""){
+                    scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips" onclick="communecterUser();" '+
                             'data-toggle="tooltip" data-placement="top" title="Communectez-vous" '+
                             'id="btn-my-co">'+
                             '<i class="fa fa-university"></i>'+
                         '</button>';
+                }
             }
         //}
        

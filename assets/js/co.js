@@ -600,7 +600,7 @@ var urlCtrl = {
 		"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus'},
 	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download'},
 	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : false},
-	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download'},
+	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : false},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
@@ -1410,7 +1410,7 @@ function  bindExplainLinks() {
 }
 
 function  bindLBHLinks() { 
-	$(".lbh").off().on("click",function(e) {  		
+	$(".lbh").unbind("click").on("click",function(e) {  		
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
@@ -1419,7 +1419,7 @@ function  bindLBHLinks() {
 	    urlCtrl.loadByHash( h );
 	});
 	//open any url in a modal window
-	$(".lbhp").off().on("click",function(e) {
+	$(".lbhp").unbind("click").on("click",function(e) {
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
@@ -2174,8 +2174,12 @@ var collection = {
 				if(data.result){
 					if(data.list == '$unset'){
 						if(location.hash.indexOf("#page") >=0){
-							$(".favorisMenu").removeClass("text-yellow");
-							$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o');
+							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){ 
+                				loadDataDirectory("collections", "star"); 
+              				}else{ 
+                				$(".favorisMenu").removeClass("text-yellow"); 
+                				$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o'); 
+              				} 
 						}else{
 							$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
 							delete userConnected.collections[collection][what][id];
@@ -2183,9 +2187,13 @@ var collection = {
 					}
 					else{
 						if(location.hash.indexOf("#page") >=0){
-							$(".favorisMenu").addClass("text-yellow");
-							$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star');
-						}
+							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){ 
+                				loadDataDirectory("collections", "star"); 
+              				}else{ 
+                				$(".favorisMenu").addClass("text-yellow"); 
+                				$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star'); 
+              				}
+              			}
 						else
 							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
 						if(!userConnected.collections)
@@ -2233,7 +2241,7 @@ var uploadObj = {
 	gotoUrl : null,
 	isSub : false,
 	update  : false,
-	folder : moduleId, //on force pour pas casser toutes les vielles images
+	folder : "communecter", //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
 		mylog.log("set uploadObj.id", id);
@@ -2264,7 +2272,7 @@ var dyFObj = {
 		formData.key = ctrl;
 		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj);
 		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj.elementLocations);
-		if(dyFInputs.locationObj.elementLocations){
+		if(dyFInputs.locationObj.centerLocation){
 			//formData.multiscopes = elementLocation;
 			mylog.warn("here--- -------- centerLocation",dyFInputs.locationObj.centerLocation);
 			formData.address = dyFInputs.locationObj.centerLocation.address;
@@ -2473,6 +2481,7 @@ var dyFObj = {
 	        }
 	    });
 	},
+	
 	//entry point function for opening dynForms
 	openForm : function  (type, afterLoad,data) { 
 	    //mylog.clear();
@@ -2480,11 +2489,10 @@ var dyFObj = {
 	    $("#openModal").modal("hide");
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
-	    //global variables clean up
-	    dyFInputs.locationObj.elementLocation = null;
-	    dyFInputs.locationObj.elementLocations = [];
-	    dyFInputs.locationObj.centerLocation = null;
-	    updateLocality = false;
+	    uploadObj.contentKey="profil"; 
+      	if(type=="addPhoto") 
+        	uploadObj.contentKey="slider"; 
+	   
 	    //initKSpec();
 	    if(userId)
 		{
@@ -2528,6 +2536,7 @@ var dyFObj = {
 				function() { 
 					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+dyFInputs.get(type).ctrl+'.js');
 					mylog.dir(dynForm);
+					//typeObj[type].dynForm = dynForm;
 				  	dyFInputs.get(type).dynForm = dynForm;
 					dyFObj.elementObj = dyFInputs.get(type);
 					if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
@@ -2556,6 +2565,7 @@ var dyFObj = {
 							              "</div>");
 	  	$('.modal-footer').hide();
 	  	$('#ajax-modal').modal("show");
+	  	dyFInputs.init();
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
 	  	dyFObj.buildDynForm(afterLoad, data);
@@ -2657,6 +2667,49 @@ var dyFObj = {
 }
 //TODO : refactor into dyfObj.inputs
 var dyFInputs = {
+	init : function(){
+		 //global variables clean up
+		dyFInputs.locationObj.elementLocation = null;
+	    dyFInputs.locationObj.elementLocations = [];
+	    dyFInputs.locationObj.centerLocation = null;
+	    updateLocality = false;
+
+	    // GET LIST OF NETWORK'S TAGS
+	    if(networkJson){
+	    	if(typeof networkJson.filter.linksTag != "undefined"){
+				var networkTags = [];
+				if(typeof networkJson.request.mainTag != "undefined")
+					networkTags.push({id:networkJson.request.mainTag[0],text:networkJson.request.mainTag[0]});
+				$.each(networkJson.filter.linksTag, function(category, properties) {
+					optgroupObject=new Object;
+					optgroupObject.text=category;
+					optgroupObject.children=[];
+					$.each(properties.tags, function(i, tag) {
+						val={id:tag,text:tag};
+						optgroupObject.children.push(val);
+					});
+					networkTags.push(optgroupObject);
+				});
+			}
+
+		    if(typeof networkJson.add != "undefined"){
+				$.each(networkJson.add, function(key, v) {
+					if(typeof networkJson.request.sourceKey != "undefined"){
+						sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
+						typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
+					}
+					if(v){
+						if(typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+							typeObj[key].dynForm.jsonSchema.properties.tags.data=networkTags;
+							if(typeof networkJson.request.mainTag != "undefined")
+								typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
+						}
+					}
+				});
+			}
+	    }
+		
+	},
 	inputText :function(label, placeholder, rules, custom) { 
 		var inputObj = {
 			label : label,
@@ -2751,6 +2804,10 @@ var dyFInputs = {
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
+				$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+						  					  .addClass("bg-dark");
+    		 	
+    		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
         	},500);
     	}
     },
@@ -2987,6 +3044,7 @@ var dyFInputs = {
 	    			var startDate = "";
 	    			var endDate = "";
 	    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
+	    			
 	    			if (allDay) {
 	    				$(".dateTimeInput").addClass("dateInput");
 	    				$(".dateTimeInput").removeClass("dateTimeInput");
@@ -3238,7 +3296,7 @@ var typeObj = {
 	"citoyen" : { sameAs:"person" },
 	"citoyens" : { sameAs:"person" },
 	
-	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle",
+	"poi":{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
 			subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
 				   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
 				   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
@@ -3748,8 +3806,8 @@ function initKInterface(params){ console.log("initKInterface");
     $(".btn-show-map").off().click(function(){
     	if(typeof formInMap != "undefined" && formInMap.actived == true)
 			formInMap.cancel();
-    	else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
-			getContextDataLinks();
+    	//else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+		//	getContextDataLinks();
 		else
 			showMap();
     });
@@ -3781,14 +3839,14 @@ function getContextDataLinks(){
 		success: function(data){
 			mylog.log("getContextDataLinks data", data);
 			Sig.restartMap();
-			Sig.showMapElements(Sig.map, data);
-			showMap();
+			Sig.showMapElements(Sig.map, data, "link", "La communauté de <b>"+contextData.name+"</b>");
+			//showMap();
 		},
 		error: function (error) {
 			mylog.log("getContextDataLinks error findGeoposByInsee", error);
 			Sig.restartMap();
 			callbackFindByInseeError(error);
-			showMap();	
+			//showMap();	
 		}
 			
 	});
@@ -3885,5 +3943,6 @@ function test(params, itemType){
 $(document).ready(function() { 
 	setTimeout( function () { checkPoll() }, 10000);
 	document.onkeyup = keyboardNav.checkKeycode;
-	bindRightClicks();
+	if(notNull(userId) && userId!="") 
+		bindRightClicks();
 });

@@ -18,9 +18,10 @@ function userValidatedActions() {
 }
 
 function removeParametersWithoutReloading() {
-	window.history.pushState("Invitation", 
+	//alert("removeParams");
+	/*window.history.pushState("Invitation", 
 		"Invitation", 
-		location.href.replace(location.search,""));
+		location.href.replace(location.search,""));*/
 }
 
 var Login = function() {
@@ -258,7 +259,7 @@ var Login = function() {
 		});
 	};
 
-	var runRegisterValidator = function() { console.log("runRegisterValidator");
+	var runRegisterValidator = function() { console.log("runRegisterValidator!");
 		var form3 = $('.form-register');
 		var errorHandler3 = $('.errorHandler', form3);
 		var createBtn = null;

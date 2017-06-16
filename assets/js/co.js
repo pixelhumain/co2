@@ -1864,7 +1864,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 	                });
 				}
         	} else if ($("#ajaxFormModal").is(":visible") && $this.parent().find(".dynFormUrlsWarning").length <= 0){
-				$this.parent().append( "<span class='text-red dynFormUrlsWarning'>* Ceci n'est pas un url valide.</span>" );         	
+				//$this.parent().append( "<span class='text-red dynFormUrlsWarning'>* Ceci n'est pas un url valide.</span>" );         	
         	}
         }
     }); 
@@ -2951,7 +2951,7 @@ var dyFInputs = {
 	    return inputObj;
 	},
     urls : {
-    	label : "Ajouter des informations libres",
+    	label : "Informations libres / urls",
     	placeholder : "informations / urls ...",
         inputType : "array",
         value : [],

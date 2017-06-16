@@ -600,7 +600,7 @@ var urlCtrl = {
 		"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus'},
 	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download'},
 	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : false},
-	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download'},
+	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : false},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
@@ -2481,6 +2481,7 @@ var dyFObj = {
 	        }
 	    });
 	},
+	
 	//entry point function for opening dynForms
 	openForm : function  (type, afterLoad,data) { 
 	    //mylog.clear();
@@ -2491,11 +2492,7 @@ var dyFObj = {
 	    uploadObj.contentKey="profil"; 
       	if(type=="addPhoto") 
         	uploadObj.contentKey="slider"; 
-	    //global variables clean up
-	    dyFInputs.locationObj.elementLocation = null;
-	    dyFInputs.locationObj.elementLocations = [];
-	    dyFInputs.locationObj.centerLocation = null;
-	    updateLocality = false;
+	   
 	    //initKSpec();
 	    if(userId)
 		{
@@ -2539,6 +2536,7 @@ var dyFObj = {
 				function() { 
 					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+dyFInputs.get(type).ctrl+'.js');
 					mylog.dir(dynForm);
+					//typeObj[type].dynForm = dynForm;
 				  	dyFInputs.get(type).dynForm = dynForm;
 					dyFObj.elementObj = dyFInputs.get(type);
 					if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
@@ -2567,6 +2565,7 @@ var dyFObj = {
 							              "</div>");
 	  	$('.modal-footer').hide();
 	  	$('#ajax-modal').modal("show");
+	  	dyFInputs.init();
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
 	  	dyFObj.buildDynForm(afterLoad, data);
@@ -2668,6 +2667,49 @@ var dyFObj = {
 }
 //TODO : refactor into dyfObj.inputs
 var dyFInputs = {
+	init : function(){
+		 //global variables clean up
+		dyFInputs.locationObj.elementLocation = null;
+	    dyFInputs.locationObj.elementLocations = [];
+	    dyFInputs.locationObj.centerLocation = null;
+	    updateLocality = false;
+
+	    // GET LIST OF NETWORK'S TAGS
+	    if(networkJson){
+	    	if(typeof networkJson.filter.linksTag != "undefined"){
+				var networkTags = [];
+				if(typeof networkJson.request.mainTag != "undefined")
+					networkTags.push({id:networkJson.request.mainTag[0],text:networkJson.request.mainTag[0]});
+				$.each(networkJson.filter.linksTag, function(category, properties) {
+					optgroupObject=new Object;
+					optgroupObject.text=category;
+					optgroupObject.children=[];
+					$.each(properties.tags, function(i, tag) {
+						val={id:tag,text:tag};
+						optgroupObject.children.push(val);
+					});
+					networkTags.push(optgroupObject);
+				});
+			}
+
+		    if(typeof networkJson.add != "undefined"){
+				$.each(networkJson.add, function(key, v) {
+					if(typeof networkJson.request.sourceKey != "undefined"){
+						sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
+						typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
+					}
+					if(v){
+						if(typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+							typeObj[key].dynForm.jsonSchema.properties.tags.data=networkTags;
+							if(typeof networkJson.request.mainTag != "undefined")
+								typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
+						}
+					}
+				});
+			}
+	    }
+		
+	},
 	inputText :function(label, placeholder, rules, custom) { 
 		var inputObj = {
 			label : label,

@@ -125,6 +125,8 @@ function initVar(){
 					'<i class="fa fa-chevron-left"></i></button>'+
 				'</div>';
 	$("#btn-back").parent().replaceWith(btnSearch);
+
+	$("#mapLegende").addClass("hidden");
 }
 
 

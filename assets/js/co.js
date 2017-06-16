@@ -2174,8 +2174,12 @@ var collection = {
 				if(data.result){
 					if(data.list == '$unset'){
 						if(location.hash.indexOf("#page") >=0){
-							$(".favorisMenu").removeClass("text-yellow");
-							$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o');
+							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){ 
+                				loadDataDirectory("collections", "star"); 
+              				}else{ 
+                				$(".favorisMenu").removeClass("text-yellow"); 
+                				$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o'); 
+              				} 
 						}else{
 							$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
 							delete userConnected.collections[collection][what][id];
@@ -2183,9 +2187,13 @@ var collection = {
 					}
 					else{
 						if(location.hash.indexOf("#page") >=0){
-							$(".favorisMenu").addClass("text-yellow");
-							$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star');
-						}
+							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){ 
+                				loadDataDirectory("collections", "star"); 
+              				}else{ 
+                				$(".favorisMenu").addClass("text-yellow"); 
+                				$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star'); 
+              				}
+              			}
 						else
 							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
 						if(!userConnected.collections)
@@ -2233,7 +2241,7 @@ var uploadObj = {
 	gotoUrl : null,
 	isSub : false,
 	update  : false,
-	folder : moduleId, //on force pour pas casser toutes les vielles images
+	folder : "communecter", //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
 		mylog.log("set uploadObj.id", id);
@@ -2480,6 +2488,9 @@ var dyFObj = {
 	    $("#openModal").modal("hide");
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
+	    uploadObj.contentKey="profil"; 
+      	if(type=="addPhoto") 
+        	uploadObj.contentKey="slider"; 
 	    //global variables clean up
 	    dyFInputs.locationObj.elementLocation = null;
 	    dyFInputs.locationObj.elementLocations = [];
@@ -3753,8 +3764,8 @@ function initKInterface(params){ console.log("initKInterface");
     $(".btn-show-map").off().click(function(){
     	if(typeof formInMap != "undefined" && formInMap.actived == true)
 			formInMap.cancel();
-    	else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
-			getContextDataLinks();
+    	//else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+		//	getContextDataLinks();
 		else
 			showMap();
     });
@@ -3786,14 +3797,14 @@ function getContextDataLinks(){
 		success: function(data){
 			mylog.log("getContextDataLinks data", data);
 			Sig.restartMap();
-			Sig.showMapElements(Sig.map, data);
-			showMap();
+			Sig.showMapElements(Sig.map, data, "link", "La communauté de <b>"+contextData.name+"</b>");
+			//showMap();
 		},
 		error: function (error) {
 			mylog.log("getContextDataLinks error findGeoposByInsee", error);
 			Sig.restartMap();
 			callbackFindByInseeError(error);
-			showMap();	
+			//showMap();	
 		}
 			
 	});
@@ -3890,5 +3901,6 @@ function test(params, itemType){
 $(document).ready(function() { 
 	setTimeout( function () { checkPoll() }, 10000);
 	document.onkeyup = keyboardNav.checkKeycode;
-	bindRightClicks();
+	if(notNull(userId) && userId!="") 
+		bindRightClicks();
 });

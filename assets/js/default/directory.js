@@ -21,6 +21,7 @@ function startSearch(indexMin, indexMax, callBack){
     console.log("startSearch 1", typeof callBack, callBack, loadingData);
     if(loadingData) return;
     loadingData = true;
+    showIsLoading(true);
     
     //mylog.log("loadingData true");
     indexStep = indexStepInit;
@@ -339,14 +340,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             else $.extend(mapElements, data);
             
             //affiche les éléments sur la carte
-            if(CoSigAllReadyLoad)
-            Sig.showMapElements(Sig.map, mapElements);
-            else{
-              setTimeout(function(){ 
-                Sig.showMapElements(Sig.map, mapElements);
-              }, 3000);
-            }
-            
+            Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
+                        
             if(typeof callBack == "function")
                 callBack();
         }

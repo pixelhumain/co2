@@ -129,9 +129,9 @@ jQuery(document).ready(function() {
     //     var elementDate = new Date(elementTime * 1000);
     //     $(this).children(".dateTZ").text(elementDate.toLocaleDateString() + " " + elementDate.toLocaleTimeString());
     // });
-    Sig.showMapElements(Sig.map, localActivity);
-    $('#mapLegende').html("<i class='fa fa-clock-o'></i> Activité local en direct");
-    $('#mapLegende').show();
+    Sig.showMapElements(Sig.map, localActivity, "clock-o", "Activité territoriale");
+    //$('#mapLegende').html("<i class='fa fa-clock-o'></i> Activité territoriale");
+    //$('#mapLegende').show();
 
     $(".el-nowList").click(function(){
         var id = $(this).data("id");

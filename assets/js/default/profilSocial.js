@@ -7,6 +7,7 @@ function initDateHeaderPage(params){
 function getCroppingModal(){
 	
 }
+
 function menuLeftShow(){
 	if($("#menu-left-container").hasClass("hidden-xs"))
 		$("#menu-left-container").removeClass("hidden-xs");
@@ -28,39 +29,48 @@ function bindButtonMenu(){
 	$(".btn-start-newsstream").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
-		history.pushState(null, "New Title", hashUrlPage);
+		location.hash=hashUrlPage
+		//history.pushState(null, "New Title", hashUrlPage);
 		loadNewsStream(true);
 	});
 	$(".btn-start-mystream").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
-		if(contextData.type=="citoyens" && userId==contextData.id)
-			history.pushState(null, "New Title", hashUrlPage+".view.mystream");
-		else
-			history.pushState(null, "New Title", hashUrlPage);
+		if(contextData.type=="citoyens" && userId==contextData.id){
+			location.hash=hashUrlPage+".view.mystream";
+			//history.pushState(null, "New Title", hashUrlPage+".view.mystream");
+		}
+		else{
+			location.hash=hashUrlPage;
+			//history.pushState(null, "New Title", hashUrlPage);
+		}
 		loadNewsStream(false);
 	});
 	$("#btn-start-gallery").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.gallery");
+		location.hash=hashUrlPage+".view.gallery";
+		//history.pushState(null, "New Title", hashUrlPage+".view.gallery");
 		//location.search="?view=gallery";
 		loadGallery();
 	});
 	$(".btn-start-notifications").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
-		history.pushState(null, "New Title", hashUrlPage+".view.notifications");
+		location.hash=hashUrlPage+".view.notifications";
+		//history.pushState(null, "New Title", hashUrlPage+".view.notifications");
 		//location.search="?view=notifications";
 		loadNotifications();
 	});
 	$(".btn-start-chart").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.chart");
+		location.hash=hashUrlPage+".view.chart";
+		//history.pushState(null, "New Title", hashUrlPage+".view.chart");
 		loadChart();
 	});
 	$(".btn-show-activity").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.history");
+		location.hash=hashUrlPage+".view.history";
+		//history.pushState(null, "New Title", hashUrlPage+".view.history");
 		loadHistoryActivity();
 	});
 	
@@ -79,7 +89,8 @@ function bindButtonMenu(){
 	});
 	$(".edit-chart").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.editChart");
+		location.hash=hashUrlPage+".view.editChart";
+		//history.pushState(null, "New Title", hashUrlPage+".view.editChart");
 		loadEditChart();
 	});
 	$(".btn-open-collection").click(function(){
@@ -89,7 +100,8 @@ function bindButtonMenu(){
 
 	$("#btn-start-detail").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.detail");
+		location.hash=hashUrlPage+".view.detail";
+		//history.pushState(null, "New Title", hashUrlPage+".view.detail");
 		loadDetail();
 	});
 
@@ -107,13 +119,15 @@ function bindButtonMenu(){
 
 	$("#btn-start-urls").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.urls");
+		location.hash=hashUrlPage+".view.urls";
+		//history.pushState(null, "New Title", hashUrlPage+".view.urls");
 		loadUrls();
 	});
 
 	$("#btn-start-contacts").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.contacts");
+		location.hash=hashUrlPage+".view.contacts";
+		//history.pushState(null, "New Title", hashUrlPage+".view.contacts");
 		loadContacts();
 	});
 
@@ -285,7 +299,8 @@ function bindButtonOpenForm(){
 
 function loadDataDirectory(dataName, dataIcon, edit){
 	showLoader('#central-container');
-	history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
+	location.hash=hashUrlPage+".view.directory.dir."+dataName;
+	//history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
 	// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
@@ -352,7 +367,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	if( openEdition || edit ){
 		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
 			if(dataName == "collections"){
-				html += '<a class="tooltips btn btn-sm btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
+				html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
 		    	html +=	'<i class="fa fa-plus"></i> Créer une nouvelle collection</a>' ; 
 			}
 			else {
@@ -403,7 +418,30 @@ function loadNewsStream(isLiveBool){
 		},"html");
 	}, 700);
 }
-
+function loadSettings(){
+	mylog.log("confidentiality", seePreferences);
+	loadNewsStream(true);
+	history.pushState(null, "New Title", hashUrlPage);
+	$("#modal-confidentiality").modal("show");
+	if(seePreferences=="true"){
+		param = new Object;
+    	param.name = "seePreferences";
+    	param.value = false;
+    	param.pk = contextData.id;
+		$.ajax({
+	        type: "POST",
+	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+	        data: param,
+	       	dataType: "json",
+	    	success: function(data){
+		    	if(data.result){
+					$("#divSeePreferencesHeader").addClass("hidden");
+					$('#editConfidentialityBtn').removeClass("btn-red");
+		    	}
+		    }
+		});
+	}
+}
 function loadGallery(){
 	toogleNotif(false);
 	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id;
@@ -521,9 +559,9 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	var n=0;
 	$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
 	if(n>0){
-
+		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 		var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
-						getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
+						thisTitle+
 					"<hr></div>";
 		
 		
@@ -554,6 +592,9 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		initBtnLink();
 		initBtnAdmin();
 		bindButtonOpenForm();
+		
+		Sig.showMapElements(Sig.map, data, "", thisTitle);
+    
 	}else{
 		var nothing = "Aucun";
 		if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
@@ -567,6 +608,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 											"</span>");
 		toogleNotif(false);
 	}
+
 }
 
 function loadStream(indexMin, indexMax, isLiveBool){ mylog.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow

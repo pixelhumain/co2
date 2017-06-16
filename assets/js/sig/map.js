@@ -34,6 +34,8 @@
 			//mémorise les éléments
 			this.Sig.elementsMap = new Array();
 			this.Sig.preloadElementsMap = {};
+			this.Sig.preloadIconLegende = "";
+			this.Sig.preloadTextLegende = "";
 
 			//##
 			//créer un marker sur la carte, en fonction de sa position géographique
@@ -219,6 +221,7 @@
 				this.panelFilterType = "all";
 				this.clearMap(thisMap);
 				this.currentMarkerPopupOpen = null;
+				hideMapLegende();
 			};
 
 			this.Sig.showMyPosition = function(){
@@ -694,7 +697,7 @@
 			};
 
 
-			this.Sig.showMapElements = function(thisMap, data)
+			this.Sig.showMapElements = function(thisMap, data, iconLegende, textLegende)
 			{
 				//mylog.warn("--------------- showMapElements ---------------------");
 				
@@ -703,12 +706,17 @@
 				if(CoSigAllReadyLoad != true) {
 					console.log("showMapElements CoSigAllReadyLoad false -> save data", data);
 					Sig.preloadElementsMap = data;
+					Sig.preloadIconLegende = iconLegende;
+					Sig.preloadTextLegende = textLegende;
 					return;
 		 		}
 
 				mylog.log("--------------- showMapElements ---------------------", data);
 				//mylog.log(data);
 				if(data == null) return;
+
+				showMapLegende(iconLegende, textLegende);
+				showIsLoading(false);
 
 				var filterPanelValue = "citoyens";
 				//enregistre les dernières données dans une variable locale

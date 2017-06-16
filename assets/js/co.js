@@ -2675,7 +2675,7 @@ var dyFInputs = {
 	    updateLocality = false;
 
 	    // GET LIST OF NETWORK'S TAGS
-	    if(networkJson){
+	    if(typeof networkJson != 'undefined'){
 	    	if(typeof networkJson.filter.linksTag != "undefined"){
 				var networkTags = [];
 				if(typeof networkJson.request.mainTag != "undefined")

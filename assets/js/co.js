@@ -746,6 +746,7 @@ var urlCtrl = {
 		// mylog.log("IS DIRECTORY ? ", 
 		// 			hash.indexOf("#default.directory"), 
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
+
 		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
 			mylog.log("globalTheme", globalTheme);
@@ -778,7 +779,6 @@ var urlCtrl = {
 			location.hash = hash;
 			return;
 		}
-
 		currentUrl = hash;
 		allReadyLoad = true;
 		CoAllReadyLoad = true;
@@ -793,6 +793,7 @@ var urlCtrl = {
 		
 
 		//alert("urlCtrl.loadByHash"+hash);
+
 	    mylog.warn("urlCtrl.loadByHash",hash,back);
 	    if( urlCtrl.jsController(hash) ){
 	    	mylog.log("urlCtrl.loadByHash >>> hash found",hash);
@@ -822,6 +823,7 @@ var urlCtrl = {
 	        hashT = hash.split(".");
 	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
 	    }
+
 	    /*else if( hash.indexOf("#news.index.type") >= 0 ){
 	        hashT = hash.split(".");
 	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" )+'?isFirst=1', 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
@@ -843,7 +845,6 @@ var urlCtrl = {
 	        showAjaxPanel( '/app/index', 'Home','home' );
 	    mylog.log("testnetwork hash", hash);
 	    location.hash = hash;
-
 	    /*if(typeof back == "function"){
 	    	alert("back");
 	    	back();
@@ -2674,40 +2675,45 @@ var dyFInputs = {
 	    dyFInputs.locationObj.centerLocation = null;
 	    updateLocality = false;
 
-	    // GET LIST OF NETWORK'S TAGS
-	    if(typeof networkJson != 'undefined'){
-	    	if(typeof networkJson.filter.linksTag != "undefined"){
-				var networkTags = [];
-				if(typeof networkJson.request.mainTag != "undefined")
-					networkTags.push({id:networkJson.request.mainTag[0],text:networkJson.request.mainTag[0]});
-				$.each(networkJson.filter.linksTag, function(category, properties) {
-					optgroupObject=new Object;
-					optgroupObject.text=category;
-					optgroupObject.children=[];
-					$.each(properties.tags, function(i, tag) {
-						val={id:tag,text:tag};
-						optgroupObject.children.push(val);
-					});
-					networkTags.push(optgroupObject);
-				});
-			}
-
-		    if(typeof networkJson.add != "undefined"){
-				$.each(networkJson.add, function(key, v) {
-					if(typeof networkJson.request.sourceKey != "undefined"){
-						sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
-						typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
+	    // Initialize tags list for network in form of element
+		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"){
+			$.each(networkJson.add, function(key, v) {
+				if(typeof networkJson.request.sourceKey != "undefined"){
+					sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
+					typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
+				}
+				if(v){
+					mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
+					mylog.log("networkTags", networkTags);
+					if(typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+						typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
+						if(typeof networkJson.request.mainTag != "undefined")
+							typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
 					}
-					if(v){
-						if(typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
-							typeObj[key].dynForm.jsonSchema.properties.tags.data=networkTags;
-							if(typeof networkJson.request.mainTag != "undefined")
-								typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
+					mylog.log("networkJson.dynForm");
+					if(notNull(networkJson.dynForm)){
+						mylog.log("networkJson.dynForm", "networkJson.dynForm");
+						if(notNull(networkJson.dynForm.extra)){
+							var nbListTags = 1 ;
+							mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
+							mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
+							while(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags)){
+								typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
+									"inputType" : "tags",
+									"placeholder" : networkJson.dynForm.extra["tags"+nbListTags].placeholder,
+									"values" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
+									"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ]
+								};
+								nbListTags++;
+								mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
+								mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
+							}
+							delete typeObj[key].dynForm.jsonSchema.properties.tags;
 						}
 					}
-				});
-			}
-	    }
+				}
+			});
+		}
 		
 	},
 	inputText :function(label, placeholder, rules, custom) { 

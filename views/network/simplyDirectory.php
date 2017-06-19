@@ -519,9 +519,10 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 					if(typeof networkJson.request.oneElement != "undefined" && networkJson.request.oneElement == true){
 						filterTags(data.filters.tags);
 						filterType(data.filters.types);
+						$("#divRolesMenu").removeClass("hidden");
 					}else{
-						$("#divRolesMenu").addClass("hidden");
-					}
+  						$("#divRolesMenu").addClass("hidden");
+  					}
 					
 					bindAutocomplete();
 					str = "";

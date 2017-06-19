@@ -610,6 +610,11 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	}
 
 }
+var loading = "<div class='loader text-dark text-center'>"+
+		"<span style='font-size:25px;'>"+
+			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
+			"<span class='text-dark'>Chargement en cours ...</span>" + 
+		"</div>";
 
 function loadStream(indexMin, indexMax, isLiveBool){ mylog.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
 	loadingData = true;
@@ -631,7 +636,10 @@ function loadStream(indexMin, indexMax, isLiveBool){ mylog.log("LOAD STREAM PROF
         success:
             function(data) {
                 if(data){ //alert(data);
+                	$("#news-list").find(".loader").remove();
                 	$("#news-list").append(data);
+                	if($("#noMoreNews").length<=0)
+						$("#news-list").append(loading);
                 	//bindTags();
 					
 				}

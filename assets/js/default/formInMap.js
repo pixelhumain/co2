@@ -47,7 +47,8 @@ var formInMap = {
 		}
 
 		var coordinates = new Array(0, 0);
-		if( notNull(contextData) && notNull(contextData.geo) && formInMap.updateLocality == true)
+		if( notNull(contextData) && notNull(contextData.geo) && formInMap.updateLocality == true 
+			&& formInMap.NE_lat != "" && formInMap.NE_lng != "")
 			coordinates = new Array(formInMap.NE_lat, formInMap.NE_lng);
 		
 		mylog.log("coordinates", coordinates);
@@ -117,11 +118,13 @@ var formInMap = {
 			formInMap.getDetailCity();
 		}else{
 			formInMap.initVarNE();
+			formInMap.geoShape = "";
 			if(index)
 				formInMap.addressesIndex = index ;
 		}
 		formInMap.formType = type ;
 		formInMap.updateLocality = true;
+		
 		if(typeof contextMap == "undefined")
 			contextMap = [];
 		formInMap.showMarkerNewElement();

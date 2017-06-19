@@ -462,10 +462,10 @@
 
 	var formatDateView = "DD MMMM YYYY à HH:mm" ;
 	var formatDatedynForm = "DD/MM/YYYY HH:mm" ;
-	if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php echo Project::COLLECTION; ?>" ) {
+	/*if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php //echo Project::COLLECTION; ?>" ) {
 		formatDateView = "DD MMMM YYYY" ;
 		formatDatedynForm = "DD/MM/YYYY" ;
-	}
+	}*/
 
 	jQuery(document).ready(function() {
 		bindDynFormEditable();
@@ -569,6 +569,14 @@
 
 	function initDate() {//DD/mm/YYYY hh:mm
 		//moment.locale('fr');
+		if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php echo Project::COLLECTION; ?>" ) {
+			formatDateView = "DD MMMM YYYY" ;
+			formatDatedynForm = "DD/MM/YYYY" ;
+		}else{
+			formatDateView = "DD MMMM YYYY à HH:mm" ;
+			formatDatedynForm = "DD/MM/YYYY HH:mm" ;
+		}
+
 		if( typeof contextData.startDate != "undefined" && contextData.startDate != "" ){
 			$("#divStartDate").removeClass("hidden");
 			$("#divNoDate").addClass("hidden");
@@ -582,7 +590,7 @@
 			$("#divEndDate").removeClass("hidden");
 		else
 			$("#divEndDate").addClass("hidden");
-
+		mylog.log("formatDateView", formatDateView);
 		if($("#startDateAbout").html() != "")
 	    	$("#startDateAbout").html(moment(contextData.startDateDB).local().locale("fr").format(formatDateView));
 	    if($("#endDateAbout").html() != "")

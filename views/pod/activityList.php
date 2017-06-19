@@ -33,7 +33,8 @@ $arrayLabel=array(
 	"isOpenEdition" => Yii::t("common", "open edition"),
 	"state" => Yii::t("common", "state"),
 	"organizer" => Yii::t("common", "organizer"),
-	"contacts" => Yii::t("common", "un contact")
+	"contacts" => Yii::t("common", "un contact"),
+	"descriptionHTML" => Yii::t("common", "la descripton"),
 );
 if ($contextType == Organization::COLLECTION)
 	$contextTypeLabel=Yii::t("common","of the organization");
@@ -128,6 +129,8 @@ $countries= OpenData::getCountriesList();
 						
 						} else if(@$value["object"]["displayValue"] && !empty($value["object"]["displayValue"]) )
 							echo Yii::t("common",$value["object"]["displayValue"]);
+						else if($value["object"]["displayName"] == "descriptionHTML")
+							echo "transformer la description en format Markdown";
 						else
 							echo "supprimé";
 						

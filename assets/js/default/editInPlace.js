@@ -193,7 +193,8 @@ function bindAboutPodElement() {
 							if(data.result && data.resultGoods.result){
 								if(typeof data.resultGoods.values.allDay != "undefined"){
 									contextData.allDay = data.resultGoods.values.allDay;
-									$("#allDayAbout").html(contextData.allDay);
+
+									$("#allDayAbout").html((contextData.allDay ? trad["yes"] : trad["no"]));
 								}  
 								if(typeof data.resultGoods.values.startDate != "undefined"){
 									contextData.startDate = data.resultGoods.values.startDate;
@@ -209,7 +210,6 @@ function bindAboutPodElement() {
 								initDate();
 								updateCalendar();
 							}
-
 							//urlCtrl.loadByHash(location.hash);
 							dyFObj.closeForm();
 						},
@@ -625,7 +625,7 @@ function bindAboutPodElement() {
 			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.facebook))
 				dataUpdate.facebook = contextData.socialNetwork.facebook;
 
-			dyFObj.openForm(form, null, dataUpdate);
+			dyFObj.openForm(form, "sub", dataUpdate);
 
 			
 		});

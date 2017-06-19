@@ -112,6 +112,7 @@ var Login = function() {
 				$(".alert").hide();
 				//loginBtn.start();
 				$(".loginBtn").find(".fa").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
+				$(".loginBtn-welcome").find(".fa").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
 				var params = { 
 				   "email" : ( $("#email-login-welcome").length ? $("#email-login-welcome").val() : $("#email-login").val() ), 
                    "pwd" : ( $("#password-login-welcome").length ? $("#password-login-welcome").val() : $("#password-login").val() )
@@ -181,6 +182,7 @@ var Login = function() {
 							$('.loginResult').show();
 		    		  	}
 		    		  	$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
+		    		  	$(".loginBtn-welcome").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
 						//loginBtn.stop();
 		    		  }
 		    	  },

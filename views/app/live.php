@@ -79,7 +79,7 @@
 
 
 <?php //$this->renderPartial('../news/modalCreateAnc'); ?>
-
+<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"live")); ?>
 <?php //$this->renderPartial($layoutPath.'footer', array("subdomain"=>"annonces")); ?>
 
 <script type="text/javascript" >

@@ -2118,7 +2118,7 @@ var directory = {
                       
             str +=  '</h3>';
         
-        if(params.endDay != params.startDay && params.endDate != null && params.startDate != params.endDate)
+        if(params.endDateDB != params.startDateDB && params.endDate != null && params.startDate != params.endDate)
             str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       "<small>Au </small>"+
                       '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+

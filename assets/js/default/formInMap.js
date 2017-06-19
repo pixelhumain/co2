@@ -48,7 +48,7 @@ var formInMap = {
 
 		var coordinates = new Array(0, 0);
 		if( notNull(contextData) && notNull(contextData.geo) && formInMap.updateLocality == true)
-			coordinates = new Array(contextData.geo.latitude, contextData.geo.longitude);
+			coordinates = new Array(formInMap.NE_lat, formInMap.NE_lng);
 		
 		mylog.log("coordinates", coordinates);
 

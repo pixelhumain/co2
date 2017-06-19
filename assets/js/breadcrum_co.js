@@ -23,6 +23,7 @@ function bindCommunexionScopeEvents(){
             $("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
         }
         toogleScopeMultiscope( $(this).data("scope-value") );
+        $("#newsstream").html("<div class='col-md-12 text-center'><i class='fa fa-circle'></i> <i class='fa fa-circle'></i> <i class='fa fa-circle'></i><hr style='margin-top: 34px;'></div>");
         $("#footerDropdown").html("<i class='fa fa-circle'></i> <i class='fa fa-circle'></i> <i class='fa fa-circle'></i><hr style='margin-top: 34px;'>");
         var sec = 3;
         if(typeof interval != "undefined") clearInterval(interval);
@@ -44,6 +45,7 @@ function bindCommunexionScopeEvents(){
                 for(n=0;n<sec;n++) str += "<i class='fa fa-circle'></i> ";
                 str += "<hr style='margin-top: 34px;'>";
                 $("#footerDropdown").html(str);
+                $("#newsstream").html("<div class='col-md-12 text-center'>"+str+"</div>");
             }
         }, 800);
         checkScopeMax();

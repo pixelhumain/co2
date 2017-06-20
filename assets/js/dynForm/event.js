@@ -66,7 +66,7 @@ dynForm = {
 	        }
 		},
 	    beforeSave : function(){
-	    	//alert("onBeforeSave");
+	    	alert("onBeforeSave");
 	    	
 	    	if( !$("#ajaxFormModal #allDay").val())
 	    		$("#ajaxFormModal #allDay").val(false);
@@ -77,11 +77,13 @@ dynForm = {
 	    	//Transform datetime before sending
 	    	var allDay = $("#ajaxFormModal #allDay").is(':checked');
 	    	var dateformat = "DD/MM/YYYY";
-	    	if (! allDay) 
-	    		var dateformat = "DD/MM/YYYY HH:mm"
-	    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format());
-			$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format());
-			//mylog.log($("#ajaxFormModal #startDate").val());
+	    	var outputFormat="YYYY-MM-DD";
+	    	if (! allDay) {
+	    		var dateformat = "DD/MM/YYYY HH:mm";
+	    		var outputFormat="YYYY-MM-DD HH::mm";
+	    	}
+	    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format(outputFormat));
+			$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format(outputFormat));
 	    },
 	    properties : {
 	    	info : {

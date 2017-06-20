@@ -66,18 +66,18 @@ Il me semblerait absolument nécessaire d'organiser AUSSI des assemblées locale
 ----------------------------
 
 
-*** Dans Communecter, chaque commune dispose d'un "conseil citoyen".
+*** - Dans Communecter, chaque commune dispose d'un "conseil citoyen".
 
-*** Dans Communecter, un "conseil citoyen" est un espace destiné à co-écrire les lois d'un pays.
+*** - Dans Communecter, un "conseil citoyen" est un espace destiné à co-écrire les lois d'un pays.
 Dans notre cas : la France. (applicable pour n'importe quel pays).
 
-*** Chaque citoyens peut proposer des textes de lois
+*** - Chaque citoyens peut proposer des textes de lois
 
-*** Chaque citoyens peut participer la correction, l'amélioration, et le vote des lois proposées par les autres citoyens.
+*** - Chaque citoyens peut participer la correction, l'amélioration, et le vote des lois proposées par les autres citoyens.
 
-*** Chaque citoyens peut voter -pour- les lois qui lui conviennent, et -voter- contre celles qui ne lui conviennent pas (+ vote blanc pris en compte).
+*** - Chaque citoyens peut voter -pour- les lois qui lui conviennent, et -voter- contre celles qui ne lui conviennent pas (+ vote blanc pris en compte).
 
-*** Pour valider une loi, il faut qu'elle obtienne une majorité de suffrages favorables dans un temps donnée (ma proposition : 1 mois)
+*** - Pour valider une loi, il faut qu'elle obtienne une majorité de suffrages favorables dans un temps donnée (ma proposition : 1 mois)
 => règle de la majorité : à définir
   => ma proposition : une proposition doit obtenir un minimum de 61.8% des suffrages favorables pour être validée.
   => pourquoi 61.8 ? le nombre d'or : 0.618 
@@ -89,7 +89,7 @@ Dans notre cas : la France. (applicable pour n'importe quel pays).
     => il faut donc éviter la majorité à 50% qui est trop aléatoire (49 je perd, 51 je gagne)
 
 
-*** Sur Communecter, voter signifie == 
+*** - Sur Communecter, voter signifie :
 		- Je valide cette proposition de loi
 		- J'invalide cette proposition de loi
     - Vote blanc
@@ -107,7 +107,7 @@ Rayon d'action des citoyens :
 - On ne peut agir que dans les conseil citoyens liés à sa communexion :
 ma commune, mon département, ma région, mon pays.
 
-- On peut accéder en lecture à toutes les propositions de tous les conseils citoyens (en changeant de scope).
+- On peut accéder en lecture à toutes les propositions de tous les conseils citoyens (en changeant de communexion).
 
 
 

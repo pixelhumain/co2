@@ -309,6 +309,7 @@ function loadDataDirectory(dataName, dataIcon, edit){
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
 					displayInTheContainer(data, dataName, dataIcon, type, edit);
+					bindButtonOpenForm();
 				}
 	,"html");
 }
@@ -372,7 +373,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 			}
 			else {
 				var elemSpec = dyFInputs.get(dataName);
-				html += '<button class="tooltips btn btn-sm btn-success pull-right btn-open-form" data-form-type="'+elemSpec.ctrl+'">';
+				html += '<button class="btn btn-sm btn-success pull-right btn-open-form" data-form-type="'+elemSpec.ctrl+'" data-dismiss="modal">';
 		    	html +=	'<i class="fa fa-plus"></i> Créer '+trad[ elemSpec.ctrl ]+'</button>' ;  
 		    }
 		}

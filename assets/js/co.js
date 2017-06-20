@@ -3490,12 +3490,13 @@ function manageTimestampOnDate() {
 function displayStartAndEndDate(event) {
 	var content = "";
 	//si on a bien les dates
-	if("undefined" != typeof event['startDate'] && "undefined" != typeof event['endDate']){
+	mylog.log("event map", event);
+	if("undefined" != typeof event['startDateDB'] && "undefined" != typeof event['endDateDB']){
 		//var start = dateToStr(data['startDate'], "fr", true);
 		//var end = dateToStr(data['endDate'], "fr", true);
 		
-		var startDateMoment = moment(event['startDate']).local();
-		var endDateMoment = moment(event['endDate']).local();
+		var startDateMoment = moment(event['startDateDB']).local();
+		var endDateMoment = moment(event['endDateDB']).local();
 
 		var startDate = startDateMoment.format("DD-MM-YYYY");
 		var endDate = endDateMoment.format("DD-MM-YYYY");

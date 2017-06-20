@@ -526,7 +526,6 @@
 		'/js/default/profilSocial.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
-
 ?>
 
 <script type="text/javascript">

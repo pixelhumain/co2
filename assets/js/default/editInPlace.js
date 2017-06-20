@@ -183,10 +183,13 @@ function bindAboutPodElement() {
 					    	removeFieldUpdateDynForm(contextData.type);
 					    	
 					    	var dateformat = "DD/MM/YYYY";
-					    	if (! allDay && contextData.type == typeObj.event.col) 
+					    	var outputFormat="YYYY-MM-DD";
+					    	if (! allDay && contextData.type == typeObj.event.col) {
 					    		var dateformat = "DD/MM/YYYY HH:mm" ;
-					    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format());
-							$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format());
+					    		var outputFormat="YYYY-MM-DD HH::mm";
+					    	}
+					    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format(outputFormat));
+							$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format(outputFormat));
 					    },
 						afterSave : function(data){
 							mylog.dir(data);
@@ -244,10 +247,10 @@ function bindAboutPodElement() {
 			};
 			
 			if(notEmpty(contextData.startDateDB))
-				dataUpdate.startDate = moment(contextData.startDateDB).local().format(formatDatedynForm);
+				dataUpdate.startDate = moment(contextData.startDateDB,"YYYY-MM-DD HH:mm").local().format(formatDatedynForm);
 
 			if(notEmpty(contextData.endDateDB))
-				dataUpdate.endDate = moment(contextData.endDateDB).local().format(formatDatedynForm);
+				dataUpdate.endDate = moment(contextData.endDateDB,"YYYY-MM-DD HH:mm").local().format(formatDatedynForm);
 
 			mylog.log("btn-update-when", form, dataUpdate, formatDatedynForm);
 			dyFObj.openForm(form, "initUpdateWhen", dataUpdate);

@@ -24,9 +24,11 @@ dynForm = {
 		    			$("#ajaxFormModal #parentId").val( contextData.id );
 	    			}
 
-	    			if ( contextData && contextData.id ){
+	    			if ( contextData && typeof contextData.organizerId != "undefined"){
 		    			$("#ajaxFormModal #organizerId").val( contextData.organizerId );
 	    			}
+	    			if(contextData && typeof contextData.organizerType != "undefined")
+	    				$("#ajaxFormModal #organizerType").val( contextData.organizerType );
 	    			//$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
 	    			if( contextData && contextData.type )
 	    				$("#ajaxFormModal #parentType").val( contextData.type ); 

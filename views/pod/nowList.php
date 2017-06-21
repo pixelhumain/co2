@@ -53,9 +53,15 @@
     <?php } else { ?>
         <h6 class="no-margin header-nowList" style="font-size:12px">
             <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> Activité territoriale<br>
-             <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope; ?></small>
+             <small class="text-red"><i class="fa fa-map"></i> <?php echo $scope; ?></small>
         </h6>
         <hr class="angle-down">
+        <center>
+            <button class="btn btn-default btn-sm btn-show-onmap block" id="btn-show-activity-onmap">
+                <i class="fa fa-map"></i> Afficher sur la carte
+            </button>
+        </center>
+        <br>
         <!-- <hr class="margin-5 margin-bottom-10"> -->
 
         <?php foreach ($result as $key => $v) { 
@@ -129,7 +135,11 @@ jQuery(document).ready(function() {
     //     var elementDate = new Date(elementTime * 1000);
     //     $(this).children(".dateTZ").text(elementDate.toLocaleDateString() + " " + elementDate.toLocaleTimeString());
     // });
-    Sig.showMapElements(Sig.map, localActivity, "clock-o", "Activité territoriale");
+    
+    $("#btn-show-activity-onmap").click(function(){
+        Sig.showMapElements(Sig.map, localActivity, "clock-o", "Activité territoriale");
+        showMap(true);
+    });
     //$('#mapLegende').html("<i class='fa fa-clock-o'></i> Activité territoriale");
     //$('#mapLegende').show();
 

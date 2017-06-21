@@ -79,25 +79,37 @@ Dans notre cas : la France. (applicable pour n'importe quel pays).
 
 *** - Pour valider une loi, il faut qu'elle obtienne une majorité de suffrages favorables dans un temps donnée (ma proposition : 1 mois)
 => règle de la majorité : à définir
+
   => ma proposition : une proposition doit obtenir un minimum de 61.8% des suffrages favorables pour être validée.
+
   => pourquoi 61.8 ? le nombre d'or : 0.618 
       - http://villemin.gerard.free.fr/Wwwgvmm/Geometri/NbOrDebu.htm
       - https://fr.wikipedia.org/wiki/Nombre_d%27or
     => pourquoi pas 50% ? il faut garder une marge d'erreur suffisante pour faire face aux spécificités des votes en ligne :
+
       => tout le monde ne peut pas voter à chaque fois qu'il le pourrait
+
       => tout le monde peut tricher (voter avec plusieurs comptes - dans un sens comme dans l'autre)
+
     => il faut donc éviter la majorité à 50% qui est trop aléatoire (49 je perd, 51 je gagne)
 
 
 *** - Sur Communecter, voter signifie :
 		- Je valide cette proposition de loi
+
 		- J'invalide cette proposition de loi
+
     - Vote blanc
 
-		==
+		ou
+
+
 		Valider cette proposition ?
+
 		- Oui (pour)
+
 		- Non, invalider (contre)
+
     - Blanc
 
 
@@ -116,11 +128,12 @@ ma commune, mon département, ma région, mon pays.
 Loi = array(articlesDeLoi) + array(Amendements)
 ------------------------------------------------
 
-*** Une loi est composées de plusieurs articles.
-*** Chaque article est soumis aux propositions d'amendements des autres utilisateurs
+*** - Une loi est composées de plusieurs articles.
+*** - Chaque article est soumis aux propositions d'amendements des autres utilisateurs
 
 ** Amendement : def Wikipedia :
 Un amendement est une modification, soumise au vote d'une assemblée, en vue de corriger, compléter ou annuler tout ou une partie d'un projet de loi en cours de délibération ou d'une loi pré-existante.
+https://fr.wikipedia.org/wiki/Amendement_(loi)
 
 
 
@@ -316,6 +329,12 @@ pour assurer que les modifications proposées soit compatibles avec le système 
   Il ne peut pas y avoir de véritable démocratie (participative/directe) dans la 5eme république.
 
 
+
+
+
+-------------------------------------------------
+Afin de donner une impulsion forte au lancement de la constituante, et donner un exemple du travail que l'on attend des citoyens,
+je pense que nous devrions nous-mêmes (les communecteurs) écrire les grandes lignes d'une nouvelle constitution, en se basant sur le projet SMART-TERRE. 
 
 
 

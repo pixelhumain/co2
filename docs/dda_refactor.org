@@ -241,7 +241,7 @@ Le scope est automatiquement initialisé sur la communexion de l'utilisateur con
 
 
 ********
-** MISE EN OEUVRE / UTILISATION / CONCRETEMENT KESKON FAIT AVEC CA ?
+** MISE EN OEUVRE / CONCRETEMENT KESKON FAIT AVEC CA ?
 ********
 *** Par quoi commencer ? Quelles lois ? Quels thèmes traiter ? etc...
 ********

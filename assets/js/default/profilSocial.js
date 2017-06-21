@@ -350,7 +350,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + str+" <b> lien"+s;
-		html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
+		html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
     	html +=	'<i class="fa fa-plus"></i> '+trad["Add link"]+'</a>' ;  
 	}
 
@@ -359,7 +359,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + " a " + countData+" <b> point de contact"+s;
-		html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
+		html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
     	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ; 
 
 
@@ -368,12 +368,12 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	if( openEdition || edit ){
 		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
 			if(dataName == "collections"){
-				html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
+				html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="collection.crud()">';
 		    	html +=	'<i class="fa fa-plus"></i> Créer une nouvelle collection</a>' ; 
 			}
 			else {
 				var elemSpec = dyFInputs.get(dataName);
-				html += '<button class="btn btn-sm btn-success pull-right btn-open-form" data-form-type="'+elemSpec.ctrl+'" data-dismiss="modal">';
+				html += '<button class="btn btn-sm btn-link bg-green-k pull-right btn-open-form" data-form-type="'+elemSpec.ctrl+'" data-dismiss="modal">';
 		    	html +=	'<i class="fa fa-plus"></i> Créer '+trad[ elemSpec.ctrl ]+'</button>' ;  
 		    }
 		}

@@ -105,7 +105,7 @@ function bindButtonMenu(){
 		loadDetail();
 	});
 
-	$(".load-data-directory").click(function(){
+	$(".load-data-directory").click(function(){ 
 		responsiveMenuLeft();
 		var dataName = $(this).data("type-dir");
 		mylog.log(".load-data-directory", dataName);
@@ -297,9 +297,8 @@ function bindButtonOpenForm(){
     });
 }
 
-function loadDataDirectory(dataName, dataIcon, edit){
+function loadDataDirectory(dataName, dataIcon, edit){ //console.log("loadDataDirectory");
 	showLoader('#central-container');
-	location.hash=hashUrlPage+".view.directory.dir."+dataName;
 	//history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
 	// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
@@ -309,15 +308,19 @@ function loadDataDirectory(dataName, dataIcon, edit){
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
 					displayInTheContainer(data, dataName, dataIcon, type, edit);
+					bindButtonOpenForm();
+					location.hash=hashUrlPage+".view.directory.dir."+dataName;
 				}
 	,"html");
 }
 
 function getLabelTitleDir(dataName, dataIcon, countData, n){
-	mylog.log("bgetLabelTitleDir", dataName, dataIcon, countData, n, trad);
+	//mylog.log("bgetLabelTitleDir", dataName, dataIcon, countData, n, trad);
 	var elementName = "<span class='Montserrat' id='name-lbl-title'>"+$("#nameHeader .name-header").html()+"</span>";
 	
 	var s = (n>1) ? "s" : "";
+
+
 	var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
 	if(dataName == "follows")	{ html += elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
 	else if(dataName == "followers")	{ html += countData + " <b>abonné"+s+"</b> à " + elementName; }
@@ -349,7 +352,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + str+" <b> lien"+s;
-		html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
+		html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
     	html +=	'<i class="fa fa-plus"></i> '+trad["Add link"]+'</a>' ;  
 	}
 
@@ -358,7 +361,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + " a " + countData+" <b> point de contact"+s;
-		html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
+		html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
     	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ; 
 
 
@@ -367,16 +370,17 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	if( openEdition || edit ){
 		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
 			if(dataName == "collections"){
-				html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
+				html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="collection.crud()">';
 		    	html +=	'<i class="fa fa-plus"></i> Créer une nouvelle collection</a>' ; 
 			}
 			else {
 				var elemSpec = dyFInputs.get(dataName);
-				html += '<button class="tooltips btn btn-sm btn-success pull-right btn-open-form" data-form-type="'+elemSpec.ctrl+'">';
+				html += '<button class="btn btn-sm btn-link bg-green-k pull-right btn-open-form" data-form-type="'+elemSpec.ctrl+'" data-dismiss="modal">';
 		    	html +=	'<i class="fa fa-plus"></i> Créer '+trad[ elemSpec.ctrl ]+'</button>' ;  
 		    }
 		}
 	}
+
 	return html;
 }
 
@@ -560,9 +564,13 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
 	if(n>0){
 		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
+
 		var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
-						thisTitle+
-					"<hr></div>";
+						'<button class="btn btn-default btn-sm btn-show-onmap inline" id="btn-show-links-onmap">'+
+				            '<i class="fa fa-map"></i>'+
+				        '</button>' +
+						thisTitle+"<hr>" +
+					"</div>";
 		
 		
 		mapElements = new Array();
@@ -593,7 +601,10 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		initBtnAdmin();
 		bindButtonOpenForm();
 		
-		Sig.showMapElements(Sig.map, data, "", thisTitle);
+		$("#btn-show-links-onmap").off().click(function(){
+			Sig.showMapElements(Sig.map, data, "", thisTitle);
+			showMap(true);
+		});
     
 	}else{
 		var nothing = "Aucun";

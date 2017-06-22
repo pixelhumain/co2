@@ -254,6 +254,7 @@ class CommunecterController extends Controller
         "updatemultitag"      => array("href" => "/ph/communecter/person/updatemultitag"),
         "updatemultiscope"      => array("href" => "/ph/communecter/person/updatemultiscope"),
         "sendinvitationagain"      => array("href" => "/ph/communecter/person/sendinvitationagain"),
+        "removehelpblock"      => array("href" => "/ph/communecter/person/removehelpblock"),
 
         
         "chooseinvitecontact"=> array('href'    => "/ph/communecter/person/chooseinvitecontact"),

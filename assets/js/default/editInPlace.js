@@ -502,10 +502,16 @@ function bindAboutPodElement() {
 						afterSave : function(data){
 							mylog.dir(data);
 							if(data.result && data.resultGoods.result){
-								$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
+								if(data.resultGoods.values.shortDescription=="")
+									$(".contentInformation #shortDescriptionAbout").html('<i> Non renseignée</i>');
+								else
+									$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
 								$(".contentInformation #shortDescriptionAboutEdit").html(data.resultGoods.values.shortDescription);
 								$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
-								$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
+								if(data.resultGoods.values.description=="")
+									$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml('<i> Non renseignée</i>'));
+								else
+									$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
 								$("#descriptionMarkdown").html(data.resultGoods.values.description);
 							}
 							dyFObj.closeForm();

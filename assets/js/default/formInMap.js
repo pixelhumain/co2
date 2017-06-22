@@ -7,11 +7,9 @@ var formInMap = {
 	NE_city : "",
 	NE_cp : "",
 	NE_street : "",
-
 	NE_country : "",
 	NE_dep : "",
 	NE_region : "",
-
 	geoShape : "",
 
 	typeSearchInternational : "",
@@ -95,8 +93,6 @@ var formInMap = {
 			$("#divStreetAddress").removeClass("hidden");
 		$("#right_tool_map_locality").removeClass("hidden");
 		$("#right_tool_map_search").addClass("hidden");
-
-
 	},
 
 	initUpdateLocality : function(address, geo, type, index){
@@ -161,7 +157,8 @@ var formInMap = {
 		// ---------------- newElement_city
 		$('[name="newElement_city"]').keyup(function(){ 
 			$("#dropdown-city-found").show();
-			if($('[name="newElement_city"]').val().length > 1){
+			mylog.log("newElement_city", $('[name="newElement_city"]').val().trim().length);
+			if($('[name="newElement_city"]').val().trim().length > 1){
 				formInMap.NE_city = $('[name="newElement_city"]').val();
 				formInMap.changeSelectCountrytim();
 
@@ -259,7 +256,6 @@ var formInMap = {
 		formInMap.bindActived = true ;
 	},
 
-
 	autocompleteFormAddress : function(currentScopeType, scopeValue){
 		mylog.log("autocompleteFormAddress", currentScopeType, scopeValue);
 		$("#dropdown-newElement_"+currentScopeType+"-found").html("<li><a href='javascript:'><i class='fa fa-refresh fa-spin'></i></a></li>");
@@ -331,7 +327,6 @@ var formInMap = {
 			}
 		});
 	},
-
 
 	add : function(complete, data, inseeGeoSHapes){
 		mylog.log("add", complete, data, inseeGeoSHapes);
@@ -443,44 +438,50 @@ var formInMap = {
 	backToForm : function(cancel){
 		mylog.log("backToForm 2");
 		formInMap.actived = false ;
-		if(formInMap.modePostalCode == false ){
-			if(formInMap.updateLocality == false ){
-				if(notEmpty($("[name='newElement_lat']").val())){
-					locObj = formInMap.createLocalityObj();
-					mylog.log("forminmap copyMapForm2Dynform");
-					dyFInputs.locationObj.copyMapForm2Dynform(locObj);
-					dyFInputs.locationObj.addLocationToForm(locObj);
+		if(cancel == true ){
+			showMap(false);
+		}
+		else{
+			if(formInMap.modePostalCode == false ){
+				if(formInMap.updateLocality == false ){
+					if(notEmpty($("[name='newElement_lat']").val())){
+						locObj = formInMap.createLocalityObj();
+						mylog.log("forminmap copyMapForm2Dynform");
+						dyFInputs.locationObj.copyMapForm2Dynform(locObj);
+						dyFInputs.locationObj.addLocationToForm(locObj);
+					}
+					$("#form-street").val($('#street_sumery_value').html());
+					$(".locationBtn").html("<i class='fa fa-home'></i> Adresse secondaire");
+					showMap(false);
+					Sig.clearMap();
+					if(location.hash != "#referencement" && location.hash != "#web")
+						$('#ajax-modal').modal("show");
+				}else{
+					if(typeof cancel == "undefined" || cancel == false)
+						formInMap.updateLocalityElement();
+					showMap(false);
+					if(typeof contextMap != "undefined")
+						Sig.showMapElements(Sig.map, contextMap);
+				}	
+			}else{
+				if(notEmpty($("[name='newPC_lat']").val())){
+					postalCodeObj = {
+						postalCode : $("[name='newPC_postalCode']").val(),
+						name : $("[name='newPC_name']").val(),
+						latitude : $("[name='newPC_lat']").val(),
+						longitude : $("[name='newPC_lon']").val()
+					};
+					mylog.log("forminmap copyMapForm2Dynform 2");
+					dyFInputs.locationObj.copyMapForm2Dynform(postalCodeObj);
+					dyFInputs.locationObj.addLocationToForm(postalCodeObj);
 				}
-				$("#form-street").val($('#street_sumery_value').html());
-				$(".locationBtn").html("<i class='fa fa-home'></i> Adresse secondaire");
 				showMap(false);
 				Sig.clearMap();
 				if(location.hash != "#referencement" && location.hash != "#web")
 					$('#ajax-modal').modal("show");
-			}else{
-				if(typeof cancel == "undefined" || cancel == false)
-					formInMap.updateLocalityElement();
-				showMap(false);
-				if(typeof contextMap != "undefined")
-					Sig.showMapElements(Sig.map, contextMap);
-			}	
-		}else{
-			if(notEmpty($("[name='newPC_lat']").val())){
-				postalCodeObj = {
-					postalCode : $("[name='newPC_postalCode']").val(),
-					name : $("[name='newPC_name']").val(),
-					latitude : $("[name='newPC_lat']").val(),
-					longitude : $("[name='newPC_lon']").val()
-				};
-				mylog.log("forminmap copyMapForm2Dynform 2");
-				dyFInputs.locationObj.copyMapForm2Dynform(postalCodeObj);
-				dyFInputs.locationObj.addLocationToForm(postalCodeObj);
 			}
-			showMap(false);
-			Sig.clearMap();
-			if(location.hash != "#referencement" && location.hash != "#web")
-				$('#ajax-modal').modal("show");
 		}
+		
 	},
 
 	updateLocalityElement : function(){
@@ -561,27 +562,11 @@ var formInMap = {
     		$.cookie("communexionLevel", "cpCommunexion", { expires: 365, path : "/" });
     		urlCtrl.loadByHash(location.hash);
 		}
-		
 	},
 
 	initDropdown : function(){ 
 		$("#dropdown-newElement_cp-found").html("<li><a href='javascript:' class='disabled'>"+trad['Currently researching']+"</a></li>");
 		$("#dropdown-newElement_city-found").html("<li><a href='javascript:' class='disabled'>"+trad['Search a city, a town or a postal code'] +"</a></li>");
-	},
-
-	initData : function(){
-		mylog.log("initData");
-		formInMap.timeoutAddCity;
-		formInMap.initVarNE();
-		formInMap.typeSearchInternational = "";
-		formInMap.formType = "";
-		formInMap.updateLocality = false;
-		formInMap.addressesIndex = false;
-		formInMap.initDropdown();
-		$("#divStreetAddress").addClass("hidden");
-		$("#divPostalCode").addClass("hidden");
-		$("#divCity").addClass("hidden");
-		formInMap.initHtml();
 	},
 
 	initHtml : function(){
@@ -656,7 +641,6 @@ var formInMap = {
 		return val ;
 	},
 
-
 	getDepAndRegion : function(){
 		if(typeof formInMap.NE_dep == "undefined" || formInMap.NE_dep == "" || typeof formInMap.NE_region == "undefined" || formInMap.NE_region == ""){
 			$.ajax({
@@ -682,7 +666,6 @@ var formInMap = {
 			});
 		}
 	},
-
 
 	changeSelectCountrytim : function(){
 		mylog.log("changeSelectCountrytim", formInMap.NE_country);
@@ -723,7 +706,6 @@ var formInMap = {
 			$("#newElement_btnSearchAddress").removeClass("btn-warning");
 			$("#newElement_btnSearchAddress").addClass("btn-default");
 		}
-		
 	},
 
 	hiddenHtmlMap : function(bool){
@@ -766,14 +748,30 @@ var formInMap = {
 		}, 1500);
 	},
 
+	initData : function(){
+		mylog.log("initData");
+		formInMap.timeoutAddCity;
+		formInMap.initVarNE();
+		formInMap.typeSearchInternational = "";
+		formInMap.geoShape = "";
+		formInMap.formType = "";
+		formInMap.updateLocality = false;
+		formInMap.addressesIndex = false;
+		formInMap.initDropdown();
+		$("#divStreetAddress").addClass("hidden");
+		$("#divPostalCode").addClass("hidden");
+		$("#divCity").addClass("hidden");
+		formInMap.initHtml();
+	},
+
 	cancel : function(){
 		$("#right_tool_map_locality").addClass("hidden");
 		$("#right_tool_map_search").removeClass("hidden");
+		formInMap.initData();
 		formInMap.initVarNE();
 		formInMap.initHtml();
 		formInMap.hiddenHtmlMap(false);
 		formInMap.backToForm(true);
-		
 	}
 
 };

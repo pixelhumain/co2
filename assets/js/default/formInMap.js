@@ -436,6 +436,8 @@ var formInMap = {
 	},
 
 	backToForm : function(cancel){
+		$("#right_tool_map_locality").addClass("hidden");
+		$("#right_tool_map_search").removeClass("hidden");
 		mylog.log("backToForm 2");
 		formInMap.actived = false ;
 		if(cancel == true ){
@@ -765,9 +767,11 @@ var formInMap = {
 	},
 
 	cancel : function(){
-		$("#right_tool_map_locality").addClass("hidden");
-		$("#right_tool_map_search").removeClass("hidden");
-		formInMap.initData();
+		formInMap.typeSearchInternational = "";
+		formInMap.geoShape = "";
+		formInMap.formType = "";
+		formInMap.updateLocality = false;
+		formInMap.addressesIndex = false;
 		formInMap.initVarNE();
 		formInMap.initHtml();
 		formInMap.hiddenHtmlMap(false);

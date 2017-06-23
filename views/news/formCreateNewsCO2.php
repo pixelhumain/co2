@@ -274,7 +274,7 @@
   }
 ?>
 <!-- <div id="newLiveFeedForm" class="col-xs-12 no-padding margin-bottom-10"></div> -->
-<div id="formCreateNewsTemp" style="float: none;" class="center-block">
+<div id="formCreateNewsTemp" style="float: none;" class="center-block hidden">
   <div class='no-padding form-create-news-container col-sm-12'>
 
     <div class='padding-10 partition-light no-margin text-left header-form-create-news' style="margin-bottom:-40px !important;">
@@ -309,7 +309,7 @@
       <input  type="text" id="falseInput" onclick="javascript:showFormBlock(true);" 
           class="col-xs-12 col-md-12" placeholder="Exprimez-vous ..."   style="padding:15px;"/>
 
-      <div class="extract_url">
+      <div class="extract_url" style="display:none;">
         <div class="padding-10 bg-white">
           <img class="loading_indicator" src="<?php echo $this->module->assetsUrl ?>/images/news/ajax-loader.gif">
           <textarea id="get_url" placeholder="Exprimez-vous ..." class="get_url_input form-control textarea mention" style="border:none;background:transparent !important" name="getUrl" spellcheck="false" ></textarea>

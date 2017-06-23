@@ -66,8 +66,6 @@ dynForm = {
 	        }
 		},
 	    beforeSave : function(){
-	    	alert("onBeforeSave");
-	    	
 	    	if( !$("#ajaxFormModal #allDay").val())
 	    		$("#ajaxFormModal #allDay").val(false);
 	    	if( typeof $("#ajaxFormModal #description").code === 'function' )

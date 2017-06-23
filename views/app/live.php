@@ -56,6 +56,10 @@
 		text-align: center;
 		background: white;
 	}
+
+	#btn-my-co{
+		margin-top: 15px;
+	}
 </style>
 <div class="row padding-10 bg-white">
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
@@ -117,12 +121,12 @@ jQuery(document).ready(function() {
 	$(".subsub").hide();
 	setTitle("", "", "Live");
 
-	var liveType = "<?php echo (@$type && !empty($type)) ? $type : ''; ?>";
+	/*var liveType = "<?php echo (@$type && !empty($type)) ? $type : ''; ?>";
 	if(typeof liveTypeName[liveType] != "undefined") 
 		 liveType = " > "+liveTypeName[liveType];
 	else liveType = ", la boite à outils citoyenne connectée " + liveType;
-
-	setTitle("Communecter" + liveType, "<i class='fa fa-heartbeat '></i>");
+*/
+	setTitle("Live", "Live");
 	//initFilterLive();
 	//showTagsScopesMin("#list_tags_scopes");
 	$("#btn-slidup-scopetags").click(function(){
@@ -145,6 +149,42 @@ jQuery(document).ready(function() {
     initFreedomInterface();
     
     Sig.restartMap(Sig.map);
+
+
+
+    $("#main-search-bar").keyup(function(e){
+        $("#second-search-bar").val($(this).val());
+        $("#input-search-map").val($(this).val());
+        if(e.keyCode == 13){
+            loadStream();
+            KScrollTo("#content-social");
+        }
+    });
+    $("#main-search-bar").change(function(){
+        $("#second-search-bar").val($(this).val());
+    });
+
+    $("#second-search-bar").keyup(function(e){
+        $("#main-search-bar").val($(this).val());
+        $("#input-search-map").val($(this).val());
+        if(e.keyCode == 13){            
+            loadStream();
+            KScrollTo("#content-social");
+         }
+    });
+
+    $("#input-search-map").keyup(function(e){
+        $("#second-search-bar").val($("#input-search-map").val());
+        $("#main-search-bar").val($("#input-search-map").val());
+        if(e.keyCode == 13){
+            loadStream();
+         }
+    });
+
+    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
+        loadStream();
+    });
+
 
     //KScrollTo(".main-btn-scopes");
 });

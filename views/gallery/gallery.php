@@ -37,6 +37,7 @@ if( isset($parent) ){
 		float:left;
 		width:200px;
 		height:200px;
+		display:none;
 	}
 	.portfolio-item > .tools.tools-bottom {
 	    background-color: rgba(0,0,0,0.3);

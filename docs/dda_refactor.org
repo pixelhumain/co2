@@ -223,11 +223,17 @@ Une loi progresse sur le territoire à travers 4 niveaux : commune, dep, region,
 - On enregistre
 
 => la proposition est publiée dans mon conseil citoyen communal en premier.
+
 => mes voisins votes
+
   => la proposition est acceptée
+
     => la proposition concerne seulement ma commune ?
+
       => oui : fin du process
+
       => non : envoi automatique au département (et ainsi de suite aux niveaux supérieurs jusqu'au niveau final)
+
   => la proposition est refusée : fin du process
 
 
@@ -312,7 +318,7 @@ Mais il faut que l'équipe de dev ait un droit de véto (avec justification obli
 pour assurer que les modifications proposées soit compatibles avec le système en place, et réalisables techniquement. 
 (il faut pouvoir assurer que le système est toujours cohérent avec le préambule, mais le code ne se modifie pas en un claquement de doigt)
     
-*** Je propose aussi : que l'on puisse signaler son désacord avec le préambule en signant par email. 
+*** Je propose aussi : que l'on puisse signaler son désacord avec l'ensemble de la démarche en signant par email. 
   
   Je trouve ça intéressant de savoir combien de personnes sont prêtes à manifester leur désaprobation globale par rapport à notre démarche.
   En faisant le ratio entre NB-mailContre / NB-inscrits, on aura une idée de notre légitimité.
@@ -330,11 +336,31 @@ pour assurer que les modifications proposées soit compatibles avec le système 
 
 
 
-
-
 -------------------------------------------------
 Afin de donner une impulsion forte au lancement de la constituante, et donner un exemple du travail que l'on attend des citoyens,
 je pense que nous devrions nous-mêmes (les communecteurs) écrire les grandes lignes d'une nouvelle constitution, en se basant sur le projet SMART-TERRE. 
 
+Nous pouvons aussi mettre en place 2 espaces constituant : 
+1 pour la constituante SMART-TERRE et 
+1 qui démarre à partir de rien (procédure libre)
 
+
+
+-------------------------------------------------
+*** Question sécurité :
+La technologie blockchain semble être parfaitement adapté au contexte,
+mais je ne saurais pas dire dans quelle mesure il est possible de l'utiliser au sein du projet Communecter.
+Je ne saurais dire aussi combien de temps ce système est utilisable, étant donnée que la puissance de calcule nécessaire au maintient du réseau augmente avec le temps.
+Quand j'ai installé mon porte feuille bitcoin il y a quelques temps, j'ai mis 2 semaines à télécharger la blockchain sur ma machine. Qu'en sera-t-il dans 1 an ? 5 ans ? 10 ans ? Si c'est la même chose pour une blockchain de vote, ça me semble limité de fait par ce pb.
+
+Personnellement, je considère que : quelques soit le niveau de sécurité qui sera utilisé, il y aura toujours des failles,
+et que toute l'énergie qu'on mettra à sécuriser un système sera un jour réduite à néant par un hackeur plus malin que les autres.
+
+Donc, je serais plutôt favorable à une solution qui intègre le fait que le système ne soit pas infaillible (sans pour autant être une passoire), et que l'on prenne en compte cette incertitude comme faisant partie du système. Il faut aussi prendre en compte le fait qu'une triche peut être jouée dans les deux sens : en bien comme en mal. Donc les triches s'équilibres.
+Je peux très bien voter 3 fois avec 3 comptes pour une loi absolument vitale.
+Et même si l'inverse est vrai aussi, je pense qu'il n'y aura pas suffisamment de tricheurs pour qu'ils influances suffisamment le résultat des votes.
+
+Le fait par exemple, de limiter le droit de vote aux conseils citoyens liés à la communexion des utilisateurs, limite leurs possibilités de tricher.
+(il faudra probablement bloquer la communexion à 1 changement par mois au maximum)
+La majorité à 61,8% limite aussi la triche puisque les propositions ont besoin de toutes façon d'une large majorité pour gagner, donc les propositions qui seront acceptées sont celles qui sont les plus consensuelles. Il faut un nombre de tricheurs plus important pour faire annuler une proposition consensuelle.
 

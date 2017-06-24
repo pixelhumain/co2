@@ -29,7 +29,7 @@ function bindAboutPodElement() {
 		}
 	}
 
-	function removeAddresses (index){
+	function removeAddresses (index, formInMap){
 
 		bootbox.confirm({
 			message: trad["suredeletelocality"]+"<span class='text-red'></span>",
@@ -60,7 +60,16 @@ function bindAboutPodElement() {
 				    	success: function(data){
 					    	if(data.result){
 								toastr.success(data.msg);
-								urlCtrl.loadByHash(location.hash);
+
+								if(formInMap == true){
+									$(".locationEl"+ index).remove();
+									dyFInputs.locationObj.elementLocation = null;
+									dyFInputs.locationObj.elementLocations.splice(ix,1);
+									//TODO check if this center then apply on first
+									//$(".locationEl"+dyFInputs.locationObj.countLocation).remove();
+								}
+								else
+									urlCtrl.loadByHash(location.hash);
 					    	}
 					    }
 					});
@@ -183,17 +192,21 @@ function bindAboutPodElement() {
 					    	removeFieldUpdateDynForm(contextData.type);
 					    	
 					    	var dateformat = "DD/MM/YYYY";
-					    	if (! allDay && contextData.type == typeObj.event.col) 
+					    	var outputFormat="YYYY-MM-DD";
+					    	if (! allDay && contextData.type == typeObj.event.col) {
 					    		var dateformat = "DD/MM/YYYY HH:mm" ;
-					    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format());
-							$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format());
+					    		var outputFormat="YYYY-MM-DD HH::mm";
+					    	}
+					    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format(outputFormat));
+							$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format(outputFormat));
 					    },
 						afterSave : function(data){
 							mylog.dir(data);
 							if(data.result && data.resultGoods.result){
 								if(typeof data.resultGoods.values.allDay != "undefined"){
 									contextData.allDay = data.resultGoods.values.allDay;
-									$("#allDayAbout").html(contextData.allDay);
+
+									$("#allDayAbout").html((contextData.allDay ? trad["yes"] : trad["no"]));
 								}  
 								if(typeof data.resultGoods.values.startDate != "undefined"){
 									contextData.startDate = data.resultGoods.values.startDate;
@@ -209,7 +222,6 @@ function bindAboutPodElement() {
 								initDate();
 								updateCalendar();
 							}
-
 							//urlCtrl.loadByHash(location.hash);
 							dyFObj.closeForm();
 						},
@@ -244,10 +256,10 @@ function bindAboutPodElement() {
 			};
 			
 			if(notEmpty(contextData.startDateDB))
-				dataUpdate.startDate = moment(contextData.startDateDB).local().format(formatDatedynForm);
+				dataUpdate.startDate = moment(contextData.startDateDB,"YYYY-MM-DD HH:mm").local().format(formatDatedynForm);
 
 			if(notEmpty(contextData.endDateDB))
-				dataUpdate.endDate = moment(contextData.endDateDB).local().format(formatDatedynForm);
+				dataUpdate.endDate = moment(contextData.endDateDB,"YYYY-MM-DD HH:mm").local().format(formatDatedynForm);
 
 			mylog.log("btn-update-when", form, dataUpdate, formatDatedynForm);
 			dyFObj.openForm(form, "initUpdateWhen", dataUpdate);
@@ -499,10 +511,16 @@ function bindAboutPodElement() {
 						afterSave : function(data){
 							mylog.dir(data);
 							if(data.result && data.resultGoods.result){
-								$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
+								if(data.resultGoods.values.shortDescription=="")
+									$(".contentInformation #shortDescriptionAbout").html('<i>'+trad["notSpecified"]+'</i>');
+								else
+									$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
 								$(".contentInformation #shortDescriptionAboutEdit").html(data.resultGoods.values.shortDescription);
 								$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
-								$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
+								if(data.resultGoods.values.description=="")
+									$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml('<i>'+trad["notSpecified"]+'</i>'));
+								else
+									$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
 								$("#descriptionMarkdown").html(data.resultGoods.values.description);
 							}
 							dyFObj.closeForm();
@@ -625,7 +643,7 @@ function bindAboutPodElement() {
 			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.facebook))
 				dataUpdate.facebook = contextData.socialNetwork.facebook;
 
-			dyFObj.openForm(form, null, dataUpdate);
+			dyFObj.openForm(form, "sub", dataUpdate);
 
 			
 		});

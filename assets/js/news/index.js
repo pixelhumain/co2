@@ -363,7 +363,7 @@ function modifyNews(idNews,typeNews){
 				   	if(typeof updateNews[idNews]["media"] != "undefined")
 				   		message += getMediaCommonHtml(updateNews[idNews]["media"],"save");
 		message +="</div>"+
-					'<div class="form-group tagstags col-sm-12 no-padding">'+
+					'<div class="form-group tagstags">'+
           				'<input id="tagsUpdate" type="" data-type="select2" name="tags" placeholder="#Tags" value="" style="width:100%;">'+       
       				"</div>"+
 				   "</div>";

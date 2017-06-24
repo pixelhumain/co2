@@ -878,7 +878,7 @@ jQuery(document).ready(function()
  	$('#modal-scope').appendTo("#modal_scope_extern") ;
  	if(isLiveGlobal())
  		showTagsScopesMin(".list_tags_scopes");
- 	alert();
+ 
  	showFormBlock(false);
 });
 function isInArray(value, array) {

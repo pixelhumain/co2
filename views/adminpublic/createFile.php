@@ -854,7 +854,7 @@ function stepThree(params){
         				var elt1 = jQuery.parseJSON($("#jsonImport").val());
         				var elt2 = jQuery.parseJSON(data.elements);
         				$.each(elt2, function(key, val){
-		        			elt1.push(val)
+		        			elt1.push(val);
 		        		});
         				importD = JSON.stringify(elt1);
         			}
@@ -866,13 +866,14 @@ function stepThree(params){
         		else{
         			if(data.elementsWarnings == "[]")
         				errorD = $("#jsonError").val();
-        			else
+        			else{
         				var elt1E = jQuery.parseJSON($("#jsonError").val());
         				var elt2E = jQuery.parseJSON(data.elementsWarnings);
         				$.each(elt2E, function(key, val){
-		        			elt1E.push(val)
+		        			elt1E.push(val);
 		        		});
         				errorD = JSON.stringify(elt1E);
+        			}
         		}
 
         		

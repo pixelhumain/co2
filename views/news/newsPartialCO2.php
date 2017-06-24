@@ -85,7 +85,11 @@
       <?php } ?>
     </div>
   </li>
-
+  <!--<div class='loader text-dark'>
+    <span style='font-size:25px;'>
+      <i class='fa fa-spin fa-circle-o-notch'></i> 
+      <span class='text-dark'>Chargement en cours ...</span> 
+    </div>-->
   <?php } ?>
 
   <?php if(@$isFirst == true && sizeof($news)==0){ ?>
@@ -93,7 +97,7 @@
         <i class='fa fa-ban'></i>
         Aucune actualité
       </li>
-  <?php }else if(sizeof($news)==0 || sizeof($news) < 6 && @$actionController != "save"){
+  <?php }else if(sizeof($news)==0 && @$actionController != "save"){
       echo "<li id='noMoreNews' class='text-left'><i class='fa fa-ban'></i> ".Yii::t("common", "No more news")."</li>";
   } ?>
   <script type="text/javascript">

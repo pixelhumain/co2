@@ -133,8 +133,6 @@ function showMap(show)
 
   //chargement de la carte
 
-
-
 	mylog.log("showMap");
 	if(show === undefined) show = !isMapEnd;
 	if(show){

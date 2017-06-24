@@ -24,9 +24,11 @@ dynForm = {
 		    			$("#ajaxFormModal #parentId").val( contextData.id );
 	    			}
 
-	    			if ( contextData && contextData.id ){
+	    			if ( contextData && typeof contextData.organizerId != "undefined"){
 		    			$("#ajaxFormModal #organizerId").val( contextData.organizerId );
 	    			}
+	    			if(contextData && typeof contextData.organizerType != "undefined")
+	    				$("#ajaxFormModal #organizerType").val( contextData.organizerType );
 	    			//$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
 	    			if( contextData && contextData.type )
 	    				$("#ajaxFormModal #parentType").val( contextData.type ); 
@@ -34,8 +36,8 @@ dynForm = {
 	    			if(contextData.startDateDB && contextData.endDateDB){
 	    				$("#ajaxFormModal").after("<input type='hidden' id='startDateParent' value='"+contextData.startDateDB+"'/>"+
 	    										  "<input type='hidden' id='endDateParent' value='"+contextData.endDateDB+"'/>");
-	    				$("#ajaxFormModal #startDate").after("<span id='parentstartDate'><i class='fa fa-warning'></i> date début du parent : "+moment( contextData.startDateDB).format('DD/MM/YYYY HH:mm')+"</span>");
-	    				$("#ajaxFormModal #endDate").after("<span id='parentendDate'><i class='fa fa-warning'></i> date de fin du parent : "+moment( contextData.endDateDB).format('DD/MM/YYYY HH:mm')+"</span>");
+	    				$("#ajaxFormModal #startDate").after("<span id='parentstartDate'><i class='fa fa-warning'></i> date début du parent : "+moment( contextData.startDateDB,"YYYY-MM-DD HH:mm").format('DD/MM/YYYY HH:mm')+"</span>");
+	    				$("#ajaxFormModal #endDate").after("<span id='parentendDate'><i class='fa fa-warning'></i> date de fin du parent : "+moment( contextData.endDateDB,"YYYY-MM-DD HH:mm").format('DD/MM/YYYY HH:mm')+"</span>");
 	    			}
 	    			//alert($("#ajaxFormModal #parentId").val() +" | "+$("#ajaxFormModal #parentType").val());
 	    		}
@@ -64,8 +66,6 @@ dynForm = {
 	        }
 		},
 	    beforeSave : function(){
-	    	//alert("onBeforeSave");
-	    	
 	    	if( !$("#ajaxFormModal #allDay").val())
 	    		$("#ajaxFormModal #allDay").val(false);
 	    	if( typeof $("#ajaxFormModal #description").code === 'function' )
@@ -75,11 +75,13 @@ dynForm = {
 	    	//Transform datetime before sending
 	    	var allDay = $("#ajaxFormModal #allDay").is(':checked');
 	    	var dateformat = "DD/MM/YYYY";
-	    	if (! allDay) 
-	    		var dateformat = "DD/MM/YYYY HH:mm"
-	    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format());
-			$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format());
-			//mylog.log($("#ajaxFormModal #startDate").val());
+	    	var outputFormat="YYYY-MM-DD";
+	    	if (! allDay) {
+	    		var dateformat = "DD/MM/YYYY HH:mm";
+	    		var outputFormat="YYYY-MM-DD HH::mm";
+	    	}
+	    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format(outputFormat));
+			$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format(outputFormat));
 	    },
 	    properties : {
 	    	info : {

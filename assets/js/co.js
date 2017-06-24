@@ -585,22 +585,22 @@ var urlCtrl = {
 		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
 	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
-	    "#admin.checkgeocodage" : {title:'CHECKGEOCODAGE ', icon : 'download'},
-	    "#admin.openagenda" : {title:'OPENAGENDA ', icon : 'download'},
-	    "#admin.adddata" : {title:'ADDDATA ', icon : 'download'},
-	    "#admin.importdata" : {title:'IMPORT DATA ', icon : 'download'},
-	    "#admin.index" : {title:'IMPORT DATA ', icon : 'download'},
-	    "#admin.cities" : {title:'CITIES ', icon : 'university'},
-	    "#admin.sourceadmin" : {title:'SOURCE ADMIN', icon : 'download'},
-	    "#admin.checkcities" : {title:'SOURCE ADMIN', icon : 'download'},
-	    "#admin.directory" : {title:'IMPORT DATA ', icon : 'download'},
-	    "#admin.mailerrordashboard" : {title:'MAIL ERROR ', icon : 'download'},
-	    "#admin.moderate" : {title:'MODERATE ', icon : 'download'},
-	    "#admin.createfile" : {title:'IMPORT DATA', icon : 'download'},
-		"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus'},
-	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download'},
-	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : false},
-	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download'},
+	    "#admin.checkgeocodage" : {title:'CHECKGEOCODAGE ', icon : 'download', useHeader: true},
+	    "#admin.openagenda" : {title:'OPENAGENDA ', icon : 'download', useHeader: true},
+	    "#admin.adddata" : {title:'ADDDATA ', icon : 'download', useHeader: true},
+	    "#admin.importdata" : {title:'IMPORT DATA ', icon : 'download', useHeader: true},
+	    "#admin.index" : {title:'IMPORT DATA ', icon : 'download', useHeader: true},
+	    "#admin.cities" : {title:'CITIES ', icon : 'university', useHeader: true},
+	    "#admin.sourceadmin" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
+	    "#admin.checkcities" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
+	    "#admin.directory" : {title:'IMPORT DATA ', icon : 'download', useHeader: true},
+	    "#admin.mailerrordashboard" : {title:'MAIL ERROR ', icon : 'download', useHeader: true},
+	    "#admin.moderate" : {title:'MODERATE ', icon : 'download', useHeader: true},
+	    "#admin.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader: true},
+		"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus', useHeader: true},
+	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
+	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : true},
+	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : true},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
@@ -754,6 +754,7 @@ var urlCtrl = {
 		// mylog.log("IS DIRECTORY ? ", 
 		// 			hash.indexOf("#default.directory"), 
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
+
 		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
 			mylog.log("globalTheme", globalTheme);
@@ -786,7 +787,6 @@ var urlCtrl = {
 			location.hash = hash;
 			return;
 		}
-
 		currentUrl = hash;
 		allReadyLoad = true;
 		CoAllReadyLoad = true;
@@ -801,6 +801,7 @@ var urlCtrl = {
 		
 
 		//alert("urlCtrl.loadByHash"+hash);
+
 	    mylog.warn("urlCtrl.loadByHash",hash,back);
 	    if( urlCtrl.jsController(hash) ){
 	    	mylog.log("urlCtrl.loadByHash >>> hash found",hash);
@@ -830,6 +831,7 @@ var urlCtrl = {
 	        hashT = hash.split(".");
 	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
 	    }
+
 	    /*else if( hash.indexOf("#news.index.type") >= 0 ){
 	        hashT = hash.split(".");
 	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" )+'?isFirst=1', 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
@@ -851,7 +853,6 @@ var urlCtrl = {
 	        showAjaxPanel( '/app/index', 'Home','home' );
 	    mylog.log("testnetwork hash", hash);
 	    location.hash = hash;
-
 	    /*if(typeof back == "function"){
 	    	alert("back");
 	    	back();
@@ -1872,7 +1873,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 	                });
 				}
         	} else if ($("#ajaxFormModal").is(":visible") && $this.parent().find(".dynFormUrlsWarning").length <= 0){
-				$this.parent().append( "<span class='text-red dynFormUrlsWarning'>* Ceci n'est pas un url valide.</span>" );         	
+				//$this.parent().append( "<span class='text-red dynFormUrlsWarning'>* Ceci n'est pas un url valide.</span>" );         	
         	}
         }
     }); 
@@ -2182,8 +2183,12 @@ var collection = {
 				if(data.result){
 					if(data.list == '$unset'){
 						if(location.hash.indexOf("#page") >=0){
-							$(".favorisMenu").removeClass("text-yellow");
-							$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o');
+							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){ 
+                				loadDataDirectory("collections", "star"); 
+              				}else{ 
+                				$(".favorisMenu").removeClass("text-yellow"); 
+                				$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o'); 
+              				} 
 						}else{
 							$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
 							delete userConnected.collections[collection][what][id];
@@ -2191,9 +2196,13 @@ var collection = {
 					}
 					else{
 						if(location.hash.indexOf("#page") >=0){
-							$(".favorisMenu").addClass("text-yellow");
-							$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star');
-						}
+							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){ 
+                				loadDataDirectory("collections", "star"); 
+              				}else{ 
+                				$(".favorisMenu").addClass("text-yellow"); 
+                				$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star'); 
+              				}
+              			}
 						else
 							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
 						if(!userConnected.collections)
@@ -2241,7 +2250,7 @@ var uploadObj = {
 	gotoUrl : null,
 	isSub : false,
 	update  : false,
-	folder : moduleId, //on force pour pas casser toutes les vielles images
+	folder : "communecter", //on force pour pas casser toutes les vielles images
 	set : function(type,id){
 		uploadObj.type = type;
 		mylog.log("set uploadObj.id", id);
@@ -2251,6 +2260,7 @@ var uploadObj = {
 
 var dyFObj = {
 	elementObj : null,
+	elementData : null,
 	//rules to show hide submit btn, used anwhere on blur and can be 
 	//completed by specific rules on dynForm Obj
 	//ex : dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf
@@ -2282,9 +2292,6 @@ var dyFObj = {
 				$.each( dyFInputs.locationObj.elementLocations,function (i,v) { 
 					mylog.log("elementLocations v", v);
 					if(typeof v != "undefined" && typeof v.center != "undefined" ){
-						// formData.address = dyFInputs.locationObj.elementLocations.address;
-						// formData.geo = dyFInputs.locationObj.elementLocations.geo;
-						// formData.geoPosition = dyFInputs.locationObj.elementLocations.geoPosition;
 						dyFInputs.locationObj.elementLocations.splice(i, 1);
 					}
 				});
@@ -2474,13 +2481,14 @@ var dyFObj = {
 				delete data.map["_id"];
 				mylog.dir(data);
 				console.log(data);
-				
+				dyFObj.elementData = data;
 				dyFObj.openForm( dyFInputs.get(type).ctrl ,null, data.map);
 	        } else {
 	           toastr.error("something went wrong!! please try again.");
 	        }
 	    });
 	},
+	
 	//entry point function for opening dynForms
 	openForm : function  (type, afterLoad,data) { 
 	    //mylog.clear();
@@ -2488,11 +2496,10 @@ var dyFObj = {
 	    $("#openModal").modal("hide");
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
-	    //global variables clean up
-	    dyFInputs.locationObj.elementLocation = null;
-	    dyFInputs.locationObj.elementLocations = [];
-	    dyFInputs.locationObj.centerLocation = null;
-	    updateLocality = false;
+	    uploadObj.contentKey="profil"; 
+      	if(type=="addPhoto") 
+        	uploadObj.contentKey="slider"; 
+	   
 	    //initKSpec();
 	    if(userId)
 		{
@@ -2536,6 +2543,7 @@ var dyFObj = {
 				function() { 
 					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+dyFInputs.get(type).ctrl+'.js');
 					mylog.dir(dynForm);
+					//typeObj[type].dynForm = dynForm;
 				  	dyFInputs.get(type).dynForm = dynForm;
 					dyFObj.elementObj = dyFInputs.get(type);
 					if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
@@ -2564,6 +2572,7 @@ var dyFObj = {
 							              "</div>");
 	  	$('.modal-footer').hide();
 	  	$('#ajax-modal').modal("show");
+	  	dyFInputs.init();
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
 	  	dyFObj.buildDynForm(afterLoad, data);
@@ -2665,6 +2674,56 @@ var dyFObj = {
 }
 //TODO : refactor into dyfObj.inputs
 var dyFInputs = {
+	init : function(){
+		 //global variables clean up
+		dyFInputs.locationObj.elementLocation = null;
+	    dyFInputs.locationObj.elementLocations = [];
+	    dyFInputs.locationObj.centerLocation = null;
+	    dyFInputs.locationObj.countLocation = 0 ;
+	    dyFInputs.locationObj.addresses = (typeof dyFObj.elementData != "undefined" && dyFObj.elementData != null && typeof dyFObj.elementData.map.addresses != "undefined") ? dyFObj.elementData.map.addresses  :  [] ;
+	    updateLocality = false;
+
+	    // Initialize tags list for network in form of element
+		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"){
+			$.each(networkJson.add, function(key, v) {
+				if(typeof networkJson.request.sourceKey != "undefined"){
+					sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
+					typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
+				}
+				if(v){
+					mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
+					mylog.log("networkTags", networkTags);
+					if(typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+						typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
+						if(typeof networkJson.request.mainTag != "undefined")
+							typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
+					}
+					mylog.log("networkJson.dynForm");
+					if(notNull(networkJson.dynForm)){
+						mylog.log("networkJson.dynForm", "networkJson.dynForm");
+						if(notNull(networkJson.dynForm.extra)){
+							var nbListTags = 1 ;
+							mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
+							mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
+							while(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags)){
+								typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
+									"inputType" : "tags",
+									"placeholder" : networkJson.dynForm.extra["tags"+nbListTags].placeholder,
+									"values" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
+									"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ]
+								};
+								nbListTags++;
+								mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
+								mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
+							}
+							delete typeObj[key].dynForm.jsonSchema.properties.tags;
+						}
+					}
+				}
+			});
+		}
+		
+	},
 	inputText :function(label, placeholder, rules, custom) { 
 		var inputObj = {
 			label : label,
@@ -2851,11 +2910,112 @@ var dyFInputs = {
 		elementLocation : null,
 		centerLocation : null,
 		elementLocations : [],
+		addresses : [],
 		elementPostalCode : null,
 		elementPostalCodes : [],
 		countLocation : 0,
 		countPostalCode : 0,
-		copyMapForm2Dynform : function (locObj) { 
+		initVar :function(){
+			dyFInputs.locationObj.elementLocation = null;
+		    dyFInputs.locationObj.elementLocations = [];
+		    dyFInputs.locationObj.centerLocation = null;
+		    dyFInputs.locationObj.addresses = [];
+		    dyFInputs.locationObj.countLocation = 0 ;
+		},
+		init : function () {
+			mylog.log("init loc");
+			$(".deleteLocDynForm").click(function(){
+				mylog.log("deleteLocDynForm", $(this).data("index"));
+				var index = $(this).data("index");
+				var indexLoc = $(this).data("indexLoc");
+				if(index == -1 && dyFInputs.locationObj.elementLocations.length > 1){
+					toastr.error("Vous ne pouvez pas supprimer l'adresse principal si vous avez des adresses secondaires");
+				}else{
+					bootbox.confirm({
+						message: trad["suredeletelocality"]+"<span class='text-red'></span>",
+						buttons: {
+							confirm: {
+								label: trad["yes"],
+								className: 'btn-success'
+							},
+							cancel: {
+								label: trad["no"],
+								className: 'btn-danger'
+							}
+						},
+						callback: function (result) {
+							if (!result) {
+								return;
+							} else {
+								mylog.log("Index Delete", $(this).data("index"));
+								var param = new Object;
+								param.name = (index == -1 ) ? "locality" : "addresses";
+								param.value = (index == -1 ) ? "" : { addressesIndex : index };
+								param.pk = uploadObj.id;
+
+								$.ajax({
+							        type: "POST",
+							        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+uploadObj.type,
+							        data: param,
+							       	dataType: "json",
+							    	success: function(data){
+								    	if(data.result){
+											toastr.success(data.msg);
+											
+											var formValues = dyFObj.elementData.map;
+											mylog.log("FormValues", formValues);
+
+											dyFInputs.locationObj.elementLocation = null;
+											dyFInputs.locationObj.elementLocations.splice(indexLoc,1);
+											if(index != -1 ){
+												dyFInputs.locationObj.initVar();
+												$(".locationlocation").html("");
+												   
+												if( dyFInputs.locationObj.addresses ){
+													dyFInputs.locationObj.addresses.splice(index,1);
+													var test = [];
+													$.each(dyFInputs.locationObj.elementLocations, function(i,locelt){
+														$.each(dyFInputs.locationObj.addresses, function(i,addLoc){
+
+															if(addLoc.postalCode == locelt.locelt && 
+																addLoc.streetAddress == locelt.streetAddress &&
+																addLoc.insee == locelt.insee &&
+																addLoc.addressCountry == locelt.addressCountry &&
+																addLoc.addressLocality == locelt.addressLocality){
+																test.push(locelt);
+															}
+														});
+													});
+													
+												}
+
+												if( formValues.address && formValues.geo && formValues.geoPosition ){
+													mylog.warn("init Adress location",formValues.address.addressLocality,formValues.address.postalCode);
+													dyFInputs.locationObj.copyMapForm2Dynform({address:formValues.address,geo:formValues.geo,geo:formValues.geoPosition});
+													dyFInputs.locationObj.addLocationToForm({address:formValues.address,geo:formValues.geo,geo:formValues.geoPosition}, -1);
+												}
+												if( dyFInputs.locationObj.addresses ){
+													$.each(dyFInputs.locationObj.addresses, function(i,addLoc){
+														mylog.warn("init extra addresses location ",locationObj.address.addressLocality,locationObj.address.postalCode);
+														dyFInputs.locationObj.copyMapForm2Dynform(locationObj);
+														dyFInputs.locationObj.addLocationToForm(locationObj, i);	
+													});
+												}
+												
+											}else{
+												$(".locationEl"+ indexLoc).remove();
+											}
+								    	}
+								    }
+								});
+							}
+						}
+					});
+				}
+			});
+		},
+		copyMapForm2Dynform : function (locObj) {
+			mylog.warn("---------------copyMapForm2Dynform----------------");
 			//if(!elementLocation)
 			//	elementLocation = [];
 			mylog.log("locationObj", locObj);
@@ -2871,7 +3031,7 @@ var dyFInputs = {
 			mylog.dir(dyFInputs.locationObj.elementLocations);
 			//elementLocation.push(positionObj);
 		},
-		addLocationToForm : function (locObj){
+		addLocationToForm : function (locObj, index){
 			mylog.warn("---------------addLocationToForm----------------");
 			mylog.dir(locObj);
 			var strHTML = "";
@@ -2889,10 +3049,29 @@ var dyFInputs = {
 				btnSuccess = "btn-success";
 				locCenter = "<span class='lblcentre'>(localité centrale)</span>";
 			}
-			
-			strHTML = "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+")' class=' locationEl"+dyFInputs.locationObj.countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
+
+			if(typeof index != "undefined"){
+				strHTML = "<a href='javascript:;' class='deleteLocDynForm locationEl"+dyFInputs.locationObj.countLocation+" btn' data-index='"+index+"' data-indexLoc='"+dyFInputs.locationObj.countLocation+"'>"+
+								"<i class='text-red fa fa-times'></i></a>"+
+					  		"<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
+					  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' data-index='"+index+"' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'>"+
+					  	"<i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
+			}
+			else{
+				strHTML = "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+")' class=' locationEl"+dyFInputs.locationObj.countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
 					  "<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
 					  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
+			}
+			
+			
+			
+			// strHTML = "<a href='javascript:removeLocation("+dyFInputs.locationObj.countLocation+", "+true+")'' class=' locationEl"+dyFInputs.locationObj.countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
+			// 		  "<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
+			// 		  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
+
+			$(".postalcodepostalcode").prepend(strHTML);
+
+			mylog.log("strAddres", strHTML);
 			$(".locationlocation").prepend(strHTML);
 			dyFInputs.locationObj.countLocation++;
 		},
@@ -2931,6 +3110,13 @@ var dyFInputs = {
 			//TODO check if this center then apply on first
 			//$(".locationEl"+dyFInputs.locationObj.countLocation).remove();
 			$(".locationEl"+ix).remove();
+
+			/*if(ix != 0){
+				removeAddresses(ix-1, true);
+			}
+			else
+				removeAddress(true);*/
+
 		},
 		setAsCenter : function (ix){
 
@@ -2963,7 +3149,7 @@ var dyFInputs = {
 	    return inputObj;
 	},
     urls : {
-    	label : "Ajouter des informations libres",
+    	label : "Informations libres / urls",
     	placeholder : "informations / urls ...",
         inputType : "array",
         value : [],
@@ -3267,7 +3453,7 @@ var typeObj = {
 	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
 	"NGO" : {sameAs:"organization", color:"green", icon:"users"},
 	"Association" : {sameAs:"organization", color:"green", icon: "group"},
-	"GovernmentOrganization" : {sameAs:"organization",color: "red",icon: "university"},
+	"GovernmentOrganization" : {col:"organization", color: "red",icon: "university"},
 	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
 	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
 	"events" : {sameAs:"event"},
@@ -3439,12 +3625,13 @@ function manageTimestampOnDate() {
 function displayStartAndEndDate(event) {
 	var content = "";
 	//si on a bien les dates
-	if("undefined" != typeof event['startDate'] && "undefined" != typeof event['endDate']){
+	mylog.log("event map", event);
+	if("undefined" != typeof event['startDateDB'] && "undefined" != typeof event['endDateDB']){
 		//var start = dateToStr(data['startDate'], "fr", true);
 		//var end = dateToStr(data['endDate'], "fr", true);
 		
-		var startDateMoment = moment(event['startDate']).local();
-		var endDateMoment = moment(event['endDate']).local();
+		var startDateMoment = moment(event['startDateDB']).local();
+		var endDateMoment = moment(event['endDateDB']).local();
 
 		var startDate = startDateMoment.format("DD-MM-YYYY");
 		var endDate = endDateMoment.format("DD-MM-YYYY");
@@ -3898,5 +4085,6 @@ function test(params, itemType){
 $(document).ready(function() { 
 	setTimeout( function () { checkPoll() }, 10000);
 	document.onkeyup = keyboardNav.checkKeycode;
-	bindRightClicks();
+	if(notNull(userId) && userId!="") 
+		bindRightClicks();
 });

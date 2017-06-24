@@ -7,11 +7,9 @@ var formInMap = {
 	NE_city : "",
 	NE_cp : "",
 	NE_street : "",
-
 	NE_country : "",
 	NE_dep : "",
 	NE_region : "",
-
 	geoShape : "",
 
 	typeSearchInternational : "",
@@ -47,8 +45,9 @@ var formInMap = {
 		}
 
 		var coordinates = new Array(0, 0);
-		if( notNull(contextData) && notNull(contextData.geo) && formInMap.updateLocality == true)
-			coordinates = new Array(contextData.geo.latitude, contextData.geo.longitude);
+		if( notNull(contextData) && notNull(contextData.geo) && formInMap.updateLocality == true 
+			&& formInMap.NE_lat != "" && formInMap.NE_lng != "")
+			coordinates = new Array(formInMap.NE_lat, formInMap.NE_lng);
 		
 		mylog.log("coordinates", coordinates);
 
@@ -94,8 +93,6 @@ var formInMap = {
 			$("#divStreetAddress").removeClass("hidden");
 		$("#right_tool_map_locality").removeClass("hidden");
 		$("#right_tool_map_search").addClass("hidden");
-
-
 	},
 
 	initUpdateLocality : function(address, geo, type, index){
@@ -117,11 +114,13 @@ var formInMap = {
 			formInMap.getDetailCity();
 		}else{
 			formInMap.initVarNE();
+			formInMap.geoShape = "";
 			if(index)
 				formInMap.addressesIndex = index ;
 		}
 		formInMap.formType = type ;
 		formInMap.updateLocality = true;
+		
 		if(typeof contextMap == "undefined")
 			contextMap = [];
 		formInMap.showMarkerNewElement();
@@ -158,7 +157,8 @@ var formInMap = {
 		// ---------------- newElement_city
 		$('[name="newElement_city"]').keyup(function(){ 
 			$("#dropdown-city-found").show();
-			if($('[name="newElement_city"]').val().length > 1){
+			mylog.log("newElement_city", $('[name="newElement_city"]').val().trim().length);
+			if($('[name="newElement_city"]').val().trim().length > 1){
 				formInMap.NE_city = $('[name="newElement_city"]').val();
 				formInMap.changeSelectCountrytim();
 
@@ -256,7 +256,6 @@ var formInMap = {
 		formInMap.bindActived = true ;
 	},
 
-
 	autocompleteFormAddress : function(currentScopeType, scopeValue){
 		mylog.log("autocompleteFormAddress", currentScopeType, scopeValue);
 		$("#dropdown-newElement_"+currentScopeType+"-found").html("<li><a href='javascript:'><i class='fa fa-refresh fa-spin'></i></a></li>");
@@ -328,7 +327,6 @@ var formInMap = {
 			}
 		});
 	},
-
 
 	add : function(complete, data, inseeGeoSHapes){
 		mylog.log("add", complete, data, inseeGeoSHapes);
@@ -438,47 +436,99 @@ var formInMap = {
 	},
 
 	backToForm : function(cancel){
+		$("#right_tool_map_locality").addClass("hidden");
+		$("#right_tool_map_search").removeClass("hidden");
 		mylog.log("backToForm 2");
 		formInMap.actived = false ;
-		if(formInMap.modePostalCode == false ){
+		// if(cancel == true ){
+		// 	showMap(false);
+		// }
+		// else{
+			if(formInMap.modePostalCode == false ){
+				mylog.log("backToForm 3");
+				if(formInMap.updateLocality == false ){
+					mylog.log("backToForm 6");
+					if(notEmpty($("[name='newElement_lat']").val())){
+						locObj = formInMap.createLocalityObj();
+						mylog.log("forminmap copyMapForm2Dynform");
+						dyFInputs.locationObj.copyMapForm2Dynform(locObj);
+						dyFInputs.locationObj.addLocationToForm(locObj);
+					}
+					$("#form-street").val($('#street_sumery_value').html());
+					$(".locationBtn").html("<i class='fa fa-home'></i> Adresse secondaire");
+					showMap(false);
+					Sig.clearMap();
+					if(location.hash != "#referencement" && location.hash != "#web")
+						$('#ajax-modal').modal("show");
+				}else{
+
+					mylog.log("backToForm 5");
+					formInMap.updateLocality = false;
+					if(typeof cancel == "undefined" || cancel == false)
+						formInMap.updateLocalityElement();
+
+					showMap(false);
+					if(typeof contextMap != "undefined")
+						Sig.showMapElements(Sig.map, contextMap);
+				}	
+			}else{
+				mylog.log("backToForm 4");
+				if(notEmpty($("[name='newPC_lat']").val())){
+					postalCodeObj = {
+						postalCode : $("[name='newPC_postalCode']").val(),
+						name : $("[name='newPC_name']").val(),
+						latitude : $("[name='newPC_lat']").val(),
+						longitude : $("[name='newPC_lon']").val()
+					};
+					mylog.log("forminmap copyMapForm2Dynform 2");
+					dyFInputs.locationObj.copyMapForm2Dynform(postalCodeObj);
+					dyFInputs.locationObj.addLocationToForm(postalCodeObj);
+				}
+				showMap(false);
+				Sig.clearMap();
+				if(location.hash != "#referencement" && location.hash != "#web")
+					$('#ajax-modal').modal("show");
+			}
+		//}
+		
+	},
+
+	/*backToForm : function(cancel){
+		mylog.log("backToForm 3");
+		formInMap.actived = false ;
+		mylog.log("cancel", cancel);
+		if(typeof cancel == "undefined" || cancel == false){
+			mylog.log("formInMap.updateLocality", formInMap.updateLocality);
 			if(formInMap.updateLocality == false ){
+				mylog.log("here1");
 				if(notEmpty($("[name='newElement_lat']").val())){
+					mylog.log("here2");
 					locObj = formInMap.createLocalityObj();
 					mylog.log("forminmap copyMapForm2Dynform");
 					dyFInputs.locationObj.copyMapForm2Dynform(locObj);
 					dyFInputs.locationObj.addLocationToForm(locObj);
 				}
+				mylog.log("here3");
 				$("#form-street").val($('#street_sumery_value').html());
 				$(".locationBtn").html("<i class='fa fa-home'></i> Adresse secondaire");
-				showMap(false);
+				mylog.log("here4");
 				Sig.clearMap();
 				if(location.hash != "#referencement" && location.hash != "#web")
 					$('#ajax-modal').modal("show");
 			}else{
-				if(typeof cancel == "undefined" || cancel == false)
-					formInMap.updateLocalityElement();
-				showMap(false);
+				mylog.log("here5");
+				formInMap.updateLocalityElement();
 				if(typeof contextMap != "undefined")
 					Sig.showMapElements(Sig.map, contextMap);
-			}	
-		}else{
-			if(notEmpty($("[name='newPC_lat']").val())){
-				postalCodeObj = {
-					postalCode : $("[name='newPC_postalCode']").val(),
-					name : $("[name='newPC_name']").val(),
-					latitude : $("[name='newPC_lat']").val(),
-					longitude : $("[name='newPC_lon']").val()
-				};
-				mylog.log("forminmap copyMapForm2Dynform 2");
-				dyFInputs.locationObj.copyMapForm2Dynform(postalCodeObj);
-				dyFInputs.locationObj.addLocationToForm(postalCodeObj);
 			}
-			showMap(false);
-			Sig.clearMap();
-			if(location.hash != "#referencement" && location.hash != "#web")
-				$('#ajax-modal').modal("show");
-		}
-	},
+		}else{}
+		mylog.log("right_tool_map_locality 2");
+		$("#right_tool_map_locality").addClass("hidden");
+		$("#right_tool_map_search").removeClass("hidden");
+		mylog.log("backToForm showMap false");
+		showMap(false);		
+	},*/
+
 
 	updateLocalityElement : function(){
 		mylog.log("updateLocalityElement");
@@ -536,11 +586,11 @@ var formInMap = {
 							}
 						}
 						Sig.restartMap();
+						mylog.log("right_tool_map_locality");
 						$("#right_tool_map_locality").addClass("hidden");
 						$("#right_tool_map_search").removeClass("hidden");
 						urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 						toastr.success(data.msg);
-						
 			    	}else{
 			    		toastr.error(data.msg);
 			    	}
@@ -558,27 +608,11 @@ var formInMap = {
     		$.cookie("communexionLevel", "cpCommunexion", { expires: 365, path : "/" });
     		urlCtrl.loadByHash(location.hash);
 		}
-		
 	},
 
 	initDropdown : function(){ 
 		$("#dropdown-newElement_cp-found").html("<li><a href='javascript:' class='disabled'>"+trad['Currently researching']+"</a></li>");
 		$("#dropdown-newElement_city-found").html("<li><a href='javascript:' class='disabled'>"+trad['Search a city, a town or a postal code'] +"</a></li>");
-	},
-
-	initData : function(){
-		mylog.log("initData");
-		formInMap.timeoutAddCity;
-		formInMap.initVarNE();
-		formInMap.typeSearchInternational = "";
-		formInMap.formType = "";
-		formInMap.updateLocality = false;
-		formInMap.addressesIndex = false;
-		formInMap.initDropdown();
-		$("#divStreetAddress").addClass("hidden");
-		$("#divPostalCode").addClass("hidden");
-		$("#divCity").addClass("hidden");
-		formInMap.initHtml();
 	},
 
 	initHtml : function(){
@@ -653,7 +687,6 @@ var formInMap = {
 		return val ;
 	},
 
-
 	getDepAndRegion : function(){
 		if(typeof formInMap.NE_dep == "undefined" || formInMap.NE_dep == "" || typeof formInMap.NE_region == "undefined" || formInMap.NE_region == ""){
 			$.ajax({
@@ -680,7 +713,6 @@ var formInMap = {
 		}
 	},
 
-
 	changeSelectCountrytim : function(){
 		mylog.log("changeSelectCountrytim", formInMap.NE_country);
 		mylog.log("formInMap.NE_cp.substring(0, 3)");
@@ -706,6 +738,7 @@ var formInMap = {
 	},
 
 	btnValideDisable : function(bool){
+		mylog.log("showWarningGeo");
 		$("#newElement_btnValidateAddress").prop('disabled', bool);
 	},
 
@@ -720,10 +753,10 @@ var formInMap = {
 			$("#newElement_btnSearchAddress").removeClass("btn-warning");
 			$("#newElement_btnSearchAddress").addClass("btn-default");
 		}
-		
 	},
 
 	hiddenHtmlMap : function(bool){
+		mylog.log("formInMap hiddenHtmlMap()", bool);
 		if(bool == true){
 			$("#txt-find-place").addClass("hidden");
 			$("#input-search-map").addClass("hidden");
@@ -735,7 +768,7 @@ var formInMap = {
 			$("#input-search-map").removeClass("hidden");
 			$("#menu-map-btn-start-search").removeClass("hidden");
 			$("#mainMap .tools-btn").removeClass("hidden");
-			$("#map-loading-data").removeClass("hidden");
+			//$("#map-loading-data").removeClass("hidden");
 		}
 	},
 
@@ -763,14 +796,32 @@ var formInMap = {
 		}, 1500);
 	},
 
+	initData : function(){
+		mylog.log("initData");
+		formInMap.timeoutAddCity;
+		formInMap.initVarNE();
+		formInMap.typeSearchInternational = "";
+		formInMap.geoShape = "";
+		formInMap.formType = "";
+		formInMap.updateLocality = false;
+		formInMap.addressesIndex = false;
+		formInMap.initDropdown();
+		$("#divStreetAddress").addClass("hidden");
+		$("#divPostalCode").addClass("hidden");
+		$("#divCity").addClass("hidden");
+		formInMap.initHtml();
+	},
+
 	cancel : function(){
-		$("#right_tool_map_locality").addClass("hidden");
-		$("#right_tool_map_search").removeClass("hidden");
+		mylog.log("formInMap cancel()");
+		formInMap.typeSearchInternational = "";
+		formInMap.geoShape = "";
+		formInMap.formType = "";
+		formInMap.addressesIndex = false;
 		formInMap.initVarNE();
 		formInMap.initHtml();
 		formInMap.hiddenHtmlMap(false);
 		formInMap.backToForm(true);
-		
 	}
 
 };

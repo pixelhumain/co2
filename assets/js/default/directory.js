@@ -963,9 +963,15 @@ var directory = {
          // }
 
           if(typeof params.description != "undefined" && params.description != "")
-              str += "<div class='col-md-12 col-sm-12 col-xs-12 no-padding pull-left'><hr>" + params.description + "<hr></div>";
+              str += "<div class='col-xs-12 no-padding pull-left'><hr>" + params.description + "<hr></div>";
 
-         
+          if( typeof params.medias != "undefined" && typeof params.medias[0].content.url ){
+            str += "<div class='col-xs-12 bold text-black' style='font-size:15px;'>Média (urls, informations)</div>";
+            $.each(params.medias, function (ix, mo) {  
+              str += "<div class='col-xs-12'><a href='" + mo.content.url + "' target='_blank'>" + mo.content.url + "</a></div>";
+            });
+          }
+
           var thisLocality = "";
           if(typeof params.fullLocality != "undefined" && params.fullLocality != "" && params.fullLocality != " ")
                thisLocality = "<a href='"+params.hash+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
@@ -1361,7 +1367,7 @@ var directory = {
         str = "";  
         str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
         str += "<div class='searchEntity contactPanelHtml'>";
-          str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
+          str += "<div class='panel-heading border-light col-lg-12 col-xs-12'>";
           if(params.title.length > 20){
             str += '<h4 class="panel-title text-dark pull-left tooltips"' + 
                         'data-toggle="tooltip" data-placement="bottom" data-original-title="'+params.title+'">'+
@@ -1407,7 +1413,7 @@ var directory = {
 	    str = "";  
 	    str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 '>";
 			str += "<div class='searchEntity contactPanelHtml'>";
-				str += "<div class='panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12'>";
+				str += "<div class='panel-heading border-light col-lg-12 col-xs-12'>";
 					if(notEmpty(params.idContact)){
 						str += '<a href="#page.type.citoyens.id.'+params.idContact+'" class="lbh" >';
 						str += (notEmpty(params.name) ? '<h4 class="panel-title text-dark pull-left">'+params.name+'</h4><br/>' : '')+'</a>';
@@ -1670,11 +1676,11 @@ var directory = {
                 if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
                     params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
 
-                if(dyFInputs.get(itemType) && 
+                /*if(dyFInputs.get(itemType) && 
                     dyFInputs.get(itemType).col == "poi" && 
                     typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
                 params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
-
+                */
                 params.insee = params.insee ? params.insee : "";
                 params.postalCode = "", params.city="",params.cityName="";
                 if (params.address != null) {
@@ -1824,7 +1830,7 @@ var directory = {
     },
 
     getWeekDayName : function(numWeek){
-      var wdays = new Array("", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche");
+      var wdays = new Array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche");
       if(typeof wdays[numWeek] != "undefined") return wdays[numWeek];
       else return "";
     },
@@ -1899,7 +1905,7 @@ var directory = {
       mylog.log("sectionFilter",list,what,dest);
 
         if( type == "btn" )
-          str = '<label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="typeBtn"><i class="fa fa-chevron-down"></i> '+what.title+' </label>'
+          str = '<label class="col-xs-12 text-left control-label no-padding" for="typeBtn"><i class="fa fa-chevron-down"></i> '+what.title+' </label>'
         else
           str = '<h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">'+
                 '<i class="fa fa-'+what.icon+'"></i> </h4><hr>';
@@ -2076,21 +2082,20 @@ var directory = {
      getDateFormated: function(params){
     
         params.startDateDB = notEmpty(params.startDate) ? params.startDate : null;
-        params.startDay = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD") : "";
-        params.startMonth = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("MM") : "";
-        params.startYear = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("YYYY") : "";
-        params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("d") : "";
-        params.startTime = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("HH:mm") : "";
-        params.startDate = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        params.startDay = notEmpty(params.startDate) ? moment(params.startDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("DD") : "";
+        params.startMonth = notEmpty(params.startDate) ? moment(params.startDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("MM") : "";
+        params.startYear = notEmpty(params.startDate) ? moment(params.startDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("YYYY") : "";
+        params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("d") : "";
+        params.startTime = notEmpty(params.startDate) ? moment(params.startDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("HH:mm") : "";
+        params.startDate = notEmpty(params.startDate) ? moment(params.startDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
         
         params.endDateDB = notEmpty(params.endDate) ? params.endDate: null;
-        params.endDay = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD") : "";
-        params.endMonth = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("MM") : "";
-        params.endYear = notEmpty(params.startDate) ? moment(params.endDate).local().locale("fr").format("YYYY") : "";
-        params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate).local().locale("fr").format("d") : "";
-        params.endTime = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("HH:mm") : "";
-        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
-        
+        params.endDay = notEmpty(params.endDate) ? moment(params.endDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("DD") : "";
+        params.endMonth = notEmpty(params.endDate) ? moment(params.endDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("MM") : "";
+        params.endYear = notEmpty(params.startDate) ? moment(params.endDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("YYYY") : "";
+        params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate,"YYYY-MM-DD HH:mm").format("d") : "";
+        params.endTime = notEmpty(params.endDate) ? moment(params.endDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("HH:mm") : "";
+        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
         params.startDayNum = directory.getWeekDayName(params.startDayNum);
         params.endDayNum = directory.getWeekDayName(params.endDayNum);
 
@@ -2118,7 +2123,7 @@ var directory = {
                       
             str +=  '</h3>';
         
-        if(params.endDay != params.startDay && params.endDate != null && params.startDate != params.endDate)
+        if(params.endDateDB != params.startDateDB && params.endDate != null && params.startDate != params.endDate)
             str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       "<small>Au </small>"+
                       '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+

@@ -97,7 +97,7 @@
 			"subdomain" : "apropos", 
 			"subdomainName" : "Info",
 			"hash":"#app.info",
-			"icon" : "search", 
+			"icon" : "info-circle", 
 			"mainTitle" : "Le réseau social à effet de sert",
 			"placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
 		},

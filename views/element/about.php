@@ -462,10 +462,10 @@
 
 	var formatDateView = "DD MMMM YYYY à HH:mm" ;
 	var formatDatedynForm = "DD/MM/YYYY HH:mm" ;
-	if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php echo Project::COLLECTION; ?>" ) {
+	/*if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php //echo Project::COLLECTION; ?>" ) {
 		formatDateView = "DD MMMM YYYY" ;
 		formatDatedynForm = "DD/MM/YYYY" ;
-	}
+	}*/
 
 	jQuery(document).ready(function() {
 		bindDynFormEditable();
@@ -497,65 +497,7 @@
 		});
 
 		$("#btn-remove-geopos").click(function(){
-			var msg = trad["suredeletelocality"] ;
-			if(contextData.type == "<?php echo Person::COLLECTION; ?>")
-				msg = trad["suredeletepersonlocality"] ;
-
-			bootbox.confirm({
-				message: msg + "<span class='text-red'></span>",
-				buttons: {
-					confirm: {
-						label: "<?php echo Yii::t('common','Yes');?>",
-						className: 'btn-success'
-					},
-					cancel: {
-						label: "<?php echo Yii::t('common','No');?>",
-						className: 'btn-danger'
-					}
-				},
-				callback: function (result) {
-					if (!result) {
-						return;
-					} else {
-						param = new Object;
-				    	param.name = "locality";
-				    	param.value = "";
-				    	param.pk = contextData.id;
-						$.ajax({
-					        type: "POST",
-					        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-					        data: param,
-					       	dataType: "json",
-					    	success: function(data){
-						    	//
-						    	if(data.result){
-									if(contextData.type == "<?php echo Person::COLLECTION ;?>"){
-										//Menu Left
-										$("#btn-geoloc-auto-menu").attr("href", "javascript:");
-										$('#btn-geoloc-auto-menu > span.lbl-btn-menu').html("Communectez-vous");
-										$("#btn-geoloc-auto-menu").attr("onclick", "communecterUser()");
-										$("#btn-geoloc-auto-menu").off().removeClass("lbh");
-										//Dashbord
-										$("#btn-menuSmall-mycity").attr("href", "javascript:");
-										$("#btn-menuSmall-citizenCouncil").attr("href", "javascript:");
-										//Multiscope
-										$(".msg-scope-co").html("<i class='fa fa-cogs'></i> Paramétrer mon code postal</a>");
-										//MenuSmall
-										$(".hide-communected").show();
-										$(".visible-communected").hide();
-
-										$(".communecter-btn").removeClass("hidden");
-									}
-									toastr.success(data.msg);
-									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
-
-						    	}
-						    }
-						});
-					}
-				}
-			});	
-
+			removeAddress();	
 		});
 
 		$("#btn-update-geopos-admin").click(function(){
@@ -569,6 +511,14 @@
 
 	function initDate() {//DD/mm/YYYY hh:mm
 		//moment.locale('fr');
+		if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php echo Project::COLLECTION; ?>" ) {
+			formatDateView = "DD MMMM YYYY" ;
+			formatDatedynForm = "DD/MM/YYYY" ;
+		}else{
+			formatDateView = "DD MMMM YYYY à HH:mm" ;
+			formatDatedynForm = "DD/MM/YYYY HH:mm" ;
+		}
+
 		if( typeof contextData.startDate != "undefined" && contextData.startDate != "" ){
 			$("#divStartDate").removeClass("hidden");
 			$("#divNoDate").addClass("hidden");
@@ -582,11 +532,11 @@
 			$("#divEndDate").removeClass("hidden");
 		else
 			$("#divEndDate").addClass("hidden");
-
+		mylog.log("formatDateView", formatDateView);
 		if($("#startDateAbout").html() != "")
-	    	$("#startDateAbout").html(moment(contextData.startDateDB).local().locale("fr").format(formatDateView));
+	    	$("#startDateAbout").html(moment(contextData.startDateDB,"YYYY-MM-DD HH:mm").local().locale("fr").format(formatDateView));
 	    if($("#endDateAbout").html() != "")
-	    	$("#endDateAbout").html(moment( contextData.endDateDB).local().locale("fr").format(formatDateView));
+	    	$("#endDateAbout").html(moment( contextData.endDateDB,"YYYY-MM-DD HH:mm").local().locale("fr").format(formatDateView));
 
 	    if($("#birthDate").html() != "")
 	    	$("#birthDate").html(moment($("#birthDate").html()).local().locale("fr").format("DD/MM/YYYY"));

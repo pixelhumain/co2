@@ -91,6 +91,9 @@
 	background-color: white;
 }
 
+#btn-show-activity-onmap{
+    width:100%;
+}
 </style>
 
 <?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
@@ -526,11 +529,9 @@
 		'/js/default/profilSocial.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
-
 ?>
 
 <script type="text/javascript">
-	
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
 	mylog.log("init contextData", contextData);
     var params = <?php echo json_encode(@$params); ?>; 

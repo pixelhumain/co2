@@ -125,7 +125,10 @@
             </div>
             
             <div class="col-xs-12"  style="margin-top:50px">
-                <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" style="margin-bottom:20px;" class="nc_map" height=50> 
+                <h1><span class="text-red">CO</span>NTRIBUER</h1>
+                <h2><a href="https://chat.lescommuns.org/channel/co_dev_open" target='_blanck'>Developper</a></h2>
+                <h2><a href="default/view/page/financement/dir/docs|comprendre" class="lbhp">CO FINANCER</a></h2>
+                <h2><a href="https://chat.lescommuns.org/channel/communecter_accueil" target='_blanck'>Organiser</a></h2>
             </div>
 
         </div>

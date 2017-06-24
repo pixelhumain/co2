@@ -16,7 +16,7 @@
 		<?php 
         
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
-               $type == Project::COLLECTION || $type == Organization::COLLECTION || $type == Poi::COLLECTION){
+               $type == Project::COLLECTION || $type == Organization::COLLECTION){
     			$params = array("element"=>$element , 
     							"page" => "page",
     							"edit"=>$edit,
@@ -70,6 +70,16 @@
                                 );
 
                 $this->renderPartial('../survey/entryStandalone', $params ); 
+            }
+
+            if($type == Poi::COLLECTION){
+                $params = array("element"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
+
+                $this->renderPartial('../poi/standalone', $params ); 
             }
 		?>
 	</div>

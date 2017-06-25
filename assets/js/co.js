@@ -880,9 +880,13 @@ also switches the global Title and Icon
 **************/
 
 function  processingBlockUi() { 
-	msg = '<h4 style="font-weight:300" class=" text-dark padding-10"><i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...</h4>';
+	msg = '<h4 style="font-weight:300" class=" text-dark padding-10">'+
+			'<i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...'+
+		  '</h4>';
+
 	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
 		msg = themeObj.blockUi.processingMsg;
+
 	$.blockUI({ message :  msg });
 	bindLBHLinks();
 }
@@ -938,7 +942,6 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
         	}
         	
         	if( typeof urlCtrl.afterLoad == "function") {
-        		mylog.log("9999999999999999999999999999", searchType, $('#searchTags').val() );
         		urlCtrl.afterLoad();
         		urlCtrl.afterLoad = null;
         	}

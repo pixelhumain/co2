@@ -775,3 +775,63 @@ function inintDescs() {
 	$("#descProfilsocial").html(descHtml);
 	mylog.log("descHtml", descHtml);
 }
+
+function removeAddress(form){
+	var msg = trad["suredeletelocality"] ;
+		if(!form && contextData.type == "<?php echo Person::COLLECTION; ?>")
+			msg = trad["suredeletepersonlocality"] ;
+
+		bootbox.confirm({
+			message: msg + "<span class='text-red'></span>",
+			buttons: {
+				confirm: {
+					label: "<?php echo Yii::t('common','Yes');?>",
+					className: 'btn-success'
+				},
+				cancel: {
+					label: "<?php echo Yii::t('common','No');?>",
+					className: 'btn-danger'
+				}
+			},
+			callback: function (result) {
+				if (!result) {
+					return;
+				} else {
+					param = new Object;
+			    	param.name = "locality";
+			    	param.value = "";
+			    	param.pk = contextData.id;
+					$.ajax({
+				        type: "POST",
+				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+				        data: param,
+				       	dataType: "json",
+				    	success: function(data){
+					    	//
+					    	if(data.result && !form){
+								if(contextData.type == "<?php echo Person::COLLECTION ;?>") {
+									//Menu Left
+									$("#btn-geoloc-auto-menu").attr("href", "javascript:");
+									$('#btn-geoloc-auto-menu > span.lbl-btn-menu').html("Communectez-vous");
+									$("#btn-geoloc-auto-menu").attr("onclick", "communecterUser()");
+									$("#btn-geoloc-auto-menu").off().removeClass("lbh");
+									//Dashbord
+									$("#btn-menuSmall-mycity").attr("href", "javascript:");
+									$("#btn-menuSmall-citizenCouncil").attr("href", "javascript:");
+									//Multiscope
+									$(".msg-scope-co").html("<i class='fa fa-cogs'></i> Paramétrer mon code postal</a>");
+									//MenuSmall
+									$(".hide-communected").show();
+									$(".visible-communected").hide();
+
+									$(".communecter-btn").removeClass("hidden");
+								}
+								toastr.success(data.msg);
+								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
+					    	}
+					    }
+					});
+				}
+			}
+		});
+}

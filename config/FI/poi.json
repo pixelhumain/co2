@@ -1,0 +1,55 @@
+{
+    "sections" : {
+        
+
+        "link"          : { "label": "Lien, Url","key":"link","icon":"link"},
+        "tool"          : { "label": "Outil","key":"tool","icon":"wrench"},
+        "machine"       : { "label": "Machine","key":"machine","icon":"cogs"},
+        "software"      : { "label": "Software","key":"software","icon":"code"},
+        "rh"            : { "label": "Ressource Humaine","key":"rh","icon":"users"},
+        "RessourceMaterielle" : { "label": "Ressource Materielle","key":"RessourceMaterielle","icon":"cubes"},
+        "RessourceFinanciere" : { "label": "Ressource Financiere","key":"RessourceFinanciere","icon":"money"},
+        "ficheBlanche" : { "label": "Fiche Blanche","key":"ficheBlanche","icon":"file-text-o"},
+        "geoJson"       : { "label": "Url au format geojson ou vers une umap","key":"geoJson","icon":"map"},
+        "compostPickup" : { "label": "récolte de composte","key":"compostPickup","icon":"inbox"},
+        "video"         : { "label": "video","key":"video","icon":"video-camera"},
+        "sharedLibrary" : { "label": "bibliothèque partagée","key":"sharedLibrary","icon":"book"},
+        "recoveryCenter": { "label": "ressourcerie","key":"recoveryCenter","icon":"recycle"},
+        "trash"         : { "label": "poubelle","key":"trash","icon":"trash"},
+        "history"       : { "label": "histoire","key":"history","icon":"clock-o"},
+        "something2See" : { "label": "chose a voir","key":"something2See","icon":"eye"},
+        "funPlace"      : { "label": "endroit Sympas (skatepark, vue...)","key":"funPlace","icon":"smile-o"},
+        "place"         : { "label": "place publique","key":"place","icon":"map-marker"},
+        "artPiece"      : { "label": "oeuvres","key":"artPiece","icon":"paint-brush"},
+        "streetArts"    : { "label": "arts de rue","key":"streetArts","icon":"paint-brush"},
+        "openScene"     : { "label": "scène ouverte","key":"openScene","icon":"bullhorn"},
+        "stand"         : { "label": "stand","key":"stand","icon":"map-marker"},
+        "parking"       : { "label": "Parking","key":"parking","icon":"car"},
+        "other"           : { "label":"Autre","key":"other","icon":"map-marker"}
+    },
+    "filters":{
+         "TiersLieux" : 
+            {   "icon" : "home",
+                "subcat" : 
+                [   "Fablab",
+                    "Repaire Café",
+                    "Coworking", 
+                    "Salle reunion",
+                    "Jardin Partagé",
+                    "Urbaine",
+                    "Rurale"
+                ]
+            }, 
+
+        "Maison" :  {  
+             "icon" : "home",
+            "subcat" : 
+            [    "Electroménager",
+                 "Mobilier", 
+                 "Équipement bébé", 
+                 "Animaux", 
+                 "Divers"
+            ]
+        }
+    }
+}

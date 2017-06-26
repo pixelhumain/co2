@@ -91,6 +91,9 @@
 	background-color: white;
 }
 
+#btn-show-activity-onmap{
+    width:100%;
+}
 </style>
 
 <?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>

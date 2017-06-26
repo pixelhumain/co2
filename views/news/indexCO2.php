@@ -160,7 +160,10 @@ jQuery(document).ready(function() {
     }
     //$("#addImage").click();
   });
+
   showFormBlock(false);
+  $("#formCreateNewsTemp").removeClass('hidden');
+  
   initForm();
   bindEventNews();
   if(typeof(initLimitDate.created) == "object")

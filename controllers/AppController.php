@@ -137,6 +137,7 @@ class AppController extends CommunecterController {
         $params = array("type" => @$type );
         echo $this->renderPartial("search", $params, true);
     }
+    
     public function actionSocial($type=null){
         CO2Stat::incNbLoad("co2-search");   
         $params = array("type" => @$type );

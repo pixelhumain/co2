@@ -2630,9 +2630,9 @@ var dyFObj = {
 		if( !$("#ajaxFormModal #id").val() && !uploadObj.update )
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
-				mylog.log("setMongoId uploadObj.id", data.id);
+				mylog.log("setMongoId uploadObj.id", data.id, typeof callback);
 				uploadObj.id = data.id;
-				$("#ajaxFormModal #id").val(data.id)
+				$("#ajaxFormModal #id").val(data.id);
 				if( typeof callback === "function" )
                 	callback();
 			});
@@ -2686,15 +2686,16 @@ var dyFInputs = {
 					typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
 				}
 				if(v){
-					mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
-					mylog.log("networkTags", networkTags);
-					if(typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
-						typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
-						if(typeof networkJson.request.mainTag != "undefined")
-							typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
-					}
-					mylog.log("networkJson.dynForm");
 					if(notNull(networkJson.dynForm)){
+						mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
+						mylog.log("networkTags", networkTags);
+						if(typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+							typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
+							if(typeof networkJson.request.mainTag != "undefined")
+								typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
+						}
+						mylog.log("networkJson.dynForm");
+					
 						mylog.log("networkJson.dynForm", "networkJson.dynForm");
 						if(notNull(networkJson.dynForm.extra)){
 							var nbListTags = 1 ;

@@ -36,8 +36,8 @@ dynForm = {
 	    			if(contextData.startDateDB && contextData.endDateDB){
 	    				$("#ajaxFormModal").after("<input type='hidden' id='startDateParent' value='"+contextData.startDateDB+"'/>"+
 	    										  "<input type='hidden' id='endDateParent' value='"+contextData.endDateDB+"'/>");
-	    				$("#ajaxFormModal #startDate").after("<span id='parentstartDate'><i class='fa fa-warning'></i> date début du parent : "+moment( contextData.startDateDB,"YYYY-MM-DD HH:mm").format('DD/MM/YYYY HH:mm')+"</span>");
-	    				$("#ajaxFormModal #endDate").after("<span id='parentendDate'><i class='fa fa-warning'></i> date de fin du parent : "+moment( contextData.endDateDB,"YYYY-MM-DD HH:mm").format('DD/MM/YYYY HH:mm')+"</span>");
+	    				$("#ajaxFormModal #startDate").after("<span id='parentstartDate'><i class='fa fa-warning'></i> date début du parent : "+ moment( contextData.startDateDB /*,"YYYY-MM-DD HH:mm"*/).format('DD/MM/YYYY HH:mm')+"</span>");
+	    				$("#ajaxFormModal #endDate").after("<span id='parentendDate'><i class='fa fa-warning'></i> date de fin du parent : "+ moment( contextData.endDateDB /*,"YYYY-MM-DD HH:mm"*/).format('DD/MM/YYYY HH:mm')+"</span>");
 	    			}
 	    			//alert($("#ajaxFormModal #parentId").val() +" | "+$("#ajaxFormModal #parentType").val());
 	    		}

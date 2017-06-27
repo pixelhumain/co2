@@ -2630,7 +2630,7 @@ var dyFObj = {
 		if( !$("#ajaxFormModal #id").val() && !uploadObj.update )
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
-				mylog.log("setMongoId uploadObj.id", data.id, typeof callback);
+				mylog.log("setMongoId uploadObj.id", data.id);
 				uploadObj.id = data.id;
 				$("#ajaxFormModal #id").val(data.id);
 				if( typeof callback === "function" )

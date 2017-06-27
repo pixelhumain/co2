@@ -289,11 +289,11 @@
       <?php if((@$canManageNews && $canManageNews==true) || (@$isLive && $isLive == true)){ ?>
       <div class="user-image-buttons">
         <form method="post" id="photoAddNews" enctype="multipart/form-data">
-          <span class="btn btn-white btn-file fileupload-new btn-sm uploadImageNews"  <?php if (!$authorizedToStock){ ?> onclick="addMoreSpace();" <?php } ?>>
+          <span class="btn btn-white btn-file fileupload-new btn-sm uploadImageNews"  <?php //if (!$authorizedToStock){ echo 'onclick="addMoreSpace();"'; } ?>>
           <span class="fileupload-new"><i class="fa fa-picture-o fa-x"></i> </span>
-            <?php if ($authorizedToStock){ ?>
+            <?php //if ($authorizedToStock){ ?>
               <input type="file" accept=".gif, .jpg, .png" name="newsImage" id="addImage" onchange="showMyImage(this);">
-            <?php } ?>
+            <?php //} ?>
           </span>
         </form>
       </div>

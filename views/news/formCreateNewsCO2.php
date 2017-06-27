@@ -241,6 +241,7 @@
     $iconBegin= "connectdevelop";
     $headerName= "Journal de l'événement";//.$contextName;
     $topTitle = "Journal de l'événement";//.$contextName;
+    $public = true;
     //if(@$canManageNews && $canManageNews==true)
       $textForm = Yii::t("common","Post a message in the wall of")." ".$contextName.", ".Yii::t("common","publicly shared or to this community");
     //else
@@ -379,7 +380,7 @@
         </div>  
 
         
-        <?php if($contextParentType == Organization::COLLECTION || $contextParentType == Project::COLLECTION){ ?>
+        <?php if($contextParentType == Organization::COLLECTION || $contextParentType == Project::COLLECTION || $contextParentType == Event::COLLECTION){ ?>
         <div class="dropdown no-padding pull-right">
           <a data-toggle="dropdown" class="btn btn-default" id="btn-toogle-dropdown-targetIsAuthor" href="#">
           <?php if(@$parent["profilThumbImageUrl"]){ ?>

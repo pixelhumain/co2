@@ -82,6 +82,8 @@ dynForm = {
 	    	}
 	  		// $("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format(outputFormat));
 			// $("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format(outputFormat));
+
+			mylog.log( "HERE", $("#ajaxFormModal #startDate").val(), moment( $("#ajaxFormModal #startDate").val(), dateformat).format() ) ; 
 			$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format() );
 			$("#ajaxFormModal #endDate").val( moment(   $("#ajaxFormModal #endDate").val(), dateformat).format() );
 	    },

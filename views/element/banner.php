@@ -217,7 +217,8 @@
 			<?php if(@$element['parent']){ ?>
 				<?php echo Yii::t("common","Planned on") ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/> 
 			<?php } ?>
-			<?php if(@$element['organizerType'] && @$element['organizerId']){ ?>
+			<?php if(	@$element['organizerType'] && @$element['organizerId'] && 
+						$element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow"){ ?>
 				<?php echo Yii::t("common","Organized by"); ?> : 
 				<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" 
 					class="lbh"> 

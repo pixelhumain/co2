@@ -91,6 +91,7 @@ function isUniqueUsername(username) {
 }
 
 function addCustomValidators() {
+	mylog.log("addCustomValidators");
 	//Validate a postalCode
 	jQuery.validator.addMethod("validPostalCode", function(value, element) {
 	    var response;
@@ -105,6 +106,7 @@ function addCustomValidators() {
 			    response = data;
 			}
 		});
+
 	    if (Object.keys(response).length > 0) {
 	    	return true;
 	    } else {

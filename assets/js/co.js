@@ -2475,7 +2475,7 @@ var dyFObj = {
 				data.map.id = data.map["_id"]["$id"];
 				delete data.map["_id"];
 				mylog.dir(data);
-				console.log(data);
+				console.log("editElement", data);
 				dyFObj.elementData = data;
 				dyFObj.openForm( dyFInputs.get(type).ctrl ,null, data.map);
 	        } else {
@@ -2548,16 +2548,13 @@ var dyFObj = {
 	},
 	//prepare information for the modal panel 
 	//and launches the build process
-	starBuild : function  (afterLoad, data) {
+	starBuild : function  (afterLoad, data) { 
 		mylog.warn("------------ starBuild",dyFObj.elementObj, afterLoad, data);
 		mylog.dir(dyFObj.elementObj);
 		$("#ajax-modal .modal-header").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA");//.addClass(dyFObj.elementObj.bgClass);
 		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
 		$("#ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
-
-		$("#ajax-modal .modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-blue bg-turq")
-									  .addClass(dyFObj.elementObj.titleClass);
-
+		
 	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
@@ -2567,10 +2564,14 @@ var dyFObj = {
 							              "</div>");
 	  	$('.modal-footer').hide();
 	  	$('#ajax-modal').modal("show");
+
 	  	dyFInputs.init();
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
 	  	dyFObj.buildDynForm(afterLoad, data);
+
+	  	$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+									  .addClass(dyFObj.elementObj.titleClass).addClass("lol");
 	},
 	buildDynForm : function (afterLoad,data) { 
 		mylog.warn("--------------- buildDynForm", dyFObj.elementObj, afterLoad,data);
@@ -2815,7 +2816,7 @@ var dyFInputs = {
         			$('#ajax-modal').modal("hide");
 		        });
 				$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-						  					  .addClass("bg-dark");
+					  					  	  .addClass("bg-dark");
     		 	
     		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
         	},500);

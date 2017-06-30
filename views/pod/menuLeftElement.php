@@ -155,8 +155,7 @@
 	
 <?php if (($edit==true || $openEdition==true) && @Yii::app()->session["userId"]){ ?>
 		<li class="visible-xs">
-			<a href="javascript:" class="letter-green ssmla"  
-				data-toggle="modal" data-target="#selectCreate">
+			<a href="javascript:" class="letter-green ssmla open-create-form-modal">
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php echo Yii::t("common", "Create") ?>
 		  	</a>
 		</li>

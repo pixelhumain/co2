@@ -3423,6 +3423,11 @@ var typeObj = {
 			    title : "Uploader une image ?",
 			    icon : "question-cirecle-o",
 			    noSubmitBtns : true,
+			    onLoads : {
+			    	beforeBuild : function(){
+				    	uploadObj.gotoUrl = location.hash;
+				    },
+			    },
 			    properties : {
 			    	image : dyFInputs.imageAddPhoto
 			    }

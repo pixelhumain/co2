@@ -475,6 +475,7 @@ function bindLeftMenuFilters () {
 
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
         $(".keycat").addClass("hidden");
+        
         if(sectionKey)
             $(this).addClass("active");
 

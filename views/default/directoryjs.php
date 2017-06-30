@@ -303,7 +303,6 @@
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
-              <i class="fa fa-money"></i> A vendre
             </h4>
             <hr>
             <?php 

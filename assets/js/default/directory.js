@@ -205,7 +205,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               str += '<div class="col-md-12 text-left" id="">';
               str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+
                         "<i class='fa fa-angle-down'></i> " + totalData + " résultats ";
-              str += "<small>";
+              str += "<small class='resultTypes'>";
               if(typeof headerParams != "undefined"){
                 $.each( searchType, function(key, val){
                   mylog.log(">>> each autocomplete search",val);

@@ -470,7 +470,10 @@ function bindLeftMenuFilters () {
 
 
         if(typeof classified.sections[sectionKey] != "undefined") {
+            alert(classified.sections[sectionKey]["label"]);
             $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]);
+            $('.classifiedSection').remove();
+            $(".resultTypes").append( "<span class='classifiedSection text-dark hidden-xs pull-right'> > <i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]+'<i class="fa fa-times text-red resetFilters"></i></span>');
             $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+classified.sections[sectionKey]["color"])
             $(".fa-title-list").removeClass("hidden");
         }

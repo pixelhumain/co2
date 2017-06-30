@@ -2461,6 +2461,7 @@ var dyFObj = {
 		uploadObj.type = type;
 		uploadObj.id = id;
 		uploadObj.update = true;
+
 		$.ajax({
 	        type: "GET",
 	        url: baseUrl+"/"+moduleId+"/element/get/type/"+type+"/id/"+id,
@@ -2494,7 +2495,7 @@ var dyFObj = {
 	    uploadObj.contentKey="profil"; 
       	if(type=="addPhoto") 
         	uploadObj.contentKey="slider"; 
-	   
+	    
 	    //initKSpec();
 	    if(userId)
 		{
@@ -2555,10 +2556,7 @@ var dyFObj = {
 		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
 		$("#ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
 
-		$("#ajax-modal .modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-blue bg-turq")
-									  .addClass(dyFObj.elementObj.titleClass);
-
-	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
+		$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
 							              	//"<h1 id='proposerloiFormLabel' >Faire une proposition</h1>"+
@@ -2571,6 +2569,8 @@ var dyFObj = {
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
 	  	dyFObj.buildDynForm(afterLoad, data);
+	  	$("#ajax-modal .modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-blue bg-turq")
+									  .addClass(dyFObj.elementObj.titleClass);
 	},
 	buildDynForm : function (afterLoad,data) { 
 		mylog.warn("--------------- buildDynForm", dyFObj.elementObj, afterLoad,data);

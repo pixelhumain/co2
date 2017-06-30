@@ -418,59 +418,76 @@ function bindLeftMenuFilters () {
     {    
         searchType = [ typeInit ];
         indexStepInit = 100;
+        
+        if( $(this).hasClass( "active" ) )
+        {
+            sectionKey = null;
+            $('#searchTags').val("");
+            $('.classifiedSection').remove();
+            $(".label-category,.resultTypes").html("");
+        } 
+        else 
+        {
+
+            section = $(this).data("type-anc");
+            sectionKey = $(this).data("key");
+            //alert("section : " + section);
+
+            if( sectionKey == "forsale" || sectionKey == "forrent"){
+                $("#section-price").show(200);
+                KScrollTo("#section-price");
+            }
+            else {
+                $("#section-price").hide();
+                $("#priceMin").val("");
+                $("#priceMax").val("");
+                KScrollTo("#dropdown_search");
+            }
+
+            /*
+            if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
+                sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
+                //$(".subsub").show(300);
+                $('#searchTags').val(section);
+                //KScrollTo("#section-price");
+                startSearch(0, indexStepInit, searchCallback); 
+            } */
+            if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
+                //alert('build left menu'+classified.sections[sectionKey].filters);
+                classified.currentLeftFilters = classified.sections[sectionKey].filters;
+                var filters = classified[ classified.currentLeftFilters ]; 
+                var what = { title : classified.sections[sectionKey].label, 
+                             icon : classified.sections[sectionKey].icon }
+                directory.sectionFilter( filters, ".classifiedFilters",what);
+                bindLeftMenuFilters ();
+                
+            }
+            else if(classified.currentLeftFilters != null) {
+                //alert('rebuild original'); 
+                var what = { title : classified.sections[sectionKey].label, 
+                             icon : classified.sections[sectionKey].icon }
+                directory.sectionFilter( classified.filters, ".classifiedFilters",what);
+                bindLeftMenuFilters ();
+                classified.currentLeftFilters = null;
+            }
+            $('#searchTags').val(section);
+        }
+
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
         $(".keycat").addClass("hidden");
-        $(this).addClass("active");
+        if(sectionKey)
+            $(this).addClass("active");
 
-        section = $(this).data("type-anc");
-        sectionKey = $(this).data("key");
-        //alert("section : " + section);
-
-        if( sectionKey == "forsale" || sectionKey == "forrent"){
-            $("#section-price").show(200);
-            KScrollTo("#section-price");
-        }
-        else {
-            $("#section-price").hide();
-            $("#priceMin").val("");
-            $("#priceMax").val("");
-            KScrollTo("#dropdown_search");
-        }
-
-        /*
-        if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
-            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
-            //$(".subsub").show(300);
-            $('#searchTags').val(section);
-            //KScrollTo("#section-price");
-            startSearch(0, indexStepInit, searchCallback); 
-        } */
-        if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
-            //alert('build left menu'+classified.sections[sectionKey].filters);
-            classified.currentLeftFilters = classified.sections[sectionKey].filters;
-            var filters = classified[ classified.currentLeftFilters ]; 
-            var what = { title : classified.sections[sectionKey].label, 
-                         icon : classified.sections[sectionKey].icon }
-            directory.sectionFilter( filters, ".classifiedFilters",what);
-            bindLeftMenuFilters ();
-            
-        }
-        else if(classified.currentLeftFilters != null) {
-            //alert('rebuild original'); 
-            var what = { title : classified.sections[sectionKey].label, 
-                         icon : classified.sections[sectionKey].icon }
-            directory.sectionFilter( classified.filters, ".classifiedFilters",what);
-            bindLeftMenuFilters ();
-            classified.currentLeftFilters = null;
-        }
-
-        $('#searchTags').val(section);
+        
         //KScrollTo(".top-page");
         startSearch(0, indexStepInit, searchCallback); 
 
 
-        if(typeof classified.sections[sectionKey] != "undefined") {
+        if(sectionKey && typeof classified.sections[sectionKey] != "undefined") {
+            alert(classified.sections[sectionKey]["label"]);
             $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]);
+            $('.classifiedSection').remove();
+            $(".resultTypes").append( "<span class='classifiedSection text-azure text-bold hidden-xs pull-right'><i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]+'<i class="fa fa-times text-red resetFilters"></i></span>');
             $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+classified.sections[sectionKey]["color"])
             $(".fa-title-list").removeClass("hidden");
         }

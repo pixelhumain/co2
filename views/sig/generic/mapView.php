@@ -39,8 +39,8 @@
 	<div class="bg-main-menu bgpixeltree_sig"></div>
 
 	<?php if($sigParams['useRightList']){ ?>
-		<div id="right_tool_map">
-			<div id="right_tool_map_search" class="hidden-xs hidden-sm">
+		<div id="right_tool_map" class="hidden-xs hidden-sm">
+			<div id="right_tool_map_search">
 			<!-- 	HEADER -->
 				<div class="right_tool_map_header">
 					<?php if($sigParams['usePanel']){ ?>

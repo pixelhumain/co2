@@ -205,7 +205,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               str += '<div class="col-md-12 text-left" id="">';
               str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+
                         "<i class='fa fa-angle-down'></i> " + totalData + " résultats ";
-              str += "<small>";
+              str += "<small class='resultTypes'>";
               if(typeof headerParams != "undefined"){
                 $.each( searchType, function(key, val){
                   mylog.log(">>> each autocomplete search",val);
@@ -2126,9 +2126,12 @@ var directory = {
                       
             str +=  '</h3>';
         }
-            
-        
-        if(params.endDate != null && params.startDay != params.endDay){
+          
+        var dStart = params.startDay + params.startMonth + params.startYear;
+        var dEnd = params.endDay + params.endMonth + params.endYear;
+        mylog.log("DATEE", dStart, dEnd);
+
+        if(params.endDate != null && dStart != dEnd){
           str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       "<small>Au </small>"+
                       '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+

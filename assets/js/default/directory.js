@@ -426,7 +426,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    	});
 
   	//on click sur les boutons link
-   	$(".followBtn").click(function(){
+   	$(".followBtn").off().on("click",function(){
 	   	formData = new Object();
    		formData.parentId = $(this).attr("data-id");
    		formData.childId = userId;

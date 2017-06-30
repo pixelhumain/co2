@@ -801,7 +801,7 @@ function showFormBlock(bool){
 		if(isLiveGlobal()){
 			scopeHtml ="";
 
-			//if(typeof userConnected != "undefined" && userConnected != null ){
+			if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false" && communexion.state){
 				scopeHtml +='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
 	            				'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
 	                        	'data-scope-value="'+$.cookie('communexionValue')+'" '+
@@ -811,7 +811,15 @@ function showFormBlock(bool){
 	            				'id="btn-my-co">'+
 	            				'<i class="fa fa-university"></i>'+
 	            			'</a>';
-	        //}
+	        }else{
+	        	if(userId!=""){
+                    scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips" onclick="communecterUser();" '+
+                            'data-toggle="tooltip" data-placement="top" title="Communectez-vous" '+
+                            'id="btn-my-co">'+
+                            '<i class="fa fa-university"></i>'+
+                        '</button>';
+                }
+	        }
 
             scopeHtml +='<h5 class="pull-left letter-red" style="margin-bottom: -8px;margin-top: 14px;">'+
                             '<a class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-10 margin-right-10" '+ 
@@ -834,7 +842,8 @@ function showFormBlock(bool){
 			actionOnSetGlobalScope="save";
 			$("#scopeListContainerForm").append(scopeHtml);
 			$(".item-globalscope-checker:last-child").trigger("click").removeClass("inactive");
-            $(".item-globalscope-checker").attr('disabled', true);
+			if(globalCommunexion)
+            	$(".item-globalscope-checker").attr('disabled', true);
 			$("#container-scope-filter").hide();
 			bindCommunexionScopeEvents();
 		}

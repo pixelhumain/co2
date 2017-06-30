@@ -88,6 +88,9 @@ function autocompleteMultiScope(){
     		});
     		if(html != "")
     		$("#dropdown-multi-scope-found").html(html);
+    		$("#dropdown-multi-scope-found").mouseleave(function(){
+    			$(this).hide();
+    		});
     		
 	    },
 		error: function(error){

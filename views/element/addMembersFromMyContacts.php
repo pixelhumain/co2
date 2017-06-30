@@ -414,6 +414,9 @@ function setInviteInput(num){
 	$('#div-invite-search-all #inviteName').val(person["name"]);
 	$('#div-invite-search-all #inviteId').val(personId);
 	$("#div-invite-search-all #ficheUser-ficheName").text(person["name"]);
+	$("#div-invite-search-all #ficheUser-btnProfil").attr("href", "#page.type.citoyens.id."+person["id"]);
+
+
 	
 	if (person.address != null) {
 		//Address : CP + Locality
@@ -433,12 +436,12 @@ function setInviteInput(num){
 	} else {
 		tagsStr += "<span class='label label-inverse'>No Tag</span> ";
 	}
-	$("#div-invite-search-all #ficheUser-tags").html('<div class="pull-left"><i class="fa fa-tags"></i> '+tagsStr+'</div>');
+	//$("#div-invite-search-all #ficheUser-tags").html('<div class="pull-left"><i class="fa fa-tags"></i> '+tagsStr+'</div>');
 	$(".photoInvited").empty();
 	if (person["profilImageUrl"] != "") {
 		$(".photoInvited").html("<img class='img-responsive' src='"+baseUrl+person["profilImageUrl"]+"' />");
 	} else {
-		$(".photoInvited").html("<span><i class='fa fa-user_circled' style='font-size: 10em;'></i></span>");
+		$(".photoInvited").html("<span><i class='fa fa-user_circled fa-3x'></i></span>");
 	}
 
 	//Pending
@@ -1210,7 +1213,7 @@ function autoCompleteInviteSearch2(search){
 				if(v.id != userId) {
 					tabObject.push(v);
 	 				if(v.profilImageUrl != ""){
-	 					var htmlIco= "<img width='50' height='50' alt='image' class='img-circle' src='"+baseUrl+v.profilImageUrl+"'/>"
+	 					var htmlIco= "<img width='25' height='25' alt='image' class='img-circle' src='"+baseUrl+v.profilImageUrl+"'/>"
 	 				}
 	 				if (v.address != null) {
 	 					city = v.address.addressLocality;
@@ -1297,20 +1300,21 @@ function buildModalInvite(fieldObj, idUi){
 									'</input>' +
 									'<hr>'+
 									'<div class="form-group hidden" id="ficheUser">'+
-										'<div class="col-md-5 text-center">'+
+										'<div class="col-md-12 text-center">'+
 											'<div class="photoInvited text-center">'+
 											'</div>'+
-											'<a class="pending btn btn-xs btn-red tooltips" data-toggle="tooltip" data-placement="bottom" title="This user has been already invited but has not connected yet.">Pending User</a>'+
-										'</div>'+
-										'<div class="col-md-7">'+
-											'<a href="javascript:;" class="connectBtn btn btn-lg tooltips " data-placement="top" data-original-title="Follow this person" ><i class=" connectBtnIcon fa fa-link "></i> Follow this person</a>'+
-											'<a href="javascript:;" class="disconnectBtn btn btn-lg tooltips " data-placement="top" data-original-title="Unfollow this person" ><i class=" disconnectBtnIcon fa fa-unlink "></i> Unfollow this person</a>'+
+											'<a class="pending btn btn-xs btn-red tooltips" data-toggle="tooltip" data-placement="bottom" title="Cette personne a déjà été invité, mais na pas encore rejoint le réseau">Cette personne a déjà été invité, mais n\'a pas encore rejoint le réseau</a>'+
+
+											'<a href="javascript:;" class="connectBtn btn btn-lg tooltips " data-placement="top" data-original-title="Suivre cette personne" ><i class=" connectBtnIcon fa fa-link "></i> Suivre cette personne</a>'+
+											'<a href="javascript:;" class="disconnectBtn btn btn-lg tooltips " data-placement="top" data-original-title="Ne plus suivre cette personne" ><i class=" disconnectBtnIcon fa fa-unlink "></i> Ne plus suivre cette personne</a>'+
 											'<hr>'+
 											'<h4 id="ficheUser-ficheName" name="ficheUser-ficheName"></h4>'+
+											'<a href="" data-toggle="modal" data-target="#modal-scope"  class="btn btn-default lbh" id="ficheUser-btnProfil">Aller sur sa page</a><br>'+
 											'<input id="inviteId" name="inviteId" type="hidden" value="">'+
 											'<span id="ficheUser-email" name="ficheUser-email" ></span><br><br>'+
 											'<span id="ficheUser-address" name="ficheUser-address" ></span><br><br>'+
 											'<span id="ficheUser-tags" name="ficheUser-tags" ></span><br>'+
+											'<br>'+
 										'</div>'+
 									'</div>'+
 									'<div class="row hidden" id="step3">'+

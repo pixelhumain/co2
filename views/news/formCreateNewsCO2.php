@@ -241,6 +241,7 @@
     $iconBegin= "connectdevelop";
     $headerName= "Journal de l'événement";//.$contextName;
     $topTitle = "Journal de l'événement";//.$contextName;
+    $public = true;
     //if(@$canManageNews && $canManageNews==true)
       $textForm = Yii::t("common","Post a message in the wall of")." ".$contextName.", ".Yii::t("common","publicly shared or to this community");
     //else
@@ -288,11 +289,11 @@
       <?php if((@$canManageNews && $canManageNews==true) || (@$isLive && $isLive == true)){ ?>
       <div class="user-image-buttons">
         <form method="post" id="photoAddNews" enctype="multipart/form-data">
-          <span class="btn btn-white btn-file fileupload-new btn-sm uploadImageNews"  <?php if (!$authorizedToStock){ ?> onclick="addMoreSpace();" <?php } ?>>
+          <span class="btn btn-white btn-file fileupload-new btn-sm uploadImageNews"  <?php //if (!$authorizedToStock){ echo 'onclick="addMoreSpace();"'; } ?>>
           <span class="fileupload-new"><i class="fa fa-picture-o fa-x"></i> </span>
-            <?php if ($authorizedToStock){ ?>
+            <?php //if ($authorizedToStock){ ?>
               <input type="file" accept=".gif, .jpg, .png" name="newsImage" id="addImage" onchange="showMyImage(this);">
-            <?php } ?>
+            <?php //} ?>
           </span>
         </form>
       </div>
@@ -379,7 +380,7 @@
         </div>  
 
         
-        <?php if($contextParentType == Organization::COLLECTION || $contextParentType == Project::COLLECTION){ ?>
+        <?php if($contextParentType == Organization::COLLECTION || $contextParentType == Project::COLLECTION || $contextParentType == Event::COLLECTION){ ?>
         <div class="dropdown no-padding pull-right">
           <a data-toggle="dropdown" class="btn btn-default" id="btn-toogle-dropdown-targetIsAuthor" href="#">
           <?php if(@$parent["profilThumbImageUrl"]){ ?>

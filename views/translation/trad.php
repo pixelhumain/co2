@@ -224,6 +224,11 @@ var trad = {
 "stand"         : "<?php echo Yii::t("common", "stand") ?>",
 "parking"       : "<?php echo Yii::t("common", "parking") ?>",
 "other"          : "<?php echo Yii::t("common", "other") ?>",
+
+"Name"          : "<?php echo Yii::t("common", "Name") ?>",
+"Email"          : "<?php echo Yii::t("common", "Email") ?>",
+"Please specify a name" : "<?php echo Yii::t("common", "Please specify a name") ?>",
+"Please specify a email" : "<?php echo Yii::t("common", "Please specify a email") ?>",
 };
 
 var tradCountry = {

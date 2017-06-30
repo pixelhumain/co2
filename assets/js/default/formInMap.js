@@ -87,12 +87,14 @@ var formInMap = {
 		if(formInMap.bindActived == false)
 			formInMap.bindFormInMap();
 
-		if(userId == "")
+		if(userId == "" || formInMap.NE_insee == "")
 			$("#divStreetAddress").addClass("hidden");
 		else
 			$("#divStreetAddress").removeClass("hidden");
+
 		$("#right_tool_map_locality").removeClass("hidden");
 		$("#right_tool_map_search").addClass("hidden");
+		$("#mapLegende").addClass("hidden");
 	},
 
 	initUpdateLocality : function(address, geo, type, index){
@@ -438,6 +440,7 @@ var formInMap = {
 	backToForm : function(cancel){
 		$("#right_tool_map_locality").addClass("hidden");
 		$("#right_tool_map_search").removeClass("hidden");
+		$("#mapLegende").removeClass("hidden");
 		mylog.log("backToForm 2");
 		formInMap.actived = false ;
 		// if(cancel == true ){
@@ -456,6 +459,7 @@ var formInMap = {
 					}
 					$("#form-street").val($('#street_sumery_value').html());
 					$(".locationBtn").html("<i class='fa fa-home'></i> Adresse secondaire");
+					formInMap.initData();
 					showMap(false);
 					Sig.clearMap();
 					if(location.hash != "#referencement" && location.hash != "#web")
@@ -492,43 +496,6 @@ var formInMap = {
 		//}
 		
 	},
-
-	/*backToForm : function(cancel){
-		mylog.log("backToForm 3");
-		formInMap.actived = false ;
-		mylog.log("cancel", cancel);
-		if(typeof cancel == "undefined" || cancel == false){
-			mylog.log("formInMap.updateLocality", formInMap.updateLocality);
-			if(formInMap.updateLocality == false ){
-				mylog.log("here1");
-				if(notEmpty($("[name='newElement_lat']").val())){
-					mylog.log("here2");
-					locObj = formInMap.createLocalityObj();
-					mylog.log("forminmap copyMapForm2Dynform");
-					dyFInputs.locationObj.copyMapForm2Dynform(locObj);
-					dyFInputs.locationObj.addLocationToForm(locObj);
-				}
-				mylog.log("here3");
-				$("#form-street").val($('#street_sumery_value').html());
-				$(".locationBtn").html("<i class='fa fa-home'></i> Adresse secondaire");
-				mylog.log("here4");
-				Sig.clearMap();
-				if(location.hash != "#referencement" && location.hash != "#web")
-					$('#ajax-modal').modal("show");
-			}else{
-				mylog.log("here5");
-				formInMap.updateLocalityElement();
-				if(typeof contextMap != "undefined")
-					Sig.showMapElements(Sig.map, contextMap);
-			}
-		}else{}
-		mylog.log("right_tool_map_locality 2");
-		$("#right_tool_map_locality").addClass("hidden");
-		$("#right_tool_map_search").removeClass("hidden");
-		mylog.log("backToForm showMap false");
-		showMap(false);		
-	},*/
-
 
 	updateLocalityElement : function(){
 		mylog.log("updateLocalityElement");
@@ -589,6 +556,7 @@ var formInMap = {
 						mylog.log("right_tool_map_locality");
 						$("#right_tool_map_locality").addClass("hidden");
 						$("#right_tool_map_search").removeClass("hidden");
+						$("#mapLegende").removeClass("hidden");
 						urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 						toastr.success(data.msg);
 			    	}else{
@@ -624,7 +592,6 @@ var formInMap = {
 				$('#'+value+'_sumery_value').html(tradCountry[ formInMap["NE_"+value] ]);
 			else
 				$('#'+value+'_sumery_value').html(formInMap["NE_"+value]);
-				
 
 			if(formInMap["NE_"+value] != ""){
 				$('#'+value+'_sumery').removeClass("hidden");

@@ -2085,20 +2085,20 @@ var directory = {
      getDateFormated: function(params){
     
         params.startDateDB = notEmpty(params.startDate) ? params.startDate : null;
-        params.startDay = notEmpty(params.startDate) ? moment(params.startDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("DD") : "";
-        params.startMonth = notEmpty(params.startDate) ? moment(params.startDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("MM") : "";
-        params.startYear = notEmpty(params.startDate) ? moment(params.startDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("YYYY") : "";
-        params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("d") : "";
-        params.startTime = notEmpty(params.startDate) ? moment(params.startDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("HH:mm") : "";
-        params.startDate = notEmpty(params.startDate) ? moment(params.startDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        params.startDay = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD") : "";
+        params.startMonth = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("MM") : "";
+        params.startYear = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("YYYY") : "";
+        params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("d") : "";
+        params.startTime = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("HH:mm") : "";
+        params.startDate = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
         
         params.endDateDB = notEmpty(params.endDate) ? params.endDate: null;
-        params.endDay = notEmpty(params.endDate) ? moment(params.endDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("DD") : "";
-        params.endMonth = notEmpty(params.endDate) ? moment(params.endDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("MM") : "";
-        params.endYear = notEmpty(params.startDate) ? moment(params.endDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("YYYY") : "";
-        params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate,"YYYY-MM-DD HH:mm").format("d") : "";
-        params.endTime = notEmpty(params.endDate) ? moment(params.endDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("HH:mm") : "";
-        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate,"YYYY-MM-DD HH:mm").local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        params.endDay = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD") : "";
+        params.endMonth = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("MM") : "";
+        params.endYear = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("YYYY") : "";
+        params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).format("d") : "";
+        params.endTime = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("HH:mm") : "";
+        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
         params.startDayNum = directory.getWeekDayName(params.startDayNum);
         params.endDayNum = directory.getWeekDayName(params.endDayNum);
 
@@ -2108,13 +2108,13 @@ var directory = {
         
 
         var startLbl = (params.endDay != params.startDay) ? "Du" : "";
-        var endTime = (params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
+        var endTime = ( params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
         mylog.log("params.allDay", !notEmpty(params.allDay), params.allDay);
        
         
         var str = "";
-        if(params.startDate != null)
-            str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+        if(params.startDate != null){
+          str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       '<small>'+startLbl+' </small>'+
                       '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
                       params.startDay + ' ' + params.startMonth + 
@@ -2125,9 +2125,14 @@ var directory = {
                       }
                       
             str +=  '</h3>';
-        
-        if(params.endDateDB != params.startDateDB && params.endDate != null && params.startDate != params.endDate)
-            str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+        }
+          
+        var dStart = params.startDay + params.startMonth + params.startYear;
+        var dEnd = params.endDay + params.endMonth + params.endYear;
+        mylog.log("DATEE", dStart, dEnd);
+
+        if(params.endDate != null && dStart != dEnd){
+          str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       "<small>Au </small>"+
                       '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
                       params.endDay + ' ' + params.endMonth + 
@@ -2137,6 +2142,8 @@ var directory = {
                                 params.endTime+"</b></small>";
                       }
             str +=  '</h3>';
+        }
+            
             
         return str;
   },

@@ -310,7 +310,7 @@
 				
 				$(this.cssModuleName + " .panel_map").css({"max-height":rightPanelHeight - 8*2 /*padding*/ - 45 });
 				
-				var RTM_width =  ($("#right_tool_map").css('display') != 'none') ? $("#right_tool_map").width()+30 : 0;
+				var RTM_width =  ($("#right_tool_map").css('display') != 'none') ? $("#right_tool_map").width()+30 : 30;
 				var GAM_width =  ($("#right_tool_map").css('display') != 'none') ? RTM_width+30 : RTM_width+30;
 				$(this.cssModuleName + " .tools-btn").css({"right": RTM_width });
 				$(this.cssModuleName + " .btn-groupe-around-me-km").css({"right": GAM_width });

@@ -91,6 +91,7 @@ function isUniqueUsername(username) {
 }
 
 function addCustomValidators() {
+	mylog.log("addCustomValidators");
 	//Validate a postalCode
 	jQuery.validator.addMethod("validPostalCode", function(value, element) {
 	    var response;
@@ -105,6 +106,7 @@ function addCustomValidators() {
 			    response = data;
 			}
 		});
+
 	    if (Object.keys(response).length > 0) {
 	    	return true;
 	    } else {
@@ -138,7 +140,8 @@ function addCustomValidators() {
     }, "Invalid : please stick to given values.");
 
     jQuery.validator.addMethod("greaterThan", function(value, element, params) {    
-	    if (!/Invalid|NaN/.test(new Date(value))) {
+	    //if (!/Invalid|NaN/.test(new Date(value))) {
+	    if (!/Invalid|NaN/.test(new Date(moment(value, "DD/MM/YYYY HH:mm").format()))) {
 	        return moment(value, "DD/MM/YYYY HH:mm").isAfter(moment($(params[0]).val(), "DD/MM/YYYY HH:mm"));
 	    }    
 	    return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) > Number($(params[0]).val())); 

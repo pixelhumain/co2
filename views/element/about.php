@@ -61,10 +61,10 @@
 <div id="ficheInfo" class="panel panel-white col-lg-12 col-md-12 col-sm-12 no-padding shadow2">
 	
 	<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
-		<h4 class="panel-title text-dark pull-left"> 
+		<h4 class="panel-title text-dark pull-left">
 			<i class="fa fa-file-text-o"></i> <?php echo Yii::t("common","Descriptions") ?>
 		</h4>
-		<?php if($edit==true || $openEdition==true ){?>
+		<?php if($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ){?>
 		  	<button class="btn-update-descriptions btn btn-default letter-blue pull-right tooltips" 
 				data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update description") ?>">
 				<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?></b>
@@ -102,7 +102,7 @@
 		<h4 class="panel-title text-dark pull-left"> 
 			<i class="fa fa-address-card-o"></i> <?php echo Yii::t("common","General information") ?>
 		</h4>
-		<?php if($edit==true || $openEdition==true ){?>
+		<?php if($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ){?>
 			<button class="btn-update-info btn btn-default letter-blue pull-right tooltips" 
 				data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update general information") ?>">
 				<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?></b>
@@ -271,7 +271,7 @@
 						<i class="fa fa-clock-o"></i> <?php echo Yii::t("common","When"); ?>
 					</h4>
 				</a>
-				<?php if($edit==true || $openEdition==true ){?>
+				<?php if($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ){?>
 					<button class="btn-update-when btn btn-default letter-blue pull-right tooltips" 
 						data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update date") ?>">
 						<b><i class="fa fa-pencil"></i></b>
@@ -312,7 +312,7 @@
 
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 labelAbout padding-10">
 				<span><i class="fa fa-home"></i></span> <?php echo Yii::t("common", "Main locality") ?>
-				<?php if (!empty($element["address"]["codeInsee"]) && ( $edit==true || $openEdition==true ) ) { 
+				<?php if (!empty($element["address"]["codeInsee"]) && ( $edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ) ) { 
 					echo '<a href="javascript:;" id="btn-remove-geopos" class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Remove Locality").'">
 								<i class="fa text-red fa-trash-o"></i>
 							</a> 
@@ -374,21 +374,23 @@
 					echo $address;
 					?>
 
-					<a href='javascript:removeAddresses("<?php echo $ix ; ?>");'  class="addresses pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Remove Locality");?>"><i class="fa text-red fa-trash-o"></i></a>
-					<a href='javascript:updateLocalityEntities("<?php echo $ix ; ?>", <?php echo json_encode($p);?>);' class=" pull-right pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Locality");?>"><i class="fa text-red fa-map-marker addresses"></i></a></span>
+					<?php if( $edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ) { ?>
+						<a href='javascript:removeAddresses("<?php echo $ix ; ?>");'  class="addresses pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Remove Locality");?>"><i class="fa text-red fa-trash-o"></i></a>
+						<a href='javascript:updateLocalityEntities("<?php echo $ix ; ?>", <?php echo json_encode($p);?>);' class=" pull-right pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Locality");?>"><i class="fa text-red fa-map-marker addresses"></i></a></span>
+					<?php } ?>
 				</span>
 				<hr/>
 			<?php 	} ?>
 			</div>
 		<?php } ?>
 		<div class="text-right padding-10">
-			<?php if(empty($element["address"]) && $type!=Person::COLLECTION && ($edit==true || $openEdition==true )){ ?>
+			<?php if(empty($element["address"]) && $type!=Person::COLLECTION && ($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) )){ ?>
 				<b><a href="javascript:;" class="btn btn-default letter-blue margin-top-5 addresses btn-update-geopos">
 					<i class="fa fa-map-marker"></i>
 					<span class="hidden-sm"><?php echo Yii::t("common","Add a primary address") ; ?></span>
 				</a></b>
 			<?php	}
-			if($type!=Person::COLLECTION && !empty($element["address"]) && ($edit==true || $openEdition==true )) { ?>
+			if($type!=Person::COLLECTION && !empty($element["address"]) && ($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) )) { ?>
 				<b><a href='javascript:updateLocalityEntities("<?php echo count(@$element["addresses"]) ; ?>");' id="btn-add-geopos" class="btn btn-default letter-blue margin-top-5 addresses" style="margin: 10px 0px;">
 					<i class="fa fa-plus" style="margin:0px !important;"></i> 
 					<span class="hidden-sm"><?php echo Yii::t("common","Add an address"); ?></span>
@@ -413,7 +415,7 @@
 			<h4 class="panel-title text-dark pull-left"> 
 				<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common","Socials"); ?>
 			</h4>
-			<?php if($edit==true || $openEdition==true ){?>
+			<?php if($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ) {?>
 				<button class="btn-update-network btn btn-default letter-blue pull-right tooltips" 
 					data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update network") ?>">
 					<b><i class="fa fa-pencil"></i></b>
@@ -534,9 +536,9 @@
 			$("#divEndDate").addClass("hidden");
 		mylog.log("formatDateView", formatDateView);
 		if($("#startDateAbout").html() != "")
-	    	$("#startDateAbout").html(moment(contextData.startDateDB,"YYYY-MM-DD HH:mm").local().locale("fr").format(formatDateView));
+	    	$("#startDateAbout").html(moment(contextData.startDateDB).local().locale("fr").format(formatDateView));
 	    if($("#endDateAbout").html() != "")
-	    	$("#endDateAbout").html(moment( contextData.endDateDB,"YYYY-MM-DD HH:mm").local().locale("fr").format(formatDateView));
+	    	$("#endDateAbout").html(moment( contextData.endDateDB).local().locale("fr").format(formatDateView));
 
 	    if($("#birthDate").html() != "")
 	    	$("#birthDate").html(moment($("#birthDate").html()).local().locale("fr").format("DD/MM/YYYY"));

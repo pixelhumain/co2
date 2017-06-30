@@ -272,11 +272,11 @@
 	            			); 
 	            		?>
 	            		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
-		  				<li class="text-left">
-			               	<a href="javascript:;" id="editConfidentialityBtn" class="bg-white">
-			                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
-			                </a>
-			            </li>
+			  				<li class="text-left">
+				               	<a href="javascript:;" id="editConfidentialityBtn" class="bg-white">
+				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
+				                </a>
+				            </li>
 			            <?php } ?>
 						<li>
 							<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
@@ -285,11 +285,15 @@
 						</li>
 
 			  			<?php if($type !=Person::COLLECTION){ ?>
-			  				<li class="text-left">
-								<a href="javascript:;" class="btn-show-activity">
-									<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
-								</a>
-							</li>
+
+			  				<?php if($openEdition==true){ ?>
+				  				<li class="text-left">
+									<a href="javascript:;" class="btn-show-activity">
+										<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
+									</a>
+								</li>
+							<?php } ?>
+
 							<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) { ?>
 				  			<li class="text-left">
 				               	<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">

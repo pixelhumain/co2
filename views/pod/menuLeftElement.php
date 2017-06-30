@@ -176,10 +176,10 @@
 
 				if( @$inviteLink && @$inviteText ){?>
 				<li class="">
-					<a href="javascript:" class="tooltips ssmla" 
+					<a href="javascript:" class="tooltips ssmla text-red" 
 					data-placement="bottom" data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common","to the ".Element::getControlerByCollection($type)))); ?>" 
 					data-toggle="modal" data-target="#modal-scope">
-						<i class="fa fa-send"></i> <?php echo $inviteText ?>
+						<i class="fa fa-user-plus "></i> <?php echo $inviteText ?>
 					</a>
 				</li>
 				<li><hr></li>

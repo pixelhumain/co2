@@ -213,7 +213,7 @@ var formInMap = {
 
 		$("#newElement_btnValidateAddress").click(function(){
 			mylog.log("#newElement_btnValidateAddress");
-			/*if(notEmpty(formInMap.saveCities[formInMap.NE_insee])){
+			if(notEmpty(formInMap.saveCities[formInMap.NE_insee])){
 				var obj = { city : formInMap.saveCities[formInMap.NE_insee] }
 				obj.city.geoShape = 1;
 				if(uncomplete == true){
@@ -246,7 +246,7 @@ var formInMap = {
 						mylog.log("Une erreur est survenue pendant l'enregistrement de la commune");
 					}
 				});
-			}else*/
+			}else
 				formInMap.backToForm();
 		});
 

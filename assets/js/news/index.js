@@ -813,11 +813,11 @@ function showFormBlock(bool){
 	            			'</a>';
 	        }else{
 	        	if(userId!=""){
-                    scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips" onclick="communecterUser();" '+
+                    scopeHtml='<a href="javascript:;" class="pull-left btn btn-link bg-white text-red tooltips" onclick="communecterUser();" '+
                             'data-toggle="tooltip" data-placement="top" title="Communectez-vous" '+
                             'id="btn-my-co">'+
                             '<i class="fa fa-university"></i>'+
-                        '</button>';
+                        '</a>';
                 }
 	        }
 

@@ -485,7 +485,7 @@ function bindLeftMenuFilters () {
 
 
         if(sectionKey && typeof classified.sections[sectionKey] != "undefined") {
-            alert(classified.sections[sectionKey]["label"]);
+            //alert(classified.sections[sectionKey]["label"]);
             $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]);
             $('.classifiedSection').remove();
             $(".resultTypes").append( "<span class='classifiedSection text-azure text-bold hidden-xs pull-right'><i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]+'<i class="fa fa-times text-red resetFilters"></i></span>');

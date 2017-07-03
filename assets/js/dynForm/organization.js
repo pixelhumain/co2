@@ -32,7 +32,7 @@ dynForm = {
                     $("#ajax-modal .infocustom p").addClass("text-dark");
                 }
 
-	    		if(contextData.type && contextData.id ){
+	    		if(contextData && contextData.type && contextData.id ){
 	    			//console.log("HERE WE ARE");
     				$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 

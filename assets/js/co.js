@@ -2461,6 +2461,7 @@ var dyFObj = {
 		uploadObj.type = type;
 		uploadObj.id = id;
 		uploadObj.update = true;
+
 		$.ajax({
 	        type: "GET",
 	        url: baseUrl+"/"+moduleId+"/element/get/type/"+type+"/id/"+id,
@@ -2494,7 +2495,7 @@ var dyFObj = {
 	    uploadObj.contentKey="profil"; 
       	if(type=="addPhoto") 
         	uploadObj.contentKey="slider"; 
-	   
+	    
 	    //initKSpec();
 	    if(userId)
 		{
@@ -3422,6 +3423,11 @@ var typeObj = {
 			    title : "Uploader une image ?",
 			    icon : "question-cirecle-o",
 			    noSubmitBtns : true,
+			    onLoads : {
+			    	beforeBuild : function(){
+				    	uploadObj.gotoUrl = location.hash;
+				    },
+			    },
 			    properties : {
 			    	image : dyFInputs.imageAddPhoto
 			    }

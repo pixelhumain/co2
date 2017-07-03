@@ -56,6 +56,8 @@ function bindCommunexionScopeEvents(){
     $(".start-new-communexion").click(function(){  
         if (typeof $.cookie('communexionName') !== 'undefined'){
             activateGlobalCommunexion(true);
+            if(actionOnSetGlobalScope=="save")
+                $(".item-globalscope-checker").attr('disabled', true);
         }else{
             communecterUser();
         }

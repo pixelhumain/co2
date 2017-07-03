@@ -181,8 +181,8 @@ function bindButtonMenu(){
     	//$(".central-section").show();    	
     });
 
-    $("#open-select-create").click(function(){
-
+    $("#open-select-create, .open-create-form-modal").click(function(){
+    	responsiveMenuLeft(true);
 		//$(".central-section").hide();
     	$("#div-select-create").show(200);
     	setTimeout(function(){

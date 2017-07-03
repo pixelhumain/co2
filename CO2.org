@@ -1,8 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 /////////// BASH ET MIGRATION A PREVOIR POUR LA MISE EN PRODUCTION ///////// 
 ///////////////////////////////////////////////////////////////////////////
-[] IMAGES
- => Renommer le dossier /upload/communecter/ en /upload/co2/
 [] Chart
 **** Bash de reprise des data dans les chart des projets
 /communecter/datamigration/RefactorChartProjectData
@@ -13,6 +11,9 @@
 [] News
 **** Bash of object.type inbstead of object.objectType on news(!!!important with notification reactor!!!!)
 ph/communecter/datamigration/ObjectObjectTypeNewsToObjectType
+[] Params config => Mettre les deux variables à jour (celle ci sont bonnes pour la prod) => utliser dans l'accueil
+    "openatlasId" => "555eba56c655675cdd65bf19",
+    "communecterId" => "55dafac4e41d75571d848360",
 /////////////////////////////////////////////////////////////////////////////
 ////////////////////// END BASH ET MIGRATION /////////////////////////////// 
 ///////////////////////////////////////////////////////////////////////////

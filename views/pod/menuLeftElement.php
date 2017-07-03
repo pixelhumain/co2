@@ -155,8 +155,7 @@
 	
 <?php if (($edit==true || $openEdition==true) && @Yii::app()->session["userId"]){ ?>
 		<li class="visible-xs">
-			<a href="javascript:" class="letter-green ssmla"  
-				data-toggle="modal" data-target="#selectCreate">
+			<a href="javascript:" class="letter-green ssmla open-create-form-modal">
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php echo Yii::t("common", "Create") ?>
 		  	</a>
 		</li>
@@ -177,10 +176,10 @@
 
 				if( @$inviteLink && @$inviteText ){?>
 				<li class="">
-					<a href="javascript:" class="tooltips ssmla" 
+					<a href="javascript:" class="tooltips ssmla text-red" 
 					data-placement="bottom" data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common","to the ".Element::getControlerByCollection($type)))); ?>" 
 					data-toggle="modal" data-target="#modal-scope">
-						<i class="fa fa-send"></i> <?php echo $inviteText ?>
+						<i class="fa fa-user-plus "></i> <?php echo $inviteText ?>
 					</a>
 				</li>
 				<li><hr></li>
@@ -201,7 +200,7 @@
 	?>
 	<li class="visible-xs">
 		<a href="javascript:" class="ssmla btn-start-newsstream">	
-			<i class="fa fa-rss"></i> <?php echo Yii::app()->theme->baseUrl ; ?> Fil d'actualités
+			<i class="fa fa-rss"></i> Fil d'actualités
 		</a>
 	</li>
 

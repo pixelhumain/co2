@@ -561,6 +561,21 @@
 		$(".hide-"+contextData.type).hide();
 		getProfilSubview(subView,dirHash);
 		
+		$("#input-search-map").keyup(function(e){
+	        $("#second-search-bar").val($("#input-search-map").val());
+	        $("#main-search-bar").val($("#input-search-map").val());
+	        if(e.keyCode == 13){
+	            initTypeSearch("all");
+	            startSearch(0, indexStepInit, searchCallback);
+	         }
+	    });
+
+	    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
+	        initTypeSearch("all");
+	        startSearch(0, indexStepInit, searchCallback);
+	    });
+
+
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
 		getContextDataLinks();

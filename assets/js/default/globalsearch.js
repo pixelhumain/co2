@@ -34,7 +34,7 @@ function startGlobalSearch(indexMin, indexMax){
 
     setTimeout(function(){ loadingDataGS = false; }, 10000);
     
-    var search = $('.input-global-search').val();
+    var search = $('#second-search-bar').val();
     //if(search == "") search = $('#input-global-search-xs').val();
     if(loadingDataGS || search.length<3) return;
     

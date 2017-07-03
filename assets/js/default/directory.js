@@ -976,7 +976,7 @@ var directory = {
           if(typeof params.fullLocality != "undefined" && params.fullLocality != "" && params.fullLocality != " ")
           {
             str += "<div class='col-xs-12 bold text-black' style='font-size:15px;'>Addresse : </div>";
-            thisLocality = "<a href='"+params.hash+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
+            thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "' class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
                                 "<i class='fa fa-home'></i> " + params.fullLocality + 
                               "</a>";
           }

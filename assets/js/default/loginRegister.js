@@ -112,10 +112,9 @@ var Login = function() {
 				$(".alert").hide();
 				//loginBtn.start();
 				$(".loginBtn").find(".fa").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
-				$(".loginBtn-welcome").find(".fa").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
 				var params = { 
-				   "email" : ( $("#email-login-welcome").length ? $("#email-login-welcome").val() : $("#email-login").val() ), 
-                   "pwd" : ( $("#password-login-welcome").length ? $("#password-login-welcome").val() : $("#password-login").val() )
+				   "email" : $("#email-login").val(), 
+                   "pwd" : $("#password-login").val() 
                 };
 			      
 		    	$.ajax({
@@ -182,7 +181,6 @@ var Login = function() {
 							$('.loginResult').show();
 		    		  	}
 		    		  	$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
-		    		  	$(".loginBtn-welcome").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
 						//loginBtn.stop();
 		    		  }
 		    	  },
@@ -261,7 +259,7 @@ var Login = function() {
 		});
 	};
 
-	var runRegisterValidator = function() { console.log("runRegisterValidator!");
+	var runRegisterValidator = function() { console.log("runRegisterValidator!!!!");
 		var form3 = $('.form-register');
 		var errorHandler3 = $('.errorHandler', form3);
 		var createBtn = null;
@@ -284,11 +282,11 @@ var Login = function() {
 				},
 				email3 : {
 					required : { 
-						depends:function(){
-							$(this).val($.trim($(this).val()));
-							return true;
-        				}
-        			},
+					 	depends:function(){
+					 		$(this).val($.trim($(this).val()));
+					 		return true;
+					 	}
+					},
 					email : true
 				},
 				password3 : {
@@ -303,6 +301,7 @@ var Login = function() {
 					required : true
 				}
 			},
+
 			messages: {
 				agree: trad["mustacceptCGU"],
 			},
@@ -310,10 +309,10 @@ var Login = function() {
 				errorHandler3.hide();
 				createBtn.start();
 				var params = { 
-				   "name" : ($('.form-register #registerName-welcome').val() ? $('.form-register #registerName-welcome').val() : $('.form-register #registerName').val() ),
-				   "username" : ($('.form-register #username-welcome').val() ? $('.form-register #username-welcome').val() : $(".form-register #username").val()),
-				   "email" : ($('.form-register #email3-welcome').val() ? $('.form-register #email3-welcome').val()  :$(".form-register #email3").val()),
-                   "pwd" : ($('.form-register #password3-welcome').val() ? $('.form-register #password3-welcome').val() : $(".form-register #password3").val()),
+				   "name" : $('.form-register #registerName').val(),
+				   "username" :$(".form-register #username").val(),
+				   "email" : $(".form-register #email3").val(),
+                   "pwd" : $(".form-register #password3").val(),
                    "app" : moduleId, //"$this->module->id"
                    "pendingUserId" : pendingUserId,
                    "mode" : REGISTER_MODE_TWO_STEPS
@@ -336,12 +335,6 @@ var Login = function() {
 						$("#password3").val("");
 						$("#passwordAgain").val("");
 						$('#agree').prop('checked', false);
-						$("#registerName-welcome").val("");
-						$("#username-welcome").val("");
-						$("#email3-welcome").val("");
-						$("#password3-welcome").val("");
-						$("#passwordAgain-welcome").val("");
-						$('#agree-welcome').prop('checked', false);
 		    		  	console.log(data);
 		    		  	if(typeof data.isInvitation != "undefined" && data.isInvitation){
 		    		  		toastr.success(data.msg);

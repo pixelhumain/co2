@@ -342,7 +342,7 @@ jQuery(document).ready(function() {
          }
     });
 
-    $("#input-search-map").keyup(function(e){
+    $("#input-search-map").off().keyup(function(e){
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
@@ -351,7 +351,7 @@ jQuery(document).ready(function() {
          }
     });
 
-    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
+    $("#menu-map-btn-start-search, #main-search-bar-addon").off().click(function(){
         initTypeSearch(typeInit);
         startSearch(0, indexStepInit, searchCallback);
     });

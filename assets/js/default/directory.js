@@ -987,7 +987,7 @@ var directory = {
           if(typeof params.contactInfo != "undefined" && params.contactInfo != "")
           str += "<div class='entityType letter-green bold' style='font-size:17px;'><i class='fa fa-address-card'></i> " + params.contactInfo + "</div>";
        
-          //str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+          str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
 
         str += "<hr></div>";
 

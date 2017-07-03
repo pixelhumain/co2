@@ -129,6 +129,7 @@ var Login = function() {
 		    		  	var url = requestedUrl;
 		    		  	//mylog.warn(url,", has #"+url.indexOf("#"),"count / : ",url.split("/").length - 1 );
 		    		  	if(backUrl != null){
+		    		  		alert("back");
 		    		  		urlCtrl.loadByHash(backUrl);
 		    		  		backUrl = null;
 		    		  	} else if( typeof dyFObj.openFormAfterLogin != "undefined"){
@@ -140,19 +141,23 @@ var Login = function() {
 		    		  		//reload to the url initialy requested
 		    		  		window.location.href = url;
 		        		} */ else {
-		        			if( url.split("/").length - 1 <= 3 ) {
+		        			if(location.hash.indexOf("#page") >= 0){
+		        				window.location.reload();
+		        			}
+		        			else if( url.split("/").length - 1 <= 3 ) {
 		        				//mylog.log("login 2",baseUrl+'#default.home');
 		        				//classic use case wherever you login from if not notifications/get/not/id...
 		        				//you stay on the current page
 		        				//if(location.hash == '#default.home')
-		        				window.location.href = baseUrl+'/co2#page.type.citoyens.id.'+data.id;
+		        				location.hash='#page.type.citoyens.id.'+data.id;
 		        				window.location.reload();
 		        				/*else
 		        					window.location.href = baseUrl+'#default.home';*/
 		        			}
 		        			else {
+		        				//alert("3");
 		        				mylog.log("login 3 reload", data);
-		        				history.pushState(null, "New Title",'#page.type.citoyens.id.'+data.id);
+		        				location.hash='#page.type.citoyens.id.'+data.id;
 		        				//for urls like notifications/get/not/id...
 		        				//window.location.href = baseUrl+'/co2#page.type.citoyens.id.'+data.id;
 		        				window.location.reload();

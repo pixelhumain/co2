@@ -561,7 +561,7 @@
 		$(".hide-"+contextData.type).hide();
 		getProfilSubview(subView,dirHash);
 		
-		$("#input-search-map").keyup(function(e){
+		$("#input-search-map").off().keyup(function(e){
 	        $("#second-search-bar").val($("#input-search-map").val());
 	        $("#main-search-bar").val($("#input-search-map").val());
 	        if(e.keyCode == 13){
@@ -570,7 +570,7 @@
 	         }
 	    });
 
-	    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
+	    $("#menu-map-btn-start-search, #main-search-bar-addon").off().click(function(){
 	        initTypeSearch("all");
 	        startSearch(0, indexStepInit, searchCallback);
 	    });

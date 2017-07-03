@@ -200,7 +200,7 @@
 	?>
 	<li class="visible-xs">
 		<a href="javascript:" class="ssmla btn-start-newsstream">	
-			<i class="fa fa-rss"></i> <?php echo Yii::app()->theme->baseUrl ; ?> Fil d'actualités
+			<i class="fa fa-rss"></i> Fil d'actualités
 		</a>
 	</li>
 

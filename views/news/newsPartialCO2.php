@@ -80,7 +80,7 @@
           <!-- <a><i class="glyphicon glyphicon-thumbs-up"></i></a>
           <a><i class="glyphicon glyphicon-share"></i></a> -->
           <div class="col-md-12 pull-left padding-5" id="footer-media-<?php echo @$media["_id"]; ?>"></div>
-          <div class="col-md-12 no-padding pull-left margin-top-10" id="commentContent<?php echo @$media["_id"]; ?>"></div>
+          <div class="col-md-12 col-sm-12 col-xs-12 no-padding pull-left margin-top-10" id="commentContent<?php echo @$media["_id"]; ?>"></div>
       </div>     
       <?php } ?>
     </div>

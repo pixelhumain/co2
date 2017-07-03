@@ -18,7 +18,7 @@ dynForm = {
 	    	},
 	    	onload : function(data){
 	    		if(data && data.type){
-	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+data.type+"</h4>");
+	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+trad[data.type]+"</h4>");
 					$(".sectionBtntagList").hide();
 	    		} else
 	    			$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();

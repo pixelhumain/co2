@@ -3467,6 +3467,7 @@ var typeObj = {
 	"entry" : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-lightblue",bgClass : "bgDDA",	icon : "gavel",	color : "azure", saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
 	"vote" : {col:"actionRooms",ctrl:"survey"},
 	"survey" : {col:"actionRooms",ctrl:"survey",color:"lightblue2",icon:"cog"},
+	"surveys" : {sameAs:"survey"},
 	"action" : {col:"actions",ctrl:"room",titleClass : "bg-lightblue",bgClass : "bgDDA",icon : "cogs",color : "lightblue2", saveUrl : baseUrl+"/" + moduleId + "/rooms/saveaction"},
 	"actions" : {col:"actions",color:"azure",ctrl:"room",icon:"cog"},
 	"rooms" : {col:"actions",ctrl:"room",color:"azure",icon:"gavel"},

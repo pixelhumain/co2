@@ -1125,7 +1125,7 @@ var directory = {
 
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.hash+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
+                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "' class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             //else thisLocality = "<br>";

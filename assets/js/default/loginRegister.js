@@ -59,7 +59,8 @@ var Login = function() {
 			errorElement : "span", // contain the error msg in a small tag
 			errorClass : 'help-block',
 			errorPlacement : function(error, element) {// render error placement for each input type
-				if (element.attr("type") == "radio" || element.attr("type") == "checkbox") {// for chosen elements, need to insert the error after the chosen container
+				if (element.attr("type") == "radio" || element.attr("type") == "checkbox") {
+				// for chosen elements, need to insert the error after the chosen container
 					error.insertAfter($(element).closest('.form-group').children('div').children().last());
 				} else if (element.attr("name") == "card_expiry_mm" || element.attr("name") == "card_expiry_yyyy") {
 					error.appendTo($(element).closest('.form-group').children('div'));
@@ -264,12 +265,12 @@ var Login = function() {
 		var errorHandler3 = $('.errorHandler', form3);
 		var createBtn = null;
 		
-		Ladda.bind('.createBtn', {
+		/*Ladda.bind('.createBtn', {
 	        callback: function (instance) {
 	            createBtn = instance;
 	        }
-	    });
-		form3.validate({
+	    });*/
+	    form3.validate({
 			rules : {
 				name : {
 					required : true,
@@ -294,9 +295,10 @@ var Login = function() {
 					required : true
 				},
 				passwordAgain : {
-					equalTo : "#password3"
+					equalTo : "#password3",
+					required : true
 				},
-				agree : {
+				agree: {
 					minlength : 1,
 					required : true
 				}
@@ -307,7 +309,9 @@ var Login = function() {
 			},
 			submitHandler : function(form) { console.log("runRegisterValidator submitHandler");
 				errorHandler3.hide();
-				createBtn.start();
+				//createBtn.start();
+				$(".createBtn").prop('disabled', true);
+	    		$(".createBtn").find(".fa").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
 				var params = { 
 				   "name" : $('.form-register #registerName').val(),
 				   "username" :$(".form-register #username").val(),
@@ -328,7 +332,9 @@ var Login = function() {
 		    	  data: params,
 		    	  success: function(data){
 		    		  if(data.result) {
-		    		  	createBtn.stop();
+		    		  	//createBtn.stop();
+						$(".createBtn").prop('disabled', false);
+	    				$(".createBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
 						$("#registerName").val("");
 						$("#username").val("");
 						$("#email3").val("");
@@ -360,12 +366,16 @@ var Login = function() {
 		    		  else {
 						$('.registerResult').html(data.msg);
 						$('.registerResult').show();
-						createBtn.stop();
+						$(".createBtn").prop('disabled', false);
+	    				$(".createBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
+						//createBtn.stop();
 		    		  }
 		    	  },
 		    	  error: function(data) {
 		    	  	toastr.error(trad["somethingwentwrong"]);
-		    	  	createBtn.stop();
+		    	  	$(".createBtn").prop('disabled', false);
+	    			$(".createBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
+		    	  	//createBtn.stop();
 		    	  },
 		    	  dataType: "json"
 		    	});
@@ -373,7 +383,9 @@ var Login = function() {
 			},
 			invalidHandler : function(event, validator) {//display error alert on form submit
 				errorHandler3.show();
-				createBtn.stop();
+				$(".createBtn").prop('disabled', false);
+	    		$(".createBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
+				//createBtn.stop();
 			}
 		});
 	};

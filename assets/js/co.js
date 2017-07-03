@@ -936,10 +936,10 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 			if(mapEnd)
 				showMap(true);
 
-    		/*if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
+    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
         		uploadObj.type = contextData.type;
         		uploadObj.id = contextData.id;
-        	}*/
+        	}
         	
         	if( typeof urlCtrl.afterLoad == "function") {
         		urlCtrl.afterLoad();

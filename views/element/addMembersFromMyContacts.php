@@ -470,7 +470,6 @@ function setInviteInput(num){
 }
 
 function newInvitation(){
-	alert("biboup");
 	$("#div-invite-search-all #dropdown_searchInvite").css({"display" : "none" });
 	$("#div-invite-search-all #ficheUser").addClass("hidden");
 	$("#div-invite-search-all #step3").removeClass("hidden");
@@ -1083,22 +1082,23 @@ function bindInvite(){
 
 	$("#btn-save-invite").off().on('click', function()
 	{
-		alert("kikikikiiiii");
+		$(this).prop("disabled",true);
+		$(this).find("i").removeClass("fa-send").addClass("fa-spinner fa-spin");
 		if(listMails.length == 0)
     		toastr.error("Veuillez sélectionner une adresse mail.");
-    	else if($("#inviteEmail").val()==""){
-    		toastr.error("Email por favor");	
-    	}
-    	else if($("#inviteName").val()==""){
-    		toastr.error("Name por favor");	
+    	else if($("#inviteEmail").val()=="" || $("#inviteName").val()==""){
+    		if($("#inviteEmail").val()=="" && $("#inviteEmail").parent().find(".error-block-invite").length <=0)
+    			$("#step3 #inviteEmail").parent().append("<span class='text-red error-block-invite'><i>* Veuillez ajouter un email</i></span>");
+    		if($("#inviteName").val()=="" && $("#inviteName").parent().find(".error-block-invite").length <=0)
+    			$("#step3 #inviteName").parent().append("<span class='text-red error-block-invite'><i>* Veuillez ajouter un nom</i></span>");	
+    		$(this).prop("disabled",false);
+			$(this).find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
     	}
     	else{
-    		newInvitation={"invitedUserName":$("#inviteName").val(),"invitedUserEmail":$("#inviteEmail").val()};
-    		var nameUtil = "" ;
-    		var textmail = "Bonjour, J'ai découvert un réseau sociétal citoyen appelé \"Communecter - être connecter à sa commune\". Tu peux agir concrétement autour de chez toi et découvrir ce qui s'y passe. Viens rejoindre le réseau sur communecter.org.";
+    		if($(".error-block-invite").length>=0)
+    			$(".error-block-invite").remove();
     		mylog.log("listMails", listMails);
     		if(Object.keys(listMails).length==0){
-    			alert("empty");
     			dataInvite={msgEmail : $("#inviteText").val(),
 		        	invitedUserName : $("#inviteName").val(),
 		        	invitedUserEmail : $("#inviteEmail").val(),
@@ -1127,10 +1127,17 @@ function bindInvite(){
 			        	}else
 			        		addFloopEntity(data.invitedUser.id, "<?php echo Person::COLLECTION ?>", data.invitedUser);
 			        	$('#inviteSearch').val("");
+			        	$("#div-invite-search-all #step3 #inviteName").val("");
+			        	$("#div-invite-search-all #step3 #inviteEmail").val("");
+			        	$("#div-invite-search-all #step3").addClass("hidden");
 						//backToSearch();
+						$("#div-invite-search-all #step3 #btn-save-invite").prop("disabled",false);
+						$("#div-invite-search-all #step3 #btn-save-invite").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
 			        } else {
 			        	$.unblockUI();
 						toastr.error(data.msg);
+						$("#div-invite-search-all #step3 #btn-save-invite").prop("disabled",false);
+						$("#div-invite-search-all #step3 #btn-save-invite").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
 			        }
 				}
 		    })
@@ -1459,7 +1466,7 @@ function buildModalInvite(fieldObj, idUi){
 										'<div class="row margin-bottom-10">'+
 											'<div class="col-md-11">'+
 												'<div class="form-group">'+
-										    	    '<button class="btn bg-dark pull-right" id="btn-save-invite" >Inviter</button> '+
+										    	    '<button class="btn bg-dark pull-right" id="btn-save-invite" ><i class="fa fa-send"></i> <?php echo Yii::t("common","Send invitation"); ?></button> '+
 										    		'<button class="btn btn-danger pull-right btnCancel" style="margin-right:10px;" id="btnCancelStep3" >Annuler</button>'+
 										    	'</div>'+
 										    '</div>'+

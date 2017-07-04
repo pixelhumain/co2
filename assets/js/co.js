@@ -1430,8 +1430,10 @@ function  bindLBHLinks() {
 		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-		if( $(this).data("modalshow") )
+		if( $(this).data("modalshow") ){
 			smallMenu.open ( directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
+			initBtnLink();
+		}
 		else {
 			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
 	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);

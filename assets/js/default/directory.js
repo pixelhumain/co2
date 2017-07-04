@@ -492,6 +492,43 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                    $(this).data("contact-role"),$(this).data("contact-telephone"));
     });
 
+    $(".deleteThisBtn").off().on("click",function () 
+    {
+      mylog.log("deleteThisBtn click");
+          $(this).empty().html('<i class="fa fa-spinner fa-spin"></i>');
+          var btnClick = $(this);
+          var id = $(this).data("id");
+          var type = $(this).data("type");
+          var urlToSend = baseUrl+"/"+moduleId+"/element/delete/type/"+type+"/id/"+id;
+          
+          bootbox.confirm("confirm please !!",
+          function(result) 
+          {
+        if (!result) {
+          btnClick.empty().html('<i class="fa fa-trash"></i>');
+          return;
+        } else {
+          $.ajax({
+                type: "POST",
+                url: urlToSend,
+                dataType : "json"
+            })
+            .done(function (data) {
+                if ( data && data.result ) {
+                  toastr.info("élément effacé");
+                  $("#"+type+id).remove();
+                  urlCtrl.loadByHash( location.hash );
+                  if($("#openModal").hasClass("in"))
+                    $("#openModal").modal("hide");
+                } else {
+                   toastr.error("something went wrong!! please try again.");
+                }
+            });
+        }
+      });
+
+    });
+
     initBtnShare();
 
    	//on click sur les boutons link
@@ -1053,10 +1090,13 @@ var directory = {
             // '</a>'+
         '</div>';
 
-        if( params.creator == userId )
-        str += '<hr><a href="javascript:dyFObj.editElement(\''+params.type+'\', \''+params.id+'\' );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
+        if( params.creator == userId || params.author == userId ){
+          str += '<hr>'+
+              '<a href="javascript:;" class="btn btn-default text-red deleteThisBtn margin-top-15 bold pull-left" data-type="'+params.type+'" data-id="'+params.id+'" ><i class="fa fa-trash"></i></a> '+
+              '<a href="javascript:dyFObj.editElement(\''+params.type+'\', \''+params.id+'\' );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
                   '<i class="fa fa-pencil"></i> Modifier cet élément'+
               '</a>';
+            }
 
 
 

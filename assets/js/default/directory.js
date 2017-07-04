@@ -517,7 +517,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 if ( data && data.result ) {
                   toastr.info("élément effacé");
                   $("#"+type+id).remove();
-                  if( $(".contain_"+type+"+"+id) )
+                  if( $(".contain_"+type+"+"+id).length > 0 )
                     $(".contain_"+type+"+"+id).remove();
                   else
                     urlCtrl.loadByHash( location.hash );
@@ -817,7 +817,7 @@ var directory = {
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
-    		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" contain_"+params.type+"+"+params.id+"'>";
+    		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" contain_"+params.type+"_"+params.id+"'>";
     		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
     		mylog.log("inMyContacts",inMyContacts(params.type, params.name));
         var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;
@@ -857,7 +857,7 @@ var directory = {
             }
 
             if(notEmpty(params.typePoi)){
-              str += "<span class='bold typePoiDir'><i class='fa fa-chevron-right'></i> " + trad[params.typePoi] + "<hr></span>";  
+              str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + trad[params.typePoi] + "<hr></span>";  
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";

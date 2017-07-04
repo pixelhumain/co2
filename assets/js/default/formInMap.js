@@ -94,11 +94,15 @@ var formInMap = {
 
 		$("#right_tool_map_locality").removeClass("hidden");
 		$("#right_tool_map_search").addClass("hidden");
-		$("#mapLegende").addClass("hidden");
+		if(typeof networkJson == "undefined" || networkJson == null)
+			$("#mapLegende").addClass("hidden");
 	},
 
 	initUpdateLocality : function(address, geo, type, index){
 		mylog.log("initUpdateLocality", address, geo, type, index);
+
+
+		showMap(true);
 		if(address != null && geo != null ){
 			formInMap.NE_insee = address.codeInsee;
 			formInMap.NE_lat = geo.latitude;
@@ -440,7 +444,8 @@ var formInMap = {
 	backToForm : function(cancel){
 		$("#right_tool_map_locality").addClass("hidden");
 		$("#right_tool_map_search").removeClass("hidden");
-		$("#mapLegende").removeClass("hidden");
+		if(typeof networkJson == "undefined" || networkJson == null)
+			$("#mapLegende").removeClass("hidden");
 		mylog.log("backToForm 2");
 		formInMap.actived = false ;
 		// if(cancel == true ){
@@ -556,7 +561,8 @@ var formInMap = {
 						mylog.log("right_tool_map_locality");
 						$("#right_tool_map_locality").addClass("hidden");
 						$("#right_tool_map_search").removeClass("hidden");
-						$("#mapLegende").removeClass("hidden");
+						if(typeof networkJson == "undefined" || networkJson == null)
+							$("#mapLegende").removeClass("hidden");
 						urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 						toastr.success(data.msg);
 			    	}else{

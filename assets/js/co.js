@@ -2074,7 +2074,7 @@ function communecterUser(){
 function updateLocalityEntities(addressesIndex, addressesLocality){
 	mylog.warn("updateLocalityEntities");
 	$("#ajax-modal").modal("hide");
-	showMap(true);
+	
 	if(typeof formInMap.initUpdateLocality != "undefined"){
 		var address = contextData.address ;
 		var geo = contextData.geo ;
@@ -2088,6 +2088,7 @@ function updateLocalityEntities(addressesIndex, addressesLocality){
 		mylog.log(address, geo, contextData.type, addressesIndex);
 		formInMap.initUpdateLocality(address, geo, contextData.type, addressesIndex); 
 	}
+
 }
 
 function cityKeyPart(unikey, part){
@@ -2681,7 +2682,7 @@ var dyFInputs = {
 	    updateLocality = false;
 
 	    // Initialize tags list for network in form of element
-		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"){
+		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"  && typeof typeOb != "undefined" ){
 			$.each(networkJson.add, function(key, v) {
 				if(typeof networkJson.request.sourceKey != "undefined"){
 					mylog.log("here, sourceKey")

@@ -30,11 +30,15 @@
 		background-color: white;
 	}
 
+	.dropdown_searchListNW{
+		min-height: 100%;
+	}
+
 
 </style>
 
 <div class="col-md-12 no-padding" id="repertory" >
-	<div id="dropdown_search" class="col-md-12 container list-group-item"></div>
+	<div id="dropdown_search" class="col-md-12 container list-group-item dropdown_searchListNW"></div>
 </div>
 <div class="col-md-12 padding-10" id="ficheInfoDetail"></div>
 
@@ -597,7 +601,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 						var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
 						var url = baseUrl+'/'+moduleId+ "/default/dir#" + type + ".simply.id." + id;
 						// var onclick = 'loadByHash("#organization.simply.id.' + id + '");';
-						var onclick = 'getAjaxFiche("#element.detail.type.'+o.typeSig+'.id.'+id+'",1);';
+						var onclick = 'getAjaxFiche("#page.type.'+o.typeSig+'.id.'+id+'",1);';
 						var onclickCp = "";
 						var target = " target='_blank'";
 						var dataId = "";
@@ -616,7 +620,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 						if(typeof o.tags != "undefined" && o.tags != null){
 							$.each(o.tags, function(key, value){
 								if(value != ""){
-									tags += "<a href='javascript:' class='badge bg-red btn-tag tagFilter padding-5' data-tag-value='"+slugify(value)+"'>#" + value + "</a> ";
+									tags += "<a href='javascript:;' class='badge bg-red btn-tag tagFilter padding-5' data-tag-value='"+slugify(value)+"'>#" + value + "</a> ";
 									elTagsList += slugify(value)+" ";
 									if(find == false && value in linksTagImages == true){
 										find = true;
@@ -664,7 +668,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 						str += "<div id='"+id+"' class='row list-group-item item searchEntity "+mix+" "+elTagsList+" "+fullLocality+" "+disabledBorder+"' >";
 						if( typeof networkJson.result.displayImage != "undefined"){
 							str += '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 padding-10 center">'+
-							'<img class="img-responsive thumbnail" src="'+pathmedium+'"></div>';
+							'<img class="img-responsive thumbnail" src="'+pathmedium+'" alt="Image"'+ name+'".></div>';
 						}
 						
 						str += "<div class='entityMiddle col-md-5 name' onclick='"+onclick+"'>";
@@ -694,7 +698,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 						target = "";
 						str += "<div class='entityBottom col-md-5'>";
 						str += "<hr>";
-						if(tags=="") tags = "<a href='#' class='badge bg-red btn-tag'>#</a>";
+						if(tags=="") tags = "<a href='javascript:;' class='badge bg-red btn-tag'>#</a>";
 						str += tags;
 						str += "</div>";
 						str += "</div>";
@@ -954,6 +958,7 @@ function breadcrumGuide(level, url){
 				}
 			});
 		}
+
 		if(newLevel == 5){
 			$(".breadcrumChevron[data-value='4']").remove();
 			$(".breadcrumAnchor[data-value='4']").remove();
@@ -981,7 +986,6 @@ function getAjaxFiche(url, breadcrumLevel){
 		pathIcon = "list";
 	}
 
-	isEntityView=true;
 	allReadyLoad = true;
 	//location.hash = url;
 	urlHash=url;
@@ -1021,7 +1025,7 @@ function getAjaxFiche(url, breadcrumLevel){
 
 	mylog.log("networkParams", networkParams);
 
-	getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?network='+networkParams, function(){
+	getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
 		$.unblockUI();
 		mylog.log(contextData);
 		//Construct breadcrumb
@@ -1037,20 +1041,17 @@ function reverseToRepertory(){
 	mylog.log("reverseToRepertory", isMapEnd);
 	if(isMapEnd)
 		showMapNetwork();
-	
-	isEntityView=false;
+
+	updateMap();
 	$("#ficheInfoDetail").hide( 700 );
 	$(".main-col-search").removeClass("col-md-12 col-sm-12").addClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3");
-	$("#repertory").show( 700 );
-	mylog.log(".main-menu-left");
+	$("#dropdown_search").show();
+	$("#repertory").show();
 	$(".main-menu-left").show( 700 );
-	// $(".panel-group .panel-default").fadeIn();
-	// $(".panel-group .panel-back").hide();
-	$html = ' <a href="#network.simplydirectory" onclick="breadcrumGuide(0)" class="breadcrumAnchor text-dark" style="font-size:20px;">Liste</a>';
+	$html = '<a href="javascript:;" onclick="breadcrumGuide(0)" class="breadcrumAnchor text-dark" style="font-size:20px;">Liste</a>';
 	$("#breadcrum").html($html);
 	history.replaceState(null, '', window.location.href.split('#')[0]);
-	Sig.restartMap();
-	Sig.showMapElements(Sig.map, contextMapNetwork);
+	
 }
 
 //if all tags exist returns true
@@ -1257,6 +1258,7 @@ function updateMap(){
 				else
 					add= false;
 				mylog.log("here2", v.name, searchValNetwork, v.name.search( new RegExp( searchValNetwork, "i" )) );
+				mylog.log("configFiltre", disableActived, v.disabled, citiesActived, typesActived, rolesActived);
 				if(	add && 
 					( 	disableActived == false || 
 						(disableActived == true && typeof v.disabled != "undefined" && v.disabled == true) ) && 
@@ -1318,9 +1320,10 @@ function updateMap(){
 				}
 			});
 		}else{
-			$.each(contextMapNetwork,function(k,v){
+			/*$.each(contextMapNetwork,function(k,v){
 				filteredList = addTabMap(v, filteredList);
-			});
+			});*/
+			filteredList = contextMapNetwork;
 			$(".searchEntity").show();
 		}
 	}

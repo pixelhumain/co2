@@ -2684,9 +2684,11 @@ var dyFInputs = {
 		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"){
 			$.each(networkJson.add, function(key, v) {
 				if(typeof networkJson.request.sourceKey != "undefined"){
+					mylog.log("here, sourceKey")
 					sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
 					typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
 				}
+
 				if(v){
 					if(notNull(networkJson.dynForm)){
 						mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);

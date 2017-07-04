@@ -177,11 +177,13 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
 
                   var name = typeof o.name != "undefined" ? o.name : "";
                   var postalCode = (typeof o.address != "undefined" &&
-                            typeof o.address.postalCode != "undefined") ? o.address.postalCode : "";
+                                    o.address != null &&
+                                    typeof o.address.postalCode != "undefined") ? o.address.postalCode : "";
                   
                   if(postalCode == "") postalCode = typeof o.cp != "undefined" ? o.cp : "";
                   var cityName = (typeof o.address != "undefined" &&
-                          typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
+                                  o.address != null &&
+                                  typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
                   
                   var fullLocality = postalCode + " " + cityName;
                   if(fullLocality == " Addresse non renseignée" || fullLocality == "" || fullLocality == " ") 

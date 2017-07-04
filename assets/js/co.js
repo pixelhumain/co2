@@ -2058,7 +2058,7 @@ function newInvitation(){
 		$("#ajaxFormModal #inviteName").val($("#ajaxFormModal #inviteSearch").val());
 		$("#ajaxFormModal #inviteEmail").val("");
 	}
-	$("#inviteText").val('<?php echo Yii::t("person","Hello, \\nCome and meet me on that website!\\nAn email, your town and you are connected to your city!\\nYou can see everything that happens in your city and act for the commons."); ?>');
+	$("#inviteText").val('');
 }
 
 function communecterUser(){

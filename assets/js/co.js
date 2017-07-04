@@ -2248,7 +2248,7 @@ var uploadObj = {
 	isSub : false,
 	update  : false,
 	folder : "communecter", //on force pour pas casser toutes les vielles images
-	path : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+uploadObj.folder+"/folder/"+uploadObj.type+"/ownerId/"+uploadObj.id+"/input/qqfile/contentKey/"+uploadObj.contentKey
+	path : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+uploadObj.folder+"/folder/"+uploadObj.type+"/ownerId/"+uploadObj.id+"/input/qqfile/contentKey/"+uploadObj.contentKey,
 	set : function(type,id){
 		uploadObj.type = type;
 		mylog.log("set uploadObj.id", id);

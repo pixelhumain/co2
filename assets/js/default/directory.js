@@ -492,6 +492,46 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                    $(this).data("contact-role"),$(this).data("contact-telephone"));
     });
 
+    $(".deleteThisBtn").off().on("click",function () 
+    {
+      mylog.log("deleteThisBtn click");
+          $(this).empty().html('<i class="fa fa-spinner fa-spin"></i>');
+          var btnClick = $(this);
+          var id = $(this).data("id");
+          var type = $(this).data("type");
+          var urlToSend = baseUrl+"/"+moduleId+"/element/delete/type/"+type+"/id/"+id;
+          
+          bootbox.confirm("confirm please !!",
+          function(result) 
+          {
+        if (!result) {
+          btnClick.empty().html('<i class="fa fa-trash"></i>');
+          return;
+        } else {
+          $.ajax({
+                type: "POST",
+                url: urlToSend,
+                dataType : "json"
+            })
+            .done(function (data) {
+                if ( data && data.result ) {
+                  toastr.info("élément effacé");
+                  $("#"+type+id).remove();
+                  if( $(".contain_"+type+"_"+id).length > 0 )
+                    $(".contain_"+type+"_"+id).remove();
+                  else
+                    urlCtrl.loadByHash( location.hash );
+                  if($("#openModal").hasClass("in"))
+                    $("#openModal").modal("hide");
+                } else {
+                   toastr.error("something went wrong!! please try again.");
+                }
+            });
+        }
+      });
+
+    });
+
     initBtnShare();
 
    	//on click sur les boutons link
@@ -777,7 +817,7 @@ var directory = {
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
-    		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" '>";
+    		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" contain_"+params.type+"_"+params.id+"'>";
     		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
     		mylog.log("inMyContacts",inMyContacts(params.type, params.name));
         var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;
@@ -817,11 +857,11 @@ var directory = {
             }
 
             if(notEmpty(params.typePoi)){
-              str += "<span class='bold typePoiDir'><i class='fa fa-chevron-right'></i> " + trad[params.typePoi] + "<hr></span>";  
+              str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + trad[params.typePoi] + "<hr></span>";  
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark add2fav "+linkAction+">"+
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+">"+
                       iconFaReply + params.name + 
                    "</a>";  
                     
@@ -834,7 +874,7 @@ var directory = {
             }
 
             if( params.section ){
-              str += "<div class='entityType bold'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
+              str += "<div class='entityType'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
                 if(typeof params.subtype != "undefined") str += " > " + params.subtype;
               str += "</div>";
             }
@@ -1053,10 +1093,14 @@ var directory = {
             // '</a>'+
         '</div>';
 
-        if( params.creator == userId )
-        str += '<hr><a href="javascript:dyFObj.editElement(\''+params.type+'\', \''+params.id+'\' );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
+        if( params.creator == userId || params.author == userId ){
+          str += '<hr>'+
+              '<div class="col-md-offset-1 col-md-10 col-sm-12 col-xs-12 shadow2 padding-15 margin-top-25">'+
+              '<a href="javascript:;" class="btn btn-default text-red deleteThisBtn bold pull-left" data-type="'+params.type+'" data-id="'+params.id+'" ><i class="fa fa-trash"></i></a> '+
+              '<a href="javascript:dyFObj.editElement(\''+params.type+'\', \''+params.id+'\' );" class="btn btn-default pull-right letter-green bold">'+
                   '<i class="fa fa-pencil"></i> Modifier cet élément'+
-              '</a>';
+              '</a></div>';
+            }
 
 
 

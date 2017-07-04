@@ -817,7 +817,7 @@ var directory = {
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
-    		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" ' class='contain_"+params.type+"+"+params.id+"'>";
+    		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" contain_"+params.type+"+"+params.id+"'>";
     		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
     		mylog.log("inMyContacts",inMyContacts(params.type, params.name));
         var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;

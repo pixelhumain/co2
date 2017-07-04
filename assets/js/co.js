@@ -3987,6 +3987,12 @@ function getContextDataLinks(){
 		success: function(data){
 			mylog.log("getContextDataLinks data", data);
 			Sig.restartMap();
+			contextData.map = {
+				sig : Sig.map,
+				data : data,
+				icon : "link",
+				title : "La communauté de <b>"+contextData.name+"</b>"
+			} ;
 			Sig.showMapElements(Sig.map, data, "link", "La communauté de <b>"+contextData.name+"</b>");
 			//showMap();
 		},

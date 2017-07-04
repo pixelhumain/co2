@@ -472,8 +472,8 @@ var formInMap = {
 						formInMap.updateLocalityElement();
 
 					showMap(false);
-					if(typeof contextMap != "undefined")
-						Sig.showMapElements(Sig.map, contextMap);
+					if(typeof contextData.map != "undefined" && contextData.map != null)
+						Sig.showMapElements(contextData.map.sig, contextData.map.data, contextData.map.icon, contextData.map.title);
 				}	
 			}else{
 				mylog.log("backToForm 4");

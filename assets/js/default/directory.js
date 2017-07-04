@@ -517,8 +517,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 if ( data && data.result ) {
                   toastr.info("élément effacé");
                   $("#"+type+id).remove();
-                  if( $(".contain_"+type+"+"+id).length > 0 )
-                    $(".contain_"+type+"+"+id).remove();
+                  if( $(".contain_"+type+"_"+id).length > 0 )
+                    $(".contain_"+type+"_"+id).remove();
                   else
                     urlCtrl.loadByHash( location.hash );
                   if($("#openModal").hasClass("in"))

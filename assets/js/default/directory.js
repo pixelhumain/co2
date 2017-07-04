@@ -1096,8 +1096,8 @@ var directory = {
         if( params.creator == userId || params.author == userId ){
           str += '<hr>'+
               '<div class="col-md-offset-1 col-md-10 col-sm-12 col-xs-12 shadow2 padding-15 margin-top-25">'+
-              '<a href="javascript:;" class="btn btn-default text-red deleteThisBtn margin-top-15 bold pull-left" data-type="'+params.type+'" data-id="'+params.id+'" ><i class="fa fa-trash"></i></a> '+
-              '<a href="javascript:dyFObj.editElement(\''+params.type+'\', \''+params.id+'\' );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
+              '<a href="javascript:;" class="btn btn-default text-red deleteThisBtn bold pull-left" data-type="'+params.type+'" data-id="'+params.id+'" ><i class="fa fa-trash"></i></a> '+
+              '<a href="javascript:dyFObj.editElement(\''+params.type+'\', \''+params.id+'\' );" class="btn btn-default pull-right letter-green bold">'+
                   '<i class="fa fa-pencil"></i> Modifier cet élément'+
               '</a></div>';
             }

@@ -174,6 +174,7 @@ jQuery(document).ready(function() {
             $("#localActivity"+type+id).removeClass("hidden");
             $("#localActivity"+type+id).off().mouseleave(function(){
                 $(this).addClass("hidden").html("");
+                $(".el-nowList").removeClass("hidden");
             });
             bindLBHLinks();
             initBtnShare();

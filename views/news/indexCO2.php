@@ -197,11 +197,15 @@ function initForm(){ console.log("initForm initForm");
           if(value.profilThumbImageUrl!="")
           avatar = baseUrl+value.profilThumbImageUrl;
           object = new Object;
-          object.id = value._id.$id;
+          if(typeof value._id != "undefined")
+            object.id = value._id.$id;
+          else if(typeof value.id != "undefined")
+            object.id = value.id;
           object.name = value.name;
         object.avatar = avatar;
         object.type = "citoyens";
-        mentionsContact.push(object);
+        if(typeof object.id != "undefined")
+          mentionsContact.push(object);
       }
       });
       $.each(myContacts["organizations"], function (key,value){

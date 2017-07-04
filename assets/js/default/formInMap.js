@@ -473,7 +473,7 @@ var formInMap = {
 
 					showMap(false);
 					if(typeof contextData.map != "undefined" && contextData.map != null)
-						Sig.showMapElements(contextData.map.sig, contextData.map.data, contextData.map.icon, contextData.map.title);
+						Sig.showMapElements(Sig.map, contextData.map.data, contextData.map.icon, contextData.map.title);
 				}	
 			}else{
 				mylog.log("backToForm 4");

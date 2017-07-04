@@ -614,7 +614,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			dataToMap = new Array();
 			$.each(data, function(key, val){
 				$.each(val.list, function(type, list){
-					console.log("collection", type, list);
+					mylog.log("collection", type, list);
 					$.each(list, function(id, el){
 						dataToMap.push(el);
 					});
@@ -622,7 +622,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			});
 		}
 
-					console.log("dataToMap", dataToMap);
+					mylog.log("dataToMap", dataToMap);
 		$("#btn-show-links-onmap").off().click(function(){
 			Sig.showMapElements(Sig.map, dataToMap, "", thisTitle);
 			showMap(true);

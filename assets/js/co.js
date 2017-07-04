@@ -3956,8 +3956,13 @@ function initKInterface(params){ console.log("initKInterface");
 			formInMap.cancel();
     	//else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
 		//	getContextDataLinks();
-		else
-			showMap();
+		else{
+
+			if(isMapEnd == false && contextData && contextData.map && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id) )
+				Sig.showMapElements(Sig.map, contextData.map.data, contextData.map.icon, contextData.map.title);
+			
+				showMap();
+		}
     });
 
     bindLBHLinks();
@@ -3988,7 +3993,6 @@ function getContextDataLinks(){
 			mylog.log("getContextDataLinks data", data);
 			Sig.restartMap();
 			contextData.map = {
-				sig : Sig.map,
 				data : data,
 				icon : "link",
 				title : "La communauté de <b>"+contextData.name+"</b>"

@@ -18,10 +18,9 @@ function userValidatedActions() {
 }
 
 function removeParametersWithoutReloading() {
-	//alert("removeParams");
-	/*window.history.pushState("Invitation", 
+	window.history.pushState("Invitation", 
 		"Invitation", 
-		location.href.replace(location.search,""));*/
+		location.href.replace(location.search,""));
 }
 
 var Login = function() {

@@ -108,8 +108,7 @@ function bindButtonMenu(){
 	$(".load-data-directory").click(function(){ 
 		responsiveMenuLeft();
 		var dataName = $(this).data("type-dir");
-		mylog.log(".load-data-directory", dataName);
-		loadDataDirectory(dataName, $(this).data("icon"),edit);
+		location.hash=hashUrlPage+".view.directory.dir."+dataName;
 	});
 		
 	$("#subsubMenuLeft a").click(function(){
@@ -297,8 +296,10 @@ function bindButtonOpenForm(){
     });
 }
 
-function loadDataDirectory(dataName, dataIcon, edit){ //console.log("loadDataDirectory");
+function loadDataDirectory(dataName, dataIcon, edit){ console.log("loadDataDirectory");
 	showLoader('#central-container');
+
+	var dataIcon = $(".load-data-directory[data-type-dir="+dataName+"]").data("icon");
 	//history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
 	// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
@@ -309,7 +310,7 @@ function loadDataDirectory(dataName, dataIcon, edit){ //console.log("loadDataDir
 						edit=dataName;
 					displayInTheContainer(data, dataName, dataIcon, type, edit);
 					bindButtonOpenForm();
-					location.hash=hashUrlPage+".view.directory.dir."+dataName;
+					
 				}
 	,"html");
 }
@@ -565,12 +566,19 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	if(n>0){
 		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 
-		var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
-						'<button class="btn btn-default btn-sm btn-show-onmap inline" id="btn-show-links-onmap">'+
+		var html = "";
+
+		var btnMap = '<button class="btn btn-default btn-sm btn-show-onmap inline" id="btn-show-links-onmap">'+
 				            '<i class="fa fa-map"></i>'+
-				        '</button>' +
-						thisTitle+"<hr>" +
-					"</div>";
+				        '</button>';
+
+		html += "<div class='col-md-12 margin-bottom-15 labelTitleDir'>";
+		
+		if(dataName != "urls")
+			html += btnMap;
+
+		html +=	thisTitle + "<hr>";
+		html +=	"</div>";
 		
 		
 		mapElements = new Array();
@@ -601,8 +609,22 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		initBtnAdmin();
 		bindButtonOpenForm();
 		
+		var dataToMap = data;
+		if(dataName == "collections"){
+			dataToMap = new Array();
+			$.each(data, function(key, val){
+				$.each(val.list, function(type, list){
+					console.log("collection", type, list);
+					$.each(list, function(id, el){
+						dataToMap.push(el);
+					});
+				});
+			});
+		}
+
+					console.log("dataToMap", dataToMap);
 		$("#btn-show-links-onmap").off().click(function(){
-			Sig.showMapElements(Sig.map, data, "", thisTitle);
+			Sig.showMapElements(Sig.map, dataToMap, "", thisTitle);
 			showMap(true);
 		});
     

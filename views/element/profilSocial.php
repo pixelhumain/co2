@@ -565,21 +565,6 @@
 		$(".hide-"+contextData.type).hide();
 		getProfilSubview(subView,dirHash);
 		
-		$("#input-search-map").off().keyup(function(e){
-	        $("#second-search-bar").val($("#input-search-map").val());
-	        $("#main-search-bar").val($("#input-search-map").val());
-	        if(e.keyCode == 13){
-	            initTypeSearch("all");
-	            startSearch(0, indexStepInit, searchCallback);
-	         }
-	    });
-
-	    $("#menu-map-btn-start-search, #main-search-bar-addon").off().click(function(){
-	        initTypeSearch("all");
-	        startSearch(0, indexStepInit, searchCallback);
-	    });
-
-
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
 		getContextDataLinks();
@@ -587,7 +572,7 @@
 		var elemSpec = dyFInputs.get("<?php echo $type?>");
 		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");
 	});
-	function getProfilSubview(sub, dir){
+	function getProfilSubview(sub, dir){ console.log("getProfilSubview", sub, dir);
 		if(sub!=""){
 			if(sub=="gallery")
 				loadGallery();

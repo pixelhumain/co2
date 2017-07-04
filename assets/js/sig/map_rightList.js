@@ -193,7 +193,7 @@
 			//récupère l'url de l'icon a afficher
 			var ico = thisSig.getIcoByType(allElement);
 			var color = thisSig.getIcoColorByType(allElement);
-console.log("icon sig", allElement, "ico", ico, "color", color);
+			console.log("icon sig", allElement, "ico", ico, "color", color);
 			
 			var icons = '<i class="fa fa-'+ ico + ' text-'+ color +'"></i>';
 
@@ -228,10 +228,14 @@ console.log("icon sig", allElement, "ico", ico, "color", color);
 							button	+= 	"</div>";
 						}
 
-						if("undefined" != typeof element['address'] && "undefined" != typeof element['address']['addressLocality'] )
+						if("undefined" != typeof element['address'] && 
+						    element['address'] != null && 
+						   "undefined" != typeof element['address']['addressLocality'] )
 						button	+= 	"<div class='info_item city_item_map_list inline'>" + element['address']['addressLocality'] + "</div>";
 								
-						if("undefined" != typeof element['address'] && "undefined" != typeof element['address']['addressCountry'] )
+						if("undefined" != typeof element['address'] && 
+						    element['address'] != null && 
+						    "undefined" != typeof element['address']['addressCountry'] )
 						button	+= 	"<div class='info_item country_item_map_list inline'>" + element['address']['addressCountry'] + "</div>";
 						
 						if("undefined" != typeof element['cp'] )

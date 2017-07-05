@@ -272,9 +272,9 @@ function bindInviteModal(){
 				        	$.each(data.data, function(key, elt) {
 				        		addFloopEntity(elt.invitedUser.id, "<?php echo Person::COLLECTION ?>", elt.invitedUser);
 				        	});
-			        	}else 
-			        		//addFloopEntity(data.invitedUser.id, "<?php echo Person::COLLECTION ?>", data.invitedUser);
-			        	/*$('#inviteSearch').val("");
+			        	}else
+			        		addFloopEntity(data.invitedUser.id, "<?php echo Person::COLLECTION ?>", data.invitedUser);
+			        	$('#inviteSearch').val("");
 			        	$("#invite-modal-element #step3 #inviteName").val("");
 			        	$("#invite-modal-element #step3 #invite-modal-element #inviteEmail").val("");
 			        	$("#invite-modal-element #step3").addClass("hidden");
@@ -400,7 +400,7 @@ function bindInviteModal(){
 	$("#invite-modal-element #submitAfficherInvite").off().on("click", function() {
 		mylog.log("submitAfficherInvite");
 		var mails = $("#invite-modal-element #textareaMails").val().split(/[\s\n;]+/);
-		checkAndGetMails(mails);
+		checkAndGetMailsInvite(mails);
 	});
 }
   

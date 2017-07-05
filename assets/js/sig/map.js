@@ -171,7 +171,7 @@
 			{
 				if(typeof showMe == "undefined") showMe = true;
 
-				//mylog.warn("--------------- clearMap ---------------------");
+				mylog.warn("--------------- clearMap ---------------------");
 				if(this.markersLayer != "")
 					this.markersLayer.clearLayers();
 

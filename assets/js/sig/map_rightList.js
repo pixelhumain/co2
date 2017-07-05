@@ -69,7 +69,7 @@
 											showThis = true;
 										}
 
-										if(typeof this.address != "undefined")
+										if(typeof this.address != "undefined" && this.address != null)
 										if(typeof this.address.addressLocality != "undefined")
 										if(this.address.addressLocality.search(new RegExp($(thisSig.cssModuleName + ' #input_name_filter').val(), "i")) >= 0){
 											showThis = true;

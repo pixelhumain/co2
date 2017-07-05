@@ -2075,7 +2075,7 @@ function communecterUser(){
 function updateLocalityEntities(addressesIndex, addressesLocality){
 	mylog.warn("updateLocalityEntities");
 	$("#ajax-modal").modal("hide");
-	showMap(true);
+	
 	if(typeof formInMap.initUpdateLocality != "undefined"){
 		var address = contextData.address ;
 		var geo = contextData.geo ;
@@ -2089,6 +2089,7 @@ function updateLocalityEntities(addressesIndex, addressesLocality){
 		mylog.log(address, geo, contextData.type, addressesIndex);
 		formInMap.initUpdateLocality(address, geo, contextData.type, addressesIndex); 
 	}
+
 }
 
 function cityKeyPart(unikey, part){
@@ -2688,12 +2689,14 @@ var dyFInputs = {
 	    updateLocality = false;
 
 	    // Initialize tags list for network in form of element
-		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"){
+		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"  && typeof typeOb != "undefined" ){
 			$.each(networkJson.add, function(key, v) {
 				if(typeof networkJson.request.sourceKey != "undefined"){
+					mylog.log("here, sourceKey")
 					sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
 					typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
 				}
+
 				if(v){
 					if(notNull(networkJson.dynForm)){
 						mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
@@ -3959,8 +3962,13 @@ function initKInterface(params){ console.log("initKInterface");
 			formInMap.cancel();
     	//else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
 		//	getContextDataLinks();
-		else
-			showMap();
+		else{
+
+			if(isMapEnd == false && contextData && contextData.map && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id) )
+				Sig.showMapElements(Sig.map, contextData.map.data, contextData.map.icon, contextData.map.title);
+			
+				showMap();
+		}
     });
 
     bindLBHLinks();
@@ -3990,6 +3998,11 @@ function getContextDataLinks(){
 		success: function(data){
 			mylog.log("getContextDataLinks data", data);
 			Sig.restartMap();
+			contextData.map = {
+				data : data,
+				icon : "link",
+				title : "La communauté de <b>"+contextData.name+"</b>"
+			} ;
 			Sig.showMapElements(Sig.map, data, "link", "La communauté de <b>"+contextData.name+"</b>");
 			//showMap();
 		},

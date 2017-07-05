@@ -353,8 +353,11 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + str+" <b> lien"+s;
-		html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
-    	html +=	'<i class="fa fa-plus"></i> '+trad["Add link"]+'</a>' ;  
+		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
+			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
+    		html +=	'<i class="fa fa-plus"></i> '+trad["Add link"]+'</a>' ;
+		}
+		  
 	}
 
 	else if(dataName == "contacts"){
@@ -362,8 +365,10 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + " a " + countData+" <b> point de contact"+s;
-		html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
-    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ; 
+		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
+			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
+	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ;
+	    }
 
 
 	}

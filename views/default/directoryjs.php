@@ -83,11 +83,15 @@
 }
 <?php } ?>
 
-.keycat:hover,
-.keycat.active,
 .btn-select-category-1:hover,
 .btn-select-category-1.active{
-  background-color: #2C3E50!important;
+    background-color: #2C3E50!important;
+    color: #fff!important;
+    border-color:transparent!important;
+}
+.keycat:hover,
+.keycat.active{
+    background-color: #2BB0C6!important;
     color: #fff!important;
     border-color:transparent!important;
 }
@@ -318,7 +322,7 @@
                     <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
                   </button><br>
                   <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
-                    <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
+                    <button class="btn btn-default text-azure margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
                       <i class="fa fa-angle-right"></i> <?php echo $cat2; ?>
                     </button><br class="hidden">
                   <?php } ?>
@@ -408,7 +412,7 @@
                     <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
                   </button><br>
                   <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
-                    <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
+                    <button class="btn btn-default text-azure margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
                       <i class="fa fa-angle-right"></i> <?php echo $cat2; ?>
                     </button><br class="hidden">
                   <?php } ?>

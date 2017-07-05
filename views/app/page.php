@@ -128,6 +128,7 @@ function initPageInterface(){
     });
 
     $("#menu-map-btn-start-search").click(function(){
+        $("#second-search-bar").val($("#input-search-map").val());
         startGlobalSearch(0, indexStepGS);
     });
 

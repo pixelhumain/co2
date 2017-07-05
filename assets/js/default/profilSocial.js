@@ -109,6 +109,7 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		var dataName = $(this).data("type-dir");
 		location.hash=hashUrlPage+".view.directory.dir."+dataName;
+		if(lastWindowUrl==null) loadDataDirectory(dataName, "", edit);
 	});
 		
 	$("#subsubMenuLeft a").click(function(){
@@ -353,8 +354,11 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + str+" <b> lien"+s;
-		html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
-    	html +=	'<i class="fa fa-plus"></i> '+trad["Add link"]+'</a>' ;  
+		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
+			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
+    		html +=	'<i class="fa fa-plus"></i> '+trad["Add link"]+'</a>' ;
+		}
+		  
 	}
 
 	else if(dataName == "contacts"){
@@ -362,8 +366,10 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + " a " + countData+" <b> point de contact"+s;
-		html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
-    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ; 
+		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
+			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
+	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ;
+	    }
 
 
 	}
@@ -614,7 +620,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			dataToMap = new Array();
 			$.each(data, function(key, val){
 				$.each(val.list, function(type, list){
-					console.log("collection", type, list);
+					mylog.log("collection", type, list);
 					$.each(list, function(id, el){
 						dataToMap.push(el);
 					});
@@ -622,7 +628,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			});
 		}
 
-					console.log("dataToMap", dataToMap);
+					mylog.log("dataToMap", dataToMap);
 		$("#btn-show-links-onmap").off().click(function(){
 			Sig.showMapElements(Sig.map, dataToMap, "", thisTitle);
 			showMap(true);

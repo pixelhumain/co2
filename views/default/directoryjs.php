@@ -244,6 +244,10 @@
             <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
                 <i class="fa fa-university"></i> 
                 <span class="hidden-xs">Services publics</span>
+            </button><hr class="hidden-xs">
+            <button class="btn text-green-poi btn-directory-type" data-type="poi">
+                <i class="fa fa-map-marker"></i> 
+                <span class="hidden-xs">Points d'intêret</span>
             </button>
             <hr class="hidden-sm hidden-md hidden-lg">
           </div>

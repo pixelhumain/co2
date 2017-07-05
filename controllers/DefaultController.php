@@ -33,8 +33,9 @@ class DefaultController extends CommunecterController {
       // http://127.0.0.1/ph/network?network=tierslieuxlille
       // http://127.0.0.1/ph/network/default/index/src/tierslieuxlille
 
-	    if(@$_GET["network"] )
-	      $src = $_GET["network"];
+	    if(@$_GET["network"] ){
+	      $this->redirect(Yii::app()->createUrl("/network/default/index?src=".$_GET["network"]));
+      }
       if( @$src ){
         Yii::app()->theme = "network";
         Yii::app()->params['networkParams'] = $src;

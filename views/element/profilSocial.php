@@ -546,6 +546,8 @@
     var liveScopeType = "";
     var subView="<?php echo @$_GET['view']; ?>";
     var hashUrlPage= ( (typeof networkParams != "undefined") ? "?network="+networkParams : "" )+"#page.type."+contextData.type+".id."+contextData.id;
+
+    var hashUrlPage= "#page.type."+contextData.type+".id."+contextData.id;
     var cropResult;
     var idObjectShared = new Array();
 

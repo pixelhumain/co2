@@ -69,7 +69,7 @@
 											showThis = true;
 										}
 
-										if(typeof this.address != "undefined")
+										if(typeof this.address != "undefined" && this.address != null)
 										if(typeof this.address.addressLocality != "undefined")
 										if(this.address.addressLocality.search(new RegExp($(thisSig.cssModuleName + ' #input_name_filter').val(), "i")) >= 0){
 											showThis = true;
@@ -193,7 +193,7 @@
 			//récupère l'url de l'icon a afficher
 			var ico = thisSig.getIcoByType(allElement);
 			var color = thisSig.getIcoColorByType(allElement);
-			console.log("icon sig", allElement, "ico", ico, "color", color);
+			//console.log("icon sig", allElement, "ico", ico, "color", color);
 			
 			var icons = '<i class="fa fa-'+ ico + ' text-'+ color +'"></i>';
 

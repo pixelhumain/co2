@@ -319,6 +319,8 @@ jQuery(document).ready(function() {
             KScrollTo("#content-social");
     });*/
 
+    
+    
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
@@ -346,13 +348,18 @@ jQuery(document).ready(function() {
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
-            initTypeSearch(typeInit);
+            if(typeInit == "all") initTypeSearch("allSig");
+            else initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
          }
     });
 
     $("#menu-map-btn-start-search, #main-search-bar-addon").off().click(function(){
-        initTypeSearch(typeInit);
+        $("#second-search-bar").val($("#input-search-map").val());
+        $("#main-search-bar").val($("#input-search-map").val());
+        console.log("typeInit", typeInit);
+        if(typeInit == "all") initTypeSearch("allSig");
+        else initTypeSearch(typeInit);
         startSearch(0, indexStepInit, searchCallback);
     });
 

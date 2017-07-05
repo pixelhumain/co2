@@ -192,6 +192,7 @@ dynForm = {
             },
             subtype : dyFInputs.inputHidden(),
             price : dyFInputs.price(),
+            //devise : dyFInputs.inputSelect("Devise", "Iniquez la monnaie utilisée pour votre annonce", ["€", "$"]),
             name : dyFInputs.name( "classified" ) ,
             description : dyFInputs.textarea("Description", "..."),
             image : dyFInputs.image(),

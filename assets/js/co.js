@@ -2843,9 +2843,10 @@ var dyFInputs = {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
+	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
 		    	dyFObj.closeForm();
 				//alert( "image upload then goto : "+uploadObj.gotoUrl );
-	            urlCtrl.loadByHash( uploadObj.gotoUrl );
+	            urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 		    }
     	}
     },
@@ -2866,7 +2867,7 @@ var dyFInputs = {
 					});
 	    		}
 	        }
-	    } ;
+	    };
 	    return inputObj;
 	},
 
@@ -2883,12 +2884,13 @@ var dyFInputs = {
 	    return res;
 	},
     price :function(label, placeholder, rules, custom) { 
-		var inputObj = dyFInputs.inputText("Prix", "Prix ...") ;
+		var inputObj = dyFInputs.inputText("Prix (€)", "Prix ...") ;
 	    inputObj.init = function(){
     		$('input#price').filter_input({regex:'[0-9]'});
       	};
     	return inputObj;
     },
+
     email :function (label,placeholder,rules) {  
     	var inputObj = {
     		inputType : "text",

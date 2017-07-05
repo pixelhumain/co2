@@ -178,7 +178,7 @@ Tu peux agir concrétement autour de chez toi et découvrir ce qui s'y passe. Vi
                                 <div class="col-md-12 col-sm-12 col-xs-12 text-center">
 	                                <hr>
 	                                <a href="javascript:;" style="font-size: 13px;" class="btn btn-danger btnCancel" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Retour</a> 
-	                                <button class="btn bg-dark " id="btnInviteNew" >Inviter</button>
+	                                <button class="btn btn-primary" id="btnInviteNew" ><i class="fa fa-send"></i> Inviter</button>
 	                            </div>
                             </div>
                             
@@ -225,7 +225,7 @@ function bindInviteModal(){
 		}
 	});
 
-	$("#invite-modal-element  #btn-save-invite").off().on('click', function(){
+	/*$("#invite-modal-element  #btn-save-invite").off().on('click', function(){
 		mylog.log("btn-save-invite");
 		$(this).prop("disabled",true);
 		$(this).find("i").removeClass("fa-send").addClass("fa-spinner fa-spin");
@@ -239,7 +239,7 @@ function bindInviteModal(){
     			$("#invite-modal-element #step3 #inviteName").parent().append("<span class='text-red error-block-invite'><i>* Veuillez ajouter un nom</i></span>");	
     		$(this).prop("disabled",false);
 			$(this).find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
-    	}*/
+    	}
     	else{
     		mylog.log("here 3");
     		if($(".error-block-invite").length>=0)
@@ -267,21 +267,21 @@ function bindInviteModal(){
 					if (data &&  data.result) {               
 			        	toastr.success('L\'invitation a été envoyée avec succès!');
 			        	mylog.log(data);
-			        	/*
+			        	
 			        	if(typeof data.data !="undefined"){
 				        	$.each(data.data, function(key, elt) {
 				        		addFloopEntity(elt.invitedUser.id, "<?php echo Person::COLLECTION ?>", elt.invitedUser);
 				        	});
-			        	}else
-			        		addFloopEntity(data.invitedUser.id, "<?php echo Person::COLLECTION ?>", data.invitedUser);
-			        	$('#inviteSearch').val("");
+			        	}else 
+			        		//addFloopEntity(data.invitedUser.id, "<?php echo Person::COLLECTION ?>", data.invitedUser);
+			        	/*$('#inviteSearch').val("");
 			        	$("#invite-modal-element #step3 #inviteName").val("");
 			        	$("#invite-modal-element #step3 #invite-modal-element #inviteEmail").val("");
 			        	$("#invite-modal-element #step3").addClass("hidden");
 						//backToSearch();
 						$("#invite-modal-element #step3 #btn-save-invite").prop("disabled",false);
 						$("#invite-modal-element #step3 #btn-save-invite").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
-						*/
+						
 						urlCtrl.loadByHash(location.hash);
 			        } else {
 			        	$.unblockUI();
@@ -296,7 +296,7 @@ function bindInviteModal(){
 		        
 		    });
     	}
-  	});
+  	});*/
 	$('#invite-modal-element #inviteSearch').keyup(function(e){
 	    var search = $('#invite-modal-element #inviteSearch').val();
 	    if(search.length>2){
@@ -436,8 +436,8 @@ function runinviteFormValidation(el) {
             }
         },
         messages : {
-            inviteName : "* "+trad["Please specify a name"],
-            inviteSearch : "* "+trad["Please specify a email"]
+            inviteName : "* <?php echo Yii::t("common","Please specify the name") ?>",//+trad["Please specify a name"],
+            inviteEmail : "* <?php echo Yii::t("common","Please enter an email") ?>"//+trad["Please specify a email"]
         },
         invalidHandler : function(invite, validator) {//display error alert on form submit
             successHandler2.hide();
@@ -462,6 +462,8 @@ function runinviteFormValidation(el) {
             mylog.log("submit handler");
             successHandler2.show();
             errorHandler2.hide();
+            $("#btnInviteNew").prop("disabled",true);
+			$("#btnInviteNew").find("i").removeClass("fa-send").addClass("fa-spin fa-spinner");
             var parentId = $(".form-invite .invite-parentId").val();
             var invitedUserName = $("#invite-modal-element #inviteName").val();
             var invitedUserEmail = $("#invite-modal-element #inviteEmail").val();
@@ -483,13 +485,19 @@ function runinviteFormValidation(el) {
                 $.unblockUI();
                 if (data &&  data.result) {               
                     toastr.success('L\'invitation a été envoyée avec succès!');
+                    addFloopEntity(data.invitedUser.id, "<?php echo Person::COLLECTION ?>", data.invitedUser);
+                    $("#invite-modal-element #step3").addClass("hidden");
                     $("#invite-modal-element #inviteName").val("");
                     $("#invite-modal-element #inviteEmail").val("");
                     $("#invite-modal-element #inviteText").val('Bonjour, J\'ai découvert un réseau sociétal citoyen appelé "Communecter - être connecter à sa commune".\nTu peux agir concrétement autour de chez toi et découvrir ce qui s\'y passe. Viens rejoindre le réseau sur communecter.org."');
                     $('#invite-modal').modal('hide');
-                    
+                    $('#inviteSearch').val("");
+                    $("#btnInviteNew").prop("disabled",false);
+					$("#btnInviteNew").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
                 } else {
                     $.unblockUI();
+                    $("#btnInviteNew").prop("disabled",false);
+					$("#btnInviteNew").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
                     toastr.error(data.msg);
                 }
             });
@@ -626,7 +634,6 @@ function newInvitation(){
 	}
 
 	$("#invite-modal-element #inviteText").val("<?php echo Yii::t("person","Hello, \\nCome and meet me on that website!\\nAn email, your town and you are connected to your city!\\nYou can see everything that happens in your city and act for the commons."); ?>");
-	//runinviteFormValidation();
 }
 
 function fadeInView(inView){

@@ -527,6 +527,11 @@
 						"parentId" => (string)$element['_id'], 
 						"members" => @$members));
 
+		$this->renderPartial('../element/invite',
+				array(	"type"=>$type, 
+						"parentId" => (string)$element['_id'], 
+						"members" => @$members));
+
 ?>
 
 <?php	$cssAnsScriptFilesModule = array(

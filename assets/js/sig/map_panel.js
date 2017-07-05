@@ -33,7 +33,7 @@
 
 				$(this.cssModuleName + ' #item_panel_filter_' + tagSelected).addClass("selected");
 			}
-			this.showMapElements(thisMap, this.dataMap);
+			this.showMapElements(thisMap, this.dataMap, "", "");
 			this.zoomOnAllElements(thisMap);
 		};
 

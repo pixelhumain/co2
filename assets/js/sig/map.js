@@ -700,7 +700,7 @@
 			this.Sig.showMapElements = function(thisMap, data, iconLegende, textLegende)
 			{
 				//mylog.warn("--------------- showMapElements ---------------------");
-				if(typeof textLegende != "undefined" && textLegende != null){
+				if(typeof textLegende != "undefined" && textLegende != null && textLegende != ""){
 					this.listPanel.tags = new Array();
 					this.listPanel.types = new Array();
 					this.panelFilter = "all";

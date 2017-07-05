@@ -2840,9 +2840,10 @@ var dyFInputs = {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
+	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
 		    	dyFObj.closeForm();
 				//alert( "image upload then goto : "+uploadObj.gotoUrl );
-	            urlCtrl.loadByHash( uploadObj.gotoUrl );
+	            urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 		    }
     	}
     },

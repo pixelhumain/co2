@@ -501,7 +501,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
           var type = $(this).data("type");
           var urlToSend = baseUrl+"/"+moduleId+"/element/delete/type/"+type+"/id/"+id;
           
-          bootbox.confirm("confirm please !!",
+          bootbox.confirm(trad.areyousuretodelete,
           function(result) 
           {
         if (!result) {

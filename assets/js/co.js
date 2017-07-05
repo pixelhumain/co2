@@ -2866,7 +2866,7 @@ var dyFInputs = {
 					});
 	    		}
 	        }
-	    } ;
+	    };
 	    return inputObj;
 	},
 
@@ -2883,12 +2883,13 @@ var dyFInputs = {
 	    return res;
 	},
     price :function(label, placeholder, rules, custom) { 
-		var inputObj = dyFInputs.inputText("Prix", "Prix ...") ;
+		var inputObj = dyFInputs.inputText("Prix (€)", "Prix ...") ;
 	    inputObj.init = function(){
     		$('input#price').filter_input({regex:'[0-9]'});
       	};
     	return inputObj;
     },
+
     email :function (label,placeholder,rules) {  
     	var inputObj = {
     		inputType : "text",

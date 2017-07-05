@@ -355,21 +355,21 @@
 
           <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 padding-top-10" id="section-price">
           
-            <div class="form-group col-md-4 col-sm-4 col-xs-6">
+            <div class="form-group col-md-5 col-sm-5 col-xs-6">
               <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
                 <i class="fa fa-chevron-down"></i> Prix min
               </label>
               <input type="text" id="priceMin" name="priceMin" class="form-control" placeholder="prix min"/>
             </div>
 
-            <div class="form-group col-md-4 col-sm-4 col-xs-6">
+            <div class="form-group col-md-5 col-sm-5 col-xs-6">
               <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
                 <i class="fa fa-chevron-down"></i> Prix max
               </label>
               <input type="text" id="priceMax" name="priceMax" class="form-control col-md-5" placeholder="prix max"/>
             </div>
             
-            <div class="form-group col-md-4 col-sm-4 col-xs-12">
+            <div class="form-group col-md-2 col-sm-2 col-xs-12 hidden">
               <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
                 <i class="fa fa-money"></i> Devise
               </label>
@@ -378,6 +378,12 @@
                 <option class="bold" value="$">dollars $</option>
                 <option class="bold" value="CFP">CFP</option>
               </select>
+            </div>
+
+            <div class="form-group col-md-2 col-sm-2 col-xs-12 margin-top-10">
+              <button class="btn btn-default col-md-12 margin-top-15 btn-directory-type" data-type="classified">
+                <i class="fa fa-search"></i> <span class="hidden-xs hidden-ms">Rechercher</span>
+              </button>
             </div>
 
             <hr class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding" id="before-section-result"> 

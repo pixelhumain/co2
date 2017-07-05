@@ -51,7 +51,11 @@ function checkPoll(){
 		countPoll++;
 	}
 }
-
+function setLanguage(lang){
+	$.cookie('lang', lang, { expires: 365, path: "/" });
+	toastr.success("Changement de la langue en cours");
+	urlCtrl.loadByHash(location.hash);
+}
 function bindRightClicks() { 
 	$.contextMenu({
 	    selector: ".add2fav",

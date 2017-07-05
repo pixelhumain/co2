@@ -937,8 +937,7 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 				showMap(true);
 
     		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
-        		uploadObj.type = contextData.type;
-        		uploadObj.id = contextData.id;
+        		uploadObj.set(contextData.type,contextData.id);
         	}
         	
         	if( typeof urlCtrl.afterLoad == "function") {
@@ -2058,7 +2057,7 @@ function newInvitation(){
 		$("#ajaxFormModal #inviteName").val($("#ajaxFormModal #inviteSearch").val());
 		$("#ajaxFormModal #inviteEmail").val("");
 	}
-	$("#inviteText").val('<?php echo Yii::t("person","Hello, \\nCome and meet me on that website!\\nAn email, your town and you are connected to your city!\\nYou can see everything that happens in your city and act for the commons."); ?>');
+	$("#inviteText").val('');
 }
 
 function communecterUser(){
@@ -2249,10 +2248,19 @@ var uploadObj = {
 	isSub : false,
 	update  : false,
 	folder : "communecter", //on force pour pas casser toutes les vielles images
+	contentKey : "profil",
+	path : null,
 	set : function(type,id){
-		uploadObj.type = type;
-		mylog.log("set uploadObj.id", id);
-		uploadObj.id = id;
+		if(typeof type != "undefined"){
+			mylog.log("set uploadObj", id,type,uploadObj.folder,uploadObj.contentKey);
+			uploadObj.type = type;
+			uploadObj.id = id;
+			uploadObj.path = baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+uploadObj.folder+"/folder/"+type+"/ownerId/"+id+"/input/qqfile/contentKey/"+uploadObj.contentKey;
+		} else {
+			uploadObj.type = null;
+			uploadObj.id = null;
+			uploadObj.path = null;
+		}
 	}
 };
 
@@ -2445,8 +2453,7 @@ var dyFObj = {
 		                }
 					}
 	            }
-	            uploadObj.type = null;
-	    		uploadObj.id = null;
+	            uploadObj.set()
 	    	}
 	    });
 	},
@@ -2454,15 +2461,13 @@ var dyFObj = {
 		$('#ajax-modal').modal("hide");
 	    //clear the unecessary DOM 
 	    $("#ajaxFormModal").html(''); 
-	   	uploadObj.type = null;
-	    uploadObj.id = null;
+	   	uploadObj.set();
 	    uploadObj.update = false;
 	},
 	editElement : function (type,id){
 		mylog.warn("--------------- editElement ",type,id);
 		//get ajax of the elemetn content
-		uploadObj.type = type;
-		uploadObj.id = id;
+		uploadObj.set(type,id);
 		uploadObj.update = true;
 
 		$.ajax({
@@ -2636,7 +2641,7 @@ var dyFObj = {
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
 				mylog.log("setMongoId uploadObj.id", data.id);
-				uploadObj.id = data.id;
+				uploadObj.set(type,data.id);
 				$("#ajaxFormModal #id").val(data.id);
 				if( typeof callback === "function" )
                 	callback();
@@ -3779,8 +3784,7 @@ var js_templates = {
 //*********************************************************************************
 var album = {
 	show : function (id,type){
-		uploadObj.type = type;
-		uploadObj.id = id;
+		uploadObj.set(type,id);
 		getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+id+"/type/"+type+"/tpl/json" , function( data ) { 
 			
 			console.dir(data);
@@ -3794,8 +3798,7 @@ var album = {
 				},
 			    function(){
 			    	$(".addPhotoBtn").click(function() { 
-			    		uploadObj.type = type;
-			    		uploadObj.id = id;
+			    		uploadObj.set(type,id);
 						dyFObj.openForm("addPhoto");
 			    	});
 			    	album.delete();

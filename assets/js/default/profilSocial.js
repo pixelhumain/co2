@@ -283,7 +283,7 @@ function bindButtonMenu(){
 
 function bindButtonOpenForm(){
 	//window select open form type (selectCreate)
-	$(".btn-open-form").click(function(){
+	$(".btn-open-form").off().on("click",function(){
         var typeForm = $(this).data("form-type");
         mylog.log("test", $(this).data("form-subtype")),
         currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;

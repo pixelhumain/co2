@@ -621,6 +621,10 @@
 			"news"   : "Actualités",
 			"News"   : "Actualités",
 			"NEWS"   : "Actualités",
+
+			"classified"   : "Annonces",
+			"poi"   : "Points d'intérêt",
+			"city"   : "Commune",
 			
 		}
 

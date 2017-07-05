@@ -700,6 +700,12 @@
 			this.Sig.showMapElements = function(thisMap, data, iconLegende, textLegende)
 			{
 				//mylog.warn("--------------- showMapElements ---------------------");
+				if(typeof textLegende != "undefined" && textLegende != null && textLegende != ""){
+					this.listPanel.tags = new Array();
+					this.listPanel.types = new Array();
+					this.panelFilter = "all";
+					this.panelFilterType = "all";
+				}
 				
 				//si la carte n'est pas chargée
 				//on mémorise les données et on les affichera avec le prochain showMap

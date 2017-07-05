@@ -170,14 +170,16 @@
 					$inviteLink = "contributors";
 					$inviteText =  Yii::t("common",'Invite contributors') ;
 				}else if ($type == Person::COLLECTION) { 
-					$inviteLink = "members";
+					$inviteLink = "people";
 					$inviteText =  Yii::t("common",'Invite people') ;
 				}
-
+				$whereConnect="";
+				if($type!=Person::COLLECTION)
+					$whereConnect='to the '.Element::getControlerByCollection($type);
 				if( @$inviteLink && @$inviteText ){?>
 				<li class="">
 					<a href="javascript:" class="tooltips ssmla text-red" 
-					data-placement="bottom" data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common","to the ".Element::getControlerByCollection($type)))); ?>" 
+					data-placement="bottom" data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common", $whereConnect))); ?>" 
 					data-toggle="modal" data-target="#modal-scope">
 						<i class="fa fa-user-plus "></i> <?php echo $inviteText ?>
 					</a>

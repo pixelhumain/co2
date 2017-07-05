@@ -84,10 +84,13 @@ function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(typeInit == "all") {
-        searchType = ["persons", "organizations", "projects"];
+        searchType = ["persons", "organizations", "projects", "poi"];
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
 
         indexStepInit = 30;
+    }else if(typeInit == "allSig"){
+      searchType = ["persons", "organizations", "projects", "poi"];
+      indexStepInit = 50;
     }
     else{
         searchType = [ typeInit ];
@@ -813,13 +816,13 @@ var directory = {
     // ********************************
 	  elementPanelHtml : function(params){
     		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name);
-    		mylog.log("----------- elementPanelHtml",params.type,params.name, params);
+    		//mylog.log("----------- elementPanelHtml",params.type,params.name, params);
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
     		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" contain_"+params.type+"_"+params.id+"'>";
     		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
-    		mylog.log("inMyContacts",inMyContacts(params.type, params.name));
+    		
         var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;
         if(typeof params.edit  != "undefined")
               str += this.getAdminToolBar(params);
@@ -1686,7 +1689,7 @@ var directory = {
 
 
             itemType=(contentType) ? contentType :params.type;
-            mylog.log("itemType",itemType);
+            
             if( itemType ){ 
                 if(directory.dirLog) mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);

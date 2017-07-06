@@ -5,7 +5,9 @@
     
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
-    $this->renderPartial($layoutPath.'header', 
+
+    if($this->module->id != "network")
+        $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
                                 "page" => "page") ); 
 ?>

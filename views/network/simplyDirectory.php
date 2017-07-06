@@ -970,13 +970,12 @@ function breadcrumGuide(level, url){
 
 
 function getAjaxFiche(url, breadcrumLevel){
-
 	mylog.log("getAjaxFiche Network", url, breadcrumLevel);
 	$("#ficheInfoDetail").empty();
 	if(location.hash == ""){
-		history.pushState(null, "New Title", url);
+		history.pushState(null, "New Title", '?src='+networkParams+url);
 	}
-
+	
 	if(isMapEnd){
 		pathTitle="Cartographie";
 		pathIcon = "map-marker";
@@ -1024,7 +1023,7 @@ function getAjaxFiche(url, breadcrumLevel){
 	});
 
 	mylog.log("networkParams", networkParams);
-
+	
 	getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
 		$.unblockUI();
 		mylog.log(contextData);

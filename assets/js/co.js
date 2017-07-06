@@ -51,7 +51,11 @@ function checkPoll(){
 		countPoll++;
 	}
 }
-
+function setLanguage(lang){
+	$.cookie('lang', lang, { expires: 365, path: "/" });
+	toastr.success("Changement de la langue en cours");
+	urlCtrl.loadByHash(location.hash);
+}
 function bindRightClicks() { 
 	$.contextMenu({
 	    selector: ".add2fav",
@@ -1985,7 +1989,9 @@ function inMyContacts (type,id) {
 	var res = false ;
 	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
 		$.each( myContacts[type], function( key,val ){
-			if( id == val["_id"]["$id"] ){
+			mylog.log("val", val);
+			if( ( typeof val["_id"] != "undefined" && id == val["_id"]["$id"] ) || 
+				(typeof val["id"] != "undefined" && id == val["id"] ) ) {
 				res = true;
 				return ;
 			}

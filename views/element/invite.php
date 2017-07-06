@@ -274,15 +274,7 @@ function bindInviteModal(){
 				        	});
 			        	}else
 			        		addFloopEntity(data.invitedUser.id, "<?php echo Person::COLLECTION ?>", data.invitedUser);
-			        	/*$('#inviteSearch').val("");
-			        	$("#invite-modal-element #step3 #inviteName").val("");
-			        	$("#invite-modal-element #step3 #invite-modal-element #inviteEmail").val("");
-			        	$("#invite-modal-element #step3").addClass("hidden");
-						//backToSearch();
-						$("#invite-modal-element #step3 #btn-save-invite").prop("disabled",false);
-						$("#invite-modal-element #step3 #btn-save-invite").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
-						*/
-						urlCtrl.loadByHash(location.hash);
+			        	urlCtrl.loadByHash(location.hash);
 			        } else {
 			        	$.unblockUI();
 						toastr.error(data.msg);

@@ -2179,20 +2179,21 @@ var collection = {
 				console.warn(params.action,collection,what,id);
 				if(data.result){
 					if(data.list == '$unset'){
-						if(location.hash.indexOf("#page") >=0){
+						/*if(location.hash.indexOf("#page") >=0){
 							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){ 
                 				loadDataDirectory("collections", "star"); 
               				}else{ 
                 				$(".favorisMenu").removeClass("text-yellow"); 
                 				$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o'); 
               				} 
-						}else{
-							$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
+						}else{*/
+							$(el).removeClass("text-yellow"); 
+							$(el).children("i").removeClass("fa-star text-yellow").addClass('fa-star-o');
 							delete userConnected.collections[collection][what][id];
-						}
+						//}
 					}
 					else{
-						if(location.hash.indexOf("#page") >=0){
+						/*if(location.hash.indexOf("#page") >=0){
 							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){ 
                 				loadDataDirectory("collections", "star"); 
               				}else{ 
@@ -2200,8 +2201,10 @@ var collection = {
                 				$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star'); 
               				}
               			}
-						else
-							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
+						else*/
+							$(el).addClass("text-yellow"); 
+							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-yellow');
+
 						if(!userConnected.collections)
 							userConnected.collections = {};
 						if(!userConnected.collections[collection])

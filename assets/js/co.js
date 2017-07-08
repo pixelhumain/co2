@@ -750,7 +750,7 @@ var urlCtrl = {
 		// mylog.log("IS DIRECTORY ? ", 
 		// 			hash.indexOf("#default.directory"), 
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
-		
+
 		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
 			mylog.log("globalTheme", globalTheme);
@@ -2698,7 +2698,7 @@ var dyFInputs = {
 	    updateLocality = false;
 
 	    // Initialize tags list for network in form of element
-		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"  && typeof typeOb != "undefined" ){
+		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"  && typeof typeObj != "undefined" ){
 			$.each(networkJson.add, function(key, v) {
 				if(typeof networkJson.request.sourceKey != "undefined"){
 					mylog.log("here, sourceKey")
@@ -2716,7 +2716,6 @@ var dyFInputs = {
 								typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
 						}
 						mylog.log("networkJson.dynForm");
-					
 						mylog.log("networkJson.dynForm", "networkJson.dynForm");
 						if(notNull(networkJson.dynForm.extra)){
 							var nbListTags = 1 ;
@@ -2727,7 +2726,8 @@ var dyFInputs = {
 									"inputType" : "tags",
 									"placeholder" : networkJson.dynForm.extra["tags"+nbListTags].placeholder,
 									"values" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
-									"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ]
+									"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
+									"label" : networkJson.dynForm.extra["tags"+nbListTags].list
 								};
 								nbListTags++;
 								mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);

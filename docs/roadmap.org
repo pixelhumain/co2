@@ -96,6 +96,8 @@ Liste des notifications déjà lues => #370 #453
 [ ] url city a transmettre 
 @Tib et @Tango 
 [ ] REfactor DDA 
+@tango
+[ ] connecter le form mail au membres d'un groupe
 @Clem
 [ ] Finir Besoin Ressource compétence () 
 [ ] visualisation de la banque des besoins =>#1260 + #490

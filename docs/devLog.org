@@ -64,6 +64,12 @@ IndieCamp Névez ... Installation 1% en cours
 **** Params config => Mettre les deux variables à jour (celle ci sont bonnes pour la prod) => utliser dans l'accueil
     "openatlasId" => "555eba56c655675cdd65bf19",
     "communecterId" => "55dafac4e41d75571d848360"
+**** Supprimer les news avec un media string
+db.getCollection('news').find({ "media" : {'$type': 2},"created":{'$lt':new Date('Jun 01, 2016')}}).count()
+152 news avec un media de type string enregistrer entre janvier 2016 et mai 2016 (avant la mise en ligne de Juin)
+qui font sauté les fils des pages !! 
+**** Supprimer les news de type needs (après avoir lancer le bash ObjectObjectTypeNewsToObjectType) 
+db.getCollection('news').find("object.type":"needs")
 
 ----------------------------------------------------
 

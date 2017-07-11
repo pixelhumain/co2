@@ -94,6 +94,7 @@ Liste des notifications déjà lues => #370 #453
 [ ] Stephane Exodata 0692615381
 [ ] transfert d'image PROD to QA
 [ ] url city a transmettre 
+[ ] dynform bookmarking using POI : add a url > Next > get content (voir avec tango kgougle )
 @Tib et @Tango 
 [ ] REfactor DDA 
 @tango

@@ -363,7 +363,7 @@ function modifyNews(idNews,typeNews){
 				   	if(typeof updateNews[idNews]["media"] != "undefined")
 				   		message += getMediaCommonHtml(updateNews[idNews]["media"],"save");
 		message +="</div>"+
-					'<div class="form-group tagstags">'+
+					'<div class="form-group tagstags col-md-12 col-sm-12 col-xs-12">'+
           				'<input id="tagsUpdate" type="" data-type="select2" name="tags" placeholder="#Tags" value="" style="width:100%;">'+       
       				"</div>"+
 				   "</div>";
@@ -419,7 +419,7 @@ function modifyNews(idNews,typeNews){
 			if ($("#tagsUpdate").val() != ""){
 				newNews.tags = $("#tagsUpdate").val().split(",");	
 			}
-			if (mentionsInput.length != 0){
+			if (typeof mentionsInput != "undefined" && mentionsInput.length != 0){
 				newNews.mentions=mentionsInput;
 			}
 		    //if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));	

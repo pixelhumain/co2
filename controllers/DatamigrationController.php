@@ -1473,6 +1473,81 @@ class DatamigrationController extends CommunecterController {
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
+	public function actionObjectObjectTypeNewsToObjectType(){
+	  	// Check in mongoDB
+	  	//// db.getCollection('news').find({"object.objectType": {'$exists':true}})
+	  	// Check number of news to formated
+	  	//// db.getCollection('news').find({"object.objectType": {'$exists':true}}).count()
+	  	$news=PHDB::find(News::COLLECTION,array("object.objectType"=>array('$exists'=>true)));
+	  	$nbNews=0;
+	  	foreach($news as $key => $data){
+	  		$newObject=array("id"=>$data["object"]["id"], "type"=> $data["object"]["objectType"]);
+			PHDB::update(News::COLLECTION,
+				array("_id" => $data["_id"]) , 
+				array('$set' => array("object" => $newObject))
+			);
+	  		$nbNews++;
+	  	}
+	  	echo "nombre de news traitées:".$nbNews." news";
+	}
+
+
+	public function actionUpOldNotifications(){
+  	// Update notify.id 
+  	$notifications=PHDB::find(ActivityStream::COLLECTION,array("notify.id"=>array('$exists'=>true)));
+  	$nbNotifications=0;
+  	//print_r($notifications);
+  	foreach($notifications as $key => $data){
+  		//print_r($data["notify"]["id"]);
+  		$update=false;
+  		$newArrayId=array();
+  		foreach($data["notify"]["id"] as $val){
+			if(gettype($val)=="string"){
+				//echo($val);
+  				$newArrayId[$val]=array("isUnsee"=>true,"isUnread"=>true);
+  				$update=true;
+  			}
+  		}
+  		if($update){
+  			//print_r($newArrayId);
+			PHDB::update(ActivityStream::COLLECTION,
+				array("_id" => $data["_id"]) , 
+				array('$set' => array("notify.id" => $newArrayId))
+			);
+			$nbNotifications++;
+		}
+  		
+  	}
+  	echo "nombre de notifs traitées:".$nbNotifications." notifs";
+  }
+  	public function actionSharedByRefactor(){
+	  	// Check in mongoDB
+	  	//// db.getCollection('news').find({"object.objectType": {'$exists':true}})
+	  	// Check number of news to formated
+	  	//// db.getCollection('news').find({"object.objectType": {'$exists':true}}).count()
+	  	$news=PHDB::find(News::COLLECTION,array());
+	  	$nbNews=0;
+	  	foreach($news as $key => $data){
+	  		if(@$data["targetIsAuthor"] && $data["targetIsAuthor"] == true ){
+				PHDB::update(News::COLLECTION,
+					array("_id" => $data["_id"]) , 
+					array('$set' => array("sharedBy" => array(array('id'=> $data["target"]["id"],
+        					'type'=>$data["target"]["type"],
+        					'updated'=> $data["created"]))))
+				);
+			} else {
+				PHDB::update(News::COLLECTION,
+					array("_id" => $data["_id"]) , 
+					array('$set' => array("sharedBy" => array(array('id'=> $data["author"],
+        					'type'=>"citoyens",
+        					'updated'=> $data["created"]))))
+				);
+			}
+	  		$nbNews++;
+	  	}
+	  	echo "nombre de news traitées:".$nbNews." news";
+  		
+  	}
 
 
 }

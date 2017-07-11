@@ -236,7 +236,7 @@ function notifCount(upNotifUnseen, element)
 	mylog.log(" !!!! notifCount", countNotif, "element :",element);
 	$(".notifCount").html( countNotif );
 	if(countNotif == 0)
-		$(".notifList"+element).html("<li><i class='fa fa-ban'></i> No more notifications for the moment</li>");
+		$(".notifList"+element).html("<li><i class='fa fa-ban'></i> "+trad["noMoreNotifs"]+"</li>");
 	//if(element==""){
 		if( countNotifUnseen > 0)
 		{

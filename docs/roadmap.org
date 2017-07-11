@@ -6,7 +6,6 @@
 [ ] possibilité d'envoie un messsage entre conseil citoyen 
 [ ] Btn suggest sur co
 ‎   [ ]    Ajouter un participant type orga 
-[ ] Pano facon reparali 
 [ ] Invité par le phone
 [ ] partager le lien vers lappli dans l'email 
 
@@ -29,25 +28,17 @@ j'ai modifié la date de fin, mais ce projet reste dans "ancien projet"
     https://prerender.io/documentation
 
 * Global
+[.2] pouvoir ajouter des url d'image plutôt que d'uploader les photos ou le copier coller
 [.2] Ne plus etre bloquer pour ouvrir des pays => #1261, #323
   - utilisant le localiseur et une validation que tout est bon pour ajouter une city 
   - ouverture par pays validé en amont 
-
 [.2] internationalisation traduction
+
 [.2] la charte ethique en 10 pts 
   - Liberté 
   - respect total de l'autre 
   - un outil pur faire société 
-[.2] bouton share (Social) non intrusif 
 [.2 spec] reflechir First Connect , show notifications, hot news ....  
-[.2] pouvoir ajouter des url d'image plutôt que d'uploader les photos ou le copier coller
-[.2] code cleaning : => #634, #961, #755, #419
-  - typeSIG=ctrl=collection 
-  - Vocabulaire (proposal = action = rooms = action rooms...)
-  - theme => suppression des anciennes vues
-Refactor Directory2 vers Résultat de recherche
- - normaliser l'affichage de Directory2 (communauté) pour le mettre comme les resultats de recherche
- => #275, #493
 
  * Elements
 [.2] event + project : change organiser #632
@@ -62,19 +53,14 @@ Refactor Directory2 vers Résultat de recherche
 Report Abuse on element
 
 ** Event ideas 
+  [.2] Duplication d'event
   [.2] agenda : les events prennent pas la durée sur plusieurs jours
   [.2] affiché les event mois precedent et suivant
-
-  [.2] Duplication d'event
   [.21] Best place calculator : utilisant la position des participants
   [.2] parent Event : load param ajax : show only ongoing or event to come 
   When subevent , prefill location => #1017
   Type d'événement : liste ouverte #663
   Pouvoir choisir en lieu Online pour les events #663
-
-** Needs
-  [.2 spéc] Finir Besoin Ressource compétence () 
-  [.2 spec] visualisation de la banque des besoins =>#1260 + #490
 
 ** POI
   [.2] affiché sur la carte un type geoJson 
@@ -95,8 +81,52 @@ Report Abuse on element
 Notification intelligentes => 685
 Liste des notifications déjà lues => #370 #453
 
+
 * ************************************************************    
-* Version 0.2  : en cours
+* Version 0.21  : MEQA
+* ************************************************************  
+
+@Tib 
+[ ] Finir module Tiers Lieux 
+[ ] REssource
+[ ] Besoin
+[ ]  Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté
+[ ] Stephane Exodata 0692615381
+[ ] transfert d'image PROD to QA
+[ ] url city a transmettre 
+@Tib et @Tango 
+[ ] REfactor DDA 
+@Clem
+[ ] Finir Besoin Ressource compétence () 
+[ ] visualisation de la banque des besoins =>#1260 + #490
+[ ] msg mail sur un groupe sur les @ dans les news, et @all 
+@Rapha 
+[ ] internationalisation 
+  [ ] Barcelone
+  [ ] ajout des villes libre
+  [ ] modification villes via dynform 
+  [ ] ajout ville via import import 
+  [ ] traduction EN + ES
+[ ] network 
+  [ ] refactor cleanup 
+  [ ] simplifier l'ergonomie 
+    [ ] btn plus
+    [ ] filtres
+    [ ] liste 
+    [ ] affiche au load 
+    [ ] lazyload 
+@damien 
+  [ ] coopedia ??
+@daniel
+  [ ] SSO
+@Marc 
+  [ ] wikimedia
+@Christopher
+  [ ] nextclowd
+  [ ] DEV et QA sur server privé
+
+* ************************************************************    
+* Version 0.2  : MEQA
 * ************************************************************  
 ** @Tib
 [ ] on previews , activate keyboard navigation

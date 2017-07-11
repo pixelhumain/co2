@@ -1520,6 +1520,34 @@ class DatamigrationController extends CommunecterController {
   	}
   	echo "nombre de notifs traitées:".$nbNotifications." notifs";
   }
+  	public function actionSharedByRefactor(){
+	  	// Check in mongoDB
+	  	//// db.getCollection('news').find({"object.objectType": {'$exists':true}})
+	  	// Check number of news to formated
+	  	//// db.getCollection('news').find({"object.objectType": {'$exists':true}}).count()
+	  	$news=PHDB::find(News::COLLECTION,array());
+	  	$nbNews=0;
+	  	foreach($news as $key => $data){
+	  		if(@$data["targetIsAuthor"] && $data["targetIsAuthor"] == true ){
+				PHDB::update(News::COLLECTION,
+					array("_id" => $data["_id"]) , 
+					array('$set' => array("sharedBy" => array(array('id'=> $data["target"]["id"],
+        					'type'=>$data["target"]["type"],
+        					'updated'=> $data["created"]))))
+				);
+			} else {
+				PHDB::update(News::COLLECTION,
+					array("_id" => $data["_id"]) , 
+					array('$set' => array("sharedBy" => array(array('id'=> $data["author"],
+        					'type'=>"citoyens",
+        					'updated'=> $data["created"]))))
+				);
+			}
+	  		$nbNews++;
+	  	}
+	  	echo "nombre de news traitées:".$nbNews." news";
+  		
+  	}
 
 
 }

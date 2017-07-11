@@ -385,6 +385,8 @@ function modifyNews(idNews,typeNews){
 	      label: "Enregistrer",
 	      className: "btn-success",
 	      callback: function() {
+	      	heightCurrent=$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").height();
+	      	$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").append("<div class='updateLoading' style='line-height:"+heightCurrent+"px'><i class='fa fa-spin fa-spinner'></i> En cours de modification</div>");
 	      	$('.newsTextUpdate').mentionsInput('getMentions', function(data) {
       			mentionsInput=data;
     		});
@@ -434,7 +436,6 @@ function modifyNews(idNews,typeNews){
 			    .done(function (data) {
 		    		if(data)
 		    		{
-		    			console.log(data);
 		    			$("#"+typeNewsUpdate+idNewsUpdate).replaceWith(data);
 		    			bindEventNews();
 		    			//if the news is post in a different month than last news and current month

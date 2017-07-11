@@ -13,6 +13,9 @@
 ----------------------------------------------------
 ----------------------------------------------------
 * Version 0.2
+** @Tango
+*** batch pour le partager les news
+/co2/datamigration/SharedByRefactor
 
 ** @Rapha
 *** initialise les multiscopes
@@ -24,12 +27,12 @@
 
 ** @Bouboule : 
 **** Bash de reprise des data dans les chart des projets
-/communecter/datamigration/RefactorChartProjectData
+/co2/datamigration/RefactorChartProjectData
 **** Bash de reprise des data dans notifications 
 ****** Create notify.id as object with isUnread and isUnseen
-/communecter/datamigration/UpOldNotifications
+/co2/datamigration/UpOldNotifications
 **** Bash of object.type inbstead of object.objectType on news(!!!important with notification reactor!!!!)
-ph/communecter/datamigration/ObjectObjectTypeNewsToObjectType
+/co2/datamigration/ObjectObjectTypeNewsToObjectType
 ----------------------------------------------------
 
 * Version 0.17

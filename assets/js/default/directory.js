@@ -843,7 +843,7 @@ var directory = {
         if(params.updated != null )
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
         
-        var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' " : " lbh'";
+        var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
         if(params.type == "citoyens") 
             params.hash += '.viewer.' + userId;
        // if(typeof params.size == "undefined" || params.size == "max")
@@ -1055,7 +1055,7 @@ var directory = {
           var c = 1;
           $.each(data.list,function(k,v) { 
             mylog.log("data list",k,v);
-            if( $('.carousel-first img').attr('src').indexOf(v.name) < 0 ){
+            if( $('.carousel-first img').attr('src') && $('.carousel-first img').attr('src').indexOf(v.name) < 0 ){
               $(".carousel-inner").append('  <div class="item">'+
               "   <img class='img-responsive' src='"+v.path+"/"+v.name+"'/>"+
               ' </div>');
@@ -1096,7 +1096,7 @@ var directory = {
             // '</a>'+
         '</div>';
 
-        if( params.creator == userId || params.author == userId ){
+        if( params.creator == userId || params.author == userId || params.parentId == userId ){
           str += '<hr>'+
               '<div class="col-md-offset-1 col-md-10 col-sm-12 col-xs-12 shadow2 padding-15 margin-top-25">'+
               '<a href="javascript:;" class="btn btn-default text-red deleteThisBtn bold pull-left" data-type="'+params.type+'" data-id="'+params.id+'" ><i class="fa fa-trash"></i></a> '+

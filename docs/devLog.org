@@ -11,11 +11,43 @@
 ----------------------------------------------------
 ----------------------------------------------------
 ----------------------------------------------------
+Appel 
+Jerome Blondin 
+Tomassini 
+
+IndieCamp Névez ... Installation 1% en cours
+
 ----------------------------------------------------
 * Version 0.2
+<<<<<<< HEAD
 ** @Tango
 *** batch pour le partager les news
 /co2/datamigration/SharedByRefactor
+=======
+[X] MEQA 
+  [X] tagging : ph,ctk, communecter master actuel en v0.17 : v.0.17 PH-DORY 
+
+          tag v0.0.17     co2         prod
+                    |     |           |
+  master ---------------------     ------------
+                        /             \ 
+                       /               \
+  dev -----------------                 ---------
+                                          \
+                                           future devs 
+                                           ---- internationalisation ----------------  
+                                           tiers lieux ------------
+                                           dda ---------------
+
+  [X] master en v.02 
+  [X] paramsQA en v.02
+  [X] copy BDD PROD to QA
+    [X] dump PROD 
+    [X] restore QA + drop
+  [ ] transfert des images
+  [X] update ph, ctk , co2  
+  [X] script de devlog 
+>>>>>>> 89da561c9f1a7a4b5f3352eef52c4945b5ac8cf4
 
 ** @Rapha
 *** initialise les multiscopes
@@ -33,6 +65,21 @@
 /co2/datamigration/UpOldNotifications
 **** Bash of object.type inbstead of object.objectType on news(!!!important with notification reactor!!!!)
 /co2/datamigration/ObjectObjectTypeNewsToObjectType
+<<<<<<< HEAD
+=======
+**** Bash of sharedBy on news (refactor share) - create an array sharedBy with the author and date
+/co2/datamigration/SharedByRefactor
+**** Params config => Mettre les deux variables à jour (celle ci sont bonnes pour la prod) => utliser dans l'accueil
+    "openatlasId" => "555eba56c655675cdd65bf19",
+    "communecterId" => "55dafac4e41d75571d848360"
+**** Supprimer les news avec un media string
+db.getCollection('news').find({ "media" : {'$type': 2},"created":{'$lt':new Date('Jun 01, 2016')}}).count()
+152 news avec un media de type string enregistrer entre janvier 2016 et mai 2016 (avant la mise en ligne de Juin)
+qui font sauté les fils des pages !! 
+**** Supprimer les news de type needs (après avoir lancer le bash ObjectObjectTypeNewsToObjectType) 
+db.getCollection('news').find("object.type":"needs")
+
+>>>>>>> 89da561c9f1a7a4b5f3352eef52c4945b5ac8cf4
 ----------------------------------------------------
 
 * Version 0.17

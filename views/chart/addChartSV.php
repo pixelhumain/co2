@@ -337,8 +337,8 @@ function runChartFormValidation() {
 		    .done(function (data,myNewChart) 
 		    {
 			   if (data.result==true) {   
+			   		loadEditChart();
 		        	toastr.success("<?php echo Yii::t("chart",ucfirst(substr($parentType,0,-1)).'&#146;s values well updated') ?>");
-		        	$.unblockUI();
 		        } else {
 		           toastr.error('Something Went Wrong');
 		        }

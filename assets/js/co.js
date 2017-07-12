@@ -2510,8 +2510,8 @@ var dyFObj = {
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
 	    uploadObj.contentKey="profil"; 
-      	if(type=="addPhoto") 
-        	uploadObj.contentKey="slider"; 
+      	/*if(type=="addPhoto") 
+        	uploadObj.contentKey="slider";*/ 
 	    
 	    //initKSpec();
 	    if(userId)
@@ -3445,10 +3445,16 @@ var typeObj = {
 			    icon : "question-cirecle-o",
 			    noSubmitBtns : true,
 			    onLoads : {
-			    	beforeBuild : function(){
-				    	uploadObj.gotoUrl = location.hash;
-				    },
+			    	
 			    },
+			    beforeBuild : function(){
+			    	uploadObj.contentKey="slider";
+					uploadObj.set(contextData.type,contextData.id);
+				    uploadObj.gotoUrl = location.hash;
+				},
+				afterSave : function(){
+
+				},
 			    properties : {
 			    	image : dyFInputs.imageAddPhoto
 			    }

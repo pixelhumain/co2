@@ -1475,5 +1475,93 @@ class DatamigrationController extends CommunecterController {
 
 
 
+
+
+	public function actionDepRefactorCitiesZones(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$dep = array();
+		$cities = PHDB::find(City::COLLECTION, array("depName" => array('$exists' => 1)));
+		if(!empty($cities)){
+			foreach (@$cities as $keyElt => $city) {
+				if(!empty($city["depName"]) && trim($city["depName"]) != "" && !in_array($city["depName"], $dep)){
+					$dep[] = $city["depName"];
+					$zone = Zone::createLevel($city["depName"], $city["country"], "4");
+					if(!empty($zone)){
+						$nbelement++;
+						Zone::save($zone);
+					}
+				}
+			}
+		}
+		
+		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+	}
+
+	// -------------------- Fonction pour le refactor Cities/zones
+	public function actionRegionBERefactorCitiesZones(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$region = array();
+		$cities = PHDB::find(City::COLLECTION, array("regionNameBel" => array('$exists' => 1)));
+		if(!empty($cities)){
+			foreach (@$cities as $keyElt => $city) {
+				if(!empty($city["regionNameBel"]) && trim($city["regionNameBel"]) != "" && !in_array($city["regionNameBel"], $region)){
+					
+					$zone = Zone::createLevel($city["regionNameBel"], $city["country"], "2");
+
+					
+					if(!empty($zone)){
+						$region[] = $city["regionNameBel"];
+						$nbelement++;
+						Zone::save($zone);
+					}else{
+						echo  "Erreur: " .$city["regionNameBel"]." : City :".(String)$city["_id"]."<br>" ;
+					}
+				}
+			}
+		}
+		
+		foreach (@$region as $k => $v) {
+			echo  "Good: " .$v."<br>" ;
+		}
+		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+	}
+
+
+
+	public function actionRegionRefactorCitiesZones(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$region = array();
+		$cities = PHDB::find(City::COLLECTION, array("regionName" => array('$exists' => 1)));
+		if(!empty($cities)){
+			foreach (@$cities as $keyElt => $city) {
+				if(!empty($city["regionName"]) && trim($city["regionName"]) != "" && !in_array($city["regionName"], $region)){
+					$zone = Zone::createLevel($city["regionName"], $city["country"], "3");
+					if(!empty($zone)){
+						$region[] = $city["regionName"];
+						$nbelement++;
+						//Zone::save($zone);
+					}else{
+						$erreur[(String)$city["_id"]] = $city["regionName"];
+						//echo  "Erreur: " .$city["regionName"]." : City :".(String)$city["_id"]."<br>" ;
+					}
+				}
+			}
+		}
+
+		foreach (@$region as $k => $v) {
+			echo  "Good: " .$v."<br>" ;
+		}
+		
+		foreach (@$erreur as $k => $v) {
+			echo  "Erreur: " .$v." : City :".$k."<br>" ;
+		}
+		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+	}
+
+	// -------------------- Fin des foncction pour le refactor Cities/zones
+
 }
 

@@ -100,9 +100,21 @@ Liste des notifications déjà lues => #370 #453
 @tango
 [ ] connecter le form mail au membres d'un groupe
 @Clem
-[ ] Finir Besoin Ressource compétence () 
+[ ] Finir Besoin Ressource compétence () [commencer]
 [ ] visualisation de la banque des besoins =>#1260 + #490
-[ ] msg mail sur un groupe sur les @ dans les news, et @all 
+[ ] msg mail sur un groupe sur les @ dans les news, et @all (send message on notify someone) 
+  [ ] create notification for @all
+[ ] Rework @ for same working mobile [#192]
+  [ ] générer des pseudoUnique pour le mention et aussi pour générer de jolie url communecter.org/livincoop
+[ ] Add # in news text
+[ ] Translate website (get spanish trad from poupou or others)
+  [ ] Create template of co-working on language translation and add language (wishlist)
+[ ] Banniere rework 
+  [ ] Save cropping
+  [ ] Redimension main image as 1600*... or 1000*... 
+  [ ] Limitation of 500px*100px
+[ ] Get preferences of email 
+[ ] Create more email
 @Rapha 
 [ ] internationalisation 
   [ ] Barcelone

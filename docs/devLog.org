@@ -62,6 +62,8 @@ IndieCamp Névez ... Installation 1% en cours
 /co2/datamigration/ObjectObjectTypeNewsToObjectType
 **** Bash of sharedBy on news (refactor share) - create an array sharedBy with the author and date
 /co2/datamigration/SharedByRefactor
+**** Bash delete organizations properties !!
+co2/datamigration/RemovePropertiesOfOrganizations
 **** Params config => Mettre les deux variables à jour (celle ci sont bonnes pour la prod) => utliser dans l'accueil
     "openatlasId" => "555eba56c655675cdd65bf19",
     "communecterId" => "55dafac4e41d75571d848360"

@@ -647,7 +647,7 @@ class DatamigrationController extends CommunecterController {
 
 
 
-	public function actionUpdateRegion(){
+	/*public function actionUpdateRegion(){
 
 		$newsRegions = array(
 						//array("new_code","new_name","former_code","former_name"),
@@ -694,7 +694,7 @@ class DatamigrationController extends CommunecterController {
 				                        array('$set' => array(	"region" => $region[0],
 				                        						"regionName" => $region[1])),
 				                        array("multi"=> true)
-				                    );*/
+				                    );
 				foreach ($cities as $key => $city) {
 					$res = PHDB::update( City::COLLECTION, 
 									  	array("_id"=>new MongoId($key)),
@@ -713,7 +713,7 @@ class DatamigrationController extends CommunecterController {
 
 		}
 
-	}
+	}*/
 
 	public function actionUpdateUserName() {
 		//add a suffle username for pending users event if they got one
@@ -984,7 +984,18 @@ class DatamigrationController extends CommunecterController {
 			echo "////////// <br/>";
 		}
 	}
-
+	public function actionRemovePropertiesOfOrganizations(){
+		$organizations = PHDB::find(Organization::COLLECTION, array("properties.chart" => array('$exists' => 1)));
+		$nbOrgaDealWith=0;
+		foreach($organizations as $data){
+			PHDB::update(Organization::COLLECTION,
+				array("_id" => new MongoId((string)$data["_id"])),
+				array('$unset' => array("properties"=> ""))
+			);
+			$nbOrgaDealWith++;
+		}	
+		echo "nombre d'organizations traitées : ".$nbOrgaDealWith;
+	}
 	public function actionFixBugCoutryReunion(){
 		$nbelement = 0 ;
 		$elements = PHDB::find(Organization::COLLECTION, array("address.addressCountry" => "Réunion"));

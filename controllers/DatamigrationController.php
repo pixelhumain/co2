@@ -1570,18 +1570,34 @@ class DatamigrationController extends CommunecterController {
 		$region = array();
 		$cities = PHDB::find(City::COLLECTION, array("depName" => array('$exists' => 0) ) );
 		if(!empty($cities)){
-			foreach (@$cities as $keyElt => $city) {
+			foreach (@$cities as $key => $city) {
 				if(!empty($city["dep"])){
 					$depName = PHDB::findOne(City::COLLECTION, array( '$and' => array( 
 																		array( "dep" => $city["dep"] ),
-																		array("depName" => array('$exists' => 1) ) ) ) );
 
-					if(!empty($depName))
-						echo  "Good: ".$city["name"]." ".var_dump($depName["depName"])."<br>" ;
+																		array( '$or' => array(
+																			array("depName" => array('$exists' => 1) ),
+																			array("regionName" => array('$exists' => 1) ) ) ) 
+																	) ) );
+					if(!empty($depName)){
+						$name = "";
+						if(!empty($depName["depName"])){
+							$name = $depName["depName"] ;
+						}else if(!empty($depName["regionName"])){
+						
+							$name = ucfirst(strtolower($depName["regionName"])) ;
+						}
+
+						$res = PHDB::update( City::COLLECTION, 
+									  	array("_id"=>new MongoId($key)),
+				                        array('$set' => array(	"depName" => $name ))
+				                    );
+						echo  "Good: ".$city["name"]." ".$name."<br>" ;
+						$nbelement++;
+						
+					}
 					else
-						echo  "Erreur: ".$city["name"]." ".var_dump($depName["dep"])."<br>" ;
-
-					$nbelement++;
+						echo  "Erreur: ".$city["name"]." ".$depName["depName"]."<br>" ;
 				}
 
 			}

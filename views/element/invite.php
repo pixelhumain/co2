@@ -170,7 +170,7 @@
                                             <i class="fa fa-align-justify fa-2x"></i>
                                         </div>
                                         <div class="col-md-9">
-                                            <textarea class="invite-text form-control" id="inviteText" name="inviteText" rows="4">Bonjour, J'ai découvert un réseau sociétal citoyen appelé "Communecter - être connecter à sa commune". 
+                                            <textarea class="invite-text form-control" id="inviteText" name="inviteText" rows="4">Bonjour, J'ai découvert un réseau sociétal citoyen appelé "Communecter - être connecté à sa commune". 
 Tu peux agir concrétement autour de chez toi et découvrir ce qui s'y passe. Viens rejoindre le réseau sur communecter.org.</textarea>
                                         </div>
                                     </div>

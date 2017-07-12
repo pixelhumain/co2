@@ -3452,9 +3452,6 @@ var typeObj = {
 					uploadObj.set(contextData.type,contextData.id);
 				    uploadObj.gotoUrl = location.hash;
 				},
-				afterSave : function(){
-
-				},
 			    properties : {
 			    	image : dyFInputs.imageAddPhoto
 			    }

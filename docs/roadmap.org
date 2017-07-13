@@ -86,20 +86,31 @@ Liste des notifications déjà lues => #370 #453
 * Version 0.21  : MEQA , MEP ?/07/2017
 * ************************************************************  
 
-@Tib 
-[ ] Finir module Tiers Lieux 
-[ ] REssource
-[ ] Besoin
-[ ]  Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté
-[ ] Stephane Exodata 0692615381
-[ ] transfert d'image PROD to QA
-[ ] url city a transmettre 
-[ ] dynform bookmarking using POI : add a url > Next > get content (voir avec tango kgougle )
-@Tib et @Tango 
-[ ] REfactor DDA 
-@tango
+* @Tib 
+  [ ] Finir module Tiers Lieux 
+  [ ] REssource
+  [ ] Besoin
+  [ ]  Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté
+  [ ] Stephane Exodata 0692615381
+  [ ] transfert d'image PROD to QA
+  [ ] url city a transmettre 
+  [ ] dynform bookmarking using POI : add a url > Next > get content (voir avec tango kgougle )
+  [ ] btn changement de langue 
+* @Tib et @Tango 
+  [ ] REfactor DDA 
+  [ ] utiliser le DDA pour ouvrir et crowd sourcer les demandes de fonctionnalité de CO
+  [ ] intégrer aussi un partage de budget sur une proposition
+    [ ] convert proposal to project 
+    [ ] open to crowdfunding > status : funding 
+      [ ] list objectives titles + description (medium) 
+      [ ] build pixel funding
+      [ ] particpation join and get involved / share budget 
+      [ ] if obtained > projects status : implementation
+      [ ] project tasking / actions
+      [ ] when all done status : finished 
+* @tango
 [ ] connecter le form mail au membres d'un groupe
-@Clem
+* @Clem
 [ ] Finir Besoin Ressource compétence () [commencer]
 [ ] visualisation de la banque des besoins =>#1260 + #490
 [ ] msg mail sur un groupe sur les @ dans les news, et @all (send message on notify someone) 
@@ -115,7 +126,7 @@ Liste des notifications déjà lues => #370 #453
   [ ] Limitation of 500px*100px
 [ ] Get preferences of email 
 [ ] Create more email
-@Rapha 
+* @Rapha 
 [ ] internationalisation 
   [ ] Barcelone
   [ ] ajout des villes libre
@@ -130,13 +141,13 @@ Liste des notifications déjà lues => #370 #453
     [ ] liste 
     [ ] affiche au load 
     [ ] lazyload 
-@damien 
+* @damien 
   [ ] coopedia ??
-@daniel
+* @daniel
   [ ] SSO
-@Marc 
+* @Marc 
   [ ] wikimedia
-@Christopher
+* @Christopher
   [ ] nextclowd
   [ ] DEV et QA sur server privé
 

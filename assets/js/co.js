@@ -2841,7 +2841,8 @@ var dyFInputs = {
 					  					  	  .addClass("bg-dark");
     		 	
     		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
-        	},500);
+
+        	},800);
     	}
     },
     image :function() { 

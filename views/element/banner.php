@@ -45,6 +45,7 @@
 	    color: white;
 	    border-radius: 3px;
 	    margin-right: 2px;
+	    display:none;
 	}
 	.header-address{
 		font-size: 14px;
@@ -258,6 +259,11 @@
 
 <script>
 jQuery(document).ready(function() {
+	$("#col-banner").mouseenter(function(){
+		$("#banner_element").show();
+	}).mouseleave(function(){
+		$("#banner_element").hide();
+	});
 	//IMAGE CHANGE//
 	$("#uploadScropResizeAndSaveImage .close-modal").click(function(){
 		$.unblockUI();

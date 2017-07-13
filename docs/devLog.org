@@ -11,8 +11,38 @@
 ----------------------------------------------------
 ----------------------------------------------------
 ----------------------------------------------------
+Appel 
+Jerome Blondin 
+Tomassini 
+
+IndieCamp Névez ... Installation 1% en cours
+
 ----------------------------------------------------
 * Version 0.2
+
+[X] MEQA 
+  [X] tagging : ph,ctk, communecter master actuel en v0.17 : v.0.17 PH-DORY 
+
+          tag v0.0.17     co2         prod
+                    |     |           |
+  master ---------------------     ------------
+                        /             \ 
+                       /               \
+  dev -----------------                 ---------
+                                          \
+                                           future devs 
+                                           ---- internationalisation ----------------  
+                                           tiers lieux ------------
+                                           dda ---------------
+
+  [X] master en v.02 
+  [X] paramsQA en v.02
+  [X] copy BDD PROD to QA
+    [X] dump PROD 
+    [X] restore QA + drop
+  [ ] transfert des images
+  [X] update ph, ctk , co2  
+  [X] script de devlog 
 
 ** @Rapha
 *** initialise les multiscopes
@@ -24,12 +54,26 @@
 
 ** @Bouboule : 
 **** Bash de reprise des data dans les chart des projets
-/communecter/datamigration/RefactorChartProjectData
+/co2/datamigration/RefactorChartProjectData
 **** Bash de reprise des data dans notifications 
 ****** Create notify.id as object with isUnread and isUnseen
-/communecter/datamigration/UpOldNotifications
+/co2/datamigration/UpOldNotifications
 **** Bash of object.type inbstead of object.objectType on news(!!!important with notification reactor!!!!)
-ph/communecter/datamigration/ObjectObjectTypeNewsToObjectType
+/co2/datamigration/ObjectObjectTypeNewsToObjectType
+**** Bash of sharedBy on news (refactor share) - create an array sharedBy with the author and date
+/co2/datamigration/SharedByRefactor
+**** Bash delete organizations properties !!
+co2/datamigration/RemovePropertiesOfOrganizations
+**** Params config => Mettre les deux variables à jour (celle ci sont bonnes pour la prod) => utliser dans l'accueil
+    "openatlasId" => "555eba56c655675cdd65bf19",
+    "communecterId" => "55dafac4e41d75571d848360"
+**** Supprimer les news avec un media string
+db.getCollection('news').find({ "media" : {'$type': 2},"created":{'$lt':new Date('Jun 01, 2016')}}).count()
+152 news avec un media de type string enregistrer entre janvier 2016 et mai 2016 (avant la mise en ligne de Juin)
+qui font sauté les fils des pages !! 
+**** Supprimer les news de type needs (après avoir lancer le bash ObjectObjectTypeNewsToObjectType) 
+db.getCollection('news').find("object.type":"needs")
+
 ----------------------------------------------------
 
 * Version 0.17

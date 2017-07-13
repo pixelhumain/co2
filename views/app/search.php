@@ -319,6 +319,8 @@ jQuery(document).ready(function() {
             KScrollTo("#content-social");
     });*/
 
+    
+    
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
@@ -342,17 +344,22 @@ jQuery(document).ready(function() {
          }
     });
 
-    $("#input-search-map").keyup(function(e){
+    $("#input-search-map").off().keyup(function(e){
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
-            initTypeSearch(typeInit);
+            if(typeInit == "all") initTypeSearch("allSig");
+            else initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
          }
     });
 
-    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
-        initTypeSearch(typeInit);
+    $("#menu-map-btn-start-search, #main-search-bar-addon").off().click(function(){
+        $("#second-search-bar").val($("#input-search-map").val());
+        $("#main-search-bar").val($("#input-search-map").val());
+        console.log("typeInit", typeInit);
+        if(typeInit == "all") initTypeSearch("allSig");
+        else initTypeSearch(typeInit);
         startSearch(0, indexStepInit, searchCallback);
     });
 
@@ -418,59 +425,77 @@ function bindLeftMenuFilters () {
     {    
         searchType = [ typeInit ];
         indexStepInit = 100;
+        
+        if( $(this).hasClass( "active" ) )
+        {
+            sectionKey = null;
+            $('#searchTags').val("");
+            $('.classifiedSection').remove();
+            $(".label-category,.resultTypes").html("");
+        } 
+        else 
+        {
+
+            section = $(this).data("type-anc");
+            sectionKey = $(this).data("key");
+            //alert("section : " + section);
+
+            if( sectionKey == "forsale" || sectionKey == "forrent"){
+                $("#section-price").show(200);
+                KScrollTo("#section-price");
+            }
+            else {
+                $("#section-price").hide();
+                $("#priceMin").val("");
+                $("#priceMax").val("");
+                KScrollTo("#dropdown_search");
+            }
+
+            /*
+            if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
+                sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
+                //$(".subsub").show(300);
+                $('#searchTags').val(section);
+                //KScrollTo("#section-price");
+                startSearch(0, indexStepInit, searchCallback); 
+            } */
+            if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
+                //alert('build left menu'+classified.sections[sectionKey].filters);
+                classified.currentLeftFilters = classified.sections[sectionKey].filters;
+                var filters = classified[ classified.currentLeftFilters ]; 
+                var what = { title : classified.sections[sectionKey].label, 
+                             icon : classified.sections[sectionKey].icon }
+                directory.sectionFilter( filters, ".classifiedFilters",what);
+                bindLeftMenuFilters ();
+                
+            }
+            else if(classified.currentLeftFilters != null) {
+                //alert('rebuild original'); 
+                var what = { title : classified.sections[sectionKey].label, 
+                             icon : classified.sections[sectionKey].icon }
+                directory.sectionFilter( classified.filters, ".classifiedFilters",what);
+                bindLeftMenuFilters ();
+                classified.currentLeftFilters = null;
+            }
+            $('#searchTags').val(section);
+        }
+
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
         $(".keycat").addClass("hidden");
-        $(this).addClass("active");
+        
+        if(sectionKey)
+            $(this).addClass("active");
 
-        section = $(this).data("type-anc");
-        sectionKey = $(this).data("key");
-        //alert("section : " + section);
-
-        if( sectionKey == "forsale" || sectionKey == "forrent"){
-            $("#section-price").show(200);
-            KScrollTo("#section-price");
-        }
-        else {
-            $("#section-price").hide();
-            $("#priceMin").val("");
-            $("#priceMax").val("");
-            KScrollTo("#dropdown_search");
-        }
-
-        /*
-        if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
-            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
-            //$(".subsub").show(300);
-            $('#searchTags').val(section);
-            //KScrollTo("#section-price");
-            startSearch(0, indexStepInit, searchCallback); 
-        } */
-        if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
-            //alert('build left menu'+classified.sections[sectionKey].filters);
-            classified.currentLeftFilters = classified.sections[sectionKey].filters;
-            var filters = classified[ classified.currentLeftFilters ]; 
-            var what = { title : classified.sections[sectionKey].label, 
-                         icon : classified.sections[sectionKey].icon }
-            directory.sectionFilter( filters, ".classifiedFilters",what);
-            bindLeftMenuFilters ();
-            
-        }
-        else if(classified.currentLeftFilters != null) {
-            //alert('rebuild original'); 
-            var what = { title : classified.sections[sectionKey].label, 
-                         icon : classified.sections[sectionKey].icon }
-            directory.sectionFilter( classified.filters, ".classifiedFilters",what);
-            bindLeftMenuFilters ();
-            classified.currentLeftFilters = null;
-        }
-
-        $('#searchTags').val(section);
+        
         //KScrollTo(".top-page");
         startSearch(0, indexStepInit, searchCallback); 
 
 
-        if(typeof classified.sections[sectionKey] != "undefined") {
+        if(sectionKey && typeof classified.sections[sectionKey] != "undefined") {
+            //alert(classified.sections[sectionKey]["label"]);
             $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]);
+            $('.classifiedSection').remove();
+            $(".resultTypes").append( "<span class='classifiedSection text-azure text-bold hidden-xs pull-right'><i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]+'<i class="fa fa-times text-red resetFilters"></i></span>');
             $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+classified.sections[sectionKey]["color"])
             $(".fa-title-list").removeClass("hidden");
         }
@@ -478,28 +503,51 @@ function bindLeftMenuFilters () {
 
     $(".btn-select-category-1").off().on("click", function(){
         searchType = [ typeInit ];
-        $(".btn-select-category-1").removeClass("active");
-        $(this).addClass("active");
-
+        var searchTxt = "";
         var classType = $(this).data("keycat");
-        $(".keycat").addClass("hidden");
-        $(".keycat-"+classType).removeClass("hidden");   
 
-        //alert("classType : "+classType);
+        if( $(this).hasClass( "active" ) )
+        {
+            searchTxt = section;
+            $(this).removeClass( "active" );
+            $(".keycat-"+classType).addClass("hidden"); 
+        } 
+        else 
+        {
+            $(".btn-select-category-1").removeClass("active");
+            $(this).addClass("active");
 
-        $('#searchTags').val(section+","+classType);
+            $(".keycat").addClass("hidden");
+            $(".keycat-"+classType).removeClass("hidden");  
+            searchTxt = section+","+classType; 
+        }
+        //alert(".btn-select-category-1 : "+searchTxt);
+        $('#searchTags').val(searchTxt);
         startSearch(0, indexStepInit, searchCallback);  
     });
 
     $(".keycat").off().on("click", function(){
 
         searchType = [ typeInit ];
-        $(".keycat").removeClass("active");
-        $(this).addClass("active");
-        var classSubType = $(this).data("keycat");
+        var searchTxt = "";
         var classType = $(this).data("categ");
-        //alert("classSubType : "+classSubType);
-        $('#searchTags').val(section+","+classType+","+classSubType);
+        var classSubType = $(this).data("keycat");
+        if( $(this).hasClass( "active" ) )
+        {
+            searchTxt = section+","+classType;
+            $(this).removeClass( "active" );
+        } 
+        else 
+        {
+            $(".keycat").removeClass("active");
+            $(this).addClass("active");
+            
+            //alert("classSubType : "+classSubType);
+            searchTxt = section+","+classType+","+classSubType;
+        }
+
+        //alert(" .keycat : "+searchTxt);
+        $('#searchTags').val( searchTxt );
         KScrollTo("#menu-section-classified");
         startSearch(0, indexStepInit, searchCallback);  
     });

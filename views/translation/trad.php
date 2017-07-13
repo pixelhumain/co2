@@ -229,6 +229,7 @@ var trad = {
 "Email"          : "<?php echo Yii::t("common", "Email") ?>",
 "Please specify a name" : "<?php echo Yii::t("common", "Please specify a name") ?>",
 "Please specify a email" : "<?php echo Yii::t("common", "Please specify a email") ?>",
+"noMoreNotifs":"<?php echo Yii::t("common","No more notifications for the moment") ?>"
 };
 
 var tradCountry = {

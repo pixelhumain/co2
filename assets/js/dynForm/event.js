@@ -15,7 +15,7 @@ dynForm = {
     		 		$("#ajax-modal-modal-title").html()+
     		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
 
-	    		if(contextData.type == "events"){
+	    		if(contextData && contextData.type == "events"){
 	    			$("#ajaxFormModal #parentId").removeClass('hidden');
 	    		
     				if( $('#ajaxFormModal #parentId > optgroup > option[value="'+contextData.id+'"]').length == 0 )

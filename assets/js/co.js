@@ -51,7 +51,11 @@ function checkPoll(){
 		countPoll++;
 	}
 }
-
+function setLanguage(lang){
+	$.cookie('lang', lang, { expires: 365, path: "/" });
+	toastr.success("Changement de la langue en cours");
+	urlCtrl.loadByHash(location.hash);
+}
 function bindRightClicks() { 
 	$.contextMenu({
 	    selector: ".add2fav",
@@ -937,8 +941,7 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 				showMap(true);
 
     		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
-        		uploadObj.type = contextData.type;
-        		uploadObj.id = contextData.id;
+        		uploadObj.set(contextData.type,contextData.id);
         	}
         	
         	if( typeof urlCtrl.afterLoad == "function") {
@@ -1430,8 +1433,10 @@ function  bindLBHLinks() {
 		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-		if( $(this).data("modalshow") )
+		if( $(this).data("modalshow") ){
 			smallMenu.open ( directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
+			initBtnLink();
+		}
 		else {
 			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
 	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
@@ -1984,7 +1989,9 @@ function inMyContacts (type,id) {
 	var res = false ;
 	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
 		$.each( myContacts[type], function( key,val ){
-			if( id == val["_id"]["$id"] ){
+			mylog.log("val", val);
+			if( ( typeof val["_id"] != "undefined" && id == val["_id"]["$id"] ) || 
+				(typeof val["id"] != "undefined" && id == val["id"] ) ) {
 				res = true;
 				return ;
 			}
@@ -2056,7 +2063,7 @@ function newInvitation(){
 		$("#ajaxFormModal #inviteName").val($("#ajaxFormModal #inviteSearch").val());
 		$("#ajaxFormModal #inviteEmail").val("");
 	}
-	$("#inviteText").val('<?php echo Yii::t("person","Hello, \\nCome and meet me on that website!\\nAn email, your town and you are connected to your city!\\nYou can see everything that happens in your city and act for the commons."); ?>');
+	$("#inviteText").val('');
 }
 
 function communecterUser(){
@@ -2074,7 +2081,7 @@ function communecterUser(){
 function updateLocalityEntities(addressesIndex, addressesLocality){
 	mylog.warn("updateLocalityEntities");
 	$("#ajax-modal").modal("hide");
-	showMap(true);
+	
 	if(typeof formInMap.initUpdateLocality != "undefined"){
 		var address = contextData.address ;
 		var geo = contextData.geo ;
@@ -2088,6 +2095,7 @@ function updateLocalityEntities(addressesIndex, addressesLocality){
 		mylog.log(address, geo, contextData.type, addressesIndex);
 		formInMap.initUpdateLocality(address, geo, contextData.type, addressesIndex); 
 	}
+
 }
 
 function cityKeyPart(unikey, part){
@@ -2177,20 +2185,21 @@ var collection = {
 				console.warn(params.action,collection,what,id);
 				if(data.result){
 					if(data.list == '$unset'){
-						if(location.hash.indexOf("#page") >=0){
+						/*if(location.hash.indexOf("#page") >=0){
 							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){ 
                 				loadDataDirectory("collections", "star"); 
               				}else{ 
                 				$(".favorisMenu").removeClass("text-yellow"); 
                 				$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o'); 
               				} 
-						}else{
-							$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
+						}else{*/
+							$(el).removeClass("text-yellow"); 
+							$(el).children("i").removeClass("fa-star text-yellow").addClass('fa-star-o');
 							delete userConnected.collections[collection][what][id];
-						}
+						//}
 					}
 					else{
-						if(location.hash.indexOf("#page") >=0){
+						/*if(location.hash.indexOf("#page") >=0){
 							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){ 
                 				loadDataDirectory("collections", "star"); 
               				}else{ 
@@ -2198,8 +2207,10 @@ var collection = {
                 				$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star'); 
               				}
               			}
-						else
-							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
+						else*/
+							$(el).addClass("text-yellow"); 
+							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-yellow');
+
 						if(!userConnected.collections)
 							userConnected.collections = {};
 						if(!userConnected.collections[collection])
@@ -2246,10 +2257,19 @@ var uploadObj = {
 	isSub : false,
 	update  : false,
 	folder : "communecter", //on force pour pas casser toutes les vielles images
+	contentKey : "profil",
+	path : null,
 	set : function(type,id){
-		uploadObj.type = type;
-		mylog.log("set uploadObj.id", id);
-		uploadObj.id = id;
+		if(typeof type != "undefined"){
+			mylog.log("set uploadObj", id,type,uploadObj.folder,uploadObj.contentKey);
+			uploadObj.type = type;
+			uploadObj.id = id;
+			uploadObj.path = baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+uploadObj.folder+"/folder/"+type+"/ownerId/"+id+"/input/qqfile/contentKey/"+uploadObj.contentKey;
+		} else {
+			uploadObj.type = null;
+			uploadObj.id = null;
+			uploadObj.path = null;
+		}
 	}
 };
 
@@ -2442,8 +2462,7 @@ var dyFObj = {
 		                }
 					}
 	            }
-	            uploadObj.type = null;
-	    		uploadObj.id = null;
+	            uploadObj.set()
 	    	}
 	    });
 	},
@@ -2451,16 +2470,15 @@ var dyFObj = {
 		$('#ajax-modal').modal("hide");
 	    //clear the unecessary DOM 
 	    $("#ajaxFormModal").html(''); 
-	   	uploadObj.type = null;
-	    uploadObj.id = null;
+	   	uploadObj.set();
 	    uploadObj.update = false;
 	},
 	editElement : function (type,id){
 		mylog.warn("--------------- editElement ",type,id);
 		//get ajax of the elemetn content
-		uploadObj.type = type;
-		uploadObj.id = id;
+		uploadObj.set(type,id);
 		uploadObj.update = true;
+
 		$.ajax({
 	        type: "GET",
 	        url: baseUrl+"/"+moduleId+"/element/get/type/"+type+"/id/"+id,
@@ -2492,9 +2510,9 @@ var dyFObj = {
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
 	    uploadObj.contentKey="profil"; 
-      	if(type=="addPhoto") 
-        	uploadObj.contentKey="slider"; 
-	   
+      	/*if(type=="addPhoto") 
+        	uploadObj.contentKey="slider";*/ 
+	    
 	    //initKSpec();
 	    if(userId)
 		{
@@ -2632,7 +2650,7 @@ var dyFObj = {
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
 				mylog.log("setMongoId uploadObj.id", data.id);
-				uploadObj.id = data.id;
+				uploadObj.set(type,data.id);
 				$("#ajaxFormModal #id").val(data.id);
 				if( typeof callback === "function" )
                 	callback();
@@ -2680,12 +2698,14 @@ var dyFInputs = {
 	    updateLocality = false;
 
 	    // Initialize tags list for network in form of element
-		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"){
+		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"  && typeof typeObj != "undefined" ){
 			$.each(networkJson.add, function(key, v) {
 				if(typeof networkJson.request.sourceKey != "undefined"){
+					mylog.log("here, sourceKey")
 					sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
 					typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
 				}
+
 				if(v){
 					if(notNull(networkJson.dynForm)){
 						mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
@@ -2696,7 +2716,6 @@ var dyFInputs = {
 								typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
 						}
 						mylog.log("networkJson.dynForm");
-					
 						mylog.log("networkJson.dynForm", "networkJson.dynForm");
 						if(notNull(networkJson.dynForm.extra)){
 							var nbListTags = 1 ;
@@ -2707,7 +2726,8 @@ var dyFInputs = {
 									"inputType" : "tags",
 									"placeholder" : networkJson.dynForm.extra["tags"+nbListTags].placeholder,
 									"values" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
-									"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ]
+									"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
+									"label" : networkJson.dynForm.extra["tags"+nbListTags].list
 								};
 								nbListTags++;
 								mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
@@ -2832,9 +2852,10 @@ var dyFInputs = {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
 	    	afterUploadComplete : function(){
+	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
 		    	dyFObj.closeForm();
 				//alert( "image upload then goto : "+uploadObj.gotoUrl );
-	            urlCtrl.loadByHash( uploadObj.gotoUrl );
+	            urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 		    }
     	}
     },
@@ -2855,7 +2876,7 @@ var dyFInputs = {
 					});
 	    		}
 	        }
-	    } ;
+	    };
 	    return inputObj;
 	},
 
@@ -2872,12 +2893,13 @@ var dyFInputs = {
 	    return res;
 	},
     price :function(label, placeholder, rules, custom) { 
-		var inputObj = dyFInputs.inputText("Prix", "Prix ...") ;
+		var inputObj = dyFInputs.inputText("Prix (€)", "Prix ...") ;
 	    inputObj.init = function(){
     		$('input#price').filter_input({regex:'[0-9]'});
       	};
     	return inputObj;
     },
+
     email :function (label,placeholder,rules) {  
     	var inputObj = {
     		inputType : "text",
@@ -3422,6 +3444,14 @@ var typeObj = {
 			    title : "Uploader une image ?",
 			    icon : "question-cirecle-o",
 			    noSubmitBtns : true,
+			    onLoads : {
+			    	
+			    },
+			    beforeBuild : function(){
+			    	uploadObj.contentKey="slider";
+					uploadObj.set(contextData.type,contextData.id);
+				    uploadObj.gotoUrl = location.hash;
+				},
 			    properties : {
 			    	image : dyFInputs.imageAddPhoto
 			    }
@@ -3461,8 +3491,10 @@ var typeObj = {
 	"entry" : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-lightblue",bgClass : "bgDDA",	icon : "gavel",	color : "azure", saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
 	"vote" : {col:"actionRooms",ctrl:"survey"},
 	"survey" : {col:"actionRooms",ctrl:"survey",color:"lightblue2",icon:"cog"},
+	"surveys" : {sameAs:"survey"},
 	"action" : {col:"actions",ctrl:"room",titleClass : "bg-lightblue",bgClass : "bgDDA",icon : "cogs",color : "lightblue2", saveUrl : baseUrl+"/" + moduleId + "/rooms/saveaction"},
 	"actions" : {col:"actions",color:"azure",ctrl:"room",icon:"cog"},
+	"actionRooms" : {sameAs:"actions"},
 	"rooms" : {col:"actions",ctrl:"room",color:"azure",icon:"gavel"},
 	"discuss" : {col:"actionRooms",ctrl:"room"},
 	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
@@ -3767,8 +3799,7 @@ var js_templates = {
 //*********************************************************************************
 var album = {
 	show : function (id,type){
-		uploadObj.type = type;
-		uploadObj.id = id;
+		uploadObj.set(type,id);
 		getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+id+"/type/"+type+"/tpl/json" , function( data ) { 
 			
 			console.dir(data);
@@ -3782,8 +3813,7 @@ var album = {
 				},
 			    function(){
 			    	$(".addPhotoBtn").click(function() { 
-			    		uploadObj.type = type;
-			    		uploadObj.id = id;
+			    		uploadObj.set(type,id);
 						dyFObj.openForm("addPhoto");
 			    	});
 			    	album.delete();
@@ -3947,8 +3977,13 @@ function initKInterface(params){ console.log("initKInterface");
 			formInMap.cancel();
     	//else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
 		//	getContextDataLinks();
-		else
-			showMap();
+		else{
+
+			if(isMapEnd == false && contextData && contextData.map && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id) )
+				Sig.showMapElements(Sig.map, contextData.map.data, contextData.map.icon, contextData.map.title);
+			
+				showMap();
+		}
     });
 
     bindLBHLinks();
@@ -3978,6 +4013,11 @@ function getContextDataLinks(){
 		success: function(data){
 			mylog.log("getContextDataLinks data", data);
 			Sig.restartMap();
+			contextData.map = {
+				data : data,
+				icon : "link",
+				title : "La communauté de <b>"+contextData.name+"</b>"
+			} ;
 			Sig.showMapElements(Sig.map, data, "link", "La communauté de <b>"+contextData.name+"</b>");
 			//showMap();
 		},

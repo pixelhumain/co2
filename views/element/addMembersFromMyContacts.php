@@ -414,6 +414,9 @@ function setInviteInput(num){
 	$('#div-invite-search-all #inviteName').val(person["name"]);
 	$('#div-invite-search-all #inviteId').val(personId);
 	$("#div-invite-search-all #ficheUser-ficheName").text(person["name"]);
+	$("#div-invite-search-all #ficheUser-btnProfil").attr("href", "#page.type.citoyens.id."+person["id"]);
+
+
 	
 	if (person.address != null) {
 		//Address : CP + Locality
@@ -433,12 +436,12 @@ function setInviteInput(num){
 	} else {
 		tagsStr += "<span class='label label-inverse'>No Tag</span> ";
 	}
-	$("#div-invite-search-all #ficheUser-tags").html('<div class="pull-left"><i class="fa fa-tags"></i> '+tagsStr+'</div>');
+	//$("#div-invite-search-all #ficheUser-tags").html('<div class="pull-left"><i class="fa fa-tags"></i> '+tagsStr+'</div>');
 	$(".photoInvited").empty();
-	if (person["profilImageUrl"] != "") {
-		$(".photoInvited").html("<img class='img-responsive' src='"+baseUrl+person["profilImageUrl"]+"' />");
+	if (person["profilMediumImageUrl"] != "") {
+		$(".photoInvited").html("<img class='img-responsive' src='"+baseUrl+person["profilMediumImageUrl"]+"' />");
 	} else {
-		$(".photoInvited").html("<span><i class='fa fa-user_circled' style='font-size: 10em;'></i></span>");
+		$(".photoInvited").html("<span><i class='fa fa-user_circled fa-3x'></i></span>");
 	}
 
 	//Pending
@@ -482,6 +485,7 @@ function newInvitation(){
 	}
 
 	$("#inviteText").val("<?php echo Yii::t("person","Hello, \\nCome and meet me on that website!\\nAn email, your town and you are connected to your city!\\nYou can see everything that happens in your city and act for the commons."); ?>");
+	//runinviteFormValidation();
 }
 	
 function bindEventScopeModal(){
@@ -669,8 +673,8 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 										if(typeof fieldObj.values[type.name] != "undefined")
 										$.each(fieldObj.values[type.name], function(key2, value){ 
 										if(typeof value != "undefined"){
-											var cp = (typeof value.address != "undefined" && typeof value.address.postalCode != "undefined") ? value.address.postalCode : typeof value.cp != "undefined" ? value.cp : "";
-											var city = (typeof value.address != "undefined" && typeof value.address.addressLocality != "undefined") ? value.address.addressLocality : "";
+											var cp = (typeof value.address != "undefined" && notNull(value.address) && typeof value.address.postalCode != "undefined") ? value.address.postalCode : typeof value.cp != "undefined" ? value.cp : "";
+											var city = (typeof value.address != "undefined" && notNull(value.address) && typeof value.address.addressLocality != "undefined") ? value.address.addressLocality : "";
 											var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl+'/'+ value.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
 											var name =  typeof value.name != "undefined" ? value.name : 
 														typeof value.username != "undefined" ? value.username : "";
@@ -980,41 +984,160 @@ function sendInvitationMailAddMember(){ mylog.log("sendInvitationMailAddMember")
         } 
 	});
 }
+/*function runinviteFormValidation(el) {
+	var forminvite = $('.form-invite');
+	var errorHandler2 = $('.errorHandler', forminvite);
+	var successHandler2 = $('.successHandler', forminvite);
+	alert("runInvinte");
+	forminvite.validate({
+		errorElement : "span", // contain the error msg in a span tag
+		errorClass : 'help-block',
+		errorPlacement : function(error, element) {// render error placement for each input type
+			if (element.attr("type") == "radio" || element.attr("type") == "checkbox") {// for chosen elements, need to insert the error after the chosen container
+				error.insertAfter($(element).closest('.form-group').children('div').children().last());
+			} else if (element.parent().hasClass("input-icon")) {
 
+				error.insertAfter($(element).parent());
+			} else {
+				error.insertAfter(element);
+				// for other inputs, just perform default behavior
+			}
+		},
+		ignore : "",
+		rules : {
+			inviteName : {
+				minlength : 2,
+				required : true
+			},
+			inviteEmail : {
+				required : true
+			}
+		},
+		messages : {
+			inviteName : "* Please specify a name",
+			inviteSearch : "* Please specify a email"
+		},
+		invalidHandler : function(invite, validator) {//display error alert on form submit
+			successHandler2.hide();
+			errorHandler2.show();
+		},
+		highlight : function(element) {
+			$(element).closest('.help-block').removeClass('valid');
+			// display OK icon
+			$(element).closest('.form-group').removeClass('has-success').addClass('has-error').find('.symbol').removeClass('ok').addClass('required');
+			// add the Bootstrap error class to the control group
+		},
+		unhighlight : function(element) {// revert the change done by hightlight
+			$(element).closest('.form-group').removeClass('has-error');
+			// set error class to the control group
+		},
+		success : function(label, element) {
+			label.addClass('help-block valid');
+			// mark the current input as valid and display OK icon
+			$(element).closest('.form-group').removeClass('has-error').addClass('has-success').find('.symbol').removeClass('required').addClass('ok');
+		},
+		submitHandler : function(form) {
+			mylog.log("submit handler");
+			successHandler2.show();
+			errorHandler2.hide();
+			var parentId = $(".form-invite .invite-parentId").val();
+			var invitedUserName = $("#inviteName").val();
+			var invitedUserEmail = $("#inviteEmail").val();
+			$.blockUI({
+				message : '<span class="homestead"><i class="fa fa-spin fa-circle-o-noch"></i> Merci de patienter ...</span>'
+			});
+			$.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+'/person/follows',
+		        dataType : "json",
+		        data: {
+		        	parentId : parentId,
+		        	invitedUserName : invitedUserName,
+		        	invitedUserEmail : invitedUserEmail,
+		        	msgEmail : $("#inviteText").val()
+		        },
+				type:"POST",
+		    })
+		    .done(function (data) {
+		    	$.unblockUI();
+		        if (data &&  data.result) {               
+		        	toastr.success('L\'invitation a été envoyée avec succès!');
+		        	addFloopEntity(data.invitedUser.id, "<?php echo Person::COLLECTION ?>", data.invitedUser);
+				      $('#inviteSearch').val("");
+					//Minus 1 on number of invit
+					var count = parseInt($("#numberOfInvit").data("count")) - 1;
+					$("#numberOfInvit").html(count + ' invitation(s)');
+					$("#numberOfInvit").data("count", count);
+					backToSearch();
+		        } else {
+		        	$.unblockUI();
+					toastr.error(data.msg);
+		        }
+		    });
+		}
+	});
+};*/
 // ***************** Invite *********************
 function bindInvite(){
 
 	$("#btn-save-invite").off().on('click', function()
 	{
+		$(this).prop("disabled",true);
+		$(this).find("i").removeClass("fa-send").addClass("fa-spinner fa-spin");
 		if(listMails.length == 0)
     		toastr.error("Veuillez sélectionner une adresse mail.");
+    	else if($("#inviteEmail").val()=="" || $("#inviteName").val()==""){
+    		if($("#inviteEmail").val()=="" && $("#inviteEmail").parent().find(".error-block-invite").length <=0)
+    			$("#step3 #inviteEmail").parent().append("<span class='text-red error-block-invite'><i>* Veuillez ajouter un email</i></span>");
+    		if($("#inviteName").val()=="" && $("#inviteName").parent().find(".error-block-invite").length <=0)
+    			$("#step3 #inviteName").parent().append("<span class='text-red error-block-invite'><i>* Veuillez ajouter un nom</i></span>");	
+    		$(this).prop("disabled",false);
+			$(this).find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
+    	}
     	else{
-    		var nameUtil = "" ;
-    		var textmail = "Bonjour, J'ai découvert un réseau sociétal citoyen appelé \"Communecter - être connecter à sa commune\". Tu peux agir concrétement autour de chez toi et découvrir ce qui s'y passe. Viens rejoindre le réseau sur communecter.org.";
+    		if($(".error-block-invite").length>=0)
+    			$(".error-block-invite").remove();
     		mylog.log("listMails", listMails);
+    		if(Object.keys(listMails).length==0){
+    			dataInvite={msgEmail : $("#inviteText").val(),
+		        	invitedUserName : $("#inviteName").val(),
+		        	invitedUserEmail : $("#inviteEmail").val(),
+		        	listMails:{}
+		        };
+    		} else{
+    			dataInvite={
+    				msgEmail : $("#inviteText").val(),
+		        	listMails:listMails
+		        }
+    		}
     		$.ajax({
 		        type: "POST",
 		        url: baseUrl+"/"+moduleId+'/person/follows',
 		        dataType : "json",
-		        data: {
-		        	//parentId : $("#parentId").val(),
-		        	listMails : listMails,
-		        	msgEmail : textmail,
-		        	//gmail : false
-		        },
+		        data: dataInvite,
 				type:"POST",
 				success: function(data){ 
 					if (data &&  data.result) {               
 			        	toastr.success('L\'invitation a été envoyée avec succès!');
 			        	mylog.log(data);
-			        	$.each(data.data, function(key, elt) {
-			        		addFloopEntity(elt.invitedUser.id, <?php echo Person::COLLECTION ?>, elt.invitedUser);
-			        	});
+			        	if(typeof data.data !="undefined"){
+				        	$.each(data.data, function(key, elt) {
+				        		addFloopEntity(elt.invitedUser.id, "<?php echo Person::COLLECTION ?>", elt.invitedUser);
+				        	});
+			        	}else
+			        		addFloopEntity(data.invitedUser.id, "<?php echo Person::COLLECTION ?>", data.invitedUser);
 			        	$('#inviteSearch').val("");
+			        	$("#div-invite-search-all #step3 #inviteName").val("");
+			        	$("#div-invite-search-all #step3 #inviteEmail").val("");
+			        	$("#div-invite-search-all #step3").addClass("hidden");
 						//backToSearch();
+						$("#div-invite-search-all #step3 #btn-save-invite").prop("disabled",false);
+						$("#div-invite-search-all #step3 #btn-save-invite").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
 			        } else {
 			        	$.unblockUI();
 						toastr.error(data.msg);
+						$("#div-invite-search-all #step3 #btn-save-invite").prop("disabled",false);
+						$("#div-invite-search-all #step3 #btn-save-invite").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
 			        }
 				}
 		    })
@@ -1209,8 +1332,9 @@ function autoCompleteInviteSearch2(search){
 				var htmlIco ="<i class='fa fa-user fa-2x'></i>"
 				if(v.id != userId) {
 					tabObject.push(v);
-	 				if(v.profilImageUrl != ""){
-	 					var htmlIco= "<img width='50' height='50' alt='image' class='img-circle' src='"+baseUrl+v.profilImageUrl+"'/>"
+					console.log(v);
+	 				if(v.profilThumbImageUrl != ""){
+	 					var htmlIco= "<img width='25' height='25' alt='image' class='img-circle' src='"+baseUrl+v.profilThumbImageUrl+"'/>"
 	 				}
 	 				if (v.address != null) {
 	 					city = v.address.addressLocality;
@@ -1297,20 +1421,21 @@ function buildModalInvite(fieldObj, idUi){
 									'</input>' +
 									'<hr>'+
 									'<div class="form-group hidden" id="ficheUser">'+
-										'<div class="col-md-5 text-center">'+
+										'<div class="col-md-12 text-center">'+
 											'<div class="photoInvited text-center">'+
 											'</div>'+
-											'<a class="pending btn btn-xs btn-red tooltips" data-toggle="tooltip" data-placement="bottom" title="This user has been already invited but has not connected yet.">Pending User</a>'+
-										'</div>'+
-										'<div class="col-md-7">'+
-											'<a href="javascript:;" class="connectBtn btn btn-lg tooltips " data-placement="top" data-original-title="Follow this person" ><i class=" connectBtnIcon fa fa-link "></i> Follow this person</a>'+
-											'<a href="javascript:;" class="disconnectBtn btn btn-lg tooltips " data-placement="top" data-original-title="Unfollow this person" ><i class=" disconnectBtnIcon fa fa-unlink "></i> Unfollow this person</a>'+
+											'<a class="pending btn btn-xs btn-red tooltips" data-toggle="tooltip" data-placement="bottom" title="Cette personne a déjà été invité, mais na pas encore rejoint le réseau">Cette personne a déjà été invité, mais n\'a pas encore rejoint le réseau</a>'+
+
+											'<a href="javascript:;" class="connectBtn btn btn-lg tooltips " data-placement="top" data-original-title="Suivre cette personne" ><i class=" connectBtnIcon fa fa-link "></i> Suivre cette personne</a>'+
+											'<a href="javascript:;" class="disconnectBtn btn btn-lg tooltips " data-placement="top" data-original-title="Ne plus suivre cette personne" ><i class=" disconnectBtnIcon fa fa-unlink "></i> Ne plus suivre cette personne</a>'+
 											'<hr>'+
 											'<h4 id="ficheUser-ficheName" name="ficheUser-ficheName"></h4>'+
+											'<a href="" data-toggle="modal" data-target="#modal-scope"  class="btn btn-default lbh" id="ficheUser-btnProfil">Aller sur sa page</a><br>'+
 											'<input id="inviteId" name="inviteId" type="hidden" value="">'+
 											'<span id="ficheUser-email" name="ficheUser-email" ></span><br><br>'+
 											'<span id="ficheUser-address" name="ficheUser-address" ></span><br><br>'+
 											'<span id="ficheUser-tags" name="ficheUser-tags" ></span><br>'+
+											'<br>'+
 										'</div>'+
 									'</div>'+
 									'<div class="row hidden" id="step3">'+
@@ -1341,7 +1466,7 @@ function buildModalInvite(fieldObj, idUi){
 										'<div class="row margin-bottom-10">'+
 											'<div class="col-md-11">'+
 												'<div class="form-group">'+
-										    	    '<button class="btn bg-dark pull-right" id="btnInviteNew" >Inviter</button> '+
+										    	    '<button class="btn bg-dark pull-right" id="btn-save-invite" ><i class="fa fa-send"></i> <?php echo Yii::t("common","Send invitation"); ?></button> '+
 										    		'<button class="btn btn-danger pull-right btnCancel" style="margin-right:10px;" id="btnCancelStep3" >Annuler</button>'+
 										    	'</div>'+
 										    '</div>'+

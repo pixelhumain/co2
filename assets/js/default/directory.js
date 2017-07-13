@@ -84,10 +84,13 @@ function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(typeInit == "all") {
-        searchType = ["persons", "organizations", "projects"];
+        searchType = ["persons", "organizations", "projects", "poi"];
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
 
         indexStepInit = 30;
+    }else if(typeInit == "allSig"){
+      searchType = ["persons", "organizations", "projects", "poi"];
+      indexStepInit = 50;
     }
     else{
         searchType = [ typeInit ];
@@ -205,7 +208,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               str += '<div class="col-md-12 text-left" id="">';
               str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+
                         "<i class='fa fa-angle-down'></i> " + totalData + " résultats ";
-              str += "<small>";
+              str += "<small class='resultTypes'>";
               if(typeof headerParams != "undefined"){
                 $.each( searchType, function(key, val){
                   mylog.log(">>> each autocomplete search",val);
@@ -426,7 +429,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    	});
 
   	//on click sur les boutons link
-   	$(".followBtn").click(function(){
+   	$(".followBtn").off().on("click",function(){
 	   	formData = new Object();
    		formData.parentId = $(this).attr("data-id");
    		formData.childId = userId;
@@ -490,6 +493,46 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     $(".btn-update-contact").click(function(){ console.log("editContact");
       updateContact($(this).data("contact-key"),$(this).data("contact-name"), $(this).data("contact-email"), 
                    $(this).data("contact-role"),$(this).data("contact-telephone"));
+    });
+
+    $(".deleteThisBtn").off().on("click",function () 
+    {
+      mylog.log("deleteThisBtn click");
+          $(this).empty().html('<i class="fa fa-spinner fa-spin"></i>');
+          var btnClick = $(this);
+          var id = $(this).data("id");
+          var type = $(this).data("type");
+          var urlToSend = baseUrl+"/"+moduleId+"/element/delete/type/"+type+"/id/"+id;
+          
+          bootbox.confirm(trad.areyousuretodelete,
+          function(result) 
+          {
+        if (!result) {
+          btnClick.empty().html('<i class="fa fa-trash"></i>');
+          return;
+        } else {
+          $.ajax({
+                type: "POST",
+                url: urlToSend,
+                dataType : "json"
+            })
+            .done(function (data) {
+                if ( data && data.result ) {
+                  toastr.info("élément effacé");
+                  $("#"+type+id).remove();
+                  if( $(".contain_"+type+"_"+id).length > 0 )
+                    $(".contain_"+type+"_"+id).remove();
+                  else
+                    urlCtrl.loadByHash( location.hash );
+                  if($("#openModal").hasClass("in"))
+                    $("#openModal").modal("hide");
+                } else {
+                   toastr.error("something went wrong!! please try again.");
+                }
+            });
+        }
+      });
+
     });
 
     initBtnShare();
@@ -771,36 +814,36 @@ var directory = {
     // ********************************
     //  ELEMENT DIRECTORY PANEL
     // ********************************
-	elementPanelHtml : function(params){
-		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name);
-		mylog.log("----------- elementPanelHtml",params.type,params.name, params);
-		str = "";
-		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
-		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
-		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" '>";
-		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
-		mylog.log("inMyContacts",inMyContacts(params.type, params.name));
-    var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;
-    if(typeof params.edit  != "undefined")
-          str += this.getAdminToolBar(params);
-        
-		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){
-			isFollowed=false;
+	  elementPanelHtml : function(params){
+    		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name);
+    		//mylog.log("----------- elementPanelHtml",params.type,params.name, params);
+    		str = "";
+    		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
+    		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
+    		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" contain_"+params.type+"_"+params.id+"'>";
+    		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
+    		
+        var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;
+        if(typeof params.edit  != "undefined")
+              str += this.getAdminToolBar(params);
+            
+    		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){
+    			isFollowed=false;
 
-			if(typeof params.isFollowed != "undefined" ) 
-				isFollowed=true;
-			tip = (params.type == "events") ? "Participer" : 'Suivre';
-			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-			' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-			" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-			"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-			"</a>";          
-		}
+    			if(typeof params.isFollowed != "undefined" ) 
+    				isFollowed=true;
+    			tip = (params.type == "events") ? "Participer" : 'Suivre';
+    			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+    			' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+    			" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+    			"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
+    			"</a>";          
+    		}
 
         if(params.updated != null )
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
         
-        var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' " : " lbh'";
+        var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
         if(params.type == "citoyens") 
             params.hash += '.viewer.' + userId;
        // if(typeof params.size == "undefined" || params.size == "max")
@@ -816,10 +859,16 @@ var directory = {
               str += "</div>";
             }
 
+            if(notEmpty(params.typePoi)){
+              str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + trad[params.typePoi] + "<hr></span>";  
+            }
+
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark add2fav "+linkAction+">"+
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+">"+
                       iconFaReply + params.name + 
-                   "</a>";   
+                   "</a>";  
+                    
+                    
             if(typeof(params.statusLink)!="undefined"){
               if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined")
                 str+="<span class='text-red'>Administrateur</span>";
@@ -828,7 +877,7 @@ var directory = {
             }
 
             if( params.section ){
-              str += "<div class='entityType bold'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
+              str += "<div class='entityType'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
                 if(typeof params.subtype != "undefined") str += " > " + params.subtype;
               str += "</div>";
             }
@@ -970,32 +1019,43 @@ var directory = {
             $.each(params.medias, function (ix, mo) {  
               str += "<div class='col-xs-12'><a href='" + mo.content.url + "' target='_blank'>" + mo.content.url + "</a></div>";
             });
+            str += "<hr class='col-xs-12'>";
+          }
+
+
+          if(typeof params.contactInfo != "undefined" && params.contactInfo != ""){
+            str += "<div class='entityType letter-green bold' style='font-size:17px;'><i class='fa fa-address-card'></i> Contact : " + params.contactInfo + "</div>";
+            str += "<hr class='col-xs-12'>";
           }
 
           var thisLocality = "";
           if(typeof params.fullLocality != "undefined" && params.fullLocality != "" && params.fullLocality != " ")
           {
-            str += "<div class='col-xs-12 bold text-black' style='font-size:15px;'>Addresse : </div>";
-            thisLocality = "<a href='"+params.hash+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
-                                "<i class='fa fa-home'></i> " + params.fullLocality + 
-                              "</a>";
+            str += "<div class='col-xs-12 bold text-black' style='font-size:15px;'>Addresse : ";
+            str += "<a href='"+params.hash+"' data-id='" + params.dataId + "' class='entityLocality  lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
+                              "<i class='fa fa-home'></i> " + params.fullLocality + 
+                            "</a>";
+           str += "</div>";
+           str += "<hr class='col-xs-12'>";
+           //str += thisLocality;
           }
           //else thisLocality = "<br>";
           
-          str += thisLocality;
 
-          if(typeof params.contactInfo != "undefined" && params.contactInfo != "")
-          str += "<div class='entityType letter-green bold' style='font-size:17px;'><i class='fa fa-address-card'></i> " + params.contactInfo + "</div>";
        
-          //str += "<div class='tagsContainer text-red'>"+params.tags+"</div>";
+          if(notEmpty(params.tagsLbl)){
+            str += "<div class='col-xs-12 bold text-black' style='font-size:15px;'>Mots clés : "+params.tagsLbl+"</div>";
+            str += "<hr class='col-xs-12'>";
+          }
 
-        str += "<hr></div>";
+
+        str += "</div>";
 
         getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/"+params.type+"/tpl/json" , function( data ) { 
           var c = 1;
           $.each(data.list,function(k,v) { 
             mylog.log("data list",k,v);
-            if( $('.carousel-first img').attr('src').indexOf(v.name) < 0 ){
+            if( $('.carousel-first img').attr('src') && $('.carousel-first img').attr('src').indexOf(v.name) < 0 ){
               $(".carousel-inner").append('  <div class="item">'+
               "   <img class='img-responsive' src='"+v.path+"/"+v.name+"'/>"+
               ' </div>');
@@ -1036,10 +1096,14 @@ var directory = {
             // '</a>'+
         '</div>';
 
-        if( params.creator == userId )
-        str += '<hr><a href="javascript:dyFObj.editElement(\''+params.type+'\', \''+params.id+'\' );" class="btn btn-default pull-right margin-top-15 letter-green bold">'+
+        if( params.creator == userId || params.author == userId || params.parentId == userId ){
+          str += '<hr>'+
+              '<div class="col-md-offset-1 col-md-10 col-sm-12 col-xs-12 shadow2 padding-15 margin-top-25">'+
+              '<a href="javascript:;" class="btn btn-default text-red deleteThisBtn bold pull-left" data-type="'+params.type+'" data-id="'+params.id+'" ><i class="fa fa-trash"></i></a> '+
+              '<a href="javascript:dyFObj.editElement(\''+params.type+'\', \''+params.id+'\' );" class="btn btn-default pull-right letter-green bold">'+
                   '<i class="fa fa-pencil"></i> Modifier cet élément'+
-              '</a>';
+              '</a></div>';
+            }
 
 
 
@@ -1125,7 +1189,7 @@ var directory = {
 
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.hash+'" data-id="' + params.dataId + '"' + "  class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
+                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "' class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             //else thisLocality = "<br>";
@@ -1494,7 +1558,7 @@ var directory = {
                       "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
                     "</a>";
         }
-*/
+        */
         if(params.updated != null && !params.useMinSize)
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
 
@@ -1612,8 +1676,8 @@ var directory = {
       return str;
     },
     showResultsDirectoryHtml : function ( data, contentType, size, edit){ //size == null || min || max
-        //mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
-        //mylog.log(" data", data,"size",  size, "contentType", contentType)
+        mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
+        mylog.log("showResultsDirectoryHtml data", data,"size",  size, "contentType", contentType)
         //mylog.log(" dirLog",directory.dirLog);
         var str = "";
 
@@ -1625,7 +1689,7 @@ var directory = {
 
 
             itemType=(contentType) ? contentType :params.type;
-            mylog.log("itemType",itemType);
+            
             if( itemType ){ 
                 if(directory.dirLog) mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
@@ -1692,6 +1756,16 @@ var directory = {
                     params.cityName = params.address.addressLocality ? params.address.addressLocality : "";
                 }
                 params.fullLocality = params.postalCode + " " + params.cityName;
+
+                if (false && typeof params.addresses != "undefined" && params.addresses != null) {
+                $.each(params.addresses, function(key, val){
+                  //console.log("second address", val);
+                    var postalCode = val.address.postalCode ? val.address.postalCode : "";
+                    var cityName = val.address.addressLocality ? val.address.addressLocality : "";
+                    
+                    params.fullLocality += "<br>"+ postalCode + " " + cityName;
+                  });
+                }
 
                 params.type = dyFInputs.get(itemType).col;
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
@@ -2126,9 +2200,12 @@ var directory = {
                       
             str +=  '</h3>';
         }
-            
-        
-        if(params.endDate != null && params.startDay != params.endDay){
+          
+        var dStart = params.startDay + params.startMonth + params.startYear;
+        var dEnd = params.endDay + params.endMonth + params.endYear;
+        mylog.log("DATEE", dStart, dEnd);
+
+        if(params.endDate != null && dStart != dEnd){
           str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                       "<small>Au </small>"+
                       '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+

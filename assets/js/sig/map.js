@@ -171,7 +171,7 @@
 			{
 				if(typeof showMe == "undefined") showMe = true;
 
-				//mylog.warn("--------------- clearMap ---------------------");
+				mylog.warn("--------------- clearMap ---------------------");
 				if(this.markersLayer != "")
 					this.markersLayer.clearLayers();
 
@@ -310,7 +310,7 @@
 				
 				$(this.cssModuleName + " .panel_map").css({"max-height":rightPanelHeight - 8*2 /*padding*/ - 45 });
 				
-				var RTM_width =  ($("#right_tool_map").css('display') != 'none') ? $("#right_tool_map").width()+30 : 0;
+				var RTM_width =  ($("#right_tool_map").css('display') != 'none') ? $("#right_tool_map").width()+30 : 30;
 				var GAM_width =  ($("#right_tool_map").css('display') != 'none') ? RTM_width+30 : RTM_width+30;
 				$(this.cssModuleName + " .tools-btn").css({"right": RTM_width });
 				$(this.cssModuleName + " .btn-groupe-around-me-km").css({"right": GAM_width });
@@ -700,6 +700,12 @@
 			this.Sig.showMapElements = function(thisMap, data, iconLegende, textLegende)
 			{
 				//mylog.warn("--------------- showMapElements ---------------------");
+				if(typeof textLegende != "undefined" && textLegende != null && textLegende != ""){
+					this.listPanel.tags = new Array();
+					this.listPanel.types = new Array();
+					this.panelFilter = "all";
+					this.panelFilterType = "all";
+				}
 				
 				//si la carte n'est pas chargée
 				//on mémorise les données et on les affichera avec le prochain showMap

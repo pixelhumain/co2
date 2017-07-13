@@ -1,3 +1,12 @@
+<?php 
+    /*if(Yii::app()->session["userId"] != $element["_id"] &&
+      !Preference::showPreference($element, $type, "locality", Yii::app()->session["userId"]))
+        echo "pouetttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt";
+       // return;  
+
+    echo Preference::showPreference($element, $type, "locality", Yii::app()->session["userId"]) ? "yes" : "no";*/
+?>
+
 <style> 
     hr.angle-down::after {
         background-color: #e6344d;
@@ -165,6 +174,7 @@ jQuery(document).ready(function() {
             $("#localActivity"+type+id).removeClass("hidden");
             $("#localActivity"+type+id).off().mouseleave(function(){
                 $(this).addClass("hidden").html("");
+                $(".el-nowList").removeClass("hidden");
             });
             bindLBHLinks();
             initBtnShare();

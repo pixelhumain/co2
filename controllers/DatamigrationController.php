@@ -647,7 +647,7 @@ class DatamigrationController extends CommunecterController {
 
 
 
-	public function actionUpdateRegion(){
+	/*public function actionUpdateRegion(){
 
 		$newsRegions = array(
 						//array("new_code","new_name","former_code","former_name"),
@@ -694,7 +694,7 @@ class DatamigrationController extends CommunecterController {
 				                        array('$set' => array(	"region" => $region[0],
 				                        						"regionName" => $region[1])),
 				                        array("multi"=> true)
-				                    );*/
+				                    );
 				foreach ($cities as $key => $city) {
 					$res = PHDB::update( City::COLLECTION, 
 									  	array("_id"=>new MongoId($key)),
@@ -713,7 +713,7 @@ class DatamigrationController extends CommunecterController {
 
 		}
 
-	}
+	}*/
 
 	public function actionUpdateUserName() {
 		//add a suffle username for pending users event if they got one
@@ -984,7 +984,18 @@ class DatamigrationController extends CommunecterController {
 			echo "////////// <br/>";
 		}
 	}
-
+	public function actionRemovePropertiesOfOrganizations(){
+		$organizations = PHDB::find(Organization::COLLECTION, array("properties.chart" => array('$exists' => 1)));
+		$nbOrgaDealWith=0;
+		foreach($organizations as $data){
+			PHDB::update(Organization::COLLECTION,
+				array("_id" => new MongoId((string)$data["_id"])),
+				array('$unset' => array("properties"=> ""))
+			);
+			$nbOrgaDealWith++;
+		}	
+		echo "nombre d'organizations traitées : ".$nbOrgaDealWith;
+	}
 	public function actionFixBugCoutryReunion(){
 		$nbelement = 0 ;
 		$elements = PHDB::find(Organization::COLLECTION, array("address.addressCountry" => "Réunion"));
@@ -1473,6 +1484,141 @@ class DatamigrationController extends CommunecterController {
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
+	public function actionObjectObjectTypeNewsToObjectType(){
+	  	// Check in mongoDB
+	  	//// db.getCollection('news').find({"object.objectType": {'$exists':true}})
+	  	// Check number of news to formated
+	  	//// db.getCollection('news').find({"object.objectType": {'$exists':true}}).count()
+	  	$news=PHDB::find(News::COLLECTION,array("object.objectType"=>array('$exists'=>true)));
+	  	$nbNews=0;
+	  	foreach($news as $key => $data){
+	  		$newObject=array("id"=>$data["object"]["id"], "type"=> $data["object"]["objectType"]);
+			PHDB::update(News::COLLECTION,
+				array("_id" => $data["_id"]) , 
+				array('$set' => array("object" => $newObject))
+			);
+	  		$nbNews++;
+	  	}
+	  	echo "nombre de news traitées:".$nbNews." news";
+	}
+
+
+	public function actionUpOldNotifications(){
+  	// Update notify.id 
+  	$notifications=PHDB::find(ActivityStream::COLLECTION,array("notify.id"=>array('$exists'=>true)));
+  	$nbNotifications=0;
+  	//print_r($notifications);
+  	foreach($notifications as $key => $data){
+  		//print_r($data["notify"]["id"]);
+  		$update=false;
+  		$newArrayId=array();
+  		foreach($data["notify"]["id"] as $val){
+			if(gettype($val)=="string"){
+				//echo($val);
+  				$newArrayId[$val]=array("isUnsee"=>true,"isUnread"=>true);
+  				$update=true;
+  			}
+  		}
+  		if($update){
+  			//print_r($newArrayId);
+			PHDB::update(ActivityStream::COLLECTION,
+				array("_id" => $data["_id"]) , 
+				array('$set' => array("notify.id" => $newArrayId))
+			);
+			$nbNotifications++;
+		}
+  		
+  	}
+  	echo "nombre de notifs traitées:".$nbNotifications." notifs";
+  }
+  	public function actionSharedByRefactor(){
+	  	// Check in mongoDB
+	  	//// db.getCollection('news').find({"object.objectType": {'$exists':true}})
+	  	// Check number of news to formated
+	  	//// db.getCollection('news').find({"object.objectType": {'$exists':true}}).count()
+	  	$news=PHDB::find(News::COLLECTION,array());
+	  	$nbNews=0;
+	  	foreach($news as $key => $data){
+	  		if(@$data["targetIsAuthor"] && $data["targetIsAuthor"] == true ){
+				PHDB::update(News::COLLECTION,
+					array("_id" => $data["_id"]) , 
+					array('$set' => array("sharedBy" => array(array('id'=> $data["target"]["id"],
+        					'type'=>$data["target"]["type"],
+        					'updated'=> $data["created"]))))
+				);
+			} else {
+				PHDB::update(News::COLLECTION,
+					array("_id" => $data["_id"]) , 
+					array('$set' => array("sharedBy" => array(array('id'=> $data["author"],
+        					'type'=>"citoyens",
+        					'updated'=> $data["created"]))))
+				);
+			}
+	  		$nbNews++;
+	  	}
+	  	echo "nombre de news traitées:".$nbNews." news";
+  		
+  	}
+
+
+
+  	public function actionUpdateRegion(){
+
+		$newsRegions = array(
+						//array("new_code","new_name","former_code","former_name"),
+						array("01","Guadeloupe","01","Guadeloupe"),
+						array("02","Martinique","02","Martinique"),
+						array("03","Guyane","03","Guyane"),
+						array("04","La Réunion","04","La Réunion"),
+						array("06","Mayotte","06","Mayotte"),
+						array("11","Île-de-France","11","Île-de-France"),
+						array("24","Centre-Val de Loire","24","Centre"),
+						array("27","Bourgogne-Franche-Comté","26","Bourgogne"),
+						array("27","Bourgogne-Franche-Comté","43","Franche-Comté"),
+						array("28","Normandie","23","Haute-Normandie"),
+						array("28","Normandie","25","Basse-Normandie"),
+						array("32","Nord-Pas-de-Calais-Picardie","31","Nord-Pas-de-Calais"),
+						array("32","Nord-Pas-de-Calais-Picardie","22","Picardie"),
+						array("44","Alsace-Champagne-Ardenne-Lorraine","41","Lorraine"),
+						array("44","Alsace-Champagne-Ardenne-Lorraine","42","Alsace"),
+						array("44","Alsace-Champagne-Ardenne-Lorraine","21","Champagne-Ardenne"),
+						array("52","Pays de la Loire","52","Pays de la Loire"),
+						array("53","Bretagne","53","Bretagne"),
+						array("75","Aquitaine-Limousin-Poitou-Charentes","72","Aquitaine"),
+						array("75","Aquitaine-Limousin-Poitou-Charentes","54","Poitou-Charentes"),
+						array("75","Aquitaine-Limousin-Poitou-Charentes","74","Limousin"),
+						array("76","Languedoc-Roussillon-Midi-Pyrénées","73","Midi-Pyrénées"),
+						array("76","Languedoc-Roussillon-Midi-Pyrénées","91","Languedoc-Roussillon"),
+						array("84","Auvergne-Rhône-Alpes","82","Rhône-Alpes"),
+						array("84","Auvergne-Rhône-Alpes","83","Auvergne"),
+						array("93","Provence-Alpes-Côte d'Azur","93","Provence-Alpes-Côte d'Azur"),
+						array("94","Corse","94","Corse")
+					);
+
+		foreach ($newsRegions as $key => $region){
+
+			echo "News : (".$region[0].") ".$region[1]." ---- Ancien : (".$region[2].") ".$region[3]."</br>" ;
+
+			$cities = PHDB::find(City::COLLECTION,array("region" => $region[2]));
+			$res = array("result" => false , "msg" => "La région (".$region[0].") ".$region[1]." n'existe pas");
+			
+			if(!empty($cities)){
+				foreach ($cities as $key => $city) {
+					$res = PHDB::update( City::COLLECTION, 
+									  	array("_id"=>new MongoId($key)),
+				                        array('$set' => array(	"region" => $region[0],
+				                        						"regionName" => $region[1]))
+				                    );
+				}
+				echo "</br></br></br>";
+				echo "Result : ".$res["result"]." | ".$res["msg"]."</br></br></br>";
+			}
+			else
+				echo "Result : ".$res["result"]." | ".$res["msg"]."</br></br></br>";
+
+		}
+
+	}
 
 
 

@@ -18,8 +18,8 @@ function showDropDownGS(show){
   }
 }
 
-var searchTypeGS = [ "persons", "organizations", "projects", "events"/*, "cities"*/ ];
-var allSearchTypeGS = [ "persons", "organizations", "projects", "events"/*, "cities"*/ ];
+var searchTypeGS = [ "persons", "organizations", "projects", "events", "poi"/*, "cities"*/ ];
+var allSearchTypeGS = [ "persons", "organizations", "projects", "events", "poi"/*, "cities"*/ ];
 
 var loadingDataGS = false;
 var indexStepGS = 20;
@@ -34,7 +34,7 @@ function startGlobalSearch(indexMin, indexMax){
 
     setTimeout(function(){ loadingDataGS = false; }, 10000);
     
-    var search = $('.input-global-search').val();
+    var search = $('#second-search-bar').val();
     //if(search == "") search = $('#input-global-search-xs').val();
     if(loadingDataGS || search.length<3) return;
     
@@ -177,11 +177,13 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
 
                   var name = typeof o.name != "undefined" ? o.name : "";
                   var postalCode = (typeof o.address != "undefined" &&
-                            typeof o.address.postalCode != "undefined") ? o.address.postalCode : "";
+                                    o.address != null &&
+                                    typeof o.address.postalCode != "undefined") ? o.address.postalCode : "";
                   
                   if(postalCode == "") postalCode = typeof o.cp != "undefined" ? o.cp : "";
                   var cityName = (typeof o.address != "undefined" &&
-                          typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
+                                  o.address != null &&
+                                  typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
                   
                   var fullLocality = postalCode + " " + cityName;
                   if(fullLocality == " Addresse non renseignée" || fullLocality == "" || fullLocality == " ") 

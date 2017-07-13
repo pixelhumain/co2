@@ -108,8 +108,8 @@ function bindButtonMenu(){
 	$(".load-data-directory").click(function(){ 
 		responsiveMenuLeft();
 		var dataName = $(this).data("type-dir");
-		mylog.log(".load-data-directory", dataName);
-		loadDataDirectory(dataName, $(this).data("icon"),edit);
+		location.hash=hashUrlPage+".view.directory.dir."+dataName;
+		if(lastWindowUrl==null) loadDataDirectory(dataName, "", edit);
 	});
 		
 	$("#subsubMenuLeft a").click(function(){
@@ -181,8 +181,8 @@ function bindButtonMenu(){
     	//$(".central-section").show();    	
     });
 
-    $("#open-select-create").click(function(){
-
+    $("#open-select-create, .open-create-form-modal").click(function(){
+    	responsiveMenuLeft(true);
 		//$(".central-section").hide();
     	$("#div-select-create").show(200);
     	setTimeout(function(){
@@ -284,7 +284,7 @@ function bindButtonMenu(){
 
 function bindButtonOpenForm(){
 	//window select open form type (selectCreate)
-	$(".btn-open-form").click(function(){
+	$(".btn-open-form").off().on("click",function(){
         var typeForm = $(this).data("form-type");
         mylog.log("test", $(this).data("form-subtype")),
         currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
@@ -297,8 +297,10 @@ function bindButtonOpenForm(){
     });
 }
 
-function loadDataDirectory(dataName, dataIcon, edit){ //console.log("loadDataDirectory");
+function loadDataDirectory(dataName, dataIcon, edit){ console.log("loadDataDirectory");
 	showLoader('#central-container');
+
+	var dataIcon = $(".load-data-directory[data-type-dir="+dataName+"]").data("icon");
 	//history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
 	// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
@@ -309,7 +311,7 @@ function loadDataDirectory(dataName, dataIcon, edit){ //console.log("loadDataDir
 						edit=dataName;
 					displayInTheContainer(data, dataName, dataIcon, type, edit);
 					bindButtonOpenForm();
-					location.hash=hashUrlPage+".view.directory.dir."+dataName;
+					
 				}
 	,"html");
 }
@@ -352,8 +354,11 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + str+" <b> lien"+s;
-		html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
-    	html +=	'<i class="fa fa-plus"></i> '+trad["Add link"]+'</a>' ;  
+		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
+			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
+    		html +=	'<i class="fa fa-plus"></i> '+trad["Add link"]+'</a>' ;
+		}
+		  
 	}
 
 	else if(dataName == "contacts"){
@@ -361,8 +366,10 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + " a " + countData+" <b> point de contact"+s;
-		html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
-    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ; 
+		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
+			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
+	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ;
+	    }
 
 
 	}
@@ -565,34 +572,46 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	if(n>0){
 		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 
-		var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
-						'<button class="btn btn-default btn-sm btn-show-onmap inline" id="btn-show-links-onmap">'+
+		var html = "";
+
+		var btnMap = '<button class="btn btn-default btn-sm btn-show-onmap inline" id="btn-show-links-onmap">'+
 				            '<i class="fa fa-map"></i>'+
-				        '</button>' +
-						thisTitle+"<hr>" +
-					"</div>";
+				        '</button>';
+
+		html += "<div class='col-md-12 margin-bottom-15 labelTitleDir'>";
+		
+		if(dataName != "urls")
+			html += btnMap;
+
+		html +=	thisTitle + "<hr>";
+		html +=	"</div>";
 		
 		
 		mapElements = new Array();
-		if(mapElements.length==0) mapElements = data;
-        else $.extend(mapElements, data);
+		
 		
 		if(dataName != "collections"){
+			if(mapElements.length==0) mapElements = data;
+        	else $.extend(mapElements, data);
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){
 				colName=col;
 				if(col=="favorites")
 					colName="favoris";
-				html += "<h4 class='col-md-12 col-sm-12 col-xs-12'><i class='fa fa-star'></i> "+colName+"<hr></h4>";
+				html += "<a class='btn btn-default col-xs-12 shadow2 padding-10 margin-bottom-20' onclick='$(\"."+colName+"\").toggleClass(\"hide\")' ><h2><i class='fa fa-star'></i> "+colName+" ("+Object.keys(val.list).length+")</h2></a>"+
+						"<div class='"+colName+" hide'>";
 				console.log("list", val);
 				if(val.count==0)
-					html +="<span class='col-md-12 col-sm-12 col-xs-12 text-dark margin-bottom-20'>Aucun élément dans cette collection</span>";
+					html +="<span class='col-xs-12 text-dark margin-bottom-20'>Aucun élément dans cette collection</span>";
 				else{
 					$.each(val.list, function(key, elements){ 
+						if(mapElements.length==0) mapElements = elements;
+        				else $.extend(mapElements, elements);
 						html += directory.showResultsDirectoryHtml(elements, key);
 					});
 				}
+				html += "</div>";
 			});
 		}
 		toogleNotif(false);
@@ -601,8 +620,22 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		initBtnAdmin();
 		bindButtonOpenForm();
 		
+		var dataToMap = data;
+		if(dataName == "collections"){
+			dataToMap = new Array();
+			$.each(data, function(key, val){
+				$.each(val.list, function(type, list){
+					mylog.log("collection", type, list);
+					$.each(list, function(id, el){
+						dataToMap.push(el);
+					});
+				});
+			});
+		}
+
+					mylog.log("dataToMap", dataToMap);
 		$("#btn-show-links-onmap").off().click(function(){
-			Sig.showMapElements(Sig.map, data, "", thisTitle);
+			Sig.showMapElements(Sig.map, dataToMap, "", thisTitle);
 			showMap(true);
 		});
     

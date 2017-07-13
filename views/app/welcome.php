@@ -54,14 +54,14 @@ function initWelcomeInterface(){
          }
     });
     
-    $("#input-search-map").keyup(function(e){ console.log("keyup #input-search-map");
+    $("#input-search-map").off().keyup(function(e){ console.log("keyup #input-search-map");
         $("#second-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
             startGlobalSearch(0, indexStepGS);
          }
     });
 
-    $("#menu-map-btn-start-search").click(function(){
+    $("#menu-map-btn-start-search").off().click(function(){
         startGlobalSearch(0, indexStepGS);
     });
 

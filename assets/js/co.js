@@ -2832,6 +2832,7 @@ var dyFInputs = {
     		{
         		$('#trigger-upload').click(function(e) {
         			e.preventDefault();
+        			alert("bah oui ma gueule");
 		        	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");

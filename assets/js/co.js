@@ -2832,8 +2832,7 @@ var dyFInputs = {
     		{
     			alert("initImageTrigger");
         		$('#trigger-upload').click(function(e) {
-        			e.preventDefault();
-		        	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+        			$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
@@ -2842,7 +2841,7 @@ var dyFInputs = {
     		 	
     		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
 
-        	},800);
+        	},500);
     	}
     },
     image :function() { 
@@ -2854,6 +2853,7 @@ var dyFInputs = {
     	return {
 	    	inputType : "uploader",
 	    	label : "Images de profil et album", 
+	    	showUploadBtn : false,
 	    	afterUploadComplete : function(){
 	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
 		    	dyFObj.closeForm();

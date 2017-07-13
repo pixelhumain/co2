@@ -2830,7 +2830,8 @@ var dyFInputs = {
     	init : function() { 
     		setTimeout( function()
     		{
-        		$('#trigger-upload').click(function() {
+        		$('#trigger-upload').click(function(e) {
+        			e.preventDefault();
 		        	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");

@@ -212,7 +212,7 @@
 		  <button type="button" class="btn btn-default bold hidden-xs btn-start-notifications">
 		  	<i class="fa fa-bell"></i> 
 		  	<span class="hidden-xs hidden-sm">
-		  		<?php if (@Yii::app()->session["userId"] == $element["_id"]) echo "Mes n"; else echo "N"; ?>otif<span class="hidden-md">ications</span>
+		  		<?php if (@Yii::app()->session["userId"] == $element["_id"]) echo "Mes notif<span class='hidden-md'>ications</span>"; else echo "Notif<span class='hidden-md'>ications</span>"; ?>
 		  	</span>
 		  	<span class="badge notifications-countElement <?php if(!@$countNotifElement || (@$countNotifElement && $countNotifElement=="0")) echo 'badge-transparent hide'; else echo 'badge-success'; ?>">
 		  		<?php echo @$countNotifElement ?>

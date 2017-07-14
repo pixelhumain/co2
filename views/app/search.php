@@ -247,7 +247,7 @@
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
-var titlePage = "<?php echo @$params["pages"]["#".$page]["subdomainName"]; ?>";
+var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
 
 //var TPL = "kgougle";
 

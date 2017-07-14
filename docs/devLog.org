@@ -51,6 +51,8 @@ IndieCamp Névez ... Installation 1% en cours
 /co2/datamigration/AddGeoShapeMissing
 *** change le type des telephones de object en array
 /co2/datamigration/ChangePhoneObjectToArray
+*** departement manquant
+/co2/datamigration/ChangePhoneObjectToArray
 
 ** @Bouboule : 
 **** Bash de reprise des data dans les chart des projets

@@ -2536,6 +2536,7 @@ var dyFObj = {
 	//if doesn't exist tries to lazyload it from assets/js/dynForm
 	//(object) :: is dynformp definition
 	getDynFormObj : function(type, callback,afterLoad, data ){
+		//alert(type+'.js');
 		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
 		if(typeof type == "object"){
 			mylog.log(" object directly Loaded : ", type);
@@ -2554,6 +2555,7 @@ var dyFObj = {
 			lazyLoad( dfPath+type+'.js', 
 				null,
 				function() { 
+					//alert(dfPath+type+'.js');
 					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+dyFInputs.get(type).ctrl+'.js');
 					mylog.dir(dynForm);
 					//typeObj[type].dynForm = dynForm;
@@ -2589,7 +2591,7 @@ var dyFObj = {
 	  	dyFObj.buildDynForm(afterLoad, data);
 
 	  	$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-									  .addClass(dyFObj.elementObj.titleClass).addClass("lol");
+									  .addClass(dyFObj.elementObj.titleClass);
 	},
 	buildDynForm : function (afterLoad,data) { 
 		mylog.warn("--------------- buildDynForm", dyFObj.elementObj, afterLoad,data);
@@ -2628,6 +2630,8 @@ var dyFObj = {
 			        mylog.log("onSave", dyFObj.elementObj.saveUrl);
 			        if( dyFObj.elementObj.save )
 			        	dyFObj.elementObj.save("#ajaxFormModal");
+			        if( dyFObj.elementObj.dynForm.jsonSchema.save )
+			        	dyFObj.elementObj.dynForm.jsonSchema.save();
 			        else if(dyFObj.elementObj.saveUrl)
 			        	dyFObj.saveElement("#ajaxFormModal",dyFObj.elementObj.col,dyFObj.elementObj.ctrl,dyFObj.elementObj.saveUrl,afterSave);
 			        else
@@ -2830,8 +2834,9 @@ var dyFInputs = {
     	init : function() { 
     		setTimeout( function()
     		{
-    			alert("initImageTrigger");
+    			
         		$('#trigger-upload').click(function(e) {
+        			alert("initImageTrigger");
         			$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
@@ -2841,7 +2846,7 @@ var dyFInputs = {
     		 	
     		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
 
-        	},500);
+        	},1500);
     	}
     },
     image :function() { 
@@ -2852,7 +2857,7 @@ var dyFInputs = {
 
     	return {
 	    	inputType : "uploader",
-	    	label : "Images de profil et album", 
+	    	label : "Vos images ici :", 
 	    	showUploadBtn : false,
 	    	afterUploadComplete : function(){
 	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
@@ -3441,26 +3446,7 @@ var typeObj = {
 			    }
 			}
 		}	},
-	"addPhoto":{ 
-		dynForm : {
-		    jsonSchema : {
-			    title : "Uploader une image ?",
-			    icon : "question-cirecle-o",
-			    noSubmitBtns : true,
-			    onLoads : {
-			    	
-			    },
-			    beforeBuild : function(){
-			    	uploadObj.contentKey="slider";
-					uploadObj.set(contextData.type,contextData.id);
-				    uploadObj.gotoUrl = location.hash;
-				},
-			    properties : {
-			    	image : dyFInputs.imageAddPhoto
-			    }
-			}
-		}},
-	
+	"addPhoto":{ titleClass : "bg-dark" },
 	"person" : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
 	"persons" : { sameAs:"person" },
 	"people" : { sameAs:"person" },

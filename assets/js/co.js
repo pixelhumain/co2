@@ -2830,8 +2830,9 @@ var dyFInputs = {
     	init : function() { 
     		setTimeout( function()
     		{
-    			alert("initImageTrigger");
+    			
         		$('#trigger-upload').click(function(e) {
+        			alert("initImageTrigger");
         			$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
@@ -2841,7 +2842,7 @@ var dyFInputs = {
     		 	
     		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
 
-        	},500);
+        	},1500);
     	}
     },
     image :function() { 

@@ -126,6 +126,7 @@ Liste des notifications déjà lues => #370 #453
   [ ] Limitation of 500px*100px
 [ ] Get preferences of email 
 [ ] Create more email
+[ ] faire le point sur l'evaluation des communs
 * @Rapha 
 [ ] internationalisation 
   [ ] Barcelone

@@ -2857,7 +2857,7 @@ var dyFInputs = {
 
     	return {
 	    	inputType : "uploader",
-	    	label : "Images de profil et album", 
+	    	label : "Vos images ici :", 
 	    	showUploadBtn : false,
 	    	afterUploadComplete : function(){
 	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
@@ -3446,27 +3446,7 @@ var typeObj = {
 			    }
 			}
 		}	},
-	"addPhoto":{ },
-	/*
-		dynForm : {
-		    jsonSchema : {
-			    title : "Uploader une image ?",
-			    icon : "question-cirecle-o",
-			    noSubmitBtns : true,
-			    onLoads : {
-			    	
-			    },
-			    beforeBuild : function(){
-			    	uploadObj.contentKey="slider";
-					uploadObj.set(contextData.type,contextData.id);
-				    uploadObj.gotoUrl = location.hash;
-				},
-			    properties : {
-			    	image : dyFInputs.imageAddPhoto
-			    }
-			}
-		}},*/
-	
+	"addPhoto":{ titleClass : "bg-dark" },
 	"person" : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
 	"persons" : { sameAs:"person" },
 	"people" : { sameAs:"person" },

@@ -16,7 +16,7 @@
 			"icon" : "", 
 			"mainTitle" : "Réseau sociétal <span class='text-red'>territorial</span>",
 			"placeholderMainSearch" : "search something ...",
-			"lblBtnCreate" : "Créer quelque chose",
+			"lblBtnCreate" : "Create something",
 			"colorBtnCreate" : "green"
 		},
 
@@ -30,7 +30,7 @@
 			"icon" : "search", 
 			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
 			"placeholderMainSearch" : "search a page ...",
-			"lblBtnCreate" : "Créer une page",
+			"lblBtnCreate" : "Create a page",
 			"colorBtnCreate" : "green"
 		},
 
@@ -39,12 +39,12 @@
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "annonces", 
-			"subdomainName" : "Ads",
+			"subdomainName" : "Classifieds",
 			"hash" : "#app.annonces",
 			"icon" : "bullhorn", 
 			"mainTitle" : "Classified ads",
-			"placeholderMainSearch" : "search among ads ...",
-			"lblBtnCreate" : "Publier une annonce",
+			"placeholderMainSearch" : "search among classifieds ...",
+			"lblBtnCreate" : "Create a classified ad",
 			"colorBtnCreate" : "azure"
 		},
 
@@ -58,7 +58,7 @@
 			"icon" : "calendar", 
 			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",
 			"placeholderMainSearch" : "search an event ...",
-			"lblBtnCreate" : "Créer un événement",
+			"lblBtnCreate" : "Create an event",
 			"colorBtnCreate" : "orange"
 		},
 

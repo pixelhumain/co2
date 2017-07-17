@@ -308,12 +308,12 @@
       <input type="hidden" id="typeNews" name="type" value="news"/>
 
       <input  type="text" id="falseInput" onclick="javascript:showFormBlock(true);" 
-          class="col-xs-12 col-md-12" placeholder="Exprimez-vous ..."   style="padding:15px;"/>
+          class="col-xs-12 col-md-12" placeholder="<?php echo Yii::t("common","Express yourself ...") ?>" style="padding:15px;"/>
 
       <div class="extract_url" style="display:none;">
         <div class="padding-10 bg-white">
           <img class="loading_indicator" src="<?php echo $this->module->assetsUrl ?>/images/news/ajax-loader.gif">
-          <textarea id="get_url" placeholder="Exprimez-vous ..." class="get_url_input form-control textarea mention" style="border:none;background:transparent !important" name="getUrl" spellcheck="false" ></textarea>
+          <textarea id="get_url" placeholder="<?php echo Yii::t("common","Express yourself ...") ?>" class="get_url_input form-control textarea mention" style="border:none;background:transparent !important" name="getUrl" spellcheck="false" ></textarea>
           <ul class="dropdown-menu" id="dropdown_search" style="">
           </ul>
 
@@ -330,7 +330,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
           <hr class="submit">
           
-          <button id="btn-submit-form" type="submit" class="btn btn-success pull-right">Envoyer <i class="fa fa-arrow-circle-right"></i></button>
+          <button id="btn-submit-form" type="submit" class="btn btn-success pull-right"><?php echo Yii::t("common","Submit") ?> <i class="fa fa-arrow-circle-right"></i></button>
 
 
         <?php if((@$canManageNews && $canManageNews==true) 

@@ -55,7 +55,7 @@
 </style>
 
 <div class='col-md-12 margin-bottom-15'>
-	<i class="fa fa-info-circle fa-2x"></i><span class='Montserrat' id='name-lbl-title'> A propos</span>
+	<i class="fa fa-info-circle fa-2x"></i><span class='Montserrat' id='name-lbl-title'> <?php echo Yii::t("common","About") ?></span>
 </div>
 
 <div id="ficheInfo" class="panel panel-white col-lg-12 col-md-12 col-sm-12 no-padding shadow2">

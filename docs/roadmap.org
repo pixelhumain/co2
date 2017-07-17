@@ -83,9 +83,21 @@ Liste des notifications déjà lues => #370 #453
 
 
 * ************************************************************    
-* Version 0.21  : MEQA , MEP ?/07/2017
+* Version 0.21  : en cours
 * ************************************************************  
 
+* Amelioration during tests
+  [ ] redirect after error : go back to previous page , not "home" 
+  [ ] last visited links
+  [ ] date devant le lien follow
+  [ ] click follow sur orga > msg : "Êtes-vous sûr de ne plus suivre cette personne ?"
+    [ ] removes the orga from list , why ????
+  [ ] bug msg non approprié : inviter qlqun 
+  [ ] clean up themes (cityBox, sig )
+  [ ] clean up recurrent logs 
+  [ ] ajouter un btn contribuer a la fin des modules 
+  [ ] photo maia 
+  [ ] menu > drop answers > show nb of members + nb of links
 * @Tib 
   [ ] Finir module Tiers Lieux 
   [ ] REssource
@@ -96,6 +108,7 @@ Liste des notifications déjà lues => #370 #453
   [ ] url city a transmettre 
   [ ] dynform bookmarking using POI : add a url > Next > get content (voir avec tango kgougle )
   [ ] btn changement de langue 
+  [ ] brique comeptence et tache sur mon profil 
 * @Tib et @Tango 
   [ ] REfactor DDA 
   [ ] utiliser le DDA pour ouvrir et crowd sourcer les demandes de fonctionnalité de CO
@@ -151,9 +164,11 @@ Liste des notifications déjà lues => #370 #453
 * @Christopher
   [ ] nextclowd
   [ ] DEV et QA sur server privé
-
+* @Thomas 
+  [ ] interoperabilté RC
+  
 * ************************************************************    
-* Version 0.2  : MEQA
+* Version 0.2  : MEQA, MEP 17/07
 * ************************************************************  
 ** @Tib
 [ ] on previews , activate keyboard navigation

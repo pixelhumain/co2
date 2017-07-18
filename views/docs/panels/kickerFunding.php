@@ -1,5 +1,4 @@
 <div class="panel-heading border-light center text-dark partition-white radius-10 " style="margin-bottom:30px;">
-	<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" style="margin-bottom:20px;" class="nc_map" height=50><br/>
 	<span class="panel-title homestead text-red " style="font-size: 48px">Aidez la vie d'un communs</span> </span>
 </div>
 
@@ -51,11 +50,11 @@
         	<br>
         	<hr>
 
-        	<h1 class="text-red font-blackoutM" id="koica">
+        	<h1 class="text-red homestead" id="koica">
         		On reste fragile !!!
         	</h1>
 
-        	<h3 class="letter-blue"><i class="fa fa-angle-right"></i> Please help us !</h3>
+        	<h3 class="text-dark "><i class="fa fa-angle-right"></i> Please help us !</h3>
         	<p>
 				Le collectif de développeurs qui s'occupe actuellement de la plateforme a besoin de pouvoir continuer à travailler à plein temps sur ce projet pharaonique.
 				<br><br>
@@ -70,21 +69,34 @@
 				<br><br>
 				Si vous souhaitez que le réseau Communecter continue à grandir, il ne tient qu'à vous d'apporter votre soutien. Si chacun d'entre vous donne quelques euros, c'est possible !
 
-				<h3 class="letter-blue">Un projet à long terme</h3>
+				<h3 class="text-dark ">Un projet à long terme</h3>
 				L'équipe actuelle de développeurs est sur-motivée et souhaite plus que tout continuer son travail.<br>
 				Elle souhaite également s'agrandir si possible, en intégrant de nouveau développeurs, ou en collaborant avec d'autres équipes afin de développer des applications interropérables.<br><br>
 				Nous souhaitons également continuer à améliorer l'application Communecter, en rajoutant de nouvelles fonctionnalités.
 
-				<h3 class="letter-blue">Budget annuel : (exemple)</h3>
+				<h3 class="text-dark ">Budget annuel : (objectif 2017)</h3>
 				6 développeurs à 2000€/mois, pendant 1 an : Pour développer l'application<br>
 				6 * 2000 * 12 = <?php $c1 = 6 * 2000 * 12; echo $c1; ?>€
 				<br><br>
 				6 communecteur à 1000€/mois, pendant 1 an : Pour faire connaitre et comprendre l'application<br>
 				6 * 2000 * 12 = <?php $c2 = 6 * 1000 * 12; echo $c2; ?>€
 				<br><br>
-				ETC ...
+				Charges Technique : BDD, Hebergement<br>
+				8000€
 				<br><br><br>
-				Total : <?php echo $c1 + $c2; ?>€
+				Total : <?php echo $c1 + $c2+8000; ?>€
+
+				<h3 class="text-red ">Budget actuel : (depuis 2015)</h3>
+				6 développeurs à 2000€/mois, pendant 1 an : Pour développer l'application<br>
+				6 * 1000 * 12 = <?php $c1 = 6 * 1000 * 12; echo $c1; ?>€
+				<br><br>
+				2 contrats Aidés + 4 services Civiques<br>
+				2 * 4000  = <?php $c2 = 2 * 4000; echo $c2; ?>€
+				<br><br>
+				Charges Technique : BDD, Hebergement<br>
+				8000€
+				<br><br><br>
+				Total : <?php echo $c1 + $c2+8000; ?>€
         	</p>
         </div>
     </div>

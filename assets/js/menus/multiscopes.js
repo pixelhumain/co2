@@ -202,10 +202,10 @@ function addScopeToMultiscope(scopeValue, scopeName){
 }
 
 
-function deleteScopeInMultiscope(scopeValue){ //mylog.log("deleteScopeInMultiscope(scopeValue)", scopeValue);
+function deleteScopeInMultiscope(scopeValue){ mylog.log("deleteScopeInMultiscope(scopeValue)", scopeValue);
 	if(scopeExists(scopeValue)){
 		delete myMultiScopes[scopeValue];
-		$("[data-scope-value='"+scopeValue+"']").remove();
+		$("[data-scope-value=\""+scopeValue+"\"]").remove();
 		saveMultiScope();
 	}
 	//mylog.dir(myMultiScopes);

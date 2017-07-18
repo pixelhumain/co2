@@ -81,91 +81,107 @@ Report Abuse on element
 Notification intelligentes => 685
 Liste des notifications déjà lues => #370 #453
 
-
+* idea
+ [ ] menu > drop answers > show nb of members + nb of links
 * ************************************************************    
 * Version 0.21  : en cours
 * ************************************************************  
+* Communication 
+  [ ] passer la roadmap dans le Wiki
+  [ ] commencer une campagne d'adhésion à Open Atlas 
+  [ ] poster CO + smarterre , base de la gazette automatiser 
+  
+* GFX 
+  ** @Edith 
+    [ ] Aide Design Site 
+    [ ] Aide Design de la Gazette 
+    [ ] Aide Plaquette 
+    [ ] Participation Design Local
+  ** @Steph 
+    [ ] Design deco du CoBus 
 
-* Amelioration during tests
-  [ ] redirect after error : go back to previous page , not "home" 
-  [ ] last visited links
-  [ ] date devant le lien follow
-  [ ] click follow sur orga > msg : "Êtes-vous sûr de ne plus suivre cette personne ?"
-    [ ] removes the orga from list , why ????
-  [ ] bug msg non approprié : inviter qlqun 
-  [ ] clean up themes (cityBox, sig )
-  [ ] clean up recurrent logs 
-  [ ] ajouter un btn contribuer a la fin des modules 
-  [ ] photo maia 
-  [ ] menu > drop answers > show nb of members + nb of links
-* @Tib 
-  [ ] Finir module Tiers Lieux 
-  [ ] REssource
-  [ ] Besoin
-  [ ]  Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté
-  [ ] Stephane Exodata 0692615381
-  [ ] transfert d'image PROD to QA
-  [ ] url city a transmettre 
-  [ ] dynform bookmarking using POI : add a url > Next > get content (voir avec tango kgougle )
-  [ ] btn changement de langue 
-  [ ] brique comeptence et tache sur mon profil 
-* @Tib et @Tango 
-  [ ] REfactor DDA 
-  [ ] utiliser le DDA pour ouvrir et crowd sourcer les demandes de fonctionnalité de CO
-  [ ] intégrer aussi un partage de budget sur une proposition
-    [ ] convert proposal to project 
-    [ ] open to crowdfunding > status : funding 
-      [ ] list objectives titles + description (medium) 
-      [ ] build pixel funding
-      [ ] particpation join and get involved / share budget 
-      [ ] if obtained > projects status : implementation
-      [ ] project tasking / actions
-      [ ] when all done status : finished 
-* @tango
-[ ] connecter le form mail au membres d'un groupe
-* @Clem
-[ ] Finir Besoin Ressource compétence () [commencer]
-[ ] visualisation de la banque des besoins =>#1260 + #490
-[ ] msg mail sur un groupe sur les @ dans les news, et @all (send message on notify someone) 
-  [ ] create notification for @all
-[ ] Rework @ for same working mobile [#192]
-  [ ] générer des pseudoUnique pour le mention et aussi pour générer de jolie url communecter.org/livincoop
-[ ] Add # in news text
-[ ] Translate website (get spanish trad from poupou or others)
-  [ ] Create template of co-working on language translation and add language (wishlist)
-[ ] Banniere rework 
-  [ ] Save cropping
-  [ ] Redimension main image as 1600*... or 1000*... 
-  [ ] Limitation of 500px*100px
-[ ] Get preferences of email 
-[ ] Create more email
-[ ] faire le point sur l'evaluation des communs
-* @Rapha 
-[ ] internationalisation 
-  [ ] Barcelone
-  [ ] ajout des villes libre
-  [ ] modification villes via dynform 
-  [ ] ajout ville via import import 
-  [ ] traduction EN + ES
-[ ] network 
-  [ ] refactor cleanup 
-  [ ] simplifier l'ergonomie 
-    [ ] btn plus
-    [ ] filtres
-    [ ] liste 
-    [ ] affiche au load 
-    [ ] lazyload 
-* @damien 
-  [ ] coopedia ??
-* @daniel
-  [ ] SSO
-* @Marc 
-  [ ] wikimedia
-* @Christopher
-  [ ] nextclowd
-  [ ] DEV et QA sur server privé
-* @Thomas 
-  [ ] interoperabilté RC
+* DEV
+  ** Amelioration during tests
+    [ ] ajouter un btn contribuer a la fin des modules 
+    [ ] redirect after error : go back to previous page , not "home" 
+    [ ] new menu List or shortcut: last visited links
+    [ ] date devant le lien follow
+    [ ] click follow sur orga > msg : "Êtes-vous sûr de ne plus suivre cette personne ?"
+      [ ] removes the orga from list , why ????
+    [ ] bug msg non approprié : inviter qlqun 
+    [ ] clean up themes (cityBox, sig )
+    [ ] clean up recurrent logs 
+   
+  ** @Tib 
+    [ ] Finir module Tiers Lieux 
+    [ ] REssource
+    [ ] Besoin
+    [ ]  Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté
+    [ ] Stephane Exodata 0692615381
+    [ ] transfert d'image PROD to QA
+    [ ] url city a transmettre 
+    [ ] dynform bookmarking using POI : add a url > Next > get content (voir avec tango kgougle )
+    [ ] btn changement de langue 
+    [ ] brique comeptence et tache sur mon profil 
+  ** @Tib et @Tango 
+    [ ] REfactor DDA 
+    [ ] utiliser le DDA pour ouvrir et crowd sourcer les demandes de fonctionnalité de CO
+    [ ] intégrer aussi un partage de budget sur une proposition
+      [ ] convert proposal to project 
+      [ ] open to crowdfunding > status : funding 
+        [ ] list objectives titles + description (medium) 
+        [ ] build pixel funding
+        [ ] particpation join and get involved / share budget 
+        [ ] if obtained > projects status : implementation
+        [ ] project tasking / actions
+        [ ] when all done status : finished 
+  ** @tango
+  [ ] connecter le form mail au membres d'un groupe
+  ** @Clem
+  [ ] Finir Besoin Ressource compétence () [commencer]
+  [ ] visualisation de la banque des besoins =>#1260 + #490
+  [ ] msg mail sur un groupe sur les @ dans les news, et @all (send message on notify someone) 
+    [ ] create notification for @all
+  [ ] Rework @ for same working mobile [#192]
+    [ ] générer des pseudoUnique pour le mention et aussi pour générer de jolie url communecter.org/livincoop
+  [ ] Add # in news text
+  [ ] Translate website (get spanish trad from poupou or others)
+    [ ] Create template of co-working on language translation and add language (wishlist)
+  [ ] Banniere rework 
+    [ ] Save cropping
+    [ ] Redimension main image as 1600*... or 1000*... 
+    [ ] Limitation of 500px*100px
+  [ ] Get preferences of email 
+  [ ] Create more email
+  [ ] faire le point sur l'evaluation des communs
+  ** @Rapha 
+
+  [ ] internationalisation 
+    [ ] Barcelone
+    [ ] ajout des villes libre
+    [ ] modification villes via dynform 
+    [ ] ajout ville via import import 
+    [ ] traduction EN + ES
+  [ ] network 
+    [ ] refactor cleanup 
+    [ ] simplifier l'ergonomie 
+      [ ] btn plus
+      [ ] filtres
+      [ ] liste 
+      [ ] affiche au load 
+      [ ] lazyload 
+  ** @damien 
+    [ ] coopedia ??
+  ** @daniel
+    [ ] SSO
+  ** @Marc 
+    [ ] wikimedia
+  ** @Christopher
+    [ ] nextclowd
+    [ ] DEV et QA sur server privé
+  ** @Thomas 
+    [ ] interoperabilté Rocket Chat 
+    [ ] COMOBI en PROD
   
 * ************************************************************    
 * Version 0.2  : MEQA, MEP 17/07

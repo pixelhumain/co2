@@ -158,7 +158,7 @@ jQuery(document).ready(function() {
         console.log("try open", id, type);
         var data = "";
         $.each(localActivity, function(key, value){
-            if(key==id) data = value;
+            if(key==id) data = Object.assign({}, value);
         });
         console.log("try open data", data);
 

@@ -1249,7 +1249,7 @@ var directory = {
         params.attendees = "<hr class='margin-top-10 margin-bottom-10'>";
         
         isFollowed=false;
-          if(typeof params.isFollowed != "undefined" ) isFollowed=true;
+        if(typeof params.isFollowed != "undefined" ) isFollowed=true;
           
         if(userId != null && userId != "" && params.id != userId){
           // params.attendees += "<button id='btn-participate' class='text-dark btn btn-link followBtn no-padding'"+

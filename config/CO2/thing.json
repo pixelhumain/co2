@@ -1,0 +1,58 @@
+{
+    "sections" : {
+        "smartcitizen" : {
+            "label":"Smart-Citizen-Kit",   
+            "labelshort" : "SCK",         
+            "key" : "smartCitizen",  
+            "icon" : "thermometer-three-quarters",
+            "section":1,
+            "color":"azure",
+            "filter" : "sckFilters",
+            "active" : true
+
+        },
+        "CO PI": {
+            "label":"CO PI",      
+            "key" : "copi",     
+            "icon" : "clone",
+            "section":2,
+            "color":"azure",
+            "filter" : "copiFilters",
+            "active": false
+        }    
+    },
+    "sckFilters": { 
+        "Dernieres-Mesures" :  { 
+            "page" : "scklastestreadings",
+            "label" :"Dernières Mesures", 
+            "icon" : "clock-o",
+            "key" : "smartCitizen",
+            "subcat" : [ "Temperature et humidité" , "Gaz", "Lumière" , "Bruit" , "Nets", "Énergie", "Tous" ]
+        },
+        "Graphes" : { 
+            "page" : "graph",  
+            "icon" : "line-chart",
+            "label" :"Graphes",
+            "key" : "smartCitizen",
+            "subcat" : [ "Données Communecter", "Données API SmartCitizen" ]
+        },
+        "Gestion-SCK" : {
+            "page" : "manage",
+            "icon" : "database",
+            "label" :"Gestion SCK",
+            "key" : "smartCitizen",
+            "forAdmin" : true,
+            "subcat" : [ "Avec compte smartcitizen", "Sans compte smartcitizen" ]
+        }
+    },
+    "copiFilters": {
+        "Voir-tous" : {
+            "page": "copi",
+            "icon" : "cloud",
+            "label" :"Copi All",
+            "key" : "copi",
+            "subcat" : [ ]
+        }
+    }
+
+}

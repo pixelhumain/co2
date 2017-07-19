@@ -350,5 +350,8 @@ class AppController extends CommunecterController {
         exit;
     }
 
-    
+    public function actionThing(){
+        CO2Stat::incNbLoad("co2-thing");
+        echo $this->renderPartial("thing",array(), true);
+    }
 }

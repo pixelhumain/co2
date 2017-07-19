@@ -337,6 +337,7 @@
 											"poi.openScene" 	: "poi-marker-default",
 											"poi.stand" 		: "poi-marker-default",
 											"poi.parking" 		: "poi-marker-default",
+											"poi.smartCitizen"	: "poi-marker-default",
 
 											"entry" 			: "entry-marker-default",
 											"action" 			: "action-marker-default",

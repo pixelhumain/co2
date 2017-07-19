@@ -175,7 +175,19 @@
 			"icon" : "university", 
 			"mainTitle" : "Partie Admin Public",
 			"placeholderMainSearch" : "Admin Public ..."
-		}
+		},
+
+		"#thing": {
+			"inMenu" : true, 
+			"useHeader" : false, 
+			"open" : true, 
+			"subdomain" : "thing", 
+			"subdomainName" : "Objets communectés",
+			"hash" : "#app.thing",
+			"icon" : "database", 
+			"mainTitle" : "Les objets communectés",
+			"placeholderMainSearch" : "Les objets communectés ..."
+        }
 
 	}
 

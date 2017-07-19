@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : "Publier une annonce",
+	    title : tradDynForm["addclassified"],
 	    icon : "bullhorn",
 	    type : "object",	    
 	    onLoads : {
@@ -14,7 +14,7 @@ dynForm = {
 	    		 	
 	    		 	$("#ajax-modal-modal-title").html(
 	    		 		$("#ajax-modal-modal-title").html()+
-	    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
+	    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
 	    		}
 	    	},
 	    	onload : function(data){
@@ -108,7 +108,7 @@ dynForm = {
 	            		});
 	            		$(".subtypeSection").html('<hr class="col-md-12 no-padding">'+
 	            								  '<label class="col-md-12 text-left control-label no-padding" for="typeBtn">'+
-	            								  	'<i class="fa fa-chevron-down"></i> Sous-catégorie'+
+	            								  	'<i class="fa fa-chevron-down"></i> '+tradDynForm["subcategory"]+
 	            								  '</label>' + fieldHTML );
 
 	            		$(".subtypeBtn").off().on("click",function()
@@ -139,7 +139,7 @@ dynForm = {
                 html:"",
             },
             sectionBtn :{
-                label : "De quel type d'annonce s'agit-il ? ",
+                label : tradDynForm["whichkindofclassified"]+" ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
                 list : classified.sections,
@@ -154,7 +154,7 @@ dynForm = {
 						//$(".sectionBtn:not(.active)").hide();
 						var sectionKey = $(this).data('key');
 						//alert(sectionKey);
-						var what = { title : "Dans quelle catégorie souhaitez-vous publier votre annonce ?", 
+						var what = { title : tradDynForm["inwhichcategoryforclassified"]+" ?", 
 				                         icon : classified.sections[sectionKey].icon }
 						if( jsonHelper.notNull( "classified.sections."+sectionKey+".filters" ) ){
 				            //alert('build btns menu'+classified.sections[sectionKey].filters);
@@ -176,7 +176,7 @@ dynForm = {
             },
             section : dyFInputs.inputHidden(),
 	        typeBtn :{
-                label : "Dans quelle catégorie souhaitez-vous publier votre annonce ? ",
+                label : tradDynForm["inwhichcategoryforclassified"]+" ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir une catégorie",
                 list : classified.filters,
@@ -196,7 +196,7 @@ dynForm = {
             name : dyFInputs.name( "classified" ) ,
             description : dyFInputs.textarea("Description", "..."),
             image : dyFInputs.image(),
-            contactInfo : dyFInputs.inputText("Coordonnées", "n° tel, addresse email ..."),
+            contactInfo : dyFInputs.inputText(tradDynForm["contactinfo"], tradDynForm["telemail"]+" ..."),
             location : dyFInputs.location,
             tags : dyFInputs.tags(),
             parentId : dyFInputs.inputHidden(),

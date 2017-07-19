@@ -2763,9 +2763,9 @@ var dyFInputs = {
 	        rules : ( notEmpty(rules) ? rules : { required : true } )
 	    };
 	    if(type){
-	    	inputObj.label = "Nom de votre " + trad[dyFInputs.get(type).ctrl]+" ";
+	    	inputObj.label = tradDynForm["nameofyour"]+" " + trad[dyFInputs.get(type).ctrl]+" ";
 	    	if(type=="classified") 
-	    		inputObj.label = "Titre de votre " + trad[type]+" ";
+	    		inputObj.label = tradDynForm["titleofyour"]+" "+ trad[type]+" ";
 
 	    	inputObj.placeholder = inputObj.label + " ...";
 
@@ -2823,9 +2823,9 @@ var dyFInputs = {
     	tagsL = (list) ? list : tagsList;
     	return {
 			inputType : "tags",
-			placeholder : "Mots clés",
+			placeholder : tradDynForm["tags"],
 			values : tagsL,
-			label : "Ajouter quelques mots clés"
+			label : tradDynForm["addtags"]
 		}
 	},
     imageAddPhoto : {
@@ -2857,7 +2857,7 @@ var dyFInputs = {
 
     	return {
 	    	inputType : "uploader",
-	    	label : "Vos images ici :", 
+	    	label : tradDynForm["imageshere"]+" :", 
 	    	showUploadBtn : false,
 	    	afterUploadComplete : function(){
 	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
@@ -2901,7 +2901,7 @@ var dyFInputs = {
 	    return res;
 	},
     price :function(label, placeholder, rules, custom) { 
-		var inputObj = dyFInputs.inputText("Prix (€)", "Prix ...") ;
+		var inputObj = dyFInputs.inputText(tradDynForm["pricesymbole"], tradDynForm["pricesymbole"]+" ...") ;
 	    inputObj.init = function(){
     		$('input#price').filter_input({regex:'[0-9]'});
       	};
@@ -2911,7 +2911,7 @@ var dyFInputs = {
     email :function (label,placeholder,rules) {  
     	var inputObj = {
     		inputType : "text",
-	    	label : ( notEmpty(label) ? label : "E-mail principal" ),
+	    	label : ( notEmpty(label) ? label : tradDynForm["mainemail"] ),
 	    	placeholder : ( notEmpty(placeholder) ? placeholder : "exemple@mail.com" ),
 	    	rules : ( notEmpty(rules) ? rules : { email: true } )
 	    }
@@ -2926,7 +2926,7 @@ var dyFInputs = {
 	    return inputObj;
 	},
 	location : {
-		label :"Localisation",
+		label : tradDynForm["localization"],
        inputType : "location"
     },
     locationObj : {
@@ -3160,7 +3160,7 @@ var dyFInputs = {
 		}
     },
     inputUrl :function (label,placeholder,rules, custom) {  
-    	label = ( notEmpty(label) ? label : "URL principale" );
+    	label = ( notEmpty(label) ? label : tradDynForm["mainurl"] );
     	placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
     	rules = ( notEmpty(rules) ? rules : { url: true } );
     	custom = ( notEmpty(custom) ? custom : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>" );
@@ -3176,8 +3176,8 @@ var dyFInputs = {
 	    return inputObj;
 	},
     urls : {
-    	label : "Informations libres / urls",
-    	placeholder : "informations / urls ...",
+    	label : tradDynForm["freeinfourl"],
+    	placeholder : tradDynForm["freeinfourl"]+" ...",
         inputType : "array",
         value : [],
         init:function(){
@@ -3186,7 +3186,7 @@ var dyFInputs = {
     },
     urlsOptionnel : {
         inputType : "array",
-        placeholder : "url, informations supplémentaires, actions à faire, etc",
+        placeholder : tradDynForm["urlandaddinfoandaction"],
         value : [],
         init:function(){
             getMediaFromUrlContent(".addmultifield0", ".resultGetUrl0",0);
@@ -3204,9 +3204,9 @@ var dyFInputs = {
 	        	})
 	        },
 	    	"switch" : {
-	    		"onText" : "Oui",
-	    		"offText" : "Non",
-	    		"labelText":"Toute la journée",
+	    		"onText" : tradDynForm["yes"],
+	    		"offText" : tradDynForm["no"],
+	    		"labelText":tradDynForm["allday"],
 	    		"onChange" : function(){
 	    			var allDay = $("#ajaxFormModal #allDay").is(':checked');
 	    			var startDate = "";
@@ -3298,11 +3298,11 @@ var dyFInputs = {
     	mylog.log('startDateInput', typeDate);
     	var inputObj = {
 	        inputType : ( notEmpty(typeDate) ? typeDate : "datetime" ),
-	        placeholder: "Date de début",
-	        label : "Date de début",
+	        placeholder: tradDynForm["startDate"],
+	        label : tradDynForm["startDate"],
 	        rules : { 
 	        	required : true,
-	        	duringDates: ["#startDateParent","#endDateParent","La date de début"]
+	        	duringDates: ["#startDateParent","#endDateParent",tradDynForm["thestartDate"]]
 	    	}
 	    }
     	return inputObj;
@@ -3310,20 +3310,20 @@ var dyFInputs = {
     endDateInput : function(typeDate){
     	var inputObj = {
 	        inputType : ( notEmpty(typeDate) ? typeDate : "datetime" ),
-	        placeholder: "Date de fin",
-	        label : "Date de fin",
+	        placeholder: tradDynForm["endDate"],
+	        label : tradDynForm["endDate"],
 	        rules : { 
 	        	required : true,
-	        	greaterThan: ["#ajaxFormModal #startDate","la date de début"],
-	        	duringDates: ["#startDateParent","#endDateParent","La date de fin"]
+	        	greaterThan: ["#ajaxFormModal #startDate",tradDynForm["thestartDate"]],
+	        	duringDates: ["#startDateParent","#endDateParent",tradDynForm["theendDate"]]
 		    }
 	    }
     	return inputObj;
     },
     birthDate : {
         inputType : "date",
-        label : "Date d'anniversaire",
-        placeholder: "Date d'anniversaire"
+        label : tradDynForm["birthdate"],
+        placeholder: tradDynForm["birthdate"]
     },
     dateEnd :{
     	inputType : "date",

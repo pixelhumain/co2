@@ -329,7 +329,7 @@
 			  	<button 	class='btn btn-default bold btn-share pull-right  letter-green' style="border:0px!important;"
 	                    	data-ownerlink='share' data-id='<?php echo $element["_id"]; ?>' data-type='<?php echo $typeItem; ?>' 
 	                    	data-isShared='false'>
-	                    	<i class='fa fa-share'></i> <span class="hidden-xs">Partager</span>
+	                    	<i class='fa fa-share'></i> <span class="hidden-xs"><?php echo Yii::t("common","Share") ?></span>
 	          	</button>
 	        </div>
 	    <?php } ?>
@@ -413,7 +413,7 @@
 
 			<button data-form-type="contactPoint"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-blue hide-citoyens">
-	            <h6><i class="fa fa-envelope fa-2x bg-blue"></i><br> <?php Yii::t("common","Contact") ?></h6>
+	            <h6><i class="fa fa-envelope fa-2x bg-blue"></i><br> <?php echo Yii::t("common","Contact") ?></h6>
 	            <small><?php echo Yii::t("form", "Define roles of everyone<br>Communicate easily<br>Internal and external") ?></small>
 	        </button>
 
@@ -452,26 +452,23 @@
 
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section pull-right">
 		
-		<?php   //$classDescH=""; 
-				//$classBtnDescH="<i class='fa fa-angle-up'></i> masquer"; 
-				$marginCentral="";
-				//if(!@$element["description"] || @$linksBtn["isFollowing"]==true || 
-				//	@$linksBtn["isMember"]==true){
-					$classDescH="hidden"; 
-					$classBtnDescH="<i class='fa fa-angle-down'></i> afficher la description"; 
-				//}
+		<?php    
+			$marginCentral="";
+			$classDescH="hidden"; 
+			$classBtnDescH="<i class='fa fa-angle-down'></i> ".Yii::t("common","show description"); 
+				
 
 		if($typeItem != Person::COLLECTION){ 
 		?>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:20px;">
 				<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
 					<b><i class="fa fa-angle-down"></i> 
-					<i class="fa fa-info-circle"></i> Description principale</b>
+					<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","Main description") ?></b>
 					<hr>
 					<span id="descProfilsocial">
 						<?php echo 	@$element["description"] && @$element["description"]!="" ? 
 									@$element["description"] : 
-									"<span class='label label-info'>Aucune description enregistrée</span>"; ?>
+									"<span class='label label-info'> ".Yii::t("common","No description registred")."</span>"; ?>
 					</span>
 				</span>
 			</div>

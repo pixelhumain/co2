@@ -270,7 +270,6 @@ function bindAboutPodElement() {
 
 
 		$(".btn-update-info").off().on( "click", function(){
-
 			var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
@@ -280,7 +279,7 @@ function bindAboutPodElement() {
 						onLoads : {
 							initUpdateInfo : function(){
 								mylog.log("initUpdateInfo");
-								$(".emailtext").slideToggle();
+								$(".emailOptionneltext").slideToggle();
 								$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 											  					  .addClass("bg-dark");
 							}
@@ -824,7 +823,6 @@ function bindAboutPodElement() {
 				valCD = "typeEvent";
 
 
-mylog.log("here",val, $.inArray( val, SNetwork ), typeof contextData["socialNetwork"][val], $("#ajaxFormModal #"+val).val());
 			if(	$("#ajaxFormModal #"+val).length && 
 				( 	( 	typeof contextData[valCD] != "undefined" && 
 						contextData[valCD] != null && 
@@ -835,13 +833,15 @@ mylog.log("here",val, $.inArray( val, SNetwork ), typeof contextData["socialNetw
 						$("#ajaxFormModal #"+val).val().trim().length == 0 ) || 
 					//social network
 					( 	$.inArray( val, SNetwork ) >= 0 && 
+						( 	typeof contextData["socialNetwork"] != "undefined" && 
+							contextData["socialNetwork"] != null ) && (
 						( 	typeof contextData["socialNetwork"][val] != "undefined" || 
 							contextData["socialNetwork"][val] != null && 
 							$("#ajaxFormModal #"+val).val().trim() == contextData["socialNetwork"][val] )
 						||
 						( 	( 	typeof contextData["socialNetwork"][val] == "undefined" || 
 							contextData["socialNetwork"][val] == null ) && 
-						$("#ajaxFormModal #"+val).val().trim().length == 0 )
+						$("#ajaxFormModal #"+val).val().trim().length == 0 ) )
 					)
 				) 
 			) {

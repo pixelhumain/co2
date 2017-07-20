@@ -11,7 +11,7 @@
 	.valueAbout{
 		border-left: 1px solid #dbdbdb;
 	}
-	#shortDescriptionAbout, #descriptionAbout{
+	#shortDescriptionAbout/*, #descriptionAbout*/{
 		white-space: pre-line;
 	}
 	.contentInformation{

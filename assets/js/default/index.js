@@ -95,7 +95,7 @@ function showNotif(show){
     }
 
     if(show){
-    	refreshNotifications(userId,"citoyens","");
+    	//refreshNotifications(userId,"citoyens","");
     	$('#notificationPanelSearch').show("fast");
     	markAllAsSeen(false,"");
     }

@@ -11,7 +11,7 @@
 	.valueAbout{
 		border-left: 1px solid #dbdbdb;
 	}
-	#shortDescriptionAbout, #descriptionAbout{
+	#shortDescriptionAbout/*, #descriptionAbout*/{
 		white-space: pre-line;
 	}
 	.contentInformation{
@@ -157,7 +157,11 @@
 						<span><i class="fa fa-angle-right"></i></span><?php echo Yii::t("common", "Type"); ?> 
 					</div>
 					<div id="typeAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span><?php echo (@$element["type"]) ? Yii::t("event", $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span>
+
+						<?php 
+						$message = (($type==Organization::COLLECTION) ? "organization" : "event") ;
+						echo (@$element["type"]) ? Yii::t( $message, $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 					</div>
 				</div>
 		<?php }

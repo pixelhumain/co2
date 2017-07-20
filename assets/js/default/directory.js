@@ -429,25 +429,25 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    	});
 
   	//on click sur les boutons link
-   	$(".followBtn").off().on("click",function(){
-	   	formData = new Object();
-   		formData.parentId = $(this).attr("data-id");
-   		formData.childId = userId;
-   		formData.childType = personCOLLECTION;
-   		var type = $(this).attr("data-type");
-   		var name = $(this).attr("data-name");
-   		var id = $(this).attr("data-id");
-   		//traduction du type pour le floopDrawer
-   		var typeOrigine = dyFInputs.get(type).col;
-      if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
+	$(".followBtn").click(function(){
+		formData = new Object();
+		formData.parentId = $(this).attr("data-id");
+		formData.childId = userId;
+		formData.childType = personCOLLECTION;
+		var type = $(this).attr("data-type");
+		var name = $(this).attr("data-name");
+		var id = $(this).attr("data-id");
+		//traduction du type pour le floopDrawer
+		var typeOrigine = dyFInputs.get(type).col;
+		if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
    		formData.parentType = typeOrigine;
-      mylog.log("followBtn",type);
+   		mylog.log("followBtn",type);
    		type = (type == "person") ? "people" : dyFInputs.get(type).col;
 
 		var thiselement = this;
 		$(this).html("<i class='fa fa-spin fa-circle-o-notch text-azure'></i>");
 		//mylog.log(formData);
-    var linkType = (type == "events") ? "connect" : "follow";
+		var linkType = (type == "events") ? "connect" : "follow";
 		if ($(this).attr("data-ownerlink")=="follow"){
 			$.ajax({
 				type: "POST",
@@ -475,6 +475,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 				data : formData,
 				dataType: "json",
 				success: function(data){
+					mylog.log("YOYOY", data);
 					if ( data && data.result ) {
 						$(thiselement).html("<i class='fa fa-chain'></i>");
 						$(thiselement).attr("data-ownerlink","follow");
@@ -843,7 +844,7 @@ var directory = {
         if(params.updated != null )
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
         
-        var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' " : " lbh'";
+        var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
         if(params.type == "citoyens") 
             params.hash += '.viewer.' + userId;
        // if(typeof params.size == "undefined" || params.size == "max")
@@ -1055,7 +1056,7 @@ var directory = {
           var c = 1;
           $.each(data.list,function(k,v) { 
             mylog.log("data list",k,v);
-            if( $('.carousel-first img').attr('src').indexOf(v.name) < 0 ){
+            if( $('.carousel-first img').attr('src') && $('.carousel-first img').attr('src').indexOf(v.name) < 0 ){
               $(".carousel-inner").append('  <div class="item">'+
               "   <img class='img-responsive' src='"+v.path+"/"+v.name+"'/>"+
               ' </div>');
@@ -1096,7 +1097,7 @@ var directory = {
             // '</a>'+
         '</div>';
 
-        if( params.creator == userId || params.author == userId ){
+        if( params.creator == userId || params.author == userId || params.parentId == userId ){
           str += '<hr>'+
               '<div class="col-md-offset-1 col-md-10 col-sm-12 col-xs-12 shadow2 padding-15 margin-top-25">'+
               '<a href="javascript:;" class="btn btn-default text-red deleteThisBtn bold pull-left" data-type="'+params.type+'" data-id="'+params.id+'" ><i class="fa fa-trash"></i></a> '+
@@ -1249,7 +1250,7 @@ var directory = {
         params.attendees = "<hr class='margin-top-10 margin-bottom-10'>";
         
         isFollowed=false;
-          if(typeof params.isFollowed != "undefined" ) isFollowed=true;
+        if(typeof params.isFollowed != "undefined" ) isFollowed=true;
           
         if(userId != null && userId != "" && params.id != userId){
           // params.attendees += "<button id='btn-participate' class='text-dark btn btn-link followBtn no-padding'"+

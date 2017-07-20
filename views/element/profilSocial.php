@@ -527,6 +527,11 @@
 						"parentId" => (string)$element['_id'], 
 						"members" => @$members));
 
+		$this->renderPartial('../element/invite',
+				array(	"type"=>$type, 
+						"parentId" => (string)$element['_id'], 
+						"members" => @$members));
+
 ?>
 
 <?php	$cssAnsScriptFilesModule = array(
@@ -545,9 +550,7 @@
     var typeItem = "<?php echo $typeItem; ?>";
     var liveScopeType = "";
     var subView="<?php echo @$_GET['view']; ?>";
-    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?network="+networkParams : "" )+"#page.type."+contextData.type+".id."+contextData.id;
-
-    var hashUrlPage= "#page.type."+contextData.type+".id."+contextData.id;
+    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?src="+networkParams : "" )+"#page.type."+contextData.type+".id."+contextData.id;
     var cropResult;
     var idObjectShared = new Array();
 

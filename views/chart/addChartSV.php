@@ -93,11 +93,11 @@ textarea.form-control{
 		</div>
 
 
-		<div id="commonsChart" class="formChart col-md-12" style="display:none;">
+		<div id="commonsChart" class="formChart col-md-12 col-sm-12 col-xs-12" style="display:none;">
 			<h3 style="font-variant:small-caps;"><span class="stepFormChart">2</span><?php echo Yii::t("chart","Evaluate your ".substr($parentType,0,-1)." as commons") ?></h3>
 			<form id="opendata"></form>
 		</div>
-		<div id="openChart" class="formChart" style="display:none;">
+		<div id="openChart" class="formChart col-md-12 col-sm-12 col-xs-12" style="display:none;">
 			<h3 style="font-variant:small-caps;"><span class="stepFormChart">2</span><?php echo Yii::t("chart","Add properties which defined your ".substr($parentType,0,-1)) ?></h3>
 			<form class="form-chart">
 				<div>
@@ -337,8 +337,8 @@ function runChartFormValidation() {
 		    .done(function (data,myNewChart) 
 		    {
 			   if (data.result==true) {   
+			   		loadEditChart();
 		        	toastr.success("<?php echo Yii::t("chart",ucfirst(substr($parentType,0,-1)).'&#146;s values well updated') ?>");
-		        	$.unblockUI();
 		        } else {
 		           toastr.error('Something Went Wrong');
 		        }

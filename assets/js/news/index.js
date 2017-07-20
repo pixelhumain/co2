@@ -363,7 +363,7 @@ function modifyNews(idNews,typeNews){
 				   	if(typeof updateNews[idNews]["media"] != "undefined")
 				   		message += getMediaCommonHtml(updateNews[idNews]["media"],"save");
 		message +="</div>"+
-					'<div class="form-group tagstags">'+
+					'<div class="form-group tagstags col-md-12 col-sm-12 col-xs-12">'+
           				'<input id="tagsUpdate" type="" data-type="select2" name="tags" placeholder="#Tags" value="" style="width:100%;">'+       
       				"</div>"+
 				   "</div>";
@@ -385,6 +385,8 @@ function modifyNews(idNews,typeNews){
 	      label: "Enregistrer",
 	      className: "btn-success",
 	      callback: function() {
+	      	heightCurrent=$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").height();
+	      	$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").append("<div class='updateLoading' style='line-height:"+heightCurrent+"px'><i class='fa fa-spin fa-spinner'></i> En cours de modification</div>");
 	      	$('.newsTextUpdate').mentionsInput('getMentions', function(data) {
       			mentionsInput=data;
     		});
@@ -419,7 +421,7 @@ function modifyNews(idNews,typeNews){
 			if ($("#tagsUpdate").val() != ""){
 				newNews.tags = $("#tagsUpdate").val().split(",");	
 			}
-			if (mentionsInput.length != 0){
+			if (typeof mentionsInput != "undefined" && mentionsInput.length != 0){
 				newNews.mentions=mentionsInput;
 			}
 		    //if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));	
@@ -434,7 +436,6 @@ function modifyNews(idNews,typeNews){
 			    .done(function (data) {
 		    		if(data)
 		    		{
-		    			console.log(data);
 		    			$("#"+typeNewsUpdate+idNewsUpdate).replaceWith(data);
 		    			bindEventNews();
 		    			//if the news is post in a different month than last news and current month

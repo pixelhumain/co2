@@ -503,28 +503,51 @@ function bindLeftMenuFilters () {
 
     $(".btn-select-category-1").off().on("click", function(){
         searchType = [ typeInit ];
-        $(".btn-select-category-1").removeClass("active");
-        $(this).addClass("active");
-
+        var searchTxt = "";
         var classType = $(this).data("keycat");
-        $(".keycat").addClass("hidden");
-        $(".keycat-"+classType).removeClass("hidden");   
 
-        //alert("classType : "+classType);
+        if( $(this).hasClass( "active" ) )
+        {
+            searchTxt = section;
+            $(this).removeClass( "active" );
+            $(".keycat-"+classType).addClass("hidden"); 
+        } 
+        else 
+        {
+            $(".btn-select-category-1").removeClass("active");
+            $(this).addClass("active");
 
-        $('#searchTags').val(section+","+classType);
+            $(".keycat").addClass("hidden");
+            $(".keycat-"+classType).removeClass("hidden");  
+            searchTxt = section+","+classType; 
+        }
+        //alert(".btn-select-category-1 : "+searchTxt);
+        $('#searchTags').val(searchTxt);
         startSearch(0, indexStepInit, searchCallback);  
     });
 
     $(".keycat").off().on("click", function(){
 
         searchType = [ typeInit ];
-        $(".keycat").removeClass("active");
-        $(this).addClass("active");
-        var classSubType = $(this).data("keycat");
+        var searchTxt = "";
         var classType = $(this).data("categ");
-        //alert("classSubType : "+classSubType);
-        $('#searchTags').val(section+","+classType+","+classSubType);
+        var classSubType = $(this).data("keycat");
+        if( $(this).hasClass( "active" ) )
+        {
+            searchTxt = section+","+classType;
+            $(this).removeClass( "active" );
+        } 
+        else 
+        {
+            $(".keycat").removeClass("active");
+            $(this).addClass("active");
+            
+            //alert("classSubType : "+classSubType);
+            searchTxt = section+","+classType+","+classSubType;
+        }
+
+        //alert(" .keycat : "+searchTxt);
+        $('#searchTags').val( searchTxt );
         KScrollTo("#menu-section-classified");
         startSearch(0, indexStepInit, searchCallback);  
     });

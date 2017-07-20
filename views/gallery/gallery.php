@@ -72,7 +72,7 @@ if( isset($parent) ){
 <div class="row" id="galleryPad">
 
 	<div class='col-xs-12 margin-bottom-15'>
-		<i class="fa fa-camera fa-2x"></i><span class='Montserrat' id='name-lbl-title'> Gallerie photos</span>
+		<i class="fa fa-camera fa-2x"></i><span class='Montserrat' id='name-lbl-title'> <?php echo Yii::t("common", "Photos gallery") ?> </span>
 	</div>
 
 	<div class="col-xs-12">

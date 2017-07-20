@@ -45,6 +45,7 @@
 	    color: white;
 	    border-radius: 3px;
 	    margin-right: 2px;
+	    display:none;
 	}
 	.header-address{
 		font-size: 14px;
@@ -250,7 +251,7 @@
 		<div class='col-md-offset-1' id='cropContainer'>
 			<img src='' id='cropImage' class='' style=''/>
 			<div class='col-md-12'>
-				<input type='submit' class='btn btn-success text-white imageCrop saveBanner'/>
+				<button class='btn btn-success text-white imageCrop saveBanner'><i class="fa fa-send"></i> <?php echo Yii::t("common","Save") ?></button>
 			</div>
 		</div>
 	</div>
@@ -258,6 +259,11 @@
 
 <script>
 jQuery(document).ready(function() {
+	$("#col-banner").mouseenter(function(){
+		$("#banner_element").show();
+	}).mouseleave(function(){
+		$("#banner_element").hide();
+	});
 	//IMAGE CHANGE//
 	$("#uploadScropResizeAndSaveImage .close-modal").click(function(){
 		$.unblockUI();
@@ -294,7 +300,7 @@ jQuery(document).ready(function() {
    							// access image size here 
    						 	var imgWidth=this.width;
    						 	var imgHeight=this.height;
-   							if(imgWidth>=1000 && imgHeight>=500){
+   							if(imgWidth>=600 && imgHeight>=300){
                					$.blockUI({ 
                						message: $('div#uploadScropResizeAndSaveImage'), 
                						css: {cursor:null,padding: '0px !important'}
@@ -317,6 +323,8 @@ jQuery(document).ready(function() {
 									$(".saveBanner").click(function(){
 								        //console.log(cropResult);
 								        //var cropResult=cropResult;
+								        $(this).prop("disabled",true);
+								        $(this).find("i").removeClass("fa-send").addClass("fa-spin fa-spinner");
 								        $("#banner_photoAdd").submit();
 									});
 									$("#banner_photoAdd").off().on('submit',(function(e) {
@@ -354,6 +362,8 @@ jQuery(document).ready(function() {
 											dataType: "json",
 											success: function(data){
 										        if(data.result){
+										        	$(".saveBanner").prop("disabled",false);
+								        			$(".saveBanner").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
 										        	newBanner='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
 										        	$("#contentBanner").html(newBanner);
 										        	$(".contentHeaderInformation").addClass("backgroundHeaderInformation");
@@ -367,7 +377,7 @@ jQuery(document).ready(function() {
 							}
    						 	else
    						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
-							};
+						};
 			        });
 			        reader.readAsDataURL(file);
 			    }  

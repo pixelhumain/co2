@@ -588,25 +588,30 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		
 		
 		mapElements = new Array();
-		if(mapElements.length==0) mapElements = data;
-        else $.extend(mapElements, data);
+		
 		
 		if(dataName != "collections"){
+			if(mapElements.length==0) mapElements = data;
+        	else $.extend(mapElements, data);
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){
 				colName=col;
 				if(col=="favorites")
 					colName="favoris";
-				html += "<h4 class='col-md-12 col-sm-12 col-xs-12'><i class='fa fa-star'></i> "+colName+"<hr></h4>";
+				html += "<a class='btn btn-default col-xs-12 shadow2 padding-10 margin-bottom-20' onclick='$(\"."+colName+"\").toggleClass(\"hide\")' ><h2><i class='fa fa-star'></i> "+colName+" ("+Object.keys(val.list).length+")</h2></a>"+
+						"<div class='"+colName+" hide'>";
 				console.log("list", val);
 				if(val.count==0)
-					html +="<span class='col-md-12 col-sm-12 col-xs-12 text-dark margin-bottom-20'>Aucun élément dans cette collection</span>";
+					html +="<span class='col-xs-12 text-dark margin-bottom-20'>Aucun élément dans cette collection</span>";
 				else{
 					$.each(val.list, function(key, elements){ 
+						if(mapElements.length==0) mapElements = elements;
+        				else $.extend(mapElements, elements);
 						html += directory.showResultsDirectoryHtml(elements, key);
 					});
 				}
+				html += "</div>";
 			});
 		}
 		toogleNotif(false);

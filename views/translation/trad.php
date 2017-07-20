@@ -10,7 +10,11 @@ var trad = {
 "removeconnectionevents" : "<?php echo Yii::t("common","Are you sure to not participate to this event") ?>",
 "removeconnectionorganizations" : "<?php echo Yii::t("common","Are you sure to remove the link with this organization") ?>",
 "removeconnectionprojects" : "<?php echo Yii::t("common","Are you sure to remove the link with this project") ?>",
+"removeconnectioncontributors" : "<?php echo Yii::t("common","Are you sure to remove the link with this project") ?>",
+"removeconnectionmembers" : "<?php echo Yii::t("common","Are you sure to remove the link of member") ?>",
 "removeconnectioncitoyens" : "<?php echo Yii::t("common","Are you sure to remove this follows") ?>",
+"removeconnectionfollowers" : "<?php echo Yii::t("common","Are you sure to remove this follow") ?>",
+"removeconnectionfollows" : "<?php echo Yii::t("common","Are you sure to remove this follow") ?>",
 "asmember" : "<?php echo Yii::t("common", "as member") ?>",
 "ascontributor" : "<?php echo Yii::t("common", "as contributor") ?>",
 "asadmin" : "<?php echo Yii::t("common", "as admin") ?>",
@@ -229,6 +233,7 @@ var trad = {
 "Email"          : "<?php echo Yii::t("common", "Email") ?>",
 "Please specify a name" : "<?php echo Yii::t("common", "Please specify a name") ?>",
 "Please specify a email" : "<?php echo Yii::t("common", "Please specify a email") ?>",
+"noMoreNotifs":"<?php echo Yii::t("common","No more notifications for the moment") ?>"
 };
 
 var tradCountry = {

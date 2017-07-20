@@ -8,8 +8,10 @@
             })  ;
         }
         scopeHtml="";
+
         //if(typeof userConnected != "undefined" && userConnected != null ){
-             if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false" && communexion.state){
+             if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false" &&
+                 typeof communexion != "undefined" && communexion.state){
                 scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
                             'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
                             'data-scope-value="'+$.cookie('communexionValue')+'" '+

@@ -154,7 +154,7 @@
             
           </span>
         </h4>
-     <?php } ?>
+     
 
      <?php if($typeSelected == "cities"){ ?>   
       <p class="text-center bold"> Recherchez une commune à laquelle vous communecter.<br>
@@ -426,7 +426,7 @@
         <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
 
       <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
-      
+      <?php } ?>
   </div>
 
 <?php //$this->renderPartial(@$path."first_step_directory"); ?> 

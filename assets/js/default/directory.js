@@ -429,25 +429,25 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    	});
 
   	//on click sur les boutons link
-   	$(".followBtn").off().on("click",function(){
-	   	formData = new Object();
-   		formData.parentId = $(this).attr("data-id");
-   		formData.childId = userId;
-   		formData.childType = personCOLLECTION;
-   		var type = $(this).attr("data-type");
-   		var name = $(this).attr("data-name");
-   		var id = $(this).attr("data-id");
-   		//traduction du type pour le floopDrawer
-   		var typeOrigine = dyFInputs.get(type).col;
-      if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
+	$(".followBtn").click(function(){
+		formData = new Object();
+		formData.parentId = $(this).attr("data-id");
+		formData.childId = userId;
+		formData.childType = personCOLLECTION;
+		var type = $(this).attr("data-type");
+		var name = $(this).attr("data-name");
+		var id = $(this).attr("data-id");
+		//traduction du type pour le floopDrawer
+		var typeOrigine = dyFInputs.get(type).col;
+		if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
    		formData.parentType = typeOrigine;
-      mylog.log("followBtn",type);
+   		mylog.log("followBtn",type);
    		type = (type == "person") ? "people" : dyFInputs.get(type).col;
 
 		var thiselement = this;
 		$(this).html("<i class='fa fa-spin fa-circle-o-notch text-azure'></i>");
 		//mylog.log(formData);
-    var linkType = (type == "events") ? "connect" : "follow";
+		var linkType = (type == "events") ? "connect" : "follow";
 		if ($(this).attr("data-ownerlink")=="follow"){
 			$.ajax({
 				type: "POST",
@@ -475,6 +475,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 				data : formData,
 				dataType: "json",
 				success: function(data){
+					mylog.log("YOYOY", data);
 					if ( data && data.result ) {
 						$(thiselement).html("<i class='fa fa-chain'></i>");
 						$(thiselement).attr("data-ownerlink","follow");

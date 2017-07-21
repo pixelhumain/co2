@@ -11,7 +11,7 @@
 	.valueAbout{
 		border-left: 1px solid #dbdbdb;
 	}
-	#shortDescriptionAbout, #descriptionAbout{
+	#shortDescriptionAbout/*, #descriptionAbout*/{
 		white-space: pre-line;
 	}
 	.contentInformation{
@@ -157,7 +157,11 @@
 						<span><i class="fa fa-angle-right"></i></span><?php echo Yii::t("common", "Type"); ?> 
 					</div>
 					<div id="typeAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span><?php echo (@$element["type"]) ? Yii::t("event", $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span>
+
+						<?php 
+						$message = (($type==Organization::COLLECTION) ? "organization" : "event") ;
+						echo (@$element["type"]) ? Yii::t( $message, $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 					</div>
 				</div>
 		<?php }
@@ -407,7 +411,7 @@
 		$facebook = (!empty($element["socialNetwork"]["facebook"])? $element["socialNetwork"]["facebook"]:"javascript:;") ;
 		$twitter =  (!empty($element["socialNetwork"]["twitter"])? $element["socialNetwork"]["twitter"]:"javascript:;") ;
 		$googleplus =  (!empty($element["socialNetwork"]["googleplus"])? $element["socialNetwork"]["googleplus"]:"javascript:;") ;
-		$gitHub =  (!empty($element["socialNetwork"]["github"])? $element["socialNetwork"]["github"]:"javascript:;") ;
+		$github =  (!empty($element["socialNetwork"]["github"])? $element["socialNetwork"]["github"]:"javascript:;") ;
 		$instagram =  (!empty($element["socialNetwork"]["instagram"])? $element["socialNetwork"]["instagram"]:"javascript:;") ;
 	?>
 	<div id="socialAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding shadow2">
@@ -446,7 +450,7 @@
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="GitHub">
 				<span><i class="fa fa-github"></i></span> 
-				<a href="<?php echo $gitHub ; ?>" target="_blank" id="gitHubAbout" class="socialIcon" ><?php echo ($gitHub != "javascript:;") ? $gitHub : '<i>'.Yii::t("common","Not specified").'</i>' ; ?></a>
+				<a href="<?php echo $github ; ?>" target="_blank" id="githubAbout" class="socialIcon" ><?php echo ($github != "javascript:;") ? $github : '<i>'.Yii::t("common","Not specified").'</i>' ; ?></a>
 			</div>
 			<?php if($type==Person::COLLECTION){ ?> 
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Telegram">

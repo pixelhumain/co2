@@ -396,6 +396,7 @@ function validateConnection(parentType, parentId, childId, childType, linkOption
 		},
 	});  
 }
+
 function follow(parentType, parentId, childId, childType, callback){
 	mylog.log("follow",parentType, parentId, childId, childType, callback);
 	$(".followBtn").removeClass("fa-link").addClass("fa-spinner fa-spin");
@@ -425,6 +426,7 @@ function follow(parentType, parentId, childId, childType, callback){
 		},
 	});
 }
+
 function connectTo(parentType, parentId, childId, childType, connectType, parentName, actionAdmin) {
 	if(parentType=="events" && connectType=="attendee")
 		$(".connectBtn").removeClass("fa-link").addClass("fa-spinner fa-spin");
@@ -573,8 +575,8 @@ var urlCtrl = {
 	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
-	    "#news.detail" : {title:'NEWS DETAIL ', icon : 'rss' },
-	    "#news.index.type" : {title:'NEWS INDEX ', icon : 'rss', menuId:"menu-btn-news-network","urlExtraParam":"isFirst=1" },
+	    //"#news.detail" : {title:'NEWS DETAIL ', icon : 'rss' },
+	    //"#news.index.type" : {title:'NEWS INDEX ', icon : 'rss', menuId:"menu-btn-news-network","urlExtraParam":"isFirst=1" },
 	    "#need.detail" : {title:'NEED DETAIL ', icon : 'cubes' },
 	    "#need.addneedsv" : {title:'NEED DETAIL ', icon : 'cubes' },
 	    "#city.creategraph" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },

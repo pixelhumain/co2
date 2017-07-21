@@ -44,7 +44,7 @@
       	"#social":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
-                  "open" : false,
+                  "open" : true,
                   "subdomain" : "social", 
                   "subdomainName" : "social",
                   "hash" : "#app.search",
@@ -57,7 +57,7 @@
       	"#freedom":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
-                  "open" : false,
+                  "open" : true,
                   "subdomain" : "freedom", 
                   "subdomainName" : "freedom",
                   "hash" : "#app.annonces",
@@ -70,7 +70,7 @@
       	"#agenda":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
-                  "open" : false,
+                  "open" : true,
                   "subdomain" : "agenda", 
                   "subdomainName" : "agenda",
                   "hash" : "#app.agenda",

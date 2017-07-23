@@ -25,8 +25,12 @@
 
     if(@$type=="cities")    { $lblCreate = ""; }
 
-    if($params["title"] == "Kgougle") $page = "social";
-    
+    if($params["title"] == "Kgougle") {
+        $page = "social";
+        if(@$type=="classified"){ $page = "freedom"; }
+        if(@$type=="events"){ $page = "agenda"; }
+    }
+
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                             array(  "layoutPath"=>$layoutPath ,
@@ -116,8 +120,8 @@
     .item-globalscope-checker:hover,
     .item-globalscope-checker:active,
     .item-globalscope-checker:focus{
-        color:#e6344d !important;
-        border-bottom:1px solid #e6344d;
+        /*color:#e6344d !important;*/
+        /*border-bottom:1px solid #e6344d;*/
         text-decoration: none !important;
     }
     header .container, 
@@ -237,8 +241,9 @@
 
 
 <?php $this->renderPartial($layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.pageCreate', array()); ?>
+<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array()); ?>
 
-<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>$page)); ?>
+<?php //$this->renderPartial($layoutPath.'footer', array("subdomain"=>$page)); ?>
 
 
 

@@ -18,8 +18,8 @@ function showDropDownGS(show){
   }
 }
 
-var searchTypeGS = [ "persons", "organizations", "projects", "events", "poi"/*, "cities"*/ ];
-var allSearchTypeGS = [ "persons", "organizations", "projects", "events", "poi"/*, "cities"*/ ];
+var searchTypeGS = [ "persons", "organizations", "projects", "events", "poi", "cities" ];
+var allSearchTypeGS = [ "persons", "organizations", "projects", "events", "poi", "cities" ];
 
 var loadingDataGS = false;
 var indexStepGS = 20;

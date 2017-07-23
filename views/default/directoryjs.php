@@ -245,6 +245,10 @@
                 <i class="fa fa-lightbulb-o"></i> 
                 <span class="hidden-xs">Projets</span>
             </button><hr class="hidden-xs">
+            <button class="btn text-red btn-directory-type" data-type="cities">
+                <i class="fa fa-university"></i> 
+                <span class="hidden-xs">Communes</span>
+            </button><br class="hidden-xs">
             <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
                 <i class="fa fa-university"></i> 
                 <span class="hidden-xs">Services publics</span>
@@ -350,7 +354,7 @@
                             data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
                             data-type="classified"
                             style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
-                      <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["label"]; ?>
+                      <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["labelFront"]; ?>
                     </button>
                   </div>
             <?php } ?>  

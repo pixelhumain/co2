@@ -351,10 +351,10 @@ function openDropdownMultiscope(){
 
 function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 						inseeCommunexion, cityNameCommunexion, cpCommunexion, 
-						regionNameCommunexion, countryCommunexion){  
+						regionNameCommunexion, depNameCommunexion, countryCommunexion){  
 
 	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel,
-			  inseeCommunexion, cityNameCommunexion, cpCommunexion, regionNameCommunexion, countryCommunexion);
+			  inseeCommunexion, cityNameCommunexion, cpCommunexion, regionNameCommunexion, depNameCommunexion, countryCommunexion);
 
 	if(scopeValue == "") return;
 	
@@ -371,6 +371,11 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 		if(scopeType == "region") $("#searchLocalityREGION").val(scopeValue);
 		$("#searchLocalityLEVEL").val(scopeLevel);
 		$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
+		
+
+		$.removeCookie('communexionType', { path: '/' }); $.removeCookie('communexionValue', { path: '/' }); 
+		$.removeCookie('communexionName', { path: '/' }); $.removeCookie('communexionLevel', { path: '/' }); 
+
 		$.cookie('communexionType', scopeType, { expires: 365, path: "/" });
 		$.cookie('communexionValue', scopeValue, { expires: 365, path: "/" });
 		$.cookie('communexionName', scopeName, { expires: 365, path: "/" });
@@ -378,6 +383,10 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 		//$.cookie('currentLevel', scopeType, { expires: 365, path: "/" });
 	
 		if(inseeCommunexion != null){
+			$.removeCookie('inseeCommunexion', { path: '/' }); 
+			$.removeCookie('cityNameCommunexion', { path: '/' }); 
+			$.removeCookie('cpCommunexion', { path: '/' }); 
+			
 			$.cookie('inseeCommunexion',   		inseeCommunexion,  		{ expires: 365, path: "/" });
 			$.cookie('cityNameCommunexion', 	cityNameCommunexion,	{ expires: 365, path: "/" });
 			$.cookie('cpCommunexion',   		cpCommunexion,  		{ expires: 365, path: "/" });		
@@ -393,8 +402,24 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 				//else loadLiveNow();
 			}
 		}
+
+		communexion.currentLevel = scopeLevel;
+		if(typeof communexion != "undefined" && typeof inseeCommunexion != "undefined"){
+			communexion.currentName = scopeName;
+			communexion.currentValue = scopeValue;
+			communexion.state = true;
+			communexion.values.cityCp = cpCommunexion;
+			communexion.values.cityKey = scopeValue;
+			communexion.values.cityName = cityNameCommunexion;
+			communexion.values.depName = depNameCommunexion;
+			communexion.values.inseeName = inseeCommunexion;
+			communexion.values.regionName = regionNameCommunexion;
+
+		}else{
+			//alert("no communexion");
+		}
 		//rebuildSearchScopeInput();
-		//activateGlobalCommunexion(true);
+		activateGlobalCommunexion(true);
 		//startSearch(0, indexStepInit, searchCallback);
 		//loadByHash(location.hash);
 }

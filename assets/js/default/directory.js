@@ -381,8 +381,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     $(".acceptAsBtn").off().on("click",function () {
       validateConnection(contextData.type, contextData.id, $(this).data("id"), $(this).data("type"), $(this).data("connect-validation"), 
         function() {
-          toastr.success("Validation is well registered");
-          loadByHash(location.hash);
+          toastr.success(trad["validationwellregistred"]);
+          urlCtrl.loadByHash(location.hash);
         }
       );
     });

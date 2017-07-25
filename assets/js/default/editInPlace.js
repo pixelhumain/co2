@@ -84,7 +84,7 @@ function bindAboutPodElement() {
 				trad["udpateorganizer"]+
 				buildSelect("organizerId", "organizerId", 
 							{"inputType" : "select", "options" : firstOptions(), 
-							"groupOptions":myAdminList( ["organizations","projects"] )}, ""),
+							"groupOptions": myAdminList( ["organizations","projects"] )}, ""),
 			buttons: {
 				confirm: {
 					label: trad["udpateorganizer"],
@@ -205,7 +205,7 @@ function bindAboutPodElement() {
 
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){
+							if(data.result&& data.resultGoods && data.resultGoods.result){
 								if(typeof data.resultGoods.values.allDay != "undefined"){
 									contextData.allDay = data.resultGoods.values.allDay;
 
@@ -290,7 +290,7 @@ function bindAboutPodElement() {
 					    },
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){
+							if(data.result&& data.resultGoods && data.resultGoods.result){
 
 								if(typeof data.resultGoods.values.name != "undefined"){
 									contextData.name = data.resultGoods.values.name;
@@ -350,7 +350,7 @@ function bindAboutPodElement() {
 										val=100;
 									$('#progressStyle').val(val);
 									$('#labelProgressStyle').html(contextData.avancement);
-									$('#avancementAbout').html(trad["Project maturity"] + " : " + trad[contextData.avancement] );
+									$('#avancementAbout').html(trad[contextData.avancement] );
 								}
 
 								if(typeof data.resultGoods.values.type != "undefined"){
@@ -440,8 +440,29 @@ function bindAboutPodElement() {
 				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
 				form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
 			}
+
 			if(contextData.type != typeObj.poi.col) 
 				form.dynForm.jsonSchema.properties.url = dyFInputs.inputUrl();
+
+
+
+			form.dynForm.jsonSchema.properties.parentId = {
+	         	label : "Fait parti d'un élément ?",
+            	inputType : "select",
+            	class : "",
+            	placeholder : "Fait parti d'un élément ?",
+            	options : {
+            		"":"Pas de Parent"
+            	},
+            	"groupOptions" : parentList( ["organizations", "projects" ,"events"], contextData.parentId, contextData.parentType ),
+            	init : function(){ console.log("init ParentId");
+	            	$("#ajaxFormModal #parentId").off().on("change",function(){
+	            		var selected = $(':selected', this);
+    					$("#ajaxFormModal #parentType").val(selected.parent().attr('label'));
+	            	});
+	            }
+            };
+            form.dynForm.jsonSchema.properties.parentType = dyFInputs.inputHidden();
 			
 			var dataUpdate = {
 				block : "info",
@@ -488,6 +509,9 @@ function bindAboutPodElement() {
 			
 			if(contextData.type != typeObj.poi.col && notEmpty(contextData.url)) 
 				dataUpdate.url = contextData.url;
+
+			if(notEmpty(contextData.parentId)) 
+				dataUpdate.parentId = contextData.parentId;
 			
 			mylog.log("dataUpdate", dataUpdate);
 			dyFObj.openForm(form, "initUpdateInfo", dataUpdate);
@@ -512,7 +536,7 @@ function bindAboutPodElement() {
 						},
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){
+							if(data.result&& data.resultGoods && data.resultGoods.result){
 								if(data.resultGoods.values.shortDescription=="")
 									$(".contentInformation #shortDescriptionAbout").html('<i>'+trad["notSpecified"]+'</i>');
 								else
@@ -572,7 +596,7 @@ function bindAboutPodElement() {
 					    },
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){
+							if(data.result&& data.resultGoods && data.resultGoods.result){
 
 								if(typeof data.resultGoods.values.telegram != "undefined"){
 									contextData.socialNetwork.telegram = data.resultGoods.values.telegram.trim();
@@ -795,9 +819,9 @@ function bindAboutPodElement() {
 		var fieldsElement = [ 	"name", "tags", "email", "url", "fixe", "mobile", "fax", 
 								"telegram", "github", "skype", "twitter", "facebook", "gpplus"];
 		var fieldsPerson = ["username",  "birthDate"];
-		var fieldsProject = [ "avancement", "startDate", "endDate" ];
-		var fieldsOrga = [ "type" ];
-		var fieldsEvent = [ "type", "startDate", "endDate"];
+		var fieldsProject = [ "avancement", "startDate", "endDate", "parentId" ];
+		var fieldsOrga = [ "type", "parentId" ];
+		var fieldsEvent = [ "type", "startDate", "endDate", "parentId", , "organizerId"];
 
 		var SNetwork = [ "telegram", "github", "skype", "twitter", "facebook", "gpplus"];
 

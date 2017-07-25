@@ -1618,8 +1618,9 @@ function myAdminList (ctypes) {
 				$.each( myContacts[ ctype ],function(id,elemObj){
 					mylog.log("myAdminList",ctype,id,elemObj.name);
 					if( elemObj.links && elemObj.links[connectionType] && elemObj.links[connectionType][userId] && elemObj.links[connectionType][userId].isAdmin) {
-						mylog.warn("myAdminList2",ctype+"-"+id+"-"+elemObj.name);
+						mylog.warn("myAdminList2",ctype+"-"+id+"-"+elemObj.name, elemObj["_id"]["$id"]);
 						myList[ ctype ]["options"][ elemObj["_id"]["$id"] ] = elemObj.name;
+						mylog.log(myList);
 					}
 				});
 			}
@@ -1628,6 +1629,17 @@ function myAdminList (ctypes) {
 	}
 	return myList;
 }
+
+function parentList (ctypes, parentId, parentType) { 
+	var myList = myAdminList( ctypes ) ;
+	mylog.log("parentList", notEmpty(parentId) , notEmpty(parentType) ,  !notEmpty(myList[parentType]["options"][parentId]));
+    if(notEmpty(parentId) && notEmpty(parentType) &&  !notEmpty(myList[parentType]["options"][parentId])){
+    	myList[ parentType ]["options"][ parentId ] = contextData.parent.name;  
+    }
+    return myList; 
+}
+
+
 function escapeHtml(string) {
 	var entityMap = {
 	    '"': '&quot;',
@@ -2391,6 +2403,7 @@ var dyFObj = {
 		formData = $(formId).serializeFormJSON();
 		mylog.log("before",formData);
 		formData = dyFObj.formatData(formData,collection,ctrl);
+		mylog.log("saveElement", formData);
 		formData.medias = [];
 		$(".resultGetUrl").each(function(){
 			if($(this).html() != ""){
@@ -2694,7 +2707,8 @@ var dyFObj = {
 }
 //TODO : refactor into dyfObj.inputs
 var dyFInputs = {
-	init : function(){
+
+	init : function() {
 		 //global variables clean up
 		dyFInputs.locationObj.elementLocation = null;
 	    dyFInputs.locationObj.elementLocations = [];
@@ -2747,6 +2761,7 @@ var dyFInputs = {
 		}
 		
 	},
+
 	inputText :function(label, placeholder, rules, custom) { 
 		var inputObj = {
 			label : label,

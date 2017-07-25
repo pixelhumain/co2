@@ -109,6 +109,7 @@
 
 			return popupContent;
 		};
+
 		//##
 		//création du contenu de la popup d'un site web
 		Sig.getPopupSiteUrl = function(data){
@@ -333,7 +334,7 @@
 		};
 
 		Sig.getPopupSimpleCity = function(data){
-			mylog.log(data);
+			//mylog.log("getPopupSimpleCity", data);
 			var city = data["name"].replace("'", "\'");;
 			var insee = data["insee"];
 			var cp = data["cp"];
@@ -345,29 +346,53 @@
 				var nbCpByInsee = data["countCpByInsee"];
 				var cityInsee = data["cityInsee"];
 			}
-			var showAjaxPanel = 'urlCtrl.loadByHash("#city.detail.insee.'+insee+'.postalCode.'+cp+'");'
+			
 			var popupContent = '<div class="pod-local-actors" style="display:inline-block; width:100%;">' +
 									"<h4 class='panel-title text-red homestead'>"+
 										"<i class='fa fa-university'></i> "+city+
 									"</h4>" + 
-									"<h4 class='panel-title text-red homestead'>"+ cp + "</h4>";/* + 
-									"<button class='btn btn-default btn-communecter-city btn-sm col-md-12 text-red bold' "+
-											 "name-com='" + city + "' " + "insee-com='" + insee + "' " + "cp-com='" + cp + "'" + "lat-com='" + lat + "'" + "lng-com='" + lng + "'" +  "reg-com='" + reg + "'" +  "ctry-com='" + cntry + "'";
-				if (typeof(nbCpByInsee) != "undefined"){
-				popupContent += " nbCpByInsee-com='" + nbCpByInsee + "'" + "cityInsee-com='" + cityInsee + "'";
-				}						
-				popupContent += 			"onclick='javascript:setScopeValue($(this))'>"+
-										"<i class='fa fa-crosshairs'></i> Communecter"+
-									"</button>";*/
-
+									"<h4 class='panel-title text-red homestead'>"+ cp + "</h4>";
+				
+			var citykey = data.country + "_" + data.insee + "-" + data.cp;						
 			if(location.hash != "#default.twostepregister")
-			popupContent +=			"<button class='no-margin btn btn-default btn-more btn-sm col-md-12' onclick='javascript:"+showAjaxPanel+"'>"+
-										"<i class='fa fa-plus'></i> En savoir plus"+
+			popupContent +=			"<button class='no-margin btn btn-default text-red btn-more btn-sm col-md-12 start-new-communexion' "+
+										"onclick='javascript:Sig.startNewCommunexion($(this))'"+
+										"data-scope-value='" + citykey + "' " + 
+		                                "data-scope-name='" + data.name + "' " + 
+		                                "data-scope-type='city' " + 
+		                                "data-insee-communexion='" + data.insee + "' "+ 
+		                                "data-name-communexion='" + data.name + "' "+ 
+		                                "data-cp-communexion='" + data.cp + "' "+ 
+		                                "data-region-communexion='" + data.regionName + "' "+ 
+		                                "data-dep-communexion='" + data.depName + "' "+ 
+		                                "data-country-communexion='" + data.country + "' "+
+									">"+
+										"<i class='fa fa-angle-right'></i> Communecter"+
 									"</button>";
 
 			popupContent +=		'</div>';
 			return popupContent;
 		};
+
+
+		Sig.startNewCommunexion = function(thisButton){
+	        $("#main-search-bar, #second-search-bar, #input-search-map").val("");
+            setGlobalScope( thisButton.data("scope-value"), thisButton.data("scope-name"), thisButton.data("scope-type"), "city",
+                             thisButton.data("insee-communexion"), thisButton.data("name-communexion"), thisButton.data("cp-communexion"),
+                              thisButton.data("region-communexion"), thisButton.data("dep-communexion"), thisButton.data("country-communexion") ) ;
+            
+            if($("#communexionNameHome").length){
+            	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+thisButton.data("name-communexion")+'</span></span>');
+            	$("#liveNowCoName").html("<span class='text-red'> à "+thisButton.data("name-communexion")+"</span>");
+              $("#main-search-bar").val("");
+            	$(".info_co, .input_co").addClass("hidden");
+              $("#change_co").removeClass("hidden");
+				          $("#dropdown_search").html("");
+            }
+
+            startSearch(0, indexStepInit, searchCallback);
+		};
+
 
 		Sig.getPopupAddress = function(data, label){
 			mylog.log(data);

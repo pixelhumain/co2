@@ -46,7 +46,7 @@ var trad = {
 "tryagain":"<?php echo Yii::t("common","Please try again") ?>",
 "wrongwithurl":"<?php echo Yii::t("common","Something went wrong with the url") ?>",
 "leaveeventsuccess":"<?php echo Yii::t("common", "You leave successfully this event") ?>",
-"leaveeventsuccess":"<?php echo Yii::t("common", "You leave successfully this event") ?>",
+"validationwellregistred":"<?php echo Yii::t("common","Validation is well registered") ?>",
 "visiblepublic":"<?php echo Yii::t("common","Visible to all and posted on the city's wall")?>",
 "visiblerestricted": "<?php echo Yii::t("common","Visible to all on this wall and published on this network")?>",
 "visibleprivate": "<?php echo Yii::t("common","Private view")?>",

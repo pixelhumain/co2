@@ -46,7 +46,6 @@
 	jQuery(document).ready(function() {
 		
 		var id = "<?php echo $itemId ?>";
-		//var sliderKey = "<?php// echo Document::IMG_SLIDER; ?>";
 		var editFile = <?php echo ($editMode) ? 'true':'false'; ?>;
 		var type = "<?php echo $type ?>";
 		var contentId = "<?php echo Document::IMG_PROFIL ?>";
@@ -280,23 +279,23 @@
 			mylog.log("loading new profil");
 			$.ajax({
 			  	type: "POST",
-			  	url: baseUrl+"/"+moduleId+"/person/getthumbpath",
+			  	url: baseUrl+"/"+moduleId+"/element/getthumbpath/type/"+type+"/id/"+id,
 			  	dataType: "json"
 			}).done( function(data){
+				console.log(data);
 		        if(typeof data.profilThumbImageUrl != "undefined"){
-		        	//console.log(data);
+		        	
 		        	profilThumbImageUrl = baseUrl + data.profilThumbImageUrl;
 		        	//alert(profilThumbImageUrl);
-		        	$("#menu-thumb-profil").attr("src", profilThumbImageUrl);
-		        	$("#menu-left-thumb-profil").attr("src", profilThumbImageUrl);
-		        	$("#menu-small-thumb-profil").attr("src", profilThumbImageUrl);
-		        	$(".item_map_list_"+Sig.getObjectId(Sig.userData)+" .thumbnail-profil img").attr("src", profilThumbImageUrl);
+		        	if(type=="citoyens")
+		        		$(".menu-name-profil img").attr("src", profilThumbImageUrl);
+		        	//$("#menu-left-thumb-profil").attr("src", profilThumbImageUrl);
+		        	//$("#menu-small-thumb-profil").attr("src", profilThumbImageUrl);
+		        	$(".identity-min img").attr("src", profilThumbImageUrl);
+		        	$("#floopItem-"+type+"-"+id+" a img").attr("src", profilThumbImageUrl);
+		        	$("#popup"+id+" img").attr("src", profilThumbImageUrl);
+		        	$(".item_map_list_"+id+" .left-col .thumbnail-profil img").attr("src", profilThumbImageUrl);
 		        }
-
-		        mylog.log(Sig.userData.profilImageUrl);
-		        mylog.log("NOUVELLE PATH THUMB PROFIL : <?php echo Yii::app()->createUrl('/'.$this->module->id.'/document/resized/50x50/'); ?>" + data.profilImageUrl);
-		    	//Sig.userData.profilImageUrl = "<?php echo Yii::app()->createUrl('/'.$this->module->id.'/document/resized/50x50/'); ?>" + data.profilImageUrl;
-		        mylog.log(Sig.userData.profilImageUrl);
 		        
 		    });
 		}

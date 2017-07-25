@@ -1648,7 +1648,30 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	  		
 	  	}
 	 }
-
+	public function actionCreatorUpdatedOnNotifications(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			echo "nombre de notifs attendus = environs 15.3k";
+		  	$notifications=PHDB::find(ActivityStream::COLLECTION,array("notify"=>array('$exists'=>true),"updated"=>array('$exists'=>false)));
+		  	$nbNotifs=0;
+		  	$nbNotifsDeleted=0;
+		  	foreach($notifications as $key => $data){
+		  		if(!@$data["created"] ){
+		  			PHDB::remove(ActivityStream::COLLECTION, array("_id"=>new MongoId($key)));
+		  			$nbNotifsDeleted++;
+		  		}
+		  		if(!@$data["updated"] && @$data["created"] ){
+					PHDB::update(ActivityStream::COLLECTION,
+						array("_id" => $data["_id"]) , 
+						array('$set' => array('updated'=> $data["created"])));
+					$nbNotifs++;
+				}
+				
+		  	}
+		  	echo "Nombre de notifs deleted car pas de created (normalement 383):".$nbNotifsDeleted." notifs<br/>";
+		  	echo "nombre de notifications traitées:".$nbNotifs." notifs";
+	  		
+	  	}
+	 }
 
 
   	public function actionUpdateRegion(){

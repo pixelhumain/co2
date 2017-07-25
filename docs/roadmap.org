@@ -167,6 +167,7 @@ Liste des notifications déjà lues => #370 #453
     [ ] btn changement de langue 
     [ ] brique comeptence et tache sur mon profil 
     [ ] réintégré la GEd de granddir 
+    [ ] losing session
   ** @Tib et @Tango 
     [ ] REfactor DDA 
     [ ] utiliser le DDA pour ouvrir et crowd sourcer les demandes de fonctionnalité de CO

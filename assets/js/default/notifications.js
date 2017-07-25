@@ -209,16 +209,19 @@ function buildNotifications(list, element, event)
 					else
 						str+="enable";
 				str+="'>"+
-					"<a href='javascript:;' class='notif' data-id='"+notifKey+"' data-href='"+ url +"'>"+
-						"<span class='label bg-dark'>"+
-							'<i class="fa '+icon+'"></i>'+
-						"</span>" + 
-						
-						'<span class="message">'+
-							displayName+
-						"</span>" + 
-						
-						"<span class='time pull-left'>"+momentNotif+"</span>"+
+					"<a href='javascript:;' class='notif col-md-12 col-sm-12 col-xs-12 no-padding' data-id='"+notifKey+"' data-href='"+ url +"'>"+
+						"<div class='content-icon col-md-1 col-sm-1 col-xs-1 no-padding'>"+
+							"<span class='label bg-dark pull-left'>"+
+								'<i class="fa '+icon+'"></i>'+
+							"</span>" +
+						"</div>"+ 
+						"<div class='col-md-10 col-sm-10 col-xs-10 no-padding'>"+
+							'<span class="message pull-left">'+
+								displayName+
+							"</span>" + 
+							
+							"<span class='time pull-left'>"+momentNotif+"</span>"+
+						"</div>"+
 					"</a>"+
 					"<a href='javascript:;' class='label removeBtn tooltips' onclick='removeNotification(\""+notifKey+"\")' data-toggle='tooltip' data-placement='left' title='Delete' style='display:none;'>"+
 							'<i class="fa fa-remove"></i>'+
@@ -226,15 +229,17 @@ function buildNotifications(list, element, event)
 				  "</li>";
 			if(event==null){
 				$(".notifList"+element).append(str);
-				$(".notif_"+notifKey).removeClass('hide').addClass("animated bounceInRight enable");
+				$(".notif_"+notifKey).removeClass('hide').addClass("animated bounceInRight enable col-md-12 col-sm-12 col-xs-12");
 			}else{
 				notifHtml+=str;
 			}
 			if( notifObj.timestamp > maxNotifTimstamp )
 				maxNotifTimstamp = notifObj.timestamp;
 		});
-		if(event != null)
+		if(event != null){
 			$(".notifList"+element).html(notifHtml);
+			$(".notifLi").addClass("col-md-12 col-sm-12 col-xs-12");
+		}
 		setTimeout( function(){
 	    	notifCount(false, element);
 	    	bindNotifEvents(element);
@@ -253,7 +258,7 @@ function notifCount(upNotifUnseen, element)
 	mylog.log(" !!!! notifCount", countNotif, "element :",element);
 	$(".notifCount").html( countNotif );
 	if(countNotif == 0)
-		$(".notifList"+element).html("<li><i class='fa fa-ban'></i> "+trad["noMoreNotifs"]+"</li>");
+		$(".notifList"+element).html("<li class='col-md-12 col-sm-12 col-xs-12'><i class='fa fa-ban'></i> "+trad["noMoreNotifs"]+"</li>");
 	//if(element==""){
 		if( countNotifUnseen > 0)
 		{

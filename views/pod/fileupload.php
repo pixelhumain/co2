@@ -285,7 +285,7 @@
 				console.log(data);
 		        if(typeof data.profilThumbImageUrl != "undefined"){
 		        	
-		        	profilThumbImageUrl = baseUrl + data.profilThumbImageUrl+"?t="+new Date().getTime();
+		        	profilThumbImageUrl = baseUrl + data.profilThumbImageUrl;
 		        	//alert(profilThumbImageUrl);
 		        	if(type=="citoyens")
 		        		$(".menu-name-profil img").attr("src", profilThumbImageUrl);

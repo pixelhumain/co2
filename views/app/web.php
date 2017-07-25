@@ -192,7 +192,8 @@
 
 <div id="mainCategories" class="shadow padding-bottom-50"></div>
 
-<?php $this->renderPartial($layoutPath.'footer',  array( "subdomain"=>"web" ) ); ?>
+
+<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array("subdomain"=>"web")); ?>
 
 <script type="text/javascript" >
 

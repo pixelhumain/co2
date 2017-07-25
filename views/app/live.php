@@ -82,9 +82,8 @@
 </div>
 
 
-<?php //$this->renderPartial('../news/modalCreateAnc'); ?>
-<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"live")); ?>
-<?php //$this->renderPartial($layoutPath.'footer', array("subdomain"=>"annonces")); ?>
+<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array("subdomain"=>"live")); ?>
+
 
 <script type="text/javascript" >
 

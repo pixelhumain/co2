@@ -376,7 +376,7 @@ jQuery(document).ready(function() {
 								}, 300);
 							}
    						 	else
-   						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
+   						 		toastr.warning(trad["minsizebanner"]);
 						};
 			        });
 			        reader.readAsDataURL(file);

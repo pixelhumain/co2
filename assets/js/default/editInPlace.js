@@ -78,97 +78,6 @@ function bindAboutPodElement() {
 		});		
 	}
 
-	function updateOrganizer() {
-		bootbox.confirm({
-			message: 
-				trad["udpateorganizer"]+
-				buildSelect("organizerId", "organizerId", 
-							{"inputType" : "select", "options" : firstOptions(), 
-							"groupOptions": myAdminList( ["organizations","projects"] )}, ""),
-			buttons: {
-				confirm: {
-					label: trad["udpateorganizer"],
-					className: 'btn-success'
-				},
-				cancel: {
-					label: trad["cancel"],
-					className: 'btn-danger'
-				}
-			},
-			
-			callback: function (result) {
-				if (!result) {
-					return;
-				} else {
-					var organizer = { "organizerId" : organizerId, "organizerType" : organizerType };
-
-					var param = new Object;
-					param.name = "organizer";
-					param.value = organizer;
-					param.pk = contextData.id;
-					$.ajax({
-				        type: "POST",
-				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-				        data: param,
-				       	dataType: "json",
-				    	success: function(data){
-					    	if(data.result){
-								toastr.success(data.msg);
-								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
-					    	} else {
-					    		toastr.error(data.msg);
-					    	}
-					    }
-					});
-				}
-			}
-		}).init(function(){
-        	console.log("init de la bootbox !");
-        	$("#organizerId").off().on("change",function(){
-        		organizerId = $(this).val();
-        		if(organizerId == "dontKnow" )
-        			organizerType = "dontKnow";
-        		else if( $('#organizerId').find(':selected').data('type') && typeObj[$('#organizerId').find(':selected').data('type')] )
-        			organizerType = typeObj[$('#organizerId').find(':selected').data('type')].col;
-        		else
-        			organizerType = typeObj["person"].col;
-
-        		mylog.warn( "organizer",organizerId,organizerType );
-        		$("#ajaxFormModal #organizerType ").val( organizerType );
-        	});
-        })
-	}
-	
-	function buildSelect(id, field, fieldObj,formValues) {
-		var fieldClass = (fieldObj.class) ? fieldObj.class : '';
-		var placeholder = (fieldObj.placeholder) ? fieldObj.placeholder+required : '';
-		var fieldHTML = "";
-		if ( fieldObj.inputType == "select" || fieldObj.inputType == "selectMultiple" ) 
-        {
-       		var multiple = (fieldObj.inputType == "selectMultiple") ? 'multiple="multiple"' : '';
-       		mylog.log("build field "+field+">>>>>> select selectMultiple");
-       		var isSelect2 = (fieldObj.isSelect2) ? "select2Input" : "";
-       		fieldHTML += '<select class="'+isSelect2+' '+fieldClass+'" '+multiple+' name="'+field+'" id="'+field+'" style="width: 100%;height:30px;" data-placeholder="'+placeholder+'">';
-			if(placeholder)
-				fieldHTML += '<option class="text-red" style="font-weight:bold" disabled selected>'+placeholder+'</option>';
-			else
-				fieldHTML += '<option></option>';
-
-			var selected = "";
-			
-			//initialize values
-			if(fieldObj.options)
-				fieldHTML += buildSelectOptions(fieldObj.options, fieldObj.value);
-			
-			if( fieldObj.groupOptions ){
-				fieldHTML += buildSelectGroupOptions(fieldObj.groupOptions, fieldObj.value);
-			} 
-			fieldHTML += '</select>';
-        }
-        return fieldHTML;
-	}
-
-
 	function bindDynFormEditable(){
 		$(".btn-update-when").off().on( "click", function(){
 			var form = {
@@ -403,6 +312,40 @@ function bindAboutPodElement() {
 									contextData.fax = parsePhone(data.resultGoods.values.fax);
 									$("#faxAbout").html(contextData.fax);
 								}
+
+								if(typeof data.resultGoods.values.parent != "undefined"){
+									mylog.log("modif parent", data.resultGoods.values.parent);
+									contextData.parent = data.resultGoods.values.parent.parent;
+									contextData.parentId = data.resultGoods.values.parent.parentId;
+									contextData.parentType = data.resultGoods.values.parent.parentType;
+
+									var html = "<i>"+trad["notSpecified"]+"</i>";
+
+									if(notEmpty(contextData.parentId)){
+										html = '<a href="#page.type.'+contextData.parentType+'.id.'+contextData.parentId+'" class="lbh">'+ 
+											'<i class="fa fa-'+dyFInputs.get(contextData.parentType).icon+'"></i> '+
+											contextData.parent.name+'</a><br/>'; 
+									}
+
+									$("#parentAbout").html(html);
+								}
+
+								if(typeof data.resultGoods.values.organizer != "undefined"){
+									mylog.log("modif organizer", data.resultGoods.values.organizer);
+									contextData.organizer = data.resultGoods.values.organizer.organizer;
+									contextData.organizerId = data.resultGoods.values.organizer.organizerId;
+									contextData.organizerType = data.resultGoods.values.organizer.organizerType;
+
+									var html = "<i>"+trad["notSpecified"]+"</i>";
+
+									if(notEmpty(contextData.organizerId)){
+										html = '<a href="#page.type.'+contextData.organizerType+'.id.'+contextData.organizerId+'" class="lbh">'+ 
+											'<i class="fa fa-'+dyFInputs.get(contextData.organizerType).icon+'"></i> '+
+											contextData.organizer.name+'</a><br/>'; 
+									}
+
+									$("#organizerAbout").html(html);
+								}
 							}
 							dyFObj.closeForm();
 							changeHiddenFields();
@@ -445,16 +388,19 @@ function bindAboutPodElement() {
 				form.dynForm.jsonSchema.properties.url = dyFInputs.inputUrl();
 
 
+			var listParent =  ["organizations"] ;
 
+			if(contextData.type == typeObj.event.col)
+				listParent =  ["event"] ;
+
+			
 			form.dynForm.jsonSchema.properties.parentId = {
 	         	label : "Fait parti d'un élément ?",
             	inputType : "select",
             	class : "",
             	placeholder : "Fait parti d'un élément ?",
-            	options : {
-            		"":"Pas de Parent"
-            	},
-            	"groupOptions" : parentList( ["organizations", "projects" ,"events"], contextData.parentId, contextData.parentType ),
+            	options : firstOptions(),
+            	"groupOptions" : parentList( listParent, contextData.parentId, contextData.parentType ),
             	init : function(){ console.log("init ParentId");
 	            	$("#ajaxFormModal #parentId").off().on("change",function(){
 	            		var selected = $(':selected', this);
@@ -463,6 +409,13 @@ function bindAboutPodElement() {
 	            }
             };
             form.dynForm.jsonSchema.properties.parentType = dyFInputs.inputHidden();
+
+            if(contextData.type == typeObj.event.col){
+            	mylog.log("here");
+            	form.dynForm.jsonSchema.properties.organizerId =  dyFInputs.organizerId(contextData.parentId, contextData.parentType);
+	            form.dynForm.jsonSchema.properties.organizerType = dyFInputs.inputHidden();
+            }
+            
 			
 			var dataUpdate = {
 				block : "info",
@@ -512,6 +465,15 @@ function bindAboutPodElement() {
 
 			if(notEmpty(contextData.parentId)) 
 				dataUpdate.parentId = contextData.parentId;
+
+			if(notEmpty(contextData.parentType)) 
+				dataUpdate.parentType = contextData.parentType;
+
+			if(notEmpty(contextData.organizerId)) 
+				dataUpdate.organizerId = contextData.organizerId;
+
+			if(notEmpty(contextData.organizerType)) 
+				dataUpdate.organizerType = contextData.organizerType;
 			
 			mylog.log("dataUpdate", dataUpdate);
 			dyFObj.openForm(form, "initUpdateInfo", dataUpdate);

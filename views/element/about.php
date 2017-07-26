@@ -199,6 +199,24 @@
 			</div>
 		<?php } ?>
 
+		<?php if($type == Event::COLLECTION){ ?>
+			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
+					<span><i class="fa fa-link"></i></span> <?php echo Yii::t("common","Organized by"); ?>
+				</div>
+				<div id="organizerAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-desktop"></i> <?php echo Yii::t("common","Organized by"); ?> :</span>
+				<?php 
+					if(!empty($element["organizer"])){ ?>
+						<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" class="lbh"> 
+						<i class="fa fa-<?php echo Element::getFaIcon($element['organizerType']); ; ?>"></i> 
+						<?php echo $element['organizer']['name']; ?></a><br/> 
+				<?php }else
+						echo '<i>'.Yii::t("common","Not specified").'</i>';?>
+				</div>
+			</div>
+		<?php } ?>
+
 
 
 

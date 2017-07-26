@@ -174,7 +174,7 @@
                         data-fkey="<?php echo $key; ?>"
                         style="border-radius:0px; border-color: transparent; text-transform: uppercase;" 
                         data-keycat="<?php echo $cat["name"]; ?>">
-                  <i class="fa <?php echo $cat["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $cat["name"]; ?>
+                  <i class="fa <?php echo $cat["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo Yii::t("category", $cat["name"]); ?>
                 </button>
               </div>
                 <?php //foreach ($cat as $key2 => $cat2) { ?>
@@ -219,43 +219,43 @@
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
             <button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
-                <span class="hidden-xs">Thématiques</span>
+                <span class="hidden-xs"><?php echo Yii::t("common","Thématiques") ?></span>
             </button><hr class="hidden-xs">
             <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
                 <i class="fa fa-search"></i> 
-                <span class="hidden-xs">Tous</span>
+                <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
             </button><hr class="hidden-xs">
             <button class="btn text-yellow btn-directory-type" data-type="persons">
                 <i class="fa fa-user"></i> 
-                <span class="hidden-xs">Citoyens</span>
+                <span class="hidden-xs"><?php echo Yii::t("common","People") ?></span>
             </button><hr class="hidden-xs">
             <button class="btn text-green  btn-directory-type" data-type="NGO">
                 <i class="fa fa-group"></i> 
-                <span class="hidden-xs">Associations</span>
+                <span class="hidden-xs"><?php echo Yii::t("common", "NGOs") ?></span>
             </button><br class="hidden-xs">
             <button class="btn text-azure  btn-directory-type" data-type="LocalBusiness">
                 <i class="fa fa-industry"></i> 
-                <span class="hidden-xs">Entreprises</span>
+                <span class="hidden-xs"><?php echo Yii::t("common","Compagnies") ?></span>
             </button><br class="hidden-xs">
             <button class="btn text-turq btn-directory-type" data-type="Group">
                 <i class="fa fa-circle-o"></i> 
-                <span class="hidden-xs">Groupes</span>
+                <span class="hidden-xs"><?php echo Yii::t("common","Groups") ?></span>
             </button><br class="hidden-xs">
             <button class="btn text-purple btn-directory-type" data-type="projects">
                 <i class="fa fa-lightbulb-o"></i> 
-                <span class="hidden-xs">Projets</span>
+                <span class="hidden-xs"><?php echo Yii::t("common","Projects") ?></span>
             </button><hr class="hidden-xs">
             <button class="btn text-red btn-directory-type" data-type="cities">
                 <i class="fa fa-university"></i> 
-                <span class="hidden-xs">Communes</span>
+                <span class="hidden-xs"><?php echo Yii::t("common","Cities") ?></span>
             </button><br class="hidden-xs">
             <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
                 <i class="fa fa-university"></i> 
-                <span class="hidden-xs">Services publics</span>
+                <span class="hidden-xs"><?php echo Yii::t("common","Public structures") ?></span>
             </button><hr class="hidden-xs">
             <button class="btn text-green-poi btn-directory-type" data-type="poi">
                 <i class="fa fa-map-marker"></i> 
-                <span class="hidden-xs">Points d'intêret</span>
+                <span class="hidden-xs"><?php echo Yii::t("common","Point of interest") ?></span>
             </button>
             <hr class="hidden-sm hidden-md hidden-lg">
           </div>
@@ -294,7 +294,7 @@
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
             <button class="btn text-black bg-white btn-directory-type btn-all" data-type-event="" data-type="events">
                 <i class="fa fa-search"></i> 
-                <span class="hidden-xs">Tous</span>
+                <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
             </button><hr class="hidden-xs">
             
             <?php $categories = Event::$types; 
@@ -303,7 +303,7 @@
                   <?php //if(is_array($cat)) { ?>
                     <button class="btn text-orange btn-directory-type" 
                             style="margin-left:-5px;" data-type-event="<?php echo $key; ?>" data-type="events">
-                      <?php echo $cat; ?>
+                      <?php echo Yii::t("category",$cat); ?>
                     </button><br class="hidden-xs">
                   <?php //} ?>
               <?php } ?>
@@ -354,7 +354,7 @@
                             data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
                             data-type="classified"
                             style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
-                      <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $section["labelFront"]; ?>
+                      <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo Yii::t("category",$section["labelFront"]); ?>
                     </button>
                   </div>
             <?php } ?>  
@@ -365,21 +365,21 @@
           
             <div class="form-group col-md-5 col-sm-5 col-xs-6">
               <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
-                <i class="fa fa-chevron-down"></i> Prix min
+                <i class="fa fa-chevron-down"></i> <?php echo Yii::t("common","Min price") ?>
               </label>
               <input type="text" id="priceMin" name="priceMin" class="form-control" placeholder="prix min"/>
             </div>
 
             <div class="form-group col-md-5 col-sm-5 col-xs-6">
               <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
-                <i class="fa fa-chevron-down"></i> Prix max
+                <i class="fa fa-chevron-down"></i> <?php echo Yii::t("common","Max price") ?>
               </label>
               <input type="text" id="priceMax" name="priceMax" class="form-control col-md-5" placeholder="prix max"/>
             </div>
             
             <div class="form-group col-md-2 col-sm-2 col-xs-12 hidden">
               <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
-                <i class="fa fa-money"></i> Devise
+                <i class="fa fa-money"></i> <?php echo Yii::t("common","Currency") ?>
               </label>
               <select class="form-control" name="devise" id="devise" style="">
                 <option class="bold" value="€">euro €</option>
@@ -390,7 +390,7 @@
 
             <div class="form-group col-md-2 col-sm-2 col-xs-12 margin-top-10">
               <button class="btn btn-default col-md-12 margin-top-15 btn-directory-type" data-type="classified">
-                <i class="fa fa-search"></i> <span class="hidden-xs hidden-ms">Rechercher</span>
+                <i class="fa fa-search"></i> <span class="hidden-xs hidden-ms"><?php echo Yii::t("common","Search") ?></span>
               </button>
             </div>
 
@@ -445,20 +445,20 @@
 <script type="text/javascript">
 
 var headerParams = {
-  "persons"       : { color: "yellow",  icon: "user",         name: "citoyens" },
-  "organizations" : { color: "green",   icon: "group",        name: "organisations" },
-  "NGO"           : { color: "green",   icon: "group",        name: "associations" },
-  "LocalBusiness" : { color: "azure",   icon: "industry",     name: "entreprises" },
-  "Group"         : { color: "black",   icon: "circle-o",     name: "Groupes" },
-  "projects"      : { color: "purple",  icon: "lightbulb-o",  name: "projets" },
-  "events"        : { color: "orange",  icon: "calendar",     name: "événements" },
-  "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions" },
-  "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
-  "cities"        : { color: "red",     icon: "university",   name: "communes" },
-  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
-  "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
-  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
-  "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
+  "persons"       : { color: "yellow",  icon: "user",         name: trad["people"] },
+  "organizations" : { color: "green",   icon: "group",        name: trad["organizations"] },
+  "NGO"           : { color: "green",   icon: "group",        name: trad["NGO"] },
+  "LocalBusiness" : { color: "azure",   icon: "industry",     name: trad["LocalBusiness"] },
+  "Group"         : { color: "black",   icon: "circle-o",     name: trad["groups"] },
+  "projects"      : { color: "purple",  icon: "lightbulb-o",  name: trad["projects"] },
+  "events"        : { color: "orange",  icon: "calendar",     name: trad["events"] },
+  "vote"          : { color: "azure",   icon: "gavel",        name: trad["proposal"] },
+  "actions"       : { color: "lightblue2",    icon: "cogs",   name: trad["actions"] },
+  "cities"        : { color: "red",     icon: "university",   name: trad["cities"] },
+  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: trad["pointsinterests"] },
+  "place"         : { color: "green",   icon: "map-marker",   name: trad["place"] },
+  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad["classifieds"] },
+  "GovernmentOrganization" : { color: "red",   icon: "university",        name: trad["GovernmentOrganization"] },
   
 }
 

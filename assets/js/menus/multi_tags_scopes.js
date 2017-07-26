@@ -13,7 +13,7 @@
              if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false" &&
                  typeof communexion != "undefined" && communexion.state){
                 scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-                            'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
+                            'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+$.cookie('communexionName')+'" '+
                             'data-scope-value="'+$.cookie('communexionValue')+'" '+
                             'data-scope-name="'+$.cookie('communexionName')+'" '+
                             'data-scope-level="'+$.cookie('communexionLevel')+'" '+
@@ -24,7 +24,7 @@
             }else{
                 if(userId!=""){
                     scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips" onclick="communecterUser();" '+
-                            'data-toggle="tooltip" data-placement="top" title="Communectez-vous" '+
+                            'data-toggle="tooltip" data-placement="top" title="'+trad["communectyou"]+'" '+
                             'id="btn-my-co">'+
                             '<i class="fa fa-university"></i>'+
                         '</button>';
@@ -36,15 +36,15 @@
                         '<button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-10 margin-right-10" '+ 
                             'data-target="#modalScopes" data-toggle="modal" '+
                             'data-toggle="tooltip" data-placement="top" '+ 
-                            'title="Sélectionner des lieux de recherche">'+
+                            'title="'+trad["selectscopesearch"]+'">'+
                             '<img src="'+themeUrl+'/assets/img/cible3.png" height=25>'+
                         '</button>';
                         if(numberOfScope > 0){
-                            scopeHtml+= 'recherche ciblée <i class="fa fa-angle-right"></i>';
+                            scopeHtml+= trad["searchingon"]+' <i class="fa fa-angle-right"></i>';
                         } else{
                             scopeHtml+= '<span id="helpMultiScope" class="toggle-scope-dropdown">'+
                                            '<a href="javascript:" data-target="#modalScopes" data-toggle="modal" class="letter-red">'+
-                                                '<i class="fa fa-plus"></i> Ajouter des filtres géographiques ?'+
+                                                '<i class="fa fa-plus"></i> '+trad["addScopeFilters"]+' ?'+
                                             '</a>'+
                                         '</span>';
                         }

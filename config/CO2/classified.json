@@ -1,16 +1,16 @@
 {
     "sections" : {
         "sharing": {
-            "label":"Partager", 
-            "labelFront":"À partager",      
+            "label":"Share", 
+            "labelFront":"To share",      
             "key" : "sharing",     
             "icon" : "exchange",               
             "section":2, 
             "color":"azure"
         },
         "donation": {
-            "label":"Donner",   
-            "labelFront":"À donner",        
+            "label":"Give",   
+            "labelFront":"To give",        
             "key" : "donation",     
             "icon" : "gift",                    
             "section":2, 
@@ -18,8 +18,8 @@
         },
 
         "forsale": {
-            "label":"Vendre",  
-            "labelFront":"À vendre",            
+            "label":"Sale",  
+            "labelFront":"For sale",            
             "key" : "forsale",     
             "icon" : "money",                  
             "section":3, 
@@ -27,8 +27,8 @@
         },
 
         "forrent": {
-            "label":"Louer",   
-            "labelFront":"À louer",            
+            "label":"Rent",   
+            "labelFront":"For rent",            
             "key" : "forrent",    
             "icon" : "external-link",          
             "section":3, 
@@ -37,8 +37,8 @@
 
 
         "lookingfor" : {
-            "label":"Besoin", 
-            "labelFront":"À la recherche",   
+            "label":"Need", 
+            "labelFront":"Looking for",   
             "key" : "lookingfor",  
             "icon" : "eye",                    
             "section":4, 
@@ -46,8 +46,8 @@
         },
 
         "job": {
-            "label":"Emplois", 
-            "labelFront":"Offres d'emplois",      
+            "label":"Jobs", 
+            "labelFront":"Offers",      
             "key" : "job",         
             "icon" : "briefcase",              
             "section":5, 

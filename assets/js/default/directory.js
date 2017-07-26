@@ -207,7 +207,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               //mylog.dir(data);
               str += '<div class="col-md-12 text-left" id="">';
               str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+
-                        "<i class='fa fa-angle-down'></i> " + totalData + " résultats ";
+                        "<i class='fa fa-angle-down'></i> " + totalData + " "+trad["results"]+" ";
               str += "<small class='resultTypes'>";
               if(typeof headerParams != "undefined"){
                 $.each( searchType, function(key, val){
@@ -677,7 +677,7 @@ var directory = {
         }
 
         if(params.updated != null && !params.useMinSize)
-          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
+          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad["actif"]+" </span>" + params.updated + "</div>";
 
         if(params.itemType!="city" && (typeof params.size == "undefined" || params.size == "max"))
           str += "<a href='"+params.hash+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + params.imgProfil + "</a>";
@@ -845,7 +845,7 @@ var directory = {
     		}
 
         if(params.updated != null )
-          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
+          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad["actif"]+" </span>" + params.updated + "</div>";
         
         var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
         if(params.type == "citoyens") 
@@ -1265,37 +1265,37 @@ var directory = {
           params.attendees += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10 btn-share'"+
                               " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"' "+//data-name='"+params.name+"'"+
                               " data-isShared='"+isShared+"'>"+
-                              "<i class='fa fa-share'></i> Partager</button>";
+                              "<i class='fa fa-share'></i> "+trad["share"]+"</button>";
         }
         if(typeof params.edit  != "undefined"){
           params.attendees += "<button class='text-dark btn btn-link no-padding margin-left-10 disconnectConnection'"+
                               " data-id='"+params.id+"' data-type='"+params.type+"' data-connection='"+params.edit+"' data-parent-hide='4'>"+
-                              "<i class='fa fa-unlink'></i> Ne plus participer</button>";
+                              "<i class='fa fa-unlink'></i> "+trad["notparticipateanymore"]+"</button>";
         }
         params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
-                                    "data-toggle='tooltip' data-placement='bottom' data-original-title='participant(s)'>" + 
+                                    "data-toggle='tooltip' data-placement='bottom' data-original-title='"+trad["attendee-s"]+"'>" + 
                               cntP + " <i class='fa fa-street-view'></i>"+
                             "</small>";
 
         params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
-                                    "data-toggle='tooltip' data-placement='bottom' data-original-title='intéressé(s)'>" +
+                                    "data-toggle='tooltip' data-placement='bottom' data-original-title='"+trad["concerned"]+"'>" +
                                cntIt + " <i class='fa fa-thumbs-up'></i>"+
                             "</small>";
 
         params.attendees += "<small class='light margin-left-10 tooltips pull-right'  "+
-                                    "data-toggle='tooltip' data-placement='bottom' data-original-title='invité(s)'>" +
+                                    "data-toggle='tooltip' data-placement='bottom' data-original-title='"+trad["guest-s"]+"'>" +
                                cntIv + " <i class='fa fa-envelope'></i>"+
                             "</small>";
 
            
         //if(params.imgProfil.indexOf("fa-2x")<0)
-        var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" sous évennement(s)"  : "" ; 
+        var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" "+trad["subevent-s"]  : "" ; 
         str += '<div class="col-xs-12 col-sm-4 col-md-4 no-padding">'+
                   '<a href="'+params.hash+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+  
                 '</div>';
         
         if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id)){
-          var tip = "Ça m'intéresse";
+          var tip = trad["interested"];
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
                       'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
                       " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"'"+
@@ -1381,7 +1381,7 @@ var directory = {
         str +=    "<div class='searchEntity'>";
 
                 if(params.updated != null)
-                  str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
+                  str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad["actif"]+" </span>" + params.updated + "</div>";
 
                 str += "<div class='padding-10 informations'>";
                       
@@ -1566,7 +1566,7 @@ var directory = {
         }
         */
         if(params.updated != null && !params.useMinSize)
-          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
+          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad["actif"]+" </span>" + params.updated + "</div>";
 
         params.startDay = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("DD/MM") : "";
         params.startTime = notEmpty(params.startDate) ? moment(params.startDate).local().locale("fr").format("HH:mm") : "";
@@ -1913,13 +1913,13 @@ var directory = {
     },
 
     getWeekDayName : function(numWeek){
-      var wdays = new Array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche");
+      var wdays = new Array(trad["sunday"],trad["monday"],trad["tuesday"],trad["wednesday"],trad["thursday"],trad["friday"],trad["saturday"],trad["sunday"]);
       if(typeof wdays[numWeek] != "undefined") return wdays[numWeek];
       else return "";
     },
     getMonthName : function(numMonth){
       numMonth = parseInt(numMonth);
-      var wdays = new Array("", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
+      var wdays = new Array("", trad["january"],trad["february"],trad["march"],trad["april"],trad["may"],trad["june"],trad["july"],trad["august"],trad["september"],trad["october"],trad["november"],trad["december"]);
       if(typeof wdays[numMonth] != "undefined") return wdays[numMonth];
       else return "";
     },
@@ -1956,14 +1956,14 @@ var directory = {
         directory.tagsT = [];
         $("#listTags").html('');
         if(withSearch){
-            $("#listTags").append("<h5 class=''><i class='fa fa-search'></i> Filtrer par tag</h5>");
+            $("#listTags").append("<h5 class=''><i class='fa fa-search'></i> "+trad["filtertags"]+"</h5>");
             $("#listTags").append('<input id="searchBarTextJS" data-searchPage="true" type="text" class="input-search form-control">');
         }
        // alert(directory.elemClass);
        // $("#listTags").append("<h4 class=''> <i class='fa fa-tags'></i> trier </h4>");
         $("#listTags").append("<a class='btn btn-link text-red favElBtn favAllBtn' "+
             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,directory.elemClass,1)'>"+
-            " <i class='fa fa-refresh'></i> <b>Afficher tout</b></a><br/>");
+            " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a><br/>");
         $.each( $(directory.elemClass),function(k,o){
             $.each($(o).find(".btn-tag"),function(i,oT){
                 var oTag = $(oT).data('tag-value').toLowerCase();
@@ -2187,7 +2187,7 @@ var directory = {
         params.color="orange";
         
 
-        var startLbl = (params.endDay != params.startDay) ? "Du" : "";
+        var startLbl = (params.endDay != params.startDay) ? trad["fromdate"] : "";
         var endTime = ( params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
         mylog.log("params.allDay", !notEmpty(params.allDay), params.allDay);
        
@@ -2213,7 +2213,7 @@ var directory = {
 
         if(params.endDate != null && dStart != dEnd){
           str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      "<small>Au </small>"+
+                      "<small>"+trad["todate"]+" </small>"+
                       '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
                       params.endDay + ' ' + params.endMonth + 
                       ' <small class="letter-'+params.color+'">' + params.endYear + '</small>';

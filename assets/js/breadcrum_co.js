@@ -75,7 +75,7 @@ function activateGlobalCommunexion(active, firstLoad){  mylog.log("activateGloba
         bindCommunexionScopeEvents();
     }
     else{
-        headerHtml='<a href="#web" class="menu-btn-back-category" data-target="#modalMainMenu" data-toggle="modal">'+
+        headerHtml='<a href="#" class="menu-btn-back-category" data-target="#modalMainMenu" data-toggle="modal">'+
                 '<img src="'+themeUrl+'/assets/img/LOGOS/'+domainName+'/logo-head-search.png" height="60" class="inline margin-bottom-15">'+
                 '</a>';
         saveCookieMultiscope();

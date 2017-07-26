@@ -122,11 +122,12 @@ var trad = {
 "job" : "Emplois",
 
 "Project maturity" : "<?php echo Yii::t("project","Project maturity",null,Yii::app()->controller->module->id)?>",
-"idea" : "<?php echo Yii::t("project","idea",null,Yii::app()->controller->module->id)?>",
-"started" : "<?php echo Yii::t("project","started",null,Yii::app()->controller->module->id)?>", 
-"development" : "<?php echo Yii::t("project","development",null,Yii::app()->controller->module->id)?>",
-"testing" : "<?php echo Yii::t("project","testing",null,Yii::app()->controller->module->id)?>",
-
+"idea" : "<?php echo Yii::t("project","idea")?>",
+"started" : "<?php echo Yii::t("project","started")?>", 
+"development" : "<?php echo Yii::t("project","development")?>",
+"testing" : "<?php echo Yii::t("project","testing")?>",
+"concept"  : "<?php echo Yii::t("project","concept")?>",
+"mature"  : "<?php echo Yii::t("project","mature")?>",
 "notSpecified" : "<?php echo Yii::t("common","Not specified") ?>",
 "UnknownLocality" : "<?php echo Yii::t("common","Unknown Locality") ?>",
 

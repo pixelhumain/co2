@@ -1772,13 +1772,11 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 
 	public function actionRegionetDepRefactorCitiesZones(){
-		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			ini_set('memory_limit', '-1');
 			$nbelement = 0 ;
 			$region = array();
-			$cities = PHDB::find(City::COLLECTION, array('$and' => 
-													array("regionName" => array('$exists' => 1) ) , 
-													 array("depName" => array('$exists' => 1) ) ) );
+			$cities = PHDB::find(City::COLLECTION, array("regionName" => array('$exists' => 1) ) ) ;
 			if(!empty($cities)){
 				foreach (@$cities as $keyElt => $city) {
 					if(!empty($city["regionName"]) && trim($city["regionName"]) != "" && !in_array($city["regionName"], $region)){
@@ -1803,7 +1801,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				echo  "Erreur: " .$v." : City :".$k."<br>" ;
 			}
 			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
-		}
+		//}
 	}
 
 

@@ -54,7 +54,8 @@ function checkPoll(){
 function setLanguage(lang){
 	$.cookie('lang', lang, { expires: 365, path: "/" });
 	toastr.success("Changement de la langue en cours");
-	urlCtrl.loadByHash(location.hash);
+	//window.reloadurlCtrl.loadByHash(location.hash);
+	location.reload();
 }
 function bindRightClicks() { 
 	$.contextMenu({

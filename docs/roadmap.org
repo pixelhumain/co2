@@ -158,6 +158,9 @@ Liste des notifications déjà lues => #370 #453
     [ ] add delete to image upload 
       - on Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté 
     [ ] Repair + Finir module Tiers Lieux 
+      [ ] on events TL connecté url to visio 
+        [ ] show icons for quick access to ressources of a TL event
+
     [ ] Ressource
     [ ] Besoin
     [ ] Stephane Exodata 0692615381
@@ -217,10 +220,12 @@ Liste des notifications déjà lues => #370 #453
       [ ] lazyload 
   ** @Damien 
     [ ] coopedia
+      [ ] etat pour mettre en prod ?
     [ ] opendata sources 
       [ ] connecter des scripts api 
         [ ] scope geo
         [ ] thematique ou tag 
+        [ ] perso
   ** @Daniel
     [ ] SSO
   ** @Marc 

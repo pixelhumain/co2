@@ -560,6 +560,9 @@ function bindAboutPodElement() {
 							mylog.dir(data);
 							if(data.result&& data.resultGoods && data.resultGoods.result){
 
+								if(!notEmpty(contextData.socialNetwork))
+									contextData.socialNetwork = {};
+
 								if(typeof data.resultGoods.values.telegram != "undefined"){
 									contextData.socialNetwork.telegram = data.resultGoods.values.telegram.trim();
 									changeNetwork('#telegramAbout', contextData.socialNetwork.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.socialNetwork.telegram);

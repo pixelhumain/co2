@@ -381,8 +381,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     $(".acceptAsBtn").off().on("click",function () {
       validateConnection(contextData.type, contextData.id, $(this).data("id"), $(this).data("type"), $(this).data("connect-validation"), 
         function() {
-          toastr.success("Validation is well registered");
-          loadByHash(location.hash);
+          toastr.success(trad["validationwellregistred"]);
+          urlCtrl.loadByHash(location.hash);
         }
       );
     });
@@ -1100,7 +1100,7 @@ var directory = {
             // '</a>'+
         '</div>';
 
-        if( params.creator == userId || params.author == userId || params.parentId == userId ){
+        if( params.creator == userId || params.author == userId || params.parentId == userId || dyFObj.canUserEdit() ){
           str += '<hr>'+
               '<div class="col-md-offset-1 col-md-10 col-sm-12 col-xs-12 shadow2 padding-15 margin-top-25">'+
               '<a href="javascript:;" class="btn btn-default text-red deleteThisBtn bold pull-left" data-type="'+params.type+'" data-id="'+params.id+'" ><i class="fa fa-trash"></i></a> '+

@@ -84,9 +84,46 @@ Liste des notifications déjà lues => #370 #453
 * idea
  [ ] menu > drop answers > show nb of members + nb of links
  [ ] new menu List or shortcut: last visited links
+ [ ] add contributor or member, add a tag list option , could be used as roles or team filters
 * ************************************************************    
 * Version 0.21  : en cours
 * ************************************************************  
+* Action Terrain 
+  [ ] journée Biodiversité Pointoss coupe coupe l'accacia (Galabert)
+* Action Projet
+  *  COBUS
+    [ ] install batterie 
+    [ ] switch + test multi ordi 
+    [ ] generateur avec onduleur 
+  * COMOBI
+  * interop 
+    [ ] connecté une autre instance CO en mode interop 
+  * COPEDIA
+    [ ] 
+  * FAI
+    [ ] rencontre avec martial 
+    [ ] TEster les antennes
+  * COPI + TIERS LIEUX
+  * Kiltir Lab 
+  * BCH 
+    [ ] {{@Tib}} : etudier interop avec des cart open source 
+    [ ] {{@Tib}} : contacter Anil voir 
+    [ ] {{@Geoffrey}} : Doc épuré 
+    [ ] Features :
+      [ ] Messagerie -> Rocket chat
+      [ ] Payement -> A faire 
+      [ ] Acceuil
+      [ ] La Carte
+      [ ] Sauvegarde -> Collection 
+      [ ] Facture + Contrat (Case à cocher) -> A faire (générateur pdf)
+      [ ] Les circuits ->  Search
+      [ ] Boutique -> POI + Vente en ligne + Stock (meme design que "Les circuits")
+      [ ] Reservation N°1 : Etape
+              - Calendrier remplie d'event -> Page Agenda
+              - Utilisateur fait une réservation -> Dynform
+              - Le pro reçoit un mail avec le tel / email de l'user -> Envoie de mail
+              - Payement 
+
 * Communication 
   [ ] passer la roadmap dans le Wiki
   [ ] commencer une campagne d'adhésion à Open Atlas 
@@ -114,6 +151,9 @@ Liste des notifications déjà lues => #370 #453
     [ ] SEO optim
    
   ** @Tib
+    [ ] Anil prestashop pricing 
+    [ ] Chloe utilisation du conservatoire 
+    [ ] Damien + Tib : share 
     [ ] add filters in top bar mapEnd , near username
     [ ] add delete to image upload 
       - on Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté 
@@ -127,6 +167,7 @@ Liste des notifications déjà lues => #370 #453
     [ ] btn changement de langue 
     [ ] brique comeptence et tache sur mon profil 
     [ ] réintégré la GEd de granddir 
+    [ ] losing session
   ** @Tib et @Tango 
     [ ] REfactor DDA 
     [ ] utiliser le DDA pour ouvrir et crowd sourcer les demandes de fonctionnalité de CO
@@ -142,6 +183,7 @@ Liste des notifications déjà lues => #370 #453
   ** @tango
   [ ] connecter le form mail au membres d'un groupe
   ** @Clem
+  [ ] add HTML5 notifications
   [ ] Finir Besoin Ressource compétence () [commencer]
   [ ] visualisation de la banque des besoins =>#1260 + #490
   [ ] msg mail sur un groupe sur les @ dans les news, et @all (send message on notify someone) 
@@ -159,7 +201,6 @@ Liste des notifications déjà lues => #370 #453
   [ ] Create more email
   [ ] faire le point sur l'evaluation des communs
   ** @Rapha 
-
   [ ] internationalisation 
     [ ] Barcelone
     [ ] ajout des villes libre
@@ -174,9 +215,13 @@ Liste des notifications déjà lues => #370 #453
       [ ] liste 
       [ ] affiche au load 
       [ ] lazyload 
-  ** @damien 
-    [ ] coopedia ??
-  ** @daniel
+  ** @Damien 
+    [ ] coopedia
+    [ ] opendata sources 
+      [ ] connecter des scripts api 
+        [ ] scope geo
+        [ ] thematique ou tag 
+  ** @Daniel
     [ ] SSO
   ** @Marc 
     [ ] wikimedia

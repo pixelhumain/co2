@@ -89,8 +89,6 @@ class AppController extends CommunecterController {
 
     	echo $this->renderPartial("referencement", $params, true);
     }
-
-
 	
 	public function actionMedia(){ //kgougle
 		$indexMin = isset($_POST['indexMin']) ? $_POST['indexMin'] : 0;

@@ -908,7 +908,6 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 			
 	setTimeout(function(){
 		$(dest).html("");
-		mylog.log("here", $(dest).length );	
 		$(".hover-info,.hover-info2").hide();
 		processingBlockUi();
 		showMap(false);
@@ -2309,11 +2308,8 @@ var dyFObj = {
 		mylog.warn("----------- formatData",formData, collection,ctrl);
 		formData.collection = collection;
 		formData.key = ctrl;
-		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj);
-		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj.elementLocations);
 		if(dyFInputs.locationObj.centerLocation){
 			//formData.multiscopes = elementLocation;
-			mylog.warn("here--- -------- centerLocation",dyFInputs.locationObj.centerLocation);
 			formData.address = dyFInputs.locationObj.centerLocation.address;
 			formData.geo = dyFInputs.locationObj.centerLocation.geo;
 			formData.geoPosition = dyFInputs.locationObj.centerLocation.geoPosition;
@@ -2703,6 +2699,18 @@ var dyFObj = {
 		mylog.dir(form);
 
 		dyFObj.openForm(form, fct, data);
+	},
+	canUserEdit : function ( ) {
+		var res = false;
+		if( userId && userConnected && userConnected.links && contextData ){
+			if(contextData.type == "organizations" && userConnected.links.memberOf[contextData.id].isAdmin )
+				res = true;
+			if(contextData.type == "events" && userConnected.links.events[contextData.id].isAdmin )
+				res = true;
+			if(contextData.type == "projects" && userConnected.links.projects[contextData.id].isAdmin )
+				res = true;
+		}
+		return res;
 	}
 }
 //TODO : refactor into dyfObj.inputs
@@ -2721,7 +2729,6 @@ var dyFInputs = {
 		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"  && typeof typeObj != "undefined" ){
 			$.each(networkJson.add, function(key, v) {
 				if(typeof networkJson.request.sourceKey != "undefined"){
-					mylog.log("here, sourceKey")
 					sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
 					typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
 				}

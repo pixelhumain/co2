@@ -1775,19 +1775,37 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			ini_set('memory_limit', '-1');
 			$nbelement = 0 ;
+			$erreur = array();
 			$region = array();
 			$cities = PHDB::find(City::COLLECTION, array("regionName" => array('$exists' => 1) ) ) ;
-			if(!empty($cities)){
-				foreach (@$cities as $keyElt => $city) {
-					if(!empty($city["regionName"]) && trim($city["regionName"]) != "" && !in_array($city["regionName"], $region)){
-						$zone = Zone::createLevel($city["regionName"], $city["country"], "3");
+
+
+
+			$aggregate = array(
+			    array(
+			        '$group' => array(
+			            "_id" => array(	"regionName" => '$regionName', 
+			            				"country" => '$country',
+			            				"regionNameBel" => '$regionNameBel' ),
+			        ),
+			    ),
+			);
+
+			$cities = PHDB::aggregate( City::COLLECTION, $aggregate);
+			
+
+			if(!empty($cities["result"])){
+				foreach (@$cities["result"] as $keyElt => $city) {
+					if($keyElt == 0 && !empty($city["_id"]["regionName"]) && trim($city["_id"]["regionName"]) != ""){
+					//var_dump($city);
+						//$region[] = $city["regionName"];
+						$zone = Zone::createLevel($city["_id"]["regionName"], $city["_id"]["country"], "3", $city["_id"]["regionNameBel"]);
 						if(!empty($zone)){
-							$region[] = $city["regionName"];
+							$region[] = $city["_id"]["regionName"];
 							$nbelement++;
-							//Zone::save($zone);
+							Zone::save($zone);
 						}else{
-							$erreur[(String)$city["_id"]] = $city["regionName"];
-							//echo  "Erreur: " .$city["regionName"]." : City :".(String)$city["_id"]."<br>" ;
+							$erreur[] = $city["_id"]["regionName"];
 						}
 					}
 				}

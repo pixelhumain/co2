@@ -1617,8 +1617,9 @@ function myAdminList (ctypes) {
 				$.each( myContacts[ ctype ],function(id,elemObj){
 					mylog.log("myAdminList",ctype,id,elemObj.name);
 					if( elemObj.links && elemObj.links[connectionType] && elemObj.links[connectionType][userId] && elemObj.links[connectionType][userId].isAdmin) {
-						mylog.warn("myAdminList2",ctype+"-"+id+"-"+elemObj.name);
+						mylog.warn("myAdminList2",ctype+"-"+id+"-"+elemObj.name, elemObj["_id"]["$id"]);
 						myList[ ctype ]["options"][ elemObj["_id"]["$id"] ] = elemObj.name;
+						mylog.log(myList);
 					}
 				});
 			}
@@ -1627,6 +1628,23 @@ function myAdminList (ctypes) {
 	}
 	return myList;
 }
+
+function parentList (ctypes, parentId, parentType) { 
+	mylog.log("parentList", ctypes, parentId, parentType);
+	var myList = myAdminList( ctypes ) ;
+	if(	notEmpty(parentId) && notEmpty(parentType) && 
+		notEmpty(myList) && 
+		(	!notEmpty(myList[parentType]) ||
+			( notEmpty(myList[parentType]) && !notEmpty(myList[parentType]["options"][parentId]) ) ) ) {
+
+		if(!notEmpty(myList[parentType]))
+			myList[ parentType ] = { label: parentType, options:{} };
+    	myList[ parentType ]["options"][ parentId ] = contextData.parent.name;  
+    }
+    return myList; 
+}
+
+
 function escapeHtml(string) {
 	var entityMap = {
 	    '"': '&quot;',
@@ -2387,6 +2405,7 @@ var dyFObj = {
 		formData = $(formId).serializeFormJSON();
 		mylog.log("before",formData);
 		formData = dyFObj.formatData(formData,collection,ctrl);
+		mylog.log("saveElement", formData);
 		formData.medias = [];
 		$(".resultGetUrl").each(function(){
 			if($(this).html() != ""){
@@ -2702,7 +2721,8 @@ var dyFObj = {
 }
 //TODO : refactor into dyfObj.inputs
 var dyFInputs = {
-	init : function(){
+
+	init : function() {
 		 //global variables clean up
 		dyFInputs.locationObj.elementLocation = null;
 	    dyFInputs.locationObj.elementLocations = [];
@@ -2754,6 +2774,7 @@ var dyFInputs = {
 		}
 		
 	},
+
 	inputText :function(label, placeholder, rules, custom) { 
 		var inputObj = {
 			label : label,
@@ -2827,6 +2848,41 @@ var dyFInputs = {
 			rules : ( notEmpty(rules) ? rules : {} )
 		};
 		return inputObj;
+	},
+	inputSelectGroup :function(label, placeholder, list, group, rules, init) { 
+		var inputObj = {
+			inputType : "select",
+			label : ( notEmpty(label) ? label : "" ),
+			placeholder : ( notEmpty(placeholder) ? placeholder : "Choisir" ),
+			options : ( notEmpty(list) ? list : [] ),
+			groupOptions : ( notEmpty(group) ? group : [] ),
+			rules : ( notEmpty(rules) ? rules : {} ),
+			init : ( notEmpty(init) ? init : function(){} )
+		};
+		return inputObj;
+	},
+	organizerId : function( organizerId, organizerType ){
+		return dyFInputs.inputSelectGroup( 	"Qui organise cet événement ?", 
+											"Qui organise ?", 
+											firstOptions(), 
+											parentList( ["organizations","projects"], organizerId, organizerType ), 
+											{ required : true },
+											function(){
+												$("#ajaxFormModal #organizerId").off().on("change",function(){
+													
+													var organizerId = $(this).val();
+													var organizerType = "notfound";
+													if(organizerId == "dontKnow" )
+														organizerType = "dontKnow";
+													else if( $('#organizerId').find(':selected').data('type') && typeObj[$('#organizerId').find(':selected').data('type')] )
+														organizerType = $('#organizerId').find(':selected').data('type');
+													else
+														organizerType = typeObj["person"].col;
+
+													mylog.warn( "organizer",organizerId,organizerType, $('#organizerId').find(':selected').data('type') );
+													$("#ajaxFormModal #organizerType").val( organizerType );
+												});
+											});
 	},
 	tags : function(list) { 
     	tagsL = (list) ? list : tagsList;
@@ -3255,54 +3311,6 @@ var dyFInputs = {
     	};
     	return inputObj;
     },
-   /* allDay : {
-    	inputType : "checkbox",
-    	checked : true,
-    	init : function(){
-        	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
-        		mylog.log("toto",$("#ajaxFormModal #allDay").val());
-        	})
-        },
-    	"switch" : {
-    		"onText" : "Oui",
-    		"offText" : "Non",
-    		"labelText":"Toute la journée",
-    		"onChange" : function(){
-    			var allDay = $("#ajaxFormModal #allDay").is(':checked');
-    			var startDate = "";
-    			var endDate = "";
-    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
-    			if (allDay) {
-    				$(".dateTimeInput").addClass("dateInput");
-    				$(".dateTimeInput").removeClass("dateTimeInput");
-    				$('.dateInput').datetimepicker('destroy');
-    				$(".dateInput").datetimepicker({ 
-				        autoclose: true,
-				        lang: "fr",
-				        format: "d/m/Y",
-				        timepicker:false
-				    });
-				    startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
-				    endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
-    			} else {
-    				$(".dateInput").addClass("dateTimeInput");
-    				$(".dateInput").removeClass("dateInput");
-    				$('.dateTimeInput').datetimepicker('destroy');
-    				$(".dateTimeInput").datetimepicker({ 
-	       				weekStart: 1,
-						step: 15,
-						lang: 'fr',
-						format: 'd/m/Y H:i'
-				    });
-				    
-    				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
-					endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
-    			}
-			    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
-				if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
-    		}
-    	}
-    },*/
     startDateInput : function(typeDate){
     	mylog.log('startDateInput', typeDate);
     	var inputObj = {

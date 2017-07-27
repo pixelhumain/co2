@@ -193,7 +193,13 @@ class TestController extends CommunecterController {
 		}
     }
   public function actionTest() {
-  	$allOrganizations = PHDB::findAndSort ( Organization::COLLECTION ,array("disabled" => array('$exists' => false)), 
+  	echo "canAdministrate news : 59391e1e539f22d86c7f5918 :: ".News::canAdministrate("585bdfdaf6ca47b6118b4583", "59391e1e539f22d86c7f5918");
+  	echo "<br/>*************************************<br/>";
+  	echo "59391e08539f227f6e7f5917 | projects | 585bdfdaf6ca47b6118b4583<br/>";
+  	echo "Authorisation::isElementAdmin :: ".Authorisation::isElementAdmin("59391e08539f227f6e7f5917", "projects", "585bdfdaf6ca47b6118b4583");
+  	echo "<br/>*************************************<br/>";
+  	
+  	/*$allOrganizations = PHDB::findAndSort ( Organization::COLLECTION ,array("disabled" => array('$exists' => false)), 
 	  												array("updated" => -1, "name" => 1), 100, 
 
 	  												array("name", "address", "shortDescription", "description","updated"));
@@ -208,7 +214,7 @@ class TestController extends CommunecterController {
   	foreach ($all as $key => $value) 
   	{
   		echo $value['name']." > ".date("d/m/Y",$value['updated'])." > ".$value['startDate']."<br/>";
-  	}
+  	}*/
   	//echo hash('sha256', "mc420011@gmail.com"."communecter974");
     //echo $_SERVER["X-Auth-Token"];
     //Authorisation::isMeteorConnected( "TCvdPtAVCkkDvrBDtICLUfRIi93L3gOG+MwT4SvDK0U=", true );

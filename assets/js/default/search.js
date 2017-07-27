@@ -6,6 +6,7 @@ function initSearchInterface(){
         if(e.keyCode == 13){
             initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
+            $(".btn-directory-type").removeClass("active");
             KScrollTo("#content-social");
         }
     });
@@ -19,6 +20,7 @@ function initSearchInterface(){
         if(e.keyCode == 13){
             initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
+            $(".btn-directory-type").removeClass("active");
             KScrollTo("#content-social");
          }
     });
@@ -30,6 +32,7 @@ function initSearchInterface(){
             if(typeInit == "all") initTypeSearch("allSig");
             else initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
+            $(".btn-directory-type").removeClass("active");
          }
     });
 
@@ -40,6 +43,7 @@ function initSearchInterface(){
         if(typeInit == "all") initTypeSearch("allSig");
         else initTypeSearch(typeInit);
         startSearch(0, indexStepInit, searchCallback);
+        $(".btn-directory-type").removeClass("active");
     });
 
     $(".btn-create-elem").click(function(){

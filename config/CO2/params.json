@@ -76,7 +76,19 @@
 			"placeholderMainSearch" : "rechercher parmis les messages ..."
 		},
 
-
+"#place":
+    {"inMenu" : true, 
+    "useHeader" : true, 
+    "open" : true, 
+    "subdomain" : "place", 
+    "subdomainName" : "Lieux",
+    "hash" : "#app.search.type.place",
+    "icon" : "map-marker", 
+    "mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
+    "placeholderMainSearch" : "Rechercher un lieu ...",
+    "lblBtnCreate" : "Ajouter un lieu",
+    "colorBtnCreate" : "green"
+},
 
 		"#page": {
 			"inMenu" : false, 

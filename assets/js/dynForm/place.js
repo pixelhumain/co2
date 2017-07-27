@@ -90,7 +90,7 @@ dynForm = {
 	            	});
 	            }
             },
-            section : dyFInputs.hidden,
+            section : dyFInputs.nputHidden(),
 	        typeBtn :{
                 label : "Type de lieu ? ",
 	            inputType : "tagList",
@@ -135,12 +135,12 @@ dynForm = {
 	            	});
 	            }
             },
-            type : dyFInputs.hidden,
+            type : dyFInputs.nputHidden(),
             subtypeSection : {
                 inputType : "custom",
                 html:"<div class='subtypeSection'></div>"
             },
-            subtype : dyFInputs.hidden,
+            subtype : dyFInputs.nputHidden(),
             name : dyFInputs.name("place"),
 	        image : dyFInputs.image( ),
             //description : dyFInputs.description,
@@ -153,8 +153,8 @@ dynForm = {
                 html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
             },
             urls : dyFInputs.urlsOptionnel,
-            parentId : dyFInputs.hidden,
-            parentType : dyFInputs.hidden,
+            parentId : dyFInputs.nputHidden(),
+            parentType : dyFInputs.nputHidden()
 	    }
 	}
 };

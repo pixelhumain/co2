@@ -1737,6 +1737,33 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}
 	}
 
+
+	public function actionAddZeroPostalCode(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			$nbelement = 0 ;
+			$where = array( '$and' => array(
+										array("address.postalCode" => array('$exists' => 1)),
+										array("address.addressCountry" => array('$ne' => "BE") ) ),
+							'$where' => "this.address.postalCode.length == 4" );
+
+			$orgs = PHDB::find(Organization::COLLECTION, $where);
+
+			if(!empty($orgs)){
+				foreach (@$orgs as $keyElt => $org) {
+					$res = PHDB::update( Organization::COLLECTION, 
+										  	array("_id"=>new MongoId($keyElt)),
+					                        array('$set' => array(	"address.postalCode" => "0".$org["address"]["postalCode"]))
+					                    );
+					echo $org["name"]." : ".$org["address"]["postalCode"]." > 0".$org["address"]["postalCode"]."<br>" ;
+					$nbelement++;
+				}
+			}
+			
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+		}
+	}
+
 	// -------------------- Fonction pour le refactor Cities/zones
 	public function actionRegionBERefactorCitiesZones(){
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){

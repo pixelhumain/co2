@@ -1711,32 +1711,6 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}
 	}
 
-
-
-
-	public function actionDepRefactorCitiesZones(){
-		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
-			ini_set('memory_limit', '-1');
-			$nbelement = 0 ;
-			$dep = array();
-			$cities = PHDB::find(City::COLLECTION, array("depName" => array('$exists' => 1)));
-			if(!empty($cities)){
-				foreach (@$cities as $keyElt => $city) {
-					if(!empty($city["depName"]) && trim($city["depName"]) != "" && !in_array($city["depName"], $dep)){
-						$dep[] = $city["depName"];
-						$zone = Zone::createLevel($city["depName"], $city["country"], "4");
-						if(!empty($zone)){
-							$nbelement++;
-							Zone::save($zone);
-						}
-					}
-				}
-			}
-			
-			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
-		}
-	}
-
 	// -------------------- Fonction pour le refactor Cities/zones
 	public function actionRegionBERefactorCitiesZones(){
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
@@ -1777,10 +1751,6 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			$nbelement = 0 ;
 			$erreur = array();
 			$region = array();
-			$cities = PHDB::find(City::COLLECTION, array("regionName" => array('$exists' => 1) ) ) ;
-
-
-
 			$aggregate = array(
 			    array(
 			        '$group' => array(
@@ -1795,18 +1765,75 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			
 
 			if(!empty($cities["result"])){
-				foreach (@$cities["result"] as $keyElt => $city) {
+				foreach (@$cities["result"] as $keyElt => $city) {				
 					if(!empty($city["_id"]["regionName"]) && trim($city["_id"]["regionName"]) != ""){
-					//var_dump($city);
-						//$region[] = $city["regionName"];
-						$zone = Zone::createLevel($city["_id"]["regionName"], $city["_id"]["country"], "3", ((!empty($city["_id"]["regionNameBel"])) ? $city["_id"]["regionNameBel"] : null));
-						if(!empty($zone)){
-							$region[] = $city["_id"]["regionName"];
-							$nbelement++;
-							Zone::save($zone);
-						}else{
-							$erreur[] = $city["_id"]["regionName"];
+						
+						$exists = PHDB::findOne(Zone::COLLECTION, array('$and' => array(
+													array("name" => $city["_id"]["regionName"] ) , 
+													 array("level" => "3" ) ) ) );
+						if($exists== null){
+							$zone = Zone::createLevel($city["_id"]["regionName"], $city["_id"]["country"], "3", ((!empty($city["_id"]["regionNameBel"])) ? $city["_id"]["regionNameBel"] : null));
+							if(!empty($zone)){
+								$region[] = $city["_id"]["regionName"];
+								$nbelement++;
+								Zone::save($zone);
+							}else{
+								$erreur[] = $city["_id"]["regionName"];
+							}
 						}
+						
+					}
+				}
+			}
+
+			foreach (@$region as $k => $v) {
+				echo  "Good: " .$v."<br>" ;
+			}
+			
+			foreach (@$erreur as $k => $v) {
+				echo  "Erreur: " .$v." : City :".$k."<br>" ;
+			}
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+		//}
+	}
+
+	public function actionDepRefactorCitiesZones(){
+		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			$nbelement = 0 ;
+			$erreur = array();
+			$region = array();
+			$aggregate = array(
+			    array(
+			        '$group' => array(
+			            "_id" => array(	"depName" => '$depName', 
+			            				"country" => '$country',
+			            				"regionNameBel" => '$regionNameBel' ),
+			        ),
+			    ),
+			);
+
+			$cities = PHDB::aggregate( City::COLLECTION, $aggregate);
+			
+
+			if(!empty($cities["result"])){
+				foreach (@$cities["result"] as $keyElt => $city) {				
+					if(!empty($city["_id"]["depName"]) && trim($city["_id"]["depName"]) != ""){
+						
+						$exists = PHDB::findOne(Zone::COLLECTION, array('$and' => array(
+													array("name" => $city["_id"]["depName"] ) , 
+													 array("level" => "4" ) ) ) );
+						if($exists== null){
+							$zone = Zone::createLevel($city["_id"]["depName"], $city["_id"]["country"], "4", ((!empty($city["_id"]["regionNameBel"])) ? $city["_id"]["regionNameBel"] : null));
+							if(!empty($zone)){
+								$region[] = $city["_id"]["depName"];
+								$nbelement++;
+								Zone::save($zone);
+							}else{
+								$erreur[] = $city["_id"]["depName"];
+							}
+						}
+						
 					}
 				}
 			}

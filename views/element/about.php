@@ -11,7 +11,7 @@
 	.valueAbout{
 		border-left: 1px solid #dbdbdb;
 	}
-	#shortDescriptionAbout, #descriptionAbout{
+	#shortDescriptionAbout/*, #descriptionAbout*/{
 		white-space: pre-line;
 	}
 	.contentInformation{
@@ -118,13 +118,13 @@
 				<span class="visible-xs pull-left margin-right-5"><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Name") ?> :</span> <?php echo $element["name"]; ?>
 			</div>
 		</div>
-		<?php if($type==Project::COLLECTION && @$avancement){ ?>
+		<?php if($type==Project::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
-					<span><i class="fa fa-cycle"></i></span> <?php echo Yii::t("project","Project maturity"); ?>
+					<span><i class="fa fa-line-chart"></i></span> <?php echo Yii::t("project","Project maturity"); ?>
 				</div>
 				<div  id="avancementAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-cycle"></i> <?php echo Yii::t("project","Project maturity"); ?> :</span><?php echo (@$avancement) ? Yii::t("project",$avancement) : '<i>'.Yii::t("common","Not specified").'</i>' ?>
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-line-chart"></i> <?php echo Yii::t("project","Project maturity"); ?> :</span><?php echo (@$element["properties"]["avancement"]) ? Yii::t("project",$element["properties"]["avancement"]) : '<i>'.Yii::t("common","Not specified").'</i>' ?>
 				</div>
 			</div>
 		<?php } ?>
@@ -157,7 +157,11 @@
 						<span><i class="fa fa-angle-right"></i></span><?php echo Yii::t("common", "Type"); ?> 
 					</div>
 					<div id="typeAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span><?php echo (@$element["type"]) ? Yii::t("event", $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span>
+
+						<?php 
+						$message = (($type==Organization::COLLECTION) ? "organization" : "event") ;
+						echo (@$element["type"]) ? Yii::t( $message, $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 					</div>
 				</div>
 		<?php }
@@ -174,6 +178,48 @@
 				</div>
 			</div>
 		<?php } ?>
+
+
+
+		<?php if($type != Person::COLLECTION){ ?>
+			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
+					<span><i class="fa fa-link"></i></span> <?php echo Yii::t("common","Parenthood"); ?>
+				</div>
+				<div id="parentAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-desktop"></i> <?php echo Yii::t("common","Parenthood"); ?> :</span>
+				<?php 
+					if(!empty($element["parent"])){ ?>
+						<a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> 
+						<i class="fa fa-<?php echo Element::getFaIcon($element['parentType']); ; ?>"></i> 
+						<?php echo $element['parent']['name']; ?></a><br/> 
+				<?php }else
+						echo '<i>'.Yii::t("common","Not specified").'</i>';?>
+				</div>
+			</div>
+		<?php } ?>
+
+		<?php if($type == Event::COLLECTION){ ?>
+			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
+					<span><i class="fa fa-link"></i></span> <?php echo Yii::t("common","Organized by"); ?>
+				</div>
+				<div id="organizerAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-desktop"></i> <?php echo Yii::t("common","Organized by"); ?> :</span>
+				<?php 
+					if(!empty($element["organizer"])){ ?>
+						<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" class="lbh"> 
+						<i class="fa fa-<?php echo Element::getFaIcon($element['organizerType']); ; ?>"></i> 
+						<?php echo $element['organizer']['name']; ?></a><br/> 
+				<?php }else
+						echo '<i>'.Yii::t("common","Not specified").'</i>';?>
+				</div>
+			</div>
+		<?php } ?>
+
+
+
+
 
 		<?php if($type!=Poi::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
@@ -407,7 +453,7 @@
 		$facebook = (!empty($element["socialNetwork"]["facebook"])? $element["socialNetwork"]["facebook"]:"javascript:;") ;
 		$twitter =  (!empty($element["socialNetwork"]["twitter"])? $element["socialNetwork"]["twitter"]:"javascript:;") ;
 		$googleplus =  (!empty($element["socialNetwork"]["googleplus"])? $element["socialNetwork"]["googleplus"]:"javascript:;") ;
-		$gitHub =  (!empty($element["socialNetwork"]["github"])? $element["socialNetwork"]["github"]:"javascript:;") ;
+		$github =  (!empty($element["socialNetwork"]["github"])? $element["socialNetwork"]["github"]:"javascript:;") ;
 		$instagram =  (!empty($element["socialNetwork"]["instagram"])? $element["socialNetwork"]["instagram"]:"javascript:;") ;
 	?>
 	<div id="socialAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding shadow2">
@@ -446,7 +492,7 @@
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="GitHub">
 				<span><i class="fa fa-github"></i></span> 
-				<a href="<?php echo $gitHub ; ?>" target="_blank" id="gitHubAbout" class="socialIcon" ><?php echo ($gitHub != "javascript:;") ? $gitHub : '<i>'.Yii::t("common","Not specified").'</i>' ; ?></a>
+				<a href="<?php echo $github ; ?>" target="_blank" id="githubAbout" class="socialIcon" ><?php echo ($github != "javascript:;") ? $github : '<i>'.Yii::t("common","Not specified").'</i>' ; ?></a>
 			</div>
 			<?php if($type==Person::COLLECTION){ ?> 
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Telegram">

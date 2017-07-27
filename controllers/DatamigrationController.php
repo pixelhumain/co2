@@ -902,6 +902,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 						echo  $type." id : " .$key." : pas de geo <br>" ;
 					}
 
+
 				}
 
 			}		
@@ -1307,7 +1308,6 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}
 	}
 
-
 	public function actionAddDepAndRegionAndCountryInAddress(){
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
@@ -1359,7 +1359,6 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				}
 			}		
 			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
-
 		}
 	}
 
@@ -1611,7 +1610,6 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				);
 				$nbNotifications++;
 			}
-	  		
 	  	}
 	  	echo "nombre de notifs traitées:".$nbNotifications." notifs";
 	  }
@@ -1711,6 +1709,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}
 	}
 
+
 	// -------------------- Fonction pour le refactor Cities/zones
 	public function actionRegionBERefactorCitiesZones(){
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
@@ -1731,6 +1730,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 							Zone::save($zone);
 						}else{
 							echo  "Erreur: " .$city["regionNameBel"]." : City :".(String)$city["_id"]."<br>" ;
+
 						}
 					}
 				}

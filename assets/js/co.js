@@ -310,7 +310,7 @@ function connectPerson(connectUserId, callback)
 
 
 function disconnectTo(parentType,parentId,childId,childType,connectType, callback) {
-	var messageBox = trad["removeconnection"+parentType];
+	var messageBox = trad["removeconnection"+connectType];
 	$(".disconnectBtnIcon").removeClass("fa-unlink").addClass("fa-spinner fa-spin");
 	var formData = {
 		"childId" : childId,
@@ -347,7 +347,7 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 								if (typeof callback == "function") 
 									callback();
 								else
-									urlCtrl.loadByHash("#page.type.citoyens.id."+userId);
+									urlCtrl.loadByHash(location.hash);
 							} else {
 							   toastr.error("You leave succesfully");
 							}
@@ -396,6 +396,7 @@ function validateConnection(parentType, parentId, childId, childType, linkOption
 		},
 	});  
 }
+
 function follow(parentType, parentId, childId, childType, callback){
 	mylog.log("follow",parentType, parentId, childId, childType, callback);
 	$(".followBtn").removeClass("fa-link").addClass("fa-spinner fa-spin");
@@ -425,6 +426,7 @@ function follow(parentType, parentId, childId, childType, callback){
 		},
 	});
 }
+
 function connectTo(parentType, parentId, childId, childType, connectType, parentName, actionAdmin) {
 	if(parentType=="events" && connectType=="attendee")
 		$(".connectBtn").removeClass("fa-link").addClass("fa-spinner fa-spin");
@@ -573,8 +575,8 @@ var urlCtrl = {
 	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
-	    "#news.detail" : {title:'NEWS DETAIL ', icon : 'rss' },
-	    "#news.index.type" : {title:'NEWS INDEX ', icon : 'rss', menuId:"menu-btn-news-network","urlExtraParam":"isFirst=1" },
+	    //"#news.detail" : {title:'NEWS DETAIL ', icon : 'rss' },
+	    //"#news.index.type" : {title:'NEWS INDEX ', icon : 'rss', menuId:"menu-btn-news-network","urlExtraParam":"isFirst=1" },
 	    "#need.detail" : {title:'NEED DETAIL ', icon : 'cubes' },
 	    "#need.addneedsv" : {title:'NEED DETAIL ', icon : 'cubes' },
 	    "#city.creategraph" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
@@ -906,7 +908,6 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 			
 	setTimeout(function(){
 		$(dest).html("");
-		mylog.log("here", $(dest).length );	
 		$(".hover-info,.hover-info2").hide();
 		processingBlockUi();
 		showMap(false);
@@ -1616,8 +1617,9 @@ function myAdminList (ctypes) {
 				$.each( myContacts[ ctype ],function(id,elemObj){
 					mylog.log("myAdminList",ctype,id,elemObj.name);
 					if( elemObj.links && elemObj.links[connectionType] && elemObj.links[connectionType][userId] && elemObj.links[connectionType][userId].isAdmin) {
-						mylog.warn("myAdminList2",ctype+"-"+id+"-"+elemObj.name);
+						mylog.warn("myAdminList2",ctype+"-"+id+"-"+elemObj.name, elemObj["_id"]["$id"]);
 						myList[ ctype ]["options"][ elemObj["_id"]["$id"] ] = elemObj.name;
+						mylog.log(myList);
 					}
 				});
 			}
@@ -1626,6 +1628,23 @@ function myAdminList (ctypes) {
 	}
 	return myList;
 }
+
+function parentList (ctypes, parentId, parentType) { 
+	mylog.log("parentList", ctypes, parentId, parentType);
+	var myList = myAdminList( ctypes ) ;
+	if(	notEmpty(parentId) && notEmpty(parentType) && 
+		notEmpty(myList) && 
+		(	!notEmpty(myList[parentType]) ||
+			( notEmpty(myList[parentType]) && !notEmpty(myList[parentType]["options"][parentId]) ) ) ) {
+
+		if(!notEmpty(myList[parentType]))
+			myList[ parentType ] = { label: parentType, options:{} };
+    	myList[ parentType ]["options"][ parentId ] = contextData.parent.name;  
+    }
+    return myList; 
+}
+
+
 function escapeHtml(string) {
 	var entityMap = {
 	    '"': '&quot;',
@@ -2295,11 +2314,8 @@ var dyFObj = {
 		mylog.warn("----------- formatData",formData, collection,ctrl);
 		formData.collection = collection;
 		formData.key = ctrl;
-		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj);
-		mylog.warn("here--- -------- elementLocations",dyFInputs.locationObj.elementLocations);
 		if(dyFInputs.locationObj.centerLocation){
 			//formData.multiscopes = elementLocation;
-			mylog.warn("here--- -------- centerLocation",dyFInputs.locationObj.centerLocation);
 			formData.address = dyFInputs.locationObj.centerLocation.address;
 			formData.geo = dyFInputs.locationObj.centerLocation.geo;
 			formData.geoPosition = dyFInputs.locationObj.centerLocation.geoPosition;
@@ -2389,6 +2405,7 @@ var dyFObj = {
 		formData = $(formId).serializeFormJSON();
 		mylog.log("before",formData);
 		formData = dyFObj.formatData(formData,collection,ctrl);
+		mylog.log("saveElement", formData);
 		formData.medias = [];
 		$(".resultGetUrl").each(function(){
 			if($(this).html() != ""){
@@ -2536,6 +2553,7 @@ var dyFObj = {
 	//if doesn't exist tries to lazyload it from assets/js/dynForm
 	//(object) :: is dynformp definition
 	getDynFormObj : function(type, callback,afterLoad, data ){
+		//alert(type+'.js');
 		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
 		if(typeof type == "object"){
 			mylog.log(" object directly Loaded : ", type);
@@ -2554,6 +2572,7 @@ var dyFObj = {
 			lazyLoad( dfPath+type+'.js', 
 				null,
 				function() { 
+					//alert(dfPath+type+'.js');
 					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+dyFInputs.get(type).ctrl+'.js');
 					mylog.dir(dynForm);
 					//typeObj[type].dynForm = dynForm;
@@ -2589,7 +2608,7 @@ var dyFObj = {
 	  	dyFObj.buildDynForm(afterLoad, data);
 
 	  	$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-									  .addClass(dyFObj.elementObj.titleClass).addClass("lol");
+									  .addClass(dyFObj.elementObj.titleClass);
 	},
 	buildDynForm : function (afterLoad,data) { 
 		mylog.warn("--------------- buildDynForm", dyFObj.elementObj, afterLoad,data);
@@ -2628,6 +2647,8 @@ var dyFObj = {
 			        mylog.log("onSave", dyFObj.elementObj.saveUrl);
 			        if( dyFObj.elementObj.save )
 			        	dyFObj.elementObj.save("#ajaxFormModal");
+			        if( dyFObj.elementObj.dynForm.jsonSchema.save )
+			        	dyFObj.elementObj.dynForm.jsonSchema.save();
 			        else if(dyFObj.elementObj.saveUrl)
 			        	dyFObj.saveElement("#ajaxFormModal",dyFObj.elementObj.col,dyFObj.elementObj.ctrl,dyFObj.elementObj.saveUrl,afterSave);
 			        else
@@ -2684,11 +2705,24 @@ var dyFObj = {
 		mylog.dir(form);
 
 		dyFObj.openForm(form, fct, data);
+	},
+	canUserEdit : function ( ) {
+		var res = false;
+		if( userId && userConnected && userConnected.links && contextData ){
+			if(contextData.type == "organizations" && userConnected.links.memberOf[contextData.id].isAdmin )
+				res = true;
+			if(contextData.type == "events" && userConnected.links.events[contextData.id].isAdmin )
+				res = true;
+			if(contextData.type == "projects" && userConnected.links.projects[contextData.id].isAdmin )
+				res = true;
+		}
+		return res;
 	}
 }
 //TODO : refactor into dyfObj.inputs
 var dyFInputs = {
-	init : function(){
+
+	init : function() {
 		 //global variables clean up
 		dyFInputs.locationObj.elementLocation = null;
 	    dyFInputs.locationObj.elementLocations = [];
@@ -2701,7 +2735,6 @@ var dyFInputs = {
 		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"  && typeof typeObj != "undefined" ){
 			$.each(networkJson.add, function(key, v) {
 				if(typeof networkJson.request.sourceKey != "undefined"){
-					mylog.log("here, sourceKey")
 					sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
 					typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
 				}
@@ -2741,6 +2774,7 @@ var dyFInputs = {
 		}
 		
 	},
+
 	inputText :function(label, placeholder, rules, custom) { 
 		var inputObj = {
 			label : label,
@@ -2815,6 +2849,41 @@ var dyFInputs = {
 		};
 		return inputObj;
 	},
+	inputSelectGroup :function(label, placeholder, list, group, rules, init) { 
+		var inputObj = {
+			inputType : "select",
+			label : ( notEmpty(label) ? label : "" ),
+			placeholder : ( notEmpty(placeholder) ? placeholder : "Choisir" ),
+			options : ( notEmpty(list) ? list : [] ),
+			groupOptions : ( notEmpty(group) ? group : [] ),
+			rules : ( notEmpty(rules) ? rules : {} ),
+			init : ( notEmpty(init) ? init : function(){} )
+		};
+		return inputObj;
+	},
+	organizerId : function( organizerId, organizerType ){
+		return dyFInputs.inputSelectGroup( 	"Qui organise cet événement ?", 
+											"Qui organise ?", 
+											firstOptions(), 
+											parentList( ["organizations","projects"], organizerId, organizerType ), 
+											{ required : true },
+											function(){
+												$("#ajaxFormModal #organizerId").off().on("change",function(){
+													
+													var organizerId = $(this).val();
+													var organizerType = "notfound";
+													if(organizerId == "dontKnow" )
+														organizerType = "dontKnow";
+													else if( $('#organizerId').find(':selected').data('type') && typeObj[$('#organizerId').find(':selected').data('type')] )
+														organizerType = $('#organizerId').find(':selected').data('type');
+													else
+														organizerType = typeObj["person"].col;
+
+													mylog.warn( "organizer",organizerId,organizerType, $('#organizerId').find(':selected').data('type') );
+													$("#ajaxFormModal #organizerType").val( organizerType );
+												});
+											});
+	},
 	tags : function(list) { 
     	tagsL = (list) ? list : tagsList;
     	return {
@@ -2830,8 +2899,10 @@ var dyFInputs = {
     	init : function() { 
     		setTimeout( function()
     		{
-        		$('#trigger-upload').click(function() {
-		        	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+    			
+        		$('#trigger-upload').click(function(e) {
+        			alert("initImageTrigger");
+        			$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
@@ -2839,7 +2910,8 @@ var dyFInputs = {
 					  					  	  .addClass("bg-dark");
     		 	
     		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
-        	},500);
+
+        	},1500);
     	}
     },
     image :function() { 
@@ -2850,7 +2922,8 @@ var dyFInputs = {
 
     	return {
 	    	inputType : "uploader",
-	    	label : "Images de profil et album", 
+	    	label : "Vos images ici :", 
+	    	showUploadBtn : false,
 	    	afterUploadComplete : function(){
 	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
 		    	dyFObj.closeForm();
@@ -3238,54 +3311,6 @@ var dyFInputs = {
     	};
     	return inputObj;
     },
-   /* allDay : {
-    	inputType : "checkbox",
-    	checked : true,
-    	init : function(){
-        	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
-        		mylog.log("toto",$("#ajaxFormModal #allDay").val());
-        	})
-        },
-    	"switch" : {
-    		"onText" : "Oui",
-    		"offText" : "Non",
-    		"labelText":"Toute la journée",
-    		"onChange" : function(){
-    			var allDay = $("#ajaxFormModal #allDay").is(':checked');
-    			var startDate = "";
-    			var endDate = "";
-    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
-    			if (allDay) {
-    				$(".dateTimeInput").addClass("dateInput");
-    				$(".dateTimeInput").removeClass("dateTimeInput");
-    				$('.dateInput').datetimepicker('destroy');
-    				$(".dateInput").datetimepicker({ 
-				        autoclose: true,
-				        lang: "fr",
-				        format: "d/m/Y",
-				        timepicker:false
-				    });
-				    startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
-				    endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
-    			} else {
-    				$(".dateInput").addClass("dateTimeInput");
-    				$(".dateInput").removeClass("dateInput");
-    				$('.dateTimeInput').datetimepicker('destroy');
-    				$(".dateTimeInput").datetimepicker({ 
-	       				weekStart: 1,
-						step: 15,
-						lang: 'fr',
-						format: 'd/m/Y H:i'
-				    });
-				    
-    				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
-					endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
-    			}
-			    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
-				if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
-    		}
-    	}
-    },*/
     startDateInput : function(typeDate){
     	mylog.log('startDateInput', typeDate);
     	var inputObj = {
@@ -3438,26 +3463,7 @@ var typeObj = {
 			    }
 			}
 		}	},
-	"addPhoto":{ 
-		dynForm : {
-		    jsonSchema : {
-			    title : "Uploader une image ?",
-			    icon : "question-cirecle-o",
-			    noSubmitBtns : true,
-			    onLoads : {
-			    	
-			    },
-			    beforeBuild : function(){
-			    	uploadObj.contentKey="slider";
-					uploadObj.set(contextData.type,contextData.id);
-				    uploadObj.gotoUrl = location.hash;
-				},
-			    properties : {
-			    	image : dyFInputs.imageAddPhoto
-			    }
-			}
-		}},
-	
+	"addPhoto":{ titleClass : "bg-dark" },
 	"person" : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
 	"persons" : { sameAs:"person" },
 	"people" : { sameAs:"person" },
@@ -3861,7 +3867,7 @@ function KScrollTo(target){
 	mylog.log("KScrollTo target", target);
 	if($(target).length>=1){
 		$('html, body').stop().animate({
-	        scrollTop: $(target).offset().top - 70
+	        scrollTop: $(target).offset().top - 60
 	    }, 500, '');
 	}
 }

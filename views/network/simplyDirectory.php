@@ -872,13 +872,13 @@ function loadServerFilters(types,tags){
 	$('.categoryFilter').prop("checked", false );
 
 	//One by One Tag
-	$.each(nwVar.searchTag, function(index, value){
+	/*$.each(nwVar.searchTag, function(index, value){
 		//Display
 		$('.tagFilter[value="'+value+'"]').prop("checked", true );
 		if($('.tagFilter[value="'+value+'"]').length)breadcum = breadcum+"<span class='label label-danger tagFilter' value='"+value+"'>"+$('.tagFilter[value="'+value+'"]').attr("data-label")+"</span> ";
 		//Open menu
 		manageCollapse(value,true);
-	});
+	});*/
 
 	$.each(nwVar.searchLocalityNAME, function(index, value){
 		//Display
@@ -891,7 +891,7 @@ function loadServerFilters(types,tags){
 	$.each(nwVar.searchCategory, function(index, value){
 		$('.categoryFilter[value="'+value+'"]').prop( "checked", true );
 		breadcum = breadcum+"<span class='label label-danger categoryFilter' value='"+value+"'>"+value+"</span> ";
-	});
+	}); 
 
 	$(".tagFilter").off().click(function(e){
 		mylog.log(".tagFilter",  $(this));

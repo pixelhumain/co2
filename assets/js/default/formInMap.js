@@ -571,7 +571,12 @@ var formInMap = {
 			    }
 			});
 		} else {
-			mylog.log("locality communexion", locality)
+			mylog.log("locality communexion", locality);
+			$.removeCookie('communexionType', { path: '/' }); $.removeCookie('communexionValue', { path: '/' }); 
+			$.removeCookie('communexionName', { path: '/' }); $.removeCookie('communexionLevel', { path: '/' }); 
+			$.removeCookie('inseeCommunexion', { path: '/' }); $.removeCookie('cityNameCommunexion', { path: '/' }); 
+			$.removeCookie('cpCommunexion', { path: '/' }); $.removeCookie('communexionActivated', { path: '/' }); 
+
 			$.cookie("inseeCommunexion", locality.address.codeInsee, { expires: 365, path : "/" });
     		$.cookie("cpCommunexion", locality.address.postalCode, { expires: 365, path : "/" });
     		$.cookie("cityNameCommunexion", locality.address.addressLocality , { expires: 365, path : "/" });

@@ -209,14 +209,23 @@
 				</div>
 			</div>
 		<?php } ?>
-	<?php if($type==Event::COLLECTION || $type==Poi::COLLECTION){ ?>
+	<?php if($type==Event::COLLECTION || $type==Poi::COLLECTION || $type==Project::COLLECTION){ ?>
 		<div class="section-date pull-right">
 			<?php if($type==Event::COLLECTION){ ?>
 				<div class="header-banner"  style="font-size: 14px;font-weight: none;"></div>
 			<?php } ?>
 			<div style="font-size: 14px;font-weight: none;">
-			<?php if(@$element['parent']){ ?>
-				<?php echo Yii::t("common","Planned on") ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/> 
+			<?php if(@$element['parent']){ 
+
+					if($type==Event::COLLECTION){
+						$msg = Yii::t("common","Planned on") ;
+					}else{
+						$msg = Yii::t("common","Parenthood") ;
+					}
+
+			$icon = Element::getFaIcon($element['parentType']);
+
+			echo $msg ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-<?php echo $icon ; ?>"></i> <?php  echo $element['parent']['name']; ?></a><br/> 
 			<?php } ?>
 			<?php if(	@$element['organizerType'] && @$element['organizerId'] && 
 						$element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow"){ ?>
@@ -251,7 +260,7 @@
 		<div class='col-md-offset-1' id='cropContainer'>
 			<img src='' id='cropImage' class='' style=''/>
 			<div class='col-md-12'>
-				<input type='submit' class='btn btn-success text-white imageCrop saveBanner'/>
+				<button class='btn btn-success text-white imageCrop saveBanner'><i class="fa fa-send"></i> <?php echo Yii::t("common","Save") ?></button>
 			</div>
 		</div>
 	</div>
@@ -300,7 +309,7 @@ jQuery(document).ready(function() {
    							// access image size here 
    						 	var imgWidth=this.width;
    						 	var imgHeight=this.height;
-   							if(imgWidth>=1000 && imgHeight>=500){
+   							if(imgWidth>=600 && imgHeight>=300){
                					$.blockUI({ 
                						message: $('div#uploadScropResizeAndSaveImage'), 
                						css: {cursor:null,padding: '0px !important'}
@@ -323,6 +332,8 @@ jQuery(document).ready(function() {
 									$(".saveBanner").click(function(){
 								        //console.log(cropResult);
 								        //var cropResult=cropResult;
+								        $(this).prop("disabled",true);
+								        $(this).find("i").removeClass("fa-send").addClass("fa-spin fa-spinner");
 								        $("#banner_photoAdd").submit();
 									});
 									$("#banner_photoAdd").off().on('submit',(function(e) {
@@ -360,6 +371,8 @@ jQuery(document).ready(function() {
 											dataType: "json",
 											success: function(data){
 										        if(data.result){
+										        	$(".saveBanner").prop("disabled",false);
+								        			$(".saveBanner").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
 										        	newBanner='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
 										        	$("#contentBanner").html(newBanner);
 										        	$(".contentHeaderInformation").addClass("backgroundHeaderInformation");
@@ -373,7 +386,7 @@ jQuery(document).ready(function() {
 							}
    						 	else
    						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
-							};
+						};
 			        });
 			        reader.readAsDataURL(file);
 			    }  

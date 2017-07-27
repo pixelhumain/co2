@@ -13,7 +13,7 @@ function bindAboutPodElement() {
 		mylog.log("-----------------changeHiddenFields----------------------");
 		//
 		listFields = [	"username", "birthDate", "email", "avancement", "url", "fixe",
-						"mobile","fax", "facebook", "twitter", "gpplus", "gitHub", "skype", "telegram"];
+						"mobile","fax", "facebook", "twitter", "gpplus", "github", "skype", "telegram"];
 		
 		$.each(listFields, function(i,value) {
 			mylog.log("listFields", value, typeof contextData[value]);
@@ -78,97 +78,6 @@ function bindAboutPodElement() {
 		});		
 	}
 
-	function updateOrganizer() {
-		bootbox.confirm({
-			message: 
-				trad["udpateorganizer"]+
-				buildSelect("organizerId", "organizerId", 
-							{"inputType" : "select", "options" : firstOptions(), 
-							"groupOptions":myAdminList( ["organizations","projects"] )}, ""),
-			buttons: {
-				confirm: {
-					label: trad["udpateorganizer"],
-					className: 'btn-success'
-				},
-				cancel: {
-					label: trad["cancel"],
-					className: 'btn-danger'
-				}
-			},
-			
-			callback: function (result) {
-				if (!result) {
-					return;
-				} else {
-					var organizer = { "organizerId" : organizerId, "organizerType" : organizerType };
-
-					var param = new Object;
-					param.name = "organizer";
-					param.value = organizer;
-					param.pk = contextData.id;
-					$.ajax({
-				        type: "POST",
-				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-				        data: param,
-				       	dataType: "json",
-				    	success: function(data){
-					    	if(data.result){
-								toastr.success(data.msg);
-								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
-					    	} else {
-					    		toastr.error(data.msg);
-					    	}
-					    }
-					});
-				}
-			}
-		}).init(function(){
-        	console.log("init de la bootbox !");
-        	$("#organizerId").off().on("change",function(){
-        		organizerId = $(this).val();
-        		if(organizerId == "dontKnow" )
-        			organizerType = "dontKnow";
-        		else if( $('#organizerId').find(':selected').data('type') && typeObj[$('#organizerId').find(':selected').data('type')] )
-        			organizerType = typeObj[$('#organizerId').find(':selected').data('type')].col;
-        		else
-        			organizerType = typeObj["person"].col;
-
-        		mylog.warn( "organizer",organizerId,organizerType );
-        		$("#ajaxFormModal #organizerType ").val( organizerType );
-        	});
-        })
-	}
-	
-	function buildSelect(id, field, fieldObj,formValues) {
-		var fieldClass = (fieldObj.class) ? fieldObj.class : '';
-		var placeholder = (fieldObj.placeholder) ? fieldObj.placeholder+required : '';
-		var fieldHTML = "";
-		if ( fieldObj.inputType == "select" || fieldObj.inputType == "selectMultiple" ) 
-        {
-       		var multiple = (fieldObj.inputType == "selectMultiple") ? 'multiple="multiple"' : '';
-       		mylog.log("build field "+field+">>>>>> select selectMultiple");
-       		var isSelect2 = (fieldObj.isSelect2) ? "select2Input" : "";
-       		fieldHTML += '<select class="'+isSelect2+' '+fieldClass+'" '+multiple+' name="'+field+'" id="'+field+'" style="width: 100%;height:30px;" data-placeholder="'+placeholder+'">';
-			if(placeholder)
-				fieldHTML += '<option class="text-red" style="font-weight:bold" disabled selected>'+placeholder+'</option>';
-			else
-				fieldHTML += '<option></option>';
-
-			var selected = "";
-			
-			//initialize values
-			if(fieldObj.options)
-				fieldHTML += buildSelectOptions(fieldObj.options, fieldObj.value);
-			
-			if( fieldObj.groupOptions ){
-				fieldHTML += buildSelectGroupOptions(fieldObj.groupOptions, fieldObj.value);
-			} 
-			fieldHTML += '</select>';
-        }
-        return fieldHTML;
-	}
-
-
 	function bindDynFormEditable(){
 		$(".btn-update-when").off().on( "click", function(){
 			var form = {
@@ -205,7 +114,7 @@ function bindAboutPodElement() {
 
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){
+							if(data.result&& data.resultGoods && data.resultGoods.result){
 								if(typeof data.resultGoods.values.allDay != "undefined"){
 									contextData.allDay = data.resultGoods.values.allDay;
 
@@ -270,7 +179,6 @@ function bindAboutPodElement() {
 
 
 		$(".btn-update-info").off().on( "click", function(){
-
 			var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
@@ -280,7 +188,7 @@ function bindAboutPodElement() {
 						onLoads : {
 							initUpdateInfo : function(){
 								mylog.log("initUpdateInfo");
-								$(".emailtext").slideToggle();
+								$(".emailOptionneltext").slideToggle();
 								$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 											  					  .addClass("bg-dark");
 							}
@@ -291,7 +199,7 @@ function bindAboutPodElement() {
 					    },
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){
+							if(data.result&& data.resultGoods && data.resultGoods.result){
 
 								if(typeof data.resultGoods.values.name != "undefined"){
 									contextData.name = data.resultGoods.values.name;
@@ -351,7 +259,7 @@ function bindAboutPodElement() {
 										val=100;
 									$('#progressStyle').val(val);
 									$('#labelProgressStyle').html(contextData.avancement);
-									$('#avancementAbout').html(trad["Project maturity"] + " : " + trad[contextData.avancement] );
+									$('#avancementAbout').html(trad[contextData.avancement] );
 								}
 
 								if(typeof data.resultGoods.values.type != "undefined"){
@@ -404,6 +312,40 @@ function bindAboutPodElement() {
 									contextData.fax = parsePhone(data.resultGoods.values.fax);
 									$("#faxAbout").html(contextData.fax);
 								}
+
+								if(typeof data.resultGoods.values.parent != "undefined"){
+									mylog.log("modif parent", data.resultGoods.values.parent);
+									contextData.parent = data.resultGoods.values.parent.parent;
+									contextData.parentId = data.resultGoods.values.parent.parentId;
+									contextData.parentType = data.resultGoods.values.parent.parentType;
+
+									var html = "<i>"+trad["notSpecified"]+"</i>";
+
+									if(notEmpty(contextData.parentId)){
+										html = '<a href="#page.type.'+contextData.parentType+'.id.'+contextData.parentId+'" class="lbh">'+ 
+											'<i class="fa fa-'+dyFInputs.get(contextData.parentType).icon+'"></i> '+
+											contextData.parent.name+'</a><br/>'; 
+									}
+
+									$("#parentAbout").html(html);
+								}
+
+								if(typeof data.resultGoods.values.organizer != "undefined"){
+									mylog.log("modif organizer", data.resultGoods.values.organizer);
+									contextData.organizer = data.resultGoods.values.organizer.organizer;
+									contextData.organizerId = data.resultGoods.values.organizer.organizerId;
+									contextData.organizerType = data.resultGoods.values.organizer.organizerType;
+
+									var html = "<i>"+trad["notSpecified"]+"</i>";
+
+									if(notEmpty(contextData.organizerId)){
+										html = '<a href="#page.type.'+contextData.organizerType+'.id.'+contextData.organizerId+'" class="lbh">'+ 
+											'<i class="fa fa-'+dyFInputs.get(contextData.organizerType).icon+'"></i> '+
+											contextData.organizer.name+'</a><br/>'; 
+									}
+
+									$("#organizerAbout").html(html);
+								}
 							}
 							dyFObj.closeForm();
 							changeHiddenFields();
@@ -441,8 +383,39 @@ function bindAboutPodElement() {
 				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
 				form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
 			}
+
 			if(contextData.type != typeObj.poi.col) 
 				form.dynForm.jsonSchema.properties.url = dyFInputs.inputUrl();
+
+
+			var listParent =  ["organizations"] ;
+
+			if(contextData.type == typeObj.event.col)
+				listParent =  ["event"] ;
+
+			
+			form.dynForm.jsonSchema.properties.parentId = {
+	         	label : "Fait parti d'un élément ?",
+            	inputType : "select",
+            	class : "",
+            	placeholder : "Fait parti d'un élément ?",
+            	options : firstOptions(),
+            	"groupOptions" : parentList( listParent, contextData.parentId, contextData.parentType ),
+            	init : function(){ console.log("init ParentId");
+	            	$("#ajaxFormModal #parentId").off().on("change",function(){
+	            		var selected = $(':selected', this);
+    					$("#ajaxFormModal #parentType").val(selected.parent().attr('label'));
+	            	});
+	            }
+            };
+            form.dynForm.jsonSchema.properties.parentType = dyFInputs.inputHidden();
+
+            if(contextData.type == typeObj.event.col){
+            	mylog.log("here");
+            	form.dynForm.jsonSchema.properties.organizerId =  dyFInputs.organizerId(contextData.parentId, contextData.parentType);
+	            form.dynForm.jsonSchema.properties.organizerType = dyFInputs.inputHidden();
+            }
+            
 			
 			var dataUpdate = {
 				block : "info",
@@ -489,6 +462,18 @@ function bindAboutPodElement() {
 			
 			if(contextData.type != typeObj.poi.col && notEmpty(contextData.url)) 
 				dataUpdate.url = contextData.url;
+
+			if(notEmpty(contextData.parentId)) 
+				dataUpdate.parentId = contextData.parentId;
+
+			if(notEmpty(contextData.parentType)) 
+				dataUpdate.parentType = contextData.parentType;
+
+			if(notEmpty(contextData.organizerId)) 
+				dataUpdate.organizerId = contextData.organizerId;
+
+			if(notEmpty(contextData.organizerType)) 
+				dataUpdate.organizerType = contextData.organizerType;
 			
 			mylog.log("dataUpdate", dataUpdate);
 			dyFObj.openForm(form, "initUpdateInfo", dataUpdate);
@@ -513,7 +498,7 @@ function bindAboutPodElement() {
 						},
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){
+							if(data.result&& data.resultGoods && data.resultGoods.result){
 								if(data.resultGoods.values.shortDescription=="")
 									$(".contentInformation #shortDescriptionAbout").html('<i>'+trad["notSpecified"]+'</i>');
 								else
@@ -573,7 +558,10 @@ function bindAboutPodElement() {
 					    },
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){
+							if(data.result&& data.resultGoods && data.resultGoods.result){
+
+								if(!notEmpty(contextData.socialNetwork))
+									contextData.socialNetwork = {};
 
 								if(typeof data.resultGoods.values.telegram != "undefined"){
 									contextData.socialNetwork.telegram = data.resultGoods.values.telegram.trim();
@@ -590,9 +578,9 @@ function bindAboutPodElement() {
 									changeNetwork('#twitterAbout', contextData.socialNetwork.twitter, contextData.socialNetwork.twitter);
 								}
 
-								if(typeof data.resultGoods.values.gitHub != "undefined"){
-									contextData.socialNetwork.gitHub = data.resultGoods.values.gitHub.trim();
-									changeNetwork('#gitHubAbout', contextData.socialNetwork.gitHub, contextData.socialNetwork.gitHub);
+								if(typeof data.resultGoods.values.github != "undefined"){
+									contextData.socialNetwork.github = data.resultGoods.values.github.trim();
+									changeNetwork('#githubAbout', contextData.socialNetwork.github, contextData.socialNetwork.github);
 								}
 
 								if(typeof data.resultGoods.values.skype != "undefined"){
@@ -614,7 +602,7 @@ function bindAboutPodElement() {
 							typeElement : dyFInputs.inputHidden(),
 							isUpdate : dyFInputs.inputHidden(true), 
 							skype : dyFInputs.inputUrl("Lien vers Skype"),
-							gitHub : dyFInputs.inputUrl("Lien vers Git Hub"), 
+							github : dyFInputs.inputUrl("Lien vers Git Hub"), 
 							gpplus : dyFInputs.inputUrl("Lien vers Google Plus"),
 					        twitter : dyFInputs.inputUrl("Lien vers Twitter"),
 					        facebook :  dyFInputs.inputUrl("Lien vers Facebook"),
@@ -637,8 +625,8 @@ function bindAboutPodElement() {
 				dataUpdate.twitter = contextData.socialNetwork.twitter;
 			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.gpplus))
 				dataUpdate.gpplus = contextData.socialNetwork.gpplus;
-			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.gitHub))
-				dataUpdate.gitHub = contextData.socialNetwork.gitHub;
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.github))
+				dataUpdate.github = contextData.socialNetwork.github;
 			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.skype))
 				dataUpdate.skype = contextData.socialNetwork.skype;
 			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.telegram))
@@ -794,11 +782,13 @@ function bindAboutPodElement() {
 	function removeFieldUpdateDynForm(collection){
 		mylog.log("------------------------ removeFieldUpdateDynForm", collection);
 		var fieldsElement = [ 	"name", "tags", "email", "url", "fixe", "mobile", "fax", 
-								"telegram", "gitHub", "skype", "twitter", "facebook", "gpplus"];
+								"telegram", "github", "skype", "twitter", "facebook", "gpplus"];
 		var fieldsPerson = ["username",  "birthDate"];
-		var fieldsProject = [ "avancement", "startDate", "endDate" ];
-		var fieldsOrga = [ "type" ];
-		var fieldsEvent = [ "type", "startDate", "endDate"];
+		var fieldsProject = [ "avancement", "startDate", "endDate", "parentId" ];
+		var fieldsOrga = [ "type", "parentId" ];
+		var fieldsEvent = [ "type", "startDate", "endDate", "parentId", , "organizerId"];
+
+		var SNetwork = [ "telegram", "github", "skype", "twitter", "facebook", "gpplus"];
 
 		if(collection == typeObj.person.col)
 			fieldsElement = fieldsElement.concat(fieldsPerson);
@@ -809,6 +799,8 @@ function bindAboutPodElement() {
 		else if(collection == typeObj.event.col)
 			fieldsElement = fieldsElement.concat(fieldsEvent);
 		var valCD = "";
+
+
 		$.each(fieldsElement, function(key, val){ 
 
 			valCD = val;
@@ -816,6 +808,9 @@ function bindAboutPodElement() {
 				valCD = "typeOrga";
 			else if(val == "type" && collection == typeObj.event.col)
 				valCD = "typeEvent";
+			else if(val == "type" && collection == typeObj.event.col)
+				valCD = "typeEvent";
+
 
 			if(	$("#ajaxFormModal #"+val).length && 
 				( 	( 	typeof contextData[valCD] != "undefined" && 
@@ -824,9 +819,21 @@ function bindAboutPodElement() {
 					) ||  
 					( 	( 	typeof contextData[valCD] == "undefined" || 
 							contextData[valCD] == null ) && 
-						$("#ajaxFormModal #"+val).val().trim().length == 0 ) 
+						$("#ajaxFormModal #"+val).val().trim().length == 0 ) || 
+					//social network
+					( 	$.inArray( val, SNetwork ) >= 0 && 
+						( 	typeof contextData["socialNetwork"] != "undefined" && 
+							contextData["socialNetwork"] != null ) && (
+						( 	typeof contextData["socialNetwork"][val] != "undefined" || 
+							contextData["socialNetwork"][val] != null && 
+							$("#ajaxFormModal #"+val).val().trim() == contextData["socialNetwork"][val] )
+						||
+						( 	( 	typeof contextData["socialNetwork"][val] == "undefined" || 
+							contextData["socialNetwork"][val] == null ) && 
+						$("#ajaxFormModal #"+val).val().trim().length == 0 ) )
+					)
 				) 
-			){
+			) {
 				$("#ajaxFormModal #"+val).remove();
 			}
 			else if(val == "birthDate"){

@@ -30,7 +30,7 @@ function startSearch(indexMin, indexMax, callBack){
 
 	  var name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
     
-    if(name == "" && searchType.indexOf("cities") > -1) return;  
+    //if(name == "" && searchType.indexOf("cities") > -1) return;  
 
     if(typeof indexMin == "undefined") indexMin = 0;
     if(typeof indexMax == "undefined") indexMax = indexStep;
@@ -84,12 +84,12 @@ function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(typeInit == "all") {
-        searchType = ["persons", "organizations", "projects", "poi"];
+        searchType = ["persons", "organizations", "projects", "poi", "cities"];
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
 
         indexStepInit = 30;
     }else if(typeInit == "allSig"){
-      searchType = ["persons", "organizations", "projects", "poi"];
+      searchType = ["persons", "organizations", "projects", "poi", "cities"];
       indexStepInit = 50;
     }
     else{
@@ -293,12 +293,13 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 //active les link lbh
                 bindLBHLinks();
 
-                //only on homepage
-                $(".start-new-communexion").click(function(){  
+                $(".start-new-communexion").click(function(){
+                    $("#main-search-bar, #second-search-bar, #input-search-map").val("");
                     setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
                                      $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
-                                      $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
-                    activateGlobalCommunexion(true);
+                                      $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
+                    
+                    //only on homepage
                     if($("#communexionNameHome").length){
                     	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+$(this).data("name-communexion")+'</span></span>');
                     	$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
@@ -306,6 +307,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                     	$(".info_co, .input_co").addClass("hidden");
                       $("#change_co").removeClass("hidden");
 						          $("#dropdown_search").html("");
+                    }else{
+                      startSearch(0, indexStepInit, searchCallback);
                     }
                 });
 
@@ -378,8 +381,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     $(".acceptAsBtn").off().on("click",function () {
       validateConnection(contextData.type, contextData.id, $(this).data("id"), $(this).data("type"), $(this).data("connect-validation"), 
         function() {
-          toastr.success("Validation is well registered");
-          loadByHash(location.hash);
+          toastr.success(trad["validationwellregistred"]);
+          urlCtrl.loadByHash(location.hash);
         }
       );
     });
@@ -429,25 +432,25 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
    	});
 
   	//on click sur les boutons link
-   	$(".followBtn").off().on("click",function(){
-	   	formData = new Object();
-   		formData.parentId = $(this).attr("data-id");
-   		formData.childId = userId;
-   		formData.childType = personCOLLECTION;
-   		var type = $(this).attr("data-type");
-   		var name = $(this).attr("data-name");
-   		var id = $(this).attr("data-id");
-   		//traduction du type pour le floopDrawer
-   		var typeOrigine = dyFInputs.get(type).col;
-      if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
+	$(".followBtn").click(function(){
+		formData = new Object();
+		formData.parentId = $(this).attr("data-id");
+		formData.childId = userId;
+		formData.childType = personCOLLECTION;
+		var type = $(this).attr("data-type");
+		var name = $(this).attr("data-name");
+		var id = $(this).attr("data-id");
+		//traduction du type pour le floopDrawer
+		var typeOrigine = dyFInputs.get(type).col;
+		if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
    		formData.parentType = typeOrigine;
-      mylog.log("followBtn",type);
+   		mylog.log("followBtn",type);
    		type = (type == "person") ? "people" : dyFInputs.get(type).col;
 
 		var thiselement = this;
 		$(this).html("<i class='fa fa-spin fa-circle-o-notch text-azure'></i>");
 		//mylog.log(formData);
-    var linkType = (type == "events") ? "connect" : "follow";
+		var linkType = (type == "events") ? "connect" : "follow";
 		if ($(this).attr("data-ownerlink")=="follow"){
 			$.ajax({
 				type: "POST",
@@ -475,6 +478,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 				data : formData,
 				dataType: "json",
 				success: function(data){
+					mylog.log("YOYOY", data);
 					if ( data && data.result ) {
 						$(thiselement).html("<i class='fa fa-chain'></i>");
 						$(thiselement).attr("data-ownerlink","follow");
@@ -1096,7 +1100,7 @@ var directory = {
             // '</a>'+
         '</div>';
 
-        if( params.creator == userId || params.author == userId || params.parentId == userId ){
+        if( params.creator == userId || params.author == userId || params.parentId == userId || dyFObj.canUserEdit() ){
           str += '<hr>'+
               '<div class="col-md-offset-1 col-md-10 col-sm-12 col-xs-12 shadow2 padding-15 margin-top-25">'+
               '<a href="javascript:;" class="btn btn-default text-red deleteThisBtn bold pull-left" data-type="'+params.type+'" data-id="'+params.id+'" ><i class="fa fa-trash"></i></a> '+
@@ -1249,7 +1253,7 @@ var directory = {
         params.attendees = "<hr class='margin-top-10 margin-bottom-10'>";
         
         isFollowed=false;
-          if(typeof params.isFollowed != "undefined" ) isFollowed=true;
+        if(typeof params.isFollowed != "undefined" ) isFollowed=true;
           
         if(userId != null && userId != "" && params.id != userId){
           // params.attendees += "<button id='btn-participate' class='text-dark btn btn-link followBtn no-padding'"+
@@ -1398,28 +1402,30 @@ var directory = {
                                         "</span>";
                     else thisLocality = "<br>";
                     
-                    var citykey = params.country + "_" + params.insee + "-" + params.cp;
-                    //$city["country"]."_".$city["insee"]."-".$city["cp"];
-                   
-                    thisLocality += "<button class='btn btn-sm btn-default item-globalscope-checker start-new-communexion' "+
-                                    "data-scope-value='" + citykey + "' " + 
-                                    "data-scope-name='" + params.name + "' " + 
-                                    "data-scope-type='city' " + 
-                                    "data-insee-communexion='" + params.insee + "' "+ 
-                                    "data-name-communexion='" + params.name + "' "+ 
-                                    "data-cp-communexion='" + params.cp + "' "+ 
-                                    "data-region-communexion='" + params.regionName + "' "+ 
-                                    "data-country-communexion='" + params.country + "' "+ 
-                                    ">"+
-                                        "<i class='fa fa-angle-right'></i> Communecter" + 
-                                    "</button>";
-
                     str += thisLocality;
-                    
-                  str += "</div>";
-                str += "</div>";
-              str += "</div>";
 
+                    
+                    str += "</div>";
+                  str += "</div>";
+      
+                mylog.log("-----------cityPanelHtml params", params);  
+                var citykey = params.country + "_" + params.insee + "-" + params.cp;
+                str += "<button class='btn btn-sm btn-danger item-globalscope-checker start-new-communexion' "+
+                                "data-scope-value='" + citykey + "' " + 
+                                "data-scope-name='" + params.name + "' " + 
+                                "data-scope-type='city' " + 
+                                "data-insee-communexion='" + params.insee + "' "+ 
+                                "data-name-communexion='" + params.name + "' "+ 
+                                "data-cp-communexion='" + params.cp + "' "+ 
+                                "data-region-communexion='" + params.regionName + "' "+ 
+                                "data-dep-communexion='" + params.depName + "' "+ 
+                                "data-country-communexion='" + params.country + "' "+ 
+                                ">"+
+                                    "<i class='fa fa-angle-right'></i> Communecter" + 
+                                "</button>";
+                
+
+                str += "</div>";                
               str += "</div>";
               return str;
     },

@@ -1600,7 +1600,8 @@ function  firstOptions() {
 	return res;
  }
 
-function myAdminList (ctypes) { 
+function myAdminList (ctypes) {
+	mylog.log("myAdminList", ctypes);
 	var myList = {};
 	if(userId){
 		//types in MyContacts
@@ -1613,7 +1614,7 @@ function myAdminList (ctypes) {
 			var connectionType = connectionTypes[ctype];
 			myList[ ctype ] = { label: ctype, options:{} };
 			if( notNull(myContacts) ){
-				mylog.log("myAdminList",ctype,connectionType,myContacts[ ctype ]);
+				mylog.log("myAdminList",ctype, connectionType, myContacts, myContacts[ ctype ]);
 				$.each( myContacts[ ctype ],function(id,elemObj){
 					mylog.log("myAdminList",ctype,id,elemObj.name);
 					if( elemObj.links && elemObj.links[connectionType] && elemObj.links[connectionType][userId] && elemObj.links[connectionType][userId].isAdmin) {
@@ -1632,6 +1633,8 @@ function myAdminList (ctypes) {
 function parentList (ctypes, parentId, parentType) { 
 	mylog.log("parentList", ctypes, parentId, parentType);
 	var myList = myAdminList( ctypes ) ;
+
+	mylog.log("parentList myList", myList);
 	if(	notEmpty(parentId) && notEmpty(parentType) && 
 		notEmpty(myList) && 
 		(	!notEmpty(myList[parentType]) ||

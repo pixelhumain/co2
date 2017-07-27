@@ -252,7 +252,6 @@ function addFloopEntity(entityId, entityType, entityValue){
 
 	//We check if the element is already displayed
 	if($('#floopItem-'+type.name+'-'+entityId).length < 1){
-		mylog.log("here5");
 		var html = getFloopItem(entityId, type, entityValue);
 		$("ul#floopType-"+entityType).prepend(html);
 	}

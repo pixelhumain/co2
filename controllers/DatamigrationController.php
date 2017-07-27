@@ -1796,10 +1796,10 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 			if(!empty($cities["result"])){
 				foreach (@$cities["result"] as $keyElt => $city) {
-					if($keyElt == 0 && !empty($city["_id"]["regionName"]) && trim($city["_id"]["regionName"]) != ""){
+					if(!empty($city["_id"]["regionName"]) && trim($city["_id"]["regionName"]) != ""){
 					//var_dump($city);
 						//$region[] = $city["regionName"];
-						$zone = Zone::createLevel($city["_id"]["regionName"], $city["_id"]["country"], "3", $city["_id"]["regionNameBel"]);
+						$zone = Zone::createLevel($city["_id"]["regionName"], $city["_id"]["country"], "3", ((!empty($city["_id"]["regionNameBel"])) ? $city["_id"]["regionNameBel"] : null));
 						if(!empty($zone)){
 							$region[] = $city["_id"]["regionName"];
 							$nbelement++;

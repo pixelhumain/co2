@@ -216,7 +216,7 @@
         <?php if($typeSelected == "all"){ ?>   
           
           <?php if(Yii::app()->params["CO2DomainName"] != "BCH"){ ?>  
-          <?php } ?>
+
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
             <button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
@@ -260,7 +260,7 @@
             </button>
             <hr class="hidden-sm hidden-md hidden-lg">
           </div>
-        
+        <?php } ?>
         <?php } else if( $typeSelected == "vote" ){?>
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">

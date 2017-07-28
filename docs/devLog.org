@@ -50,6 +50,8 @@ MEP
   [X] script de devlog 
 
 ** @Rapha
+*** Ajoute un zeo au cp
+/co2/datamigration/AddZeroPostalCode
 *** initialise les multiscopes
 /co2/datamigration/InitMultiScope
 *** ajout des geoShape au ville qui en ont pas

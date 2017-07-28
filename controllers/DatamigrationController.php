@@ -1745,7 +1745,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 
 
-	public function actionRegionetDepRefactorCitiesZones(){
+	public function actionRegionRefactorCitiesZones(){
 		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			ini_set('memory_limit', '-1');
 			$nbelement = 0 ;
@@ -1808,7 +1808,8 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			        '$group' => array(
 			            "_id" => array(	"depName" => '$depName', 
 			            				"country" => '$country',
-			            				"regionNameBel" => '$regionNameBel' ),
+			            				"regionNameBel" => '$regionNameBel',
+			            				"regionName" => '$regionName', ),
 			        ),
 			    ),
 			);
@@ -1818,13 +1819,13 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 			if(!empty($cities["result"])){
 				foreach (@$cities["result"] as $keyElt => $city) {				
-					if(!empty($city["_id"]["depName"]) && trim($city["_id"]["depName"]) != ""){
+					if($keyElt == 0 && !empty($city["_id"]["depName"]) && trim($city["_id"]["depName"]) != ""){
 						
 						$exists = PHDB::findOne(Zone::COLLECTION, array('$and' => array(
 													array("name" => $city["_id"]["depName"] ) , 
 													 array("level" => "4" ) ) ) );
 						if($exists== null){
-							$zone = Zone::createLevel($city["_id"]["depName"], $city["_id"]["country"], "4", ((!empty($city["_id"]["regionNameBel"])) ? $city["_id"]["regionNameBel"] : null));
+							$zone = Zone::createLevel($city["_id"]["depName"], $city["_id"]["country"], "4", ((!empty($city["_id"]["regionNameBel"])) ? $city["_id"]["regionNameBel"] : null), ((!empty($city["_id"]["regionName"])) ? $city["_id"]["regionName"] : null));
 							if(!empty($zone)){
 								$region[] = $city["_id"]["depName"];
 								$nbelement++;

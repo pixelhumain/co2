@@ -103,7 +103,7 @@ dynForm = {
             		{
 	            		$.each(filt[ $(this).data('key') ]["subcat"], function(k,v) { 
 	            			fieldHTML += '<div class="col-md-6 padding-5">'+
-	    									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>' +
+	    									'<a class="btn tagListEl subtypeBtn '+tradCategory[k]+'Btn " data-tag="'+tradCategory[v]+'" href="javascript:;">'+tradCategory[v]+'</a>' +
 	            						"</div>";
 	            		});
 	            		$(".subtypeSection").html('<hr class="col-md-12 no-padding">'+
@@ -143,7 +143,7 @@ dynForm = {
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
                 list : classified.sections,
-                trad : trad,
+                trad : tradCategory,
                 init : function(){
                 	$(".sectionBtn").off().on("click",function()
 	            	{
@@ -180,6 +180,7 @@ dynForm = {
 	            inputType : "tagList",
                 placeholder : "Choisir une catégorie",
                 list : classified.filters,
+                trad:tradCategory,
                 init : function(){
                 	classified.currentLeftFilters = null;
                 	dyFObj.elementObj.dynForm.jsonSchema.actions.initTypeBtn();

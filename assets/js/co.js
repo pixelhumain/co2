@@ -2529,7 +2529,7 @@ var dyFObj = {
 				afterLoad : afterLoad,
 				data : data
 			};
-			toastr.error("Vous devez être connecté pour afficher les formulaires de création");
+			toastr.error(tradDynForm["mustbeconnectforcreateform"]);
 			$('#modalLogin').modal("show");
 		}
 	},

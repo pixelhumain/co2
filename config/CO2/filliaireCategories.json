@@ -5,7 +5,7 @@
 		"tags" : ["commun"]
 	}, 
 	"food": {
-		"name" : "Agriculture | Fooding",
+		"name" : "Agriculture | Food",
 		"icon" : "fa-cutlery",
 		"tags" : ["agriculture","alimentation"]
 	},  
@@ -15,12 +15,12 @@
 		"tags" : ["santé"]
 	},  
 	"waste": {
-		"name" : "Trashes",
+		"name" : "Waste",
 		"icon" : "fa-trash-o ",
 		"tags" : ["déchets"]
 	},  
 	"building": {
-		"name" : "Planning | Transport | Construction",
+		"name" : "Development | Transport | Construction",
 		"icon" : "fa-bus",
 		"tags" : ["aménagement","transport","construction"]
 	},  
@@ -55,7 +55,7 @@
 		"tags" : ["biodiversité"]
 	},  
 	"tic": {
-		"name" : "TIC | Numeric | Internet",
+		"name" : "ICT | Numeric | Internet",
 		"icon" : "fa-laptop",
 		"tags" : ["numérique","tic","internet"]
 	}

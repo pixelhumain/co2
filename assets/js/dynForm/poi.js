@@ -83,7 +83,7 @@ dynForm = {
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
                 list : poi.sections,
-                trad : trad,
+                trad : tradCategory,
                 init : function(){
                 	$(".sectionBtn").off().on("click",function()
 	            	{

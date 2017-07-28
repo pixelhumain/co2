@@ -836,7 +836,7 @@ var directory = {
 
     			if(typeof params.isFollowed != "undefined" ) 
     				isFollowed=true;
-    			tip = (params.type == "events") ? "Participer" : 'Suivre';
+    			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
     			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
     			' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
     			" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
@@ -1772,7 +1772,7 @@ var directory = {
                     params.fullLocality += "<br>"+ postalCode + " " + cityName;
                   });
                 }
-
+                alert(itemType);
                 params.type = dyFInputs.get(itemType).col;
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
@@ -1844,37 +1844,37 @@ var directory = {
       if(data.edit=="follows"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'>"+
-            "<i class='fa fa-unlink'></i> Ne plus suivre"+
+            "<i class='fa fa-unlink'></i> "+trad["unfollow"]+
           "</button> ";
       }
       if(data.edit=="organizations" || data.edit=="projects"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='3'>"+
-            "<i class='fa fa-unlink'></i> Annuler ce lien"+
+            "<i class='fa fa-unlink'></i> "+trad["cancellink"]+
           "</button> ";
       }
       if(data.edit=="members" || data.edit=="contributors"){
         if(data.type!="organizations" && typeof data.statusLink["toBeValidated"] != "undefined" && typeof data.statusLink["isAdminPending"] == "undefined"){
           html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='toBeValidated' data-parent-hide='2'>"+
-            "<i class='fa fa-user'></i> Accepter comme "+data.edit.substring(0,data.edit.length-1);
+            "<i class='fa fa-user'></i> "+trad["acceptas"+data.edit]+
           "</button> ";
         }else if(data.type!="organizations" && typeof data.statusLink["isAdminPending"] != "undefined"){
           html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='isAdminPending' data-parent-hide='2'>"+
-            "<i class='fa fa-user-plus'></i> Accepter comme admin";
+            "<i class='fa fa-user-plus'></i> "+trad["acceptasadmin"]+
           "</button> ";
         }
         if(data.type!="organizations" && typeof data.statusLink["isAdmin"] == "undefined"){
           html +='<button class="btn btn-default btn-xs" '+
                    'onclick="connectTo(\''+contextData.type+'\',\''+contextData.id+'\', \''+data.id+'\', \''+data.type+'\', \'admin\',\'\',\'true\')">'+
-                            '<i class="fa fa-user-plus"></i> Ajouter comme admin'+
+                            '<i class="fa fa-user-plus"></i> '+trad["addasadmin"]+
                           '</button>';
         }
         if(data.type=="organizations" || (typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined"))
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'>"+
-            "<i class='fa fa-unlink'></i> Supprimer ce "+data.edit.substring(0,data.edit.length-1);
+            "<i class='fa fa-unlink'></i> "+trad["delete"+data.edit]+
           "</button> ";
       }
       html+="</div>";
@@ -1994,18 +1994,18 @@ var directory = {
                 '<i class="fa fa-'+what.icon+'"></i> </h4><hr>';
         
         $(dest).html(str);
-
         $.each( list,function(k,o){
-            if( type == "btn" )
-              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'"><a class="btn tagListEl btn-select-type-anc typeBtn '+k+'Btn " data-tag="'+k+'" data-key="'+k+'" href="javascript:;"><i class="fa fa-'+o.icon+'"></i> <br>'+k+'</a></div>'
+            if( type == "btn" ){
+              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'"><a class="btn tagListEl btn-select-type-anc typeBtn '+k+'Btn " data-tag="'+tradCategory[k]+'" data-key="'+k+'" href="javascript:;"><i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+'</a></div>'
+            }
             else 
-              str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="'+k+'">'+
-                    '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+k+'</button><br>';
+              str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="'+tradCategory[k]+'">'+
+                    '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+tradCategory[k]+'</button><br>';
             if( o.subcat && type != "btn" )
             {
               $.each( o.subcat ,function(i,oT){
-                  str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
-                          '<i class="fa fa-angle-right"></i>'+oT+'</button><br class="hidden">';
+                  str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+tradCategory[k]+'" data-categ="'+tradCategory[k]+'" data-keycat="'+tradCategory[oT]+'">'+
+                          '<i class="fa fa-angle-right"></i>'+tradCategory[oT]+'</button><br class="hidden">';
               });
             }
             $(dest).append(str);

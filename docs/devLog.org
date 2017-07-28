@@ -60,6 +60,8 @@ co2/datamigration/CreatorUpdatedOnNotifications
 
 * MISE EN PRODUCTION CO2 
 ** @Rapha
+*** Ajoute un zeo au cp
+/co2/datamigration/AddZeroPostalCode
 *** initialise les multiscopes
 /co2/datamigration/InitMultiScope
 *** ajout des geoShape au ville qui en ont pas

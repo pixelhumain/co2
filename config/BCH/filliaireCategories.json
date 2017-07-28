@@ -1,0 +1,22 @@
+{
+	"Hébergement" : { 
+		"name" : "Hébergement",
+		"icon" : "fa-home",
+		"tags" : ["commun"]
+	}, 
+	"Restauration": {
+		"name" : "Restauration",
+		"icon" : "fa-cutlery",
+		"tags" : ["agriculture","alimentation"]
+	},  
+	"Loisirs": {
+		"name" : "Loisirs",
+		"icon" : "fa-heartbeat",
+		"tags" : ["santé"]
+	},  
+	"Transport": {
+		"name" : "Transport",
+		"icon" : "fa-car ",
+		"tags" : ["déchets"]
+	}
+}

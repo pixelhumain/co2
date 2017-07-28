@@ -784,9 +784,7 @@ function descHtmlToMarkdown() {
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
-		    		mylog.log("here");
 			    	//toastr.success(data.msg);
-			    	
 			    }
 			});
 			mylog.log("param", param);

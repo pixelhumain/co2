@@ -19,8 +19,6 @@
 	  
 	<div class="col-xs-12 center ">
 		
-	
-
 	<div id="list_filters">
 	  <!--  <div class="col-xs-12 margin-top-15 no-padding">
 	    <div id="list_tags_scopes" class="hidden-xs list_tags_scopes"></div> test test test

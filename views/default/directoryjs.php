@@ -32,13 +32,7 @@
   background-color: transparent;
 }
 
-#col-btn-type-directory .btn-directory-type .btn-all{
-  /*background-color: #F2F2F2;*/
-}
 
-.btn-select-filliaire:hover{
-  background-color: #F2F2F2;
-}
 @media (max-width: 768px) {
   #col-btn-type-directory{
     text-align: center!important;
@@ -166,13 +160,18 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
         <!-- <h5>Recherche thématique<br><i class='fa fa-chevron-down'></i></h5> -->
         <?php $filliaireCategories = CO2::getContextList("filliaireCategories"); 
+              $col = "";
+              if(sizeof($filliaireCategories) == 3) $col = "col-md-4 col-sm-4 col-sm-4";
+              if(sizeof($filliaireCategories) == 4) $col = "col-md-3 col-sm-3 col-sm-3";
+              if(sizeof($filliaireCategories) == 5) $col = "col-md-3 col-sm-3 col-sm-3";
+              if(sizeof($filliaireCategories) >= 6) $col = "col-md-2 col-sm-3 col-sm-6";
+              
               //var_dump($categories); exit;
               foreach ($filliaireCategories as $key => $cat) { 
                  if(is_array($cat)) { ?>
-              <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
-                <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis margin-bottom-5 btn-select-filliaire" 
+              <div class="<?php echo $col; ?> no-padding">
+                <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-filliaire" 
                         data-fkey="<?php echo $key; ?>"
-                        style="border-radius:0px; border-color: transparent; text-transform: uppercase;" 
                         data-keycat="<?php echo $cat["name"]; ?>">
                   <i class="fa <?php echo $cat["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo Yii::t("category", $cat["name"]); ?>
                 </button>
@@ -185,7 +184,7 @@
               <?php } ?>
             </button>
           <?php } ?>
-          <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
+          <!-- <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> -->
         </div>
         
         
@@ -216,6 +215,8 @@
 
         <?php if($typeSelected == "all"){ ?>   
           
+          <?php if(Yii::app()->params["CO2DomainName"] != "BCH"){ ?>  
+          <?php } ?>
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
             <button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
@@ -424,14 +425,23 @@
               </button>
             <?php } ?>
           </div>
-        <?php } 
 
-        $col = ( !in_array($typeSelected, array("classified","events","vote","all","place") )) ? 10 : 8; ?>
+        <?php } ?>
+
+        <?php $col = ( !in_array($typeSelected, array("classified","events","vote","all","place") )) ? 10 : 8; ?>
+        <?php if(Yii::app()->params["CO2DomainName"] == "BCH"){ $col = 10; } ?>
+        
         <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
 
-      <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
+        <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
       <?php } ?>
   </div>
+
+
+
+
+
+
 
 <?php //$this->renderPartial(@$path."first_step_directory"); ?> 
 <?php $city = (@$_GET['lockCityKey'] ? City::getByUnikey($_GET['lockCityKey']) : null);
@@ -558,6 +568,10 @@ jQuery(document).ready(function() {
   //   rebuildSearchScopeInput();
   // }
 
+
+  <?php if(Yii::app()->params["CO2DomainName"] == "BCH"){ ?>
+      $("#sub-menu-filliaire").removeClass("hidden");
+  <?php } ?>
 
   $(".btn-open-filliaire").click(function(){
       if($("#sub-menu-filliaire").hasClass("hidden"))

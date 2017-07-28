@@ -40,51 +40,51 @@
         <div class="col-lg-7 col-md-8 col-sm-7 col-xs-12">
 
         	<h5 class="pull-left">
-        		<i class="fa fa-angle-down"></i> Situation financière
+        		<i class="fa fa-angle-down"></i> <?php echo Yii::t("docs","Financial situation") ?>
         	</h5>
         	
         	<a href="#" class="lbh btn btn-default pull-right margin-left-5 btn-submenu tooltips"
-        		data-toggle="tooltip" data-placement="top" title="Retourner vers l'accueil">
-        		<b>Quitter cette page <i class="fa fa-arrow-right"></i></b>
+        		data-toggle="tooltip" data-placement="top" title="<?php echo Yii::t("common","Back to home") ?>">
+        		<b><?php echo Yii::t("common","Leave this page") ?> <i class="fa fa-arrow-right"></i></b>
         	</a> 
 
         	<br>
         	<hr>
 
         	<h1 class="letter-red font-blackoutM" id="koica">
-        		ON N'A PLUS DE SOUS !!!
+        		<?php echo Yii::t("docs","ALERT : SOON OUT OF MONEY") ?> !!!
         	</h1>
 
-        	<h3 class="letter-blue"><i class="fa fa-angle-right"></i> Please help us !</h3>
+        	<h3 class="letter-blue"><i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","1 euro to save us") ?> !</h3>
         	<p>
-				Le collectif de développeurs qui s'occupe actuellement de la plateforme a besoin de pouvoir continuer à travailler à plein temps sur ce projet pharaonique.
+				<?php echo Yii::t("docs","The developers who work on the platform need to earn some good money to work full time on this huge project") ?>.
 				<br><br>
-				Impossible pour eux de travailler à mi-temps, et de partager leur travail avec d'autres prestations.<br>
-				La maintenance, l'amélioration, et le suivi de l'application nécessite une équipe de techniciens compétent qui s'en occupe quotidiennement.
+				<?php echo Yii::t("docs","It just can’t be done as a part-time job.<br>The maintenance and the upgrading of the application need a competent team of technicians available on a daylee basis") ?>.
 				<br><br>
-				Pour que nos développeurs puissent se consacrer entièrement au projet Communecter, ils ont besoin de votre soutient financier.
+				<?php echo Yii::t("docs", "In order to have full-time developpers on communecter, they need your financial support") ?>.
 				<br><br>
-				Le compte de l'association sont aujourd'hui au plus bas, ce qui laisse entrevoir la possibilité de l'abandon de la plateforme, faute de moyen financier suffisant pour permettre aux développeurs de vivre sans travailler "à côté".
+				<?php echo Yii::t("docs","The current account of NGO is too low to assume a short-term vision for the platform and for its team") ?>.
 				<br><br>
-				Nous nous en remettons donc à vos dons.
+				<?php echo Yii::t("docs","To make this happen, we need your help") ?>.
 				<br><br>
-				Si vous souhaitez que le réseau Communecter continue à grandir, il ne tient qu'à vous d'apporter votre soutien. Si chacun d'entre vous donne quelques euros, c'est possible !
+				<?php echo Yii::t("docs", "If you want to see the project keep on going and growing, you can now be part of it, even with 1 euro on a monthly basis, it will make things possible") ?> !
 
-				<h3 class="letter-blue">Un projet à long terme</h3>
-				L'équipe actuelle de développeurs est sur-motivée et souhaite plus que tout continuer son travail.<br>
-				Elle souhaite également s'agrandir si possible, en intégrant de nouveau développeurs, ou en collaborant avec d'autres équipes afin de développer des applications interropérables.<br><br>
-				Nous souhaitons également continuer à améliorer l'application Communecter, en rajoutant de nouvelles fonctionnalités.
+				<h3 class="letter-blue"><?php echo Yii::t("docs","A long-term project") ?></h3>
+				<?php echo Yii::t("docs","The actual team of developpers are very motivated to follow the work.<br>She needs also to grow up with new developpers and to work with other team to build interoperable applications") ?>.<br><br>
+				<?php echo Yii::t("docs","Finally, we want to keep improving Communecter, adding new functions") ?>.<br><br>
 
-				<h3 class="letter-blue">Budget annuel : (exemple)</h3>
-				6 développeurs à 2000€/mois, pendant 1 an : Pour développer l'application<br>
+				<h3 class="letter-blue"><?php echo Yii::t("docs","Annual budget") ?> :</h3>
+				<?php echo Yii::t("docs","6 developpers at 2000€/month for a year : To develop the app") ?><br>
 				6 * 2000 * 12 = <?php $c1 = 6 * 2000 * 12; echo $c1; ?>€
 				<br><br>
-				6 communecteur à 1000€/mois, pendant 1 an : Pour faire connaitre et comprendre l'application<br>
+				<?php echo Yii::t("docs","6 commonecters at 1000€/month for a year : To help people connect via the platform")?><br>
 				6 * 2000 * 12 = <?php $c2 = 6 * 1000 * 12; echo $c2; ?>€
 				<br><br>
 				ETC ...
 				<br><br><br>
-				Total : <?php echo $c1 + $c2; ?>€
+				<?php echo Yii::t("docs","Total") ?> : <?php echo $c1 + $c2; ?>€
+				<br><br>
+				<?php echo Yii::t("docs","We are currently running on an annuel budget of 80K€ and only the developpers are payed 1000€ / monthly") ?>.
         	</p>
         </div>
     </div>

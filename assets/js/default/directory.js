@@ -1772,7 +1772,6 @@ var directory = {
                     params.fullLocality += "<br>"+ postalCode + " " + cityName;
                   });
                 }
-                alert(itemType);
                 params.type = dyFInputs.get(itemType).col;
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";

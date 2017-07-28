@@ -162,7 +162,7 @@
             "subcat" : []
         },
         "Agriculture" : {
-            "icon":"user",
+            "icon":"shopping-basket",
             "subcat" : []
         },
         "Fishing" : {
@@ -198,15 +198,15 @@
             "subcat" : []
         },
         "IT-Telecommunication" : {
-            "icon":"internet-explorer",
+            "icon":"wifi",
             "subcat" : []
         },
         "Installation-Maintenance" : {
-            "icon":"desktop",
+            "icon":"wrench",
             "subcat" : []
         },
         "Marketing-Strategy" : {
-            "icon":"user",
+            "icon":"area-chart",
             "subcat" : []
         },
         "Human_Ressources" : {

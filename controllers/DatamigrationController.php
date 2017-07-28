@@ -1819,7 +1819,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 			if(!empty($cities["result"])){
 				foreach (@$cities["result"] as $keyElt => $city) {				
-					if($keyElt == 0 && !empty($city["_id"]["depName"]) && trim($city["_id"]["depName"]) != ""){
+					if( !empty($city["_id"]["depName"]) && trim($city["_id"]["depName"]) != ""){
 						
 						$exists = PHDB::findOne(Zone::COLLECTION, array('$and' => array(
 													array("name" => $city["_id"]["depName"] ) , 
@@ -1893,6 +1893,72 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 		}
+	}
+
+
+
+	public function actionLinkCityAndZone(){
+		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);
+			$nbelement = 0 ;
+			$erreur = array();
+			$region = array();
+			$cities = PHDB::find(City::COLLECTION, array("modifiedByBatch.LinkCityAndZone" => 
+															array('$exists' => 0)) );
+
+			if(!empty($cities)){
+				foreach (@$cities as $keyElt => $city) {
+					//if($nbelement == 0){
+						$set = array();			
+						if(!empty($city["dep"]) && !empty($city["depName"])){
+							$city["dep"] = Zone::getIdLevelByNameAndCountry($city["depName"], "4", $city["country"]);
+							$set["dep"] = $city["dep"];
+						}
+
+						if(!empty($city["region"]) && !empty($city["regionName"])){
+							$city["region"] = Zone::getIdLevelByNameAndCountry($city["regionName"], "3", $city["country"]);
+							$set["region"] = $city["region"];
+						}
+
+						if(!empty($city["regionBel"])){
+							$city["regionBel"] = Zone::getIdLevelByNameAndCountry($city["regionNameBel"], "2", $city["country"]);
+							$set["regionBel"] = $city["regionBel"];
+						}
+
+
+						if($set ==  true){
+							$city["modifiedByBatch"][] = array("LinkCityAndZone" => new MongoDate(time()));
+
+							//var_dump($keyElt);
+							if($city["country"] == "BE"){
+								$res = PHDB::update( City::COLLECTION, 
+										  	array("_id"=>new MongoId($keyElt)),
+					                        array('$set' => array(	"dep" => $city["dep"],
+					                        						"region" => $city["region"],
+					                        						"regionBel" => $city["regionBel"],
+					                        						"modifiedByBatch" => $city["modifiedByBatch"]))
+					                    );
+							}else{
+								$res = PHDB::update( City::COLLECTION, 
+										  	array("_id"=>new MongoId($keyElt)),
+					                        array('$set' => array(	"dep" => $city["dep"],
+					                        						"region" => $city["region"],
+					                        						"modifiedByBatch" => $city["modifiedByBatch"]))
+					                    );
+							}
+							
+							echo  "Good: ".$city["name"]." ".$city["country"]." : ".$keyElt."<br>" ;
+							$nbelement++;
+						}
+						else
+							echo  "Erreur: ".$city["name"]." ".$city["country"]." : ".$keyElt."<br>" ;
+					//}
+					
+				}
+			}
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+		//}
 	}
 
 	// -------------------- Fin des foncction pour le refactor Cities/zones

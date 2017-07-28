@@ -6,7 +6,7 @@
       "pages" : 
       {
       	"#app.index":
-                  {"redirect":"welcome"},
+                  {"redirect":"web"},
       	
             "#welcome": {
                   "inMenu" : false, 

@@ -674,7 +674,7 @@ function bindAboutPodElement() {
 			title : title,
 			type : type,
 			url : url,
-			index : ind
+			index : ind.toString()
 		}
 		mylog.log("params",params);
 		dyFObj.openForm( 'url','sub', params);
@@ -683,7 +683,7 @@ function bindAboutPodElement() {
 
 	function updateContact(ind, name, email, role, telephone) {
 		mylog.log("updateContact", ind, name, email, role, telephone);
-		dataUpdate = { index : ind } ;
+		dataUpdate = { index : ind.toString() } ;
 		if(name != "undefined")
 			dataUpdate.name = name;
 		if(email != "undefined")

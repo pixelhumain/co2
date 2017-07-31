@@ -2571,7 +2571,7 @@ var dyFObj = {
 		}else {
 			//TODO : pouvoir surchargé le dossier dynform dans le theme
 			//via themeObj.dynForm.folder overload
-			var dfPath = (jsonHelper.notNull( "themeObj.dynForm.folder") ) ? themeObj.dynForm.folder : moduleUrl+'/js/dynForm/';
+			var dfPath = (jsonHelper.notNull( "themeObj.dynForm.folder" ) ) ? themeObj.dynForm.folder : moduleUrl+'/js/dynForm/';
 			lazyLoad( dfPath+type+'.js', 
 				null,
 				function() { 

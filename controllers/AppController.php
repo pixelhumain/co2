@@ -199,7 +199,7 @@ class AppController extends CommunecterController {
             
         if( $type == Person::COLLECTION  || $type == Event::COLLECTION || 
             $type == Project::COLLECTION || $type == Organization::COLLECTION || 
-            $type == Poi::COLLECTION || $type == Place::COLLECTION || 
+            $type == Poi::COLLECTION || $type == Place::COLLECTION || $type == Ressource::COLLECTION || 
             $type == Classified::COLLECTION)    
             $element = Element::getByTypeAndId($type, $id);
 

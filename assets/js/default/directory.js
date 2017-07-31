@@ -820,14 +820,14 @@ var directory = {
     // ********************************
 	  elementPanelHtml : function(params){
     		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name);
-    		//mylog.log("----------- elementPanelHtml",params.type,params.name, params);
+    		mylog.log("----------- elementPanelHtml",params.type,params.name, params);
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
     		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" contain_"+params.type+"_"+params.id+"'>";
     		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
     		
-        var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;
+        var addFollowBtn = ( $.inArray(params.type, ["poi","ressource"])>=0 )  ? false : true;
         if(typeof params.edit  != "undefined")
               str += this.getAdminToolBar(params);
             
@@ -841,13 +841,13 @@ var directory = {
     			' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
     			" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
     			"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-    			"</a>";          
+    			"</a>";
     		}
 
         if(params.updated != null )
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>actif </span>" + params.updated + "</div>";
         
-        var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
+        var linkAction = ( $.inArray(params.type, ["poi","ressource","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
         if(params.type == "citoyens") 
             params.hash += '.viewer.' + userId;
        // if(typeof params.size == "undefined" || params.size == "max")
@@ -1695,7 +1695,7 @@ var directory = {
 
 
             itemType=(contentType) ? contentType :params.type;
-            
+            mylog.log("itemType",itemType,"name",params.name,"dyFInputs.get( itemType )",dyFInputs.get( itemType ));
             if( itemType ){ 
                 if(directory.dirLog) mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
@@ -1806,7 +1806,7 @@ var directory = {
                 if(params.type == "cities")
                   str += directory.cityPanelHtml(params);  
                 
-                else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","place"])>=0) 
+                else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","place","ressource"] )>=0) 
                   str += directory.elementPanelHtml(params);  
                 
                 else if(params.type == "events")

@@ -228,7 +228,7 @@
 		</a>
 	</li>	
 
-	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ 
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Place::COLLECTION){ 
 		if(@$element["properties"] && @$element["properties"]["chart"]) 
 			$countChart=count($element["properties"]["chart"]); 
 		if(@$countChart || $edit || $openEdition){ ?>
@@ -239,7 +239,7 @@
 			</li>
 	<?php } } ?>
 
-	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION || $type==Place::COLLECTION){ ?>
 	<li class="">
 		<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
 			id="btn-start-contacts" class="ssmla">
@@ -317,14 +317,14 @@
 					<i class="fa fa-calendar"></i> <?php echo Yii::t("common","Events"); ?>
 				</a>
 			</li>
-			<?php if ($type==Person::COLLECTION){ ?>
+			<?php if ($type==Person::COLLECTION || $type==Place::COLLECTION ){ ?>
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="organizations" data-icon="group">
 					<i class="fa fa-group"></i>  <?php echo Yii::t("common","Organizations"); ?>
 				</a>
 			</li>
 			<?php }  ?>
-			<?php if ($type==Person::COLLECTION || $type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
+			<?php if ($type==Person::COLLECTION || $type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Place::COLLECTION){ ?>
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="projects" data-icon="lightbulb-o">
 					<i class="fa fa-lightbulb-o"></i>  <?php echo Yii::t("common","Projects"); ?>
@@ -334,14 +334,24 @@
 			<?php }  ?>
 		<?php }  ?>
 			
+		<?php if ( $type==Place::COLLECTION ){  
+					if(!@$front || (@$front && $front["poi"])){ 
+		?>
+			<li>
+				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="ressource" data-icon="cubes">
+					<i class="fa fa-cubes"></i> <?php echo Yii::t("common","Ressources"); ?>
+				</a>
+			</li>			
+		<?php }  
+		} ?>
+
 		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
-				  $type==Event::COLLECTION || $type==Person::COLLECTION){  
+				  $type==Event::COLLECTION || $type==Person::COLLECTION || $type==Place::COLLECTION ){  
 					if(!@$front || (@$front && $front["poi"])){ 
 		?>
 			<li>
 				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="poi" data-icon="map-marker">
 					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Points of interests"); ?>
-		</a>
 				</a>
 			</li>			
 		<?php }  

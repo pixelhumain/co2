@@ -85,6 +85,7 @@ Liste des notifications déjà lues => #370 #453
  [ ] menu > drop answers > show nb of members + nb of links
  [ ] new menu List or shortcut: last visited links
  [ ] add contributor or member, add a tag list option , could be used as roles or team filters
+ [ ] make this our homepage , ex : a rpopos
 * ************************************************************    
 * Version 0.21  : en cours
 * ************************************************************  
@@ -131,10 +132,20 @@ Liste des notifications déjà lues => #370 #453
 
 * GFX 
   ** @Edith 
-    [ ] Aide Design Site 
+    [ ] Aide Design Site Open Atlas 
+      [ ] uniformisation du menu 
+      [ ] Accueil a droite (1er lien 
+      [ ] regle 3 typo maxi 
+      [ ] @Edith : 5 couleurs
+      [ ] soit en BD de Guillaume , soit en photo montage 
+        [ ] brainstorming idée phtoos 
     [ ] Aide Design de la Gazette 
+      [ ] a revoir a 
     [ ] Aide Plaquette 
-    [ ] Participation Design Local
+    [ ] Participation Design Local 
+      [ ] convertion des affiches Smarterre en double face 
+        [ ] face 1 : présentation d'une thématique 
+        [ ] face 2 : activité , orga, projet, events, actu 
   ** @Steph 
     [ ] Design deco du CoBus 
 
@@ -155,7 +166,16 @@ Liste des notifications déjà lues => #370 #453
     [ ] add filters in top bar mapEnd , near username
     [ ] add delete to image upload 
       - on Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté 
-    [ ] Repair + Finir module Tiers Lieux 
+    [X] Repair module Tiers Lieux 
+    [X] Repair save Ressource 
+    [ ] Module TL 
+      [ ] directory
+        [ ] members 
+        [X] projects
+        [X] organisations
+        [X] poi
+        [ ] ressource
+        [ ] needs
       [ ] on events TL connecté url to visio 
         [ ] show icons for quick access to ressources of a TL event
     [ ] Ressource
@@ -183,6 +203,8 @@ Liste des notifications déjà lues => #370 #453
   ** @tango
   [ ] connecter le form mail au membres d'un groupe
   ** @Clem
+  [ ] on dynform, input name : paste url > get + fills max inputs
+    [ ] also on add news > propose add as element > choose type fills infos 
   [ ] add HTML5 notifications
   [ ] Finir Besoin Ressource compétence () [commencer]
   [ ] visualisation de la banque des besoins =>#1260 + #490
@@ -231,6 +253,8 @@ Liste des notifications déjà lues => #370 #453
       [ ] j'ajoute une url youtube visualisation
       [ ] j'ajoute une umap ou un geojson 
       [ ] j'ajoute un Rocket Chat, on peut y acceder 
+    [ ] chantier tags : appliqué a PROD 
+      [ ] mettre en collection et géré les traduction 
   ** @Daniel
     [ ] SSO
   ** @Marc 

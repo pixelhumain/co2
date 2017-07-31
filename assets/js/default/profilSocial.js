@@ -306,7 +306,8 @@ function loadDataDirectory(dataName, dataIcon, edit){ console.log("loadDataDirec
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 				function(data){ 
-					var type = dataName == "poi" ? dataName : null;
+					//use this when the document in DB doesn't carry the generic type , like below 
+					var type = (dataName == "poi" || dataName == "ressource") ? dataName : null;
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
 					displayInTheContainer(data, dataName, dataIcon, type, edit);
@@ -343,6 +344,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 
 	else if(dataName == "collections"){ html += countData+" <b>collection"+s+"</b> de " + elementName; }
 	else if(dataName == "poi"){ html += countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
+	else if(dataName == "ressource"){ html += countData+" <b>ressource"+s+"</b> créé"+s+" par " + elementName; }
 	else if(dataName == "classified"){ html += countData+" <b>annonce"+s+"</b> créée"+s+" par " + elementName; }
 
 	else if(dataName == "needs"){ html += countData+" <b>besoin"+s+"</b> de " + elementName; }
@@ -580,7 +582,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 
 		html += "<div class='col-md-12 margin-bottom-15 labelTitleDir'>";
 		
-		if(dataName != "urls")
+		if(dataName != "urls" && dataName != "ressource")
 			html += btnMap;
 
 		html +=	thisTitle + "<hr>";
@@ -588,7 +590,6 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		
 		
 		mapElements = new Array();
-		
 		
 		if(dataName != "collections"){
 			if(mapElements.length==0) mapElements = data;
@@ -633,7 +634,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			});
 		}
 
-					mylog.log("dataToMap", dataToMap);
+		mylog.log("dataToMap", dataToMap);
 		$("#btn-show-links-onmap").off().click(function(){
 			Sig.showMapElements(Sig.map, dataToMap, "", thisTitle);
 			showMap(true);

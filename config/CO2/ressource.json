@@ -1,33 +1,83 @@
 {
     "sections" : {
         "tool": {
-            "label":"Outil",           
+            "label":"Tool",           
             "key" : "tool",  
             "icon" : "cutlery"
         },
         "competence": {
-            "label":"Compétence",      
+            "label":"Competence",      
             "key" : "competence",     
-            "icon" : "users"
+            "icon" : "users",
+            "subcat" : 
+                [   
+                    "Electric Engineer",
+                    "Electrician", 
+                    "Journalist",
+                    "Community Manager"
+                ]
+        },
+        "documentation": {
+            "label":"Documentation",      
+            "key" : "documentation",     
+            "icon" : "book"
+        },
+        "machine": {
+            "label":"Machine",      
+            "key" : "machine",     
+            "icon" : "print",
+            "subcat" : 
+                [   "Computers",
+                    "CNC",
+                    "3D Printer",
+                    "Laser cutter",
+                    "Serigraphy",
+                    "Transport"
+                ]
+        },
+        "transport": {
+            "label":"Transport",      
+            "key" : "transport",     
+            "icon" : "car"
+        },
+        "offices": {
+            "label":"Offices",      
+            "key" : "offices",     
+            "icon" : "cube"
+        },
+        "internet": {
+            "label":"Internet",      
+            "key" : "internet",     
+            "icon" : "usb"
+        },
+        "openWifi": {
+            "label":"Open Wifi",      
+            "key" : "openWifi",     
+            "icon" : "wifi"
+        },
+        "drive": {
+            "label":"Open Drive",      
+            "key" : "drive",     
+            "icon" : "folder-open"
+        },
+        "visio": {
+            "label":"Conferencing",      
+            "key" : "visio",     
+            "icon" : "video-camera"
+        },
+        "wiki": {
+            "label":"Wiki",      
+            "key" : "wiki",     
+            "icon" : "wikipedia-w"
+        },
+        "activity": {
+            "label":"Activity Stream",      
+            "key" : "activity",     
+            "icon" : "rss"
         }
     },
     "filters" : {
-        "Machine" : 
-            {   "icon" : "home",
-                "subcat" : 
-                [   "CNC",
-                    "Imprimante 3D",
-                    "Découpeuse laser"
-                ]
-            }, 
-        "Knowledge" : 
-            {   "icon" : "user",
-                "subcat" : 
-                [   "Ingenieur Elec",
-                    "Electrcité", 
-                    "Journaliste"
-                ]
-            }
+       
     }
     
 }

@@ -62,12 +62,12 @@
     <?php } else { ?>
         <h6 class="no-margin header-nowList" style="font-size:12px">
             <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> <?php echo Yii::t("common","Territorial activity") ?><br>
-             <small class="text-red"><i class="fa fa-map"></i> <?php echo $scope; ?></small>
+             <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope; ?></small>
         </h6>
         <hr class="angle-down">
         <center>
             <button class="btn btn-default btn-sm btn-show-onmap block" id="btn-show-activity-onmap">
-                <i class="fa fa-map"></i> <?php echo Yii::t("common","Show on the map") ?>
+                <i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Show on the map") ?>
             </button>
         </center>
         <br>

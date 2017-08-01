@@ -243,7 +243,7 @@
 	<li class="">
 		<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
 			id="btn-start-contacts" class="ssmla">
-			<i class="fa fa-envelope"></i> Nous contacter
+			<i class="fa fa-envelope"></i> <?php echo Yii::t("common","Contact us"); ?>
 		</a>
 	</li>
 	<?php } ?>

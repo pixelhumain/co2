@@ -1,6 +1,7 @@
 {
 	"sections" : {
-        "competition": {"label":"Compétition",      
+        "competition": {
+            "label":"Competition",      
             "key" : "competition",     
             "icon" : "trophy",               
             "section":2, 
@@ -15,7 +16,7 @@
         },
 
         "concours": {
-            "label":"Concours",            
+            "label":"Contest",            
             "key" : "concours",     
             "icon" : "graduation-cap",                  
             "section":3, 
@@ -23,7 +24,7 @@
         },
 
         "exposition": {
-            "label":"Exposition",             
+            "label":"Exhibition",             
             "key" : "exposition",    
             "icon" : "universal-access",          
             "section":3, 
@@ -40,7 +41,7 @@
         },
 
         "getTogether": {
-            "label":"Rencontre",     
+            "label":"Get together",     
             "key" : "getTogether",         
             "icon" : "group",              
             "section":5, 
@@ -48,16 +49,50 @@
         },
 
         "market": {
-            "label":"Marché",     
+            "label":"Market",     
             "key" : "market",         
             "icon" : "shopping-basket",              
             "section":5, 
             "color":"azure"
         },
-
         "meeting": {
-            "label":"Réunion",     
+            "label":"Meeting",     
             "key" : "meeting",         
+            "icon" : "handshake-o",              
+            "section":5, 
+            "color":"azure"
+        },
+        "course": {
+            "label":"Course",     
+            "key" : "course",         
+            "icon" : "handshake-o",              
+            "section":5, 
+            "color":"azure"
+        },
+        "workshop": {
+            "label":"Workshop",     
+            "key" : "workshop",         
+            "icon" : "handshake-o",              
+            "section":5, 
+            "color":"azure"
+        },
+        "conference": {
+            "label":"Conference",     
+            "key" : "conference",         
+            "icon" : "handshake-o",              
+            "section":5, 
+            "color":"azure"
+        },
+        "film": {
+            "label":"Film",     
+            "key" : "film",         
+            "icon" : "handshake-o",              
+            "section":5, 
+            "color":"azure"
+        },
+        "debate": {
+            "label":"Debate",     
+            "key" : "debate",         
             "icon" : "handshake-o",              
             "section":5, 
             "color":"azure"

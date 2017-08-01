@@ -77,13 +77,13 @@
                     data-target="#dash-create-modal" data-toggle="modal"
                     data-toggle="tooltip" data-placement="top" 
                     title="<?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>">
-                <i class="fa fa-plus-circle"></i> <?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>
+                <i class="fa fa-plus-circle"></i> <?php echo Yii::t("common",@$params["pages"]["#".$page]["lblBtnCreate"]); ?>
             </button>
             <?php }else{ ?>
             <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips" data-type="<?php echo @$type; ?>"
                     data-toggle="tooltip" data-placement="top" 
                     title="<?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>">
-                <i class="fa fa-plus-circle"></i> <?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>
+                <i class="fa fa-plus-circle"></i> <?php echo Yii::t("common",@$params["pages"]["#".$page]["lblBtnCreate"]); ?>
             </button>
             <?php } ?>
 
@@ -138,7 +138,7 @@
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
-var titlePage = "<?php echo @$params["pages"]["#".$page]["subdomainName"]; ?>";
+var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
 
 //var TPL = "kgougle";
 

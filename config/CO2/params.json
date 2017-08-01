@@ -11,12 +11,12 @@
 			"useHeader" : false, 
 			"open" : true, 
 			"subdomain" : "welcome", 
-			"subdomainName" : "Accueil",
+			"subdomainName" : "Home",
 			"hash" : "#app.welcome",
 			"icon" : "", 
 			"mainTitle" : "Réseau sociétal <span class='text-red'>territorial</span>",
-			"placeholderMainSearch" : "Rechercher quelque chose ...",
-			"lblBtnCreate" : "Créer quelque chose",
+			"placeholderMainSearch" : "search something ...",
+			"lblBtnCreate" : "Create something",
 			"colorBtnCreate" : "green"
 		},
 
@@ -25,12 +25,12 @@
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "search", 
-			"subdomainName" : "Recherche",
+			"subdomainName" : "Search",
 			"hash" : "#app.search",
 			"icon" : "search", 
-			"mainTitle" : "Moteur de recherche <span class='text-red'>territorial</span>",
-			"placeholderMainSearch" : "Rechercher une page ...",
-			"lblBtnCreate" : "Créer une page",
+			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
+			"placeholderMainSearch" : "search a page ...",
+			"lblBtnCreate" : "Create a page",
 			"colorBtnCreate" : "green"
 		},
 
@@ -39,12 +39,12 @@
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "annonces", 
-			"subdomainName" : "Annonces",
+			"subdomainName" : "Classifieds",
 			"hash" : "#app.annonces",
 			"icon" : "bullhorn", 
-			"mainTitle" : "Petites annonces",
-			"placeholderMainSearch" : "rechercher parmis les annonces  ...",
-			"lblBtnCreate" : "Publier une annonce",
+			"mainTitle" : "Classified ads",
+			"placeholderMainSearch" : "search among classifieds ...",
+			"lblBtnCreate" : "Create a classified ad",
 			"colorBtnCreate" : "azure"
 		},
 
@@ -56,9 +56,9 @@
 			"subdomainName" : "Agenda",
 			"hash":"#app.agenda",
 			"icon" : "calendar", 
-			"mainTitle" : "L'agenda <span class='text-red'>C</span>Ommun",
-			"placeholderMainSearch" : "rechercher un événement ...",
-			"lblBtnCreate" : "Créer un événement",
+			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",
+			"placeholderMainSearch" : "search an event ...",
+			"lblBtnCreate" : "Create an event",
 			"colorBtnCreate" : "orange"
 		},
 
@@ -72,8 +72,8 @@
 			"subdomainName" : "Live",
 			"hash":"#app.live",
 			"icon" : "newspaper-o", 
-			"mainTitle" : "Le fil d'actualité <span class='text-red'>CO</span>mmun",
-			"placeholderMainSearch" : "rechercher parmis les messages ..."
+			"mainTitle" : "<span class='text-red'>CO</span>mmon live",
+			"placeholderMainSearch" : "search in live ..."
 		},
 
 
@@ -87,7 +87,7 @@
 			"hash":"#app.page",
 			"icon" : "", 
 			"mainTitle" : "Le réseau social à effet de sert",
-			"placeholderMainSearch" : "rechercher ..."
+			"placeholderMainSearch" : "search ..."
 		},
 
 		"#info": {
@@ -99,7 +99,7 @@
 			"hash":"#app.info",
 			"icon" : "info-circle", 
 			"mainTitle" : "Le réseau social à effet de sert",
-			"placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
+			"placeholderMainSearch" : "search on people communected ..."
 		},
 
         "#power": {
@@ -111,7 +111,7 @@
             "hash":"#app.power",
             "icon" : "hand-rock-o", 
             "mainTitle" : "CO-démocratie",
-            "placeholderMainSearch" : "Rechercher ...",
+            "placeholderMainSearch" : "search ...",
             "lblBtnCreate" : "Faire une proposition",
             "colorBtnCreate" : "azure"
         },
@@ -126,7 +126,7 @@
             "hash":"#app.city",
             "icon" : "university", 
             "mainTitle" : "Communexion activée",
-            "placeholderMainSearch" : "rechercher ..."
+            "placeholderMainSearch" : "search ..."
         },
 
 		"#rooms": {
@@ -138,7 +138,7 @@
 			"hash":"#app.rooms",
 			"icon" : "university", 
 			"mainTitle" : "Communexion activée",
-			"placeholderMainSearch" : "rechercher ..."
+			"placeholderMainSearch" : "search ..."
 		},
 
 		"#survey": {
@@ -150,7 +150,7 @@
 			"hash":"#app.survey",
 			"icon" : "university", 
 			"mainTitle" : "Communexion activée",
-			"placeholderMainSearch" : "rechercher ..."
+			"placeholderMainSearch" : "search ..."
 		},
 
 		"#admin": {

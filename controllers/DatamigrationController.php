@@ -1648,6 +1648,28 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	  		
 	  	}
 	 }
+	public function actionChangeEventFrenchType(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			echo "Traitement des événements avec le type 'exposition' ou 'concours'";
+		  	$events=PHDB::find(Event::COLLECTION,array('$or' => array( array('type' => 'concours'), array('type' => 'exposition') )));
+		  	$nbEvents=0;
+		  	
+		  	foreach($events as $key => $data){
+		  		if($data["type"]=="exposition")
+		  			$newType="exhibition";
+		  		else if($data["type"]=="concours")
+		  			$newType="contest";
+				PHDB::update(Event::COLLECTION,
+						array("_id" => $data["_id"]) , 
+						array('$set' => array('type'=> $newType)));
+				$nbEvents++;
+				
+		  	}
+		  	echo "nombre de events traités:".$nbEvents." events";
+	  		
+	  	}
+	 }
+
 	public function actionCreatorUpdatedOnNotifications(){
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			echo "nombre de notifs attendus = environs 15.3k";

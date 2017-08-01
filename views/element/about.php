@@ -160,8 +160,13 @@
 						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span>
 
 						<?php 
-						$message = (($type==Organization::COLLECTION) ? "organization" : "event") ;
-						echo (@$element["type"]) ? Yii::t( $message, $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+						if(@$typesList && @$element["type"])
+							$showType=Yii::t( "category",$typesList[$element["type"]]);
+						else if (@$element["type"])
+							$showType=Yii::t( "category",$element["type"]);
+						else
+							$showType='<i>'.Yii::t("common","Not specified").'</i>';
+						echo $showType; ?>
 					</div>
 				</div>
 		<?php }
@@ -335,7 +340,7 @@
 				<?php } ?>
 
 					<div id="divStartDate" class="col-md-12 col-sm-12 col-xs-12 contentInformation padding-10">
-						<span><?php echo Yii::t("common","FromDate") ?> </span><span id="startDateAbout" class="" ><?php echo (isset($element["startDate"]) ? $element["startDate"] : "" ); ?></span>
+						<span><?php echo Yii::t("event","From") ?> </span><span id="startDateAbout" class="" ><?php echo (isset($element["startDate"]) ? $element["startDate"] : "" ); ?></span>
 					</div>
 					<div id="divEndDate"  class="col-md-12 col-sm-12 col-xs-12 contentInformation padding-10">
 						<span><?php echo Yii::t("common","To") ?></span> <span id="endDateAbout" class=""><?php echo (isset($element["endDate"]) ? $element["endDate"] : "" ); ?></span> 
@@ -582,12 +587,12 @@
 			$("#divEndDate").addClass("hidden");
 		mylog.log("formatDateView", formatDateView);
 		if($("#startDateAbout").html() != "")
-	    	$("#startDateAbout").html(moment(contextData.startDateDB).local().locale("fr").format(formatDateView));
+	    	$("#startDateAbout").html(moment(contextData.startDateDB).local().locale(mainLanguage).format(formatDateView));
 	    if($("#endDateAbout").html() != "")
-	    	$("#endDateAbout").html(moment( contextData.endDateDB).local().locale("fr").format(formatDateView));
+	    	$("#endDateAbout").html(moment( contextData.endDateDB).local().locale(mainLanguage).format(formatDateView));
 
 	    if($("#birthDate").html() != "")
-	    	$("#birthDate").html(moment($("#birthDate").html()).local().locale("fr").format("DD/MM/YYYY"));
+	    	$("#birthDate").html(moment($("#birthDate").html()).local().locale(mainLanguage).format("DD/MM/YYYY"));
 	    $('#dateTimezone').attr('data-original-title', "Fuseau horaire : GMT " + moment().local().format("Z"));
 	}
 

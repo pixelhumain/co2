@@ -203,7 +203,7 @@ function bindAboutPodElement() {
 
 								if(typeof data.resultGoods.values.name != "undefined"){
 									contextData.name = data.resultGoods.values.name;
-									$("#nameHeader").html(contextData.name);
+									$("#nameHeader > .name-header").html(contextData.name);
 									$("#nameAbout").html(contextData.name);
 								}
 
@@ -264,13 +264,16 @@ function bindAboutPodElement() {
 
 								if(typeof data.resultGoods.values.type != "undefined"){
 
-									if(contextData.type == typeObj.organization.col )
+									if(contextData.type == typeObj.organization.col ){
 										contextData.typeOrga = data.resultGoods.values.type;
+										$(".pastille-type-element").removeClass("bg-azure bg-red bg-green bg-turq").addClass("bg-"+typeObj[contextData.typeOrga]["color"]);
+										$("#nameHeader").find("i").removeClass("fa-university fa-industry fa-users fa-group").addClass("fa-"+typeObj[contextData.typeOrga]["icon"]);
+									}
 									else
 										contextData.typeEvent = data.resultGoods.values.type;
 									//$("#typeHeader").html(data.resultGoods.values.type);
-									$("#typeAbout").html(trad[data.resultGoods.values.type]);
-									$("#typeHeader .type-header").html(trad[data.resultGoods.values.type]);
+									$("#typeAbout").html(tradCategory[data.resultGoods.values.type]);
+									$("#typeHeader .type-header").html(tradCategory[data.resultGoods.values.type]);
 								}
 
 								if(typeof data.resultGoods.values.email != "undefined"){
@@ -366,22 +369,22 @@ function bindAboutPodElement() {
 			}
 
 			if(contextData.type == typeObj.organization.col ){
-				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
+				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm["organizationType"], tradDynForm["organizationType"], organizationTypes, { required : true });
 			}else if(contextData.type == typeObj.event.col ){
-				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'événement", "Type d'événement", eventTypes, { required : true });
+				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm["eventTypes"], tradDynForm["eventTypes"], eventTypes, { required : true });
 			}
 
 			if(contextData.type == typeObj.project.col ){
-				form.dynForm.jsonSchema.properties.avancement = dyFInputs.inputSelect("L'avancement du project", "Avancement du projet", avancementProject);
+				form.dynForm.jsonSchema.properties.avancement = dyFInputs.inputSelect(tradDynForm["theprojectmaturity"], tradDynForm["projectmaturity"], avancementProject);
 			}
 
 			form.dynForm.jsonSchema.properties.tags = dyFInputs.tags();
 
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.email = dyFInputs.email();
-				form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText("Fixe","Saisir les numéros de téléphone séparer par une virgule");
-				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
-				form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
+				form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText(tradDynForm["fix"],tradDynForm["enterfixnumber"]);
+				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText(tradDynForm["mobile"],tradDynForm["entermobilenumber"]);
+				form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText(tradDynForm["fax"],tradDynForm["enterfaxnumber"]);
 			}
 
 			if(contextData.type != typeObj.poi.col) 
@@ -395,10 +398,10 @@ function bindAboutPodElement() {
 
 			
 			form.dynForm.jsonSchema.properties.parentId = {
-	         	label : "Fait parti d'un élément ?",
+	         	label : tradDynForm["ispartofelement"]+" ?",
             	inputType : "select",
             	class : "",
-            	placeholder : "Fait parti d'un élément ?",
+            	placeholder : tradDynForm["ispartofelement"]+" ?",
             	options : firstOptions(),
             	"groupOptions" : parentList( listParent, contextData.parentId, contextData.parentType ),
             	init : function(){ console.log("init ParentId");
@@ -519,8 +522,8 @@ function bindAboutPodElement() {
 							block : dyFInputs.inputHidden(),
 							typeElement : dyFInputs.inputHidden(),
 							isUpdate : dyFInputs.inputHidden(true),
-							shortDescription : 	dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
-							description : dyFInputs.textarea("Description longue", "..."),
+							shortDescription : 	dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
+							description : dyFInputs.textarea(tradDynForm["longDescription"], "..."),
 						}
 					}
 				}
@@ -602,11 +605,11 @@ function bindAboutPodElement() {
 							block : dyFInputs.inputHidden(),
 							typeElement : dyFInputs.inputHidden(),
 							isUpdate : dyFInputs.inputHidden(true), 
-							skype : dyFInputs.inputUrl("Lien vers Skype"),
-							github : dyFInputs.inputUrl("Lien vers Git Hub"), 
-							gpplus : dyFInputs.inputUrl("Lien vers Google Plus"),
-					        twitter : dyFInputs.inputUrl("Lien vers Twitter"),
-					        facebook :  dyFInputs.inputUrl("Lien vers Facebook"),
+							skype : dyFInputs.inputUrl(tradDynForm["linkSkype"]),
+							github : dyFInputs.inputUrl(tradDynForm["linkGithub"]), 
+							gpplus : dyFInputs.inputUrl(tradDynForm["linkGplus"]),
+					        twitter : dyFInputs.inputUrl(tradDynForm["linkTwitter"]),
+					        facebook :  dyFInputs.inputUrl(tradDynForm["linkFacebook"]),
 						}
 					}
 				}

@@ -1595,9 +1595,9 @@ function activateSummernote(elem) {
 
 function  firstOptions() { 
 	var res = {
-		"dontKnow":"Je ne sais pas",
+		"dontKnow":tradDynForm["dontknow"],
 	};
-	res[userId] = "Moi";
+	res[userId] = tradDynForm["me"];
 	return res;
  }
 
@@ -2866,8 +2866,8 @@ var dyFInputs = {
 		return inputObj;
 	},
 	organizerId : function( organizerId, organizerType ){
-		return dyFInputs.inputSelectGroup( 	"Qui organise cet événement ?", 
-											"Qui organise ?", 
+		return dyFInputs.inputSelectGroup( 	tradDynForm["whoorganizedevent"]+" ?", 
+											tradDynForm["whoorganize"]+" ?", 
 											firstOptions(), 
 											parentList( ["organizations","projects"], organizerId, organizerType ), 
 											{ required : true },

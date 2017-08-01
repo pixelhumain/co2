@@ -864,7 +864,7 @@ var directory = {
             }
 
             if(notEmpty(params.typePoi)){
-              str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + trad[params.typePoi] + "<hr></span>";  
+              str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typePoi] + "<hr></span>";  
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
@@ -1105,7 +1105,7 @@ var directory = {
               '<div class="col-md-offset-1 col-md-10 col-sm-12 col-xs-12 shadow2 padding-15 margin-top-25">'+
               '<a href="javascript:;" class="btn btn-default text-red deleteThisBtn bold pull-left" data-type="'+params.type+'" data-id="'+params.id+'" ><i class="fa fa-trash"></i></a> '+
               '<a href="javascript:dyFObj.editElement(\''+params.type+'\', \''+params.id+'\' );" class="btn btn-default pull-right letter-green bold">'+
-                  '<i class="fa fa-pencil"></i> Modifier cet élément'+
+                  '<i class="fa fa-pencil"></i> '+trad["modifyelement"]+
               '</a></div>';
             }
 
@@ -1343,10 +1343,9 @@ var directory = {
                         eventTypes[params.typeEvent] : 
                         trad["event"]) : 
                         trad["event"];
-                               
         //console.log("??????????????????",Object.keys(params));
         str += "<h5 class='text-dark lbh add2fav no-margin'>"+
-                  "<i class='fa fa-reply fa-rotate-180'></i> " + typeEvent + thisLocality +
+                  "<i class='fa fa-reply fa-rotate-180'></i> " + tradCategory[typeEvent] + thisLocality +
                "</h5>";
 
         str += "<a href='"+params.hash+"' class='entityName text-dark lbh add2fav'>"+

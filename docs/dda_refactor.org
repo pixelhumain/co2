@@ -57,20 +57,21 @@ Cette nouvelle amélioration, rend possible une nouvelle forme de démocratie ba
 Pour faire simple, si nous avons une oligarchie, c'est parce que nous avons des représentant (qui ne représentent plus qu'eux-mêmes).
 Au fil du temps, la professionnalisation de la politique a engendré une nouvelle classe dominante dont nous avons conscience qu'elle n'agit pas en notre faveur, mais dont nous ne savons pas comment nous en passer. Pour nous passer de nos représentant, il n'y a qu'un seul moyen : mettre en place une démocratie directe.
 
-Jusqu'à l'invention d'internet, la démocratie directe n'était possible que sur un territoire restreint. Car la mise en commun du travail démocratique n'était pas possible à grande échelle. Seul un système informatique connecté peut rendre possible une démocratie où tout le monde participe. Si nous ne voulons plus de l'oligarchie, nous devons nous impliquer nous même dans le processus démocratique, mais pour que tout le monde puisse s'impliquer, il faut que cela passe par un système informatique.
+Jusqu'à l'invention d'internet, la démocratie directe n'était possible que sur un territoire restreint. Car la mise en commun du travail démocratique n'était pas possible à grande échelle. Seul un système informatique connecté peut rendre possible une démocratie où tout le monde participe. Si nous ne voulons plus de l'oligarchie, nous devons nous impliquer nous même dans le processus démocratique, et pour que tout le monde puisse s'impliquer, il faut que cela passe par un système informatique.
 
 Cependant, même si un système informatique est indispensable, ce système n'est qu'un outil. Cela ne signifie pas que la démocratie n'existerait QUE sur internet.
 Il me semblerait absolument nécessaire d'organiser AUSSI des assemblées locales (IRL) pour parler de politique entre citoyens, pour débattre des idées, pour faire des propositions, etc. Le système informatique sera là pour rassembler l'ensemble de ces travaux, les rendre disponibles à tous, permettre le vote pour les prises de décisions à grande échelle, etc, etc.
 
+Voici donc une hébauche du système informatique que j'imagine, basé sur le réseau communecter.org, et le système de "communexion" :
 
 ----------------------------
-*** La démocratie communectée :
+*** La démocratie Communectée :
 ----------------------------
 
 
 *** - Dans Communecter, chaque commune dispose d'un "conseil citoyen".
 
-*** - Dans Communecter, un "conseil citoyen" est un espace destiné à co-écrire les lois d'un pays.
+*** - Dans Communecter, un "conseil citoyen" est un espace destiné à co-écrire les lois du pays.
 Dans notre cas : la France. (applicable pour n'importe quel pays).
 
 *** - Chaque citoyens peut proposer des textes de lois
@@ -80,6 +81,7 @@ Dans notre cas : la France. (applicable pour n'importe quel pays).
 *** - Chaque citoyens peut voter -pour- les lois qui lui conviennent, et -voter- contre celles qui ne lui conviennent pas (+ vote blanc pris en compte).
 
 *** - Pour valider une loi, il faut qu'elle obtienne une majorité de suffrages favorables dans un temps donnée (ma proposition : 1 mois)
+
 => règle de la majorité : à définir
 
   => ma proposition : une proposition doit obtenir un minimum de 61.8% des suffrages favorables pour être validée.
@@ -94,17 +96,18 @@ Dans notre cas : la France. (applicable pour n'importe quel pays).
       => tout le monde peut tricher (voter avec plusieurs comptes - dans un sens comme dans l'autre)
 
     => il faut donc éviter la majorité à 50% qui est trop aléatoire (49 je perd, 51 je gagne)
+    => il faut donc relever le seuil de la majorité, pour assurer que chaque texte validé correspond à la volonté populaire.
 
 
 *** - Sur Communecter, voter signifie :
+
 		- Je valide cette proposition de loi
 
 		- J'invalide cette proposition de loi
 
-    - Vote blanc
+    - Je n'ai pas d'avis : Vote blanc
 
-		ou
-
+		-- formulé autrement :
 
 		Valider cette proposition ?
 
@@ -118,12 +121,15 @@ Dans notre cas : la France. (applicable pour n'importe quel pays).
 ------------------------------------------------
 Rayon d'action des citoyens : 
 ------------------------------------------------
-- On ne peut agir que dans les conseil citoyens liés à sa communexion :
-ma commune, mon département, ma région, mon pays.
+- Un citoyen ne peut agir (proposer, voter, amander) que dans les conseil citoyens liés à sa communexion :
+sa commune, son département, sa région, son pays.
 
-- On peut accéder en lecture à toutes les propositions de tous les conseils citoyens (en changeant de communexion).
+- Cepedant, chaque citoyen peut accéder en lecture à toutes les propositions de tous les conseils citoyens (en changeant de communexion), 
+même s'il ne peut pas y participer (proposer, voter, amander).
 
-
+=> pourquoi ? 
+  => pour limiter les possibilités de triches (je ne peux tricher que dans MON conseil citoyen)
+  => pour répartir le travail de lecture et de vote sur l'ensemble du territoire
 
 *** Sur Communecter, une loi c'est quoi ? 
 ------------------------------------------------
@@ -148,13 +154,14 @@ COMMUNE > DEPARTEMENT > REGION > PAYS
 *** 
 Les lois sont toujours proposées d'abord au niveau local : la commune. Dans le conseil citoyen des communes.
 Lorsqu'on propose un texte, on peut définir le "niveau final" à atteindre (COMMUNE, DEPARTEMENT, REGION ou PAYS) en fonction de la portée du texte.
+
 *** 
 Lorsqu'une proposition de loi est adoptée dans une commune, elle est automatiquement soumise à un nouveau vote, au niveau supérieur,jusqu'à atteindre
 le niveau final visé.
 
 *** 
 Si le conseil citoyen départemental approuve à nouveau la proposition de loi, celle-ci est officiellement validée, 
-et légitimement applicable à l'ensemble des communes du département en question.
+et légitimement applicable à l'ensemble des communes du département en question, après un délais d'application à définir. Il est possible qu'un plan de mise en oeuvre soit nécessaire pour certaines lois validées .
 
 Si elle est réfusée, elle n'est pas valide et donc inaplicable sauf dans la commune initiale qui l'avait validée, 
 si la commune est en mesure d'en assurer seule l'application, et que cela n'entre pas en conflit avec les lois des niveaux supérieurs.
@@ -182,7 +189,7 @@ Pas besoin de tirage au sort, puisque tout le monde peut y participer en même t
 Et pas besoin d'élus pour écrire les lois, puisqu'elles sont co-écrites par tout le monde.
 
 *** EN RÉSUMÉ
-La validation d'une loi part de la base (les communes), puis s'étend progressivement à travers le département et la région.
+La validation d'une loi part de la base (les communes), puis s'étend progressivement à travers le département, la région, le pays.
 Une loi progresse sur le territoire à travers 4 niveaux : commune, dep, region, pays
 
 
@@ -261,6 +268,8 @@ Le scope est automatiquement initialisé sur la communexion de l'utilisateur con
 
 
 
+
+
 ********
 ** MISE EN OEUVRE / CONCRETEMENT KESKON FAIT AVEC CA ?
 ********
@@ -306,7 +315,7 @@ Il me semble donc qu'il faut tout mettre en commun dès le départ
 Dans le cas d'une constituante, nous serons obligés d'écrire les premiers articles de la constitution que nous souhaitons réécrire,
 une sorte de préambule à la constitution, pour définir les règles de fonctionnement du système informatique.
 
-Ce préambule pourrait être soumis à ses propres règles de fonctionnement pour être définitivement validé (ou non) avant lancer la constituante.
+Ce préambule pourrait être soumis à ses propres règles de fonctionnement pour être définitivement validé (ou non) avant de lancer la constituante.
 
 La constituante ne pourrait débuter véritablement qu'une fois le préambule validé par le vote, et éventuellment modifié par amendements.
 

@@ -142,11 +142,16 @@
 					<i class="fa fa-<?php echo $icon; ?> pull-left margin-top-5"></i> 
 					<div class="name-header pull-left"><?php echo @$element["name"]; ?></div>
 				</span>
-				<?php if(($type==Organization::COLLECTION || $type==Event::COLLECTION) && @$element["type"]){ ?>
+				<?php if(($type==Organization::COLLECTION || $type==Event::COLLECTION) && @$element["type"]){ 
+					if($type==Organization::COLLECTION)
+						$typesList=Organization::$types;
+					else
+						$typesList=Event::$types;
+				?>
 					<span id="typeHeader" class="margin-left-10 pull-left">
 						<i class="fa fa-x fa-angle-right pull-left"></i>
 						<div class="type-header pull-left">
-					 		<?php echo Yii::t("common", $element["type"]) ?>
+					 		<?php echo Yii::t("category", $typesList[$element["type"]]) ?>
 					 	</div>
 					</span>
 				<?php } ?>
@@ -388,7 +393,7 @@ jQuery(document).ready(function() {
 								}, 300);
 							}
    						 	else
-   						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
+   						 		toastr.warning(trad["minsizebanner"]);
 						};
 			        });
 			        reader.readAsDataURL(file);

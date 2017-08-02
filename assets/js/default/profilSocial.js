@@ -143,10 +143,10 @@ function bindButtonMenu(){
 	$("#btn-hide-desc").click(function(){
 		if($("#desc-event").hasClass("hidden")){
 			$("#desc-event").removeClass("hidden");
-			$("#btn-hide-desc").html("<i class='fa fa-angle-up'></i> masquer");
+			$("#btn-hide-desc").html("<i class='fa fa-angle-up'></i> "+trad["hide"]);
 		}else{
 			$("#desc-event").addClass("hidden");
-			$("#btn-hide-desc").html("<i class='fa fa-angle-down'></i> afficher la description");
+			$("#btn-hide-desc").html("<i class='fa fa-angle-down'></i> "+trad["showdescr"]);
 		}
 	});
 
@@ -331,32 +331,33 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	
 	var s = (n>1) ? "s" : "";
 
-
+	if(countData=='Aucun')
+		countData=trad["no"];
 	var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
-	if(dataName == "follows")	{ html += elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
-	else if(dataName == "followers")	{ html += countData + " <b>abonné"+s+"</b> à " + elementName; }
-	else if(dataName == "members")	{ html += elementName + " est composé de " + countData + " <b>membre"+s+"</b>"; }
-	else if(dataName == "attendees")	{ html += countData + " <b>Participant"+s+"</b> à l'événement " + elementName; }
-	else if(dataName == "guests")	{ html += countData + " <b>Invité"+s+"</b> sur " + elementName; }
-	else if(dataName == "contributors")	{ html += countData + " <b>contributeur"+s+"</b> au projet " + elementName; }
+	if(dataName == "follows")	{ html += elementName + " "+trad["isfollowing"]+" " + countData + " "+trad["page"]+s+""; }
+	else if(dataName == "followers")	{ html += countData + " <b>"+trad["follower"]+s+"</b> "+trad["to"]+" "+ elementName; }
+	else if(dataName == "members")	{ html += elementName + " "+trad["iscomposedof"]+" " + countData + " <b>"+trad["member"]+s+"</b>"; }
+	else if(dataName == "attendees")	{ html += countData + " <b>"+trad["attendee"]+s+"</b> "+trad["toevent"]+" " + elementName; }
+	else if(dataName == "guests")	{ html += countData + " <b>"+trad["guest"]+s+"</b> "+trad["on"]+" " + elementName; }
+	else if(dataName == "contributors")	{ html += countData + " <b>"+trad["contributor"]+s+"</b> "+trad["toproject"]+" " + elementName; }
 	
 	else if(dataName == "events"){ 
 		if(type == "events"){
-			html += elementName + " est composé de " + countData+" <b> sous-événement"+s; 
+			html += elementName + " "+trad["iscomposedof"]+" " + countData+" <b> "+trad["subevent"]+s; 
 		}else{
-			html += elementName + " participe à " + countData+" <b> événement"+s; 
+			html += elementName + " "+trad["takepart"]+" " + countData+" <b> "+trad["event"]+s; 
 		}
 	}
-	else if(dataName == "organizations")	{ html += elementName + " est membre de " + countData+" <b>organisation"+s; }
-	else if(dataName == "projects")		{ html += elementName + " contribue à " + countData+" <b>projet"+s }
+	else if(dataName == "organizations")	{ html += elementName + " "+trad["ismemberof"]+" "+ countData+" <b>"+trad["organization"]+s; }
+	else if(dataName == "projects")		{ html += elementName + " "+trad["contributeto"]+" " + countData+" <b>"+trad["project"]+s }
 
-	else if(dataName == "collections"){ html += countData+" <b>collection"+s+"</b> de " + elementName; }
-	else if(dataName == "poi"){ html += countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
-	else if(dataName == "classified"){ html += countData+" <b>annonce"+s+"</b> créée"+s+" par " + elementName; }
+	else if(dataName == "collections"){ html += countData+" <b>"+trad["collection"]+s+"</b> "+trad["of"]+" " + elementName; }
+	else if(dataName == "poi"){ html += countData+" <b>"+trad["point"+s+"interest"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
+	else if(dataName == "classified"){ html += countData+" <b>"+trad["classified"]+s+"</b> "+trad['createdby'+s]+" " + elementName; }
 
-	else if(dataName == "needs"){ html += countData+" <b>besoin"+s+"</b> de " + elementName; }
+	else if(dataName == "needs"){ html += countData+" <b>"+trad["need"]+s+"</b> "+trad["of"]+" " + elementName; }
 
-	else if(dataName == "dda"){ html += countData+" <b>proposition"+s+"</b> de " + elementName; }
+	else if(dataName == "dda"){ html += countData+" <b>"+trad["proposal"]+s+"</b> "+trad["of"]+" " + elementName; }
 
 	else if(dataName == "actionRooms"){ html += countData+" <b>espace de décision"+s+"</b> de " + elementName; }
 
@@ -389,12 +390,12 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections","actionRooms"] ) >= 0 ){
 			if(dataName == "collections"){
 				html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="collection.crud()">';
-		    	html +=	'<i class="fa fa-plus"></i> Créer une nouvelle collection</a>' ; 
+		    	html +=	'<i class="fa fa-plus"></i> '+trad["createcollection"]+'</a>' ; 
 			}
 			else {
 				var elemSpec = dyFInputs.get(dataName);
 				html += '<button class="btn btn-sm btn-link bg-green-k pull-right btn-open-form" data-form-type="'+elemSpec.ctrl+'" data-dismiss="modal">';
-		    	html +=	'<i class="fa fa-plus"></i> Créer '+trad[ elemSpec.ctrl ]+'</button>' ;  
+		    	html +=	'<i class="fa fa-plus"></i> '+trad["create"+elemSpec.ctrl]+'</button>' ;  
 		    }
 		}
 	}

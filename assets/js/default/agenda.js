@@ -269,7 +269,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
               {       
                 //ajout du footer       
                 str += '<div class="center" id="footerDropdown">';
-                str += "<hr style='float:left; width:100%;'/><label style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " résultats</label><br/>";
+                str += "<hr style='float:left; width:100%;'/><label style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " "+trad["results"]+"</label><br/>";
                 str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
                 str += "</div>";
 

@@ -196,7 +196,7 @@
     			$iconNewsPaper="user-circle"; 
     	  ?>
 		  <button type="button" class="btn btn-default bold hidden-xs btn-start-newsstream">
-		  		<i class="fa fa-rss"></i> Fil d'actu<span class="hidden-sm">alité</span>s
+		  		<i class="fa fa-rss"></i> <?php echo Yii::t("common","News stream<span class='hidden-sm'></span>") ?>
 		  </button>
 
 		  <?php } else {
@@ -212,7 +212,7 @@
 		  <button type="button" class="btn btn-default bold hidden-xs btn-start-notifications">
 		  	<i class="fa fa-bell"></i> 
 		  	<span class="hidden-xs hidden-sm">
-		  		<?php if (@Yii::app()->session["userId"] == $element["_id"]) echo "Mes n"; else echo "N"; ?>otif<span class="hidden-md">ications</span>
+		  		<?php if (@Yii::app()->session["userId"] == $element["_id"]) echo Yii::t("common","My notif<span class='hidden-md'>ication</span>s"); else echo Yii::t("common","Notif<span class='hidden-md'>ication</span>s"); ?>
 		  	</span>
 		  	<span class="badge notifications-countElement <?php if(!@$countNotifElement || (@$countNotifElement && $countNotifElement=="0")) echo 'badge-transparent hide'; else echo 'badge-success'; ?>">
 		  		<?php echo @$countNotifElement ?>
@@ -329,7 +329,7 @@
 			  	<button 	class='btn btn-default bold btn-share pull-right  letter-green' style="border:0px!important;"
 	                    	data-ownerlink='share' data-id='<?php echo $element["_id"]; ?>' data-type='<?php echo $typeItem; ?>' 
 	                    	data-isShared='false'>
-	                    	<i class='fa fa-share'></i> <span class="hidden-xs">Partager</span>
+	                    	<i class='fa fa-share'></i> <span class="hidden-xs"><?php echo Yii::t("common","Share") ?></span>
 	          	</button>
 	        </div>
 	    <?php } ?>
@@ -374,75 +374,75 @@
 	       
 	       	<span class="name-header"><?PHP echo @$element["name"]; ?></span>
 	       <br>
-	       	<i class="fa fa-plus-circle"></i> Publier du contenu sur cette page
-	       <br><small>Que souhaitez-vous publier ?</small>
+	       	<i class="fa fa-plus-circle"></i> <?php echo Yii::t("form","Create content link to this page") ?>
+	       <br><small><?php echo Yii::t("form","What kind of content will you create ?") ?></small>
 	       </h4>
 
 	        <div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
 
 	        <button data-form-type="event"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-orange">
-	            <h6><i class="fa fa-calendar fa-2x bg-orange"></i><br> Événement</h6>
-	            <small>Faire connaitre un événement<br>Inviter des participants<br>Informer votre réseau</small>
+	            <h6><i class="fa fa-calendar fa-2x bg-orange"></i><br> <?php echo Yii::t("common", "Event") ?></h6>
+	            <small><?php echo Yii::t("form", "Diffuse an event<br>Invite attendees<br>Communicate to your network") ?></small>
 	        </button>
 	        <button data-form-type="classified"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure hide-event">
-	            <h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> Annonce</h6>
-	            <small>Publier une petite annonce<br>Partager Donner Vendre Louer<br>Matériel Immobilier Emploi</small>
+	            <h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> <?php echo Yii::t("common", "Classified") ?></h6>
+	            <small><?php echo Yii::t("form","Create a classified ad<br>To share To give To sell To rent<br>Material Property Job") ?></small>
 	        </button>
 
 	        <button data-form-type="poi"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green-poi">
-	            <h6><i class="fa fa-map-marker fa-2x bg-green-poi"></i><br> Point d'intérêt</h6>
-	            <small>Faire connaître un lieu intéressant<br>Contribuer à la carte collaborative<br>Valoriser son territoire</small>
+	            <h6><i class="fa fa-map-marker fa-2x bg-green-poi"></i><br> <?php echo Yii::t("common", "Point of interest") ?></h6>
+	            <small><?php echo Yii::t("form","Make visible an interesting place<br>Contribute to the collaborative map<br>Highlight your territory") ?></small>
 	        </button>
 
 	        
 	        <button data-form-type="url" data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-url">
-	            <h6><i class="fa fa-link fa-2x bg-url"></i><br> URL</h6>
-	            <small>Partager une addresse web<br>Vos sites favoris<br>Des info importantes...</small>
+	            <h6><i class="fa fa-link fa-2x bg-url"></i><br> <?php echo Yii::t("common", "URL") ?></h6>
+	            <small><?php echo Yii::t("form","Share a link<br>Your favorites websites<br>Important news...") ?></small>
 	        </button>
 
 
 	        <button data-form-type="project"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-purple hide-event">
-	            <h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> Projet</h6>
-	            <small>Faire connaitre un projet<br>Trouver du soutien<br>Construire une communauté</small>
+	            <h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> <?php echo Yii::t("common", "Project") ?></h6>
+	            <small><?php echo Yii::t("form", "Make visible a project<br>Find support<br>Build a community") ?></small>
 	        </button>
 
 			<button data-form-type="contactPoint"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-blue hide-citoyens">
-	            <h6><i class="fa fa-envelope fa-2x bg-blue"></i><br> Contact</h6>
-	            <small>Définir les rôles de chacun<br>Faciliter la communication<br>Interne et externe</small>
+	            <h6><i class="fa fa-envelope fa-2x bg-blue"></i><br> <?php echo Yii::t("common","Contact") ?></h6>
+	            <small><?php echo Yii::t("form", "Define roles of everyone<br>Communicate easily<br>Internal and external") ?></small>
 	        </button>
 
 			<div class="section-create-page">
 	        
 	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GROUP; ?>"  data-dismiss="modal"
 	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 letter-turq">
-	                <h6><i class="fa fa-circle-o fa-2x bg-turq"></i><br> Groupe</h6>
-	                <small>Créer un groupe<br>Partager vos centres d'intêrets<br>Discuter Communiquer S'amuser</small>
+	                <h6><i class="fa fa-circle-o fa-2x bg-turq"></i><br> <?php echo Yii::t("common", "Group") ?></h6>
+	                <small><?php echo Yii::t("form","Create a group<br>Share your interest<br>Speak Diffuse Have fun") ?></small>
 	            </button>
 
 	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_NGO; ?>"  data-dismiss="modal"
 	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green">
-	                <h6><i class="fa fa-group fa-2x bg-green"></i><br> Association</h6>
-	                <small>Faire connaitre votre association<br>Gérer les adhérents<br>Partager votre actualité</small>
+	                <h6><i class="fa fa-group fa-2x bg-green"></i><br> <?php echo Yii::t("common", "NGO") ?></h6>
+	                <small><?php echo Yii::t("form","Make visible your NGO<br>Manage the community<br>Share your news") ?></small>
 	            </button>
 	            
 	            
 	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_BUSINESS; ?>"  data-dismiss="modal"
 	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure">
-	                <h6><i class="fa fa-industry fa-2x bg-azure"></i><br> Entreprise</h6>
-	                <small>Faire connaitre votre entreprise<br>Trouver de nouveaux clients<br>Gérer vos contacts</small>
+	                <h6><i class="fa fa-industry fa-2x bg-azure"></i><br> <?php echo Yii::t("common", "Local Business") ?></h6>
+	                <small><?php echo Yii::t("form","Make visible your company<br>Find new customer<br>Manage your contacts") ?></small>
 	            </button>
 
 	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GOV; ?>"  
 	                    data-dismiss="modal"
 	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-red">
-	                <h6><i class="fa fa-university fa-2x bg-red"></i><br> Service public</h6>
-	                <small>Mairies, scolaires, etc...<br>Partager votre actualité<br>Partager des événements</small>
+	                <h6><i class="fa fa-university fa-2x bg-red"></i><br> <?php echo Yii::t("common", "Government Organization") ?></h6>
+	                <small><?php echo Yii::t("form","Town hall, schools, etc...<br>Share your news<br>Share events") ?></small>
 	            </button>
 
 	        </div>
@@ -452,26 +452,23 @@
 
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section pull-right">
 		
-		<?php   //$classDescH=""; 
-				//$classBtnDescH="<i class='fa fa-angle-up'></i> masquer"; 
-				$marginCentral="";
-				//if(!@$element["description"] || @$linksBtn["isFollowing"]==true || 
-				//	@$linksBtn["isMember"]==true){
-					$classDescH="hidden"; 
-					$classBtnDescH="<i class='fa fa-angle-down'></i> afficher la description"; 
-				//}
+		<?php    
+			$marginCentral="";
+			$classDescH="hidden"; 
+			$classBtnDescH="<i class='fa fa-angle-down'></i> ".Yii::t("common","show description"); 
+				
 
 		if($typeItem != Person::COLLECTION){ 
 		?>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:20px;">
 				<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
 					<b><i class="fa fa-angle-down"></i> 
-					<i class="fa fa-info-circle"></i> Description principale</b>
+					<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","Main description") ?></b>
 					<hr>
 					<span id="descProfilsocial">
 						<?php echo 	@$element["description"] && @$element["description"]!="" ? 
 									@$element["description"] : 
-									"<span class='label label-info'>Aucune description enregistrée</span>"; ?>
+									"<span class='label label-info'> ".Yii::t("common","No description registred")."</span>"; ?>
 					</span>
 				</span>
 			</div>

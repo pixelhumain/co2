@@ -463,8 +463,9 @@ var formInMap = {
 						dyFInputs.locationObj.addLocationToForm(locObj);
 					}
 					$("#form-street").val($('#street_sumery_value').html());
-					$(".locationBtn").html("<i class='fa fa-home'></i> Adresse secondaire");
-					formInMap.initData();
+					if(typeof cancel == "undefined" || cancel==false)
+						$(".locationBtn").html("<i class='fa fa-home'></i> "+tradDynForm["secondLocality"]);
+					formInMap.initData(true);
 					showMap(false);
 					Sig.clearMap();
 					if(location.hash != "#referencement" && location.hash != "#web")
@@ -774,13 +775,15 @@ var formInMap = {
 		}, 1500);
 	},
 
-	initData : function(){
+	initData : function(keepType){
 		mylog.log("initData");
 		formInMap.timeoutAddCity;
 		formInMap.initVarNE();
 		formInMap.typeSearchInternational = "";
 		formInMap.geoShape = "";
-		formInMap.formType = "";
+		if(typeof keepType =="undefined" || keepType==false){
+			formInMap.formType = "";
+		}
 		formInMap.updateLocality = false;
 		formInMap.addressesIndex = false;
 		formInMap.initDropdown();
@@ -794,7 +797,7 @@ var formInMap = {
 		mylog.log("formInMap cancel()");
 		formInMap.typeSearchInternational = "";
 		formInMap.geoShape = "";
-		formInMap.formType = "";
+		//formInMap.formType = "";
 		formInMap.addressesIndex = false;
 		formInMap.initVarNE();
 		formInMap.initHtml();

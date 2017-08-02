@@ -2610,8 +2610,8 @@ var dyFObj = {
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
 	  	dyFObj.buildDynForm(afterLoad, data);
-
-	  	$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+	  	if(typeof dyFObj.elementObj.titleClass != "undefined")
+	  		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 									  .addClass(dyFObj.elementObj.titleClass);
 	},
 	buildDynForm : function (afterLoad,data) { 
@@ -3134,19 +3134,22 @@ var dyFInputs = {
 			if( locObj.address.addressCountry)
 				strHTML += locObj.address.addressCountry;
 			if( locObj.address.postalCode)
-				strHTML += " ,"+locObj.address.postalCode;
+				strHTML += ", "+locObj.address.postalCode;
 			if( locObj.address.addressLocality)
-				strHTML += " ,"+locObj.address.addressLocality;
+				strHTML += ", "+locObj.address.addressLocality;
 			if( locObj.address.streetAddress)
-				strHTML += " ,"+locObj.address.streetAddress;
+				strHTML += ", "+locObj.address.streetAddress;
 			var btnSuccess = "";
 			var locCenter = "";
+			var boolCenter=false;
 			if( dyFInputs.locationObj.countLocation == 0){
 				btnSuccess = "btn-success";
-				locCenter = "<span class='lblcentre'>(localité centrale)</span>";
+				//locCenter = "<span class='lblcentre'>(localité centrale)</span>";
+				locCenter = "<span class='lblcentre'> "+tradDynForm["mainLocality"]+"</span>"; 
+				boolCenter=true;
 			}
 
-			if(typeof index != "undefined"){
+			/*if(typeof index != "undefined"){
 				strHTML = "<a href='javascript:;' class='deleteLocDynForm locationEl"+dyFInputs.locationObj.countLocation+" btn' data-index='"+index+"' data-indexLoc='"+dyFInputs.locationObj.countLocation+"'>"+
 								"<i class='text-red fa fa-times'></i></a>"+
 					  		"<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
@@ -3157,8 +3160,47 @@ var dyFInputs = {
 				strHTML = "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+")' class=' locationEl"+dyFInputs.locationObj.countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
 					  "<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
 					  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
+			}*/
+			if(typeof index != "undefined"){
+				strHTML =  
+			        "<div class='col-md-12 col-sm-12 col-xs-12 text-left shadow2 padding-15 margin-top-15 margin-bottom-15'>" + 
+			          "<span class='pull-left locationEl"+dyFInputs.locationObj.countLocation+" locel text-red bold'>"+ 
+			            "<i class='fa fa-home fa-2x'></i> "+ 
+			            strHTML+ 
+			          "</span> "+ 
+			 
+			          "<a href='javascript:;' data-index='"+index+"' data-indexLoc='"+dyFInputs.locationObj.countLocation+"' "+ 
+			            "class='deleteLocDynForm locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+ 
+			            "<i class='fa fa-times'></i> "+tradDynForm["clear"]+ 
+			          "</a>"+ 
+			 
+			          "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' data-index='"+index+"'"+ 
+			            "class='margin-right-5 centers pull-right center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm "+btnSuccess+"'> "+ 
+			            "<i class='fa fa-map-marker'></i> "+locCenter+ 
+			          "</a>" + 
+			           
+			        "</div>"; 
+			} else {
+				strHTML =  
+			        "<div class='col-md-12 col-sm-12 col-xs-12 text-left shadow2 padding-15 margin-top-15 margin-bottom-15'>" + 
+			          "<span class='pull-left locationEl"+dyFInputs.locationObj.countLocation+" locel text-red bold'>"+ 
+			            "<i class='fa fa-home fa-2x'></i> "+ 
+			            strHTML+ 
+			          "</span> "+ 
+			 
+			          "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+", "+boolCenter+")' "+ 
+			            "class='removeLocalityBtn locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+ 
+			            "<i class='fa fa-times'></i> "+tradDynForm["clear"]+ 
+			          "</a>"+ 
+			 
+			          "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' "+ 
+			            "class='setAsCenterLocalityBtn margin-right-5 centers pull-right center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm "+btnSuccess+"'> "+ 
+			            "<i class='fa fa-map-marker'></i> "+locCenter+ 
+			          "</a>" + 
+			           
+			        "</div>"; 
 			}
-			
+      		$(".locationlocation").append(strHTML); 
 			
 			
 			// strHTML = "<a href='javascript:removeLocation("+dyFInputs.locationObj.countLocation+", "+true+")'' class=' locationEl"+dyFInputs.locationObj.countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
@@ -3168,7 +3210,7 @@ var dyFInputs = {
 			$(".postalcodepostalcode").prepend(strHTML);
 
 			mylog.log("strAddres", strHTML);
-			$(".locationlocation").prepend(strHTML);
+			//$(".locationlocation").prepend(strHTML);
 			dyFInputs.locationObj.countLocation++;
 		},
 		copyPCForm2Dynform : function (postalCodeObj) { 
@@ -3199,13 +3241,45 @@ var dyFInputs = {
 			$(".postalcodepostalcode").prepend(strHTML);
 			dyFInputs.locationObj.countPostalCode++;
 		},
-		removeLocation : function (ix){
+		removeLocation : function (ix,center){
 			mylog.log("dyFInputs.locationObj.removeLocation", ix, dyFInputs.locationObj.elementLocations);
 			dyFInputs.locationObj.elementLocation = null;
 			dyFInputs.locationObj.elementLocations.splice(ix,1);
+			$(".locationEl"+ix).parent().remove();
+			//delete dyFInputs.locationObj.elementLocations[ix];
+			dyFInputs.locationObj.countLocation--;
+			if(dyFInputs.locationObj.countLocation > 0){
+				for(var prop in dyFInputs.locationObj.elementLocations){
+					if(prop >= ix){
+						domNumber=parseInt(prop)+1;
+						domParent=$(".locationEl"+domNumber).parent();
+						var btnSuccess = "";
+						var locCenter = "";
+						var boolCenter=false;
+						if( typeof center != "undefined" && center && prop==0){
+							btnSuccess = "btn-success";
+							//locCenter = "<span class='lblcentre'>(localité centrale)</span>";
+							locCenter = "<span class='lblcentre'> "+tradDynForm["mainLocality"]+"</span>"; 
+							boolCenter=true;
+						}
+						domParent.find(".removeLocalityBtn").attr("href","javascript:dyFInputs.locationObj.removeLocation("+prop+","+boolCenter+")");
+						domParent.find(".setAsCenterLocalityBtn").attr("href","javascript:dyFInputs.locationObj.setAsCenter("+prop+")");
+						$(".locationEl"+domNumber).each(function(){
+							$(this).removeClass("locationEl"+domNumber).addClass("locationEl"+prop);
+						});
+						$(".center"+domNumber).removeClass("center"+domNumber).addClass("center"+prop)/*.append(locCenter)*/;
+					}
+				}
+				if(typeof center != "undefined" && center)
+					dyFInputs.locationObj.setAsCenter(0);
+			} else{
+				$(".locationBtn").html("<i class='fa fa-home'></i> "+tradDynForm["mainLocality"]);
+				//dyFInputs.locationObj.centerLocation = null;
+			}
+			
+			//$.each(function())
 			//TODO check if this center then apply on first
 			//$(".locationEl"+dyFInputs.locationObj.countLocation).remove();
-			$(".locationEl"+ix).remove();
 
 			/*if(ix != 0){
 				removeAddresses(ix-1, true);
@@ -3218,12 +3292,14 @@ var dyFInputs = {
 
 			$(".centers").removeClass('btn-success');
 			$(".lblcentre").remove();
-			$.each(dyFInputs.locationObj.elementLocations,function(i, v) { 
-				if( v.center)
+			$.each(dyFInputs.locationObj.elementLocations,function(i, v) {
+				console.log(v); 
+				if(typeof v.center != "undefined" && v.center)
 					delete v.center;
 			})
 			$(".centers").removeClass('btn-success');
-			$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>(localité centrale)</span>");
+			$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>addresse principale</span>");
+			$(".center"+ix).parent().find(".removeLocalityBtn").attr("href","javascript:dyFInputs.locationObj.removeLocation("+ix+",true)");
 			dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocations[ix];
 			dyFInputs.locationObj.elementLocations[ix].center = true;
 		}
@@ -3989,7 +4065,7 @@ function initKInterface(params){ console.log("initKInterface");
 
     $(".btn-show-map").off().click(function(){
     	if(typeof formInMap != "undefined" && formInMap.actived == true)
-			formInMap.cancel();
+			formInMap.cancel(true);
     	//else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
 		//	getContextDataLinks();
 		else{

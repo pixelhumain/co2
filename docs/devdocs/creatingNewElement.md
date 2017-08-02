@@ -9,4 +9,5 @@ var ressource = <?php echo json_encode( CO2::getContextList("ressource") ) ?>;
 - add openForm btn views/element/profilesocial.php 
 - add left menu link views/pod/menuLeftElement.php 
 - ctk/models/Element.php add new Element Mappings
-- 
+- if used as a directory add to GetDataDetailAction
+- add to Document::generateProfilImages $allowedElements

@@ -167,14 +167,15 @@ Liste des notifications déjà lues => #370 #453
     [ ] SEO optim
    
   ** @Tib
-    [ ] Chloe utilisation du conservatoire 
     [ ] add filters in top bar mapEnd , near username
     [ ] add delete to image upload 
       - on Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté 
     [X] Repair module Tiers Lieux 
     [X] Repair save Ressource 
+    [ ] Edit Element : right click > editer
     [ ] Module TL 
       [ ] bugs
+        [ ] remove section tous
         [ ] search
           [ ] bug : show all
         [ ] update place, ressource : desc  , name ...

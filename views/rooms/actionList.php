@@ -623,7 +623,7 @@ var nbSurveyTotal = <?php echo count($list); ?>;
 
 jQuery(document).ready(function() {
   
-  setTitle("Actions Réactions","cogs text-red");
+  //setTitle("Actions Réactions","cogs text-red");
   $(".main-col-search").addClass("assemblyHeadSection");
   $('.tooltips').tooltip();
 

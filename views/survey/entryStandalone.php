@@ -376,7 +376,7 @@ var endDate = "<?php echo date("d/m/Y",@$survey["dateEnd"]) ?>";
 jQuery(document).ready(function() {
 	$.fn.editable.defaults.container='body';
 	$(".main-col-search").addClass("assemblyHeadSection");
-  	setTitle("Propositions, débats, votes","gavel");
+  	//setTitle("Propositions, débats, votes","gavel");
   	$('.box-vote').show();
 
   	$(".tooltips").tooltip();

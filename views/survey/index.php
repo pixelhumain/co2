@@ -741,7 +741,7 @@ clickedVoteObject = null;
 var nbSurveyTotal = <?php echo count($list); ?>;
 
 jQuery(document).ready(function() {
-  setTitle("Décider ensemble","gavel text-red");
+  //setTitle("Décider ensemble","gavel text-red");
   $(".main-col-search").addClass("assemblyHeadSection");
   $('.tooltips').tooltip();
 

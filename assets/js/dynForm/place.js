@@ -13,7 +13,14 @@ dynForm = {
 	    		}
 	    	}, 
 	    	onload : function(){
-	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
+	    		
+	    		if(typeof data != "undefined" && data.section && data.type && data.subtype ){
+	    			$("#ajaxFormModal #id").val(data.id);
+	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+data.section+" > "+data.type+" > "+data.subtype+"</h4>" );
+					$(".sectionBtntagList").hide();
+					$(".typeBtntagList").hide();
+	    		} else
+	    			$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
 	    	},
 	    },
 	    beforeSave : function(){
@@ -37,7 +44,7 @@ dynForm = {
 	    },
 	    beforeBuild : function(){
 	    	dyFObj.setMongoId('place',function(){
-	    		uploadObj.gotoUrl = '#page.type.places.id.'+uploadObj.id;
+	    		uploadObj.gotoUrl = '#page.type.place.id.'+uploadObj.id;
 	    	});
 	    },
 		afterSave : function(){

@@ -3478,10 +3478,10 @@ var typeObj = {
 				   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
 				   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
 
-	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
+	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker", titleClass : "bg-azure"},
 	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
 	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
-	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
+	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube", titleClass : "bg-azure" },
 
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},

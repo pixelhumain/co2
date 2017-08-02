@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : "Formulaire d'un ressource",
+	    title : "Formulaire d'une ressource",
 	    icon : "map-marker",
 	    type : "object",
 	    onLoads : {
@@ -12,8 +12,12 @@ dynForm = {
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 	    		}
 	    	}, 
-	    	onload : function(){
-	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
+	    	onload : function(data){
+	    		if(data && data.section){
+	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+data.section+"</h4>");
+					$(".sectionBtntagList").hide();
+	    		} else
+	    			$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
 	    	},
 	    },
 	    beforeSave : function(){

@@ -15,4 +15,5 @@ le décor est poser par le ph/themes/CO2
             * http://127.0.0.1/ph/co2/element/getdatadetail/type/place/id/58d7e06e539f221b3d09bba7/dataName/poi?tpl=json 
             * GetDataDetailAction
         * then builds the correspondign directory.js 
+
             

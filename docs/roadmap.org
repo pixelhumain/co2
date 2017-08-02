@@ -124,6 +124,11 @@ Liste des notifications déjà lues => #370 #453
               - Utilisateur fait une réservation -> Dynform
               - Le pro reçoit un mail avec le tel / email de l'user -> Envoie de mail
               - Payement 
+  * SmartCity Possession
+    [ ] DDA
+    [ ] GED simple
+    [ ] Rocket chat 
+    [ ] share urls 
 
 * Communication 
   [ ] passer la roadmap dans le Wiki
@@ -169,15 +174,18 @@ Liste des notifications déjà lues => #370 #453
     [X] Repair module Tiers Lieux 
     [X] Repair save Ressource 
     [ ] Module TL 
-      [ ] directory
-        [ ] members 
-        [X] projects
-        [X] organisations
-        [X] poi
-        [ ] ressource
-        [ ] needs
-      [ ] on events TL connecté url to visio 
-        [ ] show icons for quick access to ressources of a TL event
+      [ ] bugs
+        [ ] search
+          [ ] bug : show all
+        [ ] update place, ressource : desc  , name ...
+        [ ] type PL Tous :(
+        [ ] directory
+          [ ] members 
+          [ ] needs
+      [ ] ideas
+        [ ] mesLieux : adds a location to a map in person
+        [ ] on events TL connecté url to visio 
+          [ ] show icons for quick access to ressources of a TL event
     [ ] Ressource
     [ ] Besoin
     [ ] Stephane Exodata 0692615381
@@ -202,6 +210,7 @@ Liste des notifications déjà lues => #370 #453
         [ ] when all done status : finished 
   ** @tango
   [ ] connecter le form mail au membres d'un groupe
+  [ ] delete mapIconTop into typeObj
   ** @Clem
   [ ] on dynform, input name : paste url > get + fills max inputs
     [ ] also on add news > propose add as element > choose type fills infos 
@@ -240,6 +249,7 @@ Liste des notifications déjà lues => #370 #453
   ** @Damien 
     [ ] coopedia
       [ ] etat pour mettre en prod ?
+    [ ] MEP interop
     [ ] opendata sources 
       [ ] connecter des scripts api 
         [ ] scope geo

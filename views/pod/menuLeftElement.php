@@ -341,7 +341,6 @@
 			<li>
 				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="poi" data-icon="map-marker">
 					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Points of interests"); ?>
-		</a>
 				</a>
 			</li>			
 		<?php }  
@@ -356,6 +355,19 @@
 			</li>
 		<?php } ?>
 		<li><hr></li>
+
+		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
+				  $type==Person::COLLECTION){  
+					if(!@$front || (@$front)){ 
+		?>
+			<li class="margin-top-50">
+				<h4><i class="fa fa-angle-down"></i> Espace coopératif</h4>
+				<hr>
+			</li>
+			<li class="" id="fast-rooms">
+			</li>			
+		<?php }  
+		} ?>
 
 	<?php } ?>
 

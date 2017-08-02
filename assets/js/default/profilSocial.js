@@ -67,6 +67,15 @@ function bindButtonMenu(){
 		//history.pushState(null, "New Title", hashUrlPage+".view.chart");
 		loadChart();
 	});
+
+	$(".btn-start-actionrooms").click(function(){
+		responsiveMenuLeft();
+		location.hash=hashUrlPage+".view.actionRooms";
+		//history.pushState(null, "New Title", hashUrlPage+".view.chart");
+		loadActionRoom();
+	});
+
+	
 	$(".btn-show-activity").click(function(){
 		responsiveMenuLeft();
 		location.hash=hashUrlPage+".view.history";
@@ -349,6 +358,8 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 
 	else if(dataName == "dda"){ html += countData+" <b>proposition"+s+"</b> de " + elementName; }
 
+	else if(dataName == "actionRooms"){ html += countData+" <b>espace de décision"+s+"</b> de " + elementName; }
+
 	else if(dataName == "urls"){ 
 		var str = " a " + countData;
 		if(countData == "Aucun")
@@ -375,7 +386,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	}
 
 	if( openEdition || edit ){
-		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
+		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections","actionRooms"] ) >= 0 ){
 			if(dataName == "collections"){
 				html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="collection.crud()">';
 		    	html +=	'<i class="fa fa-plus"></i> Créer une nouvelle collection</a>' ; 
@@ -529,6 +540,14 @@ function loadUrls(){
 					displayInTheContainer(data, "urls", "external-link", "urls");
 				}
 	,"html");
+}
+
+function loadActionRoom(){
+	//toogleNotif(false);
+	showLoader('#fast-rooms');
+	var params = { };
+	ajaxPost('#fast-rooms', baseUrl+'/'+moduleId+'/rooms/index/type/'+contextData.type+
+									'/id/'+contextData.id, params, function(){},"html");
 }
 
 function loadContacts(){

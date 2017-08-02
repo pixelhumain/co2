@@ -75,7 +75,7 @@
 	<?php
 		if($contextType == "actionRooms" && $context["type"] == ActionRoom::TYPE_DISCUSS){
 			echo "<div class='col-md-4'>";
-			$this->renderPartial('../pod/fileupload', array("itemId" => (string)$context["_id"],
+			/*$this->renderPartial('../pod/fileupload', array("itemId" => (string)$context["_id"],
 				  "type" => ActionRoom::COLLECTION,
 				  "resize" => false,
 				  "contentId" => Document::IMG_PROFIL,
@@ -83,7 +83,7 @@
 				  "image" => $images,
 				   "parentType" => $parentType,
 				   "parentId" => $parentId, 
-			)); 
+			)); */
 		}
 		echo "</div>";
 	

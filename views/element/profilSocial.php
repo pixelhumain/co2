@@ -570,6 +570,8 @@
 		$(".hide-"+contextData.type).hide();
 		getProfilSubview(subView,dirHash);
 		
+		loadActionRoom();
+
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
 		getContextDataLinks();

@@ -110,7 +110,7 @@
   .mixcontainer .mix{
     border-radius:0px;
     border-color: #CCC;
-    height:355px;
+    height:375px;
     margin:1% 1% !important;
     float:left;
     moz-box-shadow: 0px 2px 4px -3px rgba(101, 101, 101, 0.61);
@@ -198,6 +198,7 @@
     .progress{
       margin-bottom:5px;
       margin-top:5px;
+      width:100%;
     }
 
 
@@ -305,7 +306,7 @@
         $tagBlock = "";
         $cpBlock = "";
         $name = $entry["name"];
-        $message = substr($entry["message"],0,280);
+        $message = substr(@$entry["message"],0,280);
         $email =  (isset($entry["email"])) ? $entry["email"] : "";
         $cpList = (isset($entry["cp"])) ? $entry["cp"] : "";
         if( !isset($_GET["cp"]) && $entry["type"] == Survey::TYPE_SURVEY )
@@ -376,7 +377,7 @@
         $surveyIsClosed = (isset($entry["dateEnd"]) && $entry["dateEnd"] < time() ) ;
         $surveyHasVoted = (isset($voteLinksAndInfos["hasVoted"]) && $voteLinksAndInfos["hasVoted"] == true) ? true : false;
         
-        $content = ($entry["type"]==Survey::TYPE_ENTRY) ? "".$entry["message"]:"";
+        $content = ($entry["type"]==Survey::TYPE_ENTRY) ? "".@$entry["message"]:"";
 
        
         $moderatelink = (  @$where["type"]==Survey::TYPE_ENTRY && $isModerator && isset( $entry["applications"][Yii::app()->controller->module->id]["cleared"] ) && $entry["applications"][Yii::app()->controller->module->id]["cleared"] == false ) ? "<a class='btn golink' href='javascript:moderateEntry(\"".$entry["_id"]."\",1)'><i class='fa fa-plus ' ></i></a><a class='btn alertlink' href='javascript:moderateEntry(\"".$entry["_id"]."\",0)'><i class='fa fa-minus ' ></i></a>" :"";
@@ -451,9 +452,9 @@
         //title + Link
         $link = $name;
         if ( $entry["type"] == Survey::TYPE_SURVEY )
-          $link = '<a class="titleMix text-dark '.$meslois.'" onclick="showRoom(\'entry\', \''.(string)$entry["_id"].'\')" href="javascript:">'."<i class='fa fa-".$titleIcon."'></i> ".$name.' ('.$count.')</a>' ;
+          $link = '<a class="titleMix text-dark '.$meslois.'" onclick="loadRoom(\'entry\', \''.(string)$entry["_id"].'\')" href="javascript:">'."<i class='fa fa-".$titleIcon."'></i> ".$name.' ('.$count.')</a>' ;
         else if ( $entry["type"] == "entry" )
-          $link = '<a class="titleMix text-dark '.$meslois.'" onclick="showRoom(\'entry\', \''.(string)$entry["_id"].'\')" href="javascript:;">'."<i class='fa fa-".$titleIcon."'></i> ".substr($name, 0, 70).'</a>' ;
+          $link = '<a class="titleMix text-dark '.$meslois.'" onclick="loadRoom(\'entry\', \''.(string)$entry["_id"].'\')" href="javascript:;">'."<i class='fa fa-".$titleIcon."'></i> ".substr($name, 0, 70).'</a>' ;
 
         //$leftLinks = "<button onclick='".$mainClick."' class='btn btn-default homestead col-md-12' style='font-size:20px;'> ".$stateLbl."</button>"; //$voteLinksAndInfos["links"];
 
@@ -473,7 +474,7 @@
         if( !$surveyIsClosed && !$surveyHasVoted && !$isArchived )        
         $leftLinks = "<button onclick=".'"urlCtrl.loadByHash(\''.$btnUrl.'\')"'." class='col-xs-12 btn btn-default homestead text-red pull-left' style='font-size:20px;'> ".$btnLbl."</button>";
         else{
-          $btnRead = '<button onclick="showRoom(\'entry\', \''.(string)$entry["_id"].'\')"'." class='btn btn-lg btn-default homestead pull-right text-bold tooltips' ".
+          $btnRead = '<button onclick="loadRoom(\'entry\', \''.(string)$entry["_id"].'\')"'." class='btn btn-lg btn-default homestead pull-right text-bold tooltips' ".
                   ' data-toggle="tooltip" data-placement="left" title="Afficher les détails"'.
                   " style='margin-top: -2px;margin-right: -5px;margin-bottom: -1px;'><i class='fa fa-angle-right'></i></button>"; //$voteLinksAndInfos["links"];
         }
@@ -566,16 +567,16 @@
 
     <div class="panel-white" style="display:inline-block; width:100%;">
    
-          <div class="col-md-4 col-sm-4 margin-bottom-15">
+          <div class="col-md-4 col-sm-4 margin-bottom-15 bg-white" style="min-height: 200px;">
                 <?php 
-                  $this->renderPartial('../pod/fileupload', array("itemId" => (string)$where["survey"]["_id"],
+                  /*$this->renderPartial('../pod/fileupload', array("itemId" => (string)$where["survey"]["_id"],
                                             "type" => ActionRoom::COLLECTION,
                                             "resize" => false,
                                             "contentId" => Document::IMG_PROFIL,
                                             "editMode" => @$canParticipate,
                                             "image" => $images,
                                             "parentType" => $parentType,
-                                            "parentId" => $parentId)); 
+                                            "parentId" => $parentId)); */
                 ?>
           </div>   
                 
@@ -949,7 +950,7 @@ function toggleGraph(){
 function archive(collection,id){
   mylog.warn("--------------- archive ---------------------",collection,id);
     
-  bootbox.confirm("Vous êtes sûr ? ",
+  bootbox.confirm("Vous êtes sûr de vouloir archiver cet espace ?",
       function(result) {
         if (result) {
           params = { 

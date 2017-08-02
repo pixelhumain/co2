@@ -3,6 +3,22 @@
 
 <style type="text/css">
     blockquote{border-color: #2BB0C6; cursor: pointer;}
+
+    #editRoomsContainer .select2TagsInput{
+      border:0px !important;
+    }
+
+    #editRoomsContainer .tagstags ul.select2-choices{
+      border: solid 1px #DADADA !important
+    }
+
+    #editRoomsContainer .form-actions hr{
+      display: none;
+    }
+
+    #editRoomsContainer .control-label{
+      margin-bottom:10px;
+    }
 </style>
 
 <div id="editRoomsContainer" class=""></div>
@@ -31,6 +47,7 @@ var roomFormDefinition = {
             "name" :{
               "inputType" : "text",
               "placeholder" : "Nom de l'espace",
+              "label" : "Nom de l'espace",
               "rules" : {
                 "required" : true
               }
@@ -88,7 +105,7 @@ function editRoomSV (roomObj) {
           onSave : function(){
             mylog.log("saving Room!!");
             mylog.log("type : ", $("#editRoomsContainer #roomType").val());
-            processingBlockUi();
+            //processingBlockUi();
             var params = { 
                "email" : "<?php echo Yii::app()->session['userEmail']?>" , 
                "name" : $("#editRoomsContainer #name").val() , 
@@ -113,6 +130,8 @@ function editRoomSV (roomObj) {
                   delete window.myVotesList;
                   mylog.log("SUCCESS SAVE ROOM :");
                   mylog.dir(data);
+
+                  /*
                     if( data.newInfos.type == "<?php echo ActionRoom::TYPE_DISCUSS ?>" )
                       urlCtrl.loadByHash("#comment.index.type.actionRooms.id."+data.newInfos["_id"]["$id"]);
                     else if(data.newInfos.type == "<?php echo ActionRoom::TYPE_FRAMAPAD ?>" )
@@ -120,7 +139,9 @@ function editRoomSV (roomObj) {
                     else if( data.newInfos.type == "<?php echo ActionRoom::TYPE_ACTIONS ?>")
                       urlCtrl.loadByHash("#rooms.actions.id."+data.newInfos["_id"]["$id"]);
                     else 
-                      urlCtrl.loadByHash("#survey.entries.id."+data.newInfos["_id"]["$id"]);
+                      urlCtrl.loadByHash("#survey.entries.id."+data.newInfos["_id"]["$id"]);*/
+                  toastr.success("Le nouvel espace a bien été créé");
+                  loadActionRoom(); 
                     //rooms.index.type.<?php echo (isset($_GET['type'])) ? $_GET['type'] : '' ?>.id.<?php echo (isset($_GET['id'])) ? $_GET['id'] : '' ?>");
                     $("#modal-create-room").modal("toogle");
                 }

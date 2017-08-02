@@ -108,7 +108,7 @@
 			<h1 class="text-dark" style="font-size: 17px;margin-top: 20px;">
 				<i class="fa fa-angle-down"></i> 
 				<span class="homestead"><i class="fa fa-archive"></i> Espace de décision :</span>
-				<a href="javascript:showRoom('vote', '<?php echo @$survey["survey"]; ?>')">
+				<a href="javascript:loadRoom('vote', '<?php echo @$survey["survey"]; ?>')">
 					<?php echo $room["name"]; ?>
 				</a>
 				<hr>
@@ -178,13 +178,13 @@
 
 			<div class="col-md-4 col-sm-4 col-xs-12 no-padding" style="padding-right: 15px !important;">
 				
-				<?php  $this->renderPartial('../pod/fileupload', 
+				<?php  /*$this->renderPartial('../pod/fileupload', 
 											 array("itemId" => $survey["_id"],
 											  "type" => Survey::COLLECTION,
 											  "resize" => false,
 											  "contentId" => Document::IMG_PROFIL,
 											  "editMode" => Authorisation::canEditItem(Yii::app()->session['userId'],Survey::COLLECTION,$survey["_id"],$parentType,$parentId),
-											  "image" => @$images)); 
+											  "image" => @$images)); */
 				
 				if(isset( Yii::app()->session["userId"]) && false)
 				{
@@ -206,7 +206,7 @@
 								Yii::t("rooms","You created this vote.",null,Yii::app()->controller->module->id);
 
 					    if( Yii::app()->request->isAjaxRequest){ ?>
-							<a class="btn btn-xs btn-default" onclick="entryDetail('<?php echo Yii::app()->createUrl("/communecter/survey/entry/id/".(string)$survey["_id"])?>','edit')" href="javascript:;">
+							<a class="btn btn-xs btn-default" onclick="entryDetail('<?php echo Yii::app()->createUrl("/survey/entry/id/".(string)$survey["_id"])?>','edit')" href="javascript:;">
 								<i class='fa fa-pencil' ></i> 
 								<?php echo Yii::t("rooms","Edit this Entry",null,Yii::app()->controller->module->id) ?>
 							</a>
@@ -284,7 +284,7 @@
 
 				<div class="col-xs-12 text-dark" style="font-size:15px">
 					<hr style="margin-top:0px">
-					<?php echo $survey["message"]; ?>
+					<?php echo @$survey["message"]; ?>
 					<hr>
 					<h2 class="center homestead text-dark"><i class="fa fa-angle-down"></i><br>Espace de vote</h2>
 				</div>
@@ -383,10 +383,10 @@ jQuery(document).ready(function() {
 	
   	$('#form-edit-entry #btn-submit-form').addClass("hidden");
 
- //  	$(".commentPod").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
-	// getAjax(".commentPod",baseUrl+"/"+moduleId+"/comment/index/type/surveys/id/<?php echo $survey['_id'] ?>",
-	// 	function(){  $(".commentCount").html( $(".nbComments").html() ); 
-	// },"html");
+  	$(".commentPod").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
+	getAjax(".commentPod",baseUrl+"/"+moduleId+"/comment/index/type/surveys/id/<?php echo $survey['_id'] ?>",
+		function(){  $(".commentCount").html( $(".nbComments").html() ); 
+	},"html");
 
 	$(".explainLink").click(function() {
 		showDefinition( $(this).data("id") );

@@ -1545,12 +1545,12 @@ var directory = {
     // ********************************
     roomsPanelHtml : function(params){
       if(directory.dirLog) mylog.log("-----------roomsPanelHtml");
-
+      console.log("-----------roomsPanelHtml");
       if(params.type == "surveys") params.hash = "#page.type.surveys.id."+params.id;
       //else if(params.type == "actions") params.hash = "#rooms.action.id."+params.id;
    
       str = "";  
-      str += "<div class='col-xs-6 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-xs-12 col-sm-6 col-md-6 col-lg-4 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
       
@@ -1600,8 +1600,8 @@ var directory = {
                         + params.parent.name + 
                       "</a>";
 
-            var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbh add2fav margin-top-15'>"+
+            var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "<i class='fa fa-inbox'></i> ";
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbh add2fav margin-top-25'>"+
                       iconFaReply + params.name + 
                    "</a>";
             
@@ -1812,7 +1812,10 @@ var directory = {
                 else if(params.type == "events")
                   str += directory.eventPanelHtml(params);  
                 
-                else if(params.type == "surveys" || params.type == "actions")
+                else if(params.type == "surveys")
+                    str += directory.roomsPanelHtml(params);  
+                
+                else if(params.type == "actionRooms")
                     str += directory.roomsPanelHtml(params);  
                 
                 else if(params.type == "classified")

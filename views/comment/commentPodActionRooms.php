@@ -41,8 +41,8 @@
 
 
 <?php if($contextType == "actionRooms"){
-  Menu::comments( $parentType, $parentId );
-  $this->renderPartial('../default/panels/toolbar');
+  //Menu::comments( $parentType, $parentId );
+  //$this->renderPartial('../default/panels/toolbar');
 }
 ?>
 

@@ -457,14 +457,14 @@ border: 1px solid #E4E4E4;
 
         <div class="panel-white margin-top-15" style="display:inline-block; width:100%;">
             <div class="col-md-4 col-sm-4 margin-bottom-15">
-              <?php $this->renderPartial('../pod/fileupload', array("itemId" => $room["_id"],
+              <?php /*$this->renderPartial('../pod/fileupload', array("itemId" => $room["_id"],
                                           "type" => ActionRoom::COLLECTION,
                                           "resize" => false,
                                           "contentId" => Document::IMG_PROFIL,
                                           "editMode" => Authorisation::canEditItem(Yii::app()->session['userId'],ActionRoom::COLLECTION,$room['_id'],$room['parentType'],$room['parentId']),
                                           "image" => $images,
                                           "parentType" => $room['parentType'],
-                                          "parentId" => $room['parentId'])); 
+                                          "parentId" => $room['parentId'])); */
               ?>
             </div>
             

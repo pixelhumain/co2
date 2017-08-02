@@ -221,7 +221,7 @@ var formInMap = {
 			if(notEmpty(formInMap.saveCities[formInMap.NE_insee])){
 				var obj = { city : formInMap.saveCities[formInMap.NE_insee] }
 				obj.city.geoShape = 1;
-				if(uncomplete == true){
+				if(formInMap.uncomplete == true){
 					var postalCode = {};
 					
 					postalCode.name = obj.city.name;
@@ -233,6 +233,8 @@ var formInMap = {
 
 					obj.city.postalCodes.push(postalCode);
 				}
+
+				mylog.log("city/save", obj);
 				
 				$.ajax({
 			        type: "POST",
@@ -329,7 +331,7 @@ var formInMap = {
 		    },
 			error: function(error){
 	    		$("#dropdown-newElement_"+currentScopeType+"-found").html("error");
-				mylog.log("Une erreur est survenue pendant autocompleteMultiScope");
+				mylog.log("Une erreur est survenue pendant autocompleteMultiScope", error);
 			}
 		});
 	},
@@ -350,7 +352,7 @@ var formInMap = {
 			//$('#cp_sumery_value').html(data.data("cp"));
 			formInMap.NE_cp = data.data("cp");
 		}else{
-			uncomplete = true;
+			formInMap.uncomplete = true;
 			$('[name="newElement_cp"]').attr( "placeholder", "Vous devez ajouter un code postal" );
 			$('#divPostalCode').addClass("has-error");
 		}
@@ -675,17 +677,23 @@ var formInMap = {
 		    	success: function(data){
 		    		mylog.log("getDepAndRegion", data);
 			    	
-			    	if(data.depName){
-			    		formInMap.NE_dep = data.depName;
-			    	}else{
-			    		formInMap.NE_dep = "";
-			    	}
+			    	if(data){
 
-			    	if(data.regionName){
-			    		formInMap.NE_region = data.regionName;
-					}else{
-			    		formInMap.NE_region = "";
+			    		formInMap.NE_dep = ((data.depName) ? data.depName : "");
+			    		formInMap.NE_region = ((data.regionName) ? data.regionName : "");
+			    		/*if(data.depName){
+			    			formInMap.NE_dep = data.depName;
+				    	}else{
+				    		formInMap.NE_dep = "";
+				    	}
+
+				    	if(data.regionName){
+				    		formInMap.NE_region = data.regionName;
+						}else{
+				    		formInMap.NE_region = "";
+				    	}*/
 			    	}
+			    	
 			    }
 			});
 		}

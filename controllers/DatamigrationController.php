@@ -1961,6 +1961,105 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		//}
 	}
 
+
+	public function actionCreateKeyZone(){
+		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);
+			$nbelement = 0 ;
+			$erreur = array();
+			$region = array();
+			$zones = PHDB::find(Zone::COLLECTION, array() );
+
+			if(!empty($zones)){
+				foreach (@$zones as $keyElt => $zone) {
+					//if($nbelement == 0){
+						
+						$key = Zone::createKey($zone);						
+							//var_dump($keyElt);
+						/*$res = PHDB::update( City::COLLECTION, 
+									  	array("_id"=>new MongoId($keyElt)),
+				                        array('$set' => array(	"dep" => $city["dep"],
+				                        						"region" => $city["region"],
+				                        						"modifiedByBatch" => $city["modifiedByBatch"]))
+				        );*/
+							
+						echo  "Good: ".$zone["name"]." ".$zone["level"]." : ".$key."<br>" ;
+						$nbelement++;
+						
+						
+					//}
+					
+				}
+			}
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+	}
+
+
+	// -------------------- Fonction pour le refactor Cities/zones
+	public function actionFinalisation(){
+		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			$nbelement = 0 ;
+			$region = array();
+			$zones = PHDB::find(Zone::COLLECTION, array('$and' => array(
+															array("level" => "3"),
+															array("countryCode" => "FR",
+															/*array("level2" => array('$exists' => 0)*/)
+														)));
+			if(!empty($zones)){
+				foreach (@$zones as $keyElt => $zone) {
+					echo  "Good: ".$zone["name"]." ".$zone["level"]."<br>" ;
+						$nbelement++;
+				}
+			}
+
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+		//}
+	}
+
+	
+
+	// -------------------- Fonction pour le refactor Cities/zones
+	public function actionRenameRegion(){
+		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			$nbelement = 0 ;
+			$regionName = array("Alsace-Champagne-Ardenne-Lorraine" => "Grand Est",
+							"Nord-Pas-de-Calais-Picardie" => "Hauts-de-France",
+							"Aquitaine-Limousin-Poitou-Charentes" => "Nouvelle-Aquitaine",
+							"Languedoc-Roussillon-Midi-Pyrénées" => "Occitanie");
+			
+			foreach (@$regionName as $old => $new) {
+				$zones = PHDB::find(Zone::COLLECTION, array("name" => $old));
+				if(!empty($zones)){
+					foreach (@$zones as $keyElt => $zone) {
+						$res = PHDB::update( Zone::COLLECTION, 
+									  	array("_id"=>new MongoId($keyElt)),
+				                        array('$set' => array("name" => $new))
+				        );
+						echo  "Good: ".$zone["name"]." ".$zone["level"]."<br>" ;
+							$nbelement++;
+					}
+				}
+
+				$cities = PHDB::find(City::COLLECTION, array("regionName" => $old));
+				if(!empty($cities)){
+					foreach (@$cities as $keyElt => $city) {
+						$res = PHDB::update( City::COLLECTION, 
+									  	array("_id"=>new MongoId($keyElt)),
+				                        array('$set' => array("regionName" => $new))
+				        );
+						echo  "Good: ".$city["name"]."<br>" ;
+							$nbelement++;
+					}
+				}
+			}
+
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+		//}
+	}
+
 	// -------------------- Fin des foncction pour le refactor Cities/zones
 
 }

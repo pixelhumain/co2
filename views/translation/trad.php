@@ -288,7 +288,9 @@ var tradDynForm = {
 	"infocreateproject":"<?php echo Yii::t("form","Make visble your project to all has never been so easy !<br>Create your project in few seconds,<br>then complete more according to your needs")?>",
 	"infocreateorganization":"<?php echo Yii::t("form","Create your page in few seconds,<br>then add more details,<br>according to your needs")?>",
 	"infocreateurl":"<?php echo Yii::t("form","Share links you like, to make them accessible to all") ?>",
+	"infocreateRoom":"<?php echo Yii::t("form","Rooms are spaces of Discussion, decision and action for a community") ?>",
 	"infocreatecontact":"<?php echo Yii::t("form","Indicate contacts linked to this page to give more opportunities for people to find you") ?>",
+
 	"whoorganizedevent":"<?php echo Yii::t("form","Who is organizing this event") ?>",
 	"whoorganize":"<?php echo Yii::t("form","Who organizes") ?>",
 	"ispartofevent":"<?php echo Yii::t("form","Is part of an event") ?>",
@@ -330,6 +332,7 @@ var tradDynForm = {
 	"addpoi":"<?php echo Yii::t("form","Create a point of interest") ?>",
 	"addclassified":"<?php echo Yii::t("form","Create a classified") ?>",
 	"addurl":"<?php echo Yii::t("form","Add an url") ?>",
+	"addroom":"<?php echo Yii::t("form","Add a cooperation room") ?>",
 	"addcontact":"<?php echo Yii::t("form","Add a contact") ?>",
 	"addimage":"<?php echo Yii::t("form","Add an image") ?>",
 	"save":"<?php echo Yii::t("common","Save") ?>",
@@ -518,6 +521,9 @@ var tradCategory = {
     "NGO":"<?php echo Yii::t("category","NGO") ?>",
     "LocalBusiness":"<?php echo Yii::t("category","Local Business") ?>",
     "Group":"<?php echo Yii::t("category","Group") ?>",
+    "Discussion":"<?php echo Yii::t("rooms","Discussion") ?>",
+    "Decision":"<?php echo Yii::t("rooms","Decision") ?>",
+    "Action":"<?php echo Yii::t("rooms","Action") ?>",
     "GovernmentOrganization":"<?php echo Yii::t("category","Government Organization") ?>",
 };
 var tradCountry = {

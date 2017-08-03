@@ -229,10 +229,11 @@ h1.citizenAssembly-header {
 
 	</h1>
 	<?php } ?>
+	
 	<?php  if( isset(Yii::app()->session['userId']) && 
 			Authorisation::canParticipate(Yii::app()->session['userId'], $parentType, $parentId ) ){ ?>
 	<div class="modal fade" id="modal-create-room" tabindex="-1" role="dialog">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog"> 
 	    <div class="modal-content">
 	      <div class="modal-header text-dark">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

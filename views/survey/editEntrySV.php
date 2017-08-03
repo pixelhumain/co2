@@ -78,8 +78,7 @@ var proposalFormDefinition = {
               "rules" : {
                 "required" : true
               },
-              "value" : <?php echo ( isset($survey) && isset($survey["message"]) ) ? json_encode($survey["message"]) : '""' ?>,
-
+              "value" : <?php echo ( isset($survey) && isset($survey["message"]) ) ? json_encode($survey["message"]) : '""' ?>
             },
             "dateEnd" :{
               "inputType" : "date",

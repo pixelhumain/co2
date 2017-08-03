@@ -228,6 +228,7 @@ function loadRoom(type, id){
 			null, function(){},"html");
 
 	toogleNotif(false);
+	KScrollTo("#shortDescriptionHeader");
 	/*var thiHash = "#"+mapUrl[type]["hash"]+".id."+id;
 	urlCtrl.loadByHash(thiHash);*/
 }

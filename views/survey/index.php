@@ -20,7 +20,7 @@
 <?php 
   $nameList = (strlen($where["survey"]["name"])>20) ? substr($where["survey"]["name"],0,20)."..." : $where["survey"]["name"];
   $extraBtn = ( Authorisation::canParticipate( Yii::app()->session['userId'], $parentType, $parentId ) ) 
-    ?  ' <i class="fa fa-caret-right"></i> <a class="filter btn  btn-xs btn-primary Helvetica lbh" href="#survey.editEntry.survey.'.(string)$where["survey"]["_id"].'"><i class="fa fa-plus"></i> '.Yii::t( "survey", 'Add a proposal', null, Yii::app()->controller->module->id).'</a>' 
+    ?  ' <i class="fa fa-caret-right"></i> <a class="filter btn  btn-xs btn-primary Helvetica lbh" href="#survey.editEntry.survey.'.(string)$where["survey"]["_id"].'"><i class="fa fa-plus"></i> '.Yii::t( "rooms", 'Add a proposal').'</a>' 
     : '';
 
   if(!isset($_GET["renderPartial"])){
@@ -33,7 +33,7 @@
             "faTitle" => "gavel",
             "colorTitle" => "azure",
             "textTitle" => 
-              "<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#rooms.index.type.$parentType.id.$parentId.tab.2\")'><i class='fa fa-gavel'></i> ".Yii::t("rooms","Decide", null, Yii::app()->controller->module->id)."</a>"." / ".
+              "<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#rooms.index.type.$parentType.id.$parentId.tab.2\")'><i class='fa fa-gavel'></i> ".Yii::t("rooms","Decide")."</a>"." / ".
               "<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#survey.entries.id.".(string)$where["survey"]["_id"]."\")'><i class='fa fa-th'></i> ".$nameList."</a>".$extraBtn 
                           
     )); 
@@ -102,7 +102,7 @@
   .color-btnvote-purple{  background-color: #C1ABD4!important;}
   .color-btnvote-red{   background-color: #db254e!important;}
   .controls{
-    background: #fff;
+    background: transparent;
     border-bottom: 1px solid #BDBDBD;
     border-top: 1px solid #fff;
   }
@@ -175,15 +175,15 @@
   }
 
   .home .controls {
-    border: 1px solid #E4E4E4;
+    border: 0px solid #E4E4E4;
   }
 
     .message-propostal{
       font-size: 13px !important;
       font-weight: 300 !important;
       margin-top: 0px !important;
-      min-height: 110px;
-      max-height: 110px;
+      min-height: 105px;
+      max-height: 105px;
       line-height: 1.3;
       width:100%;
     }
@@ -215,6 +215,9 @@
       margin-bottom: 6px;
     }
 
+    .h5voteres{
+      font-size: 10px;
+    }
    
   @media screen and (max-width: 1399px) {
     .mixcontainer .mix, .mixcontainer .gap{
@@ -427,20 +430,20 @@
         
         $closeBtn = "";
         $isClosed = "";
-        $stateLbl = "<i class='fa fa-gavel'></i> ".Yii::t('rooms', "VOTE", null, Yii::app()->controller->module->id);
+        $stateLbl = "<i class='fa fa-gavel'></i> ".Yii::t('rooms', "VOTE");
         $mainClick = 'urlCtrl.loadByHash("#survey.entry.id.'.(string)$entry["_id"].'")';
         $titleIcon = 'gavel';
         if( Yii::app()->session["userEmail"] == $entry["email"] && (!isset($entry["dateEnd"]) || $entry["dateEnd"] > time() ) && $entry["type"] == Survey::TYPE_ENTRY ) 
           $closeBtn = "<a class='btn btn-xs pull-right' href='javascript:;' style='margin-right:5px;'".
                         " onclick='closeEntry(\"".$entry["_id"]."\")'>".
-                        "<i class='fa fa-times'></i> ".Yii::t('rooms', 'Close', null, Yii::app()->controller->module->id).
+                        "<i class='fa fa-times'></i> ".Yii::t('rooms', 'Close').
                       "</a>";
         else if($surveyIsClosed){
             $isClosed = " closed";
-            $stateLbl = "<i class='fa fa-times text-red'></i> ".Yii::t('rooms', 'Closed', null, Yii::app()->controller->module->id);
+            $stateLbl = "<i class='fa fa-times text-red'></i> ".Yii::t('rooms', 'Closed');
             $titleIcon = "times text-red";
         }else{
-          $stateLbl = "<i class='fa fa-sign-in text-red'></i> ".Yii::t('rooms', 'Login to vote', null, Yii::app()->controller->module->id);
+          $stateLbl = "<i class='fa fa-sign-in text-red'></i> ".Yii::t('rooms', 'Login to vote');
           $mainClick = 'showPanel("box-login")';
         }
 
@@ -461,18 +464,18 @@
 
         $btnRead = "";
         $leftLinks = "";
-        $btnLbl = "<i class='fa fa-sign-in'></i> ".Yii::t("survey","JOIN TO VOTE", null, Yii::app()->controller->module->id);
+        $btnLbl = "<i class='fa fa-sign-in'></i> ".Yii::t("survey","JOIN TO VOTE");
         $ctrl = Element::getControlerByCollection($parentType);
         //$btnUrl = "#$ctrl.detail.id.$parentId";
         $btnUrl = '#survey.entry.id.'.(string)$entry["_id"];
 
         if( @$canParticipate && !$isArchived){
-          $btnLbl = "<i class='fa fa-gavel'></i> ".Yii::t("survey","VOTE", null, Yii::app()->controller->module->id);
+          $btnLbl = "<i class='fa fa-gavel'></i> ".Yii::t("survey","VOTE");
           $btnUrl = '#survey.entry.id.'.(string)$entry["_id"];
         }
 
         if( !$surveyIsClosed && !$surveyHasVoted && !$isArchived )        
-        $leftLinks = "<button onclick=".'"urlCtrl.loadByHash(\''.$btnUrl.'\')"'." class='col-xs-12 btn btn-default homestead text-red pull-left' style='font-size:20px;'> ".$btnLbl."</button>";
+        $leftLinks = '<button onclick="loadRoom(\'entry\', \''.(string)$entry["_id"].'\')"'." class='col-xs-12 btn btn-default homestead text-red pull-left' style='font-size:20px;'> ".$btnLbl."</button>";
         else{
           $btnRead = '<button onclick="loadRoom(\'entry\', \''.(string)$entry["_id"].'\')"'." class='btn btn-lg btn-default homestead pull-right text-bold tooltips' ".
                   ' data-toggle="tooltip" data-placement="left" title="Afficher les détails"'.
@@ -491,18 +494,18 @@
         $cpList = ( ( @$where["type"]==Survey::TYPE_SURVEY) ? $cpList : "");
         
         $createdInfo  = "<div class='text-azure lbl-info-survey '><i class='fa fa-clock-o' style='padding:0px 5px 0px 2px;'></i> ";
-        $createdInfo .= (!empty( $created )) ? " ".Yii::t("rooms", "created", null, Yii::app()->controller->module->id) . " : ".$created : "";
+        $createdInfo .= (!empty( $created )) ? " ".Yii::t("rooms", "created") . " : ".$created : "";
         $createdInfo .= "</div>";
 
         $ends = "";
         //if( Yii::app()->session["userEmail"] == $entry["email"] ){
         if($entry["type"]==Survey::TYPE_ENTRY && (!isset($entry["dateEnd"]) || $entry["dateEnd"] > time() ) ){
           $ends  = "<div class='text-green lbl-info-survey pull-left' style='color: rgb(228, 108, 108);'><i class='fa fa-clock-o' style='padding:0px 5px 0px 2px;'></i> ";
-          $ends .=  "".(!empty( $entry["dateEnd"] )) ? " ".Yii::t("rooms", "end", null, Yii::app()->controller->module->id) . " : ".date("d/m/y",$entry["dateEnd"]) : "";
+          $ends .=  "".(!empty( $entry["dateEnd"] )) ? " ".Yii::t("rooms", "end") . " : ".date("d/m/y",$entry["dateEnd"]) : "";
           $ends .= "</div>";
         }else{
           $ends  = "<div class='text-red lbl-info-survey pull-left' style='color: rgb(228, 108, 108);'><i class='fa fa-clock-o' style='padding:0px 5px 0px 2px;'></i> ";
-          $ends .=  "".(!empty( $entry["dateEnd"] )) ? " ".Yii::t("rooms", "ended", null, Yii::app()->controller->module->id) . " : ".date("d/m/y",$entry["dateEnd"]) : "";
+          $ends .=  "".(!empty( $entry["dateEnd"] )) ? " ".Yii::t("rooms", "ended") . " : ".date("d/m/y",$entry["dateEnd"]) : "";
           $ends .= "</div>";
         }
         //}
@@ -581,34 +584,37 @@
           </div>   
                 
          <?php if (count(@$list) > 0) { ?>
-           <div class="controls col-md-8 col-sm-8 bar-btn-filters no-border no-padding" style="border-radius:0px;">
+           <div class="controls col-md-7 col-sm-7 pull-right bar-btn-filters no-border no-padding" style="border-radius:0px;">
                 <div class="pull-left">
-                  <button class="filter btn btn-default fr" data-filter="all"><i class="fa fa-eye"></i> Afficher tout</button>
-                  <button id="ChangeLayout" class="btn btn-default" style="margin-bottom: 6px;"><i class="fa fa-reorder"></i></button>
-                  
-                  <!--<button class="btn btn-default fr pull-left" onclick="toogleTags();"><i class="fa fa-filter"></i> Filtrer par tags</button>-->
+                  <button class="filter btn btn-default fr" data-filter="all">
+                    <i class="fa fa-eye"></i> <?php echo Yii::t("rooms", "Show all"); ?>
+                  </button>
+
+                  <button id="ChangeLayout" class="btn btn-default" style="margin-bottom: 6px;">
+                    <i class="fa fa-reorder"></i>
+                  </button>
                 </div>    
            </div>
           
         
-           <div class="col-md-8 col-sm-8 no-padding">
+           <div class="col-md-7 col-sm-7 pull-right no-padding">
               <a class="filter btn bg-dark" data-filter=".closed">
-                <i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'Closed', null, Yii::app()->controller->module->id)?>
+                <i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'Closed')?>
               </a>
               <?php if( $logguedAndValid && $where["type"]==Survey::TYPE_ENTRY){?>
                 <a class="filter btn bg-dark" data-filter=".avoter">
-                  <i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'To vote', null, Yii::app()->controller->module->id)?>
+                  <i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'To vote')?>
                 </a>
               <?php } ?>
               <a class="filter btn bg-dark" data-filter=".mesvotes">
-                <i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'My votes', null, Yii::app()->controller->module->id)?>
+                <i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'My votes')?>
               </a>
               <a class="filter btn bg-dark" data-filter=".myentries">
-                <i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'My proposals', null, Yii::app()->controller->module->id)?>
+                <i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'My proposals')?>
               </a>
             </div> 
            
-            <div class="col-md-8 col-sm-8 no-padding" style="display:inline-block;">
+            <div class="col-md-7 col-sm-7 pull-right no-padding" style="display:inline-block;">
                   <?php if( $logguedAndValid && $where["type"]==Survey::TYPE_ENTRY ) { ?>
                   <button class="sort btn btn-default" data-sort="vote:asc"><i class="fa fa-caret-up"></i></button>
                   <button class="sort btn btn-default" data-sort="vote:desc"><i class="fa fa-caret-down"></i></button>
@@ -656,12 +662,12 @@
                     <?php 
                       if(isset(Yii::app()->session["userId"])){
                         if( $where["survey"]["parentType"] == City::COLLECTION )
-                          echo Yii::t('rooms', 'Participation open to city residents only', null, Yii::app()->controller->module->id);
+                          echo Yii::t('rooms', 'Participation open to city residents only');
                         else
-                          echo Yii::t('rooms', 'JOIN TO PARTICIPATE', null, Yii::app()->controller->module->id);
+                          echo Yii::t('rooms', 'JOIN TO PARTICIPATE');
                       }
                       else
-                        echo Yii::t('rooms', 'LOGIN TO PARTICIPATE', null, Yii::app()->controller->module->id);
+                        echo Yii::t('rooms', 'LOGIN TO PARTICIPATE');
                     ?> 
                     </span>
                   </blockquote>

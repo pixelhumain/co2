@@ -51,6 +51,13 @@
     right: 30px!important;
     left: 70px!important;
 }
+
+.textarea-new-comment {
+    max-width: 99% !important;
+    min-width: 99% !important;
+    float: right;
+}
+
 </style>
 
 <?php 
@@ -100,7 +107,7 @@
 	  }
 ?>
 
-<div class="padding-25 margin-top-25 row vote-row contentProposal bg-white" >
+<div class="padding-25 row vote-row contentProposal bg-white" >
 
 	<div class="col-md-12">
 		<!-- start: REGISTER BOX -->
@@ -134,7 +141,7 @@
 					<?php if( @($organizer) ){ ?>
 						<span class="text-red" style="font-size:13px; font-weight:500;">
 							<i class="fa fa-angle-right"></i> 
-							<?php echo Yii::t("rooms","Made by ",null,Yii::app()->controller->module->id) ?> 
+							<?php echo Yii::t("rooms","Made by ") ?> 
 							<a style="font-size:14px;" href="javascript:<?php echo @$organizer['link'] ?>" class="text-dark">
 								<?php echo @$organizer['name'] ?>
 							</a>
@@ -286,7 +293,7 @@
 					<hr style="margin-top:0px">
 					<?php echo @$survey["message"]; ?>
 					<hr>
-					<h2 class="center homestead text-dark"><i class="fa fa-angle-down"></i><br>Espace de vote</h2>
+					<h2 class="text-center homestead text-dark margin-bottom-25"><i class="fa fa-angle-down"></i> Espace de vote</h2>
 				</div>
 
 				<div class="col-xs-12">
@@ -322,8 +329,9 @@
 	</div>
 		
 	<div class="col-md-12 col-sm-12 commentSection leftInfoSection" >
-		<hr>
-		<h2 class='text-dark homestead' style="margin: -20px 0px 15px;"><i class="fa fa-angle-down"></i><br>Discussion</h2>
+		<h2 class='text-dark homestead text-center' style="margin: 10px 0px 15px;">
+			<i class="fa fa-angle-down"></i> Discussion
+		</h2>
 		<div class="box-vote box-pod margin-10 commentPod"></div>
 	</div>
 	

@@ -131,7 +131,7 @@
 	
 			<div class="col-md-4 no-padding" style="padding-right: 15px !important;">
 				<?php 
-				$this->renderPartial('../pod/fileupload', 
+				/*$this->renderPartial('../pod/fileupload', 
 								array("itemId" => $action['_id'],
 									  "type" => ActionRoom::COLLECTION_ACTIONS,
 									  "resize" => false,
@@ -139,7 +139,7 @@
 									  "editMode" => Authorisation::canEditItem(Yii::app()->session['userId'],$parentType,$parentId),
 									  "image" => $images,
 									   "parentId" => $parentSpace['parentId'], 
-									   "parentType" => $parentSpace['parentType'])); 
+									   "parentType" => $parentSpace['parentType'])); */
 				?>
 				<div class="col-md-12 padding-10">
 					<?php if( @$action["tags"] ){ ?>
@@ -211,7 +211,7 @@
 
 			<div class="col-md-12 text-dark" style="font-size:15px">
 				<hr style="margin-top:0px">
-				<?php echo $action["message"]; ?>
+				<?php echo @$action["message"]; ?>
 				<hr>
 			</div>
 			<div class="col-md-7 text-dark" style="font-size:15px">

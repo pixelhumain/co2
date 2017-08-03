@@ -142,7 +142,8 @@
 						<span class="text-red" style="font-size:13px; font-weight:500;">
 							<i class="fa fa-angle-right"></i> 
 							<?php echo Yii::t("rooms","Made by ") ?> 
-							<a style="font-size:14px;" href="javascript:<?php echo @$organizer['link'] ?>" class="text-dark">
+							<a style="font-size:14px;" href="<?php echo @$organizer['link'] ?>" 
+								class="lbh text-dark">
 								<?php echo @$organizer['name'] ?>
 							</a>
 						</span><br/>

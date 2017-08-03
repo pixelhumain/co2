@@ -324,7 +324,7 @@ border: 0px solid #E4E4E4;
         
         //title + Link
         if ( $entry["type"] == ActionRoom::TYPE_ACTION )
-          $name = '<a class="titleMix text-dark " onclick="showRoom(\'action\', \''.(string)$entry["_id"].'\')" href="javascript:;">'.
+          $name = '<a class="titleMix text-dark " onclick="loadRoom(\'action\', \''.(string)$entry["_id"].'\')" href="javascript:;">'.
                     "<i class='fa fa-cogs'></i> ".substr($name, 0, 70).
                   '</a>' ;
 

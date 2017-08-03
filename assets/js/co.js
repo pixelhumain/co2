@@ -2805,7 +2805,7 @@ var dyFInputs = {
 	    	inputObj.init = function(){
 	        	$("#ajaxFormModal #name ").off().on("blur",function(){
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
-	            		globalSearch($(this).val(),[ dyFInputs.get(type).col ], addElement );
+	            		globalSearch($(this).val(),[ dyFInputs.get(type).col, "organizations" ], addElement );
 	            	
 	            	dyFObj.canSubmitIf();
 	        	});

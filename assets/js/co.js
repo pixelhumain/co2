@@ -2282,6 +2282,7 @@ var uploadObj = {
 	folder : "communecter", //on force pour pas casser toutes les vielles images
 	contentKey : "profil",
 	path : null,
+	extra : null,
 	set : function(type,id){
 		if(typeof type != "undefined"){
 			mylog.log("set uploadObj", id,type,uploadObj.folder,uploadObj.contentKey);
@@ -2318,6 +2319,9 @@ var dyFObj = {
 		mylog.warn("----------- formatData",formData, collection,ctrl);
 		formData.collection = collection;
 		formData.key = ctrl;
+		if( $isArray(formData.id) )
+			formData.id = formData.id[0]; //this shouldn't happen, occurs in survey
+
 		if(dyFInputs.locationObj.centerLocation){
 			//formData.multiscopes = elementLocation;
 			formData.address = dyFInputs.locationObj.centerLocation.address;
@@ -2512,6 +2516,9 @@ var dyFObj = {
 				//onLoad fill inputs
 				//will be sued in the dynform  as update 
 				data.map.id = data.map["_id"]["$id"];
+				if(typeof typeObj[type].formatData == "function")
+					data = typeObj[type].formatData();
+
 				delete data.map["_id"];
 				mylog.dir(data);
 				console.log("editElement", data);
@@ -3396,11 +3403,11 @@ var dyFInputs = {
     	mylog.log('startDateInput', typeDate);
     	var inputObj = {
 	        inputType : ( notEmpty(typeDate) ? typeDate : "datetime" ),
-	        placeholder: tradDynForm["startDate"],
-	        label : tradDynForm["startDate"],
+	        placeholder: tradDynForm.startDate,
+	        label : tradDynForm.startDate,
 	        rules : { 
 	        	required : true,
-	        	duringDates: ["#startDateParent","#endDateParent",tradDynForm["thestartDate"]]
+	        	duringDates: ["#startDateParent","#endDateParent",tradDynForm.thestartDate]
 	    	}
 	    }
     	return inputObj;
@@ -3408,23 +3415,24 @@ var dyFInputs = {
     endDateInput : function(typeDate){
     	var inputObj = {
 	        inputType : ( notEmpty(typeDate) ? typeDate : "datetime" ),
-	        placeholder: tradDynForm["endDate"],
-	        label : tradDynForm["endDate"],
+	        placeholder: tradDynForm.endDate,
+	        label : tradDynForm.endDate,
 	        rules : { 
 	        	required : true,
-	        	greaterThan: ["#ajaxFormModal #startDate",tradDynForm["thestartDate"]],
-	        	duringDates: ["#startDateParent","#endDateParent",tradDynForm["theendDate"]]
+	        	greaterThan: ["#ajaxFormModal #startDate",tradDynForm.thestartDate],
+	        	duringDates: ["#startDateParent","#endDateParent",tradDynForm.theendDate]
 		    }
 	    }
     	return inputObj;
     },
     birthDate : {
         inputType : "date",
-        label : tradDynForm["birthdate"],
-        placeholder: tradDynForm["birthdate"]
+        label : tradDynForm.birthdate,
+        placeholder: tradDynForm.birthdate
     },
     dateEnd :{
     	inputType : "date",
+    	label : tradDynForm.endDate,
     	placeholder : "Fin de la période de vote",
     	rules : { 
     		required : true,
@@ -3578,11 +3586,11 @@ var typeObj = {
 	"entry" : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
 		saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
 	"vote" : {col:"actionRooms",ctrl:"survey"},
-	"survey" : {col:"actionRooms",ctrl:"survey",color:"lightblue2",icon:"cog"},
+	"survey" : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
 	"surveys" : {sameAs:"survey"},
-	"action" : {col:"actions",ctrl:"room",titleClass : "bg-dark",bgClass : "bgDDA",icon : "cogs",color : "lightblue2", 
-		saveUrl : baseUrl+"/" + moduleId + "/rooms/saveaction"},
-	"actions" : {col:"actions",color:"azure",ctrl:"room",icon:"cog"},
+	"action" : {col:"actions", ctrl:"room", titleClass : "bg-dark", bgClass : "bgDDA", icon : "cogs", color : "lightblue2", 
+		saveUrl : baseUrl+"/" + moduleId + "/rooms/saveaction" },
+	"actions" : { sameAs : "action" },
 	"actionRooms" : {sameAs:"room"},
 	"rooms" : {sameAs:"room"},
 	"room" : {col:"actionRooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-dark"},

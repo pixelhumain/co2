@@ -35,7 +35,6 @@
             "textTitle" => 
               "<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#rooms.index.type.$parentType.id.$parentId.tab.2\")'><i class='fa fa-gavel'></i> ".Yii::t("rooms","Decide")."</a>"." / ".
               "<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#survey.entries.id.".(string)$where["survey"]["_id"]."\")'><i class='fa fa-th'></i> ".$nameList."</a>".$extraBtn 
-                          
     )); 
     echo '<div class="col-md-12 panel-white padding-15" id="room-container">';
   }
@@ -683,38 +682,6 @@
 
     </section>
 
-<?php  if( Authorisation::canParticipate(Yii::app()->session['userId'],$where["survey"]["parentType"],$where["survey"]["parentId"]) ) { ?>
-<div class="modal fade" id="modal-create-proposal" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header text-dark">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title text-left">
-          <i class="fa fa-angle-down"></i> <i class="fa fa-plus"></i> Créer une proposition
-        </h2>
-      </div>
-      <div class="modal-body no-padding">
-        <div class="panel-body" id="form-create-proposal">
-          <?php //var_dump($where["survey"]);
-              $params = array(
-                  "roomId"=>(string)$where["survey"]["_id"]
-              );
-            $this->renderPartial('../survey/editEntrySV', $params); 
-
-          ?>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-          <button type="button" class="btn btn-success"
-                 onclick="saveNewProposal()">
-              <i class="fa fa-save"></i> Enregistrer
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<?php } ?>
 
 <div class="space20"></div>
 

@@ -107,8 +107,7 @@
 				<div class="col-md-6">
 					<div class="box-ajaxTools">
 						<?php if (  isset(Yii::app()->session["userId"]) && $action["organizerId"] == Yii::app()->session["userId"] )  { ?>
-							<a class="tooltips btn btn-default  " href="javascript:" 
-							   data-toggle="modal" data-target="#modal-edit-action"
+							<a class="tooltips btn btn-default  " href="javascript:dyFObj.editElement('actions','<?php echo  $action["_id"] ?>');" 							   
 							   data-placement="bottom" data-original-title="Editer cette action">
 								<i class="fa fa-pencil "></i> <span class="hidden-sm hidden-md hidden-xs">Éditer</span>
 							</a>
@@ -262,40 +261,6 @@
 	</div>
 	
 </div>
-
-
-<?php if ( isset(Yii::app()->session["userId"]) && $action["organizerId"] == Yii::app()->session["userId"] )  { ?>
-<div class="modal fade" id="modal-edit-action" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header text-dark">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title text-left">
-        	<i class="fa fa-angle-down"></i> <i class="fa fa-pencil"></i> Éditer la proposition
-        </h2>
-      </div>
-      <div class="modal-body no-padding">
-      	<div class="panel-body" id="form-edit-action">
-			<?php 
-				$params = array(
-			    	"action" => $action, //la proposition actuelle
-			        "roomId" => $parentSpace["_id"] //id de la room
-			    );
-				$this->renderPartial('../rooms/editAction', $params); 
-			?>
-		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-			<button type="button" class="btn btn-success"
-				    onclick="$('#form-edit-action #btn-submit-form').click()">
-					<i class="fa fa-save"></i> Enregistrer
-			</button>
-		</div>
-	  </div>
-	</div>
-  </div>
-</div>
-<?php } ?>
 
 <?php 
  if(!isset($_GET["renderPartial"])){

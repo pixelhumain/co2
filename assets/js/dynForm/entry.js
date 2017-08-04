@@ -18,7 +18,7 @@ dynForm = {
             });
         },*/
 	    afterSave : function(){
-            if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
+            if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
                 $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
             else 
             { 

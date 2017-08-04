@@ -6,13 +6,19 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	"sub" : function(){
+	    		dataHelper.activateMarkdown("#ajaxFormModal #message");
 	    		$("#ajaxFormModal #room").val( contextDataDDA.id );
     		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
 	    	}
 	    },
-	    beforeSave : function(){
-	    	if( typeof $("#ajaxFormModal #message").code === 'function' ) 
-	    		$("#ajaxFormModal #message").val( $("#ajaxFormModal #message").code() );
+	    afterSave : function(){
+            if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
+                $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+            else 
+            { 
+                dyFObj.closeForm(); 
+                urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+            }
 	    },
 	    properties : {
 	    	info : {
@@ -56,7 +62,7 @@ dynForm = {
             	custom : "<br/><span class='text-small'>Choisir l'espace où s'ajoutera votre action parmi vos organisations et projets<br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet  </span>"
             },
             name : dyFInputs.name,
-            message : dyFInputs.textarea("Description", "..."),
+            message : dyFInputs.textarea(tradDynForm.longDescription, "..."),
             startDate :{
               inputType : "date",
               label : "Date de début",

@@ -230,48 +230,6 @@ h1.citizenAssembly-header {
 	</h1>
 	<?php } ?>
 	
-	<?php  if( isset(Yii::app()->session['userId']) && 
-			Authorisation::canParticipate(Yii::app()->session['userId'], $parentType, $parentId ) ){ ?>
-	<div class="modal fade" id="modal-create-room" tabindex="-1" role="dialog">
-	  <div class="modal-dialog"> 
-	    <div class="modal-content">
-	      <div class="modal-header text-dark">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h2 class="modal-title text-left">
-	        	<i class="fa fa-angle-down"></i> <i class="fa fa-plus"></i> Créer un espace
-	        </h2>
-	      </div>
-	      <div class="modal-body no-padding">
-	      	<div class="panel-body" id="form-create-room">
-				<?php 
-					$listRoomTypes = Lists::getListByName("listRoomTypes");
-				    foreach ($listRoomTypes as $key => $value) {
-				        //error_log("translate ".$value);
-				        $listRoomTypes[$key] = Yii::t("rooms",$value, null, Yii::app()->controller->module->id);
-				    }
-				    $tagsList =  Lists::getListByName("tags");
-				    $params = array(
-				        "listRoomTypes" => $listRoomTypes,
-				        "tagsList" => $tagsList,
-				        "id" => $parentId,
-				        "type" => $parentType
-				    );
-					$this->renderPartial('../rooms/editRoomSV', $params); 
-				?>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-				<button type="button" class="btn btn-success"
-					    onclick="javascript:saveNewRoom();">
-						<i class="fa fa-save"></i> Enregistrer
-				</button>
-			</div>
-		  </div>
-		</div>
-	  </div>
-	</div>
-
-<?php } ?>
 
 <?php 
 /*createModalRoom($discussions,$parentType, $parentId, 1, "Sélectionnez un espace de discussion", "comments", "discuss", "Aucun espace de discussion");

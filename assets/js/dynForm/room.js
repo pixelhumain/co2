@@ -109,12 +109,12 @@ dynForm = {
                 html:"",
             },
             sectionBtn :{
-                label : tradDynForm.whichkindofpoi+" ? ",
+                label : tradDynForm.whichkindofroom+" ? ",
                 inputType : "tagList",
                 placeholder : "Choisir un type",
                 list : roomList.sections,
                 trad : tradCategory,
-                init : function(){
+                init : function(){ //console.log("LIST ROOM TYPE", roomList);
                     $(".sectionBtn").off().on("click",function()
                     {
                         $(".typeBtntagList").show();

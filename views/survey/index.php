@@ -727,7 +727,7 @@
 *
 ***************************************** */
 
- var contextData = {
+ var contextDataDDA = {
     name : "<?php echo addslashes(@$where["survey"]["name"]) ?>",
     id : "<?php echo (string)@$where["survey"]["_id"] ?>",
     type : "entry",

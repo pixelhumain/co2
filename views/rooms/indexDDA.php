@@ -95,11 +95,22 @@ a h1.text-azure:hover{
 	<hr>
 </div> -->
 
-<div class="col-md-12 col-sm-12 col-xs-12 panel-white no-padding" id="room-container">
+<div class="col-md-12 col-sm-12 col-xs-12 panel-white no-padding margin-bottom-50" id="room-container">
 
 <div class="panel-group" id="accordion">
 	<?php 
 		$auth = ((Authorisation::canParticipate(Yii::app()->session['userId'],$parentType,$parentId) /*&& (@$fromView != "entity.detail") */)?true:false);
+		
+		if($auth==true) {
+		    	/*echo '<button onclick="selectRoomType(\''.$typeNew.'\')" data-toggle="modal" 
+		    			data-target="#modal-create-room" class="btn btn-link letter-green col-md-12 no-padding" style="text-align:left;">'.
+		    			'<b><i class="fa fa-plus"></i> créer un nouvel espace</b>'.
+		    		'</button>';*/
+		    	echo '<button onclick="dyFObj.openForm(\'room\',\'sub\')" class="btn btn-link letter-green col-md-12 no-padding" style="text-align:left;">'.
+		    			'<b><i class="fa fa-plus"></i> créer un nouvel espace</b>'.
+		    		'</button>';
+		}
+
 		createAccordionMenu($discussions, 1, "Discussions", "comments", "discuss", "Aucun espace de discussion", $auth, @$fromView);
 		createAccordionMenu($votes, 2, "Décisions", "gavel", "vote", "Aucun espace de décision", $auth, @$fromView);
 		createAccordionMenu($actions, 3, "Actions", "cogs", "actions", "Aucun espace d'action", $auth, @$fromView);
@@ -164,14 +175,7 @@ a h1.text-azure:hover{
 		         if(empty($elements)) 
 			      	echo '<div class="panel-body hide-on-reduce-menu"><small><i class="fa fa-times"></i> '.$emptyMsg.'</small></div>';
 
-			     if($auth==true) {
-				    echo '<div class="panel-body hide-on-reduce-menu">';
-				    	echo '<button onclick="selectRoomType(\''.$typeNew.'\')" data-toggle="modal" 
-				    			data-target="#modal-create-room" class="btn btn-link letter-green col-md-12 no-padding" style="text-align:left;">'.
-				    			'<b><i class="fa fa-plus"></i> créer un nouvel espace</b>'.
-				    		'</button>';
-				    echo  '</div>';
-				}
+			     
 
 	echo 	'</div>';
 

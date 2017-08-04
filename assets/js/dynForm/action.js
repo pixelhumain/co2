@@ -1,13 +1,13 @@
 dynForm = {
     jsonSchema : {
 	    title : "Ajouter une action",
-	    icon : "gavel",
+	    icon : "cogs",
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	"sub" : function(){
-	    		$("#ajaxFormModal #room").val( contextData.id );
-    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
+	    		$("#ajaxFormModal #room").val( contextDataDDA.id );
+    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
 	    	}
 	    },
 	    beforeSave : function(){
@@ -22,7 +22,7 @@ dynForm = {
 	        id : dyFInputs.inputHidden(""),
             room :{
             	inputType : "select",
-            	placeholder : "Choisir une thématique ?",
+            	placeholder : "Choisir un espace",
             	init : function(){
             		if( userId )
             		{
@@ -47,8 +47,8 @@ dynForm = {
 	            			    mylog.dir(window.myActionsList);
 	            			    html = buildSelectGroupOptions(window.myActionsList);
 								$("#room").append(html);
-								if(contextData && contextData.id)
-									$("#ajaxFormModal #room").val( contextData.id );
+								if(contextDataDDA && contextDataDDA.id)
+									$("#ajaxFormModal #room").val( contextDataDDA.id );
 						    } );
 	            		}
             		}
@@ -59,10 +59,12 @@ dynForm = {
             message : dyFInputs.textarea("Description", "..."),
             startDate :{
               inputType : "date",
+              label : "Date de début",
               placeholder : "Date de début"
             },
             dateEnd :{
               inputType : "date",
+              label : "Date de fin",
               placeholder : "Date de fin"
             },
          	tags : dyFInputs.tags(),

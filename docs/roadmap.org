@@ -86,7 +86,7 @@ Liste des notifications déjà lues => #370 #453
  [ ] new menu List or shortcut: last visited links
  [ ] add contributor or member, add a tag list option , could be used as roles or team filters
  [ ] offrir a tous : le ppt, slideshow intégré 
-
+ [ ] 4 question scrum : on organisation : 
 * ************************************************************    
 * Version 0.21  : en cours
 * ************************************************************  

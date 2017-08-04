@@ -233,8 +233,11 @@
 		
 		<div class="btn-group pull-right">
 	  	
-			<?php if($element["_id"] == Yii::app()->session["userId"] && 
-			  			Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
+			<?php 
+				$role = Role::getRolesUserId(@Yii::app()->session["userId"]) ; 
+        
+			if($element["_id"] == Yii::app()->session["userId"] && 
+			   (Role::isSuperAdmin($role) || Role::isSourceAdmin($role) )) { ?>
 			  <!--<button type="button" class="btn btn-default bold lbh" data-hash="#admin">
 			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
 			  </button>-->

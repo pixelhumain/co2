@@ -360,10 +360,7 @@
 				  $type==Person::COLLECTION){  
 					if(!@$front || (@$front)){ 
 		?>
-			<li class="margin-top-50">
-				<h4><i class="fa fa-angle-down"></i> Espace coopératif</h4>
-				<hr>
-			</li>
+			
 			<li class="" id="fast-rooms">
 			</li>			
 		<?php }  

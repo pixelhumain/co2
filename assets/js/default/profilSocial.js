@@ -886,3 +886,39 @@ function removeAddress(form){
 			}
 		});
 }
+
+
+var mapUrl = { 	"discuss": 
+					{ "url"  : "comment/index/type/actionRooms", 
+					  "hash" : "comment.index.type.actionRooms"
+					} ,
+				"vote": 
+					{ "url"  : "survey/entries", 
+					  "hash" : "survey.entries"
+					} ,
+				"entry" :
+					{ "url"  : "survey/entry",
+					  "hash" : "survey.entry",
+					},
+				"actions": 
+					{ "url"  : "rooms/actions", 
+					  "hash" : "rooms.actions"
+					} ,
+				"action":
+					{ "url" : "rooms/action",
+					  "hash" : "rooms.action",
+					}
+			}
+
+function loadRoom(type, id){
+	location.hash=hashUrlPage+".view.dda.dir."+type+".idda."+id;			
+}
+
+function startLoadRoom(type, id){	
+	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+mapUrl[type]["url"]+ '/id/'+id+"?renderPartial=true", 
+			null, function(){
+			},"html");
+
+	toogleNotif(false);
+	KScrollTo("#shortDescriptionHeader");
+}

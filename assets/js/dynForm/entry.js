@@ -6,8 +6,9 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	"sub" : function(){
-    			$("#ajaxFormModal #survey").val( contextData.id );
-    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
+    			$("#ajaxFormModal #survey").val( contextDataDDA.id );
+    			if(typeof contextDataDDA.name != "undefined" && contextDataDDA.name != "")
+    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
 	    	}
 	    },
 	    beforeSave : function(){
@@ -18,12 +19,12 @@ dynForm = {
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p><i class='fa fa-info-circle'></i> Une proposition sert à discuter et demander l'avis d'une communauté sur une idée ou une question donnée</p>",
+                html:"<br><p><i class='fa fa-info-circle'></i> Une proposition sert à discuter et demander l'avis d'une communauté sur une idée ou une question donnée</p>",
             },
 	        id : dyFInputs.inputHidden(),
             survey :{
             	inputType : "select",
-            	placeholder : "Choisir une thématique ?",
+            	label : "Choisir un espace",
             	init : function(){
             		if( userId )
             		{
@@ -52,8 +53,8 @@ dynForm = {
 	            			    
 	            			    html = buildSelectGroupOptions(window.myVotesList);
 								$("#survey").append(html);
-								if(contextData && contextData.id)
-									$("#ajaxFormModal #survey").val( contextData.id );
+								if(contextDataDDA && contextDataDDA.id)
+									$("#ajaxFormModal #survey").val( contextDataDDA.id );
 						    } );
 	            		}
 	            		/*$("#survey").change(function() { 
@@ -62,9 +63,9 @@ dynForm = {
 
             		}
             	},
-            	custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
+            	//custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
             },
-            name : dyFInputs.name,
+            name : dyFInputs.name("vote"),
             message : dyFInputs.textarea("Description", "..."),
             dateEnd : dyFInputs.dateEnd,
             tags : dyFInputs.tags(),
@@ -77,9 +78,7 @@ dynForm = {
             email: dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userConnected.email : "") ),
             organizer : dyFInputs.inputHidden("currentUser"),
             type : dyFInputs.inputHidden("entry")
-            
-            
-            
+                        
 	    }
 	}
 };

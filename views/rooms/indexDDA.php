@@ -95,6 +95,10 @@ a h1.text-azure:hover{
 	<hr>
 </div> -->
 
+
+<h4 class="margin-top-50"><i class="fa fa-angle-down"></i> Espace coopératif</h4>
+<hr>
+
 <div class="col-md-12 col-sm-12 col-xs-12 panel-white no-padding margin-bottom-50" id="room-container">
 
 <div class="panel-group" id="accordion">

@@ -135,11 +135,15 @@
 
 	    <div class="col-md-3 col-sm-3 hidden-xs no-padding" style="bottom:-31px; position: absolute;">
 		<?php 	if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
-					 $images=$element["profilMediumImageUrl"];
+					 $images=array(
+					 	"medium"=>$element["profilMediumImageUrl"],
+					 	"large"=>$element["profilImageUrl"]
+					 );
 				else $images="";	
 				
 				$this->renderPartial('../pod/fileupload', 
 								array("itemId" => (string) $element["_id"],
+									  "itemName" => $element["name"],
 									  "type" => $type,
 									  "resize" => false,
 									  "contentId" => Document::IMG_PROFIL,

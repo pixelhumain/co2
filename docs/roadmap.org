@@ -191,15 +191,18 @@ Liste des notifications déjà lues => #370 #453
   [ ] Rework @ for same working mobile [#192]
     [ ] générer des pseudoUnique pour le mention et aussi pour générer de jolie url communecter.org/livincoop
   [ ] Add # in news text
-  [ ] Translate website (get spanish trad from poupou or others)
+  [X] Translate website (get spanish trad from poupou or others)
     [ ] Create template of co-working on language translation and add language (wishlist)
-  [ ] Banniere rework 
-    [ ] Save cropping
-    [ ] Redimension main image as 1600*... or 1000*... 
-    [ ] Limitation of 500px*100px
+  [X] Banniere rework 
+    [X] Save cropping with no modficiation
+    [X] Save and redimension main image as 1100*700  
+    [X] Limitation of 300px*100px
+    [X] Create normal banniere image, rezized/banner.png and thumb for album
+    [X] LightBox for banner and profil
   [ ] Get preferences of email 
   [ ] Create more email
   [ ] faire le point sur l'evaluation des communs
+  [ ] Ajouter les roles en attribut des links
   ** @Rapha 
   [ ] internationalisation 
     [ ] Barcelone

@@ -72,8 +72,7 @@ dynForm = {
             });
         },
 	    afterSave : function(){
-            alert("afterSave!!");
-			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
+            if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
                 $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
             else 
             { 

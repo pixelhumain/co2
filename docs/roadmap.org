@@ -85,6 +85,8 @@ Liste des notifications déjà lues => #370 #453
  [ ] menu > drop answers > show nb of members + nb of links
  [ ] new menu List or shortcut: last visited links
  [ ] add contributor or member, add a tag list option , could be used as roles or team filters
+ [ ] offrir a tous : le ppt, slideshow intégré 
+
 * ************************************************************    
 * Version 0.21  : en cours
 * ************************************************************  

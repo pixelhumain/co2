@@ -202,46 +202,6 @@ jQuery(document).ready(function() {
 	});
 });
 
-<?php //if(isset($renderPartial)){ ?>
-function loadRoom(type, id){
-	
-	var mapUrl = { 	"all": 
-						{ "url"  : "rooms/index/type/<?php echo $parentType; ?>", 
-						  "hash" : "rooms.index.type.<?php echo $parentType; ?>"
-						} ,
-					"discuss": 
-						{ "url"  : "comment/index/type/actionRooms", 
-						  "hash" : "comment.index.type.actionRooms"
-						} ,
-					"vote": 
-						{ "url"  : "survey/entries", 
-						  "hash" : "survey.entries"
-						} ,
-					"entry" :
-						{ "url"  : "survey/entry",
-						  "hash" : "survey.entry",
-						},
-					"actions": 
-						{ "url"  : "rooms/actions", 
-						  "hash" : "rooms.actions"
-						} ,
-					"action":
-						{
-							"url" : "rooms/action",
-							"hash" : "rooms.action",
-						}
-				}
-
-	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+mapUrl[type]["url"]+ '/id/'+id+"?renderPartial=true", 
-			null, function(){},"html");
-
-	toogleNotif(false);
-	KScrollTo("#shortDescriptionHeader");
-	/*var thiHash = "#"+mapUrl[type]["hash"]+".id."+id;
-	urlCtrl.loadByHash(thiHash);*/
-}
-
-<?php //} ?>
 </script>
 
 <style>

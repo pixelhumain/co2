@@ -553,6 +553,7 @@
 
     var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 	var dirHash="<?php echo @$_GET['dir']; ?>";
+	var idda="<?php echo @$_GET['idda']; ?>";
 	jQuery(document).ready(function() {
 		bindButtonMenu();
 		inintDescs();
@@ -601,6 +602,11 @@
 				loadContacts();
 			else if(sub=="settings")
 				loadSettings();
+			else if(sub=="dda"){
+				var splitHash=location.hash.split(".");
+				var idda = splitHash[splitHash.length-1];
+				startLoadRoom(dir, idda);
+			}
 		} else
 			loadNewsStream(true);
 	}

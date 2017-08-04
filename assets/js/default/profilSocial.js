@@ -575,7 +575,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		var html = "";
 
 		var btnMap = '<button class="btn btn-default btn-sm btn-show-onmap inline" id="btn-show-links-onmap">'+
-				            '<i class="fa fa-map"></i>'+
+				            '<i class="fa fa-map-marker"></i>'+
 				        '</button>';
 
 		html += "<div class='col-md-12 margin-bottom-15 labelTitleDir'>";
@@ -783,9 +783,7 @@ function descHtmlToMarkdown() {
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
-		    		mylog.log("here");
 			    	//toastr.success(data.msg);
-			    	
 			    }
 			});
 			mylog.log("param", param);

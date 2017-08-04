@@ -164,6 +164,9 @@
 
 							  echo @$element["address"]["postalCode"] && @$element["address"]["addressLocality"] ? 
 									", ".$element["address"]["addressLocality"] : "";
+
+							  echo @$element["address"]["streetAddress"] && @$element["address"]["streetAddress"] ? 
+									", ".$element["address"]["streetAddress"] : "";
 						?>
 					</div>
 					<?php $classCircleO = (!empty($element["tags"]) ? "" : "hidden" ); ?>

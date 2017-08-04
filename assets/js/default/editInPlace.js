@@ -391,7 +391,7 @@ function bindAboutPodElement() {
 			var listParent =  ["organizations"] ;
 
 			if(contextData.type == typeObj.event.col)
-				listParent =  ["event"] ;
+				listParent =  ["events"] ;
 
 			
 			form.dynForm.jsonSchema.properties.parentId = {
@@ -411,7 +411,6 @@ function bindAboutPodElement() {
             form.dynForm.jsonSchema.properties.parentType = dyFInputs.inputHidden();
 
             if(contextData.type == typeObj.event.col){
-            	mylog.log("here");
             	form.dynForm.jsonSchema.properties.organizerId =  dyFInputs.organizerId(contextData.parentId, contextData.parentType);
 	            form.dynForm.jsonSchema.properties.organizerType = dyFInputs.inputHidden();
             }
@@ -465,6 +464,8 @@ function bindAboutPodElement() {
 
 			if(notEmpty(contextData.parentId)) 
 				dataUpdate.parentId = contextData.parentId;
+			else
+				dataUpdate.parentId = "dontKnow";
 
 			if(notEmpty(contextData.parentType)) 
 				dataUpdate.parentType = contextData.parentType;
@@ -673,7 +674,7 @@ function bindAboutPodElement() {
 			title : title,
 			type : type,
 			url : url,
-			index : ind
+			index : ind.toString()
 		}
 		mylog.log("params",params);
 		dyFObj.openForm( 'url','sub', params);
@@ -682,7 +683,7 @@ function bindAboutPodElement() {
 
 	function updateContact(ind, name, email, role, telephone) {
 		mylog.log("updateContact", ind, name, email, role, telephone);
-		dataUpdate = { index : ind } ;
+		dataUpdate = { index : ind.toString() } ;
 		if(name != "undefined")
 			dataUpdate.name = name;
 		if(email != "undefined")
@@ -811,7 +812,8 @@ function bindAboutPodElement() {
 			else if(val == "type" && collection == typeObj.event.col)
 				valCD = "typeEvent";
 
-
+			mylog.log("val", val, valCD);
+			mylog.log("val2", $("#ajaxFormModal #"+val).length);
 			if(	$("#ajaxFormModal #"+val).length && 
 				( 	( 	typeof contextData[valCD] != "undefined" && 
 						contextData[valCD] != null && 

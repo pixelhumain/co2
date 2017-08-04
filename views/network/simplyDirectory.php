@@ -1256,7 +1256,6 @@ function updateMap(){
 					add = ( (verb == "and") ? and( tags, v.tags ) : or( tags, v.tags ) );
 				else
 					add= false;
-				mylog.log("here2", v.name, searchValNetwork, v.name.search( new RegExp( searchValNetwork, "i" )) );
 				mylog.log("configFiltre", disableActived, v.disabled, citiesActived, typesActived, rolesActived);
 				if(	add && 
 					( 	disableActived == false || 
@@ -1291,8 +1290,6 @@ function updateMap(){
 			searchValNetwork.length > 0)  {
 
 			$.each(contextMapNetwork,function(k,v){
-				
-				mylog.log("here", v.name, searchValNetwork, v.name.search( new RegExp( searchValNetwork, "i" )) );
 				if(	( 	disableActived == false || 
 						(disableActived == true && typeof v.disabled != "undefined" && v.disabled == true) ) && 
 					( citiesActived.length == 0  || 

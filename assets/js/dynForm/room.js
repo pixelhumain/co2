@@ -67,9 +67,10 @@ dynForm = {
             }
         },
         beforeBuild : function(){
-            dyFObj.setMongoId('poi',function(){
-                uploadObj.gotoUrl = (contextData != null && contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.poi" : location.hash;
+            dyFObj.setMongoId('actionRooms',function(){
+                uploadObj.gotoUrl = (contextData != null && contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.dda.dir.vote.idda."+uploadObj.id : location.hash;
             });
+            
         },
 	    afterSave : function(){
             if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )

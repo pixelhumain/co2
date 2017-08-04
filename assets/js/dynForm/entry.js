@@ -6,15 +6,25 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	"sub" : function(){
+	    		dataHelper.activateMarkdown("#ajaxFormModal #message");
     			$("#ajaxFormModal #survey").val( contextDataDDA.id );
-    			if(typeof contextDataDDA.name != "undefined" && contextDataDDA.name != "")
+    			if (typeof contextDataDDA.name != "undefined" && contextDataDDA.name != "")
     		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
 	    	}
 	    },
-	    beforeSave : function(){
-	    	
-	    	if( typeof $("#ajaxFormModal #message").code === 'function' )  
-	    		$("#ajaxFormModal #message").val( $("#ajaxFormModal #message").code() );
+	    /*beforeBuild : function(){
+            dyFObj.setMongoId('survey',function(){
+                uploadObj.gotoUrl = (contextData != null && contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.poi" : location.hash;
+            });
+        },*/
+	    afterSave : function(){
+            if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
+                $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+            else 
+            { 
+                dyFObj.closeForm(); 
+                urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+            }
 	    },
 	    properties : {
 	    	info : {
@@ -66,14 +76,10 @@ dynForm = {
             	//custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
             },
             name : dyFInputs.name("vote"),
-            message : dyFInputs.textarea("Description", "..."),
+            message : dyFInputs.textarea(tradDynForm.longDescription, "..."),
             dateEnd : dyFInputs.dateEnd,
             tags : dyFInputs.tags(),
-            formshowers : {
-            	label : "En détails",
-                inputType : "custom",
-                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options ( urls)</a>",
-            },
+            //image : dyFInputs.image(),
             urls : dyFInputs.urls,
             email: dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userConnected.email : "") ),
             organizer : dyFInputs.inputHidden("currentUser"),

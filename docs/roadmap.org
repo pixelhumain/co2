@@ -172,12 +172,18 @@ Liste des notifications déjà lues => #370 #453
     [ ] losing session : rememberme
     [ ] enable edit POI when open Edition
   ** @Tib et @Tango 
-    [ ] REfactor DDA 
-      [ ] one room containing all DDAs instead create a room for each section
-      [ ] Tripple page 
-        [ ] think about a process stepper Discuss (can skip), Decide (can skip) Action (option) where nothing is mandatory 
+    [ ] repair DDA + bugs
       [ ] add create btns
       [ ] add short Desc :: dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 })
+      [ ] redirect
+        [ ] room create
+        [ ] proposition redirect
+        [ ] action redirect
+      [ ] proposition 
+        [>>>>>>>] text description create 
+        [ ] Edit 
+        [ ] Deplacer
+        [ ] translate dynform
     [ ] utiliser le DDA pour ouvrir et crowd sourcer les demandes de fonctionnalité de CO
     [ ] intégrer aussi un partage de budget sur une proposition
       [ ] convert proposal to project 
@@ -188,6 +194,12 @@ Liste des notifications déjà lues => #370 #453
         [ ] if obtained > projects status : implementation
         [ ] project tasking / actions
         [ ] when all done status : finished 
+    [ ] ideas
+      [ ] in decision room > open proposal in preview to run through all proposals 
+      [ ] one room containing all DDAs instead create a room for each section
+      [ ] Tripple page 
+        [ ] think about a process stepper Discuss (can skip), Decide (can skip) Action (option) where nothing is mandatory 
+
   ** @tango
   [ ] connecter le form mail au membres d'un groupe
   ** @Clem

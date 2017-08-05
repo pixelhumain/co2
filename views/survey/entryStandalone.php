@@ -292,7 +292,7 @@
 
 				<div class="col-xs-12 text-dark" style="font-size:15px">
 					<hr style="margin-top:0px">
-					<?php echo @$survey["message"]; ?>
+					<?php echo nl2br(@$survey["message"]); ?>
 					<hr>
 					<h2 class="text-center homestead text-dark margin-bottom-25"><i class="fa fa-angle-down"></i> Espace de vote</h2>
 				</div>

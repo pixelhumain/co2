@@ -2319,7 +2319,7 @@ var dyFObj = {
 		mylog.warn("----------- formatData",formData, collection,ctrl);
 		formData.collection = collection;
 		formData.key = ctrl;
-		if( $isArray(formData.id) )
+		if( $.isArray(formData.id) )
 			formData.id = formData.id[0]; //this shouldn't happen, occurs in survey
 
 		if(dyFInputs.locationObj.centerLocation){

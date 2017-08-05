@@ -1542,14 +1542,17 @@ var directory = {
     // ********************************
     // ROOMS DIRECTORY PANEL
     // ********************************
-    roomsPanelHtml : function(params){
+    roomsPanelHtml : function(params, itemType){
       if(directory.dirLog) mylog.log("-----------roomsPanelHtml");
-      console.log("-----------roomsPanelHtml");
-      if(params.type == "surveys") params.hash = "#page.type.surveys.id."+params.id;
+      mylog.log("-----------roomsPanelHtml :"+itemType);
+      if(itemType == "surveys") params.hash = "#page.type.surveys.id."+params.id;
+      else if(itemType == "vote") params.hash = "#page.type."+params.parentType+".id."+params.parentId+".view.dda.dir.vote.idda."+ params.id;
+      else if(itemType == "discuss") params.hash = "#page.type."+params.parentType+".id."+params.parentId+".view.dda.dir.discuss.idda."+ params.id;
+      else if(itemType == "actions") params.hash = "#page.type."+params.parentType+".id."+params.parentId+".view.dda.dir.actions.idda."+ params.id;
       //else if(params.type == "actions") params.hash = "#rooms.action.id."+params.id;
    
       str = "";  
-      str += "<div class='col-xs-12 col-sm-6 col-md-6 col-lg-4 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-xs-12 col-sm-6 col-md-6 col-lg-4 searchEntityContainer "+itemType+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
       
@@ -1613,14 +1616,15 @@ var directory = {
             
             
             if(notEmpty(params.parentRoom)){
-              params.parentUrl = "";
+              params.parentUrl = params.hash;
               params.parentIco = "";
-              if(params.type == "surveys"){ 
-                params.parentUrl = "#survey.entries.id."+params.survey; 
-                params.parentIco = "archive"; }
-              else if(params.type == "actions") {
-                params.parentUrl = "#rooms.actions.id."+params.room;
-                params.parentIco = "cogs";}
+              if(itemType == "surveys")
+                params.parentIco = "archive"; 
+              else if(itemType == "actions") 
+                params.parentIco = "cogs";
+              else if(itemType == "vote") 
+                params.parentIco = "gavel";
+
               str += "<div class='text-dark'>"+
 
                         "<i class='fa fa-" + params.parentIco + "'></i><a href='" + params.parentUrl + "' class='lbh add2fav'> " + params.parentRoom.name + "</a>"+
@@ -1694,7 +1698,6 @@ var directory = {
 
 
             itemType=(contentType) ? contentType :params.type;
-            
             if( itemType ){ 
                 if(directory.dirLog) mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
@@ -1810,11 +1813,8 @@ var directory = {
                 else if(params.type == "events")
                   str += directory.eventPanelHtml(params);  
                 
-                else if(params.type == "surveys")
-                    str += directory.roomsPanelHtml(params);  
-                
-                else if(params.type == "actionRooms")
-                    str += directory.roomsPanelHtml(params);  
+                else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"]) ) 
+                    str += directory.roomsPanelHtml(params,itemType);  
                 
                 else if(params.type == "classified")
                   if(contextData != null)

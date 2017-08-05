@@ -3,7 +3,17 @@
 https://docs.google.com/document/d/1RX-a5Os9sw7a9CMPCOOE1N3Q-P6XRxFL2NNZXrpWgWE/edit
 
 ## architecture spec
+menu is build using ajax 
+```
+loadActionRoom()
+/rooms/index/type/'+contextData.type+'/id/'+contextData.id
+```
 
+testing directory loading 
+```
+loadDataDirectory
+ajax /element/getdatadetail/type....
+```
 ### Rooms
  3 types listed in config/CO2/rooms.json
 - discussion 

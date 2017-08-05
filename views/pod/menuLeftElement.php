@@ -360,10 +360,6 @@
 				  $type==Person::COLLECTION){  
 					if(!@$front || (@$front)){ 
 		?>
-			
-			<li class="" id="fast-rooms">
-			</li>
-
 			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="discuss" data-icon="comment">
 					<i class="fa fa-comment"></i> <?php echo Yii::t("common","Discussion"); ?>
 				</a>
@@ -373,6 +369,10 @@
 			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="actions" data-icon="cogs">
 					<i class="fa fa-cogs"></i> <?php echo Yii::t("common","Actions"); ?>
 				</a>
+			<li class="" id="fast-rooms">
+			</li>
+
+			
 		<?php }  
 		} ?>
 

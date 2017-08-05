@@ -143,10 +143,10 @@ function bindButtonMenu(){
 	$("#btn-hide-desc").click(function(){
 		if($("#desc-event").hasClass("hidden")){
 			$("#desc-event").removeClass("hidden");
-			$("#btn-hide-desc").html("<i class='fa fa-angle-up'></i> "+trad["hide"]);
+			$("#btn-hide-desc").html("<i class='fa fa-angle-up'></i> "+trad.hide);
 		}else{
 			$("#desc-event").addClass("hidden");
-			$("#btn-hide-desc").html("<i class='fa fa-angle-down'></i> "+trad["showdescr"]);
+			$("#btn-hide-desc").html("<i class='fa fa-angle-down'></i> "+trad.showdescr);
 		}
 	});
 
@@ -315,12 +315,12 @@ function loadDataDirectory(dataName, dataIcon, edit){ console.log("loadDataDirec
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 				function(data){ 
-					var type = dataName == "poi" ? dataName : null;
+					var type = ($.inArray(dataName, ["poi","ressource","vote","actions","discuss"]) ) ? dataName : null;
+
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
 					displayInTheContainer(data, dataName, dataIcon, type, edit);
 					bindButtonOpenForm();
-					
 				}
 	,"html");
 }
@@ -332,32 +332,34 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	var s = (n>1) ? "s" : "";
 
 	if(countData=='Aucun')
-		countData=trad["no"];
+		countData=trad.no;
 	var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
-	if(dataName == "follows")	{ html += elementName + " "+trad["isfollowing"]+" " + countData + " "+trad["page"]+s+""; }
-	else if(dataName == "followers")	{ html += countData + " <b>"+trad["follower"]+s+"</b> "+trad["to"]+" "+ elementName; }
-	else if(dataName == "members")	{ html += elementName + " "+trad["iscomposedof"]+" " + countData + " <b>"+trad["member"]+s+"</b>"; }
-	else if(dataName == "attendees")	{ html += countData + " <b>"+trad["attendee"]+s+"</b> "+trad["toevent"]+" " + elementName; }
-	else if(dataName == "guests")	{ html += countData + " <b>"+trad["guest"]+s+"</b> "+trad["on"]+" " + elementName; }
-	else if(dataName == "contributors")	{ html += countData + " <b>"+trad["contributor"]+s+"</b> "+trad["toproject"]+" " + elementName; }
+	if(dataName == "follows")	{ html += elementName + " "+trad.isfollowing+" " + countData + " "+trad.page+s+""; }
+	else if(dataName == "followers")	{ html += countData + " <b>"+trad.follower+s+"</b> "+trad.to+" "+ elementName; }
+	else if(dataName == "members")	{ html += elementName + " "+trad.iscomposedof+" " + countData + " <b>"+trad.member+s+"</b>"; }
+	else if(dataName == "attendees")	{ html += countData + " <b>"+trad.attendee+s+"</b> "+trad.toevent+" " + elementName; }
+	else if(dataName == "guests")	{ html += countData + " <b>"+trad.guest+s+"</b> "+trad.on+" " + elementName; }
+	else if(dataName == "contributors")	{ html += countData + " <b>"+trad.contributor+s+"</b> "+trad.toproject+" " + elementName; }
 	
 	else if(dataName == "events"){ 
 		if(type == "events"){
-			html += elementName + " "+trad["iscomposedof"]+" " + countData+" <b> "+trad["subevent"]+s; 
+			html += elementName + " "+trad.iscomposedof+" " + countData+" <b> "+trad.subevent+s; 
 		}else{
-			html += elementName + " "+trad["takepart"]+" " + countData+" <b> "+trad["event"]+s; 
+			html += elementName + " "+trad.takepart+" " + countData+" <b> "+trad.event+s; 
 		}
 	}
-	else if(dataName == "organizations")	{ html += elementName + " "+trad["ismemberof"]+" "+ countData+" <b>"+trad["organization"]+s; }
-	else if(dataName == "projects")		{ html += elementName + " "+trad["contributeto"]+" " + countData+" <b>"+trad["project"]+s }
+	else if(dataName == "organizations")	{ html += elementName + " "+trad.ismemberof+" "+ countData+" <b>"+trad.organization+s; }
+	else if(dataName == "projects")		{ html += elementName + " "+trad.contributeto+" " + countData+" <b>"+trad.project+s }
 
-	else if(dataName == "collections"){ html += countData+" <b>"+trad["collection"]+s+"</b> "+trad["of"]+" " + elementName; }
+	else if(dataName == "collections"){ html += countData+" <b>"+trad.collection+s+"</b> "+trad.of+" " + elementName; }
 	else if(dataName == "poi"){ html += countData+" <b>"+trad["point"+s+"interest"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
-	else if(dataName == "classified"){ html += countData+" <b>"+trad["classified"]+s+"</b> "+trad['createdby'+s]+" " + elementName; }
+	else if(dataName == "classified"){ html += countData+" <b>"+trad.classified+s+"</b> "+trad['createdby'+s]+" " + elementName; }
 
-	else if(dataName == "needs"){ html += countData+" <b>"+trad["need"]+s+"</b> "+trad["of"]+" " + elementName; }
+	else if(dataName == "needs"){ html += countData+" <b>"+trad.need+s+"</b> "+trad.of+" " + elementName; }
 
-	else if(dataName == "dda"){ html += countData+" <b>"+trad["proposal"]+s+"</b> "+trad["of"]+" " + elementName; }
+	else if(dataName == "vote"){ html += countData+" <b>"+trad.proposal+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "discuss"){ html += countData+" <b>"+trad.discussion+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "actions"){ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName; }
 
 	else if(dataName == "actionRooms"){ html += countData+" <b>espace de décision"+s+"</b> de " + elementName; }
 
@@ -390,7 +392,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections","actionRooms"] ) >= 0 ){
 			if(dataName == "collections"){
 				html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="collection.crud()">';
-		    	html +=	'<i class="fa fa-plus"></i> '+trad["createcollection"]+'</a>' ; 
+		    	html +=	'<i class="fa fa-plus"></i> '+trad.createcollection+'</a>' ; 
 			}
 			else {
 				var elemSpec = dyFInputs.get(dataName);
@@ -817,7 +819,7 @@ function inintDescs() {
 		descHtmlToMarkdown();
 	mylog.log("after");
 	mylog.log("inintDescs", $("#descriptionMarkdown").html());
-	var descHtml = "<i>"+trad["notSpecified"]+"</i>";
+	var descHtml = "<i>"+trad.notSpecified+"</i>";
 	if($("#descriptionMarkdown").html().length > 0){
 		descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
 	}
@@ -828,9 +830,9 @@ function inintDescs() {
 }
 
 function removeAddress(form){
-	var msg = trad["suredeletelocality"] ;
+	var msg = trad.suredeletelocality ;
 		if(!form && contextData.type == "<?php echo Person::COLLECTION; ?>")
-			msg = trad["suredeletepersonlocality"] ;
+			msg = trad.suredeletepersonlocality ;
 
 		bootbox.confirm({
 			message: msg + "<span class='text-red'></span>",

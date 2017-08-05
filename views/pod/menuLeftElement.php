@@ -362,7 +362,17 @@
 		?>
 			
 			<li class="" id="fast-rooms">
-			</li>			
+			</li>
+
+			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="discuss" data-icon="comment">
+					<i class="fa fa-comment"></i> <?php echo Yii::t("common","Discussion"); ?>
+				</a>
+			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="vote" data-icon="gavel">
+					<i class="fa fa-gavel"></i> <?php echo Yii::t("common","Decision"); ?>
+				</a>
+			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="actions" data-icon="cogs">
+					<i class="fa fa-cogs"></i> <?php echo Yii::t("common","Actions"); ?>
+				</a>
 		<?php }  
 		} ?>
 

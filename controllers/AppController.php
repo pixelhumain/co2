@@ -90,7 +90,7 @@ class AppController extends CommunecterController {
 	public function actionMedia(){ //kgougle
 		$indexMin = isset($_POST['indexMin']) ? $_POST['indexMin'] : 0;
         $indexMax = isset($_POST['indexMax']) ? $_POST['indexMax'] : 10;
-        $sources = isset($_POST['sources']) ? $_POST['sources'] : array("NCI", "NC1", "CALEDOSPHERE", "NCTV");
+        $sources = isset($_POST['sources']) ? $_POST['sources'] : array("NCI", "NC1", "OUTREMERS360", "NCTV", "TAZAR");
         $search = isset($_POST['search']) ? $_POST['search'] : "";
 
         $indexStep = $indexMax - $indexMin;

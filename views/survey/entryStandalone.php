@@ -159,7 +159,7 @@
 							$hasVote = (@$survey["voteUpCount"] || @$survey["voteAbstainCount"] || @$survey["voteUnclearCount"] || @$survey["voteMoreInfoCount"] || @$survey["voteDownCount"] ) ? true : false;
 				            if( !$hasVote && $voteLinksAndInfos["avoter"] != "closed" )
 				            { ?>
-								<a class="tooltips btn btn-default  " href="javascript:openEntryForm()" >
+								<a class="tooltips btn btn-default  " href="javascript:dyFObj.editElement('surveys','<?php echo  $survey["_id"] ?>');" >
 									<i class="fa fa-pencil "></i> <span class="hidden-sm hidden-md hidden-xs">Éditer</span>
 								</a>
 							<?php } ?>
@@ -214,7 +214,7 @@
 								Yii::t("rooms","You created this vote.",null,Yii::app()->controller->module->id);
 
 					    if( Yii::app()->request->isAjaxRequest){ ?>
-							<a class="btn btn-xs btn-default" onclick="entryDetail('<?php echo Yii::app()->createUrl("/survey/entry/id/".(string)$survey["_id"])?>','edit')" href="javascript:;">
+							<a class="btn btn-xs btn-default" onclick="dyFObj.editElement('surveys','<?php echo  $survey["_id"] ?>');" href="javascript:;">
 								<i class='fa fa-pencil' ></i> 
 								<?php echo Yii::t("rooms","Edit this Entry",null,Yii::app()->controller->module->id) ?>
 							</a>
@@ -292,7 +292,7 @@
 
 				<div class="col-xs-12 text-dark" style="font-size:15px">
 					<hr style="margin-top:0px">
-					<?php echo @$survey["message"]; ?>
+					<?php echo nl2br(@$survey["message"]); ?>
 					<hr>
 					<h2 class="text-center homestead text-dark margin-bottom-25"><i class="fa fa-angle-down"></i> Espace de vote</h2>
 				</div>
@@ -337,33 +337,6 @@
 	</div>
 	
 </div>
-
-<?php if (  isset(Yii::app()->session["userId"]) && $survey["organizerId"] == Yii::app()->session["userId"] )  { ?>
-<div class="modal fade" id="modal-edit-entry" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header text-dark">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title text-left">
-        	<i class="fa fa-angle-down"></i> <i class="fa fa-pencil"></i> Éditer la proposition
-        </h2>
-      </div>
-      <div class="modal-body no-padding">
-      	<div class="panel-body" id="form-edit-entry">
-			<?php 
-				/*$params = array(
-			    	"survey" => $survey, //la proposition actuelle
-			        "roomId" => $survey["survey"] //id de la room
-			    );
-				$this->renderPartial('../survey/editEntrySV', $params); */
-			?>
-		</div>
-		
-	  </div>
-	</div>
-  </div>
-</div>
-<?php }	?>
 
 <?php 
  if(!isset($_GET["renderPartial"])){

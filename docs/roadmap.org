@@ -85,6 +85,8 @@ Liste des notifications déjà lues => #370 #453
  [ ] menu > drop answers > show nb of members + nb of links
  [ ] new menu List or shortcut: last visited links
  [ ] add contributor or member, add a tag list option , could be used as roles or team filters
+ [ ] offrir a tous : le ppt, slideshow intégré 
+ [ ] 4 question scrum : on organisation : 
 * ************************************************************    
 * Version 0.21  : en cours
 * ************************************************************  
@@ -139,6 +141,8 @@ Liste des notifications déjà lues => #370 #453
     [ ] Design deco du CoBus 
 
 * DEV
+  ** Todo 
+    [ ]  Api annonce
   ** Amelioration during tests
     [ ] redirect after error : go back to previous page , not "home" 
     [ ] date devant le lien follow
@@ -168,18 +172,44 @@ Liste des notifications déjà lues => #370 #453
     [ ] brique comeptence et tache sur mon profil 
     [ ] réintégré la GEd de granddir 
     [ ] losing session : rememberme
+    [ ] enable edit POI when open Edition
   ** @Tib et @Tango 
-    [ ] REfactor DDA 
-    [ ] utiliser le DDA pour ouvrir et crowd sourcer les demandes de fonctionnalité de CO
-    [ ] intégrer aussi un partage de budget sur une proposition
+    *** repair DDA + bugs
+      [ ] add create btns
+      [ ] proposition 
+        [ ] Edit > shows > but doesn't save
+        [ ] Deplacer
+        [ ] translate dynform
+        [ ] connect image
+      [ ] room 
+        [ ] connect image
+        [ ] Delete a room ??? can only Archive
+      [ ] actions
+        [ ] assign bug redirect
+        [ ] connect image
+      [ ] use directorys for room Lists
+      [ ] virer les communes des drop down
+    *** usages
+      [ ] DDA is for members only ? preference ? 
+      [ ] utiliser le DDA pour les propositions de nouvelles fonctionnalités de CO
+    *** ideas features
+      * amélioration
+      [ ] add short Desc :: dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 })
+      [ ] add DDA activity to journal 
+      [ ] in decision room > open proposal in preview to run through all proposals 
+      [ ] one room containing all DDAs instead create a room for each section
+      [ ] Tripple page 
+        [ ] think about a process stepper Discuss (can skip), Decide (can skip) Action (option) where nothing is mandatory 
+      [ ] intégrer aussi un partage de budget sur une proposition
       [ ] convert proposal to project 
-      [ ] open to crowdfunding > status : funding 
+      [ ] on a proposal open to crowdfunding > status : funding 
         [ ] list objectives titles + description (medium) 
         [ ] build pixel funding
         [ ] particpation join and get involved / share budget 
         [ ] if obtained > projects status : implementation
         [ ] project tasking / actions
         [ ] when all done status : finished 
+      [ ] what about Document, Discuss, Decide, Act = 3D.A
   ** @tango
   [ ] connecter le form mail au membres d'un groupe
   ** @Clem
@@ -202,6 +232,12 @@ Liste des notifications déjà lues => #370 #453
   [ ] Get preferences of email 
   [ ] Create more email
   [ ] faire le point sur l'evaluation des communs
+  [ ] idée 
+    [ ]  sur les valeurs pouvoir ajouter une image sur chaque valeur pourrait etre un peu plus sexy
+        et l'autre option proposé par maia, rajouter une liste fixe de mot sur chacune des 6sections du survey de Simon
+    [ ] pour le 31/8 : sur un event ou une orga 
+      pouvoir ajouté les personnes ou orga qui font l'event , 
+      ou qui sont partenaires yaurait simplement un lien Organisation dans ces 2 type event et orga 
   [ ] Ajouter les roles en attribut des links
   ** @Rapha 
   [ ] internationalisation 

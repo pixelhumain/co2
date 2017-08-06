@@ -237,8 +237,11 @@
 		
 		<div class="btn-group pull-right">
 	  	
-			<?php if($element["_id"] == Yii::app()->session["userId"] && 
-			  			Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
+			<?php 
+				$role = Role::getRolesUserId(@Yii::app()->session["userId"]) ; 
+        
+			if($element["_id"] == Yii::app()->session["userId"] && 
+			   (Role::isSuperAdmin($role) || Role::isSourceAdmin($role) )) { ?>
 			  <!--<button type="button" class="btn btn-default bold lbh" data-hash="#admin">
 			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
 			  </button>-->
@@ -557,6 +560,7 @@
 
     var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 	var dirHash="<?php echo @$_GET['dir']; ?>";
+	var idda="<?php echo @$_GET['idda']; ?>";
 	jQuery(document).ready(function() {
 		bindButtonMenu();
 		inintDescs();
@@ -605,6 +609,11 @@
 				loadContacts();
 			else if(sub=="settings")
 				loadSettings();
+			else if(sub=="dda"){
+				var splitHash=location.hash.split(".");
+				var idda = splitHash[splitHash.length-1];
+				startLoadRoom(dir, idda);
+			}
 		} else
 			loadNewsStream(true);
 	}

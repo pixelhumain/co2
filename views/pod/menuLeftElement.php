@@ -360,12 +360,19 @@
 				  $type==Person::COLLECTION){  
 					if(!@$front || (@$front)){ 
 		?>
-			<li class="margin-top-50">
-				<h4><i class="fa fa-angle-down"></i> Espace coopératif</h4>
-				<hr>
-			</li>
+			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="discuss" data-icon="comment">
+					<i class="fa fa-comment"></i> <?php echo Yii::t("common","Discussion"); ?>
+				</a>
+			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="vote" data-icon="gavel">
+					<i class="fa fa-gavel"></i> <?php echo Yii::t("common","Decision"); ?>
+				</a>
+			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="actions" data-icon="cogs">
+					<i class="fa fa-cogs"></i> <?php echo Yii::t("common","Actions"); ?>
+				</a>
 			<li class="" id="fast-rooms">
-			</li>			
+			</li>
+
+			
 		<?php }  
 		} ?>
 

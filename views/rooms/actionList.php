@@ -213,6 +213,20 @@ border: 0px solid #E4E4E4;
 
 <section class="mt80 stepContainer">
   <div class="home">
+<script type="text/javascript">
+var contextDataDDA = {
+  name : "<?php echo addslashes(@$room["name"]) ?>",
+  id : "<?php echo (string)@$room["_id"] ?>",
+  type : "room",
+  controller : "survey",
+  controller : "<?php echo Survey::CONTROLLER;?>",
+  otags : "<?php echo addslashes(@$room["name"]).",débat, proposition, question, vote, communecter,".addslashes(@implode(",", @$room["tags"])) ?>",
+  odesc : <?php echo json_encode( 'Propositions : '.addslashes(@$room["name"])); ?>,
+  parentType : "<?php echo @$room["parentType"] ?>",
+  parentId : "<?php echo (string)@$room["parentId"] ?>"
+};
+
+</script>
 
   <?php 
   $logguedAndValid = Person::logguedAndValid();
@@ -554,44 +568,6 @@ border: 0px solid #E4E4E4;
   </section>
 
 
-
-<?php  if( Authorisation::canParticipate(Yii::app()->session['userId'],$room["parentType"],$room["parentId"]) ) { ?>
-<div class="modal fade" id="modal-create-action" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header text-dark">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title text-left">
-          <i class="fa fa-angle-down"></i> <i class="fa fa-plus"></i> Ajouter une action
-        </h2>
-      </div>
-      <div class="modal-body no-padding">
-        <div class="panel-body" id="form-create-action">
-          <?php 
-              $params = array(
-                  "room"=>$room,
-                  "roomId" => (string)$room["_id"],
-                  "mode"=>"new",
-                  //"action"=>$room,
-              );
-              $params["organizer"] = array(  "name" => $parent["name"],
-                                             "link" => Yii::app()->createUrl('/'.Yii::app()->controller->module->id."/".$room["parentType"]."/dashboard/id/".$room["parentId"]) );
-
-            $this->renderPartial('../rooms/editAction', $params); 
-          ?>  
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-          <button type="button" class="btn btn-success"
-                 onclick="saveNewAction()">
-              <i class="fa fa-save"></i> Enregistrer
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<?php } ?>
 
 <div class="space20"></div>
 

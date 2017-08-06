@@ -95,11 +95,26 @@ a h1.text-azure:hover{
 	<hr>
 </div> -->
 
-<div class="col-md-12 col-sm-12 col-xs-12 panel-white no-padding" id="room-container">
+
+<h4 class="margin-top-50"><i class="fa fa-angle-down"></i> Espace coopératif</h4>
+<hr>
+
+<div class="col-md-12 col-sm-12 col-xs-12 panel-white no-padding margin-bottom-50" id="room-container">
 
 <div class="panel-group" id="accordion">
 	<?php 
 		$auth = ((Authorisation::canParticipate(Yii::app()->session['userId'],$parentType,$parentId) /*&& (@$fromView != "entity.detail") */)?true:false);
+		
+		if($auth==true) {
+		    	/*echo '<button onclick="selectRoomType(\''.$typeNew.'\')" data-toggle="modal" 
+		    			data-target="#modal-create-room" class="btn btn-link letter-green col-md-12 no-padding" style="text-align:left;">'.
+		    			'<b><i class="fa fa-plus"></i> créer un nouvel espace</b>'.
+		    		'</button>';*/
+		    	echo '<button onclick="dyFObj.openForm(\'room\',\'sub\')" class="btn btn-link letter-green col-md-12 no-padding" style="text-align:left;">'.
+		    			'<b><i class="fa fa-plus"></i> créer un nouvel espace</b>'.
+		    		'</button>';
+		}
+
 		createAccordionMenu($discussions, 1, "Discussions", "comments", "discuss", "Aucun espace de discussion", $auth, @$fromView);
 		createAccordionMenu($votes, 2, "Décisions", "gavel", "vote", "Aucun espace de décision", $auth, @$fromView);
 		createAccordionMenu($actions, 3, "Actions", "cogs", "actions", "Aucun espace d'action", $auth, @$fromView);
@@ -164,14 +179,7 @@ a h1.text-azure:hover{
 		         if(empty($elements)) 
 			      	echo '<div class="panel-body hide-on-reduce-menu"><small><i class="fa fa-times"></i> '.$emptyMsg.'</small></div>';
 
-			     if($auth==true) {
-				    echo '<div class="panel-body hide-on-reduce-menu">';
-				    	echo '<button onclick="selectRoomType(\''.$typeNew.'\')" data-toggle="modal" 
-				    			data-target="#modal-create-room" class="btn btn-link letter-green col-md-12 no-padding" style="text-align:left;">'.
-				    			'<b><i class="fa fa-plus"></i> créer un nouvel espace</b>'.
-				    		'</button>';
-				    echo  '</div>';
-				}
+			     
 
 	echo 	'</div>';
 
@@ -194,46 +202,6 @@ jQuery(document).ready(function() {
 	});
 });
 
-<?php //if(isset($renderPartial)){ ?>
-function loadRoom(type, id){
-	
-	var mapUrl = { 	"all": 
-						{ "url"  : "rooms/index/type/<?php echo $parentType; ?>", 
-						  "hash" : "rooms.index.type.<?php echo $parentType; ?>"
-						} ,
-					"discuss": 
-						{ "url"  : "comment/index/type/actionRooms", 
-						  "hash" : "comment.index.type.actionRooms"
-						} ,
-					"vote": 
-						{ "url"  : "survey/entries", 
-						  "hash" : "survey.entries"
-						} ,
-					"entry" :
-						{ "url"  : "survey/entry",
-						  "hash" : "survey.entry",
-						},
-					"actions": 
-						{ "url"  : "rooms/actions", 
-						  "hash" : "rooms.actions"
-						} ,
-					"action":
-						{
-							"url" : "rooms/action",
-							"hash" : "rooms.action",
-						}
-				}
-
-	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+mapUrl[type]["url"]+ '/id/'+id+"?renderPartial=true", 
-			null, function(){},"html");
-
-	toogleNotif(false);
-	KScrollTo("#shortDescriptionHeader");
-	/*var thiHash = "#"+mapUrl[type]["hash"]+".id."+id;
-	urlCtrl.loadByHash(thiHash);*/
-}
-
-<?php //} ?>
 </script>
 
 <style>

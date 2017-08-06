@@ -148,8 +148,6 @@ function OpenDynForm(mapping = null, tagname = null, eltID = null, list_tags_osm
 	list_options = {};
 	list_all_tag_osm = [];
 
-	// if (tagname != null) {
-
 	var list_tags_amenity = getAllValueForTagAmenityOSM();
 	var list_tags_place = getAllValueForTagPlaceOSM();
 	var list_tags_office = getAllValueForTagOfficeOSM();
@@ -186,21 +184,6 @@ function OpenDynForm(mapping = null, tagname = null, eltID = null, list_tags_osm
 		})
 	});
 
-	// if (tagname == "amenity") {
-	// 	// var theme_array = getThemeArray();
-	// 	list_tags_amenity = getAllValueForTagAmenityOSM();
-	// 	$.each(list_tags_amenity, function(index, value) {
-	// 		list_options[index] = {};
-	// 		list_options[index].label = index;
-	// 		list_options[index].options = {};
-	// 		$.each(value, function(indextags, tagsvalue) {
-	// 			list_options[index].options[tagsvalue] = tagsvalue;
-	// 		})
-	// 	});
-	
-	// }
-
-	 // else {
 	list_options["Tag à modifier"] = {};
 	list_options["Tag à modifier"].label = "Tag à modifier";
 	list_options["Tag à modifier"].options = {};
@@ -217,8 +200,6 @@ function OpenDynForm(mapping = null, tagname = null, eltID = null, list_tags_osm
 	list_type_element["Type de l'élément"].options.office = "Bâtiment administratif",
 	list_type_element["Type de l'élément"].options.leisure = "Loisir",
 	list_type_element["Type de l'élément"].options.shop = "Boutique",
-
-	// }
 
 	mylog.log('LA LISTE DE TOUTES LES OPTIONS DU SELECT EST : ' , list_options);
 	mylog.log('LISTE TAG OSM', list_tags_osm);
@@ -267,10 +248,8 @@ function OpenDynForm(mapping = null, tagname = null, eltID = null, list_tags_osm
 			}
 		}
 	};
-	// }
 
 	dyFObj.openForm(form, null, mapping);
-
 	$(".modal-header").addClass("bg-dark");
 }
 

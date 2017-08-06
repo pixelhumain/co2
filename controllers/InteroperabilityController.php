@@ -19,7 +19,11 @@ class InteroperabilityController extends CommunecterController {
       'co-osm-push-tag' => 'citizenToolKit.controllers.interoperability.OSMPushTagAction',
       'wikitoco' => 'citizenToolKit.controllers.interoperability.WikiToCoAction',
       'pushtypewikidata' => 'citizenToolKit.controllers.interoperability.PushTypeWikidataAction',
+      'wikidata-put-description' => 'citizenToolKit.controllers.interoperability.WikidataPutDescriptionAction',
+      'wikidata-put-claim' => 'citizenToolKit.controllers.interoperability.WikidataPutClaimAction',
       'proposeopendatasource' => 'citizenToolKit.controllers.interoperability.ProposeOpenDataSourceAction',
+      'validateproposeinterop' => 'citizenToolKit.controllers.interoperability.ValidateProposeInteropAction',
+      'rejectproposeinterop' => 'citizenToolKit.controllers.interoperability.RejectProposeInteropAction',
     );
   }
 }

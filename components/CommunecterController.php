@@ -485,6 +485,7 @@ class CommunecterController extends Controller
       "sendmailformcontactprivate" => array('href' => "/ph/communecter/app/sendmailformcontactprivate", "public" => true),
       "checkurlexists" => array('href' => "/ph/communecter/app/checkurlexists", "public" => true),
       "interoperability"  => array('href' => "/ph/communecter/app/interoperability",   "public" => false),
+      "test2"             => array('href' => "/ph/communecter/app/test2",   "public" => false),
       ),
     "export" => array(
       "index"             => array('href' => "ph/communecter/export/index",            "public" => true),
@@ -500,6 +501,7 @@ class CommunecterController extends Controller
       "co-osm-getode"      => array('href' => 'ph/communecter/interoperability/co-osm-getnode',  "public" => true),
       "wikitoco"              => array('href' => 'ph/communecter/interoperability/wikitoco',  "public" => true),
       "pushtypewikidata"    => array('href' => 'ph/communecter/interoperability/pushtypewikidata',  "public" => true),
+      "wikidata-put-description"    => array('href' => 'ph/communecter/interoperability/wikidata-put-description',  "public" => true),
       ),
     "rooms" => array('href' => "/ph/communecter/app/rooms", "public" => true),
     "survey" => array('href' => "/ph/communecter/app/survey", "public" => true),

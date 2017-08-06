@@ -315,8 +315,7 @@ function loadDataDirectory(dataName, dataIcon, edit){ console.log("loadDataDirec
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 				function(data){ 
-					var type = ($.inArray(dataName, ["poi","ressource","vote","actions","discuss"]) ) ? dataName : null;
-
+					var type = ($.inArray(dataName, ["poi","ressource","vote","actions","discuss"]) >=0) ? dataName : null;
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
 					displayInTheContainer(data, dataName, dataIcon, type, edit);

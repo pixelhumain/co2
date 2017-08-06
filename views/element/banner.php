@@ -86,10 +86,19 @@
 	</form>
 
 	<div id="contentBanner" class="col-md-12 col-sm-12 col-xs-12 no-padding">
-		<?php if (@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])){ ?> 
-			<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" 
-				src="<?php echo Yii::app()->createUrl('/'.$element["profilBannerUrl"]) ?>">
-		<?php } ?>
+		<?php if (@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])){	
+			$imgHtml='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" 
+				src="'.Yii::app()->createUrl('/'.$element["profilBannerUrl"]).'">';
+			if (@$element["profilRealBannerUrl"] && !empty($element["profilRealBannerUrl"])){
+				$imgHtml='<a href="'.Yii::app()->createUrl('/'.$element["profilRealBannerUrl"]).'"
+							class="thumb-info"  
+							data-title="'.Yii::t("common","Cover image of")." ".$element["name"].'"
+							data-lightbox="all">'.
+							$imgHtml.
+						'</a>';
+			}
+			echo $imgHtml;
+		} ?>
 	</div>
 	
 	<?php if(!empty($element["badges"]) || $openEdition == true ){ ?>
@@ -317,17 +326,21 @@ jQuery(document).ready(function() {
    							// access image size here 
    						 	var imgWidth=this.width;
    						 	var imgHeight=this.height;
-   							if(imgWidth>=600 && imgHeight>=300){
+   							if(imgWidth>=400 && imgHeight>=150){
                					$.blockUI({ 
                						message: $('div#uploadScropResizeAndSaveImage'), 
                						css: {cursor:null,padding: '0px !important'}
                					}); 
                					$("#uploadScropResizeAndSaveImage").parent().css("padding-top", "0px !important");
 								//$("#uploadScropResizeAndSaveImage").html(html);
+							    
 								setTimeout(function(){
+									var setImage={"width":1600,"height":400};
 									var parentWidth=$("#cropContainer").width();
-									var crop = $('#cropImage').cropbox({width: parentWidth,
-										//height: 400,
+									//var parentHeight=setImage.height*(parentWidth/setImage.width);
+									var crop = $('#cropImage').cropbox({
+										width: parentWidth,
+										height: 300,
 										zoomIn:true,
 										zoomOut:true}, function() {
 											cropResult=this.result;
@@ -381,7 +394,7 @@ jQuery(document).ready(function() {
 										        if(data.result){
 										        	$(".saveBanner").prop("disabled",false);
 								        			$(".saveBanner").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
-										        	newBanner='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
+										        	newBanner='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src.profilBannerUrl+'" style="">';
 										        	$("#contentBanner").html(newBanner);
 										        	$(".contentHeaderInformation").addClass("backgroundHeaderInformation");
 										        	$.unblockUI();

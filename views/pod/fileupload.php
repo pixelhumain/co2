@@ -54,7 +54,7 @@
 		var imageName= "";
 		var imageId= "";
 		var imagesPath = [];
-		var image = <?php echo ($image!="") ? json_encode($image) : "" ?>;
+		var image = <?php echo json_encode($image) ?>;
 		var itemName="<?php echo $itemName ?>";
 		if("undefined" != typeof(contentKeyBase))
 			var contentKey = contentKeyBase/*+"."+contentIdtoSend*/;

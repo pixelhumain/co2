@@ -405,9 +405,11 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	return html;
 }
 
-function loadAdminDashboard(){
+function loadAdminDashboard(week){
 	showLoader('#central-container');
-	getAjax('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/main",function(){ 
+	ajaxPost('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/main/week/"+week,
+			 { "week" : week },
+			 function(){ 
 			
 	},"html");
 }

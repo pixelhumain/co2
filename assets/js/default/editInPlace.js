@@ -188,7 +188,6 @@ function bindAboutPodElement() {
 						type: "object",
 						onLoads : {
 							initUpdateInfo : function(){
-								alert();
 								mylog.log("initUpdateInfo");
 								$(".emailOptionneltext").slideToggle();
 								$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")

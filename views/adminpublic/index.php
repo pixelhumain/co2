@@ -19,14 +19,14 @@
 			<li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="lbh text-purple" style="cursor:pointer;" href="#adminpublic.createfile">
 					<i class="fa fa-upload fa-2x"></i>
-					<?php echo Yii::t("common", "IMPORT DATA"); ?>
+					<?php echo Yii::t("common", "Converter"); ?>
 				</a>
 			</li>
 
 			<li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="lbh text-red" style="cursor:pointer;" href="#adminpublic.adddata">
 					<i class="fa fa-plus fa-2x"></i>
-					<?php echo Yii::t("common", "ADD DATA"); ?>
+					<?php echo Yii::t("common", "IMPORT DATA"); ?>
 				</a>
 			</li>
 			

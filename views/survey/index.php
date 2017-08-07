@@ -571,15 +571,9 @@
    
           <div class="col-md-4 col-sm-4 margin-bottom-15 bg-white" style="min-height: 200px;">
                 <?php 
-                  /*$this->renderPartial('../pod/fileupload', array("itemId" => (string)$where["survey"]["_id"],
-                                            "type" => ActionRoom::COLLECTION,
-                                            "resize" => false,
-                                            "contentId" => Document::IMG_PROFIL,
-                                            "editMode" => @$canParticipate,
-                                            "image" => $images,
-                                            "parentType" => $parentType,
-                                            "parentId" => $parentId)); */
-                ?>
+                 $img =  (@$where["survey"]['profilImageUrl']) ? "<img class='img-responsive' src='".Yii::app()->createUrl('/'.@$where["survey"]['profilImageUrl'])."'/>" : "";
+                 echo $img;
+              ?>
           </div>   
                 
          <?php if (count(@$list) > 0) { ?>

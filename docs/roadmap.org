@@ -85,8 +85,15 @@ Liste des notifications déjà lues => #370 #453
  [ ] menu > drop answers > show nb of members + nb of links
  [ ] new menu List or shortcut: last visited links
  [ ] add contributor or member, add a tag list option , could be used as roles or team filters
- [ ] offrir a tous : le ppt, slideshow intégré 
- [ ] 4 question scrum : on organisation : 
+ ** feature 
+  [ ] 4 question scrum : on organisation : 
+  [ ] offrir a tous : le ppt, slideshow intégré 
+ [ ] sur detail element montrer la filère , valoriser les tags
+ [ ] lifepath : ultra personnel tag
+  - can use POI's type lifepath > private | public
+  - can be used for following any item
+ ** interoperabilty + data mining : 
+  [ ] use FB social graph to mine events and organisation 
 * ************************************************************    
 * Version 0.21  : en cours
 * ************************************************************  
@@ -194,6 +201,10 @@ Liste des notifications déjà lues => #370 #453
       [ ] utiliser le DDA pour les propositions de nouvelles fonctionnalités de CO
     *** ideas features
       * amélioration
+      [ ] pouvoir like ou qualifier un surlignage 
+      [ ] background Color nuance pour pondéré la force d'un commentaire ou amendement
+        - plus ou moins rouge si on est plus ou moins en désaccord 
+        - plus ou moins vert si on est plus ou moins en accord 
       [ ] add short Desc :: dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 })
       [ ] add DDA activity to journal 
       [ ] in decision room > open proposal in preview to run through all proposals 

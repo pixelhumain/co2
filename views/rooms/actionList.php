@@ -471,14 +471,9 @@ var contextDataDDA = {
 
         <div class="panel-white margin-top-15" style="display:inline-block; width:100%;">
             <div class="col-md-4 col-sm-4 margin-bottom-15 bg-white" style="min-height: 200px;">
-              <?php /*$this->renderPartial('../pod/fileupload', array("itemId" => $room["_id"],
-                                          "type" => ActionRoom::COLLECTION,
-                                          "resize" => false,
-                                          "contentId" => Document::IMG_PROFIL,
-                                          "editMode" => Authorisation::canEditItem(Yii::app()->session['userId'],ActionRoom::COLLECTION,$room['_id'],$room['parentType'],$room['parentId']),
-                                          "image" => $images,
-                                          "parentType" => $room['parentType'],
-                                          "parentId" => $room['parentId'])); */
+              <?php 
+                 $img =  (@$room['profilImageUrl']) ? "<img class='img-responsive' src='".Yii::app()->createUrl('/'.@$room['profilImageUrl'])."'/>" : "";
+                 echo $img;
               ?>
             </div>
             

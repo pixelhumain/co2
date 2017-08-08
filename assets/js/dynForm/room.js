@@ -69,13 +69,10 @@ dynForm = {
         actions : {
             clear : function() {
                 
-                $("#ajaxFormModal #section, #ajaxFormModal #type, #ajaxFormModal #subtype").val("");
+                $("#ajaxFormModal #section, #ajaxFormModal #type").val("");
 
                 $(".breadcrumbcustom").html( "");
                 $(".sectionBtntagList").show(); 
-                $(".typeBtntagList").hide(); 
-                $(".subtypeSection").html("");
-                $(".subtypeSectioncustom").show();
                 $(".nametext, .imageuploader, .tagstags, #btn-submit-form").hide();
             }
         },

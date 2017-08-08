@@ -1555,7 +1555,7 @@ var directory = {
       str += "<div class='col-xs-12 col-sm-6 col-md-6 col-lg-4 searchEntityContainer "+itemType+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
-      
+      str += "<a href='"+params.hash+"' class='container-img-profil add2fav'>" + params.imgProfil + "</a>";
        /* if(userId != null && userId != "" && params.id != userId){
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
@@ -1587,9 +1587,8 @@ var directory = {
             str += '</div>';
         }
         var w = (params.startDate != null) ? "8" : "12"
-            //str += '<div class="col-xs-'+w+'">'+
-            //    '<a href="'+params.hash+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+
-            //'</div>'+
+            
+       
        str +=  '</div>';
         
         str += "<div class='padding-10 informations'>";

@@ -82,18 +82,25 @@ Notification intelligentes => 685
 Liste des notifications déjà lues => #370 #453
 
 * idea
- [ ] menu > drop answers > show nb of members + nb of links
- [ ] new menu List or shortcut: last visited links
- [ ] add contributor or member, add a tag list option , could be used as roles or team filters
+  [ ] menu > drop answers > show nb of members + nb of links
+  [ ] new menu List or shortcut: last visited links
+  [ ] add contributor or member, add a tag list option , could be used as roles or team filters
  ** feature 
   [ ] 4 question scrum : on organisation : 
   [ ] offrir a tous : le ppt, slideshow intégré 
- [ ] sur detail element montrer la filère , valoriser les tags
- [ ] lifepath : ultra personnel tag
-  - can use POI's type lifepath > private | public
-  - can be used for following any item
- ** interoperabilty + data mining : 
-  [ ] use FB social graph to mine events and organisation 
+  [ ] sur detail element montrer la filère , valoriser les tags
+  [ ] lifepath : ultra personnel tag
+    - can use POI's type lifepath > private | public
+    - can be used for following any item
+  ** interoperabilty + data mining : 
+    [ ] use FB social graph to mine events and organisation 
+  ** COMOBI
+    [ ] global phone app : btn add to communecter 
+      - activable anywhere on anything 
+        - FB link 
+        - url site 
+        - event (FB, Google) 
+
 * ************************************************************    
 * Version 0.21  : en cours
 * ************************************************************  
@@ -132,6 +139,9 @@ Liste des notifications déjà lues => #370 #453
               - Utilisateur fait une réservation -> Dynform
               - Le pro reçoit un mail avec le tel / email de l'user -> Envoie de mail
               - Payement 
+
+      démarrage 15/07 
+
 
 * Communication 
   [ ] passer la roadmap dans le Wiki
@@ -181,21 +191,28 @@ Liste des notifications déjà lues => #370 #453
     [ ] losing session : rememberme
     [ ] enable edit POI when open Edition
   ** @Tib et @Tango 
+    [ ] quick adder : copy link , set type 
+      - get page data > fill form > save 
+      - fill contact form 
     *** repair DDA + bugs
       [ ] add create btns
-      [ ] proposition 
+      [ ] proposition
+        [ ] create proposal
         [ ] Edit > shows > but doesn't save
         [ ] Deplacer
         [ ] translate dynform
         [ ] connect image
-      [ ] room 
-        [ ] connect image
+      [ ] rooms
+        [ ] click once on actions, then again > 404
         [ ] Delete a room ??? can only Archive
       [ ] actions
+        [ ] in actions room create an action > doesnt save 
         [ ] assign bug redirect
         [ ] connect image
       [ ] use directorys for room Lists
       [ ] virer les communes des drop down
+      * test
+        - creations on every type 
     *** usages
       [ ] DDA is for members only ? preference ? 
       [ ] utiliser le DDA pour les propositions de nouvelles fonctionnalités de CO

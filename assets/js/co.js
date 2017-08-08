@@ -2624,7 +2624,7 @@ var dyFObj = {
 	buildDynForm : function (afterLoad,data) { 
 		mylog.warn("--------------- buildDynForm", dyFObj.elementObj, afterLoad,data);
 		if(userId)
-		{
+		{ 
 			var form = $.dynForm({
 			      formId : "#ajax-modal-modal-body #ajaxFormModal",
 			      formObj : dyFObj.elementObj.dynForm,

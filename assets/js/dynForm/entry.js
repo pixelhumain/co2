@@ -12,11 +12,11 @@ dynForm = {
     		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
 	    	}
 	    },
-	    /*beforeBuild : function(){
+	    beforeBuild : function(){
             dyFObj.setMongoId('survey',function(){
-                uploadObj.gotoUrl = (contextData != null && contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.poi" : location.hash;
+            	
             });
-        },*/
+        },
 	    afterSave : function(){
             if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
                 $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
@@ -79,7 +79,7 @@ dynForm = {
             message : dyFInputs.textarea(tradDynForm.longDescription, "..."),
             dateEnd : dyFInputs.dateEnd,
             tags : dyFInputs.tags(),
-            //image : dyFInputs.image(),
+            image : dyFInputs.image(),
             urls : dyFInputs.urls,
             email: dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userConnected.email : "") ),
             organizer : dyFInputs.inputHidden("currentUser"),

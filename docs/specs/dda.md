@@ -27,7 +27,6 @@ dynForm dyFObj.openForm('room','sub')
 
 according to type , rooms show differently 
 
-
 Features :
 - Archiving : 
 - 

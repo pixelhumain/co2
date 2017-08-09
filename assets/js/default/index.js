@@ -63,7 +63,7 @@ function resizeInterface()
   var height = $("#mapCanvasBg").height() - 55;
   $("#ajaxSV").css({"minHeight" : height});
   //$("#menu-container").css({"minHeight" : height});
-  var heightDif = $("#search-contact").height() + $("#floopHeader").height() + 60 /* top */ + 0 /* bottom */;
+  var heightDif = $("#search-contact").height() + $("#floopHeader").height() + 80 /* top */ + 0 /* bottom */;
   var menuTopHeight = $("#mainNav").height();// - $(".toolbar").height();
   
   //mylog.log("heightDif", heightDif);
@@ -95,9 +95,10 @@ function showNotif(show){
     }
 
     if(show){
-    	refreshNotifications(userId,"citoyens","");
     	$('#notificationPanelSearch').show("fast");
     	markAllAsSeen(false,"");
+    	refreshNotifications(userId,"citoyens","","menuTop");
+
     }
 	else 	 $('#notificationPanelSearch').hide("fast");
 
@@ -122,9 +123,8 @@ function showMap(show)
 		console.log("showMap", show, "elementsMap", Sig.preloadElementsMap);
 		mapBg = Sig.loadMap("mapCanvas", initSigParams);
 	    Sig.showIcoLoading(false);
-	    Sig.showMapElements(Sig.map, Sig.preloadElementsMap);
+	    Sig.showMapElements(Sig.map, Sig.preloadElementsMap, Sig.preloadIconLegende, Sig.preloadTextLegende);
 	}
-	//alert("hello showMap " + CoSigAllReadyLoad);
 	
     if(mapBg == null) return;
 
@@ -134,10 +134,9 @@ function showMap(show)
 
   //chargement de la carte
 
-
-
 	mylog.log("showMap");
 	if(show === undefined) show = !isMapEnd;
+	var mainContainer = (typeof networkJson != "undefined" && networkJson != null) ? ".my-main-container" : ".main-container" ;
 	if(show){
 		isMapEnd =true;
 		showNotif(false);
@@ -166,17 +165,19 @@ function showMap(show)
 		$(".main-menu-left").hide(); //addClass("inSig");
 		$("body").addClass("inSig");
 
-		$(".main-container").animate({
+
+
+		$(mainContainer).animate({
      							//top: -1000,
      							opacity:0,
 						      }, 'slow' );
 
-		setTimeout(function(){ $(".main-container").hide(); }, 100);
+		setTimeout(function(){ $(mainContainer).hide(); }, 100);
 		var timer = setTimeout("Sig.constructUI()", 1000);
 		
 	}else{
 		isMapEnd = false;
-		hideMapLegende();
+		//hideMapLegende();
 
 		var iconMap = "map-marker";
 		if(typeof ICON_MAP_MENU_TOP != "undefined") iconMap = ICON_MAP_MENU_TOP;
@@ -193,12 +194,12 @@ function showMap(show)
 		//$(".menu-left-container hr").css({opacity:1} );
 		//$(".main-menu-left").removeClass("inSig");
 		$("body").removeClass("inSig");
-		$(".main-container").animate({
+		$(mainContainer).animate({
      							//top: 50,
      							opacity:1
 						      }, 'slow' );
 		setTimeout(function(){ 
-			$(".main-container").show();
+			$(mainContainer).show();
 			$('html, body').stop().animate({
 	            scrollTop: currentScrollTop
 	        }, 500, ''); 

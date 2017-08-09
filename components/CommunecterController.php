@@ -254,6 +254,7 @@ class CommunecterController extends Controller
         "updatemultitag"      => array("href" => "/ph/communecter/person/updatemultitag"),
         "updatemultiscope"      => array("href" => "/ph/communecter/person/updatemultiscope"),
         "sendinvitationagain"      => array("href" => "/ph/communecter/person/sendinvitationagain"),
+        "removehelpblock"      => array("href" => "/ph/communecter/person/removehelpblock"),
 
         
         "chooseinvitecontact"=> array('href'    => "/ph/communecter/person/chooseinvitecontact"),
@@ -457,6 +458,7 @@ class CommunecterController extends Controller
       "about"               => array("href" => "/ph/communecter/element/about"),
       "getdatadetail"       => array("href" => "/ph/communecter/element/getdatadetail"),
       "stopdelete"          => array("href" => "/ph/communecter/element/stopdelete"),
+      'getthumbpath'    => array("href" => "/ph/communecter/element/getThumbPath"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/communecter/app/welcome",         "public" => true),

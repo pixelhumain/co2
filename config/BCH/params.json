@@ -1,0 +1,182 @@
+{
+	"title" : "app",
+	"metaImg" : "/assets/img/LOGOS/BCH/logo.png",
+	"metaDesc" : "Bienvenue chez l'habitant",
+
+	"pages" : {
+		"#app.index": {"redirect":"welcome"},
+
+		"#welcome": {
+			"inMenu" : false, 
+			"useHeader" : false, 
+			"open" : true, 
+			"subdomain" : "welcome", 
+			"subdomainName" : "Accueil",
+			"hash" : "#app.welcome",
+			"icon" : "", 
+			"mainTitle" : "Réseau sociétal <span class='text-red'>territorial</span>",
+			"placeholderMainSearch" : "Rechercher quelque chose ...",
+			"lblBtnCreate" : "Créer quelque chose",
+			"colorBtnCreate" : "green"
+		},
+
+		"#search": {
+			"inMenu" : false, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "search", 
+			"subdomainName" : "Recherche",
+			"hash" : "#app.search",
+			"icon" : "search", 
+			"mainTitle" : "Rechercher parmis nos offres",
+			"placeholderMainSearch" : "Rechercher une page ...",
+			"lblBtnCreate" : "Créer une page",
+			"colorBtnCreate" : "green"
+		},
+
+		"#annonces": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : false, 
+			"subdomain" : "annonces", 
+			"subdomainName" : "Annonces",
+			"hash" : "#app.annonces",
+			"icon" : "bullhorn", 
+			"mainTitle" : "Petites annonces",
+			"placeholderMainSearch" : "rechercher parmis les annonces  ...",
+			"lblBtnCreate" : "Publier une annonce",
+			"colorBtnCreate" : "azure"
+		},
+
+		"#agenda": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : false, 
+			"subdomain" : "agenda", 
+			"subdomainName" : "Agenda",
+			"hash":"#app.agenda",
+			"icon" : "calendar", 
+			"mainTitle" : "L'agenda <span class='text-red'>C</span>Ommun",
+			"placeholderMainSearch" : "rechercher un événement ...",
+			"lblBtnCreate" : "Créer un événement",
+			"colorBtnCreate" : "orange"
+		},
+
+
+
+		"#live": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : false, 
+			"subdomain" : "live", 
+			"subdomainName" : "Live",
+			"hash":"#app.live",
+			"icon" : "newspaper-o", 
+			"mainTitle" : "Le fil d'actualité <span class='text-red'>CO</span>mmun",
+			"placeholderMainSearch" : "rechercher parmis les messages ..."
+		},
+
+
+
+		"#page": {
+			"inMenu" : false, 
+			"useHeader" : false, 
+			"open" : true, 
+			"subdomain" : "page", 
+			"subdomainName" : "page",
+			"hash":"#app.page",
+			"icon" : "", 
+			"mainTitle" : "Le réseau social à effet de sert",
+			"placeholderMainSearch" : "rechercher ..."
+		},
+
+		"#info": {
+			"inMenu" : false, 
+			"useHeader" : false, 
+			"open" : true, 
+			"subdomain" : "apropos", 
+			"subdomainName" : "Info",
+			"hash":"#app.info",
+			"icon" : "info-circle", 
+			"mainTitle" : "Le réseau social à effet de sert",
+			"placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
+		},
+
+        "#power": {
+            "inMenu" : false, 
+            "useHeader" : true, 
+            "open" : false, 
+            "subdomain" : "power", 
+            "subdomainName" : "Power",
+            "hash":"#app.power",
+            "icon" : "hand-rock-o", 
+            "mainTitle" : "CO-démocratie",
+            "placeholderMainSearch" : "Rechercher ...",
+            "lblBtnCreate" : "Faire une proposition",
+            "colorBtnCreate" : "azure"
+        },
+
+
+        "#city": {
+            "inMenu" : false, 
+            "useHeader" : false,
+            "open" : true,  
+            "subdomain" : "city", 
+            "subdomainName" : "City",
+            "hash":"#app.city",
+            "icon" : "university", 
+            "mainTitle" : "Communexion activée",
+            "placeholderMainSearch" : "rechercher ..."
+        },
+
+		"#rooms": {
+			"inMenu" : false, 
+			"useHeader" : false,
+			"open" : false,  
+			"subdomain" : "rooms", 
+			"subdomainName" : "rooms",
+			"hash":"#app.rooms",
+			"icon" : "university", 
+			"mainTitle" : "Communexion activée",
+			"placeholderMainSearch" : "rechercher ..."
+		},
+
+		"#survey": {
+			"inMenu" : false, 
+			"useHeader" : false,
+			"open" : false,  
+			"subdomain" : "city", 
+			"subdomainName" : "City",
+			"hash":"#app.survey",
+			"icon" : "university", 
+			"mainTitle" : "Communexion activée",
+			"placeholderMainSearch" : "rechercher ..."
+		},
+
+		"#admin": {
+			"inMenu" : false, 
+			"useHeader" : true, 
+			"open" : false, 
+			"subdomain" : "admin", 
+			"subdomainName" : "admin",
+			"hash":"#admin",
+			"icon" : "university", 
+			"mainTitle" : "Partie Admin",
+			"placeholderMainSearch" : "Admin ..."
+		},
+
+		"#adminpublic": {
+			"inMenu" : false, 
+			"useHeader" : true, 
+			"open" : false, 
+			"subdomain" : "admin", 
+			"subdomainName" : "admin",
+			"hash":"#adminpublic",
+			"icon" : "university", 
+			"mainTitle" : "Partie Admin Public",
+			"placeholderMainSearch" : "Admin Public ..."
+		}
+
+	}
+
+}

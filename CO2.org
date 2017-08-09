@@ -1,8 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 /////////// BASH ET MIGRATION A PREVOIR POUR LA MISE EN PRODUCTION ///////// 
 ///////////////////////////////////////////////////////////////////////////
-[] IMAGES
- => Renommer le dossier /upload/communecter/ en /upload/co2/
 [] Chart
 **** Bash de reprise des data dans les chart des projets
 /communecter/datamigration/RefactorChartProjectData
@@ -13,6 +11,9 @@
 [] News
 **** Bash of object.type inbstead of object.objectType on news(!!!important with notification reactor!!!!)
 ph/communecter/datamigration/ObjectObjectTypeNewsToObjectType
+[] Params config => Mettre les deux variables à jour (celle ci sont bonnes pour la prod) => utliser dans l'accueil
+    "openatlasId" => "555eba56c655675cdd65bf19",
+    "communecterId" => "55dafac4e41d75571d848360",
 /////////////////////////////////////////////////////////////////////////////
 ////////////////////// END BASH ET MIGRATION /////////////////////////////// 
 ///////////////////////////////////////////////////////////////////////////
@@ -33,35 +34,34 @@ AGENDA
 
 ANNONCES :::Tib :::Tango
   [X] Système de Mot Clé Contextuel
-  [ ] Finir DynForm Annonce
-    [ ] Gérer les devises du prix / pays (Euro, CFP)
-  [ ] template Annonce
+  [X] Finir DynForm Annonce
+    [X] Gérer les devises du prix / pays (Euro, CFP)
+  [X] template Annonce
     [X] Mise en avant du prix
     [X] Photos 
-    [ ] Finir tpl preview
-      [ ] gallerie
-  [ ] Système de recherche par prix (à ajouter au globalautocomplete) 
-  [ ] Redirection vers la page annonce apres SAVE
-  [ ] pouvoir faire une RAZ de tous les filtres
+    [X] Finir tpl preview
+      [X] gallerie
+  [X] Système de recherche par prix (à ajouter au globalautocomplete) 
+  [X] Redirection vers la page annonce apres SAVE
+  [X] pouvoir faire une RAZ de tous les filtres
   [X] wording (donner / à donner etc)
   [ ] Gestion des annonces favorites ?
 
 CITIES :::Rapha :::Tib
 [ ] Réintégrer les City  :::Rapha
   [ ] Filiaires thématiques   :::Tib
-  [ ] Espace info commune
-  [ ] 
+  [ ] Espace info commune 
 
 PAGE PROFIL PERSO :::ALL
-  [ ] Paramètres de confidentialité / autres paramètres :::Rapha
-  [ ] Nouveau système de notifications :::Clem
-  [ ] Edition des données perso :::Rapha
-  [ ] Option Follow / Favoris / Devenir membre / etc :::Clem
-  [ ] Refactor Directory - Communauté / Collection :::Tango :::Tib
+  [X] Paramètres de confidentialité / autres paramètres :::Rapha
+  [X] Nouveau système de notifications :::Clem
+  [X] Edition des données perso :::Rapha
+  [X] Option Follow / Favoris / Devenir membre / etc :::Clem
+  [X] Refactor Directory - Communauté / Collection :::Tango :::Tib
   [ ] Messagerie privée / RocketChat :::Tib
   [X] Besoins / Need pour orga&projets
-  [ ] Pouvoir partager les news (in / out) :::
-  [ ] Système de partage d'element dans les news (annonces, events, etc) :::CLem
+  [X] Pouvoir partager les news (in / out) :::
+  [X] Système de partage d'element dans les news (annonces, events, etc) :::CLem
   [ ] Ajouter un onglet "mon agenda"
   [ ] Finir les OnePages :::Tango (5J)
   
@@ -75,7 +75,6 @@ DDA
 
 ADMIN 
 [ ] rétablir le module Admin
-
 
 [ ] Rédiger les filtre dans classified.json
 [ ] Faire le menu de gauche des pages elements

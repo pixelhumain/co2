@@ -44,8 +44,8 @@
 <script type="text/javascript">
 	
 	jQuery(document).ready(function() {
+		
 		var id = "<?php echo $itemId ?>";
-		//var sliderKey = "<?php echo Document::IMG_SLIDER; ?>";
 		var editFile = <?php echo ($editMode) ? 'true':'false'; ?>;
 		var type = "<?php echo $type ?>";
 		var contentId = "<?php echo Document::IMG_PROFIL ?>";
@@ -54,8 +54,8 @@
 		var imageName= "";
 		var imageId= "";
 		var imagesPath = [];
-		var image = "<?php echo $image; ?>";
-		//alert(image);
+		var image = <?php echo json_encode($image) ?>;
+		var itemName="<?php echo $itemName ?>";
 		if("undefined" != typeof(contentKeyBase))
 			var contentKey = contentKeyBase/*+"."+contentIdtoSend*/;
 		else
@@ -127,7 +127,7 @@
 			$("#"+contentId+"_imgPreview").addClass("hidden");
 			$.ajax({
 				//url: baseUrl+"/"+moduleId+"/api/saveUserImages/type/"+type+"/id/"+id+"/contentKey/"+contentKey+"/user/<?php echo Yii::app()->session["userId"]?>",
-				url : baseUrl+"/"+moduleId+"/document/<?php echo Yii::app()->params['uploadUrl'] ?>dir/"+moduleId+"/folder/"+type+"/ownerId/"+id+"/input/avatar",
+				url : baseUrl+"/"+moduleId+"/document/<?php echo Yii::app()->params['uploadUrl'] ?>dir/communecter/folder/"+type+"/ownerId/"+id+"/input/avatar",
 				type: "POST",
 				data: new FormData(this),
 				contentType: false,
@@ -142,7 +142,7 @@
 						  		"id":id,
 						  		"type":type,
 						  		"folder":type+"/"+id,
-						  		"moduleId":moduleId,
+						  		"moduleId":"communecter",
 						  		"author" : "<?php echo (isset(Yii::app()->session['userId'])) ? Yii::app()->session['userId'] : 'unknown'?>"  , 
 						  		"name" : data.name , 
 						  		"date" : new Date() , 
@@ -212,7 +212,13 @@
 			if(image!=""){
 				//imageUrl = baseUrl+image[contentId.toLowerCase()][0];
 				j++;
-				$("#profil_imgPreview").html('<img class="img-responsive" src="'+baseUrl+image+'" />');	
+				imageHtml='<a href="'+baseUrl+image.large+'" '+
+							'class="thumb-info" '+  
+							'data-title="<?php echo Yii::t("common","Profil image of") ?> '+itemName+'" '+
+							'data-lightbox="all">'+
+								'<img class="img-responsive" src="'+baseUrl+image.medium+'" />'+
+							'</a>';
+				$("#profil_imgPreview").html(imageHtml);	
 			}else{
 				imageUrl = '<img class="img-responsive thumbnail" src="<?php echo $this->module->assetsUrl ?>/images/thumbnail-default.jpg"/>';
 				j++;
@@ -279,23 +285,23 @@
 			mylog.log("loading new profil");
 			$.ajax({
 			  	type: "POST",
-			  	url: baseUrl+"/"+moduleId+"/person/getthumbpath",
+			  	url: baseUrl+"/"+moduleId+"/element/getthumbpath/type/"+type+"/id/"+id,
 			  	dataType: "json"
 			}).done( function(data){
+				console.log(data);
 		        if(typeof data.profilThumbImageUrl != "undefined"){
-		        	//console.log(data);
+		        	
 		        	profilThumbImageUrl = baseUrl + data.profilThumbImageUrl;
 		        	//alert(profilThumbImageUrl);
-		        	$("#menu-thumb-profil").attr("src", profilThumbImageUrl);
-		        	$("#menu-left-thumb-profil").attr("src", profilThumbImageUrl);
-		        	$("#menu-small-thumb-profil").attr("src", profilThumbImageUrl);
-		        	$(".item_map_list_"+Sig.getObjectId(Sig.userData)+" .thumbnail-profil img").attr("src", profilThumbImageUrl);
+		        	if(type=="citoyens")
+		        		$(".menu-name-profil img").attr("src", profilThumbImageUrl);
+		        	//$("#menu-left-thumb-profil").attr("src", profilThumbImageUrl);
+		        	//$("#menu-small-thumb-profil").attr("src", profilThumbImageUrl);
+		        	$(".identity-min img").attr("src", profilThumbImageUrl);
+		        	$("#floopItem-"+type+"-"+id+" a img").attr("src", profilThumbImageUrl);
+		        	$("#popup"+id+" img").attr("src", profilThumbImageUrl);
+		        	$(".item_map_list_"+id+" .left-col .thumbnail-profil img").attr("src", profilThumbImageUrl);
 		        }
-
-		        mylog.log(Sig.userData.profilImageUrl);
-		        mylog.log("NOUVELLE PATH THUMB PROFIL : <?php echo Yii::app()->createUrl('/'.$this->module->id.'/document/resized/50x50/'); ?>" + data.profilImageUrl);
-		    	//Sig.userData.profilImageUrl = "<?php echo Yii::app()->createUrl('/'.$this->module->id.'/document/resized/50x50/'); ?>" + data.profilImageUrl;
-		        mylog.log(Sig.userData.profilImageUrl);
 		        
 		    });
 		}

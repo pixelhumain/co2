@@ -37,6 +37,7 @@ if( isset($parent) ){
 		float:left;
 		width:200px;
 		height:200px;
+		display:none;
 	}
 	.portfolio-item > .tools.tools-bottom {
 	    background-color: rgba(0,0,0,0.3);
@@ -67,10 +68,11 @@ if( isset($parent) ){
 		color: white !important;
 	}
 </style>
+<?php if(Authorisation::canParticipate( Yii::app()->session['userId'], $itemType, $itemId )) $editAlbum=true; ?>
 <div class="row" id="galleryPad">
 
 	<div class='col-xs-12 margin-bottom-15'>
-		<i class="fa fa-camera fa-2x"></i><span class='Montserrat' id='name-lbl-title'> Gallerie photos</span>
+		<i class="fa fa-camera fa-2x"></i><span class='Montserrat' id='name-lbl-title'> <?php echo Yii::t("common", "Photos gallery") ?> </span>
 	</div>
 
 	<div class="col-xs-12">
@@ -78,7 +80,7 @@ if( isset($parent) ){
 			<div class="panel-body">
 				<div class="controls">
 					<ul class="nav nav-pills">
-						<?php  if( Authorisation::canParticipate( Yii::app()->session['userId'], $itemType, $itemId ) ) {  ?>
+						<?php  if( @$editAlbum && $editAlbum ) {  ?>
 						<li>
 							<a class="btn btn-default" href="javascript:dyFObj.openForm('addPhoto')">
 								<i class="fa fa-upload"></i> <?php echo Yii::t("common","Add Photos"); ?>
@@ -86,7 +88,7 @@ if( isset($parent) ){
 						</li>
 						<?php  }  ?>
 						<li class="filter active" data-filter="all">
-							<a href="#" class="btn btn-default"><?php echo Yii::t("common","Show All"); ?></a>
+							<a href="javascript:;" class="btn btn-default"><?php echo Yii::t("common","Show All"); ?></a>
 						</li>
 					</ul>
 				</div>
@@ -100,14 +102,13 @@ if( isset($parent) ){
 	</div>
 </div>
 <script type="text/javascript">
-
 var images;
 var tabButton = [];
 var mapButton = {"media": "Media", "slider": "Album", "profil" : "Profil", "banner" : "Banner", "logo" : "Logo"};
 var itemId = "<?php echo $itemId; ?>";
 var itemType = "<?php echo $itemType; ?>";
 
-var authorizationToEdit = <?php echo (isset($canEdit) && $canEdit) ? 'true': 'false'; ?>; 
+var authorizationToEdit = <?php echo (isset($editAlbum) && $editAlbum) ? 'true': 'false'; ?>; 
 var images = <?php echo json_encode($images); ?>;
 var contextName = "<?php echo addslashes(@$contextName); ?>";	
 var contextIcon = "<?php echo $contextIcon; ?>";
@@ -131,7 +132,7 @@ function initGrid(){
 			if($.inArray(k, tabButton)==-1){
 				tabButton.push(k);
 				var liHtml = '<li class="filter" data-filter=".'+k+'">'+
-								'<a href="#">' + mapButton[k] + '</a>'+
+								'<a href="javascript:;">' + mapButton[k] + '</a>'+
 							 '</li>';
 				$(".nav-pills").append(liHtml);
 			}

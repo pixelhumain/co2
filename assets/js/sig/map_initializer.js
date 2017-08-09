@@ -381,8 +381,8 @@
 											"markerPlace" 		: { ico : "map-marker", color : "red" 	},
 											"me" 				: { ico : "map-marker", color : "blue" 	},
 
-											"poi" 				: { ico : "info-circle", color : "dark" 	},
-											"poi.video" 		: { ico : "video-camera", color : "dark" 	},
+											"poi" 				: { ico : "map-marker", color : "green-poi" 	},
+											"poi.video" 		: { ico : "video-camera", color : "green-poi" 	},
 
 											"entry" 			: { ico : "gavel", color : "azure" 	},
 											"action" 			: { ico : "cogs", color : "lightblue2" 	},
@@ -446,6 +446,7 @@
 		};
 
 		Sig.getIcoNameByType = function (data){
+			mylog.log("getIcoNameByType",this.icoMarkersMap,  data);
 			var type = this.getTypeSigOfData(data);
 			if(this.icoMarkersMap[type] != null){
 					return this.icoMarkersMap[type];
@@ -620,6 +621,10 @@
 			"news"   : "Actualités",
 			"News"   : "Actualités",
 			"NEWS"   : "Actualités",
+
+			"classified"   : "Annonces",
+			"poi"   : "Points d'intérêt",
+			"city"   : "Commune",
 			
 		}
 

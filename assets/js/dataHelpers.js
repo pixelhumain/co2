@@ -91,6 +91,7 @@ function isUniqueUsername(username) {
 }
 
 function addCustomValidators() {
+	mylog.log("addCustomValidators");
 	//Validate a postalCode
 	jQuery.validator.addMethod("validPostalCode", function(value, element) {
 	    var response;
@@ -105,6 +106,7 @@ function addCustomValidators() {
 			    response = data;
 			}
 		});
+
 	    if (Object.keys(response).length > 0) {
 	    	return true;
 	    } else {
@@ -138,7 +140,8 @@ function addCustomValidators() {
     }, "Invalid : please stick to given values.");
 
     jQuery.validator.addMethod("greaterThan", function(value, element, params) {    
-	    if (!/Invalid|NaN/.test(new Date(value))) {
+	    //if (!/Invalid|NaN/.test(new Date(value))) {
+	    if (!/Invalid|NaN/.test(new Date(moment(value, "DD/MM/YYYY HH:mm").format()))) {
 	        return moment(value, "DD/MM/YYYY HH:mm").isAfter(moment($(params[0]).val(), "DD/MM/YYYY HH:mm"));
 	    }    
 	    return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) > Number($(params[0]).val())); 
@@ -269,28 +272,34 @@ var dataHelper = {
 		var lines = csv.split("\n");			
 		var result = [];
 		$.each(lines, function(key, value){
-			var colonnes = value.split(separateur);
-			var newColonnes = [];
-			$.each(colonnes, function(keyCol, valueCol){
-				if(typeof separateurText == "undefined" || separateurText =="")
-					newColonnes.push(valueCol);
-				else{
-					if(valueCol.charAt(0) == separateurText && valueCol.charAt(valueCol.length-1) == separateurText){
-						var elt = valueCol.substr(1,valueCol.length-2);
-						newColonnes.push(elt);
-					}else{
+			if(value.length > 0){
+				var colonnes = value.split(separateur);
+				var newColonnes = [];
+				$.each(colonnes, function(keyCol, valueCol){
+					
+					if(typeof separateurText == "undefined" || separateurText =="")
 						newColonnes.push(valueCol);
+					else{
+						if(valueCol.charAt(0) == separateurText && valueCol.charAt(valueCol.length-1) == separateurText){
+							var elt = valueCol.substr(1,valueCol.length-2);
+							newColonnes.push(elt);
+						}else{
+							newColonnes.push(valueCol);
+						}
 					}
-				}
-			});
-			result.push(newColonnes);
+					
+					
+				});
+				result.push(newColonnes);
+			}
+			
 		});
 		return result;
 	},
 
 	markdownToHtml : function (str) { 
 		var converter = new showdown.Converter();
-		var res = converter.makeHtml(str)
+		var res = converter.makeHtml(str);
 		return res;
 	},
 
@@ -362,7 +371,7 @@ var dataHelper = {
 			$(elem).markdown(markdownParams);
 		}
 
-		$(elem).before('La syntaxe Mardown utilisé pour la description. Si vous souhaitez <a href="https://michelf.ca/projets/php-markdown/syntaxe/" target="_blank">en savoir plus</a>');
+		$(elem).before(tradDynForm["syntaxmarkdownused"]);
 	}
 
 }

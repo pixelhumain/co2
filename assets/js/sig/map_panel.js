@@ -33,7 +33,7 @@
 
 				$(this.cssModuleName + ' #item_panel_filter_' + tagSelected).addClass("selected");
 			}
-			this.showMapElements(thisMap, this.dataMap);
+			this.showMapElements(thisMap, this.dataMap, "", "");
 			this.zoomOnAllElements(thisMap);
 		};
 
@@ -70,6 +70,7 @@
 			
 			//if("undefined" != typeof typeSig)
 			$.each(typeSig, function(index, value){
+				mylog.log("add to listPanel", value);
 				thisSig.listPanel["types"].push(value); //new Array(objectId);
 			});
 
@@ -83,9 +84,15 @@
 		//affiche la liste des items dans le panel
 		//et initialise l'événement click pour chaque item
 		this.Sig.updatePanel = function(thisMap){ //alert("updatePanel : " + JSON.stringify(this.listPanel));
-			mylog.warn("--------------- updatePanel ---------------------");
+			mylog.warn("--------------- updatePanel ---------------------", this.listPanel);
 			////mylog.log(this.listPanel);
 			var thisSig = this;
+
+			$.each($(this.cssModuleName + " .item_panel_map"), function(){
+				if($(this).attr("id") != "item_panel_map_all" && $(this).attr("id") != "item_panel_filter_all")
+					$(this).remove();
+			});
+
 			////mylog.log(thisSig.listPanel["tags"].length);
 			if("undefined" != typeof thisSig.listPanel["tags"] && thisSig.listPanel["tags"] != null)
 				$.each(thisSig.listPanel["tags"], function(key, value){
@@ -110,6 +117,7 @@
 				}
 
 			});
+
 
 			$.each(thisSig.listPanel["types"], function(key, value){
 

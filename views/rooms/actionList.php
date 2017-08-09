@@ -61,7 +61,7 @@ a.btn.voteDown{background-color: #db254e;border: 1px solid #db254e;}
 .color-btnvote-purple{  background-color: #C1ABD4!important;}
 .color-btnvote-red{   background-color: #db254e!important;}
 .controls{
-  background: #FFF;
+  background: transparent;
   border-bottom: 1px solid #BDBDBD;
   border-top: 1px solid #fff;
 }
@@ -168,7 +168,7 @@ a.btn.voteDown{background-color: #db254e;border: 1px solid #db254e;}
 
 
 .home .controls {
-border: 1px solid #E4E4E4;
+border: 0px solid #E4E4E4;
 }
 
 
@@ -213,6 +213,20 @@ border: 1px solid #E4E4E4;
 
 <section class="mt80 stepContainer">
   <div class="home">
+<script type="text/javascript">
+var contextDataDDA = {
+  name : "<?php echo addslashes(@$room["name"]) ?>",
+  id : "<?php echo (string)@$room["_id"] ?>",
+  type : "room",
+  controller : "survey",
+  controller : "<?php echo Survey::CONTROLLER;?>",
+  otags : "<?php echo addslashes(@$room["name"]).",débat, proposition, question, vote, communecter,".addslashes(@implode(",", @$room["tags"])) ?>",
+  odesc : <?php echo json_encode( 'Propositions : '.addslashes(@$room["name"])); ?>,
+  parentType : "<?php echo @$room["parentType"] ?>",
+  parentId : "<?php echo (string)@$room["parentId"] ?>"
+};
+
+</script>
 
   <?php 
   $logguedAndValid = Person::logguedAndValid();
@@ -228,10 +242,10 @@ border: 1px solid #E4E4E4;
     ***************************************** */
     function buildEntryBlock( $entry,$uniqueVoters,$alltags,$parentType,$parentId,$switchcount ){
         $logguedAndValid = Person::logguedAndValid();
-        $tagBlock = "-";//<i class='fa fa-info-circle'></i> Aucun tag";
+        $tagBlock = "";//<i class='fa fa-info-circle'></i> Aucun tag";
         $cpBlock = "";
         $name = $entry["name"];
-        $message = substr($entry["message"],0,280);
+        $message = substr(@$entry["message"],0,280);
         $email =  (isset($entry["email"])) ? $entry["email"] : "";
         $cpList = (isset($entry["cp"])) ? $entry["cp"] : "";
         if( !isset($_GET["cp"]) && $entry["type"] == Survey::TYPE_SURVEY )
@@ -281,14 +295,14 @@ border: 1px solid #E4E4E4;
         //checks if the user is a follower of the entry
         $followingEntry = ( $logguedAndValid && Action::isUserFollowing($entry,Action::ACTION_FOLLOW) ) ? "myentries":"";
 
-        $message = "<div class='text-dark no-border message-propostal'>".$message."</div>";
+        $message = "<div class='text-dark no-border message-propostal'>".@$message."</div>";
         
         /* **************************************
         Rendering Each block
         ****************************************/
         $hrefComment = "#commentsForm";
         $commentCount = 0;
-        $content = ($entry["type"]==ActionRoom::TYPE_ACTION) ? "".$entry["message"]:"";
+        $content = ($entry["type"]==ActionRoom::TYPE_ACTION) ? "".@$entry["message"]:"";
 
        
         $moderatelink = (   @$entry["applications"][Yii::app()->controller->module->id]["cleared"]  && 
@@ -324,7 +338,7 @@ border: 1px solid #E4E4E4;
         
         //title + Link
         if ( $entry["type"] == ActionRoom::TYPE_ACTION )
-          $name = '<a class="titleMix text-dark " onclick="showRoom(\'action\', \''.(string)$entry["_id"].'\')" href="javascript:;">'.
+          $name = '<a class="titleMix text-dark " onclick="loadRoom(\'action\', \''.(string)$entry["_id"].'\')" href="javascript:;">'.
                     "<i class='fa fa-cogs'></i> ".substr($name, 0, 70).
                   '</a>' ;
 
@@ -334,7 +348,7 @@ border: 1px solid #E4E4E4;
         $createdInfo  = "<div class='text-azure lbl-info-survey '>".
                           "<i class='fa fa-clock-o' style='padding:0px 5px 0px 2px;'></i> ";
         $createdInfo .= (!empty( $startDate )) ? 
-                          Yii::t("rooms", "Start Date", null, Yii::app()->controller->module->id) . 
+                          Yii::t("rooms", "Start Date") . 
                           " : ".$startDate 
                           : "Non défini";
         $createdInfo .= "</div>";
@@ -344,7 +358,7 @@ border: 1px solid #E4E4E4;
           $ends  = "<div class='text-green lbl-info-survey pull-left' style='color: rgb(228, 108, 108);'>".
                     "<i class='fa fa-clock-o' style='padding:0px 5px 0px 2px;'></i> ";
           $ends .=  (!empty( $endDate )) ? 
-                      Yii::t("rooms", "end", null, Yii::app()->controller->module->id) . 
+                      Yii::t("rooms", "end") . 
                       " : ".$endDate
                       : "Non défini";
           $ends .= "</div>";
@@ -352,28 +366,28 @@ border: 1px solid #E4E4E4;
           $ends  = "<div class='text-red lbl-info-survey pull-left' style='color: rgb(228, 108, 108);'>".
                     "<i class='fa fa-clock-o' style='padding:0px 5px 0px 2px;'></i> ";
           $ends .=  (!empty( $endDate )) ? 
-                      Yii::t("rooms", "ended", null, Yii::app()->controller->module->id) . 
+                      Yii::t("rooms", "ended") . 
                       " : ".$endDate 
                       : "Non définit";
           $ends .= "</div>";
         }
         
         $statusClass = ActionRoom::ACTION_TODO;
-        $statusLbl = Yii::t("rooms", "Todo", null, Yii::app()->controller->module->id);
+        $statusLbl = Yii::t("rooms", "Todo");
         $statusColor = "default";
         if( ( isset($action["startDate"]) && $action["startDate"] < time() ) || ( !@$action["startDate"] && @$action["dateEnd"] ) ){
           $statusClass = ActionRoom::ACTION_INPROGRESS;
-          $statusLbl = Yii::t("rooms", "Progressing", null, Yii::app()->controller->module->id);
+          $statusLbl = Yii::t("rooms", "Progressing");
           $statusColor = "success";
           if( @$entry["dateEnd"] < time()  ){
             $statusClass = ActionRoom::ACTION_LATE;
-            $statusLbl = Yii::t("rooms", "Late", null, Yii::app()->controller->module->id);
+            $statusLbl = Yii::t("rooms", "Late");
             $statusColor = "warning";
           }
         } 
         if ( @$entry["status"] == ActionRoom::ACTION_CLOSED  ) {
           $statusClass = ActionRoom::ACTION_CLOSED;
-          $statusLbl = Yii::t("rooms", "Closed", null, Yii::app()->controller->module->id);
+          $statusLbl = Yii::t("rooms", "Closed");
           $statusColor = "danger";
         }
         $status = "<div class='badge badge-".$statusColor." pull-right'>".$statusLbl."</div>";
@@ -425,7 +439,7 @@ border: 1px solid #E4E4E4;
     ?>
     
       <?php 
-      $extraBtn = ( Authorisation::canParticipate(Yii::app()->session['userId'],$room['parentType'],$room['parentId']) ) ?  '<i class="fa fa-caret-right"></i> <a class="filter btn btn-xs btn-primary Helvetica lbh" href="#rooms.editAction.room.'.(string)$room["_id"].'"> <i class="fa fa-plus"></i> '.Yii::t( "survey", 'Add an Action', null, Yii::app()->controller->module->id).'</a>' : '';
+      $extraBtn = ( Authorisation::canParticipate(Yii::app()->session['userId'],$room['parentType'],$room['parentId']) ) ?  '<i class="fa fa-caret-right"></i> <a class="filter btn btn-xs btn-primary Helvetica lbh" href="#rooms.editAction.room.'.(string)$room["_id"].'"> <i class="fa fa-plus"></i> '.Yii::t( "survey", 'Add an Action').'</a>' : '';
 
       if(!isset($_GET["renderPartial"])){
         $this->renderPartial('../rooms/header',array(    
@@ -435,7 +449,7 @@ border: 1px solid #E4E4E4;
                               "fromView" => "rooms.actions",
                               "faTitle" => "cogs",
                               "colorTitle" => "azure",
-                              "textTitle" => "<a class='text-dark btn' href='#rooms.index.type.".$room['parentType'].".id.".$room['parentId'].".tab.3'><i class='fa fa-cogs'></i> ".Yii::t("rooms","Actions", null, Yii::app()->controller->module->id)."</a>".
+                              "textTitle" => "<a class='text-dark btn' href='#rooms.index.type.".$room['parentType'].".id.".$room['parentId'].".tab.3'><i class='fa fa-cogs'></i> ".Yii::t("rooms","Actions")."</a>".
                               " / ".
                               "<a class='text-dark btn' href='#rooms.actions.id.".$room["_id"]."'><i class='fa fa-cogs'></i> ".$room["name"]."</a>".$extraBtn
                              
@@ -456,41 +470,36 @@ border: 1px solid #E4E4E4;
         ?>
 
         <div class="panel-white margin-top-15" style="display:inline-block; width:100%;">
-            <div class="col-md-4 col-sm-4 margin-bottom-15">
-              <?php $this->renderPartial('../pod/fileupload', array("itemId" => $room["_id"],
-                                          "type" => ActionRoom::COLLECTION,
-                                          "resize" => false,
-                                          "contentId" => Document::IMG_PROFIL,
-                                          "editMode" => Authorisation::canEditItem(Yii::app()->session['userId'],ActionRoom::COLLECTION,$room['_id'],$room['parentType'],$room['parentId']),
-                                          "image" => $images,
-                                          "parentType" => $room['parentType'],
-                                          "parentId" => $room['parentId'])); 
+            <div class="col-md-4 col-sm-4 margin-bottom-15 bg-white" style="min-height: 200px;">
+              <?php 
+                 $img =  (@$room['profilImageUrl']) ? "<img class='img-responsive' src='".Yii::app()->createUrl('/'.@$room['profilImageUrl'])."'/>" : "";
+                 echo $img;
               ?>
             </div>
             
             <?php if ( count(@$list) > 0 ) { ?>
 
-              <div class="controls col-md-8 col-sm-8 bar-btn-filters no-border no-padding">
+              <div class="controls col-md-7 col-sm-7 pull-right  bar-btn-filters no-border no-padding">
                     <button class="filter btn btn-default fr" data-filter="all"><i class="fa fa-eye"></i> Afficher tout</button>
                     <button id="ChangeLayout" class="btn btn-default" style="margin-bottom: 6px;"><i class="fa fa-reorder"></i></button>
                     <button id="reduceInfo" class="btn btn-default"  onclick="reduceInfo();"><i class="fa fa-minus-square"></i></button>
               </div>
 
-              <div class="controls col-md-8 col-sm-8 bar-btn-filters no-border no-padding">
+              <div class="controls col-md-7 col-sm-7 pull-right  bar-btn-filters no-border no-padding">
                     <?php if( count($alltags) && false ){?>
                       <button class="btn bg-red fr" onclick="toogleTags();"><i class="fa fa-filter"></i>  Tags</button>
                     <?php } ?>
                     <?php if( $logguedAndValid ){?>
-                      <a class="filter btn bg-dark" data-filter=".myentries" id="myentriesBtn"><i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'My Todo', null, Yii::app()->controller->module->id)?></a>
-                      <a class="filter btn bg-dark" data-filter=".todo" id="todoBtn"><i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'Todo', null, Yii::app()->controller->module->id)?></a>
-                      <a class="filter btn bg-dark" data-filter=".inprogress" id="inprogressBtn"><i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'In Progress', null, Yii::app()->controller->module->id)?></a>
-                      <a class="filter btn bg-dark" data-filter=".late" id="lateBtn"><i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'Late', null, Yii::app()->controller->module->id)?></a>
-                      <a class="filter btn bg-dark" data-filter=".closed" id="closedBtn"><i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'Closed', null, Yii::app()->controller->module->id)?></a>
-                      <a class="filter btn bg-dark" data-filter=".unassigned" id="unassignedBtn"><i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'Unassigned', null, Yii::app()->controller->module->id)?></a>
+                      <a class="filter btn bg-dark" data-filter=".myentries" id="myentriesBtn"><i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'My Todo'); ?></a>
+                      <a class="filter btn bg-dark" data-filter=".todo" id="todoBtn"><i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'Todo'); ?></a>
+                      <a class="filter btn bg-dark" data-filter=".inprogress" id="inprogressBtn"><i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'In Progress'); ?></a>
+                      <a class="filter btn bg-dark" data-filter=".late" id="lateBtn"><i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'Late'); ?></a>
+                      <a class="filter btn bg-dark" data-filter=".closed" id="closedBtn"><i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'Closed'); ?></a>
+                      <a class="filter btn bg-dark" data-filter=".unassigned" id="unassignedBtn"><i class="fa fa-filter"></i> <?php echo Yii::t('rooms', 'Unassigned'); ?></a>
                     <?php } ?>
               </div>
 
-              <div class="col-md-8 col-sm-8 no-padding">
+              <div class="col-md-7 col-sm-7 pull-right  no-padding">
                 <?php if( $logguedAndValid ) { ?>
                   <button class="sort btn btn-default" data-sort="vote:asc"><i class="fa fa-caret-up"></i></button>
                   <button class="sort btn btn-default" data-sort="vote:desc"><i class="fa fa-caret-down"></i></button>
@@ -508,9 +517,9 @@ border: 1px solid #E4E4E4;
                 <blockquote> 
                   <span class=""><i class="fa fa-angle-right"></i> 
                   <?php if(isset(Yii::app()->session["userId"]))
-                          echo Yii::t('rooms', 'JOIN TO PARTICIPATE', null, Yii::app()->controller->module->id);
+                          echo Yii::t('rooms', 'JOIN TO PARTICIPATE');
                         else
-                          echo Yii::t('rooms', 'LOGIN TO PARTICIPATE', null, Yii::app()->controller->module->id);
+                          echo Yii::t('rooms', 'LOGIN TO PARTICIPATE');
                   ?> 
                   </span>
                 </blockquote>
@@ -539,7 +548,7 @@ border: 1px solid #E4E4E4;
         <?php if ( count(@$list) > 0 ) { ?>
           <div class="col-md-12">      
             <div id="tags-container" class="col-md-12 margin-bottom-15">
-              <?php echo $tagBlock?>
+              <?php echo $tagBlock; ?>
             </div>
           </div>
         <?php } ?>
@@ -554,44 +563,6 @@ border: 1px solid #E4E4E4;
   </section>
 
 
-
-<?php  if( Authorisation::canParticipate(Yii::app()->session['userId'],$room["parentType"],$room["parentId"]) ) { ?>
-<div class="modal fade" id="modal-create-action" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header text-dark">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title text-left">
-          <i class="fa fa-angle-down"></i> <i class="fa fa-plus"></i> Ajouter une action
-        </h2>
-      </div>
-      <div class="modal-body no-padding">
-        <div class="panel-body" id="form-create-action">
-          <?php 
-              $params = array(
-                  "room"=>$room,
-                  "roomId" => (string)$room["_id"],
-                  "mode"=>"new",
-                  //"action"=>$room,
-              );
-              $params["organizer"] = array(  "name" => $parent["name"],
-                                             "link" => Yii::app()->createUrl('/'.Yii::app()->controller->module->id."/".$room["parentType"]."/dashboard/id/".$room["parentId"]) );
-
-            $this->renderPartial('../rooms/editAction', $params); 
-          ?>  
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-          <button type="button" class="btn btn-success"
-                 onclick="saveNewAction()">
-              <i class="fa fa-save"></i> Enregistrer
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<?php } ?>
 
 <div class="space20"></div>
 
@@ -623,7 +594,7 @@ var nbSurveyTotal = <?php echo count($list); ?>;
 
 jQuery(document).ready(function() {
   
-  setTitle("Actions Réactions","cogs text-red");
+  //setTitle("Actions Réactions","cogs text-red");
   $(".main-col-search").addClass("assemblyHeadSection");
   $('.tooltips').tooltip();
 

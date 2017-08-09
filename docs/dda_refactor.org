@@ -1,86 +1,169 @@
 
-Application "Démocratie" ~= DDA
+Application "Démocratie" dans CO2
 -------------------------------
+by AlphaTango
 
+Ce texte est une proposition personnelle concernant l'application de participation citoyenne que nous souhaitons proposer sur le réseau communecter.
+Toutes ces propositions sont soumises à réflexion / correction / amélioration / suggestions des lecteurs, et ne constituent en aucun cas
+une proposition complète, définitive, immuable, de l'application à développer.
+Je vous expose mes réflexions afin de faire avancer ce chantier, je ne prétend pas avoir la vérité absolue sur le sujet, ni même avoir pensé à tout.
 
 -------------------------------
-Démocratie : le pouvoir au peuple, pour le peuple, par le peuple
+Démocratie : le pouvoir du peuple, pour le peuple, par le peuple
 -------------------------------
 - La démocratie ce n'est pas élire ses maîtres, c'est voter ses lois.
 ----------------------------
 
+** Introduction
+
+A titre personnel, je considère que la démocratie telle que nous la pratiquons aujourd'hui, en 2017, en France, 
+est devenue trop élitiste pour mériter encore le nom de démocratie.
+
+Je ne renie pas pour autant l'histoire de France. Je suis même plutôt heureux de savoir que des gens se sont un jour levé contre le pouvoir monarchique, afin de l'abolir, et de mettre en place un système où le peuple obtenait une plus large répartition du pouvoir.
+Les choses ne changent jamais en un éclair. Il faut du temps pour avancer. C'est pourquoi la démocratie s'est progressivement perfectionnée, améliorée, au fil des années, en fonction des courants de pensées et de l'évolution technologique de la société (qui accélère la diffusion des idées, et qui libère du temps pour Penser). 
+
+Au départ donc, je peux comprendre que nous ayons appelé ce système la "démocratie", dans le sens où c'était la meilleure démocratie que nous puissions mettre en place avec les moyens de l'époque.
+
+Mais je considère aujourd'hui, que la démocratie telle que nous la pratiquons en France n'est plus la forme la plus aboutie que nous puissions imaginer.
+L'avènement d'internet implique de nouvelles possitilités que nous allons devoir mettre en place pour que la France redevienne une vraie démocratie.
+Au fil du temps, la démocratie a été remplacée par une oligarchie que plus personne ne peut nier depuis l'investiture de Mr Macron.
+Le pouvoir sera désormais accaparé par ce groupe d'oligarque jusqu'à ce que le peuple se soulève à nouveau et décide de changer les règles du jeu.
+
+https://www.youtube.com/watch?v=o1sQAvB39N4
+
+Avec internet, nous pouvons changer les règles du jeu.
+
+Internet est un évènement majeur dans l'histoire de l'humanité. 
+Pour la première fois, nous sommes tous reliés les uns aux autres de façon directe, et nous pouvons tous interragir les uns avec les autres en direct.
+
+Reprenons l'historique des inventions en terme de diffusion de l'information, 
+et constatons comme chaque nouvelle invention repousse les limites :
+
+- L'imprimerie : permet d'imprimer des documents papier et de les distribuer sur un territoire (plusieurs personnes, mais nombre d'impressions limité à l'époque, et rayon de diffusion limité)
+- Le télégrame : permet d'envoyer un texte court, de façon instantanée, sur une longue distance, à une personne à la fois.
+- Le téléphone : permet d'envoyer une séquence audio, de façon instantanée et en direct, sur une longue distance à une personne à la fois.
+- La radio : permet de diffuser une séquence audio, en continue et en direct, dans un large périmètre, à un grand nombre de personnes à la fois.
+- La télévision : permet d'envoyer de l'image et du son, en direct, sur un très large périmètre, et à un grand nombre de personnes.
+
+- Internet : permet de mettre à disposition de tout le monde, tout type d'information (image, son, vidéo, texte), accessible à n'importe quel moment, depuis n'importe où dans le monde (ou presque, en tout cas une très grande surface du globe).
+
+Internet libère l'information, en permettant à l'humanité de s'affranchir des barrières de l'espace et du temps (en matière de diffusion d'information)
+
+Le réseau communecter.org, tente d'apporter une nouvelle amélioration à internet, en ajoutant aux informations une notion géographique, de façon à géolocaliser les données pertinentes pour une zone géographique donnée, et à les rendre accessibles facilement aux habitants de ce territoire.
+(C'est ce que j'appelle la géo-communication.)
+
+Cette nouvelle amélioration, rend possible une nouvelle forme de démocratie basée sur la participation locale, et peut permettre de régler le problème de la représentativité des élus. 
+
+Pour faire simple, si nous avons une oligarchie, c'est parce que nous avons des représentant (qui ne représentent plus qu'eux-mêmes).
+Au fil du temps, la professionnalisation de la politique a engendré une nouvelle classe dominante dont nous avons conscience qu'elle n'agit pas en notre faveur, mais dont nous ne savons pas comment nous en passer. Pour nous passer de nos représentant, il n'y a qu'un seul moyen : mettre en place une démocratie directe.
+
+Jusqu'à l'invention d'internet, la démocratie directe n'était possible que sur un territoire restreint. Car la mise en commun du travail démocratique n'était pas possible à grande échelle. Seul un système informatique connecté peut rendre possible une démocratie où tout le monde participe. Si nous ne voulons plus de l'oligarchie, nous devons nous impliquer nous même dans le processus démocratique, et pour que tout le monde puisse s'impliquer, il faut que cela passe par un système informatique.
+
+Cependant, même si un système informatique est indispensable, ce système n'est qu'un outil. Cela ne signifie pas que la démocratie n'existerait QUE sur internet.
+Il me semblerait absolument nécessaire d'organiser AUSSI des assemblées locales (IRL) pour parler de politique entre citoyens, pour débattre des idées, pour faire des propositions, etc. Le système informatique sera là pour rassembler l'ensemble de ces travaux, les rendre disponibles à tous, permettre le vote pour les prises de décisions à grande échelle, etc, etc.
+
+Voici donc une hébauche du système informatique que j'imagine, basé sur le réseau communecter.org, et le système de "communexion" :
 
 ----------------------------
-*** La démocratie communectée :
+*** La démocratie Communectée :
 ----------------------------
 
-*** Dans Communecter, chaque commune dispose d'un "conseil citoyen".
 
-*** Dans Communecter, un "conseil citoyen" est un espace destiné à co-écrire les lois d'un pays, dans notre cas : la France.
-(applicable pour n'importe quel pays). C'est aussi un espace de dialogue avec les élus locaux (tant qu'il y en a)
+*** - Dans Communecter, chaque commune dispose d'un "conseil citoyen".
 
-*** Chaque citoyens peut proposer des lois, et participer à l'écriture, la correction, l'amélioration, et le vote des lois proposées par les autres citoyens.
+*** - Dans Communecter, un "conseil citoyen" est un espace destiné à co-écrire les lois du pays.
+Dans notre cas : la France. (applicable pour n'importe quel pays).
 
-*** Chaque citoyens peut voter -pour- les lois qui lui conviennent, et -voter- contre celles qui ne lui conviennent pas (+ vote blanc pris en compte).
+*** - Chaque citoyens peut proposer des textes de lois
 
-*** Pour valider une loi, il faut qu'elle obtienne une majorité de suffrages favorables dans un temps donnée (ma proposition : 1 mois)
+*** - Chaque citoyens peut participer la correction, l'amélioration, et le vote des lois proposées par les autres citoyens.
+
+*** - Chaque citoyens peut voter -pour- les lois qui lui conviennent, et -voter- contre celles qui ne lui conviennent pas (+ vote blanc pris en compte).
+
+*** - Pour valider une loi, il faut qu'elle obtienne une majorité de suffrages favorables dans un temps donnée (ma proposition : 1 mois)
+
 => règle de la majorité : à définir
+
   => ma proposition : une proposition doit obtenir un minimum de 61.8% des suffrages favorables pour être validée.
+
   => pourquoi 61.8 ? le nombre d'or : 0.618 
       - http://villemin.gerard.free.fr/Wwwgvmm/Geometri/NbOrDebu.htm
       - https://fr.wikipedia.org/wiki/Nombre_d%27or
-    => il faut garder une marge d'erreur suffisante pour faire face aux spécificités des votes en ligne :
+    => pourquoi pas 50% ? il faut garder une marge d'erreur suffisante pour faire face aux spécificités des votes en ligne :
+
       => tout le monde ne peut pas voter à chaque fois qu'il le pourrait
+
       => tout le monde peut tricher (voter avec plusieurs comptes - dans un sens comme dans l'autre)
-    => il faut donc éviter la majorité à 50% qui est trop aléatoire (49 je perd, 51 je gagne (1 pastis))
+
+    => il faut donc éviter la majorité à 50% qui est trop aléatoire (49 je perd, 51 je gagne)
+    => il faut donc relever le seuil de la majorité, pour assurer que chaque texte validé correspond à la volonté populaire.
 
 
-*** Sur Communecter, voter signifie == 
+*** - Sur Communecter, voter signifie :
+
 		- Je valide cette proposition de loi
-		ou
-		- J'invalide cette proposition de loi
-    ou
-    - Vote blanc
 
-		==
+		- J'invalide cette proposition de loi
+
+    - Je n'ai pas d'avis : Vote blanc
+
+		-- formulé autrement :
+
 		Valider cette proposition ?
+
 		- Oui (pour)
+
 		- Non, invalider (contre)
+
     - Blanc
 
 
+------------------------------------------------
+Rayon d'action des citoyens : 
+------------------------------------------------
+- Un citoyen ne peut agir (proposer, voter, amander) que dans les conseil citoyens liés à sa communexion :
+sa commune, son département, sa région, son pays.
 
+- Cepedant, chaque citoyen peut accéder en lecture à toutes les propositions de tous les conseils citoyens (en changeant de communexion), 
+même s'il ne peut pas y participer (proposer, voter, amander).
+
+=> pourquoi ? 
+  => pour limiter les possibilités de triches (je ne peux tricher que dans MON conseil citoyen)
+  => pour répartir le travail de lecture et de vote sur l'ensemble du territoire
 
 *** Sur Communecter, une loi c'est quoi ? 
 ------------------------------------------------
 Loi = array(articlesDeLoi) + array(Amendements)
 ------------------------------------------------
 
-*** Une loi est composées de plusieurs articles.
-*** Chaque article est soumis aux propositions d'amendements des autres utilisateurs
+*** - Une loi est composées de plusieurs articles.
+*** - Chaque article est soumis aux propositions d'amendements des autres utilisateurs
 
-*** Amendement : def Wikipedia :
+** Amendement : def Wikipedia :
 Un amendement est une modification, soumise au vote d'une assemblée, en vue de corriger, compléter ou annuler tout ou une partie d'un projet de loi en cours de délibération ou d'une loi pré-existante.
+https://fr.wikipedia.org/wiki/Amendement_(loi)
 
 
-********
+
 *** Votations des lois et application des résultats :
 ********
-
+**** La spécificité du système que je propose ici réside en grande partie dans ce principe :
 COMMUNE > DEPARTEMENT > REGION > PAYS
+
 
 *** 
 Les lois sont toujours proposées d'abord au niveau local : la commune. Dans le conseil citoyen des communes.
+Lorsqu'on propose un texte, on peut définir le "niveau final" à atteindre (COMMUNE, DEPARTEMENT, REGION ou PAYS) en fonction de la portée du texte.
 
 *** 
-Lorsqu'une proposition de loi est adoptée dans une commune, elle est automatiquement soumise à un nouveau vote, au niveau départemental, 
-dans le conseil citoyen du département de la commune initiale.
+Lorsqu'une proposition de loi est adoptée dans une commune, elle est automatiquement soumise à un nouveau vote, au niveau supérieur,jusqu'à atteindre
+le niveau final visé.
 
 *** 
 Si le conseil citoyen départemental approuve à nouveau la proposition de loi, celle-ci est officiellement validée, 
-et légitimement applicable à l'ensemble des communes du département en question.
+et légitimement applicable à l'ensemble des communes du département en question, après un délais d'application à définir. Il est possible qu'un plan de mise en oeuvre soit nécessaire pour certaines lois validées .
 
-Si elle est réfusée, elle n'est pas valide et donc innaplicable sauf dans la commune initiale qui l'avait validée, 
+Si elle est réfusée, elle n'est pas valide et donc inaplicable sauf dans la commune initiale qui l'avait validée, 
 si la commune est en mesure d'en assurer seule l'application, et que cela n'entre pas en conflit avec les lois des niveaux supérieurs.
 
 *** 
@@ -96,17 +179,18 @@ les gens situés à proximité sur le même territoire sont les plus à même de
 De cette façon, nous encourageons également les gens à se préocuper d'abord à leur contexte territorial, avant de s'occuper de celui des autres. 
 En respect avec l'adage "penser global, agir local".
 
-On a beaucoup de problème en commun sur tous nos territoires, mais on essaie d'abord de régler ceux de son territoire. 
-Si chacun fait sa part au niveau local, on n'aura plus qu'à afiner et mutualiser les lois aux niveaux département, région, et pays, 
-pour armoniser les textes et les rendres applicables à des contextes territoriaux plus étendus si besoin.
+On a beaucoup de problème en commun sur tous nos territoires, mais si on essaie d'abord de régler ceux de son territoire, 
+si chacun fait sa part au niveau local, on n'aura plus qu'à afiner et mutualiser les lois aux niveaux département, région, et pays, 
+pour armoniser les textes et les rendres applicables à des contextes territoriaux plus étendus, si besoin.
 
 
 *** AUTRE AVANTAGE DE CE SYSTEME :
 Pas besoin de tirage au sort, puisque tout le monde peut y participer en même temps.
+Et pas besoin d'élus pour écrire les lois, puisqu'elles sont co-écrites par tout le monde.
 
 *** EN RÉSUMÉ
-Pour résumer : on part de la base (les communes), puis on étend progressivement la zone de progression de lois.
-Une loi progresse sur le territoire à travers 4 niveaux (ou + après refactor) : commune, dep, region, pays
+La validation d'une loi part de la base (les communes), puis s'étend progressivement à travers le département, la région, le pays.
+Une loi progresse sur le territoire à travers 4 niveaux : commune, dep, region, pays
 
 
 *** Note : On peut imaginer différents comportement possibles, dans le cas où une proposition est rejetée au niveau régional (par exemple), reste-t-elle en vigueur au niveau départemental ? je n'ai pas de réponse définitive aujourd'hui.
@@ -127,6 +211,8 @@ Une loi progresse sur le territoire à travers 4 niveaux (ou + après refactor) 
   - Tous les citoyens qui n'ont pas encore voté (mais qui en ont le droit) peuvent toujours voter 
   (pour / contre / blanc).
 
+  - Tous les citoyens qui ont déjà voté peuvent changer leur vote à tout moment
+
   - Un texte est automatiquement abrogé (passe à l'état refusé) si le total des votes en cours est redescendu en dessous du seuil de la majorité 
   (61,8% ou moins ? pour éviter que ca clignote autour de la limite. Par exemple 60% ou 55%. ou mieux : 61.80 - 6.18 = 55.62)
 
@@ -136,20 +222,27 @@ Une loi progresse sur le territoire à travers 4 niveaux (ou + après refactor) 
 
 *** Comment on crée une proposition de loi ?
 
-- On choisi un(ou plusieurs) thème(s) - les thèmes pourraient être équivalents à différents ministères, et nous serions tous ministres :p
-  Santé, Energie, Climat, Culture, Animation, Biodiversité, Economie sociale et solidaire, etc...
+- On choisi un(ou plusieurs) thème(s), parmis les thèmes prédéfinis (+ possibilité de proposer de nouveaux thèmes) 
+  - les thèmes pourraient être équivalents à différents ministères :
+    Santé, Energie, Climat, Culture, Animation, Biodiversité, Economie sociale et solidaire, etc...
 
 - On écrit sa proposition
-- On définit le niveau final à atteindre (commune, departement, region, pays)
+- On définit le niveau final à atteindre (commune, departement, region, ou pays)
 - On définit une liste de tags pour décrire le contenu de la proposition
 - On enregistre
 
 => la proposition est publiée dans mon conseil citoyen communal en premier.
+
 => mes voisins votes
+
   => la proposition est acceptée
+
     => la proposition concerne seulement ma commune ?
+
       => oui : fin du process
+
       => non : envoi automatique au département (et ainsi de suite aux niveaux supérieurs jusqu'au niveau final)
+
   => la proposition est refusée : fin du process
 
 
@@ -160,44 +253,46 @@ INTERFACE DE NAVIGATION:
 ****************************************
 
 Menu gauche :
-* En ce moment
-* J'ai voté pour
-* J'ai voté contre
-* Adoptées
-* Refusées
+*** En ce moment
+*** J'ai voté pour
+*** J'ai voté contre
+*** Adoptées
+*** Refusées
 
 Menu gauche secondaire : choix des thèmes (résultats croisés avec menu de gauche)
-* Thèmes
-*** santé
-*** energie
-*** culture
-*** climat
-*** etc ...
+** Thèmes
+*** santé, energie, culture, climat, etc ...
+
+Menu scope : pour pouvoir lire les propositions de n'importe quelle commune, departement, region.
+Le scope est automatiquement initialisé sur la communexion de l'utilisateur connecté au départ (il peut naviguer ensuite)
 
 
 
 
 
 ********
-* MISE EN OEUVRE / UTILISATION / CONCRETEMENT KESKON FAIT AVEC CA ?
+** MISE EN OEUVRE / CONCRETEMENT KESKON FAIT AVEC CA ?
 ********
 *** Par quoi commencer ? Quelles lois ? Quels thèmes traiter ? etc...
 ********
 Avant toute chose, il me semble qu'il faut commencer par (ré)écrire le texte fondateur sur lequel repose toutes les autres lois : la constitution. 
 Je propose que le premier texte co-écrit sur communecter soit une nouvelle constitution, pour une 6eme république.
 
-Si nous réussissons à co-écrire ce textes, nous serons capables d'écrire tous les autres textes de lois dont nous aurons besoins.
+Pourquoi ?
 
 Les lois dépendent de la constitution, donc il est logique de commencer par réécrire une constitution.
 Sinon, toutes les lois réécrites resteront soumise à la constitution actuelle, et seront donc en quelques sortes faussées dès le départ.
 
-La constitution est là pour définir le fonctionnement de l'Etat, notamment la façon dont sont votées les lois, 
+La constitution est là pour définir le fonctionnement de l'Etat, notamment la façon dont sont votées et appliquées les lois, 
 et pour définir ses principes fondateurs inviolables. ex : le droit au travail, le droit au logement, l'égalité homme/femme, etc
 
 La constitution définit le socle commun de la société.
 Les lois suivantes ne font que découler des principes définis dans la constitution. 
 Il faut donc la réécrire en premier.
 
+Si nous réussissons à co-écrire ce texte, nous serons capables d'écrire tous les autres textes de lois dont nous aurons besoins.
+
+https://www.youtube.com/watch?v=S5ImWW1f_W4
 
 *** La constituante
 Dans le cas où nous décidons de commencer par la procédure de (ré)écriture de la constitution,
@@ -211,53 +306,73 @@ nous risquons de nous retrouver avec énormément de doublons (propositions simi
 qui seront difficiles à départager une fois arrivé au niveau PAYS.
 
 Il me semble donc qu'il faut tout mettre en commun dès le départ
-  - déjà pour gagner du temps (1 mois par niveau)
+  - déjà pour gagner du temps (1 mois ou + par niveau) => mise en commun + rapide
   - et pour éviter les doublons dans les propositions
     -> si j'ai lu une proposition similaire à celle que je voulais faire : 
        je n'ajouterai pas ma proposition, puisque je pourrai proposer un amendement.
 
 
-Dans le cas d'une constituante, nous serons obligés d'en écrire les premiers articles,
-une sorte de préambule à la constitution, pour définir les règles de fonctionnement de l'application.
+Dans le cas d'une constituante, nous serons obligés d'écrire les premiers articles de la constitution que nous souhaitons réécrire,
+une sorte de préambule à la constitution, pour définir les règles de fonctionnement du système informatique.
 
-Ce préambule pourrait être soumis à ses propres règles de fonctionnement pour être définitivement validé (ou non) avant lancer la constituante.
+Ce préambule pourrait être soumis à ses propres règles de fonctionnement pour être définitivement validé (ou non) avant de lancer la constituante.
 
 La constituante ne pourrait débuter véritablement qu'une fois le préambule validé par le vote, et éventuellment modifié par amendements.
 
-* Question > est-il possible de modifier le préambule de la constitution une fois qu'il a été validé ?
+*** Question > est-il possible de modifier le préambule de la constitution une fois qu'il a été validé ?
   Il faut peut être une procédure spéciale.
-  Parce que les dev doivent être en mesure d'apporter les corrections dans le code (ça ne se fait pas en un claquement de doigt).
+  Parce que les développeurs doivent être en mesure d'apporter les corrections dans le code (ça ne se fait pas en un claquement de doigt).
   Il faut pouvoir assurer à tout moment la cohérence entre le texte voté, et l'état du système en production.
   Et il faut vérifier que le texte validé est réalisable techniquement.
 
-* Je propose > on ne peut plus toucher au préambule à partir du moment où il aura été validé une première fois, après votes et amendements.
-  On peut seulement en écrire un nouveau, le soumettre au vote, et dans le cas où ce nouveau préambule est accepté : 
-  trouver des gentils codeurs pour l'implémenter (mais pas nous) sur un autre système.
-
-  > Une fois le process lancé, on ne peut pas modifier les règles de votes (ou autres) tous les mois... sinon c'est impossible à gérer (et à comprendre).
-
-* > Ou alors, il faut que l'équipe de dev ait un droit de véto (avec justification obligatoire, et éventuellement une séance de vote réservé aux dev)
+*** Je propose : on peut proposer des modifications au préambule, même après qu'il ait été validé une première fois, après votes et amendements.
+Mais il faut que l'équipe de dev ait un droit de véto (avec justification obligatoire, et éventuellement une séance de vote réservé aux dev),
+pour assurer que les modifications proposées soit compatibles avec le système en place, et réalisables techniquement. 
+(il faut pouvoir assurer que le système est toujours cohérent avec le préambule, mais le code ne se modifie pas en un claquement de doigt)
     
-* Je propose aussi : que l'on puisse signaler son désacord avec le préambule en signant par email. 
-  En considérant que le nombre d'inscrits sur le réseau est égal au nombre de personnes qui valident notre préambule, 
-  on pourra avoir une idée de la popularité du système qu'on propose.
-
-  je trouve ça intéressant de savoir combien de personnes sont prêtes à manifester leur désaprobation.
-  En faisant le ratio entre NB-mailContre / NB-inscrits, on aura une idée de la légitimité de notre démarche.
+*** Je propose aussi : que l'on puisse signaler son désacord avec l'ensemble de la démarche en signant par email. 
+  
+  Je trouve ça intéressant de savoir combien de personnes sont prêtes à manifester leur désaprobation globale par rapport à notre démarche.
+  En faisant le ratio entre NB-mailContre / NB-inscrits, on aura une idée de notre légitimité.
   Le but étant d'avoir un maximum de légitimité si on arrive à co-écrire une nouvelle constitution de A à Z, 
-  pour avoir le maximum de poid pour la faire officialiser : cad faire en sorte que cette nouvelle constitution devienne la nouvelle constitution officielle
-  du peuple Français, et qu'elle soit la référence pour toutes nos institutions 
-  (ce qui n'arrivera jamais sans un mouvement insurectonnel/révolutionnaire utilisant probablement la force, 
+  pour avoir le maximum de poid pour la faire ratifier : cad faire en sorte que cette nouvelle constitution devienne la nouvelle constitution officielle
+  du peuple Français, et qu'elle soit la référence pour toutes nos institutions.
+  (ce qui n'arrivera probablement jamais sans un mouvement insurectonnel/révolutionnaire utilisant probablement la force, 
   mais surtout sans une nouvelle constitution écrite et prête à être mise en place).
 
-  Il n'y aura une 6eme république que si nous réussissons à co-écrire une nouvelle constitution. C'est une étape incontournable...
+  Il n'y aura une 6eme république QUE si nous réussissons à co-écrire une nouvelle constitution. C'est une étape incontournable.
   
-  Tant que nous restons dans la 5eme république, les changements que nous souhaitons voir se produire dans la société (solidarité, écologie, conso locale, etc) 
-  n'ont que très peu de chance de se produire. Seule une nouvelle constitution pourra créer l'élan suffisant pour d'attaquer à l'ampleur de la tâche.
+  Tant que nous restons dans la 5eme république, les changements que nous souhaitons voir se produire au niveau de la démocratie (participation locale, controle des élus, etc) n'ont que très peu de chance de se produire à grande échelle. Seule une nouvelle constitution pourra créer l'élan suffisant pour s'attaquer à l'ampleur de la tâche.
 
   Il ne peut pas y avoir de véritable démocratie (participative/directe) dans la 5eme république.
 
 
 
+-------------------------------------------------
+Afin de donner une impulsion forte au lancement de la constituante, et donner un exemple du travail que l'on attend des citoyens,
+je pense que nous devrions nous-mêmes (les communecteurs) écrire les grandes lignes d'une nouvelle constitution, en se basant sur le projet SMART-TERRE. 
 
+Nous pouvons aussi mettre en place 2 espaces constituant : 
+1 pour la constituante SMART-TERRE et 
+1 qui démarre à partir de rien (procédure libre)
+
+
+
+-------------------------------------------------
+*** Question sécurité :
+La technologie blockchain semble être parfaitement adapté au contexte,
+mais je ne saurais pas dire dans quelle mesure il est possible de l'utiliser au sein du projet Communecter.
+Je ne saurais dire aussi combien de temps ce système est utilisable, étant donnée que la puissance de calcule nécessaire au maintient du réseau augmente avec le temps.
+Quand j'ai installé mon porte feuille bitcoin il y a quelques temps, j'ai mis 2 semaines à télécharger la blockchain sur ma machine. Qu'en sera-t-il dans 1 an ? 5 ans ? 10 ans ? Si c'est la même chose pour une blockchain de vote, ça me semble limité de fait par ce pb.
+
+Personnellement, je considère que : quelques soit le niveau de sécurité qui sera utilisé, il y aura toujours des failles,
+et que toute l'énergie qu'on mettra à sécuriser un système sera un jour réduite à néant par un hackeur plus malin que les autres.
+
+Donc, je serais plutôt favorable à une solution qui intègre le fait que le système ne soit pas infaillible (sans pour autant être une passoire), et que l'on prenne en compte cette incertitude comme faisant partie du système. Il faut aussi prendre en compte le fait qu'une triche peut être jouée dans les deux sens : en bien comme en mal. Donc les triches s'équilibres.
+Je peux très bien voter 3 fois avec 3 comptes pour une loi absolument vitale.
+Et même si l'inverse est vrai aussi, je pense qu'il n'y aura pas suffisamment de tricheurs pour qu'ils influances suffisamment le résultat des votes.
+
+Le fait par exemple, de limiter le droit de vote aux conseils citoyens liés à la communexion des utilisateurs, limite leurs possibilités de tricher.
+(il faudra probablement bloquer la communexion à 1 changement par mois au maximum)
+La majorité à 61,8% limite aussi la triche puisque les propositions ont besoin de toutes façon d'une large majorité pour gagner, donc les propositions qui seront acceptées sont celles qui sont les plus consensuelles. Il faut un nombre de tricheurs plus important pour faire annuler une proposition consensuelle.
 

@@ -39,8 +39,8 @@
 	<div class="bg-main-menu bgpixeltree_sig"></div>
 
 	<?php if($sigParams['useRightList']){ ?>
-		<div id="right_tool_map">
-			<div id="right_tool_map_search" class="hidden-xs hidden-sm">
+		<div id="right_tool_map" class="hidden-xs hidden-sm">
+			<div id="right_tool_map_search">
 			<!-- 	HEADER -->
 				<div class="right_tool_map_header">
 					<?php if($sigParams['usePanel']){ ?>
@@ -215,7 +215,7 @@
 
 
 		<div class="btn-group btn-group-lg btn-group-map input-search-place">
-		<?php if($sigParams['useResearchTools']){ ?>
+		<?php if(false /*désactivé*/ && $sigParams['useResearchTools']){ ?>
 			<input type="text" class="pull-left input-search-place-in-map txt-find-place" id="txt-find-place" 
 					placeholder="rechercher un lieu, une addresse" style="margin-top:2px;">
 			<!-- <button type="button" class="btn btn-map pull-right" id="btn-find-more"><i class="fa fa-ellipsis-h"></i></button> -->

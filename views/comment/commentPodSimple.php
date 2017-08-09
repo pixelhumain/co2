@@ -72,10 +72,21 @@
 </style>
 <?php if($contextType == "actionRooms"){ ?>
 <div class='row'>
+	<?php 
+	  	$icon = (@$context["status"] == ActionRoom::STATE_ARCHIVED) ? "download" : "comments";
+      	$archived = (@$context["status"] == ActionRoom::STATE_ARCHIVED) ? "<span class='text-small helvetica'>(ARCHIVED)</span>" : "";
+      	$color = (@$context["status"] == ActionRoom::STATE_ARCHIVED) ? "text-red " : "text-dark";
+    ?>
+    <div class='col-md-8'>
+		<h3 class=" <?php echo $color;?>" style="color:rgba(0, 0, 0, 0.8);">
+	      <i class="fa fa-angle-right"></i> "<?php echo $context["name"].$archived; ?>"
+	  	</h3>
+	</div>
+
 	<?php
 		if($contextType == "actionRooms" && $context["type"] == ActionRoom::TYPE_DISCUSS){
 			echo "<div class='col-md-4'>";
-			$this->renderPartial('../pod/fileupload', array("itemId" => (string)$context["_id"],
+			/*$this->renderPartial('../pod/fileupload', array("itemId" => (string)$context["_id"],
 				  "type" => ActionRoom::COLLECTION,
 				  "resize" => false,
 				  "contentId" => Document::IMG_PROFIL,
@@ -83,19 +94,11 @@
 				  "image" => $images,
 				   "parentType" => $parentType,
 				   "parentId" => $parentId, 
-			)); 
+			)); */
 		}
 		echo "</div>";
 	
-	  	$icon = (@$context["status"] == ActionRoom::STATE_ARCHIVED) ? "download" : "comments";
-      	$archived = (@$context["status"] == ActionRoom::STATE_ARCHIVED) ? "<span class='text-small helvetica'>(ARCHIVED)</span>" : "";
-      	$color = (@$context["status"] == ActionRoom::STATE_ARCHIVED) ? "text-red " : "text-dark";
     ?>
-    <div class='col-md-8'>
-		<h1 class=" <?php echo $color;?>" style="color:rgba(0, 0, 0, 0.8); font-size:27px;">
-	      <i class="fa fa-<?php echo $icon;?>"></i> "<?php echo $context["name"].$archived; ?>"
-	  	</h1>
-	</div>
 </div>
 <?php } ?>
 

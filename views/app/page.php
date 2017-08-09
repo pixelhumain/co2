@@ -1,11 +1,13 @@
 <?php 
-	//HtmlHelper::registerCssAndScriptsFiles( array('', ) , Yii::app()->theme->baseUrl. '/assets');
+	HtmlHelper::registerCssAndScriptsFiles( array('/css/default/directory.css') , Yii::app()->theme->baseUrl. '/assets');
 	//$cssAnsScriptFilesModule = array('');
 	//HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
-
+    
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
-    $this->renderPartial($layoutPath.'header', 
+
+    if($this->module->id != "network")
+        $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
                                 "page" => "page") ); 
 ?>
@@ -16,7 +18,7 @@
 		<?php 
         
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
-               $type == Project::COLLECTION || $type == Organization::COLLECTION || $type == Poi::COLLECTION){
+               $type == Project::COLLECTION || $type == Organization::COLLECTION){
     			$params = array("element"=>$element , 
     							"page" => "page",
     							"edit"=>$edit,
@@ -49,7 +51,6 @@
                 $this->renderPartial('../news/standalone', $params ); 
             }
 
-
             if($type == Classified::COLLECTION){
                 $params = array("element"=>$element , 
                                 "page" => "page",
@@ -61,6 +62,26 @@
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
 
                 $this->renderPartial('../classified/standalone', $params ); 
+            }
+
+            if($type == Survey::COLLECTION){
+                $params = array("survey"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
+
+                $this->renderPartial('../survey/entryStandalone', $params ); 
+            }
+
+            if($type == Poi::COLLECTION){
+                $params = array("element"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
+
+                $this->renderPartial('../poi/standalone', $params ); 
             }
 		?>
 	</div>
@@ -79,7 +100,7 @@ jQuery(document).ready(function() {
 	initKInterface({"affixTop":0});
 	$("#mainNav").addClass("affix");
 	initPageInterface();
-    // var tpl = '<?php echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
+    // var tpl = '<?php //echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
 	// getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
 	// 	initPageInterface();
 	// },"html");
@@ -109,6 +130,7 @@ function initPageInterface(){
     });
 
     $("#menu-map-btn-start-search").click(function(){
+        $("#second-search-bar").val($("#input-search-map").val());
         startGlobalSearch(0, indexStepGS);
     });
 

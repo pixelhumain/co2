@@ -1,12 +1,12 @@
 dynForm = {
     jsonSchema : {
-	    title : "Publier une annonce",
+	    title : tradDynForm["addclassified"],
 	    icon : "bullhorn",
 	    type : "object",	    
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	sub : function(){
-	    		if(contextData.type && contextData.id ){
+	    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
     				$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 	    			$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
@@ -14,11 +14,17 @@ dynForm = {
 	    		 	
 	    		 	$("#ajax-modal-modal-title").html(
 	    		 		$("#ajax-modal-modal-title").html()+
-	    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
+	    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
 	    		}
 	    	},
-	    	onload : function(){
-	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+	    	onload : function(data){
+	    		if(data && data.section && data.type && data.subtype ){
+	    			$("#ajaxFormModal #id").val(data.id);
+	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+data.section+" > "+data.type+" > "+data.subtype+"</h4>" );
+					$(".sectionBtntagList").hide();
+					$(".typeBtntagList").hide();
+	    		} else
+	    			$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
 	    	},
 	    	/*,
 	    	loadData : function(data){
@@ -31,7 +37,7 @@ dynForm = {
 	    },
 	    beforeBuild : function(){
 	    	dyFObj.setMongoId('classified',function(){
-	    		uploadObj.gotoUrl = (contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.classified" : location.hash;
+	    		uploadObj.gotoUrl = (contextData != null && contextData.type && contextData.id  ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.classified" : location.hash;
 	    	});
 	    },
 	    beforeSave : function(){
@@ -57,7 +63,7 @@ dynForm = {
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else {
 		    	dyFObj.closeForm();
-			    urlCtrl.loadByHash( uploadObj.gotoUrl );
+			    urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 		    }
 	    },
 	    canSubmitIf : function () { 
@@ -97,12 +103,12 @@ dynForm = {
             		{
 	            		$.each(filt[ $(this).data('key') ]["subcat"], function(k,v) { 
 	            			fieldHTML += '<div class="col-md-6 padding-5">'+
-	    									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>' +
+	    									'<a class="btn tagListEl subtypeBtn '+tradCategory[k]+'Btn " data-tag="'+tradCategory[v]+'" href="javascript:;">'+tradCategory[v]+'</a>' +
 	            						"</div>";
 	            		});
 	            		$(".subtypeSection").html('<hr class="col-md-12 no-padding">'+
 	            								  '<label class="col-md-12 text-left control-label no-padding" for="typeBtn">'+
-	            								  	'<i class="fa fa-chevron-down"></i> Sous-catégorie'+
+	            								  	'<i class="fa fa-chevron-down"></i> '+tradDynForm["subcategory"]+
 	            								  '</label>' + fieldHTML );
 
 	            		$(".subtypeBtn").off().on("click",function()
@@ -133,11 +139,11 @@ dynForm = {
                 html:"",
             },
             sectionBtn :{
-                label : "De quel type d'annonce s'agit-il ? ",
+                label : tradDynForm["whichkindofclassified"]+" ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
                 list : classified.sections,
-                trad : trad,
+                trad : tradCategory,
                 init : function(){
                 	$(".sectionBtn").off().on("click",function()
 	            	{
@@ -148,7 +154,7 @@ dynForm = {
 						//$(".sectionBtn:not(.active)").hide();
 						var sectionKey = $(this).data('key');
 						//alert(sectionKey);
-						var what = { title : "Dans quelle catégorie souhaitez-vous publier votre annonce ?", 
+						var what = { title : tradDynForm["inwhichcategoryforclassified"]+" ?", 
 				                         icon : classified.sections[sectionKey].icon }
 						if( jsonHelper.notNull( "classified.sections."+sectionKey+".filters" ) ){
 				            //alert('build btns menu'+classified.sections[sectionKey].filters);
@@ -170,10 +176,11 @@ dynForm = {
             },
             section : dyFInputs.inputHidden(),
 	        typeBtn :{
-                label : "Dans quelle catégorie souhaitez-vous publier votre annonce ? ",
+                label : tradDynForm["inwhichcategoryforclassified"]+" ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir une catégorie",
                 list : classified.filters,
+                trad:tradCategory,
                 init : function(){
                 	classified.currentLeftFilters = null;
                 	dyFObj.elementObj.dynForm.jsonSchema.actions.initTypeBtn();
@@ -186,10 +193,11 @@ dynForm = {
             },
             subtype : dyFInputs.inputHidden(),
             price : dyFInputs.price(),
+            //devise : dyFInputs.inputSelect("Devise", "Iniquez la monnaie utilisée pour votre annonce", ["€", "$"]),
             name : dyFInputs.name( "classified" ) ,
             description : dyFInputs.textarea("Description", "..."),
             image : dyFInputs.image(),
-            contactInfo : dyFInputs.inputText("Coordonnées", "n° tel, addresse email ..."),
+            contactInfo : dyFInputs.inputText(tradDynForm["contactinfo"], tradDynForm["telemail"]+" ..."),
             location : dyFInputs.location,
             tags : dyFInputs.tags(),
             parentId : dyFInputs.inputHidden(),

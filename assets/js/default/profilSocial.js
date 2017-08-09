@@ -7,6 +7,7 @@ function initDateHeaderPage(params){
 function getCroppingModal(){
 	
 }
+
 function menuLeftShow(){
 	if($("#menu-left-container").hasClass("hidden-xs"))
 		$("#menu-left-container").removeClass("hidden-xs");
@@ -28,39 +29,57 @@ function bindButtonMenu(){
 	$(".btn-start-newsstream").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
-		history.pushState(null, "New Title", hashUrlPage);
+		location.hash=hashUrlPage
+		//history.pushState(null, "New Title", hashUrlPage);
 		loadNewsStream(true);
 	});
 	$(".btn-start-mystream").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
-		if(contextData.type=="citoyens" && userId==contextData.id)
-			history.pushState(null, "New Title", hashUrlPage+".view.mystream");
-		else
-			history.pushState(null, "New Title", hashUrlPage);
+		if(contextData.type=="citoyens" && userId==contextData.id){
+			location.hash=hashUrlPage+".view.mystream";
+			//history.pushState(null, "New Title", hashUrlPage+".view.mystream");
+		}
+		else{
+			location.hash=hashUrlPage;
+			//history.pushState(null, "New Title", hashUrlPage);
+		}
 		loadNewsStream(false);
 	});
 	$("#btn-start-gallery").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.gallery");
+		location.hash=hashUrlPage+".view.gallery";
+		//history.pushState(null, "New Title", hashUrlPage+".view.gallery");
 		//location.search="?view=gallery";
 		loadGallery();
 	});
 	$(".btn-start-notifications").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
-		history.pushState(null, "New Title", hashUrlPage+".view.notifications");
+		location.hash=hashUrlPage+".view.notifications";
+		//history.pushState(null, "New Title", hashUrlPage+".view.notifications");
 		//location.search="?view=notifications";
 		loadNotifications();
 	});
 	$(".btn-start-chart").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.chart");
+		location.hash=hashUrlPage+".view.chart";
+		//history.pushState(null, "New Title", hashUrlPage+".view.chart");
 		loadChart();
 	});
+
+	$(".btn-start-actionrooms").click(function(){
+		responsiveMenuLeft();
+		location.hash=hashUrlPage+".view.actionRooms";
+		//history.pushState(null, "New Title", hashUrlPage+".view.chart");
+		loadActionRoom();
+	});
+
+	
 	$(".btn-show-activity").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.history");
+		location.hash=hashUrlPage+".view.history";
+		//history.pushState(null, "New Title", hashUrlPage+".view.history");
 		loadHistoryActivity();
 	});
 	
@@ -68,7 +87,7 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		mylog.log("open-confidentiality");
 		toogleNotif(false);
-		smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").val()));
+		smallMenu.open( dataHelper.markdownToHtml($("#descriptionMarkdown").html()));
 		bindLBHLinks();
 	});
 
@@ -79,7 +98,8 @@ function bindButtonMenu(){
 	});
 	$(".edit-chart").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.editChart");
+		location.hash=hashUrlPage+".view.editChart";
+		//history.pushState(null, "New Title", hashUrlPage+".view.editChart");
 		loadEditChart();
 	});
 	$(".btn-open-collection").click(function(){
@@ -89,15 +109,16 @@ function bindButtonMenu(){
 
 	$("#btn-start-detail").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.detail");
+		location.hash=hashUrlPage+".view.detail";
+		//history.pushState(null, "New Title", hashUrlPage+".view.detail");
 		loadDetail();
 	});
 
-	$(".load-data-directory").click(function(){
+	$(".load-data-directory").click(function(){ 
 		responsiveMenuLeft();
 		var dataName = $(this).data("type-dir");
-		mylog.log(".load-data-directory", dataName);
-		loadDataDirectory(dataName, $(this).data("icon"),edit);
+		location.hash=hashUrlPage+".view.directory.dir."+dataName;
+		if(lastWindowUrl==null) loadDataDirectory(dataName, "", edit);
 	});
 		
 	$("#subsubMenuLeft a").click(function(){
@@ -107,23 +128,25 @@ function bindButtonMenu(){
 
 	$("#btn-start-urls").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.urls");
+		location.hash=hashUrlPage+".view.urls";
+		//history.pushState(null, "New Title", hashUrlPage+".view.urls");
 		loadUrls();
 	});
 
 	$("#btn-start-contacts").click(function(){
 		responsiveMenuLeft();
-		history.pushState(null, "New Title", hashUrlPage+".view.contacts");
+		location.hash=hashUrlPage+".view.contacts";
+		//history.pushState(null, "New Title", hashUrlPage+".view.contacts");
 		loadContacts();
 	});
 
 	$("#btn-hide-desc").click(function(){
 		if($("#desc-event").hasClass("hidden")){
 			$("#desc-event").removeClass("hidden");
-			$("#btn-hide-desc").html("<i class='fa fa-angle-up'></i> masquer");
+			$("#btn-hide-desc").html("<i class='fa fa-angle-up'></i> "+trad.hide);
 		}else{
 			$("#desc-event").addClass("hidden");
-			$("#btn-hide-desc").html("<i class='fa fa-angle-down'></i> afficher la description");
+			$("#btn-hide-desc").html("<i class='fa fa-angle-down'></i> "+trad.showdescr);
 		}
 	});
 
@@ -155,18 +178,7 @@ function bindButtonMenu(){
 		dyFObj.openForm(form, null, dataUpdate);
 	});
 
-	//window select open form type (selectCreate)
-	$(".btn-open-form").click(function(){
-        var typeForm = $(this).data("form-type");
-        mylog.log("test", $(this).data("form-subtype")),
-        currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
-
-        //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
-        if(contextData && contextData.type && contextData.id )
-            dyFObj.openForm(typeForm,"sub");
-        else
-            dyFObj.openForm(typeForm);
-    });
+	bindButtonOpenForm();
 
     $("#div-select-create").mouseleave(function(){
     	$("#div-select-create").hide(200);
@@ -178,8 +190,8 @@ function bindButtonMenu(){
     	//$(".central-section").show();    	
     });
 
-    $("#open-select-create").click(function(){
-
+    $("#open-select-create, .open-create-form-modal").click(function(){
+    	responsiveMenuLeft(true);
 		//$(".central-section").hide();
     	$("#div-select-create").show(200);
     	setTimeout(function(){
@@ -279,58 +291,87 @@ function bindButtonMenu(){
 
 }
 
-function loadDataDirectory(dataName, dataIcon, edit){
+function bindButtonOpenForm(){
+	//window select open form type (selectCreate)
+	$(".btn-open-form").off().on("click",function(){
+        var typeForm = $(this).data("form-type");
+        mylog.log("test", $(this).data("form-subtype")),
+        currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
+
+        //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
+        if(contextData && contextData.type && contextData.id )
+            dyFObj.openForm(typeForm,"sub");
+        else
+            dyFObj.openForm(typeForm);
+    });
+}
+
+function loadDataDirectory(dataName, dataIcon, edit){ console.log("loadDataDirectory");
 	showLoader('#central-container');
-	history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
+
+	var dataIcon = $(".load-data-directory[data-type-dir="+dataName+"]").data("icon");
+	//history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
 	// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 				function(data){ 
+					var type = ($.inArray(dataName, ["poi","ressource","vote","actions","discuss"]) >=0) ? dataName : null;
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
-					displayInTheContainer(data, dataName, dataIcon, "", edit);
+					displayInTheContainer(data, dataName, dataIcon, type, edit);
+					bindButtonOpenForm();
 				}
 	,"html");
 }
 
 function getLabelTitleDir(dataName, dataIcon, countData, n){
-	mylog.log("bgetLabelTitleDir", dataName, dataIcon, countData, n, trad);
+	//mylog.log("bgetLabelTitleDir", dataName, dataIcon, countData, n, trad);
 	var elementName = "<span class='Montserrat' id='name-lbl-title'>"+$("#nameHeader .name-header").html()+"</span>";
 	
 	var s = (n>1) ? "s" : "";
+
+	if(countData=='Aucun')
+		countData=trad.no;
 	var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
-	if(dataName == "follows")	{ html += elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
-	else if(dataName == "followers")	{ html += countData + " <b>abonné"+s+"</b> à " + elementName; }
-	else if(dataName == "members")	{ html += elementName + " est composé de " + countData + " <b>membre"+s+"</b>"; }
-	else if(dataName == "attendees")	{ html += countData + " <b>Participant"+s+"</b> à l'événement " + elementName; }
-	else if(dataName == "guests")	{ html += countData + " <b>Invité"+s+"</b> sur " + elementName; }
-	else if(dataName == "contributors")	{ html += countData + " <b>contributeur"+s+"</b> au projet " + elementName; }
+	if(dataName == "follows")	{ html += elementName + " "+trad.isfollowing+" " + countData + " "+trad.page+s+""; }
+	else if(dataName == "followers")	{ html += countData + " <b>"+trad.follower+s+"</b> "+trad.to+" "+ elementName; }
+	else if(dataName == "members")	{ html += elementName + " "+trad.iscomposedof+" " + countData + " <b>"+trad.member+s+"</b>"; }
+	else if(dataName == "attendees")	{ html += countData + " <b>"+trad.attendee+s+"</b> "+trad.toevent+" " + elementName; }
+	else if(dataName == "guests")	{ html += countData + " <b>"+trad.guest+s+"</b> "+trad.on+" " + elementName; }
+	else if(dataName == "contributors")	{ html += countData + " <b>"+trad.contributor+s+"</b> "+trad.toproject+" " + elementName; }
 	
 	else if(dataName == "events"){ 
 		if(type == "events"){
-			html += elementName + " est composé de " + countData+" <b> sous-événement"+s; 
+			html += elementName + " "+trad.iscomposedof+" " + countData+" <b> "+trad.subevent+s; 
 		}else{
-			html += elementName + " participe à " + countData+" <b> événement"+s; 
+			html += elementName + " "+trad.takepart+" " + countData+" <b> "+trad.event+s; 
 		}
 	}
-	else if(dataName == "organizations")	{ html += elementName + " est membre de " + countData+" <b>organisation"+s; }
-	else if(dataName == "projects")		{ html += elementName + " contribue à " + countData+" <b>projet"+s }
+	else if(dataName == "organizations")	{ html += elementName + " "+trad.ismemberof+" "+ countData+" <b>"+trad.organization+s; }
+	else if(dataName == "projects")		{ html += elementName + " "+trad.contributeto+" " + countData+" <b>"+trad.project+s }
 
-	else if(dataName == "collections"){ html += countData+" <b>collection"+s+"</b> de " + elementName; }
-	else if(dataName == "poi"){ html += countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
-	else if(dataName == "classified"){ html += countData+" <b>annonce"+s+"</b> créée"+s+" par " + elementName; }
+	else if(dataName == "collections"){ html += countData+" <b>"+trad.collection+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "poi"){ html += countData+" <b>"+trad["point"+s+"interest"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
+	else if(dataName == "classified"){ html += countData+" <b>"+trad.classified+s+"</b> "+trad['createdby'+s]+" " + elementName; }
 
-	else if(dataName == "needs"){ html += countData+" <b>besoin"+s+"</b> de " + elementName; }
+	else if(dataName == "needs"){ html += countData+" <b>"+trad.need+s+"</b> "+trad.of+" " + elementName; }
 
-	else if(dataName == "dda"){ html += countData+" <b>proposition"+s+"</b> de " + elementName; }
+	else if(dataName == "vote"){ html += countData+" <b>"+trad.proposal+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "discuss"){ html += countData+" <b>"+trad.discussion+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "actions"){ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName; }
+
+	else if(dataName == "actionRooms"){ html += countData+" <b>espace de décision"+s+"</b> de " + elementName; }
 
 	else if(dataName == "urls"){ 
 		var str = " a " + countData;
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + str+" <b> lien"+s;
-		html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
-    	html +=	'<i class="fa fa-plus"></i> '+trad["Add link"]+'</a>' ;  
+		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
+			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'url\',\'sub\')">';
+    		html +=	'<i class="fa fa-plus"></i> '+trad["Add link"]+'</a>' ;
+		}
+		  
 	}
 
 	else if(dataName == "contacts"){
@@ -338,30 +379,36 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		if(countData == "Aucun")
 			str = " n'a aucun";
 		html += elementName + " a " + countData+" <b> point de contact"+s;
-		html += '<a class="btn btn-sm btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
-    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ; 
+		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
+			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
+	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ;
+	    }
 
 
 	}
 
-	if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
-		if(dataName == "collections"){
-			html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="collection.crud()">';
-	    	html +=	'<i class="fa fa-plus"></i> Ajouter Collection</a>' ; 
+	if( openEdition || edit ){
+		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections","actionRooms"] ) >= 0 ){
+			if(dataName == "collections"){
+				html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="collection.crud()">';
+		    	html +=	'<i class="fa fa-plus"></i> '+trad.createcollection+'</a>' ; 
+			}
+			else {
+				var elemSpec = dyFInputs.get(dataName);
+				html += '<button class="btn btn-sm btn-link bg-green-k pull-right btn-open-form" data-form-type="'+elemSpec.ctrl+'" data-dismiss="modal">';
+		    	html +=	'<i class="fa fa-plus"></i> '+trad["create"+elemSpec.ctrl]+'</button>' ;  
+		    }
 		}
-		else {
-			var elemSpec = dyFInputs.get(dataName);
-			html += '<a class="tooltips btn btn-xs btn-success pull-right " href="javascript:;" onclick="dyFObj.openForm ( \''+elemSpec.ctrl+'\',\'sub\')">';
-	    	html +=	'<i class="fa fa-plus"></i> Ajouter '+trad[ elemSpec.ctrl ]+'</a>' ;  
-	    }
 	}
 
 	return html;
 }
 
-function loadAdminDashboard(){
+function loadAdminDashboard(week){
 	showLoader('#central-container');
-	getAjax('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/main",function(){ 
+	ajaxPost('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/main/week/"+week,
+			 { "week" : week },
+			 function(){ 
 			
 	},"html");
 }
@@ -397,7 +444,30 @@ function loadNewsStream(isLiveBool){
 		},"html");
 	}, 700);
 }
-
+function loadSettings(){
+	mylog.log("confidentiality", seePreferences);
+	loadNewsStream(true);
+	history.pushState(null, "New Title", hashUrlPage);
+	$("#modal-confidentiality").modal("show");
+	if(seePreferences=="true"){
+		param = new Object;
+    	param.name = "seePreferences";
+    	param.value = false;
+    	param.pk = contextData.id;
+		$.ajax({
+	        type: "POST",
+	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+	        data: param,
+	       	dataType: "json",
+	    	success: function(data){
+		    	if(data.result){
+					$("#divSeePreferencesHeader").addClass("hidden");
+					$('#editConfidentialityBtn').removeClass("btn-red");
+		    	}
+		    }
+		});
+	}
+}
 function loadGallery(){
 	toogleNotif(false);
 	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id;
@@ -476,6 +546,14 @@ function loadUrls(){
 	,"html");
 }
 
+function loadActionRoom(){
+	//toogleNotif(false);
+	showLoader('#fast-rooms');
+	var params = { };
+	ajaxPost('#fast-rooms', baseUrl+'/'+moduleId+'/rooms/index/type/'+contextData.type+
+									'/id/'+contextData.id, params, function(){},"html");
+}
+
 function loadContacts(){
 	showLoader('#central-container');
 	getAjax('', baseUrl+'/'+moduleId+'/element/getcontacts/type/'+contextData.type+
@@ -492,6 +570,9 @@ function loadContacts(){
 			    		//console.log('contactMail', contactMail);
 			    		$("#formContact .contact-email").html(contactMail);
 			    		$("#formContact #contact-name").html(contactName);
+
+			    		$("#formContact #emailSender").val(userConnected.email);
+			    		$("#formContact #name").val(userConnected.name);
 			    		
 			    		$("#formContact #form-control").val("");
 			    		
@@ -512,25 +593,75 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	var n=0;
 	$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
 	if(n>0){
+		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 
-		var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
-						getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
-					"<hr></div>";
+		var html = "";
 
+		var btnMap = '<button class="btn btn-default btn-sm btn-show-onmap inline" id="btn-show-links-onmap">'+
+				            '<i class="fa fa-map-marker"></i>'+
+				        '</button>';
+
+		html += "<div class='col-md-12 margin-bottom-15 labelTitleDir'>";
+		
+		if(dataName != "urls")
+			html += btnMap;
+
+		html +=	thisTitle + "<hr>";
+		html +=	"</div>";
+		
+		
+		mapElements = new Array();
+		
+		
 		if(dataName != "collections"){
+			if(mapElements.length==0) mapElements = data;
+        	else $.extend(mapElements, data);
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){
-				html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
-				$.each(val.list, function(key, elements){ 
-					html += directory.showResultsDirectoryHtml(elements, key);
-				});
+				colName=col;
+				if(col=="favorites")
+					colName="favoris";
+				html += "<a class='btn btn-default col-xs-12 shadow2 padding-10 margin-bottom-20' onclick='$(\"."+colName+"\").toggleClass(\"hide\")' ><h2><i class='fa fa-star'></i> "+colName+" ("+Object.keys(val.list).length+")</h2></a>"+
+						"<div class='"+colName+" hide'>";
+				console.log("list", val);
+				if(val.count==0)
+					html +="<span class='col-xs-12 text-dark margin-bottom-20'>Aucun élément dans cette collection</span>";
+				else{
+					$.each(val.list, function(key, elements){ 
+						if(mapElements.length==0) mapElements = elements;
+        				else $.extend(mapElements, elements);
+						html += directory.showResultsDirectoryHtml(elements, key);
+					});
+				}
+				html += "</div>";
 			});
 		}
 		toogleNotif(false);
 		$("#central-container").html(html);
 		initBtnLink();
 		initBtnAdmin();
+		bindButtonOpenForm();
+		
+		var dataToMap = data;
+		if(dataName == "collections"){
+			dataToMap = new Array();
+			$.each(data, function(key, val){
+				$.each(val.list, function(type, list){
+					mylog.log("collection", type, list);
+					$.each(list, function(id, el){
+						dataToMap.push(el);
+					});
+				});
+			});
+		}
+
+					mylog.log("dataToMap", dataToMap);
+		$("#btn-show-links-onmap").off().click(function(){
+			Sig.showMapElements(Sig.map, dataToMap, "", thisTitle);
+			showMap(true);
+		});
+    
 	}else{
 		var nothing = "Aucun";
 		if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
@@ -544,7 +675,13 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 											"</span>");
 		toogleNotif(false);
 	}
+
 }
+var loading = "<div class='loader text-dark text-center'>"+
+		"<span style='font-size:25px;'>"+
+			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
+			"<span class='text-dark'>Chargement en cours ...</span>" + 
+		"</div>";
 
 function loadStream(indexMin, indexMax, isLiveBool){ mylog.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
 	loadingData = true;
@@ -566,7 +703,10 @@ function loadStream(indexMin, indexMax, isLiveBool){ mylog.log("LOAD STREAM PROF
         success:
             function(data) {
                 if(data){ //alert(data);
+                	$("#news-list").find(".loader").remove();
                 	$("#news-list").append(data);
+                	if($("#noMoreNews").length<=0)
+						$("#news-list").append(loading);
                 	//bindTags();
 					
 				}
@@ -666,9 +806,7 @@ function descHtmlToMarkdown() {
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
-		    		mylog.log("here");
 			    	//toastr.success(data.msg);
-			    	
 			    }
 			});
 			mylog.log("param", param);
@@ -681,7 +819,109 @@ function inintDescs() {
 	if(edit == true || openEdition== true)
 		descHtmlToMarkdown();
 	mylog.log("after");
-	var descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
+	mylog.log("inintDescs", $("#descriptionMarkdown").html());
+	var descHtml = "<i>"+trad.notSpecified+"</i>";
+	if($("#descriptionMarkdown").html().length > 0){
+		descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
+	}
+	
 	$("#descriptionAbout").html(descHtml);
 	$("#descProfilsocial").html(descHtml);
+	mylog.log("descHtml", descHtml);
+}
+
+function removeAddress(form){
+	var msg = trad.suredeletelocality ;
+		if(!form && contextData.type == "<?php echo Person::COLLECTION; ?>")
+			msg = trad.suredeletepersonlocality ;
+
+		bootbox.confirm({
+			message: msg + "<span class='text-red'></span>",
+			buttons: {
+				confirm: {
+					label: "<?php echo Yii::t('common','Yes');?>",
+					className: 'btn-success'
+				},
+				cancel: {
+					label: "<?php echo Yii::t('common','No');?>",
+					className: 'btn-danger'
+				}
+			},
+			callback: function (result) {
+				if (!result) {
+					return;
+				} else {
+					param = new Object;
+			    	param.name = "locality";
+			    	param.value = "";
+			    	param.pk = contextData.id;
+					$.ajax({
+				        type: "POST",
+				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+				        data: param,
+				       	dataType: "json",
+				    	success: function(data){
+					    	//
+					    	if(data.result && !form){
+								if(contextData.type == "<?php echo Person::COLLECTION ;?>") {
+									//Menu Left
+									$("#btn-geoloc-auto-menu").attr("href", "javascript:");
+									$('#btn-geoloc-auto-menu > span.lbl-btn-menu').html("Communectez-vous");
+									$("#btn-geoloc-auto-menu").attr("onclick", "communecterUser()");
+									$("#btn-geoloc-auto-menu").off().removeClass("lbh");
+									//Dashbord
+									$("#btn-menuSmall-mycity").attr("href", "javascript:");
+									$("#btn-menuSmall-citizenCouncil").attr("href", "javascript:");
+									//Multiscope
+									$(".msg-scope-co").html("<i class='fa fa-cogs'></i> Paramétrer mon code postal</a>");
+									//MenuSmall
+									$(".hide-communected").show();
+									$(".visible-communected").hide();
+
+									$(".communecter-btn").removeClass("hidden");
+								}
+								toastr.success(data.msg);
+								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
+					    	}
+					    }
+					});
+				}
+			}
+		});
+}
+
+
+var mapUrl = { 	"discuss": 
+					{ "url"  : "comment/index/type/actionRooms", 
+					  "hash" : "comment.index.type.actionRooms"
+					} ,
+				"vote": 
+					{ "url"  : "survey/entries", 
+					  "hash" : "survey.entries"
+					} ,
+				"entry" :
+					{ "url"  : "survey/entry",
+					  "hash" : "survey.entry",
+					},
+				"actions": 
+					{ "url"  : "rooms/actions", 
+					  "hash" : "rooms.actions"
+					} ,
+				"action":
+					{ "url" : "rooms/action",
+					  "hash" : "rooms.action",
+					}
+			}
+
+function loadRoom(type, id){
+	location.hash=hashUrlPage+".view.dda.dir."+type+".idda."+id;			
+}
+
+function startLoadRoom(type, id){	
+	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+mapUrl[type]["url"]+ '/id/'+id+"?renderPartial=true", 
+			null, function(){
+			},"html");
+
+	toogleNotif(false);
+	KScrollTo("#shortDescriptionHeader");
 }

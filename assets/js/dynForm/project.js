@@ -13,7 +13,7 @@ dynForm = {
 			    		 	
 			    		 	$("#ajax-modal-modal-title").html(
 			    		 		$("#ajax-modal-modal-title").html()+
-			    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
+			    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
 			    	}
 			    },
 			    beforeBuild : function(){
@@ -36,8 +36,7 @@ dynForm = {
 			    properties : {
 			    	info : {
 		                inputType : "custom",
-		                html:"<p class='text-purple'>Faire connaître vos projets n'a jamais été aussi simple !<br>" +
-							  "Créez votre page en quelques secondes,<br>et complétez les informations plus tard, selon vos besoins<hr>" +
+		                html:"<p class='text-purple'>"+tradDynForm["infocreateproject"]+"<hr>" +
 							  "</p>",
 		            },
 			        name : dyFInputs.name("project"),
@@ -46,11 +45,11 @@ dynForm = {
 		            image : dyFInputs.image(),
 		            location : dyFInputs.location,
 		            tags :dyFInputs.tags(),
-		            shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
+		            shortDescription : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
 		            formshowers : {
-		            	label : "En détails",
+		            	label : tradDynForm["indetails"],
 		                inputType : "custom",
-		                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> options (desc, urls)</a>",
+		                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> "+tradDynForm["optiondescrurl"]+"</a>",
 		            },
 		            url : dyFInputs.inputUrlOptionnel(),
 		            "preferences[publicFields]" : dyFInputs.inputHidden([]),

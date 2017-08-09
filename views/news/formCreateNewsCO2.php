@@ -241,6 +241,7 @@
     $iconBegin= "connectdevelop";
     $headerName= "Journal de l'événement";//.$contextName;
     $topTitle = "Journal de l'événement";//.$contextName;
+    $public = true;
     //if(@$canManageNews && $canManageNews==true)
       $textForm = Yii::t("common","Post a message in the wall of")." ".$contextName.", ".Yii::t("common","publicly shared or to this community");
     //else
@@ -274,7 +275,7 @@
   }
 ?>
 <!-- <div id="newLiveFeedForm" class="col-xs-12 no-padding margin-bottom-10"></div> -->
-<div id="formCreateNewsTemp" style="float: none;" class="center-block">
+<div id="formCreateNewsTemp" style="float: none;" class="center-block hidden">
   <div class='no-padding form-create-news-container col-sm-12'>
 
     <div class='padding-10 partition-light no-margin text-left header-form-create-news' style="margin-bottom:-40px !important;">
@@ -288,11 +289,11 @@
       <?php if((@$canManageNews && $canManageNews==true) || (@$isLive && $isLive == true)){ ?>
       <div class="user-image-buttons">
         <form method="post" id="photoAddNews" enctype="multipart/form-data">
-          <span class="btn btn-white btn-file fileupload-new btn-sm uploadImageNews"  <?php if (!$authorizedToStock){ ?> onclick="addMoreSpace();" <?php } ?>>
+          <span class="btn btn-white btn-file fileupload-new btn-sm uploadImageNews"  <?php //if (!$authorizedToStock){ echo 'onclick="addMoreSpace();"'; } ?>>
           <span class="fileupload-new"><i class="fa fa-picture-o fa-x"></i> </span>
-            <?php if ($authorizedToStock){ ?>
+            <?php //if ($authorizedToStock){ ?>
               <input type="file" accept=".gif, .jpg, .png" name="newsImage" id="addImage" onchange="showMyImage(this);">
-            <?php } ?>
+            <?php //} ?>
           </span>
         </form>
       </div>
@@ -307,12 +308,12 @@
       <input type="hidden" id="typeNews" name="type" value="news"/>
 
       <input  type="text" id="falseInput" onclick="javascript:showFormBlock(true);" 
-          class="col-xs-12 col-md-12" placeholder="Exprimez-vous ..."   style="padding:15px;"/>
+          class="col-xs-12 col-md-12" placeholder="<?php echo Yii::t("common","Express yourself ...") ?>" style="padding:15px;"/>
 
-      <div class="extract_url">
+      <div class="extract_url" style="display:none;">
         <div class="padding-10 bg-white">
           <img class="loading_indicator" src="<?php echo $this->module->assetsUrl ?>/images/news/ajax-loader.gif">
-          <textarea id="get_url" placeholder="Exprimez-vous ..." class="get_url_input form-control textarea mention" style="border:none;background:transparent !important" name="getUrl" spellcheck="false" ></textarea>
+          <textarea id="get_url" placeholder="<?php echo Yii::t("common","Express yourself ...") ?>" class="get_url_input form-control textarea mention" style="border:none;background:transparent !important" name="getUrl" spellcheck="false" ></textarea>
           <ul class="dropdown-menu" id="dropdown_search" style="">
           </ul>
 
@@ -329,7 +330,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
           <hr class="submit">
           
-          <button id="btn-submit-form" type="submit" class="btn btn-success pull-right">Envoyer <i class="fa fa-arrow-circle-right"></i></button>
+          <button id="btn-submit-form" type="submit" class="btn btn-success pull-right"><?php echo Yii::t("common","Submit") ?> <i class="fa fa-arrow-circle-right"></i></button>
 
 
         <?php if((@$canManageNews && $canManageNews==true) 
@@ -379,7 +380,7 @@
         </div>  
 
         
-        <?php if($contextParentType == Organization::COLLECTION || $contextParentType == Project::COLLECTION){ ?>
+        <?php if($contextParentType == Organization::COLLECTION || $contextParentType == Project::COLLECTION || $contextParentType == Event::COLLECTION){ ?>
         <div class="dropdown no-padding pull-right">
           <a data-toggle="dropdown" class="btn btn-default" id="btn-toogle-dropdown-targetIsAuthor" href="#">
           <?php if(@$parent["profilThumbImageUrl"]){ ?>

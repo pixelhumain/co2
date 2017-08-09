@@ -208,8 +208,8 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
     //var myParent = <?php echo json_encode(@$parent)?>;
     //dataNewsSearch.parent = { }
 
-  var loading = "<div class='loader text-dark '>"+
-		"<span style='font-size:25px;' class='homestead'>"+
+  var loading = "<div class='loader text-dark text-center'>"+
+		"<span style='font-size:25px;'>"+
 			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
 			"<span class='text-dark'>Chargement en cours ...</span>" + 
 		"</div>";
@@ -217,7 +217,9 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 	//loading = "";
 
 	if(isFirst){ //render HTML for 1st load
-		$("#newsstream").html(loading);
+		//if($("#newsstream .loader").length<0){
+		//	$("#newsstream").html(loading);
+		//}
 		ajaxPost("#newsstream",baseUrl+"/"+moduleId+urlCtrl+"/date/0"+isFirstParam,dataSearch, function(news){
 			//showTagsScopesMin(".list_tags_scopes");
 			 $(window).bind("scroll",function(){ 
@@ -245,7 +247,9 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 			//	showFormBlock(false);
 
 			bindTags();
-
+			if($("#noMoreNews").length<=0)
+				$("#newsstream").append(loading);
+					
 			//$("#formCreateNewsTemp").appendTo("#modal-create-anc #formCreateNews");
 			//$("#info-write-msg").html("<?php echo Yii::t("common","Write a public message visible on the wall of selected places") ?>");
 			//$("#info-write-msg").html("Conseil : donnez un maximum de détails");
@@ -256,7 +260,10 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 	}else{ //data JSON for load next
 		//dateLimit=0;currentMonth = null;
 		loadingData = true;
-		$("#newsstream").append(loading);
+		//if($("#newsstream .loader").length<0){
+		//	alert();
+		//	$("#newsstream").append(loading);
+		//}
 		console.log("data",dataSearch);
 		$.ajax({
 		        type: "POST",
@@ -266,6 +273,8 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 					if(data){
 						$("#newsstream").find(".loader").remove();
 						$("#news-list").append(data);
+						if($("#noMoreNews").length<=0)
+							$("#newsstream").append(loading);
 						//buildTimeLine (data.news, 0, 5);
 						//bindTags();
 						//if(typeof(data.limitDate.created) == "object")

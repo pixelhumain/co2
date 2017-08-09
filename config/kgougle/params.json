@@ -7,7 +7,21 @@
       {
       	"#app.index":
                   {"redirect":"web"},
-      	  
+      	
+            "#welcome": {
+                  "inMenu" : false, 
+                  "useHeader" : false, 
+                  "open" : true, 
+                  "subdomain" : "welcome", 
+                  "subdomainName" : "Accueil",
+                  "hash" : "#app.welcome",
+                  "icon" : "", 
+                  "mainTitle" : "La porte d'entrée sur le web Calédonien",
+                  "placeholderMainSearch" : "Rechercher quelque chose ...",
+                  "lblBtnCreate" : "Créer quelque chose",
+                  "colorBtnCreate" : "green"
+            },
+
       	"#web":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
@@ -44,7 +58,7 @@
       	"#social":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
-                  "open" : false,
+                  "open" : true,
                   "subdomain" : "social", 
                   "subdomainName" : "social",
                   "hash" : "#app.search",
@@ -57,7 +71,7 @@
       	"#freedom":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
-                  "open" : false,
+                  "open" : true,
                   "subdomain" : "freedom", 
                   "subdomainName" : "freedom",
                   "hash" : "#app.annonces",
@@ -70,7 +84,7 @@
       	"#agenda":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
-                  "open" : false,
+                  "open" : true,
                   "subdomain" : "agenda", 
                   "subdomainName" : "agenda",
                   "hash" : "#app.agenda",

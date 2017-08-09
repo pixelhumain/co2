@@ -52,8 +52,14 @@
 <script type="text/javascript">
 var contextType="<?php echo $parentType ?>";
 var contextId="<?php echo $parentId ?>";
+var commonsView="<?php echo @$commonsView ?>";
+var openView="<?php echo @$openView ?>";
+if(commonsView==true)
+	chartLoader="commons";
+else if (openView==true)
+	chartLoader="open";
 jQuery(document).ready(function() {
-	ajaxPost('#chartPad', baseUrl+'/'+moduleId+'/chart/index/type/'+contextType+'/id/'+contextId+'/chart/commons', 
+	ajaxPost('#chartPad', baseUrl+'/'+moduleId+'/chart/index/type/'+contextType+'/id/'+contextId+'/chart/'+chartLoader, 
 	null,
 	function(){},"html");
 	$(".edit-chart").click(function(){

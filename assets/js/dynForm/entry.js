@@ -6,24 +6,35 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	"sub" : function(){
-    			$("#ajaxFormModal #survey").val( contextData.id );
-    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
+	    		dataHelper.activateMarkdown("#ajaxFormModal #message");
+    			$("#ajaxFormModal #survey").val( contextDataDDA.id );
+    			if (typeof contextDataDDA.name != "undefined" && contextDataDDA.name != "")
+    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
 	    	}
 	    },
-	    beforeSave : function(){
-	    	
-	    	if( typeof $("#ajaxFormModal #message").code === 'function' )  
-	    		$("#ajaxFormModal #message").val( $("#ajaxFormModal #message").code() );
+	    beforeBuild : function(){
+            dyFObj.setMongoId('survey',function(){
+            	
+            });
+        },
+	    afterSave : function(){
+            if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
+                $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+            else 
+            { 
+                dyFObj.closeForm(); 
+                urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+            }
 	    },
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p><i class='fa fa-info-circle'></i> Une proposition sert à discuter et demander l'avis d'une communauté sur une idée ou une question donnée</p>",
+                html:"<br><p><i class='fa fa-info-circle'></i> Une proposition sert à discuter et demander l'avis d'une communauté sur une idée ou une question donnée</p>",
             },
 	        id : dyFInputs.inputHidden(),
             survey :{
             	inputType : "select",
-            	placeholder : "Choisir une thématique ?",
+            	label : "Choisir un espace",
             	init : function(){
             		if( userId )
             		{
@@ -52,8 +63,8 @@ dynForm = {
 	            			    
 	            			    html = buildSelectGroupOptions(window.myVotesList);
 								$("#survey").append(html);
-								if(contextData && contextData.id)
-									$("#ajaxFormModal #survey").val( contextData.id );
+								if(contextDataDDA && contextDataDDA.id)
+									$("#ajaxFormModal #survey").val( contextDataDDA.id );
 						    } );
 	            		}
 	            		/*$("#survey").change(function() { 
@@ -62,24 +73,18 @@ dynForm = {
 
             		}
             	},
-            	custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
+            	//custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
             },
-            name : dyFInputs.name,
-            message : dyFInputs.textarea("Description", "..."),
+            name : dyFInputs.name("vote"),
+            message : dyFInputs.textarea(tradDynForm.longDescription, "..."),
             dateEnd : dyFInputs.dateEnd,
             tags : dyFInputs.tags(),
-            formshowers : {
-            	label : "En détails",
-                inputType : "custom",
-                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options ( urls)</a>",
-            },
+            image : dyFInputs.image(),
             urls : dyFInputs.urls,
             email: dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userConnected.email : "") ),
             organizer : dyFInputs.inputHidden("currentUser"),
             type : dyFInputs.inputHidden("entry")
-            
-            
-            
+                        
 	    }
 	}
 };

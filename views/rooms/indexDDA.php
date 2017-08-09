@@ -86,34 +86,59 @@ a h1.text-azure:hover{
 	                        "history" => $history, 
 	                        "mainPage" => true
 	                        ));
-		echo '<div class="col-md-12 panel-white padding-15" id="room-container">';
-   } 
- ?>
+		//echo '<div class="col-md-4 panel-white padding-15" id="room-container">';
+   }
+?>
+<!-- 
+<div class="labelTitleDir">
+	<i class="fa fa-inbox fa-2x margin-right-10"></i> <i class="fa fa-angle-down"></i> <b>Espaces de décisions</b>
+	<hr>
+</div> -->
+
+
+<h4 class="margin-top-50"><i class="fa fa-angle-down"></i> Espace coopératif</h4>
+<hr>
+
+<div class="col-md-12 col-sm-12 col-xs-12 panel-white no-padding margin-bottom-50" id="room-container">
+
 <div class="panel-group" id="accordion">
 	<?php 
 		$auth = ((Authorisation::canParticipate(Yii::app()->session['userId'],$parentType,$parentId) /*&& (@$fromView != "entity.detail") */)?true:false);
+		
+		if($auth==true) {
+		    	/*echo '<button onclick="selectRoomType(\''.$typeNew.'\')" data-toggle="modal" 
+		    			data-target="#modal-create-room" class="btn btn-link letter-green col-md-12 no-padding" style="text-align:left;">'.
+		    			'<b><i class="fa fa-plus"></i> créer un nouvel espace</b>'.
+		    		'</button>';*/
+		    	echo '<button onclick="dyFObj.openForm(\'room\',\'sub\')" class="btn btn-link letter-green col-md-12 no-padding" style="text-align:left;">'.
+		    			'<b><i class="fa fa-plus"></i> créer un nouvel espace</b>'.
+		    		'</button>';
+		}
+
 		createAccordionMenu($discussions, 1, "Discussions", "comments", "discuss", "Aucun espace de discussion", $auth, @$fromView);
-		createAccordionMenu($votes, 2, "Décisions", "archive", "vote", "Aucun espace de décision", $auth, @$fromView);
+		createAccordionMenu($votes, 2, "Décisions", "gavel", "vote", "Aucun espace de décision", $auth, @$fromView);
 		createAccordionMenu($actions, 3, "Actions", "cogs", "actions", "Aucun espace d'action", $auth, @$fromView);
 	?>
 </div>
 
-<div id="endOfRoom">
+<!-- <div id="endOfRoom">
 	<a href='javascript:urlCtrl.loadByHash("#rooms.index.type.organizations.id.<?php echo (String) $parentId; ?>")'>
 		<i class='fa fa-sign-in'></i> Entrer dans l'espace coopératif 
 	</a>
-</div>
+</div> -->
+
 <?php 
 	function createAccordionMenu($elements, $index, $title, $icon, $typeNew, $emptyMsg, $auth, $fromView){
 	
-	$in = $index == 1 ? "in" : "";
+	$in =  "";//$index == 1 ? "in" : "";
 	
+	echo '<div class="col-md-12 no-padding">';
 	echo '<div class="panel panel-default">';
 
-	echo    '<div class="panel-heading bg-dark">
+	echo    '<div class="panel-heading text-dark no-padding">
 		      <div class="panel-title">
 		        <a data-toggle="collapse" data-parent="#accordion" href="#collapse'.$index.'" class="show-menu-co">
-		        	<i class="fa fa-angle-down hide-on-reduce-menu"></i> <i class="fa fa-'.$icon.'"></i> <span class="hide-on-reduce-menu">'.$title.'</span>
+		        	<i class="fa fa-'.$icon.'"></i> <span class="hide-on-reduce-menu bold">'.$title.'</span>
 		        	<span class="badge pull-right hide-on-reduce-menu">'.count($elements).'</span>
 		        </a>
 		      </div>
@@ -130,7 +155,7 @@ a h1.text-azure:hover{
 			        	$col = ActionRoom::TYPE_ACTIONS;
 			        	$attr = 'room';
 			        }
-			        $onclick = 'showRoom(\''.$typeNew.'\', \''.(string)$value["_id"].'\')';
+			        $onclick = 'loadRoom(\''.$typeNew.'\', \''.(string)$value["_id"].'\')';
 			        if(@$value["type"] == "entry") $onclick = 'urlCtrl.loadByHash(\'#survey.entry.id.'.(string)$value["_id"].'\')';
 			        if(@$value["type"] == "action") $onclick = 'urlCtrl.loadByHash(\'#room.action.id.'.(string)$value["_id"].'\')';
 			        if(@$fromView == "entity.detail") $onclick = 'loadRoom(\''.$typeNew.'\', \''.(string)$value["_id"].'\')';
@@ -144,27 +169,21 @@ a h1.text-azure:hover{
 						$count = PHDB::count(Survey::COLLECTION,array("room"=>(string)$value["_id"]));
 					else if( @$value["type"] == ActionRoom::TYPE_DISCUSS )
 						$count = (empty($value["commentCount"])?0:$value["commentCount"]);
-					echo '<div class="panel-body hide-on-reduce-menu">'.
-							'<a href="javascript:'.$onclick.'" class="text-dark">'.
-								'<i class="fa fa-'.$icon.'"></i> '.$value["name"]." ".$updated." <div class='badge badge-success pull-right'>".$count."</div> ".$parentContext.
+					echo '<div class="panel-body no-padding hide-on-reduce-menu">'.
+							'<a href="javascript:'.$onclick.'" class="text-dark  padding-top-15 padding-bottom-15">'.
+								'<small><i class="fa fa-angle-right"></i> '.$value["name"]./*" ".$updated.*/" <div class='badge badge-success pull-right'>".$count."</div> "./*$parentContext.*/"</small>".
 							'</a>'.
 						 '</div>';
 		        } 
 
 		         if(empty($elements)) 
-			      	echo '<div class="panel-body hide-on-reduce-menu"><i class="fa fa-times"></i> '.$emptyMsg.'</div>';
+			      	echo '<div class="panel-body hide-on-reduce-menu"><small><i class="fa fa-times"></i> '.$emptyMsg.'</small></div>';
 
-			     if($auth==true) {
-				    echo '<div class="panel-body hide-on-reduce-menu">';
-				    	echo '<a href="javascript:" onclick="selectRoomType(\''.$typeNew.'\')" data-toggle="modal" 
-				    			data-target="#modal-create-room" class="text-green">'.
-				    			'<i class="fa fa-plus"></i> <i class="fa fa-'.$icon.'"></i> Nouvel espace'.
-				    		'</a>';
-				    echo  '</div>';
-				}
+			     
 
 	echo 	'</div>';
 
+	echo '</div>';
 	echo '</div>';
 }
 
@@ -183,41 +202,6 @@ jQuery(document).ready(function() {
 	});
 });
 
-<?php if(isset($renderPartial)){ ?>
-function loadRoom(type, id){
-	
-	var mapUrl = { 	"all": 
-						{ "url"  : "rooms/index/type/<?php echo $parentType; ?>", 
-						  "hash" : "rooms.index.type.<?php echo $parentType; ?>"
-						} ,
-					"discuss": 
-						{ "url"  : "comment/index/type/actionRooms", 
-						  "hash" : "comment.index.type.actionRooms"
-						} ,
-					"vote": 
-						{ "url"  : "survey/entries", 
-						  "hash" : "survey.entries"
-						} ,
-					"entry" :
-						{ "url"  : "survey/entry",
-						  "hash" : "survey.entry",
-						},
-					"actions": 
-						{ "url"  : "rooms/actions", 
-						  "hash" : "rooms.actions"
-						} ,
-					"action":
-						{
-							"url" : "rooms/action",
-							"hash" : "rooms.action",
-						}
-				}
-
-	var thiHash = "#"+mapUrl[type]["hash"]+".id."+id;
-	urlCtrl.loadByHash(thiHash);
-}
-
-<?php } ?>
 </script>
 
 <style>

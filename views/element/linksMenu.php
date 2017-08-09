@@ -190,7 +190,7 @@
 
 <?php if ($elementType!= Person::COLLECTION && $elementId!=Yii::app()->session["userId"]){ ?>
 	<a href="javascript:collection.add2fav('<?php echo $elementType ?>','<?php echo $elementId ?>')"  
-	class="btn-o menu-linksBtn no-border-right <?php if(@$xsView) echo "hidden"; ?>"><i class="fa fa-star"></i> <?php echo Yii::t("common","Favorites"); ?></a>
+	class="btn-o menu-linksBtn no-border-right <?php if(@$xsView) echo "hidden"; ?> star_<?php echo $elementType.'_'.$elementId; ?>"><i class="fa fa-star-o"></i> <?php echo Yii::t("common","Favorites"); ?></a>
 <?php } ?>
 <!-- View in menu params // visible only on xs -->
 <?php if(@$xsView){ ?>
@@ -205,12 +205,24 @@
 <?php } ?>
 <!-- End of xs generated -->
 <script type="text/javascript">
+	var elementType='<?php echo $elementType ?>';
+	var elementId='<?php echo $elementId ?>';
 	jQuery(document).ready(function() {
 		$('ul.nav li.dropdown').hover(function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
-}, function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
-});
+ 			$(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+		}, function() {
+  			$(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+		});
+		if(typeof userConnected !="undefined" && userConnected!=null
+			&& typeof userConnected.collections !="undefined" 
+			&& typeof userConnected.collections.favorites !="undefined"
+			&& typeof userConnected.collections.favorites[elementType] !="undefined"
+			&& typeof userConnected.collections.favorites[elementType][elementId] !="undefined"
+			&& $(".star_"+elementType+"_"+elementId).length){
+			$(".star_"+elementType+"_"+elementId ).addClass("text-yellow");
+			$(".star_"+elementType+"_"+elementId ).children("i").removeClass("fa-star-o").addClass("fa-star");
+		}
+
 		/*$(".menu-btn-follow").click(function(){
 	          $("#dropdown-followBtn").addClass("open");
 	 	});

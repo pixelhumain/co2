@@ -6,26 +6,30 @@
 ?>
 
 <h1 class="letter-"><i class="fa fa-grav letter-red"></i> Bonjour <span class="letter-red">Super Admin</span></h1>
-<h5 class="letter-">Quelle partie du site souhaitez-vous administrer ?</h5>
 
-<div class="col-md-4">
-	<button class="btn btn-default btn-lg font-blackoutM letter-red col-md-12 padding-10 btn-superadmin" data-action="web">
-		<i class="fa fa-search letter-red"></i><br>WEB
-	</button>
-</div>
-<div class="col-md-4">
-	<button class="btn btn-default btn-lg font-blackoutM letter-red col-md-12 padding-10 btn-superadmin" data-action="live">
-		<i class="fa fa-newspaper-o letter-red"></i><br>LIVE
-	</button>
-</div>
-<div class="col-md-4">
-	<button class="btn btn-default btn-lg font-blackoutM letter-red col-md-12 padding-10 btn-superadmin" data-action="power">
-		<i class="fa fa-comments letter-red"></i><br>POWER
-	</button>
-</div>
+<?php if(Yii::app()->params["CO2DomainName"] == "kgougle"){ ?>
+	<h5 class="letter-">Quelle partie du site souhaitez-vous administrer ?</h5>
+
+	<div class="col-md-4">
+		<button class="btn btn-default btn-lg font-blackoutM letter-red col-md-12 padding-10 btn-superadmin" data-action="web">
+			<i class="fa fa-search letter-red"></i><br>WEB
+		</button>
+	</div>
+	<div class="col-md-4">
+		<button class="btn btn-default btn-lg font-blackoutM letter-red col-md-12 padding-10 btn-superadmin" data-action="live">
+			<i class="fa fa-newspaper-o letter-red"></i><br>LIVE
+		</button>
+	</div>
+	<div class="col-md-4">
+		<button class="btn btn-default btn-lg font-blackoutM letter-red col-md-12 padding-10 btn-superadmin" data-action="power">
+			<i class="fa fa-comments letter-red"></i><br>POWER
+		</button>
+	</div>
+<?php } ?>
 
 <?php 
-	$visits = CO2Stat::getStatsByHash(); 
+	$week = @$_POST["week"];
+	$visits = CO2Stat::getStatsByHash(@$week); 
 	$days = array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
 ?>
 <style>
@@ -36,7 +40,19 @@
 </style>
 <div class="col-md-12 stat-week padding-bottom-50">
 	<hr>
-	<h2 class="text-left text-azure"><i class="fa fa-angle-down"></i> Nombre de visites - Semaine <?php echo date("W"); ?></span></h2>
+	<h4 class="text-left text-azure">
+		<i class="fa fa-angle-down"></i> Nombre de visites - Semaine <?php echo $visits["week"]; ?></span>
+		<br><br>
+		<button class="btn btn-default pull-left margin-right-5" id="back-week" data-week="<?php echo $visits["numweek"]-1; echo $visits["year"]; ?>">
+			<i class="fa fa-chevron-left"></i> Sem <?php echo $visits["numweek"]-1; ?>
+		</button>
+		<?php if($visits["numweek"]< Date("W")){ ?>
+		<button class="btn btn-default pull-left" id="next-week" data-week="<?php echo $visits["numweek"]+1; echo $visits["year"]; ?>">
+			Sem <?php echo $visits["numweek"]+1; ?> <i class="fa fa-chevron-right"></i> 
+		</button>
+		<?php } ?>
+	</h4>
+
 	<?php foreach ($visits["hash"] as $domain => $stats) { $totalLoad = 0; ?>
 			<div class="col-md-12 text-center">
 				<?php foreach ($days as $key => $day) { $totalLoad += @$stats[$day]["nbLoad"] ? $stats[$day]["nbLoad"] : 0; } ?>
@@ -68,6 +84,11 @@
 				getAjax('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/"+action,function(){ 
 					
 			},"html");
+		});
+
+		$("#back-week, #next-week").click(function(){
+			var numweek = $(this).data("week");
+			loadAdminDashboard(numweek);
 		});
 	});
 

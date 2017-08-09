@@ -93,7 +93,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 <script type="text/javascript" >
 var updateNews= new Object;
 </script>
-<div class="col-md-12 col-sm-12 no-padding margin-bottom-15" style="<?php if(!@isLive){ ?>padding-left:25px!important;<?php } ?>">
+<div class="col-md-12 col-sm-12 col-xs-12 no-padding margin-bottom-15" style="<?php if(!@isLive){ ?>padding-left:25px!important;<?php } ?>">
   <?php //var_dump($params); 
         $params = array(
                   "type" => $type,
@@ -160,7 +160,10 @@ jQuery(document).ready(function() {
     }
     //$("#addImage").click();
   });
+
   showFormBlock(false);
+  $("#formCreateNewsTemp").removeClass('hidden');
+  
   initForm();
   bindEventNews();
   if(typeof(initLimitDate.created) == "object")
@@ -194,11 +197,15 @@ function initForm(){ console.log("initForm initForm");
           if(value.profilThumbImageUrl!="")
           avatar = baseUrl+value.profilThumbImageUrl;
           object = new Object;
-          object.id = value._id.$id;
+          if(typeof value._id != "undefined")
+            object.id = value._id.$id;
+          else if(typeof value.id != "undefined")
+            object.id = value.id;
           object.name = value.name;
         object.avatar = avatar;
         object.type = "citoyens";
-        mentionsContact.push(object);
+        if(typeof object.id != "undefined")
+          mentionsContact.push(object);
       }
       });
       $.each(myContacts["organizations"], function (key,value){

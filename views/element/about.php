@@ -11,7 +11,7 @@
 	.valueAbout{
 		border-left: 1px solid #dbdbdb;
 	}
-	#shortDescriptionAbout, #descriptionAbout{
+	#shortDescriptionAbout/*, #descriptionAbout*/{
 		white-space: pre-line;
 	}
 	.contentInformation{
@@ -55,16 +55,16 @@
 </style>
 
 <div class='col-md-12 margin-bottom-15'>
-	<i class="fa fa-info-circle fa-2x"></i><span class='Montserrat' id='name-lbl-title'> A propos</span>
+	<i class="fa fa-info-circle fa-2x"></i><span class='Montserrat' id='name-lbl-title'> <?php echo Yii::t("common","About") ?></span>
 </div>
 
 <div id="ficheInfo" class="panel panel-white col-lg-12 col-md-12 col-sm-12 no-padding shadow2">
 	
 	<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
-		<h4 class="panel-title text-dark pull-left"> 
+		<h4 class="panel-title text-dark pull-left">
 			<i class="fa fa-file-text-o"></i> <?php echo Yii::t("common","Descriptions") ?>
 		</h4>
-		<?php if($edit==true || $openEdition==true ){?>
+		<?php if($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ){?>
 		  	<button class="btn-update-descriptions btn btn-default letter-blue pull-right tooltips" 
 				data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update description") ?>">
 				<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?></b>
@@ -77,10 +77,9 @@
 				<span><i class="fa fa-quote-left"></i></span> <?php echo Yii::t("common", "Short description") ?>
 			</div>
 			<div id="shortDescriptionAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-				<span class="visible-xs col-xs-12 no-padding"><i class="fa fa-quote-left"></i> <?php echo Yii::t("common", "Short description") ?>:
-				</span><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+				<span class="visible-xs col-xs-12 no-padding"><i class="fa fa-quote-left"></i> <?php echo Yii::t("common", "Short description") ?>: </span><?php echo (@$element["shortDescription"]) ? $element["shortDescription"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 			</div>
-			<span id="shortDescriptionAboutEdit" name="shortDescriptionAboutEdit"  class="col-xs-12 hidden" ><?php echo (!empty($element["shortDescription"])) ? $element["shortDescription"] : ""; ?></span>
+			<span id="shortDescriptionAboutEdit" name="shortDescriptionAboutEdit"  class="hidden" ><?php echo (!empty($element["shortDescription"])) ? $element["shortDescription"] : ""; ?></span>
 		</div>
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 			<div class="col-md-3 col-sm-3 col-xs-3 hidden-xs labelAbout padding-10">
@@ -103,7 +102,7 @@
 		<h4 class="panel-title text-dark pull-left"> 
 			<i class="fa fa-address-card-o"></i> <?php echo Yii::t("common","General information") ?>
 		</h4>
-		<?php if($edit==true || $openEdition==true ){?>
+		<?php if($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ){?>
 			<button class="btn-update-info btn btn-default letter-blue pull-right tooltips" 
 				data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update general information") ?>">
 				<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?></b>
@@ -119,13 +118,13 @@
 				<span class="visible-xs pull-left margin-right-5"><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Name") ?> :</span> <?php echo $element["name"]; ?>
 			</div>
 		</div>
-		<?php if($type==Project::COLLECTION && @$avancement){ ?>
+		<?php if($type==Project::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
-					<span><i class="fa fa-cycle"></i></span> <?php echo Yii::t("project","Project maturity"); ?>
+					<span><i class="fa fa-line-chart"></i></span> <?php echo Yii::t("project","Project maturity"); ?>
 				</div>
 				<div  id="avancementAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-cycle"></i> <?php echo Yii::t("project","Project maturity"); ?> :</span><?php echo (@$avancement) ? Yii::t("project",$avancement) : '<i>'.Yii::t("common","Not specified").'</i>' ?>
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-line-chart"></i> <?php echo Yii::t("project","Project maturity"); ?> :</span><?php echo (@$element["properties"]["avancement"]) ? Yii::t("project",$element["properties"]["avancement"]) : '<i>'.Yii::t("common","Not specified").'</i>' ?>
 				</div>
 			</div>
 		<?php } ?>
@@ -158,7 +157,16 @@
 						<span><i class="fa fa-angle-right"></i></span><?php echo Yii::t("common", "Type"); ?> 
 					</div>
 					<div id="typeAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span><?php echo (@$element["type"]) ? Yii::t("event", $element["type"]) : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
+						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span>
+
+						<?php 
+						if(@$typesList && @$element["type"])
+							$showType=Yii::t( "category",$typesList[$element["type"]]);
+						else if (@$element["type"])
+							$showType=Yii::t( "category",$element["type"]);
+						else
+							$showType='<i>'.Yii::t("common","Not specified").'</i>';
+						echo $showType; ?>
 					</div>
 				</div>
 		<?php }
@@ -175,6 +183,48 @@
 				</div>
 			</div>
 		<?php } ?>
+
+
+
+		<?php if($type != Person::COLLECTION){ ?>
+			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
+					<span><i class="fa fa-link"></i></span> <?php echo Yii::t("common","Parenthood"); ?>
+				</div>
+				<div id="parentAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-desktop"></i> <?php echo Yii::t("common","Parenthood"); ?> :</span>
+				<?php 
+					if(!empty($element["parent"])){ ?>
+						<a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> 
+						<i class="fa fa-<?php echo Element::getFaIcon($element['parentType']); ; ?>"></i> 
+						<?php echo $element['parent']['name']; ?></a><br/> 
+				<?php }else
+						echo '<i>'.Yii::t("common","Not specified").'</i>';?>
+				</div>
+			</div>
+		<?php } ?>
+
+		<?php if($type == Event::COLLECTION){ ?>
+			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
+					<span><i class="fa fa-link"></i></span> <?php echo Yii::t("common","Organized by"); ?>
+				</div>
+				<div id="organizerAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-desktop"></i> <?php echo Yii::t("common","Organized by"); ?> :</span>
+				<?php 
+					if(!empty($element["organizer"])){ ?>
+						<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" class="lbh"> 
+						<i class="fa fa-<?php echo Element::getFaIcon($element['organizerType']); ; ?>"></i> 
+						<?php echo $element['organizer']['name']; ?></a><br/> 
+				<?php }else
+						echo '<i>'.Yii::t("common","Not specified").'</i>';?>
+				</div>
+			</div>
+		<?php } ?>
+
+
+
+
 
 		<?php if($type!=Poi::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
@@ -272,9 +322,9 @@
 						<i class="fa fa-clock-o"></i> <?php echo Yii::t("common","When"); ?>
 					</h4>
 				</a>
-				<?php if($edit==true || $openEdition==true ){?>
+				<?php if($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ){?>
 					<button class="btn-update-when btn btn-default letter-blue pull-right tooltips" 
-						data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update network") ?>">
+						data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update date") ?>">
 						<b><i class="fa fa-pencil"></i></b>
 					</button>
 				<?php } ?>
@@ -290,7 +340,7 @@
 				<?php } ?>
 
 					<div id="divStartDate" class="col-md-12 col-sm-12 col-xs-12 contentInformation padding-10">
-						<span><?php echo Yii::t("common","FromDate") ?> </span><span id="startDateAbout" class="" ><?php echo (isset($element["startDate"]) ? $element["startDate"] : "" ); ?></span>
+						<span><?php echo Yii::t("event","From") ?> </span><span id="startDateAbout" class="" ><?php echo (isset($element["startDate"]) ? $element["startDate"] : "" ); ?></span>
 					</div>
 					<div id="divEndDate"  class="col-md-12 col-sm-12 col-xs-12 contentInformation padding-10">
 						<span><?php echo Yii::t("common","To") ?></span> <span id="endDateAbout" class=""><?php echo (isset($element["endDate"]) ? $element["endDate"] : "" ); ?></span> 
@@ -313,7 +363,7 @@
 
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 labelAbout padding-10">
 				<span><i class="fa fa-home"></i></span> <?php echo Yii::t("common", "Main locality") ?>
-				<?php if (!empty($element["address"]["codeInsee"]) && ( $edit==true || $openEdition==true ) ) { 
+				<?php if (!empty($element["address"]["codeInsee"]) && ( $edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ) ) { 
 					echo '<a href="javascript:;" id="btn-remove-geopos" class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Remove Locality").'">
 								<i class="fa text-red fa-trash-o"></i>
 							</a> 
@@ -375,21 +425,23 @@
 					echo $address;
 					?>
 
-					<a href='javascript:removeAddresses("<?php echo $ix ; ?>");'  class="addresses pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Remove Locality");?>"><i class="fa text-red fa-trash-o"></i></a>
-					<a href='javascript:updateLocalityEntities("<?php echo $ix ; ?>", <?php echo json_encode($p);?>);' class=" pull-right pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Locality");?>"><i class="fa text-red fa-map-marker addresses"></i></a></span>
+					<?php if( $edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ) { ?>
+						<a href='javascript:removeAddresses("<?php echo $ix ; ?>");'  class="addresses pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Remove Locality");?>"><i class="fa text-red fa-trash-o"></i></a>
+						<a href='javascript:updateLocalityEntities("<?php echo $ix ; ?>", <?php echo json_encode($p);?>);' class=" pull-right pull-right tooltips margin-right-15" data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common","Update Locality");?>"><i class="fa text-red fa-map-marker addresses"></i></a></span>
+					<?php } ?>
 				</span>
 				<hr/>
 			<?php 	} ?>
 			</div>
 		<?php } ?>
 		<div class="text-right padding-10">
-			<?php if(empty($element["address"]) && $type!=Person::COLLECTION && ($edit==true || $openEdition==true )){ ?>
+			<?php if(empty($element["address"]) && $type!=Person::COLLECTION && ($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) )){ ?>
 				<b><a href="javascript:;" class="btn btn-default letter-blue margin-top-5 addresses btn-update-geopos">
 					<i class="fa fa-map-marker"></i>
 					<span class="hidden-sm"><?php echo Yii::t("common","Add a primary address") ; ?></span>
 				</a></b>
 			<?php	}
-			if($type!=Person::COLLECTION && !empty($element["address"]) && ($edit==true || $openEdition==true )) { ?>
+			if($type!=Person::COLLECTION && !empty($element["address"]) && ($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) )) { ?>
 				<b><a href='javascript:updateLocalityEntities("<?php echo count(@$element["addresses"]) ; ?>");' id="btn-add-geopos" class="btn btn-default letter-blue margin-top-5 addresses" style="margin: 10px 0px;">
 					<i class="fa fa-plus" style="margin:0px !important;"></i> 
 					<span class="hidden-sm"><?php echo Yii::t("common","Add an address"); ?></span>
@@ -406,7 +458,7 @@
 		$facebook = (!empty($element["socialNetwork"]["facebook"])? $element["socialNetwork"]["facebook"]:"javascript:;") ;
 		$twitter =  (!empty($element["socialNetwork"]["twitter"])? $element["socialNetwork"]["twitter"]:"javascript:;") ;
 		$googleplus =  (!empty($element["socialNetwork"]["googleplus"])? $element["socialNetwork"]["googleplus"]:"javascript:;") ;
-		$gitHub =  (!empty($element["socialNetwork"]["github"])? $element["socialNetwork"]["github"]:"javascript:;") ;
+		$github =  (!empty($element["socialNetwork"]["github"])? $element["socialNetwork"]["github"]:"javascript:;") ;
 		$instagram =  (!empty($element["socialNetwork"]["instagram"])? $element["socialNetwork"]["instagram"]:"javascript:;") ;
 	?>
 	<div id="socialAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding shadow2">
@@ -414,7 +466,7 @@
 			<h4 class="panel-title text-dark pull-left"> 
 				<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common","Socials"); ?>
 			</h4>
-			<?php if($edit==true || $openEdition==true ){?>
+			<?php if($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ) {?>
 				<button class="btn-update-network btn btn-default letter-blue pull-right tooltips" 
 					data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update network") ?>">
 					<b><i class="fa fa-pencil"></i></b>
@@ -445,7 +497,7 @@
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="GitHub">
 				<span><i class="fa fa-github"></i></span> 
-				<a href="<?php echo $gitHub ; ?>" target="_blank" id="gitHubAbout" class="socialIcon" ><?php echo ($gitHub != "javascript:;") ? $gitHub : '<i>'.Yii::t("common","Not specified").'</i>' ; ?></a>
+				<a href="<?php echo $github ; ?>" target="_blank" id="githubAbout" class="socialIcon" ><?php echo ($github != "javascript:;") ? $github : '<i>'.Yii::t("common","Not specified").'</i>' ; ?></a>
 			</div>
 			<?php if($type==Person::COLLECTION){ ?> 
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Telegram">
@@ -463,10 +515,10 @@
 
 	var formatDateView = "DD MMMM YYYY à HH:mm" ;
 	var formatDatedynForm = "DD/MM/YYYY HH:mm" ;
-	if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php echo Project::COLLECTION; ?>" ) {
+	/*if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php //echo Project::COLLECTION; ?>" ) {
 		formatDateView = "DD MMMM YYYY" ;
 		formatDatedynForm = "DD/MM/YYYY" ;
-	}
+	}*/
 
 	jQuery(document).ready(function() {
 		bindDynFormEditable();
@@ -498,65 +550,7 @@
 		});
 
 		$("#btn-remove-geopos").click(function(){
-			var msg = trad["suredeletelocality"] ;
-			if(contextData.type == "<?php echo Person::COLLECTION; ?>")
-				msg = trad["suredeletepersonlocality"] ;
-
-			bootbox.confirm({
-				message: msg + "<span class='text-red'></span>",
-				buttons: {
-					confirm: {
-						label: "<?php echo Yii::t('common','Yes');?>",
-						className: 'btn-success'
-					},
-					cancel: {
-						label: "<?php echo Yii::t('common','No');?>",
-						className: 'btn-danger'
-					}
-				},
-				callback: function (result) {
-					if (!result) {
-						return;
-					} else {
-						param = new Object;
-				    	param.name = "locality";
-				    	param.value = "";
-				    	param.pk = contextData.id;
-						$.ajax({
-					        type: "POST",
-					        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-					        data: param,
-					       	dataType: "json",
-					    	success: function(data){
-						    	//
-						    	if(data.result){
-									if(contextData.type == "<?php echo Person::COLLECTION ;?>"){
-										//Menu Left
-										$("#btn-geoloc-auto-menu").attr("href", "javascript:");
-										$('#btn-geoloc-auto-menu > span.lbl-btn-menu').html("Communectez-vous");
-										$("#btn-geoloc-auto-menu").attr("onclick", "communecterUser()");
-										$("#btn-geoloc-auto-menu").off().removeClass("lbh");
-										//Dashbord
-										$("#btn-menuSmall-mycity").attr("href", "javascript:");
-										$("#btn-menuSmall-citizenCouncil").attr("href", "javascript:");
-										//Multiscope
-										$(".msg-scope-co").html("<i class='fa fa-cogs'></i> Paramétrer mon code postal</a>");
-										//MenuSmall
-										$(".hide-communected").show();
-										$(".visible-communected").hide();
-
-										$(".communecter-btn").removeClass("hidden");
-									}
-									toastr.success(data.msg);
-									urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
-
-						    	}
-						    }
-						});
-					}
-				}
-			});	
-
+			removeAddress();	
 		});
 
 		$("#btn-update-geopos-admin").click(function(){
@@ -570,6 +564,14 @@
 
 	function initDate() {//DD/mm/YYYY hh:mm
 		//moment.locale('fr');
+		if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php echo Project::COLLECTION; ?>" ) {
+			formatDateView = "DD MMMM YYYY" ;
+			formatDatedynForm = "DD/MM/YYYY" ;
+		}else{
+			formatDateView = "DD MMMM YYYY à HH:mm" ;
+			formatDatedynForm = "DD/MM/YYYY HH:mm" ;
+		}
+
 		if( typeof contextData.startDate != "undefined" && contextData.startDate != "" ){
 			$("#divStartDate").removeClass("hidden");
 			$("#divNoDate").addClass("hidden");
@@ -583,15 +585,14 @@
 			$("#divEndDate").removeClass("hidden");
 		else
 			$("#divEndDate").addClass("hidden");
-
-
+		mylog.log("formatDateView", formatDateView);
 		if($("#startDateAbout").html() != "")
-	    	$("#startDateAbout").html(moment($("#startDateAbout").html()).local().locale("fr").format(formatDateView));
+	    	$("#startDateAbout").html(moment(contextData.startDateDB).local().locale(mainLanguage).format(formatDateView));
 	    if($("#endDateAbout").html() != "")
-	    	$("#endDateAbout").html(moment($("#endDateAbout").html()).local().locale("fr").format(formatDateView));
+	    	$("#endDateAbout").html(moment( contextData.endDateDB).local().locale(mainLanguage).format(formatDateView));
 
 	    if($("#birthDate").html() != "")
-	    	$("#birthDate").html(moment($("#birthDate").html()).local().locale("fr").format("DD/MM/YYYY"));
+	    	$("#birthDate").html(moment($("#birthDate").html()).local().locale(mainLanguage).format("DD/MM/YYYY"));
 	    $('#dateTimezone').attr('data-original-title', "Fuseau horaire : GMT " + moment().local().format("Z"));
 	}
 

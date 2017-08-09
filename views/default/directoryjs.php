@@ -455,6 +455,7 @@
 <script type="text/javascript">
 
 var headerParams = {
+<<<<<<< HEAD
   "persons"       : { color: "yellow",  icon: "user",         name: trad["people"] },
   "organizations" : { color: "green",   icon: "group",        name: trad["organizations"] },
   "NGO"           : { color: "green",   icon: "group",        name: trad["NGO"] },
@@ -469,6 +470,28 @@ var headerParams = {
   "place"         : { color: "green",   icon: "map-marker",   name: trad["place"] },
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad["classifieds"] },
   "GovernmentOrganization" : { color: "red",   icon: "university",        name: trad["GovernmentOrganization"] },
+=======
+  "persons"       : { color: "yellow",  icon: "user",         name: "citoyens" },
+  "organizations" : { color: "green",   icon: "group",        name: "organisations" },
+  "NGO"           : { color: "green",   icon: "group",        name: "associations" },
+  "LocalBusiness" : { color: "azure",   icon: "industry",     name: "entreprises" },
+  "Group"         : { color: "black",   icon: "circle-o",     name: "Groupes" },
+  "projects"      : { color: "purple",  icon: "lightbulb-o",  name: "projets" },
+  "events"        : { color: "orange",  icon: "calendar",     name: "événements" },
+  "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions, Questions, Votes" },
+  "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
+  "cities"        : { color: "red",     icon: "university",   name: "communes" },
+  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
+  "wikidata"    : { color: "lightblue2",   icon: "group",   name: "Wikidata" },
+  "datagouv"    : { color: "lightblue2",   icon: "bullhorn",   name: "DataGouv" },
+  "osm"    : { color: "lightblue2",   icon: "bullhorn",   name: "Open Street Map" },
+  "ods"    : { color: "lightblue2",   icon: "bullhorn",   name: "OpenDatasoft" },
+  "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
+  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
+  "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
+  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
+  "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
+>>>>>>> copedia
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )

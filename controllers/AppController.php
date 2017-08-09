@@ -236,10 +236,14 @@ class AppController extends CommunecterController {
 	}
 
     public function actionInteroperability(){
-        $params=array();
         CO2Stat::incNbLoad("co2-interoberability");
-        echo $this->renderPartial("interoperability", $params, true);
+        echo $this->renderPartial("interoperability", array(), true);
     } 
+
+    public function actionTest2() {
+        CO2Stat::incNbLoad("co2-test2");
+        echo $this->renderPartial("test2", array(), true);
+    }
 
     public function actionInfo($p){
         $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? 

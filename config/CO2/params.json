@@ -134,7 +134,20 @@
             "hash" : "#app.interoperability",
             "icon" : "database", 
             "mainTitle" : "Module d'intéropérabilité",
-            "placeholderMainSearch" : "Rechercher dans les données venus d'ailleurs ..."
+            "placeholderMainSearch" : "Rechercher des données venus d'ailleurs ..."
+        },
+
+
+		"#test": {
+            "inMenu" : false, 
+            "useHeader" : true, 
+            "open" : true, 
+            "subdomain" : "test2", 
+            "subdomainName" : "test2",
+            "hash" : "#app.test",
+            "icon" : "database", 
+            "mainTitle" : "Module de test",
+            "placeholderMainSearch" : " TEST ..."
         },
 
 		"#rooms": {

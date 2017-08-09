@@ -295,7 +295,6 @@ jQuery(document).ready(function() {
             }
         });
 
-
         loadingData = false; 
         initTypeSearch(type);
         startSearch(0, indexStepInit, searchCallback);

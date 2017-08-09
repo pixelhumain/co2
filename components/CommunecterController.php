@@ -103,6 +103,7 @@ class CommunecterController extends Controller
       "createfile" => array("href" => "/ph/communecter/admin/createfile"),
       "mailerrordashboard" => array("href" => "/ph/communecter/admin/mailerrordashboard"),
       "cities" => array("href" => "/ph/communecter/admin/cities"),
+
     ),
     
     "adminpublic" => array(
@@ -114,7 +115,8 @@ class CommunecterController extends Controller
       "assigndata"    => array("href" => "/ph/communecter/adminpublic/assigndata"),
       "getdatabyurl"   => array("href" => "/ph/communecter/adminpublic/getdatabyurl"),
       "previewdata"    => array("href" => "/ph/communecter/adminpublic/previewdata"),
-      
+      "interopproposed"    => array("href" => "/ph/communecter/adminpublic/interopproposed"),
+
     ),
     "collections" => array(
       "add"    => array("href" => "/ph/communecter/collections/add"),
@@ -485,6 +487,7 @@ class CommunecterController extends Controller
       "sendmailformcontactprivate" => array('href' => "/ph/communecter/app/sendmailformcontactprivate", "public" => true),
       "checkurlexists" => array('href' => "/ph/communecter/app/checkurlexists", "public" => true),
       "interoperability"  => array('href' => "/ph/communecter/app/interoperability",   "public" => false),
+      "test2"             => array('href' => "/ph/communecter/app/test2",   "public" => false),
       ),
     "export" => array(
       "index"             => array('href' => "ph/communecter/export/index",            "public" => true),
@@ -494,14 +497,18 @@ class CommunecterController extends Controller
       ),
     "interoperability" => array(
       "index"              => array('href' => 'ph/communecter/interoperability/index',  "public" => true),
+      "get"              => array('href' => 'ph/communecter/interoperability/get',  "public" => true),
+      "copedia"              => array('href' => 'ph/communecter/interoperability/copedia',  "public" => true),
+      "co-osm"              => array('href' => 'ph/communecter/interoperability/co-osm',  "public" => true),
+      "co-osm-getode"      => array('href' => 'ph/communecter/interoperability/co-osm-getnode',  "public" => true),
+      "wikitoco"              => array('href' => 'ph/communecter/interoperability/wikitoco',  "public" => true),
+      "pushtypewikidata"    => array('href' => 'ph/communecter/interoperability/pushtypewikidata',  "public" => true),
+      "wikidata-put-description"    => array('href' => 'ph/communecter/interoperability/wikidata-put-description',  "public" => true),
       ),
-      "rooms" => array('href' => "/ph/communecter/app/rooms", "public" => true),
-      "survey" => array('href' => "/ph/communecter/app/survey", "public" => true),
-    // ),
+    "rooms" => array('href' => "/ph/communecter/app/rooms", "public" => true),
+    "survey" => array('href' => "/ph/communecter/app/survey", "public" => true),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/communecter/siteurl/incnbclick"),
-    
-
     ),
   );
 

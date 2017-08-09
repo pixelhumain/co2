@@ -524,7 +524,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
                             $.ajax({
 								type: "POST",
 								url: baseUrl+"/"+moduleId+"/link/connect",
-								data: formData,
+								data: formData,	
 								dataType: "json",
 								success: function(data) {
 									if(data.result){
@@ -592,6 +592,7 @@ var urlCtrl = {
 		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
 	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
+
 	    "#admin.checkgeocodage" : {title:'CHECKGEOCODAGE ', icon : 'download', useHeader: true},
 	    "#admin.openagenda" : {title:'OPENAGENDA ', icon : 'download', useHeader: true},
 	    "#admin.adddata" : {title:'ADDDATA ', icon : 'download', useHeader: true},
@@ -608,6 +609,7 @@ var urlCtrl = {
 	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
 	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : true},
 	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : true},
+	   	"#adminpublic.interopproposed" : {title : 'INTEROP PROPOSED', icon : 'download', useHeader : true},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
@@ -625,6 +627,10 @@ var urlCtrl = {
 		"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
 		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
 		"#opendata" : {"alias":"#data.index"},
+		"#interoperability.copedia" : {title:'COPEDIA', icon : 'fa-folder-open-o','useHeader' : true},
+		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o','useHeader' : true},
+
+
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
 	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
@@ -720,7 +726,6 @@ var urlCtrl = {
 						path = urlCtrl.convertToPath(hash);
 						pathT = path.split('/');
 						//open path in a modal (#openModal)
-						
 						if(pathT[0] == "modal"){
 							path = path.substring(5);
 							alert(baseUrl+'/'+moduleId+path);
@@ -899,7 +904,6 @@ function  processingBlockUi() {
 }
 function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
 	//alert("showAjaxPanel"+url);
-	
 	var dest = ( typeof urlObj == "undefined" || typeof urlObj.useHeader != "undefined" ) ? themeObj.mainContainer : ".pageContent" ;
 	mylog.log("showAjaxPanel", url, urlObj,dest,urlCtrl.afterLoad );	
 	//var dest = themeObj.mainContainer;
@@ -3346,6 +3350,12 @@ var dyFInputs = {
         	$(".urlsarray").css("display","none");	
         }
     },
+    // latitude : function() {
+
+    // },
+    // longitude : function() {
+
+    // },
     allDay : function(checked){
 
     	var inputObj = {

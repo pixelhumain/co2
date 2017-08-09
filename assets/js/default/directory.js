@@ -1005,7 +1005,7 @@ var directory = {
             if(typeof params.name != "undefined" && params.name != "")
               str += "<div class='bold text-black' style='font-size:20px;'>"+ 
                         "<div class='col-md-8 col-sm-8 col-xs-7 no-padding margin-top-10'>"+params.name + "</div>";
-                        if(typeof hash != "undefined"){ 
+                        if( typeof hash != "undefined" ){ 
                           str +=  "<div class='col-md-4 col-sm-4 col-xs-5 no-padding'>"+ 
                                     nav.next+
                                     nav.prev+

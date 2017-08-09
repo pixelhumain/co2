@@ -6,6 +6,7 @@ var trad = {
 	"askadminprojects" : "<?php echo Yii::t("common", "You are going to ask to become an admin of the project") ?>",
 	"askadminorganizations" : "<?php echo Yii::t("common", "You are going to ask to become an admin of the organization") ?>",
 	"confirm" : "<?php echo Yii::t("common", "Please confirm") ?>",
+	"edit" : "<?php echo Yii::t("common", "Edit") ?>",
 	"removeconnection" : "<?php echo Yii::t("common","Are you sure you want to remove this connection") ?>",
 	"removeconnectionevents" : "<?php echo Yii::t("common","Are you sure to not participate to this event") ?>",
 	"removeconnectionorganizations" : "<?php echo Yii::t("common","Are you sure to remove the link with this organization") ?>",

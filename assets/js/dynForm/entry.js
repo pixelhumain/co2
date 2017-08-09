@@ -5,17 +5,14 @@ dynForm = {
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	"sub" : function(){
+	    	onload : function(data){
 	    		dataHelper.activateMarkdown("#ajaxFormModal #message");
-    			$("#ajaxFormModal #survey").val( contextDataDDA.id );
-    			if (typeof contextDataDDA.name != "undefined" && contextDataDDA.name != "")
-    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
-	    	}
+	            if (typeof contextDataDDA.name != "undefined" && contextDataDDA.name != "")
+	    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
+	        }
 	    },
 	    beforeBuild : function(){
-            dyFObj.setMongoId('survey',function(){
-            	
-            });
+            dyFObj.setMongoId('survey',function(){});
         },
 	    afterSave : function(){
             if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
@@ -48,7 +45,7 @@ dynForm = {
 	            			    $.each( data.votes , function( k,v ) 
 	            			    { 
 	            			    	parentName = "";
-		            			    if(!window.myVotesList[ v.parentType]){
+		            			    if(v.parentType != "cities" && !window.myVotesList[ v.parentType]){
 		            			    	var label = ( v.parentType == "cities" && cpCommunexion && v.parentId.indexOf(cpCommunexion) ) ? cityNameCommunexion : v.parentType;
 		            			    	window.myVotesList[ v.parentType] = {"label":label};
 		            			    	window.myVotesList[ v.parentType].options = {}
@@ -63,8 +60,8 @@ dynForm = {
 	            			    
 	            			    html = buildSelectGroupOptions(window.myVotesList);
 								$("#survey").append(html);
-								if(contextDataDDA && contextDataDDA.id)
-									$("#ajaxFormModal #survey").val( contextDataDDA.id );
+								if(contextDataDDA && contextDataDDA.room)
+									$("#ajaxFormModal #survey").val( contextDataDDA.room );
 						    } );
 	            		}
 	            		/*$("#survey").change(function() { 

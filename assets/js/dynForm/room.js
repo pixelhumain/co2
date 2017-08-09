@@ -43,13 +43,13 @@ dynForm = {
 						  					  .addClass("bg-url");
                 uploadObj.gotoUrl = "tmp";
     		},
-            onload : function(data){
-                if(data && data.type){
-                    $(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+tradCategory[data.type]+"</h4>");
-                    $(".sectionBtntagList").hide();
-                } else
-                    $(".nametext, .imageuploader, .tagstags, #btn-submit-form").hide();
-            }
+        onload : function(data){
+            if(data && data.type){
+                $(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+tradCategory[data.type]+"</h4>");
+                $(".sectionBtntagList").hide();
+            } else
+                $(".nametext, .imageuploader, .tagstags, #btn-submit-form").hide();
+        }
 	    },
         beforeBuild : function(){
             dyFObj.setMongoId('actionRooms',function(){});

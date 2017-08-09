@@ -53,5 +53,6 @@ return array(
 
 	"Remove" => "Supprimer",
 	"Update" => "Modifier",
+	"Edit" => "Éditer",
 	
 );

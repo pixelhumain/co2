@@ -267,9 +267,10 @@
 
 <script type="text/javascript">
 clickedVoteObject = null;
-var contextData = {
+var contextDataDDA = {
 	name : "<?php echo addslashes(@$action["name"]) ?>",
 	id : "<?php echo (string)@$action["_id"] ?>",
+	room : "<?php echo (string)@$room["_id"] ?>",
 	type : "action",
 	controller : "room",
 	otags : "<?php echo addslashes(@$action["name"]).",débat, proposition, question, vote, communecter,".addslashes(@implode(",", @$action["tags"])) ?>",

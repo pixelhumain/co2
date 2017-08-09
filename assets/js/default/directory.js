@@ -657,12 +657,8 @@ var directory = {
     colPos: "left",
     dirLog : false,
     defaultPanelHtml : function(params){
-<<<<<<< HEAD
       // mylog.log("----------- defaultPanelHtml",params, params.type,params.name, params.url);
       if(directory.dirLog) mylog.log("----------- defaultPanelHtml",params.type,params.name);
-=======
-      mylog.log("----------- defaultPanelHtml",params.type,params.name);
->>>>>>> f781165b487a9158d55878f2ddec79a728b92cd0
       str = "";  
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";

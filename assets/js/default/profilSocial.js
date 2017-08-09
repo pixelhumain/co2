@@ -287,6 +287,14 @@ function bindButtonMenu(){
 		$(this).addClass("active");
 	});
 
+	$("#open-co-space").click(function(){
+		uiCoop.startUI();
+	});
+
+	$("#reopen-menu-left-container").click(function(){
+		uiCoop.closeUI();
+	});
+
 	initBtnShare();
 
 }

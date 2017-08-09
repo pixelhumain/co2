@@ -213,7 +213,7 @@
 		  </button>
 
 		  <?php if((@Yii::app()->session["userId"] && $isLinked==true) || @Yii::app()->session["userId"] == $element["_id"]){ ?>
-		  <button type="button" class="btn btn-default bold hidden-xs btn-start-notifications">
+		  <button type="button" class="btn btn-default bold hidden-xs btn-start-notifications hidden">
 		  	<i class="fa fa-bell"></i> 
 		  	<span class="hidden-xs hidden-sm">
 		  		<?php if (@Yii::app()->session["userId"] == $element["_id"]) echo Yii::t("common","My notif<span class='hidden-md'>ication</span>s"); else echo Yii::t("common","Notif<span class='hidden-md'>ication</span>s"); ?>
@@ -226,6 +226,15 @@
 
 
 		  <?php if(@Yii::app()->session["userId"])
+		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION ){ ?>
+		  <button type="button" class="btn btn-default bold hidden-xs" 
+		  		  id="open-co-space" style="border-right:0px!important;">
+		  		<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common", "Espace CO"); ?>
+		  </button>
+		  <?php } ?>
+
+
+		  <?php if(@Yii::app()->session["userId"])
 		  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
 		  			($type==Person::COLLECTION && (string)$element["_id"]==@Yii::app()->session["userId"])){ ?>
 		  <button type="button" class="btn btn-default bold letter-green hidden-xs" 
@@ -233,6 +242,7 @@
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
 		  </button>
 		  <?php } ?>
+
 		</div>
 		
 		<div class="btn-group pull-right">
@@ -343,28 +353,34 @@
 	</div>
 
 	
-	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial hidden-xs" 
-			style="margin-top:40px;">  		
-	    <?php 
-	    	$params = array(    "element" => @$element, 
+	<div id="div-reopen-menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-3 hidden">
+		<button id="reopen-menu-left-container" class="btn btn-default">
+			<i class="fa fa-arrow-left"></i> Retour<span class="hidden-sm hidden-xs"> au menu principal</span>
+		</button><hr>
+		<h4><i class="fa fa-connectdevelop"></i> Espace coopératif</h4>
+		<?php $params = array(  "element" => @$element, 
                                 "type" => @$type, 
                                 "edit" => @$edit,
                                 "isLinked" => @$isLinked,
                                 "countNotifElement"=>@$countNotifElement,
-                                //"countries" => @$countries,
-                                //"controller" => $controller,
                                 "invitedMe" => @$invitedMe,
                                 "openEdition" => $openEdition,
-                                //"countStrongLinks" => $countStrongLinks,
-                                //"countLowLinks" => @$countLowLinks,
-                                //"countInvitations"=> $countInvitations,
-                                //"linksBtn"=> @$linksBtn
                                 );
 
-	    	/*if(@$members) $params["members"] = $members;
-	    	if(@$events) $params["events"] = $events;
-	    	if(@$needs) $params["needs"] = $needs;
-	    	if(@$projects) $params["projects"] = $projects;*/
+	    	$this->renderPartial('../cooperation/menuCoop', $params); 
+	    ?>
+	</div>
+
+	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial hidden-xs" 
+			style="margin-top:40px;">  		
+	    <?php $params = array(  "element" => @$element, 
+                                "type" => @$type, 
+                                "edit" => @$edit,
+                                "isLinked" => @$isLinked,
+                                "countNotifElement"=>@$countNotifElement,
+                                "invitedMe" => @$invitedMe,
+                                "openEdition" => $openEdition,
+                                );
 
 	    	$this->renderPartial('../pod/menuLeftElement', $params ); 
 	    ?>
@@ -540,6 +556,7 @@
 
 <?php	$cssAnsScriptFilesModule = array(
 		'/js/default/profilSocial.js',
+		'/js/cooperation/uiCoop.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 ?>

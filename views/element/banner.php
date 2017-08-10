@@ -92,10 +92,10 @@
 		<?php } ?>
 	</div>
 	
-	<?php if(!empty($element["badges"]) || $openEdition == true ){ ?>
+	<?php if(!empty($element["preferences"]["isOpenEdition"]) || !empty($element["preferences"]["isOpenData"]) ){ ?>
     <div class="section-badges pull-right">
 		<div class="no-padding">
-			<?php if(!empty($element["badges"])){?>
+			<?php if(!empty($element["preferences"]["isOpenData"])){?>
 				<?php if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
 					<div class="badgePH pull-left" data-title="OPENDATA">
 						<span class="pull-left tooltips" data-toggle="tooltip" data-placement="left" 
@@ -111,7 +111,7 @@
 			<?php } 
 			} ?>
 
-			<?php if ($openEdition == true) { ?>
+			<?php if (!empty($element["preferences"]["isOpenEdition"])) { ?>
 				<div class="badgePH pull-left margin-left-15" data-title="OPENEDITION">
 					<a href="javascript:;" class="btn-show-activity">
 					<span class="pull-right tooltips" data-toggle="tooltip" data-placement="left" 

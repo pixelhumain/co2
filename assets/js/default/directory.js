@@ -499,8 +499,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                    $(this).data("contact-role"),$(this).data("contact-telephone"));
     });
 
-    $(".deleteThisBtn").off().on("click",function () 
-    {
+    $(".deleteThisBtn").off().on("click",function (){
       mylog.log("deleteThisBtn click");
           $(this).empty().html('<i class="fa fa-spinner fa-spin"></i>');
           var btnClick = $(this);
@@ -549,7 +548,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
 
   function initBtnShare(){
-    console.log("init btn-share ");
+    mylog.log("init btn-share ");
     $(".btn-share").off().click(function(){
       var thiselement = this;
 
@@ -559,7 +558,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       $("#modal-share").modal("show");
       
       //$("#modal-share #htmlElementToShare").html("test");
-      console.log("initBtnShare "+type+" - "+id);
+      mylog.log("initBtnShare "+type+" - "+id);
       //$("#news-list li#"+type+id).html("bébé");
       var html = "";
       
@@ -574,6 +573,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         html = "<div class='searchEntity'>"+$(".searchEntity#entity"+id).html()+"</div>";
 
       if(html == "" && type !="news" && type!="activityStream" && typeof contextData != "undefined"){
+        mylog.log("HERE", contextData);
         html = directory.showResultsDirectoryHtml(new Array(contextData), type);
       } 
       

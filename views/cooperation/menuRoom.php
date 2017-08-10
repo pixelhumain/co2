@@ -1,3 +1,5 @@
+
+
 <style>
 	
 	#coop-container, #menu-room, #coop-data-container{
@@ -61,6 +63,10 @@
 	#coop-data-container{
 		border-right: 1px solid #c6c4c4;
 	}
+
+	#coop-container .ctnr-txtarea{
+		left:50px !important;
+	}
 </style>
 
 <div class="col-lg-12 col-md-12 col-sm-12 no-padding margin-top-15 bg-white" id="coop-container">
@@ -86,13 +92,14 @@
 			<?php //var_dump($proposalList); ?>
 			<?php if(@$proposalList || @$room){ ?>
 				<div class="title-section">
-					<a href="javascript:" class="pull-left open elipsis btn-hide-data-room visible-sm visible-xs" 
+					<a href="javascript:" 
+						class="pull-left open elipsis btn-hide-data-room visible-sm visible-xs" 
 						style="margin-left:-10px;" data-key="proposals">
 				  		<i class="fa fa-caret-down"></i>
 				  	</a>
 					<i class="fa fa-inbox"></i> 
 			  		<?php echo Yii::t("cooperation", "Proposals") ?>
-			  		<a href="javascript:" class="letter-green pull-right btn-add">
+			  		<a href="javascript:dyFObj.openForm('proposal')" class="letter-green pull-right btn-add">
 				  		<i class="fa fa-plus-circle tooltips"  data-placement='top'  data-toogle='tooltips'
 				  			data-original-title="<?php echo Yii::t("cooperation", "Add proposal") ?>"></i> 
 				  		<span class="hidden-min"><?php echo Yii::t("cooperation", "Add proposal") ?></span>
@@ -187,3 +194,8 @@
 		
 	</div>
 </div>
+
+<script type="text/javascript">
+	var currentRoomId = '<?php echo @$room["_id"] ? $room["_id"] : ""; ?>';
+	console.log("currentRoomId", currentRoomId);
+</script>

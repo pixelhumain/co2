@@ -49,8 +49,20 @@ var uiCoop = {
 			$("#coop-data-container").addClass("col-lg-8 col-md-8 col-sm-8").removeClass("hidden");
 		}
 		else{
-			$("#menu-room").removeClass("min col-lg-4 col-md-4 col-sm-4 min").addClass("col-lg-12 col-md-12 col-sm-12");
+			uiCoop.maximizeReader(false);
+			$("#menu-room").removeClass("min col-lg-4 col-md-4 col-sm-4").addClass("col-lg-12 col-md-12 col-sm-12");
 			$("#coop-data-container").removeClass("min col-lg-8 col-md-8 col-sm-8").addClass("hidden");
+		}
+	},
+
+	"maximizeReader" : function(max){
+		if(max)	{
+			$("#menu-room").addClass("hidden");
+			$("#coop-data-container").removeClass("col-lg-8 col-md-8 col-sm-8").addClass("col-lg-12 col-md-12 col-sm-12");
+		}
+		else{
+			$("#menu-room").removeClass("hidden");
+			$("#coop-data-container").removeClass("col-lg-12 col-md-12 col-sm-12").addClass("col-lg-8 col-md-8 col-sm-8");
 		}
 	},
 
@@ -89,6 +101,7 @@ var uiCoop = {
 					}
 				});
 
+				KScrollTo("#div-reopen-menu-left-container");
 				$(".tooltips").tooltip();
 			}
 		);

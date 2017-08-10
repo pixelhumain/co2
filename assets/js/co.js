@@ -3439,6 +3439,24 @@ var dyFInputs = {
     		greaterThanNow : ["DD/MM/YYYY"]
     	}
     },
+    voteDateEnd :{
+    	inputType : "date",
+    	label : "Fin de la période de vote",
+    	placeholder : "Fin de la période de vote",
+    	rules : { 
+    		required : true,
+    		greaterThanNow : ["DD/MM/YYYY"]
+    	}
+    },
+    amendementDateEnd :{
+    	inputType : "date",
+    	label : "Fin de la période d'amendement",
+    	placeholder : "Fin de la période d'amendement",
+    	rules : { 
+    		required : true,
+    		greaterThanNow : ["DD/MM/YYYY"]
+    	}
+    },
     inviteSearch : {
     	inputType : "searchInvite",
        	init : function(){
@@ -3588,6 +3606,7 @@ var typeObj = {
 	"vote" : {col:"actionRooms",ctrl:"survey"},
 	"survey" : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
 	"surveys" : {sameAs:"survey"},
+	"proposal" : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-dark" }, 
 	"action" : {col:"actions", ctrl:"room", titleClass : "bg-dark", bgClass : "bgDDA", icon : "cogs", color : "lightblue2", 
 		saveUrl : baseUrl+"/" + moduleId + "/rooms/saveaction" },
 	"actions" : { sameAs : "action" },

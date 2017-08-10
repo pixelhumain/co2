@@ -5,7 +5,7 @@
 				'/vendor/colorpicker/css/colorpicker.css',
 				'/css/news/index.css',	
 				'/css/timeline2.css',
-				'/css/circle.css',	
+				//'/css/circle.css',	
 				'/css/default/directory.css',	
 				'/js/comments.js',
 				'/css/profilSocial.css',

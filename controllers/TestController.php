@@ -207,7 +207,7 @@ class TestController extends CommunecterController {
 	echo $api->version(); echo "\n";
 
 	// login as the main admin user
-	$admin = new \RocketChat\User('oceatoon@gmail.com', '2210rocket');
+	$admin = new \RocketChat\User('oceatoon@gmail.com', 'xxxx');
 	if( $admin->login() ) {
 		echo "admin user logged in\n";
 	};

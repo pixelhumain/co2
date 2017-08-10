@@ -128,16 +128,21 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 	                           };
 	}
     //mylog.log("levelCommunexionName", levelCommunexionName[levelCommunexion]);
+    
+    var searchLocality = ($('#searchLocalityCITYKEY').length && $('#searchLocalityCITYKEY').val() != "" ) ? $('#searchLocalityCITYKEY').val().split(',') : [] ;
+    if($('#searchLocalityZONE').length && $('#searchLocalityZONE').val() != "")
+      $.merge( searchLocality, $('#searchLocalityZONE').val().split(',') );
+    // if($('#searchLocalityDEPARTEMENT').length && $('#searchLocalityDEPARTEMENT').val() != "")
+    //   $.merge( searchLocality, $('#searchLocalityDEPARTEMENT').val().split(',') );
+    // if($('#searchLocalityREGION').length && $('#searchLocalityREGION').val() != ""){
+    //   $.merge( searchLocality, $('#searchLocalityREGION').val().split(',') );
+    //}
+
     var data = {
       "name" : name, 
-      "locality" : "",//locality, 
+      "locality" : searchLocality,//locality, 
       "searchType" : searchType, 
       "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] , //is an array
-      "searchLocalityCITYKEY" : ($('#searchLocalityCITYKEY').length ) ? $('#searchLocalityCITYKEY').val().split(',') : [],
-      "searchLocalityCODE_POSTAL" : ($('#searchLocalityCODE_POSTAL').length ) ? $('#searchLocalityCODE_POSTAL').val().split(',') : [], 
-      "searchLocalityDEPARTEMENT" : ($('#searchLocalityDEPARTEMENT').length ) ?  $('#searchLocalityDEPARTEMENT').val().split(',') : [],
-      "searchLocalityREGION" : ($('#searchLocalityREGION').length ) ? $('#searchLocalityREGION').val().split(',') : [],
-      "searchLocalityLEVEL" : ($('#searchLocalityLEVEL').length ) ? $('#searchLocalityLEVEL').val() : [],
       "searchBy" : levelCommunexionName[levelCommunexion], 
       "indexMin" : indexMin, 
       "indexMax" : indexMax

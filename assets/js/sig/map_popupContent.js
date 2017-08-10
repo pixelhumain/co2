@@ -480,8 +480,9 @@
 		}
 
 		Sig.getPopupAddressInformation = function(data){
+			mylog.log("getPopupAddressInformation", data);
 			var popupContent = "";
-			if("undefined" != typeof data['address']) { 
+			if(null != data['address'] && "undefined" != typeof data['address'] ) { 
 				if ("undefined" != typeof data['address']['streetAddress'] )
 					popupContent	+= 	"<div class='popup-info-profil'>" + data['address']['streetAddress'] + "</div>";
 					

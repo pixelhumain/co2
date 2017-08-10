@@ -2267,60 +2267,152 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	}
 
 	public function actionBatchInterElement() {
-		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
-			
-			$types = array(Person::COLLECTION, Organization::COLLECTION, Project::COLLECTION, Event::COLLECTION, Poi::COLLECTION);
+		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$nbelement = 0 ;
+			$types = array(Person::COLLECTION , Organization::COLLECTION, /*Project::COLLECTION, Event::COLLECTION, Poi::COLLECTION*/);
 
 			foreach ($types as $keyType => $type) {
-				$elts = PHDB::find($type, array("address" => array('$exists' => 1)));
+				$elts = PHDB::find($type, array('$and' => array(
+												array("address" => array('$exists' => 1)),
+												array("address.key" => array('$exists' => 0)))
+						));
 
 				foreach ($elts as $key => $elt) {
 					if(!empty($elt["address"]["codeInsee"])){
 						$city = PHDB::findOne(City::COLLECTION, array("insee" => $elt["address"]["codeInsee"]));
 
-						$newAddress = $elt["address"];
-						$newAddress["key"] = $city["key"]."@".$elt["address"]["postalCode"];
-						$newAddress["level4Name"] = $city["depName"];
-						$newAddress["level3Name"] = $city["regionName"];
+						if(!empty($city)){
+							$newAddress = $elt["address"];
+							$newAddress["key"] = $city["key"]."@".$elt["address"]["postalCode"];
+							// $newAddress["level4Name"] = $city["depName"];
+							// $newAddress["level3Name"] = $city["regionName"];
 
-						if(!empty($city["regionNameBel"])])
-							$newAddress["level2Name"] = $city["regionNameBel"];
+							// if(!empty($city["regionNameBel"]))
+							// 	$newAddress["level2Name"] = $city["regionNameBel"];
 
-						$set = array("address" => $newAddress);
+							$set = array("address" => $newAddress);
 
-						if(!empty($elt["addresses"])){
-							$newAdd = array();
-							foreach ($elt["addresses"] as $keyAddresses => $address) {
-								$cityAdd = PHDB::findOne(City::COLLECTION, array("insee" => $address["codeInsee"]));
-								$address["key"] = $cityAdd["key"]."@".$address["postalCode"];
-								$address["level4Name"] = $cityAdd["depName"];
-								$address["level3Name"] = $cityAdd["regionName"];
+							if(!empty($elt["addresses"])){
+								$newAdd = array();
+								foreach ($elt["addresses"] as $keyAddresses => $address) {
 
-								if(!empty($city["regionNameBel"])])
-									$address["level2Name"] = $cityAdd["regionNameBel"];
+									if(!empty($address["address"]["codeInsee"])){
+										$cityAdd = PHDB::findOne(City::COLLECTION, array("insee" => $address["address"]["codeInsee"]));
+										if(!empty($city)){
+											$address["address"]["key"] = $cityAdd["key"]."@".$address["address"]["postalCode"];
+											// $address["address"]["level4Name"] = $cityAdd["depName"];
+											// $address["address"]["level3Name"] = $cityAdd["regionName"];
 
-								$newAdd[] = $address;
+											// if(!empty($city["regionNameBel"]))
+											// 	$address["address"]["level2Name"] = $cityAdd["regionNameBel"];
+
+											$newAdd[] = $address;
+										}else{
+											echo  "Error addresses: ".$elt["name"]." " . $type. " " . $key. "<br>" ;
+										}
+
+									}else{
+										echo  "Error Insee: ".$elt["name"]." " . $type. " " . $key. "<br>" ;
+									}
+									
+								}
+								if(!empty($newAdd))
+									$set["addresses"] = $newAdd;
 							}
 
-							$set["addresses"] = $newAdd;
+							$res = PHDB::update($type, 
+									array("_id"=>new MongoId($key)),
+									array('$set' => $set)
+							);
+							$nbelement++;
 						}
-
-						$res = PHDB::update($type, 
-								array("_id"=>new MongoId($key)),
-								array('$set' => $set)
-						);
+						
+					}else{
+						echo  "Error: ".$elt["name"]." " . $type. " " . $key. "<br>" ;
 					}
 					
 				}
 			}
-			echo "good" ;
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 			
-		}
+		//}
 	}
 
 
+	public function actionBatchInterNews() {
+		$news = PHDB::find(News::COLLECTION, array("address" => array('$exists' => 1)));
+		$listKey = array();
+		foreach ($news as $key => $new) {
+			if(!empty($new["scope"])){
 
+				if(!empty($new["scope"]["city"])){
 
+					foreach ($new["scope"]["city"] as $keyS => $valueS) {
+						$city = PHDB::findOne(City::COLLECTION, array("insee" => $valueS["codeInsee"]));
+						$newsKey = array();
+						if(!empty($valueS["postalCode"])){
+							$newsKey["key"] = $city["key"].$valueS["postalCode"];
+							$newsKey["postalCode"] = $valueS["postalCode"];
+						}else if(!empty($valueS["codeInsee"])){
+							$newsKey["key"] = $city["key"];
+							$newsKey["name"] = $valueS["addressLocality"];
+						}
+
+						if(!empty($newsKey))
+							$listKey[] = $newsKey;
+					}
+				}
+
+				if(!empty($new["scope"]["dep"])){
+
+					foreach ($new["scope"]["dep"] as $keyS => $valueS) {
+
+						$renameDep = array(	"REUNION" => "Réunion",
+											"Phillippeville" => "Philippeville" );
+
+						$nameD = (!empty($renameDep[$valueS["name"]])? $renameDep[$valueS["name"]] : $valueS["name"] ) ;
+
+						$zone = PHDB::findOne(Zone::COLLECTION, array("name" => $nameD));
+						$newsKey = array();
+						if(!empty($zone)){
+							$newsKey["key"] = $zone["key"];
+							$newsKey["name"] = $zone["name"];
+							$listKey[] = $newsKey;
+						}
+					}
+				}
+
+				if(!empty($new["scope"]["region"])){
+
+					foreach ($new["scope"]["region"] as $keyS => $valueS) {
+
+						$renameRegion = array(	"Alsace-Champagne-Ardenne-Lorraine" => "Grand Est",
+												'Nord-Pas-de-Calais-Picardie' => "Hauts-de-France",
+												"Aquitaine-Limousin-Poitou-Charentes" => "Nouvelle-Aquitaine",
+												"Languedoc-Roussillon-Midi-Pyrénées" => "Occitanie",
+												"La Réunion" => "Réunion" );
+
+						$nameR = (!empty($renameRegion[$valueS["name"]])? $renameRegion[$valueS["name"]] : $valueS["name"] ) ;
+
+						$zone = PHDB::findOne(Zone::COLLECTION, array("name" => $nameR));
+						$newsKey = array();
+						if(!empty($zone)){
+							$newsKey["key"] = $zone["key"];
+							$newsKey["name"] = $zone["name"];
+							$listKey[] = $newsKey;
+						}
+					}
+				}
+
+				$newscope = array("type" => $new["type"], "keys" => $listKey);
+				$set = array("scope" => $newscope);
+				$res = PHDB::update(News::COLLECTION, 
+						array("_id"=>new MongoId($key)),
+						array('$set' => $set)
+				);
+			}
+		}
+	}
 	// -------------------- Fin des foncction pour le refactor Cities/zones
 
 }

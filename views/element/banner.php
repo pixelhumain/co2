@@ -105,7 +105,7 @@
     <div class="section-badges pull-right">
 		<div class="no-padding">
 			<?php if(!empty($element["preferences"]["isOpenData"])){?>
-				<?php if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
+				<?php //if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
 					<div class="badgePH pull-left" data-title="OPENDATA">
 						<span class="pull-left tooltips" data-toggle="tooltip" data-placement="left" 
 							  title="Les données sont ouvertes." style="font-size: 13px; line-height: 30px;">
@@ -117,7 +117,7 @@
 							<?php echo Yii::t("common","Open data") ?>
 						</span>
 					</div>
-			<?php } 
+			<?php //} 
 			} ?>
 
 			<?php if (!empty($element["preferences"]["isOpenEdition"])) { ?>

@@ -42,13 +42,19 @@ class CO2 {
     	return $cities;
     }
 
-    public static function getCommunexionCookies(){
-        $communexion = array("state"=>false, "values"=>array());
-        //var_dump(Yii::app()->request->cookies['communexionActivated']);
-        if(isset( Yii::app()->request->cookies['communexionActivated'] ) && 
-                  (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
-            $communexion["state"] = true;
-        }        
+	public static function getCommunexionCookies(){
+		$communexion = array("state"=>false, "values"=>array());
+		//var_dump(Yii::app()->request->cookies['communexionActivated']);
+		if(isset( Yii::app()->request->cookies['communexionActivated'] ) && (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
+			$communexion["state"] = true;
+		}
+
+		/*if(!empty(Yii::app()->request->cookies['keyCommunexion']->value)){
+			$communexion["state"] = true;
+			$keyCo = Yii::app()->request->cookies['keyCommunexion']->value;
+			$where = array("key" =>new MongoRegex("/^".$ckeyCop."/i"));
+			$city = PHDB::findOne( City::COLLECTION , $where );
+		}*/
         if(@Yii::app()->request->cookies['cpCommunexion'] && !empty(Yii::app()->request->cookies['cpCommunexion']->value)){
             $communexion["state"] = true;
             $cp = (string)Yii::app()->request->cookies['cpCommunexion'];

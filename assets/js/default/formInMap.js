@@ -290,6 +290,7 @@ var formInMap = {
 	    		var inseeGeoSHapes = new Array();
 	    		formInMap.saveCities = new Array();
 	    		$.each(data.cities, function(key, value){
+	    			mylog.log("HERE", value);
 	    			var insee = value.insee;
 	    			var country = value.country;
 	    			var dep = value.depName;
@@ -301,7 +302,8 @@ var formInMap = {
 				    	inseeGeoSHapes[insee] = value.geoShape.coordinates[0];
 
 	    			if(currentScopeType == "city" || currentScopeType == "locality") { mylog.log("in scope city"); mylog.dir(value);
-	    				var key = value.key; 
+	    				var keyL = value.key; 
+	    				mylog.log("keyL", keyL, value.key, value);
 	    				if(value.postalCodes.length > 0){
 	    					$.each(value.postalCodes, function(key, valueCP){
 			    				var val = valueCP.name; 
@@ -310,14 +312,14 @@ var formInMap = {
 			    				var lng = valueCP.geo.longitude;
 
 			    				var lblList = value.name + ", " + valueCP.name + ", " + valueCP.postalCode ;
-			    				html += "<li><a href='javascript:' data-type='"+currentScopeType+"' data-key='"+key+"' data-dep='"+dep+"' data-region='"+region+"' data-country='"+country+"' data-city='"+val+"' data-cp='"+lbl+"' data-lat='"+lat+"' data-lng='"+lng+"' data-insee='"+insee+"' class='item-city-found'>"+lblList+"</a></li>";
+			    				html += "<li><a href='javascript:' data-type='"+currentScopeType+"' data-keyl='"+keyL+"' data-dep='"+dep+"' data-region='"+region+"' data-country='"+country+"' data-city='"+val+"' data-cp='"+lbl+"' data-lat='"+lat+"' data-lng='"+lng+"' data-insee='"+insee+"' class='item-city-found'>"+lblList+"</a></li>";
 			    			});
 	    				}else{
 	    					var val = value.name; 
 		    				var lat = value.geo.latitude;
 		    				var lng = value.geo.longitude;
-			    				var lblList = value.name ;
-	    					html += "<li><a href='javascript:' data-type='"+currentScopeType+"' data-key='"+key+"' data-dep='"+dep+"' data-region='"+region+"' data-country='"+country+"' data-city='"+val+"' data-lat='"+lat+"' data-lng='"+lng+"' data-insee='"+insee+"' class='item-city-found-uncomplete'>"+lblList+"</a></li>";
+			    			var lblList = value.name ;
+	    					html += "<li><a href='javascript:' data-type='"+currentScopeType+"' data-keyl='"+keyL+"' data-dep='"+dep+"' data-region='"+region+"' data-country='"+country+"' data-city='"+val+"' data-lat='"+lat+"' data-lng='"+lng+"' data-insee='"+insee+"' class='item-city-found-uncomplete'>"+lblList+"</a></li>";
 						}
 	    			};
 	    		});
@@ -342,7 +344,7 @@ var formInMap = {
 	},
 
 	add : function(complete, data, inseeGeoSHapes){
-		mylog.log("add", complete, data, inseeGeoSHapes);
+		mylog.log("add2", complete, data, inseeGeoSHapes);
 		
 		formInMap.NE_insee = data.data("insee");
 		formInMap.NE_lat = data.data("lat");
@@ -351,7 +353,8 @@ var formInMap = {
 		formInMap.NE_country = data.data("country");
 		formInMap.NE_dep = data.data("dep");
 		formInMap.NE_region = data.data("region");
-		formInMap.NE_key = data.data("key");
+		mylog.log("NE_key", data.data("keyl"));
+		formInMap.NE_key = data.data("keyl");
 
 		if(complete == true){
 			formInMap.NE_cp = data.data("cp");
@@ -690,7 +693,7 @@ var formInMap = {
 			$.ajax({
 		        type: "POST",
 		        url: baseUrl+"/"+moduleId+"/city/getDepAndRegion/",
-		        data: {insee : formInMap.NE_key},
+		        data: {key : formInMap.NE_key},
 		       	dataType: "json",
 		    	success: function(data){
 		    		mylog.log("getDepAndRegion", data);

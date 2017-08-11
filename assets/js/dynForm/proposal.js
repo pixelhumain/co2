@@ -21,14 +21,16 @@ dynForm = {
             	
             });*/
         },
-	    afterSave : function(){
+	    afterSave : function(data){
             if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
                 $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
             else 
             { 
                 dyFObj.closeForm(); 
-                uiCoop.getCoopData(contextData.type, contextData.id, "proposal");
-                //urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+                 uiCoop.getCoopData(null, null, "room", null, data.map.idParentRoom);
+                setTimeout(function(){
+                	uiCoop.getCoopData(null, null, "proposal", null, data.id);
+                }, 1000);
             }
 	    },
 	    properties : {
@@ -81,8 +83,8 @@ dynForm = {
             	},
             	//custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
             },*/
-            title : dyFInputs.name("vote"),
-            description : dyFInputs.textarea(tradDynForm.longDescription, "..."),
+            title : dyFInputs.name("proposal"),
+            description : dyFInputs.textarea(tradDynForm.textproposal, "..."),
             amendementActivated : dyFInputs.inputHidden( true ),
             amendementDateEnd : dyFInputs.amendementDateEnd,
             voteActivated : dyFInputs.inputHidden( true ),
@@ -91,9 +93,11 @@ dynForm = {
             //image : dyFInputs.image(),
             urls : dyFInputs.urls,
             //email: dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userConnected.email : "") ),
-            idUserAuthor : dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userId : "") ),
+            //idUserAuthor : dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userId : "") ),
             status: dyFInputs.inputHidden( "amendable" ),
             canModify: dyFInputs.inputHidden( true ),
+            parentId : dyFInputs.inputHidden(contextData.id),
+            parentType : dyFInputs.inputHidden(contextData.type),
             //organizer : dyFInputs.inputHidden("currentUser"),
             //type : dyFInputs.inputHidden("entry")
                         

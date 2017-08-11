@@ -78,6 +78,8 @@ return array(
 	"Start Date" => "Début",
 	"End Date" => "Fin",
 	"Actions" => "Actions",
+	"Action" => "Action",
+	"action" => "action",
 	"All your Actions" => "Liste de vos actions",
 	"All your Rooms" => "Liste des thématiques",
 	"Rooms" => "Espaces coopératifs",

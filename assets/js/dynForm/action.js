@@ -14,13 +14,17 @@ dynForm = {
         beforeBuild : function(){
             dyFObj.setMongoId('actions',function(){});
         },
-	    afterSave : function(){
+	    afterSave : function(data){
             if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
                 $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
             else 
             { 
-                dyFObj.closeForm(); 
-                urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+                dyFObj.closeForm();
+                uiCoop.getCoopData(null, null, "room", null, data.map.idParentRoom);
+                setTimeout(function(){
+                    uiCoop.getCoopData(null, null, "action", null, data.id);
+                }, 1000); 
+                //urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
             }
 	    },
 	    properties : {
@@ -29,13 +33,13 @@ dynForm = {
                 html:"<p><i class='fa fa-info-circle'></i> Une Action permet de faire avancer votre projet ou le fonctionnement de votre association</p>",
             },
 	        id : dyFInputs.inputHidden(""),
-            room :{
+            /*room :{
             	inputType : "select",
             	placeholder : "Choisir un espace",
             	init : function(){
             		if( userId )
             		{
-            			/*filling the seclect*/
+            			/*filling the seclect* /
 	            		if(notNull(window.myActionsList)){
 	            			html = buildSelectGroupOptions( window.myActionsList);
 	            			$("#room").append(html); 
@@ -63,27 +67,29 @@ dynForm = {
             		}
             	},
             	custom : "<br/><span class='text-small'>Choisir l'espace où s'ajoutera votre action parmi vos organisations et projets<br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet  </span>"
-            },
-            name : dyFInputs.name,
-            message : dyFInputs.textarea(tradDynForm.longDescription, "..."),
+            },*/
+            idParentRoom : dyFInputs.inputHidden(currentRoomId),
+            name : dyFInputs.name("action"),
+            description : dyFInputs.textarea(tradDynForm.longDescription, "..."),
             startDate :{
               inputType : "date",
               label : "Date de début",
               placeholder : "Date de début"
             },
-            dateEnd :{
+            endDate :{
               inputType : "date",
               label : "Date de fin",
               placeholder : "Date de fin"
             },
-         	tags : dyFInputs.tags(),
+         	status: dyFInputs.inputHidden( "todo" ),
+            tags : dyFInputs.tags(),
             urls : dyFInputs.urls,
             email : dyFInputs.inputHidden( ( (userId!=null && userConnected != null) ? userConnected.email : "" ) ),
-            organizer: dyFInputs.inputHidden( "currentUser" ),
-            type : dyFInputs.inputHidden( "action" ),
+            idUserAuthor: dyFInputs.inputHidden(userId),
+            //type : dyFInputs.inputHidden( "action" ),
             parentId : dyFInputs.inputHidden( userId ),
             parentType :  dyFInputs.inputHidden( "citoyens" ),
-            image : dyFInputs.image()
+            // image : dyFInputs.image()
 	    }
 	}
 };

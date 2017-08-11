@@ -27,15 +27,21 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 pull-left margin-top-10">
 
-	<h5 class="">Vous avez voté <span class="letter-green">pour</span> cette proposition</h5>
-	<hr>
 	<h6>
 		<?php echo @$proposal["voteDateEnd"] ? "Fin du vote : ".$proposal["voteDateEnd"] : ""; ?>
 	</h6>
 	<h6>
 		<?php echo @$proposal["amendementDateEnd"] ? "Fin des amendements : ".$proposal["amendementDateEnd"] : ""; ?>
 	</h6>
+	<hr>
+	<h5 class="">Vous avez voté <span class="letter-green">pour</span> cette proposition</h5>
+	
 </div>
+
+<?php 
+	if(@$proposal["voteActivated"] == "true") 
+		$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$proposal));
+?>
 
 <div class="col-lg-12 col-md-12 col-sm-12">
 	<hr>
@@ -43,13 +49,8 @@
 
 	<h5><?php echo @$proposal["shortDescription"]; ?></h5>
 </div>
-<?php 
-	if(@$proposal["voteActivated"] == "true") 
-		$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$proposal));
-?>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-25">
-	<h5><i class="fa fa-angle-down"></i> Proposition :</h5>
 	<?php echo $proposal["description"]; ?>
 	<hr>
 	<button class="btn btn-default col-lg-12 col-md-12 col-sm-12">Afficher les amendements</button>

@@ -1,7 +1,7 @@
 <?php 
 	
 	$cssAnsScriptFilesTheme = array(
-		"/plugins/Chart-2.6.0/dist/Chart.min.js"
+		"/plugins/Chart-2.6.0/Chart.min.js"
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 ?>
@@ -27,7 +27,9 @@
 		<canvas id="pieVote"/>
 	</div>
 
-	
+	<div class="col-lg-3 col-md-3 col-sm-4 text-center no-padding pull-left">
+		<h5 class="no-margin"><i class="fa fa-hand-o-up"></i> VOTER</h5>
+	</div>
 
  	<?php 
  		$voteRes = array("Pour"=> array("bg-color"=> "green-k",
@@ -64,7 +66,7 @@
 
 	<?php } ?>
 
-	<div class="col-lg-12 col-md-12 col-sm-12 pull-left">
+	<div class="col-lg-12 col-md-12 col-sm-12 pull-left margin-top-15">
 		<label>
 			Majorité : <b>50%</b> 
 			Proposition temporairement <span class="bold letter-green">Validée</span>
@@ -83,7 +85,7 @@
 	function chartInit(){ //alert("start loadchart");
 		var data = {
 		    datasets: [{
-		    	data: [10, 20, 30, 40],
+		    	data: [55, 25, 5, 15],
 		    
 
 			    // These labels appear in the legend and in the tooltips when hovering different arcs

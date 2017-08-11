@@ -96,7 +96,8 @@
 }
 </style>
 
-<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
+<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) 
+		$this->renderPartial('../element/confirmDeleteModal'); ?>
 <?php 
 	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
 
@@ -355,9 +356,14 @@
 	
 	<div id="div-reopen-menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-3 hidden">
 		<button id="reopen-menu-left-container" class="btn btn-default">
-			<i class="fa fa-arrow-left"></i> Retour<span class="hidden-sm hidden-xs"> au menu principal</span>
-		</button><hr>
-		<h4><i class="fa fa-connectdevelop"></i> Espace coopératif</h4>
+			<i class="fa fa-arrow-left"></i> <span class="hidden-sm hidden-xs"> Retour au </span>menu principal
+		</button>
+		<!-- <button id="refresh-coop-rooms" class="btn btn-default pull-right">
+			<i class="fa fa-refresh"></i>
+		</button> -->
+		<hr>
+		<h4><i class="fa fa-connectdevelop"></i> Espace co<span class="hidden-sm">opératif</span></h4>
+		<hr>
 		<?php $params = array(  "element" => @$element, 
                                 "type" => @$type, 
                                 "edit" => @$edit,

@@ -81,13 +81,19 @@
 		padding-left:4px; 
 	}
 	
+	
 	.menuCoop a.load-coop-data{
 		font-size:13px;
-		padding-left: 10px;
+		padding-left: 14px;
 	}
 
 	.menuCoop .sub-rooms a.load-coop-data{
 		font-size:17px;
+	}
+
+
+	#menuCoop a.letter-green{
+		padding-left:14px; 
 	}
 
 	#div-reopen-menu-left-container{
@@ -101,8 +107,8 @@
 	<!-- ----------- RESOLUTION --------------- -->
 	<li>
 		<a href="javascript:" class="title-section" data-key="resolutions">
-	  		<i class="fa fa-caret-right"></i>  
-	  		<i class="fa fa-inbox"></i> <?php echo Yii::t("cooperation", "Resolutions") ?>
+	  		<!-- <i class="fa fa-caret-right"></i>   -->
+	  		<i class="fa fa-inbox margin-left-25"></i> <?php echo Yii::t("cooperation", "Resolutions") ?>
 	  	</a>
 	</li>
 
@@ -115,11 +121,11 @@
 	  	</a>
 	</li>
 
-		<li class="submenucoop hidden sub-actions">
+		<!-- <li class="submenucoop hidden sub-actions">
 			<a href="javascript:" class="letter-green">
 		  		<i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "Create action") ?>
 		  	</a>
-		</li>
+		</li> -->
 
 		<li class="submenucoop hidden sub-actions"><hr></li>
 
@@ -152,11 +158,11 @@
 	  	</a>
 	</li>
 
-	<li class="submenucoop hidden sub-proposals">
+	<!-- <li class="submenucoop hidden sub-proposals">
 		<a href="javascript:" class="letter-green">
 	  		<i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "Create proposal") ?>
 	  	</a>
-	</li>
+	</li> -->
 
 	<li class="submenucoop hidden sub-proposals"><hr></li>
 	
@@ -198,19 +204,15 @@
 	</li>
 
 	<li class="submenucoop sub-rooms">
-		<a href="javascript:" class="letter-green">
+		<a href="javascript:dyFObj.openForm('room')" class="letter-green">
 	  		<i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "Create room") ?>
 	  	</a>
 	</li>
 
 	<li class="submenucoop sub-rooms"><hr></li>
 
-	<?php foreach($roomList["roomList"] as $key => $room){ ?>
-		<li class="submenucoop sub-rooms">
-			<a href="javascript:" class="load-coop-data" data-type="room" data-dataid="<?php echo (string)@$room["_id"]; ?>">
-		  		<i class="fa fa-hashtag"></i> <?php echo @$room["name"]; ?>
-		  	</a>
-		</li>
-	<?php } ?>
+	<div id="coop-room-list">
+		<?php $this->renderPartial('../cooperation/roomList', array("roomList"=>$roomList["roomList"])); ?>
+	</div>
 
 </ul>

@@ -75,23 +75,24 @@
 
 		<?php //var_dump($room); ?>
 		<?php if(@$room){ ?>
-			<img src="">
-			<h2><i class="fa fa-hashtag"></i> <?php echo @$room["name"]; ?></h2>
+			<!-- <img src=""> -->
+			<h2 class="margin-top-15"><i class="fa fa-hashtag"></i> <?php echo @$room["name"]; ?></h2>
 			<hr>
 			<h4><?php echo Yii::t("cooperation", "Topic") ?> : <small><?php echo @$room["topic"]; ?></small></h4>
 			<h5><small><?php echo @$room["description"]; ?></small></h5>
 			<hr>
 		<?php }else{ ?>
-			<h2>
-				<i class="fa fa-hashtag"></i> 
-				<?php echo Yii::t("cooperation", @$post["type"])." - ".Yii::t("cooperation", @$post["status"]); ?>
-			</h2>
+			<h3 class="margin-top-15">
+				<i class="fa fa-search"></i> 
+				<?php echo Yii::t("cooperation", @$post["type"])." <small>".Yii::t("cooperation", @$post["status"])."</small>"; ?>
+			</h3>
+			<hr>
 		<?php } ?>
 
 		<ul class="menuCoop margin-bottom-50 ">
 			<?php //var_dump($proposalList); ?>
-			<?php if(@$proposalList || @$room){ ?>
-				<div class="title-section">
+			<?php if(@$post["type"] == Proposal::CONTROLLER || @$post["type"] == Room::CONTROLLER){ ?>
+				<div class="margin-top-25 title-section">
 					<a href="javascript:" 
 						class="pull-left open elipsis btn-hide-data-room visible-sm visible-xs" 
 						style="margin-left:-10px;" data-key="proposals">
@@ -99,11 +100,13 @@
 				  	</a>
 					<i class="fa fa-inbox"></i> 
 			  		<?php echo Yii::t("cooperation", "Proposals") ?>
-			  		<a href="javascript:dyFObj.openForm('proposal')" class="letter-green pull-right btn-add">
-				  		<i class="fa fa-plus-circle tooltips"  data-placement='top'  data-toogle='tooltips'
-				  			data-original-title="<?php echo Yii::t("cooperation", "Add proposal") ?>"></i> 
-				  		<span class="hidden-min"><?php echo Yii::t("cooperation", "Add proposal") ?></span>
-				  	</a>
+			  		<?php if(@$post["type"] == Room::CONTROLLER){ ?>
+						<a href="javascript:dyFObj.openForm('proposal')" class="letter-green pull-right btn-add">
+					  		<i class="fa fa-plus-circle tooltips"  data-placement='top'  data-toogle='tooltips'
+					  			data-original-title="<?php echo Yii::t("cooperation", "Add proposal") ?>"></i> 
+					  		<span class="hidden-min"><?php echo Yii::t("cooperation", "Add proposal") ?></span>
+					  	</a>
+				  	<?php } ?>
 			  	</div>
 				
 
@@ -123,6 +126,10 @@
 							  	</small>
 						  	</a>
 						</li>
+				<?php }else{ ?>
+						<li class="submenucoop sub-proposals col-lg-12 col-md-12 col-sm-12">
+							<i class="fa fa-ban"></i> <?php echo Yii::t("cooperation", "No proposal") ?>
+						</li>
 				<?php } ?>
 
 				<hr class="col-lg-12 col-md-12 col-sm-12 no-padding margin-bottom-25">
@@ -130,7 +137,7 @@
 			<?php } ?>
 
 			<?php //var_dump($proposalList); ?>
-			<?php if(@$actionList || @$room){ ?>
+			<?php if(@$post["type"] == Action::CONTROLLER || @$post["type"] == Room::CONTROLLER){ ?>
 				<div class="margin-top-25 title-section col-lg-12 col-md-12 col-sm-12">
 					<a href="javascript:" class="open elipsis pull-left btn-hide-data-room visible-sm visible-xs" 
 						style="margin-left:-10px;" data-key="actions">
@@ -138,10 +145,12 @@
 				  	</a>
 					<i class="fa fa-inbox"></i> 
 			  		<?php echo Yii::t("cooperation", "Actions") ?>
-				  	<a href="javascript:" class="letter-green pull-right">
-				  		<i class="fa fa-plus-circle"></i> 
-				  		<span class="hidden-min"><?php echo Yii::t("cooperation", "Add action") ?></span>
-				  	</a>
+			  		<?php if(@$post["type"] == Room::CONTROLLER){ ?>
+					  	<a href="javascript:dyFObj.openForm('action')" class="letter-green pull-right">
+					  		<i class="fa fa-plus-circle"></i> 
+					  		<span class="hidden-min"><?php echo Yii::t("cooperation", "Add action") ?></span>
+					  	</a>
+					<?php } ?>
 			  	</div>
 				
 				<?php   if(@$actionList)
@@ -158,6 +167,10 @@
 								  	</small>
 							  	</a>
 							</li>
+				<?php }else{ ?>
+						<li class="submenucoop sub-proposals col-lg-12 col-md-12 col-sm-12">
+							<i class="fa fa-ban"></i> <?php echo Yii::t("cooperation", "No action") ?>
+						</li>
 				<?php } ?>
 
 				<hr class="col-lg-12 col-md-12 col-sm-12 no-padding margin-bottom-25">

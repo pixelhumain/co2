@@ -275,6 +275,7 @@ var trad = {
 	"discuss":"<?php echo Yii::t("rooms","Discussion") ?>",
 	"vote":"<?php echo Yii::t("rooms","Decision") ?>",
 	"actions":"<?php echo Yii::t("rooms","Action") ?>",
+	"action":"<?php echo Yii::t("rooms","action") ?>",
 	"actionRooms":"<?php echo Yii::t("rooms","actionRooms") ?>",
 	"room":"<?php echo Yii::t("rooms","room") ?>",
 };
@@ -294,7 +295,7 @@ var tradDynForm = {
 	"infocreateproject":"<?php echo Yii::t("form","Make visble your project to all has never been so easy !<br>Create your project in few seconds,<br>then complete more according to your needs")?>",
 	"infocreateorganization":"<?php echo Yii::t("form","Create your page in few seconds,<br>then add more details,<br>according to your needs")?>",
 	"infocreateurl":"<?php echo Yii::t("form","Share links you like, to make them accessible to all") ?>",
-	"infocreateRoom":"<?php echo Yii::t("form","Rooms are spaces of Discussion, decision and action for a community") ?>",
+	"infocreateRoom":"<?php echo Yii::t("form","Rooms are spaces of decision and action for a community") ?>",
 	"infocreatecontact":"<?php echo Yii::t("form","Indicate contacts linked to this page to give more opportunities for people to find you") ?>",
 
 	"whoorganizedevent":"<?php echo Yii::t("form","Who is organizing this event") ?>",
@@ -305,6 +306,7 @@ var tradDynForm = {
 	"eventparentEndDate":"<?php echo Yii::t("form","Event parent's end date") ?>",
 	"shortDescription":"<?php echo Yii::t("form","Short description") ?>",
 	"longDescription":"<?php echo Yii::t("form","Long description") ?>",
+	"textproposal":"<?php echo Yii::t("form","Your proposal") ?>",
 	"eventTypes":"<?php echo Yii::t("form","Event type") ?>",
 	"organizationType":"<?php echo Yii::t("form","Organization type") ?>",
 	"nameofyour":"<?php echo Yii::t("form","Name of your") ?>",
@@ -535,7 +537,6 @@ var tradCategory = {
     "GovernmentOrganization":"<?php echo Yii::t("category","Government Organization") ?>",
 	"discuss":"<?php echo Yii::t("rooms","Discussion") ?>",
 	"vote":"<?php echo Yii::t("rooms","Decision") ?>",
-	"actions":"<?php echo Yii::t("rooms","Action") ?>",
 };
 var tradCountry = {
 	"BE":"Belgique", 

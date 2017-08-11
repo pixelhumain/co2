@@ -45,6 +45,7 @@ function bindButtonMenu(){
 			//history.pushState(null, "New Title", hashUrlPage);
 		}
 		loadNewsStream(false);
+		uiCoop.closeUI(false);
 	});
 	$("#btn-start-gallery").click(function(){
 		responsiveMenuLeft();
@@ -293,6 +294,11 @@ function bindButtonMenu(){
 
 	$("#reopen-menu-left-container").click(function(){
 		uiCoop.closeUI();
+	});
+
+	$("#refresh-coop-rooms").click(function(){
+		uiCoop.getCoopData(contextData.type, contextData.id, "room");
+		uiCoop.startUI();
 	});
 
 	initBtnShare();

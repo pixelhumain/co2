@@ -5,12 +5,15 @@ dynForm = {
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	"sub" : function(){
-	    		dataHelper.activateMarkdown("#ajaxFormModal #message");
-	    		$("#ajaxFormModal #room").val( contextDataDDA.id );
+	    	"onload" : function(){
+	    		
+	    		$("#ajaxFormModal #room").val( contextDataDDA.room );
     		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
 	    	}
 	    },
+        beforeBuild : function(){
+            dyFObj.setMongoId('actions',function(){});
+        },
 	    afterSave : function(){
             if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
                 $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
@@ -39,9 +42,9 @@ dynForm = {
 	            		} else {
 	            			getAjax( null , baseUrl+"/" + moduleId + "/rooms/index/type/citoyens/id/"+userId+"/view/data/fields/actions" , function(data){
 	            			    window.myActionsList = {};
-	            			    $.each( data.actions , function( k,v ) 
-	            			    { mylog.log(v.parentType,v.parentId);
-	            			    	if(v.parentType){
+	            			    $.each( data.actions , function( k,v ) { 
+                                    mylog.log(v.parentType,v.parentId);
+	            			    	if(v.parentType && v.parentType != "cities"){
 			            			    if( !window.myActionsList[ v.parentType] ){
 											var label = ( v.parentType == "cities" && cpCommunexion && v.parentId.indexOf(cpCommunexion) ) ? cityNameCommunexion : "Thématique des " + trad[v.parentType];
 			            			    	window.myActionsList[ v.parentType] = {"label":label};
@@ -53,8 +56,8 @@ dynForm = {
 	            			    mylog.dir(window.myActionsList);
 	            			    html = buildSelectGroupOptions(window.myActionsList);
 								$("#room").append(html);
-								if(contextDataDDA && contextDataDDA.id)
-									$("#ajaxFormModal #room").val( contextDataDDA.id );
+								if(contextDataDDA && contextDataDDA.room)
+									$("#ajaxFormModal #room").val( contextDataDDA.room );
 						    } );
 	            		}
             		}
@@ -74,17 +77,13 @@ dynForm = {
               placeholder : "Date de fin"
             },
          	tags : dyFInputs.tags(),
-            formshowers : {
-                label : "En détails",
-                inputType : "custom",
-                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
-            },
             urls : dyFInputs.urls,
             email : dyFInputs.inputHidden( ( (userId!=null && userConnected != null) ? userConnected.email : "" ) ),
             organizer: dyFInputs.inputHidden( "currentUser" ),
             type : dyFInputs.inputHidden( "action" ),
             parentId : dyFInputs.inputHidden( userId ),
             parentType :  dyFInputs.inputHidden( "citoyens" ),
+            image : dyFInputs.image()
 	    }
 	}
 };

@@ -82,11 +82,28 @@ Notification intelligentes => 685
 Liste des notifications déjà lues => #370 #453
 
 * idea
- [ ] menu > drop answers > show nb of members + nb of links
- [ ] new menu List or shortcut: last visited links
- [ ] add contributor or member, add a tag list option , could be used as roles or team filters
- [ ] offrir a tous : le ppt, slideshow intégré 
- [ ] 4 question scrum : on organisation : 
+  [ ] menu > drop answers > show nb of members + nb of links
+  [ ] new menu List or shortcut: last visited links
+  [ ] add contributor or member, add a tag list option , could be used as roles or team filters
+ ** feature 
+  [ ] 4 question scrum : on organisation : 
+  [ ] offrir a tous : le ppt, slideshow intégré 
+  [ ] sur detail element montrer la filère , valoriser les tags
+  [ ] lifepath : ultra personnel tag
+    - can use POI's type lifepath > private | public
+    - can be used for following any item
+  ** interoperabilty + data mining : 
+    [ ] use FB social graph to mine events and organisation 
+  ** COMOBI
+    [ ] global phone app : btn add to communecter 
+      - activable anywhere on anything 
+        - FB link 
+        - url site 
+        - event (FB, Google) 
+  ** ERgonomie 
+    [ ] menuLeft dynamic avec l'activité 
+      - faire remonté les point menu qui ont des nouveauté
+
 * ************************************************************    
 * Version 0.21  : en cours
 * ************************************************************  
@@ -101,13 +118,14 @@ Liste des notifications déjà lues => #370 #453
   * interop 
     [ ] connecté une autre instance CO en mode interop 
   * COPEDIA
-    [ ] 
+    [ ] intégré dans un projet global universitaire trans discipline
+    [ ]  voir avec Fred Mesnard et David Grosser , comment l'intégrer dans le cursus , ou meme au LIM 
   * FAI
     [ ] rencontre avec martial 
     [ ] TEster les antennes
   * COPI + TIERS LIEUX
   * Kiltir Lab 
-  * BCH 
+  * Ter Là 
     [ ] {{@Tib}} : etudier interop avec des cart open source 
     [ ] {{@Tib}} : contacter Anil voir 
     [ ] {{@Geoffrey}} : Doc épuré 
@@ -125,6 +143,9 @@ Liste des notifications déjà lues => #370 #453
               - Utilisateur fait une réservation -> Dynform
               - Le pro reçoit un mail avec le tel / email de l'user -> Envoie de mail
               - Payement 
+      [ ] Cdc receptionné le 01/08/2017
+        [ ] Réunion de lancement 8/08 
+        [ ] Démarrage du projet prévu le 1er Sept
 
 * Communication 
   [ ] passer la roadmap dans le Wiki
@@ -159,41 +180,38 @@ Liste des notifications déjà lues => #370 #453
     [ ] add filters in top bar mapEnd , near username
     [ ] add delete to image upload 
       - on Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté 
-    [ ] Repair + Finir module Tiers Lieux 
+    [ ] Finir module Tiers Lieux 
       [ ] on events TL connecté url to visio 
         [ ] show icons for quick access to ressources of a TL event
-    [ ] Ressource
-    [ ] Besoin
-    [ ] Stephane Exodata 0692615381
-    [ ] transfert d'image PROD to QA
+        [ ] avoir des roles concirerge ...etc == RH
+          [ ] Compétence 
+        * features
+          [ ] Ressource
+            [ ] temps de consommation d'une ressource
+            [ ] taux d'utilisation 
+          [ ] Besoin
+          [ ] Service 
+            [ ] Wifi , lit, bouffe, coworking, café
     [ ] url city a transmettre 
     [ ] dynform bookmarking using POI : add a url > Next > get content (voir avec tango kgougle )
-    [ ] btn changement de langue 
+      [ ] dynform filling threw get content from url copied into name field
     [ ] brique comeptence et tache sur mon profil 
     [ ] réintégré la GEd de granddir 
     [ ] losing session : rememberme
-    [ ] enable edit POI when open Edition
+    [ ] enable edit POI when open Edition 
   ** @Tib et @Tango 
-    *** repair DDA + bugs
-      [ ] add create btns
-      [ ] proposition 
-        [ ] Edit > shows > but doesn't save
-        [ ] Deplacer
-        [ ] translate dynform
-        [ ] connect image
-      [ ] room 
-        [ ] connect image
-        [ ] Delete a room ??? can only Archive
-      [ ] actions
-        [ ] assign bug redirect
-        [ ] connect image
-      [ ] use directorys for room Lists
-      [ ] virer les communes des drop down
+    [ ] quick adder : copy link , set type 
+      - get page data > fill form > save 
+      - fill contact form 
     *** usages
       [ ] DDA is for members only ? preference ? 
       [ ] utiliser le DDA pour les propositions de nouvelles fonctionnalités de CO
     *** ideas features
       * amélioration
+      [ ] pouvoir like ou qualifier un surlignage 
+      [ ] background Color nuance pour pondéré la force d'un commentaire ou amendement
+        - plus ou moins rouge si on est plus ou moins en désaccord 
+        - plus ou moins vert si on est plus ou moins en accord 
       [ ] add short Desc :: dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 })
       [ ] add DDA activity to journal 
       [ ] in decision room > open proposal in preview to run through all proposals 

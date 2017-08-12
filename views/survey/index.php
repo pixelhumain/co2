@@ -571,15 +571,9 @@
    
           <div class="col-md-4 col-sm-4 margin-bottom-15 bg-white" style="min-height: 200px;">
                 <?php 
-                  /*$this->renderPartial('../pod/fileupload', array("itemId" => (string)$where["survey"]["_id"],
-                                            "type" => ActionRoom::COLLECTION,
-                                            "resize" => false,
-                                            "contentId" => Document::IMG_PROFIL,
-                                            "editMode" => @$canParticipate,
-                                            "image" => $images,
-                                            "parentType" => $parentType,
-                                            "parentId" => $parentId)); */
-                ?>
+                 $img =  (@$where["survey"]['profilImageUrl']) ? "<img class='img-responsive' src='".Yii::app()->createUrl('/'.@$where["survey"]['profilImageUrl'])."'/>" : "";
+                 echo $img;
+              ?>
           </div>   
                 
          <?php if (count(@$list) > 0) { ?>
@@ -697,11 +691,12 @@
  var contextDataDDA = {
     name : "<?php echo addslashes(@$where["survey"]["name"]) ?>",
     id : "<?php echo (string)@$where["survey"]["_id"] ?>",
-    type : "entry",
+    room : "<?php echo (string)@$where["survey"]["_id"] ?>",
+    type : "room",
     controller : "survey",
     controller : "<?php echo Survey::CONTROLLER;?>",
     otags : "<?php echo addslashes(@$where["survey"]["name"]).",débat, proposition, question, vote, communecter,".addslashes(@implode(",", @$where["survey"]["tags"])) ?>",
-    odesc : <?php echo json_encode( 'Propositions : '.addslashes(@$where["survey"]["name"])); ?>,
+    odesc : <?php echo json_encode( 'Proposal Room : '.addslashes(@$where["survey"]["name"])); ?>,
     parentType : "<?php echo @$where["survey"]["parentType"] ?>",
     parentId : "<?php echo (string)@$where["survey"]["parentId"] ?>"
   };  

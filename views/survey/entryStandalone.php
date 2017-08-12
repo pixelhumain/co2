@@ -186,13 +186,9 @@
 
 			<div class="col-md-4 col-sm-4 col-xs-12 no-padding" style="padding-right: 15px !important;">
 				
-				<?php  /*$this->renderPartial('../pod/fileupload', 
-											 array("itemId" => $survey["_id"],
-											  "type" => Survey::COLLECTION,
-											  "resize" => false,
-											  "contentId" => Document::IMG_PROFIL,
-											  "editMode" => Authorisation::canEditItem(Yii::app()->session['userId'],Survey::COLLECTION,$survey["_id"],$parentType,$parentId),
-											  "image" => @$images)); */
+				<?php 
+                 $img =  (@$survey['profilImageUrl']) ? "<img class='img-responsive' src='".Yii::app()->createUrl('/'.@$survey['profilImageUrl'])."'/>" : "";
+                 echo $img;
 				
 				if(isset( Yii::app()->session["userId"]) && false)
 				{
@@ -349,6 +345,26 @@
 </style>
 
 <script type="text/javascript">
+
+/* **************************************
+*
+*  Initialisation
+*
+***************************************** */
+
+ var contextDataDDA = {
+    name : "<?php echo addslashes(@$survey["name"]) ?>",
+    id : "<?php echo (string)@$survey["_id"] ?>",
+    room : "<?php echo (string)@$survey["survey"] ?>",
+    type : "entry",
+    controller : "survey",
+    controller : "<?php echo Survey::CONTROLLER;?>",
+    otags : "<?php echo addslashes(@$survey["name"]).",débat, proposition, question, vote, communecter,".addslashes(@implode(",", @$survey["tags"])) ?>",
+    odesc : <?php echo json_encode( 'Propositions : '.addslashes(@$survey["name"])); ?>,
+    parentType : "<?php echo @$survey["parentType"] ?>",
+    parentId : "<?php echo (string)@$survey["parentId"] ?>"
+  };  
+
 clickedVoteObject = null;
 var images = <?php echo json_encode(@$images) ?>;
 var mode = "view";
@@ -446,7 +462,7 @@ function addaction(id,action)
 					label: "Confirmer",
 					className: "btn-info",
 					callback: function() {
-						var voteComment = $("#modalComment .newComment").code();
+						var voteComment = $("#modalComment .newComment").val();
 						params = { 
 				           "userId" : '<?php echo Yii::app()->session["userId"]?>' , 
 				           "id" : id ,

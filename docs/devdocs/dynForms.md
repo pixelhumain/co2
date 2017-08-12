@@ -67,7 +67,7 @@ Upload Process in dynforms
 	    endpoint: baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+uploadObj.folder+"/folder/"+uploadObj.type+"/ownerId/"+uploadObj.id+"/input/qqfile"
     //params : uploadObj
 },
-```
+
 - Controller : ctk/document/uploadSaveAction 
 	- prepares folders
 	- checks size and extension
@@ -75,13 +75,21 @@ Upload Process in dynforms
 	```
 	Document::checkFileRequirements($file, $dir, $folder, $ownerId, $input);
 	```
-	- uploads to corresponding folder
+	
+- uploads to corresponding folder
 	```
 	Document::uploadDocument($file, $res["uploadDir"],$input,$rename);
+	add COLLECTION generateProfilImages::$allowedElements
 	```
-	- saves to DB document collection 
-		- can canEdit permissions :: Authorisation::canEditItem ($type)
-		- 
+	
+- saves to DB document collection 
+	* can canEdit permissions :: Authorisation::canEditItem ($type)
+	* add the the COLLECTION canEdit test 
 	```
 	Document::save($params)
+	```
+
+	-errors : 
+	```
+	Vous n'êtes pas autorisé à modifier et/ou ajouter un document ici
 	```

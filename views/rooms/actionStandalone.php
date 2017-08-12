@@ -130,15 +130,8 @@
 	
 			<div class="col-md-4 no-padding" style="padding-right: 15px !important;">
 				<?php 
-				/*$this->renderPartial('../pod/fileupload', 
-								array("itemId" => $action['_id'],
-									  "type" => ActionRoom::COLLECTION_ACTIONS,
-									  "resize" => false,
-									  "contentId" => Document::IMG_PROFIL,
-									  "editMode" => Authorisation::canEditItem(Yii::app()->session['userId'],$parentType,$parentId),
-									  "image" => $images,
-									   "parentId" => $parentSpace['parentId'], 
-									   "parentType" => $parentSpace['parentType'])); */
+				$img =  (@$action['profilImageUrl']) ? "<img class='img-responsive' src='".Yii::app()->createUrl('/'.@$action['profilImageUrl'])."'/>" : "";
+                 echo $img;
 				?>
 				<div class="col-md-12 padding-10">
 					<?php if( @$action["tags"] ){ ?>
@@ -274,9 +267,10 @@
 
 <script type="text/javascript">
 clickedVoteObject = null;
-var contextData = {
+var contextDataDDA = {
 	name : "<?php echo addslashes(@$action["name"]) ?>",
 	id : "<?php echo (string)@$action["_id"] ?>",
+	room : "<?php echo (string)@$room["_id"] ?>",
 	type : "action",
 	controller : "room",
 	otags : "<?php echo addslashes(@$action["name"]).",débat, proposition, question, vote, communecter,".addslashes(@implode(",", @$action["tags"])) ?>",

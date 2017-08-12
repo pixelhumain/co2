@@ -57,6 +57,7 @@ function setLanguage(lang){
 	//window.reloadurlCtrl.loadByHash(location.hash);
 	location.reload();
 }
+var watchThis = null;
 function bindRightClicks() { 
 	$.contextMenu({
 	    selector: ".add2fav",
@@ -76,13 +77,28 @@ function bindRightClicks() {
 						var	id =  href[3];
 					}
 				}
-				//console.log(href,href[0],what,id);
+				/*console.log( $(this)[0].class );
+				watchThis = {
+					t : $(this),
+					tr : $trigger
+				};*/
 				var btns = {
+					/*
+					todo : how remove if can't edit 
+					would like to use a class but can't find how to get the content of the class attribute
+					ask TKA
+					editThis : {
+						name: trad.edit,
+			        	icon: "fa-pencil", 
+			        	callback: function(key, opt){ 
+					        dyFObj.editElement( what , id );
+			        	}
+					},*/
 					openInNewTab : {
 						name: "Ouvrir dans un nouvel onglet",
 			        	icon: "fa-arrow-circle-right", 
 			        	callback: function(key, opt){ 
-					        	window.open($trigger[0].hash, '_blank');
+					        window.open($trigger[0].hash, '_blank');
 			        	}
 					}
 				};
@@ -451,7 +467,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
                 message: '<div class="row">  ' +
                     '<div class="col-md-12"> ' +
                     '<form class="form-horizontal"> ' +
-                    '<label class="col-md-4 control-label" for="awesomeness">'+trad["areyouadmin"]+'?</label> ' +
+                    '<label class="col-md-4 control-label" for="awesomeness">'+trad["Would you like to be an administrator"]+'?</label> ' +
                     '<div class="col-md-4"> <div class="radio"> <label for="awesomeness-0"> ' +
                     '<input type="radio" name="awesomeness" id="awesomeness-0" value="admin"> ' +
                     trad["yes"]+' </label> ' +
@@ -2624,7 +2640,7 @@ var dyFObj = {
 	buildDynForm : function (afterLoad,data) { 
 		mylog.warn("--------------- buildDynForm", dyFObj.elementObj, afterLoad,data);
 		if(userId)
-		{
+		{ 
 			var form = $.dynForm({
 			      formId : "#ajax-modal-modal-body #ajaxFormModal",
 			      formObj : dyFObj.elementObj.dynForm,
@@ -2814,7 +2830,7 @@ var dyFInputs = {
 	    	inputObj.init = function(){
 	        	$("#ajaxFormModal #name ").off().on("blur",function(){
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
-	            		globalSearch($(this).val(),[ dyFInputs.get(type).col ], addElement );
+	            		globalSearch($(this).val(),[ dyFInputs.get(type).col, "organizations" ], addElement );
 	            	
 	            	dyFObj.canSubmitIf();
 	        	});
@@ -2960,6 +2976,7 @@ var dyFInputs = {
 						$("#ajaxFormModal #maxlength"+$(this).attr("id")).html($("#ajaxFormModal "+name).val().length);
 					});
 	    		}
+	    		dataHelper.activateMarkdown("#ajaxFormModal #message");
 	        }
 	    };
 	    return inputObj;
@@ -3583,18 +3600,20 @@ var typeObj = {
 	"projects" : {sameAs:"project"},
 	"city" : {sameAs:"cities"},
 	"cities" : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
+	
 	"entry" : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
 		saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
 	"vote" : {col:"actionRooms",ctrl:"survey"},
 	"survey" : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
 	"surveys" : {sameAs:"survey"},
-	"action" : {col:"actions", ctrl:"room", titleClass : "bg-dark", bgClass : "bgDDA", icon : "cogs", color : "lightblue2", 
+	"action" : {col:"actions", ctrl:"action", titleClass : "bg-dark", bgClass : "bgDDA", icon : "cogs", color : "lightblue2", 
 		saveUrl : baseUrl+"/" + moduleId + "/rooms/saveaction" },
 	"actions" : { sameAs : "action" },
 	"actionRooms" : {sameAs:"room"},
 	"rooms" : {sameAs:"room"},
 	"room" : {col:"actionRooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-dark"},
 	"discuss" : {col:"actionRooms",ctrl:"room"},
+
 	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
 		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
 	"classified":{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",

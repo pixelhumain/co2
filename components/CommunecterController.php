@@ -357,6 +357,9 @@ class CommunecterController extends Controller
     ),
     "gallery" => array(
       "index"        => array("href" => "ph/communecter/gallery/index"),
+      "gallery"        => array("href" => "ph/communecter/gallery/gallery"),
+      "crudcollection"        => array("href" => "ph/communecter/gallery/crudcollection"),
+      "crudfile"        => array("href" => "ph/communecter/gallery/crudfile"),
       "removebyid"   => array("href" => "ph/communecter/gallery/removebyid"),
     ),
     "link" => array(

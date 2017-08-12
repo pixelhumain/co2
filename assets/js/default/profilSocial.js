@@ -470,7 +470,7 @@ function loadSettings(){
 }
 function loadGallery(){
 	toogleNotif(false);
-	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id;
+	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id+"/docType/image";
 	
 	showLoader('#central-container');
 	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 

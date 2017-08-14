@@ -2413,6 +2413,59 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			}
 		}
 	}
+
+
+	public function actionLevel234(){
+		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			$nbelement = 0 ;
+			
+			$cities = PHDB::find(City::COLLECTION, array('$or' => array(
+														array('level2' => array('$exists' => 0)),
+														array('level3' => array('$exists' => 0)),
+														array('level4' => array('$exists' => 0))
+												)));
+			//$cities = PHDB::find(City::COLLECTION, array('level3' => array('exists' => 0)));
+			//var_dump($cities);
+			if(!empty($cities)){
+				foreach (@$cities as $keyElt => $city) {
+					$set = array();
+					if(empty($city["level2"]) && !empty($city["regionBel"])){
+						$set["level2"] = $city["regionBel"];
+						if(!empty($city["regionNameBel"]))
+							$set["level2Name"] = $city["regionNameBel"];
+					}
+
+					if(empty($city["level3"]) && !empty($city["region"])){
+						$set["level3"] = $city["region"];
+
+						if(!empty($city["regionName"]))
+							$set["level3Name"] = $city["regionName"];
+					}
+
+					if(empty($city["level4"]) && !empty($city["dep"])){
+						$set["level4"] = $city["dep"];
+						if(!empty($city["depName"]))
+							$set["level4Name"] = $city["depName"];
+					}
+
+					if(!empty($set)){
+						$res = PHDB::update( City::COLLECTION, 
+									  	array("_id"=>new MongoId($keyElt)),
+										array('$set' => $set)
+						);
+
+						echo  "Good: ".$city["name"]." <br>" ;
+						$nbelement++;
+					}
+				}
+			}else{
+				echo  "Error" ;
+
+			}
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+		//}
+	}
 	// -------------------- Fin des foncction pour le refactor Cities/zones
 
 }

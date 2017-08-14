@@ -11,6 +11,7 @@ function bindCommunexionScopeEvents(){
                          $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"), 
                          $(this).data("region-communexion"), $(this).data("country-communexion")) ;
     });
+    
     $(".item-scope-input").off().on("click", function(){ 
         scopeValue=$(this).data("scope-value");
         if($(this).hasClass("disabled")){

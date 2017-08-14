@@ -49,13 +49,14 @@ class CO2 {
 			$communexion["state"] = true;
 		}
 
-		/*if(!empty(Yii::app()->request->cookies['keyCommunexion']->value)){
+		if(!empty(Yii::app()->request->cookies['keyCommunexion']->value)){
 			$communexion["state"] = true;
 			$keyCo = Yii::app()->request->cookies['keyCommunexion']->value;
-			$where = array("key" =>new MongoRegex("/^".$ckeyCop."/i"));
-			$city = PHDB::findOne( City::COLLECTION , $where );
-		}*/
-        if(@Yii::app()->request->cookies['cpCommunexion'] && !empty(Yii::app()->request->cookies['cpCommunexion']->value)){
+
+			$communexion["values"] = City::explodeKeyLocality($keyCo);
+			/*$where = array("key" =>new MongoRegex("/^".$keyCo."/i"));
+			$city = PHDB::findOne( City::COLLECTION , $where );*/
+		}/*else if(@Yii::app()->request->cookies['cpCommunexion'] && !empty(Yii::app()->request->cookies['cpCommunexion']->value)){
             $communexion["state"] = true;
             $cp = (string)Yii::app()->request->cookies['cpCommunexion'];
             $insee = (string)Yii::app()->request->cookies['inseeCommunexion'];
@@ -108,7 +109,7 @@ class CO2 {
                     $communexion["currentLevel"] =  "city";
                 //return $communexion;           
             }
-        }else{
+        }*/else{
             $communexion["levelMinCommunexion"] =  false;
             $communexion["currentLevel"] =  false;
             $communexion["currentName"] = false;

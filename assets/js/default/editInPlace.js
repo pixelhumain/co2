@@ -699,6 +699,14 @@ function bindAboutPodElement() {
 		mylog.log("dataUpdate", dataUpdate);
 		dyFObj.openForm ('contactPoint','contact', dataUpdate);
 	}
+	function updateDocument(id, title) {
+		mylog.log("updateDocument", id, name);
+		dataUpdate = { docId : id } ;
+		if(title != "undefined")
+			dataUpdate.title = title;
+		mylog.log("dataUpdate", dataUpdate);
+		dyFObj.openForm ('document','sub', dataUpdate);
+	}
 
 	function removeUrl(ind) {
 		bootbox.confirm({

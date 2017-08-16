@@ -22,6 +22,7 @@ class DocumentController extends CommunecterController {
 	        'deletedocumentbytid'	=> 'citizenToolKit.controllers.document.DeleteDocumentByIdAction',
             'delete'                => 'citizenToolKit.controllers.document.DeleteAction',
             'upload'                => 'citizenToolKit.controllers.document.UploadAction',
+            'update'                => 'citizenToolKit.controllers.document.UpdateAction',
             'uploadsave'                => 'citizenToolKit.controllers.document.UploadSaveAction',
             'getlistbyid'           => 'citizenToolKit.controllers.document.GetListByIdAction',
 

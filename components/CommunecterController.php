@@ -379,6 +379,7 @@ class CommunecterController extends Controller
       "removeAndBacktract"  => array("href"=> "/ph/communecter/document/removeAndBacktract"),
       "getlistbyid"         => array("href"=> "ph/communecter/document/getlistbyid"),
       "upload"              => array("href"=> "ph/communecter/document/upload"),
+      "update"              => array("href"=> "ph/communecter/document/update"),
       "uploadsave"          => array("href"=> "ph/communecter/document/uploadsave"),
       "delete"              => array("href"=> "ph/communecter/document/delete")
     ),

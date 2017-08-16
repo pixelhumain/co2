@@ -7,6 +7,8 @@ var trad = {
 	"askadminorganizations" : "<?php echo Yii::t("common", "You are going to ask to become an admin of the organization") ?>",
 	"confirm" : "<?php echo Yii::t("common", "Please confirm") ?>",
 	"edit" : "<?php echo Yii::t("common", "Edit") ?>",
+	"movehere" : "<?php echo Yii::t("common", "Move here") ?>",
+	"noalbumregister" : "<?php echo Yii::t("common", "No album found") ?>",
 	"removeconnection" : "<?php echo Yii::t("common","Are you sure you want to remove this connection") ?>",
 	"removeconnectionevents" : "<?php echo Yii::t("common","Are you sure to not participate to this event") ?>",
 	"removeconnectionorganizations" : "<?php echo Yii::t("common","Are you sure to remove the link with this organization") ?>",
@@ -116,6 +118,14 @@ var trad = {
 	"poi" : "<?php echo Yii::t("common","Point of interest") ?>",
 	"contactPoint" : "<?php echo Yii::t("common","contact") ?>",
 	"collection" : "<?php echo Yii::t("common","collection") ?>",
+	"profil" : "<?php echo Yii::t("common","profile") ?>",
+	"banner" : "<?php echo Yii::t("common","cover") ?>",
+	"slider" : "<?php echo Yii::t("common","albums") ?>",
+	"and" : "<?php echo Yii::t("common","and") ?>",
+	"album" : "<?php echo Yii::t("common","album") ?>",
+	"albums" : "<?php echo Yii::t("common","albums") ?>",
+	"image" : "<?php echo Yii::t("common","image") ?>",
+	"images" : "<?php echo Yii::t("common","images") ?>",
 	"Technologie" : "Technologie",
 	"Immobilier" : "Immobilier",
 	"Véhicules" : "Véhicules",
@@ -373,6 +383,9 @@ var tradDynForm = {
 	"enterfaxnumber":"<?php echo Yii::t("form","Enter fax numbers separated by a comma") ?>",
 	"theprojectmaturity":"<?php echo Yii::t("form","Maturity of the project") ?>",
 	"projectmaturity":"<?php echo Yii::t("form","Project maturity") ?>",
+	"addinfotodoc":"<?php echo Yii::t("form","add informations to this document") ?>",
+	"infoimages":"<?php echo Yii::t("form","Add informations to the document to make it pertinent for others") ?>",
+	"titleimage":"<?php echo Yii::t("form","Image title") ?>",
 
 };
 

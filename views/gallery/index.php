@@ -64,7 +64,7 @@ ul.dropdown-menu-collection > li > a:hover{
 			<div id="breadcrumGallery" class="col-md-12 col-sm-12 col-xs-12 no-padding">
 
 			</div>
-			<?php if($editAlbum==true){ ?>
+			<?php if(@$editAlbum && $editAlbum==true){ ?>
 			<div class="controls col-md-12 col-sm-12 col-xs-12 margin-top-5 no-padding">
 				<ul class="nav nav-pills">
 					<li>
@@ -107,7 +107,7 @@ ul.dropdown-menu-collection > li > a:hover{
 						"itemId"=>$itemId,
 						"itemType"=>$itemType,
 						"contentKey"=>"",
-						"editAlbum"=>$editAlbum,
+						"editAlbum"=>@$editAlbum,
 						"breadcrumLevel"=>true
 					);
 			 		echo $this->renderPartial("gallery", $params, true);

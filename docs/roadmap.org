@@ -247,6 +247,25 @@ Liste des notifications déjà lues => #370 #453
     [X] Limitation of 300px*100px
     [X] Create normal banniere image, rezized/banner.png and thumb for album
     [X] LightBox for banner and profil
+  [ ] Portefolio
+    [X] Create folder albums
+    [X] Move file to album
+    [X] Arborescente navigation into folder  
+    [X] Gallery
+      [X] Delete photos + delete current profile and cover photos
+      [X] Edit document => title on photo
+    [ ] Portefolio - Library - Documentations -bookmarks
+      [ ] Add file type pdf-excell-ppt-word-libreoffice
+      [ ] Urls dynform process with extract process
+      [ ] Bookmarks (tags organization)
+      [ ] Document view 
+      [ ] Delete documents and urls
+  [ ] Roles
+    [ ] Open organizations to event only for admin
+    [ ] Add roles (prefine and free) in addMultiMembers and in links (Database)
+    [ ] List of role by contextType (json or ctk)
+    [ ] Edit role in directory if admin
+    [ ] filter roles (tags in directory) 
   [ ] Get preferences of email 
   [ ] Create more email
   [ ] faire le point sur l'evaluation des communs

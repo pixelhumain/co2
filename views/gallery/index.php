@@ -318,7 +318,12 @@ ul.dropdown-menu-collection > li > a:hover{
 					}else if(action == "del"){
 						delete collectionsGallery[params.name];
 					}
-					getViewGallery(breadcrumLevel,data.createdIn, "slider",true);
+					if(notNull(data.created))
+						getViewGallery(breadcrumLevel,data.createdIn, "slider",true);
+					else{
+						breadcrumLevel=1;
+						appendLevel(breadcrumLevel,"","slider");
+					}
 
 				}
 				else

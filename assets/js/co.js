@@ -3346,14 +3346,80 @@ var dyFInputs = {
         	$(".urlsarray").css("display","none");	
         }
     },
-    allDay : function(checked){
+    checkbox : function(checked, id, params){
+
+    	var inputObj = {
+    		label: params["labelText"],
+    		inputType : "checkbox",
+	    	checked : ( notEmpty(checked) ? checked : "" ),
+	    	init : function(){
+	        	
+	        	$("#ajaxFormModal #"+id).val(checked);
+	        	$("#ajaxFormModal ."+id+"checkbox label").append("<span class='lbl-status-check margin-left-10'></span>");
+	        	if(typeof params["labelInformation"] != "undefined")
+	        		$("#ajaxFormModal ."+id+"checkbox").append("<small class='col-md-12 col-xs-12 text-left no-padding' style='margin-top:-10px;'>"+params["labelInformation"]+"</small>");
+
+	        	setTimeout(function(){
+	        		$(".bootstrap-switch-label").off().click(function(){
+	        			$(".bootstrap-switch-off").click();
+	        		});
+		        	if (checked) {
+	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
+	    				$(params["inputId"]).show(400);
+	    			} else {
+	    				
+	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
+	    				$(params["inputId"]).hide(400);
+	    			}
+    			}, 1000);
+	        },
+	    	"switch" : {
+	    		"onText" : params["onText"],
+	    		"offText" : params["offText"],
+	    		"labelText":params["labelInInput"],
+	    		"onChange" : function(){
+	    			var checkbox = $("#ajaxFormModal #"+id).is(':checked');
+	    			$("#ajaxFormModal #"+id).val($("#ajaxFormModal #"+id).is(':checked'));
+	    			
+	    			console.log("on change checkbox",$("#ajaxFormModal #"+id).val());
+	        		//$("#ajaxFormModal #"+id+"checkbox").append("<span class='lbl-status-check'></span>");
+	    			if (checkbox) {
+	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
+	    				$(params["inputId"]).show(400);
+	    				/*if(id=="amendementActivated"){
+	    					var am = $("#ajaxFormModal #voteActivated").val();
+	    					console.log("am", am);
+	    					if(am == "true")
+	    						$("#ajaxFormModal .voteActivatedcheckbox .bootstrap-switch-handle-on").click();
+	    				}
+	    				if(id=="voteActivated"){
+	    					var am = $("#ajaxFormModal #amendementActivated").val();
+	    					console.log("vote", am);
+	    					if(am == "true")
+	    						$("#ajaxFormModal .amendementActivatedcheckbox .bootstrap-switch-handle-on").click();
+	    				}*/
+	    			} else {
+	    				
+	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
+	    				$(params["inputId"]).hide(400);
+	    			}
+	    		}
+		    }
+    	};
+	    return inputObj;
+	},
+	allDay : function(checked){
 
     	var inputObj = {
     		inputType : "checkbox",
 	    	checked : ( notEmpty(checked) ? checked : "" ),
 	    	init : function(){
 	        	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
-	        		mylog.log("toto",$("#ajaxFormModal #allDay").val());
+	        		mylog.log("allDay dateLimit",$("#ajaxFormModal #allDay").val());
 	        	})
 	        },
 	    	"switch" : {
@@ -3440,7 +3506,7 @@ var dyFInputs = {
     	}
     },
     voteDateEnd :{
-    	inputType : "date",
+    	inputType : "datetime",
     	label : "Fin de la période de vote",
     	placeholder : "Fin de la période de vote",
     	rules : { 
@@ -3449,8 +3515,8 @@ var dyFInputs = {
     	}
     },
     amendementDateEnd :{
-    	inputType : "date",
-    	label : "Fin de la période d'amendement",
+    	inputType : "datetime",
+    	label : "Fin de la période d'amendement (ouverture des votes)",
     	placeholder : "Fin de la période d'amendement",
     	rules : { 
     		required : true,

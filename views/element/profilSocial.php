@@ -102,7 +102,7 @@
 	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
 
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
-<div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
+<div class="col-lg-offset- col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
     <section class="col-md-12 col-sm-12 col-xs-12" id="social-header" 
     	<?php if (!@$element["profilBannereUrl"] || (@$element["profilBannereUrl"] && empty($element["profilBannereUrl"]))){ ?> 
@@ -134,7 +134,7 @@
 
 
 
-	    <div class="col-md-3 col-sm-3 hidden-xs no-padding" style="bottom:-31px; position: absolute;">
+	    <div class="col-lg-2 col-md-3 col-sm-3 hidden-xs no-padding" style="bottom:-31px; position: absolute;">
 		<?php 	if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
 					 $images=array(
 					 	"medium"=>$element["profilMediumImageUrl"],
@@ -169,7 +169,7 @@
 		</div>
     </section>
     
-    <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 pull-right sub-menu-social no-padding">
+    <div class="col-md-9 col-sm-9 col-lg-10 col-xs-12 pull-right sub-menu-social no-padding">
 
     	<div class="btn-group inline">
 
@@ -228,7 +228,7 @@
 
 		  <?php if(@Yii::app()->session["userId"])
 		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION ){ ?>
-		  <button type="button" class="btn btn-default bold hidden-xs" 
+		  <button type="button" class="btn btn-default bold hidden-xs letter-turq" 
 		  		  id="open-co-space" style="border-right:0px!important;">
 		  		<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common", "Espace CO"); ?>
 		  </button>
@@ -354,7 +354,7 @@
 	</div>
 
 	
-	<div id="div-reopen-menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-3 hidden">
+	<div id="div-reopen-menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 hidden">
 		<button id="reopen-menu-left-container" class="btn btn-default">
 			<i class="fa fa-arrow-left"></i> <span class="hidden-sm hidden-xs"> Retour au </span>menu principal
 		</button>
@@ -362,8 +362,7 @@
 			<i class="fa fa-refresh"></i>
 		</button> -->
 		<hr>
-		<h4><i class="fa fa-connectdevelop"></i> Espace co<span class="hidden-sm">opératif</span></h4>
-		<hr>
+		<h4 class="letter-turq"><i class="fa fa-connectdevelop"></i> Espaces co<span class="hidden-sm">opératifs</span></h4>
 		<?php $params = array(  "element" => @$element, 
                                 "type" => @$type, 
                                 "edit" => @$edit,
@@ -377,7 +376,7 @@
 	    ?>
 	</div>
 
-	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial hidden-xs" 
+	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 profilSocial hidden-xs" 
 			style="margin-top:40px;">  		
 	    <?php $params = array(  "element" => @$element, 
                                 "type" => @$type, 
@@ -392,7 +391,7 @@
 	    ?>
 	</div>
 
-	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-9 padding-50 margin-top-50 links-main-menu hidden" 
+	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-10 padding-50 margin-top-50 links-main-menu hidden" 
 		 id="div-select-create">
 		<div class="col-md-12 col-sm-12 col-xs-12 padding-15 shadow2 bg-white ">
 	       
@@ -479,7 +478,7 @@
     </div>
 
 
-	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section pull-right">
+	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-10 no-padding central-section pull-right">
 		
 		<?php    
 			$marginCentral="";

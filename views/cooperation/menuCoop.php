@@ -1,3 +1,11 @@
+<?php 
+	
+	$cssAnsScriptFilesTheme = array(
+		"/plugins/Chart-2.6.0/Chart.min.js"
+	);
+	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
+?>
+
 <style>
 
 	ul.menuCoop {
@@ -66,9 +74,9 @@
 
 	.menuCoop a:active,
 	.menuCoop a.active{
-		background-color: #edecec;
+		background-color: #CDE7F9;
 		border-left: 3px solid #0095FF;
-		color:#0095FF;
+		/*color:#0095FF;*/
 	}
 	
 	.menuCoop i.fa{
@@ -98,61 +106,46 @@
 
 	#div-reopen-menu-left-container{
 		margin-top: 35px;
-		padding-top: 80px;
+		padding-top: 10px;
 	}
 
+	#comments-container .footer-comments{
+		background-color: white !important;
+	}
 </style>
 
+<?php $menuCoopData = Cooperation::getCoopData($type, (string)$element["_id"], "room"); ?>
+
 <ul id="menuCoop" class="margin-top-25 menuCoop">
-	<!-- ----------- RESOLUTION --------------- -->
-	<li>
-		<a href="javascript:" class="title-section" data-key="resolutions">
-	  		<!-- <i class="fa fa-caret-right"></i>   -->
-	  		<i class="fa fa-inbox margin-left-25"></i> <?php echo Yii::t("cooperation", "Resolutions") ?>
-	  	</a>
-	</li>
-
 	
-	<!-- ------------ ACTIONS -------------- -->
-	<li>
-		<a href="javascript:" class="title-section elipsis" data-key="actions">
-	  		<i class="fa fa-caret-right"></i>  
-	  		<i class="fa fa-inbox"></i> <?php echo Yii::t("cooperation", "Actions") ?>
+
+	<!------------------ ROOMS ----------- -->
+	
+	<!-- <li>
+		<a href="javascript:" class="title-section elipsis open" data-key="rooms">
+			<i class="fa fa-caret-down"></i>  
+	  		<i class="fa fa-inbox"></i> <?php echo Yii::t("cooperation", "Rooms") ?>
+	  	</a>
+	</li> -->
+
+	<li class="submenucoop sub-rooms"><hr></li>
+	
+	<li class="submenucoop sub-rooms">
+		<a href="javascript:dyFObj.openForm('room')" class="letter-green">
+	  		<i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "Create room") ?>
 	  	</a>
 	</li>
 
-		<!-- <li class="submenucoop hidden sub-actions">
-			<a href="javascript:" class="letter-green">
-		  		<i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "Create action") ?>
-		  	</a>
-		</li> -->
+	<li class="submenucoop sub-rooms"><hr></li>
 
-		<li class="submenucoop hidden sub-actions"><hr></li>
+	<div id="coop-room-list" class="margin-bottom-50">
+		<?php $this->renderPartial('../cooperation/roomList', array("roomList"=>$menuCoopData["roomList"])); ?>
+	</div>
 
-		<li class="submenucoop hidden sub-actions">
-			<a href="javascript:" class="load-coop-data" data-type="action" data-status="mine">
-		  		<i class="fa fa-user-circle"></i> <?php echo Yii::t("cooperation", "My actions") ?>
-		  	</a>
-		</li>
-		<li class="submenucoop hidden sub-actions">
-			<a href="javascript:" class="load-coop-data" data-type="action" data-status="todo">
-		  		<i class="fa fa-ticket"></i> <?php echo Yii::t("cooperation", "To do") ?>
-		  	</a>
-		</li>
-		<li class="submenucoop hidden sub-actions">
-			<a href="javascript:" class="load-coop-data" data-type="action" data-status="done">
-		  		<i class="fa fa-check"></i> <?php echo Yii::t("cooperation", "Done") ?>
-		  	</a>
-		</li>
-		<li class="submenucoop hidden sub-actions">
-			<a href="javascript:" class="load-coop-data" data-type="action" data-status="archived">
-		  		<i class="fa fa-trash"></i> <?php echo Yii::t("cooperation", "Archived") ?>
-		  	</a>
-		</li>
 	
 	<!----------------- PROPOSALS ------------ -->
 	<li>
-		<a href="javascript:" class="title-section elipsis" data-key="proposals">
+		<a href="javascript:" class="title-section elipsis open" data-key="proposals">
 	  		<i class="fa fa-caret-right"></i>  
 	  		<i class="fa fa-inbox"></i> <?php echo Yii::t("cooperation", "Proposals") ?>
 	  	</a>
@@ -166,53 +159,61 @@
 
 	<li class="submenucoop hidden sub-proposals"><hr></li>
 	
-	<li class="submenucoop hidden sub-proposals">
-		<a href="javascript:" class="load-coop-data" data-type="proposal" data-status="mine">
-	  		<i class="fa fa-user-circle"></i> <?php echo Yii::t("cooperation", "My proposals") ?>
-	  	</a>
-	</li>
-	<li class="submenucoop hidden sub-proposals">
-		<a href="javascript:" class="load-coop-data" data-type="proposal" data-status="amendable">
-	  		<i class="fa fa-pencil"></i> <?php echo Yii::t("cooperation", "Amendable") ?>
-	  	</a>
-	</li>
-	<li class="submenucoop hidden sub-proposals">
-		<a href="javascript:" class="load-coop-data" data-type="proposal" data-status="tovote">
-	  		<i class="fa fa-gavel"></i> <?php echo Yii::t("cooperation", "To vote") ?>
-	  	</a>
-	</li>
-	<li class="submenucoop hidden sub-proposals">
-		<a href="javascript:" class="load-coop-data" data-type="proposal" data-status="closed">
-	  		<i class="fa fa-times"></i> <?php echo Yii::t("cooperation", "Closed") ?>
-	  	</a>
-	</li>
-	<li class="submenucoop hidden sub-proposals">
-		<a href="javascript:" class="load-coop-data" data-type="proposal" data-status="archived">
-	  		<i class="fa fa-trash"></i> <?php echo Yii::t("cooperation", "Archived") ?>
-	  	</a>
-	</li>
+	<?php foreach(array("mine" => "My proposals", 
+						"amendable"=>"Amendable", 
+						"tovote"=>"To vote",
+						"closed" => "Closed", 
+						"archived"=> "Archived") as $status=>$tradStatus){ ?>
+
+		<li class="submenucoop sub-proposals">
+			<a href="javascript:" class="load-coop-data" data-type="proposal" data-status="<?php echo $status ?>">
+		  		<i class="fa fa-<?php echo Cooperation::getIconCoop($status); ?>"></i> <?php echo Yii::t("cooperation", $tradStatus) ?>
+		  		<span class="badge pull-right bg-<?php echo Cooperation::getColorCoop($status); ?>">
+		  			<?php echo @$menuCoopData["allCount"]["proposals"][$status]; ?>
+		  		</span>
+		  	</a>
+		</li>
+	<?php } ?>
 
 	
-	<!------------------ ROOMS ----------- -->
-	<?php $roomList = Cooperation::getCoopData($type, (string)$element["_id"], "room"); ?>
-
+	
+	<!-- ------------ ACTIONS -------------- -->
 	<li>
-		<a href="javascript:" class="title-section elipsis open" data-key="rooms">
-			<i class="fa fa-caret-down"></i>  
-	  		<i class="fa fa-inbox"></i> <?php echo Yii::t("cooperation", "Rooms") ?>
+		<a href="javascript:" class="title-section elipsis open" data-key="actions">
+	  		<i class="fa fa-caret-right"></i>  
+	  		<i class="fa fa-inbox"></i> <?php echo Yii::t("cooperation", "Actions") ?>
 	  	</a>
 	</li>
 
-	<li class="submenucoop sub-rooms">
-		<a href="javascript:dyFObj.openForm('room')" class="letter-green">
-	  		<i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "Create room") ?>
+		<!-- <li class="submenucoop hidden sub-actions">
+			<a href="javascript:" class="letter-green">
+		  		<i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "Create action") ?>
+		  	</a>
+		</li> -->
+
+		<li class="submenucoop hidden sub-actions"><hr></li>
+
+		<?php foreach(array("mine" => "My actions", "todo"=>"To do", 
+							"done" => "Done", "archived"=> "Archived") as $status=>$tradStatus){ ?>
+
+			<li class="submenucoop sub-actions">
+				<a href="javascript:" class="load-coop-data" data-type="action" data-status="<?php echo $status ?>">
+			  		<i class="fa fa-<?php echo Cooperation::getIconCoop($status); ?>"></i> <?php echo Yii::t("cooperation", $tradStatus) ?>
+			  		<span class="badge pull-right bg-<?php echo Cooperation::getColorCoop($status); ?>">
+			  			<?php echo @$menuCoopData["allCount"]["actions"][$status]; ?>
+			  		</span>
+			  	</a>
+			</li>
+		<?php } ?>
+
+	
+	
+	<!-- ----------- RESOLUTION --------------- -->
+	<li class="hidden">
+		<a href="javascript:" class="title-section" data-key="resolutions">
+	  		<!-- <i class="fa fa-caret-right"></i>   -->
+	  		<i class="fa fa-inbox margin-left-25"></i> <?php echo Yii::t("cooperation", "Resolutions") ?>
 	  	</a>
 	</li>
-
-	<li class="submenucoop sub-rooms"><hr></li>
-
-	<div id="coop-room-list">
-		<?php $this->renderPartial('../cooperation/roomList', array("roomList"=>$roomList["roomList"])); ?>
-	</div>
 
 </ul>

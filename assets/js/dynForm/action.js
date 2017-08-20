@@ -72,12 +72,12 @@ dynForm = {
             name : dyFInputs.name("action"),
             description : dyFInputs.textarea(tradDynForm.longDescription, "..."),
             startDate :{
-              inputType : "date",
+              inputType : "datetime",
               label : "Date de début",
               placeholder : "Date de début"
             },
             endDate :{
-              inputType : "date",
+              inputType : "datetime",
               label : "Date de fin",
               placeholder : "Date de fin"
             },
@@ -87,8 +87,8 @@ dynForm = {
             email : dyFInputs.inputHidden( ( (userId!=null && userConnected != null) ? userConnected.email : "" ) ),
             idUserAuthor: dyFInputs.inputHidden(userId),
             //type : dyFInputs.inputHidden( "action" ),
-            parentId : dyFInputs.inputHidden( userId ),
-            parentType :  dyFInputs.inputHidden( "citoyens" ),
+            parentId : dyFInputs.inputHidden(contextData.id),
+            parentType : dyFInputs.inputHidden(contextData.type),
             // image : dyFInputs.image()
 	    }
 	}

@@ -1,11 +1,30 @@
-<?php //var_dump($proposal); ?>
+<?php 
+	$author = Person::getById(@$proposal["creator"]);
+	$profilThumbImageUrl = Element::getImgProfil($author, "profilThumbImageUrl", $this->module->assetsUrl);
 
-<div class="col-lg-5 col-md-5 col-sm-5 pull-left margin-top-10">
-	<h5 class="">Status : 
+	$myId = Yii::app()->session["userId"];
+	$hasVote = @$proposal["votes"] ? Cooperation::userHasVoted($myId, $proposal["votes"]) : false; 
+	$auth = Authorisation::canEditItem(Yii::app()->session['userId'], $proposal["parentType"], $proposal["parentId"]);
+
+	$parentRoom = Room::getById($proposal["idParentRoom"]);
+	//echo $parentRoom['name'];
+?>
+
+<div class="col-lg-5 col-md-5 col-sm-5 pull-left margin-top-15">
+	<?php if(@$post["status"]) {
+  		$parentRoom = Room::getById($proposal["idParentRoom"]);
+  	?>
+  	<br>
+  	<h4 class="elipsis letter-turq">
+		<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
+	</h4><br>
+  	<?php  } ?>
+
+	<label class=""><i class="fa fa-bell"></i> Status : 
 		<small class="text-light">
-			<i class="fa fa-pencil"></i> <?php echo $proposal["status"]; ?>
+			<?php echo Yii::t("cooperation", $proposal["status"]); ?>
 		</small>
-	</h5>
+	</label>
 </div>
 
 
@@ -13,11 +32,13 @@
 	<button class="btn btn-default pull-right margin-left-5 margin-top-10" id="btn-close-proposal">
 		<i class="fa fa-times"></i>
 	</button>
-	<button class="btn btn-default pull-right margin-left-5 margin-top-10">
-		<i class="fa fa-cog"></i> options
-	</button>
-	<button class="btn btn-default pull-right margin-left-5 margin-top-10" id="btn-extend-proposal">
-		<i class="fa fa-long-arrow-left "></i>
+	<?php if($auth){ ?>
+		<button class="btn btn-default pull-right margin-left-5 margin-top-10">
+			<i class="fa fa-cog"></i> options
+		</button>
+	<?php } ?>
+	<button class="btn btn-default pull-right margin-left-5 margin-top-10 btn-extend-proposal">
+		<i class="fa fa-long-arrow-left"></i>
 	</button>
 	<button class="btn btn-default pull-right margin-left-5 margin-top-10 hidden" id="btn-minimize-proposal">
 		<i class="fa fa-long-arrow-right"></i>
@@ -25,41 +46,99 @@
 </div>
 
 
-<div class="col-lg-12 col-md-12 col-sm-12 pull-left margin-top-10">
+<div class="col-lg-12 col-md-12 col-sm-12 pull-left margin-top-10" style="padding-left: 8px;">
 
-	<h6>
-		<?php echo @$proposal["voteDateEnd"] ? "Fin du vote : ".$proposal["voteDateEnd"] : ""; ?>
-	</h6>
-	<h6>
-		<?php echo @$proposal["amendementDateEnd"] ? "Fin des amendements : ".$proposal["amendementDateEnd"] : ""; ?>
-	</h6>
-	<hr>
-	<h5 class="">Vous avez voté <span class="letter-green">pour</span> cette proposition</h5>
-	
+	<label>
+		<img class="img-circle" id="menu-thumb-profil" 
+         width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
+		<a href="#page.type.citoyens.id.<?php echo $proposal["creator"]; ?>" class="lbh">
+			<?php echo $author["username"]; ?></a><?php if($myId == $proposal["creator"]){ ?><small>, vous êtes l'auteur de cette proposition </small>
+		<?php }else{ ?>
+		<small> est l'auteur de cette proposition</small>
+		<?php } ?>
+	</label>
+
+	<?php if(@$proposal["status"] == "tovote"){ ?>
+		<hr>
+		<h6 class="pull-left">
+			<?php echo @$proposal["voteDateEnd"] ? 
+					"<i class='fa fa-clock-o'></i> Vote ouvert jusqu'au <span class='letter-green'>".$proposal["voteDateEnd"]."</span> · ".
+					Yii::t("cooperation", "end") ." ". 
+		  				Translate::pastTime($proposal["voteDateEnd"], "datefr")
+					: "Vote ouvert jusqu'à une date non-définie"; ?>
+		</h6>
+		<?php if($hasVote!=false){ ?>
+			<h5 class="pull-right">Vous avez voté 
+				<span class="letter-<?php echo Cooperation::getColorVoted($hasVote); ?>">
+					<?php echo Yii::t("cooperation", $hasVote); ?>
+				</span>
+			</h5>
+		<?php }else{ ?>
+			<h5 class="letter-red pull-right">Vous n'avez pas voté</h5>
+		<?php } ?>
+	<?php }else if(@$proposal["status"] == "amendable"){ ?>
+		<!-- <h6>
+			<?php echo @$proposal["amendementDateEnd"] ? "Fin des amendements : ".$proposal["amendementDateEnd"] : ""; ?>
+		</h6> -->
+		<hr>
+		<h5 class="text-purple no-margin">
+			<i class="fa fa-pencil"></i> Proposition soumise aux amendements 
+			<small class="text-purple">jusqu'au <?php echo @$proposal["amendementDateEnd"]; ?></small>
+		</h5>
+		<small>Vous pouvez proposer des amendements et voter les amendements proposés par les autres utilisateurs</small>
+		<hr>
+		<?php //if($proposal["creator"] == $myId){ ?>
+			<!-- <button class="btn btn-link letter-green letter-white radius-5" id="btn-activate-vote">
+				<i class="fa fa-check-circle"></i> Activer les votes
+			</button> -->
+		<?php //} ?>
+		<?php if($auth){ ?>
+			<button class="btn btn-link text-purple radius-5">
+				<i class="fa fa-pencil"></i> Proposer un amendement
+			</button>
+		<?php } ?>
+			<button class="btn btn-link text-purple radius-5 btn-show-amendement pull-right">
+				Afficher les amendements <i class="fa fa-chevron-right"></i>
+			</button>
+			
+	<?php } ?>
+
 </div>
 
 <?php 
-	if(@$proposal["voteActivated"] == "true") 
+	if(@$proposal["voteActivated"] == "true" && @$proposal["status"] == "tovote") 
 		$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$proposal));
 ?>
 
 <div class="col-lg-12 col-md-12 col-sm-12">
 	<hr>
-	<h2><i class="fa fa-hashtag"></i> <?php echo $proposal["title"]; ?></h2>
-
-	<h5><?php echo @$proposal["shortDescription"]; ?></h5>
+</div>
+<div class="col-lg-10 col-md-12 col-sm-12">
+	<h3><i class="fa fa-hashtag"></i> <?php echo $proposal["title"]; ?></h3>
 </div>
 
-<div class="col-lg-12 col-md-12 col-sm-12 margin-top-25">
-	<?php echo $proposal["description"]; ?>
+<div class="col-lg-10 col-md-12 col-sm-12 margin-top-25">
+	<?php echo nl2br($proposal["description"]); ?>
 	<hr>
-	<button class="btn btn-default col-lg-12 col-md-12 col-sm-12">Afficher les amendements</button>
+	<!-- <button class="btn btn-link col-lg-12 col-md-12 col-sm-12 bg-purple radius-5 btn-show-amendement">
+		<i class="fa fa-pencil-square-o"></i> Afficher les amendements
+	</button> -->
 
 </div>
 
 
+<?php if(@$proposal["status"] == "tovote"){ ?>
+<div class="col-lg-12 col-md-12 col-sm-12 margin-top-15">
+	<h4 class="pull-left"><i class="fa fa-angle-down"></i> Liste des amendements validés</h4>
+	<button class="btn btn-default pull-right btn-extend-proposal"><i class="fa fa-long-arrow-left"></i></button>
+	<button class="btn btn-default pull-right btn-minimize-proposal hidden"><i class="fa fa-long-arrow-right"></i></button>
+</div>
+<?php } ?>
+
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-25">
-	<h4 class="text-center"><i class="fa fa-angle-down"></i><br>Débat</h4>
+	<h4 class="pull-left"><i class="fa fa-angle-down"></i> Débat</h4>
+	<button class="btn btn-default pull-right btn-extend-proposal"><i class="fa fa-long-arrow-left"></i></button>
+	<button class="btn btn-default pull-right btn-minimize-proposal hidden"><i class="fa fa-long-arrow-right"></i></button>
 </div>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-25" id="comments-container">
@@ -69,25 +148,40 @@
 
 
 <script type="text/javascript">
-	
+	var idParentProposal = "<?php echo $proposal['_id'] ?>";
+	var idParentRoom = "<?php echo $proposal['idParentRoom'] ?>";
 	jQuery(document).ready(function() { 
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
-		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/proposals/id/<?php echo $proposal['_id'] ?>",
+		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/proposals/id/"+idParentProposal,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 		},"html");
 
 		$("#btn-close-proposal").click(function(){
 			uiCoop.minimizeMenuRoom(false);
 		});
-		$("#btn-extend-proposal").click(function(){
+		$(".btn-extend-proposal").click(function(){
 			uiCoop.maximizeReader(true);
-			$("#btn-minimize-proposal").removeClass("hidden");
-			$("#btn-extend-proposal").addClass("hidden");
+			$(".btn-minimize-proposal").removeClass("hidden");
+			$(".btn-extend-proposal").addClass("hidden");
 		});
-		$("#btn-minimize-proposal").click(function(){
+		$(".btn-minimize-proposal").click(function(){
 			uiCoop.maximizeReader(false);
-			$("#btn-minimize-proposal").addClass("hidden");
-			$("#btn-extend-proposal").removeClass("hidden");
+			$(".btn-minimize-proposal").addClass("hidden");
+			$(".btn-extend-proposal").removeClass("hidden");
+		});
+		$(".btn-show-amendement").click(function(){
+			uiCoop.showAmendement(true);
+		});
+		$("#btn-hide-amendement").click(function(){
+			uiCoop.showAmendement(false);
+		});
+		$(".btn-send-vote").click(function(){
+			var voteValue = $(this).data('vote-value');
+			console.log("send vote", voteValue),
+			uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom);
+		});
+		$("#btn-activate-vote").click(function(){
+			uiCoop.activateVote(idParentProposal);
 		});
 	});
 

@@ -35,6 +35,9 @@ var uiCoop = {
 
 	"initBtnLoadData" : function(){
 		$(".load-coop-data").off().click(function(){
+			$(".load-coop-data").removeClass("active");
+			$(this).addClass("active");
+			
 			var type = $(this).data("type");
 			var status = $(this).data("status");
 			var dataId = $(this).data("dataid");
@@ -66,7 +69,20 @@ var uiCoop = {
 		}
 	},
 
-	"getCoopData" : function(parentType, parentId, type, status, dataId){
+	"showAmendement" : function(show){
+		if(show){
+			$("#menu-room").addClass("hidden");
+			$("#amendement-container").removeClass("hidden");
+
+		}else{
+			$("#menu-room").removeClass("hidden");
+			$("#coop-data-container").removeClass("col-lg-12 col-md-12 col-sm-12").addClass("col-lg-8 col-md-8 col-sm-8");
+			$("#amendement-container").addClass("hidden");
+		
+		}
+	},
+
+	"getCoopData" : function(parentType, parentId, type, status, dataId, onSuccess, showLoading){
 		var url = moduleId+'/cooperation/getcoopdata';
 		var params = {
 			"parentType" : parentType,
@@ -76,10 +92,11 @@ var uiCoop = {
 			"dataId" : dataId
 		};
 
-		if(typeof dataId == "undefined" || dataId == null || type == "room")
-				$("#central-container").html("<i class='fa fa-refresh fa-spin'></i>");
-		else	$("#coop-data-container").html("<i class='fa fa-refresh fa-spin'></i>");
-		
+		if(typeof showLoading == "undefined" || showLoading == true){
+			if(typeof dataId == "undefined" || dataId == null || type == "room")
+					$("#central-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
+			else	$("#coop-data-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
+		}
 
 		ajaxPost("", url, params,
 			function (data){
@@ -111,8 +128,88 @@ var uiCoop = {
 
 				KScrollTo("#div-reopen-menu-left-container");
 				$(".tooltips").tooltip();
+
+				if(typeof onSuccess == "function") onSuccess();
 			}
 		);
+	},
+
+	"initSearchInMenuRoom" : function(){
+		$(".inputSearchInMenuRoom").keyup(function(){
+			var type = $(this).data('type-search');
+			var searchVal = $(this).val();
+			if(searchVal == "") {
+				$(".submenucoop.sub-"+type).show();
+				return;
+			}
+
+			$(".submenucoop.sub-"+type).hide();
+			console.log("searchVal", searchVal, "type", type);
+			$.each($(".submenucoop.sub-"+type), function(){
+				console.log("this", this);
+				
+				var content = $(this).data("name-search");
+
+				if(typeof content != "undefined"){
+					var found = content.search(new RegExp(searchVal, "i"));
+					console.log("content", content);
+					if(found >= 0){
+						var id = $(this).show();
+					}
+				}
+			});
+			
+		});
+	},
+
+	"sendVote" : function(parentType, parentId, voteValue, idParentRoom){
+
+		var params = {
+			"parentType" : parentType,
+			"parentId" : parentId,
+			"voteValue" : voteValue
+		};
+
+		var url = moduleId+'/cooperation/savevote';
+		console.log("uiCoop.sendVote", url, params);
+		$("#coop-data-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
+		
+		
+		ajaxPost("", url, params,
+			function (proposalView){
+				console.log("success save vote");
+				uiCoop.getCoopData(null, null, "room", null, idParentRoom, 
+					function(){
+						uiCoop.minimizeMenuRoom(true);
+						$("#coop-data-container").html(proposalView);
+					}, false);
+			}
+		);
+	},
+
+	"activateVote" : function(proposalId){
+		
+		var param = {
+			block: "activeCoop",
+			typeElement: "proposals",
+			id: proposalId,
+			
+			status: "tovote",
+			voteActivated: true,
+			amendementActivated: false
+
+		};
+
+		$.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+"/element/updateblock/",
+		        data: param,
+		       	dataType: "json",
+		    	success: function(data){
+		    		uiCoop.getCoopData(null, null, "proposal", null, proposalId);
+		    	}
+		});
+
 	}
 
 }

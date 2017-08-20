@@ -59,10 +59,10 @@ dynForm = {
           dyFObj.setMongoId('actionRooms',function(){});
       },
 	    afterSave : function(data){
-            if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
+            /*if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
                 $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
             else 
-            { 
+            { */
                 console.log("RES CREATE ROOM :", data);
                 dyFObj.closeForm(); 
                 uiCoop.getCoopData(data.map.parentType, data.map.parentId, "room");
@@ -72,7 +72,7 @@ dynForm = {
                 
                 //uiCoop.getCoopData(contextData.type, contextData.id, "room", null, uploadObj.id);
                 //urlCtrl.loadByHash( uploadObj.gotoUrl );
-            }
+            /*}*/
 	    },
       canSubmitIf : function () { 
            return ( $("#ajaxFormModal #type").val() ) ? true : false ;

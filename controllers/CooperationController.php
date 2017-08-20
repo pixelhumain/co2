@@ -18,6 +18,7 @@ class CooperationController extends CommunecterController {
 	{
 	    return array(
 	        'getcoopdata'       	=> 'citizenToolKit.controllers.cooperation.GetCoopDataAction',
+	        'savevote'       		=> 'citizenToolKit.controllers.cooperation.SaveVoteAction',
 	    );
 	}
 

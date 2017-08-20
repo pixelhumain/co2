@@ -374,7 +374,7 @@ var tradDynForm = {
 	"enterfaxnumber":"<?php echo Yii::t("form","Enter fax numbers separated by a comma") ?>",
 	"theprojectmaturity":"<?php echo Yii::t("form","Maturity of the project") ?>",
 	"projectmaturity":"<?php echo Yii::t("form","Project maturity") ?>",
-
+	"textarguments" : "<?php echo Yii::t("form","Arguments") ?>",
 };
 
 var tradCategory = {

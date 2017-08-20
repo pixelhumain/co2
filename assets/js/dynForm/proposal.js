@@ -11,7 +11,7 @@ dynForm = {
     		 	
     		 	
 	    		dataHelper.activateMarkdown("#ajaxFormModal #message");
-    			$("#ajaxFormModal #survey").val( contextDataDDA.id );
+    			//$("#ajaxFormModal #survey").val( contextDataDDA.id );
     			if (typeof contextDataDDA.name != "undefined" && contextDataDDA.name != "")
     		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
 	    	}
@@ -21,13 +21,25 @@ dynForm = {
             	
             });*/
         },
+        beforeSave : function(){
+        	if($("#ajaxFormModal #amendementActivated").val() == "true"){
+				$("#ajaxFormModal #status").val("amendable");
+			}
+			else if($("#ajaxFormModal #voteActivated").val() == "true"){
+				$("#ajaxFormModal #status").val("tovote");
+			}
+			console.log("beforeSave", $("#ajaxFormModal #voteActivated").val(), $("#ajaxFormModal #status").val());
+        },
 	    afterSave : function(data){
             if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
                 $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
             else 
             { 
                 dyFObj.closeForm(); 
-                 uiCoop.getCoopData(null, null, "room", null, data.map.idParentRoom);
+               	var oldCount = $("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html();
+               	console.log("oldCount", parseInt(oldCount), parseInt(oldCount)+1);
+               	$("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html(parseInt(oldCount)+1);
+               	uiCoop.getCoopData(null, null, "room", null, data.map.idParentRoom);
                 setTimeout(function(){
                 	uiCoop.getCoopData(null, null, "proposal", null, data.id);
                 }, 1000);
@@ -85,9 +97,31 @@ dynForm = {
             },*/
             title : dyFInputs.name("proposal"),
             description : dyFInputs.textarea(tradDynForm.textproposal, "..."),
-            amendementActivated : dyFInputs.inputHidden( true ),
+            arguments : dyFInputs.textarea(tradDynForm.textarguments, "..."),
+            amendementActivated : dyFInputs.checkbox(true, "amendementActivated", 
+            										{ "onText" : "Non",
+            										  "offText": "Oui",
+            										  "onLabel" : "activés",
+            										  "offLabel": "désactivés",
+            										  "inputId" : ".amendementDateEnddatetime",
+            										  "labelText": "Amendements",
+            										  "labelInInput": "Activer les amendements",
+            										  "labelInformation": "<i class='fa fa-info-circle'></i> Les votes sont désactivés pendant la période d'amendement"
+
+            }),
             amendementDateEnd : dyFInputs.amendementDateEnd,
             voteActivated : dyFInputs.inputHidden( true ),
+            /*dyFInputs.checkbox(false, "voteActivated", 
+            										{ "onText" : "Non",
+            										  "offText": "Oui",
+            										  "onLabel" : "activés",
+            										  "offLabel": "désactivés",
+            										  "inputId" : ".voteDateEnddatetime",
+            										  "labelText": "Votes",
+            										  "labelInInput": "Activer les votes",
+            										  "labelInformation": "Vous pourrez activer les votes plus tard",
+
+            }),*/
             voteDateEnd : dyFInputs.voteDateEnd,
             tags : dyFInputs.tags(),
             //image : dyFInputs.image(),
@@ -95,6 +129,7 @@ dynForm = {
             //email: dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userConnected.email : "") ),
             //idUserAuthor : dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userId : "") ),
             status: dyFInputs.inputHidden( "amendable" ),
+            majority: dyFInputs.inputHidden( 50 ),
             canModify: dyFInputs.inputHidden( true ),
             parentId : dyFInputs.inputHidden(contextData.id),
             parentType : dyFInputs.inputHidden(contextData.type),

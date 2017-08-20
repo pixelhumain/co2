@@ -37,7 +37,7 @@ var uiCoop = {
 		$(".load-coop-data").off().click(function(){
 			$(".load-coop-data").removeClass("active");
 			$(this).addClass("active");
-			
+
 			var type = $(this).data("type");
 			var status = $(this).data("status");
 			var dataId = $(this).data("dataid");
@@ -143,9 +143,9 @@ var uiCoop = {
 				return;
 			}
 
-			$(".submenucoop.sub-"+type).hide();
+			$("#coop-container .submenucoop.sub-"+type).hide();
 			console.log("searchVal", searchVal, "type", type);
-			$.each($(".submenucoop.sub-"+type), function(){
+			$.each($("#coop-container .submenucoop.sub-"+type), function(){
 				console.log("this", this);
 				
 				var content = $(this).data("name-search");

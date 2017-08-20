@@ -8,7 +8,7 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 padding-top-15" id="podVote">
 	
-	<div class="col-lg-4 col-md-4 col-sm-4 text-center padding-15 pull-right">
+	<div class="col-lg-3 col-md-4 col-sm-4 text-center padding-15 pull-right">
 		<canvas id="pieVote"/>
 	</div>
 

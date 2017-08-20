@@ -198,6 +198,11 @@
 		text-decoration: none;
 	}
 
+	.progress-bar.bg-white{
+		color: #3C545D;
+		border: 1px solid #B3C9D2;
+	}
+
 </style>
 
 <div class="col-lg-12 col-md-12 col-sm-12 no-padding margin-top-15 bg-white" id="coop-container">
@@ -308,7 +313,7 @@
 						  	  		<?php 
 						  	  			$voteRes = Proposal::getAllVoteRes($proposal);
 							  	  		foreach($voteRes as $key => $value){ 
-							  	  			if($totalVotant > 0 && @$proposal["status"] == "tovote"){ 
+							  	  			if($totalVotant > 0 && @$proposal["status"] == "tovote" && $value["percent"] > 0){ 
 						  	  		?>
 											  <div class="progress-bar bg-<?php echo $value["bg-color"]; ?>" role="progressbar" 
 											  		style="width:<?php echo $value["percent"]; ?>%">

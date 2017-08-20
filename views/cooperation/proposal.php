@@ -14,10 +14,10 @@
 	<?php if(@$post["status"]) {
   		$parentRoom = Room::getById($proposal["idParentRoom"]);
   	?>
-  	<br>
   	<h4 class="elipsis letter-turq">
 		<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
-	</h4><br>
+	</h4>
+	<br>
   	<?php  } ?>
 
 	<label class=""><i class="fa fa-bell"></i> Status : 

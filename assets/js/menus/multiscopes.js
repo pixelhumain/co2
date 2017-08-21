@@ -13,7 +13,7 @@ function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId);
 	        data: {"multiscopes" : myMultiScopes},
 	       	dataType: "json",
 	    	success: function(data){
-	    		//mylog.log("saveMultiScope() success");
+	    		mylog.log("saveMultiScope() success");
 	    		
 		    },
 			error: function(error){
@@ -21,7 +21,6 @@ function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId);
 			}
 		});
 	}else{
-		
 	}
 	showCountScope();
 	rebuildSearchScopeInput();

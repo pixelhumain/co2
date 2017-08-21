@@ -455,22 +455,6 @@
 <script type="text/javascript">
 
 var headerParams = {
-<<<<<<< HEAD
-  "persons"       : { color: "yellow",  icon: "user",         name: trad["people"] },
-  "organizations" : { color: "green",   icon: "group",        name: trad["organizations"] },
-  "NGO"           : { color: "green",   icon: "group",        name: trad["NGO"] },
-  "LocalBusiness" : { color: "azure",   icon: "industry",     name: trad["LocalBusiness"] },
-  "Group"         : { color: "black",   icon: "circle-o",     name: trad["groups"] },
-  "projects"      : { color: "purple",  icon: "lightbulb-o",  name: trad["projects"] },
-  "events"        : { color: "orange",  icon: "calendar",     name: trad["events"] },
-  "vote"          : { color: "azure",   icon: "gavel",        name: trad["proposal"] },
-  "actions"       : { color: "lightblue2",    icon: "cogs",   name: trad["actions"] },
-  "cities"        : { color: "red",     icon: "university",   name: trad["cities"] },
-  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: trad["pointsinterests"] },
-  "place"         : { color: "green",   icon: "map-marker",   name: trad["place"] },
-  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad["classifieds"] },
-  "GovernmentOrganization" : { color: "red",   icon: "university",        name: trad["GovernmentOrganization"] },
-=======
   "persons"       : { color: "yellow",  icon: "user",         name: "citoyens" },
   "organizations" : { color: "green",   icon: "group",        name: "organisations" },
   "NGO"           : { color: "green",   icon: "group",        name: "associations" },
@@ -491,7 +475,6 @@ var headerParams = {
   "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
   "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
->>>>>>> copedia
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )

@@ -328,7 +328,7 @@ input.form-control{
 										data-calltoactionlabel="INVITE"
 										data-calltoactionurl="www.communecter.org"
 										data-cookiepolicy="single_host_origin"
-										data-prefilltext="Bonjour, J'ai découvert un réseau sociétal citoyen appelé Communecter - être connecter à sa commune. Tu peux agir concrétement autour de chez toi et découvrir ce qui s'y passe. Viens rejoindre le réseau sur communecter.org.">
+										data-prefilltext="Bonjour, J'ai découvert un réseau sociétal citoyen appelé Communecter - être connecté à sa commune. Tu peux agir concrétement autour de chez toi et découvrir ce qui s'y passe. Viens rejoindre le réseau sur communecter.org.">
 										Partagez Communecter sur Google+
 									</a> -->
 								</div>
@@ -371,7 +371,7 @@ input.form-control{
 										<label for="textmail" class="control-label">Message</label>
 								</div>
 			        			<div id="Messages" class="col-xs-12">
-					        		<textarea id="textmail" class="form-control" rows="3">Bonjour, J'ai découvert un réseau sociétal citoyen appelé "Communecter - être connecter à sa commune". 
+					        		<textarea id="textmail" class="form-control" rows="3">Bonjour, J'ai découvert un réseau sociétal citoyen appelé "Communecter - être connecté à sa commune". 
 			Tu peux agir concrétement autour de chez toi et découvrir ce qui s'y passe. Viens rejoindre le réseau sur communecter.org.</textarea>
 					        		<div class="col-sm-12">&nbsp;</div>
 								</div>

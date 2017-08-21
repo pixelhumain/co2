@@ -6,7 +6,13 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	sub : function(){
-
+				
+				if(typeof currentKFormType == "undefined" || currentKFormType == "" || 
+				  currentKFormType == "null" || currentKFormType == null){
+					currentKFormType = "organization";
+				}else{
+					$("#ajaxFormModal .typeselect").addClass("hidden");
+				}
 	    		//console.log("onLoads Sub currentKFormType", currentKFormType, contextData, contextData.id);
                 var typeName = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? trad["add"+currentKFormType] : elementObj.dynForm.jsonSchema.title;
                 var typeIcon = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? typeObj[currentKFormType].icon : elementObj.dynForm.jsonSchema.icon;
@@ -26,13 +32,13 @@ dynForm = {
                     $("#ajax-modal .infocustom p").addClass("text-dark");
                 }
 
-	    		if(contextData.type && contextData.id ){
+	    		if(contextData && contextData.type && contextData.id ){
 	    			//console.log("HERE WE ARE");
     				$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 
 	    		 	$("#ajax-modal-modal-title").append(
-	    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+
+	    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+
 	    		 														contextData.name+
 	    		 														"</span></small>" );
 	    		}
@@ -61,21 +67,21 @@ dynForm = {
                 inputType : "custom",
                 html:"<p class='text-"+typeObj["organization"].color+"'>"+
                 		//"Faire connaître votre Organisation n'a jamais été aussi simple !<br>" +
-					    "Créez votre page en quelques secondes,<br>puis rajoutez des détails,<br>selon vos besoins ...<hr>" +
+					    tradDynForm["infocreateorganization"]+" ...<hr>" +
 					 "</p>",
             },
 	        name : dyFInputs.name("organization"),
 	        similarLink : dyFInputs.similarLink,
-	        type : dyFInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true }),
-            role : dyFInputs.inputSelect(	"Votre rôle",
-            								"Quel est votre rôle ?", 
+	        type : dyFInputs.inputSelect(tradDynForm["organizationType"], tradDynForm["organizationType"], organizationTypes, { required : true }),
+            role : dyFInputs.inputSelect(	tradDynForm["yourrole"],
+            								tradDynForm["whichrole"]+" ?", 
             								{ admin : trad.administrator, member : trad.member, creator : trad.justCitizen }, 
             								{ required : true } ),
             tags : dyFInputs.tags(),
             location : dyFInputs.location,
 	        image : dyFInputs.image(),
             email : dyFInputs.email(),
-	        shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
+	        shortDescription : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
 	        url : dyFInputs.inputUrl(),
             "preferences[publicFields]" : dyFInputs.inputHidden([]),
             "preferences[privateFields]" : dyFInputs.inputHidden([]),

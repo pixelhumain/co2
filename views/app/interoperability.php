@@ -307,12 +307,6 @@ $this->renderPartial($layoutPath.'header',
 
 </div>
 
-<?php
-
-    $this->renderPartial($layoutPath.'footer', array("subdomain"=>"interoperability"));
-
-?>
-
 <script type="text/javascript">	
 
     var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;

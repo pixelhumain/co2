@@ -45,6 +45,7 @@
 	    color: white;
 	    border-radius: 3px;
 	    margin-right: 2px;
+	    display:none;
 	}
 	.header-address{
 		font-size: 14px;
@@ -85,17 +86,26 @@
 	</form>
 
 	<div id="contentBanner" class="col-md-12 col-sm-12 col-xs-12 no-padding">
-		<?php if (@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])){ ?> 
-			<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" 
-				src="<?php echo Yii::app()->createUrl('/'.$element["profilBannerUrl"]) ?>">
-		<?php } ?>
+		<?php if (@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])){	
+			$imgHtml='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" 
+				src="'.Yii::app()->createUrl('/'.$element["profilBannerUrl"]).'">';
+			if (@$element["profilRealBannerUrl"] && !empty($element["profilRealBannerUrl"])){
+				$imgHtml='<a href="'.Yii::app()->createUrl('/'.$element["profilRealBannerUrl"]).'"
+							class="thumb-info"  
+							data-title="'.Yii::t("common","Cover image of")." ".$element["name"].'"
+							data-lightbox="all">'.
+							$imgHtml.
+						'</a>';
+			}
+			echo $imgHtml;
+		} ?>
 	</div>
 	
-	<?php if(!empty($element["badges"]) || $openEdition == true ){ ?>
+	<?php if(!empty($element["preferences"]["isOpenEdition"]) || !empty($element["preferences"]["isOpenData"]) ){ ?>
     <div class="section-badges pull-right">
 		<div class="no-padding">
-			<?php if(!empty($element["badges"])){?>
-				<?php if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
+			<?php if(!empty($element["preferences"]["isOpenData"])){?>
+				<?php //if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
 					<div class="badgePH pull-left" data-title="OPENDATA">
 						<span class="pull-left tooltips" data-toggle="tooltip" data-placement="left" 
 							  title="Les données sont ouvertes." style="font-size: 13px; line-height: 30px;">
@@ -107,10 +117,10 @@
 							<?php echo Yii::t("common","Open data") ?>
 						</span>
 					</div>
-			<?php } 
+			<?php //} 
 			} ?>
 
-			<?php if ($openEdition == true) { ?>
+			<?php if (!empty($element["preferences"]["isOpenEdition"])) { ?>
 				<div class="badgePH pull-left margin-left-15" data-title="OPENEDITION">
 					<a href="javascript:;" class="btn-show-activity">
 					<span class="pull-right tooltips" data-toggle="tooltip" data-placement="left" 
@@ -141,11 +151,16 @@
 					<i class="fa fa-<?php echo $icon; ?> pull-left margin-top-5"></i> 
 					<div class="name-header pull-left"><?php echo @$element["name"]; ?></div>
 				</span>
-				<?php if(($type==Organization::COLLECTION || $type==Event::COLLECTION) && @$element["type"]){ ?>
+				<?php if(($type==Organization::COLLECTION || $type==Event::COLLECTION) && @$element["type"]){ 
+					if($type==Organization::COLLECTION)
+						$typesList=Organization::$types;
+					else
+						$typesList=Event::$types;
+				?>
 					<span id="typeHeader" class="margin-left-10 pull-left">
 						<i class="fa fa-x fa-angle-right pull-left"></i>
 						<div class="type-header pull-left">
-					 		<?php echo Yii::t("common", $element["type"]) ?>
+					 		<?php echo Yii::t("category", $typesList[$element["type"]]) ?>
 					 	</div>
 					</span>
 				<?php } ?>
@@ -163,6 +178,9 @@
 
 							  echo @$element["address"]["postalCode"] && @$element["address"]["addressLocality"] ? 
 									", ".$element["address"]["addressLocality"] : "";
+
+							  echo @$element["address"]["streetAddress"] && @$element["address"]["streetAddress"] ? 
+									", ".$element["address"]["streetAddress"] : "";
 						?>
 					</div>
 					<?php $classCircleO = (!empty($element["tags"]) ? "" : "hidden" ); ?>
@@ -208,16 +226,26 @@
 				</div>
 			</div>
 		<?php } ?>
-	<?php if($type==Event::COLLECTION || $type==Poi::COLLECTION){ ?>
+	<?php if($type==Event::COLLECTION || $type==Poi::COLLECTION || $type==Project::COLLECTION){ ?>
 		<div class="section-date pull-right">
 			<?php if($type==Event::COLLECTION){ ?>
 				<div class="header-banner"  style="font-size: 14px;font-weight: none;"></div>
 			<?php } ?>
 			<div style="font-size: 14px;font-weight: none;">
-			<?php if(@$element['parent']){ ?>
-				<?php echo Yii::t("common","Planned on") ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-calendar"></i> <?php  echo $element['parent']['name']; ?></a><br/> 
+			<?php if(@$element['parent']){ 
+
+					if($type==Event::COLLECTION){
+						$msg = Yii::t("common","Planned on") ;
+					}else{
+						$msg = Yii::t("common","Parenthood") ;
+					}
+
+			$icon = Element::getFaIcon($element['parentType']);
+
+			echo $msg ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-<?php echo $icon ; ?>"></i> <?php  echo $element['parent']['name']; ?></a><br/> 
 			<?php } ?>
-			<?php if(@$element['organizerType'] && @$element['organizerId']){ ?>
+			<?php if(	@$element['organizerType'] && @$element['organizerId'] && 
+						$element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow"){ ?>
 				<?php echo Yii::t("common","Organized by"); ?> : 
 				<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" 
 					class="lbh"> 
@@ -249,7 +277,7 @@
 		<div class='col-md-offset-1' id='cropContainer'>
 			<img src='' id='cropImage' class='' style=''/>
 			<div class='col-md-12'>
-				<input type='submit' class='btn btn-success text-white imageCrop saveBanner'/>
+				<button class='btn btn-success text-white imageCrop saveBanner'><i class="fa fa-send"></i> <?php echo Yii::t("common","Save") ?></button>
 			</div>
 		</div>
 	</div>
@@ -257,7 +285,11 @@
 
 <script>
 jQuery(document).ready(function() {
-
+	$("#col-banner").mouseenter(function(){
+		$("#banner_element").show();
+	}).mouseleave(function(){
+		$("#banner_element").hide();
+	});
 	//IMAGE CHANGE//
 	$("#uploadScropResizeAndSaveImage .close-modal").click(function(){
 		$.unblockUI();
@@ -294,17 +326,21 @@ jQuery(document).ready(function() {
    							// access image size here 
    						 	var imgWidth=this.width;
    						 	var imgHeight=this.height;
-   							if(imgWidth>=1000 && imgHeight>=500){
+   							if(imgWidth>=400 && imgHeight>=150){
                					$.blockUI({ 
                						message: $('div#uploadScropResizeAndSaveImage'), 
                						css: {cursor:null,padding: '0px !important'}
                					}); 
                					$("#uploadScropResizeAndSaveImage").parent().css("padding-top", "0px !important");
 								//$("#uploadScropResizeAndSaveImage").html(html);
+							    
 								setTimeout(function(){
+									var setImage={"width":1600,"height":400};
 									var parentWidth=$("#cropContainer").width();
-									var crop = $('#cropImage').cropbox({width: parentWidth,
-										//height: 400,
+									//var parentHeight=setImage.height*(parentWidth/setImage.width);
+									var crop = $('#cropImage').cropbox({
+										width: parentWidth,
+										height: 300,
 										zoomIn:true,
 										zoomOut:true}, function() {
 											cropResult=this.result;
@@ -317,6 +353,8 @@ jQuery(document).ready(function() {
 									$(".saveBanner").click(function(){
 								        //console.log(cropResult);
 								        //var cropResult=cropResult;
+								        $(this).prop("disabled",true);
+								        $(this).find("i").removeClass("fa-send").addClass("fa-spin fa-spinner");
 								        $("#banner_photoAdd").submit();
 									});
 									$("#banner_photoAdd").off().on('submit',(function(e) {
@@ -345,7 +383,7 @@ jQuery(document).ready(function() {
 										// Attach file
 										//formData.append('image', $('input[type=banniere]')[0].files[0]); 
 										$.ajax({
-											url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextData.type+"/ownerId/"+contextData.id+"/input/banner",
+											url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/communecter/folder/"+contextData.type+"/ownerId/"+contextData.id+"/input/banner",
 											type: "POST",
 											data: fd,
 											contentType: false,
@@ -354,7 +392,9 @@ jQuery(document).ready(function() {
 											dataType: "json",
 											success: function(data){
 										        if(data.result){
-										        	newBanner='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
+										        	$(".saveBanner").prop("disabled",false);
+								        			$(".saveBanner").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
+										        	newBanner='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src.profilBannerUrl+'" style="">';
 										        	$("#contentBanner").html(newBanner);
 										        	$(".contentHeaderInformation").addClass("backgroundHeaderInformation");
 										        	$.unblockUI();
@@ -366,8 +406,8 @@ jQuery(document).ready(function() {
 								}, 300);
 							}
    						 	else
-   						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
-							};
+   						 		toastr.warning(trad["minsizebanner"]);
+						};
 			        });
 			        reader.readAsDataURL(file);
 			    }  

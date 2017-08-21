@@ -71,9 +71,9 @@ function buildListContactHtml(contacts, myId){
 										//'</button>' +		
 										'<i class="fa fa-'+type.icon+'"></i> <span class="">'+t('My '+type.name)+"</span>";
 										if(myId != ""){
-		HTML += 						'<button onclick="'+urlBtnAdd+'" class="tooltips btn btn-default btn-sm pull-right btn_shortcut_add text-'+type.color+'" data-placement="left" data-original-title="'+tooltips_lbl[type.name]+'">'+
-											'<i class="fa fa-plus"></i>'+
-										'</button>';
+		//HTML += 						'<button onclick="'+urlBtnAdd+'" class="tooltips btn btn-default btn-sm pull-right btn_shortcut_add text-'+type.color+'" data-placement="left" data-original-title="'+tooltips_lbl[type.name]+'">'+
+		//									'<i class="fa fa-plus"></i>'+
+		//								'</button>';
 											if (type.name == "events" || type.name == "projects") {
 		HTML += 						'<button onclick="showHideOldElements(\''+type.name+'\')" class="tooltips btn btn-default btn-sm pull-right btn_shortcut_add text-'+type.color+'" data-placement="left" data-original-title="'+tooltips_lbl[type.name+'History']+'">'+
 											'<i class="fa fa-history"></i>'+
@@ -111,8 +111,8 @@ function buildListContactHtml(contacts, myId){
 function getFloopItem(id, type, value){
 	var oldElement = isOldElement(value);
 
-	var cp = (typeof value.address != "undefined" && typeof value.address.postalCode != "undefined") ? value.address.postalCode : typeof value.cp != "undefined" ? value.cp : "";
-	var city = (typeof value.address != "undefined" && typeof value.address.addressLocality != "undefined") ? value.address.addressLocality : "";
+	var cp = (typeof value.address != "undefined" && notNull(value.address) && typeof value.address.postalCode != "undefined") ? value.address.postalCode : typeof value.cp != "undefined" ? value.cp : "";
+	var city = (typeof value.address != "undefined" && notNull(value.address) && typeof value.address.addressLocality != "undefined") ? value.address.addressLocality : "";
 	defaultImg=type.name;
 	if(defaultImg=="people")
 		defaultImg="citoyens";
@@ -252,7 +252,6 @@ function addFloopEntity(entityId, entityType, entityValue){
 
 	//We check if the element is already displayed
 	if($('#floopItem-'+type.name+'-'+entityId).length < 1){
-		mylog.log("here5");
 		var html = getFloopItem(entityId, type, entityValue);
 		$("ul#floopType-"+entityType).prepend(html);
 	}

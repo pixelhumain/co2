@@ -193,7 +193,60 @@ class TestController extends CommunecterController {
 		}
     }
   public function actionTest() {
-  	$allOrganizations = PHDB::findAndSort ( Organization::COLLECTION ,array("disabled" => array('$exists' => false)), 
+  	
+  	define('REST_API_ROOT', '/api/v1/');
+	define('ROCKET_CHAT_INSTANCE', 'https://chat.lescommuns.org');
+
+	Yii::import('rocketchat.RocketChatClient', true);
+	Yii::import('rocketchat.RocketChatUser', true);
+	Yii::import('rocketchat.RocketChatChannel', true);
+	Yii::import('rocketchat.RocketChatGroup', true);
+	Yii::import('httpful.Request', true);
+	Yii::import('httpful.Bootstrap', true);
+	$api = new \RocketChat\Client();
+	echo $api->version(); echo "\n";
+
+	// login as the main admin user
+	$admin = new \RocketChat\User('oceatoon@gmail.com', 'xxxx');
+	if( $admin->login() ) {
+		echo "admin user logged in\n";
+	};
+	$admin->info();
+	echo "I'm {$admin->nickname} ({$admin->id}) "; echo "\n";
+echo "<br/>*************************************<br/>";
+	$list = $api->list_groups();
+	
+	foreach ($list as $key => $value) {
+			echo $key." :: ".$value->name."<br/>"; 
+		}
+echo "<br/>*************************************<br/>";
+	$list = $api->list_channels();
+	
+	foreach ($list as $key => $value) {
+			echo $key." :: ".$value->name."<br/>"; 
+		}
+
+  	echo "<br/>*************************************<br/>";
+
+	 /* 	$newuser = new \RocketChat\User('new_user_name', 'new_user_password', array(
+		'nickname' => 'tib@co2.org',
+		'email' => 'tibor@communecter.org',
+	));
+	if( !$newuser->login(false) ) {
+		// actually create the user if it does not exist yet
+	  $newuser->create();
+	}
+	echo "user {$newuser->nickname} created ({$newuser->id})\n";*/
+echo "<br/>*************************************<br/>";
+	// create a new channel
+/*$channel = new \RocketChat\Channel( 'co_dev', array($admin) );
+//$channel->create();
+// post a message
+$channel->postMessage('Hello world from PHP RC API code in co2 :smile:');*/
+
+
+  	echo "<br/>*************************************<br/>";
+  	/*$allOrganizations = PHDB::findAndSort ( Organization::COLLECTION ,array("disabled" => array('$exists' => false)), 
 	  												array("updated" => -1, "name" => 1), 100, 
 
 	  												array("name", "address", "shortDescription", "description","updated"));
@@ -208,7 +261,7 @@ class TestController extends CommunecterController {
   	foreach ($all as $key => $value) 
   	{
   		echo $value['name']." > ".date("d/m/Y",$value['updated'])." > ".$value['startDate']."<br/>";
-  	}
+  	}*/
   	//echo hash('sha256', "mc420011@gmail.com"."communecter974");
     //echo $_SERVER["X-Auth-Token"];
     //Authorisation::isMeteorConnected( "TCvdPtAVCkkDvrBDtICLUfRIi93L3gOG+MwT4SvDK0U=", true );

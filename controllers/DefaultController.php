@@ -23,16 +23,29 @@ class DefaultController extends CommunecterController {
      * Home page
      */
 
-	public function actionIndex() 
+	public function actionIndex($src=null) 
 	{
     	//Yii::app()->theme = $theme;   
       //Yii::app()->session["theme"] = $theme; 
       //Yii::app()->theme = "notragora";
       //Yii::app()->theme = "CO2";
-	    if(@$_GET["network"]){
-	      Yii::app()->theme = "network";
-	      Yii::app()->params['networkParams'] = $_GET["network"];
-	    }
+
+      // http://127.0.0.1/ph/network?network=tierslieuxlille
+      // http://127.0.0.1/ph/network/default/index/src/tierslieuxlille
+
+	    if(@$_GET["network"] ){
+	      $this->redirect(Yii::app()->createUrl("/network/default/index?src=".$_GET["network"]));
+      }
+      if( @$src ){
+        Yii::app()->theme = "network";
+        Yii::app()->params['networkParams'] = $src;
+        Yii::app()->session["theme"] = "network";
+        Yii::app()->session["networkParams"] = $src;
+      }
+      else if(@Yii::app()->session["theme"] == "network" ){
+        Yii::app()->theme = "network";
+        Yii::app()->params['networkParams'] = Yii::app()->session["networkParams"];
+      }
 	    $this->render("index");
   }
 

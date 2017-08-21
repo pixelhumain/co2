@@ -89,8 +89,6 @@ class AppController extends CommunecterController {
 
     	echo $this->renderPartial("referencement", $params, true);
     }
-
-
 	
 	public function actionMedia(){ //kgougle
 		$indexMin = isset($_POST['indexMin']) ? $_POST['indexMin'] : 0;
@@ -137,6 +135,7 @@ class AppController extends CommunecterController {
         $params = array("type" => @$type );
         echo $this->renderPartial("search", $params, true);
     }
+    
     public function actionSocial($type=null){
         CO2Stat::incNbLoad("co2-search");   
         $params = array("type" => @$type );
@@ -184,19 +183,20 @@ class AppController extends CommunecterController {
         echo $this->renderPartial("admin", $params, true);
     }
 
-    public function actionRooms($type,$id){
+    public function actionRooms($type,$id){ exit;
         CO2Stat::incNbLoad("co2-rooms");    
         $params = array("id" => @$id,
                         "type" => @$type
                         );
-        print_r($params);
+        //print_r($params);
         echo $this->renderPartial("rooms", $params, true);
     }
 
 
 	public function actionPage($type, $id, $view=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
-        
+        //var_dump($type); exit;
+            
         if( $type == Person::COLLECTION  || $type == Event::COLLECTION || 
             $type == Project::COLLECTION || $type == Organization::COLLECTION )    
             $element = Element::getByTypeAndId($type, $id);
@@ -211,10 +211,14 @@ class AppController extends CommunecterController {
         else if($type == Poi::COLLECTION){
             $element = Poi::getById($id);
         }
+        else if($type == Survey::COLLECTION){
+            $element = Survey::getById($id);
+        }
 
         if(@$element["parentId"] && @$element["parentType"])
             $element['parent'] = Element::getByTypeAndId( $element["parentType"], $element["parentId"]);
-        if(@$element["organizerId"] && @$element["organizerType"])
+        if(@$element["organizerId"] && @$element["organizerType"] && 
+            $element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow")
             $element['organizer'] = Element::getByTypeAndId( $element["organizerType"], $element["organizerId"]);
 
         $params = array("id" => @$id,
@@ -337,9 +341,9 @@ class AppController extends CommunecterController {
                 $emailReceiver = $element["contacts"][$idReceiver]["email"];
                 error_log("EMAIL FOUND : ".$emailReceiver);
 
-                //if(!empty(@$emailReceiver))
-                //Mail::sendMailFormContactPrivate($_POST["emailSender"], $_POST["names"], $_POST["subject"], 
-                //                                 $_POST["contentMsg"], $emailReceiver);
+                if(!empty($emailReceiver))
+                    Mail::sendMailFormContactPrivate($_POST["emailSender"], $_POST["names"], $_POST["subject"], 
+                                                 $_POST["contentMsg"], $emailReceiver);
                 
                 $res = array("res"=>true, "captcha"=>true);  
                 Rest::json($res); exit;

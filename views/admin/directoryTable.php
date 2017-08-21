@@ -249,6 +249,7 @@ jQuery(document).ready(function() {
 	setTitle("Espace administrateur : Répertoire","cog");
 	bindAdminBtnEvents();
 	resetDirectoryTable() ;
+	initKInterface();
 	if(openingFilter != "")
 		$('.filter'+openingFilter).trigger("click");
 });	

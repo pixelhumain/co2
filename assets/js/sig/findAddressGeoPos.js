@@ -121,22 +121,22 @@ function callGeoWebService(providerName, requestPart, countryCode, success, erro
 	var data = {};
 
 	if(providerName == "nominatim") {
-		if(typeSearchInternational == "address")
+		if(formInMap.typeSearchInternational == "address")
 		url = "//nominatim.openstreetmap.org/search?q=" + requestPart + "," + countryCode + "&format=json&polygon=0&addressdetails=1";
-		else if(typeSearchInternational == "city")
+		else if(formInMap.typeSearchInternational == "city")
 		url = "//nominatim.openstreetmap.org/search?city=" + requestPart + "&country=" + countryCode + "&format=json&polygon=0&addressdetails=1";
 	}
 	
 	if(providerName == "google") {
-		if(typeSearchInternational == "address")
+		if(formInMap.typeSearchInternational == "address")
 		url = "//maps.googleapis.com/maps/api/geocode/json?address=" + requestPart + "," + countryCode;
-		else if(typeSearchInternational == "city")
+		else if(formInMap.typeSearchInternational == "city")
 		url = "//maps.googleapis.com/maps/api/geocode/json?locality=" + requestPart + "&country=" + countryCode;
 	}	
 	if(providerName == "data.gouv") {
-		if(typeSearchInternational == "address")
+		if(formInMap.typeSearchInternational == "address")
 		url = "//api-adresse.data.gouv.fr/search/?q=" + requestPart;
-		else if(typeSearchInternational == "city")
+		else if(formInMap.typeSearchInternational == "city")
 		url = "//api-adresse.data.gouv.fr/search/?q=" + requestPart + "&type=city";
 	}
 	if(providerName == "communecter") {

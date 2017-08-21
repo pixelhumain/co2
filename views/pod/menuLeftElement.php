@@ -155,40 +155,41 @@
 	
 <?php if (($edit==true || $openEdition==true) && @Yii::app()->session["userId"]){ ?>
 		<li class="visible-xs">
-			<a href="javascript:" class="letter-green ssmla"  
-				data-toggle="modal" data-target="#selectCreate">
+			<a href="javascript:" class="letter-green ssmla open-create-form-modal">
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php echo Yii::t("common", "Create") ?>
 		  	</a>
 		</li>
 	<?php //if($type != Person::COLLECTION){
+		$modalTarget = "#modal-scope";
 				if ($type == Event::COLLECTION ){ 
 					$inviteLink = "people";
 					$inviteText =  Yii::t("common","Invite people") ;			
-				}else if ($type == Organization::COLLECTION || $type == Person::COLLECTION) { 
+				}else if ($type == Organization::COLLECTION) { 
 					$inviteLink = "members";
 					$inviteText =  Yii::t("common",'Invite members') ;
 				}else if ($type == Project::COLLECTION ){ 
 					$inviteLink = "contributors";
 					$inviteText =  Yii::t("common",'Invite contributors') ;
-				} 
-
+				}else if ($type == Person::COLLECTION) { 
+					$inviteLink = "people";
+					$inviteText =  Yii::t("common",'Invite people') ;
+					$modalTarget = "#invite-modal-element";
+				}
+				$whereConnect="";
+				if($type!=Person::COLLECTION)
+					$whereConnect='to the '.Element::getControlerByCollection($type);
 				if( @$inviteLink && @$inviteText ){?>
-				<li class="">
-					<a href="javascript:" class="tooltips ssmla" 
-					data-placement="bottom" data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common","to the ".Element::getControlerByCollection($type)))); ?>" 
-					data-toggle="modal" data-target="#modal-scope">
-						<i class="fa fa-send"></i> <?php echo $inviteText ?>
-					</a>
-				</li>
-				<li><hr></li>
-		<?php }
-			//}else{
-				?>
-				<!-- <a href="javascript:;" id="inviteBtn" class="bg-white">
-					<i class="fa fa-cogs"></i> <?php //echo Yii::t("common", "Invite"); ?>
-				</a> -->
-				<?php
-			//}
+					<li class="">
+						<a href="javascript:;" class="tooltips ssmla text-red" 
+						data-placement="bottom" 
+						data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common", $whereConnect))); ?>" 
+						data-toggle="modal" 
+						data-target="<?php echo $modalTarget ?>">
+							<i class="fa fa-user-plus "></i> <?php echo $inviteText ?>
+						</a>
+					</li>
+					<li><hr></li>
+		<?php 	}
 	}	?>
 	<?php if(@Yii::app()->session["userId"] && 
 		 $type==Person::COLLECTION && 
@@ -198,7 +199,7 @@
 	?>
 	<li class="visible-xs">
 		<a href="javascript:" class="ssmla btn-start-newsstream">	
-			<i class="fa fa-rss"></i> <?php echo Yii::app()->theme->baseUrl ; ?> Fil d'actualités
+			<i class="fa fa-rss"></i> Fil d'actualités
 		</a>
 	</li>
 
@@ -242,7 +243,7 @@
 	<li class="">
 		<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
 			id="btn-start-contacts" class="ssmla">
-			<i class="fa fa-envelope"></i> Nous contacter
+			<i class="fa fa-envelope"></i> <?php echo Yii::t("common","Contact us"); ?>
 		</a>
 	</li>
 	<?php } ?>
@@ -340,7 +341,6 @@
 			<li>
 				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="poi" data-icon="map-marker">
 					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Points of interests"); ?>
-		</a>
 				</a>
 			</li>			
 		<?php }  
@@ -355,6 +355,26 @@
 			</li>
 		<?php } ?>
 		<li><hr></li>
+
+		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
+				  $type==Person::COLLECTION){  
+					if(!@$front || (@$front)){ 
+		?>
+			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="discuss" data-icon="comment">
+					<i class="fa fa-comment"></i> <?php echo Yii::t("common","Discussion"); ?>
+				</a>
+			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="vote" data-icon="gavel">
+					<i class="fa fa-gavel"></i> <?php echo Yii::t("common","Decision"); ?>
+				</a>
+			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="actions" data-icon="cogs">
+					<i class="fa fa-cogs"></i> <?php echo Yii::t("common","Actions"); ?>
+				</a>
+			<li class="" id="fast-rooms">
+			</li>
+
+			
+		<?php }  
+		} ?>
 
 	<?php } ?>
 

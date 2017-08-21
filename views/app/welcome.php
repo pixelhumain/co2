@@ -8,9 +8,9 @@
                             )
                         );
     $cssAnsScriptFiles = array(
-     '/assets/css/welcome.css',
      '/assets/css/profilSocial.css',
      '/assets/css/default/directory.css',
+        '/assets/css/welcome.css',
     //  '/assets/css/referencement.css'
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->baseUrl); 
@@ -54,14 +54,14 @@ function initWelcomeInterface(){
          }
     });
     
-    $("#input-search-map").keyup(function(e){ console.log("keyup #input-search-map");
+    $("#input-search-map").off().keyup(function(e){ console.log("keyup #input-search-map");
         $("#second-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
             startGlobalSearch(0, indexStepGS);
          }
     });
 
-    $("#menu-map-btn-start-search").click(function(){
+    $("#menu-map-btn-start-search").off().click(function(){
         startGlobalSearch(0, indexStepGS);
     });
 

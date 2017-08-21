@@ -41,8 +41,8 @@
 
 
 <?php if($contextType == "actionRooms"){
-  Menu::comments( $parentType, $parentId );
-  $this->renderPartial('../default/panels/toolbar');
+  //Menu::comments( $parentType, $parentId );
+  //$this->renderPartial('../default/panels/toolbar');
 }
 ?>
 
@@ -75,7 +75,7 @@ var latestComments = <?php echo time(); ?>;
 jQuery(document).ready(function() {
 	
 	<?php if($contextType == "actionRooms"){ ?>
-  		setTitle("<?php echo Yii::t("rooms","Discussion", null, Yii::app()->controller->module->id); ?>","comments");
+  		//setTitle("<?php echo Yii::t("rooms","Discussion", null, Yii::app()->controller->module->id); ?>","comments");
 		$(".main-col-search").addClass("assemblyHeadSection");
   	<?php } ?>
 

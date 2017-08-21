@@ -2,7 +2,7 @@
 $cs = Yii::app()->getClientScript();
 
 $cssAnsScriptFilesModule = array(
-  '/assets/css/rooms/header.css'
+  //'/assets/css/rooms/header.css'
 );
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl); ?>
  <style>
@@ -94,7 +94,7 @@ h1.citizenAssembly-header {
 }
 </style>	
 
-
+	<?php  if(false){ ?>
 	<h1 class="text-dark citizenAssembly-header">
 	 	<?php 
 	    	$urlPhotoProfil = "";
@@ -228,52 +228,11 @@ h1.citizenAssembly-header {
 		</div>
 
 	</h1>
-
-	<?php  if( isset(Yii::app()->session['userId']) && 
-			Authorisation::canParticipate(Yii::app()->session['userId'], $parentType, $parentId ) ){ ?>
-	<div class="modal fade" id="modal-create-room" tabindex="-1" role="dialog">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header text-dark">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h2 class="modal-title text-left">
-	        	<i class="fa fa-angle-down"></i> <i class="fa fa-plus"></i> Créer un espace
-	        </h2>
-	      </div>
-	      <div class="modal-body no-padding">
-	      	<div class="panel-body" id="form-create-room">
-				<?php 
-					$listRoomTypes = Lists::getListByName("listRoomTypes");
-				    foreach ($listRoomTypes as $key => $value) {
-				        //error_log("translate ".$value);
-				        $listRoomTypes[$key] = Yii::t("rooms",$value, null, Yii::app()->controller->module->id);
-				    }
-				    $tagsList =  Lists::getListByName("tags");
-				    $params = array(
-				        "listRoomTypes" => $listRoomTypes,
-				        "tagsList" => $tagsList,
-				        "id" => $parentId,
-				        "type" => $parentType
-				    );
-					$this->renderPartial('../rooms/editRoomSV', $params); 
-				?>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-				<button type="button" class="btn btn-success"
-					    onclick="javascript:saveNewRoom();">
-						<i class="fa fa-save"></i> Enregistrer
-				</button>
-			</div>
-		  </div>
-		</div>
-	  </div>
-	</div>
-
-<?php } ?>
+	<?php } ?>
+	
 
 <?php 
-createModalRoom($discussions,$parentType, $parentId, 1, "Sélectionnez un espace de discussion", "comments", "discuss", "Aucun espace de discussion");
+/*createModalRoom($discussions,$parentType, $parentId, 1, "Sélectionnez un espace de discussion", "comments", "discuss", "Aucun espace de discussion");
 createModalRoom($votes,$parentType, $parentId, 2, "Sélectionnez un espace de décision", "archive", "vote", "Aucun espace de décision");
 createModalRoom($actions,$parentType, $parentId, 3, "Sélectionnez un espace d'action", "cogs", "actions", "Aucun espace d'action");
 createModalRoom($history,$parentType, $parentId, 4, "Historique de votre activité", "clock-o", "history", "Aucune activité");
@@ -282,7 +241,7 @@ createModalRoom($history,$parentType, $parentId, 4, "Historique de votre activit
 //if( in_array($where, array("rooms.action","survey.entry"))){
 	createModalRoom( array_merge($votes,$actions) ,$parentType, $parentId, 5, 
 					"Choisir un nouvel espace", "share-alt", "move", "Aucun espace","move",$faTitle);
-
+*/
 //}
 
 function createModalRoom($elements, $parentType, $parentId, $index, $title, 
@@ -291,7 +250,7 @@ function createModalRoom($elements, $parentType, $parentId, $index, $title,
 
 	$iconType = array("discuss"=>"comments", "entry" => "archive", "actions" => "cogs");
 	
-	echo '<div class="panel panel-default no-margin">';
+	echo '<div class="panel panel-default no-margin" style="border:0px;">';
 
 	echo    '<div class="modal fade" id="modal-select-room'.$index.'" tabindex="-1" role="dialog">
 			  <div class="modal-dialog">

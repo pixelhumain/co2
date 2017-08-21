@@ -13,7 +13,7 @@ function bindAboutPodElement() {
 		mylog.log("-----------------changeHiddenFields----------------------");
 		//
 		listFields = [	"username", "birthDate", "email", "avancement", "url", "fixe",
-						"mobile","fax", "facebook", "twitter", "gpplus", "gitHub", "skype", "telegram"];
+						"mobile","fax", "facebook", "twitter", "gpplus", "github", "skype", "telegram"];
 		
 		$.each(listFields, function(i,value) {
 			mylog.log("listFields", value, typeof contextData[value]);
@@ -29,7 +29,7 @@ function bindAboutPodElement() {
 		}
 	}
 
-	function removeAddresses (index){
+	function removeAddresses (index, formInMap){
 
 		bootbox.confirm({
 			message: trad["suredeletelocality"]+"<span class='text-red'></span>",
@@ -60,7 +60,16 @@ function bindAboutPodElement() {
 				    	success: function(data){
 					    	if(data.result){
 								toastr.success(data.msg);
-								urlCtrl.loadByHash(location.hash);
+
+								if(formInMap == true){
+									$(".locationEl"+ index).remove();
+									dyFInputs.locationObj.elementLocation = null;
+									dyFInputs.locationObj.elementLocations.splice(ix,1);
+									//TODO check if this center then apply on first
+									//$(".locationEl"+dyFInputs.locationObj.countLocation).remove();
+								}
+								else
+									urlCtrl.loadByHash(location.hash);
 					    	}
 					    }
 					});
@@ -69,105 +78,22 @@ function bindAboutPodElement() {
 		});		
 	}
 
-	function updateOrganizer() {
-		bootbox.confirm({
-			message: 
-				trad["udpateorganizer"]+
-				buildSelect("organizerId", "organizerId", 
-							{"inputType" : "select", "options" : firstOptions(), 
-							"groupOptions":myAdminList( ["organizations","projects"] )}, ""),
-			buttons: {
-				confirm: {
-					label: trad["udpateorganizer"],
-					className: 'btn-success'
-				},
-				cancel: {
-					label: trad["cancel"],
-					className: 'btn-danger'
-				}
-			},
-			
-			callback: function (result) {
-				if (!result) {
-					return;
-				} else {
-					var organizer = { "organizerId" : organizerId, "organizerType" : organizerType };
-
-					var param = new Object;
-					param.name = "organizer";
-					param.value = organizer;
-					param.pk = contextData.id;
-					$.ajax({
-				        type: "POST",
-				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-				        data: param,
-				       	dataType: "json",
-				    	success: function(data){
-					    	if(data.result){
-								toastr.success(data.msg);
-								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
-					    	} else {
-					    		toastr.error(data.msg);
-					    	}
-					    }
-					});
-				}
-			}
-		}).init(function(){
-        	console.log("init de la bootbox !");
-        	$("#organizerId").off().on("change",function(){
-        		organizerId = $(this).val();
-        		if(organizerId == "dontKnow" )
-        			organizerType = "dontKnow";
-        		else if( $('#organizerId').find(':selected').data('type') && typeObj[$('#organizerId').find(':selected').data('type')] )
-        			organizerType = typeObj[$('#organizerId').find(':selected').data('type')].col;
-        		else
-        			organizerType = typeObj["person"].col;
-
-        		mylog.warn( "organizer",organizerId,organizerType );
-        		$("#ajaxFormModal #organizerType ").val( organizerType );
-        	});
-        })
-	}
-	
-	function buildSelect(id, field, fieldObj,formValues) {
-		var fieldClass = (fieldObj.class) ? fieldObj.class : '';
-		var placeholder = (fieldObj.placeholder) ? fieldObj.placeholder+required : '';
-		var fieldHTML = "";
-		if ( fieldObj.inputType == "select" || fieldObj.inputType == "selectMultiple" ) 
-        {
-       		var multiple = (fieldObj.inputType == "selectMultiple") ? 'multiple="multiple"' : '';
-       		mylog.log("build field "+field+">>>>>> select selectMultiple");
-       		var isSelect2 = (fieldObj.isSelect2) ? "select2Input" : "";
-       		fieldHTML += '<select class="'+isSelect2+' '+fieldClass+'" '+multiple+' name="'+field+'" id="'+field+'" style="width: 100%;height:30px;" data-placeholder="'+placeholder+'">';
-			if(placeholder)
-				fieldHTML += '<option class="text-red" style="font-weight:bold" disabled selected>'+placeholder+'</option>';
-			else
-				fieldHTML += '<option></option>';
-
-			var selected = "";
-			
-			//initialize values
-			if(fieldObj.options)
-				fieldHTML += buildSelectOptions(fieldObj.options, fieldObj.value);
-			
-			if( fieldObj.groupOptions ){
-				fieldHTML += buildSelectGroupOptions(fieldObj.groupOptions, fieldObj.value);
-			} 
-			fieldHTML += '</select>';
-        }
-        return fieldHTML;
-	}
-
 	function bindDynFormEditable(){
-
 		$(".btn-update-when").off().on( "click", function(){
 			var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
-						title : trad["Change password"],
+
+						title : trad["Update date"],
 						icon : "fa-key",
+						onLoads : {
+							initUpdateWhen : function(){
+								mylog.log("initUpdateInfo");
+								$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  					  .addClass("bg-dark");
+							}
+						},
 						beforeSave : function(){
 							mylog.log("beforeSave");
 							var allDay = $("#ajaxFormModal #allDay").is(':checked');
@@ -175,33 +101,39 @@ function bindAboutPodElement() {
 					    	removeFieldUpdateDynForm(contextData.type);
 					    	
 					    	var dateformat = "DD/MM/YYYY";
-					    	if (! allDay) 
+					    	//var outputFormat="YYYY-MM-DD";
+					    	if (! allDay && contextData.type == typeObj.event.col) {
 					    		var dateformat = "DD/MM/YYYY HH:mm" ;
-					    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format());
+					    		//var outputFormat="YYYY-MM-DD HH::mm";
+					    	}
+					  //   	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format(outputFormat));
+							// $("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format(outputFormat));
+							$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format());
 							$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format());
 					    },
+
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){
+							if(data.result&& data.resultGoods && data.resultGoods.result){
 								if(typeof data.resultGoods.values.allDay != "undefined"){
 									contextData.allDay = data.resultGoods.values.allDay;
-									$("#allDayAbout").html(contextData.allDay);
+
+									$("#allDayAbout").html((contextData.allDay ? trad["yes"] : trad["no"]));
 								}  
 								if(typeof data.resultGoods.values.startDate != "undefined"){
 									contextData.startDate = data.resultGoods.values.startDate;
-									$("#startDateAbout").html(moment(contextData.startDate).local().locale("fr").format(formatDateView));
+									//$("#startDateAbout").html(moment(contextData.startDate).local().locale("fr").format(formatDateView));
 									//$("#startDateAbout").html(directory.returnDate(contextData.startDate, formatDateView));
 								}  
 								if(typeof data.resultGoods.values.endDate != "undefined"){
 									contextData.endDate = data.resultGoods.values.endDate;
-									$("#endDateAbout").html(moment(contextData.endDate).local().locale("fr").format(formatDateView));
+									//$("#endDateAbout").html(moment(contextData.endDate).local().locale("fr").format(formatDateView));
 									//$("#endDateAbout").html(directory.returnDate(contextData.endDate, formatDateView));
 								}
 								initDateHeaderPage(contextData);
 								initDate();
 								updateCalendar();
 							}
-
 							//urlCtrl.loadByHash(location.hash);
 							dyFObj.closeForm();
 						},
@@ -214,14 +146,20 @@ function bindAboutPodElement() {
 				}
 			};
 
+			var typeDate = "date";
 			if(contextData.type == typeObj.event.col){
 				var checked = (notNull(contextData.allDay) && contextData.allDay == true) ?  true : false ;
 				form.dynForm.jsonSchema.properties.allDay = dyFInputs.allDay(checked);
 				form.dynForm.jsonSchema.properties.allDayHidden = dyFInputs.inputHidden(checked);
+				mylog.log("allDay", checked)
+				if(checked == false )
+					typeDate = "datetime";
+				
 			}
-
-			form.dynForm.jsonSchema.properties.startDate = dyFInputs.startDateInput;
-			form.dynForm.jsonSchema.properties.endDate = dyFInputs.endDateInput;
+			
+			
+			form.dynForm.jsonSchema.properties.startDate = dyFInputs.startDateInput(typeDate);
+			form.dynForm.jsonSchema.properties.endDate = dyFInputs.endDateInput(typeDate);
 
 			var dataUpdate = {
 				block : "when",
@@ -230,28 +168,28 @@ function bindAboutPodElement() {
 			};
 			
 			if(notEmpty(contextData.startDateDB))
-				dataUpdate.startDate = moment(contextData.startDateDB).local().format(formatDatedynForm);
+				dataUpdate.startDate = moment(contextData.startDateDB/*,"YYYY-MM-DD HH:mm"*/).local().format(formatDatedynForm);
 
 			if(notEmpty(contextData.endDateDB))
-				dataUpdate.endDate = moment(contextData.endDateDB).local().format(formatDatedynForm);
+				dataUpdate.endDate = moment(contextData.endDateDB/*,"YYYY-MM-DD HH:mm"*/).local().format(formatDatedynForm);
 
-			mylog.log("btn-update-when", form, dataUpdate);
-			dyFObj.openForm(form, "initWhen", dataUpdate);
+			mylog.log("btn-update-when", form, dataUpdate, formatDatedynForm);
+			dyFObj.openForm(form, "initUpdateWhen", dataUpdate);
 		});
 
 
 		$(".btn-update-info").off().on( "click", function(){
-
 			var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
 						title : trad["Update general information"],
 						icon : "fa-key",
+						type: "object",
 						onLoads : {
 							initUpdateInfo : function(){
 								mylog.log("initUpdateInfo");
-								$(".emailtext").slideToggle();
+								$(".emailOptionneltext").slideToggle();
 								$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 											  					  .addClass("bg-dark");
 							}
@@ -262,11 +200,11 @@ function bindAboutPodElement() {
 					    },
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){
+							if(data.result&& data.resultGoods && data.resultGoods.result){
 
 								if(typeof data.resultGoods.values.name != "undefined"){
 									contextData.name = data.resultGoods.values.name;
-									$("#nameHeader").html(contextData.name);
+									$("#nameHeader > .name-header").html(contextData.name);
 									$("#nameAbout").html(contextData.name);
 								}
 
@@ -322,18 +260,21 @@ function bindAboutPodElement() {
 										val=100;
 									$('#progressStyle').val(val);
 									$('#labelProgressStyle').html(contextData.avancement);
-									$('#avancementAbout').html(trad["Project maturity"] + " : " + trad[contextData.avancement] );
+									$('#avancementAbout').html(trad[contextData.avancement] );
 								}
 
 								if(typeof data.resultGoods.values.type != "undefined"){
 
-									if(contextData.type == typeObj.organization.col )
+									if(contextData.type == typeObj.organization.col ){
 										contextData.typeOrga = data.resultGoods.values.type;
+										$(".pastille-type-element").removeClass("bg-azure bg-red bg-green bg-turq").addClass("bg-"+typeObj[contextData.typeOrga]["color"]);
+										$("#nameHeader").find("i").removeClass("fa-university fa-industry fa-users fa-group").addClass("fa-"+typeObj[contextData.typeOrga]["icon"]);
+									}
 									else
 										contextData.typeEvent = data.resultGoods.values.type;
 									//$("#typeHeader").html(data.resultGoods.values.type);
-									$("#typeAbout").html(trad[data.resultGoods.values.type]);
-									$("#typeHeader .type-header").html(trad[data.resultGoods.values.type]);
+									$("#typeAbout").html(tradCategory[data.resultGoods.values.type]);
+									$("#typeHeader .type-header").html(tradCategory[data.resultGoods.values.type]);
 								}
 
 								if(typeof data.resultGoods.values.email != "undefined"){
@@ -375,6 +316,40 @@ function bindAboutPodElement() {
 									contextData.fax = parsePhone(data.resultGoods.values.fax);
 									$("#faxAbout").html(contextData.fax);
 								}
+
+								if(typeof data.resultGoods.values.parent != "undefined"){
+									mylog.log("modif parent", data.resultGoods.values.parent);
+									contextData.parent = data.resultGoods.values.parent.parent;
+									contextData.parentId = data.resultGoods.values.parent.parentId;
+									contextData.parentType = data.resultGoods.values.parent.parentType;
+
+									var html = "<i>"+trad["notSpecified"]+"</i>";
+
+									if(notEmpty(contextData.parentId)){
+										html = '<a href="#page.type.'+contextData.parentType+'.id.'+contextData.parentId+'" class="lbh">'+ 
+											'<i class="fa fa-'+dyFInputs.get(contextData.parentType).icon+'"></i> '+
+											contextData.parent.name+'</a><br/>'; 
+									}
+
+									$("#parentAbout").html(html);
+								}
+
+								if(typeof data.resultGoods.values.organizer != "undefined"){
+									mylog.log("modif organizer", data.resultGoods.values.organizer);
+									contextData.organizer = data.resultGoods.values.organizer.organizer;
+									contextData.organizerId = data.resultGoods.values.organizer.organizerId;
+									contextData.organizerType = data.resultGoods.values.organizer.organizerType;
+
+									var html = "<i>"+trad["notSpecified"]+"</i>";
+
+									if(notEmpty(contextData.organizerId)){
+										html = '<a href="#page.type.'+contextData.organizerType+'.id.'+contextData.organizerId+'" class="lbh">'+ 
+											'<i class="fa fa-'+dyFInputs.get(contextData.organizerType).icon+'"></i> '+
+											contextData.organizer.name+'</a><br/>'; 
+									}
+
+									$("#organizerAbout").html(html);
+								}
 							}
 							dyFObj.closeForm();
 							changeHiddenFields();
@@ -395,25 +370,55 @@ function bindAboutPodElement() {
 			}
 
 			if(contextData.type == typeObj.organization.col ){
-				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'organisation", "Type d'organisation", organizationTypes, { required : true });
+				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm["organizationType"], tradDynForm["organizationType"], organizationTypes, { required : true });
 			}else if(contextData.type == typeObj.event.col ){
-				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect("Type d'événement", "Type d'événement", eventTypes, { required : true });
+				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm["eventTypes"], tradDynForm["eventTypes"], eventTypes, { required : true });
 			}
 
 			if(contextData.type == typeObj.project.col ){
-				form.dynForm.jsonSchema.properties.avancement = dyFInputs.inputSelect("L'avancement du project", "Avancement du projet", avancementProject);
+				form.dynForm.jsonSchema.properties.avancement = dyFInputs.inputSelect(tradDynForm["theprojectmaturity"], tradDynForm["projectmaturity"], avancementProject);
 			}
 
 			form.dynForm.jsonSchema.properties.tags = dyFInputs.tags();
 
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.email = dyFInputs.email();
-				form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText("Fixe","Saisir les numéros de téléphone séparer par une virgule");
-				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText("Mobile","Saisir les numéros de portable séparer par une virgule");
-				form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText("Fax","Saisir les numéros de fax séparer par une virgule");
+				form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText(tradDynForm["fix"],tradDynForm["enterfixnumber"]);
+				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText(tradDynForm["mobile"],tradDynForm["entermobilenumber"]);
+				form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText(tradDynForm["fax"],tradDynForm["enterfaxnumber"]);
 			}
+
 			if(contextData.type != typeObj.poi.col) 
 				form.dynForm.jsonSchema.properties.url = dyFInputs.inputUrl();
+
+
+			var listParent =  ["organizations"] ;
+
+			if(contextData.type == typeObj.event.col)
+				listParent =  ["events"] ;
+
+			
+			form.dynForm.jsonSchema.properties.parentId = {
+	         	label : tradDynForm["ispartofelement"]+" ?",
+            	inputType : "select",
+            	class : "",
+            	placeholder : tradDynForm["ispartofelement"]+" ?",
+            	options : firstOptions(),
+            	"groupOptions" : parentList( listParent, contextData.parentId, contextData.parentType ),
+            	init : function(){ console.log("init ParentId");
+	            	$("#ajaxFormModal #parentId").off().on("change",function(){
+	            		var selected = $(':selected', this);
+    					$("#ajaxFormModal #parentType").val(selected.parent().attr('label'));
+	            	});
+	            }
+            };
+            form.dynForm.jsonSchema.properties.parentType = dyFInputs.inputHidden();
+
+            if(contextData.type == typeObj.event.col){
+            	form.dynForm.jsonSchema.properties.organizerId =  dyFInputs.organizerId(contextData.parentId, contextData.parentType);
+	            form.dynForm.jsonSchema.properties.organizerType = dyFInputs.inputHidden();
+            }
+            
 			
 			var dataUpdate = {
 				block : "info",
@@ -460,6 +465,20 @@ function bindAboutPodElement() {
 			
 			if(contextData.type != typeObj.poi.col && notEmpty(contextData.url)) 
 				dataUpdate.url = contextData.url;
+
+			if(notEmpty(contextData.parentId)) 
+				dataUpdate.parentId = contextData.parentId;
+			else
+				dataUpdate.parentId = "dontKnow";
+
+			if(notEmpty(contextData.parentType)) 
+				dataUpdate.parentType = contextData.parentType;
+
+			if(notEmpty(contextData.organizerId)) 
+				dataUpdate.organizerId = contextData.organizerId;
+
+			if(notEmpty(contextData.organizerType)) 
+				dataUpdate.organizerType = contextData.organizerType;
 			
 			mylog.log("dataUpdate", dataUpdate);
 			dyFObj.openForm(form, "initUpdateInfo", dataUpdate);
@@ -484,11 +503,17 @@ function bindAboutPodElement() {
 						},
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){
-								$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
+							if(data.result&& data.resultGoods && data.resultGoods.result){
+								if(data.resultGoods.values.shortDescription=="")
+									$(".contentInformation #shortDescriptionAbout").html('<i>'+trad["notSpecified"]+'</i>');
+								else
+									$(".contentInformation #shortDescriptionAbout").html(data.resultGoods.values.shortDescription);
 								$(".contentInformation #shortDescriptionAboutEdit").html(data.resultGoods.values.shortDescription);
 								$("#shortDescriptionHeader").html(data.resultGoods.values.shortDescription);
-								$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
+								if(data.resultGoods.values.description=="")
+									$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml('<i>'+trad["notSpecified"]+'</i>'));
+								else
+									$(".contentInformation #descriptionAbout").html(dataHelper.markdownToHtml(data.resultGoods.values.description));
 								$("#descriptionMarkdown").html(data.resultGoods.values.description);
 							}
 							dyFObj.closeForm();
@@ -498,8 +523,8 @@ function bindAboutPodElement() {
 							block : dyFInputs.inputHidden(),
 							typeElement : dyFInputs.inputHidden(),
 							isUpdate : dyFInputs.inputHidden(true),
-							shortDescription : 	dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
-							description : dyFInputs.textarea("Description longue", "..."),
+							shortDescription : 	dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
+							description : dyFInputs.textarea(tradDynForm["longDescription"], "..."),
 						}
 					}
 				}
@@ -538,36 +563,39 @@ function bindAboutPodElement() {
 					    },
 						afterSave : function(data){
 							mylog.dir(data);
-							if(data.result && data.resultGoods.result){
+							if(data.result&& data.resultGoods && data.resultGoods.result){
+
+								if(!notEmpty(contextData.socialNetwork))
+									contextData.socialNetwork = {};
 
 								if(typeof data.resultGoods.values.telegram != "undefined"){
-									contextData.telegram = data.resultGoods.values.telegram.trim();
-									changeNetwork('#telegramAbout', contextData.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.telegram);
+									contextData.socialNetwork.telegram = data.resultGoods.values.telegram.trim();
+									changeNetwork('#telegramAbout', contextData.socialNetwork.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.socialNetwork.telegram);
 								}
 
 								if(typeof data.resultGoods.values.facebook != "undefined"){
-									contextData.facebook = data.resultGoods.values.facebook.trim();
-									changeNetwork('#facebookAbout', contextData.facebook, contextData.facebook);
+									contextData.socialNetwork.facebook = data.resultGoods.values.facebook.trim();
+									changeNetwork('#facebookAbout', contextData.socialNetwork.facebook, contextData.socialNetwork.facebook);
 								}
 
 								if(typeof data.resultGoods.values.twitter != "undefined"){
-									contextData.twitter = data.resultGoods.values.twitter.trim();
-									changeNetwork('#twitterAbout', contextData.twitter, contextData.twitter);
+									contextData.socialNetwork.twitter = data.resultGoods.values.twitter.trim();
+									changeNetwork('#twitterAbout', contextData.socialNetwork.twitter, contextData.socialNetwork.twitter);
 								}
 
-								if(typeof data.resultGoods.values.gitHub != "undefined"){
-									contextData.gitHub = data.resultGoods.values.gitHub.trim();
-									changeNetwork('#gitHubAbout', contextData.gitHub, contextData.gitHub);
+								if(typeof data.resultGoods.values.github != "undefined"){
+									contextData.socialNetwork.github = data.resultGoods.values.github.trim();
+									changeNetwork('#githubAbout', contextData.socialNetwork.github, contextData.socialNetwork.github);
 								}
 
 								if(typeof data.resultGoods.values.skype != "undefined"){
-									contextData.skype = data.resultGoods.values.skype.trim();
-									changeNetwork('#skypeAbout', contextData.skype, contextData.skype);
+									contextData.socialNetwork.skype = data.resultGoods.values.skype.trim();
+									changeNetwork('#skypeAbout', contextData.socialNetwork.skype, contextData.socialNetwork.skype);
 								}
 
 								if(typeof data.resultGoods.values.gpplus != "undefined"){
-									contextData.gpplus = data.resultGoods.values.gpplus.trim();
-									changeNetwork('#gpplusAbout', contextData.gpplus, contextData.gpplus);
+									contextData.socialNetwork.gpplus = data.resultGoods.values.gpplus.trim();
+									changeNetwork('#gpplusAbout', contextData.socialNetwork.gpplus, contextData.socialNetwork.gpplus);
 								}
 							}
 							dyFObj.closeForm();
@@ -578,11 +606,11 @@ function bindAboutPodElement() {
 							block : dyFInputs.inputHidden(),
 							typeElement : dyFInputs.inputHidden(),
 							isUpdate : dyFInputs.inputHidden(true), 
-							skype : dyFInputs.inputUrl("Lien vers Skype"),
-							github : dyFInputs.inputUrl("Lien vers Git Hub"), 
-							gpplus : dyFInputs.inputUrl("Lien vers Google Plus"),
-					        twitter : dyFInputs.inputUrl("Lien vers Twitter"),
-					        facebook :  dyFInputs.inputUrl("Lien vers Facebook"),
+							skype : dyFInputs.inputUrl(tradDynForm["linkSkype"]),
+							github : dyFInputs.inputUrl(tradDynForm["linkGithub"]), 
+							gpplus : dyFInputs.inputUrl(tradDynForm["linkGplus"]),
+					        twitter : dyFInputs.inputUrl(tradDynForm["linkTwitter"]),
+					        facebook :  dyFInputs.inputUrl(tradDynForm["linkFacebook"]),
 						}
 					}
 				}
@@ -598,20 +626,20 @@ function bindAboutPodElement() {
 		        typeElement : contextData.type,
 			};
 
-			if(notEmpty(contextData.twitter))
-				dataUpdate.twitter = contextData.twitter;
-			if(notEmpty(contextData.gpplus))
-				dataUpdate.gpplus = contextData.gpplus;
-			if(notEmpty(contextData.gitHub))
-				dataUpdate.gitHub = contextData.gitHub;
-			if(notEmpty(contextData.skype))
-				dataUpdate.skype = contextData.skype;
-			if(notEmpty(contextData.telegram))
-				dataUpdate.telegram = contextData.telegram;
-			if(notEmpty(contextData.facebook))
-				dataUpdate.facebook = contextData.facebook;
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.twitter))
+				dataUpdate.twitter = contextData.socialNetwork.twitter;
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.gpplus))
+				dataUpdate.gpplus = contextData.socialNetwork.gpplus;
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.github))
+				dataUpdate.github = contextData.socialNetwork.github;
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.skype))
+				dataUpdate.skype = contextData.socialNetwork.skype;
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.telegram))
+				dataUpdate.telegram = contextData.socialNetwork.telegram;
+			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.facebook))
+				dataUpdate.facebook = contextData.socialNetwork.facebook;
 
-			dyFObj.openForm(form, null, dataUpdate);
+			dyFObj.openForm(form, "sub", dataUpdate);
 
 			
 		});
@@ -650,16 +678,16 @@ function bindAboutPodElement() {
 			title : title,
 			type : type,
 			url : url,
-			index : ind
+			index : ind.toString()
 		}
 		mylog.log("params",params);
-		dyFObj.openForm( 'url','parentUrl', params);
+		dyFObj.openForm( 'url','sub', params);
 	}
 
 
 	function updateContact(ind, name, email, role, telephone) {
 		mylog.log("updateContact", ind, name, email, role, telephone);
-		dataUpdate = { index : ind } ;
+		dataUpdate = { index : ind.toString() } ;
 		if(name != "undefined")
 			dataUpdate.name = name;
 		if(email != "undefined")
@@ -673,46 +701,85 @@ function bindAboutPodElement() {
 	}
 
 	function removeUrl(ind) {
-		param = new Object;
-    	param.name = "urls";
-    	param.value = {index : ind};
-    	param.pk = contextData.id;
-		param.type = contextData.type;
-		$.ajax({
-	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-	        data: param,
-	       	dataType: "json",
-	    	success: function(data){
-	    		mylog.log("data", data);
-		    	if(data.result){
-					toastr.success(data.msg);
-					urlCtrl.loadByHash(location.hash);
-		    	}
-		    }
+		bootbox.confirm({
+			message: trad["suretodeletelink"]+"<span class='text-red'></span>",
+			buttons: {
+				confirm: {
+					label: trad["yes"],
+					className: 'btn-success'
+				},
+				cancel: {
+					label: trad["no"],
+					className: 'btn-danger'
+				}
+			},
+			callback: function (result) {
+				if (!result) {
+					return;
+				} else {
+					param = new Object;
+			    	param.name = "urls";
+			    	param.value = {index : ind};
+			    	param.pk = contextData.id;
+					param.type = contextData.type;
+					$.ajax({
+				        type: "POST",
+				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+				        data: param,
+				       	dataType: "json",
+				    	success: function(data){
+				    		mylog.log("data", data);
+					    	if(data.result){
+								toastr.success(data.msg);
+								urlCtrl.loadByHash(location.hash);
+					    	}
+					    }
+					});
+				}
+			}
 		});
+		
 	}
 
 	
 
 	function removeContact(ind) {
-		param = new Object;
-    	param.name = "contacts";
-    	param.value = {index : ind};
-    	param.pk = contextData.id;
-		param.type = contextData.type;
-		$.ajax({
-	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-	        data: param,
-	       	dataType: "json",
-	    	success: function(data){
-	    		mylog.log("data", data);
-		    	if(data.result){
-					toastr.success(data.msg);
-					urlCtrl.loadByHash(location.hash);
-		    	}
-		    }
+		bootbox.confirm({
+			message: trad["suretodeletecontact"]+"<span class='text-red'></span>",
+			buttons: {
+				confirm: {
+					label: trad["yes"],
+					className: 'btn-success'
+				},
+				cancel: {
+					label: trad["no"],
+					className: 'btn-danger'
+				}
+			},
+			callback: function (result) {
+				if (!result) {
+					return;
+				} else {
+					param = new Object;
+			    	param.name = "contacts";
+			    	param.value = {index : ind};
+			    	param.pk = contextData.id;
+					param.type = contextData.type;
+					$.ajax({
+				        type: "POST",
+				        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
+				        data: param,
+				       	dataType: "json",
+				    	success: function(data){
+				    		mylog.log("data", data);
+					    	if(data.result){
+								toastr.success(data.msg);
+								urlCtrl.loadByHash(location.hash);
+					    	}
+					    }
+					});
+				}
+			}
 		});
 	}
 
@@ -720,11 +787,13 @@ function bindAboutPodElement() {
 	function removeFieldUpdateDynForm(collection){
 		mylog.log("------------------------ removeFieldUpdateDynForm", collection);
 		var fieldsElement = [ 	"name", "tags", "email", "url", "fixe", "mobile", "fax", 
-								"telegram", "gitHub", "skype", "twitter", "facebook", "gpplus"];
+								"telegram", "github", "skype", "twitter", "facebook", "gpplus"];
 		var fieldsPerson = ["username",  "birthDate"];
-		var fieldsProject = [ "avancement", "startDate", "endDate" ];
-		var fieldsOrga = [ "type" ];
-		var fieldsEvent = [ "type", "startDate", "endDate"];
+		var fieldsProject = [ "avancement", "startDate", "endDate", "parentId" ];
+		var fieldsOrga = [ "type", "parentId" ];
+		var fieldsEvent = [ "type", "startDate", "endDate", "parentId", , "organizerId"];
+
+		var SNetwork = [ "telegram", "github", "skype", "twitter", "facebook", "gpplus"];
 
 		if(collection == typeObj.person.col)
 			fieldsElement = fieldsElement.concat(fieldsPerson);
@@ -735,6 +804,8 @@ function bindAboutPodElement() {
 		else if(collection == typeObj.event.col)
 			fieldsElement = fieldsElement.concat(fieldsEvent);
 		var valCD = "";
+
+
 		$.each(fieldsElement, function(key, val){ 
 
 			valCD = val;
@@ -742,7 +813,11 @@ function bindAboutPodElement() {
 				valCD = "typeOrga";
 			else if(val == "type" && collection == typeObj.event.col)
 				valCD = "typeEvent";
+			else if(val == "type" && collection == typeObj.event.col)
+				valCD = "typeEvent";
 
+			mylog.log("val", val, valCD);
+			mylog.log("val2", $("#ajaxFormModal #"+val).length);
 			if(	$("#ajaxFormModal #"+val).length && 
 				( 	( 	typeof contextData[valCD] != "undefined" && 
 						contextData[valCD] != null && 
@@ -750,9 +825,21 @@ function bindAboutPodElement() {
 					) ||  
 					( 	( 	typeof contextData[valCD] == "undefined" || 
 							contextData[valCD] == null ) && 
-						$("#ajaxFormModal #"+val).val().trim().length == 0 ) 
+						$("#ajaxFormModal #"+val).val().trim().length == 0 ) || 
+					//social network
+					( 	$.inArray( val, SNetwork ) >= 0 && 
+						( 	typeof contextData["socialNetwork"] != "undefined" && 
+							contextData["socialNetwork"] != null ) && (
+						( 	typeof contextData["socialNetwork"][val] != "undefined" || 
+							contextData["socialNetwork"][val] != null && 
+							$("#ajaxFormModal #"+val).val().trim() == contextData["socialNetwork"][val] )
+						||
+						( 	( 	typeof contextData["socialNetwork"][val] == "undefined" || 
+							contextData["socialNetwork"][val] == null ) && 
+						$("#ajaxFormModal #"+val).val().trim().length == 0 ) )
+					)
 				) 
-			){
+			) {
 				$("#ajaxFormModal #"+val).remove();
 			}
 			else if(val == "birthDate"){

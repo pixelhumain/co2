@@ -456,6 +456,7 @@
 		};
 
 		Sig.getIcoNameByType = function (data){
+			mylog.log("getIcoNameByType",this.icoMarkersMap,  data);
 			var type = this.getTypeSigOfData(data);
 			if(this.icoMarkersMap[type] != null){
 					return this.icoMarkersMap[type];
@@ -635,6 +636,10 @@
 			"news"   : "Actualités",
 			"News"   : "Actualités",
 			"NEWS"   : "Actualités",
+
+			"classified"   : "Annonces",
+			"poi"   : "Points d'intérêt",
+			"city"   : "Commune",
 			
 		}
 

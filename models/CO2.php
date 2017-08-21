@@ -50,9 +50,9 @@ class CO2 {
         if(isset( Yii::app()->request->cookies['communexionActivated'] ) && 
                   (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
             $communexion["state"] = true;
-        echo "oui";
         }        
         if(@Yii::app()->request->cookies['cpCommunexion'] && !empty(Yii::app()->request->cookies['cpCommunexion']->value)){
+            $communexion["state"] = true;
             $cp = (string)Yii::app()->request->cookies['cpCommunexion'];
             $insee = (string)Yii::app()->request->cookies['inseeCommunexion'];
 

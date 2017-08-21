@@ -1,0 +1,60 @@
+{
+    "sections" : {
+        "all": {
+            "label":"Tous",           
+            "key" : "all",  
+            "icon" : "cloud"
+        },
+        "common": {
+            "label":"Commun",           
+            "key" : "common",  
+            "icon" : "circle-o"
+        },
+        "public": {
+            "label":"Public",      
+            "key" : "public",     
+            "icon" : "users"
+        },
+        "private": {
+            "label":"Privée",             
+            "key" : "private",     
+            "icon" : "lock"
+        },
+        "urban": {
+            "label":"Urbain",           
+            "key" : "urban",  
+            "icon" : "building-o"
+        },
+        "rural": {
+            "label":"Rural",           
+            "key" : "rural",  
+            "icon" : "tree"
+        }
+        
+    },
+    "filters":{
+         "TiersLieux" : 
+            {   "icon" : "home",
+                "subcat" : 
+                [   "Fablab",
+                    "Repaire Café",
+                    "Coworking", 
+                    "Salle reunion",
+                    "Jardin Partagé",
+                    "Urbaine",
+                    "Rurale"
+                ]
+            }, 
+
+        "Maison" :  {  
+             "icon" : "home",
+            "subcat" : 
+            [    "Electroménager",
+                 "Mobilier", 
+                 "Équipement bébé", 
+                 "Animaux", 
+                 "Divers"
+            ]
+        }
+    }
+}

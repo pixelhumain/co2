@@ -116,19 +116,23 @@ function removeNotification(id)
 	
 }*/
 
-function refreshNotifications(elementId,elementType,element)
+function refreshNotifications(elementId,elementType,element,event)
 {
 	//ajax get Notifications
 	$(".pageslide-list.header .btn-primary i.fa-refresh").addClass("fa-spin");
 	mylog.log("refreshNotifications", maxNotifTimstamp);
 	var element = element;
+	if(typeof event != "undefined" && event)
+		var event=event;
+	else
+		var event=null;
 	$.ajax({
         type: "GET",
         url: baseUrl+"/"+moduleId+"/notification/getnotifications/type/"+elementType+"/id/"+elementId+"?ts="+maxNotifTimstamp
     })
     .done(function (data) { //mylog.log("REFRESH NOTIF : "); mylog.dir(data);
         if (data) {       
-        	buildNotifications(data,element);
+        	buildNotifications(data,element,event);
         } else {
             toastr.error("no notifications found ");
         }
@@ -158,14 +162,17 @@ function refreshNotifications(elementId,elementType,element)
     });
 
 }*/
-function buildNotifications(list, element)
+function buildNotifications(list, element, event)
 {	mylog.log(list);
 	//element="";
 //	if(isPodView)
 //		element="Element";
 //	mylog.info("buildNotifications"+element+"()");
 	mylog.log(typeof list);
-	$(".notifList"+element).html("");
+	if(event==null)
+		$(".notifList"+element).html("");
+	else
+		notifHtml="";
 	if(typeof list != "undefined" && typeof list == "object"){
 		$.each( list , function( notifKey , notifObj )
 		{
@@ -196,28 +203,43 @@ function buildNotifications(list, element)
 			var isSeen = (typeof notifObj.notify.id[userId] != "undefined" && typeof notifObj.notify.id[userId].isUnseen != "undefined") ? "" : "seen";
 			var isRead = (typeof notifObj.notify.id[userId] != "undefined" && typeof notifObj.notify.id[userId].isUnread != "undefined") ? "" : "read";
 
-			str = "<li class='notifLi notif_"+notifKey+" "+isSeen+" "+isRead+" hide'>"+
-					"<a href='javascript:;' class='notif' data-id='"+notifKey+"' data-href='"+ url +"'>"+
-						"<span class='label bg-dark'>"+
-							'<i class="fa '+icon+'"></i>'+
-						"</span>" + 
-						
-						'<span class="message">'+
-							displayName+
-						"</span>" + 
-						
-						"<span class='time pull-left'>"+momentNotif+"</span>"+
+			str = "<li class='notifLi notif_"+notifKey+" "+isSeen+" "+isRead+" ";
+					if(event==null)
+						str+="hide";
+					else
+						str+="enable";
+				str+="'>"+
+					"<a href='javascript:;' class='notif col-md-12 col-sm-12 col-xs-12 no-padding' data-id='"+notifKey+"' data-href='"+ url +"'>"+
+						"<div class='content-icon col-md-1 col-sm-1 col-xs-1 no-padding'>"+
+							"<span class='label bg-dark pull-left'>"+
+								'<i class="fa '+icon+'"></i>'+
+							"</span>" +
+						"</div>"+ 
+						"<div class='col-md-10 col-sm-10 col-xs-10 no-padding'>"+
+							'<span class="message pull-left">'+
+								displayName+
+							"</span>" + 
+							
+							"<span class='time pull-left'>"+momentNotif+"</span>"+
+						"</div>"+
 					"</a>"+
 					"<a href='javascript:;' class='label removeBtn tooltips' onclick='removeNotification(\""+notifKey+"\")' data-toggle='tooltip' data-placement='left' title='Delete' style='display:none;'>"+
 							'<i class="fa fa-remove"></i>'+
 						"</a>" + 
 				  "</li>";
-
-			$(".notifList"+element).append(str);
-			$(".notif_"+notifKey).removeClass('hide').addClass("animated bounceInRight enable");
+			if(event==null){
+				$(".notifList"+element).append(str);
+				$(".notif_"+notifKey).removeClass('hide').addClass("animated bounceInRight enable col-md-12 col-sm-12 col-xs-12");
+			}else{
+				notifHtml+=str;
+			}
 			if( notifObj.timestamp > maxNotifTimstamp )
 				maxNotifTimstamp = notifObj.timestamp;
 		});
+		if(event != null){
+			$(".notifList"+element).html(notifHtml);
+			$(".notifLi").addClass("col-md-12 col-sm-12 col-xs-12");
+		}
 		setTimeout( function(){
 	    	notifCount(false, element);
 	    	bindNotifEvents(element);
@@ -236,7 +258,7 @@ function notifCount(upNotifUnseen, element)
 	mylog.log(" !!!! notifCount", countNotif, "element :",element);
 	$(".notifCount").html( countNotif );
 	if(countNotif == 0)
-		$(".notifList"+element).html("<li><i class='fa fa-ban'></i> No more notifications for the moment</li>");
+		$(".notifList"+element).html("<li class='col-md-12 col-sm-12 col-xs-12'><i class='fa fa-ban'></i> "+trad["noMoreNotifs"]+"</li>");
 	//if(element==""){
 		if( countNotifUnseen > 0)
 		{

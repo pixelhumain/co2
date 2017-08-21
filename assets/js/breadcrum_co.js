@@ -23,6 +23,8 @@ function bindCommunexionScopeEvents(){
             $("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
         }
         toogleScopeMultiscope( $(this).data("scope-value") );
+        if(actionOnSetGlobalScope=="filter")
+            $("#newsstream").html("<div class='col-md-12 text-center'><i class='fa fa-circle'></i> <i class='fa fa-circle'></i> <i class='fa fa-circle'></i><hr style='margin-top: 34px;'></div>");
         $("#footerDropdown").html("<i class='fa fa-circle'></i> <i class='fa fa-circle'></i> <i class='fa fa-circle'></i><hr style='margin-top: 34px;'>");
         var sec = 3;
         if(typeof interval != "undefined") clearInterval(interval);
@@ -44,6 +46,8 @@ function bindCommunexionScopeEvents(){
                 for(n=0;n<sec;n++) str += "<i class='fa fa-circle'></i> ";
                 str += "<hr style='margin-top: 34px;'>";
                 $("#footerDropdown").html(str);
+                if(actionOnSetGlobalScope=="filter")
+                    $("#newsstream").html("<div class='col-md-12 text-center'>"+str+"</div>");
             }
         }, 800);
         checkScopeMax();
@@ -52,6 +56,8 @@ function bindCommunexionScopeEvents(){
     $(".start-new-communexion").click(function(){  
         if (typeof $.cookie('communexionName') !== 'undefined'){
             activateGlobalCommunexion(true);
+            if(actionOnSetGlobalScope=="save")
+                $(".item-globalscope-checker").attr('disabled', true);
         }else{
             communecterUser();
         }
@@ -62,15 +68,15 @@ function activateGlobalCommunexion(active, firstLoad){  mylog.log("activateGloba
     globalCommunexion=active;
     if(active){
         headerHtml='<i class="fa fa-university"></i> ' + $.cookie('communexionName') + "<small class='text-dark'>.CO</small>"
-        setGlobalScope($.cookie('communexionValue'), $.cookie('communexionName'), $.cookie('communexionType'), $.cookie('communexionLevel'));
+        //setGlobalScope($.cookie('communexionValue'), $.cookie('communexionName'), $.cookie('communexionType'), $.cookie('communexionLevel'));
         $("#container-scope-filter").html(getBreadcrumCommunexion());
         if(actionOnSetGlobalScope=="save")
             $("#scopeListContainerForm").html(getBreadcrumCommunexion());
         bindCommunexionScopeEvents();
     }
     else{
-        headerHtml='<a href="#web" class="menu-btn-back-category" data-target="#modalMainMenu" data-toggle="modal">'+
-                '<img src="'+themeUrl+'/assets/img/CO2r.png" height="60" class="inline margin-bottom-15">'+
+        headerHtml='<a href="#" class="menu-btn-back-category" data-target="#modalMainMenu" data-toggle="modal">'+
+                '<img src="'+themeUrl+'/assets/img/LOGOS/'+domainName+'/logo-head-search.png" height="60" class="inline margin-bottom-15">'+
                 '</a>';
         saveCookieMultiscope();
         //rebuildSearchScopeInput();
@@ -93,7 +99,7 @@ function getBreadcrumCommunexion(){
             tips+=v+" / ";
         });
     }
-    htmlCommunexion='<div class="breadcrum-communexion hidden-xs col-md-12">';
+    htmlCommunexion='<div class="breadcrum-communexion col-md-12">';
     if(actionOnSetGlobalScope=="filter"){
         htmlCommunexion+='<button class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="Quitter la communexion">'+
             '<i class="fa fa-times"></i>'+

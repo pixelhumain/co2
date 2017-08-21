@@ -6,42 +6,43 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	sub : function(){
-
 	    		
     			$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 						  					  .addClass("bg-orange");
     		 	
     		 	$("#ajax-modal-modal-title").html(
     		 		$("#ajax-modal-modal-title").html()+
-    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
+    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
 
-	    		if(contextData.type == "events"){
+	    		if(contextData && contextData.type == "events"){
 	    			$("#ajaxFormModal #parentId").removeClass('hidden');
 	    		
     				if( $('#ajaxFormModal #parentId > optgroup > option[value="'+contextData.id+'"]').length == 0 )
-	    				$('#ajaxFormModal #parentId > optgroup[label="events"]').prepend('<option value="'+contextData.id+'" selected>Fait parti de : '+contextData.name+'</option>');
+	    				$('#ajaxFormModal #parentId > optgroup[label="events"]').prepend('<option value="'+contextData.id+'" selected>'+tradDynForm["ispartof"]+' : '+contextData.name+'</option>');
 	    			else if ( contextData && contextData.id ){
 		    			$("#ajaxFormModal #parentId").val( contextData.id );
 	    			}
 
-	    			if ( contextData && contextData.id ){
+	    			if ( contextData && typeof contextData.organizerId != "undefined"){
 		    			$("#ajaxFormModal #organizerId").val( contextData.organizerId );
 	    			}
+	    			if(contextData && typeof contextData.organizerType != "undefined")
+	    				$("#ajaxFormModal #organizerType").val( contextData.organizerType );
 	    			//$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
 	    			if( contextData && contextData.type )
 	    				$("#ajaxFormModal #parentType").val( contextData.type ); 
 
-	    			if(contextData.startDate && contextData.endDate ){
-	    				$("#ajaxFormModal").after("<input type='hidden' id='startDateParent' value='"+contextData.startDate+"'/>"+
-	    										  "<input type='hidden' id='endDateParent' value='"+contextData.endDate+"'/>");
-	    				$("#ajaxFormModal #startDate").after("<span id='parentstartDate'><i class='fa fa-warning'></i> date début du parent : "+moment( contextData.startDate).format('DD/MM/YYYY HH:mm')+"</span>");
-	    				$("#ajaxFormModal #endDate").after("<span id='parentendDate'><i class='fa fa-warning'></i> date de fin du parent : "+moment( contextData.endDate).format('DD/MM/YYYY HH:mm')+"</span>");
+	    			if(contextData.startDateDB && contextData.endDateDB){
+	    				$("#ajaxFormModal").after("<input type='hidden' id='startDateParent' value='"+contextData.startDateDB+"'/>"+
+	    										  "<input type='hidden' id='endDateParent' value='"+contextData.endDateDB+"'/>");
+	    				$("#ajaxFormModal #startDate").after("<span id='parentstartDate'><i class='fa fa-warning'></i> "+tradDynForm["parentStartDate"]+" : "+ moment( contextData.startDateDB /*,"YYYY-MM-DD HH:mm"*/).format('DD/MM/YYYY HH:mm')+"</span>");
+	    				$("#ajaxFormModal #endDate").after("<span id='parentendDate'><i class='fa fa-warning'></i> "+tradDynForm["parentEndDate"]+" : "+ moment( contextData.endDateDB /*,"YYYY-MM-DD HH:mm"*/).format('DD/MM/YYYY HH:mm')+"</span>");
 	    			}
 	    			//alert($("#ajaxFormModal #parentId").val() +" | "+$("#ajaxFormModal #parentType").val());
 	    		}
 	    		else {
 		    		if( $('#ajaxFormModal #organizerId > optgroup > option[value="'+contextData.id+'"]').length == 0 )
-	    				$('#ajaxFormModal #organizerId').prepend('<option data-type="'+typeObj[contextData.type].ctrl+'" value="'+contextData.id+'" selected>Organisé par : '+contextData.name+'</option>');
+	    				$('#ajaxFormModal #organizerId').prepend('<option data-type="'+typeObj[contextData.type].ctrl+'" value="'+contextData.id+'" selected>'+tradDynForm["organizedby"]+' : '+contextData.name+'</option>');
 	    			else if( contextData && contextData.id )
 		    			$("#ajaxFormModal #organizerId").val( contextData.id );
 	    			if( contextData && contextData.type )
@@ -64,8 +65,6 @@ dynForm = {
 	        }
 		},
 	    beforeSave : function(){
-	    	//alert("onBeforeSave");
-	    	
 	    	if( !$("#ajaxFormModal #allDay").val())
 	    		$("#ajaxFormModal #allDay").val(false);
 	    	if( typeof $("#ajaxFormModal #description").code === 'function' )
@@ -75,24 +74,30 @@ dynForm = {
 	    	//Transform datetime before sending
 	    	var allDay = $("#ajaxFormModal #allDay").is(':checked');
 	    	var dateformat = "DD/MM/YYYY";
-	    	if (! allDay) 
-	    		var dateformat = "DD/MM/YYYY HH:mm"
-	    	$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format());
-			$("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format());
-			//mylog.log($("#ajaxFormModal #startDate").val());
+	    	var outputFormat="YYYY-MM-DD";
+	    	if (! allDay) {
+	    		var dateformat = "DD/MM/YYYY HH:mm";
+	    		var outputFormat="YYYY-MM-DD HH::mm";
+	    	}
+	  		// $("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format(outputFormat));
+			// $("#ajaxFormModal #endDate").val( moment( $("#ajaxFormModal #endDate").val(), dateformat).format(outputFormat));
+
+			mylog.log( "HERE", $("#ajaxFormModal #startDate").val(), moment( $("#ajaxFormModal #startDate").val(), dateformat).format() ) ; 
+			$("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format() );
+			$("#ajaxFormModal #endDate").val( moment(   $("#ajaxFormModal #endDate").val(), dateformat).format() );
 	    },
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p><i class='fa fa-info-circle'></i> Si vous voulez créer un nouvel évènement de façon à le rendre plus visible : c'est le bon endroit !!<br>Vous pouvez inviter des participants, planifier des sous évènements, publier des actus lors de l'évènement...</p>",
+                html:"<p><i class='fa fa-info-circle'></i> "+tradDynForm["infocreateevent"]+"...</p>",
             },
             name : dyFInputs.name("event"),
 	        similarLink : dyFInputs.similarLink,
 	        organizerId :{
-	        	label : "Qui organise cet événement ?",
+	        	label : tradDynForm["whoorganizedevent"]+" ?",
 	        	rules : { required : true },
             	inputType : "select",
-            	placeholder : "Qui organise ?",
+            	placeholder : tradDynForm["whoorganize"]+" ?",
             	rules : { required : true },
             	options : firstOptions(),
             	groupOptions : myAdminList( ["organizations","projects"] ),
@@ -115,12 +120,12 @@ dynForm = {
             },
 	        organizerType : dyFInputs.inputHidden(),
 	        parentId :{
-	         	label : "Fait parti d'un évènement ?",
+	         	label : tradDynForm["ispartofevent"]+" ?",
             	inputType : "select",
             	class : "",
-            	placeholder : "Fait parti d'un évènement ?",
+            	placeholder : tradDynForm["ispartevent"]+" ?",
             	options : {
-            		"":"Pas de Parent"
+            		"":tradDynForm["noparent"]
             	},
             	"groupOptions" : myAdminList( ["events"] ),
             	init : function(){ console.log("init ParentId");
@@ -150,25 +155,25 @@ dynForm = {
 		            		}
 		            		$("#startDateParent").val(startDateParent);
 		            		$("#endDateParent").val(endDateParent);
-		            		$("#parentstartDate").html("<i class='fa fa-warning'></i> Date de début de l'événement parent : "+moment( startDateParent ).format('DD/MM/YYYY HH:mm'));
-			    			$("#parentendDate").html("<i class='fa fa-warning'></i> Date de fin de l'événement parent : "+moment( endDateParent ).format('DD/MM/YYYY HH:mm'));
+		            		$("#parentstartDate").html("<i class='fa fa-warning'></i> "+tradDynForm["eventparentStartDate"]+" : "+moment( startDateParent ).format('DD/MM/YYYY HH:mm'));
+			    			$("#parentendDate").html("<i class='fa fa-warning'></i> "+tradDynForm["eventparentEndDate"]+" : "+moment( endDateParent ).format('DD/MM/YYYY HH:mm'));
 	            		}
 	            	});
 	            }
             },
             parentType : dyFInputs.inputHidden(),
-	        type : dyFInputs.inputSelect("Type d\'évènement",null,eventTypes, { required : true }),
+	        type : dyFInputs.inputSelect(tradDynForm["eventTypes"],null,eventTypes, { required : true }),
 	        image : dyFInputs.image( ),
             allDay : dyFInputs.allDay(),
-            startDate : dyFInputs.startDateInput,
-            endDate : dyFInputs.endDateInput,
+            startDate : dyFInputs.startDateInput("datetime"),
+            endDate : dyFInputs.endDateInput("datetime"),
             location : dyFInputs.location,
             tags : dyFInputs.tags(),
-            shortDescription : dyFInputs.textarea("Description courte", "...",{ maxlength: 140 }),
+            shortDescription : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
             formshowers : {
-            	label : "En détails",
+            	label : tradDynForm["indetails"],
                 inputType : "custom",
-                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> options (desc, urls)</a>",
+                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> "+tradDynForm["optiondescrurl"]+"</a>",
             },
 	        url : dyFInputs.inputUrlOptionnel(),
             "preferences[publicFields]" :  dyFInputs.inputHidden([]),

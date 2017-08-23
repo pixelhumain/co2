@@ -5,92 +5,91 @@
 	</div>
 	<div class="col-lg-12 col-md-12 col-sm-12">
 		<hr>
-		<button class="btn btn-link radius-5 text-purple col-lg-12 col-md-12 col-sm-12" id="btn-create-amendement">
+		<button class="btn btn-link radius-5 text-purple col-lg-12 col-md-12 col-sm-12 btn-create-amendement">
 			<i class="fa fa-pencil"></i> Proposer un amendement
 		</button>
 	</div>
 
-	<?php $amendements = array( array("pseudo"=>"pseudo1",
-									  "type"=>"Ajout", 
-									  "color"=>"green"), 
+	 <div class="form-group col-lg-12 col-md-12 col-sm-12 hidden" id="form-amendement">
+	  <hr>
+	  <label><i class="fa fa-pencil"></i> Rédiger votre amendement :</label><br>
+	  <small><i>Si votre amendement est accepté, il sera ajouté à la suite de la proposition principale,<br>et fera parti de la proposition finale, soumise au vote.</i></small><br><br>
+	  <textarea class="form-control" rows="5" id="txtAmdt" placeholder="votre amendement"></textarea>
+	  <br>
+	  <small class="pull-right"><i>Les amendements ne peuvent dépasser la taille de 500 caractères.</i></small>
+	  <br>
+	  <button class="btn btn-sm btn-link radius-5 bg-green-k pull-right" id="btn-save-amendement">
+			<i class="fa fa-save"></i> Enregistrer mon amendement
+	  </button>
+	  <button class="btn btn-sm btn-link radius-5 bg-red pull-right margin-right-10" id="btn-save-amendement">
+			<i class="fa fa-times"></i> Annuler
+	  </button>
+	  <hr class="col-lg-12 col-md-12 col-sm-12 no-padding">
+	</div> 
 
-								array("pseudo"=>"pseudo2",
-									  "type"=>"Suppression",
-									  "color"=>"red"), 
-
-								array("pseudo"=>"pseudo3",
-									  "type"=>"Modification",
-									  "color"=>"orange") 
-							);
-	?>
-
-	<?php $i=0;
+	<?php 
+		$i=0;		
+		$allVotesRes = array();
+		if(@$amendements)
 		foreach($amendements as $key => $am){ $i++;
-	?>
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow2 margin-top-15 padding-15 podVoteAmendement">
-			
-			<div class="col-lg-9 col-md-9 col-sm-8 col-xs-8 pull-left no-padding">
-				<img src="<?php echo $this->module->assetsUrl.'/images/thumbnail-default.jpg'; ?>" 
-					 class="img-circle pull-left margin-right-10" height="30" width="30">
-				<label class="pull-left margin-top-5">Pseudo</label>
-				
-				<h6 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">Vous n'avez pas voté</h6>
-				<label class="pull-left">n°<?php echo $i; ?> <span class="letter-green">
-					<i class="fa fa-angle-right"></i> Ajout</span>
-				</label>
-			</div>
+			//var_dump($am); //exit;
+			$author = Person::getSimpleUserById(@$am["idUserAuthor"]);
+			$allVotes = @$am["votes"] ? $am["votes"] : array();
+			$myId = Yii::app()->session["userId"];
+			$hasVoted = Cooperation::userHasVoted($myId, $allVotes);
+	 		$voteRes = Proposal::getAllVoteRes($am);
+	 		unset($voteRes["uncomplet"]);
+	 		$allVotesRes[$key] = $voteRes;
 
-			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-2 pull-right">
-				<canvas class="" id="res-vote-chart-<?php echo $i; ?>" width="100%" height="100px"/>
-			</div>
-			
-			<p class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-				Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit
-			</p>
-			<?php 
-		 		$voteRes = array("Pour"=> array("bg-color"=> "green-k",
-		 										"votant"=>55, "percent"=>55),
-		 						"Contre"=> array("bg-color"=> "red",
-		 										"votant"=>25, "percent"=>25),
-		 						"Blanc"=> array("bg-color"=> "white",
-		 										"votant"=>5, "percent"=>5),
-		 		);
-		 		foreach ($voteRes as $key => $value) {
-		 	?>
-
-			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center pull-left margin-top-5 padding-5">
-					<button class="btn btn-link btn-sm bg-<?php echo $value["bg-color"]; ?> 
-									tooltips col-lg-12 col-md-12 col-sm-12 col-xs-12"
-							data-original-title="cliquer pour voter" data-placement="bottom">
-							<?php echo $key; ?> (<?php echo $value["percent"]; ?>%)
-					</button>			
-			</div>
-
-			<?php } ?>
-
-			
-		</div>
-
-	<?php } ?>
+	 		$this->renderPartial('../cooperation/pod/amendement', array("key"=>$key, "am"=>$am,
+		 																"author" => $author,
+		 																"voteRes" => $voteRes,
+		 																"allVotes" => $allVotes,
+		 																"myId" => $myId,
+		 																"hasVoted" => $hasVoted));
+		} 
+	 ?>
 		
 </div>
 
 <script type="text/javascript">
 	var myPieChart;
-	var voteRes = <?php echo json_encode($voteRes); ?> 
+	var amendements = <?php echo json_encode(@$amendements); ?> ;
+	var allVotesRes = <?php echo json_encode($allVotesRes); ?>;
 	jQuery(document).ready(function() { //alert("start loadchart");
-		//setTimeout(function(){chartInit();},200);
+		
 		var i=0;
-		$.each(voteRes, function(key, val){ i++;
-			chartInitAm(i);
+		if(allVotesRes != null){
+			$.each(allVotesRes, function(key, voteRes){
+				var voteValues = new Array();
+				var totalVotant = 0;
+
+				if(voteRes.up != "undefined") 		{ voteValues.push(voteRes.up.percent); totalVotant+=voteRes.up.votant; }
+				if(voteRes.down != "undefined") 	{ voteValues.push(voteRes.down.percent); totalVotant+=voteRes.down.votant; }
+				if(voteRes.white != "undefined") 	{ voteValues.push(voteRes.white.percent); totalVotant+=voteRes.white.votant; }
+				
+				if(totalVotant > 0)
+				chartInitAm(key, voteValues);
+			});
+		}
+
+		$("#btn-save-amendement").click(function(){
+			uiCoop.saveAmendement(idParentProposal, "add");
+		});
+
+		$(".btn-send-vote-amendement").click(function(){
+			var voteValue = $(this).data('vote-value');
+			var idAmdt = $(this).data('vote-id-amdt');
+			console.log("send vote", voteValue),
+			uiCoop.sendVote("amendement", idParentProposal, voteValue, idParentRoom, idAmdt);
 		});
 	});
 
-	function chartInitAm(key){ //alert("start loadchart");
+	function chartInitAm(key, data){ 
+		console.log("chartInitAm", key, data);
 		var data = {
 		    datasets: [{
-		    	data: [55, 25, 20],
-		    
+		    	data: data,
 			    // These labels appear in the legend and in the tooltips when hovering different arcs
 			    backgroundColor: [
 	                '#34a853',
@@ -128,6 +127,5 @@
 			},
 		    //options: options
 		});
-		//myPieChart.canvas.style.height = '50px';
 	}
 </script>

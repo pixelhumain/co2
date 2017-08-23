@@ -97,7 +97,12 @@ dynForm = {
             },*/
             title : dyFInputs.name("proposal"),
             description : dyFInputs.textarea(tradDynForm.textproposal, "..."),
-            arguments : dyFInputs.textarea(tradDynForm.textarguments, "..."),
+            infoargs : {
+                inputType : "custom",
+                html:"<div class='text-left'><b><i class='fa fa-info-circle'></i> <i>Le vote final portera sur le contenu de votre proposition.</b>"+
+                	 "<br>Pour plus de clareté, détaillez toute information complémentaire, relative à votre proposition, dans la section suivante.</i></div>",
+            },
+	        arguments : dyFInputs.textarea(tradDynForm.textargumentsandmore, "..."),
             amendementActivated : dyFInputs.checkbox(true, "amendementActivated", 
             										{ "onText" : "Non",
             										  "offText": "Oui",

@@ -278,6 +278,10 @@ var trad = {
 	"action":"<?php echo Yii::t("rooms","action") ?>",
 	"actionRooms":"<?php echo Yii::t("rooms","actionRooms") ?>",
 	"room":"<?php echo Yii::t("rooms","room") ?>",
+
+	"Your amendement has been save with success" : "<?php echo Yii::t("cooperation", "Your amendement has been save with success") ?>",
+	"Your vote has been save with success" : "<?php echo Yii::t("cooperation", "Your vote has been save with success") ?>",
+	"processing save" : "<?php echo Yii::t("cooperation", "processing save") ?>",
 };
 
 var tradDynForm = {
@@ -375,6 +379,7 @@ var tradDynForm = {
 	"theprojectmaturity":"<?php echo Yii::t("form","Maturity of the project") ?>",
 	"projectmaturity":"<?php echo Yii::t("form","Project maturity") ?>",
 	"textarguments" : "<?php echo Yii::t("form","Arguments") ?>",
+	"textargumentsandmore" : "<?php echo Yii::t("form","More informations, arguments, exemples,") ?>",
 };
 
 var tradCategory = {

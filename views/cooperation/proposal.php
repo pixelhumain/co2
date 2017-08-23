@@ -93,11 +93,11 @@
 			</button> -->
 		<?php //} ?>
 		<?php if($auth){ ?>
-			<button class="btn btn-link text-purple radius-5">
+			<button class="btn btn-link text-purple radius-5 btn-create-amendement">
 				<i class="fa fa-pencil"></i> Proposer un amendement
 			</button>
 		<?php } ?>
-			<button class="btn btn-link text-purple radius-5 btn-show-amendement pull-right">
+			<button class="btn btn-link text-purple radius-5 btn-show-amendement">
 				Afficher les amendements <i class="fa fa-chevron-right"></i>
 			</button>
 			
@@ -119,11 +119,28 @@
 
 <div class="col-lg-10 col-md-12 col-sm-12 margin-top-25">
 	<?php echo nl2br($proposal["description"]); ?>
-	<hr>
-	<!-- <button class="btn btn-link col-lg-12 col-md-12 col-sm-12 bg-purple radius-5 btn-show-amendement">
-		<i class="fa fa-pencil-square-o"></i> Afficher les amendements
-	</button> -->
+	
+	<?php if(@$proposal["arguments"]){ ?>
+		<hr>
+		<h6 class=""><i class="fa fa-angle-down"></i> Compléments d'informations, argumentations, exemples, démonstrations, etc</h6>
+		<?php echo nl2br(@$proposal["arguments"]); ?>
+	<?php } ?>
 
+	<?php if(@$proposal["tags"]){ ?>
+		<hr>
+		<?php foreach($proposal["tags"] as $key => $tag){ ?>
+			<span class="badge bg-red"><?php echo $tag; ?></span>
+		<?php } ?>	
+	<?php } ?>
+
+	<?php if(@$proposal["urls"]){ ?>
+		<hr>	
+		<h6 class=""><i class="fa fa-angle-down"></i> Liens externes</h6>
+		<?php foreach($proposal["urls"] as $key => $url){ ?>
+			<a href="<?php echo $url; ?>" class="btn btn-link"><?php echo $url; ?></a>
+		<?php } ?>
+	<?php } ?>
+	<hr>	
 </div>
 
 
@@ -132,6 +149,7 @@
 	<h4 class="pull-left"><i class="fa fa-angle-down"></i> Liste des amendements validés</h4>
 	<button class="btn btn-default pull-right btn-extend-proposal"><i class="fa fa-long-arrow-left"></i></button>
 	<button class="btn btn-default pull-right btn-minimize-proposal hidden"><i class="fa fa-long-arrow-right"></i></button>
+	<div class="col-lg-12 col-md-12 col-sm-12"><i class="fa fa-ban"></i> Aucun amendement validé</div>
 </div>
 <?php } ?>
 
@@ -145,7 +163,7 @@
 	
 </div>
 
-
+<?php $this->renderPartial('../cooperation/amendements', array("amendements"=>@$proposal["amendements"])); ?>
 
 <script type="text/javascript">
 	var idParentProposal = "<?php echo $proposal['_id'] ?>";
@@ -175,6 +193,14 @@
 		$("#btn-hide-amendement").click(function(){
 			uiCoop.showAmendement(false);
 		});
+		$(".btn-create-amendement").click(function(){
+			uiCoop.showAmendement(true);
+			if($("#form-amendement").hasClass("hidden"))
+				$("#form-amendement").removeClass("hidden");
+			else 
+				$("#form-amendement").addClass("hidden");
+		});
+
 		$(".btn-send-vote").click(function(){
 			var voteValue = $(this).data('vote-value');
 			console.log("send vote", voteValue),

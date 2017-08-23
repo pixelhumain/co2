@@ -83,6 +83,7 @@ var uiCoop = {
 	},
 
 	"getCoopData" : function(parentType, parentId, type, status, dataId, onSuccess, showLoading){
+		console.log("getCoopData", parentType, parentId, type, status, dataId, onSuccess, showLoading)
 		var url = moduleId+'/cooperation/getcoopdata';
 		var params = {
 			"parentType" : parentType,
@@ -91,11 +92,15 @@ var uiCoop = {
 			"status" : status,
 			"dataId" : dataId
 		};
-
+		console.log("showLoading ?", typeof showLoading, showLoading);
+		
 		if(typeof showLoading == "undefined" || showLoading == true){
-			if(typeof dataId == "undefined" || dataId == null || type == "room")
-					$("#central-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
-			else	$("#coop-data-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
+			if(typeof dataId == "undefined" || dataId == null || type == "room"){
+				$("#central-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
+			}
+			else{
+				$("#coop-data-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
+			}
 		}
 
 		ajaxPost("", url, params,
@@ -162,26 +167,33 @@ var uiCoop = {
 		});
 	},
 
-	"sendVote" : function(parentType, parentId, voteValue, idParentRoom){
-
+	"sendVote" : function(parentType, parentId, voteValue, idParentRoom, idAmdt){
+		console.log("sendVote", parentType, parentId, voteValue, idParentRoom, idAmdt);
+		
 		var params = {
 			"parentType" : parentType,
 			"parentId" : parentId,
 			"voteValue" : voteValue
 		};
+		if(typeof idAmdt != "undefined")
+			params["idAmdt"] = idAmdt;
 
 		var url = moduleId+'/cooperation/savevote';
-		console.log("uiCoop.sendVote", url, params);
-		$("#coop-data-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
+		//$("#coop-data-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
 		
 		
+		toastr.info(trad["processing save"]);
 		ajaxPost("", url, params,
 			function (proposalView){
 				console.log("success save vote");
 				uiCoop.getCoopData(null, null, "room", null, idParentRoom, 
 					function(){
+						toastr.success(trad["Your vote has been save with success"]);
+						
 						uiCoop.minimizeMenuRoom(true);
 						$("#coop-data-container").html(proposalView);
+						if(parentType == "amendement")
+							uiCoop.showAmendement(true);
 					}, false);
 			}
 		);
@@ -207,6 +219,35 @@ var uiCoop = {
 		       	dataType: "json",
 		    	success: function(data){
 		    		uiCoop.getCoopData(null, null, "proposal", null, proposalId);
+		    	}
+		});
+
+	},
+
+	"saveAmendement" : function(proposalId, typeAmdt){
+		var txtAmdt = $("#txtAmdt").val();
+		var param = {
+			block: "amendement",
+			typeElement: "proposals",
+			id: proposalId,			
+			txtAmdt: txtAmdt,
+			typeAmdt: typeAmdt
+		};
+		console.log("saveAmendement", param);
+		toastr.info(trad["processing save"]);
+		$.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+"/element/updateblock/",
+		        data: param,
+		       	dataType: "json",
+		    	success: function(data){
+					console.log("success updateblock", data);
+		    		uiCoop.getCoopData(null, null, "proposal", null, proposalId, function(){
+		    			//uiCoop.minimizeMenuRoom(true);
+		    			uiCoop.showAmendement(true);
+		    			toastr.success(trad["Your amendement has been save with success"]);
+						//$("#coop-data-container").html(proposalView);
+		    		}, false);
 		    	}
 		});
 

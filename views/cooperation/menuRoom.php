@@ -203,6 +203,22 @@
 		border: 1px solid #B3C9D2;
 	}
 
+	.textAmdt{
+		font-size:14px;
+	}
+	.textAmdt hr{
+		margin-top: 0px;
+	}
+
+	textarea#arguments{
+		min-height:150px;
+	}
+
+	.extracted_content h4, .extracted_content p{
+		font-size:13px;
+		text-align: left;
+	}
+
 </style>
 
 <div class="col-lg-12 col-md-12 col-sm-12 no-padding margin-top-15 bg-white" id="coop-container">
@@ -442,9 +458,6 @@
 	<div class="hidden" id="coop-data-container">
 		
 	</div>
-
-
-	<?php $this->renderPartial('../cooperation/amendements', array()); ?>
 
 </div>
 

@@ -355,12 +355,16 @@ class CommunecterController extends Controller
       "fileupload"   => array("href" => "ph/communecter/pod/fileupload"),
       "activitylist"   => array("href" => "ph/communecter/pod/activitylist"),
     ),
+    "bookmark" => array(
+      "delete"        => array("href" => "ph/communecter/bookmark/delete"),
+    ),
     "gallery" => array(
       "index"        => array("href" => "ph/communecter/gallery/index"),
       "gallery"        => array("href" => "ph/communecter/gallery/gallery"),
       "crudcollection"        => array("href" => "ph/communecter/gallery/crudcollection"),
       "crudfile"        => array("href" => "ph/communecter/gallery/crudfile"),
       "removebyid"   => array("href" => "ph/communecter/gallery/removebyid"),
+      "filter"   => array("href" => "ph/communecter/gallery/filter"),
     ),
     "link" => array(
       "removemember"        => array("href" => "/ph/communecter/link/removemember"),

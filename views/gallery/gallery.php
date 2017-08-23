@@ -361,7 +361,6 @@ function initGrid(){
 			//}
 	})
 	if(j>0){
-		bindBtnGallery();
 		$('#Grid').mixItUp();
 		$('.portfolio-item .chkbox').bind('click', function () {
 	        if ($(this).parent().hasClass('selected')) {
@@ -379,7 +378,7 @@ function initGrid(){
 	}
 }
 
-function bindBtnGallery(){
+/*function bindBtnGallery(){
 	$(".portfolio-item .btnRemove").on("click", function(e){
 		var imageId= $(this).data("id");
 		var imageName= $(this).data("name");
@@ -413,5 +412,5 @@ function bindBtnGallery(){
 				}
 			});
 	});
-}
+}*/
 </script>

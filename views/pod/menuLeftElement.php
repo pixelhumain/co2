@@ -254,6 +254,11 @@
 			<i class="fa fa-camera"></i> <?php echo Yii::t("common","Gallery"); ?>
 		</a>
 	</li>
+	<li class="">
+		<a href="javascript:" class="ssmla" id="btn-start-library">
+			<i class="fa fa-book"></i> <?php echo Yii::t("common","Library"); ?>
+		</a>
+	</li>
 
 	
 	<li class="">

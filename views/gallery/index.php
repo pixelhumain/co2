@@ -67,6 +67,7 @@ ul.dropdown-menu-collection > li > a:hover{
 			<?php if(@$editAlbum && $editAlbum==true){ ?>
 			<div class="controls col-md-12 col-sm-12 col-xs-12 margin-top-5 no-padding">
 				<ul class="nav nav-pills">
+					<?php if($docType=="image"){ ?>
 					<li>
 						<a class="btn" href="javascript:dyFObj.openForm('addPhoto')">
 							<i class="fa fa-upload"></i> <?php echo Yii::t("common","Add Photos"); ?>
@@ -77,6 +78,30 @@ ul.dropdown-menu-collection > li > a:hover{
 							<i class="fa fa-plus"></i> <?php echo Yii::t("common","Create an album"); ?>
 						</a>
 					</li>
+					<?php } else { ?>
+						<li class="dropdown-add-file">
+							<a class="btn show-nav-add" href="javascript:;">
+								<i class="fa fa-plus-circle"></i> <?php echo Yii::t("common","Add documents"); ?>
+							</a>
+							<ul class="dropdown-menu dropdown-menu-file arrow_box">
+		                        <li class="text-left">
+		                        	<a class="btn show-nav-add" href="javascript:dyFObj.openForm('addFile')">
+		                        		<i class="fa fa-file-o"></i> <?php echo Yii::t("common","Uploaod file"); ?> 
+		                        	</a>
+		                        </li>
+		                        <li class="text-left">
+		                        	<a class="btn show-nav-add" href="javascript:dyFObj.openForm('bookmark','sub')">
+		                        		<i class="fa fa-bookmark"></i> <?php echo Yii::t("common","Add bookmark") ?>
+		                        	</a>
+		                        </li>
+	                        </ul>
+						</li>
+						<li>
+							<a class="btn" href="javascript:;" onclick="crudCollectionGallery('new')">
+								<i class="fa fa-plus"></i> <?php echo Yii::t("common","Create an album"); ?>
+							</a>
+						</li>
+					<?php } ?>
 					<li class="dropdown-collection">
 						<a class="btn show-nav-col" href="javascript:;">
 							<i class="fa fa-reply fa-rotate-180"></i> <?php echo Yii::t("common","Move to"); ?>
@@ -92,12 +117,14 @@ ul.dropdown-menu-collection > li > a:hover{
 							<i class="fa fa-trash"></i> <?php echo Yii::t("common","Delete"); ?>
 						</a>
 					</li>
+					<?php }else{
+
+						} ?>
 					<!--<li class="filter active" data-filter="all">
 						<a href="javascript:;" class="btn btn-default"><?php echo Yii::t("common","Show All"); ?></a>
 					</li>-->
 				</ul>
 			</div>
-			<?php } ?>
 			<div id="gallery-container" class="col-md-12 col-sm-12 col-xs-12 no-padding">
 			<?php
 				if($docType=="image"){
@@ -111,6 +138,17 @@ ul.dropdown-menu-collection > li > a:hover{
 						"breadcrumLevel"=>true
 					);
 			 		echo $this->renderPartial("gallery", $params, true);
+				}else if($docType=="file"){
+					$params = array(
+						"files"=>@$files,
+						"folders"=>@$folders,
+						"itemId"=>$itemId,
+						"itemType"=>$itemType,
+						"contentKey"=>"",
+						"editAlbum"=>@$editAlbum,
+						"breadcrumLevel"=>true
+					);
+			 		echo $this->renderPartial("library", $params, true);
 				}
 				//print_r($results);
 				//echo $docType;
@@ -150,10 +188,32 @@ ul.dropdown-menu-collection > li > a:hover{
 			}
   			$(this).stop(true, true).delay(200).fadeOut(500);
 		});
+		$('.show-nav-add').click(function() {
+ 			$(this).parent().find('.dropdown-menu-file').stop(true, true).delay(200).fadeIn(500);
+ 			/*htmlMenuCol="";
+ 			$.each(navCollections,function(i,v){
+ 				historyNav.push(v);
+ 			});
+ 			openDirectory();*/
+		});
+		$('.dropdown-menu-file').mouseleave(function() {
+			/*if(actionCrud==false){
+				navCollections=[];
+				$.each(historyNav,function(i,v){
+					navCollections.push(v);
+				});
+				console.log("navHistory",navCollections);
+			}*/
+  			$(this).stop(true, true).delay(200).fadeOut(500);
+		});
 	});
 	function appendLevel(breadcrumLevel, name, contentKey, buildNew){
 		if(breadcrumLevel==0){
-			$html='<i class="fa fa-home fa-1x text-black" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i><a href="javascript:;" onclick="galleryGuide('+breadcrumLevel+')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'" data-name="'+name+'">Galerie</a>';
+			if(docType=="image")
+				nameFirst="Gallery";
+			else
+				nameFirst="Lirary";
+			$html='<i class="fa fa-home fa-1x text-black" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i><a href="javascript:;" onclick="galleryGuide('+breadcrumLevel+')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'" data-name="'+name+'">'+nameFirst+'</a>';
 		} else {
 			nameBread=name;
 			if(nameBread=="")
@@ -239,20 +299,26 @@ ul.dropdown-menu-collection > li > a:hover{
 		$("#deleteDocuments").off().on("click",function(e){
 			var path="communecter";
 			e.preventDefault();
+			if(docType=="image" || contentKey=="files")
+				url="/document/delete/dir/"+moduleId+"/type/"+itemType+"/id/"+itemId;
+			else
+				url="/bookmark/delete/type/"+itemType+"/id/"+itemId;
 			bootbox.confirm("<?php echo Yii::t('common','Are you sure you want to delete this selection') ?>?", 
 			function(result) {
 				if(result){
 					$.ajax({
-						url: baseUrl+"/"+moduleId+"/document/delete/dir/"+moduleId+"/type/"+itemType+"/id/"+itemId,
+						url: baseUrl+"/"+moduleId+url,
 						type: "POST",
 						dataType : "json",
 						data: {"parentId": itemId, "ids":selectedIds, 
 							  "parentType": itemType, "path" : path, "source":"gallery"},
 						success: function(data){
 							if(data.result){
+								console.log(selectedIds);
 								$.each(selectedIds, function(i,v){
+									alert(v);
 									$("#"+v).remove();
-									selectedIds.splice(v,1);;
+									selectedIds=[];//.splice($.inArray(v,selectedIds),1);;
 								});
 								toastr.success(data.msg);
 							}else{
@@ -347,6 +413,8 @@ ul.dropdown-menu-collection > li > a:hover{
 	function getViewGallery(breadcrumLevel,name,contentKey,action){
 		if(docType=="image")
 			view="gallery";
+		else
+			view="library";
 		var url = "gallery/index/type/"+itemType+"/id/"+itemId+"/docType/"+docType;
 		var data = {};
 		if(breadcrumLevel>1 && action!=true )

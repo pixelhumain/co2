@@ -1860,7 +1860,6 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
         //url to match in the text field
         var $this = $(this);
         if($this.parents().eq(nbParent).find(appendClassName).html()=="" || (e.which==32 || e.which==13)){
-
 	        var match_url = new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
 	        if (match_url.test(getUrl.val())) 
 	        {
@@ -2164,7 +2163,170 @@ function cityKeyPart(unikey, part){
 	if(part == "cp") return unikey.substr(e+1, len);
 	if(part == "country") return unikey.substr(e+1, len);
 }
+/* ***********************************
+			EXTRACTPROCCESS
+********************************** */
+var processUrl = {
+	checkUrlExists: function(url){
+	    url = url.trim();
+	    if(url.lastIndexOf("/") == url.lenght){
+	        url = url.substr(0, url.lenght-1);
+	        $("#form-url").val(url); 
+	    }
 
+	    $.ajax({
+	        type: "POST",
+	        url: baseUrl+"/"+moduleId+"/app/checkurlexists",
+	        data: { url: url },
+	        dataType: "json",
+	        success: function(data){ console.log("checkUrlExists", data);
+	            if(data.status == "URL_EXISTS")
+	            urlExists = true;
+	            else
+	            urlExists = false;
+	            console.log("checkUrlExists", data);
+	            refUrl(url);
+	        },
+	        error: function(data){
+	            console.log("check url exists error");
+	        }
+	    });
+	},
+	refUrl: function(url){
+	    if(!processUrl.isValidURL(url)){
+	        $("#status-ref").html("<span class='letter-red'><i class='fa fa-times'></i> cette url n'est pas valide.</span>");
+	        return;
+	    }
+		$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> recherche en cours</span>");
+		$("#refResult").addClass("hidden");
+		$("#send-ref").addClass("hidden");
+
+		urlValidated = "";
+
+	    $.ajax({ 
+	    	url: "//cors-anywhere.herokuapp.com/" + url, // 'http://google.fr', 
+	    	//crossOrigin: true,
+	    	timeout:10000,
+	        success:
+				function(data) {
+					
+				    var jq = $.parseHTML(data);
+				    
+				    var tempDom = $('<output>').append($.parseHTML(data));
+				    var title = $('title', tempDom).html();
+				    var stitle = "";
+
+				    if(stitle=="" || stitle=="undefined")
+				   		stitle = $('blockquote', tempDom).html();
+
+				   	//console.log("STITLE", stitle);
+
+					if(stitle=="" || stitle=="undefined")
+				   		stitle = $('h2', tempDom).html();
+
+					if(stitle=="" || stitle=="undefined")
+				   		stitle = $('h3', tempDom).html();
+
+					if(stitle=="" || stitle=="undefined")
+				   		stitle = $('blockquote', tempDom).html();
+
+					if(title=="" || title=="undefined")
+				   		title = stitle;
+
+	                var favicon = $("link[rel*='icon']", tempDom).attr("href");
+	                var hostname = (new URL(url)).origin;
+	                var faviconSrc = "";
+	                if(typeof favicon != "undefined"){
+	                    var faviconSrc = hostname+favicon;
+	                    if(favicon.indexOf("http")>=0) faviconSrc = favicon;
+	                }
+
+					var description = $(tempDom).find('meta[name=description]').attr("content");
+
+					var keywords = $(tempDom).find('meta[name=keywords]').attr("content");
+					//console.log("keywords", keywords);
+
+					var arrayKeywords = new Array();
+					if(typeof keywords != "undefined")
+						arrayKeywords = keywords.split(",");
+
+					//console.log("arrayKeywords", arrayKeywords);
+
+					//if(typeof arrayKeywords[0] != "undefined") $("#form-keywords1").val(arrayKeywords[0]); else $("#form-keywords1").val("");
+					//if(typeof arrayKeywords[1] != "undefined") $("#form-keywords2").val(arrayKeywords[1]); else $("#form-keywords2").val("");
+					//if(typeof arrayKeywords[2] != "undefined") $("#form-keywords3").val(arrayKeywords[2]); else $("#form-keywords3").val("");
+					//if(typeof arrayKeywords[3] != "undefined") $("#form-keywords4").val(arrayKeywords[3]); else $("#form-keywords4").val("");
+
+					if(description=="" || description=="undefined")
+				   		if(stitle=="" || stitle=="undefined")
+				   			description = stitle;
+				   	params = new Object;
+				   	params.title=title,
+				   	params.favicon=faviconSrc,
+				   	params.hostname=hostname,
+				   	params.description=description,
+				   	params.tags=arrayKeywords;
+					console.log(params);
+					/*$("#form-title").val(title);
+	                $("#form-favicon").val(faviconSrc);
+	                $("#form-description").val(description);*/
+					
+
+					//color
+					$("#ajaxFormModal #name").val(title);   	
+				   	//color	
+					$("#ajaxFormModal #description").val(description); 
+				   	//color
+				   	if(notEmpty(arrayKeywords))		
+						$("#ajaxFormModal #tags").select2("val",arrayKeywords);
+					/*if($("#form-keywords1").val() != "")   $("#lbl-keywords").removeClass("text-orange").addClass("letter-green");
+					else 								   $("#lbl-keywords").removeClass("letter-green").addClass("text-orange");
+				   		
+				   	$("#form-title").off().keyup(function(){
+				   		if($(this).val()!="")$("#lbl-title").removeClass("letter-red").addClass("letter-green");
+						else 				 $("#lbl-title").removeClass("letter-green").addClass("letter-red");
+						checkAllInfo();
+				   	});
+				   	$("#form-description").off().keyup(function(){
+				   		if($(this).val()!="")$("#lbl-description").removeClass("text-orange").addClass("letter-green");
+						else 				 $("#lbl-description").removeClass("letter-green").addClass("text-orange");
+						checkAllInfo();
+				   	});
+				   	$("#form-keywords1").off().keyup(function(){
+				   		if($(this).val()!="")$("#lbl-keywords").removeClass("text-orange").addClass("letter-green");
+						else 				 $("#lbl-keywords").removeClass("letter-green").addClass("text-orange");
+						checkAllInfo();
+				   	});
+
+				   	$("#status-ref").html("<span class='letter-green'><img src='"+faviconSrc+"' height=30 alt='x'> <i class='fa fa-check'></i> Nous avons trouvé votre page</span>");
+	    			$("#refResult").removeClass("hidden");
+				   
+				   	$("#lbl-url").removeClass("letter-red").addClass("letter-green");
+				   	urlValidated = url;
+
+				    $('<output>').remove();
+				    tempDom = "";
+
+				    checkAllInfo();*/	
+				    return params;		   
+				},
+			error:function(xhr, status, error){
+				$("#lbl-url").removeClass("letter-green").addClass("letter-red");
+				$("#status-ref").html("<span class='letter-red'><i class='fa fa-ban'></i> URL INNACCESSIBLE</span>");
+			},
+			statusCode:{
+				404: function(){
+					$("#lbl-url").removeClass("letter-green").addClass("letter-red");
+					$("#status-ref").html("<span class='letter-red'><i class='fa fa-ban'></i> 404 : URL INTROUVABLE OU INACCESSIBLE</span>");
+				}
+			}
+		});
+	},
+	isValidURL:function(url) {
+  		var match_url = new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+  		return match_url.test(url);
+	}
+}
 /* *********************************
 			COLLECTIONS
 ********************************** */
@@ -2316,8 +2478,14 @@ var uploadObj = {
 	contentKey : "profil",
 	path : null,
 	extra : null,
-	set : function(type,id){
-		if(typeof type != "undefined"){
+	set : function(type,id, file){
+		if(notNull(file) && file){
+			mylog.log("set uploadObj", id,type,uploadObj.folder,uploadObj.contentKey);
+			uploadObj.type = type;
+			uploadObj.id = id;
+			uploadObj.path = baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+uploadObj.folder+"/folder/"+type+"/ownerId/"+id+"/input/qqfile/docType/file";
+		}
+		else if(typeof type != "undefined"){
 			mylog.log("set uploadObj", id,type,uploadObj.folder,uploadObj.contentKey);
 			uploadObj.type = type;
 			uploadObj.id = id;
@@ -2977,6 +3145,25 @@ var dyFInputs = {
 		    }
     	}
     },
+    file :function() { 
+    	
+    	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
+    		uploadObj.gotoUrl = location.hash ;
+    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
+
+    	return {
+	    	inputType : "uploader",
+	    	label : tradDynForm["imageshere"]+" :", 
+	    	showUploadBtn : false,
+	    	filetypes:["pdf","xls","xlsx","doc","docx","ppt","pptx","odt","ods","odp"],
+	    	afterUploadComplete : function(){
+	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
+		    	dyFObj.closeForm();
+				//alert( "image upload then goto : "+uploadObj.gotoUrl );
+	            urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+		    }
+    	}
+    },
     textarea :function (label,placeholder,rules) {  
     	var inputObj = {
     		inputType : "textarea",
@@ -3380,6 +3567,19 @@ var dyFInputs = {
         	$(".urlsarray").css("display","none");	
         }
     },
+    bookmarkUrl: function(label, placeholder,rules, custom){
+    	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
+    	inputObj.init = function(){
+    		$("#ajaxFormModal #url").bind("input keyup",function(e) {
+            	processUrl.refUrl($(this).val());
+            	/*if(result){
+            		console.log(result);
+            	}*/
+        	});
+            //$(".urltext").css("display","none");
+        };
+	    return inputObj;
+    },
     allDay : function(checked){
 
     	var inputObj = {
@@ -3587,6 +3787,7 @@ var typeObj = {
 			}
 		}	},
 	"addPhoto":{ titleClass : "bg-dark" },
+	"addFile":{ titleClass : "bg-dark" },
 	"person" : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
 	"persons" : { sameAs:"person" },
 	"people" : { sameAs:"person" },
@@ -3641,6 +3842,7 @@ var typeObj = {
 				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
 				   ]	},
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
+	"bookmark" : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
 	"document" : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
 	//"video" : {icon:"video-camera",color:"dark"},

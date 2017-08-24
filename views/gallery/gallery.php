@@ -361,7 +361,6 @@ function initGrid(){
 			//}
 	})
 	if(j>0){
-		bindBtnGallery();
 		$('#Grid').mixItUp();
 		$('.portfolio-item .chkbox').bind('click', function () {
 	        if ($(this).parent().hasClass('selected')) {
@@ -371,15 +370,15 @@ function initGrid(){
 	        }
 	    });
 	}else{
-		var htmlDefault = "<div class='center col-md-12 col-sm-12 col-xs-12'>"+
+		var htmlDefault = "<div class='center col-md-12 col-sm-12 col-xs-12 padding-5'>"+
 							"<i class='fa fa-picture-o fa-5x text-blue'></i>"+
-							"<br>No picture to show"+
+							"<br>"+trad.nopicture+
 						"</div>";
 		$('#Grid').append(htmlDefault);
 	}
 }
 
-function bindBtnGallery(){
+/*function bindBtnGallery(){
 	$(".portfolio-item .btnRemove").on("click", function(e){
 		var imageId= $(this).data("id");
 		var imageName= $(this).data("name");
@@ -413,5 +412,5 @@ function bindBtnGallery(){
 				}
 			});
 	});
-}
+}*/
 </script>

@@ -264,8 +264,9 @@ $this->renderPartial($layoutPath.'header',
 			    	<a href="javascript:;" class="btn btn-primary col-sm-2" type="submit" id="btnError">Save</a>
 			    </div>
 			</div>
-			<div class="col-xs-12 col-sm-12">
-				<button class="btn btn-danger margin-top-15" onclick="returnStep2()">Retour <i class="fa fa-reply"></i></button>
+			<div class="col-xs-12 col-sm-12 margin-top-15">
+				<button class="btn btn-danger col-sm-2 col-md-offset-4 " onclick="returnStep2()">Retour <i class="fa fa-reply"></i></button>
+				<a href="#adminpublic.addData" class="btn btn-success col-sm-2 col-md-offset-2" type="submit">Page d'ajout de données</a>
 			</div>
 		</div>
 
@@ -404,7 +405,7 @@ function bindCreateFile(){
 
 	  			$("#selectAttributesElt").append(chaine);
   			}  			
-	  		ligne = '<tr id="lineMapping'+nbLigneMapping+'"> ';
+	  		ligne = '<tr id="lineMapping'+nbLigneMapping+'" class="lineMapping"> ';
 	  		ligne =	 ligne + '<td id="valueSource'+nbLigneMapping+'">' + selectSource + '</td>';
 	  		ligne =	 ligne + '<td id="valueAttributeElt'+nbLigneMapping+'">' + selectAttributesElt + '</td>';
 	  		ligne =	 ligne + '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ selectSource +'"/><a href="javascript:;" class="deleteLineMapping btn btn-danger">X</a></td></tr>';
@@ -667,7 +668,7 @@ function createStepTwo(data){
 		var nbLigneMapping = $("#nbLigneMapping").val();
 		var i = 0 ;
 		$.each(data.arrayMapping, function(key, value){
-			ligne = '<tr id="lineMapping'+nbLigneMapping+'"> ';
+			ligne = '<tr id="lineMapping'+nbLigneMapping+'" class="lineMapping"> ';
 	  		ligne =	 ligne + '<td id="valueSource'+nbLigneMapping+'">' + key + '</td>';
 	  		ligne =	 ligne + '<td id="valueAttributeElt'+nbLigneMapping+'">' + value + '</td>';
 	  		ligne =	 ligne + '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ key +'"/><a href="javascript:;" class="deleteLineMapping btn btn-danger">X</a></td></tr>';
@@ -746,6 +747,7 @@ function returnStep1(){
 	$("#menu-step-mapping").hide(400);
 	$("#menu-step-source").show(400);
 	$("#menu-step-visualisation").hide(400);
+	$(".lineMapping").remove();
 	bindUpdate();
 }
 

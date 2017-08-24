@@ -52,12 +52,16 @@ MEP
 ---------------------------------------
 ----- BASH DE REPRISE DES DONNEES -----
 ---------------------------------------
-* TRANSLATE CO2
+* MEP CO21
 ** @BOUBOULE
 *** Bash de reprise du les notifications avec ajout du param updated dans toutes les notifs et suppression des notifs sans params $created
 co2/datamigration/CreatorUpdatedOnNotifications
 *** Bash sur les clés des event en francais: "concours"=>"contest" et "exposition"=>"exhibition"
 co2/datamigration/ChangeEventFrenchType
+*** A faire Bash de reprise des clés francaises POI (ex ressourceMaterielle to materialRessource) et CLASSIFIED
+TODO @TIBOR @BOUBOULE
+*** Bash on document used for profil and banner of element => Add boolean current : true
+co2/dataMigration/AddCurrentToDoc
 
 
 * MISE EN PRODUCTION CO2 

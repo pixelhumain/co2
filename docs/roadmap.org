@@ -322,7 +322,7 @@ Liste des notifications déjà lues => #370 #453
       [ ] what about Document, Discuss, Decide, Act = 3D.A
   ** @tango
   [ ] connecter le form mail au membres d'un groupe
-  ** @Clem
+  ** @Bouboule
   [ ] add HTML5 notifications
   [ ] Finir Besoin Ressource compétence () [commencer]
   [ ] visualisation de la banque des besoins =>#1260 + #490
@@ -339,6 +339,28 @@ Liste des notifications déjà lues => #370 #453
     [X] Limitation of 300px*100px
     [X] Create normal banniere image, rezized/banner.png and thumb for album
     [X] LightBox for banner and profil
+  [X] Portefolio
+    [X] Create folder albums
+    [X] Move file to album
+    [X] Arborescente navigation into folder  
+    [X] Gallery
+      [X] Delete photos + delete current profile and cover photos
+      [X] Edit document => title on photo
+    [X] Portefolio - Library - Documentations -bookmarks
+      [X] Add file type pdf-excell-ppt-word-libreoffice
+      [X] Urls dynform process with extract process
+      [X] Bookmarks (tags organization)
+      [X] Document view 
+      [X] Delete documents and urls
+    [ ] Merge collections inside portefolio
+    [ ] addPhoto & addFile => can share as news
+    [ ] add extract image on bookmark 
+  [ ] Roles
+    [ ] Open organizations to event only for admin
+    [ ] Add roles (prefine and free) in addMultiMembers and in links (Database)
+    [ ] List of role by contextType (json or ctk)
+    [ ] Edit role in directory if admin
+    [ ] filter roles (tags in directory) 
   [ ] Get preferences of email 
   [ ] Create more email
   [ ] faire le point sur l'evaluation des communs

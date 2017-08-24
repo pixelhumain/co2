@@ -683,6 +683,22 @@ function bindAboutPodElement() {
 		mylog.log("params",params);
 		dyFObj.openForm( 'url','sub', params);
 	}
+	function updateBookmark(id) {
+		mylog.log("updBook",id);
+		filesUp=files[id];
+		var params=new Object;
+		params.id=id;
+		if(filesUp.url != "undefined")
+			params.url=filesUp.url;
+		if(filesUp.name != "undefined")
+			params.name=filesUp.name;
+		if(filesUp.tags != "undefined")
+			params.tags=filesUp.tags;
+		if(filesUp.description != "undefined")
+			params.description=filesUp.description;
+		mylog.log("params",params);
+		dyFObj.openForm( 'bookmark','sub', params);
+	}
 
 
 	function updateContact(ind, name, email, role, telephone) {
@@ -698,6 +714,14 @@ function bindAboutPodElement() {
 			dataUpdate.phone = telephone;
 		mylog.log("dataUpdate", dataUpdate);
 		dyFObj.openForm ('contactPoint','contact', dataUpdate);
+	}
+	function updateDocument(id, title) {
+		mylog.log("updateDocument", id, name);
+		dataUpdate = { docId : id } ;
+		if(title != "undefined")
+			dataUpdate.title = title;
+		mylog.log("dataUpdate", dataUpdate);
+		dyFObj.openForm ('document','sub', dataUpdate);
 	}
 
 	function removeUrl(ind) {

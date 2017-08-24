@@ -1808,7 +1808,40 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 		}
 	}
-
+	//Bash on document used for profil and banner of element
+	//Used for delete in gallery to know directly when a current doc is used as profil and banner  
+	//find doc used current for profil and banner
+	public function actionAddCurrentToDoc(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$docs=PHDB::find(Document::COLLECTION, array(
+				'$or'=>array(
+					array("contentKey"=>"banner"),
+					array("contentKey"=>"profil")
+					)));
+			$totalProfil=0;
+			$totalBanner=0;
+			foreach($docs as $key => $data){
+				if(@$data["id"] && $data["type"]!="city"){
+					$element=Element::getElementSimpleById($data["id"], $data["type"],null,array("profilImageUrl","profilBannerUrl"));
+					$docProfilUrl=Document::getDocumentFolderUrl($data)."/".$data["name"];
+					if(!empty($element["profilImageUrl"]) && @$docProfilUrl && $docProfilUrl==$element["profilImageUrl"]){
+						echo "Profil:".$key."<br>";
+						PHDB::update(Document::COLLECTION,array("_id"=>new MongoId($key)),array('$set'=>array("current"=>true)));
+						$totalProfil++;
+					}
+					if(!empty($element["profilBannerUrl"]) && @$docProfilUrl && $docProfilUrl==$element["profilBannerUrl"]){
+						echo "banner:".$key."<br>";
+						PHDB::update(Document::COLLECTION,array("_id"=>new MongoId($key)),array('$set'=>array("current"=>true)));
+						$totalBanner++;
+					}
+				}
+			}
+			echo "Nombre de profil used actually by element:".$totalProfil."<br>";
+			echo "Nombre de banner used actually by element:".$totalBanner;
+		}else
+			echo "connectoi crétin";
+	}
+	
 	// -------------------- Fonction pour le refactor Cities/zones
 	public function actionRegionBERefactorCitiesZones(){
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){

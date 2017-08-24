@@ -53,6 +53,13 @@ function bindButtonMenu(){
 		//location.search="?view=gallery";
 		loadGallery();
 	});
+	$("#btn-start-library").click(function(){
+		responsiveMenuLeft();
+		location.hash=hashUrlPage+".view.library";
+		//history.pushState(null, "New Title", hashUrlPage+".view.gallery");
+		//location.search="?view=gallery";
+		loadLibrary();
+	});
 	$(".btn-start-notifications").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
@@ -470,14 +477,22 @@ function loadSettings(){
 }
 function loadGallery(){
 	toogleNotif(false);
-	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id;
+	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id+"/docType/image";
 	
 	showLoader('#central-container');
 	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 		null,
 		function(){},"html");
 }
-
+function loadLibrary(){
+	toogleNotif(false);
+	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id+"/docType/file";
+	
+	showLoader('#central-container');
+	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+		null,
+		function(){},"html");
+}
 function loadChart(){
 	toogleNotif(false);
 	var url = "chart/header/type/"+typeItem+"/id/"+contextData.id;

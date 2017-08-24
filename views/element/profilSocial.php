@@ -630,6 +630,8 @@
 		if(sub!=""){
 			if(sub=="gallery")
 				loadGallery();
+			if(sub=="library")
+				loadLibrary();
 			else if(sub=="notifications")
 				loadNotifications();
 			else if(sub.indexOf("chart") >= 0){

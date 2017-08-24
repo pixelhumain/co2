@@ -364,9 +364,16 @@ class CommunecterController extends Controller
       "fileupload"   => array("href" => "ph/co2/pod/fileupload"),
       "activitylist"   => array("href" => "ph/co2/pod/activitylist"),
     ),
+    "bookmark" => array(
+      "delete"        => array("href" => "ph/communecter/bookmark/delete"),
+    ),
     "gallery" => array(
-      "index"        => array("href" => "ph/co2/gallery/index"),
-      "removebyid"   => array("href" => "ph/co2/gallery/removebyid"),
+      "index"        => array("href" => "ph/communecter/gallery/index"),
+      "gallery"        => array("href" => "ph/communecter/gallery/gallery"),
+      "crudcollection"        => array("href" => "ph/communecter/gallery/crudcollection"),
+      "crudfile"        => array("href" => "ph/communecter/gallery/crudfile"),
+      "removebyid"   => array("href" => "ph/communecter/gallery/removebyid"),
+      "filter"   => array("href" => "ph/communecter/gallery/filter"),
     ),
     "link" => array(
       "removemember"        => array("href" => "/ph/co2/link/removemember"),
@@ -378,15 +385,16 @@ class CommunecterController extends Controller
       "validate"          => array("href" => "/ph/co2/link/validate"),
     ),
     "document" => array(
-      "resized"             => array("href"=> "/ph/co2/document/resized", "public" => true),
-      "list"                => array("href"=> "/ph/co2/document/list"),
-      "save"                => array("href"=> "/ph/co2/document/save"),
-      "deleteDocumentById"  => array("href"=> "/ph/co2/document/deleteDocumentById"),
-      "removeAndBacktract"  => array("href"=> "/ph/co2/document/removeAndBacktract"),
-      "getlistbyid"         => array("href"=> "ph/co2/document/getlistbyid"),
-      "upload"              => array("href"=> "ph/co2/document/upload"),
-      "uploadsave"          => array("href"=> "ph/co2/document/uploadsave"),
-      "delete"              => array("href"=> "ph/co2/document/delete")
+      "resized"             => array("href"=> "/ph/communecter/document/resized", "public" => true),
+      "list"                => array("href"=> "/ph/communecter/document/list"),
+      "save"                => array("href"=> "/ph/communecter/document/save"),
+      "deleteDocumentById"  => array("href"=> "/ph/communecter/document/deleteDocumentById"),
+      "removeAndBacktract"  => array("href"=> "/ph/communecter/document/removeAndBacktract"),
+      "getlistbyid"         => array("href"=> "ph/communecter/document/getlistbyid"),
+      "upload"              => array("href"=> "ph/communecter/document/upload"),
+      "update"              => array("href"=> "ph/communecter/document/update"),
+      "uploadsave"          => array("href"=> "ph/communecter/document/uploadsave"),
+      "delete"              => array("href"=> "ph/communecter/document/delete")
     ),
     "survey" => array(
       "index"       => array("href" => "/ph/co2/survey/index", "public" => true),

@@ -3,21 +3,32 @@
 	font-size: 20px;
 	font-variant: small-caps;
 }
-.dropdown-menu-collection{
+.dropdown-menu-collection, .dropdown-menu-file{
 	position: absolute !important;
 	left:10px;
 	border: 1px solid rgba(0,0,0,.15);
     border-radius: 2px;
     -webkit-box-shadow: 1px 6px 10px rgba(0,0,0,.6);
     box-shadow: 1px 6px 10px rgba(0,0,0,0.6);
-    min-width: 220px;
+}
+.dropdown-menu-collection{
+	min-width: 220px;
     min-height: 200px;
 }
-.dropdown-menu-collection:before{
+.dropdown-menu-collection:before, .dropdown-menu-file:before{
 	left:13%;
 	margin-left: -11px;
 }
-.dropdown-menu-collection:after{
+.dropdown-menu-collection:before{
+	left:13%;
+}
+.dropdown-menu-file:before{
+	left:16%;
+}
+.dropdown-menu-file > li > a{
+	text-align: left;
+}
+.dropdown-menu-collection:after, .dropdown-menu-file:after{
 	left: -5%;
     margin-left: 30px;
 }
@@ -57,10 +68,24 @@ ul.dropdown-menu-collection > li:hover > a{
 ul.dropdown-menu-collection > li > a:hover{
 	background-color: inherit !important;
 }
+.btn-delete-doc, .btn-move-collection{
+	display: none;
+}
+#header-gallery.affix{
+    top:113px;
+    margin-left: -15px;
+    padding-top: 5px;
+    -webkit-box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 2px -1px rgba(0,0,0,0.5);
+    z-index: 1000;
+    background-color: white;
+}
 </style>
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="galleryPad">
 	<div class="panel panel-white">
 		<div class="panel-body">
+			<div id="header-gallery">
 			<div id="breadcrumGallery" class="col-md-12 col-sm-12 col-xs-12 no-padding">
 
 			</div>
@@ -81,28 +106,28 @@ ul.dropdown-menu-collection > li > a:hover{
 					<?php } else { ?>
 						<li class="dropdown-add-file">
 							<a class="btn show-nav-add" href="javascript:;">
-								<i class="fa fa-plus-circle"></i> <?php echo Yii::t("common","Add documents"); ?>
+								<i class="fa fa-plus-circle"></i> <?php echo Yii::t("common","Add"); ?>
 							</a>
 							<ul class="dropdown-menu dropdown-menu-file arrow_box">
 		                        <li class="text-left">
-		                        	<a class="btn show-nav-add" href="javascript:dyFObj.openForm('addFile')">
-		                        		<i class="fa fa-file-o"></i> <?php echo Yii::t("common","Uploaod file"); ?> 
+		                        	<a class="btn show-nav-add text-left" href="javascript:dyFObj.openForm('addFile')">
+		                        		<i class="fa fa-file-text-o"></i> <?php echo Yii::t("common","Uploaod files"); ?> 
 		                        	</a>
 		                        </li>
 		                        <li class="text-left">
-		                        	<a class="btn show-nav-add" href="javascript:dyFObj.openForm('bookmark','sub')">
+		                        	<a class="btn show-nav-add text-left" href="javascript:dyFObj.openForm('bookmark','sub')">
 		                        		<i class="fa fa-bookmark"></i> <?php echo Yii::t("common","Add bookmark") ?>
 		                        	</a>
 		                        </li>
 	                        </ul>
 						</li>
-						<li>
+						<li class="btn-add-folder">
 							<a class="btn" href="javascript:;" onclick="crudCollectionGallery('new')">
-								<i class="fa fa-plus"></i> <?php echo Yii::t("common","Create an album"); ?>
+								<i class="fa fa-plus"></i> <?php echo Yii::t("common","Create a folder"); ?>
 							</a>
 						</li>
 					<?php } ?>
-					<li class="dropdown-collection">
+					<li class="dropdown-collection btn-move-collection hidden">
 						<a class="btn show-nav-col" href="javascript:;">
 							<i class="fa fa-reply fa-rotate-180"></i> <?php echo Yii::t("common","Move to"); ?>
 						</a>
@@ -112,7 +137,7 @@ ul.dropdown-menu-collection > li > a:hover{
 	                        </li>
                         </ul>
 					</li>
-					<li>
+					<li class="btn-move-collection btn-delete-doc hidden">
 						<a class="btn text-red" href="javascript:;" id="deleteDocuments">
 							<i class="fa fa-trash"></i> <?php echo Yii::t("common","Delete"); ?>
 						</a>
@@ -124,6 +149,7 @@ ul.dropdown-menu-collection > li > a:hover{
 						<a href="javascript:;" class="btn btn-default"><?php echo Yii::t("common","Show All"); ?></a>
 					</li>-->
 				</ul>
+			</div>
 			</div>
 			<div id="gallery-container" class="col-md-12 col-sm-12 col-xs-12 no-padding">
 			<?php
@@ -190,29 +216,24 @@ ul.dropdown-menu-collection > li > a:hover{
 		});
 		$('.show-nav-add').click(function() {
  			$(this).parent().find('.dropdown-menu-file').stop(true, true).delay(200).fadeIn(500);
- 			/*htmlMenuCol="";
- 			$.each(navCollections,function(i,v){
- 				historyNav.push(v);
- 			});
- 			openDirectory();*/
 		});
 		$('.dropdown-menu-file').mouseleave(function() {
-			/*if(actionCrud==false){
-				navCollections=[];
-				$.each(historyNav,function(i,v){
-					navCollections.push(v);
-				});
-				console.log("navHistory",navCollections);
-			}*/
   			$(this).stop(true, true).delay(200).fadeOut(500);
 		});
+		$('#header-gallery').affix({
+ 			offset: {
+      			top: 500
+		    }
+		 }).on('affix.bs.affix', function(){
+        	$(this).width($(this).parents().eq(1).width());//css('margin-top', $('#headerNavWrapper').outerHeight(true)+'px');
+    	});
 	});
 	function appendLevel(breadcrumLevel, name, contentKey, buildNew){
 		if(breadcrumLevel==0){
 			if(docType=="image")
-				nameFirst="Gallery";
+				nameFirst=trad.gallery;
 			else
-				nameFirst="Lirary";
+				nameFirst=trad.library;
 			$html='<i class="fa fa-home fa-1x text-black" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i><a href="javascript:;" onclick="galleryGuide('+breadcrumLevel+')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'" data-name="'+name+'">'+nameFirst+'</a>';
 		} else {
 			nameBread=name;
@@ -295,6 +316,13 @@ ul.dropdown-menu-collection > li > a:hover{
 				$(this).parents().eq(2).removeClass("active");
 				selectedIds.splice(idSelect,1);
 			}
+			class2=".btn-delete-doc, .btn-move-collection";
+			if(inArray(contentKey,["profil","banner","bookmarks"]))
+				class2=".btn-delete-doc";
+			if(selectedIds.length>0)
+				$(class2).removeClass("hidden");
+			else
+				$(class2).addClass();
 		});
 		$("#deleteDocuments").off().on("click",function(e){
 			var path="communecter";
@@ -384,11 +412,15 @@ ul.dropdown-menu-collection > li > a:hover{
 					}else if(action == "del"){
 						delete collectionsGallery[params.name];
 					}
-					if(notNull(data.created))
-						getViewGallery(breadcrumLevel,data.createdIn, "slider",true);
+					if(docType=="image")
+							keyCreate="slider";
+						else
+							keyCreate="files";
+					if(notNull(data.createdIn))
+						getViewGallery(breadcrumLevel,data.createdIn, keyCreate,true);
 					else{
 						breadcrumLevel=1;
-						appendLevel(breadcrumLevel,"","slider");
+						appendLevel(breadcrumLevel,"",keyCreate);
 					}
 
 				}

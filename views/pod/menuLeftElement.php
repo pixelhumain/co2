@@ -261,12 +261,12 @@
 	</li>
 
 	
-	<li class="">
+	<!--<li class="">
 		<a href="javascript:" class="ssmla" id="btn-start-urls">
 			<i class="fa fa-external-link"></i> <?php echo Yii::t("common","Urls"); ?>
 		</a>
 	</li>
-	
+	-->
 	<li><hr></li>
 	<?php if(	$type != Poi::COLLECTION 
 				&& ( 	$type != Person::COLLECTION || 

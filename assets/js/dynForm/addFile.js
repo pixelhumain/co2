@@ -1,10 +1,9 @@
 dynForm = {
     jsonSchema : {
-	    title : "Publier un fichier",
-	    icon : "file",
+	    title : tradDynForm.uploadfile,
+	    icon : "file-text-o",
 	    beforeBuild : function(){
 	    	uploadObj.gotoUrl = location.hash;
-	    	//uploadObj.contentKey="slider";
 			uploadObj.set( contextData.type,contextData.id,true);
 	    },
 	    save : function() { 
@@ -14,9 +13,7 @@ dynForm = {
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p class='text-dark'>"+
-                		"Share your file here ! <hr>" +
-					 "</p>",
+                html:"<p class='text-dark'><i class='fa fa-info-circle'></i> "+tradDynForm.infouploadfile+" <hr></p>",
             },
 	        file : dyFInputs.file(),
 	    }

@@ -370,9 +370,9 @@ function initGrid(){
 	        }
 	    });
 	}else{
-		var htmlDefault = "<div class='center col-md-12 col-sm-12 col-xs-12'>"+
+		var htmlDefault = "<div class='center col-md-12 col-sm-12 col-xs-12 padding-5'>"+
 							"<i class='fa fa-picture-o fa-5x text-blue'></i>"+
-							"<br>No picture to show"+
+							"<br>"+trad.nopicture+
 						"</div>";
 		$('#Grid').append(htmlDefault);
 	}

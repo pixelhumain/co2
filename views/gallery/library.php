@@ -121,7 +121,7 @@ if( isset($parent) ){
 		font-size: 12px;
 	}
 	.filter-folder-gallery span{
-		font-size: 14px;
+		font-size: 16px;
 	}
 	.portfolio-item .tools.tools-bottom > a, .portfolio-item .tools.tools-top > a {
 	    position: absolute;
@@ -234,19 +234,55 @@ if( isset($parent) ){
  {
     opacity: .5;
 }
-.content_folder_file.col-md-6, .content_folder_file.col-sm-6{
+@media screen and (min-width: 768px) {
+.content_folder_file, .content_folder_file{
 	width:48%;
+}
+}
+@media screen and (max-width: 768px) {
+	.content_folder_file{
+		width:100%;
+	}
 }
 #GridAlbums .folder:hover{
 	background-color: rgba(0,0,0,0.1);
 }
-/*<div class="checkbox">
-            <label style="font-size: 2em">
-                <input type="checkbox" value="" checked>
-                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                Big
-            </label>*/
-/*checkbox font-size in (label) + class .checkbox-info*/ 
+#listTags > a {
+	width: 100%;
+	padding: 5px 5px;
+	text-align: right;
+}
+.tagsElipsis{
+	max-width: 75%;
+	margin-right: 2px;
+	vertical-align: bottom;
+}
+.filterBookmarks .badge{
+    background-color: #337ab7;
+    color: white;
+    font-size: 11px;
+    padding: 3px 6px;
+}
+.filterBookmarks.active{
+	border-right: 0px solid #337ab7;
+    background-color: #337ab7;
+    color: white;
+    text-decoration: none;
+}
+.filterBookmarks:hover{
+	width:initial !important;
+	float: right !important;
+    background-color: #337ab7;
+    color:white;
+    text-decoration: none;
+}
+.filterBookmarks:hover > .tagsElipsis{
+	max-width: inherit; 
+}
+.filterBookmarks:hover > .badge, .filterBookmarks.active > .badge{
+	background-color: white;
+	color: #337ab7; 
+}
 </style>
 <!-- GRID -->
 <?php if(@$folders && count($folders)>0){ //print_r($albums); ?>
@@ -260,12 +296,12 @@ if( isset($parent) ){
 	<!-- "gap" elements fill in the gaps in justified grid -->
 </ul>
 <?php if($contentKey=="bookmarks"){ ?>
- <div id="listTags" class="col-sm-2 col-md-2 text-left"></div>
+ <div id="listTags" class="col-sm-2 col-md-2 text-left no-padding"></div>
 <?php } ?>
 <script type="text/javascript">
 var fies;
 var tabButton = [];
-var mapButton = {"media": "Media", "slider": "Album", "profil" : "Profil", "banner" : "Banner", "logo" : "Logo"};
+var mapButton = {"files":"Files","bookmarks":"Bookmarks"};
 var mapContentKey= {"album": "slider", "profil" : "profil", "banner" : "banner"};
 var itemId = "<?php echo $itemId; ?>";
 var itemType = "<?php echo $itemType; ?>";
@@ -274,7 +310,7 @@ var authorizationToEdit = <?php echo (isset($editAlbum) && $editAlbum) ? 'true':
 var files = <?php echo json_encode($files); ?>;
 var folders = <?php echo json_encode($folders); ?>;
 if(contentKey=="bookmarks")
-	var tagsList = <?php echo json_encode(@$tagsFilter); ?>;
+	var tagsListFilter = <?php echo json_encode(@$tagsFilter); ?>;
 var contextName = "<?php echo addslashes(@$contextName); ?>";	
 var contextIcon = "<?php echo $contextIcon; ?>";
 var selectedIds=[];
@@ -295,6 +331,10 @@ jQuery(document).ready(function() {
 	}).mouseleave(function(){
 		$(this).find(".tools.tools-bottom").hide();
 	});
+	if(contentKey=="bookmarks")
+		$(".btn-add-folder").hide();
+	else
+		$(".btn-add-folder").show();
 });
 
 function initPanelLibrary(){
@@ -310,7 +350,7 @@ function initPanelLibrary(){
 			contentTitle=k;
 			htmlFolders = '<li class="content_folder_file '+k+' col-sm-12 col-md-12 col-xs-12" data-cat="1">'+
 				' <div class="portfolio-item">'+
-					' <a href="javascript:;" class="openFolder" data-name="'+nameCol+'" data-key="file">'+
+					' <a href="javascript:;" class="openFolder" data-name="'+nameCol+'" data-key="files">'+
 					'<div class="content-info col-md-8 col-sm-8 col-sx-8 padding-5">'+
 								'<span><i class="fa fa-folder"></i> '+nameCol+'</span>'+
 							'</div>'+
@@ -357,14 +397,14 @@ function initPanelLibrary(){
 				//}
 		});
 		if(contentKey=="bookmarks"){
-			tagsFilter(tagsList);
+			tagsFilter(tagsListFilter);
 		}
 		if(j>0){
 			
 		}else{
-			var htmlDefault = "<div class='center col-md-12 col-sm-12 col-xs-12'>"+
-								"<i class='fa fa-picture-o fa-5x text-blue'></i>"+
-								"<br>No files to show"+
+			var htmlDefault = "<div class='center col-md-12 col-sm-12 col-xs-12 padding-5'>"+
+								"<i class='fa fa-files-o fa-5x text-blue'></i>"+
+								"<br>"+trad.nofile+
 							"</div>";
 			$('#Grid').append(htmlDefault);
 		}
@@ -377,7 +417,7 @@ function getViewUrl(id,data){
 	description="";
 	if(typeof data.tags != "undefined"){
 		$.each(data.tags,function(i,v){ 
-			htmlTags+='<span class="badge letter-red bg-white no-padding">#'+v+'</span>';
+			htmlTags+='<span class="badge letter-red bg-white no-padding">#'+v+'</span> ';
 			elTagsList += slugify(v)+" ";
 		});
 	}
@@ -421,12 +461,12 @@ function getViewUrl(id,data){
 function initMenuLibrary(){
 	htmlBtn = ' <a href="javascript:;" class="openFolder filter-folder-gallery" data-name="" data-key="bookmarks">'+
 						'<div class="center">' +
-							'<span class="titleAlbum"><i class="fa fa-bookmark"></i> '+trad.bookmarks+'</span><br/>'+
+							'<span class="titleAlbum"><i class="fa fa-bookmark"></i> '+trad.bookmarks+'</span><br/><br/>'+
 							'<span>'+trad.explainbookmark+'</span>'+
 						'</div>'+
 					' </a>';
 
-	html = '<li class="content_folder_file mix library-img no-padding col-md-6 col-sm-6 col-xs-12" data-cat="1">'+
+	html = '<li class="content_folder_file mix library-img no-padding" data-cat="1">'+
 				' <div class="portfolio-item portfolio-item-album">'+
 					//' <a class="thumb-info" href="'+v.imagePath+'" data-lightbox="all">'+
 						' <img src="'+moduleUrl+'/images/bookmarks.jpg" class="initLibrary img-responsive" alt="">'+
@@ -437,12 +477,12 @@ function initMenuLibrary(){
 			'</li>';
 	htmlBtn = ' <a href="javascript:;" class="openFolder filter-folder-gallery" data-name="" data-key="files">'+
 						'<div class="center">' +
-							'<span class="titleAlbum"><i class="fa fa-file"></i> '+trad.files+'</span><br/>'+
+							'<span class="titleAlbum"><i class="fa fa-file-text-o"></i> '+trad.files+'</span><br/><br/>'+
 							'<span>'+trad.explainfile+'</span>'+
 						'</div>'+
 					' </a>';
 
-	html += '<li class="content_folder_file mix library-img no-padding col-md-6 col-sm-6 col-xs-12" data-cat="1">'+
+	html += '<li class="content_folder_file mix library-img no-padding" data-cat="1">'+
 				' <div class="portfolio-item portfolio-item-album">'+
 					//' <a class="thumb-info" href="'+v.imagePath+'" data-lightbox="all">'+
 						' <img src="'+moduleUrl+'/images/files.jpg" class="initLibrary img-responsive" alt="">'+
@@ -459,18 +499,20 @@ function tagsFilter(tags){
           //directory.multiTagsT.push(oTag);
           //mylog.log(oTag);
           showTag=oTag;
-          if(oTag.length > 10)
-          	showTag=oTag.substring(0,10)+"...";
-          filterHtml='<a class="btn btn-xs btn-link filterBookmarks tooltips '+slugify(oTag)+'Btn" data-tag="'+slugify(oTag)+'" '+
-          				'href="javascript:;" onclick="filterBookmark(\''+addslashes(oTag)+'\')">'+
-          			"<i class='fa fa-tag'></i> "+showTag+" "+
-          			"<span class='badge'>"+oT.count+"</span>"+
+          /*if(oTag.length > 10)
+          	showTag=oTag.substring(0,10)+"...";*/
+          filterHtml='<a class="btn btn-xs btn-link filterBookmarks '+slugify(oTag)+'Btn pull-right" data-tag="'+slugify(oTag)+'" '+
+          				'href="javascript:;" onclick="filterBookmark(\''+addslashes(oTag)+'\',this)">'+
+          					"<span class='elipsis tagsElipsis'>#"+showTag+"</span> "+
+          					"<span class='badge'>"+oT.count+"</span>"+
           			"</a><br/>";
           $("#listTags").append(filterHtml);
         }
      });
 }
-function filterBookmark(tag){
+function filterBookmark(tag,$this){
+		$(".filterBookmarks").removeClass("active");
+		$($this).addClass("active");
 		showLoader('#Grid');
 		$.ajax({
 		  type: "POST",
@@ -491,39 +533,4 @@ function filterBookmark(tag){
 		  dataType: "json"
 		});
 }
-/*function bindBtnGallery(){
-	$(".portfolio-item .btnRemove").on("click", function(e){
-		var imageId= $(this).data("id");
-		var imageName= $(this).data("name");
-		var key = $(this).data("key");
-		var path="";
-		if(key == "slider")
-			var path="album";
-		else if(key=="communevent")
-			var path=key;
-//		var path = $(this).data("path");
-		e.preventDefault();
-		bootbox.confirm("<?php echo Yii::t('common','Are you sure you want to delete') ?> <span class='text-red'>"+
-						$(this).data("name")+"</span> ?", 
-			function(result) {
-				if(result){
-					$.ajax({
-						url: baseUrl+"/"+moduleId+"/document/delete/dir/"+moduleId+"/type/"+itemType+"/parentId/"+itemId,
-						type: "POST",
-						dataType : "json",
-						data: {"name": imageName, "parentId": itemId, "docId":imageId, 
-							  "parentType": itemType, "path" : path, "source":"gallery"},
-						success: function(data){
-							if(data.result){
-								$("#"+imageId).remove();
-								toastr.success(data.msg);
-							}else{
-								toastr.error(data.error)
-							}
-						}
-					});
-				}
-			});
-	});
-}*/
 </script>

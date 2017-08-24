@@ -3153,7 +3153,7 @@ var dyFInputs = {
 
     	return {
 	    	inputType : "uploader",
-	    	label : tradDynForm["imageshere"]+" :", 
+	    	label : tradDynForm.fileshere+" :", 
 	    	showUploadBtn : false,
 	    	filetypes:["pdf","xls","xlsx","doc","docx","ppt","pptx","odt","ods","odp"],
 	    	afterUploadComplete : function(){

@@ -92,6 +92,10 @@ Liste des notifications déjà lues => #370 #453
   [ ] lifepath : ultra personnel tag
     - can use POI's type lifepath > private | public
     - can be used for following any item
+  [ ] Shop : Listing produit
+    [ ] listing en mode bullet points
+    [ ] POI type produit , prix 
+      [ ] subtype : sandwich plat 
   ** interoperabilty + data mining : 
     [ ] use FB social graph to mine events and organisation 
   ** COMOBI
@@ -103,23 +107,47 @@ Liste des notifications déjà lues => #370 #453
   ** ERgonomie 
     [ ] menuLeft dynamic avec l'activité 
       - faire remonté les point menu qui ont des nouveauté
-
+  ** news 
+    @pitonStLeu, pouvoir référencer une commune
+  [ ] baniere ou image : remerciement, cité un auteur pour la réutilisation 
+  c'est le minimum dans le copytalisme 
+  ** Open Science 
+    [ ] photo-identification collaborative : 
+      - créer group 
+      - POI + photo + hashtag en commun , ex : #baleineReunion
+      - Btn sameAs : open Search Box + find Element + choose name 
+      - Outside src : en regardant les photos, video de qlqun (FB, flickR...) 
+        > POI : #baleineREunion + url 
 * ************************************************************    
-* Version 0.21  : en cours
+* Version 0.21.8  : en cours
+8 correpsond le nb de nouvelle fonctionalité
+- DDA refactored
+- internationalisation
+- integration de rocket Chat 
+- creation de dossier sur les album 
+- mini GED avec upload de document
+- gestion des role sur les membres
+- ??? module Tiers Lieux , Ressources
 * ************************************************************  
 * Action Terrain 
   [ ] journée Biodiversité Pointoss coupe coupe l'accacia (Galabert)
 * Action Projet
+  * imprimante de qiuartier 
+    [ ] cout 199€ 
+    [ ] utilisateur 
+      [ ] personne ou asso 
   *  COBUS
-    [ ] install batterie 
+    [ ] design 
+      - 16/08 point @steph 
+    [ ] install batterie RV @Charly
     [ ] switch + test multi ordi 
-    [ ] generateur avec onduleur 
+    [ ] generateur avec onduleur @Franky
   * COMOBI
   * interop 
     [ ] connecté une autre instance CO en mode interop 
   * COPEDIA
     [ ] intégré dans un projet global universitaire trans discipline
-    [ ]  voir avec Fred Mesnard et David Grosser , comment l'intégrer dans le cursus , ou meme au LIM 
+    [ ] voir avec Fred Mesnard et David Grosser , comment l'intégrer dans le cursus , ou meme au LIM 
   * FAI
     [ ] rencontre avec martial 
     [ ] TEster les antennes
@@ -176,11 +204,19 @@ Liste des notifications déjà lues => #370 #453
     [ ] SEO optim
    
   ** @Tib
+    [ ] verifier les qrcode 
+    [ ]  NA : supprimer
+      http://www.notragora.com/#element.detail.type.organizations.id.59020d90dd04528a627f4fb8 et http://www.notragora.com/#element.detail.type.organizations.id.5937fbe5dd045296372263a2 
+    [ ] bug effacement de latitude fruitiere [[https://www.communecter.org/#page.type.organizations.id.5718adb240bb4eeb271d6553.view.directory.dir.followers]]
+    [ ] request an open app system
+      - demande d'hébergement de tout les outils dégoogelisé 
+      - le prix peut etre proportionnel à la consommation 
+      - avec un reversement a chque commun utilisé
     [ ] Chloe utilisation du conservatoire 
     [ ] add filters in top bar mapEnd , near username
     [ ] add delete to image upload 
       - on Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté 
-    [ ] Finir module Tiers Lieux 
+    * Finir module Tiers Lieux 
       [ ] on events TL connecté url to visio 
         [ ] show icons for quick access to ressources of a TL event
         [ ] avoir des roles concirerge ...etc == RH
@@ -193,6 +229,54 @@ Liste des notifications déjà lues => #370 #453
           [ ] Service 
             [ ] Wifi , lit, bouffe, coworking, café
     [ ] url city a transmettre 
+    * integrating Rocket Chat
+      [X] mode standalone : http://127.0.0.1/ph/co2/rocketchat/
+      [X] mode module : lbh('#chat')
+      [X] mode modal on elements : $("#rocketchatModal").modal('show')
+      [X] create group channel by Name 
+      [X] on orga page , btn > creates and opens RC group (private channel)
+>>>>>>>>[ ] check group existance before creation , otherwise just invite
+          [ ] on demand : either we put a property on an element describing if corresponding exists or not 
+          [ ] pre create all element's rooms 
+>>>>>>>>[ ] only members, have access 
+>>>>>>>>[ ] after create invite all members to chat and add notification
+>>>>>>>>[ ] check anymember can start the chat
+      [X] apply to projects and events
+      [X] on CO-login get RC loginToken
+      [X] integrate into CO 
+        [X] on element pages as modal 
+        [X] as a module in top menu 
+      [X] add redirect iframe to login + after login redirect to iframe
+      [X] how to use live chat :?layout=embedded
+      [X] preload iframe after login 
+>>>>>>[[ ]] getting chat notifictions ???
+        [[https://rocket.chat/docs/developer-guides/iframe-integration/events]]
+      ** test 
+        [ ] my chat shows fullscreen rocket with all activated channels
+        [ ] an elements chat > show only the elements chat
+        [ ] should members create new channels in their chat
+        [ ] person changing username : changement de nom d'user d'un coté, il faut viré coté rocket chat profil et avatar pour pas pouvoir changer de nom d'user email avatar, et coté CO2 si changement appelle a /api/v1/users.update avec data.username data.email data.name https://rocket.chat/docs/developer-guides/rest-api/users/update
+      ** batch script
+>>>>>>>>>[ ] genéré tout les compte RC pour les comptes existant sinon ca peut planter les demandes chat direct
+      ** bugs
+        
+        [ ] creating projects , name many words space seperated
+        [ ] project chat > open > click close
+        [ ] aprés abonnement ou devient member > show chat btn
+        [ ] login broken when loosing to chat : don't make it mandatory, if no chat, hide btn
+      ** use cases 
+        [X] gloabal menu : module chat btn opens , all my chat rooms 
+        [X] any element page : open the elements channel 
+          [ ] chat with members , or add all members 
+        [X] on someones page : show btn if connected, open the direct chat room
+          [X] when connection is billateral 
+            [X] connect one to one msg
+          [X] use as private message otherwise
+      ** ideas + amelioration
+        [ ] export chat history
+        [ ] pouvoir utiliser un rocket chat externe (only for admins)
+        [ ] add chat shortcut, maybe right click in directories , or floopdrwaer
+      * -----------------------------------------
     [ ] dynform bookmarking using POI : add a url > Next > get content (voir avec tango kgougle )
       [ ] dynform filling threw get content from url copied into name field
     [ ] brique comeptence et tache sur mon profil 
@@ -200,6 +284,14 @@ Liste des notifications déjà lues => #370 #453
     [ ] losing session : rememberme
     [ ] enable edit POI when open Edition 
   ** @Tib et @Tango 
+    [ ] lancé DDA sur plusieur communauté test
+      [ ] pour : CGPME (vienne sveloupoule@cpmereunion.re), nancy mine, Pref, Digi Reunion 
+      [ ] proposition pour 15 spetembre 
+        [ ] idée sur axe regionnaux 
+        [ ] nationaux 
+        [ ] filiere
+        [ ] échanges poser les questions
+        [ ] lister vos actions concrete
     [ ] quick adder : copy link , set type 
       - get page data > fill form > save 
       - fill contact form 

@@ -641,6 +641,7 @@ var urlCtrl = {
 		"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
 		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
 		"#opendata" : {"alias":"#data.index"},
+		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ loadChat("","citoyens", true, true) } },
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
 	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
@@ -686,11 +687,16 @@ var urlCtrl = {
 			//mylog.log("replaceAndShow2",urlIndex);
 			if( hash.indexOf(urlIndex) >= 0 )
 			{
+				if(urlObj.goto){
+					window.location.href = urlObj.goto;
+					return false;
+				}
 				checkMenu(urlObj, hash);
 			
 				endPoint = urlCtrl.loadableUrls[urlIndex];
 				mylog.log("jsController 2",endPoint,"login",endPoint.login,endPoint.hash );
-				if( typeof endPoint.login == undefined || !endPoint.login || ( endPoint.login && userId ) ){
+				if( typeof endPoint.login == undefined || !endPoint.login || ( endPoint.login && userId ) )
+				{
 					//alises are renaming of urls example default.home could be #home
 					if( endPoint.alias ){
 						endPoint = urlCtrl.jsController(endPoint.alias);

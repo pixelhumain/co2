@@ -243,6 +243,7 @@ var trad = {
 	"acceptasmembers": "<?php echo Yii::t("common","Accept as member") ?>", 
 	"acceptascontributors": "<?php echo Yii::t("common","Accept as contributor") ?>",
 	"addasadmin": "<?php echo Yii::t("common","Add as admin") ?>",
+	"addmodifyroles":"<?php echo Yii::t("common","Add/Update roles") ?>",
 	"deletemembers":"<?php echo Yii::t("common","Delete this member") ?>",
 	"deletecontributors":"<?php echo Yii::t("common","Delete this contributor") ?>",
 	"follow": "<?php echo Yii::t("common","follow") ?>",

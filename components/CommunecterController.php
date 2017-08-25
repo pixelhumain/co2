@@ -377,6 +377,7 @@ class CommunecterController extends Controller
     ),
     "link" => array(
       "removemember"        => array("href" => "/ph/co2/link/removemember"),
+      "removerole"        => array("href" => "/ph/co2/link/removerole"),
       "removecontributor"   => array("href" => "/ph/co2/link/removecontributor"),
       "disconnect"        => array("href" => "/ph/co2/link/disconnect"),
       "connect"           => array("href" => "/ph/co2/link/connect"),

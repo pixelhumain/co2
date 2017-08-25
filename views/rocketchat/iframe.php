@@ -34,8 +34,12 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 		//fired on direct conversation or when pinged in a channel
 		if(e.data.eventName=="notification" ){
 			console.info("xxxxxxxxxxxxxx NOTIFICATION ", e.data.eventName,e.data.data);
-			toastr.info("notification received");
-			$(".chatnotifs").html("+");
+			toastr.info("notification received");	
+		} 
+
+		if(e.data.eventName=="new-message" ){
+			console.info("xxxxxxxxxxxxxx NEW MSG ", e.data.eventName,e.data.data);
+			toastr.info("new-message");
 		} 
 
 
@@ -57,6 +61,13 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 			}
 
 		}
+
+		if( typeof e.data.eventName == "undefined" ){
+				document.querySelector('iframe').contentWindow.postMessage({
+					  externalCommand: 'login-with-token',
+					  token: '<?php echo Yii::app()->session["loginToken"]; ?>' }, '*');
+		}
+
 		//away
 		//online
 		if(e.data.eventName=="status-changed"){

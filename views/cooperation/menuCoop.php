@@ -100,8 +100,9 @@
 	}
 
 
-	#menuCoop a.letter-green{
-		padding-left:14px; 
+	#menuCoop a.letter-green,
+	#menuCoop a.text-dark{
+		padding-left:15px; 
 	}
 
 	#div-reopen-menu-left-container{
@@ -114,30 +115,22 @@
 	}
 </style>
 
-<?php $menuCoopData = Cooperation::getCoopData($type, (string)$element["_id"], "room"); ?>
-
-<ul id="menuCoop" class="margin-top-25 menuCoop">
-	
-
-	<!------------------ ROOMS ----------- -->
-	
-	<!-- <li>
-		<a href="javascript:" class="title-section elipsis open" data-key="rooms">
-			<i class="fa fa-caret-down"></i>  
-	  		<i class="fa fa-inbox"></i> <?php echo Yii::t("cooperation", "Rooms") ?>
-	  	</a>
-	</li> -->
-
-	<li class="submenucoop sub-rooms"><hr></li>
-	
-	<li class="submenucoop sub-rooms">
-		<a href="javascript:dyFObj.openForm('room')" class="letter-green">
-	  		<i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "Create room") ?>
-	  	</a>
-	</li>
+	<?php 
+		$menuCoopData = Cooperation::getCoopData($type, (string)$element["_id"], "room");
+		$auth = Authorisation::canEditItem(Yii::app()->session['userId'], $type, (string)$element["_id"]);
+	?>
+	<?php if($auth){ ?>
+		<li class="submenucoop sub-rooms"><hr></li>
+		
+		<li class="submenucoop sub-rooms">
+			<a href="javascript:dyFObj.openForm('room')" class="letter-green">
+		  		<i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "Create room") ?>
+		  	</a>
+		</li>
+	<?php } ?>
 
 	<li class="submenucoop sub-rooms"><hr></li>
-
+	
 	<div id="coop-room-list" class="margin-bottom-50">
 		<?php $this->renderPartial('../cooperation/roomList', array("roomList"=>$menuCoopData["roomList"])); ?>
 	</div>
@@ -150,12 +143,6 @@
 	  		<i class="fa fa-inbox"></i> <?php echo Yii::t("cooperation", "Proposals") ?>
 	  	</a>
 	</li>
-
-	<!-- <li class="submenucoop hidden sub-proposals">
-		<a href="javascript:" class="letter-green">
-	  		<i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "Create proposal") ?>
-	  	</a>
-	</li> -->
 
 	<li class="submenucoop hidden sub-proposals"><hr></li>
 	
@@ -185,12 +172,6 @@
 	  	</a>
 	</li>
 
-		<!-- <li class="submenucoop hidden sub-actions">
-			<a href="javascript:" class="letter-green">
-		  		<i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "Create action") ?>
-		  	</a>
-		</li> -->
-
 		<li class="submenucoop hidden sub-actions"><hr></li>
 
 		<?php foreach(array("mine" => "My actions", "todo"=>"To do", 
@@ -215,5 +196,3 @@
 	  		<i class="fa fa-inbox margin-left-25"></i> <?php echo Yii::t("cooperation", "Resolutions") ?>
 	  	</a>
 	</li>
-
-</ul>

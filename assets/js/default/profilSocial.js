@@ -296,11 +296,6 @@ function bindButtonMenu(){
 		uiCoop.closeUI();
 	});
 
-	$("#refresh-coop-rooms").click(function(){
-		uiCoop.getCoopData(contextData.type, contextData.id, "room");
-		uiCoop.startUI();
-	});
-
 	initBtnShare();
 
 }

@@ -3511,7 +3511,7 @@ var dyFInputs = {
     	placeholder : "Fin de la période de vote",
     	rules : { 
     		required : true,
-    		greaterThanNow : ["DD/MM/YYYY"]
+    		greaterThanNow : ["DD/MM/YYYY H:m"]
     	}
     },
     amendementDateEnd :{
@@ -3520,7 +3520,7 @@ var dyFInputs = {
     	placeholder : "Fin de la période d'amendement",
     	rules : { 
     		required : true,
-    		greaterThanNow : ["DD/MM/YYYY"]
+    		greaterThanNow : ["DD/MM/YYYY H:m"]
     	}
     },
     inviteSearch : {

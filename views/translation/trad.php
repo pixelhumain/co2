@@ -282,6 +282,8 @@ var trad = {
 	"Your amendement has been save with success" : "<?php echo Yii::t("cooperation", "Your amendement has been save with success") ?>",
 	"Your vote has been save with success" : "<?php echo Yii::t("cooperation", "Your vote has been save with success") ?>",
 	"processing save" : "<?php echo Yii::t("cooperation", "processing save") ?>",
+	"processing ok" : "<?php echo Yii::t("cooperation", "processing ok") ?>",
+	"processing" : "<?php echo Yii::t("cooperation", "processing") ?>",
 };
 
 var tradDynForm = {

@@ -139,9 +139,11 @@
 
 
 	#podVote .btn-link.bg-white, 
-	.podVoteAmendement .btn-link.bg-white{
+	.podVoteAmendement .btn-link.bg-white,
+	#podVote .badge.bg-white, 
+	.podVoteAmendement .badge.bg-white{
 		color:black;
-		border-color: black;
+		border: 1px solid black;
 	}
 	#podVote .btn-link, 
 	.podVoteAmendement .btn-link{
@@ -225,18 +227,23 @@
 	
 	<div class="col-lg-12 col-md-12 col-sm-12 bg-white" id="menu-room">
 
-		<?php //var_dump($room); ?>
 		<?php if(@$room){ ?>
-			<!-- <img src=""> -->
-			<h2 class="margin-top-15 elipsis letter-turq"><i class="fa fa-connectdevelop"></i> <?php echo @$room["name"]; ?></h2>
+			<h2 class="margin-top-15 elipsis letter-turq">
+				<i class="fa fa-connectdevelop"></i> <?php echo @$room["name"]; ?>
+			</h2>
 			<hr>
-			<h4><?php echo Yii::t("cooperation", "Topic") ?> : <small><?php echo @$room["topic"]; ?></small></h4>
+			<h4>
+				<?php echo Yii::t("cooperation", "Topic") ?> : 
+				<small><?php echo @$room["topic"]; ?></small>
+			</h4>
 			<h5><small><?php echo @$room["description"]; ?></small></h5>
 			<hr>
 		<?php }else{ ?>
 			<h3 class="margin-top-15 elipsis">
 				<i class="fa fa-search"></i> 
-				<?php echo Yii::t("cooperation", @$post["type"])." <small>".Yii::t("cooperation", @$post["status"])."</small>"; ?>
+				<?php $thisStatus = @$post["status"] ? @$post["status"] : "all status"; ?>
+				<?php echo Yii::t("cooperation", @$post["type"])." <small>".
+						   Yii::t("cooperation", @$thisStatus)."</small>"; ?>
 			</h3>
 			<hr>
 		<?php } ?>
@@ -266,6 +273,11 @@
 					  			data-original-title="<?php echo Yii::t("cooperation", "Add proposal") ?>"></i> 
 					  		<span class="hidden-min hidden-sm"><?php echo Yii::t("cooperation", "Add proposal") ?></span>
 					  	</a>
+				  	<?php }else if(@$post["type"] == Room::CONTROLLER){ ?>
+				  		<label class="text-black pull-right tooltips" 
+				  			   data-position="top" data-original-title="Devenez membre pour contribuer">
+				  			<i class="fa fa-lock"></i>
+				  		</label>
 				  	<?php } ?>
 			  	</div>
 				
@@ -311,12 +323,14 @@
 								  	<small class="letter-light margin-left-10">
 								  		<i class="fa fa-clock-o"></i> 
 								  		<?php 	if(@$proposal["amendementDateEnd"] && @$proposal["status"] == "amendable")
-									  				echo Yii::t("cooperation", "end") ." ". 
-									  				Translate::pastTime($proposal["amendementDateEnd"], "datefr"); 
+									  				echo Yii::t("cooperation", "end") ." ".
+									  				//$proposal["amendementDateEnd"];
+									  				//date("Y-m-d H:i:s", $proposal["amendementDateEnd"]);
+									  				Translate::pastTime($proposal["amendementDateEnd"], "date"); 
 
 									  			else if(@$proposal["voteDateEnd"] && @$proposal["status"] == "tovote" )
 									  				echo Yii::t("cooperation", "end") ." ". 
-									  				Translate::pastTime($proposal["voteDateEnd"], "datefr"); 
+									  				Translate::pastTime($proposal["voteDateEnd"], "date"); 
 								  		?>
 								  	</small>
 							  	<?php } ?>
@@ -381,11 +395,16 @@
 				  			
 			  		<?php 
 			  			if(@$post["type"] == Room::CONTROLLER && $auth){ ?>
-					  	<a href="javascript:dyFObj.openForm('action')" class="letter-green pull-right">
-					  		<i class="fa fa-plus-circle"></i> 
-					  		<span class="hidden-min hidden-sm"><?php echo Yii::t("cooperation", "Add action") ?></span>
-					  	</a>
-					<?php } ?>
+						  	<a href="javascript:dyFObj.openForm('action')" class="letter-green pull-right">
+						  		<i class="fa fa-plus-circle"></i> 
+						  		<span class="hidden-min hidden-sm"><?php echo Yii::t("cooperation", "Add action") ?></span>
+						  	</a>
+						<?php }elseif(@$post["type"] == Room::CONTROLLER){ ?>
+					  		<label class="text-black pull-right tooltips" 
+					  			   data-position="top" data-original-title="Devenez membre pour contribuer">
+					  			<i class="fa fa-lock"></i>
+					  		</label>
+						<?php } ?>
 			  	</div>
 				
 				<?php   if(@$actionList)

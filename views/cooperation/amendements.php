@@ -1,27 +1,47 @@
 <div class="col-lg-4 col-md-5 col-sm-6 padding-top-15 hidden pull-right bg-white shadow2" id="amendement-container">
 	<div class="col-lg-12 col-md-12 col-sm-12">
 		<h5 class="pull-left"><i class="fa fa-angle-down"></i> Amendements</h5>
-		<button class="btn btn-default pull-right" id="btn-hide-amendement"><i class="fa fa-times"></i></button>
+		<button class="btn btn-default pull-right tooltips" 
+				data-original-title="Fermer cette fenêtre" data-placement="bottom"
+				id="btn-hide-amendement"><i class="fa fa-times"></i></button>
+		<button class="btn btn-default pull-right margin-right-5 tooltips" 
+				data-original-title="Actualiser les données" data-placement="bottom"
+				data-id-proposal="<?php echo $proposal["_id"]; ?>"
+				id="btn-refresh-amendement"><i class="fa fa-refresh"></i></button>
 	</div>
 	<div class="col-lg-12 col-md-12 col-sm-12">
 		<hr>
-		<button class="btn btn-link radius-5 text-purple col-lg-12 col-md-12 col-sm-12 btn-create-amendement">
-			<i class="fa fa-pencil"></i> Proposer un amendement
-		</button>
+		<?php if($auth && @$proposal["status"] == "amendable"){ ?>
+			<button class="btn btn-link radius-5 text-purple col-lg-12 col-md-12 col-sm-12 btn-create-amendement">
+				<i class="fa fa-pencil"></i> Proposer un amendement
+			</button>
+		<?php } else if(@$proposal["status"] != "amendable"){ ?>
+			<label class="bg-white letter-purple">
+				<i class="fa fa-clock-o"></i> La période d'amendement est terminée
+			</label>
+			<hr>
+		<?php } else if(!$auth){ ?>
+			<label class="badge bg-purple col-lg-12 col-md-12 col-sm-12">
+				<i class="fa fa-lock"></i> Devenez membre pour contribuer
+			</label>
+		<?php } ?>
 	</div>
 
 	 <div class="form-group col-lg-12 col-md-12 col-sm-12 hidden" id="form-amendement">
 	  <hr>
 	  <label><i class="fa fa-pencil"></i> Rédiger votre amendement :</label><br>
 	  <small><i>Si votre amendement est accepté, il sera ajouté à la suite de la proposition principale,<br>et fera parti de la proposition finale, soumise au vote.</i></small><br><br>
-	  <textarea class="form-control" rows="5" id="txtAmdt" placeholder="votre amendement"></textarea>
+	  <textarea class="form-control" rows="8" id="txtAmdt" placeholder="votre amendement"></textarea>
 	  <br>
-	  <small class="pull-right"><i>Les amendements ne peuvent dépasser la taille de 500 caractères.</i></small>
+	  <small class="pull-left"><i>Les amendements ne peuvent dépasser la taille de 1000 caractères</i></small>
+	  
+	  <small class="pull-right" id="charsLeft"></small><br>
+	  <small class="pull-left"><i>(taille minimale : 10 caractères)</i></small>
 	  <br>
 	  <button class="btn btn-sm btn-link radius-5 bg-green-k pull-right" id="btn-save-amendement">
 			<i class="fa fa-save"></i> Enregistrer mon amendement
 	  </button>
-	  <button class="btn btn-sm btn-link radius-5 bg-red pull-right margin-right-10" id="btn-save-amendement">
+	  <button class="btn btn-sm btn-link radius-5 bg-red pull-right margin-right-10 btn-create-amendement">
 			<i class="fa fa-times"></i> Annuler
 	  </button>
 	  <hr class="col-lg-12 col-md-12 col-sm-12 no-padding">
@@ -30,25 +50,34 @@
 	<?php 
 		$i=0;		
 		$allVotesRes = array();
-		if(@$amendements)
-		foreach($amendements as $key => $am){ $i++;
-			//var_dump($am); //exit;
-			$author = Person::getSimpleUserById(@$am["idUserAuthor"]);
-			$allVotes = @$am["votes"] ? $am["votes"] : array();
-			$myId = Yii::app()->session["userId"];
-			$hasVoted = Cooperation::userHasVoted($myId, $allVotes);
-	 		$voteRes = Proposal::getAllVoteRes($am);
-	 		unset($voteRes["uncomplet"]);
-	 		$allVotesRes[$key] = $voteRes;
 
-	 		$this->renderPartial('../cooperation/pod/amendement', array("key"=>$key, "am"=>$am,
-		 																"author" => $author,
-		 																"voteRes" => $voteRes,
-		 																"allVotes" => $allVotes,
-		 																"myId" => $myId,
-		 																"hasVoted" => $hasVoted));
-		} 
-	 ?>
+		if(@$amendements){
+			foreach($amendements as $key => $am){ $i++;
+				//var_dump($am); //exit;
+				$author = Person::getSimpleUserById(@$am["idUserAuthor"]);
+				$allVotes = @$am["votes"] ? $am["votes"] : array();
+				$myId = Yii::app()->session["userId"];
+				$hasVoted = Cooperation::userHasVoted($myId, $allVotes);
+		 		$voteRes = Proposal::getAllVoteRes($am);
+		 		unset($voteRes["uncomplet"]);
+		 		$allVotesRes[$key] = $voteRes;
+
+		 		$this->renderPartial('../cooperation/pod/amendement', 
+		 								array(	"key"=>$key, "am"=>$am, 
+		  										"proposal"=>@$proposal,
+												"author" => $author,
+												"voteRes" => $voteRes,
+												"allVotes" => $allVotes,
+												"myId" => $myId,
+												"auth" => $auth,
+												"hasVoted" => $hasVoted));
+			}
+		}else{ 
+	?>
+	<div class="col-lg-12 col-md-12 col-sm-12 margin-top-">
+		<h5 class="text-left"><i class="fa fa-ban"></i> Aucun amendement</h5>
+	</div>
+	<?php } ?>
 		
 </div>
 
@@ -83,6 +112,27 @@
 			console.log("send vote", voteValue),
 			uiCoop.sendVote("amendement", idParentProposal, voteValue, idParentRoom, idAmdt);
 		});
+
+		$("#btn-save-amendement").attr("disabled", "disabled");
+
+		$("#txtAmdt").keyup(function(){
+			var txt = $(this).val();
+			if(txt.length > 1000){ console.log('len1', txt.length);
+				txt = txt.substr(0, 1000); console.log('len2', txt.length);
+				$(this).val(txt);
+			}
+			if(txt.length >= 10){ 
+				$("#charsLeft").addClass("letter-green");
+				$("#btn-save-amendement").removeAttr("disabled");
+			}else { 
+				$("#charsLeft").removeClass("letter-green"); 
+				$("#btn-save-amendement").attr("disabled", "disabled");
+			}
+
+			$("#charsLeft").html(txt.length+" / 1000");
+		});
+
+		//$('#txtAmdt').limit('140','#charsLeft');
 	});
 
 	function chartInitAm(key, data){ 

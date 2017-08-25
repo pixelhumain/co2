@@ -7,7 +7,6 @@
 	$auth = Authorisation::canEditItem(Yii::app()->session['userId'], $proposal["parentType"], $proposal["parentId"]);
 
 	$parentRoom = Room::getById($proposal["idParentRoom"]);
-	//echo $parentRoom['name'];
 ?>
 
 <div class="col-lg-5 col-md-5 col-sm-5 pull-left margin-top-15">
@@ -15,21 +14,24 @@
   		$parentRoom = Room::getById($proposal["idParentRoom"]);
   	?>
   	<h4 class="elipsis letter-turq">
-		<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
+  		<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
 	</h4>
 	<br>
   	<?php  } ?>
 
 	<label class=""><i class="fa fa-bell"></i> Status : 
-		<small class="text-light">
+		<small class="letter-<?php echo Cooperation::getColorCoop($proposal["status"]); ?>">
 			<?php echo Yii::t("cooperation", $proposal["status"]); ?>
 		</small>
 	</label>
+
 </div>
 
 
 <div class="col-lg-7 col-md-7 col-sm-7 no-padding">
-	<button class="btn btn-default pull-right margin-left-5 margin-top-10" id="btn-close-proposal">
+	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
+				data-original-title="Fermer cette fenêtre" data-placement="bottom"
+				id="btn-close-proposal">
 		<i class="fa fa-times"></i>
 	</button>
 	<?php if($auth){ ?>
@@ -37,10 +39,17 @@
 			<i class="fa fa-cog"></i> options
 		</button>
 	<?php } ?>
-	<button class="btn btn-default pull-right margin-left-5 margin-top-10 btn-extend-proposal">
+	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
+				data-original-title="Actualiser les données" data-placement="bottom"
+				data-id-proposal="<?php echo $proposal["_id"]; ?>"
+				id="btn-refresh-proposal"><i class="fa fa-refresh"></i></button>
+
+	<button class="btn btn-default pull-right margin-left-5 margin-top-10 btn-extend-proposal tooltips" 
+				data-original-title="Agrandir l'espace de lecture" data-placement="bottom">
 		<i class="fa fa-long-arrow-left"></i>
 	</button>
-	<button class="btn btn-default pull-right margin-left-5 margin-top-10 hidden" id="btn-minimize-proposal">
+	<button class="btn btn-default pull-right margin-left-5 margin-top-10 hidden btn-minimize-proposal tooltips" 
+				data-original-title="Réduire l'espace de lecture" data-placement="bottom">
 		<i class="fa fa-long-arrow-right"></i>
 	</button>
 </div>
@@ -59,12 +68,17 @@
 	</label>
 
 	<?php if(@$proposal["status"] == "tovote"){ ?>
+		<button class="btn btn-link text-purple radius-5 btn-show-amendement pull-right">
+			Afficher les amendements (<?php echo count(@$proposal["amendements"]); ?>) <i class="fa fa-chevron-right"></i>
+		</button>
 		<hr>
 		<h6 class="pull-left">
 			<?php echo @$proposal["voteDateEnd"] ? 
-					"<i class='fa fa-clock-o'></i> Vote ouvert jusqu'au <span class='letter-green'>".$proposal["voteDateEnd"]."</span> · ".
+					"<i class='fa fa-clock-o'></i> Vote ouvert jusqu'au <span class='letter-green'>".
+					date('d/m/Y H:i e', strtotime($proposal["voteDateEnd"])).
+					"</span> · ".
 					Yii::t("cooperation", "end") ." ". 
-		  				Translate::pastTime($proposal["voteDateEnd"], "datefr")
+		  				Translate::pastTime($proposal["voteDateEnd"], "date")
 					: "Vote ouvert jusqu'à une date non-définie"; ?>
 		</h6>
 		<?php if($hasVote!=false){ ?>
@@ -77,36 +91,41 @@
 			<h5 class="letter-red pull-right">Vous n'avez pas voté</h5>
 		<?php } ?>
 	<?php }else if(@$proposal["status"] == "amendable"){ ?>
-		<!-- <h6>
-			<?php echo @$proposal["amendementDateEnd"] ? "Fin des amendements : ".$proposal["amendementDateEnd"] : ""; ?>
-		</h6> -->
 		<hr>
 		<h5 class="text-purple no-margin">
 			<i class="fa fa-pencil"></i> Proposition soumise aux amendements 
-			<small class="text-purple">jusqu'au <?php echo @$proposal["amendementDateEnd"]; ?></small>
+			<small class="text-purple">jusqu'au 
+				<?php echo date('d/m/Y H:i e', strtotime($proposal["amendementDateEnd"])); ?>
+				<br><i class="fa fa-angle-right"></i> Fin des amendements et ouverture des votes <?php echo Translate::pastTime($proposal["amendementDateEnd"], "date"); ?>
+			</small>
 		</h5>
 		<small>Vous pouvez proposer des amendements et voter les amendements proposés par les autres utilisateurs</small>
 		<hr>
-		<?php //if($proposal["creator"] == $myId){ ?>
-			<!-- <button class="btn btn-link letter-green letter-white radius-5" id="btn-activate-vote">
-				<i class="fa fa-check-circle"></i> Activer les votes
-			</button> -->
-		<?php //} ?>
+		
 		<?php if($auth){ ?>
 			<button class="btn btn-link text-purple radius-5 btn-create-amendement">
 				<i class="fa fa-pencil"></i> Proposer un amendement
 			</button>
 		<?php } ?>
 			<button class="btn btn-link text-purple radius-5 btn-show-amendement">
-				Afficher les amendements <i class="fa fa-chevron-right"></i>
+				Afficher les amendements (<?php echo count(@$proposal["amendements"]); ?>) <i class="fa fa-chevron-right"></i>
 			</button>
-			
+		
+	<?php }else if(@$proposal["status"] == "closed"){ ?>
+		<button class="btn btn-link text-purple radius-5 btn-show-amendement pull-right">
+			Afficher les amendements (<?php echo count(@$proposal["amendements"]); ?>) <i class="fa fa-chevron-right"></i>
+		</button>
+		<hr>
+		<h5 class="no-margin"><span class="text-red">La session de vote est terminée</span> · 
+			<?php echo Yii::t("cooperation", "end")." ".Translate::pastTime($proposal["voteDateEnd"], "date"); ?>
+		</h5>
+		<br>
 	<?php } ?>
 
 </div>
 
 <?php 
-	if(@$proposal["voteActivated"] == "true" && @$proposal["status"] == "tovote") 
+	if(@$proposal["status"] != "amendable") 
 		$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$proposal));
 ?>
 
@@ -144,30 +163,36 @@
 </div>
 
 
-<?php if(@$proposal["status"] == "tovote"){ ?>
+<?php //if(@$proposal["status"] != "tovote"){ ?>
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-15">
 	<h4 class="pull-left"><i class="fa fa-angle-down"></i> Liste des amendements validés</h4>
 	<button class="btn btn-default pull-right btn-extend-proposal"><i class="fa fa-long-arrow-left"></i></button>
 	<button class="btn btn-default pull-right btn-minimize-proposal hidden"><i class="fa fa-long-arrow-right"></i></button>
 	<div class="col-lg-12 col-md-12 col-sm-12"><i class="fa fa-ban"></i> Aucun amendement validé</div>
 </div>
-<?php } ?>
+<?php //} ?>
+
+<div class="col-lg-12 col-md-12 col-sm-12"><hr></div>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-25">
-	<h4 class="pull-left"><i class="fa fa-angle-down"></i> Débat</h4>
+	<h4 class="pull-left"><i class="fa fa-balance-scale fa-2x"></i> Débat</h4>
 	<button class="btn btn-default pull-right btn-extend-proposal"><i class="fa fa-long-arrow-left"></i></button>
 	<button class="btn btn-default pull-right btn-minimize-proposal hidden"><i class="fa fa-long-arrow-right"></i></button>
 </div>
 
-<div class="col-lg-12 col-md-12 col-sm-12 margin-top-25" id="comments-container">
-	
-</div>
 
-<?php $this->renderPartial('../cooperation/amendements', array("amendements"=>@$proposal["amendements"])); ?>
+<div class="col-lg-12 col-md-12 col-sm-12" id="comments-container">
+<hr>
+</div>
+<?php $this->renderPartial('../cooperation/amendements', 
+							array("amendements"=>@$proposal["amendements"], 
+								  "proposal"=>@$proposal,
+								  "auth"=>$auth)); ?>
 
 <script type="text/javascript">
-	var idParentProposal = "<?php echo $proposal['_id'] ?>";
-	var idParentRoom = "<?php echo $proposal['idParentRoom'] ?>";
+	var idParentProposal = "<?php echo $proposal['_id']; ?>";
+	var idParentRoom = "<?php echo $proposal['idParentRoom']; ?>";
+	var msgController = "<?php echo @$msgController ? $msgController : ''; ?>";
 	jQuery(document).ready(function() { 
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
 		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/proposals/id/"+idParentProposal,
@@ -209,6 +234,32 @@
 		$("#btn-activate-vote").click(function(){
 			uiCoop.activateVote(idParentProposal);
 		});
+
+		$("#btn-refresh-proposal").click(function(){
+			toastr.info(trad["processing"]);
+			var idProposal = $(this).data("id-proposal");
+			uiCoop.getCoopData(null, null, "proposal", null, idProposal, 
+				function(){
+					uiCoop.minimizeMenuRoom(true);
+					uiCoop.showAmendement(false);
+					toastr.success(trad["processing ok"]);
+				}, false);
+		});
+
+		$("#btn-refresh-amendement").click(function(){
+			toastr.info(trad["processing"]);
+			var idProposal = $(this).data("id-proposal");
+			uiCoop.getCoopData(null, null, "proposal", null, idProposal, 
+				function(){
+					uiCoop.minimizeMenuRoom(true);
+					uiCoop.showAmendement(true);
+					toastr.success(trad["processing ok"]);
+				}, false);
+		});
+
+		if(msgController != ""){
+			toastr.error(msgController);
+		}
 	});
 
 </script>

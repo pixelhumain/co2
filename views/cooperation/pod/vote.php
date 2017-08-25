@@ -12,9 +12,15 @@
 		<canvas id="pieVote"/>
 	</div>
 
-	<div class="col-lg-3 col-md-3 col-sm-4 text-center no-padding pull-left">
-		<h5 class="no-margin"><i class="fa fa-hand-o-up"></i> VOTER</h5>
-	</div>
+		<div class="col-lg-3 col-md-3 col-sm-4 text-center no-padding pull-left">
+			<h5 class="no-margin">
+				<?php if(@$proposal["status"] == "tovote"){ ?>
+					<i class="fa fa-hand-o-up"></i> VOTER
+				<?php }else{ ?>
+					<i class="fa fa-balance-scale"></i> RÉSULTATS
+				<?php } ?>
+			</h5>
+		</div>
 
  	<?php 
  		$voteRes = Proposal::getAllVoteRes($proposal);
@@ -23,20 +29,28 @@
  			//var_dump($value); exit;
  	?>
 
-	<div class="col-lg-8 col-md-8 col-sm-8 text-center no-padding pull-left margin-top-5">
-		<div class="col-lg-5 col-md-5 col-sm-7 text-center pull-left margin-top-5">
-			<button class="btn btn-send-vote btn-link btn-sm bg-<?php echo $value["bg-color"]; ?> tooltips"
-					data-original-title="cliquer pour voter" data-placement="left"
-					data-vote-value="<?php echo $value["voteValue"]; ?>"><?php echo Yii::t("cooperation", $key); ?></button>
+		<div class="col-lg-8 col-md-8 col-sm-8 text-center no-padding pull-left margin-top-5">
+			<div class="col-lg-5 col-md-5 col-sm-7 text-center pull-left margin-top-5">
+				<?php if(@$proposal["status"] == "tovote"){ ?>
+					<button class="btn btn-send-vote btn-link btn-sm bg-<?php echo $value["bg-color"]; ?> tooltips"
+							data-original-title="cliquer pour voter" data-placement="left"
+							data-vote-value="<?php echo $value["voteValue"]; ?>"><?php echo Yii::t("cooperation", $key); ?>
+					</button>
+				<?php }else{ ?>
+					<label class="col-lg-12 col-md-12 col-sm-12 badge padding-10 bg-<?php echo $value["bg-color"]; ?>">
+						<?php echo Yii::t("cooperation", $key); ?>
+					</label>
+				<?php } ?>
+
+			</div>
+			<div class="col-lg-2 col-md-2 col-sm-2 text-center pull-left margin-top-5 tooltips"
+						data-original-title="<?php echo $value["votant"]; ?> votants" data-placement="right">
+				<label><?php echo $value["percent"]; ?>%</label>
+			</div>
+			<div class="col-lg-5 col-md-5 col-sm-5 text-center pull-left margin-top-5 hidden-sm hidden-xs">
+				<small><?php echo $value["votant"]; ?> votant(s)</small><br>
+			</div>
 		</div>
-		<div class="col-lg-2 col-md-2 col-sm-2 text-center pull-left margin-top-5 tooltips"
-					data-original-title="<?php echo $value["votant"]; ?> votants" data-placement="right">
-			<label><?php echo $value["percent"]; ?>%</label>
-		</div>
-		<div class="col-lg-5 col-md-5 col-sm-5 text-center pull-left margin-top-5 hidden-sm hidden-xs">
-			<small><?php echo $value["votant"]; ?> votant(s)</small><br>
-		</div>
-	</div>
 
 	<?php } ?>
 

@@ -363,17 +363,10 @@
 		</button> -->
 		<hr>
 		<h4 class="letter-turq"><i class="fa fa-connectdevelop"></i> Espaces co<span class="hidden-sm">opératifs</span></h4>
-		<?php $params = array(  "element" => @$element, 
-                                "type" => @$type, 
-                                "edit" => @$edit,
-                                "isLinked" => @$isLinked,
-                                "countNotifElement"=>@$countNotifElement,
-                                "invitedMe" => @$invitedMe,
-                                "openEdition" => $openEdition,
-                                );
 
-	    	$this->renderPartial('../cooperation/menuCoop', $params); 
-	    ?>
+
+		<ul id="menuCoop" class="margin-top-25 menuCoop">
+	    </ul>
 	</div>
 
 	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 profilSocial hidden-xs" 

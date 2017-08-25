@@ -22,7 +22,8 @@ var uiCoop = {
 		});
 
 		uiCoop.initBtnLoadData();
-		uiCoop.getCoopData(contextData.type, contextData.id, "proposal", "tovote");
+		uiCoop.getCoopData(contextData.type, contextData.id, "menucoop");
+		uiCoop.getCoopData(contextData.type, contextData.id, "proposal");
 	},
 
 	"closeUI" : function(reloadStream){
@@ -94,6 +95,8 @@ var uiCoop = {
 		};
 		console.log("showLoading ?", typeof showLoading, showLoading);
 		
+		KScrollTo("#div-reopen-menu-left-container");
+
 		if(typeof showLoading == "undefined" || showLoading == true){
 			if(typeof dataId == "undefined" || dataId == null || type == "room"){
 				$("#central-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
@@ -106,7 +109,9 @@ var uiCoop = {
 		ajaxPost("", url, params,
 			function (data){
 				if(typeof dataId == "undefined" || dataId == null || type == "room") {
-					if(dataId == null && type == "room")
+					if(type == "menucoop")
+						$("#menuCoop").html(data);
+					else if(dataId == null && type == "room")
 						$("#coop-room-list").html(data);
 					else
 						$("#central-container").html(data);
@@ -131,7 +136,6 @@ var uiCoop = {
 					}
 				});
 
-				KScrollTo("#div-reopen-menu-left-container");
 				$(".tooltips").tooltip();
 
 				if(typeof onSuccess == "function") onSuccess();
@@ -226,6 +230,11 @@ var uiCoop = {
 
 	"saveAmendement" : function(proposalId, typeAmdt){
 		var txtAmdt = $("#txtAmdt").val();
+		if(txtAmdt.length < 10){
+			toastr.error("Votre amendement est trop court ! Minimum : 10 caractères");
+			return;
+		}
+
 		var param = {
 			block: "amendement",
 			typeElement: "proposals",

@@ -29,6 +29,16 @@ dynForm = {
 				$("#ajaxFormModal #status").val("tovote");
 			}
 			console.log("beforeSave", $("#ajaxFormModal #voteActivated").val(), $("#ajaxFormModal #status").val());
+
+			var dateformat = "DD/MM/YYYY HH:mm";
+	    	var outputFormat="YYYY-MM-DD HH::mm";
+	    	
+	    	console.log("TEST DATE TIMEZONE");
+	    	console.log($("#ajaxFormModal #amendementDateEnd").val());
+			$("#ajaxFormModal #amendementDateEnd").val( moment( $("#ajaxFormModal #amendementDateEnd").val(), dateformat).format() );
+	    	console.log($("#ajaxFormModal #amendementDateEnd").val());
+	    	
+			$("#ajaxFormModal #voteDateEnd").val( moment(   $("#ajaxFormModal #voteDateEnd").val(), dateformat).format() );
         },
 	    afterSave : function(data){
             if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
@@ -135,7 +145,7 @@ dynForm = {
             //idUserAuthor : dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userId : "") ),
             status: dyFInputs.inputHidden( "amendable" ),
             majority: dyFInputs.inputHidden( 50 ),
-            canModify: dyFInputs.inputHidden( true ),
+            //canModify: dyFInputs.inputHidden( true ),
             parentId : dyFInputs.inputHidden(contextData.id),
             parentType : dyFInputs.inputHidden(contextData.type),
             //organizer : dyFInputs.inputHidden("currentUser"),

@@ -1812,7 +1812,7 @@ var directory = {
                 else if(params.type == "events")
                   str += directory.eventPanelHtml(params);  
                 
-                else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"]) ) 
+                else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
                     str += directory.roomsPanelHtml(params,itemType);  
                 
                 else if(params.type == "classified")

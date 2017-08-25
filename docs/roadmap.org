@@ -235,12 +235,12 @@ Liste des notifications déjà lues => #370 #453
       [X] mode modal on elements : $("#rocketchatModal").modal('show')
       [X] create group channel by Name 
       [X] on orga page , btn > creates and opens RC group (private channel)
->>>>>>>>[ ] check group existance before creation , otherwise just invite
-          [ ] on demand : either we put a property on an element describing if corresponding exists or not 
-          [ ] pre create all element's rooms 
+        [ ] check group existance before creation , otherwise just invite
+          [X] on demand : either we put a property on an element describing if corresponding exists or not 
 >>>>>>>>[ ] only members, have access 
 >>>>>>>>[ ] after create invite all members to chat and add notification
 >>>>>>>>[ ] check anymember can start the chat
+      [ ] manage chat module color according to login state based on events
       [X] apply to projects and events
       [X] on CO-login get RC loginToken
       [X] integrate into CO 
@@ -249,8 +249,7 @@ Liste des notifications déjà lues => #370 #453
       [X] add redirect iframe to login + after login redirect to iframe
       [X] how to use live chat :?layout=embedded
       [X] preload iframe after login 
->>>>>>[[ ]] getting chat notifictions ???
-        [[https://rocket.chat/docs/developer-guides/iframe-integration/events]]
+      [X] getting chat notifictions [[https://rocket.chat/docs/developer-guides/iframe-integration/events]]
       ** test 
         [ ] my chat shows fullscreen rocket with all activated channels
         [ ] an elements chat > show only the elements chat
@@ -259,11 +258,11 @@ Liste des notifications déjà lues => #370 #453
       ** batch script
 >>>>>>>>>[ ] genéré tout les compte RC pour les comptes existant sinon ca peut planter les demandes chat direct
       ** bugs
-        
         [ ] creating projects , name many words space seperated
         [ ] project chat > open > click close
         [ ] aprés abonnement ou devient member > show chat btn
         [ ] login broken when loosing to chat : don't make it mandatory, if no chat, hide btn
+        [ ] on #chat reload
       ** use cases 
         [X] gloabal menu : module chat btn opens , all my chat rooms 
         [X] any element page : open the elements channel 

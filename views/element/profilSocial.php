@@ -250,10 +250,11 @@
   					if( (string)$element["_id"]==@Yii::app()->session["userId"] )
   						$loadChat = "";
   			}?>
-		  <button type="button" onclick="javascript:loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold letter-red hidden-xs" 
+		  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold letter-red hidden-xs" 
 		  		  id="open-rocketChat" style="border-right:0px!important;">
 		  		<i class="fa fa-comments fa-2x"></i>
 		  </button>
+		  <span class="elChatNotifs topbar-badge badge animated bounceIn badge-warning"></span>
 		  <?php } ?>
 
 		  <?php /* Links in new TAB

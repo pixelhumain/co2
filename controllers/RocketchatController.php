@@ -58,34 +58,58 @@ class RocketchatController extends CommunecterController {
 		$this->renderPartial( "rocket" );
 	}
 
+	//test 
+	// http://127.0.0.1/ph/co2/rocketchat/logint
+	// existing user with good pwd > genertes token 
+	// existing user with bad pwd > msg > Unauthorised
+	// inexistant user > msg > Unauthorised
 	public function actionLogint() {
-		/*$rocket = RocketChat::getToken("oceatoon@gmail.com", "");
+		$rocket = RocketChat::getToken("oceatoon@gmail.com", "22102210");
+		Yii::app()->session["loginToken"] = $rocket["loginToken"];
+	  	Yii::app()->session["rocketUserId"] = $rocket["rocketUserId"];
 		header('Content-Type: application/json');
-	 	echo json_encode($rocket);*/
+	 	echo json_encode($rocket);
+	 	/*echo Yii::app()->session["loginToken"]."<br/>";
+	  	echo Yii::app()->session["rocketUserId"];*/
 	}
 
-	//http://127.0.0.1/ph/co2/rocketchat/chat/name/openatlas974@gmail.com/type/citoyens
-	public function actionChat($name,$type="",$id=null,$roomType=null) {
+	//tested 
+	// accessing Element > creates 
+		// channels : http://127.0.0.1/ph/co2/rocketchat/chat/name/openatlas/type/test/roomType/channel/test/true
+		// groups : http://127.0.0.1/ph/co2/rocketchat/chat/name/openatlas/type/test/roomType/group/test/true
+	public function actionChat($name,$type="",$id=null,$roomType=null,$test=null) {
+		$group = null;
 		if( $type == Person::COLLECTION ){
 			//id will contain the username
-			$roomType == "direct";
+			/*$roomType == "direct";
 			$path = "/direct/".$name;
-			$direct = RocketChat::createDirect($id);
+			$group = RocketChat::createDirect($id);*/
+			$group = array("msg" => "all users are created on first login");
 		} elseif($roomType == "channel"){
 			$path = "/channel/".$type."_".$name;
 	 		$group = RocketChat::createGroup ($type."_".$name,$roomType);
-	 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
-	 										array('$set' => array("hasRC"=>true) ));
+	 		if(!$test){
+		 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
+		 										array('$set' => array("hasRC"=>true) ));
+		 	} 
 		}
 		else{
 			$path = "/group/".$type."_".$name;
 	 		$group = RocketChat::createGroup ($type."_".$name);
-	 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
-	 										array('$set' => array("hasRC"=>true) ));
+	 		if(!$test){
+		 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
+		 										array('$set' => array("hasRC"=>true) ));
+		 	}
 		}
+
 	 	//echo json_encode($group);
 	 	$embed = true;
-	 	$this->renderPartial( "iframe", array( 'path'=>$path, "embed"=>$embed) );
+	 	if(Yii::app()->request->isAjaxRequest)
+	 		$this->renderPartial( "iframe", array( 'path'=>$path, "embed"=>$embed) );
+	 	else{
+	 		header('Content-Type: application/json');
+	 		echo json_encode($group);
+	 	}
 	}
 
 

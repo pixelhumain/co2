@@ -83,9 +83,24 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 		
 	});
 </script>
+<style>
+	.iframe-rocketchat{
+		overflow:hidden;
+		overflow-x:hidden;
+		overflow-y:hidden;
+		height:100%;
+		width:100%;
+		position:absolute;
+		top:0px;
+		left:0px;
+		right:0px;
+		bottom:0px;
+	}
+</style>
 
-
-<iframe id="rc" src="https://chat.communecter.org<?php echo $embedPath ?>" frameborder="0" style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:80%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px" height="600px" width="100%"></iframe>
+<iframe id="rc" src="https://chat.communecter.org<?php echo $embedPath ?>" 
+		frameborder="0" class="iframe-rocketchat">
+</iframe>
 
 <?php 
 } else 

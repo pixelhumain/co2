@@ -37,17 +37,17 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 		//fired on direct conversation or when pinged in a channel
 		if(e.data.eventName=="notification" ){
 			console.info("xxxxxxxxxxxxxx NOTIFICATION ", e.data.eventName,e.data.data);
-			alert("notification received");	
+			//alert("notification received");	
 		} 
 
 		if(e.data.eventName=="new-message" ){
 			console.info("xxxxxxxxxxxxxx NEW MSG ", e.data.eventName,e.data.data);
-			alert("new-message");
+			//alert("new-message");
 		} 
 
 		if(e.data.eventName=="room-opened" ){
 			console.info("xxxxxxxxxxxxxx Open Room ", e.data.eventName,e.data.data);
-			alert("room-opened");
+			//alert("room-opened");
 		} 
 
 

@@ -54,8 +54,21 @@ class CO2 {
 			$keyCo = Yii::app()->request->cookies['keyCommunexion']->value;
 
 			$communexion["values"] = City::explodeKeyLocality($keyCo);
-			/*$where = array("key" =>new MongoRegex("/^".$keyCo."/i"));
-			$city = PHDB::findOne( City::COLLECTION , $where );*/
+            $communexion["currentLevel"] = "city";
+
+            if($communexion["values"]["cp"]){
+                $where = array("postalCodes.postalCode" =>new MongoRegex("/^".$communexion["values"]["cp"]."/i"));
+                $citiesResult = PHDB::find( City::COLLECTION , $where );
+
+                $cities=array();
+                foreach ($citiesResult as $key => $v) {
+                    $trad4 = Zone::getTranslateById($key);
+                    $cities[]=(!empty($trad4["translates"]["EN"]) ? $trad4["translates"]["EN"] : $v["name"]);
+                }
+                $communexion["cities"] = $cities;
+            }
+            
+			
 		}/*else if(@Yii::app()->request->cookies['cpCommunexion'] && !empty(Yii::app()->request->cookies['cpCommunexion']->value)){
             $communexion["state"] = true;
             $cp = (string)Yii::app()->request->cookies['cpCommunexion'];

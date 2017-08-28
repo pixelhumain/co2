@@ -2466,6 +2466,106 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 		//}
 	}
+
+
+	public function actionNamePays(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		
+		$zones = PHDB::find(City::COLLECTION, array('$and' => array(
+													array('translateId' => array('$exists' => 0)),
+													array('$or' => array(
+														array('osmID' => array('$exists' => 1)),
+														array('wikidataID' => array('$exists' => 1)))))));
+		// $zones = PHDB::find(Zone::COLLECTION, array('$and' => array(
+		// 											array('translateId' => array('$exists' => 0)),
+		// 											array('$or' => array(
+		// 												array('osmID' => array('$exists' => 1)),
+		// 												array('wikidataID' => array('$exists' => 1)))))));
+		
+		if(!empty($zones)){
+
+			foreach ($zones as $key => $zone) {
+				
+				$translate = array();
+				$info = array();
+				if(!empty($zone["osmID"])){
+					$zoneNominatim =  json_decode(file_get_contents("http://nominatim.openstreetmap.org/lookup?format=json&namedetails=1&osm_ids=R".$zone["osmID"]), true);
+				
+					if(!empty($zoneNominatim) && !empty($zoneNominatim[0]["namedetails"])){
+						
+						
+						foreach ($zoneNominatim[0]["namedetails"] as $keyName => $valueName) {
+							$arrayName = explode(":", $keyName);
+							if(!empty($arrayName[1]) && $arrayName[0] == "name" && strlen($arrayName[1]) == 2){
+								$translate[strtoupper($arrayName[1])] = $valueName;
+							}
+						}
+					}
+				}
+
+				if(!empty($zone["wikidataID"]) && empty($translate)){
+
+					$zoneWiki =  json_decode(file_get_contents("https://www.wikidata.org/wiki/Special:EntityData/".$zone["wikidataID"].".json"), true);
+					
+					if(!empty($zoneWiki) && !empty($zoneWiki["entities"][$zone["wikidataID"]]["labels"])){
+						foreach ($zoneWiki["entities"][$zone["wikidataID"]]["labels"] as $keyName => $valueName) {
+							
+							if(strlen($keyName) == 2){
+								$translate[strtoupper($keyName)] = $valueName["value"];
+							}
+						}
+					}
+				}
+
+				if(!empty($translate)){
+					$info["countryCode"] = $zone["country"];
+					//$info["countryCode"] = $zone["countryCode"];
+					$info["parentId"] = $key;
+					$info["parentType"] = City::COLLECTION;
+					//$info["parentType"] = Zone::COLLECTION;
+					$info["parentKey"] = $zone["key"];
+					$info["translates"] = $translate;
+					PHDB::insert("translates", $info);
+					PHDB::update(City::COLLECTION, 
+								array("_id"=>new MongoId($key)),
+								array('$set' => array("translateId" => (string)$info["_id"]))
+					);
+
+					$nbelement++;
+				}else {
+					echo  "Error ".$zone["name"]." ".$key." <br/>" ;
+				}
+			}
+
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+		}
+	}
+
+	public function actionRemoveTrans(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		
+		//$zones = PHDB::find(City::COLLECTION, array('translateId' => array('$exists' => 0)));
+		$zones = PHDB::find(Zone::COLLECTION, array('translateId' => array('$exists' => 1)));
+		
+		if(!empty($zones)){
+
+			foreach ($zones as $key => $zone) {
+				
+					PHDB::update(Zone::COLLECTION, 
+								array("_id"=>new MongoId($key)),
+								array('$unset' => array("translateId" => ""))
+					);
+
+					$nbelement++;
+				
+			}
+
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+		}
+	}
+
 	// -------------------- Fin des foncction pour le refactor Cities/zones
 
 }

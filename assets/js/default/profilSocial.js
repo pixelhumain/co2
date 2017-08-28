@@ -940,13 +940,3 @@ function startLoadRoom(type, id){
 	toogleNotif(false);
 	KScrollTo("#shortDescriptionHeader");
 }
-
-/*function loadChat(name){ 
-	showLoader('#central-container');
-	getAjax('#central-container', baseUrl+'/'+moduleId+'/rocketchat/iframe',null,"html");
-	/*getAjax('', baseUrl+'/'+moduleId+'/rocketchat/chat/name/'+name,
-				function(data){ 
-					getAjax('#central-container', baseUrl+'/'+moduleId+'/rocketchat/iframe',null,"html");
-				}
-	,"html");*/
-//}

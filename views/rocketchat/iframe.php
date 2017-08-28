@@ -14,16 +14,19 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 	window.addEventListener('message', function(e) {
 	    console.info(">>>>>>>>>> ifroame ", e.data.eventName); // event name
 	    console.log(e.data.data); // event data
-
+	   // alert(" embedPath : <?php echo @$embed; ?> :: " +e.data.eventName);
 		if(e.data.eventName=="startup" && e.data.data== true){
 
-			toastr.info("startup Rocket Chat");
+			//toastr.info("startup Rocket Chat");
+			//alert(" embedPath : <?php echo $embedPath; ?> :: " +e.data.eventName);
+			rcObjToken = '<?php echo Yii::app()->session["loginToken"]; ?>';
 
 			document.querySelector('iframe').contentWindow.postMessage({
 			  externalCommand: 'login-with-token',
 			  token: '<?php echo Yii::app()->session["loginToken"]; ?>' }, '*');
 
 			<?php if ( @$path ) { ?>
+				rcObjPath = '<?php echo $path ?>';
 				document.querySelector('iframe').contentWindow.postMessage({
 				  externalCommand: 'go',
 				  path: '<?php echo $path ?>'}, '*');
@@ -34,12 +37,17 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 		//fired on direct conversation or when pinged in a channel
 		if(e.data.eventName=="notification" ){
 			console.info("xxxxxxxxxxxxxx NOTIFICATION ", e.data.eventName,e.data.data);
-			toastr.info("notification received");	
+			alert("notification received");	
 		} 
 
 		if(e.data.eventName=="new-message" ){
 			console.info("xxxxxxxxxxxxxx NEW MSG ", e.data.eventName,e.data.data);
-			toastr.info("new-message");
+			alert("new-message");
+		} 
+
+		if(e.data.eventName=="room-opened" ){
+			console.info("xxxxxxxxxxxxxx Open Room ", e.data.eventName,e.data.data);
+			alert("room-opened");
 		} 
 
 
@@ -55,17 +63,20 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 				alert("unread-changed :: relogin");
 				setTimeout(function(){
 					document.querySelector('iframe').contentWindow.postMessage({
-					  externalCommand: 'login-with-token',
-					  token: '<?php echo Yii::app()->session["loginToken"]; ?>' }, '*');
+					  	externalCommand: 'login-with-token',
+					  	token: '<?php echo Yii::app()->session["loginToken"]; ?>' }, '*');
+						rcObj.token = '<?php echo Yii::app()->session["loginToken"]; ?>';
 				}, 500);
 			}
 
 		}
 
-		if( typeof e.data.eventName == "undefined" ){
+		if( typeof e.data.eventName == "relogin" ){
+			toastr.info(">>>>>>>>>>> relogin");
 				document.querySelector('iframe').contentWindow.postMessage({
 					  externalCommand: 'login-with-token',
 					  token: '<?php echo Yii::app()->session["loginToken"]; ?>' }, '*');
+				rcObj.token = '<?php echo Yii::app()->session["loginToken"]; ?>';
 		}
 
 		//away

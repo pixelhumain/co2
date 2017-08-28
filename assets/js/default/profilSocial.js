@@ -45,6 +45,7 @@ function bindButtonMenu(){
 			//history.pushState(null, "New Title", hashUrlPage);
 		}
 		loadNewsStream(false);
+		uiCoop.closeUI(false);
 	});
 	$("#btn-start-gallery").click(function(){
 		responsiveMenuLeft();
@@ -292,6 +293,14 @@ function bindButtonMenu(){
 		var value = $(this).attr("value");
 		$(".btn-group-"+type + " .btn").removeClass("active");
 		$(this).addClass("active");
+	});
+
+	$("#open-co-space").click(function(){
+		uiCoop.startUI();
+	});
+
+	$("#reopen-menu-left-container").click(function(){
+		uiCoop.closeUI();
 	});
 
 	initBtnShare();

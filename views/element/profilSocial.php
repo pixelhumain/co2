@@ -5,7 +5,7 @@
 				'/vendor/colorpicker/css/colorpicker.css',
 				'/css/news/index.css',	
 				'/css/timeline2.css',
-				'/css/circle.css',	
+				//'/css/circle.css',	
 				'/css/default/directory.css',	
 				'/js/comments.js',
 				'/css/profilSocial.css',
@@ -96,12 +96,13 @@
 }
 </style>
 
-<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
+<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) 
+		$this->renderPartial('../element/confirmDeleteModal'); ?>
 <?php 
 	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
 
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
-<div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
+<div class="col-lg-offset- col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
     <section class="col-md-12 col-sm-12 col-xs-12" id="social-header" 
     	<?php if (!@$element["profilBannereUrl"] || (@$element["profilBannereUrl"] && empty($element["profilBannereUrl"]))){ ?> 
@@ -133,7 +134,7 @@
 
 
 
-	    <div class="col-md-3 col-sm-3 hidden-xs no-padding" style="bottom:-31px; position: absolute;">
+	    <div class="col-lg-2 col-md-3 col-sm-3 hidden-xs no-padding" style="bottom:-31px; position: absolute;">
 		<?php 	if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
 					 $images=array(
 					 	"medium"=>$element["profilMediumImageUrl"],
@@ -168,7 +169,7 @@
 		</div>
     </section>
     
-    <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 pull-right sub-menu-social no-padding">
+    <div class="col-md-9 col-sm-9 col-lg-10 col-xs-12 pull-right sub-menu-social no-padding">
 
     	<div class="btn-group inline">
 
@@ -213,7 +214,7 @@
 		  </button>
 
 		  <?php if((@Yii::app()->session["userId"] && $isLinked==true) || @Yii::app()->session["userId"] == $element["_id"]){ ?>
-		  <button type="button" class="btn btn-default bold hidden-xs btn-start-notifications">
+		  <button type="button" class="btn btn-default bold hidden-xs btn-start-notifications hidden">
 		  	<i class="fa fa-bell"></i> 
 		  	<span class="hidden-xs hidden-sm">
 		  		<?php if (@Yii::app()->session["userId"] == $element["_id"]) echo Yii::t("common","My notif<span class='hidden-md'>ication</span>s"); else echo Yii::t("common","Notif<span class='hidden-md'>ication</span>s"); ?>
@@ -221,6 +222,15 @@
 		  	<span class="badge notifications-countElement <?php if(!@$countNotifElement || (@$countNotifElement && $countNotifElement=="0")) echo 'badge-transparent hide'; else echo 'badge-success'; ?>">
 		  		<?php echo @$countNotifElement ?>
 		  	</span>
+		  </button>
+		  <?php } ?>
+
+
+		  <?php if(@Yii::app()->session["userId"])
+		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION ){ ?>
+		  <button type="button" class="btn btn-default bold hidden-xs letter-turq" 
+		  		  id="open-co-space" style="border-right:0px!important;">
+		  		<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common", "Espace CO"); ?>
 		  </button>
 		  <?php } ?>
 
@@ -386,34 +396,37 @@
 	</div>
 
 	
-	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial hidden-xs" 
+	<div id="div-reopen-menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 hidden">
+		<button id="reopen-menu-left-container" class="btn btn-default">
+			<i class="fa fa-arrow-left"></i> <span class="hidden-sm hidden-xs"> Retour au </span>menu principal
+		</button>
+		<!-- <button id="refresh-coop-rooms" class="btn btn-default pull-right">
+			<i class="fa fa-refresh"></i>
+		</button> -->
+		<hr>
+		<h4 class="letter-turq"><i class="fa fa-connectdevelop"></i> Espaces co<span class="hidden-sm">opératifs</span></h4>
+
+
+		<ul id="menuCoop" class="margin-top-25 menuCoop">
+	    </ul>
+	</div>
+
+	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 profilSocial hidden-xs" 
 			style="margin-top:40px;">  		
-	    <?php 
-	    	$params = array(    "element" => @$element, 
+	    <?php $params = array(  "element" => @$element, 
                                 "type" => @$type, 
                                 "edit" => @$edit,
                                 "isLinked" => @$isLinked,
                                 "countNotifElement"=>@$countNotifElement,
-                                //"countries" => @$countries,
-                                //"controller" => $controller,
                                 "invitedMe" => @$invitedMe,
                                 "openEdition" => $openEdition,
-                                //"countStrongLinks" => $countStrongLinks,
-                                //"countLowLinks" => @$countLowLinks,
-                                //"countInvitations"=> $countInvitations,
-                                //"linksBtn"=> @$linksBtn
                                 );
-
-	    	/*if(@$members) $params["members"] = $members;
-	    	if(@$events) $params["events"] = $events;
-	    	if(@$needs) $params["needs"] = $needs;
-	    	if(@$projects) $params["projects"] = $projects;*/
 
 	    	$this->renderPartial('../pod/menuLeftElement', $params ); 
 	    ?>
 	</div>
 
-	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-9 padding-50 margin-top-50 links-main-menu hidden" 
+	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-10 padding-50 margin-top-50 links-main-menu hidden" 
 		 id="div-select-create">
 		<div class="col-md-12 col-sm-12 col-xs-12 padding-15 shadow2 bg-white ">
 	       
@@ -500,7 +513,7 @@
     </div>
 
 
-	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section pull-right">
+	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-10 no-padding central-section pull-right">
 		
 		<?php    
 			$marginCentral="";
@@ -583,6 +596,7 @@
 
 <?php	$cssAnsScriptFilesModule = array(
 		'/js/default/profilSocial.js',
+		'/js/cooperation/uiCoop.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 ?>

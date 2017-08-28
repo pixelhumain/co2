@@ -40,10 +40,16 @@
 			<i class="fa fa-cog"></i> options
 		  </button>
 		  <ul class="dropdown-menu">
+		    <li><a href="javascript:" class="" 
+		    		data-id-proposal="<?php echo $proposal["_id"]; ?>"
+		    		data-status="archived">
+		    	<i class="fa fa-pencil"></i> Modifier ma proposition
+		    	</a>
+		    </li>
 		    <li><a href="javascript:" class="btn-option-status-proposal" 
 		    		data-id-proposal="<?php echo $proposal["_id"]; ?>"
 		    		data-status="archived">
-		    	<i class="fa fa-pencil"></i> Archiver ma proposition
+		    	<i class="fa fa-trash"></i> Archiver ma proposition
 		    	</a>
 		    </li>
 		    <!-- <li><hr class="margin-5"></li> -->

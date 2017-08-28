@@ -235,11 +235,13 @@
 			<h3 class="margin-top-15 letter-turq">
 				<i class="fa fa-connectdevelop"></i> <?php echo @$room["name"]; ?>
 			</h3>
+			<?php if(@$room["topic"]){ ?>
 			<hr>
 			<h4>
 				<?php echo Yii::t("cooperation", "Topic") ?> : 
 				<small><?php echo @$room["topic"]; ?></small>
 			</h4>
+			<?php } ?>
 			<h5><small><?php echo @$room["description"]; ?></small></h5>
 			<hr>
 		<?php }else{ ?>

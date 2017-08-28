@@ -64,11 +64,13 @@ class RocketchatController extends CommunecterController {
 	// existing user with bad pwd > msg > Unauthorised
 	// inexistant user > msg > Unauthorised
 	public function actionLogint() {
+		header('Content-Type: application/json');
 		$rocket = RocketChat::getToken("oceatoon@gmail.com", "22102210");
 		Yii::app()->session["loginToken"] = $rocket["loginToken"];
 	  	Yii::app()->session["rocketUserId"] = $rocket["rocketUserId"];
-		header('Content-Type: application/json');
-	 	echo json_encode($rocket);
+	  	
+ 		echo json_encode($rocket);
+		  
 	 	/*echo Yii::app()->session["loginToken"]."<br/>";
 	  	echo Yii::app()->session["rocketUserId"];*/
 	}

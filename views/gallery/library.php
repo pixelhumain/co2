@@ -348,7 +348,7 @@ function initPanelLibrary(){
 		$.each(folders, function(k, v){
 			nameCol=k;
 			contentTitle=k;
-			htmlFolders = '<li class="content_folder_file '+k+' col-sm-12 col-md-12 col-xs-12" data-cat="1">'+
+			htmlFolders = '<li class="content_folder '+k+' col-sm-12 col-md-12 col-xs-12" data-cat="1">'+
 				' <div class="portfolio-item">'+
 					' <a href="javascript:;" class="openFolder" data-name="'+nameCol+'" data-key="files">'+
 					'<div class="content-info col-md-8 col-sm-8 col-sx-8 padding-5">'+
@@ -365,7 +365,7 @@ function initPanelLibrary(){
 					titleDoc="";
 					if(notNull(v.name))
 						titleDoc=v.name;
-					var htmlThumbail = '<li class="content_folder_file '+k+' col-sm-12 col-md-12 col-xs-12" data-cat="1" id="'+v.id+'">'+
+					var htmlThumbail = '<li class="content_file '+k+' col-sm-12 col-md-12 col-xs-12" data-cat="1" id="'+v.id+'">'+
 						' <div class="portfolio-item">';
 						if(authorizationToEdit){
 							htmlThumbail += '<div class="checkbox-content pull-left">'+
@@ -425,7 +425,7 @@ function getViewUrl(id,data){
 		description=data.description;
 
 	}
-	var html = '<li class="content_folder_file '+id+' col-sm-12 col-md-12 col-xs-12 '+elTagsList+'" data-cat="1" id="'+id+'">'+
+	var html = '<li class="content_file '+id+' col-sm-12 col-md-12 col-xs-12 '+elTagsList+'" data-cat="1" id="'+id+'">'+
 			' <div class="portfolio-item">';
 			if(authorizationToEdit){
 				html += '<div class="checkbox-content pull-left">'+

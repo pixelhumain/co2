@@ -1,12 +1,15 @@
-
-
 <style>
 #podVote{
-	border: 1px solid grey;
+	/*border: 1px dashed grey;*/
+	border-radius: 20px;
+	margin-top:15px;
+	margin-bottom:30px;
+	background: #f3f3f3;
+	/*color: white;*/
 }
 </style>
 
-<div class="col-lg-12 col-md-12 col-sm-12 padding-top-15" id="podVote">
+<div class="col-lg-12 col-md-12 col-sm-12 padding-top-15 shadow2" id="podVote">
 	
 	<div class="col-lg-3 col-md-4 col-sm-4 text-center padding-15 pull-right">
 		<canvas id="pieVote"/>
@@ -26,9 +29,7 @@
  		$voteRes = Proposal::getAllVoteRes($proposal);
  		$totalVotant = Proposal::getTotalVoters($proposal); 
  		foreach ($voteRes as $key => $value) {
- 			//var_dump($value); exit;
  	?>
-
 		<div class="col-lg-8 col-md-8 col-sm-8 text-center no-padding pull-left margin-top-5">
 			<div class="col-lg-5 col-md-5 col-sm-7 text-center pull-left margin-top-5">
 				<?php if(@$proposal["status"] == "tovote"){ ?>

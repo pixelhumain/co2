@@ -54,7 +54,7 @@
 		text-decoration: none !important;
 		color:#3C545D;
 		font-size: 13px;
-		padding: 4px;
+		padding: 7px;
 		padding-left: 20px;
 		display: block;
 		text-align: left;
@@ -74,7 +74,7 @@
 
 	.menuCoop a:active,
 	.menuCoop a.active{
-		background-color: #CDE7F9;
+		background-color: #C8EBF5;
 		border-left: 3px solid #0095FF;
 		/*color:#0095FF;*/
 	}
@@ -96,7 +96,7 @@
 	}
 
 	.menuCoop .sub-rooms a.load-coop-data{
-		font-size:17px;
+		font-size:14px;
 	}
 
 
@@ -112,6 +112,22 @@
 
 	#comments-container .footer-comments{
 		background-color: white !important;
+	}
+
+	#coop-container h1, 
+	#coop-container h2,
+	#coop-container h3,
+	#coop-container h4, 
+	#coop-container h5, 
+	#coop-container h6 {
+	    text-transform: none !important;
+	    letter-spacing: -1px;
+	    font-weight: 200 !important;
+	}
+
+	#coop-container h6, 
+	#coop-container h5 {
+	    letter-spacing: 0px;
 	}
 </style>
 

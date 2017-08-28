@@ -35,7 +35,7 @@
 	}
 
 	#menu-room .menuCoop .title-section a{
-		padding-right: 8px;
+		padding: 4px 8px 4px 4px;
 		margin-top:-1px;
 	}
 	#menu-room .menuCoop .title-section a:hover{
@@ -221,6 +221,10 @@
 		text-align: left;
 	}
 
+	#container-text-proposal{
+		border-radius: 5px;
+	}
+
 </style>
 
 <div class="col-lg-12 col-md-12 col-sm-12 no-padding margin-top-15 bg-white" id="coop-container">
@@ -228,9 +232,9 @@
 	<div class="col-lg-12 col-md-12 col-sm-12 bg-white" id="menu-room">
 
 		<?php if(@$room){ ?>
-			<h2 class="margin-top-15 elipsis letter-turq">
+			<h3 class="margin-top-15 letter-turq">
 				<i class="fa fa-connectdevelop"></i> <?php echo @$room["name"]; ?>
-			</h2>
+			</h3>
 			<hr>
 			<h4>
 				<?php echo Yii::t("cooperation", "Topic") ?> : 
@@ -284,7 +288,6 @@
 
 
 				<?php if(@$proposalList)
-						//for($i=0;$i<20;$i++)
 						foreach($proposalList as $key => $proposal){ ?>
 						<?php $totalVotant = Proposal::getTotalVoters($proposal); ?>
 						<li class="submenucoop sub-proposals no-padding col-lg-4 col-md-6 col-sm-6" 
@@ -293,9 +296,17 @@
 								data-status="<?php echo @$proposal["status"]; ?>" 
 							   	data-dataid="<?php echo (string)@$proposal["_id"]; ?>">
 						  		
-						  		<span class="elipsis">
-						  			<i class="fa fa-hashtag"></i> <?php echo @$proposal["title"]; ?>
-						  		</span>
+						  		<?php if(@$proposal["title"]){ ?>
+							  		<span class="elipsis">
+							  			<i class="fa fa-hashtag"></i> 
+							  			<?php echo @$proposal["title"]; ?>
+							  		</span>
+						  		<?php }else{ ?> 
+							  		<small class="elipsis"><b>
+							  			<i class="fa fa-hashtag"></i> 
+							  			<?php echo substr(@$proposal["description"], 0, 150); ?></b>
+							  		</small>
+						  		<?php } ?>
 						  		
 							  	<?php if(@$post["status"]) { $parentRoom = Room::getById($proposal["idParentRoom"]); ?>
 							  	<br>
@@ -334,10 +345,6 @@
 								  		?>
 								  	</small>
 							  	<?php } ?>
-
-							  	
-							  	
-
 
 						  	  	<div class="progress <?php if($proposal["status"] != "tovote") echo "hidden-min"; ?>">
 						  	  		<?php 
@@ -379,7 +386,6 @@
 
 			<?php } ?>
 
-			<?php //var_dump($proposalList); ?>
 			<?php if(@$post["type"] == Action::CONTROLLER || @$post["type"] == Room::CONTROLLER){ ?>
 				<div class="margin-top-25 title-section col-lg-12 col-md-12 col-sm-12">
 					<a href="javascript:" class="open elipsis pull-left btn-hide-data-room visible-sm visible-xs" 

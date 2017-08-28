@@ -260,6 +260,27 @@ var uiCoop = {
 		    	}
 		});
 
+	},
+
+	"changeStatus" : function(type, id, status, parentType, parentId){
+		var param = {
+			parentType : parentType,
+			parentId : parentId,
+			type: type,
+			id: id,			
+			name: "status",
+			value: status
+		};
+		toastr.info(trad["processing save"]);
+		$.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+"/element/updatefield/",
+		        data: param,
+		       	dataType: "json",
+		    	success: function(data){
+		    		uiCoop.getCoopData(null, null, type, null, id);
+		    	}
+		});
 	}
 
 }

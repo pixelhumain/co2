@@ -105,7 +105,7 @@ dynForm = {
             	},
             	//custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
             },*/
-            title : dyFInputs.name("proposal"),
+            title : dyFInputs.name("proposal", { required : false }),
             description : dyFInputs.textarea(tradDynForm.textproposal, "..."),
             infoargs : {
                 inputType : "custom",

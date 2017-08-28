@@ -119,7 +119,7 @@ Liste des notifications déjà lues => #370 #453
       - Outside src : en regardant les photos, video de qlqun (FB, flickR...) 
         > POI : #baleineREunion + url 
 * ************************************************************    
-* Version 0.21.8  : en cours
+* Version C0.21.8  : en cours
 8 correpsond le nb de nouvelle fonctionalité
 - DDA refactored
 - internationalisation
@@ -127,6 +127,7 @@ Liste des notifications déjà lues => #370 #453
 - creation de dossier sur les album 
 - mini GED avec upload de document
 - gestion des role sur les membres
+- traduction 
 - ??? module Tiers Lieux , Ressources
 * ************************************************************  
 * Action Terrain 

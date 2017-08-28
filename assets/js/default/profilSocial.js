@@ -54,6 +54,13 @@ function bindButtonMenu(){
 		//location.search="?view=gallery";
 		loadGallery();
 	});
+	$("#btn-start-library").click(function(){
+		responsiveMenuLeft();
+		location.hash=hashUrlPage+".view.library";
+		//history.pushState(null, "New Title", hashUrlPage+".view.gallery");
+		//location.search="?view=gallery";
+		loadLibrary();
+	});
 	$(".btn-start-notifications").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
@@ -479,14 +486,22 @@ function loadSettings(){
 }
 function loadGallery(){
 	toogleNotif(false);
-	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id;
+	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id+"/docType/image";
 	
 	showLoader('#central-container');
 	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 		null,
 		function(){},"html");
 }
-
+function loadLibrary(){
+	toogleNotif(false);
+	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id+"/docType/file";
+	
+	showLoader('#central-container');
+	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+		null,
+		function(){},"html");
+}
 function loadChart(){
 	toogleNotif(false);
 	var url = "chart/header/type/"+typeItem+"/id/"+contextData.id;
@@ -596,11 +611,38 @@ function loadContacts(){
 				}
 	,"html");
 }
-
+//todo add count on each tag
+    function getfilterRoles(roles) { 
+    	console.log("roles",roles);
+        $("#listRoles").html("");
+        $("#listRoles").append("<a class='btn btn-link text-red favElBtn favAllBtn' "+
+            "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'>"+
+            " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a>");
+        	$.each( roles,function(k,o){
+                $("#listRoles").append("<a class='btn btn-link favElBtn text-red "+slugify(k)+"Btn' "+
+                                "data-tag='"+slugify(k)+"' "+
+                                "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(k)+"\",\".searchEntityContainer\",1)'>"+
+                                  k+" <span class='badge'>"+o.count+"</span>"+
+                            "</a>");
+        	});
+    }
 function displayInTheContainer(data, dataName, dataIcon, contextType, edit){ 
 	mylog.log("displayInTheContainer",data, dataName, dataIcon, contextType, edit)
 	var n=0;
-	$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
+	listRoles={};
+	$.each(data, function(key, val){ 
+		console.log("rolesShox",val);
+		if(typeof key != "undefined") n++; 
+		if(typeof val.rolesLink != "undefined"){
+			console.log(val.rolesLink);
+			$.each(val.rolesLink, function(i,v){
+				if(typeof listRoles[v] != "undefined")
+					listRoles[v].count++;
+				else
+					listRoles[v]={"count": 1}
+			});
+		}
+	});
 	if(n>0){
 		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 
@@ -615,13 +657,14 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		if(dataName != "urls")
 			html += btnMap;
 
-		html +=	thisTitle + "<hr>";
+		html +=	thisTitle;
+		html += "<div id='listRoles'></div>"+
+			 "<hr>";
 		html +=	"</div>";
-		
 		
 		mapElements = new Array();
 		
-		
+		console.log("listRoles",listRoles);
 		if(dataName != "collections"){
 			if(mapElements.length==0) mapElements = data;
         	else $.extend(mapElements, data);
@@ -651,7 +694,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		initBtnLink();
 		initBtnAdmin();
 		bindButtonOpenForm();
-		
+		getfilterRoles(listRoles);
 		var dataToMap = data;
 		if(dataName == "collections"){
 			dataToMap = new Array();
@@ -934,3 +977,13 @@ function startLoadRoom(type, id){
 	toogleNotif(false);
 	KScrollTo("#shortDescriptionHeader");
 }
+
+/*function loadChat(name){ 
+	showLoader('#central-container');
+	getAjax('#central-container', baseUrl+'/'+moduleId+'/rocketchat/iframe',null,"html");
+	/*getAjax('', baseUrl+'/'+moduleId+'/rocketchat/chat/name/'+name,
+				function(data){ 
+					getAjax('#central-container', baseUrl+'/'+moduleId+'/rocketchat/iframe',null,"html");
+				}
+	,"html");*/
+//}

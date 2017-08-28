@@ -5,9 +5,9 @@ dynForm = {
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	"sub" : function(){
-	    		dataHelper.activateMarkdown("#ajaxFormModal #message");
-	    		$("#ajaxFormModal #room").val( contextDataDDA.id );
+	    	"onload" : function(){
+	    		
+	    		$("#ajaxFormModal #room").val( contextDataDDA.room );
     		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
 	    	}
 	    },
@@ -46,9 +46,9 @@ dynForm = {
 	            		} else {
 	            			getAjax( null , baseUrl+"/" + moduleId + "/rooms/index/type/citoyens/id/"+userId+"/view/data/fields/actions" , function(data){
 	            			    window.myActionsList = {};
-	            			    $.each( data.actions , function( k,v ) 
-	            			    { mylog.log(v.parentType,v.parentId);
-	            			    	if(v.parentType){
+	            			    $.each( data.actions , function( k,v ) { 
+                                    mylog.log(v.parentType,v.parentId);
+	            			    	if(v.parentType && v.parentType != "cities"){
 			            			    if( !window.myActionsList[ v.parentType] ){
 											var label = ( v.parentType == "cities" && cpCommunexion && v.parentId.indexOf(cpCommunexion) ) ? cityNameCommunexion : "Thématique des " + trad[v.parentType];
 			            			    	window.myActionsList[ v.parentType] = {"label":label};
@@ -60,8 +60,8 @@ dynForm = {
 	            			    mylog.dir(window.myActionsList);
 	            			    html = buildSelectGroupOptions(window.myActionsList);
 								$("#room").append(html);
-								if(contextDataDDA && contextDataDDA.id)
-									$("#ajaxFormModal #room").val( contextDataDDA.id );
+								if(contextDataDDA && contextDataDDA.room)
+									$("#ajaxFormModal #room").val( contextDataDDA.room );
 						    } );
 	            		}
             		}

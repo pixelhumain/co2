@@ -76,7 +76,17 @@
 			"placeholderMainSearch" : "search in live ..."
 		},
 
-
+		"#chat": {
+			"inMenu" : true, 
+			"open" : true, 
+			"subdomain" : "chat", 
+			"subdomainName" : "Chat",
+			"alias":"#chatAction",
+			"login" : true,
+			"notif" : "chatNotifs",
+			"icon" : "comments", 
+			"mainTitle" : "<span class='text-red'>CHAT with your communities</span>"
+		},
 
 		"#page": {
 			"inMenu" : false, 

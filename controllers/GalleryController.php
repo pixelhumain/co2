@@ -19,6 +19,9 @@ class GalleryController extends CommunecterController {
 	    return array(
 	    	'index'       	=> 'citizenToolKit.controllers.gallery.IndexAction',
 	        'getlistbyid'     	=> 'citizenToolKit.controllers.gallery.GetListByIdAction',
+	    	'crudcollection'     	=> 'citizenToolKit.controllers.gallery.CrudCollectionAction',
+	    	'crudfile'     	=> 'citizenToolKit.controllers.gallery.CrudFileAction',
+	    	'filter'     	=> 'citizenToolKit.controllers.gallery.FilterAction',
 	    );
 	}
 }

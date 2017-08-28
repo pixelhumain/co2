@@ -242,8 +242,50 @@
 		  		  id="open-select-create" style="border-right:0px!important;">
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
 		  </button>
+
 		  <?php } ?>
 
+  		  <?php if(@Yii::app()->session["userId"])
+  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
+  			($type==Person::COLLECTION) ||
+  			(Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"])))
+  			{ 
+  				//todo : elements members of
+  				$loadChat = $element["name"];
+  				//people have pregenerated rooms so allways available 
+  				$hasRC = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "true" : "false";
+  				$canEdit = ( (@$edit && $edit) || (@$openEdition && $openEdition) ) ? "true" : "false";
+  				if($type == Person::COLLECTION){
+  				 	$loadChat = (string)$element["username"];
+  					if( (string)$element["_id"]==@Yii::app()->session["userId"] )
+  						$loadChat = "";
+  			}?>
+		  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold letter-red hidden-xs" 
+		  		  id="open-rocketChat" style="border-right:0px!important;">
+		  		<i class="fa fa-comments fa-2x"></i>
+		  </button>
+		  <span class="elChatNotifs topbar-badge badge animated bounceIn badge-warning"></span>
+		  <?php } ?>
+
+		  <?php /* Links in new TAB
+		  if(@Yii::app()->session["userId"])
+  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
+  			($type==Person::COLLECTION) ||
+  			(Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"])))
+  			{ 
+  				//todo : elements members of
+  				$loadChat = '/'.$this->module->id.'/rocketchat/chat/name/'.$element["name"].'/type/'.$type;
+  				if($type == Person::COLLECTION)
+  				{
+  				 	$loadChat = '/'.$this->module->id.'/rocketchat/chat/name/'.$element["username"].'/type/'.$type;
+  					if( (string)$element["_id"]==@Yii::app()->session["userId"] )
+  						$loadChat = '/'.$this->module->id.'/rocketchat';
+  				}
+  				?> 
+			  	<a href="<?php echo $loadChat;?>" target="_blanck" class="btn btn-default bold letter-red hidden-xs" style="border-right:0px!important;">
+			  		<i class="fa fa-comments fa-2x"></i> 
+			  	</a>
+			<?php } */?>
 		</div>
 		
 		<div class="btn-group pull-right">
@@ -603,6 +645,8 @@
 		if(sub!=""){
 			if(sub=="gallery")
 				loadGallery();
+			if(sub=="library")
+				loadLibrary();
 			else if(sub=="notifications")
 				loadNotifications();
 			else if(sub.indexOf("chart") >= 0){

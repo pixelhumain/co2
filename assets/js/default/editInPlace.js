@@ -683,6 +683,70 @@ function bindAboutPodElement() {
 		mylog.log("params",params);
 		dyFObj.openForm( 'url','sub', params);
 	}
+	function updateRoles(childId, childType, childName, connectType, roles) {
+		var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/link/removerole/",
+				dynForm : {
+					jsonSchema : {
+						title : "Ajouter ou modifier les rôles de "+childName,// trad["Update network"],
+						icon : "fa-key",
+						onLoads : {
+							sub : function(){
+								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  				  .addClass("bg-dark");
+								//bindDesc("#ajaxFormModal");
+							}
+						},
+						beforeSave : function(){
+							mylog.log("beforeSave");
+					    	//removeFieldUpdateDynForm(contextData.type);
+					    },
+						afterSave : function(data){
+							mylog.dir(data);
+							dyFObj.closeForm();
+							loadDataDirectory(connectType, "user", true);
+							//changeHiddenFields();
+						},
+						properties : {
+							contextId : dyFInputs.inputHidden(),
+							contextType : dyFInputs.inputHidden(), 
+							roles : dyFInputs.tags(rolesList),
+							childId : dyFInputs.inputHidden(), 
+							childType : dyFInputs.inputHidden(),
+							connectType : dyFInputs.inputHidden()
+						}
+					}
+				}
+			};
+
+			var dataUpdate = {
+		        contextId : contextData.id,
+		        contextType : contextData.type,
+		        childId : childId,
+		        childType : childType,
+		        connectType : connectType,
+			};
+
+			if(notEmpty(roles))
+				dataUpdate.roles = roles.split(",");
+			dyFObj.openForm(form, "sub", dataUpdate);		
+	}
+	function updateBookmark(id) {
+		mylog.log("updBook",id);
+		filesUp=files[id];
+		var params=new Object;
+		params.id=id;
+		if(filesUp.url != "undefined")
+			params.url=filesUp.url;
+		if(filesUp.name != "undefined")
+			params.name=filesUp.name;
+		if(filesUp.tags != "undefined")
+			params.tags=filesUp.tags;
+		if(filesUp.description != "undefined")
+			params.description=filesUp.description;
+		mylog.log("params",params);
+		dyFObj.openForm( 'bookmark','sub', params);
+	}
 
 
 	function updateContact(ind, name, email, role, telephone) {
@@ -698,6 +762,14 @@ function bindAboutPodElement() {
 			dataUpdate.phone = telephone;
 		mylog.log("dataUpdate", dataUpdate);
 		dyFObj.openForm ('contactPoint','contact', dataUpdate);
+	}
+	function updateDocument(id, title) {
+		mylog.log("updateDocument", id, name);
+		dataUpdate = { docId : id } ;
+		if(title != "undefined")
+			dataUpdate.title = title;
+		mylog.log("dataUpdate", dataUpdate);
+		dyFObj.openForm ('document','sub', dataUpdate);
 	}
 
 	function removeUrl(ind) {

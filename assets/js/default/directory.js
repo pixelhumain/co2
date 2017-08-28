@@ -499,8 +499,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                    $(this).data("contact-role"),$(this).data("contact-telephone"));
     });
 
-    $(".deleteThisBtn").off().on("click",function () 
-    {
+    $(".deleteThisBtn").off().on("click",function (){
       mylog.log("deleteThisBtn click");
           $(this).empty().html('<i class="fa fa-spinner fa-spin"></i>');
           var btnClick = $(this);
@@ -549,7 +548,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
 
   function initBtnShare(){
-    console.log("init btn-share ");
+    mylog.log("init btn-share ");
     $(".btn-share").off().click(function(){
       var thiselement = this;
 
@@ -559,7 +558,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       $("#modal-share").modal("show");
       
       //$("#modal-share #htmlElementToShare").html("test");
-      console.log("initBtnShare "+type+" - "+id);
+      mylog.log("initBtnShare "+type+" - "+id);
       //$("#news-list li#"+type+id).html("bébé");
       var html = "";
       
@@ -574,6 +573,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         html = "<div class='searchEntity'>"+$(".searchEntity#entity"+id).html()+"</div>";
 
       if(html == "" && type !="news" && type!="activityStream" && typeof contextData != "undefined"){
+        mylog.log("HERE", contextData);
         html = directory.showResultsDirectoryHtml(new Array(contextData), type);
       } 
       
@@ -656,7 +656,7 @@ var directory = {
     defaultPanelHtml : function(params){
       mylog.log("----------- defaultPanelHtml",params.type,params.name);
       str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
       if(params.itemType!="city" && (params.useMinSize))
@@ -790,7 +790,7 @@ var directory = {
             }
 
             str += "<div class='entityDescription'>" + params.description + "</div>";
-         
+            str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
 
             if(params.useMinSize){
@@ -824,7 +824,7 @@ var directory = {
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
-    		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" contain_"+params.type+"_"+params.id+"'>";
+    		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
     		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
     		
         var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;
@@ -896,7 +896,7 @@ var directory = {
             str += thisLocality;
             
             str += "<div class='entityDescription'>" + params.description + "</div>";
-         
+            str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
             /*
               if(params.startDate != null)
@@ -1005,7 +1005,7 @@ var directory = {
             if(typeof params.name != "undefined" && params.name != "")
               str += "<div class='bold text-black' style='font-size:20px;'>"+ 
                         "<div class='col-md-8 col-sm-8 col-xs-7 no-padding margin-top-10'>"+params.name + "</div>";
-                        if(typeof hash != "undefined"){ 
+                        if( typeof hash != "undefined" ){ 
                           str +=  "<div class='col-md-4 col-sm-4 col-xs-5 no-padding'>"+ 
                                     nav.next+
                                     nav.prev+
@@ -1797,6 +1797,20 @@ var directory = {
                 }else{
                   params.tagsLbl = "";
                 }
+                params.elRolesList = "";
+                var thisRoles = "";
+                params.rolesLbl = "";
+                if(typeof params.rolesLink != "undefined" && params.rolesLink != null){
+                  thisRoles += "Roles: "
+                  $.each(params.rolesLink, function(key, value){
+                    if(typeof value != "undefined" && value != "" && value != "undefined"){
+                      thisRoles += "<span class='bg-transparent text-dark' data-tag-value='"+slugify(value)+"'>" + value + ",</span> ";
+                      params.elRolesList += slugify(value)+" ";
+                    }
+                  });
+                  params.rolesLbl = thisRoles;
+                }
+              
 
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
                 
@@ -1812,7 +1826,7 @@ var directory = {
                 else if(params.type == "events")
                   str += directory.eventPanelHtml(params);  
                 
-                else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"]) ) 
+                else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
                     str += directory.roomsPanelHtml(params,itemType);  
                 
                 else if(params.type == "classified")
@@ -1836,46 +1850,74 @@ var directory = {
         return str;
     },
     getAdminToolBar : function(data){
-
+      countBtn=0;
       var html = "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips adminIconDirectory'>"+
        "<i class='fa fa-cog'></i>"+ //fa-bookmark fa-rotate-270
        "</a>";
       html+="<div class='adminToolBar'>";
       if(data.edit=="follows"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'"+
+            " style='bottom:"+(30*countBtn)+"px'>"+
             "<i class='fa fa-unlink'></i> "+trad["unfollow"]+
           "</button> ";
+          countBtn++;
       }
       if(data.edit=="organizations" || data.edit=="projects"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='3'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='3'"+
+            " style='bottom:"+(30*countBtn)+"px'>"+
             "<i class='fa fa-unlink'></i> "+trad["cancellink"]+
           "</button> ";
+          countBtn++;
       }
+     
       if(data.edit=="members" || data.edit=="contributors"){
-        if(data.type!="organizations" && typeof data.statusLink["toBeValidated"] != "undefined" && typeof data.statusLink["isAdminPending"] == "undefined"){
-          html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='toBeValidated' data-parent-hide='2'>"+
-            "<i class='fa fa-user'></i> "+trad["acceptas"+data.edit]+
+        if(data.type=="organizations" || (typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined")){
+          html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'"+
+            " style='bottom:"+(30*countBtn)+"px'>"+
+            "<i class='fa fa-unlink'></i> "+trad["delete"+data.edit]+
           "</button> ";
-        }else if(data.type!="organizations" && typeof data.statusLink["isAdminPending"] != "undefined"){
-          html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='isAdminPending' data-parent-hide='2'>"+
-            "<i class='fa fa-user-plus'></i> "+trad["acceptasadmin"]+
-          "</button> ";
+          countBtn++;
         }
         if(data.type!="organizations" && typeof data.statusLink["isAdmin"] == "undefined"){
           html +='<button class="btn btn-default btn-xs" '+
-                   'onclick="connectTo(\''+contextData.type+'\',\''+contextData.id+'\', \''+data.id+'\', \''+data.type+'\', \'admin\',\'\',\'true\')">'+
+                   'onclick="connectTo(\''+contextData.type+'\',\''+contextData.id+'\', \''+data.id+'\', \''+data.type+'\', \'admin\',\'\',\'true\')"'+
+                   " style='bottom:"+(30*countBtn)+"px'>"+
                             '<i class="fa fa-user-plus"></i> '+trad["addasadmin"]+
                           '</button>';
+          countBtn++;
         }
-        if(data.type=="organizations" || (typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined"))
-          html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'>"+
-            "<i class='fa fa-unlink'></i> "+trad["delete"+data.edit]+
+        if(data.type!="organizations" && typeof data.statusLink["toBeValidated"] != "undefined" && typeof data.statusLink["isAdminPending"] == "undefined"){
+          html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='toBeValidated' data-parent-hide='2'"+
+            " style='bottom:"+(30*countBtn)+"px'>"+
+            "<i class='fa fa-user'></i> "+trad["acceptas"+data.edit]+
           "</button> ";
+          countBtn++;
+        }else if(data.type!="organizations" && typeof data.statusLink["isAdminPending"] != "undefined"){
+          html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='isAdminPending' data-parent-hide='2'"+
+            " style='bottom:"+(30*countBtn)+"px'>"+
+            "<i class='fa fa-user-plus'></i> "+trad["acceptasadmin"]+
+          "</button> ";
+          countBtn++;
+        }
+         if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){
+          roles="";
+          if(typeof data.rolesLink != "undefined"){
+            $.each(data.rolesLink,function(i,v){
+              roles+=v+',';
+            });
+          }
+          html +="<button class='btn btn-default btn-xs'"+ 
+            ' onclick="updateRoles(\''+data.id+'\', \''+data.type+'\', \''+data.name+'\', \''+data.edit+'\',\''+roles+'\')"'+
+            " style='bottom:"+(30*countBtn)+"px'>"+
+            "<i class='fa fa-pencil'></i> "+trad.addmodifyroles
+          "</button> ";
+          countBtn++;
+        }
       }
       html+="</div>";
       return html;

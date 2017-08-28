@@ -3573,7 +3573,6 @@ var dyFInputs = {
         	$(".urlsarray").css("display","none");	
         }
     },
-    checkbox : function(checked, id, params){
     bookmarkUrl: function(label, placeholder,rules, custom){
     	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
     	inputObj.init = function(){
@@ -3587,8 +3586,8 @@ var dyFInputs = {
         };
 	    return inputObj;
     },
-    allDay : function(checked){
-
+    checkbox : function(checked, id, params){
+    
     	var inputObj = {
     		label: params["labelText"],
     		inputType : "checkbox",

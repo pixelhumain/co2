@@ -45,6 +45,7 @@ function bindButtonMenu(){
 			//history.pushState(null, "New Title", hashUrlPage);
 		}
 		loadNewsStream(false);
+		uiCoop.closeUI(false);
 	});
 	$("#btn-start-gallery").click(function(){
 		responsiveMenuLeft();
@@ -292,6 +293,14 @@ function bindButtonMenu(){
 		var value = $(this).attr("value");
 		$(".btn-group-"+type + " .btn").removeClass("active");
 		$(this).addClass("active");
+	});
+
+	$("#open-co-space").click(function(){
+		uiCoop.startUI();
+	});
+
+	$("#reopen-menu-left-container").click(function(){
+		uiCoop.closeUI();
 	});
 
 	initBtnShare();
@@ -602,11 +611,38 @@ function loadContacts(){
 				}
 	,"html");
 }
-
+//todo add count on each tag
+    function getfilterRoles(roles) { 
+    	console.log("roles",roles);
+        $("#listRoles").html("");
+        $("#listRoles").append("<a class='btn btn-link text-red favElBtn favAllBtn' "+
+            "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'>"+
+            " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a>");
+        	$.each( roles,function(k,o){
+                $("#listRoles").append("<a class='btn btn-link favElBtn text-red "+slugify(k)+"Btn' "+
+                                "data-tag='"+slugify(k)+"' "+
+                                "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(k)+"\",\".searchEntityContainer\",1)'>"+
+                                  k+" <span class='badge'>"+o.count+"</span>"+
+                            "</a>");
+        	});
+    }
 function displayInTheContainer(data, dataName, dataIcon, contextType, edit){ 
 	mylog.log("displayInTheContainer",data, dataName, dataIcon, contextType, edit)
 	var n=0;
-	$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
+	listRoles={};
+	$.each(data, function(key, val){ 
+		console.log("rolesShox",val);
+		if(typeof key != "undefined") n++; 
+		if(typeof val.rolesLink != "undefined"){
+			console.log(val.rolesLink);
+			$.each(val.rolesLink, function(i,v){
+				if(typeof listRoles[v] != "undefined")
+					listRoles[v].count++;
+				else
+					listRoles[v]={"count": 1}
+			});
+		}
+	});
 	if(n>0){
 		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 
@@ -621,13 +657,14 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		if(dataName != "urls")
 			html += btnMap;
 
-		html +=	thisTitle + "<hr>";
+		html +=	thisTitle;
+		html += "<div id='listRoles'></div>"+
+			 "<hr>";
 		html +=	"</div>";
-		
 		
 		mapElements = new Array();
 		
-		
+		console.log("listRoles",listRoles);
 		if(dataName != "collections"){
 			if(mapElements.length==0) mapElements = data;
         	else $.extend(mapElements, data);
@@ -657,7 +694,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		initBtnLink();
 		initBtnAdmin();
 		bindButtonOpenForm();
-		
+		getfilterRoles(listRoles);
 		var dataToMap = data;
 		if(dataName == "collections"){
 			dataToMap = new Array();

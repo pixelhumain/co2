@@ -243,6 +243,7 @@ var trad = {
 	"acceptasmembers": "<?php echo Yii::t("common","Accept as member") ?>", 
 	"acceptascontributors": "<?php echo Yii::t("common","Accept as contributor") ?>",
 	"addasadmin": "<?php echo Yii::t("common","Add as admin") ?>",
+	"addmodifyroles":"<?php echo Yii::t("common","Add/Update roles") ?>",
 	"deletemembers":"<?php echo Yii::t("common","Delete this member") ?>",
 	"deletecontributors":"<?php echo Yii::t("common","Delete this contributor") ?>",
 	"follow": "<?php echo Yii::t("common","follow") ?>",
@@ -290,12 +291,19 @@ var trad = {
 	"discuss":"<?php echo Yii::t("rooms","Discussion") ?>",
 	"vote":"<?php echo Yii::t("rooms","Decision") ?>",
 	"actions":"<?php echo Yii::t("rooms","Action") ?>",
+	"action":"<?php echo Yii::t("rooms","action") ?>",
 	"actionRooms":"<?php echo Yii::t("rooms","actionRooms") ?>",
 	"room":"<?php echo Yii::t("rooms","room") ?>",
 	"gallery":"<?php echo Yii::t("common","Gallery") ?>",
 	"library":"<?php echo Yii::t("common","Library") ?>",
 	"nopicture":"<?php echo Yii::t("common","No picture in this album") ?>",
 	"nofile":"<?php echo Yii::t("common","No file in this folder") ?>",
+
+	"Your amendement has been save with success" : "<?php echo Yii::t("cooperation", "Your amendement has been save with success") ?>",
+	"Your vote has been save with success" : "<?php echo Yii::t("cooperation", "Your vote has been save with success") ?>",
+	"processing save" : "<?php echo Yii::t("cooperation", "processing save") ?>",
+	"processing ok" : "<?php echo Yii::t("cooperation", "processing ok") ?>",
+	"processing" : "<?php echo Yii::t("cooperation", "processing") ?>",
 };
 
 var tradDynForm = {
@@ -313,7 +321,7 @@ var tradDynForm = {
 	"infocreateproject":"<?php echo Yii::t("form","Make visble your project to all has never been so easy !<br>Create your project in few seconds,<br>then complete more according to your needs")?>",
 	"infocreateorganization":"<?php echo Yii::t("form","Create your page in few seconds,<br>then add more details,<br>according to your needs")?>",
 	"infocreateurl":"<?php echo Yii::t("form","Share links you like, to make them accessible to all") ?>",
-	"infocreateRoom":"<?php echo Yii::t("form","Rooms are spaces of Discussion, decision and action for a community") ?>",
+	"infocreateRoom":"<?php echo Yii::t("form","Rooms are spaces of decision and action for a community") ?>",
 	"infocreatecontact":"<?php echo Yii::t("form","Indicate contacts linked to this page to give more opportunities for people to find you") ?>",
 	"infocreatebookmark":"<?php echo Yii::t("form","Create a list of bookmark to find fastly your favorite url<br>And share it to other people") ?>",
 	"infouploadfile":"<?php echo Yii::t("form","Upload files here to share it with others<br>And organized them !") ?>",
@@ -325,6 +333,7 @@ var tradDynForm = {
 	"eventparentEndDate":"<?php echo Yii::t("form","Event parent's end date") ?>",
 	"shortDescription":"<?php echo Yii::t("form","Short description") ?>",
 	"longDescription":"<?php echo Yii::t("form","Long description") ?>",
+	"textproposal":"<?php echo Yii::t("form","Your proposal") ?>",
 	"eventTypes":"<?php echo Yii::t("form","Event type") ?>",
 	"organizationType":"<?php echo Yii::t("form","Organization type") ?>",
 	"nameofyour":"<?php echo Yii::t("form","Name of your") ?>",
@@ -395,6 +404,8 @@ var tradDynForm = {
 	"enterfaxnumber":"<?php echo Yii::t("form","Enter fax numbers separated by a comma") ?>",
 	"theprojectmaturity":"<?php echo Yii::t("form","Maturity of the project") ?>",
 	"projectmaturity":"<?php echo Yii::t("form","Project maturity") ?>",
+	"textarguments" : "<?php echo Yii::t("form","Arguments") ?>",
+	"textargumentsandmore" : "<?php echo Yii::t("form","More informations, arguments, exemples,") ?>",
 	"addinfotodoc":"<?php echo Yii::t("form","add informations to this document") ?>",
 	"infoimages":"<?php echo Yii::t("form","Add informations to the document to make it pertinent for others") ?>",
 	"titleimage":"<?php echo Yii::t("form","Image title") ?>",
@@ -561,7 +572,6 @@ var tradCategory = {
     "GovernmentOrganization":"<?php echo Yii::t("category","Government Organization") ?>",
 	"discuss":"<?php echo Yii::t("rooms","Discussion") ?>",
 	"vote":"<?php echo Yii::t("rooms","Decision") ?>",
-	"actions":"<?php echo Yii::t("rooms","Action") ?>",
 };
 var tradCountry = {
 	"BE":"Belgique", 

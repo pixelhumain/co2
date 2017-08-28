@@ -29,7 +29,7 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 				rcObjPath = '<?php echo $path ?>';
 				document.querySelector('iframe').contentWindow.postMessage({
 				  externalCommand: 'go',
-				  path: '<?php echo $path ?>'}, '*');
+				  path: '<?php echo $path ?>?layout=embedded'}, '*');
 			<?php } ?>
 
 		} 
@@ -83,7 +83,7 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 		//online
 		if(e.data.eventName=="status-changed"){
 			console.info("xxxxxxxxxxxxxx STATUS CHANGED ", e.data.eventName,e.data.data);
-			toastr.error("status changed : "+e.data.data);	
+			//toastr.error("status changed : "+e.data.data);	
 		}
 
 		if(e.data.eventName=="unread-changed-by-subscription" && ( e.data.data.name == contextData.type+"_"+slugify(contextData.name) || e.data.data.name == contextData.username )  ){

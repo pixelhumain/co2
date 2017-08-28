@@ -52,7 +52,7 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 			else {
 				//can be when messages arrives, like notifiactions
 				//or disconnect so forcing reconnect
-				alert("unread-changed :: relogin");
+				//alert("unread-changed :: relogin");
 				setTimeout(function(){
 					document.querySelector('iframe').contentWindow.postMessage({
 					  externalCommand: 'login-with-token',

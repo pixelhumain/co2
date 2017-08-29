@@ -47,8 +47,7 @@ function startSearch(indexMin, indexMax, callBack){
     if(name.length>=3 || name.length == 0)
     {
       var locality = "";
-      if( communexionActivated )
-      {
+      if( communexionActivated ){
   	    if(typeof(cityInseeCommunexion) != "undefined")
         {
     			if(levelCommunexion == 1) locality = cpCommunexion;
@@ -113,7 +112,7 @@ var mapElements = new Array();
 
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
-  console.log("START -------- autoCompleteSearch ", typeof callBack, callBack);
+  console.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
 	if(typeof(cityInseeCommunexion) != "undefined"){
 	    var levelCommunexionName = { 1 : "CODE_POSTAL_INSEE",
 	                             2 : "INSEE",
@@ -128,15 +127,16 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 	                           };
 	}
     //mylog.log("levelCommunexionName", levelCommunexionName[levelCommunexion]);
+    if($.cookie('communexionActivated') == "true"  ){
+      var searchLocality = [communexion.currentValue];
+    }
+    else{
+      var searchLocality = ($('#searchLocalityCITYKEY').length && $('#searchLocalityCITYKEY').val() != "" ) ? $('#searchLocalityCITYKEY').val().split(',') : [] ;
+      if($('#searchLocalityZONE').length && $('#searchLocalityZONE').val() != "")
+        $.merge( searchLocality, $('#searchLocalityZONE').val().split(',') );
+    }
     
-    var searchLocality = ($('#searchLocalityCITYKEY').length && $('#searchLocalityCITYKEY').val() != "" ) ? $('#searchLocalityCITYKEY').val().split(',') : [] ;
-    if($('#searchLocalityZONE').length && $('#searchLocalityZONE').val() != "")
-      $.merge( searchLocality, $('#searchLocalityZONE').val().split(',') );
-    // if($('#searchLocalityDEPARTEMENT').length && $('#searchLocalityDEPARTEMENT').val() != "")
-    //   $.merge( searchLocality, $('#searchLocalityDEPARTEMENT').val().split(',') );
-    // if($('#searchLocalityREGION').length && $('#searchLocalityREGION').val() != ""){
-    //   $.merge( searchLocality, $('#searchLocalityREGION').val().split(',') );
-    //}
+    
 
     var data = {
       "name" : name, 

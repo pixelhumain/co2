@@ -105,6 +105,7 @@ function autocompleteMultiScope(){
 }
 /**********************************************/
 function loadMultiScopes(){
+	mylog.log("loadMultiScopes");
 	$.each(myMultiScopes, function(key, value){
 		showScopeInMultiscope(key);
 	});
@@ -407,14 +408,20 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 		$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
 		
 
-		$.removeCookie('communexionType', { path: '/' }); $.removeCookie('communexionValue', { path: '/' }); 
-		$.removeCookie('communexionName', { path: '/' }); $.removeCookie('communexionLevel', { path: '/' }); 
+		$.removeCookie('communexionType', { path: '/' }); 
+		$.removeCookie('communexionValue', { path: '/' }); 
+		$.removeCookie('communexionName', { path: '/' }); 
+		$.removeCookie('communexionLevel', { path: '/' });
 
 		$.cookie('communexionType', scopeType, { expires: 365, path: "/" });
 		$.cookie('communexionValue', scopeValue, { expires: 365, path: "/" });
 		$.cookie('communexionName', scopeName, { expires: 365, path: "/" });
-		$.cookie('communexionLevel', scopeLevel, { expires: 365, path: "/" });
+		//$.cookie('communexionLevel', scopeLevel, { expires: 365, path: "/" });
 		//$.cookie('currentLevel', scopeType, { expires: 365, path: "/" });
+	
+		communexion.currentLevel = scopeLevel;
+		communexion.currentName = scopeName;
+		communexion.currentValue = scopeValue;
 	
 		if(inseeCommunexion != null){
 			$.removeCookie('inseeCommunexion', { path: '/' }); 
@@ -437,10 +444,9 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 			}
 		}
 
-		communexion.currentLevel = scopeLevel;
-		if(typeof communexion != "undefined" && typeof inseeCommunexion != "undefined"){
-			communexion.currentName = scopeName;
-			communexion.currentValue = scopeValue;
+		
+		/*if(typeof communexion != "undefined" && typeof inseeCommunexion != "undefined"){
+			
 			communexion.state = true;
 			communexion.values.cityCp = cpCommunexion;
 			communexion.values.cityKey = scopeValue;
@@ -449,9 +455,7 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 			communexion.values.inseeName = inseeCommunexion;
 			communexion.values.regionName = regionNameCommunexion;
 
-		}else{
-			//alert("no communexion");
-		}
+		}*/
 		//rebuildSearchScopeInput();
 		activateGlobalCommunexion(true);
 		//startSearch(0, indexStepInit, searchCallback);

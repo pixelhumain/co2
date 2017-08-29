@@ -2348,14 +2348,19 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				if(!empty($new["scope"]["city"])){
 
 					foreach ($new["scope"]["city"] as $keyS => $valueS) {
-						$city = PHDB::findOne(City::COLLECTION, array("insee" => $valueS["codeInsee"]));
 						$newsKey = array();
-						if(!empty($valueS["postalCode"])){
-							$newsKey["key"] = $city["key"].$valueS["postalCode"];
-							$newsKey["postalCode"] = $valueS["postalCode"];
-						}else if(!empty($valueS["codeInsee"])){
-							$newsKey["key"] = $city["key"];
-							$newsKey["name"] = $valueS["addressLocality"];
+						if(!empty($valueS["codeInsee"])){
+							$city = PHDB::findOne(City::COLLECTION, array("insee" => $valueS["codeInsee"]));
+							if(!empty($city)){
+								$newsKey["key"] = $city["key"];
+								$newsKey["parentId"] = (String) $city["_id"] ;
+								$newsKey["parentType"] = City::COLLECTION ;
+								if(!empty($valueS["postalCode"])){
+									$newsKey["postalCode"] = $valueS["postalCode"];
+								}else{
+									$newsKey["name"] = $valueS["addressLocality"];
+								}
+							}
 						}
 
 						if(!empty($newsKey))
@@ -2377,6 +2382,8 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 						if(!empty($zone)){
 							$newsKey["key"] = $zone["key"];
 							$newsKey["name"] = $zone["name"];
+							$newsKey["parentId"] = (String) $zone["_id"] ;
+							$newsKey["parentType"] = Zone::COLLECTION ;
 							$listKey[] = $newsKey;
 						}
 					}
@@ -2398,6 +2405,8 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 						$newsKey = array();
 						if(!empty($zone)){
 							$newsKey["key"] = $zone["key"];
+							$newsKey["parentId"] = (String) $zone["_id"] ;
+							$newsKey["parentType"] = Zone::COLLECTION ;
 							$newsKey["name"] = $zone["name"];
 							$listKey[] = $newsKey;
 						}

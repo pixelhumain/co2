@@ -85,7 +85,8 @@
 			"login" : true,
 			"notif" : "chatNotifs",
 			"icon" : "comments", 
-			"mainTitle" : "<span class='text-red'>CHAT with your communities</span>"
+			"mainTitle" : "<span class='text-red'>CHAT with your communities</span>",
+			"removeAfterLoad" : true 
 		},
 
 		"#page": {

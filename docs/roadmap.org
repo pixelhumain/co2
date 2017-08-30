@@ -239,6 +239,7 @@ Liste des notifications déjà lues => #370 #453
         [ ] check group existance before creation , otherwise just invite
           [X] on demand : either we put a property on an element describing if corresponding exists or not 
 >>>>>>>>[ ] only members, have access 
+          [ ] testing if non member has access to 
 >>>>>>>>[ ] after create invite all members to chat and add notification
 >>>>>>>>[ ] check anymember can start the chat
       [ ] manage chat module color according to login state based on events

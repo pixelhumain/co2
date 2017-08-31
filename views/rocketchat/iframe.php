@@ -12,8 +12,8 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 	
 <script type="text/javascript">
 	window.addEventListener('message', function(e) {
-	    console.info(">>>>>>>>>> ifroame ", e.data.eventName); // event name
-	    console.log(e.data.data); // event data
+	    mylog.info(">>>>>>>>>> ifroame ", e.data.eventName); // event name
+	    mylog.log(e.data.data); // event data
 	   // alert(" embedPath : <?php echo @$embed; ?> :: " +e.data.eventName);
 		if(e.data.eventName=="startup" && e.data.data== true){
 
@@ -36,24 +36,24 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 		
 		//fired on direct conversation or when pinged in a channel
 		if(e.data.eventName=="notification" ){
-			console.info("xxxxxxxxxxxxxx NOTIFICATION ", e.data.eventName,e.data.data);
+			mylog.info("xxxxxxxxxxxxxx NOTIFICATION ", e.data.eventName,e.data.data);
 			//alert("notification received");	
 		} 
 
 		if(e.data.eventName=="new-message" ){
-			console.info("xxxxxxxxxxxxxx NEW MSG ", e.data.eventName,e.data.data);
+			mylog.info("xxxxxxxxxxxxxx NEW MSG ", e.data.eventName,e.data.data);
 			//alert("new-message");
 		} 
 
 		if(e.data.eventName=="room-opened" ){
-			console.info("xxxxxxxxxxxxxx Open Room ", e.data.eventName,e.data.data);
+			mylog.info("xxxxxxxxxxxxxx Open Room ", e.data.eventName,e.data.data);
 			//alert("room-opened");
 		} 
 
 
 		if(e.data.eventName=="unread-changed" ){
-			console.info("xxxxxxxxxxxxxx UNREAD ","<?php echo Yii::app()->session["loginToken"]; ?>", e.data.eventName,e.data.data);
-			toastr.info("unread-changed :: "+e.data.data);
+			mylog.info("xxxxxxxxxxxxxx UNREAD ","<?php echo Yii::app()->session["loginToken"]; ?>", e.data.eventName,e.data.data);
+			//toastr.info("unread-changed :: "+e.data.data);
 			
 			if(e.data.data)
 				 $(".chatNotifs").html(e.data.data);
@@ -82,7 +82,7 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 		//away
 		//online
 		if(e.data.eventName=="status-changed"){
-			console.info("xxxxxxxxxxxxxx STATUS CHANGED ", e.data.eventName,e.data.data);
+			mylog.info("xxxxxxxxxxxxxx STATUS CHANGED ", e.data.eventName,e.data.data);
 			//toastr.error("status changed : "+e.data.data);	
 		}
 

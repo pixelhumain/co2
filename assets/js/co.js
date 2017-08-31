@@ -658,7 +658,7 @@ var urlCtrl = {
 		"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
 		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
 		"#opendata" : {"alias":"#data.index"},
-		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) } },
+		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) }, removeAfterLoad : true },
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
 	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
@@ -769,6 +769,9 @@ var urlCtrl = {
 						
 						if(endPoint.menu)
 							$("."+endPoint.menu).removeClass("hide");
+
+						if(endPoint.removeAfterLoad)
+							history.pushState('', document.title, window.location.pathname);
 					} 
 					res = true;
 					return false;
@@ -787,12 +790,10 @@ var urlCtrl = {
 	//back sert juste a differencier un load avec le back btn
 	//ne sert plus, juste a savoir d'ou vient drait l'appel
 	loadByHash : function ( hash , back ) {
-		//alert("loadByHash"+hash);
-		/* court circuit du lbh pour changer le type du directory si on est déjà sur une page directory */
 		// mylog.log("IS DIRECTORY ? ", 
 		// 			hash.indexOf("#default.directory"), 
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
-
+		onchangeClick=false;
 		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
 			mylog.log("globalTheme", globalTheme);
@@ -932,13 +933,12 @@ function  processingBlockUi() {
 
 	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
 		msg = themeObj.blockUi.processingMsg;
-
 	$.blockUI({ message :  msg });
 	bindLBHLinks();
 }
 function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
 	//alert("showAjaxPanel"+url);
-	
+	$(".progressTop").show().val(20);
 	var dest = ( typeof urlObj == "undefined" || typeof urlObj.useHeader != "undefined" ) ? themeObj.mainContainer : ".pageContent" ;
 	mylog.log("showAjaxPanel", url, urlObj,dest,urlCtrl.afterLoad );	
 	//var dest = themeObj.mainContainer;
@@ -946,25 +946,27 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 	//alert("showAjaxPanel"+dest);
 	showNotif(false);
 			
-	setTimeout(function(){
-		$(dest).html("");
-		$(".hover-info,.hover-info2").hide();
-		processingBlockUi();
-		showMap(false);
-	}, 200);
+	//setTimeout(function(){
+		//$(".main-container > header").html("");
+		//$(".pageContent").html("");
+	$(".hover-info,.hover-info2").hide();
+		//processingBlockUi();
+	showMap(false);
+	//}, 200);
 
 	$(".box").hide(200);
 	//showPanel('box-ajax');
 	icon = (icon) ? " <i class='fa fa-"+icon+"'></i> " : "";
 	$(".panelTitle").html(icon+title).fadeIn();
 	mylog.log("GETAJAX",icon+title);
-	
-	showTopMenu(true);
+	//showTopMenu(true);
 	userIdBefore = userId;
 	setTimeout(function(){
 		if( $(dest).length )
 		{
-		 getAjax(dest, baseUrl+'/'+moduleId+url, function(data){ 
+		setTimeout(function(){ $('.progressTop').val(40)}, 1000);
+		setTimeout(function(){ $('.progressTop').val(60)}, 3000);
+		getAjax(dest, baseUrl+'/'+moduleId+url, function(data){ 
 			
 			if( dest != themeObj.mainContainer )
 				$(".subModuleTitle").html("");
@@ -975,7 +977,9 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 			bindExplainLinks();
 			bindTags();
 			bindLBHLinks();
-
+			$(".progressTop").val(90);
+			setTimeout(function(){ $(".progressTop").val(100)}, 10);
+			$(".progressTop").fadeOut(200);
 			$.unblockUI();
 
 			if(mapEnd)
@@ -1458,7 +1462,7 @@ function  bindExplainLinks() {
 }
 
 function  bindLBHLinks() { 
-	$(".lbh").unbind("click").on("click",function(e) {  		
+	$(".lbh").off().on("click",function(e) {  		
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks",$(this).attr("href"));

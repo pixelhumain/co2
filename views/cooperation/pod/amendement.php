@@ -50,9 +50,9 @@
 		<small>
 			<i class="fa fa-2x fa-balance-scale"></i> Majorité : <b><?php echo @$proposal["majority"]; ?>%</b> 
 			<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
-				 <span class="pull-right badge bg-green-k margin-top-5 padding-5">Amendement temporairement <span class="bold">Validée</span></span>
+				 <span class="pull-right badge bg-green-k margin-top-5 padding-5">temporairement <span class="bold">Validée</span></span>
 			<?php }else{ ?>
-				 <span class="pull-right badge bg-red margin-top-5 padding-5">Amendement temporairement <span class="bold">refusé</span></span>
+				 <span class="pull-right badge bg-red margin-top-5 padding-5">temporairement <span class="bold">refusé</span></span>
 			<?php } ?>
 		</small>
 		

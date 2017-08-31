@@ -48,11 +48,10 @@
 	</div> 
 
 	<?php 
-		$i=0;		
 		$allVotesRes = array();
 
 		if(@$amendements){
-			foreach($amendements as $key => $am){ $i++;
+			foreach($amendements as $key => $am){
 				//var_dump($am); //exit;
 				$author = Person::getSimpleUserById(@$am["idUserAuthor"]);
 				$allVotes = @$am["votes"] ? $am["votes"] : array();

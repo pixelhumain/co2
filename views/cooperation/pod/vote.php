@@ -9,7 +9,7 @@
 }
 </style>
 
-<div class="col-lg-12 col-md-12 col-sm-12 padding-top-15 shadow2" id="podVote">
+<div class="col-lg-12 col-md-12 col-sm-12 padding-top-15 padding-bottom-5" id="podVote">
 	
 	<div class="col-lg-3 col-md-4 col-sm-4 text-center padding-15 pull-right">
 		<canvas id="pieVote"/>
@@ -55,13 +55,15 @@
 
 	<?php } ?>
 
-	<div class="col-lg-12 col-md-12 col-sm-12 pull-left padding-15">
+	<div class="col-lg-12 col-md-12 col-sm-12 pull-left padding-15 majority-space">
 		<small>
 			<i class="fa fa-2x fa-balance-scale"></i> Majorité : <b><?php echo @$proposal["majority"]; ?>%</b> 
-			<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > 50 ){ ?>
-				 < <?php echo $voteRes["up"]["percent"]; ?>% : Atteint<br>Proposition temporairement <span class="bold letter-green">Validée</span>
+			<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
+				 Proposition <?php if($proposal["status"] != "closed"){ ?>temporairement <?php } ?>
+				 <span class="bold letter-green">Validée</span>
 			<?php }else{ ?>
-				 > <?php echo $voteRes["up"]["percent"]; ?>% : Non atteint<br>Proposition temporairement <span class="bold letter-red">Refusée</span>
+				 Proposition <?php if($proposal["status"] != "closed"){ ?>temporairement <?php } ?> 
+				 <span class="bold letter-red">Refusée</span>
 			<?php } ?>
 		</small>
 		

@@ -477,7 +477,7 @@
 
 			<?php } ?>
 
-			
+
 			<?php //var_dump($proposalList); ?>
 			<?php if(@$resolutionList || @$room){ ?>
 				<div class="margin-top-25 title-section col-lg-12 col-md-12 col-sm-12">
@@ -555,7 +555,7 @@
 								  		<?php 
 								  			if(@$action["endDate"])
 								  				echo Yii::t("cooperation", "end") ." ". 
-								  				Translate::pastTime($action["endDate"], "datefr"); 
+								  				Translate::pastTime($action["endDate"], "date"); 
 
 								  		?>
 								  	</small>

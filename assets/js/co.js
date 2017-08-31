@@ -3919,7 +3919,7 @@ var typeObj = {
 	"survey" : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
 	"surveys" : {sameAs:"survey"},
 	"proposal" : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-dark" }, 
-	"action" : {col:"actions", ctrl:"action", titleClass : "bg-dark", bgClass : "bgDDA", icon : "cogs", color : "lightblue2" },
+	"action" : {col:"actions", ctrl:"action", titleClass : "bg-dark", bgClass : "bgDDA", icon : "cogs", color : "dark" },
 	"actions" : { sameAs : "action" },
 	"actionRooms" : {sameAs:"room"},
 	"rooms" : {sameAs:"room"},

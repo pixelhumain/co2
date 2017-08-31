@@ -163,12 +163,11 @@
 				<h3><i class="fa fa-angle-down"></i> Proposition</h3>
 			<?php } ?>
 		
-
 			<?php echo nl2br($proposal["description"]); ?>
 	</div>
 
 	<?php //if(@$proposal["status"] != "tovote"){ ?>
-		<div class="col-lg-12 col-md-12 col-sm-12 margin-top-15">
+		<div class="col-lg-12 col-md-12 col-sm-12 margin-top-15 no-padding">
 			<!-- <hr>	 -->
 			<h4 class="pull-left">
 				<i class="fa fa-angle-down"></i> Liste des amendements validés · 
@@ -270,7 +269,7 @@
 </div>
 
 
-<div class="col-lg-12 col-md-12 col-sm-12" id="comments-container">
+<div class="col-lg-12 col-md-12 col-sm-12 margin-bottom-50" id="comments-container">
 <hr>
 </div>
 <?php $this->renderPartial('../cooperation/amendements', 

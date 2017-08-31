@@ -57,7 +57,7 @@ var uiCoop = {
 			accept : '.draggable', // je n'accepte que le bloc ayant "draggable" pour class
 		    drop : function(event, ui){
 		        toastr.info('end drag');
-		        console.log("end drag", event, ui);
+		        console.log("end drag");//, event, ui);
 		    }
 		});
 	},

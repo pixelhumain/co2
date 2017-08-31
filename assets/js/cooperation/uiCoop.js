@@ -35,6 +35,7 @@ var uiCoop = {
 	},
 
 	"initBtnLoadData" : function(){
+		//alert('initBtnLoadData');
 		$(".load-coop-data").off().click(function(){
 			$(".load-coop-data").removeClass("active");
 			$(this).addClass("active");
@@ -44,6 +45,20 @@ var uiCoop = {
 			var dataId = $(this).data("dataid");
 			//console.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
 			uiCoop.getCoopData(contextData.type, contextData.id, type, status, dataId);
+		});
+		//uiCoop.initDragAndDrop();
+	},
+
+	"initDragAndDrop" : function(){ console.log('initDragAndDrop');
+		$('.draggable').draggable({
+		    revert : true // sera renvoyé à sa place s'il n'est pas déposé dans #drop
+		});
+		$('.droppable').droppable({
+			accept : '.draggable', // je n'accepte que le bloc ayant "draggable" pour class
+		    drop : function(event, ui){
+		        toastr.info('end drag');
+		        console.log("end drag");//, event, ui);
+		    }
 		});
 	},
 
@@ -281,6 +296,24 @@ var uiCoop = {
 		    		uiCoop.getCoopData(null, null, type, null, id);
 		    	}
 		});
+	},
+
+	"deleteByTypeAndId" : function(type, id){
+		var param = {
+			type: type,
+			id: id
+		};
+		toastr.info(trad["processing save"]);
+		$.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+"/element/delete/type/"+type+"/id/"+id,
+		        //data: param,
+		       	//dataType: "json",
+		    	success: function(data){
+		    		uiCoop.getCoopData(contextData.type, contextData.id, "room");
+					uiCoop.startUI();
+		    	}
+		});	
 	}
 
 }

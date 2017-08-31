@@ -154,24 +154,92 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-5">
 	
-	<div class="padding-25 bg-lightblue shado" id="container-text-proposal" 
+	<div class="padding-25 bg-lightblue radius-5" id="container-text-proposal" 
 		 style="padding-top:5px !important; color:#2C3E50 !important">
-		<?php if(@$proposal["title"]){ ?>
-			<div class="col-lg-12 col-md-12 col-sm-12 no-padding">
+			
+			<?php if(@$proposal["title"]){ ?>
 				<h3><i class="fa fa-hashtag"></i> <?php echo @$proposal["title"]; ?></h3>
-			</div>
-		<?php }else{ ?>
-			<div class="col-lg-12 col-md-12 col-sm-12 no-padding">
+			<?php }else{ ?>
 				<h3><i class="fa fa-angle-down"></i> Proposition</h3>
-			</div>
-		<?php } ?>
-
-		<?php echo nl2br($proposal["description"]); ?>
+			<?php } ?>
+		
+			<?php echo nl2br($proposal["description"]); ?>
 	</div>
 
+	<?php //if(@$proposal["status"] != "tovote"){ ?>
+		<div class="col-lg-12 col-md-12 col-sm-12 margin-top-15 no-padding">
+			<!-- <hr>	 -->
+			<h4 class="pull-left">
+				<i class="fa fa-angle-down"></i> Liste des amendements validés · 
+				<small>
+					<i class="fa fa-balance-scale"></i> Majorité : <b><?php echo @$proposal["majority"]; ?>%</b> 
+				</small>
+			</h4>
+			<button class="btn btn-default pull-right btn-extend-proposal">
+				<i class="fa fa-long-arrow-left"></i>
+			</button>
+			<button class="btn btn-default pull-right btn-minimize-proposal hidden">
+				<i class="fa fa-long-arrow-right"></i>
+			</button>
+			<div class="col-lg-12 col-md-12 col-sm-12 no-padding">
+				<?php 
+					$i=0;
+					if(@$proposal["amendements"]){
+						foreach($proposal["amendements"] as $key => $am){ $i++;
+							//var_dump($am); //exit;
+							$author = Person::getSimpleUserById(@$am["idUserAuthor"]);
+							$allVotes = @$am["votes"] ? $am["votes"] : array();
+							$myId = Yii::app()->session["userId"];
+							$hasVoted = Cooperation::userHasVoted($myId, $allVotes);
+					 		$voteRes = Proposal::getAllVoteRes($am);
+					 		unset($voteRes["uncomplet"]);
+					 		$allVotesRes[$key] = $voteRes;
+					 		$validate = @$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"];
+				?>
+				<?php if($validate == true){ ?>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow2 margin-top-15 padding-15 podVoteAmendement">
+				
+						<label class="pull-left"><span class="badge bg-purple">n°<?php echo $key; ?></span> <span class="letter-green">
+							<i class="fa fa-angle-right"></i> Ajout</span>
+						</label>
+						
+						<!-- <span class="pull-right badge bg-green-k padding-5">Amendement <span class="bold">Validée</span></span> -->
+								
+
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-10 margin-top-5 no-padding textAmdt">
+							<hr>
+							<?php echo @$am["textAdd"]; ?>
+						</div>
+
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding progress <?php if($proposal["status"] != "tovote") echo "hidden-min"; ?>">
+				  	  		<?php 
+				  	  			$voteRes = Proposal::getAllVoteRes($am);
+				  	  			$totalVotant = Proposal::getTotalVoters($am);
+					  	  		foreach($voteRes as $key => $value){ 
+					  	  	?>
+								  <div class="progress-bar bg-<?php echo $value["bg-color"]; ?>" role="progressbar" 
+								  		style="width:<?php echo $value["percent"]; ?>%">
+								    <?php echo $value["percent"]; ?>%
+								  </div>
+							<?php } ?>
+
+						</div> 
+
+					</div>
+				<?php } //if ?>
+
+				<?php } //foreach ?>
+				<?php } if($i == 0){ echo "<i class='fa fa-ban'></i> Aucun amendement validé"; } ?>
+			</div>
+		</div>
+		<?php //} ?>
+
 	<?php if(@$proposal["arguments"]){ ?>
-		<h4 class="margin-top-50"><i class="fa fa-angle-down"></i> Compléments d'informations, argumentations, exemples, démonstrations, etc</h4>
-		<?php echo nl2br(@$proposal["arguments"]); ?>
+		<hr>
+		<h4 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-50"><i class="fa fa-angle-down"></i> Compléments d'informations, argumentations, exemples, démonstrations, etc</h4>
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+			<?php echo nl2br(@$proposal["arguments"]); ?>
+		</div>
 	<?php } ?>
 
 	<?php if(@$proposal["tags"]){ ?>
@@ -191,34 +259,36 @@
 </div>
 
 
-<?php //if(@$proposal["status"] != "tovote"){ ?>
-<div class="col-lg-12 col-md-12 col-sm-12 margin-top-15">
-	<hr>	
-	<h4 class="pull-left"><i class="fa fa-angle-down"></i> Liste des amendements validés</h4>
-	<button class="btn btn-default pull-right btn-extend-proposal">
-		<i class="fa fa-long-arrow-left"></i>
-	</button>
-	<button class="btn btn-default pull-right btn-minimize-proposal hidden">
-		<i class="fa fa-long-arrow-right"></i>
-	</button>
-	<div class="col-lg-12 col-md-12 col-sm-12">
-		<i class="fa fa-ban"></i> Aucun amendement validé
-	</div>
-</div>
-<?php //} ?>
 
 <div class="col-lg-12 col-md-12 col-sm-12"><hr></div>
 
-<div class="col-lg-12 col-md-12 col-sm-12 margin-top-25">
-	<h4 class="pull-left"><i class="fa fa-balance-scale fa-2x"></i> Débat</h4>
-	<button class="btn btn-default pull-right btn-extend-proposal"><i class="fa fa-long-arrow-left"></i></button>
-	<button class="btn btn-default pull-right btn-minimize-proposal hidden"><i class="fa fa-long-arrow-right"></i></button>
+
+<div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 padding-bottom-15">
+
+	<h4 class="text-center"><i class="fa fa-balance-scale fa-2x margin-bottom-10"></i><br>Débat</h4><hr>
+	<h4 class="text-center">Ajouter un argument<br><i class="fa fa-angle-down"></i></h4>
+
+	<div class="col-md-4 col-sm-4 col-xs-4">
+		<button class="btn btn-link bg-green-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="up">Pour</button>
+	</div>
+	<div class="col-md-4 col-sm-4 col-xs-4">
+		<button class="btn btn-link col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="">Neutre</button>
+	</div>
+	<div class="col-md-4 col-sm-4 col-xs-4">
+		<button class="btn btn-link bg-red-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="down">Contre</button>
+	</div>
+
 </div>
 
 
-<div class="col-lg-12 col-md-12 col-sm-12" id="comments-container">
+
+<div class="col-lg-12 col-md-12 col-sm-12 margin-bottom-50" id="comments-container">
 <hr>
 </div>
+
 <?php $this->renderPartial('../cooperation/amendements', 
 							array("amendements"=>@$proposal["amendements"], 
 								  "proposal"=>@$proposal,
@@ -231,9 +301,26 @@
 	var idParentRoom = "<?php echo $proposal['idParentRoom']; ?>";
 	var msgController = "<?php echo @$msgController ? $msgController : ''; ?>";
 	jQuery(document).ready(function() { 
+		
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
+		
 		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/proposals/id/"+idParentProposal,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
+				$(".container-txtarea").hide();
+
+				$(".btn-select-arg-comment").click(function(){
+					var argval = $(this).data("argval");
+					$(".container-txtarea").show();
+
+					$(".textarea-new-comment").removeClass("bg-green-comment bg-red-comment");
+					var classe="";
+					var pholder="Votre commentaire";
+					if(argval == "up")   { classe="bg-green-comment"; pholder="Votre argument pour";   }
+					if(argval == "down") { classe="bg-red-comment";   pholder="Votre argument contre"; }
+					$(".textarea-new-comment").addClass(classe).attr("placeholder", pholder);
+					$("#argval").val(argval);
+				});
+
 		},"html");
 
 		$("#btn-close-proposal").click(function(){

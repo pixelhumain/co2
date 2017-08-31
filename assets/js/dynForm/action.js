@@ -5,14 +5,27 @@ dynForm = {
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	"onload" : function(){
-	    		
+	    	/*"onload" : function(){	    		
 	    		$("#ajaxFormModal #room").val( contextDataDDA.room );
     		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
-	    	}
+	    	},*/
+            sub : function(){ alert("yo");
+                $("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+                                              .addClass("bg-dark");
+            }
 	    },
         beforeBuild : function(){
             dyFObj.setMongoId('actions',function(){});
+        },
+        beforeSave : function(){
+            var dateformat = "DD/MM/YYYY HH:mm";
+            var outputFormat="YYYY-MM-DD HH::mm";
+            
+            console.log("TEST DATE TIMEZONE");
+            console.log($("#ajaxFormModal #amendementDateEnd").val());
+            
+            $("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format() ); 
+            $("#ajaxFormModal #endDate").val( moment(   $("#ajaxFormModal #endDate").val(), dateformat).format() );
         },
 	    afterSave : function(data){
             if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )

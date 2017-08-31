@@ -109,18 +109,23 @@
 		$profilThumbImageUrlUser = ""; 
 
 		if(isset(Yii::app()->session["userId"])){
-		$me = Person::getMinimalUserById(Yii::app()->session["userId"]);
-		$profilThumbImageUrlUser = Element::getImgProfil($me, "profilThumbImageUrl", $this->module->assetsUrl); 
+			$me = Person::getMinimalUserById(Yii::app()->session["userId"]);
+			$profilThumbImageUrlUser = Element::getImgProfil($me, "profilThumbImageUrl", $this->module->assetsUrl); 
 	?>
-		<img src="<?php echo $profilThumbImageUrlUser; ?>" class="img-responsive pull-left" 
-			 style="margin-right:6px;height:32px; border-radius:3px;">
 
-		<div id="container-txtarea-<?php echo $idComment; ?>">
-			<div style="" class="ctnr-txtarea">
-				<textarea rows="1" style="height:1em;" class="form-control textarea-new-comment" 
-						  id="textarea-new-comment<?php echo $idComment; ?>" placeholder="Votre commentaire..."></textarea>
+			
+			<div class="col-md-12 col-sm-12 col-xs-12 no-padding margin-top-15 container-txtarea">
+				<img src="<?php echo $profilThumbImageUrlUser; ?>" class="img-responsive pull-left" 
+					 style="margin-right:6px;height:32px; border-radius:3px;">
+
+				<div id="container-txtarea-<?php echo $idComment; ?>">
+					<div style="" class="ctnr-txtarea">
+						<textarea rows="1" style="height:1em;" class="form-control textarea-new-comment" 
+								  id="textarea-new-comment<?php echo $idComment; ?>" placeholder="Votre commentaire..."></textarea>
+						<input type="hidden" id="argval" value=""/>
+					</div>
+				</div>
 			</div>
-		</div>
 	<?php } ?>
 
 	<div id="comments-list-<?php echo $idComment; ?>">
@@ -142,8 +147,13 @@
 			 		$count++; 
 					$profilThumbImageUrl = Element::getImgProfil($comment["author"], "profilThumbImageUrl", $assetsUrl); 
 					if($hidden > 0) $hiddenClass = "hidden hidden-".$hidden;
+					
+					$classArgument = "";
+					if(@$comment["argval"] == "up") $classArgument = "bg-green-comment";
+					if(@$comment["argval"] == "down") $classArgument = "bg-red-comment";
 		?>
-					<div class="col-xs-12 no-padding margin-top-5 item-comment <?php echo $hiddenClass; ?>" id="item-comment-<?php echo $comment["_id"]; ?>">
+					<div class="col-xs-12 no-padding margin-top-5 item-comment <?php echo $hiddenClass.' '.$classArgument; ?>" 
+						 id="item-comment-<?php echo $comment["_id"]; ?>">
 
 						<img src="<?php echo $profilThumbImageUrl; ?>" class="img-responsive pull-left" 
 							 style="margin-right:10px;height:32px; border-radius:3px;">
@@ -155,7 +165,7 @@
 									<?php echo $comment["text"]; ?>
 								</span>
 							</span><br>
-							<span>
+							<small class="bold">
 							<?php if(isset(Yii::app()->session["userId"])){ ?>
 								 
 								<?php if(@$canComment){ ?>
@@ -229,7 +239,7 @@
 									</div>
 
 							<?php } ?>
-							</span>
+							</small>
 						</span>
 						<div id="comments-list-<?php echo $comment["_id"]; ?>" class="hidden pull-left col-md-11 col-sm-11 col-xs-11 no-padding answerCommentContainer">
 							<?php if(sizeOf($comment["replies"]) > 0) //recursive for answer (replies)
@@ -374,9 +384,13 @@
 	}
 	
 
-	function showOneComment(textComment, idComment, isAnswer, idNewComment){
+	function showOneComment(textComment, idComment, isAnswer, idNewComment, argval){
 		textComment = linkify(textComment);
-		var html = '<div class="col-xs-12 no-padding margin-top-5 item-comment" id="item-comment-'+idNewComment+'">'+
+		var classArgument = "";
+		if(argval == "up") classArgument = "bg-green-comment";
+		if(argval == "down") classArgument = "bg-red-comment";
+
+		var html = '<div class="col-xs-12 no-padding margin-top-5 item-comment '+classArgument+'" id="item-comment-'+idNewComment+'">'+
 
 						'<img src="<?php echo @$profilThumbImageUrlUser; ?>" class="img-responsive pull-left" '+
 						'	 style="margin-right:10px;height:32px; border-radius:3px;">'+
@@ -386,7 +400,7 @@
 						'		<span class="text-dark"><strong><?php echo @$me["name"]; ?></strong></span><br>'+
 						'		<span class="text-comment">'	+ textComment + "</span>" +
 						'	</span><br>'+
-							'<span class="">' +
+							'<small class="bold">' +
 								<?php if(@$canComment){ ?>
 							'		<a class="" href=\'javascript:answerComment(\"<?php echo $idComment; ?>\", \"'+idNewComment+'\")\'>Répondre</a> '+
 								<?php } ?> 
@@ -423,7 +437,7 @@
 							//'			<a class="" href=\'javascript:deleteComment(\"'+idNewComment+'\")\'>Supprimer</a> '+
 							//'			<a class="" href=\'javascript:modifyComment(\"'+idNewComment+'\")\'>Modifier</a>'+
 								<?php } ?>
-							'</span>'+
+							'</small>'+
 						'</span>'+	
 						'<div id="comments-list-'+idNewComment+'" class="pull-left col-md-11 no-padding answerCommentContainer"></div>' +
 							
@@ -463,13 +477,16 @@
 			return;
 		}
 
+		var argval = $("#argval").val();
+
 		$.ajax({
 			url: baseUrl+'/'+moduleId+"/comment/save/",
 			data: {
 				parentCommentId: parentCommentId,
 				content : textComment,
 				contextId : context["_id"]["$id"],
-				contextType : contextType
+				contextType : contextType,
+				argval : argval
 			},
 			type: 'post',
 			global: false,
@@ -503,7 +520,7 @@
 						latestComments = data.time;
 
 						var isAnswer = parentCommentId!="";
-						showOneComment(textComment, parentCommentId, isAnswer, data.id.$id);   
+						showOneComment(textComment, parentCommentId, isAnswer, data.id.$id, argval);   
 						bindEventActions();    
 					}
 				},

@@ -111,6 +111,10 @@ Liste des notifications déjà lues => #370 #453
     @pitonStLeu, pouvoir référencer une commune
   [ ] baniere ou image : remerciement, cité un auteur pour la réutilisation 
   c'est le minimum dans le copytalisme 
+  ** Event communication 
+    [ ] comunicate an email like event@co.org anyone can add it to a mailing list 
+    the event would be added by someone 
+    [ ] in time this mail box could even become a task box that anyone could act upon
   ** Open Science 
     [ ] photo-identification collaborative : 
       - créer group 
@@ -205,6 +209,7 @@ Liste des notifications déjà lues => #370 #453
     [ ] SEO optim
    
   ** @Tib
+    [ ] search fork the world > opens a preview POI > should have the parent link
     [ ] verifier les qrcode 
     [ ]  NA : supprimer
       http://www.notragora.com/#element.detail.type.organizations.id.59020d90dd04528a627f4fb8 et http://www.notragora.com/#element.detail.type.organizations.id.5937fbe5dd045296372263a2 
@@ -215,7 +220,7 @@ Liste des notifications déjà lues => #370 #453
       - avec un reversement a chque commun utilisé
     [ ] Chloe utilisation du conservatoire 
     [ ] add filters in top bar mapEnd , near username
-    [ ] add delete to image upload 
+    [ ] add delete to image upload  [[https://docs.fineuploader.com/quickstart/02-setting_options.html]]
       - on Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté 
     * Finir module Tiers Lieux 
       [ ] on events TL connecté url to visio 
@@ -243,6 +248,7 @@ Liste des notifications déjà lues => #370 #453
 >>>>>>>>[ ] after create invite all members to chat and add notification
 >>>>>>>>[ ] check anymember can start the chat
       [ ] manage chat module color according to login state based on events
+      [ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
       [X] apply to projects and events
       [X] on CO-login get RC loginToken
       [X] integrate into CO 
@@ -260,7 +266,11 @@ Liste des notifications déjà lues => #370 #453
       ** batch script
 >>>>>>>>>[ ] genéré tout les compte RC pour les comptes existant sinon ca peut planter les demandes chat direct
       ** bugs
-        [ ] creating projects , name many words space seperated
+        [ ] change name > doesn't open the good room :(
+          [ ] gérer le cas de plusieurs orga ave cle meme nom 
+        [ ] ?layout isn't always applied on elements chats
+        [ ] chat notif decrement from 2 stays on 1
+        [ ] creating projects , with ' in name
         [ ] project chat > open > click close
         [ ] aprés abonnement ou devient member > show chat btn
         [ ] login broken when loosing to chat : don't make it mandatory, if no chat, hide btn

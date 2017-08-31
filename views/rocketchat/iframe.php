@@ -12,8 +12,8 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 	
 <script type="text/javascript">
 	window.addEventListener('message', function(e) {
-	    mylog.info(">>>>>>>>>> ifroame ", e.data.eventName); // event name
-	    mylog.log(e.data.data); // event data
+	    //mylog.info(">>>>>>>>>> ifroame ", e.data.eventName); // event name
+	    //mylog.log(e.data.data); // event data
 	   // alert(" embedPath : <?php echo @$embed; ?> :: " +e.data.eventName);
 		if(e.data.eventName=="startup" && e.data.data== true){
 
@@ -87,7 +87,11 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 		}
 
 		if(e.data.eventName=="unread-changed-by-subscription" && ( e.data.data.name == contextData.type+"_"+slugify(contextData.name) || e.data.data.name == contextData.username )  ){
-			//console.info("xxxxxxxxxxxxxx unread-changed-by-subscription ", e.data.eventName,e.data.data);
+			
+			if(e.data.data && e.data.data.unread && e.data.data.unread > 0){
+				console.info("xxxxxxxxxxxxxx unread-changed-by-subscription ");
+				mylog.log(e.data.data);
+			}
 			//alert("unread-changed-by-subscription",e.data.data.unread);
 			$(".elChatNotifs").html( (e.data.data.unread > 0) ?  e.data.data.unread : ""  );	
 		}

@@ -93,7 +93,14 @@
 
 
 
-<div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 margin-bottom-50" id="comments-container"><hr></div>
+<div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 padding-bottom-5">
+	<h4 class="text-center">
+		<i class="fa fa-comments fa-2x margin-bottom-10"></i><br>Discussion<br>
+		<i class="fa fa-angle-down"></i>
+	</h4>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 margin-top-10 margin-bottom-50" id="comments-container"><hr></div>
 
 
 <script type="text/javascript">

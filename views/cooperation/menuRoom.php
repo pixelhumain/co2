@@ -258,6 +258,10 @@
 		border-top: 1px solid #b4c8cf;
 	}
 
+	.container-txtarea{
+		margin-bottom:15px;
+	}
+
 </style>
 
 <?php 

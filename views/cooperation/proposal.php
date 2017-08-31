@@ -262,16 +262,33 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12"><hr></div>
 
-<div class="col-lg-12 col-md-12 col-sm-12 margin-top-25">
-	<h4 class="pull-left"><i class="fa fa-balance-scale fa-2x"></i> Débat</h4>
-	<button class="btn btn-default pull-right btn-extend-proposal"><i class="fa fa-long-arrow-left"></i></button>
-	<button class="btn btn-default pull-right btn-minimize-proposal hidden"><i class="fa fa-long-arrow-right"></i></button>
+
+<div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 padding-bottom-15">
+
+	<h4 class="text-center"><i class="fa fa-balance-scale fa-2x margin-bottom-10"></i><br>Débat</h4><hr>
+	<h4 class="text-center">Ajouter un argument<br><i class="fa fa-angle-down"></i></h4>
+
+	<div class="col-md-4 col-sm-4 col-xs-4">
+		<button class="btn btn-link bg-green-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="up">Pour</button>
+	</div>
+	<div class="col-md-4 col-sm-4 col-xs-4">
+		<button class="btn btn-link col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="">Neutre</button>
+	</div>
+	<div class="col-md-4 col-sm-4 col-xs-4">
+		<button class="btn btn-link bg-red-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="down">Contre</button>
+	</div>
+
 </div>
+
 
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-bottom-50" id="comments-container">
 <hr>
 </div>
+
 <?php $this->renderPartial('../cooperation/amendements', 
 							array("amendements"=>@$proposal["amendements"], 
 								  "proposal"=>@$proposal,
@@ -284,9 +301,26 @@
 	var idParentRoom = "<?php echo $proposal['idParentRoom']; ?>";
 	var msgController = "<?php echo @$msgController ? $msgController : ''; ?>";
 	jQuery(document).ready(function() { 
+		
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
+		
 		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/proposals/id/"+idParentProposal,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
+				$(".container-txtarea").hide();
+
+				$(".btn-select-arg-comment").click(function(){
+					var argval = $(this).data("argval");
+					$(".container-txtarea").show();
+
+					$(".textarea-new-comment").removeClass("bg-green-comment bg-red-comment");
+					var classe="";
+					var pholder="Votre commentaire";
+					if(argval == "up")   { classe="bg-green-comment"; pholder="Votre argument pour";   }
+					if(argval == "down") { classe="bg-red-comment";   pholder="Votre argument contre"; }
+					$(".textarea-new-comment").addClass(classe).attr("placeholder", pholder);
+					$("#argval").val(argval);
+				});
+
 		},"html");
 
 		$("#btn-close-proposal").click(function(){

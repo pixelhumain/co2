@@ -164,16 +164,16 @@
 	<h4 class="text-center">Ajouter un argument<br><i class="fa fa-angle-down"></i></h4>
 
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link bg-green-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
-		data-argval="up">Pour</button>
+		<button class="btn btn-link bg-green-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment bold" 
+		data-argval="up"><i class="fa fa-thumbs-o-up"></i> Pour</button>
 	</div>
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		<button class="btn btn-link col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment bold" 
 		data-argval="">Neutre</button>
 	</div>
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link bg-red-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
-		data-argval="down">Contre</button>
+		<button class="btn btn-link bg-red-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment bold" 
+		data-argval="down"><i class="fa fa-thumbs-o-down"></i> Contre</button>
 	</div>
 
 </div>

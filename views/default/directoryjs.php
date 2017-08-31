@@ -468,7 +468,7 @@ var headerParams = {
   "poi"       	  :	{ color: "black",   icon: "map-marker",   name: trad["pointsinterests"] },
   "place"         : { color: "green",   icon: "map-marker",   name: trad["place"] },
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad["classifieds"] },
-  "GovernmentOrganization" : { color: "red",   icon: "university",        name: trad["GovernmentOrganization"] },
+  "GovernmentOrganization" : { color: "red",   icon: "university",        name: trad["GovernmentOrganizations"] },
   
 }
 

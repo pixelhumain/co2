@@ -461,11 +461,11 @@
 	        </button>
 
 	        
-	        <button data-form-type="url" data-dismiss="modal"
+	        <!--<button data-form-type="url" data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-url">
 	            <h6><i class="fa fa-link fa-2x bg-url"></i><br> <?php echo Yii::t("common", "URL") ?></h6>
 	            <small><?php echo Yii::t("form","Share a link<br>Your favorites websites<br>Important news...") ?></small>
-	        </button>
+	        </button>-->
 
 
 	        <button data-form-type="project"  data-dismiss="modal"

@@ -17,7 +17,7 @@
 			if(empty($pois)){ ?>
 				<div class="padding-10">
 					<blockquote class="no-margin">
-					<?php echo Yii::t("common","Add points of interests to {what}", array("{what}"=>Yii::t("common","this ".Element::getControlerByCollection($parentType))));  ?>
+					<?php echo Yii::t("common","Add points of interest to {what}", array("{what}"=>Yii::t("common","this ".Element::getControlerByCollection($parentType))));  ?>
 					</blockquote>
 				</div>
 			<?php }

@@ -13,6 +13,8 @@
 	$auth = Authorisation::canEditItem(Yii::app()->session['userId'], $resolution["parentType"], $resolution["parentId"]);
 
 	$parentRoom = Room::getById($resolution["idParentRoom"]);
+
+	$voteRes = Proposal::getAllVoteRes($resolution);
 ?>
 
 <div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
@@ -36,9 +38,19 @@
 	</label>
 
 	<hr>
-	<h5 class="no-margin">La résolution suivante a été <span class="letter-green">adoptée</span> 
+	<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
+		 <h5 class="no-margin">La résolution suivante a été 
+		 	<span class="letter-green">validée</span>
+		 </h5>
+	<?php }else{ ?>
+		 <h5 class="no-margin">La résolution suivante a été 
+		 	<span class="letter-red">refusée</span>
+		 </h5>
+	<?php } ?>
+
+	<!-- <h5 class="no-margin">La résolution suivante a été <span class="letter-green">adoptée</span> 
 		<?php //echo " · ".Yii::t("cooperation", "end")." ".Translate::pastTime($resolution["voteDateEnd"], "date"); ?>
-	</h5>
+	</h5> -->
 	<br>
 </div>
 
@@ -161,20 +173,24 @@
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 padding-bottom-15">
 
 	<h4 class="text-center"><i class="fa fa-balance-scale fa-2x margin-bottom-10"></i><br>Débat</h4><hr>
+	<?php if($auth){ ?>
 	<h4 class="text-center">Ajouter un argument<br><i class="fa fa-angle-down"></i></h4>
 
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link bg-green-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment bold" 
-		data-argval="up"><i class="fa fa-thumbs-o-up"></i> Pour</button>
+		<button class="btn btn-link bg-green-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="up">Pour</button>
 	</div>
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment bold" 
+		<button class="btn btn-link col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
 		data-argval="">Neutre</button>
 	</div>
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link bg-red-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment bold" 
-		data-argval="down"><i class="fa fa-thumbs-o-down"></i> Contre</button>
+		<button class="btn btn-link bg-red-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="down">Contre</button>
 	</div>
+	<?php }else{ ?>
+	<h5 class="text-center">Devenez membre ou contributeur pour participer au débat<br><i class="fa fa-angle-down"></i></h5>
+	<?php } ?>
 
 </div>
 

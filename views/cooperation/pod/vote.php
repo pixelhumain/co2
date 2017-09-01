@@ -22,7 +22,7 @@
 				<?php }else if(@$proposal["status"] != "tovote"){ ?>
 					<i class="fa fa-balance-scale"></i> RÉSULTATS
 				<?php }else if(!$auth){ ?>
-					<i class="fa fa-lock"></i> Devenez membre pour voter
+					<i class="fa fa-lock"></i> Devenez membre ou contributeur pour voter
 				<?php } ?>
 			</h5>
 		</div>

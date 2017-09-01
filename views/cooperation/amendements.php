@@ -22,7 +22,7 @@
 			<hr>
 		<?php } else if(!$auth){ ?>
 			<label class="badge bg-purple col-lg-12 col-md-12 col-sm-12">
-				<i class="fa fa-lock"></i> Devenez membre pour contribuer
+				<i class="fa fa-lock"></i> Devenez membre ou contributeur <br>pour proposer des amendements
 			</label>
 		<?php } ?>
 	</div>
@@ -37,13 +37,14 @@
 	  
 	  <small class="pull-right" id="charsLeft"></small><br>
 	  <small class="pull-left"><i>(taille minimale : 10 caractères)</i></small>
-	  <br>
-	  <button class="btn btn-sm btn-link radius-5 bg-green-k pull-right" id="btn-save-amendement">
-			<i class="fa fa-save"></i> Enregistrer mon amendement
-	  </button>
-	  <button class="btn btn-sm btn-link radius-5 bg-red pull-right margin-right-10 btn-create-amendement">
-			<i class="fa fa-times"></i> Annuler
-	  </button>
+	  <div class="ol-lg-12 col-md-12 col-sm-12 margin-top-10 no-padding">
+		  <button class="btn btn-sm btn-link radius-5 bg-green-k pull-right" id="btn-save-amendement">
+				<i class="fa fa-save"></i> Enregistrer mon amendement
+		  </button>
+		  <button class="btn btn-sm btn-link radius-5 bg-red pull-right margin-right-10 btn-create-amendement">
+				<i class="fa fa-times"></i> Annuler
+		  </button>
+	  </div>
 	  <hr class="col-lg-12 col-md-12 col-sm-12 no-padding">
 	</div> 
 

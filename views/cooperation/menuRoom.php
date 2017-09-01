@@ -179,6 +179,8 @@
 
 	.podVoteAmendement {
 	    /*background-color: #e7e7e7;*/
+	    border: 1px solid #b9b9b9;
+		border-radius: 10px;
 	}
 
 	#ajax-modal .bootstrap-switch-wrapper{

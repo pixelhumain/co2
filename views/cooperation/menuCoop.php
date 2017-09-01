@@ -133,7 +133,8 @@
 
 	<?php 
 		$menuCoopData = Cooperation::getCoopData($type, (string)$element["_id"], "room");
-		$auth = Authorisation::canEditItem(Yii::app()->session['userId'], $type, (string)$element["_id"]);
+		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $type, (string)$element["_id"]);
+		
 	?>
 	<?php if($auth){ ?>
 		<li class="submenucoop sub-rooms"><hr></li>

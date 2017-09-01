@@ -265,7 +265,11 @@
 </style>
 
 <?php 
-	$auth = Authorisation::canEditItem(Yii::app()->session['userId'], @$room["parentType"], @$room["parentId"]);
+	$auth = false;
+	if(@$room)
+		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], @$room["parentType"], @$room["parentId"]);
+	else if(@$post["parentType"])
+		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], @$post["parentType"], @$post["parentId"]);	
 ?>
 
 <!-- ************ MODAL ********************** -->

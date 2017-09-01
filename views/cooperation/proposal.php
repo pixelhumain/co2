@@ -5,7 +5,7 @@
 	$myId = Yii::app()->session["userId"];
 	$hasVote = @$proposal["votes"] ? Cooperation::userHasVoted($myId, $proposal["votes"]) : false; 
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $proposal["parentType"], $proposal["parentId"]);
-
+	
 	$parentRoom = Room::getById($proposal["idParentRoom"]);
 ?>
 
@@ -149,7 +149,7 @@
 
 <?php 
 	if(@$proposal["status"] != "amendable") 
-		$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$proposal));
+		$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$proposal, "auth" => $auth));
 ?>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-5">

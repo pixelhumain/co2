@@ -345,7 +345,7 @@
 		?>
 			<li>
 				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="poi" data-icon="map-marker">
-					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Points of interests"); ?>
+					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Points of interest"); ?>
 				</a>
 			</li>			
 		<?php }  

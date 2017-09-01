@@ -153,6 +153,7 @@ var trad = {
 	"LocalBusiness" : "<?php echo Yii::t("common","LocalBusiness") ?>",
 	"Group" :"<?php echo Yii::t("common","Group") ?>",
 	"GovernmentOrganization" : "<?php echo Yii::t("common","GovernmentOrganization") ?>",
+	"GovernmentOrganizations" : "<?php echo Yii::t("common","Government organizations") ?>",
 
 	"character(s)" : "<?php echo Yii::t("common","character(s)") ?>",
 	"Change password" : "<?php echo Yii::t("common","Change password") ?>",
@@ -224,7 +225,8 @@ var trad = {
 	"of":"<?php echo Yii::t("common","of")?>",
 	"need":"<?php echo Yii::t("common","need")?>",
 	"pointinterest" : "<?php echo Yii::t("common","point of interest") ?>",
-	"pointsinterests" : "<?php echo Yii::t("common","points of interests") ?>",
+	"pointsinterests" : "<?php echo Yii::t("common","points of interest") ?>",
+	"cities":"<?php echo Yii::t("common","cities") ?>",
 	"proposal" : "<?php echo Yii::t("common","proposal") ?>",
 	"createdbys": "<?php echo Yii::t("common","have been created by") ?>",
 	"createdby": "<?php echo Yii::t("common","created by") ?>",
@@ -390,7 +392,7 @@ var tradDynForm = {
 	"choosetype":"<?php echo Yii::t("form","Choose a type") ?>",	
 	"contactrole":"<?php echo Yii::t("form","Contact's role") ?>",
 	"contactphone":"<?php echo Yii::t("form","Contact's phone") ?>",	
-	"mustbeconnectforcreateform":"<?php echo Yii::t("form","You must be connected to access to create forms") ?>",
+	"mustbeconnectforcreateform":"<?php echo Yii::t("common","You must be connected to access to create forms") ?>",
 	"linkSkype":"<?php echo Yii::t("form","Link to Skype") ?>",
 	"linkGithub":"<?php echo Yii::t("form","Link to GitHub") ?>",
 	"linkGplus":"<?php echo Yii::t("form","Link to Google Plus") ?>",
@@ -409,6 +411,7 @@ var tradDynForm = {
 	"addinfotodoc":"<?php echo Yii::t("form","add informations to this document") ?>",
 	"infoimages":"<?php echo Yii::t("form","Add informations to the document to make it pertinent for others") ?>",
 	"titleimage":"<?php echo Yii::t("form","Image title") ?>",
+	"dropfileshere":"<?php echo Yii::t("form","Drop files here") ?>"
 
 };
 
@@ -428,11 +431,11 @@ var tradCategory = {
 	"recoveryCenter": "<?php echo Yii::t("category", "Recovery center") ?>",
 	"trash"         : "<?php echo Yii::t("category", "Trash") ?>",
 	"history"       : "<?php echo Yii::t("category", "History") ?>",
-	"something2See" : "<?php echo Yii::t("category", "Something to see") ?>",
+	"something2See" : "<?php echo Yii::t("category", "To see") ?>",
 	"funPlace"      : "<?php echo Yii::t("category", "Fun place") ?>",
 	"place"         : "<?php echo Yii::t("category", "Public place") ?>",
 	"artPiece"      : "<?php echo Yii::t("category", "Art pieces") ?>",
-	"streetArts"    : "<?php echo Yii::t("category", "Street arts") ?>",
+	"streetArt"    : "<?php echo Yii::t("category", "Street art") ?>",
 	"openScene"     : "<?php echo Yii::t("category", "Open mic") ?>",
 	"stand"         : "<?php echo Yii::t("category", "Stand") ?>",
 	"parking"       : "<?php echo Yii::t("category", "Parking") ?>",

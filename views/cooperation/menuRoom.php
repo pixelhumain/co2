@@ -178,7 +178,7 @@
 	}
 
 	.podVoteAmendement {
-	    background-color: #e7e7e7;
+	    /*background-color: #e7e7e7;*/
 	}
 
 	#ajax-modal .bootstrap-switch-wrapper{

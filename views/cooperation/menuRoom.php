@@ -347,11 +347,11 @@
 			
 			<?php if(@$post["type"] == Proposal::CONTROLLER || @$post["type"] == Room::CONTROLLER){ ?>
 				<div class="margin-top-25 title-section">
-					<a href="javascript:" 
+					<!-- <a href="javascript:" 
 						class="pull-left open elipsis btn-hide-data-room visible-sm visible-xs" 
 						style="margin-left:-10px;" data-key="proposals">
 				  		<i class="fa fa-caret-down"></i>
-				  	</a>
+				  	</a> -->
 					<i class="fa fa-inbox"></i> 
 			  		<?php echo Yii::t("cooperation", "Proposals") ?>
 
@@ -509,10 +509,10 @@
 
 			<?php if(@$post["type"] == Action::CONTROLLER || @$post["type"] == Room::CONTROLLER){ ?>
 				<div class="margin-top-25 title-section col-lg-12 col-md-12 col-sm-12">
-					<a href="javascript:" class="open elipsis pull-left btn-hide-data-room visible-sm visible-xs" 
+					<!-- <a href="javascript:" class="open elipsis pull-left btn-hide-data-room visible-sm visible-xs" 
 						style="margin-left:-10px;" data-key="actions">
 				  		<i class="fa fa-caret-down"></i>
-				  	</a>
+				  	</a> -->
 					<i class="fa fa-inbox"></i> 
 			  		<?php echo Yii::t("cooperation", "Actions") ?>
 			  		

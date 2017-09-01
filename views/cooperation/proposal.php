@@ -4,7 +4,7 @@
 
 	$myId = Yii::app()->session["userId"];
 	$hasVote = @$proposal["votes"] ? Cooperation::userHasVoted($myId, $proposal["votes"]) : false; 
-	$auth = Authorisation::canEditItem(Yii::app()->session['userId'], $proposal["parentType"], $proposal["parentId"]);
+	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $proposal["parentType"], $proposal["parentId"]);
 
 	$parentRoom = Room::getById($proposal["idParentRoom"]);
 ?>

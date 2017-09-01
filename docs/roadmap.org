@@ -122,6 +122,17 @@ Liste des notifications déjà lues => #370 #453
       - Btn sameAs : open Search Box + find Element + choose name 
       - Outside src : en regardant les photos, video de qlqun (FB, flickR...) 
         > POI : #baleineREunion + url 
+  ** dynsurvey proposal 
+    - dynForm & dynSurvey Builder
+    - room > create survey as proposal 
+    - instead of voting, people will answer a answer
+    - each question can be of certain type 
+      - texte 
+      - values
+        - fixed
+        - percentage
+        - 
+
 * ************************************************************    
 * Version C0.21.8  : en cours
 8 correpsond le nb de nouvelle fonctionalité

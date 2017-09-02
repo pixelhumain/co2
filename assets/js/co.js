@@ -3883,7 +3883,6 @@ var dyFInputs = {
     },
     inputHidden :function(value, rules) { 
 		var inputObj = { inputType : "hidden"};
-		alert(value);
 		if( notNull(value) ) inputObj.value = value ;
 		if( notNull(rules) ) inputObj.rules = rules ;
     	return inputObj;

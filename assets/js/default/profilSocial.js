@@ -126,7 +126,7 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		var dataName = $(this).data("type-dir");
 		location.hash=hashUrlPage+".view.directory.dir."+dataName;
-		if(lastWindowUrl==null) loadDataDirectory(dataName, "", edit);
+		loadDataDirectory(dataName, "", edit);
 	});
 		
 	$("#subsubMenuLeft a").click(function(){

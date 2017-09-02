@@ -1908,7 +1908,7 @@ var directory = {
           if(typeof data.rolesLink != "undefined")
               roles+=data.rolesLink.join(", ");
           html +="<button class='btn btn-default btn-xs'"+ 
-            ' onclick="updateRoles(\''+data.id+'\', \''+data.type+'\', \''+data.name+'\', \''+data.edit+'\',\''+roles+'\')"'+
+            ' onclick="updateRoles(\''+data.id+'\', \''+data.type+'\', \''+addslashes(data.name)+'\', \''+data.edit+'\',\''+roles+'\')"'+
             " style='bottom:"+(30*countBtn)+"px'>"+
             "<i class='fa fa-pencil'></i> "+trad.addmodifyroles
           "</button> ";

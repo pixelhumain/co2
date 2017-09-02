@@ -178,7 +178,9 @@
 	}
 
 	.podVoteAmendement {
-	    background-color: #e7e7e7;
+	    /*background-color: #e7e7e7;*/
+	    border: 1px solid #b9b9b9;
+		border-radius: 10px;
 	}
 
 	#ajax-modal .bootstrap-switch-wrapper{
@@ -265,7 +267,11 @@
 </style>
 
 <?php 
-	$auth = Authorisation::canEditItem(Yii::app()->session['userId'], @$room["parentType"], @$room["parentId"]);
+	$auth = false;
+	if(@$room)
+		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], @$room["parentType"], @$room["parentId"]);
+	else if(@$post["parentType"])
+		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], @$post["parentType"], @$post["parentId"]);	
 ?>
 
 <!-- ************ MODAL ********************** -->
@@ -347,11 +353,11 @@
 			
 			<?php if(@$post["type"] == Proposal::CONTROLLER || @$post["type"] == Room::CONTROLLER){ ?>
 				<div class="margin-top-25 title-section">
-					<a href="javascript:" 
+					<!-- <a href="javascript:" 
 						class="pull-left open elipsis btn-hide-data-room visible-sm visible-xs" 
 						style="margin-left:-10px;" data-key="proposals">
 				  		<i class="fa fa-caret-down"></i>
-				  	</a>
+				  	</a> -->
 					<i class="fa fa-inbox"></i> 
 			  		<?php echo Yii::t("cooperation", "Proposals") ?>
 
@@ -509,10 +515,10 @@
 
 			<?php if(@$post["type"] == Action::CONTROLLER || @$post["type"] == Room::CONTROLLER){ ?>
 				<div class="margin-top-25 title-section col-lg-12 col-md-12 col-sm-12">
-					<a href="javascript:" class="open elipsis pull-left btn-hide-data-room visible-sm visible-xs" 
+					<!-- <a href="javascript:" class="open elipsis pull-left btn-hide-data-room visible-sm visible-xs" 
 						style="margin-left:-10px;" data-key="actions">
 				  		<i class="fa fa-caret-down"></i>
-				  	</a>
+				  	</a> -->
 					<i class="fa fa-inbox"></i> 
 			  		<?php echo Yii::t("cooperation", "Actions") ?>
 			  		

@@ -17,10 +17,12 @@
 
 		<div class="col-lg-3 col-md-3 col-sm-4 text-center no-padding pull-left">
 			<h5 class="no-margin">
-				<?php if(@$proposal["status"] == "tovote"){ ?>
+				<?php if(@$proposal["status"] == "tovote" && $auth){ ?>
 					<i class="fa fa-hand-o-up"></i> VOTER
-				<?php }else{ ?>
+				<?php }else if(@$proposal["status"] != "tovote"){ ?>
 					<i class="fa fa-balance-scale"></i> RÉSULTATS
+				<?php }else if(!$auth){ ?>
+					<i class="fa fa-lock"></i> Devenez membre ou contributeur pour voter
 				<?php } ?>
 			</h5>
 		</div>
@@ -32,7 +34,7 @@
  	?>
 		<div class="col-lg-8 col-md-8 col-sm-8 text-center no-padding pull-left margin-top-5">
 			<div class="col-lg-5 col-md-5 col-sm-7 text-center pull-left margin-top-5">
-				<?php if(@$proposal["status"] == "tovote"){ ?>
+				<?php if(@$proposal["status"] == "tovote" && $auth){ ?>
 					<button class="btn btn-send-vote btn-link btn-sm bg-<?php echo $value["bg-color"]; ?> tooltips"
 							data-original-title="cliquer pour voter" data-placement="left"
 							data-vote-value="<?php echo $value["voteValue"]; ?>"><?php echo Yii::t("cooperation", $key); ?>

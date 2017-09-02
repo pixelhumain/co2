@@ -22,12 +22,12 @@
 				<?php if($auth){ ?>
 					Vous n'avez pas voté<br>
 					<small class="text-dark">
-						Le vote estouvert jusqu'au : 
+						Le vote est ouvert jusqu'au : 
 						<?php echo date('d/m/Y H:i e', strtotime($proposal["amendementDateEnd"])); ?>
 					</small>
 				<?php }else{ ?>
 					<small class="text-dark">
-						Vous ne pouvez pas voter
+						Devenez membre ou contributeur pour voter
 					</small>
 				<?php } ?>
 			</h5>

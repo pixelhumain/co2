@@ -4,6 +4,7 @@ dynForm = {
 	    icon : "file-text-o",
 	    beforeBuild : function(){
 	    	uploadObj.gotoUrl = location.hash;
+	    	uploadObj.contentKey="file";
 			uploadObj.set( contextData.type,contextData.id,true);
 	    },
 	    save : function() { 
@@ -16,6 +17,8 @@ dynForm = {
                 html:"<p class='text-dark'><i class='fa fa-info-circle'></i> "+tradDynForm.infouploadfile+" <hr></p>",
             },
 	        file : dyFInputs.file(),
+	        newsCreation : dyFInputs.checkbox(false,"newsCreation",{labelText: tradDynForm.sharefilesasnews, onText:tradDynForm.yes, offText:tradDynForm.no,labelInInput:tradDynForm.shareit, inputId: "#createNews"}),
+	        news: dyFInputs.createNews() 
 	    }
 	}
 };

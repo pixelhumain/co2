@@ -594,6 +594,14 @@ var tradCategory = {
     "GovernmentOrganization":"<?php echo Yii::t("category","Government Organization") ?>",
 	"discuss":"<?php echo Yii::t("rooms","Discussion") ?>",
 	"vote":"<?php echo Yii::t("rooms","Decision") ?>",
+	"financier":"<?php echo Yii::t("category","Financier") ?>",
+	"partner":"<?php echo Yii::t("category","Partner") ?>",
+	"organizor":"<?php echo Yii::t("category","Organizor") ?>",
+	"president":"<?php echo Yii::t("category","President") ?>",
+	"sponsor":"<?php echo Yii::t("category","Sponsor") ?>",
+	"director":"<?php echo Yii::t("category","Director") ?>",
+	"speaker":"<?php echo Yii::t("category","Speaker") ?>",
+	"intervener":"<?php echo Yii::t("category","Intervener") ?>",
 };
 var tradCountry = {
 	"BE":"Belgique", 

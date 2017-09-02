@@ -1458,7 +1458,7 @@ function showMyImage(fileInput) {
 		$("#photoAddNews").submit();	  
 	}
 }
-	
+
 function getMediaImages(o,newsId,authorId,targetName){
 	countImages=o.images.length;
 	html="";
@@ -1529,6 +1529,15 @@ function getMediaImages(o,newsId,authorId,targetName){
 	}
 	return html;
 }
+function getMediaFiles(o,newsId,authorId,targetName){
+	html="";
+	for(var i in o.files){
+		path=baseUrl+"/"+uploadUrl+"communecter/"+o.files[i].folder+"/"+o.files[i].name;
+		html+="<div class='col-md-12 padding-5'>"+
+			"<a href='"+path+"' target='_blank'>"+documents.getIcon(o.files[i].contentKey)+" "+o.files[i].name+"</a></div>";
+	}
+	return html;
+}	
 function deleteImage(id,name,hideMsg,communevent){
 	if(communevent==true)
 		path="communevent";

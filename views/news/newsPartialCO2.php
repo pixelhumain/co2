@@ -324,14 +324,13 @@
           });
         }
         if("undefined" != typeof v.media){
-          if(typeof(v.media.type)=="undefined" || v.media.type=="url_content"){
-            if("object" != typeof v.media)
-              media=v.media;
-            else
+          if(typeof(v.media.type)=="undefined" || v.media.type=="url_content")
               media=getMediaHtml(v.media,"show",e);
               //// Fonction générant l'html
-          } else if (v.media.type=="gallery_images")
+          else if (v.media.type=="gallery_images")
             media=getMediaImages(v.media,e,v.author.id,v.target.name);
+          else if (v.media.type=="gallery_files")
+            media=getMediaFiles(v.media,e,v.author.id,v.target.name);
           $("#result"+e).html(media);
         }
         bindLBHLinks();

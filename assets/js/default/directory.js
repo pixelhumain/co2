@@ -1802,11 +1802,10 @@ var directory = {
                 params.rolesLbl = "";
                 if(typeof params.rolesLink != "undefined" && params.rolesLink != null){
                   thisRoles += "Roles: "
+                  thisRoles += params.rolesLink.join(", ");
                   $.each(params.rolesLink, function(key, value){
-                    if(typeof value != "undefined" && value != "" && value != "undefined"){
-                      thisRoles += "<span class='bg-transparent text-dark' data-tag-value='"+slugify(value)+"'>" + value + ",</span> ";
+                    if(typeof value != "undefined" && value != "" && value != "undefined")
                       params.elRolesList += slugify(value)+" ";
-                    }
                   });
                   params.rolesLbl = thisRoles;
                 }
@@ -1906,11 +1905,8 @@ var directory = {
         }
          if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){
           roles="";
-          if(typeof data.rolesLink != "undefined"){
-            $.each(data.rolesLink,function(i,v){
-              roles+=v+',';
-            });
-          }
+          if(typeof data.rolesLink != "undefined")
+              roles+=data.rolesLink.join(", ");
           html +="<button class='btn btn-default btn-xs'"+ 
             ' onclick="updateRoles(\''+data.id+'\', \''+data.type+'\', \''+data.name+'\', \''+data.edit+'\',\''+roles+'\')"'+
             " style='bottom:"+(30*countBtn)+"px'>"+

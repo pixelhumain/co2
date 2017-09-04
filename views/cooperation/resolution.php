@@ -123,7 +123,7 @@
 			</div>
 		<?php } ?>
 
-		<?php echo nl2br($resolution["description"]); ?>
+		<?php echo nl2br(@$resolution["description"]); ?>
 
 		<?php 
 			$i=0;
@@ -215,7 +215,7 @@
 		
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
 		
-		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/proposals/id/"+idParentresolution,
+		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/resolutions/id/"+idParentresolution,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 				$(".container-txtarea").hide();
 

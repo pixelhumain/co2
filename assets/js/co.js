@@ -829,7 +829,10 @@ var urlCtrl = {
 		currentUrl = hash;
 		allReadyLoad = true;
 		CoAllReadyLoad = true;
-		contextData = null;
+		if( typeof urlCtrl.loadableUrls[hash] == "undefined" || 
+			typeof urlCtrl.loadableUrls[hash].emptyContextData == "undefined" || 
+			urlCtrl.loadableUrls[hash].emptyContextData == true )
+			contextData = null;
 
 		$(".my-main-container").off()
 							   .bind("scroll", function () {shadowOnHeader()})
@@ -838,7 +841,6 @@ var urlCtrl = {
 		$(".searchIcon").removeClass("fa-file-text-o").addClass("fa-search");
 		searchPage = false;
 		
-
 		//alert("urlCtrl.loadByHash"+hash);
 
 	    mylog.warn("urlCtrl.loadByHash",hash,back);
@@ -2873,7 +2875,7 @@ var dyFObj = {
 							              	"<form id='ajaxFormModal' enctype='multipart/form-data'></form>"+
 							              	"</div>"+
 							              "</div>");
-	  	$('.modal-footer').hide();
+	  	$('#ajax-modal .modal-footer').hide();
 	  	$('#ajax-modal').modal("show");
 
 	  	dyFInputs.init();
@@ -4008,12 +4010,12 @@ var typeObj = {
 	"vote" : {col:"actionRooms",ctrl:"survey"},
 	"survey" : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
 	"surveys" : {sameAs:"survey"},
-	"proposal" : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-dark" }, 
-	"action" : {col:"actions", ctrl:"action", titleClass : "bg-dark", bgClass : "bgDDA", icon : "cogs", color : "dark" },
+	"proposal" : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
+	"action" : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
 	"actions" : { sameAs : "action" },
 	"actionRooms" : {sameAs:"room"},
 	"rooms" : {sameAs:"room"},
-	"room" : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-dark"},
+	"room" : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
 	"discuss" : {col:"actionRooms",ctrl:"room"},
 
 	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 

@@ -132,6 +132,8 @@ class CommunecterController extends Controller
       "test"    => array("href" => "/ph/co2/rocketchat/test"),
       "testt"    => array("href" => "/ph/co2/rocketchat/testt"),
       "chat"    => array("href" => "/ph/co2/rocketchat/chat"),
+      "list"    => array("href" => "/ph/co2/rocketchat/list"),
+      "invite"    => array("href" => "/ph/co2/rocketchat/invite"),
     ),
     "default" => array(
       "index"                => array("href" => "/ph/co2/default/index", "public" => true),

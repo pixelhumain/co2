@@ -8,8 +8,99 @@
 
 <style>
 
+	body, body.modal-open{
+		overflow: hidden !important;
+	}
+	/* MODAL */
+	
+	#modalCoop.modal{
+		z-index: 1030;
+	}
+
+	#modalCoop.modal,	
+	#modalCoop.modal .modal-dialog,
+	#modalCoop.modal .modal-content{
+		position: fixed;
+		top: 0px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		width:100%;
+		margin:0px;
+		padding:0px;
+	}
+
+	#modalCoop.modal .modal-header{
+		padding: 0px;
+	}
+	#modalCoop.modal .modal-content{
+		border-radius:0px;
+		padding-top: 0px !important;
+		border:0px !important;
+		
+	}
+
+	#modalCoop.modal .modal-body{
+		position: fixed;
+	    top: 51px;
+	    bottom: 0px;
+	    left: 0px;
+	    right: 0px;
+	}
+
+	ul#menuCoop{
+		overflow-y: auto;
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		margin: 0px;
+		padding: 0px;
+	}
+
+	#modalCoop.modal #main-coop-container{
+		position: absolute;
+		right: 0px;
+		top: 0px;
+		bottom: 0px;
+	}
+
+	#coop-container{
+		position: absolute;
+		top: 2px;
+		bottom: 0px;
+		right: 0px;
+		left: 0px;
+	}
+
+	#modalCoop.modal #menu-room{
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		left: 0px;
+		padding: 10px 20px 10px 10px;
+		overflow-y: auto;
+	}
+
+	#modalCoop.modal #coop-data-container{
+		overflow-y: auto;
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		right: 0px;
+		margin: 0px;
+		padding: 10px 20px 10px 10px;
+		left: unset;
+	}
+
+
+	/* MODAL */
+
 	ul.menuCoop {
 	    list-style-type: none;
+	    /*position: absolute;*/
+	    /*top:0px;*/
 	}
 
 	.menuCoop hr{
@@ -20,22 +111,22 @@
 
 	.menuCoop .title-section{
 		text-decoration: none !important;
-		color:#353535;
-		background-color:#edecec;
+		color:#FFF;
+		background-color:#229296;
 		font-size: 17px;
 		padding: 6px;
 		padding-left: 10px;
 		display: block;
 		text-align: left;
 		font-weight: bold;
-		border: 2px solid #e4e4e4;
+		border: 0px solid #e4e4e4;
 		margin-top: 10px;
 		margin-bottom: 10px;
-		border-radius: 50px;
+		/*border-radius: 50px;*/
 	}
 
 	.menuCoop a.title-section.open{
-		border-color: #a2c8ae;
+		/*border-color: #a2c8ae;*/
 	}
 
 	.menuCoop a.title-section .fa-caret-down,
@@ -44,11 +135,11 @@
 		width:20px;
 	}
 
-	.menuCoop a.title-section:hover {
+	/*.menuCoop a.title-section:hover {
 	    color: #0095FF;
 	    background-color: #edecec;
 	    border: 2px solid #0095FF;
-	}
+	}*/
 
 	.menuCoop a{
 		text-decoration: none !important;
@@ -63,17 +154,18 @@
 	}
 
 
-	.menuCoop a:hover{
+	.menuCoop a.load-coop-data:hover{
 		color:#0095FF;
 		background-color: #edecec;
 		border-left: 3px solid #0095FF;
 	}
+	
 	.menuCoop a.letter-green:hover{
 		border-left: 3px solid #34a853;
 	}
 
-	.menuCoop a:active,
-	.menuCoop a.active{
+	.menuCoop a.load-coop-data:active,
+	.menuCoop a.load-coop-data.active{
 		background-color: #C8EBF5;
 		border-left: 3px solid #0095FF;
 		/*color:#0095FF;*/
@@ -129,33 +221,44 @@
 	#coop-container h5 {
 	    letter-spacing: 0px;
 	}
+
+	#coop-container .menuCoop .title-section{
+		background-color: #d7eeef;
+		color:#353535;
+		border-radius:4px;
+	}
+
+
+	.submenucoop.sub-proposals{
+		padding: 0px 10px 0 0 !important;
+	}
+
 </style>
 
 	<?php 
 		$menuCoopData = Cooperation::getCoopData($type, (string)$element["_id"], "room");
-		$auth = Authorisation::canEditItem(Yii::app()->session['userId'], $type, (string)$element["_id"]);
+		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $type, (string)$element["_id"]);
 	?>
-	<?php if($auth){ ?>
-		<li class="submenucoop sub-rooms"><hr></li>
-		
-		<li class="submenucoop sub-rooms">
-			<a href="javascript:dyFObj.openForm('room')" class="letter-green">
-		  		<i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "Create room") ?>
-		  	</a>
+		<li class="padding-10 submenucoop sub-rooms">
+			<h3 class="padding-left-10 letter-turq">
+				<i class="fa fa-connectdevelop"></i> Espace co		  	
+			</h3>
+			
 		</li>
-	<?php } ?>
 
 	<li class="submenucoop sub-rooms"><hr></li>
 	
 	<div id="coop-room-list" class="margin-bottom-50">
-		<?php $this->renderPartial('../cooperation/roomList', array("roomList"=>$menuCoopData["roomList"])); ?>
+		<?php $this->renderPartial('../cooperation/roomList', array("roomList"=>$menuCoopData["roomList"], "auth"=>$auth)); ?>
 	</div>
+
+	<?php if(!@$menuCoopData["roomList"]) return; ?>
 
 	
 	<!----------------- PROPOSALS ------------ -->
 	<li>
 		<a href="javascript:" class="title-section elipsis open" data-key="proposals">
-	  		<i class="fa fa-caret-right"></i>  
+	  		<i class="fa fa-caret-down"></i>  
 	  		<i class="fa fa-inbox"></i> <?php echo Yii::t("cooperation", "Proposals") ?>
 	  	</a>
 	</li>
@@ -183,7 +286,7 @@
 	<!-- ------------ ACTIONS -------------- -->
 	<li>
 		<a href="javascript:" class="title-section elipsis open" data-key="actions">
-	  		<i class="fa fa-caret-right"></i>  
+	  		<i class="fa fa-caret-down"></i>  
 	  		<i class="fa fa-inbox"></i> <?php echo Yii::t("cooperation", "Actions") ?>
 	  	</a>
 	</li>
@@ -204,6 +307,7 @@
 		<?php } ?>
 
 	
+<li class="submenucoop sub-rooms margin-top-50"></li>
 	
 	<!-- ----------- RESOLUTION --------------- -->
 	<li class="hidden">
@@ -212,3 +316,4 @@
 	  		<i class="fa fa-inbox margin-left-25"></i> <?php echo Yii::t("cooperation", "Resolutions") ?>
 	  	</a>
 	</li>
+

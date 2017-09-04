@@ -126,7 +126,7 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		var dataName = $(this).data("type-dir");
 		location.hash=hashUrlPage+".view.directory.dir."+dataName;
-		if(lastWindowUrl==null) loadDataDirectory(dataName, "", edit);
+		loadDataDirectory(dataName, "", edit);
 	});
 		
 	$("#subsubMenuLeft a").click(function(){
@@ -184,6 +184,13 @@ function bindButtonMenu(){
 	        userId : userId
 	    };
 		dyFObj.openForm(form, null, dataUpdate);
+	});
+
+	
+	$("#btn-update-coop").click(function(){
+		toastr.info(trad["processing"]);
+		uiCoop.getCoopData(contextData.type, contextData.id, "room");
+		uiCoop.startUI();
 	});
 
 	bindButtonOpenForm();

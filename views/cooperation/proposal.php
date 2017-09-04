@@ -4,8 +4,8 @@
 
 	$myId = Yii::app()->session["userId"];
 	$hasVote = @$proposal["votes"] ? Cooperation::userHasVoted($myId, $proposal["votes"]) : false; 
-	$auth = Authorisation::canEditItem(Yii::app()->session['userId'], $proposal["parentType"], $proposal["parentId"]);
-
+	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $proposal["parentType"], $proposal["parentId"]);
+	
 	$parentRoom = Room::getById($proposal["idParentRoom"]);
 ?>
 
@@ -149,7 +149,7 @@
 
 <?php 
 	if(@$proposal["status"] != "amendable") 
-		$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$proposal));
+		$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$proposal, "auth" => $auth));
 ?>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-5">
@@ -163,7 +163,7 @@
 				<h3><i class="fa fa-angle-down"></i> Proposition</h3>
 			<?php } ?>
 		
-			<?php echo nl2br($proposal["description"]); ?>
+			<?php echo nl2br(@$proposal["description"]); ?>
 	</div>
 
 	<?php //if(@$proposal["status"] != "tovote"){ ?>
@@ -236,7 +236,7 @@
 
 	<?php if(@$proposal["arguments"]){ ?>
 		<hr>
-		<h4 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-50"><i class="fa fa-angle-down"></i> Compléments d'informations, argumentations, exemples, démonstrations, etc</h4>
+		<h4 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-50 no-padding"><i class="fa fa-angle-down"></i> Compléments d'informations, argumentations, exemples, démonstrations, etc</h4>
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 			<?php echo nl2br(@$proposal["arguments"]); ?>
 		</div>
@@ -266,21 +266,25 @@
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 padding-bottom-15">
 
 	<h4 class="text-center"><i class="fa fa-balance-scale fa-2x margin-bottom-10"></i><br>Débat</h4><hr>
+
+	<?php if($auth){ ?>
 	<h4 class="text-center">Ajouter un argument<br><i class="fa fa-angle-down"></i></h4>
 
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link bg-green-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
-		data-argval="up">Pour</button>
+		<button class="bold btn btn-link bg-green-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="up"><i class="fa fa-thumbs-up"></i> Pour</button>
 	</div>
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		<button class="bold btn btn-link col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
 		data-argval="">Neutre</button>
 	</div>
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link bg-red-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
-		data-argval="down">Contre</button>
+		<button class="bold btn btn-link bg-red-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="down"><i class="fa fa-thumbs-down"></i> Contre</button>
 	</div>
-
+	<?php }else{ ?>
+	<h5 class="text-center">Devenez membre ou contributeur pour participer au débat<br><i class="fa fa-angle-down"></i></h5>
+	<?php } ?>
 </div>
 
 

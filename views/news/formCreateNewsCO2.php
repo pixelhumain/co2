@@ -321,7 +321,7 @@
         </div>
       </div>
       <div class="form-group tagstags col-sm-12 no-padding">
-          <input id="tags" type="" data-type="select2" name="tags" placeholder="#Tags" value="" style="width:100%;">        
+          <input id="tags" type="" data-type="select2" name="tags" placeholder="#Tags" value="" style="width:100%;">
       </div>
       <div class="form-actions no-padding" style="display: block;">
         

@@ -1,11 +1,11 @@
 /* uiCoop is use for all function relative to UI for Cooperation Spaces (DDA) */
 var uiCoop = {
 	"startUI" : function(){
-		$("#menu-left-container").hide();
-		$("#div-reopen-menu-left-container").removeClass("hidden");
-		$("#central-container").html("");
+		//$("#menu-left-container").hide();
+		//$("#div-reopen-menu-left-container").removeClass("hidden");
+		$("#main-coop-container").html("");
 
-		KScrollTo("#div-reopen-menu-left-container");
+		//KScrollTo("#div-reopen-menu-left-container");
 
 		toogleNotif(false);
 
@@ -27,11 +27,11 @@ var uiCoop = {
 	},
 
 	"closeUI" : function(reloadStream){
-		$("#menu-left-container").show();
-		$("#div-reopen-menu-left-container").addClass("hidden");
-		KScrollTo("#topPosKScroll");
+		//$("#menu-left-container").show();
+		//$("#div-reopen-menu-left-container").addClass("hidden");
+		//KScrollTo("#topPosKScroll");
 
-		if(reloadStream != false) loadNewsStream(false);
+		//if(reloadStream != false) loadNewsStream(false);
 	},
 
 	"initBtnLoadData" : function(){
@@ -88,6 +88,7 @@ var uiCoop = {
 	"showAmendement" : function(show){
 		if(show){
 			$("#menu-room").addClass("hidden");
+			$("#coop-data-container").addClass("col-lg-12 col-md-12 col-sm-12").removeClass("col-lg-8 col-md-8 col-sm-8");
 			$("#amendement-container").removeClass("hidden");
 
 		}else{
@@ -110,11 +111,11 @@ var uiCoop = {
 		};
 		console.log("showLoading ?", typeof showLoading, showLoading);
 		
-		KScrollTo("#div-reopen-menu-left-container");
+		//KScrollTo("#div-reopen-menu-left-container");
 
 		if(typeof showLoading == "undefined" || showLoading == true){
 			if(typeof dataId == "undefined" || dataId == null || type == "room"){
-				$("#central-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
+				$("#main-coop-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
 			}
 			else{
 				$("#coop-data-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
@@ -129,7 +130,7 @@ var uiCoop = {
 					else if(dataId == null && type == "room")
 						$("#coop-room-list").html(data);
 					else
-						$("#central-container").html(data);
+						$("#main-coop-container").html(data);
 					uiCoop.minimizeMenuRoom(false);
 				}
 				else{
@@ -143,11 +144,11 @@ var uiCoop = {
 					if($(this).hasClass("open")){
 						$("#menu-room .sub-"+$(this).data("key")).addClass("hidden");
 						$(this).removeClass("open");
-						$(this).find(".fa-caret-down").removeClass("fa-caret-down").addClass("fa-caret-right");
+						//$(this).find(".fa-caret-down").removeClass("fa-caret-down").addClass("fa-caret-right");
 					}else{
 						$("#menu-room .sub-"+$(this).data("key")).removeClass("hidden");
 						$(this).addClass("open");
-						$(this).find(".fa-caret-right").removeClass("fa-caret-right").addClass("fa-caret-down");
+						//$(this).find(".fa-caret-right").removeClass("fa-caret-right").addClass("fa-caret-down");
 					}
 				});
 

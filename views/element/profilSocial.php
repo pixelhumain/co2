@@ -96,13 +96,16 @@
 }
 </style>
 
-<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) 
+<?php 
+	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $type, (string)$element["_id"]);
+
+	if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) 
 		$this->renderPartial('../element/confirmDeleteModal'); ?>
 <?php 
 	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
 
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
-<div class="col-lg-offset- col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">	
+<div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
     <section class="col-md-12 col-sm-12 col-xs-12" id="social-header" 
     	<?php if (!@$element["profilBannereUrl"] || (@$element["profilBannereUrl"] && empty($element["profilBannereUrl"]))){ ?> 
@@ -257,7 +260,7 @@
 
 		  <?php if(@Yii::app()->session["userId"])
 		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION ){ ?>
-		  <button type="button" class="btn btn-default bold hidden-xs letter-turq" 
+		  <button type="button" class="btn btn-default bold hidden-xs letter-turq" data-toggle="modal" data-target="#modalCoop" 
 		  		  id="open-co-space" style="border-right:0px!important;">
 		  		<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common", "Espace CO"); ?>
 		  </button>
@@ -403,20 +406,109 @@
 	</div>
 
 	
-	<div id="div-reopen-menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 hidden">
-		<button id="reopen-menu-left-container" class="btn btn-default">
+	<!-- <div id="div-reopen-menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 hidden"> -->
+		<!-- <button id="reopen-menu-left-container" class="btn btn-default">
 			<i class="fa fa-arrow-left"></i> <span class="hidden-sm hidden-xs"> Retour au </span>menu principal
-		</button>
+		</button> -->
 		<!-- <button id="refresh-coop-rooms" class="btn btn-default pull-right">
 			<i class="fa fa-refresh"></i>
 		</button> -->
-		<hr>
+		<!-- <hr>
 		<h4 class="letter-turq"><i class="fa fa-connectdevelop"></i> Espaces co<span class="hidden-sm">opératifs</span></h4>
+ -->
+		<!-- ************ MODAL ********************** -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modalCoop">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close margin-5 padding-10" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+		        <button href="javascript:" class="btn btn-default btn-sm text-dark pull-right tooltips"
+							id="btn-update-coop" style="margin: 10px 10px 0 0;" data-original-title="Rafraichir la page" data-placement="left">
+				  		<i class="fa fa-refresh"></i> <?php echo Yii::t("cooperation", "Refresh data") ?>
+				  	</button> 	
+		        	
+		        <div class="modal-title" id="modalText">
+		        	<img class="pull-left margin-right-15" src="<?php echo $thumbAuthor; ?>" height=52 width=52 style="">
+					<!-- <h4 class="pull-left margin-top-15"><i class="fa fa-connectdevelop"></i> Espace coopératif</h4> -->
+		        	<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left" style="margin-top:14px;"></div>
+					 <h4 class="pull-left margin-top-15">
+		        	  <?php echo @$element["name"]; ?>
+		        	</h4>
+
+		        	
+		        </div>
+		      </div>
+		      
+		       <div class="modal-body col-lg-12 col-md-12 col-sm-12 padding-15">
+					<ul id="menuCoop" class="menuCoop col-lg-2 col-md-3 col-sm-3">
+		    		</ul>
+		    		<div id="main-coop-container" class="col-lg-10 col-md-9 col-sm-9"></div>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+	    
+
+		<!-- ************ MODAL HELP COOP ********************** -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modalHelpCOOP">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <!-- <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <div class="modal-title" id="modalText">
+		        	<h4><i class="fa fa-info-circle"></i> Aide</h4>
+		        </div>
+		      </div>
+		       -->
+		       <div class="modal-body padding-25">
+				<?php $this->renderPartial('../cooperation/pod/home', array("type"=>$type)); ?>
+		      </div>
+		      <div class="modal-footer">
+		      	<div id="modalAction" style="display:inline"></div>
+		        <button class="btn btn-default pull-right btn-sm margin-top-10 margin-right-10" data-dismiss="modal"> J'ai compris</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
+
+		<!-- ************ MODAL DELETE ********************** -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modalDeleteRoom">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		        	<span aria-hidden="true">&times;</span>
+		        </button>
+		        <div class="modal-title" id="modalText">
+		        	<h4><i class="fa fa-times"></i> Supprimer un espace coopératif</h4>
+		        </div>
+		      </div>
+		      <div class="modal-body">
+		      	<h3 style="text-transform: none!important; font-weight: 200;" class="letter-turq">
+		      		<i class="fa fa-hashtag"></i> <span id="space-name"><?php echo @$room["name"]; ?></span>
+		      	</h3>
+		      	<label>Etes-vous sur de vouloir supprimer cet espace coopératif ?</label><br>
+		      	<small class="text-red">Toutes les propositions, résolutions, et actions de cet espace seront supprimés définitivements.</small>
+		      </div>
+		      <div class="modal-footer">
+		      	<div id="modalAction" style="display:inline"></div>
+		        <button class="btn btn-danger pull-right btn-sm margin-top-10" 
+						id="btn-delete-room" data-placement="bottom" 
+						data-dismiss="modal"
+						data-original-title="supprimer l'espace : <?php echo @$room["name"]; ?>"
+						data-id-room="<?php echo @$room["_id"]; ?>">
+					<i class="fa fa-trash"></i> Oui, supprimer cet espace
+				</button>
+				<button class="btn btn-default pull-right btn-sm margin-top-10 margin-right-10" data-dismiss="modal"> Annuler</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 
 
-		<ul id="menuCoop" class="margin-top-25 menuCoop">
-	    </ul>
-	</div>
+
+	<!-- </div> -->
 
 	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 profilSocial hidden-xs" 
 			style="margin-top:40px;">  		
@@ -433,7 +525,7 @@
 	    ?>
 	</div>
 
-	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-10 padding-50 margin-top-50 links-main-menu hidden" 
+	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-9 padding-50 margin-top-50 links-main-menu hidden" 
 		 id="div-select-create">
 		<div class="col-md-12 col-sm-12 col-xs-12 padding-15 shadow2 bg-white ">
 	       
@@ -442,7 +534,7 @@
 	       		<i class="fa fa-times-circle fa-2x"></i>
 	       	</a>
 	       
-	       	<span class="name-header"><?PHP echo @$element["name"]; ?></span>
+	       	<span class="name-header"><?php echo @$element["name"]; ?></span>
 	       <br>
 	       	<i class="fa fa-plus-circle"></i> <?php echo Yii::t("form","Create content link to this page") ?>
 	       <br><small><?php echo Yii::t("form","What kind of content will you create ?") ?></small>

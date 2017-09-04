@@ -142,14 +142,12 @@ ul.dropdown-menu-collection > li > a:hover{
 							<i class="fa fa-trash"></i> <?php echo Yii::t("common","Delete"); ?>
 						</a>
 					</li>
-					<?php }else{
-
-						} ?>
 					<!--<li class="filter active" data-filter="all">
 						<a href="javascript:;" class="btn btn-default"><?php echo Yii::t("common","Show All"); ?></a>
 					</li>-->
 				</ul>
 			</div>
+			<?php } ?>
 			</div>
 			<div id="gallery-container" class="col-md-12 col-sm-12 col-xs-12 no-padding">
 			<?php
@@ -344,7 +342,6 @@ ul.dropdown-menu-collection > li > a:hover{
 							if(data.result){
 								console.log(selectedIds);
 								$.each(selectedIds, function(i,v){
-									alert(v);
 									$("#"+v).remove();
 									selectedIds=[];//.splice($.inArray(v,selectedIds),1);;
 								});

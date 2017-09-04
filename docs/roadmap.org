@@ -263,11 +263,12 @@ Liste des notifications déjà lues => #370 #453
           [X] testing if non member has access to 
 >>>>>>>>[ ] after create invite all members to chat by notification
 >>>>>>>>[ ] check anymember can join the chat 
-        [ ] only admins can start a group chat
+>>>>>>>>[ ] only admins can start a group chat
       [ ] manage chat module color according to login state based on events
       [ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
       [X] apply to projects and events
       [X] on CO-login get RC loginToken
+      [ ] don't show chat if no loginToken
       [X] integrate into CO 
         [X] on element pages as modal 
         [X] as a module in top menu 

@@ -63,9 +63,9 @@ class RocketchatController extends CommunecterController {
 	// existing user with good pwd > genertes token 
 	// existing user with bad pwd > msg > Unauthorised
 	// inexistant user > msg > Unauthorised
-	public function actionLogint() {
+	public function actionLogint($email,$pwd) {
 		header('Content-Type: application/json');
-		$rocket = RocketChat::getToken("oceatoon@gmail.com", "22102210");
+		$rocket = RocketChat::getToken($email, $pwd);
 		Yii::app()->session["loginToken"] = $rocket["loginToken"];
 	  	Yii::app()->session["rocketUserId"] = $rocket["rocketUserId"];
 	  	

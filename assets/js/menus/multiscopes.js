@@ -58,9 +58,9 @@ function autocompleteMultiScope(){
     		$.each(data.cities, function(key, value){
     			if(currentScopeType == "city") { //mylog.log("in scope city");
     				//val = value.country + '_' + value.insee;
-    				val = value.key;
+    				val = key;
 		    		lbl = (typeof value.name!= "undefined") ? value.name : ""; //value.name ;
-		    		lblList = lbl + " (" +value.depName + ")";
+		    		lblList = lbl + ((typeof value.level3Name!= "undefined") ? " (" +value.level3Name + ")" : "");
 		    		html += '<li><a href="javascript:;" class="addScope" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
 
     			};
@@ -69,7 +69,7 @@ function autocompleteMultiScope(){
 		    			//if($.inArray(valueCP.name, allCities)<0){ 
 	    					//allCities.push(valueCP.name);
 		    				//val = valueCP.postalCode;
-		    				val = value.key+"@"+valueCP.postalCode;
+		    				val = valueCP.postalCode;
 		    				lbl = valueCP.postalCode ;
 		    				lblList = valueCP.name + ", " +valueCP.postalCode ;
 		    				html += '<li><a href="javascript:;" class="addScope" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
@@ -78,7 +78,7 @@ function autocompleteMultiScope(){
     			}; 
     			
     			if(currentScopeType == "zone" /*currentScopeType == "dep" || currentScopeType == "region"*/){
-    				val = value.key;
+    				val = key;
 		    		lbl = (typeof value.name!= "undefined") ? value.name : ""; //value.name ;
 		    		lblList = lbl + " (" +value.countryCode + ")";
 		    		level = value.level[0];
@@ -255,6 +255,36 @@ function toogleScopeMultiscope(scopeValue){ mylog.log("toogleScopeMultiscope(sco
 }
 
 function getMultiScopeList(){ return myMultiScopes; }
+
+
+function getLocalityForSearch(){ 
+	if($.cookie('communexionActivated') == "true"  ){
+      var searchLocality = {}
+      searchLocality[communexion.currentValue] = { type : communexion.currentLevel, 
+                                                    name : communexion.currentName,
+                                                    active : true };
+    }else{
+      var searchLocality = getMultiScopeForSearch();
+    }
+    return searchLocality;
+}
+
+function getMultiScopeForSearch(){ 
+	var res = {};
+	mylog.log("getMultiScopeForSearch", myMultiScopes);
+	$.each(myMultiScopes, function(key, value){
+		mylog.log("getMultiScopeForSearch value.active", value.active);
+		if(value.active == true){
+			res[key] = value;
+			mylog.log("getMultiScopeForSearch search2", res);
+		}
+	});
+
+	mylog.log("getMultiScopeForSearch search", res);
+	return res; 
+
+}
+
 
 var timerMsgMultiscope;
 function showMsgInfoMultiScope(msg, type){

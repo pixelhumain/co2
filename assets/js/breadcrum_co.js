@@ -117,12 +117,12 @@ function getBreadcrumCommunexion(){
 	htmlCommunexion+=	'<i class="fa fa-university fa-2x text-red"></i>'+
 							'<div class="getFormLive" style="display:inline-block;">';
 
-	if(communexion.values.level2Key){
+	if(communexion.values.level2){
 		htmlCommunexion+=			'<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
 										'class="btn btn-link text-red item-globalscope-checker homestead '; 
 											if( communexion.currentLevel != "level2" )
 												htmlCommunexion+="inactive";
-		htmlCommunexion+=					'" data-scope-value="'+communexion.values.level2Key+'" '+
+		htmlCommunexion+=					'" data-scope-value="'+communexion.values.level2+'" '+
 											'data-scope-name="'+communexion.values.level2Name+'" '+
 											'data-scope-type="'+communexion.communexionType+'" '+
 											'data-scope-level="level2">'+
@@ -130,12 +130,12 @@ function getBreadcrumCommunexion(){
 									'</button>';
 	}
 
-	if(communexion.values.level3Key){
+	if(communexion.values.level3){
 		htmlCommunexion+=			'<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
 										'class="btn btn-link text-red item-globalscope-checker homestead '; 
 											if( communexion.currentLevel != "level3" )
 												htmlCommunexion+="inactive";
-		htmlCommunexion+=					'" data-scope-value="'+communexion.values.level3Key+'" '+
+		htmlCommunexion+=					'" data-scope-value="'+communexion.values.level3+'" '+
 											'data-scope-name="'+communexion.values.level3Name+'" '+
 											'data-scope-type="'+communexion.communexionType+'" '+
 											'data-scope-level="level3">'+
@@ -143,12 +143,12 @@ function getBreadcrumCommunexion(){
 									'</button>';
 	}
 
-	if(communexion.values.level4Key){
+	if(communexion.values.level4){
 		htmlCommunexion+=			'<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
 										'class="btn btn-link text-red item-globalscope-checker homestead ';
 											if( communexion.currentLevel != "level4" )
 												htmlCommunexion+="inactive";
-		htmlCommunexion+= 					'" data-scope-value="'+communexion.values.level4Key+'" '+
+		htmlCommunexion+= 					'" data-scope-value="'+communexion.values.level4+'" '+
 											'data-scope-name="'+communexion.values.level4Name+'" '+
 											'data-scope-type="'+communexion.communexionType+'" '+
 											'data-scope-level="level4">'+
@@ -172,7 +172,7 @@ function getBreadcrumCommunexion(){
 							'class="btn btn-link text-red item-globalscope-checker homestead ';
 								if( communexion.currentLevel != "city" )
 										htmlCommunexion+="inactive";
-			htmlCommunexion+= 	'" data-scope-value="'+communexion.values.cityKey+'" '+
+			htmlCommunexion+= 	'" data-scope-value="'+communexion.values.city+'" '+
 								'data-scope-name="'+communexion.values.cityName+'" '+
 								'data-scope-type="city" '+
 								'data-scope-level="city">'+
@@ -183,7 +183,7 @@ function getBreadcrumCommunexion(){
                     'class="btn btn-link text-red item-globalscope-checker homestead tooltips ';
 								if( communexion.currentLevel != "cp" )
 									htmlCommunexion+="inactive";
-			htmlCommunexion+= 	'" data-scope-value="'+communexion.values.cityKey+'" '+
+			htmlCommunexion+= 	'" data-scope-value="'+communexion.values.city+'" '+
                     'data-scope-name="'+communexion.values.cityName+'" '+
                     'data-scope-type="'+communexion.communexionType+'" '+
                     'data-scope-level="cp" '+
@@ -194,7 +194,7 @@ function getBreadcrumCommunexion(){
                     'class="btn btn-link text-red item-globalscope-checker homestead  ';
 								if( communexion.currentLevel != "city" )
 										htmlCommunexion+="inactive";
-			htmlCommunexion+= 	'"data-scope-value="'+communexion.values.cityKey+'" '+
+			htmlCommunexion+= 	'"data-scope-value="'+communexion.values.city+'" '+
                     'data-scope-name="'+communexion.values.cityName+'" '+
                     'data-scope-type="'+communexion.communexionType+'" '+
                     'data-scope-level="city">'+

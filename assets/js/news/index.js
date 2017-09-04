@@ -1228,23 +1228,36 @@ function saveNews(){
 				}
 				
 				if($('#searchLocalityCITYKEY') && isLiveGlobal() && liveScopeType=="global" ){
-					if(globalCommunexion){
+					// if(globalCommunexion){
 
-						if($('#searchLocalityCITYKEY').val()!="")
-							cpInseeKey=$('#searchLocalityCITYKEY').val().split("_");
-						else
-							cpInseeKey=$('#searchLocalityCODE_POSTAL').val().split("_");
-						cpInseeKey=cpInseeKey[1].split("-");
-						newNews.codeInsee=cpInseeKey[0];
-						newNews.postalCode=cpInseeKey[1];
-					}else{
-						newNews.searchLocalityCITYKEY = $('#searchLocalityCITYKEY').val().split(',');
-				    	newNews.searchLocalityCODE_POSTAL = $('#searchLocalityCODE_POSTAL').val().split(',');
-				    	newNews.searchLocalityDEPARTEMENT = $('#searchLocalityDEPARTEMENT').val().split(',');
-				    	newNews.searchLocalityREGION = $('#searchLocalityREGION').val().split(',');
-				    	newNews.searchLocalityLEVEL = $('#searchLocalityLEVEL').val();
-					}	
+					// 	if($('#searchLocalityCITYKEY').val()!="")
+					// 		cpInseeKey=$('#searchLocalityCITYKEY').val().split("_");
+					// 	else
+					// 		cpInseeKey=$('#searchLocalityCODE_POSTAL').val().split("_");
+					// 	cpInseeKey=cpInseeKey[1].split("-");
+					// 	newNews.codeInsee=cpInseeKey[0];
+					// 	newNews.postalCode=cpInseeKey[1];
+					// }else{
+					// 	newNews.searchLocalityCITYKEY = $('#searchLocalityCITYKEY').val().split(',');
+				 //    	newNews.searchLocalityCODE_POSTAL = $('#searchLocalityCODE_POSTAL').val().split(',');
+				 //    	newNews.searchLocalityDEPARTEMENT = $('#searchLocalityDEPARTEMENT').val().split(',');
+				 //    	newNews.searchLocalityREGION = $('#searchLocalityREGION').val().split(',');
+				 //    	newNews.searchLocalityLEVEL = $('#searchLocalityLEVEL').val();
+					// }
+
+					// if(globalCommunexion){
+					// 	newNews.localities = [communexion.currentValue];
+					// }
+					// else{
+					// 	newNews.localities = ($('#searchLocalityCITYKEY').length && $('#searchLocalityCITYKEY').val() != "" ) ? $('#searchLocalityCITYKEY').val().split(',') : [] ;
+					// 	if($('#searchLocalityZONE').length && $('#searchLocalityZONE').val() != "")
+					// 	$.merge( newNews.localities, $('#searchLocalityZONE').val().split(',') );
+					// }
+
+					newNews.localities = getLocalityForSearch();	
 			    }
+
+
 
 			    if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));
 				else newNews.tags = $('#searchTags').val().split(',');		

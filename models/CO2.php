@@ -53,6 +53,7 @@ class CO2 {
 			$communexion["state"] = true;
             $communexion["values"] = json_decode(CookieHelper::getCookie("communexion"), true);
             $communexion["currentLevel"] = "city";
+            
             if($communexion["values"]["cp"]){
                 $where = array("postalCodes.postalCode" =>new MongoRegex("/^".$communexion["values"]["cp"]."/i"));
                 $citiesResult = PHDB::find( City::COLLECTION , $where );
@@ -67,7 +68,7 @@ class CO2 {
 
             $communexion["communexionType"] = CookieHelper::getCookie("communexionType");
             $communexion["currentName"] = $communexion["values"]["cityName"];
-            $communexion["currentValue"] =  $communexion["values"]["cityKey"];
+            $communexion["currentValue"] =  $communexion["values"]["city"];
             
             
 			

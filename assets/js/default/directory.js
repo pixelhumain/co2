@@ -127,17 +127,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 	                           };
 	}
     //mylog.log("levelCommunexionName", levelCommunexionName[levelCommunexion]);
-    if($.cookie('communexionActivated') == "true"  ){
-      var searchLocality = [communexion.currentValue];
-    }
-    else{
-      var searchLocality = ($('#searchLocalityCITYKEY').length && $('#searchLocalityCITYKEY').val() != "" ) ? $('#searchLocalityCITYKEY').val().split(',') : [] ;
-      if($('#searchLocalityZONE').length && $('#searchLocalityZONE').val() != "")
-        $.merge( searchLocality, $('#searchLocalityZONE').val().split(',') );
-    }
+    var searchLocality = getLocalityForSearch();
     
-    
-
     var data = {
       "name" : name, 
       "locality" : searchLocality,//locality, 

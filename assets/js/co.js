@@ -1656,7 +1656,7 @@ function myAdminList (ctypes) {
 		};
 		$.each( ctypes, function(i,ctype) {
 			var connectionType = connectionTypes[ctype];
-			myList[ ctype ] = { label: ctype, options:{} };
+			myList[ ctype ] = { label: trad[ctype], options:{} };
 			if( notNull(myContacts) ){
 				mylog.log("myAdminList",ctype, connectionType, myContacts, myContacts[ ctype ]);
 				$.each( myContacts[ ctype ],function(id,elemObj){
@@ -2478,6 +2478,58 @@ var collection = {
 ********************************** */
 var contextData = null;
 var dynForm = null;
+var mentionsInit = {
+	stopMention : false,
+	get : function(domElement){
+		$(domElement).mentionsInput({
+		  onDataRequest:function (mode, query, callback) {
+			  	if(mentionsInit.stopMention)
+			  		return false;
+			  	var data = mentionsContact;
+			  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+				callback.call(this, data);
+		   		var search = {"search" : query};
+		  		$.ajax({
+					type: "POST",
+			        url: baseUrl+"/"+moduleId+"/search/searchmemberautocomplete",
+			        data: search,
+			        dataType: "json",
+			        success: function(retdata){
+			        	if(!retdata){
+			        		toastr.error(retdata.content);
+			        	}else{
+				        	//mylog.log(retdata);
+				        	data = [];
+				        	for(var key in retdata){
+					        	for (var id in retdata[key]){
+						        	avatar="";
+						        	if(retdata[key][id].profilThumbImageUrl!="")
+						        		avatar = baseUrl+retdata[key][id].profilThumbImageUrl;
+						        	object = new Object;
+						        	object.id = id;
+						        	object.name = retdata[key][id].name;
+						        	object.avatar = avatar;
+						        	object.type = key;
+						        	var findInLocal = _.findWhere(mentionsContact, {
+										name: retdata[key][id].name, 
+										type: key
+									}); 
+									if(typeof(findInLocal) == "undefined")
+										mentionsContact.push(object);
+						 			}
+				        	}
+				        	data=mentionsContact;
+				        	//mylog.log(data);
+				    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+							callback.call(this, data);
+							mylog.log(callback);
+			  			}
+					}	
+				})
+		  	}
+	  	});
+	}
+}
 var uploadObj = {
 	type : null,
 	id : null,
@@ -2751,7 +2803,7 @@ var dyFObj = {
 	    uploadObj.contentKey="profil"; 
       	/*if(type=="addPhoto") 
         	uploadObj.contentKey="slider";*/ 
-	    
+	    //BOUBOULE ICI ACTIVER LEVENEMENT
 	    //initKSpec();
 	    if(userId)
 		{
@@ -3145,8 +3197,11 @@ var dyFInputs = {
 
     	return {
 	    	inputType : "uploader",
+	    	docType : "image",
 	    	label : tradDynForm["imageshere"]+" :", 
 	    	showUploadBtn : false,
+	    	template:'qq-template-gallery',
+	    	filetypes:['jpeg', 'jpg', 'gif', 'png'],
 	    	afterUploadComplete : function(){
 	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
 		    	dyFObj.closeForm();
@@ -3165,6 +3220,8 @@ var dyFInputs = {
 	    	inputType : "uploader",
 	    	label : tradDynForm.fileshere+" :", 
 	    	showUploadBtn : false,
+	    	docType : "file",
+	    	template:'qq-template-manual-trigger',
 	    	filetypes:["pdf","xls","xlsx","doc","docx","ppt","pptx","odt","ods","odp"],
 	    	afterUploadComplete : function(){
 	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
@@ -3216,7 +3273,7 @@ var dyFInputs = {
     	return inputObj;
     },
 
-    email :function (label,placeholder,rules) {  
+    text :function (label,placeholder,rules) {  
     	var inputObj = {
     		inputType : "text",
 	    	label : ( notEmpty(label) ? label : tradDynForm["mainemail"] ),
@@ -3227,11 +3284,45 @@ var dyFInputs = {
 	    return inputObj;
 	},
 	emailOptionnel :function (label,placeholder,rules) {  
-    	var inputObj = dyFInputs.email(label, placeholder, rules);
+    	var inputObj = dyFInputs.text(label, placeholder, rules);
     	inputObj.init = function(){
 			$(".emailtext").css("display","none");
 		};
 	    return inputObj;
+	},
+	createNews: function (){
+		var inputObj = {
+			inputType : "createNews",
+			label : "ta mere",
+       		placeholder:"",
+       		rules: "",
+       		params : {"targetId":contextData.id, "targetType":contextData.type, 
+     					"targetImg":contextData.profilThumbImageUrl, "targetName":contextData.name, 
+     					"authorId":userId,"authorImg":userConnected.profilThumbImageUrl, "authorName":userConnected.name}
+   		}
+		inputObj.init = function(){
+			$("#createNews").css("display","none");
+			$("#createNews #tags").select2({tags:tagsList});
+			$("#createNews > textarea").elastic();
+			mentionsInit.get("#createNews > #mentionsText > textarea");
+			$("#createNews .scopeShare").click(function() {
+				mylog.log(this);
+				replaceText=$(this).find("h4").html();
+				$("#createNews #btn-toogle-dropdown-scope").html(replaceText+' <i class="fa fa-caret-down" style="font-size:inherit;"></i>');
+				scopeChange=$(this).data("value");
+				$("#createNews > input[name='scope']").val(scopeChange);
+				
+			});
+			$("#createNews .targetIsAuthor").click(function() {
+				mylog.log(this);
+				srcImg=$(this).find("img").attr("src");
+				name=$(this).data("name");
+				$("#createNews #btn-toogle-dropdown-targetIsAuthor").html('<img height=20 width=20 src="'+srcImg+'"/> '+name+' <i class="fa fa-caret-down" style="font-size:inherit;"></i>');
+				authorTargetChange=$(this).data("value");
+				$("#createNews #authorIsTarget").val(authorTargetChange);
+			});
+		};
+		return inputObj;  
 	},
 	location : {
 		label : tradDynForm["localization"],
@@ -3609,12 +3700,12 @@ var dyFInputs = {
 	        		});
 		        	if (checked) {
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onText"]+'</span>');
 	    				$(params["inputId"]).show(400);
 	    			} else {
 	    				
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offText"]+'</span>');
 	    				$(params["inputId"]).hide(400);
 	    			}
     			}, 1000);
@@ -3626,12 +3717,11 @@ var dyFInputs = {
 	    		"onChange" : function(){
 	    			var checkbox = $("#ajaxFormModal #"+id).is(':checked');
 	    			$("#ajaxFormModal #"+id).val($("#ajaxFormModal #"+id).is(':checked'));
-	    			
 	    			console.log("on change checkbox",$("#ajaxFormModal #"+id).val());
 	        		//$("#ajaxFormModal #"+id+"checkbox").append("<span class='lbl-status-check'></span>");
 	    			if (checkbox) {
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onText"]+'</span>');
 	    				$(params["inputId"]).show(400);
 	    				/*if(id=="amendementActivated"){
 	    					var am = $("#ajaxFormModal #voteActivated").val();
@@ -3648,7 +3738,7 @@ var dyFInputs = {
 	    			} else {
 	    				
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offText"]+'</span>');
 	    				$(params["inputId"]).hide(400);
 	    			}
 	    		}
@@ -3945,6 +4035,15 @@ var typeObj = {
 };
 
 var documents = {
+	objFile:{
+		"pdf":{icon:"file-pdf-o",class:"text-red"},
+		"text":{icon:"file-text-o",class:"text-blue"},
+		"presentation":{icon:"file-powerpoint-o",class:"text-orange"},
+		"spreadsheet":{icon:"file-excel-o",class:"text-green"}
+	},
+	getIcon : function(contentKey){
+		return '<i class="fa fa-'+documents.objFile[contentKey].icon+' '+documents.objFile[contentKey].class+'"></i>';
+	},
 	saveImages : function (contextType, contextId,contentKey){
 		//alert("saveImages"+contextType+contextId);
 		$.ajax({

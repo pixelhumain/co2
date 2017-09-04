@@ -19,6 +19,8 @@ dynForm = {
 					 "</p>",
             },
 	        image : dyFInputs.image(),
+	        newsCreation : dyFInputs.checkbox(false,"newsCreation",{labelText: tradDynForm.shareimagesasnews, onText:tradDynForm.yes, offText:tradDynForm.no,labelInInput:tradDynForm.shareit, inputId: "#createNews"}),
+	        news: dyFInputs.createNews()
 	    }
 	}
 };

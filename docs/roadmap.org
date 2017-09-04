@@ -332,6 +332,8 @@ Liste des notifications déjà lues => #370 #453
   [ ] Rework @ for same working mobile [#192]
     [ ] générer des pseudoUnique pour le mention et aussi pour générer de jolie url communecter.org/livincoop
   [ ] Add # in news text
+  [ ] Integrating notifications of dda with @tango
+  [X] News design of laoding
   [X] Translate website (get spanish trad from poupou or others)
     [ ] Create template of co-working on language translation and add language (wishlist)
   [X] Banniere rework 
@@ -353,25 +355,25 @@ Liste des notifications déjà lues => #370 #453
       [X] Bookmarks (tags organization)
       [X] Document view 
       [X] Delete documents and urls
-    [ ] Merge collections inside portefolio
-    [ ] addPhoto & addFile => can share as news
+    [X] Merge collections inside portefolio
+    [X] addPhoto & addFile => can share as news
     [ ] add extract image on bookmark 
-  [ ] Roles
-    [ ] Open organizations to event only for admin
-    [ ] Add roles (prefine and free) in addMultiMembers and in links (Database)
-    [ ] List of role by contextType (json or ctk)
-    [ ] Edit role in directory if admin
-    [ ] filter roles (tags in directory) 
+  [X] Roles
+    [X] Open organizations to event only for admin
+    [X] Add roles (prefine and free) in addMultiMembers and in links (Database)
+    [X] List of role by contextType (json or ctk)
+    [X] Edit role in directory if admin
+    [X] filter roles (tags in directory) 
   [ ] Get preferences of email 
   [ ] Create more email
   [ ] faire le point sur l'evaluation des communs
   [ ] idée 
     [ ]  sur les valeurs pouvoir ajouter une image sur chaque valeur pourrait etre un peu plus sexy
         et l'autre option proposé par maia, rajouter une liste fixe de mot sur chacune des 6sections du survey de Simon
-    [ ] pour le 31/8 : sur un event ou une orga 
+    [X] pour le 31/8 : sur un event ou une orga 
       pouvoir ajouté les personnes ou orga qui font l'event , 
       ou qui sont partenaires yaurait simplement un lien Organisation dans ces 2 type event et orga 
-  [ ] Ajouter les roles en attribut des links
+  [X] Ajouter les roles en attribut des links
   ** @Rapha 
   [ ] internationalisation 
     [ ] Barcelone

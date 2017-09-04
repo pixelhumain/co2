@@ -314,12 +314,6 @@ if(contentKey=="bookmarks")
 var contextName = "<?php echo addslashes(@$contextName); ?>";	
 var contextIcon = "<?php echo $contextIcon; ?>";
 var selectedIds=[];
-var objFile={
-	"pdf":{icon:"file-pdf-o",class:"text-red"},
-	"text":{icon:"file-text-o",class:"text-blue"},
-	"presentation":{icon:"file-powerpoint-o",class:"text-orange"},
-	"spreadsheet":{icon:"file-excel-o",class:"text-green"}
-};
 <?php if(@$breadcrumLevel){ ?>
 	var breadcrumLevel=0;
 <?php } ?>
@@ -376,10 +370,10 @@ function initPanelLibrary(){
 		        				'</div>';
 						}
 						htmlThumbail+='<div class="content-info col-md-8 col-sm-8 col-sx-8 padding-5">'+
-										'<span><i class="fa fa-'+objFile[k].icon+' '+objFile[k].class+'"></i> '+titleDoc+' - <i>'+v.size+'</i></span>'+
+										'<span>'+documents.getIcon(k)+' '+titleDoc+' - <i>'+v.size+'</i></span>'+
 									'</div>'+
 							'<div class="tools tools-right pull-right padding-5">'+
-								' <a href="'+v.imagePath+'" class="margin-right-10">' +
+								' <a href="'+v.imagePath+'" target="_blank" class="margin-right-10">' +
 									' <i class="fa fa-upload"></i>'+
 								' </a>';
 						if(authorizationToEdit){

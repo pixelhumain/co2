@@ -8,7 +8,7 @@
 
 <style>
 
-	body.modal-open{
+	body, body.modal-open{
 		overflow: hidden !important;
 	}
 	/* MODAL */

@@ -3,12 +3,12 @@
 <style>
 	
 	#coop-container, #menu-room, #coop-data-container{
-		min-height:700px;
+		/*min-height:700px;*/
 		
 	}
 
 	#coop-container{
-		border: 1px solid #c6c4c4;
+		border-left: 1px solid #c6c4c4;
 	}
 
 	#menu-room{
@@ -73,7 +73,7 @@
 
 	#amendement-container{
 		position: fixed;
-		top: 113px;
+		top: 56px;
 		bottom: 0px;
 		right: 0px;
 		overflow-y: scroll;
@@ -264,6 +264,10 @@
 		margin-bottom:15px;
 	}
 
+	.title-section.elipsis{
+		max-width: 100%;
+	}
+
 </style>
 
 <?php 
@@ -276,15 +280,15 @@
 	$thisType = @$room ? @$room["parentType"] : @$post["parentType"];
 ?>
 
-<div class="col-lg-12 col-md-12 col-sm-12 no-padding margin-top-15 bg-white" id="coop-container">
+<div class="col-lg-12 col-md-12 col-sm-12 no-padding bg-white" id="coop-container">
 	
 	<?php if(!@$proposalList && !@$resolutionList && !@$actionList && !@$room){ ?>
-		<div class="col-lg-12 col-md-12 col-sm-12 margin-top-50" style=" margin-bottom:100px;">
+		<div class="col-lg-12 col-md-12 col-sm-12" id="menu-room">
 			<?php $this->renderPartial('../cooperation/pod/home', array("type"=>$thisType)); ?>
 		</div>
 	<?php }else{ ?>
 
-		<div class="col-lg-12 col-md-12 col-sm-12 bg-white margin-top-10" id="menu-room">
+		<div class="col-lg-12 col-md-12 col-sm-12 bg-white" id="menu-room">
 			
 			<?php if(@$room){ ?>
 				

@@ -1,5 +1,7 @@
 <style>
-	
+	.help-coop{
+		padding: 0 15px;
+	}
 </style>
 <div class="help-coop font-montserrat">
 	<h2 class="letter-turq">Bienvenue dans votre espace coopératif</h2>

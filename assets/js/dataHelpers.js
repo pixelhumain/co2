@@ -371,7 +371,7 @@ var dataHelper = {
 			$(elem).markdown(markdownParams);
 		}
 
-		$(elem).before('La syntaxe Mardown utilisé pour la description. Si vous souhaitez <a href="https://michelf.ca/projets/php-markdown/syntaxe/" target="_blank">en savoir plus</a>');
+		$(elem).before(tradDynForm["syntaxmarkdownused"]);
 	}
 
 }

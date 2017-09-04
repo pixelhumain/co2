@@ -1646,7 +1646,52 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	  		
 	  	}
 	 }
+	public function actionChangeEventFrenchType(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			echo "Traitement des événements avec le type 'exposition' ou 'concours'";
+		  	$events=PHDB::find(Event::COLLECTION,array('$or' => array( array('type' => 'concours'), array('type' => 'exposition') )));
+		  	$nbEvents=0;
+		  	
+		  	foreach($events as $key => $data){
+		  		if($data["type"]=="exposition")
+		  			$newType="exhibition";
+		  		else if($data["type"]=="concours")
+		  			$newType="contest";
+				PHDB::update(Event::COLLECTION,
+						array("_id" => $data["_id"]) , 
+						array('$set' => array('type'=> $newType)));
+				$nbEvents++;
+				
+		  	}
+		  	echo "nombre de events traités:".$nbEvents." events";
+	  		
+	  	}
+	 }
 
+	public function actionCreatorUpdatedOnNotifications(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			echo "nombre de notifs attendus = environs 15.3k";
+		  	$notifications=PHDB::find(ActivityStream::COLLECTION,array("notify"=>array('$exists'=>true),"updated"=>array('$exists'=>false)));
+		  	$nbNotifs=0;
+		  	$nbNotifsDeleted=0;
+		  	foreach($notifications as $key => $data){
+		  		if(!@$data["created"] ){
+		  			PHDB::remove(ActivityStream::COLLECTION, array("_id"=>new MongoId($key)));
+		  			$nbNotifsDeleted++;
+		  		}
+		  		if(!@$data["updated"] && @$data["created"] ){
+					PHDB::update(ActivityStream::COLLECTION,
+						array("_id" => $data["_id"]) , 
+						array('$set' => array('updated'=> $data["created"])));
+					$nbNotifs++;
+				}
+				
+		  	}
+		  	echo "Nombre de notifs deleted car pas de created (normalement 383):".$nbNotifsDeleted." notifs<br/>";
+		  	echo "nombre de notifications traitées:".$nbNotifs." notifs";
+	  		
+	  	}
+	 }
 
 
   	public function actionUpdateRegion(){
@@ -1709,7 +1754,89 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}
 	}
 
+	public function actionDepRefactorCitiesZones(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			$nbelement = 0 ;
+			$dep = array();
+			$cities = PHDB::find(City::COLLECTION, array("depName" => array('$exists' => 1)));
+			if(!empty($cities)){
+				foreach (@$cities as $keyElt => $city) {
+					if(!empty($city["depName"]) && trim($city["depName"]) != "" && !in_array($city["depName"], $dep)){
+						$dep[] = $city["depName"];
+						$zone = Zone::createLevel($city["depName"], $city["country"], "4");
+						if(!empty($zone)){
+							$nbelement++;
+							Zone::save($zone);
+						}
+					}
+				}
+			}
+			
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+		}
+	}
 
+
+	public function actionAddZeroPostalCode(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			$nbelement = 0 ;
+			$where = array( '$and' => array(
+										array("address.postalCode" => array('$exists' => 1)),
+										array("address.addressCountry" => array('$ne' => "BE") ) ),
+							'$where' => "this.address.postalCode.length == 4" );
+
+			$orgs = PHDB::find(Organization::COLLECTION, $where);
+
+			if(!empty($orgs)){
+				foreach (@$orgs as $keyElt => $org) {
+					$res = PHDB::update( Organization::COLLECTION, 
+										  	array("_id"=>new MongoId($keyElt)),
+					                        array('$set' => array(	"address.postalCode" => "0".$org["address"]["postalCode"]))
+					                    );
+					echo $org["name"]." : ".$org["address"]["postalCode"]." > 0".$org["address"]["postalCode"]."<br>" ;
+					$nbelement++;
+				}
+			}
+			
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+		}
+	}
+	//Bash on document used for profil and banner of element
+	//Used for delete in gallery to know directly when a current doc is used as profil and banner  
+	//find doc used current for profil and banner
+	public function actionAddCurrentToDoc(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$docs=PHDB::find(Document::COLLECTION, array(
+				'$or'=>array(
+					array("contentKey"=>"banner"),
+					array("contentKey"=>"profil")
+					)));
+			$totalProfil=0;
+			$totalBanner=0;
+			foreach($docs as $key => $data){
+				if(@$data["id"] && $data["type"]!="city"){
+					$element=Element::getElementSimpleById($data["id"], $data["type"],null,array("profilImageUrl","profilBannerUrl"));
+					$docProfilUrl=Document::getDocumentFolderUrl($data)."/".$data["name"];
+					if(!empty($element["profilImageUrl"]) && @$docProfilUrl && $docProfilUrl==$element["profilImageUrl"]){
+						echo "Profil:".$key."<br>";
+						PHDB::update(Document::COLLECTION,array("_id"=>new MongoId($key)),array('$set'=>array("current"=>true)));
+						$totalProfil++;
+					}
+					if(!empty($element["profilBannerUrl"]) && @$docProfilUrl && $docProfilUrl==$element["profilBannerUrl"]){
+						echo "banner:".$key."<br>";
+						PHDB::update(Document::COLLECTION,array("_id"=>new MongoId($key)),array('$set'=>array("current"=>true)));
+						$totalBanner++;
+					}
+				}
+			}
+			echo "Nombre de profil used actually by element:".$totalProfil."<br>";
+			echo "Nombre de banner used actually by element:".$totalBanner;
+		}else
+			echo "connectoi crétin";
+	}
+	
 	// -------------------- Fonction pour le refactor Cities/zones
 	public function actionRegionBERefactorCitiesZones(){
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){

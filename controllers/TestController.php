@@ -192,13 +192,12 @@ class TestController extends CommunecterController {
 			);
 		}
     }
-  public function actionTest() {
-  	echo "canAdministrate news : 59391e1e539f22d86c7f5918 :: ".News::canAdministrate("585bdfdaf6ca47b6118b4583", "59391e1e539f22d86c7f5918");
+
+ 
+
+public function actionTest() {
+
   	echo "<br/>*************************************<br/>";
-  	echo "59391e08539f227f6e7f5917 | projects | 585bdfdaf6ca47b6118b4583<br/>";
-  	echo "Authorisation::isElementAdmin :: ".Authorisation::isElementAdmin("59391e08539f227f6e7f5917", "projects", "585bdfdaf6ca47b6118b4583");
-  	echo "<br/>*************************************<br/>";
-  	
   	/*$allOrganizations = PHDB::findAndSort ( Organization::COLLECTION ,array("disabled" => array('$exists' => false)), 
 	  												array("updated" => -1, "name" => 1), 100, 
 

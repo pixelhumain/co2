@@ -185,8 +185,15 @@
 		text-decoration: line-through;
 		display:none;
 	}
+	.divRoles{
+		margin:5px;
+		display:none;
+	}
 	.btn-is-admin.selected{
 		display:inline;
+	}
+	.divRoles.selected{
+		display:block;
 	}
 	.btn-is-admin.selected.isAdmin {
 		text-decoration: none;
@@ -279,11 +286,11 @@ var elementId = "<?php echo $parentId; ?>"
 var myContactsMembers = $.extend( true, {}, myContacts );
 var listContact = new Array();
 var newMemberInCommunity = false;
-
+var isElementAdmin= "<?php echo Authorisation::isElementAdmin($parentId, $type, @Yii::app()->session["userId"]) ?>";
 var contactTypes = [{ name : "people", color: "yellow", icon:"user", label:"Citoyens" }];
 var listMails = {};
-
-if(elementType != "<?php echo Event::COLLECTION ?>")
+var rolesList=[tradCategory.financier,tradCategory.partner,tradCategory.sponsor,tradCategory.organizor,tradCategory.president, tradCategory.director,tradCategory.speaker,tradCategory.intervener];
+if(elementType != "<?php echo Event::COLLECTION ?>" || isElementAdmin)
 	contactTypes.push({ name : "organizations", color: "green", icon:"group", label:"Organisations" });
 
 
@@ -547,6 +554,7 @@ function bindEventScopeModal(){
 function bindEventScopeContactsModal(){
 	//initialise la selection d'une checkbox contact au click sur le bouton qui lui correspond
 	mylog.log("bindEventScopeContactsModal");
+	// QUESTION BOUBOULE : IS THAT USED BECAUSE NEXT ONE DO THE SAME ???????? @tango @rapha 
 	$(".btn-chk-contact").click(function(){ 
 		var id = $(this).attr("idcontact"); 
 		var type = $(this).attr("typecontact");
@@ -554,11 +562,12 @@ function bindEventScopeContactsModal(){
 
 		var check = !$("#chk-scope-"+id).prop('checked');
 		$("#chk-scope-"+id).prop("checked", check);
-		
-		if(check && type != "organizations")
-		$("[data-id='"+id+"'].btn-is-admin").addClass("selected");
-		else
-		$("[data-id='"+id+"'].btn-is-admin").removeClass("selected");
+		if(check){
+			if(type != "organizations")
+				$("[data-id='"+id+"'].btn-is-admin").addClass("selected");
+			$("[data-id='"+id+"'].divRoles").addClass("selected");
+		}else
+		$("[data-id='"+id+"'].btn-is-admin, [data-id='"+id+"'].divRoles").removeClass("selected");
 	});
 
 	$(".chk-contact").click(function(){ 
@@ -569,10 +578,12 @@ function bindEventScopeContactsModal(){
 		var check = $(this).prop('checked');
 		//$("#chk-scope-"+id).prop("checked", check);
 		
-		if(check && type != "organizations")
-		$("[data-id='"+id+"'].btn-is-admin").addClass("selected");
-		else
-		$("[data-id='"+id+"'].btn-is-admin").removeClass("selected");
+		if(check){
+			if(type != "organizations")
+				$("[data-id='"+id+"'].btn-is-admin").addClass("selected");
+			$("[data-id='"+id+"'].divRoles").addClass("selected");
+		}else
+			$("[data-id='"+id+"'].btn-is-admin, [data-id='"+id+"'].divRoles").removeClass("selected");
 	});
 
 	$(".btn-is-admin").click(function(){
@@ -581,6 +592,7 @@ function bindEventScopeContactsModal(){
 		else
 			$(this).addClass("isAdmin");
 	});
+	$('.tagsRoles').select2({tags:rolesList});
 }
 
 function buildModal(fieldObj, idUi){
@@ -700,8 +712,13 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 															'<span class="scope-city-contact text-light" idcontact="'+thisKey+'">' + city + '</span>'+
 														'</span>' +
 													'</div>' +
-												'</div>' +
-											'</li>';
+												'</div>';
+												if(isElementAdmin){
+	fieldHTML +=									'<div class="divRoles col-md-12 col-sm-12 col-xs-12" data-id="'+thisKey+'"">'+
+														'<input id="tagsRoles'+getObjectId(value)+'" class="tagsRoles" type="" data-type="select2" name="roles" placeholder="Add roles" value="" style="width:100%;">'+
+													'</div>';	
+												}
+	fieldHTML +=								'</li>';
 											}
 										}
 										});									
@@ -841,16 +858,22 @@ function sendInvitation(){
 			if ($("#isAdmin"+id).hasClass("isAdmin")) {
 				connectType = "admin";
 			}
+			if ($("#tagsRoles"+id).val() != ""){
+				roles = $("#tagsRoles"+id).val().split(",");	
+			}
 
 			mylog.log("add this element ?", email, type, id, name);
 			if(type != "" && id != "" && name != "")
-				params["childs"].push({
+				pushChild={
 					"childId" : id,
 					"childName" : name,
 					"childEmail" : email,
 					"childType" : type, 
 					"connectType" : connectType
-				})
+				}
+				if(roles != "undefined")
+					pushChild.roles=roles;
+				params["childs"].push(pushChild)
 		}
 	});
 	mylog.log("params constructed");
@@ -888,12 +911,12 @@ function sendInvitation(){
 			            mapType="people";
 			        mapElements.push(newMember);
 				});*/
-				if(typeof(mapUrl) != "undefined"){
+				/*if(typeof(mapUrl) != "undefined"){
 					if(typeof(mapUrl.detail.load) != "undefined" && mapUrl.detail.load)
 						mapUrl.detail.load = false;
 					if(typeof(mapUrl.directory.load) != "undefined" && mapUrl.directory.load)
 						mapUrl.directory.load = false;
-				}
+				}*/
 				if(data.onlyOrganization)
 					loadDataDirectory("members", "users");
 				else

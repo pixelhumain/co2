@@ -51,7 +51,7 @@
 	$extraBtn = ( Authorisation::canParticipate(Yii::app()->session['userId'],$parentSpace['parentType'],$parentSpace['parentId']) ) ? 
 		'<i class="fa fa-angle-right"></i> '.
 		'<a class="filter btn btn-xs btn-primary Helvetica lbh" href="#rooms.editAction.room.'.$parentSpace["_id"].'">'.
-			'<i class="fa fa-plus"></i> '.Yii::t( "survey", "Add an Action", null, Yii::app()->controller->module->id).
+			'<i class="fa fa-plus"></i> '.Yii::t( "survey", "Add an Action").
 		'</a>' 
 		: '';
 
@@ -63,7 +63,7 @@
                         "fromView" => "rooms.actions",
                         "faTitle" => "cogs",
                         "colorTitle" => "azure",
-                        "textTitle" => "<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#rooms.index.type.".$room['parentType'].".id.".$room['parentId'].".tab.3\")'><i class='fa fa-cogs'></i> ".Yii::t("rooms","Actions", null, Yii::app()->controller->module->id)."</a>".
+                        "textTitle" => "<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#rooms.index.type.".$room['parentType'].".id.".$room['parentId'].".tab.3\")'><i class='fa fa-cogs'></i> ".Yii::t("rooms","Actions")."</a>".
                         				" / ".
                         				"<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#rooms.actions.id.".$parentSpace["_id"]."\")'><i class='fa fa-cogs'></i> ".$parentSpace["name"]."</a>".$extraBtn
                             
@@ -94,7 +94,7 @@
 					<?php if( @($organizer) ){ ?>
 						<span class="text-red" style="font-size:13px; font-weight:500;">
 							<i class="fa fa-angle-right"></i> 
-							<?php echo Yii::t("rooms","Made by ",null,Yii::app()->controller->module->id) ?> 
+							<?php echo Yii::t("rooms","Made by ") ?> 
 							<a style="font-size:14px;" href="javascript:<?php echo @$organizer['link'] ?>" class="text-dark">
 								<?php echo @$organizer['name'] ?>
 							</a>
@@ -107,8 +107,7 @@
 				<div class="col-md-6">
 					<div class="box-ajaxTools">
 						<?php if (  isset(Yii::app()->session["userId"]) && $action["organizerId"] == Yii::app()->session["userId"] )  { ?>
-							<a class="tooltips btn btn-default  " href="javascript:" 
-							   data-toggle="modal" data-target="#modal-edit-action"
+							<a class="tooltips btn btn-default  " href="javascript:dyFObj.editElement('actions','<?php echo  $action["_id"] ?>');" 							   
 							   data-placement="bottom" data-original-title="Editer cette action">
 								<i class="fa fa-pencil "></i> <span class="hidden-sm hidden-md hidden-xs">Éditer</span>
 							</a>
@@ -131,15 +130,8 @@
 	
 			<div class="col-md-4 no-padding" style="padding-right: 15px !important;">
 				<?php 
-				$this->renderPartial('../pod/fileupload', 
-								array("itemId" => $action['_id'],
-									  "type" => ActionRoom::COLLECTION_ACTIONS,
-									  "resize" => false,
-									  "contentId" => Document::IMG_PROFIL,
-									  "editMode" => Authorisation::canEditItem(Yii::app()->session['userId'],$parentType,$parentId),
-									  "image" => $images,
-									   "parentId" => $parentSpace['parentId'], 
-									   "parentType" => $parentSpace['parentType'])); 
+				$img =  (@$action['profilImageUrl']) ? "<img class='img-responsive' src='".Yii::app()->createUrl('/'.@$action['profilImageUrl'])."'/>" : "";
+                 echo $img;
 				?>
 				<div class="col-md-12 padding-10">
 					<?php if( @$action["tags"] ){ ?>
@@ -158,20 +150,20 @@
 			<div class="col-md-8 col-tool-vote text-dark" style="margin-bottom: 10px; margin-top: 10px; font-size:15px;">			
 					<?php
 						//if no assignee , no startDate no end Date
-				        $statusLbl = Yii::t("rooms", "Todo", null, Yii::app()->controller->module->id);
+				        $statusLbl = Yii::t("rooms", "Todo");
 				        $statusColor = "badge-info";
 				        //if startDate passed, or no startDate but has end Date
 				        if( ( isset($action["startDate"]) && $action["startDate"] < time() )  || ( !@$action["startDate"] && @$action["dateEnd"] ) )
 				        {
-				          $statusLbl = Yii::t("rooms", "Progressing", null, Yii::app()->controller->module->id);
+				          $statusLbl = Yii::t("rooms", "Progressing");
 				          $statusColor = "badge-success";
 				          if( @$action["dateEnd"] < time()  ){
-				            $statusLbl = Yii::t("rooms", "Late", null, Yii::app()->controller->module->id);
+				            $statusLbl = Yii::t("rooms", "Late");
 				            $statusColor = "badge-error";
 				          }
 				        } 
 				        if ( @$action["status"] == ActionRoom::ACTION_CLOSED  ) {
-				          $statusLbl = Yii::t("rooms", "Closed", null, Yii::app()->controller->module->id);
+				          $statusLbl = Yii::t("rooms", "Closed");
 				          $statusColor = "bg-red";
 				        }
 					?>
@@ -181,20 +173,20 @@
 					</span>
 					<span class="text-azure">
 						<i class="fa fa-calendar"></i> 
-						<?php echo Yii::t("rooms","Start Date",null,Yii::app()->controller->module->id) ?> : 
+						<?php echo Yii::t("rooms","Start Date"); ?> : 
 						<?php echo @$action["startDate"] ? date("d/m/y",$action["startDate"]) : "Indéfini" ?>
 					</span>
 					<br>
 					<?php if( @$action["dateEnd"] ){ ?>
 					<span class="text-red">
 						<i class="fa fa-calendar"></i> 
-						<?php echo Yii::t("rooms","End Date",null,Yii::app()->controller->module->id) ?> :
+						<?php echo Yii::t("rooms","End Date"); ?> :
 						<?php echo @$action["dateEnd"] ? date("d/m/y",$action["dateEnd"]) : "Indéfini" ?>
 					</span>
 					<br><hr>
 					<span>
 				 		<i class="fa fa-user"></i> 
-				 		<?php echo Yii::t("rooms","VISITORS",null,Yii::app()->controller->module->id) ?> : 
+				 		<?php echo Yii::t("rooms","VISITORS"); ?> : 
 				 		<?php echo (isset($action["viewCount"])) ? $action["viewCount"] : "0"  ?>
 				 	</span>
 					<br><hr>
@@ -211,7 +203,7 @@
 
 			<div class="col-md-12 text-dark" style="font-size:15px">
 				<hr style="margin-top:0px">
-				<?php echo $action["message"]; ?>
+				<?php echo @$action["message"]; ?>
 				<hr>
 			</div>
 			<div class="col-md-7 text-dark" style="font-size:15px">
@@ -263,40 +255,6 @@
 	
 </div>
 
-
-<?php if ( isset(Yii::app()->session["userId"]) && $action["organizerId"] == Yii::app()->session["userId"] )  { ?>
-<div class="modal fade" id="modal-edit-action" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header text-dark">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title text-left">
-        	<i class="fa fa-angle-down"></i> <i class="fa fa-pencil"></i> Éditer la proposition
-        </h2>
-      </div>
-      <div class="modal-body no-padding">
-      	<div class="panel-body" id="form-edit-action">
-			<?php 
-				$params = array(
-			    	"action" => $action, //la proposition actuelle
-			        "roomId" => $parentSpace["_id"] //id de la room
-			    );
-				$this->renderPartial('../rooms/editAction', $params); 
-			?>
-		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-			<button type="button" class="btn btn-success"
-				    onclick="$('#form-edit-action #btn-submit-form').click()">
-					<i class="fa fa-save"></i> Enregistrer
-			</button>
-		</div>
-	  </div>
-	</div>
-  </div>
-</div>
-<?php } ?>
-
 <?php 
  if(!isset($_GET["renderPartial"])){
   echo "</div>"; // ferme le id="room-container"
@@ -309,9 +267,10 @@
 
 <script type="text/javascript">
 clickedVoteObject = null;
-var contextData = {
+var contextDataDDA = {
 	name : "<?php echo addslashes(@$action["name"]) ?>",
 	id : "<?php echo (string)@$action["_id"] ?>",
+	room : "<?php echo (string)@$room["_id"] ?>",
 	type : "action",
 	controller : "room",
 	otags : "<?php echo addslashes(@$action["name"]).",débat, proposition, question, vote, communecter,".addslashes(@implode(",", @$action["tags"])) ?>",

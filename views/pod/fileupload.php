@@ -54,8 +54,8 @@
 		var imageName= "";
 		var imageId= "";
 		var imagesPath = [];
-		var image = "<?php echo $image; ?>";
-		//alert(image);
+		var image = <?php echo json_encode($image) ?>;
+		var itemName="<?php echo $itemName ?>";
 		if("undefined" != typeof(contentKeyBase))
 			var contentKey = contentKeyBase/*+"."+contentIdtoSend*/;
 		else
@@ -212,7 +212,13 @@
 			if(image!=""){
 				//imageUrl = baseUrl+image[contentId.toLowerCase()][0];
 				j++;
-				$("#profil_imgPreview").html('<img class="img-responsive" src="'+baseUrl+image+'" />');	
+				imageHtml='<a href="'+baseUrl+image.large+'" '+
+							'class="thumb-info" '+  
+							'data-title="<?php echo Yii::t("common","Profil image of") ?> '+itemName+'" '+
+							'data-lightbox="all">'+
+								'<img class="img-responsive" src="'+baseUrl+image.medium+'" />'+
+							'</a>';
+				$("#profil_imgPreview").html(imageHtml);	
 			}else{
 				imageUrl = '<img class="img-responsive thumbnail" src="<?php echo $this->module->assetsUrl ?>/images/thumbnail-default.jpg"/>';
 				j++;

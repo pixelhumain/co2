@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : "Ajouter un contact",
+	    title : tradDynForm["addcontact"],
 	    icon : "user",
 	    type : "object",
 	    onLoads : {
@@ -29,13 +29,13 @@ dynForm = {
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p><i class='fa fa-info-circle'></i> Facilitez les rencontres en indiquant les coordonnées des personnes en lien avec cette page</p>",
+                html:"<p><i class='fa fa-info-circle'></i> "+tradDynForm["infocreatecontact"]+"</p>",
             },
             name : dyFInputs.name("citoyens", {}, true),
 	        similarLink : dyFInputs.similarLink,
-	        email : dyFInputs.email("E-mail principal", "exemple@mail.com"),
-	        role : dyFInputs.inputText("Role du contact", "Role du contact"),
-	        phone : dyFInputs.inputText("Téléphone du contact", "Téléphone du contact"),
+	        email : dyFInputs.email(tradDynForm["mainemail"], "exemple@mail.com"),
+	        role : dyFInputs.inputText(tradDynForm["contactrole"], tradDynForm["contactrole"]),
+	        phone : dyFInputs.inputText(tradDynForm["contactphone"], tradDynForm["contactphone"]),
             idContact : dyFInputs.inputHidden(),
             parentId :dyFInputs.inputHidden(),
             parentType : dyFInputs.inputHidden(),

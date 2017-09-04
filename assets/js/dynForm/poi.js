@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : "Créer un point d'interet",
+	    title : tradDynForm["addpoi"],
 	    icon : "map-marker",
 	    type : "object",
 	    onLoads : {
@@ -8,7 +8,7 @@ dynForm = {
 	    	sub : function(){
 	    		$("#ajax-modal-modal-title").html(
     		 		$("#ajax-modal-modal-title").html()+
-    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
+    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
 
 	    		if(contextData.type && contextData.id )
 	    		{
@@ -18,7 +18,7 @@ dynForm = {
 	    	},
 	    	onload : function(data){
 	    		if(data && data.type){
-	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+trad[data.type]+"</h4>");
+	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+tradCategory[data.type]+"</h4>");
 					$(".sectionBtntagList").hide();
 	    		} else
 	    			$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();
@@ -70,9 +70,8 @@ dynForm = {
 	    	info : {
                 inputType : "custom",
                 html:"<p class='text-"+typeObj["poi"].color+"'>"+
-                		"Partagez librement toutes sortes d'informations<br>" +
-					    "Localisez-les pour les rendres accessibles à tous<br>" +
-					    "Et participez à la co-construction de votre territoire connecté !<hr>" +
+                		tradDynForm["infocreatepoi"]+
+                		"<hr>"+
 					 "</p>",
             },
             breadcrumb : {
@@ -80,11 +79,11 @@ dynForm = {
                 html:"",
             },
             sectionBtn :{
-                label : "Quel type de lieu souhaitez-vous localiser ? ",
+                label : tradDynForm["whichkindofpoi"]+" ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
                 list : poi.sections,
-                trad : trad,
+                trad : tradCategory,
                 init : function(){
                 	$(".sectionBtn").off().on("click",function()
 	            	{
@@ -105,7 +104,7 @@ dynForm = {
 	        name : dyFInputs.name("poi"),
 	        image : dyFInputs.image(),
             //description : dyFInputs.description,
-            description : dyFInputs.textarea("Description", "..."),
+            description : dyFInputs.textarea(tradDynForm["description"], "..."),
             location : dyFInputs.location,
             tags :dyFInputs.tags(),
             urls : dyFInputs.urls,

@@ -81,14 +81,11 @@
                 
                 <h4 class="pull-left">
                     <small>
-                        <i class="fa fa-share"></i> Partager du contenu 
-                        <small class="text-dark">avec votre réseau<br>
-                            <small>Ce contenu sera partagé avec l'ensemble de vos followers</small>
-                        </small>
+                        <i class="fa fa-share"></i> <?php echo Yii::t("common","Share content <small class='text-dark'>with your network<br><small>This content will be shared to your followers</small></small>") ?>
                     </small>
                 </h4>
                  <div class="form-group">
-                    <textarea class="form-control" rows="2" id="msg-share" placeholder="exprimez-vous ..."></textarea>
+                    <textarea class="form-control" rows="2" id="msg-share" placeholder="<?php echo Yii::t("common","Express yourself ...") ?>"></textarea>
                 </div>
                 <div class="col-md-12 shadow2 no-padding" id="htmlElementToShare"></div>
             </div>
@@ -96,10 +93,10 @@
                 <hr>
                 <button class="btn btn-success pull-right margin-left-5" id="btn-share-it" data-dismiss="modal"
                         data-ownerlink='share' data-id='' data-type=''>
-                <i class="fa fa-share"></i> Partager
+                <i class="fa fa-share"></i> <?php echo Yii::t("common","Share") ?>
                 </button>
                 <button class="btn btn-default pull-right" data-dismiss="modal">
-                <i class="fa fa-times"></i> Annuler
+                <i class="fa fa-times"></i> <?php echo Yii::t("common","Cancel") ?>
                 </button>
             </div>
         </div>

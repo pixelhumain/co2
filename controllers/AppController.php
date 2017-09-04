@@ -183,6 +183,12 @@ class AppController extends CommunecterController {
         echo $this->renderPartial("admin", $params, true);
     }
 
+    public function actionChat(){
+        CO2Stat::incNbLoad("co2-chat");   
+        $params = array("iframeOnly"=>true);
+        echo $this->renderPartial("../rocketchat/iframe", $params, true);
+    }
+
     public function actionRooms($type,$id){ exit;
         CO2Stat::incNbLoad("co2-rooms");    
         $params = array("id" => @$id,

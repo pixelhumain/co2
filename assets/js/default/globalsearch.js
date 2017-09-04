@@ -159,10 +159,6 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                   var target = " target='_blank'";
                   var dataId = "";
                   if(type == "city"){
-                    //url = "javascript:"; //#main-col-search";
-                    url = '#co2.city.insee.' + insee + '.postalCode.'+postalCode; //"'+o.name.replace("'", "\'")+'");';
-                    //onclickCp = 'urlCtrl.loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'";';
-                    //target = "";
                     dataId = o.name; //.replace("'", "\'");
                   }
 
@@ -208,6 +204,8 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
 
                     target = "";
 
+                  
+                if(type != "city"){ 
                     str += "<a href='"+url+"' class='lbh col-md-12 col-sm-12 col-xs-12 no-padding searchEntity'>";
                       str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
                       str +=   htmlIco;
@@ -222,10 +220,44 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                         if(nbFollower >= 1)
                         str +=    " <span class='pull-right'><i class='fa fa-chain margin-left-10'></i> " + nbFollower + " follower</span>";
                        
-                        str +=  "</div>";
+                        str += '</div>';
                         
                       str += "</div>";
+
                     str += "</a>";
+
+                  }else{
+                        var citykey = o.country + "_" + o.insee + "-" + o.cp;
+                        str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding searchEntity start-new-communexion' ";
+                        str +=    "data-scope-value='" + citykey + "' " + 
+                                  "data-scope-name='" + o.name + "' " + 
+                                  "data-scope-type='city' " + 
+                                  "data-insee-communexion='" + o.insee + "' "+ 
+                                  "data-name-communexion='" + o.name + "' "+ 
+                                  "data-cp-communexion='" + o.cp + "' "+ 
+                                  "data-region-communexion='" + o.regionName + "' "+ 
+                                  "data-dep-communexion='" + o.depName + "' "+ 
+                                  "data-country-communexion='" + o.country + "' ";
+                        str += ">";
+                        str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
+                        str +=   htmlIco;
+                        str += "</div>";
+                        str += "<div class='col-md-10 col-sm-10 col-xs-10 entityRight'>";
+
+                        str += "<div class='entityName text-dark'>" + name + "</div>";
+                          
+                          str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
+                                    "<i class='fa fa-home'></i> " + fullLocality;
+
+                          if(nbFollower >= 1)
+                          str +=    " <span class='pull-right'><i class='fa fa-chain margin-left-10'></i> " + nbFollower + " follower</span>";
+                         
+                          str += '</div>';
+                          
+                        str += "</div>";
+
+                      str += "</a>";
+                  }
                               
               }); //end each
 
@@ -244,6 +276,15 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               //on affiche la dropdown
               showDropDownGS(true);
             
+              $(".start-new-communexion").click(function(){
+                  $("#main-search-bar, #second-search-bar, #input-search-map").val("");
+                  setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
+                                   $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
+                                    $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
+                  
+                  urlCtrl.loadByHash("#search")
+              });
+
               bindLBHLinks();
 
             //signal que le chargement est terminé

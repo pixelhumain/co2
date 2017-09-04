@@ -45,6 +45,7 @@ function bindButtonMenu(){
 			//history.pushState(null, "New Title", hashUrlPage);
 		}
 		loadNewsStream(false);
+		uiCoop.closeUI(false);
 	});
 	$("#btn-start-gallery").click(function(){
 		responsiveMenuLeft();
@@ -52,6 +53,13 @@ function bindButtonMenu(){
 		//history.pushState(null, "New Title", hashUrlPage+".view.gallery");
 		//location.search="?view=gallery";
 		loadGallery();
+	});
+	$("#btn-start-library").click(function(){
+		responsiveMenuLeft();
+		location.hash=hashUrlPage+".view.library";
+		//history.pushState(null, "New Title", hashUrlPage+".view.gallery");
+		//location.search="?view=gallery";
+		loadLibrary();
 	});
 	$(".btn-start-notifications").click(function(){
 		//$(".ssmla").removeClass('active');
@@ -67,6 +75,15 @@ function bindButtonMenu(){
 		//history.pushState(null, "New Title", hashUrlPage+".view.chart");
 		loadChart();
 	});
+
+	$(".btn-start-actionrooms").click(function(){
+		responsiveMenuLeft();
+		location.hash=hashUrlPage+".view.actionRooms";
+		//history.pushState(null, "New Title", hashUrlPage+".view.chart");
+		loadActionRoom();
+	});
+
+	
 	$(".btn-show-activity").click(function(){
 		responsiveMenuLeft();
 		location.hash=hashUrlPage+".view.history";
@@ -109,7 +126,7 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		var dataName = $(this).data("type-dir");
 		location.hash=hashUrlPage+".view.directory.dir."+dataName;
-		if(lastWindowUrl==null) loadDataDirectory(dataName, "", edit);
+		loadDataDirectory(dataName, "", edit);
 	});
 		
 	$("#subsubMenuLeft a").click(function(){
@@ -134,10 +151,10 @@ function bindButtonMenu(){
 	$("#btn-hide-desc").click(function(){
 		if($("#desc-event").hasClass("hidden")){
 			$("#desc-event").removeClass("hidden");
-			$("#btn-hide-desc").html("<i class='fa fa-angle-up'></i> masquer");
+			$("#btn-hide-desc").html("<i class='fa fa-angle-up'></i> "+trad.hide);
 		}else{
 			$("#desc-event").addClass("hidden");
-			$("#btn-hide-desc").html("<i class='fa fa-angle-down'></i> afficher la description");
+			$("#btn-hide-desc").html("<i class='fa fa-angle-down'></i> "+trad.showdescr);
 		}
 	});
 
@@ -167,6 +184,13 @@ function bindButtonMenu(){
 	        userId : userId
 	    };
 		dyFObj.openForm(form, null, dataUpdate);
+	});
+
+	
+	$("#btn-update-coop").click(function(){
+		toastr.info(trad["processing"]);
+		uiCoop.getCoopData(contextData.type, contextData.id, "room");
+		uiCoop.startUI();
 	});
 
 	bindButtonOpenForm();
@@ -278,6 +302,14 @@ function bindButtonMenu(){
 		$(this).addClass("active");
 	});
 
+	$("#open-co-space").click(function(){
+		uiCoop.startUI();
+	});
+
+	$("#reopen-menu-left-container").click(function(){
+		uiCoop.closeUI();
+	});
+
 	initBtnShare();
 
 }
@@ -306,12 +338,11 @@ function loadDataDirectory(dataName, dataIcon, edit){ console.log("loadDataDirec
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 				function(data){ 
-					var type = dataName == "poi" ? dataName : null;
+					var type = ($.inArray(dataName, ["poi","ressource","vote","actions","discuss"]) >=0) ? dataName : null;
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
 					displayInTheContainer(data, dataName, dataIcon, type, edit);
 					bindButtonOpenForm();
-					
 				}
 	,"html");
 }
@@ -322,32 +353,37 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	
 	var s = (n>1) ? "s" : "";
 
-
+	if(countData=='Aucun')
+		countData=trad.no;
 	var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
-	if(dataName == "follows")	{ html += elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
-	else if(dataName == "followers")	{ html += countData + " <b>abonné"+s+"</b> à " + elementName; }
-	else if(dataName == "members")	{ html += elementName + " est composé de " + countData + " <b>membre"+s+"</b>"; }
-	else if(dataName == "attendees")	{ html += countData + " <b>Participant"+s+"</b> à l'événement " + elementName; }
-	else if(dataName == "guests")	{ html += countData + " <b>Invité"+s+"</b> sur " + elementName; }
-	else if(dataName == "contributors")	{ html += countData + " <b>contributeur"+s+"</b> au projet " + elementName; }
+	if(dataName == "follows")	{ html += elementName + " "+trad.isfollowing+" " + countData + " "+trad.page+s+""; }
+	else if(dataName == "followers")	{ html += countData + " <b>"+trad.follower+s+"</b> "+trad.to+" "+ elementName; }
+	else if(dataName == "members")	{ html += elementName + " "+trad.iscomposedof+" " + countData + " <b>"+trad.member+s+"</b>"; }
+	else if(dataName == "attendees")	{ html += countData + " <b>"+trad.attendee+s+"</b> "+trad.toevent+" " + elementName; }
+	else if(dataName == "guests")	{ html += countData + " <b>"+trad.guest+s+"</b> "+trad.on+" " + elementName; }
+	else if(dataName == "contributors")	{ html += countData + " <b>"+trad.contributor+s+"</b> "+trad.toproject+" " + elementName; }
 	
 	else if(dataName == "events"){ 
 		if(type == "events"){
-			html += elementName + " est composé de " + countData+" <b> sous-événement"+s; 
+			html += elementName + " "+trad.iscomposedof+" " + countData+" <b> "+trad.subevent+s; 
 		}else{
-			html += elementName + " participe à " + countData+" <b> événement"+s; 
+			html += elementName + " "+trad.takepart+" " + countData+" <b> "+trad.event+s; 
 		}
 	}
-	else if(dataName == "organizations")	{ html += elementName + " est membre de " + countData+" <b>organisation"+s; }
-	else if(dataName == "projects")		{ html += elementName + " contribue à " + countData+" <b>projet"+s }
+	else if(dataName == "organizations")	{ html += elementName + " "+trad.ismemberof+" "+ countData+" <b>"+trad.organization+s; }
+	else if(dataName == "projects")		{ html += elementName + " "+trad.contributeto+" " + countData+" <b>"+trad.project+s }
 
-	else if(dataName == "collections"){ html += countData+" <b>collection"+s+"</b> de " + elementName; }
-	else if(dataName == "poi"){ html += countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
-	else if(dataName == "classified"){ html += countData+" <b>annonce"+s+"</b> créée"+s+" par " + elementName; }
+	else if(dataName == "collections"){ html += countData+" <b>"+trad.collection+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "poi"){ html += countData+" <b>"+trad["point"+s+"interest"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
+	else if(dataName == "classified"){ html += countData+" <b>"+trad.classified+s+"</b> "+trad['createdby'+s]+" " + elementName; }
 
-	else if(dataName == "needs"){ html += countData+" <b>besoin"+s+"</b> de " + elementName; }
+	else if(dataName == "needs"){ html += countData+" <b>"+trad.need+s+"</b> "+trad.of+" " + elementName; }
 
-	else if(dataName == "dda"){ html += countData+" <b>proposition"+s+"</b> de " + elementName; }
+	else if(dataName == "vote"){ html += countData+" <b>"+trad.proposal+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "discuss"){ html += countData+" <b>"+trad.discussion+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "actions"){ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName; }
+
+	else if(dataName == "actionRooms"){ html += countData+" <b>espace de décision"+s+"</b> de " + elementName; }
 
 	else if(dataName == "urls"){ 
 		var str = " a " + countData;
@@ -375,15 +411,15 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	}
 
 	if( openEdition || edit ){
-		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections"] ) >= 0 ){
+		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections","actionRooms"] ) >= 0 ){
 			if(dataName == "collections"){
 				html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="collection.crud()">';
-		    	html +=	'<i class="fa fa-plus"></i> Créer une nouvelle collection</a>' ; 
+		    	html +=	'<i class="fa fa-plus"></i> '+trad.createcollection+'</a>' ; 
 			}
 			else {
 				var elemSpec = dyFInputs.get(dataName);
 				html += '<button class="btn btn-sm btn-link bg-green-k pull-right btn-open-form" data-form-type="'+elemSpec.ctrl+'" data-dismiss="modal">';
-		    	html +=	'<i class="fa fa-plus"></i> Créer '+trad[ elemSpec.ctrl ]+'</button>' ;  
+		    	html +=	'<i class="fa fa-plus"></i> '+trad["create"+elemSpec.ctrl]+'</button>' ;  
 		    }
 		}
 	}
@@ -391,9 +427,11 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	return html;
 }
 
-function loadAdminDashboard(){
+function loadAdminDashboard(week){
 	showLoader('#central-container');
-	getAjax('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/main",function(){ 
+	ajaxPost('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/main/week/"+week,
+			 { "week" : week },
+			 function(){ 
 			
 	},"html");
 }
@@ -455,14 +493,22 @@ function loadSettings(){
 }
 function loadGallery(){
 	toogleNotif(false);
-	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id;
+	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id+"/docType/image";
 	
 	showLoader('#central-container');
 	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 		null,
 		function(){},"html");
 }
-
+function loadLibrary(){
+	toogleNotif(false);
+	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id+"/docType/file";
+	
+	showLoader('#central-container');
+	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+		null,
+		function(){},"html");
+}
 function loadChart(){
 	toogleNotif(false);
 	var url = "chart/header/type/"+typeItem+"/id/"+contextData.id;
@@ -531,6 +577,14 @@ function loadUrls(){
 	,"html");
 }
 
+function loadActionRoom(){
+	//toogleNotif(false);
+	showLoader('#fast-rooms');
+	var params = { };
+	ajaxPost('#fast-rooms', baseUrl+'/'+moduleId+'/rooms/index/type/'+contextData.type+
+									'/id/'+contextData.id, params, function(){},"html");
+}
+
 function loadContacts(){
 	showLoader('#central-container');
 	getAjax('', baseUrl+'/'+moduleId+'/element/getcontacts/type/'+contextData.type+
@@ -564,11 +618,38 @@ function loadContacts(){
 				}
 	,"html");
 }
-
+//todo add count on each tag
+    function getfilterRoles(roles) { 
+    	console.log("roles",roles);
+        $("#listRoles").html("");
+        $("#listRoles").append("<a class='btn btn-link text-red favElBtn favAllBtn' "+
+            "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'>"+
+            " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a>");
+        	$.each( roles,function(k,o){
+                $("#listRoles").append("<a class='btn btn-link favElBtn text-red "+slugify(k)+"Btn' "+
+                                "data-tag='"+slugify(k)+"' "+
+                                "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(k)+"\",\".searchEntityContainer\",1)'>"+
+                                  k+" <span class='badge'>"+o.count+"</span>"+
+                            "</a>");
+        	});
+    }
 function displayInTheContainer(data, dataName, dataIcon, contextType, edit){ 
 	mylog.log("displayInTheContainer",data, dataName, dataIcon, contextType, edit)
 	var n=0;
-	$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
+	listRoles={};
+	$.each(data, function(key, val){ 
+		console.log("rolesShox",val);
+		if(typeof key != "undefined") n++; 
+		if(typeof val.rolesLink != "undefined"){
+			console.log(val.rolesLink);
+			$.each(val.rolesLink, function(i,v){
+				if(typeof listRoles[v] != "undefined")
+					listRoles[v].count++;
+				else
+					listRoles[v]={"count": 1}
+			});
+		}
+	});
 	if(n>0){
 		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 
@@ -583,13 +664,14 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		if(dataName != "urls")
 			html += btnMap;
 
-		html +=	thisTitle + "<hr>";
+		html +=	thisTitle;
+		html += "<div id='listRoles'></div>"+
+			 "<hr>";
 		html +=	"</div>";
-		
 		
 		mapElements = new Array();
 		
-		
+		console.log("listRoles",listRoles);
 		if(dataName != "collections"){
 			if(mapElements.length==0) mapElements = data;
         	else $.extend(mapElements, data);
@@ -619,7 +701,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		initBtnLink();
 		initBtnAdmin();
 		bindButtonOpenForm();
-		
+		getfilterRoles(listRoles);
 		var dataToMap = data;
 		if(dataName == "collections"){
 			dataToMap = new Array();
@@ -797,7 +879,7 @@ function inintDescs() {
 		descHtmlToMarkdown();
 	mylog.log("after");
 	mylog.log("inintDescs", $("#descriptionMarkdown").html());
-	var descHtml = "<i>"+trad["notSpecified"]+"</i>";
+	var descHtml = "<i>"+trad.notSpecified+"</i>";
 	if($("#descriptionMarkdown").html().length > 0){
 		descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
 	}
@@ -808,9 +890,9 @@ function inintDescs() {
 }
 
 function removeAddress(form){
-	var msg = trad["suredeletelocality"] ;
+	var msg = trad.suredeletelocality ;
 		if(!form && contextData.type == "<?php echo Person::COLLECTION; ?>")
-			msg = trad["suredeletepersonlocality"] ;
+			msg = trad.suredeletepersonlocality ;
 
 		bootbox.confirm({
 			message: msg + "<span class='text-red'></span>",
@@ -865,4 +947,40 @@ function removeAddress(form){
 				}
 			}
 		});
+}
+
+
+var mapUrl = { 	"discuss": 
+					{ "url"  : "comment/index/type/actionRooms", 
+					  "hash" : "comment.index.type.actionRooms"
+					} ,
+				"vote": 
+					{ "url"  : "survey/entries", 
+					  "hash" : "survey.entries"
+					} ,
+				"entry" :
+					{ "url"  : "survey/entry",
+					  "hash" : "survey.entry",
+					},
+				"actions": 
+					{ "url"  : "rooms/actions", 
+					  "hash" : "rooms.actions"
+					} ,
+				"action":
+					{ "url" : "rooms/action",
+					  "hash" : "rooms.action",
+					}
+			}
+
+function loadRoom(type, id){
+	location.hash=hashUrlPage+".view.dda.dir."+type+".idda."+id;			
+}
+
+function startLoadRoom(type, id){	
+	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+mapUrl[type]["url"]+ '/id/'+id+"?renderPartial=true", 
+			null, function(){
+			},"html");
+
+	toogleNotif(false);
+	KScrollTo("#shortDescriptionHeader");
 }

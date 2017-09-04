@@ -86,17 +86,26 @@
 	</form>
 
 	<div id="contentBanner" class="col-md-12 col-sm-12 col-xs-12 no-padding">
-		<?php if (@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])){ ?> 
-			<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" 
-				src="<?php echo Yii::app()->createUrl('/'.$element["profilBannerUrl"]) ?>">
-		<?php } ?>
+		<?php if (@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])){	
+			$imgHtml='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" 
+				src="'.Yii::app()->createUrl('/'.$element["profilBannerUrl"]).'">';
+			if (@$element["profilRealBannerUrl"] && !empty($element["profilRealBannerUrl"])){
+				$imgHtml='<a href="'.Yii::app()->createUrl('/'.$element["profilRealBannerUrl"]).'"
+							class="thumb-info"  
+							data-title="'.Yii::t("common","Cover image of")." ".$element["name"].'"
+							data-lightbox="all">'.
+							$imgHtml.
+						'</a>';
+			}
+			echo $imgHtml;
+		} ?>
 	</div>
 	
-	<?php if(!empty($element["badges"]) || $openEdition == true ){ ?>
+	<?php if(!empty($element["preferences"]["isOpenEdition"]) || !empty($element["preferences"]["isOpenData"]) ){ ?>
     <div class="section-badges pull-right">
 		<div class="no-padding">
-			<?php if(!empty($element["badges"])){?>
-				<?php if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
+			<?php if(!empty($element["preferences"]["isOpenData"])){?>
+				<?php //if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
 					<div class="badgePH pull-left" data-title="OPENDATA">
 						<span class="pull-left tooltips" data-toggle="tooltip" data-placement="left" 
 							  title="Les données sont ouvertes." style="font-size: 13px; line-height: 30px;">
@@ -108,10 +117,10 @@
 							<?php echo Yii::t("common","Open data") ?>
 						</span>
 					</div>
-			<?php } 
+			<?php //} 
 			} ?>
 
-			<?php if ($openEdition == true) { ?>
+			<?php if (!empty($element["preferences"]["isOpenEdition"])) { ?>
 				<div class="badgePH pull-left margin-left-15" data-title="OPENEDITION">
 					<a href="javascript:;" class="btn-show-activity">
 					<span class="pull-right tooltips" data-toggle="tooltip" data-placement="left" 
@@ -130,7 +139,7 @@
 
 	<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation <?php if(@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])) echo "backgroundHeaderInformation" ?>">	
     	
-    	<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
+    	<div class="col-xs-12 col-sm-9 col-md-9 col-lg-10 text-white pull-right">
 			<?php if (@$element["status"] == "deletePending") { ?> 
 				<h4 class="text-left padding-left-15 pull-left no-margin letter-red">En cours de suppression</h4><br>
 			<?php } ?>
@@ -142,11 +151,16 @@
 					<i class="fa fa-<?php echo $icon; ?> pull-left margin-top-5"></i> 
 					<div class="name-header pull-left"><?php echo @$element["name"]; ?></div>
 				</span>
-				<?php if(($type==Organization::COLLECTION || $type==Event::COLLECTION) && @$element["type"]){ ?>
+				<?php if(($type==Organization::COLLECTION || $type==Event::COLLECTION) && @$element["type"]){ 
+					if($type==Organization::COLLECTION)
+						$typesList=Organization::$types;
+					else
+						$typesList=Event::$types;
+				?>
 					<span id="typeHeader" class="margin-left-10 pull-left">
 						<i class="fa fa-x fa-angle-right pull-left"></i>
 						<div class="type-header pull-left">
-					 		<?php echo Yii::t("common", $element["type"]) ?>
+					 		<?php echo Yii::t("category", $typesList[$element["type"]]) ?>
 					 	</div>
 					</span>
 				<?php } ?>
@@ -156,7 +170,7 @@
 		<?php 
 			$classAddress = ( (@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]) ? "" : "hidden" );
 		//if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]){ ?>
-			<div class="header-address-tags col-xs-12 col-sm-9 col-md-9 col-lg-9 pull-right margin-bottom-5 <?php echo $classAddress ; ?>">
+			<div class="header-address-tags col-xs-12 col-sm-9 col-md-9 col-lg-10 pull-right margin-bottom-5 <?php echo $classAddress ; ?>">
 				<?php if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"]){ ?>
 					<div class="header-address badge letter-white bg-red margin-left-5 pull-left">
 						<?php echo @$element["address"]["postalCode"] ? 
@@ -185,7 +199,7 @@
 				</div>
 			</div>
 		
-		<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 pull-right">
+		<div class="col-xs-12 col-sm-9 col-md-9 col-lg-10 pull-right">
 			<span class="pull-left text-white" id="shortDescriptionHeader"><?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
 			</span>	
 		</div>
@@ -312,17 +326,21 @@ jQuery(document).ready(function() {
    							// access image size here 
    						 	var imgWidth=this.width;
    						 	var imgHeight=this.height;
-   							if(imgWidth>=600 && imgHeight>=300){
+   							if(imgWidth>=400 && imgHeight>=150){
                					$.blockUI({ 
                						message: $('div#uploadScropResizeAndSaveImage'), 
                						css: {cursor:null,padding: '0px !important'}
                					}); 
                					$("#uploadScropResizeAndSaveImage").parent().css("padding-top", "0px !important");
 								//$("#uploadScropResizeAndSaveImage").html(html);
+							    
 								setTimeout(function(){
+									var setImage={"width":1600,"height":400};
 									var parentWidth=$("#cropContainer").width();
-									var crop = $('#cropImage').cropbox({width: parentWidth,
-										//height: 400,
+									//var parentHeight=setImage.height*(parentWidth/setImage.width);
+									var crop = $('#cropImage').cropbox({
+										width: parentWidth,
+										height: 300,
 										zoomIn:true,
 										zoomOut:true}, function() {
 											cropResult=this.result;
@@ -376,7 +394,7 @@ jQuery(document).ready(function() {
 										        if(data.result){
 										        	$(".saveBanner").prop("disabled",false);
 								        			$(".saveBanner").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
-										        	newBanner='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
+										        	newBanner='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src.profilBannerUrl+'" style="">';
 										        	$("#contentBanner").html(newBanner);
 										        	$(".contentHeaderInformation").addClass("backgroundHeaderInformation");
 										        	$.unblockUI();
@@ -388,7 +406,7 @@ jQuery(document).ready(function() {
 								}, 300);
 							}
    						 	else
-   						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
+   						 		toastr.warning(trad["minsizebanner"]);
 						};
 			        });
 			        reader.readAsDataURL(file);

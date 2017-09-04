@@ -333,7 +333,7 @@
 											"poi.something2See" : "poi-marker-default",
 											"poi.funPlace" 		: "poi-marker-default",
 											"poi.place" 		: "poi-marker-default",
-											"poi.streetArts" 	: "poi-marker-default",
+											"poi.streetArt" 	: "poi-marker-default",
 											"poi.openScene" 	: "poi-marker-default",
 											"poi.stand" 		: "poi-marker-default",
 											"poi.parking" 		: "poi-marker-default",

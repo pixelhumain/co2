@@ -1,16 +1,16 @@
 {
     "sections" : {
         "sharing": {
-            "label":"Partager", 
-            "labelFront":"À partager",      
+            "label":"Share", 
+            "labelFront":"To share",      
             "key" : "sharing",     
             "icon" : "exchange",               
             "section":2, 
             "color":"azure"
         },
         "donation": {
-            "label":"Donner",   
-            "labelFront":"À donner",        
+            "label":"Give",   
+            "labelFront":"To give",        
             "key" : "donation",     
             "icon" : "gift",                    
             "section":2, 
@@ -18,8 +18,8 @@
         },
 
         "forsale": {
-            "label":"Vendre",  
-            "labelFront":"À vendre",            
+            "label":"Sale",  
+            "labelFront":"For sale",            
             "key" : "forsale",     
             "icon" : "money",                  
             "section":3, 
@@ -27,8 +27,8 @@
         },
 
         "forrent": {
-            "label":"Louer",   
-            "labelFront":"À louer",            
+            "label":"Rent",   
+            "labelFront":"For rent",            
             "key" : "forrent",    
             "icon" : "external-link",          
             "section":3, 
@@ -37,8 +37,8 @@
 
 
         "lookingfor" : {
-            "label":"Besoin", 
-            "labelFront":"À la recherche",   
+            "label":"Need", 
+            "labelFront":"Looking for",   
             "key" : "lookingfor",  
             "icon" : "eye",                    
             "section":4, 
@@ -46,8 +46,8 @@
         },
 
         "job": {
-            "label":"Emplois", 
-            "labelFront":"Offres d'emplois",      
+            "label":"Jobs", 
+            "labelFront":"Offers",      
             "key" : "job",         
             "icon" : "briefcase",              
             "section":5, 
@@ -57,193 +57,188 @@
 
     },
     "filters" : {
-        "Technologie" : 
+        "Technology" : 
             {   "icon" : "laptop",
-                "subcat" : ["TV / Vidéo", "Informatique", "Tablettes", "Téléphonie", "Appareils photos", "Appareil audio"]
+                "subcat" : ["TV / Video", "IT", "Touchpads", "Telephony", "Camera", "Audio device"]
             }, 
          
-         "Immobilier" : 
+         "Property" : 
             {   "icon" : "building",
-                "subcat" : ["Maison", "Appartement", "Terrain", "Parking", "Bureaux"]
+                "subcat" : ["House", "Flat", "Ground", "Parking", "Office"]
             }, 
          
-         "Véhicules" : 
+         "Vehicles" : 
             {   "icon" : "car",
                 "subcat" : 
-                [   "Voiture", 
+                [   "Car", 
                     "SUV", 
-                    "4x4", 
-                    "Utilitaire", 
+                    "Utility", 
                     "Moto", 
                     "Scooter", 
-                    "Bateau", 
-                    "Voiturette", 
-                    "Vélos",
-                    "Équipement véhicule",
-                    "Équipement 2 roues",
-                    "Équipement bateau",
-                    "Équipement vélo"
+                    "Boat", 
+                    "Small car", 
+                    "Bikes",
+                    "Car equipment",
+                    "2-wheeled equipment",
+                    "Boat equipment",
+                    "Bike equipment"
                 ]
             }, 
 
-         "Maison" :  
+         "Home" :  
             {   "icon" : "home",
                 "subcat" : 
-                [    "Electroménager",
-                     "Mobilier", 
-                     "Équipement bébé", 
-                     "Animaux", 
-                     "Divers"
+                [    "Household appliances",
+                     "Furniture", 
+                     "Baby equipment", 
+                     "Animals", 
+                     "Various"
                 ]
             },
 
-         "Loisirs" :  
+         "Leisure" :  
             {   "icon" : "smile-o",
                 "subcat" : 
                 [    "Sports", 
-                     "Instrument musique", 
-                     "Sonorisation", 
+                     "Musical instrument", 
+                     "Sound system", 
                      "CD / DVD",
-                     "Jouet", 
-                     "Jeux de société", 
-                     "Livres / BD", 
+                     "Toy", 
+                     "Games", 
+                     "Books / Comics", 
                      "Collections", 
-                     "Bricolages", 
-                     "Jardinage", 
-                     "Art / Déco", 
-                     "Modélisme", 
-                     "Puériculture", 
-                     "Animaux", 
-                     "Divers"
+                     "DIY", 
+                     "Gardening", 
+                     "Art / Deco", 
+                     "Model making", 
+                     "Childcare", 
+                     "Animals", 
+                     "Various"
                 ]
             },
 
-        "Mode" : 
+        "Fashion" : 
             {   "icon" : "shopping-bag",
                 "subcat" :  
-                [    "Vêtements", 
-                     "Chaussures", 
-                     "Accessoires", 
-                     "Montres", 
-                     "Bijoux"
+                [    "Clothes", 
+                     "Shoes", 
+                     "Accessories", 
+                     "Watches", 
+                     "Jewels"
                 ]
             }
     },
     "jobFilters" : {
-        "Achats-Comptabilité-Gestion" : {
-            "icon":"user",
+        "Purchase-Comptability-Management" : {
+            "icon":"briefcase",
             "subcat" : []
         },
-        "Arts-Artisanat" : {
-            "icon":"user",
+        "Arts-Crafts" : {
+            "icon":"paint-brush",
             "subcat" : []
         },
-        "Banque-Assurance" : {
-            "icon":"user",
+        "Bank-Insurance" : {
+            "icon":"money",
             "subcat" : []
         },
-        "Bâtiment-Travaux_Publics" : {
-            "icon":"user",
+        "Building-Public_works" : {
+            "icon":"building",
             "subcat" : []
         },
-        "Commerce-Vente" : {
-            "icon":"user",
+        "Trade-Sales" : {
+            "icon":"handshake-o",
             "subcat" : []
         },
-        "Communication-Multimédia" : {
-            "icon":"user",
+        "Communication-Multimedia" : {
+            "icon":"television",
             "subcat" : []
         },
-        "Conseil-Etudes" : {
-            "icon":"user",
+        "Consultant-Market_research" : {
+            "icon":"search",
             "subcat" : []
         },
-        "Direction_Entreprise" : {
-            "icon":"user",
-            "subcat" : []
-        },
-        "Espaces_Naturels" : {
-            "icon":"user",
+        "Natural_spaces" : {
+            "icon":"tree",
             "subcat" : []
         },
         "Agriculture" : {
-            "icon":"user",
+            "icon":"shopping-basket",
             "subcat" : []
         },
-        "Pêche" : {
-            "icon":"user",
+        "Fishing" : {
+            "icon":"tint",
             "subcat" : []
         },
-        "Soins_aux_animaux" : {
-            "icon":"user",
+        "Animals_care" : {
+            "icon":"medkit",
             "subcat" : []
         },
-        "Hôtellerie" : {
-            "icon":"user",
+        "Hotel_business" : {
+            "icon":"hotel",
             "subcat" : []
         },
-        "Restauration" : {
-            "icon":"user",
+        "Catering" : {
+            "icon":"cutlery",
             "subcat" : []
         },
-        "Tourisme" : {
-            "icon":"user",
+        "Tourism" : {
+            "icon":"info-circle",
             "subcat" : []
         },
         "Animation" : {
-            "icon":"user",
+            "icon":"signing",
             "subcat" : []
         },
-        "Immobilier" : {
-            "icon":"user",
+        "Property" : {
+            "icon":"building-o",
             "subcat" : []
         },
-        "Industrie" : {
-            "icon":"user",
+        "Industry" : {
+            "icon":"industry",
             "subcat" : []
         },
-        "Informatique-Télécommunication" : {
-            "icon":"user",
+        "IT-Telecommunication" : {
+            "icon":"wifi",
             "subcat" : []
         },
         "Installation-Maintenance" : {
-            "icon":"user",
+            "icon":"wrench",
             "subcat" : []
         },
-        "Marketing-Stratégie_Commerciale" : {
-            "icon":"user",
+        "Marketing-Strategy" : {
+            "icon":"area-chart",
             "subcat" : []
         },
-        "Ressources_Humaines" : {
-            "icon":"user",
+        "Human_Ressources" : {
+            "icon":"group",
             "subcat" : []
         },
-        "Santé" : {
-            "icon":"user",
+        "Health" : {
+            "icon":"stethoscope",
             "subcat" : []
         },
-        "Secrétariat-Assistanat" : {
-            "icon":"user",
+        "Secretariat-Assistantship" : {
+            "icon":"support",
             "subcat" : []
         },
-        "Services_à_la_personne" : {
-            "icon":"user",
+        "Home_services" : {
+            "icon":"blind",
             "subcat" : []
         },
-        "Services_à_la_collectivité" : {
-            "icon":"user",
+        "Public_services" : {
+            "icon":"university",
             "subcat" : []
         },
         "Spectacle" : {
-            "icon":"user",
+            "icon":"star",
             "subcat" : []
         },
         "Sport" : {
-            "icon":"user",
+            "icon":"futbol-o",
             "subcat" : []
         },
-        "Transport-Logistique" : {
-            "icon":"user",
+        "Transport-Logistic" : {
+            "icon":"truck",
             "subcat" : []
         }
     }

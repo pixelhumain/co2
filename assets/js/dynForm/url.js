@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : "Ajouter une url",
+	    title : tradDynForm["addurl"],
 	    icon : "link",
 	    type : "object",
 	    onLoads : {
@@ -10,7 +10,7 @@ dynForm = {
     		 	
     		 	$("#ajax-modal-modal-title").html(
     		 		$("#ajax-modal-modal-title").html()+
-    		 		" <br><small class='text-white'>en tant que : <span class='text-dark'>"+contextData.name+"</span></small>" );
+    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
     		
     		 	if( contextData && contextData.id )
 					$("#ajaxFormModal #parentId").val( contextData.id );
@@ -25,11 +25,11 @@ dynForm = {
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p><i class='fa fa-info-circle'></i> Partagez des liens qui vous intéresse, pour les rendre accessibles à tous.</p>",
+                html:"<p><i class='fa fa-info-circle'></i> "+tradDynForm["infocreateurl"]+".</p>",
             },
-            title : dyFInputs.inputText("Nom", "Titre de l'URL", { required : true }),
-	        url : dyFInputs.inputText("URL du lien", "URL du lien", { required : true, url : true }),
-            type : dyFInputs.inputSelect("Type de l'URL", "Choisir un type", urlTypes, { required : true }),
+            title : dyFInputs.inputText(tradDynForm["name"], tradDynForm["titleurl"], { required : true }),
+	        url : dyFInputs.inputText(tradDynForm["linkUrl"], tradDynForm["linkUrl"], { required : true, url : true }),
+            type : dyFInputs.inputSelect(tradDynForm["urltype"], tradDynForm["choosetype"], urlTypes, { required : true }),
             index : dyFInputs.inputHidden(),
             parentId : dyFInputs.inputHidden(null, { required : true }),
             parentType : dyFInputs.inputHidden(null, { required : true })

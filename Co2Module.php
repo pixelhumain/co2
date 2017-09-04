@@ -30,9 +30,9 @@ class Co2Module extends CWebModule {
 		if(@$_GET["network"]) {
             Yii::app()->params['networkParams'] = $_GET["network"];
         }
-       /* if(@Yii::app()->request->cookies['lang'] && !empty(Yii::app()->request->cookies['lang']->value))
+       if(@Yii::app()->request->cookies['lang'] && !empty(Yii::app()->request->cookies['lang']->value))
         	Yii::app()->language = (string)Yii::app()->request->cookies['lang'];
-        else */
+        else 
 			Yii::app()->language = (isset(Yii::app()->session["lang"])) ? Yii::app()->session["lang"] : 'fr';
 		
 		// import the module-level models and components

@@ -30,44 +30,44 @@
     <?php if((!@$scope || @$scope=="") && $open==false ){ ?>
         <?php if($type="citoyens" && $id==@Yii::app()->session["userId"]){ ?>
         <h6 class="no-margin" style="font-size:12px">
-            <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> Activité territoriale<br>
-             <small class="text-red"><i class="fa fa-map-marker"></i> Vous n'êtes pas communecté</small>
+            <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> <?php echo Yii::t("common","Territorial activity") ?><br>
+             <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo Yii::t("common","You're not communected") ?></small>
         </h6>
 
         <button class="btn btn-default bg-red text-white margin-top-15 btn-communecter">
-            <i class="fa fa-university"></i> Je me communecte
+            <i class="fa fa-university"></i> <?php echo Yii::t("common","I communnect me") ?>
         </button>
         <br><br>
         <h5 class="no-margin" style="font-size:12px">
-             <small class="text-red"><i class="fa fa-angle-right"></i> La communexion vous permet de capter en direct les informations pertinentes qui se trouvent autour de vous.</small>
+             <small class="text-red"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Communexion gives you live informations on what's happened around you") ?>.</small>
         </h5>
         <br>
         <span style="font-family: 11px;">
-            <i class="fa fa-signal"></i> Pour utiliser le réseau à pleine puissance, nous vous conseillons de vous <i><b>communecter</b></i>.
+            <i class="fa fa-signal"></i> <?php echo Yii::t("home","To use the network efficiently, we advice you to be <i><b>communected</b></i>") ?>.
             <br><br>
             <!-- <h6><small>communecter : </small><br>se connecter à sa commune</h6> -->
-            <i class="fa fa-magic"></i> Indiquez de préférence votre <b>commune de résidence</b>, pour garder un œil sur ce qui se passe près de chez vous, de façon automatique.<br>
+            <i class="fa fa-magic"></i> <?php echo Yii::t("home","Indicate your <b>living place</b>, to keep informed about what's happened around you automatically.")?><br>
         </span>
         <br>
         <h5 class="no-margin" style="font-size:12px">
-             <small class="text-red"><i class="fa fa-angle-right"></i> Vous pourrez aussi utiliser la communexion lors de vos recherches sur les autres applications :
+             <small class="text-red"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common","You will be able to use also the communexion during your research on the others apps") ?> :
              <span class="col-md-12 margin-top-10">
-             <a class="col-md-6 padding-5 text-center" href=""><i class="fa fa-search"></i><br>recherche</a>
-             <a class="col-md-6 padding-5 text-center" href=""><i class="fa fa-bullhorn"></i><br>annonces</a>
-             <a class="col-md-6 padding-5 text-center" href=""><i class="fa fa-calendar"></i><br>agenda</a>
-             <a class="col-md-6 padding-5 text-center" href=""><i class="fa fa-newspaper-o"></i><br>live</a></small>
+             <a class="col-md-6 padding-5 text-center" href=""><i class="fa fa-search"></i><br><?php echo Yii::t("common","search") ?></a>
+             <a class="col-md-6 padding-5 text-center" href=""><i class="fa fa-bullhorn"></i><br><?php echo Yii::t("common","classified") ?></a>
+             <a class="col-md-6 padding-5 text-center" href=""><i class="fa fa-calendar"></i><br><?php echo Yii::t("common","agenda") ?></a>
+             <a class="col-md-6 padding-5 text-center" href=""><i class="fa fa-newspaper-o"></i><br><?php echo Yii::t("common","live") ?></a></small>
              </span>
         </h5>
         <?php } ?>
     <?php } else { ?>
         <h6 class="no-margin header-nowList" style="font-size:12px">
-            <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> Activité territoriale<br>
+            <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> <?php echo Yii::t("common","Territorial activity") ?><br>
              <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope; ?></small>
         </h6>
         <hr class="angle-down">
         <center>
             <button class="btn btn-default btn-sm btn-show-onmap block" id="btn-show-activity-onmap">
-                <i class="fa fa-map-marker"></i> Afficher sur la carte
+                <i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Show on the map") ?>
             </button>
         </center>
         <br>

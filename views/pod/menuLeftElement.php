@@ -243,7 +243,7 @@
 	<li class="">
 		<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
 			id="btn-start-contacts" class="ssmla">
-			<i class="fa fa-envelope"></i> Nous contacter
+			<i class="fa fa-envelope"></i> <?php echo Yii::t("common","Contact us"); ?>
 		</a>
 	</li>
 	<?php } ?>
@@ -254,14 +254,19 @@
 			<i class="fa fa-camera"></i> <?php echo Yii::t("common","Gallery"); ?>
 		</a>
 	</li>
+	<li class="">
+		<a href="javascript:" class="ssmla" id="btn-start-library">
+			<i class="fa fa-book"></i> <?php echo Yii::t("common","Library"); ?>
+		</a>
+	</li>
 
 	
-	<li class="">
+	<!--<li class="">
 		<a href="javascript:" class="ssmla" id="btn-start-urls">
 			<i class="fa fa-external-link"></i> <?php echo Yii::t("common","Urls"); ?>
 		</a>
 	</li>
-	
+	-->
 	<li><hr></li>
 	<?php if(	$type != Poi::COLLECTION 
 				&& ( 	$type != Person::COLLECTION || 
@@ -340,8 +345,7 @@
 		?>
 			<li>
 				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="poi" data-icon="map-marker">
-					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Points of interests"); ?>
-		</a>
+					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Points of interest"); ?>
 				</a>
 			</li>			
 		<?php }  

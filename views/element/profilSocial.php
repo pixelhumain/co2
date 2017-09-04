@@ -228,7 +228,7 @@
 		  </button>
 		  <?php } ?>
 
-		  <?php if(@Yii::app()->session["userId"])
+		  <?php if(@Yii::app()->session["userId"] && Yii::app()->params['rocketchatEnabled'] )
 	  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition)) ) || 
 	  			($type==Person::COLLECTION) ||
 	  			//admins can create rooms

@@ -24,7 +24,7 @@ class RocketchatController extends CommunecterController {
 
 
 	public function actionIndex() {
-		if ( @Yii::app()->session["userId"] )
+		if ( @Yii::app()->session["userId"]  && Yii::app()->params['rocketchatEnabled'] )
 			$this->renderPartial("iframe");
 		else {
 			Yii::app()->session["goto"] = "/rocketchat";

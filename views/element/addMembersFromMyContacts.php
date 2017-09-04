@@ -715,7 +715,7 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 												'</div>';
 												if(isElementAdmin){
 	fieldHTML +=									'<div class="divRoles col-md-12 col-sm-12 col-xs-12" data-id="'+thisKey+'"">'+
-														'<input id="tagsRoles'+getObjectId(value)+'" class="tagsRoles" type="" data-type="select2" name="roles" placeholder="Add roles" value="" style="width:100%;">'+
+														'<input id="tagsRoles'+getObjectId(value)+'" class="tagsRoles" type="" data-type="select2" name="roles" placeholder="<?php echo Yii::t("common","Add a role") ?>" value="" style="width:100%;">'+
 													'</div>';	
 												}
 	fieldHTML +=								'</li>';

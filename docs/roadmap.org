@@ -329,9 +329,12 @@ Liste des notifications déjà lues => #370 #453
   [ ] visualisation de la banque des besoins =>#1260 + #490
   [ ] msg mail sur un groupe sur les @ dans les news, et @all (send message on notify someone) 
     [ ] create notification for @all
-  [ ] Rework @ for same working mobile [#192]
+  [ ] NEWS
+    [ ]Rework @ for same working mobile [#192]
     [ ] générer des pseudoUnique pour le mention et aussi pour générer de jolie url communecter.org/livincoop
-  [ ] Add # in news text
+    [ ] Add # in news text
+    [ ] Show who like the news and separte action and views pod comment/like/unlike
+    [X] Template gallerie files
   [ ] Integrating notifications of dda with @tango
   [X] News design of laoding
   [X] Translate website (get spanish trad from poupou or others)

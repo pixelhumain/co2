@@ -123,7 +123,7 @@
 			</div>
 		<?php } ?>
 
-		<?php echo nl2br($resolution["description"]); ?>
+		<?php echo nl2br(@$resolution["description"]); ?>
 
 		<?php 
 			$i=0;

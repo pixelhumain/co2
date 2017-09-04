@@ -9,15 +9,16 @@ dynForm = {
 	    		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 						  					  .addClass("bg-dark");
     		 	
-    		 	
-	    		dataHelper.activateMarkdown("#ajaxFormModal #message");
+    		 	dataHelper.activateMarkdown("#ajaxFormModal #message");
     			//$("#ajaxFormModal #survey").val( contextDataDDA.id );
     			if (typeof contextDataDDA.name != "undefined" && contextDataDDA.name != "")
     		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
 	    	}
 	    },
 	    beforeBuild : function(){
-           /* dyFObj.setMongoId('survey',function(){
+           alert(currentRoomId);
+           $(".form-group #idParentRoom").val(currentRoomId);
+	    		/* dyFObj.setMongoId('survey',function(){
             	
             });*/
         },

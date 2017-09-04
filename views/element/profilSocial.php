@@ -412,6 +412,10 @@
 
 		<ul id="menuCoop" class="margin-top-25 menuCoop">
 	    </ul>
+
+	    
+		
+
 	</div>
 
 	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 profilSocial hidden-xs" 

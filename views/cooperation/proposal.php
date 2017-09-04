@@ -163,7 +163,7 @@
 				<h3><i class="fa fa-angle-down"></i> Proposition</h3>
 			<?php } ?>
 		
-			<?php echo nl2br($proposal["description"]); ?>
+			<?php echo nl2br(@$proposal["description"]); ?>
 	</div>
 
 	<?php //if(@$proposal["status"] != "tovote"){ ?>

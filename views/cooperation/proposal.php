@@ -271,16 +271,16 @@
 	<h4 class="text-center">Ajouter un argument<br><i class="fa fa-angle-down"></i></h4>
 
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link bg-green-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
-		data-argval="up">Pour</button>
+		<button class="bold btn btn-link bg-green-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="up"><i class="fa fa-thumbs-up"></i> Pour</button>
 	</div>
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		<button class="bold btn btn-link col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
 		data-argval="">Neutre</button>
 	</div>
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link bg-red-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
-		data-argval="down">Contre</button>
+		<button class="bold btn btn-link bg-red-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="down"><i class="fa fa-thumbs-down"></i> Contre</button>
 	</div>
 	<?php }else{ ?>
 	<h5 class="text-center">Devenez membre ou contributeur pour participer au débat<br><i class="fa fa-angle-down"></i></h5>

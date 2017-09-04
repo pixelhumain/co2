@@ -36,7 +36,7 @@
 			<div class="col-lg-5 col-md-5 col-sm-7 text-center pull-left margin-top-5">
 				<?php if(@$proposal["status"] == "tovote" && $auth){ ?>
 					<button class="btn btn-send-vote btn-link btn-sm bg-<?php echo $value["bg-color"]; ?> tooltips"
-							data-original-title="cliquer pour voter" data-placement="left"
+							data-original-title="cliquer pour voter" data-placement="right"
 							data-vote-value="<?php echo $value["voteValue"]; ?>"><?php echo Yii::t("cooperation", $key); ?>
 					</button>
 				<?php }else{ ?>

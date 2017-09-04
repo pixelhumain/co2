@@ -16,7 +16,6 @@ dynForm = {
 	    	}
 	    },
 	    beforeBuild : function(){
-           alert(currentRoomId);
            $(".form-group #idParentRoom").val(currentRoomId);
 	    		/* dyFObj.setMongoId('survey',function(){
             	

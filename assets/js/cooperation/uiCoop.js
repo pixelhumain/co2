@@ -144,11 +144,11 @@ var uiCoop = {
 					if($(this).hasClass("open")){
 						$("#menu-room .sub-"+$(this).data("key")).addClass("hidden");
 						$(this).removeClass("open");
-						$(this).find(".fa-caret-down").removeClass("fa-caret-down").addClass("fa-caret-right");
+						//$(this).find(".fa-caret-down").removeClass("fa-caret-down").addClass("fa-caret-right");
 					}else{
 						$("#menu-room .sub-"+$(this).data("key")).removeClass("hidden");
 						$(this).addClass("open");
-						$(this).find(".fa-caret-right").removeClass("fa-caret-right").addClass("fa-caret-down");
+						//$(this).find(".fa-caret-right").removeClass("fa-caret-right").addClass("fa-caret-down");
 					}
 				});
 

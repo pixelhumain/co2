@@ -444,6 +444,28 @@
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 	    
+
+<!-- ************ MODAL ********************** -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modalHelpCOOP">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <!-- <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <div class="modal-title" id="modalText">
+		        	<h4><i class="fa fa-info-circle"></i> Aide</h4>
+		        </div>
+		      </div>
+		       -->
+		       <div class="modal-body padding-25">
+				<?php $this->renderPartial('../cooperation/pod/home', array("type"=>$type)); ?>
+		      </div>
+		      <div class="modal-footer">
+		      	<div id="modalAction" style="display:inline"></div>
+		        <button class="btn btn-default pull-right btn-sm margin-top-10 margin-right-10" data-dismiss="modal"> J'ai compris</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 		
 
 	<!-- </div> -->

@@ -12,6 +12,11 @@
 		overflow: hidden !important;
 	}
 	/* MODAL */
+	
+	#modalCoop.modal{
+		z-index: 1030;
+	}
+
 	#modalCoop.modal,	
 	#modalCoop.modal .modal-dialog,
 	#modalCoop.modal .modal-content{
@@ -37,7 +42,7 @@
 
 	#modalCoop.modal .modal-body{
 		position: fixed;
-	    top: 55px;
+	    top: 51px;
 	    bottom: 0px;
 	    left: 0px;
 	    right: 0px;
@@ -220,6 +225,7 @@
 	#coop-container .menuCoop .title-section{
 		background-color: #d7eeef;
 		color:#353535;
+		border-radius:4px;
 	}
 
 
@@ -234,11 +240,9 @@
 		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $type, (string)$element["_id"]);
 	?>
 		<li class="padding-10 submenucoop sub-rooms">
-			<h5 class="padding-left-10">
-				<i class="fa fa-angle-down"></i> <i class="fa fa-connectdevelop"></i> Espace coopératif
-				
-			  	
-			</h5>
+			<h3 class="padding-left-10 letter-turq">
+				<i class="fa fa-connectdevelop"></i> Espace co		  	
+			</h3>
 			
 		</li>
 
@@ -254,7 +258,7 @@
 	<!----------------- PROPOSALS ------------ -->
 	<li>
 		<a href="javascript:" class="title-section elipsis open" data-key="proposals">
-	  		<i class="fa fa-caret-right"></i>  
+	  		<i class="fa fa-caret-down"></i>  
 	  		<i class="fa fa-inbox"></i> <?php echo Yii::t("cooperation", "Proposals") ?>
 	  	</a>
 	</li>
@@ -282,7 +286,7 @@
 	<!-- ------------ ACTIONS -------------- -->
 	<li>
 		<a href="javascript:" class="title-section elipsis open" data-key="actions">
-	  		<i class="fa fa-caret-right"></i>  
+	  		<i class="fa fa-caret-down"></i>  
 	  		<i class="fa fa-inbox"></i> <?php echo Yii::t("cooperation", "Actions") ?>
 	  	</a>
 	</li>
@@ -303,6 +307,7 @@
 		<?php } ?>
 
 	
+<li class="submenucoop sub-rooms margin-top-50"></li>
 	
 	<!-- ----------- RESOLUTION --------------- -->
 	<li class="hidden">
@@ -312,26 +317,3 @@
 	  	</a>
 	</li>
 
-
-
-<!-- ************ MODAL ********************** -->
-		<div class="modal fade" tabindex="-1" role="dialog" id="modalHelpCOOP">
-		  <div class="modal-dialog modal-lg">
-		    <div class="modal-content">
-		      <!-- <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <div class="modal-title" id="modalText">
-		        	<h4><i class="fa fa-info-circle"></i> Aide</h4>
-		        </div>
-		      </div>
-		       -->
-		       <div class="modal-body padding-25">
-				<?php $this->renderPartial('../cooperation/pod/home', array("type"=>$type)); ?>
-		      </div>
-		      <div class="modal-footer">
-		      	<div id="modalAction" style="display:inline"></div>
-		        <button class="btn btn-default pull-right btn-sm margin-top-10 margin-right-10" data-dismiss="modal"> J'ai compris</button>
-		      </div>
-		    </div><!-- /.modal-content -->
-		  </div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->

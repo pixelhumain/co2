@@ -1,5 +1,8 @@
 
-		
+<?php if(!@$auth)
+		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], @$post["parentType"], @$post["parentId"]);
+?>
+
 <li class="submenucoop sub-rooms">
 	<?php if($auth){ ?>
 		<a href="javascript:dyFObj.openForm('room')" class="btn btn-link letter-green bold">
@@ -26,10 +29,6 @@
 
 <script type="text/javascript">
 	jQuery(document).ready(function() { 
-		$("#btn-update-coop").click(function(){
-			toastr.info(trad["processing"]);
-			uiCoop.getCoopData(contextData.type, contextData.id, "room");
-			uiCoop.startUI();
-		});
+		
 	});
 </script>

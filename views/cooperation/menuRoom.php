@@ -35,7 +35,7 @@
 	}
 
 	#menu-room .menuCoop .title-section{
-		padding: 6px 6px 6px 15px;
+		padding: 6px 6px 9px 15px;
 	}
 
 	#menu-room .menuCoop .title-section a{
@@ -73,7 +73,7 @@
 
 	#amendement-container{
 		position: fixed;
-		top: 56px;
+		top: 53px;
 		bottom: 0px;
 		right: 0px;
 		overflow-y: scroll;
@@ -268,6 +268,10 @@
 		max-width: 100%;
 	}
 
+	.menuCoop .btn-add{
+		display: inline !important;
+	}
+
 </style>
 
 <?php 
@@ -276,13 +280,15 @@
 		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], @$room["parentType"], @$room["parentId"]);
 	else if(@$post["parentType"])
 		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], @$post["parentType"], @$post["parentId"]);	
+	else
+		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], @$parentType, @$parentId);	
 
 	$thisType = @$room ? @$room["parentType"] : @$post["parentType"];
 ?>
 
 <div class="col-lg-12 col-md-12 col-sm-12 no-padding bg-white" id="coop-container">
 	
-	<?php if(!@$proposalList && !@$resolutionList && !@$actionList && !@$room){ ?>
+	<?php if(!@$proposalList && !@$resolutionList && !@$actionList && !@$room && @$status == "all"){ ?>
 		<div class="col-lg-12 col-md-12 col-sm-12" id="menu-room">
 			<?php $this->renderPartial('../cooperation/pod/home', array("type"=>$thisType)); ?>
 		</div>
@@ -352,14 +358,10 @@
 						<i class="fa fa-inbox"></i> 
 				  		<?php echo Yii::t("cooperation", "Proposals") ?>
 
-					  	<input type="text" class="inputSearchInMenuRoom pull-right form-input hidden-min hidden-xs" 
-					  			data-type-search="proposals" 
-					  			placeholder="<?php echo Yii::t("cooperation", "Search in proposals") ?>..." />
-
 				  		<?php 
 				  			if(@$post["type"] == Room::CONTROLLER && $auth){ 
 				  		?>
-							<a href="javascript:dyFObj.openForm('proposal')" class="letter-green pull-right btn-add">
+							<a href="javascript:dyFObj.openForm('proposal')" class="letter-green btn-add">
 						  		<i class="fa fa-plus-circle tooltips"  data-placement='top'  data-toogle='tooltips'
 						  			data-original-title="<?php echo Yii::t("cooperation", "Add proposal") ?>"></i> 
 						  		<span class="hidden-min hidden-sm"><?php echo Yii::t("cooperation", "Add proposal") ?></span>
@@ -370,6 +372,12 @@
 					  			<i class="fa fa-lock"></i>
 					  		</label>
 					  	<?php } ?>
+
+					  	<input type="text" class="inputSearchInMenuRoom pull-right form-input hidden-min hidden-xs" 
+					  			data-type-search="proposals" 
+					  			placeholder="<?php echo Yii::t("cooperation", "Search in proposals") ?>..." />
+
+				  		
 				  	</div>
 					
 
@@ -470,7 +478,7 @@
 							<?php } //end foreach ?>
 					<?php }else{ ?>
 							<li class="submenucoop sub-proposals col-lg-12 col-md-12 col-sm-12">
-								<i class="fa fa-ban"></i> <?php echo Yii::t("cooperation", "No proposal") ?>
+								<i class="fa fa-ban margin-left-15"></i> <?php echo Yii::t("cooperation", "No proposal") ?>
 							</li>
 					<?php } ?>
 
@@ -484,6 +492,10 @@
 					<div class="margin-top-25 title-section col-lg-12 col-md-12 col-sm-12">
 						<i class="fa fa-inbox"></i> 
 				  		<?php echo Yii::t("cooperation", "Resolutions") ?>
+
+				  		<input type="text" class="inputSearchInMenuRoom pull-right form-input hidden-min hidden-xs" 
+				  				data-type-search="resolutions" 
+					  			placeholder="<?php echo Yii::t("cooperation", "Search in resolution") ?>..." />
 				  	</div>
 					
 					<?php  	if(@$resolutionList)
@@ -497,6 +509,10 @@
 								  		</span>
 								  	</a>
 								</li>
+					<?php }else{ ?>
+							<li class="submenucoop sub-proposals col-lg-12 col-md-12 col-sm-12">
+								<i class="fa fa-ban margin-left-15"></i> <?php echo Yii::t("cooperation", "No resolution") ?>
+							</li>
 					<?php } ?>
 
 					<hr class="col-md-12 no-padding margin-bottom-25">
@@ -512,23 +528,24 @@
 					  	</a> -->
 						<i class="fa fa-inbox"></i> 
 				  		<?php echo Yii::t("cooperation", "Actions") ?>
-				  		
-				  		<input type="text" class="inputSearchInMenuRoom pull-right form-input hidden-min hidden-xs" 
-				  				data-type-search="actions" 
-					  			placeholder="<?php echo Yii::t("cooperation", "Search in actions") ?>..." />
-					  			
-				  		<?php 
-				  			if(@$post["type"] == Room::CONTROLLER && $auth){ ?>
-							  	<a href="javascript:dyFObj.openForm('action')" class="letter-green pull-right">
+
+				  		<?php if(@$post["type"] == Room::CONTROLLER && $auth){ ?>
+							  	<a href="javascript:dyFObj.openForm('action')" class="letter-green btn-add">
 							  		<i class="fa fa-plus-circle"></i> 
 							  		<span class="hidden-min hidden-sm"><?php echo Yii::t("cooperation", "Add action") ?></span>
 							  	</a>
-							<?php }elseif(@$post["type"] == Room::CONTROLLER){ ?>
+						<?php }elseif(@$post["type"] == Room::CONTROLLER){ ?>
 						  		<label class="text-black pull-right tooltips" 
 						  			   data-position="top" data-original-title="Devenez membre pour contribuer">
 						  			<i class="fa fa-lock"></i>
 						  		</label>
-							<?php } ?>
+						<?php } ?>
+
+				  		<input type="text" class="inputSearchInMenuRoom pull-right form-input hidden-min hidden-xs" 
+				  				data-type-search="actions" 
+					  			placeholder="<?php echo Yii::t("cooperation", "Search in actions") ?>..." />
+					  			
+				  		
 				  	</div>
 					
 					<?php   if(@$actionList)
@@ -564,7 +581,7 @@
 								</li>
 					<?php }else{ ?>
 							<li class="submenucoop sub-proposals col-lg-12 col-md-12 col-sm-12">
-								<i class="fa fa-ban"></i> <?php echo Yii::t("cooperation", "No action") ?>
+								<i class="fa fa-ban margin-left-15"></i> <?php echo Yii::t("cooperation", "No action") ?>
 							</li>
 					<?php } ?>
 

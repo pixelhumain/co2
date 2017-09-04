@@ -186,6 +186,13 @@ function bindButtonMenu(){
 		dyFObj.openForm(form, null, dataUpdate);
 	});
 
+	
+	$("#btn-update-coop").click(function(){
+		toastr.info(trad["processing"]);
+		uiCoop.getCoopData(contextData.type, contextData.id, "room");
+		uiCoop.startUI();
+	});
+
 	bindButtonOpenForm();
 
     $("#div-select-create").mouseleave(function(){

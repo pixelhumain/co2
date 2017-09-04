@@ -33,7 +33,7 @@ dynForm = {
             },
             name : dyFInputs.name("citoyens", {}, true),
 	        similarLink : dyFInputs.similarLink,
-	        email : dyFInputs.email(tradDynForm["mainemail"], "exemple@mail.com"),
+	        email : dyFInputs.text(tradDynForm["mainemail"], "exemple@mail.com"),
 	        role : dyFInputs.inputText(tradDynForm["contactrole"], tradDynForm["contactrole"]),
 	        phone : dyFInputs.inputText(tradDynForm["contactphone"], tradDynForm["contactphone"]),
             idContact : dyFInputs.inputHidden(),

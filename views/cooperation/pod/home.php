@@ -3,7 +3,7 @@
 		padding: 0 15px;
 	}
 </style>
-<div class="help-coop font-montserrat">
+<div class="help-coop font-montserrat margin-bottom-50">
 	<h2 class="letter-turq">Bienvenue dans votre espace coopératif</h2>
 	<hr>
 	<h3>A quoi ça sert ?</h3>

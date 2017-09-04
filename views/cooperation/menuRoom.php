@@ -533,7 +533,9 @@
 
 				  		<?php if(@$post["type"] == Room::CONTROLLER && $auth){ ?>
 							  	<a href="javascript:dyFObj.openForm('action')" class="letter-green btn-add">
-							  		<i class="fa fa-plus-circle"></i> 
+							  		<i class="fa fa-plus-circle tooltips"
+							  	  		data-placement='top'  data-toogle='tooltips'
+						  				data-original-title="<?php echo Yii::t("cooperation", "Add action") ?>"></i> 
 							  		<span class="hidden-min hidden-sm"><?php echo Yii::t("cooperation", "Add action") ?></span>
 							  	</a>
 						<?php }elseif(@$post["type"] == Room::CONTROLLER){ ?>

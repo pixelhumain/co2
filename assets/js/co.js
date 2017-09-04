@@ -2873,7 +2873,7 @@ var dyFObj = {
 							              	"<form id='ajaxFormModal' enctype='multipart/form-data'></form>"+
 							              	"</div>"+
 							              "</div>");
-	  	$('.modal-footer').hide();
+	  	$('#ajax-modal .modal-footer').hide();
 	  	$('#ajax-modal').modal("show");
 
 	  	dyFInputs.init();

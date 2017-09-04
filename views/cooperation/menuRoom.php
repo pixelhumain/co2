@@ -286,9 +286,11 @@
 	$thisType = @$room ? @$room["parentType"] : @$post["parentType"];
 ?>
 
-<div class="col-lg-12 col-md-12 col-sm-12 no-padding bg-white" id="coop-container">
+<div class="col-lg-12 col-md-12 col-sm-12 no-padding bg-white text-dark" id="coop-container">
 	
-	<?php if(!@$proposalList && !@$resolutionList && !@$actionList && !@$room && @$status == "all"){ ?>
+	<?php 
+		$menuCoopData = Cooperation::getCoopData(@$parentType, @$parentId, "room");
+		if(empty(@$menuCoopData["roomList"])){ ?>
 		<div class="col-lg-12 col-md-12 col-sm-12" id="menu-room">
 			<?php $this->renderPartial('../cooperation/pod/home', array("type"=>$thisType)); ?>
 		</div>
@@ -300,7 +302,7 @@
 				
 				<?php if(@$auth){ ?>
 					<button class="btn btn-default pull-right btn-sm margin-top-10 hidden-min tooltips" 
-							data-target="#modalDeleteRoom" data-toggle="modal" >
+							data-target="#modalDeleteRoom" data-toggle="modal" id="btn-open-modal-delete">
 						<i class="fa fa-trash"></i> Supprimer
 					</button>
 					<button class="btn btn-default pull-right btn-sm margin-top-10 hidden-min tooltips margin-right-5" 
@@ -602,42 +604,11 @@
 </div>
 
 
-<!-- ************ MODAL ********************** -->
-<div class="modal fade" tabindex="-1" role="dialog" id="modalDeleteRoom">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <div class="modal-title" id="modalText">
-        	<h4><i class="fa fa-times"></i> Supprimer un espace coopératif</h4>
-        </div>
-      </div>
-      <div class="modal-body">
-      	<h3 style="text-transform: none!important; font-weight: 200;" class="letter-turq">
-      		<i class="fa fa-hashtag"></i> <?php echo @$room["name"]; ?>
-      	</h3>
-      	<label>Etes-vous sur de vouloir supprimer cet espace coopératif ?</label><br>
-      	<small class="text-red">Toutes les propositions, résolutions, et actions de cet espace seront supprimés définitivements.</small>
-      </div>
-      <div class="modal-footer">
-      	<div id="modalAction" style="display:inline"></div>
-        <button class="btn btn-danger pull-right btn-sm margin-top-10" 
-				id="btn-delete-room" data-placement="bottom" 
-				data-original-title="supprimer l'espace : <?php echo @$room["name"]; ?>"
-				data-id-room="<?php echo @$room["_id"]; ?>">
-			<i class="fa fa-trash"></i> Oui, supprimer cet espace
-		</button>
-		<button class="btn btn-default pull-right btn-sm margin-top-10 margin-right-10" data-dismiss="modal"> Annuler</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
 
 
 <script type="text/javascript">
 	var currentRoomId = "<?php echo @$room["_id"] ? $room["_id"] : ""; ?>";
+	var currentRoomName = "<?php echo @$room["name"] ? $room["name"] : ""; ?>";
 
 	console.log("currentRoomId", currentRoomId);
 
@@ -647,7 +618,14 @@
 
 		});
 		
-		$("#btn-delete-room").click(function(){
+		$("#btn-open-modal-delete").off().click(function(){
+			console.log("currentRoomId", currentRoomId);
+			console.log("currentRoomName", currentRoomName);
+			$("#modalDeleteRoom #btn-delete-room").attr("data-id-room", currentRoomId);
+			$("#modalDeleteRoom #space-name").html(currentRoomName);
+		});
+
+		$("#btn-delete-room").off().click(function(){
 			idRoom = $(this).data("id-room");
 			console.log("idRoom", idRoom);
 			uiCoop.deleteByTypeAndId("rooms", idRoom);

@@ -445,7 +445,7 @@
 		</div><!-- /.modal -->
 	    
 
-<!-- ************ MODAL ********************** -->
+		<!-- ************ MODAL HELP COOP ********************** -->
 		<div class="modal fade" tabindex="-1" role="dialog" id="modalHelpCOOP">
 		  <div class="modal-dialog modal-lg">
 		    <div class="modal-content">
@@ -467,6 +467,42 @@
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 		
+
+		<!-- ************ MODAL DELETE ********************** -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modalDeleteRoom">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		        	<span aria-hidden="true">&times;</span>
+		        </button>
+		        <div class="modal-title" id="modalText">
+		        	<h4><i class="fa fa-times"></i> Supprimer un espace coopératif</h4>
+		        </div>
+		      </div>
+		      <div class="modal-body">
+		      	<h3 style="text-transform: none!important; font-weight: 200;" class="letter-turq">
+		      		<i class="fa fa-hashtag"></i> <span id="space-name"><?php echo @$room["name"]; ?></span>
+		      	</h3>
+		      	<label>Etes-vous sur de vouloir supprimer cet espace coopératif ?</label><br>
+		      	<small class="text-red">Toutes les propositions, résolutions, et actions de cet espace seront supprimés définitivements.</small>
+		      </div>
+		      <div class="modal-footer">
+		      	<div id="modalAction" style="display:inline"></div>
+		        <button class="btn btn-danger pull-right btn-sm margin-top-10" 
+						id="btn-delete-room" data-placement="bottom" 
+						data-dismiss="modal"
+						data-original-title="supprimer l'espace : <?php echo @$room["name"]; ?>"
+						data-id-room="<?php echo @$room["_id"]; ?>">
+					<i class="fa fa-trash"></i> Oui, supprimer cet espace
+				</button>
+				<button class="btn btn-default pull-right btn-sm margin-top-10 margin-right-10" data-dismiss="modal"> Annuler</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+
 
 	<!-- </div> -->
 

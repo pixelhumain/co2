@@ -86,7 +86,8 @@
 			"notif" : "chatNotifs",
 			"icon" : "comments", 
 			"mainTitle" : "<span class='text-red'>CHAT with your communities</span>",
-			"removeAfterLoad" : true 
+			"removeAfterLoad" : true, 
+			"emptyContextData" : false
 		},
 
 		"#page": {

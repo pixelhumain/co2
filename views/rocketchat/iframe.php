@@ -55,9 +55,8 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 			mylog.info("xxxxxxxxxxxxxx UNREAD ","<?php echo Yii::app()->session["loginToken"]; ?>", e.data.eventName,e.data.data);
 			//toastr.info("unread-changed :: "+e.data.data);
 			
-			if(e.data.data)
 				 $(".chatNotifs").html(e.data.data);
-			else {
+			/*else {
 				//can be when messages arrives, like notifiactions
 				//or disconnect so forcing reconnect
 				//alert("unread-changed :: relogin");
@@ -67,12 +66,12 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 					  	token: '<?php echo Yii::app()->session["loginToken"]; ?>' }, '*');
 						rcObj.token = '<?php echo Yii::app()->session["loginToken"]; ?>';
 				}, 500);
-			}
+			}*/
 
 		}
 
 		if( typeof e.data.eventName == "relogin" ){
-			toastr.info(">>>>>>>>>>> relogin");
+			//toastr.info(">>>>>>>>>>> relogin");
 				document.querySelector('iframe').contentWindow.postMessage({
 					  externalCommand: 'login-with-token',
 					  token: '<?php echo Yii::app()->session["loginToken"]; ?>' }, '*');
@@ -86,7 +85,7 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 			//toastr.error("status changed : "+e.data.data);	
 		}
 
-		if(e.data.eventName=="unread-changed-by-subscription" && ( e.data.data.name == contextData.type+"_"+slugify(contextData.name) || e.data.data.name == contextData.username )  ){
+		if(e.data.eventName=="unread-changed-by-subscription" && ( contextData && ( e.data.data.name == contextData.type+"_"+slugify(contextData.name) ||  e.data.data.name == contextData.username ) ) ){
 			
 			if(e.data.data && e.data.data.unread && e.data.data.unread > 0){
 				console.info("xxxxxxxxxxxxxx unread-changed-by-subscription ");
@@ -113,7 +112,7 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 	}
 </style>
 
-<iframe id="rc" src="https://chat.communecter.org<?php echo $embedPath ?>" 
+<iframe id="rc" src="https://chat.communecter.org<?php //echo $embedPath ?>" 
 		frameborder="0" class="iframe-rocketchat">
 </iframe>
 

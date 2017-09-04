@@ -226,15 +226,19 @@
 		  <?php } ?>
 
 		  <?php if(@Yii::app()->session["userId"])
-	  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
+	  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition)) ) || 
 	  			($type==Person::COLLECTION) ||
-	  			(Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"])))
+	  			//admins can create rooms
+	  			( Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) ) ||
+	  			//simple members can join only when admins had created
+	  			( @$element["hasRC"] && Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"])) )
 	  			{ 
 	  				//todo : elements members of
 	  				$loadChat = $element["name"];
 	  				//people have pregenerated rooms so allways available 
 	  				$hasRC = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "true" : "false";
 	  				$canEdit = ( (@$edit && $edit) || (@$openEdition && $openEdition) ) ? "true" : "false";
+	  				//Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) );
 	  				if($type == Person::COLLECTION)
 	  				{
 	  				 	$loadChat = (string)$element["username"];
@@ -245,9 +249,9 @@
 	  	  ?>
 		  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
 		  		  id="open-rocketChat" style="border-right:0px!important;">
-		  		<i class="fa fa-comments"></i> Messagerie
+		  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
 		  </button>
-		  <span class="elChatNotifs topbar-badge badge animated bounceIn badge-warning"></span>
+		  
 		  <?php } ?>
 
 

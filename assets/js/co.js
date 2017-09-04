@@ -829,7 +829,10 @@ var urlCtrl = {
 		currentUrl = hash;
 		allReadyLoad = true;
 		CoAllReadyLoad = true;
-		contextData = null;
+		if( typeof urlCtrl.loadableUrls[hash] == "undefined" || 
+			typeof urlCtrl.loadableUrls[hash].emptyContextData == "undefined" || 
+			urlCtrl.loadableUrls[hash].emptyContextData == true )
+			contextData = null;
 
 		$(".my-main-container").off()
 							   .bind("scroll", function () {shadowOnHeader()})
@@ -838,7 +841,6 @@ var urlCtrl = {
 		$(".searchIcon").removeClass("fa-file-text-o").addClass("fa-search");
 		searchPage = false;
 		
-
 		//alert("urlCtrl.loadByHash"+hash);
 
 	    mylog.warn("urlCtrl.loadByHash",hash,back);

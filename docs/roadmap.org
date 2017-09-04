@@ -251,13 +251,19 @@ Liste des notifications déjà lues => #370 #453
       [X] mode module : lbh('#chat')
       [X] mode modal on elements : $("#rocketchatModal").modal('show')
       [X] create group channel by Name 
+      [X] creer un user admin username "communecter" ou corail coralali coAdmin
       [X] on orga page , btn > creates and opens RC group (private channel)
-        [ ] check group existance before creation , otherwise just invite
+        [X] groups always created by coAdmin 
+        [X] first user creates the room , but if another user tries to join it jsut does go , which doesn't work on groups 
+          [X] only Admins can create rooms
+          [X] if exists , check user list of channels, then decide go or invite process 
+        [X] check group existance before creation , otherwise just invite
           [X] on demand : either we put a property on an element describing if corresponding exists or not 
->>>>>>>>[ ] only members, have access 
-          [ ] testing if non member has access to 
->>>>>>>>[ ] after create invite all members to chat and add notification
->>>>>>>>[ ] check anymember can start the chat
+          [X] only members, have access 
+          [X] testing if non member has access to 
+>>>>>>>>[ ] after create invite all members to chat by notification
+>>>>>>>>[ ] check anymember can join the chat 
+        [ ] only admins can start a group chat
       [ ] manage chat module color according to login state based on events
       [ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
       [X] apply to projects and events
@@ -269,10 +275,10 @@ Liste des notifications déjà lues => #370 #453
       [X] how to use live chat :?layout=embedded
       [X] preload iframe after login 
       [X] getting chat notifictions [[https://rocket.chat/docs/developer-guides/iframe-integration/events]]
+      [ ] mutualiser les import RocketChat
       ** test 
         [ ] my chat shows fullscreen rocket with all activated channels
         [ ] an elements chat > show only the elements chat
-        [ ] should members create new channels in their chat
         [ ] person changing username : changement de nom d'user d'un coté, il faut viré coté rocket chat profil et avatar pour pas pouvoir changer de nom d'user email avatar, et coté CO2 si changement appelle a /api/v1/users.update avec data.username data.email data.name https://rocket.chat/docs/developer-guides/rest-api/users/update
       ** batch script
 >>>>>>>>>[ ] genéré tout les compte RC pour les comptes existant sinon ca peut planter les demandes chat direct
@@ -286,6 +292,7 @@ Liste des notifications déjà lues => #370 #453
         [ ] aprés abonnement ou devient member > show chat btn
         [ ] login broken when loosing to chat : don't make it mandatory, if no chat, hide btn
         [ ] on #chat reload
+        [ ] check and validate if element really isOpen on Controller side , currently only JS var passed on
       ** use cases 
         [X] gloabal menu : module chat btn opens , all my chat rooms 
         [X] any element page : open the elements channel 
@@ -410,8 +417,12 @@ Liste des notifications déjà lues => #370 #453
       [ ] lazyload 
   ** @Damien 
     [ ] coopedia
+      [ ] sortir comme une appli 
       [ ] etat pour mettre en prod ?
-    [ ] opendata sources 
+      [ ] orga TER
+    [ ] tags 
+    [ ] converter RSS + jsonFeed
+    [ ] opendata sources + interop
       [ ] connecter des scripts api 
         [ ] scope geo
         [ ] thematique ou tag 

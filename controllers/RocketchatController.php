@@ -24,7 +24,7 @@ class RocketchatController extends CommunecterController {
 
 
 	public function actionIndex() {
-		if ( @Yii::app()->session["userId"] )
+		if ( @Yii::app()->session["userId"]  && Yii::app()->params['rocketchatEnabled'] )
 			$this->renderPartial("iframe");
 		else {
 			Yii::app()->session["goto"] = "/rocketchat";
@@ -174,8 +174,8 @@ class RocketchatController extends CommunecterController {
 		// login as the main admin user
 		echo "<br/>***************LOGIN **********************<br/>";
 		$admin = new \RocketChat\User(Yii::app()->params['rocketAdmin'], Yii::app()->params['rocketAdminPwd']);
-		//$admin = new \RocketChat\User("openatlas974@gmail.com", "xxx");
-		//$admin = new \RocketChat\User("clement.damiens@gmail.com", "xxxx");
+		//$admin = new \RocketChat\User("openatlas974@gmail.com", "2210open");
+		//$admin = new \RocketChat\User("clement.damiens@gmail.com", "blaiross");
 
 		//5715348040bb4e873d1d650b
 		if( $admin->login() ) {

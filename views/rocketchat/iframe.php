@@ -31,7 +31,6 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 				  externalCommand: 'go',
 				  path: '<?php echo $path ?>?layout=embedded'}, '*');
 			<?php } ?>
-
 		} 
 		
 		//fired on direct conversation or when pinged in a channel

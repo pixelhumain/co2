@@ -174,8 +174,8 @@ class RocketchatController extends CommunecterController {
 		// login as the main admin user
 		echo "<br/>***************LOGIN **********************<br/>";
 		$admin = new \RocketChat\User(Yii::app()->params['rocketAdmin'], Yii::app()->params['rocketAdminPwd']);
-		//$admin = new \RocketChat\User("openatlas974@gmail.com", "2210open");
-		//$admin = new \RocketChat\User("clement.damiens@gmail.com", "blaiross");
+		//$admin = new \RocketChat\User("openatlas974@gmail.com", "xxx");
+		//$admin = new \RocketChat\User("clement.damiens@gmail.com", "xxxx");
 
 		//5715348040bb4e873d1d650b
 		if( $admin->login() ) {

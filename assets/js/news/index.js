@@ -419,19 +419,26 @@ function modifyNews(idNews,typeNews){
 						newNews.media.content.videoLink=$("#resultsUpdate .video_link_value").val();
 				}
 				else if($("#resultsUpdate .type").val()=="gallery_images"){
-					newNews.media.countImages=$("#resultsUpdate .docsId").length,
-					newNews.media.images=[];
-					$(".docsId").each(function(){
-						newNews.media.images.push($(this).val());	
-					});
+					newNews.media.countImages=$("#resultsUpdate .docsId").length;
+					if(newNews.media.countImages>0){
+						newNews.media.images=[];
+						$(".docsId").each(function(){
+							newNews.media.images.push($(this).val());	
+						});
+					}else
+						news.media="unset";
 				}else{
-					newNews.media.countFiles=$("#resultsUpdate .docsId").length,
-					newNews.media.files=[];
-					$(".docsId").each(function(){
-						newNews.media.files.push($(this).val());	
-					});
+					newNews.media.countFiles=$("#resultsUpdate .docsId").length;
+					if(newNews.media.countFiles>0){
+						newNews.media.files=[];
+						$(".docsId").each(function(){
+							newNews.media.files.push($(this).val());	
+						});
+					}else
+						newNews.media="unset";		
 				}
-			}
+			}else
+				newNews.media="unset";
 			if ($("#tagsUpdate").val() != ""){
 				newNews.tags = $("#tagsUpdate").val().split(",");	
 			}
@@ -515,83 +522,19 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
 	//$(idTextArea).css('height', "34px");
 	//$("#container-txtarea-news-"+idNews).css('height', "34px");
 	mentionsInit.get(idTextArea);
-	/*$(idTextArea).mentionsInput({
-    onDataRequest:function (mode, query, callback) {
-        if(mentionsInit.stopMention)
-          return false;
-      	//$.each(data.mentions,function(e,v){
-      	//	mentionsContact.push(v);
-      	//});
-        var data = mentionsContact;
-        data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
-      callback.call(this, data);
-
-        var search = {"search" : query};
-        $.ajax({
-        type: "POST",
-            url: baseUrl+"/"+moduleId+"/search/searchmemberautocomplete",
-            data: search,
-            dataType: "json",
-            success: function(retdata){
-              if(!retdata){
-                toastr.error(retdata.content);
-              }else{
-                //mylog.log(retdata);
-                data = [];
-                for(var key in retdata){
-                  for (var id in retdata[key]){
-                    avatar="";
-                    if(retdata[key][id].profilThumbImageUrl!="")
-                      avatar = baseUrl+retdata[key][id].profilThumbImageUrl;
-                    object = new Object;
-                    object.id = id;
-                    object.name = retdata[key][id].name;
-                    object.avatar = avatar;
-                    object.type = key;
-                    var findInLocal = _.findWhere(mentionsContact, {
-                  name: retdata[key][id].name, 
-                  type: key
-                }); 
-                if(typeof(findInLocal) == "undefined")
-                  mentionsContact.push(object);
-                }
-                }
-                data=mentionsContact;
-                //mylog.log(data);
-              data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
-            callback.call(this, data);
-            mylog.log(callback);
-            }
-        } 
-      })
-    }//,
-    //"defaultValue":data.mentions
-    });*/
 	$(".removeMediaUrl").click(function(){
         $trigger=$(this).parents().eq(1).find(idTextArea);
 	    $(idTextArea).parents().eq(1).find("#resultsUpdate").empty().hide();
-	    //$trigger.trigger("input");
 	});
-							
+	$(".deleteDoc").click(function(){
+		$(this).parent().remove();
+		if($(".deleteDoc").length == 0)
+			$("#resultsUpdate").empty().hide();
+	});
 	autosize($(idTextArea));
 	textNews=data.text;
-	/*if(typeof data.mentions){
-		$.each(data.mentions, function( index, value ){
-		//	$(idTextArea).mentionsInput('addMention', value.name);
-	   		mentionsContactarray = textNews.split(value.value);
-	   		mylog.log(array);
-	   		textNews=array[0]+
-	   					"@"+value.name+
-	   				array[1];
-	   					
-		});
-	}*/
 	$(idTextArea).val(textNews);
-	/*if(typeof data.mentions){
-		$.each(data.mentions, function( index, value ){
 	
-	$(idTextArea).mentionsInput("addMention",value);
-}); }*/
 	$(idTextArea).mentionsInput("update", data.mentions);
 	$(idTextArea).on('keyup ', function(e){
 		var heightTxtArea = $(idTextArea).css("height");
@@ -942,7 +885,6 @@ function getUrlContent(){ console.log("getUrlContent getUrlContent");
                 $("#results").hide();
                 $("#loading_indicator").show(); //show loading indicator image
                 //ajax request to be sent to extract-process.php
-                //alert(extracted_url);
                 lastUrl=extracted_url;
                 $.ajax({
 					url: baseUrl+'/'+moduleId+"/news/extractprocess",
@@ -972,79 +914,7 @@ function getUrlContent(){ console.log("getUrlContent getUrlContent");
                 });
 			}
         }
-    }); /*.keydown(function( event ) {
-		if ( event.which == 192 ) {
-			peopleReference=true;
-  		}
-  		if(peopleReference == true){
-	  		allValue=getUrl.val();
-	  		search=allValue.split("@").pop();
-	  		var data = {"search" : search,"searchMode":"personOnly"};
-	  		$.ajax({
-				type: "POST",
-		        url: baseUrl+"/"+moduleId+"/search/searchmemberautocomplete",
-		        data: data,
-		        dataType: "json",
-		        success: function(data){
-		        	if(!data){
-		        		toastr.error(data.content);
-		        	}else{
-		        		
-						str = "";
-						mylog.log(data);
-						if(data.citoyens.length != 0){
-							$("#dropdown_search").show();
-				 			$.each(data, function(key, value) {
-				 				
-				 				$.each(value, function(i, v){
-				 					var imageSearch = '<i class="fa fa-user fa-2x"></i>';
-				 					var logoSearch = "";
-				 					mylog.log(v);
-				 					if("undefined" != typeof v.profilThumbImageUrl && v.profilThumbImageUrl!=""){
-				 						var imageSearch = '<img alt="image" class="" src="'+baseUrl+v.profilThumbImageUrl+'" style="height:25px;padding-right:5px;"/>'
-				 					}
-				  					str += '<li class="li-dropdown-scope"><a href="javascript:setReferenceInNews(\''+v.id+'\',\''+v.name+'\',\''+v.email+'\',\''+key+'\')">'+imageSearch+' '+v.name +'</a></li>';
-				  				});
-				  			}); 
-				  			$("#dropdown_search").html(str);
-				  		} else{
-					  		$("#dropdown_search").hide();
-		        		peopleReference=false;
-
-				  		}
-		  			}
-				}	
-			})*/
-	  		/*getUrl.select2({
-				  ajax: {
-				    url: "https://api.github.com/search/repositories",
-				    dataType: 'json',
-				    delay: 250,
-				    data: search
-				    },
-				    processResults: function (data, params) {
-				      // parse the results into the format expected by Select2
-				      // since we are using custom formatting functions we do not need to
-				      // alter the remote JSON data, except to indicate that infinite
-				      // scrolling can be used
-				      params.page = params.page || 1;
-				
-				      return {
-				        results: data.items,
-				        pagination: {
-				          more: (params.page * 30) < data.total_count
-				        }
-				      };
-				    },
-				    cache: true
-				  },
-				  escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-				  minimumInputLength: 1,
-				  templateResult: formatRepo, // omitted for brevity, see the source of this page
-				  templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
-				});*/
-  		//}
-  	//});
+    });
 }
 function getMediaHtml(data,action,idNews){
 	if(typeof(data.images)!="undefined"){
@@ -1479,8 +1349,8 @@ function getMediaImages(o,newsId,authorId,targetName,edit){
 	html="";
 	if(typeof edit != "undefined" && edit=="update"){
 		for(var i in o.images){
-			html+="<div class='newImageAlbum'><img src='"+baseUrl+"/"+uploadUrl+"communecter/"+o.images[i].folder+"/"+o.images[i].name+"' style='width:75px; height:75px;'/>"+
-		       	"<a href='javascript:;' class='btn-red text-white deleteDoc' onclick='deleteDocFromNews(\'"+o.images[i]._id.$id+"\',\'"+edit+"\')'><i class='fa fa-trash'></i></a>"+
+			html+="<div class='updateImageNews'><img src='"+baseUrl+"/"+uploadUrl+"communecter/"+o.images[i].folder+"/"+o.images[i].name+"' style='width:75px; height:75px;'/>"+
+		       	"<a href='javascript:;' class='btn-red text-white deleteDoc' onclick='deleteDocFromNews(\'"+o.images[i]._id.$id+"\',\'"+edit+"\')'><i class='fa fa-times text-dark'></i></a>"+
 					"<input type='hidden' class='docsId' value='"+o.images[i]._id.$id+"'></div>";
 		}
 		return html;
@@ -1558,8 +1428,8 @@ function getMediaFiles(o,newsId, edit){
 		path=baseUrl+"/"+uploadUrl+"communecter/"+o.files[i].folder+"/"+o.files[i].name;
 		html+="<div class='col-md-12 padding-5 shadow2 margin-top-5'>"+
 			"<a href='"+path+"' target='_blank'>"+documents.getIcon(o.files[i].contentKey)+" "+o.files[i].name+"</a>";
-			if(typeof edit != "undefined" && edit){
-				html+="<a href='javascript:;' class='btn-red text-white deleteDoc' onclick='deleteDocFromNews(\'"+o.files[i]._id.$id+"\',\'"+edit+"\')'><i class='fa fa-trash'></i></a>"+
+			if(typeof edit != "undefined" && edit=="update"){
+				html+="<a href='javascript:;' class='btn-red text-white deleteDoc' onclick='deleteDocFromNews(\'"+o.files[i]._id.$id+"\',\'"+edit+"\')'><i class='fa fa-times text-dark'></i></a>"+
 					"<input type='hidden' class='docsId' value='"+o.files[i]._id.$id+"'>";
 			}
 		html +="</div>";

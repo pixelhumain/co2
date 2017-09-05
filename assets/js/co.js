@@ -1878,7 +1878,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 	        var match_url = /\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i;
 	        if (match_url.test(getUrl.val())) 
 	        {
-		        mylog.log(getUrl.val().match(match_url));
+		        //mylog.log(getUrl.val().match(match_url));
 		        if(lastUrl != getUrl.val().match(match_url)[0]){
 			       // alert(lastUrl+"///"+getUrl.val().match(match_url)[0]);
 		        	var extracted_url = getUrl.val().match(match_url)[0]; //extracted first url from text filed
@@ -1886,7 +1886,6 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 	                $this.parents().eq(nbParent).find(".loading_indicator").show(); //show loading indicator image
 
 	                //ajax request to be sent to extract-process.php
-	                alert(extracted_url);
 	                lastUrl=extracted_url;
 	                extracted_url_send=extracted_url;
 	                if(extracted_url_send.indexOf("http")<0)

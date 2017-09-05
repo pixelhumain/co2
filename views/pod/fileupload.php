@@ -30,9 +30,9 @@
 					</a>
 				</div>
 				<div class="photoUploading" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_photoUploading">
-					<div class="center" style="text-align: center;">
+					<!---<div class="center" style="text-align: center;">
 						<i class="fa fa-spinner fa-spin fa-5x"></i>
-					</div>
+					</div>-->
 				</div>
 				<?php } ?>
 			</div>

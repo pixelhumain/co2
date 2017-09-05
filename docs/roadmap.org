@@ -111,6 +111,10 @@ Liste des notifications déjà lues => #370 #453
     @pitonStLeu, pouvoir référencer une commune
   [ ] baniere ou image : remerciement, cité un auteur pour la réutilisation 
   c'est le minimum dans le copytalisme 
+  ** Event communication 
+    [ ] comunicate an email like event@co.org anyone can add it to a mailing list 
+    the event would be added by someone 
+    [ ] in time this mail box could even become a task box that anyone could act upon
   ** Open Science 
     [ ] photo-identification collaborative : 
       - créer group 
@@ -118,6 +122,17 @@ Liste des notifications déjà lues => #370 #453
       - Btn sameAs : open Search Box + find Element + choose name 
       - Outside src : en regardant les photos, video de qlqun (FB, flickR...) 
         > POI : #baleineREunion + url 
+  ** dynsurvey proposal 
+    - dynForm & dynSurvey Builder
+    - room > create survey as proposal 
+    - instead of voting, people will answer a answer
+    - each question can be of certain type 
+      - texte 
+      - values
+        - fixed
+        - percentage
+        - 
+
 * ************************************************************    
 * Version C0.21.8  : en cours
 8 correpsond le nb de nouvelle fonctionalité
@@ -205,6 +220,7 @@ Liste des notifications déjà lues => #370 #453
     [ ] SEO optim
    
   ** @Tib
+    [ ] search fork the world > opens a preview POI > should have the parent link
     [ ] verifier les qrcode 
     [ ]  NA : supprimer
       http://www.notragora.com/#element.detail.type.organizations.id.59020d90dd04528a627f4fb8 et http://www.notragora.com/#element.detail.type.organizations.id.5937fbe5dd045296372263a2 
@@ -215,7 +231,7 @@ Liste des notifications déjà lues => #370 #453
       - avec un reversement a chque commun utilisé
     [ ] Chloe utilisation du conservatoire 
     [ ] add filters in top bar mapEnd , near username
-    [ ] add delete to image upload 
+    [ ] add delete to image upload  [[https://docs.fineuploader.com/quickstart/02-setting_options.html]]
       - on Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté 
     * Finir module Tiers Lieux 
       [ ] on events TL connecté url to visio 
@@ -235,16 +251,24 @@ Liste des notifications déjà lues => #370 #453
       [X] mode module : lbh('#chat')
       [X] mode modal on elements : $("#rocketchatModal").modal('show')
       [X] create group channel by Name 
+      [X] creer un user admin username "communecter" ou corail coralali coAdmin
       [X] on orga page , btn > creates and opens RC group (private channel)
-        [ ] check group existance before creation , otherwise just invite
+        [X] groups always created by coAdmin 
+        [X] first user creates the room , but if another user tries to join it jsut does go , which doesn't work on groups 
+          [X] only Admins can create rooms
+          [X] if exists , check user list of channels, then decide go or invite process 
+        [X] check group existance before creation , otherwise just invite
           [X] on demand : either we put a property on an element describing if corresponding exists or not 
->>>>>>>>[ ] only members, have access 
-          [ ] testing if non member has access to 
->>>>>>>>[ ] after create invite all members to chat and add notification
->>>>>>>>[ ] check anymember can start the chat
+          [X] only members, have access 
+          [X] testing if non member has access to 
+>>>>>>>>[ ] after create invite all members to chat by notification
+>>>>>>>>[ ] check anymember can join the chat 
+>>>>>>>>[ ] only admins can start a group chat
       [ ] manage chat module color according to login state based on events
+      [ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
       [X] apply to projects and events
       [X] on CO-login get RC loginToken
+      [ ] don't show chat if no loginToken
       [X] integrate into CO 
         [X] on element pages as modal 
         [X] as a module in top menu 
@@ -252,19 +276,24 @@ Liste des notifications déjà lues => #370 #453
       [X] how to use live chat :?layout=embedded
       [X] preload iframe after login 
       [X] getting chat notifictions [[https://rocket.chat/docs/developer-guides/iframe-integration/events]]
+      [ ] mutualiser les import RocketChat
       ** test 
         [ ] my chat shows fullscreen rocket with all activated channels
         [ ] an elements chat > show only the elements chat
-        [ ] should members create new channels in their chat
         [ ] person changing username : changement de nom d'user d'un coté, il faut viré coté rocket chat profil et avatar pour pas pouvoir changer de nom d'user email avatar, et coté CO2 si changement appelle a /api/v1/users.update avec data.username data.email data.name https://rocket.chat/docs/developer-guides/rest-api/users/update
       ** batch script
 >>>>>>>>>[ ] genéré tout les compte RC pour les comptes existant sinon ca peut planter les demandes chat direct
       ** bugs
-        [ ] creating projects , name many words space seperated
+        [ ] change name > doesn't open the good room :(
+          [ ] gérer le cas de plusieurs orga ave cle meme nom 
+        [ ] ?layout isn't always applied on elements chats
+        [ ] chat notif decrement from 2 stays on 1
+        [ ] creating projects , with ' in name
         [ ] project chat > open > click close
         [ ] aprés abonnement ou devient member > show chat btn
         [ ] login broken when loosing to chat : don't make it mandatory, if no chat, hide btn
         [ ] on #chat reload
+        [ ] check and validate if element really isOpen on Controller side , currently only JS var passed on
       ** use cases 
         [X] gloabal menu : module chat btn opens , all my chat rooms 
         [X] any element page : open the elements channel 
@@ -329,9 +358,12 @@ Liste des notifications déjà lues => #370 #453
   [ ] visualisation de la banque des besoins =>#1260 + #490
   [ ] msg mail sur un groupe sur les @ dans les news, et @all (send message on notify someone) 
     [ ] create notification for @all
-  [ ] Rework @ for same working mobile [#192]
+  [ ] NEWS
+    [ ]Rework @ for same working mobile [#192]
     [ ] générer des pseudoUnique pour le mention et aussi pour générer de jolie url communecter.org/livincoop
-  [ ] Add # in news text
+    [ ] Add # in news text
+    [ ] Show who like the news and separte action and views pod comment/like/unlike
+    [X] Template gallerie files
   [ ] Integrating notifications of dda with @tango
   [X] News design of laoding
   [X] Translate website (get spanish trad from poupou or others)
@@ -391,8 +423,12 @@ Liste des notifications déjà lues => #370 #453
       [ ] lazyload 
   ** @Damien 
     [ ] coopedia
+      [ ] sortir comme une appli 
       [ ] etat pour mettre en prod ?
-    [ ] opendata sources 
+      [ ] orga TER
+    [ ] tags 
+    [ ] converter RSS + jsonFeed
+    [ ] opendata sources + interop
       [ ] connecter des scripts api 
         [ ] scope geo
         [ ] thematique ou tag 

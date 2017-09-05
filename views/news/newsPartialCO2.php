@@ -330,7 +330,7 @@
           else if (v.media.type=="gallery_images")
             media=getMediaImages(v.media,e,v.author.id,v.target.name);
           else if (v.media.type=="gallery_files")
-            media=getMediaFiles(v.media,e,v.author.id,v.target.name);
+            media=getMediaFiles(v.media,e);
           $("#result"+e).html(media);
         }
         bindLBHLinks();

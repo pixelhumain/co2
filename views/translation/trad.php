@@ -431,6 +431,7 @@ var tradDynForm = {
 	"newsvisibility":"<?php echo Yii::t("form","Visibility of the news") ?>",
 	"writenewshere":"<?php echo Yii::t("form","Write your news here") ?>",
 	"shareit":"<?php echo Yii::t("common","Share") ?>",
+	"wouldbecomeadmin":"<?php echo Yii::t("common","Would you like to be an administrator") ?>",
 
 };
 

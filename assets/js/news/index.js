@@ -360,8 +360,17 @@ function modifyNews(idNews,typeNews){
 	 	message += "<div id='container-txtarea-news-"+idNews+"' class='updateMention'>";
 		message += 	"<textarea id='textarea-edit-news"+idNews+"' class='form-control newsContentEdit newsTextUpdate get-url-input' placeholder='modifier votre message'>"+commentContent+"</textarea>"+
 				   	"<div id='resultsUpdate' class='bg-white results col-sm-12'>";
-				   	if(typeof updateNews[idNews]["media"] != "undefined")
-				   		message += getMediaCommonHtml(updateNews[idNews]["media"],"save");
+				   	if(typeof updateNews[idNews]["media"] != "undefined"){
+				   		if(updateNews[idNews]["media"]["type"]=="url_content")
+				   			message += getMediaCommonHtml(updateNews[idNews]["media"],"save");
+				   		else if(updateNews[idNews]["media"]["type"]=="gallery_files"){
+				   				message += getMediaFiles(updateNews[idNews]["media"],idNews, "update");
+				   			message += "<input type='hidden' class='type' value='gallery_files'>";
+				   		}else{
+				   			message += getMediaImages(updateNews[idNews]["media"], idNews,null,null, "update");
+				   			message += "<input type='hidden' class='type' value='gallery_images'>";
+				   		}
+				   	}
 		message +="</div>"+
 					'<div class="form-group tagstags col-md-12 col-sm-12 col-xs-12">'+
           				'<input id="tagsUpdate" type="" data-type="select2" name="tags" placeholder="#Tags" value="" style="width:100%;">'+       
@@ -394,8 +403,8 @@ function modifyNews(idNews,typeNews){
     		newNews.idNews = idNews;
 			if($("#resultsUpdate").html() != ""){
 				newNews.media=new Object;	
+				newNews.media.type=$("#resultsUpdate .type").val();
 				if($("#resultsUpdate .type").val()=="url_content"){
-					newNews.media.type=$("#resultsUpdate .type").val();
 					if($("#resultsUpdate .name").length)
 						newNews.media.name=$("#resultsUpdate .name").val();
 					if($("#resultsUpdate .description").length)
@@ -409,12 +418,17 @@ function modifyNews(idNews,typeNews){
 					if($("#resultsUpdate .video_link_value").length)
 						newNews.media.content.videoLink=$("#resultsUpdate .video_link_value").val();
 				}
-				else{
-					newNews.media.type=$("#resultsUpdate .type").val(),
-					newNews.media.countImages=$("#resultsUpdate .count_images").val(),
+				else if($("#resultsUpdate .type").val()=="gallery_images"){
+					newNews.media.countImages=$("#resultsUpdate .docsId").length,
 					newNews.media.images=[];
-					$(".imagesNews").each(function(){
+					$(".docsId").each(function(){
 						newNews.media.images.push($(this).val());	
+					});
+				}else{
+					newNews.media.countFiles=$("#resultsUpdate .docsId").length,
+					newNews.media.files=[];
+					$(".docsId").each(function(){
+						newNews.media.files.push($(this).val());	
 					});
 				}
 			}
@@ -500,9 +514,10 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
 	getMediaFromUrlContent(idTextArea,"#resultsUpdate",1);
 	//$(idTextArea).css('height', "34px");
 	//$("#container-txtarea-news-"+idNews).css('height', "34px");
-	$(idTextArea).mentionsInput({
+	mentionsInit.get(idTextArea);
+	/*$(idTextArea).mentionsInput({
     onDataRequest:function (mode, query, callback) {
-        if(stopMention)
+        if(mentionsInit.stopMention)
           return false;
       	//$.each(data.mentions,function(e,v){
       	//	mentionsContact.push(v);
@@ -549,9 +564,9 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
             }
         } 
       })
-    },
-    "defaultValue":data.mentions
-    });
+    }//,
+    //"defaultValue":data.mentions
+    });*/
 	$(".removeMediaUrl").click(function(){
         $trigger=$(this).parents().eq(1).find(idTextArea);
 	    $(idTextArea).parents().eq(1).find("#resultsUpdate").empty().hide();
@@ -1446,14 +1461,22 @@ function showMyImage(fileInput) {
 	}
 }
 
-function getMediaImages(o,newsId,authorId,targetName){
+function getMediaImages(o,newsId,authorId,targetName,edit){
 	countImages=o.images.length;
 	html="";
-	if(canManageNews==1 || authorId==idSession){
+	if(typeof edit != "undefined" && edit=="update"){
+		for(var i in o.images){
+			html+="<div class='newImageAlbum'><img src='"+baseUrl+"/"+uploadUrl+"communecter/"+o.images[i].folder+"/"+o.images[i].name+"' style='width:75px; height:75px;'/>"+
+		       	"<a href='javascript:;' class='btn-red text-white deleteDoc' onclick='deleteDocFromNews(\'"+o.images[i]._id.$id+"\',\'"+edit+"\')'><i class='fa fa-trash'></i></a>"+
+					"<input type='hidden' class='docsId' value='"+o.images[i]._id.$id+"'></div>";
+		}
+		return html;
+	}
+	/*if(canManageNews==1 || authorId==idSession){
 		for(var i in o.images){
 			html+="<input type='hidden' class='deleteImageIdName"+newsId+"' value='"+o.images[i]._id.$id+"|"+o.images[i].name+"'/>";
 		}
-	}
+	}*/
 	if(countImages==1){
 		path=baseUrl+"/"+uploadUrl+"communecter/"+o.images[0].folder+"/"+o.images[0].name;
 		html+="<div class='col-md-12 no-padding margin-top-10'><a class='thumb-info' href='"+path+"' data-title='album de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='max-height:200px;'></a></div>";
@@ -1516,12 +1539,17 @@ function getMediaImages(o,newsId,authorId,targetName){
 	}
 	return html;
 }
-function getMediaFiles(o,newsId,authorId,targetName){
+function getMediaFiles(o,newsId, edit){
 	html="";
 	for(var i in o.files){
 		path=baseUrl+"/"+uploadUrl+"communecter/"+o.files[i].folder+"/"+o.files[i].name;
-		html+="<div class='col-md-12 padding-5'>"+
-			"<a href='"+path+"' target='_blank'>"+documents.getIcon(o.files[i].contentKey)+" "+o.files[i].name+"</a></div>";
+		html+="<div class='col-md-12 padding-5 shadow2 margin-top-5'>"+
+			"<a href='"+path+"' target='_blank'>"+documents.getIcon(o.files[i].contentKey)+" "+o.files[i].name+"</a>";
+			if(typeof edit != "undefined" && edit){
+				html+="<a href='javascript:;' class='btn-red text-white deleteDoc' onclick='deleteDocFromNews(\'"+o.files[i]._id.$id+"\',\'"+edit+"\')'><i class='fa fa-trash'></i></a>"+
+					"<input type='hidden' class='docsId' value='"+o.files[i]._id.$id+"'>";
+			}
+		html +="</div>";
 	}
 	return html;
 }	

@@ -24,7 +24,7 @@ class RocketchatController extends CommunecterController {
 
 
 	public function actionIndex() {
-		if ( @Yii::app()->session["userId"] )
+		if ( @Yii::app()->session["userId"]  && Yii::app()->params['rocketchatEnabled'] )
 			$this->renderPartial("iframe");
 		else {
 			Yii::app()->session["goto"] = "/rocketchat";
@@ -63,9 +63,9 @@ class RocketchatController extends CommunecterController {
 	// existing user with good pwd > genertes token 
 	// existing user with bad pwd > msg > Unauthorised
 	// inexistant user > msg > Unauthorised
-	public function actionLogint() {
+	public function actionLogint($email,$pwd) {
 		header('Content-Type: application/json');
-		$rocket = RocketChat::getToken("oceatoon@gmail.com", "22102210");
+		$rocket = RocketChat::getToken($email, $pwd);
 		Yii::app()->session["loginToken"] = $rocket["loginToken"];
 	  	Yii::app()->session["rocketUserId"] = $rocket["rocketUserId"];
 	  	
@@ -76,10 +76,12 @@ class RocketchatController extends CommunecterController {
 	}
 
 	//tested 
+	// All actions are driven by the coAdmin user 
+	// creations and invites
 	// accessing Element > creates 
 		// channels : http://127.0.0.1/ph/co2/rocketchat/chat/name/openatlas/type/test/roomType/channel/test/true
 		// groups : http://127.0.0.1/ph/co2/rocketchat/chat/name/openatlas/type/test/roomType/group/test/true
-	public function actionChat($name,$type="",$id=null,$roomType=null,$test=null) {
+	public function actionChat($name,$type="",$id=null,$roomType=null) {
 		$group = null;
 		if( $type == Person::COLLECTION ){
 			//id will contain the username
@@ -89,29 +91,50 @@ class RocketchatController extends CommunecterController {
 			$group = array("msg" => "all users are created on first login");
 		} elseif($roomType == "channel"){
 			$path = "/channel/".$type."_".$name;
-	 		$group = RocketChat::createGroup ($type."_".$name,$roomType);
-	 		if(!$test){
+	 		$group = RocketChat::createGroup ($type."_".$name,$roomType, Yii::app()->session['user']['username']);
+	 		if($group != null){
 		 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
 		 										array('$set' => array("hasRC"=>true) ));
 		 	} 
 		}
 		else{
 			$path = "/group/".$type."_".$name;
-	 		$group = RocketChat::createGroup ($type."_".$name);
-	 		if(!$test){
+			$group = null;
+			if(Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) || 
+				Link::isLinked($id,$type,Yii::app()->session["userId"]) )
+	 			$group = RocketChat::createGroup ($type."_".$name,null, Yii::app()->session['user']['username']);
+	 		else 
+	 			Rest::json(array("result"=>false,
+	 							 "error"=>"Unauthorized Access.",
+	 							 "canEdit" => Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id),
+	 							 "userId"=>Yii::app()->session['userId'], 
+	 							 "userEmail"=>Yii::app()->session['userEmail'], 
+	 							 "type"=>$type, "id"=>$id));
+	 		if($group != null){
 		 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
 		 										array('$set' => array("hasRC"=>true) ));
 		 	}
 		}
 
 	 	//echo json_encode($group);
-	 	$embed = true;
-	 	if(Yii::app()->request->isAjaxRequest)
+	 	//$embed = true;
+	 	/*if(Yii::app()->request->isAjaxRequest && !$noRender){
 	 		$this->renderPartial( "iframe", array( 'path'=>$path, "embed"=>$embed) );
-	 	else{
-	 		header('Content-Type: application/json');
-	 		echo json_encode($group);
-	 	}
+	 	} else {*/
+ 		
+ 		Rest::json($group);
+	 	
+	}
+
+	public function actionInvite($name,$type="",$id=null,$roomType=null,$test=null) {
+		$group = null;
+		$group = RocketChat::invite ($type."_".$name,$roomType, Yii::app()->session['user']['username']);
+
+	}
+
+	public function actionList() {
+		if(@Yii::app()->session['userId'] && @Yii::app()->session["loginToken"] )
+ 			Rest::json( RocketChat::listUserChannels() );
 	}
 
 
@@ -151,15 +174,21 @@ class RocketchatController extends CommunecterController {
 		// login as the main admin user
 		echo "<br/>***************LOGIN **********************<br/>";
 		$admin = new \RocketChat\User(Yii::app()->params['rocketAdmin'], Yii::app()->params['rocketAdminPwd']);
+		//$admin = new \RocketChat\User("openatlas974@gmail.com", "2210open");
+		//$admin = new \RocketChat\User("clement.damiens@gmail.com", "blaiross");
 
 		//5715348040bb4e873d1d650b
 		if( $admin->login() ) {
-			echo "admin user logged in<br/>";
+			echo "user logged in<br/>";
 		};
 		$admin->info();
-		echo "username {$admin->nickname}<br/>id ({$admin->id})<br/>authToken ({$admin->authToken}) <br/>";
+		echo "username {$admin->username}<br/>id ({$admin->id})<br/>authToken ({$admin->authToken}) <br/>";
 
-		
+		/*echo ">>>> list channels <br/>";
+		$list = $admin->listJoined();
+        foreach ($list as $key => $value) {
+        	echo $key." channel : ".$value." <br/>";
+        }*/
 
 	/*	echo "<br/>***************LIST PRIVATE CHANNELS **********************<br/>";
 			$list = $api->list_groups();
@@ -168,8 +197,6 @@ class RocketchatController extends CommunecterController {
 					echo $key." :: ".$value->name."<br/>"; 
 				}
 	*/
-
-
 	/*	echo "<br/>*********** LIST ALL CHANNELS **************************<br/>";
 			$list = $api->list_channels();
 			
@@ -180,34 +207,6 @@ class RocketchatController extends CommunecterController {
 
 $list = array(
 //array("Julie","MARTIN","julie.ml.martin@gmail.com"),
-//array("Adrien","DISS","adrien@alternatiba.re"),
-//array("Marine","MARTINEAU","marine.martineau@gmail.com"),
-//array("Simon","CHAUVAT","simon.chauvat@ntymail.com"),
-//array("Franck","MONTAUZON","franck@ecomanifestation.re"),
-//array("Teddy","JAMOIS","teddy.jamois@gmail.com"),
-//array("Quentin","METTLER","quentin.mettler@gmail.com"),
-//array("Olivier","FONTAINE","opfontaine@gmail.com"),
-//array("Georget","PAUSE","georget.pause@gmail.com"),
-//array("PaulHenri","LEBEAU","polenri.lebeau@gmail.com"),
-//array("Sylvia","HEYMANN","sylvia_c_h@msn.com"),
-//array("MieNicole","BASSONVILLE","ninilakour@hotmail.fr"),
-//array("David","GROSLIER","chefgroslier@gmail.com"),
-//array("Marion","BASQUIN","basquin.marion@hotmail.fr"),
-//array("Philippe","LUCAS","runlucas@gmail.com"),
-//array("Sylvain","Brunet","sylvain1brunet@gmail.com"),
-//array("Tibor","KATELBACH","oceatoon@gmail.com"),
-//array("MehmetGinette","PEKKIP","pekkip@orange.fr"),
-//array("Olivier","Cassard","omc.cassard@gmail.com"),
-//array("Delphine","CHAUVIERE","delphine.chauviere@medecinsdumonde.net"),
-//array("Jessie","LEBON","fnarsoi.chargemissions@gmail.com"),
-//array("Florence","CLAIRAMBAULT","f.clairambault@compagnonsbatisseurs.eu"),
-//array("Christelle","MOREL","projets.granddir@gmail.com"),
-//array("Chloe","EUPHRASIE","granddir974@gmail.com"),
-//array("Sand","B","sand.freelance@gmail.com"),
-//array("Leo","Robin","leo_pf@yahoo.fr"),
-//array("Alexandre","Payet","alexandre_payet@me.com"),
-//array("Jahne","Henry","Jahne.anders@gmail.com"),
-//array("Stephanie","Ferrere","st.ferrere@gmail.com")
 );
 		/*  	echo "<br/>*********** TEST NEW USER **************************<br/>";
 		  	foreach ($list as $key => $user) 
@@ -231,21 +230,36 @@ $list = array(
 		// create a new channel
 		//K6YT5zkLBKmKKScWy  'croxxxat'
 
-		$channel = new \RocketChat\Channel( 'alternatiba_pei');
-		
+
+		//$channel = new \RocketChat\Group( 'test8priv',array("openatlas"));
+		$channel = new \RocketChat\Group( 'test13priv');
+
 		//creates if doesn't exist
+		/*
 		echo ">>>> channel create<br/>";
 		$res = $channel->create();
-        var_dump($res);
-		//set as private 
-		//$channel->setType("crocket","p");
+        var_dump($res);*/
 
-		echo ">>>> channel info<br/>";
+        /*echo "<br/>>>>> channel info :  ({$channel->name})<br/>";
 		$channel->info();
-		echo "<br/>channel  id ({$channel->id}) <br/>name ({$channel->name})<br/>";
+		var_dump($res);
+		if($channel->id == null)
+			echo "<br/><b style='color:red'>you dont have access to this room</b>";
+		else 
+			echo "<br/>channel  id ({$channel->id}) <br/>name ({$channel->name})<br/>";
+         */
 
-		/*echo ">>>> invite newuser<br/>";
-		$channel->invite($newuser);*/
+
+		//if( !$res->success && $res->errorType == "error-duplicate-channel-name" ){
+			//set as private 
+			//$channel->setType("crocket","p");
+
+
+        	echo "<br/>>>>> invite new user<br/>";
+        	//$res = $channel->invite("openatlas");
+			$res = $channel->invite("Bouboule");
+			var_dump($res);
+        //}
 
 		// post a message
 		//$channel->postMessage('Hello world from PHP RC API code in co2 :smile:');

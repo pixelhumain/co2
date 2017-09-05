@@ -80,7 +80,7 @@ dynForm = {
             tags : dyFInputs.tags(),
             location : dyFInputs.location,
 	        image : dyFInputs.image(),
-            email : dyFInputs.email(),
+            email : dyFInputs.text(),
 	        shortDescription : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
 	        url : dyFInputs.inputUrl(),
             "preferences[publicFields]" : dyFInputs.inputHidden([]),

@@ -484,12 +484,12 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
                 message: '<div class="row">  ' +
                     '<div class="col-md-12"> ' +
                     '<form class="form-horizontal"> ' +
-                    '<label class="col-md-4 control-label" for="awesomeness">'+trad["Would you like to be an administrator"]+'?</label> ' +
+                    '<label class="col-md-4 control-label" for="awesomeness">'+tradDynForm.wouldbecomeadmin+'?</label> ' +
                     '<div class="col-md-4"> <div class="radio"> <label for="awesomeness-0"> ' +
                     '<input type="radio" name="awesomeness" id="awesomeness-0" value="admin"> ' +
-                    trad["yes"]+' </label> ' +
+                    tradDynForm.yes+' </label> ' +
                     '</div><div class="radio"> <label for="awesomeness-1"> ' +
-                    '<input type="radio" name="awesomeness" id="awesomeness-1" value="'+connectType+'" checked="checked"> '+trad["no"]+' </label> ' +
+                    '<input type="radio" name="awesomeness" id="awesomeness-1" value="'+connectType+'" checked="checked"> '+tradDynForm.no+' </label> ' +
                     '</div> ' +
                     '</div> </div>' +
                     '</form></div></div>',
@@ -829,7 +829,10 @@ var urlCtrl = {
 		currentUrl = hash;
 		allReadyLoad = true;
 		CoAllReadyLoad = true;
-		contextData = null;
+		if( typeof urlCtrl.loadableUrls[hash] == "undefined" || 
+			typeof urlCtrl.loadableUrls[hash].emptyContextData == "undefined" || 
+			urlCtrl.loadableUrls[hash].emptyContextData == true )
+			contextData = null;
 
 		$(".my-main-container").off()
 							   .bind("scroll", function () {shadowOnHeader()})
@@ -838,7 +841,6 @@ var urlCtrl = {
 		$(".searchIcon").removeClass("fa-file-text-o").addClass("fa-search");
 		searchPage = false;
 		
-
 		//alert("urlCtrl.loadByHash"+hash);
 
 	    mylog.warn("urlCtrl.loadByHash",hash,back);
@@ -1869,11 +1871,14 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
     getUrl.bind("input keyup",function(e) { //user types url in text field        
         //url to match in the text field
         var $this = $(this);
+        if($(appendClassName).html()==""){
         if($this.parents().eq(nbParent).find(appendClassName).html()=="" || (e.which==32 || e.which==13)){
-	        var match_url = new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+        	//new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?")
+        	///\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i
+	        var match_url = /\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i;
 	        if (match_url.test(getUrl.val())) 
 	        {
-		        //mylog.log(getUrl.val().match(match_url));
+		        mylog.log(getUrl.val().match(match_url));
 		        if(lastUrl != getUrl.val().match(match_url)[0]){
 			       // alert(lastUrl+"///"+getUrl.val().match(match_url)[0]);
 		        	var extracted_url = getUrl.val().match(match_url)[0]; //extracted first url from text filed
@@ -1881,7 +1886,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 	                $this.parents().eq(nbParent).find(".loading_indicator").show(); //show loading indicator image
 
 	                //ajax request to be sent to extract-process.php
-	                //alert(extracted_url);
+	                alert(extracted_url);
 	                lastUrl=extracted_url;
 	                extracted_url_send=extracted_url;
 	                if(extracted_url_send.indexOf("http")<0)
@@ -1941,6 +1946,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 				//$this.parent().append( "<span class='text-red dynFormUrlsWarning'>* Ceci n'est pas un url valide.</span>" );         	
         	}
         }
+    }
     }); 
 }
 

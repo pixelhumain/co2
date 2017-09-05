@@ -3232,7 +3232,12 @@ var dyFInputs = {
 	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
 		    	dyFObj.closeForm();
 				//alert( "image upload then goto : "+uploadObj.gotoUrl );
-	            urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+				if(location.hash.indexOf("view.library")>0){
+					buildNewBreadcrum("files");
+					getViewGallery(1,"","files");
+				}		
+				else
+	            	urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 		    }
     	}
     },

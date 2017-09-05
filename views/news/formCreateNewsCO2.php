@@ -35,7 +35,7 @@
   top:0px;
   left:0px;
 }
-.updateImageNews > a {
+.deleteDoc {
   position: absolute;
   top:0px;
   right: 0px;

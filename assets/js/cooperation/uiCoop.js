@@ -21,6 +21,8 @@ var uiCoop = {
 			}
 		});
 
+		
+
 		uiCoop.initBtnLoadData();
 		uiCoop.getCoopData(contextData.type, contextData.id, "menucoop");
 		uiCoop.getCoopData(contextData.type, contextData.id, "proposal");
@@ -48,16 +50,48 @@ var uiCoop = {
 		});
 		//uiCoop.initDragAndDrop();
 	},
-
 	"initDragAndDrop" : function(){ console.log('initDragAndDrop');
 		$('.draggable').draggable({
-		    revert : true // sera renvoyé à sa place s'il n'est pas déposé dans #drop
+		    revert : true, // sera renvoyé à sa place s'il n'est pas déposé dans #drop
+		    appendTo: 'body',
+		    helper: 'clone',
+		    zIndex: 10000,
+    		scroll: false,
+    		start : function(){
+    			uiCoop.dragId = $(this).data("dataid");
+    			uiCoop.dragType = $(this).data("type");
+    			console.log("start drag", $(this).data("dataid"), "coopId", uiCoop.dragId, "coopType", uiCoop.dragType);
+    		}
 		});
 		$('.droppable').droppable({
 			accept : '.draggable', // je n'accepte que le bloc ayant "draggable" pour class
 		    drop : function(event, ui){
 		        toastr.info('end drag');
-		        console.log("end drag");//, event, ui);
+		        var idNewRoom = $(this).data("dataid");
+		        console.log("end drag / roomId", idNewRoom, "coopId", uiCoop.dragId, "coopType", uiCoop.dragType);//, event, ui);
+		    	uiCoop.changeRoom(uiCoop.dragType, uiCoop.dragId, idNewRoom, contextData.type, contextData.id);
+		    },
+		    activate : function( event, ui ){
+		    	var roomid = $(this).data("dataid");
+		    	//console.log("activate", roomid);
+		    	$(this).parent().addClass("bg-lightblue draggin");
+		    },
+		    deactivate : function( event, ui ){
+		    	var roomid = $(this).data("dataid");
+		    	//console.log("deactivate", roomid);
+		    	$(this).removeClass("text-white").parent().removeClass("bg-lightblue draggin bg-turq");
+		    },
+		    over : function( event, ui ){
+		    	var roomid = $(this).data("dataid");
+		    	console.log("over", roomid);
+		    	$(this).addClass("text-white").parent().addClass("bg-turq");
+		    	$(this).parent().removeClass("bg-lightblue");
+		    },
+		    out : function( event, ui ){
+		    	var roomid = $(this).data("dataid");
+		    	console.log("out", roomid);
+		    	$(this).removeClass("text-white").parent().removeClass("bg-turq");
+		    	$(this).parent().addClass("bg-lightblue");
 		    }
 		});
 	},
@@ -295,6 +329,28 @@ var uiCoop = {
 		       	dataType: "json",
 		    	success: function(data){
 		    		uiCoop.getCoopData(null, null, type, null, id);
+		    	}
+		});
+	},
+
+	"changeRoom" : function(dragType, dragId, idNewRoom, parentType, parentId){
+		var param = {
+			parentType : parentType,
+			parentId : parentId,
+			type: dragType,
+			id: dragId,			
+			name: "idParentRoom",
+			value: idNewRoom
+		};
+		console.log("changeRoom", param);
+		toastr.info(trad["processing save"]);
+		$.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+"/element/updatefield/",
+		        data: param,
+		       	dataType: "json",
+		    	success: function(data){
+		    		uiCoop.getCoopData(null, null, "room", null, idNewRoom);
 		    	}
 		});
 	},

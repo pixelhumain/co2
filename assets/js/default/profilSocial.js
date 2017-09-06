@@ -195,10 +195,10 @@ function bindButtonMenu(){
 
 	bindButtonOpenForm();
 
-    $("#div-select-create").mouseleave(function(){
-    	$("#div-select-create").hide(200);
+    /*$("#div-select-create").mouseleave(function(){
+    	$("#div-select-create").stop(true, true).delay(200).fadeOut(500);
     	//$(".central-section").show();    	
-    });
+    });*/
 
     $("#btn-close-select-create").click(function(){
     	$("#div-select-create").hide(200);

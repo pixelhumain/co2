@@ -433,6 +433,9 @@ ul.dropdown-menu-collection > li > a:hover{
 		if(docType=="image"){
 			breadcrumLevel++;
 			appendLevel(breadcrumLevel,"","slider",true);
+		}else if(docType=="files" || docType=="bookmarks"){
+			breadcrumLevel++;
+			appendLevel(breadcrumLevel,"",docType,true);
 		}
 		$.each(navCollections, function(i,v){
 			breadcrumLevel++;

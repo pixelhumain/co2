@@ -14,10 +14,12 @@
 
 
 <?php foreach($roomList as $key => $room){ ?>
-	<li class="submenucoop sub-rooms">
+	<li class="submenucoop sub-rooms "
+			data-type="room" data-dataid="<?php echo (string)@$room["_id"]; ?>">
 		<a href="javascript:" class="load-coop-data droppable letter-turq" 
 			data-type="room" data-dataid="<?php echo (string)@$room["_id"]; ?>">
-	  		<i class="fa fa-hashtag"></i> <?php echo @$room["name"]; ?>
+		 	<i class="fa fa-hashtag"></i> <?php echo @$room["name"]; ?>
+		 	<i class="fa fa-inbox pull-right"></i>
 	  	</a>
 	</li>
 <?php } ?>

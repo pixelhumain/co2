@@ -17,7 +17,35 @@
 		border-right: 1px solid #c6c4c4;*/
 	}
 
+	li.submenucoop{
+		list-style-type: none;
+	}
 
+	.ui-draggable-dragging{
+		background-color: rgba(255,255,255,0.8);
+		padding:5px;
+		-webkit-box-shadow: 0px 0px 5px -4px rgba(0,0,0,0.5) ;
+	    -moz-box-shadow: 0px 0px 5px -4px rgba(0,0,0,0.5) ;
+	    box-shadow: 0px 0px 5px -4px rgba(0,0,0,0.5) ;
+	}
+	.ui-draggable-dragging .tooltip.in{
+		display: none !important;
+	}
+
+	 .draggin .droppable i.fa.fa-inbox{
+		display: inline;
+	}
+	.droppable i.fa.fa-inbox{
+		display: none;
+	}
+
+	body .load-coop-data .progress{
+		display: none;
+	}
+	#menu-room .load-coop-data .progress{
+		display: block;
+	}
+	body .load-coop-data,
 	#menu-room .load-coop-data{
 		/*border-left: 3px solid #3C545D;*/
 		padding:8px;
@@ -276,10 +304,15 @@
 
 <?php 
 	$auth = false;
-	if(@$room)
+	if(@$room){
 		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], @$room["parentType"], @$room["parentId"]);
-	else if(@$post["parentType"])
+		$menuCoopData = Cooperation::getCoopData(@$room["parentType"], @$room["parentId"], "room");
+		
+	}
+	else if(@$post["parentType"]){
 		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], @$post["parentType"], @$post["parentId"]);	
+		$menuCoopData = Cooperation::getCoopData(@$post["parentType"], @$post["parentId"], "room");
+	}
 	else
 		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], @$parentType, @$parentId);	
 
@@ -289,8 +322,7 @@
 <div class="col-lg-12 col-md-12 col-sm-12 no-padding bg-white text-dark" id="coop-container">
 	
 	<?php 
-		$menuCoopData = Cooperation::getCoopData(@$parentType, @$parentId, "room");
-		if(empty(@$menuCoopData["roomList"])){ ?>
+		if(isset($menuCoopData["roomList"]) && empty(@$menuCoopData["roomList"])){ ?>
 		<div class="col-lg-12 col-md-12 col-sm-12" id="menu-room">
 			<?php $this->renderPartial('../cooperation/pod/home', array("type"=>$thisType)); ?>
 		</div>
@@ -369,7 +401,7 @@
 						  		<span class="hidden-min hidden-sm"><?php echo Yii::t("cooperation", "Add proposal") ?></span>
 						  	</a>
 					  	<?php }else if(@$post["type"] == Room::CONTROLLER){ ?>
-					  		<label class="text-black pull-right tooltips" 
+					  		<label class="text-black tooltips" 
 					  			   data-position="top" data-original-title="Devenez membre pour contribuer">
 					  			<i class="fa fa-lock"></i>
 					  		</label>
@@ -389,17 +421,31 @@
 								foreach($proposalList as $key => $proposal){ ?>
 								<?php $totalVotant = Proposal::getTotalVoters($proposal); ?>
 									<?php if(@$proposal["status"] == $thisStatus){ ?>
-										<li class="submenucoop sub-proposals no-padding col-lg-4 col-md-6 col-sm-6 draggable" 
+										<li class="submenucoop sub-proposals no-padding col-lg-4 col-md-6 col-sm-6 " 
 										data-name-search="<?php echo str_replace('"', '', @$proposal["title"]); ?>">
 										<a href="javascript:" class="load-coop-data " data-type="proposal" 
 											data-status="<?php echo @$proposal["status"]; ?>" 
 										   	data-dataid="<?php echo (string)@$proposal["_id"]; ?>">
 									  		
 									  		<?php if(@$proposal["title"]){ ?>
-										  		<span class="elipsis">
-										  			<i class="fa fa-hashtag"></i> 
-										  			<?php echo @$proposal["title"]; ?>
-										  		</span>
+										  		<?php if(@$proposal["status"] == "amendable" || 
+										  					 @$proposal["status"] == "tovote" && $auth){ ?>
+										  			<span class="elipsis draggable" 
+										  					data-dataid="<?php echo (string)@$proposal["_id"]; ?>"
+											  				data-type="proposals" >
+											  			<i class="fa fa-arrows-alt letter-light tooltips"  
+										   					data-original-title="cliquer / déplacer dans un autre espace" 
+											  				data-placement="right"></i> 
+											  			<i class="fa fa-hashtag"></i> 
+											  			<?php echo @$proposal["title"]; ?>
+										  			</span>
+										  		<?php }else{ ?>
+										  			<span class="elipsis">
+											  			<i class="fa fa-hashtag"></i> 
+											  			<?php echo @$proposal["title"]; ?>
+										  			</span>
+										  		<?php } ?>
+										  			
 									  		<?php }else{ ?> 
 										  		<small class="elipsis"><b>
 										  			<i class="fa fa-hashtag"></i> 
@@ -443,6 +489,7 @@
 												  				Translate::pastTime($proposal["voteDateEnd"], "date"); 
 											  		?>
 											  	</small>
+
 										  	<?php } ?>
 
 									  	  	<div class="progress <?php if($proposal["status"] != "tovote") echo "hidden-min"; ?>">
@@ -539,7 +586,7 @@
 							  		<span class="hidden-min hidden-sm"><?php echo Yii::t("cooperation", "Add action") ?></span>
 							  	</a>
 						<?php }elseif(@$post["type"] == Room::CONTROLLER){ ?>
-						  		<label class="text-black pull-right tooltips" 
+						  		<label class="text-black tooltips" 
 						  			   data-position="top" data-original-title="Devenez membre pour contribuer">
 						  			<i class="fa fa-lock"></i>
 						  		</label>
@@ -559,9 +606,22 @@
 									<a href="javascript:" class="load-coop-data" data-type="action"
 										data-status="<?php echo @$action["status"]; ?>" 
 								   		data-dataid="<?php echo (string)@$action["_id"]; ?>">
-								  		<span class="elipsis">
-								  			<i class="fa fa-hashtag"></i> <span class="name-search"><?php echo @$action["name"]; ?></span>
-								  		</span>
+								  		<?php if(@$action["status"] == "todo" && $auth){ ?>
+										  			<span class="elipsis draggable" 
+										  					data-dataid="<?php echo (string)@$action["_id"]; ?>"
+											  				data-type="actions" >
+											  			<i class="fa fa-arrows-alt letter-light tooltips"  
+										   					data-original-title="cliquer / déplacer dans un autre espace" 
+											  				data-placement="right"></i> 
+											  			<i class="fa fa-hashtag"></i> 
+											  			<?php echo @$action["name"]; ?>
+										  			</span>
+										  		<?php }else{ ?>
+										  			<span class="elipsis">
+											  			<i class="fa fa-hashtag"></i> 
+											  			<?php echo @$action["name"]; ?>
+										  			</span>
+										  		<?php } ?>
 								  		<?php if(@$post["status"]) { $parentRoom = Room::getById($action["idParentRoom"]); ?>
 									  	<br>
 									  	<small class="elipsis">

@@ -8,7 +8,7 @@
 
 <style>
 
-	body, body.modal-open{
+	body.modal-open{
 		overflow: hidden !important;
 	}
 	/* MODAL */
@@ -51,7 +51,7 @@
 	ul#menuCoop{
 		overflow-y: auto;
 		position: absolute;
-		top: 0px;
+		top: 2px;
 		bottom: 0px;
 		left: 0px;
 		right: 0px;

@@ -408,7 +408,7 @@ function bindAboutPodElement() {
             	init : function(){ console.log("init ParentId");
 	            	$("#ajaxFormModal #parentId").off().on("change",function(){
 	            		var selected = $(':selected', this);
-    					$("#ajaxFormModal #parentType").val(selected.parent().attr('label'));
+    					$("#ajaxFormModal #parentType").val(selected.data('type'));
 	            	});
 	            }
             };

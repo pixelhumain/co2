@@ -702,6 +702,7 @@
 
 <script type="text/javascript">
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
+	initMetaPage(contextData.name,contextData.shortDescription,contextData.profilImageUrl);
 	mylog.log("init contextData", contextData);
     var params = <?php echo json_encode(@$params); ?>; 
     var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false );
@@ -740,6 +741,20 @@
 		var elemSpec = dyFInputs.get("<?php echo $type?>");
 		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");
 	});
+	function initMetaPage(title, description, image){
+		if(title != ""){
+			$("meta[name='title']").attr("content",title);
+			$("meta[property='og:title']").attr("content",title);
+		}
+		if(description != ""){
+			$("meta[name='description']").attr("content",description);
+			$("meta[property='og:description']").attr("content",description);
+		}
+		if(image != ""){
+			$("meta[name='image']").attr("content",baseUrl+image);
+			$("meta[property='og:image']").attr("content",baseUrl+image);
+		}
+	}
 	function getProfilSubview(sub, dir){ console.log("getProfilSubview", sub, dir);
 		if(sub!=""){
 			if(sub=="gallery")

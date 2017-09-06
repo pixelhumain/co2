@@ -331,6 +331,8 @@
             media=getMediaImages(v.media,e,v.author.id,v.target.name);
           else if (v.media.type=="gallery_files")
             media=getMediaFiles(v.media,e);
+          else if (v.media.type=="activityStream")
+            media=directory.showResultsDirectoryHtml(new Array(v.media.object),v.media.object.type);
           $("#result"+e).html(media);
         }
         bindLBHLinks();

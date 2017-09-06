@@ -1898,7 +1898,14 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 						dataType: 'json',
 						success: function(data){        
 			                mylog.log(data); 
-		                    content = getMediaCommonHtml(data,"save");
+			                if(data.type=="activityStream"){
+			                	content = '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>'+
+			                			 directory.showResultsDirectoryHtml(new Array(data.object), data.object.type)+
+			                			"<input type='hidden' class='type' value='activityStream'>"+
+										"<input type='hidden' class='objectId' value='"+data.object.id+"'>"+
+										"<input type='hidden' class='objectType' value='"+data.object.type+"'>";
+			                }else
+		                    	content = getMediaCommonHtml(data,"save");
 		                    //load results in the element
 		                    //return content;
 		                   //$("#results").html(content); 

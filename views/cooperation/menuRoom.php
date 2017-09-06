@@ -343,14 +343,14 @@
 							data-id-room="<?php echo @$room["_id"]; ?>">
 						<i class="fa fa-pencil"></i> Modifier
 					</button>
-					<button class="btn btn-link text-dark pull-right btn-sm margin-top-5 hidden-min tooltips margin-right-5" 
-							id="btn-edit-room" data-placement="bottom" 
-							data-original-title="aide"
-							data-toggle="modal" data-target="#modalHelpCOOP">
-						<i class="fa fa-2x fa-info-circle"></i>
-					</button>
-					
 				<?php } ?>
+				
+				<button class="btn btn-link text-dark pull-right btn-sm margin-top-5 hidden-min tooltips margin-right-5" 
+						id="btn-edit-room" data-placement="bottom" 
+						data-original-title="aide"
+						data-toggle="modal" data-target="#modalHelpCOOP">
+					<i class="fa fa-2x fa-info-circle"></i>
+				</button>
 
 				<h3 class="margin-top-15 letter-turq">
 					<i class="fa fa-connectdevelop"></i> <?php echo @$room["name"]; ?>

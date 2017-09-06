@@ -43,14 +43,8 @@ var loadStream = function(indexMin, indexMax){ mylog.log("loadStream");
     if(isLiveGlobal() && liveScopeType == "global"){ 
     	 //getMultiTagList(); //$('#searchBarText').val();
 		filter = {
-	      //"tagSearch" : tagSearch, 
-	      "searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
-	      "searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-	      "searchLocalityDEPARTEMENT" : $('#searchLocalityDEPARTEMENT').val().split(','),
-	      "searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
-	      "searchType" : searchType, 
-	     // "type" : "city"
-	      //"searchBy" : levelCommunexionName[levelCommunexion]
+			"locality" : getLocalityForSearch();,
+			"searchType" : searchType,
 	    };
 	    //contextParentType = "city";
     }	

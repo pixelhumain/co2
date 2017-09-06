@@ -113,28 +113,13 @@ var mapElements = new Array();
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   console.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
-	if(typeof(cityInseeCommunexion) != "undefined"){
-	    var levelCommunexionName = { 1 : "CODE_POSTAL_INSEE",
-	                             2 : "INSEE",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
-	}else{
-		var levelCommunexionName = { 1 : "INSEE",
-	                             2 : "CODE_POSTAL_INSEE",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
-	}
-    //mylog.log("levelCommunexionName", levelCommunexionName[levelCommunexion]);
-    var searchLocality = getLocalityForSearch();
+	var searchLocality = getLocalityForSearch();
     
     var data = {
       "name" : name, 
       "locality" : searchLocality,//locality, 
       "searchType" : searchType, 
-      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] , //is an array
-      "searchBy" : levelCommunexionName[levelCommunexion], 
+      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
       "indexMin" : indexMin, 
       "indexMax" : indexMax
     };

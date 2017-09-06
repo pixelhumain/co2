@@ -66,20 +66,16 @@ function autocompleteMultiScope(){
     			};
     			if(currentScopeType == "cp") { 
     				$.each(value.postalCodes, function(key, valueCP){ //mylog.log(allCities);
-		    			//if($.inArray(valueCP.name, allCities)<0){ 
-	    					//allCities.push(valueCP.name);
-		    				//val = valueCP.postalCode;
-		    				val = valueCP.postalCode;
-		    				lbl = valueCP.postalCode ;
-		    				lblList = valueCP.name + ", " +valueCP.postalCode ;
-		    				html += '<li><a href="javascript:;" class="addScope" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
-    					//}
+						val = valueCP.postalCode;
+						lbl = valueCP.postalCode ;
+						lblList = valueCP.name + ", " +valueCP.postalCode ;
+						html += '<li><a href="javascript:;" class="addScope" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
     				});
     			}; 
     			
-    			if(currentScopeType == "zone" /*currentScopeType == "dep" || currentScopeType == "region"*/){
+    			if(currentScopeType == "zone"){
     				val = key;
-		    		lbl = (typeof value.name!= "undefined") ? value.name : ""; //value.name ;
+		    		lbl = (typeof value.name!= "undefined") ? value.name : ""; 
 		    		lblList = lbl + " (" +value.countryCode + ")";
 		    		level = value.level[0];
     				html += '<li><a href="javascript:;" class="addScope" data-level="'+level+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
@@ -334,31 +330,7 @@ function rebuildSearchScopeInput(){
 	if( $("#searchLocalityCODE_POSTAL") )
 		$("#searchLocalityCODE_POSTAL").val(searchLocalityCODE_POSTALs);
 
-	/*****************************************************************************************/
-	// searchLocalityDEPARTEMENTs = "";
-	// $.each($('.item-scope-dep'), function(key, value){
-	// 	if(!$(value).hasClass('disabled')){
-	// 		key = $(value).data("scope-value");
-	// 		searchLocalityDEPARTEMENTs += (searchLocalityDEPARTEMENTs == "") ? key :   ","+key;
-	// 	}
-	// });
-	// //mylog.log("searchLocalityDEPARTEMENTs",searchLocalityDEPARTEMENTs);
-	// if( $("#searchLocalityDEPARTEMENT") )
-	// 	$("#searchLocalityDEPARTEMENT").val(searchLocalityDEPARTEMENTs);
 
-	/*****************************************************************************************/
-	// searchLocalityREGIONs = "";
-	// $.each($('.item-scope-region'), function(key, value){
-	// 	if(!$(value).hasClass('disabled')){
-	// 		key = $(value).data("scope-value");
-	// 		searchLocalityREGIONs += (searchLocalityREGIONs == "") ? key :   ","+key;
-	// 	}
-	// });
-	// //mylog.log("searchLocalityREGIONs",searchLocalityREGIONs);
-	// if( $("#searchLocalityREGION") )
-	// 	$("#searchLocalityREGION").val(searchLocalityREGIONs);
-
-	/*****************************************************************************************/
 	searchLocalityZONEs = "";
 	$.each($('.item-scope-zone'), function(key, value){
 		if(!$(value).hasClass('disabled')){
@@ -426,13 +398,9 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 		mylog.log("myMultiScopes", myMultiScopes, indexStepInit);
 		$("#searchLocalityCITYKEY").val("");
 		$("#searchLocalityCODE_POSTAL").val("");
-		// $("#searchLocalityDEPARTEMENT").val("");
-		// $("#searchLocalityREGION").val("");
 		$("#searchLocalityZONE").val("");
 		if(scopeType == "city") {$("#searchLocalityCITYKEY").val(scopeValue);} 
 		if(scopeType == "cp") $("#searchLocalityCODE_POSTAL").val(scopeValue);
-		// if(scopeType == "dep") $("#searchLocalityDEPARTEMENT").val(scopeValue);
-		// if(scopeType == "region") $("#searchLocalityREGION").val(scopeValue);
 		if(scopeType == "zone") $("#searchLocalityZONE").val(scopeValue);
 		$("#searchLocalityLEVEL").val(scopeLevel);
 		$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
@@ -460,9 +428,7 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 			
 			$.cookie('inseeCommunexion',   		inseeCommunexion,  		{ expires: 365, path: "/" });
 			$.cookie('cityNameCommunexion', 	cityNameCommunexion,	{ expires: 365, path: "/" });
-			$.cookie('cpCommunexion',   		cpCommunexion,  		{ expires: 365, path: "/" });		
-			//$.cookie('regionNameCommunexion',   regionNameCommunexion,  { expires: 365, path: "/" });
-			//$.cookie('countryCommunexion',   	countryCommunexion,  	{ expires: 365, path: "/" });
+			$.cookie('cpCommunexion',   		cpCommunexion,  		{ expires: 365, path: "/" });
 		}else{
 			console.log("communexion hash:", location.hash);
 			if(actionOnSetGlobalScope == "filter"){

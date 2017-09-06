@@ -1,5 +1,5 @@
 # Communecter
 
 * Réseau sociétal citoyen disponible ici : http://communecter.org/
-* Documentation : https://github.com/pixelhumain/co2/wiki
+* Documentation : https://wiki.communecter.org/
 * Chat : https://chat.lescommuns.org/

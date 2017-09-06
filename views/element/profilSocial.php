@@ -240,7 +240,7 @@
 	  				$loadChat = $element["name"];
 	  				//people have pregenerated rooms so allways available 
 	  				$hasRC = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "true" : "false";
-	  				$canEdit = ( (@$edit && $edit) || (@$openEdition && $openEdition) ) ? "true" : "false";
+	  				$canEdit = ( @$openEdition && $openEdition ) ? "true" : "false";
 	  				//Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) );
 	  				if($type == Person::COLLECTION)
 	  				{

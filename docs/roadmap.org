@@ -264,7 +264,8 @@ Liste des notifications déjà lues => #370 #453
 >>>>>>>>[ ] after create invite all members to chat by notification
 >>>>>>>>[ ] check anymember can join the chat 
 >>>>>>>>[ ] only admins can start a group chat
-      [ ] manage chat module color according to login state based on events
+      [ ] try to optimise admin login using smart handling of header 
+
       [ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
       [X] apply to projects and events
       [X] on CO-login get RC loginToken
@@ -426,8 +427,8 @@ Liste des notifications déjà lues => #370 #453
       [ ] sortir comme une appli 
       [ ] etat pour mettre en prod ?
       [ ] orga TER
-    [ ] tags 
-    [ ] converter RSS + jsonFeed
+>>>>[ ] tags 
+>>>>[ ] converter RSS + jsonFeed
     [ ] opendata sources + interop
       [ ] connecter des scripts api 
         [ ] scope geo

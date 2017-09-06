@@ -8,8 +8,6 @@
  */
 class RocketchatController extends CommunecterController {
   
-
-
 	protected function beforeAction($action) {
 	    parent::initPage();
 	    return parent::beforeAction($action);
@@ -21,7 +19,6 @@ class RocketchatController extends CommunecterController {
 	        //'iframe'    => 'citizenToolKit.controllers.action.AddActionAction'
 	    );
 	}
-
 
 	public function actionIndex() {
 		if ( @Yii::app()->session["userId"]  && Yii::app()->params['rocketchatEnabled'] )
@@ -65,14 +62,33 @@ class RocketchatController extends CommunecterController {
 	// inexistant user > msg > Unauthorised
 	public function actionLogint($email,$pwd) {
 		header('Content-Type: application/json');
-		$rocket = RocketChat::getToken($email, $pwd);
-		Yii::app()->session["loginToken"] = $rocket["loginToken"];
-	  	Yii::app()->session["rocketUserId"] = $rocket["rocketUserId"];
-	  	
+		
+		if($email == null){
+		Yii::app()->session["adminLoginToken"]   = null;
+		Yii::app()->session["adminRocketUserId"] = null;
+		Yii::app()->session["loginToken"]        = null;
+		Yii::app()->session["rocketUserId"]      = null;
+		}
+
+	    Yii::app()->session["adminLoginToken"] = Yii::app()->params["adminLoginToken"];
+	    Yii::app()->session["adminRocketUserId"] = Yii::app()->params["adminRocketUserId"];
+
+	    
+
+	    if(!@Yii::app()->session["loginToken"]){
+			$rocket = RocketChat::getToken( $email, $pwd );
+			Yii::app()->session["loginToken"] = $rocket["loginToken"];
+		  	Yii::app()->session["rocketUserId"] = $rocket["rocketUserId"];
+		  }
+	  	$rocket["loginToken"] = Yii::app()->session["loginToken"];
+	    $rocket["rocketUserId"] = Yii::app()->session["rocketUserId"];
+	    $rocket["adminLoginToken"] = Yii::app()->params["adminLoginToken"];
+	    $rocket["adminRocketUserId"] = Yii::app()->params["adminRocketUserId"];
+	    $rocket['username'] = Yii::app()->session['user']['username'];
+	    $rocket['email'] = $email;
+
  		echo json_encode($rocket);
 		  
-	 	/*echo Yii::app()->session["loginToken"]."<br/>";
-	  	echo Yii::app()->session["rocketUserId"];*/
 	}
 
 	//tested 
@@ -110,9 +126,11 @@ class RocketchatController extends CommunecterController {
 	 							 "userId"=>Yii::app()->session['userId'], 
 	 							 "userEmail"=>Yii::app()->session['userEmail'], 
 	 							 "type"=>$type, "id"=>$id));
-	 		if($group != null){
+
+	 		if($group != null && @$group->create->group->_id){
 		 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
-		 										array('$set' => array("hasRC"=>true) ));
+		 										array('$set' => array("hasRC"=>true, 
+		 															  "rcId"=>$group->create->group->_id) ));
 		 	}
 		}
 
@@ -173,7 +191,7 @@ class RocketchatController extends CommunecterController {
 
 		// login as the main admin user
 		echo "<br/>***************LOGIN **********************<br/>";
-		$admin = new \RocketChat\User(Yii::app()->params['rocketAdmin'], Yii::app()->params['rocketAdminPwd']);
+		$admin = new \RocketChat\User(Yii::app()->params['rocketAdmin'], Yii::app()->params['rocketAdminPwd'],null,true);
 		//$admin = new \RocketChat\User("openatlas974@gmail.com", "2210open");
 		//$admin = new \RocketChat\User("clement.damiens@gmail.com", "blaiross");
 
@@ -232,7 +250,7 @@ $list = array(
 
 
 		//$channel = new \RocketChat\Group( 'test8priv',array("openatlas"));
-		$channel = new \RocketChat\Group( 'test13priv');
+		$channel = new \RocketChat\Group( 'projects_booom-closed');
 
 		//creates if doesn't exist
 		/*
@@ -240,14 +258,14 @@ $list = array(
 		$res = $channel->create();
         var_dump($res);*/
 
-        /*echo "<br/>>>>> channel info :  ({$channel->name})<br/>";
-		$channel->info();
+        echo "<br/>>>>> channel info :  ({$channel->name})<br/>";
+		$res = $channel->info();
 		var_dump($res);
 		if($channel->id == null)
-			echo "<br/><b style='color:red'>you dont have access to this room</b>";
+			echo "<br/><b style='color:red'>you dont have access to this room</b><br/>";
 		else 
 			echo "<br/>channel  id ({$channel->id}) <br/>name ({$channel->name})<br/>";
-         */
+         
 
 
 		//if( !$res->success && $res->errorType == "error-duplicate-channel-name" ){
@@ -255,7 +273,7 @@ $list = array(
 			//$channel->setType("crocket","p");
 
 
-        	echo "<br/>>>>> invite new user<br/>";
+        	//echo "<br/>>>>> invite new user<br/>";
         	//$res = $channel->invite("openatlas");
 			$res = $channel->invite("Bouboule");
 			var_dump($res);

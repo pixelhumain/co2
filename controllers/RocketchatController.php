@@ -60,34 +60,37 @@ class RocketchatController extends CommunecterController {
 	// existing user with good pwd > genertes token 
 	// existing user with bad pwd > msg > Unauthorised
 	// inexistant user > msg > Unauthorised
-	public function actionLogint($email,$pwd) {
+	public function actionLogint($email=null,$pwd=null) {
 		header('Content-Type: application/json');
-		
-		if($email == null){
-		Yii::app()->session["adminLoginToken"]   = null;
-		Yii::app()->session["adminRocketUserId"] = null;
-		Yii::app()->session["loginToken"]        = null;
-		Yii::app()->session["rocketUserId"]      = null;
-		}
+		if(Yii::app()->session["userId"])
+		{
+			if($email == null){
+			Yii::app()->session["adminLoginToken"]   = null;
+			Yii::app()->session["adminRocketUserId"] = null;
+			Yii::app()->session["loginToken"]        = null;
+			Yii::app()->session["rocketUserId"]      = null;
+			}
 
-	    Yii::app()->session["adminLoginToken"] = Yii::app()->params["adminLoginToken"];
-	    Yii::app()->session["adminRocketUserId"] = Yii::app()->params["adminRocketUserId"];
+		    Yii::app()->session["adminLoginToken"] = Yii::app()->params["adminLoginToken"];
+		    Yii::app()->session["adminRocketUserId"] = Yii::app()->params["adminRocketUserId"];
 
-	    
+		    
 
-	    if(!@Yii::app()->session["loginToken"]){
-			$rocket = RocketChat::getToken( $email, $pwd );
-			Yii::app()->session["loginToken"] = $rocket["loginToken"];
-		  	Yii::app()->session["rocketUserId"] = $rocket["rocketUserId"];
-		  }
-	  	$rocket["loginToken"] = Yii::app()->session["loginToken"];
-	    $rocket["rocketUserId"] = Yii::app()->session["rocketUserId"];
-	    $rocket["adminLoginToken"] = Yii::app()->params["adminLoginToken"];
-	    $rocket["adminRocketUserId"] = Yii::app()->params["adminRocketUserId"];
-	    $rocket['username'] = Yii::app()->session['user']['username'];
-	    $rocket['email'] = $email;
+		    if(!@Yii::app()->session["loginToken"]){
+				$rocket = RocketChat::getToken( $email, $pwd );
+				Yii::app()->session["loginToken"] = $rocket["loginToken"];
+			  	Yii::app()->session["rocketUserId"] = $rocket["rocketUserId"];
+			  }
+		  	$rocket["loginToken"] = Yii::app()->session["loginToken"];
+		    $rocket["rocketUserId"] = Yii::app()->session["rocketUserId"];
+		    $rocket["adminLoginToken"] = Yii::app()->params["adminLoginToken"];
+		    $rocket["adminRocketUserId"] = Yii::app()->params["adminRocketUserId"];
+		    $rocket['username'] = Yii::app()->session['user']['username'];
+		    $rocket['email'] = $email;
 
- 		echo json_encode($rocket);
+	 		echo json_encode($rocket);
+	 	} else 
+	 		Rest::json( array("result"=>false,"error"=>"Must be Loggued in."));
 		  
 	}
 
@@ -99,48 +102,52 @@ class RocketchatController extends CommunecterController {
 		// groups : http://127.0.0.1/ph/co2/rocketchat/chat/name/openatlas/type/test/roomType/group/test/true
 	public function actionChat($name,$type="",$id=null,$roomType=null) {
 		$group = null;
-		if( $type == Person::COLLECTION ){
-			//id will contain the username
-			/*$roomType == "direct";
-			$path = "/direct/".$name;
-			$group = RocketChat::createDirect($id);*/
-			$group = array("msg" => "all users are created on first login");
-		} elseif($roomType == "channel"){
-			$path = "/channel/".$type."_".$name;
-	 		$group = RocketChat::createGroup ($type."_".$name,$roomType, Yii::app()->session['user']['username']);
-	 		if($group != null){
-		 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
-		 										array('$set' => array("hasRC"=>true) ));
-		 	} 
-		}
-		else{
-			$path = "/group/".$type."_".$name;
-			$group = null;
-			if(Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) || 
-				Link::isLinked($id,$type,Yii::app()->session["userId"]) )
-	 			$group = RocketChat::createGroup ($type."_".$name,null, Yii::app()->session['user']['username']);
-	 		else 
-	 			Rest::json(array("result"=>false,
-	 							 "error"=>"Unauthorized Access.",
-	 							 "canEdit" => Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id),
-	 							 "userId"=>Yii::app()->session['userId'], 
-	 							 "userEmail"=>Yii::app()->session['userEmail'], 
-	 							 "type"=>$type, "id"=>$id));
+		if(Yii::app()->session["userId"])
+		{
+			if( $type == Person::COLLECTION ){
+				//id will contain the username
+				/*$roomType == "direct";
+				$path = "/direct/".$name;
+				$group = RocketChat::createDirect($id);*/
+				$group = array("msg" => "all users are created on first login");
+			} elseif($roomType == "channel"){
+				$path = "/channel/".$type."_".$name;
+		 		$group = RocketChat::createGroup ($type."_".$name,$roomType, Yii::app()->session['user']['username']);
+		 		if($group != null){
+			 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
+			 										array('$set' => array("hasRC"=>true) ));
+			 	} 
+			}
+			else{
+				$path = "/group/".$type."_".$name;
+				$group = null;
+				if(Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) || 
+					Link::isLinked($id,$type,Yii::app()->session["userId"]) )
+		 			$group = RocketChat::createGroup ($type."_".$name,null, Yii::app()->session['user']['username']);
+		 		else 
+		 			Rest::json(array("result"=>false,
+		 							 "error"=>"Unauthorized Access.",
+		 							 "canEdit" => Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id),
+		 							 "userId"=>Yii::app()->session['userId'], 
+		 							 "userEmail"=>Yii::app()->session['userEmail'], 
+		 							 "type"=>$type, "id"=>$id));
 
-	 		if($group != null && @$group->create->group->_id){
-		 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
-		 										array('$set' => array("hasRC"=>true, 
-		 															  "rcId"=>$group->create->group->_id) ));
-		 	}
-		}
+		 		if($group != null && @$group->create->group->_id){
+			 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
+			 										array('$set' => array("hasRC"=>true, 
+			 															  "rcId"=>$group->create->group->_id) ));
+			 	}
+			}
 
-	 	//echo json_encode($group);
-	 	//$embed = true;
-	 	/*if(Yii::app()->request->isAjaxRequest && !$noRender){
-	 		$this->renderPartial( "iframe", array( 'path'=>$path, "embed"=>$embed) );
-	 	} else {*/
- 		
- 		Rest::json($group);
+		 	//echo json_encode($group);
+		 	//$embed = true;
+		 	/*if(Yii::app()->request->isAjaxRequest && !$noRender){
+		 		$this->renderPartial( "iframe", array( 'path'=>$path, "embed"=>$embed) );
+		 	} else {*/
+	 		
+	 		Rest::json($group);
+	 	} else 
+	 		Rest::json( array("result"=>false,"error"=>"Must be Loggued in."));
 	 	
 	}
 

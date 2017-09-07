@@ -3691,7 +3691,76 @@ var dyFInputs = {
         };
 	    return inputObj;
     },
-    checkbox : function(checked, id, params){
+    checkboxSimple : function(checked, id, params){
+    
+    	var inputObj = {
+    		label: params["labelText"],
+    		params : params,
+	    	inputType : "checkboxSimple",
+	    	checked : $("#ajaxFormModal #"+id).val(),
+	    	init : function(){
+	    		var checked = $("#ajaxFormModal #"+id).val();
+	    		var idTrue = "#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox[data-checkval='true']";
+	    		var idFalse = "#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox[data-checkval='false']";
+
+	    		$("#ajaxFormModal #"+id).val(checked);
+
+	    		if(typeof params["labelInformation"] != "undefined")
+	        		$("#ajaxFormModal ."+id+"checkboxSimple label").append(
+	        				"<small class='col-md-12 col-xs-12 text-left no-padding' "+
+									"style='font-weight: 200;'>"+
+									params["labelInformation"]+
+							"</small>");
+
+	        	if(checked == "true"){
+	    			$(idTrue).addClass("bg-green-k").removeClass("letter-green");
+	    			$("#ajaxFormModal ."+id+"checkboxSimple label").append(
+	    					"<span class='lbl-status-check margin-left-10'>"+
+	    						'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>'+
+	    					"</span>");
+	        	}
+
+	    		if(checked == "false"){ 
+	    			$(idFalse).addClass("bg-red").removeClass("letter-red");
+	    			$("#ajaxFormModal ."+id+"checkboxSimple label").append(
+	    					"<span class='lbl-status-check margin-left-10'>"+
+	    						'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>'+
+	    					"</span>");
+
+	    			setTimeout(function(){
+    			  		if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+    			  	}, 1000);
+	    		}
+	    		
+
+	    		$("#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox").click(function(){
+	    			var checkval = $(this).data('checkval');
+	    			$("#ajaxFormModal #"+id).val(checkval);
+
+	    			if(checkval) {
+	    				$(idTrue).addClass("bg-green-k").removeClass("letter-green");
+	    			  	$(idFalse).removeClass("bg-red").addClass("letter-red");
+	    			  	$("#ajaxFormModal ."+id+"checkboxSimple .lbl-status-check").html(
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
+	    			  	
+	    			  	if(typeof params["inputId"] != "undefined") $(params["inputId"]).show(400);
+	    			}
+	    			else{
+	    			  	$(idFalse).addClass("bg-red").removeClass("letter-red");
+	    				$(idTrue).removeClass("bg-green-k").addClass("letter-green");
+	    				$("#ajaxFormModal ."+id+"checkboxSimple .lbl-status-check").html(
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
+
+	    				if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+	    			}
+	    		});
+	    	}
+	    };
+
+	    return inputObj;
+	},
+	
+	checkbox : function(checked, id, params){
     
     	var inputObj = {
     		label: params["labelText"],
@@ -3708,14 +3777,15 @@ var dyFInputs = {
 	        		$(".bootstrap-switch-label").off().click(function(){
 	        			$(".bootstrap-switch-off").click();
 	        		});
+	        		alert(checked);
 		        	if (checked) {
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onText"]+'</span>');
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
 	    				$(params["inputId"]).show(400);
 	    			} else {
 	    				
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offText"]+'</span>');
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
 	    				$(params["inputId"]).hide(400);
 	    			}
     			}, 1000);
@@ -3731,7 +3801,7 @@ var dyFInputs = {
 	        		//$("#ajaxFormModal #"+id+"checkbox").append("<span class='lbl-status-check'></span>");
 	    			if (checkbox) {
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onText"]+'</span>');
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
 	    				$(params["inputId"]).show(400);
 	    				/*if(id=="amendementActivated"){
 	    					var am = $("#ajaxFormModal #voteActivated").val();
@@ -3748,7 +3818,7 @@ var dyFInputs = {
 	    			} else {
 	    				
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offText"]+'</span>');
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
 	    				$(params["inputId"]).hide(400);
 	    			}
 	    		}
@@ -4019,6 +4089,7 @@ var typeObj = {
 	"survey" : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
 	"surveys" : {sameAs:"survey"},
 	"proposal" : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
+	"proposals" : { sameAs : "proposal" },
 	"action" : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
 	"actions" : { sameAs : "action" },
 	"actionRooms" : {sameAs:"room"},

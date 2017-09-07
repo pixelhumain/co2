@@ -364,11 +364,19 @@ function modifyNews(idNews,typeNews){
 				   		if(updateNews[idNews]["media"]["type"]=="url_content")
 				   			message += getMediaCommonHtml(updateNews[idNews]["media"],"save");
 				   		else if(updateNews[idNews]["media"]["type"]=="gallery_files"){
-				   				message += getMediaFiles(updateNews[idNews]["media"],idNews, "update");
-				   			message += "<input type='hidden' class='type' value='gallery_files'>";
+				   			message += getMediaFiles(updateNews[idNews]["media"],idNews, "update")+
+				   			"<input type='hidden' class='type' value='gallery_files'>";
+				   		}else if (updateNews[idNews]["media"]["type"]=="gallery_files"){
+				   			message += getMediaImages(updateNews[idNews]["media"], idNews,null,null, "update")+
+				   			"<input type='hidden' class='type' value='gallery_images'>";
 				   		}else{
-				   			message += getMediaImages(updateNews[idNews]["media"], idNews,null,null, "update");
-				   			message += "<input type='hidden' class='type' value='gallery_images'>";
+				   			message +='<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>'+
+			                directory.showResultsDirectoryHtml(new Array(updateNews[idNews]["media"]["object"]), updateNews[idNews]["media"]["object"]["type"])+
+                			"<input type='hidden' class='type' value='activityStream'>"+
+							"<input type='hidden' class='objectId' value='"+updateNews[idNews]["media"]["object"]["id"]+"'>"+
+							"<input type='hidden' class='objectType' value='"+updateNews[idNews]["media"]["object"]["type"]+"'>";
+				   			//message += getMediaImages(updateNews[idNews]["media"], idNews,null,null, "update");
+				   			//message += "<input type='hidden' class='type' value='gallery_images'>";
 				   		}
 				   	}
 		message +="</div>"+
@@ -427,7 +435,7 @@ function modifyNews(idNews,typeNews){
 						});
 					}else
 						news.media="unset";
-				}else{
+				}else if($("#resultsUpdate .type").val()=="gallery_files"){
 					newNews.media.countFiles=$("#resultsUpdate .docsId").length;
 					if(newNews.media.countFiles>0){
 						newNews.media.files=[];
@@ -436,6 +444,11 @@ function modifyNews(idNews,typeNews){
 						});
 					}else
 						newNews.media="unset";		
+				}else{
+					newNews.media.object={
+						"id":$("#resultsUpdate .objectId"),
+						"type":$("#resultsUpdate .objectType")
+					};
 				}
 			}else
 				newNews.media="unset";
@@ -1098,6 +1111,12 @@ function saveNews(){
 							newNews.media.content.imageSize=$("#form-news #results .size_img").val();
 						if($("#form-news #results .video_link_value").length)
 							newNews.media.content.videoLink=$("#form-news #results .video_link_value").val();
+					}else if($("#form-news #results .type").val()=="activityStream"){
+						newNews.media.type=$("#form-news #results .type").val(),
+						newNews.media.object={
+							"id":$("#form-news #results .objectId").val(),
+							"type":$("#form-news #results .objectType").val()
+						}
 					}
 					else{
 						newNews.media.type=$("#form-news #results .type").val(),

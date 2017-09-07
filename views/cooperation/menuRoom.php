@@ -217,7 +217,7 @@
 		margin-left: 0% !important;
 	}
 
-	#ajax-modal .form-group.amendementActivatedcheckbox,
+	#ajax-modal .form-group.amendementActivatedcheckboxSimple,
 	#ajax-modal .form-group.amendementDateEnddatetime,
 	#ajax-modal .form-group.voteActivatedcheckbox,
 	#ajax-modal .form-group.voteDateEnddatetime
@@ -226,10 +226,11 @@
 		background-color: #EDEDED;
 	}
 
-	#ajax-modal .form-group.amendementActivatedcheckbox,
+	#ajax-modal .form-group.amendementActivatedcheckboxSimple,
 	#ajax-modal .form-group.voteActivatedcheckbox{
 		margin-bottom:0px;
 		margin-top:30px;
+		display: flow-root;
 	}
 
 	.bootstrap-switch-handle-off{
@@ -681,15 +682,17 @@
 		});
 		
 		$("#btn-open-modal-delete").off().click(function(){
-			console.log("currentRoomId", currentRoomId);
-			console.log("currentRoomName", currentRoomName);
 			$("#modalDeleteRoom #btn-delete-room").attr("data-id-room", currentRoomId);
 			$("#modalDeleteRoom #space-name").html(currentRoomName);
 		});
 
+		$("#btn-edit-room").click(function(){
+			var idRoom = $(this).data("id-room");
+			dyFObj.editElement('rooms', idRoom);
+		});
+
 		$("#btn-delete-room").off().click(function(){
-			idRoom = $(this).data("id-room");
-			console.log("idRoom", idRoom);
+			var idRoom = $(this).data("id-room");
 			uiCoop.deleteByTypeAndId("rooms", idRoom);
 		});
 		//alert("initDrag");

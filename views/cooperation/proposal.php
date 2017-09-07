@@ -40,7 +40,7 @@
 			<i class="fa fa-cog"></i> options
 		  </button>
 		  <ul class="dropdown-menu">
-		    <li><a href="javascript:" class="" 
+		    <li><a href="javascript:" id="btn-edit-proposal" 
 		    		data-id-proposal="<?php echo $proposal["_id"]; ?>"
 		    		data-status="archived">
 		    	<i class="fa fa-pencil"></i> Modifier ma proposition
@@ -388,7 +388,14 @@
 		$(".btn-option-status-proposal").click(function(){
 			var idProposal = $(this).data("id-proposal");
 			var status = $(this).data("status");
+			console.log("update status proposals", idProposal, status, parentTypeElement, parentIdElement);
 			uiCoop.changeStatus("proposals", idProposal, status, parentTypeElement, parentIdElement);
+		});
+
+		$("#btn-edit-proposal").click(function(){
+			var idProposal = $(this).data("id-proposal");
+			console.log("edit idProposal", idProposal);
+			dyFObj.editElement('proposals', idProposal);
 		});
 
 		if(msgController != ""){

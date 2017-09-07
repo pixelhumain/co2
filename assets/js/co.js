@@ -1899,7 +1899,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 						success: function(data){        
 			                mylog.log(data); 
 			                if(data.type=="activityStream"){
-			                	content = '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>'+
+			                  	content = '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>'+
 			                			 directory.showResultsDirectoryHtml(new Array(data.object), data.object.type)+
 			                			"<input type='hidden' class='type' value='activityStream'>"+
 										"<input type='hidden' class='objectId' value='"+data.object.id+"'>"+
@@ -2034,10 +2034,20 @@ function getMediaCommonHtml(data,action,id){
 		mediaUrl=data.content.url;
 	else
 		mediaUrl="";
-	if(typeof(data.description) !="undefined" && typeof(data.name) != "undefined" && data.description !="" && data.name != ""){
-		contentMedia='<div class="extracted_content col-xs-8 padding-20"><h4><a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">'+data.name+'</a></h4><p>'+data.description+'</p>'+countThumbail+'</div>';
-		inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
-		inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
+	if((typeof(data.description) !="undefined" || typeof(data.name) != "undefined") && (data.description !="" || data.name != "")){
+		contentMedia='<div class="extracted_content col-xs-8 padding-20">'+
+			'<a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">';
+			if(typeof(data.name) != "undefined" && data.name!=""){
+				contentMedia+='<h4>'+data.name+'</h4></a>';
+				inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
+			}
+			if(typeof(data.description) != "undefined" && data.description!=""){
+				contentMedia+='<p>'+data.description+'</p>'+countThumbail+'>';
+				if(typeof(data.name) == "undefined" || data.name=="")
+					contentMedia+='</a>';
+				inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
+			}
+		contentMedia+='</div>';
 	}
 	else{
 		contentMedia="";

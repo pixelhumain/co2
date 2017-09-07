@@ -1007,10 +1007,20 @@ function getMediaHtml(data,action,idNews){
 		mediaUrl=data.content.url;
 	else
 		mediaUrl="";
-	if(typeof(data.description) !="undefined" && typeof(data.name) != "undefined" && data.description !="" && data.name != ""){
-		contentMedia='<div class="extracted_content padding-5"><h4><a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">'+data.name+'</a></h4><p>'+data.description+'</p>'+countThumbail+'</div>';
-		inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
-		inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
+	if((typeof(data.description) !="undefined" || typeof(data.name) != "undefined") && (data.description !="" || data.name != "")){
+		contentMedia='<div class="extracted_content col-xs-8 padding-20">'+
+			'<a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">';
+			if(typeof(data.name) != "undefined" && data.name!=""){
+				contentMedia+='<h4>'+data.name+'</h4></a>';
+				inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
+			}
+			if(typeof(data.description) != "undefined" && data.description!=""){
+				contentMedia+='<p>'+data.description+'</p>'+countThumbail+'>';
+				if(typeof(data.name) == "undefined" || data.name=="")
+					contentMedia+='</a>';
+				inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
+			}
+		contentMedia+='</div>';
 	}
 	else{
 		contentMedia="";

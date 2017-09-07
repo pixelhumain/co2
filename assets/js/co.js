@@ -3026,6 +3026,11 @@ var dyFInputs = {
 				}
 
 				if(v){
+					if(typeof networkJson.request.searchTag != "undefined"){
+						typeObj[key].dynForm.jsonSchema.properties.tags.data = networkJson.request.searchTag;
+					}
+
+
 					if(notNull(networkJson.dynForm)){
 						mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
 						mylog.log("networkTags", networkTags);

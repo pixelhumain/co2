@@ -1892,11 +1892,14 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
         if($this.parents().eq(nbParent).find(appendClassName).html()=="" || (e.which==32 || e.which==13)){
         	//new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?")
         	///\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i
-	        var match_url = /\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i;
+	        //var match_url = /\b(https?|ftp):\/\/([\-A-Z0-9. \-]+?|www\\.)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i;
+	        //var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+	        var match_url=/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
 	        if (match_url.test(getUrl.val())) 
 	        {
-		        //mylog.log(getUrl.val().match(match_url));
-		        if(lastUrl != getUrl.val().match(match_url)[0]){
+		        if(lastUrl != getUrl.val().match(match_url)[0] && processUrl.isLoading==false){
+		        	processUrl.isLoading=true;
+		        	mylog.log(getUrl.val().match(match_url));
 			       // alert(lastUrl+"///"+getUrl.val().match(match_url)[0]);
 		        	var extracted_url = getUrl.val().match(match_url)[0]; //extracted first url from text filed
 	                //$this.parent().find(appendClassName).html("<i class='fa fa-spin fa-spinner text-red fa-2x'></i>");//hide();
@@ -1915,6 +1918,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 						dataType: 'json',
 						success: function(data){        
 			                mylog.log(data); 
+			                processUrl.isLoading=false;
 			                if(data.type=="activityStream"){
 			                  	content = '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>'+
 			                			 directory.showResultsDirectoryHtml(new Array(data.object), data.object.type)+
@@ -2216,6 +2220,7 @@ function cityKeyPart(unikey, part){
 			EXTRACTPROCCESS
 ********************************** */
 var processUrl = {
+	isLoading:false,
 	checkUrlExists: function(url){
 	    url = url.trim();
 	    if(url.lastIndexOf("/") == url.lenght){

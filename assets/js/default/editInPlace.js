@@ -323,15 +323,20 @@ function bindAboutPodElement() {
 									contextData.parentId = data.resultGoods.values.parent.parentId;
 									contextData.parentType = data.resultGoods.values.parent.parentType;
 
-									var html = "<i>"+trad["notSpecified"]+"</i>";
+									var htmlAbout = "<i>"+trad["notSpecified"]+"</i>";
+									var htmlHeader = "";
 
 									if(notEmpty(contextData.parentId)){
-										html = '<a href="#page.type.'+contextData.parentType+'.id.'+contextData.parentId+'" class="lbh">'+ 
+										htmlAbout = '<a href="#page.type.'+contextData.parentType+'.id.'+contextData.parentId+'" class="lbh">'+ 
 											'<i class="fa fa-'+dyFInputs.get(contextData.parentType).icon+'"></i> '+
-											contextData.parent.name+'</a><br/>'; 
+											contextData.parent.name+'</a><br/>';
+
+										htmlHeader =((contextData.type == typeObj.event.col) ? trad["Planned on"] : trad["Parenthood"] ) ;
+										htmlHeader += htmlAbout;
 									}
 
-									$("#parentAbout").html(html);
+									$("#parentAbout").html(htmlAbout);
+									$("#parentHeader").html(htmlHeader);
 								}
 
 								if(typeof data.resultGoods.values.organizer != "undefined"){
@@ -341,14 +346,17 @@ function bindAboutPodElement() {
 									contextData.organizerType = data.resultGoods.values.organizer.organizerType;
 
 									var html = "<i>"+trad["notSpecified"]+"</i>";
+									var htmlHeader = "";
 
 									if(notEmpty(contextData.organizerId)){
 										html = '<a href="#page.type.'+contextData.organizerType+'.id.'+contextData.organizerId+'" class="lbh">'+ 
 											'<i class="fa fa-'+dyFInputs.get(contextData.organizerType).icon+'"></i> '+
-											contextData.organizer.name+'</a><br/>'; 
+											contextData.organizer.name+'</a><br/>';
+										htmlHeader = tradDynForm.organizedby + " " + html;
 									}
 
 									$("#organizerAbout").html(html);
+									$("#organizerHeader").html(htmlHeader);
 								}
 							}
 							dyFObj.closeForm();
@@ -408,7 +416,7 @@ function bindAboutPodElement() {
             	init : function(){ console.log("init ParentId");
 	            	$("#ajaxFormModal #parentId").off().on("change",function(){
 	            		var selected = $(':selected', this);
-    					$("#ajaxFormModal #parentType").val(selected.parent().attr('label'));
+    					$("#ajaxFormModal #parentType").val(selected.data('type'));
 	            	});
 	            }
             };

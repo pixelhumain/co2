@@ -603,6 +603,8 @@ var tradCategory = {
 	"director":"<?php echo Yii::t("category","Director") ?>",
 	"speaker":"<?php echo Yii::t("category","Speaker") ?>",
 	"intervener":"<?php echo Yii::t("category","Intervener") ?>",
+	"Planned on":"<?php echo Yii::t("common","Planned on") ?>",
+	"Parenthood":"<?php echo Yii::t("common","Parenthood") ?>",
 };
 var tradCountry = {
 	"BE":"Belgique", 

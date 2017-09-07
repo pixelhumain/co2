@@ -12,6 +12,9 @@ dynForm = {
             sub : function(){ alert("yo");
                 $("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
                                               .addClass("bg-dark");
+            },
+            onload : function(data){
+                $("#ajaxFormModal #idParentRoom").val(currentRoomId);
             }
 	    },
         beforeBuild : function(){

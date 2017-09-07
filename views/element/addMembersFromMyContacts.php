@@ -980,6 +980,8 @@ function sendInvitationMailAddMember(){ mylog.log("sendInvitationMailAddMember")
 					$("#numberOfInvit").html(count + ' invitation(s)');
 					$("#numberOfInvit").data("count", count);
 				}
+				
+				$("#search-contact").val("");
 				$("#addMembers #memberId").val("");
                 $("#addMembers #memberType").val("");
                 $("#addMembers #memberName").val("");
@@ -988,7 +990,7 @@ function sendInvitationMailAddMember(){ mylog.log("sendInvitationMailAddMember")
                 $('#addMembers #organizationType').val("");
 				$("#addMembers #memberIsAdmin").val("false");
 				$('#addMembers #memberEmail').parents().eq(1).show();
-				$("[name='my-checkbox']").bootstrapSwitch('state', false);
+				//$("[name='my-checkbox']").bootstrapSwitch('state', false);
 				$("#loader-send-mail-invite").html('');
 				//showSearch();
 				if(typeof(mapUrl) != "undefined"){

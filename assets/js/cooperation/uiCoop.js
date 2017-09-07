@@ -66,10 +66,9 @@ var uiCoop = {
 		$('.droppable').droppable({
 			accept : '.draggable', // je n'accepte que le bloc ayant "draggable" pour class
 		    drop : function(event, ui){
-		        toastr.info('end drag');
 		        var idNewRoom = $(this).data("dataid");
-		        console.log("end drag / roomId", idNewRoom, "coopId", uiCoop.dragId, "coopType", uiCoop.dragType);//, event, ui);
-		    	uiCoop.changeRoom(uiCoop.dragType, uiCoop.dragId, idNewRoom, contextData.type, contextData.id);
+		        uiCoop.changeRoom(uiCoop.dragType, uiCoop.dragId, idNewRoom, contextData.type, contextData.id);
+		    	toastr.info("L'élément a bien été déplacé");
 		    },
 		    activate : function( event, ui ){
 		    	var roomid = $(this).data("dataid");
@@ -321,6 +320,7 @@ var uiCoop = {
 			name: "status",
 			value: status
 		};
+		
 		toastr.info(trad["processing save"]);
 		$.ajax({
 		        type: "POST",
@@ -328,7 +328,12 @@ var uiCoop = {
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
-		    		uiCoop.getCoopData(null, null, type, null, id);
+		    		type = (type == "proposals") ? "proposal" : type;
+		    		type = (type == "actions") ? "action" : type;
+		    		toastr.success(trad["processing ok"]);
+					uiCoop.getCoopData(null, null, "room", null, idParentRoom, function(){
+			    		uiCoop.getCoopData(parentType, parentId, type, null, id);
+		    		});
 		    	}
 		});
 	},

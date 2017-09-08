@@ -59,7 +59,7 @@ var trad = {
 "postalCode" : "<?php echo Yii::t("common","Postal Code"); ?>",
 "unknownPostalCode" : "<?php echo Yii::t("common","Unknown Postal Code"); ?>",
 "city" : "<?php echo Yii::t("common","City"); ?>",
-
+"addmodifyroles":"<?php echo Yii::t("common","Add/Update roles") ?>", 
 "administrator" : "<?php echo Yii::t("common","Administrator") ?>",
 "member" : "<?php echo Yii::t("common","Member") ?>",
 "justCitizen" : "<?php echo Yii::t("common","Just a citizen wanting to give visibility to it :)") ?>",
@@ -237,7 +237,16 @@ var trad = {
 "Please specify a email" : "<?php echo Yii::t("common", "Please specify a email") ?>",
 "noMoreNotifs":"<?php echo Yii::t("common","No more notifications for the moment") ?>"
 };
-
+var tradCategory = {
+	"financier":"<?php echo Yii::t("category","Financier") ?>", 
+  "partner":"<?php echo Yii::t("category","Partner") ?>", 
+  "organizor":"<?php echo Yii::t("category","Organizor") ?>", 
+  "president":"<?php echo Yii::t("category","President") ?>", 
+  "sponsor":"<?php echo Yii::t("category","Sponsor") ?>", 
+  "director":"<?php echo Yii::t("category","Director") ?>", 
+  "speaker":"<?php echo Yii::t("category","Speaker") ?>", 
+  "intervener":"<?php echo Yii::t("category","Intervener") ?>"
+}
 var tradCountry = {
 	"BE":"Belgique", 
     "FR":"France",

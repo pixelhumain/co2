@@ -185,9 +185,16 @@
 		text-decoration: line-through;
 		display:none;
 	}
-	.btn-is-admin.selected{
-		display:inline;
-	}
+	.divRoles{ 
+    margin:5px; 
+    display:none; 
+  } 
+  .btn-is-admin.selected{ 
+    display:inline; 
+  } 
+  .divRoles.selected{ 
+    display:block; 
+  } 
 	.btn-is-admin.selected.isAdmin {
 		text-decoration: none;
 	}
@@ -279,11 +286,11 @@ var elementId = "<?php echo $parentId; ?>"
 var myContactsMembers = $.extend( true, {}, myContacts );
 var listContact = new Array();
 var newMemberInCommunity = false;
-
+var isElementAdmin= "<?php echo Authorisation::isElementAdmin($parentId, $type, @Yii::app()->session["userId"]) ?>"; 
 var contactTypes = [{ name : "people", color: "yellow", icon:"user", label:"Citoyens" }];
 var listMails = {};
-
-if(elementType != "<?php echo Event::COLLECTION ?>")
+var rolesList=[tradCategory.financier,tradCategory.partner,tradCategory.sponsor,tradCategory.organizor,tradCategory.president, tradCategory.director,tradCategory.speaker,tradCategory.intervener]; 
+if(elementType != "<?php echo Event::COLLECTION ?>" || isElementAdmin) 
 	contactTypes.push({ name : "organizations", color: "green", icon:"group", label:"Organisations" });
 
 
@@ -555,11 +562,13 @@ function bindEventScopeContactsModal(){
 		var check = !$("#chk-scope-"+id).prop('checked');
 		$("#chk-scope-"+id).prop("checked", check);
 		
-		if(check && type != "organizations")
-		$("[data-id='"+id+"'].btn-is-admin").addClass("selected");
-		else
-		$("[data-id='"+id+"'].btn-is-admin").removeClass("selected");
-	});
+		if(check){ 
+	      if(type != "organizations") 
+	        $("[data-id='"+id+"'].btn-is-admin").addClass("selected"); 
+	      $("[data-id='"+id+"'].divRoles").addClass("selected"); 
+	    }else 
+	    $("[data-id='"+id+"'].btn-is-admin, [data-id='"+id+"'].divRoles").removeClass("selected"); 
+  });
 
 	$(".chk-contact").click(function(){ 
 		var id = $(this).attr("idcontact"); 
@@ -569,11 +578,13 @@ function bindEventScopeContactsModal(){
 		var check = $(this).prop('checked');
 		//$("#chk-scope-"+id).prop("checked", check);
 		
-		if(check && type != "organizations")
-		$("[data-id='"+id+"'].btn-is-admin").addClass("selected");
-		else
-		$("[data-id='"+id+"'].btn-is-admin").removeClass("selected");
-	});
+		if(check){ 
+	      if(type != "organizations") 
+	        $("[data-id='"+id+"'].btn-is-admin").addClass("selected"); 
+	      $("[data-id='"+id+"'].divRoles").addClass("selected"); 
+	    }else 
+	      $("[data-id='"+id+"'].btn-is-admin, [data-id='"+id+"'].divRoles").removeClass("selected"); 
+  }); 
 
 	$(".btn-is-admin").click(function(){
 		if($(this).hasClass("isAdmin"))
@@ -581,6 +592,7 @@ function bindEventScopeContactsModal(){
 		else
 			$(this).addClass("isAdmin");
 	});
+	 $('.tagsRoles').select2({tags:rolesList}); 
 }
 
 function buildModal(fieldObj, idUi){
@@ -700,8 +712,13 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 															'<span class="scope-city-contact text-light" idcontact="'+thisKey+'">' + city + '</span>'+
 														'</span>' +
 													'</div>' +
-												'</div>' +
-											'</li>';
+												 '</div>'; 
+                        if(isElementAdmin){ 
+  fieldHTML +=                  '<div class="divRoles col-md-12 col-sm-12 col-xs-12" data-id="'+thisKey+'"">'+ 
+                            '<input id="tagsRoles'+getObjectId(value)+'" class="tagsRoles" type="" data-type="select2" name="roles" placeholder="Add roles" value="" style="width:100%;">'+ 
+                          '</div>';   
+                        } 
+  fieldHTML +=                '</li>'; 
 											}
 										}
 										});									
@@ -809,7 +826,7 @@ function checkSearch(thisElement, searchVal, type){
 function sendInvitation(){
 	var connectType = "member";
 	//if ($("#addMembers #memberIsAdmin").val() == true) connectType = "admin";
-	var params = {
+	 var params = {
 		"childs" : new Array(),
 		//"organizationType" : $("#addMembers #organizationType").val(),
 		"parentType" : elementType,
@@ -824,7 +841,10 @@ function sendInvitation(){
 			var name = "";
 			var contactPublicFound = new Array();
 			var connectType = "";
-
+			if ($("#tagsRoles"+id).val() != ""){ 
+		        roles = $("#tagsRoles"+id).val().split(",");   
+		      } 
+	
 			if(addLinkSearchMode == "all") { contactPublicFound = listContact;
 			}else if(addLinkSearchMode=="contacts"){ contactPublicFound = myContactsMembers; }
 
@@ -844,13 +864,16 @@ function sendInvitation(){
 
 			mylog.log("add this element ?", email, type, id, name);
 			if(type != "" && id != "" && name != "")
-				params["childs"].push({
-					"childId" : id,
-					"childName" : name,
-					"childEmail" : email,
-					"childType" : type, 
-					"connectType" : connectType
-				})
+				pushChild={ 
+		          "childId" : id, 
+		          "childName" : name, 
+		          "childEmail" : email, 
+		          "childType" : type,  
+		          "connectType" : connectType 
+		        } 
+        	if(roles != "undefined") 
+          		pushChild.roles=roles; 
+        	params["childs"].push(pushChild) 
 		}
 	});
 	mylog.log("params constructed");

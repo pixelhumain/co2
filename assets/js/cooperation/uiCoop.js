@@ -376,6 +376,105 @@ var uiCoop = {
 					uiCoop.startUI();
 		    	}
 		});	
+	},
+
+
+	initUIProposal : function(){
+		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
+		
+		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/proposals/id/"+idParentProposal,
+			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
+				$(".container-txtarea").hide();
+
+				$(".btn-select-arg-comment").click(function(){
+					var argval = $(this).data("argval");
+					$(".container-txtarea").show();
+
+					$(".textarea-new-comment").removeClass("bg-green-comment bg-red-comment");
+					var classe="";
+					var pholder="Votre commentaire";
+					if(argval == "up")   { classe="bg-green-comment"; pholder="Votre argument pour";   }
+					if(argval == "down") { classe="bg-red-comment";   pholder="Votre argument contre"; }
+					$(".textarea-new-comment").addClass(classe).attr("placeholder", pholder);
+					$("#argval").val(argval);
+				});
+
+		},"html");
+
+		$("#btn-close-proposal").click(function(){
+			uiCoop.minimizeMenuRoom(false);
+		});
+		$(".btn-extend-proposal").click(function(){
+			uiCoop.maximizeReader(true);
+			$(".btn-minimize-proposal").removeClass("hidden");
+			$(".btn-extend-proposal").addClass("hidden");
+		});
+		$(".btn-minimize-proposal").click(function(){
+			uiCoop.maximizeReader(false);
+			$(".btn-minimize-proposal").addClass("hidden");
+			$(".btn-extend-proposal").removeClass("hidden");
+		});
+		$(".btn-show-amendement").click(function(){
+			uiCoop.showAmendement(true);
+		});
+		$("#btn-hide-amendement").click(function(){
+			uiCoop.showAmendement(false);
+		});
+		$(".btn-create-amendement").click(function(){
+			uiCoop.showAmendement(true);
+			if($("#form-amendement").hasClass("hidden"))
+				$("#form-amendement").removeClass("hidden");
+			else 
+				$("#form-amendement").addClass("hidden");
+		});
+
+		$(".btn-send-vote").click(function(){
+			var voteValue = $(this).data('vote-value');
+			console.log("send vote", voteValue),
+			uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom);
+		});
+		$("#btn-activate-vote").click(function(){
+			uiCoop.activateVote(idParentProposal);
+		});
+
+		$("#btn-refresh-proposal").click(function(){
+			toastr.info(trad["processing"]);
+			var idProposal = $(this).data("id-proposal");
+			uiCoop.getCoopData(null, null, "proposal", null, idProposal, 
+				function(){
+					uiCoop.minimizeMenuRoom(true);
+					uiCoop.showAmendement(false);
+					toastr.success(trad["processing ok"]);
+				}, false);
+		});
+
+		$("#btn-refresh-amendement").click(function(){
+			toastr.info(trad["processing"]);
+			var idProposal = $(this).data("id-proposal");
+			uiCoop.getCoopData(null, null, "proposal", null, idProposal, 
+				function(){
+					uiCoop.minimizeMenuRoom(true);
+					uiCoop.showAmendement(true);
+					toastr.success(trad["processing ok"]);
+				}, false);
+		});
+
+		$(".btn-option-status-proposal").click(function(){
+			var idProposal = $(this).data("id-proposal");
+			var status = $(this).data("status");
+			console.log("update status proposals", idProposal, status, parentTypeElement, parentIdElement);
+			uiCoop.changeStatus("proposals", idProposal, status, parentTypeElement, parentIdElement);
+		});
+
+		$("#btn-edit-proposal").click(function(){
+			var idProposal = $(this).data("id-proposal");
+			console.log("edit idProposal", idProposal);
+			dyFObj.editElement('proposals', idProposal);
+		});
+
+		if(msgController != ""){
+			toastr.error(msgController);
+		}
 	}
 
 }

@@ -3741,12 +3741,13 @@ var dyFInputs = {
     		label: params["labelText"],
     		params : params,
 	    	inputType : "checkboxSimple",
-	    	checked : $("#ajaxFormModal #"+id).val(),
+	    	checked : checked, //$("#ajaxFormModal #"+id).val(),
 	    	init : function(){
-	    		var checked = $("#ajaxFormModal #"+id).val();
+	    		//var checked = $("#ajaxFormModal #"+id).val();
+	    		console.log("checkcheck2", checked, "#ajaxFormModal #"+id);
 	    		var idTrue = "#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox[data-checkval='true']";
 	    		var idFalse = "#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox[data-checkval='false']";
-
+	    		console.log("checkcheck2", checked, "#ajaxFormModal #"+id);
 	    		$("#ajaxFormModal #"+id).val(checked);
 
 	    		if(typeof params["labelInformation"] != "undefined")
@@ -3780,7 +3781,8 @@ var dyFInputs = {
 	    		$("#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox").click(function(){
 	    			var checkval = $(this).data('checkval');
 	    			$("#ajaxFormModal #"+id).val(checkval);
-
+	    			console.log("EVENT CLICK ON CHECKSIMPLE", checkval);
+	    			
 	    			if(checkval) {
 	    				$(idTrue).addClass("bg-green-k").removeClass("letter-green");
 	    			  	$(idFalse).removeClass("bg-red").addClass("letter-red");
@@ -3798,6 +3800,7 @@ var dyFInputs = {
 	    				if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
 	    			}
 	    		});
+
 	    	}
 	    };
 
@@ -3821,7 +3824,7 @@ var dyFInputs = {
 	        		$(".bootstrap-switch-label").off().click(function(){
 	        			$(".bootstrap-switch-off").click();
 	        		});
-	        		alert(checked);
+	        		
 		        	if (checked) {
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
 	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');

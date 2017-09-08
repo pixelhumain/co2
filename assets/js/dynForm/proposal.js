@@ -16,17 +16,46 @@ dynForm = {
 	    	},
 	    	onload : function(data){
 				$("#ajaxFormModal #idParentRoom").val(currentRoomId);
-				data.amendementActivated = (data.amendementActivated == "true") ? true : false;
-				data.voteActivated 		 = (data.voteActivated == "true") 		? true : false;
-				console.log("dyn Proposal onLoad data:", data);
-				if(data.amendementActivated == false){
-					$("#ajaxFormModal #amendementActivated").val("false");
+				console.log("checkcheck0", data, typeof data);
+
+				if(typeof data.amendementActivated != "undefined"){
+					data.amendementActivated = (data.amendementActivated == "true" || data.amendementActivated == true) ? true : false;
+					data.voteActivated 		 = (data.voteActivated == "true" || data.voteActivated == true) 			? true : false;
+					
+					console.log("checkcheck1", data);
+
+					if(data.amendementActivated == false){
+						var idTrue = "#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='true']";
+	    				var idFalse = "#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='false']";
+	    				
+	    				$("#ajaxFormModal #amendementActivated").val("false");
+						$("#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='false']").trigger( "click" );
+						
+						$(idFalse).addClass("bg-red").removeClass("letter-red");
+	    				$(idTrue).removeClass("bg-green-k").addClass("letter-green");
+
+	    				$("#ajaxFormModal .amendementActivatedcheckboxSimple .lbl-status-check").html(
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> désactivés</span>');
+
+	    				if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+					}
 				}
 
-				var d = new Date(data.voteDateEnd);
-				var voteDateEnd = moment(d).format("DD/MM/YYYY HH:mm");
-				console.log("voteDateEnd", d, voteDateEnd);
-				$("#ajaxFormModal #voteDateEnd").val(voteDateEnd);
+				if(typeof data.voteDateEnd != "undefined"){
+					var d = new Date(data.voteDateEnd);
+					var voteDateEnd = moment(d).format("DD/MM/YYYY HH:mm");
+					console.log("voteDateEnd", d, voteDateEnd);
+					$("#ajaxFormModal #voteDateEnd").val(voteDateEnd);
+				}
+
+				if(typeof data.amendementDateEnd != "undefined"){
+					d = new Date(data.amendementDateEnd);
+					var amendementDateEnd = moment(d).format("DD/MM/YYYY HH:mm");
+					$("#ajaxFormModal #amendementDateEnd").val(amendementDateEnd);
+				}else{
+					$("#ajaxFormModal #amendementDateEnd").val("");
+				}
+
 			}
 	    },
         beforeSave : function(){
@@ -55,16 +84,16 @@ dynForm = {
             { 
                 dyFObj.closeForm(); 
                	var oldCount = $("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html();
-               	//console.log("data success save proposal", data);
+               	console.log("data success save proposal", data);
                	$("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html(parseInt(oldCount)+1);
                	
-               	if(typeof data.idParentRoom != "undefined"){
+               	if(typeof data.map.idParentRoom != "undefined"){
 	               	uiCoop.getCoopData(null, null, "room", null, data.map.idParentRoom);
 	                setTimeout(function(){
 	                	uiCoop.getCoopData(null, null, "proposal", null, data.id);
 	                }, 1000);
 	            }else{
-	            	uiCoop.getCoopData(null, null, "room", null, idParentRoom);
+	            	uiCoop.getCoopData(null, null, "room", null, currentRoomId);
 	                setTimeout(function(){
 	                	uiCoop.getCoopData(null, null, "proposal", null, idParentProposal);
 	                }, 1000);

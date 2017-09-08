@@ -312,7 +312,7 @@ jQuery(document).ready(function() {
    							// access image size here 
    						 	var imgWidth=this.width;
    						 	var imgHeight=this.height;
-   							if(imgWidth>=600 && imgHeight>=300){
+   							if(imgWidth>=300 && imgHeight>=100){
                					$.blockUI({ 
                						message: $('div#uploadScropResizeAndSaveImage'), 
                						css: {cursor:null,padding: '0px !important'}
@@ -388,7 +388,7 @@ jQuery(document).ready(function() {
 								}, 300);
 							}
    						 	else
-   						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
+   						 		toastr.warning("Please choose an image with a minimun of size: 300x100 (widthxheight)");
 						};
 			        });
 			        reader.readAsDataURL(file);

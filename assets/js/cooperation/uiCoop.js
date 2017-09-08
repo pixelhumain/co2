@@ -1,13 +1,14 @@
 /* uiCoop is use for all function relative to UI for Cooperation Spaces (DDA) */
 var uiCoop = {
 	"startUI" : function(){
+		console.log("startUICOOP");
 		//$("#menu-left-container").hide();
 		//$("#div-reopen-menu-left-container").removeClass("hidden");
 		$("#main-coop-container").html("");
 
 		//KScrollTo("#div-reopen-menu-left-container");
 
-		toogleNotif(false);
+		//toogleNotif(false);
 
 		$("a.title-section").off().click(function(){
 			if($(this).hasClass("open")){
@@ -20,8 +21,6 @@ var uiCoop = {
 				$(this).find(".fa-caret-right").removeClass("fa-caret-right").addClass("fa-caret-down");
 			}
 		});
-
-		
 
 		uiCoop.initBtnLoadData();
 		uiCoop.getCoopData(contextData.type, contextData.id, "menucoop");

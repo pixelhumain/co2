@@ -307,7 +307,7 @@ var trad = {
 	"processing ok" : "<?php echo Yii::t("cooperation", "processing ok") ?>",
 	"processing" : "<?php echo Yii::t("cooperation", "processing") ?>",
 
-	"amendable" : "<?php echo Yii::t("cooperation", "processing") ?>",
+	"amendable" : "<?php echo Yii::t("cooperation", "amendable") ?>",
 	"tovote" : "<?php echo Yii::t("cooperation", "tovote") ?>",
 	"todo" : "<?php echo Yii::t("cooperation", "todo") ?>",
 	"closed" : "<?php echo Yii::t("cooperation", "closed") ?>",

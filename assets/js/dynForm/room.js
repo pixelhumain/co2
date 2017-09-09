@@ -123,10 +123,10 @@ dynForm = {
             //type : dyFInputs.inputHidden(),
 
             name : dyFInputs.name("room"),
-            topic : dyFInputs.inputText("Sujet traité", "..."),
+            //topic : dyFInputs.inputText("Sujet traité", "..."),
             description : dyFInputs.textarea(tradDynForm.description, "..."),
             // image : dyFInputs.image(),
-            tags : dyFInputs.tags()
+            //tags : dyFInputs.tags()
 	    }
 	}
 };

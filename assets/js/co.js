@@ -3109,6 +3109,24 @@ var dyFInputs = {
 	    mylog.log("inputText ", inputObj);
     	return inputObj;
     },
+    slug :function(label, placeholder, rules) { 
+		var inputObj = {
+			label : label,
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "... " ),
+	        inputType : "text",
+	        rules : ( notEmpty(rules) ? rules : "")
+	    };
+    	inputObj.init = function(){
+        	$("#ajaxFormModal #slug").bind("input keyup",function(e) {
+        		$(this).val(slugify($(this).val()));
+        		if($("#ajaxFormModal #slug").val().length > 3 )
+            		slugUnique($(this).val());
+            	//dyFObj.canSubmitIf();
+        	});
+	    }
+	    mylog.log("dyFInputs ", inputObj);
+    	return inputObj;
+    },
 	name :function(type, rules, addElement, extraOnBlur) { 
 		var inputObj = {
 	    	placeholder : "... ",

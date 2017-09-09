@@ -235,9 +235,14 @@
 	  			( Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) ) ||
 	  			//simple members can join only when admins had created
 	  			( @$element["hasRC"] && Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"])) )
-	  			{ 
+	  			{
+	  				if(@$element["slug"])
+						//todo : elements members of
+	  					$loadChat = $element["slug"];
+	  				else
+	  					$createSlugBeforeChat=true;
 	  				//todo : elements members of
-	  				$loadChat = $element["name"];
+	  				//$loadChat = $element["name"];
 	  				//people have pregenerated rooms so allways available 
 	  				$hasRC = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "true" : "false";
 	  				$canEdit = ( @$openEdition && $openEdition ) ? "true" : "false";
@@ -250,10 +255,17 @@
 		  			}
 		  			$chatColor = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "text-red" : "";
 	  	  ?>
-		  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
+	  	  <?php if(@$createSlugBeforeChat){ ?>
+	  	  	<button type="button" onclick="javascript:createSlugBeforeChat('<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
 		  		  id="open-rocketChat" style="border-right:0px!important;">
 		  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
-		  </button>
+		  	</button>
+	  	  <?php } else{ ?>
+			  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
+			  		  id="open-rocketChat" style="border-right:0px!important;">
+			  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
+			  </button>
+		  <?php } ?>
 		  
 		  <?php } ?>
 

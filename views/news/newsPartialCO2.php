@@ -302,7 +302,7 @@
           textHtml="";
           textNews=v.text;
            if(v.text.length > 0)
-              textNews=checkAndCutLongString(v.text,500,v._id.$id);
+              textNews=checkAndCutLongString(v.text,500,v._id.$id,"showmorenews",true);
             //Check if @mentions return text with link
             if(typeof(v.mentions) != "undefined")
               textNews = addMentionInText(textNews,v.mentions);
@@ -310,16 +310,16 @@
           $("#newsContent"+e).html(textHtml);
 
           $(".btn-showmorenews").off().click(function(){
-            var newsid = $(this).data("newsid");
+            var newsid = $(this).data("id");
              console.log("hasClass ?", $("#newsContent"+newsid+" .timeline_text span.endtext").hasClass("hidden"));
             if($("#newsContent"+newsid+" .timeline_text span.endtext").hasClass("hidden")){
                 $("#newsContent"+newsid+" .timeline_text span.endtext").removeClass("hidden");
                 $("#newsContent"+newsid+" .timeline_text span.ppp").addClass("hidden");
-                $(this).html("réduire le texte");
+                $(this).html("Réduire le texte").parent().prepend("<br>");
             }else{
                 $("#newsContent"+newsid+" .timeline_text span.endtext").addClass("hidden");
                 $("#newsContent"+newsid+" .timeline_text span.ppp").removeClass("hidden");
-                $(this).html("Lire la suite");
+                $(this).html("Lire la suite").parent().find("br").remove();
             }
           });
         }

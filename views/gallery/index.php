@@ -354,6 +354,19 @@ ul.dropdown-menu-collection > li > a:hover{
 				}
 			});
 		});
+		$(".btn-showmoredesc").off().click(function(){
+            var id = $(this).data("id");
+             console.log("hasClass ?", $("#"+id+" .contentDescription span.endtext").hasClass("hidden"));
+            if($("#"+id+" .contentDescription span.endtext").hasClass("hidden")){
+                $("#"+id+" .contentDescription span.endtext").removeClass("hidden");
+                $("#"+id+" .contentDescription span.ppp").addClass("hidden");
+                $(this).html("Réduire le texte").parent().prepend("<br>");
+            }else{
+                $("#"+id+" .contentDescription span.endtext").addClass("hidden");
+                $("#"+id+" .contentDescription span.ppp").removeClass("hidden");
+                $(this).html("Lire la suite").parent().find("br").remove();
+            }
+         });
 
 	}
 	function addToCollection(name){

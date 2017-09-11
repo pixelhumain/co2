@@ -143,7 +143,7 @@ class RocketchatController extends CommunecterController {
 					"chat"
 				);
 
-				array( "text"=>"Oyé Oyé , ".Yii::app()->session["user"]["name"]." a créé la fusée pour Dailoguer en direct : Click pour découvrir le Rocket Chat de la Communauté.", 
+				/*array( "text"=>"Oyé Oyé , ".Yii::app()->session["user"]["name"]." a créé la fusée pour Dailoguer en direct : Click pour découvrir le Rocket Chat de la Communauté.", 
 					   "parentType"=>$type,
 					   "parentId"=>$id,
 					   "scope"=>"private",
@@ -154,7 +154,7 @@ class RocketchatController extends CommunecterController {
 					   				"image"=>Yii::app()->getRequest()->getBaseUrl(true)."/themes/CO2//assets/img/bg_pixeltree2.jpg", 
 					   				"imageSize":"large")), 
 					   "type"=>"news");
-				News::save($array);
+				News::save($array);*/
 		 	}
 
 		 	//echo json_encode($group);

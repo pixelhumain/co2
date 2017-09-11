@@ -104,27 +104,24 @@ class RocketchatController extends CommunecterController {
 		$group = null;
 		if(Yii::app()->session["userId"])
 		{
-			if( $type == Person::COLLECTION ){
+			/*if( $type == Person::COLLECTION ){
 				//id will contain the username
 				/*$roomType == "direct";
 				$path = "/direct/".$name;
 				$group = RocketChat::createDirect($id);*/
-				$group = array("msg" => "all users are created on first login");
-			} elseif($roomType == "channel"){
+				//$group = array("msg" => "all users are created on first login");
+			//} else*/
+			if($roomType == "channel"){
 				$path = "/channel/".$type."_".$name;
-		 		$group = RocketChat::createGroup ($type."_".$name,$roomType, Yii::app()->session['user']['username']);
-		 		if($group != null){
-			 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
-			 										array('$set' => array("hasRC"=>true) ));
-			 	} 
+		 		$group = RocketChat::createGroup ($type."_".$name,$roomType, Yii::app()->session['user']['username']); 
 			}
 			else{
 				$path = "/group/".$type."_".$name;
 				$group = null;
 				if(Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) || 
-					Link::isLinked($id,$type,Yii::app()->session["userId"]) )
+					Link::isLinked($id,$type,Yii::app()->session["userId"]) ){
 		 			$group = RocketChat::createGroup ($type."_".$name,null, Yii::app()->session['user']['username']);
-		 		else 
+		 		} else 
 		 			Rest::json(array("result"=>false,
 		 							 "error"=>"Unauthorized Access.",
 		 							 "canEdit" => Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id),
@@ -132,12 +129,33 @@ class RocketchatController extends CommunecterController {
 		 							 "userEmail"=>Yii::app()->session['userEmail'], 
 		 							 "type"=>$type, "id"=>$id));
 
-		 		if($group != null && @$group->create->group->_id){
-			 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
-			 										array('$set' => array("hasRC"=>true, 
-			 															  "rcId"=>$group->create->group->_id) ));
-			 	}
+		 		
 			}
+
+			if($group != null && @$group->create->channel->_id ) {
+		 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
+		 										array('$set' => array("hasRC"=>true) ));
+		 		// TODO : notification or news
+				Notification::constructNotification(ActStr::VERB_ADD, 
+					array("id" => Yii::app()->session["userId"],"name"=> Yii::app()->session["user"]["name"]), 
+					array( "type"=>$type,"id"=> $id), 
+					null, 
+					"chat"
+				);
+
+				array( "text"=>"Oyé Oyé , ".Yii::app()->session["user"]["name"]." a créé la fusée pour Dailoguer en direct : Click pour découvrir le Rocket Chat de la Communauté.", 
+					   "parentType"=>$type,
+					   "parentId"=>$id,
+					   "scope"=>"private",
+					   "media"=>array(
+					   			"type"=>"url_content", 
+					   			"content"=> array(
+					   				"url"=>Yii::app()->getRequest()->getBaseUrl(true)."/themes/CO2//assets/img/bg_pixeltree2.jpg",
+					   				"image"=>Yii::app()->getRequest()->getBaseUrl(true)."/themes/CO2//assets/img/bg_pixeltree2.jpg", 
+					   				"imageSize":"large")), 
+					   "type"=>"news");
+				News::save($array);
+		 	}
 
 		 	//echo json_encode($group);
 		 	//$embed = true;

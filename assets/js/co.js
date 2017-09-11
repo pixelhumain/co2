@@ -3311,6 +3311,7 @@ var dyFInputs = {
 		    	dyFObj.closeForm();
 				//alert( "image upload then goto : "+uploadObj.gotoUrl );
 				if(location.hash.indexOf("view.library")>0){
+					navCollections=[];
 					buildNewBreadcrum("files");
 					getViewGallery(1,"","files");
 				}		

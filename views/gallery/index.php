@@ -378,8 +378,14 @@ ul.dropdown-menu-collection > li > a:hover{
 			ajaxPost(null,baseUrl+"/"+moduleId+"/gallery/crudfile/action/"+action ,params,function(data) { 
 					if(data.result){
 						actionCrud=true;
-						buildNewBreadcrum(docType);
-						getViewGallery(breadcrumLevel,data.movedIn, "slider",true);
+						keyMov="slider";
+						dockey=docType;
+						if(docType=="file"){
+							keyMov="files";
+							docKey=keyMov;
+						}
+						buildNewBreadcrum(docKey);
+						getViewGallery(breadcrumLevel,data.movedIn, keyMov,true);
 						toastr.success(data.msg);
 					}
 					else
@@ -425,7 +431,7 @@ ul.dropdown-menu-collection > li > a:hover{
 					if(docType=="image")
 							keyCreate="slider";
 						else
-							keyCreate="files";
+							keyCreate="file";
 					if(notNull(data.createdIn))
 						getViewGallery(breadcrumLevel,data.createdIn, keyCreate,true);
 					else{

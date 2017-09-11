@@ -61,34 +61,7 @@
 				id="btn-close-resolution">
 		<i class="fa fa-times"></i>
 	</button>
-	<?php if($auth && @$resolution["creator"] == Yii::app()->session['userId']){ ?>
-		 <div class="pull-right dropdown">
-		  <button class="btn btn-default margin-left-5 margin-top-10" data-toggle="dropdown">
-			<i class="fa fa-cog"></i> options
-		  </button>
-		  <ul class="dropdown-menu">
-		    <li><a href="javascript:" class="" 
-		    		data-id-resolution="<?php echo $resolution["_id"]; ?>"
-		    		data-status="archived">
-		    	<i class="fa fa-pencil"></i> Modifier ma proposition
-		    	</a>
-		    </li>
-		    <li><a href="javascript:" class="btn-option-status-resolution" 
-		    		data-id-resolution="<?php echo $resolution["_id"]; ?>"
-		    		data-status="archived">
-		    	<i class="fa fa-trash"></i> Archiver ma proposition
-		    	</a>
-		    </li>
-		    <!-- <li><hr class="margin-5"></li> -->
-		    <li><a href="javascript:" class="btn-option-status-resolution" 
-		    		data-id-resolution="<?php echo $resolution["_id"]; ?>"
-		    		data-status="closed">
-		    		<i class="fa fa-times"></i> Fermer ma proposition
-		    	</a>
-		    </li>
-		  </ul>
-		</div> 
-	<?php } ?>
+	
 	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
 				data-original-title="Actualiser les données" data-placement="bottom"
 				data-id-resolution="<?php echo $resolution["_id"]; ?>"

@@ -421,7 +421,7 @@
 							
 							if(data != null){
 								if(data.profilMarkerExists == true)
-								data.profilMarkerImageUrl = "/upload/" + moduleId + data.profilMarkerImageUrl;// + "?v="+thisSig.vMarker;
+									data.profilMarkerImageUrl = "/upload/communecter" + data.profilMarkerImageUrl;// + "?v="+thisSig.vMarker;
 								thisSig.vMarker++;
 								var lng =  parseFloat(data.position.longitude);
 								//mylog.log("MYPOSITION", data, lng);

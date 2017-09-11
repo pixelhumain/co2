@@ -841,10 +841,10 @@ function sendInvitation(){
 			var name = "";
 			var contactPublicFound = new Array();
 			var connectType = "";
+			var roles = "";
 			if ($("#tagsRoles"+id).val() != ""){ 
 		        roles = $("#tagsRoles"+id).val().split(",");   
 		      } 
-	
 			if(addLinkSearchMode == "all") { contactPublicFound = listContact;
 			}else if(addLinkSearchMode=="contacts"){ contactPublicFound = myContactsMembers; }
 
@@ -871,7 +871,7 @@ function sendInvitation(){
 		          "childType" : type,  
 		          "connectType" : connectType 
 		        } 
-        	if(roles != "undefined") 
+        	if(typeof roles != "undefined" && roles != "") 
           		pushChild.roles=roles; 
         	params["childs"].push(pushChild) 
 		}
@@ -911,12 +911,12 @@ function sendInvitation(){
 			            mapType="people";
 			        mapElements.push(newMember);
 				});*/
-				if(typeof(mapUrl) != "undefined"){
+			/*	if(typeof(mapUrl) != "undefined"){
 					if(typeof(mapUrl.detail.load) != "undefined" && mapUrl.detail.load)
 						mapUrl.detail.load = false;
 					if(typeof(mapUrl.directory.load) != "undefined" && mapUrl.directory.load)
 						mapUrl.directory.load = false;
-				}
+				}*/
 				if(data.onlyOrganization)
 					loadDataDirectory("members", "users");
 				else

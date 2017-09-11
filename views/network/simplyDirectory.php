@@ -143,7 +143,7 @@ function initVar(){
    	indexStep = indexStepInit;
    	var allSearchParams = ["mainTag", "sourceKey", "searchType", "searchTag","searchCategory","searchLocalityNAME","searchLocalityCODE_POSTAL_INSEE","searchLocalityDEPARTEMENT","searchLocalityINSEE","searchLocalityREGION"];
    	$.each(allSearchParams,function(k,v){
-   		mylog.log("allSearchParams", )
+   		mylog.log("allSearchParams" );
 		nwVar[v] = ( ( typeof networkJson.request[v] != "undefined" && $.isArray(networkJson.request[v]) ) ? networkJson.request[v] : [] );
 		nwVar["all"+v] = ( ( typeof networkJson.request[v] != "undefined" && $.isArray(networkJson.request[v]) ) ? networkJson.request[v] : [] );
 	});

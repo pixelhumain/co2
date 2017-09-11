@@ -1759,13 +1759,13 @@ function globalSearch(searchValue,types,contact){
  			$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
  			cotmp = {};
  			$.each(data, function(id, elem) {
-  				mylog.log(elem);
+  				mylog.log("similarlink globalautocomplete", elem);
   				city = "";
 				postalCode = "";
 				var htmlIco ="<i class='fa fa-users'></i>";
 				if(elem.type){
 					typeIco = elem.type;
-					htmlIco ="<i class='fa fa-"+typeObj[elem.type].icon +"'></i>";
+					htmlIco ="<i class='fa fa-"+dyFInputs.get(elem.type).icon +"'></i>";
 				}
 				where = "";
 				if (elem.address != null) {
@@ -1774,9 +1774,9 @@ function globalSearch(searchValue,types,contact){
 					if( notEmpty( city ) && notEmpty( postalCode ) )
 					where = ' ('+postalCode+" "+city+")";
 				}
-				var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
+				//var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
 				if("undefined" != typeof elem.profilImageUrl && elem.profilImageUrl != ""){
-					var htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
+					htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
 				}
 				
 				if(contact == true){

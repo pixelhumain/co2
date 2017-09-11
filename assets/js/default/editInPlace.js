@@ -367,6 +367,7 @@ function bindAboutPodElement() {
 						properties : {
 							block : dyFInputs.inputHidden(),
 							name : dyFInputs.name(contextData.type),
+							similarLink : dyFInputs.similarLink,
 							typeElement : dyFInputs.inputHidden(),
 							isUpdate : dyFInputs.inputHidden(true)
 						}

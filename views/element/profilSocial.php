@@ -242,7 +242,7 @@
 	  				else
 	  					$createSlugBeforeChat=true;
 	  				//todo : elements members of
-	  				//$loadChat = $element["name"];
+	  				$loadChat = $element["name"];
 	  				//people have pregenerated rooms so allways available 
 	  				$hasRC = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "true" : "false";
 	  				$canEdit = ( @$openEdition && $openEdition ) ? "true" : "false";

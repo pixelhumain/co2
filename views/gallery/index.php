@@ -379,7 +379,7 @@ ul.dropdown-menu-collection > li > a:hover{
 					if(data.result){
 						actionCrud=true;
 						keyMov="slider";
-						dockey=docType;
+						docKey=docType;
 						if(docType=="file"){
 							keyMov="files";
 							docKey=keyMov;

@@ -112,15 +112,15 @@ class RocketchatController extends CommunecterController {
 				//$group = array("msg" => "all users are created on first login");
 			//} else*/
 			if($roomType == "channel"){
-				$path = "/channel/".$type."_".$name;
-		 		$group = RocketChat::createGroup ($type."_".$name,$roomType, Yii::app()->session['user']['username']); 
+				$path = "/channel/".$name;
+		 		$group = RocketChat::createGroup ($name,$roomType, Yii::app()->session['user']['username']); 
 			}
 			else{
-				$path = "/group/".$type."_".$name;
+				$path = "/group/".$name;
 				$group = null;
 				if(Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) || 
 					Link::isLinked($id,$type,Yii::app()->session["userId"]) ){
-		 			$group = RocketChat::createGroup ($type."_".$name,null, Yii::app()->session['user']['username']);
+		 			$group = RocketChat::createGroup ($name,null, Yii::app()->session['user']['username']);
 		 		} else 
 		 			Rest::json(array("result"=>false,
 		 							 "error"=>"Unauthorized Access.",

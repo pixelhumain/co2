@@ -40,23 +40,23 @@
 			<i class="fa fa-cog"></i> options
 		  </button>
 		  <ul class="dropdown-menu">
-		    <li><a href="javascript:" class="" 
+		    <li><a href="javascript:" id="btn-edit-action" 
 		    		data-id-action="<?php echo $action["_id"]; ?>"
 		    		data-status="archived">
-		    	<i class="fa fa-pencil"></i> Modifier
+		    	<i class="fa fa-pencil"></i> Modifier l'action
 		    	</a>
 		    </li>
 		    <li><a href="javascript:" class="btn-option-status-action" 
 		    		data-id-action="<?php echo $action["_id"]; ?>"
 		    		data-status="archived">
-		    	<i class="fa fa-trash"></i> Archiver
+		    	<i class="fa fa-trash"></i> Archiver l'action
 		    	</a>
 		    </li>
 		    <!-- <li><hr class="margin-5"></li> -->
 		    <li><a href="javascript:" class="btn-option-status-action" 
 		    		data-id-action="<?php echo $action["_id"]; ?>"
-		    		data-status="closed">
-		    		<i class="fa fa-times"></i> Fermer
+		    		data-status="done">
+		    		<i class="fa fa-times"></i> Fermer l'action
 		    	</a>
 		    </li>
 		  </ul>
@@ -114,6 +114,34 @@
 		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/actions/id/"+idAction,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 		},"html");
+
+
+		$("#btn-close-action").click(function(){
+			uiCoop.minimizeMenuRoom(false);
+		});
+		$(".btn-extend-action").click(function(){
+			uiCoop.maximizeReader(true);
+			$(".btn-minimize-action").removeClass("hidden");
+			$(".btn-extend-action").addClass("hidden");
+		});
+		$(".btn-minimize-action").click(function(){
+			uiCoop.maximizeReader(false);
+			$(".btn-minimize-action").addClass("hidden");
+			$(".btn-extend-action").removeClass("hidden");
+		});
+
+		$(".btn-option-status-action").click(function(){
+			var idAction = $(this).data("id-action");
+			var status = $(this).data("status");
+			console.log("update status actions", idAction, status, parentTypeElement, parentIdElement);
+			uiCoop.changeStatus("actions", idAction, status, parentTypeElement, parentIdElement);
+		});
+
+		$("#btn-edit-action").click(function(){
+			var idaction = $(this).data("id-action");
+			console.log("edit idAction", idAction);
+			dyFObj.editElement('actions', idAction);
+		});
 
 	});
 </script>

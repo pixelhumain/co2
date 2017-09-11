@@ -306,7 +306,7 @@
             //Check if @mentions return text with link
             if(typeof(v.mentions) != "undefined")
               textNews = addMentionInText(textNews,v.mentions);
-          textHtml='<span class="timeline_text no-padding text-black" >'+textNews+'</span>';
+          textHtml='<span class="timeline_text no-padding text-black" >'+linkify(textNews)+'</span>';
           $("#newsContent"+e).html(textHtml);
 
           $(".btn-showmorenews").off().click(function(){

@@ -14,7 +14,26 @@ dynForm = {
                                               .addClass("bg-dark");
             },
             onload : function(data){
+                console.log("onload action data", data, "currentRoomId", typeof currentRoomId);
+                if(typeof currentRoomId != "undefined" && currentRoomId != "")
                 $("#ajaxFormModal #idParentRoom").val(currentRoomId);
+                else if(typeof data.idParentRoom != "undefined")
+                $("#ajaxFormModal #idParentRoom").val(data.idParentRoom);
+
+                if(typeof data.startDate != "undefined"){
+                    var d = new Date(data.startDate);
+                    var startDate = moment(d).format("DD/MM/YYYY HH:mm");
+                    console.log("startDate", d, startDate);
+                    $("#ajaxFormModal #startDate").val(startDate);
+                }
+
+                if(typeof data.endDate != "undefined"){
+                    d = new Date(data.endDate);
+                    var endDate = moment(d).format("DD/MM/YYYY HH:mm");
+                    $("#ajaxFormModal #endDate").val(endDate);
+                }else{
+                    $("#ajaxFormModal #endDate").val("");
+                }
             }
 	    },
         beforeBuild : function(){
@@ -35,6 +54,7 @@ dynForm = {
                 $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
             else 
             { 
+                console.log("afterSave action data", data);
                 dyFObj.closeForm();
                 uiCoop.getCoopData(null, null, "room", null, data.map.idParentRoom);
                 setTimeout(function(){

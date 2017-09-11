@@ -69,7 +69,7 @@
 						</ul>
 					</div>
 				<?php } ?>	
-				<span class="right_tool_map_header_title">Résultats</span>
+				<span class="right_tool_map_header_title">Résultats !</span>
 					<span class="right_tool_map_header_info"> / </span>
 					
 				</div>

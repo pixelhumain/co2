@@ -75,7 +75,6 @@ var topMenuActivated = true;
 var nwVar = {
 	mainTag : [],
 	sourceKey : [],
-	searchType : [],
 	searchTag : [],
 	searchCategory : [],
 	searchLocalityNAME : [],
@@ -84,8 +83,6 @@ var nwVar = {
 	searchLocalityINSEE : [],
 	searchLocalityREGION : [],
 
-	allmainTag : [],
-	allsourceKey : [],
 	allsearchType : [],
 	allsearchTag : [],
 	allsearchCategory : [],

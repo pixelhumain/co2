@@ -43,8 +43,8 @@ var loadStream = function(indexMin, indexMax){ mylog.log("loadStream");
     if(isLiveGlobal() && liveScopeType == "global"){ 
     	 //getMultiTagList(); //$('#searchBarText').val();
 		filter = {
-			"locality" : getLocalityForSearch();,
-			"searchType" : searchType,
+			"locality" : getLocalityForSearch(),
+			"searchType" : searchType
 	    };
 	    //contextParentType = "city";
     }	

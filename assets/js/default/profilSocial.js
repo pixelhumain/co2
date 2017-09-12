@@ -801,21 +801,28 @@ function toogleNotif(open){
 }
 
 function loadLiveNow () {
-	mylog.log("loadLiveNow");
-	var dep = ( ( notNull(contextData["address"])  && notNull(contextData["address"]["depName"]) ) ? 
-				contextData["address"]["depName"] : "");
+	mylog.log("loadLiveNow", contextData.address);
+
+	var level = {} ;
+	if( notNull(contextData.address)) {
+		mylog.log("loadLiveNow", contextData.address);
+		if(notNull(contextData.address.level4)){
+			mylog.log("loadLiveNow", contextData.address.level4);
+			level[contextData.address.level4] = { type : "level4", name : contextData.address.level4Name } ;
+		} else if(notNull(contextData.address.level3)){
+			level[contextData.address.level3] = { type : "level3", name : contextData.address.level3Name } ;
+		} else if(notNull(contextData.address.level2)){
+			level[contextData.address.level2] = { type : "level2", name : contextData.address.level2Name } ;
+		} else
+			level[contextData.address.level1] = { type : "level1", name : contextData.address.level1Name } ;
+	}
+
+	mylog.log("loadLiveNow", level);
+	
 
     var searchParams = {
       "tpl":"/pod/nowList",
-      //"latest" : true,
-      //"searchType" : [typeObj["event"]["col"],typeObj["project"]["col"],
-      //					typeObj["organization"]["col"],"classified",
-      //				 /*typeObj["organization"]["col"]*//*,typeObj["action"]["col"]*/], 
-      //"searchTag" : $('#searchTags').val().split(','), //is an array
-      //"searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
-      //"searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-      "searchLocalityDEPARTEMENT" : new Array(dep), //$('#searchLocalityDEPARTEMENT').val().split(','),
-      //"searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
+      "searchLocality" : level,
       "indexMin" : 0, 
       "indexMax" : 30 
     };

@@ -82,15 +82,8 @@ var nwVar = {
 	searchLocalityDEPARTEMENT : [],
 	searchLocalityINSEE : [],
 	searchLocalityREGION : [],
-
 	allsearchType : [],
 	allsearchTag : [],
-	allsearchCategory : [],
-	allsearchLocalityNAME : [],
-	allsearchLocalityCODE_POSTAL_INSEE : [],
-	allsearchLocalityDEPARTEMENT : [],
-	allsearchLocalityINSEE : [],
-	allsearchLocalityREGION : [],
 }
 
 jQuery(document).ready(function() {
@@ -140,7 +133,6 @@ function initVar(){
    	indexStep = indexStepInit;
    	var allSearchParams = ["mainTag", "sourceKey", "searchType", "searchTag","searchCategory","searchLocalityNAME","searchLocalityCODE_POSTAL_INSEE","searchLocalityDEPARTEMENT","searchLocalityINSEE","searchLocalityREGION"];
    	$.each(allSearchParams,function(k,v){
-   		mylog.log("allSearchParams", )
 		nwVar[v] = ( ( typeof networkJson.request[v] != "undefined" && $.isArray(networkJson.request[v]) ) ? networkJson.request[v] : [] );
 		nwVar["all"+v] = ( ( typeof networkJson.request[v] != "undefined" && $.isArray(networkJson.request[v]) ) ? networkJson.request[v] : [] );
 	});

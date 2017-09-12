@@ -79,10 +79,6 @@
 </div>
 
 
-<?php 
-	$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$resolution, "hasVote" => $hasVote));
-?>
-
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-5">
 	
 	<div class="padding-25 bg-lightblue radius-5" id="container-text-resolution" 
@@ -141,6 +137,11 @@
 	<?php } ?>
 </div>
 
+
+
+<?php 
+	$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$resolution, "hasVote" => $hasVote));
+?>
 
 <div class="col-lg-12 col-md-12 col-sm-12"><hr></div>
 

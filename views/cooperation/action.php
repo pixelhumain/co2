@@ -92,7 +92,27 @@
 	</div>
 </div>
 
-
+<div class="col-md-12 " >
+	<?php if( @$action["links"]["contributors"] ) {	
+			$this->renderPartial('../pod/usersList', array(  
+								"project"=> $action,
+								"users" => $contributors,
+								"countStrongLinks" => $countStrongLinks, 
+								"userCategory" => Yii::t("rooms","Doers"), 
+								"contentType" => ActionRoom::COLLECTION_ACTIONS,
+								"admin" => true	)); 
+		}
+	
+	if( Authorisation::canParticipate(Yii::app()->session['userId'],$action["parentType"],$action["parentId"]) && 
+		  !@$action["links"]["contributors"][Yii::app()->session['userId']]  )
+	{	?>
+	<a href="javascript:;" class="pull-right text-large btn btn-dark-blue " 
+	   onclick="assignMe('<?php echo (string)$action["_id"]?>');" >
+		<i class="fa fa-link"></i> 
+		<?php echo Yii::t("rooms","I'll Do it") ?>
+   	</a>
+	<?php }	?>
+</div>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 padding-bottom-5">
 	<h4 class="text-center">
@@ -147,4 +167,22 @@
 		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
 							  ".view.coop.room." + idParentRoom + ".action." + idAction;
 	});
+
+	function assignMe(id)
+	{
+	    bootbox.confirm("<strong>Êtes-vous sûr de vouloir participer à cette action ?</strong>" +
+	    				"Vous serez inscrit dans la liste des participants.",
+
+	        function(result) {
+	            if (result) {
+	              params = { "id" : id };
+	              ajaxPost(null,'<?php echo Yii::app()->createUrl(Yii::app()->controller->module->id."/rooms/assignme")?>',params,function(data){
+	                if(data.result)
+	                  alert("Tango a l'aide comment je reload stp");
+	                else 
+	                  toastr.error(data.msg);
+	              });
+	        } 
+	    });
+	 }
 </script>

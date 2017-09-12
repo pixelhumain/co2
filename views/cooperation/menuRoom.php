@@ -91,7 +91,7 @@
 
 			
 
-			<ul class="menuCoop margin-bottom-50 ">
+			<ul class="menuCoop margin-bottom-50">
 				
 				<?php if(@$post["type"] == Proposal::CONTROLLER || @$post["type"] == Room::CONTROLLER){ ?>
 					<div class="margin-top-25 title-section">

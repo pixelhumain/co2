@@ -17,6 +17,7 @@
 	$voteRes = Proposal::getAllVoteRes($resolution);
 ?>
 
+
 <div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
 	<?php if(@$post["status"]) {
   		$parentRoom = Room::getById($resolution["idParentRoom"]);
@@ -39,13 +40,13 @@
 
 	<hr>
 	<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
-		 <h5 class="no-margin">La résolution suivante a été 
+		 <h2 class="no-margin">La <b>résolution</b> suivante a été 
 		 	<span class="letter-green">validée</span>
-		 </h5>
+		 </h2>
 	<?php }else{ ?>
-		 <h5 class="no-margin">La résolution suivante a été 
+		 <h2 class="no-margin">La <b>résolution</b> suivante a été 
 		 	<span class="letter-red">refusée</span>
-		 </h5>
+		 </h2>
 	<?php } ?>
 
 	<!-- <h5 class="no-margin">La résolution suivante a été <span class="letter-green">adoptée</span> 
@@ -55,7 +56,7 @@
 </div>
 
 
-<div class="col-lg-5 col-md-6 col-sm-6 no-padding">
+<div class="col-lg-5 col-md-6 col-sm-6">
 	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
 				data-original-title="Fermer cette fenêtre" data-placement="bottom"
 				id="btn-close-resolution">
@@ -77,10 +78,6 @@
 	</button>
 </div>
 
-
-<?php 
-	$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$resolution));
-?>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-5">
 	
@@ -141,6 +138,11 @@
 </div>
 
 
+
+<?php 
+	$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$resolution, "hasVote" => $hasVote));
+?>
+
 <div class="col-lg-12 col-md-12 col-sm-12"><hr></div>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 padding-bottom-15">
@@ -181,14 +183,14 @@
 <script type="text/javascript">
 	var parentTypeElement = "<?php echo $resolution['parentType']; ?>";
 	var parentIdElement = "<?php echo $resolution['parentId']; ?>";
-	var idParentresolution = "<?php echo $resolution['_id']; ?>";
+	var idParentResolution = "<?php echo $resolution['_id']; ?>";
 	var idParentRoom = "<?php echo $resolution['idParentRoom']; ?>";
 	var msgController = "<?php echo @$msgController ? $msgController : ''; ?>";
 	jQuery(document).ready(function() { 
 		
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
 		
-		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/resolutions/id/"+idParentresolution,
+		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/resolutions/id/"+idParentResolution,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 				$(".container-txtarea").hide();
 
@@ -236,10 +238,10 @@
 		$(".btn-send-vote").click(function(){
 			var voteValue = $(this).data('vote-value');
 			console.log("send vote", voteValue),
-			uiCoop.sendVote("resolution", idParentresolution, voteValue, idParentRoom);
+			uiCoop.sendVote("resolution", idParentResolution, voteValue, idParentRoom);
 		});
 		$("#btn-activate-vote").click(function(){
-			uiCoop.activateVote(idParentresolution);
+			uiCoop.activateVote(idParentResolution);
 		});
 
 		$("#btn-refresh-resolution").click(function(){
@@ -270,6 +272,9 @@
 			uiCoop.changeStatus("resolutions", idresolution, status, parentTypeElement, parentIdElement);
 		});
 
+		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
+							  ".view.coop.room." + idParentRoom + ".resolution." + idParentResolution;
+		
 		if(msgController != ""){
 			toastr.error(msgController);
 		}

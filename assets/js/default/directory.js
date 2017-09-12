@@ -546,6 +546,10 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       var parentId = $(this).data("coop-parentid");
       var parentType = $(this).data("coop-parenttype");
 
+      coopType = coopType == "actions" ? "action" : coopType;
+      coopType = coopType == "proposals" ? "proposal" : coopType;
+      coopType = coopType == "resolutions" ? "resolution" : coopType;
+
       console.log("onclick coopPanelHtml", coopType, coopId, idParentRoom, parentId, parentType);
       
       if(contextData.id == parentId && contextData.type == parentType){
@@ -556,10 +560,6 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             uiCoop.getCoopData(null, null, "room", null, coopId);
           }else{
             setTimeout(function(){
-              coopType = coopType == "actions" ? "action" : coopType;
-              coopType = coopType == "proposals" ? "proposal" : coopType;
-              coopType = coopType == "resolutions" ? "resolution" : coopType;
-
               uiCoop.getCoopData(null, null, "room", null, idParentRoom, 
               function(){
                 toastr.info(trad["processing"]);
@@ -568,7 +568,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             }, 1000);
           }
       }else{
-        toastr.error("todo");
+        var hash = "#page.type." + parentType + ".id." + parentId + 
+                ".view.coop.room." + idParentRoom + "."+coopType+"." + coopId;
+        urlCtrl.loadByHash(hash);
       }
 
     });

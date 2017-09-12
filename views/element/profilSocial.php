@@ -360,6 +360,14 @@
 				                </a>
 				            </li>
 			            <?php } ?>
+						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+			  				<li class="text-left">
+				               	<a href="javascript:;" onclick="updateSlug();" id="" class="bg-white">
+				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Edit slug"); ?>
+				                </a>
+				            </li>
+			            <?php } ?>
+						
 						<li>
 							<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
 								<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?>

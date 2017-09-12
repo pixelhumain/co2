@@ -232,27 +232,32 @@
 				<div class="header-banner"  style="font-size: 14px;font-weight: none;"></div>
 			<?php } ?>
 			<div style="font-size: 14px;font-weight: none;">
-			<?php if(@$element['parent']){ 
 
-					if($type==Event::COLLECTION){
-						$msg = Yii::t("common","Planned on") ;
-					}else{
-						$msg = Yii::t("common","Parenthood") ;
-					}
+				<div id="parentHeader" >
+					<?php if(@$element['parent']){ 
 
-			$icon = Element::getFaIcon($element['parentType']);
+							if($type==Event::COLLECTION){
+								$msg = Yii::t("common","Planned on") ;
+							}else{
+								$msg = Yii::t("common","Parenthood") ;
+							}
 
-			echo $msg ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-<?php echo $icon ; ?>"></i> <?php  echo $element['parent']['name']; ?></a><br/> 
-			<?php } ?>
-			<?php if(	@$element['organizerType'] && @$element['organizerId'] && 
-						$element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow"){ ?>
-				<?php echo Yii::t("common","Organized by"); ?> : 
-				<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" 
-					class="lbh"> 
-					<i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> 
-						<?php  echo $element['organizer']['name']; ?>
-				</a>
-			<?php } ?>
+						$icon = Element::getFaIcon($element['parentType']);
+
+						echo $msg ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-<?php echo $icon ; ?>"></i> <?php  echo $element['parent']['name']; ?></a><br/> 
+					<?php } ?>
+				</div>
+				<div id="organizerHeader" >
+					<?php if(	@$element['organizerType'] && @$element['organizerId'] && 
+								$element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow"){ ?>
+						<?php echo Yii::t("common","Organized by"); ?> : 
+						<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" 
+							class="lbh"> 
+							<i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> 
+								<?php  echo $element['organizer']['name']; ?>
+						</a>
+					<?php } ?>
+				</div>
 			</div>
 	    </div>
 	<?php } ?>

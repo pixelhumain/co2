@@ -519,12 +519,42 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
     });
 
-    initBtnShare();
 
-   	//on click sur les boutons link
-    // $(".btn-tag").click(function(){
-    //   setSearchValue($(this).html());
-    // });
+    $(".coopPanelHtml").click(function(){
+      var coopType = $(this).data("coop-type");
+      var coopId = $(this).data("coop-id");
+      var idParentRoom = $(this).data("coop-idparentroom");
+      var parentId = $(this).data("coop-parentid");
+      var parentType = $(this).data("coop-parenttype");
+
+      console.log("onclick coopPanelHtml", coopType, coopId, idParentRoom, parentId, parentType);
+      
+      if(contextData.id == parentId && contextData.type == parentType){
+          toastr.info(trad["processing"]);
+          uiCoop.startUI();
+          $("#modalCoop").modal("show");
+          if(coopType == "rooms"){
+            uiCoop.getCoopData(null, null, "room", null, coopId);
+          }else{
+            setTimeout(function(){
+              coopType = coopType == "actions" ? "action" : coopType;
+              coopType = coopType == "proposals" ? "proposal" : coopType;
+              coopType = coopType == "resolutions" ? "resolution" : coopType;
+
+              uiCoop.getCoopData(null, null, "room", null, idParentRoom, 
+              function(){
+                toastr.info(trad["processing"]);
+                uiCoop.getCoopData(null, null, coopType, null, coopId);
+              }, false);
+            }, 1000);
+          }
+      }else{
+        toastr.error("todo");
+      }
+
+    });
+
+    initBtnShare();
   }
 
 
@@ -1413,10 +1443,10 @@ var directory = {
     // URL DIRECTORY PANEL
     // ********************************
     urlPanelHtml : function(params, key){
-		  //if(directory.dirLog) 
+      //if(directory.dirLog) 
       mylog.log("-----------urlPanelHtml", params, key);
       params.title = escapeHtml(params.title);
-  		if(directory.dirLog) mylog.log("-----------contactPanelHtml", params);
+      if(directory.dirLog) mylog.log("-----------contactPanelHtml", params);
         str = "";  
         str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
         str += "<div class='searchEntity contactPanelHtml'>";
@@ -1427,7 +1457,7 @@ var directory = {
                         params.title.substring(0,20)+'...</h4>';
           }else{
             str += '<h4 class="panel-title text-dark pull-left">'+ params.title+'</h4>';
-          }35
+          }
               str += '<br/><a href="'+params.url+'" target="_blank" class="text-dark">'
               str += ((params.url.length > 65) ? params.url.substring(0,65)+'...' : params.url)+'</a>';             
               
@@ -1452,6 +1482,38 @@ var directory = {
             
           str += '</ul>';
         }
+        str += "</div>";  
+      str += "</div>";
+      return str;
+    
+    },
+    // ********************************
+    // PROPOSAL DIRECTORY PANEL
+    // ********************************
+    coopPanelHtml : function(params, key){
+      //if(directory.dirLog) 
+      mylog.log("-----------proposalPanelHtml", params, key);
+      var idParentRoom = typeof params.idParentRoom != "undefined" ? params.idParentRoom : "";
+      var name = (typeof params.title != "undefined" && params.title != "undefined") ? params.title : params.name;
+      var description = params.description.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
+      name = escapeHtml(name);
+      if(directory.dirLog) mylog.log("-----------coopPanelHtml", params);
+        str = "";  
+        str += "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
+        str += "<div class='searchEntity coopPanelHtml' data-coop-type='"+ params.type + "'  data-coop-id='"+ params.id + "' "+
+                    "data-coop-idparentroom='"+ idParentRoom + "' "+
+                    "data-coop-parentid='"+ params.parentId + "' "+"data-coop-parenttype='"+ params.parentType + "' "+
+                    ">";
+          str += "<div class='panel-heading border-light col-lg-12 col-xs-12'>";
+
+          if(name != "")
+          str += '<h4 class="panel-title letter-turq"><i class="fa '+ params.ico + '"></i> '+ name + '</h4>';
+
+          if(params.type != "rooms")
+          str += '<h5 class=""><small><i class="fa fa-bell"></i> '+ trad[params.status] + '</small></h5>';
+
+          str += '<span class="text-dark">'+description+'</span>';
+          str += "</div>";
         str += "</div>";  
       str += "</div>";
       return str;
@@ -1806,15 +1868,17 @@ var directory = {
                 else if(params.type == "events")
                   str += directory.eventPanelHtml(params);  
                 
-                else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
-                    str += directory.roomsPanelHtml(params,itemType);  
+                //else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
+                //    str += directory.roomsPanelHtml(params,itemType);  
                 
-                else if(params.type == "classified")
+                else if(params.type == "classified"){
                   if(contextData != null)
                     str += directory.elementPanelHtml(params);  
                   else
                     str += directory.classifiedPanelHtml(params);
-
+                }
+                else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
+                  str += directory.coopPanelHtml(params);  
                 else
                   str += directory.defaultPanelHtml(params);
             }
@@ -1896,6 +1960,18 @@ var directory = {
           countBtn++;
         }
       }
+      if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){ 
+          roles=""; 
+           if(typeof data.rolesLink != "undefined") 
+              roles+=data.rolesLink.join(", "); 
+          html +="<button class='btn btn-default btn-xs'"+  
+            ' onclick="updateRoles(\''+data.id+'\', \''+data.type+'\', \''+addslashes(data.name)+'\', \''+data.edit+'\',\''+roles+'\')"'+ 
+            " style='bottom:"+(30*countBtn)+"px'>"+ 
+            "<i class='fa fa-pencil'></i> "+trad.addmodifyroles 
+          "</button> "; 
+          countBtn++; 
+      }
+    
       html+="</div>";
       return html;
     },

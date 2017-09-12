@@ -158,6 +158,23 @@ function bindRightClicks() {
 	    }
 	});
 }
+function linkify(inputText) {
+    var replacedText, replacePattern1, replacePattern2, replacePattern3;
+
+    //URLs starting with http://, https://, or ftp://
+    replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+
+    //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+    replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+
+    //Change email addresses to mailto:: links.
+    replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+    replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+
+    return replacedText;
+}
 function addslashes(str) {
 	  //  discuss at: http://phpjs.org/functions/addslashes/
 	  // original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
@@ -249,7 +266,23 @@ function updateField(type,id,name,value,reload){
 	  dataType: "json"
 	});
 }
+function addslashes(str) {
+	  //  discuss at: http://phpjs.org/functions/addslashes/
+	  // original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+	  // improved by: Ates Goral (http://magnetiq.com)
+	  // improved by: marrtins
+	  // improved by: Nate
+	  // improved by: Onno Marsman
+	  // improved by: Brett Zamir (http://brett-zamir.me)
+	  // improved by: Oskar Larsson Högfeldt (http://oskar-lh.name/)
+	  //    input by: Denny Wardhana
+	  //   example 1: addslashes("kevin's birthday");
+	  //   returns 1: "kevin\\'s birthday"
 
+	  return (str + '')
+		.replace(/[\\"']/g, '\\$&')
+		.replace(/\u0000/g, '\\0');
+	}
 /* *************************** */
 /* global JS tools */
 /* *************************** */
@@ -1742,13 +1775,13 @@ function globalSearch(searchValue,types,contact){
  			$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
  			cotmp = {};
  			$.each(data, function(id, elem) {
-  				mylog.log(elem);
+  				mylog.log("similarlink globalautocomplete", elem);
   				city = "";
 				postalCode = "";
 				var htmlIco ="<i class='fa fa-users'></i>";
 				if(elem.type){
 					typeIco = elem.type;
-					htmlIco ="<i class='fa fa-"+typeObj[elem.type].icon +"'></i>";
+					htmlIco ="<i class='fa fa-"+dyFInputs.get(elem.type).icon +"'></i>";
 				}
 				where = "";
 				if (elem.address != null) {
@@ -1757,9 +1790,9 @@ function globalSearch(searchValue,types,contact){
 					if( notEmpty( city ) && notEmpty( postalCode ) )
 					where = ' ('+postalCode+" "+city+")";
 				}
-				var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
+				//var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
 				if("undefined" != typeof elem.profilImageUrl && elem.profilImageUrl != ""){
-					var htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
+					htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
 				}
 				
 				if(contact == true){
@@ -1875,18 +1908,20 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
         if($this.parents().eq(nbParent).find(appendClassName).html()=="" || (e.which==32 || e.which==13)){
         	//new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?")
         	///\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i
-	        var match_url = /\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i;
+	        //var match_url = /\b(https?|ftp):\/\/([\-A-Z0-9. \-]+?|www\\.)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i;
+	        //var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+	        var match_url=/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
 	        if (match_url.test(getUrl.val())) 
 	        {
-		        mylog.log(getUrl.val().match(match_url));
-		        if(lastUrl != getUrl.val().match(match_url)[0]){
+		        if(lastUrl != getUrl.val().match(match_url)[0] && processUrl.isLoading==false){
+		        	processUrl.isLoading=true;
+		        	mylog.log(getUrl.val().match(match_url));
 			       // alert(lastUrl+"///"+getUrl.val().match(match_url)[0]);
 		        	var extracted_url = getUrl.val().match(match_url)[0]; //extracted first url from text filed
 	                //$this.parent().find(appendClassName).html("<i class='fa fa-spin fa-spinner text-red fa-2x'></i>");//hide();
 	                $this.parents().eq(nbParent).find(".loading_indicator").show(); //show loading indicator image
 
 	                //ajax request to be sent to extract-process.php
-	                alert(extracted_url);
 	                lastUrl=extracted_url;
 	                extracted_url_send=extracted_url;
 	                if(extracted_url_send.indexOf("http")<0)
@@ -1899,7 +1934,15 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 						dataType: 'json',
 						success: function(data){        
 			                mylog.log(data); 
-		                    content = getMediaCommonHtml(data,"save");
+			                processUrl.isLoading=false;
+			                if(data.type=="activityStream"){
+			                  	content = '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>'+
+			                			 directory.showResultsDirectoryHtml(new Array(data.object), data.object.type)+
+			                			"<input type='hidden' class='type' value='activityStream'>"+
+										"<input type='hidden' class='objectId' value='"+data.object.id+"'>"+
+										"<input type='hidden' class='objectType' value='"+data.object.type+"'>";
+			                }else
+		                    	content = getMediaCommonHtml(data,"save");
 		                    //load results in the element
 		                    //return content;
 		                   //$("#results").html(content); 
@@ -2028,10 +2071,20 @@ function getMediaCommonHtml(data,action,id){
 		mediaUrl=data.content.url;
 	else
 		mediaUrl="";
-	if(typeof(data.description) !="undefined" && typeof(data.name) != "undefined" && data.description !="" && data.name != ""){
-		contentMedia='<div class="extracted_content col-xs-8 padding-20"><h4><a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">'+data.name+'</a></h4><p>'+data.description+'</p>'+countThumbail+'</div>';
-		inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
-		inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
+	if((typeof(data.description) !="undefined" || typeof(data.name) != "undefined") && (data.description !="" || data.name != "")){
+		contentMedia='<div class="extracted_content col-xs-8 padding-20">'+
+			'<a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">';
+			if(typeof(data.name) != "undefined" && data.name!=""){
+				contentMedia+='<h4>'+data.name+'</h4></a>';
+				inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
+			}
+			if(typeof(data.description) != "undefined" && data.description!=""){
+				contentMedia+='<p>'+data.description+'</p>'+countThumbail+'>';
+				if(typeof(data.name) == "undefined" || data.name=="")
+					contentMedia+='</a>';
+				inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
+			}
+		contentMedia+='</div>';
 	}
 	else{
 		contentMedia="";
@@ -2183,6 +2236,7 @@ function cityKeyPart(unikey, part){
 			EXTRACTPROCCESS
 ********************************** */
 var processUrl = {
+	isLoading:false,
 	checkUrlExists: function(url){
 	    url = url.trim();
 	    if(url.lastIndexOf("/") == url.lenght){
@@ -3020,6 +3074,11 @@ var dyFInputs = {
 				}
 
 				if(v){
+					if(typeof networkJson.request.searchTag != "undefined"){
+						typeObj[key].dynForm.jsonSchema.properties.tags.data = networkJson.request.searchTag;
+					}
+
+
 					if(notNull(networkJson.dynForm)){
 						mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
 						mylog.log("networkTags", networkTags);
@@ -3064,6 +3123,24 @@ var dyFInputs = {
 	        custom : ( notEmpty(custom) ? custom : "" )
 	    };
 	    mylog.log("inputText ", inputObj);
+    	return inputObj;
+    },
+    slug :function(label, placeholder, rules) { 
+		var inputObj = {
+			label : label,
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "... " ),
+	        inputType : "text",
+	        rules : ( notEmpty(rules) ? rules : "")
+	    };
+    	inputObj.init = function(){
+        	$("#ajaxFormModal #slug").bind("input keyup",function(e) {
+        		$(this).val(slugify($(this).val()));
+        		if($("#ajaxFormModal #slug").val().length > 3 )
+            		slugUnique($(this).val());
+            	//dyFObj.canSubmitIf();
+        	});
+	    }
+	    mylog.log("dyFInputs ", inputObj);
     	return inputObj;
     },
 	name :function(type, rules, addElement, extraOnBlur) { 
@@ -3233,7 +3310,13 @@ var dyFInputs = {
 	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
 		    	dyFObj.closeForm();
 				//alert( "image upload then goto : "+uploadObj.gotoUrl );
-	            urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+				if(location.hash.indexOf("view.library")>0){
+					navCollections=[];
+					buildNewBreadcrum("files");
+					getViewGallery(1,"","files");
+				}		
+				else
+	            	urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 		    }
     	}
     },
@@ -3687,7 +3770,79 @@ var dyFInputs = {
         };
 	    return inputObj;
     },
-    checkbox : function(checked, id, params){
+    checkboxSimple : function(checked, id, params){
+    
+    	var inputObj = {
+    		label: params["labelText"],
+    		params : params,
+	    	inputType : "checkboxSimple",
+	    	checked : checked, //$("#ajaxFormModal #"+id).val(),
+	    	init : function(){
+	    		//var checked = $("#ajaxFormModal #"+id).val();
+	    		console.log("checkcheck2", checked, "#ajaxFormModal #"+id);
+	    		var idTrue = "#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox[data-checkval='true']";
+	    		var idFalse = "#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox[data-checkval='false']";
+	    		console.log("checkcheck2", checked, "#ajaxFormModal #"+id);
+	    		$("#ajaxFormModal #"+id).val(checked);
+
+	    		if(typeof params["labelInformation"] != "undefined")
+	        		$("#ajaxFormModal ."+id+"checkboxSimple label").append(
+	        				"<small class='col-md-12 col-xs-12 text-left no-padding' "+
+									"style='font-weight: 200;'>"+
+									params["labelInformation"]+
+							"</small>");
+
+	        	if(checked == "true"){
+	    			$(idTrue).addClass("bg-green-k").removeClass("letter-green");
+	    			$("#ajaxFormModal ."+id+"checkboxSimple label").append(
+	    					"<span class='lbl-status-check margin-left-10'>"+
+	    						'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>'+
+	    					"</span>");
+	        	}
+
+	    		if(checked == "false"){ 
+	    			$(idFalse).addClass("bg-red").removeClass("letter-red");
+	    			$("#ajaxFormModal ."+id+"checkboxSimple label").append(
+	    					"<span class='lbl-status-check margin-left-10'>"+
+	    						'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>'+
+	    					"</span>");
+
+	    			setTimeout(function(){
+    			  		if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+    			  	}, 1000);
+	    		}
+	    		
+
+	    		$("#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox").click(function(){
+	    			var checkval = $(this).data('checkval');
+	    			$("#ajaxFormModal #"+id).val(checkval);
+	    			console.log("EVENT CLICK ON CHECKSIMPLE", checkval);
+	    			
+	    			if(checkval) {
+	    				$(idTrue).addClass("bg-green-k").removeClass("letter-green");
+	    			  	$(idFalse).removeClass("bg-red").addClass("letter-red");
+	    			  	$("#ajaxFormModal ."+id+"checkboxSimple .lbl-status-check").html(
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
+	    			  	
+	    			  	if(typeof params["inputId"] != "undefined") $(params["inputId"]).show(400);
+	    			}
+	    			else{
+	    			  	$(idFalse).addClass("bg-red").removeClass("letter-red");
+	    				$(idTrue).removeClass("bg-green-k").addClass("letter-green");
+	    				$("#ajaxFormModal ."+id+"checkboxSimple .lbl-status-check").html(
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
+
+	    				if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+	    			}
+	    		});
+
+	    	}
+	    };
+
+	    return inputObj;
+	},
+	
+	checkbox : function(checked, id, params){
     
     	var inputObj = {
     		label: params["labelText"],
@@ -3704,14 +3859,15 @@ var dyFInputs = {
 	        		$(".bootstrap-switch-label").off().click(function(){
 	        			$(".bootstrap-switch-off").click();
 	        		});
+	        		
 		        	if (checked) {
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onText"]+'</span>');
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
 	    				$(params["inputId"]).show(400);
 	    			} else {
 	    				
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offText"]+'</span>');
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
 	    				$(params["inputId"]).hide(400);
 	    			}
     			}, 1000);
@@ -3727,7 +3883,7 @@ var dyFInputs = {
 	        		//$("#ajaxFormModal #"+id+"checkbox").append("<span class='lbl-status-check'></span>");
 	    			if (checkbox) {
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onText"]+'</span>');
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
 	    				$(params["inputId"]).show(400);
 	    				/*if(id=="amendementActivated"){
 	    					var am = $("#ajaxFormModal #voteActivated").val();
@@ -3744,7 +3900,7 @@ var dyFInputs = {
 	    			} else {
 	    				
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offText"]+'</span>');
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
 	    				$(params["inputId"]).hide(400);
 	    			}
 	    		}
@@ -4015,6 +4171,7 @@ var typeObj = {
 	"survey" : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
 	"surveys" : {sameAs:"survey"},
 	"proposal" : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
+	"proposals" : { sameAs : "proposal" },
 	"action" : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
 	"actions" : { sameAs : "action" },
 	"actionRooms" : {sameAs:"room"},

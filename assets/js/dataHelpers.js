@@ -89,7 +89,40 @@ function isUniqueUsername(username) {
 	mylog.log("isUniqueUsername=", response);
 	return response;
 }
+function slugUnique(searchValue,types,contact){
+	
+	//searchType = (types) ? types : ["organizations", "projects", "events", "needs", "citoyens"];
 
+	var data = { 	 
+		"slug" : searchValue
+	};
+	$("#listSameSlug").html("<i class='fa fa-spin fa-circle-o-notch'></i> Vérification d'existence");
+	$("#similarLink").show();
+	$("#btn-submit-form").html('<i class="fa  fa-spinner fa-spin"></i>').prop("disabled",true);
+	$.ajax({
+      type: "POST",
+          url: baseUrl+"/" + moduleId + "/slug/check",
+          data: data,
+          dataType: "json",
+          error: function (data){
+             mylog.log("error"); mylog.dir(data);
+             $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
+          },
+          success: function(data){
+ 			var msg = "Ce pseudo est déjà utilisé";
+ 			$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
+			if (!data.result) {
+				$("#listSameSlug").html("<div class='col-sm-12 light-border text-red'> <i class='fa fa-eye'></i> "+msg+"</div>");
+				//bindLBHLinks();
+			} else {
+				$("#listSameSlug").html("<span class='txt-green'><i class='fa fa-thumbs-up text-green'></i> Aucun pseudo avec ce nom.</span>");
+
+			}
+
+			
+          }
+ 	});
+}
 function addCustomValidators() {
 	mylog.log("addCustomValidators");
 	//Validate a postalCode

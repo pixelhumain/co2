@@ -826,7 +826,7 @@ function checkSearch(thisElement, searchVal, type){
 function sendInvitation(){
 	var connectType = "member";
 	//if ($("#addMembers #memberIsAdmin").val() == true) connectType = "admin";
-	var params = {
+	 var params = {
 		"childs" : new Array(),
 		//"organizationType" : $("#addMembers #organizationType").val(),
 		"parentType" : elementType,
@@ -841,7 +841,10 @@ function sendInvitation(){
 			var name = "";
 			var contactPublicFound = new Array();
 			var connectType = "";
-
+			var roles = "";
+			if ($("#tagsRoles"+id).val() != ""){ 
+		        roles = $("#tagsRoles"+id).val().split(",");   
+		      } 
 			if(addLinkSearchMode == "all") { contactPublicFound = listContact;
 			}else if(addLinkSearchMode=="contacts"){ contactPublicFound = myContactsMembers; }
 
@@ -864,16 +867,16 @@ function sendInvitation(){
 
 			mylog.log("add this element ?", email, type, id, name);
 			if(type != "" && id != "" && name != "")
-				pushChild={
-					"childId" : id,
-					"childName" : name,
-					"childEmail" : email,
-					"childType" : type, 
-					"connectType" : connectType
-				}
-				if(roles != "undefined")
-					pushChild.roles=roles;
-				params["childs"].push(pushChild)
+				pushChild={ 
+		          "childId" : id, 
+		          "childName" : name, 
+		          "childEmail" : email, 
+		          "childType" : type,  
+		          "connectType" : connectType 
+		        } 
+        	if(typeof roles != "undefined" && roles != "") 
+          		pushChild.roles=roles; 
+        	params["childs"].push(pushChild) 
 		}
 	});
 	mylog.log("params constructed");
@@ -980,6 +983,8 @@ function sendInvitationMailAddMember(){ mylog.log("sendInvitationMailAddMember")
 					$("#numberOfInvit").html(count + ' invitation(s)');
 					$("#numberOfInvit").data("count", count);
 				}
+				
+				$("#search-contact").val("");
 				$("#addMembers #memberId").val("");
                 $("#addMembers #memberType").val("");
                 $("#addMembers #memberName").val("");
@@ -988,7 +993,7 @@ function sendInvitationMailAddMember(){ mylog.log("sendInvitationMailAddMember")
                 $('#addMembers #organizationType').val("");
 				$("#addMembers #memberIsAdmin").val("false");
 				$('#addMembers #memberEmail').parents().eq(1).show();
-				$("[name='my-checkbox']").bootstrapSwitch('state', false);
+				//$("[name='my-checkbox']").bootstrapSwitch('state', false);
 				$("#loader-send-mail-invite").html('');
 				//showSearch();
 				if(typeof(mapUrl) != "undefined"){

@@ -13,14 +13,51 @@ dynForm = {
     			//$("#ajaxFormModal #survey").val( contextDataDDA.id );
     			if (typeof contextDataDDA.name != "undefined" && contextDataDDA.name != "")
     		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
-	    	}
+	    	},
+	    	onload : function(data){
+				$("#ajaxFormModal #idParentRoom").val(currentRoomId);
+				console.log("checkcheck0", data, typeof data);
+
+				if(typeof data.amendementActivated != "undefined"){
+					data.amendementActivated = (data.amendementActivated == "true" || data.amendementActivated == true) ? true : false;
+					data.voteActivated 		 = (data.voteActivated == "true" || data.voteActivated == true) 			? true : false;
+					
+					console.log("checkcheck1", data);
+
+					if(data.amendementActivated == false){
+						var idTrue = "#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='true']";
+	    				var idFalse = "#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='false']";
+	    				
+	    				$("#ajaxFormModal #amendementActivated").val("false");
+						$("#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='false']").trigger( "click" );
+						
+						$(idFalse).addClass("bg-red").removeClass("letter-red");
+	    				$(idTrue).removeClass("bg-green-k").addClass("letter-green");
+
+	    				$("#ajaxFormModal .amendementActivatedcheckboxSimple .lbl-status-check").html(
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> désactivés</span>');
+
+	    				if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+					}
+				}
+
+				if(typeof data.voteDateEnd != "undefined"){
+					var d = new Date(data.voteDateEnd);
+					var voteDateEnd = moment(d).format("DD/MM/YYYY HH:mm");
+					console.log("voteDateEnd", d, voteDateEnd);
+					$("#ajaxFormModal #voteDateEnd").val(voteDateEnd);
+				}
+
+				if(typeof data.amendementDateEnd != "undefined"){
+					d = new Date(data.amendementDateEnd);
+					var amendementDateEnd = moment(d).format("DD/MM/YYYY HH:mm");
+					$("#ajaxFormModal #amendementDateEnd").val(amendementDateEnd);
+				}else{
+					$("#ajaxFormModal #amendementDateEnd").val("");
+				}
+
+			}
 	    },
-	    beforeBuild : function(){
-           $(".form-group #idParentRoom").val(currentRoomId);
-	    		/* dyFObj.setMongoId('survey',function(){
-            	
-            });*/
-        },
         beforeSave : function(){
         	if($("#ajaxFormModal #amendementActivated").val() == "true"){
 				$("#ajaxFormModal #status").val("amendable");
@@ -33,10 +70,10 @@ dynForm = {
 			var dateformat = "DD/MM/YYYY HH:mm";
 	    	var outputFormat="YYYY-MM-DD HH::mm";
 	    	
-	    	console.log("TEST DATE TIMEZONE");
-	    	console.log($("#ajaxFormModal #amendementDateEnd").val());
+	    	//console.log("TEST DATE TIMEZONE");
+	    	//console.log($("#ajaxFormModal #amendementDateEnd").val());
 			$("#ajaxFormModal #amendementDateEnd").val( moment( $("#ajaxFormModal #amendementDateEnd").val(), dateformat).format() );
-	    	console.log($("#ajaxFormModal #amendementDateEnd").val());
+	    	//console.log($("#ajaxFormModal #amendementDateEnd").val());
 	    	
 			$("#ajaxFormModal #voteDateEnd").val( moment(   $("#ajaxFormModal #voteDateEnd").val(), dateformat).format() );
         },
@@ -47,12 +84,20 @@ dynForm = {
             { 
                 dyFObj.closeForm(); 
                	var oldCount = $("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html();
-               	console.log("oldCount", parseInt(oldCount), parseInt(oldCount)+1);
+               	console.log("data success save proposal", data);
                	$("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html(parseInt(oldCount)+1);
-               	uiCoop.getCoopData(null, null, "room", null, data.map.idParentRoom);
-                setTimeout(function(){
-                	uiCoop.getCoopData(null, null, "proposal", null, data.id);
-                }, 1000);
+               	
+               	if(typeof data.map.idParentRoom != "undefined"){
+	               	uiCoop.getCoopData(null, null, "room", null, data.map.idParentRoom);
+	                setTimeout(function(){
+	                	uiCoop.getCoopData(null, null, "proposal", null, data.id);
+	                }, 1000);
+	            }else{
+	            	uiCoop.getCoopData(null, null, "room", null, currentRoomId);
+	                setTimeout(function(){
+	                	uiCoop.getCoopData(null, null, "proposal", null, idParentProposal);
+	                }, 1000);
+	            }
             }
 	    },
 	    properties : {
@@ -113,13 +158,13 @@ dynForm = {
                 	 "<br>Pour plus de clareté, détaillez toute information complémentaire, relative à votre proposition, dans la section suivante.</i></div>",
             },
 	        arguments : dyFInputs.textarea(tradDynForm.textargumentsandmore, "..."),
-            amendementActivated : dyFInputs.checkbox(true, "amendementActivated", 
-            										{ "onText" : "Non",
-            										  "offText": "Oui",
+            amendementActivated : dyFInputs.checkboxSimple("true", "amendementActivated", 
+            										{ "onText" : "Oui",
+            										  "offText": "Non",
             										  "onLabel" : "activés",
             										  "offLabel": "désactivés",
             										  "inputId" : ".amendementDateEnddatetime",
-            										  "labelText": "Amendements",
+            										  "labelText": "Activer les amendements ?",
             										  "labelInInput": "Activer les amendements",
             										  "labelInformation": "<i class='fa fa-info-circle'></i> Les votes sont désactivés pendant la période d'amendement"
 

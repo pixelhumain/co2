@@ -369,6 +369,9 @@ class CommunecterController extends Controller
     "bookmark" => array(
       "delete"        => array("href" => "ph/communecter/bookmark/delete"),
     ),
+    "slug" => array(
+      "check"        => array("href" => "ph/communecter/slug/check"),
+    ),
     "gallery" => array(
       "index"        => array("href" => "ph/communecter/gallery/index"),
       "gallery"        => array("href" => "ph/communecter/gallery/gallery"),

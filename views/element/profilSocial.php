@@ -235,12 +235,17 @@
 	  			( Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) ) ||
 	  			//simple members can join only when admins had created
 	  			( @$element["hasRC"] && Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"])) )
-	  			{ 
+	  			{
+	  				if(@$element["slug"])
+						//todo : elements members of
+	  					$loadChat = $element["slug"];
+	  				else
+	  					$createSlugBeforeChat=true;
 	  				//todo : elements members of
 	  				$loadChat = $element["name"];
 	  				//people have pregenerated rooms so allways available 
 	  				$hasRC = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "true" : "false";
-	  				$canEdit = ( (@$edit && $edit) || (@$openEdition && $openEdition) ) ? "true" : "false";
+	  				$canEdit = ( @$openEdition && $openEdition ) ? "true" : "false";
 	  				//Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) );
 	  				if($type == Person::COLLECTION)
 	  				{
@@ -250,10 +255,17 @@
 		  			}
 		  			$chatColor = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "text-red" : "";
 	  	  ?>
-		  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
+	  	  <?php /*if(@$createSlugBeforeChat){ ?>
+	  	  	<button type="button" onclick="javascript:createSlugBeforeChat('<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
 		  		  id="open-rocketChat" style="border-right:0px!important;">
 		  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
-		  </button>
+		  	</button>
+	  	  <?php } else{ */?>
+			  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
+			  		  id="open-rocketChat" style="border-right:0px!important;">
+			  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
+			  </button>
+		  <?php //} ?>
 		  
 		  <?php } ?>
 
@@ -702,6 +714,7 @@
 
 <script type="text/javascript">
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
+	initMetaPage(contextData.name,contextData.shortDescription,contextData.profilImageUrl);
 	mylog.log("init contextData", contextData);
     var params = <?php echo json_encode(@$params); ?>; 
     var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false );
@@ -740,6 +753,20 @@
 		var elemSpec = dyFInputs.get("<?php echo $type?>");
 		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");
 	});
+	function initMetaPage(title, description, image){
+		if(title != ""){
+			$("meta[name='title']").attr("content",title);
+			$("meta[property='og:title']").attr("content",title);
+		}
+		if(description != ""){
+			$("meta[name='description']").attr("content",description);
+			$("meta[property='og:description']").attr("content",description);
+		}
+		if(image != ""){
+			$("meta[name='image']").attr("content",baseUrl+image);
+			$("meta[property='og:image']").attr("content",baseUrl+image);
+		}
+	}
 	function getProfilSubview(sub, dir){ console.log("getProfilSubview", sub, dir);
 		if(sub!=""){
 			if(sub=="gallery")

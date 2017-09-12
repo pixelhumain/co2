@@ -302,24 +302,24 @@
           textHtml="";
           textNews=v.text;
            if(v.text.length > 0)
-              textNews=checkAndCutLongString(v.text,500,v._id.$id);
+              textNews=checkAndCutLongString(v.text,500,v._id.$id,"showmorenews",true);
             //Check if @mentions return text with link
             if(typeof(v.mentions) != "undefined")
               textNews = addMentionInText(textNews,v.mentions);
-          textHtml='<span class="timeline_text no-padding text-black" >'+textNews+'</span>';
+          textHtml='<span class="timeline_text no-padding text-black" >'+linkify(textNews)+'</span>';
           $("#newsContent"+e).html(textHtml);
 
           $(".btn-showmorenews").off().click(function(){
-            var newsid = $(this).data("newsid");
+            var newsid = $(this).data("id");
              console.log("hasClass ?", $("#newsContent"+newsid+" .timeline_text span.endtext").hasClass("hidden"));
             if($("#newsContent"+newsid+" .timeline_text span.endtext").hasClass("hidden")){
                 $("#newsContent"+newsid+" .timeline_text span.endtext").removeClass("hidden");
                 $("#newsContent"+newsid+" .timeline_text span.ppp").addClass("hidden");
-                $(this).html("réduire le texte");
+                $(this).html("Réduire le texte").parent().prepend("<br>");
             }else{
                 $("#newsContent"+newsid+" .timeline_text span.endtext").addClass("hidden");
                 $("#newsContent"+newsid+" .timeline_text span.ppp").removeClass("hidden");
-                $(this).html("Lire la suite");
+                $(this).html("Lire la suite").parent().find("br").remove();
             }
           });
         }
@@ -331,6 +331,8 @@
             media=getMediaImages(v.media,e,v.author.id,v.target.name);
           else if (v.media.type=="gallery_files")
             media=getMediaFiles(v.media,e);
+          else if (v.media.type=="activityStream")
+            media=directory.showResultsDirectoryHtml(new Array(v.media.object),v.media.object.type);
           $("#result"+e).html(media);
         }
         bindLBHLinks();

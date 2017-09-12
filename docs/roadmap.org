@@ -220,6 +220,7 @@ Liste des notifications déjà lues => #370 #453
     [ ] SEO optim
    
   ** @Tib
+>>>>[ ] suppression d'un element user type COEDitor
     [ ] search fork the world > opens a preview POI > should have the parent link
     [ ] verifier les qrcode 
     [ ]  NA : supprimer
@@ -261,10 +262,10 @@ Liste des notifications déjà lues => #370 #453
           [X] on demand : either we put a property on an element describing if corresponding exists or not 
           [X] only members, have access 
           [X] testing if non member has access to 
->>>>>>>>[ ] after create invite all members to chat by notification
->>>>>>>>[ ] check anymember can join the chat 
->>>>>>>>[ ] only admins can start a group chat
-      [ ] manage chat module color according to login state based on events
+>>>>>>>>[X] after create invite all members to chat by notification
+      
+      [???] only admins can start a group chat
+      [ ] try to optimise admin login using smart handling of header 
       [ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
       [X] apply to projects and events
       [X] on CO-login get RC loginToken
@@ -278,11 +279,8 @@ Liste des notifications déjà lues => #370 #453
       [X] getting chat notifictions [[https://rocket.chat/docs/developer-guides/iframe-integration/events]]
       [ ] mutualiser les import RocketChat
       ** test 
-        [ ] my chat shows fullscreen rocket with all activated channels
-        [ ] an elements chat > show only the elements chat
+        [X] check anymember can join the chat 
         [ ] person changing username : changement de nom d'user d'un coté, il faut viré coté rocket chat profil et avatar pour pas pouvoir changer de nom d'user email avatar, et coté CO2 si changement appelle a /api/v1/users.update avec data.username data.email data.name https://rocket.chat/docs/developer-guides/rest-api/users/update
-      ** batch script
->>>>>>>>>[ ] genéré tout les compte RC pour les comptes existant sinon ca peut planter les demandes chat direct
       ** bugs
         [ ] change name > doesn't open the good room :(
           [ ] gérer le cas de plusieurs orga ave cle meme nom 
@@ -297,15 +295,18 @@ Liste des notifications déjà lues => #370 #453
       ** use cases 
         [X] gloabal menu : module chat btn opens , all my chat rooms 
         [X] any element page : open the elements channel 
-          [ ] chat with members , or add all members 
+          [X] chat with members , or add all members 
         [X] on someones page : show btn if connected, open the direct chat room
           [X] when connection is billateral 
             [X] connect one to one msg
           [X] use as private message otherwise
       ** ideas + amelioration
+        [ ] @all > would post a news on wall element
         [ ] export chat history
         [ ] pouvoir utiliser un rocket chat externe (only for admins)
         [ ] add chat shortcut, maybe right click in directories , or floopdrwaer
+        [ ] build up visual tchat tree, showing all your channels , onclick a channel show who is inside 
+          -  could analyse participation by sizing face icon size
       * -----------------------------------------
     [ ] dynform bookmarking using POI : add a url > Next > get content (voir avec tango kgougle )
       [ ] dynform filling threw get content from url copied into name field
@@ -426,8 +427,8 @@ Liste des notifications déjà lues => #370 #453
       [ ] sortir comme une appli 
       [ ] etat pour mettre en prod ?
       [ ] orga TER
-    [ ] tags 
-    [ ] converter RSS + jsonFeed
+>>>>[ ] tags 
+>>>>[ ] converter RSS + jsonFeed
     [ ] opendata sources + interop
       [ ] connecter des scripts api 
         [ ] scope geo

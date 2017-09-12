@@ -306,6 +306,13 @@ var trad = {
 	"processing save" : "<?php echo Yii::t("cooperation", "processing save") ?>",
 	"processing ok" : "<?php echo Yii::t("cooperation", "processing ok") ?>",
 	"processing" : "<?php echo Yii::t("cooperation", "processing") ?>",
+
+	"amendable" : "<?php echo Yii::t("cooperation", "amendable") ?>",
+	"tovote" : "<?php echo Yii::t("cooperation", "tovote") ?>",
+	"todo" : "<?php echo Yii::t("cooperation", "todo") ?>",
+	"closed" : "<?php echo Yii::t("cooperation", "closed") ?>",
+	"archived" : "<?php echo Yii::t("cooperation", "archived") ?>",
+	"done" : "<?php echo Yii::t("cooperation", "done") ?>",
 };
 
 var tradDynForm = {
@@ -603,6 +610,8 @@ var tradCategory = {
 	"director":"<?php echo Yii::t("category","Director") ?>",
 	"speaker":"<?php echo Yii::t("category","Speaker") ?>",
 	"intervener":"<?php echo Yii::t("category","Intervener") ?>",
+	"Planned on":"<?php echo Yii::t("common","Planned on") ?>",
+	"Parenthood":"<?php echo Yii::t("common","Parenthood") ?>",
 };
 var tradCountry = {
 	"BE":"Belgique", 

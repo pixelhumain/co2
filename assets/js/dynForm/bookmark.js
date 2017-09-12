@@ -19,7 +19,11 @@ dynForm = {
 	    },
 	    afterSave : function(){
 			dyFObj.closeForm();
-		    urlCtrl.loadByHash( location.hash );
+            if(location.hash.indexOf("view.library")>0){
+                    buildNewBreadcrum("bookmarks");
+                    getViewGallery(1,"","bookmarks");
+            }else
+		      urlCtrl.loadByHash( location.hash );
 	    },
 	    properties : {
            // url : dyFInputs.bookmarkUrl(tradDynForm["linkUrl"], tradDynForm["linkUrl"], { required : true, url : true }),

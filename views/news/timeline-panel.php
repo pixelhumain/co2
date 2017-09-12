@@ -7,6 +7,10 @@
   "displayShared-organizations"   => "an organization",
   "displayShared-events"      => "an event",
   "displayShared-classified"    => "an announce",
+  "displayShared-proposals"    => "a proposal",
+  "displayShared-actions"    => "an action",
+  "displayShared-resolutions"    => "a resolution",
+  "displayShared-rooms"    => "a cooperative space",
 ); ?>
   
   <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12">

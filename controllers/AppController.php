@@ -237,7 +237,6 @@ class AppController extends CommunecterController {
                         "element" => $element);
 
         $params = Element::getInfoDetail($params, $element, $type, $id);
-        
     	echo $this->renderPartial("page", $params, true);
 	}
 

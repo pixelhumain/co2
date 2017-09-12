@@ -266,7 +266,23 @@ function updateField(type,id,name,value,reload){
 	  dataType: "json"
 	});
 }
+function addslashes(str) {
+	  //  discuss at: http://phpjs.org/functions/addslashes/
+	  // original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+	  // improved by: Ates Goral (http://magnetiq.com)
+	  // improved by: marrtins
+	  // improved by: Nate
+	  // improved by: Onno Marsman
+	  // improved by: Brett Zamir (http://brett-zamir.me)
+	  // improved by: Oskar Larsson Högfeldt (http://oskar-lh.name/)
+	  //    input by: Denny Wardhana
+	  //   example 1: addslashes("kevin's birthday");
+	  //   returns 1: "kevin\\'s birthday"
 
+	  return (str + '')
+		.replace(/[\\"']/g, '\\$&')
+		.replace(/\u0000/g, '\\0');
+	}
 /* *************************** */
 /* global JS tools */
 /* *************************** */
@@ -1759,13 +1775,13 @@ function globalSearch(searchValue,types,contact){
  			$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
  			cotmp = {};
  			$.each(data, function(id, elem) {
-  				mylog.log(elem);
+  				mylog.log("similarlink globalautocomplete", elem);
   				city = "";
 				postalCode = "";
 				var htmlIco ="<i class='fa fa-users'></i>";
 				if(elem.type){
 					typeIco = elem.type;
-					htmlIco ="<i class='fa fa-"+typeObj[elem.type].icon +"'></i>";
+					htmlIco ="<i class='fa fa-"+dyFInputs.get(elem.type).icon +"'></i>";
 				}
 				where = "";
 				if (elem.address != null) {
@@ -1774,9 +1790,9 @@ function globalSearch(searchValue,types,contact){
 					if( notEmpty( city ) && notEmpty( postalCode ) )
 					where = ' ('+postalCode+" "+city+")";
 				}
-				var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
+				//var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
 				if("undefined" != typeof elem.profilImageUrl && elem.profilImageUrl != ""){
-					var htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
+					htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
 				}
 				
 				if(contact == true){
@@ -3109,6 +3125,24 @@ var dyFInputs = {
 	    mylog.log("inputText ", inputObj);
     	return inputObj;
     },
+    slug :function(label, placeholder, rules) { 
+		var inputObj = {
+			label : label,
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "... " ),
+	        inputType : "text",
+	        rules : ( notEmpty(rules) ? rules : "")
+	    };
+    	inputObj.init = function(){
+        	$("#ajaxFormModal #slug").bind("input keyup",function(e) {
+        		$(this).val(slugify($(this).val()));
+        		if($("#ajaxFormModal #slug").val().length > 3 )
+            		slugUnique($(this).val());
+            	//dyFObj.canSubmitIf();
+        	});
+	    }
+	    mylog.log("dyFInputs ", inputObj);
+    	return inputObj;
+    },
 	name :function(type, rules, addElement, extraOnBlur) { 
 		var inputObj = {
 	    	placeholder : "... ",
@@ -3277,6 +3311,7 @@ var dyFInputs = {
 		    	dyFObj.closeForm();
 				//alert( "image upload then goto : "+uploadObj.gotoUrl );
 				if(location.hash.indexOf("view.library")>0){
+					navCollections=[];
 					buildNewBreadcrum("files");
 					getViewGallery(1,"","files");
 				}		

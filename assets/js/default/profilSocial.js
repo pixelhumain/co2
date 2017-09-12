@@ -987,3 +987,7 @@ function startLoadRoom(type, id){
 	toogleNotif(false);
 	KScrollTo("#shortDescriptionHeader");
 }
+/*function createSlugBeforeChat(type,canEdit,hasRc){
+	dynForm.openForm("slug","sub");
+	rcObj.loadChat(loadChat,type,canEdit,hasRC);
+}*/

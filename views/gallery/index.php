@@ -354,6 +354,19 @@ ul.dropdown-menu-collection > li > a:hover{
 				}
 			});
 		});
+		$(".btn-showmoredesc").off().click(function(){
+            var id = $(this).data("id");
+             console.log("hasClass ?", $("#"+id+" .contentDescription span.endtext").hasClass("hidden"));
+            if($("#"+id+" .contentDescription span.endtext").hasClass("hidden")){
+                $("#"+id+" .contentDescription span.endtext").removeClass("hidden");
+                $("#"+id+" .contentDescription span.ppp").addClass("hidden");
+                $(this).html("Réduire le texte").parent().prepend("<br>");
+            }else{
+                $("#"+id+" .contentDescription span.endtext").addClass("hidden");
+                $("#"+id+" .contentDescription span.ppp").removeClass("hidden");
+                $(this).html("Lire la suite").parent().find("br").remove();
+            }
+         });
 
 	}
 	function addToCollection(name){
@@ -365,8 +378,14 @@ ul.dropdown-menu-collection > li > a:hover{
 			ajaxPost(null,baseUrl+"/"+moduleId+"/gallery/crudfile/action/"+action ,params,function(data) { 
 					if(data.result){
 						actionCrud=true;
-						buildNewBreadcrum(docType);
-						getViewGallery(breadcrumLevel,data.movedIn, "slider",true);
+						keyMov="slider";
+						docKey=docType;
+						if(docType=="file"){
+							keyMov="files";
+							docKey=keyMov;
+						}
+						buildNewBreadcrum(docKey);
+						getViewGallery(breadcrumLevel,data.movedIn, keyMov,true);
 						toastr.success(data.msg);
 					}
 					else
@@ -412,7 +431,7 @@ ul.dropdown-menu-collection > li > a:hover{
 					if(docType=="image")
 							keyCreate="slider";
 						else
-							keyCreate="files";
+							keyCreate="file";
 					if(notNull(data.createdIn))
 						getViewGallery(breadcrumLevel,data.createdIn, keyCreate,true);
 					else{

@@ -416,10 +416,10 @@ function getViewUrl(id,data){
 		});
 	}
 	if(typeof data.description != "undefined"){
-		description=data.description;
+		description=checkAndCutLongString(data.description,200,id,"showmoredesc",true);;
 
 	}
-	var html = '<li class="content_file '+id+' col-sm-12 col-md-12 col-xs-12 '+elTagsList+'" data-cat="1" id="'+id+'">'+
+	var html = '<li class="content_file '+id+' col-sm-12 col-md-12 col-xs-12 no-padding '+elTagsList+'" data-cat="1" id="'+id+'">'+
 			' <div class="portfolio-item">';
 			if(authorizationToEdit){
 				html += '<div class="checkbox-content pull-left">'+

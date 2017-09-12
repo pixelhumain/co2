@@ -88,7 +88,7 @@
 				<h3><i class="fa fa-hashtag"></i> <?php echo @$action["name"]; ?></h3>
 			<?php } ?>
 		
-			<?php echo nl2br($action["description"]); ?>
+			<?php echo nl2br(@$action["description"]); ?>
 	</div>
 </div>
 

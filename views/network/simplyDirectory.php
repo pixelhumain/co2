@@ -120,7 +120,7 @@ function initVar(){
 	if( typeof networkJson.request.pagination != "undefined" && networkJson.request.pagination > 0)
 		indexStepInit = networkJson.request.pagination ;
 
-  	if(typeof networkJson.filter.linksTag != "undefined"){
+  	if(typeof networkJson.filter != "undefined" && typeof networkJson.filter.linksTag != "undefined"){
    		$.each(networkJson.filter.linksTag, function(index, value){ 
    			if(typeof value != "undefined"){
    				linksTagImages[value] = {};
@@ -445,24 +445,26 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	mylog.log("searchTagGlobal : "+searchTagGlobal);
 
 	var searchTagsSimply = {} ;
-	$.each(searchTagGlobal, function(i, o) {
+	if(typeof networkJson.filter != "undefined" && typeof networkJson.filter.linksTag != "undefined"){
+		$.each(searchTagGlobal, function(i, o) {
 
-		$.each(networkJson.filter.linksTag, function(keyNet, valueNet){
+			$.each(networkJson.filter.linksTag, function(keyNet, valueNet){
 
-			if(typeof valueNet.tags[o] != "undefined"){
-				if(typeof searchTagsSimply[keyNet] == "undefined")
-				  searchTagsSimply[keyNet] = [];
+				if(typeof valueNet.tags[o] != "undefined"){
+					if(typeof searchTagsSimply[keyNet] == "undefined")
+					  searchTagsSimply[keyNet] = [];
 
-				if(typeof valueNet.tags[o] == "string")
-				  searchTagsSimply[keyNet].push(valueNet.tags[o]);
-				else{
-					$.each(valueNet.tags[o], function(keyTags, valueTags){
-					  searchTagsSimply[keyNet].push(valueTags);
-					});
+					if(typeof valueNet.tags[o] == "string")
+					  searchTagsSimply[keyNet].push(valueNet.tags[o]);
+					else{
+						$.each(valueNet.tags[o], function(keyTags, valueTags){
+						  searchTagsSimply[keyNet].push(valueTags);
+						});
+					}
 				}
-			}
+			});
 		});
-	});
+	}
 
 	mylog.log("searchTagsSimply", searchTagsSimply);
 
@@ -488,7 +490,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	if(typeof networkJson.request.sourceKey != "undefined")
 		data.sourceKey = networkJson.request.sourceKey;
 
-	if(typeof networkJson.filter.paramsFiltre != "undefined")
+	if(typeof networkJson.filter != "undefined" && typeof networkJson.filter.paramsFiltre != "undefined")
 		data.paramsFiltre = networkJson.filter.paramsFiltre;
 
 	if(userConnected != null && typeof userConnected.roles.superAdmin != "undefined" && userConnected.roles.superAdmin == true)
@@ -889,19 +891,21 @@ function loadServerFilters(types,tags){
 		var filtre = $(this).attr("value");
 		var parent = $(this).data("parent")
 		mylog.log("parent",parent);
-		$.each(networkJson.filter.linksTag, function(keyNet, valueNet){
-			if(typeof valueNet.tags[filtre] != "undefined"){
+		if(typeof networkJson.filter != "undefined" && typeof networkJson.filter.linksTag != "undefined"){
+			$.each(networkJson.filter.linksTag, function(keyNet, valueNet){
+				if(typeof valueNet.tags[filtre] != "undefined"){
 
-				if(typeof valueNet.tags[filtre] == "string"){
-					tagActivedUpdate(checked, valueNet.tags[filtre], parent);
-				}
-				else{
-					$.each(valueNet.tags[filtre], function(keyTags, valueTags){
-						tagActivedUpdate(checked, valueTags, parent);
-					});
-				}
-			}  
-		});
+					if(typeof valueNet.tags[filtre] == "string"){
+						tagActivedUpdate(checked, valueNet.tags[filtre], parent);
+					}
+					else{
+						$.each(valueNet.tags[filtre], function(keyTags, valueTags){
+							tagActivedUpdate(checked, valueTags, parent);
+						});
+					}
+				}  
+			});
+		}
 
 		chargement();	  	
 	});

@@ -326,6 +326,8 @@ var addLinkDynFormInvite = {
 
 var addLinkSearchMode = "contacts";
 jQuery(document).ready(function() {
+
+	mylog.log("here");
 	if(elementType != "citoyens")
 		buildModal(addLinkDynForm, "modalDirectoryForm");
 	else
@@ -1388,7 +1390,7 @@ function autoCompleteInviteSearch2(search){
 
 
 function buildModalInvite(fieldObj, idUi){
-	mylog.log("buildModal", fieldObj, idUi);
+	mylog.log("buildModalInvite", fieldObj, idUi);
 	//var fieldClass = " select2TagsInput select2ScopeInput";
     var fieldHTML = "";    		
 	fieldHTML += '<div class="modal fade" id="modal-scope" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+

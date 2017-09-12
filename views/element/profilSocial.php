@@ -717,7 +717,12 @@
 
     var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 	var dirHash="<?php echo @$_GET['dir']; ?>";
-	var idda="<?php echo @$_GET['idda']; ?>";
+	var roomId = "<?php echo @$_GET['room']; ?>";
+	var proposalId = "<?php echo @$_GET['proposal']; ?>";
+	var resolutionId = "<?php echo @$_GET['resolution']; ?>";
+	var actionId = "<?php echo @$_GET['action']; ?>";
+
+
 	jQuery(document).ready(function() {
 		bindButtonMenu();
 		inintDescs();
@@ -782,13 +787,55 @@
 				loadContacts();
 			else if(sub=="settings")
 				loadSettings();
-			else if(sub=="dda"){
-				var splitHash=location.hash.split(".");
-				var idda = splitHash[splitHash.length-1];
-				startLoadRoom(dir, idda);
+			else if(sub=="coop"){
+				loadCoop(roomId, proposalId, resolutionId, actionId);
 			}
 		} else
 			loadNewsStream(true);
 	}
+
+
+
+function loadCoop(roomId, proposalId, resolutionId, actionId){
+	roomId 		= (roomId != "") 	 ? roomId 		: null;
+	proposalId  = (proposalId != "") ? proposalId 	: null;
+	resolutionId  = (resolutionId != "") ? resolutionId 	: null;
+	actionId 	= (actionId != "") 	 ? actionId 	: null;
+
+	toastr.info(trad["processing"]);
+	
+	uiCoop.startUI(false);
+	
+	setTimeout(function(){	
+		uiCoop.getCoopData(contextData.type, contextData.id, "room", null, roomId, function(){ 
+			toastr.success(trad["processing ok"]);
+			$("#modalCoop").modal("show");
+
+			var type = null;
+			var id = null;
+
+			if(proposalId != null){
+				type = "proposal"; id = proposalId;
+			}
+
+			if(actionId != null){
+				type = "action"; id = actionId;
+			}
+
+			if(resolutionId != null){
+				type = "resolution"; id = resolutionId;
+			}
+
+			console.log("getCoopData??", contextData.type, contextData.id, type, null, id);
+
+			if(type != null) 
+			uiCoop.getCoopData(contextData.type, contextData.id, type, null, id);
+
+			setTimeout(function(){
+				loadNewsStream(true);
+			}, 5000);
+		});
+	}, 1500);
+}
 
 </script>

@@ -4,6 +4,7 @@
 
 ?>
 
+
 <div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
 	<?php if(@$post["status"]) {
   		$parentRoom = Room::getById($action["idParentRoom"]);
@@ -28,7 +29,7 @@
 	</h4>
 </div>
 
-<div class="col-lg-5 col-md-6 col-sm-6 no-padding">
+<div class="col-lg-5 col-md-6 col-sm-6">
 	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
 				data-original-title="Fermer cette fenêtre" data-placement="bottom"
 				id="btn-close-action">
@@ -143,5 +144,7 @@
 			dyFObj.editElement('actions', idAction);
 		});
 
+		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
+							  ".view.coop.room." + idParentRoom + ".action." + idAction;
 	});
 </script>

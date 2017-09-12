@@ -803,8 +803,10 @@ var urlCtrl = {
 						if(endPoint.menu)
 							$("."+endPoint.menu).removeClass("hide");
 
-						if(endPoint.removeAfterLoad)
+						if(endPoint.removeAfterLoad){
+							//alert("removeAfterLoad 1");
 							history.pushState('', document.title, window.location.pathname);
+						}
 					} 
 					res = true;
 					return false;

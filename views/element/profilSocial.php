@@ -389,16 +389,25 @@
 				            <?php } ?>
 			            <?php } else { ?>
 			            	<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+
+			            	<li class="text-left">
+				               	<a href='javascript:;' onclick='rcObj.settings();' >
+									<i class='fa fa-comments'></i> <?php echo Yii::t("common","Chat Settings"); ?>
+								</a>
+				            </li>
+
 							<li class="text-left">
 								<a href='javascript:' id="downloadProfil">
 									<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
 								</a>
 							</li>
+							
 							<li class="text-left">
 				               	<a href='javascript:;' id="btn-update-password" class='text-red'>
 									<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
 								</a>
 				            </li>
+
 				            <?php } ?>
 			            <?php } ?>
 			  		</ul>

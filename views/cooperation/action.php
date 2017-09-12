@@ -15,6 +15,27 @@
 	<br>
   	<?php  } ?>
 
+
+<?php
+	//if no assignee , no startDate no end Date
+    $statusLbl = Yii::t("rooms", "Todo");
+    $statusColor = "badge-info";
+    //if startDate passed, or no startDate but has end Date
+    if( (bool)strtotime(@$action["startDate"]) == FALSE && (bool)strtotime(@$action["endDate"]) == FALSE ){
+    	$action["status"] = "nodate";	
+    } 
+    else if( strtotime(@$action["startDate"]) > time() )
+      	$action["status"] = "startingsoon";
+    else if( ( isset($action["startDate"]) && strtotime($action["startDate"]) <= time() )  || 
+    		   ( !@$action["startDate"] && @$action["endDate"] ) )
+    {
+      $action["status"] = "progress";
+      if( strtotime(@$action["endDate"]) < time()  )
+        $action["status"] = "late";
+      
+    } 
+?>			
+
 	<label class=""><i class="fa fa-bell"></i> Status : 
 		<small class="letter-<?php echo Cooperation::getColorCoop($action["status"]); ?>">
 			<?php echo Yii::t("cooperation", $action["status"]); ?>
@@ -22,10 +43,19 @@
 	</label>
 
 	<h4 class="text-purple no-margin">
-		<i class="fa fa-pencil"></i> Action ouverte du <small class="text-purple"><?php echo date('d/m/Y', strtotime($action["startDate"])); ?>
+		<i class="fa fa-pencil"></i> Action ouverte 
+<?php
+if( @$action["startDate"] && (bool)strtotime(@$action["startDate"]) != FALSE ){
+?> 
+		du <small class="text-purple"><?php echo date('d/m/Y', strtotime($action["startDate"])); ?>
+<?php
+}
+
+if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
+?> 
 		au <?php echo date('d/m/Y', strtotime($action["endDate"])); ?></small>
 			<!-- <br><i class="fa fa-angle-right"></i> Fin <?php echo Translate::pastTime($action["endDate"], "date"); ?> -->
-		
+<?php } ?>		
 	</h4>
 </div>
 
@@ -178,7 +208,7 @@
 	              params = { "id" : id };
 	              ajaxPost(null,'<?php echo Yii::app()->createUrl(Yii::app()->controller->module->id."/rooms/assignme")?>',params,function(data){
 	                if(data.result)
-	                  alert("Tango a l'aide comment je reload stp");
+	                  alert("Tango a l'aide comment je reload stp action.php > function assignMe > l.181");
 	                else 
 	                  toastr.error(data.msg);
 	              });

@@ -616,7 +616,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		html +=	"</div>";
 		
 		
-		mapElements = new Array();
+		var mapElements = new Array();
 		
 		
 		if(dataName != "collections"){

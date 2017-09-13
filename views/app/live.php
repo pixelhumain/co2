@@ -22,9 +22,24 @@
                                 "type" => @$type,
                                 "page" => "live",
                                 "explain"=> "Live public : retrouvez tous les messages publics selon vos lieux favoris") ); 
+    $randImg = rand(1, 2);
+    //$randImg = 1;
 ?>
 
 <style>
+    header {
+      background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/live/pexels-<?php echo $randImg; ?>.jpeg") top center;
+        min-height:600px;
+    }
+     #main-scope-name a{
+        height: 130px;
+        background-color: rgba(255, 255, 255, 0.9);
+        width: 130px;
+        display: inline-block;
+        padding-top: 30px;
+        border-radius: 50%;
+        padding-right: 4px;
+    }
 	.scope-min-header{
         float: left;
         margin-top: 23px;

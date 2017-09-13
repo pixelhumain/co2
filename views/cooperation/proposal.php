@@ -157,14 +157,14 @@
 	<?php } ?>
 
 	<?php if(@$proposal["status"] == "tovote" && $hasVote!=false){ ?>
-			<h5 class="pull-left col-md-3">Vous avez voté 
-				<span class="letter-<?php echo Cooperation::getColorVoted($hasVote); ?>">
-					<?php echo Yii::t("cooperation", $hasVote); ?>
-				</span>
-			</h5>
-		<?php }elseif(@$proposal["status"] == "tovote"){ ?>
-			<h5 class="letter-red pull-left">Vous n'avez pas voté</h5>
-		<?php } ?>
+		<h5 class="pull-left">Vous avez voté 
+			<span class="letter-<?php echo Cooperation::getColorVoted($hasVote); ?>">
+				<?php echo Yii::t("cooperation", $hasVote); ?>
+			</span>
+		</h5>
+	<?php }elseif(@$proposal["status"] == "tovote"){ ?>
+		<h5 class="letter-red pull-left">Vous n'avez pas voté</h5>
+	<?php } ?>
 </div>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-5">

@@ -56,6 +56,46 @@ dynForm = {
 					$("#ajaxFormModal #amendementDateEnd").val("");
 				}
 
+				$("#ajaxFormModal .majoritytext").append(
+						"<small class='pull-left margin-top-5' id='info'><i class='fa fa-info-circle'></i> "+
+						 "Votre proposition devra recueillir plus de <b>"+
+						 "50%</b> de votes <span class='letter-green'>favorables</span> pour être validée" +
+						"</small>");
+
+				$("#ajaxFormModal #majority").val("50");
+				$('#ajaxFormModal #majority').filter_input({regex:'^(0|[1-9][0-9]*)$'});
+				
+				$('#ajaxFormModal #majority').keyup (function(){
+					var strval = $(this).val();
+					var intval = strval != "" ? parseInt(strval) : 0;
+					console.log("intval1", intval);
+					if(intval > 100) 
+						$("#ajaxFormModal .majoritytext small#info").html(
+						"<i class='fa fa-info-circle'></i> Impossible de dépasser les 100%");
+
+					if(intval < 50) 
+						$("#ajaxFormModal .majoritytext small#info").html(
+						"<i class='fa fa-info-circle'></i> Impossible de descendre à moins de 50%");
+
+					if(intval >= 50 && intval <= 100) 
+					$("#ajaxFormModal .majoritytext small#info").html(
+						"<i class='fa fa-info-circle'></i> Votre proposition devra recueillir plus de <b>"+
+						intval + "%</b> de votes <span class='letter-green'>favorables</span> pour être validée");
+				});
+
+				$('#ajaxFormModal #majority').focusout (function(){
+					var strval = $(this).val();
+					var intval = strval != "" ? parseInt(strval) : 0;
+					console.log("intval1", intval);
+					if(intval > 100) intval = 100;
+					if(intval < 50) intval = 50;
+					console.log("intval2", intval);
+					$('#ajaxFormModal #majority').val(intval);
+					$("#ajaxFormModal .majoritytext small#info").html(
+						"<i class='fa fa-info-circle'></i> Votre proposition devra recueillir plus de <b>"+
+						intval + "%</b> de votes <span class='letter-green'>favorables</span> pour être validée");
+				});
+
 			}
 	    },
         beforeSave : function(){
@@ -186,10 +226,10 @@ dynForm = {
             tags : dyFInputs.tags(),
             //image : dyFInputs.image(),
             urls : dyFInputs.urls,
+            majority: dyFInputs.inputText( "Règle de majorité (%) <small class='letter-green'>indiquez une valeur entre 50% et 100%</small>", "50%" ),
             //email: dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userConnected.email : "") ),
             //idUserAuthor : dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userId : "") ),
             status: dyFInputs.inputHidden( "amendable" ),
-            majority: dyFInputs.inputHidden( 50 ),
             //canModify: dyFInputs.inputHidden( true ),
             parentId : dyFInputs.inputHidden(contextData.id),
             parentType : dyFInputs.inputHidden(contextData.type),

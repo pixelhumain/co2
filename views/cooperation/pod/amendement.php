@@ -1,4 +1,4 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow2 margin-top-15 padding-15 podVoteAmendement">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow2 margin-top-15 margin-bottom-15 padding-15 podVoteAmendement">
 	
 	<div class="col-lg-9 col-md-9 col-sm-8 col-xs-8 pull-left no-padding">
 		<!-- <img src="<?php echo $this->module->assetsUrl.'/images/thumbnail-default.jpg'; ?>" 
@@ -21,10 +21,12 @@
 			<h5 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">
 				<?php if($auth){ ?>
 					Vous n'avez pas voté<br>
-					<small class="text-dark">
-						Le vote est ouvert jusqu'au : 
-						<?php echo date('d/m/Y H:i e', strtotime($proposal["amendementDateEnd"])); ?>
-					</small>
+					<?php if($proposal["status"] == "amendable"){ ?>
+						<small class="text-dark">
+							Le vote est ouvert jusqu'au : 
+							<?php echo date('d/m/Y H:i e', strtotime($proposal["amendementDateEnd"])); ?>
+						</small>
+					<?php } ?>
 				<?php }else{ ?>
 					<small class="text-dark">
 						Devenez membre ou contributeur pour voter
@@ -39,20 +41,27 @@
 		<canvas class="" id="res-vote-chart-<?php echo $key; ?>" width="50%" height="50px"/>
 	</div>
 	
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-10 no-padding textAmdt">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-10 no-padding">
 		<hr>
+	</div>
+
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-10 no-padding textAmdt">
 		<?php echo @$am["textAdd"]; ?>
 	</div>
 
 
-	<div class="col-lg-12 col-md-12 col-sm-12 pull-left padding-15">
+	<div class="col-lg-12 col-md-12 col-sm-12 pull-left no-padding">
 		<hr>
 		<small>
 			<i class="fa fa-2x fa-balance-scale"></i> Majorité : <b><?php echo @$proposal["majority"]; ?>%</b> 
 			<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
-				 <span class="pull-right badge bg-green-k margin-top-5 padding-5">temporairement <span class="bold">Validée</span></span>
+				 <span class="pull-right badge bg-green-k margin-top-5 padding-5">
+				 <?php if($proposal["status"] == "amendable"){ ?>temporairement <?php }else{ ?>définitivement<?php } ?>
+				 <span class="bold">validée</span></span>
 			<?php }else{ ?>
-				 <span class="pull-right badge bg-red margin-top-5 padding-5">temporairement <span class="bold">refusé</span></span>
+				 <span class="pull-right badge bg-red margin-top-5 padding-5">
+				 <?php if($proposal["status"] == "amendable"){ ?>temporairement <?php }else{ ?>définitivement<?php } ?>
+				 <span class="bold">refusé</span></span>
 			<?php } ?>
 		</small>
 		
@@ -75,6 +84,21 @@
 			<label class="badge padding-10 bg-<?php echo $value["bg-color"]; ?> col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<?php echo Yii::t("cooperation", $keyV); ?> (<?php echo $value["percent"]; ?>%)
 			</label>
+		<?php } ?>			
+	</div>
+
+	<?php } ?>
+
+	<?php 
+ 		foreach ($voteRes as $keyV => $value) {  //var_dump($auth);
+ 	?>
+	<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center pull-left margin-top-5 padding-5">
+		<?php if(@$proposal["status"] == "amendable" && $auth){ ?>
+			<div class="letter-<?php echo $value["bg-color"]; ?> 
+						tooltips col-lg-12 col-md-12 col-sm-12 col-xs-12"
+					data-original-title="nombre de votants" data-placement="bottom">
+					<i class="fa fa-group"></i> <b><?php echo $value["votant"]; ?></b>
+			</div>
 		<?php } ?>			
 	</div>
 

@@ -1,5 +1,5 @@
 <style>
-	.majority-space{
+	small.majority{
 		display: none;
 	}
 </style>
@@ -10,10 +10,13 @@
 
 	$myId = Yii::app()->session["userId"];
 	$hasVote = @$resolution["votes"] ? Cooperation::userHasVoted($myId, $resolution["votes"]) : false; 
-	$auth = Authorisation::canEditItem(Yii::app()->session['userId'], $resolution["parentType"], $resolution["parentId"]);
+
+	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], 
+			$resolution["parentType"], $resolution["parentId"]);
 
 	$parentRoom = Room::getById($resolution["idParentRoom"]);
 
+	$totalVotant = Proposal::getTotalVoters($resolution);
 	$voteRes = Proposal::getAllVoteRes($resolution);
 ?>
 
@@ -39,19 +42,35 @@
 	</label>
 
 	<hr>
-	<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
-		 <h2 class="no-margin">La <b>résolution</b> suivante a été 
-		 	<span class="letter-green">validée</span>
-		 </h2>
-	<?php }else{ ?>
-		 <h2 class="no-margin">La <b>résolution</b> suivante a été 
+		<h4 class="no-margin">La <b>résolution</b> suivante a été 
+		 	<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && 
+		 			$voteRes["up"]["percent"] > @$resolution["majority"] ){ ?>
+				<span class="letter-green">validée</span>
+			 <?php }else{ ?>
 		 	<span class="letter-red">refusée</span>
-		 </h2>
-	<?php } ?>
+			<?php } ?>
+		</h4>
 
-	<!-- <h5 class="no-margin">La résolution suivante a été <span class="letter-green">adoptée</span> 
-		<?php //echo " · ".Yii::t("cooperation", "end")." ".Translate::pastTime($resolution["voteDateEnd"], "date"); ?>
-	</h5> -->
+		<div class="progress">
+			<?php 
+				foreach($voteRes as $key => $value){ 
+					if($totalVotant > 0 && $value["percent"] > 0){ 
+			?>
+					  <div class="progress-bar bg-<?php echo $value["bg-color"]; ?>" role="progressbar" 
+					  		style="width:<?php echo $value["percent"]; ?>%">
+					    <?php echo $value["percent"]; ?>%
+					  </div>
+				<?php } ?>
+			<?php } ?>
+
+			<?php if($totalVotant == 0){ ?>
+					<div class="progress-bar bg-turq" role="progressbar" style="width:100%">
+					    Aucun vote
+					  </div>
+			<?php } ?>
+		</div> 
+
+		<h3><i class="fa fa-balance-scale"></i> Majorité : <b><?php echo @$resolution["majority"]; ?>%</b></h3>
 	<br>
 </div>
 
@@ -140,7 +159,9 @@
 
 
 <?php 
-	$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$resolution, "hasVote" => $hasVote));
+	$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$resolution, 
+														  "hasVote" => $hasVote, 
+														  "auth" => $auth));
 ?>
 
 <div class="col-lg-12 col-md-12 col-sm-12"><hr></div>

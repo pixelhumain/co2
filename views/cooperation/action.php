@@ -1,6 +1,6 @@
 <?php 
 
-	$auth = Authorisation::canEditItem(Yii::app()->session['userId'], $action["parentType"], $action["parentId"]);
+	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $action["parentType"], $action["parentId"]);
 
 ?>
 

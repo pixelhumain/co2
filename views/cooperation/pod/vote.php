@@ -69,27 +69,28 @@
 
 	<div class="col-lg-12 col-md-12 col-sm-12 pull-left padding-15 majority-space">
 
-			<?php if(@$proposal["status"] == "tovote" && $auth){ ?>
-				<?php if($hasVote!=false){ ?>
-					<h5 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
-						style="padding-left: 0px !important;">Vous avez voté 
-						<span class="letter-<?php echo Cooperation::getColorVoted($hasVote); ?>">
-							<?php echo Yii::t("cooperation", $hasVote); ?>
-						</span>
-					</h5>
-				<?php }else{ ?>
-					<h5 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
-						style="padding-left: 0px !important;">Vous n'avez pas voté</h5>
-				<?php } ?>
-				<br>
+		<?php if(@$proposal["status"] != "amendable" && $auth){ ?>
+			<?php if($hasVote!=false){ ?>
+				<h5 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
+					style="padding-left: 0px !important;">Vous avez voté 
+					<span class="letter-<?php echo Cooperation::getColorVoted($hasVote); ?>">
+						<?php echo Yii::t("cooperation", $hasVote); ?>
+					</span>
+				</h5>
+			<?php }else{ ?>
+				<h5 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
+					style="padding-left: 0px !important;">Vous n'avez pas voté</h5>
 			<?php } ?>
-		<small>
+			<br>
+		<?php } ?>
+
+		<small class="majority">
 			<i class="fa fa-2x fa-balance-scale"></i> Majorité : <b><?php echo @$proposal["majority"]; ?>%</b> 
 			<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
-				 Proposition <?php if($proposal["status"] != "closed"){ ?>temporairement <?php } ?>
+				 Proposition <?php if($proposal["status"] == "tovote"){ ?>temporairement <?php } ?>
 				 <span class="bold letter-green">Validée</span>
 			<?php }else{ ?>
-				 Proposition <?php if($proposal["status"] != "closed"){ ?>temporairement <?php } ?> 
+				 Proposition <?php if($proposal["status"] == "tovote"){ ?>temporairement <?php } ?> 
 				 <span class="bold letter-red">Refusée</span>
 			<?php } ?>
 		</small>

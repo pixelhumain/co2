@@ -1,40 +1,7 @@
 <style>
-	#panel-first-step{
-		text-align: center;
-		margin-top:20px;
-	}
-	#panel-first-step button{
-		margin-bottom:5px;
-	}
-
-	#ajax-modal .modal-content,
-	#formContact .modal-content{
-		background-color: rgba(0,0,0,0.6);
-	}
-	
-	#ajax-modal .container,
-	#formContact .container{
-		background-color: white;
-		border-radius: 4px;
-	}
-
-	#ajax-modal.portfolio-modal,
-	#formContact.portfolio-modal {
-		background-color: transparent;
-	}
-
-	#ajax-modal .close-modal .lr,
-	#ajax-modal .close-modal .rl,
-	#formContact .close-modal .lr,
-	#formContact .close-modal .rl{
-		background-color: white;
-	}
-
 	.dropdown_searchListNW{
 		min-height: 100%;
 	}
-
-
 </style>
 
 <div class="col-md-12 no-padding" id="repertory" >
@@ -46,7 +13,7 @@
 //Icons by default categories
 var linksTagImages = new Object();
 var contextMapNetwork = [];
-var allElement = new Array();
+//var allElement = new Array();
 var allTags = new Object();
 var allTypes = new Object();
 var indexStepInit = 100;
@@ -98,7 +65,7 @@ jQuery(document).ready(function() {
 	else
 		showMapNetwork(false);
 
-	$(".main-menu-left.inSig").hide();
+	//$(".main-menu-left.inSig").hide();
 	$("#right_tool_map").removeClass("hidden-sm").hide( 700 );
 
 	topMenuActivated = true;
@@ -107,8 +74,6 @@ jQuery(document).ready(function() {
 	var timeoutSearch = setTimeout(function(){ }, 100);
 
 	setTimeout(function(){ $("#input-communexion").hide(300); }, 300);
-	$(".moduleLabel").html("<i class='fa fa-connectdevelop'></i> <span id='main-title-menu'>Cartographie des Tiers-Lieux </span> <span class='text-red'>MEL</span>");
-	$('.tooltips').tooltip();
 	
 	mylog.log("indexStepInit", indexStepInit);
 	startSearchSimply(0, indexStepInit);
@@ -136,7 +101,6 @@ function initVar(){
 		nwVar[v] = ( ( typeof networkJson.request[v] != "undefined" && $.isArray(networkJson.request[v]) ) ? networkJson.request[v] : [] );
 		nwVar["all"+v] = ( ( typeof networkJson.request[v] != "undefined" && $.isArray(networkJson.request[v]) ) ? networkJson.request[v] : [] );
 	});
-
 
 	var btnSearch = '<div class="btn-group btn-group-lg tooltips" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Recherche par nom">'+
 					'<button type="button" class="btn btn-map " id="btn-search">'+

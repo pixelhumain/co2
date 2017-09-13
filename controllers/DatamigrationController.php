@@ -2126,5 +2126,23 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			}
 		}
 	}
+	public function actionRelaunchInvitation(){
+		ini_set('memory_limit', '-1');
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){		
+			$res=PHDB::find(Person::COLLECTION,array("pending"=>array('$exists'=>true)));
+			$i=0;
+			$v=0;
+			foreach($res as $key => $value){
+				if(DataValidator::email($value["email"])==""){
+					Mail::relaunchInvitePerson($value);
+					$i++;
+				}else{
+					$v++;
+				}
+			}
+			echo $i." mails envoyé pour relancer l'inscription<br>";
+			echo $v." utilisateur non inscrit (validé) qui ont un mail de marde<br>";
+		}
+	}
 }
 

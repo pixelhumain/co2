@@ -618,6 +618,9 @@ function loadContacts(){
 				}
 	,"html");
 }
+
+
+
 //todo add count on each tag
     function getfilterRoles(roles) { 
     	console.log("roles",roles);

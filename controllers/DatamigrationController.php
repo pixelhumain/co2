@@ -2892,6 +2892,147 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	}
 
 	// -------------------- Fin des foncction pour le refactor Cities/zones
+		// -------------------- Slugify everything
+	public function actionSlugifyCitoyens(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$slugExist=array();
+			$unwanted_array = array(    'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+                            'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
+                            'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
+                            'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
+                            'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y' );
+			//foreach($typeEl as $type){
+				
+				$res=PHDB::find(Person::COLLECTION);
+				echo "//////////".count($res)." Citoyens/////////////////<br>";
+				foreach ($res as $key => $value) {
+					if((@$value["username"] && !empty($value["username"]) || !@$value["tobeactivated"])){
+						// replace non letter or digits by -
+						if(@$value["username"]){
+							$string=$value["username"];
+							$createUsername=false;
+						}else{
+							$string=$value["name"];
+							$createUsername=true;
+						}
+						$str="";
+						$value=explode(" ",$string);
+						$i=0;
+						foreach($value as $v){
+							$text = strtr( $v, $unwanted_array );
+							//$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+			  				$text = preg_replace('~[^\\pL\d]+~u', '', $text);
 
+				  			// trim
+				  			$text = trim($text, '-');
+
+				 			// transliterate
+				  			$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+				  			// lowercase
+				  			$text = strtolower($text);
+				  			if($i>0)
+				  				$text = ucfirst($text);
+
+				  			// remove unwanted characters
+				  			$text = preg_replace('~[^-\w]+~', '', $text);
+				  			$str.=$text;
+				  			$i++;
+			  			}	
+			  			if(in_array($str, $slugExist)){
+			 			//if(!Slug::check(array("slug"=>$str,"type"=>Organization::COLLECTION,"id"=>$key))){
+			 				$v = 1; // $i est un nombre que l'on incrémentera. 
+			 				$inc=true;
+			 				//echo "ouuuuuuuuuiiii";
+							while($inc==true) 
+							{ 
+								//$inc=Slug::check(array("slug"=>$str.$i,"type"=>Organization::COLLECTION,"id"=>$key));
+							  	//echo $i . "<br />";
+							  	$inc=in_array($str.$v, $slugExist);
+							  	//echo $inc;
+								if(!$inc)
+									$str=$str.$v;
+								else
+							  		$v ++ ;
+							}
+						}
+						if(@$createUsername && $createUsername==true){
+							echo "doooooooit entry username////";
+						}
+						array_push($slugExist, $str);
+						echo  $str."<br>";
+					}
+		 		}
+			//}
+		}
+	}
+	public function actionSlugifyElement(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$slugcitoyens=PHDB::find(Slug::COLLECTION);
+			$typeEl=array("organizations","projects","events");
+			$slugExist=array();
+			foreach($slugcitoyens as $data){
+				array_push($slugExist,$data["name"]);
+			}
+			print_r($slugExist);
+			$unwanted_array = array(    'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+                            'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
+                            'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
+                            'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
+                            'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y' );
+			foreach($typeEl as $type){
+				echo "//////////".$type."/////////////////<br>";
+				$res=PHDB::find($type);
+				foreach ($res as $key => $value) {
+					if(@$value["name"] && !empty($value["name"])){
+						// replace non letter or digits by -
+						$str="";
+						$value=explode(" ",$value["name"]);
+						$i=0;
+						foreach($value as $v){
+							$text = strtr( $v, $unwanted_array );
+							//$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+			  				$text = preg_replace('~[^\\pL\d]+~u', '', $text);
+
+				  			// trim
+				  			$text = trim($text, '-');
+
+				 			// transliterate
+				  			$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+				  			// lowercase
+				  			$text = strtolower($text);
+				  			if($i>0)
+				  				$text = ucfirst($text);
+
+				  			// remove unwanted characters
+				  			$text = preg_replace('~[^-\w]+~', '', $text);
+				  			$str.=$text;
+				  			$i++;
+			  			}	
+			  			if(in_array($str, $slugExist)){
+			 			//if(!Slug::check(array("slug"=>$str,"type"=>Organization::COLLECTION,"id"=>$key))){
+			 				$v = 1; // $i est un nombre que l'on incrémentera. 
+			 				$inc=true;
+			 				//echo "ouuuuuuuuuiiii";
+							while($inc==true) 
+							{ 
+								//$inc=Slug::check(array("slug"=>$str.$i,"type"=>Organization::COLLECTION,"id"=>$key));
+							  	//echo $i . "<br />";
+							  	$inc=in_array($str.$v, $slugExist);
+							  	//echo $inc;
+								if(!$inc)
+									$str=$str.$v;
+								else
+							  		$v ++ ;
+							}
+						}
+						array_push($slugExist, $str);
+						echo  $str."<br>";
+					}
+		 		}
+			}
+		}
+	}
 }
 

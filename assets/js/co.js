@@ -803,8 +803,10 @@ var urlCtrl = {
 						if(endPoint.menu)
 							$("."+endPoint.menu).removeClass("hide");
 
-						if(endPoint.removeAfterLoad)
+						if(endPoint.removeAfterLoad){
+							//alert("removeAfterLoad 1");
 							history.pushState('', document.title, window.location.pathname);
+						}
 					} 
 					res = true;
 					return false;
@@ -3126,6 +3128,7 @@ var dyFInputs = {
     	return inputObj;
     },
     slug :function(label, placeholder, rules) { 
+    	console.log("rooooles",rules);
 		var inputObj = {
 			label : label,
 	    	placeholder : ( notEmpty(placeholder) ? placeholder : "... " ),
@@ -3134,9 +3137,11 @@ var dyFInputs = {
 	    };
     	inputObj.init = function(){
         	$("#ajaxFormModal #slug").bind("input keyup",function(e) {
-        		$(this).val(slugify($(this).val()));
-        		if($("#ajaxFormModal #slug").val().length > 3 )
+        		$(this).val(slugify($(this).val(), true));
+        		if($("#ajaxFormModal #slug").val().length >= 3 )
             		slugUnique($(this).val());
+            	else
+            		$("#ajaxFormModal #slug").parent().removeClass("has-success").addClass("has-error").find("span").text("Please enter at least 3 characters.");
             	//dyFObj.canSubmitIf();
         	});
 	    }

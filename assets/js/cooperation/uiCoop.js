@@ -1,6 +1,6 @@
 /* uiCoop is use for all function relative to UI for Cooperation Spaces (DDA) */
 var uiCoop = {
-	"startUI" : function(){
+	"startUI" : function(loadData=true){
 		console.log("startUICOOP");
 		//$("#menu-left-container").hide();
 		//$("#div-reopen-menu-left-container").removeClass("hidden");
@@ -23,8 +23,12 @@ var uiCoop = {
 		});
 
 		uiCoop.initBtnLoadData();
+
 		uiCoop.getCoopData(contextData.type, contextData.id, "menucoop");
-		uiCoop.getCoopData(contextData.type, contextData.id, "proposal");
+		
+		if(loadData){
+			uiCoop.getCoopData(contextData.type, contextData.id, "proposal");
+		}
 	},
 
 	"closeUI" : function(reloadStream){
@@ -96,12 +100,14 @@ var uiCoop = {
 
 	"minimizeMenuRoom" : function(min){ console.log("minimizeMenuRoom", min);
 		if(min)	{
-			$("#menu-room").addClass("min col-lg-4 col-md-4 col-sm-4").removeClass("col-lg-12 col-md-12 col-sm-12");
+			$("#menu-room").addClass("min col-lg-4 col-md-4 col-sm-4")
+							.removeClass("col-lg-12 col-md-12 col-sm-12");
 			$("#coop-data-container").addClass("col-lg-8 col-md-8 col-sm-8").removeClass("hidden");
 		}
 		else{
 			uiCoop.maximizeReader(false);
-			$("#menu-room").removeClass("min col-lg-4 col-md-4 col-sm-4").addClass("col-lg-12 col-md-12 col-sm-12");
+			$("#menu-room").removeClass("min col-lg-4 col-md-4 col-sm-4")
+							.addClass("col-lg-12 col-md-12 col-sm-12");
 			$("#coop-data-container").removeClass("min col-lg-8 col-md-8 col-sm-8").addClass("hidden");
 		}
 	},
@@ -109,23 +115,27 @@ var uiCoop = {
 	"maximizeReader" : function(max){ console.log("maximizeReader", max);
 		if(max)	{
 			$("#menu-room").addClass("hidden");
-			$("#coop-data-container").removeClass("col-lg-8 col-md-8 col-sm-8").addClass("col-lg-12 col-md-12 col-sm-12");
+			$("#coop-data-container").removeClass("col-lg-8 col-md-8 col-sm-8")
+									 .addClass("col-lg-12 col-md-12 col-sm-12");
 		}
 		else{
 			$("#menu-room").removeClass("hidden");
-			$("#coop-data-container").removeClass("col-lg-12 col-md-12 col-sm-12").addClass("col-lg-8 col-md-8 col-sm-8");
+			$("#coop-data-container").removeClass("col-lg-12 col-md-12 col-sm-12")
+									 .addClass("col-lg-8 col-md-8 col-sm-8");
 		}
 	},
 
 	"showAmendement" : function(show){
 		if(show){
 			$("#menu-room").addClass("hidden");
-			$("#coop-data-container").addClass("col-lg-12 col-md-12 col-sm-12").removeClass("col-lg-8 col-md-8 col-sm-8");
+			$("#coop-data-container").addClass("col-lg-12 col-md-12 col-sm-12")
+									 .removeClass("col-lg-8 col-md-8 col-sm-8");
 			$("#amendement-container").removeClass("hidden");
 
 		}else{
 			$("#menu-room").removeClass("hidden");
-			$("#coop-data-container").removeClass("col-lg-12 col-md-12 col-sm-12").addClass("col-lg-8 col-md-8 col-sm-8");
+			$("#coop-data-container").removeClass("col-lg-12 col-md-12 col-sm-12")
+									 .addClass("col-lg-8 col-md-8 col-sm-8");
 			$("#amendement-container").addClass("hidden");
 		
 		}
@@ -147,10 +157,12 @@ var uiCoop = {
 
 		if(typeof showLoading == "undefined" || showLoading == true){
 			if(typeof dataId == "undefined" || dataId == null || type == "room"){
-				$("#main-coop-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
+				$("#main-coop-container").html(
+					"<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
 			}
 			else{
-				$("#coop-data-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
+				$("#coop-data-container").html(
+					"<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
 			}
 		}
 
@@ -470,6 +482,9 @@ var uiCoop = {
 			console.log("edit idProposal", idProposal);
 			dyFObj.editElement('proposals', idProposal);
 		});
+
+		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
+							  ".view.coop.room." + idParentRoom + ".proposal." + idParentProposal;
 
 		if(msgController != ""){
 			toastr.error(msgController);

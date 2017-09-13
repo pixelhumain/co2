@@ -131,7 +131,10 @@ Liste des notifications déjà lues => #370 #453
       - values
         - fixed
         - percentage
-        - 
+  ** Qui est là, Action en cours, Todo, Todo Perso  : dans un e communauté 
+    une vision à un temps t, de toutes les ressources d'une CO 
+      - en mode web 
+      - mobi
 
 * ************************************************************    
 * Version C0.21.8  : en cours

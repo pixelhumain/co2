@@ -2,7 +2,7 @@
 #podVote{
 	/*border: 1px dashed grey;*/
 	border-radius: 20px;
-	margin-top:15px;
+	margin-top:35px;
 	margin-bottom:30px;
 	background: #f3f3f3;
 	/*color: white;*/
@@ -15,7 +15,7 @@
 		<canvas id="pieVote"/>
 	</div>
 
-		<div class="col-lg-3 col-md-3 col-sm-4 text-center no-padding pull-left">
+		<div class="col-lg-4 col-md-4 col-sm-5 text-center no-padding pull-left">
 			<h5 class="no-margin">
 				<?php if(@$proposal["status"] == "tovote" && $auth){ ?>
 					<i class="fa fa-hand-o-up"></i> VOTER
@@ -25,15 +25,25 @@
 					<i class="fa fa-lock"></i> Devenez membre ou contributeur pour voter
 				<?php } ?>
 			</h5>
+
 		</div>
 
+		
  	<?php 
  		$voteRes = Proposal::getAllVoteRes($proposal);
  		$totalVotant = Proposal::getTotalVoters($proposal); 
  		foreach ($voteRes as $key => $value) {
  	?>
 		<div class="col-lg-8 col-md-8 col-sm-8 text-center no-padding pull-left margin-top-5">
-			<div class="col-lg-5 col-md-5 col-sm-7 text-center pull-left margin-top-5">
+			<div class="col-lg-1 col-md-1 col-sm-1 text-center no-padding pull-left margin-top-5">
+				<?php if($key == $hasVote){ ?>
+					<i class="fa fa-chevron-right pull-right" style="margin-top:8px;"></i> 
+					<i class="fa fa-user-circle pull-right tooltips" style="margin-top:8px;"
+						data-original-title="vous avez voté <?php echo Yii::t("cooperation", $hasVote); ?>" 
+						data-placement="right"></i>
+				<?php } ?>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-6 text-center pull-left margin-top-5">
 				<?php if(@$proposal["status"] == "tovote" && $auth){ ?>
 					<button class="btn btn-send-vote btn-link btn-sm bg-<?php echo $value["bg-color"]; ?> tooltips"
 							data-original-title="cliquer pour voter" data-placement="right"
@@ -50,7 +60,7 @@
 						data-original-title="<?php echo $value["votant"]; ?> votants" data-placement="right">
 				<label><?php echo $value["percent"]; ?>%</label>
 			</div>
-			<div class="col-lg-5 col-md-5 col-sm-5 text-center pull-left margin-top-5 hidden-sm hidden-xs">
+			<div class="col-lg-4 col-md-4 col-sm-4 text-center pull-left margin-top-5 hidden-sm hidden-xs">
 				<small><?php echo $value["votant"]; ?> votant(s)</small><br>
 			</div>
 		</div>
@@ -58,6 +68,21 @@
 	<?php } ?>
 
 	<div class="col-lg-12 col-md-12 col-sm-12 pull-left padding-15 majority-space">
+
+			<?php if(@$proposal["status"] == "tovote" && $auth){ ?>
+				<?php if($hasVote!=false){ ?>
+					<h5 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
+						style="padding-left: 0px !important;">Vous avez voté 
+						<span class="letter-<?php echo Cooperation::getColorVoted($hasVote); ?>">
+							<?php echo Yii::t("cooperation", $hasVote); ?>
+						</span>
+					</h5>
+				<?php }else{ ?>
+					<h5 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
+						style="padding-left: 0px !important;">Vous n'avez pas voté</h5>
+				<?php } ?>
+				<br>
+			<?php } ?>
 		<small>
 			<i class="fa fa-2x fa-balance-scale"></i> Majorité : <b><?php echo @$proposal["majority"]; ?>%</b> 
 			<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>

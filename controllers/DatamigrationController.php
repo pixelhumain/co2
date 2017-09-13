@@ -1959,6 +1959,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	// -------------------- Fin des foncction pour le refactor Cities/zones
 		// -------------------- Slugify everything
 	public function actionSlugifyCitoyens(){
+		ini_set('memory_limit', '-1');
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			$slugExist=array();
 			$unwanted_array = array(    'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
@@ -1970,8 +1971,9 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				
 				$res=PHDB::find(Person::COLLECTION);
 				echo "//////////".count($res)." Citoyens/////////////////<br>";
+				$count=0;
 				foreach ($res as $key => $value) {
-					if((@$value["username"] && !empty($value["username"]) || !@$value["tobeactivated"])){
+					//if((@$value["username"] && !empty($value["username"])){
 						// replace non letter or digits by -
 						if(@$value["username"]){
 							$string=$value["username"];
@@ -2005,14 +2007,10 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				  			$i++;
 			  			}	
 			  			if(in_array($str, $slugExist)){
-			 			//if(!Slug::check(array("slug"=>$str,"type"=>Organization::COLLECTION,"id"=>$key))){
 			 				$v = 1; // $i est un nombre que l'on incrémentera. 
 			 				$inc=true;
-			 				//echo "ouuuuuuuuuiiii";
 							while($inc==true) 
 							{ 
-								//$inc=Slug::check(array("slug"=>$str.$i,"type"=>Organization::COLLECTION,"id"=>$key));
-							  	//echo $i . "<br />";
 							  	$inc=in_array($str.$v, $slugExist);
 							  	//echo $inc;
 								if(!$inc)
@@ -2023,35 +2021,54 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 						}
 						if(@$createUsername && $createUsername==true){
 							echo "doooooooit entry username////";
+							PHDB::update(
+							Person::COLLECTION,
+							array("_id"=>new MongoId($key)),
+							array('$set'=>array("username"=>$str)));
 						}
 						array_push($slugExist, $str);
 						echo  $str."<br>";
-					}
+						//INSERT IN SLUG COLLECTION
+						PHDB::insert(Slug::COLLECTION,array("name"=>$str,"id"=>$key,"type"=>Person::COLLECTION));
+						//INSERT SLUG ENTRY IN ELEMENT
+						PHDB::update(
+							Person::COLLECTION,
+							array("_id"=>new MongoId($key)),
+							array('$set'=>array("slug"=>$str)));
+					//}
+					$count++;
 		 		}
+		 		echo "/////////////".$count." citoyens traités (comme des sauvages)//////////";
 			//}
 		}
 	}
 	public function actionSlugifyElement(){
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);
 			$slugcitoyens=PHDB::find(Slug::COLLECTION);
 			$typeEl=array("organizations","projects","events");
 			$slugExist=array();
 			foreach($slugcitoyens as $data){
 				array_push($slugExist,$data["name"]);
 			}
-			print_r($slugExist);
 			$unwanted_array = array(    'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
                             'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
                             'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
                             'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
                             'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y' );
 			foreach($typeEl as $type){
-				echo "//////////".$type."/////////////////<br>";
+				
 				$res=PHDB::find($type);
+				echo "//////////".count($res)." ".$type."/////////////////<br>";
+				$count=0;
 				foreach ($res as $key => $value) {
 					if(@$value["name"] && !empty($value["name"])){
 						// replace non letter or digits by -
 						$str="";
+						if(strlen($value["name"])>50)
+							substr($value["name"],50);
+						
 						$value=explode(" ",$value["name"]);
 						$i=0;
 						foreach($value as $v){
@@ -2086,6 +2103,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 							  	//echo $i . "<br />";
 							  	$inc=in_array($str.$v, $slugExist);
 							  	//echo $inc;
+							  	echo "ca bloque la ".$str.$v;
 								if(!$inc)
 									$str=$str.$v;
 								else
@@ -2093,9 +2111,18 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 							}
 						}
 						array_push($slugExist, $str);
-						echo  $str."<br>";
+						echo  $key."////".$type."/////".$str."<br>";
+						//INSERT IN SLUG COLLECTION
+						PHDB::insert(Slug::COLLECTION,array("name"=>$str,"id"=>$key,"type"=>$type));
+						//INSERT SLUG ENTRY IN ELEMENT
+						PHDB::update(
+							$type,
+							array("_id"=>new MongoId($key)),
+							array('$set'=>array("slug"=>$str)));
+						$count++;
 					}
 		 		}
+		 		echo "////////////////".$count." ".$type." traités (comme des animaux) ///////";
 			}
 		}
 	}

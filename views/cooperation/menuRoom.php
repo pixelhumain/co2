@@ -40,7 +40,7 @@
 <div class="col-lg-12 col-md-12 col-sm-12 no-padding bg-white text-dark" id="coop-container">
 	
 	<?php 
-		if(isset($menuCoopData["roomList"]) && empty(@$menuCoopData["roomList"])){ ?>
+		if(isset($roomList) && empty(@$roomList)){ ?>
 		<div class="col-lg-12 col-md-12 col-sm-12" id="menu-room">
 			<?php $this->renderPartial('../cooperation/pod/home', array("type"=>$thisType)); ?>
 		</div>
@@ -71,7 +71,7 @@
 				</button>
 
 				<h3 class="margin-top-15 letter-turq">
-					<i class="fa fa-connectdevelop"></i> <?php echo @$room["name"]; ?>
+					<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$room["name"]; ?>
 				</h3>
 
 				
@@ -411,7 +411,7 @@
 
 		$("#btn-delete-room").off().click(function(){
 			var idRoom = $(this).data("id-room");
-			uiCoop.deleteByTypeAndId("rooms", idRoom);
+			uiCoop.deleteByTypeAndId("rooms", currentRoomId);
 		});
 		//alert("initDrag");
 		//uiCoop.initDragAndDrop();

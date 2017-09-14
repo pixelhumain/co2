@@ -37,7 +37,7 @@
 		<div class="col-lg-8 col-md-8 col-sm-8 text-center no-padding pull-left margin-top-5">
 			<div class="col-lg-1 col-md-1 col-sm-1 text-center no-padding pull-left margin-top-5">
 				<?php if($key == $hasVote){ ?>
-					<i class="fa fa-chevron-right pull-right" style="margin-top:8px;"></i> 
+					<i class="fa fa-chevron-right pull-right  hidden-sm hidden-md" style="margin-top:8px;"></i> 
 					<i class="fa fa-user-circle pull-right tooltips" style="margin-top:8px;"
 						data-original-title="vous avez voté <?php echo Yii::t("cooperation", $hasVote); ?>" 
 						data-placement="right"></i>
@@ -85,7 +85,7 @@
 		<?php } ?>
 
 		<small class="majority">
-			<i class="fa fa-2x fa-balance-scale"></i> Majorité : <b><?php echo @$proposal["majority"]; ?>%</b> 
+			<i class="fa fa-2x fa-balance-scale"></i> Règle de majorité : <b><?php echo @$proposal["majority"]; ?>%</b> 
 			<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
 				 Proposition <?php if($proposal["status"] == "tovote"){ ?>temporairement <?php } ?>
 				 <span class="bold letter-green">Validée</span>

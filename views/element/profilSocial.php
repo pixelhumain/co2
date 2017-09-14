@@ -360,6 +360,14 @@
 				                </a>
 				            </li>
 			            <?php } ?>
+						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+			  				<li class="text-left">
+				               	<a href="javascript:;" onclick="updateSlug();" id="" class="bg-white">
+				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Edit slug"); ?>
+				                </a>
+				            </li>
+			            <?php } ?>
+						
 						<li>
 							<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
 								<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?>
@@ -389,16 +397,25 @@
 				            <?php } ?>
 			            <?php } else { ?>
 			            	<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+
+			            	<li class="text-left">
+				               	<a href='javascript:;' onclick='rcObj.settings();' >
+									<i class='fa fa-comments'></i> <?php echo Yii::t("common","Chat Settings"); ?>
+								</a>
+				            </li>
+
 							<li class="text-left">
 								<a href='javascript:' id="downloadProfil">
 									<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
 								</a>
 							</li>
+							
 							<li class="text-left">
 				               	<a href='javascript:;' id="btn-update-password" class='text-red'>
 									<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
 								</a>
 				            </li>
+
 				            <?php } ?>
 			            <?php } ?>
 			  		</ul>
@@ -501,7 +518,7 @@
 		      		<i class="fa fa-hashtag"></i> <span id="space-name"><?php echo @$room["name"]; ?></span>
 		      	</h3>
 		      	<label>Etes-vous sur de vouloir supprimer cet espace coopératif ?</label><br>
-		      	<small class="text-red">Toutes les propositions, résolutions, et actions de cet espace seront supprimés définitivements.</small>
+		      	<small class="text-red">Toutes les propositions, résolutions, et actions de cet espace seront supprimées définitivement.</small>
 		      </div>
 		      <div class="modal-footer">
 		      	<div id="modalAction" style="display:inline"></div>
@@ -509,7 +526,7 @@
 						id="btn-delete-room" data-placement="bottom" 
 						data-dismiss="modal"
 						data-original-title="supprimer l'espace : <?php echo @$room["name"]; ?>"
-						data-id-room="<?php echo @$room["_id"]; ?>">
+						data-id-room="">
 					<i class="fa fa-trash"></i> Oui, supprimer cet espace
 				</button>
 				<button class="btn btn-default pull-right btn-sm margin-top-10 margin-right-10" data-dismiss="modal"> Annuler</button>
@@ -729,7 +746,12 @@
 
     var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 	var dirHash="<?php echo @$_GET['dir']; ?>";
-	var idda="<?php echo @$_GET['idda']; ?>";
+	var roomId = "<?php echo @$_GET['room']; ?>";
+	var proposalId = "<?php echo @$_GET['proposal']; ?>";
+	var resolutionId = "<?php echo @$_GET['resolution']; ?>";
+	var actionId = "<?php echo @$_GET['action']; ?>";
+
+
 	jQuery(document).ready(function() {
 		bindButtonMenu();
 		inintDescs();
@@ -794,13 +816,55 @@
 				loadContacts();
 			else if(sub=="settings")
 				loadSettings();
-			else if(sub=="dda"){
-				var splitHash=location.hash.split(".");
-				var idda = splitHash[splitHash.length-1];
-				startLoadRoom(dir, idda);
+			else if(sub=="coop"){
+				loadCoop(roomId, proposalId, resolutionId, actionId);
 			}
 		} else
 			loadNewsStream(true);
 	}
+
+
+
+function loadCoop(roomId, proposalId, resolutionId, actionId){
+	roomId 		= (roomId != "") 	 ? roomId 		: null;
+	proposalId  = (proposalId != "") ? proposalId 	: null;
+	resolutionId  = (resolutionId != "") ? resolutionId 	: null;
+	actionId 	= (actionId != "") 	 ? actionId 	: null;
+
+	toastr.info(trad["processing"]);
+	
+	uiCoop.startUI(false);
+	
+	setTimeout(function(){	
+		uiCoop.getCoopData(contextData.type, contextData.id, "room", null, roomId, function(){ 
+			toastr.success(trad["processing ok"]);
+			$("#modalCoop").modal("show");
+
+			var type = null;
+			var id = null;
+
+			if(proposalId != null){
+				type = "proposal"; id = proposalId;
+			}
+
+			if(actionId != null){
+				type = "action"; id = actionId;
+			}
+
+			if(resolutionId != null){
+				type = "resolution"; id = resolutionId;
+			}
+
+			console.log("getCoopData??", contextData.type, contextData.id, type, null, id);
+
+			if(type != null) 
+			uiCoop.getCoopData(contextData.type, contextData.id, type, null, id);
+
+			setTimeout(function(){
+				loadNewsStream(true);
+			}, 5000);
+		});
+	}, 1500);
+}
 
 </script>

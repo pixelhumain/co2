@@ -40,7 +40,7 @@
 <div class="col-lg-12 col-md-12 col-sm-12 no-padding bg-white text-dark" id="coop-container">
 	
 	<?php 
-		if(isset($menuCoopData["roomList"]) && empty(@$menuCoopData["roomList"])){ ?>
+		if(isset($roomList) && empty(@$roomList)){ ?>
 		<div class="col-lg-12 col-md-12 col-sm-12" id="menu-room">
 			<?php $this->renderPartial('../cooperation/pod/home', array("type"=>$thisType)); ?>
 		</div>
@@ -71,7 +71,7 @@
 				</button>
 
 				<h3 class="margin-top-15 letter-turq">
-					<i class="fa fa-connectdevelop"></i> <?php echo @$room["name"]; ?>
+					<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$room["name"]; ?>
 				</h3>
 
 				
@@ -91,7 +91,7 @@
 
 			
 
-			<ul class="menuCoop margin-bottom-50 ">
+			<ul class="menuCoop margin-bottom-50">
 				
 				<?php if(@$post["type"] == Proposal::CONTROLLER || @$post["type"] == Room::CONTROLLER){ ?>
 					<div class="margin-top-25 title-section">
@@ -134,7 +134,7 @@
 								<?php $isAuthor = Yii::app()->session['userId'] == $proposal["creator"]; ?>
 									<?php if(@$proposal["status"] == $thisStatus){ ?>
 										<li class="submenucoop sub-proposals no-padding col-lg-4 col-md-6 col-sm-6 " 
-										data-name-search="<?php echo str_replace('"', '', @$proposal["title"]); ?>">
+											data-name-search="<?php echo str_replace('"', '', @$proposal["title"]); ?>">
 										<a href="javascript:" class="load-coop-data " data-type="proposal" 
 											data-status="<?php echo @$proposal["status"]; ?>" 
 										   	data-dataid="<?php echo (string)@$proposal["_id"]; ?>">
@@ -202,14 +202,13 @@
 												  				Translate::pastTime($proposal["voteDateEnd"], "date"); 
 											  		?>
 											  	</small>
-
 										  	<?php } ?>
 
 									  	  	<div class="progress <?php if($proposal["status"] != "tovote") echo "hidden-min"; ?>">
 									  	  		<?php 
 									  	  			$voteRes = Proposal::getAllVoteRes($proposal);
 										  	  		foreach($voteRes as $key => $value){ 
-										  	  			if($totalVotant > 0 && @$proposal["status"] == "tovote" && $value["percent"] > 0){ 
+										  	  			if($totalVotant > 0 && $value["percent"] > 0){ 
 									  	  		?>
 														  <div class="progress-bar bg-<?php echo $value["bg-color"]; ?>" role="progressbar" 
 														  		style="width:<?php echo $value["percent"]; ?>%">
@@ -219,16 +218,23 @@
 												<?php } ?>
 
 											  <?php if($totalVotant == 0 && @$proposal["status"] == "tovote"){ ?>
-											  			<div class="progress-bar bg-green-k" role="progressbar" 
-													  		style="width:100%">
-													    À voter !
+											  			<div class="progress-bar bg-turq" 
+											  				 role="progressbar" style="width:100%">
+													    	 Soyez le premier à voter
 													  </div>
 											  <?php } ?>
 
 											  <?php if($totalVotant == 0 && @$proposal["status"] == "amendable"){ ?>
-											  			<div class="progress-bar bg-lightpurple text-dark" role="progressbar" 
-													  		style="width:100%">
-													    En cours d'amendement
+											  			<div class="progress-bar bg-lightpurple text-dark" 
+											  				 role="progressbar" style="width:100%">
+													    	 En cours d'amendement
+													  </div>
+											  <?php } ?>
+
+											  <?php if($totalVotant == 0 && @$proposal["status"] == "closed"){ ?>
+											  			<div class="progress-bar bg-white text-dark" 
+											  				 role="progressbar" style="width:100%">
+													    	 Aucun vote
 													  </div>
 											  <?php } ?>
 
@@ -405,7 +411,7 @@
 
 		$("#btn-delete-room").off().click(function(){
 			var idRoom = $(this).data("id-room");
-			uiCoop.deleteByTypeAndId("rooms", idRoom);
+			uiCoop.deleteByTypeAndId("rooms", currentRoomId);
 		});
 		//alert("initDrag");
 		//uiCoop.initDragAndDrop();

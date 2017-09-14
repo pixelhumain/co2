@@ -1,8 +1,9 @@
 <?php 
-
-	$auth = Authorisation::canEditItem(Yii::app()->session['userId'], $action["parentType"], $action["parentId"]);
+	//var_dump($action); exit;
+	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $action["parentType"], $action["parentId"]);
 
 ?>
+
 
 <div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
 	<?php if(@$post["status"]) {
@@ -14,6 +15,27 @@
 	<br>
   	<?php  } ?>
 
+
+<?php
+	//if no assignee , no startDate no end Date
+    $statusLbl = Yii::t("rooms", "Todo");
+    $statusColor = "badge-info";
+    //if startDate passed, or no startDate but has end Date
+    if( (bool)strtotime(@$action["startDate"]) == FALSE && (bool)strtotime(@$action["endDate"]) == FALSE ){
+    	$action["status"] = "nodate";	
+    } 
+    else if( strtotime(@$action["startDate"]) > time() )
+      	$action["status"] = "startingsoon";
+    else if( ( isset($action["startDate"]) && strtotime($action["startDate"]) <= time() )  || 
+    		   ( !@$action["startDate"] && @$action["endDate"] ) )
+    {
+      $action["status"] = "progress";
+      if( strtotime(@$action["endDate"]) < time()  )
+        $action["status"] = "late";
+      
+    } 
+?>			
+
 	<label class=""><i class="fa fa-bell"></i> Status : 
 		<small class="letter-<?php echo Cooperation::getColorCoop($action["status"]); ?>">
 			<?php echo Yii::t("cooperation", $action["status"]); ?>
@@ -21,14 +43,23 @@
 	</label>
 
 	<h4 class="text-purple no-margin">
-		<i class="fa fa-pencil"></i> Action ouverte du <small class="text-purple"><?php echo date('d/m/Y', strtotime($action["startDate"])); ?>
+		<i class="fa fa-pencil"></i> Action ouverte 
+<?php
+if( @$action["startDate"] && (bool)strtotime(@$action["startDate"]) != FALSE ){
+?> 
+		du <small class="text-purple"><?php echo date('d/m/Y', strtotime($action["startDate"])); ?>
+<?php
+}
+
+if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
+?> 
 		au <?php echo date('d/m/Y', strtotime($action["endDate"])); ?></small>
 			<!-- <br><i class="fa fa-angle-right"></i> Fin <?php echo Translate::pastTime($action["endDate"], "date"); ?> -->
-		
+<?php } ?>		
 	</h4>
 </div>
 
-<div class="col-lg-5 col-md-6 col-sm-6 no-padding">
+<div class="col-lg-5 col-md-6 col-sm-6">
 	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
 				data-original-title="Fermer cette fenêtre" data-placement="bottom"
 				id="btn-close-action">
@@ -87,11 +118,30 @@
 				<h3><i class="fa fa-hashtag"></i> <?php echo @$action["name"]; ?></h3>
 			<?php } ?>
 		
-			<?php echo nl2br($action["description"]); ?>
+			<?php echo nl2br(@$action["description"]); ?>
 	</div>
 </div>
 
-
+<div class="col-lg-12 col-md-12 col-sm-12 margin-top-25" >
+	<?php if( @$action["links"]["contributors"] ) {	
+			$this->renderPartial('../pod/usersList', array(  
+								"project"=> $action,
+								"users" => $contributors,
+								"countStrongLinks" => $countStrongLinks, 
+								"userCategory" => Yii::t("rooms","Assignés à cette tâche"), 
+								"contentType" => ActionRoom::COLLECTION_ACTIONS,
+								"admin" => true	)); 
+		}
+	
+	if( $auth && !@$action["links"]["contributors"][Yii::app()->session['userId']]  )
+	{	?>
+	<a href="javascript:;" class="pull-right text-large btn btn-dark-blue " 
+	   onclick="assignMe('<?php echo (string)$action["_id"]?>');" >
+		<i class="fa fa-link"></i> 
+		<?php echo Yii::t("rooms","I'll Do it") ?>
+   	</a>
+	<?php }	?>
+</div>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 padding-bottom-5">
 	<h4 class="text-center">
@@ -143,5 +193,26 @@
 			dyFObj.editElement('actions', idAction);
 		});
 
+		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
+							  ".view.coop.room." + idParentRoom + ".action." + idAction;
 	});
+
+	function assignMe(id)
+	{
+	    bootbox.confirm("<strong>Êtes-vous sûr de vouloir participer à cette action ?</strong><br>" +
+	    				"Vous serez inscrit dans la liste des participants.",
+
+	        function(result) {
+	            if (result) {
+	              params = { "id" : id };
+	              ajaxPost(null,'<?php echo Yii::app()->createUrl(Yii::app()->controller->module->id."/rooms/assignme")?>',params,function(data){
+	                if(data.result)
+	                  uiCoop.getCoopData(null, null, "action", null, idAction); 
+	                  //alert("Tango a l'aide comment je reload stp action.php > function assignMe > l.181");
+	                else 
+	                  toastr.error(data.msg);
+	              });
+	        } 
+	    });
+	 }
 </script>

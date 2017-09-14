@@ -17,13 +17,15 @@
 
     $params = CO2::getThemeParams();
 
+    $maxImg = 5;
+
     $page = "search";
     if(!@$type){  $type = "all"; }
 
-    if(@$type=="events")    { $page = "agenda"; }
-    if(@$type=="classified"){ $page = "annonces"; }
-    if(@$type=="vote")      { $page = "power"; }
-    if(@$type=="place")     { $page = "place"; }
+    if(@$type=="events")    { $page = "agenda";     $maxImg = 7; }
+    if(@$type=="classified"){ $page = "annonces";   $maxImg = 1; }
+    if(@$type=="vote")      { $page = "power";      $maxImg = 1; }
+    if(@$type=="place")     { $page = "place";      $maxImg = 1; }
 
     if(@$type=="cities")    { $lblCreate = ""; }
 
@@ -38,14 +40,36 @@
                             array(  "layoutPath"=>$layoutPath ,
                                     "page" => $page,
                                     "type" => @$type) ); 
+
+
+    $randImg = rand(1, $maxImg);
+    //$randImg = 2;
 ?>
 
 <style>
+    <?php if($params["title"] != "Kgougle") { ?>
+    header {
+      background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/<?php echo $page; ?>/pexels-<?php echo $randImg; ?>.jpeg") center center;
+      /*opacity: 0.3;
+      background-color: black;*/
+    }
     
+    
+    #main-scope-name a{
+        height: 130px;
+        background-color: rgba(255, 255, 255, 0.9);
+        width: 130px;
+        display: inline-block;
+        padding-top: 30px;
+        border-radius: 50%;
+        padding-right: 4px;
+    }
+    <?php } ?>
 </style>
 
 
-<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow pageContent" id="content-social" style="min-height:700px;">
+<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow pageContent" 
+     id="content-social" style="min-height:700px;">
 
     <?php if(@$type=="events"){ ?>
     <div class="col-md-12 no-padding calendar"></div>
@@ -209,7 +233,7 @@ jQuery(document).ready(function() {
     
     if(page == "annonces" || page == "agenda" || page == "power"){
         setTimeout(function(){
-            KScrollTo("#content-social");  
+            //KScrollTo("#content-social");  
         }, 1000);
     }
     $(".tooltips").tooltip();

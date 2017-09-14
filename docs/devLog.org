@@ -54,14 +54,28 @@ MEP
 ---------------------------------------
 * MEP CO21
 ** @BOUBOULE
+*** [!!!A passer le slugelement!!!] Bash de reprise sur les slugs citoyens
+** Crée les slugs à partir des usernames et si n'y a pas d'username (premiers utilisateurs) crée les usernames à la volée
+co2/datamigration/slugifycitoyens
+
+*** Bash de reprise sur les slugs organizations, projects, events
+** Crée les slugs à partir des name + entrée dans les collections
+co2/datamigration/slugifyelement
+
 *** Bash de reprise du les notifications avec ajout du param updated dans toutes les notifs et suppression des notifs sans params $created
 co2/datamigration/CreatorUpdatedOnNotifications
+
 *** Bash sur les clés des event en francais: "concours"=>"contest" et "exposition"=>"exhibition"
 co2/datamigration/ChangeEventFrenchType
+
 *** A faire Bash de reprise des clés francaises POI (ex ressourceMaterielle to materialRessource) et CLASSIFIED
 TODO @TIBOR @BOUBOULE
 *** Bash on document used for profil and banner of element => Add boolean current : true
 co2/dataMigration/AddCurrentToDoc
+
+*** Script de relance des 2000 citoyens en attente d'inscription suite à invitation
+** Enregistrement de cron avec le template relaunchInvitation
+co2/dataMigration/relaunchinvitation 
 
 
 * MISE EN PRODUCTION CO2 

@@ -374,7 +374,7 @@ function bindAboutPodElement() {
 					}
 				}
 			};
-			form.dynForm.jsonSchema.properties.slug = dyFInputs.slug("Slug", "Slug", {minlength : 3});
+			//form.dynForm.jsonSchema.properties.slug = dyFInputs.slug("Slug", "Slug", {minlength : 3, uniqueSlug:true});
 			if(contextData.type == typeObj.person.col ){
 				form.dynForm.jsonSchema.properties.username = dyFInputs.inputText("Username", "Username", { required : true });
 				form.dynForm.jsonSchema.properties.birthDate = dyFInputs.birthDate;
@@ -657,7 +657,7 @@ function bindAboutPodElement() {
 			
 		});
 	}
-	function createSlugBeforeChat(type,canEdit,hasRc) {
+	function updateSlug() {
 		/*var type=type;
 		var canEdit=canEdit;
 		var hasRc=hasRc;*/
@@ -681,7 +681,8 @@ function bindAboutPodElement() {
 						afterSave : function(data){
 							dyFObj.closeForm();
 							toastr.success("Votre slug a bien été enregistré");
-							rcObj.loadChat(data.resultGoods.values.slug,type,canEdit,hasRc);
+							contextData.slug=data.resultGoods.values.slug;
+							//rcObj.loadChat(data.resultGoods.values.slug,type,canEdit,hasRc);
 							//loadDataDirectory(connectType, "user", true);
 							//changeHiddenFields();
 						},
@@ -693,7 +694,7 @@ function bindAboutPodElement() {
 				            block : dyFInputs.inputHidden(),
 							id : dyFInputs.inputHidden(),
 							typeElement : dyFInputs.inputHidden(), 
-							slug : dyFInputs.slug("Slug","Slug",{minlength:3}),
+							slug : dyFInputs.slug("Slug","Slug",{minlength:3/*, uniqueSlug:true*/}),
 						}
 					}
 				}
@@ -702,7 +703,7 @@ function bindAboutPodElement() {
 				block : "info",
 		        id : contextData.id,
 		        typeElement : contextData.type,
-		        name : contextData.name,	
+		        slug : contextData.slug,	
 			};
 			dyFObj.openForm(form, "sub", dataUpdate);		
 	}

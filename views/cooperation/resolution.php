@@ -1,5 +1,5 @@
 <style>
-	.majority-space{
+	small.majority{
 		display: none;
 	}
 </style>
@@ -10,19 +10,23 @@
 
 	$myId = Yii::app()->session["userId"];
 	$hasVote = @$resolution["votes"] ? Cooperation::userHasVoted($myId, $resolution["votes"]) : false; 
-	$auth = Authorisation::canEditItem(Yii::app()->session['userId'], $resolution["parentType"], $resolution["parentId"]);
+
+	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], 
+			$resolution["parentType"], $resolution["parentId"]);
 
 	$parentRoom = Room::getById($resolution["idParentRoom"]);
 
+	$totalVotant = Proposal::getTotalVoters($resolution);
 	$voteRes = Proposal::getAllVoteRes($resolution);
 ?>
 
-<div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
+
+<div class="col-lg-8 col-md-7 col-sm-7 pull-left margin-top-15">
 	<?php if(@$post["status"]) {
   		$parentRoom = Room::getById($resolution["idParentRoom"]);
   	?>
   	<h4 class="letter-turq">
-  		<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
+  		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
 	</h4>
 	<br>
   	<?php  } ?>
@@ -36,26 +40,10 @@
 		<small> est l'auteur de cette proposition</small>
 		<?php } ?>
 	</label>
-
-	<hr>
-	<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
-		 <h5 class="no-margin">La résolution suivante a été 
-		 	<span class="letter-green">validée</span>
-		 </h5>
-	<?php }else{ ?>
-		 <h5 class="no-margin">La résolution suivante a été 
-		 	<span class="letter-red">refusée</span>
-		 </h5>
-	<?php } ?>
-
-	<!-- <h5 class="no-margin">La résolution suivante a été <span class="letter-green">adoptée</span> 
-		<?php //echo " · ".Yii::t("cooperation", "end")." ".Translate::pastTime($resolution["voteDateEnd"], "date"); ?>
-	</h5> -->
-	<br>
 </div>
 
 
-<div class="col-lg-5 col-md-6 col-sm-6 no-padding">
+<div class="col-lg-4 col-md-5 col-sm-5">
 	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
 				data-original-title="Fermer cette fenêtre" data-placement="bottom"
 				id="btn-close-resolution">
@@ -78,22 +66,54 @@
 </div>
 
 
-<?php 
-	$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$resolution));
-?>
+<div class="col-lg-12 col-md-12 col-sm-12 pull-left">
+	<hr>
+		<h3 class="no-margin">La <b>résolution</b> suivante a été prise : <br class="visible-md">
+			<small>la proposition est 
+			 	<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && 
+			 			$voteRes["up"]["percent"] > @$resolution["majority"] ){ ?>
+					<span class="letter-green">validée</span>
+				 <?php }else{ ?>
+			 	<span class="letter-red">refusée</span>
+				<?php } ?>
+			</small>
+		</h3>
+
+		<div class="progress col-lg-7 col-md-10 col-sm-12 no-padding">
+			<?php 
+				foreach($voteRes as $key => $value){ 
+					if($totalVotant > 0 && $value["percent"] > 0){ 
+			?>
+					  <div class="progress-bar bg-<?php echo $value["bg-color"]; ?>" role="progressbar" 
+					  		style="width:<?php echo $value["percent"]; ?>%">
+					    <?php echo $value["percent"]; ?>%
+					  </div>
+				<?php } ?>
+			<?php } ?>
+
+			<?php if($totalVotant == 0){ ?>
+					<div class="progress-bar bg-turq" role="progressbar" style="width:100%">
+					    Aucun vote
+					  </div>
+			<?php } ?>
+		</div> 
+
+		<h3 class="col-lg-12 col-md-12 col-sm-12">
+			<i class="fa fa-balance-scale"></i> Règle de majorité : <b><?php echo @$resolution["majority"]; ?>%</b>
+		</h3>
+	<br>
+</div>
+
+
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-5">
 	
 	<div class="padding-25 bg-lightblue radius-5" id="container-text-resolution" 
 		 style="padding-top:5px !important; color:#2C3E50 !important">
 		<?php if(@$resolution["title"]){ ?>
-			<div class="col-lg-12 col-md-12 col-sm-12 no-padding">
 				<h3><i class="fa fa-hashtag"></i> <?php echo @$resolution["title"]; ?></h3>
-			</div>
 		<?php }else{ ?>
-			<div class="col-lg-12 col-md-12 col-sm-12 no-padding">
 				<h3><i class="fa fa-angle-down"></i> Proposition</h3>
-			</div>
 		<?php } ?>
 
 		<?php echo nl2br(@$resolution["description"]); ?>
@@ -141,6 +161,13 @@
 </div>
 
 
+
+<?php 
+	$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$resolution, 
+														  "hasVote" => $hasVote, 
+														  "auth" => $auth));
+?>
+
 <div class="col-lg-12 col-md-12 col-sm-12"><hr></div>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 padding-bottom-15">
@@ -181,14 +208,14 @@
 <script type="text/javascript">
 	var parentTypeElement = "<?php echo $resolution['parentType']; ?>";
 	var parentIdElement = "<?php echo $resolution['parentId']; ?>";
-	var idParentresolution = "<?php echo $resolution['_id']; ?>";
+	var idParentResolution = "<?php echo $resolution['_id']; ?>";
 	var idParentRoom = "<?php echo $resolution['idParentRoom']; ?>";
 	var msgController = "<?php echo @$msgController ? $msgController : ''; ?>";
 	jQuery(document).ready(function() { 
 		
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
 		
-		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/resolutions/id/"+idParentresolution,
+		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/resolutions/id/"+idParentResolution,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 				$(".container-txtarea").hide();
 
@@ -236,10 +263,10 @@
 		$(".btn-send-vote").click(function(){
 			var voteValue = $(this).data('vote-value');
 			console.log("send vote", voteValue),
-			uiCoop.sendVote("resolution", idParentresolution, voteValue, idParentRoom);
+			uiCoop.sendVote("resolution", idParentResolution, voteValue, idParentRoom);
 		});
 		$("#btn-activate-vote").click(function(){
-			uiCoop.activateVote(idParentresolution);
+			uiCoop.activateVote(idParentResolution);
 		});
 
 		$("#btn-refresh-resolution").click(function(){
@@ -270,6 +297,9 @@
 			uiCoop.changeStatus("resolutions", idresolution, status, parentTypeElement, parentIdElement);
 		});
 
+		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
+							  ".view.coop.room." + idParentRoom + ".resolution." + idParentResolution;
+		
 		if(msgController != ""){
 			toastr.error(msgController);
 		}

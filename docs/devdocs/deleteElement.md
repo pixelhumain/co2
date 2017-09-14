@@ -1,5 +1,6 @@
 # Deleting an Element 
 
+
 - Element::deleteElement($elementType, $elementId, $reason, $userId) 
     - self::getByTypeAndId
     - Document::listMyDocumentByIdAndType

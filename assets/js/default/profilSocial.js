@@ -618,6 +618,9 @@ function loadContacts(){
 				}
 	,"html");
 }
+
+
+
 //todo add count on each tag
     function getfilterRoles(roles) { 
     	console.log("roles",roles);
@@ -669,7 +672,8 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			 "<hr>";
 		html +=	"</div>";
 		
-		mapElements = new Array();
+		
+		var mapElements = new Array();
 		
 		console.log("listRoles",listRoles);
 		if(dataName != "collections"){

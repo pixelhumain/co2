@@ -1,5 +1,5 @@
 <?php 
-
+	//var_dump($action); exit;
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $action["parentType"], $action["parentId"]);
 
 ?>
@@ -122,19 +122,18 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 	</div>
 </div>
 
-<div class="col-md-12 " >
+<div class="col-lg-12 col-md-12 col-sm-12 margin-top-25" >
 	<?php if( @$action["links"]["contributors"] ) {	
 			$this->renderPartial('../pod/usersList', array(  
 								"project"=> $action,
 								"users" => $contributors,
 								"countStrongLinks" => $countStrongLinks, 
-								"userCategory" => Yii::t("rooms","Doers"), 
+								"userCategory" => Yii::t("rooms","Assignés à cette tâche"), 
 								"contentType" => ActionRoom::COLLECTION_ACTIONS,
 								"admin" => true	)); 
 		}
 	
-	if( Authorisation::canParticipate(Yii::app()->session['userId'],$action["parentType"],$action["parentId"]) && 
-		  !@$action["links"]["contributors"][Yii::app()->session['userId']]  )
+	if( $auth && !@$action["links"]["contributors"][Yii::app()->session['userId']]  )
 	{	?>
 	<a href="javascript:;" class="pull-right text-large btn btn-dark-blue " 
 	   onclick="assignMe('<?php echo (string)$action["_id"]?>');" >
@@ -200,7 +199,7 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 
 	function assignMe(id)
 	{
-	    bootbox.confirm("<strong>Êtes-vous sûr de vouloir participer à cette action ?</strong>" +
+	    bootbox.confirm("<strong>Êtes-vous sûr de vouloir participer à cette action ?</strong><br>" +
 	    				"Vous serez inscrit dans la liste des participants.",
 
 	        function(result) {
@@ -208,7 +207,8 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 	              params = { "id" : id };
 	              ajaxPost(null,'<?php echo Yii::app()->createUrl(Yii::app()->controller->module->id."/rooms/assignme")?>',params,function(data){
 	                if(data.result)
-	                  alert("Tango a l'aide comment je reload stp action.php > function assignMe > l.181");
+	                  uiCoop.getCoopData(null, null, "action", null, idAction); 
+	                  //alert("Tango a l'aide comment je reload stp action.php > function assignMe > l.181");
 	                else 
 	                  toastr.error(data.msg);
 	              });

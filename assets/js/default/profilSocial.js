@@ -672,7 +672,8 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			 "<hr>";
 		html +=	"</div>";
 		
-		mapElements = new Array();
+		
+		var mapElements = new Array();
 		
 		console.log("listRoles",listRoles);
 		if(dataName != "collections"){

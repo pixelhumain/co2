@@ -374,7 +374,7 @@ function bindAboutPodElement() {
 					}
 				}
 			};
-			form.dynForm.jsonSchema.properties.slug = dyFInputs.slug("Slug", "Slug", {minlength : 3, uniqueSlug:true});
+			//form.dynForm.jsonSchema.properties.slug = dyFInputs.slug("Slug", "Slug", {minlength : 3, uniqueSlug:true});
 			if(contextData.type == typeObj.person.col ){
 				form.dynForm.jsonSchema.properties.username = dyFInputs.inputText("Username", "Username", { required : true });
 				form.dynForm.jsonSchema.properties.birthDate = dyFInputs.birthDate;
@@ -681,6 +681,7 @@ function bindAboutPodElement() {
 						afterSave : function(data){
 							dyFObj.closeForm();
 							toastr.success("Votre slug a bien été enregistré");
+							contextData.slug=data.resultGoods.values.slug;
 							//rcObj.loadChat(data.resultGoods.values.slug,type,canEdit,hasRc);
 							//loadDataDirectory(connectType, "user", true);
 							//changeHiddenFields();

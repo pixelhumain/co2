@@ -75,7 +75,7 @@ dynForm = {
 	        type : dyFInputs.inputSelect(tradDynForm["organizationType"], tradDynForm["organizationType"], organizationTypes, { required : true }),
             role : dyFInputs.inputSelect(	tradDynForm["yourrole"],
             								tradDynForm["whichrole"]+" ?", 
-            								{ admin : trad.administrator, member : trad.member, creator : trad.justCitizen }, 
+            								{ admin : trad.administrator, member : trad.Member, creator : trad.justCitizen }, 
             								{ required : true } ),
             tags : dyFInputs.tags(),
             location : dyFInputs.location,

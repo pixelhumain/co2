@@ -518,7 +518,7 @@
 		      		<i class="fa fa-hashtag"></i> <span id="space-name"><?php echo @$room["name"]; ?></span>
 		      	</h3>
 		      	<label>Etes-vous sur de vouloir supprimer cet espace coopératif ?</label><br>
-		      	<small class="text-red">Toutes les propositions, résolutions, et actions de cet espace seront supprimés définitivements.</small>
+		      	<small class="text-red">Toutes les propositions, résolutions, et actions de cet espace seront supprimées définitivement.</small>
 		      </div>
 		      <div class="modal-footer">
 		      	<div id="modalAction" style="display:inline"></div>
@@ -526,7 +526,7 @@
 						id="btn-delete-room" data-placement="bottom" 
 						data-dismiss="modal"
 						data-original-title="supprimer l'espace : <?php echo @$room["name"]; ?>"
-						data-id-room="<?php echo @$room["_id"]; ?>">
+						data-id-room="">
 					<i class="fa fa-trash"></i> Oui, supprimer cet espace
 				</button>
 				<button class="btn btn-default pull-right btn-sm margin-top-10 margin-right-10" data-dismiss="modal"> Annuler</button>

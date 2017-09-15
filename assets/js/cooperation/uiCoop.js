@@ -42,7 +42,10 @@ var uiCoop = {
 	"initBtnLoadData" : function(){
 		//alert('initBtnLoadData');
 		$(".load-coop-data").off().click(function(){
-			$(".load-coop-data").removeClass("active");
+			var type = $(this).data("type");
+			$("#menu-room .load-coop-data").removeClass("active");
+			$(".load-coop-data[data-type='"+type+"']").removeClass("active");
+
 			$(this).addClass("active");
 
 			var type = $(this).data("type");
@@ -371,18 +374,12 @@ var uiCoop = {
 		});
 	},
 
-	"deleteByTypeAndId" : function(type, id){
-		var param = {
-			type: type,
-			id: id
-		};
+	"deleteByTypeAndId" : function(typeDelete, idDelete){
 		toastr.info(trad["processing save"]);
 		$.ajax({
 		        type: "POST",
-		        url: baseUrl+"/"+moduleId+"/element/delete/type/"+type+"/id/"+id,
-		        //data: param,
-		       	//dataType: "json",
-		    	success: function(data){
+		        url: baseUrl+"/"+moduleId+"/element/delete/type/"+typeDelete+"/id/"+idDelete,
+		        success: function(data){
 		    		uiCoop.getCoopData(contextData.type, contextData.id, "room");
 					uiCoop.startUI();
 		    	}

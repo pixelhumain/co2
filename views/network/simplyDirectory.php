@@ -372,15 +372,6 @@ function startSearchSimply(indexMin, indexMax){
 	}
 	// if(name.length>=3 || name.length == 0){
 	var locality = "";
-	/*communexionActivated=true;
-	levelCommunexion = 1;
-	if(communexionActivated){
-		if(levelCommunexion == 1) locality = inseeCommunexion;
-		if(levelCommunexion == 2) locality = cpCommunexion;
-		if(levelCommunexion == 3) locality = cpCommunexion.substr(0, 2);
-		if(levelCommunexion == 4) locality = inseeCommunexion;
-		if(levelCommunexion == 5) locality = "";
-	}*/
 	autoCompleteSearchSimply(name, locality, indexMin, indexMax);
 }
 
@@ -392,15 +383,8 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 		3 : "DEPARTEMENT",
 		4 : "REGION"
 	};
-	var searchBy = levelCommunexionName[levelCommunexion];
-	// searchBy = "NAME";
-	/*mylog.log("searchLocalityNAME : ",nwVar.searchLocalityNAME);
-	mylog.log("searchLocalityCODE_POSTAL_INSEE : ",nwVar.searchLocalityCODE_POSTAL_INSEE);
-	mylog.log("searchLocalityDEPARTEMENT : ",nwVar.searchLocalityDEPARTEMENT);
-	mylog.log("searchLocalityINSEE : ",nwVar.searchLocalityINSEE);
-	mylog.log("searchLocalityREGION : ",nwVar.searchLocalityREGION);
-	mylog.log("searchTag : ",nwVar.searchTag);
-	mylog.log("searchCategory : ",nwVar.searchCategory);*/
+	//var searchBy = levelCommunexionName[levelCommunexion];
+
 
 	//To merge Category and tags which are finally all tags
 	var searchTagGlobal = [];
@@ -411,7 +395,6 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	var searchTagsSimply = {} ;
 	if(typeof networkJson.filter != "undefined" && typeof networkJson.filter.linksTag != "undefined"){
 		$.each(searchTagGlobal, function(i, o) {
-
 			$.each(networkJson.filter.linksTag, function(keyNet, valueNet){
 
 				if(typeof valueNet.tags[o] != "undefined"){
@@ -443,7 +426,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 		"searchLocalityDEPARTEMENT" : nwVar.searchLocalityDEPARTEMENT,
 		"searchLocalityINSEE" : nwVar.searchLocalityINSEE,
 		"searchLocalityREGION" : nwVar.searchLocalityREGION,
-		"searchBy" : searchBy,
+		//"searchBy" : searchBy,
 		"indexMin" : indexMin,
 		"indexMax" : indexMax,
 		//"sourceKey" : sourceKey,
@@ -513,150 +496,158 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 					var city, postalCode = "";
 					var mapElements = new Array();
 					allTags = data.filters;
-
+					var htmlCO2 = "";
+					htmlCO2 = directory.showResultsDirectoryHtml(data.res);
 					//parcours la liste des résultats de la recherche
 					$.each(data.res, function(i, o) {
-						var typeIco = i;
-						var ico = mapIconTop["default"];
-						var color = mapColorIconTop["default"];
+						mylog.log("Search ", o);
+						
+						// var typeIco = i;
+						// var ico = mapIconTop["default"];
+						// var color = mapColorIconTop["default"];
 
-						typeIco = o.type;
-						ico = ("undefined" != typeof mapIconTop[typeIco]) ? mapIconTop[typeIco] : mapIconTop["default"];
-						color = ("undefined" != typeof mapColorIconTop[typeIco]) ? mapColorIconTop[typeIco] : mapColorIconTop["default"];
+						// typeIco = o.type;
+						// ico = ("undefined" != typeof mapIconTop[typeIco]) ? mapIconTop[typeIco] : mapIconTop["default"];
+						// color = ("undefined" != typeof mapColorIconTop[typeIco]) ? mapColorIconTop[typeIco] : mapColorIconTop["default"];
 
-						htmlIco ="<i class='fa "+ ico +" text-"+color+"'></i>";
-						if("undefined" != typeof o.profilThumbImageUrl && o.profilThumbImageUrl != ""){
-							var htmlIco= "<img width='80' height='80' alt='' class='img-circle bg-"+color+"' src='"+baseUrl+o.profilThumbImageUrl+"'/>";
-						}
+						// htmlIco ="<i class='fa "+ ico +" text-"+color+"'></i>";
+						// if("undefined" != typeof o.profilThumbImageUrl && o.profilThumbImageUrl != ""){
+						// 	var htmlIco= "<img width='80' height='80' alt='' class='img-circle bg-"+color+"' src='"+baseUrl+o.profilThumbImageUrl+"'/>";
+						// }
 
-						city="";
-						var postalCode = o.cp
-						if (o.address != null) {
-							city = o.address.addressLocality;
-							postalCode = o.cp ? o.cp : o.address.postalCode ? o.address.postalCode : "";
-						}
+						// city="";
+						// var postalCode = o.cp
+						// if (o.address != null) {
+						// 	city = o.address.addressLocality;
+						// 	postalCode = o.cp ? o.cp : o.address.postalCode ? o.address.postalCode : "";
+						// }
 
-						//console.dir(o);
-						var id = getObjectId(o);
-						var tagsClasses = "";
-						var insee = o.insee ? o.insee : "";
-						type = o.type;
-						if(type=="citoyen") type = "person";
+						// //console.dir(o);
+						// var id = getObjectId(o);
+						// var tagsClasses = "";
+						// var insee = o.insee ? o.insee : "";
+						// type = o.type;
+						// if(type=="citoyen") type = "person";
 
-						//Consolidate types
-						if(type != "undefined" && type != null){
-							if(typeof allTypes[type] != "undefined"){
-								allTypes[type] = allTypes[type] + 1;
-							}
-							else{
-								allTypes[type] = 1;
-							}
-						}
+						// //Consolidate types
+						// if(type != "undefined" && type != null){
+						// 	if(typeof allTypes[type] != "undefined"){
+						// 		allTypes[type] = allTypes[type] + 1;
+						// 	}
+						// 	else{
+						// 		allTypes[type] = 1;
+						// 	}
+						// }
 
-						var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
-						var url = baseUrl+'/'+moduleId+ "/default/dir#" + type + ".simply.id." + id;
-						// var onclick = 'loadByHash("#organization.simply.id.' + id + '");';
-						var onclick = 'getAjaxFiche("#page.type.'+o.typeSig+'.id.'+id+'",1);';
-						var onclickCp = "";
-						var target = " target='_blank'";
-						var dataId = "";
-						if(type == "city"){
-							url = "javascript:"; //#main-col-search";
-							onclick = 'setScopeValue($(this))'; //"'+o.name.replace("'", "\'")+'");';
-							onclickCp = 'setScopeValue($(this));';
-							target = "";
-							dataId = o.name; //.replace("'", "\'");
-						}
+						// var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
+						// var url = baseUrl+'/'+moduleId+ "/default/dir#" + type + ".simply.id." + id;
+						// // var onclick = 'loadByHash("#organization.simply.id.' + id + '");';
+						// var onclick = 'getAjaxFiche("#page.type.'+o.typeSig+'.id.'+id+'",1);';
+						// var onclickCp = "";
+						// var target = " target='_blank'";
+						// var dataId = "";
+						// if(type == "city"){
+						// 	url = "javascript:"; //#main-col-search";
+						// 	onclick = 'setScopeValue($(this))'; //"'+o.name.replace("'", "\'")+'");';
+						// 	onclickCp = 'setScopeValue($(this));';
+						// 	target = "";
+						// 	dataId = o.name; //.replace("'", "\'");
+						// }
 
-						//var tags = "";
-						var find = false;
-						var tags = "";
-						var elTagsList = "";
-						if(typeof o.tags != "undefined" && o.tags != null){
-							$.each(o.tags, function(key, value){
-								if(value != ""){
-									tags += "<a href='javascript:;' class='badge bg-red btn-tag tagFilter padding-5' data-tag-value='"+slugify(value)+"'>#" + value + "</a> ";
-									elTagsList += slugify(value)+" ";
-									if(find == false && value in linksTagImages == true){
-										find = true;
-										o.typeSig = "organizations";
-										o.type = "organizations";
-									}
-								}
-							});
-						}
+						// //var tags = "";
+						// var find = false;
+						// var tags = "";
+						// var elTagsList = "";
+						// if(typeof o.tags != "undefined" && o.tags != null){
+						// 	$.each(o.tags, function(key, value){
+						// 		if(value != ""){
+						// 			tags += "<a href='javascript:;' class='badge bg-red btn-tag tagFilter padding-5' data-tag-value='"+slugify(value)+"'>#" + value + "</a> ";
+						// 			elTagsList += slugify(value)+" ";
+						// 			if(find == false && value in linksTagImages == true){
+						// 				find = true;
+						// 				o.typeSig = "organizations";
+						// 				o.type = "organizations";
+						// 			}
+						// 		}
+						// 	});
+						// }
 
 						mapElements.push(o);
 						contextMapNetwork.push(o);
-						// console.log(tagsClasses);
-						var name = typeof o.name != "undefined" ? o.name : "";
-						var website = (typeof o.url != "undefined" || o.url != null) ? o.url : "";
-						var postalCode = (	typeof o.address != "undefined" &&
-											typeof o.address.postalCode != "undefined") ? o.address.postalCode : "";
+						// // console.log(tagsClasses);
+						// var name = typeof o.name != "undefined" ? o.name : "";
+						// var website = (typeof o.url != "undefined" || o.url != null) ? o.url : "";
+						// var postalCode = (	typeof o.address != "undefined" &&
+						// 					typeof o.address.postalCode != "undefined") ? o.address.postalCode : "";
 
-						if(postalCode == "") postalCode = typeof o.cp != "undefined" ? o.cp : "";
-						var cityName = (typeof o.address != "undefined" &&
-										typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
+						// if(postalCode == "") postalCode = typeof o.cp != "undefined" ? o.cp : "";
+						// var cityName = (typeof o.address != "undefined" &&
+						// 				typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
 
-						var fullLocality = postalCode + " " + cityName;
-						fullLocality = fullLocality.trim();
-						var description = (	typeof o.shortDescription != "undefined" &&
-											o.shortDescription != null) ? o.shortDescription : "";
-						if(description == "") description = (	typeof o.description != "undefined" &&
-																o.description != null) ? o.description : "";
-						description = "";
-						if(o.profilMediumImageUrl != "undefined" && o.profilMediumImageUrl != "")
-							pathmedium = baseUrl+o.profilMediumImageUrl;
-						else
-							pathmedium = "<?php echo $this->module->assetsUrl ?>/images/thumbnail-default.jpg";
-						shortDescription = (	typeof o.shortDescription != "undefined" &&
-												o.shortDescription != null ) ? o.shortDescription : "";
+						// var fullLocality = postalCode + " " + cityName;
+						// fullLocality = fullLocality.trim();
+						// var description = (	typeof o.shortDescription != "undefined" &&
+						// 					o.shortDescription != null) ? o.shortDescription : "";
+						// if(description == "") description = (	typeof o.description != "undefined" &&
+						// 										o.description != null) ? o.description : "";
+						// description = "";
+						// if(o.profilMediumImageUrl != "undefined" && o.profilMediumImageUrl != "")
+						// 	pathmedium = baseUrl+o.profilMediumImageUrl;
+						// else
+						// 	pathmedium = "<?php //echo $this->module->assetsUrl ?>/images/thumbnail-default.jpg";
+						// shortDescription = (	typeof o.shortDescription != "undefined" &&
+						// 						o.shortDescription != null ) ? o.shortDescription : "";
 
-						var startDate = (typeof o.startDate != "undefined") ? "Du "+dateToStr(o.startDate, "fr", true, true) : null;
-						var endDate   = (typeof o.endDate   != "undefined") ? "Au "+dateToStr(o.endDate, "fr", true, true)   : null;
+						// var startDate = (typeof o.startDate != "undefined") ? "Du "+dateToStr(o.startDate, "fr", true, true) : null;
+						// var endDate   = (typeof o.endDate   != "undefined") ? "Au "+dateToStr(o.endDate, "fr", true, true)   : null;
 
-						var disabledBorder = ((typeof o.disabled != "undefined" && o.disabled == true) ? "border-red elementDisabled" : "" );
-						var disabledText = ((typeof o.disabled != "undefined" && o.disabled == true) ? '<h1 id="disabledList" class="text-red"><?php echo Yii::t("common", "Disabled"); ?></h1>' : "" );
+						// var disabledBorder = ((typeof o.disabled != "undefined" && o.disabled == true) ? "border-red elementDisabled" : "" );
+						// var disabledText = ((typeof o.disabled != "undefined" && o.disabled == true) ? '<h1 id="disabledList" class="text-red"><?php //echo Yii::t("common", "Disabled"); ?></h1>' : "" );
 
 
-						/***** VERSION SIMPLY *****/
-						str += "<div id='"+id+"' class='row list-group-item item searchEntity "+mix+" "+elTagsList+" "+fullLocality+" "+disabledBorder+"' >";
-						if( typeof networkJson.result.displayImage != "undefined"){
-							str += '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 padding-10 center">'+
-							'<img class="img-responsive thumbnail" src="'+pathmedium+'" alt="Image"'+ name+'".></div>';
-						}
+						// /***** VERSION SIMPLY *****/
+						// str += "<div id='"+id+"' class='row list-group-item item searchEntity "+mix+" "+elTagsList+" "+fullLocality+" "+disabledBorder+"' >";
+						// if( typeof networkJson.result.displayImage != "undefined"){
+						// 	str += '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 padding-10 center">'+
+						// 	'<img class="img-responsive thumbnail" src="'+pathmedium+'" alt="Image"'+ name+'".></div>';
+						// }
 						
-						str += "<div class='entityMiddle col-md-5 name' onclick='"+onclick+"'>";
-						str += disabledText;
-						str += "<a class='entityName text-dark'>" + name + "</a><br/>";
-						if(website != null && website.trim() != "")
-							str += "<i class='fa fa-desktop fa_url'></i> <a href='"+website+"' target='_blank'>"+website+"</a><br/>";
+						// str += "<div class='entityMiddle col-md-5 name' onclick='"+onclick+"'>";
+						// str += disabledText;
+						// str += "<a class='entityName text-dark'>" + name + "</a><br/>";
+						// if(website != null && website.trim() != "")
+						// 	str += "<i class='fa fa-desktop fa_url'></i> <a href='"+website+"' target='_blank'>"+website+"</a><br/>";
 
-						if( typeof networkJson.result.fullLocality != "undefined" && fullLocality != ""){
-							str += "<div class='entityLocality'><i class='fa fa-home'></i> " + fullLocality + "</div><br/>";
-						}
+						// if( typeof networkJson.result.fullLocality != "undefined" && fullLocality != ""){
+						// 	str += "<div class='entityLocality'><i class='fa fa-home'></i> " + fullLocality + "</div><br/>";
+						// }
 						
-						str += "</div>";
+						// str += "</div>";
 
 
-						if( typeof networkJson.result.displayType != "undefined"){
-							str += "<div class='entityMiddle col-md-2 type '>";
-							typeIco = "";
-							str += htmlIco+"" + typeIco + "";
-							str += "</div>";
-						}
+						// if( typeof networkJson.result.displayType != "undefined"){
+						// 	str += "<div class='entityMiddle col-md-2 type '>";
+						// 	typeIco = "";
+						// 	str += htmlIco+"" + typeIco + "";
+						// 	str += "</div>";
+						// }
 
-						if( typeof networkJson.result.displayShortDescription != "undefined"){
-							str += "<div class='entityMiddle col-md-5 type '>"+shortDescription+"</div>";
-						}
+						// if( typeof networkJson.result.displayShortDescription != "undefined"){
+						// 	str += "<div class='entityMiddle col-md-5 type '>"+shortDescription+"</div>";
+						// }
 
-						target = "";
-						str += "<div class='entityBottom col-md-5'>";
-						str += "<hr>";
-						if(tags=="") tags = "<a href='javascript:;' class='badge bg-red btn-tag'>#</a>";
-						str += tags;
-						str += "</div>";
-						str += "</div>";
+						// target = "";
+						// str += "<div class='entityBottom col-md-5'>";
+						// str += "<hr>";
+						// if(tags=="") tags = "<a href='javascript:;' class='badge bg-red btn-tag'>#</a>";
+						// str += tags;
+						// str += "</div>";
+						// str += "</div>";
+
+
+						
+
+
 					}); //end each
 				
 					if(str == "") {
@@ -701,6 +692,9 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 							//on scroll pour coller le haut de l'arbre au menuTop
 							// $(".my-main-container").scrollTop(95);
 						}
+
+						$("#dropdown_search").html(htmlCO2);
+
 
 						//On met à jour les filtres
 						if( typeof networkJson.mode != "undefined" && networkJson.mode == "client" ){

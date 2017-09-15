@@ -54,7 +54,7 @@ MEP
 ---------------------------------------
 * MEP CO21
 ** @BOUBOULE
-*** [!!!A passer le slugelement!!!] Bash de reprise sur les slugs citoyens
+*** [!!!A passer le slugelement + SUPPRESSION DES CITOYENS SANS NOOOOM!!!] Bash de reprise sur les slugs citoyens et supprime les citoyens sans nom !!!!
 ** Crée les slugs à partir des usernames et si n'y a pas d'username (premiers utilisateurs) crée les usernames à la volée
 co2/datamigration/slugifycitoyens
 

@@ -1972,8 +1972,9 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				$res=PHDB::find(Person::COLLECTION);
 				echo "//////////".count($res)." Citoyens/////////////////<br>";
 				$count=0;
+				$del=0;
 				foreach ($res as $key => $value) {
-					//if((@$value["username"] && !empty($value["username"])){
+					if((@$value["username"] && !empty($value["username"])) || (@$value["name"] && !empty($value["name"]))){
 						// replace non letter or digits by -
 						if(@$value["username"]){
 							$string=$value["username"];
@@ -2035,12 +2036,18 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 							Person::COLLECTION,
 							array("_id"=>new MongoId($key)),
 							array('$set'=>array("slug"=>$str)));
-					//}
-					$count++;
+						$count++;
+					} else {
+						PHDB::remove(
+							Person::COLLECTION,
+							array("_id"=>new MongoId($key)));
+						$del++;
+					}
 		 		}
-		 		echo "/////////////".$count." citoyens traités (comme des sauvages)//////////";
-			//}
-		}
+		 		echo "/////////////".$count." citoyens traités (comme des sauvages)//////////<br>";
+		 		echo "/////////////".$del." citoyens zigouillés, lapidés, déchiquetés, oubliés, mis au bucher //////////<br>";
+		}else 
+			echo "Bois du rebBull t'auras des ailles";
 	}
 	public function actionSlugifyElement(){
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
@@ -2124,7 +2131,8 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		 		}
 		 		echo "////////////////".$count." ".$type." traités (comme des animaux) ///////";
 			}
-		}
+		}else 
+			echo "Tout le monde t'as vu !! reste bien tranquille";
 	}
 	public function actionRelaunchInvitation(){
 		ini_set('memory_limit', '-1');
@@ -2142,7 +2150,8 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			}
 			echo $i." mails envoyé pour relancer l'inscription<br>";
 			echo $v." utilisateur non inscrit (validé) qui ont un mail de marde<br>";
-		}
+		}else 
+			echo "Pas d'envoie pour toi ma cocote !! Tu vas aller au four plutot";
 	}
 }
 

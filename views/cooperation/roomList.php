@@ -74,10 +74,20 @@
 <?php } ?>
 
 
+<?php /* foreach($roomList as $key => $room){ ?>
+	<li class="submenucoop sub-rooms tooltips " data-toggle="tooltip" data-placement="bottom" title="P : <?php echo @$allCount['proposals'][ (string)$room['_id']]; ?> , A : <?php echo @$allCount['actions'][ (string)$room['_id']]; ?>"
+			data-type="room" data-dataid="<?php echo (string)@$room["_id"]; ?>">
+		<a href="javascript:" class="load-coop-data droppable letter-turq " 
+			data-type="room" data-dataid="<?php echo (string)@$room["_id"]; ?>">
+		 	<i class="fa fa-hashtag"></i> <?php echo @$room["name"]; ?>
+		 	<i class="fa fa-inbox pull-right"></i>
+	  	</a>
+	</li>
+<?php } */?>
+
 
 
 <script type="text/javascript">
 	jQuery(document).ready(function() { 
-		
 	});
 </script>

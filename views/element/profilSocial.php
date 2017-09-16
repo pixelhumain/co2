@@ -228,13 +228,21 @@
 		  </button>
 		  <?php } ?>
 
+		  <script type="text/javascript">
+	  	  	
+			   /*alert( "x<?php echo (@$edit && $edit) || (@$openEdition && $openEdition) ?>"+
+			           "x<?php echo Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id);  ?>"+
+			           "x<?php echo Link::isLinked((string)$element["_id"], $type, Yii::app()->session["userId"]);   ?>");
+    			*/
+	  	  </script>
+
 		  <?php if(@Yii::app()->session["userId"] && Yii::app()->params['rocketchatEnabled'] )
 	  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition)) ) || 
 	  			($type==Person::COLLECTION) ||
 	  			//admins can create rooms
 	  			( Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) ) ||
 	  			//simple members can join only when admins had created
-	  			( @$element["hasRC"] && Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"])) )
+	  			( @$element["hasRC"] && Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"]))  )
 	  			{
 	  				if(@$element["slug"])
 						//todo : elements members of
@@ -255,6 +263,7 @@
 		  			}
 		  			$chatColor = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "text-red" : "";
 	  	  ?>
+	  	  
 	  	  <?php /*if(@$createSlugBeforeChat){ ?>
 	  	  	<button type="button" onclick="javascript:createSlugBeforeChat('<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
 		  		  id="open-rocketChat" style="border-right:0px!important;">
@@ -812,6 +821,8 @@
 				loadDetail();
 			else if(sub=="urls")
 				loadUrls();
+			else if(sub=="chat" && userId)
+				rcObj.loadChat("","citoyens", true, true);
 			else if(sub=="contacts")
 				loadContacts();
 			else if(sub=="settings")

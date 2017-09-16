@@ -65,7 +65,7 @@ var trad = {
 	"city" : "<?php echo Yii::t("common","City"); ?>",
 
 	"administrator" : "<?php echo Yii::t("common","Administrator") ?>",
-	"member" : "<?php echo Yii::t("common","Member") ?>",
+	"Member" : "<?php echo Yii::t("common","Member") ?>",
 	"justCitizen" : "<?php echo Yii::t("common","Just a citizen wanting to give visibility to it :)") ?>",
 
 	"addProject" : "<?php echo Yii::t("common","Add a Project") ?>",
@@ -128,7 +128,7 @@ var trad = {
 	"images" : "<?php echo Yii::t("common","images") ?>",
 	"bookmarks" : "<?php echo Yii::t("common","Bookmarks") ?>",
 	"files" : "<?php echo Yii::t("common","Files") ?>",
-	"explainbookmark" : "<?php echo Yii::t("document","Collection of bookmarks<br>To classified favorite and useful urls<br>And share it to the community") ?>",
+	"explainbookmark" : "<?php echo Yii::t("document","Collection of bookmarks<br>To classified favorite urls<br>And share it to the community") ?>",
 	"explainfile" : "<?php echo Yii::t("document","Collection of files<br>To download and share documents<br>With the community") ?>",
 	"Technologie" : "Technologie",
 	"Immobilier" : "Immobilier",

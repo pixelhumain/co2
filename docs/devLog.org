@@ -11,50 +11,14 @@
 ----------------------------------------------------
 ----------------------------------------------------
 ----------------------------------------------------
-Appel 
-Jerome Blondin 
-Tomassini 
-
-IndieCamp Névez ... Installation 1% en cours
-
-----------------------------------------------------
-* Version 0.2
-
-[ ] MEQA 
-  [X] tagging : ph,ctk, communecter master actuel en v0.17 : v.0.17 PH-DORY 
-
-          tag v0.0.17     co2         prod
-                    |     |           |
-  master ---------------------     ------------
-                        /             \ 
-                       /               \
-  dev -----------------                 ---------
-                                          \
-                                           future devs 
-                                           ---- internationalisation ----------------  
-                                           tiers lieux ------------
-                                           dda ---------------
-MEQA
-  [X] master en v.02 
-  [X] paramsQA en v.02
-  [X] copy BDD PROD to QA
-    [X] dump PROD 
-    [X] restore QA + drop
-  [ ] transfert des images
-  [X] update ph, ctk , co2  
-  [X] script de devlog 
-
-MEP 
-  [X] update code
-  [X] paramsconfigPROD en v.02
-  [X] script de devlog 
 
 ---------------------------------------
 ----- BASH DE REPRISE DES DONNEES -----
 ---------------------------------------
-* MEP CO21
+* Version C0.21.7
+
 ** @BOUBOULE
-*** [!!!A passer le slugelement!!!] Bash de reprise sur les slugs citoyens
+*** [!!!A passer le slugelement + SUPPRESSION DES CITOYENS SANS NOOOOM!!!] Bash de reprise sur les slugs citoyens et supprime les citoyens sans nom !!!!
 ** Crée les slugs à partir des usernames et si n'y a pas d'username (premiers utilisateurs) crée les usernames à la volée
 co2/datamigration/slugifycitoyens
 
@@ -109,7 +73,39 @@ db.getCollection('news').find({ "media" : {'$type': 2},"created":{'$lt':new Date
 152 news avec un media de type string enregistrer entre janvier 2016 et mai 2016 (avant la mise en ligne de Juin)
 qui font sauté les fils des pages !! 
 **** Supprimer les news de type needs (après avoir lancer le bash ObjectObjectTypeNewsToObjectType) 
-db.getCollection('news').find("object.type":"needs")
+db.getCollection('news').find("object.type":"needs") 
+
+----------------------------------------------------
+* Version 0.2
+
+[ ] MEQA 
+  [X] tagging : ph,ctk, communecter master actuel en v0.17 : v.0.17 PH-DORY 
+
+          tag v0.0.17     co2         prod
+                    |     |           |
+  master ---------------------     ------------
+                        /             \ 
+                       /               \
+  dev -----------------                 ---------
+                                          \
+                                           future devs 
+                                           ---- internationalisation ----------------  
+                                           tiers lieux ------------
+                                           dda ---------------
+MEQA
+  [X] master en v.02 
+  [X] paramsQA en v.02
+  [X] copy BDD PROD to QA
+    [X] dump PROD 
+    [X] restore QA + drop
+  [ ] transfert des images
+  [X] update ph, ctk , co2  
+  [X] script de devlog 
+
+MEP 
+  [X] update code
+  [X] paramsconfigPROD en v.02
+  [X] script de devlog 
 
 ----------------------------------------------------
 

@@ -29,7 +29,10 @@
 	<li class="submenucoop sub-rooms"><hr></li>
 	
 	<div id="coop-room-list" class="margin-bottom-50">
-		<?php $this->renderPartial('../cooperation/roomList', array("roomList"=>$menuCoopData["roomList"], "auth"=>$auth)); ?>
+		<?php $this->renderPartial('../cooperation/roomList', array("roomList"=>$menuCoopData["roomList"], 
+																	"auth"=>$auth,
+																	"parentType" => $parentType,
+																	"parentId" => $parentId)); ?>
 	</div>
 
 	<?php if(!@$menuCoopData["roomList"]) return; ?>

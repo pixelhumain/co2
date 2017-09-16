@@ -348,8 +348,12 @@ var tradDynForm = {
 	"nameofyour":"<?php echo Yii::t("form","Name of your") ?>",
 	"titleofyour":"<?php echo Yii::t("form","Title of your") ?>",
 	"tags":"<?php echo Yii::t("form","Tags") ?>",
+	"roles":"<?php echo Yii::t("form","Roles") ?>",
 	"description":"<?php echo Yii::t("form","Description") ?>",
 	"addtags":"<?php echo Yii::t("form","Add some tags") ?>",
+	"limitAccessRole":"<?php echo Yii::t("form","Limit role access") ?>",
+
+	"addroles":"<?php echo Yii::t("form","Add some roles") ?>",
 	"imageshere":"<?php echo Yii::t("form","Your pictures here") ?>",
 	"fileshere":"<?php echo Yii::t("form","Your files here") ?>",
 	"pricesymbole":"<?php echo Yii::t("form","Price (£)") ?>",

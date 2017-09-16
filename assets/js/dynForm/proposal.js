@@ -223,10 +223,10 @@ dynForm = {
 
             }),*/
             voteDateEnd : dyFInputs.voteDateEnd,
+            majority: dyFInputs.inputText( "Règle de majorité (%) <small class='letter-green'>indiquez une valeur entre 50% et 100%</small>", "50%" ),
             tags : dyFInputs.tags(),
             //image : dyFInputs.image(),
             urls : dyFInputs.urls,
-            majority: dyFInputs.inputText( "Règle de majorité (%) <small class='letter-green'>indiquez une valeur entre 50% et 100%</small>", "50%" ),
             //email: dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userConnected.email : "") ),
             //idUserAuthor : dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userId : "") ),
             status: dyFInputs.inputHidden( "amendable" ),

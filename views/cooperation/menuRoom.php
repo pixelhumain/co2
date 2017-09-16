@@ -76,6 +76,19 @@
 
 				
 				<h4 class="room-desc"><small><?php echo @$room["description"]; ?></small></h4>
+
+				<?php if(@$room["roles"] && @$room["roles"] != ""){ ?>
+					<?php $roomRoles = explode(",", @$room["roles"]); ?>
+					<h5 class="room-desc">
+						<small class="letter-blue">
+							<b><i class="fa fa-unlock-alt"></i> Accès réservé : </b>
+							<?php $r = ""; foreach ($roomRoles as $role) {
+								if($r!="") $r.=", "; $r.=$role;
+							} 	echo $r; ?>
+						</small>
+					</h5>
+				<?php } ?>
+
 				<hr>
 
 			<?php }else{ ?>

@@ -822,7 +822,6 @@ var directory = {
             }
 
             str += "<div class='entityDescription'>" + params.description + "</div>";
-            str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
 
             if(params.useMinSize){
@@ -912,6 +911,9 @@ var directory = {
                 str+="<span class='text-red'>En attente de validation</span>";
             }
 
+            if(params.rolesLbl != "")
+            str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
+            
             if( params.section ){
               str += "<div class='entityType'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
                 if(typeof params.subtype != "undefined") str += " > " + params.subtype;
@@ -928,7 +930,6 @@ var directory = {
             str += thisLocality;
             
             str += "<div class='entityDescription'>" + params.description + "</div>";
-            str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
             /*
               if(params.startDate != null)
@@ -1865,12 +1866,13 @@ var directory = {
                 var thisRoles = "";
                 params.rolesLbl = "";
                 if(typeof params.rolesLink != "undefined" && params.rolesLink != null){
-                  thisRoles += "Roles: "
+                  thisRoles += "<small class='letter-blue'><b>Rôle :</b> ";
                   thisRoles += params.rolesLink.join(", ");
                   $.each(params.rolesLink, function(key, value){
                     if(typeof value != "undefined" && value != "" && value != "undefined")
                       params.elRolesList += slugify(value)+" ";
                   });
+                  thisRoles += "</small>";
                   params.rolesLbl = thisRoles;
                 }
               

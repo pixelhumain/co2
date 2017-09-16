@@ -10,7 +10,7 @@
 
 	$totalVotant = Proposal::getTotalVoters($proposal);
 	$voteRes = Proposal::getAllVoteRes($proposal);
-				
+	
 ?>
 
 <div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
@@ -300,10 +300,12 @@
 	<?php } ?>
 
 	<?php if(@$proposal["tags"]){ ?>
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 		<hr>
 		<?php foreach($proposal["tags"] as $key => $tag){ ?>
 			<span class="badge bg-red"><?php echo $tag; ?></span>
 		<?php } ?>	
+		</div>
 	<?php } ?>
 
 	<?php if(@$proposal["urls"]){ ?>

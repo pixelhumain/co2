@@ -43,6 +43,12 @@ var uiCoop = {
 		//alert('initBtnLoadData');
 		$(".load-coop-data").off().click(function(){
 			var type = $(this).data("type");
+			
+			if(type == "locked"){
+				toastr.info("Vous n'avez pas accès à cet espace");
+				return;
+			}
+
 			$("#menu-room .load-coop-data").removeClass("active");
 			$(".load-coop-data[data-type='"+type+"']").removeClass("active");
 

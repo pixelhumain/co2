@@ -125,6 +125,7 @@ dynForm = {
             name : dyFInputs.name("room"),
             //topic : dyFInputs.inputText("Sujet traité", "..."),
             description : dyFInputs.textarea(tradDynForm.description, "..."),
+            roles : dyFInputs.tags(rolesList, tradDynForm["addroles"] , tradDynForm["limitAccessRole"]),
             // image : dyFInputs.image(),
             //tags : dyFInputs.tags()
 	    }

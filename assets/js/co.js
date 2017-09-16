@@ -3247,13 +3247,13 @@ var dyFInputs = {
 												});
 											});
 	},
-	tags : function(list) { 
+	tags : function(list, placeholder, label) { 
     	tagsL = (list) ? list : tagsList;
     	return {
 			inputType : "tags",
-			placeholder : tradDynForm["tags"],
+			placeholder : placeholder != null ? placeholder : tradDynForm["tags"],
 			values : tagsL,
-			label : tradDynForm["addtags"]
+			label : label != null ? label : tradDynForm["addtags"]
 		}
 	},
     imageAddPhoto : {

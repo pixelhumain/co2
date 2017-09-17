@@ -213,7 +213,6 @@
 						</button><br class="hidden">
 					<?php } ?>
 				<?php } ?>
-			</button>
 		<?php } ?>
 	</div>
 

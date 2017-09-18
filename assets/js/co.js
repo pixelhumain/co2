@@ -1933,27 +1933,26 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
         var $this = $(this);
         if($(appendClassName).html()==""){
         if($this.parents().eq(nbParent).find(appendClassName).html()=="" || (e.which==32 || e.which==13)){
-        	//new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?")
-        	///\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i
-	        //var match_url = /\b(https?|ftp):\/\/([\-A-Z0-9. \-]+?|www\\.)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i;
-	        //var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
-	        var match_url=/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+        	//var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?")
+        	var match_url=new RegExp("(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})");///\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i
+	       // var match_url = /\b(https?|ftp):\/\/([\-A-Z0-9. \-]+?|www\\.)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i;
+	       // var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+	        //var match_url=/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
 	        if (match_url.test(getUrl.val())) 
 	        {
-		        if(lastUrl != getUrl.val().match(match_url)[0] && processUrl.isLoading==false){
+	        	extract_url=getUrl.val().match(match_url)[0];
+	        	extract_url=extract_url.replace(/[\n]/gi," ");
+	        	extract_url=extract_url.split(" ");
+	        	extract_url=extract_url[0];
+		        if(lastUrl != extract_url && processUrl.isLoading==false){
 		        	processUrl.isLoading=true;
-		        	mylog.log(getUrl.val().match(match_url));
-			       // alert(lastUrl+"///"+getUrl.val().match(match_url)[0]);
-		        	var extracted_url = getUrl.val().match(match_url)[0]; //extracted first url from text filed
-	                //$this.parent().find(appendClassName).html("<i class='fa fa-spin fa-spinner text-red fa-2x'></i>");//hide();
+		        	var extracted_url = extract_url;
 	                $this.parents().eq(nbParent).find(".loading_indicator").show(); //show loading indicator image
-
 	                //ajax request to be sent to extract-process.php
 	                lastUrl=extracted_url;
 	                extracted_url_send=extracted_url;
 	                if(extracted_url_send.indexOf("http")<0)
 	                	extracted_url_send = "http://"+extracted_url;
-	               // $(appendClassName).html("<i class='fa fa-spin fa-reload'></i>");
 	                $.ajax({
 						url: baseUrl+'/'+moduleId+"/news/extractprocess",
 						data: {'url': extracted_url_send},
@@ -1990,7 +1989,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 						error : function(){
 							$.unblockUI();
 							//toastr.error(trad["wrongwithurl"] + " !");
-
+							 processUrl.isLoading=false;
 							//content to be loaded in #results element
 							var content = '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-refresh"></i></a><h4><a href="'+extracted_url+'" target="_blank" class="lastUrl wrongUrl">'+extracted_url+'</a></h4>';
 		                    //load results in the element

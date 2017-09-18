@@ -829,6 +829,7 @@ var urlCtrl = {
 		// 			hash.indexOf("#default.directory"), 
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
 		onchangeClick=false;
+		navInSlug=false;
 		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
 			mylog.log("globalTheme", globalTheme);
@@ -925,6 +926,30 @@ var urlCtrl = {
 		        hashT = hash.split(".");
 		        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ADD NEED '+typesLabels[hashT[3]],'cubes' );
 		} */
+		else if(hash.length>2){
+			hash = hash.replace( "#","" );
+			hashT=hash.split(".");
+			if(typeof hashT == "string")
+				slug=hashT;
+			else
+				slug=hashT[0];
+			$.ajax({
+	  			type: "POST",
+	  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
+	  			dataType: "json",
+	  			success: function(data){
+			  		if(data.result){
+			  			viewPage="";			  			
+			  			if(hashT.length > 1){
+			  				hashT.shift();
+			  				viewPage="/"+hashT.join("/");
+			  			}
+			  			showAjaxPanel('/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
+			  		}else
+			  			showAjaxPanel( '/app/index', 'Home','home' );
+	 			},
+			});
+		}
 	    else 
 	        showAjaxPanel( '/app/index', 'Home','home' );
 	    mylog.log("testnetwork hash", hash);

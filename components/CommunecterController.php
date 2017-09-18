@@ -371,6 +371,7 @@ class CommunecterController extends Controller
     ),
     "slug" => array(
       "check"        => array("href" => "ph/communecter/slug/check"),
+      "getinfo"        => array("href" => "ph/communecter/slug/getinfo"),
     ),
     "gallery" => array(
       "index"        => array("href" => "ph/communecter/gallery/index"),

@@ -64,9 +64,8 @@ function bindButtonMenu(){
 	$(".btn-start-notifications").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
+		reloadWindow=false;
 		location.hash=hashUrlPage+".view.notifications";
-		//history.pushState(null, "New Title", hashUrlPage+".view.notifications");
-		//location.search="?view=notifications";
 		loadNotifications();
 	});
 	$(".btn-start-chart").click(function(){
@@ -130,6 +129,7 @@ function bindButtonMenu(){
 	});
 		
 	$("#subsubMenuLeft a").click(function(){
+		onchangeClick=false;
 		$("#subsubMenuLeft a").removeClass("active");
 		$(this).addClass("active");
 	});

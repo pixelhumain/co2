@@ -72,7 +72,7 @@ var trad = {
 "administrator" : "<?php echo Yii::t("common","Administrator") ?>",
 "member" : "<?php echo Yii::t("common","Member") ?>",
 "justCitizen" : "<?php echo Yii::t("common","Just a citizen wanting to give visibility to it :)") ?>",
-
+"seeall": "<?php echo Yii::t("common","See all") ?>",
 "addProject" : "<?php echo Yii::t("common","Add a Project") ?>",
 "addproject" : "<?php echo Yii::t("common","Add a Project") ?>",
 "addEvent" : "<?php echo Yii::t("common","Add an Event") ?>",

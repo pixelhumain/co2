@@ -88,6 +88,7 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 }
 .newsContent{ 
   white-space: pre-line; 
+  word-wrap: break-word;
 }
 </style>
 <script type="text/javascript" >

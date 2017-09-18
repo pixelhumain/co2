@@ -308,7 +308,7 @@
 		</div>
 	<?php } ?>
 
-	<?php if(@$proposal["urls"]){ ?>
+	<?php var_dump(@$proposal["urls"]); if(@$proposal["urls"]){ ?>
 		<hr>	
 		<h4 class=""><i class="fa fa-angle-down"></i> Liens externes</h4>
 		<?php foreach($proposal["urls"] as $key => $url){ ?>

@@ -127,7 +127,7 @@
 			</small>
 		</h4>
 
-		<h4 class="pull-right text-right">
+		<h4 class="pull-right text-right"> 
 			<small class="majority">
 				<i class="fa fa-2x fa-balance-scale"></i> Règle de majorité : <b><?php echo @$proposal["majority"]; ?>%</b><br>
 				<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>

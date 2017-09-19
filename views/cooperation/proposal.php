@@ -127,7 +127,6 @@
 
 
 <div class="col-lg-9 col-md-12 col-sm-12 pull-left margin-bottom-15">
-
 	
 	<?php if(@$proposal["status"] == "tovote"){ ?>
 		<hr>
@@ -193,7 +192,7 @@
 	
 	<div class="padding-25 bg-lightblue radius-5" id="container-text-proposal" 
 		 style="padding-top:5px !important; color:#2C3E50 !important">
-			
+
 			<?php if(@$proposal["title"]){ ?>
 				<h3><i class="fa fa-hashtag"></i> <?php echo @$proposal["title"]; ?></h3>
 			<?php }else{ ?>
@@ -201,6 +200,13 @@
 			<?php } ?>
 		
 			<?php echo nl2br(@$proposal["description"]); ?>
+			<?php if(@$proposal["tags"]){ ?>
+				<br><br>
+				<?php foreach($proposal["tags"] as $key => $tag){ ?>
+					<span class="letter-red margin-right-15">#<?php echo $tag; ?></span>
+				<?php } ?>	
+				
+			<?php } ?>
 	</div>
 
 	<?php //if(@$proposal["status"] != "tovote"){ ?>
@@ -310,21 +316,16 @@
 		</div>
 	<?php } ?>
 
-	<?php if(@$proposal["tags"]){ ?>
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-		<hr>
-		<?php foreach($proposal["tags"] as $key => $tag){ ?>
-			<span class="badge bg-red"><?php echo $tag; ?></span>
-		<?php } ?>	
-		</div>
-	<?php } ?>
+	
 
 	<?php if(@$proposal["urls"]){ ?>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 		<hr>	
 		<h4 class=""><i class="fa fa-angle-down"></i> Liens externes</h4>
 		<?php foreach($proposal["urls"] as $key => $url){ ?>
-			<a href="<?php echo $url; ?>" class="btn btn-link"><?php echo $url; ?></a>
+			<a href="<?php echo $url; ?>" target="_blank" class="btn btn-default bg-white shadow2"><?php echo $url; ?></a>
 		<?php } ?>
+	</div>
 	<?php } ?>
 </div>
 

@@ -132,33 +132,14 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 	</div>
 </div>
 
-<style>
-	.link-assignee{
-		padding:0 5px;
-	}
-	.link-assignee a{
-		
-		border-radius: 40px;
-		padding:5px 10px 5px 5px;
-	}
-	.link-assignee:hover{
-	}
-	.link-assignee a:hover{
-		background-color: #e6e6e6;
-		text-decoration: none!important;
-	}
-</style>
-
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-25" >
 
-
 	<?php if( $auth && !@$action["links"]["contributors"][Yii::app()->session['userId']]  ){ ?>
-		<a href="javascript:;" class="btn btn-default" 
-		   onclick="assignMe('<?php echo (string)$action["_id"]?>');" >
+		<button class="btn btn-default" data-target="#modalAssignMe" data-toggle="modal">
 			<i class="fa fa-handshake-o"></i> 
 			<?php echo Yii::t("rooms","I'll Do it") ?>
-	   	</a><hr>
-	<?php }else{ ?>
+	   	</button><hr>
+	<?php }else if( $auth ){ ?>
 		<h5 class="letter-green"><i class="fa fa-check"></i> Vous participez à cette action</h5><hr>
 	<?php }	?>
 
@@ -166,9 +147,9 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 		<h4><i class="fa fa-angle-down"></i> <i class="fa fa-group"></i> Ils participent à cette action</h4><hr>
 	<?php foreach ($action["links"]["contributors"] as $id => $att) { // var_dump($att);
 			$contrib = Element::getByTypeAndId($att["type"], $id); ?>
-			<div class="col-lg-3 col-md-4 col-sm-6 link-assignee ">
+			<div class="col-lg-4 col-md-4 col-sm-6 link-assignee ">
 				<a href="#page.type.citoyens.id.<?php echo $id; ?>" 
-					class="elipsis shadow2">
+					class="elipsis shadow2 lbh">
 					<img width="40" height="40"  alt="image" class="img-circle tooltips" 
 						 <?php if(@$contrib['profilThumbImageUrl']){ ?>
 						 src="<?php echo Yii::app()->createUrl('/'.$contrib['profilThumbImageUrl']) ?>" 
@@ -187,7 +168,6 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 	<?php }else{ ?>
 		<h4><i class="fa fa-ban"></i> <i class="fa fa-group"></i> Aucun participant</h4>
 	<?php }	?>
-
 
 </div>
 
@@ -244,26 +224,13 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 			dyFObj.editElement('actions', idAction);
 		});
 
+		$("#btn-validate-assign-me").off().click(function(){
+			uiCoop.assignMe(idAction);
+		});
+
 		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
 							  ".view.coop.room." + idParentRoom + ".action." + idAction;
 	});
 
-	function assignMe(id)
-	{
-	    bootbox.confirm("<strong>Êtes-vous sûr de vouloir participer à cette action ?</strong><br>" +
-	    				"Vous serez inscrit dans la liste des participants.",
-
-	        function(result) {
-	            if (result) {
-	              params = { "id" : id };
-	              ajaxPost(null,'<?php echo Yii::app()->createUrl(Yii::app()->controller->module->id."/rooms/assignme")?>',params,function(data){
-	                if(data.result)
-	                  uiCoop.getCoopData(context.type, context.id, "action", null, idAction); 
-	                  //alert("Tango a l'aide comment je reload stp action.php > function assignMe > l.181");
-	                else 
-	                  toastr.error(data.msg);
-	              });
-	        } 
-	    });
-	 }
+	
 </script>

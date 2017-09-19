@@ -380,7 +380,7 @@ var uiCoop = {
 		});
 	},
 
-	"deleteByTypeAndId" : function(typeDelete, idDelete){
+	deleteByTypeAndId : function(typeDelete, idDelete){
 		toastr.info(trad["processing save"]);
 		$.ajax({
 		        type: "POST",
@@ -392,6 +392,38 @@ var uiCoop = {
 		});	
 	},
 
+	assignMe : function(idAction){
+		$.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+"/rooms/assignme",
+		        data: { "id" : idAction },
+		        success: function(data){
+		    		if(data.result){
+		    		  toastr.success("Votre participation a été enregistrée");
+		              uiCoop.getCoopData(contextData.type, contextData.id, "action", null, idAction); 
+	                  //alert("Tango a l'aide comment je reload stp action.php > function assignMe > l.181");
+	                }
+	                else 
+	                  toastr.error(data.msg);
+		    	}
+		});	
+
+		/*bootbox.confirm("<strong>Êtes-vous sûr de vouloir participer à cette action ?</strong><br>" +
+	    				"Vous serez inscrit dans la liste des participants.",
+
+	        function(result) {
+	            if (result) {
+	              params = { "id" : id };
+	              ajaxPost(null,'<?php echo Yii::app()->createUrl(Yii::app()->controller->module->id."/rooms/assignme")?>',params,function(data){
+	                if(data.result)
+	                  uiCoop.getCoopData(contextData.type, contextData.id, "action", null, idAction); 
+	                  //alert("Tango a l'aide comment je reload stp action.php > function assignMe > l.181");
+	                else 
+	                  toastr.error(data.msg);
+	              });
+	        } 
+	    });*/
+	},
 
 	initUIProposal : function(){
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");

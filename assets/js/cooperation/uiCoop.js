@@ -32,11 +32,7 @@ var uiCoop = {
 	},
 
 	"closeUI" : function(reloadStream){
-		//$("#menu-left-container").show();
-		//$("#div-reopen-menu-left-container").addClass("hidden");
-		//KScrollTo("#topPosKScroll");
-
-		//if(reloadStream != false) loadNewsStream(false);
+		
 	},
 
 	"initBtnLoadData" : function(){
@@ -60,8 +56,8 @@ var uiCoop = {
 			//console.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
 			uiCoop.getCoopData(contextData.type, contextData.id, type, status, dataId);
 		});
-		//uiCoop.initDragAndDrop();
 	},
+
 	"initDragAndDrop" : function(){ console.log('initDragAndDrop');
 		$('.draggable').draggable({
 		    revert : true, // sera renvoyé à sa place s'il n'est pas déposé dans #drop
@@ -160,10 +156,8 @@ var uiCoop = {
 			"status" : status,
 			"dataId" : dataId
 		};
-		console.log("showLoading ?", typeof showLoading, showLoading);
+		//console.log("showLoading ?", typeof showLoading, showLoading);
 		
-		//KScrollTo("#div-reopen-menu-left-container");
-
 		if(typeof showLoading == "undefined" || showLoading == true){
 			if(typeof dataId == "undefined" || dataId == null || type == "room"){
 				$("#main-coop-container").html(
@@ -252,14 +246,12 @@ var uiCoop = {
 			params["idAmdt"] = idAmdt;
 
 		var url = moduleId+'/cooperation/savevote';
-		//$("#coop-data-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
-		
 		
 		toastr.info(trad["processing save"]);
 		ajaxPost("", url, params,
 			function (proposalView){
 				console.log("success save vote");
-				uiCoop.getCoopData(parentType, parentId, "room", null, idParentRoom, 
+				uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
 					function(){
 						toastr.success(trad["Your vote has been save with success"]);
 						
@@ -321,10 +313,8 @@ var uiCoop = {
 		    	success: function(data){
 					console.log("success updateblock", data);
 		    		uiCoop.getCoopData(null, null, "proposal", null, proposalId, function(){
-		    			//uiCoop.minimizeMenuRoom(true);
 		    			uiCoop.showAmendement(true);
 		    			toastr.success(trad["Your amendement has been save with success"]);
-						//$("#coop-data-container").html(proposalView);
 		    		}, false);
 		    	}
 		});
@@ -407,25 +397,10 @@ var uiCoop = {
 	                  toastr.error(data.msg);
 		    	}
 		});	
-
-		/*bootbox.confirm("<strong>Êtes-vous sûr de vouloir participer à cette action ?</strong><br>" +
-	    				"Vous serez inscrit dans la liste des participants.",
-
-	        function(result) {
-	            if (result) {
-	              params = { "id" : id };
-	              ajaxPost(null,'<?php echo Yii::app()->createUrl(Yii::app()->controller->module->id."/rooms/assignme")?>',params,function(data){
-	                if(data.result)
-	                  uiCoop.getCoopData(contextData.type, contextData.id, "action", null, idAction); 
-	                  //alert("Tango a l'aide comment je reload stp action.php > function assignMe > l.181");
-	                else 
-	                  toastr.error(data.msg);
-	              });
-	        } 
-	    });*/
 	},
 
 	initUIProposal : function(){
+		
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
 		
 		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/proposals/id/"+idParentProposal,
@@ -450,22 +425,27 @@ var uiCoop = {
 		$("#btn-close-proposal").click(function(){
 			uiCoop.minimizeMenuRoom(false);
 		});
+
 		$(".btn-extend-proposal").click(function(){
 			uiCoop.maximizeReader(true);
 			$(".btn-minimize-proposal").removeClass("hidden");
 			$(".btn-extend-proposal").addClass("hidden");
 		});
+
 		$(".btn-minimize-proposal").click(function(){
 			uiCoop.maximizeReader(false);
 			$(".btn-minimize-proposal").addClass("hidden");
 			$(".btn-extend-proposal").removeClass("hidden");
 		});
+
 		$(".btn-show-amendement").click(function(){
 			uiCoop.showAmendement(true);
 		});
+
 		$("#btn-hide-amendement").click(function(){
 			uiCoop.showAmendement(false);
 		});
+
 		$(".btn-create-amendement").click(function(){
 			uiCoop.showAmendement(true);
 			if($("#form-amendement").hasClass("hidden"))
@@ -479,6 +459,7 @@ var uiCoop = {
 			console.log("send vote", voteValue),
 			uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom);
 		});
+
 		$("#btn-activate-vote").click(function(){
 			uiCoop.activateVote(idParentProposal);
 		});
@@ -486,7 +467,7 @@ var uiCoop = {
 		$("#btn-refresh-proposal").click(function(){
 			toastr.info(trad["processing"]);
 			var idProposal = $(this).data("id-proposal");
-			uiCoop.getCoopData(null, null, "proposal", null, idProposal, 
+			uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, idProposal, 
 				function(){
 					uiCoop.minimizeMenuRoom(true);
 					uiCoop.showAmendement(false);
@@ -497,7 +478,7 @@ var uiCoop = {
 		$("#btn-refresh-amendement").click(function(){
 			toastr.info(trad["processing"]);
 			var idProposal = $(this).data("id-proposal");
-			uiCoop.getCoopData(null, null, "proposal", null, idProposal, 
+			uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, idProposal, 
 				function(){
 					uiCoop.minimizeMenuRoom(true);
 					uiCoop.showAmendement(true);
@@ -524,6 +505,63 @@ var uiCoop = {
 		if(msgController != ""){
 			toastr.error(msgController);
 		}
+	},
+
+	initUIAction : function(){
+
+		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
+		
+		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/actions/id/"+idAction,
+			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
+		},"html");
+
+
+		$("#btn-close-action").click(function(){
+			uiCoop.minimizeMenuRoom(false);
+		});
+
+		$(".btn-extend-action").click(function(){
+			uiCoop.maximizeReader(true);
+			$(".btn-minimize-action").removeClass("hidden");
+			$(".btn-extend-action").addClass("hidden");
+		});
+
+		$(".btn-minimize-action").click(function(){
+			uiCoop.maximizeReader(false);
+			$(".btn-minimize-action").addClass("hidden");
+			$(".btn-extend-action").removeClass("hidden");
+		});
+
+		$("#btn-refresh-action").click(function(){
+			toastr.info(trad["processing"]);
+			var idProposal = $(this).data("id-action");
+			uiCoop.getCoopData(contextData.type, contextData.id, "action", null, idProposal, 
+				function(){
+					uiCoop.minimizeMenuRoom(true);
+					uiCoop.showAmendement(false);
+					toastr.success(trad["processing ok"]);
+				}, false);
+		});
+
+		$(".btn-option-status-action").click(function(){
+			var idAction = $(this).data("id-action");
+			var status = $(this).data("status");
+			console.log("update status actions", idAction, status, parentTypeElement, parentIdElement);
+			uiCoop.changeStatus("actions", idAction, status, parentTypeElement, parentIdElement);
+		});
+
+		$("#btn-edit-action").click(function(){
+			var idaction = $(this).data("id-action");
+			console.log("edit idAction", idAction);
+			dyFObj.editElement('actions', idAction);
+		});
+
+		$("#btn-validate-assign-me").off().click(function(){
+			uiCoop.assignMe(idAction);
+		});
+
+		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
+							  ".view.coop.room." + idParentRoom + ".action." + idAction;
 	}
 
 }

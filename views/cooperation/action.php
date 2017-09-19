@@ -29,21 +29,22 @@
 
 <?php
 	//if no assignee , no startDate no end Date
-    $statusLbl = Yii::t("rooms", "Todo");
+    $statusLbl = Yii::t("rooms", @$post["status"]);
     //if startDate passed, or no startDate but has end Date
-    if( (bool)strtotime(@$action["startDate"]) == FALSE && (bool)strtotime(@$action["endDate"]) == FALSE ){
-    	$action["status"] = "nodate";	
-    } 
-    else if( strtotime(@$action["startDate"]) > time() )
-      	$action["status"] = "startingsoon";
-    else if( ( isset($action["startDate"]) && strtotime($action["startDate"]) <= time() )  || 
-    		   ( !@$action["startDate"] && @$action["endDate"] ) )
-    {
-      $action["status"] = "progress";
-      if( strtotime(@$action["endDate"]) < time()  )
-        $action["status"] = "late";
-      
-    } 
+    if(@$post["status"] == "todo"){
+	    if( (bool)strtotime(@$action["startDate"]) == FALSE && (bool)strtotime(@$action["endDate"]) == FALSE ){
+	    	$action["status"] = "nodate";	
+	    } 
+	    else if( strtotime(@$action["startDate"]) > time() )
+	      	$action["status"] = "startingsoon";
+	    else if( ( isset($action["startDate"]) && strtotime($action["startDate"]) <= time() )  || 
+	    		   ( !@$action["startDate"] && @$action["endDate"] ) ) {
+	        $action["status"] = "progress";
+	      	if( strtotime(@$action["endDate"]) < time()  )
+	        	$action["status"] = "late";
+	      
+	    } 
+}
 ?>			
 
 	<label class=""><i class="fa fa-bell"></i> Status : 
@@ -191,45 +192,7 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 	currentRoomId = idParentRoom;
 
 	jQuery(document).ready(function() { 
-		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
-		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/actions/id/"+idAction,
-			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
-		},"html");
-
-
-		$("#btn-close-action").click(function(){
-			uiCoop.minimizeMenuRoom(false);
-		});
-		$(".btn-extend-action").click(function(){
-			uiCoop.maximizeReader(true);
-			$(".btn-minimize-action").removeClass("hidden");
-			$(".btn-extend-action").addClass("hidden");
-		});
-		$(".btn-minimize-action").click(function(){
-			uiCoop.maximizeReader(false);
-			$(".btn-minimize-action").addClass("hidden");
-			$(".btn-extend-action").removeClass("hidden");
-		});
-
-		$(".btn-option-status-action").click(function(){
-			var idAction = $(this).data("id-action");
-			var status = $(this).data("status");
-			console.log("update status actions", idAction, status, parentTypeElement, parentIdElement);
-			uiCoop.changeStatus("actions", idAction, status, parentTypeElement, parentIdElement);
-		});
-
-		$("#btn-edit-action").click(function(){
-			var idaction = $(this).data("id-action");
-			console.log("edit idAction", idAction);
-			dyFObj.editElement('actions', idAction);
-		});
-
-		$("#btn-validate-assign-me").off().click(function(){
-			uiCoop.assignMe(idAction);
-		});
-
-		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
-							  ".view.coop.room." + idParentRoom + ".action." + idAction;
+		uiCoop.initUIAction();
 	});
 
 	

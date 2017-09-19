@@ -28,6 +28,22 @@
 
 	<li class="submenucoop sub-rooms"><hr></li>
 	
+	<?php if(@$access=="deny"){ ?>
+		<li class="padding-10 submenucoop sub-rooms">
+			<h5 class="padding-left-10 letter-red">
+				<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
+			</h5>
+			<?php if(!isset(Yii::app()->session['userId'])){ ?>
+				<h5 class="padding-left-10">
+					<small class="letter-orange"><i class="fa fa-user-circle"></i> Vous n'êtes pas connecté</small>  	
+				</h5>
+			<?php } ?>
+			<h5 class="padding-left-10 letter-red">
+				<small>Devenez membre ou contributeur</small>  	
+			</h5>
+		</li>
+	<?php exit; } ?>
+	
 	<div id="coop-room-list" class="margin-bottom-50">
 		<?php $this->renderPartial('../cooperation/roomList', array("roomList"=>$menuCoopData["roomList"], 
 																	"auth"=>$auth,
@@ -48,11 +64,15 @@
 
 	<li class="submenucoop hidden sub-proposals"><hr></li>
 	
-	<?php foreach(array("mine" => "My proposals", 
-						"amendable"=>"Amendable", 
-						"tovote"=>"To vote",
-						"closed" => "Closed", 
-						"archived"=> "Archived") as $status=>$tradStatus){ ?>
+	<?php $allStatus = array("amendable"=>"Amendable", 
+							 "tovote"=>"To vote",
+							 "closed" => "Closed", 
+							 "archived"=> "Archived");
+		
+		if(Yii::app()->session['userId'])
+		$allStatus["mine"] = "My proposals";
+
+	 	foreach($allStatus as $status=>$tradStatus){ ?>
 
 		<li class="submenucoop sub-proposals">
 			<a href="javascript:" class="load-coop-data" data-type="proposal" data-status="<?php echo $status ?>">
@@ -76,8 +96,14 @@
 
 		<li class="submenucoop hidden sub-actions"><hr></li>
 
-		<?php foreach(array("mine" => "My actions", "todo"=>"To do", 
-							"done" => "Done", "archived"=> "Archived") as $status=>$tradStatus){ ?>
+		<?php $allStatus = array("todo"=>"To do", 
+								 "done" => "Done", 
+								 "archived"=> "Archived");
+		
+			if(Yii::app()->session['userId'])
+			$allStatus["mine"] = "My proposals";
+
+		 	foreach($allStatus as $status=>$tradStatus){ ?>
 
 			<li class="submenucoop sub-actions">
 				<a href="javascript:" class="load-coop-data" data-type="action" data-status="<?php echo $status ?>">

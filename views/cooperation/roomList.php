@@ -2,10 +2,15 @@
 <?php if(!isset($auth))
 		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], @$parentType, @$parentId);
 
-		$me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
-		$myRoles = @$me["links"]["memberOf"][@$parentId]["roles"] ? 
-				   @$me["links"]["memberOf"][@$parentId]["roles"] : array();
+		if(isset(Yii::app()->session['userId'])){
+			$me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
+			$myRoles = @$me["links"]["memberOf"][@$parentId]["roles"] ? 
+					   @$me["links"]["memberOf"][@$parentId]["roles"] : array();
+		}else{
+			$myRoles = array();
+		}	
 ?>
+
 
 <?php if($auth){ ?>
 	<li class="submenucoop sub-rooms">

@@ -56,9 +56,9 @@ dynForm = {
             { 
                 console.log("afterSave action data", data);
                 dyFObj.closeForm();
-                uiCoop.getCoopData(null, null, "room", null, data.map.idParentRoom);
+                uiCoop.getCoopData(contextData.type, contextData.id, "room", null, data.map.idParentRoom);
                 setTimeout(function(){
-                    uiCoop.getCoopData(null, null, "action", null, data.id);
+                    uiCoop.getCoopData(contextData.type, contextData.id, "action", null, data.id);
                 }, 1000); 
                 //urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
             }

@@ -37,6 +37,25 @@
 	$thisType = @$parentType; //@$room ? @$room["parentType"] : @$post["parentType"];
 ?>
 
+
+<?php if(@$access=="deny"){ ?>
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<h5 class="padding-left-10 letter-red">
+			<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
+		</h5>
+
+		<?php if(!isset(Yii::app()->session['userId'])){ ?>
+			<h5 class="padding-left-10">
+				<small class="letter-orange"><i class="fa fa-user-circle"></i> Vous n'êtes pas connecté</small>  	
+			</h5>
+		<?php } ?>
+		
+		<h5 class="padding-left-10 letter-red">
+			<small>Devenez membre ou contributeur</small>  	
+		</h5>
+	</div>
+<?php exit; } ?>
+
 <div class="col-lg-12 col-md-12 col-sm-12 no-padding bg-white text-dark" id="coop-container">
 	
 	<?php 

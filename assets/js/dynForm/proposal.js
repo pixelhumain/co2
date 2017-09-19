@@ -128,14 +128,14 @@ dynForm = {
                	$("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html(parseInt(oldCount)+1);
                	
                	if(typeof data.map.idParentRoom != "undefined"){
-	               	uiCoop.getCoopData(null, null, "room", null, data.map.idParentRoom);
+	               	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, data.map.idParentRoom);
 	                setTimeout(function(){
-	                	uiCoop.getCoopData(null, null, "proposal", null, data.id);
+	                	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, data.id);
 	                }, 1000);
 	            }else{
-	            	uiCoop.getCoopData(null, null, "room", null, currentRoomId);
+	            	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, currentRoomId);
 	                setTimeout(function(){
-	                	uiCoop.getCoopData(null, null, "proposal", null, idParentProposal);
+	                	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, idParentProposal);
 	                }, 1000);
 	            }
             }

@@ -259,7 +259,7 @@ var uiCoop = {
 		ajaxPost("", url, params,
 			function (proposalView){
 				console.log("success save vote");
-				uiCoop.getCoopData(null, null, "room", null, idParentRoom, 
+				uiCoop.getCoopData(parentType, parentId, "room", null, idParentRoom, 
 					function(){
 						toastr.success(trad["Your vote has been save with success"]);
 						
@@ -351,7 +351,7 @@ var uiCoop = {
 		    		type = (type == "proposals") ? "proposal" : type;
 		    		type = (type == "actions") ? "action" : type;
 		    		toastr.success(trad["processing ok"]);
-					uiCoop.getCoopData(null, null, "room", null, idParentRoom, function(){
+					uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, function(){
 			    		uiCoop.getCoopData(parentType, parentId, type, null, id);
 		    		});
 		    	}
@@ -375,7 +375,7 @@ var uiCoop = {
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
-		    		uiCoop.getCoopData(null, null, "room", null, idNewRoom);
+		    		uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idNewRoom);
 		    	}
 		});
 	},

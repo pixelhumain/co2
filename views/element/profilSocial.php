@@ -837,6 +837,13 @@
 
 
 function loadCoop(roomId, proposalId, resolutionId, actionId){
+	/*console.log("loadCoop", userId);
+	if(userId == "") {
+		toastr.info("Vous devez êtres connecté pour accéder à cet espace coopératif");
+		loadNewsStream();
+		return;
+	}*/
+
 	roomId 		= (roomId != "") 	 ? roomId 		: null;
 	proposalId  = (proposalId != "") ? proposalId 	: null;
 	resolutionId  = (resolutionId != "") ? resolutionId 	: null;

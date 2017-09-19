@@ -13,6 +13,17 @@
 	
 ?>
 
+<?php if(@$access=="deny"){ ?>
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<h5 class="padding-left-10 letter-red">
+			<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
+		</h5>
+		<h5 class="padding-left-10 letter-red">
+			<small>Devenez membre ou contributeur</small>  	
+		</h5>
+	</div>
+<?php exit; } ?>
+
 <div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
 
 
@@ -308,7 +319,7 @@
 		</div>
 	<?php } ?>
 
-	<?php var_dump(@$proposal["urls"]); if(@$proposal["urls"]){ ?>
+	<?php if(@$proposal["urls"]){ ?>
 		<hr>	
 		<h4 class=""><i class="fa fa-angle-down"></i> Liens externes</h4>
 		<?php foreach($proposal["urls"] as $key => $url){ ?>
@@ -369,6 +380,9 @@
 	var idParentProposal = "<?php echo $proposal['_id']; ?>";
 	var idParentRoom = "<?php echo $proposal['idParentRoom']; ?>";
 	var msgController = "<?php echo @$msgController ? $msgController : ''; ?>";
+
+	currentRoomId = idParentRoom;
+
 	jQuery(document).ready(function() { 
 		
 		uiCoop.initUIProposal();

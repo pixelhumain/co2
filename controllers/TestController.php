@@ -1342,12 +1342,79 @@ La vie en santé;Santé;;
 
 
 	public function actionPdf(){
-		require __DIR__.'/vendor/autoload.php';
+		//require __DIR__ . '/../../vendor/spipu/html2pdf/src';
 
-		use Spipu\Html2Pdf\Html2Pdf;
+		//use Spipu\Html2Pdf\Html2Pdf;
 
-		$html2pdf = new Html2Pdf();
+		// Yii::import("html2pdf.Exception.Html2PdfException", true);
+		Yii::import("tcpdf.tcpdf", true);
+		// Yii::import("html2pdf.MyPdf", true);	
+		// Yii::import("html2pdf.Parsing.TextParser", true);	
+		// Yii::import("html2pdf.Parsing.TagParser", true);	
+		// Yii::import("html2pdf.Parsing.HtmlLexer", true);	
+		// Yii::import("html2pdf.Parsing.Html", true);	
+		// Yii::import("html2pdf.Parsing.Css", true);
+		// Yii::import("html2pdf.Parsing.Token", true);	
+		// Yii::import("html2pdf.Parsing.Node", true);
+		// Yii::import("html2pdf.Extension.ExtensionInterface", true);	
+		// Yii::import("html2pdf.Extension.CoreExtension", true);
+		// Yii::import("html2pdf.Tag.TagInterface", true);
+		// Yii::import("html2pdf.Tag.AbstractTag", true);
+		// Yii::import("html2pdf.Tag.AbstractDefaultTag", true);
+		// Yii::import("html2pdf.Tag.Big", true);
+		// Yii::import("html2pdf.Tag.Bookmark", true);
+		// Yii::import("html2pdf.Tag.I", true);
+		// Yii::import("html2pdf.Tag.B", true);
+		// Yii::import("html2pdf.Tag.S", true);
+		// Yii::import("html2pdf.Tag.U", true);
+		// Yii::import("html2pdf.Tag.Em", true);
+		// Yii::import("html2pdf.Tag.Span", true);
+		// Yii::import("html2pdf.Tag.Ins", true);
+		// Yii::import("html2pdf.Tag.Small", true);
+		// Yii::import("html2pdf.Tag.Font", true);
+		// Yii::import("html2pdf.Tag.Label", true);
+		// Yii::import("html2pdf.Tag.Samp", true);
+		// Yii::import("html2pdf.Tag.Strong", true);
+		// Yii::import("html2pdf.Tag.Sub", true);
+		// Yii::import("html2pdf.Tag.Sup", true);
+		// Yii::import("html2pdf.Tag.Cite", true);
+		// Yii::import("html2pdf.Tag.Del", true);
+		// Yii::import("html2pdf.Tag.Address", true);
+		// Yii::import("html2pdf.Locale", true);
+		// Yii::import("html2pdf.Html2Pdf", true);
+		// Yii::import("html2pdf.CssConverter", true);
+		
+		
+		$html2pdf = new \Spipu\Html2Pdf\Html2Pdf();
 		$html2pdf->writeHTML('<h1>HelloWorld</h1>This is my first test');
 		$html2pdf->output();
+
+
+		// *************** Autre test *****************
+		// $html2pdf = Yii::app()->ePdf->HTML2PDF();
+  		//$html2pdf->WriteHTML('<h1>HelloWorld</h1>This is my first test', array(), true);
+  		//$html2pdf->Output();
+		// # mPDF
+        // $mPDF1 = Yii::app()->ePdf->mpdf();
+ 
+        // # You can easily override default constructor's params
+        // $mPDF1 = Yii::app()->ePdf->mpdf('', 'A5');
+ 
+        // # render (full page)
+        // $mPDF1->WriteHTML($this->render('index', array(), true));
+ 
+        // # Load a stylesheet
+        // $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css') . '/main.css');
+        // $mPDF1->WriteHTML($stylesheet, 1);
+ 
+        // # renderPartial (only 'view' of current controller)
+        // $mPDF1->WriteHTML($this->renderPartial('index', array(), true));
+ 
+        // # Renders image
+        // $mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
+ 
+        // # Outputs ready PDF
+        // $mPDF1->Output();
+
 	}
 }

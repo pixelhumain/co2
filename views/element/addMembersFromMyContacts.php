@@ -245,7 +245,7 @@
         <div class="form-group" id="addMemberSection">
 
         	<input type="radio" value="citoyens" name="memberType" data-fa="user" checked> <i class="fa fa-user"></i> <?php echo Yii::t("common","a citizen"); ?>
-        	<?php if($type != "events"){ ?>
+        	<?php if($type != "events" || Authorisation::isElementAdmin($parentId, $type, @Yii::app()->session["userId"])){ ?>
         		<input type="radio" value="organizations" name="memberType" data-fa="group" style="margin-left:25px;"> <i class="fa fa-group"></i> <?php echo Yii::t("common","an organization"); ?>
         	<?php } ?>
 			<div class="input-group">

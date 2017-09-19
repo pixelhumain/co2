@@ -224,6 +224,32 @@ dynForm = {
             }),*/
             voteDateEnd : dyFInputs.voteDateEnd,
             majority: dyFInputs.inputText( "Règle de majorité (%) <small class='letter-green'>indiquez une valeur entre 50% et 100%</small>", "50%" ),
+            
+            voteAnonymous : dyFInputs.checkboxSimple("true", "voteAnonymous", 
+            										{ "onText" : "Oui",
+            										  "offText": "Non",
+            										  "onLabel" : "anonyme",
+            										  "offLabel": "désactivés",
+            										  //"inputId" : ".amendementDateEnddatetime",
+            										  "labelText": "Votes anonyme ?",
+            										  //"labelInInput": "Activer les amendements",
+            										  "labelInformation": "<i class='fa fa-info-circle'></i> Souhaitez-vous garder secrète l'identité des votants ?"
+
+            }),
+            
+            voteCanChange : dyFInputs.checkboxSimple("true", "voteCanChange", 
+            										{ "onText" : "Oui",
+            										  "offText": "Non",
+            										  "onLabel" : "changement de vote autorisé",
+            										  "offLabel": "changement de vote interdit",
+            										  //"inputId" : ".amendementDateEnddatetime",
+            										  "labelText": "Autoriser le changement de vote ?",
+            										  //"labelInInput": "Activer les amendements",
+            										  "labelInformation": "<i class='fa fa-info-circle'></i> Souhaitez-vous permettre aux votants de changer leur choix à volonté ?"
+
+            }),
+            
+
             tags : dyFInputs.tags(),
             //image : dyFInputs.image(),
             urls : dyFInputs.urls,

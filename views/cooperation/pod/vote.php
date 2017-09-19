@@ -33,6 +33,25 @@
  		$voteRes = Proposal::getAllVoteRes($proposal);
  		$totalVotant = Proposal::getTotalVoters($proposal); 
  		foreach ($voteRes as $key => $value) {
+
+ 			$identities = ""; 
+ 			if(@$proposal["voteAnonymous"] && @$proposal["voteAnonymous"] == "false"){
+	 			$nbVotant=0;
+	 			if(@$proposal["votes"][$key])
+	 			foreach ($proposal["votes"][$key] as $idVotant) { $nbVotant++;
+		 			if($nbVotant<50){ 
+			 			$votant = Element::getByTypeAndId("citoyens", $idVotant);
+			 			$identities .= $identities!="" ? ", " : "";
+			 			$identities .= $votant["username"];
+			 		}else if($nbVotant==50){
+			 			$identities .= "...";
+			 		}
+		 		}
+		 	}else{ $identities = "les votes sont anonymes"; }
+
+		 	$tooltipsVoteCantChange = "";
+		 	if($hasVote && @$proposal["voteCanChange"] == "false") 
+		 		$tooltipsVoteCantChange = "Vous ne pouvez plus changer votre vote";
  	?>
 		<div class="col-lg-8 col-md-8 col-sm-8 text-center no-padding pull-left margin-top-5">
 			<div class="col-lg-1 col-md-1 col-sm-1 text-center no-padding pull-left margin-top-5">
@@ -44,13 +63,14 @@
 				<?php } ?>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-6 text-center pull-left margin-top-5">
-				<?php if(@$proposal["status"] == "tovote" && $auth){ ?>
+				<?php if(@$proposal["status"] == "tovote" && $auth && (!$hasVote || @$proposal["voteCanChange"] == "true")){ ?>
 					<button class="btn btn-send-vote btn-link btn-sm bg-<?php echo $value["bg-color"]; ?> tooltips"
 							data-original-title="cliquer pour voter" data-placement="right"
 							data-vote-value="<?php echo $value["voteValue"]; ?>"><?php echo Yii::t("cooperation", $key); ?>
 					</button>
 				<?php }else{ ?>
-					<label class="col-lg-12 col-md-12 col-sm-12 badge padding-10 bg-<?php echo $value["bg-color"]; ?>">
+					<label class="col-lg-12 col-md-12 col-sm-12 badge padding-10 bg-<?php echo $value["bg-color"]; ?> tooltips"
+						   data-original-title="<?php echo $tooltipsVoteCantChange; ?>" data-placement="right">
 						<?php echo Yii::t("cooperation", $key); ?>
 					</label>
 				<?php } ?>
@@ -60,7 +80,8 @@
 						data-original-title="<?php echo $value["votant"]; ?> votants" data-placement="right">
 				<label><?php echo $value["percent"]; ?>%</label>
 			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 text-center pull-left margin-top-5 hidden-sm hidden-xs">
+			<div class="col-lg-4 col-md-4 col-sm-4 text-center pull-left margin-top-5 hidden-sm hidden-xs tooltips"
+				 data-original-title="<?php echo $identities; ?>" data-placement="top">
 				<small><?php echo $value["votant"]; ?> votant(s)</small><br>
 			</div>
 		</div>
@@ -71,30 +92,54 @@
 
 		<?php if(@$proposal["status"] != "amendable" && $auth){ ?>
 			<?php if($hasVote!=false){ ?>
-				<h5 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
+				<h4 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
 					style="padding-left: 0px !important;">Vous avez voté 
 					<span class="letter-<?php echo Cooperation::getColorVoted($hasVote); ?>">
 						<?php echo Yii::t("cooperation", $hasVote); ?>
 					</span>
-				</h5>
+				</h4>
 			<?php }else{ ?>
-				<h5 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
-					style="padding-left: 0px !important;">Vous n'avez pas voté</h5>
+				<h4 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
+					style="padding-left: 0px !important;">Vous n'avez pas voté</h4>
 			<?php } ?>
 			<br>
 		<?php } ?>
 
-		<small class="majority">
-			<i class="fa fa-2x fa-balance-scale"></i> Règle de majorité : <b><?php echo @$proposal["majority"]; ?>%</b> 
-			<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
-				 Proposition <?php if($proposal["status"] == "tovote"){ ?>temporairement <?php } ?>
-				 <span class="bold letter-green">Validée</span>
-			<?php }else{ ?>
-				 Proposition <?php if($proposal["status"] == "tovote"){ ?>temporairement <?php } ?> 
-				 <span class="bold letter-red">Refusée</span>
-			<?php } ?>
-		</small>
-		
+		<hr style="border-color:lightgrey;">
+
+		<h4 class="pull-left">
+			<small>
+				<i class="fa fa-gavel"></i> Changement de vote : 
+				<?php if(@$proposal["voteCanChange"] == "true"){ ?> 
+					<span class="letter-green">Autorisé</span>
+				<?php }else{ ?> 
+					<span class="letter-red">Non-autorisé</span>
+				<?php } ?> 
+				<br>
+				<i class="fa fa-user-secret"></i> Vote anonyme : 
+				<?php if(!isset($proposal["voteAnonymous"]) || @$proposal["voteAnonymous"] == "true"){ ?> 
+					<span class="letter-green">Oui</span>
+				<?php }else{ ?> 
+					<span class="letter-red">Non</span>
+				<?php } ?> 
+				
+				
+			</small>
+		</h4>
+
+		<h4 class="pull-right text-right">
+			<small class="majority">
+				<i class="fa fa-2x fa-balance-scale"></i> Règle de majorité : <b><?php echo @$proposal["majority"]; ?>%</b><br>
+				<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
+					 Proposition <?php if($proposal["status"] == "tovote"){ ?>temporairement <?php } ?>
+					 <span class="bold letter-green">Validée</span>
+				<?php }else{ ?>
+					 Proposition <?php if($proposal["status"] == "tovote"){ ?>temporairement <?php } ?> 
+					 <span class="bold letter-red">Refusée</span>
+				<?php } ?>
+			</small>
+		</h4>
+
 	</div>
 
 </div>

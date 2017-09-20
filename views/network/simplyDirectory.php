@@ -842,30 +842,31 @@ function loadServerFilters(types,tags){
 		breadcum = breadcum+"<span class='label label-danger categoryFilter' value='"+value+"'>"+value+"</span> ";
 	}); 
 
-	$(".tagFilter").off().click(function(e){
+	$(".tagFilter").click(function(e){
 		mylog.log(".tagFilter",  $(this));
-		mylog.log($(this).is( ':checked' ), $(this).prop( 'checked' ), $(this).attr( 'checked' ));
-		var checked = $(this).is( ':checked' );
-		var filtre = $(this).attr("value");
-		var parent = $(this).data("parent")
-		mylog.log("parent",parent);
-		if(typeof networkJson.filter != "undefined" && typeof networkJson.filter.linksTag != "undefined"){
-			$.each(networkJson.filter.linksTag, function(keyNet, valueNet){
-				if(typeof valueNet.tags[filtre] != "undefined"){
+		mylog.log("label :", $(this).hasClass( "active" ), $(this).attr( 'class' ), $(this).children(".childrenTag").attr( 'id' ), $(this).className);
+		mylog.log("checkbox :", $(this).data( "val" ),$("#"+$(this).data( "val" )), $("#"+$(this).data( "val" )).is( ':checked' ), $("#"+$(this).data( "val" )).prop( 'checked' ), $("#"+$(this).data( "val" )).attr( 'checked' ), $("#"+$(this).data( "val" )).attr( 'class' ));
+		// var checked = $(this).is( ':checked' );
+		// var filtre = $(this).attr("value");
+		// var parent = $(this).data("parent")
+		// mylog.log("parent",parent);
+		// if(typeof networkJson.filter != "undefined" && typeof networkJson.filter.linksTag != "undefined"){
+		// 	$.each(networkJson.filter.linksTag, function(keyNet, valueNet){
+		// 		if(typeof valueNet.tags[filtre] != "undefined"){
 
-					if(typeof valueNet.tags[filtre] == "string"){
-						tagActivedUpdate(checked, valueNet.tags[filtre], parent);
-					}
-					else{
-						$.each(valueNet.tags[filtre], function(keyTags, valueTags){
-							tagActivedUpdate(checked, valueTags, parent);
-						});
-					}
-				}  
-			});
-		}
+		// 			if(typeof valueNet.tags[filtre] == "string"){
+		// 				tagActivedUpdate(checked, valueNet.tags[filtre], parent);
+		// 			}
+		// 			else{
+		// 				$.each(valueNet.tags[filtre], function(keyTags, valueTags){
+		// 					tagActivedUpdate(checked, valueTags, parent);
+		// 				});
+		// 			}
+		// 		}  
+		// 	});
+		// }
 
-		chargement();	  	
+		// chargement();  	
 	});
 
 	$(".villeFilter").off().click(function(e){

@@ -68,7 +68,7 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 pull-left">
 	<hr>
-		<h3 class="no-margin">La <b>résolution</b> suivante a été prise : <br class="visible-md">
+		<h4 class="no-margin">La <b>résolution</b> suivante a été prise : <br class="visible-md">
 			<small>la proposition est 
 			 	<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && 
 			 			$voteRes["up"]["percent"] > @$resolution["majority"] ){ ?>
@@ -77,7 +77,7 @@
 			 	<span class="letter-red">refusée</span>
 				<?php } ?>
 			</small>
-		</h3>
+		</h4>
 
 		<div class="progress col-lg-7 col-md-10 col-sm-12 no-padding">
 			<?php 
@@ -98,9 +98,9 @@
 			<?php } ?>
 		</div> 
 
-		<h3 class="col-lg-12 col-md-12 col-sm-12">
+		<h4 class="col-lg-12 col-md-12 col-sm-12">
 			<i class="fa fa-balance-scale"></i> Règle de majorité : <b><?php echo @$resolution["majority"]; ?>%</b>
-		</h3>
+		</h4>
 	<br>
 </div>
 
@@ -116,6 +116,10 @@
 				<h3><i class="fa fa-angle-down"></i> Proposition</h3>
 		<?php } ?>
 
+		<?php if(@$resolution["description"]){
+				$resolution["description"] = Translate::strToClickable($resolution["description"]);
+		} ?>
+			
 		<?php echo nl2br(@$resolution["description"]); ?>
 
 		<?php 
@@ -137,6 +141,14 @@
 
 		<?php } //foreach ?>
 		<?php } //if($i == 0){ echo "<hr><i class='fa fa-ban'></i> Aucun amendement validé"; } ?>
+
+		<?php if(@$resolution["tags"]){ ?>
+			<br><br> <b>Tags : </b>
+			<?php foreach($resolution["tags"] as $key => $tag){ ?>
+				<span class="letter-red margin-right-15">#<?php echo $tag; ?></span>
+			<?php } ?>	
+			
+		<?php } ?>
 	</div>
 
 	<?php if(false && @$resolution["arguments"]){ ?>
@@ -144,19 +156,17 @@
 		<?php echo nl2br(@$resolution["arguments"]); ?>
 	<?php } ?>
 
-	<?php if(@$resolution["tags"]){ ?>
-		<hr>
-		<?php foreach($resolution["tags"] as $key => $tag){ ?>
-			<span class="badge bg-red"><?php echo $tag; ?></span>
-		<?php } ?>	
-	<?php } ?>
-
+	
 	<?php if(@$resolution["urls"]){ ?>
-		<hr>	
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 		<h4 class=""><i class="fa fa-angle-down"></i> Liens externes</h4>
 		<?php foreach($resolution["urls"] as $key => $url){ ?>
-			<a href="<?php echo $url; ?>" class="btn btn-link"><?php echo $url; ?></a>
+			<a href="<?php echo $url; ?>" target="_blank" class="btn btn-default bg-white shadow2 margin-bottom-5">
+				<i class="fa fa-external-link"></i> <?php echo $url; ?>
+			</a>
 		<?php } ?>
+		<hr>	
+	</div>
 	<?php } ?>
 </div>
 

@@ -4,6 +4,24 @@
 
 ?>
 
+<style>
+	.btn-assignee:hover{
+		color:white;
+		background-color: #288942 !important;
+	}
+</style>
+
+<?php if(@$access=="deny"){ ?>
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<h5 class="padding-left-10 letter-red">
+			<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
+		</h5>
+		<h5 class="padding-left-10 letter-red">
+			<small>Devenez membre ou contributeur</small>  	
+		</h5>
+	</div>
+<?php exit; } ?>
+
 
 <div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
 	<?php if(@$post["status"]) {
@@ -18,22 +36,22 @@
 
 <?php
 	//if no assignee , no startDate no end Date
-    $statusLbl = Yii::t("rooms", "Todo");
-    $statusColor = "badge-info";
+    $statusLbl = Yii::t("rooms", @$post["status"]);
     //if startDate passed, or no startDate but has end Date
-    if( (bool)strtotime(@$action["startDate"]) == FALSE && (bool)strtotime(@$action["endDate"]) == FALSE ){
-    	$action["status"] = "nodate";	
-    } 
-    else if( strtotime(@$action["startDate"]) > time() )
-      	$action["status"] = "startingsoon";
-    else if( ( isset($action["startDate"]) && strtotime($action["startDate"]) <= time() )  || 
-    		   ( !@$action["startDate"] && @$action["endDate"] ) )
-    {
-      $action["status"] = "progress";
-      if( strtotime(@$action["endDate"]) < time()  )
-        $action["status"] = "late";
-      
-    } 
+    if(@$post["status"] == "todo"){
+	    if( (bool)strtotime(@$action["startDate"]) == FALSE && (bool)strtotime(@$action["endDate"]) == FALSE ){
+	    	$action["status"] = "nodate";	
+	    } 
+	    else if( strtotime(@$action["startDate"]) > time() )
+	      	$action["status"] = "startingsoon";
+	    else if( ( isset($action["startDate"]) && strtotime($action["startDate"]) <= time() )  || 
+	    		   ( !@$action["startDate"] && @$action["endDate"] ) ) {
+	        $action["status"] = "progress";
+	      	if( strtotime(@$action["endDate"]) < time()  )
+	        	$action["status"] = "late";
+	      
+	    } 
+}
 ?>			
 
 	<label class=""><i class="fa fa-bell"></i> Status : 
@@ -41,13 +59,13 @@
 			<?php echo Yii::t("cooperation", $action["status"]); ?>
 		</small>
 	</label>
-
-	<h4 class="text-purple no-margin">
-		<i class="fa fa-pencil"></i> Action ouverte 
+	<hr>
+	<h4 class="no-margin">
+		<i class="fa fa-clock-o"></i> Action à réaliser 
 <?php
 if( @$action["startDate"] && (bool)strtotime(@$action["startDate"]) != FALSE ){
 ?> 
-		du <small class="text-purple"><?php echo date('d/m/Y', strtotime($action["startDate"])); ?>
+		du <small class="letter-blue"><?php echo date('d/m/Y', strtotime($action["startDate"])); ?>
 <?php
 }
 
@@ -118,29 +136,71 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 				<h3><i class="fa fa-hashtag"></i> <?php echo @$action["name"]; ?></h3>
 			<?php } ?>
 		
+			<?php if(@$action["description"]){
+					$action["description"] = Translate::strToClickable($action["description"]);
+			} ?>
+			
 			<?php echo nl2br(@$action["description"]); ?>
+
+			<?php if(@$action["tags"]){ ?>
+				<br><br> <b>Tags : </b>
+				<?php foreach($action["tags"] as $key => $tag){ ?>
+					<span class="letter-red margin-right-15">#<?php echo $tag; ?></span>
+				<?php } ?>	
+				
+			<?php } ?>
 	</div>
 </div>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-25" >
-	<?php if( @$action["links"]["contributors"] ) {	
-			$this->renderPartial('../pod/usersList', array(  
-								"project"=> $action,
-								"users" => $contributors,
-								"countStrongLinks" => $countStrongLinks, 
-								"userCategory" => Yii::t("rooms","Assignés à cette tâche"), 
-								"contentType" => ActionRoom::COLLECTION_ACTIONS,
-								"admin" => true	)); 
-		}
-	
-	if( $auth && !@$action["links"]["contributors"][Yii::app()->session['userId']]  )
-	{	?>
-	<a href="javascript:;" class="pull-right text-large btn btn-dark-blue " 
-	   onclick="assignMe('<?php echo (string)$action["_id"]?>');" >
-		<i class="fa fa-link"></i> 
-		<?php echo Yii::t("rooms","I'll Do it") ?>
-   	</a>
+
+	<?php if(@$action["urls"]){ ?>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+		<h4 class=""><i class="fa fa-angle-down"></i> Liens externes</h4>
+		<?php foreach($action["urls"] as $key => $url){ ?>
+			<a href="<?php echo $url; ?>" target="_blank" class="btn btn-default bg-white shadow2 margin-bottom-5">
+				<i class="fa fa-external-link"></i> <?php echo $url; ?>
+			</a>
+		<?php } ?>
+		<hr>	
+	</div>
+	<?php } ?>
+
+	<?php if( $auth && !@$action["links"]["contributors"][Yii::app()->session['userId']]  ){ ?>
+		<button class="btn btn-default bg-green-k btn-assignee" data-target="#modalAssignMe" data-toggle="modal">
+			<i class="fa fa-handshake-o"></i> 
+			<?php echo Yii::t("rooms","I'll Do it") ?>
+	   	</button><hr>
+	<?php }else if( $auth ){ ?>
+		<h5 class="letter-green"><i class="fa fa-check"></i> Vous participez à cette action</h5><hr>
 	<?php }	?>
+
+	<?php if( @$action["links"]["contributors"] ) {	?>
+		<h4><i class="fa fa-angle-down"></i> <i class="fa fa-group"></i> Ils participent à cette action</h4><hr>
+	<?php foreach ($action["links"]["contributors"] as $id => $att) { // var_dump($att);
+			$contrib = Element::getByTypeAndId($att["type"], $id); ?>
+			<div class="col-lg-4 col-md-4 col-sm-6 link-assignee ">
+				<a href="#page.type.citoyens.id.<?php echo $id; ?>" 
+					class="elipsis shadow2 lbh">
+					<img width="40" height="40"  alt="image" class="img-circle tooltips" 
+						 <?php if(@$contrib['profilThumbImageUrl']){ ?>
+						 src="<?php echo Yii::app()->createUrl('/'.$contrib['profilThumbImageUrl']) ?>" 
+						 <?php } ?>
+						 data-placement="top" data-original-title="<?php echo @$contrib['name']; ?>">
+						<span class="">
+							<?php if(false && @$att["isAdmin"]==true){ ?>
+								<i class="fa fa-user-secret letter-red"></i>
+							<?php } ?>
+							<b><?php echo @$contrib['name']; ?></b>
+						</span>
+				</a>
+			</div>
+		<?php } ?>
+	
+	<?php }else{ ?>
+		<h4><i class="fa fa-ban"></i> <i class="fa fa-group"></i> Aucun participant</h4>
+	<?php }	?>
+
 </div>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 padding-bottom-5">
@@ -159,60 +219,12 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 	var idAction = "<?php echo $action['_id']; ?>";
 	var idParentRoom = "<?php echo $action['idParentRoom']; ?>";
 	var msgController = "<?php echo @$msgController ? $msgController : ''; ?>";
+
+	currentRoomId = idParentRoom;
+
 	jQuery(document).ready(function() { 
-		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
-		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/actions/id/"+idAction,
-			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
-		},"html");
-
-
-		$("#btn-close-action").click(function(){
-			uiCoop.minimizeMenuRoom(false);
-		});
-		$(".btn-extend-action").click(function(){
-			uiCoop.maximizeReader(true);
-			$(".btn-minimize-action").removeClass("hidden");
-			$(".btn-extend-action").addClass("hidden");
-		});
-		$(".btn-minimize-action").click(function(){
-			uiCoop.maximizeReader(false);
-			$(".btn-minimize-action").addClass("hidden");
-			$(".btn-extend-action").removeClass("hidden");
-		});
-
-		$(".btn-option-status-action").click(function(){
-			var idAction = $(this).data("id-action");
-			var status = $(this).data("status");
-			console.log("update status actions", idAction, status, parentTypeElement, parentIdElement);
-			uiCoop.changeStatus("actions", idAction, status, parentTypeElement, parentIdElement);
-		});
-
-		$("#btn-edit-action").click(function(){
-			var idaction = $(this).data("id-action");
-			console.log("edit idAction", idAction);
-			dyFObj.editElement('actions', idAction);
-		});
-
-		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
-							  ".view.coop.room." + idParentRoom + ".action." + idAction;
+		uiCoop.initUIAction();
 	});
 
-	function assignMe(id)
-	{
-	    bootbox.confirm("<strong>Êtes-vous sûr de vouloir participer à cette action ?</strong><br>" +
-	    				"Vous serez inscrit dans la liste des participants.",
-
-	        function(result) {
-	            if (result) {
-	              params = { "id" : id };
-	              ajaxPost(null,'<?php echo Yii::app()->createUrl(Yii::app()->controller->module->id."/rooms/assignme")?>',params,function(data){
-	                if(data.result)
-	                  uiCoop.getCoopData(null, null, "action", null, idAction); 
-	                  //alert("Tango a l'aide comment je reload stp action.php > function assignMe > l.181");
-	                else 
-	                  toastr.error(data.msg);
-	              });
-	        } 
-	    });
-	 }
+	
 </script>

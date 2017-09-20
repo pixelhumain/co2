@@ -10,8 +10,19 @@
 
 	$totalVotant = Proposal::getTotalVoters($proposal);
 	$voteRes = Proposal::getAllVoteRes($proposal);
-				
+	
 ?>
+
+<?php if(@$access=="deny"){ ?>
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<h5 class="padding-left-10 letter-red">
+			<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
+		</h5>
+		<h5 class="padding-left-10 letter-red">
+			<small>Devenez membre ou contributeur</small>  	
+		</h5>
+	</div>
+<?php exit; } ?>
 
 <div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
 
@@ -116,7 +127,6 @@
 
 
 <div class="col-lg-9 col-md-12 col-sm-12 pull-left margin-bottom-15">
-
 	
 	<?php if(@$proposal["status"] == "tovote"){ ?>
 		<hr>
@@ -182,14 +192,25 @@
 	
 	<div class="padding-25 bg-lightblue radius-5" id="container-text-proposal" 
 		 style="padding-top:5px !important; color:#2C3E50 !important">
-			
+
 			<?php if(@$proposal["title"]){ ?>
 				<h3><i class="fa fa-hashtag"></i> <?php echo @$proposal["title"]; ?></h3>
 			<?php }else{ ?>
 				<h3><i class="fa fa-angle-down"></i> Proposition</h3>
 			<?php } ?>
 		
+			<?php if(@$proposal["description"]){
+					$proposal["description"] = Translate::strToClickable($proposal["description"]);
+			} ?>
+			
 			<?php echo nl2br(@$proposal["description"]); ?>
+			<?php if(@$proposal["tags"]){ ?>
+				<br><br> <b>Tags : </b>
+				<?php foreach($proposal["tags"] as $key => $tag){ ?>
+					<span class="letter-red margin-right-15">#<?php echo $tag; ?></span>
+				<?php } ?>	
+				
+			<?php } ?>
 	</div>
 
 	<?php //if(@$proposal["status"] != "tovote"){ ?>
@@ -299,19 +320,18 @@
 		</div>
 	<?php } ?>
 
-	<?php if(@$proposal["tags"]){ ?>
-		<hr>
-		<?php foreach($proposal["tags"] as $key => $tag){ ?>
-			<span class="badge bg-red"><?php echo $tag; ?></span>
-		<?php } ?>	
-	<?php } ?>
+	
 
 	<?php if(@$proposal["urls"]){ ?>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 		<hr>	
 		<h4 class=""><i class="fa fa-angle-down"></i> Liens externes</h4>
 		<?php foreach($proposal["urls"] as $key => $url){ ?>
-			<a href="<?php echo $url; ?>" class="btn btn-link"><?php echo $url; ?></a>
+			<a href="<?php echo $url; ?>" target="_blank" class="btn btn-default bg-white shadow2 margin-bottom-5">
+				<i class="fa fa-external-link"></i> <?php echo $url; ?>
+			</a>
 		<?php } ?>
+	</div>
 	<?php } ?>
 </div>
 
@@ -367,6 +387,9 @@
 	var idParentProposal = "<?php echo $proposal['_id']; ?>";
 	var idParentRoom = "<?php echo $proposal['idParentRoom']; ?>";
 	var msgController = "<?php echo @$msgController ? $msgController : ''; ?>";
+
+	currentRoomId = idParentRoom;
+
 	jQuery(document).ready(function() { 
 		
 		uiCoop.initUIProposal();

@@ -304,6 +304,9 @@ var trad = {
 	"Your amendement has been save with success" : "<?php echo Yii::t("cooperation", "Your amendement has been save with success") ?>",
 	"Your vote has been save with success" : "<?php echo Yii::t("cooperation", "Your vote has been save with success") ?>",
 	"processing save" : "<?php echo Yii::t("cooperation", "processing save") ?>",
+	"processing delete" : "<?php echo Yii::t("cooperation", "processing delete") ?>",
+	"processing delete ok" : "<?php echo Yii::t("cooperation", "processing delete ok") ?>",
+	"processing delete KO" : "<?php echo Yii::t("cooperation", "processing delete KO") ?>",
 	"processing ok" : "<?php echo Yii::t("cooperation", "processing ok") ?>",
 	"processing" : "<?php echo Yii::t("cooperation", "processing") ?>",
 
@@ -348,8 +351,12 @@ var tradDynForm = {
 	"nameofyour":"<?php echo Yii::t("form","Name of your") ?>",
 	"titleofyour":"<?php echo Yii::t("form","Title of your") ?>",
 	"tags":"<?php echo Yii::t("form","Tags") ?>",
+	"roles":"<?php echo Yii::t("form","Roles") ?>",
 	"description":"<?php echo Yii::t("form","Description") ?>",
 	"addtags":"<?php echo Yii::t("form","Add some tags") ?>",
+	"limitAccessRole":"<?php echo Yii::t("form","Limit role access") ?>",
+
+	"addroles":"<?php echo Yii::t("form","Add some roles") ?>",
 	"imageshere":"<?php echo Yii::t("form","Your pictures here") ?>",
 	"fileshere":"<?php echo Yii::t("form","Your files here") ?>",
 	"pricesymbole":"<?php echo Yii::t("form","Price (£)") ?>",

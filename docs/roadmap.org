@@ -135,7 +135,8 @@ Liste des notifications déjà lues => #370 #453
     une vision à un temps t, de toutes les ressources d'une CO 
       - en mode web 
       - mobi
-
+  ** Keyboard nav
+    Ctrl + ? > opens floop > type > reduce selection
 * ************************************************************    
 * Version C0.21.8  : en cours
 8 correpsond le nb de nouvelle fonctionalité

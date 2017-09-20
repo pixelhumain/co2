@@ -4,6 +4,13 @@
 
 ?>
 
+<style>
+	.btn-assignee:hover{
+		color:white;
+		background-color: #288942 !important;
+	}
+</style>
+
 <?php if(@$access=="deny"){ ?>
 	<div class="col-lg-12 col-md-12 col-sm-12">
 		<h5 class="padding-left-10 letter-red">
@@ -130,13 +137,33 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 			<?php } ?>
 		
 			<?php echo nl2br(@$action["description"]); ?>
+
+			<?php if(@$action["tags"]){ ?>
+				<br><br> <b>Tags : </b>
+				<?php foreach($action["tags"] as $key => $tag){ ?>
+					<span class="letter-red margin-right-15">#<?php echo $tag; ?></span>
+				<?php } ?>	
+				
+			<?php } ?>
 	</div>
 </div>
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-25" >
 
+	<?php if(@$action["urls"]){ ?>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+		<h4 class=""><i class="fa fa-angle-down"></i> Liens externes</h4>
+		<?php foreach($action["urls"] as $key => $url){ ?>
+			<a href="<?php echo $url; ?>" target="_blank" class="btn btn-default bg-white shadow2 margin-bottom-5">
+				<i class="fa fa-external-link"></i> <?php echo $url; ?>
+			</a>
+		<?php } ?>
+		<hr>	
+	</div>
+	<?php } ?>
+
 	<?php if( $auth && !@$action["links"]["contributors"][Yii::app()->session['userId']]  ){ ?>
-		<button class="btn btn-default" data-target="#modalAssignMe" data-toggle="modal">
+		<button class="btn btn-default bg-green-k btn-assignee" data-target="#modalAssignMe" data-toggle="modal">
 			<i class="fa fa-handshake-o"></i> 
 			<?php echo Yii::t("rooms","I'll Do it") ?>
 	   	</button><hr>

@@ -201,7 +201,7 @@
 		
 			<?php echo nl2br(@$proposal["description"]); ?>
 			<?php if(@$proposal["tags"]){ ?>
-				<br><br>
+				<br><br> <b>Tags : </b>
 				<?php foreach($proposal["tags"] as $key => $tag){ ?>
 					<span class="letter-red margin-right-15">#<?php echo $tag; ?></span>
 				<?php } ?>	
@@ -323,7 +323,9 @@
 		<hr>	
 		<h4 class=""><i class="fa fa-angle-down"></i> Liens externes</h4>
 		<?php foreach($proposal["urls"] as $key => $url){ ?>
-			<a href="<?php echo $url; ?>" target="_blank" class="btn btn-default bg-white shadow2"><?php echo $url; ?></a>
+			<a href="<?php echo $url; ?>" target="_blank" class="btn btn-default bg-white shadow2 margin-bottom-5">
+				<i class="fa fa-external-link"></i> <?php echo $url; ?>
+			</a>
 		<?php } ?>
 	</div>
 	<?php } ?>

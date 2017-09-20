@@ -1669,6 +1669,38 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	  		
 	  	}
 	 }
+	 public function actionChangePoiType(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			echo "Traitement des p(zéro)is<br/>";
+		  	$pois=PHDB::find(Poi::COLLECTION);
+		  	$nbPois=0;
+		  	
+		  	foreach($pois as $key => $data){
+		  		if(!@$data["type"]){
+		  			$newType="other";
+		  		}else{
+			  		if($data["type"]=="poi")
+			  			$newType="other";
+			  		else if($data["type"]=="streetArts")
+			  			$newType="streetArt";
+			  		else if($data["type"]=="ficheBlanche")
+			  			$newType="documentation";
+			  		else if($data["type"]=="RessourceMaterielle")
+			  			$newType="materialRessource";
+			  		else
+			  			$newType=$data["type"];
+		  		}
+				PHDB::update(Poi::COLLECTION,
+						array("_id" => $data["_id"]) , 
+						array('$set' => array('type'=> $newType)));
+				$nbPois++;
+				
+		  	}
+		  	echo "nombre de p0is traités:".$nbPois." pois";
+	  		
+	  	}else
+	  		echo "jajajajajja: Tu as volé trop près du soleil Icare";
+	 }
 
 	public function actionCreatorUpdatedOnNotifications(){
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){

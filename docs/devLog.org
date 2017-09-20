@@ -31,6 +31,8 @@ co2/datamigration/CreatorUpdatedOnNotifications
 
 *** Bash sur les clés des event en francais: "concours"=>"contest" et "exposition"=>"exhibition"
 co2/datamigration/ChangeEventFrenchType
+*** Bash sur les type des poi: si type existe pas => "other", si type == poi => "other", si clé francaise => clé anglaise etc
+co2/datamigration/ChangePoiType
 
 *** A faire Bash de reprise des clés francaises POI (ex ressourceMaterielle to materialRessource) et CLASSIFIED
 TODO @TIBOR @BOUBOULE

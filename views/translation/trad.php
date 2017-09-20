@@ -304,6 +304,9 @@ var trad = {
 	"Your amendement has been save with success" : "<?php echo Yii::t("cooperation", "Your amendement has been save with success") ?>",
 	"Your vote has been save with success" : "<?php echo Yii::t("cooperation", "Your vote has been save with success") ?>",
 	"processing save" : "<?php echo Yii::t("cooperation", "processing save") ?>",
+	"processing delete" : "<?php echo Yii::t("cooperation", "processing delete") ?>",
+	"processing delete ok" : "<?php echo Yii::t("cooperation", "processing delete ok") ?>",
+	"processing delete KO" : "<?php echo Yii::t("cooperation", "processing delete KO") ?>",
 	"processing ok" : "<?php echo Yii::t("cooperation", "processing ok") ?>",
 	"processing" : "<?php echo Yii::t("cooperation", "processing") ?>",
 

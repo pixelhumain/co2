@@ -516,8 +516,9 @@ class CommunecterController extends Controller
       "incnbclick"        => array('href' => "ph/co2/siteurl/incnbclick")
     ),
     "cooperation" => array(
-      "getcoopdata"        => array('href' => "ph/communecter/cooperation/getcoopdata"),
-      "savevote"        => array('href' => "ph/communecter/cooperation/savevote")
+      "getcoopdata"        => array('href' => "ph/co2/cooperation/getcoopdata"),
+      "savevote"           => array('href' => "ph/co2/cooperation/savevote"),
+      "deleteamendement"  => array('href' => "ph/co2/cooperation/deleteamendement")
     ),
   );
 

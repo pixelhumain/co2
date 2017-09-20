@@ -199,6 +199,10 @@
 				<h3><i class="fa fa-angle-down"></i> Proposition</h3>
 			<?php } ?>
 		
+			<?php if(@$proposal["description"]){
+					$proposal["description"] = Translate::strToClickable($proposal["description"]);
+			} ?>
+			
 			<?php echo nl2br(@$proposal["description"]); ?>
 			<?php if(@$proposal["tags"]){ ?>
 				<br><br> <b>Tags : </b>

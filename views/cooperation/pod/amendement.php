@@ -1,5 +1,12 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow2 margin-top-15 margin-bottom-15 padding-15 podVoteAmendement">
 	
+	<?php if(Yii::app()->session["userId"]==$am["idUserAuthor"]){ ?>
+		<button class="btn btn-sm btn-default pull-right btn-modal-delete-am" data-toggle="modal" data-target="#modalDeleteAm"
+		 data-id-am="<?php echo $key; ?>">
+			<i class="fa fa-trash"></i>
+		</button>
+	<?php } ?>
+
 	<div class="col-lg-9 col-md-9 col-sm-8 col-xs-8 pull-left no-padding">
 		<!-- <img src="<?php echo $this->module->assetsUrl.'/images/thumbnail-default.jpg'; ?>" 
 			 class="img-circle pull-left margin-right-10" height="30" width="30">
@@ -8,6 +15,7 @@
 		<label class="pull-left"><span class="badge bg-purple">n°<?php echo $key; ?></span> <span class="letter-green">
 			<i class="fa fa-angle-right"></i> Ajout</span>
 		</label>
+
 
 		<?php if($hasVoted!=false){ ?>
 			<h5 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">

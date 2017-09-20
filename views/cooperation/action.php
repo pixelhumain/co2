@@ -136,6 +136,10 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 				<h3><i class="fa fa-hashtag"></i> <?php echo @$action["name"]; ?></h3>
 			<?php } ?>
 		
+			<?php if(@$action["description"]){
+					$action["description"] = Translate::strToClickable($action["description"]);
+			} ?>
+			
 			<?php echo nl2br(@$action["description"]); ?>
 
 			<?php if(@$action["tags"]){ ?>

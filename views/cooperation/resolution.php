@@ -116,6 +116,10 @@
 				<h3><i class="fa fa-angle-down"></i> Proposition</h3>
 		<?php } ?>
 
+		<?php if(@$resolution["description"]){
+				$resolution["description"] = Translate::strToClickable($resolution["description"]);
+		} ?>
+			
 		<?php echo nl2br(@$resolution["description"]); ?>
 
 		<?php 

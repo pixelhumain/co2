@@ -149,7 +149,16 @@ class AppController extends CommunecterController {
         $params = array("type" => "classified");
         echo $this->renderPartial("search", $params, true);
     }
-
+    public function actionPrestations(){
+        CO2Stat::incNbLoad("co2-annonces"); 
+        $params = array("type" => "classified");
+        echo $this->renderPartial("search", $params, true);
+    }
+    public function actionStore(){
+        CO2Stat::incNbLoad("co2-annonces"); 
+        $params = array("type" => "classified");
+        echo $this->renderPartial("search", $params, true);
+    }
 
 
     public function actionFreedom(){

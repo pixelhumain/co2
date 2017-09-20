@@ -94,7 +94,7 @@
     </div>
     <?php } ?>
 
-    <?php if(@$type!="cities"){ ?>
+    <?php if(@$type!="cities" && Yii::app()->params["CO2DomainName"] != "BCH"){ ?>
         <div class="col-md-2 col-sm-2 col-xs-12 no-padding">
             <?php if(@$type=="all"){ ?>
             <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips"
@@ -116,16 +116,17 @@
         <?php //var_dump(Yii::app()->request->cookies['communexionActivated']);
               //var_dump(CO2::getCommunexionCookies()); 
         ?>
-
+        <?php if(Yii::app()->params["CO2DomainName"] != "BCH"){ ?> 
         <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
             <?php $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
         </div>
+        <?php } ?>
     <?php } ?>
 
 
 	<div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="page"></div>
 
-    <?php if(@$type=="all" && !empty(Yii::app()->session["userId"]) ){ ?>
+    <?php if(@$type=="all" && !empty(Yii::app()->session["userId"]) && Yii::app()->params["CO2DomainName"] != "BCH" ){ ?>
     <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
         <!-- <hr style="margin-bottom:-20px;"> -->
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 

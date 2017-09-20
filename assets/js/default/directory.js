@@ -1252,6 +1252,103 @@ var directory = {
       str += "</div>";
       return str;
     },
+    prestaProductPanelHtml : function(params){
+      if(directory.dirLog) mylog.log("----------- classifiedPanelHtml",params,params.name);
+
+      str = "";  
+      str += "<div class='col-lg-6 col-md-12 pull- col-sm-12 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
+      str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
+      
+     // directory.colPos = directory.colPos == "left" ? "right" : "left";
+       
+      if(userId != null && userId != "" && params.id != userId){
+          isFollowed=false;
+          if(typeof params.isFollowed != "undefined" ) isFollowed=true;
+           var tip = 'Garder en favoris';
+            str += "<a href='javascript:collection.add2fav(\"classified\",\""+params.id+"\")' class='dirStar star_classified_"+params.id+" btn btn-default btn-sm btn-add-to-directory bg-white tooltips'" + 
+                  'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"'>"+
+                    "<i class='fa fa star fa-star-o'></i>"+ //fa-bookmark fa-rotate-270
+                  "</a>";
+          
+        }
+
+        if(params.updated != null )
+          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>publié </span>" + 
+                    params.updated + 
+                  "</div>";
+        
+        if(params.type == "citoyens") 
+            params.hash += '.viewer.' + userId;
+        if(typeof params.size == "undefined" || params.size == "max")
+          str += "<a href='"+params.hash+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + 
+                    params.imgProfil + 
+                  "</a>";
+
+        str += "<div class='padding-10 informations'>";
+
+        str += "<div class='entityRight no-padding'>";
+
+            if(typeof params.size == "undefined" || params.size == "max"){
+              str += "<div class='entityCenter no-padding'>";
+              str +=    "<a href='"+params.hash+"' class='lbhp add2fav' data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
+              str += "</div>";
+            }
+
+            str += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10 btn-share pull-right'"+
+                              " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"'>"+
+                              "<i class='fa fa-share'></i> Partager</button>";
+
+
+            var devise = typeof params.devise != "undefined" ? params.devise : "";
+            if(typeof params.price != "undefined" && params.price != "")
+            str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
+         
+            if(typeof params.category != "undefined"){
+              str += "<div class='entityType'><span class='uppercase bold'>" + params.section + "</span> > " + params.category;
+              if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+              str += "</div>";
+            }
+
+            var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbhp add2fav'  data-modalshow='"+params.id+"'>"+
+                      iconFaReply + params.name + 
+                   "</a>";  
+       
+            
+            
+            if(typeof params.description != "undefined" && params.description != "")
+            str += "<div class='entityDescription'>" + params.description + "</div>";
+            
+
+            var thisLocality = "";
+            if(params.fullLocality != "" && params.fullLocality != " ")
+                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "' class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
+                                  "<i class='fa fa-home'></i> " + params.fullLocality + 
+                                "</a>";
+            //else thisLocality = "<br>";
+            
+            str += thisLocality;
+
+
+            if(typeof params.contactInfo != "undefined" && params.contactInfo != "")
+            str += "<div class='entityType letter-green'><i class='fa fa-address-card'></i> " + params.contactInfo + "</div>";
+         
+            str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
+
+            
+            if(params.startDate != null)
+            str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+            if(params.endDate != null)
+            str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+      
+          str += "</div>";
+        str += "</div>";
+      str += "</div>";
+
+      str += "</div>";
+      return str;
+    },
     // ********************************
     // EVENT DIRECTORY PANEL
     // ********************************

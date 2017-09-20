@@ -156,7 +156,6 @@
       </p>
     <?php } ?>
 
-
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
         <!-- <h5>Recherche thématique<br><i class='fa fa-chevron-down'></i></h5> -->
         <?php $filliaireCategories = CO2::getContextList("filliaireCategories"); 
@@ -185,8 +184,7 @@
             </button>
           <?php } ?>
           <!-- <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> -->
-        </div>
-        
+        </div>    
         
         <?php if($typeSelected == "place"){ ?>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center subsub" id="menu-section-place">
@@ -310,8 +308,8 @@
               <?php } ?>
           </div>
 
-        <?php }else if($typeSelected == "classified"){ ?>
-
+        <?php }else if($typeSelected == "classified"){ 
+          if(Yii::app()->params["CO2DomainName"] != "BCH"){ ?>
           <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub classifiedFilters" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
@@ -400,7 +398,51 @@
           </div>
           <!-- </div> -->
 
-        <?php } 
+        <?php } else{ 
+          $prestation = CO2::getContextList("prestation");
+          ?> 
+          <div class="col-lg-2 col-md-3 col-sm-3 col-md-offset-1 col-sm-offset-1 col-xs-12 margin-top-25 text-left subsub" id="sub-menu-left">
+              <h2 class="bg-orange text-white">FILTRE</h2>      
+              <hr>
+              <div class="col-md-12 no-padding padding-top-10 padding-bottom-10 label-category" id="title-sub-menu-category">
+                <h4 class="col-md-10">Toute destination</h4> <span class="col-md-12 bg-orange"><i class="fa fa-caret-right"></i><span>
+              </div>
+              <hr>
+              <?php 
+                  foreach ($prestation["categories"] as $key => $cat) {
+              ?>
+                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                      <i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo Yii::t("category",$cat); ?> 
+                    </button><br>
+              <?php } ?>
+              <div class="col-md-12 no-padding padding-top-10 padding-bottom-10 label-category" id="title-sub-menu-category">
+                <h4 class="col-md-10">Vous voyagez</h4> <span class="col-md-12 bg-orange"><i class="fa fa-caret-right"></i><span>
+              </div>
+              <hr>
+              <input type="text" id="filterNumber" value="" placeholder="Number of travellers">
+              <label>Date of travel</label>
+              <span>From</span>
+              <input type="date" name="">
+              <span>To</span>
+              <input type="date" name="">
+              <label>Price for search</label>
+              <input type="price" name="">
+              
+              <label>Adapted time</label>
+              <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                      <i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo Yii::t("category","Senior"); ?> 
+                    </button><br>
+              <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                      <i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo Yii::t("category","PMR"); ?> 
+                    </button><br>
+              <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                      <i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo Yii::t("category","Famille avec enfants"); ?> 
+                    </button><br>
+              <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                      <i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo Yii::t("category","Régime alimentaires"); ?> 
+                    </button><br>
+            </div>
+        <?php } }
         else if($typeSelected == "place"){ ?>
 
           <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub" id="sub-menu-left">
@@ -429,11 +471,12 @@
         <?php } ?>
 
         <?php $col = ( !in_array($typeSelected, array("classified","events","vote","all","place") )) ? 10 : 8; ?>
-        <?php if(Yii::app()->params["CO2DomainName"] == "BCH"){ $col = 10; } ?>
+        <?php if(Yii::app()->params["CO2DomainName"] == "BCH"){ $col = 8; } ?>
         
         <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
-
+        <?php if(Yii::app()->params["CO2DomainName"] != "BCH"){ ?> 
         <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
+        <?php } ?>
       <?php } ?>
   </div>
 
@@ -570,7 +613,7 @@ jQuery(document).ready(function() {
 
 
   <?php if(Yii::app()->params["CO2DomainName"] == "BCH"){ ?>
-      $("#sub-menu-filliaire").removeClass("hidden");
+      $("#sub-menu-filliaire").addClass("hidden");
   <?php } ?>
 
   $(".btn-open-filliaire").click(function(){

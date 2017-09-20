@@ -842,7 +842,7 @@ function sendInvitation(){
 			var contactPublicFound = new Array();
 			var connectType = "";
 			var roles = "";
-			if ($("#tagsRoles"+id).val() != ""){ 
+			if (typeof $("#tagsRoles"+id).val() != "undefined" && $("#tagsRoles"+id).val() != ""){ 
 		        roles = $("#tagsRoles"+id).val().split(",");   
 		      } 
 			if(addLinkSearchMode == "all") { contactPublicFound = listContact;
@@ -861,9 +861,9 @@ function sendInvitation(){
 			if ($("#isAdmin"+id).hasClass("isAdmin")) {
 				connectType = "admin";
 			}
-			if ($("#tagsRoles"+id).val() != ""){
+			/*if ($("#tagsRoles"+id).val() != ""){
 				roles = $("#tagsRoles"+id).val().split(",");	
-			}
+			}*/
 
 			mylog.log("add this element ?", email, type, id, name);
 			if(type != "" && id != "" && name != "")

@@ -34,6 +34,7 @@ co2/datamigration/ChangeEventFrenchType
 
 *** A faire Bash de reprise des clés francaises POI (ex ressourceMaterielle to materialRessource) et CLASSIFIED
 TODO @TIBOR @BOUBOULE
+
 *** Bash on document used for profil and banner of element => Add boolean current : true
 co2/dataMigration/AddCurrentToDoc
 

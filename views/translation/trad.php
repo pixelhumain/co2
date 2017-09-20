@@ -14,6 +14,7 @@ var trad = {
 	"removeconnectionorganizations" : "<?php echo Yii::t("common","Are you sure to remove the link with this organization") ?>",
 	"removeconnectionprojects" : "<?php echo Yii::t("common","Are you sure to remove the link with this project") ?>",
 	"removeconnectioncontributors" : "<?php echo Yii::t("common","Are you sure to remove the link with this project") ?>",
+	"removeconnectionattendees" : "<?php echo Yii::t("common","Are you sure to leave this event") ?>",
 	"removeconnectionmembers" : "<?php echo Yii::t("common","Are you sure to remove the link of member") ?>",
 	"removeconnectioncitoyens" : "<?php echo Yii::t("common","Are you sure to remove this follows") ?>",
 	"removeconnectionfollowers" : "<?php echo Yii::t("common","Are you sure to remove this follow") ?>",

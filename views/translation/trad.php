@@ -248,6 +248,7 @@ var trad = {
 	"addasadmin": "<?php echo Yii::t("common","Add as admin") ?>",
 	"addmodifyroles":"<?php echo Yii::t("common","Add/Update roles") ?>",
 	"deletemembers":"<?php echo Yii::t("common","Delete this member") ?>",
+	"deleteattendees":"<?php echo Yii::t("common","Delete this attendee") ?>",
 	"deletecontributors":"<?php echo Yii::t("common","Delete this contributor") ?>",
 	"follow": "<?php echo Yii::t("common","follow") ?>",
 	"follower": "<?php echo Yii::t("common","follower") ?>",

@@ -1252,34 +1252,20 @@ var directory = {
       str += "</div>";
       return str;
     },
-    prestaProductPanelHtml : function(params){
+    storePanelHtml : function(params){
       if(directory.dirLog) mylog.log("----------- classifiedPanelHtml",params,params.name);
 
       str = "";  
-      str += "<div class='col-lg-6 col-md-12 pull- col-sm-12 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-lg-3 col-md-4 col-sm-4 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
       
      // directory.colPos = directory.colPos == "left" ? "right" : "left";
        
-      if(userId != null && userId != "" && params.id != userId){
-          isFollowed=false;
-          if(typeof params.isFollowed != "undefined" ) isFollowed=true;
-           var tip = 'Garder en favoris';
-            str += "<a href='javascript:collection.add2fav(\"classified\",\""+params.id+"\")' class='dirStar star_classified_"+params.id+" btn btn-default btn-sm btn-add-to-directory bg-white tooltips'" + 
-                  'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-                  " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"'>"+
-                    "<i class='fa fa star fa-star-o'></i>"+ //fa-bookmark fa-rotate-270
-                  "</a>";
-          
-        }
-
-        if(params.updated != null )
+       /* if(params.updated != null )
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>publié </span>" + 
                     params.updated + 
-                  "</div>";
+                  "</div>";*/
         
-        if(params.type == "citoyens") 
-            params.hash += '.viewer.' + userId;
         if(typeof params.size == "undefined" || params.size == "max")
           str += "<a href='"+params.hash+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + 
                     params.imgProfil + 
@@ -1289,59 +1275,44 @@ var directory = {
 
         str += "<div class='entityRight no-padding'>";
 
-            if(typeof params.size == "undefined" || params.size == "max"){
+            /*if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
               str +=    "<a href='"+params.hash+"' class='lbhp add2fav' data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
               str += "</div>";
-            }
+            }*/
 
-            str += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10 btn-share pull-right'"+
+            /*str += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10 btn-share pull-right'"+
                               " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"'>"+
-                              "<i class='fa fa-share'></i> Partager</button>";
+                              "<i class='fa fa-share'></i> Partager</button>";*/
 
-
-            var devise = typeof params.devise != "undefined" ? params.devise : "";
-            if(typeof params.price != "undefined" && params.price != "")
-            str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
-         
-            if(typeof params.category != "undefined"){
+           /* if(typeof params.category != "undefined"){
               str += "<div class='entityType'><span class='uppercase bold'>" + params.section + "</span> > " + params.category;
               if(typeof params.subtype != "undefined") str += " > " + params.subtype;
               str += "</div>";
-            }
+            }*/
 
-            var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+           /* var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
             str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbhp add2fav'  data-modalshow='"+params.id+"'>"+
                       iconFaReply + params.name + 
-                   "</a>";  
+                   "</a>";*/  
        
             
+            if(typeof params.name != "undefined" && params.name != "")
+            str += "<div class='entityName'>" + params.name + "</div>";
             
             if(typeof params.description != "undefined" && params.description != "")
             str += "<div class='entityDescription'>" + params.description + "</div>";
-            
-
-            var thisLocality = "";
-            if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "' class='entityLocality pull-right lbhp add2fav letter-red' data-modalshow='"+params.id+"'>"+
-                                  "<i class='fa fa-home'></i> " + params.fullLocality + 
-                                "</a>";
-            //else thisLocality = "<br>";
-            
-            str += thisLocality;
-
-
-            if(typeof params.contactInfo != "undefined" && params.contactInfo != "")
-            str += "<div class='entityType letter-green'><i class='fa fa-address-card'></i> " + params.contactInfo + "</div>";
+          str += "</div>";
+          str += "<div class='entityRight no-padding price'>";
+            str += "<hr class='margin-bottom-10 margin-top-10'>";
+            var devise = typeof params.devise != "undefined" ? params.devise : "€";
+            if(typeof params.price != "undefined" && params.price != "")
+             str += "<div class='entityPrice col-md-6'><span class='price-trunc'>"+ Math.trunc(params.price) + "</span> " + devise + "</div>";
          
-            str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
-
-            
-            if(params.startDate != null)
-            str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
-            if(params.endDate != null)
-            str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
-      
+            str += "<a  href='"+params.hash+"' class='showMore btn bg-orange text-white lbhp'  data-modalshow='"+params.id+"'>"+
+                      "Show +"+ 
+                   "</a>";  
+       
           str += "</div>";
         str += "</div>";
       str += "</div>";
@@ -1978,29 +1949,33 @@ var directory = {
                 
                 if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);
                 
+                if(domainName=="terla"){
+                  str += directory.storePanelHtml(params);
                   //template principal
-                if(params.type == "cities")
-                  str += directory.cityPanelHtml(params);  
-                
-                else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","place"])>=0) 
-                  str += directory.elementPanelHtml(params);  
-                
-                else if(params.type == "events")
-                  str += directory.eventPanelHtml(params);  
-                
-                //else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
-                //    str += directory.roomsPanelHtml(params,itemType);  
-                
-                else if(params.type == "classified"){
-                  if(contextData != null)
+                }else{
+                  if(params.type == "cities")
+                    str += directory.cityPanelHtml(params);  
+                  
+                  else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","place"])>=0) 
                     str += directory.elementPanelHtml(params);  
+                  
+                  else if(params.type == "events")
+                    str += directory.eventPanelHtml(params);  
+                  
+                  //else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
+                  //    str += directory.roomsPanelHtml(params,itemType);  
+                  
+                  else if(params.type == "classified"){
+                    if(contextData != null)
+                      str += directory.elementPanelHtml(params);  
+                    else
+                      str += directory.classifiedPanelHtml(params);
+                  }
+                  else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
+                    str += directory.coopPanelHtml(params);  
                   else
-                    str += directory.classifiedPanelHtml(params);
+                    str += directory.defaultPanelHtml(params);
                 }
-                else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
-                  str += directory.coopPanelHtml(params);  
-                else
-                  str += directory.defaultPanelHtml(params);
             }
 
           }else{

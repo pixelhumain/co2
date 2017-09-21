@@ -213,7 +213,7 @@
 
         <?php if($typeSelected == "all"){ ?>   
           
-          <?php if(Yii::app()->params["CO2DomainName"] != "BCH"){ ?>  
+          <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
             <button class="btn text-white bg-dark btn-open-filliaire">
@@ -309,7 +309,7 @@
           </div>
 
         <?php }else if($typeSelected == "classified"){ 
-          if(Yii::app()->params["CO2DomainName"] != "BCH"){ ?>
+          if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>
           <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub classifiedFilters" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
@@ -471,10 +471,10 @@
         <?php } ?>
 
         <?php $col = ( !in_array($typeSelected, array("classified","events","vote","all","place") )) ? 10 : 8; ?>
-        <?php if(Yii::app()->params["CO2DomainName"] == "BCH"){ $col = 8; } ?>
+        <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
         
         <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
-        <?php if(Yii::app()->params["CO2DomainName"] != "BCH"){ ?> 
+        <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
         <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
         <?php } ?>
       <?php } ?>
@@ -612,7 +612,7 @@ jQuery(document).ready(function() {
   // }
 
 
-  <?php if(Yii::app()->params["CO2DomainName"] == "BCH"){ ?>
+  <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ ?>
       $("#sub-menu-filliaire").addClass("hidden");
   <?php } ?>
 

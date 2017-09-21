@@ -402,7 +402,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
 						toastr.success(data.msg);	
 						$(thiselement).html("<i class='fa fa-unlink text-green'></i>");
 						$(thiselement).attr("data-ownerlink","unparticipate");
-						$(thiselement).attr("data-original-title", "Ne plus particper à l'évènement");
+						$(thiselement).attr("data-original-title", "Ne plus participer à l'évènement");
 						addFloopEntity(id, type, data.parent);
 						showFloopDrawer(true);
 					}

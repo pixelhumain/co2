@@ -43,8 +43,12 @@
 
 <style>
     <?php if($params["title"] != "Kgougle") { ?>
-    header {
-      background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/<?php echo $page; ?>/pexels-<?php echo $randImg; ?>.jpeg") center center;
+    header .headerImg{
+      background-image: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion1.jpg");
+          background-size: 100% auto;
+    height: 300px;
+    margin-top: 45px;
+    background-repeat: no-repeat;
       /*opacity: 0.3;
       background-color: black;*/
     }

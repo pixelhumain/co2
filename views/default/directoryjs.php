@@ -136,6 +136,7 @@
         <?php $typeSelected = $_GET['type']; ?>
         <?php if($typeSelected == "persons") $typeSelected = "citoyens" ; ?>
         <?php $spec = Element::getElementSpecsByType($typeSelected); ?>
+        <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
         <h4 class="text-left pull-left subtitle-search" style="margin-left:10px; margin-top:15px; width:100%;">
           <span class="subtitle-search text-<?php echo $spec["text-color"]; ?> homestead">
             <?php 
@@ -148,8 +149,7 @@
             
           </span>
         </h4>
-     
-
+        <?php } ?>
      <?php if($typeSelected == "cities"){ ?>   
       <p class="text-center bold"> Recherchez une commune à laquelle vous communecter.<br>
           Une fois communecté, toutes vos recherches seront automatiquement filtrées en fonction de la commune choisie.
@@ -401,46 +401,44 @@
         <?php } else{ 
           $prestation = CO2::getContextList("prestation");
           ?> 
-          <div class="col-lg-2 col-md-3 col-sm-3 col-md-offset-1 col-sm-offset-1 col-xs-12 margin-top-25 text-left subsub" id="sub-menu-left">
-              <h2 class="bg-orange text-white">FILTRE</h2>      
-              <hr>
+          <div class="col-lg-2 col-md-3 col-sm-3 col-md-offset-1 col-sm-offset-1 col-xs-12 margin-top-25 text-left subsub no-padding shadow2" id="sub-menu-left">
+              <h4 class="bg-orange text-white no-margin padding-10">FILTRE</h4>      
               <div class="col-md-12 no-padding padding-top-10 padding-bottom-10 label-category" id="title-sub-menu-category">
-                <h4 class="col-md-10">Toute destination</h4> <span class="col-md-12 bg-orange"><i class="fa fa-caret-right"></i><span>
+                <h4 class="col-md-10">Toute destination</h4> <span class="col-md-2 bg-orange"><i class="fa fa-angle-right"></i><span>
               </div>
               <hr>
               <?php 
                   foreach ($prestation["categories"] as $key => $cat) {
               ?>
-                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
-                      <i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo Yii::t("category",$cat); ?> 
-                    </button><br>
+                  <div class="col-md-12 text-dark margin-bottom-5">
+                      <input type="checkbox" class="btn-select-category-1" data-keycat="<?php echo $key; ?>"> <?php echo Yii::t("category",$cat); ?> 
+                    </div><br>
               <?php } ?>
               <div class="col-md-12 no-padding padding-top-10 padding-bottom-10 label-category" id="title-sub-menu-category">
-                <h4 class="col-md-10">Vous voyagez</h4> <span class="col-md-12 bg-orange"><i class="fa fa-caret-right"></i><span>
+                <h4 class="col-md-10">Vous voyagez</h4> <span class="col-md-2 bg-orange"><i class="fa fa-angle-right"></i><span>
               </div>
-              <hr>
               <input type="text" id="filterNumber" value="" placeholder="Number of travellers">
               <label>Date of travel</label>
               <span>From</span>
-              <input type="date" name="">
+              <input type="date" name=""><br/>
               <span>To</span>
               <input type="date" name="">
               <label>Price for search</label>
               <input type="price" name="">
               
               <label>Adapted time</label>
-              <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
-                      <i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo Yii::t("category","Senior"); ?> 
-                    </button><br>
-              <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
-                      <i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo Yii::t("category","PMR"); ?> 
-                    </button><br>
-              <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
-                      <i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo Yii::t("category","Famille avec enfants"); ?> 
-                    </button><br>
-              <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
-                      <i class="fa fa-chevron-circle-down hidden-xs"></i> <?php echo Yii::t("category","Régime alimentaires"); ?> 
-                    </button><br>
+             <div class="col-md-12 text-dark margin-bottom-5">
+                <input type="checkbox" class="btn-select-category-1" data-keycat="senior"> <?php echo Yii::t("category","Senior"); ?> 
+              </div>
+              <div class="col-md-12 text-dark margin-bottom-5">
+                <input type="checkbox" class="btn-select-category-1" data-keycat="pmr"> <?php echo Yii::t("category","PMR"); ?> 
+              </div>
+              <div class="col-md-12 text-dark margin-bottom-5">
+                <input type="checkbox" class="btn-select-category-1" data-keycat="famillychild"> <?php echo Yii::t("category","Familly with children"); ?> 
+              </div>
+              <div class="col-md-12 text-dark margin-bottom-5">
+                <input type="checkbox" class="btn-select-category-1" data-keycat="healthfood"> <?php echo Yii::t("category","Food care"); ?>
+              </div>
             </div>
         <?php } }
         else if($typeSelected == "place"){ ?>

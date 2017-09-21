@@ -78,7 +78,7 @@
 		},
 
 		"#chat": {
-			"inMenu" : true, 
+			"inMenu" : false, 
 			"open" : true, 
 			"subdomain" : "chat", 
 			"subdomainName" : "Chat",

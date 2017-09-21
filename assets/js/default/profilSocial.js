@@ -64,9 +64,8 @@ function bindButtonMenu(){
 	$(".btn-start-notifications").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
+		reloadWindow=false;
 		location.hash=hashUrlPage+".view.notifications";
-		//history.pushState(null, "New Title", hashUrlPage+".view.notifications");
-		//location.search="?view=notifications";
 		loadNotifications();
 	});
 	$(".btn-start-chart").click(function(){
@@ -130,6 +129,7 @@ function bindButtonMenu(){
 	});
 		
 	$("#subsubMenuLeft a").click(function(){
+		onchangeClick=false;
 		$("#subsubMenuLeft a").removeClass("active");
 		$(this).addClass("active");
 	});
@@ -625,11 +625,11 @@ function loadContacts(){
     function getfilterRoles(roles) { 
     	console.log("roles",roles);
         $("#listRoles").html("");
-        $("#listRoles").append("<a class='btn btn-link text-red favElBtn favAllBtn' "+
+        $("#listRoles").append("<a class='btn btn-link letter-blue favElBtn favAllBtn' "+
             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'>"+
             " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a>");
         	$.each( roles,function(k,o){
-                $("#listRoles").append("<a class='btn btn-link favElBtn text-red "+slugify(k)+"Btn' "+
+                $("#listRoles").append("<a class='btn btn-link favElBtn letter-blue "+slugify(k)+"Btn' "+
                                 "data-tag='"+slugify(k)+"' "+
                                 "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(k)+"\",\".searchEntityContainer\",1)'>"+
                                   k+" <span class='badge'>"+o.count+"</span>"+

@@ -135,7 +135,8 @@ Liste des notifications déjà lues => #370 #453
     une vision à un temps t, de toutes les ressources d'une CO 
       - en mode web 
       - mobi
-
+  ** Keyboard nav
+    Ctrl + ? > opens floop > type > reduce selection
 * ************************************************************    
 * Version C0.21.8  : en cours
 8 correpsond le nb de nouvelle fonctionalité
@@ -151,10 +152,6 @@ Liste des notifications déjà lues => #370 #453
 * Action Terrain 
   [ ] journée Biodiversité Pointoss coupe coupe l'accacia (Galabert)
 * Action Projet
-  * imprimante de qiuartier 
-    [ ] cout 199€ 
-    [ ] utilisateur 
-      [ ] personne ou asso 
   *  COBUS
     [ ] design 
       - 16/08 point @steph 
@@ -172,19 +169,27 @@ Liste des notifications déjà lues => #370 #453
     [ ] TEster les antennes
   * COPI + TIERS LIEUX
   * Kiltir Lab 
+    * imprimante de quartier 
+      [ ] cout 199€ 
+      [ ] utilisateur 
+        [ ] personne ou asso 
+    * broyeur de quartier
   * Ter Là 
     [ ] {{@Tib}} : etudier interop avec des cart open source 
     [ ] {{@Tib}} : contacter Anil voir 
     [ ] {{@Geoffrey}} : Doc épuré 
-    [ ] Features :
-      [ ] Messagerie -> Rocket chat
+    [ ] Features
+      [X] Messagerie -> Rocket chat
+        [ ] creer une instance
       [ ] Payement -> A faire 
+        [ ] mangoPay
       [ ] Acceuil
       [ ] La Carte
       [ ] Sauvegarde -> Collection 
       [ ] Facture + Contrat (Case à cocher) -> A faire (générateur pdf)
       [ ] Les circuits ->  Search
       [ ] Boutique -> POI + Vente en ligne + Stock (meme design que "Les circuits")
+      [ ] Integration du Design
       [ ] Reservation N°1 : Etape
               - Calendrier remplie d'event -> Page Agenda
               - Utilisateur fait une réservation -> Dynform
@@ -192,7 +197,7 @@ Liste des notifications déjà lues => #370 #453
               - Payement 
       [ ] Cdc receptionné le 01/08/2017
         [ ] Réunion de lancement 8/08 
-        [ ] Démarrage du projet prévu le 1er Sept
+        [ ] Démarrage du projet prévu le seamine du 18 Sept
 
 * Communication 
   [ ] passer la roadmap dans le Wiki
@@ -206,7 +211,7 @@ Liste des notifications déjà lues => #370 #453
     [ ] Aide Plaquette 
     [ ] Participation Design Local
   ** @Steph 
-    [ ] Design deco du CoBus 
+    [ ] Design deco du CoBus
 
 * DEV
   ** Todo 
@@ -265,10 +270,8 @@ Liste des notifications déjà lues => #370 #453
           [X] on demand : either we put a property on an element describing if corresponding exists or not 
           [X] only members, have access 
           [X] testing if non member has access to 
->>>>>>>>[X] after create invite all members to chat by notification
-      
-      [???] only admins can start a group chat
-      [ ] try to optimise admin login using smart handling of header 
+        [X] after create invite all members to chat by notification
+      [X] try to optimise admin login using smart handling of header 
       [ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
       [X] apply to projects and events
       [X] on CO-login get RC loginToken
@@ -279,6 +282,9 @@ Liste des notifications déjà lues => #370 #453
       [X] add redirect iframe to login + after login redirect to iframe
       [X] how to use live chat :?layout=embedded
       [X] preload iframe after login 
+      [X] changing organisation type open Edition or cloed > change room group or channel 
+[ ] base room on contextData.slug 
+      [X] changing slug > renames room
       [X] getting chat notifictions [[https://rocket.chat/docs/developer-guides/iframe-integration/events]]
       [ ] mutualiser les import RocketChat
       ** test 

@@ -245,7 +245,7 @@
         <div class="form-group" id="addMemberSection">
 
         	<input type="radio" value="citoyens" name="memberType" data-fa="user" checked> <i class="fa fa-user"></i> <?php echo Yii::t("common","a citizen"); ?>
-        	<?php if($type != "events"){ ?>
+        	<?php if($type != "events" || Authorisation::isElementAdmin($parentId, $type, @Yii::app()->session["userId"])){ ?>
         		<input type="radio" value="organizations" name="memberType" data-fa="group" style="margin-left:25px;"> <i class="fa fa-group"></i> <?php echo Yii::t("common","an organization"); ?>
         	<?php } ?>
 			<div class="input-group">
@@ -347,7 +347,7 @@ jQuery(document).ready(function() {
 	});
 
 	$.each(organizationTypes, function(k, v) {
-   		$(".member-organization-type").append($("<option />").val(k).text(v));
+   		$(".member-organization-type").append($("<option />").val(k).text(tradCategory[k]));
 	});
 	bindInvite();
 });
@@ -770,7 +770,7 @@ function autoCompleteEmailAddMember(searchValue){
 		"search" : searchValue,
 		"elementId" : elementId
 	};
-	if (elementType == "<?php echo Event::COLLECTION ?>")
+	if (elementType == "<?php echo Event::COLLECTION ?>" && !isElementAdmin)
 		data.searchMode = "personOnly";
 
 	$("#list-scroll-type").html("<div class='padding-10'><i class='fa fa-spin fa-refresh'></i> Recherche en cours</div>");
@@ -844,7 +844,7 @@ function sendInvitation(){
 			var contactPublicFound = new Array();
 			var connectType = "";
 			var roles = "";
-			if ($("#tagsRoles"+id).val() != ""){ 
+			if (typeof $("#tagsRoles"+id).val() != "undefined" && $("#tagsRoles"+id).val() != ""){ 
 		        roles = $("#tagsRoles"+id).val().split(",");   
 		      } 
 			if(addLinkSearchMode == "all") { contactPublicFound = listContact;
@@ -863,9 +863,9 @@ function sendInvitation(){
 			if ($("#isAdmin"+id).hasClass("isAdmin")) {
 				connectType = "admin";
 			}
-			if ($("#tagsRoles"+id).val() != ""){
+			/*if ($("#tagsRoles"+id).val() != ""){
 				roles = $("#tagsRoles"+id).val().split(",");	
-			}
+			}*/
 
 			mylog.log("add this element ?", email, type, id, name);
 			if(type != "" && id != "" && name != "")

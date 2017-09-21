@@ -772,7 +772,7 @@ function bindAboutPodElement() {
 						properties : {
 							contextId : dyFInputs.inputHidden(),
 							contextType : dyFInputs.inputHidden(), 
-							roles : dyFInputs.tags(rolesList),
+							roles : dyFInputs.tags(rolesList, tradDynForm["addroles"] , tradDynForm["addroles"]),
 							childId : dyFInputs.inputHidden(), 
 							childType : dyFInputs.inputHidden(),
 							connectType : dyFInputs.inputHidden()

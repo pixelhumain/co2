@@ -17,7 +17,8 @@ class SlugController extends CommunecterController {
 	public function actions()
 	{
 	    return array(
-	        'check'    => 'citizenToolKit.controllers.slug.CheckAction'
+	        'check'    => 'citizenToolKit.controllers.slug.CheckAction',
+	        'getinfo'    => 'citizenToolKit.controllers.slug.GetInfoAction'
 	    );
 	}
 }

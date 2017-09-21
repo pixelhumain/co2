@@ -2570,7 +2570,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	public function actionBatchInterElement() {
 		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			$nbelement = 0 ;
-			$types = array(/*Person::COLLECTION , Organization::COLLECTION,*/ Project::COLLECTION, Event::COLLECTION, Poi::COLLECTION);
+			$types = array(Person::COLLECTION , Organization::COLLECTION, Project::COLLECTION, Event::COLLECTION, Poi::COLLECTION);
 
 			foreach ($types as $keyType => $type) {
 				$elts = PHDB::find($type, array('$and' => array(

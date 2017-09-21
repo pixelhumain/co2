@@ -1939,7 +1939,7 @@ var directory = {
           countBtn++;
       }
      
-      if(data.edit=="members" || data.edit=="contributors"){
+      if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){
         if(data.type=="organizations" || (typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined")){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'"+
@@ -1971,7 +1971,7 @@ var directory = {
           "</button> ";
           countBtn++;
         }
-         if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){
+        if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){
           roles="";
           if(typeof data.rolesLink != "undefined")
               roles+=data.rolesLink.join(", ");
@@ -1983,7 +1983,7 @@ var directory = {
           countBtn++;
         }
       }
-      if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){ 
+     /* if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){ 
           roles=""; 
            if(typeof data.rolesLink != "undefined") 
               roles+=data.rolesLink.join(", "); 
@@ -1993,7 +1993,7 @@ var directory = {
             "<i class='fa fa-pencil'></i> "+trad.addmodifyroles 
           "</button> "; 
           countBtn++; 
-      }
+      }*/
     
       html+="</div>";
       return html;

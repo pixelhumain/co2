@@ -345,7 +345,7 @@ jQuery(document).ready(function() {
 	});
 
 	$.each(organizationTypes, function(k, v) {
-   		$(".member-organization-type").append($("<option />").val(k).text(v));
+   		$(".member-organization-type").append($("<option />").val(k).text(tradCategory[k]));
 	});
 	bindInvite();
 });
@@ -768,7 +768,7 @@ function autoCompleteEmailAddMember(searchValue){
 		"search" : searchValue,
 		"elementId" : elementId
 	};
-	if (elementType == "<?php echo Event::COLLECTION ?>")
+	if (elementType == "<?php echo Event::COLLECTION ?>" && !isElementAdmin)
 		data.searchMode = "personOnly";
 
 	$("#list-scroll-type").html("<div class='padding-10'><i class='fa fa-spin fa-refresh'></i> Recherche en cours</div>");
@@ -842,7 +842,7 @@ function sendInvitation(){
 			var contactPublicFound = new Array();
 			var connectType = "";
 			var roles = "";
-			if ($("#tagsRoles"+id).val() != ""){ 
+			if (typeof $("#tagsRoles"+id).val() != "undefined" && $("#tagsRoles"+id).val() != ""){ 
 		        roles = $("#tagsRoles"+id).val().split(",");   
 		      } 
 			if(addLinkSearchMode == "all") { contactPublicFound = listContact;
@@ -861,9 +861,9 @@ function sendInvitation(){
 			if ($("#isAdmin"+id).hasClass("isAdmin")) {
 				connectType = "admin";
 			}
-			if ($("#tagsRoles"+id).val() != ""){
+			/*if ($("#tagsRoles"+id).val() != ""){
 				roles = $("#tagsRoles"+id).val().split(",");	
-			}
+			}*/
 
 			mylog.log("add this element ?", email, type, id, name);
 			if(type != "" && id != "" && name != "")

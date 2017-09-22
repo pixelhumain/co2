@@ -616,9 +616,9 @@ var formInMap = {
 						if(typeof contextData.address == "undefined" || contextData.address == null){
 							inMap =false ;
 						}
-						contextData.address = locality.address;
-						contextData.geo = locality.geo;
-						contextData.geoPosition = locality.geoPosition;
+						contextData.address = data.locality.address;
+						contextData.geo = data.locality.geo;
+						contextData.geoPosition = data.locality.geoPosition;
 						
 						formInMap.hiddenHtmlMap(false);
 						formInMap.initData();
@@ -651,7 +651,7 @@ var formInMap = {
 						if(typeof networkJson == "undefined" || networkJson == null)
 							$("#mapLegende").removeClass("hidden");
 						mylog.log("contextData", contextData.type, contextData.id);
-						urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
+						//urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 						toastr.success(data.msg);
 					}else{
 						toastr.error(data.msg);

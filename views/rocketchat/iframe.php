@@ -52,7 +52,7 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 
 		if(e.data.eventName=="unread-changed" ){
 			mylog.info("xxxxxxxxxxxxxx UNREAD ","<?php echo Yii::app()->session["loginToken"]; ?>", e.data.eventName,e.data.data);
-			//toastr.info("unread-changed :: "+e.data.data);
+			toastr.info("unread-changed :: "+e.data.data);
 			
 				 $(".chatNotifs").html(e.data.data);
 			/*else {

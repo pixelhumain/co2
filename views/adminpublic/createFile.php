@@ -3,6 +3,8 @@ $cs = Yii::app()->getClientScript();
 $cssAnsScriptFilesModule = array(
 		'/plugins/jsonview/jquery.jsonview.js',
 		'/plugins/jsonview/jquery.jsonview.css',
+		'/plugins/JSzip/jszip.min.js',
+		'/plugins/FileSaver.js/FileSaver.min.js',
 		//'/assets/js/sig/geoloc.js',
 		/*'/assets/js/dataHelpers.js',
 		'/assets/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
@@ -441,13 +443,25 @@ function bindCreateFile(){
 
 
 	$("#btnImport").off().on('click', function(){
-  		$("<a />", {
-		    "download": nameFile+"_StandardForCommunecter.json",
-		    "href" : "data:application/json," + encodeURIComponent($('#jsonImport').val())
-		  }).appendTo("body")
-		  .click(function() {
-		     $(this).remove()
-		  })[0].click() ;
+		if(notEmpty($('#jsonCities').val())){
+			var zip = new JSZip();
+			zip.file(nameFile+"_StandardForCommunecter.json", $('#jsonImport').val());
+			zip.file("SaveCities.json", $('#jsonCities').val());
+			zip.generateAsync({type:"blob"})
+				.then(function(content) {
+				    // see FileSaver.js
+				    saveAs(content, nameFile+"_Import.zip");
+				});
+		}else{
+			saveAs($('#jsonImport').val(), nameFile+"_StandardForCommunecter.json");
+		}
+  		// $("<a />", {
+		  //   "download": nameFile+"_StandardForCommunecter.json",
+		  //   "href" : "data:application/json," + encodeURIComponent($('#jsonImport').val())
+		  // }).appendTo("body")
+		  // .click(function() {
+		  //    $(this).remove()
+		  // })[0].click() ;
   	});
 
   	$("#btnError").off().on('click', function(){
@@ -594,13 +608,15 @@ function bindUpdate(data){
   	});
 
   	$("#fileImport").change(function(e) {
-    	var nameFileSplit = $("#fileImport").val().split("."); 
-  		if(extensions.indexOf(nameFileSplit[nameFileSplit.length-1]) == -1){
+    	var fileSplit = $("#fileImport").val().split("."); 
+  		if(extensions.indexOf(fileSplit[fileSplit.length-1]) == -1){
   			toastr.error("Vous devez sélectionner un fichier en CSV ou JSON");
   			return false ;
   		}
-  		nameFile = nameFileSplit[0];
-		typeFile = nameFileSplit[nameFileSplit.length-1];
+  		nameFileSplit = fileSplit[0].split('\\');
+  		mylog.log("nameFileSplit", nameFileSplit);
+  		nameFile = nameFileSplit[nameFileSplit.length-1];
+		typeFile = fileSplit[fileSplit.length-1];
 
 		if(extensions.indexOf(typeFile) == -1) {
 			alert('Upload CSV or JSON');

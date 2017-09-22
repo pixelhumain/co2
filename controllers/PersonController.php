@@ -60,6 +60,7 @@ class PersonController extends CommunecterController {
           'get'                => 'citizenToolKit.controllers.person.GetAction',
           'getcontactsbymails' => 'citizenToolKit.controllers.person.GetContactsByMailsAction',
           'removehelpblock'    => 'citizenToolKit.controllers.person.RemoveHelpBlockAction',
+          'dashboard'    => 'citizenToolKit.controllers.person.dashboardAction',
           
 
 	    );
@@ -117,7 +118,9 @@ public function actionInitDataPeople()
     Rest::json( $import );
     Yii::app()->end();
   }
- 
+ public function actionShoppingCart(){
+    echo $this->renderPartial("shoppingCart", array(), true);
+ }
  public function actionSendMail()
   {
     foreach ($_POST['mails'] as $value) 

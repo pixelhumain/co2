@@ -1539,11 +1539,12 @@ function  bindLBHLinks() {
 		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
 		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));
 		mylog.warn("***************************************");
-		alert("oodufoids");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 		if( $(this).data("modalshow") ){
 			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
-	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/app/"+url);
+			if(h.indexOf("#page") >= 0)
+				url="app/"+url
+	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
 			//smallMenu.open ( getAjax(directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
 			
 		}

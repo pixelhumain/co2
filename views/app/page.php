@@ -6,10 +6,10 @@
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
 
-    /*if($this->module->id != "network")
+    if($this->module->id != "network" && $type!=Classified::COLLECTION)
         $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
-                                "page" => "page") );*/ 
+                                "page" => "page") ); 
 ?>
 
 
@@ -33,8 +33,10 @@
 
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
-
-                $this->renderPartial('../element/profilSocial', $params ); 
+                if(Yii::app()->params["CO2DomainName"] == "terla"){
+                    $this->renderPartial('../element/terla/index', $params );
+                }else
+                    $this->renderPartial('../element/profilSocial', $params ); 
             }
 
 

@@ -102,7 +102,7 @@
 			</span>
 		</div>
 		<div class="col-md-4 padding-20 margin-top-20">
-			<a href="javascript:;" class="btn bg-orange">I book</a>
+			<a href="javascript:;" class="btn bg-orange" onclick="addToShoppingCart('<?php echo (string)$element["_id"] ?>','<?php echo $element["type"] ?>');">I book</a>
 		</div>
 	</div>
 	<div id="commentClassified" class="col-md-12 margin-top-20">
@@ -137,5 +137,32 @@
 		//var html = directory.preview(classified);
 	  	//$("#classified").html(html);
 	});
-
+	function addToShoppingCart(id,type){
+		if(typeof userId != "undefined" && userId != ""){
+			if(typeof shoppingCart[type] == "undefined")
+				shoppingCart[type]=[];
+			shoppingCart[type].push(mapElements[id]);
+			countShoppingCart(true);
+			console.log("element",mapElements[id]);
+		}else{
+			$('#modalLogin').modal("show");
+		}
+	}
+	function countShoppingCart(){
+		total=0;
+		$.each(shoppingCart, function(k, v){
+			total+=v.length;
+		});
+		if(total > 0){
+			$(".shoppingCart-count").html(total);
+			$('.shoppingCart-count').removeClass('hide');
+			$('.shoppingCart-count').addClass('animated bounceIn');
+			$('.shoppingCart-count').addClass('badge-success');
+			$('.shoppingCart-count').removeClass('badge-tranparent');
+		}else{
+			$('.shoppingCart-count').addClass('hide');
+			$('.shoppingCart-count').removeClass('badge-success');
+			$('.shoppingCart-count').addClass('badge-tranparent');
+		}
+	}
 </script>

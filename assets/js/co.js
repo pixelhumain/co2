@@ -1524,7 +1524,7 @@ function  bindExplainLinks() {
 }
 
 function  bindLBHLinks() { 
-	$(".lbh").off().on("click",function(e) {  		
+	$(".lbh").off().on("click",function(e) {  	
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
@@ -1539,10 +1539,13 @@ function  bindLBHLinks() {
 		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
 		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));
 		mylog.warn("***************************************");
+		alert("oodufoids");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 		if( $(this).data("modalshow") ){
-			smallMenu.open ( directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
-			initBtnLink();
+			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
+	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/app/"+url);
+			//smallMenu.open ( getAjax(directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
+			
 		}
 		else {
 			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;

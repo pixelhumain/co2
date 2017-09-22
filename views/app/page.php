@@ -6,15 +6,15 @@
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
 
-    if($this->module->id != "network")
+    /*if($this->module->id != "network")
         $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
-                                "page" => "page") ); 
+                                "page" => "page") );*/ 
 ?>
 
 
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
-	<div class="padding-top-15" id="onepage">
+	<div class="" id="onepage">
 		<?php 
         
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
@@ -97,9 +97,9 @@ var indexStepGS = 20;
 
 jQuery(document).ready(function() {
 	
-	initKInterface({"affixTop":0});
+	//initKInterface({"affixTop":0});
 	$("#mainNav").addClass("affix");
-	initPageInterface();
+	//initPageInterface();
     // var tpl = '<?php //echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
 	// getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
 	// 	initPageInterface();

@@ -978,8 +978,8 @@ var directory = {
         console.log("prev",p,pid);
 
         return {
-            prev : "<a href='"+p+"' data-modalshow='"+pid+"' class='lbhp text-dark pull-right margin-right-10 margin-left-10'><i class='fa fa-2x fa-arrow-circle-left'></i> </a> ",
-            next : "<a href='"+n+"' data-modalshow='"+nid+"' class='lbhp text-dark pull-right'> <i class='fa fa-2x fa-arrow-circle-right'></i></a>"
+            prev : "<a href='"+p+"' data-modalshow='"+pid+"' class='lbhp text-dark'><i class='fa fa-2x fa-angle-left'></i> </a> ",
+            next : "<a href='"+n+"' data-modalshow='"+nid+"' class='lbhp text-dark'> <i class='fa fa-2x fa-angle-right'></i></a>"
         }
     },
     // ********************************
@@ -1266,7 +1266,7 @@ var directory = {
                     params.updated + 
                   "</div>";*/
         
-        if(typeof params.size == "undefined" || params.size == "max")
+        //if(typeof params.size == "undefined" || params.size == "max")
           str += "<a href='"+params.hash+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + 
                     params.imgProfil + 
                   "</a>";

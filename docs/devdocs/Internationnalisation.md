@@ -11,7 +11,7 @@
         [X] Niveau 2 ( Region belgique )
         [99%] Niveau 3 ( Région France et Canton belge)
         [99%] Niveau 4 ( Département France et Arrondissement belge)
-    [ ] Batch pour renommer les regions de France
+    [X] Batch pour renommer les regions de France
     [X] Batch pour créer le lien entre cities / zones
         [X] departement -> level4
         [X] region -> level3
@@ -21,10 +21,10 @@
         [99%] les villes 
         [40%] les éléments possédants une adresse
     [ ] Batch qui supprime “*BE“ dans les insee des communes de la belgique
-    [ ] Batch pour remplacer dans les addresses (vérifier que c'est la même chose pour la belgique: 
-        [ ] departement -> level4
-        [ ] region -> level3
-        [ ] regionBel -> level2
+    [X] Batch pour remplacer dans les addresses (vérifier que c'est la même chose pour la belgique: 
+        [X] departement -> level4
+        [X] region -> level3
+        [X] regionBel -> level2
     [ ] Traduction en Fonction du pays
         [ ] géré le process
         [ ] “insee“  -> “INSEE”, “INS” (etc …)
@@ -32,27 +32,43 @@
         [ ] "level3" -> “région”, “canton” etc ...
         [ ] "level2" -> “région”, etc …
     [ ] Création automatique des nouvelles communes 
-        [90%] Via le formInMap
+        [95%] Via le formInMap
         [ ] Via l'import
-        [ ] Création de la clé unique
-        [90%] Création des zones liers
+        [95%] Création des zones liers
         [X] Ajout des wikiID et osm ID
-        [90%] Ajout des CP
+        [95%] Ajout des CP
     [ ] Update Commune 
         [ 50% ] Création d'un formulaire pour permettre de modifier les communes
     [ ] Page admin pour géré les villes 
-    [ ] Modification dans le code
-        [ ] Gestion des scopes via la clé unique
-        [ ] Géré la recherche sur la localité par la clé unique
+    [X] Modification dans le code
+        [X] Gestion des scopes
+        [X] Géré la recherche sur la localité
+        [ ] Network :
+        	[X] Géré l'ancien format
+        	[ ] Nouveau format
+        [X] Activité du territoire
+        [X] Communexion
 
 ## Process passage à l'internationnalisation 
 
 - Sauvegardais l'actuelle base de données
 - Supprimer cities
-- Importer cities , zones et translates
+- Importer cities , zones et translates :
+```
+mongoimport --host c19.lamppost.17.mongolayer.com --port 10019 --username devCommunecter --password 2210wtfmongo$ --db dev-communecter --collection zones --file zones.json
+```
+
+```
+mongoimport --host c19.lamppost.17.mongolayer.com --port 10019 --username devCommunecter --password 2210wtfmongo$ --db dev-communecter --collection translate --file translate.json
+```
+
+```
+mongoimport --host c19.lamppost.17.mongolayer.com --port 10019 --username devCommunecter --password 2210wtfmongo$ --db dev-communecter --collection cities --file cities.json
+```
+
 - Passer les batchs
-    - BatchInterElement
-    - BatchInterNews
+    - co2/datamigration/BatchInterElement
+    - co2/datamigration/BatchInterNews
 
 
 ## Changements

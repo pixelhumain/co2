@@ -52,8 +52,8 @@
 ## Process passage à l'internationnalisation 
 
 - Sauvegardais l'actuelle base de données
-- Supprimer cities
-- Importer cities , zones et translates :
+- Supprimais cities
+- Importer cities, zones et translates :
 ```
 mongoimport --host c19.lamppost.17.mongolayer.com --port 10019 --username devCommunecter --password 2210wtfmongo$ --db dev-communecter --collection zones --file zones.json
 ```
@@ -77,9 +77,9 @@ mongoimport --host c19.lamppost.17.mongolayer.com --port 10019 --username devCom
 
 #### Citoyen, orga , event et project
 
-On a enlever depName et regionName 
+On a enlevé depName et regionName 
 
-On a rajouter localityId qui correspond au Mongo ID de la commune, level et levelName de 1 à 4
+On a rajouté localityId qui correspond au Mongo ID de la commune, level et levelName de 1 à 4
 
 level1 : Mongo ID de la zone
 level1Name : Nom de la zone
@@ -104,9 +104,9 @@ level1Name : Nom de la zone
 
 #### Cities
 
-On a enlever dep, depName, region et regionName 
+On a enlevé dep, depName, region et regionName 
 
-On a rajouter localityId qui correspond au Mongo ID de la commune, level et levelName de 1 à 4
+On a rajouté localityId qui correspond au Mongo ID de la commune, level et levelName de 1 à 4
 
 #### Zone 
 

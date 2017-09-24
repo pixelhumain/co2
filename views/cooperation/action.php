@@ -1,7 +1,7 @@
 <?php 
 	//var_dump($action); exit;
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $action["parentType"], $action["parentId"]);
-
+	$parentRoom = Room::getById($action["idParentRoom"]);
 ?>
 
 <style>
@@ -24,21 +24,16 @@
 
 
 <div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
-	<?php if(@$post["status"]) {
-  		$parentRoom = Room::getById($action["idParentRoom"]);
-  	?>
-  	<h4 class="letter-turq">
+	<h4 class="letter-turq">
   		<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
 	</h4>
 	<br>
-  	<?php  } ?>
-
 
 <?php
 	//if no assignee , no startDate no end Date
     $statusLbl = Yii::t("rooms", @$post["status"]);
     //if startDate passed, or no startDate but has end Date
-    if(@$post["status"] == "todo"){
+    if(@$action["status"] == "todo"){
 	    if( (bool)strtotime(@$action["startDate"]) == FALSE && (bool)strtotime(@$action["endDate"]) == FALSE ){
 	    	$action["status"] = "nodate";	
 	    } 
@@ -51,15 +46,46 @@
 	        	$action["status"] = "late";
 	      
 	    } 
-}
+	}
+
 ?>			
 
-	<label class=""><i class="fa fa-bell"></i> Status : 
+	<hr style="margin-top:5px;">
+	<h4 class="no-margin status-breadcrum">
+		
+		<small><i class="fa fa-certificate"></i></small>
+				
+		<?php if(@$action["status"] == "todo"){ ?>
+			<span class="letter-green underline"><?php echo Yii::t("cooperation", $action["status"]); ?></span>	
+		<?php }else if(@$action["status"] == "late"){ ?>
+			<span class="letter-orange underline"><?php echo Yii::t("cooperation", $action["status"]); ?></span>	
+		<?php }else if(@$action["status"] == "progress"){ ?>
+			<span class="letter-green underline"><?php echo Yii::t("cooperation", $action["status"]); ?></span>	
+		<?php }else if(@$action["status"] == "startingsoon"){ ?>
+			<span class="letter-green underline"><?php echo Yii::t("cooperation", $action["status"]); ?></span>	
+		<?php }else if(@$action["status"] == "nodate"){ ?>
+			<span class="letter-orange underline"><?php echo Yii::t("cooperation", $action["status"]); ?></span>	
+		<?php }else if(@$action["status"] == "disabled"){ ?>
+			<span class="letter-orange underline"><?php echo Yii::t("cooperation", $action["status"]); ?></span>	
+		<?php }else{ ?>
+			<small><?php echo Yii::t("cooperation", "todo"); ?></small>	
+		<?php } ?>
+
+		<small><i class="fa fa-chevron-right"></i></small>
+		<?php if(@$action["status"] == "done"){ ?>
+			<span class="letter-red underline"><?php echo Yii::t("cooperation", $action["status"]); ?></span>
+		<?php }else{ ?>
+			<small><?php echo Yii::t("cooperation", "done"); ?></small>
+		<?php } ?>
+	</h4>
+	<hr>
+	<!-- <label class=""><i class="fa fa-bell"></i> Status : 
 		<small class="letter-<?php echo Cooperation::getColorCoop($action["status"]); ?>">
 			<?php echo Yii::t("cooperation", $action["status"]); ?>
 		</small>
 	</label>
-	<hr>
+	<hr> -->
+
 	<h4 class="no-margin">
 		<i class="fa fa-clock-o"></i> Action à réaliser 
 <?php
@@ -90,22 +116,21 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 		  </button>
 		  <ul class="dropdown-menu">
 		    <li><a href="javascript:" id="btn-edit-action" 
-		    		data-id-action="<?php echo $action["_id"]; ?>"
-		    		data-status="archived">
+		    		data-id-action="<?php echo $action["_id"]; ?>">
 		    	<i class="fa fa-pencil"></i> Modifier l'action
 		    	</a>
 		    </li>
 		    <li><a href="javascript:" class="btn-option-status-action" 
 		    		data-id-action="<?php echo $action["_id"]; ?>"
-		    		data-status="archived">
-		    	<i class="fa fa-trash"></i> Archiver l'action
+		    		data-status="disabled">
+		    	<i class="fa fa-times"></i> Désactiver l'action
 		    	</a>
 		    </li>
 		    <!-- <li><hr class="margin-5"></li> -->
 		    <li><a href="javascript:" class="btn-option-status-action" 
 		    		data-id-action="<?php echo $action["_id"]; ?>"
 		    		data-status="done">
-		    		<i class="fa fa-times"></i> Fermer l'action
+		    		<i class="fa fa-trash"></i> Fermer l'action
 		    	</a>
 		    </li>
 		  </ul>

@@ -24,18 +24,11 @@
 	</div>
 <?php exit; } ?>
 
+
 <div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
-
-
-	<?php if(@$post["status"]) {
-  		$parentRoom = Room::getById($proposal["idParentRoom"]);
-  	?>
   	<h4 class="letter-turq">
   		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
 	</h4>
-	<!-- <br> -->
-  	<?php  } ?>
-
 </div>
 
 
@@ -53,8 +46,7 @@
 		  <ul class="dropdown-menu">
 		  	<?php if(!@$proposal["amendements"] && !$hasVote){ ?>
 		    <li><a href="javascript:" id="btn-edit-proposal" 
-		    		data-id-proposal="<?php echo $proposal["_id"]; ?>"
-		    		data-status="archived">
+		    		data-id-proposal="<?php echo $proposal["_id"]; ?>">
 		    	<i class="fa fa-pencil"></i> Modifier ma proposition
 		    	</a>
 		    </li>
@@ -67,15 +59,15 @@
 			<?php } ?>
 		    <li><a href="javascript:" class="btn-option-status-proposal" 
 		    		data-id-proposal="<?php echo $proposal["_id"]; ?>"
-		    		data-status="archived">
-		    	<i class="fa fa-trash"></i> Archiver ma proposition
+		    		data-status="disabled">
+		    	<i class="fa fa-times"></i> Désactiver ma proposition
 		    	</a>
 		    </li>
 		    <!-- <li><hr class="margin-5"></li> -->
 		    <li><a href="javascript:" class="btn-option-status-proposal" 
 		    		data-id-proposal="<?php echo $proposal["_id"]; ?>"
 		    		data-status="closed">
-		    		<i class="fa fa-times"></i> Fermer ma proposition
+		    		<i class="fa fa-trash"></i> Fermer ma proposition
 		    	</a>
 		    </li>
 		  </ul>
@@ -108,6 +100,33 @@
 		<small> est l'auteur de cette proposition</small>
 		<?php } ?>
 	</label>
+
+	<hr style="margin-top:5px;">
+	<h4 class="no-margin status-breadcrum">
+		
+		<small><i class="fa fa-certificate"></i></small>
+		<?php if(@$proposal["status"] == "amendable"){ ?>		
+			<span class="letter-purple underline"><?php echo Yii::t("cooperation", $proposal["status"]); ?></span>	
+		<?php }else{ ?>	
+			<small><?php echo Yii::t("cooperation", "amendable"); ?></small>	
+		<?php } ?>			
+		
+		<small><i class="fa fa-chevron-right"></i></small>
+		<?php if(@$proposal["status"] == "tovote"){ ?>
+			<span class="letter-green underline"><?php echo Yii::t("cooperation", $proposal["status"]); ?></span>	
+		<?php }else if(@$proposal["status"] == "disabled"){ ?>
+			<span class="letter-orange underline"><?php echo Yii::t("cooperation", "Disabled"); ?></span>	
+		<?php }else{ ?>
+			<small><?php echo Yii::t("cooperation", "tovote"); ?></small>	
+		<?php } ?>
+		
+		<small><i class="fa fa-chevron-right"></i></small>
+		<?php if(@$proposal["status"] == "closed"){ ?>
+			<span class="letter-red underline"><?php echo Yii::t("cooperation", $proposal["status"]); ?></span>
+		<?php }else{ ?>
+			<small><?php echo Yii::t("cooperation", "closed"); ?></small>
+		<?php } ?>
+	</h4>
 
 	<?php if(@$proposal["status"] == "amendable"){ ?>
 		<hr>
@@ -225,7 +244,7 @@
 					Afficher les amendements (<?php echo count(@$proposal["amendements"]); ?>) <i class="fa fa-chevron-right"></i>
 				</button>
 				<hr>
-			<?php }else if((@$proposal["status"] == "closed" || @$proposal["status"] == "archived") 
+			<?php }else if((@$proposal["status"] == "closed" || @$proposal["status"] == "disabled") 
 							&& count(@$proposal["amendements"]) > 0){ ?>
 				<button class="btn btn-link text-purple radius-5 btn-show-amendement pull-left">
 					Afficher tous les amendements (<?php echo count(@$proposal["amendements"]); ?>) <i class="fa fa-chevron-right"></i>

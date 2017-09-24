@@ -160,7 +160,7 @@
 
 
 					<?php if(@$proposalList){
-							foreach(array("tovote", "amendable", "closed", "archived") as $thisStatus){ 
+							foreach(array("tovote", "amendable", "closed", "disabled") as $thisStatus){ 
 								foreach($proposalList as $key => $proposal){ ?>
 								<?php $totalVotant = Proposal::getTotalVoters($proposal); ?>
 								<?php $isAuthor = Yii::app()->session['userId'] == $proposal["creator"]; ?>
@@ -198,7 +198,8 @@
 										  		</small>
 									  		<?php } ?>
 									  		
-										  	<?php if(@$post["status"]) { $parentRoom = Room::getById($proposal["idParentRoom"]); ?>
+										  	<?php if(@$post["status"]) { 
+										  		$parentRoom = Room::getById(@$proposal["idParentRoom"]); ?>
 										  	<br>
 										  	<small class="elipsis">
 									  			<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>

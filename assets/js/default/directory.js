@@ -557,13 +557,13 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
           uiCoop.startUI();
           $("#modalCoop").modal("show");
           if(coopType == "rooms"){
-            uiCoop.getCoopData(null, null, "room", null, coopId);
+            uiCoop.getCoopData(contextData.type, contextData.id, "room", null, coopId);
           }else{
             setTimeout(function(){
-              uiCoop.getCoopData(null, null, "room", null, idParentRoom, 
+              uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
               function(){
                 toastr.info(trad["processing"]);
-                uiCoop.getCoopData(null, null, coopType, null, coopId);
+                uiCoop.getCoopData(contextData.type, contextData.id, coopType, null, coopId);
               }, false);
             }, 1000);
           }

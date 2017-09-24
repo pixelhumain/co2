@@ -1532,7 +1532,7 @@ var directory = {
           str += '<h4 class="panel-title letter-turq"><i class="fa '+ params.ico + '"></i> '+ name + '</h4>';
 
           if(params.type != "rooms")
-          str += '<h5 class=""><small><i class="fa fa-bell"></i> '+ trad[params.status] + '</small></h5>';
+          str += '<h5 class=""><small><i class="fa fa-certificate"></i> '+ trad[params.status] + '</small></h5>';
 
           str += '<span class="text-dark">'+description+'</span>';
           str += "</div>";

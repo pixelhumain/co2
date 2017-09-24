@@ -459,11 +459,32 @@
 		  <div class="modal-dialog modal-lg">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <button type="button" class="close margin-5 padding-10" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+		        <button type="button" class="close margin-5 padding-10" data-dismiss="modal" 
+		        		aria-label="Close"><i class="fa fa-times"></i>
+		        </button>
+
+		        <?php 
+                    if( isset( Yii::app()->session['userId']) ){
+                      $me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
+                      $profilThumbImageUrl = Element::getImgProfil($me, "profilThumbImageUrl", $this->module->assetsUrl);
+                      $countNotifElement = ActivityStream::countUnseenNotifications(Yii::app()->session["userId"], Person::COLLECTION, Yii::app()->session["userId"]);
+                ?> 
+                 <!-- #page.type.citoyens.id.<?php echo Yii::app()->session['userId']; ?> -->
+                <a  href="#page.type.citoyens.id.<?php echo Yii::app()->session['userId']; ?>"
+                    class="menu-name-profil lbh text-dark pull-right shadow2" 
+                    data-toggle="dropdown">
+                        <small class="hidden-xs hidden-sm margin-left-10" id="menu-name-profil">
+                            <?php echo @$me["name"] ? $me["name"] : @$me["username"]; ?>
+                        </small> 
+                        <img class="img-circle" id="menu-thumb-profil" 
+                             width="40" height="40" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
+                </a>
+                <?php } ?>
+
 		        <button href="javascript:" class="btn btn-default btn-sm text-dark pull-right tooltips"
-							id="btn-update-coop" style="margin: 10px 10px 0 0;" data-original-title="Rafraichir la page" data-placement="left">
-				  		<i class="fa fa-refresh"></i> <?php echo Yii::t("cooperation", "Refresh data") ?>
-				  	</button> 	
+						id="btn-update-coop" style="margin: 10px 10px 0 0;" data-original-title="Rafraichir la page" data-placement="left">
+			  			<i class="fa fa-refresh"></i> <?php echo Yii::t("cooperation", "Refresh data") ?>
+			  	</button> 	
 		        	
 		        <div class="modal-title" id="modalText">
 		        	<img class="pull-left margin-right-15" src="<?php echo $thumbAuthor; ?>" height=52 width=52 style="">
@@ -817,9 +838,13 @@
     var liveScopeType = "";
     var subView="<?php echo @$_GET['view']; ?>";
     var navInSlug=false;
+   
     if(typeof contextData.slug != "undefined")
      	navInSlug=true;
-    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?src="+networkParams : "" )+( (typeof contextData.slug != "undefined") ? "#"+contextData.slug : "#page.type."+contextData.type+".id."+contextData.id);
+   
+    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?src="+networkParams : "" )+
+    				 ( (typeof contextData.slug != "undefined") ? "#"+contextData.slug : "#page.type."+contextData.type+".id."+contextData.id);
+    
     if(location.hash.indexOf("#page")>=0){
     	strHash="";
     	if(location.hash.indexOf(".view")>0){
@@ -830,6 +855,7 @@
     	history.replaceState("#page.type."+contextData.type+".id."+contextData.id, "", "#"+contextData.slug+strHash);
     	//location.hash=;
     }
+    
     var cropResult;
     var idObjectShared = new Array();
 

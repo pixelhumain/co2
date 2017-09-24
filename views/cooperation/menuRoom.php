@@ -451,6 +451,10 @@
 
 		uiCoop.initDragAndDrop();
 		uiCoop.initSearchInMenuRoom();
+
+		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
+						".view.coop.room." + currentRoomId;
+
 	});
 
 </script>

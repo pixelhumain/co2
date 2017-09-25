@@ -3,11 +3,11 @@
 $cssAnsScriptFilesModule = array(
     '/js/default/directory.js',
     '/js/interoperability/interoperability.js',
-  );
-  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+);
+HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
-  HtmlHelper::registerCssAndScriptsFiles( array('/css/default/directory.css', ) , 
-                                          Yii::app()->theme->baseUrl. '/assets');
+HtmlHelper::registerCssAndScriptsFiles( array('/css/default/directory.css', ) , 
+                                      Yii::app()->theme->baseUrl. '/assets');
 
 $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
@@ -214,7 +214,9 @@ $this->renderPartial($layoutPath.'header',
     </button>
 </div>
 
-<?php $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
+    <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
+        <?php $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
+    </div>
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
 <?php $filliaireCategories = CO2::getContextList("filliaireCategories"); 
@@ -339,6 +341,7 @@ $this->renderPartial($layoutPath.'header',
 
 	jQuery(document).ready(function() {
         initKInterface({"affixTop":320}); 
+        initTypeSearchInterop();
         typeD = "wikidata";
 
         $('.moduleTitle').append('<br/><a href="javascript:OpenDynFormForProposeOpenData()">Vous avez des données Open Data que vous souhaiteriez incorporez dans Communecter ? N\'attendez plus ! Proposez vous même vos sources de données libres et faites les valoriser !!!</a>');
@@ -453,7 +456,11 @@ $this->renderPartial($layoutPath.'header',
         all_interop_url = [];
         var url_interop = "";
 
-        if (communexion.state == true) {
+        <?php //var_dump(Yii::app()->request->cookies['communexionActivated']);
+              //var_dump(CO2::getCommunexionCookies()); 
+        ?>
+
+        if ($.cookie().communexionActivated == true) {
         	var geoShape = getGeoShapeForOsm(communexion.values.geoShape);
             var geofilter = getGeofilterPolygon(communexion.values.geoShape);
             var city_wikidataID = communexion.values.wikidataID;
@@ -579,12 +586,12 @@ $this->renderPartial($layoutPath.'header',
 	      {
 	  	    if(typeof(cityInseeCommunexion) != "undefined")
 	        {
-	    			if(levelCommunexion == 1) locality = cpCommunexion;
-	    			if(levelCommunexion == 2) locality = inseeCommunexion;
-	    		}else{
-	    			if(levelCommunexion == 1) locality = inseeCommunexion;
-	    			if(levelCommunexion == 2) locality = cpCommunexion;
-	    		}
+    			if(levelCommunexion == 1) locality = cpCommunexion;
+    			if(levelCommunexion == 2) locality = inseeCommunexion;
+    		}else{
+    			if(levelCommunexion == 1) locality = inseeCommunexion;
+    			if(levelCommunexion == 2) locality = cpCommunexion;
+    		}
 	        //if(levelCommunexion == 3) locality = cpCommunexion.substr(0, 2);
 	        if(levelCommunexion == 3) locality = inseeCommunexion;
 	        if(levelCommunexion == 4) locality = inseeCommunexion;
@@ -635,7 +642,7 @@ $this->renderPartial($layoutPath.'header',
 	            mylog.log("error autocomplete INTEROP search"); mylog.dir(data);     
 	            //signal que le chargement est terminé
 	            loadingData = false;  
-                $('#dropdown_search').html("<h1>LA REQUETE N'A PAS ABOUTIE !!! VERIFIEZ VOTRE CONNEXION ...  </h1>");   
+                $('#dropdown_search').append("<br/><div><h1>Une requête n'a pas abouti ... </h1></div>");   
 	        },
 	        success: function(data){ mylog.log("success autocomplete INTEROP search", data); 
 	        	toastr.success("Une partie des données est arrivé");

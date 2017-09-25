@@ -1,6 +1,6 @@
 
 function bindCommunexionScopeEvents(){
-    $(".btn-decommunecter").click(function(){
+    $(".btn-decommunecter").off().on('click',function(){
         activateGlobalCommunexion(false); 
     });
     $(".item-globalscope-checker").click(function(){  
@@ -33,6 +33,10 @@ function bindCommunexionScopeEvents(){
                 if(actionOnSetGlobalScope=="filter"){
                     if(location.hash.indexOf("#live") >= 0){
                         startNewsSearch(true)
+                    } 
+                    else if (location.hash.indexOf("#interoperability") >= 0) {
+                        initTypeSearchInterop();
+                        startSearchInterop(0,30);
                     }
                     else{
                         startSearch(0, indexStepInit); 
@@ -82,9 +86,14 @@ function activateGlobalCommunexion(active, firstLoad){  mylog.log("activateGloba
         //rebuildSearchScopeInput();
         showTagsScopesMin();
         bindCommunexionScopeEvents();
+
+        // TODO search interop
+
         if(actionOnSetGlobalScope=="filter"){
             if(location.hash.indexOf("#live") >=0)
                 startNewsSearch(true);
+            else if(location.hash.indexOf("#interoperability") >= 0)
+                mylog.log('On ne lance pas le startSearch normal');
             else if(!firstLoad)
                 startSearch(0, indexStepInit,searchCallback);
         }

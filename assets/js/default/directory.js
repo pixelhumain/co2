@@ -824,7 +824,7 @@ var directory = {
     // ********************************
 	  elementPanelHtml : function(params){
     		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name);
-    		//mylog.log("----------- elementPanelHtml",params.type,params.name, params);
+    		// mylog.log("----------- elementPanelHtml",params.type,params.name, params);
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
@@ -1810,6 +1810,9 @@ var directory = {
                   params.color = getIconColorForInteropElements(interop_type);
                   params.htmlIco = getImageIcoForInteropElements(interop_type);
                   params.type = "poi.interop."+interop_type;
+
+                  mylog.log('PARAMS POUR UN ELEMENT INTEROP', params);
+                  mylog.log('PARAMS SIZE', params.size);
                   
                 //params.url = '#page.type.'+params.type+'.id.' + params.id;
                 // params.hash = '#page.type.'+params.type+'.id.' + params.id;
@@ -1859,8 +1862,8 @@ var directory = {
                 else if(params.type == "events")
                   str += directory.eventPanelHtml(params);  
                 
-                else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"]) ) 
-                    str += directory.roomsPanelHtml(params,itemType);  
+                else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>= 0 ) 
+                  str += directory.roomsPanelHtml(params,itemType);  
                 
                 else if(params.type == "classified")
                   if(contextData != null)

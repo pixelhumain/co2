@@ -115,7 +115,8 @@ class CommunecterController extends Controller
       "assigndata"    => array("href" => "/ph/communecter/adminpublic/assigndata"),
       "getdatabyurl"   => array("href" => "/ph/communecter/adminpublic/getdatabyurl"),
       "previewdata"    => array("href" => "/ph/communecter/adminpublic/previewdata"),
-      "interopproposed"    => array("href" => "/ph/communecter/adminpublic/interopproposed"),
+      "interopproposed" => array("href" => "/ph/communecter/adminpublic/interopproposed"),
+      "cleantags" => array("href" => "ph/communecter/adminpublic/cleantags"),
 
     ),
     "collections" => array(

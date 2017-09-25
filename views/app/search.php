@@ -17,13 +17,15 @@
 
     $params = CO2::getThemeParams();
 
+    $maxImg = 5;
+
     $page = "search";
     if(!@$type){  $type = "all"; }
 
-    if(@$type=="events")    { $page = "agenda"; }
-    if(@$type=="classified"){ $page = "annonces"; }
-    if(@$type=="vote")      { $page = "power"; }
-    if(@$type=="place")     { $page = "place"; }
+    if(@$type=="events")    { $page = "agenda";     $maxImg = 7; }
+    if(@$type=="classified"){ $page = "annonces";   $maxImg = 1; }
+    if(@$type=="vote")      { $page = "power";      $maxImg = 1; }
+    if(@$type=="place")     { $page = "place";      $maxImg = 1; }
 
     if(@$type=="cities")    { $lblCreate = ""; }
 
@@ -38,113 +40,35 @@
                             array(  "layoutPath"=>$layoutPath ,
                                     "page" => $page,
                                     "type" => @$type) ); 
+
+
+    $randImg = rand(1, $maxImg);
+    //$randImg = 2;
 ?>
 
 <style>
+    <?php if($params["title"] != "Kgougle") { ?>
+    header {
+      background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/<?php echo $page; ?>/pexels-<?php echo $randImg; ?>.jpeg") center center;
+      /*opacity: 0.3;
+      background-color: black;*/
+    }
     
-    /*
-<<<<<<< HEAD
-    #page #dropdown_search{
-    	min-height:500px;
+    #main-scope-name a{
+        height: 130px;
+        background-color: rgba(255, 255, 255, 0.9);
+        width: 130px;
+        display: inline-block;
+        padding-top: 30px;
+        border-radius: 50%;
+        padding-right: 4px;
     }
-    #page .row.headerDirectory{
-        margin-top: 20px;
-        display: none;
-    }
-    #page p {
-        font-size: 13px;
-    }
-    .container-result-search {
-        border-top:1px solid #eee;
-        padding-top:15px;
-    }
-
-    .btn-create-page{
-        margin-top:0px;
-        z-index: 10;
-        border-radius: 0 50%;
-        -ms-transform: rotate(7deg);
-        -webkit-transform: rotate(7deg);
-        transform: rotate(-45deg);
-    }
-    .btn-create-page:hover{
-        background-color: white!important;
-        color:#34a853!important;
-        border: 2px solid #34a853!important;
-
-    }
-    .main-btn-scopes {
-        margin-top: 7px;
-    }
-
-    .scope-min-header{
-        float: left;
-        margin-top: 27px;
-        margin-left: 35px;
-    }
-
-    .links-create-element .btn-create-elem{
-        margin-top:25px;
-    }
-    .links-create-element a.btn-create-elem:hover{
-        text-decoration: none;
-    }
-
-    .subtitle-search{
-        display: none;
-    }
-       
-    .breadcrum-communexion{ 
-         margin-top:25px;
-    }
-
-    .breadcrum-communexion .item-globalscope-checker{
-        border-bottom:1px solid #e6344d;
-    }
-    .item-globalscope-checker.inactive{
-        color:#DBBCC1 !important;
-        border-bottom:0px;
-    }
-    .item-globalscope-checker:hover,
-    .item-globalscope-checker:active,
-    .item-globalscope-checker:focus{
-        color:#e6344d !important;
-        border-bottom:1px solid #e6344d;
-        text-decoration: none !important;
-    }
-    header .container, 
-    .header .container{
-        padding-bottom: 40px;
-    }
-
-    .btn-directory-type.bg-white {
-        background-color: #F2F2F2 !important;
-    }
-
-    .searchEntityContainer.pull-right.classified{
-        clear: right;
-    }
-    .searchEntityContainer.pull-left.classified{
-        clear: left;
-    }
-
-    .carousel-inner > .item > img.img-responsive{
-        display: inline !important;
-        max-height: 400px !important;
-    }
-
-    .btn-select-type-anc.active,
-    .btn-select-type-anc:active,
-    .btn-select-type-anc:focus{
-        color: white !important;
-        background-color: #2C3E50;
-    }
-=======
->>>>>>> f781165b487a9158d55878f2ddec79a728b92cd0 */
+    <?php } ?>
 </style>
 
 
-<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow pageContent" id="content-social" style="min-height:700px;">
+<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow pageContent" 
+     id="content-social" style="min-height:700px;">
 
     <?php if(@$type=="events"){ ?>
     <div class="col-md-12 no-padding calendar"></div>
@@ -175,7 +99,7 @@
             <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips"
                     data-target="#dash-create-modal" data-toggle="modal"
                     data-toggle="tooltip" data-placement="top" 
-                    title="<?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>">
+                    title="<?php echo Yii::t("common", @$params["pages"]["#".$page]["lblBtnCreate"]); ?>">
                 <i class="fa fa-plus-circle"></i> <?php echo Yii::t("common",@$params["pages"]["#".$page]["lblBtnCreate"]); ?>
             </button>
             <?php }else{ ?>
@@ -306,7 +230,7 @@ jQuery(document).ready(function() {
     
     if(page == "annonces" || page == "agenda" || page == "power"){
         setTimeout(function(){
-            KScrollTo("#content-social");  
+            //KScrollTo("#content-social");  
         }, 1000);
     }
     $(".tooltips").tooltip();

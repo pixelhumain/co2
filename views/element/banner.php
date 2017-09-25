@@ -139,7 +139,7 @@
 
 	<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation <?php if(@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])) echo "backgroundHeaderInformation" ?>">	
     	
-    	<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
+    	<div class="col-xs-12 col-sm-9 col-md-9 col-lg-10 text-white pull-right">
 			<?php if (@$element["status"] == "deletePending") { ?> 
 				<h4 class="text-left padding-left-15 pull-left no-margin letter-red">En cours de suppression</h4><br>
 			<?php } ?>
@@ -170,7 +170,7 @@
 		<?php 
 			$classAddress = ( (@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]) ? "" : "hidden" );
 		//if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]){ ?>
-			<div class="header-address-tags col-xs-12 col-sm-9 col-md-9 col-lg-9 pull-right margin-bottom-5 <?php echo $classAddress ; ?>">
+			<div class="header-address-tags col-xs-12 col-sm-9 col-md-9 col-lg-10 pull-right margin-bottom-5 <?php echo $classAddress ; ?>">
 				<?php if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"]){ ?>
 					<div class="header-address badge letter-white bg-red margin-left-5 pull-left">
 						<?php echo @$element["address"]["postalCode"] ? 
@@ -199,7 +199,7 @@
 				</div>
 			</div>
 		
-		<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 pull-right">
+		<div class="col-xs-12 col-sm-9 col-md-9 col-lg-10 pull-right">
 			<span class="pull-left text-white" id="shortDescriptionHeader"><?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
 			</span>	
 		</div>
@@ -232,27 +232,32 @@
 				<div class="header-banner"  style="font-size: 14px;font-weight: none;"></div>
 			<?php } ?>
 			<div style="font-size: 14px;font-weight: none;">
-			<?php if(@$element['parent']){ 
 
-					if($type==Event::COLLECTION){
-						$msg = Yii::t("common","Planned on") ;
-					}else{
-						$msg = Yii::t("common","Parenthood") ;
-					}
+				<div id="parentHeader" >
+					<?php if(@$element['parent']){ 
 
-			$icon = Element::getFaIcon($element['parentType']);
+							if($type==Event::COLLECTION){
+								$msg = Yii::t("common","Planned on") ;
+							}else{
+								$msg = Yii::t("common","Parenthood") ;
+							}
 
-			echo $msg ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-<?php echo $icon ; ?>"></i> <?php  echo $element['parent']['name']; ?></a><br/> 
-			<?php } ?>
-			<?php if(	@$element['organizerType'] && @$element['organizerId'] && 
-						$element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow"){ ?>
-				<?php echo Yii::t("common","Organized by"); ?> : 
-				<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" 
-					class="lbh"> 
-					<i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> 
-						<?php  echo $element['organizer']['name']; ?>
-				</a>
-			<?php } ?>
+						$icon = Element::getFaIcon($element['parentType']);
+
+						echo $msg ?> : <a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> <i class="fa fa-<?php echo $icon ; ?>"></i> <?php  echo $element['parent']['name']; ?></a><br/> 
+					<?php } ?>
+				</div>
+				<div id="organizerHeader" >
+					<?php if(	@$element['organizerType'] && @$element['organizerId'] && 
+								$element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow"){ ?>
+						<?php echo Yii::t("common","Organized by"); ?> : 
+						<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" 
+							class="lbh"> 
+							<i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> 
+								<?php  echo $element['organizer']['name']; ?>
+						</a>
+					<?php } ?>
+				</div>
 			</div>
 	    </div>
 	<?php } ?>

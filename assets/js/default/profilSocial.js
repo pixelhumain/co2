@@ -45,6 +45,7 @@ function bindButtonMenu(){
 			//history.pushState(null, "New Title", hashUrlPage);
 		}
 		loadNewsStream(false);
+		uiCoop.closeUI(false);
 	});
 	$("#btn-start-gallery").click(function(){
 		responsiveMenuLeft();
@@ -53,12 +54,18 @@ function bindButtonMenu(){
 		//location.search="?view=gallery";
 		loadGallery();
 	});
+	$("#btn-start-library").click(function(){
+		responsiveMenuLeft();
+		location.hash=hashUrlPage+".view.library";
+		//history.pushState(null, "New Title", hashUrlPage+".view.gallery");
+		//location.search="?view=gallery";
+		loadLibrary();
+	});
 	$(".btn-start-notifications").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
+		reloadWindow=false;
 		location.hash=hashUrlPage+".view.notifications";
-		//history.pushState(null, "New Title", hashUrlPage+".view.notifications");
-		//location.search="?view=notifications";
 		loadNotifications();
 	});
 	$(".btn-start-chart").click(function(){
@@ -118,10 +125,11 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		var dataName = $(this).data("type-dir");
 		location.hash=hashUrlPage+".view.directory.dir."+dataName;
-		if(lastWindowUrl==null) loadDataDirectory(dataName, "", edit);
+		loadDataDirectory(dataName, "", edit);
 	});
 		
 	$("#subsubMenuLeft a").click(function(){
+		onchangeClick=false;
 		$("#subsubMenuLeft a").removeClass("active");
 		$(this).addClass("active");
 	});
@@ -178,12 +186,19 @@ function bindButtonMenu(){
 		dyFObj.openForm(form, null, dataUpdate);
 	});
 
+	
+	$("#btn-update-coop").click(function(){
+		toastr.info(trad["processing"]);
+		uiCoop.getCoopData(contextData.type, contextData.id, "room");
+		uiCoop.startUI();
+	});
+
 	bindButtonOpenForm();
 
-    $("#div-select-create").mouseleave(function(){
-    	$("#div-select-create").hide(200);
+    /*$("#div-select-create").mouseleave(function(){
+    	$("#div-select-create").stop(true, true).delay(200).fadeOut(500);
     	//$(".central-section").show();    	
-    });
+    });*/
 
     $("#btn-close-select-create").click(function(){
     	$("#div-select-create").hide(200);
@@ -285,6 +300,14 @@ function bindButtonMenu(){
 		var value = $(this).attr("value");
 		$(".btn-group-"+type + " .btn").removeClass("active");
 		$(this).addClass("active");
+	});
+
+	$("#open-co-space").click(function(){
+		uiCoop.startUI();
+	});
+
+	$("#reopen-menu-left-container").click(function(){
+		uiCoop.closeUI();
 	});
 
 	initBtnShare();
@@ -470,14 +493,22 @@ function loadSettings(){
 }
 function loadGallery(){
 	toogleNotif(false);
-	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id;
+	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id+"/docType/image";
 	
 	showLoader('#central-container');
 	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 		null,
 		function(){},"html");
 }
-
+function loadLibrary(){
+	toogleNotif(false);
+	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id+"/docType/file";
+	
+	showLoader('#central-container');
+	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+		null,
+		function(){},"html");
+}
 function loadChart(){
 	toogleNotif(false);
 	var url = "chart/header/type/"+typeItem+"/id/"+contextData.id;
@@ -588,10 +619,40 @@ function loadContacts(){
 	,"html");
 }
 
+
+
+//todo add count on each tag
+    function getfilterRoles(roles) { 
+    	console.log("roles",roles);
+        $("#listRoles").html("");
+        $("#listRoles").append("<a class='btn btn-link letter-blue favElBtn favAllBtn' "+
+            "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'>"+
+            " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a>");
+        	$.each( roles,function(k,o){
+                $("#listRoles").append("<a class='btn btn-link favElBtn letter-blue "+slugify(k)+"Btn' "+
+                                "data-tag='"+slugify(k)+"' "+
+                                "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(k)+"\",\".searchEntityContainer\",1)'>"+
+                                  k+" <span class='badge'>"+o.count+"</span>"+
+                            "</a>");
+        	});
+    }
 function displayInTheContainer(data, dataName, dataIcon, contextType, edit){ 
 	mylog.log("displayInTheContainer",data, dataName, dataIcon, contextType, edit)
 	var n=0;
-	$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
+	listRoles={};
+	$.each(data, function(key, val){ 
+		console.log("rolesShox",val);
+		if(typeof key != "undefined") n++; 
+		if(typeof val.rolesLink != "undefined"){
+			console.log(val.rolesLink);
+			$.each(val.rolesLink, function(i,v){
+				if(typeof listRoles[v] != "undefined")
+					listRoles[v].count++;
+				else
+					listRoles[v]={"count": 1}
+			});
+		}
+	});
 	if(n>0){
 		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 
@@ -606,13 +667,15 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		if(dataName != "urls")
 			html += btnMap;
 
-		html +=	thisTitle + "<hr>";
+		html +=	thisTitle;
+		html += "<div id='listRoles'></div>"+
+			 "<hr>";
 		html +=	"</div>";
 		
 		
-		mapElements = new Array();
+		var mapElements = new Array();
 		
-		
+		console.log("listRoles",listRoles);
 		if(dataName != "collections"){
 			if(mapElements.length==0) mapElements = data;
         	else $.extend(mapElements, data);
@@ -642,7 +705,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		initBtnLink();
 		initBtnAdmin();
 		bindButtonOpenForm();
-		
+		getfilterRoles(listRoles);
 		var dataToMap = data;
 		if(dataName == "collections"){
 			dataToMap = new Array();
@@ -742,21 +805,28 @@ function toogleNotif(open){
 }
 
 function loadLiveNow () {
-	mylog.log("loadLiveNow");
-	var dep = ( ( notNull(contextData["address"])  && notNull(contextData["address"]["depName"]) ) ? 
-				contextData["address"]["depName"] : "");
+	mylog.log("loadLiveNow", contextData.address);
+
+	var level = {} ;
+	if( notNull(contextData.address)) {
+		mylog.log("loadLiveNow", contextData.address);
+		if(notNull(contextData.address.level4)){
+			mylog.log("loadLiveNow", contextData.address.level4);
+			level[contextData.address.level4] = { type : "level4", name : contextData.address.level4Name } ;
+		} else if(notNull(contextData.address.level3)){
+			level[contextData.address.level3] = { type : "level3", name : contextData.address.level3Name } ;
+		} else if(notNull(contextData.address.level2)){
+			level[contextData.address.level2] = { type : "level2", name : contextData.address.level2Name } ;
+		} else
+			level[contextData.address.level1] = { type : "level1", name : contextData.address.level1Name } ;
+	}
+
+	mylog.log("loadLiveNow", level);
+	
 
     var searchParams = {
       "tpl":"/pod/nowList",
-      //"latest" : true,
-      //"searchType" : [typeObj["event"]["col"],typeObj["project"]["col"],
-      //					typeObj["organization"]["col"],"classified",
-      //				 /*typeObj["organization"]["col"]*//*,typeObj["action"]["col"]*/], 
-      //"searchTag" : $('#searchTags').val().split(','), //is an array
-      //"searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
-      //"searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-      "searchLocalityDEPARTEMENT" : new Array(dep), //$('#searchLocalityDEPARTEMENT').val().split(','),
-      //"searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
+      "searchLocality" : level,
       "indexMin" : 0, 
       "indexMax" : 30 
     };
@@ -925,3 +995,7 @@ function startLoadRoom(type, id){
 	toogleNotif(false);
 	KScrollTo("#shortDescriptionHeader");
 }
+/*function createSlugBeforeChat(type,canEdit,hasRc){
+	dynForm.openForm("slug","sub");
+	rcObj.loadChat(loadChat,type,canEdit,hasRC);
+}*/

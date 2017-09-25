@@ -1,7 +1,8 @@
 {
 	"title" : "app",
-	"metaImg" : "/assets/img/CO.png",
-	"metaDesc" : "Réseau sociétal citoyen",
+	"metaImg" : "/assets/img/bg_pixeltree2.jpg",
+	"metaTitle" : "Réseau sociétal citoyen",
+	"metaDesc" : "Communecter : Connecter à sa commune, inter connecter les communs, un réseau sociétal pour un citoyen connecté et acteur au centre de sa société.",
 
 	"pages" : {
 		"#app.index": {"redirect":"welcome"},
@@ -72,6 +73,20 @@
 			"icon" : "newspaper-o", 
 			"mainTitle" : "<span class='text-red'>CO</span>mmon live",
 			"placeholderMainSearch" : "search in live ..."
+		},
+
+		"#chat": {
+			"inMenu" : false, 
+			"open" : true, 
+			"subdomain" : "chat", 
+			"subdomainName" : "Chat",
+			"alias":"#chatAction",
+			"login" : true,
+			"notif" : "chatNotifs",
+			"icon" : "comments", 
+			"mainTitle" : "<span class='text-red'>CHAT with your communities</span>",
+			"removeAfterLoad" : true, 
+			"emptyContextData" : false
 		},
 
 		"#page": {

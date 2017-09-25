@@ -185,8 +185,15 @@
 		text-decoration: line-through;
 		display:none;
 	}
+	.divRoles{
+		margin:5px;
+		display:none;
+	}
 	.btn-is-admin.selected{
 		display:inline;
+	}
+	.divRoles.selected{
+		display:block;
 	}
 	.btn-is-admin.selected.isAdmin {
 		text-decoration: none;
@@ -238,7 +245,7 @@
         <div class="form-group" id="addMemberSection">
 
         	<input type="radio" value="citoyens" name="memberType" data-fa="user" checked> <i class="fa fa-user"></i> <?php echo Yii::t("common","a citizen"); ?>
-        	<?php if($type != "events"){ ?>
+        	<?php if($type != "events" || Authorisation::isElementAdmin($parentId, $type, @Yii::app()->session["userId"])){ ?>
         		<input type="radio" value="organizations" name="memberType" data-fa="group" style="margin-left:25px;"> <i class="fa fa-group"></i> <?php echo Yii::t("common","an organization"); ?>
         	<?php } ?>
 			<div class="input-group">
@@ -279,11 +286,11 @@ var elementId = "<?php echo $parentId; ?>"
 var myContactsMembers = $.extend( true, {}, myContacts );
 var listContact = new Array();
 var newMemberInCommunity = false;
-
+var isElementAdmin= "<?php echo Authorisation::isElementAdmin($parentId, $type, @Yii::app()->session["userId"]) ?>";
 var contactTypes = [{ name : "people", color: "yellow", icon:"user", label:"Citoyens" }];
 var listMails = {};
-
-if(elementType != "<?php echo Event::COLLECTION ?>")
+var rolesList=[tradCategory.financier,tradCategory.partner,tradCategory.sponsor,tradCategory.organizor,tradCategory.president, tradCategory.director,tradCategory.speaker,tradCategory.intervener];
+if(elementType != "<?php echo Event::COLLECTION ?>" || isElementAdmin)
 	contactTypes.push({ name : "organizations", color: "green", icon:"group", label:"Organisations" });
 
 
@@ -319,6 +326,8 @@ var addLinkDynFormInvite = {
 
 var addLinkSearchMode = "contacts";
 jQuery(document).ready(function() {
+
+	mylog.log("here");
 	if(elementType != "citoyens")
 		buildModal(addLinkDynForm, "modalDirectoryForm");
 	else
@@ -338,7 +347,7 @@ jQuery(document).ready(function() {
 	});
 
 	$.each(organizationTypes, function(k, v) {
-   		$(".member-organization-type").append($("<option />").val(k).text(v));
+   		$(".member-organization-type").append($("<option />").val(k).text(tradCategory[k]));
 	});
 	bindInvite();
 });
@@ -547,6 +556,7 @@ function bindEventScopeModal(){
 function bindEventScopeContactsModal(){
 	//initialise la selection d'une checkbox contact au click sur le bouton qui lui correspond
 	mylog.log("bindEventScopeContactsModal");
+	// QUESTION BOUBOULE : IS THAT USED BECAUSE NEXT ONE DO THE SAME ???????? @tango @rapha 
 	$(".btn-chk-contact").click(function(){ 
 		var id = $(this).attr("idcontact"); 
 		var type = $(this).attr("typecontact");
@@ -554,11 +564,12 @@ function bindEventScopeContactsModal(){
 
 		var check = !$("#chk-scope-"+id).prop('checked');
 		$("#chk-scope-"+id).prop("checked", check);
-		
-		if(check && type != "organizations")
-		$("[data-id='"+id+"'].btn-is-admin").addClass("selected");
-		else
-		$("[data-id='"+id+"'].btn-is-admin").removeClass("selected");
+		if(check){
+			if(type != "organizations")
+				$("[data-id='"+id+"'].btn-is-admin").addClass("selected");
+			$("[data-id='"+id+"'].divRoles").addClass("selected");
+		}else
+		$("[data-id='"+id+"'].btn-is-admin, [data-id='"+id+"'].divRoles").removeClass("selected");
 	});
 
 	$(".chk-contact").click(function(){ 
@@ -569,10 +580,12 @@ function bindEventScopeContactsModal(){
 		var check = $(this).prop('checked');
 		//$("#chk-scope-"+id).prop("checked", check);
 		
-		if(check && type != "organizations")
-		$("[data-id='"+id+"'].btn-is-admin").addClass("selected");
-		else
-		$("[data-id='"+id+"'].btn-is-admin").removeClass("selected");
+		if(check){
+			if(type != "organizations")
+				$("[data-id='"+id+"'].btn-is-admin").addClass("selected");
+			$("[data-id='"+id+"'].divRoles").addClass("selected");
+		}else
+			$("[data-id='"+id+"'].btn-is-admin, [data-id='"+id+"'].divRoles").removeClass("selected");
 	});
 
 	$(".btn-is-admin").click(function(){
@@ -581,6 +594,7 @@ function bindEventScopeContactsModal(){
 		else
 			$(this).addClass("isAdmin");
 	});
+	$('.tagsRoles').select2({tags:rolesList});
 }
 
 function buildModal(fieldObj, idUi){
@@ -700,8 +714,13 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 															'<span class="scope-city-contact text-light" idcontact="'+thisKey+'">' + city + '</span>'+
 														'</span>' +
 													'</div>' +
-												'</div>' +
-											'</li>';
+												'</div>';
+												if(isElementAdmin){
+	fieldHTML +=									'<div class="divRoles col-md-12 col-sm-12 col-xs-12" data-id="'+thisKey+'"">'+
+														'<input id="tagsRoles'+getObjectId(value)+'" class="tagsRoles" type="" data-type="select2" name="roles" placeholder="<?php echo Yii::t("common","Add a role") ?>" value="" style="width:100%;">'+
+													'</div>';	
+												}
+	fieldHTML +=								'</li>';
 											}
 										}
 										});									
@@ -751,7 +770,7 @@ function autoCompleteEmailAddMember(searchValue){
 		"search" : searchValue,
 		"elementId" : elementId
 	};
-	if (elementType == "<?php echo Event::COLLECTION ?>")
+	if (elementType == "<?php echo Event::COLLECTION ?>" && !isElementAdmin)
 		data.searchMode = "personOnly";
 
 	$("#list-scroll-type").html("<div class='padding-10'><i class='fa fa-spin fa-refresh'></i> Recherche en cours</div>");
@@ -809,7 +828,7 @@ function checkSearch(thisElement, searchVal, type){
 function sendInvitation(){
 	var connectType = "member";
 	//if ($("#addMembers #memberIsAdmin").val() == true) connectType = "admin";
-	var params = {
+	 var params = {
 		"childs" : new Array(),
 		//"organizationType" : $("#addMembers #organizationType").val(),
 		"parentType" : elementType,
@@ -824,7 +843,10 @@ function sendInvitation(){
 			var name = "";
 			var contactPublicFound = new Array();
 			var connectType = "";
-
+			var roles = "";
+			if (typeof $("#tagsRoles"+id).val() != "undefined" && $("#tagsRoles"+id).val() != ""){ 
+		        roles = $("#tagsRoles"+id).val().split(",");   
+		      } 
 			if(addLinkSearchMode == "all") { contactPublicFound = listContact;
 			}else if(addLinkSearchMode=="contacts"){ contactPublicFound = myContactsMembers; }
 
@@ -841,16 +863,22 @@ function sendInvitation(){
 			if ($("#isAdmin"+id).hasClass("isAdmin")) {
 				connectType = "admin";
 			}
+			/*if ($("#tagsRoles"+id).val() != ""){
+				roles = $("#tagsRoles"+id).val().split(",");	
+			}*/
 
 			mylog.log("add this element ?", email, type, id, name);
 			if(type != "" && id != "" && name != "")
-				params["childs"].push({
-					"childId" : id,
-					"childName" : name,
-					"childEmail" : email,
-					"childType" : type, 
-					"connectType" : connectType
-				})
+				pushChild={ 
+		          "childId" : id, 
+		          "childName" : name, 
+		          "childEmail" : email, 
+		          "childType" : type,  
+		          "connectType" : connectType 
+		        } 
+        	if(typeof roles != "undefined" && roles != "") 
+          		pushChild.roles=roles; 
+        	params["childs"].push(pushChild) 
 		}
 	});
 	mylog.log("params constructed");
@@ -888,12 +916,12 @@ function sendInvitation(){
 			            mapType="people";
 			        mapElements.push(newMember);
 				});*/
-				if(typeof(mapUrl) != "undefined"){
+				/*if(typeof(mapUrl) != "undefined"){
 					if(typeof(mapUrl.detail.load) != "undefined" && mapUrl.detail.load)
 						mapUrl.detail.load = false;
 					if(typeof(mapUrl.directory.load) != "undefined" && mapUrl.directory.load)
 						mapUrl.directory.load = false;
-				}
+				}*/
 				if(data.onlyOrganization)
 					loadDataDirectory("members", "users");
 				else
@@ -957,6 +985,8 @@ function sendInvitationMailAddMember(){ mylog.log("sendInvitationMailAddMember")
 					$("#numberOfInvit").html(count + ' invitation(s)');
 					$("#numberOfInvit").data("count", count);
 				}
+				
+				$("#search-contact").val("");
 				$("#addMembers #memberId").val("");
                 $("#addMembers #memberType").val("");
                 $("#addMembers #memberName").val("");
@@ -965,7 +995,7 @@ function sendInvitationMailAddMember(){ mylog.log("sendInvitationMailAddMember")
                 $('#addMembers #organizationType').val("");
 				$("#addMembers #memberIsAdmin").val("false");
 				$('#addMembers #memberEmail').parents().eq(1).show();
-				$("[name='my-checkbox']").bootstrapSwitch('state', false);
+				//$("[name='my-checkbox']").bootstrapSwitch('state', false);
 				$("#loader-send-mail-invite").html('');
 				//showSearch();
 				if(typeof(mapUrl) != "undefined"){
@@ -1360,7 +1390,7 @@ function autoCompleteInviteSearch2(search){
 
 
 function buildModalInvite(fieldObj, idUi){
-	mylog.log("buildModal", fieldObj, idUi);
+	mylog.log("buildModalInvite", fieldObj, idUi);
 	//var fieldClass = " select2TagsInput select2ScopeInput";
     var fieldHTML = "";    		
 	fieldHTML += '<div class="modal fade" id="modal-scope" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+

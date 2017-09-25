@@ -276,7 +276,9 @@ function bindAboutPodElement() {
 									$("#typeAbout").html(tradCategory[data.resultGoods.values.type]);
 									$("#typeHeader .type-header").html(tradCategory[data.resultGoods.values.type]);
 								}
+								if(typeof data.resultGoods.values.email != "undefined"){
 
+								}
 								if(typeof data.resultGoods.values.email != "undefined"){
 									mylog.log("update email");
 									contextData.email = data.resultGoods.values.email;
@@ -323,15 +325,20 @@ function bindAboutPodElement() {
 									contextData.parentId = data.resultGoods.values.parent.parentId;
 									contextData.parentType = data.resultGoods.values.parent.parentType;
 
-									var html = "<i>"+trad["notSpecified"]+"</i>";
+									var htmlAbout = "<i>"+trad["notSpecified"]+"</i>";
+									var htmlHeader = "";
 
 									if(notEmpty(contextData.parentId)){
-										html = '<a href="#page.type.'+contextData.parentType+'.id.'+contextData.parentId+'" class="lbh">'+ 
+										htmlAbout = '<a href="#page.type.'+contextData.parentType+'.id.'+contextData.parentId+'" class="lbh">'+ 
 											'<i class="fa fa-'+dyFInputs.get(contextData.parentType).icon+'"></i> '+
-											contextData.parent.name+'</a><br/>'; 
+											contextData.parent.name+'</a><br/>';
+
+										htmlHeader =((contextData.type == typeObj.event.col) ? trad["Planned on"] : trad["Parenthood"] ) ;
+										htmlHeader += htmlAbout;
 									}
 
-									$("#parentAbout").html(html);
+									$("#parentAbout").html(htmlAbout);
+									$("#parentHeader").html(htmlHeader);
 								}
 
 								if(typeof data.resultGoods.values.organizer != "undefined"){
@@ -341,14 +348,17 @@ function bindAboutPodElement() {
 									contextData.organizerType = data.resultGoods.values.organizer.organizerType;
 
 									var html = "<i>"+trad["notSpecified"]+"</i>";
+									var htmlHeader = "";
 
 									if(notEmpty(contextData.organizerId)){
 										html = '<a href="#page.type.'+contextData.organizerType+'.id.'+contextData.organizerId+'" class="lbh">'+ 
 											'<i class="fa fa-'+dyFInputs.get(contextData.organizerType).icon+'"></i> '+
-											contextData.organizer.name+'</a><br/>'; 
+											contextData.organizer.name+'</a><br/>';
+										htmlHeader = tradDynForm.organizedby + " " + html;
 									}
 
 									$("#organizerAbout").html(html);
+									$("#organizerHeader").html(htmlHeader);
 								}
 							}
 							dyFObj.closeForm();
@@ -357,13 +367,14 @@ function bindAboutPodElement() {
 						properties : {
 							block : dyFInputs.inputHidden(),
 							name : dyFInputs.name(contextData.type),
+							similarLink : dyFInputs.similarLink,
 							typeElement : dyFInputs.inputHidden(),
 							isUpdate : dyFInputs.inputHidden(true)
 						}
 					}
 				}
 			};
-
+			//form.dynForm.jsonSchema.properties.slug = dyFInputs.slug("Slug", "Slug", {minlength : 3, uniqueSlug:true});
 			if(contextData.type == typeObj.person.col ){
 				form.dynForm.jsonSchema.properties.username = dyFInputs.inputText("Username", "Username", { required : true });
 				form.dynForm.jsonSchema.properties.birthDate = dyFInputs.birthDate;
@@ -382,7 +393,7 @@ function bindAboutPodElement() {
 			form.dynForm.jsonSchema.properties.tags = dyFInputs.tags();
 
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
-				form.dynForm.jsonSchema.properties.email = dyFInputs.email();
+				form.dynForm.jsonSchema.properties.email = dyFInputs.text();
 				form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText(tradDynForm["fix"],tradDynForm["enterfixnumber"]);
 				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText(tradDynForm["mobile"],tradDynForm["entermobilenumber"]);
 				form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText(tradDynForm["fax"],tradDynForm["enterfaxnumber"]);
@@ -408,7 +419,7 @@ function bindAboutPodElement() {
             	init : function(){ console.log("init ParentId");
 	            	$("#ajaxFormModal #parentId").off().on("change",function(){
 	            		var selected = $(':selected', this);
-    					$("#ajaxFormModal #parentType").val(selected.parent().attr('label'));
+    					$("#ajaxFormModal #parentType").val(selected.data('type'));
 	            	});
 	            }
             };
@@ -426,7 +437,9 @@ function bindAboutPodElement() {
 		        typeElement : contextData.type,
 		        name : contextData.name,	
 			};
-			
+			if(notNull(contextData.slug) && contextData.slug.length > 0)
+				dataUpdate.slug = contextData.slug;
+
 			if(notNull(contextData.tags) && contextData.tags.length > 0)
 				dataUpdate.tags = contextData.tags;
 
@@ -644,7 +657,56 @@ function bindAboutPodElement() {
 			
 		});
 	}
-
+	function updateSlug() {
+		/*var type=type;
+		var canEdit=canEdit;
+		var hasRc=hasRc;*/
+		var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
+				dynForm : {
+					jsonSchema : {
+						title : "Créer un slug",// trad["Update network"],
+						icon : "fa-key",
+						onLoads : {
+							sub : function(){
+								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  				  .addClass("bg-dark");
+								//bindDesc("#ajaxFormModal");
+							}
+						},
+						beforeSave : function(){
+							mylog.log("beforeSave");
+					    	//removeFieldUpdateDynForm(contextData.type);
+					    },
+						afterSave : function(data){
+							dyFObj.closeForm();
+							toastr.success("Votre slug a bien été enregistré");
+							contextData.slug=data.resultGoods.values.slug;
+							//rcObj.loadChat(data.resultGoods.values.slug,type,canEdit,hasRc);
+							//loadDataDirectory(connectType, "user", true);
+							//changeHiddenFields();
+						},
+						properties : {
+							info : {
+				                inputType : "custom",
+				                html:"<p class='text-dark'><i class='fa fa-info-circle'></i> Slug is very important.<br> It will permit to give a unique name to chat in a room,<br>A beautiful url like www.communecter.org/livincoop<br>And a specific mention name<hr></p>",
+				            },
+				            block : dyFInputs.inputHidden(),
+							id : dyFInputs.inputHidden(),
+							typeElement : dyFInputs.inputHidden(), 
+							slug : dyFInputs.slug("Slug","Slug",{minlength:3/*, uniqueSlug:true*/}),
+						}
+					}
+				}
+			};
+			var dataUpdate = {
+				block : "info",
+		        id : contextData.id,
+		        typeElement : contextData.type,
+		        slug : contextData.slug,	
+			};
+			dyFObj.openForm(form, "sub", dataUpdate);		
+	}
 	function changeNetwork(id, url, str){
 		mylog.log("changeNetwork", id, url, str);
 		$(id).attr('href', url);
@@ -683,6 +745,70 @@ function bindAboutPodElement() {
 		mylog.log("params",params);
 		dyFObj.openForm( 'url','sub', params);
 	}
+	function updateRoles(childId, childType, childName, connectType, roles) {
+		var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/link/removerole/",
+				dynForm : {
+					jsonSchema : {
+						title : "Ajouter ou modifier les rôles de "+childName,// trad["Update network"],
+						icon : "fa-key",
+						onLoads : {
+							sub : function(){
+								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  				  .addClass("bg-dark");
+								//bindDesc("#ajaxFormModal");
+							}
+						},
+						beforeSave : function(){
+							mylog.log("beforeSave");
+					    	//removeFieldUpdateDynForm(contextData.type);
+					    },
+						afterSave : function(data){
+							mylog.dir(data);
+							dyFObj.closeForm();
+							loadDataDirectory(connectType, "user", true);
+							//changeHiddenFields();
+						},
+						properties : {
+							contextId : dyFInputs.inputHidden(),
+							contextType : dyFInputs.inputHidden(), 
+							roles : dyFInputs.tags(rolesList, tradDynForm["addroles"] , tradDynForm["addroles"]),
+							childId : dyFInputs.inputHidden(), 
+							childType : dyFInputs.inputHidden(),
+							connectType : dyFInputs.inputHidden()
+						}
+					}
+				}
+			};
+
+			var dataUpdate = {
+		        contextId : contextData.id,
+		        contextType : contextData.type,
+		        childId : childId,
+		        childType : childType,
+		        connectType : connectType,
+			};
+
+			if(notEmpty(roles))
+				dataUpdate.roles = roles.split(",");
+			dyFObj.openForm(form, "sub", dataUpdate);		
+	}
+	function updateBookmark(id) {
+		mylog.log("updBook",id);
+		filesUp=files[id];
+		var params=new Object;
+		params.id=id;
+		if(filesUp.url != "undefined")
+			params.url=filesUp.url;
+		if(filesUp.name != "undefined")
+			params.name=filesUp.name;
+		if(filesUp.tags != "undefined")
+			params.tags=filesUp.tags;
+		if(filesUp.description != "undefined")
+			params.description=filesUp.description;
+		mylog.log("params",params);
+		dyFObj.openForm( 'bookmark','sub', params);
+	}
 
 
 	function updateContact(ind, name, email, role, telephone) {
@@ -698,6 +824,14 @@ function bindAboutPodElement() {
 			dataUpdate.phone = telephone;
 		mylog.log("dataUpdate", dataUpdate);
 		dyFObj.openForm ('contactPoint','contact', dataUpdate);
+	}
+	function updateDocument(id, title) {
+		mylog.log("updateDocument", id, name);
+		dataUpdate = { docId : id } ;
+		if(title != "undefined")
+			dataUpdate.title = title;
+		mylog.log("dataUpdate", dataUpdate);
+		dyFObj.openForm ('document','sub', dataUpdate);
 	}
 
 	function removeUrl(ind) {
@@ -786,7 +920,7 @@ function bindAboutPodElement() {
 
 	function removeFieldUpdateDynForm(collection){
 		mylog.log("------------------------ removeFieldUpdateDynForm", collection);
-		var fieldsElement = [ 	"name", "tags", "email", "url", "fixe", "mobile", "fax", 
+		var fieldsElement = [ 	"name", "slug", "tags", "email", "url", "fixe", "mobile", "fax", 
 								"telegram", "github", "skype", "twitter", "facebook", "gpplus"];
 		var fieldsPerson = ["username",  "birthDate"];
 		var fieldsProject = [ "avancement", "startDate", "endDate", "parentId" ];

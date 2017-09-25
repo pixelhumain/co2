@@ -158,6 +158,40 @@ function bindRightClicks() {
 	    }
 	});
 }
+function linkify(inputText) {
+    var replacedText, replacePattern1, replacePattern2, replacePattern3;
+
+    //URLs starting with http://, https://, or ftp://
+    replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+
+    //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+    replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+
+    //Change email addresses to mailto:: links.
+    replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+    replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+
+    return replacedText;
+}
+function addslashes(str) {
+	  //  discuss at: http://phpjs.org/functions/addslashes/
+	  // original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+	  // improved by: Ates Goral (http://magnetiq.com)
+	  // improved by: marrtins
+	  // improved by: Nate
+	  // improved by: Onno Marsman
+	  // improved by: Brett Zamir (http://brett-zamir.me)
+	  // improved by: Oskar Larsson Högfeldt (http://oskar-lh.name/)
+	  //    input by: Denny Wardhana
+	  //   example 1: addslashes("kevin's birthday");
+	  //   returns 1: "kevin\\'s birthday"
+
+	  return (str + '')
+		.replace(/[\\"']/g, '\\$&')
+		.replace(/\u0000/g, '\\0');
+	}
 /* *************************** */
 /* instance du menu questionnaire*/
 /* *************************** */
@@ -232,7 +266,23 @@ function updateField(type,id,name,value,reload){
 	  dataType: "json"
 	});
 }
+function addslashes(str) {
+	  //  discuss at: http://phpjs.org/functions/addslashes/
+	  // original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+	  // improved by: Ates Goral (http://magnetiq.com)
+	  // improved by: marrtins
+	  // improved by: Nate
+	  // improved by: Onno Marsman
+	  // improved by: Brett Zamir (http://brett-zamir.me)
+	  // improved by: Oskar Larsson Högfeldt (http://oskar-lh.name/)
+	  //    input by: Denny Wardhana
+	  //   example 1: addslashes("kevin's birthday");
+	  //   returns 1: "kevin\\'s birthday"
 
+	  return (str + '')
+		.replace(/[\\"']/g, '\\$&')
+		.replace(/\u0000/g, '\\0');
+	}
 /* *************************** */
 /* global JS tools */
 /* *************************** */
@@ -467,12 +517,12 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
                 message: '<div class="row">  ' +
                     '<div class="col-md-12"> ' +
                     '<form class="form-horizontal"> ' +
-                    '<label class="col-md-4 control-label" for="awesomeness">'+trad["Would you like to be an administrator"]+'?</label> ' +
+                    '<label class="col-md-4 control-label" for="awesomeness">'+tradDynForm.wouldbecomeadmin+'?</label> ' +
                     '<div class="col-md-4"> <div class="radio"> <label for="awesomeness-0"> ' +
                     '<input type="radio" name="awesomeness" id="awesomeness-0" value="admin"> ' +
-                    trad["yes"]+' </label> ' +
+                    tradDynForm.yes+' </label> ' +
                     '</div><div class="radio"> <label for="awesomeness-1"> ' +
-                    '<input type="radio" name="awesomeness" id="awesomeness-1" value="'+connectType+'" checked="checked"> '+trad["no"]+' </label> ' +
+                    '<input type="radio" name="awesomeness" id="awesomeness-1" value="'+connectType+'" checked="checked"> '+tradDynForm.no+' </label> ' +
                     '</div> ' +
                     '</div> </div>' +
                     '</form></div></div>',
@@ -647,6 +697,7 @@ var urlCtrl = {
 		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o','useHeader' : true},
 
 
+		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) }, removeAfterLoad : true },
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
 	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
@@ -692,11 +743,16 @@ var urlCtrl = {
 			//mylog.log("replaceAndShow2",urlIndex);
 			if( hash.indexOf(urlIndex) >= 0 )
 			{
+				if(urlObj.goto){
+					window.location.href = urlObj.goto;
+					return false;
+				}
 				checkMenu(urlObj, hash);
 			
 				endPoint = urlCtrl.loadableUrls[urlIndex];
 				mylog.log("jsController 2",endPoint,"login",endPoint.login,endPoint.hash );
-				if( typeof endPoint.login == undefined || !endPoint.login || ( endPoint.login && userId ) ){
+				if( typeof endPoint.login == undefined || !endPoint.login || ( endPoint.login && userId ) )
+				{
 					//alises are renaming of urls example default.home could be #home
 					if( endPoint.alias ){
 						endPoint = urlCtrl.jsController(endPoint.alias);
@@ -751,6 +807,11 @@ var urlCtrl = {
 						
 						if(endPoint.menu)
 							$("."+endPoint.menu).removeClass("hide");
+
+						if(endPoint.removeAfterLoad){
+							//alert("removeAfterLoad 1");
+							history.pushState('', document.title, window.location.pathname);
+						}
 					} 
 					res = true;
 					return false;
@@ -769,12 +830,11 @@ var urlCtrl = {
 	//back sert juste a differencier un load avec le back btn
 	//ne sert plus, juste a savoir d'ou vient drait l'appel
 	loadByHash : function ( hash , back ) {
-		//alert("loadByHash"+hash);
-		/* court circuit du lbh pour changer le type du directory si on est déjà sur une page directory */
 		// mylog.log("IS DIRECTORY ? ", 
 		// 			hash.indexOf("#default.directory"), 
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
-
+		onchangeClick=false;
+		navInSlug=false;
 		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
 			mylog.log("globalTheme", globalTheme);
@@ -810,7 +870,10 @@ var urlCtrl = {
 		currentUrl = hash;
 		allReadyLoad = true;
 		CoAllReadyLoad = true;
-		contextData = null;
+		if( typeof urlCtrl.loadableUrls[hash] == "undefined" || 
+			typeof urlCtrl.loadableUrls[hash].emptyContextData == "undefined" || 
+			urlCtrl.loadableUrls[hash].emptyContextData == true )
+			contextData = null;
 
 		$(".my-main-container").off()
 							   .bind("scroll", function () {shadowOnHeader()})
@@ -819,7 +882,6 @@ var urlCtrl = {
 		$(".searchIcon").removeClass("fa-file-text-o").addClass("fa-search");
 		searchPage = false;
 		
-
 		//alert("urlCtrl.loadByHash"+hash);
 
 	    mylog.warn("urlCtrl.loadByHash",hash,back);
@@ -869,6 +931,30 @@ var urlCtrl = {
 		        hashT = hash.split(".");
 		        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ADD NEED '+typesLabels[hashT[3]],'cubes' );
 		} */
+		else if(hash.length>2){
+			hash = hash.replace( "#","" );
+			hashT=hash.split(".");
+			if(typeof hashT == "string")
+				slug=hashT;
+			else
+				slug=hashT[0];
+			$.ajax({
+	  			type: "POST",
+	  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
+	  			dataType: "json",
+	  			success: function(data){
+			  		if(data.result){
+			  			viewPage="";			  			
+			  			if(hashT.length > 1){
+			  				hashT.shift();
+			  				viewPage="/"+hashT.join("/");
+			  			}
+			  			showAjaxPanel('/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
+			  		}else
+			  			showAjaxPanel( '/app/index', 'Home','home' );
+	 			},
+			});
+		}
 	    else 
 	        showAjaxPanel( '/app/index', 'Home','home' );
 	    mylog.log("testnetwork hash", hash);
@@ -914,12 +1000,15 @@ function  processingBlockUi() {
 
 	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
 		msg = themeObj.blockUi.processingMsg;
-
 	$.blockUI({ message :  msg });
 	bindLBHLinks();
 }
 function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
 	//alert("showAjaxPanel"+url);
+<<<<<<< HEAD
+=======
+	$(".progressTop").show().val(20);
+>>>>>>> 71f42992249077f2597de4a6557a1a5a8bd057d5
 	var dest = ( typeof urlObj == "undefined" || typeof urlObj.useHeader != "undefined" ) ? themeObj.mainContainer : ".pageContent" ;
 	mylog.log("showAjaxPanel", url, urlObj,dest,urlCtrl.afterLoad );	
 	//var dest = themeObj.mainContainer;
@@ -927,25 +1016,27 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 	//alert("showAjaxPanel"+dest);
 	showNotif(false);
 			
-	setTimeout(function(){
-		$(dest).html("");
-		$(".hover-info,.hover-info2").hide();
-		processingBlockUi();
-		showMap(false);
-	}, 200);
+	//setTimeout(function(){
+		//$(".main-container > header").html("");
+		//$(".pageContent").html("");
+	$(".hover-info,.hover-info2").hide();
+		//processingBlockUi();
+	showMap(false);
+	//}, 200);
 
 	$(".box").hide(200);
 	//showPanel('box-ajax');
 	icon = (icon) ? " <i class='fa fa-"+icon+"'></i> " : "";
 	$(".panelTitle").html(icon+title).fadeIn();
 	mylog.log("GETAJAX",icon+title);
-	
-	showTopMenu(true);
+	//showTopMenu(true);
 	userIdBefore = userId;
 	setTimeout(function(){
 		if( $(dest).length )
 		{
-		 getAjax(dest, baseUrl+'/'+moduleId+url, function(data){ 
+		setTimeout(function(){ $('.progressTop').val(40)}, 1000);
+		setTimeout(function(){ $('.progressTop').val(60)}, 3000);
+		getAjax(dest, baseUrl+'/'+moduleId+url, function(data){ 
 			
 			if( dest != themeObj.mainContainer )
 				$(".subModuleTitle").html("");
@@ -956,7 +1047,9 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 			bindExplainLinks();
 			bindTags();
 			bindLBHLinks();
-
+			$(".progressTop").val(90);
+			setTimeout(function(){ $(".progressTop").val(100)}, 10);
+			$(".progressTop").fadeOut(200);
 			$.unblockUI();
 
 			if(mapEnd)
@@ -1439,7 +1532,7 @@ function  bindExplainLinks() {
 }
 
 function  bindLBHLinks() { 
-	$(".lbh").unbind("click").on("click",function(e) {  		
+	$(".lbh").off().on("click",function(e) {  		
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
@@ -1633,7 +1726,7 @@ function myAdminList (ctypes) {
 		};
 		$.each( ctypes, function(i,ctype) {
 			var connectionType = connectionTypes[ctype];
-			myList[ ctype ] = { label: ctype, options:{} };
+			myList[ ctype ] = { label: trad[ctype], options:{} };
 			if( notNull(myContacts) ){
 				mylog.log("myAdminList",ctype, connectionType, myContacts, myContacts[ ctype ]);
 				$.each( myContacts[ ctype ],function(id,elemObj){
@@ -1717,13 +1810,13 @@ function globalSearch(searchValue,types,contact){
  			$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
  			cotmp = {};
  			$.each(data, function(id, elem) {
-  				mylog.log(elem);
+  				mylog.log("similarlink globalautocomplete", elem);
   				city = "";
 				postalCode = "";
 				var htmlIco ="<i class='fa fa-users'></i>";
 				if(elem.type){
 					typeIco = elem.type;
-					htmlIco ="<i class='fa fa-"+typeObj[elem.type].icon +"'></i>";
+					htmlIco ="<i class='fa fa-"+dyFInputs.get(elem.type).icon +"'></i>";
 				}
 				where = "";
 				if (elem.address != null) {
@@ -1732,9 +1825,9 @@ function globalSearch(searchValue,types,contact){
 					if( notEmpty( city ) && notEmpty( postalCode ) )
 					where = ' ('+postalCode+" "+city+")";
 				}
-				var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
+				//var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
 				if("undefined" != typeof elem.profilImageUrl && elem.profilImageUrl != ""){
-					var htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
+					htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
 				}
 				
 				if(contact == true){
@@ -1846,25 +1939,31 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
     getUrl.bind("input keyup",function(e) { //user types url in text field        
         //url to match in the text field
         var $this = $(this);
+        if($(appendClassName).html()==""){
         if($this.parents().eq(nbParent).find(appendClassName).html()=="" || (e.which==32 || e.which==13)){
+        	//var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?")
+        	//var match_url=new RegExp("(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})");
+        	//var match_url=/\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i
+	       // var match_url = /\b(https?|ftp):\/\/([\-A-Z0-9. \-]+?|www\\.)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i;
+	       // var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+	        //var match_url=/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+	        var match_url=/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
 
-	        var match_url = new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
 	        if (match_url.test(getUrl.val())) 
 	        {
-		        //mylog.log(getUrl.val().match(match_url));
-		        if(lastUrl != getUrl.val().match(match_url)[0]){
-			       // alert(lastUrl+"///"+getUrl.val().match(match_url)[0]);
-		        	var extracted_url = getUrl.val().match(match_url)[0]; //extracted first url from text filed
-	                //$this.parent().find(appendClassName).html("<i class='fa fa-spin fa-spinner text-red fa-2x'></i>");//hide();
+	        	extract_url=getUrl.val().match(match_url)[0];
+	        	extract_url=extract_url.replace(/[\n]/gi," ");
+	        	extract_url=extract_url.split(" ");
+	        	extract_url=extract_url[0];
+		        if(lastUrl != extract_url && processUrl.isLoading==false){
+		        	processUrl.isLoading=true;
+		        	var extracted_url = extract_url;
 	                $this.parents().eq(nbParent).find(".loading_indicator").show(); //show loading indicator image
-
 	                //ajax request to be sent to extract-process.php
-	                //alert(extracted_url);
 	                lastUrl=extracted_url;
 	                extracted_url_send=extracted_url;
 	                if(extracted_url_send.indexOf("http")<0)
 	                	extracted_url_send = "http://"+extracted_url;
-	               // $(appendClassName).html("<i class='fa fa-spin fa-reload'></i>");
 	                $.ajax({
 						url: baseUrl+'/'+moduleId+"/news/extractprocess",
 						data: {'url': extracted_url_send},
@@ -1872,7 +1971,15 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 						dataType: 'json',
 						success: function(data){        
 			                mylog.log(data); 
-		                    content = getMediaCommonHtml(data,"save");
+			                processUrl.isLoading=false;
+			                if(data.type=="activityStream"){
+			                  	content = '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>'+
+			                			 directory.showResultsDirectoryHtml(new Array(data.object), data.object.type)+
+			                			"<input type='hidden' class='type' value='activityStream'>"+
+										"<input type='hidden' class='objectId' value='"+data.object.id+"'>"+
+										"<input type='hidden' class='objectType' value='"+data.object.type+"'>";
+			                }else
+		                    	content = getMediaCommonHtml(data,"save");
 		                    //load results in the element
 		                    //return content;
 		                   //$("#results").html(content); 
@@ -1893,7 +2000,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 						error : function(){
 							$.unblockUI();
 							//toastr.error(trad["wrongwithurl"] + " !");
-
+							 processUrl.isLoading=false;
 							//content to be loaded in #results element
 							var content = '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-refresh"></i></a><h4><a href="'+extracted_url+'" target="_blank" class="lastUrl wrongUrl">'+extracted_url+'</a></h4>';
 		                    //load results in the element
@@ -1919,6 +2026,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 				//$this.parent().append( "<span class='text-red dynFormUrlsWarning'>* Ceci n'est pas un url valide.</span>" );         	
         	}
         }
+    }
     }); 
 }
 
@@ -2000,10 +2108,20 @@ function getMediaCommonHtml(data,action,id){
 		mediaUrl=data.content.url;
 	else
 		mediaUrl="";
-	if(typeof(data.description) !="undefined" && typeof(data.name) != "undefined" && data.description !="" && data.name != ""){
-		contentMedia='<div class="extracted_content col-xs-8 padding-20"><h4><a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">'+data.name+'</a></h4><p>'+data.description+'</p>'+countThumbail+'</div>';
-		inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
-		inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
+	if((typeof(data.description) !="undefined" || typeof(data.name) != "undefined") && (data.description !="" || data.name != "")){
+		contentMedia='<div class="extracted_content col-xs-8 padding-20">'+
+			'<a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">';
+			if(typeof(data.name) != "undefined" && data.name!=""){
+				contentMedia+='<h4>'+data.name+'</h4></a>';
+				inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
+			}
+			if(typeof(data.description) != "undefined" && data.description!=""){
+				contentMedia+='<p>'+data.description+'</p>'+countThumbail+'>';
+				if(typeof(data.name) == "undefined" || data.name=="")
+					contentMedia+='</a>';
+				inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
+			}
+		contentMedia+='</div>';
 	}
 	else{
 		contentMedia="";
@@ -2032,7 +2150,7 @@ function inMyContacts (type,id) {
 	var res = false ;
 	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
 		$.each( myContacts[type], function( key,val ){
-			mylog.log("val", val);
+			//mylog.log("val", val);
 			if( ( typeof val["_id"] != "undefined" && id == val["_id"]["$id"] ) || 
 				(typeof val["id"] != "undefined" && id == val["id"] ) ) {
 				res = true;
@@ -2151,7 +2269,171 @@ function cityKeyPart(unikey, part){
 	if(part == "cp") return unikey.substr(e+1, len);
 	if(part == "country") return unikey.substr(e+1, len);
 }
+/* ***********************************
+			EXTRACTPROCCESS
+********************************** */
+var processUrl = {
+	isLoading:false,
+	checkUrlExists: function(url){
+	    url = url.trim();
+	    if(url.lastIndexOf("/") == url.lenght){
+	        url = url.substr(0, url.lenght-1);
+	        $("#form-url").val(url); 
+	    }
 
+	    $.ajax({
+	        type: "POST",
+	        url: baseUrl+"/"+moduleId+"/app/checkurlexists",
+	        data: { url: url },
+	        dataType: "json",
+	        success: function(data){ console.log("checkUrlExists", data);
+	            if(data.status == "URL_EXISTS")
+	            urlExists = true;
+	            else
+	            urlExists = false;
+	            console.log("checkUrlExists", data);
+	            refUrl(url);
+	        },
+	        error: function(data){
+	            console.log("check url exists error");
+	        }
+	    });
+	},
+	refUrl: function(url){
+	    if(!processUrl.isValidURL(url)){
+	        $("#status-ref").html("<span class='letter-red'><i class='fa fa-times'></i> cette url n'est pas valide.</span>");
+	        return;
+	    }
+		$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> recherche en cours</span>");
+		$("#refResult").addClass("hidden");
+		$("#send-ref").addClass("hidden");
+
+		urlValidated = "";
+
+	    $.ajax({ 
+	    	url: "//cors-anywhere.herokuapp.com/" + url, // 'http://google.fr', 
+	    	//crossOrigin: true,
+	    	timeout:10000,
+	        success:
+				function(data) {
+					
+				    var jq = $.parseHTML(data);
+				    
+				    var tempDom = $('<output>').append($.parseHTML(data));
+				    var title = $('title', tempDom).html();
+				    var stitle = "";
+
+				    if(stitle=="" || stitle=="undefined")
+				   		stitle = $('blockquote', tempDom).html();
+
+				   	//console.log("STITLE", stitle);
+
+					if(stitle=="" || stitle=="undefined")
+				   		stitle = $('h2', tempDom).html();
+
+					if(stitle=="" || stitle=="undefined")
+				   		stitle = $('h3', tempDom).html();
+
+					if(stitle=="" || stitle=="undefined")
+				   		stitle = $('blockquote', tempDom).html();
+
+					if(title=="" || title=="undefined")
+				   		title = stitle;
+
+	                var favicon = $("link[rel*='icon']", tempDom).attr("href");
+	                var hostname = (new URL(url)).origin;
+	                var faviconSrc = "";
+	                if(typeof favicon != "undefined"){
+	                    var faviconSrc = hostname+favicon;
+	                    if(favicon.indexOf("http")>=0) faviconSrc = favicon;
+	                }
+
+					var description = $(tempDom).find('meta[name=description]').attr("content");
+
+					var keywords = $(tempDom).find('meta[name=keywords]').attr("content");
+					//console.log("keywords", keywords);
+
+					var arrayKeywords = new Array();
+					if(typeof keywords != "undefined")
+						arrayKeywords = keywords.split(",");
+
+					//console.log("arrayKeywords", arrayKeywords);
+
+					//if(typeof arrayKeywords[0] != "undefined") $("#form-keywords1").val(arrayKeywords[0]); else $("#form-keywords1").val("");
+					//if(typeof arrayKeywords[1] != "undefined") $("#form-keywords2").val(arrayKeywords[1]); else $("#form-keywords2").val("");
+					//if(typeof arrayKeywords[2] != "undefined") $("#form-keywords3").val(arrayKeywords[2]); else $("#form-keywords3").val("");
+					//if(typeof arrayKeywords[3] != "undefined") $("#form-keywords4").val(arrayKeywords[3]); else $("#form-keywords4").val("");
+
+					if(description=="" || description=="undefined")
+				   		if(stitle=="" || stitle=="undefined")
+				   			description = stitle;
+				   	params = new Object;
+				   	params.title=title,
+				   	params.favicon=faviconSrc,
+				   	params.hostname=hostname,
+				   	params.description=description,
+				   	params.tags=arrayKeywords;
+					console.log(params);
+					/*$("#form-title").val(title);
+	                $("#form-favicon").val(faviconSrc);
+	                $("#form-description").val(description);*/
+					
+
+					//color
+					$("#ajaxFormModal #name").val(title);   	
+				   	//color	
+					$("#ajaxFormModal #description").val(description); 
+				   	//color
+				   	if(notEmpty(arrayKeywords))		
+						$("#ajaxFormModal #tags").select2("val",arrayKeywords);
+					/*if($("#form-keywords1").val() != "")   $("#lbl-keywords").removeClass("text-orange").addClass("letter-green");
+					else 								   $("#lbl-keywords").removeClass("letter-green").addClass("text-orange");
+				   		
+				   	$("#form-title").off().keyup(function(){
+				   		if($(this).val()!="")$("#lbl-title").removeClass("letter-red").addClass("letter-green");
+						else 				 $("#lbl-title").removeClass("letter-green").addClass("letter-red");
+						checkAllInfo();
+				   	});
+				   	$("#form-description").off().keyup(function(){
+				   		if($(this).val()!="")$("#lbl-description").removeClass("text-orange").addClass("letter-green");
+						else 				 $("#lbl-description").removeClass("letter-green").addClass("text-orange");
+						checkAllInfo();
+				   	});
+				   	$("#form-keywords1").off().keyup(function(){
+				   		if($(this).val()!="")$("#lbl-keywords").removeClass("text-orange").addClass("letter-green");
+						else 				 $("#lbl-keywords").removeClass("letter-green").addClass("text-orange");
+						checkAllInfo();
+				   	});
+
+				   	$("#status-ref").html("<span class='letter-green'><img src='"+faviconSrc+"' height=30 alt='x'> <i class='fa fa-check'></i> Nous avons trouvé votre page</span>");
+	    			$("#refResult").removeClass("hidden");
+				   
+				   	$("#lbl-url").removeClass("letter-red").addClass("letter-green");
+				   	urlValidated = url;
+
+				    $('<output>').remove();
+				    tempDom = "";
+
+				    checkAllInfo();*/	
+				    return params;		   
+				},
+			error:function(xhr, status, error){
+				$("#lbl-url").removeClass("letter-green").addClass("letter-red");
+				$("#status-ref").html("<span class='letter-red'><i class='fa fa-ban'></i> URL INNACCESSIBLE</span>");
+			},
+			statusCode:{
+				404: function(){
+					$("#lbl-url").removeClass("letter-green").addClass("letter-red");
+					$("#status-ref").html("<span class='letter-red'><i class='fa fa-ban'></i> 404 : URL INTROUVABLE OU INACCESSIBLE</span>");
+				}
+			}
+		});
+	},
+	isValidURL:function(url) {
+  		var match_url = new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+  		return match_url.test(url);
+	}
+}
 /* *********************************
 			COLLECTIONS
 ********************************** */
@@ -2293,6 +2575,58 @@ var collection = {
 ********************************** */
 var contextData = null;
 var dynForm = null;
+var mentionsInit = {
+	stopMention : false,
+	get : function(domElement){
+		$(domElement).mentionsInput({
+		  onDataRequest:function (mode, query, callback) {
+			  	if(mentionsInit.stopMention)
+			  		return false;
+			  	var data = mentionsContact;
+			  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+				callback.call(this, data);
+		   		var search = {"search" : query};
+		  		$.ajax({
+					type: "POST",
+			        url: baseUrl+"/"+moduleId+"/search/searchmemberautocomplete",
+			        data: search,
+			        dataType: "json",
+			        success: function(retdata){
+			        	if(!retdata){
+			        		toastr.error(retdata.content);
+			        	}else{
+				        	//mylog.log(retdata);
+				        	data = [];
+				        	for(var key in retdata){
+					        	for (var id in retdata[key]){
+						        	avatar="";
+						        	if(retdata[key][id].profilThumbImageUrl!="")
+						        		avatar = baseUrl+retdata[key][id].profilThumbImageUrl;
+						        	object = new Object;
+						        	object.id = id;
+						        	object.name = retdata[key][id].name;
+						        	object.avatar = avatar;
+						        	object.type = key;
+						        	var findInLocal = _.findWhere(mentionsContact, {
+										name: retdata[key][id].name, 
+										type: key
+									}); 
+									if(typeof(findInLocal) == "undefined")
+										mentionsContact.push(object);
+						 			}
+				        	}
+				        	data=mentionsContact;
+				        	//mylog.log(data);
+				    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+							callback.call(this, data);
+							mylog.log(callback);
+			  			}
+					}	
+				})
+		  	}
+	  	});
+	}
+}
 var uploadObj = {
 	type : null,
 	id : null,
@@ -2303,8 +2637,14 @@ var uploadObj = {
 	contentKey : "profil",
 	path : null,
 	extra : null,
-	set : function(type,id){
-		if(typeof type != "undefined"){
+	set : function(type,id, file){
+		if(notNull(file) && file){
+			mylog.log("set uploadObj", id,type,uploadObj.folder,uploadObj.contentKey);
+			uploadObj.type = type;
+			uploadObj.id = id;
+			uploadObj.path = baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+uploadObj.folder+"/folder/"+type+"/ownerId/"+id+"/input/qqfile/docType/file";
+		}
+		else if(typeof type != "undefined"){
 			mylog.log("set uploadObj", id,type,uploadObj.folder,uploadObj.contentKey);
 			uploadObj.type = type;
 			uploadObj.id = id;
@@ -2560,7 +2900,7 @@ var dyFObj = {
 	    uploadObj.contentKey="profil"; 
       	/*if(type=="addPhoto") 
         	uploadObj.contentKey="slider";*/ 
-	    
+	    //BOUBOULE ICI ACTIVER LEVENEMENT
 	    //initKSpec();
 	    if(userId)
 		{
@@ -2630,7 +2970,7 @@ var dyFObj = {
 							              	"<form id='ajaxFormModal' enctype='multipart/form-data'></form>"+
 							              	"</div>"+
 							              "</div>");
-	  	$('.modal-footer').hide();
+	  	$('#ajax-modal .modal-footer').hide();
 	  	$('#ajax-modal').modal("show");
 
 	  	dyFInputs.init();
@@ -2771,6 +3111,11 @@ var dyFInputs = {
 				}
 
 				if(v){
+					if(typeof networkJson.request.searchTag != "undefined"){
+						typeObj[key].dynForm.jsonSchema.properties.tags.data = networkJson.request.searchTag;
+					}
+
+
 					if(notNull(networkJson.dynForm)){
 						mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
 						mylog.log("networkTags", networkTags);
@@ -2815,6 +3160,27 @@ var dyFInputs = {
 	        custom : ( notEmpty(custom) ? custom : "" )
 	    };
 	    mylog.log("inputText ", inputObj);
+    	return inputObj;
+    },
+    slug :function(label, placeholder, rules) { 
+    	console.log("rooooles",rules);
+		var inputObj = {
+			label : label,
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "... " ),
+	        inputType : "text",
+	        rules : ( notEmpty(rules) ? rules : "")
+	    };
+    	inputObj.init = function(){
+        	$("#ajaxFormModal #slug").bind("input keyup",function(e) {
+        		$(this).val(slugify($(this).val(), true));
+        		if($("#ajaxFormModal #slug").val().length >= 3 )
+            		slugUnique($(this).val());
+            	else
+            		$("#ajaxFormModal #slug").parent().removeClass("has-success").addClass("has-error").find("span").text("Please enter at least 3 characters.");
+            	//dyFObj.canSubmitIf();
+        	});
+	    }
+	    mylog.log("dyFInputs ", inputObj);
     	return inputObj;
     },
 	name :function(type, rules, addElement, extraOnBlur) { 
@@ -2916,13 +3282,13 @@ var dyFInputs = {
 												});
 											});
 	},
-	tags : function(list) { 
+	tags : function(list, placeholder, label) { 
     	tagsL = (list) ? list : tagsList;
     	return {
 			inputType : "tags",
-			placeholder : tradDynForm["tags"],
+			placeholder : placeholder != null ? placeholder : tradDynForm["tags"],
 			values : tagsL,
-			label : tradDynForm["addtags"]
+			label : label != null ? label : tradDynForm["addtags"]
 		}
 	},
     imageAddPhoto : {
@@ -2954,13 +3320,43 @@ var dyFInputs = {
 
     	return {
 	    	inputType : "uploader",
+	    	docType : "image",
 	    	label : tradDynForm["imageshere"]+" :", 
 	    	showUploadBtn : false,
+	    	template:'qq-template-gallery',
+	    	filetypes:['jpeg', 'jpg', 'gif', 'png'],
 	    	afterUploadComplete : function(){
 	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
 		    	dyFObj.closeForm();
 				//alert( "image upload then goto : "+uploadObj.gotoUrl );
 	            urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+		    }
+    	}
+    },
+    file :function() { 
+    	
+    	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
+    		uploadObj.gotoUrl = location.hash ;
+    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
+
+    	return {
+	    	inputType : "uploader",
+	    	label : tradDynForm.fileshere+" :", 
+	    	showUploadBtn : false,
+	    	docType : "file",
+	    	template:'qq-template-manual-trigger',
+	    	filetypes:["pdf","xls","xlsx","doc","docx","ppt","pptx","odt","ods","odp"],
+	    	afterUploadComplete : function(){
+	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
+		    	dyFObj.closeForm();
+				//alert( "image upload then goto : "+uploadObj.gotoUrl );
+				if(location.hash.indexOf("view.library")>0){
+					navCollections=[];
+					buildNewBreadcrum("files");
+					getViewGallery(1,"","files");
+				}		
+				else
+	            	urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 		    }
     	}
     },
@@ -3006,7 +3402,7 @@ var dyFInputs = {
     	return inputObj;
     },
 
-    email :function (label,placeholder,rules) {  
+    text :function (label,placeholder,rules) {  
     	var inputObj = {
     		inputType : "text",
 	    	label : ( notEmpty(label) ? label : tradDynForm["mainemail"] ),
@@ -3017,11 +3413,45 @@ var dyFInputs = {
 	    return inputObj;
 	},
 	emailOptionnel :function (label,placeholder,rules) {  
-    	var inputObj = dyFInputs.email(label, placeholder, rules);
+    	var inputObj = dyFInputs.text(label, placeholder, rules);
     	inputObj.init = function(){
 			$(".emailtext").css("display","none");
 		};
 	    return inputObj;
+	},
+	createNews: function (){
+		var inputObj = {
+			inputType : "createNews",
+			label : "ta mere",
+       		placeholder:"",
+       		rules: "",
+       		params : {"targetId":contextData.id, "targetType":contextData.type, 
+     					"targetImg":contextData.profilThumbImageUrl, "targetName":contextData.name, 
+     					"authorId":userId,"authorImg":userConnected.profilThumbImageUrl, "authorName":userConnected.name}
+   		}
+		inputObj.init = function(){
+			$("#createNews").css("display","none");
+			$("#createNews #tags").select2({tags:tagsList});
+			$("#createNews > textarea").elastic();
+			mentionsInit.get("#createNews > #mentionsText > textarea");
+			$("#createNews .scopeShare").click(function() {
+				mylog.log(this);
+				replaceText=$(this).find("h4").html();
+				$("#createNews #btn-toogle-dropdown-scope").html(replaceText+' <i class="fa fa-caret-down" style="font-size:inherit;"></i>');
+				scopeChange=$(this).data("value");
+				$("#createNews > input[name='scope']").val(scopeChange);
+				
+			});
+			$("#createNews .targetIsAuthor").click(function() {
+				mylog.log(this);
+				srcImg=$(this).find("img").attr("src");
+				name=$(this).data("name");
+				$("#createNews #btn-toogle-dropdown-targetIsAuthor").html('<img height=20 width=20 src="'+srcImg+'"/> '+name+' <i class="fa fa-caret-down" style="font-size:inherit;"></i>');
+				authorTargetChange=$(this).data("value");
+				$("#createNews #authorIsTarget").val(authorTargetChange);
+			});
+		};
+		return inputObj;  
 	},
 	location : {
 		label : tradDynForm["localization"],
@@ -3367,6 +3797,7 @@ var dyFInputs = {
         	$(".urlsarray").css("display","none");	
         }
     },
+<<<<<<< HEAD
     // latitude : function() {
 
     // },
@@ -3374,13 +3805,167 @@ var dyFInputs = {
 
     // },
     allDay : function(checked){
+=======
+    bookmarkUrl: function(label, placeholder,rules, custom){
+    	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
+    	inputObj.init = function(){
+    		$("#ajaxFormModal #url").bind("input keyup",function(e) {
+            	processUrl.refUrl($(this).val());
+            	/*if(result){
+            		console.log(result);
+            	}*/
+        	});
+            //$(".urltext").css("display","none");
+        };
+	    return inputObj;
+    },
+    checkboxSimple : function(checked, id, params){
+    
+    	var inputObj = {
+    		label: params["labelText"],
+    		params : params,
+	    	inputType : "checkboxSimple",
+	    	checked : checked, //$("#ajaxFormModal #"+id).val(),
+	    	init : function(){
+	    		//var checked = $("#ajaxFormModal #"+id).val();
+	    		console.log("checkcheck2", checked, "#ajaxFormModal #"+id);
+	    		var idTrue = "#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox[data-checkval='true']";
+	    		var idFalse = "#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox[data-checkval='false']";
+	    		console.log("checkcheck2", checked, "#ajaxFormModal #"+id);
+	    		$("#ajaxFormModal #"+id).val(checked);
+
+	    		if(typeof params["labelInformation"] != "undefined")
+	        		$("#ajaxFormModal ."+id+"checkboxSimple label").append(
+	        				"<small class='col-md-12 col-xs-12 text-left no-padding' "+
+									"style='font-weight: 200;'>"+
+									params["labelInformation"]+
+							"</small>");
+
+	        	if(checked == "true"){
+	    			$(idTrue).addClass("bg-green-k").removeClass("letter-green");
+	    			$("#ajaxFormModal ."+id+"checkboxSimple label").append(
+	    					"<span class='lbl-status-check margin-left-10'>"+
+	    						'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>'+
+	    					"</span>");
+	        	}
+
+	    		if(checked == "false"){ 
+	    			$(idFalse).addClass("bg-red").removeClass("letter-red");
+	    			$("#ajaxFormModal ."+id+"checkboxSimple label").append(
+	    					"<span class='lbl-status-check margin-left-10'>"+
+	    						'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>'+
+	    					"</span>");
+
+	    			setTimeout(function(){
+    			  		if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+    			  	}, 1000);
+	    		}
+	    		
+
+	    		$("#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox").click(function(){
+	    			var checkval = $(this).data('checkval');
+	    			$("#ajaxFormModal #"+id).val(checkval);
+	    			console.log("EVENT CLICK ON CHECKSIMPLE", checkval);
+	    			
+	    			if(checkval) {
+	    				$(idTrue).addClass("bg-green-k").removeClass("letter-green");
+	    			  	$(idFalse).removeClass("bg-red").addClass("letter-red");
+	    			  	$("#ajaxFormModal ."+id+"checkboxSimple .lbl-status-check").html(
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
+	    			  	
+	    			  	if(typeof params["inputId"] != "undefined") $(params["inputId"]).show(400);
+	    			}
+	    			else{
+	    			  	$(idFalse).addClass("bg-red").removeClass("letter-red");
+	    				$(idTrue).removeClass("bg-green-k").addClass("letter-green");
+	    				$("#ajaxFormModal ."+id+"checkboxSimple .lbl-status-check").html(
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
+
+	    				if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+	    			}
+	    		});
+
+	    	}
+	    };
+
+	    return inputObj;
+	},
+	
+	checkbox : function(checked, id, params){
+    
+    	var inputObj = {
+    		label: params["labelText"],
+    		inputType : "checkbox",
+	    	checked : ( notEmpty(checked) ? checked : "" ),
+	    	init : function(){
+	        	
+	        	$("#ajaxFormModal #"+id).val(checked);
+	        	$("#ajaxFormModal ."+id+"checkbox label").append("<span class='lbl-status-check margin-left-10'></span>");
+	        	if(typeof params["labelInformation"] != "undefined")
+	        		$("#ajaxFormModal ."+id+"checkbox").append("<small class='col-md-12 col-xs-12 text-left no-padding' style='margin-top:-10px;'>"+params["labelInformation"]+"</small>");
+
+	        	setTimeout(function(){
+	        		$(".bootstrap-switch-label").off().click(function(){
+	        			$(".bootstrap-switch-off").click();
+	        		});
+	        		
+		        	if (checked) {
+	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
+	    				$(params["inputId"]).show(400);
+	    			} else {
+	    				
+	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
+	    				$(params["inputId"]).hide(400);
+	    			}
+    			}, 1000);
+	        },
+	    	"switch" : {
+	    		"onText" : params["onText"],
+	    		"offText" : params["offText"],
+	    		"labelText":params["labelInInput"],
+	    		"onChange" : function(){
+	    			var checkbox = $("#ajaxFormModal #"+id).is(':checked');
+	    			$("#ajaxFormModal #"+id).val($("#ajaxFormModal #"+id).is(':checked'));
+	    			console.log("on change checkbox",$("#ajaxFormModal #"+id).val());
+	        		//$("#ajaxFormModal #"+id+"checkbox").append("<span class='lbl-status-check'></span>");
+	    			if (checkbox) {
+	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
+	    				$(params["inputId"]).show(400);
+	    				/*if(id=="amendementActivated"){
+	    					var am = $("#ajaxFormModal #voteActivated").val();
+	    					console.log("am", am);
+	    					if(am == "true")
+	    						$("#ajaxFormModal .voteActivatedcheckbox .bootstrap-switch-handle-on").click();
+	    				}
+	    				if(id=="voteActivated"){
+	    					var am = $("#ajaxFormModal #amendementActivated").val();
+	    					console.log("vote", am);
+	    					if(am == "true")
+	    						$("#ajaxFormModal .amendementActivatedcheckbox .bootstrap-switch-handle-on").click();
+	    				}*/
+	    			} else {
+	    				
+	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
+	    				$(params["inputId"]).hide(400);
+	    			}
+	    		}
+		    }
+    	};
+	    return inputObj;
+	},
+	allDay : function(checked){
+>>>>>>> 71f42992249077f2597de4a6557a1a5a8bd057d5
 
     	var inputObj = {
     		inputType : "checkbox",
 	    	checked : ( notEmpty(checked) ? checked : "" ),
 	    	init : function(){
 	        	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
-	        		mylog.log("toto",$("#ajaxFormModal #allDay").val());
+	        		mylog.log("allDay dateLimit",$("#ajaxFormModal #allDay").val());
 	        	})
 	        },
 	    	"switch" : {
@@ -3464,6 +4049,24 @@ var dyFInputs = {
     	rules : { 
     		required : true,
     		greaterThanNow : ["DD/MM/YYYY"]
+    	}
+    },
+    voteDateEnd :{
+    	inputType : "datetime",
+    	label : "Fin de la période de vote",
+    	placeholder : "Fin de la période de vote",
+    	rules : { 
+    		required : true,
+    		greaterThanNow : ["DD/MM/YYYY H:m"]
+    	}
+    },
+    amendementDateEnd :{
+    	inputType : "datetime",
+    	label : "Fin de la période d'amendement (ouverture des votes)",
+    	placeholder : "Fin de la période d'amendement",
+    	rules : { 
+    		required : true,
+    		greaterThanNow : ["DD/MM/YYYY H:m"]
     	}
     },
     inviteSearch : {
@@ -3580,6 +4183,7 @@ var typeObj = {
 			}
 		}	},
 	"addPhoto":{ titleClass : "bg-dark" },
+	"addFile":{ titleClass : "bg-dark" },
 	"person" : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
 	"persons" : { sameAs:"person" },
 	"people" : { sameAs:"person" },
@@ -3616,12 +4220,13 @@ var typeObj = {
 	"vote" : {col:"actionRooms",ctrl:"survey"},
 	"survey" : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
 	"surveys" : {sameAs:"survey"},
-	"action" : {col:"actions", ctrl:"action", titleClass : "bg-dark", bgClass : "bgDDA", icon : "cogs", color : "lightblue2", 
-		saveUrl : baseUrl+"/" + moduleId + "/rooms/saveaction" },
+	"proposal" : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
+	"proposals" : { sameAs : "proposal" },
+	"action" : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
 	"actions" : { sameAs : "action" },
 	"actionRooms" : {sameAs:"room"},
 	"rooms" : {sameAs:"room"},
-	"room" : {col:"actionRooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-dark"},
+	"room" : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
 	"discuss" : {col:"actionRooms",ctrl:"room"},
 
 	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
@@ -3634,6 +4239,8 @@ var typeObj = {
 				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
 				   ]	},
 	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
+	"bookmark" : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
+	"document" : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
 	"default" : {icon:"arrow-circle-right",color:"dark"},
 	//"video" : {icon:"video-camera",color:"dark"},
 	"formContact" : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
@@ -3641,6 +4248,15 @@ var typeObj = {
 };
 
 var documents = {
+	objFile:{
+		"pdf":{icon:"file-pdf-o",class:"text-red"},
+		"text":{icon:"file-text-o",class:"text-blue"},
+		"presentation":{icon:"file-powerpoint-o",class:"text-orange"},
+		"spreadsheet":{icon:"file-excel-o",class:"text-green"}
+	},
+	getIcon : function(contentKey){
+		return '<i class="fa fa-'+documents.objFile[contentKey].icon+' '+documents.objFile[contentKey].class+'"></i>';
+	},
 	saveImages : function (contextType, contextId,contentKey){
 		//alert("saveImages"+contextType+contextId);
 		$.ajax({

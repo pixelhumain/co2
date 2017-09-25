@@ -11,11 +11,84 @@
 ----------------------------------------------------
 ----------------------------------------------------
 ----------------------------------------------------
-Appel 
-Jerome Blondin 
-Tomassini 
 
-IndieCamp Névez ... Installation 1% en cours
+---------------------------------------
+----- BASH DE REPRISE DES DONNEES -----
+---------------------------------------
+
+* Version C0.22
+
+** @Rapha
+*** Batch qui tranforme les adresses des elements dans le nouveau formats
+co2/datamigration/BatchInterElement
+
+*** Batch qui tranforme les adresses des news dans le nouveau formats
+co2/datamigration/BatchInterNews
+
+* Version C0.21.7
+
+** @BOUBOULE
+*** [!!!A passer le slugelement + SUPPRESSION DES CITOYENS SANS NOOOOM!!!] Bash de reprise sur les slugs citoyens et supprime les citoyens sans nom !!!!
+** Crée les slugs à partir des usernames et si n'y a pas d'username (premiers utilisateurs) crée les usernames à la volée
+co2/datamigration/slugifycitoyens
+
+*** Bash de reprise sur les slugs organizations, projects, events
+** Crée les slugs à partir des name + entrée dans les collections
+co2/datamigration/slugifyelement
+
+*** Bash de reprise du les notifications avec ajout du param updated dans toutes les notifs et suppression des notifs sans params $created
+co2/datamigration/CreatorUpdatedOnNotifications
+
+*** Bash sur les clés des event en francais: "concours"=>"contest" et "exposition"=>"exhibition"
+co2/datamigration/ChangeEventFrenchType
+*** Bash sur les type des poi: si type existe pas => "other", si type == poi => "other", si clé francaise => clé anglaise etc
+co2/datamigration/ChangePoiType
+
+*** A faire Bash de reprise des clés francaises POI (ex ressourceMaterielle to materialRessource) et CLASSIFIED
+TODO @TIBOR @BOUBOULE
+
+*** Bash on document used for profil and banner of element => Add boolean current : true
+co2/dataMigration/AddCurrentToDoc
+
+*** Script de relance des 2000 citoyens en attente d'inscription suite à invitation
+** Enregistrement de cron avec le template relaunchInvitation
+co2/dataMigration/relaunchinvitation 
+
+
+* MISE EN PRODUCTION CO2 
+** @Rapha
+*** Ajoute un zeo au cp
+/co2/datamigration/AddZeroPostalCode
+*** initialise les multiscopes
+/co2/datamigration/InitMultiScope
+*** ajout des geoShape au ville qui en ont pas
+/co2/datamigration/AddGeoShapeMissing
+*** change le type des telephones de object en array
+/co2/datamigration/ChangePhoneObjectToArray
+*** departement manquant
+/co2/datamigration/ChangePhoneObjectToArray
+
+** @Bouboule : 
+**** Bash de reprise des data dans les chart des projets
+/co2/datamigration/RefactorChartProjectData
+**** Bash de reprise des data dans notifications 
+****** Create notify.id as object with isUnread and isUnseen
+/co2/datamigration/UpOldNotifications
+**** Bash of object.type inbstead of object.objectType on news(!!!important with notification reactor!!!!)
+/co2/datamigration/ObjectObjectTypeNewsToObjectType
+**** Bash of sharedBy on news (refactor share) - create an array sharedBy with the author and date
+/co2/datamigration/SharedByRefactor
+**** Bash delete organizations properties !!
+co2/datamigration/RemovePropertiesOfOrganizations
+**** Params config => Mettre les deux variables à jour (celle ci sont bonnes pour la prod) => utliser dans l'accueil
+    "openatlasId" => "555eba56c655675cdd65bf19",
+    "communecterId" => "55dafac4e41d75571d848360"
+**** Supprimer les news avec un media string
+db.getCollection('news').find({ "media" : {'$type': 2},"created":{'$lt':new Date('Jun 01, 2016')}}).count()
+152 news avec un media de type string enregistrer entre janvier 2016 et mai 2016 (avant la mise en ligne de Juin)
+qui font sauté les fils des pages !! 
+**** Supprimer les news de type needs (après avoir lancer le bash ObjectObjectTypeNewsToObjectType) 
+db.getCollection('news').find("object.type":"needs") 
 
 ----------------------------------------------------
 * Version 0.2
@@ -48,50 +121,6 @@ MEP
   [X] update code
   [X] paramsconfigPROD en v.02
   [X] script de devlog 
-
----------------------------------------
------ BASH DE REPRISE DES DONNEES -----
----------------------------------------
-* TRANSLATE CO2
-** @BOUBOULE
-*** Bash de reprise du les notifications avec ajout du param updated dans toutes les notifs et suppression des notifs sans params $created
-co2/datamigration/CreatorUpdatedOnNotifications
-*** Bash sur les clés des event en francais: "concours"=>"contest" et "exposition"=>"exhibition"
-co2/datamigration/ChangeEventFrenchType
-
-
-* MISE EN PRODUCTION CO2 
-** @Rapha
-*** Ajoute un zeo au cp
-/co2/datamigration/AddZeroPostalCode
-*** initialise les multiscopes
-/co2/datamigration/InitMultiScope
-*** ajout des geoShape au ville qui en ont pas
-/co2/datamigration/AddGeoShapeMissing
-*** change le type des telephones de object en array
-/co2/datamigration/ChangePhoneObjectToArray
-
-** @Bouboule : 
-**** Bash de reprise des data dans les chart des projets
-/co2/datamigration/RefactorChartProjectData
-**** Bash de reprise des data dans notifications 
-****** Create notify.id as object with isUnread and isUnseen
-/co2/datamigration/UpOldNotifications
-**** Bash of object.type inbstead of object.objectType on news(!!!important with notification reactor!!!!)
-/co2/datamigration/ObjectObjectTypeNewsToObjectType
-**** Bash of sharedBy on news (refactor share) - create an array sharedBy with the author and date
-/co2/datamigration/SharedByRefactor
-**** Bash delete organizations properties !!
-co2/datamigration/RemovePropertiesOfOrganizations
-**** Params config => Mettre les deux variables à jour (celle ci sont bonnes pour la prod) => utliser dans l'accueil
-    "openatlasId" => "555eba56c655675cdd65bf19",
-    "communecterId" => "55dafac4e41d75571d848360"
-**** Supprimer les news avec un media string
-db.getCollection('news').find({ "media" : {'$type': 2},"created":{'$lt':new Date('Jun 01, 2016')}}).count()
-152 news avec un media de type string enregistrer entre janvier 2016 et mai 2016 (avant la mise en ligne de Juin)
-qui font sauté les fils des pages !! 
-**** Supprimer les news de type needs (après avoir lancer le bash ObjectObjectTypeNewsToObjectType) 
-db.getCollection('news').find("object.type":"needs")
 
 ----------------------------------------------------
 

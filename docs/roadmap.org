@@ -92,6 +92,10 @@ Liste des notifications déjà lues => #370 #453
   [ ] lifepath : ultra personnel tag
     - can use POI's type lifepath > private | public
     - can be used for following any item
+  [ ] Shop : Listing produit
+    [ ] listing en mode bullet points
+    [ ] POI type produit , prix 
+      [ ] subtype : sandwich plat 
   ** interoperabilty + data mining : 
     [ ] use FB social graph to mine events and organisation 
   ** COMOBI
@@ -103,41 +107,89 @@ Liste des notifications déjà lues => #370 #453
   ** ERgonomie 
     [ ] menuLeft dynamic avec l'activité 
       - faire remonté les point menu qui ont des nouveauté
-
+  ** news 
+    @pitonStLeu, pouvoir référencer une commune
+  [ ] baniere ou image : remerciement, cité un auteur pour la réutilisation 
+  c'est le minimum dans le copytalisme 
+  ** Event communication 
+    [ ] comunicate an email like event@co.org anyone can add it to a mailing list 
+    the event would be added by someone 
+    [ ] in time this mail box could even become a task box that anyone could act upon
+  ** Open Science 
+    [ ] photo-identification collaborative : 
+      - créer group 
+      - POI + photo + hashtag en commun , ex : #baleineReunion
+      - Btn sameAs : open Search Box + find Element + choose name 
+      - Outside src : en regardant les photos, video de qlqun (FB, flickR...) 
+        > POI : #baleineREunion + url 
+  ** dynsurvey proposal 
+    - dynForm & dynSurvey Builder
+    - room > create survey as proposal 
+    - instead of voting, people will answer a answer
+    - each question can be of certain type 
+      - texte 
+      - values
+        - fixed
+        - percentage
+  ** Qui est là, Action en cours, Todo, Todo Perso  : dans un e communauté 
+    une vision à un temps t, de toutes les ressources d'une CO 
+      - en mode web 
+      - mobi
+  ** Keyboard nav
+    Ctrl + ? > opens floop > type > reduce selection
 * ************************************************************    
-* Version 0.21  : en cours
+* Version C0.21.8  : en cours
+8 correpsond le nb de nouvelle fonctionalité
+- DDA refactored
+- internationalisation
+- integration de rocket Chat 
+- creation de dossier sur les album 
+- mini GED avec upload de document
+- gestion des role sur les membres
+- traduction 
+- ??? module Tiers Lieux , Ressources
 * ************************************************************  
 * Action Terrain 
   [ ] journée Biodiversité Pointoss coupe coupe l'accacia (Galabert)
 * Action Projet
   *  COBUS
-    [ ] install batterie 
+    [ ] design 
+      - 16/08 point @steph 
+    [ ] install batterie RV @Charly
     [ ] switch + test multi ordi 
-    [ ] generateur avec onduleur 
+    [ ] generateur avec onduleur @Franky
   * COMOBI
   * interop 
     [ ] connecté une autre instance CO en mode interop 
   * COPEDIA
     [ ] intégré dans un projet global universitaire trans discipline
-    [ ]  voir avec Fred Mesnard et David Grosser , comment l'intégrer dans le cursus , ou meme au LIM 
+    [ ] voir avec Fred Mesnard et David Grosser , comment l'intégrer dans le cursus , ou meme au LIM 
   * FAI
     [ ] rencontre avec martial 
     [ ] TEster les antennes
   * COPI + TIERS LIEUX
   * Kiltir Lab 
+    * imprimante de quartier 
+      [ ] cout 199€ 
+      [ ] utilisateur 
+        [ ] personne ou asso 
+    * broyeur de quartier
   * Ter Là 
     [ ] {{@Tib}} : etudier interop avec des cart open source 
     [ ] {{@Tib}} : contacter Anil voir 
     [ ] {{@Geoffrey}} : Doc épuré 
-    [ ] Features :
-      [ ] Messagerie -> Rocket chat
+    [ ] Features
+      [X] Messagerie -> Rocket chat
+        [ ] creer une instance
       [ ] Payement -> A faire 
+        [ ] mangoPay
       [ ] Acceuil
       [ ] La Carte
       [ ] Sauvegarde -> Collection 
       [ ] Facture + Contrat (Case à cocher) -> A faire (générateur pdf)
       [ ] Les circuits ->  Search
       [ ] Boutique -> POI + Vente en ligne + Stock (meme design que "Les circuits")
+      [ ] Integration du Design
       [ ] Reservation N°1 : Etape
               - Calendrier remplie d'event -> Page Agenda
               - Utilisateur fait une réservation -> Dynform
@@ -145,7 +197,7 @@ Liste des notifications déjà lues => #370 #453
               - Payement 
       [ ] Cdc receptionné le 01/08/2017
         [ ] Réunion de lancement 8/08 
-        [ ] Démarrage du projet prévu le 1er Sept
+        [ ] Démarrage du projet prévu le seamine du 18 Sept
 
 * Communication 
   [ ] passer la roadmap dans le Wiki
@@ -159,7 +211,7 @@ Liste des notifications déjà lues => #370 #453
     [ ] Aide Plaquette 
     [ ] Participation Design Local
   ** @Steph 
-    [ ] Design deco du CoBus 
+    [ ] Design deco du CoBus
 
 * DEV
   ** Todo 
@@ -176,11 +228,21 @@ Liste des notifications déjà lues => #370 #453
     [ ] SEO optim
    
   ** @Tib
+>>>>[ ] suppression d'un element user type COEDitor
+    [ ] search fork the world > opens a preview POI > should have the parent link
+    [ ] verifier les qrcode 
+    [ ]  NA : supprimer
+      http://www.notragora.com/#element.detail.type.organizations.id.59020d90dd04528a627f4fb8 et http://www.notragora.com/#element.detail.type.organizations.id.5937fbe5dd045296372263a2 
+    [ ] bug effacement de latitude fruitiere [[https://www.communecter.org/#page.type.organizations.id.5718adb240bb4eeb271d6553.view.directory.dir.followers]]
+    [ ] request an open app system
+      - demande d'hébergement de tout les outils dégoogelisé 
+      - le prix peut etre proportionnel à la consommation 
+      - avec un reversement a chque commun utilisé
     [ ] Chloe utilisation du conservatoire 
     [ ] add filters in top bar mapEnd , near username
-    [ ] add delete to image upload 
+    [ ] add delete to image upload  [[https://docs.fineuploader.com/quickstart/02-setting_options.html]]
       - on Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté 
-    [ ] Finir module Tiers Lieux 
+    * Finir module Tiers Lieux 
       [ ] on events TL connecté url to visio 
         [ ] show icons for quick access to ressources of a TL event
         [ ] avoir des roles concirerge ...etc == RH
@@ -193,6 +255,68 @@ Liste des notifications déjà lues => #370 #453
           [ ] Service 
             [ ] Wifi , lit, bouffe, coworking, café
     [ ] url city a transmettre 
+    * integrating Rocket Chat
+      [X] mode standalone : http://127.0.0.1/ph/co2/rocketchat/
+      [X] mode module : lbh('#chat')
+      [X] mode modal on elements : $("#rocketchatModal").modal('show')
+      [X] create group channel by Name 
+      [X] creer un user admin username "communecter" ou corail coralali coAdmin
+      [X] on orga page , btn > creates and opens RC group (private channel)
+        [X] groups always created by coAdmin 
+        [X] first user creates the room , but if another user tries to join it jsut does go , which doesn't work on groups 
+          [X] only Admins can create rooms
+          [X] if exists , check user list of channels, then decide go or invite process 
+        [X] check group existance before creation , otherwise just invite
+          [X] on demand : either we put a property on an element describing if corresponding exists or not 
+          [X] only members, have access 
+          [X] testing if non member has access to 
+        [X] after create invite all members to chat by notification
+      [X] try to optimise admin login using smart handling of header 
+      [ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
+      [X] apply to projects and events
+      [X] on CO-login get RC loginToken
+      [ ] don't show chat if no loginToken
+      [X] integrate into CO 
+        [X] on element pages as modal 
+        [X] as a module in top menu 
+      [X] add redirect iframe to login + after login redirect to iframe
+      [X] how to use live chat :?layout=embedded
+      [X] preload iframe after login 
+      [X] changing organisation type open Edition or cloed > change room group or channel 
+[ ] base room on contextData.slug 
+      [X] changing slug > renames room
+      [X] getting chat notifictions [[https://rocket.chat/docs/developer-guides/iframe-integration/events]]
+      [ ] mutualiser les import RocketChat
+      ** test 
+        [X] check anymember can join the chat 
+        [ ] person changing username : changement de nom d'user d'un coté, il faut viré coté rocket chat profil et avatar pour pas pouvoir changer de nom d'user email avatar, et coté CO2 si changement appelle a /api/v1/users.update avec data.username data.email data.name https://rocket.chat/docs/developer-guides/rest-api/users/update
+      ** bugs
+        [ ] change name > doesn't open the good room :(
+          [ ] gérer le cas de plusieurs orga ave cle meme nom 
+        [ ] ?layout isn't always applied on elements chats
+        [ ] chat notif decrement from 2 stays on 1
+        [ ] creating projects , with ' in name
+        [ ] project chat > open > click close
+        [ ] aprés abonnement ou devient member > show chat btn
+        [ ] login broken when loosing to chat : don't make it mandatory, if no chat, hide btn
+        [ ] on #chat reload
+        [ ] check and validate if element really isOpen on Controller side , currently only JS var passed on
+      ** use cases 
+        [X] gloabal menu : module chat btn opens , all my chat rooms 
+        [X] any element page : open the elements channel 
+          [X] chat with members , or add all members 
+        [X] on someones page : show btn if connected, open the direct chat room
+          [X] when connection is billateral 
+            [X] connect one to one msg
+          [X] use as private message otherwise
+      ** ideas + amelioration
+        [ ] @all > would post a news on wall element
+        [ ] export chat history
+        [ ] pouvoir utiliser un rocket chat externe (only for admins)
+        [ ] add chat shortcut, maybe right click in directories , or floopdrwaer
+        [ ] build up visual tchat tree, showing all your channels , onclick a channel show who is inside 
+          -  could analyse participation by sizing face icon size
+      * -----------------------------------------
     [ ] dynform bookmarking using POI : add a url > Next > get content (voir avec tango kgougle )
       [ ] dynform filling threw get content from url copied into name field
     [ ] brique comeptence et tache sur mon profil 
@@ -200,6 +324,14 @@ Liste des notifications déjà lues => #370 #453
     [ ] losing session : rememberme
     [ ] enable edit POI when open Edition 
   ** @Tib et @Tango 
+    [ ] lancé DDA sur plusieur communauté test
+      [ ] pour : CGPME (vienne sveloupoule@cpmereunion.re), nancy mine, Pref, Digi Reunion 
+      [ ] proposition pour 15 spetembre 
+        [ ] idée sur axe regionnaux 
+        [ ] nationaux 
+        [ ] filiere
+        [ ] échanges poser les questions
+        [ ] lister vos actions concrete
     [ ] quick adder : copy link , set type 
       - get page data > fill form > save 
       - fill contact form 
@@ -230,15 +362,20 @@ Liste des notifications déjà lues => #370 #453
       [ ] what about Document, Discuss, Decide, Act = 3D.A
   ** @tango
   [ ] connecter le form mail au membres d'un groupe
-  ** @Clem
+  ** @Bouboule
   [ ] add HTML5 notifications
   [ ] Finir Besoin Ressource compétence () [commencer]
   [ ] visualisation de la banque des besoins =>#1260 + #490
   [ ] msg mail sur un groupe sur les @ dans les news, et @all (send message on notify someone) 
     [ ] create notification for @all
-  [ ] Rework @ for same working mobile [#192]
+  [ ] NEWS
+    [ ]Rework @ for same working mobile [#192]
     [ ] générer des pseudoUnique pour le mention et aussi pour générer de jolie url communecter.org/livincoop
-  [ ] Add # in news text
+    [ ] Add # in news text
+    [ ] Show who like the news and separte action and views pod comment/like/unlike
+    [X] Template gallerie files
+  [ ] Integrating notifications of dda with @tango
+  [X] News design of laoding
   [X] Translate website (get spanish trad from poupou or others)
     [ ] Create template of co-working on language translation and add language (wishlist)
   [X] Banniere rework 
@@ -247,16 +384,38 @@ Liste des notifications déjà lues => #370 #453
     [X] Limitation of 300px*100px
     [X] Create normal banniere image, rezized/banner.png and thumb for album
     [X] LightBox for banner and profil
+  [X] Portefolio
+    [X] Create folder albums
+    [X] Move file to album
+    [X] Arborescente navigation into folder  
+    [X] Gallery
+      [X] Delete photos + delete current profile and cover photos
+      [X] Edit document => title on photo
+    [X] Portefolio - Library - Documentations -bookmarks
+      [X] Add file type pdf-excell-ppt-word-libreoffice
+      [X] Urls dynform process with extract process
+      [X] Bookmarks (tags organization)
+      [X] Document view 
+      [X] Delete documents and urls
+    [X] Merge collections inside portefolio
+    [X] addPhoto & addFile => can share as news
+    [ ] add extract image on bookmark 
+  [X] Roles
+    [X] Open organizations to event only for admin
+    [X] Add roles (prefine and free) in addMultiMembers and in links (Database)
+    [X] List of role by contextType (json or ctk)
+    [X] Edit role in directory if admin
+    [X] filter roles (tags in directory) 
   [ ] Get preferences of email 
   [ ] Create more email
   [ ] faire le point sur l'evaluation des communs
   [ ] idée 
     [ ]  sur les valeurs pouvoir ajouter une image sur chaque valeur pourrait etre un peu plus sexy
         et l'autre option proposé par maia, rajouter une liste fixe de mot sur chacune des 6sections du survey de Simon
-    [ ] pour le 31/8 : sur un event ou une orga 
+    [X] pour le 31/8 : sur un event ou une orga 
       pouvoir ajouté les personnes ou orga qui font l'event , 
       ou qui sont partenaires yaurait simplement un lien Organisation dans ces 2 type event et orga 
-  [ ] Ajouter les roles en attribut des links
+  [X] Ajouter les roles en attribut des links
   ** @Rapha 
   [ ] internationalisation 
     [ ] Barcelone
@@ -274,8 +433,12 @@ Liste des notifications déjà lues => #370 #453
       [ ] lazyload 
   ** @Damien 
     [ ] coopedia
+      [ ] sortir comme une appli 
       [ ] etat pour mettre en prod ?
-    [ ] opendata sources 
+      [ ] orga TER
+>>>>[ ] tags 
+>>>>[ ] converter RSS + jsonFeed
+    [ ] opendata sources + interop
       [ ] connecter des scripts api 
         [ ] scope geo
         [ ] thematique ou tag 

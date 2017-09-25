@@ -195,7 +195,7 @@ jQuery(document).ready(function() {
 			NE_cp = site.address.postalCode;
 			NE_street = site.address.streetAddress.trim();
 			NE_country = site.address.addressCountry;
-			NE_dep = site.address.depName;
+			NE_level1 = site.address.level1;
 			NE_region = site.address.regionName;
 	        $("#name-city-selected").html(site.address.addressLocality + ", " + site.address.postalCode);
 	    }else{

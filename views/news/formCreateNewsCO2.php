@@ -21,7 +21,7 @@
   -o-filter: grayscale(0.7) blur(1px);
   -ms-filter: grayscale(0.7) blur(1px);
 }
-.newImageAlbum{
+.newImageAlbum, .updateImageNews{
   width: 75px;
     height: 75px;
     margin: 5px;
@@ -29,6 +29,20 @@
     position: relative;
     background-color: white;
     display: inline-block;
+}
+.updateImageNews > img {
+  position: absolute;
+  top:0px;
+  left:0px;
+}
+.deleteDoc {
+  position: absolute;
+  top:0px;
+  right: 0px;
+}
+.deleteDoc:hover > i {
+    text-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+    font-size: 16px;
 }
 .spinner-add-image{
   position: absolute;
@@ -321,7 +335,7 @@
         </div>
       </div>
       <div class="form-group tagstags col-sm-12 no-padding">
-          <input id="tags" type="" data-type="select2" name="tags" placeholder="#Tags" value="" style="width:100%;">        
+          <input id="tags" type="" data-type="select2" name="tags" placeholder="#Tags" value="" style="width:100%;">
       </div>
       <div class="form-actions no-padding" style="display: block;">
         

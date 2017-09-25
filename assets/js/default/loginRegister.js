@@ -127,10 +127,8 @@ var Login = function() {
 		    		  	//alert("dyFObj.openForm"+dyFObj.openFormAfterLogin.type);
 		    		  	var url = requestedUrl;
 		    		  	//mylog.warn(url,", has #"+url.indexOf("#"),"count / : ",url.split("/").length - 1 );
-		    		  	if(backUrl != null){
-		    		  		alert("back");
-		    		  		urlCtrl.loadByHash(backUrl);
-		    		  		backUrl = null;
+		    		  	if(data.goto != null){
+		    		  		window.location.href = baseUrl+"/"+moduleId+data.goto;
 		    		  	} else if( typeof dyFObj.openFormAfterLogin != "undefined"){
 		    		  		userId = data.id;
 		    		  		$('#modalLogin').modal("hide");

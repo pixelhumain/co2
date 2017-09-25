@@ -333,7 +333,7 @@
 											"poi.something2See" : "poi-marker-default",
 											"poi.funPlace" 		: "poi-marker-default",
 											"poi.place" 		: "poi-marker-default",
-											"poi.streetArts" 	: "poi-marker-default",
+											"poi.streetArt" 	: "poi-marker-default",
 											"poi.openScene" 	: "poi-marker-default",
 											"poi.stand" 		: "poi-marker-default",
 											"poi.parking" 		: "poi-marker-default",
@@ -431,7 +431,7 @@
 							
 							if(data != null){
 								if(data.profilMarkerExists == true)
-								data.profilMarkerImageUrl = "/upload/" + moduleId + data.profilMarkerImageUrl;// + "?v="+thisSig.vMarker;
+									data.profilMarkerImageUrl = "/upload/communecter" + data.profilMarkerImageUrl;// + "?v="+thisSig.vMarker;
 								thisSig.vMarker++;
 								var lng =  parseFloat(data.position.longitude);
 								//mylog.log("MYPOSITION", data, lng);

@@ -11,9 +11,14 @@
 	.valueAbout{
 		border-left: 1px solid #dbdbdb;
 	}
-	#shortDescriptionAbout/*, #descriptionAbout*/{
+	#shortDescriptionAbout{
 		white-space: pre-line;
 	}
+
+	/*#descriptionAbout{
+		padding-left : 10px;
+	}*/
+
 	.contentInformation{
 		border-bottom: 1px solid #dbdbdb;
 	}
@@ -47,6 +52,8 @@
 	.descriptiontextarea label{
 		margin-left:10px;
 	}
+
+
 	@media (min-width: 1200px) {
 		.no-ing{
 			padding-left: 15px !important;

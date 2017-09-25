@@ -454,10 +454,7 @@ function loadLiveNow () {
       "searchType" : ["<?php echo Event::COLLECTION?>","<?php echo Project::COLLECTION?>",
       				  "<?php echo Organization::COLLECTION?>","<?php echo ActionRoom::COLLECTION?>"], 
       "searchTag" : $('#searchTags').val().split(','), //is an array
-      "searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
-      "searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-      "searchLocalityDEPARTEMENT" : $('#searchLocalityDEPARTEMENT').val().split(','),
-      "searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
+      "locality" : getLocalityForSearch(),
       "indexMin" : 0, 
       "indexMax" : 10 
     };
@@ -478,12 +475,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 
 	var isFirstParam = isFirst ? "?isFirst=1&tpl=co2" : "?tpl=co2";
 	isFirstParam += "&nbCol=1";
-	var tagSearch = $('#searchTags').val().split(',');; //$('#searchBarText').val();
-	var levelCommunexionName = { 1 : "CITYKEY",
-	                             2 : "CODE_POSTAL",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
+	var tagSearch = $('#searchTags').val().split(',');
 	
 	var thisType="ko";
 	var urlCtrl = ""
@@ -501,11 +493,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 	var dataNewsSearch = {};
 	if(liveScopeType == "global")
 		dataNewsSearch = {
-	      "searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
-	      "searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-	      "searchLocalityDEPARTEMENT" : $('#searchLocalityDEPARTEMENT').val().split(','),
-	      "searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
-
+	      "locality" : getLocalityForSearch()
 	    };
 
     dataNewsSearch.tagSearch = tagSearch;

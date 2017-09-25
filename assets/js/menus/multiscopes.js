@@ -20,8 +20,9 @@ function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId);
 			}
 		});
 	}else{
-		
-	} 
+
+	}
+
 	showCountScope();
 	//rebuildSearchScopeInput();
 	setTimeout(function(){ rebuildSearchScopeInput() }, 1000);
@@ -32,6 +33,9 @@ function saveCookieMultiscope(){
 	$.cookie('multiscopes',   	JSON.stringify(myMultiScopes), { expires: 365, path: location.pathname });
 	/*if(location.hash.indexOf("#city.detail")==0)
 		urlCtrl.loadByHash("#default.live");*/
+
+	if(location.hash.indexOf("#interoperability")!==0) {
+	}
 }
 
 function autocompleteMultiScope(){
@@ -433,6 +437,8 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 			if(actionOnSetGlobalScope == "filter"){
 				if(location.hash.indexOf("#live") >= 0)
                 	startNewsSearch(true);
+                else if (location.hash.indexOf("#interoperability") >= 0)
+                	mylog.log('On ne lance pas le StartSearch normal');
             	else if(location.hash != "")
 					startSearch(0, indexStepInit, searchCallback);
 				//else loadLiveNow();

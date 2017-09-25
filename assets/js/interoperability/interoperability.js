@@ -156,7 +156,7 @@ function getWiki(q){
                         if (data_dbpedia.results.bindings[0].picture !== undefined) {      
                             wikipedia.fr.depiction = data_dbpedia.results.bindings[0].picture.value;
                         } else {
-                            wikipedia.fr.depiction = "/ph/assets/7d331fe5/images/thumbnail-default.jpg";
+                            wikipedia.fr.depiction = assetPath+ "/images/thumbnail-default.jpg";
                         }
 
                         $("#ajax-modal-modal-title").append(
@@ -278,7 +278,7 @@ function getWikipediaArticle(limit, offset) {
                   $("#list_wiki_article").append(
                   '<li class="wiki_article_element img-thumbnail col-sm-6 col-xs-12">'+ 
                     '<a class="wiki_article_links" target="_blank" href="'+value.pagewiki.value+'">'+value.label.value+'<BR>' +
-                    '<img class="img_wiki_element" src="/ph/assets/7d331fe5/images/thumbnail-default.jpg" title="Cliquez pour agrandir"/>'+
+                    '<img class="img_wiki_element" src="'+assetPath+'/images/thumbnail-default.jpg" title="Cliquez pour agrandir"/>'+
                     '</a>' +
                   '</li>'
                   );
@@ -1520,10 +1520,6 @@ function OneOsmItemOnMap(value) {
             "longitude": value.lon,
         },
         "name" :value.tags.name,
-        "profilImageUrl" : "/assets/9fffbde3/images/logos/OSM-logo.png",
-        "profilMarkerImageUrl": "/assets/9fffbde3/images/logos/OSM-logo.png",
-        "profilMediumImageUrl" : "/assets/9fffbde3/images/logos/OSM-logo.png",
-        "profilThumbImageUrl" : "/assets/9fffbde3/images/logos/OSM-logo.png",
         "typeSig" : "poi",
     };
 
@@ -1769,7 +1765,7 @@ function getCityDataByInsee(insee) {
 
 function getUrlInteropForWiki(wikidataID) {
 
-    var url_wiki = "http://127.0.0.1/ph/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+wikidataID+".json";
+    var url_wiki = baseUrl + "/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+wikidataID+".json";
 
     if (text_search_name !== "") {
         url_wiki += "&text_filter="+text_search_name;
@@ -1780,27 +1776,27 @@ function getUrlInteropForWiki(wikidataID) {
 
 function getUrlInteropForDatagouv(insee) {
 
-    var url_datagouv = "http://127.0.0.1/ph/api/convert/datagouv?url=https://www.data.gouv.fr/api/1/spatial/zone/fr/town/"+insee+"/datasets";
+    var url_datagouv = baseUrl + "/api/convert/datagouv?url=https://www.data.gouv.fr/api/1/spatial/zone/fr/town/"+insee+"/datasets";
 
     return url_datagouv;
 }
 
 function getUrlInteropForOsm(geoShape, amenity_filter = null) {
 
-    var url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"](poly:"'+geoShape+'");out%20'+endNow+';';
+    var url_osm = baseUrl + '/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"](poly:"'+geoShape+'");out%20'+endNow+';';
 
     if (amenity_filter == null) {
         if (text_search_name !== "") {
-            url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'",i](poly:"'+geoShape+'");out%20'+endNow+';';
+            url_osm = baseUrl + '/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'",i](poly:"'+geoShape+'");out%20'+endNow+';';
         } 
     } else {
         if (amenity_filter == "") {
-            url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"="NIMPORTEQUOI"](poly:"'+geoShape+'");out%20'+endNow+';';
+            url_osm = baseUrl + '/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"="NIMPORTEQUOI"](poly:"'+geoShape+'");out%20'+endNow+';';
         } else {
             if (text_search_name == "") {
-                url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
+                url_osm = baseUrl + '/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
             } else {
-                url_osm = 'http://127.0.0.1/ph/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'"]["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
+                url_osm = baseUrl + '/api/convert/osm?url=http://overpass-api.de/api/interpreter?data=[out:json];node["name"~"'+text_search_name+'"]["amenity"~"^('+amenity_filter+')"](poly:"'+geoShape+'");out%20'+endNow+';';
             }
         }
     }                         
@@ -1810,7 +1806,7 @@ function getUrlInteropForOsm(geoShape, amenity_filter = null) {
 
 function getUrlInteropForOds(geofilter, filter = null) {
 
-    var url_ods = "http://127.0.0.1/ph/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+    var url_ods = baseUrl + "/api/convert/ods?url=https://data.opendatasoft.com/api/records/1.0/search/?dataset=sirene%40public&facet=categorie&facet=proden&facet=libapen&facet=siege&facet=libreg_new&facet=saisonat&facet=libtefen&facet=depet&facet=libnj&facet=libtca&facet=liborigine&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
 
     if (text_search_name !== "") {
         url_ods += "&q="+text_search_name;
@@ -1825,10 +1821,10 @@ function getUrlInteropForOds(geofilter, filter = null) {
 
 function getUrlInteropForDatanova(geofilter) {
 
-    var url_datanova = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+    var url_datanova = baseUrl + "/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
 
     if (text_search_name !== "") {
-        url_datanova = "http://127.0.0.1/ph/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&q="+text_search_name+"&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+        url_datanova = baseUrl + "/api/convert/datanova?url=https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_poincont&q="+text_search_name+"&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
     }
 
     return url_datanova;
@@ -1836,10 +1832,10 @@ function getUrlInteropForDatanova(geofilter) {
 
 function getUrlInteropForPoleEmploi(insee, filter = null) {
 
-    var url_pole_emploi = "http://127.0.0.1/ph/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+insee+"%27%20LIMIT%20"+endNow;
+    var url_pole_emploi = baseUrl + "/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+insee+"%27%20LIMIT%20"+endNow;
 
     if (filter !== null) {
-       url_pole_emploi = "http://127.0.0.1/ph/api/convert/poleemploi?rome_activity="+filter+"&url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+insee+"%27%20LIMIT%20"+endNow;
+       url_pole_emploi = baseUrl + "/api/convert/poleemploi?rome_activity="+filter+"&url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+insee+"%27%20LIMIT%20"+endNow;
     } 
 
     return url_pole_emploi;
@@ -1848,10 +1844,10 @@ function getUrlInteropForPoleEmploi(insee, filter = null) {
 function getUrlInteropForEducMembre(geofilter) {
 
 
-    var url_educ_membre = "http://127.0.0.1/ph/api/convert/educmembre?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-iuf-les-membres&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+    var url_educ_membre = baseUrl + "/api/convert/educmembre?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-iuf-les-membres&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
 
     if (text_search_name !== "") {
-        url_educ_membre = "http://127.0.0.1/ph/api/convert/educmembre?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-iuf-les-membres&q="+text_search_name+"&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+        url_educ_membre = baseUrl + "/api/convert/educmembre?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-iuf-les-membres&q="+text_search_name+"&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
     }
 
     return url_educ_membre;
@@ -1859,10 +1855,10 @@ function getUrlInteropForEducMembre(geofilter) {
 
 function getUrlInteropForEducEtab(geofilter) {
 
-    var url_educ_etab = "http://127.0.0.1/ph/api/convert/educetab?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-etablissements-publics-prives-impliques-recherche-developpement&facet=siren&facet=libelle&facet=date_de_creation&facet=categorie&facet=libelle_ape&facet=tranche_etp&facet=categorie_juridique&facet=wikidata&facet=commune&facet=unite_urbaine&facet=departement&facet=region&facet=pays&facet=badge&facet=region_avant_2016&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+    var url_educ_etab = baseUrl + "/api/convert/educetab?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-etablissements-publics-prives-impliques-recherche-developpement&facet=siren&facet=libelle&facet=date_de_creation&facet=categorie&facet=libelle_ape&facet=tranche_etp&facet=categorie_juridique&facet=wikidata&facet=commune&facet=unite_urbaine&facet=departement&facet=region&facet=pays&facet=badge&facet=region_avant_2016&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
 
     if (text_search_name !== "") {
-        url_educ_etab = "http://127.0.0.1/ph/api/convert/educetab?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-etablissements-publics-prives-impliques-recherche-developpement&facet=siren&facet=libelle&facet=date_de_creation&facet=categorie&facet=libelle_ape&facet=tranche_etp&facet=categorie_juridique&facet=wikidata&facet=commune&facet=unite_urbaine&facet=departement&facet=region&facet=pays&facet=badge&facet=region_avant_2016&q="+text_search_name+"&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+        url_educ_etab = baseUrl + "/api/convert/educetab?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-etablissements-publics-prives-impliques-recherche-developpement&facet=siren&facet=libelle&facet=date_de_creation&facet=categorie&facet=libelle_ape&facet=tranche_etp&facet=categorie_juridique&facet=wikidata&facet=commune&facet=unite_urbaine&facet=departement&facet=region&facet=pays&facet=badge&facet=region_avant_2016&q="+text_search_name+"&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
     }
 
     return url_educ_etab;
@@ -1870,10 +1866,10 @@ function getUrlInteropForEducEtab(geofilter) {
 
 function getUrlInteropForEducStruct(geofilter) {
 
-    var url_educ_struct = "http://127.0.0.1/ph/api/convert/educstruct?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-structures-recherche-publiques-actives&facet=numero_national_de_structure&facet=annee_de_creation&facet=tutelles&facet=type_de_tutelle&facet=nature_de_tutelle&facet=nature_de_structure&facet=type_de_structure&facet=niveau_de_structure&facet=domaine_scientifique&facet=panel_erc&facet=theme_de_recherche&facet=commune&facet=unite_urbaine&facet=departement&facet=region&facet=pays&facet=comue&facet=region_avant_2016&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+    var url_educ_struct = baseUrl + "/api/convert/educstruct?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-structures-recherche-publiques-actives&facet=numero_national_de_structure&facet=annee_de_creation&facet=tutelles&facet=type_de_tutelle&facet=nature_de_tutelle&facet=nature_de_structure&facet=type_de_structure&facet=niveau_de_structure&facet=domaine_scientifique&facet=panel_erc&facet=theme_de_recherche&facet=commune&facet=unite_urbaine&facet=departement&facet=region&facet=pays&facet=comue&facet=region_avant_2016&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
 
     if (text_search_name !== "") {
-        url_educ_struct = "http://127.0.0.1/ph/api/convert/educstruct?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-structures-recherche-publiques-actives&facet=numero_national_de_structure&facet=annee_de_creation&facet=tutelles&facet=type_de_tutelle&facet=nature_de_tutelle&facet=nature_de_structure&facet=type_de_structure&facet=niveau_de_structure&facet=domaine_scientifique&facet=panel_erc&facet=theme_de_recherche&facet=commune&facet=unite_urbaine&facet=departement&facet=region&facet=pays&facet=comue&facet=region_avant_2016&rows=30&start="+startNow+"&q="+text_search_name+"&geofilter.polygon="+geofilter;
+        url_educ_struct = baseUrl + "/api/convert/educstruct?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-structures-recherche-publiques-actives&facet=numero_national_de_structure&facet=annee_de_creation&facet=tutelles&facet=type_de_tutelle&facet=nature_de_tutelle&facet=nature_de_structure&facet=type_de_structure&facet=niveau_de_structure&facet=domaine_scientifique&facet=panel_erc&facet=theme_de_recherche&facet=commune&facet=unite_urbaine&facet=departement&facet=region&facet=pays&facet=comue&facet=region_avant_2016&rows=30&start="+startNow+"&q="+text_search_name+"&geofilter.polygon="+geofilter;
     }
 
     return url_educ_struct;
@@ -1881,10 +1877,10 @@ function getUrlInteropForEducStruct(geofilter) {
 
 function getUrlInteropForEducEcole(geofilter) {
 
-    var url_educ_ecole = "http://127.0.0.1/ph/api/convert/educecole?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-ecoles_doctorales_annuaire&facet=numero&facet=groupe_disciplinaire&facet=toutes_les_disciplines&facet=discipline_principale&facet=localisation&facet=liste_tous_etablissements&facet=laboratoires_rattaches&facet=annee_de_creation&facet=annee_accreditation&facet=etablissement_support&facet=liste_codes_tous_etablissements&facet=identifiants_des_laboratoires&facet=libelle_unite_urbaine&facet=libelle_departement&facet=libelle_academie&facet=libelle_region&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+    var url_educ_ecole = baseUrl + "/api/convert/educecole?url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-ecoles_doctorales_annuaire&facet=numero&facet=groupe_disciplinaire&facet=toutes_les_disciplines&facet=discipline_principale&facet=localisation&facet=liste_tous_etablissements&facet=laboratoires_rattaches&facet=annee_de_creation&facet=annee_accreditation&facet=etablissement_support&facet=liste_codes_tous_etablissements&facet=identifiants_des_laboratoires&facet=libelle_unite_urbaine&facet=libelle_departement&facet=libelle_academie&facet=libelle_region&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
 
     if (text_search_name !== "") {
-        url_educ_ecole = "http://127.0.0.1/ph/api/convert/educ?dataset=ecole&url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-ecoles_doctorales_annuaire&facet=numero&facet=groupe_disciplinaire&facet=toutes_les_disciplines&facet=discipline_principale&facet=localisation&facet=liste_tous_etablissements&facet=laboratoires_rattaches&facet=annee_de_creation&facet=annee_accreditation&facet=etablissement_support&facet=liste_codes_tous_etablissements&facet=identifiants_des_laboratoires&facet=libelle_unite_urbaine&facet=libelle_departement&facet=libelle_academie&facet=libelle_region&q="+text_search_name+"&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
+        url_educ_ecole = baseUrl + "/api/convert/educ?dataset=ecole&url=https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-ecoles_doctorales_annuaire&facet=numero&facet=groupe_disciplinaire&facet=toutes_les_disciplines&facet=discipline_principale&facet=localisation&facet=liste_tous_etablissements&facet=laboratoires_rattaches&facet=annee_de_creation&facet=annee_accreditation&facet=etablissement_support&facet=liste_codes_tous_etablissements&facet=identifiants_des_laboratoires&facet=libelle_unite_urbaine&facet=libelle_departement&facet=libelle_academie&facet=libelle_region&q="+text_search_name+"&rows=30&start="+startNow+"&geofilter.polygon="+geofilter;
 
     }
 
@@ -1961,25 +1957,26 @@ function getIconColorForInteropElements(type_elt) {
 function getImageIcoForInteropElements(type_elt) {
 
     var icon_image = "";
+    var baseUrlJustForThis = baseUrl.substring(0,baseUrl.length-2);
 
     if (type_elt == "datanova") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-laposte.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/logo-laposte.png'>";
     } else if (type_elt == "ods") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/opendata-soft-logo.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/opendata-soft-logo.png'>";
     } else if (type_elt == "osm") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/OSM-logo.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/OSM-logo.png'>";
     } else if (type_elt == "wiki") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-wikidata.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/logo-wikidata.png'>";
     } else if (type_elt == "datagouv") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/data-gouv-logo.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/data-gouv-logo.png'>";
     } else if (type_elt == "poleemploi") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo_pole_emploi.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/logo_pole_emploi.png'>";
     } else if (type_elt == "educ_etab" || type_elt == "educ_membre" || type_elt == "educ_ecole" || type_elt == "educ_struct") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo_open_data_educ.jpg'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/logo_open_data_educ.jpg'>";
     } 
 
     else {
-        icon_image = "<img width=100 style='margin-top:20px;' src='http://127.0.0.1/"+moduleUrl+"'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"'>";
     }
 
     return icon_image;
@@ -1989,23 +1986,25 @@ function getImageIcoForInteropElements(type_elt) {
 function getimgProfilPathForInteropDataOnMap(type_elt) {
 
     var imgProfilPath;
+    var baseUrlJustForThis = baseUrl.substring(0,baseUrl.length-2);
+
 
     mylog.log('LE TYPE DE L\'ELEMENT POUR L\'ICONE DE LA MAP', type_elt);
 
     if (type_elt == "poi.interop.datanova") {
-        var imgProfilPath = "http://127.0.0.1/"+moduleUrl+"/images/logos/logo-laposte.png";
+        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/logo-laposte.png";
     } else if (type_elt == "poi.interop.wiki") {
-        var imgProfilPath = "http://127.0.0.1/"+moduleUrl+"/images/logos/logo-wikidata.png";
+        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/logo-wikidata.png";
     } else if (type_elt == "poi.interop.datagouv") {
-        var imgProfilPath = "http://127.0.0.1/"+moduleUrl+"/images/logos/data-gouv-logo.png";
+        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/data-gouv-logo.png";
     } else if (type_elt == "poi.interop.poleemploi") {
-        var imgProfilPath = "http://127.0.0.1/"+moduleUrl+"/images/logos/logo_pole_emploi.png";
+        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/logo_pole_emploi.png";
     } else if (type_elt == "poi.interop.osm") {
-        var imgProfilPath = "http://127.0.0.1/"+moduleUrl+"/images/logos/OSM-logo.png";
+        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/OSM-logo.png";
     } else if (type_elt == "poi.interop.ods") {
-        var imgProfilPath = "http://127.0.0.1/"+moduleUrl+"/images/logos/opendata-soft-logo.png";
+        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/opendata-soft-logo.png";
     } else if (type_elt == "poi.interop.educ_etab" || type_elt == "poi.interop.educ_membre" || type_elt == "poi.interop.educ_ecole" || type_elt == "poi.interop.educ_struct") {
-        var imgProfilPath = "http://127.0.0.1/"+moduleUrl+"/images/logos/logo_open_data_educ.jpg";
+        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/logo_open_data_educ.jpg";
     }
     return imgProfilPath;
 }

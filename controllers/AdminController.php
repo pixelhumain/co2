@@ -43,7 +43,6 @@ class AdminController extends CommunecterController {
 			'statistics' => 'citizenToolKit.controllers.admin.StatisticsAction',
 			'createfile' => 'citizenToolKit.controllers.admin.CreateFileAction',
 			'cities' => 'citizenToolKit.controllers.admin.CitiesAction',
-
 	    );
 	}
 

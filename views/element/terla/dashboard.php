@@ -51,26 +51,26 @@
 
 	}
 </style>
-<div class="headerTitleStanalone">
-	<span>Mon tableau de bord</span> 
-	<?php if(@$element["professional"]){ ?>
-		<a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo (string)$element["_id"] ?>.view.pro" class="lbh btn btn-orange">Go to my professional account<button>
-	<?php }else{ ?> 
-		<button class="createPro bg-orange">Create a professional account<button>
-	<?php } ?>
-</div>
+<div class="headerTitleStanalone"><span>Mon tableau de bord</span> <button class="backTravel">Back to my traveller account<button></div>
 <div class="col-md-10 col-md-offset-1 contentOnePage">
 	<div class="col-md-12 no-padding margin-bottom-20 margin-top-20">
 		<div class="col-md-12 bg-lightgray">
-			<h2 class="col-md-12 letter-blue-2">Some of our top trip</h2>
+			<h2 class="col-md-12 letter-blue-2">Ajouter vos produits et services</h2>
 			<div class="row col-md-10">	
-				<p>
-					Lipsr rakeklaef zejfiaoiz ijezfjezajifo jiofeza quesako ezokdozdoiezi dezijdjiezdjiezijdijez ijezdjezid ezdiezjd ezdiezjdo
+				<p>Ces produits et services sont soumis à une validation du site pour authentifier vos propositions avant publications
 				</p>
 			</div>
-			<div class="row col-md-2">
-				<a href="javascript:;" class="btn bg-orange">View more</a>
-			</div>
+			<button data-form-type="product"  
+	                    data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-red">
+	                <h6><i class="fa fa-university fa-2x bg-red"></i><br> <?php echo Yii::t("common", "Product") ?></h6>
+	                <small><?php echo Yii::t("form","Town hall, schools, etc...<br>Share your news<br>Share events") ?></small>
+	            </button><button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GOV; ?>"  
+	                    data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-red">
+	                <h6><i class="fa fa-university fa-2x bg-red"></i><br> <?php echo Yii::t("common", "Prestation") ?></h6>
+	                <small><?php echo Yii::t("form","Town hall, schools, etc...<br>Share your news<br>Share events") ?></small>
+	            </button>
 		</div>
 	</div>
 	<div class="podDash col-md-12 margin-top-20">
@@ -102,23 +102,12 @@
 	var edit=true;
 	jQuery(document).ready(function() {
 		loadDetail(true);
-		$(".createPro").click(function(){
-			$.ajax({
-	    		type: "POST",
-	    		url: baseUrl+"/"+moduleId+'/person/updatefield',
-	    		data:{pk:userId,name:"professional", value:true},
-	            success: function(data){
-	            	goProAccount();
-	            }
-	         });
-		});
 		bindButtonMenu();
-		
+		$(".btn-open-form").click(function(){
+			dyFObj.openForm("product");
+		});
 		KScrollTo("#topPosKScroll");
 	});
-	function goProAccount(){
-		urlCtrl.loadByHash("#page.type.citoyens.id."+contextData.id+".view.pro");
-	}
 	function getProfilSubview(sub, dir){ console.log("getProfilSubview", sub, dir);
 		if(sub!=""){
 			if(sub=="message")

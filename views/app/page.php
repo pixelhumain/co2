@@ -34,7 +34,10 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
                 if(Yii::app()->params["CO2DomainName"] == "terla"){
-                    $this->renderPartial('../element/terla/index', $params );
+                    if($view=="pro")
+                        $this->renderPartial('../element/terla/dashboard', $params );
+                    else
+                        $this->renderPartial('../element/terla/index', $params );
                 }else
                     $this->renderPartial('../element/profilSocial', $params ); 
             }
@@ -65,7 +68,18 @@
 
                 $this->renderPartial('../classified/standalone', $params ); 
             }
+            if($type == Product::COLLECTION){
+                $params = array("element"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
 
+                if(@$members) $params["members"] = $members;
+                if(@$invitedMe) $params["invitedMe"] = $invitedMe;
+
+                $this->renderPartial('../element/standalone', $params ); 
+            }
             if($type == Survey::COLLECTION){
                 $params = array("survey"=>$element , 
                                 "page" => "page",

@@ -4217,6 +4217,7 @@ var typeObj = {
 
 	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
 		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
+	"product":{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",	icon:"gift"},
 	"classified":{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
 				   subTypes : [
 				   //FR

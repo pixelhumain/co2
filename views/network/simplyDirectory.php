@@ -10,20 +10,11 @@
 <div class="col-md-12 padding-10" id="ficheInfoDetail"></div>
 
 <script type="text/javascript">
-//Icons by default categories
-var linksTagImages = new Object();
 var contextMapNetwork = [];
-//var allElement = new Array();
-var allTags = new Object();
-var allTypes = new Object();
 var indexStepInit = 100;
 var searchPrefTag = null ;
 var indexStep = indexStepInit;
-var currentIndexMin = 0;
-var currentIndexMax = indexStep;
 var scrollEnd = false;
-var totalData = 0;
-var timeout = null;
 
 var tagsActived = {};
 var disableActived = false;
@@ -35,9 +26,6 @@ var searchValNetwork = "";
 var loadingData = false;
 var mapElements = new Array();
 var tagsFilter = new Array();
-var mix = "";
-
-var topMenuActivated = true;
 
 var nwVar = {
 	mainTag : [],
@@ -49,8 +37,7 @@ var nwVar = {
 	searchLocalityDEPARTEMENT : [],
 	searchLocalityINSEE : [],
 	searchLocalityREGION : [],
-	allsearchType : [],
-	allsearchTag : [],
+	searchType : [],
 }
 
 jQuery(document).ready(function() {
@@ -65,10 +52,8 @@ jQuery(document).ready(function() {
 	else
 		showMapNetwork(false);
 
-	//$(".main-menu-left.inSig").hide();
 	$("#right_tool_map").removeClass("hidden-sm").hide( 700 );
 
-	topMenuActivated = true;
 	hideScrollTop = true;
 	checkScroll();
 	var timeoutSearch = setTimeout(function(){ }, 100);
@@ -85,21 +70,12 @@ function initVar(){
 	if( typeof networkJson.request.pagination != "undefined" && networkJson.request.pagination > 0)
 		indexStepInit = networkJson.request.pagination ;
 
-  	if(typeof networkJson.filter != "undefined" && typeof networkJson.filter.linksTag != "undefined"){
-   		$.each(networkJson.filter.linksTag, function(index, value){ 
-   			if(typeof value != "undefined"){
-   				linksTagImages[value] = {};
-   			}
-   		});
-   	}
+	citiesActived = ( ((typeof networkJson.request.searchLocalityNAME == "undefined") || networkJson == null) ? [] : networkJson.request.searchLocalityNAME);
 
-   	citiesActived = ( ((typeof networkJson.request.searchLocalityNAME == "undefined") || networkJson == null) ? [] : networkJson.request.searchLocalityNAME);
-
-   	indexStep = indexStepInit;
-   	var allSearchParams = ["mainTag", "sourceKey", "searchType", "searchTag","searchCategory","searchLocalityNAME","searchLocalityCODE_POSTAL_INSEE","searchLocalityDEPARTEMENT","searchLocalityINSEE","searchLocalityREGION"];
-   	$.each(allSearchParams,function(k,v){
+	indexStep = indexStepInit;
+	var allSearchParams = ["mainTag", "sourceKey", "searchType", "searchTag","searchCategory","searchLocalityNAME","searchLocalityCODE_POSTAL_INSEE","searchLocalityDEPARTEMENT","searchLocalityINSEE","searchLocalityREGION"];
+	$.each(allSearchParams,function(k,v){
 		nwVar[v] = ( ( typeof networkJson.request[v] != "undefined" && $.isArray(networkJson.request[v]) ) ? networkJson.request[v] : [] );
-		nwVar["all"+v] = ( ( typeof networkJson.request[v] != "undefined" && $.isArray(networkJson.request[v]) ) ? networkJson.request[v] : [] );
 	});
 
 	var btnSearch = '<div class="btn-group btn-group-lg tooltips" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Recherche par nom">'+
@@ -175,6 +151,9 @@ function bindNetwork(){
 			$(this).find(".firstIcon").removeClass("fa-angle-left").addClass("fa-filter");
 		}
 	});
+
+
+	
 	
 	$(".showHideMoreTitleMap").click(function(){
 		mylog.log(".showHideMoreTitleMap");
@@ -203,55 +182,55 @@ function bindNetwork(){
 	/***** CHANGE THE VIEW PARAMS  *****/
 	// $('#dropdown_params').show();
 	
-	$('#dropdown_paramsBtn').click(function(event){
-		mylog.log("#dropdown_paramsBtn");
-		event.preventDefault();
-		if($('#dropdown_paramsBtn').hasClass('active')){
-			$('#dropdown_params').fadeOut();
-			$('#dropdown_params').removeClass('col-md-3');
-			$('#dropdown_search').removeClass('col-md-9');
-			$('#dropdown_search').addClass('col-md-12');
-			$('#dropdown_paramsBtn').removeClass('active');
-		}
-		else{
-			$('#dropdown_params').addClass('col-md-3');
-			$('#dropdown_params').fadeIn();
-			$('#dropdown_search').addClass('col-md-9');
-			$('#dropdown_search').removeClass('col-md-12');
-			$('#dropdown_paramsBtn').addClass('active');
-		}
-	});
+	// $('#dropdown_paramsBtn').click(function(event){
+	// 	mylog.log("#dropdown_paramsBtn");
+	// 	event.preventDefault();
+	// 	if($('#dropdown_paramsBtn').hasClass('active')){
+	// 		$('#dropdown_params').fadeOut();
+	// 		$('#dropdown_params').removeClass('col-md-3');
+	// 		$('#dropdown_search').removeClass('col-md-9');
+	// 		$('#dropdown_search').addClass('col-md-12');
+	// 		$('#dropdown_paramsBtn').removeClass('active');
+	// 	}
+	// 	else{
+	// 		$('#dropdown_params').addClass('col-md-3');
+	// 		$('#dropdown_params').fadeIn();
+	// 		$('#dropdown_search').addClass('col-md-9');
+	// 		$('#dropdown_search').removeClass('col-md-12');
+	// 		$('#dropdown_paramsBtn').addClass('active');
+	// 	}
+	// });
 
 	/***** CHANGE THE VIEW GRID OR LIST *****/
-	$('#grid').hide();
-	$('#list').click(function(event){
-		mylog.log("#list");
-		event.preventDefault();
-		$('#dropdown_search .item').addClass('list-group-item');
-		$('.entityTop').removeClass('row');
-		$('.entityMiddle').removeClass('row');
-		$('.entityBottom').removeClass('row');
-		$('.entityTop').addClass('col-md-2');
-		$('.entityMiddle').addClass('col-md-12');
-		$('.entityBottom').addClass('col-md-4');
-		$('#grid').show();
-		$('#list').hide();
-	});
+	// $('#grid').hide();
+	// $('#list').click(function(event){
+	// 	mylog.log("#list");
+	// 	event.preventDefault();
+	// 	$('#dropdown_search .item').addClass('list-group-item');
+	// 	$('.entityTop').removeClass('row');
+	// 	$('.entityMiddle').removeClass('row');
+	// 	$('.entityBottom').removeClass('row');
+	// 	$('.entityTop').addClass('col-md-2');
+	// 	$('.entityMiddle').addClass('col-md-12');
+	// 	$('.entityBottom').addClass('col-md-4');
+	// 	$('#grid').show();
+	// 	$('#list').hide();
+	// });
 
-	$('#grid').click(function(event){
-		mylog.log("#grid");
-		event.preventDefault();
-		$('#dropdown_search .item').removeClass('list-group-item');
-		$('#dropdown_search .item').addClass('grid-group-item');
-		$('.entityTop').addClass('row');
-		$('.entityMiddle').addClass('row');
-		$('.entityBottom').addClass('row');
-		$('.entityTop').removeClass('col-md-2');
-		$('.entityMiddle').removeClass('col-md-12');
-		$('.entityBottom').removeClass('col-md-4');
-		$('#list').show();
-		$('#grid').hide();
-	});
+	// $('#grid').click(function(event){
+	// 	mylog.log("#grid");
+	// 	event.preventDefault();
+	// 	$('#dropdown_search .item').removeClass('list-group-item');
+	// 	$('#dropdown_search .item').addClass('grid-group-item');
+	// 	$('.entityTop').addClass('row');
+	// 	$('.entityMiddle').addClass('row');
+	// 	$('.entityBottom').addClass('row');
+	// 	$('.entityTop').removeClass('col-md-2');
+	// 	$('.entityMiddle').removeClass('col-md-12');
+	// 	$('.entityBottom').removeClass('col-md-4');
+	// 	$('#list').show();
+	// 	$('#grid').hide();
+	// });
 }
 
 function showMapNetwork(show){
@@ -364,10 +343,10 @@ function startSearchSimply(indexMin, indexMax){
 	var name = $('#searchBarText').val();
 	if(typeof indexMin == "undefined") indexMin = 0;
 	if(typeof indexMax == "undefined") indexMax = indexStep;
-	currentIndexMin = indexMin;
-	currentIndexMax = indexMax;
+	// currentIndexMin = indexMin;
+	// currentIndexMax = indexMax;
 	if(indexMin == 0 && indexMax == indexStep) {
-		totalData = 0;
+		//totalData = 0;
 		mapElements = new Array();
 	}
 	// if(name.length>=3 || name.length == 0){
@@ -418,7 +397,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	var data = {
 		"name" : name,
 		"locality" : "xxxx",
-		"searchType" : nwVar.allsearchType,
+		"searchType" : nwVar.searchType,
 		"searchTag" : searchTagGlobal,
 		"filtreTag" : searchTagsSimply,
 		"searchLocalityNAME" : nwVar.searchLocalityNAME,
@@ -482,7 +461,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 					var countData = 0;
 					$.each(data.res, function(i, v) { if(v.length!=0){ countData++; } });
 
-					totalData += countData;
+					//totalData += countData;
 					if(typeof networkJson.request.oneElement != "undefined" && networkJson.request.oneElement == true){
 						filterTags(data.filters.tags);
 						filterType(data.filters.types);
@@ -495,7 +474,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 					str = "";
 					var city, postalCode = "";
 					var mapElements = new Array();
-					allTags = data.filters;
+					//allTags = data.filters;
 					var htmlCO2 = "";
 					htmlCO2 = directory.showResultsDirectoryHtml(data.res);
 					//parcours la liste des résultats de la recherche
@@ -697,11 +676,12 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 
 
 						//On met à jour les filtres
-						if( typeof networkJson.mode != "undefined" && networkJson.mode == "client" ){
-							loadClientFilters(allTypes, allTags);
-						} else{ 
-							loadServerFilters(allTypes, allTags);
-						}
+						// if( typeof networkJson.mode != "undefined" && networkJson.mode == "client" ){
+						// 	loadClientFilters(allTypes, allTags);
+						// } else{ 
+						// 	loadFilters(allTypes, allTags);
+						// }
+						loadFilters();
 
 						//on affiche par liste par défaut
 						$('#list').click();
@@ -810,7 +790,8 @@ function loadServerFeatures(){
 
 }
 
-function loadServerFilters(types,tags){
+function loadFilters(){
+	mylog.log("loadFilters");
 	var displayLimit = 10;
 	var classToHide = "";
 	var i = 0;
@@ -1028,9 +1009,9 @@ function and(tags,tagList)
 	$.each(tags,function(i,t){
 		reg = new RegExp("^"+t+"$","i");
 		if( inArrayRegex(tagList,reg) == false ){
-    		res = false;
-	        return false;
-	    }
+			res = false;
+			return false;
+		}
 	});
 	return res;
 }

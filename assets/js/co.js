@@ -1005,10 +1005,7 @@ function  processingBlockUi() {
 }
 function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
 	//alert("showAjaxPanel"+url);
-<<<<<<< HEAD
-=======
 	$(".progressTop").show().val(20);
->>>>>>> 71f42992249077f2597de4a6557a1a5a8bd057d5
 	var dest = ( typeof urlObj == "undefined" || typeof urlObj.useHeader != "undefined" ) ? themeObj.mainContainer : ".pageContent" ;
 	mylog.log("showAjaxPanel", url, urlObj,dest,urlCtrl.afterLoad );	
 	//var dest = themeObj.mainContainer;
@@ -3797,15 +3794,6 @@ var dyFInputs = {
         	$(".urlsarray").css("display","none");	
         }
     },
-<<<<<<< HEAD
-    // latitude : function() {
-
-    // },
-    // longitude : function() {
-
-    // },
-    allDay : function(checked){
-=======
     bookmarkUrl: function(label, placeholder,rules, custom){
     	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
     	inputObj.init = function(){
@@ -3958,7 +3946,6 @@ var dyFInputs = {
 	    return inputObj;
 	},
 	allDay : function(checked){
->>>>>>> 71f42992249077f2597de4a6557a1a5a8bd057d5
 
     	var inputObj = {
     		inputType : "checkbox",

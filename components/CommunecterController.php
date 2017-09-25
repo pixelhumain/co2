@@ -74,6 +74,51 @@ class CommunecterController extends Controller
   );
   public $pages = array(
     "admin" => array(
+// <<<<<<< HEAD
+//       "index"     => array("href" => "/ph/communecter/admin"),
+//       "accueil"     => array("href" => "/ph/communecter/accueil"),
+//       "directory" => array("href" => "/ph/communecter/admin/directory"),
+//       "switchto"  => array("href" => "/ph/communecter/admin/switchto"),
+//       "delete"    => array("href" => "/ph/communecter/admin/delete"),
+//       "activateuser"  => array("href" => "/ph/communecter/admin/activateuser"),
+//       "importdata"    => array("href" => "/ph/communecter/admin/importdata"),
+//       "previewdata"    => array("href" => "/ph/communecter/admin/previewdata"),
+//       "importinmongo"    => array("href" => "/ph/communecter/admin/importinmongo"),
+//       "assigndata"    => array("href" => "/ph/communecter/admin/assigndata"),
+//       "checkdataimport"    => array("href" => "/ph/communecter/admin/checkdataimport"),
+//       "openagenda"    => array("href" => "/ph/communecter/admin/openagenda"),
+//       "checkventsopenagendaindb"    => array("href" => "/ph/communecter/admin/checkventsopenagendaindb"),
+//       "importeventsopenagendaindb"    => array("href" => "/ph/communecter/admin/importeventsopenagendaindb"),
+//       "checkgeocodage"   => array("href" => "/ph/communecter/admin/checkgeocodage"),
+//       "getentitybadlygeolocalited"   => array("href" => "/ph/communecter/admin/getentitybadlygeolocalited"),
+//       "getdatabyurl"   => array("href" => "/ph/communecter/admin/getdatabyurl"),
+//       "adddata"    => array("href" => "/ph/communecter/admin/adddata"),
+//       "adddataindb"    => array("href" => "/ph/communecter/admin/adddataindb"),
+//       "createfileforimport"    => array("href" => "/ph/communecter/admin/createfileforimport"),
+//       "sourceadmin"    => array("href" => "/ph/communecter/admin/sourceadmin"),
+//       "moderate"    => array("href" => "/ph/communecter/admin/moderate"),
+//       "statistics"    => array("href" => "/ph/communecter/stat/chart"),
+//       "checkcities"    => array("href" => "/ph/communecter/admin/checkcities"),
+//       "checkcedex"    => array("href" => "/ph/communecter/admin/checkcedex"),
+//       "downloadfile" => array("href" => "/ph/communecter/admin/downloadfile"),
+//       "createfile" => array("href" => "/ph/communecter/admin/createfile"),
+//       "mailerrordashboard" => array("href" => "/ph/communecter/admin/mailerrordashboard"),
+//       "cities" => array("href" => "/ph/communecter/admin/cities"),
+
+//     ),
+    
+//     "adminpublic" => array(
+//       "index"    => array("href" => "/ph/communecter/adminpublic/index"),
+//       "adddata"    => array("href" => "/ph/communecter/adminpublic/adddata"),
+//       "adddataindb"    => array("href" => "/ph/communecter/adminpublic/adddataindb"),
+//       "createfile" => array("href" => "/ph/communecter/adminpublic/createfile"),
+//       "sourceadmin" => array("href" => "/ph/communecter/adminpublic/sourceadmin"),
+//       "assigndata"    => array("href" => "/ph/communecter/adminpublic/assigndata"),
+//       "getdatabyurl"   => array("href" => "/ph/communecter/adminpublic/getdatabyurl"),
+//       "previewdata"    => array("href" => "/ph/communecter/adminpublic/previewdata"),
+//       "interopproposed"    => array("href" => "/ph/communecter/adminpublic/interopproposed"),
+
+// =======
       "index"     => array("href" => "/ph/co2/admin"),
       "accueil"     => array("href" => "/ph/co2/accueil"),
       "directory" => array("href" => "/ph/co2/admin/directory"),
@@ -115,7 +160,9 @@ class CommunecterController extends Controller
       "getdatabyurl"   => array("href" => "/ph/co2/adminpublic/getdatabyurl"),
       "previewdata"    => array("href" => "/ph/co2/adminpublic/previewdata"),
       "interopproposed"    => array("href" => "/ph/communecter/adminpublic/interopproposed"),
+
       
+// >>>>>>> 71f42992249077f2597de4a6557a1a5a8bd057d5
     ),
     "collections" => array(
       "add"    => array("href" => "/ph/co2/collections/add"),
@@ -570,15 +617,6 @@ class CommunecterController extends Controller
       "deleteamendement"  => array('href' => "ph/co2/cooperation/deleteamendement")
 // >>>>>>> 71f42992249077f2597de4a6557a1a5a8bd057d5
     ),
-    "interoperability"  => array('href' => "/ph/communecter/app/interoperability",   "public" => false),
-      "test2"             => array('href' => "/ph/communecter/app/test2",   "public" => false),
-      ),
-    "export" => array(
-      "index"             => array('href' => "ph/communecter/export/index",            "public" => true),
-      ),
-    "datasets" => array(
-      "index"             => array('href' => "ph/communecter/datesets/index",            "public" => true),
-      ),
     "interoperability" => array(
       "index"              => array('href' => 'ph/communecter/interoperability/index',  "public" => true),
       "get"              => array('href' => 'ph/communecter/interoperability/get',  "public" => true),
@@ -588,7 +626,7 @@ class CommunecterController extends Controller
       "wikitoco"              => array('href' => 'ph/communecter/interoperability/wikitoco',  "public" => true),
       "pushtypewikidata"    => array('href' => 'ph/communecter/interoperability/pushtypewikidata',  "public" => true),
       "wikidata-put-description"    => array('href' => 'ph/communecter/interoperability/wikidata-put-description',  "public" => true),
-      ),
+    ),
   );
 
   function initPage(){

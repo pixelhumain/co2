@@ -715,11 +715,12 @@
 		$(".hide-"+contextData.type).hide();
 		getProfilSubview(subView,dirHash);
 		
-		loadActionRoom();
+		//loadActionRoom();
 
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
 		getContextDataLinks();
+		
 		//Sig.showMapElements(Sig.map, mapElements);
 		var elemSpec = dyFInputs.get("<?php echo $type?>");
 		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");

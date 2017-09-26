@@ -3404,6 +3404,7 @@ var dyFInputs = {
 	    console.log("create form input email", inputObj);
 	    return inputObj;
 	},
+	
 	emailOptionnel :function (label,placeholder,rules) {  
     	var inputObj = dyFInputs.text(label, placeholder, rules);
     	inputObj.init = function(){

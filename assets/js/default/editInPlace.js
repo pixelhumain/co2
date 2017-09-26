@@ -374,7 +374,7 @@ function bindAboutPodElement() {
 					}
 				}
 			};
-			//form.dynForm.jsonSchema.properties.slug = dyFInputs.slug("Slug", "Slug", {minlength : 3, uniqueSlug:true});
+			
 			if(contextData.type == typeObj.person.col ){
 				form.dynForm.jsonSchema.properties.username = dyFInputs.inputText("Username", "Username", { required : true });
 				form.dynForm.jsonSchema.properties.birthDate = dyFInputs.birthDate;

@@ -117,6 +117,7 @@ var headerParams = {
   "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
   "cities"        : { color: "red",     icon: "university",   name: "communes" },
   "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
+  "products"           : { color: "orange",   icon: "gift",   name: "product" },
 }
 function setHeaderDirectory(type){
  

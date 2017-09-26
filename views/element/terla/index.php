@@ -52,9 +52,9 @@
 	}
 </style>
 <div class="headerTitleStanalone">
-	<span>Mon tableau de bord</span> 
+	<span>My Dashboard</span> 
 	<?php if(@$element["professional"]){ ?>
-		<a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo (string)$element["_id"] ?>.view.pro" class="lbh btn btn-orange">Go to my professional account<button>
+		<a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo (string)$element["_id"] ?>.view.pro" class="lbh btn bg-orange">Go to my professional account</a>
 	<?php }else{ ?> 
 		<button class="createPro bg-orange">Create a professional account<button>
 	<?php } ?>
@@ -91,7 +91,7 @@
 		    <a class="nav-link" href="javascript:;" id="btn-invoice"><?php echo Yii::t("common","Invoice") ?></a>
 		  </li>
 		</ul>
-		<div class="content-view-dashboard col-md-12 padding-10 bg-white">
+		<div class="content-view-dashboard col-md-12 col-sm-12 col-xs-12 margin-bottom-20 padding-10 bg-white">
 		</div>
 		
 	</div>

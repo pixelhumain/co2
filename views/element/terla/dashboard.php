@@ -51,25 +51,30 @@
 
 	}
 </style>
-<div class="headerTitleStanalone"><span>Mon tableau de bord</span> <button class="backTravel">Back to my traveller account<button></div>
+<div class="headerTitleStanalone">
+	<span>Professional dashboard</span> 
+	<a href="page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>" class="lbh btn bg-orange margin-left-10">
+		Back to my traveller account</a>
+</div>
 <div class="col-md-10 col-md-offset-1 contentOnePage">
 	<div class="col-md-12 no-padding margin-bottom-20 margin-top-20">
 		<div class="col-md-12 bg-lightgray">
-			<h2 class="col-md-12 letter-blue-2">Ajouter vos produits et services</h2>
+			<h2 class="col-md-12 letter-blue-2">Add products and services you want to offered</h2>
 			<div class="row col-md-10">	
-				<p>Ces produits et services sont soumis à une validation du site pour authentifier vos propositions avant publications
+				<p>
+					These products and services will be validated by the team of terla
 				</p>
 			</div>
 			<button data-form-type="product"  
 	                    data-dismiss="modal"
-	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-red">
-	                <h6><i class="fa fa-university fa-2x bg-red"></i><br> <?php echo Yii::t("common", "Product") ?></h6>
-	                <small><?php echo Yii::t("form","Town hall, schools, etc...<br>Share your news<br>Share events") ?></small>
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-6 col-lg-6 text-orange">
+	                <h6><i class="fa fa-shopping-basket fa-2x"></i><br> <?php echo Yii::t("common", "Product") ?></h6>
+	                <small><?php echo Yii::t("form","Food, hand-made, jewelery...<br>Sell your product here") ?></small>
 	            </button><button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GOV; ?>"  
 	                    data-dismiss="modal"
-	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-red">
-	                <h6><i class="fa fa-university fa-2x bg-red"></i><br> <?php echo Yii::t("common", "Prestation") ?></h6>
-	                <small><?php echo Yii::t("form","Town hall, schools, etc...<br>Share your news<br>Share events") ?></small>
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green">
+	                <h6><i class="fa fa-sun-o fa-2x"></i><br> <?php echo Yii::t("common", "Services") ?></h6>
+	                <small><?php echo Yii::t("form","Hostel, funny activity, food, guide...<br>Purpose your services here !") ?></small>
 	            </button>
 		</div>
 	</div>
@@ -91,7 +96,7 @@
 		    <a class="nav-link" href="javascript:;" id="btn-invoice"><?php echo Yii::t("common","Invoice") ?></a>
 		  </li>
 		</ul>
-		<div class="content-view-dashboard col-md-12 padding-10 bg-white">
+		<div class="content-view-dashboard col-md-12  col-sm-12 col-xs-12 margin-bottom-20  padding-10 bg-white">
 		</div>
 		
 	</div>

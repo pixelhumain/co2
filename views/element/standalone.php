@@ -102,7 +102,7 @@
 			</span>
 		</div>
 		<div class="col-md-4 padding-20 margin-top-20">
-			<a href="javascript:;" class="btn bg-orange" onclick="addToShoppingCart('<?php echo (string)$element["_id"] ?>','<?php echo $element["type"] ?>');">I book</a>
+			<a href="javascript:;" class="btn bg-orange" onclick="addToShoppingCart('<?php echo (string)$element["_id"] ?>','<?php echo $type ?>');">I book</a>
 		</div>
 	</div>
 	<div id="commentElement" class="col-md-12 margin-top-20">
@@ -111,9 +111,9 @@
 <script type="text/javascript">
 
 	var element=<?php echo json_encode($element); ?>;
-
+	var type="<?php echo $type; ?>";
 	jQuery(document).ready(function() {	
-		var nav = directory.findNextPrev("#page.type.classified.id."+element['_id']['$id']);
+		var nav = directory.findNextPrev("#page.type."+type+".id."+element['_id']['$id']);
         //if(typeof params.name != "undefined" && params.name != "")
         str =  "<div class='col-md-6 no-padding'>"+ 
         nav.prev+

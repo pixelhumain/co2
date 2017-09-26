@@ -439,7 +439,7 @@
 								<?php } ?>
 							'</small>'+
 						'</span>'+	
-						'<div id="comments-list-'+idNewComment+'" class="pull-left col-md-11 no-padding answerCommentContainer"></div>' +
+						'<div id="comments-list-'+idNewComment+'" class="hidden pull-left col-md-11 no-padding answerCommentContainer"></div>' +
 							
 					'</div>';
 
@@ -533,7 +533,8 @@
 	}
 
 
-	function answerComment(idComment, parentCommentId){ mylog.log("answerComment");
+	function answerComment(idComment, parentCommentId){ 
+		mylog.log("answerComment", parentCommentId, $("#comments-list-"+parentCommentId).hasClass("hidden"));
 		
 		if(!$("#comments-list-"+parentCommentId).hasClass("hidden"))
 			$("#comments-list-"+parentCommentId).addClass("hidden");

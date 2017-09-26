@@ -4,7 +4,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close margin-5 padding-10" data-dismiss="modal" 
+        <button type="button" class="close margin-5 padding-10" data-dismiss="modal" id="btn-close-coop"
         		aria-label="Close"><i class="fa fa-times"></i>
         </button>
 

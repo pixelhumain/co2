@@ -539,7 +539,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     });
 
 
-    $(".coopPanelHtml").click(function(){
+    $(".coopPanelHtml").off().click(function(){
       var coopType = $(this).data("coop-type");
       var coopId = $(this).data("coop-id");
       var idParentRoom = $(this).data("coop-idparentroom");

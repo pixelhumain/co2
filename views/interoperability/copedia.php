@@ -709,7 +709,7 @@ circle.yellow-dot {
 
 	function getWikidataID() {
 
-		if (communexion.state == true) {
+		if ($.cookie().communexionActivated == true) {
 	    var city_wikidataID = communexion.values.wikidataID;
 	  } else {
     	scope_value = getScopeValue();

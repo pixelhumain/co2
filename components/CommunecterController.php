@@ -512,6 +512,16 @@ class CommunecterController extends Controller
       "checkurlexists" => array('href' => "/ph/co2/app/checkurlexists", "public" => true),
       "rooms" => array('href' => "/ph/co2/app/rooms", "public" => true),
       "survey" => array('href' => "/ph/co2/app/survey", "public" => true),
+      "interoperability" => array(
+        "index"              => array('href' => 'ph/communecter/interoperability/index',  "public" => true),
+        "get"              => array('href' => 'ph/communecter/interoperability/get',  "public" => true),
+        "copedia"              => array('href' => 'ph/communecter/interoperability/copedia',  "public" => true),
+        "co-osm"              => array('href' => 'ph/communecter/interoperability/co-osm',  "public" => true),
+        "co-osm-getode"      => array('href' => 'ph/communecter/interoperability/co-osm-getnode',  "public" => true),
+        "wikitoco"              => array('href' => 'ph/communecter/interoperability/wikitoco',  "public" => true),
+        "pushtypewikidata"    => array('href' => 'ph/communecter/interoperability/pushtypewikidata',  "public" => true),
+        "wikidata-put-description"    => array('href' => 'ph/communecter/interoperability/wikidata-put-description',  "public" => true),
+      ),
     ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/co2/siteurl/incnbclick")
@@ -520,16 +530,6 @@ class CommunecterController extends Controller
       "getcoopdata"        => array('href' => "ph/co2/cooperation/getcoopdata"),
       "savevote"           => array('href' => "ph/co2/cooperation/savevote"),
       "deleteamendement"  => array('href' => "ph/co2/cooperation/deleteamendement")
-    ),
-    "interoperability" => array(
-      "index"              => array('href' => 'ph/communecter/interoperability/index',  "public" => true),
-      "get"              => array('href' => 'ph/communecter/interoperability/get',  "public" => true),
-      "copedia"              => array('href' => 'ph/communecter/interoperability/copedia',  "public" => true),
-      "co-osm"              => array('href' => 'ph/communecter/interoperability/co-osm',  "public" => true),
-      "co-osm-getode"      => array('href' => 'ph/communecter/interoperability/co-osm-getnode',  "public" => true),
-      "wikitoco"              => array('href' => 'ph/communecter/interoperability/wikitoco',  "public" => true),
-      "pushtypewikidata"    => array('href' => 'ph/communecter/interoperability/pushtypewikidata',  "public" => true),
-      "wikidata-put-description"    => array('href' => 'ph/communecter/interoperability/wikidata-put-description',  "public" => true),
     ),
   );
 

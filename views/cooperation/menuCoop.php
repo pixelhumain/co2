@@ -67,6 +67,7 @@
 	<?php $allStatus = array("amendable"=>"Amendable", 
 							 "tovote"=>"To vote",
 							 "disabled"=> "Disabled",
+							 "resolved"=> "Resolved",
 							 "closed" => "Closed");
 		
 		if(Yii::app()->session['userId'])

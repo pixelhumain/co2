@@ -318,6 +318,7 @@ var trad = {
 	"closed" : "<?php echo Yii::t("cooperation", "closed") ?>",
 	"archived" : "<?php echo Yii::t("cooperation", "archived") ?>",
 	"disabled" : "<?php echo Yii::t("cooperation", "disabled") ?>",
+	"resolved" : "<?php echo Yii::t("cooperation", "resolved") ?>",
 	"done" : "<?php echo Yii::t("cooperation", "done") ?>",
 };
 

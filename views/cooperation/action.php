@@ -4,12 +4,6 @@
 	$parentRoom = Room::getById($action["idParentRoom"]);
 ?>
 
-<style>
-	.btn-assignee:hover{
-		color:white;
-		background-color: #288942 !important;
-	}
-</style>
 
 <?php if(@$access=="deny"){ ?>
 	<div class="col-lg-12 col-md-12 col-sm-12">
@@ -24,11 +18,64 @@
 
 
 <div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
-	<h4 class="letter-turq">
+	<h4 class="letter-turq load-coop-data title-room" 
+  		data-type="room" data-dataid="<?php echo @$action["idParentRoom"]; ?>">
   		<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
 	</h4>
 	<br>
+</div>
 
+
+<div class="col-lg-5 col-md-6 col-sm-6">
+	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
+				data-original-title="Fermer cette fenêtre" data-placement="bottom"
+				id="btn-close-action">
+		<i class="fa fa-times"></i>
+	</button>
+	<?php if($auth && @$action["creator"] == Yii::app()->session['userId']){ ?>
+		 <div class="pull-right dropdown">
+		  <button class="btn btn-default margin-left-5 margin-top-10" data-toggle="dropdown">
+			<i class="fa fa-cog"></i> options
+		  </button>
+		  <ul class="dropdown-menu">
+		    <li><a href="javascript:" id="btn-edit-action" 
+		    		data-id-action="<?php echo $action["_id"]; ?>">
+		    	<i class="fa fa-pencil"></i> Modifier l'action
+		    	</a>
+		    </li>
+		    <li><a href="javascript:" class="btn-option-status-action" 
+		    		data-id-action="<?php echo $action["_id"]; ?>"
+		    		data-status="disabled">
+		    	<i class="fa fa-times"></i> Désactiver l'action
+		    	</a>
+		    </li>
+		    <!-- <li><hr class="margin-5"></li> -->
+		    <li><a href="javascript:" class="btn-option-status-action" 
+		    		data-id-action="<?php echo $action["_id"]; ?>"
+		    		data-status="done">
+		    		<i class="fa fa-trash"></i> Fermer l'action
+		    	</a>
+		    </li>
+		  </ul>
+		</div> 
+	<?php } ?>
+	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
+				data-original-title="Actualiser les données" data-placement="bottom"
+				data-id-action="<?php echo $action["_id"]; ?>"
+				id="btn-refresh-action"><i class="fa fa-refresh"></i></button>
+
+	<button class="btn btn-default pull-right margin-left-5 margin-top-10 btn-extend-action tooltips" 
+				data-original-title="Agrandir l'espace de lecture" data-placement="bottom">
+		<i class="fa fa-long-arrow-left"></i>
+	</button>
+	<button class="btn btn-default pull-right margin-left-5 margin-top-10 hidden btn-minimize-action tooltips" 
+				data-original-title="Réduire l'espace de lecture" data-placement="bottom">
+		<i class="fa fa-long-arrow-right"></i>
+	</button>
+</div>
+
+
+<div class="col-lg-12 col-md-12 col-sm-12 pull-left margin-top-15">
 <?php
 	//if no assignee , no startDate no end Date
     $statusLbl = Yii::t("rooms", @$post["status"]);
@@ -88,92 +135,51 @@
 
 	<h4 class="no-margin">
 		<i class="fa fa-clock-o"></i> Action à réaliser 
-<?php
-if( @$action["startDate"] && (bool)strtotime(@$action["startDate"]) != FALSE ){
-?> 
-		du <small class="letter-blue"><?php echo date('d/m/Y', strtotime($action["startDate"])); ?>
-<?php
-}
-
-if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
-?> 
-		au <?php echo date('d/m/Y', strtotime($action["endDate"])); ?></small>
-			<!-- <br><i class="fa fa-angle-right"></i> Fin <?php echo Translate::pastTime($action["endDate"], "date"); ?> -->
-<?php } ?>		
+		<?php
+			if( @$action["startDate"] && (bool)strtotime(@$action["startDate"]) != FALSE ){
+		?> 
+			du <small class="letter-blue"><?php echo date('d/m/Y', strtotime($action["startDate"])); ?>
+		<?php } ?>
+		
+		<?php if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){ ?> 
+			au <?php echo date('d/m/Y', strtotime($action["endDate"])); ?></small>
+		<?php } ?>		
 	</h4>
-</div>
 
-<div class="col-lg-5 col-md-6 col-sm-6">
-	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
-				data-original-title="Fermer cette fenêtre" data-placement="bottom"
-				id="btn-close-action">
-		<i class="fa fa-times"></i>
-	</button>
-	<?php if($auth && @$action["creator"] == Yii::app()->session['userId']){ ?>
-		 <div class="pull-right dropdown">
-		  <button class="btn btn-default margin-left-5 margin-top-10" data-toggle="dropdown">
-			<i class="fa fa-cog"></i> options
-		  </button>
-		  <ul class="dropdown-menu">
-		    <li><a href="javascript:" id="btn-edit-action" 
-		    		data-id-action="<?php echo $action["_id"]; ?>">
-		    	<i class="fa fa-pencil"></i> Modifier l'action
-		    	</a>
-		    </li>
-		    <li><a href="javascript:" class="btn-option-status-action" 
-		    		data-id-action="<?php echo $action["_id"]; ?>"
-		    		data-status="disabled">
-		    	<i class="fa fa-times"></i> Désactiver l'action
-		    	</a>
-		    </li>
-		    <!-- <li><hr class="margin-5"></li> -->
-		    <li><a href="javascript:" class="btn-option-status-action" 
-		    		data-id-action="<?php echo $action["_id"]; ?>"
-		    		data-status="done">
-		    		<i class="fa fa-trash"></i> Fermer l'action
-		    	</a>
-		    </li>
-		  </ul>
-		</div> 
+	<?php if(@$action["idParentResolution"]){ $reso = Resolution::getById($action["idParentResolution"]); ?>
+		<hr>
+		<h5>
+			Cette action est liée à la résolution suivante : 
+			<a href="#page.type.<?php echo $action['parentType']; ?>.id.<?php echo $action['parentId']; ?>.view.coop.room.<?php echo $action['idParentRoom']; ?>.action.<?php echo $action['_id']; ?>"
+			 class="load-coop-data" data-type="resolution" data-dataid="<?php echo $action['idParentResolution']; ?>">
+				<i class="fa fa-hashtag"></i> 
+				<?php echo @$reso["title"] ? @$reso["title"] : substr(@$reso["description"], 0, 150); ?>
+			</a>
+		</h5>
 	<?php } ?>
-	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
-				data-original-title="Actualiser les données" data-placement="bottom"
-				data-id-action="<?php echo $action["_id"]; ?>"
-				id="btn-refresh-action"><i class="fa fa-refresh"></i></button>
-
-	<button class="btn btn-default pull-right margin-left-5 margin-top-10 btn-extend-action tooltips" 
-				data-original-title="Agrandir l'espace de lecture" data-placement="bottom">
-		<i class="fa fa-long-arrow-left"></i>
-	</button>
-	<button class="btn btn-default pull-right margin-left-5 margin-top-10 hidden btn-minimize-action tooltips" 
-				data-original-title="Réduire l'espace de lecture" data-placement="bottom">
-		<i class="fa fa-long-arrow-right"></i>
-	</button>
 </div>
 
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-25">
 	
-	<div class="padding-15 bg-lightblue radius-5" id="container-text-action" 
-		 style="padding-top:5px !important; color:#2C3E50 !important">
-			
-			<?php if(@$action["name"]){ ?>
-				<h3><i class="fa fa-hashtag"></i> <?php echo @$action["name"]; ?></h3>
-			<?php } ?>
+	<div class="padding-15 bg-lightblue radius-5" id="container-text-action" >	
+		<?php if(@$action["name"]){ ?>
+			<h3><i class="fa fa-hashtag"></i> <?php echo @$action["name"]; ?></h3>
+		<?php } ?>
+	
+		<?php if(@$action["description"]){
+				$action["description"] = Translate::strToClickable($action["description"]);
+		} ?>
 		
-			<?php if(@$action["description"]){
-					$action["description"] = Translate::strToClickable($action["description"]);
-			} ?>
-			
-			<?php echo nl2br(@$action["description"]); ?>
+		<?php echo nl2br(@$action["description"]); ?>
 
-			<?php if(@$action["tags"]){ ?>
-				<br><br> <b>Tags : </b>
-				<?php foreach($action["tags"] as $key => $tag){ ?>
-					<span class="letter-red margin-right-15">#<?php echo $tag; ?></span>
-				<?php } ?>	
-				
-			<?php } ?>
+		<?php if(@$action["tags"]){ ?>
+			<br><br> <b>Tags : </b>
+			<?php foreach($action["tags"] as $key => $tag){ ?>
+				<span class="letter-red margin-right-15">#<?php echo $tag; ?></span>
+			<?php } ?>	
+			
+		<?php } ?>
 	</div>
 </div>
 
@@ -191,36 +197,47 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 	</div>
 	<?php } ?>
 
-	<?php if( $auth && !@$action["links"]["contributors"][Yii::app()->session['userId']]  ){ ?>
-		<button class="btn btn-default bg-green-k btn-assignee" data-target="#modalAssignMe" data-toggle="modal">
-			<i class="fa fa-handshake-o"></i> 
-			<?php echo Yii::t("rooms","I'll Do it") ?>
-	   	</button><hr>
-	<?php }else if( $auth ){ ?>
-		<h5 class="letter-green"><i class="fa fa-check"></i> Vous participez à cette action</h5><hr>
+
+
+		<hr>
+	<?php if( @$action["links"]["contributors"] ) {	?>
+		<h4 class="pull-left">
+			<i class="fa fa-angle-down"></i> <i class="fa fa-group"></i> Ils participent à cette action
+		</h4>
 	<?php }	?>
+		<?php if( $auth && !@$action["links"]["contributors"][Yii::app()->session['userId']]  ){ ?>
+			<button class="btn btn-default letter-green bold pull-right btn-assignee" 
+					data-target="#modalAssignMe" data-toggle="modal">
+				<i class="fa fa-handshake-o"></i> 
+				<?php echo Yii::t("rooms","I'll Do it") ?>
+		   	</button>
+		<?php }else if( $auth ){ ?>
+			<h5 class="letter-green pull-right"><i class="fa fa-check"></i> Vous participez à cette action</h5>
+		<?php }	?>
+
 
 	<?php if( @$action["links"]["contributors"] ) {	?>
-		<h4><i class="fa fa-angle-down"></i> <i class="fa fa-group"></i> Ils participent à cette action</h4><hr>
-	<?php foreach ($action["links"]["contributors"] as $id => $att) { // var_dump($att);
-			$contrib = Element::getByTypeAndId($att["type"], $id); ?>
-			<div class="col-lg-4 col-md-4 col-sm-6 link-assignee ">
-				<a href="#page.type.citoyens.id.<?php echo $id; ?>" 
-					class="elipsis shadow2 lbh">
-					<img width="40" height="40"  alt="image" class="img-circle tooltips" 
-						 <?php if(@$contrib['profilThumbImageUrl']){ ?>
-						 src="<?php echo Yii::app()->createUrl('/'.$contrib['profilThumbImageUrl']) ?>" 
-						 <?php } ?>
-						 data-placement="top" data-original-title="<?php echo @$contrib['name']; ?>">
-						<span class="">
-							<?php if(false && @$att["isAdmin"]==true){ ?>
-								<i class="fa fa-user-secret letter-red"></i>
-							<?php } ?>
-							<b><?php echo @$contrib['name']; ?></b>
-						</span>
-				</a>
-			</div>
+		<div class="col-lg-12 col-md-12 col-sm-12 no-padding margin-top-15">
+		<?php foreach ($action["links"]["contributors"] as $id => $att) { // var_dump($att);
+				$contrib = Element::getByTypeAndId($att["type"], $id); ?>
+				<div class="col-lg-4 col-md-4 col-sm-6 link-assignee ">
+					<a href="#page.type.citoyens.id.<?php echo $id; ?>" 
+						class="elipsis shadow2 lbh">
+						<img width="40" height="40"  alt="image" class="img-circle tooltips" 
+							 <?php if(@$contrib['profilThumbImageUrl']){ ?>
+							 src="<?php echo Yii::app()->createUrl('/'.$contrib['profilThumbImageUrl']) ?>" 
+							 <?php } ?>
+							 data-placement="top" data-original-title="<?php echo @$contrib['name']; ?>">
+							<span class="">
+								<?php if(false && @$att["isAdmin"]==true){ ?>
+									<i class="fa fa-user-secret letter-red"></i>
+								<?php } ?>
+								<b><?php echo @$contrib['name']; ?></b>
+							</span>
+					</a>
+				</div>
 		<?php } ?>
+		</div>
 	
 	<?php }else{ ?>
 		<h4><i class="fa fa-ban"></i> <i class="fa fa-group"></i> Aucun participant</h4>
@@ -249,6 +266,10 @@ if( @$action["endDate"] && (bool)strtotime(@$action["endDate"]) != FALSE ){
 
 	jQuery(document).ready(function() { 
 		uiCoop.initUIAction();
+		$(".load-coop-data[data-type='proposal']").removeClass("active");
+		$(".load-coop-data[data-type='action']").removeClass("active");
+		$(".load-coop-data[data-type='resolution']").removeClass("active");
+		$(".load-coop-data[data-type='action'][data-dataid='"+idAction+"']").addClass("active");
 	});
 
 	

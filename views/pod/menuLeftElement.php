@@ -254,14 +254,19 @@
 			<i class="fa fa-camera"></i> <?php echo Yii::t("common","Gallery"); ?>
 		</a>
 	</li>
+	<li class="">
+		<a href="javascript:" class="ssmla" id="btn-start-library">
+			<i class="fa fa-book"></i> <?php echo Yii::t("common","Library"); ?>
+		</a>
+	</li>
 
 	
-	<li class="">
+	<!--<li class="">
 		<a href="javascript:" class="ssmla" id="btn-start-urls">
 			<i class="fa fa-external-link"></i> <?php echo Yii::t("common","Urls"); ?>
 		</a>
 	</li>
-	
+	-->
 	<li><hr></li>
 	<?php if(	$type != Poi::COLLECTION 
 				&& ( 	$type != Person::COLLECTION || 
@@ -340,7 +345,7 @@
 		?>
 			<li>
 				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="poi" data-icon="map-marker">
-					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Points of interests"); ?>
+					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Points of interest"); ?>
 				</a>
 			</li>			
 		<?php }  
@@ -355,26 +360,6 @@
 			</li>
 		<?php } ?>
 		<li><hr></li>
-
-		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
-				  $type==Person::COLLECTION){  
-					if(!@$front || (@$front)){ 
-		?>
-			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="discuss" data-icon="comment">
-					<i class="fa fa-comment"></i> <?php echo Yii::t("common","Discussion"); ?>
-				</a>
-			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="vote" data-icon="gavel">
-					<i class="fa fa-gavel"></i> <?php echo Yii::t("common","Decision"); ?>
-				</a>
-			<a href="javascript:" class="ssmla load-data-directory" data-type-dir="actions" data-icon="cogs">
-					<i class="fa fa-cogs"></i> <?php echo Yii::t("common","Actions"); ?>
-				</a>
-			<li class="" id="fast-rooms">
-			</li>
-
-			
-		<?php }  
-		} ?>
 
 	<?php } ?>
 

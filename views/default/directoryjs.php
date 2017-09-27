@@ -475,6 +475,7 @@ var headerParams = {
   "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
   "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
+
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )

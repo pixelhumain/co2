@@ -5,7 +5,7 @@
 				'/vendor/colorpicker/css/colorpicker.css',
 				'/css/news/index.css',	
 				'/css/timeline2.css',
-				'/css/circle.css',	
+				//'/css/circle.css',	
 				'/css/default/directory.css',	
 				'/js/comments.js',
 				'/css/profilSocial.css',
@@ -96,7 +96,11 @@
 }
 </style>
 
-<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) $this->renderPartial('../element/confirmDeleteModal'); ?>
+<?php 
+	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $type, (string)$element["_id"]);
+
+	if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) 
+		$this->renderPartial('../element/confirmDeleteModal'); ?>
 <?php 
 	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
 
@@ -133,7 +137,7 @@
 
 
 
-	    <div class="col-md-3 col-sm-3 hidden-xs no-padding" style="bottom:-31px; position: absolute;">
+	    <div class="col-lg-2 col-md-3 col-sm-3 hidden-xs no-padding" style="bottom:-31px; position: absolute;">
 		<?php 	if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
 					 $images=array(
 					 	"medium"=>$element["profilMediumImageUrl"],
@@ -168,7 +172,7 @@
 		</div>
     </section>
     
-    <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 pull-right sub-menu-social no-padding">
+    <div class="col-md-9 col-sm-9 col-lg-10 col-xs-12 pull-right sub-menu-social no-padding">
 
     	<div class="btn-group inline">
 
@@ -213,7 +217,7 @@
 		  </button>
 
 		  <?php if((@Yii::app()->session["userId"] && $isLinked==true) || @Yii::app()->session["userId"] == $element["_id"]){ ?>
-		  <button type="button" class="btn btn-default bold hidden-xs btn-start-notifications">
+		  <button type="button" class="btn btn-default bold hidden-xs btn-start-notifications hidden">
 		  	<i class="fa fa-bell"></i> 
 		  	<span class="hidden-xs hidden-sm">
 		  		<?php if (@Yii::app()->session["userId"] == $element["_id"]) echo Yii::t("common","My notif<span class='hidden-md'>ication</span>s"); else echo Yii::t("common","Notif<span class='hidden-md'>ication</span>s"); ?>
@@ -221,6 +225,65 @@
 		  	<span class="badge notifications-countElement <?php if(!@$countNotifElement || (@$countNotifElement && $countNotifElement=="0")) echo 'badge-transparent hide'; else echo 'badge-success'; ?>">
 		  		<?php echo @$countNotifElement ?>
 		  	</span>
+		  </button>
+		  <?php } ?>
+
+		  <script type="text/javascript">
+	  	  	
+			   /*alert( "x<?php echo (@$edit && $edit) || (@$openEdition && $openEdition) ?>"+
+			           "x<?php echo Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id);  ?>"+
+			           "x<?php echo Link::isLinked((string)$element["_id"], $type, Yii::app()->session["userId"]);   ?>");
+    			*/
+	  	  </script>
+
+		  <?php if(@Yii::app()->session["userId"] && Yii::app()->params['rocketchatEnabled'] )
+	  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition)) ) || 
+	  			($type==Person::COLLECTION) ||
+	  			//admins can create rooms
+	  			( Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) ) ||
+	  			//simple members can join only when admins had created
+	  			( @$element["hasRC"] && Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"]))  )
+	  			{
+	  				if(@$element["slug"])
+						//todo : elements members of
+	  					$loadChat = $element["slug"];
+	  				else
+	  					$createSlugBeforeChat=true;
+	  				//todo : elements members of
+	  				$loadChat = $element["name"];
+	  				//people have pregenerated rooms so allways available 
+	  				$hasRC = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "true" : "false";
+	  				$canEdit = ( @$openEdition && $openEdition ) ? "true" : "false";
+	  				//Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) );
+	  				if($type == Person::COLLECTION)
+	  				{
+	  				 	$loadChat = (string)$element["username"];
+	  					if( (string)$element["_id"]==@Yii::app()->session["userId"] )
+	  						$loadChat = "";
+		  			}
+		  			$chatColor = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "text-red" : "";
+	  	  ?>
+	  	  
+	  	  <?php /*if(@$createSlugBeforeChat){ ?>
+	  	  	<button type="button" onclick="javascript:createSlugBeforeChat('<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
+		  		  id="open-rocketChat" style="border-right:0px!important;">
+		  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
+		  	</button>
+	  	  <?php } else{ */?>
+			  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
+			  		  id="open-rocketChat" style="border-right:0px!important;">
+			  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
+			  </button>
+		  <?php //} ?>
+		  
+		  <?php } ?>
+
+
+		  <?php if(@Yii::app()->session["userId"])
+		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION ){ ?>
+		  <button type="button" class="btn btn-default bold hidden-xs letter-turq" data-toggle="modal" data-target="#modalCoop" 
+		  		  id="open-co-space" style="border-right:0px!important;">
+		  		<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common", "Espace CO"); ?>
 		  </button>
 		  <?php } ?>
 
@@ -232,7 +295,28 @@
 		  		  id="open-select-create" style="border-right:0px!important;">
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
 		  </button>
+
 		  <?php } ?>
+
+		  <?php /* Links in new TAB
+		  if(@Yii::app()->session["userId"])
+  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
+  			($type==Person::COLLECTION) ||
+  			(Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"])))
+  			{ 
+  				//todo : elements members of
+  				$loadChat = '/'.$this->module->id.'/rocketchat/chat/name/'.$element["name"].'/type/'.$type;
+  				if($type == Person::COLLECTION)
+  				{
+  				 	$loadChat = '/'.$this->module->id.'/rocketchat/chat/name/'.$element["username"].'/type/'.$type;
+  					if( (string)$element["_id"]==@Yii::app()->session["userId"] )
+  						$loadChat = '/'.$this->module->id.'/rocketchat';
+  				}
+  				?> 
+			  	<a href="<?php echo $loadChat;?>" target="_blanck" class="btn btn-default bold letter-red hidden-xs" style="border-right:0px!important;">
+			  		<i class="fa fa-comments fa-2x"></i> 
+			  	</a>
+			<?php } */?>
 		</div>
 		
 		<div class="btn-group pull-right">
@@ -285,6 +369,14 @@
 				                </a>
 				            </li>
 			            <?php } ?>
+						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+			  				<li class="text-left">
+				               	<a href="javascript:;" onclick="updateSlug();" id="" class="bg-white">
+				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Edit slug"); ?>
+				                </a>
+				            </li>
+			            <?php } ?>
+						
 						<li>
 							<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
 								<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?>
@@ -314,16 +406,25 @@
 				            <?php } ?>
 			            <?php } else { ?>
 			            	<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+
+			            	<li class="text-left">
+				               	<a href='javascript:;' onclick='rcObj.settings();' >
+									<i class='fa fa-comments'></i> <?php echo Yii::t("common","Chat Settings"); ?>
+								</a>
+				            </li>
+
 							<li class="text-left">
 								<a href='javascript:' id="downloadProfil">
 									<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
 								</a>
 							</li>
+							
 							<li class="text-left">
 				               	<a href='javascript:;' id="btn-update-password" class='text-red'>
 									<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
 								</a>
 				            </li>
+
 				            <?php } ?>
 			            <?php } ?>
 			  		</ul>
@@ -343,28 +444,187 @@
 	</div>
 
 	
-	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial hidden-xs" 
+	<!-- <div id="div-reopen-menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 hidden"> -->
+		<!-- <button id="reopen-menu-left-container" class="btn btn-default">
+			<i class="fa fa-arrow-left"></i> <span class="hidden-sm hidden-xs"> Retour au </span>menu principal
+		</button> -->
+		<!-- <button id="refresh-coop-rooms" class="btn btn-default pull-right">
+			<i class="fa fa-refresh"></i>
+		</button> -->
+		<!-- <hr>
+		<h4 class="letter-turq"><i class="fa fa-connectdevelop"></i> Espaces co<span class="hidden-sm">opératifs</span></h4>
+ -->
+		<!-- ************ MODAL ********************** -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modalCoop">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close margin-5 padding-10" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+		        <button href="javascript:" class="btn btn-default btn-sm text-dark pull-right tooltips"
+							id="btn-update-coop" style="margin: 10px 10px 0 0;" data-original-title="Rafraichir la page" data-placement="left">
+				  		<i class="fa fa-refresh"></i> <?php echo Yii::t("cooperation", "Refresh data") ?>
+				  	</button> 	
+		        	
+		        <div class="modal-title" id="modalText">
+		        	<img class="pull-left margin-right-15" src="<?php echo $thumbAuthor; ?>" height=52 width=52 style="">
+					<!-- <h4 class="pull-left margin-top-15"><i class="fa fa-connectdevelop"></i> Espace coopératif</h4> -->
+		        	<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left" style="margin-top:14px;"></div>
+					 <h4 class="pull-left margin-top-15">
+		        	  <?php echo @$element["name"]; ?>
+		        	</h4>
+
+		        	
+		        </div>
+		      </div>
+		      
+		       <div class="modal-body col-lg-12 col-md-12 col-sm-12 padding-15">
+					<ul id="menuCoop" class="menuCoop col-lg-2 col-md-3 col-sm-3">
+		    		</ul>
+		    		<div id="main-coop-container" class="col-lg-10 col-md-9 col-sm-9"></div>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+	    
+
+		<!-- ************ MODAL HELP COOP ********************** -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modalHelpCOOP">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <!-- <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <div class="modal-title" id="modalText">
+		        	<h4><i class="fa fa-info-circle"></i> Aide</h4>
+		        </div>
+		      </div>
+		       -->
+		       <div class="modal-body padding-25">
+				<?php $this->renderPartial('../cooperation/pod/home', array("type"=>$type)); ?>
+		      </div>
+		      <div class="modal-footer">
+		      	<div id="modalAction" style="display:inline"></div>
+		        <button class="btn btn-default pull-right btn-sm margin-top-10 margin-right-10" data-dismiss="modal"> J'ai compris</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
+
+		<!-- ************ MODAL DELETE ********************** -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modalDeleteRoom">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		        	<span aria-hidden="true">&times;</span>
+		        </button>
+		        <div class="modal-title" id="modalText">
+		        	<h4><i class="fa fa-times"></i> Supprimer un espace coopératif</h4>
+		        </div>
+		      </div>
+		      <div class="modal-body">
+		      	<h3 style="text-transform: none!important; font-weight: 200;" class="letter-turq">
+		      		<i class="fa fa-hashtag"></i> <span id="space-name"><?php echo @$room["name"]; ?></span>
+		      	</h3>
+		      	<label>Etes-vous sur de vouloir supprimer cet espace coopératif ?</label><br>
+		      	<small class="text-red">Toutes les propositions, résolutions, et actions de cet espace seront supprimées définitivement.</small>
+		      </div>
+		      <div class="modal-footer">
+		      	<div id="modalAction" style="display:inline"></div>
+		        <button class="btn btn-danger pull-right btn-sm margin-top-10" 
+						id="btn-delete-room" data-placement="bottom" 
+						data-dismiss="modal"
+						data-original-title="supprimer l'espace : <?php echo @$room["name"]; ?>"
+						data-id-room="">
+					<i class="fa fa-trash"></i> Oui, supprimer cet espace
+				</button>
+				<button class="btn btn-default pull-right btn-sm margin-top-10 margin-right-10" data-dismiss="modal"> Annuler</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+
+		<!-- ************ MODAL ********************** -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modalAssignMe">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close margin-5 padding-10" data-dismiss="modal" aria-label="Close">
+		        	<i class="fa fa-times"></i>
+		        </button>
+		        
+		        <div class="modal-title" id="modalText">
+		        	<h5 class="pull-left margin-top-15">
+		        	 <i class="fa fa-handshake-o"></i> Participer à une action
+		        	</h5>
+		        </div>
+		      </div>
+		      
+		       <div class="modal-body padding-15">
+					<strong>Êtes-vous sûr de vouloir participer à cette action ?</strong><br>
+			    	Vous serez inscrit dans la liste des participants.
+		      </div>
+
+		      <div class="modal-footer">
+		      	<button class="btn btn-success pull-right margin-left-10" data-dismiss="modal" id="btn-validate-assign-me">
+		      		<i class="fa fa-check"></i> Oui
+		      	</button>
+		      	<button class="btn btn-default pull-right" data-dismiss="modal">
+		      		<i class="fa fa-times"></i> Non
+		      	</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+
+		<!-- ************ MODAL ********************** -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modalDeleteAm">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close margin-5 padding-10" data-dismiss="modal" aria-label="Close">
+		        	<i class="fa fa-times"></i>
+		        </button>
+		        
+		        <div class="modal-title" id="modalText">
+		        	<h5 class="pull-left margin-top-15">
+		        	 <i class="fa fa-trash"></i> Supprimer un amendement
+		        	</h5>
+		        </div>
+		      </div>
+		      
+		       <div class="modal-body padding-15">
+					<strong>Êtes-vous sûr de vouloir supprimer votre amendement ?</strong><br>
+			    	Toute suppression est définitive.
+		      </div>
+
+		      <div class="modal-footer">
+		      	<button class="btn btn-danger pull-right margin-left-10" 
+		      		data-id-am="" data-dismiss="modal" id="btn-delete-am">
+		      		<i class="fa fa-check"></i> Oui, supprimer
+		      	</button>
+		      	<button class="btn btn-default pull-right" data-dismiss="modal">
+		      		<i class="fa fa-times"></i> Non
+		      	</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+	<!-- </div> -->
+
+	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 profilSocial hidden-xs" 
 			style="margin-top:40px;">  		
-	    <?php 
-	    	$params = array(    "element" => @$element, 
+	    <?php $params = array(  "element" => @$element, 
                                 "type" => @$type, 
                                 "edit" => @$edit,
                                 "isLinked" => @$isLinked,
                                 "countNotifElement"=>@$countNotifElement,
-                                //"countries" => @$countries,
-                                //"controller" => $controller,
                                 "invitedMe" => @$invitedMe,
                                 "openEdition" => $openEdition,
-                                //"countStrongLinks" => $countStrongLinks,
-                                //"countLowLinks" => @$countLowLinks,
-                                //"countInvitations"=> $countInvitations,
-                                //"linksBtn"=> @$linksBtn
                                 );
-
-	    	/*if(@$members) $params["members"] = $members;
-	    	if(@$events) $params["events"] = $events;
-	    	if(@$needs) $params["needs"] = $needs;
-	    	if(@$projects) $params["projects"] = $projects;*/
 
 	    	$this->renderPartial('../pod/menuLeftElement', $params ); 
 	    ?>
@@ -379,7 +639,7 @@
 	       		<i class="fa fa-times-circle fa-2x"></i>
 	       	</a>
 	       
-	       	<span class="name-header"><?PHP echo @$element["name"]; ?></span>
+	       	<span class="name-header"><?php echo @$element["name"]; ?></span>
 	       <br>
 	       	<i class="fa fa-plus-circle"></i> <?php echo Yii::t("form","Create content link to this page") ?>
 	       <br><small><?php echo Yii::t("form","What kind of content will you create ?") ?></small>
@@ -405,11 +665,11 @@
 	        </button>
 
 	        
-	        <button data-form-type="url" data-dismiss="modal"
+	        <!--<button data-form-type="url" data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-url">
 	            <h6><i class="fa fa-link fa-2x bg-url"></i><br> <?php echo Yii::t("common", "URL") ?></h6>
 	            <small><?php echo Yii::t("form","Share a link<br>Your favorites websites<br>Important news...") ?></small>
-	        </button>
+	        </button>-->
 
 
 	        <button data-form-type="project"  data-dismiss="modal"
@@ -457,7 +717,7 @@
     </div>
 
 
-	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding central-section pull-right">
+	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-10 no-padding central-section pull-right">
 		
 		<?php    
 			$marginCentral="";
@@ -540,12 +800,14 @@
 
 <?php	$cssAnsScriptFilesModule = array(
 		'/js/default/profilSocial.js',
+		'/js/cooperation/uiCoop.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 ?>
 
 <script type="text/javascript">
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
+	initMetaPage(contextData.name,contextData.shortDescription,contextData.profilImageUrl);
 	mylog.log("init contextData", contextData);
     var params = <?php echo json_encode(@$params); ?>; 
     var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false );
@@ -554,13 +816,31 @@
     var typeItem = "<?php echo $typeItem; ?>";
     var liveScopeType = "";
     var subView="<?php echo @$_GET['view']; ?>";
-    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?src="+networkParams : "" )+"#page.type."+contextData.type+".id."+contextData.id;
+    var navInSlug=false;
+    if(typeof contextData.slug != "undefined")
+     	navInSlug=true;
+    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?src="+networkParams : "" )+( (typeof contextData.slug != "undefined") ? "#"+contextData.slug : "#page.type."+contextData.type+".id."+contextData.id);
+    if(location.hash.indexOf("#page")>=0){
+    	strHash="";
+    	if(location.hash.indexOf(".view")>0){
+    		hashPage=location.hash.split(".view");
+    		strHash=".view"+hashPage[1];
+    	}
+    	replaceSlug=true;
+    	history.replaceState("#page.type."+contextData.type+".id."+contextData.id, "", "#"+contextData.slug+strHash);
+    	//location.hash=;
+    }
     var cropResult;
     var idObjectShared = new Array();
 
     var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 	var dirHash="<?php echo @$_GET['dir']; ?>";
-	var idda="<?php echo @$_GET['idda']; ?>";
+	var roomId = "<?php echo @$_GET['room']; ?>";
+	var proposalId = "<?php echo @$_GET['proposal']; ?>";
+	var resolutionId = "<?php echo @$_GET['resolution']; ?>";
+	var actionId = "<?php echo @$_GET['action']; ?>";
+
+
 	jQuery(document).ready(function() {
 		bindButtonMenu();
 		inintDescs();
@@ -584,10 +864,26 @@
 		var elemSpec = dyFInputs.get("<?php echo $type?>");
 		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");
 	});
+	function initMetaPage(title, description, image){
+		if(title != ""){
+			$("meta[name='title']").attr("content",title);
+			$("meta[property='og:title']").attr("content",title);
+		}
+		if(description != ""){
+			$("meta[name='description']").attr("content",description);
+			$("meta[property='og:description']").attr("content",description);
+		}
+		if(image != ""){
+			$("meta[name='image']").attr("content",baseUrl+image);
+			$("meta[property='og:image']").attr("content",baseUrl+image);
+		}
+	}
 	function getProfilSubview(sub, dir){ console.log("getProfilSubview", sub, dir);
 		if(sub!=""){
 			if(sub=="gallery")
 				loadGallery();
+			if(sub=="library")
+				loadLibrary();
 			else if(sub=="notifications")
 				loadNotifications();
 			else if(sub.indexOf("chart") >= 0){
@@ -605,17 +901,68 @@
 				loadDetail();
 			else if(sub=="urls")
 				loadUrls();
+			else if(sub=="chat" && userId)
+				rcObj.loadChat("","citoyens", true, true);
 			else if(sub=="contacts")
 				loadContacts();
 			else if(sub=="settings")
 				loadSettings();
-			else if(sub=="dda"){
-				var splitHash=location.hash.split(".");
-				var idda = splitHash[splitHash.length-1];
-				startLoadRoom(dir, idda);
+			else if(sub=="coop"){
+				loadCoop(roomId, proposalId, resolutionId, actionId);
 			}
 		} else
 			loadNewsStream(true);
 	}
+
+
+
+function loadCoop(roomId, proposalId, resolutionId, actionId){
+	/*console.log("loadCoop", userId);
+	if(userId == "") {
+		toastr.info("Vous devez êtres connecté pour accéder à cet espace coopératif");
+		loadNewsStream();
+		return;
+	}*/
+
+	roomId 		= (roomId != "") 	 ? roomId 		: null;
+	proposalId  = (proposalId != "") ? proposalId 	: null;
+	resolutionId  = (resolutionId != "") ? resolutionId 	: null;
+	actionId 	= (actionId != "") 	 ? actionId 	: null;
+
+	toastr.info(trad["processing"]);
+	
+	uiCoop.startUI(false);
+	
+	setTimeout(function(){	
+		uiCoop.getCoopData(contextData.type, contextData.id, "room", null, roomId, function(){ 
+			toastr.success(trad["processing ok"]);
+			$("#modalCoop").modal("show");
+
+			var type = null;
+			var id = null;
+
+			if(proposalId != null){
+				type = "proposal"; id = proposalId;
+			}
+
+			if(actionId != null){
+				type = "action"; id = actionId;
+			}
+
+			if(resolutionId != null){
+				type = "resolution"; id = resolutionId;
+			}
+
+			console.log("getCoopData??", contextData.type, contextData.id, type, null, id);
+
+			if(type != null) 
+			uiCoop.getCoopData(contextData.type, contextData.id, type, null, id);
+
+			setTimeout(function(){
+				loadNewsStream(true);
+			}, 5000);
+		});
+	}, 1500);
+}
 
 </script>

@@ -11,7 +11,8 @@ function bindCommunexionScopeEvents(){
                          $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"), 
                          $(this).data("region-communexion"), $(this).data("country-communexion")) ;
     });
-    $(".item-scope-input").off().on("click", function(){ 
+    
+    $(".item-scope-input").click(function(){ 
         scopeValue=$(this).data("scope-value");
         if($(this).hasClass("disabled")){
             $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
@@ -67,7 +68,8 @@ function bindCommunexionScopeEvents(){
         }
     });
 }
-function activateGlobalCommunexion(active, firstLoad){  mylog.log("activateGlobalCommunexion", active);
+function activateGlobalCommunexion(active, firstLoad){  
+	mylog.log("activateGlobalCommunexion", active);
     $.cookie('communexionActivated', active, { expires: 365, path: "/" });
     globalCommunexion=active;
     if(active){
@@ -102,12 +104,14 @@ function activateGlobalCommunexion(active, firstLoad){  mylog.log("activateGloba
     $('.tooltips').tooltip();
 }
 function getBreadcrumCommunexion(){
-    tips="";
-    if(typeof communexion["values"]["cities"] != "undefined") {
-        $.each(communexion["values"]["cities"],function(e,v){
+    var tips="";
+    if(typeof communexion.cities != "undefined") {
+    	$.each(communexion.cities,function(e,v){
             tips+=v+" / ";
         });
     }
+
+
     htmlCommunexion='<div class="breadcrum-communexion col-md-12">';
     if(actionOnSetGlobalScope=="filter"){
         htmlCommunexion+='<button class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="Quitter la communexion">'+
@@ -119,68 +123,90 @@ function getBreadcrumCommunexion(){
         '</a>';
     }
 
-    htmlCommunexion+='<i class="fa fa-university fa-2x text-red"></i>'+ 
-        '<div class="getFormLive" style="display:inline-block;">'+
-            '<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
-                'class="btn btn-link text-red item-globalscope-checker homestead '; 
-                if($.cookie('communexionName')!=communexion.values.regionName)
-                    htmlCommunexion+="inactive";
-    htmlCommunexion+= '" data-scope-value="'+communexion.values.regionName+'" '+
-                'data-scope-name="'+communexion.values.regionName+'" '+
-                'data-scope-type="region">'+
-                '<i class="fa fa-angle-right"></i>  '+communexion.values.regionName+
-            '</button>'+ 
-            '<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
-                'class="btn btn-link text-red item-globalscope-checker homestead ';
-                if($.cookie('communexionName')!=communexion.values.depName)
-                    htmlCommunexion+="inactive";
-    htmlCommunexion+= '" data-scope-value="'+communexion.values.depName+'" '+
-                'data-scope-name="'+communexion.values.depName+'" '+
-                'data-scope-type="dep">'+
-                '<i class="fa fa-angle-right"></i>  '+communexion.values.depName+
-            '</button>';
-    if(communexion.levelMinCommunexion=="inseeCommunexion"){
-        htmlCommunexion+= '<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
-                    'class="btn btn-link text-red item-globalscope-checker homestead tooltips ';
-                    if($.cookie('communexionName')!=communexion.values.cityCp)
-                        htmlCommunexion+="inactive";
-        htmlCommunexion+= '" data-scope-value="'+communexion.values.cityCp+'" '+
-                    'data-scope-name="'+communexion.values.cityCp+'" '+
-                    'data-scope-type="cp" '+
-                    'data-scope-level="'+communexion.levelMinCommunexion+'" '+
-                    'data-toggle="tooltip" data-placement="bottom" data-original-title="'+tips+'">'+
-                    '<i class="fa fa-angle-right"></i>  '+communexion.values.cityCp+
-                '</button>'+
-                '<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
-                    'class="btn btn-link text-red item-globalscope-checker homestead ';
-                    if($.cookie('communexionName')!=communexion.values.cityName)
-                        htmlCommunexion+="inactive";
-        htmlCommunexion+= '" data-scope-value="'+communexion.values.cityKey+'" '+
-                    'data-scope-name="'+communexion.values.cityName+'" '+
-                    'data-scope-type="city" '+
-                    'data-scope-level="'+communexion.levelMinCommunexion+'">'+
-                    '<i class="fa fa-angle-right"></i>  '+communexion.values.cityName+
-                '</button>';
+	htmlCommunexion+=	'<i class="fa fa-university fa-2x text-red"></i>'+
+							'<div class="getFormLive" style="display:inline-block;">';
+
+	if(communexion.values.level2){
+		htmlCommunexion+=			'<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
+										'class="btn btn-link text-red item-globalscope-checker homestead '; 
+											if( communexion.currentLevel != "level2" )
+												htmlCommunexion+="inactive";
+		htmlCommunexion+=					'" data-scope-value="'+communexion.values.level2+'" '+
+											'data-scope-name="'+communexion.values.level2Name+'" '+
+											'data-scope-type="'+communexion.communexionType+'" '+
+											'data-scope-level="level2">'+
+										'<i class="fa fa-angle-right"></i>  '+communexion.values.level2Name+
+									'</button>';
+	}
+
+	if(communexion.values.level3){
+		htmlCommunexion+=			'<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
+										'class="btn btn-link text-red item-globalscope-checker homestead '; 
+											if( communexion.currentLevel != "level3" )
+												htmlCommunexion+="inactive";
+		htmlCommunexion+=					'" data-scope-value="'+communexion.values.level3+'" '+
+											'data-scope-name="'+communexion.values.level3Name+'" '+
+											'data-scope-type="'+communexion.communexionType+'" '+
+											'data-scope-level="level3">'+
+										'<i class="fa fa-angle-right"></i>  '+communexion.values.level3Name+
+									'</button>';
+	}
+
+	if(communexion.values.level4){
+		htmlCommunexion+=			'<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
+										'class="btn btn-link text-red item-globalscope-checker homestead ';
+											if( communexion.currentLevel != "level4" )
+												htmlCommunexion+="inactive";
+		htmlCommunexion+= 					'" data-scope-value="'+communexion.values.level4+'" '+
+											'data-scope-name="'+communexion.values.level4Name+'" '+
+											'data-scope-type="'+communexion.communexionType+'" '+
+											'data-scope-level="level4">'+
+										'<i class="fa fa-angle-right"></i>  '+communexion.values.level4Name+
+									'</button>';
+	}
+
+	if(communexion.communexionType=="city"){
+		htmlCommunexion+= '<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
+							'class="btn btn-link text-red item-globalscope-checker homestead tooltips ';
+								if( communexion.currentLevel != "cp" )
+									htmlCommunexion+="inactive";
+			htmlCommunexion+= 	'" data-scope-value="'+communexion.values.cp+'" '+
+								'data-scope-name="'+communexion.values.cp+'" '+
+								'data-scope-type="'+communexion.communexionType+'" '+
+								'data-scope-level="cp" '+
+								'data-toggle="tooltip" data-placement="bottom" data-original-title="'+tips+'">'+
+							'<i class="fa fa-angle-right"></i>  '+communexion.values.cp+
+						'</button>'+
+						'<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
+							'class="btn btn-link text-red item-globalscope-checker homestead ';
+								if( communexion.currentLevel != "city" )
+										htmlCommunexion+="inactive";
+			htmlCommunexion+= 	'" data-scope-value="'+communexion.values.city+'" '+
+								'data-scope-name="'+communexion.values.cityName+'" '+
+								'data-scope-type="city" '+
+								'data-scope-level="city">'+
+							'<i class="fa fa-angle-right"></i>  '+communexion.values.cityName+
+						'</button>';
     }else{
         htmlCommunexion+= '<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
                     'class="btn btn-link text-red item-globalscope-checker homestead tooltips ';
-                    if($.cookie('communexionName')!=communexion.values.inseeName)
-                        htmlCommunexion+="inactive";
-        htmlCommunexion+= '" data-scope-value="'+communexion.values.cityKey+'" '+
-                    'data-scope-name="'+communexion.values.inseeName+'" '+
-                    'data-scope-type="city" '+
-                    'data-scope-level="'+communexion.levelMinCommunexion+'" '+
+								if( communexion.currentLevel != "cp" )
+									htmlCommunexion+="inactive";
+			htmlCommunexion+= 	'" data-scope-value="'+communexion.values.city+'" '+
+                    'data-scope-name="'+communexion.values.cityName+'" '+
+                    'data-scope-type="'+communexion.communexionType+'" '+
+                    'data-scope-level="cp" '+
                     'data-toggle="tooltip" data-placement="bottom" data-original-title="'+tips+'"'+'>'+
-                    '<i class="fa fa-angle-right"></i>  '+communexion.values.inseeName+' (toute la ville)'+
+                    '<i class="fa fa-angle-right"></i>  '+communexion.values.cityName+' (toute la ville)'+
                 '</button>'+
                 '<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
-                    'class="btn btn-link text-red item-globalscope-checker homestead ';
-                    if($.cookie('communexionName')!=communexion.values.cityName)
-                        htmlCommunexion+='inactive';
-        htmlCommunexion+= '" data-scope-value="'+communexion.values.cityKey+'" '+
+                    'class="btn btn-link text-red item-globalscope-checker homestead  ';
+								if( communexion.currentLevel != "city" )
+										htmlCommunexion+="inactive";
+			htmlCommunexion+= 	'"data-scope-value="'+communexion.values.city+'" '+
                     'data-scope-name="'+communexion.values.cityName+'" '+
-                    'data-scope-type="cp" '+
-                    'data-scope-level="'+communexion.levelMinCommunexion+'">'+
+                    'data-scope-type="'+communexion.communexionType+'" '+
+                    'data-scope-level="city">'+
                     '<i class="fa fa-angle-right"></i>  '+communexion.values.cityName+
                 '</button>';
     }

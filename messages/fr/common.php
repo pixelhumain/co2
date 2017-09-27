@@ -54,5 +54,6 @@ return array(
 	"Remove" => "Supprimer",
 	"Update" => "Modifier",
 	"Edit" => "Éditer",
+	"Chat Settings" => "de Messagerie"
 	
 );

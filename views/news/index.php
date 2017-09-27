@@ -659,9 +659,6 @@ var locality = "<?php echo @$locality ?>";
 var searchBy = "<?php echo @$searchBy ?>";
 var tagSearch = "<?php //echo @$tagSearch ?>";
 var peopleReference=false;
-var mentionsContact = [];
-
-var stopMention = false;
 var element = null;
 	
 jQuery(document).ready(function() 
@@ -705,21 +702,6 @@ jQuery(document).ready(function()
 			icon="rss";
 		setTitle("<?php echo @$headerName; ?>",icon, "<?php echo @$topTitle; ?>");
 	<?php } ?>
-	//<span class='text-red'><i class='fa fa-rss'></i> Fil d'actus de</span>
-	//if(contextParentType!="city"){
-		
-		//if(contextParentId == idSession)
-		/*$(".moduleLabel").html("<i class='fa fa-rss'></i> Mon fil d'actus" + 
-								"<img class='img-profil-parent' src='<?php echo $imgProfil; ?>'>");
-		else
-		$(".moduleLabel").html("<span class='text-red'><i class='fa fa-rss'></i> Fil d'actus de</span> <?php echo addslashes(@$contextName); ?>" + 
-								"<img class='img-profil-parent' src='<?php echo $imgProfil; ?>'>");*/
-		
-		
-	/*}else{
-		
-	}*/
-	
 	// SetTimeout => Problem of sequence in js script reader
 	setTimeout(function(){
 		//loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
@@ -761,119 +743,8 @@ jQuery(document).ready(function()
 	//Sig.restartMap();
 	//Sig.showMapElements(Sig.map, news);
 	initFormImages();
-	console.log(myContacts);
-	if(myContacts != null){
-		$.each(myContacts["people"], function (key,value){
-			if(typeof(value) != "undefined" ){
-				avatar="";
-				console.log(value);
-			  	if(value.profilThumbImageUrl!="")
-					avatar = baseUrl+value.profilThumbImageUrl;
-			  	object = new Object;
-			  	object.id = value._id.$id;
-			  	object.name = value.name;
-				object.avatar = avatar;
-				object.type = "citoyens";
-				mentionsContact.push(object);
-			}
-	  	});
-	  	$.each(myContacts["organizations"], function (key,value){
-		  	if(typeof(value) != "undefined" ){
-		  	avatar="";
-		  	if(value.profilThumbImageUrl!="")
-				avatar = baseUrl+value.profilThumbImageUrl;
-		  	object = new Object;
-		  	object.id = value._id.$id;
-		  	object.name = value.name;
-			object.avatar = avatar;
-			object.type = "organizations";
-			mentionsContact.push(object);
-			}
-	  	});
-	}
+	mentionsInit.get("textarea.mention");
 	
-	$('textarea.mention').mentionsInput({
-	  onDataRequest:function (mode, query, callback) {
-		  	if(stopMention)
-		  		return false;
-		  	var data = mentionsContact;
-		  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
-			callback.call(this, data);
-
-			/*if(query.indexOf("+")==0) {
-				element = "";
-				if(query.indexOf("+o")==0){
-					element = "organization";
-					form = "\n>organizationName:";//form = "\n>name:";
-					form += "\n>shortDescription:";
-					form += "\n>description:";
-			        form += "\n>organizationEmail:";//form += "\n>email:";
-			        form += "\n>streetAddress:";//address
-			        form += "\n>postalCode:97421";
-			        form += "\n>city:97414";
-			        form += "\n>cityName:ST LOUIS";
-			        form += "\n>organizationCountry:RE";
-					form += "\n>type:NGO|LocalBusiness|Group|GovernmentOrganization";
-					form += "\n>role:admin|member|creator";
-
-		        }
-		        else if(query.indexOf("+pt")==0){
-					element = "poi";
-					form = "\n>name:";
-		        }
-		        if( element ){
-		        	stopMention = true;
-					$("#get_url").val( $("#get_url").val() + form);
-					return false;
-				}
-			}*/
-
-
-	   		var search = {"search" : query};
-	  		$.ajax({
-				type: "POST",
-		        url: baseUrl+"/"+moduleId+"/search/searchmemberautocomplete",
-		        data: search,
-		        dataType: "json",
-		        success: function(retdata){
-		        	if(!retdata){
-		        		toastr.error(retdata.content);
-		        	}else{
-			        	//mylog.log(retdata);
-			        	data = [];
-			        	for(var key in retdata){
-				        	for (var id in retdata[key]){
-					        	avatar="";
-					        	if(retdata[key][id].profilThumbImageUrl!="")
-					        		avatar = baseUrl+retdata[key][id].profilThumbImageUrl;
-					        	object = new Object;
-					        	object.id = id;
-					        	object.name = retdata[key][id].name;
-					        	object.avatar = avatar;
-					        	object.type = key;
-					        	var findInLocal = _.findWhere(mentionsContact, {
-									name: retdata[key][id].name, 
-									type: key
-								}); 
-								if(typeof(findInLocal) == "undefined")
-									mentionsContact.push(object);
-					 			}
-			        	}
-			        	data=mentionsContact;
-			        	//mylog.log(data);
-			    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
-						callback.call(this, data);
-						mylog.log(callback);
-		  			}
-				}	
-			})
-	  }
-  	});
-
-   	//Construct the first NewsForm
-	//buildDynForm();
-	//déplace la modal scope à l'exterieur du formulaire
-
 
  	$('#modal-scope').appendTo("#modal_scope_extern") ;
  	if(isLiveGlobal())

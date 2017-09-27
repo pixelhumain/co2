@@ -1742,6 +1742,21 @@ function getScopeValue() {
     return scope_value;
 }
 
+function getCityId() { 
+
+    if ($.cookie().communexionActivated == true) {
+        city_id = communexion.currentValue;
+    } else { 
+        $.each(myMultiScopes, function(index, value) { 
+            if (value.active == true) {
+                city_id = index;
+            }
+        });
+    }
+
+    return city_id;
+}
+
 
 function getCityDataByInsee(insee) {
 
@@ -1761,6 +1776,27 @@ function getCityDataByInsee(insee) {
         }
     });
     return city_data;
+}
+
+function getCityDataById(id) {
+
+    $.ajax({
+        type: "GET",
+        url: baseUrl + "/co2/interoperability/get/id/"+id,
+        async: false,
+        success: function(data){ mylog.log("succes get CityDataByInsee", data); //mylog.dir(data);
+            if ((Object.keys(data).length) <= 1) {
+                $.each(data, function(index, value) {
+                    city_data = value;
+                });
+            }
+            else {
+                city_data = data;
+            }
+        }
+    });
+    return city_data;
+
 }
 
 function getUrlInteropForWiki(wikidataID) {

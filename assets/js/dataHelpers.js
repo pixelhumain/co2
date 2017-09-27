@@ -89,7 +89,51 @@ function isUniqueUsername(username) {
 	mylog.log("isUniqueUsername=", response);
 	return response;
 }
+function slugUnique(searchValue){
+	
+	//searchType = (types) ? types : ["organizations", "projects", "events", "needs", "citoyens"];
+	var response;
+	var data = {
+		"id":contextData.id,
+		"type": contextData.type,
+		"slug" : searchValue
+	};
+	//$("#listSameSlug").html("<i class='fa fa-spin fa-circle-o-notch'></i> Vérification d'existence");
+	//$("#similarLink").show();
+	//$("#btn-submit-form").html('<i class="fa  fa-spinner fa-spin"></i>').prop("disabled",true);
+	$.ajax({
+      type: "POST",
+          url: baseUrl+"/" + moduleId + "/slug/check",
+          data: data,
+          dataType: "json",
+          error: function (data){
+             mylog.log("error"); mylog.dir(data);
+             //$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
+          },
+          success: function(data){
+ 			//var msg = "Ce pseudo est déjà utilisé";
+ 			//$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
+			if (!data.result) {
+				//response=false;
+				if(!$("#ajaxFormModal #slug").parent().hasClass("has-error"))
+					$("#ajaxFormModal #slug").parent().removeClass('has-success').addClass('has-error');//.find("span").text("cucu");
+				//.addClass("has-error").parent().find("span").text("cretin");
+				msgSlug="This slug is already used.";
+				//bindLBHLinks();
+			} else {
+				//response=true;
+				if(!$("#ajaxFormModal #slug").parent().hasClass("has-success"))
+					$("#ajaxFormModal #slug").parent().removeClass('has-error').addClass('has-success');
+				//.addClass("has-success").parent().find("span").text("good peydé");
+				msgSlug="This slug is not used.";
+				//$("#slug").html("<span class='txt-green'><i class='fa fa-thumbs-up text-green'></i> Aucun pseudo avec ce nom.</span>");
 
+			}
+			$("#ajaxFormModal #slug").next().text(msgSlug);
+          }
+ 	});
+ 	//return response;
+}
 function addCustomValidators() {
 	mylog.log("addCustomValidators");
 	//Validate a postalCode
@@ -113,7 +157,10 @@ function addCustomValidators() {
 	    	return false;
 	    }
 	}, "Code postal inconnu");
-
+	/*jQuery.validator.addMethod("uniqueSlug", function(value, element) {
+	    //Check unique username
+	   	return slugUnique(value);
+	}, "This slug already exists. Please choose an other one.");*/
 	jQuery.validator.addMethod("validUserName", function(value, element) {
 	    //Check authorized caracters
 		var usernameRegex = /^[a-zA-Z0-9]+$/;

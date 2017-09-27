@@ -82,10 +82,10 @@
 	$addLink = (empty($users[Yii::app()->session["userId"]])?false:true);
 ?>
 	<div class="panel panel-white user-list">
-		<div class="panel-heading border-light bg-yellow">
+		<div class="panel-heading border-light bg-azure ">
 			<h4 class="panel-title"><i class="fa fa-connectdevelop"></i> <?php echo $userCategory ?></h4>
-			
 		</div> 
+
 		<div class="panel-tools">
 			<?php if ( @$admin && $contentType != ActionRoom::COLLECTION_ACTIONS ) { ?>
 					<a class="btn btn-xs btn-default tooltips" href="javascript:;" onclick="showElementPad('directory');" data-placement="bottom" data-original-title="<?php echo $tooltips ?>">
@@ -149,6 +149,7 @@
 				</div>
 			<?php }
 			else{
+
 				foreach ($users as $e) { 
 					if(!@$e["invitorId"]){
 						$grayscale = "grayscale";
@@ -187,7 +188,7 @@
 						if($addCogFlag != false)
 							$adminFlag.='<div class="cogFlag bg-dark" style="left:'.($addCogFlag--).'px;"><i class="fa fa-cog fa-white"></i></div>';
 						if ($e["type"]==Person::COLLECTION){
-							$icon='<img height="50" width="50" class="tooltips" src="'.$this->module->assetsUrl.'/images/news/profile_default_l.png" data-placement="top" data-original-title="'.$name.'">';
+							$icon='<img height="50" width="50" class="img-circle tooltips" src="'.$this->module->assetsUrl.'/images/news/profile_default_l.png" data-placement="top" data-original-title="'.$name.'">';
 							$refIcon="fa-user";
 							$redirect="person";
 						}
@@ -203,7 +204,7 @@
 						<?php if($e && !empty($e["profilThumbImageUrl"])) {
 							// Utiliser profilThumbImageUrl && createUrl(/.$profilThumbUrl.)
 							 ?>
-							<img width="50" height="50"  alt="image" class="tooltips" src="<?php echo Yii::app()->createUrl('/'.$e['profilThumbImageUrl']) ?>" data-placement="top" data-original-title="<?php echo $name ?>">
+							<img width="50" height="50"  alt="image" class="img-circle tooltips" src="<?php echo Yii::app()->createUrl('/'.$e['profilThumbImageUrl']) ?>" data-placement="top" data-original-title="<?php echo $name ?>">
 						<?php }else{ 
 							echo $icon;
 						} ?>
@@ -213,7 +214,7 @@
 				<?php 
 					}
 				}
-				if(!empty($countLowLinks) || $countInvitations > 0 || $countStrongLinks > 11){ 
+				if(!empty(@$countLowLinks) || @$countInvitations > 0 || @$countStrongLinks > 11){ 
 					$nbCommunity=$countLowLinks;
 					$fontSize="";
 					if($countStrongLinks>11)

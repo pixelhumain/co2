@@ -47,8 +47,7 @@ function startSearch(indexMin, indexMax, callBack){
     if(name.length>=3 || name.length == 0)
     {
       var locality = "";
-      if( communexionActivated )
-      {
+      if( communexionActivated ){
   	    if(typeof(cityInseeCommunexion) != "undefined")
         {
     			if(levelCommunexion == 1) locality = cpCommunexion;
@@ -115,33 +114,14 @@ var mapElements = new Array();
 
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
-
-  console.log("START -------- autoCompleteSearch ", typeof callBack, callBack);
-	if(typeof(cityInseeCommunexion) != "undefined"){
-	    var levelCommunexionName = { 1 : "CODE_POSTAL_INSEE",
-	                             2 : "INSEE",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
-	}else{
-		var levelCommunexionName = { 1 : "INSEE",
-	                             2 : "CODE_POSTAL_INSEE",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
-	}
-    //mylog.log("levelCommunexionName", levelCommunexionName[levelCommunexion]);
+  console.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
+	var searchLocality = getLocalityForSearch();
+    
     var data = {
       "name" : name, 
-      "locality" : "",//locality, 
+      "locality" : searchLocality,//locality, 
       "searchType" : searchType, 
-      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] , //is an array
-      "searchLocalityCITYKEY" : ($('#searchLocalityCITYKEY').length ) ? $('#searchLocalityCITYKEY').val().split(',') : [],
-      "searchLocalityCODE_POSTAL" : ($('#searchLocalityCODE_POSTAL').length ) ? $('#searchLocalityCODE_POSTAL').val().split(',') : [], 
-      "searchLocalityDEPARTEMENT" : ($('#searchLocalityDEPARTEMENT').length ) ?  $('#searchLocalityDEPARTEMENT').val().split(',') : [],
-      "searchLocalityREGION" : ($('#searchLocalityREGION').length ) ? $('#searchLocalityREGION').val().split(',') : [],
-      "searchLocalityLEVEL" : ($('#searchLocalityLEVEL').length ) ? $('#searchLocalityLEVEL').val() : [],
-      "searchBy" : levelCommunexionName[levelCommunexion], 
+      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
       "indexMin" : indexMin, 
       "indexMax" : indexMax
     };
@@ -541,12 +521,44 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
     });
 
-    initBtnShare();
 
-   	//on click sur les boutons link
-    // $(".btn-tag").click(function(){
-    //   setSearchValue($(this).html());
-    // });
+    $(".coopPanelHtml").click(function(){
+      var coopType = $(this).data("coop-type");
+      var coopId = $(this).data("coop-id");
+      var idParentRoom = $(this).data("coop-idparentroom");
+      var parentId = $(this).data("coop-parentid");
+      var parentType = $(this).data("coop-parenttype");
+
+      coopType = coopType == "actions" ? "action" : coopType;
+      coopType = coopType == "proposals" ? "proposal" : coopType;
+      coopType = coopType == "resolutions" ? "resolution" : coopType;
+
+      console.log("onclick coopPanelHtml", coopType, coopId, idParentRoom, parentId, parentType);
+      
+      if(contextData.id == parentId && contextData.type == parentType){
+          toastr.info(trad["processing"]);
+          uiCoop.startUI();
+          $("#modalCoop").modal("show");
+          if(coopType == "rooms"){
+            uiCoop.getCoopData(null, null, "room", null, coopId);
+          }else{
+            setTimeout(function(){
+              uiCoop.getCoopData(null, null, "room", null, idParentRoom, 
+              function(){
+                toastr.info(trad["processing"]);
+                uiCoop.getCoopData(null, null, coopType, null, coopId);
+              }, false);
+            }, 1000);
+          }
+      }else{
+        var hash = "#page.type." + parentType + ".id." + parentId + 
+                ".view.coop.room." + idParentRoom + "."+coopType+"." + coopId;
+        urlCtrl.loadByHash(hash);
+      }
+
+    });
+
+    initBtnShare();
   }
 
 
@@ -660,7 +672,7 @@ var directory = {
       mylog.log("----------- defaultPanelHtml",params, params.type,params.name, params.url);
       if(directory.dirLog) mylog.log("----------- defaultPanelHtml",params.type,params.name);
       str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
       if(params.itemType!="city" && (params.useMinSize))
@@ -794,7 +806,6 @@ var directory = {
             }
 
             str += "<div class='entityDescription'>" + params.description + "</div>";
-         
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
 
             if(params.useMinSize){
@@ -828,7 +839,7 @@ var directory = {
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
-    		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" contain_"+params.type+"_"+params.id+"'>";
+    		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
     		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
     		
         var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;
@@ -884,6 +895,9 @@ var directory = {
                 str+="<span class='text-red'>En attente de validation</span>";
             }
 
+            if(params.rolesLbl != "")
+            str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
+            
             if( params.section ){
               str += "<div class='entityType'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
                 if(typeof params.subtype != "undefined") str += " > " + params.subtype;
@@ -900,7 +914,6 @@ var directory = {
             str += thisLocality;
             
             str += "<div class='entityDescription'>" + params.description + "</div>";
-         
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
             /*
               if(params.startDate != null)
@@ -1436,10 +1449,10 @@ var directory = {
     // URL DIRECTORY PANEL
     // ********************************
     urlPanelHtml : function(params, key){
-		  //if(directory.dirLog) 
+      //if(directory.dirLog) 
       mylog.log("-----------urlPanelHtml", params, key);
       params.title = escapeHtml(params.title);
-  		if(directory.dirLog) mylog.log("-----------contactPanelHtml", params);
+      if(directory.dirLog) mylog.log("-----------contactPanelHtml", params);
         str = "";  
         str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
         str += "<div class='searchEntity contactPanelHtml'>";
@@ -1450,7 +1463,7 @@ var directory = {
                         params.title.substring(0,20)+'...</h4>';
           }else{
             str += '<h4 class="panel-title text-dark pull-left">'+ params.title+'</h4>';
-          }35
+          }
               str += '<br/><a href="'+params.url+'" target="_blank" class="text-dark">'
               str += ((params.url.length > 65) ? params.url.substring(0,65)+'...' : params.url)+'</a>';             
               
@@ -1475,6 +1488,38 @@ var directory = {
             
           str += '</ul>';
         }
+        str += "</div>";  
+      str += "</div>";
+      return str;
+    
+    },
+    // ********************************
+    // PROPOSAL DIRECTORY PANEL
+    // ********************************
+    coopPanelHtml : function(params, key){
+      //if(directory.dirLog) 
+      mylog.log("-----------proposalPanelHtml", params, key);
+      var idParentRoom = typeof params.idParentRoom != "undefined" ? params.idParentRoom : "";
+      var name = (typeof params.title != "undefined" && params.title != "undefined") ? params.title : params.name;
+      var description = params.description.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
+      name = escapeHtml(name);
+      if(directory.dirLog) mylog.log("-----------coopPanelHtml", params);
+        str = "";  
+        str += "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
+        str += "<div class='searchEntity coopPanelHtml' data-coop-type='"+ params.type + "'  data-coop-id='"+ params.id + "' "+
+                    "data-coop-idparentroom='"+ idParentRoom + "' "+
+                    "data-coop-parentid='"+ params.parentId + "' "+"data-coop-parenttype='"+ params.parentType + "' "+
+                    ">";
+          str += "<div class='panel-heading border-light col-lg-12 col-xs-12'>";
+
+          if(name != "")
+          str += '<h4 class="panel-title letter-turq"><i class="fa '+ params.ico + '"></i> '+ name + '</h4>';
+
+          if(params.type != "rooms")
+          str += '<h5 class=""><small><i class="fa fa-bell"></i> '+ trad[params.status] + '</small></h5>';
+
+          str += '<span class="text-dark">'+description+'</span>';
+          str += "</div>";
         str += "</div>";  
       str += "</div>";
       return str;
@@ -1846,6 +1891,20 @@ var directory = {
                 }else{
                   params.tagsLbl = "";
                 }
+                params.elRolesList = "";
+                var thisRoles = "";
+                params.rolesLbl = "";
+                if(typeof params.rolesLink != "undefined" && params.rolesLink != null){
+                  thisRoles += "<small class='letter-blue'><b>Rôle :</b> ";
+                  thisRoles += params.rolesLink.join(", ");
+                  $.each(params.rolesLink, function(key, value){
+                    if(typeof value != "undefined" && value != "" && value != "undefined")
+                      params.elRolesList += slugify(value)+" ";
+                  });
+                  thisRoles += "</small>";
+                  params.rolesLbl = thisRoles;
+                }
+              
 
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
                 
@@ -1862,15 +1921,17 @@ var directory = {
                 else if(params.type == "events")
                   str += directory.eventPanelHtml(params);  
                 
-                else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>= 0 ) 
-                  str += directory.roomsPanelHtml(params,itemType);  
+                //else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
+                //    str += directory.roomsPanelHtml(params,itemType);  
                 
-                else if(params.type == "classified")
+                else if(params.type == "classified"){
                   if(contextData != null)
                     str += directory.elementPanelHtml(params);  
                   else
                     str += directory.classifiedPanelHtml(params);
-
+                }
+                else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
+                  str += directory.coopPanelHtml(params);  
                 else
                   str += directory.defaultPanelHtml(params);
                 
@@ -1887,47 +1948,84 @@ var directory = {
         return str;
     },
     getAdminToolBar : function(data){
-
+      countBtn=0;
       var html = "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips adminIconDirectory'>"+
        "<i class='fa fa-cog'></i>"+ //fa-bookmark fa-rotate-270
        "</a>";
       html+="<div class='adminToolBar'>";
       if(data.edit=="follows"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'"+
+            " style='bottom:"+(30*countBtn)+"px'>"+
             "<i class='fa fa-unlink'></i> "+trad["unfollow"]+
           "</button> ";
+          countBtn++;
       }
       if(data.edit=="organizations" || data.edit=="projects"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='3'>"+
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='3'"+
+            " style='bottom:"+(30*countBtn)+"px'>"+
             "<i class='fa fa-unlink'></i> "+trad["cancellink"]+
           "</button> ";
+          countBtn++;
       }
-      if(data.edit=="members" || data.edit=="contributors"){
-        if(data.type!="organizations" && typeof data.statusLink["toBeValidated"] != "undefined" && typeof data.statusLink["isAdminPending"] == "undefined"){
-          html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='toBeValidated' data-parent-hide='2'>"+
-            "<i class='fa fa-user'></i> "+trad["acceptas"+data.edit]+
+     
+      if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){
+        if(data.type=="organizations" || (typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined")){
+          html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'"+
+            " style='bottom:"+(30*countBtn)+"px'>"+
+            "<i class='fa fa-unlink'></i> "+trad["delete"+data.edit]+
           "</button> ";
-        }else if(data.type!="organizations" && typeof data.statusLink["isAdminPending"] != "undefined"){
-          html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='isAdminPending' data-parent-hide='2'>"+
-            "<i class='fa fa-user-plus'></i> "+trad["acceptasadmin"]+
-          "</button> ";
+          countBtn++;
         }
         if(data.type!="organizations" && typeof data.statusLink["isAdmin"] == "undefined"){
           html +='<button class="btn btn-default btn-xs" '+
-                   'onclick="connectTo(\''+contextData.type+'\',\''+contextData.id+'\', \''+data.id+'\', \''+data.type+'\', \'admin\',\'\',\'true\')">'+
+                   'onclick="connectTo(\''+contextData.type+'\',\''+contextData.id+'\', \''+data.id+'\', \''+data.type+'\', \'admin\',\'\',\'true\')"'+
+                   " style='bottom:"+(30*countBtn)+"px'>"+
                             '<i class="fa fa-user-plus"></i> '+trad["addasadmin"]+
                           '</button>';
+          countBtn++;
         }
-        if(data.type=="organizations" || (typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined"))
-          html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
-            " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'>"+
-            "<i class='fa fa-unlink'></i> "+trad["delete"+data.edit]+
+        if(data.type!="organizations" && typeof data.statusLink["toBeValidated"] != "undefined" && typeof data.statusLink["isAdminPending"] == "undefined"){
+          html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='toBeValidated' data-parent-hide='2'"+
+            " style='bottom:"+(30*countBtn)+"px'>"+
+            "<i class='fa fa-user'></i> "+trad["acceptas"+data.edit]+
           "</button> ";
+          countBtn++;
+        }else if(data.type!="organizations" && typeof data.statusLink["isAdminPending"] != "undefined"){
+          html +="<button class='btn btn-default btn-xs acceptAsBtn'"+ 
+            " data-type='"+data.type+"' data-id='"+data.id+"' data-connect-validation='isAdminPending' data-parent-hide='2'"+
+            " style='bottom:"+(30*countBtn)+"px'>"+
+            "<i class='fa fa-user-plus'></i> "+trad["acceptasadmin"]+
+          "</button> ";
+          countBtn++;
+        }
+        if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){
+          roles="";
+          if(typeof data.rolesLink != "undefined")
+              roles+=data.rolesLink.join(", ");
+          html +="<button class='btn btn-default btn-xs'"+ 
+            ' onclick="updateRoles(\''+data.id+'\', \''+data.type+'\', \''+addslashes(data.name)+'\', \''+data.edit+'\',\''+roles+'\')"'+
+            " style='bottom:"+(30*countBtn)+"px'>"+
+            "<i class='fa fa-pencil'></i> "+trad.addmodifyroles
+          "</button> ";
+          countBtn++;
+        }
       }
+     /* if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){ 
+          roles=""; 
+           if(typeof data.rolesLink != "undefined") 
+              roles+=data.rolesLink.join(", "); 
+          html +="<button class='btn btn-default btn-xs'"+  
+            ' onclick="updateRoles(\''+data.id+'\', \''+data.type+'\', \''+addslashes(data.name)+'\', \''+data.edit+'\',\''+roles+'\')"'+ 
+            " style='bottom:"+(30*countBtn)+"px'>"+ 
+            "<i class='fa fa-pencil'></i> "+trad.addmodifyroles 
+          "</button> "; 
+          countBtn++; 
+      }*/
+    
       html+="</div>";
       return html;
     },

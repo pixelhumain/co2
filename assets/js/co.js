@@ -1642,7 +1642,7 @@ maybe movebale into Element.js
 function  buildQRCode(type,id) { 
 		
 	$(".qrCode").qrcode({
-	    text: baseUrl+"/#"+dyFInputs.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
+	    text: baseUrl+"/#"+dyFInputs.get(type).col+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
 	    render: 'image',
 		minVersion: 8,
 	    maxVersion: 40,

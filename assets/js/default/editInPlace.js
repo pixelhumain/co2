@@ -276,9 +276,7 @@ function bindAboutPodElement() {
 									$("#typeAbout").html(tradCategory[data.resultGoods.values.type]);
 									$("#typeHeader .type-header").html(tradCategory[data.resultGoods.values.type]);
 								}
-								if(typeof data.resultGoods.values.email != "undefined"){
 
-								}
 								if(typeof data.resultGoods.values.email != "undefined"){
 									mylog.log("update email");
 									contextData.email = data.resultGoods.values.email;
@@ -374,7 +372,7 @@ function bindAboutPodElement() {
 					}
 				}
 			};
-			
+
 			if(contextData.type == typeObj.person.col ){
 				form.dynForm.jsonSchema.properties.username = dyFInputs.inputText("Username", "Username", { required : true });
 				form.dynForm.jsonSchema.properties.birthDate = dyFInputs.birthDate;

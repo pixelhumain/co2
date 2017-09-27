@@ -53,7 +53,7 @@
 </style>
 <div class="headerTitleStanalone">
 	<span>Professional dashboard</span> 
-	<a href="page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>" class="lbh btn bg-orange margin-left-10">
+	<a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>" class="lbh btn bg-orange margin-left-10">
 		Back to my traveller account</a>
 </div>
 <div class="col-md-10 col-md-offset-1 contentOnePage">
@@ -81,19 +81,19 @@
 	<div class="podDash col-md-12 margin-top-20">
 		<ul class="nav pull-left">
 		  <li class="nav-item active">
-		    <a class="nav-link" href="javascript:;" id="btn-detail"><?php echo Yii::t("common","My infos") ?></a>
+		    <a class="nav-link" href="javascript:;" id="btn-detail"><?php echo Yii::t("common","Infos") ?></a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="javascript:;" id="btn-message"><?php echo Yii::t("common","My messages") ?></a>
+		    <a class="nav-link" href="javascript:;" id="btn-message"><?php echo Yii::t("common","Manage buy") ?></a>
 		  </li>
 		  <li class="nav-item">
 		    <a class="nav-link" href="javascript:;" id="btn-history"><?php echo Yii::t("common","Historic") ?></a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="javascript:;" id="btn-backup"><?php echo Yii::t("common","Backup") ?></a>
+		    <a class="nav-link" href="javascript:;" id="btn-backup"><?php echo Yii::t("common","Record") ?></a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="javascript:;" id="btn-invoice"><?php echo Yii::t("common","Invoice") ?></a>
+		    <a class="nav-link" href="javascript:;" id="btn-invoice"><?php echo Yii::t("common","Guestbook") ?></a>
 		  </li>
 		</ul>
 		<div class="content-view-dashboard col-md-12  col-sm-12 col-xs-12 margin-bottom-20  padding-10 bg-white">
@@ -108,9 +108,7 @@
 	jQuery(document).ready(function() {
 		loadDetail(true);
 		bindButtonMenu();
-		$(".btn-open-form").click(function(){
-			dyFObj.openForm("product");
-		});
+		
 		KScrollTo("#topPosKScroll");
 	});
 	function getProfilSubview(sub, dir){ console.log("getProfilSubview", sub, dir);

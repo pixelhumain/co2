@@ -77,8 +77,10 @@
 
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
-
-                $this->renderPartial('../element/standalone', $params ); 
+                if($element["creator"]==Yii::app()->session["userId"] && $view != "show")
+                    $this->renderPartial('../element/terla/dashboard', $params );
+                else
+                    $this->renderPartial('../element/standalone', $params ); 
             }
             if($type == Survey::COLLECTION){
                 $params = array("survey"=>$element , 
@@ -112,7 +114,7 @@ var view = "<?php echo @$view; ?>";
 var indexStepGS = 20;
 
 jQuery(document).ready(function() {
-	
+    
 	//initKInterface({"affixTop":0});
 	$("#mainNav").addClass("affix");
 	//initPageInterface();

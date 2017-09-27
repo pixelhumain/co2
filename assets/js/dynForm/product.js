@@ -11,7 +11,7 @@ dynForm = {
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 	    			$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 							  					  .addClass("bg-azure");
-	    		 	
+	    		 	$("#ajaxFormModal #toBeValidated").val(true);
 	    		 	$("#ajax-modal-modal-title").html(
 	    		 		$("#ajax-modal-modal-title").html()+
 	    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
@@ -36,14 +36,7 @@ dynForm = {
 	    beforeSave : function(){
 	    	var tagAndTypes = ( $("#ajaxFormModal #tags").val() != "" ) ? $("#ajaxFormModal #tags").val()+"," : "" ;
 
-	    	if( $("#ajaxFormModal #section").val() )
-	    		tagAndTypes += $("#ajaxFormModal #section").val();
-	    	if( $("#ajaxFormModal #type").val() )
-	    		tagAndTypes += ","+$("#ajaxFormModal #type").val();
-	    	if( $("#ajaxFormModal #subtype").val() )
-	    		tagAndTypes += ","+$("#ajaxFormModal #subtype").val();
-	    	$("#ajaxFormModal #tags").val( tagAndTypes );
-	    	
+	    	$("#ajaxFormModal #tags").val( tagAndTypes );	    	
 	    	if( typeof $("#ajaxFormModal #description").code === 'function' )  
 	    		$("#ajaxFormModal #description").val( $("#ajaxFormModal #description").code() );
 	    	if($('#ajaxFormModal #parentId').val() == "" && $('#ajaxFormModal #parentType').val() ){
@@ -80,6 +73,7 @@ dynForm = {
             tags : dyFInputs.tags(),
             parentId : dyFInputs.inputHidden(),
             parentType : dyFInputs.inputHidden(),
+            toBeValidated : dyFInputs.inputHidden(),
 	    }
 	}
 };

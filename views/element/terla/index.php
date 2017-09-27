@@ -53,9 +53,7 @@
 </style>
 <div class="headerTitleStanalone">
 	<span>My Dashboard</span> 
-	<?php if(@$element["professional"]){ ?>
-		<a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo (string)$element["_id"] ?>.view.pro" class="lbh btn bg-orange">Go to my professional account</a>
-	<?php }else{ ?> 
+	<?php if(!@element["professional"]){ ?> 
 		<button class="createPro bg-orange">Create a professional account<button>
 	<?php } ?>
 </div>
@@ -90,6 +88,11 @@
 		  <li class="nav-item">
 		    <a class="nav-link" href="javascript:;" id="btn-invoice"><?php echo Yii::t("common","Invoice") ?></a>
 		  </li>
+		  	<?php if(@$element["professional"]){ ?>
+		  	<li class="nav-item">
+		    	<a class="nav-link" href="javascript:;" id="btn-list-pro"><?php echo Yii::t("common","Pro listing") ?></a>
+		  	</li>
+			<?php } ?>
 		</ul>
 		<div class="content-view-dashboard col-md-12 col-sm-12 col-xs-12 margin-bottom-20 padding-10 bg-white">
 		</div>
@@ -100,6 +103,7 @@
 <script type="text/javascript">
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
 	var edit=true;
+	var hashUrlPage = "#page.type."+contextData.type+".id."+contextData.id;
 	jQuery(document).ready(function() {
 		loadDetail(true);
 		$(".createPro").click(function(){
@@ -129,6 +133,9 @@
 				loadBackup();
 			else if(sub=="invoice")
 				loadInvoice();
+			else if(sub=="prolist"){
+				loadListPro();
+			}
 		} else
 			loadDetail(true);
 	}
@@ -148,26 +155,23 @@
 			//history.pushState(null, "New Title", hashUrlPage);
 			loadNewsStream(true);
 		});
-		$(".btn-start-mystream").click(function(){
-			//$(".ssmla").removeClass('active');
-			responsiveMenuLeft(true);
-			if(contextData.type=="citoyens" && userId==contextData.id){
-				location.hash=hashUrlPage+".view.mystream";
-				//history.pushState(null, "New Title", hashUrlPage+".view.mystream");
-			}
-			else{
-				location.hash=hashUrlPage;
-				//history.pushState(null, "New Title", hashUrlPage);
-			}
-			loadNewsStream(false);
-			uiCoop.closeUI(false);
+		$("#btn-list-pro").click(function(){
+			location.hash=hashUrlPage+".view.prolist";
+			loadListPro();
 		});
 	}
 	function loadDetail(){
 		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
 		showLoader('.content-view-dashboard');
-		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
+		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, null, function(){},"html");
 	}
+	function loadListPro(){
+		data={list:["products"]};
+		var url = "element/list/type/"+contextData.type+"/id/"+contextData.id;
+		showLoader('.content-view-dashboard');
+		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
+	}
+	
 	function showLoader(id){
 		$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 	}

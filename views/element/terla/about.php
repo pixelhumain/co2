@@ -61,7 +61,7 @@
 	}
 </style>
 
-<div class='col-md-12 margin-bottom-15 panel-heading'>
+<div class='col-md-12 col-sm-12 margin-bottom-15 panel-heading'>
 	<h4 class='panel-title text-dark pull-left' id='name-lbl-title'><i class="fa fa-info-circle fa-2x"></i> <?php echo Yii::t("common","My informations") ?></h4>
 	<?php if($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ){?>
 			<button class="btn-update-info btn btn-default letter-blue pull-right tooltips" 

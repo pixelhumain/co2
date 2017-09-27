@@ -456,24 +456,31 @@ $this->renderPartial($layoutPath.'header',
         all_interop_url = [];
         var url_interop = "";
 
-        <?php //var_dump(Yii::app()->request->cookies['communexionActivated']);
-              //var_dump(CO2::getCommunexionCookies()); 
-        ?>
+        city_id = getCityId();
+        city_data = getCityDataById(city_id);
+        var geoShape = getGeoShapeForOsm(city_data.geoShape);
+        var geofilter = getGeofilterPolygon(city_data.geoShape);
+        var city_wikidataID = city_data.wikidataID;
+        var city_insee = city_data.insee;
 
-        if ($.cookie().communexionActivated == true) {
-        	var geoShape = getGeoShapeForOsm(communexion.values.geoShape);
-            var geofilter = getGeofilterPolygon(communexion.values.geoShape);
-            var city_wikidataID = communexion.values.wikidataID;
-            var city_insee = communexion.values.inseeCode;
-        } else {
-        	scope_value = getScopeValue();
-            getCityDataByInsee(scope_value);
+        // if ($.cookie().communexionActivated == true) {
+        //     city_id = getCityId();
+        //     city_data = getCityDataById(city_id);
+        // 	var geoShape = getGeoShapeForOsm(communexion.values.geoShape);
+        //     var geofilter = getGeofilterPolygon(communexion.values.geoShape);
+        //     var city_wikidataID = communexion.values.wikidataID;
+        //     var city_insee = communexion.values.inseeCode;
+        // } else {
+        //     city_id = getCityId();
+        //     // scope_value = getScopeValue();
+        //     city_data = getCityDataById(city_id);
+        //     // getCityDataByInsee(scope_value);
 
-            var geoShape = getGeoShapeForOsm(city_data.geoShape);
-            var geofilter = getGeofilterPolygon(city_data.geoShape);
-            var city_wikidataID = city_data.wikidataID;
-            var city_insee = city_data.insee;
-        }
+        //     var geoShape = getGeoShapeForOsm(city_data.geoShape);
+        //     var geofilter = getGeofilterPolygon(city_data.geoShape);
+        //     var city_wikidataID = city_data.wikidataID;
+        //     var city_insee = city_data.insee;
+        // }
 
         mylog.log("LE NOUVEAU GEOSHAPE  : ", geoShape);
 

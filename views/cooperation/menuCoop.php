@@ -66,8 +66,9 @@
 	
 	<?php $allStatus = array("amendable"=>"Amendable", 
 							 "tovote"=>"To vote",
-							 "closed" => "Closed", 
-							 "archived"=> "Archived");
+							 "disabled"=> "Disabled",
+							 "resolved"=> "Resolved",
+							 "closed" => "Closed");
 		
 		if(Yii::app()->session['userId'])
 		$allStatus["mine"] = "My proposals";
@@ -97,8 +98,8 @@
 		<li class="submenucoop hidden sub-actions"><hr></li>
 
 		<?php $allStatus = array("todo"=>"To do", 
-								 "done" => "Done", 
-								 "archived"=> "Archived");
+								 "disabled"=> "Disabled", 
+								 "done" => "Done");
 		
 			if(Yii::app()->session['userId'])
 			$allStatus["mine"] = "My proposals";

@@ -733,11 +733,9 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 	bindEventScopeContactsModal();
 }
 
-//var searchValLast = "";
+
 function filterContact(searchVal){
-	//mylog.log(searchVal, "==", searchValLast);
-	//if(searchVal == searchValLast) return;
-	//searchValLast = searchVal;
+	mylog.log("filterContact", searchVal, "==", addLinkSearchMode);
 
 	if(addLinkSearchMode == "contacts"){
 		$("#btn-save").removeClass("hidden");

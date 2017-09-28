@@ -163,14 +163,14 @@ function addCustomValidators() {
 	}, "This slug already exists. Please choose an other one.");*/
 	jQuery.validator.addMethod("validUserName", function(value, element) {
 	    //Check authorized caracters
-		var usernameRegex = /^[a-zA-Z0-9]+$/;
+		var usernameRegex = /^[a-zA-Z0-9\-]+$/;
     	var validUsername = value.match(usernameRegex);
     	if (validUsername == null) {
         	return false;
     	} else {
     		return true;
     	}
-    }, "Invalid username : Only characters A-Z, a-z, 0-9 and '-' are  acceptable.");
+    }, tradDynForm.invalidUsername);
 
 	jQuery.validator.addMethod("uniqueUserName", function(value, element) {
 	    //Check unique username

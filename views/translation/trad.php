@@ -317,6 +317,8 @@ var trad = {
 	"todo" : "<?php echo Yii::t("cooperation", "todo") ?>",
 	"closed" : "<?php echo Yii::t("cooperation", "closed") ?>",
 	"archived" : "<?php echo Yii::t("cooperation", "archived") ?>",
+	"disabled" : "<?php echo Yii::t("cooperation", "disabled") ?>",
+	"resolved" : "<?php echo Yii::t("cooperation", "resolved") ?>",
 	"done" : "<?php echo Yii::t("cooperation", "done") ?>",
 };
 
@@ -448,6 +450,7 @@ var tradDynForm = {
 	"writenewshere":"<?php echo Yii::t("form","Write your news here") ?>",
 	"shareit":"<?php echo Yii::t("common","Share") ?>",
 	"wouldbecomeadmin":"<?php echo Yii::t("common","Would you like to be an administrator") ?>",
+	"invalidUsername":"<?php echo Yii::t("form","Invalid username : Only characters A-Z, a-z, 0-9 and '-' are acceptable.") ?>",
 
 };
 

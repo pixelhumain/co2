@@ -520,7 +520,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     });
 
 
-    $(".coopPanelHtml").click(function(){
+    $(".coopPanelHtml").off().click(function(){
       var coopType = $(this).data("coop-type");
       var coopId = $(this).data("coop-id");
       var idParentRoom = $(this).data("coop-idparentroom");
@@ -538,13 +538,13 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
           uiCoop.startUI();
           $("#modalCoop").modal("show");
           if(coopType == "rooms"){
-            uiCoop.getCoopData(null, null, "room", null, coopId);
+            uiCoop.getCoopData(contextData.type, contextData.id, "room", null, coopId);
           }else{
             setTimeout(function(){
-              uiCoop.getCoopData(null, null, "room", null, idParentRoom, 
+              uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
               function(){
                 toastr.info(trad["processing"]);
-                uiCoop.getCoopData(null, null, coopType, null, coopId);
+                uiCoop.getCoopData(contextData.type, contextData.id, coopType, null, coopId);
               }, false);
             }, 1000);
           }
@@ -1513,7 +1513,7 @@ var directory = {
           str += '<h4 class="panel-title letter-turq"><i class="fa '+ params.ico + '"></i> '+ name + '</h4>';
 
           if(params.type != "rooms")
-          str += '<h5 class=""><small><i class="fa fa-bell"></i> '+ trad[params.status] + '</small></h5>';
+          str += '<h5 class=""><small><i class="fa fa-certificate"></i> '+ trad[params.status] + '</small></h5>';
 
           str += '<span class="text-dark">'+description+'</span>';
           str += "</div>";

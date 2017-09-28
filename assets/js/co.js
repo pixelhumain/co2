@@ -1642,7 +1642,7 @@ maybe movebale into Element.js
 function  buildQRCode(type,id) { 
 		
 	$(".qrCode").qrcode({
-	    text: baseUrl+"/#"+dyFInputs.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
+	    text: baseUrl+"/#page.type."+dyFInputs.get(type).col+".id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
 	    render: 'image',
 		minVersion: 8,
 	    maxVersion: 40,
@@ -3404,6 +3404,7 @@ var dyFInputs = {
 	    console.log("create form input email", inputObj);
 	    return inputObj;
 	},
+	
 	emailOptionnel :function (label,placeholder,rules) {  
     	var inputObj = dyFInputs.text(label, placeholder, rules);
     	inputObj.init = function(){

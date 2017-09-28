@@ -74,7 +74,7 @@
       <?php } ?>
       
       $(".timeline_text").html(text);
-    	showCommentsTools(news["_id"]['$id']);
+    	//showCommentsTools(news["_id"]['$id']);
     }
 	});
 

@@ -47,8 +47,7 @@ function startSearch(indexMin, indexMax, callBack){
     if(name.length>=3 || name.length == 0)
     {
       var locality = "";
-      if( communexionActivated )
-      {
+      if( communexionActivated ){
   	    if(typeof(cityInseeCommunexion) != "undefined")
         {
     			if(levelCommunexion == 1) locality = cpCommunexion;
@@ -113,32 +112,14 @@ var mapElements = new Array();
 
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
-  console.log("START -------- autoCompleteSearch ", typeof callBack, callBack);
-	if(typeof(cityInseeCommunexion) != "undefined"){
-	    var levelCommunexionName = { 1 : "CODE_POSTAL_INSEE",
-	                             2 : "INSEE",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
-	}else{
-		var levelCommunexionName = { 1 : "INSEE",
-	                             2 : "CODE_POSTAL_INSEE",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
-	}
-    //mylog.log("levelCommunexionName", levelCommunexionName[levelCommunexion]);
+  console.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
+	var searchLocality = getLocalityForSearch();
+    
     var data = {
       "name" : name, 
-      "locality" : "",//locality, 
+      "locality" : searchLocality,//locality, 
       "searchType" : searchType, 
-      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] , //is an array
-      "searchLocalityCITYKEY" : ($('#searchLocalityCITYKEY').length ) ? $('#searchLocalityCITYKEY').val().split(',') : [],
-      "searchLocalityCODE_POSTAL" : ($('#searchLocalityCODE_POSTAL').length ) ? $('#searchLocalityCODE_POSTAL').val().split(',') : [], 
-      "searchLocalityDEPARTEMENT" : ($('#searchLocalityDEPARTEMENT').length ) ?  $('#searchLocalityDEPARTEMENT').val().split(',') : [],
-      "searchLocalityREGION" : ($('#searchLocalityREGION').length ) ? $('#searchLocalityREGION').val().split(',') : [],
-      "searchLocalityLEVEL" : ($('#searchLocalityLEVEL').length ) ? $('#searchLocalityLEVEL').val() : [],
-      "searchBy" : levelCommunexionName[levelCommunexion], 
+      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
       "indexMin" : indexMin, 
       "indexMax" : indexMax
     };
@@ -539,7 +520,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     });
 
 
-    $(".coopPanelHtml").click(function(){
+    $(".coopPanelHtml").off().click(function(){
       var coopType = $(this).data("coop-type");
       var coopId = $(this).data("coop-id");
       var idParentRoom = $(this).data("coop-idparentroom");
@@ -557,13 +538,13 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
           uiCoop.startUI();
           $("#modalCoop").modal("show");
           if(coopType == "rooms"){
-            uiCoop.getCoopData(null, null, "room", null, coopId);
+            uiCoop.getCoopData(contextData.type, contextData.id, "room", null, coopId);
           }else{
             setTimeout(function(){
-              uiCoop.getCoopData(null, null, "room", null, idParentRoom, 
+              uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
               function(){
                 toastr.info(trad["processing"]);
-                uiCoop.getCoopData(null, null, coopType, null, coopId);
+                uiCoop.getCoopData(contextData.type, contextData.id, coopType, null, coopId);
               }, false);
             }, 1000);
           }
@@ -1600,7 +1581,7 @@ var directory = {
           str += '<h4 class="panel-title letter-turq"><i class="fa '+ params.ico + '"></i> '+ name + '</h4>';
 
           if(params.type != "rooms")
-          str += '<h5 class=""><small><i class="fa fa-bell"></i> '+ trad[params.status] + '</small></h5>';
+          str += '<h5 class=""><small><i class="fa fa-certificate"></i> '+ trad[params.status] + '</small></h5>';
 
           str += '<span class="text-dark">'+description+'</span>';
           str += "</div>";
@@ -2011,7 +1992,7 @@ var directory = {
           countBtn++;
       }
      
-      if(data.edit=="members" || data.edit=="contributors"){
+      if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){
         if(data.type=="organizations" || (typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined")){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'"+
@@ -2043,7 +2024,7 @@ var directory = {
           "</button> ";
           countBtn++;
         }
-         if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){
+        if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){
           roles="";
           if(typeof data.rolesLink != "undefined")
               roles+=data.rolesLink.join(", ");
@@ -2055,7 +2036,7 @@ var directory = {
           countBtn++;
         }
       }
-      if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){ 
+     /* if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){ 
           roles=""; 
            if(typeof data.rolesLink != "undefined") 
               roles+=data.rolesLink.join(", "); 
@@ -2065,7 +2046,7 @@ var directory = {
             "<i class='fa fa-pencil'></i> "+trad.addmodifyroles 
           "</button> "; 
           countBtn++; 
-      }
+      }*/
     
       html+="</div>";
       return html;

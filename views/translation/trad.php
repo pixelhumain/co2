@@ -14,6 +14,7 @@ var trad = {
 	"removeconnectionorganizations" : "<?php echo Yii::t("common","Are you sure to remove the link with this organization") ?>",
 	"removeconnectionprojects" : "<?php echo Yii::t("common","Are you sure to remove the link with this project") ?>",
 	"removeconnectioncontributors" : "<?php echo Yii::t("common","Are you sure to remove the link with this project") ?>",
+	"removeconnectionattendees" : "<?php echo Yii::t("common","Are you sure to leave this event") ?>",
 	"removeconnectionmembers" : "<?php echo Yii::t("common","Are you sure to remove the link of member") ?>",
 	"removeconnectioncitoyens" : "<?php echo Yii::t("common","Are you sure to remove this follows") ?>",
 	"removeconnectionfollowers" : "<?php echo Yii::t("common","Are you sure to remove this follow") ?>",
@@ -247,6 +248,7 @@ var trad = {
 	"addasadmin": "<?php echo Yii::t("common","Add as admin") ?>",
 	"addmodifyroles":"<?php echo Yii::t("common","Add/Update roles") ?>",
 	"deletemembers":"<?php echo Yii::t("common","Delete this member") ?>",
+	"deleteattendees":"<?php echo Yii::t("common","Delete this attendee") ?>",
 	"deletecontributors":"<?php echo Yii::t("common","Delete this contributor") ?>",
 	"follow": "<?php echo Yii::t("common","follow") ?>",
 	"follower": "<?php echo Yii::t("common","follower") ?>",
@@ -304,6 +306,9 @@ var trad = {
 	"Your amendement has been save with success" : "<?php echo Yii::t("cooperation", "Your amendement has been save with success") ?>",
 	"Your vote has been save with success" : "<?php echo Yii::t("cooperation", "Your vote has been save with success") ?>",
 	"processing save" : "<?php echo Yii::t("cooperation", "processing save") ?>",
+	"processing delete" : "<?php echo Yii::t("cooperation", "processing delete") ?>",
+	"processing delete ok" : "<?php echo Yii::t("cooperation", "processing delete ok") ?>",
+	"processing delete KO" : "<?php echo Yii::t("cooperation", "processing delete KO") ?>",
 	"processing ok" : "<?php echo Yii::t("cooperation", "processing ok") ?>",
 	"processing" : "<?php echo Yii::t("cooperation", "processing") ?>",
 
@@ -312,6 +317,8 @@ var trad = {
 	"todo" : "<?php echo Yii::t("cooperation", "todo") ?>",
 	"closed" : "<?php echo Yii::t("cooperation", "closed") ?>",
 	"archived" : "<?php echo Yii::t("cooperation", "archived") ?>",
+	"disabled" : "<?php echo Yii::t("cooperation", "disabled") ?>",
+	"resolved" : "<?php echo Yii::t("cooperation", "resolved") ?>",
 	"done" : "<?php echo Yii::t("cooperation", "done") ?>",
 };
 
@@ -443,6 +450,7 @@ var tradDynForm = {
 	"writenewshere":"<?php echo Yii::t("form","Write your news here") ?>",
 	"shareit":"<?php echo Yii::t("common","Share") ?>",
 	"wouldbecomeadmin":"<?php echo Yii::t("common","Would you like to be an administrator") ?>",
+	"invalidUsername":"<?php echo Yii::t("form","Invalid username : Only characters A-Z, a-z, 0-9 and '-' are acceptable.") ?>",
 
 };
 

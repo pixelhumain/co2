@@ -1646,7 +1646,7 @@ maybe movebale into Element.js
 function  buildQRCode(type,id) { 
 		
 	$(".qrCode").qrcode({
-	    text: baseUrl+"/#"+dyFInputs.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
+	    text: baseUrl+"/#page.type."+dyFInputs.get(type).col+".id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
 	    render: 'image',
 		minVersion: 8,
 	    maxVersion: 40,
@@ -2146,7 +2146,7 @@ function inMyContacts (type,id) {
 	var res = false ;
 	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
 		$.each( myContacts[type], function( key,val ){
-			mylog.log("val", val);
+			//mylog.log("val", val);
 			if( ( typeof val["_id"] != "undefined" && id == val["_id"]["$id"] ) || 
 				(typeof val["id"] != "undefined" && id == val["id"] ) ) {
 				res = true;
@@ -3408,6 +3408,7 @@ var dyFInputs = {
 	    console.log("create form input email", inputObj);
 	    return inputObj;
 	},
+	
 	emailOptionnel :function (label,placeholder,rules) {  
     	var inputObj = dyFInputs.text(label, placeholder, rules);
     	inputObj.init = function(){

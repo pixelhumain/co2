@@ -13,6 +13,10 @@
 		font-size: 15px;
 		line-height: 17px;
 	}
+
+	#menu-room .sub-resolutions .load-coop-data{
+		line-height: 14px;
+	}
 </style>
 
 <?php 
@@ -36,6 +40,25 @@
 
 	$thisType = @$parentType; //@$room ? @$room["parentType"] : @$post["parentType"];
 ?>
+
+
+<?php if(@$access=="deny"){ ?>
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<h5 class="padding-left-10 letter-red">
+			<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
+		</h5>
+
+		<?php if(!isset(Yii::app()->session['userId'])){ ?>
+			<h5 class="padding-left-10">
+				<small class="letter-orange"><i class="fa fa-user-circle"></i> Vous n'êtes pas connecté</small>  	
+			</h5>
+		<?php } ?>
+		
+		<h5 class="padding-left-10 letter-red">
+			<small>Devenez membre ou contributeur</small>  	
+		</h5>
+	</div>
+<?php exit; } ?>
 
 <div class="col-lg-12 col-md-12 col-sm-12 no-padding bg-white text-dark" id="coop-container">
 	
@@ -76,6 +99,19 @@
 
 				
 				<h4 class="room-desc"><small><?php echo @$room["description"]; ?></small></h4>
+
+				<?php if(@$room["roles"] && @$room["roles"] != ""){ ?>
+					<?php $roomRoles = explode(",", @$room["roles"]); ?>
+					<h5 class="room-desc">
+						<small class="letter-blue">
+							<b><i class="fa fa-unlock-alt"></i> Accès réservé : </b>
+							<?php $r = ""; foreach ($roomRoles as $role) {
+								if($r!="") $r.=", "; $r.=$role;
+							} 	echo $r; ?>
+						</small>
+					</h5>
+				<?php } ?>
+
 				<hr>
 
 			<?php }else{ ?>
@@ -128,19 +164,18 @@
 
 
 					<?php if(@$proposalList){
-							foreach(array("tovote", "amendable", "closed", "archived") as $thisStatus){ 
+							foreach(array("tovote", "amendable", "closed", "disabled", "resolved") as $thisStatus){ 
 								foreach($proposalList as $key => $proposal){ ?>
 								<?php $totalVotant = Proposal::getTotalVoters($proposal); ?>
 								<?php $isAuthor = Yii::app()->session['userId'] == $proposal["creator"]; ?>
 									<?php if(@$proposal["status"] == $thisStatus){ ?>
 										<li class="submenucoop sub-proposals no-padding col-lg-4 col-md-6 col-sm-6 " 
 											data-name-search="<?php echo str_replace('"', '', @$proposal["title"]); ?>">
-										<a href="javascript:" class="load-coop-data " data-type="proposal" 
+										<a href="#page.type.<?php echo $proposal['parentType']; ?>.id.<?php echo $proposal['parentId']; ?>.view.coop.room.<?php echo $proposal['idParentRoom']; ?>.proposal.<?php echo $proposal['_id']; ?>" class="load-coop-data " data-type="proposal" 
 											data-status="<?php echo @$proposal["status"]; ?>" 
 										   	data-dataid="<?php echo (string)@$proposal["_id"]; ?>">
 									  		
-									  		<?php if(@$proposal["title"]){ ?>
-										  		<?php if((@$proposal["status"] == "amendable" || 
+									  			<?php if((@$proposal["status"] == "amendable" || 
 										  				  @$proposal["status"] == "tovote") && 
 										  				  ($isAdmin || $isAuthor)){ ?>
 										  			<span class="elipsis draggable" 
@@ -150,14 +185,13 @@
 										   					data-original-title="cliquer / déplacer dans un autre espace" 
 											  				data-placement="right"></i> 
 											  			<i class="fa fa-hashtag"></i> 
-											  			<?php echo @$proposal["title"]; ?>
+											  			<?php if(@$proposal["title"]) 
+											  					   echo @$proposal["title"]; 
+											  				  else echo "<small><b>".
+											  				  		substr(@$proposal["description"], 0, 150).
+											  				  		   "</b></small>";
+											  			?>
 										  			</span>
-										  		<?php }else{ ?>
-										  			<span class="elipsis">
-											  			<i class="fa fa-hashtag"></i> 
-											  			<?php echo @$proposal["title"]; ?>
-										  			</span>
-										  		<?php } ?>
 										  			
 									  		<?php }else{ ?> 
 										  		<small class="elipsis"><b>
@@ -166,7 +200,8 @@
 										  		</small>
 									  		<?php } ?>
 									  		
-										  	<?php if(@$post["status"]) { $parentRoom = Room::getById($proposal["idParentRoom"]); ?>
+										  	<?php if(@$post["status"]) { 
+										  		$parentRoom = Room::getById(@$proposal["idParentRoom"]); ?>
 										  	<br>
 										  	<small class="elipsis">
 									  			<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
@@ -269,11 +304,18 @@
 					<?php  	if(@$resolutionList)
 							foreach($resolutionList as $key => $resolution){ ?>
 								<li class="submenucoop sub-resolutions no-padding col-lg-4 col-md-6 col-sm-6">
-									<a href="javascript:" class="load-coop-data" data-type="resolution" 
+									<a href="#page.type.<?php echo $resolution['parentType']; ?>.id.<?php echo $resolution['parentId']; ?>.view.coop.room.<?php echo $resolution['idParentRoom']; ?>.resolution.<?php echo $resolution['_id']; ?>" class="load-coop-data" data-type="resolution" 
 									   data-status="<?php echo @$resolution["status"]; ?>" 
 									   data-dataid="<?php echo (string)@$resolution["_id"]; ?>">
+
 								  		<span class="elipsis">
-								  			<i class="fa fa-hashtag"></i> <?php echo @$resolution["title"]; ?>
+								  			<i class="fa fa-hashtag"></i> 
+								  			<?php if(@$resolution["title"]) 
+								  					   echo @$resolution["title"]; 
+								  				  else echo "<small><b>".
+								  				  		substr(@$resolution["description"], 0, 150).
+								  				  		   "</b></small>";
+								  			?>
 								  		</span>
 								  	</a>
 								</li>
@@ -322,7 +364,8 @@
 							foreach($actionList as $key => $action){ ?>
 								<li class="submenucoop sub-actions no-padding col-lg-4 col-md-6 col-sm-6"
 									data-name-search="<?php echo str_replace('"', '', @$action["name"]); ?>">
-									<a href="javascript:" class="load-coop-data" data-type="action"
+									<a href="#page.type.<?php echo $action['parentType']; ?>.id.<?php echo $action['parentId']; ?>.view.coop.room.<?php echo $action['idParentRoom']; ?>.action.<?php echo $action['_id']; ?>" 
+										class="load-coop-data" data-type="action"
 										data-status="<?php echo @$action["status"]; ?>" 
 								   		data-dataid="<?php echo (string)@$action["_id"]; ?>">
 								  		<?php if(@$action["status"] == "todo" && $auth){ ?>
@@ -418,6 +461,11 @@
 
 		uiCoop.initDragAndDrop();
 		uiCoop.initSearchInMenuRoom();
+
+		if(currentRoomId != "")
+		location.hash = "#page.type." + contextData.type + ".id." + contextData.id + 
+						".view.coop.room." + currentRoomId;
+
 	});
 
 </script>

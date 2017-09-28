@@ -406,13 +406,13 @@ var Login = function() {
 
 var oldCp = "";
 
-function validateUserName() { console.log("validateUserName click");
+function validateUserName() { mylog.log("validateUserName click");
 	var username = $('.form-register #username').val();
 	if(username.length >= 4) {
 		clearTimeout(timeout);
 		timeout = setTimeout(function() {
 				//mylog.log("bing !");
-				if (! isUniqueUsername(username)) { console.log("validateUserName notUnik");
+				if (! isUniqueUsername(username)) { mylog.log("validateUserName notUnik");
 					var validator = $( '.form-register' ).validate();
 					validator.showErrors({
   						"username": trad["usernamenotunique"]

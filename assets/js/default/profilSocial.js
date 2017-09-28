@@ -64,9 +64,8 @@ function bindButtonMenu(){
 	$(".btn-start-notifications").click(function(){
 		//$(".ssmla").removeClass('active');
 		responsiveMenuLeft(true);
+		reloadWindow=false;
 		location.hash=hashUrlPage+".view.notifications";
-		//history.pushState(null, "New Title", hashUrlPage+".view.notifications");
-		//location.search="?view=notifications";
 		loadNotifications();
 	});
 	$(".btn-start-chart").click(function(){
@@ -130,6 +129,7 @@ function bindButtonMenu(){
 	});
 		
 	$("#subsubMenuLeft a").click(function(){
+		onchangeClick=false;
 		$("#subsubMenuLeft a").removeClass("active");
 		$(this).addClass("active");
 	});
@@ -625,11 +625,11 @@ function loadContacts(){
     function getfilterRoles(roles) { 
     	console.log("roles",roles);
         $("#listRoles").html("");
-        $("#listRoles").append("<a class='btn btn-link text-red favElBtn favAllBtn' "+
+        $("#listRoles").append("<a class='btn btn-link letter-blue favElBtn favAllBtn' "+
             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'>"+
             " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a>");
         	$.each( roles,function(k,o){
-                $("#listRoles").append("<a class='btn btn-link favElBtn text-red "+slugify(k)+"Btn' "+
+                $("#listRoles").append("<a class='btn btn-link favElBtn letter-blue "+slugify(k)+"Btn' "+
                                 "data-tag='"+slugify(k)+"' "+
                                 "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(k)+"\",\".searchEntityContainer\",1)'>"+
                                   k+" <span class='badge'>"+o.count+"</span>"+
@@ -805,21 +805,28 @@ function toogleNotif(open){
 }
 
 function loadLiveNow () {
-	mylog.log("loadLiveNow");
-	var dep = ( ( notNull(contextData["address"])  && notNull(contextData["address"]["depName"]) ) ? 
-				contextData["address"]["depName"] : "");
+	mylog.log("loadLiveNow", contextData.address);
+
+	var level = {} ;
+	if( notNull(contextData.address)) {
+		mylog.log("loadLiveNow", contextData.address);
+		if(notNull(contextData.address.level4)){
+			mylog.log("loadLiveNow", contextData.address.level4);
+			level[contextData.address.level4] = { type : "level4", name : contextData.address.level4Name } ;
+		} else if(notNull(contextData.address.level3)){
+			level[contextData.address.level3] = { type : "level3", name : contextData.address.level3Name } ;
+		} else if(notNull(contextData.address.level2)){
+			level[contextData.address.level2] = { type : "level2", name : contextData.address.level2Name } ;
+		} else
+			level[contextData.address.level1] = { type : "level1", name : contextData.address.level1Name } ;
+	}
+
+	mylog.log("loadLiveNow", level);
+	
 
     var searchParams = {
       "tpl":"/pod/nowList",
-      //"latest" : true,
-      //"searchType" : [typeObj["event"]["col"],typeObj["project"]["col"],
-      //					typeObj["organization"]["col"],"classified",
-      //				 /*typeObj["organization"]["col"]*//*,typeObj["action"]["col"]*/], 
-      //"searchTag" : $('#searchTags').val().split(','), //is an array
-      //"searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
-      //"searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-      "searchLocalityDEPARTEMENT" : new Array(dep), //$('#searchLocalityDEPARTEMENT').val().split(','),
-      //"searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
+      "searchLocality" : level,
       "indexMin" : 0, 
       "indexMax" : 30 
     };

@@ -128,14 +128,14 @@ dynForm = {
                	$("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html(parseInt(oldCount)+1);
                	
                	if(typeof data.map.idParentRoom != "undefined"){
-	               	uiCoop.getCoopData(null, null, "room", null, data.map.idParentRoom);
+	               	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, data.map.idParentRoom);
 	                setTimeout(function(){
-	                	uiCoop.getCoopData(null, null, "proposal", null, data.id);
+	                	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, data.id);
 	                }, 1000);
 	            }else{
-	            	uiCoop.getCoopData(null, null, "room", null, currentRoomId);
+	            	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, currentRoomId);
 	                setTimeout(function(){
-	                	uiCoop.getCoopData(null, null, "proposal", null, idParentProposal);
+	                	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, idParentProposal);
 	                }, 1000);
 	            }
             }
@@ -223,10 +223,36 @@ dynForm = {
 
             }),*/
             voteDateEnd : dyFInputs.voteDateEnd,
+            majority: dyFInputs.inputText( "Règle de majorité (%) <small class='letter-green'>indiquez une valeur entre 50% et 100%</small>", "50%" ),
+            
+            voteAnonymous : dyFInputs.checkboxSimple("true", "voteAnonymous", 
+            										{ "onText" : "Oui",
+            										  "offText": "Non",
+            										  "onLabel" : "anonyme",
+            										  "offLabel": "désactivés",
+            										  //"inputId" : ".amendementDateEnddatetime",
+            										  "labelText": "Votes anonyme ?",
+            										  //"labelInInput": "Activer les amendements",
+            										  "labelInformation": "<i class='fa fa-info-circle'></i> Souhaitez-vous garder secrète l'identité des votants ?"
+
+            }),
+            
+            voteCanChange : dyFInputs.checkboxSimple("true", "voteCanChange", 
+            										{ "onText" : "Oui",
+            										  "offText": "Non",
+            										  "onLabel" : "changement de vote autorisé",
+            										  "offLabel": "changement de vote interdit",
+            										  //"inputId" : ".amendementDateEnddatetime",
+            										  "labelText": "Autoriser le changement de vote ?",
+            										  //"labelInInput": "Activer les amendements",
+            										  "labelInformation": "<i class='fa fa-info-circle'></i> Souhaitez-vous permettre aux votants de changer leur choix à volonté ?"
+
+            }),
+            
+
             tags : dyFInputs.tags(),
             //image : dyFInputs.image(),
             urls : dyFInputs.urls,
-            majority: dyFInputs.inputText( "Règle de majorité (%) <small class='letter-green'>indiquez une valeur entre 50% et 100%</small>", "50%" ),
             //email: dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userConnected.email : "") ),
             //idUserAuthor : dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userId : "") ),
             status: dyFInputs.inputHidden( "amendable" ),

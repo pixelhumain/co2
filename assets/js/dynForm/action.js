@@ -9,7 +9,7 @@ dynForm = {
 	    		$("#ajaxFormModal #room").val( contextDataDDA.room );
     		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
 	    	},*/
-            sub : function(){ alert("yo");
+            sub : function(){ //alert("yo");
                 $("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
                                               .addClass("bg-dark");
             },
@@ -34,10 +34,15 @@ dynForm = {
                 }else{
                     $("#ajaxFormModal #endDate").val("");
                 }
+
+                if(typeof useIdParentResolution != "undefined" && useIdParentResolution == true){
+                    $("#idParentResolution").val(idParentResolution);
+                    useIdParentResolution = false;
+                }
             }
 	    },
         beforeBuild : function(){
-            dyFObj.setMongoId('actions',function(){});
+            //dyFObj.setMongoId('actions',function(){});
         },
         beforeSave : function(){
             var dateformat = "DD/MM/YYYY HH:mm";
@@ -56,9 +61,9 @@ dynForm = {
             { 
                 console.log("afterSave action data", data);
                 dyFObj.closeForm();
-                uiCoop.getCoopData(null, null, "room", null, data.map.idParentRoom);
+                uiCoop.getCoopData(contextData.type, contextData.id, "room", null, data.map.idParentRoom);
                 setTimeout(function(){
-                    uiCoop.getCoopData(null, null, "action", null, data.id);
+                    uiCoop.getCoopData(contextData.type, contextData.id, "action", null, data.id);
                 }, 1000); 
                 //urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
             }
@@ -117,7 +122,8 @@ dynForm = {
               label : "Date de fin",
               placeholder : "Date de fin"
             },
-         	status: dyFInputs.inputHidden( "todo" ),
+            status: dyFInputs.inputHidden( "todo" ),
+            idParentResolution: dyFInputs.inputHidden( "" ),
             tags : dyFInputs.tags(),
             urls : dyFInputs.urls,
             email : dyFInputs.inputHidden( ( (userId!=null && userConnected != null) ? userConnected.email : "" ) ),

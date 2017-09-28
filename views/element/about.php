@@ -15,9 +15,9 @@
 		white-space: pre-line;
 	}
 
-	#descriptionAbout{
+	/*#descriptionAbout{
 		padding-left : 10px;
-	}
+	}*/
 
 	.contentInformation{
 		border-bottom: 1px solid #dbdbdb;

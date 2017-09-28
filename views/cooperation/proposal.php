@@ -10,21 +10,26 @@
 
 	$totalVotant = Proposal::getTotalVoters($proposal);
 	$voteRes = Proposal::getAllVoteRes($proposal);
-				
+	
 ?>
 
+<?php if(@$access=="deny"){ ?>
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<h5 class="padding-left-10 letter-red">
+			<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
+		</h5>
+		<h5 class="padding-left-10 letter-red">
+			<small>Devenez membre ou contributeur</small>  	
+		</h5>
+	</div>
+<?php exit; } ?>
+
+
 <div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
-
-
-	<?php if(@$post["status"]) {
-  		$parentRoom = Room::getById($proposal["idParentRoom"]);
-  	?>
-  	<h4 class="letter-turq">
+  	<h4 class="letter-turq load-coop-data title-room" 
+  		data-type="room" data-dataid="<?php echo @$proposal["idParentRoom"]; ?>">
   		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
 	</h4>
-	<!-- <br> -->
-  	<?php  } ?>
-
 </div>
 
 
@@ -42,8 +47,7 @@
 		  <ul class="dropdown-menu">
 		  	<?php if(!@$proposal["amendements"] && !$hasVote){ ?>
 		    <li><a href="javascript:" id="btn-edit-proposal" 
-		    		data-id-proposal="<?php echo $proposal["_id"]; ?>"
-		    		data-status="archived">
+		    		data-id-proposal="<?php echo $proposal["_id"]; ?>">
 		    	<i class="fa fa-pencil"></i> Modifier ma proposition
 		    	</a>
 		    </li>
@@ -54,17 +58,33 @@
 		    	</button>
 		    </li>
 			<?php } ?>
-		    <li><a href="javascript:" class="btn-option-status-proposal" 
-		    		data-id-proposal="<?php echo $proposal["_id"]; ?>"
-		    		data-status="archived">
-		    	<i class="fa fa-trash"></i> Archiver ma proposition
-		    	</a>
-		    </li>
+
+			<?php if(@$proposal["status"] == "disabled"){ ?>
+			    <li><a href="javascript:" class="btn-option-status-proposal" 
+			    		data-id-proposal="<?php echo $proposal["_id"]; ?>"
+			    		data-status="amendable">
+			    	<i class="fa fa-pencil"></i> Retour aux amendements
+			    	</a>
+			    </li>
+			    <li><a href="javascript:" class="btn-option-status-proposal" 
+			    		data-id-proposal="<?php echo $proposal["_id"]; ?>"
+			    		data-status="tovote">
+			    	<i class="fa fa-gavel"></i> Ouvrir les votes
+			    	</a>
+			    </li>
+		    <?php }else{ ?>
+			    <li><a href="javascript:" class="btn-option-status-proposal" 
+			    		data-id-proposal="<?php echo $proposal["_id"]; ?>"
+			    		data-status="disabled">
+			    	<i class="fa fa-times"></i> Désactiver ma proposition
+			    	</a>
+			    </li>
+		    <?php } ?>
 		    <!-- <li><hr class="margin-5"></li> -->
 		    <li><a href="javascript:" class="btn-option-status-proposal" 
 		    		data-id-proposal="<?php echo $proposal["_id"]; ?>"
 		    		data-status="closed">
-		    		<i class="fa fa-times"></i> Fermer ma proposition
+		    		<i class="fa fa-trash"></i> Fermer ma proposition
 		    	</a>
 		    </li>
 		  </ul>
@@ -98,6 +118,35 @@
 		<?php } ?>
 	</label>
 
+	<hr style="margin-top:5px;">
+	<h4 class="no-margin status-breadcrum">
+		
+		<small><i class="fa fa-certificate"></i></small>
+		<?php if(@$proposal["status"] == "amendable"){ ?>		
+			<span class="letter-purple underline"><?php echo Yii::t("cooperation", $proposal["status"]); ?></span>	
+		<?php }else{ ?>	
+			<small><?php echo Yii::t("cooperation", "amendable"); ?></small>	
+		<?php } ?>			
+		
+		<small><i class="fa fa-chevron-right"></i></small>
+		<?php if(@$proposal["status"] == "tovote"){ ?>
+			<span class="letter-green underline"><?php echo Yii::t("cooperation", $proposal["status"]); ?></span>	
+		<?php }else if(@$proposal["status"] == "disabled"){ ?>
+			<span class="letter-orange underline"><?php echo Yii::t("cooperation", $proposal["status"]); ?></span>	
+		<?php }else{ ?>
+			<small><?php echo Yii::t("cooperation", "tovote"); ?></small>	
+		<?php } ?>
+		
+		<small><i class="fa fa-chevron-right"></i></small>
+		<?php if(@$proposal["status"] == "closed"){ ?>
+			<span class="letter-red underline"><?php echo Yii::t("cooperation", $proposal["status"]); ?></span>
+		<?php }else if(@$proposal["status"] == "resolved"){ ?>
+			<span class="letter-red underline"><?php echo Yii::t("cooperation", $proposal["status"]); ?></span>
+		<?php }else{ ?>
+			<small><?php echo Yii::t("cooperation", "closed"); ?></small>
+		<?php } ?>
+	</h4>
+
 	<?php if(@$proposal["status"] == "amendable"){ ?>
 		<hr>
 		<h4 class="text-purple no-margin">
@@ -116,7 +165,6 @@
 
 
 <div class="col-lg-9 col-md-12 col-sm-12 pull-left margin-bottom-15">
-
 	
 	<?php if(@$proposal["status"] == "tovote"){ ?>
 		<hr>
@@ -178,21 +226,59 @@
 </div>
 
 
+<?php if(@$proposal["status"] == "resolved"){ ?>
+	<div class="col-lg-12 col-md-12 col-sm-12 margin-bottom-15">
+		<hr>
+		<h4 class=""><i class="fa fa-bell"></i> La <b>résolution</b> suivante a été prise : <br class="visible-md">
+			<small>la proposition est 
+			 	<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && 
+			 			$voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
+					<span class="letter-green">validée</span>
+				 <?php }else{ ?>
+			 	<span class="letter-red">refusée</span>
+				<?php } ?>
+			</small>
+		</h4>
+		<?php if(@$proposal["voteDateEnd"]){ ?>
+			<i class='fa fa-clock-o'></i> fin du vote 
+			<?php echo Translate::pastTime($proposal["voteDateEnd"], "date"); ?> · 
+			<small class='letter-green'>le 
+				<?php echo date('d/m/Y H:i e', strtotime($proposal["voteDateEnd"])); ?>
+			</small>
+		<?php } ?><br>
+		<button class="btn btn-default load-coop-data"
+				data-type="resolution" data-dataid="<?php echo @$proposal["idResolution"]; ?>">
+				<i class="fa fa-chevron-right"></i> Afficher la résolution
+		</button>
+
+	</div>
+<?php } ?>
+
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-5">
 	
-	<div class="padding-25 bg-lightblue radius-5" id="container-text-proposal" 
-		 style="padding-top:5px !important; color:#2C3E50 !important">
-			
+	<div class="padding-25 bg-lightblue radius-5" id="container-text-proposal">
+
 			<?php if(@$proposal["title"]){ ?>
 				<h3><i class="fa fa-hashtag"></i> <?php echo @$proposal["title"]; ?></h3>
 			<?php }else{ ?>
 				<h3><i class="fa fa-angle-down"></i> Proposition</h3>
 			<?php } ?>
 		
+			<?php if(@$proposal["description"]){
+					$proposal["description"] = Translate::strToClickable($proposal["description"]);
+			} ?>
+			
 			<?php echo nl2br(@$proposal["description"]); ?>
+			<?php if(@$proposal["tags"]){ ?>
+				<br><br> <b>Tags : </b>
+				<?php foreach($proposal["tags"] as $key => $tag){ ?>
+					<span class="letter-red margin-right-15">#<?php echo $tag; ?></span>
+				<?php } ?>	
+				
+			<?php } ?>
 	</div>
 
-	<?php //if(@$proposal["status"] != "tovote"){ ?>
+
 		<div class="col-lg-12 col-md-12 col-sm-12 margin-top-15 no-padding">
 			<?php if(@$proposal["status"] == "amendable"){ ?>
 				<?php if($auth){ ?>
@@ -204,7 +290,7 @@
 					Afficher les amendements (<?php echo count(@$proposal["amendements"]); ?>) <i class="fa fa-chevron-right"></i>
 				</button>
 				<hr>
-			<?php }else if((@$proposal["status"] == "closed" || @$proposal["status"] == "archived") 
+			<?php }else if((@$proposal["status"] == "closed" || @$proposal["status"] == "disabled") 
 							&& count(@$proposal["amendements"]) > 0){ ?>
 				<button class="btn btn-link text-purple radius-5 btn-show-amendement pull-left">
 					Afficher tous les amendements (<?php echo count(@$proposal["amendements"]); ?>) <i class="fa fa-chevron-right"></i>
@@ -217,79 +303,79 @@
 			<?php } ?>
 			<!-- <hr>	 -->
 			<?php if(@$proposal["amendementActivated"] == "true"){ ?>
-				<h4 class="pull-left text-purple">
-					
-					<i class="fa fa-angle-down"></i> Liste des amendements 
-					<?php if(@$proposal["status"] == "amendable"){ ?>temporairement<?php } ?> 
-					validés · 
 
-					<small>
-						<i class="fa fa-balance-scale"></i> Majorité : <b><?php echo @$proposal["majority"]; ?>%</b> 
-					</small>
-				</h4>
+			<h4 class="pull-left text-purple">
 				
-				<button class="btn btn-default pull-right btn-extend-proposal">
-					<i class="fa fa-long-arrow-left"></i>
-				</button>
-				<button class="btn btn-default pull-right btn-minimize-proposal hidden">
-					<i class="fa fa-long-arrow-right"></i>
-				</button>
-				<div class="col-lg-12 col-md-12 col-sm-12 no-padding">
-					<?php 
-						$i=0;
-						if(@$proposal["amendements"]){
-							foreach($proposal["amendements"] as $key => $am){ 
-								//var_dump($am); //exit;
-								$author = Person::getSimpleUserById(@$am["idUserAuthor"]);
-								$allVotes = @$am["votes"] ? $am["votes"] : array();
-								$myId = Yii::app()->session["userId"];
-								$hasVoted = Cooperation::userHasVoted($myId, $allVotes);
-						 		$voteRes = Proposal::getAllVoteRes($am);
-						 		unset($voteRes["uncomplet"]);
-						 		$allVotesRes[$key] = $voteRes;
-						 		$validate = @$voteRes["up"] && 
-						 					@$voteRes["up"]["percent"] && 
-						 					$voteRes["up"]["percent"] > @$proposal["majority"];
-					?>
-					<?php if($validate == true){ $i++; ?>
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow2 margin-top-15 padding-15 podVoteAmendement">
-					
-							<label class="pull-left"><span class="badge bg-purple">n°<?php echo $key; ?></span> 
-							<span class="letter-green">
-								<i class="fa fa-angle-right"></i> Ajout</span>
-							</label>
-								
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-10 margin-top-5 no-padding textAmdt">
-								<?php echo @$am["textAdd"]; ?>
-							</div>
+				<i class="fa fa-angle-down"></i> Liste des amendements 
+				<?php if(@$proposal["status"] == "amendable"){ ?>temporairement<?php } ?> 
+				validés · 
 
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding progress <?php if($proposal["status"] != "tovote") echo "hidden-min"; ?>">
-					  	  		<?php 
-					  	  			$voteRes = Proposal::getAllVoteRes($am);
-					  	  			$totalVotant = Proposal::getTotalVoters($am);
-						  	  		foreach($voteRes as $key => $value){ 
-						  	  	?>
-									  <div class="progress-bar bg-<?php echo $value["bg-color"]; ?>" role="progressbar" 
-									  		style="width:<?php echo $value["percent"]; ?>%">
-									    <?php echo $value["percent"]; ?>%
-									  </div>
-								<?php } ?>
-
-							</div> 
-
+				<small>
+					<i class="fa fa-balance-scale"></i> Majorité : <b><?php echo @$proposal["majority"]; ?>%</b> 
+				</small>
+			</h4>
+			
+			<button class="btn btn-default pull-right btn-extend-proposal">
+				<i class="fa fa-long-arrow-left"></i>
+			</button>
+			<button class="btn btn-default pull-right btn-minimize-proposal hidden">
+				<i class="fa fa-long-arrow-right"></i>
+			</button>
+			<div class="col-lg-12 col-md-12 col-sm-12 no-padding">
+				<?php 
+					$i=0;
+					if(@$proposal["amendements"]){
+						foreach($proposal["amendements"] as $key => $am){ 
+							//var_dump($am); //exit;
+							$author = Person::getSimpleUserById(@$am["idUserAuthor"]);
+							$allVotes = @$am["votes"] ? $am["votes"] : array();
+							$myId = Yii::app()->session["userId"];
+							$hasVoted = Cooperation::userHasVoted($myId, $allVotes);
+					 		$voteRes = Proposal::getAllVoteRes($am);
+					 		unset($voteRes["uncomplet"]);
+					 		$allVotesRes[$key] = $voteRes;
+					 		$validate = @$voteRes["up"] && 
+					 					@$voteRes["up"]["percent"] && 
+					 					$voteRes["up"]["percent"] > @$proposal["majority"];
+				?>
+				<?php if($validate == true){ $i++; ?>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow2 margin-top-15 padding-15 podVoteAmendement">
+				
+						<label class="pull-left"><span class="badge bg-purple">n°<?php echo $key; ?></span> 
+						<span class="letter-green">
+							<i class="fa fa-angle-right"></i> Ajout</span>
+						</label>
+							
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-10 margin-top-5 no-padding textAmdt">
+							<?php echo @$am["textAdd"]; ?>
 						</div>
-					<?php } //if ?>
 
-					<?php } //foreach ?>
-					<?php } if($i == 0){ echo "<i class='fa fa-ban'></i> Aucun amendement validé"; } ?>
-				</div>
-			<?php }else{ ?>
-				<h5 class="pull-left text-purple">
-					<i class="fa fa-ban"></i> Amendements désactivés
-				</h5>
-			<?php } ?>
-		</div>
-		<?php //} ?>
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding progress <?php if($proposal["status"] != "tovote") echo "hidden-min"; ?>">
+				  	  		<?php 
+				  	  			$voteRes = Proposal::getAllVoteRes($am);
+				  	  			$totalVotant = Proposal::getTotalVoters($am);
+					  	  		foreach($voteRes as $key => $value){ 
+					  	  	?>
+								  <div class="progress-bar bg-<?php echo $value["bg-color"]; ?>" role="progressbar" 
+								  		style="width:<?php echo $value["percent"]; ?>%">
+								    <?php echo $value["percent"]; ?>%
+								  </div>
+							<?php } ?>
+
+						</div> 
+
+					</div>
+				<?php } //if ?>
+
+				<?php } //foreach ?>
+				<?php } if($i == 0){ echo "<i class='fa fa-ban'></i> Aucun amendement validé"; } ?>
+			</div>
+		<?php }else{ ?>
+			<h5 class="pull-left text-purple">
+				<i class="fa fa-ban"></i> Amendements désactivés
+			</h5>
+		<?php } ?>
+	</div>
 
 	<?php if(@$proposal["arguments"]){ ?>
 		<hr>
@@ -299,19 +385,18 @@
 		</div>
 	<?php } ?>
 
-	<?php if(@$proposal["tags"]){ ?>
-		<hr>
-		<?php foreach($proposal["tags"] as $key => $tag){ ?>
-			<span class="badge bg-red"><?php echo $tag; ?></span>
-		<?php } ?>	
-	<?php } ?>
+	
 
 	<?php if(@$proposal["urls"]){ ?>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 		<hr>	
 		<h4 class=""><i class="fa fa-angle-down"></i> Liens externes</h4>
 		<?php foreach($proposal["urls"] as $key => $url){ ?>
-			<a href="<?php echo $url; ?>" class="btn btn-link"><?php echo $url; ?></a>
+			<a href="<?php echo $url; ?>" target="_blank" class="btn btn-default bg-white shadow2 margin-bottom-5">
+				<i class="fa fa-external-link"></i> <?php echo $url; ?>
+			</a>
 		<?php } ?>
+	</div>
 	<?php } ?>
 </div>
 
@@ -367,6 +452,9 @@
 	var idParentProposal = "<?php echo $proposal['_id']; ?>";
 	var idParentRoom = "<?php echo $proposal['idParentRoom']; ?>";
 	var msgController = "<?php echo @$msgController ? $msgController : ''; ?>";
+
+	currentRoomId = idParentRoom;
+
 	jQuery(document).ready(function() { 
 		
 		uiCoop.initUIProposal();

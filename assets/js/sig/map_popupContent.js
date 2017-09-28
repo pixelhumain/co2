@@ -58,7 +58,7 @@
 			if(typeof TPL_IFRAME != "undefined" && TPL_IFRAME==true){
 				url = "https://www.communecter.org/"+url;
 				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
-			}else{							
+			}else{						
 				popupContent += "<a href='"+url+"' onclick='"+onclick+"' class='item_map_list popup-marker lbh' id='popup"+id+"'>";
 			}
 			popupContent += "<div class='main-panel'>"
@@ -480,8 +480,9 @@
 		}
 
 		Sig.getPopupAddressInformation = function(data){
+			mylog.log("getPopupAddressInformation", data);
 			var popupContent = "";
-			if("undefined" != typeof data['address']) { 
+			if(null != data['address'] && "undefined" != typeof data['address'] ) { 
 				if ("undefined" != typeof data['address']['streetAddress'] )
 					popupContent	+= 	"<div class='popup-info-profil'>" + data['address']['streetAddress'] + "</div>";
 					
@@ -586,7 +587,7 @@
 								"<div class='form-group inline-block padding-15 form-in-map'>"+
 									"<h3 class='margin-top-5'><i class='fa fa-angle-down'></i> <i class='fa fa-home'></i> Adresse</h3>"+
 									"<div class='text-dark margin-top-5 hidden-xs'><i class='fa fa-circle'></i> Indiquez une adresse pour un placement automatique</div>"+
-									"<div class='text-dark margin-top-5 hidden-xs'><i class='fa fa-circle'></i> Déplacez l'icon avec la souris pour un placement plus précis</div>"+
+									"<div class='text-dark margin-top-5 hidden-xs'><i class='fa fa-circle'></i> Déplacez l'icône avec la souris pour un placement plus précis</div>"+
 									"<hr class='col-md-12'>"+
 									"<select class='form-group col-md-12 col-xs-12' name='newElement_country' id='newElement_country'>"+
 									"<option value=''>"+trad.chooseCountry+"</option>"+countries+
@@ -639,7 +640,7 @@
 								"<div class='form-group inline-block padding-15 form-in-map'>"+
 									"<h3 class='margin-top-5'><i class='fa fa-angle-down'></i> <i class='fa fa-home'></i> Postal Code</h3>"+
 									"<div class='text-dark margin-top-5 hidden-xs'><i class='fa fa-circle'></i> Indiquez un code postal pour une commune</div>"+
-									"<div class='text-dark margin-top-5 hidden-xs'><i class='fa fa-circle'></i> Déplacez l'icon avec la souris pour un placement plus précis</div>"+
+									"<div class='text-dark margin-top-5 hidden-xs'><i class='fa fa-circle'></i> Déplacez l'icône avec la souris pour un placement plus précis</div>"+
 									"<hr class='col-md-12'>"+
 									"<div id='divPostalCode' class=' dropdown pull-left col-md-12 col-xs-12 no-padding'> " +
 								  		"<input class='form-group col-md-12 col-xs-12' type='text' name='newPC_postalCode' placeholder='Code postal'>"+

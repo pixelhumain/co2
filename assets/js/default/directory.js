@@ -1265,7 +1265,8 @@ var directory = {
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>publié </span>" + 
                     params.updated + 
                   "</div>";*/
-        
+        if(typeof userId != "undefined" && params.creator == userId)
+          params.hash=params.hash+'.view.show';
         //if(typeof params.size == "undefined" || params.size == "max")
           str += "<a href='"+params.hash+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + 
                     params.imgProfil + 

@@ -97,7 +97,7 @@
 						
 					"</div>"+
 				"</div>"+
-				"<a href='#page.type."+type+".id."+data._id.$id+".view.pro' class='lbh btn bg-orange linkBtnList'>Manage it</a>"+
+				"<a href='#page.type."+type+".id."+data._id.$id+"' class='lbh btn bg-orange linkBtnList'>Manage it</a>"+
 			"</div>";
 		return str;
 	}

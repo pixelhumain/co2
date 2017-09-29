@@ -362,7 +362,7 @@ function modifyNews(idNews,typeNews){
 				   	"<div id='resultsUpdate' class='bg-white results col-sm-12'>";
 				   	if(typeof updateNews[idNews]["media"] != "undefined"){
 				   		if(updateNews[idNews]["media"]["type"]=="url_content")
-				   			message += getMediaCommonHtml(updateNews[idNews]["media"],"save");
+				   			message += processUrl.getMediaCommonHtml(updateNews[idNews]["media"],"save");
 				   		else if(updateNews[idNews]["media"]["type"]=="gallery_files"){
 				   			message += getMediaFiles(updateNews[idNews]["media"],idNews, "update")+
 				   			"<input type='hidden' class='type' value='gallery_files'>";

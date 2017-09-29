@@ -176,7 +176,7 @@ class CommunecterController extends Controller
       'cityexists'          => array("href" => "/ph/co2/city/cityexists"),
       'autocompletemultiscope'          => array("href" => "/ph/co2/city/autocompletemultiscope"),
       "save"               => array("href" => "/ph/co2/city/save", "public" => true),
-      'getdepandregion'          => array("href" => "/ph/co2/city/getdepandregion"),
+      'getlevel'          => array("href" => "/ph/co2/city/getlevel"),
     ),
     "news"=> array(
       "index"   => array( "href" => "/ph/co2/news/index", "public" => true,'title' => "Fil d'actualités - N.E.W.S", "subTitle"=>"Nord.Est.West.Sud","pageTitle"=>"Fil d'actualités - N.E.W.S"),
@@ -520,8 +520,12 @@ class CommunecterController extends Controller
       "incnbclick"        => array('href' => "ph/co2/siteurl/incnbclick")
     ),
     "cooperation" => array(
-      "getcoopdata"        => array('href' => "ph/communecter/cooperation/getcoopdata"),
-      "savevote"        => array('href' => "ph/communecter/cooperation/savevote")
+      "getcoopdata"        => array('href' => "ph/co2/cooperation/getcoopdata"),
+      "savevote"           => array('href' => "ph/co2/cooperation/savevote"),
+      "deleteamendement"  => array('href' => "ph/co2/cooperation/deleteamendement")
+    ),
+    "pdf" => array(
+      "create"        => array('href' => "ph/co2/pdf/create")
     ),
   );
 

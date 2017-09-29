@@ -58,7 +58,7 @@
 			if(typeof TPL_IFRAME != "undefined" && TPL_IFRAME==true){
 				url = "https://www.communecter.org/"+url;
 				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
-			}else{							
+			}else{						
 				popupContent += "<a href='"+url+"' onclick='"+onclick+"' class='item_map_list popup-marker lbh' id='popup"+id+"'>";
 			}
 			popupContent += "<div class='main-panel'>"
@@ -480,8 +480,9 @@
 		}
 
 		Sig.getPopupAddressInformation = function(data){
+			mylog.log("getPopupAddressInformation", data);
 			var popupContent = "";
-			if("undefined" != typeof data['address']) { 
+			if(null != data['address'] && "undefined" != typeof data['address'] ) { 
 				if ("undefined" != typeof data['address']['streetAddress'] )
 					popupContent	+= 	"<div class='popup-info-profil'>" + data['address']['streetAddress'] + "</div>";
 					

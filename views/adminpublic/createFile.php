@@ -3,6 +3,8 @@ $cs = Yii::app()->getClientScript();
 $cssAnsScriptFilesModule = array(
 		'/plugins/jsonview/jquery.jsonview.js',
 		'/plugins/jsonview/jquery.jsonview.css',
+		'/plugins/JSzip/jszip.min.js',
+		'/plugins/FileSaver.js/FileSaver.min.js',
 		//'/assets/js/sig/geoloc.js',
 		/*'/assets/js/dataHelpers.js',
 		'/assets/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
@@ -16,8 +18,8 @@ $userId = Yii::app()->session["userId"] ;
 $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 //header + menu
 $this->renderPartial($layoutPath.'header', 
-                    array(  "layoutPath"=>$layoutPath , 
-                            "page" => "admin") ); 
+		    array(  "layoutPath"=>$layoutPath , 
+						    "page" => "admin") ); 
 ?>
 
 <style>
@@ -231,7 +233,14 @@ $this->renderPartial($layoutPath.'header',
 
 		<div class="col-md-12 mapping-step-tsr section-tsr" id="menu-step-visualisation">
 			<div class="panel-scroll row-fluid height-300">
+				<label class="nbFile text-dark">Liste des éléments :</label>
 				<table id="representation" class="table table-striped table-hover"></table>
+			</div>
+			<br/>
+			<div class="panel-scroll row-fluid height-300">
+				<label class="nbFile text-dark">Liste des villes a ajouter :</label>
+				<table id="saveCitiesTab" class="table table-striped table-hover"></table>
+				<input type="hidden" id="jsonCities" value="">
 			</div>
 			<br/>	
 			<div class="col-xs-12 col-sm-6">
@@ -434,13 +443,25 @@ function bindCreateFile(){
 
 
 	$("#btnImport").off().on('click', function(){
-  		$("<a />", {
-		    "download": nameFile+"_StandardForCommunecter.json",
-		    "href" : "data:application/json," + encodeURIComponent($('#jsonImport').val())
-		  }).appendTo("body")
-		  .click(function() {
-		     $(this).remove()
-		  })[0].click() ;
+		if(notEmpty($('#jsonCities').val())){
+			var zip = new JSZip();
+			zip.file(nameFile+"_StandardForCommunecter.json", $('#jsonImport').val());
+			zip.file("SaveCities.json", $('#jsonCities').val());
+			zip.generateAsync({type:"blob"})
+				.then(function(content) {
+				    // see FileSaver.js
+				    saveAs(content, nameFile+"_Import.zip");
+				});
+		}else{
+			saveAs($('#jsonImport').val(), nameFile+"_StandardForCommunecter.json");
+		}
+  		// $("<a />", {
+		  //   "download": nameFile+"_StandardForCommunecter.json",
+		  //   "href" : "data:application/json," + encodeURIComponent($('#jsonImport').val())
+		  // }).appendTo("body")
+		  // .click(function() {
+		  //    $(this).remove()
+		  // })[0].click() ;
   	});
 
   	$("#btnError").off().on('click', function(){
@@ -587,13 +608,15 @@ function bindUpdate(data){
   	});
 
   	$("#fileImport").change(function(e) {
-    	var nameFileSplit = $("#fileImport").val().split("."); 
-  		if(extensions.indexOf(nameFileSplit[nameFileSplit.length-1]) == -1){
+    	var fileSplit = $("#fileImport").val().split("."); 
+  		if(extensions.indexOf(fileSplit[fileSplit.length-1]) == -1){
   			toastr.error("Vous devez sélectionner un fichier en CSV ou JSON");
   			return false ;
   		}
-  		nameFile = nameFileSplit[0];
-		typeFile = nameFileSplit[nameFileSplit.length-1];
+  		nameFileSplit = fileSplit[0].split('\\');
+  		mylog.log("nameFileSplit", nameFileSplit);
+  		nameFile = nameFileSplit[nameFileSplit.length-1];
+		typeFile = fileSplit[fileSplit.length-1];
 
 		if(extensions.indexOf(typeFile) == -1) {
 			alert('Upload CSV or JSON');
@@ -822,6 +845,7 @@ function cleanVisualisation(){
 	$("#representation").html("");
 	$("#jsonImport").val("");
     $("#jsonError").val("");
+    $("#jsonCities").val("");
 }
 
 function createInpu(nameFile, typeFile, typeElement){
@@ -846,22 +870,23 @@ function stepThree(params){
         		
         		var importD = "" ;
         		var errorD = "" ;
+        		var saveCities = "" ;
 
-        		if($("#jsonImport").val() == "")
-        			importD = data.elements;
-        		else{
-        			if(data.elements == "[]")
-        				importD = $("#jsonImport").val();
-        			else{
-        				var elt1 = jQuery.parseJSON($("#jsonImport").val());
-        				var elt2 = jQuery.parseJSON(data.elements);
-        				$.each(elt2, function(key, val){
-		        			elt1.push(val);
-		        		});
-        				importD = JSON.stringify(elt1);
-        			}
+				if($("#jsonImport").val() == "")
+					importD = data.elements;
+				else{
+					if(data.elements == "[]")
+						importD = $("#jsonImport").val();
+					else{
+						var elt1 = jQuery.parseJSON($("#jsonImport").val());
+						var elt2 = jQuery.parseJSON(data.elements);
+						$.each(elt2, function(key, val){
+							elt1.push(val);
+						});
+						importD = JSON.stringify(elt1);
+					}
 
-        		}
+				}
         		
         		if($("#jsonError").val() == "")
         			errorD = data.elementsWarnings;
@@ -878,50 +903,67 @@ function stepThree(params){
         			}
         		}
 
-        		
-        		mylog.log("importD",typeof importD);		
-        		mylog.log("errorD",typeof errorD);
+        		if($("#jsonCities").val() == "")
+					saveCities = data.saveCities;
+				else{
+					if(data.elements == "[]")
+						saveCities = $("#jsonCities").val();
+					else{
+						var elt1 = jQuery.parseJSON($("#jsonCities").val());
+						var elt2 = jQuery.parseJSON(data.saveCities);
+						$.each(elt2, function(key, val){
+							elt1.push(val);
+						});
+						saveCities = JSON.stringify(elt1);
+					}
 
-        		$("#jsonImport").val(importD);
-        		$("#jsonError").val(errorD);
-        		$("#divJsonImportView").JSONView(importD);
-        		$("#divJsonErrorView").JSONView(errorD);
+				}
+
+				
+				mylog.log("importD",typeof importD);		
+				mylog.log("errorD",typeof errorD);
+
+				$("#jsonImport").val(importD);
+				$("#jsonCities").val(importD);
+				$("#jsonError").val(errorD);
+				$("#divJsonImportView").JSONView(importD);
+				$("#divJsonErrorView").JSONView(errorD);
 
 				
 				var chaine = "" ;
-        		$.each(data.listEntite, function(keyListEntite, valueListEntite){
-        			nbFinal++;
-        			chaine += "<tr>" ;
-        			if(keyListEntite == 0)
-        			{
-        				chaine += "<th>N°</th>";
-        				$.each(valueListEntite, function(key, value){
-        					chaine += "<th>"+value+"</th>";
-        				});
-        			}else{
-        				chaine += "<td>"+keyListEntite+"</td>";
+				$.each(data.listEntite, function(keyListEntite, valueListEntite){
+					nbFinal++;
+					chaine += "<tr>" ;
+					if(keyListEntite == 0)
+					{
+						chaine += "<th>N°</th>";
 						$.each(valueListEntite, function(key, value){
-        					chaine += "<td>"+value+"</td>";
-        				});
-        			}
-        			chaine += "</tr>" ;
-        		});
-        		$("#representation").append(chaine);
+							chaine += "<th>"+value+"</th>";
+						});
+					}else{
+						chaine += "<td>"+keyListEntite+"</td>";
+						$.each(valueListEntite, function(key, value){
+							chaine += "<td>"+value+"</td>";
+						});
+					}
+					chaine += "</tr>" ;
+				});
+				$("#representation").append(chaine);
 
 
-        		$("#nbFileImport").html(jQuery.parseJSON(importD).length);
-        		$("#nbFileError").html(jQuery.parseJSON(errorD).length);
+				$("#nbFileImport").html(jQuery.parseJSON(importD).length);
+				$("#nbFileError").html(jQuery.parseJSON(errorD).length);
 
-        		if($("#checkboxTest").is(':checked')){
-        			$("#btnImport").hide();
-        			$("#btnError").hide();
-        		}else{
-        			$("#btnImport").show();
-        			$("#btnError").show();
-        		}
-        		//$("#verifBeforeImport").show();
-        	}
-        }
+				if($("#checkboxTest").is(':checked')){
+					$("#btnImport").hide();
+					$("#btnError").hide();
+				}else{
+					$("#btnImport").show();
+					$("#btnError").show();
+				}
+				//$("#verifBeforeImport").show();
+			}
+		}
     });
 }
 

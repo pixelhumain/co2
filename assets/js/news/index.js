@@ -43,14 +43,8 @@ var loadStream = function(indexMin, indexMax){ mylog.log("loadStream");
     if(isLiveGlobal() && liveScopeType == "global"){ 
     	 //getMultiTagList(); //$('#searchBarText').val();
 		filter = {
-	      //"tagSearch" : tagSearch, 
-	      "searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
-	      "searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-	      "searchLocalityDEPARTEMENT" : $('#searchLocalityDEPARTEMENT').val().split(','),
-	      "searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
-	      "searchType" : searchType, 
-	     // "type" : "city"
-	      //"searchBy" : levelCommunexionName[levelCommunexion]
+			"locality" : getLocalityForSearch(),
+			"searchType" : searchType
 	    };
 	    //contextParentType = "city";
     }	
@@ -1142,23 +1136,10 @@ function saveNews(){
 				}
 				
 				if($('#searchLocalityCITYKEY') && isLiveGlobal() && liveScopeType=="global" ){
-					if(globalCommunexion){
-
-						if($('#searchLocalityCITYKEY').val()!="")
-							cpInseeKey=$('#searchLocalityCITYKEY').val().split("_");
-						else
-							cpInseeKey=$('#searchLocalityCODE_POSTAL').val().split("_");
-						cpInseeKey=cpInseeKey[1].split("-");
-						newNews.codeInsee=cpInseeKey[0];
-						newNews.postalCode=cpInseeKey[1];
-					}else{
-						newNews.searchLocalityCITYKEY = $('#searchLocalityCITYKEY').val().split(',');
-				    	newNews.searchLocalityCODE_POSTAL = $('#searchLocalityCODE_POSTAL').val().split(',');
-				    	newNews.searchLocalityDEPARTEMENT = $('#searchLocalityDEPARTEMENT').val().split(',');
-				    	newNews.searchLocalityREGION = $('#searchLocalityREGION').val().split(',');
-				    	newNews.searchLocalityLEVEL = $('#searchLocalityLEVEL').val();
-					}	
+					newNews.localities = getLocalityForSearch();	
 			    }
+
+
 
 			    if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));
 				else newNews.tags = $('#searchTags').val().split(',');		

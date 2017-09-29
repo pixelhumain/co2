@@ -64,12 +64,13 @@ class RocketchatController extends CommunecterController {
 		header('Content-Type: application/json');
 		if(Yii::app()->session["userId"])
 		{
-			
-			Yii::app()->session["adminLoginToken"]   = null;
-			Yii::app()->session["adminRocketUserId"] = null;
-			Yii::app()->session["loginToken"]        = null;
-			Yii::app()->session["rocketUserId"]      = null;
-			
+
+			if(!@$email){
+				Yii::app()->session["adminLoginToken"]   = null;
+				Yii::app()->session["adminRocketUserId"] = null;
+				Yii::app()->session["loginToken"]        = null;
+				Yii::app()->session["rocketUserId"]      = null;
+			}
 
 		    Yii::app()->session["adminLoginToken"] = Yii::app()->params["adminLoginToken"];
 		    Yii::app()->session["adminRocketUserId"] = Yii::app()->params["adminRocketUserId"];

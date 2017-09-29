@@ -6,6 +6,9 @@ var uiCoop = {
 		//$("#div-reopen-menu-left-container").removeClass("hidden");
 		$("#main-coop-container").html("");
 
+		$("#btn-close-coop").click(function(){
+			$("#coop-data-container").html("");
+		});
 		//KScrollTo("#div-reopen-menu-left-container");
 
 		//toogleNotif(false);
@@ -283,7 +286,7 @@ var uiCoop = {
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
-		    		uiCoop.getCoopData(null, null, "proposal", null, proposalId);
+		    		uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, proposalId);
 		    	}
 		});
 
@@ -312,7 +315,7 @@ var uiCoop = {
 		       	dataType: "json",
 		    	success: function(data){
 					console.log("success updateblock", data);
-		    		uiCoop.getCoopData(null, null, "proposal", null, proposalId, function(){
+		    		uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, proposalId, function(){
 		    			uiCoop.showAmendement(true);
 		    			toastr.success(trad["Your amendement has been save with success"]);
 		    		}, false);
@@ -382,6 +385,32 @@ var uiCoop = {
 		});	
 	},
 
+	deleteAmendement : function(numAm, idProposal){
+		var param = {
+			numAm : numAm,
+			idProposal : idProposal,
+		};
+		
+		toastr.info(trad["processing delete"]);
+		$.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+"/cooperation/deleteamendement/",
+		        data: param,
+		       	//dataType: "json",
+		    	success: function(data){
+		    		toastr.success(trad["processing delete ok"]);
+					toastr.success(trad["processing ok"]);
+					$("#coop-data-container").html(data);
+					uiCoop.minimizeMenuRoom(true);
+					uiCoop.showAmendement(true);
+		    	},
+		    	error: function(data){
+		    		console.log("error data ", data);
+		    		toastr.error(trad["processing delete KO"]);
+		    	}
+		});
+	},
+
 	assignMe : function(idAction){
 		$.ajax({
 		        type: "POST",
@@ -403,6 +432,7 @@ var uiCoop = {
 		
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
 		
+		$(".footer-comments").html("");
 		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/proposals/id/"+idParentProposal,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 				$(".container-txtarea").hide();
@@ -411,7 +441,7 @@ var uiCoop = {
 					var argval = $(this).data("argval");
 					$(".container-txtarea").show();
 
-					$(".textarea-new-comment").removeClass("bg-green-comment bg-red-comment");
+					$(".textarea-new-comment").removeClass("bg-green-comment bg-white-comment bg-red-comment");
 					var classe="";
 					var pholder="Votre commentaire";
 					if(argval == "up")   { classe="bg-green-comment"; pholder="Votre argument pour";   }
@@ -453,6 +483,18 @@ var uiCoop = {
 			else 
 				$("#form-amendement").addClass("hidden");
 		});
+
+		$(".btn-modal-delete-am").click(function(){ //alert(".btn-modal-delete-am " + $(this).data("id-am"));
+			var idAm = $(this).data("id-am");
+			//$("#btn-delete-am").attr("data-id-am", idAm);
+
+
+			$("#btn-delete-am").off().click(function(){
+				//var idAm = $(this).data("id-am");
+				uiCoop.deleteAmendement(idAm, idParentProposal);
+			});
+		});
+
 
 		$(".btn-send-vote").click(function(){
 			var voteValue = $(this).data('vote-value');
@@ -511,6 +553,8 @@ var uiCoop = {
 
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
 		
+		$(".footer-comments").html("");
+
 		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/actions/id/"+idAction,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 		},"html");

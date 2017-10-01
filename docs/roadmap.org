@@ -213,22 +213,90 @@ Liste des notifications déjà lues => #370 #453
   ** @Steph 
     [ ] Design deco du CoBus
 
-* DEV
-  ** Todo 
-    [ ]  Api annonce
-  ** Amelioration during tests
-    [ ] redirect after error : go back to previous page , not "home" 
-    [ ] date devant le lien follow
-    [ ] click follow sur orga > msg : "Êtes-vous sûr de ne plus suivre cette personne ?"
-      [ ] removes the orga from list , why ????
-    [ ] bug msg non approprié : inviter qlqun 
-    [ ] clean up themes (cityBox, sig )
-    [ ] clean up recurrent logs 
-    [ ] url preview when sharing communecter
-    [ ] SEO optim
-   
+
+* idea
+  [ ] menu > drop answers > show nb of members + nb of links
+  [ ] new menu List or shortcut: last visited links
+  [ ] add contributor or member, add a tag list option , could be used as roles or team filters
+ ** feature 
+  [ ] 4 question scrum : on organisation : 
+  [ ] offrir a tous : le ppt, slideshow intégré 
+  [ ] sur detail element montrer la filère , valoriser les tags
+  [ ] lifepath : ultra personnel tag
+    - can use POI's type lifepath > private | public
+    - can be used for following any item
+  [ ] Shop : Listing produit
+    [ ] listing en mode bullet points
+    [ ] POI type produit , prix 
+      [ ] subtype : sandwich plat 
+  ** interoperabilty + data mining : 
+    [ ] use FB social graph to mine events and organisation 
+  ** COMOBI
+    [ ] global phone app : btn add to communecter 
+      - activable anywhere on anything 
+        - FB link 
+        - url site 
+        - event (FB, Google) 
+  ** ERgonomie 
+    [ ] menuLeft dynamic avec l'activité 
+      - faire remonté les point menu qui ont des nouveauté
+  ** news 
+    @pitonStLeu, pouvoir référencer une commune
+  [ ] baniere ou image : remerciement, cité un auteur pour la réutilisation 
+  c'est le minimum dans le copytalisme 
+  ** Event communication 
+    [ ] comunicate an email like event@co.org anyone can add it to a mailing list 
+    the event would be added by someone 
+    [ ] in time this mail box could even become a task box that anyone could act upon
+  ** Open Science 
+    [ ] photo-identification collaborative : 
+      - créer group 
+      - POI + photo + hashtag en commun , ex : #baleineReunion
+      - Btn sameAs : open Search Box + find Element + choose name 
+      - Outside src : en regardant les photos, video de qlqun (FB, flickR...) 
+        > POI : #baleineREunion + url 
+  ** dynsurvey proposal 
+    - dynForm & dynSurvey Builder
+    - room > create survey as proposal 
+    - instead of voting, people will answer a answer
+    - each question can be of certain type 
+      - texte 
+      - values
+        - fixed
+        - percentage
+  ** Qui est là, Action en cours, Todo, Todo Perso  : dans un e communauté 
+    une vision à un temps t, de toutes les ressources d'une CO 
+      - en mode web 
+      - mobi
+  ** menu configurable comme sur telephone , on click avatar
+    avec des widget , esay access links ...
+    possibilité de plusieurs panels
+* ************************************************************    
+* Version C0.22  : en cours
+* ************************************************************  
   ** @Tib
+>>>> [ ] integration du system de paiement Mango
+>>>> [ ] faiciliter la création de page static 
+      [ ] avec du contenu MD
+      [ ] un slideshow MD
+** json config builder 
+      - is just dynForm selector
+      - save allready gets the collection as a param in formatData
+        - any new saved Element must have a model and it's databinding at least 
+      [X] select type of config ex : "network"
+        - onclick : openForm of the given type 
+        - this way editing will also work
+      [ ] subDynform input type 
+        - similar to location process 
+        - on click opens a bootbox.dialog with a dynform inside
+>>>>[ ] removing dynform classes from co.js and lazy load them
+>>>>[ ] check webpacking      
 >>>>[ ] suppression d'un element user type COEDitor
+>>>>[ ] bug : preview POI 
+>>>>[ ] add parent class to POI types
+      [ ] poi le saviez vous , a utiliser dans les chargements
+>>>>[ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
+>>>>[ ] presistent login issue ,  SSO ?
     [ ] search fork the world > opens a preview POI > should have the parent link
     [ ] verifier les qrcode 
     [ ]  NA : supprimer

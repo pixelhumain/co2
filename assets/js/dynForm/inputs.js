@@ -26,14 +26,16 @@ dynForm = {
               placeholder : "Date de fin"
             },
             urls : dyFInputs.urls,
+            "result[displayImage]" : dyFInputs.radio( "Display Images ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
+                                                        "false" : { icon:"circle-o", lbl:trad.no} } ),
             //keyVal : dyFInputs.keyVal,
-            linksTag : dyFInputs.subDynform({
-               title : dyFInputs.name(),
+            /*"linksTag[]" : dyFInputs.subDynform({
+               key : dyFInputs.name(),
                tagParent : "Type",
                "background-color" : "#f5f5f5",
                "image" : "Travail.png",
                 "tags" : dyFInputs.tags(),
-            }, "multi","json"),
+            }, "multi"),*/
 	    }
 	}
 };

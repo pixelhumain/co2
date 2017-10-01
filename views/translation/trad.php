@@ -323,6 +323,8 @@ var trad = {
 };
 
 var tradDynForm = {
+	"appList":"<?php echo Yii::t("form","List of Applications") ?>",
+	"screenList":"<?php echo Yii::t("form","Screen shot View to Application") ?>",
 	"me":"<?php echo Yii::t("form","Me") ?>",
 	"dontknow":"<?php echo Yii::t("form","I don't know") ?>",
 	"syntaxmarkdownused":"<?php echo Yii::t("form","Markdown syntax is used for description. If you want to <a href='https://michelf.ca/projets/php-markdown/syntaxe/'' target='_blank'>know more about</a>") ?>",

@@ -1385,6 +1385,7 @@ var smallMenu = {
 		 },"html" );
 	},
 	//content Loader can go into a block
+	//smallMenu.open("Recherche","blockUI")
 	open : function (content,type) { 
 		//alert("small menu open");
 		//add somewhere in page
@@ -1404,10 +1405,11 @@ var smallMenu = {
 			         //margin : "50px",
 			         //width:"80%",
 			         //    padding: '15px', 
-			         backgroundColor: 'rgba(256,256,256,0.85)', 
+			         backgroundColor: 'rgba(0,0,0,0.70)', 
+			         //backgroundColor: 'rgba(256,256,256,0.85)', 
 			         //    '-webkit-border-radius': '10px', 
 			         //    '-moz-border-radius': '10px', 
-			             //color: '#fff' ,
+			             color: '#fff' ,
 			        	// "cursor": "pointer"
 			        }//,overlayCSS: { backgroundColor: '#fff'}
 				});
@@ -1642,7 +1644,7 @@ maybe movebale into Element.js
 function  buildQRCode(type,id) { 
 		
 	$(".qrCode").qrcode({
-	    text: baseUrl+"/#page.type."+dyFInputs.get(type).col+".id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
+	    text: baseUrl+"/#"+dyFInputs.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
 	    render: 'image',
 		minVersion: 8,
 	    maxVersion: 40,
@@ -2142,7 +2144,7 @@ function inMyContacts (type,id) {
 	var res = false ;
 	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
 		$.each( myContacts[type], function( key,val ){
-			//mylog.log("val", val);
+			mylog.log("val", val);
 			if( ( typeof val["_id"] != "undefined" && id == val["_id"]["$id"] ) || 
 				(typeof val["id"] != "undefined" && id == val["id"] ) ) {
 				res = true;
@@ -3295,7 +3297,14 @@ var dyFInputs = {
 			inputType : "tags",
 			placeholder : placeholder != null ? placeholder : tradDynForm["tags"],
 			values : tagsL,
-			label : label != null ? label : tradDynForm["addtags"]
+			label : (label != null) ? label : tradDynForm["addtags"]
+		}
+	},
+	radio : function(label,keyValues) { 
+    	return {
+    		label : (label != null) ? label : "",
+			inputType : "radio",
+			options : keyValues
 		}
 	},
     imageAddPhoto : {
@@ -3770,6 +3779,10 @@ var dyFInputs = {
 			dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocations[ix];
 			dyFInputs.locationObj.elementLocations[ix].center = true;
 		}
+    },
+    //produces 
+    subDynForm : function(form, multi){
+
     },
     inputUrl :function (label,placeholder,rules, custom) {  
     	label = ( notEmpty(label) ? label : tradDynForm["mainurl"] );
@@ -4251,8 +4264,24 @@ var typeObj = {
 			        network : { label: "Network Config",key:"network",icon:"map-marker"}
 			    }},
 	network : { col:"network",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
-	inputs : { color:"red",icon:"cogs",titleClass : "bg-phink", title : "All inputs"},
+	inputs : { color:"red",icon:"address-card-o",titleClass : "bg-phink", title : "All inputs"},
 	addAny : { color:"pink",icon:"plus",titleClass : "bg-phink",title : tradDynForm.wantToAddSomething,
+				sections : {
+			        person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
+			        organization : { label: trad.organization,key:"organization",icon:"group"},
+			        event : { label: trad.event,key:"event",icon:"calendar"},
+			        project : { label: trad.project ,key:"project",icon:"lightbulb-o"},
+			    }},
+	apps : { color:"pink",icon:"cubes",titleClass : "bg-phink",title : tradDynForm.appList,
+				sections : {
+			        search : { label: "SEARCH",key:"#search",icon:"search fa-2x text-red"},
+			        agenda : { label: "AGENDA",key:"#agenda",icon:"group fa-2x text-red"},
+			        news : { label: "NEWS",key:"#news",icon:"newspaper-o fa-2x text-red"},
+			        classifieds : { label: "ANNONCEs",key:"#classifieds",icon:"bullhorn fa-2x text-red"},
+			        dda : { label: "DISCUSS DECIDE ACT" ,key:"#dda",icon:"gavel fa-2x text-red"},
+			        chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
+			    }},
+	screens : { color:"pink",icon:"desktop",titleClass : "bg-phink",title : tradDynForm.screenList,
 				sections : {
 			        person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
 			        organization : { label: trad.organization,key:"organization",icon:"group"},

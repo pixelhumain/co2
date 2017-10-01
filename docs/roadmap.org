@@ -276,8 +276,9 @@ Liste des notifications déjà lues => #370 #453
 * Version C0.22  : en cours
 * ************************************************************  
   ** @Tib
+>>>> [ ] application launcher like linux 
 >>>> [ ] integration du system de paiement Mango
->>>> [ ] faiciliter la création de page static 
+>>>> [ ] faciliter la création de page static 
       [ ] avec du contenu MD
       [ ] un slideshow MD
 ** json config builder 

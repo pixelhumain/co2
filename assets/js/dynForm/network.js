@@ -24,7 +24,8 @@ dynForm = {
 	    formatData : function(formData){
 	    	if( $("#ajaxFormModal request[searchTag]").val() != "" && formData["request[searchTag]"] )
 				formData["request[searchTag]"] = formData["request[searchTag]"].split(",");
-	    	
+	    	if( $("#ajaxFormModal add").val() != "" && formData["add"] )
+				formData["add"] = formData["add"].split(",");
 			return formData;
 	    },
 	    properties : {
@@ -43,9 +44,9 @@ dynForm = {
             "type" : dyFInputs.inputHidden(),
 	        "name" : dyFInputs.name("network"),
 
-	        skin : {
+	        skinInfo : {
                 inputType : "custom",
-                html:"<p class='item-comment bg-green-comment'>Skin Section<hr></p>",
+                html:"<p class='item-comment bg-green-comment'>SKIN Section<hr></p>",
             },
             "skin[title]" : dyFInputs.name(),
 	        "skin[logo]" : dyFInputs.image(),
@@ -60,10 +61,27 @@ dynForm = {
             										  "labelInformation": "<i class='fa fa-info-circle'></i> Les votes sont désactivés pendant la période d'amendement"
 
             }),
-            
-            request : {
+
+            filterInfo : {
                 inputType : "custom",
-                html:"<p class='item-comment bg-green-comment'>Request Section<hr></p>",
+                html:"<p class='item-comment bg-green-comment'>FILTER Section</p>",
+            },
+
+            addInfo : {
+                inputType : "custom",
+                html:"<p class='item-comment bg-green-comment'>ADD Section</p>",
+            },
+            "add" : dyFInputs.tags( ["organization","project","event"] ),
+
+            resultInfo : {
+                inputType : "custom",
+                html:"<p class='item-comment bg-green-comment'>RESULT Section</p>",
+            },
+            "result[displayImage]" : dyFInputs.radio( "Display Images ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
+											 			"false" : { icon:"circle-o", lbl:trad.no} } ),
+            requestInfo : {
+                inputType : "custom",
+                html:"<p class='item-comment bg-green-comment'>REQUEST Section</p>",
             },
             "request[searchTag]" : dyFInputs.tags(),
 	    }

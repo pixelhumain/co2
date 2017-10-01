@@ -149,6 +149,7 @@ Liste des notifications déjà lues => #370 #453
 - traduction 
 - ??? module Tiers Lieux , Ressources
 * ************************************************************  
+
 * Action Terrain 
   [ ] journée Biodiversité Pointoss coupe coupe l'accacia (Galabert)
 * Action Projet
@@ -306,7 +307,6 @@ Liste des notifications déjà lues => #370 #453
       - demande d'hébergement de tout les outils dégoogelisé 
       - le prix peut etre proportionnel à la consommation 
       - avec un reversement a chque commun utilisé
-    [ ] Chloe utilisation du conservatoire 
     [ ] add filters in top bar mapEnd , near username
     [ ] add delete to image upload  [[https://docs.fineuploader.com/quickstart/02-setting_options.html]]
       - on Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté 
@@ -323,6 +323,44 @@ Liste des notifications déjà lues => #370 #453
           [ ] Service 
             [ ] Wifi , lit, bouffe, coworking, café
     [ ] url city a transmettre 
+    [ ] dynform bookmarking using POI : add a url > Next > get content (voir avec tango kgougle )
+      [ ] dynform filling threw get content from url copied into name field
+    [ ] brique comeptence et tache sur mon profil 
+    [ ] réintégré la GEd de granddir 
+    [ ] losing session : rememberme
+    [ ] enable edit POI when open Edition 
+* ************************************************************    
+* Version CO.22.terlà  : en cours
+* ************************************************************  
+
+* ************************************************************    
+* Version C0.21.8  : MEP
+8 correpsond le nb de nouvelle fonctionalité
+- DDA refactored
+- internationalisation
+- integration de rocket Chat 
+- creation de dossier sur les album 
+- mini GED avec upload de document
+- gestion des role sur les membres
+- traduction 
+- ??? module Tiers Lieux , Ressources
+* ************************************************************  
+
+* DEV
+  ** Todo 
+    [ ]  Api annonce
+  ** Amelioration during tests
+    [ ] redirect after error : go back to previous page , not "home" 
+    [ ] date devant le lien follow
+    [ ] click follow sur orga > msg : "Êtes-vous sûr de ne plus suivre cette personne ?"
+      [ ] removes the orga from list , why ????
+    [ ] bug msg non approprié : inviter qlqun 
+    [ ] clean up themes (cityBox, sig )
+    [ ] clean up recurrent logs 
+    [ ] url preview when sharing communecter
+    [ ] SEO optim
+   
+** Tib
     * integrating Rocket Chat
       [X] mode standalone : http://127.0.0.1/ph/co2/rocketchat/
       [X] mode module : lbh('#chat')
@@ -340,7 +378,7 @@ Liste des notifications déjà lues => #370 #453
           [X] testing if non member has access to 
         [X] after create invite all members to chat by notification
       [X] try to optimise admin login using smart handling of header 
-      [ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
+      
       [X] apply to projects and events
       [X] on CO-login get RC loginToken
       [ ] don't show chat if no loginToken
@@ -358,17 +396,6 @@ Liste des notifications déjà lues => #370 #453
       ** test 
         [X] check anymember can join the chat 
         [ ] person changing username : changement de nom d'user d'un coté, il faut viré coté rocket chat profil et avatar pour pas pouvoir changer de nom d'user email avatar, et coté CO2 si changement appelle a /api/v1/users.update avec data.username data.email data.name https://rocket.chat/docs/developer-guides/rest-api/users/update
-      ** bugs
-        [ ] change name > doesn't open the good room :(
-          [ ] gérer le cas de plusieurs orga ave cle meme nom 
-        [ ] ?layout isn't always applied on elements chats
-        [ ] chat notif decrement from 2 stays on 1
-        [ ] creating projects , with ' in name
-        [ ] project chat > open > click close
-        [ ] aprés abonnement ou devient member > show chat btn
-        [ ] login broken when loosing to chat : don't make it mandatory, if no chat, hide btn
-        [ ] on #chat reload
-        [ ] check and validate if element really isOpen on Controller side , currently only JS var passed on
       ** use cases 
         [X] gloabal menu : module chat btn opens , all my chat rooms 
         [X] any element page : open the elements channel 
@@ -385,12 +412,6 @@ Liste des notifications déjà lues => #370 #453
         [ ] build up visual tchat tree, showing all your channels , onclick a channel show who is inside 
           -  could analyse participation by sizing face icon size
       * -----------------------------------------
-    [ ] dynform bookmarking using POI : add a url > Next > get content (voir avec tango kgougle )
-      [ ] dynform filling threw get content from url copied into name field
-    [ ] brique comeptence et tache sur mon profil 
-    [ ] réintégré la GEd de granddir 
-    [ ] losing session : rememberme
-    [ ] enable edit POI when open Edition 
   ** @Tib et @Tango 
     [ ] lancé DDA sur plusieur communauté test
       [ ] pour : CGPME (vienne sveloupoule@cpmereunion.re), nancy mine, Pref, Digi Reunion 

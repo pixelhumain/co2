@@ -151,6 +151,7 @@
 					$classArgument = "";
 					if(@$comment["argval"] == "up") $classArgument = "bg-green-comment";
 					if(@$comment["argval"] == "down") $classArgument = "bg-red-comment";
+					if(@$comment["argval"] == "") $classArgument = "bg-white-comment";
 		?>
 					<div class="col-xs-12 no-padding margin-top-5 item-comment <?php echo $hiddenClass.' '.$classArgument; ?>" 
 						 id="item-comment-<?php echo $comment["_id"]; ?>">
@@ -283,6 +284,7 @@
 	
 	var context = <?php echo json_encode($context)?>;
 
+	var profilThumbImageUrlUser = "<?php echo @$profilThumbImageUrlUser; ?>";
 	// mylog.log("context");
 	// mylog.dir(context);
 	// mylog.log("comments");
@@ -303,30 +305,7 @@
 		$(".tooltips").tooltip();
 	});
 
-	function bindEventTextArea(idTextArea, idComment, isAnswer, parentCommentId){
-
-		var idUx = (parentCommentId == "") ? idComment : parentCommentId;
-		
-		$(idTextArea).css('height', "34px");
-		$("#container-txtarea-"+idUx).css('height', "34px");
-		autosize($(idTextArea));
-
-		$(idTextArea).on('keyup ', function(e){
-			if(e.which == 13 && !e.shiftKey && $(idTextArea).val() != "" && $(idTextArea).val() != " ") {
-	            //submit form via ajax, this is not JS but server side scripting so not showing here
-	            saveComment($(idTextArea).val(), parentCommentId);
-	            $(idTextArea).val("");
-	            $(idTextArea).css('height', "34px");
-        	}
-        	var heightTxtArea = $(idTextArea).css("height");
-        	$("#container-txtarea-"+idUx).css('height', heightTxtArea);
-		});
-
-		$(idTextArea).bind ("input propertychange", function(e){
-			var heightTxtArea = $(idTextArea).css("height");
-        	$("#container-txtarea-"+idUx).css('height', heightTxtArea);
-		});
-	}
+	
 
 	function bindEventActions(){
 
@@ -389,6 +368,7 @@
 		var classArgument = "";
 		if(argval == "up") classArgument = "bg-green-comment";
 		if(argval == "down") classArgument = "bg-red-comment";
+		if(argval == "") classArgument = "bg-white-comment";
 
 		var html = '<div class="col-xs-12 no-padding margin-top-5 item-comment '+classArgument+'" id="item-comment-'+idNewComment+'">'+
 
@@ -439,7 +419,7 @@
 								<?php } ?>
 							'</small>'+
 						'</span>'+	
-						'<div id="comments-list-'+idNewComment+'" class="pull-left col-md-11 no-padding answerCommentContainer"></div>' +
+						'<div id="comments-list-'+idNewComment+'" class="hidden pull-left col-md-11 no-padding answerCommentContainer"></div>' +
 							
 					'</div>';
 
@@ -450,24 +430,7 @@
 		}
 	}
 
-	function showMoreComments(id, hiddenCount){ mylog.log("showMoreComments", id, hiddenCount);
-		$(".hidden-"+hiddenCount).removeClass("hidden");
-		$(".link-show-more-" + (hiddenCount-10)).addClass("hidden");
-	}
-
-	function hideComments(id, level){ mylog.log("#comments-list-"+id + " .item-comment", level);
-		//$("#comments-list-"+id + " .item-comment").addClass("hidden");
-		if(level<=1){
-			$("#commentContent"+id).addClass("hidden");
-			//mylog.log("scroll TO : ", $('#newsFeed'+id).position().top, $('#newsHistory').position().top);
-			$('.my-main-container').animate({
-		        scrollTop: $('#newsFeed'+id).position().top + $('#newsHistory').position().top
-		    }, 400);
-		}
-		else
-			$("#comments-list-"+id).addClass("hidden");
-	}
-
+	
 
 	function saveComment(textComment, parentCommentId){
 		textComment = $.trim(textComment);
@@ -532,32 +495,6 @@
 		
 	}
 
-
-	function answerComment(idComment, parentCommentId){ mylog.log("answerComment");
-		
-		if(!$("#comments-list-"+parentCommentId).hasClass("hidden"))
-			$("#comments-list-"+parentCommentId).addClass("hidden");
-		else
-			$("#comments-list-"+parentCommentId).removeClass("hidden");
-		
-		//si l'input existe déjà on sort
-		if($('#container-txtarea-'+parentCommentId).length > 0) return;
-
-		var html = '<div id="container-txtarea-'+parentCommentId+'" class="">' +
-
-						'<img src="<?php echo @$profilThumbImageUrlUser; ?>" class="img-responsive pull-left" '+
-						'	 style="margin-right:10px;height:32px; border-radius:3px;">'+
-					
-						'<div class="ctnr-txtarea">' +
-							'<textarea rows="1" style="height:1em;" class="form-control textarea-new-comment" ' +
-									    'id="textarea-new-comment'+parentCommentId+'" placeholder="Votre réponse..."></textarea>' +
-						'</div>' +
-					'</div>';
-
-		$("#comments-list-"+parentCommentId).prepend(html);
-
-		bindEventTextArea('#textarea-new-comment'+parentCommentId, idComment, true, parentCommentId);
-	}
 
 
 	function reportAbuse(comment, contextId) {
@@ -715,36 +652,6 @@
 	}
 
 
-	//When a user already did an action on a comment the other buttons are disabled
-	function disableOtherAction(commentId, action,method) {
-		mylog.log("disableOtherAction", method);
-		if(method){ //unset
-
-			mylog.log("disableOtherAction 1", action);
-			$(".commentVoteUp[data-id='"+commentId+"']").removeClass("text-green").data("voted", false);
-			$(".commentVoteDown[data-id='"+commentId+"']").removeClass("text-orange").data("voted", false);
-			$(".commentReportAbuse[data-id='"+commentId+"']").data("voted", false);
-
-			var count = $(action+"[data-id='"+commentId+"']").data("countcomment");
-			mylog.log("count 1", count);
-			$(action+"[data-id='"+commentId+"']").data("countcomment", count-1);
-			$(action+"[data-id='"+commentId+"'] .countC").html(count-1);
-		}
-		else{ //set
-			mylog.log("disableOtherAction 2", method);
-			$(".commentVoteUp[data-id='"+commentId+"']").removeClass("text-green").data("voted",true);
-			$(".commentVoteDown[data-id='"+commentId+"']").removeClass("text-orange").data("voted",true);
-			$(".commentReportAbuse[data-id='"+commentId+"']").data("voted",true);
-
-			if (action == ".commentVoteUp") $(".commentVoteUp[data-id='"+commentId+"']").addClass("text-green");
-			if (action == ".commentVoteDown") $(".commentVoteDown[data-id='"+commentId+"']").addClass("text-orange");
-			if (action == ".commentReportAbuse") $(".commentReportAbuse[data-id='"+commentId+"']").addClass("text-red");
-
-			var count = $(action+"[data-id='"+commentId+"']").data("countcomment");
-			$(action+"[data-id='"+commentId+"']").data("countcomment", count+1);
-			$(action+"[data-id='"+commentId+"'] .countC").html(count+1);
-		}
-	}
 
 	function confirmDeleteComment(id, $this){
 		// mylog.log(contextId);
@@ -841,30 +748,6 @@
 		boxComment.on("hide.bs.modal", function() {
 		  $.unblockUI();
 		});
-	}
-
-	function updateComment(id, newText){
-		updateField("Comment",id,"text",newText,false);
-		$('#item-comment-'+id+' .text-comment').html(newText);
-		toastr.success("Votre commentaire a bien été modifié");
-	}
-
-	function linkify(inputText) {
-	    var replacedText, replacePattern1, replacePattern2, replacePattern3;
-
-	    //URLs starting with http://, https://, or ftp://
-	    replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
-	    replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank" class="text-azure">$1</a>');
-
-	    //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
-	    replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-	    replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank" class="text-azure">$2</a>');
-
-	    //Change email addresses to mailto:: links.
-	    //replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
-	    //replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
-
-	    return replacedText;
 	}
 
 

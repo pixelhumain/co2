@@ -15,6 +15,16 @@
 ---------------------------------------
 ----- BASH DE REPRISE DES DONNEES -----
 ---------------------------------------
+
+* Version C0.22
+
+** @Rapha
+*** Batch qui tranforme les adresses des elements dans le nouveau formats
+co2/datamigration/BatchInterElement
+
+*** Batch qui tranforme les adresses des news dans le nouveau formats
+co2/datamigration/BatchInterNews
+
 * Version C0.21.7
 
 ** @BOUBOULE
@@ -54,6 +64,8 @@ co2/dataMigration/relaunchinvitation
 *** ajout des geoShape au ville qui en ont pas
 /co2/datamigration/AddGeoShapeMissing
 *** change le type des telephones de object en array
+/co2/datamigration/ChangePhoneObjectToArray
+*** departement manquant
 /co2/datamigration/ChangePhoneObjectToArray
 
 ** @Bouboule : 

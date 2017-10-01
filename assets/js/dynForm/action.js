@@ -34,6 +34,11 @@ dynForm = {
                 }else{
                     $("#ajaxFormModal #endDate").val("");
                 }
+
+                if(typeof useIdParentResolution != "undefined" && useIdParentResolution == true){
+                    $("#idParentResolution").val(idParentResolution);
+                    useIdParentResolution = false;
+                }
             }
 	    },
         beforeBuild : function(){
@@ -117,7 +122,8 @@ dynForm = {
               label : "Date de fin",
               placeholder : "Date de fin"
             },
-         	status: dyFInputs.inputHidden( "todo" ),
+            status: dyFInputs.inputHidden( "todo" ),
+            idParentResolution: dyFInputs.inputHidden( "" ),
             tags : dyFInputs.tags(),
             urls : dyFInputs.urls,
             email : dyFInputs.inputHidden( ( (userId!=null && userConnected != null) ? userConnected.email : "" ) ),

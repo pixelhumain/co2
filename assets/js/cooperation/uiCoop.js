@@ -6,6 +6,9 @@ var uiCoop = {
 		//$("#div-reopen-menu-left-container").removeClass("hidden");
 		$("#main-coop-container").html("");
 
+		$("#btn-close-coop").click(function(){
+			$("#coop-data-container").html("");
+		});
 		//KScrollTo("#div-reopen-menu-left-container");
 
 		//toogleNotif(false);
@@ -429,6 +432,7 @@ var uiCoop = {
 		
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
 		
+		$(".footer-comments").html("");
 		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/proposals/id/"+idParentProposal,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 				$(".container-txtarea").hide();
@@ -437,7 +441,7 @@ var uiCoop = {
 					var argval = $(this).data("argval");
 					$(".container-txtarea").show();
 
-					$(".textarea-new-comment").removeClass("bg-green-comment bg-red-comment");
+					$(".textarea-new-comment").removeClass("bg-green-comment bg-white-comment bg-red-comment");
 					var classe="";
 					var pholder="Votre commentaire";
 					if(argval == "up")   { classe="bg-green-comment"; pholder="Votre argument pour";   }
@@ -549,6 +553,8 @@ var uiCoop = {
 
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
 		
+		$(".footer-comments").html("");
+
 		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/actions/id/"+idAction,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 		},"html");

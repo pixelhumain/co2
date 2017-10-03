@@ -68,6 +68,7 @@ dynForm = {
             name : dyFInputs.name( "classified" ) ,
             description : dyFInputs.textarea("Description", "..."),
             image : dyFInputs.image(),
+            medias : dyFInputs.videos,
             contactInfo : dyFInputs.inputText(tradDynForm["contactinfo"], tradDynForm["telemail"]+" ..."),
             location : dyFInputs.location,
             tags : dyFInputs.tags(),

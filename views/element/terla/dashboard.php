@@ -57,27 +57,6 @@
 		Back to my traveller account</a>
 </div>
 <div class="col-md-10 col-md-offset-1 contentOnePage">
-	<div class="col-md-12 no-padding margin-bottom-20 margin-top-20">
-		<div class="col-md-12 bg-lightgray">
-			<h2 class="col-md-12 letter-blue-2">Add products and services you want to offered</h2>
-			<div class="row col-md-10">	
-				<p>
-					These products and services will be validated by the team of terla
-				</p>
-			</div>
-			<button data-form-type="product"  
-	                    data-dismiss="modal"
-	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-6 col-lg-6 text-orange">
-	                <h6><i class="fa fa-shopping-basket fa-2x"></i><br> <?php echo Yii::t("common", "Product") ?></h6>
-	                <small><?php echo Yii::t("form","Food, hand-made, jewelery...<br>Sell your product here") ?></small>
-	            </button><button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GOV; ?>"  
-	                    data-dismiss="modal"
-	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green">
-	                <h6><i class="fa fa-sun-o fa-2x"></i><br> <?php echo Yii::t("common", "Services") ?></h6>
-	                <small><?php echo Yii::t("form","Hostel, funny activity, food, guide...<br>Purpose your services here !") ?></small>
-	            </button>
-		</div>
-	</div>
 	<div class="podDash col-md-12 margin-top-20">
 		<ul class="nav pull-left">
 		  <li class="nav-item active">

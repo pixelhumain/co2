@@ -3,16 +3,17 @@
 	.headerTitleStanalone{
 		left:-25px;
 		right:-25px;
+		top:98px;
 	}
 	.contentOnePage{
-		margin-top: 45px;
+		margin-top: 142px;
 	}
 	.contentOnePage .title > h2{
 		    padding: 15px 0px;
-    text-transform: inherit;
-    font-size: 20px;
+    	text-transform: inherit;
+    	font-size: 20px;
 	}
-	.carousel-media > ol > li.active{
+	/*.carousel-media > ol > li.active{
 	   margin:1px;
 	   border-top: 5px solid #EF5B34 !important;
 	}
@@ -35,7 +36,7 @@
 	}
 	.carousel-media{
 		margin-bottom: 100px;
-	}
+	}*/
 	.informations .btn-social{
 		padding: 0px;
 	    height: inherit;
@@ -49,38 +50,14 @@
 <div class="headerTitleStanalone"></div>
 <div class="col-md-10 col-md-offset-1 contentOnePage">
 	<div class="col-md-12 title text-left"><h2><?php echo ucfirst($element["name"]) ?></h2></div>
-	<div id="myCarousel" class="col-md-12 no-padding carousel carousel-media slide" data-ride="carousel">
-		  <!-- Indicators -->
-		  <ol class="carousel-indicators">
-
-		    <li data-target="#myCarousel" data-slide-to="0" class="active"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion4.jpg" alt="Reunion 1"></li>
-		    <li data-target="#myCarousel" data-slide-to="1"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion5.jpg" alt="Reunion 1"></li>
-		  </ol>
-
-		  <!-- Wrapper for slides -->
-		  <div class="carousel-inner">
-
-		    <div class="item active">
-		      <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion4.jpg" alt="Reunion 1">
-		      <div class="carousel-caption">
-		        <h3>Bienvenu chez l'habitant</h3>
-		        <p>L’objectif de ce projet est de promouvoir la culture réunionnaise en passant par des habitant, ou des prestataire à taille humaine, qui ont une légitimité pour la représenter. Des acteurs qui vont garantir la véracité et l’authenticité de notre culture et favoriser son développement. 
-				</p>
-		      </div>
-		    </div>
-
-		    <div class="item">
-		      <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion5.jpg" alt="Reunion 1">
-		      <div class="carousel-caption">
-		        <h3>Bienvenu chez l'habitant</h3>
-		        <p>L’objectif de ce projet est de promouvoir la culture réunionnaise en passant par des habitant, ou des prestataire à taille humaine, qui ont une légitimité pour la représenter. Des acteurs qui vont garantir la véracité et l’authenticité de notre culture et favoriser son développement. 
-				</p>
-		      </div>
-		    </div>
-
-		  </div>
-	</div>
-
+	<?php 
+	$images=Document::getListDocumentsWhere(array("id"=>(string)$element["_id"],"type"=>$type,"doctype"=>Document::DOC_TYPE_IMAGE),Document::DOC_TYPE_IMAGE);
+	$this->renderPartial('../pod/sliderMedia', 
+								array(
+									  "medias"=>@$element["medias"],
+									  "images" => @$images,
+									  ) ); 
+									  ?>
 	<div class="informations col-md-12 margin-bottom-20">
 	<div class="header-info col-md-12 no-padding text-left">
 		<h4 class="text-dark col-md-4 no-margin text-left">Project information</h4>

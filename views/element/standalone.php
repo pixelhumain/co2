@@ -1,12 +1,18 @@
-
+<?php
+HtmlHelper::registerCssAndScriptsFiles( 
+	array(  	
+		'/js/comments.js',
+	) , 
+	Yii::app()->theme->baseUrl. '/assets');
+?>
 <style type="text/css">
 	.headerTitleStanalone{
 		left:-25px;
 		right:-25px;
-		top:98px;
+		top:0px;
 	}
 	.contentOnePage{
-		margin-top: 142px;
+		margin-top: 55px;
 	}
 	.contentOnePage .title > h2{
 		    padding: 15px 0px;

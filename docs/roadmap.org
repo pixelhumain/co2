@@ -269,15 +269,36 @@ Liste des notifications déjà lues => #370 #453
     une vision à un temps t, de toutes les ressources d'une CO 
       - en mode web 
       - mobi
-
+  ** menu configurable comme sur telephone , on click avatar
+    avec des widget , esay access links ...
+    possibilité de plusieurs panels
 * ************************************************************    
 * Version C0.22  : en cours
 * ************************************************************  
   ** @Tib
->>>>[ ] json builder 
+>>>> [ ] application launcher like linux 
+>>>> [ ] integration du system de paiement Mango
+>>>> [ ] faciliter la création de page static 
+      [ ] avec du contenu MD
+      [ ] un slideshow MD
+** json config builder 
+      - is just dynForm selector
+      - save allready gets the collection as a param in formatData
+        - any new saved Element must have a model and it's databinding at least 
+      [X] select type of config ex : "network"
+        - onclick : openForm of the given type 
+        - this way editing will also work
+      [ ] subDynform input type 
+        - similar to location process 
+        - on click opens a bootbox.dialog with a dynform inside
+>>>>[ ] removing dynform classes from co.js and lazy load them
+>>>>[ ] check webpacking      
 >>>>[ ] suppression d'un element user type COEDitor
 >>>>[ ] bug : preview POI 
+>>>>[ ] add parent class to POI types
+      [ ] poi le saviez vous , a utiliser dans les chargements
 >>>>[ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
+>>>>[ ] presistent login issue ,  SSO ?
     [ ] search fork the world > opens a preview POI > should have the parent link
     [ ] verifier les qrcode 
     [ ]  NA : supprimer

@@ -376,7 +376,7 @@ function connectPerson(connectUserId, callback)
 
 
 
-function disconnectTo(parentType,parentId,childId,childType,connectType, callback) {
+function disconnectTo(parentType,parentId,childId,childType,connectType, callback, linkOption) {
 	var messageBox = trad["removeconnection"+connectType];
 	$(".disconnectBtnIcon").removeClass("fa-unlink").addClass("fa-spinner fa-spin");
 	var formData = {
@@ -386,6 +386,8 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 		"parentId" : parentId,
 		"connectType" : connectType,
 	};
+	if(typeof linkOption != "undefined" && linkOption)
+		formData.linkOption=linkOption;
 	bootbox.dialog({
         onEscape: function() {
             $(".disconnectBtnIcon").removeClass("fa-spinner fa-spin").addClass("fa-unlink");
@@ -1385,6 +1387,7 @@ var smallMenu = {
 		 },"html" );
 	},
 	//content Loader can go into a block
+	//smallMenu.open("Recherche","blockUI")
 	open : function (content,type) { 
 		//alert("small menu open");
 		//add somewhere in page
@@ -1404,10 +1407,11 @@ var smallMenu = {
 			         //margin : "50px",
 			         //width:"80%",
 			         //    padding: '15px', 
-			         backgroundColor: 'rgba(256,256,256,0.85)', 
+			         backgroundColor: 'rgba(0,0,0,0.70)', 
+			         //backgroundColor: 'rgba(256,256,256,0.85)', 
 			         //    '-webkit-border-radius': '10px', 
 			         //    '-moz-border-radius': '10px', 
-			             //color: '#fff' ,
+			             color: '#fff' ,
 			        	// "cursor": "pointer"
 			        }//,overlayCSS: { backgroundColor: '#fff'}
 				});
@@ -1646,7 +1650,7 @@ maybe movebale into Element.js
 function  buildQRCode(type,id) { 
 		
 	$(".qrCode").qrcode({
-	    text: baseUrl+"/#page.type."+dyFInputs.get(type).col+".id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
+	    text: baseUrl+"/#"+dyFInputs.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
 	    render: 'image',
 		minVersion: 8,
 	    maxVersion: 40,
@@ -2050,7 +2054,7 @@ function inMyContacts (type,id) {
 	var res = false ;
 	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
 		$.each( myContacts[type], function( key,val ){
-			//mylog.log("val", val);
+			mylog.log("val", val);
 			if( ( typeof val["_id"] != "undefined" && id == val["_id"]["$id"] ) || 
 				(typeof val["id"] != "undefined" && id == val["id"] ) ) {
 				res = true;
@@ -2831,7 +2835,8 @@ var dyFObj = {
 		
 		if( typeof formData.tags != "undefined" && formData.tags != "" )
 			formData.tags = formData.tags.split(",");
-
+		
+		
 		// Add collections and genres of notragora in tags
 		if( typeof formData.collections != "undefined" && formData.collections != "" ){
 			collectionsTagsSave=formData.collections.split(",");
@@ -2864,6 +2869,10 @@ var dyFObj = {
 		mylog.warn("---------------- saveElement",formId,collection,ctrl,saveUrl,afterSave );
 		formData = $(formId).serializeFormJSON();
 		mylog.log("before",formData);
+
+		if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.formatData","function") )
+			formData = dyFObj.elementObj.dynForm.jsonSchema.formatData(formData);
+
 		formData = dyFObj.formatData(formData,collection,ctrl);
 		mylog.log("saveElement", formData);
 		formData.medias = [];
@@ -2896,52 +2905,62 @@ var dyFObj = {
 				formData.medias.push(mediaObject);
 			}
 		});
+		if(formData.medias.length == 0)
+			delete formData.medias;
 		mylog.log("beforeAjax",formData);
-		$.ajax( {
-	    	type: "POST",
-	    	url: (saveUrl) ? saveUrl : baseUrl+"/"+moduleId+"/element/save",
-	    	data: formData,
-	    	dataType: "json",
-	    	success: function(data){
-	    		mylog.warn("saveElement ajax result");
-	    		mylog.dir(data);
-				if(data.result == false){
-	                toastr.error(data.msg);
-	                //reset save btn 
-	                $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false).one(function() { 
-						$( settings.formId ).submit();	        	
-			        });
-	           	}
-	            else {
-	            	if(typeof data.msg != "undefined") 
-	            		toastr.success(data.msg);
-	            	else{
-	            		if(typeof data.resultGoods != "undefined" && typeof data.resultGoods.msg != "undefined")
-	            			toastr.success(data.resultGoods.msg);
-	            		if(typeof data.resultErrors != "undefined" && typeof data.resultErrors.msg != "undefined")
-	            			toastr.error(data.resultErrors.msg);
-	            	}
-	            	// mylog.log("data.id", data.id, data.url);
-	            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
-			        	addLocationToFormloopEntity(data.id, collection, data.map);*/
-			        if (typeof afterSave == "function"){
-	            		afterSave(data);
-	            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
-	            	} else {
-						dyFObj.closeForm();
-		                if(data.url){
-		                	mylog.log("urlReload data.url", data.url);
-		                	urlCtrl.loadByHash( data.url );
-		                }
-		                else if(data.id){
-		                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
-			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
-		                }
-					}
-	            }
-	            uploadObj.set()
-	    	}
-	    });
+
+		if( dyFObj.elementObj.dynForm.jsonSchema.debug ){
+			mylog.log("debug dyn Form xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+			mylog.dir(formData);
+			dyFObj.closeForm();
+			mylog.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		} else {
+			$.ajax( {
+		    	type: "POST",
+		    	url: (saveUrl) ? saveUrl : baseUrl+"/"+moduleId+"/element/save",
+		    	data: formData,
+		    	dataType: "json",
+		    	success: function(data){
+		    		mylog.warn("saveElement ajax result");
+		    		mylog.dir(data);
+					if(data.result == false){
+		                toastr.error(data.msg);
+		                //reset save btn 
+		                $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false).one(function() { 
+							$( settings.formId ).submit();	        	
+				        });
+		           	}
+		            else {
+		            	if(typeof data.msg != "undefined") 
+		            		toastr.success(data.msg);
+		            	else{
+		            		if(typeof data.resultGoods != "undefined" && typeof data.resultGoods.msg != "undefined")
+		            			toastr.success(data.resultGoods.msg);
+		            		if(typeof data.resultErrors != "undefined" && typeof data.resultErrors.msg != "undefined")
+		            			toastr.error(data.resultErrors.msg);
+		            	}
+		            	// mylog.log("data.id", data.id, data.url);
+		            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
+				        	addLocationToFormloopEntity(data.id, collection, data.map);*/
+				        if (typeof afterSave == "function"){
+		            		afterSave(data);
+		            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+		            	} else {
+							dyFObj.closeForm();
+			                if(data.url){
+			                	mylog.log("urlReload data.url", data.url);
+			                	urlCtrl.loadByHash( data.url );
+			                }
+			                else if(data.id){
+			                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
+				        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+			                }
+						}
+		            }
+		            uploadObj.set()
+		    	}
+		    });
+		}
 	},
 	closeForm : function() {
 		$('#ajax-modal').modal("hide");
@@ -3036,7 +3055,7 @@ var dyFObj = {
 				null,
 				function() { 
 					//alert(dfPath+type+'.js');
-					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+dyFInputs.get(type).ctrl+'.js');
+					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+type+'.js');
 					mylog.dir(dynForm);
 					//typeObj[type].dynForm = dynForm;
 				  	dyFInputs.get(type).dynForm = dynForm;
@@ -3113,9 +3132,9 @@ var dyFObj = {
 			        if( dyFObj.elementObj.dynForm.jsonSchema.save )
 			        	dyFObj.elementObj.dynForm.jsonSchema.save();
 			        else if(dyFObj.elementObj.saveUrl)
-			        	dyFObj.saveElement("#ajaxFormModal",dyFObj.elementObj.col,dyFObj.elementObj.ctrl,dyFObj.elementObj.saveUrl,afterSave);
+			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj.elementObj.col, dyFObj.elementObj.ctrl, dyFObj.elementObj.saveUrl, afterSave );
 			        else
-			        	dyFObj.saveElement("#ajaxFormModal",dyFObj.elementObj.col,dyFObj.elementObj.ctrl,null,afterSave);
+			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj.elementObj.col, dyFObj.elementObj.ctrl, null, afterSave );
 			        return false;
 			    }
 			});
@@ -3380,7 +3399,14 @@ var dyFInputs = {
 			inputType : "tags",
 			placeholder : placeholder != null ? placeholder : tradDynForm["tags"],
 			values : tagsL,
-			label : label != null ? label : tradDynForm["addtags"]
+			label : (label != null) ? label : tradDynForm["addtags"]
+		}
+	},
+	radio : function(label,keyValues) { 
+    	return {
+    		label : (label != null) ? label : "",
+			inputType : "radio",
+			options : keyValues
 		}
 	},
     imageAddPhoto : {
@@ -3856,6 +3882,10 @@ var dyFInputs = {
 			dyFInputs.locationObj.elementLocations[ix].center = true;
 		}
     },
+    //produces 
+    subDynForm : function(form, multi){
+
+    },
     inputUrl :function (label,placeholder,rules, custom) {  
     	label = ( notEmpty(label) ? label : tradDynForm["mainurl"] );
     	placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
@@ -3899,6 +3929,10 @@ var dyFInputs = {
             getMediaFromUrlContent(".addmultifield0", ".resultGetUrl0",1);
         	$(".urlsarray").css("display","none");	
         }
+    },
+    keyVal : {
+    	label : "Key Value Pairs",
+    	inputType : "properties",
     },
     bookmarkUrl: function(label, placeholder,rules, custom){
     	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
@@ -4227,7 +4261,7 @@ var dyFInputs = {
 };
 
 var typeObj = {
-	"themes":{ 
+	themes:{ 
 		dynForm : {
 		    jsonSchema : {
 			    title : "Theme Switcher ?",
@@ -4249,7 +4283,7 @@ var typeObj = {
 			    }
 			}
 		}	},
-	"addElement":{ 
+	addElement:{ 
 		dynForm : {
 		    jsonSchema : {
 			    title : "Ajouter un élément ?",
@@ -4275,54 +4309,53 @@ var typeObj = {
 			    }
 			}
 		}	},
-	"addPhoto":{ titleClass : "bg-dark" },
-	"addFile":{ titleClass : "bg-dark" },
-	"person" : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
-	"persons" : { sameAs:"person" },
-	"people" : { sameAs:"person" },
-	"citoyen" : { sameAs:"person" },
-	"citoyens" : { sameAs:"person" },
+	addPhoto:{ titleClass : "bg-dark" },
+	addFile:{ titleClass : "bg-dark" },
+	person : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
+	persons : { sameAs:"person" },
+	people : { sameAs:"person" },
+	citoyen : { sameAs:"person" },
+	citoyens : { sameAs:"person" },
 	
-	"poi":{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
-			subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
-				   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
-				   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
+	poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
+		subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+			   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
+			   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
+	place:{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
+	TiersLieux : {sameAs:"place",color: "azure",icon: "home"},
+	Maison : {sameAs:"place", color: "azure",icon: "home"},
+	ressource:{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
 
-	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
-	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
-	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
-	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
-
-	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
-	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
-	"organizations" : {sameAs:"organization"},
-	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
-	"NGO" : {sameAs:"organization", color:"green", icon:"users"},
-	"Association" : {sameAs:"organization", color:"green", icon: "group"},
-	"GovernmentOrganization" : {col:"organization", color: "red",icon: "university"},
-	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
-	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
-	"events" : {sameAs:"event"},
-	"project" : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
-	"projects" : {sameAs:"project"},
-	"city" : {sameAs:"cities"},
-	"cities" : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
+	siteurl:{ col:"siteurl",ctrl:"siteurl"},
+	organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
+	organizations : {sameAs:"organization"},
+	LocalBusiness : {col:"organizations",color: "azure",icon: "industry"},
+	NGO : {sameAs:"organization", color:"green", icon:"users"},
+	Association : {sameAs:"organization", color:"green", icon: "group"},
+	GovernmentOrganization : {col:"organization", color: "red",icon: "university"},
+	Group : {	col:"organizations",color: "turq",icon: "circle-o"},
+	event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
+	events : {sameAs:"event"},
+	project : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
+	projects : {sameAs:"project"},
+	city : {sameAs:"cities"},
+	cities : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
 	
-	"entry" : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
+	entry : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
 		saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
-	"vote" : {col:"actionRooms",ctrl:"survey"},
-	"survey" : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
-	"surveys" : {sameAs:"survey"},
-	"proposal" : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
-	"proposals" : { sameAs : "proposal" },
-	"action" : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
-	"actions" : { sameAs : "action" },
-	"actionRooms" : {sameAs:"room"},
-	"rooms" : {sameAs:"room"},
-	"room" : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
-	"discuss" : {col:"actionRooms",ctrl:"room"},
+	vote : {col:"actionRooms",ctrl:"survey"},
+	survey : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
+	surveys : {sameAs:"survey"},
+	proposal : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
+	proposals : { sameAs : "proposal" },
+	action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
+	actions : { sameAs : "action" },
+	actionRooms : {sameAs:"room"},
+	rooms : {sameAs:"room"},
+	room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+	discuss : {col:"actionRooms",ctrl:"room"},
 
-	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
+	contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
 		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
 	"product":{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",	icon:"gift"},
 	"products" : {sameAs:"product"},
@@ -4333,13 +4366,42 @@ var typeObj = {
 				   //EN
 				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
 				   ]	},
-	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
-	"bookmark" : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
-	"document" : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
-	"default" : {icon:"arrow-circle-right",color:"dark"},
+	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
+	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
+	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
+	default : {icon:"arrow-circle-right",color:"dark"},
 	//"video" : {icon:"video-camera",color:"dark"},
-	"formContact" : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
-	"news" : { col : "news" }, 
+	formContact : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
+	news : { col : "news" }, 
+	config : { col:"config",color:"azure",icon:"cogs",titleClass : "bg-azure", title : tradDynForm.addconfig,
+				sections : {
+			        network : { label: "Network Config",key:"network",icon:"map-marker"}
+			    }},
+	network : { col:"network",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+	inputs : { color:"red",icon:"address-card-o",titleClass : "bg-phink", title : "All inputs"},
+	addAny : { color:"pink",icon:"plus",titleClass : "bg-phink",title : tradDynForm.wantToAddSomething,
+				sections : {
+			        person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
+			        organization : { label: trad.organization,key:"organization",icon:"group"},
+			        event : { label: trad.event,key:"event",icon:"calendar"},
+			        project : { label: trad.project ,key:"project",icon:"lightbulb-o"},
+			    }},
+	apps : { color:"pink",icon:"cubes",titleClass : "bg-phink",title : tradDynForm.appList,
+				sections : {
+			        search : { label: "SEARCH",key:"#search",icon:"search fa-2x text-red"},
+			        agenda : { label: "AGENDA",key:"#agenda",icon:"group fa-2x text-red"},
+			        news : { label: "NEWS",key:"#news",icon:"newspaper-o fa-2x text-red"},
+			        classifieds : { label: "ANNONCEs",key:"#classifieds",icon:"bullhorn fa-2x text-red"},
+			        dda : { label: "DISCUSS DECIDE ACT" ,key:"#dda",icon:"gavel fa-2x text-red"},
+			        chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
+			    }},
+	screens : { color:"pink",icon:"desktop",titleClass : "bg-phink",title : tradDynForm.screenList,
+				sections : {
+			        person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
+			        organization : { label: trad.organization,key:"organization",icon:"group"},
+			        event : { label: trad.event,key:"event",icon:"calendar"},
+			        project : { label: trad.project ,key:"project",icon:"lightbulb-o"},
+			    }},
 };
 
 var documents = {

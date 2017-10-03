@@ -886,10 +886,13 @@ var directory = {
                     
                     
             if(typeof(params.statusLink)!="undefined"){
-              if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined")
-                str+="<span class='text-red'>Administrateur</span>";
+              if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined" && typeof(params.statusLink.isAdminInviting)=="undefined")
+                str+="<span class='text-red'>"+trad.administrator+"</span>";
+              if(typeof(params.statusLink.isAdminInviting)!="undefined"){
+                str+="<span class='text-red'>"+trad.invitingToAdmin+"</span>";
+              }
               if(typeof(params.statusLink.toBeValidated)!="undefined" || typeof(params.statusLink.isAdminPending)!="undefined")
-                str+="<span class='text-red'>En attente de validation</span>";
+                str+="<span class='text-red'>"+trad.waitingValidation+"</span>";
             }
 
             if(params.rolesLbl != "")

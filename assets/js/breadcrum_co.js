@@ -89,13 +89,9 @@ function activateGlobalCommunexion(active, firstLoad){
         showTagsScopesMin();
         bindCommunexionScopeEvents();
 
-        // TODO search interop
-
         if(actionOnSetGlobalScope=="filter"){
             if(location.hash.indexOf("#live") >=0)
                 startNewsSearch(true);
-            else if(location.hash.indexOf("#interoperability") >= 0)
-                mylog.log('On ne lance pas le startSearch normal');
             else if(!firstLoad)
                 startSearch(0, indexStepInit,searchCallback);
         }

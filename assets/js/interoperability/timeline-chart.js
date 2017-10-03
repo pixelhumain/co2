@@ -37,10 +37,6 @@
         };
     }();
 
-    function dotClick() {
-        alert('ON CLIQUE SUR UN POINT DE LA FRISE !!!! ');
-    }
-
     var TimelineChart = function () {
         function TimelineChart(element, data, opts, label_dbpedia, wikidataID) {
             _classCallCheck(this, TimelineChart);
@@ -50,8 +46,6 @@
             element.classList.add('timeline-chart');
 
             var options = this.extendOptions(opts);
-
-            mylog.log('OPTION DANS TIMELINE JS!!!!!!!!!!!!!!!!!!!! : ' , label_dbpedia);
 
             var allElements = data.reduce(function (agg, e) {
                 return agg.concat(e.data);
@@ -153,7 +147,6 @@
                     svg.call(tip);
                     dots.on('mouseover', tip.show).on('mouseout', tip.hide);
                     dots.on('click', function() {
-                        // console.log(d3.tip().attr('class', 'd3-tip').val());
                         mylog.log('LE FOCUS EST SUR : ', $(".n")[0].innerHTML);
                         displayDetailModal($(".n")[0].innerHTML);
                     });
@@ -297,4 +290,3 @@
 
     module.exports = TimelineChart;
 });
-//# sourceMappingURL=timeline-chart.js.map

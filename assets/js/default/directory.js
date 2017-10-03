@@ -670,7 +670,6 @@ var directory = {
     dirLog : false,
     defaultPanelHtml : function(params){
       mylog.log("----------- defaultPanelHtml",params, params.type,params.name, params.url);
-      if(directory.dirLog) mylog.log("----------- defaultPanelHtml",params.type,params.name);
       str = "";  
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
@@ -1740,22 +1739,18 @@ var directory = {
 
         directory.colPos = "left";
 
-        mylog.log("LE DIRECTORY : ", directory);
-        mylog.log("LE PARAM DATA : ", data, typeof(data));
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
           if(directory.dirLog) mylog.log("params", params, typeof params);
 
           mylog.log("params", params, typeof params);
 
-          // if(params["_id"] != null || params["id"] != null){
           if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) {
             params['id'] = params['_id'];
           } else if (typeof(params.id) == "undefined") {
             params['id'] = Math.random();
             params['type'] = "poi";
           }
-          // }
 
           mylog.log("params", params["name"] , params.name, params.id, params["id"], typeof params["id"]);
 
@@ -1866,13 +1861,10 @@ var directory = {
 
                   if (typeof params.tags == "undefined") 
                     params.tags = [];
-                  
-                  params.tags.push(interop_type);
+                    params.tags.push(interop_type);
                 } else {
 
                   params.hash = '#page.type.'+params.type+'.id.' + params.id;
-                  if(params.type == "poi")    
-                      params.hash = '#element.detail.type.poi.id.' + params.id;
                 }
 
                 params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
@@ -1909,7 +1901,6 @@ var directory = {
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
                 
                 if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);
-                mylog.log("template principal",params,params.type, itemType);
                 
                   //template principal
                 if(params.type == "cities")

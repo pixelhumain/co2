@@ -55,10 +55,8 @@
 			
 			onclick = 'urlCtrl.loadByHash("'+url+'");';
 
-			// mylog.log('LA DATA POUR LA MAP', data);
-
 			if (type.substr(0,11) == "poi.interop") {
-				var icons = '<i class="fa fa-folder-open fa-'+ color +'"></i>';
+				// var icons = '<i class="fa fa-folder-open fa-'+ color +'"></i>';
 				url = data.url;
 				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
 			}else if (typeof TPL_IFRAME != "undefined" && TPL_IFRAME==true){

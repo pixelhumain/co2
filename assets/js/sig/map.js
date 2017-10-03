@@ -145,7 +145,6 @@
 				//mylog.log("markerName", markerName);
 				var iconUrl = assetPath+'/images/sig/markers/icons_carto/'+markerName+'.png';
 
-				// mylog.log('FMKZJMFLKEMFLK : ', thisData);
 				if(typeof thisData.profilMarkerImageUrl !== "undefined" && thisData.profilMarkerImageUrl != ""){ 
 					iconUrl = baseUrl + thisData.profilMarkerImageUrl;
 				}

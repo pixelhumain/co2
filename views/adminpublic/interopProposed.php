@@ -3,10 +3,6 @@ $cs = Yii::app()->getClientScript();
 $cssAnsScriptFilesModule = array(
 		'/plugins/jsonview/jquery.jsonview.js',
 		'/plugins/jsonview/jquery.jsonview.css',
-		//'/assets/js/sig/geoloc.js',
-		/*'/assets/js/dataHelpers.js',
-		'/assets/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
-		'/assets/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js'*/
 );
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule,Yii::app()->request->baseUrl);
 
@@ -18,7 +14,6 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 $this->renderPartial($layoutPath.'header', 
                     array(  "layoutPath"=>$layoutPath , 
                             "page" => "admin") ); 
-
 ?>
 
 <div id="main-container-proposition" class="container-all-proposition col-xs-12 bg-white">
@@ -74,13 +69,8 @@ $this->renderPartial($layoutPath.'header',
 	    		"<td data-value='"+value.userID+"'> " + value.userID + "</td>"+
 	    		"<td data-value='"+value.description+"'>"+ value.description +
 	    		"<td>"+
-	    			// "<form class='status_form'>"+
-	    			// 	"<input type='radio' name='status' value='rejected'> Rejeter </input><br>" +
-			    	// 	"<input type='radio' name='status' value='accepted'> Accepter </input>"+
-			    	// 	// "<input class='btn-validate_status' data-id='"+index+"' type='submit' name='status' value='Valider'</input>"+	    			
-			    	// 	"</form>"+
-			    		"<button id='"+index.toString()+"'  style='margin-bottom:5px; text-align='center'; class='btn btn-success btn_validate_status' data-status ='accepted' data-id='"+index.toString()+"'>Valider</button><br>"+
-			    		"<button id='"+index.toString()+"'  style='text-align:center;' class='btn btn-danger btn_validate_status' data-status='rejected' data-id='"+index.toString()+"'>Rejeter</button>"+
+		    		"<button id='"+index.toString()+"'  style='margin-bottom:5px; text-align='center'; class='btn btn-success btn_validate_status' data-status ='accepted' data-id='"+index.toString()+"'>Valider</button><br>"+
+		    		"<button id='"+index.toString()+"'  style='text-align:center;' class='btn btn-danger btn_validate_status' data-status='rejected' data-id='"+index.toString()+"'>Rejeter</button>"+
 	    		"</td>" +
 			"</tr>"
 		)
@@ -127,8 +117,6 @@ function ValidateStatus(id_propose, status) {
 	} else {
 		alert('Vous avec avorté la validation ou le rejet de la proposition');
 	}
-
-	// }
 }
 	
 </script>

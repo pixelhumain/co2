@@ -34,6 +34,13 @@
 	.carousel-media{
 		margin-bottom: 100px;
 	}
+	.carousel-media .carousel-inner{
+		max-height: 550px;
+	}
+
+	.carousel-media .carousel-inner .item > img{
+		width: 100%;
+	}
 </style>
 <div id="myCarousel" class="col-md-12 no-padding carousel carousel-media slide" data-ride="carousel">
 	<!-- Indicators -->

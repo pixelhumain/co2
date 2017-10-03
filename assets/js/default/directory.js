@@ -1851,14 +1851,6 @@ var directory = {
                   params.htmlIco = getImageIcoForInteropElements(interop_type);
                   params.type = "poi.interop."+interop_type;
 
-                  mylog.log('PARAMS POUR UN ELEMENT INTEROP', params);
-                  mylog.log('PARAMS SIZE', params.size);
-                  
-                //params.url = '#page.type.'+params.type+'.id.' + params.id;
-                // params.hash = '#page.type.'+params.type+'.id.' + params.id;
-                /*if(params.type == "poi")    
-                    params.hash = '#element.detail.type.poi.id.' + params.id;*/
-
                   if (typeof params.tags == "undefined") 
                     params.tags = [];
                     params.tags.push(interop_type);

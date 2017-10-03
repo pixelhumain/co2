@@ -4,8 +4,43 @@ function initDateHeaderPage(params){
 	$(".header-banner").html(str);
 }
 
-function getCroppingModal(){
-	
+function pushListRoles(links){
+	//Members
+	if(typeof links.members != "undefined"){
+		$.each(links.members, function(e,v){
+			if(typeof v.roles != "undefined"){
+				$.each(v.roles, function(i,data){
+					if(data != ""){
+						rolesList.push(data);
+					}
+				});
+			}
+		});
+	}
+	//Contributors
+	if(typeof links.contributors != "undefined"){
+		$.each(links.contributors, function(e,v){
+			if(typeof v.roles != "undefined"){
+				$.each(v.roles, function(i,data){
+					if(data != ""){
+						rolesList.push(data);
+					}
+				});
+			}
+		});
+	}
+	//Attendees
+	if(typeof links.attendees != "undefined"){
+		$.each(links.attendees, function(e,v){
+			if(typeof v.roles != "undefined"){
+				$.each(v.roles, function(i,data){
+					if(data != ""){
+						rolesList.push(data);
+					}
+				});
+			}
+		});
+	}
 }
 
 function menuLeftShow(){
@@ -646,6 +681,10 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		if(typeof val.rolesLink != "undefined"){
 			console.log(val.rolesLink);
 			$.each(val.rolesLink, function(i,v){
+				//Push new roles in rolesList
+				if(v != "" && !rolesList.includes(v))
+					rolesList.push(v);
+				//Incrément and push roles in filter array
 				if(typeof listRoles[v] != "undefined")
 					listRoles[v].count++;
 				else

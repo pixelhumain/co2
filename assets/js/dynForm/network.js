@@ -54,7 +54,9 @@ dynForm = {
             },
             "skin[title]" : dyFInputs.name(),
 	        	"skin[logo]" : dyFInputs.image(),
-		    "skin[paramsLogo][origin]" : dyFInputs.checkboxSimple("true", "skinparamsLogoorigin", 
+		    "skin[paramsLogo][origin]" : dyFInputs.radio( "Logo Origin ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
+											 			"false" : { icon:"circle-o", lbl:trad.no} } ),
+											 			/*dyFInputs.checkboxSimple("true", "skinparamsLogoorigin", 
             										{ "onText" : "Oui",
             										  "offText": "Non",
             										  "onLabel" : "on",
@@ -64,7 +66,7 @@ dynForm = {
             										  "labelInInput": "Activer les amendements",
             										  "labelInformation": "<i class='fa fa-info-circle'></i> Les votes sont désactivés pendant la période d'amendement"
 
-            }),
+            }),*/
 
             filterInfo : {
                 inputType : "custom",

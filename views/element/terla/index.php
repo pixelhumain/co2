@@ -73,25 +73,25 @@
 	</div>
 	<div class="podDash col-md-12 margin-top-20">
 		<ul class="nav pull-left">
-		  <li class="nav-item active">
-		    <a class="nav-link" href="javascript:;" id="btn-detail"><?php echo Yii::t("common","My infos") ?></a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" href="javascript:;" id="btn-message"><?php echo Yii::t("common","My messages") ?></a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" href="javascript:;" id="btn-history"><?php echo Yii::t("common","Historic") ?></a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" href="javascript:;" id="btn-backup"><?php echo Yii::t("common","Backup") ?></a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" href="javascript:;" id="btn-invoice"><?php echo Yii::t("common","Invoice") ?></a>
-		  </li>
-		  	<?php if(@$element["professional"]){ ?>
-		  	<li class="nav-item">
-		    	<a class="nav-link" href="javascript:;" id="btn-list-pro"><?php echo Yii::t("common","Pro listing") ?></a>
-		  	</li>
+			<li class="nav-item active">
+				<a class="nav-link" href="javascript:;" id="btn-detail"><?php echo Yii::t("common","My infos") ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="javascript:;" id="btn-message"><?php echo Yii::t("common","My messages") ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="javascript:;" id="btn-history"><?php echo Yii::t("common","Historic") ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="javascript:;" id="btn-backup"><?php echo Yii::t("common","Backup") ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="javascript:;" id="btn-invoice"><?php echo Yii::t("common","Invoice") ?></a>
+			</li>
+				<?php if(@$element["professional"]){ ?>
+				<li class="nav-item">
+				<a class="nav-link" href="javascript:;" id="btn-list-pro"><?php echo Yii::t("common","Pro listing") ?></a>
+				</li>
 			<?php } ?>
 		</ul>
 		<div class="content-view-dashboard col-md-12 col-sm-12 col-xs-12 margin-bottom-20 padding-10 bg-white">
@@ -159,12 +159,18 @@
 			location.hash=hashUrlPage+".view.prolist";
 			loadListPro();
 		});
+
+		$("#btn-invoice").click(function(){
+			loadDetail();
+		});
 	}
+
 	function loadDetail(){
 		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
 		showLoader('.content-view-dashboard');
 		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, null, function(){},"html");
 	}
+
 	function loadListPro(){
 		data={list:["products"]};
 		var url = "element/list/type/"+contextData.type+"/id/"+contextData.id;
@@ -175,6 +181,13 @@
 	function showLoader(id){
 		$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 	}
+
+	function loadInvoice(){
+		var url = "element/facture/type/"+contextData.type+"/id/"+contextData.id;
+		showLoader('.content-view-dashboard');
+		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, null, function(){},"html");
+	}
+
 	function inintDescs() {
 		return true;
 	}

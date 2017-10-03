@@ -2529,6 +2529,44 @@ var processUrl = {
 	    return content;
 	}
 }
+var list = {
+	initList : function(dataList, action){
+		var viewList="";
+		$.each(dataList, function(e,v){
+			viewList+="<h4 class='listSubtitle col-md-12 col-sm-12 col-xs-12 letter-orange'>"+Object.keys(v).length+" "+e+"</h4>";
+			$.each(v, function(i, data){
+				viewList+=list.getListOf(e,data,action);	
+			});
+			$("#listList").append(viewList)
+			
+		});
+	},
+	getListOf : function(type,data, action){
+		data.imgProfil = ""; 
+    	if(!data.useMinSize)
+        	data.imgProfil = "<i class='fa fa-image fa-3x'></i>";
+   		if("undefined" != typeof data.profilMediumImageUrl && data.profilMediumImageUrl != "")
+        	data.imgProfil= "<img class='img-responsive' src='"+baseUrl+data.profilMediumImageUrl+"'/>";
+		str="<div class='col-md-12 col-sm-12 contentListItem padding-5'>"+
+				"<div class='col-md-2 col-sm-2 contentImg text-center no-padding'>"+
+					data.imgProfil+
+				"</div>"+
+				"<div class='col-md-10 col-sm-10 listItemInfo'>"+
+					"<div class='col-md-10 col-sm-10'>"+
+						"<h4>"+data.name+"</h4>"+
+						"<span>Price: "+data.price+"</span><br/>";
+						if(typeof data.toBeValidated != "undefined")
+						str+="<i class='text-azul'>Waiting for validation</i>";
+		str+=		"</div>"+
+					"<div class='col-md-2 col-sm-2'>"+
+						
+					"</div>"+
+				"</div>"+
+				"<a href='#page.type."+type+".id."+data._id.$id+"' class='lbh btn bg-orange linkBtnList'>Manage it</a>"+
+			"</div>";
+		return str;
+	}
+}
 /* *********************************
 			COLLECTIONS
 ********************************** */

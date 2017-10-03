@@ -84,10 +84,11 @@
 <script type="text/javascript">
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
 	var edit=true;
+	var subView="<?php echo @$_GET['view']; ?>";
 	jQuery(document).ready(function() {
 		loadDetail(true);
 		bindButtonMenu();
-		
+		getProfilSubview(subView);
 		KScrollTo("#topPosKScroll");
 	});
 	function getProfilSubview(sub, dir){ console.log("getProfilSubview", sub, dir);

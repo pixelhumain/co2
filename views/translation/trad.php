@@ -66,6 +66,8 @@ var trad = {
 	"city" : "<?php echo Yii::t("common","City"); ?>",
 
 	"administrator" : "<?php echo Yii::t("common","Administrator") ?>",
+	"invitingToAdmin" : "<?php echo Yii::t("common","Invited to administrate") ?>",
+	"waitingValidation" : "<?php echo Yii::t("common","Waiting for validation") ?>",
 	"Member" : "<?php echo Yii::t("common","Member") ?>",
 	"justCitizen" : "<?php echo Yii::t("common","Just a citizen wanting to give visibility to it :)") ?>",
 
@@ -323,6 +325,8 @@ var trad = {
 };
 
 var tradDynForm = {
+	"appList":"<?php echo Yii::t("form","List of Applications") ?>",
+	"screenList":"<?php echo Yii::t("form","Screen shot View to Application") ?>",
 	"me":"<?php echo Yii::t("form","Me") ?>",
 	"dontknow":"<?php echo Yii::t("form","I don't know") ?>",
 	"syntaxmarkdownused":"<?php echo Yii::t("form","Markdown syntax is used for description. If you want to <a href='https://michelf.ca/projets/php-markdown/syntaxe/'' target='_blank'>know more about</a>") ?>",
@@ -359,8 +363,10 @@ var tradDynForm = {
 	"description":"<?php echo Yii::t("form","Description") ?>",
 	"addtags":"<?php echo Yii::t("form","Add some tags") ?>",
 	"limitAccessRole":"<?php echo Yii::t("form","Limit role access") ?>",
+	"what":"<?php echo Yii::t("form","What") ?>",
 
 	"addroles":"<?php echo Yii::t("form","Add some roles") ?>",
+	"wantToAddSomething":"<?php echo Yii::t("form","choose what you want to add ?") ?>",
 	"imageshere":"<?php echo Yii::t("form","Your pictures here") ?>",
 	"fileshere":"<?php echo Yii::t("form","Your files here") ?>",
 	"pricesymbole":"<?php echo Yii::t("form","Price (£)") ?>",
@@ -386,6 +392,8 @@ var tradDynForm = {
 	"secondLocality":"<?php echo Yii::t("common","Second locality") ?>",
 	"freeinfourl":"<?php echo Yii::t("form","Free informations / urls") ?>",
 	"addpoi":"<?php echo Yii::t("form","Create a point of interest") ?>",
+	"configNetwork":"<?php echo Yii::t("form","Configure your Network") ?>",
+	"addconfig":"<?php echo Yii::t("form","Create a config") ?>",
 	"addclassified":"<?php echo Yii::t("form","Create a classified") ?>",
 	"addurl":"<?php echo Yii::t("form","Add an url") ?>",
 	"addbookmark":"<?php echo Yii::t("form","Add a bookmark") ?>",
@@ -397,6 +405,7 @@ var tradDynForm = {
 	"save":"<?php echo Yii::t("common","Save") ?>",
 	"whichkindofroom":"<?php echo Yii::t("form","Which kind of room do you want to create") ?>",
 	"whichkindofpoi":"<?php echo Yii::t("form","Which kind of point do you want to locate") ?>",
+	"whichkindofconfig":"<?php echo Yii::t("form","Which kind of config") ?>",
 	"whichkindofclassified":"<?php echo Yii::t("form","Which kind of classified is it") ?>",
 	"inwhichcategoryforclassified":"<?php echo Yii::t("form","In which category do you want to publish the classified") ?>",
 	"subcategory":"<?php echo Yii::t("form","Subcategory") ?>",

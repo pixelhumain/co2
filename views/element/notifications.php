@@ -24,7 +24,7 @@
 			<?php if(@$confirmations["asAdmin"]){
 				foreach($confirmations["asAdmin"] as $key => $data){ ?>
 					<li class='notifLi'>
-						<a href='#person.detail.id.<?php echo $key ?>' class='notif lbh pull-left' style="line-height: 30px;">
+						<a href='#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo $key ?>' class='notif lbh pull-left' style="line-height: 30px;">
 							<span class='label bg-dark'>
 								<i class="fa fa-cog"></i>
 							</span> 
@@ -67,7 +67,7 @@
 			<?php if(@$confirmations["asMember"]){
 				foreach($confirmations["asMember"] as $key => $data){ ?>
 					<li class='notifLi'>
-						<a href='#person.detail.id.<?php echo $key ?>' class='notif lbh pull-left' style="line-height: 30px;">
+						<a href='#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo $key ?>' class='notif lbh pull-left' style="line-height: 30px;">
 						<span class='label bg-dark'>
 							<i class="fa fa-group"></i>
 						</span> 

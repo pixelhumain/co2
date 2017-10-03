@@ -376,7 +376,7 @@ function connectPerson(connectUserId, callback)
 
 
 
-function disconnectTo(parentType,parentId,childId,childType,connectType, callback) {
+function disconnectTo(parentType,parentId,childId,childType,connectType, callback, linkOption) {
 	var messageBox = trad["removeconnection"+connectType];
 	$(".disconnectBtnIcon").removeClass("fa-unlink").addClass("fa-spinner fa-spin");
 	var formData = {
@@ -386,6 +386,8 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 		"parentId" : parentId,
 		"connectType" : connectType,
 	};
+	if(typeof linkOption != "undefined" && linkOption)
+		formData.linkOption=linkOption;
 	bootbox.dialog({
         onEscape: function() {
             $(".disconnectBtnIcon").removeClass("fa-spinner fa-spin").addClass("fa-unlink");

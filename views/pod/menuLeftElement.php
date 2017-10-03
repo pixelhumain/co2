@@ -132,18 +132,29 @@
 		if(@$invitedMe && !empty($invitedMe)){
 			$inviteRefuse="Refuse";
 			$inviteAccept="Accept";
-			$tooltipAccept="Join this ".Element::getControlerByCollection($type);
+			$verb="Join";
+			$labelAdmin="";
+			$option=null;
+			$linkValid=Link::IS_INVITING;
+			if(@$invitedMe["isAdminInviting"]){
+				$verb="Administrate";
+				$option="isAdminInviting";
+				$labelAdmin=" to administrate";
+				$linkValid=Link::IS_ADMIN_INVITING;
+			}
+			$labelInvitation=Yii::t("common", "{who} invited you".$labelAdmin, array("{who}"=>"<a href='#page.type.".Person::COLLECTION.".id.".$invitedMe["invitorId"]."' class='lbh'>".$invitedMe["invitorName"]."</a>"));
+			$tooltipAccept=$verb." this ".Element::getControlerByCollection($type);
 			if ($type == Event::COLLECTION){
 				$inviteRefuse="Not interested";
 				$inviteAccept="I go";
 			}
 			echo "<div class='no-padding containInvitation' style='border-bottom: 1px solid lightgray;margin-bottom:10px !important;'>".
 				"<div class='padding-5'>".
-					"<a href='#page.type.".Person::COLLECTION.".id.".$invitedMe["invitorId"]."' class='lbh'>".$invitedMe["invitorName"]."</a><span class='text-dark'> vous a invité: <br/>".
-					'<a class="btn btn-xs tooltips btn-accept" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.(string)$element["_id"].'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Link::IS_INVITING.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
+					$labelInvitation.": <br/>".
+					'<a class="btn btn-xs tooltips btn-accept" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.(string)$element["_id"].'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.$linkValid.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
 						'<i class="fa fa-check "></i> '.Yii::t("common",$inviteAccept).
 					'</a>'.
-					'<a class="btn btn-xs tooltips btn-refuse margin-left-5" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.(string)$element["_id"].'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Element::$connectTypes[$type].'\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
+					'<a class="btn btn-xs tooltips btn-refuse margin-left-5" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.(string)$element["_id"].'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Element::$connectTypes[$type].'\',null,\''.$option.'\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
 						'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
 					'</a>'.
 				"</div>".

@@ -44,6 +44,99 @@ function getListTagsCity(all_data) {
     return list_tags;
 }
 
+function changeValueSelectByTheme() {
+
+    theme_array = getThemeArray();
+
+    $.each(theme_array, function(index, value) {
+        if (searchTags == index) {
+            $.each(value, function(index2, value2) {
+                $("#tags_value").append(
+                    '<option value="'+value2+'">'+value2+'</option>'
+                );
+                icon = getIcon(value2);
+                $("#ajax-modal-modal-title").append(
+                    "<div id='btn_"+value2+"' class='col-md-4 padding-5 sectionBtnC forrent'>"+
+                        "<a class='btn tagListEl btn-select-type-anc sectionBtn forrentBtn' data-tag='"+value2+"' data-key='forrent'><i class='fa fa-"+icon+" fa-2x'></i><br/>"+value2+
+                        "</a>"+
+                    "</div>"
+                );
+                putEventOnResultButton(value2); 
+            });
+        }
+    });
+}
+
+function changeValueSelectByThemeForActivity() {
+
+    $("#all_activity").html(' ');
+
+    $("#all_activity").append(
+        "<div id='btn_all_activity' class='col-xs-offset-4 col-md-4 padding-5 sectionBtnC forrent'>"+
+            "<a class='btn tagListEl btn-select-type-anc sectionBtn forrentBtn' data-tag='all_activity' data-key='forrent'><i class='fa fa-exclamation-circle    fa-2x'></i><br/>Afficher tout le secteur d'activité"+
+            "</a>"+
+        "</div>"
+    );
+
+    $("#btn_all_activity").off().on('click', function(e){
+        $("#select_activity").val("-1");
+        $("#activity_elected_div").html("TOUT LE SECTEUR D'ACTIVITE<br/>");
+        getOpendatasoftItem(limit,0);
+    });
+
+    $.each(activity_array, function(index, value) {
+        if (searchTags == index) {
+            $.each(value, function(index2, value2) {
+                icon = getIcon(value2);
+
+                value_sans_spec = value2;
+                value_sans_spec = value_sans_spec.replace(/\'/g, "_SQUOTE_");
+                value_sans_spec = value_sans_spec.replace(/ /g, "_SPACE_");
+                value_sans_spec = value_sans_spec.replace(/\./g, "_DOT_");
+                value_sans_spec = value_sans_spec.replace(/\&/g, "_AND_");
+                value_sans_spec = value_sans_spec.replace(/\(/g, "_PAR-OUVRANT_");
+                value_sans_spec = value_sans_spec.replace(/\)/g, "_PAR-FERMANT_");
+                value_sans_spec = value_sans_spec.replace(/\,/g, "_VIRGULE_");
+
+                $("#select_activity").append("<option value='"+value_sans_spec+"'>"+value2+"</option>");
+
+                $("#all_activity").append(
+                    "<div id='btn_"+value_sans_spec+"' class='col-md-6 padding-5 sectionBtnC forrent'>"+
+                        "<a class='btn tagListEl btn-select-type-anc sectionBtn forrentBtn' data-tag='"+value_sans_spec+"' data-key='forrent'><i class='fa fa-"+icon+" fa-2x'></i><br/>"+value2+
+                        "</a>"+
+                    "</div>"
+                );
+                putEventOnResultButtonForActivity(value_sans_spec); 
+            });
+        }
+    });
+}
+
+function putEventOnResultButton(value) {
+
+    $("#btn_"+value+"").off().on('click', function(e){
+        $("#tags_value").val(value);
+        $('#tag_value_selected').html("Tag choisi : "+value+"<br/>");
+    });
+}
+
+function putEventOnResultButtonForActivity(activity) {
+
+    $("#btn_"+activity+"").off().on('click', function(e){
+        value_with_spec = activity.replace(/_SPACE_/g, " ");
+        value_with_spec = activity.replace(/_DOT_/g, ".");
+        value_with_spec = activity.replace(/_AND_/g, "&");
+        value_with_spec = activity.replace(/_PAR-OUVRANT_/g, "(");
+        value_with_spec = activity.replace(/_PAR-FERMANT_/g, ")");
+        value_with_spec = activity.replace(/_SQUOTE_/g, "'");
+        value_with_spec = activity.replace(/_VIRGULE_/g, ",");
+        $("#select_activity").val(activity);
+        $("#activity_selected_div").html("<h2>Activité selectionné : "+value_with_spec+"<br/></h3>");
+        getOpendatasoftItem(limit,0);
+    });
+
+}
+
 function getThemeArray() {
 
     theme_array = {};

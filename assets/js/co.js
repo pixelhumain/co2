@@ -1386,7 +1386,8 @@ var smallMenu = {
 	},
 	//content Loader can go into a block
 	//smallMenu.open("Recherche","blockUI")
-	open : function (content,type) { 
+	//smallMenu.open("Recherche","bootbox")
+	open : function (content,type,color) { 
 		//alert("small menu open");
 		//add somewhere in page
 		if(!smallMenu.inBlockUI){
@@ -1396,6 +1397,8 @@ var smallMenu = {
 		else {
 			//this uses blockUI
 			if(type == "blockUI"){
+				colorCSS = (color == "black") ? 'rgba(0,0,0,0.70)' : 'rgba(256,256,256,0.85)';
+				colorCSS = (color == "black") ? '#fff' : '#000';
 				$.blockUI({ 
 					//title : 'Welcome to your page', 
 					message : (content) ? content : "<div class='blockContent'></div>",
@@ -1405,11 +1408,10 @@ var smallMenu = {
 			         //margin : "50px",
 			         //width:"80%",
 			         //    padding: '15px', 
-			         backgroundColor: 'rgba(0,0,0,0.70)', 
-			         //backgroundColor: 'rgba(256,256,256,0.85)', 
+			         backgroundColor: colorCSS,  
 			         //    '-webkit-border-radius': '10px', 
 			         //    '-moz-border-radius': '10px', 
-			             color: '#fff' ,
+			             color: colorText ,
 			        	// "cursor": "pointer"
 			        }//,overlayCSS: { backgroundColor: '#fff'}
 				});
@@ -2654,6 +2656,10 @@ var uploadObj = {
 var dyFObj = {
 	elementObj : null,
 	elementData : null,
+	subElementObj : null,
+	subElementData : null,
+	activeElem : null,
+	activeModal : null,
 	//rules to show hide submit btn, used anwhere on blur and can be 
 	//completed by specific rules on dynForm Obj
 	//ex : dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf
@@ -2764,6 +2770,7 @@ var dyFObj = {
 	},
 
 	saveElement : function  ( formId,collection,ctrl,saveUrl,afterSave ) { 
+		//alert("saveElement");
 		mylog.warn("---------------- saveElement",formId,collection,ctrl,saveUrl,afterSave );
 		formData = $(formId).serializeFormJSON();
 		mylog.log("before",formData);
@@ -2900,13 +2907,15 @@ var dyFObj = {
 	},
 	
 	//entry point function for opening dynForms
-	openForm : function  (type, afterLoad,data) { 
+	openForm : function  (type, afterLoad,data,isSub) { 
 	    //mylog.clear();
 	    $.unblockUI();
 	    $("#openModal").modal("hide");
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
 	    uploadObj.contentKey="profil"; 
+	    dyFObj.activeElem = (isSub) ? "subElementObj" : "elementObj";
+	    dyFObj.activeModal = (isSub) ? "#openModal" : "#ajax-modal";
       	/*if(type=="addPhoto") 
         	uploadObj.contentKey="slider";*/ 
 	    //BOUBOULE ICI ACTIVER LEVENEMENT
@@ -2937,14 +2946,14 @@ var dyFObj = {
 		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
 		if(typeof type == "object"){
 			mylog.log(" object directly Loaded : ", type);
-			dyFObj.elementObj = type;
+			dyFObj[dyFObj.activeElem] = type;
 			if( notNull(type.col) ) uploadObj.type = type.col;
     		callback(type, afterLoad, data);
 		}else if( jsonHelper.notNull( "typeObj."+type+".dynForm" , "object") ){
 			mylog.log(" typeObj Loaded : ", type);
-			dyFObj.elementObj = dyFInputs.get(type);
+			dyFObj[dyFObj.activeElem] = dyFInputs.get(type);
 			if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
-    		callback( dyFObj.elementObj, afterLoad, data );
+    		callback( dyFObj[dyFObj.activeElem], afterLoad, data );
 		}else {
 			//TODO : pouvoir surchargé le dossier dynform dans le theme
 			//via themeObj.dynForm.folder overload
@@ -2957,7 +2966,7 @@ var dyFObj = {
 					mylog.dir(dynForm);
 					//typeObj[type].dynForm = dynForm;
 				  	dyFInputs.get(type).dynForm = dynForm;
-					dyFObj.elementObj = dyFInputs.get(type);
+					dyFObj[dyFObj.activeElem] = dyFInputs.get(type);
 					if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
     				callback( afterLoad, data );
 			});
@@ -2966,73 +2975,89 @@ var dyFObj = {
 	//prepare information for the modal panel 
 	//and launches the build process
 	starBuild : function  (afterLoad, data) { 
-		mylog.warn("------------ starBuild",dyFObj.elementObj, afterLoad, data);
-		mylog.dir(dyFObj.elementObj);
-		$("#ajax-modal .modal-header").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA");//.addClass(dyFObj.elementObj.bgClass);
-		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
-		$("#ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
+		mylog.warn("------------ starBuild",dyFObj[dyFObj.activeElem], afterLoad, data,dyFObj.activeModal );
+		mylog.dir(dyFObj[dyFObj.activeElem]);
+		$(dyFObj.activeModal+" .modal-header").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA");//.addClass(dyFObj[elem].bgClass);
+		$(dyFObj.activeModal+" #ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
+		$(dyFObj.activeModal+" #ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
 		
-	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
+	  	$(dyFObj.activeModal+" #ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
 							              	//"<h1 id='proposerloiFormLabel' >Faire une proposition</h1>"+
 							              	"<form id='ajaxFormModal' enctype='multipart/form-data'></form>"+
 							              	"</div>"+
 							              "</div>");
-	  	$('#ajax-modal .modal-footer').hide();
-	  	$('#ajax-modal').modal("show");
+	  	$(dyFObj.activeModal+' .modal-footer').hide();
+	  	$(dyFObj.activeModal).modal("show");
 
 	  	dyFInputs.init();
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
-	  	dyFObj.buildDynForm(afterLoad, data);
-	  	if(typeof dyFObj.elementObj.titleClass != "undefined")
+	  	dyFObj.buildDynForm(afterLoad, data,dyFObj[dyFObj.activeElem],dyFObj.activeModal+" #ajaxFormModal");
+	  	if(typeof dyFObj[dyFObj.activeElem].titleClass != "undefined")
 	  		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-									  .addClass(dyFObj.elementObj.titleClass);
+									  .addClass(dyFObj[dyFObj.activeElem].titleClass);
+		
+	  	$(dyFObj.activeModal+" #ajax-modal-modal-title").html((typeof dyFObj[dyFObj.activeElem].title != "undefined") ? dyFObj[dyFObj.activeElem].title : "");
 	},
-	buildDynForm : function (afterLoad,data) { 
-		mylog.warn("--------------- buildDynForm", dyFObj.elementObj, afterLoad,data);
+	/*subDynForm : function(type, afterLoad,data) {
+		smallMenu.open();
+		$("#openModal div.modal-content div.container")..html( "<div class='row bg-white'>"+
+	  										"<div class='col-sm-10 col-sm-offset-1'>"+
+							              	"<div class='space20'></div>"+
+							              	//"<h1 id='proposerloiFormLabel' >Faire une proposition</h1>"+
+							              	"<form id='subFormModal' enctype='multipart/form-data'></form>"+
+							              	"</div>"+
+							              "</div>");
+		dyFObj.buildDynForm(afterLoad, data,dyFObj.subElementObj,"#openModal #subFormModal");
+
+	},*/
+	buildDynForm : function (afterLoad,data,obj,formId) { 
+		mylog.warn("--------------- buildDynForm", dyFObj[dyFObj.activeElem], afterLoad,data);
 		if(userId)
 		{ 
 			var form = $.dynForm({
-			      formId : "#ajax-modal-modal-body #ajaxFormModal",
-			      formObj : dyFObj.elementObj.dynForm,
+			      formId : formId,
+			      formObj : dyFObj[dyFObj.activeElem].dynForm,
 			      formValues : data,
 			      beforeBuild : function  () {
-			      	if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.beforeBuild","function") )
-				        	dyFObj.elementObj.dynForm.jsonSchema.beforeBuild();
+
+			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.beforeBuild","function") )
+				        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeBuild();
 			      },
 			      onLoad : function  () {
+
 			      	if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
-			      		themeObj.dynForm.onLoadPanel(dyFObj.elementObj);
+			      		themeObj.dynForm.onLoadPanel(dyFObj[dyFObj.activeElem]);
 			      	} else {
-				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj.elementObj.dynForm.jsonSchema.icon+"'></i> "+dyFObj.elementObj.dynForm.jsonSchema.title);
-				        //alert(afterLoad+"|"+typeof dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
+				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj[dyFObj.activeElem].dynForm.jsonSchema.icon+"'></i> "+dyFObj[dyFObj.activeElem].dynForm.jsonSchema.title);
+				        //alert(afterLoad+"|"+typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads[afterLoad]);
 			    	}
 			        
-			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
-			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
+			        if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.onLoads."+afterLoad, "function") )
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads[afterLoad](data);
 			        //incase we need a second global post process
-			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
-			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload(data);
+			        if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.onLoads.onload", "function") )
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads.onload(data);
 				    
 			        bindLBHLinks();
 			      },
 			      onSave : function(){
 
-			      	if( typeof dyFObj.elementObj.dynForm.jsonSchema.beforeSave == "function")
-			        	dyFObj.elementObj.dynForm.jsonSchema.beforeSave();
+			      	if( typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave == "function")
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave();
 
-			        var afterSave = ( typeof dyFObj.elementObj.dynForm.jsonSchema.afterSave == "function") ? dyFObj.elementObj.dynForm.jsonSchema.afterSave : null;
-			        mylog.log("onSave", dyFObj.elementObj.saveUrl);
-			        if( dyFObj.elementObj.save )
-			        	dyFObj.elementObj.save("#ajaxFormModal");
-			        if( dyFObj.elementObj.dynForm.jsonSchema.save )
-			        	dyFObj.elementObj.dynForm.jsonSchema.save();
-			        else if(dyFObj.elementObj.saveUrl)
-			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj.elementObj.col, dyFObj.elementObj.ctrl, dyFObj.elementObj.saveUrl, afterSave );
+			        var afterSave = ( typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterSave == "function") ? dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterSave : null;
+			        mylog.log("onSave ", dyFObj.activeElem, dyFObj[dyFObj.activeElem].saveUrl, dyFObj[dyFObj.activeElem].save);
+			        if( dyFObj[dyFObj.activeElem].save )
+			        	dyFObj[dyFObj.activeElem].save(dyFObj.activeModal+" #ajaxFormModal");
+			        if( dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save )
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save(); //use this for subDynForms
+			        else if(dyFObj[dyFObj.activeElem].saveUrl)
+			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, dyFObj[dyFObj.activeElem].saveUrl, afterSave );
 			        else
-			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj.elementObj.col, dyFObj.elementObj.ctrl, null, afterSave );
+			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, null, afterSave );
 			        return false;
 			    }
 			});
@@ -3647,7 +3672,7 @@ var dyFInputs = {
 			 
 			          "<a href='javascript:;' data-index='"+index+"' data-indexLoc='"+dyFInputs.locationObj.countLocation+"' "+ 
 			            "class='deleteLocDynForm locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+ 
-			            "<i class='fa fa-times'></i> "+tradDynForm["clear"]+ 
+			            "<i class='fa fa-times'></i> "+tradDynForm.clear+ 
 			          "</a>"+ 
 			 
 			          "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' data-index='"+index+"'"+ 
@@ -3666,7 +3691,7 @@ var dyFInputs = {
 			 
 			          "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+", "+boolCenter+")' "+ 
 			            "class='removeLocalityBtn locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+ 
-			            "<i class='fa fa-times'></i> "+tradDynForm["clear"]+ 
+			            "<i class='fa fa-times'></i> "+tradDynForm.clear+ 
 			          "</a>"+ 
 			 
 			          "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' "+ 
@@ -4281,13 +4306,7 @@ var typeObj = {
 			        dda : { label: "DISCUSS DECIDE ACT" ,key:"#dda",icon:"gavel fa-2x text-red"},
 			        chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
 			    }},
-	screens : { color:"pink",icon:"desktop",titleClass : "bg-phink",title : tradDynForm.screenList,
-				sections : {
-			        person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
-			        organization : { label: trad.organization,key:"organization",icon:"group"},
-			        event : { label: trad.event,key:"event",icon:"calendar"},
-			        project : { label: trad.project ,key:"project",icon:"lightbulb-o"},
-			    }},
+	filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"}
 };
 
 var documents = {

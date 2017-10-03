@@ -6,7 +6,7 @@
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
 
-    if($this->module->id != "network" && $type!=Classified::COLLECTION)
+    if($this->module->id != "network" && $type!=Classified::COLLECTION && $type!=Product::COLLECTION)
         $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
                                 "page" => "page") ); 

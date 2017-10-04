@@ -98,6 +98,10 @@ dynForm = {
                 html:"<p class='item-comment bg-green-comment'>REQUEST Section</p>",
             },
             "request[searchTag]" : dyFInputs.tags(),
+	    },
+	    tooltips : {
+	    	"filters[types]" : "CLALALALAL LFGSGSDF\n GFDSG FDSGSD",
+	    	add : "XXXX SXKXKKXXOKOXSPOKXSKXSXSXS \X  XS XS \n XS XS XS XS"
 	    }
 	}
 };

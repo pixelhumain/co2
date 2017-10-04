@@ -100,8 +100,9 @@ dynForm = {
             "request[searchTag]" : dyFInputs.tags(),
 	    },
 	    tooltips : {
+	    	filterTagsInfo : "CLALALALAL LFGSGSDF\n GFDSG FDSGSD",
 	    	"filters[types]" : "CLALALALAL LFGSGSDF\n GFDSG FDSGSD",
-	    	add : "XXXX SXKXKKXXOKOXSPOKXSKXSXSXS \X  XS XS \n XS XS XS XS"
+	    	add : "XXXX SXKXKKXXOKOXSPOKXSKXSXSXS \n  XS XS \n XS XS XS XS"
 	    }
 	}
 };

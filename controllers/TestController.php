@@ -8,6 +8,47 @@ class TestController extends CommunecterController {
     $userNotifcations = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );//PHDB::find( ActivityStream::COLLECTION,array("notify.id"  => Yii::app()->session["userId"] ));
     echo count($userNotifcations);
   }
+
+  public function actionMango() {
+    require_once '../../pixelhumain/ph/vendor/autoload.php';
+	$api = new MangoPay\MangoPayApi();
+
+	// configuration
+	$api->Config->ClientId = 'communecter';
+	$api->Config->ClientPassword = 'JUN1QGgxxxASJBQbe1QNLX4zGX0Sjd3EEdeVVejwVTNmBLMbdh';
+	$api->Config->TemporaryFolder = '../../tmp';
+	
+	// call some API methods...
+	echo "inside Mango ";	
+	try {
+		$User = new MangoPay\UserNatural();
+		$User->Email = "test_natural@testmangopay.com";
+		$User->FirstName = "Bob";
+		$User->LastName = "Briant";
+		$User->Birthday = 121271;
+		$User->Nationality = "FR";
+		$User->CountryOfResidence = "ZA";
+		$result = $api->Users->Create($User);
+		
+		var_dump($result);
+	    $users = $api->Users->GetAll(); 
+	    foreach ($user as $key => $value) {
+	    	echo $user->FirstName."<br/>";
+	    	/*$User = new MangoPay\UserNatural();
+			$User->Email = "test_natural@testmangopay.com";
+			$User->FirstName = "Bob";
+			$User->LastName = "Briant";
+			$User->Birthday = 121271;
+			$User->Nationality = "FR";
+			$User->CountryOfResidence = "ZA";
+			$result = $mangoPayApi->Users->Create($User);*/
+	    }
+	} catch(MangoPay\Libraries\ResponseException $e) {
+	    // handle/log the response exception with code $e->GetCode(), message $e->GetMessage() and error(s) $e->GetErrorDetails()
+	} catch(MangoPay\Libraries\Exception $e) {
+	    // handle/log the exception $e->GetMessage()
+	}
+  }
   
 
   // VoteDown

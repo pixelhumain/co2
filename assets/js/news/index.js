@@ -360,7 +360,7 @@ function modifyNews(idNews,typeNews){
 				   		else if(updateNews[idNews]["media"]["type"]=="gallery_files"){
 				   			message += getMediaFiles(updateNews[idNews]["media"],idNews, "update")+
 				   			"<input type='hidden' class='type' value='gallery_files'>";
-				   		}else if (updateNews[idNews]["media"]["type"]=="gallery_files"){
+				   		}else if (updateNews[idNews]["media"]["type"]=="gallery_images"){
 				   			message += getMediaImages(updateNews[idNews]["media"], idNews,null,null, "update")+
 				   			"<input type='hidden' class='type' value='gallery_images'>";
 				   		}else{
@@ -1360,7 +1360,7 @@ function getMediaImages(o,newsId,authorId,targetName,edit){
 	if(typeof edit != "undefined" && edit=="update"){
 		for(var i in o.images){
 			html+="<div class='updateImageNews'><img src='"+baseUrl+"/"+uploadUrl+"communecter/"+o.images[i].folder+"/"+o.images[i].name+"' style='width:75px; height:75px;'/>"+
-		       	"<a href='javascript:;' class='btn-red text-white deleteDoc' onclick='deleteDocFromNews(\'"+o.images[i]._id.$id+"\',\'"+edit+"\')'><i class='fa fa-times text-dark'></i></a>"+
+		       	"<a href='javascript:;' class='btn-red text-white deleteDoc'><i class='fa fa-times text-dark'></i></a>"+
 					"<input type='hidden' class='docsId' value='"+o.images[i]._id.$id+"'></div>";
 		}
 		return html;
@@ -1439,7 +1439,7 @@ function getMediaFiles(o,newsId, edit){
 		html+="<div class='col-md-12 padding-5 shadow2 margin-top-5'>"+
 			"<a href='"+path+"' target='_blank'>"+documents.getIcon(o.files[i].contentKey)+" "+o.files[i].name+"</a>";
 			if(typeof edit != "undefined" && edit=="update"){
-				html+="<a href='javascript:;' class='btn-red text-white deleteDoc' onclick='deleteDocFromNews(\'"+o.files[i]._id.$id+"\',\'"+edit+"\')'><i class='fa fa-times text-dark'></i></a>"+
+				html+="<a href='javascript:;' class='btn-red text-white deleteDoc'><i class='fa fa-times text-dark'></i></a>"+
 					"<input type='hidden' class='docsId' value='"+o.files[i]._id.$id+"'>";
 			}
 		html +="</div>";

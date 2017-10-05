@@ -2537,12 +2537,28 @@ var list = {
 			$.each(v, function(i, data){
 				viewList+=list.getListOf(e,data,action);	
 			});
-			$("#listList").append(viewList)
-			
+			$("#listList").append(viewList);
 		});
+		if(action=="history"){
+			$(".orderComment").click(function(){
+				order=listElement["orders"][$(this).data("id")];
+				commentRating(order, $(this).data("action"));
+			});
+		}
 	},
 	getListOf : function(type,data, action){
 		data.imgProfil = ""; 
+		if(action=="manage")
+			btnAction="<a href='#page.type."+type+".id."+data._id.$id+"' class='lbh btn bg-orange linkBtnList'>Manage it</a>";
+		else if(action=="history"){
+			btnAction="save";
+			labelAction="Leave your comment";
+			if(typeof data.comment != "undefined"){
+				btnAction="show";
+				labelAction="Show your comment";
+			}
+			btnAction="<a href='javascript:;' class='btn bg-green orderComment linkBtnList' data-id='"+data._id.$id+"' data-action='"+btnAction+"'>"+labelAction+"</a>";
+		}
     	if(!data.useMinSize)
         	data.imgProfil = "<i class='fa fa-image fa-3x'></i>";
    		if("undefined" != typeof data.profilMediumImageUrl && data.profilMediumImageUrl != "")
@@ -2555,15 +2571,21 @@ var list = {
 					"<div class='col-md-10 col-sm-10'>"+
 						"<h4>"+data.name+"</h4>"+
 						"<span>Price: "+data.price+"</span><br/>";
-						if(typeof data.toBeValidated != "undefined")
+						if(action=="manage" && typeof data.toBeValidated != "undefined")
 						str+="<i class='text-azul'>Waiting for validation</i>";
 		str+=		"</div>"+
 					"<div class='col-md-2 col-sm-2'>"+
 						
 					"</div>"+
 				"</div>"+
-				"<a href='#page.type."+type+".id."+data._id.$id+"' class='lbh btn bg-orange linkBtnList'>Manage it</a>"+
+				btnAction+
 			"</div>";
+		if(action=="history"){
+			str+= "<div class='col-md-12 col-sm-12 col-xs-12'>"+
+				"<div id='content-comment-"+data._id.$id+"' class='col-md-5 col-sm-5 col-xs-6 pull-right contentRatingComment'>"+
+				"</div>"+
+			"</div>"
+		}
 		return str;
 	}
 }

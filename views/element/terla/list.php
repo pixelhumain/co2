@@ -1,3 +1,17 @@
+<?php
+
+HtmlHelper::registerCssAndScriptsFiles( 
+	array(  	
+		'/js/comments.js',
+	) , 
+	Yii::app()->theme->baseUrl. '/assets');
+$cssAnsScriptFilesTheme = array(
+	'/plugins/jquery-bar-rating/jquery.barrating.js',
+	'/plugins/font-awesome/css/font-awesome.min.css',
+	'/plugins/jquery-bar-rating/fontawesome-stars.css'
+);
+HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
+?>
 <style type="text/css">
 	.contentListItem:nth-child(2n+1){
 		background-color: white;
@@ -37,6 +51,9 @@
 
 	.headerList p{
 		font-size: 18px;
+	}
+	.contentRatingComment textarea{
+		min-height: 100px;
 	}
 </style>
 <?php if($actionType=="manage"){ ?>

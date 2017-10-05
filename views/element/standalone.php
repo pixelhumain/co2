@@ -4,6 +4,11 @@ HtmlHelper::registerCssAndScriptsFiles(
 		'/js/comments.js',
 	) , 
 	Yii::app()->theme->baseUrl. '/assets');
+$cssAnsScriptFilesTheme = array(
+	'/plugins/jquery-bar-rating/jquery.barrating.js'
+);
+HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
+
 ?>
 <style type="text/css">
 	.headerTitleStanalone{
@@ -105,7 +110,8 @@ HtmlHelper::registerCssAndScriptsFiles(
       "</div>";
       $(".headerTitleStanalone").html(str);
       initBtnLink();
-      getAjax("#commentElement",baseUrl+"/"+moduleId+"/comment/index/type/"+type+"/id/"+element['_id']['$id'],
+      ajaxPost("#commentElement",baseUrl+"/"+moduleId+"/comment/index/type/"+type+"/id/"+element['_id']['$id'],
+			{"filters": ["rating"]},
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 				$(".container-txtarea").hide();
 

@@ -162,6 +162,17 @@
 						<span class="pull-left content-comment">						
 							<span class="text-black">
 								<span class="text-dark"><strong><?php echo $comment["author"]["name"]; ?></strong></span> 
+								<?php if(@$comment["rating"]){ ?>
+									<div class="br-wrapper br-theme-fontawesome-stars">
+                						<select id="ratingComments<?php echo $comment["_id"]; ?>" class="ratingComments">
+                						    <option value="1">1</option>
+						                    <option value="2">2</option>
+						                    <option value="3">3</option>
+						                    <option value="4">4</option>
+						                    <option value="5">5</option>
+						                  </select>
+						                </div>
+								<?php } ?>
 								<span class="text-comment <?php echo (@$comment['reportAbuseCount']&&$comment['reportAbuseCount']>=5)?'text-red-light-moderation':'' ?>">
 									<?php echo $comment["text"]; ?>
 								</span>
@@ -300,6 +311,10 @@
 		$("#comments-list-<?php echo $idComment; ?> .text-comment").each(function(){
 			linked = linkify($(this).html());
 			$(this).html(linked);
+		});
+		$.each(comments, function(i,v){
+			$("#ratingComments"+i).barrating('set', v.rating);
+      		$("#ratingComments"+i).barrating('readonly', false);
 		});
 
 		$(".tooltips").tooltip();

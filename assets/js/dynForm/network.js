@@ -1,4 +1,12 @@
 dynForm = {
+	removeFilter : function (ix) { 
+		//alert(ix);
+		typeObj.network.filters.splice( ix, 1 );
+		$(".filterList").html("");
+		$.each(typeObj.network.filters,function( k,v ) { 
+          $(".filterList").append(v.name+" <a href='javascript:;' onclick='typeObj.network.dynForm.removeFilter("+k+")'><i class='fa fa-times text-red'></i> </a><br/>");
+        })
+	},
     jsonSchema : {
 	    title : tradDynForm.configNetwork,
 	    icon : "connectdevelop",
@@ -22,35 +30,33 @@ dynForm = {
 	    	 return ( $("#ajaxFormModal #type").val() ) ? true : false ;
 	    },
 	    formatData : function(formData){
-	    	if( $("#ajaxFormModal request[searchTag]").val() != "" && formData["request[searchTag]"] )
+	    	//alert("formatData");
+	    	if( $(dyFObj.activeModal+" #ajaxFormModal request[searchTag]").val() != "" && formData["request[searchTag]"] )
 				formData["request[searchTag]"] = formData["request[searchTag]"].split(",");
-	    	if( $("#ajaxFormModal add").val() != "" && formData["add"] )
-				formData["add"] = formData["add"].split(",");
+	    	if( $(dyFObj.activeModal+" #ajaxFormModal add").val() != "" && formData.add )
+				formData.add = formData.add.split(",");
+			if( typeObj.network.filters )
+				formData.filters = typeObj.network.filters;
 			return formData;
 	    },
 	    properties : {
-	    	info : {
+	    	breadcrumb : {
                 inputType : "custom",
-                html:"<p class='text-"+typeObj.network.color+"'>"+
-                		tradDynForm.infoFormNetwork+
-                		"<hr>"+
-					 "</p>",
-            },
-            breadcrumb : {
-                inputType : "custom",
-                html:"<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.openForm(\"config\")'><i class='fa fa-times'></i></a> NETWORK </h4>",
+                html:"<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.openForm(\"filr\")'><i class='fa fa-times'></i></a> NETWORK </h4>",
             },
        
             "type" : dyFInputs.inputHidden(),
-	        "name" : dyFInputs.name("network"),
+	        "name" : dyFInputs.name(),
 
 	        skinInfo : {
                 inputType : "custom",
                 html:"<p class='item-comment bg-green-comment'>SKIN Section<hr></p>",
             },
             "skin[title]" : dyFInputs.name(),
-	        "skin[logo]" : dyFInputs.image(),
-		    "skin[paramsLogo][origin]" : dyFInputs.checkboxSimple("true", "skinparamsLogoorigin", 
+	        	"skin[logo]" : dyFInputs.image(),
+		    "skin[paramsLogo][origin]" : dyFInputs.radio( "Logo Origin ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
+											 			"false" : { icon:"circle-o", lbl:trad.no} } ),
+											 			/*dyFInputs.checkboxSimple("true", "skinparamsLogoorigin", 
             										{ "onText" : "Oui",
             										  "offText": "Non",
             										  "onLabel" : "on",
@@ -60,18 +66,26 @@ dynForm = {
             										  "labelInInput": "Activer les amendements",
             										  "labelInformation": "<i class='fa fa-info-circle'></i> Les votes sont désactivés pendant la période d'amendement"
 
-            }),
+            }),*/
 
             filterInfo : {
                 inputType : "custom",
-                html:"<p class='item-comment bg-green-comment'>FILTER Section</p>",
+                html:"<p class='item-comment bg-green-comment'>FILTER Section "+
+                	"</p>",
             },
-
+            "filters[types]" : dyFInputs.radio( "Types ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
+											 			"false" : { icon:"circle-o", lbl:trad.no} } ),
+            filterTagsInfo : {
+                inputType : "custom",
+                html:"<a href='javascript:;' class='btn btn-dark' onclick='dyFObj.openForm(\"filter\",null,null,true)'><i class='fa fa-plus'></i> Ajouter un Filtre</a>"+
+                	"<div class='filterList'></div>",
+            },
+            
             addInfo : {
                 inputType : "custom",
                 html:"<p class='item-comment bg-green-comment'>ADD Section</p>",
             },
-            "add" : dyFInputs.tags( ["organization","project","event"] ),
+            add : dyFInputs.tags( ["organization","project","event"] ),
 
             resultInfo : {
                 inputType : "custom",
@@ -84,6 +98,11 @@ dynForm = {
                 html:"<p class='item-comment bg-green-comment'>REQUEST Section</p>",
             },
             "request[searchTag]" : dyFInputs.tags(),
+	    },
+	    tooltips : {
+	    	filterTagsInfo : "CLALALALAL LFGSGSDF\n GFDSG FDSGSD",
+	    	"filters[types]" : "CLALALALAL LFGSGSDF\n GFDSG FDSGSD",
+	    	add : "XXXX SXKXKKXXOKOXSPOKXSKXSXSXS \n  XS XS \n XS XS XS XS"
 	    }
 	}
 };

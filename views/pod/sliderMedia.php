@@ -31,6 +31,10 @@
 	.carousel-media > ol{
 		bottom: -85px
 	}
+	.carousel-media .carousel-indicators{
+		left:30%;
+		width: 100%;
+	}
 	.carousel-media{
 		margin-bottom: 100px;
 	}

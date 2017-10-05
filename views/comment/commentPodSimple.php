@@ -160,10 +160,10 @@
 							 style="margin-right:10px;height:32px; border-radius:3px;">
 					
 						<span class="pull-left content-comment">						
-							<span class="text-black">
-								<span class="text-dark"><strong><?php echo $comment["author"]["name"]; ?></strong></span> 
+							<span class="text-black pull-left">
+								<span class="text-dark pull-left"><strong><?php echo $comment["author"]["name"]; ?></strong></span> 
 								<?php if(@$comment["rating"]){ ?>
-									<div class="br-wrapper br-theme-fontawesome-stars">
+									<div class="br-wrapper br-theme-fontawesome-stars pull-left margin-left-10">
                 						<select id="ratingComments<?php echo $comment["_id"]; ?>" class="ratingComments">
                 						    <option value="1">1</option>
 						                    <option value="2">2</option>
@@ -171,14 +171,12 @@
 						                    <option value="4">4</option>
 						                    <option value="5">5</option>
 						                  </select>
-						                </div>
+						                </div> <br>
 								<?php } ?>
-								<span class="text-comment <?php echo (@$comment['reportAbuseCount']&&$comment['reportAbuseCount']>=5)?'text-red-light-moderation':'' ?>">
-									<?php echo $comment["text"]; ?>
-								</span>
+								<span class="text-comment text-left pull-left <?php echo (@$comment['reportAbuseCount']&&$comment['reportAbuseCount']>=5)?'text-red-light-moderation':'' ?>"><?php echo $comment["text"]; ?></span>
 							</span><br>
 							<small class="bold">
-							<?php if(isset(Yii::app()->session["userId"])){ ?>
+							<?php if(isset(Yii::app()->session["userId"]) && !@$comment["rating"]){ ?>
 								 
 								<?php if(@$canComment){ ?>
 								<?php 
@@ -313,8 +311,14 @@
 			$(this).html(linked);
 		});
 		$.each(comments, function(i,v){
-			$("#ratingComments"+i).barrating('set', v.rating);
-      		$("#ratingComments"+i).barrating('readonly', false);
+			if(typeof v.rating != "undefined"){
+				$("#ratingComments"+i).barrating({
+					theme: 'fontawesome-stars',
+					'readonly': true
+				});
+				$("#ratingComments"+i).barrating("set", v.rating);
+	      		//$("#ratingComments"+i).barrating();
+			}
 		});
 
 		$(".tooltips").tooltip();

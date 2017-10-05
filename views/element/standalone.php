@@ -5,7 +5,10 @@ HtmlHelper::registerCssAndScriptsFiles(
 	) , 
 	Yii::app()->theme->baseUrl. '/assets');
 $cssAnsScriptFilesTheme = array(
-	'/plugins/jquery-bar-rating/jquery.barrating.js'
+	'/plugins/jquery-bar-rating/jquery.barrating.js',
+	'/plugins/font-awesome/css/font-awesome.min.css',
+	'/plugins/jquery-bar-rating/fontawesome-stars.css',
+	'/plugins/jquery-bar-rating/fontawesome-stars-o.css'
 );
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 
@@ -73,7 +76,20 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	<div class="header-info col-md-12 no-padding text-left">
 		<h4 class="text-dark col-md-4 no-margin text-left">Project information</h4>
 		<div class="evalutation col-md-3">
-			<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i>
+			<?php if(@$element["averageRating"]){ ?>
+				<div class="br-wrapper br-theme-fontawesome-stars-o pull-left margin-left-10">
+					<select id="ratingElement" class="ratingComments">
+					    <option value="1">1</option>
+	                    <option value="2">2</option>
+	                    <option value="3">3</option>
+	                    <option value="4">4</option>
+	                    <option value="5">5</option>
+                  	</select>
+                </div>
+                <span><?php echo $element["averageRating"] ?></span>
+			<?php }else{ ?>
+				<span>Aucun commentaire</span>
+			<?php } ?>
 		</div>
 		<div class="col-md-5">
 			<h3 class="pull-left no-margin" style="font-size: 20px;">Share</h3>
@@ -123,6 +139,15 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 		},"html");
 //setTitle("", "", classified.name);
 		element["id"] = element['_id']['$id'];
+		if(typeof element.averageRating != "undefined"){
+			$("#ratingElement").barrating({
+				theme: 'fontawesome-stars-o',
+				'readonly': true,
+				initialRating: element.averageRating
+			});
+			//$("#ratingElement").barrating("set", element.averageRating);
+	      		
+		}
 		//var html = directory.preview(classified);
 	  	//$("#classified").html(html);
 	});

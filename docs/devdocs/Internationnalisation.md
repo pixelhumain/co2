@@ -51,19 +51,20 @@
 
 ## Process passage à l'internationnalisation 
 
-- Sauvegardais l'actuelle base de données
-- Supprimais cities
+- Sauvegarder l'actuelle base de données
+- Supprimer cities
 - Importer cities, zones et translates :
+    + Déziper les fichiers puis exécuter les commandes suivants
 ```
-mongoimport --host c19.lamppost.17.mongolayer.com --port 10019 --username devCommunecter --password 2210wtfmongo$ --db dev-communecter --collection zones --file zones.json
-```
-
-```
-mongoimport --host c19.lamppost.17.mongolayer.com --port 10019 --username devCommunecter --password 2210wtfmongo$ --db dev-communecter --collection translate --file translate.json
+mongoimport --db communecter --collection zones --file zones.json
 ```
 
 ```
-mongoimport --host c19.lamppost.17.mongolayer.com --port 10019 --username devCommunecter --password 2210wtfmongo$ --db dev-communecter --collection cities --file cities.json
+mongoimport --db communecter --collection translate --file translate.json
+```
+
+```
+mongoimport --db communecter --collection cities --file cities.json
 ```
 
 - Passer les batchs

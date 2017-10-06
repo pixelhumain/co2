@@ -522,7 +522,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     });
 
 
-    $(".coopPanelHtml").click(function(){
+    $(".coopPanelHtml").off().click(function(){
       var coopType = $(this).data("coop-type");
       var coopId = $(this).data("coop-id");
       var idParentRoom = $(this).data("coop-idparentroom");
@@ -540,13 +540,13 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
           uiCoop.startUI();
           $("#modalCoop").modal("show");
           if(coopType == "rooms"){
-            uiCoop.getCoopData(null, null, "room", null, coopId);
+            uiCoop.getCoopData(contextData.type, contextData.id, "room", null, coopId);
           }else{
             setTimeout(function(){
-              uiCoop.getCoopData(null, null, "room", null, idParentRoom, 
+              uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
               function(){
                 toastr.info(trad["processing"]);
-                uiCoop.getCoopData(null, null, coopType, null, coopId);
+                uiCoop.getCoopData(contextData.type, contextData.id, coopType, null, coopId);
               }, false);
             }, 1000);
           }
@@ -888,10 +888,13 @@ var directory = {
                     
                     
             if(typeof(params.statusLink)!="undefined"){
-              if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined")
-                str+="<span class='text-red'>Administrateur</span>";
+              if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined" && typeof(params.statusLink.isAdminInviting)=="undefined")
+                str+="<span class='text-red'>"+trad.administrator+"</span>";
+              if(typeof(params.statusLink.isAdminInviting)!="undefined"){
+                str+="<span class='text-red'>"+trad.invitingToAdmin+"</span>";
+              }
               if(typeof(params.statusLink.toBeValidated)!="undefined" || typeof(params.statusLink.isAdminPending)!="undefined")
-                str+="<span class='text-red'>En attente de validation</span>";
+                str+="<span class='text-red'>"+trad.waitingValidation+"</span>";
             }
 
             if(params.rolesLbl != "")
@@ -1515,7 +1518,7 @@ var directory = {
           str += '<h4 class="panel-title letter-turq"><i class="fa '+ params.ico + '"></i> '+ name + '</h4>';
 
           if(params.type != "rooms")
-          str += '<h5 class=""><small><i class="fa fa-bell"></i> '+ trad[params.status] + '</small></h5>';
+          str += '<h5 class=""><small><i class="fa fa-certificate"></i> '+ trad[params.status] + '</small></h5>';
 
           str += '<span class="text-dark">'+description+'</span>';
           str += "</div>";

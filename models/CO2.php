@@ -50,7 +50,7 @@ class CO2 {
 			$communexion["state"] = true;
 		}
 
-		if(CookieHelper::hasCookie("communexion")) {
+		if(CookieHelper::hasCookie("communexion") && CookieHelper::hasCookie("communexionType")) {
 			$communexion["state"] = true;
             $communexion["values"] = json_decode(CookieHelper::getCookie("communexion"), true);
             $communexion["currentLevel"] = "city";

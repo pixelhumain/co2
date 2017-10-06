@@ -289,7 +289,7 @@ var newMemberInCommunity = false;
 var isElementAdmin= "<?php echo Authorisation::isElementAdmin($parentId, $type, @Yii::app()->session["userId"]) ?>";
 var contactTypes = [{ name : "people", color: "yellow", icon:"user", label:"Citoyens" }];
 var listMails = {};
-var rolesList=[tradCategory.financier,tradCategory.partner,tradCategory.sponsor,tradCategory.organizor,tradCategory.president, tradCategory.director,tradCategory.speaker,tradCategory.intervener];
+var rolesList=[ tradCategory.financier, tradCategory.partner, tradCategory.sponsor, tradCategory.organizor, tradCategory.president, tradCategory.director, tradCategory.speaker, tradCategory.intervener];
 if(elementType != "<?php echo Event::COLLECTION ?>" || isElementAdmin)
 	contactTypes.push({ name : "organizations", color: "green", icon:"group", label:"Organisations" });
 
@@ -733,11 +733,9 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 	bindEventScopeContactsModal();
 }
 
-//var searchValLast = "";
+
 function filterContact(searchVal){
-	//mylog.log(searchVal, "==", searchValLast);
-	//if(searchVal == searchValLast) return;
-	//searchValLast = searchVal;
+	mylog.log("filterContact", searchVal, "==", addLinkSearchMode);
 
 	if(addLinkSearchMode == "contacts"){
 		$("#btn-save").removeClass("hidden");

@@ -720,6 +720,8 @@
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
 		getContextDataLinks();
+		if(typeof contextData.links != "undefined" && rolesList != "undefined")
+			pushListRoles(contextData.links);
 		
 		//Sig.showMapElements(Sig.map, mapElements);
 		var elemSpec = dyFInputs.get("<?php echo $type?>");

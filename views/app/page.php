@@ -6,7 +6,7 @@
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
 
-    if($this->module->id != "network" && $type!=Classified::COLLECTION && $type!=Product::COLLECTION)
+    if($this->module->id != "network" && $type!=Classified::COLLECTION && ($type!=Product::COLLECTION || ($element["creator"]==Yii::app()->session["userId"] && $view != "show")))
         $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
                                 "page" => "page") ); 
@@ -33,12 +33,9 @@
 
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
-                if(Yii::app()->params["CO2DomainName"] == "terla"){
-                    if($view=="pro")
-                        $this->renderPartial('../element/terla/dashboard', $params );
-                    else
-                        $this->renderPartial('../element/terla/index', $params );
-                }else
+                if(Yii::app()->params["CO2DomainName"] == "terla")
+                    $this->renderPartial('../element/terla/index', $params );
+                else
                     $this->renderPartial('../element/profilSocial', $params ); 
             }
 

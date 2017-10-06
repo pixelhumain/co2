@@ -14,13 +14,13 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 
 ?>
 <style type="text/css">
-	.headerTitleStanalone{
+	.modal-content .headerTitleStanalone{
 		left:-25px;
 		right:-25px;
-		top:0px;
+		top:0px !important;
 	}
-	.contentOnePage{
-		margin-top: 55px;
+	.modal-content .contentOnePage{
+		margin-top: 55px !important;
 	}
 	.contentOnePage .title > h2{
 		    padding: 15px 0px;
@@ -118,15 +118,14 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	var type="<?php echo $type; ?>";
 	jQuery(document).ready(function() {	
 		var nav = directory.findNextPrev("#page.type."+type+".id."+element['_id']['$id']);
-        //if(typeof params.name != "undefined" && params.name != "")
         str =  "<div class='col-md-6 no-padding'>"+ 
-        nav.prev+
-        "<span>"+element.name+"</span>"+
-        nav.next+
-      "</div>";
-      $(".headerTitleStanalone").html(str);
-      initBtnLink();
-      ajaxPost("#commentElement",baseUrl+"/"+moduleId+"/comment/index/type/"+type+"/id/"+element['_id']['$id'],
+		        	nav.prev+
+		        	"<span>"+element.name+"</span>"+
+		       		nav.next+
+      			"</div>";
+     	$(".modal-content .headerTitleStanalone").html(str);
+      	initBtnLink();
+      	ajaxPost("#commentElement",baseUrl+"/"+moduleId+"/comment/index/type/"+type+"/id/"+element['_id']['$id'],
 			{"filters": ["rating"]},
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 				$(".container-txtarea").hide();
@@ -137,7 +136,6 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 				});
 
 		},"html");
-//setTitle("", "", classified.name);
 		element["id"] = element['_id']['$id'];
 		if(typeof element.averageRating != "undefined"){
 			$("#ratingElement").barrating({
@@ -145,11 +143,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 				'readonly': true,
 				initialRating: element.averageRating
 			});
-			//$("#ratingElement").barrating("set", element.averageRating);
-	      		
 		}
-		//var html = directory.preview(classified);
-	  	//$("#classified").html(html);
 	});
 	function addToShoppingCart(id,type){
 		if(typeof userId != "undefined" && userId != ""){

@@ -70,7 +70,7 @@
 			</button>
 		<?php } ?>
 </div>
-<div id="ficheInfo" class="panel panel-white col-lg-8 col-md-7 col-sm-7 no-padding">
+<div id="ficheInfo" class="panel panel-white col-lg-7 col-md-7 col-sm-7 no-padding">
 	<div class="panel-body no-padding">
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 			<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
@@ -293,6 +293,28 @@
 									  "image" => $images,
 									  "openEdition" => false) ); 
 		?>
+</div>
+<div id="mediaAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding contentInformation">
+	<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
+		<h4 class="panel-title text-dark pull-left">
+			<i class="fa fa-image"></i> <?php echo Yii::t("common","Medias") ?>
+		</h4>
+		<?php if($edit==true || ( $openEdition==true && Yii::app()->session["userId"] != null ) ){?>
+		  	<button class="btn-update-medias btn btn-default letter-blue pull-right tooltips" 
+				data-toggle="tooltip" data-placement="top" title="" alt="" data-original-title="<?php echo Yii::t("common","Update medias") ?>">
+				<b><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?></b>
+			</button>
+		 <?php } ?>
+	</div>
+	<?php $images=Document::getListDocumentsWhere(array("id"=>(string)$element["_id"],"type"=>$type,"doctype"=>Document::DOC_TYPE_IMAGE),Document::DOC_TYPE_IMAGE);
+	$this->renderPartial('../pod/sliderMedia', 
+		array(
+			  "medias"=>@$element["medias"],
+			  "images" => @$images,
+			  "onlyItem"=>true
+		) ); 
+	?>
+
 </div>
 <div id="adressesAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding contentInformation">
 		<div class="panel-heading border-light padding-15" style="background-color: #dee2e680;">

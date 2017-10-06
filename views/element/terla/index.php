@@ -147,14 +147,8 @@
 		});*/
 
 		$("#btn-detail").click(function(){
+			location.hash=hashUrlPage;
 			loadDetail();
-		});
-		$(".btn-start-newsstream").click(function(){
-			//$(".ssmla").removeClass('active');
-			responsiveMenuLeft(true);
-			location.hash=hashUrlPage
-			//history.pushState(null, "New Title", hashUrlPage);
-			loadNewsStream(true);
 		});
 		$("#btn-list-pro").click(function(){
 			location.hash=hashUrlPage+".view.prolist";

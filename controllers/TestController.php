@@ -1339,4 +1339,10 @@ La vie en santé;Santé;;
 		echo  "NB Cities : " .$nbcities."<br>" ;
 		echo $str;
 	}
+
+
+	public function actionPdf(){
+		$tpl = $this->renderPartial('application.views.pdf.test', array(), true);
+		Pdf::createPdf($tpl);
+	}
 }

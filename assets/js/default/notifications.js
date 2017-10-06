@@ -2,7 +2,7 @@ var notifications = null;
 var maxNotifTimstamp = 0;
 
 function bindNotifEvents(element){
-	$(".notifList"+element+" a.notif").off().on("click",function () 
+	$(".notifList"+element+" a.notif").off().on("mousedown",function (e) 
 	{
 		markAsRead( $(this).data("id") );
 		hash = $(this).data("href");
@@ -12,7 +12,10 @@ function bindNotifEvents(element){
 		setTimeout(function(){
           //  elem.addClass("read");
             //elem.removeClass('animated bounceOutRight');
-            urlCtrl.loadByHash(hash);
+            if(e.which==2)
+				window.open(baseUrl+hash, '_blank');
+			else		
+            	urlCtrl.loadByHash(hash);
             //notifCount();
         }, 200);
 	});

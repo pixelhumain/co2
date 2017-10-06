@@ -531,6 +531,9 @@ class CommunecterController extends Controller
       "savevote"           => array('href' => "ph/co2/cooperation/savevote"),
       "deleteamendement"  => array('href' => "ph/co2/cooperation/deleteamendement")
     ),
+    "pdf" => array(
+      "create"        => array('href' => "ph/co2/pdf/create")
+    ),
   );
 
   function initPage(){

@@ -131,8 +131,6 @@ $this->renderPartial($layoutPath.'header',
       padding:10px;
     }
 
-
-
     .logo_interop {
         margin-top: 10px;
         margin-bottom: 10px;
@@ -186,10 +184,6 @@ $this->renderPartial($layoutPath.'header',
       background-color: transparent;
     }
 
-    #col-btn-type-directory .btn-directory-type .btn-all{
-      /*background-color: #F2F2F2;*/
-    }
-
     .btn-select-filliaire:hover{
       background-color: #F2F2F2;
     }
@@ -231,11 +225,6 @@ $this->renderPartial($layoutPath.'header',
           <i class="fa <?php echo $cat["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo $cat["name"]; ?>
         </button>
       </div>
-        <?php //foreach ($cat as $key2 => $cat2) { ?>
-          <!-- <button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-<?php //echo $key; ?>">
-            <i class="fa fa-angle-right"></i> <?php //echo $cat2; ?>
-          </button><br class="hidden"> -->
-        <?php //} ?>
       <?php } ?>
     </button>
   <?php } ?>
@@ -328,7 +317,6 @@ $this->renderPartial($layoutPath.'header',
         "eco_doct" : { color: "blue",   icon: "bullhorn",   name: "Ecole doctorales accrédité" },
         "membres_univ" : { color: "blue",   icon: "bullhorn",   name: "Membres des universités de France" },
         "struct_recherche" : { color: "blue",   icon: "bullhorn",   name: "Structures de recherche" },
-
     }
 
     if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
@@ -463,27 +451,6 @@ $this->renderPartial($layoutPath.'header',
         var city_wikidataID = city_data.wikidataID;
         var city_insee = city_data.insee;
 
-        // if ($.cookie().communexionActivated == true) {
-        //     city_id = getCityId();
-        //     city_data = getCityDataById(city_id);
-        // 	var geoShape = getGeoShapeForOsm(communexion.values.geoShape);
-        //     var geofilter = getGeofilterPolygon(communexion.values.geoShape);
-        //     var city_wikidataID = communexion.values.wikidataID;
-        //     var city_insee = communexion.values.inseeCode;
-        // } else {
-        //     city_id = getCityId();
-        //     // scope_value = getScopeValue();
-        //     city_data = getCityDataById(city_id);
-        //     // getCityDataByInsee(scope_value);
-
-        //     var geoShape = getGeoShapeForOsm(city_data.geoShape);
-        //     var geofilter = getGeofilterPolygon(city_data.geoShape);
-        //     var city_wikidataID = city_data.wikidataID;
-        //     var city_insee = city_data.insee;
-        // }
-
-        mylog.log("LE NOUVEAU GEOSHAPE  : ", geoShape);
-
         if (searchTags !== "") {
         	var libelle_activity = getLibelleActivity();
             var amenity_filter = getAmenityFilter();
@@ -566,16 +533,12 @@ $this->renderPartial($layoutPath.'header',
 	        }
         }
 
-        mylog.log('URL INTEROP', url_interop);
         return url_interop;
     }
 
     function startSearchInterop(indexMin, indexMax) {
 
-        mylog.log("StartSearch INTEROPERABILITY");
-
         if (typeof(typeD) == "undefined") {
-            // toastr.error("Pas de type de directory selectionné");
             typeD = "wikidata";
         }
 
@@ -603,8 +566,6 @@ $this->renderPartial($layoutPath.'header',
 	        if(levelCommunexion == 3) locality = inseeCommunexion;
 	        if(levelCommunexion == 4) locality = inseeCommunexion;
 	        if(levelCommunexion == 5) locality = "";
-
-	        mylog.log("Locality : ", locality);
 	      } 
 	    }  
 
@@ -621,7 +582,7 @@ $this->renderPartial($layoutPath.'header',
 
     function getInteropResults(url_interop) {
 
-    	mylog.log("nouvelle url à passer dans l'auro complete : ", url_interop);
+    	mylog.log("nouvelle url à passer dans l'auto complete : ", url_interop);
 
 	    loadingData = true;
 	    
@@ -629,8 +590,6 @@ $this->renderPartial($layoutPath.'header',
 	    $(".btn-start-search").html(str);
 	    $(".btn-start-search").addClass("bg-azure");
 	    $(".btn-start-search").removeClass("bg-dark");
-
-        mylog.log("L INDEX MIN EST EGAL A : ", indexMin);
 	    
 	    if(indexMin > 0)
 	    $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
@@ -704,7 +663,6 @@ $this->renderPartial($layoutPath.'header',
 	                        searchType.push(typeD);
 	                    }
 	                    $.each(searchType, function(key, val){
-	                        mylog.log(headerParams[val]);
 	                        var params = headerParams[val];
 	                        str += "<span class='text-"+params.color+"'>"+
 	                                "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
@@ -721,8 +679,6 @@ $this->renderPartial($layoutPath.'header',
 	                str += "</h4>";
 	                str += "<hr style='float:left; width:100%;'/>";
 	                str += "</div>";
-
-	                mylog.log("LE NOMBRE D'ELEMENT DANS LE PART_DATA", Object.keys(part_data).length);
 
 	                if ((Object.keys(part_data).length > 0 && typeD == "all_interop") || (typeD !== "all_interop") ){
 		                str += directory.showResultsDirectoryHtml(part_data);
@@ -755,8 +711,6 @@ $this->renderPartial($layoutPath.'header',
 		                    //si on n'est pas sur une première recherche (chargement de la suite des résultat)
 		                    if(indexMin > 0){
 
-		                        mylog.log("ON CHARGE LA SUITE DES RESULTATS");
-
 		                        //on supprime l'ancien bouton "afficher plus de résultat"
 		                        $("#btnShowMoreResult").remove();
 		                        //on supprimer le footer (avec nb résultats)
@@ -773,7 +727,6 @@ $this->renderPartial($layoutPath.'header',
 		                    //si on est sur une première recherche
 		                    }else{
 		                        //on affiche le résultat à l'écran
-		                        mylog.log("ON CHARGE LES PREMIERS RESULTATS");
 
 		                        $("#dropdown_search").html(str);
 
@@ -945,7 +898,6 @@ $this->renderPartial($layoutPath.'header',
                     title : "Proposez vos sources Open Data",
                     icon : "fa-group",
                     afterSave : function(data){
-                        mylog.log("ON LANCE L'AFTER SAVE", data);
                         dyFObj.closeForm();   
                     },
                     properties : {

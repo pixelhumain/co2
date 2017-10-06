@@ -5,7 +5,6 @@ class CO2 {
     	$domainName = @$domainName ? $domainName : Yii::app()->params["CO2DomainName"];
     	
     	$layoutPath ="../../modules/co2/config/".$domainName."/params.json";
-        // $layoutPath ="../../modules/co2/config/CO2/params.json";
 
     	$str = file_get_contents($layoutPath);
 
@@ -68,7 +67,6 @@ class CO2 {
                 $communexion["cities"] = $cities;
             }
 
-
             $communexion["communexionType"] = CookieHelper::getCookie("communexionType");
             $communexion["currentName"] = $communexion["values"]["cityName"];
             $communexion["currentValue"] =  $communexion["values"]["city"];
@@ -78,7 +76,6 @@ class CO2 {
             $communexion["currentName"] = false;
             $communexion["currentValue"] =  false;
         }
-
         
        // var_dump($communexion);
         return $communexion;

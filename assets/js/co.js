@@ -4170,7 +4170,7 @@ var dyFInputs = {
     	};
 	    return inputObj;
 	},
-	allDay : function(checked){
+	allDay : function(checked, timepicker, domSpec){
 
     	var inputObj = {
     		inputType : "checkbox",
@@ -4185,10 +4185,13 @@ var dyFInputs = {
 	    		"offText" : tradDynForm["no"],
 	    		"labelText":tradDynForm["allday"],
 	    		"onChange" : function(){
-	    			var allDay = $("#ajaxFormModal #allDay").is(':checked');
+	    			domAdd="";
+	    			if(typeof domSpec != "undefined" && notNull(domSpec))
+	    				domAdd=domSpec;
+	    			var allDay = $("#ajaxFormModal #allDay"+domAdd).is(':checked');
 	    			var startDate = "";
 	    			var endDate = "";
-	    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
+	    			$("#ajaxFormModal #allDay"+domAdd).val($("#ajaxFormModal #allDay"+domAdd).is(':checked'));
 	    			
 	    			if (allDay) {
 	    				$(".dateTimeInput").addClass("dateInput");
@@ -4223,6 +4226,106 @@ var dyFInputs = {
     	};
     	return inputObj;
     },
+    openingHours : function(checked){
+    	var inputObj = {
+    		inputType : "checkbox",
+    		label : "Availabity of your service",
+	    	checked : ( notEmpty(checked) ? checked : "" ),
+	    	init : function(){
+	    		var openingHoursResult=[
+	    			{"dayOfWeek":"Su","allDay":true},
+	    			{"dayOfWeek":"Mo","allDay":true},
+	    			{"dayOfWeek":"Tu","allDay":true},
+	    			{"dayOfWeek":"We","allDay":true},
+	    			{"dayOfWeek":"Th","allDay":true},
+	    			{"dayOfWeek":"Fr","allDay":true},
+	    			{"dayOfWeek":"Sa","allDay":true},
+	    		];
+	    		//jQuery.datetimepicker.setLocale('fr');
+	    		//$('.changeTime').datetimepicker({format:"HH:MM"});
+	    		$(".btn-select-day").click(function(){
+	    			key=$(this).data("key");
+	    			if($(this).hasClass("active")){
+	    				$(this).removeClass("active");
+	    				$.each(openingHoursResult, function(e,v){
+	    					if(v.dayOfWeek==key){
+	    						openingHoursResult[e].disabled=true;
+	    						console.log("opening",openingHoursResult);
+	    					}
+	    				});
+	    				$("#contentDays"+key).fadeOut();
+	    			}else{
+	    				$(this).addClass("active");
+	    				$.each(openingHoursResult, function(e,v){
+	    					if(v.dayOfWeek==key){
+	    						delete openingHoursResult[e].disabled;
+	    						console.log("opening",openingHoursResult);
+	    					}
+	    				});
+	    				$("#contentDays"+key).fadeIn();
+	    			}
+	    		});
+	    		$(".allDaysWeek").click(function(){
+	    			keyRange=$(this).data("key");
+	    			//alert(keyRange);
+	        		if($(this).is(':checked')){
+	        			$("#hoursRange"+keyRange).fadeOut("slow");
+	        			$.each(openingHoursResult, function(e,v){
+	    					if(v.dayOfWeek==keyRange){
+	        					openingHoursResult[e].allDay=true;
+	        					console.log("opening",openingHoursResult);
+	        				}
+	        			});
+	        		}else{
+	        			$("#hoursRange"+keyRange).fadeIn("slow");
+	        			$.each(openingHoursResult, function(e,v){
+	    					if(v.dayOfWeek==keyRange){
+	        					openingHoursResult[e].allDay=false;
+	        					console.log("opening",openingHoursResult);
+	        				}
+	        			});
+	        		}
+	    		});
+	        	/*$("#ajaxFormModal #allWeek").off().on("switchChange.bootstrapSwitch",function (e, data) {
+	        		mylog.log("allDay dateLimit",$("#ajaxFormModal #allWeek").val());
+	        	});*/
+	        	/*initbootstrapSwitch("#ajaxFormModal .allDaysWeek", function($this){
+	        		keyRange=$this.data("key");
+	        		if($("#ajaxFormModal .allDaysWeek").is(':checked')){
+	        			$("#hoursRange"+keyRange).fadeIn("slow");
+	        		}else{
+	        			$("#hoursRange"+keyRange).fadeOut("slow");
+	        		}
+	        	});*/
+	        	//$("#ajaxFormModal .allDaysWeek").off().on("switchChange.bootstrapSwitch",function (e, data) {
+	        		
+	        		//mylog.log("allDay dateLimit",$("#ajaxFormModal .allDaysWeek").val());
+
+	        	//});
+	        	
+	        },
+	        options: {"allWeek" : true},
+	    	"switch" : {
+	    		"onText" : tradDynForm["yes"],
+	    		"offText" : tradDynForm["no"],
+	    		"labelText":tradDynForm["allweek"],
+	    		"css":{"min-width": "300px","margin": "10px"},
+	    		"onChange" : function(){
+	    			var allWeek = $("#ajaxFormModal #openingHours").is(':checked');
+	    			$("#ajaxFormModal #openingHours").val($("#ajaxFormModal #openingHours").is(':checked'));
+	    			if (allWeek) {
+	    				$("#ajaxFormModal #selectedDays").fadeOut("slow");
+	    			} else {
+	    				$("#ajaxFormModal #selectedDays").fadeIn("slow");
+	    			}
+				    //if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
+					//if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
+	    		}
+		    },
+    	};
+    	return inputObj;
+    },
+    
     startDateInput : function(typeDate){
     	mylog.log('startDateInput', typeDate);
     	var inputObj = {
@@ -4442,8 +4545,10 @@ var typeObj = {
 
 	contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
 		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	"product":{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",	icon:"gift"},
+	"product":{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",	icon:"shopping-basket"},
 	"products" : {sameAs:"product"},
+	"service":{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",	icon:"sun-o"},
+	"services" : {sameAs:"service"},
 	"classified":{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
 				   subTypes : [
 				   //FR

@@ -376,6 +376,7 @@ var tradDynForm = {
 	"yes":"<?php echo Yii::t("common","Yes") ?>",
 	"no":"<?php echo Yii::t("common","No") ?>",
 	"allday":"<?php echo Yii::t("form","All the day") ?>",
+	"allweek":"<?php echo Yii::t("form","All the week") ?>",
 	"startDate":"<?php echo Yii::t("form","Start date") ?>",
 	"endDate":"<?php echo Yii::t("form","End date") ?>",
 	"theendDate":"<?php echo Yii::t("form","the start date") ?>",

@@ -69,7 +69,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
                 <h6><i class="fa fa-shopping-basket fa-2x"></i><br> <?php echo Yii::t("common", "Product") ?></h6>
                 <small><?php echo Yii::t("form","Food, hand-made, jewelery...<br>Sell your product here") ?></small>
             </button>
-            <button data-form-type="organization" data-form-subtype=""  
+            <button data-form-type="service" data-form-subtype=""  
                     data-dismiss="modal"
                     class="btn btn-link btn-open-form col-xs-6 col-sm-4 col-md-4 col-lg-4 text-green">
                 <h6><i class="fa fa-sun-o fa-2x"></i><br> <?php echo Yii::t("common", "Services") ?></h6>
@@ -90,7 +90,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	jQuery(document).ready(function() {
 		list.initList(listElement, actionType);
 		$(".btn-open-form").click(function(){
-			dyFObj.openForm("product","sub");
+			dyFObj.openForm($(this).data("form-type"),"sub");
 		});
 		bindLBHLinks();
 	})

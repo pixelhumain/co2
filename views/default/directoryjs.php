@@ -399,7 +399,7 @@
           <!-- </div> -->
 
         <?php } else{ 
-          $prestation = CO2::getContextList("prestation");
+          $service = CO2::getContextList("service");
           ?> 
           <div class="col-lg-2 col-md-3 col-sm-3 col-md-offset-1 col-sm-offset-1 col-xs-12 margin-top-25 text-left subsub no-padding shadow2" id="sub-menu-left">
               <h4 class="bg-orange text-white no-margin padding-10">FILTRE</h4>      
@@ -408,7 +408,7 @@
               </div>
               <hr>
               <?php 
-                  foreach ($prestation["categories"] as $key => $cat) {
+                  foreach ($service["categories"] as $key => $cat) {
               ?>
                   <div class="col-md-12 text-dark margin-bottom-5">
                       <input type="checkbox" class="btn-select-category-1" data-keycat="<?php echo $key; ?>"> <?php echo Yii::t("category",$cat); ?> 
@@ -468,7 +468,7 @@
 
         <?php } ?>
         <?php  if($typeSelected != "classified" && Yii::app()->params["CO2DomainName"] == "terla"){ 
-          $prestation = CO2::getContextList("prestation");
+          $service = CO2::getContextList("service");
           ?> 
           <div class="col-lg-2 col-md-3 col-sm-3 col-md-offset-1 col-sm-offset-1 col-xs-12 margin-top-25 text-left subsub no-padding shadow2" id="sub-menu-left">
               <h4 class="bg-orange text-white no-margin padding-10">FILTRE</h4>      
@@ -477,7 +477,7 @@
               </div>
               <hr>
               <?php 
-                  foreach ($prestation["categories"] as $key => $cat) {
+                  foreach ($service["categories"] as $key => $cat) {
               ?>
                   <div class="col-md-12 text-dark margin-bottom-5">
                       <input type="checkbox" class="btn-select-category-1" data-keycat="<?php echo $key; ?>"> <?php echo Yii::t("category",$cat); ?> 

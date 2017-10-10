@@ -1,6 +1,6 @@
 
 function bindCommunexionScopeEvents(){
-    $(".btn-decommunecter").click(function(){
+    $(".btn-decommunecter").off().on('click',function(){
         activateGlobalCommunexion(false); 
     });
 
@@ -35,6 +35,10 @@ function bindCommunexionScopeEvents(){
                 if(actionOnSetGlobalScope=="filter"){
                     if(location.hash.indexOf("#live") >= 0){
                         startNewsSearch(true)
+                    } 
+                    else if (location.hash.indexOf("#interoperability") >= 0) {
+                        initTypeSearchInterop();
+                        startSearchInterop(0,30);
                     }
                     else{
                         startSearch(0, indexStepInit); 
@@ -86,6 +90,7 @@ function activateGlobalCommunexion(active, firstLoad){
         //rebuildSearchScopeInput();
         showTagsScopesMin();
         bindCommunexionScopeEvents();
+
         if(actionOnSetGlobalScope=="filter"){
             if(location.hash.indexOf("#live") >=0)
                 startNewsSearch(true);

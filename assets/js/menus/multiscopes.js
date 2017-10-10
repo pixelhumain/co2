@@ -253,8 +253,10 @@ function toogleScopeMultiscope(scopeValue){ mylog.log("toogleScopeMultiscope(sco
 function getMultiScopeList(){ return myMultiScopes; }
 
 
-function getLocalityForSearch(){ 
-	if($.cookie('communexionActivated') == "true"  ){
+function getLocalityForSearch(){
+
+	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), globalCommunexion);
+	if(globalCommunexion == true ){
       var searchLocality = {}
       searchLocality[communexion.currentValue] = { type : communexion.currentLevel, 
                                                     name : communexion.currentName,
@@ -406,39 +408,41 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 		$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
 		
 
-		$.removeCookie('communexionType', { path: '/' }); 
-		$.removeCookie('communexionValue', { path: '/' }); 
-		$.removeCookie('communexionName', { path: '/' }); 
-		$.removeCookie('communexionLevel', { path: '/' });
+		// $.removeCookie('communexionType', { path: '/' }); 
+		// $.removeCookie('communexionValue', { path: '/' }); 
+		// $.removeCookie('communexionName', { path: '/' }); 
+		// $.removeCookie('communexionLevel', { path: '/' });
 
-		$.cookie('communexionType', scopeType, { expires: 365, path: "/" });
-		$.cookie('communexionValue', scopeValue, { expires: 365, path: "/" });
-		$.cookie('communexionName', scopeName, { expires: 365, path: "/" });
+		// $.cookie('communexionType', scopeType, { expires: 365, path: "/" });
+		// $.cookie('communexionValue', scopeValue, { expires: 365, path: "/" });
+		// $.cookie('communexionName', scopeName, { expires: 365, path: "/" });
 		//$.cookie('communexionLevel', scopeLevel, { expires: 365, path: "/" });
 		//$.cookie('currentLevel', scopeType, { expires: 365, path: "/" });
 	
 		communexion.currentLevel = scopeLevel;
 		communexion.currentName = scopeName;
 		communexion.currentValue = scopeValue;
+
+		$.cookie('communexion', communexion, { expires: 365, path: "/" });
 	
-		if(inseeCommunexion != null){
-			$.removeCookie('inseeCommunexion', { path: '/' }); 
-			$.removeCookie('cityNameCommunexion', { path: '/' }); 
-			$.removeCookie('cpCommunexion', { path: '/' }); 
+		// if(inseeCommunexion != null){
+		// 	$.removeCookie('inseeCommunexion', { path: '/' }); 
+		// 	$.removeCookie('cityNameCommunexion', { path: '/' }); 
+		// 	$.removeCookie('cpCommunexion', { path: '/' }); 
 			
-			$.cookie('inseeCommunexion',   		inseeCommunexion,  		{ expires: 365, path: "/" });
-			$.cookie('cityNameCommunexion', 	cityNameCommunexion,	{ expires: 365, path: "/" });
-			$.cookie('cpCommunexion',   		cpCommunexion,  		{ expires: 365, path: "/" });
-		}else{
-			console.log("communexion hash:", location.hash);
-			if(actionOnSetGlobalScope == "filter"){
-				if(location.hash.indexOf("#live") >= 0)
-                	startNewsSearch(true);
-            	else if(location.hash != "")
-					startSearch(0, indexStepInit, searchCallback);
-				//else loadLiveNow();
-			}
-		}
+		// 	$.cookie('inseeCommunexion',   		inseeCommunexion,  		{ expires: 365, path: "/" });
+		// 	$.cookie('cityNameCommunexion', 	cityNameCommunexion,	{ expires: 365, path: "/" });
+		// 	$.cookie('cpCommunexion',   		cpCommunexion,  		{ expires: 365, path: "/" });
+		// }else{
+			// console.log("communexion hash:", location.hash);
+			// if(actionOnSetGlobalScope == "filter"){
+			// 	if(location.hash.indexOf("#live") >= 0)
+   //              	startNewsSearch(true);
+   //          	else if(location.hash != "")
+			// 		startSearch(0, indexStepInit, searchCallback);
+			// 	//else loadLiveNow();
+			// }
+		//}
 
 		
 		/*if(typeof communexion != "undefined" && typeof inseeCommunexion != "undefined"){

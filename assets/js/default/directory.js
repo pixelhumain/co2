@@ -18,7 +18,7 @@ var translate = {"organizations":"Organisations",
                  "followers":"Ils nous suivent"};
 
 function startSearch(indexMin, indexMax, callBack){
-    console.log("startSearch 1", typeof callBack, callBack, loadingData);
+    console.log("startSearch directory.js", typeof callBack, callBack, loadingData);
     if(loadingData) return;
     loadingData = true;
     showIsLoading(true);
@@ -274,24 +274,25 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 //active les link lbh
                 bindLBHLinks();
 
-                $(".start-new-communexion").click(function(){
-                    $("#main-search-bar, #second-search-bar, #input-search-map").val("");
-                    setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
-                                     $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
-                                      $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
+                // $(".start-new-communexion").click(function(){
+                //     mylog.log("start-new-communexion directory.js");
+                //     $("#main-search-bar, #second-search-bar, #input-search-map").val("");
+                //     setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
+                //                      $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
+                //                       $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
                     
-                    //only on homepage
-                    if($("#communexionNameHome").length){
-                    	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+$(this).data("name-communexion")+'</span></span>');
-                    	$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
-                      $("#main-search-bar").val("");
-                    	$(".info_co, .input_co").addClass("hidden");
-                      $("#change_co").removeClass("hidden");
-						          $("#dropdown_search").html("");
-                    }else{
-                      startSearch(0, indexStepInit, searchCallback);
-                    }
-                });
+                //     //only on homepage
+                //     if($("#communexionNameHome").length){
+                //     	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+$(this).data("name-communexion")+'</span></span>');
+                //     	$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
+                //       $("#main-search-bar").val("");
+                //     	$(".info_co, .input_co").addClass("hidden");
+                //       $("#change_co").removeClass("hidden");
+						          // $("#dropdown_search").html("");
+                //     }else{
+                //       startSearch(0, indexStepInit, searchCallback);
+                //     }
+                // });
 
 
                 $.unblockUI();

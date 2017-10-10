@@ -60,6 +60,8 @@ function startSearch(indexMin, indexMax, callBack){
         if(levelCommunexion == 3) locality = inseeCommunexion;
         if(levelCommunexion == 4) locality = inseeCommunexion;
         if(levelCommunexion == 5) locality = "";
+
+        mylog.log("Locality : ", locality);
       } 
       console.log("locality",locality);
       autoCompleteSearch(name, locality, indexMin, indexMax, callBack);
@@ -150,7 +152,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     
     if(isMapEnd)
       $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> chargement en cours");
-   
+         
     mylog.dir(data);
     //alert();
     $.ajax({
@@ -330,7 +332,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
                         
             if(typeof callBack == "function")
-                callBack();
+              callBack();
         }
     });
 
@@ -667,7 +669,7 @@ var directory = {
     colPos: "left",
     dirLog : false,
     defaultPanelHtml : function(params){
-      mylog.log("----------- defaultPanelHtml",params.type,params.name);
+      mylog.log("----------- defaultPanelHtml",params, params.type,params.name, params.url);
       str = "";  
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
@@ -832,7 +834,7 @@ var directory = {
     // ********************************
 	  elementPanelHtml : function(params){
     		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name);
-    		//mylog.log("----------- elementPanelHtml",params.type,params.name, params);
+    		// mylog.log("----------- elementPanelHtml",params.type,params.name, params);
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
@@ -1739,11 +1741,23 @@ var directory = {
         var str = "";
 
         directory.colPos = "left";
+
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
           if(directory.dirLog) mylog.log("params", params, typeof params);
-          if(params["_id"] != null || params["id"] != null){
 
+          mylog.log("params", params, typeof params);
+
+          if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) {
+            params['id'] = params['_id'];
+          } else if (typeof(params.id) == "undefined") {
+            params['id'] = Math.random();
+            params['type'] = "poi";
+          }
+
+          mylog.log("params", params["name"] , params.name, params.id, params["id"], typeof params["id"]);
+
+          if(notNull(params["_id"]) || notNull(params["id"])){
 
             itemType=(contentType) ? contentType :params.type;
             if( itemType ){ 
@@ -1754,6 +1768,7 @@ var directory = {
                 var typeIco = i;
                 params.size = size;
                 params.id = getObjectId(params);
+                mylog.log(params.id);
                 params.name = notEmpty(params.name) ? params.name : "";
                 params.description = notEmpty(params.shortDescription) ? params.shortDescription : 
                                     (notEmpty(params.message)) ? params.message : 
@@ -1765,8 +1780,13 @@ var directory = {
                 if(typeof edit != "undefined" && edit != false)
                   params.edit = edit;
                 
-                /*if( dyFInputs.get( itemType ) == null)
-                    itemType="poi";*/
+                if(typeof( typeObj[itemType] ) == "undefined") {
+                  itemType="poi";
+                }
+
+                if( dyFInputs.get( itemType ) == null)
+                  itemType="poi";
+
                 typeIco = itemType;
                 if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
 
@@ -1826,13 +1846,25 @@ var directory = {
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
-                //params.url = '#page.type.'+params.type+'.id.' + params.id;
-                params.hash = '#page.type.'+params.type+'.id.' + params.id;
-                /*if(params.type == "poi")    
-                    params.hash = '#element.detail.type.poi.id.' + params.id;*/
+                if( params.type == "poi" && params.source.insertOrign == "import") {
+                  var interop_type = getTypeInteropData(params.source.key);
+                  params.hash = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.url);
+                  params.url = params.hash;
+                  params.color = getIconColorForInteropElements(interop_type);
+                  params.htmlIco = getImageIcoForInteropElements(interop_type);
+                  params.type = "poi.interop."+interop_type;
 
-                params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';
+                  if (typeof params.tags == "undefined") 
+                    params.tags = [];
+                    params.tags.push(interop_type);
+                } else {
 
+                  params.hash = '#page.type.'+params.type+'.id.' + params.id;
+                }
+
+                params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
+
+                // params.tags = "";
                 params.elTagsList = "";
                 var thisTags = "";
                 if(typeof params.tags != "undefined" && params.tags != null){
@@ -1888,6 +1920,7 @@ var directory = {
                   str += directory.coopPanelHtml(params);  
                 else
                   str += directory.defaultPanelHtml(params);
+                
             }
 
           }else{

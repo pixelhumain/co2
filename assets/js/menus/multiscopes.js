@@ -13,16 +13,16 @@ function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId);
 	        data: {"multiscopes" : myMultiScopes},
 	       	dataType: "json",
 	    	success: function(data){
-	    		mylog.log("updatemultiscope success");
-	    		
+	    		mylog.log("updatemultiscope success");	    		
 		    },
 			error: function(error){
 				mylog.log("Une erreur est survenue pendant l'enregistrement des scopes");
 			}
 		});
 	}else{
-		
-	} 
+
+	}
+
 	showCountScope();
 	//rebuildSearchScopeInput();
 	setTimeout(function(){ rebuildSearchScopeInput() }, 1000);

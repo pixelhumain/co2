@@ -2813,7 +2813,16 @@ var uploadObj = {
 		}
 	}
 };
-
+var openingHoursResult=[
+	{"dayOfWeek":"Su","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+	{"dayOfWeek":"Mo","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+	{"dayOfWeek":"Tu","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+	{"dayOfWeek":"We","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+	{"dayOfWeek":"Th","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+	{"dayOfWeek":"Fr","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+	{"dayOfWeek":"Sa","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+];
+	    		
 var dyFObj = {
 	elementObj : null,
 	elementData : null,
@@ -2901,8 +2910,20 @@ var dyFObj = {
 		
 		if( typeof formData.tags != "undefined" && formData.tags != "" )
 			formData.tags = formData.tags.split(",");
-		
-		
+
+		if( typeof formData.openingHours != "undefined"){
+			if(typeof formData.hour != "undefined")
+				delete formData.hour;
+			if(typeof formData.minute != "undefined")
+				delete formData.minute;
+			formData.openingHours=openingHoursResult;
+			$.each(formData.openingHours, function(e,v){
+				if(v.allDays && typeof v.hours != "undefined")
+        			delete openingHoursResult[e]["hours"];
+				if(typeof v.disabled != "undefined")
+					formData.openingHours.splice(e,1);
+			});		
+		}
 		// Add collections and genres of notragora in tags
 		if( typeof formData.collections != "undefined" && formData.collections != "" ){
 			collectionsTagsSave=formData.collections.split(",");
@@ -3604,6 +3625,13 @@ var dyFInputs = {
       	};
     	return inputObj;
     },
+    quantity :function(label, placeholder, rules, custom) { 
+		var inputObj = dyFInputs.inputText(tradDynForm.quantity, tradDynForm.quantity+" ...") ;
+	    inputObj.init = function(){
+    		$('input#quantity').filter_input({regex:'[0-9]'});
+      	};
+    	return inputObj;
+    },
 
     text :function (label,placeholder,rules) {  
     	var inputObj = {
@@ -4232,15 +4260,16 @@ var dyFInputs = {
     		label : "Availabity of your service",
 	    	checked : ( notEmpty(checked) ? checked : "" ),
 	    	init : function(){
-	    		var openingHoursResult=[
-	    			{"dayOfWeek":"Su","allDay":true},
-	    			{"dayOfWeek":"Mo","allDay":true},
-	    			{"dayOfWeek":"Tu","allDay":true},
-	    			{"dayOfWeek":"We","allDay":true},
-	    			{"dayOfWeek":"Th","allDay":true},
-	    			{"dayOfWeek":"Fr","allDay":true},
-	    			{"dayOfWeek":"Sa","allDay":true},
-	    		];
+	    		//openingHoursResult=openingHours.init;
+	    		openingHoursResult=[
+					{"dayOfWeek":"Su","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+					{"dayOfWeek":"Mo","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+					{"dayOfWeek":"Tu","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+					{"dayOfWeek":"We","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+					{"dayOfWeek":"Th","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+					{"dayOfWeek":"Fr","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+					{"dayOfWeek":"Sa","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+				];
 	    		//jQuery.datetimepicker.setLocale('fr');
 	    		//$('.changeTime').datetimepicker({format:"HH:MM"});
 	    		$(".btn-select-day").click(function(){
@@ -4248,19 +4277,15 @@ var dyFInputs = {
 	    			if($(this).hasClass("active")){
 	    				$(this).removeClass("active");
 	    				$.each(openingHoursResult, function(e,v){
-	    					if(v.dayOfWeek==key){
+	    					if(v.dayOfWeek==key)
 	    						openingHoursResult[e].disabled=true;
-	    						console.log("opening",openingHoursResult);
-	    					}
 	    				});
 	    				$("#contentDays"+key).fadeOut();
 	    			}else{
 	    				$(this).addClass("active");
 	    				$.each(openingHoursResult, function(e,v){
-	    					if(v.dayOfWeek==key){
+	    					if(v.dayOfWeek==key)
 	    						delete openingHoursResult[e].disabled;
-	    						console.log("opening",openingHoursResult);
-	    					}
 	    				});
 	    				$("#contentDays"+key).fadeIn();
 	    			}
@@ -4271,38 +4296,17 @@ var dyFInputs = {
 	        		if($(this).is(':checked')){
 	        			$("#hoursRange"+keyRange).fadeOut("slow");
 	        			$.each(openingHoursResult, function(e,v){
-	    					if(v.dayOfWeek==keyRange){
+	    					if(v.dayOfWeek==keyRange)
 	        					openingHoursResult[e].allDay=true;
-	        					console.log("opening",openingHoursResult);
-	        				}
 	        			});
 	        		}else{
 	        			$("#hoursRange"+keyRange).fadeIn("slow");
 	        			$.each(openingHoursResult, function(e,v){
-	    					if(v.dayOfWeek==keyRange){
+	    					if(v.dayOfWeek==keyRange)
 	        					openingHoursResult[e].allDay=false;
-	        					console.log("opening",openingHoursResult);
-	        				}
 	        			});
 	        		}
 	    		});
-	        	/*$("#ajaxFormModal #allWeek").off().on("switchChange.bootstrapSwitch",function (e, data) {
-	        		mylog.log("allDay dateLimit",$("#ajaxFormModal #allWeek").val());
-	        	});*/
-	        	/*initbootstrapSwitch("#ajaxFormModal .allDaysWeek", function($this){
-	        		keyRange=$this.data("key");
-	        		if($("#ajaxFormModal .allDaysWeek").is(':checked')){
-	        			$("#hoursRange"+keyRange).fadeIn("slow");
-	        		}else{
-	        			$("#hoursRange"+keyRange).fadeOut("slow");
-	        		}
-	        	});*/
-	        	//$("#ajaxFormModal .allDaysWeek").off().on("switchChange.bootstrapSwitch",function (e, data) {
-	        		
-	        		//mylog.log("allDay dateLimit",$("#ajaxFormModal .allDaysWeek").val());
-
-	        	//});
-	        	
 	        },
 	        options: {"allWeek" : true},
 	    	"switch" : {

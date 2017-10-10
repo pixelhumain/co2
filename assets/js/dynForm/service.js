@@ -29,7 +29,7 @@ dynForm = {
 		    },*/
 	    },
 	    beforeBuild : function(){
-	    	dyFObj.setMongoId('products',function(){
+	    	dyFObj.setMongoId('services',function(){
 	    		uploadObj.gotoUrl = (contextData != null && contextData.type && contextData.id  ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.classified" : location.hash;
 	    	});
 	    },
@@ -62,15 +62,16 @@ dynForm = {
                 inputType : "custom",
                 html:"",
             },
-            type : dyFInputs.inputSelect(tradDynForm["servicesTypes"],null,servicesList, { required : true }),
+            type : dyFInputs.inputSelect(tradDynForm.servicesTypes,null,servicesList, { required : true }),
+            name : dyFInputs.name( "service" ) ,
             price : dyFInputs.price(),
             //devise : dyFInputs.inputSelect("Devise", "Iniquez la monnaie utilisée pour votre annonce", ["€", "$"]),
-            name : dyFInputs.name( "service" ) ,
+            quantity : dyFInputs.quantity(),
             openingHours : dyFInputs.openingHours(true),
             description : dyFInputs.textarea("Description", "..."),
             image : dyFInputs.image(),
             medias : dyFInputs.videos,
-            contactInfo : dyFInputs.inputText(tradDynForm["contactinfo"], tradDynForm["telemail"]+" ..."),
+            contactInfo : dyFInputs.inputText(tradDynForm.contactinfo, tradDynForm["telemail"]+" ..."),
             location : dyFInputs.location,
             tags : dyFInputs.tags(),
             parentId : dyFInputs.inputHidden(),

@@ -356,6 +356,8 @@ var tradDynForm = {
 	"textproposal":"<?php echo Yii::t("form","Your proposal") ?>",
 	"eventTypes":"<?php echo Yii::t("form","Event type") ?>",
 	"organizationType":"<?php echo Yii::t("form","Organization type") ?>",
+	"servicesTypes":"<?php echo Yii::t("form","Service type") ?>",
+	"quantity":"<?php echo Yii::t("form","Quantity available") ?>",
 	"nameofyour":"<?php echo Yii::t("form","Name of your") ?>",
 	"titleofyour":"<?php echo Yii::t("form","Title of your") ?>",
 	"tags":"<?php echo Yii::t("form","Tags") ?>",

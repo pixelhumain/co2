@@ -41,7 +41,7 @@ $this->renderPartial($layoutPath.'header',
     #page .bg-yellow{
         background-color:#FFC600 !important;
         color:white!important;
-    }
+    }N
     #page .bg-turq{
         background-color: #229296 !important;
         color:white!important;
@@ -601,7 +601,8 @@ $this->renderPartial($layoutPath.'header',
 	            mylog.log("error autocomplete INTEROP search"); mylog.dir(data);     
 	            //signal que le chargement est terminé
 	            loadingData = false;  
-                $('#dropdown_search').append("<br/><div><h1>Une requête n'a pas abouti ... </h1></div>");   
+                // $('#dropdown_search').append("<br/><div><h1>Something went wrong during this research ... </h1></div>");   
+                $("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'></i> Something went wrong during this research ...</span></center>");
 	        },
 	        success: function(data){ mylog.log("success autocomplete INTEROP search", data); 
 	        	toastr.success("Une partie des données est arrivé");

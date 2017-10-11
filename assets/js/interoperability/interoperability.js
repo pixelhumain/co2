@@ -811,26 +811,25 @@ function getIconColorForInteropElements(type_elt) {
 function getImageIcoForInteropElements(type_elt) {
 
     var icon_image = "";
-    var baseUrlJustForThis = baseUrl.substring(0,baseUrl.length-2);
 
     if (type_elt == "datanova") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/logo-laposte.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/logo-laposte.png'>";
     } else if (type_elt == "ods") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/opendata-soft-logo.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/opendata-soft-logo.png'>";
     } else if (type_elt == "osm") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/OSM-logo.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/OSM-logo.png'>";
     } else if (type_elt == "wiki") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/logo-wikidata.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/logo-wikidata.png'>";
     } else if (type_elt == "datagouv") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/data-gouv-logo.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/data-gouv-logo.png'>";
     } else if (type_elt == "poleemploi") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/logo_pole_emploi.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/logo_pole_emploi.png'>";
     } else if (type_elt == "educ_etab" || type_elt == "educ_membre" || type_elt == "educ_ecole" || type_elt == "educ_struct") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/logo_open_data_educ.jpg'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/logo_open_data_educ.jpg'>";
     } 
 
     else {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"'>";
     }
 
     return icon_image;

@@ -131,9 +131,15 @@ function showEmptyMsg(){
 	var c=0; 
 	if(typeof myMultiScopes != "undefined")
 		$.each(myMultiScopes, function(key, value){ c++; });
-	console.log("showEmptyMsg", c);
-	if(c==0) $("#modalScopes .visible-empty").show(); else $("#modalScopes .visible-empty").hide();
-	if(c==0) $("#modalScopes .hidden-empty").hide(); else $("#modalScopes .hidden-empty").show();
+	mylog.log("showEmptyMsg", c);
+	if(c==0) 
+        $("#modalScopes .visible-empty").show(); 
+    else 
+        $("#modalScopes .visible-empty").hide();
+	if(c==0) 
+        $("#modalScopes .hidden-empty").hide(); 
+    else 
+        $("#modalScopes .hidden-empty").show();
 
 	//c=0; $.each(myMultiTags, function(key, value){ c++; });
 	//if(c==0) $("#dropdown-multi-tag .visible-empty").show(); else $("#dropdown-multi-tag .visible-empty").hide();

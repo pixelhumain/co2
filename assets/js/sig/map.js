@@ -149,7 +149,7 @@
 					iconUrl = baseUrl + thisData.profilMarkerImageUrl;
 				}
 				if (thisData.typeSig.substr(0,11) == "poi.interop") {
-					var iconUrl = getimgProfilPathForInteropDataOnMap(thisData.typeSig);
+					iconUrl = getimgProfilPathForInteropDataOnMap(thisData.typeSig);
 				}			
 				return L.icon({
 				    iconUrl: iconUrl,

@@ -319,13 +319,13 @@ $this->renderPartial($layoutPath.'header',
         "struct_recherche" : { color: "blue",   icon: "bullhorn",   name: "Structures de recherche" },
     }
 
-    if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
-    {
-      $.each(themeObj.headerParams,function(k,v) 
-      { 
-        headerParams[k] = v;
-      });
-    }
+    // if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
+    // {
+    //   $.each(themeObj.headerParams,function(k,v) 
+    //   { 
+    //     headerParams[k] = v;
+    //   });
+    // }
 
 	jQuery(document).ready(function() {
         initKInterface({"affixTop":320}); 
@@ -420,21 +420,14 @@ $this->renderPartial($layoutPath.'header',
     }
 
     function initTypeSearchInterop(){
-
         contextTestMap = [];
-
         scrollEnd = false;
-
         all_interop_data = [];
-
         all_interop_url = [];
-
         totalData = 0;
         nb_of_stop = 0;
-
         startNow = 0;
         endNow = 30;
-
         indexMin = 0;
         indexMax = 30;
     }

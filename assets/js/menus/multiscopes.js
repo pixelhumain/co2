@@ -22,7 +22,6 @@ function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId);
 	}else{
 
 	}
-
 	showCountScope();
 	//rebuildSearchScopeInput();
 	setTimeout(function(){ rebuildSearchScopeInput() }, 1000);

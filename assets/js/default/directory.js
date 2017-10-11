@@ -1847,7 +1847,7 @@ var directory = {
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
-                if( params.type == "poi" && params.source.insertOrign == "import") {
+                if( params.type == "poi" && params.source  && params.source.insertOrign == "import") {
                   var interop_type = getTypeInteropData(params.source.key);
                   params.hash = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.url);
                   params.url = params.hash;

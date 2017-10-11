@@ -3,7 +3,9 @@ function scopeExists(scopeValue){
 	return typeof myMultiScopes[scopeValue] != "undefined";
 }
 
-function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId); mylog.dir(myMultiScopes);
+function saveMultiScope(){ 
+	mylog.log("saveMultiScope() try - userId = ", userId); 
+	mylog.dir(myMultiScopes);
 	hideSearchResults();
 	if(userId != null && userId != ""){
 		if(!notEmpty(myMultiScopes)) myMultiScopes = {};
@@ -19,8 +21,6 @@ function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId);
 				mylog.log("Une erreur est survenue pendant l'enregistrement des scopes");
 			}
 		});
-	}else{
-
 	}
 
 	showCountScope();
@@ -111,6 +111,7 @@ function loadMultiScopes(){
 }
 
 function showCountScope(){
+	mylog.log("showCountScope");
 	var count = 0; 
 	var types = new Array("city", "cp", "level1", "level2", "level3", "level4");
 	//mylog.log("showCountScope");
@@ -142,7 +143,8 @@ function selectAllScopes(select){
 	});
 	saveMultiScope();
 }
-function showScopeInMultiscope(scopeValue){ //mylog.log("showScopeInMultiscope()", scopeValue);
+function showScopeInMultiscope(scopeValue){ 
+	mylog.log("showScopeInMultiscope()", scopeValue);
 	var html = "";
 	if(scopeExists(scopeValue)){
 		var scope = myMultiScopes[scopeValue];
@@ -166,7 +168,7 @@ function showScopeInMultiscope(scopeValue){ //mylog.log("showScopeInMultiscope()
 		'</span>';
 
 		var levelType = ( (scope.type == "zone") ? "level"+scope.level : scope.type ) ;
-		mylog.log("levelType", levelType);
+		mylog.log("levelType", levelType, "#multi-scope-list-"+levelType);
 		$("#multi-scope-list-"+levelType).append(html);
 		$("#multi-scope-list-"+levelType).show();
 
@@ -188,7 +190,8 @@ function showScopeInMultiscope(scopeValue){ //mylog.log("showScopeInMultiscope()
 function addScopeToMultiscope(scopeValue, scopeName, scopeLevel){
 	mylog.log("addScopeToMultiscope", scopeValue, scopeName);
 	if(scopeValue == "") return;
-	if(!scopeExists(scopeValue)){ //mylog.log("adding", scopeValue);
+	if(!scopeExists(scopeValue)){ 
+		mylog.log("adding", scopeValue);
 		var scopeType = currentScopeType;
 		myMultiScopes[scopeValue] = { name: scopeName, active: true, type: scopeType };
 		if(notEmpty(scopeLevel)){
@@ -202,8 +205,8 @@ function addScopeToMultiscope(scopeValue, scopeName, scopeLevel){
 				scopeType = "level4";
 			myMultiScopes[scopeValue].level = scopeLevel ;
 		}
-		myMultiScopes[scopeValue].type = scopeType ;
-
+		//myMultiScopes[scopeValue].type = scopeType ;
+		mylog.log("myMultiScopes")
 		//alert();
 		showScopeInMultiscope(scopeValue);
 		$("#input-add-multi-scope").val("");

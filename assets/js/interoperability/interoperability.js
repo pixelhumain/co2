@@ -812,6 +812,7 @@ function getImageIcoForInteropElements(type_elt) {
 
     var icon_image = "";
     var baseUrlJustForThis = baseUrl.substring(0,baseUrl.length-2);
+    var baseUrlJustForThis = "";
 
     if (type_elt == "datanova") {
         icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/logo-laposte.png'>";

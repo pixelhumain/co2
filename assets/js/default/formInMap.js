@@ -162,7 +162,7 @@ var formInMap = {
 			formInMap.NE_street = "";
 
 			formInMap.initHtml();
-
+			$("#country_sumery_value").html($('[name="newElement_country"]').val());
 			$("#newElement_btnValidateAddress").prop('disabled', true);
 			$("#divStreetAddress").addClass("hidden");
 			formInMap.initDropdown();
@@ -499,14 +499,17 @@ var formInMap = {
 		$("#dropdown-newElement_streetAddress-found").html("<li><a href='javascript:'><i class='fa fa-spin fa-refresh'></i> recherche en cours</a></li>");
 		$("#dropdown-newElement_streetAddress-found").show();
 		mylog.log("countryCode", countryCode);
-		if(countryCode == "NC"){
+		
+		var countryDataGouv = ["FR","GP","MQ","GF","RE","PM","YT"];
+		if(countryDataGouv.indexOf(countryCode) != -1){
 			countryCode = formInMap.changeCountryForNominatim(countryCode);
-			mylog.log("countryCode", countryCode);
-			callNominatim(requestPart, countryCode);
+			mylog.log("countryCodeHere", countryCode);
+			callDataGouv(requestPart, countryCode);
+			
 		}else{
 			countryCode = formInMap.changeCountryForNominatim(countryCode);
 			mylog.log("countryCode", countryCode);
-			callDataGouv(requestPart, countryCode);
+			callNominatim(requestPart, countryCode);
 		}
 		
 		formInMap.btnValideDisable(false);

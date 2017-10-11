@@ -64,7 +64,7 @@ function callDataGouv(requestPart, countryCode){ /*countryCode=="FR"*/
 
 function callNominatim(requestPart, countryCode){
 	mylog.log('callNominatim');
-	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> Recherche en cours <small>Nominatim</small>");
+	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad["Currently researching"]+" <small>Nominatim</small>");
 	callGeoWebService("nominatim", requestPart, countryCode,
 		function(objNomi){ /*success nominatim*/
 			mylog.log("SUCCESS nominatim"); 

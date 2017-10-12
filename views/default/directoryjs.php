@@ -589,15 +589,17 @@ jQuery(document).ready(function() {
   });
 
   $(".btn-select-filliaire").click(function(){
+      mylog.log(".btn-select-filliaire");
       var fKey = $(this).data("fkey");
       myMultiTags = {};
       $.each(filliaireCategories[fKey]["tags"], function(key, tag){
         addTagToMultitag(tag);
       });
-      console.log("myMultiTags", myMultiTags);
+      mylog.log("myMultiTags", myMultiTags);
       
       startSearch(0, indexStepInit, searchCallback);
       KScrollTo("#content-social");
+      bindCommunexionScopeEvents();
       //KScrollTo("#before-section-result");
   });
   

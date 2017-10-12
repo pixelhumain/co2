@@ -2916,13 +2916,13 @@ var dyFObj = {
 				delete formData.hour;
 			if(typeof formData.minute != "undefined")
 				delete formData.minute;
-			formData.openingHours=openingHoursResult;
-			$.each(formData.openingHours, function(e,v){
-				if(v.allDays && typeof v.hours != "undefined")
+			$.each(openingHoursResult, function(e,v){
+				if(v.allDay && typeof v.hours != "undefined")
         			delete openingHoursResult[e]["hours"];
 				if(typeof v.disabled != "undefined")
-					formData.openingHours.splice(e,1);
+					delete openingHoursResult[e];
 			});		
+			formData.openingHours=openingHoursResult;
 		}
 		// Add collections and genres of notragora in tags
 		if( typeof formData.collections != "undefined" && formData.collections != "" ){

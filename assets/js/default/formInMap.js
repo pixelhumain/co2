@@ -232,7 +232,7 @@ var formInMap = {
 
 
 		$("#newElement_btnValidateAddress").click(function(){
-			$.blockUI();
+			processingBlockUi();
 			mylog.log("#newElement_btnValidateAddress");
 			if(notEmpty(formInMap.saveCities[formInMap.NE_insee])){
 				var obj = { city : formInMap.saveCities[formInMap.NE_insee] }

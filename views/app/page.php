@@ -79,6 +79,20 @@
                 else
                     $this->renderPartial('../element/standalone', $params ); 
             }
+            if($type == Service::COLLECTION){
+                $params = array("element"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
+
+                if(@$members) $params["members"] = $members;
+                if(@$invitedMe) $params["invitedMe"] = $invitedMe;
+                if($element["creator"]==Yii::app()->session["userId"] && $view != "show")
+                    $this->renderPartial('../element/terla/dashboard', $params );
+                else
+                    $this->renderPartial('../element/standalone', $params ); 
+            }
             if($type == Survey::COLLECTION){
                 $params = array("survey"=>$element , 
                                 "page" => "page",

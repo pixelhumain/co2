@@ -47,18 +47,18 @@
 			"lblBtnCreate" : "Create a classified ad",
 			"colorBtnCreate" : "azure"
 		},
-		"#prestations": {
+		"#activities": {
 			"inMenu" : true, 
 			"useHeader" : true, 
 			"open" : true, 
-			"subdomain" : "annonces", 
-			"subdomainName" : "Classifieds",
-			"hash" : "#app.prestations",
-			"icon" : "bullhorn", 
-			"mainTitle" : "Classified ads",
-			"placeholderMainSearch" : "search among classifieds ...",
-			"lblBtnCreate" : "Create a classified ad",
-			"colorBtnCreate" : "azure"
+			"subdomain" : "activities", 
+			"subdomainName" : "Activities",
+			"hash" : "#app.activities",
+			"icon" : "sun-o", 
+			"mainTitle" : "Activities",
+			"placeholderMainSearch" : "search among activities ...",
+			"lblBtnCreate" : "Create an activity",
+			"colorBtnCreate" : "orange"
 		},
 		"#store": {
 			"inMenu" : true, 
@@ -67,11 +67,11 @@
 			"subdomain" : "annonces", 
 			"subdomainName" : "Store",
 			"hash" : "#app.store",
-			"icon" : "bullhorn", 
+			"icon" : "shopping-basket", 
 			"mainTitle" : "Store",
 			"placeholderMainSearch" : "search among classifieds ...",
-			"lblBtnCreate" : "Create a classified ad",
-			"colorBtnCreate" : "azure"
+			"lblBtnCreate" : "Create a product",
+			"colorBtnCreate" : "orange"
 		},
 
 		"#agenda": {

@@ -510,7 +510,7 @@
               </div>
             </div>
         <?php } ?>
-        <?php $col = ( !in_array($typeSelected, array("classified","products","events","vote","all","place") )) ? 10 : 8; ?>
+        <?php $col = ( !in_array($typeSelected, array("classified","products","services","events","vote","all","place") )) ? 10 : 8; ?>
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
         
         <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
@@ -551,7 +551,8 @@ var headerParams = {
   "poi"       	  :	{ color: "black",   icon: "map-marker",   name: trad["pointsinterests"] },
   "place"         : { color: "green",   icon: "map-marker",   name: trad["place"] },
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad["classifieds"] },
-  "products"    : { color: "orange",   icon: "gift",   name: trad.products },
+  "products"    : { color: "orange",   icon: "shopping-basket",   name: trad.products },
+  "services"    : { color: "orange",   icon: "sun-o",   name: trad.products },
   "GovernmentOrganization" : { color: "red",   icon: "university",        name: trad["GovernmentOrganizations"] },
   
 }

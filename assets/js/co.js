@@ -2243,9 +2243,9 @@ function communecterUser(){
 }
 
 function updateLocalityEntities(addressesIndex, addressesLocality){
-	mylog.warn("updateLocalityEntities");
+	mylog.log("updateLocalityEntities", addressesIndex, addressesLocality);
 	$("#ajax-modal").modal("hide");
-	
+	mylog.log("typeof formInMap.initUpdateLocality", typeof formInMap.initUpdateLocality);
 	if(typeof formInMap.initUpdateLocality != "undefined"){
 		var address = contextData.address ;
 		var geo = contextData.geo ;

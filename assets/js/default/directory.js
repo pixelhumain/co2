@@ -1997,10 +1997,10 @@ var directory = {
                   else
                     str += directory.defaultPanelHtml(params);
                 }
-                else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
+              /*  else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
                   str += directory.coopPanelHtml(params);  
                 else
-                  str += directory.defaultPanelHtml(params);
+                  str += directory.defaultPanelHtml(params);*/
                 
             }
 

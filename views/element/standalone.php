@@ -21,6 +21,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	}
 	.modal-content .contentOnePage{
 		margin-top: 55px !important;
+		min-height: 500px;
 	}
 	.contentOnePage .title > h2{
 		    padding: 15px 0px;
@@ -106,12 +107,27 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 			</span>
 		</div>
 		<div class="col-md-4 padding-20 margin-top-20">
-			<a href="javascript:;" class="btn bg-orange" onclick="addToShoppingCart('<?php echo (string)$element["_id"] ?>','<?php echo $type ?>');">I book</a>
+			<?php if($type==Service::COLLECTION){ ?>
+				<a href="javascript:;" class="btn bg-orange ssmla" data-toggle="modal" 
+					data-target="#modal-available">
+							Book it
+				</a>
+			<?php } else { ?>
+				<a href="javascript:;" class="btn bg-orange" onclick="addToShoppingCart('<?php echo (string)$element["_id"] ?>','<?php echo $type ?>');">Buy it</a>
+			<?php } ?>
 		</div>
 	</div>
 	<div id="commentElement" class="col-md-12 margin-top-20">
 	</div>
 </div>
+<?php 
+	if($type==Service::COLLECTION)
+		$this->renderPartial('../pod/availableCalendar',
+				array(	"type"=>$type, 
+						"parentId" => (string)$element['_id'], 
+						"element" => @$element));
+?>
+
 <script type="text/javascript">
 
 	var element=<?php echo json_encode($element); ?>;
@@ -145,7 +161,10 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 			});
 		}
 	});
-	function addToShoppingCart(id,type){
+	function selectServiceDate(id,type){
+
+	}
+	function addToShoppingCart(id, type, data){
 		if(typeof userId != "undefined" && userId != ""){
 			if(typeof shoppingCart[type] == "undefined")
 				shoppingCart[type]=[];

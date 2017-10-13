@@ -108,8 +108,6 @@ var formInMap = {
 
 	initUpdateLocality : function(address, geo, type, index){
 		mylog.log("initUpdateLocality", address, geo, type, index);
-
-
 		showMap(true);
 		if(address != null && geo != null ){
 			formInMap.NE_insee = address.codeInsee;
@@ -234,7 +232,7 @@ var formInMap = {
 
 
 		$("#newElement_btnValidateAddress").click(function(){
-			$.blockUI();
+			processingBlockUi();
 			mylog.log("#newElement_btnValidateAddress");
 			if(notEmpty(formInMap.saveCities[formInMap.NE_insee])){
 				var obj = { city : formInMap.saveCities[formInMap.NE_insee] }
@@ -681,7 +679,8 @@ var formInMap = {
 		}
 	},
 
-	initDropdown : function(){ 
+	initDropdown : function(){
+		mylog.log("initDropdown");
 		$("#dropdown-newElement_cp-found").html("<li><a href='javascript:' class='disabled'>"+trad['Currently researching']+"</a></li>");
 		$("#dropdown-newElement_city-found").html("<li><a href='javascript:' class='disabled'>"+trad['Search a city, a town or a postal code'] +"</a></li>");
 	},
@@ -784,6 +783,7 @@ var formInMap = {
 	},
 
 	getLevel : function(){
+		mylog.log("getLevel");
 		if(notEmpty(formInMap.NE_localityId) && 
 			(	typeof formInMap.NE_level1 == "undefined" || formInMap.NE_level1 == "" || 
 				typeof formInMap.NE_level2 == "undefined" || formInMap.NE_level2 == ""|| 

@@ -10,14 +10,13 @@
         scopeHtml="";
 
         //if(typeof userConnected != "undefined" && userConnected != null ){
-             if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false" &&
-                 typeof communexion != "undefined" && communexion.state){
+             if( typeof communexion != "undefined" && communexion.state){
                 scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-                            'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+$.cookie('communexionName')+'" '+
-                            'data-scope-value="'+$.cookie('communexionValue')+'" '+
-                            'data-scope-name="'+$.cookie('communexionName')+'" '+
-                            'data-scope-level="'+$.cookie('communexionLevel')+'" '+
-                            'data-scope-type="'+$.cookie('communexionType')+'" '+
+                            'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+communexion.currentName+'" '+
+                            'data-scope-value="'+communexion.currentValue+'" '+
+                            'data-scope-name="'+communexion.currentName+'" '+
+                            'data-scope-level="'+communexion.currentLevel+'" '+
+                            'data-scope-type="'+communexion.communexionType+'" '+
                             'id="btn-my-co">'+
                             '<i class="fa fa-university"></i>'+
                         '</button>';
@@ -74,11 +73,11 @@
         $(htmlId).html(html);
         if(actionOnSetGlobalScope=="save"){
             scopeHtml='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-                            'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
-                            'data-scope-value="'+$.cookie('communexionValue')+'" '+
-                            'data-scope-name="'+$.cookie('communexionName')+'" '+
-                            'data-scope-level="'+$.cookie('communexionLevel')+'" '+
-                            'data-scope-type="'+$.cookie('communexionType')+'" '+
+                            'data-toggle="tooltip" data-placement="top" title="Communecter avec '+communexion.currentName+'" '+
+                            'data-scope-value="'+communexion.currentValue+'" '+
+                            'data-scope-name="'+communexion.currentName+'" '+
+                            'data-scope-level="'+communexion.currentLevel+'" '+
+                            'data-scope-type="'+communexion.communexionType+'" '+
                             'id="btn-my-co">'+
                             '<i class="fa fa-university"></i>'+
                         '</a>'+
@@ -132,9 +131,15 @@ function showEmptyMsg(){
 	var c=0; 
 	if(typeof myMultiScopes != "undefined")
 		$.each(myMultiScopes, function(key, value){ c++; });
-	console.log("showEmptyMsg", c);
-	if(c==0) $("#modalScopes .visible-empty").show(); else $("#modalScopes .visible-empty").hide();
-	if(c==0) $("#modalScopes .hidden-empty").hide(); else $("#modalScopes .hidden-empty").show();
+	mylog.log("showEmptyMsg", c);
+	if(c==0) 
+        $("#modalScopes .visible-empty").show(); 
+    else 
+        $("#modalScopes .visible-empty").hide();
+	if(c==0) 
+        $("#modalScopes .hidden-empty").hide(); 
+    else 
+        $("#modalScopes .hidden-empty").show();
 
 	//c=0; $.each(myMultiTags, function(key, value){ c++; });
 	//if(c==0) $("#dropdown-multi-tag .visible-empty").show(); else $("#dropdown-multi-tag .visible-empty").hide();

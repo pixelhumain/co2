@@ -140,13 +140,15 @@ Va contenir l'ensemble des Traduction pour les cities et les zones
 
 # A tester
 
+Pour voir les différents types de pays, voir dans le lien utile
+
 - Ajout d'element avec une adresses
 - Modification d'addresse
 - Suppression d'adresse
-- Communexion 
-- Scope dans Search / Live / Agenda
+- Communexion
+- Scope dans Search / Live / Agenda / Interop
 - Activité du térritoire
-- Network 
+- Network
 - Import
 
 

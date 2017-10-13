@@ -5,6 +5,7 @@ class CO2 {
     	$domainName = @$domainName ? $domainName : Yii::app()->params["CO2DomainName"];
     	
     	$layoutPath ="../../modules/co2/config/".$domainName."/params.json";
+
     	$str = file_get_contents($layoutPath);
 
 		$params = json_decode($str, true);
@@ -75,7 +76,6 @@ class CO2 {
             $communexion["currentName"] = false;
             $communexion["currentValue"] =  false;
         }
-
         
        // var_dump($communexion);
         return $communexion;

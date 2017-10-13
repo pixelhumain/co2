@@ -23,21 +23,11 @@
 
 <?php foreach($roomList as $key => $room){ ?>
 	<?php 
-		$roomRoles = explode(",", @$room["roles"]); 		
-		$intersect = array();
-		if(sizeof($myRoles) > 0)
-		foreach (@$roomRoles as $key => $roomRole) {
-			foreach ($myRoles as $key => $myRole) {
-				if($roomRole == $myRole)
-					$intersect[] = $myRole;
-			}
-		}
-		if(sizeof($intersect) > 0) $accessRoom = "unlock";
-		else if($roomRoles[0] == "") $accessRoom = "open";
-		else $accessRoom = "lock";
+
+		$accessRoom = Room::getAccessByRole($room, $myRoles);
 
 		//var_dump( @$roomRoles);
-		if(!isset($room["roles"])  || $intersect){ ?>
+		if(!isset($room["roles"])  || $accessRoom != "lock"){ ?>
 		<li class="submenucoop sub-rooms "
 				data-type="room" data-dataid="<?php echo (string)@$room["_id"]; ?>">
 			<a href="javascript:" class="load-coop-data droppable letter-turq" 
@@ -52,12 +42,16 @@
 		  	</a>
 		</li>
 	<?php }else{ ?>
-		<?php $roles = @$room["roles"]; ?>
+		<?php 
+			$rolesTooltip = "";
+			if(!is_array(@$room["roles"])) $rolesTooltip = @$room["roles"]; 
+			else foreach (@$room["roles"] as $r) $rolesTooltip .= $rolesTooltip == "" ? $r : ", ".$r; 
+		?>
 		<li class="submenucoop sub-rooms ">
 			<a href="javascript:" class="load-coop-data droppable letter-turq-light" 
 				data-type="locked" data-dataid="locked">
 			 	<i class="fa fa-lock tooltips" 
-			 		data-original-title="réservé au rôle : <?php echo $roles; ?>" 
+			 		data-original-title="réservé au(x) rôle(s) : <?php echo $rolesTooltip; ?>" 
 			 		data-placement="right"></i> <?php echo @$room["name"]; ?>
 			 	<i class="fa fa-inbox pull-right"></i>
 		  	</a>

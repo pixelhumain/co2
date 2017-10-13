@@ -538,23 +538,29 @@
 <script type="text/javascript">
 
 var headerParams = {
-  "persons"       : { color: "yellow",  icon: "user",         name: trad["people"] },
-  "organizations" : { color: "green",   icon: "group",        name: trad["organizations"] },
-  "NGO"           : { color: "green",   icon: "group",        name: trad["NGO"] },
-  "LocalBusiness" : { color: "azure",   icon: "industry",     name: trad["LocalBusiness"] },
-  "Group"         : { color: "black",   icon: "circle-o",     name: trad["groups"] },
-  "projects"      : { color: "purple",  icon: "lightbulb-o",  name: trad["projects"] },
-  "events"        : { color: "orange",  icon: "calendar",     name: trad["events"] },
-  "vote"          : { color: "azure",   icon: "gavel",        name: trad["proposal"] },
-  "actions"       : { color: "lightblue2",    icon: "cogs",   name: trad["actions"] },
-  "cities"        : { color: "red",     icon: "university",   name: trad["cities"] },
-  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: trad["pointsinterests"] },
-  "place"         : { color: "green",   icon: "map-marker",   name: trad["place"] },
-  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad["classifieds"] },
+  "persons"       : { color: "yellow",  icon: "user",         name: "citoyens" },
+  "organizations" : { color: "green",   icon: "group",        name: "organisations" },
+  "NGO"           : { color: "green",   icon: "group",        name: "associations" },
+  "LocalBusiness" : { color: "azure",   icon: "industry",     name: "entreprises" },
+  "Group"         : { color: "black",   icon: "circle-o",     name: "Groupes" },
+  "projects"      : { color: "purple",  icon: "lightbulb-o",  name: "projets" },
+  "events"        : { color: "orange",  icon: "calendar",     name: "événements" },
+  "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions, Questions, Votes" },
+  "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
+  "cities"        : { color: "red",     icon: "university",   name: "communes" },
+  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
+  "wikidata"    : { color: "lightblue2",   icon: "group",   name: "Wikidata" },
+  "datagouv"    : { color: "lightblue2",   icon: "bullhorn",   name: "DataGouv" },
+  "osm"    : { color: "lightblue2",   icon: "bullhorn",   name: "Open Street Map" },
+  "ods"    : { color: "lightblue2",   icon: "bullhorn",   name: "OpenDatasoft" },
+  "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
+  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
+  "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
+  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
+  "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
+
   "products"    : { color: "orange",   icon: "shopping-basket",   name: trad.products },
   "services"    : { color: "orange",   icon: "sun-o",   name: trad.products },
-  "GovernmentOrganization" : { color: "red",   icon: "university",        name: trad["GovernmentOrganizations"] },
-  
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
@@ -568,6 +574,7 @@ if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined
 function setHeaderDirectory(type){
  
   var params = new Array();
+
   if(typeof headerParams[type] == "undefined") return;
   params = headerParams[type];
   $(".subtitle-search").html( '<span class="text-'+params.color+'">'+
@@ -616,7 +623,6 @@ var cityNameLocked = "<?php echo $cityName; ?>";
 var typeSelected = <?php echo (@$_GET['type']) ? "'".$_GET['type']."'" : "null" ?>;
 
 var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
-
 jQuery(document).ready(function() {
 
 	
@@ -668,15 +674,17 @@ jQuery(document).ready(function() {
   });
 
   $(".btn-select-filliaire").click(function(){
+      mylog.log(".btn-select-filliaire");
       var fKey = $(this).data("fkey");
       myMultiTags = {};
       $.each(filliaireCategories[fKey]["tags"], function(key, tag){
         addTagToMultitag(tag);
       });
-      console.log("myMultiTags", myMultiTags);
+      mylog.log("myMultiTags", myMultiTags);
       
       startSearch(0, indexStepInit, searchCallback);
       KScrollTo("#content-social");
+      bindCommunexionScopeEvents();
       //KScrollTo("#before-section-result");
   });
   

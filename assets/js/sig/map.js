@@ -144,9 +144,15 @@
 				var markerName = this.getIcoNameByType(thisData);
 				//mylog.log("markerName", markerName);
 				var iconUrl = assetPath+'/images/sig/markers/icons_carto/'+markerName+'.png';
+
 				if(typeof thisData.profilMarkerImageUrl !== "undefined" && thisData.profilMarkerImageUrl != ""){ 
 					iconUrl = baseUrl + thisData.profilMarkerImageUrl;
 				}
+
+				if (thisData.typeSig && thisData.typeSig.substr(0,11) == "poi.interop") {
+					var iconUrl = getimgProfilPathForInteropDataOnMap(thisData.typeSig);
+				}
+
 				return L.icon({
 				    iconUrl: iconUrl,
 				    iconSize: [53, 60], //38, 95],

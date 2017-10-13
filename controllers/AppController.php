@@ -255,6 +255,11 @@ class AppController extends CommunecterController {
     	echo $this->renderPartial("page", $params, true);
 	}
 
+    public function actionInteroperability(){
+        CO2Stat::incNbLoad("co2-interoberability");
+        echo $this->renderPartial("interoperability", array(), true);
+    } 
+
     public function actionInfo($p){
         $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? 
                                Yii::app()->params["CO2DomainName"] : "CO2";

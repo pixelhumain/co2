@@ -2,6 +2,18 @@
 	//var_dump($action); exit;
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $action["parentType"], $action["parentId"]);
 	$parentRoom = Room::getById($action["idParentRoom"]);
+
+	if(isset(Yii::app()->session['userId'])){
+		$me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
+		$myRoles = @$me["links"]["memberOf"][@$action["parentId"]]["roles"] ? 
+				   @$me["links"]["memberOf"][@$action["parentId"]]["roles"] : array();
+	}else{
+		$myRoles = array();
+	}	
+	
+	//lock access if the user doesnt have the good role
+	$accessRoom = @$parentRoom ? Room::getAccessByRole($parentRoom, $myRoles) : ""; 
+	if($accessRoom == "lock") exit;
 ?>
 
 

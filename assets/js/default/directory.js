@@ -1503,6 +1503,9 @@ var directory = {
       //if(directory.dirLog) 
       mylog.log("-----------proposalPanelHtml", params, key);
       var idParentRoom = typeof params.idParentRoom != "undefined" ? params.idParentRoom : "";
+      if(idParentRoom == "" && params.type == "rooms") idParentRoom = params.id;
+      mylog.log("-----------idParentRoom", idParentRoom);
+      
       var name = (typeof params.title != "undefined" && params.title != "undefined") ? params.title : params.name;
       var description = params.description.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
       name = escapeHtml(name);

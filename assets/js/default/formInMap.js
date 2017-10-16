@@ -258,8 +258,8 @@ var formInMap = {
 					data: obj,
 					dataType: "json",
 					success: function(data){
-						console.dir(obj.city);
-						mylog.log("data", data);
+						mylog.log("city/save data", obj.city);
+						mylog.log("city/save data", data);
 						if(data.result){
 							formInMap.NE_localityId = data.id
 
@@ -282,8 +282,6 @@ var formInMap = {
 								formInMap.NE_level4 = data.level4;
 								formInMap.NE_level4 = data.level4Name;
 							}
-
-
 							formInMap.backToForm();
 						}
 					},
@@ -609,7 +607,7 @@ var formInMap = {
 				data: params,
 				dataType: "json",
 				success: function(data){
-					mylog.log("data", data);
+					mylog.log("updateLocalityElement data", data);
 					
 					if(data.result){
 						var inMap = true ;						
@@ -652,7 +650,7 @@ var formInMap = {
 						if(typeof networkJson == "undefined" || networkJson == null)
 							$("#mapLegende").removeClass("hidden");
 						mylog.log("contextData", contextData.type, contextData.id);
-						//urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
+						urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 						toastr.success(data.msg);
 					}else{
 						toastr.error(data.msg);

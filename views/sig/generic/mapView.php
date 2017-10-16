@@ -114,7 +114,9 @@
 					<select class='form-group col-xs-12' name='newElement_country' id='newElement_country'>
 						<?php
 							echo "<option value=''>".Yii::t("common", "Choose a country")."</option>";
-							foreach ( OpenData::$phCountries as $key => $value) {
+							$asort = OpenData::$phCountries;
+        					asort($asort);
+							foreach ( $asort as $key => $value) {
 								echo "<option value='".$key."'>".$value."</option>";
 							}
 						?>

@@ -169,18 +169,16 @@
 
 		<?php 
 			$classAddress = ( (@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]) ? "" : "hidden" );
+			var_dump($element["address"]);
 		//if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]){ ?>
 			<div class="header-address-tags col-xs-12 col-sm-9 col-md-9 col-lg-10 pull-right margin-bottom-5 <?php echo $classAddress ; ?>">
-				<?php if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"]){ ?>
+				<?php if(!empty($element["address"]["addressLocality"])){ ?>
 					<div class="header-address badge letter-white bg-red margin-left-5 pull-left">
-						<?php echo @$element["address"]["postalCode"] ? 
-									"<i class='fa fa-map-marker'></i> ".$element["address"]["postalCode"] : "";
-
-							  echo @$element["address"]["postalCode"] && @$element["address"]["addressLocality"] ? 
-									", ".$element["address"]["addressLocality"] : "";
-
-							  echo @$element["address"]["streetAddress"] && @$element["address"]["streetAddress"] ? 
-									", ".$element["address"]["streetAddress"] : "";
+						<?php
+							echo !empty($element["address"]["streetAddress"]) ? ", ".$element["address"]["streetAddress"] : "";
+							echo !empty($element["address"]["postalCode"]) ? 
+									"<i class='fa fa-map-marker'></i> ".$element["address"]["postalCode"].", " : "";
+							echo $element["address"]["addressLocality"];
 						?>
 					</div>
 					<?php $classCircleO = (!empty($element["tags"]) ? "" : "hidden" ); ?>

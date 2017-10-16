@@ -295,7 +295,7 @@
             frameborder="0" allowfullscreen></iframe>
   <?php } ?>
   <?php if(@$media["media"]){ ?>
-    <div id="result<?php echo $key ?>" class="bg-white results padding-15"></div>
+    <div id="result<?php echo $key ?>" class="bg-white results padding-15 col-md-12 col-sm-12 col-xs-12"></div>
   <?php } ?>
 
 

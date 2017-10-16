@@ -84,7 +84,7 @@ function activateGlobalCommunexion(active, firstLoad){
         bindCommunexionScopeEvents();
     }else{
         headerHtml='<a href="#" class="menu-btn-back-category" data-target="#modalMainMenu" data-toggle="modal">'+
-                '<img src="'+themeUrl+'/assets/img/LOGOS/'+domainName+'/logo-head-search.png" height="60" class="inline margin-bottom-15">'+
+                '<img src="'+themeUrl+'/assets/img/LOGOS/'+domainName+'/logo-head-search.png" height="60" class="inline">'+
                 '</a>';
         saveCookieMultiscope();
         //rebuildSearchScopeInput();
@@ -103,6 +103,7 @@ function activateGlobalCommunexion(active, firstLoad){
 }
 function getBreadcrumCommunexion(){
     var tips="";
+
     if(typeof communexion.cities != "undefined") {
     	$.each(communexion.cities,function(e,v){
             tips+=v+" / ";

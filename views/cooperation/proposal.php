@@ -60,7 +60,7 @@
 		  	<?php if(!@$proposal["amendements"] && !$hasVote){ ?>
 		    <li><a href="javascript:" id="btn-edit-proposal" 
 		    		data-id-proposal="<?php echo $proposal["_id"]; ?>">
-		    	<i class="fa fa-pencil"></i> Modifier ma proposition
+		    	<i class="fa fa-pencil"></i> Modif ma proposition
 		    	</a>
 		    </li>
 			<?php }else{ ?>

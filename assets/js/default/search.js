@@ -106,13 +106,15 @@ function bindLeftMenuFilters () {
 
             if( sectionKey == "forsale" || sectionKey == "forrent"){
                 $("#section-price").show(200);
-                KScrollTo("#section-price");
+                setTimeout(function(){
+                    KScrollTo("#container-scope-filter");
+                }, 400);
             }
             else {
                 $("#section-price").hide();
                 $("#priceMin").val("");
                 $("#priceMax").val("");
-                KScrollTo("#dropdown_search");
+                KScrollTo("#container-scope-filter");
             }
 
             if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
@@ -133,7 +135,7 @@ function bindLeftMenuFilters () {
                 bindLeftMenuFilters ();
                 classified.currentLeftFilters = null;
             }
-            $('#searchTags').val(section);
+            $('#searchTags').val(sectionKey);
         }
 
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
@@ -159,7 +161,7 @@ function bindLeftMenuFilters () {
         var classType = $(this).data("keycat");
 
         if( $(this).hasClass( "active" ) ){
-            searchTxt = section;
+            searchTxt = sectionKey;
             $(this).removeClass( "active" );
             $(".keycat-"+classType).addClass("hidden"); 
         }else{
@@ -168,7 +170,7 @@ function bindLeftMenuFilters () {
 
             $(".keycat").addClass("hidden");
             $(".keycat-"+classType).removeClass("hidden");  
-            searchTxt = section+","+classType; 
+            searchTxt = sectionKey+","+classType; 
         }
         $('#searchTags').val(searchTxt);
         startSearch(0, indexStepInit, searchCallback);  
@@ -180,17 +182,17 @@ function bindLeftMenuFilters () {
         var classType = $(this).data("categ");
         var classSubType = $(this).data("keycat");
         if( $(this).hasClass( "active" ) ){
-            searchTxt = section+","+classType;
+            searchTxt = sectionKey+","+classType;
             $(this).removeClass( "active" );
         }else{
             $(".keycat").removeClass("active");
             $(this).addClass("active");
             
-            searchTxt = section+","+classType+","+classSubType;
+            searchTxt = sectionKey+","+classType+","+classSubType;
         }
 
         $('#searchTags').val( searchTxt );
-        KScrollTo("#menu-section-classified");
+        KScrollTo("#container-scope-filter");
         startSearch(0, indexStepInit, searchCallback);  
     });
 

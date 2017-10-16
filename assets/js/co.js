@@ -3002,11 +3002,12 @@ var dyFObj = {
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
 	  	dyFObj.buildDynForm(afterLoad, data,dyFObj[dyFObj.activeElem],dyFObj.activeModal+" #ajaxFormModal");
-	  	if(typeof dyFObj[dyFObj.activeElem].titleClass != "undefined")
-	  		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-									  .addClass(dyFObj[dyFObj.activeElem].titleClass);
-		
-	  	$(dyFObj.activeModal+" #ajax-modal-modal-title").html((typeof dyFObj[dyFObj.activeElem].title != "undefined") ? dyFObj[dyFObj.activeElem].title : "");
+	  	//if(typeof dyFObj[dyFObj.currentKFormType].color != "undefined")
+	  		//$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+									  	  //.addClass(dyFObj[dyFObj.currentKFormType].color);
+		//alert("CO "+typeObj[currentKFormType].color);
+                    
+	  	//$(dyFObj.activeModal+" #ajax-modal-modal-title").html((typeof dyFObj[dyFObj.activeElem].title != "undefined") ? dyFObj[dyFObj.activeElem].title : "");
 	},
 	/*subDynForm : function(type, afterLoad,data) {
 		smallMenu.open();
@@ -3352,10 +3353,10 @@ var dyFInputs = {
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
-				$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-					  					  	  .addClass("bg-dark");
+				//$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+				//	  					  	  .addClass("bg-dark");
     		 	
-    		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
+    		 	//$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
 
         	},1500);
     	}
@@ -4229,8 +4230,8 @@ var typeObj = {
 			    }
 			}
 		}	},
-	addPhoto:{ titleClass : "bg-dark" },
-	addFile:{ titleClass : "bg-dark" },
+	addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
+	addFile:{ titleClass : "bg-dark", color : "bg-dark" },
 	person : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
 	persons : { sameAs:"person" },
 	people : { sameAs:"person" },
@@ -4285,7 +4286,7 @@ var typeObj = {
 				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
 				   ]	},
 	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
-	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
+	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
 	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
 	default : {icon:"arrow-circle-right",color:"dark"},
 	//"video" : {icon:"video-camera",color:"dark"},

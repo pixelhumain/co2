@@ -522,6 +522,7 @@ var tradCategory = {
 	"forrent" : "<?php echo Yii::t("category","Rent") ?>", 
 	"lookingfor" : "<?php echo Yii::t("category","Need") ?>",  
 	"job" : "<?php echo Yii::t("category","Jobs") ?>",
+	
 	"Share":"<?php echo Yii::t("category","Share") ?>", 
     "To share":"<?php echo Yii::t("category","To share") ?>",
     "Give":"<?php echo Yii::t("category","Give") ?>", 
@@ -533,6 +534,7 @@ var tradCategory = {
     "Need":"<?php echo Yii::t("category","Need") ?>",
     "Looking for":"<?php echo Yii::t("category","Looking for") ?>",
     "Jobs":"<?php echo Yii::t("category","Jobs") ?>",
+    
     "Offers":"<?php echo Yii::t("category","Offers") ?>",
     "Technology":"<?php echo Yii::t("category","Technology") ?>",
     "TV / Video":"<?php echo Yii::t("category","TV / Video") ?>",

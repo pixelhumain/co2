@@ -90,7 +90,7 @@ dynForm = {
 	            		
             		$(".typeBtn").removeClass("active btn-dark-blue text-white");
             		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
-            		$("#ajaxFormModal #type").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+            		$("#ajaxFormModal #type").val( ( $(this).hasClass('active') ) ? $(this).data('key') : "" );
             		
             		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a>  "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+"</h4>" );
             		$(".typeBtntagList").hide();
@@ -103,7 +103,7 @@ dynForm = {
             		{
 	            		$.each(filt[ $(this).data('key') ]["subcat"], function(k,v) { 
 	            			fieldHTML += '<div class="col-md-6 padding-5">'+
-	    									'<a class="btn tagListEl subtypeBtn '+tradCategory[k]+'Btn " data-tag="'+tradCategory[v]+'" href="javascript:;">'+tradCategory[v]+'</a>' +
+	    									'<a class="btn tagListEl subtypeBtn '+tradCategory[k]+'Btn " data-tag="'+tradCategory[v]+'"  data-key="'+v+'" href="javascript:;">'+tradCategory[v]+'</a>' +
 	            						"</div>";
 	            		});
 	            		$(".subtypeSection").html('<hr class="col-md-12 no-padding">'+
@@ -115,7 +115,7 @@ dynForm = {
 		            	{
 		            		$( ".subtypeBtn" ).removeClass("active");
 		            		$(this).addClass("active");
-		            		$("#ajaxFormModal #subtype").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+		            		$("#ajaxFormModal #subtype").val( ( $(this).hasClass('active') ) ? $(this).data('key') : "" );
 		            		$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
 		            		//$(".subtypeBtn:not(.active)").hide();
 
@@ -150,7 +150,7 @@ dynForm = {
 	            		$(".typeBtntagList").show();
 	            		$(".sectionBtn").removeClass("active btn-dark-blue text-white");
 	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
-	            		$("#ajaxFormModal #section").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+	            		$("#ajaxFormModal #section").val( ( $(this).hasClass('active') ) ? $(this).data('key') : "" );
 						//$(".sectionBtn:not(.active)").hide();
 						var sectionKey = $(this).data('key');
 						//alert(sectionKey);

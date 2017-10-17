@@ -389,80 +389,42 @@ function openDropdownMultiscope(){
 	setTimeout(function(){ $("#dropdown-content-multi-scope").addClass('open'); }, 300);
 }
 
-function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
-						inseeCommunexion, cityNameCommunexion, cpCommunexion, 
-						regionNameCommunexion, depNameCommunexion, countryCommunexion){  
+function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values){  
 
-	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel,
-			  inseeCommunexion, cityNameCommunexion, cpCommunexion, regionNameCommunexion, depNameCommunexion, countryCommunexion);
+	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel, values);
 
 	if(scopeValue == "") return;
 	
-	//if(!scopeExists(scopeValue)){ //mylog.log("adding", scopeValue);
-		//myMultiScopes[scopeValue] = { name: scopeName, active: true, type: scopeType };
-		mylog.log("myMultiScopes", myMultiScopes, indexStepInit);
-		$("#searchLocalityCITYKEY").val("");
-		$("#searchLocalityCODE_POSTAL").val("");
-		$("#searchLocalityZONE").val("");
-		if(scopeType == "city") {$("#searchLocalityCITYKEY").val(scopeValue);} 
-		if(scopeType == "cp") $("#searchLocalityCODE_POSTAL").val(scopeValue);
-		if(scopeType == "zone") $("#searchLocalityZONE").val(scopeValue);
-		$("#searchLocalityLEVEL").val(scopeLevel);
-		$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
-		
+	mylog.log("myMultiScopes", myMultiScopes, indexStepInit);
+	$("#searchLocalityCITYKEY").val("");
+	$("#searchLocalityCODE_POSTAL").val("");
+	$("#searchLocalityZONE").val("");
+	if(scopeType == "city") {$("#searchLocalityCITYKEY").val(scopeValue);} 
+	if(scopeType == "cp") $("#searchLocalityCODE_POSTAL").val(scopeValue);
+	if(scopeType == "zone") $("#searchLocalityZONE").val(scopeValue);
+	$("#searchLocalityLEVEL").val(scopeLevel);
+	$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
 
-		// $.removeCookie('communexionType', { path: '/' }); 
-		// $.removeCookie('communexionValue', { path: '/' }); 
-		// $.removeCookie('communexionName', { path: '/' }); 
-		// $.removeCookie('communexionLevel', { path: '/' });
+	// $.removeCookie('communexionType', { path: '/' }); 
+	// $.removeCookie('communexionValue', { path: '/' }); 
+	// $.removeCookie('communexionName', { path: '/' }); 
+	// $.removeCookie('communexionLevel', { path: '/' });
 
-		// $.cookie('communexionType', scopeType, { expires: 365, path: "/" });
-		// $.cookie('communexionValue', scopeValue, { expires: 365, path: "/" });
-		// $.cookie('communexionName', scopeName, { expires: 365, path: "/" });
-		//$.cookie('communexionLevel', scopeLevel, { expires: 365, path: "/" });
-		//$.cookie('currentLevel', scopeType, { expires: 365, path: "/" });
-	
-		communexion.currentLevel = scopeLevel;
-		communexion.currentName = scopeName;
-		communexion.currentValue = scopeValue;
+	communexion.currentLevel = scopeLevel;
+	communexion.currentName = scopeName;
+	communexion.currentValue = scopeValue;
 
-		$.cookie('communexion', communexion, { expires: 365, path: "/" });
-	
-		// if(inseeCommunexion != null){
-		// 	$.removeCookie('inseeCommunexion', { path: '/' }); 
-		// 	$.removeCookie('cityNameCommunexion', { path: '/' }); 
-		// 	$.removeCookie('cpCommunexion', { path: '/' }); 
-			
-		// 	$.cookie('inseeCommunexion',   		inseeCommunexion,  		{ expires: 365, path: "/" });
-		// 	$.cookie('cityNameCommunexion', 	cityNameCommunexion,	{ expires: 365, path: "/" });
-		// 	$.cookie('cpCommunexion',   		cpCommunexion,  		{ expires: 365, path: "/" });
-		// }else{
-			// console.log("communexion hash:", location.hash);
-			// if(actionOnSetGlobalScope == "filter"){
-			// 	if(location.hash.indexOf("#live") >= 0)
-   //              	startNewsSearch(true);
-   //          	else if(location.hash != "")
-			// 		startSearch(0, indexStepInit, searchCallback);
-			// 	//else loadLiveNow();
-			// }
-		//}
+	if(values)
+		communexion.values = values;
 
-		
-		/*if(typeof communexion != "undefined" && typeof inseeCommunexion != "undefined"){
-			
-			communexion.state = true;
-			communexion.values.cityCp = cpCommunexion;
-			communexion.values.cityKey = scopeValue;
-			communexion.values.cityName = cityNameCommunexion;
-			communexion.values.depName = depNameCommunexion;
-			communexion.values.inseeName = inseeCommunexion;
-			communexion.values.regionName = regionNameCommunexion;
+	$.cookie('communexion', communexion, { expires: 365, path: "/" });
 
-		}*/
-		//rebuildSearchScopeInput();
-		activateGlobalCommunexion(true);
-		//startSearch(0, indexStepInit, searchCallback);
-		//loadByHash(location.hash);
+
+
+	//rebuildSearchScopeInput();
+	activateGlobalCommunexion(true);
+	//startSearch(0, indexStepInit, searchCallback);
+	//loadByHash(location.hash);
 }
 
 //vision city : scoping global for all applications

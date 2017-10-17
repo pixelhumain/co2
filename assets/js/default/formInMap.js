@@ -258,29 +258,30 @@ var formInMap = {
 					data: obj,
 					dataType: "json",
 					success: function(data){
-						mylog.log("city/save data", obj.city);
+						mylog.log("city/save obj.city", obj.city);
 						mylog.log("city/save data", data);
 						if(data.result){
 							formInMap.NE_localityId = data.id
 
-							if(data.level1){
-								formInMap.NE_level1 = data.level1;
-								formInMap.NE_level1 = data.level1Name;
+							if(data.city.level1){
+								formInMap.NE_level1 = data.city.level1;
+								formInMap.NE_level1Name = data.city.level1Name;
+								mylog.log("city/save data.city.level1", data.city.level1);
 							}
 
-							if(data.level2){
-								formInMap.NE_level2 = data.level2;
-								formInMap.NE_level2 = data.level2Name;
+							if(data.city.level2){
+								formInMap.NE_level2 = data.city.level2;
+								formInMap.NE_level2Name = data.city.level2Name;
 							}
 
-							if(data.level3){
-								formInMap.NE_level3 = data.level3;
-								formInMap.NE_level3 = data.level3Name;
+							if(data.city.level3){
+								formInMap.NE_level3 = data.city.level3;
+								formInMap.NE_level3Name = data.city.level3Name;
 							}
 
-							if(data.level4){
-								formInMap.NE_level4 = data.level4;
-								formInMap.NE_level4 = data.level4Name;
+							if(data.city.level4){
+								formInMap.NE_level4 = data.city.level4;
+								formInMap.NE_level4Name = data.city.level4Name;
 							}
 							formInMap.backToForm();
 						}
@@ -636,6 +637,7 @@ var formInMap = {
 								currentUser.postalCode = locality.address.postalCode;
 								currentUser.codeInsee = locality.address.codeInsee;
 								currentUser.keyLocality = locality.address.key;
+								//formInMap.setCommunexion(locality.address);
 								if(typeof Sig.myPosition != "undefined"){
 									Sig.myPosition.position.latitude = locality.geo.latitude;
 									Sig.myPosition.position.longitude = locality.geo.longitude;
@@ -676,6 +678,23 @@ var formInMap = {
 			urlCtrl.loadByHash(location.hash);
 		}
 	},
+
+	// setCommunexion : function(address){
+	// 	var coFIM = {
+	// 		city : address.localityId,
+	// 		cityName : address.addressLocality,
+	// 		cp : address.postalCodes,
+	// 		level1 : address.level1,
+	// 		level1Name : address.level1Name,
+	// 		level2 : address.level2,
+	// 		level2Name : address.level2Name,
+	// 		level3 : address.level3,
+	// 		level3Name : address.level3Name,
+	// 		level4 : address.level4,
+	// 		level4Name : address.level4Name,
+	// 	}
+	// 	setGlobalScope(address.localityId, address.addressLocality, "cp", "city", coFIM);
+	// },
 
 	initDropdown : function(){
 		mylog.log("initDropdown");

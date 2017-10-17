@@ -18,6 +18,7 @@ var formInMap = {
 	NE_level1Name : "",
 
 	NE_localityId : "",
+	NE_between : false,
 	geoShape : "",
 
 	typeSearchInternational : "",
@@ -166,10 +167,10 @@ var formInMap = {
 			formInMap.initDropdown();
 			mylog.log("formInMap.NE_country", formInMap.NE_country, typeof formInMap.NE_country, formInMap.NE_country.length);
 			if(formInMap.NE_country != ""){
-				$("#divPostalCode").removeClass("hidden");
+				//$("#divPostalCode").removeClass("hidden");
 				$("#divCity").removeClass("hidden");
 			}else{
-				$("#divPostalCode").addClass("hidden");
+				//$("#divPostalCode").addClass("hidden");
 				$("#divCity").addClass("hidden");
 			}
 				
@@ -330,9 +331,10 @@ var formInMap = {
 					mylog.log("HERE", value);
 					var insee = value.insee;
 					var country = value.country;
-					if(notEmpty(value.save))
+					mylog.log("HERE formInMap.saveCities", notEmpty(value.save), value.save);
+					if(typeof value.save != "undefined" &&  value.save == true)
 						formInMap.saveCities[insee] = value;
-
+					mylog.log("HERE formInMap.saveCities", formInMap.saveCities);
 					if(notEmpty(value.geoShape))
 						inseeGeoSHapes[insee] = value.geoShape.coordinates[0];
 
@@ -425,13 +427,11 @@ var formInMap = {
 
 		if(complete == true){
 			formInMap.NE_cp = data.data("cp");
-		}	
-		// else{
-		// 	//formInMap.uncomplete = true;
-		// 	formInMap.NE_localityId = data.data("locId");
-		// 	// $('[name="newElement_cp"]').attr( "placeholder", "Vous devez ajouter un code postal" );
-		// 	// $('#divPostalCode').addClass("has-error");
-		// }
+		}else if ( 	notEmpty(formInMap.saveCities) && 
+					notEmpty(formInMap.saveCities[formInMap.NE_insee]) &&
+					notEmpty(formInMap.saveCities[formInMap.NE_insee].between)
+					)
+			formInMap.NE_between = formInMap.saveCities[formInMap.NE_insee].between ;
 
 		formInMap.initHtml();
 		
@@ -721,6 +721,11 @@ var formInMap = {
 			else
 				$('#'+value+'_sumery').addClass("hidden");
 		});
+
+		if(formInMap.NE_between != false)
+			$("#divCP").addClass("hidden");
+
+
 	},
 
 	initVarNE : function(){
@@ -924,10 +929,11 @@ var formInMap = {
 		}
 		formInMap.updateLocality = false;
 		formInMap.addressesIndex = false;
+		formInMap.NE_between = false;
 		formInMap.initDropdown();
 		$("#divStreetAddress").addClass("hidden");
-		$("#divPostalCode").addClass("hidden");
 		$("#divCity").addClass("hidden");
+		$("#divCP").addClass("hidden");
 		formInMap.initHtml();
 	},
 

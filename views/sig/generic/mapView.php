@@ -127,6 +127,9 @@
 							<li><a href='javascript:' class='disabled'><?php echo Yii::t("common", "Search a city, a town or a postal code") ; ?></a></li>
 						</ul>
 			  		</div>
+			  		<div id='divCP' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
+				  		<input class='form-group col-md-12 col-xs-12' type='text' name='newElement_cp' placeholder='<?php echo Yii::t("common", "Add a postal code") ; ?>'>
+			  		</div>
 					<div id='divStreetAddress' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
 						<input class='form-group col-md-9 col-xs-9' type='text' style='margin-right:-3px;' name='newElement_street' placeholder='<?php echo Yii::t("common", "streetFormInMap"); ?>'>
 						<button class='col-md-3 col-xs-3 btn btn-default' style='padding:3px;border-radius:0 4px 4px 0;' type='text' id='newElement_btnSearchAddress'><i class='fa fa-search'></i></button>

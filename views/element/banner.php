@@ -169,7 +169,6 @@
 
 		<?php 
 			$classAddress = ( (@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]) ? "" : "hidden" );
-			var_dump($element["address"]);
 		//if(@$element["address"]["postalCode"] || @$element["address"]["addressLocality"] || @$element["tags"]){ ?>
 			<div class="header-address-tags col-xs-12 col-sm-9 col-md-9 col-lg-10 pull-right margin-bottom-5 <?php echo $classAddress ; ?>">
 				<?php if(!empty($element["address"]["addressLocality"])){ ?>

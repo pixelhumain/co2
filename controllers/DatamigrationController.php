@@ -2524,49 +2524,6 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
-	// public function actionBatchInterElement() {
-	// 	//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
-	// 		$nbelement = 0 ;
-	// 		$types = array(Person::COLLECTION , Organization::COLLECTION, /*Project::COLLECTION, Event::COLLECTION, Poi::COLLECTION*/);
-
-	// 		foreach ($types as $keyType => $type) {
-	// 			$elts = PHDB::find($type, array('$and' => array(
-	// 											array("address" => array('$exists' => 1)),
-	// 											array("address.key" => array('$exists' => 1)))
-	// 					));
-
-	// 			foreach ($elts as $key => $elt) {
-					
-	// 				$newAddress = $elt["address"];
-	// 				unset($newAddress["key"]);
-
-	// 				$set = array("address" => $newAddress);
-
-	// 				if(!empty($elt["addresses"])){
-	// 					$newAdd = array();
-	// 					foreach ($elt["addresses"] as $keyAddresses => $address) {
-
-	// 						if(!empty($address["address"]["key"])){
-	// 							unset($address["address"]["key"]);
-	// 						}
-
-	// 						$newAdd[] = $address["address"]["key"];
-	// 					}
-
-	// 					if(!empty($newAdd))
-	// 						$set["addresses"] = $newAdd;
-	// 				}
-
-	// 				$res = PHDB::update($type, 
-	// 						array("_id"=>new MongoId($key)),
-	// 						array('$set' => $set)
-	// 				);
-	// 				$nbelement++;
-	// 			}
-	// 		}
-	// 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
-	// }
-
 	public function actionBatchInterElement() {
 		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			$nbelement = 0 ;
@@ -2769,6 +2726,92 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}
 
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+	}
+
+
+
+	public function actionBatchInterInit() {
+		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$nbelement = 0 ;
+			$types = array(Person::COLLECTION , Organization::COLLECTION, Project::COLLECTION, Event::COLLECTION, Poi::COLLECTION);
+
+			foreach ($types as $keyType => $type) {
+				$elts = PHDB::find($type, array('$and' => array(
+												array("address" => array('$exists' => 1))
+												array("address.addressCountry" => array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC" "BE")))
+						)));
+
+				foreach ($elts as $key => $elt) {
+					if(!empty($elt["address"]["codeInsee"])){
+						
+							$unset = array("address" => "");
+							if(!empty($elt["addresses"]))
+								$unset["addresses"] = "";
+							if(!empty($elt["multiscopes"]))
+								$unset["multiscopes"] = "";	
+							
+							$res = PHDB::update($type, 
+									array("_id"=>new MongoId($key)),
+									array('$unset' => $unset)
+							);
+							$nbelement++;
+					}else{
+						echo  "Error: ".$elt["name"]." " . $type. " " . $key. "<br>" ;
+					}
+					
+				}
+			}
+
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+
+			$zones = PHDB::find(Zone::COLLECTION, array("countryCode" => array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC" "BE"))))));
+			$nbelement = 0 ;
+			$nbelementNew = 0 ;
+			foreach ($zones as $key => $value) {
+				$news = PHDB::find(News::COLLECTION, array('$and' => array(
+													array("scope.localities" => array('$exists' => 1))
+													array("scope.localities.parentId" => $key))));
+
+
+				foreach ($news as $keyNew => $valueNew) {
+					$res = PHDB::update(News::COLLECTION, 
+									array("_id"=>new MongoId($keyNew)),
+									array('$set' => array("scope.localities" = array()))
+							);
+					$nbelementNew++;
+
+				}
+				echo  "Good: ".$value["name"]." " . $key. "<br>" ;
+				PHDB::remove(Zone::COLLECTION, array("_id"=>new MongoId($key)));
+				$nbelement++;
+			}
+
+			echo  "NB Zone mis à jours: " .$nbelement."<br>" ;
+
+			$cities = PHDB::find(City::COLLECTION, array("countryCode" => array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC" "BE"))))));
+			$nbelement = 0 ;
+			foreach ($cities as $key => $value) {
+				$news = PHDB::find(News::COLLECTION, array('$and' => array(
+													array("scope.localities" => array('$exists' => 1))
+													array("scope.localities.parentId" => $key))));
+
+
+				foreach ($news as $keyNew => $valueNew) {
+					$res = PHDB::update(News::COLLECTION, 
+									array("_id"=>new MongoId($keyNew)),
+									array('$set' => array("scope.localities" = array()))
+							);
+					$nbelementNew++;
+				}
+				echo  "Good: ".$value["name"]." " . $key. "<br>" ;
+				PHDB::remove(City::COLLECTION, array("_id"=>new MongoId($key)));
+				$nbelement++;
+			}
+
+			echo  "NB City mis à jours: " .$nbelement."<br>" ;
+			
+			echo  "NB New mis à jours: " .$nbelementNew."<br>" ;
+		//}
 	}
 
 

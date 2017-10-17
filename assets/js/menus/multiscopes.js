@@ -203,6 +203,7 @@ function addScopeToMultiscope(scopeValue, scopeName, scopeLevel){
 				scopeType = "level3";
 			else if(scopeLevel == "4")
 				scopeType = "level4";
+			myMultiScopes[scopeValue].type = scopeType ;
 			myMultiScopes[scopeValue].level = scopeLevel ;
 		}
 		//myMultiScopes[scopeValue].type = scopeType ;

@@ -261,14 +261,14 @@ function getLocalityForSearch(){
 	if(typeof globalCommunexion == "undefined") var globalCommunexion = false;
 
 	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), globalCommunexion);
-	if(globalCommunexion == true ){
+	//if(globalCommunexion == true ){
       var searchLocality = {}
-      searchLocality[communexion.currentValue] = { type : communexion.currentLevel, 
+      /*searchLocality[communexion.currentValue] = { type : communexion.currentLevel, 
                                                     name : communexion.currentName,
                                                     active : true };
     }else{
       var searchLocality = getMultiScopeForSearch();
-    }
+    }*/
     return searchLocality;
 }
 

@@ -131,6 +131,9 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 <script type="text/javascript">
 
 	var element=<?php echo json_encode($element); ?>;
+	element.imgProfil = "<i class='fa fa-image fa-3x'></i>";
+   	if("undefined" != typeof element.profilMediumImageUrl && element.profilMediumImageUrl != "")
+        element.imgProfil= "<img class='img-responsive' src='"+baseUrl+element.profilMediumImageUrl+"'/>";
 	var type="<?php echo $type; ?>";
 	jQuery(document).ready(function() {	
 		var nav = directory.findNextPrev("#page.type."+type+".id."+element['_id']['$id']);
@@ -161,27 +164,129 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 			});
 		}
 	});
-	function selectServiceDate(id,type){
-
-	}
-	function addToShoppingCart(id, type, data){
+	
+	function addToShoppingCart(id, type, ranges){
+		incCart=true;
 		if(typeof userId != "undefined" && userId != ""){
+			params=new Object;
+			params.name=element.name,
+			
+			params.price=element.price
+			params.countQuantity=1;
+			if(typeof element.imgProfil != "undefined")
+				params.imgProfil=element.imgProfil;	
+			if(typeof element.description != "undefined")
+				params.description=element.description;
 			if(typeof shoppingCart[type] == "undefined")
-				shoppingCart[type]=[];
-			shoppingCart[type].push(mapElements[id]);
-			countShoppingCart(true);
-			console.log("element",mapElements[id]);
+				shoppingCart[type]=new Object;
+			if(type=="services" ){
+				if(typeof shoppingCart[type][element.type]=="undefined")
+					shoppingCart[type][element.type]=new Object;
+
+				if(typeof shoppingCart[type][element.type][id]=="undefined")
+					shoppingCart[type][element.type][id]=params;
+				else{
+					shoppingCart[type][element.type][id]["countQuantity"]++;
+					incCart=false;
+				}
+				if(typeof ranges != "undefined" && notNull(ranges)){
+					if(typeof shoppingCart[type][element.type][id]["reservations"] == "undefined")
+					 	shoppingCart[type][element.type][id]["reservations"]=new Object;
+
+					if(typeof shoppingCart[type][element.type][id]["reservations"][ranges.date] == "undefined"){
+						shoppingCart[type][element.type][id]["reservations"][ranges.date] = {"countQuantity":1};
+					}else{
+						shoppingCart[type][element.type][id]["reservations"][ranges.date]["countQuantity"]++;
+						incCart=false;
+					}
+					if(typeof ranges.hours != "undefined"){
+						ranges.hours.countQuantity=1;
+						if(typeof shoppingCart[type][element.type][id]["reservations"][ranges.date]["hours"] == "undefined")
+							shoppingCart[type][element.type][id]["reservations"][ranges.date]["hours"]=[];
+
+						if(jQuery.isEmptyObject(shoppingCart[type][element.type][id]["reservations"][ranges.date]["hours"])){
+							shoppingCart[type][element.type][id]["reservations"][ranges.date]["hours"].push(ranges.hours);
+						}else{
+							hoursInArray=false;
+							$.each(shoppingCart[type][element.type][id]["reservations"][ranges.date]["hours"], function(e,v){
+								if(v.start==ranges.hours.start && v.end==ranges.hours.end){
+									shoppingCart[type][element.type][id]["reservations"][ranges.date]["hours"][e]["countQuantity"]++;
+									hoursInArray=true;
+								}
+							});
+							if(!hoursInArray)
+								shoppingCart[type][element.type][id]["reservations"][ranges.date]["hours"].push(ranges.hours);
+						}
+					}
+				}
+			}else{
+				if(typeof shoppingCart[type][id] == "undefined"){
+					shoppingCart[type][id]={};
+					shoppingCart[type][id]=params;
+				}else{
+					shoppingCart[type][id].countQuantity++;
+					incCart=false;
+				}
+			}
+			if(incCart)
+				countShoppingCart(true);
+			//console.log("element",mapElements[id]);
 		}else{
 			$('#modalLogin').modal("show");
 		}
 	}
-	function countShoppingCart(){
-		total=0;
-		$.each(shoppingCart, function(k, v){
-			total+=v.length;
-		});
-		if(total > 0){
-			$(".shoppingCart-count").html(total);
+	function removeFromShoppingCart(id, type, ranges){
+		incCart=false;
+		if(typeof userId != "undefined" && userId != ""){
+			if(type=="services" ){
+				if(shoppingCart[type][element.type][id]["countQuantity"]==1){
+					delete shoppingCart[type][element.type][id];
+					incCart=true;
+				}else{
+					shoppingCart[type][element.type][id]["countQuantity"]--;
+					if(typeof ranges != "undefined" && notNull(ranges)){
+						if(shoppingCart[type][element.type][id]["reservations"][ranges.date]["countQuantity"]==1){
+							delete shoppingCart[type][element.type][id]["reservations"][ranges.date];
+						}else{
+							shoppingCart[type][element.type][id]["reservations"][ranges.date]["countQuantity"]--;
+							if(typeof ranges.hours != "undefined"){
+								$.each(shoppingCart[type][element.type][id]["reservations"][ranges.date]["hours"], function(e,v){
+									if(v.start==ranges.hours.start && v.end==ranges.hours.end){
+										if(v.countQuantity==1)
+											delete shoppingCart[type][element.type][id]["reservations"][ranges.date]["hours"][e];
+										else
+											shoppingCart[type][element.type][id]["reservations"][ranges.date]["hours"][e]["countQuantity"]--;
+									}
+								});
+							}
+						}
+					}
+				}
+			}else{
+				if(shoppingCart[type][id].countQuantity==1){
+					incCart=true;
+					delete shoppingCart[type][id];
+				}else{
+					shoppingCart[type][id].countQuantity--;
+				}
+			}
+			if(incCart)
+				countShoppingCart(false);
+		}else{
+			$('#modalLogin').modal("show");
+		}
+	}
+	function countShoppingCart(pos){
+		//total=0;
+		//$.each(shoppingCart, function(k, v){
+		//	total+=v.length;
+		//});
+		if(pos)
+			shoppingCart.countQuantity++;
+		else
+			shoppingCart.countQuantity--;
+		if(shoppingCart.countQuantity > 0){
+			$(".shoppingCart-count").html(shoppingCart.countQuantity);
 			$('.shoppingCart-count').removeClass('hide');
 			$('.shoppingCart-count').addClass('animated bounceIn');
 			$('.shoppingCart-count').addClass('badge-success');

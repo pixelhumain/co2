@@ -66,7 +66,7 @@ dynForm = {
             name : dyFInputs.name( "service" ) ,
             price : dyFInputs.price(),
             //devise : dyFInputs.inputSelect("Devise", "Iniquez la monnaie utilisée pour votre annonce", ["€", "$"]),
-            quantity : dyFInputs.quantity(),
+            capacity : dyFInputs.quantity(),
             openingHours : dyFInputs.openingHours(true),
             description : dyFInputs.textarea("Description", "..."),
             image : dyFInputs.image(),

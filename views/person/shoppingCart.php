@@ -42,7 +42,24 @@
     .contentProduct h4, .totalPrice{
     	text-transform: inherit;
     }
-
+    .contentProduct .dateHoursDetail{
+        display:none;
+    }
+    .contentProduct .showDetail{
+        cursor: pointer;
+    }
+    .contentProduct .showDetail.rotate{
+        transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+   }
+   .dateHeader{
+        /*border-bottom: 1px solid rgba(0,0,0,0.1);*/
+        padding: 15px 0px;
+   }
+   .contentHoursSession{
+    border-top: 1px solid rgba(0,0,0,0.1);
+   }
 </style>
 <div class="headerTitleStanalone"></div>
 <div class="col-md-10 col-md-offset-1 contentOnePage">
@@ -50,6 +67,7 @@
 	</div>
 </div>
 <script type="text/javascript">
+    var totalCart=0;
 	jQuery(document).ready(function() {	
         //if(typeof params.name != "undefined" && params.name != "")
         str =  "<div class='col-md-6 no-padding'>"+ 
@@ -57,11 +75,12 @@
       "</div>";
       $(".headerTitleStanalone").html(str);
       initBtnLink();
-      if(!jQuery.isEmptyObject(shoppingCart))
+      if(shoppingCart.countQuantity > 0 )
       	html=generateCartView();
       else
       	html=generateEmptyCartView();
       $(".contentCart").html(html);
+      bindCartEvent();
     });
     function generateEmptyCartView(){
     	str="<span>Va vite faire tes courses</span><br/>"+
@@ -69,7 +88,6 @@
     	return str;
     }
     function generateCartView(){
-    	total=0;
     	str="<div class='col-md-12 bg-orange padding-10'>"+
     			"<div class='pull-right'>"+
     				"<a href='javascript:alert(\"Rapha pour toi\")' class='text-white padding-5' onclick=''><i class='fa fa-print'></i> Print</a>"+
@@ -79,37 +97,10 @@
     			"</div>"+
     		"</div>"+
     		"<div class='col-md-11' style='margin-left:4.133333333%'>";
-    		$.each(shoppingCart,function(i,v){
-    			str+="<div class='col-md-12 headerCategory margin-top-20'>"+
-    					"<div class='col-md-12'>"+
-    						"<h2 class='letter-orange mainTitle text-left'>"+i+"</h2>"+
-    					"</div>"+
-    					"<div class='col-md-1'></div>"+
-    					"<div class='col-md-5'><h3 class='subTitleCart letter-orange'>Label<h3></div>"+
-    					"<div class='col-md-2'><h3 class='subTitleCart letter-orange'>Price ht<h3></div>"+
-    					"<div class='col-md-1'><h3 class='subTitleCart letter-orange'>Detail<h3></div>"+
-    					"<div class='col-md-2'><h3 class='subTitleCart letter-orange'>Price ttc<h3></div>"+
-    					"<div class='col-md-1'></div>"+
-					"</div>";
-				$.each(v,function(e,data){
-					str+="<div class='col-md-12 contentProduct text-left'>"+
-    					"<div class='col-md-1'>"+data.imgProfil+"</div>"+
-    					"<div class='col-md-5'>"+
-    						"<h4 class='text-dark'>"+data.name+"</h4><br>"+
-    						"<span>"+data.description+"</span><br>"+
-    						"<a href='javascript:;' class='letter-blue' onclick='alert(\"What's the quoi???\")'> Save / Update</a>"+
-    					"</div>"+
-    					"<div class='col-md-2'><span>"+data.price+"</span></div>"+
-    					"<div class='col-md-1'><span><i class='fa fa-angle-down'></i></span></div>"+
-    					"<div class='col-md-2'><span>"+data.price+"</span></div>"+
-    					"<div class='col-md-1'><span><i class='fa fa-trash'></i></span></div>"+
-					"</div>";
-					total=total+data.price;
-				})
-    		});
+    		str+=getComponentsHtml(shoppingCart,true);
     		str+="<div class='col-md-12 bg-orange-1 padding-5 margin-top-20'>"+
     				"<div class='pull-right'>"+
-    					"<h3 class='letter-orange no-margin totalPrice'>Total of your order: "+total+" euros</h3>"+
+    					"<h3 class='letter-orange no-margin totalPrice'>Total of your order: "+totalCart+" euros</h3>"+
     				"</div>"+
     			"</div>";
     		str+="<div class='col-md-12 pull-right btn-cart margin-top-20'>"+
@@ -120,5 +111,129 @@
     				"<span>* folder fee included and delivery tax not included</span>"+
     			"</div></div>";
     	return str;
+    }
+    function getComponentsHtml(data,firstLevel){
+        itemHtml="";
+        $.each(data,function(i,v){
+            console.log(v);
+            if(i!="countQuantity"){
+                if(i=="services"){
+                    $.each(v,function(e, service){
+                        console.log(service);
+                        itemHtml+=getItemByCategory(e,service,"services");
+                    });
+                }
+                else{
+                    itemHtml+=getItemByCategory(i,v, "products");
+                }
+            }
+        });
+        return itemHtml;
+    }
+    function getItemByCategory(label,item, type){
+        itemHtml="<div class='col-md-12 headerCategory margin-top-20'>"+
+            "<div class='col-md-12'>"+
+                "<h2 class='letter-orange mainTitle text-left'>"+label+"</h2>"+
+            "</div>"+
+            "<div class='col-md-1'></div>"+
+            "<div class='col-md-5'><h3 class='subTitleCart letter-orange'>Label<h3></div>"+
+            "<div class='col-md-2'><h3 class='subTitleCart letter-orange'>Price ht<h3></div>"+
+            "<div class='col-md-1'><h3 class='subTitleCart letter-orange'>Detail<h3></div>"+
+            "<div class='col-md-2'><h3 class='subTitleCart letter-orange'>Price ttc<h3></div>"+
+            "<div class='col-md-1'></div>"+
+        "</div>";
+        $.each(item,function(e,data){
+            itemHtml+=getViewItem(e, data, type);
+            totalCart=totalCart+(data.price*data.countQuantity);
+        });
+        return itemHtml;
+    }
+    function getViewItem(key, data, type){
+        itemId=key;
+        itemType=type;
+        itemHtml="<div class='col-md-12 contentProduct contentProduct"+itemId+" text-left'>"+
+                "<div class='col-md-1'>"+data.imgProfil+"</div>"+
+                "<div class='col-md-5'>"+
+                    "<h4 class='text-dark'>"+data.name+"</h4><br>"+
+                    "<span>Quantity booked:"+data.countQuantity+"</span><br>";
+                    if(typeof data.description != "undefined" && data.description != "")
+            itemHtml += "<span>"+data.description+"</span><br>";
+            itemHtml += "<a href='javascript:;' class='letter-blue' onclick='alert(\"What's the quoi???\")'> Save / Update</a>"+
+                "</div>"+
+                "<div class='col-md-2 text-center'><span>"+(data.price*data.countQuantity)+"</span></div>"+
+                "<div class='col-md-1 text-center'><span class='showDetail'><i class='fa fa-2x fa-angle-down'></i></span></div>"+
+                "<div class='col-md-2 text-center'><span>"+(data.price*data.countQuantity)+"</span></div>"+
+                "<div class='col-md-1 text-center'><span> <a href='javascript:;' class='text-red' onclick='removeInCart(\""+itemId+"\", \""+itemType+"\");'><i class='fa fa-trash'></i></a></span></div>";
+                if(typeof data.reservations != "undefined"){
+            itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 dateHoursDetail'>"; 
+               //     countDate=Object.keys(data.reservations).length;
+             //       s=(countDate > 1) ? "s" : "";
+            //itemHtml += "<span>"+countDate+" date"+s+" booked</span><br/>";
+                    $.each(data.reservations, function(date, value){
+                        s=(value.countQuantity > 1) ? "s" : "";
+            itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 bookDate"+date+" shadow2 margin-bottom-10'>"+
+                            "<div class='col-md-12 col-sm-12 col-xs-12 dateHeader'>"+
+                                "<h4 class='pull-left margin-bottom-5 no-margin margin-right-10'><i class='fa fa-calendar'></i> "+date+"</h4>"+
+                                "<span class='pull-left'>"+value.countQuantity+" reservation"+s+"</span>"+
+                                "<div class='pull-right'>"+
+                                    "<a href='javascript:;' class='text-red' onclick='removeInCart(\""+itemId+"\", \""+itemType+"\",\""+date+"\");'>"+
+                                        "<i class='fa fa-trash'></i> Remove this date</a>"+
+                                "</div>"+
+                            "</div>";
+                            
+                        if(typeof value.hours != "undefined"){
+                            //countSession=Object.keys(value.hours).length;
+                            //s=(countSession > 1) ? "s" : "";
+                            //itemHtml += "<span>"+countSession+" session"+s+"</span><br/>";
+                            $.each(value.hours, function(key, hours){
+                                s=(hours.countQuantity > 1) ? "s" : "";
+            itemHtml +=         "<div class='col-md-12 col-sm-12 col-xs-12 margin-bottom-10 padding-5 contentHoursSession'>"+
+                                    "<h4 class='col-md-4 col-sm-4 col-xs-3 no-padding no-margin'><i class='fa fa-times'></i> "+hours.start+" - "+hours.end+"</h4>"+ 
+                                    "<span class='col-md-5 col-sm-5 col-xs-6'>"+hours.countQuantity+" reservation"+s+" on this session</span>"+
+                                    "<div class='pull-right'>"+
+                                        "<a href='javascript:;' class='text-red' onclick='removeInCart(\""+itemId+"\", \""+itemType+"\",\""+date+"\",\""+hours.start+"\",\""+hours.end+"\");'>"+
+                                            "<i class='fa fa-trash'></i>"+
+                                        "</a>"+
+                                    "</div>"+
+                                "</div>";
+                            });
+                        }
+            itemHtml += "</div>"; 
+                    }); 
+            itemHtml += "</div>";
+                }
+        itemHtml += "</div>";
+        return itemHtml;
+
+    }
+    function removeInCart(id,type,date,start,end){
+        ranges=null;
+        if(notNull(date)){
+            ranges=new Object;
+            ranges.date=date;
+            if(notNull(start))
+                ranges.hours={start: start , end: end};
+        }
+        removeFromShoppingCart(id, type, ranges);
+        reloadViewCart();
+    }
+    function reloadViewCart(){
+        if(shoppingCart.countQuantity > 0 )
+            html=generateCartView();
+        else
+            html=generateEmptyCartView();
+        $(".contentCart").html(html);
+        bindCartEvent();
+    }
+    function bindCartEvent(){
+        $(".showDetail").click(function(){
+            if($(this).hasClass("rotate")){
+                $(this).removeClass("rotate");
+                $(this).parents().eq(1).find(".dateHoursDetail").fadeOut("slow");
+            }else{
+                $(this).addClass("rotate");
+                $(this).parents().eq(1).find(".dateHoursDetail").fadeIn("slow");
+            }
+        });
     }
 </script>

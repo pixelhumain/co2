@@ -92,6 +92,8 @@
 </div>
 <script type="text/javascript">
   var element=<?php echo json_encode($element); ?>;
+  var itemType="<?php echo $type; ?>";
+  var itemId=element._id.$id;
   var templateColor = ["#93be3d", "#eb4124", "#0073b0", "#ed553b", "#df01a5", "#b45f04", "#2e2e2e"];
   var dateToShow, calendar, $eventDetail, eventClass, eventCategory;
   var widgetNotes = $('#notes .e-slider'), sliderNotes = $('#readNote .e-slider'), $note;
@@ -173,11 +175,12 @@ function showCalendar() {
 						value.closes="24:00";
 					calendar.push({
     					//title:"My repeating event",
-    					quantity:element.quantity,
+    					capacity:element.capacity,
     					start: value.opens, // a start time (10am in this example)
     					end: value.closes,
     					startTime:startTime,
     					endTime:endTime,
+    					quantity:0,
     					 // an end time (2pm in this example)
     					dow: [ e ] // Repeat monday and thursday
 					});
@@ -186,7 +189,8 @@ function showCalendar() {
 				calendar.push({
     					//title:"My repeating event",
     					allDay:true,
-    					quantity:element.quantity,
+    					capacity:element.capacity,
+    					quantity:0,
     					dow: [ e ] // Repeat monday and thursday
 				});
 			}
@@ -204,68 +208,109 @@ function showCalendar() {
 	mylog.log(calendar);
 	dateToShow = new Date();
 	$('#calendar').fullCalendar({
-	header : {
-			left : 'prev,next',
-			center : 'title',
-			right : 'today, month, agendaWeek, agendaDay'
-	},
-	lang : 'fr',
-	year : dateToShow.getFullYear(),
-	month : dateToShow.getMonth(),
-	date : dateToShow.getDate(),
-	editable : false,
-	events : calendar,
-	eventColor: '#EF5B34',
-	eventBackgroundColor: '#EF5B34',
-	textColor: '#fff',
-	//eventOrder:["start","end"],
-	hiddenDays:hiddenDays,
-	eventLimit: true,
-	timezone : 'local',
-	//allDaySlot : false,
-	//defaultDate:momment(),
-	eventLimitText:"sessions",
-	dayRender: function(date, cell){
-        if (date > dateToShow){
-            $(cell).addClass('disabled');
-        }
-    },
-	<?php 
-	if(@$defaultView){?>
-	  defaultView: '<?php echo $defaultView?>',
-	<?php } ?>
-	eventRender: function(event, element) {
-		if(event.start < Date.now()) { return false; }
-	    element.find(".fc-event-title").remove();
-	    element.find(".fc-event-time").remove();
-	    hoursRender="All day<br/>";
-	    if(typeof event.start !="undefined" && !event.allDay){
-	    	hoursRender=moment(event.start).format("HH:mm") + ' - '
-	        + moment(event.end).format("HH:mm") + '<br/>';
-	    }
-	    var new_description =   
-	        //+ event.quantity + '<br/>'
-	        hoursRender
-	        + 'Disponible: ' + event.quantity + '<br/>'
-	        +'<button class="btn bg-orange">Book</button>'
-	    ;
-	    element.find(".fc-content").html(new_description);
-	},
-	eventClick : function(calEvent, jsEvent, view) {
-	  //show event in subview
-	  console.log(calEvent);
-	  	alert('Event: ' + calEvent.start);
-        alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-        alert('View: ' + view.name);
-        //data={}
-        //addTo
-        // change the border color just for fun
-        //$(this).css('border-color', 'red');
-	  //dateToShow = calEvent.start;
-	  //urlCtrl.loadByHash("#event.detail.id."+calEvent._id);
-	}
-	});
+		header : {
+				left : 'prev,next',
+				center : 'title',
+				right : 'today, month, agendaWeek, agendaDay'
+		},
+		lang : 'fr',
+		year : dateToShow.getFullYear(),
+		month : dateToShow.getMonth(),
+		date : dateToShow.getDate(),
+		editable : false,
+		events : calendar,
+		eventColor: '#EF5B34',
+		eventBackgroundColor: '#EF5B34',
+		textColor: '#fff',
+		//eventOrder:["start","end"],
+		hiddenDays:hiddenDays,
+		eventLimit: true,
+		timezone : 'local',
+		//allDaySlot : false,
+		//defaultDate:momment(),
+		eventLimitText:"sessions",
+		dayRender: function(date, cell){
+	        if (date > dateToShow){
+	            $(cell).addClass('disabled');
+	        }
+	    },
+		<?php 
+		if(@$defaultView){?>
+		  defaultView: '<?php echo $defaultView?>',
+		<?php } ?>
+		eventRender: function(event, element) {
+			if(event.start < Date.now()) { return false; }
+		    element.find(".fc-event-title").remove();
+		    element.find(".fc-event-time").remove();
+		    hoursRender="All day<br/>";
+		    if(typeof event.start !="undefined" && !event.allDay){
+		    	hoursRender=moment(event.start).format("HH:mm") + ' - '
+		        + moment(event.end).format("HH:mm") + '<br/>';
+		    }
+		    var new_description =   
+		        //+ event.quantity + '<br/>'
+		        hoursRender
+		        + 'Disponible: <span class="inc-capacity">' + event.capacity + '</span><br/>'
+		        +'<a href="javascript:;" class="letter-orange remove-session hide"><i class="fa fa-minus"></i></a>'
+		        +'<span class="inc-session"> '+event.quantity+' </span>'
+		        +'<a href="javascript:;" class="letter-orange add-session"><i class="fa fa-plus"></i></a>';
+		    element.find(".fc-content").html(new_description);
+		    element.find(".remove-session").on('click', function (e) {
+        		bookDate=event.start.format('YYYY-MM-DD');
+        		event.capacity++;
+        		event.quantity--;
+        		if(event.capacity > 0)
+					element.find(".add-session").removeClass("hide");
+				if(event.quantity === 0)
+					element.find(".remove-session").addClass("hide");
+				
+				element.find(".inc-session").text(event.quantity);
+				element.find(".inc-capacity").text(event.capacity);
+				var ranges = new Object;
+				ranges.date=bookDate;
+				if(typeof event.allDay == "undefined" || !event.allDay)
+					ranges.hours={start: event.startTime , end: event.endTime};	
+				calendar.push(event);	
+		        removeFromShoppingCart(itemId, itemType, ranges);
+    		});
+    		element.find(".add-session").on('click', function (e) {
+		        console.log(event);
+        		bookDate=event.start.format('YYYY-MM-DD');
+				var ranges = new Object;
+				ranges.date=bookDate;
+				event.capacity--;
+        		event.quantity++;
+				if(event.quantity > 0)
+					element.find(".remove-session").removeClass("hide");
+				if(event.capacity === 0)
+					element.find(".add-session").addClass("hide");
+				element.find(".inc-session").data("value",event.quantity).text(event.quantity);
+				element.find(".inc-capacity").data("value",event.capacity).text(event.capacity);
+				if(typeof event.allDay == "undefined" || !event.allDay)
+					ranges.hours={start: event.startTime , end: event.endTime};		
+		        addToShoppingCart(itemId, itemType, ranges);
+		        calendar.push(event);
+    		});
+		}/*,
+		eventClick : function(calEvent, jsEvent, view) {
+		  //show event in subview
+		  	/*console.log(calEvent);
+		  	alert('Event: ' + calEvent.start);
+		  	bookDate=calEvent.start.format('YYYY-MM-DD');
 
+	        //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+	        //alert('View: ' + view.name);
+	        //var params=element;
+			var ranges = new Object;
+			ranges.date=bookDate;
+			if(typeof calEvent.allDay == "undefined" || !calEvent.allDay)
+				ranges.hours={start: calEvent.startTime , end: calEvent.endTime};		
+	        addToShoppingCart(itemId, itemType, ranges)
+	        // change the border color just for fun
+	        //$(this).css('border-color', 'red');
+		  //dateToShow = calEvent.start;
+		}*/
+	});
 	setCategoryColor(tabOrganiser);
 	dateToShow = new Date();
 };

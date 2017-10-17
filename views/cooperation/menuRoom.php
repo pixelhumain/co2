@@ -32,7 +32,14 @@
 		//$menuCoopData = Cooperation::getCoopData(@$post["parentType"], @$post["parentId"], "room");
 		$parentId = @$post["parentId"]; $parentType = @$post["parentType"];
 	}
-	//else
+
+	if(isset(Yii::app()->session['userId'])){
+		$me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
+		$myRoles = @$me["links"]["memberOf"][@$parentId]["roles"] ? 
+				   @$me["links"]["memberOf"][@$parentId]["roles"] : array();
+	}else{
+		$myRoles = array();
+	}	
 	
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], @$parentType, @$parentId);	
 
@@ -42,23 +49,8 @@
 ?>
 
 
-<?php if(@$access=="deny"){ ?>
-	<div class="col-lg-12 col-md-12 col-sm-12">
-		<h5 class="padding-left-10 letter-red">
-			<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
-		</h5>
 
-		<?php if(!isset(Yii::app()->session['userId'])){ ?>
-			<h5 class="padding-left-10">
-				<small class="letter-orange"><i class="fa fa-user-circle"></i> Vous n'êtes pas connecté</small>  	
-			</h5>
-		<?php } ?>
-		
-		<h5 class="padding-left-10 letter-red">
-			<small>Devenez membre ou contributeur</small>  	
-		</h5>
-	</div>
-<?php exit; } ?>
+<?php $accessRoom = @$room ? Room::getAccessByRole($room, $myRoles) : ""; ?>
 
 <div class="col-lg-12 col-md-12 col-sm-12 no-padding bg-white text-dark" id="coop-container">
 	
@@ -73,7 +65,7 @@
 			
 			<?php if(@$room){ ?>
 				
-				<?php if(@$auth){ ?>
+				<?php if(@$auth && $accessRoom != "lock"){ ?>
 					<button class="btn btn-default pull-right btn-sm margin-top-10 hidden-min tooltips" 
 							data-target="#modalDeleteRoom" data-toggle="modal" id="btn-open-modal-delete">
 						<i class="fa fa-trash"></i> Supprimer
@@ -101,7 +93,11 @@
 				<h4 class="room-desc"><small><?php echo @$room["description"]; ?></small></h4>
 
 				<?php if(@$room["roles"] && @$room["roles"] != ""){ ?>
-					<?php $roomRoles = explode(",", @$room["roles"]); ?>
+					<?php
+						$roomRoles = @$room["roles"]; 	
+						if(!is_array(@$room["roles"])) 
+							$roomRoles = explode(",", @$room["roles"]); 	
+					?>
 					<h5 class="room-desc">
 						<small class="letter-blue">
 							<b><i class="fa fa-unlock-alt"></i> Accès réservé : </b>
@@ -126,6 +122,40 @@
 			<?php } ?>
 
 			
+			<?php if(@$access=="deny"){ ?>
+				<div class="col-lg-12 col-md-12 col-sm-12">
+					<h5 class="padding-left-10 letter-red">
+						<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
+					</h5>
+
+					<?php if(!isset(Yii::app()->session['userId'])){ ?>
+						<h5 class="padding-left-10">
+							<small class="letter-orange"><i class="fa fa-user-circle"></i> Vous n'êtes pas connecté</small>  	
+						</h5>
+					<?php } ?>
+					
+					<h5 class="padding-left-10 letter-red">
+						<small>Devenez membre ou contributeur</small>  	
+					</h5>
+				</div>
+			<?php exit; } ?>
+
+			<?php if(@$accessRoom=="lock"){ ?>
+					<div class="col-lg-12 col-md-12 col-sm-12">
+						<h5 class="padding-left-10 letter-red">
+							<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
+						</h5>
+						
+						<?php 
+							$rolesLabel = "";
+							if(!is_array(@$room["roles"])) $rolesLabel = @$room["roles"]; 
+							else foreach (@$room["roles"] as $r) $rolesLabel .= $rolesLabel == "" ? $r : ", ".$r; 
+						?>
+						<h5 class="padding-left-10 letter-red">
+							<small>Cet espace est réservé au(x) rôle(s) suivant(s) : <?php echo $rolesLabel; ?></small>  	
+						</h5>
+					</div>
+			<?php exit; } ?>
 
 			<ul class="menuCoop margin-bottom-50">
 				

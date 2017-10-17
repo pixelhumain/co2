@@ -13,7 +13,8 @@ dynForm = {
     		 	$("#ajax-modal-modal-title").html(
     		 		$("#ajax-modal-modal-title").html()+
     		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
-
+    		 	
+    		 	
 	    		if(contextData && contextData.type == "events"){
 	    			$("#ajaxFormModal #parentId").removeClass('hidden');
 	    		

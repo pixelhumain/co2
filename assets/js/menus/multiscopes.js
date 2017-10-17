@@ -258,6 +258,8 @@ function getMultiScopeList(){ return myMultiScopes; }
 
 function getLocalityForSearch(){
 
+	if(typeof globalCommunexion == "undefined") var globalCommunexion = false;
+
 	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), globalCommunexion);
 	if(globalCommunexion == true ){
       var searchLocality = {}

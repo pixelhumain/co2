@@ -11,6 +11,20 @@
 
 	$parentRoom = Room::getById($resolution["idParentRoom"]);
 
+	if(isset(Yii::app()->session['userId'])){
+		$me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
+		$myRoles = @$me["links"]["memberOf"][@$resolution["parentId"]]["roles"] ? 
+				   @$me["links"]["memberOf"][@$resolution["parentId"]]["roles"] : array();
+	}else{
+		$myRoles = array();
+	}	
+	
+	//lock access if the user doesnt have the good role
+	$accessRoom = @$parentRoom ? Room::getAccessByRole($parentRoom, $myRoles) : ""; 
+	if($accessRoom == "lock") exit;
+
+
+	
 	$totalVotant = Proposal::getTotalVoters($resolution);
 	$voteRes = Proposal::getAllVoteRes($resolution);
 ?>

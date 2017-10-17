@@ -11,6 +11,18 @@
 	$totalVotant = Proposal::getTotalVoters($proposal);
 	$voteRes = Proposal::getAllVoteRes($proposal);
 	
+
+	if(isset(Yii::app()->session['userId'])){
+		$me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
+		$myRoles = @$me["links"]["memberOf"][@$proposal["parentId"]]["roles"] ? 
+				   @$me["links"]["memberOf"][@$proposal["parentId"]]["roles"] : array();
+	}else{
+		$myRoles = array();
+	}	
+	
+	//lock access if the user doesnt have the good role
+	$accessRoom = @$parentRoom ? Room::getAccessByRole($parentRoom, $myRoles) : ""; 
+	if($accessRoom == "lock") exit;
 ?>
 
 <?php if(@$access=="deny"){ ?>
@@ -48,7 +60,7 @@
 		  	<?php if(!@$proposal["amendements"] && !$hasVote){ ?>
 		    <li><a href="javascript:" id="btn-edit-proposal" 
 		    		data-id-proposal="<?php echo $proposal["_id"]; ?>">
-		    	<i class="fa fa-pencil"></i> Modifier ma proposition
+		    	<i class="fa fa-pencil"></i> Modif ma proposition
 		    	</a>
 		    </li>
 			<?php }else{ ?>

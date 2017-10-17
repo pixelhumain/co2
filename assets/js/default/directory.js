@@ -1195,8 +1195,8 @@ var directory = {
             str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
          
             if(typeof params.category != "undefined"){
-              str += "<div class='entityType'><span class='uppercase bold'>" + params.section + "</span> > " + params.category;
-              if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+              str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.section] + "</span> > " + tradCategory[params.category];
+              if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
               str += "</div>";
             }
 
@@ -1503,6 +1503,9 @@ var directory = {
       //if(directory.dirLog) 
       mylog.log("-----------proposalPanelHtml", params, key);
       var idParentRoom = typeof params.idParentRoom != "undefined" ? params.idParentRoom : "";
+      if(idParentRoom == "" && params.type == "rooms") idParentRoom = params.id;
+      mylog.log("-----------idParentRoom", idParentRoom);
+      
       var name = (typeof params.title != "undefined" && params.title != "undefined") ? params.title : params.name;
       var description = params.description.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
       name = escapeHtml(name);

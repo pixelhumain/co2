@@ -102,7 +102,7 @@
 								 "done" => "Done");
 		
 			if(Yii::app()->session['userId'])
-			$allStatus["mine"] = "My proposals";
+			$allStatus["mine"] = "My actions";
 
 		 	foreach($allStatus as $status=>$tradStatus){ ?>
 

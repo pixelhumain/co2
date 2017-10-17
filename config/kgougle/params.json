@@ -52,10 +52,22 @@
                   "subdomainName" : "Actu",
                   "hash" : "#app.media",
                   "icon" : "newspaper-o", 
-                  "mainTitle" : "Toute l'actualité du pays",
+                  "mainTitle" : "Fil d'actu <span class='letter-red'>média</span>",
                   "placeholderMainSearch" : "rechercher dans l'actu ..."},
 
-      	"#social":
+      	"#live": {
+                  "inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true, 
+                  "subdomain" : "live", 
+                  "subdomainName" : "Live",
+                  "hash":"#app.live",
+                  "icon" : "stack-exchange", 
+                  "mainTitle" : "Fil d'actu Fil d'actu <span class='letter-red'>citoyen</span>",
+                  "placeholderMainSearch" : "search in live ..."
+            },
+
+            "#social":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
                   "open" : true,
@@ -63,7 +75,7 @@
                   "subdomainName" : "social",
                   "hash" : "#app.search",
                   "icon" : "user-circle-o", 
-                  "mainTitle" : "Le réseau social des Nouzot",
+                  "mainTitle" : "Réseau social citoyen",
                   "placeholderMainSearch" : "rechercher une page ...",
                   "lblBtnCreate" : "Créer une page",
                   "colorBtnCreate" : "green"},
@@ -75,7 +87,7 @@
                   "subdomain" : "freedom", 
                   "subdomainName" : "freedom",
                   "hash" : "#app.annonces",
-                  "icon" : "comments", 
+                  "icon" : "bullhorn", 
                   "mainTitle" : "Toutes vos annonces en direct",
                   "placeholderMainSearch" : "rechercher parmis les annonces  ...",
                   "lblBtnCreate" : "Publier une annonce",
@@ -94,7 +106,7 @@
                   "lblBtnCreate" : "Créer un événement",
                   "colorBtnCreate" : "orange"},
 
-      	"#power":
+            "#power":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
                   "open" : false,

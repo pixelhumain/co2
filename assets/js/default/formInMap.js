@@ -247,7 +247,7 @@ var formInMap = {
 			if(notEmpty(formInMap.saveCities[formInMap.NE_insee])){
 				var obj = { city : formInMap.saveCities[formInMap.NE_insee] }
 				obj.city.geoShape = 1;
-				if(formInMap.uncomplete == true){
+				if(formInMap.NE_betweenCP != false){
 					var postalCode = {};
 					
 					postalCode.name = obj.city.name;
@@ -756,6 +756,7 @@ var formInMap = {
 		formInMap.NE_level1 = "";
 		formInMap.NE_level1Name = "";
 		formInMap.NE_localityId = "";
+		formInMap.NE_betweenCP = false;
 	},
 
 	createLocalityObj : function(withUnikey){
@@ -913,6 +914,12 @@ var formInMap = {
 				dataType: "json",
 				success: function(data){
 					formInMap.geoShape = data.geoShape;
+
+					if(notEmpty(data.betweenCP)){
+						formInMap.NE_betweenCP = data.betweenCP;
+						$("#divCP").removeClass("hidden");
+					}
+					
 					formInMap.displayGeoShape();
 				}
 			});
@@ -940,7 +947,6 @@ var formInMap = {
 		}
 		formInMap.updateLocality = false;
 		formInMap.addressesIndex = false;
-		formInMap.NE_betweenCP = false;
 		formInMap.initDropdown();
 		$("#divStreetAddress").addClass("hidden");
 		$("#divCity").addClass("hidden");

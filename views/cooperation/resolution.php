@@ -38,15 +38,17 @@
 	</h4>
 	<br>
 
-  	<label>
+	<label>
 		<img class="img-circle" id="menu-thumb-profil" 
          width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
 		<a href="#page.type.citoyens.id.<?php echo $resolution["creator"]; ?>" class="lbh">
-			<?php echo $author["username"]; ?></a><?php if($myId == $resolution["creator"]){ ?><small>, vous êtes l'auteur de cette proposition </small>
+			<?php echo $author["username"]; ?></a><?php if($myId == $resolution["creator"]){ ?><small>, 
+			<?php echo Yii::t("cooperation","your are the author of this proposal"); ?> </small>
 		<?php }else{ ?>
-		<small> est l'auteur de cette proposition</small>
+		<small> <?php echo Yii::t("cooperation","is the author of this proposal"); ?></small>
 		<?php } ?>
 	</label>
+  	
 </div>
 
 
@@ -58,16 +60,16 @@
 	</button>
 	
 	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
-				data-original-title="Actualiser les données" data-placement="bottom"
+				data-original-title="<?php echo Yii::t("cooperation","Update datas"); ?>" data-placement="bottom"
 				data-id-resolution="<?php echo $resolution["_id"]; ?>"
 				id="btn-refresh-resolution"><i class="fa fa-refresh"></i></button>
 
 	<button class="btn btn-default pull-right margin-left-5 margin-top-10 btn-extend-resolution tooltips" 
-				data-original-title="Agrandir l'espace de lecture" data-placement="bottom">
+				data-original-title="<?php echo Yii::t("cooperation","Enlarge reading space"); ?>" data-placement="bottom">
 		<i class="fa fa-long-arrow-left"></i>
 	</button>
 	<button class="btn btn-default pull-right margin-left-5 margin-top-10 hidden btn-minimize-resolution tooltips" 
-				data-original-title="Réduire l'espace de lecture" data-placement="bottom">
+				data-original-title="<?php echo Yii::t("cooperation","Reduce reading space"); ?>" data-placement="bottom">
 		<i class="fa fa-long-arrow-right"></i>
 	</button>
 </div>
@@ -75,13 +77,16 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 pull-left">
 	<hr>
-		<h4 class="no-margin">La <b>résolution</b> suivante a été prise : <br class="visible-md">
-			<small>la proposition est 
+		<h4 class="">
+			<i class="fa fa-bell"></i> 
+			<?php echo Yii::t("cooperation", "The <b>resolution</b> has been approved : "); ?>
+			<br class="visible-md">
+			<small><?php echo Yii::t("cooperation", "The proposal is"); ?> 
 			 	<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && 
 			 			$voteRes["up"]["percent"] > @$resolution["majority"] ){ ?>
-					<span class="letter-green">validée</span>
+					<span class="letter-green"><?php echo Yii::t("cooperation", "validated"); ?></span>
 				 <?php }else{ ?>
-			 	<span class="letter-red">refusée</span>
+			 	<span class="letter-red"><?php echo Yii::t("cooperation", "refused"); ?></span>
 				<?php } ?>
 			</small>
 		</h4>
@@ -100,16 +105,17 @@
 
 			<?php if($totalVotant == 0){ ?>
 					<div class="progress-bar bg-turq" role="progressbar" style="width:100%">
-					    Aucun vote
+					    <?php echo Yii::t("cooperation", "No vote"); ?>
 					  </div>
 			<?php } ?>
 		</div> 
 
 		<h4 class="col-lg-12 col-md-12 col-sm-12 no-padding">
-			<i class="fa fa-balance-scale"></i> Règle de majorité : <b><?php echo @$resolution["majority"]; ?>%</b>
+			<i class="fa fa-balance-scale"></i> <?php echo Yii::t("cooperation", "Rule of majority"); ?> : 
+			<b><?php echo @$resolution["majority"]; ?>%</b>
 			<hr>
 			<button class="btn btn-default btn-sm" id="btn-show-voteres">
-				<i class="fa fa-pie-chart"></i> Afficher les détails du vote
+				<i class="fa fa-pie-chart"></i> <?php echo Yii::t("cooperation", "Show vote details"); ?>
 			</button>
 		</h4>
 
@@ -172,14 +178,15 @@
 	</div>
 
 	<?php if(false && @$resolution["arguments"]){ ?>
-		<h4 class="margin-top-50"><i class="fa fa-angle-down"></i> Compléments d'informations, argumentations, exemples, démonstrations, etc</h4>
+		<h4 class="margin-top-50"><i class="fa fa-angle-down"></i> 
+		<?php echo Yii::t("cooperation", "More informations, arguments, exemples, demonstrations, etc"); ?></h4>
 		<?php echo nl2br(@$resolution["arguments"]); ?>
 	<?php } ?>
 
 	
 	<?php if(@$resolution["urls"]){ ?>
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-		<h4 class="margin-top-25"><i class="fa fa-angle-down"></i> Liens externes</h4>
+		<h4 class="margin-top-25"><i class="fa fa-angle-down"></i> <?php echo Yii::t("cooperation", "External links"); ?></h4>
 		<?php foreach($resolution["urls"] as $key => $url){ ?>
 			<a href="<?php echo $url; ?>" target="_blank" class="btn btn-default bg-white shadow2 margin-bottom-5">
 				<i class="fa fa-external-link"></i> <?php echo $url; ?>
@@ -193,13 +200,13 @@
 		<hr>
 		<h4 class="margin-top-25 pull-left">
 			<?php if(@$resolution["actions"]){ ?>
-				<i class="fa fa-angle-down"></i> Liste des actions liées à cette résolution
+				<i class="fa fa-angle-down"></i> <?php echo Yii::t("cooperation", "List of actions linked with this resolution"); ?>
 			<?php }else{ ?>
-				<i class="fa fa-ban"></i> Aucune action liée à cette résolution
+				<i class="fa fa-ban"></i> <?php echo Yii::t("cooperation", "No action for this resolution"); ?>
 			<?php } ?>
 		</h4>
 		<button class="btn btn-default letter-green pull-right margin-top-15 bold" id="btn-create-action">
-			<i class="fa fa-plus-circle"></i> <i class="fa fa-ticket"></i> Ajouter une action
+			<i class="fa fa-plus-circle"></i> <i class="fa fa-ticket"></i> <?php echo Yii::t("cooperation", "Add an action"); ?>
 		</button>
 
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
@@ -225,27 +232,32 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 padding-bottom-15">
 
-	<h4 class="text-center"><i class="fa fa-balance-scale fa-2x margin-bottom-10"></i><br>Débat</h4><hr>
+	<h4 class="text-center">
+		<i class="fa fa-balance-scale fa-2x margin-bottom-10"></i>
+		<br><?php echo Yii::t("cooperation", "Debat"); ?>
+	</h4>
+	<hr>
+
 	<?php if($auth){ ?>
-	<h4 class="text-center">Ajouter un argument<br><i class="fa fa-angle-down"></i></h4>
+	<h4 class="text-center"><?php echo Yii::t("cooperation", "Add an argument"); ?><br><i class="fa fa-angle-down"></i></h4>
 
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link bg-green-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
-		data-argval="up">Pour</button>
+		<button class="bold btn btn-link bg-green-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="up"><i class="fa fa-thumbs-up"></i> <?php echo Yii::t("cooperation", "I Agree"); ?></button>
 	</div>
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
-		data-argval="">Neutre</button>
+		<button class="bold btn btn-link col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval=""><?php echo Yii::t("cooperation", "Neutral"); ?></button>
 	</div>
 	<div class="col-md-4 col-sm-4 col-xs-4">
-		<button class="btn btn-link bg-red-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
-		data-argval="down">Contre</button>
+		<button class="bold btn btn-link bg-red-comment col-md-12 col-sm-12 text-dark radius-5 btn-select-arg-comment" 
+		data-argval="down"><i class="fa fa-thumbs-down"></i> <?php echo Yii::t("cooperation", "I disagree"); ?></button>
 	</div>
 	<?php }else{ ?>
-	<h5 class="text-center">Devenez membre ou contributeur pour participer au débat<br><i class="fa fa-angle-down"></i></h5>
+	<h5 class="text-center"><?php echo Yii::t("cooperation", "You must be member or contributor to participate"); ?><br><i class="fa fa-angle-down"></i></h5>
 	<?php } ?>
-
 </div>
+
 
 
 

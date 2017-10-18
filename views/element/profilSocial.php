@@ -283,7 +283,7 @@
 		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION ){ ?>
 		  <button type="button" class="btn btn-default bold hidden-xs letter-turq" data-toggle="modal" data-target="#modalCoop" 
 		  		  id="open-co-space" style="border-right:0px!important;">
-		  		<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common", "Espace CO"); ?>
+		  		<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("cooperation", "CO-space"); ?>
 		  </button>
 		  <?php } ?>
 

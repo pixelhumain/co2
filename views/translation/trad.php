@@ -82,6 +82,9 @@ var trad = {
 	"addAssociation" : "<?php echo Yii::t("common","Add an association") ?>",
 	"addNGO" : "<?php echo Yii::t("common","Add an association") ?>",
 	"addGroup" : "<?php echo Yii::t("common","Add a group") ?>",
+	"addProposal" : "<?php echo Yii::t("common","Add a proposal") ?>",
+	"addAction" : "<?php echo Yii::t("common","Add an action") ?>",
+	
 	"chooseCountry" : "<?php echo Yii::t("common","Choose a country") ?>",
 	"LoginFirst" : "<?php echo Yii::t("common","Please Login First") ?>",
 	"mustacceptCGU" : "<?php echo Yii::t("login","You must validate the CGU to sign up.") ?>",
@@ -264,7 +267,6 @@ var trad = {
 	"page": "<?php echo Yii::t("common","page") ?>",
 	"toproject": "<?php echo Yii::t("common","to the project") ?>",
 	"toevent": "<?php echo Yii::t("common","to the event") ?>",
-	"no": "<?php echo Yii::t("common","no") ?>",
 	"hide": "<?php echo Yii::t("common","hide") ?>",
 	"showdescr": "<?php echo Yii::t("common","show description") ?>",
 	"results":"<?php echo Yii::t("common","results") ?>",
@@ -322,6 +324,23 @@ var trad = {
 	"disabled" : "<?php echo Yii::t("cooperation", "disabled") ?>",
 	"resolved" : "<?php echo Yii::t("cooperation", "resolved") ?>",
 	"done" : "<?php echo Yii::t("cooperation", "done") ?>",
+
+	"activated" : "<?php echo Yii::t("cooperation", "activated") ?>",
+	"ruleOfMajority" :"<?php echo Yii::t("cooperation", "Rule of majority") ?>",
+	"giveValueMajority" :"<?php echo Yii::t("cooperation", "give a value between 50% and 100%") ?>",
+
+	"Agree" : "<?php echo Yii::t("cooperation", "Agree") ?>",
+	"Disagree" : "<?php echo Yii::t("cooperation", "Disagree") ?>",
+	"Abstain" : "<?php echo Yii::t("cooperation", "Abstain") ?>",
+	"Uncomplet" : "<?php echo Yii::t("cooperation", "Uncomplet") ?>",
+
+	"amendementTooShort" : "<?php echo Yii::t("cooperation", "Your amendement is too short ! Minimum : 10 caracters") ?>",
+
+	"thxForParticipation" : "<?php echo Yii::t("cooperation", "Thanks for your participation !") ?>",
+
+	"loadingComments" : "<?php echo Yii::t("cooperation", "Chargement des commentaires") ?>"
+
+
 };
 
 var tradDynForm = {
@@ -435,7 +454,7 @@ var tradDynForm = {
 	"theprojectmaturity":"<?php echo Yii::t("form","Maturity of the project") ?>",
 	"projectmaturity":"<?php echo Yii::t("form","Project maturity") ?>",
 	"textarguments" : "<?php echo Yii::t("form","Arguments") ?>",
-	"textargumentsandmore" : "<?php echo Yii::t("form","More informations, arguments, exemples,") ?>",
+	"textargumentsandmore" : "<?php echo Yii::t("form","More informations, arguments, exemples") ?>",
 	"addinfotodoc":"<?php echo Yii::t("form","add informations to this document") ?>",
 	"infoimages":"<?php echo Yii::t("form","Add informations to the document to make it pertinent for others") ?>",
 	"titleimage":"<?php echo Yii::t("form","Image title") ?>",
@@ -461,6 +480,39 @@ var tradDynForm = {
 	"wouldbecomeadmin":"<?php echo Yii::t("common","Would you like to be an administrator") ?>",
 	"invalidUsername":"<?php echo Yii::t("form","Invalid username : Only characters A-Z, a-z, 0-9 and '-' are acceptable.") ?>",
 
+	"inSpace" : "<?php echo Yii::t("cooperation","in this space") ?>",
+	"infoProposal1" : "<?php echo Yii::t("cooperation","The final vote will be on the content of your proposal") ?>",
+	"infoProposal2" : "<?php echo Yii::t("cooperation","For clarity, please provide additional information about your proposal in the next section.") ?>",
+
+	"infoProposal3" : "<?php echo Yii::t("cooperation","A proposal is used to discuss and seek community input on a given idea or question") ?>",
+
+	"lblAmmendementEnabled" : "<?php echo Yii::t("cooperation","Enable amendments") ?>",
+
+	"lblAmmendementDisabled" : "<?php echo Yii::t("cooperation","Votes are disabled during the amendment period") ?>",
+
+	"proposalMustHaveMore" : "<?php echo Yii::t("cooperation","Your proposal must have more than ") ?>",
+	"ofvotes" : "<?php echo Yii::t("cooperation","of votes") ?>",
+	"favorables" : "<?php echo Yii::t("cooperation","favorables") ?>",
+	"tobevalidated" : "<?php echo Yii::t("cooperation","to be validated") ?>",
+	"nowayover100" : "<?php echo Yii::t("cooperation","Impossible to go over 100%") ?>",
+	"nowayunder50" : "<?php echo Yii::t("cooperation","Impossible to go under 50%") ?>",
+
+	"changeVoteEnabled" : "<?php echo Yii::t("cooperation","changing vote enabled") ?>",
+	"changeVoteForbiden" : "<?php echo Yii::t("cooperation","changing vote forbiden") ?>",
+	"authorizeChangeVote" : "<?php echo Yii::t("cooperation","Do you want to allow voters to change them vote ?") ?>",
+	"allowChangeVote" : "<?php echo Yii::t("cooperation","Do you want to allow voters to change them vote ?") ?>",
+	
+	"dateEndVoteSession" : "<?php echo Yii::t("cooperation","Date end vote session") ?>",
+	"dateEndAmendementSessionStartVote" : "<?php echo Yii::t("cooperation","Date end amendement session (start of vote session)") ?>",
+	"dateEndAmendementSession" : "<?php echo Yii::t("cooperation","Date end amendement session") ?>",
+
+	"anonymous" :"<?php echo Yii::t("cooperation", "anonymous") ?>",
+	"nominative" :"<?php echo Yii::t("cooperation", "nominative") ?>",
+	"voteAnonymous" : "<?php echo Yii::t("cooperation", "Anonymous votation") ?>",
+	"keepSecretIdentityVote" : "<?php echo Yii::t("cooperation", "Do you want to keep secret voters identity ?") ?>",
+	"changingVoteEnabled" : "<?php echo Yii::t("cooperation", "changing vote enabled") ?>",
+	"authorizeChangeVote" : "<?php echo Yii::t("cooperation", "Authorize changing vote ?") ?>",
+	"allowChangeVote" : "<?php echo Yii::t("cooperation", "Do you want to allow voters to change them vote ?") ?>",
 };
 
 var tradCategory = {

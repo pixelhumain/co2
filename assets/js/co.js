@@ -4101,8 +4101,8 @@ var dyFInputs = {
     },
     voteDateEnd :{
     	inputType : "datetime",
-    	label : "Fin de la période de vote",
-    	placeholder : "Fin de la période de vote",
+    	label : tradDynForm.dateEndVoteSession,
+    	placeholder : tradDynForm.dateEndVoteSession,
     	rules : { 
     		required : true,
     		greaterThanNow : ["DD/MM/YYYY H:m"]
@@ -4110,8 +4110,8 @@ var dyFInputs = {
     },
     amendementDateEnd :{
     	inputType : "datetime",
-    	label : "Fin de la période d'amendement (ouverture des votes)",
-    	placeholder : "Fin de la période d'amendement",
+    	label : tradDynForm.dateEndAmendementSessionStartVote,
+    	placeholder : tradDynForm.dateEndAmendementSession,
     	rules : { 
     		required : true,
     		greaterThanNow : ["DD/MM/YYYY H:m"]

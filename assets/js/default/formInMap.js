@@ -152,25 +152,20 @@ var formInMap = {
 		// ---------------- newElement_country
 		$('[name="newElement_country"]').change(function(){
 			mylog.log("change country");
-			formInMap.NE_country = $('[name="newElement_country"]').val() ;
-			formInMap.NE_insee = "";
-			formInMap.NE_lat = "";
-			formInMap.NE_lng = "";
-			formInMap.NE_city = "";
-			formInMap.NE_cp = "";
-			formInMap.NE_street = "";
 
+			formInMap.initVarNE()
+			formInMap.NE_country = $('[name="newElement_country"]').val() ;
 			formInMap.initHtml();
 			$("#country_sumery_value").html($('[name="newElement_country"]').val());
 			$("#newElement_btnValidateAddress").prop('disabled', true);
 			$("#divStreetAddress").addClass("hidden");
+
 			formInMap.initDropdown();
 			mylog.log("formInMap.NE_country", formInMap.NE_country, typeof formInMap.NE_country, formInMap.NE_country.length);
 			if(formInMap.NE_country != ""){
-				//$("#divPostalCode").removeClass("hidden");
+				$("#divCP").addClass("hidden");
 				$("#divCity").removeClass("hidden");
 			}else{
-				//$("#divPostalCode").addClass("hidden");
 				$("#divCity").addClass("hidden");
 			}
 				

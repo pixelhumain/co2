@@ -166,7 +166,7 @@
                 classRemove="hide";
             if(typeof data.capacity != "undefined" && data.countQuantity>=data.capacity)
                 classAdd="hide";
-            incQtt="<a href='javascript:;' class='letter-orange remove-session "+classRemove+"' onclick='removeInCart(\""+itemId+"\", \""+itemType+"\",false);'>"
+            incQtt="<a href='javascript:;' class='letter-orange remove-session "+classRemove+"' onclick='removeInCart(\""+itemId+"\", \""+itemType+"\",null);'>"
                     +"<i class='fa fa-minus'></i></a>"
                 +'<span class="eventCountItem margin-left-5 margin-right-5">'
                     +'<i class="fa fa-shopping-cart"></i>'

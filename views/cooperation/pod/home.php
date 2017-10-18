@@ -119,6 +119,6 @@
 	<p style="font-size: 13px;">
 		Les actions peuvent être créées librement dans chaque espace, en fonction de vos besoins.
 		<br>
-		<i>(amélioration : il serait intéressant de pouvoir lier des <b>résolutions</b> avec des <b>actions</b>)</i>
+		Elles peuvent aussi être créées directement à la suite de chaque proposition adoptée, pour mettre en application les décisions.
 	</p>
 </div>

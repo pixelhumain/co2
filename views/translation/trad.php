@@ -28,6 +28,7 @@ var trad = {
 	"areyouadmin" : "<?php echo Yii::t("common", "Are you admin") ?>",
 	"yes" : "<?php echo Yii::t("common","Yes") ?>",
 	"no" : "<?php echo Yii::t("common","No") ?>",
+	"noone":"<?php echo Yii::t("common","No one") ?>",
 	"cancel" : "<?php echo Yii::t("common","Cancel") ?>",
 	"removeopinionbefore" : "<?php echo Yii::t("common", "Remove your last opinion before") ?>",
 	"voteaddedsuccess" : "<?php echo Yii::t("common", "Your vote has been successfully added") ?>",
@@ -640,6 +641,8 @@ var tradCategory = {
     "Accessories":"<?php echo Yii::t("category","Accessories") ?>",
     "Watches":"<?php echo Yii::t("category","Watches") ?>",
     "Jewels":"<?php echo Yii::t("category","Jewels") ?>",
+
+
     "Purchase-Comptability-Management":"<?php echo Yii::t("category","Purchase-Comptability-Management") ?>",
     "Arts-Crafts":"<?php echo Yii::t("category","Arts-Crafts") ?>",
     "Bank-Insurance":"<?php echo Yii::t("category","Bank-Insurance") ?>",

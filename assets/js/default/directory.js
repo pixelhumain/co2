@@ -1248,7 +1248,7 @@ var directory = {
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
-        if(params.updated != null && params.updated.indexOf("il y a")>=0)
+        if(params.updated != null && params.updated.indexOf("il y a")>=0 && location.hash == "#agenda")
             params.updated = "En ce moment";
 
         if(params.updated != null && !params.useMinSize)
@@ -2109,7 +2109,7 @@ var directory = {
                 if( notEmpty( oTag ) && !inArray( oTag,directory.tagsT ) ){
                   directory.tagsT.push(oTag);
                   //mylog.log(oTag);
-                  $("#listTags").append("<a class='btn btn-link favElBtn text-red "+slugify(oTag)+"Btn' "+
+                  $("#listTags").append("<a class='btn btn-link favElBtn text-red elipsis "+slugify(oTag)+"Btn' "+
                                             "data-tag='"+slugify(oTag)+"' "+
                                             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(oTag)+"\",directory.elemClass,1)'>"+
                                               "#"+oTag+
@@ -2135,16 +2135,16 @@ var directory = {
         $(dest).html(str);
         $.each( list,function(k,o){
             if( type == "btn" ){
-              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'"><a class="btn tagListEl btn-select-type-anc typeBtn '+k+'Btn " data-tag="'+tradCategory[k]+'" data-key="'+k+'" href="javascript:;"><i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+'</a></div>'
+              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'"><a class="btn tagListEl btn-select-type-anc elipsis typeBtn '+k+'Btn " data-tag="'+k+'" data-key="'+k+'" href="javascript:;"><i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+'</a></div>'
             }
             else 
-              str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="'+tradCategory[k]+'">'+
+              str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+
                     '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+tradCategory[k]+'</button><br>';
             if( o.subcat && type != "btn" )
             {
               $.each( o.subcat ,function(i,oT){
-                  str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+tradCategory[k]+'" data-categ="'+tradCategory[k]+'" data-keycat="'+tradCategory[oT]+'">'+
-                          '<i class="fa fa-angle-right"></i>'+tradCategory[oT]+'</button><br class="hidden">';
+                  str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
+                          '<i class="fa fa-angle-right"></i> '+tradCategory[oT]+'</button><br class="hidden">';
               });
             }
             $(dest).append(str);

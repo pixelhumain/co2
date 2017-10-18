@@ -9,22 +9,25 @@ dynForm = {
 	    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
     				$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
-	    			$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-							  					  .addClass("bg-azure");
-	    		 	
+	    			
 	    		 	$("#ajax-modal-modal-title").html(
 	    		 		$("#ajax-modal-modal-title").html()+
 	    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
 	    		}
 	    	},
 	    	onload : function(data){
+	    		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+							  					  .addClass("bg-azure");
+	    		
 	    		if(data && data.section && data.type && data.subtype ){
 	    			$("#ajaxFormModal #id").val(data.id);
 	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+data.section+" > "+data.type+" > "+data.subtype+"</h4>" );
 					$(".sectionBtntagList").hide();
 					$(".typeBtntagList").hide();
 	    		} else
-	    			$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+	    			$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form, .deviseselect").hide();
+	    	
+	    		$("#devise").val(deviseDefault);
 	    	},
 	    	/*,
 	    	loadData : function(data){
@@ -82,7 +85,7 @@ dynForm = {
 	    		$(".typeBtntagList").hide(); 
 	    		$(".subtypeSection").html("");
 	    		$(".subtypeSectioncustom").show();
-	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
+	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, .deviseselect").hide();
 	    		$("#btn-submit-form").hide(); 
 	    	}, 
 	    	initTypeBtn : function () { 
@@ -116,15 +119,24 @@ dynForm = {
 		            		$( ".subtypeBtn" ).removeClass("active");
 		            		$(this).addClass("active");
 		            		$("#ajaxFormModal #subtype").val( ( $(this).hasClass('active') ) ? $(this).data('key') : "" );
-		            		$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
+		            		$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, .deviseselect").show();
+		            		
+		            		if($(".form-group.sectionhidden #section").val() == "donation" ||
+		            		   $(".form-group.sectionhidden #section").val() == "sharing" ||
+		            		   $(".form-group.sectionhidden #section").val() == "lookingfor"){
+		            			$(".pricetext, .deviseselect").hide();
+		            		}else{
+		            			$(".pricetext, .deviseselect").show();
+		            		}
 		            		//$(".subtypeBtn:not(.active)").hide();
 
-		            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+" > "+$(".subtypeBtn.active").data('tag')+"</h4>" );
+		            		$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+
+		            										$(".sectionBtn.active").data('tag')+" > "+$(".typeBtn.active").data('tag')+" > "+$(".subtypeBtn.active").data('tag')+"</h4>" );
 		            		$(".subtypeSectioncustom").hide();
 		            		dyFObj.canSubmitIf();
 						});
 	            	} else {
-	            		$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
+	            		$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, .deviseselect").show();
 	            	}
             	});
 	    	}
@@ -193,7 +205,7 @@ dynForm = {
             },
             subtype : dyFInputs.inputHidden(),
             price : dyFInputs.price(),
-            //devise : dyFInputs.inputSelect("Devise", "Iniquez la monnaie utilisée pour votre annonce", ["€", "$"]),
+            devise : dyFInputs.inputSelect("Devise", "Indiquez la monnaie utilisée pour votre annonce", deviseTheme),
             name : dyFInputs.name( "classified" ) ,
             description : dyFInputs.textarea("Description", "..."),
             image : dyFInputs.image(),

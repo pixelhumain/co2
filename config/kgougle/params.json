@@ -2,7 +2,9 @@
       "title" : "Kgougle",
       "metaImg" : "/assets/img/KGOUGLE-logo-min.png",
       "metaDesc" : "Le moteur de recherche des cagous",
-      
+      "devises" : { "CFP" : "CFP" },
+      "deviseDefault" : "CFP",
+
       "pages" : 
       {
       	"#app.index":

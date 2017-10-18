@@ -1,7 +1,7 @@
 <style type="text/css">
 #breadcrumGallery{
 	font-size: 20px;
-	font-variant: small-caps;
+	/*font-variant: small-caps;*/
 }
 .dropdown-menu-collection, .dropdown-menu-file{
 	position: absolute !important;
@@ -87,7 +87,8 @@ ul.dropdown-menu-collection > li > a:hover{
 		<div class="panel-body">
 			<div id="header-gallery">
 			<div id="breadcrumGallery" class="col-md-12 col-sm-12 col-xs-12 no-padding">
-
+			</div>
+			<div class="col-md-12 col-sm-12 col-xs-12 no-padding"><hr style="margin-bottom:0px;">
 			</div>
 			<?php if(@$editAlbum && $editAlbum==true){ ?>
 			<div class="controls col-md-12 col-sm-12 col-xs-12 margin-top-5 no-padding">
@@ -232,12 +233,12 @@ ul.dropdown-menu-collection > li > a:hover{
 				nameFirst=trad.gallery;
 			else
 				nameFirst=trad.library;
-			$html='<i class="fa fa-home fa-1x text-black" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i><a href="javascript:;" onclick="galleryGuide('+breadcrumLevel+')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'" data-name="'+name+'">'+nameFirst+'</a>';
+			$html='<i class="fa fa-home fa-1x text-black" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i><a href="javascript:;" onclick="galleryGuide('+breadcrumLevel+')" class="breadcrumAnchor bold text-dark" data-value="'+breadcrumLevel+'" data-name="'+name+'">'+nameFirst+'</a>';
 		} else {
 			nameBread=name;
 			if(nameBread=="")
 				nameBread=trad[contentKey];
-			$html= '<i class="text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'">/</i>'+'<a href="javascript:;" onclick="galleryGuide('+breadcrumLevel+',\''+name+'\',\''+contentKey+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'" data-name="'+nameBread+'">'+nameBread+'</a>';
+			$html= '<i class="text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'">/</i>'+'<a href="javascript:;" onclick="galleryGuide('+breadcrumLevel+',\''+name+'\',\''+contentKey+'\')" class="breadcrumAnchor bold text-dark" data-value="'+breadcrumLevel+'" data-name="'+nameBread+'">'+nameBread+'</a>';
 		}
 		$("#breadcrumGallery").append($html);
 		if(breadcrumLevel!=0 && buildNew != true)

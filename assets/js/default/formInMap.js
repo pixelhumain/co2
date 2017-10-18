@@ -18,14 +18,14 @@ var formInMap = {
 	NE_level1Name : "",
 
 	NE_localityId : "",
-	NE_between : false,
+	NE_betweenCP : false,
 	geoShape : "",
 
 	typeSearchInternational : "",
 	formType : "",
 	updateLocality : false,
 	addressesIndex : false,
-	saveCities : new Array(),
+	saveCities : {},
 	uncomplete : false,
 
 	modePostalCode : false,
@@ -194,6 +194,15 @@ var formInMap = {
 			}
 		});
 
+
+		// ---------------- newElement_city
+		$('[name="newElement_cp"]').keyup(function(){ 
+			mylog.log("newElement_cp", $('[name="newElement_cp"]').val().trim());
+			formInMap.NE_cp = $('[name="newElement_cp"]').val().trim();
+			formInMap.btnValideDisable( ($('[name="newElement_cp"]').val().trim().length == 0 ? true : false) );
+
+		});
+
 		$('[name="newElement_city"]').focusout(function(){
 			if(notNull(formInMap.timeoutAddCity)) 
 				clearTimeout(formInMap.timeoutAddCity);
@@ -323,22 +332,24 @@ var formInMap = {
 
 				mylog.log("autocompleteFormAddress success", data);
 				html="";
-				var allCP = new Array();
-				var allCities = new Array();
-				var inseeGeoSHapes = new Array();
-				formInMap.saveCities = new Array();
+				var inseeGeoSHapes = {};
+				formInMap.saveCities = {};
 				$.each(data.cities, function(key, value){
 					mylog.log("HERE", value);
 					var insee = value.insee;
 					var country = value.country;
 					mylog.log("HERE formInMap.saveCities", notEmpty(value.save), value.save);
-					if(typeof value.save != "undefined" &&  value.save == true)
+					if(notEmpty(value.save) &&  value.save == true){
 						formInMap.saveCities[insee] = value;
+						mylog.log("HERE good save", insee, value, formInMap.saveCities);
+					}
 					mylog.log("HERE formInMap.saveCities", formInMap.saveCities);
 					if(notEmpty(value.geoShape))
 						inseeGeoSHapes[insee] = value.geoShape.coordinates[0];
 
-					if(currentScopeType == "city" || currentScopeType == "locality") { mylog.log("in scope city"); mylog.dir(value);
+					if(currentScopeType == "city" || currentScopeType == "locality") { 
+						mylog.log("in scope city"); 
+						mylog.dir(value);
 						mylog.log("locId", key, value);
 						if(value.postalCodes.length > 0){
 							$.each(value.postalCodes, function(keyCP, valueCP){
@@ -429,9 +440,9 @@ var formInMap = {
 			formInMap.NE_cp = data.data("cp");
 		}else if ( 	notEmpty(formInMap.saveCities) && 
 					notEmpty(formInMap.saveCities[formInMap.NE_insee]) &&
-					notEmpty(formInMap.saveCities[formInMap.NE_insee].between)
+					notEmpty(formInMap.saveCities[formInMap.NE_insee].betweenCP)
 					)
-			formInMap.NE_between = formInMap.saveCities[formInMap.NE_insee].between ;
+			formInMap.NE_betweenCP = formInMap.saveCities[formInMap.NE_insee].betweenCP ;
 
 		formInMap.initHtml();
 		
@@ -454,9 +465,9 @@ var formInMap = {
 
 
 		//formInMap.updateSummeryLocality(data);
-		mylog.log("complete", complete);
-		//formInMap.btnValideDisable( (complete == true ? false : true) );
-		formInMap.btnValideDisable( false );
+		mylog.log("formInMap.NE_betweenCP ", formInMap.NE_betweenCP );
+		formInMap.btnValideDisable( (formInMap.NE_betweenCP == false ? false : true) );
+		//formInMap.btnValideDisable( false );
 
 		if(userId == "")
 			$("#divStreetAddress").addClass("hidden");
@@ -722,8 +733,8 @@ var formInMap = {
 				$('#'+value+'_sumery').addClass("hidden");
 		});
 
-		if(formInMap.NE_between != false)
-			$("#divCP").addClass("hidden");
+		if(formInMap.NE_betweenCP != false)
+			$("#divCP").removeClass("hidden");
 
 
 	},
@@ -929,7 +940,7 @@ var formInMap = {
 		}
 		formInMap.updateLocality = false;
 		formInMap.addressesIndex = false;
-		formInMap.NE_between = false;
+		formInMap.NE_betweenCP = false;
 		formInMap.initDropdown();
 		$("#divStreetAddress").addClass("hidden");
 		$("#divCity").addClass("hidden");

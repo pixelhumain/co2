@@ -94,6 +94,9 @@
   var element=<?php echo json_encode($element); ?>;
   var itemType="<?php echo $type; ?>";
   var itemId=element._id.$id;
+  var subType=null;
+  if(typeof element.type !="undefined")
+  	subType=element.type;
   var templateColor = ["#93be3d", "#eb4124", "#0073b0", "#ed553b", "#df01a5", "#b45f04", "#2e2e2e"];
   var dateToShow, calendar, $eventDetail, eventClass, eventCategory;
   var widgetNotes = $('#notes .e-slider'), sliderNotes = $('#readNote .e-slider'), $note;
@@ -252,7 +255,11 @@ function showCalendar() {
 		        hoursRender
 		        + 'Disponible: <span class="inc-capacity">' + event.capacity + '</span><br/>'
 		        +'<a href="javascript:;" class="letter-orange remove-session hide"><i class="fa fa-minus"></i></a>'
-		        +'<span class="inc-session"> '+event.quantity+' </span>'
+		        +'<span class="eventCountItem margin-left-5 margin-right-5">'
+                    +'<i class="fa fa-shopping-cart"></i>'
+                    +'<span class="inc-session hide topbar-badge badge animated bounceIn badge-transparent badge-success">1</span>'
+                +'</span>'
+		        //+'<span class="inc-session"> '+event.quantity+' </span>'
 		        +'<a href="javascript:;" class="letter-orange add-session"><i class="fa fa-plus"></i></a>';
 		    element.find(".fc-content").html(new_description);
 		    element.find(".remove-session").on('click', function (e) {
@@ -261,34 +268,54 @@ function showCalendar() {
         		event.quantity--;
         		if(event.capacity > 0)
 					element.find(".add-session").removeClass("hide");
-				if(event.quantity === 0)
-					element.find(".remove-session").addClass("hide");
-				
-				element.find(".inc-session").text(event.quantity);
+				if(event.quantity === 0){
+					element.find('.remove-session').addClass('hide');
+					element.find('.inc-session').removeClass('badge-success');
+					element.find('.inc-session').addClass('badge-tranparent');
+					element.find(".inc-session").addClass("hide");
+				}else{
+					element.find(".inc-session").html(event.quantity);
+					element.find('.inc-session').removeClass('hide');
+					element.find('.inc-session').addClass('animated bounceIn');
+					element.find('.inc-session').addClass('badge-success');
+					element.find('.inc-session').removeClass('badge-tranparent');
+				}
+				//element.find(".inc-session").text(event.quantity);
 				element.find(".inc-capacity").text(event.capacity);
 				var ranges = new Object;
 				ranges.date=bookDate;
 				if(typeof event.allDay == "undefined" || !event.allDay)
 					ranges.hours={start: event.startTime , end: event.endTime};	
 				calendar.push(event);	
-		        removeFromShoppingCart(itemId, itemType, ranges);
+		        removeFromShoppingCart(itemId, itemType, false, subType, ranges);
     		});
     		element.find(".add-session").on('click', function (e) {
-		        console.log(event);
         		bookDate=event.start.format('YYYY-MM-DD');
 				var ranges = new Object;
 				ranges.date=bookDate;
 				event.capacity--;
         		event.quantity++;
-				if(event.quantity > 0)
+				if(event.quantity > 0){
 					element.find(".remove-session").removeClass("hide");
-				if(event.capacity === 0)
+					element.find(".inc-session").html(event.quantity);
+					element.find('.inc-session').removeClass('hide');
+					element.find('.inc-session').addClass('animated bounceIn');
+					element.find('.inc-session').addClass('badge-success');
+					element.find('.inc-session').removeClass('badge-tranparent');
+				}else{
+					element.find('.inc-session').addClass('hide');
+					element.find('.inc-session').removeClass('badge-success');
+					element.find('.inc-session').addClass('badge-tranparent');
+					element.find(".inc-session").addClass("hide");
+				}
+				if(event.capacity === 0){
 					element.find(".add-session").addClass("hide");
-				element.find(".inc-session").data("value",event.quantity).text(event.quantity);
+				}
+				//element.find(".inc-session").data("value",event.quantity).text(event.quantity);
 				element.find(".inc-capacity").data("value",event.capacity).text(event.capacity);
 				if(typeof event.allDay == "undefined" || !event.allDay)
 					ranges.hours={start: event.startTime , end: event.endTime};		
-		        addToShoppingCart(itemId, itemType, ranges);
+		        addToShoppingCart(itemId, itemType, subType, ranges);
 		        calendar.push(event);
     		});
 		}/*,

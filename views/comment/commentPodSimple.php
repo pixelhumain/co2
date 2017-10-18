@@ -138,7 +138,7 @@
 				$hiddenClass = "";
 				$nbTotalComments = sizeOf($comments);
 
-				if($nbTotalComments == 0 && $level == 1) { echo "Aucun commentaire"; }
+				if($nbTotalComments == 0 && $level == 1) { echo Yii::t("comment", "No comment"); }
 				if($nbTotalComments == 0) return;
 				//if($nbTotalComments == 0 && $level == 2) echo "Aucune commentaire";
 

@@ -207,7 +207,7 @@
 									<?php if(@$proposal["status"] == $thisStatus){ ?>
 										<li class="submenucoop sub-proposals no-padding col-lg-4 col-md-6 col-sm-6 " 
 											data-name-search="<?php echo str_replace('"', '', @$proposal["title"]); ?>">
-										<a href="#page.type.<?php echo $proposal['parentType']; ?>.id.<?php echo $proposal['parentId']; ?>.view.coop.room.<?php echo $proposal['idParentRoom']; ?>.proposal.<?php echo $proposal['_id']; ?>" class="load-coop-data " data-type="proposal" 
+										<a href="#page.type.<?php echo $proposal['parentType']; ?>.id.<?php echo @$proposal['parentId']; ?>.view.coop.room.<?php echo @$proposal['idParentRoom']; ?>.proposal.<?php echo @$proposal['_id']; ?>" class="load-coop-data " data-type="proposal" 
 											data-status="<?php echo @$proposal["status"]; ?>" 
 										   	data-dataid="<?php echo (string)@$proposal["_id"]; ?>">
 									  		

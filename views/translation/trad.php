@@ -338,7 +338,7 @@ var trad = {
 
 	"thxForParticipation" : "<?php echo Yii::t("cooperation", "Thanks for your participation !") ?>",
 
-	"loadingComments" : "<?php echo Yii::t("cooperation", "Chargement des commentaires") ?>"
+	"loadingComments" : "<?php echo Yii::t("cooperation", "Loading comments") ?>"
 
 
 };
@@ -512,7 +512,7 @@ var tradDynForm = {
 	"keepSecretIdentityVote" : "<?php echo Yii::t("cooperation", "Do you want to keep secret voters identity ?") ?>",
 	"changingVoteEnabled" : "<?php echo Yii::t("cooperation", "changing vote enabled") ?>",
 	"authorizeChangeVote" : "<?php echo Yii::t("cooperation", "Authorize changing vote ?") ?>",
-	"allowChangeVote" : "<?php echo Yii::t("cooperation", "Do you want to allow voters to change them vote ?") ?>",
+	"allowChangeVote" : "<?php echo Yii::t("cooperation", "Do you want to allow voters to change them vote ?") ?>"
 };
 
 var tradCategory = {

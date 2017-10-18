@@ -255,7 +255,7 @@
 		<hr>
 		<h4 class="">
 			<i class="fa fa-bell"></i> 
-			<?php echo Yii::t("cooperation", "The <b>resolution</b> has been approved : "); ?>
+			<?php echo Yii::t("cooperation", "The <b>resolution</b> has been taken : "); ?>
 			<br class="visible-md">
 			<small><?php echo Yii::t("cooperation", "The proposal is"); ?> 
 			 	<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && 
@@ -267,7 +267,7 @@
 			</small>
 		</h4>
 		<?php if(@$proposal["voteDateEnd"]){ ?>
-			<i class='fa fa-clock-o'></i> fin du vote 
+			<i class='fa fa-clock-o'></i> <?php echo Yii::t("cooperation", "End of vote session"); ?> 
 			<?php echo Translate::pastTime($proposal["voteDateEnd"], "date"); ?> · 
 			<small class='letter-green'>le 
 				<?php echo date('d/m/Y H:i e', strtotime($proposal["voteDateEnd"])); ?>

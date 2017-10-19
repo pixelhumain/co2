@@ -157,7 +157,8 @@ var uiCoop = {
 			"parentId" : parentId,
 			"type" : type,
 			"status" : status,
-			"dataId" : dataId
+			"dataId" : dataId,
+			"json" : false
 		};
 		//console.log("showLoading ?", typeof showLoading, showLoading);
 		
@@ -243,7 +244,8 @@ var uiCoop = {
 		var params = {
 			"parentType" : parentType,
 			"parentId" : parentId,
-			"voteValue" : voteValue
+			"voteValue" : voteValue,
+			"json" : false
 		};
 		if(typeof idAmdt != "undefined")
 			params["idAmdt"] = idAmdt;
@@ -389,6 +391,7 @@ var uiCoop = {
 		var param = {
 			numAm : numAm,
 			idProposal : idProposal,
+			json : false
 		};
 		
 		toastr.info(trad["processing delete"]);

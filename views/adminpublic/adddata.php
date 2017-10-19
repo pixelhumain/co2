@@ -113,6 +113,7 @@ $this->renderPartial($layoutPath.'header',
 			<label for="chooseElement"><?php echo Yii::t("common", "Element"); ?> : </label>
 			<select id="chooseElement" name="chooseElement" class="">
 				<option value="-1"><?php echo Yii::t("common", "Choose"); ?></option>
+				<option value="<?php echo City::COLLECTION; ?>"><?php echo Yii::t("common", "City"); ?></option>
 				<option value="<?php echo Organization::COLLECTION; ?>"><?php echo Yii::t("common", "Organization"); ?></option>
 				<option value="<?php echo Project::COLLECTION; ?>"><?php echo Yii::t("common", "Project"); ?></option>
 				<option value="<?php echo Event::COLLECTION; ?>"><?php echo Yii::t("common", "Event"); ?></option>

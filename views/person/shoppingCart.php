@@ -109,7 +109,7 @@
     				"</div>"+
     			"</div>";
     		str+="<div class='col-md-12 pull-right btn-cart margin-top-20'>"+
-    					"<a href='javascript:alert(\"Mangolitooooo Oceatoon\")' class='btn bg-orange text-white pull-right col-md-3' onclick=''>Validate</a>"+
+    					"<a href='javascript:;' onclick='buyCart();' class='btn bg-orange text-white pull-right col-md-3' onclick=''>Validate</a>"+
     					"<a href='javascript:;' class='btn bg-orange pull-right col-md-3 text-white close-modal' >Continue</a>"+
     			"</div>";
     		str+="<div class='col-md-12 margin-top-10 text-left'>"+
@@ -312,5 +312,57 @@
                 $(this).parents().eq(1).find(".dateHoursDetail").fadeIn("slow");
             }
         });
+    }
+    function buyCart(){
+        order=new Object;
+        orderItem=new Object;
+        order.totalPrice=totalCart;
+        order.currency="EUR";
+        $.each(shoppingCart,function(e,v){
+            if(e=="countQuantity")
+                order.countOrderItem=v;
+            else if(e=="services"){
+                $.each(v, function(cat, listByCat){
+                    $.each(listByCat, function(key, data){
+                        orderItem[key]=new Object;
+                        orderItem[key].orderedItemType=e;
+                        orderItem[key].quantity=data.countQuantity;
+                        orderItem[key].price=(data.price*data.countQuantity);
+                        orderItem[key].reservations=data.reservations;
+                    });
+                });
+            }else if(e=="products"){
+                $.each(v, function(key, data){
+                    orderItem[key]=new Object;
+                    orderItem[key].orderedItemType=e;
+                    orderItem[key].quantity=data.countQuantity;
+                    orderItem[key].price=(data.price*data.countQuantity);
+                });
+            }
+        });
+        order.orderItems=orderItem;
+        bootbox.prompt({
+            title: "Give a name to your command:", 
+            value : "Cart of "+moment(new Date()).format('DD-MM-YYYY HH:MM'), 
+            callback : function(result){ 
+                order.name=result;
+                $.ajax({
+                  type: "POST",
+                  url: baseUrl+"/"+moduleId+"/order/save", 
+                  data: order,
+                  success: function(data){
+                    if(data.result) {
+                        toastr.success(data.msg);
+                        //if(reload)
+                          //  urlCtrl.loadByHash(location.hash);
+                    }
+                    else
+                        toastr.error(data.msg);  
+                  },
+                  dataType: "json"
+                });
+                console.log(order);
+            }
+        })
     }
 </script>

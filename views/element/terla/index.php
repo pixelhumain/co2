@@ -174,7 +174,7 @@
 	}
 	function loadHistory(){
 		initBtnDash("#btn-history");
-		data={category:["orders"],actionType:"history"};
+		data={category:["orderItems"],actionType:"history"};
 		var url = "element/list/type/"+contextData.type+"/id/"+contextData.id;
 		showLoader('.content-view-dashboard');
 		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");

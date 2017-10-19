@@ -2547,9 +2547,9 @@ var list = {
 			$("#listList").append(viewList);
 		});
 		if(action=="history"){
-			$(".orderComment").click(function(){
-				order=listElement["orders"][$(this).data("id")];
-				commentRating(order, $(this).data("action"));
+			$(".orderItemComment").click(function(){
+				orderItem=listElement["orderItems"][$(this).data("id")];
+				commentRating(orderItem, $(this).data("action"));
 			});
 		}
 	},
@@ -2564,7 +2564,7 @@ var list = {
 				btnAction="show";
 				labelAction="Show your comment";
 			}
-			btnAction="<a href='javascript:;' class='btn bg-green orderComment linkBtnList' data-id='"+data._id.$id+"' data-action='"+btnAction+"'>"+labelAction+"</a>";
+			btnAction="<a href='javascript:;' class='btn bg-green orderItemComment linkBtnList' data-id='"+data._id.$id+"' data-action='"+btnAction+"'>"+labelAction+"</a>";
 		}
     	if(!data.useMinSize)
         	data.imgProfil = "<i class='fa fa-image fa-3x'></i>";

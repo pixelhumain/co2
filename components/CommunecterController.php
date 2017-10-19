@@ -435,6 +435,9 @@ class CommunecterController extends Controller
       "updatefield"  => array( "href" => "/ph/co2/comment/updatefield"),
       "countcommentsfrom" => array( "href" => "/ph/co2/comment/countcommentsfrom"),
     ),
+    "order"=> array(
+       "save"   => array("href" => "/ph/co2/order/save"),
+    ),
     "action"=> array(
        "addaction"   => array("href" => "/ph/co2/action/addaction"),
     ),

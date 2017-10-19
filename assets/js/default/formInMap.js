@@ -26,9 +26,6 @@ var formInMap = {
 	updateLocality : false,
 	addressesIndex : false,
 	saveCities : {},
-	uncomplete : false,
-
-	modePostalCode : false,
 	bindActived : false,
 
 
@@ -266,30 +263,31 @@ var formInMap = {
 						mylog.log("city/save obj.city", obj.city);
 						mylog.log("city/save data", data);
 						if(data.result){
-							formInMap.NE_localityId = data.id
-
-							if(data.city.level1){
-								formInMap.NE_level1 = data.city.level1;
-								formInMap.NE_level1Name = data.city.level1Name;
-								mylog.log("city/save data.city.level1", data.city.level1);
-							}
-
-							if(data.city.level2){
-								formInMap.NE_level2 = data.city.level2;
-								formInMap.NE_level2Name = data.city.level2Name;
-							}
-
-							if(data.city.level3){
-								formInMap.NE_level3 = data.city.level3;
-								formInMap.NE_level3Name = data.city.level3Name;
-							}
-
-							if(data.city.level4){
-								formInMap.NE_level4 = data.city.level4;
-								formInMap.NE_level4Name = data.city.level4Name;
-							}
-							formInMap.backToForm();
+							toastr.success("City create");
 						}
+
+						formInMap.NE_localityId = data.id
+						if(data.city.level1){
+							formInMap.NE_level1 = data.city.level1;
+							formInMap.NE_level1Name = data.city.level1Name;
+							mylog.log("city/save data.city.level1", data.city.level1);
+						}
+
+						if(data.city.level2){
+							formInMap.NE_level2 = data.city.level2;
+							formInMap.NE_level2Name = data.city.level2Name;
+						}
+
+						if(data.city.level3){
+							formInMap.NE_level3 = data.city.level3;
+							formInMap.NE_level3Name = data.city.level3Name;
+						}
+
+						if(data.city.level4){
+							formInMap.NE_level4 = data.city.level4;
+							formInMap.NE_level4Name = data.city.level4Name;
+						}
+						formInMap.backToForm();
 					},
 					error: function(error){
 						mylog.log("error", error);
@@ -537,11 +535,7 @@ var formInMap = {
 			$("#mapLegende").removeClass("hidden");
 		mylog.log("backToForm 2");
 		formInMap.actived = false ;
-		// if(cancel == true ){
-		// 	showMap(false);
-		// }
-		// else{
-			// if(formInMap.modePostalCode == false ){
+
 		mylog.log("backToForm 3");
 		if(formInMap.updateLocality == false ){
 			mylog.log("backToForm 6");
@@ -943,6 +937,9 @@ var formInMap = {
 		formInMap.updateLocality = false;
 		formInMap.addressesIndex = false;
 		formInMap.initDropdown();
+		formInMap.saveCities = {} ;
+		formInMap.bindActived = false;
+		
 		$("#divStreetAddress").addClass("hidden");
 		$("#divCity").addClass("hidden");
 		$("#divCP").addClass("hidden");

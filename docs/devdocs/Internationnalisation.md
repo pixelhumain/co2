@@ -53,7 +53,7 @@
 
 - Sauvegarder l'actuelle base de données
 - Supprimer cities
-- Importer cities, zones et translates :
+- Importer cities, zones et translates qui se trouve dans co2/data :
     + Déziper les fichiers puis exécuter les commandes suivants
 ```
 mongoimport --db communecter --collection zones --file zones.json

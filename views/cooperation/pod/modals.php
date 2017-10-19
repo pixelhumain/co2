@@ -27,7 +27,7 @@
         <?php } ?>
 
         <button href="javascript:" class="btn btn-default btn-sm text-dark pull-right tooltips"
-				id="btn-update-coop" style="margin: 10px 10px 0 0;" data-original-title="Rafraichir la page" data-placement="left">
+				id="btn-update-coop" style="margin: 10px 10px 0 0;" data-original-title="<?php echo Yii::t("cooperation", "Reload window") ?>" data-placement="left">
 	  			<i class="fa fa-refresh"></i> <?php echo Yii::t("cooperation", "Refresh data") ?>
 	  	</button> 	
         	

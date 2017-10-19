@@ -68,25 +68,26 @@
 				<?php if(@$auth && $accessRoom != "lock"){ ?>
 					<button class="btn btn-default pull-right btn-sm margin-top-10 hidden-min tooltips" 
 							data-target="#modalDeleteRoom" data-toggle="modal" id="btn-open-modal-delete">
-						<i class="fa fa-trash"></i> Supprimer
+						<i class="fa fa-trash"></i> <?php echo Yii::t("common", "Delete"); ?>
 					</button>
 					<button class="btn btn-default pull-right btn-sm margin-top-10 hidden-min tooltips margin-right-5" 
 							id="btn-edit-room" data-placement="bottom" 
-							data-original-title="modifier l'espace : <?php echo @$room["name"]; ?>"
+							data-original-title="<?php echo Yii::t("cooperation", "Edit this space"); ?> : <?php echo @$room["name"]; ?>"
 							data-id-room="<?php echo @$room["_id"]; ?>">
-						<i class="fa fa-pencil"></i> Modifier
+						<i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Update"); ?>
 					</button>
 				<?php } ?>
 				
 				<button class="btn btn-link text-dark pull-right btn-sm margin-top-5 hidden-min tooltips margin-right-5" 
 						id="btn-edit-room" data-placement="bottom" 
-						data-original-title="aide"
+						data-original-title="<?php echo Yii::t("common", "Help"); ?>"
 						data-toggle="modal" data-target="#modalHelpCOOP">
 					<i class="fa fa-2x fa-info-circle"></i>
 				</button>
 
 				<h3 class="margin-top-15 letter-turq">
-					<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$room["name"]; ?>
+					<i class="fa fa-connectdevelop"></i> 
+					<i class="fa fa-hashtag"></i> <?php echo @$room["name"]; ?>
 				</h3>
 
 				
@@ -100,7 +101,7 @@
 					?>
 					<h5 class="room-desc">
 						<small class="letter-blue">
-							<b><i class="fa fa-unlock-alt"></i> Accès réservé : </b>
+							<b><i class="fa fa-unlock-alt"></i> <?php echo Yii::t("cooperation","Access restricted only for"); ?> : </b>
 							<?php $r = ""; foreach ($roomRoles as $role) {
 								if($r!="") $r.=", "; $r.=$role;
 							} 	echo $r; ?>
@@ -125,17 +126,19 @@
 			<?php if(@$access=="deny"){ ?>
 				<div class="col-lg-12 col-md-12 col-sm-12">
 					<h5 class="padding-left-10 letter-red">
-						<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
+						<i class="fa fa-ban"></i> <?php echo Yii::t("cooperation", "You are not allowed to access this content"); ?>		  	
 					</h5>
 
 					<?php if(!isset(Yii::app()->session['userId'])){ ?>
 						<h5 class="padding-left-10">
-							<small class="letter-orange"><i class="fa fa-user-circle"></i> Vous n'êtes pas connecté</small>  	
+							<small class="letter-orange"><i class="fa fa-user-circle"></i> 
+							<?php echo Yii::t("cooperation", "You are not logged"); ?>
+							</small>  	
 						</h5>
 					<?php } ?>
 					
 					<h5 class="padding-left-10 letter-red">
-						<small>Devenez membre ou contributeur</small>  	
+						<small><?php echo Yii::t("cooperation", "You must be member or contributor"); ?></small>  	
 					</h5>
 				</div>
 			<?php exit; } ?>
@@ -143,7 +146,7 @@
 			<?php if(@$accessRoom=="lock"){ ?>
 					<div class="col-lg-12 col-md-12 col-sm-12">
 						<h5 class="padding-left-10 letter-red">
-							<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
+							<i class="fa fa-ban"></i> <?php echo Yii::t("cooperation", "You are not allowed to access this content"); ?>		  	
 						</h5>
 						
 						<?php 
@@ -152,7 +155,10 @@
 							else foreach (@$room["roles"] as $r) $rolesLabel .= $rolesLabel == "" ? $r : ", ".$r; 
 						?>
 						<h5 class="padding-left-10 letter-red">
-							<small>Cet espace est réservé au(x) rôle(s) suivant(s) : <?php echo $rolesLabel; ?></small>  	
+							<small>
+								<?php echo Yii::t("cooperation", "This space is open only for this roles"); ?> : 
+								<?php echo Yii::t("cooperation", $rolesLabel); ?>	
+							</small>  	
 						</h5>
 					</div>
 			<?php exit; } ?>
@@ -179,7 +185,7 @@
 						  	</a>
 					  	<?php }else if(@$post["type"] == Room::CONTROLLER){ ?>
 					  		<label class="text-black tooltips" 
-					  			   data-position="top" data-original-title="Devenez membre pour contribuer">
+					  			   data-position="top" data-original-title="<?php echo Yii::t("cooperation", "You must be member or contributor to contribuate"); ?>	">
 					  			<i class="fa fa-lock"></i>
 					  		</label>
 					  	<?php } ?>
@@ -201,7 +207,7 @@
 									<?php if(@$proposal["status"] == $thisStatus){ ?>
 										<li class="submenucoop sub-proposals no-padding col-lg-4 col-md-6 col-sm-6 " 
 											data-name-search="<?php echo str_replace('"', '', @$proposal["title"]); ?>">
-										<a href="#page.type.<?php echo $proposal['parentType']; ?>.id.<?php echo $proposal['parentId']; ?>.view.coop.room.<?php echo $proposal['idParentRoom']; ?>.proposal.<?php echo $proposal['_id']; ?>" class="load-coop-data " data-type="proposal" 
+										<a href="#page.type.<?php echo $proposal['parentType']; ?>.id.<?php echo @$proposal['parentId']; ?>.view.coop.room.<?php echo @$proposal['idParentRoom']; ?>.proposal.<?php echo @$proposal['_id']; ?>" class="load-coop-data " data-type="proposal" 
 											data-status="<?php echo @$proposal["status"]; ?>" 
 										   	data-dataid="<?php echo (string)@$proposal["_id"]; ?>">
 									  		
@@ -212,7 +218,7 @@
 										  					data-dataid="<?php echo (string)@$proposal["_id"]; ?>"
 											  				data-type="proposals" >
 											  			<i class="fa fa-arrows-alt letter-light tooltips"  
-										   					data-original-title="cliquer / déplacer dans un autre espace" 
+										   					data-original-title="<?php echo Yii::t("cooperation", "Drag / drop to an other space") ?>" 
 											  				data-placement="right"></i> 
 											  			<i class="fa fa-hashtag"></i> 
 											  			<?php if(@$proposal["title"]) 
@@ -285,21 +291,21 @@
 											  <?php if($totalVotant == 0 && @$proposal["status"] == "tovote"){ ?>
 											  			<div class="progress-bar bg-turq" 
 											  				 role="progressbar" style="width:100%">
-													    	 Soyez le premier à voter
+													    	 <?php echo Yii::t("cooperation", "Be the first to vote"); ?>
 													  </div>
 											  <?php } ?>
 
 											  <?php if($totalVotant == 0 && @$proposal["status"] == "amendable"){ ?>
 											  			<div class="progress-bar bg-lightpurple text-dark" 
 											  				 role="progressbar" style="width:100%">
-													    	 En cours d'amendement
+													    	 <?php echo Yii::t("cooperation", "Processing amendements"); ?>
 													  </div>
 											  <?php } ?>
 
 											  <?php if($totalVotant == 0 && @$proposal["status"] == "closed"){ ?>
 											  			<div class="progress-bar bg-white text-dark" 
 											  				 role="progressbar" style="width:100%">
-													    	 Aucun vote
+													    	 <?php echo Yii::t("cooperation", "No vote"); ?>
 													  </div>
 											  <?php } ?>
 
@@ -333,7 +339,8 @@
 					
 					<?php  	if(@$resolutionList)
 							foreach($resolutionList as $key => $resolution){ ?>
-								<li class="submenucoop sub-resolutions no-padding col-lg-4 col-md-6 col-sm-6">
+								<li class="submenucoop sub-resolutions no-padding col-lg-4 col-md-6 col-sm-6"
+									data-name-search="<?php echo str_replace('"', '', @$resolution["title"]); ?>">
 									<a href="#page.type.<?php echo $resolution['parentType']; ?>.id.<?php echo $resolution['parentId']; ?>.view.coop.room.<?php echo $resolution['idParentRoom']; ?>.resolution.<?php echo $resolution['_id']; ?>" class="load-coop-data" data-type="resolution" 
 									   data-status="<?php echo @$resolution["status"]; ?>" 
 									   data-dataid="<?php echo (string)@$resolution["_id"]; ?>">
@@ -350,7 +357,7 @@
 								  	</a>
 								</li>
 					<?php }else{ ?>
-							<li class="submenucoop sub-proposals col-lg-12 col-md-12 col-sm-12">
+							<li class="submenucoop sub-resolutions col-lg-12 col-md-12 col-sm-12">
 								<i class="fa fa-ban margin-left-15"></i> <?php echo Yii::t("cooperation", "No resolution") ?>
 							</li>
 					<?php } ?>
@@ -403,7 +410,7 @@
 										  					data-dataid="<?php echo (string)@$action["_id"]; ?>"
 											  				data-type="actions" >
 											  			<i class="fa fa-arrows-alt letter-light tooltips"  
-										   					data-original-title="cliquer / déplacer dans un autre espace" 
+										   					data-original-title="<?php echo Yii::t("cooperation", "Drag / drop to an other space") ?>" 
 											  				data-placement="right"></i> 
 											  			<i class="fa fa-hashtag"></i> 
 											  			<?php echo @$action["name"]; ?>
@@ -436,7 +443,7 @@
 								  	</a>
 								</li>
 					<?php }else{ ?>
-							<li class="submenucoop sub-proposals col-lg-12 col-md-12 col-sm-12">
+							<li class="submenucoop sub-actions col-lg-12 col-md-12 col-sm-12">
 								<i class="fa fa-ban margin-left-15"></i> <?php echo Yii::t("cooperation", "No action") ?>
 							</li>
 					<?php } ?>

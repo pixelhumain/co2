@@ -74,6 +74,7 @@ function initSearchInterface(){
 CLASSIFIED
 ----------------------------- */
 var section = "";
+var sectionKey;
 var classType = "";
 var classSubType = "";
 function initClassifiedInterface(){ return;
@@ -85,6 +86,7 @@ function initClassifiedInterface(){ return;
 }
 
 function bindLeftMenuFilters () { 
+
     $(".btn-select-type-anc").off().on("click", function()
     {    
         searchType = [ typeInit ];
@@ -104,7 +106,7 @@ function bindLeftMenuFilters () {
             sectionKey = $(this).data("key");
             //alert("section : " + section);
 
-            if( sectionKey == "forsale" || sectionKey == "forrent"){
+            if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "job"){
                 $("#section-price").show(200);
                 setTimeout(function(){
                     KScrollTo("#container-scope-filter");
@@ -141,13 +143,15 @@ function bindLeftMenuFilters () {
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
         $(".keycat").addClass("hidden");
         
+
         if(sectionKey)
             $(this).addClass("active");
 
         startSearch(0, indexStepInit, searchCallback); 
 
         if(sectionKey && typeof classified.sections[sectionKey] != "undefined") {
-            $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]);
+            var label = classified.sections[sectionKey]["labelFront"];
+            $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + tradCategory[label]);
             $('.classifiedSection').remove();
             $(".resultTypes").append( "<span class='classifiedSection text-azure text-bold hidden-xs pull-right'><i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]+'<i class="fa fa-times text-red resetFilters"></i></span>');
             $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+classified.sections[sectionKey]["color"])
@@ -159,7 +163,8 @@ function bindLeftMenuFilters () {
         searchType = [ typeInit ];
         var searchTxt = "";
         var classType = $(this).data("keycat");
-
+        console.log("bindLeftMenuFilters sectionKey", typeof sectionKey);
+        
         if( $(this).hasClass( "active" ) ){
             searchTxt = sectionKey;
             $(this).removeClass( "active" );

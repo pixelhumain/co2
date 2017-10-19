@@ -43,11 +43,11 @@ dynForm = {
         },*/
 	    onLoads : {
 	    	sub : function(){
-    			$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-						  					                .addClass("bg-dark");
-          uploadObj.gotoUrl = "tmp";
+    			uploadObj.gotoUrl = "tmp";
     		},
         onload : function(data){
+            $("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+                                        .addClass("bg-turq");
             // if(data && data.type){
             //     $(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+tradCategory[data.type]+"</h4>");
             //     $(".sectionBtntagList").hide();

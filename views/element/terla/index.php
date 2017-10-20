@@ -167,14 +167,14 @@
 	}
 	function loadListPro(){
 		initBtnDash("#btn-list-pro");
-		data={category:["products"],actionType:"manage"};
+		data={category:["services","products"],actionType:"manage"};
 		var url = "element/list/type/"+contextData.type+"/id/"+contextData.id;
 		showLoader('.content-view-dashboard');
 		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
 	}
 	function loadHistory(){
 		initBtnDash("#btn-history");
-		data={category:["orderItems"],actionType:"history"};
+		data={category:["orders"],actionType:"history"};
 		var url = "element/list/type/"+contextData.type+"/id/"+contextData.id;
 		showLoader('.content-view-dashboard');
 		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");

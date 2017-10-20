@@ -357,8 +357,9 @@
                   success: function(data){
                     if(data.result) {
                         toastr.success(data.msg);
+                        shoppingCart={countQuantity:0};
                         //if(reload)
-                          //  urlCtrl.loadByHash(location.hash);
+                        urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.history");
                     }
                     else
                         toastr.error(data.msg);  

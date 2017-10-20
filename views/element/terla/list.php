@@ -55,6 +55,33 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	.contentRatingComment textarea{
 		min-height: 100px;
 	}
+	#orderList{
+		bottom: 0px;
+		list-style: none;
+		border-right: 1px solid rgba(0,0,0,0.1);
+		min-height: 300px
+	}
+	#orderList li:hover{
+		cursor:pointer;
+		background-color:rgba(0,0,0,0.1);
+		border-left: 4px solid #FF9E85;
+	}
+	#orderList li{
+		border-left: 4px solid white;
+	}
+	/*#orderList li.active:hover{
+		background-color: yellow;
+	}*/
+	.orderSection .title{
+		font-size: 18px;
+		font-weight: 100;
+		text-transform: inherit;
+	}
+	#orderList li.active{
+		border-left: 4px solid #EF5B34;
+		/*font-weight: bold;
+		font-size: 20px;*/
+	}
 </style>
 <?php if($actionType=="manage"){ ?>
 <div class="headerList col-md-12 col-sm-12 no-padding margin-bottom-20 margin-top-20">
@@ -78,14 +105,43 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	</div>
 </div>
 <?php } ?>
-<div id="listList" class="col-md-12 col-sm-12">
-</div>
+<?php if($actionType=="history"){ ?>
+	<ul id="orderList" class="col-md-3 col-sm-3 col-xs-3 no-padding">
+		
+		<?php $i=0;
+			foreach ($orderList as $key => $value){ 
+				if($i==0){
+					$initHeader=$value;
+				}
+				$idOrder=(string)$value["_id"];
+				?>
+				<li class="orderSection <?php if($i==0) echo "active" ?> orderSection<?php echo $key ?> padding-10" data-id="<?php echo $key ?>">
+					<h4 class="title no-margin"><?php echo $value["name"] ?></h4>
+					<span><i><?php echo $value["countOrderItem"]; ?> purchase<?php if ($value["countOrderItem"] >1) echo "s" ?></i></span>
+				</li>
+		<?php $i++; 
+		} ?>
+	</ul>
+	<div id="headerOrder" class="col-md-9 col-sm-9 col-xs-9 margin-bottom-20">
+		<h4 class="col-md-12 col-sm-12 orderTitle no-padding letter-orange"><?php echo $initHeader["name"] ?></h4>
+		<span>Price of this command: <span class="orderPrice"><?php echo $initHeader["totalPrice"] ?> <?php echo $initHeader["currency"] ?></span></span><br/>
+		<span class="orderPurchases"><i><?php echo $value["countOrderItem"]; ?> purchase<?php if ($value["countOrderItem"] >1) echo "s" ?></i></span>
+	</div>
+	<div id="listList" class="col-md-9 col-sm-9 col-xs-9 pull-right">
+
+	</div>
+<?php } else { ?>
+	<div id="listList" class="col-md-12 col-sm-12">
+
+	</div>
+<?php } ?>
 	<script type="text/javascript">
 	var type = "<?php echo $type; ?>";
 	var id = "<?php echo $id; ?>";
 	var view = "<?php echo @$view; ?>";
 	var indexStepGS = 20;
 	var listElement = <?php echo json_encode( $list ); ?>;
+	var orderList= <?php echo json_encode( @$orderList ); ?>;
 	var actionType="<?php echo $actionType ?>";
 	jQuery(document).ready(function() {
 		list.initList(listElement, actionType);
@@ -93,7 +149,34 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 			dyFObj.openForm($(this).data("form-type"),"sub");
 		});
 		bindLBHLinks();
+		if(actionType=="history")
+			initOrderEvent();
 	})
+	function initOrderEvent(){
+		$(".orderSection").click(function(){
+			showLoader('#listList');
+			$(".orderSection").removeClass("active");
+			$(this).addClass("active");
+			orderId=$(this).data("id");
+			$("#headerOrder .orderTitle").text(orderList[orderId].name);
+			$("#headerOrder .orderPrice").text(orderList[orderId].totalPrice+" "+orderList[orderId].currency);
+			s=(orderList[orderId].countOrderItem > 1) ? "s": "";
+			$("#headerOrder .orderPurchases").text(orderList[orderId].countOrderItem+" purchase"+s);
+			$.ajax({
+				type: "POST",
+				url: baseUrl+"/"+moduleId+"/order/get/id/"+orderId, 
+				  success: function(data){
+					if(data.result) {
+						listElement = data.list;
+			        	list.initList(data.list, actionType);
+					}
+			        else
+			        	toastr.error(data.msg);  
+				  },
+				  dataType: "json"
+			});
+		});
+	}
 	/*function initList(){
 		var viewList="";
 		$.each(list, function(e,v){

@@ -437,6 +437,7 @@ class CommunecterController extends Controller
     ),
     "order"=> array(
        "save"   => array("href" => "/ph/co2/order/save"),
+       "get"   => array("href" => "/ph/co2/order/get"),
     ),
     "action"=> array(
        "addaction"   => array("href" => "/ph/co2/action/addaction"),

@@ -2540,11 +2540,13 @@ var list = {
 	initList : function(dataList, action){
 		var viewList="";
 		$.each(dataList, function(e,v){
-			viewList+="<h4 class='listSubtitle col-md-12 col-sm-12 col-xs-12 letter-orange'>"+Object.keys(v).length+" "+e+"</h4>";
+			if(action != "history")
+				viewList+="<h4 class='listSubtitle col-md-12 col-sm-12 col-xs-12 letter-orange'>"+Object.keys(v).length+" "+e+"</h4>";
 			$.each(v, function(i, data){
+				console.log(data);
 				viewList+=list.getListOf(e,data,action);	
 			});
-			$("#listList").append(viewList);
+			$("#listList").html(viewList);
 		});
 		if(action=="history"){
 			$(".orderItemComment").click(function(){

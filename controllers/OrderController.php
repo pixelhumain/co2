@@ -19,6 +19,7 @@ class OrderController extends CommunecterController {
 	    return array(
 	        //'index'       			=> 'citizenToolKit.controllers.comment.IndexAction',
 	        'save'					=> 'citizenToolKit.controllers.order.SaveAction',
+	        'get'					=> 'citizenToolKit.controllers.order.GetAction',
 	        /*'abuseprocess'			=> 'citizenToolKit.controllers.comment.AbuseProcessAction',
 	        'moderate'				=> 'citizenToolKit.controllers.comment.ModerateAction',
 	        'countcommentsfrom'		=> 'citizenToolKit.controllers.comment.CountCommentsAction',

@@ -174,9 +174,9 @@
 				<?php if(!empty($element["address"]["addressLocality"])){ ?>
 					<div class="header-address badge letter-white bg-red margin-left-5 pull-left">
 						<?php
-							echo !empty($element["address"]["streetAddress"]) ? ", ".$element["address"]["streetAddress"] : "";
+							echo !empty($element["address"]["streetAddress"]) ? "<i class='fa fa-map-marker'></i> ".$element["address"]["streetAddress"].", " : "";
 							echo !empty($element["address"]["postalCode"]) ? 
-									"<i class='fa fa-map-marker'></i> ".$element["address"]["postalCode"].", " : "";
+									$element["address"]["postalCode"].", " : "";
 							echo $element["address"]["addressLocality"];
 						?>
 					</div>

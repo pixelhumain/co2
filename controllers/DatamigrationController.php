@@ -2736,6 +2736,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 
 	public function actionBatchInterInit() {
+		ini_set('memory_limit', '-1');
 		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			$nbelement = 0 ;
 			$types = array(Person::COLLECTION , Organization::COLLECTION, Project::COLLECTION, Event::COLLECTION, Poi::COLLECTION);
@@ -2744,7 +2745,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				$elts = PHDB::find($type, array('$and' => array(
 												array("address" => array('$exists' => 1)),
 												array("address.addressCountry" => 
-														array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC", "BE") ) )
+														array('$nin' => array("PM", "MQ", "YT", "GP", "GF", "RE", "FR", "NC", "BE") ) )
 						) ) );
 
 				foreach ($elts as $key => $elt) {
@@ -2756,10 +2757,10 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 							if(!empty($elt["multiscopes"]))
 								$unset["multiscopes"] = "";	
 							
-							$res = PHDB::update($type, 
-									array("_id"=>new MongoId($key)),
-									array('$unset' => $unset)
-							);
+							// $res = PHDB::update($type, 
+							// 		array("_id"=>new MongoId($key)),
+							// 		array('$unset' => $unset)
+							// );
 							$nbelement++;
 					}else{
 						echo  "Error: ".$elt["name"]." " . $type. " " . $key. "<br>" ;
@@ -2772,7 +2773,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 			$zones = PHDB::find(Zone::COLLECTION, array("countryCode" => 
 															array('$nin' => 
-																	array("MQ", "YT", "GP", "GF", "RE", "FR", "NC", "BE"))));
+																	array("PM", "MQ", "YT", "GP", "GF", "RE", "FR", "NC", "BE"))));
 			$nbelement = 0 ;
 			$nbelementNew = 0 ;
 			foreach ($zones as $key => $value) {
@@ -2782,21 +2783,21 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 
 				foreach ($news as $keyNew => $valueNew) {
-					$res = PHDB::update(News::COLLECTION, 
-									array("_id"=>new MongoId($keyNew)),
-									array('$set' => array("scope.localities" => array() ) )
+					// $res = PHDB::update(News::COLLECTION, 
+					// 				array("_id"=>new MongoId($keyNew)),
+					// 				array('$set' => array("scope.localities" => array() ) )
 
-							);
+					// 		);
 					$nbelementNew++;
 
 				}
-				echo  "Good: ".$value["name"]." " . $key. "<br>" ;
-				PHDB::remove(Zone::COLLECTION, array("_id"=>new MongoId($key)));
+				echo  "Good: zone " . $key. "<br>" ;
+				//PHDB::remove(Zone::COLLECTION, array("_id"=>new MongoId($key)));
 				$nbelement++;
 			}
 
 			echo  "NB Zone mis à jours: " .$nbelement."<br>" ;
-			$cities = PHDB::find(City::COLLECTION, array("countryCode" => array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC", "BE"))));
+			$cities = PHDB::find(City::COLLECTION, array("country" => array('$nin' => array("PM", "MQ", "YT", "GP", "GF", "RE", "FR", "NC", "BE"))));
 
 			$nbelement = 0 ;
 			foreach ($cities as $key => $value) {
@@ -2806,14 +2807,14 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 
 				foreach ($news as $keyNew => $valueNew) {
-					$res = PHDB::update(News::COLLECTION, 
-									array("_id"=>new MongoId($keyNew)),
-									array('$set' => array("scope.localities" => array()))
-							);
+					// $res = PHDB::update(News::COLLECTION, 
+					// 				array("_id"=>new MongoId($keyNew)),
+					// 				array('$set' => array("scope.localities" => array()))
+					// 		);
 					$nbelementNew++;
 				}
-				echo  "Good: ".$value["name"]." " . $key. "<br>" ;
-				PHDB::remove(City::COLLECTION, array("_id"=>new MongoId($key)));
+				echo  "Good: cities " . $key. "<br>" ;
+				//PHDB::remove(City::COLLECTION, array("_id"=>new MongoId($key)));
 				$nbelement++;
 			}
 

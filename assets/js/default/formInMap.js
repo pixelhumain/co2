@@ -859,7 +859,7 @@ var formInMap = {
 	},
 
 	btnValideDisable : function(bool){
-		mylog.log("showWarningGeo");
+		mylog.log("btnValideDisable");
 		$("#newElement_btnValidateAddress").prop('disabled', bool);
 	},
 

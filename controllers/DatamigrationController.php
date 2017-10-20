@@ -2659,6 +2659,8 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 								if(!empty($valueS["geo"]))
 									$newsKey["geo"] = $valueS["geo"];
+
+								$newsKey = array_merge($newsKey, Zone::getLevelIdById((String) $city["_id"], $city, City::COLLECTION) ) ;
 							}
 						}
 
@@ -2684,6 +2686,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 							$newsKey["parentType"] = Zone::COLLECTION ;
 							if(!empty($zone["geo"]))
 									$newsKey["geo"] = $zone["geo"];
+							$newsKey = array_merge($newsKey, Zone::getLevelIdById((String) $zone["_id"], $zone, Zone::COLLECTION) ) ;
 							$listKey[] = $newsKey;
 						}
 					}
@@ -2709,6 +2712,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 							$newsKey["name"] = $zone["name"];
 							if(!empty($zone["geo"]))
 									$newsKey["geo"] = $zone["geo"];
+							$newsKey = array_merge($newsKey, Zone::getLevelIdById((String) $zone["_id"], $zone, Zone::COLLECTION) ) ;
 							$listKey[] = $newsKey;
 						}
 					}
@@ -2737,9 +2741,10 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 			foreach ($types as $keyType => $type) {
 				$elts = PHDB::find($type, array('$and' => array(
-												array("address" => array('$exists' => 1))
-												array("address.addressCountry" => array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC" "BE")))
-						)));
+												array("address" => array('$exists' => 1)),
+												array("address.addressCountry" => 
+														array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC", "BE") ) )
+						) ) );
 
 				foreach ($elts as $key => $elt) {
 					if(!empty($elt["address"]["codeInsee"])){
@@ -2764,19 +2769,21 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 
-			$zones = PHDB::find(Zone::COLLECTION, array("countryCode" => array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC" "BE"))))));
+			$zones = PHDB::find(Zone::COLLECTION, array("countryCode" => 
+															array('$nin' => 
+																	array("MQ", "YT", "GP", "GF", "RE", "FR", "NC", "BE"))));
 			$nbelement = 0 ;
 			$nbelementNew = 0 ;
 			foreach ($zones as $key => $value) {
 				$news = PHDB::find(News::COLLECTION, array('$and' => array(
-													array("scope.localities" => array('$exists' => 1))
+													array("scope.localities" => array('$exists' => 1)),
 													array("scope.localities.parentId" => $key))));
 
 
 				foreach ($news as $keyNew => $valueNew) {
 					$res = PHDB::update(News::COLLECTION, 
 									array("_id"=>new MongoId($keyNew)),
-									array('$set' => array("scope.localities" = array()))
+									array('$set' => array("scope.localities" => array() ) )
 							);
 					$nbelementNew++;
 
@@ -2788,18 +2795,18 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 			echo  "NB Zone mis à jours: " .$nbelement."<br>" ;
 
-			$cities = PHDB::find(City::COLLECTION, array("countryCode" => array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC" "BE"))))));
+			$cities = PHDB::find(City::COLLECTION, array("countryCode" => array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC", "BE"))));
 			$nbelement = 0 ;
 			foreach ($cities as $key => $value) {
 				$news = PHDB::find(News::COLLECTION, array('$and' => array(
-													array("scope.localities" => array('$exists' => 1))
+													array("scope.localities" => array('$exists' => 1)),
 													array("scope.localities.parentId" => $key))));
 
 
 				foreach ($news as $keyNew => $valueNew) {
 					$res = PHDB::update(News::COLLECTION, 
 									array("_id"=>new MongoId($keyNew)),
-									array('$set' => array("scope.localities" = array()))
+									array('$set' => array("scope.localities" => array()))
 							);
 					$nbelementNew++;
 				}
@@ -2966,6 +2973,109 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 		}
+	}
+
+
+	public function actionRefactorTranslate(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		
+		$translates = PHDB::find(Zone::TRANSLATE, array('origin' => array('$exists' => 0)));
+		
+		if(!empty($translates)){
+
+			foreach ($translates as $key => $translate) {
+
+				$countries = array("MQ", "YT", "GP", "GF", "RE", "NC");
+				
+				if( in_array($translate["countryCode"], $countries))
+					$origin = $translate["translates"]["FR"] ;
+				else if (!empty($translate["translates"][$translate["countryCode"]]))
+					$origin = $translate["translates"][$translate["countryCode"]] ;
+
+				if(!empty($origin)){
+					$newsT = array();
+					foreach ($translate["translates"] as $keyT => $valueT) {
+						if($valueT != $origin)
+							$newsT[$keyT] = $valueT;
+					}
+
+					PHDB::update(Zone::TRANSLATE, 
+								array("_id"=>new MongoId($key)),
+								array('$set' => array(	"origin" => $origin,
+														"translates" => $newsT))
+					);
+
+					$nbelement++;
+				}
+				
+				//break;
+			}
+
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+		}
+	}
+
+
+	public function actionRefactorCountries(){
+		ini_set('memory_limit', '-1');
+		$nbelementUpdate = 0 ;
+		$nbelementCreate= 0 ;
+		$nbelementError = 0 ;
+		$countries = json_decode(file_get_contents("../../modules/co2/data/countries.json", FILE_USE_INCLUDE_PATH), true );
+		//var_dump($countries);
+		foreach ($countries as $key => $value) {
+			//var_dump(json_encode($value));
+			//echo json_encode($value);
+
+			$zones = PHDB::find(Zone::COLLECTION, array('countryCode' => $value["cca2"]));
+
+			if(!empty($zones)){
+				$set = array();
+				if(!empty($value["cca3"]))
+					$set["cca3"] = $value["cca3"];
+				if(!empty($value["callingCode"]))
+					$set["callingCode"] = $value["callingCode"];
+				// if(!empty($value["cca3"]))
+				// 	$set["cca3"] = $value["cca3"];
+
+				if(!empty($set)){
+					// PHDB::update(Zone::TRANSLATE, 
+					// 				array("_id"=>new MongoId($key)),
+					// 				array('$set' => $set)
+					// 	);
+					$nbelementUpdate++;
+				}
+			}else{
+				$level1 = Zone::createLevel($value["name"]["official"], $value["cca2"], "1");
+
+				if(!empty($level1)){
+					if(!empty($value["cca3"]))
+					$level1["cca3"] = $value["cca3"];
+					if(!empty($value["callingCode"]))
+						$level1["callingCode"] = $value["callingCode"];
+					//echo json_encode($level1 );
+					// $savelevel1 = Zone::save($level1);
+		   //  		if($savelevel1["result"] == true)
+		   //  			$nbelementCreate++;
+		   //  		else{
+		   //  			$nbelementError++;
+		   //  			echo  "Error: " .$value["cca2"]."<br>" ;
+		   //  		}
+				}else{
+					$nbelementError++;
+		     			echo  "Error: " .$value["cca2"]."<br>" ;
+				}
+				
+			}
+
+			break;
+		}
+
+		echo  "NB Element mis à jours: " .$nbelementUpdate."<br>" ;
+		echo  "NB Element created: " .$nbelementCreate."<br>" ;
+		echo  "NB Element error: " .$nbelementError."<br>" ;
+
 	}
 
 	// -------------------- Fin des foncction pour le refactor Cities/zones

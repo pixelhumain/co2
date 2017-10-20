@@ -16,10 +16,6 @@
         [X] departement -> level4
         [X] region -> level3
         [X] regionBel -> level2
-    [ ] Batch pour crée la clé unique pour
-        [99%] Les zones
-        [99%] les villes 
-        [40%] les éléments possédants une adresse
     [ ] Batch qui supprime “*BE“ dans les insee des communes de la belgique
     [X] Batch pour remplacer dans les addresses (vérifier que c'est la même chose pour la belgique: 
         [X] departement -> level4

@@ -331,7 +331,7 @@
           <ul class="dropdown-menu" id="dropdown_search" style="">
           </ul>
 
-          <div id="results" class="bg-white results col-sm-12"></div>
+          <div id="results" class="bg-white results col-sm-12 padding-10"></div>
         </div>
       </div>
       <div class="form-group tagstags col-sm-12 no-padding">

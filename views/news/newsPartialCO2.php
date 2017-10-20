@@ -175,7 +175,7 @@ foreach($news as $key => $media){
       }
       if("undefined" != typeof v.media){
         if(typeof(v.media.type)=="undefined" || v.media.type=="url_content")
-          media=getMediaHtml(v.media,"show",e);
+          media=getMediaCommonHtml(v.media,"show",e);
         else if (v.media.type=="gallery_images")
           media=getMediaImages(v.media,e,v.author.id,v.target.name);
         else if (v.media.type=="gallery_files")
@@ -183,6 +183,15 @@ foreach($news as $key => $media){
         else if (v.media.type=="activityStream")
           media=directory.showResultsDirectoryHtml(new Array(v.media.object),v.media.object.type);
         $("#result"+e).html(media);
+         $(".videoSignal").off().on("click",function(){
+          videoLink = $(this).find(".videoLink").val();
+          iframe='<div class="embed-responsive embed-responsive-16by9 margin-bottom-5" style="background-color:black;">'+
+            '<iframe src="'+videoLink+'" width="100%" height="" class="embed-responsive-item"></iframe></div>';
+          $(this).parent().next().removeClass("col-xs-8").addClass("col-xs-12").before(iframe);
+          //$(this).parent().next();
+          $(this).parent().remove();
+
+        });
       }
       bindLBHLinks();
     });

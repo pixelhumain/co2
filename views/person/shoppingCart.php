@@ -1,12 +1,13 @@
 
 <style type="text/css">
-	.headerTitleStanalone{
+	#shoppingCart .headerTitleStanalone{
 		left:-25px;
 		right:-25px;
+        top:0px !important;
 	}
-	.contentOnePage{
+	#shoppingCart .contentOnePage{
 		min-height:700px;
-		margin-top: 45px;
+		margin-top: 45px !important;
 	}
 	.contentOnePage .title > h2{
 		    padding: 15px 0px;
@@ -65,10 +66,12 @@
         font-size: 16px;
    }
 </style>
-<div class="headerTitleStanalone"></div>
-<div class="col-md-10 col-md-offset-1 contentOnePage">
-	<div class="contentCart shadow2 col-md-12 no-padding text-center">
-	</div>
+<div id="shoppingCart">
+    <div class="headerTitleStanalone"></div>
+    <div class="col-md-10 col-md-offset-1 contentOnePage">
+    	<div class="contentCart shadow2 col-md-12 no-padding text-center">
+    	</div>
+    </div>
 </div>
 <script type="text/javascript">
     var totalCart=0;
@@ -195,9 +198,10 @@
             //itemHtml += "<span>"+countDate+" date"+s+" booked</span><br/>";
                     $.each(data.reservations, function(date, value){
                         s=(value.countQuantity > 1) ? "s" : "";
+                        dateStr=directory.getDateFormated({startDate:date}, true);
             itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 bookDate"+date+" shadow2 margin-bottom-10'>"+
                             "<div class='col-md-12 col-sm-12 col-xs-12 dateHeader'>"+
-                                "<h4 class='pull-left margin-bottom-5 no-margin col-md-5 col-sm-5 col-xs-5 no-padding'><i class='fa fa-calendar'></i> "+date+"</h4>";
+                                "<h4 class='pull-left margin-bottom-5 no-margin col-md-5 col-sm-5 col-xs-5 no-padding'><i class='fa fa-calendar'></i> "+dateStr+"</h4>";
                                 if(typeof value.hours =="undefined"){
                                     classRemove="";
                                     classAdd="";

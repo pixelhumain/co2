@@ -2378,7 +2378,7 @@ var directory = {
     return mapEnd;*/
   },
 
-     getDateFormated: function(params){
+     getDateFormated: function(params, onlyStr){
     
         params.startDateDB = notEmpty(params.startDate) ? params.startDate : null;
         params.startDay = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD") : "";
@@ -2409,35 +2409,39 @@ var directory = {
        
         
         var str = "";
-        if(params.startDate != null){
-          str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      '<small>'+startLbl+' </small>'+
-                      '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
-                      params.startDay + ' ' + params.startMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.startYear + '</small>';
-                      if(!notNull(params.allDay) || params.allDay != true){
-                        str +=  ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> '+
-                                  params.startTime+endTime+"</b></small>";
-                      }
-                      
-            str +=  '</h3>';
-        }
-          
-        var dStart = params.startDay + params.startMonth + params.startYear;
-        var dEnd = params.endDay + params.endMonth + params.endYear;
-        mylog.log("DATEE", dStart, dEnd);
+        if(notNull(onlyStr)){
+          str += params.startDay +" "+ params.startMonth +" "+ params.startYear;
+        }else{
+          if(params.startDate != null){
+            str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                        '<small>'+startLbl+' </small>'+
+                        '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
+                        params.startDay + ' ' + params.startMonth + 
+                        ' <small class="letter-'+params.color+'">' + params.startYear + '</small>';
+                        if(!notNull(params.allDay) || params.allDay != true){
+                          str +=  ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> '+
+                                    params.startTime+endTime+"</b></small>";
+                        }
+                        
+              str +=  '</h3>';
+          }
+            
+          var dStart = params.startDay + params.startMonth + params.startYear;
+          var dEnd = params.endDay + params.endMonth + params.endYear;
+          mylog.log("DATEE", dStart, dEnd);
 
-        if(params.endDate != null && dStart != dEnd){
-          str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      "<small>"+trad["todate"]+" </small>"+
-                      '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
-                      params.endDay + ' ' + params.endMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.endYear + '</small>';
-                      if(!notNull(params.allDay) || params.allDay != true){
-                        str += ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
-                                params.endTime+"</b></small>";
-                      }
-            str +=  '</h3>';
+          if(params.endDate != null && dStart != dEnd){
+            str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                        "<small>"+trad["todate"]+" </small>"+
+                        '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
+                        params.endDay + ' ' + params.endMonth + 
+                        ' <small class="letter-'+params.color+'">' + params.endYear + '</small>';
+                        if(!notNull(params.allDay) || params.allDay != true){
+                          str += ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
+                                  params.endTime+"</b></small>";
+                        }
+              str +=  '</h3>';
+          }
         }
             
             

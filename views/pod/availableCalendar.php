@@ -113,8 +113,7 @@
   		});
       $(".fc-button").on("click", function(e){
       	setCategoryColor(tabOrganiser);
-     	})
-      
+     	});
   });
 
 //creates fullCalendar
@@ -209,14 +208,20 @@ function showCalendar() {
 	});
 	}*/
 	mylog.log(calendar);
-	dateToShow = new Date();
+	if(typeof specificDays != "undefined"){}
+	else
+		dateToShow = new Date();
+	console.log(dateToShow);
+	//alert(dateToShow.getFullYear());
+	//alert(dateToShow.getMonth());
+	//alert(dateToShow.getDate());
 	$('#calendar').fullCalendar({
 		header : {
 				left : 'prev,next',
 				center : 'title',
 				right : 'today, month, agendaWeek, agendaDay'
 		},
-		lang : 'fr',
+		lang : mainLanguage,
 		year : dateToShow.getFullYear(),
 		month : dateToShow.getMonth(),
 		date : dateToShow.getDate(),
@@ -230,17 +235,15 @@ function showCalendar() {
 		eventLimit: true,
 		timezone : 'local',
 		//allDaySlot : false,
-		//defaultDate:momment(),
+		defaultDate:dateToShow,
 		eventLimitText:"sessions",
 		dayRender: function(date, cell){
 	        if (date > dateToShow){
 	            $(cell).addClass('disabled');
 	        }
 	    },
-		<?php 
-		if(@$defaultView){?>
-		  defaultView: '<?php echo $defaultView?>',
-		<?php } ?>
+		//defaultView: 'month',
+		
 		eventRender: function(event, element) {
 			if(event.start < Date.now()) { return false; }
 		    element.find(".fc-event-title").remove();
@@ -338,14 +341,16 @@ function showCalendar() {
 		  //dateToShow = calEvent.start;
 		}*/
 	});
-	setCategoryColor(tabOrganiser);
-	dateToShow = new Date();
+	
+	setCategoryColor();
+	//dateToShow = new Date();
 };
 
 function setCategoryColor(tab){
 	$(".fc-content").css("color", "white");
 	$(".fc-content").addClass("text-center");
 	$(".fc-more").addClass("spec-available-fc");
+	$(".fc-more").find(".fc-content").addClass("text-center");
   	//$(".fc-content").css("background-color", "#EF5B34");
   	//for(var i =0; i<tab.length; i++){
   	//	$("."+tab[i]+" .fc-content").css("color", "white");

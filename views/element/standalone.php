@@ -108,7 +108,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 		</div>
 		<div class="col-md-4 padding-20 margin-top-20">
 			<?php if($type==Service::COLLECTION){ ?>
-				<a href="javascript:;" class="btn bg-orange ssmla" data-toggle="modal" 
+				<a href="javascript:;" class="btn bg-orange ssmla btn-available-calendar" data-toggle="modal" 
 					data-target="#modal-available">
 							Book it
 				</a>
@@ -163,6 +163,13 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 				initialRating: element.averageRating
 			});
 		}
+		$(".btn-available-calendar").click(function(){
+      		setTimeout(function(){
+ 		 		$('#calendar').fullCalendar('gotoDate', new Date());
+ 		 		setCategoryColor();
+ 			}, 300);
+      		//$('#calendar').fullCalendar('gotoDate', new Date());
+      	});
 	});
 	
 	

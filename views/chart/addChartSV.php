@@ -68,23 +68,23 @@ textarea.form-control{
 <div id="editProjectChart">
 	<div class="noteWrap col-md-12 col-sm-12 col-xs-12 bg-white">
 
-		<button class="btn btn-primary escapeForm btn-start-chart <?php if ((!@$properties["commons"] ||  (@$properties["commons"] && empty($properties["commons"]))) && (!@$properties["open"] ||  (@$properties["open"] && empty($properties["open"]))) ) echo "hide";  ?>"><i class="fa fa-sign-out"></i>Sortir des formulaires</button> 
+		<button class="btn btn-primary escapeForm btn-start-chart <?php if ((!@$properties["commons"] ||  (@$properties["commons"] && empty($properties["commons"]))) && (!@$properties["open"] ||  (@$properties["open"] && empty($properties["open"]))) ) echo "hide";  ?>"><i class="fa fa-sign-out"></i> <?php echo Yii::t("chart","Go back to the results") ?></button> 
 		<h3 style="font-variant:small-caps;"><span class="stepFormChart">1</span><?php echo Yii::t("chart","Choose which kind of form to complete") ?></h3>
 		
-		<span style="font-style:italic; margin-left:45px;" class="text-right">Indicatif : <i class="fa fa-circle text-green"></i> <span class="text-green">Actif</span>   <i class="fa fa-circle text-orange"></i> <span class="text-orange">A modifier</span>    <i class="fa fa-circle"></i> Non rempli</span><br/>
+		<span style="font-style:italic; margin-left:45px;" class="text-right"><?php echo Yii::t("chart","Status") ?> : <i class="fa fa-circle text-green"></i> <span class="text-green"><?php echo Yii::t("chart","Current") ?></span>   <i class="fa fa-circle text-orange"></i> <span class="text-orange"><?php echo Yii::t("chart","To modified") ?></span>    <i class="fa fa-circle"></i> <?php echo Yii::t("chart","Empty") ?></span><br/>
 		
 		<div class="chooseTypeForm margin-top-50 text-center">
-			<div class="col-md-12">
+			<div class="col-md-12 col-sm-12 col-xs-12">
 				<p><?php echo Yii::t("chart","These forms are here to show the values {what} in order to give an overview about organization, manage and life {what}",array("{what}"=> Yii::t("common","of the ".Element::getControlerByCollection($parentType)))) ?></p>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 col-sm-6 col-xs-6">
 				<a id="btncommons" href="javascript:;" onclick="switchTypeChart('commons')" class="btn <?php if (isset($properties["commons"]) && !empty($properties["commons"])) echo "text-orange" ?>">
 					<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Commons") ?>
 				</a>
 				<p><?php echo Yii::t("chart","Define {what} as a common. It means to manage one or several resources openly and transparently whitout appropriating it",array("{what}"=>Yii::t("common","this ".Element::getControlerByCollection($parentType)))) ?></p>
 
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 col-sm-6 col-xs-6">
 				<a id="btnopen" href="javascript:;" onclick="switchTypeChart('open')" class="btn <?php if (isset($properties["open"]) && !empty($properties["open"])) echo "text-orange" ?>">
 					<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Open") ?>
 				</a>
@@ -102,15 +102,15 @@ textarea.form-control{
 			<form class="form-chart">
 				<div>
 						<label for="properties" style="font-style: italic">
-							<?php echo Yii::t("project","Degree of project's openness (0% = very closed, 100% = very opened)",null,Yii::app()->controller->module->id) ?>			
+							<?php echo Yii::t("chart","Degree of your evaluation (0% = very closed, 100% = very opened)") ?>			
 						</label>
-						<div class="col-md-12 no-padding">
+						<div class="col-md-12 col-sm-12 col-xs-12 no-padding">
 						<?php if (isset($properties["open"]) && !empty($properties["open"])){
 							foreach ($properties["open"] as $key => $val){ 
 						?>
-							<div class="col-md-12 form-property">
+							<div class="col-md-12 col-sm-12 col-xs-12 form-property">
 								<div class="removeProperty hide"><span class="glyphicon glyphicon-remove"></span></div>
-								<h4 style="text-align:center;width:200px;"><?php echo $key; ?></h4>
+								<h4 style="text-align:center;width:200px;"><?php echo Yii::t("chart",$key); ?></h4>
 								<?php if ($key=="gouvernance"){ ?>
 									<label for="properties" class="col-md-12 no-padding">
 										Ouverture en terme de décisions, de partenaires, de parties prenantes
@@ -128,91 +128,92 @@ textarea.form-control{
 										Quel est l'impact géographique du projet?
 									</label>
 								<?php } ?>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<input class="knob property-value" name="<?php echo $key; ?>" value="<?php if (!empty($val["value"])) echo $val["value"]; else echo 0;?>" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<textarea class="property-description"	name="<?php echo $key; ?>" placeholder="<?php echo Yii::t("chart","Describe this property") ?>"><?php if (!empty($val["description"])) echo $val["description"]; ?></textarea>
 								</div>
 							</div>
 					<?php 		
 							} 
 						} else { ?>
-							<div class="col-md-12 form-property">
+							<div class="col-md-12 col-sm-12 col-xs-12 form-property">
 								<div class="removeProperty hide"><span class="glyphicon glyphicon-remove"></span></div>
 								<h4>Gouvernance</h4>
 								<label for="properties" class="col-md-12 no-padding">
 									Ouverture en terme de décisions, de partenaires, de parties prenantes
 								</label>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<input class="knob property-value" name="gouvernance" value="0" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">	
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<textarea class="property-description"	name="gouvernance" placeholder="Describe this property"></textarea>
 								</div>
 							</div>
-							<div class="col-md-12 form-property">
+							<div class="col-md-12 col-sm-12 col-xs-12 form-property">
 								<div class="removeProperty hide"><span class="glyphicon glyphicon-remove"></span></div>
 								<h4>Partage</h4>
 								<label for="properties" class="col-md-12">
 									À combien le projet sert le bien communs?			
 								</label>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<input class="knob property-value" value="0" name="partage" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">	
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<textarea class="property-description"	name="partage" placeholder="Describe this property"></textarea>
 								</div>
 							</div>
-							<div class="col-md-12 form-property">
+							<div class="col-md-12 col-sm-12 col-xs-12 form-property">
 								<div class="removeProperty hide"><span class="glyphicon glyphicon-remove"></span></div>
 								<h4>Solidaire</h4>
 								<label for="properties" class="col-md-12 no-padding">
 									À quel point le projet est-il d'utilité sociale, du développement durable, etc.?
 								</label>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<input class="knob property-value" value="0" name="solidaire" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">	
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<textarea class="property-description"	name="solidaire" placeholder="Describe this property"></textarea>
 								</div>
 							</div>
-							<div class="col-md-12 form-property">
+							<div class="col-md-12 col-sm-12 col-xs-12 form-property">
 								<div class="removeProperty hide"><span class="glyphicon glyphicon-remove"></span></div>
 								<h4 style="text-align:center;width:200px;">Local</h4>
 								<label for="properties" class="col-md-12 no-padding">
 									Quel est l'impact géographique du projet?
 								</label>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<input class="knob property-value" value="0" name="local" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">			
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<textarea class="property-description"	name="local" placeholder="Describe this property"></textarea>
 								</div>
 							</div>
 							<?php } ?>
-							<div class="col-md-12">
-								<h4 style="text-align:center;width:200px;"></h4>
+							<div class="col-md-12 col-sm-12 col-xs-12 text-center margin-top-10">
+									<a href="javascript:;" class="text-green addProperties" style="width:80%;">
+										<i class="fa fa-plus"></i> <?php echo Yii::t("chart","Add a new property"); ?>
+									</a>
+								<!--<h4 style="text-align:center;width:200px;"></h4>
 									<div class="flexslider" style="margin-top:35px;">
 								<div id="infoPodOrga" class="padding-10">
 									<blockquote> 
 										<i class="fa fa-puzzle-piece fa-2x text-blue"></i>	<?php echo Yii::t("chart","Add<br/>A new<br/>Property") ?>
 										<br/>
-										<a href="#" class="addProperties" style="display: inline; opacity: 1; left: 0px;">
+										<a href="javascript" class="addProperties" style="display: inline; opacity: 1; left: 0px;">
 											<i class="fa fa-plus"></i> <?php echo Yii::t("common","ADD"); ?>
 										</a>
 									</blockquote>
 									
 								</div>
 								
-							</div>
+							</div>-->
 							</div>
 						</div>
-					
-					<div class="">
-						<div class="row center">
-			    	        <button class="btn btn-primary" >Enregistrer</button>
-						</div>
+					<hr class="col-md-12 col-sm-12 col-xs-12 no-padding">
+					<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+			    	        <button class="btn btn-success" style="width:80%;"><i class="fa fa-save"></i> <?php echo Yii::t("common","Save") ?></button>
 					</div>
 				</div>
 			</form>
@@ -241,7 +242,7 @@ jQuery(document).ready(function() {
 	knobInit();
     $(".addProperties").click(function(){
 	   newProperty=addNewProperties();
-	   $(this).parents().eq(3).before(newProperty);
+	   $(this).parents().eq(0).before(newProperty);
 	   knobInit(); 
 	   removeChartProperty();
     });
@@ -354,19 +355,23 @@ function runChartFormValidation() {
 	});
 };*/
 function addNewProperties(){
-	$newProperty='<div class="col-md-12 form-property no-padding">'+
-				'<h4 style="text-align:center;width:200px;">Nouvelle propriété</h4>'+
-				'<div class="col-md-12">'+
-					'<label for="properties">'+
-						'Nom de la propriétés:'+
-					'</label>'+
-					'<input type="text" placeholder="Entrer l\'intitulé de la propriété" class="newLabelProperty form-control"/>'+
-	
-					'<input class="knob property-value" value="0" name="newProjectProperty" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">'+
-				'</div>'+		
-				'<div class="col-md-6">'+
-					'<textarea class="property-description"	name="newProjectProperty" placeholder="Describe this property"></textarea>'+
-				'</div>'+
+	$newProperty='<div class="col-md-12 col-sm-12 col-xs-12 form-property no-padding margin-top-10">'+
+					'<div class="removeProperty hide"><span class="glyphicon glyphicon-remove"></span></div>'+
+					'<h4 class="col-md-12 col-sm-12 col-xs-12 text-center"><?php echo Yii::t("chart", "New property") ?></h4>'+
+					'<div class="col-md-12 col-sm-12 col-xs-12">'+
+						'<div class="propertyName col-md-12 col-sm-12 col-xs-12 margin-bottom-10">'+
+							/*'<label class="pull-left col-md-4 col-sm-4 col-xs-12" for="properties">'+
+								"<?php echo Yii::t("chart", "Property's name") ?>:"+
+							'</label>'+*/
+							"<input type='text' placeholder='<?php echo Yii::t("chart", "Name of property") ?>' class='newLabelProperty form-control pull-left col-md-12 col-sm-12 col-xs-12'/>"+
+						'</div>'+
+						'<div class="col-md-6 col-sm-6 col-xs-12">'+
+							'<input class="knob property-value" value="0" name="newProjectProperty" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">'+
+						"</div>"+
+						'<div class="col-md-6 col-sm-6 col-xs-12">'+
+							'<textarea class="property-description"	name="newProjectProperty" placeholder="<?php echo Yii::t("chart","Describe this property") ?>"></textarea>'+
+						'</div>'+
+					'</div>'+		
 				'</div>';
 	return $newProperty;
 }
@@ -377,7 +382,7 @@ function removeChartProperty(){
 	}).mouseleave(function(){
 		$(this).removeClass("borderHover").find(".removeProperty").addClass("hide");
 	});
-	$(".removeProperty").click(function(){
+	$(".removeProperty").off().on("click",function(){
 		$(this).parent().remove();
 	});
 }

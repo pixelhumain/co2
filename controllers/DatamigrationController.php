@@ -2527,11 +2527,12 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	public function actionBatchInterElement() {
 		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			$nbelement = 0 ;
-			$types = array(Person::COLLECTION , Organization::COLLECTION, Project::COLLECTION, Event::COLLECTION, Poi::COLLECTION);
+			$types = array(Person::COLLECTION , Organization::COLLECTION, Project::COLLECTION, 
+							Event::COLLECTION, Poi::COLLECTION);
 
 			foreach ($types as $keyType => $type) {
 				$elts = PHDB::find($type, array('$and' => array(
-												array("address" => array('$exists' => 1)))
+									array("address" => array('$exists' => 1)))
 						));
 
 				foreach ($elts as $key => $elt) {
@@ -2620,7 +2621,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 							$nbelement++;
 						}
 					}else{
-						echo  "Error: ".$elt["name"]." " . $type. " " . $key. "<br>" ;
+						echo  "Error address: ".$elt["name"]." " . $type. " " . $key. "<br>" ;
 					}
 					
 				}
@@ -2737,8 +2738,8 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 			foreach ($types as $keyType => $type) {
 				$elts = PHDB::find($type, array('$and' => array(
-												array("address" => array('$exists' => 1))
-												array("address.addressCountry" => array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC" "BE")))
+												array("address" => array('$exists' => 1)),
+												array("address.addressCountry" => array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC", "BE")))
 						)));
 
 				foreach ($elts as $key => $elt) {
@@ -2764,19 +2765,20 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 
-			$zones = PHDB::find(Zone::COLLECTION, array("countryCode" => array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC" "BE"))))));
+			$zones = PHDB::find(Zone::COLLECTION, array("countryCode" => 
+								array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC", "BE"))));
 			$nbelement = 0 ;
 			$nbelementNew = 0 ;
 			foreach ($zones as $key => $value) {
 				$news = PHDB::find(News::COLLECTION, array('$and' => array(
-													array("scope.localities" => array('$exists' => 1))
+													array("scope.localities" => array('$exists' => 1)),
 													array("scope.localities.parentId" => $key))));
 
 
 				foreach ($news as $keyNew => $valueNew) {
 					$res = PHDB::update(News::COLLECTION, 
 									array("_id"=>new MongoId($keyNew)),
-									array('$set' => array("scope.localities" = array()))
+									array('$set' => array("scope.localities" => array()))
 							);
 					$nbelementNew++;
 
@@ -2788,18 +2790,19 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 			echo  "NB Zone mis à jours: " .$nbelement."<br>" ;
 
-			$cities = PHDB::find(City::COLLECTION, array("countryCode" => array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC" "BE"))))));
+			$cities = PHDB::find(City::COLLECTION, array("countryCode" => 
+								array('$nin' => array("MQ", "YT", "GP", "GF", "RE", "FR", "NC", "BE"))));
 			$nbelement = 0 ;
 			foreach ($cities as $key => $value) {
 				$news = PHDB::find(News::COLLECTION, array('$and' => array(
-													array("scope.localities" => array('$exists' => 1))
+													array("scope.localities" => array('$exists' => 1)),
 													array("scope.localities.parentId" => $key))));
 
 
 				foreach ($news as $keyNew => $valueNew) {
 					$res = PHDB::update(News::COLLECTION, 
 									array("_id"=>new MongoId($keyNew)),
-									array('$set' => array("scope.localities" = array()))
+									array('$set' => array("scope.localities" => array()))
 							);
 					$nbelementNew++;
 				}

@@ -62,8 +62,9 @@ class CO2 {
 
                 $cities=array();
                 foreach ($citiesResult as $key => $v) {
-                    $trad4 = Zone::getTranslateById($key);
-                    $cities[]=(!empty($trad4["translates"]["EN"]) ? $trad4["translates"]["EN"] : $v["name"]);
+                    // $trad4 = Zone::getTranslateById($key, City::COLLECTION);
+                    // $cities[]=(!empty($trad4["translates"]["EN"]) ? $trad4["translates"]["EN"] : $v["name"]);
+                    $cities[] = City::getNameCity($key);
                 }
                 $communexion["cities"] = $cities;
             }

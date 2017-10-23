@@ -10,7 +10,7 @@ function pushListRoles(links){
 		$.each(links.members, function(e,v){
 			if(typeof v.roles != "undefined"){
 				$.each(v.roles, function(i,data){
-					if(data != ""){
+					if(data != "" && !rolesList.includes(data)){
 						rolesList.push(data);
 					}
 				});
@@ -22,7 +22,7 @@ function pushListRoles(links){
 		$.each(links.contributors, function(e,v){
 			if(typeof v.roles != "undefined"){
 				$.each(v.roles, function(i,data){
-					if(data != ""){
+					if(data != "" && !rolesList.includes(data)){
 						rolesList.push(data);
 					}
 				});
@@ -34,7 +34,7 @@ function pushListRoles(links){
 		$.each(links.attendees, function(e,v){
 			if(typeof v.roles != "undefined"){
 				$.each(v.roles, function(i,data){
-					if(data != ""){
+					if(data != "" && !rolesList.includes(data)){
 						rolesList.push(data);
 					}
 				});

@@ -345,7 +345,8 @@
 
 											"address" 			: "MARKER",
 
-											"classified" 		: "classified-marker-default"
+											"classified" 		: "classified-marker-default",
+											"services" 			: "MARKER"
 
 									  };
 
@@ -385,8 +386,8 @@
 											"poi.video" 		: { ico : "video-camera", color : "dark" 	},
 											"poi.interop.wiki" 	: { ico : "folder-open", color : "yellow" 	},
 											"poi.interop.datagouv" 	: { ico : "folder-open", color : "yellow" 	},
-											"poi.interop.osm" 	: { ico : "folder-open", color : "yellow" 	},
-											"poi.interop.ods" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.osm" 		: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.ods" 		: { ico : "folder-open", color : "yellow" 	},
 											"poi.interop.datanova" 	: { ico : "folder-open", color : "yellow" 	},
 											"poi.interop.poleemploi" 	: { ico : "folder-open", color : "yellow" 	},
 											"poi.interop.educ_etab" 	: { ico : "folder-open", color : "yellow" 	},
@@ -402,6 +403,8 @@
 											"address" 			: { ico : "map-marker", color : "red" 	},
 
 											"classified" 		: { ico : "bullhorn", color : "azure" 	},
+
+											"services" 			: { ico : "handshake-o", color : "orange" 	},
 
 									  };
 

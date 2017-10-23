@@ -438,6 +438,7 @@ $this->renderPartial($layoutPath.'header',
         var url_interop = "";
 
         city_id = getCityId();
+
         city_data = getCityDataById(city_id);
         var geoShape = getGeoShapeForOsm(city_data.geoShape);
         var geofilter = getGeofilterPolygon(city_data.geoShape);

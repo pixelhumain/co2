@@ -713,36 +713,29 @@ circle.yellow-dot {
     city_data = getCityDataById(city_id);
     var city_wikidataID = city_data.wikidataID;
 
-		// if ($.cookie().communexionActivated == true) {
-	 //    var city_wikidataID = communexion.values.wikidataID;
-	 //  } else {
-  //   	scope_value = getScopeValue();
-  //     city_data = getCityDataByInsee(scope_value);
-  //     var city_wikidataID = city_data.wikidataID;
-  //   }
     return city_wikidataID;
 	}
 		
-  function getCityDataByInsee(insee) {
+ //  function getCityDataByInsee(insee) {
 
-    $.ajax({
-      type: "GET",
-      url: baseUrl + "/co2/interoperability/get/insee/"+insee,
-      async: false,
-      success: function(data){ 
-        mylog.log("succes get CityDataByInsee", data); //mylog.dir(data);
-        if ((Object.keys(data).length) <= 1) {
-          $.each(data, function(index, value) {
-            city_data = value;
-          });
-        }
-        else {
-          city_data = data;
-        }
-      }
-    });
-    return city_data;
-	}
+ //    $.ajax({
+ //      type: "GET",
+ //      url: baseUrl + "/co2/interoperability/get/insee/"+insee,
+ //      async: false,
+ //      success: function(data){ 
+ //        mylog.log("succes get CityDataByInsee", data); //mylog.dir(data);
+ //        if ((Object.keys(data).length) <= 1) {
+ //          $.each(data, function(index, value) {
+ //            city_data = value;
+ //          });
+ //        }
+ //        else {
+ //          city_data = data;
+ //        }
+ //      }
+ //    });
+ //    return city_data;
+	// }
 
 	function OpenDynFormForPutDescriptionOnWikidataElt(wikidataID, itemLabel) {
 

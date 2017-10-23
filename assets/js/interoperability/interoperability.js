@@ -569,7 +569,12 @@ function getCityId() {
     } else { 
         $.each(myMultiScopes, function(index, value) { 
             if (value.active == true) {
-                city_id = index;
+                if (value.type == "city") {
+                    city_id = index;
+                } else if (value.type == "cp") {
+                    city_data = getCityDataByInsee(value.name);
+                    city_id = city_data._id.$id
+                }
             }
         });
     }
@@ -604,7 +609,7 @@ function getCityDataById(id) {
         type: "GET",
         url: baseUrl + "/co2/interoperability/get/id/"+id,
         async: false,
-        success: function(data){ mylog.log("succes get CityDataByInsee", data); //mylog.dir(data);
+        success: function(data){ mylog.log("succes get CityDataById", data); //mylog.dir(data);
             if ((Object.keys(data).length) <= 1) {
                 $.each(data, function(index, value) {
                     city_data = value;

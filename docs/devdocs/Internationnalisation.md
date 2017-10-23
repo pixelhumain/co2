@@ -201,17 +201,48 @@ Error Nivelles 1 597b1c0c6ff992f0038b45bf
 Error Tielt 597b1d1e6ff992f0038b4602
 NB Element mis à jours: 160
 
-## Test
-
-keyCommunexion=FR@58bd5d6494ef471f218b4588@@5979d1cd6ff9925a108b4572@597b1cff6ff992f0038b45fd@54c09644f6b95c1418004eb2@37530
-
-checker 
 
 
 
+### Integration de Pays
 
-mongoimport --host c19.lamppost.17.mongolayer.com --port 10019 --username devCommunecter --password 2210wtfmongo$ --db dev-communecter --collection zones --file zones.json
-      
-mongoimport --host c19.lamppost.17.mongolayer.com --port 10019 --username devCommunecter --password 2210wtfmongo$ --db dev-communecter --collection translate --file translate.json
+Import 1
+NB Element mis à jours: 0
+NB Element created: 166
+NB Element error: 82
 
-mongoimport --host c19.lamppost.17.mongolayer.com --port 10019 --username devCommunecter --password 2210wtfmongo$ --db dev-communecter --collection cities --file cities.json
+Import 2
+NB Element mis à jours: 0
+NB Element created: 52
+NB Element error: 24
+
+Reste a faire :
+
+todo: AW : Aruba
+todo: AX : Åland Islands
+todo: TF : French Southern and Antarctic Lands
+todo: BL : Saint Barthélemy
+todo: BV : Bouvet Island
+todo: CC : Cocos (Keeling) Islands
+todo: CW : Curaçao
+todo: CX : Christmas Island
+todo: GU : Guam
+todo: HK : Hong Kong
+todo: HM : Heard Island and McDonald Islands
+todo: MO : Macau
+todo: MF : Saint Martin
+todo: MP : Northern Mariana Islands
+todo: NF : Norfolk Island
+todo: PH : Philippines
+todo: PR : Puerto Rico
+todo: PF : French Polynesia
+todo: SJ : Svalbard and Jan Mayen
+todo: PM : Saint Pierre and Miquelon
+todo: SX : Sint Maarten
+todo: VA : Vatican City
+todo: VI : United States Virgin Islands
+todo: WF : Wallis and Futuna
+
+
+
+

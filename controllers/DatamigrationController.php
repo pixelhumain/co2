@@ -2995,6 +2995,10 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 					$origin = $translate["translates"]["FR"] ;
 				else if (!empty($translate["translates"][$translate["countryCode"]]))
 					$origin = $translate["translates"][$translate["countryCode"]] ;
+				else if (!empty($translate["translates"]["EN"]))
+					$origin = $translate["translates"]["EN"] ;
+				else if (!empty($translate["translates"]["FR"]))
+					$origin = $translate["translates"]["FR"] ;
 
 				if(!empty($origin)){
 					$newsT = array();
@@ -3031,48 +3035,50 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			//var_dump(json_encode($value));
 			//echo json_encode($value);
 
-			$zones = PHDB::find(Zone::COLLECTION, array('countryCode' => $value["cca2"]));
+			$zone = PHDB::findOne(Zone::COLLECTION, array('$and' => array(
+														array('countryCode' => $value["cca2"]),
+														array('level' => "1") ) ) );
 
-			if(!empty($zones)){
-				$set = array();
-				if(!empty($value["cca3"]))
-					$set["cca3"] = $value["cca3"];
-				if(!empty($value["callingCode"]))
-					$set["callingCode"] = $value["callingCode"];
+			if(!empty($zone)){
+				// $set = array();
 				// if(!empty($value["cca3"]))
 				// 	$set["cca3"] = $value["cca3"];
+				// if(!empty($value["callingCode"]))
+				// 	$set["callingCode"] = $value["callingCode"];
 
-				if(!empty($set)){
-					// PHDB::update(Zone::TRANSLATE, 
-					// 				array("_id"=>new MongoId($key)),
-					// 				array('$set' => $set)
-					// 	);
-					$nbelementUpdate++;
-				}
-			}else{
-				$level1 = Zone::createLevel($value["name"]["official"], $value["cca2"], "1");
+				// if(!empty($set)){
+				// 	PHDB::update(Zone::TRANSLATE, 
+				// 					array("_id"=>new MongoId((String) $zone["_id"])),
+				// 					array('$set' => $set)
+				// 		);
+				// 	$nbelementUpdate++;
+				// }
 
-				if(!empty($level1)){
-					if(!empty($value["cca3"]))
-					$level1["cca3"] = $value["cca3"];
-					if(!empty($value["callingCode"]))
-						$level1["callingCode"] = $value["callingCode"];
-					//echo json_encode($level1 );
-					// $savelevel1 = Zone::save($level1);
-		   //  		if($savelevel1["result"] == true)
-		   //  			$nbelementCreate++;
-		   //  		else{
-		   //  			$nbelementError++;
-		   //  			echo  "Error: " .$value["cca2"]."<br>" ;
-		   //  		}
-				}else{
-					$nbelementError++;
-		     			echo  "Error: " .$value["cca2"]."<br>" ;
-				}
+			} else {
+				echo  "todo: " .$value["cca2"]." : ".$value["name"]["common"]."<br>" ;
+				// $level1 = Zone::createLevel($value["name"]["common"], $value["cca2"], "1");
+
+				// if(!empty($level1)){
+				// 	if(!empty($value["cca3"]))
+				// 	$level1["cca3"] = $value["cca3"];
+				// 	if(!empty($value["callingCode"]))
+				// 		$level1["callingCode"] = $value["callingCode"];
+				// 	//echo json_encode($level1 );
+				// 	$savelevel1 = Zone::save($level1);
+		  //   		if($savelevel1["result"] == true)
+		  //   			$nbelementCreate++;
+		  //   		else{
+		  //   			$nbelementError++;
+		  //   			echo  "Error1: " .$value["cca2"]."<br>" ;
+		  //   		}
+				// }else{
+				// 	$nbelementError++;
+		  //    			echo  "Error2: " .$value["cca2"]."<br>" ;
+				// }
 				
 			}
 
-			break;
+			//break;
 		}
 
 		echo  "NB Element mis à jours: " .$nbelementUpdate."<br>" ;

@@ -2045,8 +2045,8 @@ function getMediaCommonHtml(data,action,id){
             extractClass="extracted_thumb";
             width="100%";
             height="100%";
-
-            aVideo='<a href="#" class="videoSignal text-white center"><i class="fa fa-3x fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
+            thumbImg=true;
+            aVideo='<a href="javascript:;" class="videoSignal text-white center"><i class="fa fa-3x fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
             inputToSave+="<input type='hidden' class='video_link_value' value='"+data.content.videoLink+"'/>"+
             "<input type='hidden' class='media_type' value='video_link' />";   
 		}
@@ -2057,11 +2057,13 @@ function getMediaCommonHtml(data,action,id){
                 extractClass="extracted_thumb_large";
                 width="100%";
                 height="";
+                thumbImg=false;
             }
             else{
                 extractClass="extracted_thumb";
                 width="100";
                 height="100";
+            	thumbImg=true;
             }
             inputToSave+="<input type='hidden' class='media_type' value='img_link' />";
 		}
@@ -2112,14 +2114,17 @@ function getMediaCommonHtml(data,action,id){
 	else
 		mediaUrl="";
 	if((typeof(data.description) !="undefined" || typeof(data.name) != "undefined") && (data.description !="" || data.name != "")){
-		contentMedia='<div class="extracted_content col-xs-8 padding-20">'+
+		classContentDescr="col-xs-12 padding-10";
+		if(thumbImg)
+			classContentDescr="col-xs-8";
+		contentMedia='<div class="extracted_content '+classContentDescr+'">'+
 			'<a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">';
 			if(typeof(data.name) != "undefined" && data.name!=""){
 				contentMedia+='<h4>'+data.name+'</h4></a>';
 				inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
 			}
 			if(typeof(data.description) != "undefined" && data.description!=""){
-				contentMedia+='<p>'+data.description+'</p>'+countThumbail+'>';
+				contentMedia+='<span>'+data.description+'</span>';
 				if(typeof(data.name) == "undefined" || data.name=="")
 					contentMedia+='</a>';
 				inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
@@ -2134,7 +2139,7 @@ function getMediaCommonHtml(data,action,id){
 	content="";
 	if(action == "save")
 		content += '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>';
-    content += '<div class="extracted_url padding-10">'+ inc_image +contentMedia+'</div>'+inputToSave;
+    content += '<div class="extracted_url">'+ inc_image +contentMedia+'</div>'+inputToSave;
     return content;
 }
 
@@ -2243,9 +2248,9 @@ function communecterUser(){
 }
 
 function updateLocalityEntities(addressesIndex, addressesLocality){
-	mylog.warn("updateLocalityEntities");
+	mylog.log("updateLocalityEntities", addressesIndex, addressesLocality);
 	$("#ajax-modal").modal("hide");
-	
+	mylog.log("typeof formInMap.initUpdateLocality", typeof formInMap.initUpdateLocality);
 	if(typeof formInMap.initUpdateLocality != "undefined"){
 		var address = contextData.address ;
 		var geo = contextData.geo ;
@@ -2854,6 +2859,7 @@ var dyFObj = {
 		            	// mylog.log("data.id", data.id, data.url);
 		            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
 				        	addLocationToFormloopEntity(data.id, collection, data.map);*/
+				        	
 				        if (typeof afterSave == "function"){
 		            		afterSave(data);
 		            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
@@ -3002,11 +3008,12 @@ var dyFObj = {
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
 	  	dyFObj.buildDynForm(afterLoad, data,dyFObj[dyFObj.activeElem],dyFObj.activeModal+" #ajaxFormModal");
-	  	if(typeof dyFObj[dyFObj.activeElem].titleClass != "undefined")
-	  		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-									  .addClass(dyFObj[dyFObj.activeElem].titleClass);
-		
-	  	$(dyFObj.activeModal+" #ajax-modal-modal-title").html((typeof dyFObj[dyFObj.activeElem].title != "undefined") ? dyFObj[dyFObj.activeElem].title : "");
+	  	//if(typeof dyFObj[dyFObj.currentKFormType].color != "undefined")
+	  		//$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+									  	  //.addClass(dyFObj[dyFObj.currentKFormType].color);
+		//alert("CO "+typeObj[currentKFormType].color);
+                    
+	  	//$(dyFObj.activeModal+" #ajax-modal-modal-title").html((typeof dyFObj[dyFObj.activeElem].title != "undefined") ? dyFObj[dyFObj.activeElem].title : "");
 	},
 	/*subDynForm : function(type, afterLoad,data) {
 		smallMenu.open();
@@ -3352,10 +3359,10 @@ var dyFInputs = {
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
-				$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-					  					  	  .addClass("bg-dark");
+				//$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+				//	  					  	  .addClass("bg-dark");
     		 	
-    		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
+    		 	//$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
 
         	},1500);
     	}
@@ -4100,8 +4107,8 @@ var dyFInputs = {
     },
     voteDateEnd :{
     	inputType : "datetime",
-    	label : "Fin de la période de vote",
-    	placeholder : "Fin de la période de vote",
+    	label : tradDynForm.dateEndVoteSession,
+    	placeholder : tradDynForm.dateEndVoteSession,
     	rules : { 
     		required : true,
     		greaterThanNow : ["DD/MM/YYYY H:m"]
@@ -4109,8 +4116,8 @@ var dyFInputs = {
     },
     amendementDateEnd :{
     	inputType : "datetime",
-    	label : "Fin de la période d'amendement (ouverture des votes)",
-    	placeholder : "Fin de la période d'amendement",
+    	label : tradDynForm.dateEndAmendementSessionStartVote,
+    	placeholder : tradDynForm.dateEndAmendementSession,
     	rules : { 
     		required : true,
     		greaterThanNow : ["DD/MM/YYYY H:m"]
@@ -4229,8 +4236,8 @@ var typeObj = {
 			    }
 			}
 		}	},
-	addPhoto:{ titleClass : "bg-dark" },
-	addFile:{ titleClass : "bg-dark" },
+	addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
+	addFile:{ titleClass : "bg-dark", color : "bg-dark" },
 	person : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
 	persons : { sameAs:"person" },
 	people : { sameAs:"person" },
@@ -4285,7 +4292,7 @@ var typeObj = {
 				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
 				   ]	},
 	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
-	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
+	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
 	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
 	default : {icon:"arrow-circle-right",color:"dark"},
 	//"video" : {icon:"video-camera",color:"dark"},

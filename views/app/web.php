@@ -205,6 +205,7 @@ jQuery(document).ready(function() {
     buildListCategories();
 
     location.hash = "#web";
+    setTitle("", "", "kgougle");
 });
 
 

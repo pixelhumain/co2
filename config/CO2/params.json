@@ -3,6 +3,11 @@
 	"metaImg" : "/assets/img/bg_pixeltree2.jpg",
 	"metaTitle" : "Réseau sociétal citoyen",
 	"metaDesc" : "Communecter : Connecter à sa commune, inter connecter les communs, un réseau sociétal pour un citoyen connecté et acteur au centre de sa société.",
+    "devises" : {"€" : "€",
+                 "£" : "£",
+                 "$" : "$",
+                 "CFP" : "CFP"},
+    "deviseDefault" : "€",
 
 	"pages" : {
 		"#app.index": {"redirect":"welcome"},
@@ -97,7 +102,7 @@
 			"subdomainName" : "page",
 			"hash":"#app.page",
 			"icon" : "", 
-			"mainTitle" : "Le réseau social à effet de sert",
+			"mainTitle" : "Le réseau social citoyen",
 			"placeholderMainSearch" : "search ..."
 		},
 
@@ -109,7 +114,7 @@
 			"subdomainName" : "Info",
 			"hash":"#app.info",
 			"icon" : "info-circle", 
-			"mainTitle" : "Le réseau social à effet de sert",
+			"mainTitle" : "Le réseau social citoyen",
 			"placeholderMainSearch" : "search on people communected ..."
 		},
 

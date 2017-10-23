@@ -389,7 +389,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	var s = (n>1) ? "s" : "";
 
 	if(countData=='Aucun')
-		countData=trad.no;
+		countData=trad.noone;
 	var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
 	if(dataName == "follows")	{ html += elementName + " "+trad.isfollowing+" " + countData + " "+trad.page+s+""; }
 	else if(dataName == "followers")	{ html += countData + " <b>"+trad.follower+s+"</b> "+trad.to+" "+ elementName; }
@@ -658,13 +658,25 @@ function loadContacts(){
 
 //todo add count on each tag
     function getfilterRoles(roles) { 
-    	console.log("roles",roles);
-        $("#listRoles").html("");
-        $("#listRoles").append("<a class='btn btn-link letter-blue favElBtn favAllBtn' "+
+    	console.log("getfilterRoles roles",roles);
+    	if(typeof roles == "undefined") {
+    		$("#listRoles").hide();
+    		return;
+		}
+
+		var nRole = 0;
+    	$.each( roles,function(k,o){ nRole++; } );
+    	if(nRole == 0){
+    		$("#listRoles").hide();
+    		return;
+		}
+		$("#listRoles").show(300);
+        $("#listRoles").html("<i class='fa fa-filter'></i> Tier par rôles : ");
+        $("#listRoles").append("<a class='btn btn-link btn-sm letter-blue favElBtn favAllBtn' "+
             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'>"+
             " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a>");
         	$.each( roles,function(k,o){
-                $("#listRoles").append("<a class='btn btn-link favElBtn letter-blue "+slugify(k)+"Btn' "+
+                $("#listRoles").append("<a class='btn btn-link btn-sm favElBtn letter-blue "+slugify(k)+"Btn' "+
                                 "data-tag='"+slugify(k)+"' "+
                                 "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(k)+"\",\".searchEntityContainer\",1)'>"+
                                   k+" <span class='badge'>"+o.count+"</span>"+
@@ -707,7 +719,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			html += btnMap;
 
 		html +=	thisTitle;
-		html += "<div id='listRoles'></div>"+
+		html += "<div id='listRoles' class='shadow2'></div>"+
 			 "<hr>";
 		html +=	"</div>";
 		
@@ -744,7 +756,9 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		initBtnLink();
 		initBtnAdmin();
 		bindButtonOpenForm();
+
 		getfilterRoles(listRoles);
+	
 		var dataToMap = data;
 		if(dataName == "collections"){
 			dataToMap = new Array();

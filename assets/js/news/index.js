@@ -353,7 +353,7 @@ function modifyNews(idNews,typeNews){
 	 	
 	 	message += "<div id='container-txtarea-news-"+idNews+"' class='updateMention'>";
 		message += 	"<textarea id='textarea-edit-news"+idNews+"' class='form-control newsContentEdit newsTextUpdate get-url-input' placeholder='modifier votre message'>"+commentContent+"</textarea>"+
-				   	"<div id='resultsUpdate' class='bg-white results col-sm-12'>";
+				   	"<div id='resultsUpdate' class='bg-white results col-sm-12 col-xs-12'>";
 				   	if(typeof updateNews[idNews]["media"] != "undefined"){
 				   		if(updateNews[idNews]["media"]["type"]=="url_content")
 				   			message += getMediaCommonHtml(updateNews[idNews]["media"],"save");

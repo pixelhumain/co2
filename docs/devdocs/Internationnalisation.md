@@ -16,10 +16,6 @@
         [X] departement -> level4
         [X] region -> level3
         [X] regionBel -> level2
-    [ ] Batch pour crée la clé unique pour
-        [99%] Les zones
-        [99%] les villes 
-        [40%] les éléments possédants une adresse
     [ ] Batch qui supprime “*BE“ dans les insee des communes de la belgique
     [X] Batch pour remplacer dans les addresses (vérifier que c'est la même chose pour la belgique: 
         [X] departement -> level4
@@ -53,7 +49,7 @@
 
 - Sauvegarder l'actuelle base de données
 - Supprimer cities
-- Importer cities, zones et translates :
+- Importer cities, zones et translates qui se trouve dans co2/data :
     + Déziper les fichiers puis exécuter les commandes suivants
 ```
 mongoimport --db communecter --collection zones --file zones.json
@@ -140,13 +136,15 @@ Va contenir l'ensemble des Traduction pour les cities et les zones
 
 # A tester
 
+Pour voir les différents types de pays, voir dans le lien utile
+
 - Ajout d'element avec une adresses
 - Modification d'addresse
 - Suppression d'adresse
-- Communexion 
-- Scope dans Search / Live / Agenda
+- Communexion
+- Scope dans Search / Live / Agenda / Interop
 - Activité du térritoire
-- Network 
+- Network
 - Import
 
 

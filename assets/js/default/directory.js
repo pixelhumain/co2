@@ -834,8 +834,9 @@ var directory = {
     //  ELEMENT DIRECTORY PANEL
     // ********************************
 	  elementPanelHtml : function(params){
-    		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name);
-    		// mylog.log("----------- elementPanelHtml",params.type,params.name, params);
+    		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList);
+    		
+        mylog.log("----------- elementPanelHtml log", params.elTagsList);
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
@@ -1195,8 +1196,8 @@ var directory = {
             str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
          
             if(typeof params.category != "undefined"){
-              str += "<div class='entityType'><span class='uppercase bold'>" + params.section + "</span> > " + params.category;
-              if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+              str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.section] + "</span> > " + tradCategory[params.category];
+              if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
               str += "</div>";
             }
 
@@ -1248,7 +1249,7 @@ var directory = {
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
-        if(params.updated != null && params.updated.indexOf("il y a")>=0)
+        if(params.updated != null && params.updated.indexOf("il y a")>=0 && location.hash == "#agenda")
             params.updated = "En ce moment";
 
         if(params.updated != null && !params.useMinSize)
@@ -1503,6 +1504,9 @@ var directory = {
       //if(directory.dirLog) 
       mylog.log("-----------proposalPanelHtml", params, key);
       var idParentRoom = typeof params.idParentRoom != "undefined" ? params.idParentRoom : "";
+      if(idParentRoom == "" && params.type == "rooms") idParentRoom = params.id;
+      mylog.log("-----------idParentRoom", idParentRoom);
+      
       var name = (typeof params.title != "undefined" && params.title != "undefined") ? params.title : params.name;
       var description = params.description.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
       name = escapeHtml(name);
@@ -1871,8 +1875,9 @@ var directory = {
                 if(typeof params.tags != "undefined" && params.tags != null){
                   $.each(params.tags, function(key, value){
                     if(typeof value != "undefined" && value != "" && value != "undefined"){
-                      thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value)+"'>#" + value + "</span> ";
-                      params.elTagsList += slugify(value)+" ";
+                      thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value, true)+"'>#" + slugify(value, true) + "</span> ";
+                      console.log("sluggify", value, slugify(value, true));
+                      params.elTagsList += slugify(value, true)+" ";
                     }
                   });
                   params.tagsLbl = thisTags;
@@ -2106,7 +2111,7 @@ var directory = {
                 if( notEmpty( oTag ) && !inArray( oTag,directory.tagsT ) ){
                   directory.tagsT.push(oTag);
                   //mylog.log(oTag);
-                  $("#listTags").append("<a class='btn btn-link favElBtn text-red "+slugify(oTag)+"Btn' "+
+                  $("#listTags").append("<a class='btn btn-link favElBtn text-red elipsis "+slugify(oTag)+"Btn' "+
                                             "data-tag='"+slugify(oTag)+"' "+
                                             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(oTag)+"\",directory.elemClass,1)'>"+
                                               "#"+oTag+
@@ -2132,16 +2137,16 @@ var directory = {
         $(dest).html(str);
         $.each( list,function(k,o){
             if( type == "btn" ){
-              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'"><a class="btn tagListEl btn-select-type-anc typeBtn '+k+'Btn " data-tag="'+tradCategory[k]+'" data-key="'+k+'" href="javascript:;"><i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+'</a></div>'
+              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'"><a class="btn tagListEl btn-select-type-anc elipsis typeBtn '+k+'Btn " data-tag="'+k+'" data-key="'+k+'" href="javascript:;"><i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+'</a></div>'
             }
             else 
-              str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="'+tradCategory[k]+'">'+
+              str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+
                     '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+tradCategory[k]+'</button><br>';
             if( o.subcat && type != "btn" )
             {
               $.each( o.subcat ,function(i,oT){
-                  str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+tradCategory[k]+'" data-categ="'+tradCategory[k]+'" data-keycat="'+tradCategory[oT]+'">'+
-                          '<i class="fa fa-angle-right"></i>'+tradCategory[oT]+'</button><br class="hidden">';
+                  str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
+                          '<i class="fa fa-angle-right"></i> '+tradCategory[oT]+'</button><br class="hidden">';
               });
             }
             $(dest).append(str);
@@ -2296,71 +2301,76 @@ var directory = {
     /*if( searchT.length > 3 && searchT[3] == "map" )
       mapEnd = true;
     return mapEnd;*/
-  },
-
-     getDateFormated: function(params){
+  },  
+  get_time_zone_offset : function( ) {
+    var current_date = new Date();
+    return -current_date.getTimezoneOffset() / 60;
+ },
+ getDateFormated: function(params){
+    console.log("getDateFormated", params.startDate);
+    var timezone = directory.get_time_zone_offset();
     
-        params.startDateDB = notEmpty(params.startDate) ? params.startDate : null;
-        params.startDay = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD") : "";
-        params.startMonth = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("MM") : "";
-        params.startYear = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("YYYY") : "";
-        params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("d") : "";
-        params.startTime = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("HH:mm") : "";
-        params.startDate = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
-        
-        params.endDateDB = notEmpty(params.endDate) ? params.endDate: null;
-        params.endDay = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD") : "";
-        params.endMonth = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("MM") : "";
-        params.endYear = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("YYYY") : "";
-        params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).format("d") : "";
-        params.endTime = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("HH:mm") : "";
-        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
-        params.startDayNum = directory.getWeekDayName(params.startDayNum);
-        params.endDayNum = directory.getWeekDayName(params.endDayNum);
+    params.startDateDB = notEmpty(params.startDate) ? params.startDate : null;
+    params.startDay = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("DD") : "";
+    params.startMonth = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("MM") : "";
+    params.startYear = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("YYYY") : "";
+    params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("d") : "";
+    params.startTime = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("HH:mm") : "";
+    params.startDate = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("DD MMMM YYYY - HH:mm") : null;
+    
+    params.endDateDB = notEmpty(params.endDate) ? params.endDate: null;
+    params.endDay = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("DD") : "";
+    params.endMonth = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("MM") : "";
+    params.endYear = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("YYYY") : "";
+    params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("d") : "";
+    params.endTime = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("HH:mm") : "";
+    params.endDate   = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("DD MMMM YYYY - HH:mm") : null;
+    params.startDayNum = directory.getWeekDayName(params.startDayNum);
+    params.endDayNum = directory.getWeekDayName(params.endDayNum);
 
-        params.startMonth = directory.getMonthName(params.startMonth);
-        params.endMonth = directory.getMonthName(params.endMonth);
-        params.color="orange";
-        
+    params.startMonth = directory.getMonthName(params.startMonth);
+    params.endMonth = directory.getMonthName(params.endMonth);
+    params.color="orange";
+    
 
-        var startLbl = (params.endDay != params.startDay) ? trad["fromdate"] : "";
-        var endTime = ( params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
-        mylog.log("params.allDay", !notEmpty(params.allDay), params.allDay);
-       
-        
-        var str = "";
-        if(params.startDate != null){
-          str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      '<small>'+startLbl+' </small>'+
-                      '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
-                      params.startDay + ' ' + params.startMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.startYear + '</small>';
-                      if(!notNull(params.allDay) || params.allDay != true){
-                        str +=  ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> '+
-                                  params.startTime+endTime+"</b></small>";
-                      }
-                      
-            str +=  '</h3>';
-        }
-          
-        var dStart = params.startDay + params.startMonth + params.startYear;
-        var dEnd = params.endDay + params.endMonth + params.endYear;
-        mylog.log("DATEE", dStart, dEnd);
+    var startLbl = (params.endDay != params.startDay) ? trad["fromdate"] : "";
+    var endTime = ( params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
+    mylog.log("params.allDay", !notEmpty(params.allDay), params.allDay);
+   
+    
+    var str = "";
+    if(params.startDate != null){
+      str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                  '<small>'+startLbl+' </small>'+
+                  '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
+                  params.startDay + ' ' + params.startMonth + 
+                  ' <small class="letter-'+params.color+'">' + params.startYear + '</small>';
+                  if(!notNull(params.allDay) || params.allDay != true){
+                    str +=  ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> '+
+                              params.startTime+endTime+"</b></small>";
+                  }
+                  
+        str +=  '</h3>';
+    }
+      
+    var dStart = params.startDay + params.startMonth + params.startYear;
+    var dEnd = params.endDay + params.endMonth + params.endYear;
+    mylog.log("DATEE", dStart, dEnd);
 
-        if(params.endDate != null && dStart != dEnd){
-          str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      "<small>"+trad["todate"]+" </small>"+
-                      '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
-                      params.endDay + ' ' + params.endMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.endYear + '</small>';
-                      if(!notNull(params.allDay) || params.allDay != true){
-                        str += ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
-                                params.endTime+"</b></small>";
-                      }
-            str +=  '</h3>';
-        }
-            
-            
-        return str;
+    if(params.endDate != null && dStart != dEnd){
+      str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                  "<small>"+trad["todate"]+" </small>"+
+                  '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
+                  params.endDay + ' ' + params.endMonth + 
+                  ' <small class="letter-'+params.color+'">' + params.endYear + '</small>';
+                  if(!notNull(params.allDay) || params.allDay != true){
+                    str += ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
+                            params.endTime+"</b></small>";
+                  }
+        str +=  '</h3>';
+    }
+        
+        
+    return str;
   },
 }

@@ -312,6 +312,10 @@
 
         <?php }else if($typeSelected == "classified"){ ?>
 
+        <?php 
+          $params = CO2::getThemeParams();
+          $devises = @$params["devises"];
+        ?>
           <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub classifiedFilters" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
@@ -323,11 +327,11 @@
                 foreach ($classified['filters'] as $key => $cat) {
             ?>
                 <?php if(is_array($cat)) { ?>
-                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo Yii::t("category",$key); ?>">
+                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
                     <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo Yii::t("category",$key); ?>
                   </button><br>
                   <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
-                    <button class="btn btn-default text-azure margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo Yii::t("category",$key); ?>" data-categ="<?php echo Yii::t("category",$key); ?>" data-keycat="<?php echo Yii::t("category",$cat2); ?>">
+                    <button class="btn btn-default text-azure margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
                       <i class="fa fa-angle-right"></i> <?php echo Yii::t("category",$cat2); ?>
                     </button><br class="hidden">
                   <?php } ?>
@@ -364,28 +368,30 @@
 
           <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 padding-top-10" id="section-price">
           
-            <div class="form-group col-md-5 col-sm-5 col-xs-6">
+            <div class="form-group col-md-4 col-sm-4 col-xs-6">
               <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
                 <i class="fa fa-chevron-down"></i> <?php echo Yii::t("common","Min price") ?>
               </label>
-              <input type="text" id="priceMin" name="priceMin" class="form-control" placeholder="prix min"/>
+              <input type="text" id="priceMin" name="priceMin" class="form-control" 
+                     placeholder="<?php echo Yii::t("common","Max Min") ?>"/>
             </div>
 
-            <div class="form-group col-md-5 col-sm-5 col-xs-6">
+            <div class="form-group col-md-4 col-sm-4 col-xs-6">
               <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
                 <i class="fa fa-chevron-down"></i> <?php echo Yii::t("common","Max price") ?>
               </label>
-              <input type="text" id="priceMax" name="priceMax" class="form-control col-md-5" placeholder="prix max"/>
+              <input type="text" id="priceMax" name="priceMax" class="form-control col-md-5" 
+                     placeholder="<?php echo Yii::t("common","Max price") ?>"/>
             </div>
             
-            <div class="form-group col-md-2 col-sm-2 col-xs-12 hidden">
+            <div class="form-group col-md-2 col-sm-2 col-xs-12">
               <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
-                <i class="fa fa-money"></i> <?php echo Yii::t("common","Currency") ?>
+                <i class="fa fa-money"></i> <?php echo Yii::t("common","Money") ?>
               </label>
               <select class="form-control" name="devise" id="devise" style="">
-                <option class="bold" value="€">euro €</option>
-                <option class="bold" value="$">dollars $</option>
-                <option class="bold" value="CFP">CFP</option>
+                <?php foreach($devises as $key => $devise){ ?>
+                  <option class="bold" value="<?php echo $key; ?>"><?php echo $devise; ?></option>
+                <?php } ?>
               </select>
             </div>
 
@@ -413,7 +419,7 @@
                 foreach ($place["filters"] as $key => $cat) {
             ?>
                 <?php if(is_array($cat)) { ?>
-                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 elipsis" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
                     <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
                   </button><br>
                   <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
@@ -589,15 +595,17 @@ jQuery(document).ready(function() {
   });
 
   $(".btn-select-filliaire").click(function(){
+      mylog.log(".btn-select-filliaire");
       var fKey = $(this).data("fkey");
       myMultiTags = {};
       $.each(filliaireCategories[fKey]["tags"], function(key, tag){
         addTagToMultitag(tag);
       });
-      console.log("myMultiTags", myMultiTags);
+      mylog.log("myMultiTags", myMultiTags);
       
       startSearch(0, indexStepInit, searchCallback);
       KScrollTo("#content-social");
+      bindCommunexionScopeEvents();
       //KScrollTo("#before-section-result");
   });
   

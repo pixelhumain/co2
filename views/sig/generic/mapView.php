@@ -114,7 +114,9 @@
 					<select class='form-group col-xs-12' name='newElement_country' id='newElement_country'>
 						<?php
 							echo "<option value=''>".Yii::t("common", "Choose a country")."</option>";
-							foreach ( OpenData::$phCountries as $key => $value) {
+							$asort = OpenData::$phCountries;
+        					asort($asort);
+							foreach ( $asort as $key => $value) {
 								echo "<option value='".$key."'>".$value."</option>";
 							}
 						?>
@@ -124,6 +126,9 @@
 						<ul class='dropdown-menu col-md-12 col-xs-12' id='dropdown-newElement_locality-found' style="margin-top: -15px; background-color : #ea9d13; max-height : 300px ; overflow-y: auto">
 							<li><a href='javascript:' class='disabled'><?php echo Yii::t("common", "Search a city, a town or a postal code") ; ?></a></li>
 						</ul>
+			  		</div>
+			  		<div id='divCP' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
+				  		<input class='form-group col-md-12 col-xs-12' type='text' name='newElement_cp' placeholder='<?php echo Yii::t("common", "Add a postal code") ; ?>'>
 			  		</div>
 					<div id='divStreetAddress' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
 						<input class='form-group col-md-9 col-xs-9' type='text' style='margin-right:-3px;' name='newElement_street' placeholder='<?php echo Yii::t("common", "streetFormInMap"); ?>'>

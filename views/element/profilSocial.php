@@ -283,7 +283,7 @@
 		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION ){ ?>
 		  <button type="button" class="btn btn-default bold hidden-xs letter-turq" data-toggle="modal" data-target="#modalCoop" 
 		  		  id="open-co-space" style="border-right:0px!important;">
-		  		<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common", "Espace CO"); ?>
+		  		<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("cooperation", "CO-space"); ?>
 		  </button>
 		  <?php } ?>
 
@@ -624,9 +624,12 @@
 	</section>
 
 	<!-- <section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding form-contact-mail pull-right"> -->
-		<?php 	$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+		<?php 
+			if(Yii::app()->params["CO2DomainName"] != "kgougle"){ 
+				$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 				$this->renderPartial($layoutPath.'forms.'.Yii::app()->params["CO2DomainName"].'.formContact', 
-									array("element"=>@$element)); 
+									array("element"=>@$element));
+			} 
 		?>
 	<!-- </section> -->
 </div>	

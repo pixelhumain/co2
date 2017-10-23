@@ -177,7 +177,7 @@
               if (typeof dayEvents.thumb_url != "undefined" && dayEvents.thumb_url != "") {
                   imgProfil = "<img class='badge bg-orange' src='"+dayEvents.thumb_url+"'>"; 
               }
-              item += "<a href='javascript:' onclick='"+action+"' class=''>" +
+              item += "<a href='#page.type.events.id."+dayEvents.id+"' class='loadByHash'>" +
                         imgProfil + 
                         "<div class='info-event text-dark'>" + dayEvents.name+"<br><small class='text-red'>"+ dayEvents["position"] + "</small></div>" +
                       "</a>";
@@ -262,6 +262,7 @@
           this.applyTransform(day, 'rotateY(180deg)');
           this.applyBackfaceVisibility(day);
         }
+        console.log("debug calendar", this.options);
         day = this.makeActive(day, this.options.events[dateString]);
         return this.$element.find('[data-group="days"]').append(day);
       },

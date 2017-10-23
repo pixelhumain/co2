@@ -240,6 +240,7 @@ function showResultInCalendar(mapElements){
     //mylog.dir(mapElements);
 
     var events = new Array();
+    console.log("data mapElements", mapElements);
     $.each(mapElements, function(key, thisEvent){
     
         var startDate = exists(thisEvent["startDateTime"]) ? thisEvent["startDateTime"].substr(0, 10) : "";
@@ -275,6 +276,7 @@ function showResultInCalendar(mapElements){
     if(aujourdhui.getMonth() < 10) month = "0" + month;
     var date = aujourdhui.getFullYear().toString() + "-" + month;
 
+    console.log("data events", events);
     $(".responsive-calendar").responsiveCalendar({
           time: date,
           events: events

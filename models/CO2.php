@@ -27,13 +27,14 @@ class CO2 {
     	$query = array("country"=>"NC", "name"=>array('$in'=>array("Noumea", "Dumbea", "Paita", "Mont-Dore")));
     	$citiesGN = PHDB::find(City::COLLECTION, $query);
 
-    	$query = array("country"=>"NC", "depName"=>"Province Sud", "name"=>array('$nin'=>array("Noumea", "Dumbea", "Paita", "Mont-Dore")));
+    	$query = array("country"=>"NC", "level3Name"=>"Province Sud", 
+                        "name"=>array('$nin'=>array("Noumea", "Dumbea", "Paita", "Mont-Dore")));
     	$citiesS = PHDB::find(City::COLLECTION, $query);
 
-    	$query = array("country"=>"NC", "depName"=>"Province Nord");
+    	$query = array("country"=>"NC", "level3Name"=>"Province Nord");
     	$citiesN = PHDB::find(City::COLLECTION, $query);
 
-    	$query = array("country"=>"NC", "depName"=>"Province Des Iles");
+    	$query = array("country"=>"NC", "level3Name"=>"Province des Iles");
     	$citiesI = PHDB::find(City::COLLECTION, $query);
 
     	$cities = array("GN"=>$citiesGN, 

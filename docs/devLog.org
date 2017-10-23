@@ -754,6 +754,23 @@ db.cities.find().forEach(function(doc){
 });
 
 
+db.cities.find().forEach(function(doc){ 
+    if(doc.country == "NC"){ 
+        print(doc.name+" :: " + doc.postalCodes[0].kanakName); 
+
+        if(typeof doc.postalCodes[0].kanakName != "undefined"){
+          db.cities.update({"_id":doc._id},{
+              '$set':{'kanakName':doc.postalCodes[0].kanakName}
+          });
+        } else {
+          db.cities.update({"_id":doc._id},{
+              '$set':{'kanakName':doc.postalCodes[0].name}
+          });
+        }
+    } 
+});
+
+
 ---------------------------------------------------
 Activer / Désactiver MAPBOX
 

@@ -199,6 +199,5 @@ function initTags(){
   $('#tags').select2({tags:tagsNews});
   $("#tags").select2('val', "");
 }
-
 /* COMMENTS vvv */
 </script>

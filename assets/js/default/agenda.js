@@ -9,7 +9,7 @@ var totalData = 0;
 var timeout = null;
 
 function startSearch(indexMin, indexMax){
-    mylog.log("startSearch", indexMin, indexMax, indexStep);
+    console.log("startSearch agenda.js", indexMin, indexMax, indexStep);
 
     mylog.log("loadingData", loadingData);
     if(loadingData) return;

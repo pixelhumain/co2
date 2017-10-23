@@ -376,7 +376,7 @@ function connectPerson(connectUserId, callback)
 
 
 
-function disconnectTo(parentType,parentId,childId,childType,connectType, callback) {
+function disconnectTo(parentType,parentId,childId,childType,connectType, callback, linkOption) {
 	var messageBox = trad["removeconnection"+connectType];
 	$(".disconnectBtnIcon").removeClass("fa-unlink").addClass("fa-spinner fa-spin");
 	var formData = {
@@ -386,6 +386,8 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 		"parentId" : parentId,
 		"connectType" : connectType,
 	};
+	if(typeof linkOption != "undefined" && linkOption)
+		formData.linkOption=linkOption;
 	bootbox.dialog({
         onEscape: function() {
             $(".disconnectBtnIcon").removeClass("fa-spinner fa-spin").addClass("fa-unlink");
@@ -590,7 +592,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
                             $.ajax({
 								type: "POST",
 								url: baseUrl+"/"+moduleId+"/link/connect",
-								data: formData,
+								data: formData,	
 								dataType: "json",
 								success: function(data) {
 									if(data.result){
@@ -658,6 +660,7 @@ var urlCtrl = {
 		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
 	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
+
 	    "#admin.checkgeocodage" : {title:'CHECKGEOCODAGE ', icon : 'download', useHeader: true},
 	    "#admin.openagenda" : {title:'OPENAGENDA ', icon : 'download', useHeader: true},
 	    "#admin.adddata" : {title:'ADDDATA ', icon : 'download', useHeader: true},
@@ -674,6 +677,7 @@ var urlCtrl = {
 	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
 	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : true},
 	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : true},
+	   	"#adminpublic.interopproposed" : {title : 'INTEROP PROPOSED', icon : 'download', useHeader : true},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
@@ -691,6 +695,10 @@ var urlCtrl = {
 		"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
 		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
 		"#opendata" : {"alias":"#data.index"},
+		"#interoperability.copedia" : {title:'COPEDIA', icon : 'fa-folder-open-o','useHeader' : true},
+		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o','useHeader' : true},
+
+
 		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) }, removeAfterLoad : true },
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
@@ -792,7 +800,6 @@ var urlCtrl = {
 						path = urlCtrl.convertToPath(hash);
 						pathT = path.split('/');
 						//open path in a modal (#openModal)
-						
 						if(pathT[0] == "modal"){
 							path = path.substring(5);
 							alert(baseUrl+'/'+moduleId+path);
@@ -1385,7 +1392,9 @@ var smallMenu = {
 		 },"html" );
 	},
 	//content Loader can go into a block
-	open : function (content,type) { 
+	//smallMenu.open("Recherche","blockUI")
+	//smallMenu.open("Recherche","bootbox")
+	open : function (content,type,color) { 
 		//alert("small menu open");
 		//add somewhere in page
 		if(!smallMenu.inBlockUI){
@@ -1395,6 +1404,8 @@ var smallMenu = {
 		else {
 			//this uses blockUI
 			if(type == "blockUI"){
+				colorCSS = (color == "black") ? 'rgba(0,0,0,0.70)' : 'rgba(256,256,256,0.85)';
+				colorCSS = (color == "black") ? '#fff' : '#000';
 				$.blockUI({ 
 					//title : 'Welcome to your page', 
 					message : (content) ? content : "<div class='blockContent'></div>",
@@ -1404,10 +1415,10 @@ var smallMenu = {
 			         //margin : "50px",
 			         //width:"80%",
 			         //    padding: '15px', 
-			         backgroundColor: 'rgba(256,256,256,0.85)', 
+			         backgroundColor: colorCSS,  
 			         //    '-webkit-border-radius': '10px', 
 			         //    '-moz-border-radius': '10px', 
-			             //color: '#fff' ,
+			             color: colorText ,
 			        	// "cursor": "pointer"
 			        }//,overlayCSS: { backgroundColor: '#fff'}
 				});
@@ -1646,7 +1657,7 @@ maybe movebale into Element.js
 function  buildQRCode(type,id) { 
 		
 	$(".qrCode").qrcode({
-	    text: baseUrl+"/#page.type."+dyFInputs.get(type).col+".id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
+	    text: baseUrl+"/#"+dyFInputs.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
 	    render: 'image',
 		minVersion: 8,
 	    maxVersion: 40,
@@ -2050,7 +2061,7 @@ function inMyContacts (type,id) {
 	var res = false ;
 	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
 		$.each( myContacts[type], function( key,val ){
-			//mylog.log("val", val);
+			mylog.log("val", val);
 			if( ( typeof val["_id"] != "undefined" && id == val["_id"]["$id"] ) || 
 				(typeof val["id"] != "undefined" && id == val["id"] ) ) {
 				res = true;
@@ -2140,9 +2151,9 @@ function communecterUser(){
 }
 
 function updateLocalityEntities(addressesIndex, addressesLocality){
-	mylog.warn("updateLocalityEntities");
+	mylog.log("updateLocalityEntities", addressesIndex, addressesLocality);
 	$("#ajax-modal").modal("hide");
-	
+	mylog.log("typeof formInMap.initUpdateLocality", typeof formInMap.initUpdateLocality);
 	if(typeof formInMap.initUpdateLocality != "undefined"){
 		var address = contextData.address ;
 		var geo = contextData.geo ;
@@ -2525,6 +2536,68 @@ var processUrl = {
 	    return content;
 	}
 }
+var list = {
+	initList : function(dataList, action){
+		var viewList="";
+		$.each(dataList, function(e,v){
+			if(action != "history")
+				viewList+="<h4 class='listSubtitle col-md-12 col-sm-12 col-xs-12 letter-orange'>"+Object.keys(v).length+" "+e+"</h4>";
+			$.each(v, function(i, data){
+				console.log(data);
+				viewList+=list.getListOf(e,data,action);	
+			});
+			$("#listList").html(viewList);
+		});
+		if(action=="history"){
+			$(".orderItemComment").click(function(){
+				orderItem=listElement["orderItems"][$(this).data("id")];
+				commentRating(orderItem, $(this).data("action"));
+			});
+		}
+	},
+	getListOf : function(type,data, action){
+		data.imgProfil = ""; 
+		if(action=="manage")
+			btnAction="<a href='#page.type."+type+".id."+data._id.$id+"' class='lbh btn bg-orange linkBtnList'>Manage it</a>";
+		else if(action=="history"){
+			btnAction="save";
+			labelAction="Leave your comment";
+			if(typeof data.comment != "undefined"){
+				btnAction="show";
+				labelAction="Show your comment";
+			}
+			btnAction="<a href='javascript:;' class='btn bg-green orderItemComment linkBtnList' data-id='"+data._id.$id+"' data-action='"+btnAction+"'>"+labelAction+"</a>";
+		}
+    	if(!data.useMinSize)
+        	data.imgProfil = "<i class='fa fa-image fa-3x'></i>";
+   		if("undefined" != typeof data.profilMediumImageUrl && data.profilMediumImageUrl != "")
+        	data.imgProfil= "<img class='img-responsive' src='"+baseUrl+data.profilMediumImageUrl+"'/>";
+		str="<div class='col-md-12 col-sm-12 contentListItem padding-5'>"+
+				"<div class='col-md-2 col-sm-2 contentImg text-center no-padding'>"+
+					data.imgProfil+
+				"</div>"+
+				"<div class='col-md-10 col-sm-10 listItemInfo'>"+
+					"<div class='col-md-10 col-sm-10'>"+
+						"<h4>"+data.name+"</h4>"+
+						"<span>Price: "+data.price+"</span><br/>";
+						if(action=="manage" && typeof data.toBeValidated != "undefined")
+						str+="<i class='text-azul'>Waiting for validation</i>";
+		str+=		"</div>"+
+					"<div class='col-md-2 col-sm-2'>"+
+						
+					"</div>"+
+				"</div>"+
+				btnAction+
+			"</div>";
+		if(action=="history"){
+			str+= "<div class='col-md-12 col-sm-12 col-xs-12'>"+
+				"<div id='content-comment-"+data._id.$id+"' class='col-md-5 col-sm-5 col-xs-6 pull-right contentRatingComment'>"+
+				"</div>"+
+			"</div>"
+		}
+		return str;
+	}
+}
 /* *********************************
 			COLLECTIONS
 ********************************** */
@@ -2747,10 +2820,23 @@ var uploadObj = {
 		}
 	}
 };
-
+var openingHoursResult=[
+	{"dayOfWeek":"Su","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+	{"dayOfWeek":"Mo","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+	{"dayOfWeek":"Tu","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+	{"dayOfWeek":"We","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+	{"dayOfWeek":"Th","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+	{"dayOfWeek":"Fr","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+	{"dayOfWeek":"Sa","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+];
+	    		
 var dyFObj = {
 	elementObj : null,
 	elementData : null,
+	subElementObj : null,
+	subElementData : null,
+	activeElem : null,
+	activeModal : null,
 	//rules to show hide submit btn, used anwhere on blur and can be 
 	//completed by specific rules on dynForm Obj
 	//ex : dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf
@@ -2832,6 +2918,19 @@ var dyFObj = {
 		if( typeof formData.tags != "undefined" && formData.tags != "" )
 			formData.tags = formData.tags.split(",");
 
+		if( typeof formData.openingHours != "undefined"){
+			if(typeof formData.hour != "undefined")
+				delete formData.hour;
+			if(typeof formData.minute != "undefined")
+				delete formData.minute;
+			$.each(openingHoursResult, function(e,v){
+				if(v.allDay && typeof v.hours != "undefined")
+        			delete openingHoursResult[e]["hours"];
+				if(typeof v.disabled != "undefined")
+					delete openingHoursResult[e];
+			});		
+			formData.openingHours=openingHoursResult;
+		}
 		// Add collections and genres of notragora in tags
 		if( typeof formData.collections != "undefined" && formData.collections != "" ){
 			collectionsTagsSave=formData.collections.split(",");
@@ -2861,9 +2960,14 @@ var dyFObj = {
 	},
 
 	saveElement : function  ( formId,collection,ctrl,saveUrl,afterSave ) { 
+		//alert("saveElement");
 		mylog.warn("---------------- saveElement",formId,collection,ctrl,saveUrl,afterSave );
 		formData = $(formId).serializeFormJSON();
 		mylog.log("before",formData);
+
+		if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.formatData","function") )
+			formData = dyFObj.elementObj.dynForm.jsonSchema.formatData(formData);
+
 		formData = dyFObj.formatData(formData,collection,ctrl);
 		mylog.log("saveElement", formData);
 		formData.medias = [];
@@ -2896,52 +3000,62 @@ var dyFObj = {
 				formData.medias.push(mediaObject);
 			}
 		});
+		if(formData.medias.length == 0)
+			delete formData.medias;
 		mylog.log("beforeAjax",formData);
-		$.ajax( {
-	    	type: "POST",
-	    	url: (saveUrl) ? saveUrl : baseUrl+"/"+moduleId+"/element/save",
-	    	data: formData,
-	    	dataType: "json",
-	    	success: function(data){
-	    		mylog.warn("saveElement ajax result");
-	    		mylog.dir(data);
-				if(data.result == false){
-	                toastr.error(data.msg);
-	                //reset save btn 
-	                $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false).one(function() { 
-						$( settings.formId ).submit();	        	
-			        });
-	           	}
-	            else {
-	            	if(typeof data.msg != "undefined") 
-	            		toastr.success(data.msg);
-	            	else{
-	            		if(typeof data.resultGoods != "undefined" && typeof data.resultGoods.msg != "undefined")
-	            			toastr.success(data.resultGoods.msg);
-	            		if(typeof data.resultErrors != "undefined" && typeof data.resultErrors.msg != "undefined")
-	            			toastr.error(data.resultErrors.msg);
-	            	}
-	            	// mylog.log("data.id", data.id, data.url);
-	            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
-			        	addLocationToFormloopEntity(data.id, collection, data.map);*/
-			        if (typeof afterSave == "function"){
-	            		afterSave(data);
-	            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
-	            	} else {
-						dyFObj.closeForm();
-		                if(data.url){
-		                	mylog.log("urlReload data.url", data.url);
-		                	urlCtrl.loadByHash( data.url );
-		                }
-		                else if(data.id){
-		                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
-			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
-		                }
-					}
-	            }
-	            uploadObj.set()
-	    	}
-	    });
+
+		if( dyFObj.elementObj.dynForm.jsonSchema.debug ){
+			mylog.log("debug dyn Form xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+			mylog.dir(formData);
+			dyFObj.closeForm();
+			mylog.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		} else {
+			$.ajax( {
+		    	type: "POST",
+		    	url: (saveUrl) ? saveUrl : baseUrl+"/"+moduleId+"/element/save",
+		    	data: formData,
+		    	dataType: "json",
+		    	success: function(data){
+		    		mylog.warn("saveElement ajax result");
+		    		mylog.dir(data);
+					if(data.result == false){
+		                toastr.error(data.msg);
+		                //reset save btn 
+		                $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false).one(function() { 
+							$( settings.formId ).submit();	        	
+				        });
+		           	}
+		            else {
+		            	if(typeof data.msg != "undefined") 
+		            		toastr.success(data.msg);
+		            	else{
+		            		if(typeof data.resultGoods != "undefined" && typeof data.resultGoods.msg != "undefined")
+		            			toastr.success(data.resultGoods.msg);
+		            		if(typeof data.resultErrors != "undefined" && typeof data.resultErrors.msg != "undefined")
+		            			toastr.error(data.resultErrors.msg);
+		            	}
+		            	// mylog.log("data.id", data.id, data.url);
+		            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
+				        	addLocationToFormloopEntity(data.id, collection, data.map);*/
+				        if (typeof afterSave == "function"){
+		            		afterSave(data);
+		            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+		            	} else {
+							dyFObj.closeForm();
+			                if(data.url){
+			                	mylog.log("urlReload data.url", data.url);
+			                	urlCtrl.loadByHash( data.url );
+			                }
+			                else if(data.id){
+			                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
+				        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+			                }
+						}
+		            }
+		            uploadObj.set()
+		    	}
+		    });
+		}
 	},
 	closeForm : function() {
 		$('#ajax-modal').modal("hide");
@@ -2983,13 +3097,15 @@ var dyFObj = {
 	},
 	
 	//entry point function for opening dynForms
-	openForm : function  (type, afterLoad,data) { 
+	openForm : function  (type, afterLoad,data,isSub) { 
 	    //mylog.clear();
 	    $.unblockUI();
 	    $("#openModal").modal("hide");
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
 	    uploadObj.contentKey="profil"; 
+	    dyFObj.activeElem = (isSub) ? "subElementObj" : "elementObj";
+	    dyFObj.activeModal = (isSub) ? "#openModal" : "#ajax-modal";
       	/*if(type=="addPhoto") 
         	uploadObj.contentKey="slider";*/ 
 	    //BOUBOULE ICI ACTIVER LEVENEMENT
@@ -3020,14 +3136,14 @@ var dyFObj = {
 		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
 		if(typeof type == "object"){
 			mylog.log(" object directly Loaded : ", type);
-			dyFObj.elementObj = type;
+			dyFObj[dyFObj.activeElem] = type;
 			if( notNull(type.col) ) uploadObj.type = type.col;
     		callback(type, afterLoad, data);
 		}else if( jsonHelper.notNull( "typeObj."+type+".dynForm" , "object") ){
 			mylog.log(" typeObj Loaded : ", type);
-			dyFObj.elementObj = dyFInputs.get(type);
+			dyFObj[dyFObj.activeElem] = dyFInputs.get(type);
 			if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
-    		callback( dyFObj.elementObj, afterLoad, data );
+    		callback( dyFObj[dyFObj.activeElem], afterLoad, data );
 		}else {
 			//TODO : pouvoir surchargé le dossier dynform dans le theme
 			//via themeObj.dynForm.folder overload
@@ -3036,11 +3152,11 @@ var dyFObj = {
 				null,
 				function() { 
 					//alert(dfPath+type+'.js');
-					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+dyFInputs.get(type).ctrl+'.js');
+					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+type+'.js');
 					mylog.dir(dynForm);
 					//typeObj[type].dynForm = dynForm;
 				  	dyFInputs.get(type).dynForm = dynForm;
-					dyFObj.elementObj = dyFInputs.get(type);
+					dyFObj[dyFObj.activeElem] = dyFInputs.get(type);
 					if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
     				callback( afterLoad, data );
 			});
@@ -3049,73 +3165,89 @@ var dyFObj = {
 	//prepare information for the modal panel 
 	//and launches the build process
 	starBuild : function  (afterLoad, data) { 
-		mylog.warn("------------ starBuild",dyFObj.elementObj, afterLoad, data);
-		mylog.dir(dyFObj.elementObj);
-		$("#ajax-modal .modal-header").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA");//.addClass(dyFObj.elementObj.bgClass);
-		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
-		$("#ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
+		mylog.warn("------------ starBuild",dyFObj[dyFObj.activeElem], afterLoad, data,dyFObj.activeModal );
+		mylog.dir(dyFObj[dyFObj.activeElem]);
+		$(dyFObj.activeModal+" .modal-header").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA");//.addClass(dyFObj[elem].bgClass);
+		$(dyFObj.activeModal+" #ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
+		$(dyFObj.activeModal+" #ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
 		
-	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
+	  	$(dyFObj.activeModal+" #ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
 							              	//"<h1 id='proposerloiFormLabel' >Faire une proposition</h1>"+
 							              	"<form id='ajaxFormModal' enctype='multipart/form-data'></form>"+
 							              	"</div>"+
 							              "</div>");
-	  	$('#ajax-modal .modal-footer').hide();
-	  	$('#ajax-modal').modal("show");
+	  	$(dyFObj.activeModal+' .modal-footer').hide();
+	  	$(dyFObj.activeModal).modal("show");
 
 	  	dyFInputs.init();
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
-	  	dyFObj.buildDynForm(afterLoad, data);
-	  	if(typeof dyFObj.elementObj.titleClass != "undefined")
+	  	dyFObj.buildDynForm(afterLoad, data,dyFObj[dyFObj.activeElem],dyFObj.activeModal+" #ajaxFormModal");
+	  	if(typeof dyFObj[dyFObj.activeElem].titleClass != "undefined")
 	  		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-									  .addClass(dyFObj.elementObj.titleClass);
+									  .addClass(dyFObj[dyFObj.activeElem].titleClass);
+		
+	  	$(dyFObj.activeModal+" #ajax-modal-modal-title").html((typeof dyFObj[dyFObj.activeElem].title != "undefined") ? dyFObj[dyFObj.activeElem].title : "");
 	},
-	buildDynForm : function (afterLoad,data) { 
-		mylog.warn("--------------- buildDynForm", dyFObj.elementObj, afterLoad,data);
+	/*subDynForm : function(type, afterLoad,data) {
+		smallMenu.open();
+		$("#openModal div.modal-content div.container")..html( "<div class='row bg-white'>"+
+	  										"<div class='col-sm-10 col-sm-offset-1'>"+
+							              	"<div class='space20'></div>"+
+							              	//"<h1 id='proposerloiFormLabel' >Faire une proposition</h1>"+
+							              	"<form id='subFormModal' enctype='multipart/form-data'></form>"+
+							              	"</div>"+
+							              "</div>");
+		dyFObj.buildDynForm(afterLoad, data,dyFObj.subElementObj,"#openModal #subFormModal");
+
+	},*/
+	buildDynForm : function (afterLoad,data,obj,formId) { 
+		mylog.warn("--------------- buildDynForm", dyFObj[dyFObj.activeElem], afterLoad,data);
 		if(userId)
 		{ 
 			var form = $.dynForm({
-			      formId : "#ajax-modal-modal-body #ajaxFormModal",
-			      formObj : dyFObj.elementObj.dynForm,
+			      formId : formId,
+			      formObj : dyFObj[dyFObj.activeElem].dynForm,
 			      formValues : data,
 			      beforeBuild : function  () {
-			      	if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.beforeBuild","function") )
-				        	dyFObj.elementObj.dynForm.jsonSchema.beforeBuild();
+
+			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.beforeBuild","function") )
+				        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeBuild();
 			      },
 			      onLoad : function  () {
+
 			      	if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
-			      		themeObj.dynForm.onLoadPanel(dyFObj.elementObj);
+			      		themeObj.dynForm.onLoadPanel(dyFObj[dyFObj.activeElem]);
 			      	} else {
-				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj.elementObj.dynForm.jsonSchema.icon+"'></i> "+dyFObj.elementObj.dynForm.jsonSchema.title);
-				        //alert(afterLoad+"|"+typeof dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
+				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj[dyFObj.activeElem].dynForm.jsonSchema.icon+"'></i> "+dyFObj[dyFObj.activeElem].dynForm.jsonSchema.title);
+				        //alert(afterLoad+"|"+typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads[afterLoad]);
 			    	}
 			        
-			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
-			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
+			        if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.onLoads."+afterLoad, "function") )
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads[afterLoad](data);
 			        //incase we need a second global post process
-			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
-			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload(data);
+			        if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.onLoads.onload", "function") )
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads.onload(data);
 				    
 			        bindLBHLinks();
 			      },
 			      onSave : function(){
 
-			      	if( typeof dyFObj.elementObj.dynForm.jsonSchema.beforeSave == "function")
-			        	dyFObj.elementObj.dynForm.jsonSchema.beforeSave();
+			      	if( typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave == "function")
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave();
 
-			        var afterSave = ( typeof dyFObj.elementObj.dynForm.jsonSchema.afterSave == "function") ? dyFObj.elementObj.dynForm.jsonSchema.afterSave : null;
-			        mylog.log("onSave", dyFObj.elementObj.saveUrl);
-			        if( dyFObj.elementObj.save )
-			        	dyFObj.elementObj.save("#ajaxFormModal");
-			        if( dyFObj.elementObj.dynForm.jsonSchema.save )
-			        	dyFObj.elementObj.dynForm.jsonSchema.save();
-			        else if(dyFObj.elementObj.saveUrl)
-			        	dyFObj.saveElement("#ajaxFormModal",dyFObj.elementObj.col,dyFObj.elementObj.ctrl,dyFObj.elementObj.saveUrl,afterSave);
+			        var afterSave = ( typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterSave == "function") ? dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterSave : null;
+			        mylog.log("onSave ", dyFObj.activeElem, dyFObj[dyFObj.activeElem].saveUrl, dyFObj[dyFObj.activeElem].save);
+			        if( dyFObj[dyFObj.activeElem].save )
+			        	dyFObj[dyFObj.activeElem].save(dyFObj.activeModal+" #ajaxFormModal");
+			        if( dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save )
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save(); //use this for subDynForms
+			        else if(dyFObj[dyFObj.activeElem].saveUrl)
+			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, dyFObj[dyFObj.activeElem].saveUrl, afterSave );
 			        else
-			        	dyFObj.saveElement("#ajaxFormModal",dyFObj.elementObj.col,dyFObj.elementObj.ctrl,null,afterSave);
+			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, null, afterSave );
 			        return false;
 			    }
 			});
@@ -3380,7 +3512,14 @@ var dyFInputs = {
 			inputType : "tags",
 			placeholder : placeholder != null ? placeholder : tradDynForm["tags"],
 			values : tagsL,
-			label : label != null ? label : tradDynForm["addtags"]
+			label : (label != null) ? label : tradDynForm["addtags"]
+		}
+	},
+	radio : function(label,keyValues) { 
+    	return {
+    		label : (label != null) ? label : "",
+			inputType : "radio",
+			options : keyValues
 		}
 	},
     imageAddPhoto : {
@@ -3490,6 +3629,13 @@ var dyFInputs = {
 		var inputObj = dyFInputs.inputText(tradDynForm["pricesymbole"], tradDynForm["pricesymbole"]+" ...") ;
 	    inputObj.init = function(){
     		$('input#price').filter_input({regex:'[0-9]'});
+      	};
+    	return inputObj;
+    },
+    quantity :function(label, placeholder, rules, custom) { 
+		var inputObj = dyFInputs.inputText(tradDynForm.quantity, tradDynForm.quantity+" ...") ;
+	    inputObj.init = function(){
+    		$('input#quantity').filter_input({regex:'[0-9]'});
       	};
     	return inputObj;
     },
@@ -3723,7 +3869,7 @@ var dyFInputs = {
 			 
 			          "<a href='javascript:;' data-index='"+index+"' data-indexLoc='"+dyFInputs.locationObj.countLocation+"' "+ 
 			            "class='deleteLocDynForm locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+ 
-			            "<i class='fa fa-times'></i> "+tradDynForm["clear"]+ 
+			            "<i class='fa fa-times'></i> "+tradDynForm.clear+ 
 			          "</a>"+ 
 			 
 			          "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' data-index='"+index+"'"+ 
@@ -3742,7 +3888,7 @@ var dyFInputs = {
 			 
 			          "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+", "+boolCenter+")' "+ 
 			            "class='removeLocalityBtn locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+ 
-			            "<i class='fa fa-times'></i> "+tradDynForm["clear"]+ 
+			            "<i class='fa fa-times'></i> "+tradDynForm.clear+ 
 			          "</a>"+ 
 			 
 			          "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' "+ 
@@ -3856,6 +4002,10 @@ var dyFInputs = {
 			dyFInputs.locationObj.elementLocations[ix].center = true;
 		}
     },
+    //produces 
+    subDynForm : function(form, multi){
+
+    },
     inputUrl :function (label,placeholder,rules, custom) {  
     	label = ( notEmpty(label) ? label : tradDynForm["mainurl"] );
     	placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
@@ -3899,6 +4049,10 @@ var dyFInputs = {
             getMediaFromUrlContent(".addmultifield0", ".resultGetUrl0",1);
         	$(".urlsarray").css("display","none");	
         }
+    },
+    keyVal : {
+    	label : "Key Value Pairs",
+    	inputType : "properties",
     },
     bookmarkUrl: function(label, placeholder,rules, custom){
     	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
@@ -4051,7 +4205,7 @@ var dyFInputs = {
     	};
 	    return inputObj;
 	},
-	allDay : function(checked){
+	allDay : function(checked, timepicker, domSpec){
 
     	var inputObj = {
     		inputType : "checkbox",
@@ -4066,10 +4220,13 @@ var dyFInputs = {
 	    		"offText" : tradDynForm["no"],
 	    		"labelText":tradDynForm["allday"],
 	    		"onChange" : function(){
-	    			var allDay = $("#ajaxFormModal #allDay").is(':checked');
+	    			domAdd="";
+	    			if(typeof domSpec != "undefined" && notNull(domSpec))
+	    				domAdd=domSpec;
+	    			var allDay = $("#ajaxFormModal #allDay"+domAdd).is(':checked');
 	    			var startDate = "";
 	    			var endDate = "";
-	    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
+	    			$("#ajaxFormModal #allDay"+domAdd).val($("#ajaxFormModal #allDay"+domAdd).is(':checked'));
 	    			
 	    			if (allDay) {
 	    				$(".dateTimeInput").addClass("dateInput");
@@ -4104,6 +4261,82 @@ var dyFInputs = {
     	};
     	return inputObj;
     },
+    openingHours : function(checked){
+    	var inputObj = {
+    		inputType : "checkbox",
+    		label : "Availabity of your service",
+	    	checked : ( notEmpty(checked) ? checked : "" ),
+	    	init : function(){
+	    		//openingHoursResult=openingHours.init;
+	    		openingHoursResult=[
+					{"dayOfWeek":"Su","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+					{"dayOfWeek":"Mo","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+					{"dayOfWeek":"Tu","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+					{"dayOfWeek":"We","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+					{"dayOfWeek":"Th","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+					{"dayOfWeek":"Fr","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+					{"dayOfWeek":"Sa","allDay":true, "hours":[{"opens":"06:00","closes":"19:00"}]},
+				];
+	    		//jQuery.datetimepicker.setLocale('fr');
+	    		//$('.changeTime').datetimepicker({format:"HH:MM"});
+	    		$(".btn-select-day").click(function(){
+	    			key=$(this).data("key");
+	    			if($(this).hasClass("active")){
+	    				$(this).removeClass("active");
+	    				$.each(openingHoursResult, function(e,v){
+	    					if(v.dayOfWeek==key)
+	    						openingHoursResult[e].disabled=true;
+	    				});
+	    				$("#contentDays"+key).fadeOut();
+	    			}else{
+	    				$(this).addClass("active");
+	    				$.each(openingHoursResult, function(e,v){
+	    					if(v.dayOfWeek==key)
+	    						delete openingHoursResult[e].disabled;
+	    				});
+	    				$("#contentDays"+key).fadeIn();
+	    			}
+	    		});
+	    		$(".allDaysWeek").click(function(){
+	    			keyRange=$(this).data("key");
+	    			//alert(keyRange);
+	        		if($(this).is(':checked')){
+	        			$("#hoursRange"+keyRange).fadeOut("slow");
+	        			$.each(openingHoursResult, function(e,v){
+	    					if(v.dayOfWeek==keyRange)
+	        					openingHoursResult[e].allDay=true;
+	        			});
+	        		}else{
+	        			$("#hoursRange"+keyRange).fadeIn("slow");
+	        			$.each(openingHoursResult, function(e,v){
+	    					if(v.dayOfWeek==keyRange)
+	        					openingHoursResult[e].allDay=false;
+	        			});
+	        		}
+	    		});
+	        },
+	        options: {"allWeek" : true},
+	    	"switch" : {
+	    		"onText" : tradDynForm["yes"],
+	    		"offText" : tradDynForm["no"],
+	    		"labelText":tradDynForm["allweek"],
+	    		"css":{"min-width": "300px","margin": "10px"},
+	    		"onChange" : function(){
+	    			var allWeek = $("#ajaxFormModal #openingHours").is(':checked');
+	    			$("#ajaxFormModal #openingHours").val($("#ajaxFormModal #openingHours").is(':checked'));
+	    			if (allWeek) {
+	    				$("#ajaxFormModal #selectedDays").fadeOut("slow");
+	    			} else {
+	    				$("#ajaxFormModal #selectedDays").fadeIn("slow");
+	    			}
+				    //if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
+					//if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
+	    		}
+		    },
+    	};
+    	return inputObj;
+    },
+    
     startDateInput : function(typeDate){
     	mylog.log('startDateInput', typeDate);
     	var inputObj = {
@@ -4227,7 +4460,7 @@ var dyFInputs = {
 };
 
 var typeObj = {
-	"themes":{ 
+	themes:{ 
 		dynForm : {
 		    jsonSchema : {
 			    title : "Theme Switcher ?",
@@ -4249,7 +4482,7 @@ var typeObj = {
 			    }
 			}
 		}	},
-	"addElement":{ 
+	addElement:{ 
 		dynForm : {
 		    jsonSchema : {
 			    title : "Ajouter un élément ?",
@@ -4275,57 +4508,58 @@ var typeObj = {
 			    }
 			}
 		}	},
-	"addPhoto":{ titleClass : "bg-dark" },
-	"addFile":{ titleClass : "bg-dark" },
-	"person" : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
-	"persons" : { sameAs:"person" },
-	"people" : { sameAs:"person" },
-	"citoyen" : { sameAs:"person" },
-	"citoyens" : { sameAs:"person" },
+	addPhoto:{ titleClass : "bg-dark" },
+	addFile:{ titleClass : "bg-dark" },
+	person : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
+	persons : { sameAs:"person" },
+	people : { sameAs:"person" },
+	citoyen : { sameAs:"person" },
+	citoyens : { sameAs:"person" },
 	
-	"poi":{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
-			subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
-				   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
-				   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
+	poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
+		subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+			   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
+			   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
+	place:{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
+	TiersLieux : {sameAs:"place",color: "azure",icon: "home"},
+	Maison : {sameAs:"place", color: "azure",icon: "home"},
+	ressource:{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
 
-	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
-	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
-	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
-	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
-
-	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
-	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
-	"organizations" : {sameAs:"organization"},
-	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
-	"NGO" : {sameAs:"organization", color:"green", icon:"users"},
-	"Association" : {sameAs:"organization", color:"green", icon: "group"},
-	"GovernmentOrganization" : {col:"organization", color: "red",icon: "university"},
-	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
-	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
-	"events" : {sameAs:"event"},
-	"project" : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
-	"projects" : {sameAs:"project"},
-	"city" : {sameAs:"cities"},
-	"cities" : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
+	siteurl:{ col:"siteurl",ctrl:"siteurl"},
+	organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
+	organizations : {sameAs:"organization"},
+	LocalBusiness : {col:"organizations",color: "azure",icon: "industry"},
+	NGO : {sameAs:"organization", color:"green", icon:"users"},
+	Association : {sameAs:"organization", color:"green", icon: "group"},
+	GovernmentOrganization : {col:"organization", color: "red",icon: "university"},
+	Group : {	col:"organizations",color: "turq",icon: "circle-o"},
+	event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
+	events : {sameAs:"event"},
+	project : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
+	projects : {sameAs:"project"},
+	city : {sameAs:"cities"},
+	cities : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
 	
-	"entry" : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
+	entry : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
 		saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
-	"vote" : {col:"actionRooms",ctrl:"survey"},
-	"survey" : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
-	"surveys" : {sameAs:"survey"},
-	"proposal" : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
-	"proposals" : { sameAs : "proposal" },
-	"action" : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
-	"actions" : { sameAs : "action" },
-	"actionRooms" : {sameAs:"room"},
-	"rooms" : {sameAs:"room"},
-	"room" : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
-	"discuss" : {col:"actionRooms",ctrl:"room"},
+	vote : {col:"actionRooms",ctrl:"survey"},
+	survey : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
+	surveys : {sameAs:"survey"},
+	proposal : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
+	proposals : { sameAs : "proposal" },
+	action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
+	actions : { sameAs : "action" },
+	actionRooms : {sameAs:"room"},
+	rooms : {sameAs:"room"},
+	room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+	discuss : {col:"actionRooms",ctrl:"room"},
 
-	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
+	contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
 		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	"product":{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",	icon:"gift"},
+	"product":{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",	icon:"shopping-basket"},
 	"products" : {sameAs:"product"},
+	"service":{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",	icon:"sun-o"},
+	"services" : {sameAs:"service"},
 	"classified":{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
 				   subTypes : [
 				   //FR
@@ -4333,13 +4567,36 @@ var typeObj = {
 				   //EN
 				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
 				   ]	},
-	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
-	"bookmark" : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
-	"document" : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
-	"default" : {icon:"arrow-circle-right",color:"dark"},
+	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
+	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
+	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
+	default : {icon:"arrow-circle-right",color:"dark"},
 	//"video" : {icon:"video-camera",color:"dark"},
-	"formContact" : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
-	"news" : { col : "news" }, 
+	formContact : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
+	news : { col : "news" }, 
+	config : { col:"config",color:"azure",icon:"cogs",titleClass : "bg-azure", title : tradDynForm.addconfig,
+				sections : {
+			        network : { label: "Network Config",key:"network",icon:"map-marker"}
+			    }},
+	network : { col:"network",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+	inputs : { color:"red",icon:"address-card-o",titleClass : "bg-phink", title : "All inputs"},
+	addAny : { color:"pink",icon:"plus",titleClass : "bg-phink",title : tradDynForm.wantToAddSomething,
+				sections : {
+			        person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
+			        organization : { label: trad.organization,key:"organization",icon:"group"},
+			        event : { label: trad.event,key:"event",icon:"calendar"},
+			        project : { label: trad.project ,key:"project",icon:"lightbulb-o"},
+			    }},
+	apps : { color:"pink",icon:"cubes",titleClass : "bg-phink",title : tradDynForm.appList,
+				sections : {
+			        search : { label: "SEARCH",key:"#search",icon:"search fa-2x text-red"},
+			        agenda : { label: "AGENDA",key:"#agenda",icon:"group fa-2x text-red"},
+			        news : { label: "NEWS",key:"#news",icon:"newspaper-o fa-2x text-red"},
+			        classifieds : { label: "ANNONCEs",key:"#classifieds",icon:"bullhorn fa-2x text-red"},
+			        dda : { label: "DISCUSS DECIDE ACT" ,key:"#dda",icon:"gavel fa-2x text-red"},
+			        chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
+			    }},
+	filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"}
 };
 
 var documents = {

@@ -104,8 +104,9 @@
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
 	var edit=true;
 	var hashUrlPage = "#page.type."+contextData.type+".id."+contextData.id;
+	var subView="<?php echo @$_GET['view']; ?>";
 	jQuery(document).ready(function() {
-		loadDetail(true);
+		//loadDetail(true);
 		$(".createPro").click(function(){
 			$.ajax({
 	    		type: "POST",
@@ -117,7 +118,7 @@
 	         });
 		});
 		bindButtonMenu();
-		
+		getProfilSubview(subView);
 		KScrollTo("#topPosKScroll");
 	});
 	function goProAccount(){
@@ -140,44 +141,47 @@
 			loadDetail(true);
 	}
 	function bindButtonMenu(){
-		$(".nav-link").click(function(){
+		/*$(".nav-link").click(function(){
 			$(".podDash .nav .nav-item").removeClass("active");
 			$(this).parent().addClass("active");
-		});
+		});*/
 
 		$("#btn-detail").click(function(){
+			location.hash=hashUrlPage;
 			loadDetail();
-		});
-		$(".btn-start-newsstream").click(function(){
-			//$(".ssmla").removeClass('active');
-			responsiveMenuLeft(true);
-			location.hash=hashUrlPage
-			//history.pushState(null, "New Title", hashUrlPage);
-			loadNewsStream(true);
 		});
 		$("#btn-list-pro").click(function(){
 			location.hash=hashUrlPage+".view.prolist";
 			loadListPro();
 		});
 
-		$("#btn-invoice").click(function(){
-			loadDetail();
+		$("#btn-history").click(function(){
+			location.hash=hashUrlPage+".view.history";
+			loadHistory();
 		});
 	}
 
 	function loadDetail(){
+		initBtnDash("#btn-detail");
 		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
 		showLoader('.content-view-dashboard');
 		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, null, function(){},"html");
 	}
 
 	function loadListPro(){
-		data={list:["products"]};
+		initBtnDash("#btn-list-pro");
+		data={category:["services","products"],actionType:"manage"};
 		var url = "element/list/type/"+contextData.type+"/id/"+contextData.id;
 		showLoader('.content-view-dashboard');
 		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
 	}
-	
+	function loadHistory(){
+		initBtnDash("#btn-history");
+		data={category:["orders"],actionType:"history"};
+		var url = "element/list/type/"+contextData.type+"/id/"+contextData.id;
+		showLoader('.content-view-dashboard');
+		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
+	}
 	function showLoader(id){
 		$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 	}
@@ -191,7 +195,10 @@
 	function inintDescs() {
 		return true;
 	}
-
+	function initBtnDash(dom){
+		$(".podDash .nav .nav-item").removeClass("active");
+		$(dom).parent().addClass("active");
+	}
 	function descHtmlToMarkdown() {
 		mylog.log("htmlToMarkdown");
 	}

@@ -53,7 +53,6 @@
       background-color: black;*/
     }
     
-    
     #main-scope-name a{
         height: 130px;
         background-color: rgba(255, 255, 255, 0.9);
@@ -149,7 +148,6 @@
 
 </div>
 
-
 <?php $this->renderPartial($layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.pageCreate', array()); ?>
 <?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array()); ?>
 
@@ -220,7 +218,6 @@ jQuery(document).ready(function() {
                   }
             }
         });
-
 
         loadingData = false; 
         initTypeSearch(type);

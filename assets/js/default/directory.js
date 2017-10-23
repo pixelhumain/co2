@@ -18,7 +18,7 @@ var translate = {"organizations":"Organisations",
                  "followers":"Ils nous suivent"};
 
 function startSearch(indexMin, indexMax, callBack){
-    console.log("startSearch 1", typeof callBack, callBack, loadingData);
+    console.log("startSearch directory.js", typeof callBack, callBack, loadingData);
     if(loadingData) return;
     loadingData = true;
     showIsLoading(true);
@@ -60,6 +60,8 @@ function startSearch(indexMin, indexMax, callBack){
         if(levelCommunexion == 3) locality = inseeCommunexion;
         if(levelCommunexion == 4) locality = inseeCommunexion;
         if(levelCommunexion == 5) locality = "";
+
+        mylog.log("Locality : ", locality);
       } 
       console.log("locality",locality);
       autoCompleteSearch(name, locality, indexMin, indexMax, callBack);
@@ -150,7 +152,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     
     if(isMapEnd)
       $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> chargement en cours");
-   
+         
     mylog.dir(data);
     //alert();
     $.ajax({
@@ -274,24 +276,25 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 //active les link lbh
                 bindLBHLinks();
 
-                $(".start-new-communexion").click(function(){
-                    $("#main-search-bar, #second-search-bar, #input-search-map").val("");
-                    setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
-                                     $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
-                                      $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
+                // $(".start-new-communexion").click(function(){
+                //     mylog.log("start-new-communexion directory.js");
+                //     $("#main-search-bar, #second-search-bar, #input-search-map").val("");
+                //     setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
+                //                      $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
+                //                       $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
                     
-                    //only on homepage
-                    if($("#communexionNameHome").length){
-                    	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+$(this).data("name-communexion")+'</span></span>');
-                    	$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
-                      $("#main-search-bar").val("");
-                    	$(".info_co, .input_co").addClass("hidden");
-                      $("#change_co").removeClass("hidden");
-						          $("#dropdown_search").html("");
-                    }else{
-                      startSearch(0, indexStepInit, searchCallback);
-                    }
-                });
+                //     //only on homepage
+                //     if($("#communexionNameHome").length){
+                //     	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+$(this).data("name-communexion")+'</span></span>');
+                //     	$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
+                //       $("#main-search-bar").val("");
+                //     	$(".info_co, .input_co").addClass("hidden");
+                //       $("#change_co").removeClass("hidden");
+						          // $("#dropdown_search").html("");
+                //     }else{
+                //       startSearch(0, indexStepInit, searchCallback);
+                //     }
+                // });
 
 
                 $.unblockUI();
@@ -330,7 +333,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
                         
             if(typeof callBack == "function")
-                callBack();
+              callBack();
         }
     });
 
@@ -667,7 +670,7 @@ var directory = {
     colPos: "left",
     dirLog : false,
     defaultPanelHtml : function(params){
-      mylog.log("----------- defaultPanelHtml",params.type,params.name);
+      mylog.log("----------- defaultPanelHtml",params, params.type,params.name, params.url);
       str = "";  
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
@@ -832,7 +835,7 @@ var directory = {
     // ********************************
 	  elementPanelHtml : function(params){
     		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name);
-    		//mylog.log("----------- elementPanelHtml",params.type,params.name, params);
+    		// mylog.log("----------- elementPanelHtml",params.type,params.name, params);
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
@@ -886,10 +889,13 @@ var directory = {
                     
                     
             if(typeof(params.statusLink)!="undefined"){
-              if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined")
-                str+="<span class='text-red'>Administrateur</span>";
+              if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined" && typeof(params.statusLink.isAdminInviting)=="undefined")
+                str+="<span class='text-red'>"+trad.administrator+"</span>";
+              if(typeof(params.statusLink.isAdminInviting)!="undefined"){
+                str+="<span class='text-red'>"+trad.invitingToAdmin+"</span>";
+              }
               if(typeof(params.statusLink.toBeValidated)!="undefined" || typeof(params.statusLink.isAdminPending)!="undefined")
-                str+="<span class='text-red'>En attente de validation</span>";
+                str+="<span class='text-red'>"+trad.waitingValidation+"</span>";
             }
 
             if(params.rolesLbl != "")
@@ -1566,6 +1572,9 @@ var directory = {
       //if(directory.dirLog) 
       mylog.log("-----------proposalPanelHtml", params, key);
       var idParentRoom = typeof params.idParentRoom != "undefined" ? params.idParentRoom : "";
+      if(idParentRoom == "" && params.type == "rooms") idParentRoom = params.id;
+      mylog.log("-----------idParentRoom", idParentRoom);
+      
       var name = (typeof params.title != "undefined" && params.title != "undefined") ? params.title : params.name;
       var description = params.description.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
       name = escapeHtml(name);
@@ -1805,11 +1814,23 @@ var directory = {
         var str = "";
 
         directory.colPos = "left";
+
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
           if(directory.dirLog) mylog.log("params", params, typeof params);
-          if(params["_id"] != null || params["id"] != null){
 
+          mylog.log("params", params, typeof params);
+
+          if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) {
+            params['id'] = params['_id'];
+          } else if (typeof(params.id) == "undefined") {
+            params['id'] = Math.random();
+            params['type'] = "poi";
+          }
+
+          mylog.log("params", params["name"] , params.name, params.id, params["id"], typeof params["id"]);
+
+          if(notNull(params["_id"]) || notNull(params["id"])){
 
             itemType=(contentType) ? contentType :params.type;
             if( itemType ){ 
@@ -1820,6 +1841,7 @@ var directory = {
                 var typeIco = i;
                 params.size = size;
                 params.id = getObjectId(params);
+                mylog.log(params.id);
                 params.name = notEmpty(params.name) ? params.name : "";
                 params.description = notEmpty(params.shortDescription) ? params.shortDescription : 
                                     (notEmpty(params.message)) ? params.message : 
@@ -1831,8 +1853,13 @@ var directory = {
                 if(typeof edit != "undefined" && edit != false)
                   params.edit = edit;
                 
-                /*if( dyFInputs.get( itemType ) == null)
-                    itemType="poi";*/
+                if(typeof( typeObj[itemType] ) == "undefined") {
+                  itemType="poi";
+                }
+
+                if( dyFInputs.get( itemType ) == null)
+                  itemType="poi";
+
                 typeIco = itemType;
                 if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
 
@@ -1892,13 +1919,25 @@ var directory = {
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
-                //params.url = '#page.type.'+params.type+'.id.' + params.id;
-                params.hash = '#page.type.'+params.type+'.id.' + params.id;
-                /*if(params.type == "poi")    
-                    params.hash = '#element.detail.type.poi.id.' + params.id;*/
+                if( params.type == "poi" && params.source  && params.source.insertOrign == "import") {
+                  var interop_type = getTypeInteropData(params.source.key);
+                  params.hash = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.url);
+                  params.url = params.hash;
+                  params.color = getIconColorForInteropElements(interop_type);
+                  params.htmlIco = getImageIcoForInteropElements(interop_type);
+                  params.type = "poi.interop."+interop_type;
 
-                params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';
+                  if (typeof params.tags == "undefined") 
+                    params.tags = [];
+                    params.tags.push(interop_type);
+                } else {
 
+                  params.hash = '#page.type.'+params.type+'.id.' + params.id;
+                }
+
+                params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
+
+                // params.tags = "";
                 params.elTagsList = "";
                 var thisTags = "";
                 if(typeof params.tags != "undefined" && params.tags != null){
@@ -1958,6 +1997,11 @@ var directory = {
                   else
                     str += directory.defaultPanelHtml(params);
                 }
+              /*  else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
+                  str += directory.coopPanelHtml(params);  
+                else
+                  str += directory.defaultPanelHtml(params);*/
+                
             }
 
           }else{
@@ -2334,7 +2378,7 @@ var directory = {
     return mapEnd;*/
   },
 
-     getDateFormated: function(params){
+     getDateFormated: function(params, onlyStr){
     
         params.startDateDB = notEmpty(params.startDate) ? params.startDate : null;
         params.startDay = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD") : "";
@@ -2365,35 +2409,39 @@ var directory = {
        
         
         var str = "";
-        if(params.startDate != null){
-          str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      '<small>'+startLbl+' </small>'+
-                      '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
-                      params.startDay + ' ' + params.startMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.startYear + '</small>';
-                      if(!notNull(params.allDay) || params.allDay != true){
-                        str +=  ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> '+
-                                  params.startTime+endTime+"</b></small>";
-                      }
-                      
-            str +=  '</h3>';
-        }
-          
-        var dStart = params.startDay + params.startMonth + params.startYear;
-        var dEnd = params.endDay + params.endMonth + params.endYear;
-        mylog.log("DATEE", dStart, dEnd);
+        if(notNull(onlyStr)){
+          str += params.startDay +" "+ params.startMonth +" "+ params.startYear;
+        }else{
+          if(params.startDate != null){
+            str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                        '<small>'+startLbl+' </small>'+
+                        '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
+                        params.startDay + ' ' + params.startMonth + 
+                        ' <small class="letter-'+params.color+'">' + params.startYear + '</small>';
+                        if(!notNull(params.allDay) || params.allDay != true){
+                          str +=  ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> '+
+                                    params.startTime+endTime+"</b></small>";
+                        }
+                        
+              str +=  '</h3>';
+          }
+            
+          var dStart = params.startDay + params.startMonth + params.startYear;
+          var dEnd = params.endDay + params.endMonth + params.endYear;
+          mylog.log("DATEE", dStart, dEnd);
 
-        if(params.endDate != null && dStart != dEnd){
-          str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      "<small>"+trad["todate"]+" </small>"+
-                      '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
-                      params.endDay + ' ' + params.endMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.endYear + '</small>';
-                      if(!notNull(params.allDay) || params.allDay != true){
-                        str += ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
-                                params.endTime+"</b></small>";
-                      }
-            str +=  '</h3>';
+          if(params.endDate != null && dStart != dEnd){
+            str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                        "<small>"+trad["todate"]+" </small>"+
+                        '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
+                        params.endDay + ' ' + params.endMonth + 
+                        ' <small class="letter-'+params.color+'">' + params.endYear + '</small>';
+                        if(!notNull(params.allDay) || params.allDay != true){
+                          str += ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
+                                  params.endTime+"</b></small>";
+                        }
+              str +=  '</h3>';
+          }
         }
             
             

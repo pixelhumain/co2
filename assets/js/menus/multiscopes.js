@@ -3,7 +3,9 @@ function scopeExists(scopeValue){
 	return typeof myMultiScopes[scopeValue] != "undefined";
 }
 
-function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId); mylog.dir(myMultiScopes);
+function saveMultiScope(){ 
+	mylog.log("saveMultiScope() try - userId = ", userId); 
+	mylog.dir(myMultiScopes);
 	hideSearchResults();
 	if(userId != null && userId != ""){
 		if(!notEmpty(myMultiScopes)) myMultiScopes = {};
@@ -13,16 +15,14 @@ function saveMultiScope(){ mylog.log("saveMultiScope() try - userId = ",userId);
 	        data: {"multiscopes" : myMultiScopes},
 	       	dataType: "json",
 	    	success: function(data){
-	    		mylog.log("updatemultiscope success");
-	    		
+	    		mylog.log("updatemultiscope success");	    		
 		    },
 			error: function(error){
 				mylog.log("Une erreur est survenue pendant l'enregistrement des scopes");
 			}
 		});
-	}else{
-		
-	} 
+	}
+
 	showCountScope();
 	//rebuildSearchScopeInput();
 	setTimeout(function(){ rebuildSearchScopeInput() }, 1000);
@@ -111,6 +111,7 @@ function loadMultiScopes(){
 }
 
 function showCountScope(){
+	mylog.log("showCountScope");
 	var count = 0; 
 	var types = new Array("city", "cp", "level1", "level2", "level3", "level4");
 	//mylog.log("showCountScope");
@@ -142,7 +143,8 @@ function selectAllScopes(select){
 	});
 	saveMultiScope();
 }
-function showScopeInMultiscope(scopeValue){ //mylog.log("showScopeInMultiscope()", scopeValue);
+function showScopeInMultiscope(scopeValue){ 
+	mylog.log("showScopeInMultiscope()", scopeValue);
 	var html = "";
 	if(scopeExists(scopeValue)){
 		var scope = myMultiScopes[scopeValue];
@@ -166,7 +168,7 @@ function showScopeInMultiscope(scopeValue){ //mylog.log("showScopeInMultiscope()
 		'</span>';
 
 		var levelType = ( (scope.type == "zone") ? "level"+scope.level : scope.type ) ;
-		mylog.log("levelType", levelType);
+		mylog.log("levelType", levelType, "#multi-scope-list-"+levelType);
 		$("#multi-scope-list-"+levelType).append(html);
 		$("#multi-scope-list-"+levelType).show();
 
@@ -188,7 +190,8 @@ function showScopeInMultiscope(scopeValue){ //mylog.log("showScopeInMultiscope()
 function addScopeToMultiscope(scopeValue, scopeName, scopeLevel){
 	mylog.log("addScopeToMultiscope", scopeValue, scopeName);
 	if(scopeValue == "") return;
-	if(!scopeExists(scopeValue)){ //mylog.log("adding", scopeValue);
+	if(!scopeExists(scopeValue)){ 
+		mylog.log("adding", scopeValue);
 		var scopeType = currentScopeType;
 		myMultiScopes[scopeValue] = { name: scopeName, active: true, type: scopeType };
 		if(notEmpty(scopeLevel)){
@@ -202,8 +205,8 @@ function addScopeToMultiscope(scopeValue, scopeName, scopeLevel){
 				scopeType = "level4";
 			myMultiScopes[scopeValue].level = scopeLevel ;
 		}
-		myMultiScopes[scopeValue].type = scopeType ;
-
+		//myMultiScopes[scopeValue].type = scopeType ;
+		mylog.log("myMultiScopes")
 		//alert();
 		showScopeInMultiscope(scopeValue);
 		$("#input-add-multi-scope").val("");
@@ -253,15 +256,19 @@ function toogleScopeMultiscope(scopeValue){ mylog.log("toogleScopeMultiscope(sco
 function getMultiScopeList(){ return myMultiScopes; }
 
 
-function getLocalityForSearch(){ 
-	if($.cookie('communexionActivated') == "true"  ){
+function getLocalityForSearch(){
+
+	if(typeof globalCommunexion == "undefined") var globalCommunexion = false;
+
+	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), globalCommunexion);
+	//if(globalCommunexion == true ){
       var searchLocality = {}
-      searchLocality[communexion.currentValue] = { type : communexion.currentLevel, 
+      /*searchLocality[communexion.currentValue] = { type : communexion.currentLevel, 
                                                     name : communexion.currentName,
                                                     active : true };
     }else{
       var searchLocality = getMultiScopeForSearch();
-    }
+    }*/
     return searchLocality;
 }
 
@@ -406,39 +413,41 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel,
 		$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
 		
 
-		$.removeCookie('communexionType', { path: '/' }); 
-		$.removeCookie('communexionValue', { path: '/' }); 
-		$.removeCookie('communexionName', { path: '/' }); 
-		$.removeCookie('communexionLevel', { path: '/' });
+		// $.removeCookie('communexionType', { path: '/' }); 
+		// $.removeCookie('communexionValue', { path: '/' }); 
+		// $.removeCookie('communexionName', { path: '/' }); 
+		// $.removeCookie('communexionLevel', { path: '/' });
 
-		$.cookie('communexionType', scopeType, { expires: 365, path: "/" });
-		$.cookie('communexionValue', scopeValue, { expires: 365, path: "/" });
-		$.cookie('communexionName', scopeName, { expires: 365, path: "/" });
+		// $.cookie('communexionType', scopeType, { expires: 365, path: "/" });
+		// $.cookie('communexionValue', scopeValue, { expires: 365, path: "/" });
+		// $.cookie('communexionName', scopeName, { expires: 365, path: "/" });
 		//$.cookie('communexionLevel', scopeLevel, { expires: 365, path: "/" });
 		//$.cookie('currentLevel', scopeType, { expires: 365, path: "/" });
 	
 		communexion.currentLevel = scopeLevel;
 		communexion.currentName = scopeName;
 		communexion.currentValue = scopeValue;
+
+		$.cookie('communexion', communexion, { expires: 365, path: "/" });
 	
-		if(inseeCommunexion != null){
-			$.removeCookie('inseeCommunexion', { path: '/' }); 
-			$.removeCookie('cityNameCommunexion', { path: '/' }); 
-			$.removeCookie('cpCommunexion', { path: '/' }); 
+		// if(inseeCommunexion != null){
+		// 	$.removeCookie('inseeCommunexion', { path: '/' }); 
+		// 	$.removeCookie('cityNameCommunexion', { path: '/' }); 
+		// 	$.removeCookie('cpCommunexion', { path: '/' }); 
 			
-			$.cookie('inseeCommunexion',   		inseeCommunexion,  		{ expires: 365, path: "/" });
-			$.cookie('cityNameCommunexion', 	cityNameCommunexion,	{ expires: 365, path: "/" });
-			$.cookie('cpCommunexion',   		cpCommunexion,  		{ expires: 365, path: "/" });
-		}else{
-			console.log("communexion hash:", location.hash);
-			if(actionOnSetGlobalScope == "filter"){
-				if(location.hash.indexOf("#live") >= 0)
-                	startNewsSearch(true);
-            	else if(location.hash != "")
-					startSearch(0, indexStepInit, searchCallback);
-				//else loadLiveNow();
-			}
-		}
+		// 	$.cookie('inseeCommunexion',   		inseeCommunexion,  		{ expires: 365, path: "/" });
+		// 	$.cookie('cityNameCommunexion', 	cityNameCommunexion,	{ expires: 365, path: "/" });
+		// 	$.cookie('cpCommunexion',   		cpCommunexion,  		{ expires: 365, path: "/" });
+		// }else{
+			// console.log("communexion hash:", location.hash);
+			// if(actionOnSetGlobalScope == "filter"){
+			// 	if(location.hash.indexOf("#live") >= 0)
+   //              	startNewsSearch(true);
+   //          	else if(location.hash != "")
+			// 		startSearch(0, indexStepInit, searchCallback);
+			// 	//else loadLiveNow();
+			// }
+		//}
 
 		
 		/*if(typeof communexion != "undefined" && typeof inseeCommunexion != "undefined"){

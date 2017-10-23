@@ -108,8 +108,6 @@ var formInMap = {
 
 	initUpdateLocality : function(address, geo, type, index){
 		mylog.log("initUpdateLocality", address, geo, type, index);
-
-
 		showMap(true);
 		if(address != null && geo != null ){
 			formInMap.NE_insee = address.codeInsee;
@@ -162,7 +160,7 @@ var formInMap = {
 			formInMap.NE_street = "";
 
 			formInMap.initHtml();
-
+			$("#country_sumery_value").html($('[name="newElement_country"]').val());
 			$("#newElement_btnValidateAddress").prop('disabled', true);
 			$("#divStreetAddress").addClass("hidden");
 			formInMap.initDropdown();
@@ -234,7 +232,7 @@ var formInMap = {
 
 
 		$("#newElement_btnValidateAddress").click(function(){
-			$.blockUI();
+			processingBlockUi();
 			mylog.log("#newElement_btnValidateAddress");
 			if(notEmpty(formInMap.saveCities[formInMap.NE_insee])){
 				var obj = { city : formInMap.saveCities[formInMap.NE_insee] }
@@ -499,14 +497,17 @@ var formInMap = {
 		$("#dropdown-newElement_streetAddress-found").html("<li><a href='javascript:'><i class='fa fa-spin fa-refresh'></i> recherche en cours</a></li>");
 		$("#dropdown-newElement_streetAddress-found").show();
 		mylog.log("countryCode", countryCode);
-		if(countryCode == "NC"){
+		
+		var countryDataGouv = ["FR","GP","MQ","GF","RE","PM","YT"];
+		if(countryDataGouv.indexOf(countryCode) != -1){
 			countryCode = formInMap.changeCountryForNominatim(countryCode);
-			mylog.log("countryCode", countryCode);
-			callNominatim(requestPart, countryCode);
+			mylog.log("countryCodeHere", countryCode);
+			callDataGouv(requestPart, countryCode);
+			
 		}else{
 			countryCode = formInMap.changeCountryForNominatim(countryCode);
 			mylog.log("countryCode", countryCode);
-			callDataGouv(requestPart, countryCode);
+			callNominatim(requestPart, countryCode);
 		}
 		
 		formInMap.btnValideDisable(false);
@@ -678,7 +679,8 @@ var formInMap = {
 		}
 	},
 
-	initDropdown : function(){ 
+	initDropdown : function(){
+		mylog.log("initDropdown");
 		$("#dropdown-newElement_cp-found").html("<li><a href='javascript:' class='disabled'>"+trad['Currently researching']+"</a></li>");
 		$("#dropdown-newElement_city-found").html("<li><a href='javascript:' class='disabled'>"+trad['Search a city, a town or a postal code'] +"</a></li>");
 	},
@@ -781,6 +783,7 @@ var formInMap = {
 	},
 
 	getLevel : function(){
+		mylog.log("getLevel");
 		if(notEmpty(formInMap.NE_localityId) && 
 			(	typeof formInMap.NE_level1 == "undefined" || formInMap.NE_level1 == "" || 
 				typeof formInMap.NE_level2 == "undefined" || formInMap.NE_level2 == ""|| 

@@ -31,10 +31,54 @@
 	.carousel-media > ol{
 		bottom: -85px
 	}
+	.carousel-media .carousel-indicators{
+		left:30%;
+		width: 100%;
+	}
 	.carousel-media{
 		margin-bottom: 100px;
 	}
+	.carousel-media .carousel-inner{
+		max-height: 550px;
+	}
+
+	.carousel-media .carousel-inner .item > img{
+		width: 100%;
+	}
+	#mediaAbout .carousel-media > ol > li{
+		border-top: inherit !important;
+	}
+	#mediaAbout .carousel-media > ol{
+		text-align: left;
+		left:31%;
+		z-index: 1;
+	}
 </style>
+
+<?php if(@$onlyItem){ ?>
+<div class="col-md-12 no-padding carousel-media">
+	<!-- Indicators -->
+	<ol class="carousel-indicators">
+<?php 
+			$i=0;
+			if(!empty($medias)){
+			foreach ($medias as $data){ ?>
+				 <li><img src="<?php echo $data["content"]["image"] ?>" alt=""><span class="text-white text-center"><i class="fa fa-2x fa-play-circle-o"></i></span></li>
+	   
+		<?php $i++;
+		 } } ?>
+		 <?php 
+		 	if(!empty($images)){
+			foreach ($images as $data){ ?>
+				 <li><img src="<?php echo $data["imageThumbPath"] ?>" alt=""></li>
+	   
+		<?php $i++;
+		 } } ?>
+	    <!--<li data-target="#myCarousel" data-slide-to="0" class="active"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion4.jpg" alt="Reunion 1"></li>
+	    <li data-target="#myCarousel" data-slide-to="1"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion5.jpg" alt="Reunion 1"></li>-->
+	</ol>
+</div>
+<?php }else{ ?>
 <div id="myCarousel" class="col-md-12 no-padding carousel carousel-media slide" data-ride="carousel">
 	<!-- Indicators -->
 	<ol class="carousel-indicators">
@@ -96,3 +140,4 @@
 
 	</div>
 </div>
+<?php } ?>

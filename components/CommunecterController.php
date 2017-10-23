@@ -114,7 +114,8 @@ class CommunecterController extends Controller
       "assigndata"    => array("href" => "/ph/co2/adminpublic/assigndata"),
       "getdatabyurl"   => array("href" => "/ph/co2/adminpublic/getdatabyurl"),
       "previewdata"    => array("href" => "/ph/co2/adminpublic/previewdata"),
-      
+      "interopproposed" => array("href" => "/ph/co2/adminpublic/interopproposed"),
+      "cleantags" => array("href" => "ph/co2/adminpublic/cleantags"),
     ),
     "collections" => array(
       "add"    => array("href" => "/ph/co2/collections/add"),
@@ -434,6 +435,10 @@ class CommunecterController extends Controller
       "updatefield"  => array( "href" => "/ph/co2/comment/updatefield"),
       "countcommentsfrom" => array( "href" => "/ph/co2/comment/countcommentsfrom"),
     ),
+    "order"=> array(
+       "save"   => array("href" => "/ph/co2/order/save"),
+       "get"   => array("href" => "/ph/co2/order/get"),
+    ),
     "action"=> array(
        "addaction"   => array("href" => "/ph/co2/action/addaction"),
     ),
@@ -501,7 +506,7 @@ class CommunecterController extends Controller
       "mediacrawler"      => array('href' => "/ph/co2/app/mediacrawler",      "public" => false),
       "page"              => array('href' => "/ph/co2/app/page",              "public" => true),
       "search"            => array('href' => "/ph/co2/app/search",            "public" => true),
-      "prestations"              => array('href' => "/ph/co2/app/page",              "public" => true),
+      "activities"              => array('href' => "/ph/co2/app/search",              "public" => true),
       "store"            => array('href' => "/ph/co2/app/search",            "public" => true),
       "agenda"            => array('href' => "/ph/co2/app/agenda",            "public" => true),
       "power"             => array('href' => "/ph/co2/app/power",             "public" => true),
@@ -515,6 +520,16 @@ class CommunecterController extends Controller
       "checkurlexists" => array('href' => "/ph/co2/app/checkurlexists", "public" => true),
       "rooms" => array('href' => "/ph/co2/app/rooms", "public" => true),
       "survey" => array('href' => "/ph/co2/app/survey", "public" => true),
+      "interoperability" => array(
+        "index"              => array('href' => 'ph/co2/interoperability/index',  "public" => true),
+        "get"              => array('href' => 'ph/co2/interoperability/get',  "public" => true),
+        "copedia"              => array('href' => 'ph/co2/interoperability/copedia',  "public" => true),
+        "co-osm"              => array('href' => 'ph/co2/interoperability/co-osm',  "public" => true),
+        "co-osm-getode"      => array('href' => 'ph/co2/interoperability/co-osm-getnode',  "public" => true),
+        "wikitoco"              => array('href' => 'ph/co2/interoperability/wikitoco',  "public" => true),
+        "pushtypewikidata"    => array('href' => 'ph/co2/interoperability/pushtypewikidata',  "public" => true),
+        "wikidata-put-description"    => array('href' => 'ph/co2/interoperability/wikidata-put-description',  "public" => true),
+      ),
     ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/co2/siteurl/incnbclick")

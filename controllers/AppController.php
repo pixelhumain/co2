@@ -149,13 +149,13 @@ class AppController extends CommunecterController {
         $params = array("type" => "classified");
         echo $this->renderPartial("search", $params, true);
     }
-    public function actionPrestations(){
-        CO2Stat::incNbLoad("co2-annonces"); 
-        $params = array("type" => "classified");
+    public function actionActivities(){
+        CO2Stat::incNbLoad("terla-activities"); 
+        $params = array("type" => "services");
         echo $this->renderPartial("search", $params, true);
     }
     public function actionStore(){
-        CO2Stat::incNbLoad("co2-annonces"); 
+        CO2Stat::incNbLoad("terla-store"); 
         $params = array("type" => "products");
         echo $this->renderPartial("search", $params, true);
     }
@@ -226,6 +226,9 @@ class AppController extends CommunecterController {
         else if($type == Product::COLLECTION){
             $element = Product::getById($id);
         }
+        else if($type == Service::COLLECTION){
+            $element = Service::getById($id);
+        }
         else if($type == Poi::COLLECTION){
             $element = Poi::getById($id);
         }
@@ -251,6 +254,11 @@ class AppController extends CommunecterController {
         $params = Element::getInfoDetail($params, $element, $type, $id);
     	echo $this->renderPartial("page", $params, true);
 	}
+
+    public function actionInteroperability(){
+        CO2Stat::incNbLoad("co2-interoberability");
+        echo $this->renderPartial("interoperability", array(), true);
+    } 
 
     public function actionInfo($p){
         $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? 

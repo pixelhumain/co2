@@ -63,8 +63,6 @@
 			"colorBtnCreate" : "orange"
 		},
 
-
-
 		"#live": {
 			"inMenu" : true, 
 			"useHeader" : true, 
@@ -99,7 +97,7 @@
 			"subdomainName" : "page",
 			"hash":"#app.page",
 			"icon" : "", 
-			"mainTitle" : "Le réseau social à effet de sert",
+			"mainTitle" : "Le réseau social citoyen",
 			"placeholderMainSearch" : "search ..."
 		},
 
@@ -111,7 +109,7 @@
 			"subdomainName" : "Info",
 			"hash":"#app.info",
 			"icon" : "info-circle", 
-			"mainTitle" : "Le réseau social à effet de sert",
+			"mainTitle" : "Le réseau social citoyen",
 			"placeholderMainSearch" : "search on people communected ..."
 		},
 
@@ -140,6 +138,18 @@
             "icon" : "university", 
             "mainTitle" : "Communexion activée",
             "placeholderMainSearch" : "search ..."
+        },
+
+		"#interoperability": {
+            "inMenu" : false, 
+            "useHeader" : true, 
+            "open" : true, 
+            "subdomain" : "interoperability", 
+            "subdomainName" : "Intéropérabilité",
+            "hash" : "#app.interoperability",
+            "icon" : "database", 
+            "mainTitle" : "Module d'intéropérabilité",
+            "placeholderMainSearch" : "Rechercher des données venus d'ailleurs ..."
         },
 
 		"#rooms": {
@@ -190,5 +200,4 @@
             "placeholderMainSearch" : "Admin Public ..."
         }
 	}
-
 }

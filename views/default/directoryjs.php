@@ -218,7 +218,7 @@
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
             <button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Thématiques") ?></span>
+                <span class="hidden-xs"><?php echo Yii::t("common","Themes") ?></span>
             </button><hr class="hidden-xs">
             <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
                 <i class="fa fa-search"></i> 
@@ -399,7 +399,7 @@
           <!-- </div> -->
 
         <?php } else{ 
-          $prestation = CO2::getContextList("prestation");
+          $service = CO2::getContextList("service");
           ?> 
           <div class="col-lg-2 col-md-3 col-sm-3 col-md-offset-1 col-sm-offset-1 col-xs-12 margin-top-25 text-left subsub no-padding shadow2" id="sub-menu-left">
               <h4 class="bg-orange text-white no-margin padding-10">FILTRE</h4>      
@@ -408,7 +408,7 @@
               </div>
               <hr>
               <?php 
-                  foreach ($prestation["categories"] as $key => $cat) {
+                  foreach ($service["categories"] as $key => $cat) {
               ?>
                   <div class="col-md-12 text-dark margin-bottom-5">
                       <input type="checkbox" class="btn-select-category-1" data-keycat="<?php echo $key; ?>"> <?php echo Yii::t("category",$cat); ?> 
@@ -468,7 +468,7 @@
 
         <?php } ?>
         <?php  if($typeSelected != "classified" && Yii::app()->params["CO2DomainName"] == "terla"){ 
-          $prestation = CO2::getContextList("prestation");
+          $service = CO2::getContextList("service");
           ?> 
           <div class="col-lg-2 col-md-3 col-sm-3 col-md-offset-1 col-sm-offset-1 col-xs-12 margin-top-25 text-left subsub no-padding shadow2" id="sub-menu-left">
               <h4 class="bg-orange text-white no-margin padding-10">FILTRE</h4>      
@@ -477,7 +477,7 @@
               </div>
               <hr>
               <?php 
-                  foreach ($prestation["categories"] as $key => $cat) {
+                  foreach ($service["categories"] as $key => $cat) {
               ?>
                   <div class="col-md-12 text-dark margin-bottom-5">
                       <input type="checkbox" class="btn-select-category-1" data-keycat="<?php echo $key; ?>"> <?php echo Yii::t("category",$cat); ?> 
@@ -510,7 +510,7 @@
               </div>
             </div>
         <?php } ?>
-        <?php $col = ( !in_array($typeSelected, array("classified","products","events","vote","all","place") )) ? 10 : 8; ?>
+        <?php $col = ( !in_array($typeSelected, array("classified","products","services","events","vote","all","place") )) ? 10 : 8; ?>
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
         
         <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
@@ -538,22 +538,29 @@
 <script type="text/javascript">
 
 var headerParams = {
-  "persons"       : { color: "yellow",  icon: "user",         name: trad["people"] },
-  "organizations" : { color: "green",   icon: "group",        name: trad["organizations"] },
-  "NGO"           : { color: "green",   icon: "group",        name: trad["NGO"] },
-  "LocalBusiness" : { color: "azure",   icon: "industry",     name: trad["LocalBusiness"] },
-  "Group"         : { color: "black",   icon: "circle-o",     name: trad["groups"] },
-  "projects"      : { color: "purple",  icon: "lightbulb-o",  name: trad["projects"] },
-  "events"        : { color: "orange",  icon: "calendar",     name: trad["events"] },
-  "vote"          : { color: "azure",   icon: "gavel",        name: trad["proposal"] },
-  "actions"       : { color: "lightblue2",    icon: "cogs",   name: trad["actions"] },
-  "cities"        : { color: "red",     icon: "university",   name: trad["cities"] },
-  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: trad["pointsinterests"] },
-  "place"         : { color: "green",   icon: "map-marker",   name: trad["place"] },
-  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad["classifieds"] },
-  "products"    : { color: "orange",   icon: "gift",   name: trad.products },
-  "GovernmentOrganization" : { color: "red",   icon: "university",        name: trad["GovernmentOrganizations"] },
-  
+  "persons"       : { color: "yellow",  icon: "user",         name: "citoyens" },
+  "organizations" : { color: "green",   icon: "group",        name: "organisations" },
+  "NGO"           : { color: "green",   icon: "group",        name: "associations" },
+  "LocalBusiness" : { color: "azure",   icon: "industry",     name: "entreprises" },
+  "Group"         : { color: "black",   icon: "circle-o",     name: "Groupes" },
+  "projects"      : { color: "purple",  icon: "lightbulb-o",  name: "projets" },
+  "events"        : { color: "orange",  icon: "calendar",     name: "événements" },
+  "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions, Questions, Votes" },
+  "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
+  "cities"        : { color: "red",     icon: "university",   name: "communes" },
+  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
+  "wikidata"    : { color: "lightblue2",   icon: "group",   name: "Wikidata" },
+  "datagouv"    : { color: "lightblue2",   icon: "bullhorn",   name: "DataGouv" },
+  "osm"    : { color: "lightblue2",   icon: "bullhorn",   name: "Open Street Map" },
+  "ods"    : { color: "lightblue2",   icon: "bullhorn",   name: "OpenDatasoft" },
+  "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
+  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
+  "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
+  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
+  "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
+
+  "products"    : { color: "orange",   icon: "shopping-basket",   name: trad.products },
+  "services"    : { color: "orange",   icon: "sun-o",   name: trad.products },
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
@@ -567,6 +574,7 @@ if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined
 function setHeaderDirectory(type){
  
   var params = new Array();
+
   if(typeof headerParams[type] == "undefined") return;
   params = headerParams[type];
   $(".subtitle-search").html( '<span class="text-'+params.color+'">'+
@@ -615,7 +623,6 @@ var cityNameLocked = "<?php echo $cityName; ?>";
 var typeSelected = <?php echo (@$_GET['type']) ? "'".$_GET['type']."'" : "null" ?>;
 
 var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
-
 jQuery(document).ready(function() {
 
 	
@@ -667,15 +674,17 @@ jQuery(document).ready(function() {
   });
 
   $(".btn-select-filliaire").click(function(){
+      mylog.log(".btn-select-filliaire");
       var fKey = $(this).data("fkey");
       myMultiTags = {};
       $.each(filliaireCategories[fKey]["tags"], function(key, tag){
         addTagToMultitag(tag);
       });
-      console.log("myMultiTags", myMultiTags);
+      mylog.log("myMultiTags", myMultiTags);
       
       startSearch(0, indexStepInit, searchCallback);
       KScrollTo("#content-social");
+      bindCommunexionScopeEvents();
       //KScrollTo("#before-section-result");
   });
   

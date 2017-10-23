@@ -265,19 +265,50 @@ Liste des notifications déjà lues => #370 #453
       - values
         - fixed
         - percentage
+  ** Page dédié sondage avec le module de proposition 
+    faire une page genre comme les change.org et autre 
+    on fait un appel , venez nombreux donner votre avis, proposer vos idées, ou jsute etre présent à l'appel
+    sur la question du : ....blah blah 
   ** Qui est là, Action en cours, Todo, Todo Perso  : dans un e communauté 
     une vision à un temps t, de toutes les ressources d'une CO 
       - en mode web 
       - mobi
+  ** menu configurable comme sur telephone , on click avatar
+    avec des widget , esay access links ...
+    possibilité de plusieurs panels
+  ** idea build dynform based on final json analysis (retro build)
+    - entry param is a structure similare 
 
 * ************************************************************    
 * Version C0.22  : en cours
 * ************************************************************  
   ** @Tib
->>>>[ ] json builder 
+>>>> [ ] when ona page , after login return to same page instead of personnal detail
+>>>> [ ] application launcher like linux 
+>>>> [ ] integration du system de paiement Mango
+>>>> [ ] faciliter la création de page static 
+      [ ] avec du contenu MD
+      [ ] un slideshow MD
+** json config builder 
+      - is just dynForm selector
+      - save allready gets the collection as a param in formatData
+        - any new saved Element must have a model and it's databinding at least 
+      [X] select type of config ex : "network"
+        - onclick : openForm of the given type 
+        - this way editing will also work
+      [ ] subDynform : open a subDF from any DF
+        - similar to location process 
+        - on click opens a new modal with a dynform inside
+      [ ] bugs 
+        [ ] btn annulé on subDF
+>>>>[ ] removing dynform classes from co.js and lazy load them
+>>>>[ ] check webpacking      
 >>>>[ ] suppression d'un element user type COEDitor
 >>>>[ ] bug : preview POI 
+>>>>[ ] add parent class to POI types
+      [ ] poi le saviez vous , a utiliser dans les chargements
 >>>>[ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
+>>>>[ ] presistent login issue ,  SSO ?
     [ ] search fork the world > opens a preview POI > should have the parent link
     [ ] verifier les qrcode 
     [ ]  NA : supprimer
@@ -292,11 +323,12 @@ Liste des notifications déjà lues => #370 #453
       - on Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté 
     * Finir module Tiers Lieux 
       [ ] on events TL connecté url to visio 
+        [ ] partage de calendrier entre plusieurs TL connecté
         [ ] show icons for quick access to ressources of a TL event
         [ ] avoir des roles concirerge ...etc == RH
           [ ] Compétence 
         * features
-          [ ] Ressource
+          [ ] Ressource [[[https://docs.google.com/drawings/d/17L1sZ0so3BHoV8fNclsCio9HflaAVkKP_Q1XhuUBhn4/edit]]]
             [ ] temps de consommation d'une ressource
             [ ] taux d'utilisation 
           [ ] Besoin
@@ -309,9 +341,25 @@ Liste des notifications déjà lues => #370 #453
     [ ] réintégré la GEd de granddir 
     [ ] losing session : rememberme
     [ ] enable edit POI when open Edition 
+
+
+
 * ************************************************************    
 * Version CO.22.terlà  : en cours
 * ************************************************************  
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 * ************************************************************    
 * Version C0.21.8  : MEP

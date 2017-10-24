@@ -2622,13 +2622,33 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 						}
 					}else{
 						echo  "Error address: ".$elt["name"]." " . $type. " " . $key. "<br>" ;
-					}
-					
+					}					
 				}
 			}
 			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 			
 		//}
+	}
+
+
+	public function actionBatchInterMultiScope() {
+
+		$elts = PHDB::find(Person::COLLECTION, array('$and' => array(
+									array("multiscopes" => array('$exists' => 1)))
+						));
+		$nbelement = 0 ;
+		if(!empty($elts)){
+			foreach ($elts as $key => $value) {
+				$res = PHDB::update(Person::COLLECTION, 
+						array("_id"=>new MongoId($key)),
+						array(	'$unset' 	=> array(	"multiscopes" => null),
+	                			'$set' 		=> array(	"inter" => true) ) );
+				$nbelement++;
+			}
+		}
+		
+		echo  "NB Element mis à jours: " .$nbelement."<br>" ;			
+					
 	}
 
 

@@ -41,7 +41,7 @@ $this->renderPartial($layoutPath.'header',
     #page .bg-yellow{
         background-color:#FFC600 !important;
         color:white!important;
-    }
+    }N
     #page .bg-turq{
         background-color: #229296 !important;
         color:white!important;
@@ -319,13 +319,13 @@ $this->renderPartial($layoutPath.'header',
         "struct_recherche" : { color: "blue",   icon: "bullhorn",   name: "Structures de recherche" },
     }
 
-    if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
-    {
-      $.each(themeObj.headerParams,function(k,v) 
-      { 
-        headerParams[k] = v;
-      });
-    }
+    // if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
+    // {
+    //   $.each(themeObj.headerParams,function(k,v) 
+    //   { 
+    //     headerParams[k] = v;
+    //   });
+    // }
 
 	jQuery(document).ready(function() {
         initKInterface({"affixTop":320}); 
@@ -420,21 +420,14 @@ $this->renderPartial($layoutPath.'header',
     }
 
     function initTypeSearchInterop(){
-
         contextTestMap = [];
-
         scrollEnd = false;
-
         all_interop_data = [];
-
         all_interop_url = [];
-
         totalData = 0;
         nb_of_stop = 0;
-
         startNow = 0;
         endNow = 30;
-
         indexMin = 0;
         indexMax = 30;
     }
@@ -445,7 +438,10 @@ $this->renderPartial($layoutPath.'header',
         var url_interop = "";
 
         city_id = getCityId();
-        city_data = getCityDataById(city_id);
+        type_zone = getTypeZone();
+
+        city_data = getCityDataById(city_id, type_zone);
+
         var geoShape = getGeoShapeForOsm(city_data.geoShape);
         var geofilter = getGeofilterPolygon(city_data.geoShape);
         var city_wikidataID = city_data.wikidataID;
@@ -608,7 +604,8 @@ $this->renderPartial($layoutPath.'header',
 	            mylog.log("error autocomplete INTEROP search"); mylog.dir(data);     
 	            //signal que le chargement est terminé
 	            loadingData = false;  
-                $('#dropdown_search').append("<br/><div><h1>Une requête n'a pas abouti ... </h1></div>");   
+                // $('#dropdown_search').append("<br/><div><h1>Something went wrong during this research ... </h1></div>");   
+                $("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'></i> Something went wrong during this research ...</span></center>");
 	        },
 	        success: function(data){ mylog.log("success autocomplete INTEROP search", data); 
 	        	toastr.success("Une partie des données est arrivé");

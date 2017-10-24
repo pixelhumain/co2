@@ -934,6 +934,84 @@ var directory = {
       return str;
     },
 
+    interopPanelHtml : function(params){
+      mylog.log("----------- interopPanelHtml",params, params.type,params.name, params.url);
+
+      var interop_type = getTypeInteropData(params.source.key);
+      params.hash = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.url);
+      params.url = params.hash;
+      params.color = getIconColorForInteropElements(interop_type);
+      params.htmlIco = getImageIcoForInteropElements(interop_type);
+      params.type = "poi.interop."+interop_type;
+
+      mylog.log('LES PARAMS APRES LEURS REDEFINITION');
+
+      if (typeof params.tags == "undefined") 
+        params.tags = [];
+        params.tags.push(interop_type);
+
+      str = "";  
+      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
+      str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
+
+      if(params.itemType!="city" && (params.useMinSize))
+        str += "<div class='imgHover'>" + params.imgProfil + "</div>"+
+                "<div class='contentMin'>";
+
+      if(params.itemType!="city" && (typeof params.size == "undefined" || params.size == "max"))
+        str += "<a href='"+params.hash+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + params.imgProfil + "</a>";
+
+      str += "<div class='padding-10 informations'>";
+
+      if(!params.useMinSize){
+        if(typeof params.size == "undefined" || params.size == "max"){
+          str += "<div class='entityCenter no-padding'>";
+          str +=    "<a href='"+params.hash+"' class='lbhp add2fav'  data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
+          str += "</div>";
+        }
+      }  
+              
+      str += "<div class='entityRight no-padding'>";
+
+      var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+      str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbhp add2fav'  data-modalshow='"+params.id+"'>"+
+                iconFaReply + params.name + 
+             "</a>";
+      
+      var thisLocality = "";
+      if(params.fullLocality != "" && params.fullLocality != " ")
+        thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "' class='entityLocality lbhp add2fav'  data-modalshow='"+params.id+"'>"+
+                          "<i class='fa fa-home'></i> " + params.fullLocality + 
+                        "</a>";
+      else thisLocality = "<br>";
+      
+      str += "<div class='entityDescription'>" + params.description + "</div>";
+      str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
+
+      if(params.useMinSize){
+        // if(params.startDate != null)
+        // str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+        // if(params.endDate != null)
+        // str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+        
+        if(typeof params.size == "undefined" || params.size == "max"){
+          str += "<div class='entityCenter no-padding'>";
+          str +=    "<a href='"+params.hash+"' class='lbhp add2fav'  data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
+          str += "</div>";
+        }
+      }  
+
+      if(params.type!="city" && (params.useMinSize))
+        str += "</div>";
+        str += "</div>";
+      str += "</div>";
+      str += "</div>";
+
+      str += "</div>";
+      return str;
+    },
+
+
     // ********************************
     // CALCULATE NEXT PREVIOUS 
     // ********************************
@@ -1851,21 +1929,12 @@ var directory = {
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
-                if( params.type == "poi" && params.source  && params.source.insertOrign == "import") {
+                if( params.type == "poi" && params.source  && params.source.key.substring(0,7) == "convert") {
                   var interop_type = getTypeInteropData(params.source.key);
-                  params.hash = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.url);
-                  params.url = params.hash;
-                  params.color = getIconColorForInteropElements(interop_type);
-                  params.htmlIco = getImageIcoForInteropElements(interop_type);
                   params.type = "poi.interop."+interop_type;
-
-                  if (typeof params.tags == "undefined") 
-                    params.tags = [];
-                    params.tags.push(interop_type);
-                } else {
-
-                  params.hash = '#page.type.'+params.type+'.id.' + params.id;
                 }
+
+                params.hash = '#page.type.'+params.type+'.id.' + params.id;
 
                 params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
 
@@ -1897,12 +1966,10 @@ var directory = {
                   thisRoles += "</small>";
                   params.rolesLbl = thisRoles;
                 }
-              
 
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
                 
-                if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);
-                
+                if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);                
                   //template principal
                 if(params.type == "cities")
                   str += directory.cityPanelHtml(params);  
@@ -1924,6 +1991,8 @@ var directory = {
                 }
                 else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
                   str += directory.coopPanelHtml(params);  
+                else if(params.type.substring(0,11) == "poi.interop")
+                  str += directory.interopPanelHtml(params);
                 else
                   str += directory.defaultPanelHtml(params);
                 

@@ -408,11 +408,6 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values){
 	$("#searchLocalityLEVEL").val(scopeLevel);
 	$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
 
-	// $.removeCookie('communexionType', { path: '/' }); 
-	// $.removeCookie('communexionValue', { path: '/' }); 
-	// $.removeCookie('communexionName', { path: '/' }); 
-	// $.removeCookie('communexionLevel', { path: '/' });
-
 	communexion.currentLevel = scopeLevel;
 	communexion.currentName = scopeName;
 	communexion.currentValue = scopeValue;

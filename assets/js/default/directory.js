@@ -944,8 +944,6 @@ var directory = {
       params.htmlIco = getImageIcoForInteropElements(interop_type);
       params.type = "poi.interop."+interop_type;
 
-      mylog.log('LES PARAMS APRES LEURS REDEFINITION');
-
       if (typeof params.tags == "undefined") 
         params.tags = [];
         params.tags.push(interop_type);

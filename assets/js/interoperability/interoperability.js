@@ -638,7 +638,7 @@ function getCityDataByInsee(insee) {
     return city_data;
 }
 
-function getCityDataById(id, type) {
+function getCityDataById(id, type=null) {
 
     $.ajax({
         type: "GET",

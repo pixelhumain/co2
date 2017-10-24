@@ -77,10 +77,7 @@ class CO2 {
             $communexion["currentName"] = false;
             $communexion["currentValue"] =  false;
         }
-        
-       // var_dump($communexion);
         return $communexion;
-
     }
 
 

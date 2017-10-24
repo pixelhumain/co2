@@ -1,7 +1,7 @@
 <?php
 class InteroperabilityController extends CommunecterController {
   protected function beforeAction($action) {
-      return parent::beforeAction($action);
+    return parent::beforeAction($action);
   }
 
   public function actions()

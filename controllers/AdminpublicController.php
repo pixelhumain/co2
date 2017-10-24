@@ -27,7 +27,6 @@ class AdminpublicController extends CommunecterController {
 	    'previewdata'  => 'citizenToolKit.controllers.adminpublic.PreviewDataAction',
   	    'interopproposed'  => 'citizenToolKit.controllers.adminpublic.InteropProposedAction',
   	    'cleantags' => 'citizenToolKit.controllers.adminpublic.CleanTagsAction',
-
 		);
 	}
 

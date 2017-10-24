@@ -713,13 +713,6 @@ circle.yellow-dot {
     city_data = getCityDataById(city_id);
     var city_wikidataID = city_data.wikidataID;
 
-		// if ($.cookie().communexionActivated == true) {
-	 //    var city_wikidataID = communexion.values.wikidataID;
-	 //  } else {
-  //   	scope_value = getScopeValue();
-  //     city_data = getCityDataByInsee(scope_value);
-  //     var city_wikidataID = city_data.wikidataID;
-  //   }
     return city_wikidataID;
 	}
 		

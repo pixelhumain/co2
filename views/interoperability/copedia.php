@@ -710,7 +710,7 @@ circle.yellow-dot {
 	function getWikidataID() {
 
     city_id = getCityId();
-    city_data = getCityDataById(city_id);
+    city_data = getCityDataById(city_id, "city");
     var city_wikidataID = city_data.wikidataID;
 
     return city_wikidataID;
@@ -785,7 +785,7 @@ circle.yellow-dot {
 
 		var form = {
 			saveUrl : baseUrl+"/"+moduleId+"/interoperability/wikidata-put-claim",
-			// saveUrl : "http://127.0.0.1/workspace/workspace/travail/WIKIDATA/test/oauthclient-php/test_2.php",
+			// saveUrl : "workspace/workspace/travail/WIKIDATA/test/oauthclient-php/test_2.php",
 			icon : "group",
 	    	type : "object",
 			dynForm : {
@@ -993,7 +993,7 @@ circle.yellow-dot {
   	    }
 
   	    $('#link_'+elt_label_dbpedia_sans_spec).append(
-    			'<a style="margin:10px;" class="btn btn-default" target="_blank" href="https://www.wikidata.org/wiki/'+wikidataID+'"><img style="max-height:50px;" src="http://127.0.0.1/'+moduleUrl+'/images/logos/logo-wikidata.png"/></a>'
+    			'<a style="margin:10px;" class="btn btn-default" target="_blank" href="https://www.wikidata.org/wiki/'+wikidataID+'"><img style="max-height:50px;" src="'+moduleUrl+'/images/logos/logo-wikidata.png"/></a>'
     		);
       },
       error:function(data) {
@@ -1037,11 +1037,11 @@ circle.yellow-dot {
             	"<a style='cursor:pointer; font-size:30px;' class='detail_elt' data-id="+index+">"+elt_label_dbpedia_clean+"</a><br>"+
             	"<p id='"+index+"'>"+value.typeLabel[0].typeLabel.value+"</p><br>"+
             	"<p id='link_"+index+"'>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.dbpedia.org/ressource/"+index+"'><img style='max-height:50px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.wikipedia.org/wiki/"+index+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://www.wikidata.org/wiki/"+value.wikidataID+"'><img style='max-height:50px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.dbpedia.org/ressource/"+index+"'><img style='max-height:50px;' src='"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.wikipedia.org/wiki/"+index+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://www.wikidata.org/wiki/"+value.wikidataID+"'><img style='max-height:50px;' src='"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
             	"</p>"+
-            	"<button class='copedia_link' data-id='"+index+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
+            	"<button class='copedia_link' data-id='"+index+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
             "</div>"
           );
 				}
@@ -1070,11 +1070,11 @@ circle.yellow-dot {
 	            	"<a style='cursor:pointer; font-size:30px;' class='detail_elt' data-id="+index+">"+elt_label_dbpedia_clean+"</a><br>"+
 	            	"<p id='"+index+"'>"+value.typeLabel[0].typeLabel.value+"</p><br>"+
 	            	"<p id='link_"+index+"'>"+
-	            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.dbpedia.org/ressource/"+index+"'><img style='max-height:50px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
-	            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.wikipedia.org/wiki/"+index+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
-	            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://www.wikidata.org/wiki/"+value.wikidataID+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
+	            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.dbpedia.org/ressource/"+index+"'><img style='max-height:50px;' src='"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
+	            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.wikipedia.org/wiki/"+index+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
+	            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://www.wikidata.org/wiki/"+value.wikidataID+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
 	            	"</p>"+
-	            	"<button class='copedia_link' data-id='"+index+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
+	            	"<button class='copedia_link' data-id='"+index+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
 	            "</div>"
             );
 					}
@@ -1106,11 +1106,11 @@ circle.yellow-dot {
             	"<a style='cursor:pointer; font-size:30px;' class='detail_elt' data-id="+index+">"+elt_label_dbpedia_clean+"</a><br>"+
             	"<p id='"+index+"'>"+value.typeLabel[0].typeLabel.value+"</p><br>"+
             	"<p id='link_"+index+"'>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.dbpedia.org/ressource/"+index+"'><img style='max-height:50px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.wikipedia.org/wiki/"+index+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://www.wikidata.org/wiki/"+value.wikidataID+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.dbpedia.org/ressource/"+index+"'><img style='max-height:50px;' src='"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.wikipedia.org/wiki/"+index+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://www.wikidata.org/wiki/"+value.wikidataID+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
             	"</p>"+
-            	"<button class='copedia_link' data-id='"+index+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
+            	"<button class='copedia_link' data-id='"+index+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
             "</div>"
           );
 				}
@@ -1138,11 +1138,11 @@ circle.yellow-dot {
             	"<a style='cursor:pointer; font-size:30px;' class='detail_elt' data-id="+index+">"+elt_label_dbpedia_clean+"</a><br>"+
             	"<p id='"+index+"'>"+value.typeLabel[0].typeLabel.value+"</p><br>"+
             	"<p id='link_"+index+"'>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.dbpedia.org/ressource/"+index+"'><img style='max-height:50px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.wikipedia.org/wiki/"+index+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://www.wikidata.org/wiki/"+value.wikidataID+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.dbpedia.org/ressource/"+index+"'><img style='max-height:50px;' src='"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.wikipedia.org/wiki/"+index+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://www.wikidata.org/wiki/"+value.wikidataID+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
             	"</p>"+
-            	"<button class='copedia_link' data-id='"+index+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
+            	"<button class='copedia_link' data-id='"+index+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
             "</div>"
           );
 				}
@@ -1169,11 +1169,11 @@ circle.yellow-dot {
             	"<a style='cursor:pointer; font-size:30px;' class='detail_elt' data-id="+index+">"+elt_label_dbpedia_clean+"</a><br>"+
             	"<p id='"+index+"'>"+value.typeLabel[0].typeLabel.value+"</p><br>"+
             	"<p id='link_"+index+"'>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.dbpedia.org/ressource/"+index+"'><img style='max-height:50px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.wikipedia.org/wiki/"+index+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://www.wikidata.org/wiki/"+value.wikidataID+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.dbpedia.org/ressource/"+index+"'><img style='max-height:50px;' src='"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.wikipedia.org/wiki/"+index+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://www.wikidata.org/wiki/"+value.wikidataID+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
             	"</p>"+
-            	"<button class='copedia_link' data-id='"+index+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
+            	"<button class='copedia_link' data-id='"+index+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
             "</div>"
           );
 				}
@@ -1203,11 +1203,11 @@ circle.yellow-dot {
             	"<a style='cursor:pointer; font-size:30px;' class='detail_elt' data-id="+index+">"+elt_label_dbpedia_clean+"</a><br>"+
             	"<p id='"+index+"'><button id='put_type_"+value.wikidataID+"' class='put_type_wikipedia_btn' data-id='"+value.wikidataID+"'>Ajouter un type (Wikidata)</button></p><br>"+
             	"<p id='link_"+index+"'>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.dbpedia.org/ressource/"+index+"'><img style='max-height:50px;' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.wikipedia.org/wiki/"+index+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
-            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://www.wikidata.org/wiki/"+value.wikidataID+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.dbpedia.org/ressource/"+index+"'><img style='max-height:50px;' src='"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://fr.wikipedia.org/wiki/"+index+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
+            		"<a style='margin:10px;' target='_blank' class='btn btn-default' href='https://www.wikidata.org/wiki/"+value.wikidataID+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
             	"</p>"+
-            	"<button class='copedia_link' data-id='"+index+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
+            	"<button class='copedia_link' data-id='"+index+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
             "</div>"
           );
 
@@ -1303,10 +1303,10 @@ circle.yellow-dot {
         	"<a style='cursor:pointer; font-size:30px;' class='detail_elt' data-id="+elt_label_dbpedia+">"+elt_label_dbpedia_clean+"</a><br>"+
         	"<p id='"+elt_label_dbpedia_sans_spec+"'>chargement ...</p><br>"+
         	"<p id='link_"+elt_label_dbpedia_sans_spec+"'>"+
-        		"<a style='margin:10px;' class='btn btn-default' target='_blank' href='"+value.wikipage.value+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
-        		"<a style='margin:10px;' class='btn btn-default' target='_blank' href='"+value.pagewiki.value+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
+        		"<a style='margin:10px;' class='btn btn-default' target='_blank' href='"+value.wikipage.value+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
+        		"<a style='margin:10px;' class='btn btn-default' target='_blank' href='"+value.pagewiki.value+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
         	"</p>"+
-        	"<button class='copedia_link' data-id='"+elt_label_dbpedia+"'><img style='max-height:50px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
+        	"<button class='copedia_link' data-id='"+elt_label_dbpedia+"'><img style='max-height:50px;'' src='"+moduleUrl+"/images/logos/logo-copedia.png'/></button>"+
         "</div>"
       );
 
@@ -1387,9 +1387,9 @@ circle.yellow-dot {
 
   					"<h3>Liens de l'élément</h3><br>"+
   					"<p>"+
-  						"<a style='font-size:25px; margin:30px;' target='_blank' href='https://fr.wikipedia.org/wiki/"+label_dbpedia+"'><img style='max-height:100px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
-  						"<a style='font-size:25px; margin:30px;' target='_blank' href='http://fr.dbpedia.org/page/"+label_dbpedia+"'><img style='max-height:100px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
-  						"<a style='font-size:25px; margin:30px;' target='_blank' href='https://www.wikidata.org/wiki/"+wikidataID+"'><img style='max-height:100px;'' src='http://127.0.0.1/"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
+  						"<a style='font-size:25px; margin:30px;' target='_blank' href='https://fr.wikipedia.org/wiki/"+label_dbpedia+"'><img style='max-height:100px;'' src='"+moduleUrl+"/images/logos/Wikipedia-logo-en-big.png'/></a>"+
+  						"<a style='font-size:25px; margin:30px;' target='_blank' href='http://fr.dbpedia.org/page/"+label_dbpedia+"'><img style='max-height:100px;'' src='"+moduleUrl+"/images/logos/logo-dbpedia.png'/></a>"+
+  						"<a style='font-size:25px; margin:30px;' target='_blank' href='https://www.wikidata.org/wiki/"+wikidataID+"'><img style='max-height:100px;'' src='"+moduleUrl+"/images/logos/logo-wikidata.png'/></a>"+
   					"</p>"
   				  );
 		      }
@@ -1449,7 +1449,7 @@ circle.yellow-dot {
 	function OpenDynForm(mapping) {
 
 		var form = {
-			saveUrl : "http://127.0.0.1/ph/co2/interoperability/wikitoco",
+			saveUrl : "ph/co2/interoperability/wikitoco",
 			dynForm : {
 				jsonSchema : {
 					title : trad["Change password"],

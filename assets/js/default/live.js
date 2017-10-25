@@ -179,7 +179,8 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 	}
 
 	var searchLocality = getLocalityForSearch();
-	 var dataSearch = {
+	mylog.log("searchLocality", searchLocality);
+	var dataSearch = {
       //"name" : name, 
       "localities" : searchLocality,
       "searchType" : searchType, 

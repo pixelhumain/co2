@@ -799,7 +799,7 @@ function showFormBlock(bool){
                         '<div class="scope-min-header list_tags_scopes hidden-xs text-left ellipsis">'+
             				$(".scope-min-header").html()+
             			'</div>';
-			if(globalCommunexion){
+			if(communexion.state){
 				scopeHtml='<a class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Quitter la communexion">'+
                 			'<i class="fa fa-sign-in"></i>'+
             				'</a>'+
@@ -808,7 +808,7 @@ function showFormBlock(bool){
 			actionOnSetGlobalScope="save";
 			$("#scopeListContainerForm").append(scopeHtml);
 			$(".item-globalscope-checker:last-child").trigger("click").removeClass("inactive");
-			if(globalCommunexion)
+			if(communexion.state)
             	$(".item-globalscope-checker").attr('disabled', true);
 			$("#container-scope-filter").hide();
 			bindCommunexionScopeEvents();

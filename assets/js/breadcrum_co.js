@@ -73,14 +73,20 @@ function bindCommunexionScopeEvents(){
 function activateGlobalCommunexion(active, firstLoad){  
 	mylog.log("activateGlobalCommunexion", active);
     $.cookie('communexionActivated', active, { expires: 365, path: "/" });
-    globalCommunexion=active;
+    communexion.state=active;
     if(active){
         headerHtml='<i class="fa fa-university"></i> ' + communexion.currentName + "<small class='text-dark'>.CO</small>"
         //setGlobalScope($.cookie('communexionValue'), communexion.currentName, $.cookie('communexionType'), $.cookie('communexionLevel'));
         $("#container-scope-filter").html(getBreadcrumCommunexion());
         if(actionOnSetGlobalScope=="save")
             $("#scopeListContainerForm").html(getBreadcrumCommunexion());
-        startSearch(0, indexStepInit,searchCallback);
+        //startSearch(0, indexStepInit,searchCallback);
+        if(actionOnSetGlobalScope=="filter"){
+            if(location.hash.indexOf("#live") >=0)
+                startNewsSearch(true);
+            else if(!firstLoad)
+                startSearch(0, indexStepInit,searchCallback);
+        }
         bindCommunexionScopeEvents();
     }else{
         headerHtml='<a href="#" class="menu-btn-back-category" data-target="#modalMainMenu" data-toggle="modal">'+

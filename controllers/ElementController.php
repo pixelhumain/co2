@@ -37,6 +37,7 @@ class ElementController extends CommunecterController {
           'getdatadetail'         => 'citizenToolKit.controllers.element.GetDataDetailAction',
           'stopdelete'            => 'citizenToolKit.controllers.element.StopDeleteAction',
           'getthumbpath'       => 'citizenToolKit.controllers.element.GetThumbPathAction',
+          'getcommunexion'       => 'citizenToolKit.controllers.element.GetCommunexionAction',
       );
   }
 }

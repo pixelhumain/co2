@@ -50,9 +50,9 @@ class CO2 {
 		
 
 		if(CookieHelper::hasCookie("communexion") && CookieHelper::hasCookie("communexionType")) {
-			//if(isset( Yii::app()->request->cookies['communexionActivated'] ) && (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
+			if(isset( Yii::app()->request->cookies['communexionActivated'] ) && (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
                 $communexion["state"] = true;
-            //}
+            }
             $communexion["values"] = json_decode(CookieHelper::getCookie("communexion"), true);
 
             if(!empty($communexion["values"])){

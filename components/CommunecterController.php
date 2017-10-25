@@ -439,6 +439,10 @@ class CommunecterController extends Controller
        "save"   => array("href" => "/ph/co2/order/save"),
        "get"   => array("href" => "/ph/co2/order/get"),
     ),
+    "orderitem"=> array(
+       "save"   => array("href" => "/ph/co2/orderitem/save"),
+       "get"   => array("href" => "/ph/co2/orderitem/get"),
+    ),
     "action"=> array(
        "addaction"   => array("href" => "/ph/co2/action/addaction"),
     ),

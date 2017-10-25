@@ -53,7 +53,7 @@
 </style>
 <div class="headerTitleStanalone">
 	<span>My Dashboard</span> 
-	<?php if(!@element["professional"]){ ?> 
+	<?php if(!@$element["professional"]){ ?> 
 		<button class="createPro bg-orange">Create a professional account<button>
 	<?php } ?>
 </div>

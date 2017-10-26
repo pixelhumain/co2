@@ -1742,7 +1742,7 @@ function myAdminList (ctypes) {
 				});
 			}
 		});
-		mylog.dir(myList);
+		mylog.log("myAdminList return", myList);
 	}
 	return myList;
 }

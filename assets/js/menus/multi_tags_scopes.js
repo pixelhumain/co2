@@ -10,7 +10,7 @@
         scopeHtml="";
 
         //if(typeof userConnected != "undefined" && userConnected != null ){
-             if( typeof communexion != "undefined" && communexion.state){
+             if( typeof communexion != "undefined" && notEmpty(communexion.values) ) {
                 scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
                             'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+communexion.currentName+'" '+
                             'data-scope-value="'+communexion.currentValue+'" '+

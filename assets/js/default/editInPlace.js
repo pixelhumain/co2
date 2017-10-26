@@ -32,14 +32,14 @@ function bindAboutPodElement() {
 	function removeAddresses (index, formInMap){
 
 		bootbox.confirm({
-			message: trad["suredeletelocality"]+"<span class='text-red'></span>",
+			message: trad.suredeletelocality+"<span class='text-red'></span>",
 			buttons: {
 				confirm: {
-					label: trad["yes"],
+					label: trad.yes,
 					className: 'btn-success'
 				},
 				cancel: {
-					label: trad["no"],
+					label: trad.no,
 					className: 'btn-danger'
 				}
 			},

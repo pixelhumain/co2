@@ -962,11 +962,11 @@ function removeAddress(form){
 			message: msg + "<span class='text-red'></span>",
 			buttons: {
 				confirm: {
-					label: "<?php echo Yii::t('common','Yes');?>",
+					label: trad.yes,
 					className: 'btn-success'
 				},
 				cancel: {
-					label: "<?php echo Yii::t('common','No');?>",
+					label: trad.no,
 					className: 'btn-danger'
 				}
 			},

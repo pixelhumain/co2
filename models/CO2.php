@@ -47,13 +47,17 @@ class CO2 {
 	public static function getCommunexionCookies(){
 		$communexion = array("state"=>false, "values"=>array());
 		//var_dump(Yii::app()->request->cookies['communexionActivated']);
-		if(isset( Yii::app()->request->cookies['communexionActivated'] ) && (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
-			$communexion["state"] = true;
-		}
+		
 
 		if(CookieHelper::hasCookie("communexion") && CookieHelper::hasCookie("communexionType")) {
-			$communexion["state"] = true;
+			if(isset( Yii::app()->request->cookies['communexionActivated'] ) && (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
+                $communexion["state"] = true;
+            }
             $communexion["values"] = json_decode(CookieHelper::getCookie("communexion"), true);
+
+            if(!empty($communexion["values"])){
+                $communexion["values"] = json_decode(CookieHelper::getCookie("communexion"), true);
+            }
             $communexion["currentLevel"] = "city";
             
             if($communexion["values"]["cp"]){
@@ -77,6 +81,7 @@ class CO2 {
             $communexion["currentLevel"] =  false;
             $communexion["currentName"] = false;
             $communexion["currentValue"] =  false;
+            $communexion["state"] = false;
         }
         return $communexion;
     }

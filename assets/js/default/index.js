@@ -575,8 +575,18 @@ function selectScopeLevelCommunexion(level){
 	startSearch();
 }
 
-function setCookies(path){ 
-	mylog.log("setCookies", path);
+function setCookies(){ 
+	mylog.log("setCookies");
+	$.ajax({
+			type: "POST",
+			url: baseUrl+"/"+moduleId+"/element/getCommunexion/",
+			data: params,
+			dataType: "json",
+			success: function(data){
+				communexion = data ;
+			}
+	});
+
 	//if(false){
 	/*	$.cookie('inseeCommunexion',   	inseeCommunexion,  	{ expires: 365, path: path });
 		$.cookie('cityNameCommunexion', cityNameCommunexion,{ expires: 365, path: path });

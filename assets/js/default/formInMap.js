@@ -263,7 +263,7 @@ var formInMap = {
 						mylog.log("city/save obj.city", obj.city);
 						mylog.log("city/save data", data);
 						if(data.result){
-							toastr.success("City create");
+							toastr.success(data.msg);
 						}
 
 						formInMap.NE_localityId = data.id
@@ -616,14 +616,18 @@ var formInMap = {
 						if(typeof contextData.address == "undefined" || contextData.address == null){
 							inMap =false ;
 						}
-						contextData.address = data.locality.address;
-						contextData.geo = data.locality.geo;
-						contextData.geoPosition = data.locality.geoPosition;
+
+						if(notEmpty(data.locality)){
+							contextData.address = data.locality.address;
+							contextData.geo = data.locality.geo;
+							contextData.geoPosition = data.locality.geoPosition;
+						}
+						
 						
 						formInMap.hiddenHtmlMap(false);
 						formInMap.initData();
 
-						if(!formInMap.addressesIndex){							
+						if(!formInMap.addressesIndex){
 							if(contextData.id != userId){
 								var typeMap = ((typeof contextData == "undefined" || contextData == null) ? "citoyens" : contextData.type) ;
 								if(typeMap == "citoyens")
@@ -637,7 +641,7 @@ var formInMap = {
 								currentUser.postalCode = locality.address.postalCode;
 								currentUser.codeInsee = locality.address.codeInsee;
 								currentUser.keyLocality = locality.address.key;
-								//formInMap.setCommunexion(locality.address);
+								setCookies();
 								if(typeof Sig.myPosition != "undefined"){
 									Sig.myPosition.position.latitude = locality.geo.latitude;
 									Sig.myPosition.position.longitude = locality.geo.longitude;

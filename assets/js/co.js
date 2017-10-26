@@ -248,7 +248,7 @@ function openModal(key,collection,id,tpl,savePath,isSub){
 	});
 }
 
-function updateField(type,id,name,value,reload){ 
+function updateField(type,id,name,value,reload, toastr){ 
     	
 	$.ajax({
 	  type: "POST",
@@ -256,7 +256,8 @@ function updateField(type,id,name,value,reload){
 	  data: { "pk" : id ,"name" : name, value : value },
 	  success: function(data){
 		if(data.result) {
-        	toastr.success(data.msg);
+			if(toastr==null)
+        		toastr.success(data.msg);
         	if(reload)
         		urlCtrl.loadByHash(location.hash);
 		}

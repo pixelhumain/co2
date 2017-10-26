@@ -294,6 +294,7 @@
 	var context = <?php echo json_encode($context)?>;
 
 	var profilThumbImageUrlUser = "<?php echo @$profilThumbImageUrlUser; ?>";
+	var isUpdatedComment=false;
 	// mylog.log("context");
 	// mylog.dir(context);
 	// mylog.log("comments");
@@ -399,9 +400,7 @@
 	function showOneComment(textComment, idComment, isAnswer, idNewComment, argval, mentionsArray){
 		console.log(mentionsArray);
 		if(notNull(mentionsArray)){
-			alert(textComment);
 			textComment = mentionsInit.addMentionInText(textComment,mentionsArray);
-			alert(textComment);
 		}
 		textComment = linkify(textComment);
 		var classArgument = "";
@@ -759,6 +758,7 @@
 
 	function editComment(idComment){
 		// mylog.log(contextId);
+		isUpdatedComment=true;
 		var commentContent = comments[idComment].text;
 		var message = "<div id='container-txtarea-"+idComment+"' class='content-update-comment'>"+
 						"<textarea id='textarea-new-comment"+idComment+"' class='form-control' placeholder='modifier votre commentaire'>"+commentContent+
@@ -766,20 +766,21 @@
 					  "</div>";
 		var boxComment = bootbox.dialog({
 		  message: message,
-		  title: '<?php echo Yii::t("comment","Modifier votre commentaire"); ?>', //Souhaitez-vous vraiment supprimer ce commentaire ?
+		  title: '<?php echo Yii::t("comment","Update your comment"); ?>', //Souhaitez-vous vraiment supprimer ce commentaire ?
 		  buttons: {
 		  	annuler: {
-		      label: "Annuler",
+		      label: trad.cancel,
 		      className: "btn-default",
 		      callback: function() {
-		        mylog.log("Annuler");
+		      	isUpdatedComment=false;
 		      }
 		    },
 		    enregistrer: {
-		      label: "Enregistrer",
+		      label: trad.save,
 		      className: "btn-success",
 		      callback: function() {
 		      	updateComment(idComment,$("#textarea-new-comment"+idComment).val(), "#textarea-new-comment"+idComment);
+				isUpdatedComment=false;
 				return true;
 		      }
 		    },

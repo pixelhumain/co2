@@ -2583,9 +2583,12 @@ var collection = {
 ********************************** */
 var contextData = null;
 var dynForm = null;
+var mentionsInput=[];
 var mentionsInit = {
 	stopMention : false,
+	isSearching : false,
 	get : function(domElement){
+		mentionsInput=[];
 		$(domElement).mentionsInput({
 		  onDataRequest:function (mode, query, callback) {
 			  	if(mentionsInit.stopMention)
@@ -2593,6 +2596,7 @@ var mentionsInit = {
 			  	var data = mentionsContact;
 			  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 				callback.call(this, data);
+				mentionsInit.isSearching=true;
 		   		var search = {"search" : query};
 		  		$.ajax({
 					type: "POST",
@@ -2608,11 +2612,13 @@ var mentionsInit = {
 				        	for(var key in retdata){
 					        	for (var id in retdata[key]){
 						        	avatar="";
+						        	console.log(retdata[key]);
 						        	if(retdata[key][id].profilThumbImageUrl!="")
 						        		avatar = baseUrl+retdata[key][id].profilThumbImageUrl;
 						        	object = new Object;
 						        	object.id = id;
 						        	object.name = retdata[key][id].name;
+						        	object.slug = retdata[key][id].slug;
 						        	object.avatar = avatar;
 						        	object.type = key;
 						        	var findInLocal = _.findWhere(mentionsContact, {
@@ -2633,6 +2639,48 @@ var mentionsInit = {
 				})
 		  	}
 	  	});
+	},
+	beforeSave : function(object, domElement){
+		$(domElement).mentionsInput('getMentions', function(data) {
+			mentionsInput=data;
+		});
+		if (typeof mentionsInput != "undefined" && mentionsInput.length != 0){
+			var textMention="";
+			$(domElement).mentionsInput('val', function(text) {
+				textMention=text;
+				$.each(mentionsInput, function(e,v){
+					strRep=v.name;
+					if(typeof v.slug != "undefined")
+						strRep="@"+v.slug;
+					textMention = textMention.replace("@["+v.name+"]("+v.type+":"+v.id+")", strRep);
+				});
+			});			
+			object.mentions=mentionsInput;
+			object.text=textMention;
+		}
+		return object;		      		
+	},
+	addMentionInText: function(text,mentions){
+		$.each(mentions, function( index, value ){
+			if(typeof value.slug != "undefined"){
+				str="<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+		   						value.name+
+		   					"</span>";
+				text = text.replace("@"+value.slug, str);
+			}else{
+				//Working on old news
+		   		array = text.split(value.value);
+		   		text=array[0]+
+		   					"<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+		   						value.name+
+		   					"</span>"+
+		   				array[1];
+		   	}   					
+		});
+		return text;
+	},
+	reset: function(domElement){
+		$(domElement).mentionsInput('reset');
 	}
 }
 var uploadObj = {

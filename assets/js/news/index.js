@@ -71,7 +71,6 @@ var loadStream = function(indexMin, indexMax){ mylog.log("loadStream");
 		    	mylog.log("LOAD NEWS BY AJAX");
 		    	//mylog.log(data.news);
 		    	if(data){
-		    		alert();
 					buildTimeLine (data.news, indexMin, indexMax);
 					bindTags();
 					if(typeof(data.limitDate.created) == "object")
@@ -1187,7 +1186,6 @@ function saveNews(){
 				}*/
 				newNews=mentionsInit.beforeSave(newNews, 'textarea.mention');
 				mylog.log(newNews);
-				alert();
 				$.ajax({
 			        type: "POST",
 			        url: baseUrl+"/"+moduleId+"/news/save?tpl=co2",

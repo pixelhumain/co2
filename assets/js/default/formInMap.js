@@ -263,7 +263,7 @@ var formInMap = {
 						mylog.log("city/save obj.city", obj.city);
 						mylog.log("city/save data", data);
 						if(data.result){
-							toastr.success("City create");
+							toastr.success(data.msg);
 						}
 
 						formInMap.NE_localityId = data.id

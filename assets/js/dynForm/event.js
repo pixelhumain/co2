@@ -124,7 +124,7 @@ dynForm = {
 	         	label : tradDynForm["ispartofevent"]+" ?",
             	inputType : "select",
             	class : "",
-            	placeholder : tradDynForm["ispartevent"]+" ?",
+            	placeholder : tradDynForm["ispartofevent"]+" ?",
             	options : {
             		"":tradDynForm["noparent"]
             	},

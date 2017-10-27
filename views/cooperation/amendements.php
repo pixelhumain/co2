@@ -13,36 +13,36 @@
 		<hr>
 		<?php if($auth && @$proposal["status"] == "amendable"){ ?>
 			<button class="btn btn-link radius-5 text-purple col-lg-12 col-md-12 col-sm-12 btn-create-amendement">
-				<i class="fa fa-pencil"></i> Proposer un amendement
+				<i class="fa fa-pencil"></i> <?php echo Yii::t("cooperation", "Submit an amendement"); ?>
 			</button>
 		<?php } else if(@$proposal["status"] != "amendable"){ ?>
 			<label class="bg-white letter-purple">
-				<i class="fa fa-clock-o"></i> La période d'amendement est terminée
+				<i class="fa fa-clock-o"></i> <?php echo Yii::t("cooperation", "Amendement session is closed"); ?>
 			</label>
 			<hr>
 		<?php } else if(!$auth){ ?>
 			<label class="badge bg-purple col-lg-12 col-md-12 col-sm-12">
-				<i class="fa fa-lock"></i> Devenez membre ou contributeur <br>pour proposer des amendements
+				<i class="fa fa-lock"></i> <?php echo Yii::t("cooperation", "You must be member or contributor"); ?><br><?php echo Yii::t("cooperation", "to submit amendements"); ?>
 			</label>
 		<?php } ?>
 	</div>
 
 	 <div class="form-group col-lg-12 col-md-12 col-sm-12 hidden" id="form-amendement">
 	  <hr>
-	  <label><i class="fa fa-pencil"></i> Rédiger votre amendement :</label><br>
-	  <small><i>Si votre amendement est accepté, il sera ajouté à la suite de la proposition principale,<br>et fera parti de la proposition finale, soumise au vote.</i></small><br><br>
-	  <textarea class="form-control" rows="8" id="txtAmdt" placeholder="votre amendement"></textarea>
+	  <label><i class="fa fa-pencil"></i> <?php echo Yii::t("cooperation", "Write your amendement"); ?> :</label><br>
+	  <small><i><?php echo Yii::t("cooperation", "If your amendement is adopted, it will be added to the principale proposal, <br>and will incorporated the final proposal, submited to vote."); ?></i></small><br><br>
+	  <textarea class="form-control" rows="8" id="txtAmdt" placeholder="<?php echo Yii::t("cooperation", "your amendement"); ?>"></textarea>
 	  <br>
-	  <small class="pull-left"><i>Les amendements ne peuvent dépasser la taille de 1000 caractères</i></small>
+	  <small class="pull-left"><i><?php echo Yii::t("cooperation", "Size max : 1000 caracters"); ?></i></small>
 	  
 	  <small class="pull-right" id="charsLeft"></small><br>
-	  <small class="pull-left"><i>(taille minimale : 10 caractères)</i></small>
+	  <small class="pull-left"><i>(<?php echo Yii::t("cooperation", "Size min : 10 caracters"); ?>)</i></small>
 	  <div class="ol-lg-12 col-md-12 col-sm-12 margin-top-10 no-padding">
 		  <button class="btn btn-sm btn-link radius-5 bg-green-k pull-right" id="btn-save-amendement">
-				<i class="fa fa-save"></i> Enregistrer mon amendement
+				<i class="fa fa-save"></i> <?php echo Yii::t("cooperation", "Save my amendement"); ?>
 		  </button>
 		  <button class="btn btn-sm btn-link radius-5 bg-red pull-right margin-right-10 btn-create-amendement">
-				<i class="fa fa-times"></i> Annuler
+				<i class="fa fa-times"></i> <?php echo Yii::t("common", "Cancel"); ?>
 		  </button>
 	  </div>
 	  <hr class="col-lg-12 col-md-12 col-sm-12 no-padding">
@@ -75,7 +75,7 @@
 		}else{ 
 	?>
 	<div class="col-lg-12 col-md-12 col-sm-12 margin-top-">
-		<h5 class="text-left"><i class="fa fa-ban"></i> Aucun amendement</h5>
+		<h5 class="text-left"><i class="fa fa-ban"></i> <?php echo Yii::t("cooperation", "No amendement"); ?></h5>
 	</div>
 	<?php } ?>
 		

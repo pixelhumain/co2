@@ -739,6 +739,38 @@ db.news.find({}).forEach(function(doc){
 })
 
 
+TANGO - 22/05/2017
+---------------------------------------------------
+set localityid to all NC cities
+---------------------------------------------------
+
+db.cities.find().forEach(function(doc){ 
+    if(doc.country == "NC"){ 
+        print(doc.name+" :: " + doc.country + " - " + doc._id.str); 
+        db.cities.update({"_id":doc._id},{
+            '$set':{'localityId':doc._id.str}
+        }) 
+    } 
+});
+
+
+db.cities.find().forEach(function(doc){ 
+    if(doc.country == "NC"){ 
+        print(doc.name+" :: " + doc.postalCodes[0].kanakName); 
+
+        if(typeof doc.postalCodes[0].kanakName != "undefined"){
+          db.cities.update({"_id":doc._id},{
+              '$set':{'kanakName':doc.postalCodes[0].kanakName}
+          });
+        } else {
+          db.cities.update({"_id":doc._id},{
+              '$set':{'kanakName':doc.postalCodes[0].name}
+          });
+        }
+    } 
+});
+
+
 ---------------------------------------------------
 Activer / Désactiver MAPBOX
 

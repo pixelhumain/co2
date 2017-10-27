@@ -9,7 +9,7 @@ var totalData = 0;
 var timeout = null;
 
 function startSearch(indexMin, indexMax){
-    mylog.log("startSearch", indexMin, indexMax, indexStep);
+    console.log("startSearch agenda.js", indexMin, indexMax, indexStep);
 
     mylog.log("loadingData", loadingData);
     if(loadingData) return;
@@ -163,7 +163,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
                   type = typeObj[o.type].ctrl;
                   //if(type=="citoyen") type = "person";
                   var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
-                  var onclick = 'urlCtrl.loadByHash("#' + type + '.detail.id.' + id + '");';
+                  var onclick = 'urlCtrl.loadByHash("#page.type.' + o.type + '.id.' + id + '");';
                   var onclickCp = "";
                   var target = " target='_blank'";
                   var dataId = "";

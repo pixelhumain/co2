@@ -1,8 +1,9 @@
 
 function bindCommunexionScopeEvents(){
-    $(".btn-decommunecter").click(function(){
+    $(".btn-decommunecter").off().on('click',function(){
         activateGlobalCommunexion(false); 
     });
+
     $(".item-globalscope-checker").click(function(){  
         $(".item-globalscope-checker").addClass("inactive");
         $(this).removeClass("inactive");
@@ -34,6 +35,10 @@ function bindCommunexionScopeEvents(){
                 if(actionOnSetGlobalScope=="filter"){
                     if(location.hash.indexOf("#live") >= 0){
                         startNewsSearch(true)
+                    } 
+                    else if (location.hash.indexOf("#interoperability") >= 0) {
+                        initTypeSearchInterop();
+                        startSearchInterop(0,30);
                     }
                     else{
                         startSearch(0, indexStepInit); 
@@ -54,8 +59,9 @@ function bindCommunexionScopeEvents(){
         checkScopeMax();
     });
 
-    $(".start-new-communexion").click(function(){  
-        if (typeof $.cookie('communexionName') !== 'undefined'){
+    $(".start-new-communexion").click(function(){
+        mylog.log("start-new-communexion", typeof communexion.currentName);
+        if (typeof communexion.currentName !== 'undefined'){
             activateGlobalCommunexion(true);
             if(actionOnSetGlobalScope=="save")
                 $(".item-globalscope-checker").attr('disabled', true);
@@ -67,23 +73,30 @@ function bindCommunexionScopeEvents(){
 function activateGlobalCommunexion(active, firstLoad){  
 	mylog.log("activateGlobalCommunexion", active);
     $.cookie('communexionActivated', active, { expires: 365, path: "/" });
-    globalCommunexion=active;
+    communexion.state=active;
     if(active){
-        headerHtml='<i class="fa fa-university"></i> ' + $.cookie('communexionName') + "<small class='text-dark'>.CO</small>"
-        //setGlobalScope($.cookie('communexionValue'), $.cookie('communexionName'), $.cookie('communexionType'), $.cookie('communexionLevel'));
+        headerHtml='<i class="fa fa-university"></i> ' + communexion.currentName + "<small class='text-dark'>.CO</small>"
+        //setGlobalScope($.cookie('communexionValue'), communexion.currentName, $.cookie('communexionType'), $.cookie('communexionLevel'));
         $("#container-scope-filter").html(getBreadcrumCommunexion());
         if(actionOnSetGlobalScope=="save")
             $("#scopeListContainerForm").html(getBreadcrumCommunexion());
+        //startSearch(0, indexStepInit,searchCallback);
+        if(actionOnSetGlobalScope=="filter"){
+            if(location.hash.indexOf("#live") >=0)
+                startNewsSearch(true);
+            else if(!firstLoad)
+                startSearch(0, indexStepInit,searchCallback);
+        }
         bindCommunexionScopeEvents();
-    }
-    else{
+    }else{
         headerHtml='<a href="#" class="menu-btn-back-category" data-target="#modalMainMenu" data-toggle="modal">'+
-                '<img src="'+themeUrl+'/assets/img/LOGOS/'+domainName+'/logo-head-search.png" height="60" class="inline margin-bottom-15">'+
+                '<img src="'+themeUrl+'/assets/img/LOGOS/'+domainName+'/logo-head-search.png" height="60" class="inline">'+
                 '</a>';
         saveCookieMultiscope();
         //rebuildSearchScopeInput();
         showTagsScopesMin();
         bindCommunexionScopeEvents();
+
         if(actionOnSetGlobalScope=="filter"){
             if(location.hash.indexOf("#live") >=0)
                 startNewsSearch(true);
@@ -96,6 +109,7 @@ function activateGlobalCommunexion(active, firstLoad){
 }
 function getBreadcrumCommunexion(){
     var tips="";
+
     if(typeof communexion.cities != "undefined") {
     	$.each(communexion.cities,function(e,v){
             tips+=v+" / ";
@@ -117,7 +131,7 @@ function getBreadcrumCommunexion(){
 	htmlCommunexion+=	'<i class="fa fa-university fa-2x text-red"></i>'+
 							'<div class="getFormLive" style="display:inline-block;">';
 
-	if(communexion.values.level2){
+	if(communexion.values && communexion.values.level2){
 		htmlCommunexion+=			'<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
 										'class="btn btn-link text-red item-globalscope-checker homestead '; 
 											if( communexion.currentLevel != "level2" )
@@ -130,7 +144,7 @@ function getBreadcrumCommunexion(){
 									'</button>';
 	}
 
-	if(communexion.values.level3){
+	if(communexion.values && communexion.values.level3){
 		htmlCommunexion+=			'<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
 										'class="btn btn-link text-red item-globalscope-checker homestead '; 
 											if( communexion.currentLevel != "level3" )
@@ -143,7 +157,7 @@ function getBreadcrumCommunexion(){
 									'</button>';
 	}
 
-	if(communexion.values.level4){
+	if(communexion.values && communexion.values.level4){
 		htmlCommunexion+=			'<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
 										'class="btn btn-link text-red item-globalscope-checker homestead ';
 											if( communexion.currentLevel != "level4" )

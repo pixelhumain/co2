@@ -74,6 +74,7 @@ function initSearchInterface(){
 CLASSIFIED
 ----------------------------- */
 var section = "";
+var sectionKey;
 var classType = "";
 var classSubType = "";
 function initClassifiedInterface(){ return;
@@ -85,6 +86,7 @@ function initClassifiedInterface(){ return;
 }
 
 function bindLeftMenuFilters () { 
+
     $(".btn-select-type-anc").off().on("click", function()
     {    
         searchType = [ typeInit ];
@@ -104,15 +106,17 @@ function bindLeftMenuFilters () {
             sectionKey = $(this).data("key");
             //alert("section : " + section);
 
-            if( sectionKey == "forsale" || sectionKey == "forrent"){
+            if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "job"){
                 $("#section-price").show(200);
-                KScrollTo("#section-price");
+                setTimeout(function(){
+                    KScrollTo("#container-scope-filter");
+                }, 400);
             }
             else {
                 $("#section-price").hide();
                 $("#priceMin").val("");
                 $("#priceMax").val("");
-                KScrollTo("#dropdown_search");
+                KScrollTo("#container-scope-filter");
             }
 
             if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
@@ -133,19 +137,21 @@ function bindLeftMenuFilters () {
                 bindLeftMenuFilters ();
                 classified.currentLeftFilters = null;
             }
-            $('#searchTags').val(section);
+            $('#searchTags').val(sectionKey);
         }
 
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
         $(".keycat").addClass("hidden");
         
+
         if(sectionKey)
             $(this).addClass("active");
 
         startSearch(0, indexStepInit, searchCallback); 
 
         if(sectionKey && typeof classified.sections[sectionKey] != "undefined") {
-            $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]);
+            var label = classified.sections[sectionKey]["labelFront"];
+            $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + tradCategory[label]);
             $('.classifiedSection').remove();
             $(".resultTypes").append( "<span class='classifiedSection text-azure text-bold hidden-xs pull-right'><i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]+'<i class="fa fa-times text-red resetFilters"></i></span>');
             $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+classified.sections[sectionKey]["color"])
@@ -157,9 +163,10 @@ function bindLeftMenuFilters () {
         searchType = [ typeInit ];
         var searchTxt = "";
         var classType = $(this).data("keycat");
-
+        console.log("bindLeftMenuFilters sectionKey", sectionKey);
+        
         if( $(this).hasClass( "active" ) ){
-            searchTxt = section;
+            searchTxt = sectionKey;
             $(this).removeClass( "active" );
             $(".keycat-"+classType).addClass("hidden"); 
         }else{
@@ -168,7 +175,11 @@ function bindLeftMenuFilters () {
 
             $(".keycat").addClass("hidden");
             $(".keycat-"+classType).removeClass("hidden");  
-            searchTxt = section+","+classType; 
+
+            if(typeof sectionKey != "undefined" && typeof sectionKey != null)
+                searchTxt = sectionKey+",";
+            
+            searchTxt += classType; 
         }
         $('#searchTags').val(searchTxt);
         startSearch(0, indexStepInit, searchCallback);  
@@ -180,17 +191,17 @@ function bindLeftMenuFilters () {
         var classType = $(this).data("categ");
         var classSubType = $(this).data("keycat");
         if( $(this).hasClass( "active" ) ){
-            searchTxt = section+","+classType;
+            searchTxt = sectionKey+","+classType;
             $(this).removeClass( "active" );
         }else{
             $(".keycat").removeClass("active");
             $(this).addClass("active");
             
-            searchTxt = section+","+classType+","+classSubType;
+            searchTxt = sectionKey+","+classType+","+classSubType;
         }
 
         $('#searchTags').val( searchTxt );
-        KScrollTo("#menu-section-classified");
+        KScrollTo("#container-scope-filter");
         startSearch(0, indexStepInit, searchCallback);  
     });
 

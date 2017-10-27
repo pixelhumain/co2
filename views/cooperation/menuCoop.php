@@ -21,7 +21,7 @@
 	?>
 		<li class="padding-10 submenucoop sub-rooms">
 			<h3 class="padding-left-10 letter-turq">
-				<i class="fa fa-connectdevelop"></i> Espace co		  	
+				<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("cooperation", "CO-space"); ?>		  	
 			</h3>
 			
 		</li>
@@ -102,7 +102,7 @@
 								 "done" => "Done");
 		
 			if(Yii::app()->session['userId'])
-			$allStatus["mine"] = "My proposals";
+			$allStatus["mine"] = "My actions";
 
 		 	foreach($allStatus as $status=>$tradStatus){ ?>
 

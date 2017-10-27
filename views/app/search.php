@@ -31,7 +31,7 @@
 
     if($params["title"] == "Kgougle") {
         $page = "social";
-        if(@$type=="classified"){ $page = "freedom"; }
+        if(@$type=="classified"){ $page = "annonces"; }
         if(@$type=="events"){ $page = "agenda"; }
     }
 
@@ -55,15 +55,6 @@
     }
     
     
-    #main-scope-name a{
-        height: 130px;
-        background-color: rgba(255, 255, 255, 0.9);
-        width: 130px;
-        display: inline-block;
-        padding-top: 30px;
-        border-radius: 50%;
-        padding-right: 4px;
-    }
     <?php } ?>
 </style>
 
@@ -149,7 +140,6 @@
 
 </div>
 
-
 <?php $this->renderPartial($layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.pageCreate', array()); ?>
 <?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array()); ?>
 
@@ -221,7 +211,6 @@ jQuery(document).ready(function() {
             }
         });
 
-
         loadingData = false; 
         initTypeSearch(type);
         startSearch(0, indexStepInit, searchCallback);
@@ -251,6 +240,7 @@ function showResultInCalendar(mapElements){
     //mylog.dir(mapElements);
 
     var events = new Array();
+    console.log("data mapElements", mapElements);
     $.each(mapElements, function(key, thisEvent){
     
         var startDate = exists(thisEvent["startDateTime"]) ? thisEvent["startDateTime"].substr(0, 10) : "";
@@ -286,6 +276,7 @@ function showResultInCalendar(mapElements){
     if(aujourdhui.getMonth() < 10) month = "0" + month;
     var date = aujourdhui.getFullYear().toString() + "-" + month;
 
+    console.log("data events", events);
     $(".responsive-calendar").responsiveCalendar({
           time: date,
           events: events

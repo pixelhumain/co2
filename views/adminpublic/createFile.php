@@ -924,7 +924,7 @@ function stepThree(params){
 				mylog.log("errorD",typeof errorD);
 
 				$("#jsonImport").val(importD);
-				$("#jsonCities").val(importD);
+				$("#jsonCities").val(saveCities);
 				$("#jsonError").val(errorD);
 				$("#divJsonImportView").JSONView(importD);
 				$("#divJsonErrorView").JSONView(errorD);

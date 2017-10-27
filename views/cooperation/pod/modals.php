@@ -1,5 +1,5 @@
 
-<!-- ************ MODAL ********************** -->
+<!-- ************ MAIN MODAL CO-SPACE ********************** -->
 <div class="modal fade" tabindex="-1" role="dialog" id="modalCoop">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -27,7 +27,7 @@
         <?php } ?>
 
         <button href="javascript:" class="btn btn-default btn-sm text-dark pull-right tooltips"
-				id="btn-update-coop" style="margin: 10px 10px 0 0;" data-original-title="Rafraichir la page" data-placement="left">
+				id="btn-update-coop" style="margin: 10px 10px 0 0;" data-original-title="<?php echo Yii::t("cooperation", "Reload window") ?>" data-placement="left">
 	  			<i class="fa fa-refresh"></i> <?php echo Yii::t("cooperation", "Refresh data") ?>
 	  	</button> 	
         	
@@ -77,7 +77,7 @@
 </div><!-- /.modal -->
 
 
-<!-- ************ MODAL DELETE ********************** -->
+<!-- ************ MODAL DELETE ROOM ********************** -->
 <div class="modal fade" tabindex="-1" role="dialog" id="modalDeleteRoom">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -112,7 +112,7 @@
 </div><!-- /.modal -->
 
 
-<!-- ************ MODAL ********************** -->
+<!-- ************ MODAL ASSIGN ACTION ********************** -->
 <div class="modal fade" tabindex="-1" role="dialog" id="modalAssignMe">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -146,7 +146,7 @@
 </div><!-- /.modal -->
 
 
-<!-- ************ MODAL ********************** -->
+<!-- ************ MODAL DELETE AMENDEMENT ********************** -->
 <div class="modal fade" tabindex="-1" role="dialog" id="modalDeleteAm">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">

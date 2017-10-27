@@ -4,8 +4,43 @@ function initDateHeaderPage(params){
 	$(".header-banner").html(str);
 }
 
-function getCroppingModal(){
-	
+function pushListRoles(links){
+	//Members
+	if(typeof links.members != "undefined"){
+		$.each(links.members, function(e,v){
+			if(typeof v.roles != "undefined"){
+				$.each(v.roles, function(i,data){
+					if(data != "" && !rolesList.includes(data)){
+						rolesList.push(data);
+					}
+				});
+			}
+		});
+	}
+	//Contributors
+	if(typeof links.contributors != "undefined"){
+		$.each(links.contributors, function(e,v){
+			if(typeof v.roles != "undefined"){
+				$.each(v.roles, function(i,data){
+					if(data != "" && !rolesList.includes(data)){
+						rolesList.push(data);
+					}
+				});
+			}
+		});
+	}
+	//Attendees
+	if(typeof links.attendees != "undefined"){
+		$.each(links.attendees, function(e,v){
+			if(typeof v.roles != "undefined"){
+				$.each(v.roles, function(i,data){
+					if(data != "" && !rolesList.includes(data)){
+						rolesList.push(data);
+					}
+				});
+			}
+		});
+	}
 }
 
 function menuLeftShow(){
@@ -354,7 +389,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	var s = (n>1) ? "s" : "";
 
 	if(countData=='Aucun')
-		countData=trad.no;
+		countData=trad.noone;
 	var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
 	if(dataName == "follows")	{ html += elementName + " "+trad.isfollowing+" " + countData + " "+trad.page+s+""; }
 	else if(dataName == "followers")	{ html += countData + " <b>"+trad.follower+s+"</b> "+trad.to+" "+ elementName; }
@@ -623,13 +658,25 @@ function loadContacts(){
 
 //todo add count on each tag
     function getfilterRoles(roles) { 
-    	console.log("roles",roles);
-        $("#listRoles").html("");
-        $("#listRoles").append("<a class='btn btn-link letter-blue favElBtn favAllBtn' "+
+    	console.log("getfilterRoles roles",roles);
+    	if(typeof roles == "undefined") {
+    		$("#listRoles").hide();
+    		return;
+		}
+
+		var nRole = 0;
+    	$.each( roles,function(k,o){ nRole++; } );
+    	if(nRole == 0){
+    		$("#listRoles").hide();
+    		return;
+		}
+		$("#listRoles").show(300);
+        $("#listRoles").html("<i class='fa fa-filter'></i> Tier par rôles : ");
+        $("#listRoles").append("<a class='btn btn-link btn-sm letter-blue favElBtn favAllBtn' "+
             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'>"+
             " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a>");
         	$.each( roles,function(k,o){
-                $("#listRoles").append("<a class='btn btn-link favElBtn letter-blue "+slugify(k)+"Btn' "+
+                $("#listRoles").append("<a class='btn btn-link btn-sm favElBtn letter-blue "+slugify(k)+"Btn' "+
                                 "data-tag='"+slugify(k)+"' "+
                                 "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(k)+"\",\".searchEntityContainer\",1)'>"+
                                   k+" <span class='badge'>"+o.count+"</span>"+
@@ -646,6 +693,10 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		if(typeof val.rolesLink != "undefined"){
 			console.log(val.rolesLink);
 			$.each(val.rolesLink, function(i,v){
+				//Push new roles in rolesList
+				if(v != "" && !rolesList.includes(v))
+					rolesList.push(v);
+				//Incrément and push roles in filter array
 				if(typeof listRoles[v] != "undefined")
 					listRoles[v].count++;
 				else
@@ -668,7 +719,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			html += btnMap;
 
 		html +=	thisTitle;
-		html += "<div id='listRoles'></div>"+
+		html += "<div id='listRoles' class='shadow2'></div>"+
 			 "<hr>";
 		html +=	"</div>";
 		
@@ -705,7 +756,9 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		initBtnLink();
 		initBtnAdmin();
 		bindButtonOpenForm();
+
 		getfilterRoles(listRoles);
+	
 		var dataToMap = data;
 		if(dataName == "collections"){
 			dataToMap = new Array();
@@ -805,37 +858,43 @@ function toogleNotif(open){
 }
 
 function loadLiveNow () {
-	mylog.log("loadLiveNow", contextData.address);
+	mylog.log("loadLiveNow1", contextData.address);
 
 	var level = {} ;
 	if( notNull(contextData.address)) {
-		mylog.log("loadLiveNow", contextData.address);
+		mylog.log("loadLiveNow2", contextData.address);
 		if(notNull(contextData.address.level4)){
-			mylog.log("loadLiveNow", contextData.address.level4);
+			mylog.log("loadLiveNow3", contextData.address.level4);
 			level[contextData.address.level4] = { type : "level4", name : contextData.address.level4Name } ;
 		} else if(notNull(contextData.address.level3)){
 			level[contextData.address.level3] = { type : "level3", name : contextData.address.level3Name } ;
 		} else if(notNull(contextData.address.level2)){
 			level[contextData.address.level2] = { type : "level2", name : contextData.address.level2Name } ;
-		} else
+		} else if(notNull(contextData.address.level1)){
 			level[contextData.address.level1] = { type : "level1", name : contextData.address.level1Name } ;
+		}
 	}
 
-	mylog.log("loadLiveNow", level);
-	
+	if(CO2DomainName == "kgougle")
+		level[contextData.address.level3] = { type : "level3", name : contextData.address.level3Name } ;
 
-    var searchParams = {
-      "tpl":"/pod/nowList",
-      "searchLocality" : level,
-      "indexMin" : 0, 
-      "indexMax" : 30 
-    };
+	mylog.log("loadLiveNow4", level);
+	if( jQuery.isEmptyObject(level) ) {
+		//alert("Vous n'êtes pas communecté ?");
+	} //else{
+	    var searchParams = {
+	      "tpl":"/pod/nowList",
+	      "searchLocality" : level,
+	      "indexMin" : 0, 
+	      "indexMax" : 30 
+	    };
 
-    ajaxPost( "#notif-column", baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
-					'/id/'+contextData.id+'/dataName/liveNow?tpl=nowList',
-					searchParams, function() { 
-			        bindLBHLinks();
-     } , "html" );
+	    ajaxPost( "#notif-column", baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
+						'/id/'+contextData.id+'/dataName/liveNow?tpl=nowList',
+						searchParams, function() { 
+				        bindLBHLinks();
+	     } , "html" );
+	//}
 }
 
 function showLoader(id){
@@ -902,18 +961,18 @@ function inintDescs() {
 
 function removeAddress(form){
 	var msg = trad.suredeletelocality ;
-		if(!form && contextData.type == "<?php echo Person::COLLECTION; ?>")
+		if(!form && contextData.type == personCOLLECTION)
 			msg = trad.suredeletepersonlocality ;
 
 		bootbox.confirm({
 			message: msg + "<span class='text-red'></span>",
 			buttons: {
 				confirm: {
-					label: "<?php echo Yii::t('common','Yes');?>",
+					label: trad.yes,
 					className: 'btn-success'
 				},
 				cancel: {
-					label: "<?php echo Yii::t('common','No');?>",
+					label: trad.no,
 					className: 'btn-danger'
 				}
 			},
@@ -933,7 +992,7 @@ function removeAddress(form){
 				    	success: function(data){
 					    	//
 					    	if(data.result && !form){
-								if(contextData.type == "<?php echo Person::COLLECTION ;?>") {
+								if(contextData.type == personCOLLECTION) {
 									//Menu Left
 									$("#btn-geoloc-auto-menu").attr("href", "javascript:");
 									$('#btn-geoloc-auto-menu > span.lbl-btn-menu').html("Communectez-vous");

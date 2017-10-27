@@ -114,7 +114,8 @@ class CommunecterController extends Controller
       "assigndata"    => array("href" => "/ph/co2/adminpublic/assigndata"),
       "getdatabyurl"   => array("href" => "/ph/co2/adminpublic/getdatabyurl"),
       "previewdata"    => array("href" => "/ph/co2/adminpublic/previewdata"),
-      
+      "interopproposed" => array("href" => "/ph/co2/adminpublic/interopproposed"),
+      "cleantags" => array("href" => "ph/co2/adminpublic/cleantags"),
     ),
     "collections" => array(
       "add"    => array("href" => "/ph/co2/collections/add"),
@@ -483,6 +484,7 @@ class CommunecterController extends Controller
       "getdatadetail"       => array("href" => "/ph/co2/element/getdatadetail"),
       "stopdelete"          => array("href" => "/ph/co2/element/stopdelete"),
       'getthumbpath'    => array("href" => "/ph/co2/element/getThumbPath"),
+      'getcommunexion'    => array("href" => "/ph/co2/element/getcommunexion"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/co2/app/welcome",         "public" => true),
@@ -511,6 +513,16 @@ class CommunecterController extends Controller
       "checkurlexists" => array('href' => "/ph/co2/app/checkurlexists", "public" => true),
       "rooms" => array('href' => "/ph/co2/app/rooms", "public" => true),
       "survey" => array('href' => "/ph/co2/app/survey", "public" => true),
+      "interoperability" => array(
+        "index"              => array('href' => 'ph/co2/interoperability/index',  "public" => true),
+        "get"              => array('href' => 'ph/co2/interoperability/get',  "public" => true),
+        "copedia"              => array('href' => 'ph/co2/interoperability/copedia',  "public" => true),
+        "co-osm"              => array('href' => 'ph/co2/interoperability/co-osm',  "public" => true),
+        "co-osm-getode"      => array('href' => 'ph/co2/interoperability/co-osm-getnode',  "public" => true),
+        "wikitoco"              => array('href' => 'ph/co2/interoperability/wikitoco',  "public" => true),
+        "pushtypewikidata"    => array('href' => 'ph/co2/interoperability/pushtypewikidata',  "public" => true),
+        "wikidata-put-description"    => array('href' => 'ph/co2/interoperability/wikidata-put-description',  "public" => true),
+      ),
     ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/co2/siteurl/incnbclick")
@@ -519,6 +531,9 @@ class CommunecterController extends Controller
       "getcoopdata"        => array('href' => "ph/co2/cooperation/getcoopdata"),
       "savevote"           => array('href' => "ph/co2/cooperation/savevote"),
       "deleteamendement"  => array('href' => "ph/co2/cooperation/deleteamendement")
+    ),
+    "pdf" => array(
+      "create"        => array('href' => "ph/co2/pdf/create")
     ),
   );
 

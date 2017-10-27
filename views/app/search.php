@@ -67,13 +67,13 @@
     <div class="responsive-calendar-init hidden"> 
       <div class="responsive-calendar light col-md-12 no-padding">   
           <div class="day-headers">
-            <div class="day header">Lun</div>
-            <div class="day header">Mar</div>
-            <div class="day header">Mer</div>
-            <div class="day header">Jeu</div>
-            <div class="day header">Ven</div>
-            <div class="day header">Sam</div>
-            <div class="day header">Dim</div>
+            <div class="day header"><?php echo Yii::t("translate","Mon") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Tue") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Wed") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Thu") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Fri") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Sat") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Sun") ?></div>
           </div>
           <div class="days" data-group="days"></div>   
           <div class="controls">

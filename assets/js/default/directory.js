@@ -1328,8 +1328,8 @@ var directory = {
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
-        if(params.updated != null && params.updated.indexOf("il y a")>=0 && location.hash == "#agenda")
-            params.updated = "En ce moment";
+        if(params.updated != null && params.updated.indexOf(trad.ago)>=0 && location.hash == "#agenda")
+            params.updated = trad.rightnow;
 
         if(params.updated != null && !params.useMinSize)
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
@@ -1420,7 +1420,7 @@ var directory = {
             }            
             console.log("typeDYN",params.organizerObj.type, params.organizerObj);
             elem = dyFInputs.get(params.organizerObj.type);
-            str += "<h5 class='no-margin padding-top-5'><small>Organisé par</small></h5>";
+            str += "<h5 class='no-margin padding-top-5'><small>"+tradDynForm.organizedby+"</small></h5>";
             str += "<a href='#page.type."+elem.col+".id."+params.organizerObj["_id"]["$id"]+"' class='lbh' > <small class='entityOrganizerName'>"+params.organizerObj.name+"</small></a>";
           str += "</div>";
 

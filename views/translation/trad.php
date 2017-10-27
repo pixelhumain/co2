@@ -281,6 +281,8 @@ var trad = {
 	"showdescr": "<?php echo Yii::t("common","show description") ?>",
 	"results":"<?php echo Yii::t("common","results") ?>",
 	"result":"<?php echo Yii::t("common","result") ?>",
+	"ago":"<?php echo Yii::t("common","ago") ?>",
+	"rightnow":"<?php echo Yii::t("common","Right now") ?>",
 	"actif":"<?php echo Yii::t("common","online") ?>",
 	"addScopeFilters":"<?php echo Yii::t("common","Add scope filters") ?>",
 	"searchingon":"<?php echo Yii::t("common","searching on") ?>",

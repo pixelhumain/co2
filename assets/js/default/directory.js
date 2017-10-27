@@ -188,9 +188,12 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
               //parcours la liste des résultats de la recherche
               //mylog.dir(data);
+              resultsStr=trad.result;
+              if(totalData > 1)
+                resultsStr=trad.results;
               str += '<div class="col-md-12 text-left" id="">';
               str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+
-                        "<i class='fa fa-angle-down'></i> " + totalData + " "+trad["results"]+" ";
+                        "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
               str += "<small class='resultTypes'>";
               if(typeof headerParams != "undefined"){
                 $.each( searchType, function(key, val){
@@ -239,7 +242,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               {       
                 //ajout du footer      	
                 str += '<div class="pull-left col-md-12 text-center" id="footerDropdown" style="width:100%;">';
-                str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " résultats</h3>";
+                str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " "+resultsStr+"</h3>";
                 //str += '<span class="" id="">Complétez votre recherche pour un résultat plus précis</span></center><br/>';
                 //str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
                 str += "</div>";

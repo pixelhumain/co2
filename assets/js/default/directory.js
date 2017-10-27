@@ -1942,7 +1942,8 @@ var directory = {
                 if(typeof params.tags != "undefined" && params.tags != null){
                   $.each(params.tags, function(key, value){
                     if(typeof value != "undefined" && value != "" && value != "undefined"){
-                      thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value, true)+"'>#" + slugify(value, true) + "</span> ";
+                      var tagTrad = typeof tradCategory[value] != "undefined" ? tradCategory[value] : value;
+                      thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value, true)+"' data-tag-label='"+tagTrad+"'>#" + tagTrad + "</span> ";
                       console.log("sluggify", value, slugify(value, true));
                       params.elTagsList += slugify(value, true)+" ";
                     }
@@ -2167,13 +2168,17 @@ var directory = {
             $("#listTags").append("<h5 class=''><i class='fa fa-search'></i> "+trad["filtertags"]+"</h5>");
             $("#listTags").append('<input id="searchBarTextJS" data-searchPage="true" type="text" class="input-search form-control">');
         }
-       // alert(directory.elemClass);
-       // $("#listTags").append("<h4 class=''> <i class='fa fa-tags'></i> trier </h4>");
+        // alert(directory.elemClass);
+        // $("#listTags").append("<h4 class=''> <i class='fa fa-tags'></i> trier </h4>");
         $("#listTags").append("<a class='btn btn-link text-red favElBtn favAllBtn' "+
             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,directory.elemClass,1)'>"+
             " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a><br/>");
+        
         $.each( $(directory.elemClass),function(k,o){
             $.each($(o).find(".btn-tag"),function(i,oT){
+                var realTag = $(oT).data('tag-label');
+                console.log("realTag", realTag);
+
                 var oTag = $(oT).data('tag-value').toLowerCase();
                 if( notEmpty( oTag ) && !inArray( oTag,directory.tagsT ) ){
                   directory.tagsT.push(oTag);
@@ -2181,7 +2186,7 @@ var directory = {
                   $("#listTags").append("<a class='btn btn-link favElBtn text-red elipsis "+slugify(oTag)+"Btn' "+
                                             "data-tag='"+slugify(oTag)+"' "+
                                             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(oTag)+"\",directory.elemClass,1)'>"+
-                                              "#"+oTag+
+                                              "#"+realTag+
                                         "</a><br> ");
                 }
             });
@@ -2358,7 +2363,7 @@ var directory = {
     }
     mylog.log("search : "+search,searchT, scopeBtn);
     search.replace( "#","" );
-    alert(search.substring(1)); 
+    //alert(search.substring(1)); 
     $('#searchTags').val(search);
     startSearch();
 

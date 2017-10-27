@@ -31,7 +31,7 @@
 
     if($params["title"] == "Kgougle") {
         $page = "social";
-        if(@$type=="classified"){ $page = "freedom"; }
+        if(@$type=="classified"){ $page = "annonces"; }
         if(@$type=="events"){ $page = "agenda"; }
     }
 

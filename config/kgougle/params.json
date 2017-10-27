@@ -60,7 +60,7 @@
       	"#live": {
                   "inMenu" : true, 
                   "useHeader" : true, 
-                  "open" : true, 
+                  "open" : false, 
                   "subdomain" : "live", 
                   "subdomainName" : "Live",
                   "hash":"#app.live",
@@ -82,12 +82,12 @@
                   "lblBtnCreate" : "Créer une page",
                   "colorBtnCreate" : "green"},
 
-      	"#freedom":
+      	"#annonces":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
                   "open" : true,
-                  "subdomain" : "freedom", 
-                  "subdomainName" : "freedom",
+                  "subdomain" : "annonces", 
+                  "subdomainName" : "annonces",
                   "hash" : "#app.annonces",
                   "icon" : "bullhorn", 
                   "mainTitle" : "Toutes vos annonces en direct",

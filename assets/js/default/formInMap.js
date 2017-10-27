@@ -917,6 +917,7 @@ var formInMap = {
 
 	displayGeoShape : function(){
 		mylog.log("displayGeoShape");
+		if(typeof formInMap.geoShape == "undefined") return;
 		var geoShape = Sig.inversePolygon(formInMap.geoShape.coordinates[0]);
 		Sig.showPolygon(geoShape);
 		setTimeout(function(){

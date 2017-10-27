@@ -163,7 +163,7 @@ function bindLeftMenuFilters () {
         searchType = [ typeInit ];
         var searchTxt = "";
         var classType = $(this).data("keycat");
-        console.log("bindLeftMenuFilters sectionKey", typeof sectionKey);
+        console.log("bindLeftMenuFilters sectionKey", sectionKey);
         
         if( $(this).hasClass( "active" ) ){
             searchTxt = sectionKey;
@@ -175,7 +175,11 @@ function bindLeftMenuFilters () {
 
             $(".keycat").addClass("hidden");
             $(".keycat-"+classType).removeClass("hidden");  
-            searchTxt = sectionKey+","+classType; 
+
+            if(typeof sectionKey != "undefined" && typeof sectionKey != null)
+                searchTxt = sectionKey+",";
+            
+            searchTxt += classType; 
         }
         $('#searchTags').val(searchTxt);
         startSearch(0, indexStepInit, searchCallback);  

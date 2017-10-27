@@ -319,7 +319,8 @@
           <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub classifiedFilters" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
-            <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
+            <h4 class="margin-top-25 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
+              <i class="fa fa-search"></i>
             </h4>
             <hr>
             <?php 
@@ -354,7 +355,7 @@
             <?php 
                 $currentSection = 1;
                 foreach ($classified["sections"] as $key => $section) { ?>
-                  <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
+                  <div class="col-md-2 col-sm-4 col-xs-6 no-padding">
                     <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
                             data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
                             data-type="classified"
@@ -413,7 +414,8 @@
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
-              <i class="fa fa-money"></i> Lieux           </h4>
+              <i class="fa fa-money"></i> Lieux
+            </h4>
             <hr>
             <?php 
                 foreach ($place["filters"] as $key => $cat) {

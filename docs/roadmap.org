@@ -282,7 +282,9 @@ Liste des notifications déjà lues => #370 #453
   ** idea build dynform based on final json analysis (retro build)
     - entry param is a structure similare 
   ** export an Element as MD and import a structured MD file (to be defined)
-
+  ** PPT pres suivi du qui es tu :: 
+      - rempli qlq detail 
+      - et en avant
 * ************************************************************    
 * Version C0.22  : en cours
 * ************************************************************  

@@ -615,7 +615,7 @@ class CommunecterController extends Controller
     }
 
     //load any DB config Params
-    Application::loadDBAppConfig();    
+    //Application::loadDBAppConfig();    
   }
   
   protected function beforeAction($action){

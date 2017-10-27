@@ -341,7 +341,7 @@
             <?php if( @Yii::app()->session["userId"] ) { ?> 
             <hr>
             <button class="btn btn-default margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="favorites">
-              <span class="text-red"><i class="fa fa-star hidden-xs"></i> MES FAVORIS</span>
+              <span class="text-red"><i class="fa fa-star hidden-xs"></i> <?php echo Yii::t("common","MY FAVORITES") ?></span>
             </button>
             <?php } ?>
           </div>

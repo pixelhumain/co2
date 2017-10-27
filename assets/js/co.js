@@ -2598,40 +2598,43 @@ var mentionsInit = {
 			  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 				callback.call(this, data);
 				mentionsInit.isSearching=true;
-		   		var search = {"search" : query};
+		   		var search = {"searchType" : ["citoyens","organizations","projects"]};
 		  		$.ajax({
 					type: "POST",
-			        url: baseUrl+"/"+moduleId+"/search/searchmemberautocomplete",
+			        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
 			        data: search,
 			        dataType: "json",
 			        success: function(retdata){
 			        	if(!retdata){
 			        		toastr.error(retdata.content);
 			        	}else{
-				        	//mylog.log(retdata);
+				        	mylog.log(retdata);
 				        	data = [];
-				        	for(var key in retdata){
-					        	for (var id in retdata[key]){
+				        	//for(var key in retdata){
+					        //	for (var id in retdata[key]){
+					        $.each(retdata, function (e, value){
 						        	avatar="";
-						        	console.log(retdata[key]);
-						        	if(retdata[key][id].profilThumbImageUrl!="")
-						        		avatar = baseUrl+retdata[key][id].profilThumbImageUrl;
+						        	//console.log(retdata[key]);
+						        	//aert(retdata[key][id].type);
+						        	if(typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl!="")
+						        		avatar = baseUrl+value.profilThumbImageUrl;
 						        	object = new Object;
-						        	object.id = id;
-						        	object.name = retdata[key][id].name;
-						        	object.slug = retdata[key][id].slug;
+						        	object.id = e;
+						        	object.name = value.name;
+						        	object.slug = value.slug;
 						        	object.avatar = avatar;
-						        	object.type = key;
+						        	object.type = value.type;
 						        	var findInLocal = _.findWhere(mentionsContact, {
-										name: retdata[key][id].name, 
-										type: key
+										name: value.name, 
+										type: value.type
 									}); 
 									if(typeof(findInLocal) == "undefined")
 										mentionsContact.push(object);
-						 			}
-				        	}
+						 	//		}
+				        	//}
+				        	});
 				        	data=mentionsContact;
-				        	//mylog.log(data);
+				        	mylog.log(data);
 				    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 							callback.call(this, data);
 							mylog.log(callback);

@@ -73,7 +73,6 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
   #get_url{
     min-height:100px!important;
     padding:0px;
-    margin: 5px;
   }
   .get_url_input {
     font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;

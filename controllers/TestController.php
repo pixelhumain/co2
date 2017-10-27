@@ -10,6 +10,30 @@ class TestController extends CommunecterController {
     echo count($userNotifcations);
   }
 
+  public function actionMsg() {
+    
+    $langs = array("en","fr","de","es") ;
+    $files = array("activityList","category","chart","comment","common","cooperation","docs","document","email","event","form","home","import","jobs","KCFinderWidget","loader","login","mail","need","news","notification","openData","organization","person","project","rooms","survey","translate" );
+    foreach ($files as $key => $value) {
+    	echo "<h3>file : ".$value."</h3>";
+    	try {
+    		$fr = include ( "./protected/messages/fr/".$value.".php");
+	    	$es = include ( "./protected/messages/es/".$value.".php");
+	    	$de = include ( "./protected/messages/de/".$value.".php");
+	    	foreach ($fr as $k => $v) {
+	    		//echo $k.":".$v."<br/>";
+	    		if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
+	    		if(!@$de[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/de/".$value.".php</span> <br/>";
+	    	}	
+    	} catch (Exception $e) {
+    		echo $value."file unfound <br/>";
+    	}
+    	
+    }
+    
+
+  }
+
   public function actionMango() {
     require_once '../../pixelhumain/ph/vendor/autoload.php';
 	$api = new MangoPay\MangoPayApi();

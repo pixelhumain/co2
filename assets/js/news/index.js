@@ -71,7 +71,6 @@ var loadStream = function(indexMin, indexMax){ mylog.log("loadStream");
 		    	mylog.log("LOAD NEWS BY AJAX");
 		    	//mylog.log(data.news);
 		    	if(data){
-		    		alert();
 					buildTimeLine (data.news, indexMin, indexMax);
 					bindTags();
 					if(typeof(data.limitDate.created) == "object")
@@ -398,11 +397,13 @@ function modifyNews(idNews,typeNews){
 	      callback: function() {
 	      	heightCurrent=$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").height();
 	      	$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").append("<div class='updateLoading' style='line-height:"+heightCurrent+"px'><i class='fa fa-spin fa-spinner'></i> En cours de modification</div>");
-	      	$('.newsTextUpdate').mentionsInput('getMentions', function(data) {
+	      	
+	      	/*$('.newsTextUpdate').mentionsInput('getMentions', function(data) {
       			mentionsInput=data;
-    		});
+    		});*/
     		newNews = new Object;
     		newNews.idNews = idNews;
+    		newNews.text =$(".newsTextUpdate").val();
 			if($("#resultsUpdate").html() != ""){
 				newNews.media=new Object;	
 				newNews.media.type=$("#resultsUpdate .type").val();
@@ -449,11 +450,9 @@ function modifyNews(idNews,typeNews){
 			if ($("#tagsUpdate").val() != ""){
 				newNews.tags = $("#tagsUpdate").val().split(",");	
 			}
-			if (typeof mentionsInput != "undefined" && mentionsInput.length != 0){
-				newNews.mentions=mentionsInput;
-			}
+			newNews=mentionsInit.beforeSave(newNews, '.newsTextUpdate');
+			
 		    //if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));	
-			newNews.text =$(".newsTextUpdate").val();
 			$.ajax({
 			        type: "POST",
 			        url: baseUrl+"/"+moduleId+"/news/update?tpl=co2",
@@ -542,7 +541,23 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
 	textNews=data.text;
 	$(idTextArea).val(textNews);
 	
-	$(idTextArea).mentionsInput("update", data.mentions);
+	//$(idTextArea).mentionsInput("update", data.mentions);
+	if(data.mentions.length != 0){
+		text=data.text;
+		$.each(data.mentions, function(e,v){
+			if(typeof v.slug != "undefined")
+				text=text.replace("@"+v.slug, v.name);
+		});
+
+		/*$(idTextArea).mentionsInput('val', function(text) {
+      		text.replace("@@", "@");
+      		$(this).val(text);
+      		$(this).text(text);
+    	});*/
+		$(idTextArea).val(text);
+		$(idTextArea).mentionsInput("update", data.mentions);
+		//$(idTextArea).focus()
+	}
 	$(idTextArea).on('keyup ', function(e){
 		var heightTxtArea = $(idTextArea).css("height");
     	$("#container-txtarea-news-"+idNews).css('height', heightTxtArea);
@@ -1026,9 +1041,10 @@ function getMediaHtml(data,action,idNews){
     return content;
 }
 function saveNews(){
-	$('textarea.mention').mentionsInput('getMentions', function(data) {
+	//mentionsResult=mentionsInit.beforeSave('textarea.mention');
+	/*$('textarea.mention').mentionsInput('getMentions', function(data) {
       mentionsInput=data;
-    });
+    });*/
 	var formNews = $('#form-news');
 	var errorHandler2 = $('.errorHandler', formNews);
 	var successHandler2 = $('.successHandler', formNews);
@@ -1164,9 +1180,11 @@ function saveNews(){
 					newNews.codeInsee = $("input[name='cityInsee']").val();
 				if($("input[name='cityPostalCode']").length && contextParentType == "city")
 					newNews.postalCode = $("input[name='cityPostalCode']").val();
-				if (mentionsInput.length != 0){
-					newNews.mentions=mentionsInput;
-				}
+				/*if (mentionsResult.mentionsInput.length != 0){
+					newNews.mentions=mentionsResult.mentionsInput;
+					newNews.text=mentionsResult.text;
+				}*/
+				newNews=mentionsInit.beforeSave(newNews, 'textarea.mention');
 				mylog.log(newNews);
 				$.ajax({
 			        type: "POST",
@@ -1179,7 +1197,8 @@ function saveNews(){
 		    		if(data)
 		    		{
 		    			$("#form-news #get_url").val("");
- 						$('textarea.mention').mentionsInput('reset');
+		    			mentionsInit.reset('textarea.mention');
+ 						//$('textarea.mention').mentionsInput('reset');
  						$("#form-news #results").html("").hide();
  						$("#form-news #tags").select2('val', "");
  						showFormBlock(false);

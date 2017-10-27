@@ -65,7 +65,7 @@
         setTitle("", "", text);
 
         if(typeof news.mentions != "undefined")
-          text = addMentionInText(news.text,news.mentions);
+          text = mentionsInit.addMentionInText(news.text,news.mentions);
         else text = news.text;
       }
 

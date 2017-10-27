@@ -30,6 +30,7 @@ var trad = {
 	"no" : "<?php echo Yii::t("common","No") ?>",
 	"noone":"<?php echo Yii::t("common","No one") ?>",
 	"cancel" : "<?php echo Yii::t("common","Cancel") ?>",
+	"save":"<?php echo Yii::t("common","Save") ?>",
 	"removeopinionbefore" : "<?php echo Yii::t("common", "Remove your last opinion before") ?>",
 	"voteaddedsuccess" : "<?php echo Yii::t("common", "Your vote has been successfully added") ?>",
 	"voteremovedsuccess" : "<?php echo Yii::t("common","Your vote has been successfully removed") ?>",

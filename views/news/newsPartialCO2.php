@@ -156,7 +156,7 @@ foreach($news as $key => $media){
           textNews=checkAndCutLongString(v.text,500,v._id.$id,"showmorenews",true);
           //Check if @mentions return text with link
         if(typeof(v.mentions) != "undefined")
-          textNews = addMentionInText(textNews,v.mentions);
+          textNews = mentionsInit.addMentionInText(textNews,v.mentions);
         textHtml='<span class="timeline_text no-padding text-black" >'+linkify(textNews)+'</span>';
         $("#newsContent"+e).html(textHtml);
 

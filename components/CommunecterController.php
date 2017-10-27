@@ -16,13 +16,13 @@ class CommunecterController extends Controller
   public $projectName = "";
   public $projectImage = "/images/CTK.png";
   public $projectImageL = "/images/logo.png";
-  public $footerImages = array(
+  /*public $footerImages = array(
       array("img"=>"/images/logoORD.PNG","url"=>"http://openrd.io"),
       array("img"=>"/images/logo_region_reunion.png","url"=>"http://www.regionreunion.com"),
       array("img"=>"/images/technopole.jpg","url"=>"http://technopole-reunion.com"),
       array("img"=>"/images/Logo_Licence_Ouverte_noir_avec_texte.gif","url"=>"https://data.gouv.fr"),
       array("img"=>'/images/blog-github.png',"url"=>"https://github.com/orgs/pixelhumain/dashboard"),
-      array("img"=>'/images/opensource.gif',"url"=>"http://opensource.org/"));
+      array("img"=>'/images/opensource.gif',"url"=>"http://opensource.org/"));*/
   const theme = "ph-dori";
   public $person = null;
   public $themeStyle = "theme-style11";//3,4,5,7,9
@@ -545,7 +545,8 @@ class CommunecterController extends Controller
     if( Yii::app()->controller->id == "adminpublic" && ( !Yii::app()->session[ "userIsAdmin" ] && !Yii::app()->session[ "userIsAdminPublic" ] ) )
       throw new CHttpException(403,Yii::t('error','Unauthorized Access.'));
 
-    $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];
+    if( Yii::app()->controller->id != "test")
+      $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];
     $pagesWithoutLogin = array(
                             //Login Page
                             "person/login", 
@@ -597,6 +598,9 @@ class CommunecterController extends Controller
       $this->notifications = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );
       CornerDev::addWorkLog("communecter",Yii::app()->session["userId"],Yii::app()->controller->id,Yii::app()->controller->action->id);
     }
+
+    //load any DB config Params
+    Application::loadDBAppConfig();    
   }
   
   protected function beforeAction($action){

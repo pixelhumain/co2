@@ -1,0 +1,212 @@
+body {
+	margin:0;
+	padding: 0;
+	background-color: #fafafa;
+	color: #555;
+}
+body, input {
+	font-size: 16px;
+	font-family: 'PT Sans', sans-serif;
+	font-weight: 400;
+	line-height: 1.2em;
+}
+input[type="text"] {
+	padding: 2px 5px;
+}
+a:link, a:visited {
+	color:#428bca;
+}
+#main {
+	padding: 25px 0;
+}
+#main > .container {
+	background-color: #fff;
+	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+	margin: 0 auto;
+	max-width: 100%;
+	width: 660px;
+}
+.containerInner {
+	padding:20px;
+}
+pre, .syntaxhighlighter {
+	overflow-x: auto;
+	font-size: 12px;
+	line-height: 1.3;
+	padding: 4px 6px;
+	background: rgb(245, 245, 245);
+	box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+	margin:12px 0;
+}
+.syntaxhighlighter table .container > div {
+	white-space:nowrap;
+}
+ul li pre {
+	margin-top: 4px;
+}
+ul li {
+	margin-bottom:2px;
+}
+h1 {
+	border-bottom: 1px dotted #b7b7b2;
+	display: block;
+	font-size: 24px;
+	line-height: 1.2em;
+	padding: 24px 20px;
+	margin: 0;
+	font-weight:normal;
+	color: #428bca;
+}
+h2 {
+	font-weight: normal;
+	color: #f78153;
+	margin: 0;
+}
+a.next, .next {
+	margin-top: 30px;
+	text-decoration: none !important;
+	outline: none !important;
+	color: #fff;
+	background: #f78153;
+	display: inline-block;
+	font-weight: normal;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 1px solid #eea236;
+	white-space: nowrap;
+	padding: 6px 12px;
+	border-radius: 3px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	float:right;
+}
+.next.customButton {
+	background: #51d466;
+	border: 1px solid #4cae4c;
+}
+.next:hover {
+	background: #eb6c3a;
+}
+.next.customButton:hover {
+	background: #42c557;;
+}
+.next.clicked, #main.clicked {
+	opacity:0.3;
+	cursor:wait;
+}
+.next.back {
+	float:none;
+}
+.next.docs {
+	margin-top: 27px;
+	margin-right: 22px;
+	padding: 4px 6px;
+	font-size: 14px;
+}
+.next.docs, .next.back {
+	background: #428bca;
+	border: 1px solid #357ebd;
+}
+.next.back:hover, .next.docs:hover {
+	background: #528fe2;
+}
+.clear {
+	clear:both;
+}
+.notice {
+	border-radius: 5px;
+	background-color: #f2dede;
+	border: 1px solid #ebccd1;
+	color: #a94442;
+	padding: 10px 15px;
+}
+.notice.helper {
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+	color: #31708f;
+}
+.container > .notice {
+	margin:0 20px;
+}
+.flyer {
+	background: #609cec;
+}
+.flyer span {
+	-webkit-animation: progressBar 1s ease forwards;
+	-moz-animation: progressBar 1s ease forwards;
+	animation: progressBar 1s ease forwards;
+	display:block;
+	background: #51d466;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+.flyer, .flyer span {
+	height:7px;
+	-webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,0.15);
+	box-shadow: inset 0 -1px 0 rgba(0,0,0,0.15);
+}
+table {
+	width: 100%;
+}
+table th {
+	text-align:right;
+	width:50%;
+	padding-right:10px;
+}
+ .header {
+	background: url('logo.png') no-repeat center center;
+	height: 45px;
+	margin-bottom: 20px;
+}
+#loading {
+	z-index: 10;
+	position: fixed;
+	top:0;
+	display:none;
+	height:5px;
+	width:0;
+}
+#loading div {
+	height:6px;
+	width: 100%;
+	background: #f78153;
+	background-image: -webkit-linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent);
+	background-size: 40px 40px;
+	-webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,0.15);
+	box-shadow: inset 0 -1px 0 rgba(0,0,0,0.15);
+	-webkit-animation: progress-bar-stripes 1s linear infinite;
+	animation: progress-bar-stripes 1s linear infinite;
+}
+#loading.active {
+	display:block;
+	-webkit-animation: loading-bar 2s ease forwards;
+	animation: loading-bar 2s ease forwards;
+}
+@-webkit-keyframes loading-bar {
+    to { 
+    	width: 100%; 
+    }
+}
+@keyframes loading-bar {
+    to { 
+    	width: 100%; 
+    }
+}
+@-moz-keyframes loading-bar {
+    to { 
+    	width: 100%; 
+    }
+}
+@-webkit-keyframes progress-bar-stripes {
+  from  { background-position: 40px 0; }
+  to    { background-position: 0 0; }
+}
+	
+@keyframes progress-bar-stripes {
+  from  { background-position: 40px 0; }
+  to    { background-position: 0 0; }
+}

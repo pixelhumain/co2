@@ -1,0 +1,25 @@
+body {
+	font-size: 12px;
+}
+
+#menu {
+    min-width: 250px;
+}
+
+#menu h3 {
+	font-weight: bold;
+	font-size: 100%;
+}
+#menu ul{
+    padding: 8px 8px 8px 14px;
+}
+#menu ul li{
+    padding: 3px 0px;
+}
+input[type=text] {
+	width: 250px;
+}
+
+select {
+	width: 256px;
+}

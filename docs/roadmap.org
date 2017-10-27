@@ -162,6 +162,9 @@ Liste des notifications déjà lues => #370 #453
   * COMOBI
   * interop 
     [ ] connecté une autre instance CO en mode interop 
+    [ ] amélioré le checkExist au remplisage du input NAME
+      [ ] check also les reseaux FB , Google, twitter
+      [ ] remplir réseau sociaux 
   * COPEDIA
     [ ] intégré dans un projet global universitaire trans discipline
     [ ] voir avec Fred Mesnard et David Grosser , comment l'intégrer dans le cursus , ou meme au LIM 
@@ -278,29 +281,47 @@ Liste des notifications déjà lues => #370 #453
     possibilité de plusieurs panels
   ** idea build dynform based on final json analysis (retro build)
     - entry param is a structure similare 
+  ** export an Element as MD and import a structured MD file (to be defined)
 
 * ************************************************************    
 * Version C0.22  : en cours
 * ************************************************************  
+  ** optim 
+    dynform Localiser
+      positionner direct sur ma localité 
+      btn validé disparait parfois
+      fonctionnalité des lieux (module places) 
+
   ** @Tib
->>>> [ ] when ona page , after login return to same page instead of personnal detail
->>>> [ ] application launcher like linux 
->>>> [ ] integration du system de paiement Mango
+:totest: [ ] logo de l'element dans le mail d'invite 
+          - co2/test/displayMail/id/59dc95b3dd0452f9308d4af7
+>>>> [ ] ajouter Thématique Sport
+>>>> [ ] when on a page , after login return to same page instead of personnal detail
+>>>> [ ] application launcher + activater like linux 
+[X] remake error in CO
+[X] loading configs from DB applications.key = "devParams || prodParams" > Application::loadDBAppConfig();  
+[ ] integration du system de paiement Mango
+  [ ] create User 
+  [ ] create User Wallet 
+  [ ] create Seller 
+  [ ] create seller wallet 
+  [ ] Payin Cash
+    [ ] creates a CardRegistration 
+  [ ] setle transaction 
+  [ ] build payment interface
 >>>> [ ] faciliter la création de page static 
       [ ] avec du contenu MD
       [ ] un slideshow MD
-** json config builder 
+    [X] json config builder 
       - is just dynForm selector
       - save allready gets the collection as a param in formatData
         - any new saved Element must have a model and it's databinding at least 
       [X] select type of config ex : "network"
         - onclick : openForm of the given type 
         - this way editing will also work
-      [ ] subDynform : open a subDF from any DF
+      [X] subDynform : open a subDF from any DF
         - similar to location process 
         - on click opens a new modal with a dynform inside
-      [ ] bugs 
-        [ ] btn annulé on subDF
 >>>>[ ] removing dynform classes from co.js and lazy load them
 >>>>[ ] check webpacking      
 >>>>[ ] suppression d'un element user type COEDitor

@@ -53,7 +53,6 @@ dynForm = {
     		},
 	    },
 	    afterSave : function(data){
-        alert();
 			  dyFObj.closeForm();
 		    mylog.dir(data);
             //urlCtrl.loadByHash( location.hash );

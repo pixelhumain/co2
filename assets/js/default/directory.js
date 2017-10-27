@@ -144,14 +144,14 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     $(".btn-start-search").removeClass("bg-dark");
     
     if(indexMin > 0)
-      $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
+      $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
     else
       $("#dropdown_search").html("<div class='col-md-12 col-sm-12 text-center search-loader text-dark'>"+
-                                    "<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ..."+
+                                    "<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ..."+
                                   "</div>");
     
     if(isMapEnd)
-      $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> chargement en cours");
+      $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyloading+"chargement en cours");
          
     mylog.dir(data);
     //alert();
@@ -225,7 +225,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                   $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
                   if(indexMin == 0){
                     //ajout du footer   
-                    var msg = "<i class='fa fa-ban'></i> Aucun résultat";    
+                    var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
                     if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
                     str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
                     str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";

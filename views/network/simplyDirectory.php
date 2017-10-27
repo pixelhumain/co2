@@ -519,9 +519,9 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	$(".btn-start-search").removeClass("bg-dark");
 	//$("#dropdown_search").css({"display" : "inline" });
 	if(indexMin > 0)
-	$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
+	$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
 	else
-	$("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span></center>");
+	$("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
 	if(isMapEnd){
 		$.blockUI({
 			message : "<h1 class='homestead text-red'><i class='fa fa-spin fa-circle-o-notch'></i><span class='text-dark'> En cours ...</span></h1>"
@@ -710,7 +710,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 						$(".btn-start-search").html("<i class='fa fa-search'></i>");
 						if(indexMin == 0){
 							//ajout du footer
-							var msg = "Aucun résultat";
+							var msg = trad.noresult;
 							if(name == "" && locality == "") 
 								msg = "<h3 class='text-dark'><i class='fa fa-3x fa-keyboard-o'></i><br> Préciser votre recherche pour plus de résultats ...</h3>";
 							str += '<div class="center" id="footerDropdown">';

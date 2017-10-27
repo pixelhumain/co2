@@ -248,7 +248,7 @@ function openModal(key,collection,id,tpl,savePath,isSub){
 	});
 }
 
-function updateField(type,id,name,value,reload){ 
+function updateField(type,id,name,value,reload, toastr){ 
     	
 	$.ajax({
 	  type: "POST",
@@ -256,7 +256,8 @@ function updateField(type,id,name,value,reload){
 	  data: { "pk" : id ,"name" : name, value : value },
 	  success: function(data){
 		if(data.result) {
-        	toastr.success(data.msg);
+			if(toastr==null)
+        		toastr.success(data.msg);
         	if(reload)
         		urlCtrl.loadByHash(location.hash);
 		}
@@ -2312,7 +2313,7 @@ var processUrl = {
 	        $("#status-ref").html("<span class='letter-red'><i class='fa fa-times'></i> cette url n'est pas valide.</span>");
 	        return;
 	    }
-		$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> recherche en cours</span>");
+		$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+"</span>");
 		$("#refResult").addClass("hidden");
 		$("#send-ref").addClass("hidden");
 
@@ -2583,9 +2584,12 @@ var collection = {
 ********************************** */
 var contextData = null;
 var dynForm = null;
+var mentionsInput=[];
 var mentionsInit = {
 	stopMention : false,
+	isSearching : false,
 	get : function(domElement){
+		mentionsInput=[];
 		$(domElement).mentionsInput({
 		  onDataRequest:function (mode, query, callback) {
 			  	if(mentionsInit.stopMention)
@@ -2593,38 +2597,44 @@ var mentionsInit = {
 			  	var data = mentionsContact;
 			  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 				callback.call(this, data);
-		   		var search = {"search" : query};
+				mentionsInit.isSearching=true;
+		   		var search = {"searchType" : ["citoyens","organizations","projects"]};
 		  		$.ajax({
 					type: "POST",
-			        url: baseUrl+"/"+moduleId+"/search/searchmemberautocomplete",
+			        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
 			        data: search,
 			        dataType: "json",
 			        success: function(retdata){
 			        	if(!retdata){
 			        		toastr.error(retdata.content);
 			        	}else{
-				        	//mylog.log(retdata);
+				        	mylog.log(retdata);
 				        	data = [];
-				        	for(var key in retdata){
-					        	for (var id in retdata[key]){
+				        	//for(var key in retdata){
+					        //	for (var id in retdata[key]){
+					        $.each(retdata, function (e, value){
 						        	avatar="";
-						        	if(retdata[key][id].profilThumbImageUrl!="")
-						        		avatar = baseUrl+retdata[key][id].profilThumbImageUrl;
+						        	//console.log(retdata[key]);
+						        	//aert(retdata[key][id].type);
+						        	if(typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl!="")
+						        		avatar = baseUrl+value.profilThumbImageUrl;
 						        	object = new Object;
-						        	object.id = id;
-						        	object.name = retdata[key][id].name;
+						        	object.id = e;
+						        	object.name = value.name;
+						        	object.slug = value.slug;
 						        	object.avatar = avatar;
-						        	object.type = key;
+						        	object.type = value.type;
 						        	var findInLocal = _.findWhere(mentionsContact, {
-										name: retdata[key][id].name, 
-										type: key
+										name: value.name, 
+										type: value.type
 									}); 
 									if(typeof(findInLocal) == "undefined")
 										mentionsContact.push(object);
-						 			}
-				        	}
+						 	//		}
+				        	//}
+				        	});
 				        	data=mentionsContact;
-				        	//mylog.log(data);
+				        	mylog.log(data);
 				    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 							callback.call(this, data);
 							mylog.log(callback);
@@ -2633,6 +2643,48 @@ var mentionsInit = {
 				})
 		  	}
 	  	});
+	},
+	beforeSave : function(object, domElement){
+		$(domElement).mentionsInput('getMentions', function(data) {
+			mentionsInput=data;
+		});
+		if (typeof mentionsInput != "undefined" && mentionsInput.length != 0){
+			var textMention="";
+			$(domElement).mentionsInput('val', function(text) {
+				textMention=text;
+				$.each(mentionsInput, function(e,v){
+					strRep=v.name;
+					if(typeof v.slug != "undefined")
+						strRep="@"+v.slug;
+					textMention = textMention.replace("@["+v.name+"]("+v.type+":"+v.id+")", strRep);
+				});
+			});			
+			object.mentions=mentionsInput;
+			object.text=textMention;
+		}
+		return object;		      		
+	},
+	addMentionInText: function(text,mentions){
+		$.each(mentions, function( index, value ){
+			if(typeof value.slug != "undefined"){
+				str="<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+		   						value.name+
+		   					"</span>";
+				text = text.replace("@"+value.slug, str);
+			}else{
+				//Working on old news
+		   		array = text.split(value.value);
+		   		text=array[0]+
+		   					"<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+		   						value.name+
+		   					"</span>"+
+		   				array[1];
+		   	}   					
+		});
+		return text;
+	},
+	reset: function(domElement){
+		$(domElement).mentionsInput('reset');
 	}
 }
 var uploadObj = {

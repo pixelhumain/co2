@@ -165,8 +165,8 @@
 }
 .mentions-input-box .mentions{
   font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-  left: 5px !important;
-  top: 1px !important;
+  /*left: 5px !important;
+  top: 1px !important;*/
   padding:0 !important;
 }
 .updateMention .mentions-input-box .mentions{ 

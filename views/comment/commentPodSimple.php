@@ -69,6 +69,14 @@
 	.text-comment{
 		white-space: pre-line;
 	}
+	.content-new-comment .mentions{
+		padding: 9px 5px !important;
+    	font-size: 13px !important;
+	}
+	.content-update-comment .mentions{
+		padding: 9px 5px !important;
+    	font-size: 14px !important;
+	}
 </style>
 <?php if($contextType == "actionRooms"){ ?>
 <div class='row'>
@@ -118,7 +126,7 @@
 				<img src="<?php echo $profilThumbImageUrlUser; ?>" class="img-responsive pull-left" 
 					 style="margin-right:6px;height:32px; border-radius:3px;">
 
-				<div id="container-txtarea-<?php echo $idComment; ?>">
+				<div id="container-txtarea-<?php echo $idComment; ?>" class="content-new-comment">
 					<div style="" class="ctnr-txtarea">
 						<textarea rows="1" style="height:1em;" class="form-control textarea-new-comment" 
 								  id="textarea-new-comment<?php echo $idComment; ?>" placeholder="Votre commentaire..."></textarea>
@@ -132,7 +140,7 @@
 
 		<?php 
 			$assetsUrl = $this->module->assetsUrl;
-			function showCommentTree($comments, $assetsUrl, $idComment, $canComment, $level){
+			function showCommentTree($comments, $assetsUrl, $idComment, $canComment, $level, $parentType=null){
 				$count = 0;
 				$hidden = 0;
 				$hiddenClass = "";
@@ -162,7 +170,8 @@
 						<span class="pull-left content-comment">						
 							<span class="text-black">
 								<span class="text-dark"><strong><?php echo $comment["author"]["name"]; ?></strong></span> 
-								<span class="text-comment <?php echo (@$comment['reportAbuseCount']&&$comment['reportAbuseCount']>=5)?'text-red-light-moderation':'' ?>">
+								<span class="text-comment <?php echo (@$comment['reportAbuseCount']&&$comment['reportAbuseCount']>=5)?'text-red-light-moderation':'' ?>" data-id="<?php echo $comment["_id"]; ?>" 
+									<?php if(@$comment["parentId"]) echo "data-parent-id='".$comment["parentId"]."'"; ?>>
 									<?php echo $comment["text"]; ?>
 								</span>
 							</span><br>
@@ -175,7 +184,7 @@
 									if(sizeOf($comment["replies"])==1) $lblReply = "<i class='fa fa-reply fa-rotate-180'></i>" . sizeOf($comment["replies"])." réponse";
 									if(sizeOf($comment["replies"])>1) $lblReply = "<i class='fa fa-reply fa-rotate-180'></i>" . sizeOf($comment["replies"])." réponses";
 								?>
-									<a class="" href="javascript:answerComment('<?php echo $idComment; ?>', '<?php echo $comment["_id"]; ?>')"><?php echo $lblReply; ?></a> 
+									<a class="" href="javascript:answerComment('<?php echo $idComment; ?>', '<?php echo $comment["_id"]; ?>','<?php echo $comment["contextType"]; ?>')"><?php echo $lblReply; ?></a> 
 								<?php } ?>
 								<?php 
 									$myId = Yii::app()->session["userId"]; $iVoted = "";
@@ -244,7 +253,7 @@
 						</span>
 						<div id="comments-list-<?php echo $comment["_id"]; ?>" class="hidden pull-left col-md-11 col-sm-11 col-xs-11 no-padding answerCommentContainer">
 							<?php if(sizeOf($comment["replies"]) > 0) //recursive for answer (replies)
-									showCommentTree($comment["replies"], $assetsUrl, $comment["_id"], $canComment, $level+1);  ?>
+									showCommentTree($comment["replies"], $assetsUrl, $comment["_id"], $canComment, $level+1, $comment["contextType"]);  ?>
 						</div>
 					</div>
 		<?php 		if(multiple10($count, $nbTotalComments)){ $hidden = $count; ?>
@@ -269,7 +278,7 @@
 		<?php	}//function()
 		?>
 
-		<?php showCommentTree($comments, $assetsUrl, $idComment, $canComment, 1); ?>
+		<?php showCommentTree($comments, $assetsUrl, $idComment, $canComment, 1, $contextType); ?>
 					
 	</div><!-- id="comments-list-<?php echo $idComment; ?>" -->
 
@@ -285,6 +294,7 @@
 	var context = <?php echo json_encode($context)?>;
 
 	var profilThumbImageUrlUser = "<?php echo @$profilThumbImageUrlUser; ?>";
+	var isUpdatedComment=false;
 	// mylog.log("context");
 	// mylog.dir(context);
 	// mylog.log("comments");
@@ -293,16 +303,40 @@
 	jQuery(document).ready(function() {
 
 		var idTextArea = '#textarea-new-comment<?php echo $idComment; ?>';
-		bindEventTextArea(idTextArea, idComment, false, "");
+		bindEventTextArea(idTextArea, idComment, contextType, false, "");
 		bindEventActions();
 
 		mylog.log(".comments-list-<?php echo $idComment; ?> .text-comment");
 		$("#comments-list-<?php echo $idComment; ?> .text-comment").each(function(){
-			linked = linkify($(this).html());
-			$(this).html(linked);
+			idComment=$(this).data("id");
+			idParent=$(this).data("parent-id");
+			textComment=$(this).html();
+			if(typeof idParent != "undefined"){
+				comments[idComment]=comments[idParent].replies[idComment];
+			}
+			/*if(typeof idParent != "undefined"){
+				if(typeof(comments[idParent].replies[idComment].mentions) != "undefined"){
+	          		textComment = mentionsInit.addMentionInText(textComment,comments[idParent].replies[idComment].mentions);
+	        	}
+			}else{*/
+				if(typeof(comments[idComment].mentions) != "undefined"){
+	          		textComment = mentionsInit.addMentionInText(textComment,comments[idComment].mentions);
+	        	}
+	        //}
+			textComment = linkify(textComment);
+			$(this).html(textComment);
 		});
-
-		$(".tooltips").tooltip();
+		/*$.each(comments, function(e,v){
+			textComment=v.text;
+          	//Check if @mentions return text with link
+        	if(typeof(v.mentions) != "undefined"){
+        		alert();
+          		textComment = mentionsInit.addMentionInText(textComment,v.mentions);
+        	}
+        	alert(textComment);
+        	textComment=linkify(textComment);
+       		$("#comments-list-"+e+" .text-comment").html(textComment);
+		});*/
 	});
 
 	
@@ -363,7 +397,11 @@
 	}
 	
 
-	function showOneComment(textComment, idComment, isAnswer, idNewComment, argval){
+	function showOneComment(textComment, idComment, isAnswer, idNewComment, argval, mentionsArray){
+		console.log(mentionsArray);
+		if(notNull(mentionsArray)){
+			textComment = mentionsInit.addMentionInText(textComment,mentionsArray);
+		}
 		textComment = linkify(textComment);
 		var classArgument = "";
 		if(argval == "up") classArgument = "bg-green-comment";
@@ -382,7 +420,7 @@
 						'	</span><br>'+
 							'<small class="bold">' +
 								<?php if(@$canComment){ ?>
-							'		<a class="" href=\'javascript:answerComment(\"<?php echo $idComment; ?>\", \"'+idNewComment+'\")\'>Répondre</a> '+
+							'		<a class="" href=\'javascript:answerComment(\"<?php echo $idComment; ?>\", \"'+idNewComment+'\", \"'+contextType+'\")\'>Répondre</a> '+
 								<?php } ?> 
 								<?php if(isset(Yii::app()->session["userId"])){ ?>
 
@@ -432,7 +470,7 @@
 
 	
 
-	function saveComment(textComment, parentCommentId){
+	function saveComment(textComment, parentCommentId, domElement){
 		textComment = $.trim(textComment);
 		if(!notEmpty(parentCommentId)) parentCommentId = "";
 		if(textComment == "") {
@@ -441,16 +479,17 @@
 		}
 
 		var argval = $("#argval").val();
-
+		newComment={
+			parentCommentId: parentCommentId,
+			text : textComment,
+			contextId : context["_id"]["$id"],
+			contextType : contextType,
+			argval : argval
+		};
+		newComment=mentionsInit.beforeSave(newComment, domElement);
 		$.ajax({
 			url: baseUrl+'/'+moduleId+"/comment/save/",
-			data: {
-				parentCommentId: parentCommentId,
-				content : textComment,
-				contextId : context["_id"]["$id"],
-				contextType : contextType,
-				argval : argval
-			},
+			data: newComment,
 			type: 'post',
 			global: false,
 			dataType: 'json',
@@ -462,8 +501,10 @@
 					else { 
 						toastr.success(data.msg);
 						var count = $("#newsFeed"+context["_id"]["$id"]+" .nbNewsComment").html();
+						mentionsInit.reset(domElement);
 						if(!notEmpty(count)) count = 0;
 						//mylog.log(count, context["_id"]["$id"]);
+						comments[data.id.$id]=data.newComment;
 						if(data.newComment.contextType=="news"){
 							count = parseInt(count);
 							var newCount = count +1;
@@ -483,7 +524,11 @@
 						latestComments = data.time;
 
 						var isAnswer = parentCommentId!="";
-						showOneComment(textComment, parentCommentId, isAnswer, data.id.$id, argval);   
+						mentionsArray=null;
+						if(typeof data.newComment.mentions != "undefined"){
+							mentionsArray=data.newComment.mentions;
+						}
+						showOneComment(data.newComment.text, parentCommentId, isAnswer, data.id.$id, argval, mentionsArray);   
 						bindEventActions();    
 					}
 				},
@@ -713,27 +758,29 @@
 
 	function editComment(idComment){
 		// mylog.log(contextId);
-		var commentContent = $('#item-comment-'+idComment+' .text-comment').html().trim();
-		var message = "<div id='container-txtarea-"+idComment+"'>"+
+		isUpdatedComment=true;
+		var commentContent = comments[idComment].text;
+		var message = "<div id='container-txtarea-"+idComment+"' class='content-update-comment'>"+
 						"<textarea id='textarea-new-comment"+idComment+"' class='form-control' placeholder='modifier votre commentaire'>"+commentContent+
 						"</textarea>"+
 					  "</div>";
 		var boxComment = bootbox.dialog({
 		  message: message,
-		  title: '<?php echo Yii::t("comment","Modifier votre commentaire"); ?>', //Souhaitez-vous vraiment supprimer ce commentaire ?
+		  title: '<?php echo Yii::t("comment","Update your comment"); ?>', //Souhaitez-vous vraiment supprimer ce commentaire ?
 		  buttons: {
 		  	annuler: {
-		      label: "Annuler",
+		      label: trad.cancel,
 		      className: "btn-default",
 		      callback: function() {
-		        mylog.log("Annuler");
+		      	isUpdatedComment=false;
 		      }
 		    },
 		    enregistrer: {
-		      label: "Enregistrer",
+		      label: trad.save,
 		      className: "btn-success",
 		      callback: function() {
-		      	updateComment(idComment,$("#textarea-new-comment"+idComment).val());
+		      	updateComment(idComment,$("#textarea-new-comment"+idComment).val(), "#textarea-new-comment"+idComment);
+				isUpdatedComment=false;
 				return true;
 		      }
 		    },
@@ -742,7 +789,7 @@
 
 		boxComment.on("shown.bs.modal", function() {
 		  $.unblockUI();
-		  bindEventTextArea('#textarea-new-comment'+idComment, idComment, false);
+		  bindEventTextArea('#textarea-new-comment'+idComment, idComment, contextType, false, "", comments[idComment]);
 		});
 
 		boxComment.on("hide.bs.modal", function() {

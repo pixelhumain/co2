@@ -51,7 +51,7 @@ function autocompleteMultiScope(){
     	success: function(data){
     		mylog.log("autocompleteMultiScope() success");
     		mylog.dir(data);
-    		$("#dropdown-multi-scope-found").html("Aucun résultat");
+    		$("#dropdown-multi-scope-found").html(trad.noresult);
     		html="";
     		var allCP = new Array();
     		var allCities = new Array();

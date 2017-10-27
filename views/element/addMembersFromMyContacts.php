@@ -771,7 +771,7 @@ function autoCompleteEmailAddMember(searchValue){
 	if (elementType == "<?php echo Event::COLLECTION ?>" && !isElementAdmin)
 		data.searchMode = "personOnly";
 
-	$("#list-scroll-type").html("<div class='padding-10'><i class='fa fa-spin fa-refresh'></i> Recherche en cours</div>");
+	$("#list-scroll-type").html("<div class='padding-10'><i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+"</div>");
 	$.ajax({
 		type: "POST",
         url: baseUrl+'/'+moduleId+'/search/searchmemberautocomplete',

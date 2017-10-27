@@ -391,7 +391,7 @@ var formInMap = {
 					};
 				});
 
-				if(html == "") html = "<i class='fa fa-ban'></i> Aucun résultat";
+				if(html == "") html = "<i class='fa fa-ban'></i> "+trad.noresult;
 				$("#dropdown-newElement_"+currentScopeType+"-found").html(html);
 				$("#dropdown-newElement_"+currentScopeType+"-found").show();
 
@@ -497,7 +497,7 @@ var formInMap = {
 
 		formInMap.NE_street = $('[name="newElement_street"]').val();
 
-		$("#dropdown-newElement_streetAddress-found").html("<li><a href='javascript:'><i class='fa fa-spin fa-refresh'></i> recherche en cours</a></li>");
+		$("#dropdown-newElement_streetAddress-found").html("<li><a href='javascript:'><i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+"</a></li>");
 		$("#dropdown-newElement_streetAddress-found").show();
 		mylog.log("countryCode", countryCode);
 		

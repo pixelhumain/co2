@@ -66,10 +66,10 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
     showDropDownGS(true);
 
     if(indexMin > 0)
-    $("#btnShowMoreResultGS").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
+    $("#btnShowMoreResultGS").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
     else
     $(".dropdown-result-global-search").html(
-      "<h5 class='text-dark center padding-15'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</h5>");
+      "<h5 class='text-dark center padding-15'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</h5>");
       
     showIsLoading(true);
     $.ajax({
@@ -95,7 +95,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               str = "";
               var city, postalCode = "";
               
-              if(totalDataGS == 0)      totalDataGSMSG = "<i class='fa fa-ban'></i> Aucun résultat";
+              if(totalDataGS == 0)      totalDataGSMSG = "<i class='fa fa-ban'></i> "+trad.noresult;
               else if(totalDataGS == 1) totalDataGSMSG = totalDataGS + " résultat";   
               else if(totalDataGS > 1)  totalDataGSMSG = totalDataGS + " résultats";   
 

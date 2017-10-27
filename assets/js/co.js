@@ -2313,7 +2313,7 @@ var processUrl = {
 	        $("#status-ref").html("<span class='letter-red'><i class='fa fa-times'></i> cette url n'est pas valide.</span>");
 	        return;
 	    }
-		$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> recherche en cours</span>");
+		$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+"</span>");
 		$("#refResult").addClass("hidden");
 		$("#send-ref").addClass("hidden");
 

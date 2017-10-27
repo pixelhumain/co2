@@ -588,9 +588,9 @@ $this->renderPartial($layoutPath.'header',
 	    $(".btn-start-search").removeClass("bg-dark");
 	    
 	    if(indexMin > 0)
-	    $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
+	    $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
 	    else
-	    $("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span></center>");
+	    $("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
 	      
 	    if(isMapEnd) {
 	      $.blockUI({message : "<h1 class='homestead text-red'><i class='fa fa-spin fa-circle-o-notch'></i> Commune<span class='text-dark'>xion en cours ...</span></h1>"});
@@ -687,7 +687,7 @@ $this->renderPartial($layoutPath.'header',
 		                    $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
 		                    if(indexMin == 0){
 		                        //ajout du footer   
-		                        var msg = "<i class='fa fa-ban'></i> Aucun résultat";    
+		                        var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
 		                        if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
 		                        str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
 		                        str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";

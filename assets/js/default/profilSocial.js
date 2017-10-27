@@ -968,11 +968,11 @@ function removeAddress(form){
 			message: msg + "<span class='text-red'></span>",
 			buttons: {
 				confirm: {
-					label: trad["yes"],
+					label: trad.yes,
 					className: 'btn-success'
 				},
 				cancel: {
-					label: trad["no"],
+					label: trad.no,
 					className: 'btn-danger'
 				}
 			},

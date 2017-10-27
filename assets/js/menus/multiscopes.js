@@ -259,10 +259,10 @@ function getMultiScopeList(){ return myMultiScopes; }
 
 function getLocalityForSearch(){
 
-	if(typeof globalCommunexion == "undefined") var globalCommunexion = false;
+	if(typeof communexion.state == "undefined") communexion.state = false;
 
-	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), globalCommunexion);
-	if(globalCommunexion == true ){
+	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), communexion.state);
+	if(communexion.state == true ){
       var searchLocality = {}
       searchLocality[communexion.currentValue] = { type : communexion.currentLevel, 
                                                     name : communexion.currentName,

@@ -501,11 +501,12 @@
 					else { 
 						toastr.success(data.msg);
 						var count = $("#newsFeed"+context["_id"]["$id"]+" .nbNewsComment").html();
-						mentionsInit.reset(domElement);
+						
 						if(!notEmpty(count)) count = 0;
 						//mylog.log(count, context["_id"]["$id"]);
 						comments[data.id.$id]=data.newComment;
 						if(data.newComment.contextType=="news"){
+							mentionsInit.reset(domElement);
 							count = parseInt(count);
 							var newCount = count +1;
 							var labelCom = (newCount>1) ? "commentaires" : "commentaire";

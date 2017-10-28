@@ -11,6 +11,7 @@ function userValidatedActions() {
 		$(".errorHandler").hide();
 		$('.pendingProcess').show();
 		$('.form-register #registerName').val(name);
+		$('.form-register #isInvitation').val(true);
 		$('#email3').prop('disabled', true);
 		$('#inviteCodeLink').hide();
 	}
@@ -57,7 +58,8 @@ var Login = function() {
 			errorElement : "span", // contain the error msg in a small tag
 			errorClass : 'help-block',
 			errorPlacement : function(error, element) {// render error placement for each input type
-				if (element.attr("type") == "radio" || element.attr("type") == "checkbox") {// for chosen elements, need to insert the error after the chosen container
+				if (element.attr("type") == "radio" || element.attr("type") == "checkbox") {
+				// for chosen elements, need to insert the error after the chosen container
 					error.insertAfter($(element).closest('.form-group').children('div').children().last());
 				} else if (element.attr("name") == "card_expiry_mm" || element.attr("name") == "card_expiry_yyyy") {
 					error.appendTo($(element).closest('.form-group').children('div'));
@@ -87,14 +89,13 @@ var Login = function() {
 	var runLoginValidator = function() {
 		var form = $('.form-login');
 		var loginBtn = null;
-		Ladda.bind('.loginBtn', {
+		/*Ladda.bind('.loginBtn', {
 	        callback: function (instance) {
 	            loginBtn = instance;
 	        }
-	    });
+	    });*/
 		form.submit(function(e){e.preventDefault() });
 		var errorHandler = $('.errorHandler', form);
-		
 		form.validate({
 			rules : {
 				email : {
@@ -109,10 +110,11 @@ var Login = function() {
 			submitHandler : function(form) {
 				errorHandler.hide();
 				$(".alert").hide();
-				loginBtn.start();
+				//loginBtn.start();
+				$(".loginBtn").find(".fa").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
 				var params = { 
 				   "email" : $("#email-login").val(), 
-                   "pwd" : $("#password-login").val()
+                   "pwd" : $("#password-login").val() 
                 };
 			      
 		    	$.ajax({
@@ -122,36 +124,60 @@ var Login = function() {
 		    	  success: function(data){
 		    		  if(data.result)
 		    		  {
-		    		  	//alert("elementLib.openForm"+elementLib.openFormAfterLogin.type);
+		    		  	//alert("dyFObj.openForm"+dyFObj.openFormAfterLogin.type);
 		    		  	var url = requestedUrl;
 		    		  	//mylog.warn(url,", has #"+url.indexOf("#"),"count / : ",url.split("/").length - 1 );
-		    		  	if(backUrl != null){
-		    		  		url.loadByHash(backUrl);
-		    		  		backUrl = null;
-		    		  	} else if( typeof elementLib.openFormAfterLogin != "undefined"){
+		    		  	if(data.goto != null){
+		    		  		window.location.href = baseUrl+"/"+moduleId+data.goto;
+		    		  	} else if( typeof dyFObj.openFormAfterLogin != "undefined"){
 		    		  		userId = data.id;
 		    		  		$('#modalLogin').modal("hide");
-		    		  		elementLib.openForm( elementLib.openFormAfterLogin.type, elementLib.openFormAfterLogin.afterLoad, elementLib.openFormAfterLogin.data );
-		    		  	} else if(url && url.indexOf("#") >= 0 ) {
-		    		  		//mylog.log("login 1",url);
-		    		  		//reload to the url initialy requested
-		    		  		window.location.href = url;
-		        		} else {
-		        			if( url.split("/").length - 1 <= 3 ) {
-		        				//mylog.log("login 2",baseUrl+'#default.home');
-		        				//classic use case wherever you login from if not notifications/get/not/id...
-		        				//you stay on the current page
-		        				//if(location.hash == '#default.home')
-		        				window.location.href = baseUrl+'/co2#page.type.citoyens.id.'+data.id;
-		        				window.location.reload();
-		        				/*else
-		        					window.location.href = baseUrl+'#default.home';*/
-		        			}
-		        			else {
-		        				mylog.log("login 3 reload", data);
-		        				//for urls like notifications/get/not/id...
-		        				window.location.href = baseUrl+'/co2#page.type.citoyens.id.'+data.id;
-		        				window.location.reload();
+		    		  		dyFObj.openForm( dyFObj.openFormAfterLogin.type, dyFObj.openFormAfterLogin.afterLoad, dyFObj.openFormAfterLogin.data );
+		    		  	} else {
+		    		  		userId=data.id;
+	        				var hash = location.hash.replace( "#","" );
+	        				if(typeof hash != "undefined" && hash != ""){
+								var hashT=hash.split(".");
+								if(typeof hashT == "string")
+									var slug=hashT;
+								else
+									var slug=hashT[0];
+		        				$.ajax({
+							      type: "POST",
+							          url: baseUrl+"/" + moduleId + "/slug/check",
+							          data: {slug:slug},
+							          dataType: "json",
+							          error: function (data){
+							             mylog.log("error"); mylog.dir(data);
+							          },
+							          success: function(data){
+										if (!data.result) 
+											window.location.reload();
+										else{
+											if(location.hash.indexOf("#page") >= 0)
+						        				window.location.reload();
+						        			else if( url.split("/").length - 1 <= 3 ) {
+						        				location.hash='#page.type.citoyens.id.'+userId;
+						        				window.location.reload();
+						        			}
+						        			else {
+						        				location.hash='#page.type.citoyens.id.'+userId;
+						        				window.location.reload();
+					        				}
+										}
+							          }
+							 	});
+							}else{
+			        			if(location.hash.indexOf("#page") >= 0)
+			        				window.location.reload();
+			        			else if( url.split("/").length - 1 <= 3 ) {
+			        				location.hash='#page.type.citoyens.id.'+userId;
+			        				window.location.reload();
+			        			}
+			        			else {
+			        				location.hash='#page.type.citoyens.id.'+userId;
+			        				window.location.reload();
+		        				}
 		        			}
 		        		}
 		    		  } else {
@@ -177,20 +203,23 @@ var Login = function() {
 		    		  		$('.loginResult').html(msg);
 							$('.loginResult').show();
 		    		  	}
-						loginBtn.stop();
+		    		  	$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
+						//loginBtn.stop();
 		    		  }
 		    	  },
 		    	  error: function(data) {
+		    	  	$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
 		    	  	toastr.error("Something went really bad : contact your administrator !");
-		    	  	loginBtn.stop();
+		    	  	//loginBtn.stop();
 		    	  },
 		    	  dataType: "json"
 		    	});
 			    return false; // required to block normal submit since you used ajax
 			},
 			invalidHandler : function(event, validator) {//display error alert on form submit
+				$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
 				errorHandler.show();
-				loginBtn.stop();
+				//loginBtn.stop();
 			}
 		});
 	};
@@ -253,17 +282,17 @@ var Login = function() {
 		});
 	};
 
-	var runRegisterValidator = function() { console.log("runRegisterValidator");
+	var runRegisterValidator = function() { console.log("runRegisterValidator!!!!");
 		var form3 = $('.form-register');
 		var errorHandler3 = $('.errorHandler', form3);
 		var createBtn = null;
 		
-		Ladda.bind('.createBtn', {
+		/*Ladda.bind('.createBtn', {
 	        callback: function (instance) {
 	            createBtn = instance;
 	        }
-	    });
-		form3.validate({
+	    });*/
+	    form3.validate({
 			rules : {
 				name : {
 					required : true,
@@ -276,11 +305,11 @@ var Login = function() {
 				},
 				email3 : {
 					required : { 
-						depends:function(){
-							$(this).val($.trim($(this).val()));
-							return true;
-        				}
-        			},
+					 	depends:function(){
+					 		$(this).val($.trim($(this).val()));
+					 		return true;
+					 	}
+					},
 					email : true
 				},
 				password3 : {
@@ -288,29 +317,34 @@ var Login = function() {
 					required : true
 				},
 				passwordAgain : {
-					equalTo : "#password3"
+					equalTo : "#password3",
+					required : true
 				},
-				agree : {
+				agree: {
 					minlength : 1,
 					required : true
 				}
 			},
+
 			messages: {
 				agree: trad["mustacceptCGU"],
 			},
 			submitHandler : function(form) { console.log("runRegisterValidator submitHandler");
 				errorHandler3.hide();
-				createBtn.start();
+				//createBtn.start();
+				$(".createBtn").prop('disabled', true);
+	    		$(".createBtn").find(".fa").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
 				var params = { 
 				   "name" : $('.form-register #registerName').val(),
-				   "username" : $(".form-register #username").val(),
+				   "username" :$(".form-register #username").val(),
 				   "email" : $(".form-register #email3").val(),
                    "pwd" : $(".form-register #password3").val(),
                    "app" : moduleId, //"$this->module->id"
                    "pendingUserId" : pendingUserId,
                    "mode" : REGISTER_MODE_TWO_STEPS
                 };
-                
+                if($('.form-register #isInvitation').val())
+                	params.isInvitation=true;
                 if( $("#inviteCode").val() )
 			      params.inviteCode = $("#inviteCode").val();
 
@@ -320,29 +354,50 @@ var Login = function() {
 		    	  data: params,
 		    	  success: function(data){
 		    		  if(data.result) {
-		    		  	createBtn.stop();
+		    		  	//createBtn.stop();
+						$(".createBtn").prop('disabled', false);
+	    				$(".createBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
+						$("#registerName").val("");
+						$("#username").val("");
+						$("#email3").val("");
+						$("#password3").val("");
+						$("#passwordAgain").val("");
+						$('#agree').prop('checked', false);
+		    		  	console.log(data);
+		    		  	if(typeof data.isInvitation != "undefined" && data.isInvitation){
+		    		  		toastr.success(data.msg);
+		    		  		history.pushState(null, "New Title",'#page.type.citoyens.id.'+data.id);
+		    		  		//window.location.href = baseUrl+'#page.type.citoyens.id.'+data.id;
+		        			window.location.reload();
 
-		    		  	$("#modalRegisterSuccessContent").html("<h3><i class='fa fa-smile-o fa-4x text-green'></i><br><br> "+data.msg+"</h3>");
-		    		  	$("#modalRegisterSuccess").modal({ show: 'true' }); 
-		    		  	// Hide modal if "Okay" is pressed
-					    $('#modalRegisterSuccess .btn-default').click(function() {
-					        mylog.log("hide modale and reload");
-					        $('.modal').modal('hide');
-					    	//window.location.href = baseUrl+'/#default.live';
-					    	window.location.href = baseUrl+"/"+moduleId;
-					    	window.location.reload();
-					    });
-		        		//url.loadByHash("#default.directory");
+		    		  	}
+		    		  	else{
+		    		  		$("#modalRegisterSuccessContent").html("<h3><i class='fa fa-smile-o fa-4x text-green'></i><br><br> "+data.msg+"</h3>");
+			    		  	$("#modalRegisterSuccess").modal({ show: 'true' }); 
+			    		  	// Hide modal if "Okay" is pressed
+						    $('#modalRegisterSuccess .btn-default').click(function() {
+						        mylog.log("hide modale and reload");
+						        $('.modal').modal('hide');
+						    	//window.location.href = baseUrl+'/#default.live';
+						    	window.location.href = baseUrl+"/"+moduleId;
+						    	window.location.reload();
+						    });
+		    		  	}
+		        		//urlCtrl.loadByHash("#default.directory");
 		    		  }
 		    		  else {
 						$('.registerResult').html(data.msg);
 						$('.registerResult').show();
-						createBtn.stop();
+						$(".createBtn").prop('disabled', false);
+	    				$(".createBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
+						//createBtn.stop();
 		    		  }
 		    	  },
 		    	  error: function(data) {
 		    	  	toastr.error(trad["somethingwentwrong"]);
-		    	  	createBtn.stop();
+		    	  	$(".createBtn").prop('disabled', false);
+	    			$(".createBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
+		    	  	//createBtn.stop();
 		    	  },
 		    	  dataType: "json"
 		    	});
@@ -350,7 +405,9 @@ var Login = function() {
 			},
 			invalidHandler : function(event, validator) {//display error alert on form submit
 				errorHandler3.show();
-				createBtn.stop();
+				$(".createBtn").prop('disabled', false);
+	    		$(".createBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
+				//createBtn.stop();
 			}
 		});
 	};
@@ -369,13 +426,13 @@ var Login = function() {
 
 var oldCp = "";
 
-function validateUserName() { console.log("validateUserName click");
+function validateUserName() { mylog.log("validateUserName click");
 	var username = $('.form-register #username').val();
 	if(username.length >= 4) {
 		clearTimeout(timeout);
 		timeout = setTimeout(function() {
 				//mylog.log("bing !");
-				if (! isUniqueUsername(username)) { console.log("validateUserName notUnik");
+				if (! isUniqueUsername(username)) { mylog.log("validateUserName notUnik");
 					var validator = $( '.form-register' ).validate();
 					validator.showErrors({
   						"username": trad["usernamenotunique"]

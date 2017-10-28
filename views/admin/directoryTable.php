@@ -19,11 +19,11 @@ $this->renderPartial($layoutPath.'header',
 	</div>
 	<div class="panel-tools">
 		<?php if( Yii::app()->session["userId"] ) { ?>
-		<a href="javascript:;" onclick="elementLib.openForm('organization')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Add an Organization"><i class="fa fa-plus"></i> <i class="fa fa-group"></i> </a>
+		<a href="javascript:;" onclick="dyFObj.openForm('organization')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Add an Organization"><i class="fa fa-plus"></i> <i class="fa fa-group"></i> </a>
 
-		<a href="javascript:;" onclick="elementLib.openForm('event')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Add an Event"><i class="fa fa-plus"></i> <i class="fa fa-calendar"></i></a>
+		<a href="javascript:;" onclick="dyFObj.openForm('event')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Add an Event"><i class="fa fa-plus"></i> <i class="fa fa-calendar"></i></a>
 
-		<a href="javascript:;" onclick="elementLib.openForm('person')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Invite Someone "><i class="fa fa-plus"></i> <i class="fa fa-user"></i></a>
+		<a href="javascript:;" onclick="dyFObj.openForm('person')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Invite Someone "><i class="fa fa-plus"></i> <i class="fa fa-user"></i></a>
 		<?php } ?>
 	</div>
 	<div class="panel-body">
@@ -249,6 +249,7 @@ jQuery(document).ready(function() {
 	setTitle("Espace administrateur : Répertoire","cog");
 	bindAdminBtnEvents();
 	resetDirectoryTable() ;
+	initKInterface();
 	if(openingFilter != "")
 		$('.filter'+openingFilter).trigger("click");
 });	

@@ -19,8 +19,6 @@
 	  
 	<div class="col-xs-12 center ">
 		
-	
-
 	<div id="list_filters">
 	  <!--  <div class="col-xs-12 margin-top-15 no-padding">
 	    <div id="list_tags_scopes" class="hidden-xs list_tags_scopes"></div> test test test
@@ -145,13 +143,13 @@ jQuery(document).ready(function() {
 	$(".searchIcon").attr("title","Mode Recherche ciblé (ne concerne que cette page)");*/
     $('.tooltips').tooltip();
     searchPage = true;
-	startSearch(true);
+	startNewsSearch(true);
 	$(".titleNowEvents .btnhidden").hide();
 });
 
 
 var timeout;
-function startSearch(isFirst){
+function startNewsSearch(isFirst){
 	//Modif SBAR
 	//$(".my-main-container").off();
 	if(liveScopeType == "global"){

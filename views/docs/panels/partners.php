@@ -4,18 +4,36 @@
 	<br/>
 	People & Organizations get together to build a common
 	<br/>
-	<a class="btn btn-xs btn-default" href="javascript:;" onclick="filterPartners('builder');">BUILDERS</a>
-	<a class="btn btn-xs btn-default" href="javascript:;" onclick="filterPartners('partner');">PARTNERS</a>
-	<a class="btn btn-xs btn-default" href="javascript:;" onclick="filterPartners('financer');">FINANCERS</a>
-	<a class="btn btn-xs btn-default" href="javascript:;" onclick="filterPartners('thinker');">THINKERS</a>
-	<a class="btn btn-xs btn-default" href="javascript:;" onclick="filterPartners('crowdfunder');">CROWDFUNDERS</a>
-	<a class="btn btn-xs btn-default" href="javascript:;" onclick="filterPartners('networkActor');">ALL</a>
+	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('dev');">Devs</a>
+	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('builder');">BUILDERS</a>
+	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('partner');">PARTNERS</a>
+	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('financer');">FINANCERS</a>
+	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('thinker');">THINKERS</a>
+	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('crowdfunder');">CROWDFUNDERS</a>
+	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('interoperate');">Interoperators</a>
+	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('networkActor');">ALL</a>
 </div>
 
 
 <div class="space20"></div>
+<span style="font-size: 48px;" class="typeName text-red homestead"></span>
 <div class="keywordList"></div>
-
+<style type="text/css">
+	
+	.networkActor{
+		height:230px;
+		border : 1px solid #ccc;
+	}
+	.networkActor img{
+		height:120px;
+	}
+	.networkActor img.avatar{
+	    position: relative;
+	    top: 5px;
+	    width : 60px;
+	    height : 60px;
+	}
+</style>
 <script type="text/javascript">
 
 var keywords = [
@@ -26,45 +44,108 @@ var keywords = [
 	***************************************** */
 	{
 		"icon" : "fa-users",
-		"title": "CHEZ NOUS.coop",
-		"link" : "http://www.cheznous.coop",
-		"class" : "partner"
-	},
-	{
-		"icon" : "fa-users",
 		"title": "UNISSONS",
-		"link" : "",
-		"class" : "partner"
-	},
-	{
-		"icon" : "fa-users",
-		"title": "GGOUV",
-		"link" : "",
+		"link" : "http://unisson.co/",
 		"class" : "partner"
 	},
 	{
 		"icon" : "fa-users",
 		"title": "LIVING.COOP",
-		"link" : "",
+		"link" : "www.livincoop.fr",
+		"img" : "http://www.livincoop.fr/beta_1.0/image/logo/logo_LC.png",
 		"class" : "partner"
 	},
 	{
 		"icon" : "fa-users",
-		"title": "ASSEMBLEE VIRTUELLE",
-		"link" : "http://www.virtual-assembly.org/",
+		"title": "Asso. Cyberun",
+		"link" : "http://memoire-numerique.org/lassociation-cyberun/",
+		"img" : "https://mir-s3-cdn-cf.behance.net/project_modules/disp/4fa8f036958207.57305f4795677.png",
+		"class" : "partner"
+	},
+	{
+		"icon" : "fa-users",
+		"title": "Assemblée des communs",
+		"link" : "http://wiki.lescommuns.org",
+		"img":"http://storage3.static.itmages.com/i/17/0418/h_1492555108_7807243_9c1f11f280.png",
 		"class" : "partner"
 	},
 	{
 		"icon" : "fa-users",
 		"title": "BROWSERSTACK",
 		"link" : "http://www.browserstak.com/",
+		"img":"https://www.browserstack.com/images/layout/browserstack-logo-600x315.png",
 		"class" : "partner"
 	},
+	{
+		"icon" : "fa-users",
+		"title": "CHEZ NOUS.coop",
+		"link" : "http://www.cheznous.coop",
+		"img":"http://cheznous.coop/wp-content/uploads/2015/09/LOGO-CHEZ-NOUS-V1-FINAL-21.jpg",
+		"class" : "partner"
+	},
+	{
+		"icon" : "fa-users",
+		"title": "FABLAB BARCELONA",
+		"link" : "http://fablabbcn.org/",
+		"img" : "http://www.makertour.fr/wp-content/uploads/2016/07/Fablab-Barcelona-Logo.png",
+	},	
+	{
+		"icon" : "fa-users",
+		"title": "La Myne",
+		"link" : "http://www.lamyne.org",
+		"img" : "http://www.lamyne.org/img/lamyne-logo.png",
+		"class" : "partner"
+	},
+	{
+		"icon" : "fa-users",
+		"title": "Open Factory 42",
+		"link" : "www.openfactory42.org",
+		"img" : "http://www.openfactory42.org/wp-content/uploads/sites/17/2015/03/retina120x70.png",
+		"class" : "partner"
+	},
+	{
+		"icon" : "fa-users",
+		"title": "ASSEMBLEE VIRTUELLE",
+		"link" : "http://www.virtual-assembly.org/",
+		"img" :"http://virtual-assembly.org/wp-content/uploads/2016/09/Logo_AV.png",
+		"class" : "partner"
+	},
+
 	/* **************************************
 	*
 	*	FINANCERS
 	*
 	***************************************** */
+	{
+		"icon" : "fa-users",
+		"title": "Assocation Hors Cadre",
+		"link" : "www.notragora.com",
+		"class" : "financer"
+	},
+	{
+		"icon" : "fa-users",
+		"title": "Bretagne Telecom",
+		"link" : "www.bretagnetelecom.com",
+		"class" : "financer"
+	},
+	{
+		"icon" : "fa-users",
+		"title": "Web Academie des Camelia",
+		"link" : "",
+		"class" : "financer"
+	},
+	{
+		"icon" : "fa-university",
+		"title": "AFNIC",
+		"link" : "www.afnic.fr",
+		"class" : "financer"
+	},
+	{
+		"icon" : "fa-university",
+		"title": "SIDR",
+		"link" : "www.sidr.fr",
+		"class" : "financer"
+	},
 	{
 		"icon" : "fa-university",
 		"title": "Région Réunion",
@@ -83,6 +164,7 @@ var keywords = [
 		"link" : "http://www.granddir.re",
 		"class" : "financer"
 	},
+	
 	/* **************************************
 	*
 	*	BUILDERS
@@ -90,69 +172,205 @@ var keywords = [
 	***************************************** */
 	{
 		"icon" : "fa-user",
-		"title": "Tibor",
-		"link" : "",
+		"title": "Stephanie Lorente",
+		"co" : "557ffeece41d757240532c57",
 		"class" : "builder"
 	},
 	{
 		"icon" : "fa-user",
-		"title": "Sylvain",
-		"link" : "",
+		"title": "Jerome Gonthier",
+		"co" : "555c887fc12f63153b0041ab",
+		"class" : "builder"
+	},
+	
+	{
+		"icon" : "fa-user",
+		"title": "Xavier Canal",
+		"co" : "56b48baadd0452c4304902db",
 		"class" : "builder"
 	},
 	{
 		"icon" : "fa-user",
-		"title": "Stephanie",
-		"link" : "",
+		"title": "Sitti Harouna",
+		"co" : "5761377540bb4ecd65630a8c",
 		"class" : "builder"
 	},
 	{
 		"icon" : "fa-user",
-		"title": "Jerome",
-		"link" : "",
+		"title": "Edith Chlorofib",
+		"co" : "56a0951bdd0452bf287b23c7",
 		"class" : "builder"
 	},
 	{
 		"icon" : "fa-user",
-		"title": "Xavier",
-		"link" : "",
+		"title": "Jeremy Loreau",
+		"co" : "5670f25cdd0452b81e0efebf",
 		"class" : "builder"
 	},
 	{
 		"icon" : "fa-user",
-		"title": "Jeremy",
-		"link" : "",
+		"title": "Coralie Josseron",
+		"avatar" : "https://www.communecter.org/upload/communecter/citoyens/58453a7840bb4e445df1a39d/medium/54298103562290909087399386842225737719n.jpg?_=1492716965",
+		"co" : "58453a7840bb4e445df1a39d",
 		"class" : "builder"
 	},
 	{
 		"icon" : "fa-user",
-		"title": "Clement",
-		"link" : "",
+		"title": "Jahne Anders",
+		"co" : "5830f82640bb4e6a32e069f5",
+		"avatar" : "https://www.communecter.org/upload/communecter/citoyens/5830f82640bb4e6a32e069f5/medium/14480633101544773841285635255434390505615827o.jpg?_=1492717012",
 		"class" : "builder"
 	},
 	{
 		"icon" : "fa-user",
-		"title": "Tristan",
-		"link" : "",
+		"title": "Quentin Josseron",
+		"co" : "56f444d440bb4eed75f0072e",
 		"class" : "builder"
 	},
 	{
 		"icon" : "fa-user",
-		"title": "Mathieu",
-		"link" : "",
+		"title": "Florent Bénameur",
+		"co" : "55b6186ee41d75d46322d3b1",
+		"avatar":"https://www.communecter.org/upload/communecter/citoyens/55b6186ee41d75d46322d3b1/medium/FBenameur.jpg?_=1492716922",
 		"class" : "builder"
 	},
 	{
 		"icon" : "fa-user",
-		"title": "Johnson",
-		"link" : "",
+		"title": "Julien Lecaille",
+		"co" : "56ad340cdd04528b3dd37405",
 		"class" : "builder"
 	},
 	{
 		"icon" : "fa-user",
-		"title": "Raphael",
-		"link" : "",
+		"title": "Maia Dereva",
+		"co" : "56744d4edd045264697b23d1",
 		"class" : "builder"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Remi Bocquet",
+		"co" : "56a5fa00dd0452fe07d37379",
+		"class" : "builder"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Simon Sarazin",
+		"co" : "55f053fbe41d75cd64558518",
+		"class" : "builder"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Arnaud VAn de Castel",
+		"co" : "574497ab40bb4ee368ac138b",
+		"class" : "builder"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Alexis",
+		"class" : "builder"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Juanito Ligdamis",
+		"co" : "56d9d4b6dd0452060332dc02",
+		"avatar":"https://www.communecter.org/upload/communecter/citoyens/56d9d4b6dd0452060332dc02/medium/20160808122403.jpg?_=1492717317",
+		"class" : "builder"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Priscilla Dijoux",
+		"co" : "56dd791fdd0452603f60cf54",
+		"class" : "builder"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Florian Legrand",
+		"co" : "586793ff40bb4ee620947c30",
+		"avatar":"https://www.communecter.org/upload/communecter/citoyens/586793ff40bb4ee620947c30/medium/IMG20170221133431.jpg?_=1492717390",
+		"class" : "builder"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Tom Baumert",
+		"co" : "57e5256640bb4eff07c4c9d6",
+		"avatar":"https://www.communecter.org/upload/communecter/citoyens/57e5256640bb4eff07c4c9d6/medium/profil.jpg?_=1496302667",
+		"class" : "builder"
+	},
+	/* **************************************
+	*
+	*	Devs
+	*
+	***************************************** */
+	{
+		"icon" : "fa-user",
+		"title": "Thomas Craipeau",
+		"github" : "https://github.com/aboire",
+		"co" : "55ed9107e41d75a41a558524",
+		"avatar" : "https://avatars3.githubusercontent.com/u/1200525?v=3&s=460",
+		"class" : "dev builder",
+		"where" : "La Réunion"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Clement Damiens",
+		"github" : "https://github.com/clement59",
+		"co" : "55ee8d59e41d756612558516",
+		"avatar" : "https://avatars1.githubusercontent.com/u/6576514?v=3&s=460",
+		"class" : "dev builder",
+		"where" : "Peru" 
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Tristan Goguet",
+		"github" : "https://github.com/kgneo",
+		"co" : "5640416ae41d75bc291a5a26",
+		"avatar" : "https://avatars2.githubusercontent.com/u/7578166?v=3&s=460",
+		"class" : "dev builder",
+		"where" : "Nouvelle Calédonie"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Raphael Rivière",
+		"github" : "https://github.com/RaphaelRIVIERE",
+		"co" : "55e042ffe41d754428848363",
+		"avatar" : "https://avatars1.githubusercontent.com/u/8775448?v=3&s=460",
+		"class" : "dev builder",
+		"where" : "La Réunion"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Damiens Grondin",
+		"github" : "https://github.com/GrondinDam",
+		"co" : "",
+		"class" : "dev builder",
+		"where" : "La Réunion"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Daniel Cazal",
+		"github" : "https://github.com/Danzal974",
+		"co" : "57e7da7f40bb4e385dd41c2f",
+		"avatar" : "https://avatars0.githubusercontent.com/u/19874163?v=3&s=460",
+		"class" : "dev builder",
+		"where" : "La Réunion"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Tibor Katelbach",
+		"github" : "https://github.com/oceatoon",
+		"co" : "5534fd9da1aa14201b0041cb",
+		"avatar" : "https://avatars3.githubusercontent.com/u/192076?v=3&s=460",
+		"class" : "dev builder",
+		"where" : "La Réunion"
+	},
+	{
+		"icon" : "fa-user",
+		"title": "Sylvain Barbot",
+		"github" : "https://github.com/sylvainbarbot",
+		"co" : "54fed0eca1aa1411180041ae",
+		"avatar" : "https://avatars3.githubusercontent.com/u/2662262?v=3&s=460",
+		"class" : "dev builder",
+		"where" : "La Réunion"
 	},
 	/* **************************************
 	*
@@ -161,27 +379,66 @@ var keywords = [
 	***************************************** */
 	{
 		"icon" : "fa-lightbuld-o",
-		"title": "Pierre",
+		"title": "Pierre Magnin",
 		"link" : "",
 		"class" : "thinker"
 	},
 	{
 		"icon" : "fa-lightbuld-o",
 		"title": "Mathieu Coste",
-		"link" : "",
+		"co" : "586793ff40bb4ee620947c30",
 		"class" : "thinker"
 	},
 	{
 		"icon" : "fa-lightbuld-o",
-		"title": "Guillaume Rouyer",
-		"link" : "",
+		"title": "Amaury Van Espen",
+		"co" : "586793ff40bb4ee620947c30",
+		"img" : "https://www.communecter.org/upload/communecter/citoyens/586793ff40bb4ee620947c30/medium/IMG20170221133431.jpg?_=1492714577",
 		"class" : "thinker"
 	},
+
+		/* **************************************
+	*
+	*	interoperate
+	*
+	***************************************** */
+	
 	{
-		"icon" : "fa-lightbuld-o",
-		"title": "Simon Sarazin",
+		"icon" : "fa-database",
+		"title": "Wikipedia",
 		"link" : "",
-		"class" : "thinker"
+		"class" : "interoperate"
+	},
+	{
+		"icon" : "fa-database",
+		"title": "Open Street Map",
+		"link" : "",
+		"class" : "interoperate"
+	},
+	{
+		"icon" : "fa-database",
+		"title": "Data.gouv",
+		"link" : "",
+		"class" : "interoperate"
+	},
+	{
+		"icon" : "fa-database",
+		"title": "Open Data Soft",
+		"link" : "",
+		"class" : "interoperate"
+	},
+	{
+		"icon" : "fa-database",
+		"title": "Open Agenda",
+		"link" : "https://openagenda.com",
+		"class" : "interoperate"
+	},
+	{
+		"icon" : "fa-usb",
+		"title": "smart Citizen",
+		"link" : "https://smartcitizen.me",
+		"class" : "interoperate",
+		"img" : "http://2012.cities.io/wp-content/uploads/2014/06/SmartCitizen_logo.png",
 	},
 
 /* **************************************
@@ -662,9 +919,12 @@ jQuery(document).ready(function()
 	var link, endlink;
 	setTitle("<?php echo Yii::t("common","Project Partners") ?>","");
 	$(".keywordList").html('');
+	var openType = "<?php echo @$_GET["type"]?>";
+	
 	$.each(keywords,function(i,obj) { 
 		icon = (obj.icon) ? obj.icon : "fa-tag" ;
-		icon = '<i class="fa '+icon+' faa-pulse animated-hover fa-2x"></i>';
+		where = (obj.where) ? "<br>("+obj.where+")" : "" ;
+		icon = (obj.avatar) ? "" : '<i class="fa '+icon+' faa-pulse animated-hover fa-2x"></i><br/>';
 		if (typeof obj.link != undefined && obj.link != "") {
 			link = '<a href="'+obj.link+'">';
 			endlink = '</a>';
@@ -674,14 +934,23 @@ jQuery(document).ready(function()
 		}
 		if( obj.class == "crowdfunder")
 			icon =  '<span class="fa-stack fa-lg"><i class="fa fa-user fa-stack-2x"></i><i class="fa fa-euro fa-stack-1x text-danger"></i></span>';
-			
+		var body = (obj.img) ? "<br/><img class='img-responsive' src='"+obj.img+"' />" : "";	
+		var avatar = (obj.avatar) ? "<img class='avatar img-circle' src='"+obj.avatar+"' />" : "";	
+		var links = (obj.github) ? "<br/><a href='"+obj.github+"' target='_blank' ><i class='fa fa-github fa-4x'></i></a>" : "";	
+		if( obj.co && links == "" ) links += "<br>"; 
+		links += (obj.co) ? "<a href='https://www.communecter.org/#element.detail.type.citoyens.id."+obj.co+"' target='_blank' ><img src='<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png' style='height:50px;'></a>" : "";
 		color = (obj.color) ? obj.color : "#E33551" ;
 		$(".keywordList").append(
 		'<div class="col-md-4 col-sm-12 networkActor '+obj.class+'"><div class="panel panel-white">'+
+			avatar+
 			'<div class="panel-heading border-light ">'+
 				link+
+
 				'<span class="panel-title homestead"> '+icon+' <span style="font-size: 35px; color:'+color+';"> '+obj.title.toUpperCase()+'</span></span>'+
+				where+
+				body+
 				endlink+
+				links+
 			'</div>'+
 			/*'<div class="panel-body">'+
 				'<blockquote class="space20">'+
@@ -693,12 +962,16 @@ jQuery(document).ready(function()
 	$(".networkActor").addClass("animated flipInX").on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
 		$(this).removeClass("animated flipInX");
 	});
+	filterPartners(openType);
 });
 function filterPartners(type) { 
-	$('.networkActor').hide();
-	$('.'+type).show().addClass("animated flipInX").on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-		$(this).removeClass("animated flipInX");
-	});
+	if(type){
+		$('.typeName').html(type);
+		$('.networkActor').hide();
+		$('.'+type).show().addClass("animated flipInX").on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+			$(this).removeClass("animated flipInX");
+		});
+	}
 }
 </script>
 <style type="text/css">

@@ -99,7 +99,7 @@
 </section>
 
 
-<?php $this->renderPartial($layoutPath.'footer',  array( "subdomain"=>"info" ) ); ?>
+<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"],  array( "subdomain"=>"info" ) ); ?>
 
 <script>
 

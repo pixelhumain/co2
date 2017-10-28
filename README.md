@@ -1,2 +1,5 @@
-# co2
-Communecter 2.0
+# Communecter
+
+* Réseau sociétal citoyen disponible ici : http://communecter.org/
+* Documentation : https://wiki.communecter.org/
+* Chat : https://chat.lescommuns.org/

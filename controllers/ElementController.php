@@ -22,6 +22,7 @@ class ElementController extends CommunecterController {
           'detail'                => 'citizenToolKit.controllers.element.DetailAction',
           'getalllinks'           => 'citizenToolKit.controllers.element.GetAllLinksAction',
           'geturls'               => 'citizenToolKit.controllers.element.GetUrlsAction',
+          'getcontacts'           => 'citizenToolKit.controllers.element.GetContactsAction',
           'directory'             => 'citizenToolKit.controllers.element.DirectoryAction',
           'addmembers'            => 'citizenToolKit.controllers.element.AddMembersAction',
           'aroundme'              => 'citizenToolKit.controllers.element.AroundMeAction',
@@ -33,7 +34,10 @@ class ElementController extends CommunecterController {
           'get'                   => 'citizenToolKit.controllers.element.GetAction',
           'notifications'         => 'citizenToolKit.controllers.element.NotificationsAction',
           'about'                 => 'citizenToolKit.controllers.element.AboutAction',
-          'getdatadetail'         => 'citizenToolKit.controllers.element.GetDataDetailAction'
+          'getdatadetail'         => 'citizenToolKit.controllers.element.GetDataDetailAction',
+          'stopdelete'            => 'citizenToolKit.controllers.element.StopDeleteAction',
+          'getthumbpath'       => 'citizenToolKit.controllers.element.GetThumbPathAction',
+          'getcommunexion'       => 'citizenToolKit.controllers.element.GetCommunexionAction',
       );
   }
 }

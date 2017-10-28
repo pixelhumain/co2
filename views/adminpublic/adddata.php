@@ -113,6 +113,7 @@ $this->renderPartial($layoutPath.'header',
 			<label for="chooseElement"><?php echo Yii::t("common", "Element"); ?> : </label>
 			<select id="chooseElement" name="chooseElement" class="">
 				<option value="-1"><?php echo Yii::t("common", "Choose"); ?></option>
+				<option value="<?php echo City::COLLECTION; ?>"><?php echo Yii::t("common", "City"); ?></option>
 				<option value="<?php echo Organization::COLLECTION; ?>"><?php echo Yii::t("common", "Organization"); ?></option>
 				<option value="<?php echo Project::COLLECTION; ?>"><?php echo Yii::t("common", "Project"); ?></option>
 				<option value="<?php echo Event::COLLECTION; ?>"><?php echo Yii::t("common", "Event"); ?></option>
@@ -321,7 +322,7 @@ function bindAddData(){
   		$.ajax({
 	        type: 'POST',
 	        data: params,
-	        url: baseUrl+'/communecter/adminpublic/adddataindb/',
+	        url: baseUrl+'/'+moduleId+'/adminpublic/adddataindb/',
 	        dataType : 'json',
 	        success: function(data){
 	        	console.log("data",data);
@@ -332,9 +333,9 @@ function bindAddData(){
 		        		chaine += "<tr>" +
 		        					"<td>"+value2.name+"</td>"+
 		        					"<td>"+value2.info+"</td>"+
-		        					"<td>"+baseUrl+value2.url+"</td>"+
+		        					"<td>"+(notNull(value2.url) ? baseUrl+value2.url : "")+"</td>"+
 		        					"<td>"+value2.type+"</td>"+
-		        					"<td>"+value2.id+"</td>"+
+		        					"<td>"+(notNull(value2.id) ? baseUrl+value2.id : "")+"</td>"+
 		        				"</tr>";
 		        		csv += "\n";
 		        		csv += '"'+value2.name+'";"'+value2.info+'";"'+baseUrl+value2.url+'";"'+value2.type+'";"'+value2.id+'";' ;
@@ -402,7 +403,7 @@ function callBackSearch(data){
 		if(type=="citoyen") 
 			type = "person";
 		var url = "javascript:";
-		var onclick = 'url.loadByHash("#' + type + '.detail.id.' + id + '");';
+		var onclick = 'urlCtrl.loadByHash("#' + type + '.detail.id.' + id + '");';
 		var onclickCp = "";
 		var target = " target='_blank'";
 		var dataId = "";
@@ -550,13 +551,13 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     $(".btn-start-search").removeClass("bg-dark");
     
     if(indexMin > 0)
-      $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
+      $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
     else
-      $("#dropdown_search").html("<span class='search-loader text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span>");
+      $("#dropdown_search").html("<span class='search-loader text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span>");
       
     if(isMapEnd)
       $.blockUI({
-        message : "<h3 class='homestead text-red'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span></h3>"
+        message : "<h3 class='homestead text-red'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></h3>"
       });
    
     $.ajax({

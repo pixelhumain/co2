@@ -3,7 +3,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title"><i class="fa fa-cog"></i> Confidentialité de vos informations personnelles</h4>
+				<h4 class="modal-title"><i class="fa fa-cog"></i> <?php echo Yii::t("common","Confidentiality of your personal informations") ?></h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -159,47 +159,5 @@ function bindButtonConfidentiality(){
 				echo "$('.btn-group-$typePrefB > button[value=\'false\']').addClass('active');";
 		}	
 	?>
-
-   /* $(".confidentialitySettings").click(function(){
-    	param = new Object;
-    	param.type = $(this).attr("type");
-    	param.value = $(this).attr("value");
-    	param.typeEntity = "<?php echo $type; ?>";
-    	param.idEntity = contextData.id;
-		$.ajax({
-	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/element/updatesettings",
-	        data: param,
-	       	dataType: "json",
-	    	success: function(data){
-		    	toastr.success(data.msg);
-		    }
-		});
-	});
-
-	$("#editConfidentialityBtn").click(function(){
-    	mylog.log("confidentiality", seePreferences);
-    	$("#modal-confidentiality").modal("show");
-    	if(seePreferences=="true"){
-    		param = new Object;
-	    	param.name = "seePreferences";
-	    	param.value = false;
-	    	param.pk = contextData.id;
-			$.ajax({
-		        type: "POST",
-		        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextType,
-		        data: param,
-		       	dataType: "json",
-		    	success: function(data){
-			    	//toastr.success(data.msg);
-			    	if(data.result){
-						$("#divSeePreferencesHeader").addClass("hidden");
-						$('#editConfidentialityBtn').removeClass("btn-red");
-			    	}
-			    }
-			});
-    	}
-    	
-    });*/
 }
 </script>

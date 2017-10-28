@@ -89,8 +89,53 @@ function isUniqueUsername(username) {
 	mylog.log("isUniqueUsername=", response);
 	return response;
 }
+function slugUnique(searchValue){
+	
+	//searchType = (types) ? types : ["organizations", "projects", "events", "needs", "citoyens"];
+	var response;
+	var data = {
+		"id":contextData.id,
+		"type": contextData.type,
+		"slug" : searchValue
+	};
+	//$("#listSameSlug").html("<i class='fa fa-spin fa-circle-o-notch'></i> Vérification d'existence");
+	//$("#similarLink").show();
+	//$("#btn-submit-form").html('<i class="fa  fa-spinner fa-spin"></i>').prop("disabled",true);
+	$.ajax({
+      type: "POST",
+          url: baseUrl+"/" + moduleId + "/slug/check",
+          data: data,
+          dataType: "json",
+          error: function (data){
+             mylog.log("error"); mylog.dir(data);
+             //$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
+          },
+          success: function(data){
+ 			//var msg = "Ce pseudo est déjà utilisé";
+ 			//$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
+			if (!data.result) {
+				//response=false;
+				if(!$("#ajaxFormModal #slug").parent().hasClass("has-error"))
+					$("#ajaxFormModal #slug").parent().removeClass('has-success').addClass('has-error');//.find("span").text("cucu");
+				//.addClass("has-error").parent().find("span").text("cretin");
+				msgSlug="This slug is already used.";
+				//bindLBHLinks();
+			} else {
+				//response=true;
+				if(!$("#ajaxFormModal #slug").parent().hasClass("has-success"))
+					$("#ajaxFormModal #slug").parent().removeClass('has-error').addClass('has-success');
+				//.addClass("has-success").parent().find("span").text("good peydé");
+				msgSlug="This slug is not used.";
+				//$("#slug").html("<span class='txt-green'><i class='fa fa-thumbs-up text-green'></i> Aucun pseudo avec ce nom.</span>");
 
+			}
+			$("#ajaxFormModal #slug").next().text(msgSlug);
+          }
+ 	});
+ 	//return response;
+}
 function addCustomValidators() {
+	mylog.log("addCustomValidators");
 	//Validate a postalCode
 	jQuery.validator.addMethod("validPostalCode", function(value, element) {
 	    var response;
@@ -105,23 +150,27 @@ function addCustomValidators() {
 			    response = data;
 			}
 		});
+
 	    if (Object.keys(response).length > 0) {
 	    	return true;
 	    } else {
 	    	return false;
 	    }
 	}, "Code postal inconnu");
-
+	/*jQuery.validator.addMethod("uniqueSlug", function(value, element) {
+	    //Check unique username
+	   	return slugUnique(value);
+	}, "This slug already exists. Please choose an other one.");*/
 	jQuery.validator.addMethod("validUserName", function(value, element) {
 	    //Check authorized caracters
-		var usernameRegex = /^[a-zA-Z0-9]+$/;
+		var usernameRegex = /^[a-zA-Z0-9\-]+$/;
     	var validUsername = value.match(usernameRegex);
     	if (validUsername == null) {
         	return false;
     	} else {
     		return true;
     	}
-    }, "Invalid username : Only characters A-Z, a-z, 0-9 and '-' are  acceptable.");
+    }, tradDynForm.invalidUsername);
 
 	jQuery.validator.addMethod("uniqueUserName", function(value, element) {
 	    //Check unique username
@@ -138,7 +187,8 @@ function addCustomValidators() {
     }, "Invalid : please stick to given values.");
 
     jQuery.validator.addMethod("greaterThan", function(value, element, params) {    
-	    if (!/Invalid|NaN/.test(new Date(value))) {
+	    //if (!/Invalid|NaN/.test(new Date(value))) {
+	    if (!/Invalid|NaN/.test(new Date(moment(value, "DD/MM/YYYY HH:mm").format()))) {
 	        return moment(value, "DD/MM/YYYY HH:mm").isAfter(moment($(params[0]).val(), "DD/MM/YYYY HH:mm"));
 	    }    
 	    return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) > Number($(params[0]).val())); 
@@ -260,27 +310,115 @@ function getFullTextCountry(codeCountry){
 }
 
 
-function csvToArray(csv, separateur, separateurText){
 
-	var lines = csv.split("\n");			
-	var result = [];
-	$.each(lines, function(key, value){
-		var colonnes = value.split(separateur);
-		var newColonnes = [];
-		$.each(colonnes, function(keyCol, valueCol){
-			//mylog.log("valueCol", valueCol);
-			if(typeof separateurText == "undefined" || separateurText =="")
-				newColonnes.push(valueCol);
-			else{
-				if(valueCol.charAt(0) == separateurText && valueCol.charAt(valueCol.length-1) == separateurText){
-					var elt = valueCol.substr(1,valueCol.length-2);
-					newColonnes.push(elt);
-				}else{
-					newColonnes.push(valueCol);
-				}
+
+
+var dataHelper = {
+
+	csvToArray : function (csv, separateur, separateurText){
+		var lines = csv.split("\n");			
+		var result = [];
+		$.each(lines, function(key, value){
+			if(value.length > 0){
+				var colonnes = value.split(separateur);
+				var newColonnes = [];
+				$.each(colonnes, function(keyCol, valueCol){
+					
+					if(typeof separateurText == "undefined" || separateurText =="")
+						newColonnes.push(valueCol);
+					else{
+						if(valueCol.charAt(0) == separateurText && valueCol.charAt(valueCol.length-1) == separateurText){
+							var elt = valueCol.substr(1,valueCol.length-2);
+							newColonnes.push(elt);
+						}else{
+							newColonnes.push(valueCol);
+						}
+					}
+					
+					
+				});
+				result.push(newColonnes);
 			}
+			
 		});
-			result.push(newColonnes);
-	});
-	return result;
+		return result;
+	},
+
+	markdownToHtml : function (str) { 
+		var converter = new showdown.Converter();
+		var res = converter.makeHtml(str);
+		return res;
+	},
+
+	convertMardownToHtml : function (text) { 
+		var converter = new showdown.Converter();
+		return converter.makeHtml(text);
+	},
+
+
+	activateMarkdown : function (elem) { 
+		mylog.log("activateMarkdown", elem);
+
+		markdownParams = {
+			savable:false,
+			iconlibrary:'fa',
+			language:'fr',
+			onPreview: function(e) {
+				var previewContent = "";
+				if (e.isDirty()) {
+					previewContent = dataHelper.convertMardownToHtml(e.getContent());
+				} else {
+					previewContent = dataHelper.convertMardownToHtml($(elem).val());
+				}
+				return previewContent;
+			},
+			onSave: function(e) {
+				mylog.log(e);
+			}
+		}
+
+		if( !$('script[src="'+baseUrl+'/plugins/bootstrap-markdown/js/bootstrap-markdown.js"]').length ){
+			mylog.log("activateMarkdown if");
+
+			$("<link/>", {
+			   rel: "stylesheet",
+			   type: "text/css",
+			   href: baseUrl+"/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css"
+			}).appendTo("head");
+			$.getScript( baseUrl+"/plugins/showdown/showdown.min.js", function( data, textStatus, jqxhr ) {
+
+				$.getScript( baseUrl+"/plugins/bootstrap-markdown/js/bootstrap-markdown.js", function( data, textStatus, jqxhr ) {
+					mylog.log("HERE", elem);
+
+					$.fn.markdown.messages['fr'] = {
+						'Bold': trad.Bold,
+						'Italic': trad.Italic,
+						'Heading': trad.Heading,
+						'URL/Link': trad['URL/Link'],
+						'Image': trad.Image,
+						'List': trad.List,
+						'Preview': trad.Preview,
+						'strong text': trad['strong text'],
+						'emphasized text': trad['strong text'],
+						'heading text': trad[''],
+						'enter link description here': trad['enter link description here'],
+						'Insert Hyperlink': trad['Insert Hyperlink'],
+						'enter image description here': trad['enter image description here'],
+						'Insert Image Hyperlink': trad['Insert Image Hyperlink'],
+						'enter image title here': trad['enter image title here'],
+						'list text here': trad['list text here']
+					};
+					$(elem).markdown(markdownParams);
+				});
+
+
+			});
+		} else {
+			mylog.log("activateMarkdown else");
+			$(elem).markdown(markdownParams);
+		}
+
+		$(elem).before(tradDynForm["syntaxmarkdownused"]);
+	}
+
 }

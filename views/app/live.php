@@ -1,14 +1,17 @@
 <?php 
 
-	HtmlHelper::registerCssAndScriptsFiles( array('/css/timeline2.css','/css/news/index.css',
-		
-											) , Yii::app()->theme->baseUrl. '/assets');
+	HtmlHelper::registerCssAndScriptsFiles( 
+			array('/css/timeline2.css',
+				  '/css/news/index.css',
+				  '/css/default/directory.css',	
+				) , Yii::app()->theme->baseUrl. '/assets');
 
 
 	$cssAnsScriptFilesModule = array(
 		'/js/news/index.js',
 		'/js/news/autosize.js',
 		'/js/news/newsHtml.js',
+		'/js/default/live.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
@@ -19,9 +22,16 @@
                                 "type" => @$type,
                                 "page" => "live",
                                 "explain"=> "Live public : retrouvez tous les messages publics selon vos lieux favoris") ); 
+    $randImg = rand(1, 2);
+    //$randImg = 1;
 ?>
 
 <style>
+    header {
+      background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/live/pexels-<?php echo $randImg; ?>.jpeg") top center;
+        min-height:300px;
+    }
+     
 	.scope-min-header{
         float: left;
         margin-top: 23px;
@@ -45,32 +55,42 @@
         border-bottom:1px solid #e6344d;
         text-decoration: none !important;
     }
-</style>
+    #noMoreNews {
+	    position: relative;
+	    padding: 0px 40px;
+	    bottom: 0px;
+	    width: 100%;
+		text-align: center;
+		background: white;
+	}
 
+	#btn-my-co{
+		margin-top: 15px;
+	}
+</style>
+<div class="row padding-10 bg-white">
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
-	<div class="col-md-offset-2 col-md-9 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
+	<div id="container-scope-filter" class="col-md-offset-1 col-md-11 col-lg-offset-1 col-lg-11 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
 		<?php
 	        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
 	    ?>
 	</div>
-	<div class="col-lg-2 col-md-3 hidden-sm col-xs-12 padding-20 text-right hidden-xs" id="sub-menu-left">
-		
-	</div>
 
-	<div class="col-lg-8 col-md-8 col-sm-12 no-padding margin-top-10">
+	<div class="col-lg-1 col-md-1 hidden-sm hidden-xs text-right hidden-xs" id="sub-menu-left"></div>
+
+	<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12 margin-top-10">
 		<div id="newsstream"></div>
 	</div>	
 
-	<div class="pull-right col-lg-3 col-md-3 col-sm-4 hidden-xs padding-20 margin-top-50" id="nowList">
+	<!-- <div class="pull-right col-lg-3 col-md-3 col-sm-4 hidden-xs padding-20 margin-top-50" id="nowList">
 	
-	</div>
+	</div> -->
+</div>
 </div>
 
 
+<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array("subdomain"=>"live")); ?>
 
-<?php //$this->renderPartial('../news/modalCreateAnc'); ?>
-
-<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"annonces")); ?>
 
 <script type="text/javascript" >
 
@@ -89,7 +109,6 @@ var liveTypeName = { "news":"<i class='fa fa-rss'></i> Les messages",
 					};
 
 
-var liveScopeType = "global";
 var scrollEnd = false;
 <?php if(@$type && !empty($type)){ ?>
 	searchType = ["<?php echo $type; ?>"];
@@ -100,34 +119,33 @@ var scrollEnd = false;
 var loadContent = '<?php echo @$_GET["content"]; ?>';
 var dataNewsSearch = {};
 var	dateLimit=0;
+
+var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
+//var scrollEnd = false;
 jQuery(document).ready(function() {
 
 	$(".subsub").hide();
+	setTitle("", "", "Live");
 
-	var liveType = "<?php echo (@$type && !empty($type)) ? $type : ''; ?>";
+	/*var liveType = "<?php echo (@$type && !empty($type)) ? $type : ''; ?>";
 	if(typeof liveTypeName[liveType] != "undefined") 
 		 liveType = " > "+liveTypeName[liveType];
 	else liveType = ", la boite à outils citoyenne connectée " + liveType;
-
-	setTitle("Communecter" + liveType, "<i class='fa fa-heartbeat '></i>");
-	initFilterLive();
+*/
+	setTitle("Live", "Live");
+	//initFilterLive();
 	//showTagsScopesMin("#list_tags_scopes");
-	<?php if(@$lockCityKey){ ?>
-		lockScopeOnCityKey("<?php echo $lockCityKey; ?>");
-	<?php }else{ ?>
-		//rebuildSearchScopeInput();
-	<?php } ?>
-    $("#btn-slidup-scopetags").click(function(){
+	$("#btn-slidup-scopetags").click(function(){
       slidupScopetagsMin();
     });
 	$('#btn-start-search').click(function(e){
-		startSearch(false);
+		startNewsSearch(false);
     });
 		
 	
-    $('.tooltips').tooltip();
+    
     searchPage = true;
-	startSearch(true);
+	//startNewsSearch(true);
 
 	$(".titleNowEvents .btnhidden").hide();
 
@@ -135,246 +153,47 @@ jQuery(document).ready(function() {
    
     initKInterface();//{"affixTop":10});
     initFreedomInterface();
-    $(".btn-decommunecter").click(function(){
-		activateGlobalCommunexion(false);
-  	});
-  	//KScrollTo(".main-btn-scopes");
-});
-function initFilterLive(){
-	dataNewsSearch = {
-	      "searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
-	      "searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-	      "searchLocalityDEPARTEMENT" : $('#searchLocalityDEPARTEMENT').val().split(','),
-	      "searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
-
-	};
-	console.log(dataNewsSearch);
-    dataNewsSearch.tagSearch = $('#searchTags').val().split(',');
-    dataNewsSearch.searchType = searchType; 
-    dataNewsSearch.textSearch = $('#main-search-bar').val();
- }   
-
-function initFreedomInterface(){
-	
-	initFormImages();
-
-	//loadLiveNow();
-}
-
-var timeout;
-function startSearch(isFirst){
-	//Modif SBAR
-	//$(".my-main-container").off();
-	//if(liveScopeType == "global"){
-	dateLimit=0;
-	isFirst=true;
-	showNewsStream(isFirst);
-	$(".start-new-communexion").click(function(){  
-        setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
-                                 $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
-                                  $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
-        activateGlobalCommunexion(true);
-	});
-	//}else{
-	//	showNewsStream(isFirst);//loadStream(0,5);
-	//}
-	//loadLiveNow();
-}
+    
+    Sig.restartMap(Sig.map);
 
 
-function loadStream(indexMin, indexMax){ console.log("LOAD STREAM FREEDOM");
-	loadingData = true;
-	currentIndexMin = indexMin;
-	currentIndexMax = indexMax;
 
-	//isLive = isLiveBool==true ? "/isLive/true" : "";
-	//var url = "news/index/type/citoyens/id/<?php echo @Yii::app()->session["userId"]; ?>"+isLive+"/date/"+dateLimit+"?isFirst=1&tpl=co2&renderPartial=true";
-		
-	var url = "news/index/type/city/isLive/true/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=2";
-	$.ajax({ 
-        type: "POST",
-        url: baseUrl+"/"+moduleId+'/'+url,
-        data: { indexMin: indexMin, 
-        		indexMax:indexMax, 
-        		renderPartial:true 
-        	},
-        success:
-            function(data) {
-                if(data){ //alert(data);
-                	$("#news-list").append(data);
-                	//bindTags();
-					
-				}
-				loadingData = false;
-				$(".stream-processing").hide();
-            },
-        error:function(xhr, status, error){
-            loadingData = false;
-            $("#newsstream").html("erreur");
-        },
-        statusCode:{
-                404: function(){
-                	loadingData = false;
-                    $("#newsstream").html("not found");
-            }
+    $("#main-search-bar").keyup(function(e){
+        $("#second-search-bar").val($(this).val());
+        $("#input-search-map").val($(this).val());
+        if(e.keyCode == 13){
+            loadStream();
+            KScrollTo("#content-social");
         }
     });
-}
+    $("#main-search-bar").change(function(){
+        $("#second-search-bar").val($(this).val());
+    });
 
-function loadLiveNow () { 
+    $("#second-search-bar").keyup(function(e){
+        $("#main-search-bar").val($(this).val());
+        $("#input-search-map").val($(this).val());
+        if(e.keyCode == 13){            
+            loadStream();
+            KScrollTo("#content-social");
+         }
+    });
 
-    var searchParams = {
-      "name":"",
-      "tpl":"/pod/nowList",
-      "latest" : true,
-      "searchType" : ["<?php echo Event::COLLECTION?>","<?php echo Project::COLLECTION?>",
-      				  "<?php echo Organization::COLLECTION?>","<?php echo ActionRoom::COLLECTION?>"], 
-      "searchTag" : $('#searchTags').val().split(','), //is an array
-      "searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
-      "searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-      "searchLocalityDEPARTEMENT" : $('#searchLocalityDEPARTEMENT').val().split(','),
-      "searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
-      "indexMin" : 0, 
-      "indexMax" : 10 
-    };
+    $("#input-search-map").keyup(function(e){
+        $("#second-search-bar").val($("#input-search-map").val());
+        $("#main-search-bar").val($("#input-search-map").val());
+        if(e.keyCode == 13){
+            loadStream();
+         }
+    });
 
-    
-    /*ajaxPost( "#nowList", baseUrl+"/"+moduleId+'/search/globalautocomplete' , searchParams, function() { 
-        bindLBHLinks();
-        if($('.el-nowList').length==0)
-        	$('.titleNowEvents').addClass("hidden");
-        else
-        	$('.titleNowEvents').removeClass("hidden");
-     } , "html" );*/
-}
+    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
+        loadStream();
+    });
 
-function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 
-	scrollEnd = false;
-	var isFirstParam = isFirst ? "?isFirst=1&tpl=co2" : "?tpl=co2";
-	isFirstParam += "&nbCol=2";
-	var levelCommunexionName = { 1 : "CITYKEY",
-	                             2 : "CODE_POSTAL",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
-	
-	var thisType="ko";
-	var urlCtrl = ""
-	if(liveScopeType == "global") {
-		thisType = "city";
-		urlCtrl = "/news/index/type/city/isLive/true";
-	}
-	/*<?php if(@Yii::app()->session["userId"]){ ?>
-	else if(liveScopeType == "community"){
-		thisType = "citoyens";
-		urlCtrl = "/news/index/type/citoyens/id/<?php echo @Yii::app()->session["userId"]; ?>/isLive/true";
-	}
-	<?php } ?>*/
-       
-    //dataNewsSearch.type = thisType;
-    //var myParent = <?php echo json_encode(@$parent)?>;
-    //dataNewsSearch.parent = { }
+    //KScrollTo(".main-btn-scopes");
+});
 
-  var loading = "<div class='loader text-dark '>"+
-		"<span style='font-size:25px;' class='homestead'>"+
-			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
-			"<span class='text-dark'>Chargement en cours ...</span>" + 
-		"</div>";
 
-	//loading = "";
-
-	if(isFirst){ //render HTML for 1st load
-		$("#newsstream").html(loading);
-		ajaxPost("#newsstream",baseUrl+"/"+moduleId+urlCtrl+"/date/0"+isFirstParam,dataNewsSearch, function(news){
-			showTagsScopesMin(".list_tags_scopes");
-			 $(window).bind("scroll",function(){ 
-	    		if(!loadingData && !scrollEnd){
-	         		var heightWindow = $("html").height() - $("body").height();
-	         		if( $(this).scrollTop() >= heightWindow - 400){
-	            		//loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
-	            		showNewsStream(false);
-	          		}
-	    		}
-			});
-			if(loadContent != ''){
-				if(userId){
-					showFormBlock(true);
-					if(loadContent.indexOf("%hash%"))
-						loadContent = loadContent.replace("%hash%", "#");
-					$("#get_url").val(loadContent);
-					$("#get_url").trigger("input");
-				}
-				else {
-					toastr.error('you must be loggued to post on communecter!');
-				}
-			}
-			else
-				showFormBlock(false);
-
-			bindTags();
-
-			//$("#formCreateNewsTemp").appendTo("#modal-create-anc #formCreateNews");
-			//$("#info-write-msg").html("<?php echo Yii::t("common","Write a public message visible on the wall of selected places") ?>");
-			//$("#info-write-msg").html("Conseil : donnez un maximum de détails");
-			//showFormBlock(true);
-			//$("#formCreateNewsTemp").html("");
-
-	 	},"html");
-	}else{ //data JSON for load next
-		//dateLimit=0;currentMonth = null;
-		loadingData = true;
-		$("#newsstream").append(loading);
-		console.log("dataSearch",dataNewsSearch);
-		$.ajax({
-		        type: "POST",
-		        url: baseUrl+"/"+moduleId+urlCtrl+"/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=2",
-		       	data: dataNewsSearch,
-		    	success: function(data){
-					if(data){
-						$("#newsstream").find(".loader").remove();
-						$("#news-list").append(data);
-						//buildTimeLine (data.news, 0, 5);
-						//bindTags();
-						//if(typeof(data.limitDate.created) == "object")
-						//	dateLimit=data.limitDate.created.sec;
-						//else
-						//	dateLimit=data.limitDate.created;
-					}
-					loadingData = false;
-				},
-				error: function(){
-					loadingData = false;
-				}
-			});
-	}
-	$("#dropdown_search").hide(300);
-	
-}
-
-function addSearchType(type){
-  var index = searchType.indexOf(type);
-  if (index == -1) {
-    searchType.push(type);
-    $(".search_"+type).removeClass("fa-circle-o");
-    $(".search_"+type).addClass("fa-check-circle-o");
-  }
-    mylog.log(searchType);
-}
-function removeSearchType(type){
-  var index = searchType.indexOf(type);
-  if (index > -1) {
-    searchType.splice(index, 1);
-    $(".search_"+type).removeClass("fa-check-circle-o");
-    $(".search_"+type).addClass("fa-circle-o");
-  }
-  mylog.log(searchType);
-}
-
-function hideNewLiveFeedForm(){
-	//$("#newLiveFeedForm").hide(200);
-	showFormBlock(false);
-}
-
-</script>
 </script>

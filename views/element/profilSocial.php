@@ -1,33 +1,30 @@
-
-
 <?php 
-
-	$cssAnsScriptFilesModule = array(
-		'/js/news/newsHtml.js',
-	);
-	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
-
 	HtmlHelper::registerCssAndScriptsFiles( 
 		array(  '/css/onepage.css',
-				'/css/profilSocial.css',
 				'/vendor/colorpicker/js/colorpicker.js',
 				'/vendor/colorpicker/css/colorpicker.css',
 				'/css/news/index.css',	
 				'/css/timeline2.css',
-				'/css/circle.css',	
+				//'/css/circle.css',	
 				'/css/default/directory.css',	
 				'/js/comments.js',
-			  ) , 
-		Yii::app()->theme->baseUrl. '/assets');
-		$cssAnsScriptFilesTheme = array(
-		
-"/plugins/jquery-cropbox/jquery.cropbox.css",
-"/plugins/jquery-cropbox/jquery.cropbox.js",
+				'/css/profilSocial.css',
+		) , 
+	Yii::app()->theme->baseUrl. '/assets');
 
+
+
+	$cssAnsScriptFilesTheme = array(
+		"/plugins/jquery-cropbox/jquery.cropbox.css",
+		"/plugins/jquery-cropbox/jquery.cropbox.js",
+		// SHOWDOWN
+		'/plugins/showdown/showdown.min.js',
+		//MARKDOWN
+		'/plugins/to-markdown/to-markdown.js',
+		'/plugins/jquery.qrcode/jquery-qrcode.min.js',
 	);
-	//if ($type == Project::COLLECTION)
-	//	array_push($cssAnsScriptFilesTheme, "/assets/plugins/Chart.js/Chart.min.js");
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
+	
 	$id = $_GET['id'];
 	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 
@@ -49,12 +46,17 @@
     $iconColor = Element::getColorIcon($typeItemHead) ? Element::getColorIcon($typeItemHead) : "";
 
     $useBorderElement = false;
-
     if(@Yii::app()->params["front"]) $front = Yii::app()->params["front"];
 ?>
 <style>
 	
-
+ 	hr.angle-down::after {
+        display: none;
+    }
+    hr.angle-down{
+        border-top: 0px solid #ccc;
+        margin-bottom:10px!important;
+    }
 
 <?php if($typeItem != "citoyens"){ ?>
 	.section-create-page{
@@ -62,12 +64,53 @@
 	}
 <?php } ?>
 
+<?php if($typeItem == "events"){ ?>
+	.hide-event{
+		display: none;
+	}
+<?php } ?>
+
+
+#ajax-modal .modal-content,
+#formContact .modal-content{
+	background-color: rgba(0,0,0,0.6);
+}
+#ajax-modal .container,
+#formContact .container{
+	background-color: white;
+	border-radius: 4px;
+}
+#ajax-modal.portfolio-modal,
+#formContact.portfolio-modal {
+	background-color: transparent;
+}
+#ajax-modal .close-modal .lr,
+#ajax-modal .close-modal .rl,
+#formContact .close-modal .lr,
+#formContact .close-modal .rl{
+	background-color: white;
+}
+
+#btn-show-activity-onmap{
+    width:100%;
+}
 </style>
-	
+
+<?php 
+	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $type, (string)$element["_id"]);
+
+	if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) 
+		$this->renderPartial('../element/confirmDeleteModal'); ?>
+<?php 
+	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
+
     <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
-    <section class="col-md-12 col-sm-12 col-xs-12" id="social-header">
+    <section class="col-md-12 col-sm-12 col-xs-12" id="social-header" 
+    	<?php if (!@$element["profilBannereUrl"] || (@$element["profilBannereUrl"] && empty($element["profilBannereUrl"]))){ ?> 
+    		style="background-color: rgba(0,0,0,0.5);"
+    	<?php } ?>>
         <div id="topPosKScroll"></div>
     	<?php if(@$edit==true && false) { ?>
     	<button class="btn btn-default btn-sm pull-right margin-right-15 margin-top-70 hidden-xs btn-edit-section" 
@@ -75,145 +118,61 @@
 	        <i class="fa fa-cog"></i>
 	    </button>
 	    <?php } ?>
-        <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-left no-padding" id="col-banniere">
-        	
-        	<?php if($type==Event::COLLECTION){ ?>
-        	<div class="col-xs-9 col-sm-6 col-md-5 col-lg-5 margin-right-15 margin-top-25 section-date pull-right">
-        		
-        	</div>
-        	<?php } ?>
+        
+        <?php 
+	    	$this->renderPartial('../element/banner', 
+			        			array(	"iconColor"=>$iconColor,
+			        					"icon"=>$icon,
+			        					"type"=>$type,
+			        					"element"=>$element,
+			        					"linksBtn"=>$linksBtn,
+			        					"elementId"=>(string)$element["_id"],
+			        					"elementType"=>$type,
+			        					"elementName"=> $element["name"],
+			        					"edit" => @$edit,
+			        					"openEdition" => @$openEdition) 
+			        			); 
+		?>
+		
 
-        	<?php 
-				$thumbAuthor =  @$element['profilImageUrl'] ? 
-                  Yii::app()->createUrl('/'.@$element['profilImageUrl']) 
-                  : "";
-			?>
-			<form  method="post" id="banniere_photoAdd" enctype="multipart/form-data">
-				<?php
-				if(@Yii::app()->session["userId"] && ((@$edit && $edit) || (@$openEdition && $openEdition))){ ?>
-				<div class="user-image-buttons padding-10">
-					<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="banniere_element" >
-						<span class="fileupload-new"><i class="fa fa-plus"></i> <span class="hidden-xs"> Banniere</span></span>
-						<input type="file" accept=".gif, .jpg, .png" name="banniere" id="banniere_change" class="hide">
-						<input class="banniere_isSubmit hidden" value="true"/>
-					</a>
-				</div>
-				<?php }; ?>
 
-			</form>
-			<div id="contentBanniere" class="col-md-12 col-sm-12 col-xs-12 no-padding">
-				<?php if (@$element["profilBanniereUrl"] && !empty($element["profilBanniereUrl"])){ ?> 
-					<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="<?php echo Yii::app()->createUrl('/'.$element["profilBanniereUrl"]) ?>">
-				<?php } ?>
+
+	    <div class="col-lg-2 col-md-3 col-sm-3 hidden-xs no-padding" style="bottom:-31px; position: absolute;">
+		<?php 	if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
+					 $images=array(
+					 	"medium"=>$element["profilMediumImageUrl"],
+					 	"large"=>$element["profilImageUrl"]
+					 );
+				else $images="";	
+				
+				$this->renderPartial('../pod/fileupload', 
+								array("itemId" => (string) $element["_id"],
+									  "itemName" => $element["name"],
+									  "type" => $type,
+									  "resize" => false,
+									  "contentId" => Document::IMG_PROFIL,
+									  "show" => true,
+									  "editMode" => $edit,
+									  "image" => $images,
+									  "openEdition" => $openEdition) ); 
+		?>
+
+			<?php if(@Yii::app()->session["userId"]){ ?>
+			<div class="blockUsername">
+                	<?php $this->renderPartial('../element/linksMenu', 
+            			array("linksBtn"=>$linksBtn,
+            					"elementId"=>(string)$element["_id"],
+            					"elementType"=>$type,
+            					"elementName"=> $element["name"],
+            					"openEdition" => $openEdition) 
+            			); 
+            		?>
 			</div>
-			<!--<img class="col-xs-11 col-sm-12 col-md-12 no-padding img-responsive" src="<?php echo $thumbAuthor; ?>" 
-				 style="border-bottom:45px solid white;">
-			-->
-			<div class="col-xs-12 col-sm-12 col-md-12 contentHeaderInformation">	
-				
-
-	        	
-
-	        	<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 text-white pull-right">
-	        		
-	        		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-padding margin-bottom-10">
-						<?php if(@Yii::app()->session["userId"]){ ?>
-						<div class="btn-group pull-left padding-top-5">
-						    <?php $this->renderPartial('../element/linksMenu', 
-				        			array("linksBtn"=>$linksBtn,
-				        					"elementId"=>(string)$element["_id"],
-				        					"elementType"=>$type,
-				        					"elementName"=> $element["name"],
-				        					"openEdition" => $openEdition) 
-				        			); 
-				        	?>
-						</div>
-						<?php } ?>
-					</div>
-
-        			<h4 class="text-left padding-left-15 pull-left no-margin" id="main-name-element">
-						<span id="nameHeader">
-							<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left">
-								<!--<i class="fa fa-<?php echo $icon; ?>"></i>--> 
-							</div>
-							<div class="name-header pull-left"><?php echo @$element["name"]; ?></div>
-						</span>	
-					</h4>
-
-
-					
-					
-				</div>
-
-				<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 pull-right">
-					<span class="pull-left text-white" id="shortDescriptionHeader"><?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
-						<?php if(@$edit==true) { ?>
-					<?php } ?>
-					</span>	
-				</div>
-				<div class="pull-right col-sm-3 col-md-3" style="">
-					
-				</div>
-				<!-- <a href="#app.page.type.citoyens.id.580827a8da5a3bca128b456b?tpl=onepage" target="_blank" class="font-blackoutM letter-red bold">
-					  <i class="fa fa-external-link"></i> <span class="hidden-xs hidden-sm">Page</span> web
-				</a>
-				<br> -->
-
-				<!-- <?php //if(@$element["shortDescription"]!="") { ?><i class="fa fa-quote-left pull-left "></i><?php //} ?> -->
-				
-
-				
-				
-			</div>
-	    </div>
-
-	    <div class="col-md-3 col-sm-3 col-xs-3 no-padding" style="bottom:-31px; position: absolute;">
-					<?php if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
-							$images=$element["profilMediumImageUrl"];
-							else 
-								$images="";	
-								$this->renderPartial('../pod/fileupload', array(  "itemId" => (string) $element["_id"],
-																			  "type" => $type,
-																			  "resize" => false,
-																			  "contentId" => Document::IMG_PROFIL,
-																			  "show" => true,
-																			  "editMode" => $edit,
-																			  "image" => $images,
-																			  "openEdition" => $openEdition) ); 
-																			  ?>
-								<!--<img class="img-responsive" alt="" 
-									 src="<?php echo @$element['profilMediumImageUrl'] ? 
-									 		Yii::app()->createUrl('/'.@$element['profilMediumImageUrl']) : $imgDefault; ?>">-->
-								
-								<?php if(false && @Yii::app()->session["userId"]){ ?>
-								<div class="blockUsername">
-								    <!--<h2 class="text-left">
-									    <?php //echo @$element["name"]; ?><!-- <br>
-									    <small>
-									    	<?php if(@$element["address"] && @$element["address"]["addressLocality"]) {
-					                				echo "<i class='fa fa-university'></i> ".$element["address"]["addressLocality"];
-					                				if(@$element["address"]["postalCode"]) echo ", ";
-					                			  }
-					                			  if(@$element["address"] && @$element["address"]["postalCode"]) 
-					                			  	echo $element["address"]["postalCode"];
-					                		?>
-					                	</small>
-				                	</h2>-->
-				                	<?php $this->renderPartial('../element/linksMenu', 
-				                			array("linksBtn"=>$linksBtn,
-				                					"elementId"=>(string)$element["_id"],
-				                					"elementType"=>$type,
-				                					"elementName"=> $element["name"],
-				                					"openEdition" => $openEdition) 
-				                			); 
-				                	?>
-								    <!-- <p><i class="fa fa-briefcase"></i> Web Design and Development.</p> -->
-								</div>
-								<?php } ?>
+			<?php } ?>
 		</div>
     </section>
     
-    <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 pull-right sub-menu-social no-padding">
+    <div class="col-md-9 col-sm-9 col-lg-10 col-xs-12 pull-right sub-menu-social no-padding">
 
     	<div class="btn-group inline">
 
@@ -221,12 +180,16 @@
     	  	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 			$thumbAuthor =  @$element['profilThumbImageUrl'] ? 
 		                      Yii::app()->createUrl('/'.@$element['profilThumbImageUrl']) 
-		                      : "";
+		                      : $this->module->assetsUrl.'/images/thumbnail-default.jpg';
     	  ?>
+    	  <button type="button" class="btn btn-default bold menu-left-min visible-xs" onclick="menuLeftShow();">
+		  		<i class="fa fa-bars"></i>
+		  </button>
+		  <img class="pull-left visible-xs" src="<?php echo $thumbAuthor; ?>" height=45>
     	  <div class="identity-min">
-	    	  <img class="pull-left" src="<?php echo $thumbAuthor; ?>" height=45>
-	    	  <div class="pastille-type-element hidden-xs bg-<?php echo $iconColor; ?> pull-left"></div>
-			  <div class="col-lg-1 col-md-2 col-sm-2 hidden-xs pull-left no-padding">
+	    	  <img class="pull-left hidden-xs" src="<?php echo $thumbAuthor; ?>" height=45>
+	    	  <div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left"></div>
+			  <div class="col-lg-1 col-md-2 col-sm-2 pull-left no-padding">
 	    	  	<div class="text-left padding-left-15" id="second-name-element">
 					<span id="nameHeader">
 						<h5 class="elipsis"><?php echo @$element["name"]; ?></h5>
@@ -234,15 +197,14 @@
 				</div>
 	    	  </div>
     	  </div>
-
     	  <?php if(@Yii::app()->session["userId"] && 
     			 $type==Person::COLLECTION && 
     			 (string)$element["_id"]==Yii::app()->session["userId"]){ 
 
     			$iconNewsPaper="user-circle"; 
     	  ?>
-		  <button type="button" class="btn btn-default bold" id="btn-start-newsstream">
-		  		<i class="fa fa-rss"></i> Fil d'actu<span class="hidden-sm">alité</span>s
+		  <button type="button" class="btn btn-default bold hidden-xs btn-start-newsstream">
+		  		<i class="fa fa-rss"></i> <?php echo Yii::t("common","News stream<span class='hidden-sm'></span>") ?>
 		  </button>
 
 		  <?php } else {
@@ -250,15 +212,15 @@
 		  		}
 		  ?>
 
-		  <button type="button" class="btn btn-default bold" id="btn-start-mystream">
+		  <button type="button" class="btn btn-default bold hidden-xs btn-start-mystream">
 		  		<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper"); ?>
 		  </button>
 
 		  <?php if((@Yii::app()->session["userId"] && $isLinked==true) || @Yii::app()->session["userId"] == $element["_id"]){ ?>
-		  <button type="button" class="btn btn-default bold" id="btn-start-notifications">
+		  <button type="button" class="btn btn-default bold hidden-xs btn-start-notifications hidden">
 		  	<i class="fa fa-bell"></i> 
 		  	<span class="hidden-xs hidden-sm">
-		  		Mes notif<span class="hidden-md">ications</span>
+		  		<?php if (@Yii::app()->session["userId"] == $element["_id"]) echo Yii::t("common","My notif<span class='hidden-md'>ication</span>s"); else echo Yii::t("common","Notif<span class='hidden-md'>ication</span>s"); ?>
 		  	</span>
 		  	<span class="badge notifications-countElement <?php if(!@$countNotifElement || (@$countNotifElement && $countNotifElement=="0")) echo 'badge-transparent hide'; else echo 'badge-success'; ?>">
 		  		<?php echo @$countNotifElement ?>
@@ -266,159 +228,387 @@
 		  </button>
 		  <?php } ?>
 
+		  <script type="text/javascript">
+	  	  	
+			   /*alert( "x<?php echo (@$edit && $edit) || (@$openEdition && $openEdition) ?>"+
+			           "x<?php echo Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id);  ?>"+
+			           "x<?php echo Link::isLinked((string)$element["_id"], $type, Yii::app()->session["userId"]);   ?>");
+    			*/
+	  	  </script>
 
-		  <?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
-		  <button type="button" class="btn btn-default bold letter-green" data-target="#selectCreate" data-toggle="modal">
-		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
+		  <?php if(@Yii::app()->session["userId"] && Yii::app()->params['rocketchatEnabled'] )
+	  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition)) ) || 
+	  			($type==Person::COLLECTION) ||
+	  			//admins can create rooms
+	  			( Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) ) ||
+	  			//simple members can join only when admins had created
+	  			( @$element["hasRC"] && Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"]))  )
+	  			{
+	  				if(@$element["slug"])
+						//todo : elements members of
+	  					$loadChat = $element["slug"];
+	  				else
+	  					$createSlugBeforeChat=true;
+	  				//todo : elements members of
+	  				$loadChat = $element["name"];
+	  				//people have pregenerated rooms so allways available 
+	  				$hasRC = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "true" : "false";
+	  				$canEdit = ( @$openEdition && $openEdition ) ? "true" : "false";
+	  				//Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) );
+	  				if($type == Person::COLLECTION)
+	  				{
+	  				 	$loadChat = (string)$element["username"];
+	  					if( (string)$element["_id"]==@Yii::app()->session["userId"] )
+	  						$loadChat = "";
+		  			}
+		  			$chatColor = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "text-red" : "";
+	  	  ?>
+	  	  
+	  	  <?php /*if(@$createSlugBeforeChat){ ?>
+	  	  	<button type="button" onclick="javascript:createSlugBeforeChat('<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
+		  		  id="open-rocketChat" style="border-right:0px!important;">
+		  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
+		  	</button>
+	  	  <?php } else{ */?>
+			  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
+			  		  id="open-rocketChat" style="border-right:0px!important;">
+			  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
+			  </button>
+		  <?php //} ?>
+		  
+		  <?php } ?>
+
+
+		  <?php if(@Yii::app()->session["userId"])
+		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION ){ ?>
+		  <button type="button" class="btn btn-default bold hidden-xs letter-turq" data-toggle="modal" data-target="#modalCoop" 
+		  		  id="open-co-space" style="border-right:0px!important;">
+		  		<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("cooperation", "CO-space"); ?>
 		  </button>
 		  <?php } ?>
+
+
+		  <?php if(@Yii::app()->session["userId"])
+		  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
+		  			($type==Person::COLLECTION && (string)$element["_id"]==@Yii::app()->session["userId"])){ ?>
+		  <button type="button" class="btn btn-default bold letter-green hidden-xs" 
+		  		  id="open-select-create" style="border-right:0px!important;">
+		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
+		  </button>
+
+		  <?php } ?>
+
+		  <?php /* Links in new TAB
+		  if(@Yii::app()->session["userId"])
+  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
+  			($type==Person::COLLECTION) ||
+  			(Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"])))
+  			{ 
+  				//todo : elements members of
+  				$loadChat = '/'.$this->module->id.'/rocketchat/chat/name/'.$element["name"].'/type/'.$type;
+  				if($type == Person::COLLECTION)
+  				{
+  				 	$loadChat = '/'.$this->module->id.'/rocketchat/chat/name/'.$element["username"].'/type/'.$type;
+  					if( (string)$element["_id"]==@Yii::app()->session["userId"] )
+  						$loadChat = '/'.$this->module->id.'/rocketchat';
+  				}
+  				?> 
+			  	<a href="<?php echo $loadChat;?>" target="_blanck" class="btn btn-default bold letter-red hidden-xs" style="border-right:0px!important;">
+			  		<i class="fa fa-comments fa-2x"></i> 
+			  	</a>
+			<?php } */?>
 		</div>
 		
 		<div class="btn-group pull-right">
-			<?php if((@$edit && $edit) || (@$openEdition && $openEdition)){ ?>
-			  <button type="button" class="btn btn-default bold">
+	  	
+			<?php 
+				$role = Role::getRolesUserId(@Yii::app()->session["userId"]) ; 
+        
+			if($element["_id"] == Yii::app()->session["userId"] && 
+			   (Role::isSuperAdmin($role) || Role::isSourceAdmin($role) )) { ?>
+			  <!--<button type="button" class="btn btn-default bold lbh" data-hash="#admin">
 			  	<i class="fa fa-user-secret"></i> <span class="hidden-xs hidden-sm hidden-md">Admin</span>
+			  </button>-->
+			
+			  <button type="button" class="btn btn-default bold tooltips" data-placement="left" 
+						data-original-title="super admin" id="btn-superadmin">
+			  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
 			  </button>
-			<?php } ?>
-		  <?php if($element["_id"] == Yii::app()->session["userId"] && 
-		  			Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
-		  <button type="button" class="btn btn-default bold" id="btn-superadmin">
-		  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
-		  </button>
-		  <?php } ?>
+			  <?php } ?>
 
 		</div>
 
-
-		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
-		<div class="btn-group pull-right">
+		<div class="btn-group pull-right" id="paramsMenu">
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
-				<button type="button" class="btn btn-default bold">
-		  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo Yii::t("common", "Settings"); ?></span>
-		  		</button>
-		  		<ul class="dropdown-menu arrow_box menu-params">			
-	  				<li class="text-left">
-		               	<a href="javascript:;" id="editConfidentialityBtn" class="bg-white">
-		                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
-		                </a>
-		            </li>
-					<li>
-						<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
-							<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?>
-						</a>
-					</li>
+					<button type="button" class="btn btn-default bold">
+						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+			  			<i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm"><?php echo Yii::t("common", "Settings"); ?>
+			  			<?php }else{ ?>
+			  			<i class="fa fa-chevron-down"></i>
+			  			<?php } ?>
+			  			</span>
+			  		</button> 
+			  		<!--<button type="button" class="btn btn-default bold">
+						<i class="fa fa-chevron-down"></i>
+			  		</button>-->
+			  		<ul class="dropdown-menu arrow_box menu-params">
+	                	<?php $this->renderPartial('../element/linksMenu', 
+	            			array("linksBtn"=>$linksBtn,
+	            					"elementId"=>(string)$element["_id"],
+	            					"elementType"=>$type,
+	            					"elementName"=> $element["name"],
+	            					"openEdition" => $openEdition,
+	            					"xsView"=>true) 
+	            			); 
+	            		?>
+	            		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+			  				<li class="text-left">
+				               	<a href="javascript:;" id="editConfidentialityBtn" class="bg-white">
+				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
+				                </a>
+				            </li>
+			            <?php } ?>
+						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+			  				<li class="text-left">
+				               	<a href="javascript:;" onclick="updateSlug();" id="" class="bg-white">
+				                    <i class="fa fa-id-badge"></i> <?php echo Yii::t("common", "Edit slug"); ?>
+				                </a>
+				            </li>
+			            <?php } ?>
+						
+						<li>
+							<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
+								<i class="fa fa-qrcode"></i> <?php echo Yii::t("common","QR Code") ?>
+							</a>
+						</li>
 
-		  			<?php if($type !=Person::COLLECTION){ ?>
-		  				<li class="text-left">
-							<a href="javascript:;" id="btn-show-activity">
-								<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
-							</a>
-						</li>
-			  			<li class="text-left">
-			               	<a href="javascript:;" class="bg-white text-red">
-			                    <i class="fa fa-trash"></i> 
-			                    <?php echo Yii::t("common", "Delete {what}", 
-			                    					array("{what}"=> 
-			                    						Yii::t("common","this ".Element::getControlerByCollection($type)))); 
-			                    ?>
-			                </a>
-			            </li>
-		            <?php } else { ?>
-						<li class="text-left">
-							<a href='javascript:' id="downloadProfil">
-								<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
-							</a>
-						</li>
-						<li class="text-left">
-			               	<a href='javascript:;' id="btn-update-password" class='text-red'>
-								<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
-							</a>
-			            </li>
-		            <?php } ?>
-		            
-		  		</ul>
+			  			<?php if($type !=Person::COLLECTION){ ?>
+
+			  				<?php if($openEdition==true){ ?>
+				  				<li class="text-left">
+									<a href="javascript:;" class="btn-show-activity">
+										<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
+									</a>
+								</li>
+							<?php } ?>
+
+							<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) { ?>
+				  			<li class="text-left">
+				               	<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">
+				                    <i class="fa fa-trash"></i> 
+				                    <?php echo Yii::t("common", "Delete {what}", 
+				                    					array("{what}"=> 
+				                    						Yii::t("common","this ".Element::getControlerByCollection($type)))); 
+				                    ?>
+				                </a>
+				            </li>
+				            <?php } ?>
+			            <?php } else { ?>
+			            	<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+
+			            	<li class="text-left">
+				               	<a href='javascript:;' onclick='rcObj.settings();' >
+									<i class='fa fa-comments'></i> <?php echo Yii::t("common","Chat Settings"); ?>
+								</a>
+				            </li>
+
+							<li class="text-left">
+								<a href='javascript:' id="downloadProfil">
+									<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
+								</a>
+							</li>
+							
+							<li class="text-left">
+				               	<a href='javascript:;' id="btn-update-password" class='text-red'>
+									<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
+								</a>
+				            </li>
+
+				            <?php } ?>
+			            <?php } ?>
+			  		</ul>
 		  		</li>
 		  	</ul>
 		</div>
-		<?php } ?>
 
-		
-
+	  	<?php if(isset(Yii::app()->session["userId"]) && $typeItem!=Person::COLLECTION){ ?>
+			<div class="btn-group pull-right">
+			  	<button 	class='btn btn-default bold btn-share pull-right  letter-green' style="border:0px!important;"
+	                    	data-ownerlink='share' data-id='<?php echo $element["_id"]; ?>' data-type='<?php echo $typeItem; ?>' 
+	                    	data-isShared='false'>
+	                    	<i class='fa fa-share'></i> <span class="hidden-xs"><?php echo Yii::t("common","Share") ?></span>
+	          	</button>
+	        </div>
+	    <?php } ?>
 	</div>
 
 	
-	<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profilSocial" style="margin-top:65px;">  
+	<!-- <div id="div-reopen-menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 hidden"> -->
+		<!-- <button id="reopen-menu-left-container" class="btn btn-default">
+			<i class="fa fa-arrow-left"></i> <span class="hidden-sm hidden-xs"> Retour au </span>menu principal
+		</button> -->
+		<!-- <button id="refresh-coop-rooms" class="btn btn-default pull-right">
+			<i class="fa fa-refresh"></i>
+		</button> -->
+		<!-- <hr>
+		<h4 class="letter-turq"><i class="fa fa-connectdevelop"></i> Espaces co<span class="hidden-sm">opératifs</span></h4>
+ -->
 		
-	    <?php 
-	    	$params = array(    "element" => @$element, 
+	    
+
+	<?php //render of modal for coop spaces 
+		$params = array(  "element" => @$element, 
+                            "type" => @$type, 
+                            "edit" => @$edit,
+                            "thumbAuthor"=>@$thumbAuthor,
+                            "openEdition" => $openEdition,
+                            "iconColor" => $iconColor
+                        );
+
+    	$this->renderPartial('../cooperation/pod/modals', $params ); 
+    ?>
+
+	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 profilSocial hidden-xs" 
+			style="margin-top:40px;">  		
+	    <?php $params = array(  "element" => @$element, 
                                 "type" => @$type, 
                                 "edit" => @$edit,
-                                "countries" => @$countries,
-                                "controller" => $controller,
+                                "isLinked" => @$isLinked,
+                                "countNotifElement"=>@$countNotifElement,
+                                "invitedMe" => @$invitedMe,
                                 "openEdition" => $openEdition,
-                                "countStrongLinks" => $countStrongLinks,
-                                "countLowLinks" => @$countLowLinks,
-                                "countInvitations"=> $countInvitations,
-                                "linksBtn"=> @$linksBtn
                                 );
 
-	    	if(@$members) $params["members"] = $members;
-	    	if(@$events) $params["events"] = $events;
-	    	if(@$needs) $params["needs"] = $needs;
-	    	if(@$projects) $params["projects"] = $projects;
-
-	    	$this->renderPartial('../pod/ficheInfoElementCO2', $params ); 
+	    	$this->renderPartial('../pod/menuLeftElement', $params ); 
 	    ?>
+	</div>
 
+	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-9 padding-50 margin-top-50 links-main-menu hidden" 
+		 id="div-select-create">
+		<div class="col-md-12 col-sm-12 col-xs-12 padding-15 shadow2 bg-white ">
+	       
+	       <h4 class="text-center margin-top-15" style="">
+	       	<img class="img-circle" src="<?php echo $thumbAuthor; ?>" height=30 width=30 style="margin-top:-10px;">
+	       	<a class="btn btn-link pull-right text-dark" id="btn-close-select-create" style="margin-top:-10px;">
+	       		<i class="fa fa-times-circle fa-2x"></i>
+	       	</a>
+	       	<span class="name-header"><?php echo @$element["name"]; ?></span>
+	       	<br>
+	       	<i class="fa fa-plus-circle"></i> <?php echo Yii::t("form","Create content link to this page") ?>
+	       	<br>
+	       	<small><?php echo Yii::t("form","What kind of content will you create ?") ?></small>
+	       </h4>
+
+	        <div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
+
+	        <button data-form-type="event"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-orange">
+	            <h6><i class="fa fa-calendar fa-2x bg-orange"></i><br> <?php echo Yii::t("common", "Event") ?></h6>
+	            <small><?php echo Yii::t("form", "Diffuse an event<br>Invite attendees<br>Communicate to your network") ?></small>
+	        </button>
+	        <button data-form-type="classified"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure hide-event">
+	            <h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> <?php echo Yii::t("common", "Classified") ?></h6>
+	            <small><?php echo Yii::t("form","Create a classified ad<br>To share To give To sell To rent<br>Material Property Job") ?></small>
+	        </button>
+
+	        <button data-form-type="poi"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green-poi">
+	            <h6><i class="fa fa-map-marker fa-2x bg-green-poi"></i><br> <?php echo Yii::t("common", "Point of interest") ?></h6>
+	            <small><?php echo Yii::t("form","Make visible an interesting place<br>Contribute to the collaborative map<br>Highlight your territory") ?></small>
+	        </button>
+
+	        
+	        <!--<button data-form-type="url" data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-url">
+	            <h6><i class="fa fa-link fa-2x bg-url"></i><br> <?php echo Yii::t("common", "URL") ?></h6>
+	            <small><?php echo Yii::t("form","Share a link<br>Your favorites websites<br>Important news...") ?></small>
+	        </button>-->
+
+
+	        <button data-form-type="project"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-purple hide-event">
+	            <h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> <?php echo Yii::t("common", "Project") ?></h6>
+	            <small><?php echo Yii::t("form", "Make visible a project<br>Find support<br>Build a community") ?></small>
+	        </button>
+
+			<button data-form-type="contactPoint"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-blue hide-citoyens">
+	            <h6><i class="fa fa-envelope fa-2x bg-blue"></i><br> <?php echo Yii::t("common","Contact") ?></h6>
+	            <small><?php echo Yii::t("form", "Define roles of everyone<br>Communicate easily<br>Internal and external") ?></small>
+	        </button>
+
+			<div class="section-create-page">
+	        
+	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GROUP; ?>"  data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 letter-turq">
+	                <h6><i class="fa fa-circle-o fa-2x bg-turq"></i><br> <?php echo Yii::t("common", "Group") ?></h6>
+	                <small><?php echo Yii::t("form","Create a group<br>Share your interest<br>Speak Diffuse Have fun") ?></small>
+	            </button>
+
+	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_NGO; ?>"  data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green">
+	                <h6><i class="fa fa-group fa-2x bg-green"></i><br> <?php echo Yii::t("common", "NGO") ?></h6>
+	                <small><?php echo Yii::t("form","Make visible your NGO<br>Manage the community<br>Share your news") ?></small>
+	            </button>
+	            
+	            
+	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_BUSINESS; ?>"  data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure">
+	                <h6><i class="fa fa-industry fa-2x bg-azure"></i><br> <?php echo Yii::t("common", "Local Business") ?></h6>
+	                <small><?php echo Yii::t("form","Make visible your company<br>Find new customer<br>Manage your contacts") ?></small>
+	            </button>
+
+	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GOV; ?>"  
+	                    data-dismiss="modal"
+	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-red">
+	                <h6><i class="fa fa-university fa-2x bg-red"></i><br> <?php echo Yii::t("common", "Government Organization") ?></h6>
+	                <small><?php echo Yii::t("form","Town hall, schools, etc...<br>Share your news<br>Share events") ?></small>
+	            </button>
+
+	        </div>
+	    </div>
+    </div>
+
+
+	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-10 no-padding central-section pull-right">
 		
-	</div>
-	<?php if(@$invitedMe && !empty($invitedMe)){ ?>
-	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-9 divInvited">
-		<?php 
-			
-			$inviteRefuse="Refuse";
-			$inviteAccept="Accept";
-			$tooltipAccept="Join this ".Element::getControlerByCollection($type);
-			if ($type == Project::COLLECTION){ 
-				$tooltips = "La communauté du projet";
-			}
-			else if ($type == Organization::COLLECTION){
-				$tooltips = "La communauté de l'organisation";							
-			}
-			else if ($type == Event::COLLECTION){
-				$parentRedirect = "event";
-				$inviteRefuse="Not interested";
-				$inviteAccept="I go";
-				$tooltipAccept="Go to the event";
-				$tooltips = "La communauté de l'évènement";						
-			}
-			else if ($type == Person::COLLECTION){
-				$tooltips = "La communauté de cette personne";						
-			}
-			else if ($type == Place::COLLECTION){
-				$tooltips = "La communauté de ce lieu";						
-			}
+		<?php    
+			$marginCentral="";
+			$classDescH="hidden"; 
+			$classBtnDescH="<i class='fa fa-angle-down'></i> ".Yii::t("common","show description"); 
+				
 
-
-			echo "<a href='#page.type.".Person::COLLECTION.".id.".$invitedMe["invitorId"]."' class='lbh text-purple'>".$invitedMe["invitorName"]."</a><span class='text-dark'> vous a invité : ".
-				'<a class="btn btn-xs btn-success tooltips" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.$id.'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Link::IS_INVITING.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
-					'<i class="fa fa-check "></i> '.Yii::t("common",$inviteAccept).
-				'</a> '.
-				' <a class="btn btn-xs btn-danger tooltips" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.$id.'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\'attendees\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
-					'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
-				'</a>';
-			
+		if($typeItem != Person::COLLECTION){ 
 		?>
-	</div>
-	<?php } ?>
-	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding" style="margin-top: -10px;">
-	
-		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-50" id="central-container">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:20px;">
+				<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
+					<b><i class="fa fa-angle-down"></i> 
+					<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","Main description") ?></b>
+					<hr>
+					<span id="descProfilsocial">
+						<?php echo 	@$element["description"] && @$element["description"]!="" ? 
+									@$element["description"] : 
+									"<span class='label label-info'> ".Yii::t("common","No description registred")."</span>"; ?>
+					</span>
+				</span>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
+				<button class="btn btn-link btn-xs pull-right" id="btn-hide-desc">
+					<?php echo $classBtnDescH; ?>
+				</button>
+				<br>
+				<hr>
+			</div>
+		<?php }else{ $marginCentral="50"; } ?>
+		<!-- Permet de faire le convertion en HTML -->
+		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
+
+	    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-<?php echo $marginCentral; ?>" id="central-container">
 		</div>
 
-		<?php $this->renderPartial('../pod/qrcode',array(
-																"type" => @$type,
+		<?php $this->renderPartial('../pod/qrcode',array(		"type" => @$type,
 																"name" => @$element['name'],
 																"address" => @$address,
 																"address2" => @$address2,
@@ -427,684 +617,218 @@
 																"tel" => @$tel,
 																"img"=>@$element['profilThumbImageUrl']));
 																?>
-		<div class="col-md-3 col-lg-3 hidden-sm hidden-xs margin-top-50" id="notif-column">
-		</div>
 
+		<div class="col-md-3 col-lg-3 hidden-sm hidden-xs margin-top-<?php echo $marginCentral; ?>" 
+			 id="notif-column">
+		</div>
 	</section>
-</div>	
-<style>
-	#uploadScropResizeAndSaveImage i{
-		position: inherit !important;
-	}
-	#uploadScropResizeAndSaveImage .close-modal .lr,
-	#uploadScropResizeAndSaveImage .close-modal .lr .rl{
-		z-index: 1051;
-	height: 75px;
-	width: 1px;
-	background-color: #2C3E50;
-	}
-	#uploadScropResizeAndSaveImage .close-modal .lr{
-	margin-left: 35px;
-	transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-	-webkit-transform: rotate(45deg);
-	}
-	#uploadScropResizeAndSaveImage .close-modal .rl{
-	transform: rotate(90deg);
-	-ms-transform: rotate(90deg);
-	-webkit-transform: rotate(90deg);
-	}
-	#uploadScropResizeAndSaveImage .close-modal {
-		position: absolute;
-		width: 75px;
-		height: 75px;
-		background-color: transparent;
-		top: 25px;
-		right: 25px;
-		cursor: pointer;
-	}
-	.blockUI, .blockPage, .blockMsg{
-		padding-top: 0px !important;
-	} 
-	#banniere_element:hover{
-	    color: #0095FF;
-	    background-color: white;
-	    border:1px solid #0095FF;
-	    border-radius: 3px;
-	    margin-right: 2px;
-	}
-	#banniere_element{
-	    background-color: #0095FF;
-	    color: white;
-	    border-radius: 3px;
-	    margin-right: 2px;
-	}
 
-</style>
-<div id="uploadScropResizeAndSaveImage" style="display:none;padding:0px 60px;">
-	<!--<img src='' id="previewBanniere"/>-->
-	<div class="close-modal" data-dismiss="modal"><div class="lr"><div class="rl"></div></div></div>
-		<div class="col-lg-12">
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" class="inline margin-top-25 margin-bottom-5" height="50">
-	        <br>
-		</div>
-		<div class="modal-header text-dark">
-			<h3 class="modal-title text-center" id="ajax-modal-modal-title"><i class="fa fa-crop"></i> <?php echo Yii::t("common","Resize and crop your image to render a beautiful banniere") ?></h3>
-		</div>
-		<div class="panel-body">
-			<div class='col-md-offset-1' id='cropContainer'>
-				<img src='' id='cropImage' class='' style=''/>
-				<div class='col-md-12'>
-					<input type='submit' class='btn btn-success text-white imageCrop saveBanniere'/>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+	<!-- <section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding form-contact-mail pull-right"> -->
+		<?php 
+			if(Yii::app()->params["CO2DomainName"] != "kgougle"){ 
+				$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+				$this->renderPartial($layoutPath.'forms.'.Yii::app()->params["CO2DomainName"].'.formContact', 
+									array("element"=>@$element));
+			} 
+		?>
+	<!-- </section> -->
+</div>	
 
 <?php 
-$paramsConfidentiality = array( "element" => @$element, 
-	"type" => @$type, 
-	"edit" => @$edit,
-	"controller" => $controller,
-	"openEdition" => $openEdition,
-);
-$this->renderPartial('../pod/confidentiality', $params );
+	$this->renderPartial('../pod/confidentiality',
+			array(  "element" => @$element, 
+					"type" => @$type, 
+					"edit" => @$edit,
+					"controller" => $controller,
+					"openEdition" => $openEdition,
+				) );
 
-if( $type != Person::COLLECTION)
-	$this->renderPartial('../element/addMembersFromMyContacts',array("type"=>$type, "parentId" =>(string)$element['_id'], "members"=>@$members));
+	//if( $type != Person::COLLECTION)
+		$this->renderPartial('../element/addMembersFromMyContacts',
+				array(	"type"=>$type, 
+						"parentId" => (string)$element['_id'], 
+						"members" => @$members));
 
+		$this->renderPartial('../element/invite',
+				array(	"type"=>$type, 
+						"parentId" => (string)$element['_id'], 
+						"members" => @$members));
 
 ?>
 
-<script type="text/javascript">
+<?php	$cssAnsScriptFilesModule = array(
+		'/js/default/profilSocial.js',
+		'/js/cooperation/uiCoop.js',
+	);
+	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+?>
 
-	var element = <?php echo json_encode(@$element); ?>;
-    var elementName = "<?php echo @$element["name"]; ?>";
-    var contextType = "<?php echo @$type; ?>";
-    var contextId = "<?php echo @(string)$element['_id'] ?>";
-    var contextData = { "id":contextId, "type":contextType };
-    var members = <?php echo json_encode(@$members); ?>;
-    var params = <?php echo json_encode(@$params); ?>;
+<script type="text/javascript">
+	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
+	initMetaPage(contextData.name,contextData.shortDescription,contextData.profilImageUrl);
+	mylog.log("init contextData", contextData);
+    var params = <?php echo json_encode(@$params); ?>; 
+    var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false );
+	var openEdition = ( ( '<?php echo (@$openEdition == true); ?>' == "1") ? true : false );
     var dateLimit = 0;
     var typeItem = "<?php echo $typeItem; ?>";
     var liveScopeType = "";
-    console.log("params", params);
-    var subView="<?php echo @$subview; ?>";
-    var hashUrlPage="#page.type."+contextType+".id."+contextId;
+    var subView="<?php echo @$_GET['view']; ?>";
+    var navInSlug=false;
+   
+    if(typeof contextData.slug != "undefined")
+     	navInSlug=true;
+   
+    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?src="+networkParams : "" )+
+    				 ( (typeof contextData.slug != "undefined") ? "#"+contextData.slug : "#page.type."+contextData.type+".id."+contextData.id);
+    
+    if(location.hash.indexOf("#page")>=0){
+    	strHash="";
+    	if(location.hash.indexOf(".view")>0){
+    		hashPage=location.hash.split(".view");
+    		strHash=".view"+hashPage[1];
+    	}
+    	replaceSlug=true;
+    	history.replaceState("#page.type."+contextData.type+".id."+contextData.id, "", "#"+contextData.slug+strHash);
+    	//location.hash=;
+    }
+    
     var cropResult;
+    var idObjectShared = new Array();
 
     var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
-	
+	var dirHash="<?php echo @$_GET['dir']; ?>";
+	var roomId = "<?php echo @$_GET['room']; ?>";
+	var proposalId = "<?php echo @$_GET['proposal']; ?>";
+	var resolutionId = "<?php echo @$_GET['resolution']; ?>";
+	var actionId = "<?php echo @$_GET['action']; ?>";
+
 
 	jQuery(document).ready(function() {
 		bindButtonMenu();
-		if(subView!=""){
-			if(subView=="gallery")
-				loadGallery()
-			else if(subView=="notifications")
-				loadNotifications();
-			else if(subView.indexOf("chart") >= 0){
-				id=subView.split("chart");
-				loadChart(id[1]);
-			}
-			else if(subView=="mystream")
-				loadNewsStream(false);
-			else if(subView=="history")
-				loadHistoryActivity();
-			else if(subView=="directory")
-				loadDirectory();
-			else if(subView=="editChart")
-				loadEditChart();
-			else if(subView=="detail")
-				loadDetail();
-		} else
-			loadNewsStream(true);
+		inintDescs();
+		if(typeof contextData.name !="undefined")
+			setTitle("", "", contextData.name);
+
+		if( contextData.type == "events")
+			$(".createProjectBtn").hide()
+		else 
+			$(".createProjectBtn").show()
+
+		$(".hide-"+contextData.type).hide();
+		getProfilSubview(subView,dirHash);
+		
+		//loadActionRoom();
 
 		KScrollTo("#topPosKScroll");
-		initDateHeaderPage(element);
-
-		//IMAGE CHANGE//
-		$("#uploadScropResizeAndSaveImage .close-modal").click(function(){
-			$.unblockUI();
-		});
-		$("#banniere_element").click(function(event){
-  			if (!$(event.target).is('input')) {
-  					$(this).find("input[name='banniere']").trigger('click');
-  			}
-			//$('#'+contentId+'_avatar').trigger("click");		
-		});
+		initDateHeaderPage(contextData);
+		getContextDataLinks();
+		if(typeof contextData.links != "undefined" && rolesList != "undefined")
+			pushListRoles(contextData.links);
 		
-		$('#banniere_change').off().on('change.bs.fileinput', function () {
-			setTimeout(function(){
-				var files=document.getElementById("banniere_change").files;
-				if (files[0].size > 2097152)
-					toastr.warning("Please reduce your image before to 2Mo");
-				else {
-					for (var i = 0; i < files.length; i++) {           
-				        var file = files[i];
-				       	var imageType = /image.*/;     
-				        if (!file.type.match(imageType)) {
-				            continue;
-				        }           
-				        var img=document.getElementById("cropImage");            
-				        img.file = file;    
-				        var reader = new FileReader();
-				        reader.onload = (function(aImg) { 
-				        	var image = new Image();
-   							image.src = reader.result;
-   							img.src = reader.result;
-   							image.onload = function() {
-       							// access image size here 
-       						 	var imgWidth=this.width;
-       						 	var imgHeight=this.height;
-       							if(imgWidth>=1000 && imgHeight>=500){
-	               					$.blockUI({ 
-	               						message: $('div#uploadScropResizeAndSaveImage'), 
-	               						css: {cursor:null,padding: '0px !important'}
-	               					}); 
-	               					$("#uploadScropResizeAndSaveImage").parent().css("padding-top", "0px !important");
-									//$("#uploadScropResizeAndSaveImage").html(html);
-									setTimeout(function(){
-										var crop = $('#cropImage').cropbox({width: 1300,
-											height: 400,
-											zoomIn:true,
-											zoomOut:true}, function() {
-												cropResult=this.result;
-												console.log(cropResult);
-										}).on('cropbox', function(e, crop) {
-											cropResult=crop;
-							        		console.log('crop window: ', crop);
-							        
-										});
-										$(".saveBanniere").click(function(){
-									        //console.log(cropResult);
-									        //var cropResult=cropResult;
-									        $("#banniere_photoAdd").submit();
-										});
-										$("#banniere_photoAdd").off().on('submit',(function(e) {
-			//alert(moduleId);
-			if(debug)mylog.log("id2", contextId);
-			$(".banniere_isSubmit").val("true");
-			e.preventDefault();
-			console.log(cropResult);
-			var fd = new FormData(document.getElementById("banniere_photoAdd"));
-			fd.append("parentId", contextId);
-			fd.append("parentType", contextType);
-			fd.append("formOrigin", "banniere");
-			fd.append("contentKey", "banniere");
-			fd.append("cropW", cropResult.cropW);
-			fd.append("cropH", cropResult.cropH);
-			fd.append("cropX", cropResult.cropX);
-			fd.append("cropY", cropResult.cropY);
-			//var formData = new FormData(this);
-						//console.log("formdata",formData);
-			/*formData.files= document.getElementById("banniere_change").files;
-			formData.crop= cropResult;
-			formData.parentId= contextId;
-			formData.parentType= contextType;
-			formData.formOrigin= "banniere";*/
-			//console.log(formData);
-			// Attach file
-			//formData.append('image', $('input[type=banniere]')[0].files[0]); 
-			$.ajax({
-				url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/banniere",
-				type: "POST",
-				data: fd,
-				contentType: false,
-				cache: false, 
-				processData: false,
-				dataType: "json",
-				success: function(data){
-			        if(data.result){
-			        	newBanniere='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src+'" style="">';
-			        	$("#contentBanniere").html(newBanniere);
-			        	$.unblockUI();
-			        	//$("#uploadScropResizeAndSaveImage").hide();
-			    	}
-			    }
-			});
-		}));
-									}, 300);
-								}
-       						 	else
-       						 		toastr.warning("Please choose an image with a minimun of size: 1000x450 (widthxheight)");
-  							};
-				        });
-				        reader.readAsDataURL(file);
-				    }  
-				}
-			}, 400);
-		});
-		
-		//END MAGE CHNGE
-
-		
-		
+		//Sig.showMapElements(Sig.map, mapElements);
+		var elemSpec = dyFInputs.get("<?php echo $type?>");
+		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");
 	});
-
-	function initDateHeaderPage(params){
-		var str = directory.getDateFormated(params);
-		$(".section-date").html(str);
+	function initMetaPage(title, description, image){
+		if(title != ""){
+			$("meta[name='title']").attr("content",title);
+			$("meta[property='og:title']").attr("content",title);
+		}
+		if(description != ""){
+			$("meta[name='description']").attr("content",description);
+			$("meta[property='og:description']").attr("content",description);
+		}
+		if(image != ""){
+			$("meta[name='image']").attr("content",baseUrl+image);
+			$("meta[property='og:image']").attr("content",baseUrl+image);
+		}
 	}
-
-	function getCroppingModal(){
-		
-	}
-
-	function bindButtonMenu(){
-		$("#btn-superadmin").click(function(){
-			loadAdminDashboard();
-		});
-		$("#btn-start-newsstream").click(function(){
-			history.pushState(null, "New Title", hashUrlPage);
-			loadNewsStream(true);
-		});
-		$("#btn-start-mystream").click(function(){
-			if(contextType=="citoyens" && userId==contextId)
-				history.pushState(null, "New Title", hashUrlPage+".view.mystream");
-			else
-				history.pushState(null, "New Title", hashUrlPage);
-			loadNewsStream(false);
-		});
-		$("#btn-start-gallery").click(function(){
-			history.pushState(null, "New Title", hashUrlPage+".view.gallery");
-			//location.search="?view=gallery";
-			loadGallery();
-		});
-		$("#btn-start-notifications").click(function(){
-			history.pushState(null, "New Title", hashUrlPage+".view.notifications");
-			//location.search="?view=notifications";
-			loadNotifications();
-		});
-		$(".btn-start-chart").click(function(){
-			id=$(this).data("value");
-			history.pushState(null, "New Title", hashUrlPage+".view.chart"+id);
-			//location.search="?view=chart&id="+id;
-			loadChart(id);
-		});
-		$("#btn-show-activity").click(function(){
-			history.pushState(null, "New Title", hashUrlPage+".view.history");
-			loadHistoryActivity();
-		});
-		
-		$(".open-confidentiality").click(function(){
-			mylog.log("open-confidentiality");
-			toogleNotif(false);
-			smallMenu.open( markdownToHtml($("#descriptionMarkdown").val()));
-			bindLBHLinks();
-		});
-	
-		$(".open-directory").click(function(){
-			history.pushState(null, "New Title", hashUrlPage+".view.directory");
-			loadDirectory();
-		});
-		$(".edit-chart").click(function(){
-			history.pushState(null, "New Title", hashUrlPage+".view.editChart");
-			loadEditChart();
-		});
-		$(".btn-open-collection").click(function(){
-			toogleNotif(false);
-		});
-
-		$("#btn-start-detail").click(function(){
-			history.pushState(null, "New Title", hashUrlPage+".view.detail");
-			loadDetail();
-		});
-
-		$(".load-data-directory").click(function(){
-   			var dataName = $(this).data("type-dir");
-   			console.log(".load-data-directory", dataName);
-   			loadDataDirectory(dataName, $(this).data("icon"));
-   		});
-   		
-   		$("#subsubMenuLeft a").click(function(){
-   			$("#subsubMenuLeft a").removeClass("active");
-   			$(this).addClass("active");
-   		});
-
-   		$("#btn-start-urls").click(function(){
-			history.pushState(null, "New Title", hashUrlPage+".view.detail");
-			loadUrls();
-		});
-
-	}
-	
-	function loadDataDirectory(dataName, dataIcon){
-		showLoader('#central-container');
-		// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
-		getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
-					'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
-					function(data){ 
-						var n=0;
-						$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
-						if(n>0){
-
-							var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
-											getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
-										"<hr></div>";
-
-							if(dataName != "collections"){
-								html += directory.showResultsDirectoryHtml(data);
-							}else{
-								$.each(data, function(col, val){
-									html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
-									$.each(val.list, function(key, elements){ 
-										html += directory.showResultsDirectoryHtml(elements, key);
-									});
-								});
-								
-							}
-							toogleNotif(false);
-
-							$("#central-container").html(html);
-							initBtnLink();
-							
-						}else{
-							var nothing = "Aucun";
-							if(dataName == "organizations" || dataName == "collections" || 
-								dataName == "follows" || dataName == "dda")
-								nothing = "Aucune";
-
-							var html =  "<div class='col-md-12 margin-bottom-15'>"+
-											getLabelTitleDir(dataName, dataIcon, nothing, n)+
-										"</div>";
-							$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
-																	"<i class='fa fa-ban'></i> Aucune donnée"+
-																"</span>");
-							toogleNotif(false);
-						}
-					}
-		,"html");
-	}
-
-	function getLabelTitleDir(dataName, dataIcon, countData, n){
-		mylog.log("bgetLabelTitleDir", dataName, dataIcon, countData, n)
-		var elementName = "<span class='Montserrat' id='name-lbl-title'>"+$("#nameHeader .name-header").html()+"</span>";
-		
-		var s = (n>1) ? "s" : "";
-		var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
-		if(dataName == "follows")	{ html += elementName + " est <b>abonné</b> à " + countData + " page"+s+""; }
-		if(dataName == "followers")	{ html += countData + " <b>abonné"+s+"</b> à " + elementName; }
-		if(dataName == "members")	{ html += elementName + " est composé de " + countData + " <b>membre"+s+"</b>"; }
-		if(dataName == "attendees")	{ html += countData + " <b>invité"+s+"</b> à l'événement " + elementName; }
-		if(dataName == "contributors")	{ html += countData + " <b>contributeur"+s+"</b> au projet " + elementName; }
-		
-		if(dataName == "events"){ 
-			if(type == "events"){
-				html += elementName + " est composé de " + countData+" <b> sous-événement"+s; 
-			}else{
-				html += elementName + " participe à " + countData+" <b> événement"+s; 
+	function getProfilSubview(sub, dir){ console.log("getProfilSubview", sub, dir);
+		if(sub!=""){
+			if(sub=="gallery")
+				loadGallery();
+			if(sub=="library")
+				loadLibrary();
+			else if(sub=="notifications")
+				loadNotifications();
+			else if(sub.indexOf("chart") >= 0){
+				loadChart();
 			}
-		}
-		if(dataName == "organizations")	{ html += elementName + " est membre de " + countData+" <b>organisation"+s; }
-		if(dataName == "projects")		{ html += elementName + " contribue à " + countData+" <b>projet"+s }
-
-		if(dataName == "collections"){ html += countData+" <b>collection"+s+"</b> de " + elementName; }
-		if(dataName == "poi"){ html += countData+" <b>point"+s+" d'intérêt"+s+"</b> créé"+s+" par " + elementName; }
-		if(dataName == "classified"){ html += countData+" <b>annonce"+s+"</b> créée"+s+" par " + elementName; }
-
-		if(dataName == "needs"){ html += countData+" <b>besoin"+s+"</b> de " + elementName; }
-
-		if(dataName == "dda"){ html += countData+" <b>proposition"+s+"</b> de " + elementName; }
-
-		if(dataName == "urls"){ 
-			html += elementName + " a " + countData+" <b> lien"+s;
-			html += '<a class="tooltips btn btn-xs btn-success pull-right " data-placement="top" data-toggle="tooltip" data-original-title="'+trad["Add Link"]+'" href="javascript:;" onclick="elementLib.openForm ( \'url\',\'parentUrl\')">';
-	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add Link"]+'</a>' ;  
-		}
-
-		return html;
+			else if(sub=="mystream")
+				loadNewsStream(false);
+			else if(sub=="history")
+				loadHistoryActivity();
+			else if(sub=="directory")
+				loadDataDirectory(dir,null,edit);
+			else if(sub=="editChart")
+				loadEditChart();
+			else if(sub=="detail")
+				loadDetail();
+			else if(sub=="urls")
+				loadUrls();
+			else if(sub=="chat" && userId)
+				rcObj.loadChat("","citoyens", true, true);
+			else if(sub=="contacts")
+				loadContacts();
+			else if(sub=="settings")
+				loadSettings();
+			else if(sub=="coop"){
+				loadCoop(roomId, proposalId, resolutionId, actionId);
+			}
+		} else
+			loadNewsStream(true);
 	}
 
-	function loadAdminDashboard(){
-		showLoader('#central-container');
-		getAjax('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/main",function(){ 
-				
-		},"html");
-	}
 
-	function loadNewsStream(isLiveBool){
-		isLive = isLiveBool==true ? "/isLive/true" : ""; 
-		dateLimit = 0;
-		scrollEnd = false;
 
-		toogleNotif(true);
-
-		var url = "news/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>"+isLive+"/date/"+dateLimit+
-				  "?isFirst=1&tpl=co2&renderPartial=true";
-		
-		showLoader('#central-container');
-		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
-			null,
-			function(){ 
-				loadLiveNow();
-	            $(window).bind("scroll",function(){ 
-				    if(!loadingData && !scrollEnd && colNotifOpen){
-				          var heightWindow = $("html").height() - $("body").height();
-				          if( $(this).scrollTop() >= heightWindow - 400){
-				            loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep, isLiveBool);
-				          }
-				    }
-				});
-		},"html");
-	}
-	function loadGallery(){
-		toogleNotif(false);
-		var url = "gallery/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
-		
-		showLoader('#central-container');
-		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
-			null,
-			function(){},"html");
-	}
-	function loadChart(id){
-		toogleNotif(false);
-		var url = "chart/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>/chart/"+id;
-		showLoader('#central-container');
-		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
-			null,
-			function(){},"html");
-	}
-	function loadNotifications(){
-		toogleNotif(false);
-		var url = "element/notifications/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
-		
-		showLoader('#central-container');
-		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
-			null,
-			function(){},"html");
-	}
-	function loadHistoryActivity(){
-		toogleNotif(false);
-		var url = "pod/activitylist/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>";
-		showLoader('#central-container');
-		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
-			null,
-			function(){},"html");
-	}
-	function loadDirectory(){
-		toogleNotif(false);
-		smallMenu.openAjax(baseUrl+'/'+moduleId+'/element/directory/type/'+contextData.type+'/id/'+contextData.id+
-								'?tpl=json','Communauté','fa-connectdevelop','dark');
-		bindLBHLinks();
-	}
-	function loadEditChart(){
-		toogleNotif(false);
-		var url = "chart/addchartsv/type/"+contextType+"/id/"+contextId;
-		showLoader('#central-container');
-		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
-			null,
-		function(){},"html");
-	}
-
-	function loadDetail(){
-		toogleNotif(false);
-		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
-		showLoader('#central-container');
-		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
-	}
-
-	function loadInvite(){
-		toogleNotif(false);
-		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
-		showLoader('#central-container');
-		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url+'?tpl=ficheInfoElement', null, function(){},"html");
-	}
-
-	/*function loadUrls(){
-		toogleNotif(false);
-		smallMenu.openAjax(baseUrl+'/'+moduleId+'/element/geturls/type/'+contextData.type+'/id/'+contextData.id+'?tpl=json','Urls','fa-external-link','dark');
-		bindLBHLinks();
+function loadCoop(roomId, proposalId, resolutionId, actionId){
+	/*console.log("loadCoop", userId);
+	if(userId == "") {
+		toastr.info("Vous devez êtres connecté pour accéder à cet espace coopératif");
+		loadNewsStream();
+		return;
 	}*/
 
-	function loadUrls(){
-		showLoader('#central-container');
-		// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
-		getAjax('', baseUrl+'/'+moduleId+'/element/geturls/type/'+contextData.type+
-					'/id/'+contextData.id,
-					function(data){ 
-						afficheContenaire(data, "urls", "external-link", "urls");
-					}
-		,"html");
-	}
+	roomId 		= (roomId != "") 	 ? roomId 		: null;
+	proposalId  = (proposalId != "") ? proposalId 	: null;
+	resolutionId  = (resolutionId != "") ? resolutionId 	: null;
+	actionId 	= (actionId != "") 	 ? actionId 	: null;
 
-	function afficheContenaire(data, dataName, dataIcon, contextType){ 
-		mylog.log("afficheContenaire",data, dataName, dataIcon, contextType)
-		var n=0;
-		$.each(data, function(key, val){ if(typeof key != "undefined") n++; });
-		if(n>0){
-
-			var html = "<div class='col-md-12 margin-bottom-15 labelTitleDir'>"+
-							getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
-						"<hr></div>";
-
-			if(dataName != "collections"){
-				html += directory.showResultsDirectoryHtml(data, contextType);
-			}else{
-				$.each(data, function(col, val){
-					html += "<h4 class='col-md-12'><i class='fa fa-star'></i> "+col+"<hr></h4>";
-					$.each(val.list, function(key, elements){ 
-						html += directory.showResultsDirectoryHtml(elements, key);
-					});
-				});
-			}
-			toogleNotif(false);
-			$("#central-container").html(html);
-			initBtnLink();
-		}else{
-			var nothing = "Aucun";
-			if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
-				nothing = "Aucune";
-
-			var html =  "<div class='col-md-12 margin-bottom-15'>"+
-							getLabelTitleDir(dataName, dataIcon, nothing, n)+
-						"</div>";
-			$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
-													"<i class='fa fa-ban'></i> Aucune donnée"+
-												"</span>");
-			toogleNotif(false);
-		}
-	}
+	toastr.info(trad["processing"]);
 	
-	function loadStream(indexMin, indexMax, isLiveBool){ console.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
-		loadingData = true;
-		currentIndexMin = indexMin;
-		currentIndexMax = indexMax;
-		
+	uiCoop.startUI(false);
+	
+	setTimeout(function(){	
+		uiCoop.getCoopData(contextData.type, contextData.id, "room", null, roomId, function(){ 
+			toastr.success(trad["processing ok"]);
+			$("#modalCoop").modal("show");
 
-		if(typeof dateLimit == "undefined") dateLimit = 0;
+			var type = null;
+			var id = null;
 
-		isLive = isLiveBool==true ? "/isLive/true" : "";
-		var url = "news/index/type/"+typeItem+"/id/<?php echo (string)$element["_id"] ?>"+isLive+"/date/"+dateLimit+"?tpl=co2&renderPartial=true";
-		$.ajax({ 
-	        type: "POST",
-	        url: baseUrl+"/"+moduleId+'/'+url,
-	        data: { indexMin: indexMin, 
-	        		indexMax:indexMax, 
-	        		renderPartial:true 
-	        	},
-	        success:
-	            function(data) {
-	                if(data){ //alert(data);
-	                	$("#news-list").append(data);
-	                	//bindTags();
-						
-					}
-					loadingData = false;
-					$(".stream-processing").hide();
-	            },
-	        error:function(xhr, status, error){
-	            loadingData = false;
-	            $("#news-list").html("erreur");
-	        },
-	        statusCode:{
-	                404: function(){
-	                	loadingData = false;
-	                    $("#news-list").html("not found");
-	            }
-	        }
-	    });
-	}
+			if(proposalId != null){
+				type = "proposal"; id = proposalId;
+			}
 
-	var colNotifOpen = true;
-	function toogleNotif(open){
-		if(typeof open == "undefined") open = false;
-		
-		if(open==false){
-			$('#notif-column').removeClass("col-md-3 col-sm-3 col-lg-3").addClass("hidden");
-			$('#central-container').removeClass("col-md-9 col-lg-9").addClass("col-md-12 col-lg-12");
-		}else{
-			$('#notif-column').addClass("col-md-3 col-sm-3 col-lg-3").removeClass("hidden");
-			$('#central-container').addClass("col-sm-12 col-md-9 col-lg-9").removeClass("col-md-12 col-lg-12");
-		}
+			if(actionId != null){
+				type = "action"; id = actionId;
+			}
 
-		colNotifOpen = open;
-	}
+			if(resolutionId != null){
+				type = "resolution"; id = resolutionId;
+			}
 
+			console.log("getCoopData??", contextData.type, contextData.id, type, null, id);
 
+			if(type != null) 
+			uiCoop.getCoopData(contextData.type, contextData.id, type, null, id);
 
-function loadLiveNow () { 
-	var dep = element["address"]["depName"];
-
-	/*typeof element != "undefined" ? 
-			  typeof element["address"] != "undefined" ? 
-			  typeof element["address"]["depName"] != "undefined" ? 
-			  element["address"]["depName"] : "" : "" : "";*/
-
-    var searchParams = {
-      //"name":$('.input-global-search').val(),
-      "tpl":"/pod/nowList",
-      //"latest" : true,
-      //"searchType" : [typeObj["event"]["col"],typeObj["project"]["col"],
-      //					typeObj["organization"]["col"],"classified",
-      //				 /*typeObj["organization"]["col"]*//*,typeObj["action"]["col"]*/], 
-      //"searchTag" : $('#searchTags').val().split(','), //is an array
-      //"searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
-      //"searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-      "searchLocalityDEPARTEMENT" : new Array(dep), //$('#searchLocalityDEPARTEMENT').val().split(','),
-      //"searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
-      "indexMin" : 0, 
-      "indexMax" : 30 
-    };
-
-    ajaxPost( "#notif-column", baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
-					'/id/'+contextData.id+'/dataName/liveNow?tpl=nowList',
-					searchParams, function() { 
-			        bindLBHLinks();
-			        /*if($('.el-nowList').length==0)
-			        	$('.titleNowEvents').addClass("hidden");
-			        else
-			        	$('.titleNowEvents').removeClass("hidden");*/
-     } , "html" );
-}
-
-
-function showLoader(id){
-	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
+			setTimeout(function(){
+				loadNewsStream(true);
+			}, 5000);
+		});
+	}, 1500);
 }
 
 </script>
-
-
-<?php //$this->renderPartial('sectionEditTools');?>

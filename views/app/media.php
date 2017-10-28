@@ -126,9 +126,7 @@
 
 </div>
 
-
-
-<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"media")); ?>
+<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array("subdomain"=>"media")); ?>
 
 <script type="text/javascript" >
 var loadingData = false;

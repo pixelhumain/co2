@@ -49,7 +49,15 @@
 				//lorsque la vue de la carte change, on actualise la liste d'élément (rightList)
 				//thisMap.on('moveend', function(e) { thisSig.checkListElementMap(thisMap); });
 				//losque on effectue une recherche dans le champs de texte
-				$(this.cssModuleName + " #input_name_filter" ).keyup(function (){ thisSig.checkListElementMap(thisMap); });
+				$(this.cssModuleName + " #input_name_filter" ).keyup(function (){
+					mylog.log("input_name_filter", thisMap, $(this).val());
+					if(typeof $(this).val() != "undefined" && typeof networkJson != "undefined"){
+						mylog.log("ici", $(this).val());
+						searchValNetwork = $(this).val() ;
+						updateMap();
+					}
+					thisSig.checkListElementMap(thisMap); 
+				});
 				//lorsqu'on active/désactive le filtre par zone
 				$(this.cssModuleName + " #chk-scope").click(function (){ thisSig.checkListElementMap(thisMap); });
 			}
@@ -239,7 +247,7 @@
 			var hash = "?tpl=iframesig"+location.hash+"?tpl=iframesig";
 				$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA");
 				$("#ajax-modal-modal-title").html("<i class='fa fa-share-square-o'></i> Partager cette carte.");
-				$(".modal-header").removeClass("bg-purple bg-green bg-orange bg-yellow bg-lightblue ");
+				//$(".modal-header").removeClass("bg-purple bg-green bg-orange bg-yellow bg-lightblue ");
 			  	$("#ajax-modal-modal-body").html(   "<div class='row'>"+
 			  										  "<div class='col-md-3'>"+
 				  										"<div class='form-group'>"+
@@ -325,7 +333,7 @@
 											"poi.something2See" : "poi-marker-default",
 											"poi.funPlace" 		: "poi-marker-default",
 											"poi.place" 		: "poi-marker-default",
-											"poi.streetArts" 	: "poi-marker-default",
+											"poi.streetArt" 	: "poi-marker-default",
 											"poi.openScene" 	: "poi-marker-default",
 											"poi.stand" 		: "poi-marker-default",
 											"poi.parking" 		: "poi-marker-default",
@@ -375,6 +383,16 @@
 
 											"poi" 				: { ico : "info-circle", color : "dark" 	},
 											"poi.video" 		: { ico : "video-camera", color : "dark" 	},
+											"poi.interop.wiki" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.datagouv" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.osm" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.ods" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.datanova" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.poleemploi" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.educ_etab" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.educ_struct" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.educ_membre" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.educ_ecole" 	: { ico : "folder-open", color : "yellow" 	},
 
 											"entry" 			: { ico : "gavel", color : "azure" 	},
 											"action" 			: { ico : "cogs", color : "lightblue2" 	},
@@ -413,7 +431,7 @@
 							
 							if(data != null){
 								if(data.profilMarkerExists == true)
-								data.profilMarkerImageUrl = "/upload/" + moduleId + data.profilMarkerImageUrl;// + "?v="+thisSig.vMarker;
+									data.profilMarkerImageUrl = "/upload/communecter" + data.profilMarkerImageUrl;// + "?v="+thisSig.vMarker;
 								thisSig.vMarker++;
 								var lng =  parseFloat(data.position.longitude);
 								//mylog.log("MYPOSITION", data, lng);
@@ -438,6 +456,7 @@
 		};
 
 		Sig.getIcoNameByType = function (data){
+			mylog.log("getIcoNameByType",this.icoMarkersMap,  data);
 			var type = this.getTypeSigOfData(data);
 			if(this.icoMarkersMap[type] != null){
 					return this.icoMarkersMap[type];
@@ -492,7 +511,12 @@
 				defaultType=element['typeSig'].split(".");
 				defaultType=defaultType[1];
 			}
-			var imgProfilPath =  assetPath + "/images/thumb/default_"+defaultType+".png";
+
+			if (element.typeSig.substr(0,11) == "poi.interop") {
+				var imgProfilPath = getimgProfilPathForInteropDataOnMap(element.typeSig);
+			} else {
+				var imgProfilPath =  assetPath + "/images/thumb/default_"+defaultType+".png";
+			}
 			if(typeof element.author !== "undefined" && typeof element.author.profilImageUrl !== "undefined" && element.author.profilImageUrl != "") 
 				imgProfilPath = baseUrl + element.author.profilImageUrl;
 			if(typeof element.profilThumbImageUrl !== "undefined" && element.profilThumbImageUrl != "") 
@@ -612,6 +636,10 @@
 			"news"   : "Actualités",
 			"News"   : "Actualités",
 			"NEWS"   : "Actualités",
+
+			"classified"   : "Annonces",
+			"poi"   : "Points d'intérêt",
+			"city"   : "Commune",
 			
 		}
 

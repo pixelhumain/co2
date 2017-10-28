@@ -1,154 +1,187 @@
 {
-  "title" : "app",
-  "metaImg" : "/assets/img/CO.png",
-  "metaDesc" : "Réseau sociétal citoyen",
-      
-	"pages" : 
-		{
-		  "#app.index":
-			 	 {"redirect":"search"},
-			  
-			"#search":
-			  	{"inMenu" : true, 
-                "useHeader" : true, 
-                "open" : true, 
-                "subdomain" : "search", 
-                "subdomainName" : "Recherche",
-                "hash" : "#app.search",
-                "icon" : "search", 
-                "mainTitle" : "Moteur de recherche <span class='text-red'>territorial</span>",
-                "placeholderMainSearch" : "Rechercher une page ...",
-                "lblBtnCreate" : "Créer une page",
-                "colorBtnCreate" : "green"
-          },
+	"title" : "app",
+	"metaImg" : "/assets/img/bg_pixeltree2.jpg",
+	"metaTitle" : "Réseau sociétal citoyen",
+	"metaDesc" : "Communecter : Connecter à sa commune, inter connecter les communs, un réseau sociétal pour un citoyen connecté et acteur au centre de sa société.",
+    "devises" : {"€" : "€",
+                 "£" : "£",
+                 "$" : "$",
+                 "CFP" : "CFP"},
+    "deviseDefault" : "€",
 
-		    "#annonces":
-			  	{"inMenu" : true, 
-                "useHeader" : true, 
-                "open" : true, 
-                "subdomain" : "annonces", 
-                "subdomainName" : "Annonces",
-                "hash" : "#app.annonces",
-                "icon" : "bullhorn", 
-                "mainTitle" : "Petites annonces",
-                "placeholderMainSearch" : "rechercher parmis les annonces  ...",
-                "lblBtnCreate" : "Publier une annonce",
-                "colorBtnCreate" : "azure"
-          },
+	"pages" : {
+		"#app.index": {"redirect":"welcome"},
 
-			"#agenda":
-                {"inMenu" : true, 
-                "useHeader" : true, 
-                "open" : true, 
-                "subdomain" : "agenda", 
-                "subdomainName" : "Agenda",
-                "hash":"#app.agenda",
-                "icon" : "calendar", 
-                "mainTitle" : "L'agenda <span class='text-red'>C</span>Ommun",
-                "placeholderMainSearch" : "rechercher un événement ...",
-                "lblBtnCreate" : "Créer un événement",
-                "colorBtnCreate" : "orange"
-          },
+		"#welcome": {
+			"inMenu" : false, 
+			"useHeader" : false, 
+			"open" : true, 
+			"subdomain" : "welcome", 
+			"subdomainName" : "Home",
+			"hash" : "#app.welcome",
+			"icon" : "", 
+			"mainTitle" : "Réseau sociétal <span class='text-red'>territorial</span>",
+			"placeholderMainSearch" : "search something ...",
+			"lblBtnCreate" : "Create something",
+			"colorBtnCreate" : "green"
+		},
 
-			"#power":
-			  	{"inMenu" : true, 
-                "useHeader" : true, 
-                "open" : true, 
-                "subdomain" : "power", 
-                "subdomainName" : "Démocratie",
-                "hash":"#app.power",
-                "icon" : "comments", 
-                "mainTitle" : "Espace d'expression démocratique",
-                "placeholderMainSearch" : "rechercher parmis les propositions ...",
-                "lblBtnCreate" : "Faire une proposition",
-                "colorBtnCreate" : "azure"
-          },
+		"#search": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "search", 
+			"subdomainName" : "Search",
+			"hash" : "#app.search",
+			"icon" : "search", 
+			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
+			"placeholderMainSearch" : "search a page ...",
+			"lblBtnCreate" : "Create a page",
+			"colorBtnCreate" : "green"
+		},
 
-            "#live":
-                {"inMenu" : true, 
-                "useHeader" : true, 
-                "open" : true, 
-                "subdomain" : "live", 
-                "subdomainName" : "Live",
-                "hash":"#app.live",
-                "icon" : "newspaper-o", 
-                "mainTitle" : "Le fil d'actualité <span class='text-red'>CO</span>mmun",
-                "placeholderMainSearch" : "rechercher parmis les messages ..."
-          },
+		"#annonces": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "annonces", 
+			"subdomainName" : "Classifieds",
+			"hash" : "#app.annonces",
+			"icon" : "bullhorn", 
+			"mainTitle" : "Classified ads",
+			"placeholderMainSearch" : "search among classifieds ...",
+			"lblBtnCreate" : "Create a classified ad",
+			"colorBtnCreate" : "azure"
+		},
 
-          "#place":
-                {"inMenu" : true, 
-                "useHeader" : true, 
-                "open" : true, 
-                "subdomain" : "place", 
-                "subdomainName" : "Lieux",
-                "hash" : "#app.search.type.place",
-                "icon" : "map-marker", 
-                "mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
-                "placeholderMainSearch" : "Rechercher un lieu ...",
-                "lblBtnCreate" : "Ajouter un lieu",
-                "colorBtnCreate" : "green"
-          },
+		"#agenda": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "agenda", 
+			"subdomainName" : "Agenda",
+			"hash":"#app.agenda",
+			"icon" : "calendar", 
+			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",
+			"placeholderMainSearch" : "search an event ...",
+			"lblBtnCreate" : "Create an event",
+			"colorBtnCreate" : "orange"
+		},
 
-			"#page":
-			  	{"inMenu" : false, 
-                "useHeader" : false, 
-                "open" : true, 
-                "subdomain" : "page", 
-                "subdomainName" : "page",
-                "hash":"#app.page",
-                "icon" : "", 
-                "mainTitle" : "Le réseau social à effet de sert",
-                "placeholderMainSearch" : "rechercher ..."
-          },
+		"#live": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "live", 
+			"subdomainName" : "Live",
+			"hash":"#app.live",
+			"icon" : "newspaper-o", 
+			"mainTitle" : "<span class='text-red'>CO</span>mmon live",
+			"placeholderMainSearch" : "search in live ..."
+		},
 
-            "#info":
-                {"inMenu" : false, 
-                "useHeader" : false, 
-                "open" : true, 
-                "subdomain" : "apropos", 
-                "subdomainName" : "Info",
-                "hash":"#app.info",
-                "icon" : "search", 
-                "mainTitle" : "Le réseau social à effet de sert",
-                "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."
-          },
+		"#chat": {
+			"inMenu" : false, 
+			"open" : true, 
+			"subdomain" : "chat", 
+			"subdomainName" : "Chat",
+			"alias":"#chatAction",
+			"login" : true,
+			"notif" : "chatNotifs",
+			"icon" : "comments", 
+			"mainTitle" : "<span class='text-red'>CHAT with your communities</span>",
+			"removeAfterLoad" : true, 
+			"emptyContextData" : false
+		},
 
-            "#city":
-                {"inMenu" : false, 
-                "useHeader" : false,
-                "open" : true,  
-                "subdomain" : "city", 
-                "subdomainName" : "City",
-                "hash":"#app.city",
-                "icon" : "university", 
-                "mainTitle" : "Communexion activée",
-                "placeholderMainSearch" : "rechercher ..."
-          },
-          "#rooms":
-                {"inMenu" : false, 
-                "useHeader" : false,
-                "open" : true,  
-                "subdomain" : "rooms", 
-                "subdomainName" : "rooms",
-                "hash":"#app.rooms",
-                "icon" : "university", 
-                "mainTitle" : "Communexion activée",
-                "placeholderMainSearch" : "rechercher ..."
-          },
-          "#survey":
-                {"inMenu" : false, 
-                "useHeader" : false,
-                "open" : true,  
-                "subdomain" : "city", 
-                "subdomainName" : "City",
-                "hash":"#app.survey",
-                "icon" : "university", 
-                "mainTitle" : "Communexion activée",
-                "placeholderMainSearch" : "rechercher ..."
-          },
+		"#page": {
+			"inMenu" : false, 
+			"useHeader" : false, 
+			"open" : true, 
+			"subdomain" : "page", 
+			"subdomainName" : "page",
+			"hash":"#app.page",
+			"icon" : "", 
+			"mainTitle" : "Le réseau social citoyen",
+			"placeholderMainSearch" : "search ..."
+		},
 
-          "#admin": {
+		"#info": {
+			"inMenu" : false, 
+			"useHeader" : false, 
+			"open" : true, 
+			"subdomain" : "apropos", 
+			"subdomainName" : "Info",
+			"hash":"#app.info",
+			"icon" : "info-circle", 
+			"mainTitle" : "Le réseau social citoyen",
+			"placeholderMainSearch" : "search on people communected ..."
+		},
+
+        "#power": {
+            "inMenu" : false, 
+            "useHeader" : true, 
+            "open" : false, 
+            "subdomain" : "power", 
+            "subdomainName" : "Power",
+            "hash":"#app.power",
+            "icon" : "hand-rock-o", 
+            "mainTitle" : "CO-démocratie",
+            "placeholderMainSearch" : "search ...",
+            "lblBtnCreate" : "Faire une proposition",
+            "colorBtnCreate" : "azure"
+        },
+
+
+        "#city": {
+            "inMenu" : false, 
+            "useHeader" : false,
+            "open" : true,  
+            "subdomain" : "city", 
+            "subdomainName" : "City",
+            "hash":"#app.city",
+            "icon" : "university", 
+            "mainTitle" : "Communexion activée",
+            "placeholderMainSearch" : "search ..."
+        },
+
+		"#interoperability": {
+            "inMenu" : false, 
+            "useHeader" : true, 
+            "open" : true, 
+            "subdomain" : "interoperability", 
+            "subdomainName" : "Intéropérabilité",
+            "hash" : "#app.interoperability",
+            "icon" : "database", 
+            "mainTitle" : "Module d'intéropérabilité",
+            "placeholderMainSearch" : "Rechercher des données venus d'ailleurs ..."
+        },
+
+		"#rooms": {
+			"inMenu" : false, 
+			"useHeader" : false,
+			"open" : true,  
+			"subdomain" : "rooms", 
+			"subdomainName" : "rooms",
+			"hash":"#app.rooms",
+			"icon" : "university", 
+			"mainTitle" : "Communexion activée",
+			"placeholderMainSearch" : "search ..."
+		},
+
+		"#survey": {
+			"inMenu" : false, 
+			"useHeader" : false,
+			"open" : true,  
+			"subdomain" : "city", 
+			"subdomainName" : "City",
+			"hash":"#app.survey",
+			"icon" : "university", 
+			"mainTitle" : "Communexion activée",
+			"placeholderMainSearch" : "search ..."
+		},
+
+		"#admin": {
 			"inMenu" : false, 
 			"useHeader" : true, 
 			"open" : false, 
@@ -160,19 +193,16 @@
 			"placeholderMainSearch" : "Admin ..."
 		},
 
-		"#adminpublic": {
-			"inMenu" : false, 
-			"useHeader" : true, 
-			"open" : false, 
-			"subdomain" : "admin", 
-			"subdomainName" : "admin",
-			"hash":"#adminpublic",
-			"icon" : "university", 
-			"mainTitle" : "Partie Admin Public",
-			"placeholderMainSearch" : "Admin Public ..."
-		}
-	  }
-  
-  }
-
-
+        "#adminpublic": {
+            "inMenu" : false, 
+            "useHeader" : true, 
+            "open" : false, 
+            "subdomain" : "admin", 
+            "subdomainName" : "admin",
+            "hash":"#adminpublic",
+            "icon" : "university", 
+            "mainTitle" : "Partie Admin Public",
+            "placeholderMainSearch" : "Admin Public ..."
+        }
+	}
+}

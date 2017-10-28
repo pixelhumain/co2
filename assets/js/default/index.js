@@ -6,14 +6,14 @@ function startNewCommunexion(country){
 	var locality = $('#searchBarPostalCode').val();
 	locality = locality.replace(/[^\w\s-']/gi, '');
 
-	$(".search-loader").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
+	$(".search-loader").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
 
 	var data = {"name" : name, "locality" : locality, "country" : country, "searchType" : [ "cities" ], "searchBy" : "ALL"  };
     var countData = 0;
     var oneElement = null;
 	mylog.log(data);
     $.blockUI({
-		message : "<h1 class='homestead text-dark'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span></h1>"
+		message : "<h1 class='homestead text-dark'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></h1>"
 	});
 
     $.ajax({
@@ -24,7 +24,7 @@ function startNewCommunexion(country){
           error: function (data){
             mylog.log("error");
           	mylog.dir(data);
-            $(".search-loader").html("<i class='fa fa-ban'></i> Aucun résultat");
+            $(".search-loader").html("<i class='fa fa-ban'></i> "+trad.noresult);
           },
           success: function(data){
           	mylog.log("success, try to load sig");
@@ -41,7 +41,7 @@ function startNewCommunexion(country){
 	        });
 
 	        if(countData == 0){
-	        	$(".search-loader").html("<i class='fa fa-ban'></i> Aucun résultat");
+	        	$(".search-loader").html("<i class='fa fa-ban'></i> "+trad.noresult);
 	        }else{
 	        	$(".search-loader").html("<i class='fa fa-crosshairs'></i> Sélectionnez une commune ...");
 	        	showMap(true);
@@ -59,11 +59,11 @@ function startNewCommunexion(country){
 
 function resizeInterface()
 {
-  //mylog.log("resize");
+  mylog.log("resize");
   var height = $("#mapCanvasBg").height() - 55;
   $("#ajaxSV").css({"minHeight" : height});
   //$("#menu-container").css({"minHeight" : height});
-  var heightDif = $("#search-contact").height() + $("#floopHeader").height() + 60 /* top */ + 0 /* bottom */;
+  var heightDif = $("#search-contact").height() + $("#floopHeader").height() + 80 /* top */ + 0 /* bottom */;
   var menuTopHeight = $("#mainNav").height();// - $(".toolbar").height();
   
   //mylog.log("heightDif", heightDif);
@@ -83,10 +83,10 @@ function initNotifications(){
 	  mylog.log("click notification main-top-menu");
       showNotif();
     });
-    $('.my-main-container .btn-menu-notif').off().click(function(){
+    /*$('.my-main-container .btn-menu-notif').off().click(function(){
 	  mylog.log("click notification my-main-container");
       showNotif();
-    });
+    });*/
 }
 function showNotif(show){
 	if(typeof show == "undefined"){
@@ -95,11 +95,16 @@ function showNotif(show){
     }
 
     if(show){
-    	refreshNotifications(userId,"citoyens","");
     	$('#notificationPanelSearch').show("fast");
     	markAllAsSeen(false,"");
+    	refreshNotifications(userId,"citoyens","","menuTop");
+
     }
 	else 	 $('#notificationPanelSearch').hide("fast");
+
+	
+	$("#dropdown-user").removeClass("open");
+    showFloopDrawer(false);
 }
 
 function checkScroll(){
@@ -118,9 +123,8 @@ function showMap(show)
 		console.log("showMap", show, "elementsMap", Sig.preloadElementsMap);
 		mapBg = Sig.loadMap("mapCanvas", initSigParams);
 	    Sig.showIcoLoading(false);
-	    Sig.showMapElements(Sig.map, Sig.preloadElementsMap);
+	    Sig.showMapElements(Sig.map, Sig.preloadElementsMap, Sig.preloadIconLegende, Sig.preloadTextLegende);
 	}
-	//alert("hello showMap " + CoSigAllReadyLoad);
 	
     if(mapBg == null) return;
 
@@ -130,10 +134,9 @@ function showMap(show)
 
   //chargement de la carte
 
-
-
 	mylog.log("showMap");
 	if(show === undefined) show = !isMapEnd;
+	var mainContainer = (typeof networkJson != "undefined" && networkJson != null) ? ".my-main-container" : ".main-container" ;
 	if(show){
 		isMapEnd =true;
 		showNotif(false);
@@ -162,17 +165,19 @@ function showMap(show)
 		$(".main-menu-left").hide(); //addClass("inSig");
 		$("body").addClass("inSig");
 
-		$(".main-container").animate({
+
+
+		$(mainContainer).animate({
      							//top: -1000,
      							opacity:0,
 						      }, 'slow' );
 
-		setTimeout(function(){ $(".main-container").hide(); }, 100);
+		setTimeout(function(){ $(mainContainer).hide(); }, 100);
 		var timer = setTimeout("Sig.constructUI()", 1000);
 		
 	}else{
 		isMapEnd = false;
-		hideMapLegende();
+		//hideMapLegende();
 
 		var iconMap = "map-marker";
 		if(typeof ICON_MAP_MENU_TOP != "undefined") iconMap = ICON_MAP_MENU_TOP;
@@ -189,12 +194,12 @@ function showMap(show)
 		//$(".menu-left-container hr").css({opacity:1} );
 		//$(".main-menu-left").removeClass("inSig");
 		$("body").removeClass("inSig");
-		$(".main-container").animate({
+		$(mainContainer).animate({
      							//top: 50,
      							opacity:1
 						      }, 'slow' );
 		setTimeout(function(){ 
-			$(".main-container").show();
+			$(mainContainer).show();
 			$('html, body').stop().animate({
 	            scrollTop: currentScrollTop
 	        }, 500, ''); 
@@ -256,7 +261,7 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 		
 		$("#btn-geoloc-auto-menu .fa-crosshairs").attr("data-original-title", cityNameCommunexion);
 		$("#btn-geoloc-auto-menu .fa-crosshairs").attr("title", cityNameCommunexion);
-		$("#btn-geoloc-auto-menu").off(); //click(function(){ url.loadByHash("#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion) });
+		$("#btn-geoloc-auto-menu").off(); //click(function(){ urlCtrl.loadByHash("#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion) });
 		$("#btn-geoloc-auto-menu").attr("href", '#city.detail.insee.' + inseeCommunexion+'.'+'postalCode.'+cpCommunexion);
 		$("#btn-geoloc-auto-menu").data("hash", "#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion);
 		//mylog.log("HASHHHHHHHHHHHHHHHHHHHH", $("#btn-geoloc-auto-menu").data("hash"));
@@ -279,14 +284,14 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
   		
   		if(!userId)
   		$(".btn-geoloc-auto").attr("onclick", 
-  			"url.loadByHash('#rooms.index.type.cities.id.' + countryCommunexion + '_'+ inseeCommunexion + '-'+ cpCommunexion)");
+  			"urlCtrl.loadByHash('#rooms.index.type.cities.id.' + countryCommunexion + '_'+ inseeCommunexion + '-'+ cpCommunexion)");
 
   		
 		Sig.clearMap();
 		mylog.log("hash city ? ", location.hash.indexOf("#default.city"));
 		if(location.hash == "#default.home"){
 			//showLocalActorsCityCommunexion();
-			url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+			urlCtrl.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 		}else
 		if(location.hash == "#default.directory"){
 			startSearch();
@@ -301,7 +306,7 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 		if(location.hash.indexOf("#city.detail") >= 0) {
 			//showLocalActorsCityCommunexion();
 			if(location.hash != "#city.detail.insee." + inseeCommunexion+"."+"postalCode."+cpCommunexion){
-				url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+				urlCtrl.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 			}else{
 				$("#btn-communecter").html("<i class='fa fa-check'></i> COMMUNECTÉ");
 	    		$("#btn-communecter").attr("onclick", "");
@@ -320,14 +325,14 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 			showTwoStep("load-conf-communexion");
 			setCookies();
 			$(".btn-param-postal-code").attr("data-original-title", cityNameCommunexion + " en détail");
-			//$(".btn-param-postal-code").attr("onclick", "url.loadByHash('#city.detail.insee."+inseeCommunexion+"')");
+			//$(".btn-param-postal-code").attr("onclick", "urlCtrl.loadByHash('#city.detail.insee."+inseeCommunexion+"')");
 			$(".search-loader").html("<i class='fa fa-check'></i> Vous êtes communecté : " + cityNameCommunexion + ', ' + cpCommunexion);
 			$(".lbl-btn-menu-name-city .lbl-btn-menu").html(cityNameCommunexion);
 			setTimeout(function(){ achiveTSRAddress(); /*showTwoStep("street");*/  }, 2000);
 			//showMap(false);
 		}else{
 			//showLocalActorsCityCommunexion();
-			url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+			urlCtrl.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 		}
 	}
 	
@@ -336,7 +341,7 @@ function setScopeValue(btn){ mylog.log("setScopeValue");
 
 function showLocalActorsCityCommunexion(){
 
-	url.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
+	urlCtrl.loadByHash("#city.detail.insee."+inseeCommunexion+".postalCode."+cpCommunexion);
 	return;
 
 	mylog.log("showLocalActorsCityCommunexion");
@@ -456,7 +461,7 @@ function toogleCommunexion(init){ //this = jQuery Element
     $("#searchBarPostalCode").val(cityNameCommunexion);
 
     if(inseeCommunexion != "")
-    $(".search-loader").html("<i class='fa fa-check'></i> Vous êtes communecté à " + cityNameCommunexion + ', ' + cpCommunexion);
+    	$(".search-loader").html("<i class='fa fa-check'></i> Vous êtes communecté à " + cityNameCommunexion + ', ' + cpCommunexion);
 				
    // $("#searchBarPostalCode").animate({"width" : "0px !important", "padding-left" : "51px !important;"}, 200);
     //$(".lbl-scope-list").html("<i class='fa fa-check'></i> " + cityNameCommunexion.toLowerCase() + ", " + cpCommunexion);
@@ -569,9 +574,21 @@ function selectScopeLevelCommunexion(level){
 	if(typeof startSearch == "function")
 	startSearch();
 }
-function setCookies(path){ mylog.log("setCookies", path);
+
+function setCookies(){ 
+	mylog.log("setCookies");
+	$.ajax({
+			type: "POST",
+			url: baseUrl+"/"+moduleId+"/element/getCommunexion/",
+			data: params,
+			dataType: "json",
+			success: function(data){
+				communexion = data ;
+			}
+	});
+
 	//if(false){
-		$.cookie('inseeCommunexion',   	inseeCommunexion,  	{ expires: 365, path: path });
+	/*	$.cookie('inseeCommunexion',   	inseeCommunexion,  	{ expires: 365, path: path });
 		$.cookie('cityNameCommunexion', cityNameCommunexion,{ expires: 365, path: path });
 		$.cookie('cpCommunexion',   	cpCommunexion,  	{ expires: 365, path: path });		
 		$.cookie('regionNameCommunexion',   regionNameCommunexion,  { expires: 365, path: path });
@@ -580,5 +597,26 @@ function setCookies(path){ mylog.log("setCookies", path);
 			$.cookie('nbCpbyInseeCommunexion',   	nbCpbyInseeCommunexion,  	{ expires: 365, path: path });
 			$.cookie('cityInseeCommunexion',   	cityInseeCommunexion,  	{ expires: 365, path: path });
 		}
-	//}
+
+
+		// TODO 
+
+		/*
+
+		CO2.php
+		breadcrum_communexion.php
+
+		$communexion["state"] = true; Mettre a false si romve addresse
+
+
+		Si communexionLevel == cpCommunexion
+			communexionType = "cp"
+		Sinon 
+			communexionType = "city"
+		
+		$.cookie('communexionType', communexion.currentLevel, { expires: 365, path: location.pathname });
+        $.cookie('communexionValue', communexion.currentValue, { expires: 365, path: location.pathname });
+        $.cookie('communexionName', communexion.currentName, { expires: 365, path: location.pathname });
+        $.cookie('communexionLevel', communexion.levelMinCommunexion, { expires: 365, path: location.pathname });*/
+	//}*/
 }

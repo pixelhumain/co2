@@ -18,8 +18,8 @@ function showDropDownGS(show){
   }
 }
 
-var searchTypeGS = [ "persons", "organizations", "projects", "events", "cities" ];
-var allSearchTypeGS = [ "persons", "organizations", "projects", "events", "cities" ];
+var searchTypeGS = [ "persons", "organizations", "projects", "events", "poi", "cities" ];
+var allSearchTypeGS = [ "persons", "organizations", "projects", "events", "poi", "cities" ];
 
 var loadingDataGS = false;
 var indexStepGS = 20;
@@ -34,7 +34,7 @@ function startGlobalSearch(indexMin, indexMax){
 
     setTimeout(function(){ loadingDataGS = false; }, 10000);
     
-    var search = $('.input-global-search').val();
+    var search = $('#second-search-bar').val();
     //if(search == "") search = $('#input-global-search-xs').val();
     if(loadingDataGS || search.length<3) return;
     
@@ -66,12 +66,12 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
     showDropDownGS(true);
 
     if(indexMin > 0)
-    $("#btnShowMoreResultGS").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
+    $("#btnShowMoreResultGS").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
     else
     $(".dropdown-result-global-search").html(
-      "<h5 class='text-dark center padding-15'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</h5>");
+      "<h5 class='text-dark center padding-15'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</h5>");
       
-
+    showIsLoading(true);
     $.ajax({
       type: "POST",
           url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
@@ -95,14 +95,14 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               str = "";
               var city, postalCode = "";
               
-              if(totalDataGS == 0)      totalDataGSMSG = "<i class='fa fa-ban'></i> Aucun résultat";
+              if(totalDataGS == 0)      totalDataGSMSG = "<i class='fa fa-ban'></i> "+trad.noresult;
               else if(totalDataGS == 1) totalDataGSMSG = totalDataGS + " résultat";   
               else if(totalDataGS > 1)  totalDataGSMSG = totalDataGS + " résultats";   
 
               if(totalDataGS > 0){
                 str += '<div class="text-left" id="footerDropdownGS" style="">';
                 str += "<label class='text-dark margin-top-5'><i class='fa fa-angle-down'></i> " + totalDataGSMSG + "</label>";
-                str += '<a href="#search" class="btn btn-default btn-sm pull-right" id="btnShowMoreResultGS">'+
+                str += '<a href="#search" class="btn btn-default btn-sm pull-right lbh" id="btnShowMoreResultGS">'+
                           '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> Recherche étendue'+
                         '</a>';
                 str += '</div>';
@@ -111,16 +111,26 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
 
               //parcours la liste des résultats de la recherche
               $.each(data, function(i, o) {
+                console.log(o);
                 mylog.log("globalsearch res : ", o);
                   var typeIco = i;
                   var ico = "fa-"+typeObj["default"].icon;
                   var color = mapColorIconTop["default"];
 
                   mapElementsGS.push(o);
+                  if(typeof( typeObj[o.type] ) == "undefined")
+                    itemType="poi";
+                    typeIco = o.type;
+                  //if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
+                  if(typeof o.typeOrga != "undefined")
+                    typeIco = o.typeOrga;
 
-                  typeIco = o.type;
-                  ico = ("undefined" != typeof typeObj[typeIco]) ? "fa-"+typeObj[typeIco].icon : "fa-"+typeObj["default"].icon;
-                  color = ("undefined" != typeof mapColorIconTop[typeIco]) ? mapColorIconTop[typeIco] : mapColorIconTop["default"];
+                  var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
+                  ico =  "fa-"+obj.icon;
+                  color = obj.color;
+                  //typeIco = o.type;
+                  //ico = ("undefined" != typeof typeObj[typeIco]) ? "fa-"+typeObj[typeIco].icon : "fa-"+typeObj["default"].icon;
+                  //color = ("undefined" != typeof mapColorIconTop[typeIco]) ? mapColorIconTop[typeIco] : mapColorIconTop["default"];
                   
                   htmlIco ="<i class='fa "+ ico +" fa-2x bg-"+color+"'></i>";
                   if("undefined" != typeof o.profilThumbImageUrl && o.profilThumbImageUrl != ""){
@@ -144,15 +154,11 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                   var url = (notEmpty(o.type) && notEmpty(id)) ? 
                             '#page.type.'+o.type+'.id.' + id : "";
 
-                  //var onclick = 'url.loadByHash("#' + type + '.detail.id.' + id + '");';
+                  //var onclick = 'urlCtrl.loadByHash("#' + type + '.detail.id.' + id + '");';
                   var onclickCp = "";
                   var target = " target='_blank'";
                   var dataId = "";
                   if(type == "city"){
-                    //url = "javascript:"; //#main-col-search";
-                    url = '#co2.city.insee.' + insee + '.postalCode.'+postalCode; //"'+o.name.replace("'", "\'")+'");';
-                    //onclickCp = 'url.loadByHash("#city.detail.insee.' + insee + '.postalCode.'+postalCode+'";';
-                    //target = "";
                     dataId = o.name; //.replace("'", "\'");
                   }
 
@@ -167,11 +173,13 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
 
                   var name = typeof o.name != "undefined" ? o.name : "";
                   var postalCode = (typeof o.address != "undefined" &&
-                            typeof o.address.postalCode != "undefined") ? o.address.postalCode : "";
+                                    o.address != null &&
+                                    typeof o.address.postalCode != "undefined") ? o.address.postalCode : "";
                   
                   if(postalCode == "") postalCode = typeof o.cp != "undefined" ? o.cp : "";
                   var cityName = (typeof o.address != "undefined" &&
-                          typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
+                                  o.address != null &&
+                                  typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
                   
                   var fullLocality = postalCode + " " + cityName;
                   if(fullLocality == " Addresse non renseignée" || fullLocality == "" || fullLocality == " ") 
@@ -196,6 +204,8 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
 
                     target = "";
 
+                  
+                if(type != "city"){ 
                     str += "<a href='"+url+"' class='lbh col-md-12 col-sm-12 col-xs-12 no-padding searchEntity'>";
                       str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
                       str +=   htmlIco;
@@ -210,17 +220,51 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                         if(nbFollower >= 1)
                         str +=    " <span class='pull-right'><i class='fa fa-chain margin-left-10'></i> " + nbFollower + " follower</span>";
                        
-                        str +=  "</div>";
+                        str += '</div>';
                         
                       str += "</div>";
+
                     str += "</a>";
+
+                  }else{
+                        var citykey = o.country + "_" + o.insee + "-" + o.cp;
+                        str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding searchEntity start-new-communexion' ";
+                        str +=    "data-scope-value='" + citykey + "' " + 
+                                  "data-scope-name='" + o.name + "' " + 
+                                  "data-scope-type='city' " + 
+                                  "data-insee-communexion='" + o.insee + "' "+ 
+                                  "data-name-communexion='" + o.name + "' "+ 
+                                  "data-cp-communexion='" + o.cp + "' "+ 
+                                  "data-region-communexion='" + o.regionName + "' "+ 
+                                  "data-dep-communexion='" + o.depName + "' "+ 
+                                  "data-country-communexion='" + o.country + "' ";
+                        str += ">";
+                        str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
+                        str +=   htmlIco;
+                        str += "</div>";
+                        str += "<div class='col-md-10 col-sm-10 col-xs-10 entityRight'>";
+
+                        str += "<div class='entityName text-dark'>" + name + "</div>";
+                          
+                          str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
+                                    "<i class='fa fa-home'></i> " + fullLocality;
+
+                          if(nbFollower >= 1)
+                          str +=    " <span class='pull-right'><i class='fa fa-chain margin-left-10'></i> " + nbFollower + " follower</span>";
+                         
+                          str += '</div>';
+                          
+                        str += "</div>";
+
+                      str += "</a>";
+                  }
                               
               }); //end each
 
               //ajout du footer   
               str += '<div class="text-center" id="footerDropdownGS">';
               str += "<label class='text-dark'>" + totalDataGSMSG + "</label><br/>";
-              str += '<a href="#social" class="btn btn-default btn-sm" id="btnShowMoreResultGS">'+
+              str += '<a href="#search" class="btn btn-default btn-sm lbh" id="btnShowMoreResultGS">'+
                         '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> Recherche étendue'+
                       '</a>';
               str += '</div>';
@@ -232,6 +276,15 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               //on affiche la dropdown
               showDropDownGS(true);
             
+              $(".start-new-communexion").click(function(){
+                  $("#main-search-bar, #second-search-bar, #input-search-map").val("");
+                  setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
+                                   $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
+                                    $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
+                  
+                  urlCtrl.loadByHash("#search")
+              });
+
               bindLBHLinks();
 
             //signal que le chargement est terminé
@@ -250,10 +303,10 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
           if(isMapEnd){
             //affiche les éléments sur la carte
             showDropDownGS(false);
-            Sig.showMapElements(Sig.map, mapElementsGS);
+            Sig.showMapElements(Sig.map, mapElementsGS, "globe", "Recherche globale");
           }
 
-          //$("#footerDropdownGS").append("<br><a class='btn btn-default' href='javascript:' onclick='url.loadByHash("+'"#default.directory"'+")'><i class='fa fa-plus'></i></a>");
+          //$("#footerDropdownGS").append("<br><a class='btn btn-default' href='javascript:' onclick='urlCtrl.loadByHash("+'"#default.directory"'+")'><i class='fa fa-plus'></i></a>");
         }
     });
 

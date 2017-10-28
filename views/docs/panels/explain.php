@@ -1,3 +1,10 @@
+<?php $this->renderPartial('../docs/panels/menuLink',array("url"=>"default/view/page/links")); ?>
+
+<div class="panel-heading border-light center text-dark partition-white radius-10">
+    <span class="panel-title homestead"> <span style="font-size: 48px">Frequently Asked Questions <i class='fa fa-question faa-pulse animated fa-3x  '></i> </span></span>
+</div>
+<div class="space20"></div>
+
 <style>
 .main-col-search{	padding:0px !important; }
 .fa-caret-down{font-size:56px;line-height: 10px;}

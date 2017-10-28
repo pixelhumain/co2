@@ -2,12 +2,28 @@
       "title" : "Kgougle",
       "metaImg" : "/assets/img/KGOUGLE-logo-min.png",
       "metaDesc" : "Le moteur de recherche des cagous",
-      
+      "devises" : { "CFP" : "CFP" },
+      "deviseDefault" : "CFP",
+
       "pages" : 
       {
       	"#app.index":
                   {"redirect":"web"},
-      	  
+      	
+            "#welcome": {
+                  "inMenu" : false, 
+                  "useHeader" : false, 
+                  "open" : true, 
+                  "subdomain" : "welcome", 
+                  "subdomainName" : "Accueil",
+                  "hash" : "#app.welcome",
+                  "icon" : "", 
+                  "mainTitle" : "La porte d'entrée sur le web Calédonien",
+                  "placeholderMainSearch" : "Rechercher quelque chose ...",
+                  "lblBtnCreate" : "Créer quelque chose",
+                  "colorBtnCreate" : "green"
+            },
+
       	"#web":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
@@ -38,30 +54,42 @@
                   "subdomainName" : "Actu",
                   "hash" : "#app.media",
                   "icon" : "newspaper-o", 
-                  "mainTitle" : "Toute l'actualité du pays",
+                  "mainTitle" : "Fil d'actu <span class='letter-red'>média</span>",
                   "placeholderMainSearch" : "rechercher dans l'actu ..."},
 
-      	"#social":
+      	"#live": {
+                  "inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : false, 
+                  "subdomain" : "live", 
+                  "subdomainName" : "Live",
+                  "hash":"#app.live",
+                  "icon" : "stack-exchange", 
+                  "mainTitle" : "Fil d'actu Fil d'actu <span class='letter-red'>citoyen</span>",
+                  "placeholderMainSearch" : "search in live ..."
+            },
+
+            "#social":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
-                  "open" : false,
+                  "open" : true,
                   "subdomain" : "social", 
                   "subdomainName" : "social",
                   "hash" : "#app.search",
                   "icon" : "user-circle-o", 
-                  "mainTitle" : "Le réseau social des Nouzot",
+                  "mainTitle" : "Réseau social citoyen",
                   "placeholderMainSearch" : "rechercher une page ...",
                   "lblBtnCreate" : "Créer une page",
                   "colorBtnCreate" : "green"},
 
-      	"#freedom":
+      	"#annonces":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
                   "open" : false,
-                  "subdomain" : "freedom", 
-                  "subdomainName" : "freedom",
+                  "subdomain" : "annonces", 
+                  "subdomainName" : "annonces",
                   "hash" : "#app.annonces",
-                  "icon" : "comments", 
+                  "icon" : "bullhorn", 
                   "mainTitle" : "Toutes vos annonces en direct",
                   "placeholderMainSearch" : "rechercher parmis les annonces  ...",
                   "lblBtnCreate" : "Publier une annonce",
@@ -70,7 +98,7 @@
       	"#agenda":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
-                  "open" : false,
+                  "open" : true,
                   "subdomain" : "agenda", 
                   "subdomainName" : "agenda",
                   "hash" : "#app.agenda",
@@ -80,7 +108,7 @@
                   "lblBtnCreate" : "Créer un événement",
                   "colorBtnCreate" : "orange"},
 
-      	"#power":
+            "#power":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
                   "open" : false,

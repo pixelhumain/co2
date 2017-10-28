@@ -9,7 +9,7 @@ var totalData = 0;
 var timeout = null;
 
 function startSearch(indexMin, indexMax){
-    mylog.log("startSearch", indexMin, indexMax, indexStep);
+    console.log("startSearch agenda.js", indexMin, indexMax, indexStep);
 
     mylog.log("loadingData", loadingData);
     if(loadingData) return;
@@ -87,23 +87,12 @@ function removeSearchType(type){
 var loadingData = false;
 var mapElements = new Array(); 
 function autoCompleteSearch(name, locality, indexMin, indexMax){
-    if(typeof(cityInseeCommunexion) != "undefined"){
-	    var levelCommunexionName = { 1 : "CODE_POSTAL_INSEE",
-	                             2 : "INSEE",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
-	}else{
-		var levelCommunexionName = { 1 : "INSEE",
-	                             2 : "CODE_POSTAL_INSEE",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
-	}
-    mylog.log("levelCommunexionName", levelCommunexionName[levelCommunexion]);
-    var data = {"name" : name, "locality" : locality, "searchType" : searchType, "searchBy" : levelCommunexionName[levelCommunexion], 
-                "indexMin" : indexMin, "indexMax" : indexMax  };
-
+    var searchLocality = getLocalityForSearch();
+    var data = {  "name" : name, 
+                  "locality" : searchLocality,
+                  "searchType" : searchType,
+                  "indexMin" : indexMin, 
+                  "indexMax" : indexMax  };
 
     str = "<i class='fa fa-circle-o-notch fa-spin'></i>";
     $(".btn-start-search").html(str);
@@ -112,9 +101,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
     //$("#dropdown_search").css({"display" : "inline" });
 
     if(indexMin > 0)
-    $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
+    $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
     else
-    $("#dropdown_search").html("<center><span class='search-loader text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span></center>");
+    $("#dropdown_search").html("<center><span class='search-loader text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
       
     if(isMapEnd)
         $.blockUI({
@@ -174,7 +163,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
                   type = typeObj[o.type].ctrl;
                   //if(type=="citoyen") type = "person";
                   var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
-                  var onclick = 'url.loadByHash("#' + type + '.detail.id.' + id + '");';
+                  var onclick = 'urlCtrl.loadByHash("#page.type.' + o.type + '.id.' + id + '");';
                   var onclickCp = "";
                   var target = " target='_blank'";
                   var dataId = "";
@@ -256,7 +245,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
                   $(".btn-start-search").html("<i class='fa fa-search'></i>"); 
                   if(indexMin == 0){
                     //ajout du footer       
-                    var msg = "Aucun résultat";    
+                    var msg = trad.noresult;    
                     if(name == "" && locality == "") msg = "<h3 class='text-dark'><i class='fa fa-3x fa-keyboard-o'></i><br> Préciser votre recherche pour plus de résultats ...</h3>"; 
                     str += '<div class="center" id="footerDropdown">';
                     str += "<hr style='float:left; width:100%;'/><label style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</label><br/>";
@@ -269,7 +258,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
               {       
                 //ajout du footer       
                 str += '<div class="center" id="footerDropdown">';
-                str += "<hr style='float:left; width:100%;'/><label style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " résultats</label><br/>";
+                str += "<hr style='float:left; width:100%;'/><label style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " "+trad["results"]+"</label><br/>";
                 str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
                 str += "</div>";
 
@@ -362,7 +351,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
     $.each($(".followBtn"), function(index, value){
       var id = $(value).attr("data-id");
       var type = $(value).attr("data-type");
-	  type = typeObjLib.get(type).col;
+	  type = dyFInputs.get(type).col;
 
       //mylog.log("#floopItem-"+type+"-"+id);
       if($("#floopItem-"+type+"-"+id).length){
@@ -402,7 +391,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
 						toastr.success(data.msg);	
 						$(thiselement).html("<i class='fa fa-unlink text-green'></i>");
 						$(thiselement).attr("data-ownerlink","unparticipate");
-						$(thiselement).attr("data-original-title", "Ne plus particper à l'évènement");
+						$(thiselement).attr("data-original-title", "Ne plus participer à l'évènement");
 						addFloopEntity(id, type, data.parent);
 						showFloopDrawer(true);
 					}

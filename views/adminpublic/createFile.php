@@ -3,6 +3,8 @@ $cs = Yii::app()->getClientScript();
 $cssAnsScriptFilesModule = array(
 		'/plugins/jsonview/jquery.jsonview.js',
 		'/plugins/jsonview/jquery.jsonview.css',
+		'/plugins/JSzip/jszip.min.js',
+		'/plugins/FileSaver.js/FileSaver.min.js',
 		//'/assets/js/sig/geoloc.js',
 		/*'/assets/js/dataHelpers.js',
 		'/assets/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
@@ -16,8 +18,8 @@ $userId = Yii::app()->session["userId"] ;
 $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 //header + menu
 $this->renderPartial($layoutPath.'header', 
-                    array(  "layoutPath"=>$layoutPath , 
-                            "page" => "admin") ); 
+		    array(  "layoutPath"=>$layoutPath , 
+						    "page" => "admin") ); 
 ?>
 
 <style>
@@ -69,207 +71,216 @@ $this->renderPartial($layoutPath.'header',
 		height: 300px;
 	}
 </style>
-<div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
+<div class="col-xs-12 no-padding bg-white">
+	<div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
 
-	<!-- HEADER -->
-	<center>
-		<div class="col-md-12 center bg-azure-light-3 menu-step-tsr section-tsr center">
-			<div class="homestead text-white selected" id="menu-step-1">
-				<i class="fa fa-2x fa-circle"></i><br/><?php echo Yii::t("common", "Source"); ?>
-			</div>
-			<div class="homestead text-white" id="menu-step-2">
-				<i class="fa fa-2x fa-circle-o"></i><br/><?php echo Yii::t("common", "Link"); ?>
-				
-			</div>
-			<div class="homestead text-white" id="menu-step-3">
-				<i class="fa fa-2x fa-circle-o"></i><br/><?php echo Yii::t("common", "Visualisation"); ?>
-			</div>
-		</div>
-	</center>
-
-	<!-- SOURCE -->
-	<div class="col-sm-12 block-step-tsr section-tsr" id="menu-step-source">
-		<div class="col-sm-4 col-xs-12">
-			<label for="chooseElement"><?php echo Yii::t("common", "Element"); ?> : </label>
-			<select id="chooseElement" name="chooseElement" class="">
-				<option value="-1"><?php echo Yii::t("common", "Choose"); ?></option>
-				<option value="<?php echo Organization::COLLECTION; ?>"><?php echo Yii::t("common", "Organization"); ?></option>
-				<option value="<?php echo Project::COLLECTION; ?>"><?php echo Yii::t("common", "Project"); ?></option>
-				<option value="<?php echo Event::COLLECTION; ?>"><?php echo Yii::t("common", "Event"); ?></option>
-				<option value="<?php echo Person::COLLECTION; ?>"><?php echo Yii::t("common", "Person"); ?></option>
-			</select>
-		</div>
-		<div class="col-sm-4 col-xs-12">
-			<label for="selectTypeSource"><?php echo Yii::t("common", "Source"); ?> : </label>
-			<select id="selectTypeSource" name="selectTypeSource" class="">
-				<option value="-1"><?php echo Yii::t("common", "Choose"); ?></option>
-				<option value="url"><?php echo Yii::t("common", "URL"); ?></option>
-				<option value="file"><?php echo Yii::t("common", "File"); ?></option>
-			</select>
-		</div>
-		<div class="col-sm-4 col-xs-12">
-			<label for="selectTypeSource"><?php echo Yii::t("common", "Link"); ?> : </label>
-			<select id="chooseMapping" name="chooseMapping" class="">
-				<option value="-1"><?php echo Yii::t("common", "Not link"); ?></option>
-			<?php
-				if(!empty($allMappings)){
-					foreach ($allMappings as $key => $value){
-						echo '<option value="'.$key .'">'.$value["name"].'</option>';
-					}
-				}
-			?>
-			</select>
-		</div>
-		<div id="divFile" class="col-sm-12 col-xs-12">
-			<div class="col-sm-2 col-xs-12">
-				<label for="fileImport"><?php echo Yii::t("common", "File (CSV, JSON)"); ?> : </label>
-			</div>
-			<div class="col-sm-4 col-xs-12" id="divInputFile">
-				<input type="file" id="fileImport" name="fileImport" accept=".csv,.json,.js,.geojson">
-			</div>
-		</div>
-		<div id="divUrl" class="col-sm-12 col-xs-12">
-			<div class="col-sm-4 col-xs-12">
-				<label for="textUrl"><?php echo Yii::t("common", "URL (JSON)"); ?> :</label>
-				<input type="text" id="textUrl" name="textUrl" value="">
-			</div>
-			<div class="col-sm-4 col-xs-12">
-				<label for="pathElement"><?php echo Yii::t("common", "Path Elements"); ?> :</label>
-				<input type="text" id="pathElement" name="pathElement" value="">
-			</div>
-		</div>
-		<div id="divCsv" class="col-sm-12 col-xs-12">
-			<div class="col-sm-4 col-xs-12">
-				<label for="selectSeparateur"><?php echo Yii::t("common", "Séparateur"); ?> : </label>
-				<select id="selectSeparateur" name="selectSeparateur" class="">
-					<option value=";"><?php echo Yii::t("common", "Semicolon"); ?></option>
-					<option value=","><?php echo Yii::t("common", "Comma"); ?></option>
-					<option value=" "><?php echo Yii::t("common", "Space"); ?></option>
-				</select>
-			</div>
-			<div class="col-sm-4 col-xs-12">
-				<label for="selectSeparateurText"><?php echo Yii::t("common", "Separateur de Text"); ?> : </label>
-				<select id="selectSeparateurText" name="selectSeparateur" class="">
-					<option value=""><?php echo Yii::t("common", "Nothing"); ?></option>
-					<option value='"'><?php echo Yii::t("common", "Quotation marks"); ?></option>
-					<option value="'"><?php echo Yii::t("common", "Quotes"); ?></option>
-				</select>
-			</div>
-		</div>
-		<div class="col-sm-12 col-xs-12">
-			<a href="javascript:;" id="btnNextStep" class="btn btn-success margin-top-15"><?php echo Yii::t("common", "Next step"); ?></a>
-		</div>
-	</div>
-
-	<!-- MAPPING -->
-	<div class="col-md-12 mapping-step-tsr section-tsr" id="menu-step-mapping">
-		<input type="hidden" id="nbLigneMapping" value="0"/>
-		<div class="col-md-12 nbFile text-dark" >
-			Il y a <span id="nbFileMapping" class="text-red"> <span> 
-		</div>
-		<div id="divInputHidden"></div>
-		<table id="tabcreatemapping" class="table table-striped table-bordered table-hover">
-    		<thead>
-	    		<tr>
-	    			<th class="col-sm-5"><?php echo Yii::t("common", "Source"); ?></th>
-	    			<th class="col-sm-5"><?php echo Yii::t("common", "Communecter"); ?></th>
-	    			<th class="col-sm-2"><?php echo Yii::t("common", "Add")." / ".Yii::t("common", "Remove"); ?></th>
-	    		</tr>
-    		</thead>
-	    	<tbody class="directoryLines" id="bodyCreateMapping">
-		    	<tr id="LineAddMapping">
-	    			<td>
-	    				<select id="selectSource" class="col-sm-12"></select>
-	    			</td>
-	    			<td>
-	    				<select id="selectAttributesElt" class="col-sm-12"></select>
-	    			</td>
-	    			<td>
-	    				<input type="submit" id="addMapping" class="btn btn-primary col-sm-12" value="Ajouter"/>
-	    			</td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="col-sm-12 col-xs-12">
-			<div class="col-sm-6 col-xs-12">
-				<label for="inputKey">Key : </label>
-				<input class="" placeholder="Key a attribuer à l'ensemble des données importer" id="inputKey" name="inputKey" value="">
-			</div>
-			<!--<div class="col-sm-6 col-xs-12" id="divCheckboxWarnings">
-				<label>
-					Warnings : <input type="checkbox" value="" id="checkboxWarnings" name="checkboxWarnings">
-				</label>
-			</div>-->
-		</div>
-		<div class="col-sm-12 col-xs-12">
-			<div class="col-sm-6 col-xs-12">
-				<label>
-					Test : <input class="hide" id="isTest" name="isTest" ></input>
-				<input id="checkboxTest" name="checkboxTest" type="checkbox" data-on-text="<?php echo Yii::t("common","Yes") ?>" data-off-text="<?php echo Yii::t("common","No") ?>" name="my-checkbox" checked></input>
-				</label>
-			</div>
-			<div class="col-sm-6 col-xs-12" id="divNbTest">
-				<label for="inputNbTest">Nombre d'entités à tester max(900) : </label>
-				<input class="" placeholder="" id="inputNbTest" name="inputNbTest" value="5">
-			</div>
-		</div>
-		<div class="col-sm-2 col-xs-12"  id="divInvite">
-			<div class="col-sm-12 col-xs-12" id="divAuthor">
-				<label for="nameInvitor">Author Invite: </label>
-				<input class="" placeholder="" id="nameInvitor" name="nameInvitor" value="">
-			</div>
-			<div class="col-sm-12 col-xs-12" id="divMessage">
-				<textarea id="msgInvite" class="" rows="3">Message Invite</textarea>
-			</div>
-		</div>
-		<div class="col-sm-12 col-xs-12">
-			<a href="javascript:;" id="btnPreviousStep" class="btn btn-danger margin-top-15"><?php echo Yii::t("common", "Previous step"); ?></a>
-			<a href="javascript:;" id="btnNextStep2" class="btn btn-success margin-top-15"><?php echo Yii::t("common", "Next step"); ?></a>
-		</div>
-	</div>
-
-	<div class="col-md-12 mapping-step-tsr section-tsr" id="menu-step-visualisation">
-		<div class="panel-scroll row-fluid height-300">
-			<table id="representation" class="table table-striped table-hover"></table>
-		</div>
-		<br/>	
-		<div class="col-xs-12 col-sm-6">
-			<label class="nbFile text-dark">
-				Données importés : <span id="nbFileImport" class="text-red"> <span> 
-			</label>
-			<div class="panel panel-default">
-				<div class="panel-body">
-						<input type="hidden" id="jsonImport" value="">
-					    <div class="col-sm-12" style="max-height : 300px ;overflow-y: auto" id="divJsonImportView"></div>
+		<!-- HEADER -->
+		<center>
+			<div class="col-md-12 center bg-azure-light-3 menu-step-tsr section-tsr center">
+				<div class="homestead text-white selected" id="menu-step-1">
+					<i class="fa fa-2x fa-circle"></i><br/><?php echo Yii::t("common", "Source"); ?>
 				</div>
-			</div>
-			<div class="col-sm-12 center">
-		    	<a href="javascript:;" class="btn btn-primary col-sm-2 col-md-offset-2" type="submit" id="btnImport">Save</a>
-		    </div>
-
-		</div>
-		<div class="col-xs-12 col-xs-12 col-sm-6">
-			<label class="nbFile text-dark">
-				Données rejetées : <span id="nbFileError" class="text-red"> <span> 
-			</label>
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<input type="hidden" id="jsonError" value="">
-					   <div class="col-sm-12" id="divJsonErrorView" style="max-height : 300px ;overflow-y: auto"></div>
+				<div class="homestead text-white" id="menu-step-2">
+					<i class="fa fa-2x fa-circle-o"></i><br/><?php echo Yii::t("common", "Link"); ?>
 					
 				</div>
+				<div class="homestead text-white" id="menu-step-3">
+					<i class="fa fa-2x fa-circle-o"></i><br/><?php echo Yii::t("common", "Visualisation"); ?>
+				</div>
 			</div>
-			<div class="col-sm-12 col-xs-12 center">
-		    	<a href="javascript:;" class="btn btn-primary col-sm-2" type="submit" id="btnError">Save</a>
-		    </div>
+		</center>
+
+		<!-- SOURCE -->
+		<div class="col-sm-12 block-step-tsr section-tsr" id="menu-step-source">
+			<div class="col-sm-4 col-xs-12">
+				<label for="chooseElement"><?php echo Yii::t("common", "Element"); ?> : </label>
+				<select id="chooseElement" name="chooseElement" class="">
+					<option value="-1"><?php echo Yii::t("common", "Choose"); ?></option>
+					<option value="<?php echo Organization::COLLECTION; ?>"><?php echo Yii::t("common", "Organization"); ?></option>
+					<option value="<?php echo Project::COLLECTION; ?>"><?php echo Yii::t("common", "Project"); ?></option>
+					<option value="<?php echo Event::COLLECTION; ?>"><?php echo Yii::t("common", "Event"); ?></option>
+					<option value="<?php echo Person::COLLECTION; ?>"><?php echo Yii::t("common", "Person"); ?></option>
+				</select>
+			</div>
+			<div class="col-sm-4 col-xs-12">
+				<label for="selectTypeSource"><?php echo Yii::t("common", "Source"); ?> : </label>
+				<select id="selectTypeSource" name="selectTypeSource" class="">
+					<option value="-1"><?php echo Yii::t("common", "Choose"); ?></option>
+					<option value="url"><?php echo Yii::t("common", "URL"); ?></option>
+					<option value="file"><?php echo Yii::t("common", "File"); ?></option>
+				</select>
+			</div>
+			<div class="col-sm-4 col-xs-12">
+				<label for="selectTypeSource"><?php echo Yii::t("common", "Link"); ?> : </label>
+				<select id="chooseMapping" name="chooseMapping" class="">
+					<option value="-1"><?php echo Yii::t("common", "Not link"); ?></option>
+				<?php
+					if(!empty($allMappings)){
+						foreach ($allMappings as $key => $value){
+							echo '<option value="'.$key .'">'.$value["name"].'</option>';
+						}
+					}
+				?>
+				</select>
+			</div>
+			<div id="divFile" class="col-sm-12 col-xs-12">
+				<div class="col-sm-2 col-xs-12">
+					<label for="fileImport"><?php echo Yii::t("common", "File (CSV, JSON)"); ?> : </label>
+				</div>
+				<div class="col-sm-4 col-xs-12" id="divInputFile">
+					<input type="file" id="fileImport" name="fileImport" accept=".csv,.json,.js,.geojson">
+				</div>
+			</div>
+			<div id="divUrl" class="col-sm-12 col-xs-12">
+				<div class="col-sm-4 col-xs-12">
+					<label for="textUrl"><?php echo Yii::t("common", "URL (JSON)"); ?> :</label>
+					<input type="text" id="textUrl" name="textUrl" value="">
+				</div>
+				<div class="col-sm-4 col-xs-12">
+					<label for="pathElement"><?php echo Yii::t("common", "Path Elements"); ?> :</label>
+					<input type="text" id="pathElement" name="pathElement" value="">
+				</div>
+			</div>
+			<div id="divCsv" class="col-sm-12 col-xs-12">
+				<div class="col-sm-4 col-xs-12">
+					<label for="selectSeparateur"><?php echo Yii::t("common", "Séparateur"); ?> : </label>
+					<select id="selectSeparateur" name="selectSeparateur" class="">
+						<option value=";"><?php echo Yii::t("common", "Semicolon"); ?></option>
+						<option value=","><?php echo Yii::t("common", "Comma"); ?></option>
+						<option value=" "><?php echo Yii::t("common", "Space"); ?></option>
+					</select>
+				</div>
+				<div class="col-sm-4 col-xs-12">
+					<label for="selectSeparateurText"><?php echo Yii::t("common", "Separateur de Text"); ?> : </label>
+					<select id="selectSeparateurText" name="selectSeparateur" class="">
+						<option value=""><?php echo Yii::t("common", "Nothing"); ?></option>
+						<option value='"'><?php echo Yii::t("common", "Quotation marks"); ?></option>
+						<option value="'"><?php echo Yii::t("common", "Quotes"); ?></option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-12 col-xs-12">
+				<a href="javascript:;" id="btnNextStep" class="btn btn-success margin-top-15"><?php echo Yii::t("common", "Next step"); ?></a>
+			</div>
 		</div>
-		<div class="col-xs-12 col-sm-12">
-			<button class="btn btn-danger margin-top-15" onclick="returnStep2()">Retour <i class="fa fa-reply"></i></button>
+
+		<!-- MAPPING -->
+		<div class="col-md-12 mapping-step-tsr section-tsr" id="menu-step-mapping">
+			<input type="hidden" id="nbLigneMapping" value="0"/>
+			<div class="col-md-12 nbFile text-dark" >
+				Il y a <span id="nbFileMapping" class="text-red"> <span> 
+			</div>
+			<div id="divInputHidden"></div>
+			<table id="tabcreatemapping" class="table table-striped table-bordered table-hover">
+	    		<thead>
+		    		<tr>
+		    			<th class="col-sm-5"><?php echo Yii::t("common", "Source"); ?></th>
+		    			<th class="col-sm-5"><?php echo Yii::t("common", "Communecter"); ?></th>
+		    			<th class="col-sm-2"><?php echo Yii::t("common", "Add")." / ".Yii::t("common", "Remove"); ?></th>
+		    		</tr>
+	    		</thead>
+		    	<tbody class="directoryLines" id="bodyCreateMapping">
+			    	<tr id="LineAddMapping">
+		    			<td>
+		    				<select id="selectSource" class="col-sm-12"></select>
+		    			</td>
+		    			<td>
+		    				<select id="selectAttributesElt" class="col-sm-12"></select>
+		    			</td>
+		    			<td>
+		    				<input type="submit" id="addMapping" class="btn btn-primary col-sm-12" value="Ajouter"/>
+		    			</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="col-sm-12 col-xs-12">
+				<div class="col-sm-6 col-xs-12">
+					<label for="inputKey">Key : </label>
+					<input class="" placeholder="Key a attribuer à l'ensemble des données importer" id="inputKey" name="inputKey" value="">
+				</div>
+				<!--<div class="col-sm-6 col-xs-12" id="divCheckboxWarnings">
+					<label>
+						Warnings : <input type="checkbox" value="" id="checkboxWarnings" name="checkboxWarnings">
+					</label>
+				</div>-->
+			</div>
+			<div class="col-sm-12 col-xs-12">
+				<div class="col-sm-6 col-xs-12">
+					<label>
+						Test : <input class="hide" id="isTest" name="isTest" ></input>
+					<input id="checkboxTest" name="checkboxTest" type="checkbox" data-on-text="<?php echo Yii::t("common","Yes") ?>" data-off-text="<?php echo Yii::t("common","No") ?>" name="my-checkbox" checked></input>
+					</label>
+				</div>
+				<div class="col-sm-6 col-xs-12" id="divNbTest">
+					<label for="inputNbTest">Nombre d'entités à tester max(900) : </label>
+					<input class="" placeholder="" id="inputNbTest" name="inputNbTest" value="5">
+				</div>
+			</div>
+			<div class="col-sm-2 col-xs-12"  id="divInvite">
+				<div class="col-sm-12 col-xs-12" id="divAuthor">
+					<label for="nameInvitor">Author Invite: </label>
+					<input class="" placeholder="" id="nameInvitor" name="nameInvitor" value="">
+				</div>
+				<div class="col-sm-12 col-xs-12" id="divMessage">
+					<textarea id="msgInvite" class="" rows="3">Message Invite</textarea>
+				</div>
+			</div>
+			<div class="col-sm-12 col-xs-12">
+				<a href="javascript:;" id="btnPreviousStep" class="btn btn-danger margin-top-15"><?php echo Yii::t("common", "Previous step"); ?></a>
+				<a href="javascript:;" id="btnNextStep2" class="btn btn-success margin-top-15"><?php echo Yii::t("common", "Next step"); ?></a>
+			</div>
 		</div>
+
+		<div class="col-md-12 mapping-step-tsr section-tsr" id="menu-step-visualisation">
+			<div class="panel-scroll row-fluid height-300">
+				<label class="nbFile text-dark">Liste des éléments :</label>
+				<table id="representation" class="table table-striped table-hover"></table>
+			</div>
+			<br/>
+			<div class="panel-scroll row-fluid height-300">
+				<label class="nbFile text-dark">Liste des villes a ajouter :</label>
+				<table id="saveCitiesTab" class="table table-striped table-hover"></table>
+				<input type="hidden" id="jsonCities" value="">
+			</div>
+			<br/>	
+			<div class="col-xs-12 col-sm-6">
+				<label class="nbFile text-dark">
+					Données importés : <span id="nbFileImport" class="text-red"> <span> 
+				</label>
+				<div class="panel panel-default">
+					<div class="panel-body">
+							<input type="hidden" id="jsonImport" value="">
+						    <div class="col-sm-12" style="max-height : 300px ;overflow-y: auto" id="divJsonImportView"></div>
+					</div>
+				</div>
+				<div class="col-sm-12 center">
+			    	<a href="javascript:;" class="btn btn-primary col-sm-2 col-md-offset-2" type="submit" id="btnImport">Save</a>
+			    </div>
+
+			</div>
+			<div class="col-xs-12 col-xs-12 col-sm-6">
+				<label class="nbFile text-dark">
+					Données rejetées : <span id="nbFileError" class="text-red"> <span> 
+				</label>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<input type="hidden" id="jsonError" value="">
+						   <div class="col-sm-12" id="divJsonErrorView" style="max-height : 300px ;overflow-y: auto"></div>
+						
+					</div>
+				</div>
+				<div class="col-sm-12 col-xs-12 center">
+			    	<a href="javascript:;" class="btn btn-primary col-sm-2" type="submit" id="btnError">Save</a>
+			    </div>
+			</div>
+			<div class="col-xs-12 col-sm-12 margin-top-15">
+				<button class="btn btn-danger col-sm-2 col-md-offset-4 " onclick="returnStep2()">Retour <i class="fa fa-reply"></i></button>
+				<a href="#adminpublic.addData" class="btn btn-success col-sm-2 col-md-offset-2" type="submit">Page d'ajout de données</a>
+			</div>
+		</div>
+
 	</div>
-
 </div>
-
 <script type="text/javascript">
 var file = [] ;
 var csvFile = "" ;
@@ -277,6 +288,7 @@ var extensions = ["csv", "json", "js", "geojson"];
 var nameFile = "";
 var typeFile = "";
 var typeElement = "";
+var nbFinal = 0 ;
 
 jQuery(document).ready(function() {
 
@@ -338,7 +350,7 @@ function bindCreateFile(){
 			nameFile = "JSON_URL";
   			typeFile = "json";			
 			$.ajax({
-				url: baseUrl+'/communecter/adminpublic/getdatabyurl/',
+				url: baseUrl+'/'+moduleId+'/adminpublic/getdatabyurl/',
 				type: 'POST',
 				dataType: 'json', 
 				data:{ url : $("#textUrl").val() },
@@ -402,10 +414,10 @@ function bindCreateFile(){
 
 	  			$("#selectAttributesElt").append(chaine);
   			}  			
-	  		ligne = '<tr id="lineMapping'+nbLigneMapping+'"> ';
+	  		ligne = '<tr id="lineMapping'+nbLigneMapping+'" class="lineMapping"> ';
 	  		ligne =	 ligne + '<td id="valueSource'+nbLigneMapping+'">' + selectSource + '</td>';
 	  		ligne =	 ligne + '<td id="valueAttributeElt'+nbLigneMapping+'">' + selectAttributesElt + '</td>';
-	  		ligne =	 ligne + '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ selectSource +'"/><a href="#" class="deleteLineMapping btn btn-danger">X</a></td></tr>';
+	  		ligne =	 ligne + '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ selectSource +'"/><a href="javascript:;" class="deleteLineMapping btn btn-danger">X</a></td></tr>';
 	  		$("#nbLigneMapping").val(nbLigneMapping);
 	  		$("#LineAddMapping").before(ligne);
 	  		
@@ -431,13 +443,25 @@ function bindCreateFile(){
 
 
 	$("#btnImport").off().on('click', function(){
-  		$("<a />", {
-		    "download": nameFile+"_StandardForCommunecter.json",
-		    "href" : "data:application/json," + encodeURIComponent($('#jsonImport').val())
-		  }).appendTo("body")
-		  .click(function() {
-		     $(this).remove()
-		  })[0].click() ;
+		if(notEmpty($('#jsonCities').val())){
+			var zip = new JSZip();
+			zip.file(nameFile+"_StandardForCommunecter.json", $('#jsonImport').val());
+			zip.file("SaveCities.json", $('#jsonCities').val());
+			zip.generateAsync({type:"blob"})
+				.then(function(content) {
+				    // see FileSaver.js
+				    saveAs(content, nameFile+"_Import.zip");
+				});
+		}else{
+			saveAs($('#jsonImport').val(), nameFile+"_StandardForCommunecter.json");
+		}
+  		// $("<a />", {
+		  //   "download": nameFile+"_StandardForCommunecter.json",
+		  //   "href" : "data:application/json," + encodeURIComponent($('#jsonImport').val())
+		  // }).appendTo("body")
+		  // .click(function() {
+		  //    $(this).remove()
+		  // })[0].click() ;
   	});
 
   	$("#btnError").off().on('click', function(){
@@ -557,12 +581,12 @@ function stepTwo(){
 	if(typeFile == "json" || typeFile == "js" || typeFile == "geojson")
 		params["file"] = file ;
 	else
-		file = csvToArray(csvFile, $("#selectSeparateur").val(), $("#selectSeparateurText").val())
+		file = dataHelper.csvToArray(csvFile, $("#selectSeparateur").val(), $("#selectSeparateurText").val())
 
 	$.ajax({
         type: 'POST',
         data: params,
-        url: baseUrl+'/communecter/adminpublic/assigndata/',
+        url: baseUrl+'/'+moduleId+'/adminpublic/assigndata/',
         dataType : 'json',
         async : false,
         success: function(data)
@@ -584,13 +608,15 @@ function bindUpdate(data){
   	});
 
   	$("#fileImport").change(function(e) {
-    	var nameFileSplit = $("#fileImport").val().split("."); 
-  		if(extensions.indexOf(nameFileSplit[nameFileSplit.length-1]) == -1){
+    	var fileSplit = $("#fileImport").val().split("."); 
+  		if(extensions.indexOf(fileSplit[fileSplit.length-1]) == -1){
   			toastr.error("Vous devez sélectionner un fichier en CSV ou JSON");
   			return false ;
   		}
-  		nameFile = nameFileSplit[0];
-		typeFile = nameFileSplit[nameFileSplit.length-1];
+  		nameFileSplit = fileSplit[0].split('\\');
+  		mylog.log("nameFileSplit", nameFileSplit);
+  		nameFile = nameFileSplit[nameFileSplit.length-1];
+		typeFile = fileSplit[fileSplit.length-1];
 
 		if(extensions.indexOf(typeFile) == -1) {
 			alert('Upload CSV or JSON');
@@ -665,10 +691,10 @@ function createStepTwo(data){
 		var nbLigneMapping = $("#nbLigneMapping").val();
 		var i = 0 ;
 		$.each(data.arrayMapping, function(key, value){
-			ligne = '<tr id="lineMapping'+nbLigneMapping+'"> ';
+			ligne = '<tr id="lineMapping'+nbLigneMapping+'" class="lineMapping"> ';
 	  		ligne =	 ligne + '<td id="valueSource'+nbLigneMapping+'">' + key + '</td>';
 	  		ligne =	 ligne + '<td id="valueAttributeElt'+nbLigneMapping+'">' + value + '</td>';
-	  		ligne =	 ligne + '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ key +'"/><a href="#" class="deleteLineMapping btn btn-danger">X</a></td></tr>';
+	  		ligne =	 ligne + '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ key +'"/><a href="javascript:;" class="deleteLineMapping btn btn-danger">X</a></td></tr>';
 	  		nbLigneMapping++;
 	  		$("#LineAddMapping").before(ligne);
 	  		i++;
@@ -718,7 +744,7 @@ function showStep3(){
 }
 
 function returnStep2(){
-	mylog.log("returnStep2")
+	mylog.log("returnStep2");
 	$('#menu-step-3 i.fa').removeClass("fa-circle").addClass("fa-circle-o");
 	$('#menu-step-2 i.fa').removeClass("fa-check-circle").addClass("fa-circle");
 	$('#menu-step-3').removeClass("selected");
@@ -726,14 +752,16 @@ function returnStep2(){
 	$("#menu-step-mapping").show(400);
 	$("#menu-step-source").hide(400);
 	$("#menu-step-visualisation").hide(400);
+	nbFinal=0;
 }
 
 function returnStep1(){
-	mylog.log("returnStep2")
+	mylog.log("returnStep2");
 	file = [] ;
 	nameFile = "";
 	typeFile = "";
 	typeElement = "";
+	nbFinal=0;
 	$('#divInputFile').html('<input type="file" id="fileImport" name="fileImport" accept=".csv,.json,.js,.geojson">')
 	$('#menu-step-1 i.fa').removeClass("fa-circle-o").addClass("fa-circle");
 	$('#menu-step-2 i.fa').removeClass("fa-circle").addClass("fa-circle-o");
@@ -742,6 +770,7 @@ function returnStep1(){
 	$("#menu-step-mapping").hide(400);
 	$("#menu-step-source").show(400);
 	$("#menu-step-visualisation").hide(400);
+	$(".lineMapping").remove();
 	bindUpdate();
 }
 
@@ -816,6 +845,7 @@ function cleanVisualisation(){
 	$("#representation").html("");
 	$("#jsonImport").val("");
     $("#jsonError").val("");
+    $("#jsonCities").val("");
 }
 
 function createInpu(nameFile, typeFile, typeElement){
@@ -830,7 +860,7 @@ function stepThree(params){
 	$.ajax({
         type: 'POST',
         data: params,
-        url: baseUrl+'/communecter/adminpublic/previewData/',
+        url: baseUrl+'/'+moduleId+'/adminpublic/previewData/',
         dataType : 'json',
         async : false,
         success: function(data)
@@ -840,78 +870,100 @@ function stepThree(params){
         		
         		var importD = "" ;
         		var errorD = "" ;
+        		var saveCities = "" ;
 
-        		if($("#jsonImport").val() == "")
-        			importD = data.elements;
-        		else{
-        			if(data.elements == "[]")
-        				importD = $("#jsonImport").val();
-        			else{
-        				var elt1 = jQuery.parseJSON($("#jsonImport").val());
-        				var elt2 = jQuery.parseJSON(data.elements);
-        				$.each(elt2, function(key, val){
-		        			elt1.push(val)
-		        		});
-        				importD = JSON.stringify(elt1);
-        			}
+				if($("#jsonImport").val() == "")
+					importD = data.elements;
+				else{
+					if(data.elements == "[]")
+						importD = $("#jsonImport").val();
+					else{
+						var elt1 = jQuery.parseJSON($("#jsonImport").val());
+						var elt2 = jQuery.parseJSON(data.elements);
+						$.each(elt2, function(key, val){
+							elt1.push(val);
+						});
+						importD = JSON.stringify(elt1);
+					}
 
-        		}
+				}
         		
         		if($("#jsonError").val() == "")
         			errorD = data.elementsWarnings;
         		else{
         			if(data.elementsWarnings == "[]")
         				errorD = $("#jsonError").val();
-        			else
+        			else{
         				var elt1E = jQuery.parseJSON($("#jsonError").val());
         				var elt2E = jQuery.parseJSON(data.elementsWarnings);
         				$.each(elt2E, function(key, val){
-		        			elt1E.push(val)
+		        			elt1E.push(val);
 		        		});
         				errorD = JSON.stringify(elt1E);
+        			}
         		}
 
-        		
-        		mylog.log("importD",typeof importD);		
-        		mylog.log("errorD",typeof errorD);
+        		if($("#jsonCities").val() == "")
+					saveCities = data.saveCities;
+				else{
+					if(data.elements == "[]")
+						saveCities = $("#jsonCities").val();
+					else{
+						var elt1 = jQuery.parseJSON($("#jsonCities").val());
+						var elt2 = jQuery.parseJSON(data.saveCities);
+						$.each(elt2, function(key, val){
+							elt1.push(val);
+						});
+						saveCities = JSON.stringify(elt1);
+					}
 
-        		$("#jsonImport").val(importD);
-        		$("#jsonError").val(errorD);
-        		$("#divJsonImportView").JSONView(importD);
-        		$("#divJsonErrorView").JSONView(errorD);
+				}
+
+				
+				mylog.log("importD",typeof importD);		
+				mylog.log("errorD",typeof errorD);
+
+				$("#jsonImport").val(importD);
+				$("#jsonCities").val(saveCities);
+				$("#jsonError").val(errorD);
+				$("#divJsonImportView").JSONView(importD);
+				$("#divJsonErrorView").JSONView(errorD);
 
 				
 				var chaine = "" ;
-        		$.each(data.listEntite, function(keyListEntite, valueListEntite){
-        			chaine += "<tr>" ;
-        			if(keyListEntite == 0)
-        			{
-        				$.each(valueListEntite, function(key, value){
-        					chaine += "<th>"+value+"</th>";
-        				});
-        			}else{
+				$.each(data.listEntite, function(keyListEntite, valueListEntite){
+					nbFinal++;
+					chaine += "<tr>" ;
+					if(keyListEntite == 0)
+					{
+						chaine += "<th>N°</th>";
 						$.each(valueListEntite, function(key, value){
-        					chaine += "<td>"+value+"</td>";
-        				});
-        			}
-        			chaine += "</tr>" ;
-        		});
-        		$("#representation").append(chaine);
+							chaine += "<th>"+value+"</th>";
+						});
+					}else{
+						chaine += "<td>"+keyListEntite+"</td>";
+						$.each(valueListEntite, function(key, value){
+							chaine += "<td>"+value+"</td>";
+						});
+					}
+					chaine += "</tr>" ;
+				});
+				$("#representation").append(chaine);
 
 
-        		$("#nbFileImport").html(jQuery.parseJSON(importD).length);
-        		$("#nbFileError").html(jQuery.parseJSON(errorD).length);
+				$("#nbFileImport").html(jQuery.parseJSON(importD).length);
+				$("#nbFileError").html(jQuery.parseJSON(errorD).length);
 
-        		if($("#checkboxTest").is(':checked')){
-        			$("#btnImport").hide();
-        			$("#btnError").hide();
-        		}else{
-        			$("#btnImport").show();
-        			$("#btnError").show();
-        		}
-        		//$("#verifBeforeImport").show();
-        	}
-        }
+				if($("#checkboxTest").is(':checked')){
+					$("#btnImport").hide();
+					$("#btnError").hide();
+				}else{
+					$("#btnImport").show();
+					$("#btnError").show();
+				}
+				//$("#verifBeforeImport").show();
+			}
+		}
     });
 }
 

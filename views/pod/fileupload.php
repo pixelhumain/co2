@@ -1,88 +1,11 @@
-<style>
-	
-	#fileuploadContainer{
-		position: relative;
-		width: 100%;
-		background-color: transparent;
-	}
-	.fileupload-new .thumbnail, .fileupload-exists .thumbnail{
-		height: auto;
-	}
-	.fileupload-new, .fileupload-preview{
-		max-height: 250px;
-		overflow-y: hidden;
-	}
-	.fileupload-preview .thumbnail, .fileupload-new .thumbnail{
-		/*min-height: 250px;*/
-    	/*line-height: 250px;*/
-    	background-color: black;
-	}
-	.fileupload-preview.thumbnail, .fileupload-new.thumbnail {
-   		border: 3px solid white !important;
-	}
-	.fileupload, .fileupload-preview.thumbnail, .fileupload-new .thumbnail, .fileupload-new .thumbnail img, .fileupload-preview.thumbnail img{
-		padding : 0px;
-		margin:0px !important;
-		transition: none !important;
-		border-radius: 0px !important;
-		/*min-height: 250px;*/
-		width:100%;
-	}
+<?php 
 
-	.photoUploading{
-		position: absolute;
-		width: 100%;
-		display: none;
-		top:35%;
-		left: 0%;
-		opacity: 0.4;
-    	filter: alpha(opacity=40); /* For IE8 and earlier */
-	}
-	.fileupload-preview img{
-		max-height:100%; 
-	}
+	HtmlHelper::registerCssAndScriptsFiles( 
+		array(  '/css/default/upload_img.css',
+				) , 
+	Yii::app()->theme->baseUrl. '/assets');
+?>
 
-	#profil_imgPreview, #slider_imgPreview{
-		background-color:#E7EBEF;
-		background-color: transparent !important;
-		border: 0;
-	}
-	.user-image .user-image-buttons {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  display: none;
-}
-.user-image .user-image-buttons a.fileupload-new:hover{
-    color: #0095FF;
-    background-color: white;
-    border:1px solid #0095FF;
-    border-radius: 3px;
-    margin-right: 2px;
-}
-.user-image .user-image-buttons a.fileupload-new{
-    background-color: #0095FF;
-    color: white;
-    border-radius: 3px;
-    margin-right: 2px;
-}
-.user-image .user-image-buttons .btn-red:hover{
-    color: #ea4335;
-    background-color: white;
-    border:1px solid red;
-    border-radius: 3px;
-    margin-right: 2px;
-}
-.user-image .user-image-buttons .btn-red{
-    background-color: #ea4335;
-    color: white;
-    border-radius: 3px;
-    margin-right: 2px;
-}
-.user-image:hover .user-image-buttons {
-  display: block;
-}
-</style>
 	<div class="center" id="fileuploadContainer">
 		<form  method="post" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_photoAdd" enctype="multipart/form-data">
 		<div class="fileupload fileupload-new" data-provides="fileupload" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_fileUpload">
@@ -91,9 +14,14 @@
 				</div>
 				<div class="fileupload-preview fileupload-exists thumbnail container-fluid" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_imgNewPreview"></div>
 				<?php
-				if(@Yii::app()->session["userId"] && ((@$editMode && $editMode) || (@$openEdition && $openEdition))){ ?>
+				if(@Yii::app()->session["userId"] && ((@$editMode && $editMode) || 
+					(@$openEdition && $openEdition))){ 
+
+					if($image!="") $editBtn=true; else $editBtn=false;
+				?>
 				<div class="user-image-buttons">
-					<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="profil_photoAddBtn" ><span class="fileupload-new"><i class="fa fa-plus"></i> <span class="hidden-xs">Photo</span></span>
+					<a class="btn btn-blue btn-file btn-upload fileupload-new btn-sm" id="profil_photoAddBtn" ><span class="fileupload-new">
+						<i class="fa fa-<?php if($editBtn) echo "pencil"; else echo "plus"?>"></i> <span class="hidden-xs"><?php if($editBtn) echo Yii::t("common","Edit photo"); else echo Yii::t("common","Add a photo") ?></span></span>
 						<input type="file" accept=".gif, .jpg, .png" name="avatar" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_avatar" class="hide">
 						<input class="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_isSubmit hidden" value="true"/>
 					</a>
@@ -102,11 +30,11 @@
 					</a>
 				</div>
 				<div class="photoUploading" id="<?php if(isset($podId)) echo $podId.'_'.$contentId; else echo $contentId ?>_photoUploading">
-					<div class="center" style="text-align: center;">
+					<!---<div class="center" style="text-align: center;">
 						<i class="fa fa-spinner fa-spin fa-5x"></i>
-					</div>
+					</div>-->
 				</div>
-				<?php }; ?>
+				<?php } ?>
 			</div>
 		</div>
 		</form>
@@ -115,10 +43,9 @@
 
 <script type="text/javascript">
 	
-	
 	jQuery(document).ready(function() {
+		
 		var id = "<?php echo $itemId ?>";
-		//var sliderKey = "<?php echo Document::IMG_SLIDER; ?>";
 		var editFile = <?php echo ($editMode) ? 'true':'false'; ?>;
 		var type = "<?php echo $type ?>";
 		var contentId = "<?php echo Document::IMG_PROFIL ?>";
@@ -127,8 +54,8 @@
 		var imageName= "";
 		var imageId= "";
 		var imagesPath = [];
-		var image = "<?php echo $image; ?>";
-		//alert(image);
+		var image = <?php echo json_encode($image) ?>;
+		var itemName="<?php echo addslashes($itemName) ?>";
 		if("undefined" != typeof(contentKeyBase))
 			var contentKey = contentKeyBase/*+"."+contentIdtoSend*/;
 		else
@@ -200,7 +127,7 @@
 			$("#"+contentId+"_imgPreview").addClass("hidden");
 			$.ajax({
 				//url: baseUrl+"/"+moduleId+"/api/saveUserImages/type/"+type+"/id/"+id+"/contentKey/"+contentKey+"/user/<?php echo Yii::app()->session["userId"]?>",
-				url : baseUrl+"/"+moduleId+"/document/<?php echo Yii::app()->params['uploadUrl'] ?>dir/"+moduleId+"/folder/"+type+"/ownerId/"+id+"/input/avatar",
+				url : baseUrl+"/"+moduleId+"/document/<?php echo Yii::app()->params['uploadUrl'] ?>dir/communecter/folder/"+type+"/ownerId/"+id+"/input/avatar",
 				type: "POST",
 				data: new FormData(this),
 				contentType: false,
@@ -215,7 +142,7 @@
 						  		"id":id,
 						  		"type":type,
 						  		"folder":type+"/"+id,
-						  		"moduleId":moduleId,
+						  		"moduleId":"communecter",
 						  		"author" : "<?php echo (isset(Yii::app()->session['userId'])) ? Yii::app()->session['userId'] : 'unknown'?>"  , 
 						  		"name" : data.name , 
 						  		"date" : new Date() , 
@@ -285,7 +212,13 @@
 			if(image!=""){
 				//imageUrl = baseUrl+image[contentId.toLowerCase()][0];
 				j++;
-				$("#profil_imgPreview").html('<img class="img-responsive" src="'+baseUrl+image+'" />');	
+				imageHtml='<a href="'+baseUrl+image.large+'" '+
+							'class="thumb-info" '+  
+							'data-title="<?php echo Yii::t("common","Profil image of") ?> '+itemName+'" '+
+							'data-lightbox="all">'+
+								'<img class="img-responsive" src="'+baseUrl+image.medium+'" />'+
+							'</a>';
+				$("#profil_imgPreview").html(imageHtml);	
 			}else{
 				imageUrl = '<img class="img-responsive thumbnail" src="<?php echo $this->module->assetsUrl ?>/images/thumbnail-default.jpg"/>';
 				j++;
@@ -352,23 +285,23 @@
 			mylog.log("loading new profil");
 			$.ajax({
 			  	type: "POST",
-			  	url: baseUrl+"/"+moduleId+"/person/getthumbpath",
+			  	url: baseUrl+"/"+moduleId+"/element/getthumbpath/type/"+type+"/id/"+id,
 			  	dataType: "json"
 			}).done( function(data){
+				console.log(data);
 		        if(typeof data.profilThumbImageUrl != "undefined"){
-		        	//console.log(data);
+		        	
 		        	profilThumbImageUrl = baseUrl + data.profilThumbImageUrl;
 		        	//alert(profilThumbImageUrl);
-		        	$("#menu-thumb-profil").attr("src", profilThumbImageUrl);
-		        	$("#menu-left-thumb-profil").attr("src", profilThumbImageUrl);
-		        	$("#menu-small-thumb-profil").attr("src", profilThumbImageUrl);
-		        	$(".item_map_list_"+Sig.getObjectId(Sig.userData)+" .thumbnail-profil img").attr("src", profilThumbImageUrl);
+		        	if(type=="citoyens")
+		        		$(".menu-name-profil img").attr("src", profilThumbImageUrl);
+		        	//$("#menu-left-thumb-profil").attr("src", profilThumbImageUrl);
+		        	//$("#menu-small-thumb-profil").attr("src", profilThumbImageUrl);
+		        	$(".identity-min img").attr("src", profilThumbImageUrl);
+		        	$("#floopItem-"+type+"-"+id+" a img").attr("src", profilThumbImageUrl);
+		        	$("#popup"+id+" img").attr("src", profilThumbImageUrl);
+		        	$(".item_map_list_"+id+" .left-col .thumbnail-profil img").attr("src", profilThumbImageUrl);
 		        }
-
-		        mylog.log(Sig.userData.profilImageUrl);
-		        mylog.log("NOUVELLE PATH THUMB PROFIL : <?php echo Yii::app()->createUrl('/'.$this->module->id.'/document/resized/50x50/'); ?>" + data.profilImageUrl);
-		    	//Sig.userData.profilImageUrl = "<?php echo Yii::app()->createUrl('/'.$this->module->id.'/document/resized/50x50/'); ?>" + data.profilImageUrl;
-		        mylog.log(Sig.userData.profilImageUrl);
 		        
 		    });
 		}
@@ -386,9 +319,5 @@
 		}
 		
 	});
-
-	
-
-
 	
 </script>

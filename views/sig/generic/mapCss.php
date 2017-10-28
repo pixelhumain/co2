@@ -56,6 +56,23 @@
 		background-color:<?php echo $mapBtnBgColor." !important"; ?>; /*#E6D414*/
 	}
 
+
+	
+	#right_locality_map{
+		height:<?php echo (int)$mapHeight - 60; ?>px;
+		top:<?php echo (int)$mapTop + 30; ?>px!important;
+		width: 30%;
+		right: 0px!important;
+		min-width: 400px;
+		left: unset !important;
+		box-shadow: -5px -5px 10px -3px rgba(0, 0, 0, 0.4);
+	}
+
+
+
+
+
+
 	.<?php echo $moduleName; ?> 
 	#pagination > li.active a{
 		background-color:<?php echo $mapBtnBgColor." !important"; ?>; /*#E6D414*/
@@ -158,7 +175,7 @@
 		position: fixed;
 		top: 70px;
 		left: 70px;
-		width: 22%;
+		max-width: 50%;
 		min-width: 200px;
 		max-height: 100px;
 		background-color: rgba(26, 33, 38, 0.93);

@@ -171,13 +171,13 @@
         $.each(allDayEvents, function(key, dayEvents){
 
           if (typeof dayEvents === "object") {
-              var action = 'url.loadByHash("#event.detail.id.'+dayEvents.id+'");';
+              var action = 'urlCtrl.loadByHash("#event.detail.id.'+dayEvents.id+'");';
               var item = "<li>";
               var imgProfil = "<span class='badge bg-orange'></span>";
               if (typeof dayEvents.thumb_url != "undefined" && dayEvents.thumb_url != "") {
                   imgProfil = "<img class='badge bg-orange' src='"+dayEvents.thumb_url+"'>"; 
               }
-              item += "<a href='javascript:' onclick='"+action+"' class=''>" +
+              item += "<a href='#page.type.events.id."+dayEvents.id+"' class='loadByHash'>" +
                         imgProfil + 
                         "<div class='info-event text-dark'>" + dayEvents.name+"<br><small class='text-red'>"+ dayEvents["position"] + "</small></div>" +
                       "</a>";
@@ -262,6 +262,7 @@
           this.applyTransform(day, 'rotateY(180deg)');
           this.applyBackfaceVisibility(day);
         }
+        console.log("debug calendar", this.options);
         day = this.makeActive(day, this.options.events[dateString]);
         return this.$element.find('[data-group="days"]').append(day);
       },
@@ -389,8 +390,7 @@
       });
     };
     $.fn.responsiveCalendar.defaults = {
-      //translateMonths: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      translateMonths: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+      translateMonths: [trad.january, trad.february, trad.march, trad.april, trad.may, trad.june, trad.july, trad.august, trad.september, trad.october, trad.november, trad.december],
       events: {},
       time: void 0,
       allRows: true,

@@ -34,6 +34,8 @@
 			//mémorise les éléments
 			this.Sig.elementsMap = new Array();
 			this.Sig.preloadElementsMap = {};
+			this.Sig.preloadIconLegende = "";
+			this.Sig.preloadTextLegende = "";
 
 			//##
 			//créer un marker sur la carte, en fonction de sa position géographique
@@ -142,9 +144,15 @@
 				var markerName = this.getIcoNameByType(thisData);
 				//mylog.log("markerName", markerName);
 				var iconUrl = assetPath+'/images/sig/markers/icons_carto/'+markerName+'.png';
+
 				if(typeof thisData.profilMarkerImageUrl !== "undefined" && thisData.profilMarkerImageUrl != ""){ 
 					iconUrl = baseUrl + thisData.profilMarkerImageUrl;
 				}
+
+				if (thisData.typeSig && thisData.typeSig.substr(0,11) == "poi.interop") {
+					var iconUrl = getimgProfilPathForInteropDataOnMap(thisData.typeSig);
+				}
+
 				return L.icon({
 				    iconUrl: iconUrl,
 				    iconSize: [53, 60], //38, 95],
@@ -169,7 +177,7 @@
 			{
 				if(typeof showMe == "undefined") showMe = true;
 
-				//mylog.warn("--------------- clearMap ---------------------");
+				mylog.warn("--------------- clearMap ---------------------");
 				if(this.markersLayer != "")
 					this.markersLayer.clearLayers();
 
@@ -219,6 +227,7 @@
 				this.panelFilterType = "all";
 				this.clearMap(thisMap);
 				this.currentMarkerPopupOpen = null;
+				hideMapLegende();
 			};
 
 			this.Sig.showMyPosition = function(){
@@ -307,7 +316,7 @@
 				
 				$(this.cssModuleName + " .panel_map").css({"max-height":rightPanelHeight - 8*2 /*padding*/ - 45 });
 				
-				var RTM_width =  ($("#right_tool_map").css('display') != 'none') ? $("#right_tool_map").width()+30 : 0;
+				var RTM_width =  ($("#right_tool_map").css('display') != 'none') ? $("#right_tool_map").width()+30 : 30;
 				var GAM_width =  ($("#right_tool_map").css('display') != 'none') ? RTM_width+30 : RTM_width+30;
 				$(this.cssModuleName + " .tools-btn").css({"right": RTM_width });
 				$(this.cssModuleName + " .btn-groupe-around-me-km").css({"right": GAM_width });
@@ -465,8 +474,13 @@
 
 				if( typeof thisData.geo !== "undefined" && thisData.geo != null && typeof thisData.geo.longitude !== "undefined"){
 					
-					if(typeof thisData['geo'].latitude == "undefined" || thisData['geo'].latitude == null) return false;
-					if(typeof thisData['geo'].longitude == "undefined" || thisData['geo'].longitude == null) return null;
+					if(typeof thisData['geo'].latitude == "undefined" || 
+					   thisData['geo'].latitude == null || 
+					   thisData['geo'].latitude == "") return false;
+
+					if(typeof thisData['geo'].longitude == "undefined" || 
+					   thisData['geo'].longitude == null || 
+					   thisData['geo'].longitude == "") return null;
 						
 					if(type == "markerSingle"){
 						return new Array (thisData['geo'].latitude, thisData['geo'].longitude);
@@ -517,6 +531,7 @@
 			this.Sig.showOneElementOnMap = function(thisData, thisMap){
 				//mylog.warn("--------------- showOneElementOnMap ---------------------");
 				//mylog.dir(thisData);
+				//mylog.log("showOneElementOnMap ---------------------", thisData);
 				//var objectId = thisData._id ? thisData._id.$id.toString() : null;
 				var objectId = this.getObjectId(thisData);
 							
@@ -688,21 +703,32 @@
 			};
 
 
-			this.Sig.showMapElements = function(thisMap, data)
+			this.Sig.showMapElements = function(thisMap, data, iconLegende, textLegende)
 			{
-				mylog.warn("--------------- showMapElements ---------------------");
+				//mylog.warn("--------------- showMapElements ---------------------");
+				if(typeof textLegende != "undefined" && textLegende != null && textLegende != ""){
+					this.listPanel.tags = new Array();
+					this.listPanel.types = new Array();
+					this.panelFilter = "all";
+					this.panelFilterType = "all";
+				}
 				
 				//si la carte n'est pas chargée
 				//on mémorise les données et on les affichera avec le prochain showMap
 				if(CoSigAllReadyLoad != true) {
 					console.log("showMapElements CoSigAllReadyLoad false -> save data", data);
 					Sig.preloadElementsMap = data;
+					Sig.preloadIconLegende = iconLegende;
+					Sig.preloadTextLegende = textLegende;
 					return;
 		 		}
 
-				mylog.warn("--------------- showMapElements ---------------------", data);
+				mylog.log("--------------- showMapElements ---------------------", data);
 				//mylog.log(data);
 				if(data == null) return;
+
+				showMapLegende(iconLegende, textLegende);
+				showIsLoading(false);
 
 				var filterPanelValue = "citoyens";
 				//enregistre les dernières données dans une variable locale
@@ -730,7 +756,8 @@
 				if(len >= 1){
 					$.each(data, function (key, value){ //mylog.log("type SIG ?"); mylog.dir(value);
 						var oneData = value;
-						if((value.typeSig == "news" || 
+						if( notEmpty(value) &&
+							(value.typeSig == "news" || 
 							value.typeSig == "idea" || 
 							value.typeSig == "question" || 
 							value.typeSig == "announce" || 
@@ -929,6 +956,7 @@
 
 		//show a modal when an item in the right list has no geoLocation on the map
 		this.Sig.showModalItemNotLocated = function(data){
+			mylog.log("showModalItemNotLocated", data)
 			$("#modalItemNotLocated").modal('show');
 			$("#modalItemNotLocated .modal-body").html("<i class='fa fa-spin fa-reload'></i>");
 

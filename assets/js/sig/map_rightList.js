@@ -69,7 +69,7 @@
 											showThis = true;
 										}
 
-										if(typeof this.address != "undefined")
+										if(typeof this.address != "undefined" && this.address != null)
 										if(typeof this.address.addressLocality != "undefined")
 										if(this.address.addressLocality.search(new RegExp($(thisSig.cssModuleName + ' #input_name_filter').val(), "i")) >= 0){
 											showThis = true;
@@ -193,8 +193,9 @@
 			//récupère l'url de l'icon a afficher
 			var ico = thisSig.getIcoByType(allElement);
 			var color = thisSig.getIcoColorByType(allElement);
-
-			var icons = '<i class="fa fa-'+ ico + ' fa-'+ color +'"></i>';
+			//console.log("icon sig", allElement, "ico", ico, "color", color);
+			
+			var icons = '<i class="fa fa-'+ ico + ' text-'+ color +'"></i>';
 
 
 			//recuperation de l'image de profil (ou image par defaut)
@@ -227,15 +228,23 @@
 							button	+= 	"</div>";
 						}
 
-						if("undefined" != typeof element['address'] && "undefined" != typeof element['address']['addressLocality'] )
-						button	+= 	"<div class='info_item city_item_map_list inline'>" + element['address']['addressLocality'] + "</div>";
-								
-						if("undefined" != typeof element['address'] && "undefined" != typeof element['address']['addressCountry'] )
-						button	+= 	"<div class='info_item country_item_map_list inline'>" + element['address']['addressCountry'] + "</div>";
+						if("undefined" != typeof element['address'] && element['address'] != null){
+							
+							button	+= 	"<div class='info_item city_item_map_list inline'>";
+							
+							if("undefined" != typeof element['address']['addressLocality'] )
+								button	+= 	element['address']['addressLocality']+" ";
+							
+
+							if("undefined" != typeof element['address']['postalCode'] )
+							button	+= 		element['address']['postalCode']+" ";
+
+							if("undefined" != typeof element['address']['addressCountry'] )
+							button	+= 		element['address']['addressCountry']+" ";
+							
+							button	+= 	"</div>";
 						
-						if("undefined" != typeof element['cp'] )
-						button	+= 	"<div class='info_item country_item_map_list inline' style='font-size: 15px; font-weight: 300;'>" + element['cp'] + "</div>";
-								
+						}		
 						//if("undefined" != typeof element['telephone'])
 						//button	+= 	"<div class='info_item telephone_item_map_list inline'>" + element['telephone'] + "</div>";
 						

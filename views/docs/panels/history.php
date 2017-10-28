@@ -10,22 +10,50 @@
 
 var keywords = [
 	{
+		"icon" : "fa-download",
+		"title":"Prod Re Design CO2",
+		"date" : "may - 2017"
+	},
+	{
+		"icon" : "fa-calendar",
+		"title":"Biénale du design",
+		"date" : "march - 2017",
+		"body":"Meetup OpenFactory - La Myne"
+	},
+	{
+		"icon" : "fa-calendar",
+		"title":"Open Gov Paris & Réunion",
+		"date" : "9 december - 2016"
+	},
+	{
+		"icon" : "fa-calendar",
+		"title":"Alternatiba Péi",
+		"date" : "december - 2016"
+	},
+	{
+		"icon" : "fa-download",
+		"title":"Prod Re Design by Nuit Debout Specs",
+		"date" : "november - 2016"
+	},
+	{
+		"icon" : "fa-download",
+		"title":"Beta Prod Opening",
+		"date" : "july - 2016"
+	},
+	{
 		"icon" : "fa-child",
 		"title":"ALPHA OPENING",
-		"date" : "febuary - 2016",
-		"body":"..."
+		"date" : "febuary - 2016"
 	},
 	{
 		"icon" : "fa-money",
 		"title":"OPEN DATA PLATEFORM SUBSUDY",
-		"date" : "july - 2015",
-		"body":"..."
+		"date" : "july - 2015"
 	},
 	{
 		"icon" : "fa-video-camera",
 		"title":"COMMUNECTER TRAILER",
-		"date" : "july - 2015",
-		"body":"..."
+		"date" : "july - 2015"
 	},
 	{
 		"icon" : "fa-truck",

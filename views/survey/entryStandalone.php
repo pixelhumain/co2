@@ -51,14 +51,28 @@
     right: 30px!important;
     left: 70px!important;
 }
+
+.textarea-new-comment {
+    max-width: 99% !important;
+    min-width: 99% !important;
+    float: right;
+}
+
 </style>
 
 <?php 
 	//ca sert a quoi ce doublon ?
-	$survey = Survey::getById($survey["_id"]);
-	$room = ActionRoom::getById($survey["survey"]);
-	$parentType = $room["parentType"];
-	$parentId = $room["parentId"];
+	if(@$survey["survey"]){
+		$survey = Survey::getById($survey["_id"]);
+		$room = ActionRoom::getById($survey["survey"]);
+		$parentType = $room["parentType"];
+		$parentId = $room["parentId"];
+	}else{
+		$parentType = $survey["organizerType"];
+		$parentId = $survey["organizerId"];
+		$room = Element::getByTypeAndId($parentType, $parentId);
+	}
+
 	$nameParentTitle = "";
 	if($parentType == Organization::COLLECTION && isset($parentId)){
 		$orga = Organization::getById($parentId);
@@ -74,26 +88,26 @@
 	  '</a>' 
 	  : '';
   
-  if(!isset($_GET["renderPartial"])){
-		$this->renderPartial('../rooms/header',array(   
+  	if(!isset($_GET["renderPartial"])){
+		/*$this->renderPartial('../rooms/header',array(   
 					"archived"=> (@$room["status"] == ActionRoom::STATE_ARCHIVED) , 
-        			"parent" => $parent, 
-                    "parentId" => $parentId, 
-                    "parentType" => $parentType, 
-                    "parentSpace" => $parentSpace,
+        			"parent" => @$parent, 
+                    "parentId" => @$parentId, 
+                    "parentType" => @$parentType, 
+                    "parentSpace" => @$parentSpace,
                     "fromView" => "survey.entry",
                     "faTitle" => "gavel",
                     "colorTitle" => "azure",
-                    "textTitle" => "<a class='text-dark btn' href='javascript:url.loadByHash(\"#rooms.index.type.$parentType.id.$parentId.tab.2\")'><i class='fa fa-gavel'></i> ".Yii::t("rooms","Decide", null, Yii::app()->controller->module->id)."</a>".
+                    "textTitle" => "<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#rooms.index.type.$parentType.id.$parentId.tab.2\")'><i class='fa fa-gavel'></i> ".Yii::t("rooms","Decide", null, Yii::app()->controller->module->id)."</a>".
                     				" / ".
-                    				"<a class='text-dark btn' href='javascript:url.loadByHash(\"#survey.entries.id.".$survey["survey"]."\")'><i class='fa fa-th'></i> ".$nameList."</a>".$extraBtn
+                    				"<a class='text-dark btn' href='javascript:urlCtrl.loadByHash(\"#survey.entries.id.".$survey["survey"]."\")'><i class='fa fa-th'></i> ".$nameList."</a>".$extraBtn
                       
                     )); 
-		echo '<div class="col-md-12 panel-white padding-15" id="room-container">';
+		echo '<div class="col-md-12 panel-white padding-15" id="room-container">';*/
 	  }
 ?>
 
-<div class="row vote-row contentProposal" >
+<div class="padding-25 row vote-row contentProposal bg-white" >
 
 	<div class="col-md-12">
 		<!-- start: REGISTER BOX -->
@@ -101,7 +115,7 @@
 			<h1 class="text-dark" style="font-size: 17px;margin-top: 20px;">
 				<i class="fa fa-angle-down"></i> 
 				<span class="homestead"><i class="fa fa-archive"></i> Espace de décision :</span>
-				<a href="javascript:showRoom('vote', '<?php echo $survey["survey"]; ?>')">
+				<a href="javascript:loadRoom('vote', '<?php echo @$survey["survey"]; ?>')">
 					<?php echo $room["name"]; ?>
 				</a>
 				<hr>
@@ -127,8 +141,9 @@
 					<?php if( @($organizer) ){ ?>
 						<span class="text-red" style="font-size:13px; font-weight:500;">
 							<i class="fa fa-angle-right"></i> 
-							<?php echo Yii::t("rooms","Made by ",null,Yii::app()->controller->module->id) ?> 
-							<a style="font-size:14px;" href="javascript:<?php echo @$organizer['link'] ?>" class="text-dark">
+							<?php echo Yii::t("rooms","Made by ") ?> 
+							<a style="font-size:14px;" href="<?php echo @$organizer['link'] ?>" 
+								class="lbh text-dark">
 								<?php echo @$organizer['name'] ?>
 							</a>
 						</span><br/>
@@ -144,7 +159,7 @@
 							$hasVote = (@$survey["voteUpCount"] || @$survey["voteAbstainCount"] || @$survey["voteUnclearCount"] || @$survey["voteMoreInfoCount"] || @$survey["voteDownCount"] ) ? true : false;
 				            if( !$hasVote && $voteLinksAndInfos["avoter"] != "closed" )
 				            { ?>
-								<a class="tooltips btn btn-default  " href="javascript:openEntryForm()" >
+								<a class="tooltips btn btn-default  " href="javascript:dyFObj.editElement('surveys','<?php echo  $survey["_id"] ?>');" >
 									<i class="fa fa-pencil "></i> <span class="hidden-sm hidden-md hidden-xs">Éditer</span>
 								</a>
 							<?php } ?>
@@ -171,13 +186,9 @@
 
 			<div class="col-md-4 col-sm-4 col-xs-12 no-padding" style="padding-right: 15px !important;">
 				
-				<?php  $this->renderPartial('../pod/fileupload', 
-											 array("itemId" => $survey["_id"],
-											  "type" => Survey::COLLECTION,
-											  "resize" => false,
-											  "contentId" => Document::IMG_PROFIL,
-											  "editMode" => Authorisation::canEditItem(Yii::app()->session['userId'],Survey::COLLECTION,$survey["_id"],$parentType,$parentId),
-											  "image" => $images)); 
+				<?php 
+                 $img =  (@$survey['profilImageUrl']) ? "<img class='img-responsive' src='".Yii::app()->createUrl('/'.@$survey['profilImageUrl'])."'/>" : "";
+                 echo $img;
 				
 				if(isset( Yii::app()->session["userId"]) && false)
 				{
@@ -199,7 +210,7 @@
 								Yii::t("rooms","You created this vote.",null,Yii::app()->controller->module->id);
 
 					    if( Yii::app()->request->isAjaxRequest){ ?>
-							<a class="btn btn-xs btn-default" onclick="entryDetail('<?php echo Yii::app()->createUrl("/communecter/survey/entry/id/".(string)$survey["_id"])?>','edit')" href="javascript:;">
+							<a class="btn btn-xs btn-default" onclick="dyFObj.editElement('surveys','<?php echo  $survey["_id"] ?>');" href="javascript:;">
 								<i class='fa fa-pencil' ></i> 
 								<?php echo Yii::t("rooms","Edit this Entry",null,Yii::app()->controller->module->id) ?>
 							</a>
@@ -277,9 +288,9 @@
 
 				<div class="col-xs-12 text-dark" style="font-size:15px">
 					<hr style="margin-top:0px">
-					<?php echo $survey["message"]; ?>
+					<?php echo nl2br(@$survey["message"]); ?>
 					<hr>
-					<h2 class="center homestead text-dark"><i class="fa fa-angle-down"></i><br>Espace de vote</h2>
+					<h2 class="text-center homestead text-dark margin-bottom-25"><i class="fa fa-angle-down"></i> Espace de vote</h2>
 				</div>
 
 				<div class="col-xs-12">
@@ -315,39 +326,13 @@
 	</div>
 		
 	<div class="col-md-12 col-sm-12 commentSection leftInfoSection" >
-		<hr>
-		<h2 class='text-dark homestead' style="margin: -20px 0px 15px;"><i class="fa fa-angle-down"></i><br>Discussion</h2>
+		<h2 class='text-dark homestead text-center' style="margin: 10px 0px 15px;">
+			<i class="fa fa-angle-down"></i> Discussion
+		</h2>
 		<div class="box-vote box-pod margin-10 commentPod"></div>
 	</div>
 	
 </div>
-
-<?php if (  isset(Yii::app()->session["userId"]) && $survey["organizerId"] == Yii::app()->session["userId"] )  { ?>
-<div class="modal fade" id="modal-edit-entry" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header text-dark">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title text-left">
-        	<i class="fa fa-angle-down"></i> <i class="fa fa-pencil"></i> Éditer la proposition
-        </h2>
-      </div>
-      <div class="modal-body no-padding">
-      	<div class="panel-body" id="form-edit-entry">
-			<?php 
-				$params = array(
-			    	"survey" => $survey, //la proposition actuelle
-			        "roomId" => $survey["survey"] //id de la room
-			    );
-				$this->renderPartial('../survey/editEntrySV', $params); 
-			?>
-		</div>
-		
-	  </div>
-	</div>
-  </div>
-</div>
-<?php }	?>
 
 <?php 
  if(!isset($_GET["renderPartial"])){
@@ -360,8 +345,28 @@
 </style>
 
 <script type="text/javascript">
+
+/* **************************************
+*
+*  Initialisation
+*
+***************************************** */
+
+ var contextDataDDA = {
+    name : "<?php echo addslashes(@$survey["name"]) ?>",
+    id : "<?php echo (string)@$survey["_id"] ?>",
+    room : "<?php echo (string)@$survey["survey"] ?>",
+    type : "entry",
+    controller : "survey",
+    controller : "<?php echo Survey::CONTROLLER;?>",
+    otags : "<?php echo addslashes(@$survey["name"]).",débat, proposition, question, vote, communecter,".addslashes(@implode(",", @$survey["tags"])) ?>",
+    odesc : <?php echo json_encode( 'Propositions : '.addslashes(@$survey["name"])); ?>,
+    parentType : "<?php echo @$survey["parentType"] ?>",
+    parentId : "<?php echo (string)@$survey["parentId"] ?>"
+  };  
+
 clickedVoteObject = null;
-var images = <?php echo json_encode($images) ?>;
+var images = <?php echo json_encode(@$images) ?>;
 var mode = "view";
 var itemId = "<?php echo $survey["_id"] ?>";
 var endDate = "<?php echo date("d/m/Y",@$survey["dateEnd"]) ?>";
@@ -369,7 +374,7 @@ var endDate = "<?php echo date("d/m/Y",@$survey["dateEnd"]) ?>";
 jQuery(document).ready(function() {
 	$.fn.editable.defaults.container='body';
 	$(".main-col-search").addClass("assemblyHeadSection");
-  	setTitle("Propositions, débats, votes","gavel");
+  	//setTitle("Propositions, débats, votes","gavel");
   	$('.box-vote').show();
 
   	$(".tooltips").tooltip();
@@ -457,7 +462,7 @@ function addaction(id,action)
 					label: "Confirmer",
 					className: "btn-info",
 					callback: function() {
-						var voteComment = $("#modalComment .newComment").code();
+						var voteComment = $("#modalComment .newComment").val();
 						params = { 
 				           "userId" : '<?php echo Yii::app()->session["userId"]?>' , 
 				           "id" : id ,
@@ -470,7 +475,7 @@ function addaction(id,action)
 				        	saveComment(params.comment);
 				        } 
 				      	ajaxPost(null,'<?php echo Yii::app()->createUrl($this->module->id."/survey/addaction")?>',params,function(data){
-				        	url.loadByHash(location.hash);
+				        	urlCtrl.loadByHash(location.hash);
 				      	});
 					}
 				}
@@ -586,7 +591,7 @@ function move( type,destId ){
 		        success: function(data){
 		          if(data.result){
 		            toastr.success(data.msg);
-		            url.loadByHash(data.url);
+		            urlCtrl.loadByHash(data.url);
 		          } else {
 		            toastr.error(data.msg);
 		            if(data.action == "login")

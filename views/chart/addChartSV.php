@@ -1,20 +1,10 @@
 <?php 
 $cssAnsScriptFilesTheme = array(
-//Select2
-
-	//autosize
-	//Select2
-	//'/plugins/select2/select2.css',
-	//'/plugins/select2/select2.min.js',
-	//autosize
-	//'/plugins/autosize/jquery.autosize.min.js',
 	'/plugins/jQuery-Knob/js/jquery.knob.js',
-//	'/plugins/jquery.dynForm.js',
 	'/plugins/jQuery-Smart-Wizard/js/jquery.smartWizard.js',
 	'/plugins/jquery-validation/dist/jquery.validate.min.js',
-	'/js/jsonHelper.js',
+//	'/js/jsonHelper.js',
 	'/plugins/jquery.dynSurvey/jquery.dynSurvey.js',
-	//'/assets/js/ui-sliders.js',
 );
 
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->request->baseUrl);
@@ -46,6 +36,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 .property-description{
 	width: 100%;
 	height:200px;
+	padding:5px;
 }
 .stepFormChart{
 	background-color: #8b91a0;
@@ -69,52 +60,57 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 .chooseTypeForm{
 	margin-left:45px;
 }
+textarea.form-control{
+	height: inherit !important;
+	min-height: 200px !important; 
+}
 </style>
 <div id="editProjectChart">
 	<div class="noteWrap col-md-12 col-sm-12 col-xs-12 bg-white">
-		<!-- <button class="btn btn-primary escapeForm"><i class="fa fa-sign-out"></i>Sortir des formulaires</button> -->
+
+		<button class="btn btn-primary escapeForm btn-start-chart <?php if ((!@$properties["commons"] ||  (@$properties["commons"] && empty($properties["commons"]))) && (!@$properties["open"] ||  (@$properties["open"] && empty($properties["open"]))) ) echo "hide";  ?>"><i class="fa fa-sign-out"></i> <?php echo Yii::t("chart","Go back to the results") ?></button> 
 		<h3 style="font-variant:small-caps;"><span class="stepFormChart">1</span><?php echo Yii::t("chart","Choose which kind of form to complete") ?></h3>
 		
-		<span style="font-style:italic; margin-left:45px;" class="text-right">Indicatif : <i class="fa fa-circle text-green"></i> <span class="text-green">Actif</span>   <i class="fa fa-circle text-orange"></i> <span class="text-orange">A modifier</span>    <i class="fa fa-circle"></i> Non rempli</span><br/>
+		<span style="font-style:italic; margin-left:45px;" class="text-right"><?php echo Yii::t("chart","Status") ?> : <i class="fa fa-circle text-green"></i> <span class="text-green"><?php echo Yii::t("chart","Current") ?></span>   <i class="fa fa-circle text-orange"></i> <span class="text-orange"><?php echo Yii::t("chart","To modified") ?></span>    <i class="fa fa-circle"></i> <?php echo Yii::t("chart","Empty") ?></span><br/>
 		
 		<div class="chooseTypeForm margin-top-50 text-center">
-			<div class="col-md-12">
-				<p>Explication sur le role de ce formulaire, et de l'importance </p>
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<p><?php echo Yii::t("chart","These forms are here to show the values {what} in order to give an overview about organization, manage and life {what}",array("{what}"=> Yii::t("common","of the ".Element::getControlerByCollection($parentType)))) ?></p>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 col-sm-6 col-xs-6">
 				<a id="btncommons" href="javascript:;" onclick="switchTypeChart('commons')" class="btn <?php if (isset($properties["commons"]) && !empty($properties["commons"])) echo "text-orange" ?>">
 					<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Commons") ?>
 				</a>
-				<p>Explication de ce qu'on entend par "bien commun" pour qu'on soit bien tous d'accord  sur la définition de ce terme + explication sur l'action de "choisir un type de formulaire"</p>
+				<p><?php echo Yii::t("chart","Define {what} as a common. It means to manage one or several resources openly and transparently whitout appropriating it",array("{what}"=>Yii::t("common","this ".Element::getControlerByCollection($parentType)))) ?></p>
 
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 col-sm-6 col-xs-6">
 				<a id="btnopen" href="javascript:;" onclick="switchTypeChart('open')" class="btn <?php if (isset($properties["open"]) && !empty($properties["open"])) echo "text-orange" ?>">
 					<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Open") ?>
 				</a>
-				<p>Explication de ce qu'on entend par "libre" pour qu'on soit bien tous d'accord  sur la définition de ce terme + explication sur l'action de "choisir un type de formulaire"</p>
+				<p><?php echo Yii::t("chart","Indicate the values {what} openly defining its properties and describing them",array("{what}"=> Yii::t("common", "of the ".Element::getControlerByCollection($parentType)))) ?></p>
 			</div>
 		</div>
 
 
-		<div id="commonsChart" class="formChart col-md-12" style="display:none;">
+		<div id="commonsChart" class="formChart col-md-12 col-sm-12 col-xs-12" style="display:none;">
 			<h3 style="font-variant:small-caps;"><span class="stepFormChart">2</span><?php echo Yii::t("chart","Evaluate your ".substr($parentType,0,-1)." as commons") ?></h3>
 			<form id="opendata"></form>
 		</div>
-		<div id="openChart" class="formChart" style="display:none;">
+		<div id="openChart" class="formChart col-md-12 col-sm-12 col-xs-12" style="display:none;">
 			<h3 style="font-variant:small-caps;"><span class="stepFormChart">2</span><?php echo Yii::t("chart","Add properties which defined your ".substr($parentType,0,-1)) ?></h3>
 			<form class="form-chart">
 				<div>
 						<label for="properties" style="font-style: italic">
-							<?php echo Yii::t("project","Degree of project's openness (0% = very closed, 100% = very opened)",null,Yii::app()->controller->module->id) ?>			
+							<?php echo Yii::t("chart","Degree of your evaluation (0% = very closed, 100% = very opened)") ?>			
 						</label>
-						<div class="col-md-12 no-padding">
+						<div class="col-md-12 col-sm-12 col-xs-12 no-padding">
 						<?php if (isset($properties["open"]) && !empty($properties["open"])){
 							foreach ($properties["open"] as $key => $val){ 
 						?>
-							<div class="col-md-12 form-property">
+							<div class="col-md-12 col-sm-12 col-xs-12 form-property">
 								<div class="removeProperty hide"><span class="glyphicon glyphicon-remove"></span></div>
-								<h4 style="text-align:center;width:200px;"><?php echo $key; ?></h4>
+								<h4 style="text-align:center;width:200px;"><?php echo Yii::t("chart",$key); ?></h4>
 								<?php if ($key=="gouvernance"){ ?>
 									<label for="properties" class="col-md-12 no-padding">
 										Ouverture en terme de décisions, de partenaires, de parties prenantes
@@ -132,91 +128,92 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 										Quel est l'impact géographique du projet?
 									</label>
 								<?php } ?>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<input class="knob property-value" name="<?php echo $key; ?>" value="<?php if (!empty($val["value"])) echo $val["value"]; else echo 0;?>" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<textarea class="property-description"	name="<?php echo $key; ?>" placeholder="<?php echo Yii::t("chart","Describe this property") ?>"><?php if (!empty($val["description"])) echo $val["description"]; ?></textarea>
 								</div>
 							</div>
 					<?php 		
 							} 
 						} else { ?>
-							<div class="col-md-12 form-property">
+							<div class="col-md-12 col-sm-12 col-xs-12 form-property">
 								<div class="removeProperty hide"><span class="glyphicon glyphicon-remove"></span></div>
 								<h4>Gouvernance</h4>
 								<label for="properties" class="col-md-12 no-padding">
 									Ouverture en terme de décisions, de partenaires, de parties prenantes
 								</label>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<input class="knob property-value" name="gouvernance" value="0" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">	
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<textarea class="property-description"	name="gouvernance" placeholder="Describe this property"></textarea>
 								</div>
 							</div>
-							<div class="col-md-12 form-property">
+							<div class="col-md-12 col-sm-12 col-xs-12 form-property">
 								<div class="removeProperty hide"><span class="glyphicon glyphicon-remove"></span></div>
 								<h4>Partage</h4>
 								<label for="properties" class="col-md-12">
 									À combien le projet sert le bien communs?			
 								</label>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<input class="knob property-value" value="0" name="partage" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">	
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<textarea class="property-description"	name="partage" placeholder="Describe this property"></textarea>
 								</div>
 							</div>
-							<div class="col-md-12 form-property">
+							<div class="col-md-12 col-sm-12 col-xs-12 form-property">
 								<div class="removeProperty hide"><span class="glyphicon glyphicon-remove"></span></div>
 								<h4>Solidaire</h4>
 								<label for="properties" class="col-md-12 no-padding">
 									À quel point le projet est-il d'utilité sociale, du développement durable, etc.?
 								</label>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<input class="knob property-value" value="0" name="solidaire" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">	
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<textarea class="property-description"	name="solidaire" placeholder="Describe this property"></textarea>
 								</div>
 							</div>
-							<div class="col-md-12 form-property">
+							<div class="col-md-12 col-sm-12 col-xs-12 form-property">
 								<div class="removeProperty hide"><span class="glyphicon glyphicon-remove"></span></div>
 								<h4 style="text-align:center;width:200px;">Local</h4>
 								<label for="properties" class="col-md-12 no-padding">
 									Quel est l'impact géographique du projet?
 								</label>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<input class="knob property-value" value="0" name="local" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">			
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<textarea class="property-description"	name="local" placeholder="Describe this property"></textarea>
 								</div>
 							</div>
 							<?php } ?>
-							<div class="col-md-12">
-								<h4 style="text-align:center;width:200px;"></h4>
+							<div class="col-md-12 col-sm-12 col-xs-12 text-center margin-top-10">
+									<a href="javascript:;" class="text-green addProperties" style="width:80%;">
+										<i class="fa fa-plus"></i> <?php echo Yii::t("chart","Add a new property"); ?>
+									</a>
+								<!--<h4 style="text-align:center;width:200px;"></h4>
 									<div class="flexslider" style="margin-top:35px;">
 								<div id="infoPodOrga" class="padding-10">
 									<blockquote> 
-										<i class="fa fa-puzzle-piece fa-2x text-blue"></i>	<?php echo Yii::t("project","Add<br/>A new<br/>Property",null,Yii::app()->controller->module->id) ?>
+										<i class="fa fa-puzzle-piece fa-2x text-blue"></i>	<?php echo Yii::t("chart","Add<br/>A new<br/>Property") ?>
 										<br/>
-										<a href="#" class="addProperties" style="display: inline; opacity: 1; left: 0px;">
+										<a href="javascript" class="addProperties" style="display: inline; opacity: 1; left: 0px;">
 											<i class="fa fa-plus"></i> <?php echo Yii::t("common","ADD"); ?>
 										</a>
 									</blockquote>
 									
 								</div>
 								
-							</div>
+							</div>-->
 							</div>
 						</div>
-					
-					<div class="">
-						<div class="row center">
-			    	        <button class="btn btn-primary" >Enregistrer</button>
-						</div>
+					<hr class="col-md-12 col-sm-12 col-xs-12 no-padding">
+					<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+			    	        <button class="btn btn-success" style="width:80%;"><i class="fa fa-save"></i> <?php echo Yii::t("common","Save") ?></button>
 					</div>
 				</div>
 			</form>
@@ -245,23 +242,17 @@ jQuery(document).ready(function() {
 	knobInit();
     $(".addProperties").click(function(){
 	   newProperty=addNewProperties();
-	   $(this).parents().eq(3).before(newProperty);
+	   $(this).parents().eq(0).before(newProperty);
 	   knobInit(); 
 	   removeChartProperty();
     });
-	bindprojectSubViewchart();
+    $(".btn-start-chart").click(function(){
+		history.pushState(null, "New Title", hashUrlPage+".view.chart");
+		loadChart();
+	});
+	//bindprojectSubViewchart();
 	runChartFormValidation();
 	removeChartProperty();
-	$(".escapeForm").click(function(){
-		loadByHash("#element.detail.type.<?php echo $parentType ?>.id.<?php echo $parentId ?>");
-	});
-	/*!
-	  Non-Sucking Autogrow 1.1.1
-	  license: MIT
-	  author: Roman Pushkin
-	  https://github.com/ro31337/jquery.ns-autogrow
-	*/
-	
 });
 function runChartFormValidation() {
 	var formChart = $('.form-chart');
@@ -304,55 +295,51 @@ function runChartFormValidation() {
 		submitHandler : function(form) {
 			successHandler2.show();
 			errorHandler2.hide();
-			newChart = {};
+			var newChart = {};
 			newChart["open"] = {};
 			nbProperties=0;
 			$('.form-property').each(function(){
 				valueProperties = $(this).find(".property-value").val();
 				descriptionProperties = $(this).find(".property-description").val();
-				if($(this).find(".property-value").attr("name") == "newProjectProperty"){
-					nameProperties=$(this).find(".newLabelProperty").val();
-					//alert(nameProperties);
-					if(nameProperties.length){
+				if(valueProperties !=0 || descriptionProperties!=""){
+					if($(this).find(".property-value").attr("name") == "newProjectProperty"){
+						nameProperties=$(this).find(".newLabelProperty").val();
+						//alert(nameProperties);
+						if(nameProperties.length){
+							newChart["open"][nameProperties]={};
+							newProperties={"description": descriptionProperties, "value": valueProperties};
+							//newProperties={"label" : nameProperties , "value" : valueProperties};
+							newChart["open"][nameProperties]=newProperties;
+							nbProperties++;
+						}
+					}
+					else{
+						nameProperties = $(this).find(".property-value").attr("name");
 						newChart["open"][nameProperties]={};
+						newProperties = new Object;
 						newProperties={"description": descriptionProperties, "value": valueProperties};
-						//newProperties={"label" : nameProperties , "value" : valueProperties};
 						newChart["open"][nameProperties]=newProperties;
 						nbProperties++;
 					}
 				}
-				else{
-					nameProperties = $(this).find(".property-value").attr("name");
-					newChart["open"][nameProperties]={};
-					newProperties = new Object;
-					newProperties={"description": descriptionProperties, "value": valueProperties};
-					newChart["open"][nameProperties]=newProperties;
-					nbProperties++;
-				}
 			});
+			if(nbProperties == 0){
+					newChart="open";
+			}
 			console.log(newChart);
 			//mockjax simulates an ajax call
 			$.ajax({
 		        type: "POST",
 		        url: baseUrl+"/"+moduleId+'/chart/editchart',
 		        dataType : "json",
-		        data:{properties : newChart, id : parentId, type : parentType},
+		        data: {properties : newChart, id : parentId, type : parentType},
 				type:"POST",
 		    })
 		    .done(function (data,myNewChart) 
 		    {
 			   if (data.result==true) {   
-		        	toastr.success("<?php echo Yii::t("chart",substr($parentType,0,-1).'\'s properties succesfully update') ?>");
-		        	$.unblockUI();
-		        	//loadByHash("#element.detail.type.<?php echo $parentType ?>.id.<?php echo $parentId ?>");
-//					openMainPanelFromPanel( '/project/detail/id/'+projectId, 'Project : <?php if(@$projectName) echo addslashes($projectName) ?>',"fa-lightbulb-o", projectId );
-	//////// LAST FROM DEVELOPMENT ////////////////
-		        	/*var chartToLoad=true;
-		        	showElementPad("detail");
-		        	if(typeof updateChart != "undefined" && typeof updateChart == "function"){
-			        	updateChart(data.properties, data.properties.length);
-			        }*/
-	//////// ENND LAST FROM DEVELOPMENT /////////////
+			   		loadEditChart();
+		        	toastr.success("<?php echo Yii::t("chart",ucfirst(substr($parentType,0,-1)).'&#146;s values well updated') ?>");
 		        } else {
 		           toastr.error('Something Went Wrong');
 		        }
@@ -361,77 +348,41 @@ function runChartFormValidation() {
 	});
 };
 
-function bindprojectSubViewchart() {	
-	/*$(".edit-chart").off().on("click", function() {
-		subViewElement = $(this);
-		subViewContent = subViewElement.attr('href');
-		$.subview({
-			content : subViewContent,
-			onShow : function() {
-				editChart();
-			},
-			onHide : function() {
-				hideEditChart();
-			},
-			onSave: function() {
-				$(".form-chart").submit();
-			}
-		});
-	});
-	$(".close-subview-button").off().on("click", function(e) {
-		$(".close-subviews").trigger("click");
-		e.prinviteDefault();
-	});*/
-};
-
-/*var subViewElement, subViewContent, subViewIndex;
-function hideEditChart() {
-	openMainPanelFromPanel( '/project/detail/id/'+projectId, 'Project : <?php if(@$projectName) echo addslashes($projectName) ?>',"fa-lightbulb-o", projectId );
-};*/
 // enables the edit form 
-function editChart() {
+/*function editChart() {
 	$(".close-chart-edit").off().on("click", function() {
 		$(".back-subviews").trigger("click");
 	});
-};
+};*/
 function addNewProperties(){
-	$newProperty='<div class="col-md-12 form-property no-padding">'+
-				'<h4 style="text-align:center;width:200px;">Nouvelle propriété</h4>'+
-				'<div class="col-md-12">'+
-					'<label for="properties">'+
-						'Nom de la propriétés:'+
-					'</label>'+
-					'<input type="text" placeholder="Entrer l\'intitulé de la propriété" class="newLabelProperty form-control"/>'+
-	
-					'<input class="knob property-value" value="0" name="newProjectProperty" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">'+
-				'</div>'+		
-				'<div class="col-md-6">'+
-					'<textarea class="property-description"	name="newProjectProperty" placeholder="Describe this property"></textarea>'+
-				'</div>'+
+	$newProperty='<div class="col-md-12 col-sm-12 col-xs-12 form-property no-padding margin-top-10">'+
+					'<div class="removeProperty hide"><span class="glyphicon glyphicon-remove"></span></div>'+
+					'<h4 class="col-md-12 col-sm-12 col-xs-12 text-center"><?php echo Yii::t("chart", "New property") ?></h4>'+
+					'<div class="col-md-12 col-sm-12 col-xs-12">'+
+						'<div class="propertyName col-md-12 col-sm-12 col-xs-12 margin-bottom-10">'+
+							/*'<label class="pull-left col-md-4 col-sm-4 col-xs-12" for="properties">'+
+								"<?php echo Yii::t("chart", "Property's name") ?>:"+
+							'</label>'+*/
+							"<input type='text' placeholder='<?php echo Yii::t("chart", "Name of property") ?>' class='newLabelProperty form-control pull-left col-md-12 col-sm-12 col-xs-12'/>"+
+						'</div>'+
+						'<div class="col-md-6 col-sm-6 col-xs-12">'+
+							'<input class="knob property-value" value="0" name="newProjectProperty" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">'+
+						"</div>"+
+						'<div class="col-md-6 col-sm-6 col-xs-12">'+
+							'<textarea class="property-description"	name="newProjectProperty" placeholder="<?php echo Yii::t("chart","Describe this property") ?>"></textarea>'+
+						'</div>'+
+					'</div>'+		
 				'</div>';
 	return $newProperty;
 }
-/*function updateNewKnob(){
-	$(".newLabelProperty").each(function(){
-		nameProperty=$(this).val();
-		valueProperty=$(this).parent().find(".project-property").val();
-		replaceNewProperty='<div class="col-md-4 form-property">'+
-								'<div class="removeProperty hide">'+
-									'<span class="glyphicon glyphicon-remove"></span>'+
-								'</div>'+
-								'<h4 style="text-align:center;width:200px;">'+nameProperty+'</h4>'+
-								'<input class="knob project-property" name="'+nameProperty+'" value="'+valueProperty+'" data-fgcolor="#66EE66" data-anglearc="250" data-angleoffset="-125" style="height: 66px; position: absolute; vertical-align: middle; margin-top: 66px; margin-left: -152px; border: 0px none; background: transparent none repeat scroll 0% 0%; font: bold 40px Arial; text-align: center; color: rgb(102, 238, 102); padding: 0px;">'+
-							'</div>';
-		$(this).parent().replaceWith(replaceNewProperty);
-	});
-}*/
+
 function removeChartProperty(){
 	$(".form-property").mouseenter(function(){
 		$(this).addClass("borderHover").find(".removeProperty").removeClass("hide");
 	}).mouseleave(function(){
 		$(this).removeClass("borderHover").find(".removeProperty").addClass("hide");
 	});
-	$(".removeProperty").click(function(){
+	$(".removeProperty").off().on("click",function(){
 		$(this).parent().remove();
 	});
 }
@@ -511,7 +462,7 @@ function knobInit(){
 				        surveyObj : surveyObj,
 				        surveyValues : propertiesCommons,
 				        onLoad : function(){
-					        $(".description1, .description2, .description3, .description4, .description5, .description6").focus().autogrow({vertical: true, horizontal: false});
+					        //$(".description1, .description2, .description3, .description4, .description5, .description6").focus().autogrow({vertical: true, horizontal: false});
 				        },
 				        onSave : function(params) {
 							//console.dir( $(params.surveyId).serializeFormJSON() );
@@ -536,12 +487,7 @@ function knobInit(){
 				        	  data: {properties:result, id: parentId, type: parentType},
 				              dataType: "json"
 				        	}).done( function(data){
-				                toastr.success("<?php echo Yii::t("chart", "Project chart well updated") ?>");
-				                //loadByHash("#element.detail.type."+parentType+".id."+parentId);
-				               // if( afterDynBuildSave && typeof afterDynBuildSave == "function" )
-				                 //   afterDynBuildSave(data.map,data.id);
-				                console.info('saved successfully !');
-				
+				        		toastr.success("<?php echo Yii::t("chart",ucfirst(substr($parentType,0,-1)).'&#146;s values well updated') ?>");
 				        	});
 						},
 				        collection : "commonsChart",

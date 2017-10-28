@@ -6,7 +6,6 @@
 [ ] possibilité d'envoie un messsage entre conseil citoyen 
 [ ] Btn suggest sur co
 ‎   [ ]    Ajouter un participant type orga 
-[ ] Pano facon reparali 
 [ ] Invité par le phone
 [ ] partager le lien vers lappli dans l'email 
 
@@ -29,25 +28,17 @@ j'ai modifié la date de fin, mais ce projet reste dans "ancien projet"
     https://prerender.io/documentation
 
 * Global
+[.2] pouvoir ajouter des url d'image plutôt que d'uploader les photos ou le copier coller
 [.2] Ne plus etre bloquer pour ouvrir des pays => #1261, #323
   - utilisant le localiseur et une validation que tout est bon pour ajouter une city 
   - ouverture par pays validé en amont 
-
 [.2] internationalisation traduction
+
 [.2] la charte ethique en 10 pts 
   - Liberté 
   - respect total de l'autre 
   - un outil pur faire société 
-[.2] bouton share (Social) non intrusif 
 [.2 spec] reflechir First Connect , show notifications, hot news ....  
-[.2] pouvoir ajouter des url d'image plutôt que d'uploader les photos ou le copier coller
-[.2] code cleaning : => #634, #961, #755, #419
-  - typeSIG=ctrl=collection 
-  - Vocabulaire (proposal = action = rooms = action rooms...)
-  - theme => suppression des anciennes vues
-Refactor Directory2 vers Résultat de recherche
- - normaliser l'affichage de Directory2 (communauté) pour le mettre comme les resultats de recherche
- => #275, #493
 
  * Elements
 [.2] event + project : change organiser #632
@@ -62,19 +53,14 @@ Refactor Directory2 vers Résultat de recherche
 Report Abuse on element
 
 ** Event ideas 
+  [.2] Duplication d'event
   [.2] agenda : les events prennent pas la durée sur plusieurs jours
   [.2] affiché les event mois precedent et suivant
-
-  [.2] Duplication d'event
   [.21] Best place calculator : utilisant la position des participants
   [.2] parent Event : load param ajax : show only ongoing or event to come 
   When subevent , prefill location => #1017
   Type d'événement : liste ouverte #663
   Pouvoir choisir en lieu Online pour les events #663
-
-** Needs
-  [.2 spéc] Finir Besoin Ressource compétence () 
-  [.2 spec] visualisation de la banque des besoins =>#1260 + #490
 
 ** POI
   [.2] affiché sur la carte un type geoJson 
@@ -95,11 +81,534 @@ Report Abuse on element
 Notification intelligentes => 685
 Liste des notifications déjà lues => #370 #453
 
+* idea
+  [ ] menu > drop answers > show nb of members + nb of links
+  [ ] new menu List or shortcut: last visited links
+  [ ] add contributor or member, add a tag list option , could be used as roles or team filters
+ ** feature 
+  [ ] 4 question scrum : on organisation : 
+  [ ] offrir a tous : le ppt, slideshow intégré 
+  [ ] sur detail element montrer la filère , valoriser les tags
+  [ ] lifepath : ultra personnel tag
+    - can use POI's type lifepath > private | public
+    - can be used for following any item
+  [ ] Shop : Listing produit
+    [ ] listing en mode bullet points
+    [ ] POI type produit , prix 
+      [ ] subtype : sandwich plat 
+  ** interoperabilty + data mining : 
+    [ ] use FB social graph to mine events and organisation 
+  ** COMOBI
+    [ ] global phone app : btn add to communecter 
+      - activable anywhere on anything 
+        - FB link 
+        - url site 
+        - event (FB, Google) 
+  ** ERgonomie 
+    [ ] menuLeft dynamic avec l'activité 
+      - faire remonté les point menu qui ont des nouveauté
+  ** news 
+    @pitonStLeu, pouvoir référencer une commune
+  [ ] baniere ou image : remerciement, cité un auteur pour la réutilisation 
+  c'est le minimum dans le copytalisme 
+  ** Event communication 
+    [ ] comunicate an email like event@co.org anyone can add it to a mailing list 
+    the event would be added by someone 
+    [ ] in time this mail box could even become a task box that anyone could act upon
+  ** Open Science 
+    [ ] photo-identification collaborative : 
+      - créer group 
+      - POI + photo + hashtag en commun , ex : #baleineReunion
+      - Btn sameAs : open Search Box + find Element + choose name 
+      - Outside src : en regardant les photos, video de qlqun (FB, flickR...) 
+        > POI : #baleineREunion + url 
+  ** dynsurvey proposal 
+    - dynForm & dynSurvey Builder
+    - room > create survey as proposal 
+    - instead of voting, people will answer a answer
+    - each question can be of certain type 
+      - texte 
+      - values
+        - fixed
+        - percentage
+  ** Qui est là, Action en cours, Todo, Todo Perso  : dans un e communauté 
+    une vision à un temps t, de toutes les ressources d'une CO 
+      - en mode web 
+      - mobi
+  ** Keyboard nav
+    Ctrl + ? > opens floop > type > reduce selection
 * ************************************************************    
-* Version 0.2  : en cours
+* Version C0.21.8  : en cours
+8 correpsond le nb de nouvelle fonctionalité
+- DDA refactored
+- internationalisation
+- integration de rocket Chat 
+- creation de dossier sur les album 
+- mini GED avec upload de document
+- gestion des role sur les membres
+- traduction 
+- ??? module Tiers Lieux , Ressources
 * ************************************************************  
-** @Tib 
-  [ ] bug notragora
+
+* Action Terrain 
+  [ ] journée Biodiversité Pointoss coupe coupe l'accacia (Galabert)
+* Action Projet
+  *  COBUS
+    [ ] design 
+      - 16/08 point @steph 
+    [ ] install batterie RV @Charly
+    [ ] switch + test multi ordi 
+    [ ] generateur avec onduleur @Franky
+  * COMOBI
+  * interop 
+    [ ] connecté une autre instance CO en mode interop 
+    [ ] amélioré le checkExist au remplisage du input NAME
+      [ ] check also les reseaux FB , Google, twitter
+      [ ] remplir réseau sociaux 
+  * COPEDIA
+    [ ] intégré dans un projet global universitaire trans discipline
+    [ ] voir avec Fred Mesnard et David Grosser , comment l'intégrer dans le cursus , ou meme au LIM 
+  * FAI
+    [ ] rencontre avec martial 
+    [ ] TEster les antennes
+  * COPI + TIERS LIEUX
+  * Kiltir Lab 
+    * imprimante de quartier 
+      [ ] cout 199€ 
+      [ ] utilisateur 
+        [ ] personne ou asso 
+    * broyeur de quartier
+  * Ter Là 
+    [ ] {{@Tib}} : etudier interop avec des cart open source 
+    [ ] {{@Tib}} : contacter Anil voir 
+    [ ] {{@Geoffrey}} : Doc épuré 
+    [ ] Features
+      [X] Messagerie -> Rocket chat
+        [ ] creer une instance
+      [ ] Payement -> A faire 
+        [ ] mangoPay
+      [ ] Acceuil
+      [ ] La Carte
+      [ ] Sauvegarde -> Collection 
+      [ ] Facture + Contrat (Case à cocher) -> A faire (générateur pdf)
+      [ ] Les circuits ->  Search
+      [ ] Boutique -> POI + Vente en ligne + Stock (meme design que "Les circuits")
+      [ ] Integration du Design
+      [ ] Reservation N°1 : Etape
+              - Calendrier remplie d'event -> Page Agenda
+              - Utilisateur fait une réservation -> Dynform
+              - Le pro reçoit un mail avec le tel / email de l'user -> Envoie de mail
+              - Payement 
+      [ ] Cdc receptionné le 01/08/2017
+        [ ] Réunion de lancement 8/08 
+        [ ] Démarrage du projet prévu le seamine du 18 Sept
+
+* Communication 
+  [ ] passer la roadmap dans le Wiki
+  [ ] commencer une campagne d'adhésion à Open Atlas 
+  [ ] poster CO + smarterre , base de la gazette automatiser 
+
+* GFX 
+  ** @Edith 
+    [ ] Aide Design Site 
+    [ ] Aide Design de la Gazette 
+    [ ] Aide Plaquette 
+    [ ] Participation Design Local
+  ** @Steph 
+    [ ] Design deco du CoBus
+
+
+* idea
+  [ ] menu > drop answers > show nb of members + nb of links
+  [ ] new menu List or shortcut: last visited links
+  [ ] add contributor or member, add a tag list option , could be used as roles or team filters
+ ** feature 
+  [ ] 4 question scrum : on organisation : 
+  [ ] offrir a tous : le ppt, slideshow intégré 
+  [ ] sur detail element montrer la filère , valoriser les tags
+  [ ] lifepath : ultra personnel tag
+    - can use POI's type lifepath > private | public
+    - can be used for following any item
+  [ ] Shop : Listing produit
+    [ ] listing en mode bullet points
+    [ ] POI type produit , prix 
+      [ ] subtype : sandwich plat 
+  ** interoperabilty + data mining : 
+    [ ] use FB social graph to mine events and organisation 
+  ** COMOBI
+    [ ] global phone app : btn add to communecter 
+      - activable anywhere on anything 
+        - FB link 
+        - url site 
+        - event (FB, Google) 
+  ** ERgonomie 
+    [ ] menuLeft dynamic avec l'activité 
+      - faire remonté les point menu qui ont des nouveauté
+  ** news 
+    @pitonStLeu, pouvoir référencer une commune
+  [ ] baniere ou image : remerciement, cité un auteur pour la réutilisation 
+  c'est le minimum dans le copytalisme 
+  ** Event communication 
+    [ ] comunicate an email like event@co.org anyone can add it to a mailing list 
+    the event would be added by someone 
+    [ ] in time this mail box could even become a task box that anyone could act upon
+  ** Open Science 
+    [ ] photo-identification collaborative : 
+      - créer group 
+      - POI + photo + hashtag en commun , ex : #baleineReunion
+      - Btn sameAs : open Search Box + find Element + choose name 
+      - Outside src : en regardant les photos, video de qlqun (FB, flickR...) 
+        > POI : #baleineREunion + url 
+  ** dynsurvey proposal 
+    - dynForm & dynSurvey Builder
+    - room > create survey as proposal 
+    - instead of voting, people will answer a answer
+    - each question can be of certain type 
+      - texte 
+      - values
+        - fixed
+        - percentage
+  ** Page dédié sondage avec le module de proposition 
+    faire une page genre comme les change.org et autre 
+    on fait un appel , venez nombreux donner votre avis, proposer vos idées, ou jsute etre présent à l'appel
+    sur la question du : ....blah blah 
+  ** Qui est là, Action en cours, Todo, Todo Perso  : dans un e communauté 
+    une vision à un temps t, de toutes les ressources d'une CO 
+      - en mode web 
+      - mobi
+  ** menu configurable comme sur telephone , on click avatar
+    avec des widget , esay access links ...
+    possibilité de plusieurs panels
+  ** idea build dynform based on final json analysis (retro build)
+    - entry param is a structure similare 
+  ** export an Element as MD and import a structured MD file (to be defined)
+  ** PPT pres suivi du qui es tu :: 
+      - rempli qlq detail 
+      - et en avant
+* ************************************************************    
+* Version C0.22  : en cours
+* ************************************************************  
+  ** optim 
+    dynform Localiser
+      positionner direct sur ma localité 
+      btn validé disparait parfois
+      fonctionnalité des lieux (module places) 
+
+  ** @Tib
+:totest: [ ] logo de l'element dans le mail d'invite 
+          - co2/test/displayMail/id/59dc95b3dd0452f9308d4af7
+>>>> [ ] ajouter Thématique Sport
+>>>> [ ] when on a page , after login return to same page instead of personnal detail
+>>>> [ ] application launcher + activater like linux 
+[X] remake error in CO
+[X] loading configs from DB applications.key = "devParams || prodParams" > Application::loadDBAppConfig();  
+[ ] integration du system de paiement Mango
+  [ ] create User 
+  [ ] create User Wallet 
+  [ ] create Seller 
+  [ ] create seller wallet 
+  [ ] Payin Cash
+    [ ] creates a CardRegistration 
+  [ ] setle transaction 
+  [ ] build payment interface
+>>>> [ ] faciliter la création de page static 
+      [ ] avec du contenu MD
+      [ ] un slideshow MD
+    [X] json config builder 
+      - is just dynForm selector
+      - save allready gets the collection as a param in formatData
+        - any new saved Element must have a model and it's databinding at least 
+      [X] select type of config ex : "network"
+        - onclick : openForm of the given type 
+        - this way editing will also work
+      [X] subDynform : open a subDF from any DF
+        - similar to location process 
+        - on click opens a new modal with a dynform inside
+>>>>[ ] removing dynform classes from co.js and lazy load them
+>>>>[ ] check webpacking      
+>>>>[ ] suppression d'un element user type COEDitor
+>>>>[ ] bug : preview POI 
+>>>>[ ] add parent class to POI types
+      [ ] poi le saviez vous , a utiliser dans les chargements
+>>>>[ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
+>>>>[ ] presistent login issue ,  SSO ?
+    [ ] search fork the world > opens a preview POI > should have the parent link
+    [ ] verifier les qrcode 
+    [ ]  NA : supprimer
+      http://www.notragora.com/#element.detail.type.organizations.id.59020d90dd04528a627f4fb8 et http://www.notragora.com/#element.detail.type.organizations.id.5937fbe5dd045296372263a2 
+    [ ] bug effacement de latitude fruitiere [[https://www.communecter.org/#page.type.organizations.id.5718adb240bb4eeb271d6553.view.directory.dir.followers]]
+    [ ] request an open app system
+      - demande d'hébergement de tout les outils dégoogelisé 
+      - le prix peut etre proportionnel à la consommation 
+      - avec un reversement a chque commun utilisé
+    [ ] add filters in top bar mapEnd , near username
+    [ ] add delete to image upload  [[https://docs.fineuploader.com/quickstart/02-setting_options.html]]
+      - on Update l'image dans le form edit > pas possible de supprimer l'image qu'on a précédement ajouté 
+    * Finir module Tiers Lieux 
+      [ ] on events TL connecté url to visio 
+        [ ] partage de calendrier entre plusieurs TL connecté
+        [ ] show icons for quick access to ressources of a TL event
+        [ ] avoir des roles concirerge ...etc == RH
+          [ ] Compétence 
+        * features
+          [ ] Ressource [[[https://docs.google.com/drawings/d/17L1sZ0so3BHoV8fNclsCio9HflaAVkKP_Q1XhuUBhn4/edit]]]
+            [ ] temps de consommation d'une ressource
+            [ ] taux d'utilisation 
+          [ ] Besoin
+          [ ] Service 
+            [ ] Wifi , lit, bouffe, coworking, café
+    [ ] url city a transmettre 
+    [ ] dynform bookmarking using POI : add a url > Next > get content (voir avec tango kgougle )
+      [ ] dynform filling threw get content from url copied into name field
+    [ ] brique comeptence et tache sur mon profil 
+    [ ] réintégré la GEd de granddir 
+    [ ] losing session : rememberme
+    [ ] enable edit POI when open Edition 
+
+
+
+* ************************************************************    
+* Version CO.22.terlà  : en cours
+* ************************************************************  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* ************************************************************    
+* Version C0.21.8  : MEP
+8 correpsond le nb de nouvelle fonctionalité
+- DDA refactored
+- internationalisation
+- integration de rocket Chat 
+- creation de dossier sur les album 
+- mini GED avec upload de document
+- gestion des role sur les membres
+- traduction 
+- ??? module Tiers Lieux , Ressources
+* ************************************************************  
+
+* DEV
+  ** Todo 
+    [ ]  Api annonce
+  ** Amelioration during tests
+    [ ] redirect after error : go back to previous page , not "home" 
+    [ ] date devant le lien follow
+    [ ] click follow sur orga > msg : "Êtes-vous sûr de ne plus suivre cette personne ?"
+      [ ] removes the orga from list , why ????
+    [ ] bug msg non approprié : inviter qlqun 
+    [ ] clean up themes (cityBox, sig )
+    [ ] clean up recurrent logs 
+    [ ] url preview when sharing communecter
+    [ ] SEO optim
+   
+** Tib
+    * integrating Rocket Chat
+      [X] mode standalone : http://127.0.0.1/ph/co2/rocketchat/
+      [X] mode module : lbh('#chat')
+      [X] mode modal on elements : $("#rocketchatModal").modal('show')
+      [X] create group channel by Name 
+      [X] creer un user admin username "communecter" ou corail coralali coAdmin
+      [X] on orga page , btn > creates and opens RC group (private channel)
+        [X] groups always created by coAdmin 
+        [X] first user creates the room , but if another user tries to join it jsut does go , which doesn't work on groups 
+          [X] only Admins can create rooms
+          [X] if exists , check user list of channels, then decide go or invite process 
+        [X] check group existance before creation , otherwise just invite
+          [X] on demand : either we put a property on an element describing if corresponding exists or not 
+          [X] only members, have access 
+          [X] testing if non member has access to 
+        [X] after create invite all members to chat by notification
+      [X] try to optimise admin login using smart handling of header 
+      
+      [X] apply to projects and events
+      [X] on CO-login get RC loginToken
+      [ ] don't show chat if no loginToken
+      [X] integrate into CO 
+        [X] on element pages as modal 
+        [X] as a module in top menu 
+      [X] add redirect iframe to login + after login redirect to iframe
+      [X] how to use live chat :?layout=embedded
+      [X] preload iframe after login 
+      [X] changing organisation type open Edition or cloed > change room group or channel 
+[ ] base room on contextData.slug 
+      [X] changing slug > renames room
+      [X] getting chat notifictions [[https://rocket.chat/docs/developer-guides/iframe-integration/events]]
+      [ ] mutualiser les import RocketChat
+      ** test 
+        [X] check anymember can join the chat 
+        [ ] person changing username : changement de nom d'user d'un coté, il faut viré coté rocket chat profil et avatar pour pas pouvoir changer de nom d'user email avatar, et coté CO2 si changement appelle a /api/v1/users.update avec data.username data.email data.name https://rocket.chat/docs/developer-guides/rest-api/users/update
+      ** use cases 
+        [X] gloabal menu : module chat btn opens , all my chat rooms 
+        [X] any element page : open the elements channel 
+          [X] chat with members , or add all members 
+        [X] on someones page : show btn if connected, open the direct chat room
+          [X] when connection is billateral 
+            [X] connect one to one msg
+          [X] use as private message otherwise
+      ** ideas + amelioration
+        [ ] @all > would post a news on wall element
+        [ ] export chat history
+        [ ] pouvoir utiliser un rocket chat externe (only for admins)
+        [ ] add chat shortcut, maybe right click in directories , or floopdrwaer
+        [ ] build up visual tchat tree, showing all your channels , onclick a channel show who is inside 
+          -  could analyse participation by sizing face icon size
+      * -----------------------------------------
+  ** @Tib et @Tango 
+    [ ] lancé DDA sur plusieur communauté test
+      [ ] pour : CGPME (vienne sveloupoule@cpmereunion.re), nancy mine, Pref, Digi Reunion 
+      [ ] proposition pour 15 spetembre 
+        [ ] idée sur axe regionnaux 
+        [ ] nationaux 
+        [ ] filiere
+        [ ] échanges poser les questions
+        [ ] lister vos actions concrete
+    [ ] quick adder : copy link , set type 
+      - get page data > fill form > save 
+      - fill contact form 
+    *** usages
+      [ ] DDA is for members only ? preference ? 
+      [ ] utiliser le DDA pour les propositions de nouvelles fonctionnalités de CO
+    *** ideas features
+      * amélioration
+      [ ] pouvoir like ou qualifier un surlignage 
+      [ ] background Color nuance pour pondéré la force d'un commentaire ou amendement
+        - plus ou moins rouge si on est plus ou moins en désaccord 
+        - plus ou moins vert si on est plus ou moins en accord 
+      [ ] add short Desc :: dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 })
+      [ ] add DDA activity to journal 
+      [ ] in decision room > open proposal in preview to run through all proposals 
+      [ ] one room containing all DDAs instead create a room for each section
+      [ ] Tripple page 
+        [ ] think about a process stepper Discuss (can skip), Decide (can skip) Action (option) where nothing is mandatory 
+      [ ] intégrer aussi un partage de budget sur une proposition
+      [ ] convert proposal to project 
+      [ ] on a proposal open to crowdfunding > status : funding 
+        [ ] list objectives titles + description (medium) 
+        [ ] build pixel funding
+        [ ] particpation join and get involved / share budget 
+        [ ] if obtained > projects status : implementation
+        [ ] project tasking / actions
+        [ ] when all done status : finished 
+      [ ] what about Document, Discuss, Decide, Act = 3D.A
+  ** @tango
+  [ ] connecter le form mail au membres d'un groupe
+  ** @Bouboule
+  [ ] add HTML5 notifications
+  [ ] Finir Besoin Ressource compétence () [commencer]
+  [ ] visualisation de la banque des besoins =>#1260 + #490
+  [ ] msg mail sur un groupe sur les @ dans les news, et @all (send message on notify someone) 
+    [ ] create notification for @all
+  [ ] NEWS
+    [ ]Rework @ for same working mobile [#192]
+    [ ] générer des pseudoUnique pour le mention et aussi pour générer de jolie url communecter.org/livincoop
+    [ ] Add # in news text
+    [ ] Show who like the news and separte action and views pod comment/like/unlike
+    [X] Template gallerie files
+  [ ] Integrating notifications of dda with @tango
+  [X] News design of laoding
+  [X] Translate website (get spanish trad from poupou or others)
+    [ ] Create template of co-working on language translation and add language (wishlist)
+  [X] Banniere rework 
+    [X] Save cropping with no modficiation
+    [X] Save and redimension main image as 1100*700  
+    [X] Limitation of 300px*100px
+    [X] Create normal banniere image, rezized/banner.png and thumb for album
+    [X] LightBox for banner and profil
+  [X] Portefolio
+    [X] Create folder albums
+    [X] Move file to album
+    [X] Arborescente navigation into folder  
+    [X] Gallery
+      [X] Delete photos + delete current profile and cover photos
+      [X] Edit document => title on photo
+    [X] Portefolio - Library - Documentations -bookmarks
+      [X] Add file type pdf-excell-ppt-word-libreoffice
+      [X] Urls dynform process with extract process
+      [X] Bookmarks (tags organization)
+      [X] Document view 
+      [X] Delete documents and urls
+    [X] Merge collections inside portefolio
+    [X] addPhoto & addFile => can share as news
+    [ ] add extract image on bookmark 
+  [X] Roles
+    [X] Open organizations to event only for admin
+    [X] Add roles (prefine and free) in addMultiMembers and in links (Database)
+    [X] List of role by contextType (json or ctk)
+    [X] Edit role in directory if admin
+    [X] filter roles (tags in directory) 
+  [ ] Get preferences of email 
+  [ ] Create more email
+  [ ] faire le point sur l'evaluation des communs
+  [ ] idée 
+    [ ]  sur les valeurs pouvoir ajouter une image sur chaque valeur pourrait etre un peu plus sexy
+        et l'autre option proposé par maia, rajouter une liste fixe de mot sur chacune des 6sections du survey de Simon
+    [X] pour le 31/8 : sur un event ou une orga 
+      pouvoir ajouté les personnes ou orga qui font l'event , 
+      ou qui sont partenaires yaurait simplement un lien Organisation dans ces 2 type event et orga 
+  [X] Ajouter les roles en attribut des links
+  ** @Rapha 
+  [ ] internationalisation 
+    [ ] Barcelone
+    [ ] ajout des villes libre
+    [ ] modification villes via dynform 
+    [ ] ajout ville via import import 
+    [ ] traduction EN + ES
+  [ ] network 
+    [ ] refactor cleanup 
+    [ ] simplifier l'ergonomie 
+      [ ] btn plus
+      [ ] filtres
+      [ ] liste 
+      [ ] affiche au load 
+      [ ] lazyload 
+  ** @Damien 
+    [ ] coopedia
+      [ ] sortir comme une appli 
+      [ ] etat pour mettre en prod ?
+      [ ] orga TER
+>>>>[ ] tags 
+>>>>[ ] converter RSS + jsonFeed
+    [ ] opendata sources + interop
+      [ ] connecter des scripts api 
+        [ ] scope geo
+        [ ] thematique ou tag 
+        [ ] perso
+  ** @Daniel
+    [ ] SSO
+  ** @Marc 
+    [ ] wikimedia
+  ** @Christopher
+    [ ] nextclowd
+    [ ] DEV et QA sur server privé
+  ** @Thomas 
+    [ ] interoperabilté Rocket Chat 
+    [ ] COMOBI en PROD
+  
+* ************************************************************    
+* Version 0.2  : MEQA, MEP 17/07
+* ************************************************************  
+** @Tib
+[ ] on previews , activate keyboard navigation
+[X] personne.annonce > n'ouvre pas preview
+[X] ouvrir POI dans PREVIEW
+[ ] je peux ajouter une annonce sur un autre user ????
+[ ] ajouté POI sur all elements
+[X] Modifier annonce pour un citoyen formulaire pas afficher [[https://github.com/pixelhumain/co2/issues/213]]
+[ ] annonces url standalone
+  [ ] dynform : apostrophe dans les nom des suggestions 
+  [ ] not loggued > open dynform > login > opens dynform > should reload top bar as well 
+
+  [X] bug notragora
   [X] email communecter 
   [ ] tiers lieux ressources
     [ ] créer directement le lieux from create 
@@ -192,7 +701,7 @@ Liste des notifications déjà lues => #370 #453
   [.2] finir la belgique => #1259
   * DynForm
   [ ] Refactor DynForm
-    [X] typeObjLib
+    [X] dyFInputs
     [ ] Refactor Editable
       [ ] Organiser a géré
       [ ] Nettoyer le code inutile
@@ -963,7 +1472,7 @@ Liste des notifications déjà lues => #370 #453
     [ ] script devlog pour ajouter updated sur les anciennes data 
     [ ] reparer le click du milieu
         - en mettant simplement notre hash dans le href
-    [ ] refactor links.url.loadByHash + chemin dans href
+    [ ] refactor links.urlCtrl.loadByHash + chemin dans href
     [ ] search and filter tag engine
     [ ] wisiwig sur les desc de form create
     [ ] markdown editor sur les desc de form create using bootstrap-markdown ex : in projectsv.php

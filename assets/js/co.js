@@ -3,22 +3,22 @@ var prevStep = 0;
 var steps = ["explain1","live","explain2","event","explain3","orga","explain4","project","explain5","person"];
 var slides = {
 	explain1 : function() { showDefinition("explainCommunectMe")},
-	live : function() { url.loadByHash("#default.live")},
+	live : function() { urlCtrl.loadByHash("#default.live")},
 	explain2 : function() { showDefinition("explainCartographiedeReseau")},
-	event : function() { url.loadByHash("#event.detail.id.57bb4078f6ca47cb6c8b457d")}, 
+	event : function() { urlCtrl.loadByHash("#event.detail.id.57bb4078f6ca47cb6c8b457d")}, 
 	explain3 : function() { showDefinition("explainDemoPart")},
-	orga : function() { url.loadByHash("#organization.detail.id.57553776f6ca47b37da93c2d")}, 
+	orga : function() { urlCtrl.loadByHash("#organization.detail.id.57553776f6ca47b37da93c2d")}, 
 	explain4 : function() { showDefinition("explainCommunecter")},
-	project : function() { url.loadByHash("#project.detail.id.56c1a474f6ca47a8378b45ef")},
+	project : function() { urlCtrl.loadByHash("#project.detail.id.56c1a474f6ca47a8378b45ef")},
 	explain5 : function() { showDefinition("explainProxicity")},
-	person : function() { url.loadByHash("#person.detail.id.54eda798f6b95cb404000903")} 
+	person : function() { urlCtrl.loadByHash("#person.detail.id.54eda798f6b95cb404000903")} 
 };
 
 function runslide(cmd)
 {
 	if(cmd == 0){
 		prevStep = null;
-		url.loadByHash("#default.live");
+		urlCtrl.loadByHash("#default.live");
 	}
 
 	if( prevStep != null ){
@@ -38,7 +38,7 @@ function checkPoll(){
 	if(userId){
 		_checkLoggued();
 		if(typeof refreshNotifications != "undefined")
-		refreshNotifications();
+		refreshNotifications(userId,"citoyens","");
 	}
 	
 	//according to the loaded page 
@@ -51,39 +51,71 @@ function checkPoll(){
 		countPoll++;
 	}
 }
-
+function setLanguage(lang){
+	$.cookie('lang', lang, { expires: 365, path: "/" });
+	toastr.success("Changement de la langue en cours");
+	//window.reloadurlCtrl.loadByHash(location.hash);
+	location.reload();
+}
+var watchThis = null;
 function bindRightClicks() { 
 	$.contextMenu({
 	    selector: ".add2fav",
         build: function($trigger, e) {
         	if(userId){
-        		var validElems = ["#element","#organization","#project","#event","#person","#element","#survey","#rooms"];
+        		var validElems = ["#element", "#page","#organization","#project","#event","#person","#element","#survey","#rooms"];
         		href = $trigger[0].hash.split(".");
         		if($.inArray(href[0],validElems) >=0 ){
-		        	var what = ( href[0] == "#element" ) ? href[3] : typeObj[ href[0].substring(1) ].col; 
-					var	id = ( href[0] == "#element" ) ? href[5] : href[3];
+        			if(href[0] == "#element"){
+		        		var what = href[3]; 
+						var	id = href[5];
+					}else if (href[0] == "#page"){
+						var what = href[2]; 
+						var	id = href[4];
+					}else{
+						var what = typeObj[ href[0].substring(1) ].col; 
+						var	id =  href[3];
+					}
 				}
-				//console.log(href,href[0],what,id);
+				/*console.log( $(this)[0].class );
+				watchThis = {
+					t : $(this),
+					tr : $trigger
+				};*/
 				var btns = {
+					/*
+					todo : how remove if can't edit 
+					would like to use a class but can't find how to get the content of the class attribute
+					ask TKA
+					editThis : {
+						name: trad.edit,
+			        	icon: "fa-pencil", 
+			        	callback: function(key, opt){ 
+					        dyFObj.editElement( what , id );
+			        	}
+					},*/
 					openInNewTab : {
 						name: "Ouvrir dans un nouvel onglet",
 			        	icon: "fa-arrow-circle-right", 
 			        	callback: function(key, opt){ 
-					        	window.open($trigger[0].hash, '_blank');
+					        window.open($trigger[0].hash, '_blank');
 			        	}
 					}
 				};
 	        	$.each( userConnected.collections, function (col,list) { 
 	        		btns[col] = { 
 			        	name: function($element, key, item){ 
-		        			var str = "Ajouter à "+col;
+			        		nameCol=col;
+			        		if(col=="favorites")
+			        			nameCol="mes favoris";
+		        			var str = "Ajouter à "+nameCol;
 		        			//console.log(col,what,id);
 		        			if( notNull( userConnected.collections[col]) && notNull( userConnected.collections[col][what] ) && notNull( userConnected.collections[col][what][id]) ) 
-		        				str = "Retirer de "+col;
+		        				str = "Retirer de "+nameCol;
 		        			return str; 
 		        		},
 			        	icon: "fa-folder-open", 
-			        	callback: function(key, opt){ 
+			        	callback: function(key, opt){
 				        	if( notNull( what )&& notNull( id ) ){
 					        	collection.add2fav( what,id,col );
 							}
@@ -126,6 +158,40 @@ function bindRightClicks() {
 	    }
 	});
 }
+function linkify(inputText) {
+    var replacedText, replacePattern1, replacePattern2, replacePattern3;
+
+    //URLs starting with http://, https://, or ftp://
+    replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+
+    //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+    replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+
+    //Change email addresses to mailto:: links.
+    replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+    replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+
+    return replacedText;
+}
+function addslashes(str) {
+	  //  discuss at: http://phpjs.org/functions/addslashes/
+	  // original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+	  // improved by: Ates Goral (http://magnetiq.com)
+	  // improved by: marrtins
+	  // improved by: Nate
+	  // improved by: Onno Marsman
+	  // improved by: Brett Zamir (http://brett-zamir.me)
+	  // improved by: Oskar Larsson Högfeldt (http://oskar-lh.name/)
+	  //    input by: Denny Wardhana
+	  //   example 1: addslashes("kevin's birthday");
+	  //   returns 1: "kevin\\'s birthday"
+
+	  return (str + '')
+		.replace(/[\\"']/g, '\\$&')
+		.replace(/\u0000/g, '\\0');
+	}
 /* *************************** */
 /* instance du menu questionnaire*/
 /* *************************** */
@@ -182,7 +248,7 @@ function openModal(key,collection,id,tpl,savePath,isSub){
 	});
 }
 
-function updateField(type,id,name,value,reload){ 
+function updateField(type,id,name,value,reload, toastr){ 
     	
 	$.ajax({
 	  type: "POST",
@@ -190,9 +256,10 @@ function updateField(type,id,name,value,reload){
 	  data: { "pk" : id ,"name" : name, value : value },
 	  success: function(data){
 		if(data.result) {
-        	toastr.success(data.msg);
+			if(toastr==null)
+        		toastr.success(data.msg);
         	if(reload)
-        		url.loadByHash(location.hash);
+        		urlCtrl.loadByHash(location.hash);
 		}
         else
         	toastr.error(data.msg);  
@@ -200,7 +267,23 @@ function updateField(type,id,name,value,reload){
 	  dataType: "json"
 	});
 }
+function addslashes(str) {
+	  //  discuss at: http://phpjs.org/functions/addslashes/
+	  // original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+	  // improved by: Ates Goral (http://magnetiq.com)
+	  // improved by: marrtins
+	  // improved by: Nate
+	  // improved by: Onno Marsman
+	  // improved by: Brett Zamir (http://brett-zamir.me)
+	  // improved by: Oskar Larsson Högfeldt (http://oskar-lh.name/)
+	  //    input by: Denny Wardhana
+	  //   example 1: addslashes("kevin's birthday");
+	  //   returns 1: "kevin\\'s birthday"
 
+	  return (str + '')
+		.replace(/[\\"']/g, '\\$&')
+		.replace(/\u0000/g, '\\0');
+	}
 /* *************************** */
 /* global JS tools */
 /* *************************** */
@@ -294,8 +377,8 @@ function connectPerson(connectUserId, callback)
 
 
 
-function disconnectTo(parentType,parentId,childId,childType,connectType, callback) {
-	var messageBox = trad["removeconnection"];
+function disconnectTo(parentType,parentId,childId,childType,connectType, callback, linkOption) {
+	var messageBox = trad["removeconnection"+connectType];
 	$(".disconnectBtnIcon").removeClass("fa-unlink").addClass("fa-spinner fa-spin");
 	var formData = {
 		"childId" : childId,
@@ -304,6 +387,8 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 		"parentId" : parentId,
 		"connectType" : connectType,
 	};
+	if(typeof linkOption != "undefined" && linkOption)
+		formData.linkOption=linkOption;
 	bootbox.dialog({
         onEscape: function() {
             $(".disconnectBtnIcon").removeClass("fa-spinner fa-spin").addClass("fa-unlink");
@@ -332,7 +417,7 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 								if (typeof callback == "function") 
 									callback();
 								else
-									url.loadByHash(location.hash);
+									urlCtrl.loadByHash(location.hash);
 							} else {
 							   toastr.error("You leave succesfully");
 							}
@@ -372,7 +457,7 @@ function validateConnection(parentType, parentId, childId, childType, linkOption
 					callback(parentType, parentId, childId, childType, linkOption);
 				else{
 					toastr.success(data.msg);
-					url.loadByHash(location.hash);
+					urlCtrl.loadByHash(location.hash);
 				}
 
 			} else {
@@ -381,7 +466,9 @@ function validateConnection(parentType, parentId, childId, childType, linkOption
 		},
 	});  
 }
+
 function follow(parentType, parentId, childId, childType, callback){
+	mylog.log("follow",parentType, parentId, childId, childType, callback);
 	$(".followBtn").removeClass("fa-link").addClass("fa-spinner fa-spin");
 	var formData = {
 		"childId" : childId,
@@ -402,13 +489,14 @@ function follow(parentType, parentId, childId, childType, callback){
 				if (typeof callback == "function") 
 					callback();
 				else
-					url.loadByHash(location.hash);
+					urlCtrl.loadByHash(location.hash);
 			}
 			else
 				toastr.error(data.msg);
 		},
 	});
 }
+
 function connectTo(parentType, parentId, childId, childType, connectType, parentName, actionAdmin) {
 	if(parentType=="events" && connectType=="attendee")
 		$(".connectBtn").removeClass("fa-link").addClass("fa-spinner fa-spin");
@@ -432,12 +520,12 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
                 message: '<div class="row">  ' +
                     '<div class="col-md-12"> ' +
                     '<form class="form-horizontal"> ' +
-                    '<label class="col-md-4 control-label" for="awesomeness">'+trad["areyouadmin"]+'?</label> ' +
+                    '<label class="col-md-4 control-label" for="awesomeness">'+tradDynForm.wouldbecomeadmin+'?</label> ' +
                     '<div class="col-md-4"> <div class="radio"> <label for="awesomeness-0"> ' +
                     '<input type="radio" name="awesomeness" id="awesomeness-0" value="admin"> ' +
-                    trad["yes"]+' </label> ' +
+                    tradDynForm.yes+' </label> ' +
                     '</div><div class="radio"> <label for="awesomeness-1"> ' +
-                    '<input type="radio" name="awesomeness" id="awesomeness-1" value="'+connectType+'" checked="checked"> '+trad["no"]+' </label> ' +
+                    '<input type="radio" name="awesomeness" id="awesomeness-1" value="'+connectType+'" checked="checked"> '+tradDynForm.no+' </label> ' +
                     '</div> ' +
                     '</div> </div>' +
                     '</form></div></div>',
@@ -462,7 +550,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 									if(data.result){
 										addFloopEntity(data.parent["_id"]["$id"], data.parentType, data.parent);
 										toastr.success(data.msg);	
-										url.loadByHash(location.hash);
+										urlCtrl.loadByHash(location.hash);
 									}
 									else{
 										if(typeof(data.type)!="undefined" && data.type=="info")
@@ -505,13 +593,13 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
                             $.ajax({
 								type: "POST",
 								url: baseUrl+"/"+moduleId+"/link/connect",
-								data: formData,
+								data: formData,	
 								dataType: "json",
 								success: function(data) {
 									if(data.result){
 										addFloopEntity(data.parent["_id"]["$id"], data.parentType, data.parent);
 										toastr.success(data.msg);	
-										url.loadByHash(location.hash);
+										urlCtrl.loadByHash(location.hash);
 									}
 									else{
 										if(typeof(data.type)!="undefined" && data.type=="info")
@@ -537,52 +625,90 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 }		
 
 var CoAllReadyLoad = false;
-var url = {
+var urlCtrl = {
+	afterLoad : null,
 	loadableUrls : {
+		"#modal." : {title:'OPEN in Modal'},
+		"#event.calendarview" : {title:"EVENT CALENDAR ", icon : "calendar"},
+		"#city.opendata" : {title:'STATISTICS ', icon : 'line-chart' },
+	    "#person.telegram" : {title:'CONTACT PERSON VIA TELEGRAM ', icon : 'send' },
+	    "#event.detail" : {aliasParam: "#page.type.events.id.$id", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
+	    "#poi.detail" : {aliasParam: "#page.type.poi.id.$id", params: ["id"],title:'POI DETAIL ', icon : 'calendar' },
+	    "#organization.detail" : {aliasParam: "#page.type.organizations.id.$id", params: ["id"],title:'ORGANIZATION DETAIL ', icon : 'users' },
+	    "#project.detail" : {aliasParam: "#page.type.projects.id.$id", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
+	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
+	    "#event.directory" : {aliasParam: "#page.type.events.id.$id.view.directory.dir.attendees", params: ["id"],title:'EVENT DETAIL ', icon : 'calendar' },
+	    "#organization.directory" : {aliasParam: "#page.type.organizations.id.$id.view.directory.dir.members", params: ["id"],title:'ORGANIZATION DETAIL ', icon : 'users' },
+	    "#project.directory" : {aliasParam: "#page.type.projects.id.$id.view.directory.dir.contributors", params: ["id"], title:'PROJECT DETAIL ', icon : 'lightbulb-o' },
+	    "#news.detail" : {aliasParam: "#page.type.news.id.$id", params: ["id"], title:'NEWS', icon : 'rss' },
+	    "#news.index" : {aliasParam: "#page.type.$type.id.$id", params: ["type","id"], title:'NEWS', icon : 'rss' },
+	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
+	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
+	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
+	    //"#news.detail" : {title:'NEWS DETAIL ', icon : 'rss' },
+	    //"#news.index.type" : {title:'NEWS INDEX ', icon : 'rss', menuId:"menu-btn-news-network","urlExtraParam":"isFirst=1" },
+	    "#need.detail" : {title:'NEED DETAIL ', icon : 'cubes' },
+	    "#need.addneedsv" : {title:'NEED DETAIL ', icon : 'cubes' },
+	    "#city.creategraph" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
+	    "#city.graphcity" : {title:'CITY ', icon : 'university', menuId:"btn-geoloc-auto-menu" },
+	    "#city.statisticPopulation" : {title:'CITY ', icon : 'university' },
+	    "#rooms.index.type.cities" : {title:'ACTION ROOMS ', icon : 'cubes', menuId:"btn-citizen-council-commun"},
+	    "#rooms.editroom" : {title:'ADD A ROOM ', icon : 'plus', action:function(){ editRoomSV ();	}},
+		"#element.aroundme" : {title:"Around me" , icon : 'crosshairs', menuId:"menu-btn-around-me"},
+	    "#element.notifications" : {title:'DETAIL ENTITY', icon : 'legal'},
+	    "#person.settings" : {title:'DETAIL ENTITY', icon : 'legal'},
+	    "#person.invite" : {title:'DETAIL ENTITY', icon : 'legal'},
+		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
+	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
+	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
+
+	    "#admin.checkgeocodage" : {title:'CHECKGEOCODAGE ', icon : 'download', useHeader: true},
+	    "#admin.openagenda" : {title:'OPENAGENDA ', icon : 'download', useHeader: true},
+	    "#admin.adddata" : {title:'ADDDATA ', icon : 'download', useHeader: true},
+	    "#admin.importdata" : {title:'IMPORT DATA ', icon : 'download', useHeader: true},
+	    "#admin.index" : {title:'IMPORT DATA ', icon : 'download', useHeader: true},
+	    "#admin.cities" : {title:'CITIES ', icon : 'university', useHeader: true},
+	    "#admin.sourceadmin" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
+	    "#admin.checkcities" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
+	    "#admin.directory" : {title:'IMPORT DATA ', icon : 'download', useHeader: true},
+	    "#admin.mailerrordashboard" : {title:'MAIL ERROR ', icon : 'download', useHeader: true},
+	    "#admin.moderate" : {title:'MODERATE ', icon : 'download', useHeader: true},
+	    "#admin.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader: true},
+		"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus', useHeader: true},
+	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
+	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : true},
+	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : true},
+	   	"#adminpublic.interopproposed" : {title : 'INTEROP PROPOSED', icon : 'download', useHeader : true},
+	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
+	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
+	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
+	    "#default.agenda" : {title:'COMMUNECTED AGENDA ', icon : 'calendar', menuId:"menu-btn-agenda"},
+		"#default.home" : {title:'COMMUNECTED HOME ', icon : 'home',"menu":"homeShortcuts"},
+		"#default.apropos" : {title:'COMMUNECTED HOME ', icon : 'star',"menu":"homeShortcuts"},
+		"#default.twostepregister" : {title:'TWO STEP REGISTER', icon : 'home', "menu":"homeShortcuts"},
+		"#default.view.page" : {title:'Découvrir', icon : 'file-o'},
+		"#home" : {"alias":"#default.home"},
+	    "#stat.chartglobal" : {title:'STATISTICS ', icon : 'bar-chart'},
+	    "#stat.chartlogs" : {title:'STATISTICS ', icon : 'bar-chart'},
+	    "#default.live" : {title:"FLUX'Direct" , icon : 'heartbeat', menuId:"menu-btn-live"},
+		"#default.login" : {title:'COMMUNECTED AGENDA ', icon : 'calendar'},
+		"#showTagOnMap.tag" : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showTagOnMap(hash.split('.')[2])	} },
+		"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
+		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
+		"#opendata" : {"alias":"#data.index"},
+		"#interoperability.copedia" : {title:'COPEDIA', icon : 'fa-folder-open-o','useHeader' : true},
+		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o','useHeader' : true},
+
+
+		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) }, removeAfterLoad : true },
 	},
-	short : {
-		"citoyens" : "p",
-		"poi" : "poi",
-		"siteurl":"s",
-		"organizations" : "o",
-		"events" : "e",
-		"projects" : "pr",
-		"cities" : "c",
-		"classified":"cl"
-		/*"entry" : "s",
-		"vote" : "v",
-		"action" : "a",
-		"rooms" : "r",*/
-	},
-	shortVal : [
-		"p",
-		"poi",
-		"s",
-		"o",
-		"e",
-		"pr",
-		"c",
-		"cl"
-		/*"entry" : "s",
-		"vote" : "v",
-		"action" : "a",
-		"rooms" : "r",*/
-	],
-	shortKey : [
-		"citoyens",
-		"poi" ,
-		"siteurl",
-		"organizations",
-		"events",
-		"projects" ,
-		"cities" ,
-		"classified"
-		/*"entry" : "s",
-		"vote" : "v",
-		"action" : "a",
-		"rooms" : "r",*/
-	],
+	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
+	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
 	map : function (hash) {
+		if(typeof hash == "undefined") return { hash : "#",
+												type : "",
+												id : ""
+											};
 		hashT = hash.split('.');
 		return {
 			hash : hash,
@@ -599,33 +725,40 @@ var url = {
 	checkAndConvert : function (hash) {
 		hashT = hash.split('_');
 		mylog.log("-------checkAndConvert : ",hash,hashT);
-		pos = $.inArray( hashT[0].substring(1) , url.shortVal );
+		pos = $.inArray( hashT[0].substring(1) , urlCtrl.shortVal );
 		if( pos >= 0 ){
-			type = url.shortKey[pos];
+			type = urlCtrl.shortKey[pos];
 			hash =  "#page.type."+type+".id."+hashT[1];
 			mylog.log("converted hash : ",hash);
 		} 
 		return hash;
 	},
 	jsController : function (hash){
-		hash = url.checkAndConvert(hash);
+		mylog.log("jsController", hash);
+		hash = urlCtrl.checkAndConvert(hash);
+		//alert("jsController"+hash);
 		mylog.log("jsController",hash);
 		res = false;
 		$(".menuShortcuts").addClass("hide");
-		mylog.log("url.loadableUrls", url.loadableUrls);
-		$.each( url.loadableUrls, function(urlIndex,urlObj)
+		//mylog.log("urlCtrl.loadableUrls", urlCtrl.loadableUrls);
+		$.each( urlCtrl.loadableUrls, function(urlIndex,urlObj)
 		{
 			//mylog.log("replaceAndShow2",urlIndex);
 			if( hash.indexOf(urlIndex) >= 0 )
 			{
+				if(urlObj.goto){
+					window.location.href = urlObj.goto;
+					return false;
+				}
 				checkMenu(urlObj, hash);
 			
-				endPoint = url.loadableUrls[urlIndex];
+				endPoint = urlCtrl.loadableUrls[urlIndex];
 				mylog.log("jsController 2",endPoint,"login",endPoint.login,endPoint.hash );
-				if( typeof endPoint.login == undefined || !endPoint.login || ( endPoint.login && userId ) ){
+				if( typeof endPoint.login == undefined || !endPoint.login || ( endPoint.login && userId ) )
+				{
 					//alises are renaming of urls example default.home could be #home
 					if( endPoint.alias ){
-						endPoint = url.jsController(endPoint.alias);
+						endPoint = urlCtrl.jsController(endPoint.alias);
 						return false;
 					} 
 					if( endPoint.aliasParam ){
@@ -638,8 +771,8 @@ var url = {
 									alias = alias.replace("$"+v, paramId);
 								}
 							});
-						});		
-						endPoint = url.jsController(alias);	
+						});
+						endPoint = urlCtrl.jsController(alias);	
 						return false;
 					} 
 					// an action can be connected to a url, and executed
@@ -665,12 +798,24 @@ var url = {
 						if(extraParams.indexOf("#") >= 0){
 							extraParams=extraParams.replace( "#","%hash%" );
 						}
-						path = url.convertToPath(hash);
-						showAjaxPanel( '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res );
+						path = urlCtrl.convertToPath(hash);
+						pathT = path.split('/');
+						//open path in a modal (#openModal)
+						if(pathT[0] == "modal"){
+							path = path.substring(5);
+							alert(baseUrl+'/'+moduleId+path);
+							smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+path);
+						} else
+							showAjaxPanel( '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res,endPoint );
 						
 						if(endPoint.menu)
 							$("."+endPoint.menu).removeClass("hide");
-					}
+
+						if(endPoint.removeAfterLoad){
+							//alert("removeAfterLoad 1");
+							history.pushState('', document.title, window.location.pathname);
+						}
+					} 
 					res = true;
 					return false;
 				} else {
@@ -679,7 +824,8 @@ var url = {
 					resetUnlogguedTopBar();
 					res = true;
 				}
-			}
+			} /*else 
+				alert("hash not found");*/
 		});
 		return res;
 	},
@@ -687,15 +833,20 @@ var url = {
 	//back sert juste a differencier un load avec le back btn
 	//ne sert plus, juste a savoir d'ou vient drait l'appel
 	loadByHash : function ( hash , back ) {
-		/* court circuit du lbh pour changer le type du directory si on est déjà sur une page directory */
 		// mylog.log("IS DIRECTORY ? ", 
 		// 			hash.indexOf("#default.directory"), 
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
+		onchangeClick=false;
+		navInSlug=false;
+		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
+			mylog.log("globalTheme", globalTheme);
 			if( hash.indexOf("#network") >= 0 &&
 				location.hash.indexOf("#network") >= 0 || hash=="#" || hash==""){ 
+				mylog.log("network");
 			}
 			else{
+				mylog.log("network2");
 				count=$(".breadcrumAnchor").length;
 				//case on reload view
 				if(count==0)
@@ -715,14 +866,17 @@ var url = {
 			setHeaderDirectory(type);
 			loadingData = false;
 			startSearch(0, indexStepInit, ( notNull(searchCallback) ) ? searchCallback : null );
+			mylog.log("testnetwork hash 2", hash);
 			location.hash = hash;
 			return;
 		}
-
 		currentUrl = hash;
 		allReadyLoad = true;
 		CoAllReadyLoad = true;
-		contextData = null;
+		if( typeof urlCtrl.loadableUrls[hash] == "undefined" || 
+			typeof urlCtrl.loadableUrls[hash].emptyContextData == "undefined" || 
+			urlCtrl.loadableUrls[hash].emptyContextData == true )
+			contextData = null;
 
 		$(".my-main-container").off()
 							   .bind("scroll", function () {shadowOnHeader()})
@@ -731,26 +885,38 @@ var url = {
 		$(".searchIcon").removeClass("fa-file-text-o").addClass("fa-search");
 		searchPage = false;
 		
+		//alert("urlCtrl.loadByHash"+hash);
 
-		//alert("url.loadByHash"+hash);
-	    mylog.warn("url.loadByHash",hash,back);
-	    if( url.jsController(hash) ){
-	    	mylog.log("url.loadByHash >>> jsController",hash);
+	    mylog.warn("urlCtrl.loadByHash",hash,back);
+	    if( urlCtrl.jsController(hash) ){
+	    	mylog.log("urlCtrl.loadByHash >>> hash found",hash);
 	    }
 	    else if( hash.indexOf("#panel") >= 0 ){
+
 	    	panelName = hash.substr(7);
+	    	mylog.log("panelName",panelName);
 	    	if( (panelName == "box-login" || panelName == "box-register") && userId != "" && userId != null ){
-	    		url.loadByHash("#default.home");
+	    		urlCtrl.loadByHash("#default.home");
 	    		return false;
 	    	} else if(panelName == "box-add")
 	            title = 'ADD SOMETHING TO MY NETWORK';
 	        else
 	            title = "WELCOM MUNECT HEY !!!";
-	        showPanel(panelName,null,title);
+	        if(panelName == "box-login"){
+				$('#modalLogin').modal("show");
+				$.unblockUI();
+	        }
+			else if(panelName == "box-register"){
+				$('#modalRegister').modal("show");
+				$.unblockUI();
+			}
+			else
+	       		showPanel(panelName,null,title);
 	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
 	        hashT = hash.split(".");
 	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
 	    }
+
 	    /*else if( hash.indexOf("#news.index.type") >= 0 ){
 	        hashT = hash.split(".");
 	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" )+'?isFirst=1', 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
@@ -768,18 +934,162 @@ var url = {
 		        hashT = hash.split(".");
 		        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ADD NEED '+typesLabels[hashT[3]],'cubes' );
 		} */
-
+		else if(hash.length>2){
+			hash = hash.replace( "#","" );
+			hashT=hash.split(".");
+			if(typeof hashT == "string")
+				slug=hashT;
+			else
+				slug=hashT[0];
+			$.ajax({
+	  			type: "POST",
+	  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
+	  			dataType: "json",
+	  			success: function(data){
+			  		if(data.result){
+			  			viewPage="";			  			
+			  			if(hashT.length > 1){
+			  				hashT.shift();
+			  				viewPage="/"+hashT.join("/");
+			  			}
+			  			showAjaxPanel('/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
+			  		}else
+			  			showAjaxPanel( '/app/index', 'Home','home' );
+	 			},
+			});
+		}
 	    else 
 	        showAjaxPanel( '/app/index', 'Home','home' );
-
+	    mylog.log("testnetwork hash", hash);
 	    location.hash = hash;
-
-	    /*if(!back){
-	    	history.replaceState( { "hash" :location.hash} , null, location.hash ); //changes the history.state
-		    mylog.warn("replaceState history.state",history.state);
+	    /*if(typeof back == "function"){
+	    	alert("back");
+	    	back();
 		}*/
 	}
 }
+
+/* ****************
+Generic non-ajax panel loading process 
+**************/
+function showPanel(box,callback){ 
+	$(".my-main-container").scrollTop(0);
+
+  	$(".box").hide(200);
+  	showNotif(false);
+  	
+  	if(isMapEnd) showMap(false);
+			
+	mylog.log("showPanel",box);
+	//showTopMenu(false);
+	$(themeObj.mainContainer).animate({ top: -1500, opacity:0 }, 500 );
+
+	$("."+box).show(500);
+	if (typeof callback == "function") {
+		callback();
+	}
+}
+
+/* ****************
+Generic ajax panel loading process 
+loads any REST Url endpoint returning HTML into the content section
+also switches the global Title and Icon
+**************/
+
+function  processingBlockUi() { 
+	msg = '<h4 style="font-weight:300" class=" text-dark padding-10">'+
+			'<i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...'+
+		  '</h4>';
+
+	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
+		msg = themeObj.blockUi.processingMsg;
+	$.blockUI({ message :  msg });
+	bindLBHLinks();
+}
+function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
+	//alert("showAjaxPanel"+url);
+	$(".progressTop").show().val(20);
+	var dest = ( typeof urlObj == "undefined" || typeof urlObj.useHeader != "undefined" ) ? themeObj.mainContainer : ".pageContent" ;
+	mylog.log("showAjaxPanel", url, urlObj,dest,urlCtrl.afterLoad );	
+	//var dest = themeObj.mainContainer;
+	hideScrollTop = false;
+	//alert("showAjaxPanel"+dest);
+	showNotif(false);
+			
+	//setTimeout(function(){
+		//$(".main-container > header").html("");
+		//$(".pageContent").html("");
+	$(".hover-info,.hover-info2").hide();
+		//processingBlockUi();
+	showMap(false);
+	//}, 200);
+
+	$(".box").hide(200);
+	//showPanel('box-ajax');
+	icon = (icon) ? " <i class='fa fa-"+icon+"'></i> " : "";
+	$(".panelTitle").html(icon+title).fadeIn();
+	mylog.log("GETAJAX",icon+title);
+	//showTopMenu(true);
+	userIdBefore = userId;
+	setTimeout(function(){
+		if( $(dest).length )
+		{
+		setTimeout(function(){ $('.progressTop').val(40)}, 1000);
+		setTimeout(function(){ $('.progressTop').val(60)}, 3000);
+		getAjax(dest, baseUrl+'/'+moduleId+url, function(data){ 
+			
+			if( dest != themeObj.mainContainer )
+				$(".subModuleTitle").html("");
+
+			//initNotifications(); 
+			
+			$(".modal-backdrop").hide();
+			bindExplainLinks();
+			bindTags();
+			bindLBHLinks();
+			$(".progressTop").val(90);
+			setTimeout(function(){ $(".progressTop").val(100)}, 10);
+			$(".progressTop").fadeOut(200);
+			$.unblockUI();
+
+			if(mapEnd)
+				showMap(true);
+
+    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
+        		uploadObj.set(contextData.type,contextData.id);
+        	}
+        	
+        	if( typeof urlCtrl.afterLoad == "function") {
+        		urlCtrl.afterLoad();
+        		urlCtrl.afterLoad = null;
+        	}
+        	/*if(debug){
+        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
+        			if(prevDbAccessCount == 0){
+        				dbAccessCount = parseInt(data);
+        				prevDbAccessCount = dbAccessCount;
+        			} else {
+        				dbAccessCount = parseInt(data)-prevDbAccessCount;
+        				prevDbAccessCount = parseInt(data);
+        			}
+        			//console.error('dbaccess:'+prevDbAccessCount);
+        			
+        			//$(".dbAccessBtn").remove();
+        			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
+        		},null);
+        	}*/
+         },"html");
+		} else 
+			console.error( 'showAjaxPanel', dest, "doesn't exist" );
+	}, 400);
+}
+/*prevDbAccessCount = 0; 
+function clearDbAccess() { 
+	getAjax(null, baseUrl+'/'+moduleId+"/log/clear", function(data){ 
+		$(".dbAccessBtn").remove();
+		prevDbAccessCount = 0; 
+	});
+}*/
 
 function decodeHtml(str) {
 	mylog.log("decodeHtml", str);
@@ -811,48 +1121,10 @@ function setTitle(str, icon, topTitle,keywords,shortDesc) { mylog.log("setTitle"
 		$('meta[name="description"]').attr("content","Communecter : Connecter à sa commune, inter connecter les communs, un réseau sociétal pour un citoyen connecté et acteur au centre de sa société.");
 }
 
-//ex : #search:bretagneTelecom:all
-//#search:#fablab
-//#search:#fablab:all:map
-function searchByHash (hash) 
-{ 
-	var mapEnd = false;
-	var searchT = hash.split(':');
-	// 1 : is the search term
-	var search = searchT[1]; 
-	scopeBtn = null;
-	// 2 : is the scope
-	if( searchT.length > 2 )
-	{
-		if( searchT[2] == "all" )
-			scopeBtn = ".btn-scope-niv-5" ;
-		else if( searchT[2] == "region" )
-			scopeBtn = ".btn-scope-niv-4" ;
-		else if( searchT[2] == "dep" )
-			scopeBtn = ".btn-scope-niv-3" ;
-		else if( searchT[2] == "quartier" )
-			scopeBtn = ".btn-scope-niv-2" ;
-	}
-	mylog.log("search : "+search,searchT, scopeBtn);
-	$(".input-global-search").val(search);
-	//startGlobalSearch();
-	if( scopeBtn )
-		$(scopeBtn).trigger("click"); 
-
-	if( searchT.length > 3 && searchT[3] == "map" )
-		mapEnd = true;
-	return mapEnd;
-}
-
-function markdownToHtml (str) { 
-	var converter = new showdown.Converter(),
-	res = converter.makeHtml(str);
-	return res;
-}
 
 function checkMenu(urlObj, hash){
 	mylog.log("checkMenu *******************", hash);
-	mylog.dir(urlObj);
+	//mylog.dir(urlObj);
 	$(".menu-button-left").removeClass("selected");
 	if(typeof urlObj.menuId != "undefined"){ mylog.log($("#"+urlObj.menuId).data("hash"));
 		if($("#"+urlObj.menuId).attr("href") == hash)
@@ -897,107 +1169,7 @@ function _checkLoggued() {
 	});
 }
 
-/* ****************
-Generic non-ajax panel loading process 
-**************/
-function showPanel(box,callback){ 
-	$(".my-main-container").scrollTop(0);
 
-  	$(".box").hide(200);
-  	showNotif(false);
-  	
-  	if(isMapEnd) showMap(false);
-			
-	mylog.log("showPanel");
-	//showTopMenu(false);
-	$(themeObj.mainContainer).animate({ top: -1500, opacity:0 }, 500 );
-
-	$("."+box).show(500);
-
-	if (typeof callback == "function") {
-		callback();
-	}
-}
-
-/* ****************
-Generic ajax panel loading process 
-loads any REST Url endpoint returning HTML into the content section
-also switches the global Title and Icon
-**************/
-
-function  processingBlockUi() { 
-	msg = '<h4 style="font-weight:300" class=" text-dark padding-10"><i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...</h4>';
-	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
-		msg = themeObj.blockUi.processingMsg;
-	$.blockUI({ message :  msg });
-	bindLBHLinks();
-}
-function showAjaxPanel (url,title,icon, mapEnd) { 
-	mylog.log("showAjaxPanel",url,"TITLE",title);
-	hideScrollTop = false;
-
-	showNotif(false);
-			
-	setTimeout(function(){
-		$(themeObj.mainContainer).html("");
-		$(".hover-info,.hover-info2").hide();
-		processingBlockUi();
-		showMap(false);
-	}, 200);
-
-	$(".box").hide(200);
-	//showPanel('box-ajax');
-	icon = (icon) ? " <i class='fa fa-"+icon+"'></i> " : "";
-	$(".panelTitle").html(icon+title).fadeIn();
-	mylog.log("GETAJAX",icon+title);
-	
-	showTopMenu(true);
-	userIdBefore = userId;
-	setTimeout(function(){
-		 getAjax(themeObj.mainContainer, baseUrl+'/'+moduleId+url, function(data){ 
-			
-			//initNotifications(); 
-			
-			$(".modal-backdrop").hide();
-			bindExplainLinks();
-			bindTags();
-			bindLBHLinks();
-
-			$.unblockUI();
-
-			if(mapEnd)
-				showMap(true);
-
-    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
-        		uploadObj.type = contextData.type;
-        		uploadObj.id = contextData.id;
-        	}
-        	if(debug){
-        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
-        			if(prevDbAccessCount == 0){
-        				dbAccessCount = parseInt(data);
-        				prevDbAccessCount = dbAccessCount;
-        			} else {
-        				dbAccessCount = parseInt(data)-prevDbAccessCount;
-        				prevDbAccessCount = parseInt(data);
-        			}
-        			//console.error('dbaccess:'+prevDbAccessCount);
-        			
-        			//$(".dbAccessBtn").remove();
-        			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
-        		},null);
-        	}
-
-		},"html");
-	}, 400);
-}
-prevDbAccessCount = 0; 
-function clearDbAccess() { 
-	getAjax(null, baseUrl+'/'+moduleId+"/log/clear", function(data){ 
-		$(".dbAccessBtn").remove();
-		prevDbAccessCount = 0; 
-	});
-}
 /* ****************
 visualize all tagged elements on a map
 **************/
@@ -1042,7 +1214,7 @@ function showTagOnMap (tag) {
 	          }
 	 	});
 
-	//url.loadByHash('#project.detail.id.56c1a474f6ca47a8378b45ef',null,true);
+	//urlCtrl.loadByHash('#project.detail.id.56c1a474f6ca47a8378b45ef',null,true);
 	//Sig.showFilterOnMap(tag);
 }
 
@@ -1053,14 +1225,14 @@ function showDefinition( id,copySection ){
 
 	setTimeout(function(){
 		mylog.log("showDefinition",id,copySection);
-		$(".hover-info,.hover-info2").hide();
-		$( themeObj.mainContainer ).animate({ opacity:0.3 }, 400 );
+		
+		//$( themeObj.mainContainer ).animate({ opacity:0.3 }, 400 );
 		
 		if(copySection){
 			contentHTML = $("."+id).html();
 			if(copySection != true)
 				contentHTML = copySection;
-			$(".hover-info2").css("display" , "inline").html( contentHTML );
+			smallMenu.open(contentHTML);
 			bindExplainLinks()	
 		}
 		else {
@@ -1101,9 +1273,9 @@ var smallMenu = {
 	//the url must return a list like userConnected.list
 	openAjax : function  (url,title,icon,color,title1,params,callback) 
 	{ 
-		if( typeof directory == "undefined" )
+		/*if( typeof directory == "undefined" )
 		    lazyLoad( moduleUrl+'/js/default/directory.js', null, null );
-	    
+	    */
 	    //processingBlockUi();
 	    //$(smallMenu.destination).html("<i class='fa fa-spin fa-refresh fa-4x'></i>");
 
@@ -1221,7 +1393,9 @@ var smallMenu = {
 		 },"html" );
 	},
 	//content Loader can go into a block
-	open : function (content,type) { 
+	//smallMenu.open("Recherche","blockUI")
+	//smallMenu.open("Recherche","bootbox")
+	open : function (content,type,color) { 
 		//alert("small menu open");
 		//add somewhere in page
 		if(!smallMenu.inBlockUI){
@@ -1231,19 +1405,21 @@ var smallMenu = {
 		else {
 			//this uses blockUI
 			if(type == "blockUI"){
+				colorCSS = (color == "black") ? 'rgba(0,0,0,0.70)' : 'rgba(256,256,256,0.85)';
+				colorCSS = (color == "black") ? '#fff' : '#000';
 				$.blockUI({ 
 					//title : 'Welcome to your page', 
 					message : (content) ? content : "<div class='blockContent'></div>",
-					onOverlayClick: $.unblockUI,
+					onOverlayClick: $.unblockUI(),
 			        css: { 
 			         //border: '10px solid black', 
 			         //margin : "50px",
 			         //width:"80%",
 			         //    padding: '15px', 
-			         backgroundColor: 'rgba(256,256,256,0.85)', 
+			         backgroundColor: colorCSS,  
 			         //    '-webkit-border-radius': '10px', 
 			         //    '-moz-border-radius': '10px', 
-			             //color: '#fff' ,
+			             color: colorText ,
 			        	// "cursor": "pointer"
 			        }//,overlayCSS: { backgroundColor: '#fff'}
 				});
@@ -1366,20 +1542,22 @@ function  bindLBHLinks() {
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-	    url.loadByHash( h );
+	    urlCtrl.loadByHash( h );
 	});
 	//open any url in a modal window
-	$(".lbhp").off().on("click",function(e) {
+	$(".lbhp").unbind("click").on("click",function(e) {
 		e.preventDefault();
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
 		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-		if( $(this).data("modalshow") )
+		if( $(this).data("modalshow") ){
 			smallMenu.open ( directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
+			initBtnLink();
+		}
 		else {
-			url = (h.indexOf("#") ==0 ) ? url.convertToPath(h) : h;
+			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
 	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
 	    	//smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url ,"","blockUI",h);
 		}
@@ -1476,7 +1654,7 @@ maybe movebale into Element.js
 function  buildQRCode(type,id) { 
 		
 	$(".qrCode").qrcode({
-	    text: baseUrl+"/#"+typeObjLib.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
+	    text: baseUrl+"/#"+dyFInputs.get(type).ctrl+".detail.id."+id,//'{type:"'+type+'",_id:"'+id+'"}',
 	    render: 'image',
 		minVersion: 8,
 	    maxVersion: 40,
@@ -1530,94 +1708,18 @@ function activateSummernote(elem) {
 		});
 	}
 }
-function markdownToHtml(str) { 
-	mylog.log("markdownToHtml", str);
-	var converter = new showdown.Converter();
-	var res = converter.makeHtml(str)
-	mylog.log("rest", res);
-	return res;
-}
 
-function convertMardownToHtml(text) { 
-	var converter = new showdown.Converter();
-	return converter.makeHtml(text);
-}
-
-
-function activateMarkdown(elem) { 
-	mylog.log("activateMarkdown", elem);
-
-	markdownParams = {
-			savable:false,
-			iconlibrary:'fa',
-			language:'fr',
-			onPreview: function(e) {
-				var previewContent = "";
-				if (e.isDirty()) {
-			    	previewContent = convertMardownToHtml(e.getContent());
-			    } else {
-			    	previewContent = convertMardownToHtml($(elem).val());
-			    }
-			    return previewContent;
-		  	},
-		  	onSave: function(e) {
-		  		mylog.log(e);
-		  	},
-		}
-
-	if( !$('script[src="'+baseUrl+'/plugins/bootstrap-markdown/js/bootstrap-markdown.js"]').length ){
-		mylog.log("activateMarkdown if");
-
-		$("<link/>", {
-		   rel: "stylesheet",
-		   type: "text/css",
-		   href: baseUrl+"/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css"
-		}).appendTo("head");
-		$.getScript( baseUrl+"/plugins/showdown/showdown.min.js", function( data, textStatus, jqxhr ) {
-
-			$.getScript( baseUrl+"/plugins/bootstrap-markdown/js/bootstrap-markdown.js", function( data, textStatus, jqxhr ) {
-				mylog.log("HERE", elem);
-
-				$.fn.markdown.messages['fr'] = {
-					'Bold': trad.Bold,
-					'Italic': trad.Italic,
-					'Heading': trad.Heading,
-					'URL/Link': trad['URL/Link'],
-					'Image': trad.Image,
-					'List': trad.List,
-					'Preview': trad.Preview,
-					'strong text': trad['strong text'],
-					'emphasized text': trad['strong text'],
-					'heading text': trad[''],
-					'enter link description here': trad['enter link description here'],
-					'Insert Hyperlink': trad['Insert Hyperlink'],
-					'enter image description here': trad['enter image description here'],
-					'Insert Image Hyperlink': trad['Insert Image Hyperlink'],
-					'enter image title here': trad['enter image title here'],
-					'list text here': trad['list text here']
-				};
-				$(elem).markdown(markdownParams);
-			});
-
-
-		});
-	} else {
-		mylog.log("activateMarkdown else");
-		$(elem).markdown(markdownParams);
-	}
-
-	$(elem).before('La syntaxe Mardown utilisé pour la description. Si vous souhaitez <a href="https://michelf.ca/projets/php-markdown/syntaxe/" target="_blank">en savoir plus</a>');
-}
 
 function  firstOptions() { 
 	var res = {
-		"dontKnow":"Je ne sais pas",
+		"dontKnow":tradDynForm["dontknow"],
 	};
-	res[userId] = "Moi";
+	res[userId] = tradDynForm["me"];
 	return res;
  }
 
-function myAdminList (ctypes) { 
+function myAdminList (ctypes) {
+	mylog.log("myAdminList", ctypes);
 	var myList = {};
 	if(userId){
 		//types in MyContacts
@@ -1628,28 +1730,61 @@ function myAdminList (ctypes) {
 		};
 		$.each( ctypes, function(i,ctype) {
 			var connectionType = connectionTypes[ctype];
-			myList[ ctype ] = { label: ctype, options:{} };
-			if(typeof myContacts != "undefined" && myContacts != null)
-			$.each( myContacts[ ctype ],function(id,elemObj){
-				//mylog.log(ctype+"-"+id+"-"+elemObj.name);
-				if( elemObj.links && elemObj.links[connectionType] && elemObj.links[connectionType][userId] && elemObj.links[connectionType][userId].isAdmin) {
-					//mylog.warn(ctype+"-"+id+"-"+elemObj.name);
-					myList[ ctype ]["options"][ elemObj["_id"]["$id"] ] = elemObj.name;
-				}
-			});
+			myList[ ctype ] = { label: trad[ctype], options:{} };
+			if( notNull(myContacts) ){
+				mylog.log("myAdminList",ctype, connectionType, myContacts, myContacts[ ctype ]);
+				$.each( myContacts[ ctype ],function(id,elemObj){
+					mylog.log("myAdminList",ctype,id,elemObj.name);
+					if( elemObj.links && elemObj.links[connectionType] && elemObj.links[connectionType][userId] && elemObj.links[connectionType][userId].isAdmin) {
+						mylog.warn("myAdminList2",ctype+"-"+id+"-"+elemObj.name, elemObj["_id"]["$id"]);
+						myList[ ctype ]["options"][ elemObj["_id"]["$id"] ] = elemObj.name;
+						mylog.log(myList);
+					}
+				});
+			}
 		});
-		mylog.dir(myList);
+		mylog.log("myAdminList return", myList);
 	}
 	return myList;
 }
 
-function addContact(id, name){
-	$("#idContact").val(id);
-	$("#listSameName").html("<i class='fa fa-check text-success'></i> Vous avez sélectionner : "+ name);
-	$("#name").val(name);
+function parentList (ctypes, parentId, parentType) { 
+	mylog.log("parentList", ctypes, parentId, parentType);
+	var myList = myAdminList( ctypes ) ;
+
+	mylog.log("parentList myList", myList);
+	if(	notEmpty(parentId) && notEmpty(parentType) && 
+		notEmpty(myList) && 
+		(	!notEmpty(myList[parentType]) ||
+			( notEmpty(myList[parentType]) && !notEmpty(myList[parentType]["options"][parentId]) ) ) ) {
+
+		if(!notEmpty(myList[parentType]))
+			myList[ parentType ] = { label: parentType, options:{} };
+    	myList[ parentType ]["options"][ parentId ] = contextData.parent.name;  
+    }
+    return myList; 
 }
 
-function globalSearch(searchValue,types,autre){
+
+function escapeHtml(string) {
+	var entityMap = {
+	    '"': '&quot;',
+    	"'": '&#39;',
+	};
+    return String(string).replace(/["']/g, function (s) {
+        return entityMap[s];
+    });
+} 
+
+function fillContactFields(id){
+	name = cotmp[id].name;
+	mylog.log("fillContactFields", id, name );
+	$("#idContact").val(id);
+	$("#listSameName").html("<i class='fa fa-check text-success'></i> Vous avez sélectionner : "+  escapeHtml(name));
+	$("#name").val(name);
+}
+var cotmp = {};
+function globalSearch(searchValue,types,contact){
 	
 	searchType = (types) ? types : ["organizations", "projects", "events", "needs", "citoyens"];
 
@@ -1677,14 +1812,15 @@ function globalSearch(searchValue,types,autre){
  			var compt = 0;
  			var msg = "Verifiez si cet élément n'existe pas déjà";
  			$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
+ 			cotmp = {};
  			$.each(data, function(id, elem) {
-  				mylog.log(elem);
+  				mylog.log("similarlink globalautocomplete", elem);
   				city = "";
 				postalCode = "";
 				var htmlIco ="<i class='fa fa-users'></i>";
 				if(elem.type){
 					typeIco = elem.type;
-					htmlIco ="<i class='fa fa-"+typeObj[elem.type].icon +"'></i>";
+					htmlIco ="<i class='fa fa-"+dyFInputs.get(elem.type).icon +"'></i>";
 				}
 				where = "";
 				if (elem.address != null) {
@@ -1693,17 +1829,19 @@ function globalSearch(searchValue,types,autre){
 					if( notEmpty( city ) && notEmpty( postalCode ) )
 					where = ' ('+postalCode+" "+city+")";
 				}
+				//var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
 				if("undefined" != typeof elem.profilImageUrl && elem.profilImageUrl != ""){
-					var htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
+					htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
 				}
 				
-				if(autre == true){
-					str += 	"<a href='javascript:;' onclick='addContact( \""+elem.id+"\",\""+elem.name+"\" );' class='autre btn btn-xs btn-default w50p text-left padding-5 text-blue' >"+
+				if(contact == true){
+					cotmp[id] = {id:id, name : elem.name};
+					str += 	"<a href='javascript:;' onclick='fillContactFields( \""+id+"\" );' class='col-sm-12 col-sm-3 btn btn-xs btn-default w50p text-left padding-5' >"+
 								"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
 							"</a>";
 					msg = "Verifiez si le contact est dans Communecter";
 				}else{
-					str += 	"<a target='_blank' href='#"+ elem.type +".detail.id."+ elem.id +"' class='btn btn-xs btn-default w50p text-left padding-5 text-blue' >"+
+					str += 	"<a target='_blank' href='#page.type."+ elem.type +".id."+ id +"' class='btn btn-xs btn-danger w50p text-left padding-5 margin-5' style='height:42px' >"+
 							"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
 						"</a>";
 				}
@@ -1750,111 +1888,6 @@ function globalSearch(searchValue,types,autre){
  	});
 }*/
 
-
-var elementLocation = null;
-var centerLocation = null;
-var elementLocations = [];
-var elementPostalCode = null;
-var elementPostalCodes = [];
-var countLocation = 0;
-var countPostalCode = 0;
-function copyMapForm2Dynform(locationObj) { 
-	//if(!elementLocation)
-	//	elementLocation = [];
-	mylog.log("locationObj", locationObj);
-	elementLocation = locationObj;
-	mylog.log("elementLocation", elementLocation);
-	elementLocations.push(elementLocation);
-	mylog.log("elementLocations", elementLocations);
-	if(!centerLocation || locationObj.center == true){
-		centerLocation = elementLocation;
-		elementLocation.center = true;
-	}
-	mylog.dir(elementLocations);
-	//elementLocation.push(positionObj);
-}
-
-function addLocationToForm(locationObj)
-{
-	mylog.warn("---------------addLocationToForm----------------");
-	mylog.dir(locationObj);
-	var strHTML = "";
-	if( locationObj.address.addressCountry)
-		strHTML += locationObj.address.addressCountry;
-	if( locationObj.address.postalCode)
-		strHTML += " ,"+locationObj.address.postalCode;
-	if( locationObj.address.addressLocality)
-		strHTML += " ,"+locationObj.address.addressLocality;
-	if( locationObj.address.streetAddress)
-		strHTML += " ,"+locationObj.address.streetAddress;
-	var btnSuccess = "";
-	var locCenter = "";
-	if( countLocation == 0){
-		btnSuccess = "btn-success";
-		locCenter = "<span class='lblcentre'>(localité centrale)</span>";
-	}
-	
-	strHTML = "<a href='javascript:removeLocation("+countLocation+")' class=' locationEl"+countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
-			  "<span class='locationEl"+countLocation+" locel text-azure'>"+strHTML+"</span> "+
-			  "<a href='javascript:setAsCenter("+countLocation+")' class='centers center"+countLocation+" locationEl"+countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
-	$(".locationlocation").prepend(strHTML);
-	countLocation++;
-}
-
-function copyPCForm2Dynform(postalCodeObj) { 
-	mylog.warn("---------------copyPCForm2Dynform----------------");
-	mylog.log("postalCodeObj", postalCodeObj);
-	elementPostalCode = postalCodeObj;
-	mylog.log("elementPostalCode", elementPostalCode);
-	elementPostalCodes.push(elementPostalCode);
-	mylog.log("elementPostalCodes", elementPostalCodes);
-	mylog.dir(elementPostalCodes);
-	//elementPostalCode.push(positionObj);
-}
-
-function addPostalCodeToForm(postalCodeObj)
-{
-	mylog.warn("---------------addPostalCodeToForm----------------");
-	mylog.dir(postalCodeObj);
-	var strHTML = "";
-	if( postalCodeObj.postalCode)
-		strHTML += postalCodeObj.postalCode;
-	if( postalCodeObj.name)
-		strHTML += " ,"+postalCodeObj.name;
-	if( postalCodeObj.latitude)
-		strHTML += " ,("+postalCodeObj.latitude;
-	if( postalCodeObj.longitude)
-		strHTML += " / "+postalCodeObj.longitude+")";
-	
-	strHTML = "<a href='javascript:removeLocation("+countPostalCode+")' class=' locationEl"+countPostalCode+" btn'> <i class='text-red fa fa-times'></i></a>"+
-			  "<span class='locationEl"+countPostalCode+" locel text-azure'>"+strHTML+"</span> <br/>";
-	$(".postalcodepostalcode").prepend(strHTML);
-	countPostalCode++;
-}
-
-
-function removeLocation(ix){
-	mylog.log("removeLocation", ix, elementLocations);
-	elementLocation = null;
-	elementLocations.splice(ix,1);
-	//TODO check if this center then apply on first
-	//$(".locationEl"+countLocation).remove();
-	$(".locationEl"+ix).remove();
-}
-
-function setAsCenter(ix){
-
-	$(".centers").removeClass('btn-success');
-	$(".lblcentre").remove();
-	$.each(elementLocations,function(i, v) { 
-		if( v.center)
-			delete v.center;
-	})
-	$(".centers").removeClass('btn-success');
-	$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>(localité centrale)</span>");
-	centerLocation = elementLocations[ix];
-	elementLocations[ix].center = true;
-}
 
 function notEmpty(val){
 	return typeof val != "undefined"
@@ -1910,25 +1943,31 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
     getUrl.bind("input keyup",function(e) { //user types url in text field        
         //url to match in the text field
         var $this = $(this);
+        if($(appendClassName).html()==""){
         if($this.parents().eq(nbParent).find(appendClassName).html()=="" || (e.which==32 || e.which==13)){
+        	//var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?")
+        	//var match_url=new RegExp("(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})");
+        	//var match_url=/\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i
+	       // var match_url = /\b(https?|ftp):\/\/([\-A-Z0-9. \-]+?|www\\.)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i;
+	       // var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+	        //var match_url=/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+	        var match_url=/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
 
-	        var match_url = new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
 	        if (match_url.test(getUrl.val())) 
 	        {
-		        mylog.log(getUrl.val().match(match_url));
-		        if(lastUrl != getUrl.val().match(match_url)[0]){
-			       // alert(lastUrl+"///"+getUrl.val().match(match_url)[0]);
-		        	var extracted_url = getUrl.val().match(match_url)[0]; //extracted first url from text filed
-	                //$this.parent().find(appendClassName).html("<i class='fa fa-spin fa-spinner text-red fa-2x'></i>");//hide();
+	        	extract_url=getUrl.val().match(match_url)[0];
+	        	extract_url=extract_url.replace(/[\n]/gi," ");
+	        	extract_url=extract_url.split(" ");
+	        	extract_url=extract_url[0];
+		        if(lastUrl != extract_url && processUrl.isLoading==false){
+		        	processUrl.isLoading=true;
+		        	var extracted_url = extract_url;
 	                $this.parents().eq(nbParent).find(".loading_indicator").show(); //show loading indicator image
-
 	                //ajax request to be sent to extract-process.php
-	                //alert(extracted_url);
 	                lastUrl=extracted_url;
 	                extracted_url_send=extracted_url;
 	                if(extracted_url_send.indexOf("http")<0)
 	                	extracted_url_send = "http://"+extracted_url;
-	               // $(appendClassName).html("<i class='fa fa-spin fa-reload'></i>");
 	                $.ajax({
 						url: baseUrl+'/'+moduleId+"/news/extractprocess",
 						data: {'url': extracted_url_send},
@@ -1936,7 +1975,15 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 						dataType: 'json',
 						success: function(data){        
 			                mylog.log(data); 
-		                    content = getMediaCommonHtml(data,"save");
+			                processUrl.isLoading=false;
+			                if(data.type=="activityStream"){
+			                  	content = '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>'+
+			                			 directory.showResultsDirectoryHtml(new Array(data.object), data.object.type)+
+			                			"<input type='hidden' class='type' value='activityStream'>"+
+										"<input type='hidden' class='objectId' value='"+data.object.id+"'>"+
+										"<input type='hidden' class='objectType' value='"+data.object.type+"'>";
+			                }else
+		                    	content = getMediaCommonHtml(data,"save");
 		                    //load results in the element
 		                    //return content;
 		                   //$("#results").html(content); 
@@ -1957,7 +2004,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 						error : function(){
 							$.unblockUI();
 							//toastr.error(trad["wrongwithurl"] + " !");
-
+							 processUrl.isLoading=false;
 							//content to be loaded in #results element
 							var content = '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-refresh"></i></a><h4><a href="'+extracted_url+'" target="_blank" class="lastUrl wrongUrl">'+extracted_url+'</a></h4>';
 		                    //load results in the element
@@ -1980,9 +2027,10 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 	                });
 				}
         	} else if ($("#ajaxFormModal").is(":visible") && $this.parent().find(".dynFormUrlsWarning").length <= 0){
-				$this.parent().append( "<span class='text-red dynFormUrlsWarning'>* Ceci n'est pas un url valide.</span>" );         	
+				//$this.parent().append( "<span class='text-red dynFormUrlsWarning'>* Ceci n'est pas un url valide.</span>" );         	
         	}
         }
+    }
     }); 
 }
 
@@ -1998,8 +2046,8 @@ function getMediaCommonHtml(data,action,id){
             extractClass="extracted_thumb";
             width="100%";
             height="100%";
-
-            aVideo='<a href="#" class="videoSignal text-white center"><i class="fa fa-3x fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
+            thumbImg=true;
+            aVideo='<a href="javascript:;" class="videoSignal text-white center"><i class="fa fa-3x fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
             inputToSave+="<input type='hidden' class='video_link_value' value='"+data.content.videoLink+"'/>"+
             "<input type='hidden' class='media_type' value='video_link' />";   
 		}
@@ -2010,11 +2058,13 @@ function getMediaCommonHtml(data,action,id){
                 extractClass="extracted_thumb_large";
                 width="100%";
                 height="";
+                thumbImg=false;
             }
             else{
                 extractClass="extracted_thumb";
                 width="100";
                 height="100";
+            	thumbImg=true;
             }
             inputToSave+="<input type='hidden' class='media_type' value='img_link' />";
 		}
@@ -2064,10 +2114,23 @@ function getMediaCommonHtml(data,action,id){
 		mediaUrl=data.content.url;
 	else
 		mediaUrl="";
-	if(typeof(data.description) !="undefined" && typeof(data.name) != "undefined" && data.description !="" && data.name != ""){
-		contentMedia='<div class="extracted_content col-xs-8 padding-20"><h4><a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">'+data.name+'</a></h4><p>'+data.description+'</p>'+countThumbail+'</div>';
-		inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
-		inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
+	if((typeof(data.description) !="undefined" || typeof(data.name) != "undefined") && (data.description !="" || data.name != "")){
+		classContentDescr="col-xs-12 padding-10";
+		if(thumbImg)
+			classContentDescr="col-xs-8";
+		contentMedia='<div class="extracted_content '+classContentDescr+'">'+
+			'<a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">';
+			if(typeof(data.name) != "undefined" && data.name!=""){
+				contentMedia+='<h4>'+data.name+'</h4></a>';
+				inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
+			}
+			if(typeof(data.description) != "undefined" && data.description!=""){
+				contentMedia+='<span>'+data.description+'</span>';
+				if(typeof(data.name) == "undefined" || data.name=="")
+					contentMedia+='</a>';
+				inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
+			}
+		contentMedia+='</div>';
 	}
 	else{
 		contentMedia="";
@@ -2077,7 +2140,7 @@ function getMediaCommonHtml(data,action,id){
 	content="";
 	if(action == "save")
 		content += '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>';
-    content += '<div class="extracted_url padding-10">'+ inc_image +contentMedia+'</div>'+inputToSave;
+    content += '<div class="extracted_url">'+ inc_image +contentMedia+'</div>'+inputToSave;
     return content;
 }
 
@@ -2092,11 +2155,19 @@ function myContactLabel (type,id) {
 	return null;
 }
 
-
-function shadowOnHeader() {
-	var y = $(".my-main-container").scrollTop(); 
-    if (y > 0) {  $('.main-top-menu').addClass('shadow'); }
-    else { $('.main-top-menu').removeClass('shadow'); }
+function inMyContacts (type,id) { 
+	var res = false ;
+	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
+		$.each( myContacts[type], function( key,val ){
+			mylog.log("val", val);
+			if( ( typeof val["_id"] != "undefined" && id == val["_id"]["$id"] ) || 
+				(typeof val["id"] != "undefined" && id == val["id"] ) ) {
+				res = true;
+				return ;
+			}
+		});
+	}
+	return res;
 }
 
 function autoCompleteInviteSearch(search){
@@ -2108,7 +2179,6 @@ function autoCompleteInviteSearch(search){
 		"search" : search,
 		"searchMode" : "personOnly"
 	};
-	
 	
 	ajaxPost("", moduleId+'/search/searchmemberautocomplete', data,
 		function (data){
@@ -2163,7 +2233,7 @@ function newInvitation(){
 		$("#ajaxFormModal #inviteName").val($("#ajaxFormModal #inviteSearch").val());
 		$("#ajaxFormModal #inviteEmail").val("");
 	}
-	$("#inviteText").val('<?php echo Yii::t("person","Hello, \\nCome and meet me on that website!\\nAn email, your town and you are connected to your city!\\nYou can see everything that happens in your city and act for the commons."); ?>');
+	$("#inviteText").val('');
 }
 
 function communecterUser(){
@@ -2179,10 +2249,10 @@ function communecterUser(){
 }
 
 function updateLocalityEntities(addressesIndex, addressesLocality){
-	mylog.warn("updateLocalityEntities");
+	mylog.log("updateLocalityEntities", addressesIndex, addressesLocality);
 	$("#ajax-modal").modal("hide");
-	showMap(true);
-	if(typeof initUpdateLocality != "undefined"){
+	mylog.log("typeof formInMap.initUpdateLocality", typeof formInMap.initUpdateLocality);
+	if(typeof formInMap.initUpdateLocality != "undefined"){
 		var address = contextData.address ;
 		var geo = contextData.geo ;
 		if(addressesLocality && addressesIndex){
@@ -2193,8 +2263,9 @@ function updateLocalityEntities(addressesIndex, addressesLocality){
 			geo = null ;
 		}
 		mylog.log(address, geo, contextData.type, addressesIndex);
-		initUpdateLocality(address, geo, contextData.type, addressesIndex); 
+		formInMap.initUpdateLocality(address, geo, contextData.type, addressesIndex); 
 	}
+
 }
 
 function cityKeyPart(unikey, part){
@@ -2207,7 +2278,171 @@ function cityKeyPart(unikey, part){
 	if(part == "cp") return unikey.substr(e+1, len);
 	if(part == "country") return unikey.substr(e+1, len);
 }
+/* ***********************************
+			EXTRACTPROCCESS
+********************************** */
+var processUrl = {
+	isLoading:false,
+	checkUrlExists: function(url){
+	    url = url.trim();
+	    if(url.lastIndexOf("/") == url.lenght){
+	        url = url.substr(0, url.lenght-1);
+	        $("#form-url").val(url); 
+	    }
 
+	    $.ajax({
+	        type: "POST",
+	        url: baseUrl+"/"+moduleId+"/app/checkurlexists",
+	        data: { url: url },
+	        dataType: "json",
+	        success: function(data){ console.log("checkUrlExists", data);
+	            if(data.status == "URL_EXISTS")
+	            urlExists = true;
+	            else
+	            urlExists = false;
+	            console.log("checkUrlExists", data);
+	            refUrl(url);
+	        },
+	        error: function(data){
+	            console.log("check url exists error");
+	        }
+	    });
+	},
+	refUrl: function(url){
+	    if(!processUrl.isValidURL(url)){
+	        $("#status-ref").html("<span class='letter-red'><i class='fa fa-times'></i> cette url n'est pas valide.</span>");
+	        return;
+	    }
+		$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+"</span>");
+		$("#refResult").addClass("hidden");
+		$("#send-ref").addClass("hidden");
+
+		urlValidated = "";
+
+	    $.ajax({ 
+	    	url: "//cors-anywhere.herokuapp.com/" + url, // 'http://google.fr', 
+	    	//crossOrigin: true,
+	    	timeout:10000,
+	        success:
+				function(data) {
+					
+				    var jq = $.parseHTML(data);
+				    
+				    var tempDom = $('<output>').append($.parseHTML(data));
+				    var title = $('title', tempDom).html();
+				    var stitle = "";
+
+				    if(stitle=="" || stitle=="undefined")
+				   		stitle = $('blockquote', tempDom).html();
+
+				   	//console.log("STITLE", stitle);
+
+					if(stitle=="" || stitle=="undefined")
+				   		stitle = $('h2', tempDom).html();
+
+					if(stitle=="" || stitle=="undefined")
+				   		stitle = $('h3', tempDom).html();
+
+					if(stitle=="" || stitle=="undefined")
+				   		stitle = $('blockquote', tempDom).html();
+
+					if(title=="" || title=="undefined")
+				   		title = stitle;
+
+	                var favicon = $("link[rel*='icon']", tempDom).attr("href");
+	                var hostname = (new URL(url)).origin;
+	                var faviconSrc = "";
+	                if(typeof favicon != "undefined"){
+	                    var faviconSrc = hostname+favicon;
+	                    if(favicon.indexOf("http")>=0) faviconSrc = favicon;
+	                }
+
+					var description = $(tempDom).find('meta[name=description]').attr("content");
+
+					var keywords = $(tempDom).find('meta[name=keywords]').attr("content");
+					//console.log("keywords", keywords);
+
+					var arrayKeywords = new Array();
+					if(typeof keywords != "undefined")
+						arrayKeywords = keywords.split(",");
+
+					//console.log("arrayKeywords", arrayKeywords);
+
+					//if(typeof arrayKeywords[0] != "undefined") $("#form-keywords1").val(arrayKeywords[0]); else $("#form-keywords1").val("");
+					//if(typeof arrayKeywords[1] != "undefined") $("#form-keywords2").val(arrayKeywords[1]); else $("#form-keywords2").val("");
+					//if(typeof arrayKeywords[2] != "undefined") $("#form-keywords3").val(arrayKeywords[2]); else $("#form-keywords3").val("");
+					//if(typeof arrayKeywords[3] != "undefined") $("#form-keywords4").val(arrayKeywords[3]); else $("#form-keywords4").val("");
+
+					if(description=="" || description=="undefined")
+				   		if(stitle=="" || stitle=="undefined")
+				   			description = stitle;
+				   	params = new Object;
+				   	params.title=title,
+				   	params.favicon=faviconSrc,
+				   	params.hostname=hostname,
+				   	params.description=description,
+				   	params.tags=arrayKeywords;
+					console.log(params);
+					/*$("#form-title").val(title);
+	                $("#form-favicon").val(faviconSrc);
+	                $("#form-description").val(description);*/
+					
+
+					//color
+					$("#ajaxFormModal #name").val(title);   	
+				   	//color	
+					$("#ajaxFormModal #description").val(description); 
+				   	//color
+				   	if(notEmpty(arrayKeywords))		
+						$("#ajaxFormModal #tags").select2("val",arrayKeywords);
+					/*if($("#form-keywords1").val() != "")   $("#lbl-keywords").removeClass("text-orange").addClass("letter-green");
+					else 								   $("#lbl-keywords").removeClass("letter-green").addClass("text-orange");
+				   		
+				   	$("#form-title").off().keyup(function(){
+				   		if($(this).val()!="")$("#lbl-title").removeClass("letter-red").addClass("letter-green");
+						else 				 $("#lbl-title").removeClass("letter-green").addClass("letter-red");
+						checkAllInfo();
+				   	});
+				   	$("#form-description").off().keyup(function(){
+				   		if($(this).val()!="")$("#lbl-description").removeClass("text-orange").addClass("letter-green");
+						else 				 $("#lbl-description").removeClass("letter-green").addClass("text-orange");
+						checkAllInfo();
+				   	});
+				   	$("#form-keywords1").off().keyup(function(){
+				   		if($(this).val()!="")$("#lbl-keywords").removeClass("text-orange").addClass("letter-green");
+						else 				 $("#lbl-keywords").removeClass("letter-green").addClass("text-orange");
+						checkAllInfo();
+				   	});
+
+				   	$("#status-ref").html("<span class='letter-green'><img src='"+faviconSrc+"' height=30 alt='x'> <i class='fa fa-check'></i> Nous avons trouvé votre page</span>");
+	    			$("#refResult").removeClass("hidden");
+				   
+				   	$("#lbl-url").removeClass("letter-red").addClass("letter-green");
+				   	urlValidated = url;
+
+				    $('<output>').remove();
+				    tempDom = "";
+
+				    checkAllInfo();*/	
+				    return params;		   
+				},
+			error:function(xhr, status, error){
+				$("#lbl-url").removeClass("letter-green").addClass("letter-red");
+				$("#status-ref").html("<span class='letter-red'><i class='fa fa-ban'></i> URL INNACCESSIBLE</span>");
+			},
+			statusCode:{
+				404: function(){
+					$("#lbl-url").removeClass("letter-green").addClass("letter-red");
+					$("#status-ref").html("<span class='letter-red'><i class='fa fa-ban'></i> 404 : URL INTROUVABLE OU INACCESSIBLE</span>");
+				}
+			}
+		});
+	},
+	isValidURL:function(url) {
+  		var match_url = new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+  		return match_url.test(url);
+	}
+}
 /* *********************************
 			COLLECTIONS
 ********************************** */
@@ -2238,6 +2473,9 @@ var collection = {
 					console.warn(params.action);
 					if(data.result){
 						toastr.success(data.msg);
+						if(location.hash.indexOf("#page") >=0){
+							loadDataDirectory("collections", "star");
+						}
 						//if no type defined we are on user
 						//TODO : else add on the contextMap
 						if( typeof type == "undefined" && action == "new"){
@@ -2281,11 +2519,32 @@ var collection = {
 				console.warn(params.action,collection,what,id);
 				if(data.result){
 					if(data.list == '$unset'){
-						$(el).children("i").removeClass("fa-star text-red").addClass('fa-star-o');
-						delete userConnected.collections[collection][what][id];
+						/*if(location.hash.indexOf("#page") >=0){
+							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){ 
+                				loadDataDirectory("collections", "star"); 
+              				}else{ 
+                				$(".favorisMenu").removeClass("text-yellow"); 
+                				$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o'); 
+              				} 
+						}else{*/
+							$(el).removeClass("text-yellow"); 
+							$(el).children("i").removeClass("fa-star text-yellow").addClass('fa-star-o');
+							delete userConnected.collections[collection][what][id];
+						//}
 					}
 					else{
-						$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
+						/*if(location.hash.indexOf("#page") >=0){
+							if(location.hash.indexOf("view.directory.dir.collections") >=0 && contextData.id==userId){ 
+                				loadDataDirectory("collections", "star"); 
+              				}else{ 
+                				$(".favorisMenu").addClass("text-yellow"); 
+                				$(".favorisMenu").children("i").removeClass("fa-star-o").addClass('fa-star'); 
+              				}
+              			}
+						else*/
+							$(el).addClass("text-yellow"); 
+							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-yellow');
+
 						if(!userConnected.collections)
 							userConnected.collections = {};
 						if(!userConnected.collections[collection])
@@ -2321,27 +2580,185 @@ var collection = {
 };
 
 /* *********************************
-			ELEMENTS
+			DYNFORM SPEC TYPE OBJ
 ********************************** */
+var contextData = null;
+var dynForm = null;
+var mentionsInput=[];
+var mentionsInit = {
+	stopMention : false,
+	isSearching : false,
+	get : function(domElement){
+		mentionsInput=[];
+		$(domElement).mentionsInput({
+		  onDataRequest:function (mode, query, callback) {
+			  	if(mentionsInit.stopMention)
+			  		return false;
+			  	var data = mentionsContact;
+			  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+				callback.call(this, data);
+				mentionsInit.isSearching=true;
+		   		var search = {"searchType" : ["citoyens","organizations","projects"]};
+		  		$.ajax({
+					type: "POST",
+			        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
+			        data: search,
+			        dataType: "json",
+			        success: function(retdata){
+			        	if(!retdata){
+			        		toastr.error(retdata.content);
+			        	}else{
+				        	mylog.log(retdata);
+				        	data = [];
+				        	//for(var key in retdata){
+					        //	for (var id in retdata[key]){
+					        $.each(retdata, function (e, value){
+						        	avatar="";
+						        	//console.log(retdata[key]);
+						        	//aert(retdata[key][id].type);
+						        	if(typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl!="")
+						        		avatar = baseUrl+value.profilThumbImageUrl;
+						        	object = new Object;
+						        	object.id = e;
+						        	object.name = value.name;
+						        	object.slug = value.slug;
+						        	object.avatar = avatar;
+						        	object.type = value.type;
+						        	var findInLocal = _.findWhere(mentionsContact, {
+										name: value.name, 
+										type: value.type
+									}); 
+									if(typeof(findInLocal) == "undefined")
+										mentionsContact.push(object);
+						 	//		}
+				        	//}
+				        	});
+				        	data=mentionsContact;
+				        	mylog.log(data);
+				    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+							callback.call(this, data);
+							mylog.log(callback);
+			  			}
+					}	
+				})
+		  	}
+	  	});
+	},
+	beforeSave : function(object, domElement){
+		$(domElement).mentionsInput('getMentions', function(data) {
+			mentionsInput=data;
+		});
+		if (typeof mentionsInput != "undefined" && mentionsInput.length != 0){
+			var textMention="";
+			$(domElement).mentionsInput('val', function(text) {
+				textMention=text;
+				$.each(mentionsInput, function(e,v){
+					strRep=v.name;
+					if(typeof v.slug != "undefined")
+						strRep="@"+v.slug;
+					textMention = textMention.replace("@["+v.name+"]("+v.type+":"+v.id+")", strRep);
+				});
+			});			
+			object.mentions=mentionsInput;
+			object.text=textMention;
+		}
+		return object;		      		
+	},
+	addMentionInText: function(text,mentions){
+		$.each(mentions, function( index, value ){
+			if(typeof value.slug != "undefined"){
+				str="<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+		   						value.name+
+		   					"</span>";
+				text = text.replace("@"+value.slug, str);
+			}else{
+				//Working on old news
+		   		array = text.split(value.value);
+		   		text=array[0]+
+		   					"<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+		   						value.name+
+		   					"</span>"+
+		   				array[1];
+		   	}   					
+		});
+		return text;
+	},
+	reset: function(domElement){
+		$(domElement).mentionsInput('reset');
+	}
+}
+var uploadObj = {
+	type : null,
+	id : null,
+	gotoUrl : null,
+	isSub : false,
+	update  : false,
+	folder : "communecter", //on force pour pas casser toutes les vielles images
+	contentKey : "profil",
+	path : null,
+	extra : null,
+	set : function(type,id, file){
+		if(notNull(file) && file){
+			mylog.log("set uploadObj", id,type,uploadObj.folder,uploadObj.contentKey);
+			uploadObj.type = type;
+			uploadObj.id = id;
+			uploadObj.path = baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+uploadObj.folder+"/folder/"+type+"/ownerId/"+id+"/input/qqfile/docType/file";
+		}
+		else if(typeof type != "undefined"){
+			mylog.log("set uploadObj", id,type,uploadObj.folder,uploadObj.contentKey);
+			uploadObj.type = type;
+			uploadObj.id = id;
+			uploadObj.path = baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+uploadObj.folder+"/folder/"+type+"/ownerId/"+id+"/input/qqfile/contentKey/"+uploadObj.contentKey;
+		} else {
+			uploadObj.type = null;
+			uploadObj.id = null;
+			uploadObj.path = null;
+		}
+	}
+};
 
-var elementLib = {
+var dyFObj = {
 	elementObj : null,
+	elementData : null,
+	subElementObj : null,
+	subElementData : null,
+	activeElem : null,
+	activeModal : null,
+	//rules to show hide submit btn, used anwhere on blur and can be 
+	//completed by specific rules on dynForm Obj
+	//ex : dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf
+	canSubmitIf : function () { 
+    	var valid = true;
+    	//on peut ajouter des regles dans la map definition 
+    	if(	jsonHelper.notNull("dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf", "function") )
+    		valid = dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf();
+    	if( $('#ajaxFormModal #name').length == 0 || $('#ajaxFormModal #name').val() != "" && valid )
+    		$('#btn-submit-form').show();
+    	else 
+    		$('#btn-submit-form').hide();
+		//tmp
+		$('#btn-submit-form').show();
+    },
 	formatData : function (formData, collection,ctrl) { 
 		mylog.warn("----------- formatData",formData, collection,ctrl);
 		formData.collection = collection;
 		formData.key = ctrl;
-		
-		if(elementLocation){
+		if( $.isArray(formData.id) )
+			formData.id = formData.id[0]; //this shouldn't happen, occurs in survey
+
+		if(dyFInputs.locationObj.centerLocation){
 			//formData.multiscopes = elementLocation;
-			formData.address = centerLocation.address;
-			formData.geo = centerLocation.geo;
-			formData.geoPosition = centerLocation.geoPosition;
-			if( elementLocations.length ){
-				$.each( elementLocations,function (i,v) { 
-					if( typeof v.center != "undefined" )
-						elementLocations.splice(i, 1);
+			formData.address = dyFInputs.locationObj.centerLocation.address;
+			formData.geo = dyFInputs.locationObj.centerLocation.geo;
+			formData.geoPosition = dyFInputs.locationObj.centerLocation.geoPosition;
+			if( dyFInputs.locationObj.elementLocations.length ){
+				$.each( dyFInputs.locationObj.elementLocations,function (i,v) { 
+					mylog.log("elementLocations v", v);
+					if(typeof v != "undefined" && typeof v.center != "undefined" ){
+						dyFInputs.locationObj.elementLocations.splice(i, 1);
+					}
 				});
-				formData.addresses = elementLocations;
+				formData.addresses = dyFInputs.locationObj.elementLocations;
 			}
 		}
 		
@@ -2386,7 +2803,8 @@ var elementLib = {
 		
 		if( typeof formData.tags != "undefined" && formData.tags != "" )
 			formData.tags = formData.tags.split(",");
-
+		
+		
 		// Add collections and genres of notragora in tags
 		if( typeof formData.collections != "undefined" && formData.collections != "" ){
 			collectionsTagsSave=formData.collections.split(",");
@@ -2416,10 +2834,16 @@ var elementLib = {
 	},
 
 	saveElement : function  ( formId,collection,ctrl,saveUrl,afterSave ) { 
+		//alert("saveElement");
 		mylog.warn("---------------- saveElement",formId,collection,ctrl,saveUrl,afterSave );
 		formData = $(formId).serializeFormJSON();
 		mylog.log("before",formData);
-		formData = elementLib.formatData(formData,collection,ctrl);
+
+		if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.formatData","function") )
+			formData = dyFObj.elementObj.dynForm.jsonSchema.formatData(formData);
+
+		formData = dyFObj.formatData(formData,collection,ctrl);
+		mylog.log("saveElement", formData);
 		formData.medias = [];
 		$(".resultGetUrl").each(function(){
 			if($(this).html() != ""){
@@ -2450,56 +2874,77 @@ var elementLib = {
 				formData.medias.push(mediaObject);
 			}
 		});
+		if(formData.medias.length == 0)
+			delete formData.medias;
 		mylog.log("beforeAjax",formData);
-		$.ajax( {
-	    	type: "POST",
-	    	url: (saveUrl) ? saveUrl : baseUrl+"/"+moduleId+"/element/save",
-	    	data: formData,
-	    	dataType: "json",
-	    	success: function(data){
-	    		mylog.warn("saveElement ajax result");
-	    		mylog.dir(data);
-				if(data.result == false){
-	                toastr.error(data.msg);
-	                //reset save btn 
-	                $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false).one(function() { 
-						$( settings.formId ).submit();	        	
-			        });
-	           	}
-	            else {
-	            	if(typeof data.msg != "undefined") 
-	            		toastr.success(data.msg);
-	            	else{
-	            		if(typeof data.resultGoods != "undefined" && typeof data.resultGoods.msg != "undefined")
-	            			toastr.success(data.resultGoods.msg);
-	            		if(typeof data.resultErrors != "undefined" && typeof data.resultErrors.msg != "undefined")
-	            			toastr.error(data.resultErrors.msg);
-	            	}
 
-	            	if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
-			        	addFloopEntity(data.id, collection, data.map);
-
-	            	if (typeof afterSave == "function") 
-	            		afterSave(data);
-	            	else{
-						elementLib.closeForm();
-		                if(data.url)
-		                	url.loadByHash( data.url );
-		                else if(data.id)
-			        		url.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
-					}
-	            }
-	    	}
-	    });
+		if( dyFObj.elementObj.dynForm.jsonSchema.debug ){
+			mylog.log("debug dyn Form xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+			mylog.dir(formData);
+			dyFObj.closeForm();
+			mylog.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		} else {
+			$.ajax( {
+		    	type: "POST",
+		    	url: (saveUrl) ? saveUrl : baseUrl+"/"+moduleId+"/element/save",
+		    	data: formData,
+		    	dataType: "json",
+		    	success: function(data){
+		    		mylog.warn("saveElement ajax result");
+		    		mylog.dir(data);
+					if(data.result == false){
+		                toastr.error(data.msg);
+		                //reset save btn 
+		                $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false).one(function() { 
+							$( settings.formId ).submit();	        	
+				        });
+		           	}
+		            else {
+		            	if(typeof data.msg != "undefined") 
+		            		toastr.success(data.msg);
+		            	else{
+		            		if(typeof data.resultGoods != "undefined" && typeof data.resultGoods.msg != "undefined")
+		            			toastr.success(data.resultGoods.msg);
+		            		if(typeof data.resultErrors != "undefined" && typeof data.resultErrors.msg != "undefined")
+		            			toastr.error(data.resultErrors.msg);
+		            	}
+		            	// mylog.log("data.id", data.id, data.url);
+		            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
+				        	addLocationToFormloopEntity(data.id, collection, data.map);*/
+				        	
+				        if (typeof afterSave == "function"){
+		            		afterSave(data);
+		            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+		            	} else {
+							dyFObj.closeForm();
+			                if(data.url){
+			                	mylog.log("urlReload data.url", data.url);
+			                	urlCtrl.loadByHash( data.url );
+			                }
+			                else if(data.id){
+			                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
+				        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+			                }
+						}
+		            }
+		            uploadObj.set()
+		    	}
+		    });
+		}
 	},
 	closeForm : function() {
 		$('#ajax-modal').modal("hide");
 	    //clear the unecessary DOM 
 	    $("#ajaxFormModal").html(''); 
+	   	uploadObj.set();
+	    uploadObj.update = false;
 	},
 	editElement : function (type,id){
 		mylog.warn("--------------- editElement ",type,id);
 		//get ajax of the elemetn content
+		uploadObj.set(type,id);
+		uploadObj.update = true;
+
 		$.ajax({
 	        type: "GET",
 	        url: baseUrl+"/"+moduleId+"/element/get/type/"+type+"/id/"+id,
@@ -2512,45 +2957,47 @@ var elementLib = {
 				//onLoad fill inputs
 				//will be sued in the dynform  as update 
 				data.map.id = data.map["_id"]["$id"];
+				if(typeof typeObj[type].formatData == "function")
+					data = typeObj[type].formatData();
+
 				delete data.map["_id"];
 				mylog.dir(data);
-				console.log(data);
-				
-				if( jsonHelper.notNull("themeObj.dynForm.editElementPOI","function") )
-					themeObj.dynForm.editElementPOI(type,data);
-
-				elementLib.openForm( typeObjLib.get(type).ctrl ,null, data.map);
+				console.log("editElement", data);
+				dyFObj.elementData = data;
+				dyFObj.openForm( dyFInputs.get(type).ctrl ,null, data.map);
 	        } else {
 	           toastr.error("something went wrong!! please try again.");
 	        }
 	    });
 	},
+	
 	//entry point function for opening dynForms
-	openForm : function  (type, afterLoad,data) { 
+	openForm : function  (type, afterLoad,data,isSub) { 
 	    //mylog.clear();
 	    $.unblockUI();
 	    $("#openModal").modal("hide");
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
-	    //global variables clean up
-	    elementLocation = null;
-	    elementLocations = [];
-	    centerLocation = null;
-	    updateLocality = false;
+	    uploadObj.contentKey="profil"; 
+	    dyFObj.activeElem = (isSub) ? "subElementObj" : "elementObj";
+	    dyFObj.activeModal = (isSub) ? "#openModal" : "#ajax-modal";
+      	/*if(type=="addPhoto") 
+        	uploadObj.contentKey="slider";*/ 
+	    //BOUBOULE ICI ACTIVER LEVENEMENT
 	    //initKSpec();
 	    if(userId)
 		{
-			formType = type;
-			elementLib.getDynFormObj(type, function() { 
-				elementLib.starBuild(afterLoad,data);
+			formInMap.formType = type;
+			dyFObj.getDynFormObj(type, function() { 
+				dyFObj.starBuild(afterLoad,data);
 			},afterLoad, data);
 		} else {
-			elementLib.openFormAfterLogin = {
+			dyFObj.openFormAfterLogin = {
 				type : type, 
 				afterLoad : afterLoad,
 				data : data
 			};
-			toastr.error("Vous devez être connecté pour afficher les formulaires de création");
+			toastr.error(tradDynForm["mustbeconnectforcreateform"]);
 			$('#modalLogin').modal("show");
 		}
 	},
@@ -2560,17 +3007,18 @@ var elementLib = {
 	//if doesn't exist tries to lazyload it from assets/js/dynForm
 	//(object) :: is dynformp definition
 	getDynFormObj : function(type, callback,afterLoad, data ){
+		//alert(type+'.js');
 		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
 		if(typeof type == "object"){
 			mylog.log(" object directly Loaded : ", type);
-			elementLib.elementObj = type;
+			dyFObj[dyFObj.activeElem] = type;
 			if( notNull(type.col) ) uploadObj.type = type.col;
     		callback(type, afterLoad, data);
 		}else if( jsonHelper.notNull( "typeObj."+type+".dynForm" , "object") ){
 			mylog.log(" typeObj Loaded : ", type);
-			elementLib.elementObj = typeObjLib.get(type);
-			if( notNull(typeObjLib.get(type).col) ) uploadObj.type = typeObjLib.get(type).col;
-    		callback( elementLib.elementObj, afterLoad, data );
+			dyFObj[dyFObj.activeElem] = dyFInputs.get(type);
+			if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
+    		callback( dyFObj[dyFObj.activeElem], afterLoad, data );
 		}else {
 			//TODO : pouvoir surchargé le dossier dynform dans le theme
 			//via themeObj.dynForm.folder overload
@@ -2578,79 +3026,104 @@ var elementLib = {
 			lazyLoad( dfPath+type+'.js', 
 				null,
 				function() { 
-					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+typeObjLib.get(type).ctrl+'.js');
+					//alert(dfPath+type+'.js');
+					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+type+'.js');
 					mylog.dir(dynForm);
-				  	typeObjLib.get(type).dynForm = dynForm;
-					elementLib.elementObj = typeObjLib.get(type);
-					if( notNull(typeObjLib.get(type).col) ) uploadObj.type = typeObjLib.get(type).col;
+					//typeObj[type].dynForm = dynForm;
+				  	dyFInputs.get(type).dynForm = dynForm;
+					dyFObj[dyFObj.activeElem] = dyFInputs.get(type);
+					if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
     				callback( afterLoad, data );
 			});
 		}
 	},
 	//prepare information for the modal panel 
 	//and launches the build process
-	starBuild : function  (afterLoad, data) {
-		mylog.warn("------------ starBuild",elementLib.elementObj, afterLoad, data);
-		mylog.dir(elementLib.elementObj);
-		$("#ajax-modal").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA").addClass(elementLib.elementObj.bgClass);
-		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
-		$("#ajax-modal-modal-title").removeClass("text-green").removeClass("text-purple").removeClass("text-orange").removeClass("text-azure");
-		$(".modal-header").removeClass("bg-purple bg-azure bg-green bg-orange bg-yellow bg-lightblue ").addClass(elementLib.elementObj.titleClass);
-	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
+	starBuild : function  (afterLoad, data) { 
+		mylog.warn("------------ starBuild",dyFObj[dyFObj.activeElem], afterLoad, data,dyFObj.activeModal );
+		mylog.dir(dyFObj[dyFObj.activeElem]);
+		$(dyFObj.activeModal+" .modal-header").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA");//.addClass(dyFObj[elem].bgClass);
+		$(dyFObj.activeModal+" #ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
+		$(dyFObj.activeModal+" #ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
+		
+	  	$(dyFObj.activeModal+" #ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
 							              	//"<h1 id='proposerloiFormLabel' >Faire une proposition</h1>"+
 							              	"<form id='ajaxFormModal' enctype='multipart/form-data'></form>"+
 							              	"</div>"+
 							              "</div>");
-	  	$('.modal-footer').hide();
-	  	$('#ajax-modal').modal("show");
+	  	$(dyFObj.activeModal+' .modal-footer').hide();
+	  	$(dyFObj.activeModal).modal("show");
+
+	  	dyFInputs.init();
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
-	  	elementLib.buildDynForm(afterLoad, data);
+	  	dyFObj.buildDynForm(afterLoad, data,dyFObj[dyFObj.activeElem],dyFObj.activeModal+" #ajaxFormModal");
+	  	//if(typeof dyFObj[dyFObj.currentKFormType].color != "undefined")
+	  		//$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+									  	  //.addClass(dyFObj[dyFObj.currentKFormType].color);
+		//alert("CO "+typeObj[currentKFormType].color);
+                    
+	  	//$(dyFObj.activeModal+" #ajax-modal-modal-title").html((typeof dyFObj[dyFObj.activeElem].title != "undefined") ? dyFObj[dyFObj.activeElem].title : "");
 	},
-	buildDynForm : function (afterLoad,data) { 
-		mylog.warn("--------------- buildDynForm", elementLib.elementObj, afterLoad,data);
+	/*subDynForm : function(type, afterLoad,data) {
+		smallMenu.open();
+		$("#openModal div.modal-content div.container")..html( "<div class='row bg-white'>"+
+	  										"<div class='col-sm-10 col-sm-offset-1'>"+
+							              	"<div class='space20'></div>"+
+							              	//"<h1 id='proposerloiFormLabel' >Faire une proposition</h1>"+
+							              	"<form id='subFormModal' enctype='multipart/form-data'></form>"+
+							              	"</div>"+
+							              "</div>");
+		dyFObj.buildDynForm(afterLoad, data,dyFObj.subElementObj,"#openModal #subFormModal");
+
+	},*/
+	buildDynForm : function (afterLoad,data,obj,formId) { 
+		mylog.warn("--------------- buildDynForm", dyFObj[dyFObj.activeElem], afterLoad,data);
 		if(userId)
-		{
+		{ 
 			var form = $.dynForm({
-			      formId : "#ajax-modal-modal-body #ajaxFormModal",
-			      formObj : elementLib.elementObj.dynForm,
+			      formId : formId,
+			      formObj : dyFObj[dyFObj.activeElem].dynForm,
 			      formValues : data,
 			      beforeBuild : function  () {
-			      	if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.beforeBuild","function") )
-				        	elementLib.elementObj.dynForm.jsonSchema.beforeBuild();
+
+			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.beforeBuild","function") )
+				        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeBuild();
 			      },
 			      onLoad : function  () {
+
 			      	if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
-			      		themeObj.dynForm.onLoadPanel(elementLib.elementObj);
+			      		themeObj.dynForm.onLoadPanel(dyFObj[dyFObj.activeElem]);
 			      	} else {
-				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+elementLib.elementObj.dynForm.jsonSchema.icon+"'></i> "+elementLib.elementObj.dynForm.jsonSchema.title);
-				        $("#ajax-modal-modal-body").append("<div class='space20'></div>");
-				        //alert(afterLoad+"|"+typeof elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
+				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj[dyFObj.activeElem].dynForm.jsonSchema.icon+"'></i> "+dyFObj[dyFObj.activeElem].dynForm.jsonSchema.title);
+				        //alert(afterLoad+"|"+typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads[afterLoad]);
 			    	}
 			        
-			        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
-			        	elementLib.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
+			        if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.onLoads."+afterLoad, "function") )
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads[afterLoad](data);
 			        //incase we need a second global post process
-			        if( jsonHelper.notNull( "elementLib.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
-			        	elementLib.elementObj.dynForm.jsonSchema.onLoads.onload();
+			        if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.onLoads.onload", "function") )
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads.onload(data);
 				    
 			        bindLBHLinks();
 			      },
 			      onSave : function(){
 
-			      	if( typeof elementLib.elementObj.dynForm.jsonSchema.beforeSave == "function")
-			        	elementLib.elementObj.dynForm.jsonSchema.beforeSave();
+			      	if( typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave == "function")
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave();
 
-			        var afterSave = ( typeof elementLib.elementObj.dynForm.jsonSchema.afterSave == "function") ? elementLib.elementObj.dynForm.jsonSchema.afterSave : null;
-
-			        if( elementLib.elementObj.save )
-			        	elementLib.elementObj.save("#ajaxFormModal");
-			        else if(elementLib.elementObj.saveUrl)
-			        	elementLib.saveElement("#ajaxFormModal",elementLib.elementObj.col,elementLib.elementObj.ctrl,elementLib.elementObj.saveUrl,afterSave);
+			        var afterSave = ( typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterSave == "function") ? dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterSave : null;
+			        mylog.log("onSave ", dyFObj.activeElem, dyFObj[dyFObj.activeElem].saveUrl, dyFObj[dyFObj.activeElem].save);
+			        if( dyFObj[dyFObj.activeElem].save )
+			        	dyFObj[dyFObj.activeElem].save(dyFObj.activeModal+" #ajaxFormModal");
+			        if( dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save )
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save(); //use this for subDynForms
+			        else if(dyFObj[dyFObj.activeElem].saveUrl)
+			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, dyFObj[dyFObj.activeElem].saveUrl, afterSave );
 			        else
-			        	elementLib.saveElement("#ajaxFormModal",elementLib.elementObj.col,elementLib.elementObj.ctrl,null,afterSave);
+			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, null, afterSave );
 			        return false;
 			    }
 			});
@@ -2662,13 +3135,17 @@ var elementLib = {
 	},
 
 	//generate Id for upload feature of this element 
-	setMongoId : function(type) { 
+	setMongoId : function(type,callback) { 
 		uploadObj.type = type;
-		if( !$("#ajaxFormModal #id").val() )
+		mylog.warn("uploadObj ",uploadObj);
+		if( !$("#ajaxFormModal #id").val() && !uploadObj.update )
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
-				uploadObj.id = data.id;
-				$("#ajaxFormModal #id").val(data.id)
+				mylog.log("setMongoId uploadObj.id", data.id);
+				uploadObj.set(type,data.id);
+				$("#ajaxFormModal #id").val(data.id);
+				if( typeof callback === "function" )
+                	callback();
 			});
 		}
 	},
@@ -2698,63 +3175,142 @@ var elementLib = {
 
 		mylog.dir(form);
 
-		elementLib.openForm(form, fct, data);
+		dyFObj.openForm(form, fct, data);
+	},
+	canUserEdit : function ( ) {
+		var res = false;
+		if( userId && userConnected && userConnected.links && contextData ){
+			if(contextData.type == "organizations" && userConnected.links.memberOf[contextData.id].isAdmin )
+				res = true;
+			if(contextData.type == "events" && userConnected.links.events[contextData.id].isAdmin )
+				res = true;
+			if(contextData.type == "projects" && userConnected.links.projects[contextData.id].isAdmin )
+				res = true;
+		}
+		return res;
 	}
 }
+//TODO : refactor into dyfObj.inputs
+var dyFInputs = {
+
+	init : function() {
+		 //global variables clean up
+		dyFInputs.locationObj.elementLocation = null;
+	    dyFInputs.locationObj.elementLocations = [];
+	    dyFInputs.locationObj.centerLocation = null;
+	    dyFInputs.locationObj.countLocation = 0 ;
+	    dyFInputs.locationObj.addresses = (typeof dyFObj.elementData != "undefined" && dyFObj.elementData != null && typeof dyFObj.elementData.map.addresses != "undefined") ? dyFObj.elementData.map.addresses  :  [] ;
+	    updateLocality = false;
+
+	    // Initialize tags list for network in form of element
+		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"  && typeof typeObj != "undefined" ){
+			$.each(networkJson.add, function(key, v) {
+				if(typeof networkJson.request.sourceKey != "undefined"){
+					sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
+					typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
+				}
+
+				if(v){
+					if(typeof networkJson.request.searchTag != "undefined"){
+						typeObj[key].dynForm.jsonSchema.properties.tags.data = networkJson.request.searchTag;
+					}
 
 
-/* *********************************
-			DYNFORM SPEC TYPE OBJ
-********************************** */
-var contextData = null;
-var dynForm = null;
-var uploadObj = {
-	type : null,
-	id : null,
-	folder : "communecter", //on force pour pas casser toutes les vielles images
-	set : function(type,id){
-		uploadObj.type = type;
-		uploadObj.id = id;
-	}
-};
+					if(notNull(networkJson.dynForm)){
+						mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
+						mylog.log("networkTags", networkTags);
+						if(typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+							typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
+							if(typeof networkJson.request.mainTag != "undefined")
+								typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
+						}
+						mylog.log("networkJson.dynForm");
+						mylog.log("networkJson.dynForm", "networkJson.dynForm");
+						if(notNull(networkJson.dynForm.extra)){
+							var nbListTags = 1 ;
+							mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
+							mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
+							while(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags)){
+								typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
+									"inputType" : "tags",
+									"placeholder" : networkJson.dynForm.extra["tags"+nbListTags].placeholder,
+									"values" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
+									"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
+									"label" : networkJson.dynForm.extra["tags"+nbListTags].list
+								};
+								nbListTags++;
+								mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
+								mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
+							}
+							delete typeObj[key].dynForm.jsonSchema.properties.tags;
+						}
+					}
+				}
+			});
+		}
+		
+	},
 
-var typeObjLib = {
-	name :function(type) { 
+	inputText :function(label, placeholder, rules, custom) { 
+		var inputObj = {
+			label : label,
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "... " ),
+	        inputType : "text",
+	        rules : ( notEmpty(rules) ? rules : {} ),
+	        custom : ( notEmpty(custom) ? custom : "" )
+	    };
+	    mylog.log("inputText ", inputObj);
+    	return inputObj;
+    },
+    slug :function(label, placeholder, rules) { 
+    	console.log("rooooles",rules);
+		var inputObj = {
+			label : label,
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "... " ),
+	        inputType : "text",
+	        rules : ( notEmpty(rules) ? rules : "")
+	    };
+    	inputObj.init = function(){
+        	$("#ajaxFormModal #slug").bind("input keyup",function(e) {
+        		$(this).val(slugify($(this).val(), true));
+        		if($("#ajaxFormModal #slug").val().length >= 3 )
+            		slugUnique($(this).val());
+            	else
+            		$("#ajaxFormModal #slug").parent().removeClass("has-success").addClass("has-error").find("span").text("Please enter at least 3 characters.");
+            	//dyFObj.canSubmitIf();
+        	});
+	    }
+	    mylog.log("dyFInputs ", inputObj);
+    	return inputObj;
+    },
+	name :function(type, rules, addElement, extraOnBlur) { 
 		var inputObj = {
 	    	placeholder : "... ",
 	        inputType : "text",
-	        rules : { required : true }
+	        rules : ( notEmpty(rules) ? rules : { required : true } )
 	    };
 	    if(type){
-	    	inputObj.label = "Nom de votre " + trad[type]+" ";
+	    	console.log("NAMEOFYOUR", dyFInputs.get(type).ctrl, trad[dyFInputs.get(type).ctrl]);
+	    	inputObj.label = tradDynForm["nameofyour"]+" " + trad[dyFInputs.get(type).ctrl]+" ";
 	    	if(type=="classified") 
-	    		inputObj.label = "Titre de votre " + trad[type]+" ";
+	    		inputObj.label = tradDynForm["titleofyour"]+" "+ trad[type]+" ";
 
 	    	inputObj.placeholder = inputObj.label + " ...";
 
 	    	inputObj.init = function(){
 	        	$("#ajaxFormModal #name ").off().on("blur",function(){
 	        		if($("#ajaxFormModal #name ").val().length > 3 )
-	            		globalSearch($(this).val(),[ typeObjLib.get(type).col ] );
+	            		globalSearch($(this).val(),[ dyFInputs.get(type).col, "organizations" ], addElement );
+	            	
+	            	dyFObj.canSubmitIf();
 	        	});
 	        }
 	    }else{
 	    	inputObj.label = "Nom ";
 	    }
-	    mylog.log("typeObjLib ", inputObj);
+	    mylog.log("dyFInputs ", inputObj);
     	return inputObj;
     },
-    /*nameOrganiser : {
-    	placeholder : "Nom",
-        inputType : "text",
-        rules : {required : true},
-        init : function(){
-        	$("#ajaxFormModal #name ").off().on("blur",function(){
-        		if($("#ajaxFormModal #name ").val().length > 3 )
-        			globalSearch($(this).val(),["projects", "events", "organizations"]);
-        	});
-        }
-    },*/
     username : {
     	placeholder : "username",
         inputType : "text",
@@ -2781,87 +3337,158 @@ var typeObjLib = {
         inputType : "custom",
         html:"<div id='similarLink'><div id='listSameName'></div></div>",
     },
-    type :function  (title,list,notRequired) {  
-    	var title = (title) ? title : "Type";
-    	var list = (list) ? list : eventTypes;
-	    var res = {
-	    	label : title,
-	    	inputType : "select",
-	    	placeholder : title,
-	    	rules : { required : true },
-	    	options : list
-	    }
-	    if(notRequired == false)
-	    	delete res.rules;
-	    return res;
+    inputSelect :function(label, placeholder, list, rules) { 
+		var inputObj = {
+			inputType : "select",
+			label : ( notEmpty(label) ? label : "" ),
+			placeholder : ( notEmpty(placeholder) ? placeholder : "Choisir" ),
+			options : ( notEmpty(list) ? list : [] ),
+			rules : ( notEmpty(rules) ? rules : {} )
+		};
+		return inputObj;
 	},
-    typeOrga :{
-    	label : "Type d'organisation",
-    	inputType : "select",
-    	placeholder : "Type d'organisation",
-    	rules : { required : true },
-    	options : organizationTypes
-    },
-   	avancementProject :{
-   		label : "L'avancement du project",
-    	inputType : "select",
-    	placeholder : "Avancement du projet",
-    	options : avancementProject
-    },
+	inputSelectGroup :function(label, placeholder, list, group, rules, init) { 
+		var inputObj = {
+			inputType : "select",
+			label : ( notEmpty(label) ? label : "" ),
+			placeholder : ( notEmpty(placeholder) ? placeholder : "Choisir" ),
+			options : ( notEmpty(list) ? list : [] ),
+			groupOptions : ( notEmpty(group) ? group : [] ),
+			rules : ( notEmpty(rules) ? rules : {} ),
+			init : ( notEmpty(init) ? init : function(){} )
+		};
+		return inputObj;
+	},
+	organizerId : function( organizerId, organizerType ){
+		return dyFInputs.inputSelectGroup( 	tradDynForm["whoorganizedevent"]+" ?", 
+											tradDynForm["whoorganize"]+" ?", 
+											firstOptions(), 
+											parentList( ["organizations","projects"], organizerId, organizerType ), 
+											{ required : true },
+											function(){
+												$("#ajaxFormModal #organizerId").off().on("change",function(){
+													
+													var organizerId = $(this).val();
+													var organizerType = "notfound";
+													if(organizerId == "dontKnow" )
+														organizerType = "dontKnow";
+													else if( $('#organizerId').find(':selected').data('type') && typeObj[$('#organizerId').find(':selected').data('type')] )
+														organizerType = $('#organizerId').find(':selected').data('type');
+													else
+														organizerType = typeObj["person"].col;
+
+													mylog.warn( "organizer",organizerId,organizerType, $('#organizerId').find(':selected').data('type') );
+													$("#ajaxFormModal #organizerType").val( organizerType );
+												});
+											});
+	},
+	tags : function(list, placeholder, label) { 
+    	tagsL = (list) ? list : tagsList;
+    	return {
+			inputType : "tags",
+			placeholder : placeholder != null ? placeholder : tradDynForm["tags"],
+			values : tagsL,
+			label : (label != null) ? label : tradDynForm["addtags"]
+		}
+	},
+	radio : function(label,keyValues) { 
+    	return {
+    		label : (label != null) ? label : "",
+			inputType : "radio",
+			options : keyValues
+		}
+	},
     imageAddPhoto : {
     	inputType : "uploader",
     	showUploadBtn : true,
     	init : function() { 
     		setTimeout( function()
     		{
-        		$('#trigger-upload').click(function() {
-		        	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-		        	url.loadByHash(location.hash);
+    			
+        		$('#trigger-upload').click(function(e) {
+        			alert("initImageTrigger");
+        			$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
-        	},500);
+				//$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+				//	  					  	  .addClass("bg-dark");
+    		 	
+    		 	//$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
+
+        	},1500);
     	}
     },
-    image :function(str) { 
-    	gotoUrl = (str) ? str+uploadObj.id : location.hash;
+    image :function() { 
+    	
+    	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
+    		uploadObj.gotoUrl = location.hash ;
+    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
+
     	return {
 	    	inputType : "uploader",
-	    	label : "Images de profil et album", 
+	    	docType : "image",
+	    	label : tradDynForm["imageshere"]+" :", 
+	    	showUploadBtn : false,
+	    	template:'qq-template-gallery',
+	    	filetypes:['jpeg', 'jpg', 'gif', 'png'],
 	    	afterUploadComplete : function(){
-		    	elementLib.closeForm();
-		    	//alert(gotoUrl+uploadObj.id);
-	            url.loadByHash( gotoUrl );	
-		    	}
+	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
+		    	dyFObj.closeForm();
+				//alert( "image upload then goto : "+uploadObj.gotoUrl );
+	            urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+		    }
     	}
     },
-    descriptionOptionnel : {
-        inputType : "textarea",
-		placeholder : "...",
-		init : function(){
-        	$(".descriptiontextarea").css("display","none");
-        },
-		label : "Description optionnelle"
-    },
-    description : {
-        inputType : "textarea",
-		placeholder : "...",
-		label : "Description principale"
-    },
-    shortDescription : {
-        inputType : "textarea",
-		placeholder : "...",
-		label : "Description courte",
-		rules : { maxlength: 140 }
-    },
-    tags : function(list) { 
-    	tagsL = (list) ? list : tagsList;
+    file :function() { 
+    	
+    	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
+    		uploadObj.gotoUrl = location.hash ;
+    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
+
     	return {
-			inputType : "tags",
-			placeholder : "Mots clés",
-			values : tagsL,
-			label : "Ajouter quelques mots clés"
-		}
+	    	inputType : "uploader",
+	    	label : tradDynForm.fileshere+" :", 
+	    	showUploadBtn : false,
+	    	docType : "file",
+	    	template:'qq-template-manual-trigger',
+	    	filetypes:["pdf","xls","xlsx","doc","docx","ppt","pptx","odt","ods","odp"],
+	    	afterUploadComplete : function(){
+	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
+		    	dyFObj.closeForm();
+				//alert( "image upload then goto : "+uploadObj.gotoUrl );
+				if(location.hash.indexOf("view.library")>0){
+					navCollections=[];
+					buildNewBreadcrum("files");
+					getViewGallery(1,"","files");
+				}		
+				else
+	            	urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+		    }
+    	}
+    },
+    textarea :function (label,placeholder,rules) {  
+    	var inputObj = {
+    		inputType : "textarea",
+	    	label : ( notEmpty(label) ? label : "Votre message ..." ),
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "Votre message ..." ),
+	    	rules : ( notEmpty(rules) ? rules : { } ),
+	    	init : function(){
+	    		mylog.log("textarea init");
+	    		if($(".maxlengthTextarea").length){
+	    			mylog.log("textarea init2");
+	    			$(".maxlengthTextarea").off().keyup(function(){
+						var name = "#" + $(this).attr("id") ;
+						mylog.log(".maxlengthTextarea", "#ajaxFormModal "+name, $(this).attr("id"), $("#ajaxFormModal "+name).val().length, $(this).val().length);
+						$("#ajaxFormModal #maxlength"+$(this).attr("id")).html($("#ajaxFormModal "+name).val().length);
+					});
+	    		}
+	    		dataHelper.activateMarkdown("#ajaxFormModal #message");
+	        }
+	    };
+	    return inputObj;
 	},
+
 	password : function  (title, rules) {  
     	var title = (title) ? title : trad["New password"];
     	var ph = "";
@@ -2874,45 +3501,399 @@ var typeObjLib = {
 	    }
 	    return res;
 	},
+    price :function(label, placeholder, rules, custom) { 
+		var inputObj = dyFInputs.inputText(tradDynForm["pricesymbole"], tradDynForm["pricesymbole"]+" ...") ;
+	    inputObj.init = function(){
+    		$('input#price').filter_input({regex:'[0-9]'});
+      	};
+    	return inputObj;
+    },
 
+    text :function (label,placeholder,rules) {  
+    	var inputObj = {
+    		inputType : "text",
+	    	label : ( notEmpty(label) ? label : tradDynForm["mainemail"] ),
+	    	placeholder : ( notEmpty(placeholder) ? placeholder : "exemple@mail.com" ),
+	    	rules : ( notEmpty(rules) ? rules : { email: true } )
+	    }
+	    console.log("create form input email", inputObj);
+	    return inputObj;
+	},
+	
+	emailOptionnel :function (label,placeholder,rules) {  
+    	var inputObj = dyFInputs.text(label, placeholder, rules);
+    	inputObj.init = function(){
+			$(".emailtext").css("display","none");
+		};
+	    return inputObj;
+	},
+	createNews: function (){
+		var inputObj = {
+			inputType : "createNews",
+			label : "ta mere",
+       		placeholder:"",
+       		rules: "",
+       		params : {"targetId":contextData.id, "targetType":contextData.type, 
+     					"targetImg":contextData.profilThumbImageUrl, "targetName":contextData.name, 
+     					"authorId":userId,"authorImg":userConnected.profilThumbImageUrl, "authorName":userConnected.name}
+   		}
+		inputObj.init = function(){
+			$("#createNews").css("display","none");
+			$("#createNews #tags").select2({tags:tagsList});
+			$("#createNews > textarea").elastic();
+			mentionsInit.get("#createNews > #mentionsText > textarea");
+			$("#createNews .scopeShare").click(function() {
+				mylog.log(this);
+				replaceText=$(this).find("h4").html();
+				$("#createNews #btn-toogle-dropdown-scope").html(replaceText+' <i class="fa fa-caret-down" style="font-size:inherit;"></i>');
+				scopeChange=$(this).data("value");
+				$("#createNews > input[name='scope']").val(scopeChange);
+				
+			});
+			$("#createNews .targetIsAuthor").click(function() {
+				mylog.log(this);
+				srcImg=$(this).find("img").attr("src");
+				name=$(this).data("name");
+				$("#createNews #btn-toogle-dropdown-targetIsAuthor").html('<img height=20 width=20 src="'+srcImg+'"/> '+name+' <i class="fa fa-caret-down" style="font-size:inherit;"></i>');
+				authorTargetChange=$(this).data("value");
+				$("#createNews #authorIsTarget").val(authorTargetChange);
+			});
+		};
+		return inputObj;  
+	},
 	location : {
-		label :"Localisation",
+		label : tradDynForm["localization"],
        inputType : "location"
     },
-    email : {
-		placeholder : "Ajouter un e-mail",
-		inputType : "text",
-		label : "E-mail principal",
-        rules : { email: true }
-	},
-    emailOptionnel : {
-		placeholder : "Email du responsable",
-		inputType : "text",
-		init : function(){
-			$(".emailtext").css("display","none");
+    locationObj : {
+    	/* *********************************
+					LOCATION
+		********************************** */
+		//TODO move to elementForm
+		elementLocation : null,
+		centerLocation : null,
+		elementLocations : [],
+		addresses : [],
+		elementPostalCode : null,
+		elementPostalCodes : [],
+		countLocation : 0,
+		countPostalCode : 0,
+		initVar :function(){
+			dyFInputs.locationObj.elementLocation = null;
+		    dyFInputs.locationObj.elementLocations = [];
+		    dyFInputs.locationObj.centerLocation = null;
+		    dyFInputs.locationObj.addresses = [];
+		    dyFInputs.locationObj.countLocation = 0 ;
 		},
-        rules : { email: true }
-	},
-	url : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        placeholder : "Site web",
-        label : "URL principale",
-        rules : { url: true }
+		init : function () {
+			mylog.log("init loc");
+			$(".deleteLocDynForm").click(function(){
+				mylog.log("deleteLocDynForm", $(this).data("index"));
+				var index = $(this).data("index");
+				var indexLoc = $(this).data("indexLoc");
+				if(index == -1 && dyFInputs.locationObj.elementLocations.length > 1){
+					toastr.error("Vous ne pouvez pas supprimer l'adresse principal si vous avez des adresses secondaires");
+				}else{
+					bootbox.confirm({
+						message: trad["suredeletelocality"]+"<span class='text-red'></span>",
+						buttons: {
+							confirm: {
+								label: trad["yes"],
+								className: 'btn-success'
+							},
+							cancel: {
+								label: trad["no"],
+								className: 'btn-danger'
+							}
+						},
+						callback: function (result) {
+							if (!result) {
+								return;
+							} else {
+								mylog.log("Index Delete", $(this).data("index"));
+								var param = new Object;
+								param.name = (index == -1 ) ? "locality" : "addresses";
+								param.value = (index == -1 ) ? "" : { addressesIndex : index };
+								param.pk = uploadObj.id;
+
+								$.ajax({
+							        type: "POST",
+							        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+uploadObj.type,
+							        data: param,
+							       	dataType: "json",
+							    	success: function(data){
+								    	if(data.result){
+											toastr.success(data.msg);
+											
+											var formValues = dyFObj.elementData.map;
+											mylog.log("FormValues", formValues);
+
+											dyFInputs.locationObj.elementLocation = null;
+											dyFInputs.locationObj.elementLocations.splice(indexLoc,1);
+											if(index != -1 ){
+												dyFInputs.locationObj.initVar();
+												$(".locationlocation").html("");
+												   
+												if( dyFInputs.locationObj.addresses ){
+													dyFInputs.locationObj.addresses.splice(index,1);
+													var test = [];
+													$.each(dyFInputs.locationObj.elementLocations, function(i,locelt){
+														$.each(dyFInputs.locationObj.addresses, function(i,addLoc){
+
+															if(addLoc.postalCode == locelt.locelt && 
+																addLoc.streetAddress == locelt.streetAddress &&
+																addLoc.insee == locelt.insee &&
+																addLoc.addressCountry == locelt.addressCountry &&
+																addLoc.addressLocality == locelt.addressLocality){
+																test.push(locelt);
+															}
+														});
+													});
+													
+												}
+
+												if( formValues.address && formValues.geo && formValues.geoPosition ){
+													mylog.warn("init Adress location",formValues.address.addressLocality,formValues.address.postalCode);
+													dyFInputs.locationObj.copyMapForm2Dynform({address:formValues.address,geo:formValues.geo,geo:formValues.geoPosition});
+													dyFInputs.locationObj.addLocationToForm({address:formValues.address,geo:formValues.geo,geo:formValues.geoPosition}, -1);
+												}
+												if( dyFInputs.locationObj.addresses ){
+													$.each(dyFInputs.locationObj.addresses, function(i,addLoc){
+														mylog.warn("init extra addresses location ",locationObj.address.addressLocality,locationObj.address.postalCode);
+														dyFInputs.locationObj.copyMapForm2Dynform(locationObj);
+														dyFInputs.locationObj.addLocationToForm(locationObj, i);	
+													});
+												}
+												
+											}else{
+												$(".locationEl"+ indexLoc).remove();
+											}
+								    	}
+								    }
+								});
+							}
+						}
+					});
+				}
+			});
+		},
+		copyMapForm2Dynform : function (locObj) {
+			mylog.warn("---------------copyMapForm2Dynform----------------");
+			//if(!elementLocation)
+			//	elementLocation = [];
+			mylog.log("locationObj", locObj);
+			dyFInputs.locationObj.elementLocation = locObj;
+			mylog.log("elementLocation", dyFInputs.locationObj.elementLocation);
+			dyFInputs.locationObj.elementLocations.push(dyFInputs.locationObj.elementLocation);
+			mylog.log("dyFInputs.locationObj.elementLocations", dyFInputs.locationObj.elementLocations);
+			mylog.log("dyFInputs.locationObj.centerLocation", dyFInputs.locationObj.centerLocation);
+			if(!dyFInputs.locationObj.centerLocation /*|| dyFInputs.locationObj.elementLocation.center == true*/){
+				dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocation;
+				dyFInputs.locationObj.elementLocation.center = true;
+			}
+			mylog.dir(dyFInputs.locationObj.elementLocations);
+			//elementLocation.push(positionObj);
+		},
+		addLocationToForm : function (locObj, index){
+			mylog.warn("---------------addLocationToForm----------------");
+			mylog.dir(locObj);
+			var strHTML = "";
+			if( locObj.address.addressCountry)
+				strHTML += locObj.address.addressCountry;
+			if( locObj.address.postalCode)
+				strHTML += ", "+locObj.address.postalCode;
+			if( locObj.address.addressLocality)
+				strHTML += ", "+locObj.address.addressLocality;
+			if( locObj.address.streetAddress)
+				strHTML += ", "+locObj.address.streetAddress;
+			var btnSuccess = "";
+			var locCenter = "";
+			var boolCenter=false;
+			if( dyFInputs.locationObj.countLocation == 0){
+				btnSuccess = "btn-success";
+				//locCenter = "<span class='lblcentre'>(localité centrale)</span>";
+				locCenter = "<span class='lblcentre'> "+tradDynForm["mainLocality"]+"</span>"; 
+				boolCenter=true;
+			}
+
+			/*if(typeof index != "undefined"){
+				strHTML = "<a href='javascript:;' class='deleteLocDynForm locationEl"+dyFInputs.locationObj.countLocation+" btn' data-index='"+index+"' data-indexLoc='"+dyFInputs.locationObj.countLocation+"'>"+
+								"<i class='text-red fa fa-times'></i></a>"+
+					  		"<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
+					  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' data-index='"+index+"' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'>"+
+					  	"<i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
+			}
+			else{
+				strHTML = "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+")' class=' locationEl"+dyFInputs.locationObj.countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
+					  "<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
+					  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
+			}*/
+			if(typeof index != "undefined"){
+				strHTML =  
+			        "<div class='col-md-12 col-sm-12 col-xs-12 text-left shadow2 padding-15 margin-top-15 margin-bottom-15'>" + 
+			          "<span class='pull-left locationEl"+dyFInputs.locationObj.countLocation+" locel text-red bold'>"+ 
+			            "<i class='fa fa-home fa-2x'></i> "+ 
+			            strHTML+ 
+			          "</span> "+ 
+			 
+			          "<a href='javascript:;' data-index='"+index+"' data-indexLoc='"+dyFInputs.locationObj.countLocation+"' "+ 
+			            "class='deleteLocDynForm locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+ 
+			            "<i class='fa fa-times'></i> "+tradDynForm.clear+ 
+			          "</a>"+ 
+			 
+			          "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' data-index='"+index+"'"+ 
+			            "class='margin-right-5 centers pull-right center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm "+btnSuccess+"'> "+ 
+			            "<i class='fa fa-map-marker'></i> "+locCenter+ 
+			          "</a>" + 
+			           
+			        "</div>"; 
+			} else {
+				strHTML =  
+			        "<div class='col-md-12 col-sm-12 col-xs-12 text-left shadow2 padding-15 margin-top-15 margin-bottom-15'>" + 
+			          "<span class='pull-left locationEl"+dyFInputs.locationObj.countLocation+" locel text-red bold'>"+ 
+			            "<i class='fa fa-home fa-2x'></i> "+ 
+			            strHTML+ 
+			          "</span> "+ 
+			 
+			          "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+", "+boolCenter+")' "+ 
+			            "class='removeLocalityBtn locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+ 
+			            "<i class='fa fa-times'></i> "+tradDynForm.clear+ 
+			          "</a>"+ 
+			 
+			          "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' "+ 
+			            "class='setAsCenterLocalityBtn margin-right-5 centers pull-right center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm "+btnSuccess+"'> "+ 
+			            "<i class='fa fa-map-marker'></i> "+locCenter+ 
+			          "</a>" + 
+			           
+			        "</div>"; 
+			}
+      		$(".locationlocation").append(strHTML); 
+			
+			
+			// strHTML = "<a href='javascript:removeLocation("+dyFInputs.locationObj.countLocation+", "+true+")'' class=' locationEl"+dyFInputs.locationObj.countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
+			// 		  "<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
+			// 		  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
+
+			$(".postalcodepostalcode").prepend(strHTML);
+
+			mylog.log("strAddres", strHTML);
+			//$(".locationlocation").prepend(strHTML);
+			dyFInputs.locationObj.countLocation++;
+		},
+		copyPCForm2Dynform : function (postalCodeObj) { 
+			mylog.warn("---------------copyPCForm2Dynform----------------");
+			mylog.log("postalCodeObj", postalCodeObj);
+			dyFInputs.locationObj.elementPostalCode = postalCodeObj;
+			mylog.log("elementPostalCode", dyFInputs.locationObj.elementPostalCode);
+			dyFInputs.locationObj.elementPostalCodes.push(dyFInputs.locationObj.elementPostalCode);
+			mylog.log("elementPostalCodes", dyFInputs.locationObj.elementPostalCodes);
+			mylog.dir(dyFInputs.locationObj.elementPostalCodes);
+			//elementPostalCode.push(positionObj);
+		},
+		addPostalCodeToForm : function (postalCodeObj){
+			mylog.warn("---------------addPostalCodeToForm----------------");
+			mylog.dir(postalCodeObj);
+			var strHTML = "";
+			if( postalCodeObj.postalCode)
+				strHTML += postalCodeObj.postalCode;
+			if( postalCodeObj.name)
+				strHTML += " ,"+postalCodeObj.name;
+			if( postalCodeObj.latitude)
+				strHTML += " ,("+postalCodeObj.latitude;
+			if( postalCodeObj.longitude)
+				strHTML += " / "+postalCodeObj.longitude+")";
+			
+			strHTML = "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countPostalCode+")' class=' locationEl"+dyFInputs.locationObj.countPostalCode+" btn'> <i class='text-red fa fa-times'></i></a>"+
+					  "<span class='locationEl"+dyFInputs.locationObj.countPostalCode+" locel text-azure'>"+strHTML+"</span> <br/>";
+			$(".postalcodepostalcode").prepend(strHTML);
+			dyFInputs.locationObj.countPostalCode++;
+		},
+		removeLocation : function (ix,center){
+			mylog.log("dyFInputs.locationObj.removeLocation", ix, dyFInputs.locationObj.elementLocations);
+			dyFInputs.locationObj.elementLocation = null;
+			dyFInputs.locationObj.elementLocations.splice(ix,1);
+			$(".locationEl"+ix).parent().remove();
+			//delete dyFInputs.locationObj.elementLocations[ix];
+			dyFInputs.locationObj.countLocation--;
+			if(dyFInputs.locationObj.countLocation > 0){
+				for(var prop in dyFInputs.locationObj.elementLocations){
+					if(prop >= ix){
+						domNumber=parseInt(prop)+1;
+						domParent=$(".locationEl"+domNumber).parent();
+						var btnSuccess = "";
+						var locCenter = "";
+						var boolCenter=false;
+						if( typeof center != "undefined" && center && prop==0){
+							btnSuccess = "btn-success";
+							//locCenter = "<span class='lblcentre'>(localité centrale)</span>";
+							locCenter = "<span class='lblcentre'> "+tradDynForm["mainLocality"]+"</span>"; 
+							boolCenter=true;
+						}
+						domParent.find(".removeLocalityBtn").attr("href","javascript:dyFInputs.locationObj.removeLocation("+prop+","+boolCenter+")");
+						domParent.find(".setAsCenterLocalityBtn").attr("href","javascript:dyFInputs.locationObj.setAsCenter("+prop+")");
+						$(".locationEl"+domNumber).each(function(){
+							$(this).removeClass("locationEl"+domNumber).addClass("locationEl"+prop);
+						});
+						$(".center"+domNumber).removeClass("center"+domNumber).addClass("center"+prop)/*.append(locCenter)*/;
+					}
+				}
+				if(typeof center != "undefined" && center)
+					dyFInputs.locationObj.setAsCenter(0);
+			} else{
+				$(".locationBtn").html("<i class='fa fa-home'></i> "+tradDynForm["mainLocality"]);
+				//dyFInputs.locationObj.centerLocation = null;
+			}
+			
+			//$.each(function())
+			//TODO check if this center then apply on first
+			//$(".locationEl"+dyFInputs.locationObj.countLocation).remove();
+
+			/*if(ix != 0){
+				removeAddresses(ix-1, true);
+			}
+			else
+				removeAddress(true);*/
+
+		},
+		setAsCenter : function (ix){
+
+			$(".centers").removeClass('btn-success');
+			$(".lblcentre").remove();
+			$.each(dyFInputs.locationObj.elementLocations,function(i, v) {
+				console.log(v); 
+				if(typeof v.center != "undefined" && v.center)
+					delete v.center;
+			})
+			$(".centers").removeClass('btn-success');
+			$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>addresse principale</span>");
+			$(".center"+ix).parent().find(".removeLocalityBtn").attr("href","javascript:dyFInputs.locationObj.removeLocation("+ix+",true)");
+			dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocations[ix];
+			dyFInputs.locationObj.elementLocations[ix].center = true;
+		}
     },
-    urlOptionnel : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        placeholder : "url, lien, adresse web",
-        init:function(){
+    //produces 
+    subDynForm : function(form, multi){
+
+    },
+    inputUrl :function (label,placeholder,rules, custom) {  
+    	label = ( notEmpty(label) ? label : tradDynForm["mainurl"] );
+    	placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
+    	rules = ( notEmpty(rules) ? rules : { url: true } );
+    	custom = ( notEmpty(custom) ? custom : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>" );
+	    var inputObj = dyFInputs.inputText(label, placeholder, rules, custom);
+	    return inputObj;
+	},
+	inputUrlOptionnel :function (label, placeholder,rules, custom) {  
+    	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
+    	inputObj.init = function(){
             getMediaFromUrlContent("#url", ".resultGetUrl0",0);
             $(".urltext").css("display","none");
-        },
-        rules : { url: true }
-    },
+        };
+	    return inputObj;
+	},
     urls : {
-    	label : "Ajouter des informations libres",
-    	placeholder : "informations / urls ...",
+    	label : tradDynForm["freeinfourl"],
+    	placeholder : tradDynForm["freeinfourl"]+" ...",
         inputType : "array",
         value : [],
         init:function(){
@@ -2921,149 +3902,278 @@ var typeObjLib = {
     },
     urlsOptionnel : {
         inputType : "array",
-        placeholder : "url, informations supplémentaires, actions à faire, etc",
+        placeholder : tradDynForm["urlandaddinfoandaction"],
         value : [],
         init:function(){
             getMediaFromUrlContent(".addmultifield0", ".resultGetUrl0",0);
         	$(".urlsarray").css("display","none");	
         }
     },
-    allDay : {
-    	inputType : "checkbox",
-    	init : function(){
-        	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
-        		mylog.log("toto",$("#ajaxFormModal #allDay").val());
-        	})
-        },
-    	"switch" : {
-    		"onText" : "Oui",
-    		"offText" : "Non",
-    		"labelText":"Toute la journée",
-    		"onChange" : function(){
-    			var allDay = $("#ajaxFormModal #allDay").is(':checked');
-    			var startDate = "";
-    			var endDate = "";
-    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
-    			if (allDay) {
-    				$(".dateTimeInput").addClass("dateInput");
-    				$(".dateTimeInput").removeClass("dateTimeInput");
-    				$('.dateInput').datetimepicker('destroy');
-    				$(".dateInput").datetimepicker({ 
-				        autoclose: true,
-				        lang: "fr",
-				        format: "d/m/Y",
-				        timepicker:false
-				    });
-				    startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
-				    endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
-    			} else {
-    				$(".dateInput").addClass("dateTimeInput");
-    				$(".dateInput").removeClass("dateInput");
-    				$('.dateTimeInput').datetimepicker('destroy');
-    				$(".dateTimeInput").datetimepicker({ 
-	       				weekStart: 1,
-						step: 15,
-						lang: 'fr',
-						format: 'd/m/Y H:i'
-				    });
-				    
-    				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
-					endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
-    			}
-			    if (startDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(startDate);
-				if (endDate != "Invalid date") $('#ajaxFormModal #startDateInput').val(endDate);
-    		}
-    	}
+    keyVal : {
+    	label : "Key Value Pairs",
+    	inputType : "properties",
     },
-    startDateInput : {
-        inputType : "datetime",
-        placeholder: "Date de début",
-        label : "Date de début",
-        rules : { 
-        	required : true,
-        	duringDates: ["#startDateParent","#endDateParent","La date de début"]
-    	}
+    bookmarkUrl: function(label, placeholder,rules, custom){
+    	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
+    	inputObj.init = function(){
+    		$("#ajaxFormModal #url").bind("input keyup",function(e) {
+            	processUrl.refUrl($(this).val());
+            	/*if(result){
+            		console.log(result);
+            	}*/
+        	});
+            //$(".urltext").css("display","none");
+        };
+	    return inputObj;
     },
-    endDateInput : {
-        inputType : "datetime",
-        placeholder: "Date de fin",
-        label : "Date de fin",
-        rules : { 
-        	required : true,
-        	greaterThan: ["#ajaxFormModal #startDateInput","la date de début"],
-        	duringDates: ["#startDateParent","#endDateParent","La date de fin"]
+    checkboxSimple : function(checked, id, params){
+    
+    	var inputObj = {
+    		label: params["labelText"],
+    		params : params,
+	    	inputType : "checkboxSimple",
+	    	checked : checked, //$("#ajaxFormModal #"+id).val(),
+	    	init : function(){
+	    		//var checked = $("#ajaxFormModal #"+id).val();
+	    		console.log("checkcheck2", checked, "#ajaxFormModal #"+id);
+	    		var idTrue = "#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox[data-checkval='true']";
+	    		var idFalse = "#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox[data-checkval='false']";
+	    		console.log("checkcheck2", checked, "#ajaxFormModal #"+id);
+	    		$("#ajaxFormModal #"+id).val(checked);
+
+	    		if(typeof params["labelInformation"] != "undefined")
+	        		$("#ajaxFormModal ."+id+"checkboxSimple label").append(
+	        				"<small class='col-md-12 col-xs-12 text-left no-padding' "+
+									"style='font-weight: 200;'>"+
+									params["labelInformation"]+
+							"</small>");
+
+	        	if(checked == "true"){
+	    			$(idTrue).addClass("bg-green-k").removeClass("letter-green");
+	    			$("#ajaxFormModal ."+id+"checkboxSimple label").append(
+	    					"<span class='lbl-status-check margin-left-10'>"+
+	    						'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>'+
+	    					"</span>");
+	        	}
+
+	    		if(checked == "false"){ 
+	    			$(idFalse).addClass("bg-red").removeClass("letter-red");
+	    			$("#ajaxFormModal ."+id+"checkboxSimple label").append(
+	    					"<span class='lbl-status-check margin-left-10'>"+
+	    						'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>'+
+	    					"</span>");
+
+	    			setTimeout(function(){
+    			  		if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+    			  	}, 1000);
+	    		}
+	    		
+
+	    		$("#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox").click(function(){
+	    			var checkval = $(this).data('checkval');
+	    			$("#ajaxFormModal #"+id).val(checkval);
+	    			console.log("EVENT CLICK ON CHECKSIMPLE", checkval);
+	    			
+	    			if(checkval) {
+	    				$(idTrue).addClass("bg-green-k").removeClass("letter-green");
+	    			  	$(idFalse).removeClass("bg-red").addClass("letter-red");
+	    			  	$("#ajaxFormModal ."+id+"checkboxSimple .lbl-status-check").html(
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
+	    			  	
+	    			  	if(typeof params["inputId"] != "undefined") $(params["inputId"]).show(400);
+	    			}
+	    			else{
+	    			  	$(idFalse).addClass("bg-red").removeClass("letter-red");
+	    				$(idTrue).removeClass("bg-green-k").addClass("letter-green");
+	    				$("#ajaxFormModal ."+id+"checkboxSimple .lbl-status-check").html(
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
+
+	    				if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+	    			}
+	    		});
+
+	    	}
+	    };
+
+	    return inputObj;
+	},
+	
+	checkbox : function(checked, id, params){
+    
+    	var inputObj = {
+    		label: params["labelText"],
+    		inputType : "checkbox",
+	    	checked : ( notEmpty(checked) ? checked : "" ),
+	    	init : function(){
+	        	
+	        	$("#ajaxFormModal #"+id).val(checked);
+	        	$("#ajaxFormModal ."+id+"checkbox label").append("<span class='lbl-status-check margin-left-10'></span>");
+	        	if(typeof params["labelInformation"] != "undefined")
+	        		$("#ajaxFormModal ."+id+"checkbox").append("<small class='col-md-12 col-xs-12 text-left no-padding' style='margin-top:-10px;'>"+params["labelInformation"]+"</small>");
+
+	        	setTimeout(function(){
+	        		$(".bootstrap-switch-label").off().click(function(){
+	        			$(".bootstrap-switch-off").click();
+	        		});
+	        		
+		        	if (checked) {
+	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
+	    				$(params["inputId"]).show(400);
+	    			} else {
+	    				
+	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
+	    				$(params["inputId"]).hide(400);
+	    			}
+    			}, 1000);
+	        },
+	    	"switch" : {
+	    		"onText" : params["onText"],
+	    		"offText" : params["offText"],
+	    		"labelText":params["labelInInput"],
+	    		"onChange" : function(){
+	    			var checkbox = $("#ajaxFormModal #"+id).is(':checked');
+	    			$("#ajaxFormModal #"+id).val($("#ajaxFormModal #"+id).is(':checked'));
+	    			console.log("on change checkbox",$("#ajaxFormModal #"+id).val());
+	        		//$("#ajaxFormModal #"+id+"checkbox").append("<span class='lbl-status-check'></span>");
+	    			if (checkbox) {
+	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
+	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
+	    				$(params["inputId"]).show(400);
+	    				/*if(id=="amendementActivated"){
+	    					var am = $("#ajaxFormModal #voteActivated").val();
+	    					console.log("am", am);
+	    					if(am == "true")
+	    						$("#ajaxFormModal .voteActivatedcheckbox .bootstrap-switch-handle-on").click();
+	    				}
+	    				if(id=="voteActivated"){
+	    					var am = $("#ajaxFormModal #amendementActivated").val();
+	    					console.log("vote", am);
+	    					if(am == "true")
+	    						$("#ajaxFormModal .amendementActivatedcheckbox .bootstrap-switch-handle-on").click();
+	    				}*/
+	    			} else {
+	    				
+	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
+	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
+	    				$(params["inputId"]).hide(400);
+	    			}
+	    		}
+		    }
+    	};
+	    return inputObj;
+	},
+	allDay : function(checked){
+
+    	var inputObj = {
+    		inputType : "checkbox",
+	    	checked : ( notEmpty(checked) ? checked : "" ),
+	    	init : function(){
+	        	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
+	        		mylog.log("allDay dateLimit",$("#ajaxFormModal #allDay").val());
+	        	})
+	        },
+	    	"switch" : {
+	    		"onText" : tradDynForm["yes"],
+	    		"offText" : tradDynForm["no"],
+	    		"labelText":tradDynForm["allday"],
+	    		"onChange" : function(){
+	    			var allDay = $("#ajaxFormModal #allDay").is(':checked');
+	    			var startDate = "";
+	    			var endDate = "";
+	    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
+	    			
+	    			if (allDay) {
+	    				$(".dateTimeInput").addClass("dateInput");
+	    				$(".dateTimeInput").removeClass("dateTimeInput");
+	    				$('.dateInput').datetimepicker('destroy');
+	    				$(".dateInput").datetimepicker({ 
+					        autoclose: true,
+					        lang: "fr",
+					        format: "d/m/Y",
+					        timepicker:false
+					    });
+					    startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
+					    endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
+	    			} else {
+	    				$(".dateInput").addClass("dateTimeInput");
+	    				$(".dateInput").removeClass("dateInput");
+	    				$('.dateTimeInput').datetimepicker('destroy');
+	    				$(".dateTimeInput").datetimepicker({ 
+		       				weekStart: 1,
+							step: 15,
+							lang: 'fr',
+							format: 'd/m/Y H:i'
+					    });
+					    
+	    				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
+						endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
+	    			}
+				    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
+					if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
+	    		}
+		    }
+    	};
+    	return inputObj;
+    },
+    startDateInput : function(typeDate){
+    	mylog.log('startDateInput', typeDate);
+    	var inputObj = {
+	        inputType : ( notEmpty(typeDate) ? typeDate : "datetime" ),
+	        placeholder: tradDynForm.startDate,
+	        label : tradDynForm.startDate,
+	        rules : { 
+	        	required : true,
+	        	duringDates: ["#startDateParent","#endDateParent",tradDynForm.thestartDate]
+	    	}
 	    }
+    	return inputObj;
     },
-    telegram : {
-        inputType :"text",
-        label : "Votre Speudo Telegram",
-        placeholder : "Votre Speudo Telegram"
-    },
-    skype : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Skype",
-        placeholder : "Lien vers Skype"
-    },
-    facebook : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Facebook",
-        placeholder : "Lien vers Facebook"
-    },
-    github : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Git Hub",
-        placeholder : "Lien vers Git Hub"
-    },
-    googleplus : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Google Plus",
-        placeholder : "Lien vers Google Plus"
-    },
-    twitter : {
-        inputType :"text",
-        "custom" : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>",
-        label : "Lien vers Twitter",
-        placeholder : "Lien vers Twitter"
+    endDateInput : function(typeDate){
+    	var inputObj = {
+	        inputType : ( notEmpty(typeDate) ? typeDate : "datetime" ),
+	        placeholder: tradDynForm.endDate,
+	        label : tradDynForm.endDate,
+	        rules : { 
+	        	required : true,
+	        	greaterThan: ["#ajaxFormModal #startDate",tradDynForm.thestartDate],
+	        	duringDates: ["#startDateParent","#endDateParent",tradDynForm.theendDate]
+		    }
+	    }
+    	return inputObj;
     },
     birthDate : {
         inputType : "date",
-        label : "Date d'anniversaire",
-        placeholder: "Date d'anniversaire"
+        label : tradDynForm.birthdate,
+        placeholder: tradDynForm.birthdate
     },
-    phone :{
-      	inputType : "text",
-      	label : "Fixe",
-      	placeholder : "Saisir les numéros de téléphone séparer par une virgule"
+    dateEnd :{
+    	inputType : "date",
+    	label : tradDynForm.endDate,
+    	placeholder : "Fin de la période de vote",
+    	rules : { 
+    		required : true,
+    		greaterThanNow : ["DD/MM/YYYY"]
+    	}
     },
-    mobile :{
-      	inputType : "text",
-      	label : "Mobile",
-      	placeholder : "Saisir les numéros de portable séparer par une virgule"
+    voteDateEnd :{
+    	inputType : "datetime",
+    	label : tradDynForm.dateEndVoteSession,
+    	placeholder : tradDynForm.dateEndVoteSession,
+    	rules : { 
+    		required : true,
+    		greaterThanNow : ["DD/MM/YYYY H:m"]
+    	}
     },
-    fax :{
-      	inputType : "text",
-      	label : "Fax",
-      	placeholder : "Saisir les numéros de fax séparer par une virgule"
-    },
-    price :{
-      	inputType : "price",
-      	label : "Prix",
-      	placeholder : "Prix ...",
-      	init : function(){
-    		$('input#price').filter_input({regex:'[0-9]'});
-      	}
-    },
-    contactInfo :{
-      	inputType : "text",
-      	label : "Coordonnées",
-      	placeholder : "n° tel, addresse email ..."
-    },
-    hidden :{
-      	inputType : "hidden"
+    amendementDateEnd :{
+    	inputType : "datetime",
+    	label : tradDynForm.dateEndAmendementSessionStartVote,
+    	placeholder : tradDynForm.dateEndAmendementSession,
+    	rules : { 
+    		required : true,
+    		greaterThanNow : ["DD/MM/YYYY H:m"]
+    	}
     },
     inviteSearch : {
     	inputType : "searchInvite",
@@ -3089,46 +4199,18 @@ var typeObjLib = {
         	$(".invitedUserEmailtext").css("display","none");	 
         }
     },
-    list :{
-    	inputType : "select",
-    	placeholder : "Type du point d'intérêt",
-    	options : poiTypes
-    },
-    poiTypes :{
-    	inputType : "select",
-    	placeholder : "Type du point d'intérêt",
-    	options : poiTypes
-    },
-    role :{
-    	label :"Votre rôle",
-    	inputType : "select",
-    	placeholder : "Quel est votre rôle ?",
-    	rules : { required : true },
-    	//value : "admin",
-    	options : {
-    		admin : trad.administrator,
-			member : trad.member,
-			creator : trad.justCitizen
-    	}
-    },
-    hiddenArray : {
-       inputType : "hidden",
-        value : []
-    },
-    hiddenTrue : {
-       inputType : "hidden",
-        value : true
-    },
-    dateEnd :{
-    	inputType : "date",
-    	placeholder : "Fin de la période de vote",
-    	rules : { 
-    		required : true,
-    		greaterThanNow : ["DD/MM/YYYY"]
-    	}
+    inputHidden :function(value, rules) { 
+		var inputObj = { inputType : "hidden"};
+		if( notNull(value) ) inputObj.value = value ;
+		if( notNull(rules) ) inputObj.rules = rules ;
+    	return inputObj;
     },
     get:function(type){
-    	mylog.log("typeObjLib.get", type);
+    	//mylog.log("dyFInputs.get", type);
+    	if( type == "undefined" ){
+    		toastr.error("type can't be undefined");
+    		return null;
+    	}
     	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
@@ -3136,29 +4218,29 @@ var typeObjLib = {
     		} else
     			obj = typeObj[type];
     		obj.name = (trad[type]) ? trad[type] : type;
+    	}
+    	if( obj === null ){
+    		obj = dyFInputs.deepGet(type);
+    		if( obj )
+    			obj = dyFInputs.get( obj.col )
     	}
     	return obj;
     },
     deepGet:function(type){
-    	mylog.log("get", type);
+    	//mylog.log("get", type);
     	var obj = null;
-    	if( jsonHelper.notNull("typeObj."+type)){
-    		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
-    			obj = typeObj[ typeObj[type].sameAs ];
-    		} else
-    			obj = typeObj[type];
-    		obj.name = (trad[type]) ? trad[type] : type;
-    	} else {
-    		//calculate only once
-    		//get list of all keys and sub keys
-    		//return corresponding map
-    	}
+    	$.each( typeObj,function(k,o) { 
+    		if( o.subTypes && ( $.inArray( type,  o.subTypes )>=0 ) ){
+    			obj = o;
+    			return false;
+    		}
+    	});
     	return obj;
     }
 };
 
 var typeObj = {
-	"themes":{ 
+	themes:{ 
 		dynForm : {
 		    jsonSchema : {
 			    title : "Theme Switcher ?",
@@ -3180,7 +4262,7 @@ var typeObj = {
 			    }
 			}
 		}	},
-	"addElement":{ 
+	addElement:{ 
 		dynForm : {
 		    jsonSchema : {
 			    title : "Ajouter un élément ?",
@@ -3191,13 +4273,13 @@ var typeObj = {
 		            	inputType : "custom",
 		            	html : function() { 
 		            		return "<div class='menuSmallMenu'>"+js_templates.loop( [ 
-			            		{ label : "event", classes:"col-xs-12 text-bold bg-"+typeObj["event"].color, icon:"fa-"+typeObj["event"].icon, action : "javascript:elementLib.openForm('event')"},
-			            		{ label : "organization", classes:"col-xs-12 text-bold bg-"+typeObj["organization"].color, icon:"fa-"+typeObj["organization"].icon, action : "javascript:elementLib.openForm('organization')"},
-			            		{ label : "project", classes:"col-xs-12 text-bold bg-"+typeObj["project"].color, icon:"fa-"+typeObj["project"].icon, action : "javascript:elementLib.openForm('project')"},
-			            		{ label : "poi", classes:"col-xs-12 text-bold bg-"+typeObj["poi"].color, icon:"fa-"+typeObj["poi"].icon, action : "javascript:elementLib.openForm('poi')"},
-			            		{ label : "entry", classes:"col-xs-12 text-bold bg-"+typeObj["entry"].color, icon:"fa-"+typeObj["entry"].icon, action : "javascript:elementLib.openForm('entry')"},
-			            		{ label : "action", classes:"col-xs-12 text-bold bg-"+typeObj["actions"].color, icon:"fa-"+typeObj["actions"].icon, action : "javascript:elementLib.openForm('action')"},
-			            		{ label : "classified", classes:"col-xs-12 text-bold bg-"+typeObj["classified"].color, icon:"fa-"+typeObj["classified"].icon, action : "javascript:elementLib.openForm('classified')"},
+			            		{ label : "event", classes:"col-xs-12 text-bold bg-"+typeObj["event"].color, icon:"fa-"+typeObj["event"].icon, action : "javascript:dyFObj.openForm('event')"},
+			            		{ label : "organization", classes:"col-xs-12 text-bold bg-"+typeObj["organization"].color, icon:"fa-"+typeObj["organization"].icon, action : "javascript:dyFObj.openForm('organization')"},
+			            		{ label : "project", classes:"col-xs-12 text-bold bg-"+typeObj["project"].color, icon:"fa-"+typeObj["project"].icon, action : "javascript:dyFObj.openForm('project')"},
+			            		{ label : "poi", classes:"col-xs-12 text-bold bg-"+typeObj["poi"].color, icon:"fa-"+typeObj["poi"].icon, action : "javascript:dyFObj.openForm('poi')"},
+			            		{ label : "entry", classes:"col-xs-12 text-bold bg-"+typeObj["entry"].color, icon:"fa-"+typeObj["entry"].icon, action : "javascript:dyFObj.openForm('entry')"},
+			            		{ label : "action", classes:"col-xs-12 text-bold bg-"+typeObj["actions"].color, icon:"fa-"+typeObj["actions"].icon, action : "javascript:dyFObj.openForm('action')"},
+			            		{ label : "classified", classes:"col-xs-12 text-bold bg-"+typeObj["classified"].color, icon:"fa-"+typeObj["classified"].icon, action : "javascript:dyFObj.openForm('classified')"},
 			            		{ label : "Documentation", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-book", action : "#default.view.page.index.dir.docs"},
 			            		{ label : "Signaler un bug", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-bug", action : "#news.index.type.pixels"},
 		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-6 "} )+"</div>";
@@ -3206,63 +4288,105 @@ var typeObj = {
 			    }
 			}
 		}	},
-	"addPhoto":{ 
-		dynForm : {
-		    jsonSchema : {
-			    title : "Uploader une image ?",
-			    icon : "question-cirecle-o",
-			    noSubmitBtns : true,
-			    properties : {
-			    	image : typeObjLib.imageAddPhoto
-			    }
-			}
-		}},
+	addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
+	addFile:{ titleClass : "bg-dark", color : "bg-dark" },
+	person : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
+	persons : { sameAs:"person" },
+	people : { sameAs:"person" },
+	citoyen : { sameAs:"person" },
+	citoyens : { sameAs:"person" },
 	
-	"person" : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
-	"persons" : { sameAs:"person" },
-	"people" : { sameAs:"person" },
-	"citoyen" : { sameAs:"person" },
-	"citoyens" : { sameAs:"person" },
-	
-	"poi":{  col:"poi",ctrl:"poi",color:"green", titleClass : "bg-green", icon:"info-circle"},
+	poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
+		subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+			   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
+			   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
+	place:{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
+	TiersLieux : {sameAs:"place",color: "azure",icon: "home"},
+	Maison : {sameAs:"place", color: "azure",icon: "home"},
+	ressource:{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
 
-	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
-	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
-	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
+	siteurl:{ col:"siteurl",ctrl:"siteurl"},
+	organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
+	organizations : {sameAs:"organization"},
+	LocalBusiness : {col:"organizations",color: "azure",icon: "industry"},
+	NGO : {sameAs:"organization", color:"green", icon:"users"},
+	Association : {sameAs:"organization", color:"green", icon: "group"},
+	GovernmentOrganization : {col:"organization", color: "red",icon: "university"},
+	Group : {	col:"organizations",color: "turq",icon: "circle-o"},
+	event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
+	events : {sameAs:"event"},
+	project : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
+	projects : {sameAs:"project"},
+	city : {sameAs:"cities"},
+	cities : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
 	
-	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
+	entry : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
+		saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
+	vote : {col:"actionRooms",ctrl:"survey"},
+	survey : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
+	surveys : {sameAs:"survey"},
+	proposal : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
+	proposals : { sameAs : "proposal" },
+	action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
+	actions : { sameAs : "action" },
+	actionRooms : {sameAs:"room"},
+	rooms : {sameAs:"room"},
+	room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+	discuss : {col:"actionRooms",ctrl:"room"},
 
-	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
-	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
-	"organizations" : {sameAs:"organization"},
-	"LocalBusiness" : {color: "azure",icon: "industry"},
-	"NGO" : {sameAs:"organization"},
-	"Association" : {sameAs:"organization"},
-	"GovernmentOrganization" : {color: "green",icon: "circle-o"},
-	"Group" : {	color: "turq",icon: "circle-o"},
-	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
-	"events" : {sameAs:"event"},
-	"project" : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
-	"projects" : {sameAs:"project"},
-	"city" : {sameAs:"cities"},
-	"cities" : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
-	"entry" : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-lightblue",bgClass : "bgDDA",	icon : "gavel",	color : "azure", saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
-	"vote" : {col:"actionRooms",ctrl:"survey"},
-	"survey" : {col:"actionRooms",ctrl:"survey",color:"lightblue2",icon:"cog"},
-	"action" : {col:"actions",ctrl:"room",titleClass : "bg-lightblue",bgClass : "bgDDA",icon : "cogs",color : "lightblue2", saveUrl : baseUrl+"/" + moduleId + "/rooms/saveaction"},
-	"actions" : {col:"actions",color:"azure",ctrl:"room",icon:"cog"},
-	"rooms" : {col:"actions",ctrl:"room",color:"azure",icon:"gavel"},
-	"discuss" : {col:"actionRooms",ctrl:"room"},
-	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	"classified":{col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",	},
-	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
-	"default" : {icon:"arrow-circle-right",color:"dark"},
-	"video" : {icon:"video-camera",color:"dark"},
+	contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
+		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
+	classified:{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
+				   subTypes : [
+				   //FR
+				   "Technologie","Immobilier","Véhicules","Maison","Loisirs","Mode",
+				   //EN
+				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
+				   ]	},
+	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
+	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
+	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
+	default : {icon:"arrow-circle-right",color:"dark"},
+	//"video" : {icon:"video-camera",color:"dark"},
+	formContact : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
+	news : { col : "news" }, 
+	config : { col:"config",color:"azure",icon:"cogs",titleClass : "bg-azure", title : tradDynForm.addconfig,
+				sections : {
+			        network : { label: "Network Config",key:"network",icon:"map-marker"}
+			    }},
+	network : { col:"network",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+	inputs : { color:"red",icon:"address-card-o",titleClass : "bg-phink", title : "All inputs"},
+	addAny : { color:"pink",icon:"plus",titleClass : "bg-phink",title : tradDynForm.wantToAddSomething,
+				sections : {
+			        person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
+			        organization : { label: trad.organization,key:"organization",icon:"group"},
+			        event : { label: trad.event,key:"event",icon:"calendar"},
+			        project : { label: trad.project ,key:"project",icon:"lightbulb-o"},
+			    }},
+	apps : { color:"pink",icon:"cubes",titleClass : "bg-phink",title : tradDynForm.appList,
+				sections : {
+			        search : { label: "SEARCH",key:"#search",icon:"search fa-2x text-red"},
+			        agenda : { label: "AGENDA",key:"#agenda",icon:"group fa-2x text-red"},
+			        news : { label: "NEWS",key:"#news",icon:"newspaper-o fa-2x text-red"},
+			        classifieds : { label: "ANNONCEs",key:"#classifieds",icon:"bullhorn fa-2x text-red"},
+			        dda : { label: "DISCUSS DECIDE ACT" ,key:"#dda",icon:"gavel fa-2x text-red"},
+			        chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
+			    }},
+	filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"}
 };
 
 var documents = {
+	objFile:{
+		"pdf":{icon:"file-pdf-o",class:"text-red"},
+		"text":{icon:"file-text-o",class:"text-blue"},
+		"presentation":{icon:"file-powerpoint-o",class:"text-orange"},
+		"spreadsheet":{icon:"file-excel-o",class:"text-green"}
+	},
+	getIcon : function(contentKey){
+		return '<i class="fa fa-'+documents.objFile[contentKey].icon+' '+documents.objFile[contentKey].class+'"></i>';
+	},
 	saveImages : function (contextType, contextId,contentKey){
-		alert("saveImages"+contextType+contextId);
+		//alert("saveImages"+contextType+contextId);
 		$.ajax({
 			url : baseUrl+"/"+moduleId+"/document/"+uploadUrl+"dir/"+moduleId+"/folder/"+contextType+"/ownerId/"+contextId+"/input/dynform",
 			type: "POST",
@@ -3346,26 +4470,27 @@ var keyboardNav = {
 
 	keyMap : {
 		//"112" : function(){ $('#modalMainMenu').modal("show"); },//f1
-		"113" : function(){ if(userId)url.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
+		"113" : function(){ if(userId)urlCtrl.loadByHash('#person.detail.id.'+userId); else alert("login first"); },//f2
 		"114" : function(){ $('#openModal').modal('hide'); showMap(true); },//f3
-		"115" : function(){ elementLib.openForm('themes') },//f4
-		"117" : function(){ console.clear();url.loadByHash(location.hash) },//f6
+		//"115" : function(){ dyFObj.openForm('themes') },//f4
+		"117" : function(){ console.clear();urlCtrl.loadByHash(location.hash) },//f6
 	},
 	keyMapCombo : {
-		"13" : function(){$('#openModal').modal('hide');elementLib.openForm('addElement')},//enter : add elements
+		"13" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show');//dyFObj.openForm('addElement')
+						  },//enter : add elements
 		"61" : function(){$('#openModal').modal('hide');$('#selectCreate').modal('show')},//= : add elements
-		"65" : function(){$('#openModal').modal('hide');elementLib.openForm('action')},//a : actions
+		"65" : function(){$('#openModal').modal('hide');dyFObj.openForm('action')},//a : actions
 		"66" : function(){$('#openModal').modal('hide'); smallMenu.destination = "#openModal"; smallMenu.openAjax(baseUrl+'/'+moduleId+'/collections/list','Mes Favoris','fa-star','yellow') },//b best : favoris
-		"67" : function(){$('#openModal').modal('hide');elementLib.openForm('classified')},//c : classified
-		"69" : function(){$('#openModal').modal('hide');elementLib.openForm('event')}, //e : event
+		"67" : function(){$('#openModal').modal('hide');dyFObj.openForm('classified')},//c : classified
+		"69" : function(){$('#openModal').modal('hide');dyFObj.openForm('event')}, //e : event
 		"70" : function(){$('#openModal').modal('hide'); $(".searchIcon").trigger("click") },//f : find
 		"72" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/help') },//h : help
-		"73" : function(){$('#openModal').modal('hide');elementLib.openForm('person')},//i : invite
+		"73" : function(){$('#openModal').modal('hide');dyFObj.openForm('person')},//i : invite
 		"76" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/links')},//l : links and infos
-		"79" : function(){$('#openModal').modal('hide');elementLib.openForm('organization')},//o : orga
-		"80" : function(){$('#openModal').modal('hide');elementLib.openForm('project')},//p : project
+		"79" : function(){$('#openModal').modal('hide');dyFObj.openForm('organization')},//o : orga
+		"80" : function(){$('#openModal').modal('hide');dyFObj.openForm('project')},//p : project
 		"82" : function(){$('#openModal').modal('hide');smallMenu.openAjax(baseUrl+'/'+moduleId+'/person/directory?tpl=json','Mon répertoire','fa-book','red')},//r : annuaire
-		"86" : function(){$('#openModal').modal('hide');elementLib.openForm('entry')},//v : votes
+		"86" : function(){$('#openModal').modal('hide');dyFObj.openForm('entry')},//v : votes
 	},
 	checkKeycode : function(e) {
 		e.preventDefault();
@@ -3383,17 +4508,6 @@ var keyboardNav = {
 			keyboardNav.keyMap[keycode]();
 		}
 	}
-}
-
-function cityKeyPart(unikey, part){
-	var s = unikey.indexOf("_");
-	var e = unikey.indexOf("-");
-	var len = unikey.length;
-	if(e < 0) e = len;
-	if(part == "insee") return unikey.substr(s+1, e - s-1);
-	if(part == "cp" && unikey.indexOf("-") < 0) return "";
-	if(part == "cp") return unikey.substr(e+1, len);
-	if(part == "country") return unikey.substr(e+1, len);
 }
 
 //*********************************************************************************
@@ -3417,12 +4531,13 @@ function manageTimestampOnDate() {
 function displayStartAndEndDate(event) {
 	var content = "";
 	//si on a bien les dates
-	if("undefined" != typeof event['startDate'] && "undefined" != typeof event['endDate']){
+	mylog.log("event map", event);
+	if("undefined" != typeof event['startDateDB'] && "undefined" != typeof event['endDateDB']){
 		//var start = dateToStr(data['startDate'], "fr", true);
 		//var end = dateToStr(data['endDate'], "fr", true);
 		
-		var startDateMoment = moment(event['startDate']).local();
-		var endDateMoment = moment(event['endDate']).local();
+		var startDateMoment = moment(event['startDateDB']).local();
+		var endDateMoment = moment(event['endDateDB']).local();
 
 		var startDate = startDateMoment.format("DD-MM-YYYY");
 		var endDate = endDateMoment.format("DD-MM-YYYY");
@@ -3561,8 +4676,7 @@ var js_templates = {
 //*********************************************************************************
 var album = {
 	show : function (id,type){
-		uploadObj.type = type;
-		uploadObj.id = id;
+		uploadObj.set(type,id);
 		getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+id+"/type/"+type+"/tpl/json" , function( data ) { 
 			
 			console.dir(data);
@@ -3576,9 +4690,8 @@ var album = {
 				},
 			    function(){
 			    	$(".addPhotoBtn").click(function() { 
-			    		uploadObj.type = type;
-			    		uploadObj.id = id;
-						elementLib.openForm("addPhoto");
+			    		uploadObj.set(type,id);
+						dyFObj.openForm("addPhoto");
 			    	});
 			    	album.delete();
 			    });
@@ -3625,8 +4738,8 @@ function KScrollTo(target){
 	mylog.log("KScrollTo target", target);
 	if($(target).length>=1){
 		$('html, body').stop().animate({
-	        scrollTop: $(target).offset().top - 70
-	    }, 800, '');
+	        scrollTop: $(target).offset().top - 60
+	    }, 500, '');
 	}
 }
 
@@ -3638,7 +4751,8 @@ function initKInterface(params){ console.log("initKInterface");
 	$(window).resize(function(){
       resizeInterface();
     });
-
+	resizeInterface();
+	
     //jQuery for page scrolling feature - requires jQuery Easing plugin
     $('.page-scroll a').bind('click', function(event) {
         var $anchor = $(this);
@@ -3666,15 +4780,47 @@ function initKInterface(params){ console.log("initKInterface");
             $('.navbar-toggle:visible').click();
     });
 
-   $(".logout").click(function(){
+    $(".openModalSelectCreate").click(function(){
+        $("#selectCreate").modal("show");
+        showFloopDrawer(false);
+        showNotif(false);
+    });
+
+    $(".btn-open-floopdrawer").click(function(){ 
+        showNotif(false);
+        $("#dropdown-user").removeClass("open");
+        showFloopDrawer(true);
+    });
+    $("#floopDrawerDirectory").mouseleave(function(){ 
+        showFloopDrawer(false);
+    });
+
+
+    $(".btn-show-mainmenu").click(function(){
+        showFloopDrawer(false);
+        showNotif(false);
+        $("#dropdown-user").addClass("open");
+        //clearTimeout(timerCloseDropdownUser);
+    });
+    
+    $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
+        $("#dropdown-user").removeClass("open");
+    });
+
+    $("header .container").mouseenter(function(){ 
+    	$("#dropdown-user").removeClass("open");
+    });
+
+
+    $(".logout").click(function(){
     	window.location.href=baseUrl+"/co2/person/logout";
     });
 
     $("#btn-sethome").click(function(){
-    	url.loadByHash("#info.p.sethome")
+    	urlCtrl.loadByHash("#info.p.sethome")
     });
     $("#btn-apropos").click(function(){
-    	url.loadByHash("#info.p.apropos")
+    	urlCtrl.loadByHash("#info.p.apropos")
     });
 
     var affixTop = 300;
@@ -3704,23 +4850,20 @@ function initKInterface(params){ console.log("initKInterface");
 
 
     $(".btn-show-map").off().click(function(){
-    	showMap();
+    	if(typeof formInMap != "undefined" && formInMap.actived == true)
+			formInMap.cancel(true);
+    	//else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+		//	getContextDataLinks();
+		else{
+
+			if(isMapEnd == false && contextData && contextData.map && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id) )
+				Sig.showMapElements(Sig.map, contextData.map.data, contextData.map.icon, contextData.map.title);
+			
+				showMap();
+		}
     });
 
     bindLBHLinks();
-
-    $(".btn-show-mainmenu").click(function(){
-        $("#dropdown-user").addClass("open");
-        //clearTimeout(timerCloseDropdownUser);
-    });
-    
-    $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
-        $("#dropdown-user").removeClass("open");
-    });
-
-    $("header .container").mouseenter(function(){ 
-    	$("#dropdown-user").removeClass("open");
-    });
 
     $(".tooltips").tooltip();
     
@@ -3738,8 +4881,124 @@ function initKInterface(params){ console.log("initKInterface");
 
 }
 
+function getContextDataLinks(){
+	mylog.log("getContextDataLinks");
+	$.ajax({
+		type: "POST",
+		url: baseUrl+'/'+moduleId+"/element/getalllinks/type/"+contextData.type+"/id/"+contextData.id,
+		dataType: "json",
+		success: function(data){
+			mylog.log("getContextDataLinks data", data);
+			Sig.restartMap();
+			contextData.map = {
+				data : data,
+				icon : "link",
+				title : "La communauté de <b>"+contextData.name+"</b>"
+			} ;
+			Sig.showMapElements(Sig.map, data, "link", "La communauté de <b>"+contextData.name+"</b>");
+			//showMap();
+		},
+		error: function (error) {
+			mylog.log("getContextDataLinks error findGeoposByInsee", error);
+			Sig.restartMap();
+			callbackFindByInseeError(error);
+			//showMap();	
+		}
+			
+	});
+}
+
+function test(params, itemType){
+	var typeIco = i;
+    params.size = size;
+    params.id = getObjectId(params);
+    params.name = notEmpty(params.name) ? params.name : "";
+    params.description = notEmpty(params.shortDescription) ? params.shortDescription : 
+                        (notEmpty(params.message)) ? params.message : 
+                        (notEmpty(params.description)) ? params.description : 
+                        "";
+
+    //mapElements.push(params);
+    //alert("TYPE ----------- "+contentType+":"+params.name);
+    
+    if(typeof( typeObj[itemType] ) == "undefined")
+        itemType="poi";
+    typeIco = itemType;
+    if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
+    if(typeof params.typeOrga != "undefined")
+      typeIco = params.typeOrga;
+
+    var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
+    params.ico =  "fa-"+obj.icon;
+    params.color = obj.color;
+    if(params.parentType){
+        if(directory.dirLog) mylog.log("params.parentType",params.parentType);
+        var parentObj = (dyFInputs.get(params.parentType)) ? dyFInputs.get(params.parentType) : typeObj["default"] ;
+        params.parentIcon = "fa-"+parentObj.icon;
+        params.parentColor = parentObj.color;
+    }
+    if(params.type == "classified" && typeof params.category != "undefined"){
+      params.ico = typeof classified.filters[params.category] != "undefined" ?
+                   "fa-" + classified.filters[params.category]["icon"] : "";
+    }
+
+    params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
+
+    // var urlImg = "/upload/communecter/color.jpg";
+    // params.profilImageUrl = urlImg;
+    params.useMinSize = typeof size != "undefined" && size == "min";
+    params.imgProfil = ""; 
+    if(!params.useMinSize)
+        params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
+
+    if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
+        params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
+
+    if(dyFInputs.get(itemType) && 
+        dyFInputs.get(itemType).col == "poi" && 
+        typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
+    params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
+
+    params.insee = params.insee ? params.insee : "";
+    params.postalCode = "", params.city="",params.cityName="";
+    if (params.address != null) {
+        params.city = params.address.addressLocality;
+        params.postalCode = params.cp ? params.cp : params.address.postalCode ? params.address.postalCode : "";
+        params.cityName = params.address.addressLocality ? params.address.addressLocality : "";
+    }
+    params.fullLocality = params.postalCode + " " + params.cityName;
+
+    params.type = dyFInputs.get(itemType).col;
+    params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
+                  '#page.type.'+params.parentType+'.id.' + params.parentId : "";
+
+    //params.url = '#page.type.'+params.type+'.id.' + params.id;
+    params.hash = '#page.type.'+params.type+'.id.' + params.id;
+   /* if(params.type == "poi")    
+        params.hash = '#element.detail.type.poi.id.' + id;
+
+    params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';*/
+
+    params.elTagsList = "";
+    var thisTags = "";
+    if(typeof params.tags != "undefined" && params.tags != null){
+      $.each(params.tags, function(key, value){
+        if(typeof value != "undefined" && value != "" && value != "undefined"){
+          thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value)+"'>#" + value + "</span> ";
+          params.elTagsList += slugify(value)+" ";
+        }
+      });
+      params.tagsLbl = thisTags;
+    }else{
+      params.tagsLbl = "";
+    }
+
+    params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
+}
+
 $(document).ready(function() { 
 	setTimeout( function () { checkPoll() }, 10000);
 	document.onkeyup = keyboardNav.checkKeycode;
-	bindRightClicks();
+	if(notNull(userId) && userId!="") 
+		bindRightClicks();
 });

@@ -1,19 +1,30 @@
 dynForm = {
     jsonSchema : {
-	    title : "Créer un point d'interet",
+	    title : tradDynForm["addpoi"],
 	    icon : "map-marker",
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	subPoi : function(){
+	    	sub : function(){
+	    		$("#ajax-modal-modal-title").html(
+    		 		$("#ajax-modal-modal-title").html()+
+    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
+
+	    		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+						  					  .addClass("bg-green-poi");
+				
 	    		if(contextData.type && contextData.id )
 	    		{
-    				$('#ajaxFormModal #parentId').val(contextData.id);
+	    			$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 	    		}
 	    	},
-	    	onload : function(){
-	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+	    	onload : function(data){
+	    		if(data && data.type){
+	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+tradCategory[data.type]+"</h4>");
+					$(".sectionBtntagList").hide();
+	    		} else
+	    			$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();
 	    	},
 	    },
 	    beforeSave : function(){
@@ -29,15 +40,21 @@ dynForm = {
 		    }
 	    },
 	    beforeBuild : function(){
-	    	elementLib.setMongoId('poi');
+	    	dyFObj.setMongoId('poi',function(){
+	    		uploadObj.gotoUrl = (contextData != null && contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.poi" : location.hash;
+	    	});
 	    },
 		afterSave : function(){
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-		    else {
-		    	elementLib.closeForm();	
-		    	url.loadByHash( location.hash );
-		    }
+		    else 
+		    { 
+		        dyFObj.closeForm(); 
+		        urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+	        }
+	    },
+	    canSubmitIf : function () { 
+	    	 return ( $("#ajaxFormModal #type").val() ) ? true : false ;
 	    },
 	    actions : {
 	    	clear : function() {
@@ -49,16 +66,15 @@ dynForm = {
 	    		$(".typeBtntagList").hide(); 
 	    		$(".subtypeSection").html("");
 	    		$(".subtypeSectioncustom").show();
-	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+	    		$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags, #btn-submit-form").hide();
 	    	}
 	    },
 	    properties : {
 	    	info : {
                 inputType : "custom",
                 html:"<p class='text-"+typeObj["poi"].color+"'>"+
-                		"Partagez librement toutes sortes d'informations<br>" +
-					    "Localisez-les pour les rendres accessibles à tous<br>" +
-					    "Et participez à la co-construction de votre territoire connecté !<hr>" +
+                		tradDynForm["infocreatepoi"]+
+                		"<hr>"+
 					 "</p>",
             },
             breadcrumb : {
@@ -66,40 +82,37 @@ dynForm = {
                 html:"",
             },
             sectionBtn :{
-                label : "Quel type de lieu souhaitez-vous localiser ? ",
+                label : tradDynForm["whichkindofpoi"]+" ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
                 list : poi.sections,
-                trad : trad,
+                trad : tradCategory,
                 init : function(){
                 	$(".sectionBtn").off().on("click",function()
 	            	{
 	            		$(".typeBtntagList").show();
 	            		$(".sectionBtn").removeClass("active btn-dark-blue text-white");
 	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
-	            		$("#ajaxFormModal #section").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+	            		$("#ajaxFormModal #type").val( ( $(this).hasClass('active') ) ? $(this).data('key') : "" );
 						//$(".sectionBtn:not(.active)").hide();
 						
-						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='elementLib.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
+						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
 						$(".sectionBtntagList").hide();
-						$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").show();
+						$(".nametext, .descriptiontextarea, .contactInfotext, .locationlocation, .urlsarray, .imageuploader, .tagstags").show();
+						dyFObj.canSubmitIf();
 	            	});
 	            }
             },
-            type : typeObjLib.hidden,
-	        name : typeObjLib.name("poi"),
-	        image : typeObjLib.image(),
-            description : typeObjLib.description,
-            location : typeObjLib.location,
-            tags :typeObjLib.tags(),
-            formshowers : {
-            	label : "En détails",
-                inputType : "custom",
-                html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
-            },
-            urls : typeObjLib.urlsOptionnel,
-            parentId : typeObjLib.hidden,
-            parentType : typeObjLib.hidden,
+            type : dyFInputs.inputHidden(),
+	        name : dyFInputs.name("poi"),
+	        image : dyFInputs.image(),
+            //description : dyFInputs.description,
+            description : dyFInputs.textarea(tradDynForm["description"], "..."),
+            location : dyFInputs.location,
+            tags :dyFInputs.tags(),
+            urls : dyFInputs.urls,
+            parentId : dyFInputs.inputHidden(),
+            parentType : dyFInputs.inputHidden(),
 	    }
 	}
 };

@@ -19,6 +19,7 @@ class CityController extends CommunecterController {
 	    return array(
 	        'index'       			=> 'citizenToolKit.controllers.city.IndexAction',
 	        'detail'                => 'citizenToolKit.controllers.city.DetailAction',
+	        'detailforminmap'       => 'citizenToolKit.controllers.city.DetailforminmapAction',
 	        'directory'    		 	=> 'citizenToolKit.controllers.city.DirectoryAction',
 	        'calendar'      		=> 'citizenToolKit.controllers.city.CalendarAction',
 	        'statisticpopulation' 	=> 'citizenToolKit.controllers.city.StatisticPopulationAction',
@@ -39,7 +40,7 @@ class CityController extends CommunecterController {
 	        'cityexists'  			=> 'citizenToolKit.controllers.city.CityExistsAction',
 	        'autocompletemultiscope'=> 'citizenToolKit.controllers.city.AutocompleteMultiScopeAction',
 	        'save'       			=> 'citizenToolKit.controllers.city.SaveAction',
-	        'getdepandregion'		=> 'citizenToolKit.controllers.city.GetDepAndRegionAction',
+	        'getlevel'		=> 'citizenToolKit.controllers.city.GetLevelAction',
 
 	    );
 	}

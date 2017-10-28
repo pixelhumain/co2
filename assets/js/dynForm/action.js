@@ -1,44 +1,101 @@
 dynForm = {
     jsonSchema : {
-	    title : "Ajouter une action",
-	    icon : "gavel",
+	    title : trad.addAction,
+	    icon : "cogs",
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	"sub" : function(){
-	    		$("#ajaxFormModal #room").val( contextData.id );
-    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
-	    	}
+	    	/*"onload" : function(){	    		
+	    		$("#ajaxFormModal #room").val( contextData.room );
+    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextData.name+"</small>" );
+	    	},*/
+            sub : function(){ //alert("yo");
+                
+            },
+            onload : function(data){
+
+                $("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+                                              .addClass("bg-turq");
+
+                if (typeof contextData.name != "undefined" && contextData.name != "")
+                $("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+"<small class='text-white'><br>" + tradDynForm.inSpace + " : <i class='text-white'>#"+currentRoomName+"</i></small>" );
+            
+                console.log("onload action data", data, "currentRoomId", typeof currentRoomId);
+                if(typeof currentRoomId != "undefined" && currentRoomId != "")
+                $("#ajaxFormModal #idParentRoom").val(currentRoomId);
+                else if(typeof data.idParentRoom != "undefined")
+                $("#ajaxFormModal #idParentRoom").val(data.idParentRoom);
+
+                if(typeof data.startDate != "undefined"){
+                    var d = new Date(data.startDate);
+                    var startDate = moment(d).format("DD/MM/YYYY HH:mm");
+                    console.log("startDate", d, startDate);
+                    $("#ajaxFormModal #startDate").val(startDate);
+                }
+
+                if(typeof data.endDate != "undefined"){
+                    d = new Date(data.endDate);
+                    var endDate = moment(d).format("DD/MM/YYYY HH:mm");
+                    $("#ajaxFormModal #endDate").val(endDate);
+                }else{
+                    $("#ajaxFormModal #endDate").val("");
+                }
+
+                if(typeof useIdParentResolution != "undefined" && useIdParentResolution == true){
+                    $("#idParentResolution").val(idParentResolution);
+                    useIdParentResolution = false;
+                }
+            }
 	    },
-	    beforeSave : function(){
-	    	if( typeof $("#ajaxFormModal #message").code === 'function' ) 
-	    		$("#ajaxFormModal #message").val( $("#ajaxFormModal #message").code() );
+        beforeBuild : function(){
+            //dyFObj.setMongoId('actions',function(){});
+        },
+        beforeSave : function(){
+            var dateformat = "DD/MM/YYYY HH:mm";
+            var outputFormat="YYYY-MM-DD HH::mm";
+            
+            console.log("TEST DATE TIMEZONE");
+            console.log($("#ajaxFormModal #amendementDateEnd").val());
+            
+            $("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format() ); 
+            $("#ajaxFormModal #endDate").val( moment(   $("#ajaxFormModal #endDate").val(), dateformat).format() );
+        },
+	    afterSave : function(data){
+            if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
+                $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+            else 
+            { 
+                console.log("afterSave action data", data);
+                dyFObj.closeForm();
+                uiCoop.getCoopData(contextData.type, contextData.id, "room", null, data.map.idParentRoom);
+                setTimeout(function(){
+                    uiCoop.getCoopData(contextData.type, contextData.id, "action", null, data.id);
+                }, 1000); 
+                //urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+            }
 	    },
 	    properties : {
 	    	info : {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> Une Action permet de faire avancer votre projet ou le fonctionnement de votre association</p>",
             },
-	        id :{
-              inputType : "hidden",
-              value : ""
-            },
-            room :{
+	        id : dyFInputs.inputHidden(""),
+            /*room :{
             	inputType : "select",
-            	placeholder : "Choisir une thématique ?",
+            	placeholder : "Choisir un espace",
             	init : function(){
             		if( userId )
             		{
-            			/*filling the seclect*/
+            			/*filling the seclect* /
 	            		if(notNull(window.myActionsList)){
 	            			html = buildSelectGroupOptions( window.myActionsList);
 	            			$("#room").append(html); 
 	            		} else {
 	            			getAjax( null , baseUrl+"/" + moduleId + "/rooms/index/type/citoyens/id/"+userId+"/view/data/fields/actions" , function(data){
 	            			    window.myActionsList = {};
-	            			    $.each( data.actions , function( k,v ) 
-	            			    { mylog.log(v.parentType,v.parentId);
-	            			    	if(v.parentType){
+	            			    $.each( data.actions , function( k,v ) { 
+                                    mylog.log(v.parentType,v.parentId);
+	            			    	if(v.parentType && v.parentType != "cities"){
 			            			    if( !window.myActionsList[ v.parentType] ){
 											var label = ( v.parentType == "cities" && cpCommunexion && v.parentId.indexOf(cpCommunexion) ) ? cityNameCommunexion : "Thématique des " + trad[v.parentType];
 			            			    	window.myActionsList[ v.parentType] = {"label":label};
@@ -50,52 +107,37 @@ dynForm = {
 	            			    mylog.dir(window.myActionsList);
 	            			    html = buildSelectGroupOptions(window.myActionsList);
 								$("#room").append(html);
-								if(contextData && contextData.id)
-									$("#ajaxFormModal #room").val( contextData.id );
+								if(contextData && contextData.room)
+									$("#ajaxFormModal #room").val( contextData.room );
 						    } );
 	            		}
             		}
             	},
             	custom : "<br/><span class='text-small'>Choisir l'espace où s'ajoutera votre action parmi vos organisations et projets<br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet  </span>"
-            },
-            name : typeObjLib.name,
-            message : typeObjLib.description,
+            },*/
+            idParentRoom : dyFInputs.inputHidden(currentRoomId),
+            name : dyFInputs.name("action"),
+            description : dyFInputs.textarea(tradDynForm.longDescription, "..."),
             startDate :{
-              inputType : "date",
-              placeholder : "Date de début"
+              inputType : "datetime",
+              label : tradDynForm.startDate,
+              placeholder : tradDynForm.startDate
             },
-            dateEnd :{
-              inputType : "date",
-              placeholder : "Date de fin"
+            endDate :{
+              inputType : "datetime",
+              label : tradDynForm.endDate,
+              placeholder : tradDynForm.endDate
             },
-
-         	tags : typeObjLib.tags(),
-            formshowers : {
-                label : "En détails",
-                inputType : "custom",
-                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
-            },
-            urls : typeObjLib.urls,
-            email:{
-            	inputType : "hidden",
-            	value : (userId!=null && userConnected != null) ? userConnected.email : ""
-            },
-            organizer:{
-            	inputType : "hidden",
-            	value : "currentUser"
-            },
-            "type" : {
-            	inputType : "hidden",
-            	value : "action"
-            },
-            parentId :{
-            	inputType : "hidden",
-            	value : userId	
-            },
-            parentType : {
-	            inputType : "hidden",
-	            value : "citoyens"
-	        },
+            status: dyFInputs.inputHidden( "todo" ),
+            idParentResolution: dyFInputs.inputHidden( "" ),
+            tags : dyFInputs.tags(),
+            urls : dyFInputs.urls,
+            email : dyFInputs.inputHidden( ( (userId!=null && userConnected != null) ? userConnected.email : "" ) ),
+            idUserAuthor: dyFInputs.inputHidden(userId),
+            //type : dyFInputs.inputHidden( "action" ),
+            parentId : dyFInputs.inputHidden(contextData.id),
+            parentType : dyFInputs.inputHidden(contextData.type),
+            // image : dyFInputs.image()
 	    }
 	}
 };

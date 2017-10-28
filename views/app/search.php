@@ -1,169 +1,79 @@
 <?php 
 
-  $cssAnsScriptFilesModule = array(
+    $cssAnsScriptFilesModule = array(
     '/assets/css/default/responsive-calendar.css',
-  );
-  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
-  
-  $cssAnsScriptFilesModule = array(
-    '/js/default/directory.js',
+    '/assets/css/default/search.css',
+    );
+    HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
+
+    $cssAnsScriptFilesModule = array(
     '/js/default/responsive-calendar.js',
-  );
-  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+    '/js/default/search.js',
+    );
+    HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
     $params = CO2::getThemeParams();
 
-    $page = "search";
+    $maxImg = 5;
 
+    $page = "search";
     if(!@$type){  $type = "all"; }
 
-    if(@$type=="events")    { $page = "agenda"; }
-    if(@$type=="classified"){ $page = "annonces"; }
-    if(@$type=="vote")      { $page = "power"; }
-    if(@$type=="place")     { $page = "place"; }
+    if(@$type=="events")    { $page = "agenda";     $maxImg = 7; }
+    if(@$type=="classified"){ $page = "annonces";   $maxImg = 1; }
+    if(@$type=="vote")      { $page = "power";      $maxImg = 1; }
+    if(@$type=="place")     { $page = "place";      $maxImg = 1; }
 
     if(@$type=="cities")    { $lblCreate = ""; }
 
-    if($params["title"] == "Kgougle") $page = "social";
-    
+    if($params["title"] == "Kgougle") {
+        $page = "social";
+        if(@$type=="classified"){ $page = "annonces"; }
+        if(@$type=="events"){ $page = "agenda"; }
+    }
+
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                             array(  "layoutPath"=>$layoutPath ,
                                     "page" => $page,
                                     "type" => @$type) ); 
+
+
+    $randImg = rand(1, $maxImg);
+    //$randImg = 2;
 ?>
 
 <style>
+    <?php if($params["title"] != "Kgougle") { ?>
+    header {
+      background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/<?php echo $page; ?>/pexels-<?php echo $randImg; ?>.jpeg") center center;
+      /*opacity: 0.3;
+      background-color: black;*/
+    }
     
-    #page #dropdown_search{
-    	min-height:500px;
-        /*margin-top:30px;*/
-    }
-    #page .row.headerDirectory{
-        margin-top: 20px;
-        display: none;
-    }
-    #page p {
-        font-size: 13px;
-    }
-    .container-result-search {
-        border-top:1px solid #eee;
-        padding-top:15px;
-    }
-
-    /*.homestead{
-        font-family:unset!important;
-    }*/
-    /*
-    .main-btn-scopes{
-        position: absolute;
-        top: 85px;
-        left: 18px;
-        z-index: 10;
-        border-radius: 0 50%;
-    }*/
-
-    .btn-create-page{
-        margin-top:0px;
-        z-index: 10;
-        border-radius: 0 50%;
-        -ms-transform: rotate(7deg);
-        -webkit-transform: rotate(7deg);
-        transform: rotate(-45deg);
-    }
-    .btn-create-page:hover{
-        background-color: white!important;
-        color:#34a853!important;
-        border: 2px solid #34a853!important;
-
-    }
-    .main-btn-scopes {
-        margin-top: 7px;
-    }
-
-    .scope-min-header{
-        float: left;
-        margin-top: 27px;
-        margin-left: 35px;
-    }
-
-    .links-create-element .btn-create-elem{
-        margin-top:25px;
-    }
-
-    .subtitle-search{
-        display: none;
-        /*width: 100%;
-        text-align: center;*/
-    }
-       
-    .breadcrum-communexion{ 
-         margin-top:25px;
-    }
-
-    .breadcrum-communexion .item-globalscope-checker{
-        border-bottom:1px solid #e6344d;
-    }
-    .item-globalscope-checker.inactive{
-        color:#DBBCC1 !important;
-        border-bottom:0px;
-        margin(top:-6px;)
-    }
-    .item-globalscope-checker:hover,
-    .item-globalscope-checker:active,
-    .item-globalscope-checker:focus{
-        color:#e6344d !important;
-        border-bottom:1px solid #e6344d;
-        text-decoration: none !important;
-    }
-    header .container, 
-    .header .container{
-        padding-bottom: 40px;
-    }
-
-    .btn-directory-type.bg-white {
-        background-color: #F2F2F2 !important;
-    }
-
-    .searchEntityContainer.pull-right.classified{
-        clear: right;
-    }
-    .searchEntityContainer.pull-left.classified{
-        clear: left;
-    }
-
-    .carousel-inner > .item > img.img-responsive{
-        display: inline !important;
-        max-height: 400px !important;
-    }
-
-    .btn-select-type-anc.active,
-    .btn-select-type-anc:active,
-    .btn-select-type-anc:focus{
-        color: white !important;
-        background-color: #2C3E50;
-    }
-
+    
+    <?php } ?>
 </style>
 
 
-<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow" id="content-social" style="min-height:700px;">
+<div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow pageContent" 
+     id="content-social" style="min-height:700px;">
 
     <?php if(@$type=="events"){ ?>
     <div class="col-md-12 no-padding calendar"></div>
     <div class="responsive-calendar-init hidden"> 
       <div class="responsive-calendar light col-md-12 no-padding">   
           <div class="day-headers">
-            <div class="day header">Lun</div>
-            <div class="day header">Mar</div>
-            <div class="day header">Mer</div>
-            <div class="day header">Jeu</div>
-            <div class="day header">Ven</div>
-            <div class="day header">Sam</div>
-            <div class="day header">Dim</div>
+            <div class="day header"><?php echo Yii::t("translate","Mon") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Tue") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Wed") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Thu") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Fri") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Sat") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Sun") ?></div>
           </div>
           <div class="days" data-group="days"></div>   
           <div class="controls">
@@ -181,37 +91,38 @@
             <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips"
                     data-target="#dash-create-modal" data-toggle="modal"
                     data-toggle="tooltip" data-placement="top" 
-                    title="<?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>">
-                <i class="fa fa-plus-circle"></i> <?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>
+                    title="<?php echo Yii::t("common", @$params["pages"]["#".$page]["lblBtnCreate"]); ?>">
+                <i class="fa fa-plus-circle"></i> <?php echo Yii::t("common",@$params["pages"]["#".$page]["lblBtnCreate"]); ?>
             </button>
             <?php }else{ ?>
             <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips" data-type="<?php echo @$type; ?>"
                     data-toggle="tooltip" data-placement="top" 
-                    title="<?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>">
-                <i class="fa fa-plus-circle"></i> <?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>
+                    title="<?php echo Yii::t("common", @$params["pages"]["#".$page]["lblBtnCreate"]); ?>">
+                <i class="fa fa-plus-circle"></i> <?php echo Yii::t("common",@$params["pages"]["#".$page]["lblBtnCreate"]); ?>
             </button>
             <?php } ?>
 
         </div>
 
-        <div class="col-md-10 col-sm-10 col-xs-12 padding-5">
-        <?php
-            $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
+        <?php //var_dump(Yii::app()->request->cookies['communexionActivated']);
+              //var_dump(CO2::getCommunexionCookies()); 
         ?>
+
+        <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
+            <?php $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
         </div>
     <?php } ?>
 
 
-	<div class="col-md-12 col-sm-12 col-xs-12 padding-5" id="page"></div>
+	<div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="page"></div>
 
-
-    <?php if(@$type=="all"){ ?>
+    <?php if(@$type=="all" && !empty(Yii::app()->session["userId"]) ){ ?>
     <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
         <!-- <hr style="margin-bottom:-20px;"> -->
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 
             data-target="#dash-create-modal" data-toggle="modal"
             data-toggle="tooltip" data-placement="top" 
-            title="Créer une nouvelle page">
+            title="<?php echo Yii::t("common","Create a new page") ?>">
                 <i class="fa fa-times" style="font-size:18px;"></i>
         </button>
         <h5 class="text-center letter-green margin-top-25">Créer une page</h5>
@@ -221,6 +132,7 @@
                 <span class="text-azure">entreprises</span> 
                 <span class="text-purple">projets</span> 
                 <span class="text-turq">groupes</span>
+                <span class="text-red">service public</span>
             </small>
         </h5><br>
     </div>
@@ -228,138 +140,10 @@
 
 </div>
 
+<?php $this->renderPartial($layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.pageCreate', array()); ?>
+<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array()); ?>
 
-<div class="portfolio-modal modal fade" id="dash-create-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-content padding-top-15">
-        <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-                <div class="rl">
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" height="50" class="inline margin-top-25 margin-bottom-5"><br>
-                    
-                    <h3 class="letter-red no-margin hidden-xs">
-                        <small class="text-dark">Un réseau social <span class="letter-red">citoyen</span>, au service du <span class="letter-red">bien commun</span></small>
-                    </h3><br>
-                    <h3 class="letter-red no-margin hidden-xs">
-                        <i class="fa fa-plus-circle"></i> Créer une page<br>
-                    </h3>
-                   <!-- <hr> -->
-                </div>               
-            </div>
-            <div class="row links-create-element">
-                <div class="col-lg-12">
-                    <div class="modal-header text-dark">
-                       <label class="label label-lg bg-green-k padding-5"><i class="fa fa-check"></i> Partage de messages</label> 
-                       <label class="label label-lg bg-green-k padding-5"><i class="fa fa-check"></i> Partage d'événements</label> 
-                       <label class="label label-lg bg-green-k padding-5"><i class="fa fa-check"></i> Gestion de contacts</label>  
-                       <label class="label label-lg bg-green-k padding-5"><i class="fa fa-check"></i> Messagerie privées</label>  
-                       <label class="label label-lg bg-green-k padding-5"><i class="fa fa-check"></i> Notifications</label> 
-                    </div>
-                    
-                    <div id="" class="modal-body">
-                        <div class="col-md-12 hidden">
-                            
-                        </div>
-                         <h4 class="modal-title text-center hidden">
-                            Choisissez le type de page qui vous correspond le mieux
-                            <hr>
-                        </h4>
-                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="NGO" data-type="organization"
-                            date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-center">
-                                <h2 class="text-green"><i class="fa fa-group padding-bottom-10"></i><br>
-                                    <span class="font-light"> Association</span>
-                                </h2>
-                                
-                                <div class="col-md-12 no-padding text-center hidden-xs">
-                                    <h5>Resserrer les liens du tissu associatif
-                                        <small class="hidden-xs" style="text-transform: none;"><br>
-                                            Le monde associatif est basé sur l'entraide et la solidarité.<br>
-                                            Plus que jamais, les associations ont besoin de se relier entre-elles,<br> 
-                                            pour faire plus et mieux, ensemble.
-                                        </small>
-                                    </h5>
-                                    <button class="btn btn-default text-green margin-bottom-15"><i class="fa fa-plus-circle"></i> Créer ma page</button>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="LocalBusiness" data-type="organization"
-                            date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-center">
-                                <h2 class="text-azure"><i class="fa fa-industry padding-bottom-10"></i><br>
-                                    <span class="font-light"> Entreprise</span>
-                                </h2>
-                                
-                                <div class="col-md-12 no-padding text-center hidden-xs">
-                                    <h5>Dynamiser le monde de l'entreprise
-                                        <small class="hidden-xs" style="text-transform: none;"><br>
-                                            Rester connecté à vos contacts, vos clients, vos employés, vos fournisseurs...<br>
-                                            Le réseau vous apportera une visibilité incomparable<br>
-                                            auprès de ceux qui vivent près de vous.
-                                        </small>
-                                    </h5>
-                                    <button class="btn btn-default text-azure margin-bottom-15"><i class="fa fa-plus-circle"></i> Créer ma page</button>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" data-ktype="Group" data-type="organization"
-                            date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-center">
-                                <h2 class="text-turq"><i class="fa fa-circle-o padding-bottom-10"></i><br>
-                                    <span class="font-light"> Groupe</span>
-                                </h2>
-                                
-                                <div class="col-md-12 no-padding text-center hidden-xs">
-                                    <h5>Mettre en valeur les liens humains
-                                        <small class="hidden-xs" style="text-transform: none;"><br>
-                                            La vie c'est des rencontres, des amitiés, des liens qui nous unissent<br>
-                                            à travers nos activités, nos centres d'intérêts, nos plaisirs.<br>
-                                            Les vivres c'est bien, les partager c'est encore mieux !
-                                        </small>
-                                    </h5>
-                                    <button class="btn btn-default text-turq margin-bottom-15"><i class="fa fa-plus-circle"></i> Créer ma page</button>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="javascript:" class="btn-create-elem col-lg-6 col-sm-6 col-xs-6" 
-                            data-ktype="project" data-type="project"
-                            date-target="#modalMainMenu" data-dismiss="modal">
-                            <div class="modal-body text-center">
-                                <h2 class="text-purple"><i class="fa fa-lightbulb-o padding-bottom-10"></i><br>
-                                    <span class="font-light"> Projet</span>
-                                </h2>
-                                
-                                <div class="col-md-12 no-padding text-center hidden-xs">
-                                    <h5>Ce sont les petites initiatives<br>qui donnent naissance aux projets hors du commun
-                                        <small class="hidden-xs" style="text-transform: none;"><br>
-                                            N'hésitez jamais à faire connaître vos envies, vos projets, vos rêves.<br>
-                                            C'est comme ça qu'ils grandissent !
-                                        </small>
-                                    </h5>
-                                    <button class="btn btn-default text-purple margin-bottom-15"><i class="fa fa-plus-circle"></i> Créer ma page</button>
-                                </div>
-                            </div>
-                        </a>
-
-                        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                            <hr>
-                            <a href="javascript:" style="font-size: 13px;" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Retour</a>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>$page)); ?>
+<?php //$this->renderPartial($layoutPath.'footer', array("subdomain"=>$page)); ?>
 
 
 
@@ -368,7 +152,7 @@
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
-var titlePage = "<?php echo @$params["pages"]["#".$page]["subdomainName"]; ?>";
+var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
 
 //var TPL = "kgougle";
 
@@ -400,6 +184,9 @@ jQuery(document).ready(function() {
             loadingData = false;
             startSearch(0, indexStepInit, searchCallback);
             KScrollTo("#content-social");
+
+            $(".btn-directory-type").removeClass("active");
+            $(this).addClass("active");
         });
 
         $(".btn-open-filliaire").click(function(){
@@ -414,7 +201,8 @@ jQuery(document).ready(function() {
         bindLeftMenuFilters();
 
         //console.log("init Scroll");
-        $(window).bind("scroll",function(){  mylog.log("test scroll", scrollEnd);
+        $(window).bind("scroll",function(){  
+            mylog.log("test scroll", scrollEnd);
             if(!loadingData && !scrollEnd && !isMapEnd){
                   var heightWindow = $("html").height() - $("body").height();
                   if( $(this).scrollTop() >= heightWindow - 400){
@@ -423,235 +211,22 @@ jQuery(document).ready(function() {
             }
         });
 
-
         loadingData = false; 
         initTypeSearch(type);
         startSearch(0, indexStepInit, searchCallback);
 
     },"html");
 
-    /*$("#main-btn-start-search, .menu-btn-start-search").off().click(function(){
-            initTypeSearch(typeInit);
-            startSearch(0, indexStepInit, searchCallback);
-            KScrollTo("#content-social");
-    });*/
+    initSearchInterface(); //themes/co2/assets/js/default/search.js
 
-    $("#main-search-bar").keyup(function(e){
-        $("#second-search-bar").val($(this).val());
-        $("#input-search-map").val($(this).val());
-        if(e.keyCode == 13){
-            initTypeSearch(typeInit);
-            startSearch(0, indexStepInit, searchCallback);
-            KScrollTo("#content-social");
-        }
-    });
-    $("#main-search-bar").change(function(){
-        $("#second-search-bar").val($(this).val());
-    });
-
-    $("#second-search-bar").keyup(function(e){
-        $("#main-search-bar").val($(this).val());
-        $("#input-search-map").val($(this).val());
-        if(e.keyCode == 13){
-            initTypeSearch(typeInit);
-            startSearch(0, indexStepInit, searchCallback);
-            KScrollTo("#content-social");
-         }
-    });
-
-    $("#input-search-map").keyup(function(e){
-        $("#second-search-bar").val($("#input-search-map").val());
-        $("#main-search-bar").val($("#input-search-map").val());
-        if(e.keyCode == 13){
-            initTypeSearch(typeInit);
-            startSearch(0, indexStepInit, searchCallback);
-         }
-    });
-
-    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
-        initTypeSearch(typeInit);
-        startSearch(0, indexStepInit, searchCallback);
-    });
-
-
-
-    $(".btn-create-elem").click(function(){
-        currentKFormType = $(this).data("ktype");
-        var type = $(this).data("type");
-        setTimeout(function(){
-                    elementLib.openForm(type);
-                 },500);
-        
-    });
-
-    $(".main-btn-create").click(function(){
-        currentKFormType = $(this).data("ktype");
-        var type = $(this).data("type");
-
-        if(type=="all"){
-            $("#dash-create-modal").modal("show");
-            return;
-        }
-
-        if(type=="events") type="event";
-        if(type=="vote") type="entry";
-        elementLib.openForm(type);
-    });
-
-    $(".btn-decommunecter").click(function(){
-        activateGlobalCommunexion(false);
-    });
-
+    
     if(page == "annonces" || page == "agenda" || page == "power"){
         setTimeout(function(){
-            KScrollTo("#content-social");  
+            //KScrollTo("#content-social");  
         }, 1000);
     }
     $(".tooltips").tooltip();
-
-    //currentKFormType = "Group";
-    //elementLib.openForm ("organization");
 });
-
-
-function initTypeSearch(typeInit){
-    //var defaultType = $("#main-btn-start-search").data("type");
-
-    if(typeInit == "all") {
-        searchType = ["persons", "organizations", "projects"];
-        if($('#main-search-bar').val() != "") searchType.push("cities");
-
-        indexStepInit = 30;
-    }
-    else{
-        searchType = [ typeInit ];
-        indexStepInit = 100;
-    }
-}
-
-/* -------------------------
-CLASSIFIED
------------------------------ */
-var section = "";
-var classType = "";
-var classSubType = "";
-function initClassifiedInterface(){ return;
-    classified.currentLeftFilters = null;
-    $('#menu-section-'+typeInit).removeClass("hidden");
-    $("#btn-create-classified").click(function(){
-         elementLib.openForm('classified');
-    });    
-}
-
-function bindLeftMenuFilters () { 
-
-    $(".btn-select-type-anc").off().on("click", function()
-    {    
-        searchType = [ typeInit ];
-        indexStepInit = 100;
-        $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
-        $(".keycat").addClass("hidden");
-        $(this).addClass("active");
-
-        section = $(this).data("type-anc");
-        sectionKey = $(this).data("key");
-        //alert("section : " + section);
-
-        if( sectionKey == "forsale" || sectionKey == "forrent"){
-            $("#section-price").show(200);
-            KScrollTo("#section-price");
-        }
-        else {
-            $("#section-price").hide();
-            $("#priceMin").val("");
-            $("#priceMax").val("");
-            KScrollTo("#dropdown_search");
-        }
-
-        /*
-        if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "location" || sectionKey == "donation" || 
-            sectionKey == "sharing" || sectionKey == "lookingfor" || sectionKey == "job" || sectionKey == "all" ){
-            //$(".subsub").show(300);
-            $('#searchTags').val(section);
-            //KScrollTo("#section-price");
-            startSearch(0, indexStepInit, searchCallback); 
-        } */
-        if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
-            //alert('build left menu'+classified.sections[sectionKey].filters);
-            classified.currentLeftFilters = classified.sections[sectionKey].filters;
-            var filters = classified[ classified.currentLeftFilters ]; 
-            var what = { title : classified.sections[sectionKey].label, 
-                         icon : classified.sections[sectionKey].icon }
-            directory.sectionFilter( filters, ".classifiedFilters",what);
-            bindLeftMenuFilters ();
-            
-        }
-        else if(classified.currentLeftFilters != null) {
-            //alert('rebuild original'); 
-            var what = { title : classified.sections[sectionKey].label, 
-                         icon : classified.sections[sectionKey].icon }
-            directory.sectionFilter( classified.filters, ".classifiedFilters",what);
-            bindLeftMenuFilters ();
-            classified.currentLeftFilters = null;
-        }
-
-        $('#searchTags').val(section);
-        //KScrollTo(".top-page");
-        startSearch(0, indexStepInit, searchCallback); 
-
-
-        if(typeof classified.sections[sectionKey] != "undefined") {
-            $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]);
-            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+classified.sections[sectionKey]["color"])
-            $(".fa-title-list").removeClass("hidden");
-        }
-    });
-
-    $(".btn-select-category-1").off().on("click", function(){
-        searchType = [ typeInit ];
-        $(".btn-select-category-1").removeClass("active");
-        $(this).addClass("active");
-
-        var classType = $(this).data("keycat");
-        $(".keycat").addClass("hidden");
-        $(".keycat-"+classType).removeClass("hidden");   
-
-        //alert("classType : "+classType);
-
-        $('#searchTags').val(section+","+classType);
-        startSearch(0, indexStepInit, searchCallback);  
-    });
-
-    $(".keycat").off().on("click", function(){
-
-        searchType = [ typeInit ];
-        $(".keycat").removeClass("active");
-        $(this).addClass("active");
-        var classSubType = $(this).data("keycat");
-        var classType = $(this).data("categ");
-        //alert("classSubType : "+classSubType);
-        $('#searchTags').val(section+","+classType+","+classSubType);
-        KScrollTo("#menu-section-classified");
-        startSearch(0, indexStepInit, searchCallback);  
-    });
-
-
-    $("#btn-create-classified").off().on("click", function(){
-         elementLib.openForm('classified');
-    });
-
-    $("#priceMin").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
-    $("#priceMax").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
-
-    $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
-
- }
-
-
-/* -------------------------
-END CLASSIFIED
------------------------------ */
-
 
 
 /* -------------------------
@@ -659,62 +234,60 @@ AGENDA
 ----------------------------- */
 
 <?php if(@$type == "events"){ ?>
+
 var calendarInit = false;
 function showResultInCalendar(mapElements){
-  mylog.log("showResultInCalendar xxx");
-  mylog.dir(mapElements);
+    //mylog.dir(mapElements);
 
-  var events = new Array();
-  $.each(mapElements, function(key, thisEvent){
+    var events = new Array();
+    console.log("data mapElements", mapElements);
+    $.each(mapElements, function(key, thisEvent){
     
-    var startDate = exists(thisEvent["startDateTime"]) ? thisEvent["startDateTime"].substr(0, 10) : "";
-    var endDate = exists(thisEvent["endDateTime"]) ? thisEvent["endDateTime"].substr(0, 10) : "";
-    var cp = "";
-    var loc = "";
-    if(thisEvent["address"] != null){
-        var cp = exists(thisEvent["address"]["postalCode"]) ? thisEvent["address"]["postalCode"] : "" ;
-        var loc = exists(thisEvent["address"]["addressLocality"]) ? thisEvent["address"]["addressLocality"] : "";
+        var startDate = exists(thisEvent["startDateTime"]) ? thisEvent["startDateTime"].substr(0, 10) : "";
+        var endDate = exists(thisEvent["endDateTime"]) ? thisEvent["endDateTime"].substr(0, 10) : "";
+        var cp = "";
+        var loc = "";
+        if(thisEvent["address"] != null){
+            var cp = exists(thisEvent["address"]["postalCode"]) ? thisEvent["address"]["postalCode"] : "" ;
+            var loc = exists(thisEvent["address"]["addressLocality"]) ? thisEvent["address"]["addressLocality"] : "";
+        }
+        var position = cp + " " + loc;
+
+        var name = exists(thisEvent["name"]) ? thisEvent["name"] : "";
+        var thumb_url = notEmpty(thisEvent["profilThumbImageUrl"]) ? baseUrl+thisEvent["profilThumbImageUrl"] : "";
+        
+        if(typeof events[startDate] == "undefined") events[startDate] = new Array();
+        events[startDate].push({  "id" : thisEvent["_id"]["$id"],
+                                  "thumb_url" : thumb_url, 
+                                  "startDate": startDate,
+                                  "endDate": endDate,
+                                  "name" : name,
+                                  "position" : position });
+    });
+
+    if(calendarInit == true) {
+        $(".calendar").html("");
     }
-    var position = cp + " " + loc;
 
-    var name = exists(thisEvent["name"]) ? thisEvent["name"] : "";
-    var thumb_url = notEmpty(thisEvent["profilThumbImageUrl"]) ? baseUrl+thisEvent["profilThumbImageUrl"] : "";
-    
-    if(typeof events[startDate] == "undefined") events[startDate] = new Array();
-    events[startDate].push({  "id" : thisEvent["_id"]["$id"],
-                              "thumb_url" : thumb_url, 
-                              "startDate": startDate,
-                              "endDate": endDate,
-                              "name" : name,
-                              "position" : position });
-  });
+    $(".calendar").html($(".responsive-calendar-init").html());
 
-  //mylog.dir(events);
+    var aujourdhui = new Date();
+    var  month = (aujourdhui.getMonth()+1).toString();
+    if(aujourdhui.getMonth() < 10) month = "0" + month;
+    var date = aujourdhui.getFullYear().toString() + "-" + month;
 
-  if(calendarInit == true) {
-    $(".calendar").html("");
-  }
-
-  $(".calendar").html($(".responsive-calendar-init").html());
-
-  var aujourdhui = new Date();
-  var  month = (aujourdhui.getMonth()+1).toString();
-  if(aujourdhui.getMonth() < 10) month = "0" + month;
-  var date = aujourdhui.getFullYear().toString() + "-" + month;
-  
-  $(".responsive-calendar").responsiveCalendar({
+    console.log("data events", events);
+    $(".responsive-calendar").responsiveCalendar({
           time: date,
           events: events
         });
 
+    $(".responsive-calendar").show();
 
-  $(".responsive-calendar").show();
-
-  calendarInit = true;
+    calendarInit = true;
 }
 
 <?php } ?>
-
 
 /* -------------------------
 END AGENDA

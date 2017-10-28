@@ -5,7 +5,7 @@
 function getGeoPosInternational(requestPart, countryCode){
 
 	var countryCodes = new Array("FR", "GP", "GF", "MQ", "YT", "NC", "RE", "PM");
-	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> Recherche en cours ...");
+	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" ...");
 	
 	if($.inArray(countryCode, countryCodes) >= 0) callCommunecter(requestPart, countryCode);
 	else
@@ -14,7 +14,7 @@ function getGeoPosInternational(requestPart, countryCode){
 
 function callCommunecter(requestPart, countryCode){ /*countryCode=="FR"*/
 	mylog.log('callCommunecter');
-	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> Recherche en cours <small>Communecter</small>");
+	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" <small>Communecter</small>");
 	callGeoWebService("communecter", requestPart, countryCode,
 		function(objs){ /*success nominatim*/
 			mylog.log("SUCCESS Communecter"); 
@@ -39,7 +39,7 @@ function callCommunecter(requestPart, countryCode){ /*countryCode=="FR"*/
 
 function callDataGouv(requestPart, countryCode){ /*countryCode=="FR"*/
 	mylog.log('callDataGouv');
-	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> Recherche en cours <small>Data Gouv</small>");
+	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" <small>Data Gouv</small>");
 	callGeoWebService("data.gouv", requestPart, countryCode,
 		function(objDataGouv){ /*success nominatim*/
 			mylog.log("SUCCESS DataGouv"); 
@@ -64,7 +64,7 @@ function callDataGouv(requestPart, countryCode){ /*countryCode=="FR"*/
 
 function callNominatim(requestPart, countryCode){
 	mylog.log('callNominatim');
-	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> Recherche en cours <small>Nominatim</small>");
+	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" <small>Nominatim</small>");
 	callGeoWebService("nominatim", requestPart, countryCode,
 		function(objNomi){ /*success nominatim*/
 			mylog.log("SUCCESS nominatim"); 
@@ -91,7 +91,7 @@ function callNominatim(requestPart, countryCode){
 
 function callGoogle(requestPart, countryCode){
 	mylog.log('callGoogle');
-	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> Recherche en cours <small>GoogleMap</small>");
+	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" <small>GoogleMap</small>");
 	callGeoWebService("google", requestPart, countryCode,
 		function(objGoo){ /*success google*/
 			mylog.log("SUCCESS GOOGLE");
@@ -100,16 +100,16 @@ function callGoogle(requestPart, countryCode){
 				var commonGeoObj = getCommonGeoObject(objGoo.results, "google");
 				var res = addResultsInForm(commonGeoObj, countryCode);
 				if(res == 0) 
-					showMsgListRes("<i class='fa fa-ban'></i> Aucun résultat. Précisez votre recherche.");
+					showMsgListRes("<i class='fa fa-ban'></i> "+trad.noresult+". Précisez votre recherche.");
 	
 			}else{
 				mylog.log('Aucun résultat chez Google');
-				showMsgListRes("<i class='fa fa-ban'></i> Aucun résultat. Précisez votre recherche.");
+				showMsgListRes("<i class='fa fa-ban'></i> "+trad.noresult+". Précisez votre recherche.");
 			}
 
 		}, 
 		function(thisError){ /*error google*/
-			showMsgListRes("<i class='fa fa-ban'></i> Aucun résultat. Précisez votre recherche.");
+			showMsgListRes("<i class='fa fa-ban'></i> "+trad.noresult+". Précisez votre recherche.");
 			mylog.log("ERROR GOOGLE"); mylog.dir(thisError);
 		}
 	);
@@ -121,22 +121,22 @@ function callGeoWebService(providerName, requestPart, countryCode, success, erro
 	var data = {};
 
 	if(providerName == "nominatim") {
-		if(typeSearchInternational == "address")
+		if(formInMap.typeSearchInternational == "address")
 		url = "//nominatim.openstreetmap.org/search?q=" + requestPart + "," + countryCode + "&format=json&polygon=0&addressdetails=1";
-		else if(typeSearchInternational == "city")
+		else if(formInMap.typeSearchInternational == "city")
 		url = "//nominatim.openstreetmap.org/search?city=" + requestPart + "&country=" + countryCode + "&format=json&polygon=0&addressdetails=1";
 	}
 	
 	if(providerName == "google") {
-		if(typeSearchInternational == "address")
+		if(formInMap.typeSearchInternational == "address")
 		url = "//maps.googleapis.com/maps/api/geocode/json?address=" + requestPart + "," + countryCode;
-		else if(typeSearchInternational == "city")
+		else if(formInMap.typeSearchInternational == "city")
 		url = "//maps.googleapis.com/maps/api/geocode/json?locality=" + requestPart + "&country=" + countryCode;
 	}	
 	if(providerName == "data.gouv") {
-		if(typeSearchInternational == "address")
+		if(formInMap.typeSearchInternational == "address")
 		url = "//api-adresse.data.gouv.fr/search/?q=" + requestPart;
-		else if(typeSearchInternational == "city")
+		else if(formInMap.typeSearchInternational == "city")
 		url = "//api-adresse.data.gouv.fr/search/?q=" + requestPart + "&type=city";
 	}
 	if(providerName == "communecter") {
@@ -263,7 +263,7 @@ function getCommonGeoObject(objs, providerName){
 
 		commonObj = addCoordinates(commonObj, obj, providerName);
 		commonObj["type"] = "addressEntity";
-		commonObj["typeSig"] = formType;
+		commonObj["typeSig"] = formInMap.formType;
 		commonObj["name"] = getFullAddress(commonObj);
 
 		if(typeof commonObj["postalCode"] != "undefined" && commonObj["postalCode"].indexOf(";") >= 0){
@@ -370,7 +370,7 @@ function addResultsInForm(commonGeoObj, countryCode){
 			}
 		}
 	});
-	if(html == "") html = "<i class='fa fa-ban'></i> Aucun résultat";
+	if(html == "") html = "<i class='fa fa-ban'></i> "+trad.noresult;
 	$("#dropdown-newElement_streetAddress-found").html(html);
 	$("#dropdown-newElement_streetAddress-found").show();
 
@@ -382,9 +382,11 @@ function addResultsInForm(commonGeoObj, countryCode){
 		$("#dropdown-newElement_streetAddress-found").hide();
 		$('[name="newElement_lat"]').val($(this).data("lat"));
 		$('[name="newElement_lng"]').val($(this).data("lng"));
-		NE_lat = $(this).data("lat");
-		NE_lng = $(this).data("lng");
-		updateHtmlInseeLatLon();
+		formInMap.NE_lat = $(this).data("lat");
+		formInMap.NE_lng = $(this).data("lng");
+		formInMap.showWarningGeo(false);
+		formInMap.initHtml();
+
 	});
 }
 

@@ -5,25 +5,33 @@ dynForm = {
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
-	    	"sub" : function(){
-    			$("#ajaxFormModal #survey").val( contextData.id );
-    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
-	    	}
+	    	onload : function(data){
+	    		dataHelper.activateMarkdown("#ajaxFormModal #message");
+	            if (typeof contextDataDDA.name != "undefined" && contextDataDDA.name != "")
+	    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
+	        }
 	    },
-	    beforeSave : function(){
-	    	
-	    	if( typeof $("#ajaxFormModal #message").code === 'function' )  
-	    		$("#ajaxFormModal #message").val( $("#ajaxFormModal #message").code() );
+	    beforeBuild : function(){
+            dyFObj.setMongoId('survey',function(){});
+        },
+	    afterSave : function(){
+            if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
+                $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+            else 
+            { 
+                dyFObj.closeForm(); 
+                urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+            }
 	    },
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<p><i class='fa fa-info-circle'></i> Une proposition sert à discuter et demander l'avis d'une communauté sur une idée ou une question donnée</p>",
+                html:"<br><p><i class='fa fa-info-circle'></i> Une proposition sert à discuter et demander l'avis d'une communauté sur une idée ou une question donnée</p>",
             },
-	        id : typeObjLib.hidden,
+	        id : dyFInputs.inputHidden(),
             survey :{
             	inputType : "select",
-            	placeholder : "Choisir une thématique ?",
+            	label : "Choisir un espace",
             	init : function(){
             		if( userId )
             		{
@@ -37,7 +45,7 @@ dynForm = {
 	            			    $.each( data.votes , function( k,v ) 
 	            			    { 
 	            			    	parentName = "";
-		            			    if(!window.myVotesList[ v.parentType]){
+		            			    if(v.parentType != "cities" && !window.myVotesList[ v.parentType]){
 		            			    	var label = ( v.parentType == "cities" && cpCommunexion && v.parentId.indexOf(cpCommunexion) ) ? cityNameCommunexion : v.parentType;
 		            			    	window.myVotesList[ v.parentType] = {"label":label};
 		            			    	window.myVotesList[ v.parentType].options = {}
@@ -52,8 +60,8 @@ dynForm = {
 	            			    
 	            			    html = buildSelectGroupOptions(window.myVotesList);
 								$("#survey").append(html);
-								if(contextData && contextData.id)
-									$("#ajaxFormModal #survey").val( contextData.id );
+								if(contextDataDDA && contextDataDDA.room)
+									$("#ajaxFormModal #survey").val( contextDataDDA.room );
 						    } );
 	            		}
 	            		/*$("#survey").change(function() { 
@@ -62,30 +70,18 @@ dynForm = {
 
             		}
             	},
-            	custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
+            	//custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
             },
-            name : typeObjLib.name,
-            message : typeObjLib.description,
-            dateEnd : typeObjLib.dateEnd,
-            tags : typeObjLib.tags(),
-            formshowers : {
-            	label : "En détails",
-                inputType : "custom",
-                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options ( urls)</a>",
-            },
-            urls : typeObjLib.urls,
-            email:{
-            	inputType : "hidden",
-            	value : (userId!=null && userConnected!=null) ? userConnected.email : ""
-            },
-            organizer:{
-            	inputType : "hidden",
-            	value : "currentUser"
-            },
-            type : {
-            	inputType : "hidden",
-            	value : "entry"
-            }
+            name : dyFInputs.name("vote"),
+            message : dyFInputs.textarea(tradDynForm.longDescription, "..."),
+            dateEnd : dyFInputs.dateEnd,
+            tags : dyFInputs.tags(),
+            image : dyFInputs.image(),
+            urls : dyFInputs.urls,
+            email: dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userConnected.email : "") ),
+            organizer : dyFInputs.inputHidden("currentUser"),
+            type : dyFInputs.inputHidden("entry")
+                        
 	    }
 	}
 };

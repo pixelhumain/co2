@@ -27,96 +27,101 @@
         margin-top: 207px;
         text-align: right;
     }
-<?php 
-    $btnAnc = array("blue"      =>array("color1"=>"#4285f4", 
-                                        "color2"=>"#1c6df5"),
-                    );
-?>
 
-<?php foreach($btnAnc as $color => $params){ ?>
-.btn-anc-color-<?php echo $color; ?>{
-    background-color: <?php echo $params["color1"]; ?>;
-    border-color: <?php echo $params["color1"]; ?>!important;
-    color: #fff!important;
-}
-
-.btn-anc-color-<?php echo $color; ?>:hover{
-    background-color: <?php echo $params["color2"]; ?>!important;
-    border-color: <?php echo $params["color1"]; ?>!important;
-}
-.btn-anc-color-<?php echo $color; ?>.active{ 
-    background-color:#fff!important;
-    color:<?php echo $params["color1"]; ?>!important;
-}
-.btn-anc-color-<?php echo $color; ?>.active:hover{
-    background-color: #fff;
-    color: <?php echo $params["color1"]; ?>;
-}
-<?php } ?>
-
-
-#btn-onepage-main-menu{
-    position: fixed;
-    top:110px;
-    left:20px;
-    border-radius: 1px;
-    letter-spacing: 2px;
-    border:2px solid white;
-    border-radius:100px;
-    height:40px;
-    /*width:60px;*/
-}
-
-.siteurl_title{
-    font-size:17px!important;
-}
-.siteurl_hostname{
-    font-size:14px!important;
-}
-.siteurl_desc{
-    font-size:13px!important;
-    color:#606060;
-}
-.portfolio.p1{
-    padding-top:20px;
-}
-
-.btn-fast-access{
-    font-size: 24px;
-}
-
-#section-fav{
-    max-height: 50px;
-    overflow: hidden;
-}
-
-#sub-menu-left{
-    margin-top: 207px;
-    text-align: right;
-}
-@media screen and (max-width: 1024px) {
     #mainCategories .portfolio .portfolio-item{
-        height: 110px;
+        height:100px;
     }
-    #mainCategories .portfolio .portfolio-item button.portfolio-link{
-        margin-top: 15px;
-    }
-}
 
-@media (max-width: 767px) {
+    <?php 
+        $btnAnc = array("blue"      =>array("color1"=>"#4285f4", 
+                                            "color2"=>"#1c6df5"),
+                        );
+    ?>
 
-    .category-search-link h4{
-        font-size: 0.9em;
+    <?php foreach($btnAnc as $color => $params){ ?>
+    .btn-anc-color-<?php echo $color; ?>{
+        background-color: <?php echo $params["color1"]; ?>;
+        border-color: <?php echo $params["color1"]; ?>!important;
+        color: #fff!important;
     }
-    #mainCategories h3{
-        font-size: 1.3em;
+
+    .btn-anc-color-<?php echo $color; ?>:hover{
+        background-color: <?php echo $params["color2"]; ?>!important;
+        border-color: <?php echo $params["color1"]; ?>!important;
     }
-    #sub-menu-left {
-        margin-top: 5px;
-        padding:15px;
-        text-align: left;
+    .btn-anc-color-<?php echo $color; ?>.active{ 
+        background-color:#fff!important;
+        color:<?php echo $params["color1"]; ?>!important;
     }
-}
+    .btn-anc-color-<?php echo $color; ?>.active:hover{
+        background-color: #fff;
+        color: <?php echo $params["color1"]; ?>;
+    }
+    <?php } ?>
+
+
+    #btn-onepage-main-menu{
+        position: fixed;
+        top:110px;
+        left:20px;
+        border-radius: 1px;
+        letter-spacing: 2px;
+        border:2px solid white;
+        border-radius:100px;
+        height:40px;
+        /*width:60px;*/
+    }
+
+    .siteurl_title{
+        font-size:17px!important;
+    }
+    .siteurl_hostname{
+        font-size:14px!important;
+    }
+    .siteurl_desc{
+        font-size:13px!important;
+        color:#606060;
+    }
+    .portfolio.p1{
+        padding-top:20px;
+    }
+
+    .btn-fast-access{
+        font-size: 24px;
+    }
+
+    #section-fav{
+        max-height: 50px;
+        overflow: hidden;
+    }
+
+    #sub-menu-left{
+        margin-top: 207px;
+        text-align: right;
+    }
+    @media screen and (max-width: 1024px) {
+        #mainCategories .portfolio .portfolio-item{
+            height: 110px;
+        }
+        #mainCategories .portfolio .portfolio-item button.portfolio-link{
+            margin-top: 15px;
+        }
+    }
+
+    @media (max-width: 767px) {
+
+        .category-search-link h4{
+            font-size: 0.9em;
+        }
+        #mainCategories h3{
+            font-size: 1.3em;
+        }
+        #sub-menu-left {
+            margin-top: 5px;
+            padding:15px;
+            text-align: left;
+        }
+    }
 </style>
 
 

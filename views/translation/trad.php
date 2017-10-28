@@ -412,7 +412,7 @@ var tradDynForm = {
 	"wantToAddSomething":"<?php echo Yii::t("form","choose what you want to add ?") ?>",
 	"imageshere":"<?php echo Yii::t("form","Your pictures here") ?>",
 	"fileshere":"<?php echo Yii::t("form","Your files here") ?>",
-	"pricesymbole":"<?php echo Yii::t("form","Price (£)") ?>",
+	"pricesymbole":"<?php echo Yii::t("form","Price") ?>",
 	"price":"<?php echo Yii::t("form","Price") ?>",
 	"mainemail":"<?php echo Yii::t("form","Main email") ?>",
 	"mainurl":"<?php echo Yii::t("form","Main URL") ?>",

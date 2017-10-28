@@ -439,7 +439,7 @@
         <?php $col = ( !in_array($typeSelected, array("classified","events","vote","all","place") )) ? 10 : 8; ?>
         <?php if(Yii::app()->params["CO2DomainName"] == "BCH"){ $col = 10; } ?>
         
-        <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
+        <div class="col-sm-<?php echo $col ?> col-md-<?php echo $col ?> col-xs-12" id="dropdown_search"></div>
 
         <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
       <?php } ?>

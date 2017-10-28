@@ -85,7 +85,7 @@
       	"#annonces":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
-                  "open" : true,
+                  "open" : false,
                   "subdomain" : "annonces", 
                   "subdomainName" : "annonces",
                   "hash" : "#app.annonces",

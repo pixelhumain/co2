@@ -204,10 +204,10 @@ dynForm = {
                 html:"<div class='subtypeSection'></div>"
             },
             subtype : dyFInputs.inputHidden(),
-            price : dyFInputs.price(),
-            devise : dyFInputs.inputSelect(tradDynForm.currency, tradDynForm.indicatethemoneyused, deviseTheme),
             name : dyFInputs.name( "classified" ) ,
             description : dyFInputs.textarea(tradDynForm.description, "..."),
+            price : dyFInputs.price(),
+            devise : dyFInputs.inputSelect(tradDynForm.currency, tradDynForm.indicatethemoneyused, deviseTheme),
             image : dyFInputs.image(),
             contactInfo : dyFInputs.inputText(tradDynForm.contactinfo, tradDynForm.telemail+" ..."),
             location : dyFInputs.location,

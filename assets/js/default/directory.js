@@ -192,7 +192,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               if(totalData > 1)
                 resultsStr=trad.results;
               str += '<div class="col-md-12 text-left" id="">';
-              str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+
+              str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark pull-left'>"+
                         "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
               str += "<small class='resultTypes'>";
               if(typeof headerParams != "undefined"){

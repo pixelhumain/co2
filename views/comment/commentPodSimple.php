@@ -70,7 +70,7 @@
 		white-space: pre-line;
 	}
 	.content-new-comment .mentions{
-		padding: 9px 5px !important;
+		padding: 10px 10px !important;
     	font-size: 13px !important;
 	}
 	.content-update-comment .mentions{

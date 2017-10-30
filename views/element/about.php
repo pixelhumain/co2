@@ -399,8 +399,8 @@
 					echo $address;
 					if( empty($element["address"]["codeInsee"]) && Yii::app()->session["userId"] == (String) $element["_id"]) {
 						echo '<br><a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.
-								Yii::t("common", "Connect to your city")./*'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe">'. 
-								Yii::t("common", "Why ?").*/'</a>';
+								Yii::t("common", "Connect to your city").'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe">'. 
+								Yii::t("common", "Why ?").'</a>';
 					}
 			}else
 				echo '<i>'.Yii::t("common","Not specified").'</i>';
@@ -560,6 +560,7 @@
 		inintDescs();
 		//changeHiddenFields();
 		bindAboutPodElement();
+		bindExplainLinks();
 
 		$("#small_profil").html($("#menu-name").html());
 		$("#menu-name").html("");

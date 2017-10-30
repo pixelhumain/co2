@@ -1529,7 +1529,9 @@ function  bindTags() {
 }
 
 function  bindExplainLinks() { 
-	$(".explainLink").click(function() {  
+	mylog.log("bindExplainLinks");
+	$(".explainLink").click(function() { 
+		mylog.log("explainLink");
 	    showDefinition( $(this).data("id") );
 	    return false;
 	 });

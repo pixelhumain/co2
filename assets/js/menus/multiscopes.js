@@ -392,9 +392,9 @@ function openDropdownMultiscope(){
 	setTimeout(function(){ $("#dropdown-content-multi-scope").addClass('open'); }, 300);
 }
 
-function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values){  
+function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch){  
 
-	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel, values);
+	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel, notSearch);
 
 	if(scopeValue == "") return;
 	
@@ -412,15 +412,19 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values){
 	communexion.currentName = scopeName;
 	communexion.currentValue = scopeValue;
 
-	if(values)
+	if(values){
+		if(typeof values == "string")
+			values = jQuery.parseJSON(values);
 		communexion.values = values;
+	}
 
 	$.cookie('communexion', communexion, { expires: 365, path: "/" });
 
 
-
+	if(!notNull(notSearch) || notSearch != true)
+		activateGlobalCommunexion(true);
 	//rebuildSearchScopeInput();
-	activateGlobalCommunexion(true);
+	
 	//startSearch(0, indexStepInit, searchCallback);
 	//loadByHash(location.hash);
 }

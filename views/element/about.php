@@ -397,11 +397,12 @@
 					 				: "").
 					 			'</span>';
 					echo $address;
-					if( empty($element["address"]["codeInsee"]) && Yii::app()->session["userId"] == (String) $element["_id"]) {
-						echo '<br><a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.
-								Yii::t("common", "Connect to your city").'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe">'. 
-								Yii::t("common", "Why ?").'</a>';
-					}
+					if( empty($element["address"]["codeInsee"]) && Yii::app()->session["userId"] == (String) $element["_id"]) { ?>
+						<br><a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">
+								<?php echo Yii::t("common", "Connect to your city") ?></a> 
+							<a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" onclick="showDefinition('explainCommunectMe',true)">
+								<?php echo  Yii::t("common", "Why ?") ?></a>
+					<?php }
 			}else
 				echo '<i>'.Yii::t("common","Not specified").'</i>';
 			?>
@@ -544,6 +545,7 @@
     <?php } ?> 
 </div>
 
+<?php $this->renderPartial('../pod/whycommunexion',array()); ?>
 
 <script type="text/javascript">
 

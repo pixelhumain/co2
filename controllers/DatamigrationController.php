@@ -2562,15 +2562,35 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 			foreach ($types as $keyType => $type) {
 				$elts = PHDB::find($type, array('$and' => array(
-									array("address" => array('$exists' => 1)))
-						));
+									array("address" => array('$exists' => 1)),
+									array("address.localityId" => array('$exists' => 0))
+						)));
 
 				foreach ($elts as $key => $elt) {
-					if(!empty($elt["address"]["codeInsee"])){
-						$city = PHDB::findOne(City::COLLECTION, array("insee" => $elt["address"]["codeInsee"]));
+					if(!empty($elt["address"]["codeInsee"]) || !empty($elt["address"]["postalCode"])){
 
+						if( !empty($elt["address"]["codeInsee"]) )
+							$city = PHDB::findOne(City::COLLECTION, array("insee" => $elt["address"]["codeInsee"]));
+						else
+							$city = PHDB::findOne(City::COLLECTION, array("postalCodes.postalCode" => $elt["address"]["postalCode"]));
+						//var_dump($city);
 						if(!empty($city)){
 							$newAddress = $elt["address"];
+
+							if(empty($elt["address"]["codeInsee"])){
+								$newAddress["codeInsee"] = $city["insee"];
+								$newAddress["addressCountry"] = $city["country"];
+								$newAddress["streetAddress"] = "";
+								if(!empty($city["postalCodes"]))
+									foreach ($city["postalCodes"] as $keycp => $valuecp) {
+										if($valuecp["postalCode"] == $elt["address"]["postalCode"])
+											$newAddress["addressLocality"] = $valuecp["name"];
+									}
+
+								if(!empty($newAddress["addressLocality"]))
+									$newAddress["addressLocality"] = $city["name"];
+							}
+
 							if(!empty($city["level1"])){
 								$newAddress["level1"] = $city["level1"];
 								$newAddress["level1Name"] = $city["level1Name"];
@@ -2643,11 +2663,12 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 								if(!empty($newAdd))
 									$set["addresses"] = $newAdd;
 							}
-
-							$res = PHDB::update($type, 
-									array("_id"=>new MongoId($key)),
-									array('$set' => $set)
-							);
+							if(!empty($newAddress['localityId'])){
+								$res = PHDB::update($type, 
+										array("_id"=>new MongoId($key)),
+										array('$set' => $set)
+								);
+							}
 							$nbelement++;
 						}
 					}else{
@@ -2684,7 +2705,14 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 	public function actionBatchInterNews() {
 		ini_set('memory_limit', '-1');
-		$news = PHDB::find(News::COLLECTION, array("scope" => array('$exists' => 1)));
+		//$news = PHDB::find(News::COLLECTION, array("scope" => array('$exists' => 1)));
+
+		$news = PHDB::find(News::COLLECTION, array('$and' => array(
+									array("scope" => array('$exists' => 1)),
+									array("scope.localities" => array('$exists' => 1)))
+						));
+
+
 		$nbelement = 0 ;
 		foreach ($news as $key => $new) {
 			if(!empty($new["scope"])){

@@ -2524,6 +2524,36 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
+
+	public function actionBatchTranslateMissing(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		
+		$cities = PHDB::find(City::COLLECTION, array("translateId" => array('$exists' => 0) ));
+		if(!empty($cities)){
+			foreach (@$cities as $keyElt => $city) {
+				Zone::insertTranslate(	( String ) $city["_id"], City::COLLECTION, $city["country"], $city["name"], 
+										(!empty($city["osmID"]) ? $city["osmID"] : null ), 
+										(!empty($city["wikidataID"]) ? $city["wikidataID"] : null ) ) ;
+				$nbelement++;
+			}	
+		}
+		echo  "NB City mis à jours: " .$nbelement."<br>" ;
+
+		$nbelement = 0 ;
+		
+		$zones = PHDB::find(Zone::COLLECTION, array("translateId" => array('$exists' => 0) ));
+		if(!empty($zones)){
+			foreach (@$zones as $keyElt => $zone) {
+				Zone::insertTranslate(	( String ) $zone["_id"], Zone::COLLECTION, $zone["countryCode"], $zone["name"], 
+										(!empty($zone["osmID"]) ? $zone["osmID"] : null ), 
+										(!empty($zone["wikidataID"]) ? $zone["wikidataID"] : null ) ) ;
+				$nbelement++;
+			}
+		}
+		echo  "NB Zones mis à jours: " .$nbelement."<br>" ;
+	}
+
 	public function actionBatchInterElement() {
 		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			$nbelement = 0 ;

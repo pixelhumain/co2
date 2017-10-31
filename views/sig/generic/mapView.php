@@ -115,8 +115,10 @@
 						<?php
 							echo "<option value=''>".Yii::t("common", "Choose a country")."</option>";
 							// $asort = OpenData::$phCountries;
-       //  					asort($asort);
-        					$asort = Zone::getListCountry();
+       						// asort($asort);
+        					$asort = array(array("countryCode"=>"NC",
+        										 "name"=>"Nouvelle-Calédonie")); 
+        					Zone::getListCountry();
         
 							foreach ( $asort as $key => $value) {
 								echo "<option value='".$value["countryCode"]."'>".$value["name"]."</option>";

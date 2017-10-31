@@ -50,7 +50,7 @@ var formInMap = {
 			mylog.log("NE_country", formInMap.NE_country);
 		}
 
-		var coordinates = new Array(0, 0);
+		var coordinates = new Array(-22.30295900, 166.43908700);
 		if( notNull(contextData) && notNull(contextData.geo) && formInMap.updateLocality == true 
 			&& formInMap.NE_lat != "" && formInMap.NE_lng != "")
 			coordinates = new Array(formInMap.NE_lat, formInMap.NE_lng);
@@ -63,7 +63,7 @@ var formInMap = {
 		Sig.markerFindPlace = Sig.getMarkerSingle(Sig.map, options, coordinates);
 		Sig.markerFindPlace.openPopup(); 
 		Sig.markerFindPlace.dragging.enable();
-		Sig.centerPopupMarker(coordinates, 12);
+		Sig.centerPopupMarker(coordinates, 9);
 		
 
 		$('[name="newElement_country"]').val(formInMap.NE_country);

@@ -372,7 +372,7 @@
 						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 			  				<li class="text-left">
 				               	<a href="javascript:;" onclick="updateSlug();" id="" class="bg-white">
-				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Edit slug"); ?>
+				                    <i class="fa fa-id-badge"></i> <?php echo Yii::t("common", "Edit slug"); ?>
 				                </a>
 				            </li>
 			            <?php } ?>

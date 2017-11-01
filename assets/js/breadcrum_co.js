@@ -9,8 +9,7 @@ function bindCommunexionScopeEvents(){
         $(this).removeClass("inactive");
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
         setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
-                         $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"), 
-                         $(this).data("region-communexion"), $(this).data("country-communexion")) ;
+                         $(this).data("scope-values"),  $(this).data("scope-notsearch")) ;
     });
     
     $(".item-scope-input").click(function(){ 

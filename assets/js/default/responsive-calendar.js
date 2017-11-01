@@ -390,8 +390,7 @@
       });
     };
     $.fn.responsiveCalendar.defaults = {
-      //translateMonths: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      translateMonths: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+      translateMonths: [trad.january, trad.february, trad.march, trad.april, trad.may, trad.june, trad.july, trad.august, trad.september, trad.october, trad.november, trad.december],
       events: {},
       time: void 0,
       allRows: true,

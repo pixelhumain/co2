@@ -25,7 +25,7 @@ dynForm = {
 				$("#ajax-modal .infocustom p").removeClass("text-dark text-red text-purple text-green text-green-poi text-orange text-turq text-yellow text-url");
 
                 if(typeof currentKFormType != "undefined" && typeObj[currentKFormType] && typeObj[currentKFormType].color){
-                	alert("dyn" + typeObj[currentKFormType].color);
+                	//alert("dyn" + typeObj[currentKFormType].color);
                     $("#ajax-modal .modal-header").addClass("bg-"+typeObj[currentKFormType].color);
                     $("#ajax-modal .infocustom p").addClass("text-"+typeObj[currentKFormType].color);
                 }else{

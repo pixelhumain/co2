@@ -167,41 +167,34 @@
                 <i class="fa fa-arrow-circle-right"></i> Afficher la carte
             </button>
 
-        	<hr>
-        	<h3 class="letter-blue">
-        		<i class="fa fa-newspaper-o fa-2x"></i> Un fil d'actualités
-        	</h3>
-        	<h4>Une revue de presse des grands médias calédoniens et d’outre-mers</h4>
-			<p>
-				Pour suivre en direct l'actualité locale et garder un oeil sur le reste du monde.<br>
-        	</p>
+            <hr>
+            <h3 class="letter-blue">
+                <i class="fa fa-newspaper-o fa-2x"></i> Un fil d'actualités
+            </h3>
+            <h4>Une revue de presse des grands médias calédoniens et d’outre-mers</h4>
+            <p>
+                Pour suivre en direct l'actualité locale et garder un oeil sur le reste du monde.<br>
+            </p>
 
 
-        	<!-- --------------------------------------------------------------------------------- -->
-        	<br><br><br>
-        	<h1 class="letter-red font-blackoutM" id="philo">
-        		<img src="<?php echo $urlKgou; ?>" height="35" class="logoKgou"> Notre philosophie
-        	</h1>
+            <hr>
+            <h3 class="letter-blue">
+                <i class="fa fa-user-circle fa-2x"></i> Un réseau social
+            </h3>
+            <h4>Créez votre page en quelques secondes, trouvez des followers et communiquez avec eux.</h4>
+            <p>partagez votre actu, vos photos, vos événements, vos points d'intérêts, etc </p>
+           
 
-        	<h3 class="letter-blue"><i class="fa fa-line-chart fa-2x"></i> En amélioration continue, pour le bien commun...</h3>
-        	<!-- <h4></h4> -->
-			<p>
-				Kgougle a été mis en place par <a href="" class="letter-yellow"><b>une équipe de développeurs indépendants</b></a>, dans le but de faciliter l’usage d’internet en Nouvelle-Calédonie. Ce moteur de recherche est un premier pas vers une évolution majeure de l'utilisation du web sur le territoire. En offrant un guide d'accès vers l'ensemble des sites web locaux, nous permettons à tous les Calédoniens de naviguer <i>sans se perdre</i>, et donc de prendre en main plus facilement cet outil sur-puissant...
-				<br><br>
-				Sur le caillou, internet est un outil encore nouveau, que l’on découvre petit à petit, et que nous tentons d’apprivoiser.<br>
-				Mais internet nous arrive avec une complexité et une immensité, dont nous n’avons pas toujours besoin. 
-				<br><br>
-				Au sein de notre équipe, nous pensons qu’une recherche sur le web <b>ne devrait être un casse-tête pour personne</b>, car internet est un outil formidable, <b>pour toutes les générations</b>, qui ouvre un grand nombres de nouvelles possibilités <b>pour tout le territoire</b>.
-				<br><br>
-				A moyen terme, nous souhaitons également proposer d'autres outils numériques innovants, qui participeront à l'amélioration globale des services web disponibles en Nouvelle-Calédonie.
-				<br><br>
-				
-				<a href="#info.p.ph" class="letter-yellow">
-					<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/LOGO_PIXEL_HUMAIN.png" height=100> 
-					<b><i class="fa fa-plus-circle"></i> En savoir plus sur notre équipe</b>
-				</a>
-        	</p>
+            <hr>
+            <h3 class="letter-blue">
+                <i class="fa fa-calendar fa-2x"></i> Un agenda collaboratif
+            </h3>
+            <h4>pour faire connaître tous vos événements et ne rien rater de l’activité locale</b></h4>
+            <p>(concert, exposition, sport, festival, sorties, animation culturelle, etc)</p>
+           
 
+
+        	
 
         	<!-- --------------------------------------------------------------------------------- -->
         	<br><br><br>
@@ -212,17 +205,41 @@
         	<h3 class="letter-blue"><i class="fa fa-cubes fa-2x"></i> <i class="fa fa-angle-righ"></i> Plusieurs nouveautés déjà en préparation</h3>
         	<!-- <h4>Notre imagination est sans limite...</h4> -->
 			<p>
-				<i class="fa fa-user-circle-o letter-red"></i> <span class="letter-red font-blackoutT">SOCIAL</span> <b><span class="letter-green">Un réseau social indépendant</span>, offrant toutes les fonctionnalités des réseaux les plus connus :</b> <br>Création de compte perso, partages de messages et URL, création de page pour associations, entreprises, groupes, projets, une messagerie privée... 
-				Et bien plus encore ! 
-				<br><br>
-				<i class="fa fa-comments letter-red"></i> <span class="letter-red font-blackoutT">FREEDOM</span> <b><span class="letter-green">Un outil de partage d’annonces en direct</span>, pour passer vos coups de coeur, vos coups de gueules, et diffuser toutes vos annonces</b> 
-				(à vendre, à donner, à partager, à louer, offre d’emplois, etc)
-				<br><br>
-				<i class="fa fa-calendar letter-red"></i> <span class="letter-red font-blackoutT">AGENDA</span> <b><span class="letter-green">Un agenda collaboratif</span>, pour faire connaître tous vos événements et ne rien rater de l’activité locale</b> (concert, exposition, sport, festival, sorties, animation culturelle, etc)
+                <i class="fa fa-comments letter-red"></i> <span class="letter-red font-blackoutT">ANNONCES</span> <b><span class="letter-green">Un outil de partage d’annonces en direct</span>, pour diffuser toutes vos annonces directement sur Kgougle.</b> 
+                (à vendre, à donner, à partager, à louer, offre d’emplois, etc)
+            </p>
 
-        	</p>
+            <p>
+                <i class="fa fa-comments letter-red"></i> <span class="letter-red font-blackoutT">LIVE</span> <b><span class="letter-green">Un espace de discussion public et géolocalisé</span>, pour passer vos coups de coeur, vos coups de gueule, parler de l'actu, lancer des débats sur des sujets de société, etc</b> 
+            </p>
 
-			
+            <!-- --------------------------------------------------------------------------------- -->
+            <br><br><br>
+            <h1 class="letter-red font-blackoutM" id="philo">
+                <img src="<?php echo $urlKgou; ?>" height="35" class="logoKgou"> Notre philosophie
+            </h1>
+
+            <h3 class="letter-blue"><i class="fa fa-line-chart fa-2x"></i> En amélioration continue, pour le bien commun...</h3>
+            <!-- <h4></h4> -->
+            <p>
+                Kgougle a été mis en place par <a href="" class="letter-yellow"><b>une équipe de développeurs indépendants</b></a>, dans le but de faciliter l’usage d’internet en Nouvelle-Calédonie. Ce moteur de recherche est un premier pas vers une évolution majeure de l'utilisation du web sur le territoire. En offrant un guide d'accès vers l'ensemble des sites web locaux, nous permettons à tous les Calédoniens de naviguer <i>sans se perdre</i>, et donc de prendre en main plus facilement cet outil sur-puissant...
+                <br><br>
+                Sur le caillou, internet est un outil encore nouveau, que l’on découvre petit à petit, et que nous tentons d’apprivoiser.<br>
+                Mais internet nous arrive avec une complexité et une immensité, dont nous n’avons pas toujours besoin. 
+                <br><br>
+                Au sein de notre équipe, nous pensons qu’une recherche sur le web <b>ne devrait être un casse-tête pour personne</b>, car internet est un outil formidable, <b>pour toutes les générations</b>, qui ouvre un grand nombres de nouvelles possibilités <b>pour tout le territoire</b>.
+                <br><br>
+                A moyen terme, nous souhaitons également proposer d'autres outils numériques innovants, qui participeront à l'amélioration globale des services web disponibles en Nouvelle-Calédonie.
+                <br><br>
+                
+                <a href="#info.p.ph" class="letter-yellow">
+                    <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/LOGO_PIXEL_HUMAIN.png" height=100> 
+                    <b><i class="fa fa-plus-circle"></i> En savoir plus sur notre équipe</b>
+                </a>
+            </p>
+
+
+            
 			<!-- --------------------------------------------------------------------------------- -->
         	<br><br><br>
         	<h1 class="letter-red font-blackoutM" id="motivation">

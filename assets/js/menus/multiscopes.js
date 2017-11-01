@@ -10,13 +10,13 @@ function saveMultiScope(){
 	if(userId != null && userId != ""){
 		if(!notEmpty(myMultiScopes)) myMultiScopes = {};
 		$.ajax({
-	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/person/updatemultiscope",
-	        data: {"multiscopes" : myMultiScopes},
-	       	dataType: "json",
-	    	success: function(data){
-	    		mylog.log("updatemultiscope success");	    		
-		    },
+			type: "POST",
+			url: baseUrl+"/"+moduleId+"/person/updatemultiscope",
+			data: {"multiscopes" : myMultiScopes},
+			dataType: "json",
+			success: function(data){
+				mylog.log("updatemultiscope success");	    		
+			},
 			error: function(error){
 				mylog.log("Une erreur est survenue pendant l'enregistrement des scopes");
 			}
@@ -40,61 +40,61 @@ function autocompleteMultiScope(){
 	var countryCode = $('#select-country').val();
 	$("#dropdown-multi-scope-found").html("<li><i class='fa fa-refresh fa-spin'></i></li>");
 	$.ajax({
-        type: "POST",
-        url: baseUrl+"/"+moduleId+"/city/autocompletemultiscope",
-        data: {
-        		type: currentScopeType, 
-        		scopeValue: scopeValue,
-        		countryCode: countryCode
-        },
-       	dataType: "json",
-    	success: function(data){
-    		mylog.log("autocompleteMultiScope() success");
-    		mylog.dir(data);
-    		$("#dropdown-multi-scope-found").html(trad.noresult);
-    		html="";
-    		var allCP = new Array();
-    		var allCities = new Array();
-    		$.each(data.cities, function(key, value){
-    			if(currentScopeType == "city") { //mylog.log("in scope city");
-    				//val = value.country + '_' + value.insee;
-    				val = key;
-		    		lbl = (typeof value.name!= "undefined") ? value.name : ""; //value.name ;
-		    		lblList = lbl + ((typeof value.level3Name!= "undefined") ? " (" +value.level3Name + ")" : "");
-		    		html += '<li><a href="javascript:;" class="addScope" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
+		type: "POST",
+		url: baseUrl+"/"+moduleId+"/city/autocompletemultiscope",
+		data: {
+				type: currentScopeType, 
+				scopeValue: scopeValue,
+				countryCode: countryCode
+		},
+		dataType: "json",
+		success: function(data){
+			mylog.log("autocompleteMultiScope() success");
+			mylog.dir(data);
+			$("#dropdown-multi-scope-found").html(trad.noresult);
+			html="";
+			var allCP = new Array();
+			var allCities = new Array();
+			$.each(data.cities, function(key, value){
+				if(currentScopeType == "city") { //mylog.log("in scope city");
+					//val = value.country + '_' + value.insee;
+					val = key;
+					lbl = (typeof value.name!= "undefined") ? value.name : ""; //value.name ;
+					lblList = lbl + ((typeof value.level3Name!= "undefined") ? " (" +value.level3Name + ")" : "");
+					html += '<li><a href="javascript:;" class="addScope" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
 
-    			};
-    			if(currentScopeType == "cp") { 
-    				$.each(value.postalCodes, function(key, valueCP){ //mylog.log(allCities);
+				};
+				if(currentScopeType == "cp") { 
+					$.each(value.postalCodes, function(key, valueCP){ //mylog.log(allCities);
 						val = valueCP.postalCode;
 						lbl = valueCP.postalCode ;
 						lblList = valueCP.name + ", " +valueCP.postalCode ;
 						html += '<li><a href="javascript:;" class="addScope" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
-    				});
-    			}; 
-    			
-    			if(currentScopeType == "zone"){
-    				val = key;
-		    		lbl = (typeof value.name!= "undefined") ? value.name : ""; 
-		    		lblList = lbl + " (" +value.countryCode + ")";
-		    		level = value.level[0];
-    				html += '<li><a href="javascript:;" class="addScope" data-level="'+level+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
+					});
+				}; 
+				
+				if(currentScopeType == "zone"){
+					val = key;
+					lbl = (typeof value.name!= "undefined") ? value.name : ""; 
+					lblList = lbl + " (" +value.countryCode + ")";
+					level = value.level[0];
+					html += '<li><a href="javascript:;" class="addScope" data-level="'+level+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
 
-	    		}
-    		});
-    		if(html != "")
-    		$("#dropdown-multi-scope-found").html(html);
-    		$("#dropdown-multi-scope-found").mouseleave(function(){
-    			$(this).hide();
-    		});
+				}
+			});
+			if(html != "")
+			$("#dropdown-multi-scope-found").html(html);
+			$("#dropdown-multi-scope-found").mouseleave(function(){
+				$(this).hide();
+			});
 
-    		$(".addScope").click(function(){
-    			addScopeToMultiscope($(this).data("val"), $(this).data("lbl"), $(this).data("level"));
-    		});
-    		
-	    },
+			$(".addScope").click(function(){
+				addScopeToMultiscope($(this).data("val"), $(this).data("lbl"), $(this).data("level"));
+			});
+			
+		},
 		error: function(error){
-    		$("#dropdown-multi-scope-found").html("error");
+			$("#dropdown-multi-scope-found").html("error");
 			mylog.log("Une erreur est survenue pendant autocompleteMultiScope");
 		}
 	});
@@ -263,14 +263,14 @@ function getLocalityForSearch(){
 
 	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), communexion.state);
 	if(communexion.state == true ){
-      var searchLocality = {}
-      searchLocality[communexion.currentValue] = { type : communexion.currentLevel, 
-                                                    name : communexion.currentName,
-                                                    active : true };
-    }else{
-      var searchLocality = getMultiScopeForSearch();
-    }
-    return searchLocality;
+	  var searchLocality = {}
+	  searchLocality[communexion.currentValue] = { type : communexion.currentLevel, 
+													name : communexion.currentName,
+													active : true };
+	}else{
+	  var searchLocality = getMultiScopeForSearch();
+	}
+	return searchLocality;
 }
 
 function getMultiScopeForSearch(){ 
@@ -392,9 +392,9 @@ function openDropdownMultiscope(){
 	setTimeout(function(){ $("#dropdown-content-multi-scope").addClass('open'); }, 300);
 }
 
-function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values){  
+function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch){  
 
-	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel, values);
+	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel, notSearch);
 
 	if(scopeValue == "") return;
 	
@@ -412,15 +412,27 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values){
 	communexion.currentName = scopeName;
 	communexion.currentValue = scopeValue;
 
-	if(values)
+	if(values){
+		if(typeof values == "string")
+			values = jQuery.parseJSON(values);
 		communexion.values = values;
+	}
 
 	$.cookie('communexion', communexion, { expires: 365, path: "/" });
 
+	if($("#communexionNameHome").length){
+		$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+scopeName+'</span></span>');
+		$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
+		$("#main-search-bar").val("");
+		$(".info_co, .input_co").addClass("hidden");
+		$("#change_co").removeClass("hidden");
+		$("#dropdown_search").html("");
+	}
 
-
+	if(!notNull(notSearch) || notSearch != true)
+		activateGlobalCommunexion(true);
 	//rebuildSearchScopeInput();
-	activateGlobalCommunexion(true);
+	
 	//startSearch(0, indexStepInit, searchCallback);
 	//loadByHash(location.hash);
 }

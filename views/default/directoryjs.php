@@ -341,7 +341,7 @@
             <?php if( @Yii::app()->session["userId"] ) { ?> 
             <hr>
             <button class="btn btn-default margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="favorites">
-              <span class="text-red"><i class="fa fa-star hidden-xs"></i> MES FAVORIS</span>
+              <span class="text-red"><i class="fa fa-star hidden-xs"></i> <?php echo Yii::t("common","MY FAVORITES") ?></span>
             </button>
             <?php } ?>
           </div>
@@ -439,7 +439,7 @@
         <?php $col = ( !in_array($typeSelected, array("classified","events","vote","all","place") )) ? 10 : 8; ?>
         <?php if(Yii::app()->params["CO2DomainName"] == "BCH"){ $col = 10; } ?>
         
-        <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
+        <div class="col-sm-<?php echo $col ?> col-md-<?php echo $col ?> col-xs-12" id="dropdown_search"></div>
 
         <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
       <?php } ?>
@@ -463,25 +463,23 @@
 <script type="text/javascript">
 
 var headerParams = {
-  "persons"       : { color: "yellow",  icon: "user",         name: "citoyens" },
-  "organizations" : { color: "green",   icon: "group",        name: "organisations" },
-  "NGO"           : { color: "green",   icon: "group",        name: "associations" },
-  "LocalBusiness" : { color: "azure",   icon: "industry",     name: "entreprises" },
-  "Group"         : { color: "black",   icon: "circle-o",     name: "Groupes" },
-  "projects"      : { color: "purple",  icon: "lightbulb-o",  name: "projets" },
-  "events"        : { color: "orange",  icon: "calendar",     name: "événements" },
+  "persons"       : { color: "yellow",  icon: "user",         name: trad.people },
+  "organizations" : { color: "green",   icon: "group",        name: trad.organizations },
+  "NGO"           : { color: "green",   icon: "group",        name: trad.NGOs },
+  "LocalBusiness" : { color: "azure",   icon: "industry",     name: trad.LocalBusiness },
+  "Group"         : { color: "black",   icon: "circle-o",     name: trad.groups },
+  "projects"      : { color: "purple",  icon: "lightbulb-o",  name: trad.projects },
+  "events"        : { color: "orange",  icon: "calendar",     name: trad.events },
   "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions, Questions, Votes" },
   "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
-  "cities"        : { color: "red",     icon: "university",   name: "communes" },
-  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
+  "cities"        : { color: "red",     icon: "university",   name: trad.municipalities },
+  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: trad.pointsinterests },
   "wikidata"    : { color: "lightblue2",   icon: "group",   name: "Wikidata" },
   "datagouv"    : { color: "lightblue2",   icon: "bullhorn",   name: "DataGouv" },
   "osm"    : { color: "lightblue2",   icon: "bullhorn",   name: "Open Street Map" },
   "ods"    : { color: "lightblue2",   icon: "bullhorn",   name: "OpenDatasoft" },
-  "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
-  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
-  "place"         : { color: "green",   icon: "map-marker",   name: "Lieux" },
-  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: "Annonces" },
+  "place"         : { color: "green",   icon: "map-marker",   name: trad.places },
+  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad.classifieds },
   "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
 
 }

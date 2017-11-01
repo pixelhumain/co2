@@ -188,9 +188,12 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
               //parcours la liste des résultats de la recherche
               //mylog.dir(data);
+              resultsStr=trad.result;
+              if(totalData > 1)
+                resultsStr=trad.results;
               str += '<div class="col-md-12 text-left" id="">';
-              str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+
-                        "<i class='fa fa-angle-down'></i> " + totalData + " "+trad["results"]+" ";
+              str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark pull-left'>"+
+                        "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
               str += "<small class='resultTypes'>";
               if(typeof headerParams != "undefined"){
                 $.each( searchType, function(key, val){
@@ -239,7 +242,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               {       
                 //ajout du footer      	
                 str += '<div class="pull-left col-md-12 text-center" id="footerDropdown" style="width:100%;">';
-                str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " résultats</h3>";
+                str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " "+resultsStr+"</h3>";
                 //str += '<span class="" id="">Complétez votre recherche pour un résultat plus précis</span></center><br/>';
                 //str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
                 str += "</div>";
@@ -275,6 +278,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
                 //active les link lbh
                 bindLBHLinks();
+                bindCommunexionScopeEvents()
 
                 // $(".start-new-communexion").click(function(){
                 //     mylog.log("start-new-communexion directory.js");
@@ -1325,8 +1329,8 @@ var directory = {
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
-        if(params.updated != null && params.updated.indexOf("il y a")>=0 && location.hash == "#agenda")
-            params.updated = "En ce moment";
+        if(params.updated != null && params.updated.indexOf(trad.ago)>=0 && location.hash == "#agenda")
+            params.updated = trad.rightnow;
 
         if(params.updated != null && !params.useMinSize)
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
@@ -1417,7 +1421,7 @@ var directory = {
             }            
             console.log("typeDYN",params.organizerObj.type, params.organizerObj);
             elem = dyFInputs.get(params.organizerObj.type);
-            str += "<h5 class='no-margin padding-top-5'><small>Organisé par</small></h5>";
+            str += "<h5 class='no-margin padding-top-5'><small>"+tradDynForm.organizedby+"</small></h5>";
             str += "<a href='#page.type."+elem.col+".id."+params.organizerObj["_id"]["$id"]+"' class='lbh' > <small class='entityOrganizerName'>"+params.organizerObj.name+"</small></a>";
           str += "</div>";
 
@@ -1472,6 +1476,7 @@ var directory = {
     // ********************************
     cityPanelHtml : function(params){
         if(directory.dirLog) mylog.log("-----------cityPanelHtml");
+        mylog.log("-----------cityPanelHtml", params);
         str = "";  
         str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
         str +=    "<div class='searchEntity'>";
@@ -1489,8 +1494,17 @@ var directory = {
                     params.onclickCp = 'setScopeValue($(this));';
                     params.target = "";
                     params.dataId = params.name; 
-                    params.fullLocality =  "<b>" +params.name + "</b> - " +  params.cp+ "<br>" +  params.regionName;
-                    
+                    //params.fullLocality =  "<b>" +params.name + "</b> - " +  params.cp+ "<br>" +  params.regionName;
+
+                    params.fullLocality =  "<b>" + params.name + "</b> " + (notEmpty(params.cp) ? " - " +  params.cp : "") + " ( " + params.country + " ) " ;
+                    if( notEmpty( params.level4Name ) )
+                      params.fullLocality += "<br/>" +  params.level4Name ;
+                    else if( notEmpty( params.level3Name ) )
+                      params.fullLocality += "<br/>" +  params.level3Name ;
+                    else if( notEmpty( params.level2Name ) )
+                      params.fullLocality += "<br/>" +  params.level2Name ;
+
+
                     var thisLocality = "";
                     if(params.fullLocality != "" && params.fullLocality != " ")
                          thisLocality = '<span data-id="' + params.dataId + '"' + "  class='margin-bottom-5 entityName letter-red lbh add2fav'>"+
@@ -1504,18 +1518,36 @@ var directory = {
                     str += "</div>";
                   str += "</div>";
       
-                mylog.log("-----------cityPanelHtml params", params);  
-                var citykey = params.country + "_" + params.insee + "-" + params.cp;
-                str += "<button class='btn btn-sm btn-danger item-globalscope-checker start-new-communexion' "+
-                                "data-scope-value='" + citykey + "' " + 
-                                "data-scope-name='" + params.name + "' " + 
-                                "data-scope-type='city' " + 
-                                "data-insee-communexion='" + params.insee + "' "+ 
-                                "data-name-communexion='" + params.name + "' "+ 
-                                "data-cp-communexion='" + params.cp + "' "+ 
-                                "data-region-communexion='" + params.regionName + "' "+ 
-                                "data-dep-communexion='" + params.depName + "' "+ 
-                                "data-country-communexion='" + params.country + "' "+ 
+                mylog.log("-----------cityPanelHtml params", params); 
+
+                var valuesScopes = {
+                  city : params.id,
+                  cityName : params.name,
+                  cp : params.cp,
+                  level1 : params.level1,
+                  level1Name : params.level1Name
+                }
+
+                if( notEmpty( params.level4 ) ){
+                  valuesScopes.level4 = params.level4 ;
+                  valuesScopes.level4Name = params.level4Name ;
+                }
+                if( notEmpty( params.level3 ) ){
+                  valuesScopes.level3 = params.level3 ;
+                  valuesScopes.level3Name = params.level3Name ;
+                }
+                if( notEmpty( params.level2 ) ){
+                  valuesScopes.level2 = params.level2 ;
+                  valuesScopes.level2Name = params.level2Name ;
+                }
+
+                str += "<button class='btn btn-sm btn-danger item-globalscope-checker' "+
+                                "data-scope-value='" + params.id  + "' " + 
+                                "data-scope-name='" + params.name + "' " +
+                                "data-scope-level='city' " +
+                                "data-scope-type='city' " +
+                                "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
+                                "data-scope-notsearch='"+true+"' " +
                                 ">"+
                                     "<i class='fa fa-angle-right'></i> Communecter" + 
                                 "</button>";
@@ -1840,7 +1872,8 @@ var directory = {
 
           if(notNull(params["_id"]) || notNull(params["id"])){
 
-            itemType=(contentType) ? contentType :params.type;
+            itemType=(contentType) ? contentType : params.type;
+            mylog.log("params itemType", itemType);
             if( itemType ){ 
                 if(directory.dirLog) mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
@@ -1970,6 +2003,8 @@ var directory = {
                 
                 if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);                
                   //template principal
+                mylog.log("template principal",params,params.type, itemType);
+
                 if(params.type == "cities")
                   str += directory.cityPanelHtml(params);  
                 

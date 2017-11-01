@@ -3,7 +3,12 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title"><i class="fa fa-cog"></i> <?php echo Yii::t("common","Confidentiality of your personal informations") ?></h4>
+				<?php if($type==Person::COLLECTION)
+					$titleParams=Yii::t("common","Confidentiality of your personal informations");
+				else
+					$titleParams=Yii::t("common","Settings {what}", array("{what}"=>Yii::t("common","of the ".Element::getControlerByCollection($type))));
+				?>
+				<h4 class="modal-title"><i class="fa fa-cog"></i> <?php echo $titleParams ?></h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">

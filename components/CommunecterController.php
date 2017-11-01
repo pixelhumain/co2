@@ -623,6 +623,8 @@ class CommunecterController extends Controller
       $this->notifications = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );
       CornerDev::addWorkLog("communecter",Yii::app()->session["userId"],Yii::app()->controller->id,Yii::app()->controller->action->id);
     }
+
+    Application::loadDBAppConfig();
   }
   
   protected function beforeAction($action){

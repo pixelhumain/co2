@@ -285,6 +285,21 @@ Liste des notifications déjà lues => #370 #453
   ** PPT pres suivi du qui es tu :: 
       - rempli qlq detail 
       - et en avant
+  ** COPI as a type of POI 
+    - name 
+    - where 
+    - url for interoperating 
+  ** POI as an RSS feed 
+    could show in journal live feed 
+    or as an rss reader integrating an open source RSS reader 
+  ** Stagiaire : 
+    [ ] imaginer un serious game sociétal , interactif  
+      - réintégrer la gamification 
+    [ ] blockchain 
+  ** DDA 
+    Proposition Orienté / Duel 
+      exemple de vote: PPT terminé validé ou a retoucher 
+      pouvoir changer les libélé pour contre 
 * ************************************************************    
 * Version C0.22  : en cours
 * ************************************************************  
@@ -314,6 +329,7 @@ Liste des notifications déjà lues => #370 #453
 >>>> [ ] faciliter la création de page static 
       [ ] avec du contenu MD
       [ ] un slideshow MD
+      [ ] read an externel .md text source 
     [X] json config builder 
       - is just dynForm selector
       - save allready gets the collection as a param in formatData

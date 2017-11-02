@@ -2741,7 +2741,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 		$news = PHDB::find(News::COLLECTION, array('$and' => array(
 									array("scope" => array('$exists' => 1)),
-									array("scope.localities" => array('$exists' => 1)))
+									array("scope.localities" => array('$exists' => 0)))
 						));
 
 

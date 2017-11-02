@@ -192,6 +192,7 @@ function validateScopeInter(){
 			mylog.log("validateScopeInter", data);
 			if(data.result){
 				 toastr.success(data.msg);
+                 userConnected.inter = false ;
 				$("#divInterScope").addClass("hidden");
 			}
 			else

@@ -2828,7 +2828,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 						}
 					}
 				}
-				$newscope = array("type" => $new["type"], "localities" => $listKey);
+				$newscope = array("type" => $new["scope"]["type"], "localities" => $listKey);
 				$set = array("scope" => $newscope);
 				$res = PHDB::update(News::COLLECTION, 
 						array("_id"=>new MongoId($key)),

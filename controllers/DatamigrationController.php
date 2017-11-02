@@ -2672,7 +2672,10 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 							$nbelement++;
 						}
 					}else{
-						echo  "Error address: ".$elt["name"]." " . $type. " " . $key. "<br>" ;
+						$res = PHDB::update($type, 
+									array("_id"=>new MongoId($key)),
+									array('$unset' => array("address" => ""))
+							);
 					}					
 				}
 			}

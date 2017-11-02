@@ -45,9 +45,12 @@
             <p><?php echo $media["content"]; ?></p>   
           </div>
           <?php if(isset(Yii::app()->session["userId"])) { ?>
-            <div class="timeline-footer pull-left col-md-12 padding-top-5">
-                <div class="col-md-12 pull-left padding-5" id="footer-media-<?php echo $media["_id"]; ?>"></div>
-                <div class="col-md-12 no-padding pull-left margin-top-10" id="commentContent<?php echo $media["_id"]; ?>"></div>
+            <div class="timeline-footer pull-left col-xs-12 col-sm-12 col-md-12 padding-top-5">
+                <div class="col-md-12 col-xs-12 col-sm-12 pull-left padding-5" id="footer-media-<?php echo $media["_id"]; ?>">
+                </div>
+                <div class="col-md-12 col-xs-12 col-sm-12 no-padding pull-left margin-top-10" 
+                     id="commentContent<?php echo $media["_id"]; ?>">
+                </div>
             </div>
           <?php } ?>
         </div>

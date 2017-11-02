@@ -113,8 +113,8 @@
 	<div class="col-md-1 col-sm-1 hidden-xs no-padding" id="content-media" style="min-height: 500px;">
 	</div>
 
-	<div class="col-md-10 col-sm-10 inline-block no-padding">
-		<div class="col-md-12 no-padding text-center" id="timeline-reload"></div>
+	<div class="col-md-10 col-sm-10 col-xs-12 inline-block no-padding">
+		<div class="col-md-12 col-sm-12 col-xs-12 no-padding text-center" id="timeline-reload"></div>
 		<ul class="timeline inline-block" id="timeline-live">
 			<?php  
 				if(@$medias && sizeOf($medias) > 0)

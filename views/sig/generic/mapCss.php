@@ -48,7 +48,7 @@
 	.<?php echo $moduleName; ?>
 	#right_tool_map{
 		height:<?php echo (int)$mapHeight - 60; ?>px;
-		top:<?php echo (int)$mapTop + 30; ?>px!important;
+		top:<?php echo (int)$mapTop + 30; ?>px;
 	}
 	.<?php echo $moduleName; ?> .right_tool_map_header,
 	.<?php echo $moduleName; ?> .panel_map,
@@ -60,7 +60,7 @@
 	
 	#right_locality_map{
 		height:<?php echo (int)$mapHeight - 60; ?>px;
-		top:<?php echo (int)$mapTop + 30; ?>px!important;
+		top:<?php echo (int)$mapTop + 30; ?>px;
 		width: 30%;
 		right: 0px!important;
 		min-width: 400px;

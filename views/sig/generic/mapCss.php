@@ -187,6 +187,32 @@
 		min-height: 45px;
 		overflow: hidden;
 	}
+
+	.<?php echo $moduleName; ?>
+	.filterMenuMap{
+		position:absolute;
+		top: 90px;
+		left: 30px;
+		width:250px;
+	}
+
+	.<?php echo $moduleName; ?>
+	.filterMenuMap #sub-menu-left.subsub{
+		background-color: rgba(255, 255, 255, 0.9);
+		min-width:250px; 
+		width:250px;
+		margin: 0px !important;
+	}
+
+	.<?php echo $moduleName; ?>
+	.filterMenuMap #title-sub-menu-category > h4{
+		font-size: 17px;
+	}
+
+	.<?php echo $moduleName; ?>
+	#mapLegende{
+		display: none !important;
+	}
 	
 	/* XS */
 	@media screen and (max-width: 768px) {

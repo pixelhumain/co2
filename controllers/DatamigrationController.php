@@ -2554,6 +2554,34 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		echo  "NB Zones mis à jours: " .$nbelement."<br>" ;
 	}
 
+	public function actionBatchInterElementCorrection() {
+		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$nbelement = 0 ;
+			$types = array(Person::COLLECTION , Organization::COLLECTION, Project::COLLECTION, 
+							Event::COLLECTION, Poi::COLLECTION);
+
+			foreach ($types as $keyType => $type) {
+				$elts = PHDB::find($type, array('$and' => array(
+									array("address" => array('$exists' => 1)),
+									array("address.localityId" => array('$exists' => 1)),
+									array("address.level1" => array('$exists' => 0))
+						)));
+
+				foreach ($elts as $key => $elt) {
+					$newAddress = $elt["address"];
+					unset($newAddress["localityId"]);
+					$res = PHDB::update($type, 
+							array("_id"=>new MongoId($key)),
+							array('$set' => array("address" => $newAddress))
+					);
+					$nbelement++;
+				}
+			}
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+			
+		//}
+	}
+
 	public function actionBatchInterElement() {
 		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			$nbelement = 0 ;
@@ -2676,6 +2704,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 									array("_id"=>new MongoId($key)),
 									array('$unset' => array("address" => ""))
 							);
+						$nbelement++;
 					}					
 				}
 			}

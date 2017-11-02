@@ -998,7 +998,7 @@ also switches the global Title and Icon
 
 function  processingBlockUi() { 
 	msg = '<h4 style="font-weight:300" class=" text-dark padding-10">'+
-			'<i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...'+
+			'<i class="fa fa-spin fa-circle-o-notch"></i><br>'+trad.currentlyloading+'...'+
 		  '</h4>';
 
 	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )

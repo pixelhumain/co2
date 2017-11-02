@@ -8,6 +8,7 @@ $arrayLabel=array(
 	"name" => Yii::t("common","the name"),
 	"description" => Yii::t("common","the description"),
 	"tags" => Yii::t("common","the tags"),
+	"slug" => Yii::t("common","the slug"),
 	"type" => Yii::t("common","the type"),
 	"address" => Yii::t("common","the main locality"),
 	"addresses" => Yii::t("common","a second locality"),
@@ -34,7 +35,7 @@ $arrayLabel=array(
 	"state" => Yii::t("common", "state"),
 	"organizer" => Yii::t("common", "organizer"),
 	"contacts" => Yii::t("common", "un contact"),
-	"descriptionHTML" => Yii::t("common", "la descripton"),
+	"descriptionHTML" => Yii::t("common", "the descripton"),
 );
 if ($contextType == Organization::COLLECTION)
 	$contextTypeLabel=Yii::t("common","of the organization");
@@ -54,23 +55,25 @@ $countries= OpenData::getCountriesList();
 				</div>
 	<?php } else{
 			foreach($activities as $key => $value){ 
-				if($value["verb"]==ActStr::VERB_UPDATE)
-					$action = Yii::t("common", "has updated");
-				else if($value["verb"]==ActStr::VERB_ADD )
-					$action = Yii::t("common", "has added");
-				else if($value["verb"]==ActStr::VERB_CREATE)
-					$action = Yii::t("common", "has created");
-				else if($value["verb"]==ActStr::VERB_DELETE)
-					$action = Yii::t("common", "has deleted");
+				if(@$value["object"]["displayName"] && $value["object"]["displayName"] != "descriptionHTML"){
+					if($value["verb"]==ActStr::VERB_UPDATE)
+						$action = Yii::t("common", "has updated");
+					else if($value["verb"]==ActStr::VERB_ADD )
+						$action = Yii::t("common", "has added");
+					else if($value["verb"]==ActStr::VERB_CREATE){
+						$action = Yii::t("common", "has created");
+						$contextTypeLabel="";
+					}
+					else if($value["verb"]==ActStr::VERB_DELETE)
+						$action = Yii::t("common", "has deleted");
+						
 			?>
 				<div class='col-xs-12 padding-10' style="border-bottom: 1px solid lightgrey;">
-					<?php echo "<i class='fa fa-clock-o'></i> ".date("d/m/y H:i",$value["created"]->sec)."<br/>".
-						"<a href='#page.type.".Person::COLLECTION.".id.".$value["author"]["id"]."' class='lbh' >".
-							$value["author"]["name"].
-						"</a> ".$action.
-						" <span style='font-weight:bold;'>".$arrayLabel[$value["object"]["displayName"]]."</span>"." ";
-						if ($value["verb"]!=ActStr::VERB_CREATE)
-							echo $contextTypeLabel;
+					<?php echo "<i class='fa fa-clock-o'></i> ".date("d/m/y H:i",$value["created"]->sec)."<br/>";
+						echo Yii::t("common","{who} ".$action." {what} {where}",
+							array("{who}"=>"<a href='#page.type.".Person::COLLECTION.".id.".$value["author"]["id"]."' class='lbh'>".$value["author"]["name"]."</a>",
+								"{what}"=>"<span style='font-weight:bold;'>".$arrayLabel[$value["object"]["displayName"]]."</span>",
+								"{where}"=>$contextTypeLabel));
 						echo ": <span style='color: #21b384;'>";
 						if($value["object"]["displayName"]=="address" || $value["object"]["displayName"]=="addresses"){
 							if(@$value["object"]["displayValue"]){
@@ -130,16 +133,16 @@ $countries= OpenData::getCountriesList();
 						} else if(@$value["object"]["displayValue"] && !empty($value["object"]["displayValue"]) )
 							echo Yii::t("common",$value["object"]["displayValue"]);
 						else if($value["object"]["displayName"] == "descriptionHTML")
-							echo "transformer la description en format Markdown";
+							echo Yii::t("common","change description in markdown format");
 						else
-							echo "supprimé";
+							echo Yii::t("common","deleted");
 						
 							
-						echo "</span>"
+						echo "</span>";
 					?>
 				</div>
 			<?php	
-			}
+			} }
 
 		}
 	?>

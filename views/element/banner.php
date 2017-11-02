@@ -141,7 +141,7 @@
     	
     	<div class="col-xs-12 col-sm-9 col-md-9 col-lg-10 text-white pull-right">
 			<?php if (@$element["status"] == "deletePending") { ?> 
-				<h4 class="text-left padding-left-15 pull-left no-margin letter-red">En cours de suppression</h4><br>
+				<h4 class="text-left padding-left-15 pull-left no-margin letter-red"><?php echo Yii::t("common","Being suppressed") ?></h4><br>
 			<?php } ?>
 			<h4 class="text-left padding-left-15 pull-left no-margin">
 				<span id="nameHeader">

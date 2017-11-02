@@ -83,7 +83,7 @@ foreach($news as $key => $media){
 <?php if(@$isFirst == true && sizeof($news)==0){ ?>
     <li id='noMoreNews' class='text-left padding-15'>
       <i class='fa fa-ban'></i>
-      Aucune actualité
+      <?php echo Yii::t("common", "No news in this timeline") ?>
     </li>
 <?php }else if(sizeof($news)==0 && @$actionController != "save"){
     echo "<li id='noMoreNews' class='text-left'><i class='fa fa-ban'></i> ".Yii::t("common", "No more news")."</li>";

@@ -151,7 +151,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                                   "</div>");
     
     if(isMapEnd)
-      $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyloading+"chargement en cours");
+      $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyloading);
          
     mylog.dir(data);
     //alert();

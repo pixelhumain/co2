@@ -414,7 +414,7 @@
                   <img height=20 width=20 src='<?php echo $this->module->assetsUrl.'/images/thumb/default_'.$contextParentType.'.png' ?>'>  
                 <?php } ?>
                 <?php echo $contextName ?></h4>
-                <p class="list-group-item-text small">Afficher <?php echo $contextName ?> comme auteur</p>
+                <p class="list-group-item-text small"><?php echo Yii::t("form", "Show {who} as author",array("{who}"=>$contextName)) ?></p>
               </a>
             </li>
             <li>
@@ -424,8 +424,8 @@
                 <?php } else {  ?>
                   <img height=20 width=20 src='<?php echo $this->module->assetsUrl.'/images/thumb/default_citoyens.png' ?>'>  
                 <?php } ?>
-                <?php echo ucfirst(Yii::t("common", "Moi")) ?></h4>
-                <p class="list-group-item-text small"><?php echo "Je suis l'auteur" ?></p>
+                <?php echo ucfirst(Yii::t("common", "Me")) ?></h4>
+                <p class="list-group-item-text small"><?php echo Yii::t("form","I am the author") ?></p>
               </a>
             </li>
           </ul>

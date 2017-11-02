@@ -83,7 +83,7 @@ var trad = {
 	"postalCode" : "<?php echo Yii::t("common","Postal Code"); ?>",
 	"unknownPostalCode" : "<?php echo Yii::t("common","Unknown Postal Code"); ?>",
 	"city" : "<?php echo Yii::t("common","City"); ?>",
-
+	"searchamongcontact": "<?php echo Yii::t("common","Search among your contacts"); ?>",
 	"administrator" : "<?php echo Yii::t("common","Administrator") ?>",
 	"invitingToAdmin" : "<?php echo Yii::t("common","Invited to administrate") ?>",
 	"waitingValidation" : "<?php echo Yii::t("common","Waiting for validation") ?>",
@@ -129,9 +129,11 @@ var trad = {
 	"createcollection":"<?php echo Yii::t("common","Create a new collection") ?>",
 
 	"organizations":"<?php echo Yii::t("common","organizations"); ?>",
+	"Organizations":"<?php echo Yii::t("common","Organizations"); ?>",
 	"projects":"<?php echo Yii::t("common","projects"); ?>",
 	"events":"<?php echo Yii::t("common","events"); ?>",
 	"people":"<?php echo Yii::t("common","people"); ?>",
+	"People":"<?php echo Yii::t("common","People"); ?>",
 	"citoyens":"<?php echo Yii::t("common","citoyens"); ?>",
 	"person":"<?php echo Yii::t("common","person"); ?>",
 	"followers":"<?php echo Yii::t("common","followers"); ?>",

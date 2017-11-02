@@ -111,7 +111,7 @@
     @media (max-width: 767px) {
 
         .category-search-link h4{
-            font-size: 0.9em;
+            font-size: 0.8em;
         }
         #mainCategories h3{
             font-size: 1.3em;
@@ -210,7 +210,7 @@ jQuery(document).ready(function() {
     buildListCategories();
 
     location.hash = "#web";
-    setTitle("", "", "kgougle");
+    setTitle("", "", "Kgougle");
 });
 
 

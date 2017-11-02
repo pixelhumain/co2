@@ -146,6 +146,9 @@ var interval;
 jQuery(document).ready(function() {
     initKInterface();
     initMediaInterface(); 
+
+
+    setTitle("", "", "Actu");
 	//initCommentsTools(medias);
 });
 

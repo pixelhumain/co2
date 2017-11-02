@@ -5,7 +5,7 @@
  */
 class CommunecterController extends Controller
 {
-  public $version = "v0.1.4";
+  public $version = "v0.2.1.02";
   public $versionDate = "29/07/2016 19:12";
   public $title = "Communectez";
   public $subTitle = "se connecter à sa commune";
@@ -544,7 +544,7 @@ class CommunecterController extends Controller
     //creates an issue with Json requests : to clear add josn:true on the page definition here 
     //if( Yii::app()->request->isAjaxRequest && (!isset( $page["json"] )) )
       //echo "<script type='text/javascript'> userId = '".Yii::app()->session['userId']."'; var blackfly = 'sosos';</script>";
-    
+    Yii::app()->params["version"] = $this->version ;
     if( @$_GET["theme"] ){
       Yii::app()->theme = $_GET["theme"];
       Yii::app()->session["theme"] = $_GET["theme"];

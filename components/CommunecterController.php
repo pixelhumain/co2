@@ -285,6 +285,7 @@ class CommunecterController extends Controller
 
         "get"      => array("href" => "/ph/co2/person/get"),
         "getcontactsbymails"      => array("href" => "/ph/co2/person/getcontactsbymails"),
+        "updatescopeinter" => array("href" => "/ph/co2/person/updatescopeinter"),
     ),
     "organization"=> array(
       "addorganizationform" => array("href" => "/ph/co2/organization/addorganizationform",

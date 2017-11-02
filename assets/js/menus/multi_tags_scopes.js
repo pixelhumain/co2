@@ -47,9 +47,22 @@
                                             '</a>'+
                                         '</span>';
                         }
+		
+
+
         scopeHtml+= '</h5>'+
                     '<div class="scope-min-header list_tags_scopes text-left ellipsis">'+
                     '</div>';
+
+        if( notEmpty(userConnected) && notEmpty(userConnected.inter) ) {
+        	scopeHtml+= "<div id='divInterScope' class='no-padding letter-red' style=''><br/><br/><br/><br/>"+
+                		"Nous avons du remettre les paramètres géographiques à zéro, pour prendre en compte la nouvelle mise à jour "+
+						'<a class="btn btn-xs tooltips btn-accept" href="javascript:;" onclick="validateScopeInter()">'+
+							'<i class="fa fa-check "></i> Cliquer ici pour ne plus avoir ce message.'+
+						'</a>'+
+		            "</div>";
+        }
+        
         $("#container-scope-filter").html(scopeHtml);
         //}
         /************** SCOPES **************/
@@ -166,4 +179,27 @@ function slidupScopetagsMin(show){ //mylog.log("slidupScopetagsMin", show);
 	    $("#btn-slidup-scopetags").html("<i class='fa fa-plus'></i>");
 	}
 }
+
+function validateScopeInter(){ 
+	mylog.log("validateScopeInter");
+	
+	$.ajax({
+		type: "POST",
+		url: baseUrl+"/"+moduleId+"/person/updatescopeinter/",
+		data: {},
+		dataType: "json",
+		success: function(data){
+			mylog.log("validateScopeInter", data);
+			if(data.result){
+				 toastr.success(data.msg);
+				$("#divInterScope").addClass("hidden");
+			}
+			else
+				 toastr.error(data.msg);
+		},
+		
+	});
+}
+
+
 

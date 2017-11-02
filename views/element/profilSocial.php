@@ -189,7 +189,7 @@
     	  <div class="identity-min">
 	    	  <img class="pull-left hidden-xs" src="<?php echo $thumbAuthor; ?>" height=45>
 	    	  <div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left"></div>
-			  <div class="col-lg-1 col-md-2 col-sm-2 pull-left no-padding">
+			  <div class="col-lg-1 col-md-2 col-sm-2 col-xs-5 pull-left no-padding">
 	    	  	<div class="text-left padding-left-15" id="second-name-element">
 					<span id="nameHeader">
 						<h5 class="elipsis"><?php echo @$element["name"]; ?></h5>

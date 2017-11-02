@@ -388,33 +388,33 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	
 	var s = (n>1) ? "s" : "";
 
-	if(countData=='Aucun')
-		countData=trad.noone;
+	//if(countData=='Aucun')
+	//	countData=tradException.no;
 	var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
-	if(dataName == "follows")	{ html += elementName + " "+trad.isfollowing+" " + countData + " "+trad.page+s+""; }
-	else if(dataName == "followers")	{ html += countData + " <b>"+trad.follower+s+"</b> "+trad.to+" "+ elementName; }
-	else if(dataName == "members")	{ html += elementName + " "+trad.iscomposedof+" " + countData + " <b>"+trad.member+s+"</b>"; }
-	else if(dataName == "attendees")	{ html += countData + " <b>"+trad.attendee+s+"</b> "+trad.toevent+" " + elementName; }
-	else if(dataName == "guests")	{ html += countData + " <b>"+trad.guest+s+"</b> "+trad.on+" " + elementName; }
-	else if(dataName == "contributors")	{ html += countData + " <b>"+trad.contributor+s+"</b> "+trad.toproject+" " + elementName; }
+	if(dataName == "follows")	{ html += elementName + " "+trad.isfollowing+" " + countData + " "+trad["page"+s]+""; }
+	else if(dataName == "followers")	{ html += countData + " <b>"+trad["follower"+s]+"</b> "+trad.to+" "+ elementName; }
+	else if(dataName == "members")	{ html += elementName + " "+trad.iscomposedof+" " + countData + " <b>"+trad["member"+s]+"</b>"; }
+	else if(dataName == "attendees")	{ html += countData + " <b>"+trad["attendee"+s]+"</b> "+trad.toevent+" " + elementName; }
+	else if(dataName == "guests")	{ html += countData + " <b>"+trad["guest"+s]+"</b> "+trad.on+" " + elementName; }
+	else if(dataName == "contributors")	{ html += countData + " <b>"+trad["contributor"+s]+"</b> "+trad.toproject+" " + elementName; }
 	
 	else if(dataName == "events"){ 
 		if(type == "events"){
-			html += elementName + " "+trad.iscomposedof+" " + countData+" <b> "+trad.subevent+s; 
+			html += elementName + " "+trad.iscomposedof+" " + countData+" <b> "+trad["subevent"+s]; 
 		}else{
-			html += elementName + " "+trad.takepart+" " + countData+" <b> "+trad.event+s; 
+			html += elementName + " "+trad.takepart+" " + countData+" <b> "+trad["event"+s]; 
 		}
 	}
-	else if(dataName == "organizations")	{ html += elementName + " "+trad.ismemberof+" "+ countData+" <b>"+trad.organization+s; }
-	else if(dataName == "projects")		{ html += elementName + " "+trad.contributeto+" " + countData+" <b>"+trad.project+s }
+	else if(dataName == "organizations")	{ html += elementName + " "+trad.ismemberof+" "+ countData+" <b>"+trad["organization"+s]; }
+	else if(dataName == "projects")		{ html += elementName + " "+trad.contributeto+" " + countData+" <b>"+trad["project"+s] }
 
-	else if(dataName == "collections"){ html += countData+" <b>"+trad.collection+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "collections"){ html += elementName+" "+trad.hasgot+" "+countData+" <b>"+trad["collection"+s]+"</b>"; }
 	else if(dataName == "poi"){ html += countData+" <b>"+trad["point"+s+"interest"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
-	else if(dataName == "classified"){ html += countData+" <b>"+trad.classified+s+"</b> "+trad['createdby'+s]+" " + elementName; }
+	else if(dataName == "classified"){ html += countData+" <b>"+trad[classified+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
 
-	else if(dataName == "needs"){ html += countData+" <b>"+trad.need+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "needs"){ html += countData+" <b>"+trad[need+s]+"</b> "+trad.of+" " + elementName; }
 
-	else if(dataName == "vote"){ html += countData+" <b>"+trad.proposal+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "vote"){ html += countData+" <b>"+trad[proposal+s]+"</b> "+trad.of+" " + elementName; }
 	else if(dataName == "discuss"){ html += countData+" <b>"+trad.discussion+s+"</b> "+trad.of+" " + elementName; }
 	else if(dataName == "actions"){ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName; }
 
@@ -671,7 +671,7 @@ function loadContacts(){
     		return;
 		}
 		$("#listRoles").show(300);
-        $("#listRoles").html("<i class='fa fa-filter'></i> Tier par rôles : ");
+        $("#listRoles").html("<i class='fa fa-filter'></i> "+trad.sortbyrole+": ");
         $("#listRoles").append("<a class='btn btn-link btn-sm letter-blue favElBtn favAllBtn' "+
             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'>"+
             " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a>");
@@ -740,7 +740,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 						"<div class='"+colName+" hide'>";
 				console.log("list", val);
 				if(val.count==0)
-					html +="<span class='col-xs-12 text-dark margin-bottom-20'>Aucun élément dans cette collection</span>";
+					html +="<span class='col-xs-12 text-dark margin-bottom-20'>"+trad.noelementinthiscollection+"</span>";
 				else{
 					$.each(val.list, function(key, elements){ 
 						if(mapElements.length==0) mapElements = elements;
@@ -779,15 +779,15 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		});
     
 	}else{
-		var nothing = "Aucun";
-		if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
-			nothing = "Aucune";
+		//var nothing = tradException.no;
+		//if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
+		//	nothing = tradException.nofem;
 
 		var html =  "<div class='col-md-12 margin-bottom-15'>"+
-						getLabelTitleDir(dataName, dataIcon, nothing, n)+
+						getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
 					"</div>";
 		$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
-												"<i class='fa fa-ban'></i> Aucune donnée"+
+												"<i class='fa fa-ban'></i> "+trad.nodata+
 											"</span>");
 		toogleNotif(false);
 	}

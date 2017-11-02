@@ -671,7 +671,7 @@ function loadContacts(){
     		return;
 		}
 		$("#listRoles").show(300);
-        $("#listRoles").html("<i class='fa fa-filter'></i> Tier par rôles : ");
+        $("#listRoles").html("<i class='fa fa-filter'></i> "+trad.sortbyrole+": ");
         $("#listRoles").append("<a class='btn btn-link btn-sm letter-blue favElBtn favAllBtn' "+
             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'>"+
             " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a>");

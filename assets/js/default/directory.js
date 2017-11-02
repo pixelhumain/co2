@@ -1989,7 +1989,7 @@ var directory = {
                 var thisRoles = "";
                 params.rolesLbl = "";
                 if(typeof params.rolesLink != "undefined" && params.rolesLink != null){
-                  thisRoles += "<small class='letter-blue'><b>Rôle :</b> ";
+                  thisRoles += "<small class='letter-blue'><b>"+trad.roleroles+" :</b> ";
                   thisRoles += params.rolesLink.join(", ");
                   $.each(params.rolesLink, function(key, value){
                     if(typeof value != "undefined" && value != "" && value != "undefined")

@@ -748,7 +748,7 @@ function bindAboutPodElement() {
 				saveUrl : baseUrl+"/"+moduleId+"/link/removerole/",
 				dynForm : {
 					jsonSchema : {
-						title : "Ajouter ou modifier les rôles de "+childName,// trad["Update network"],
+						title : tradDynForm.modifyoraddroles+"<br/>"+childName,// trad["Update network"],
 						icon : "fa-key",
 						onLoads : {
 							sub : function(){

@@ -358,7 +358,9 @@
 											"address" 			: "MARKER",
 
 											"classified" 		: "classified-marker-default",
-											"services" 			: "MARKER",
+											"service" 			: "services/medical",
+											"product" 			: "services/medical",
+											"products" 			: "services/shopping",
 											
 											"services.sleeping" : "services/real-estate",
 											"services.restaurant":"services/restaurants",

@@ -53,7 +53,7 @@ function checkPoll(){
 }
 function setLanguage(lang){
 	$.cookie('lang', lang, { expires: 365, path: "/" });
-	toastr.success("Changement de la langue en cours");
+	toastr.success(trad.changelanguageprocessing);
 	//window.reloadurlCtrl.loadByHash(location.hash);
 	location.reload();
 }
@@ -2465,7 +2465,7 @@ var collection = {
 				sure = confirm("Vous êtes sûr ?");
 			}
 			else if(action == "new" || action == "update")
-				params.name = prompt('Nom de la collection ?',name);
+				params.name = prompt(tradDynForm.collectionname+' ?',name);
 			if(action == "update")
 				params.oldname = name;
 			

@@ -25,6 +25,8 @@ co2/datamigration/BatchInterElement
 *** Batch qui tranforme les adresses des news dans le nouveau formats
 co2/datamigration/BatchInterNews
 
+----------------------------------------------------
+
 * Version C0.21.7
 
 ** @BOUBOULE

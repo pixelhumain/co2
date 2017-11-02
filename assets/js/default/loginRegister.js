@@ -208,6 +208,7 @@ var Login = function() {
 		    		  }
 		    	  },
 		    	  error: function(data) {
+		    	  	console.log(data);
 		    	  	$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
 		    	  	toastr.error("Something went really bad : contact your administrator !");
 		    	  	//loginBtn.stop();

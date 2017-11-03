@@ -273,9 +273,8 @@ function initGrid(){
 		nameCol=k;
 		contentKey="slider";
 		contentTitle=k;
-		countLabel=v.count+' image';
-		if(v.count>1)
-			countLabel+="s";
+		var s = (v.count>1) ? "s" : "";
+		countLabel=v.count+' '+trad["image"+s];
 		if(typeof v.countAlbums!="undefined"){
 			var s = (v.countAlbums>1) ? "s" : "";
 			if(v.countAlbums > 0)

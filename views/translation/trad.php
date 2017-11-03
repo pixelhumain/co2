@@ -465,6 +465,8 @@ var tradDynForm = {
 	"configNetwork":"<?php echo Yii::t("form","Configure your Network") ?>",
 	"addconfig":"<?php echo Yii::t("form","Create a config") ?>",
 	"addclassified":"<?php echo Yii::t("form","Create a classified") ?>",
+	"addphotos":"<?php echo Yii::t("form","Add photos to the gallery") ?>",
+	"infoaddphoto":"<?php echo Yii::t("form","Stock your photos and share them") ?>",
 	"addurl":"<?php echo Yii::t("form","Add an url") ?>",
 	"updateslug":"<?php echo Yii::t("form","Update slug") ?>",
 	"addbookmark":"<?php echo Yii::t("form","Add a bookmark") ?>",

@@ -58,7 +58,7 @@
         	scopeHtml+= "<div id='divInterScope' class='no-padding letter-red' style=''><br/><br/><br/><br/>"+
                 		"Nous avons du remettre les paramètres géographiques à zéro, pour prendre en compte la nouvelle mise à jour "+
 						'<a class="btn btn-xs tooltips btn-accept" href="javascript:;" onclick="validateScopeInter()">'+
-							'<i class="fa fa-check "></i> Cliquer ici pour ne plus avoir ce message.'+
+							'<i class="fa fa-check "></i> Cliquer ici pour ne plus voir ce message.'+
 						'</a>'+
 		            "</div>";
         }

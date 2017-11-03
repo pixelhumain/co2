@@ -125,14 +125,14 @@
             title="<?php echo Yii::t("common","Create a new page") ?>">
                 <i class="fa fa-times" style="font-size:18px;"></i>
         </button>
-        <h5 class="text-center letter-green margin-top-25">Créer une page</h5>
+        <h5 class="text-center letter-green margin-top-25"><?php echo Yii::t("form","Create a page") ?></h5>
         <h5 class="text-center">
             <small>             
-                <span class="text-green">associations</span> 
-                <span class="text-azure">entreprises</span> 
-                <span class="text-purple">projets</span> 
-                <span class="text-turq">groupes</span>
-                <span class="text-red">service public</span>
+                <span class="text-green"><?php echo Yii::t("common","NGOs") ?></span> 
+                <span class="text-azure"><?php echo Yii::t("common","Local Business") ?></span> 
+                <span class="text-purple"><?php echo Yii::t("common","Projects") ?></span> 
+                <span class="text-turq"><?php echo Yii::t("common","Groups") ?></span>
+                <span class="text-red"><?php echo Yii::t("common","Government Organization") ?></span>
             </small>
         </h5><br>
     </div>

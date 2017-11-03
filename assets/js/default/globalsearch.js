@@ -96,14 +96,14 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               var city, postalCode = "";
               
               if(totalDataGS == 0)      totalDataGSMSG = "<i class='fa fa-ban'></i> "+trad.noresult;
-              else if(totalDataGS == 1) totalDataGSMSG = totalDataGS + " résultat";   
-              else if(totalDataGS > 1)  totalDataGSMSG = totalDataGS + " résultats";   
+              else if(totalDataGS == 1) totalDataGSMSG = totalDataGS + " "+trad.result;   
+              else if(totalDataGS > 1)  totalDataGSMSG = totalDataGS + " "+trad.results;   
 
               if(totalDataGS > 0){
                 str += '<div class="text-left" id="footerDropdownGS" style="">';
                 str += "<label class='text-dark margin-top-5'><i class='fa fa-angle-down'></i> " + totalDataGSMSG + "</label>";
                 str += '<a href="#search" class="btn btn-default btn-sm pull-right lbh" id="btnShowMoreResultGS">'+
-                          '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> Recherche étendue'+
+                          '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> '+trad.extendedsearch+
                         '</a>';
                 str += '</div>';
                 str += "<hr style='margin: 0px; float:left; width:100%;'/>"
@@ -265,7 +265,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               str += '<div class="text-center" id="footerDropdownGS">';
               str += "<label class='text-dark'>" + totalDataGSMSG + "</label><br/>";
               str += '<a href="#search" class="btn btn-default btn-sm lbh" id="btnShowMoreResultGS">'+
-                        '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> Recherche étendue'+
+                        '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> '+trad.extendedsearch+
                       '</a>';
               str += '</div>';
             

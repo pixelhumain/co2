@@ -118,7 +118,10 @@
     <?php } ?>
 </div>
 
-<?php $this->renderPartial($layoutPath.'modals/'.Yii::app()->params["CO2DomainName"]."/citiesNC"); ?>
+<?php if($CO2DomainName == "kgougle"){ 
+        $this->renderPartial($layoutPath.'modals/'.Yii::app()->params["CO2DomainName"]."/citiesNC");
+      } 
+?>
 
 <script type="text/javascript" >
 

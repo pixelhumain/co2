@@ -1,5 +1,5 @@
 <!-- <div class="space20"></div> -->
-<div class="explainCommunectMe <?php echo (@$class) ? $class : 'row' ?> col-xs-4" id="whycommunexion">
+<div class="explainCommunectMe hidden <?php echo (@$class) ? $class : 'row' ?> col-xs-4" id="whycommunexion">
 		
 	<h1 class="homestead explainTitle blue "><i class="fa fa-home"></i> Communectez-moi</h1>
 	<center class="caretExplain blue"><i class="fa fa-caret-down"></i><br/></center>

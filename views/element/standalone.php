@@ -113,7 +113,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 							Book it
 				</a>
 			<?php } else { ?>
-				<a href="javascript:;" class="btn bg-orange" onclick="addToShoppingCart('<?php echo (string)$element["_id"] ?>','<?php echo $type ?>');">Buy it</a>
+				<a href="javascript:;" class="btn bg-orange" onclick="shopping.addToShoppingCart('<?php echo (string)$element["_id"] ?>','<?php echo $type ?>');">Buy it</a>
 			<?php } ?>
 		</div>
 	</div>

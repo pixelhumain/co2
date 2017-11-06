@@ -154,7 +154,7 @@ var shopping = {
 					}
 				}
 			}else{
-				if(!deleteAll){
+				if(deleteAll){
 					delete shoppingCart[type][id];
 					incCart=true;
 				}else{	

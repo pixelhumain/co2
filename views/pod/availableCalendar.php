@@ -333,7 +333,7 @@ function showCalendar() {
 				if(typeof event.allDay == "undefined" || !event.allDay)
 					ranges.hours={start: event.startTime , end: event.endTime};	
 				calendar.push(event);	
-		        removeFromShoppingCart(itemId, itemType, false, subType, ranges);
+		        shopping.removeFromShoppingCart(itemId, itemType, false, subType, ranges);
     		});
     		element.find(".add-session").on('click', function (e) {
         		bookDate=event.start.format('YYYY-MM-DD');
@@ -361,7 +361,7 @@ function showCalendar() {
 				element.find(".inc-capacity").data("value",event.capacity).text(event.capacity);
 				if(typeof event.allDay == "undefined" || !event.allDay)
 					ranges.hours={start: event.startTime , end: event.endTime};		
-		        addToShoppingCart(itemId, itemType, subType, ranges);
+		        shopping.addToShoppingCart(itemId, itemType, subType, ranges);
 		        calendar.push(event);
     		});
     		//},2000);

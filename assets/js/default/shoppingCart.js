@@ -2,28 +2,30 @@ var shopping = {
 	addToShoppingCart: function(id, type, subType, ranges){
 		incCart=true;
 		if(typeof userId != "undefined" && userId != ""){
-			params=new Object;
-			params.name = element.name,
-			params.providerId = element.parentId,
-			params.providerType = element.parentType,
-			params.price = element.price,
-			params.countQuantity=1;
-			if(typeof element.imgProfil != "undefined")
-				params.imgProfil=element.imgProfil;	
-			if(typeof element.description != "undefined")
-				params.description=element.description;
-			if(typeof element.capacity != "undefined")
-				params.capacity=element.capacity;
-			if(notNull(subType))
-				params.type=subType;
 			if(typeof shoppingCart[type] == "undefined")
 				shoppingCart[type]=new Object;
 			if(type=="services" ){
 				if(typeof shoppingCart[type][subType]=="undefined")
 					shoppingCart[type][subType]=new Object;
 
-				if(typeof shoppingCart[type][subType][id]=="undefined")
+				if(typeof shoppingCart[type][subType][id]=="undefined"){
+					params={
+						name : element.name,
+						providerId : element.parentId,
+						providerType : element.parentType,
+						price : element.price,
+						countQuantity:1
+					};
+					if(typeof element.imgProfil != "undefined")
+						params.imgProfil=element.imgProfil;	
+					if(typeof element.description != "undefined")
+						params.description=element.description;
+					if(typeof element.capacity != "undefined")
+						params.capacity=element.capacity;
+					if(notNull(subType))
+						params.type=subType;
 					shoppingCart[type][subType][id]=params;
+				}
 				else{
 					shoppingCart[type][subType][id]["countQuantity"]++;
 					incCart=false;
@@ -60,6 +62,21 @@ var shopping = {
 				}
 			}else{
 				if(typeof shoppingCart[type][id] == "undefined"){
+					params={
+						name : element.name,
+						providerId : element.parentId,
+						providerType : element.parentType,
+						price : element.price,
+						countQuantity:1
+					};
+					if(typeof element.imgProfil != "undefined")
+						params.imgProfil=element.imgProfil;	
+					if(typeof element.description != "undefined")
+						params.description=element.description;
+					if(typeof element.capacity != "undefined")
+						params.capacity=element.capacity;
+					if(notNull(subType))
+						params.type=subType;
 					shoppingCart[type][id]={};
 					shoppingCart[type][id]=params;
 				}else{
@@ -70,7 +87,6 @@ var shopping = {
 			if(incCart)
 				shopping.countShoppingCart(true);
 			localStorage.setItem("shoppingCart",JSON.stringify(shoppingCart));
-			//console.log("element",mapElements[id]);
 		}else{
 			$('#modalLogin').modal("show");
 		}
@@ -430,6 +446,33 @@ var shopping = {
                         shoppingCart={countQuantity:0};
                         //if(reload)
                         urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.history");
+                    }
+                    else
+                        toastr.error(data.msg);  
+                  },
+                  dataType: "json"
+                });
+                console.log(order);
+            }
+        })
+    },
+    saveCart:function(){
+        bootbox.prompt({
+            title: "Give a name to the saving cart:", 
+            value : "Backup of "+moment(new Date()).format('DD-MM-YYYY HH:MM'), 
+            callback : function(result){ 
+                order.name=result;
+                $.ajax({
+                  type: "POST",
+                  url: baseUrl+"/"+moduleId+"/cart/save", 
+                  data: order,
+                  success: function(data){
+                    if(data.result) {
+                        toastr.success(data.msg);
+                        shoppingCart={countQuantity:0};
+                        localStorage.removeItem("shoppingCart");
+                        //if(reload)
+                        urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.backup");
                     }
                     else
                         toastr.error(data.msg);  

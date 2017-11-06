@@ -1009,6 +1009,10 @@ function removeAddress(form){
 
 									$(".communecter-btn").removeClass("hidden");
 								}
+								communexion.currentLevel = null;
+								communexion.currentName = null;
+								communexion.currentValue = null;
+								communexion.values = null;
 								toastr.success(data.msg);
 								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					    	}

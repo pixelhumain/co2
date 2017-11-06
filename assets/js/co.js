@@ -4556,11 +4556,11 @@ var typeObj = {
 
 	contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
 		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	"product":{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",	icon:"shopping-basket"},
-	"products" : {sameAs:"product"},
-	"service":{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",	icon:"sun-o"},
-	"services" : {sameAs:"service"},
-	"classified":{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
+	product:{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",	icon:"shopping-basket"},
+	products : {sameAs:"product"},
+	service:{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",	icon:"sun-o"},
+	services : {sameAs:"service"},
+	classified:{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
 				   subTypes : [
 				   //FR
 				   "Technologie","Immobilier","Véhicules","Maison","Loisirs","Mode",

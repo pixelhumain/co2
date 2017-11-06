@@ -1,38 +1,42 @@
+var checkoutObj = {};
 function addToShoppingCart(id, type, subType, ranges){
 	incCart=true;
 	if(typeof userId != "undefined" && userId != ""){
-		params=new Object;
-		params.name=element.name,
-		
-		params.price=element.price
-		params.countQuantity=1;
+		params = {
+			name : element.name,
+			price : element.price,
+			countQuantity : 1,
+			providerId : element.parentId,
+			providerType : element.parentType
+		};
 		if(typeof element.imgProfil != "undefined")
-			params.imgProfil=element.imgProfil;	
+			params.imgProfil = element.imgProfil;	
 		if(typeof element.description != "undefined")
-			params.description=element.description;
+			params.description = element.description;
 		if(typeof element.capacity != "undefined")
-			params.capacity=element.capacity;
+			params.capacity = element.capacity;
 		if(notNull(subType))
-			params.type=subType;
+			params.type = subType;
+
 		if(typeof shoppingCart[type] == "undefined")
-			shoppingCart[type]=new Object;
+			shoppingCart[type] = new Object;
 		if(type=="services" ){
 			if(typeof shoppingCart[type][subType]=="undefined")
-				shoppingCart[type][subType]=new Object;
+				shoppingCart[type][subType] = new Object;
 
 			if(typeof shoppingCart[type][subType][id]=="undefined")
 				shoppingCart[type][subType][id]=params;
-			else{
+			else { 
 				shoppingCart[type][subType][id]["countQuantity"]++;
 				incCart=false;
 			}
 			if(typeof ranges != "undefined" && notNull(ranges)){
 				if(typeof shoppingCart[type][subType][id]["reservations"] == "undefined")
-				 	shoppingCart[type][subType][id]["reservations"]=new Object;
+				 	shoppingCart[type][subType][id]["reservations"] = new Object;
 
 				if(typeof shoppingCart[type][subType][id]["reservations"][ranges.date] == "undefined"){
 					shoppingCart[type][subType][id]["reservations"][ranges.date] = {"countQuantity":1};
-				}else{
+				} else {
 					shoppingCart[type][subType][id]["reservations"][ranges.date]["countQuantity"]++;
 					incCart=false;
 				}

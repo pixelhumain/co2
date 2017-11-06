@@ -117,7 +117,6 @@
 							// $asort = OpenData::$phCountries;
        //  					asort($asort);
         					$asort = Zone::getListCountry();
-        
 							foreach ( $asort as $key => $value) {
 								echo "<option value='".$value["countryCode"]."'>".$value["name"]."</option>";
 							}

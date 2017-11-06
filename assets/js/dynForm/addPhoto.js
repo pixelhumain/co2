@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : "Publier une photo",
+	    title : tradDynForm.addphotos,
 	    icon : "camera",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
@@ -29,7 +29,7 @@ dynForm = {
 	    	info : {
                 inputType : "custom",
                 html:"<p class='text-dark'>"+
-                		"Partagez vos photos et vos publications ! <hr>" +
+                		tradDynForm.infoaddphoto+" ! <hr>" +
 					 "</p>",
             },
 	        image : dyFInputs.image(),

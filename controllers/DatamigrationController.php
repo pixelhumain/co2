@@ -2504,8 +2504,6 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
-
-
 	public function actionBatchZoneUnsetKey(){
 		ini_set('memory_limit', '-1');
 		$nbelement = 0 ;

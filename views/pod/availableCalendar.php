@@ -279,7 +279,6 @@ function showCalendar() {
     		alert($('#calendar').fullCalendar('getDate'));*/
 		},
 		eventRender: function(event, element) {
-			console.log("ensuite");
 			if(event.start < Date.now()) { return false; }
 		    element.find(".fc-event-title").remove();
 		    element.find(".fc-event-time").remove();
@@ -288,26 +287,26 @@ function showCalendar() {
 		    	hoursRender=moment(event.start).format("HH:mm") + ' - '
 		        + moment(event.end).format("HH:mm") + '<br/>';
 		    }
-		    
-		    	currentCartFilter=getDayFilter(event);
-		    
-		   // setTimeout(function(){
+		    currentCartFilter=getDayFilter(event);
+
+		   	if(typeof event.filtered == "undefined"){
 			    event.capacity=event.capacity-currentCartFilter.quantity-currentCartFilter.myQuantity;
-			    event.quantity=currentCartFilter.myQuantity;
-			    classQuantity="";
-			    if(event.quantity==0)
-			    	classQuantity="hide";
-			    var new_description =   
-			        //+ event.quantity + '<br/>'
-			        hoursRender
-			        + 'Disponible: <span class="inc-capacity">' + event.capacity + '</span><br/>'
-			        +'<a href="javascript:;" class="letter-orange remove-session hide"><i class="fa fa-minus"></i></a>'
-			        +'<span class="eventCountItem margin-left-5 margin-right-5">'
-	                    +'<i class="fa fa-shopping-cart"></i>'
-	                    +'<span class="inc-session '+classQuantity+' topbar-badge badge animated bounceIn badge-transparent badge-success">'+event.quantity+'</span>'
-	                +'</span>'
-			        +'<a href="javascript:;" class="letter-orange add-session"><i class="fa fa-plus"></i></a>';
-			    element.find(".fc-content").html(new_description); 
+			    event.filtered=true;
+			}
+		    event.quantity=currentCartFilter.myQuantity;
+		    classQuantity="";
+		    if(event.quantity==0)
+		    	classQuantity="hide";
+		    var new_description =   
+		        hoursRender
+		        + 'Disponible: <span class="inc-capacity">' + event.capacity + '</span><br/>'
+		        +'<a href="javascript:;" class="letter-orange remove-session hide"><i class="fa fa-minus"></i></a>'
+		        +'<span class="eventCountItem margin-left-5 margin-right-5">'
+                    +'<i class="fa fa-shopping-cart"></i>'
+                    +'<span class="inc-session '+classQuantity+' topbar-badge badge animated bounceIn badge-transparent badge-success">'+event.quantity+'</span>'
+                +'</span>'
+		        +'<a href="javascript:;" class="letter-orange add-session"><i class="fa fa-plus"></i></a>';
+		    element.find(".fc-content").html(new_description); 
 		    element.find(".remove-session").on('click', function (e) {
         		bookDate=event.start.format('YYYY-MM-DD');
         		event.capacity++;
@@ -364,38 +363,10 @@ function showCalendar() {
 		        shopping.addToShoppingCart(itemId, itemType, subType, ranges);
 		        calendar.push(event);
     		});
-    		//},2000);
-		}/*,
-		eventClick : function(calEvent, jsEvent, view) {
-		  //show event in subview
-		  	/*console.log(calEvent);
-		  	alert('Event: ' + calEvent.start);
-		  	bookDate=calEvent.start.format('YYYY-MM-DD');
-
-	        //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-	        //alert('View: ' + view.name);
-	        //var params=element;
-			var ranges = new Object;
-			ranges.date=bookDate;
-			if(typeof calEvent.allDay == "undefined" || !calEvent.allDay)
-				ranges.hours={start: calEvent.startTime , end: calEvent.endTime};		
-	        addToShoppingCart(itemId, itemType, ranges)
-	        // change the border color just for fun
-	        //$(this).css('border-color', 'red');
-		  //dateToShow = calEvent.start;
-		}*/
-	});
-	$('#my-button').click(function() {
-	
-	});
-	$('#my-prev-button').click(function() {
-		var d = $('#calendar').fullCalendar('getDate');
-	    alert("The current date of the calendar is " + d);
-   		$('#calendar').fullCalendar('prev');
+		}
 	});
 	
 	setCategoryColor();
-	//dateToShow = new Date();
 };
 function getDayFilter(event){
 	currentCartFilter={"quantity":0,"myQuantity":0};
@@ -417,22 +388,23 @@ function getDayFilter(event){
 	}
 	// GET QUANTITY ALREADY BOOKED
 	//console.log("allBook",allBookings);
-	if(allBookings.length){
+	if(allBookings.length && typeof event.filtered == "undefined"){
+		//console.log("allBookings",allBookings);
 		$.each(allBookings,function(e,v){
 			date=new Date( parseInt(v.date.sec)*1000 );
-			//console.log(date+"////"+moment(date).format('YYYY-MM-DD')+"///"+event.start.format('YYYY-MM-DD'));
 			if(moment(date).format('YYYY-MM-DD')==event.start.format('YYYY-MM-DD')){
 				if(event.allDay){
-						currentCartFilter.quantity=currentCartFilter.quantity+v.countQuantity;
+						currentCartFilter.quantity=currentCartFilter.quantity+parseInt(v.countQuantity);
 				}else{
 					if(typeof v.hours != "undefined"){
 						$.each(v.hours,function(i, hours){
 							if(hours.start==event.startTime && hours.end==event.endTime)
-								currentCartFilter.quantity=currentCartFilter.quantity+hours.countQuantity;
+								currentCartFilter.quantity=currentCartFilter.quantity+parseInt(hours.countQuantity);
 						});
 					}
 				}
 			}
+			//alert(currentCartFilter.quantity);
 		});
 	}
 	return currentCartFilter;

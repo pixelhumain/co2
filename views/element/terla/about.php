@@ -294,6 +294,7 @@
 									  "openEdition" => false) ); 
 		?>
 </div>
+<?php if($type!=Person::COLLECTION){ ?>
 <div id="mediaAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding contentInformation">
 	<div class="panel-heading border-light col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #dee2e680;">
 		<h4 class="panel-title text-dark pull-left">
@@ -316,6 +317,7 @@
 	?>
 
 </div>
+<?php } ?>
 <div id="adressesAbout" class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding contentInformation">
 		<div class="panel-heading border-light padding-15" style="background-color: #dee2e680;">
 			<h4 class="panel-title text-dark"> 

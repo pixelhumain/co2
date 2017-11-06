@@ -69,6 +69,7 @@ var shopping = {
 			}
 			if(incCart)
 				shopping.countShoppingCart(true);
+			localStorage.setItem("shoppingCart",JSON.stringify(shoppingCart));
 			//console.log("element",mapElements[id]);
 		}else{
 			$('#modalLogin').modal("show");
@@ -151,6 +152,7 @@ var shopping = {
 			}
 			if(incCart)
 				shopping.countShoppingCart(false);
+			localStorage.setItem("shoppingCart",JSON.stringify(shoppingCart));
 		}else{
 			$('#modalLogin').modal("show");
 		}

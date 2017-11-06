@@ -3045,7 +3045,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 					}
 				}
 
-				if(!empty($zone["wikidataID"]) && empty($translate)){
+				if(!empty($zone["wikidataID"])){
 
 					$zoneWiki =  json_decode(file_get_contents("https://www.wikidata.org/wiki/Special:EntityData/".$zone["wikidataID"].".json"), true);
 					

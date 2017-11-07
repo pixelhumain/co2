@@ -1,7 +1,7 @@
 var shopping = {
 	cart:{
 		countQuantity:0
-	}
+	},
 	addToShoppingCart: function(id, type, subType, ranges){
 		incCart=true;
 		if(typeof userId != "undefined" && userId != ""){
@@ -243,7 +243,7 @@ var shopping = {
         });
         return itemHtml;
     },
-    getItemByCategory:function(label,item, type){
+    getItemByCategory:function(label,item, type,readOnly){
         itemHtml="<div class='col-md-12 headerCategory margin-top-20'>"+
             "<div class='col-md-12'>"+
                 "<h2 class='letter-orange mainTitle text-left'>"+label+"</h2>"+
@@ -262,7 +262,7 @@ var shopping = {
         });
         return itemHtml;
     },
-    getViewItem:function(key, data, type){
+    getViewItem:function(key, data, type,readOnly){
         itemId=key;
         itemType=type;
         subType=null;

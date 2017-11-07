@@ -2485,6 +2485,22 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
+	public function actionBatchInterRemoveGeoShapeZone() {
+		ini_set('memory_limit', '-1');
+		$where = array(	"geoShape" => array('$exists' => 1) );
+		$zones = PHDB::find(Zone::COLLECTION, $where);
+		$nbelement = 0 ;
+		foreach ($zones as $key => $zone) {
+			// $res = PHDB::update( Zone::COLLECTION, 
+			// 					  	array("_id"=>new MongoId($key)),
+			// 						array('$unset' => array("geoShape" =>  ""))
+			// 		);
+			$nbelement++;
+						
+		}
+		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+	}
+
 	public function actionBatchInterCountry() {
 		ini_set('memory_limit', '-1');
 		$where = array(	"level" => "1");

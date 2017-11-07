@@ -229,6 +229,7 @@ jQuery(document).ready(function() {
     });
 
     $("#form-street, #btn-find-position").hide();
+    
     $(".btn-scope").click(function(){
         //h4-name-city btn-select-city name-city-selected
         var cityName = $(this).data("name");
@@ -275,8 +276,6 @@ jQuery(document).ready(function() {
         });
     });
 
-    
-
     buildListCategoriesForm();
 });
 
@@ -313,33 +312,33 @@ function preLoadAddress(bool, addressCountry, cityInsee, cityName, cityCp, cityL
     };
 
     /*
-    "address" : {
-        "@type" : "PostalAddress",
-        "codeInsee" : "98818",
-        "streetAddress" : "",
-        "postalCode" : "98800",
-        "addressLocality" : "NOUMEA",
-        "level1" : "58be4bd194ef47e31d0ddbcb",
-        "level1Name" : "Nouvelle-Calédonie",
-        "addressCountry" : "NC",
-        "localityId" : "54c0965cf6b95c141800a58a",
-        "level3" : "59e9947176a1678016ee7ced",
-        "level3Name" : "Province Sud",
-        "level4" : "59e996fb76a1678016ee7cf0",
-        "level4Name" : "Drubea-Kapumè"
-    },
-    "geo" : {
-        "@type" : "GeoCoordinates",
-        "latitude" : "-22.286872708692744",
-        "longitude" : "166.4531707763672"
-    },
-    "geoPosition" : {
-        "type" : "Point",
-        "coordinates" : [ 
-            166.453170776367, 
-            -22.2868727086927
-        ]
-    },
+        "address" : {
+            "@type" : "PostalAddress",
+            "codeInsee" : "98818",
+            "streetAddress" : "",
+            "postalCode" : "98800",
+            "addressLocality" : "NOUMEA",
+            "level1" : "58be4bd194ef47e31d0ddbcb",
+            "level1Name" : "Nouvelle-Calédonie",
+            "addressCountry" : "NC",
+            "localityId" : "54c0965cf6b95c141800a58a",
+            "level3" : "59e9947176a1678016ee7ced",
+            "level3Name" : "Province Sud",
+            "level4" : "59e996fb76a1678016ee7cf0",
+            "level4Name" : "Drubea-Kapumè"
+        },
+        "geo" : {
+            "@type" : "GeoCoordinates",
+            "latitude" : "-22.286872708692744",
+            "longitude" : "166.4531707763672"
+        },
+        "geoPosition" : {
+            "type" : "Point",
+            "coordinates" : [ 
+                166.453170776367, 
+                -22.2868727086927
+            ]
+        },
     */
 }
 function sendReferencement(){

@@ -216,7 +216,7 @@ var shopping = {
     					"<h3 class='letter-orange no-margin totalPrice'>Total of your order: "+totalCart+" euros</h3>"+
     				"</div>"+
     			"</div>";
-    		str+="<div class='col-md-12 pull-right btn-cart margin-top-20'>"+
+    		str+="<div class='col-md-12 pull-right btn-cart margin-top-20 no-padding'>"+
     					"<a href='javascript:;' onclick='shopping.buyCart();' class='btn bg-orange text-white pull-right col-md-3' onclick=''>Validate</a>"+
     					"<a href='javascript:;' class='btn bg-orange pull-right col-md-3 text-white close-modal' >Continue</a>"+
     			"</div>";
@@ -243,21 +243,18 @@ var shopping = {
         });
         return itemHtml;
     },
-    getItemByCategory:function(label,item, type,readOnly){
-    	itemHtml="";
-    	if(!readOnly){
-	        itemHtml="<div class='col-md-12 headerCategory margin-top-20'>"+
-	            "<div class='col-md-12'>"+
-	                "<h2 class='letter-orange mainTitle text-left'>"+label+"</h2>"+
-	            "</div>"+
-	            "<div class='col-md-1'></div>"+
-	            "<div class='col-md-5'><h3 class='subTitleCart letter-orange'>Label<h3></div>"+
-	            "<div class='col-md-2'><h3 class='subTitleCart letter-orange'>Price ht<h3></div>"+
-	            "<div class='col-md-1'><h3 class='subTitleCart letter-orange'>Detail<h3></div>"+
-	            "<div class='col-md-2'><h3 class='subTitleCart letter-orange'>Price ttc<h3></div>"+
-	            "<div class='col-md-1'></div>"+
-	        "</div>";
-	    }
+    getItemByCategory:function(label,item, type){
+        itemHtml="<div class='col-md-12 headerCategory margin-top-20'>"+
+            "<div class='col-md-12'>"+
+                "<h2 class='letter-orange mainTitle text-left'>"+label+"</h2>"+
+            "</div>"+
+            "<div class='col-md-2'></div>"+
+            "<div class='col-md-4'><h3 class='subTitleCart letter-orange'>Label<h3></div>"+
+            "<div class='col-md-2'><h3 class='subTitleCart letter-orange'>Price ht<h3></div>"+
+            "<div class='col-md-1'><h3 class='subTitleCart letter-orange'>Detail<h3></div>"+
+            "<div class='col-md-2'><h3 class='subTitleCart letter-orange'>Price ttc<h3></div>"+
+            "<div class='col-md-1'></div>"+
+        "</div>";
         $.each(item,function(e,data){
             itemHtml+=shopping.getViewItem(e, data, type, readOnly);
             if(!readOnly)
@@ -288,18 +285,18 @@ var shopping = {
         }else
             incQtt="<span class='showDetail showDetail"+key+"' data-value='"+key+"''><i class='fa fa-2x fa-angle-down'></i></span>";
         itemHtml="<div class='col-md-12 contentProduct contentProduct"+itemId+" text-left'>"+
-                "<div class='col-md-1'>"+data.imgProfil+"</div>"+
-                "<div class='col-md-5'>"+
-                    "<h4 class='text-dark'>"+data.name+"</h4><br>"+
-                    "<span>Quantity booked:"+data.countQuantity+"</span><br>";
+                "<div class='col-md-2 no-padding'>"+data.imgProfil+"</div>"+
+                "<div class='col-md-4'>"+
+                    "<h4 class='text-dark'>"+data.name+"</h4>"+
+                    "<span>Quantity booked : "+data.countQuantity+"</span><br>";
                 if(typeof data.description != "undefined" && data.description != "")
-            itemHtml += "<span>"+data.description+"</span><br>";
-            itemHtml += "<a href='javascript:;' class='letter-blue' onclick='alert(\"What's the quoi???\")'> Save / Update</a>"+
+            itemHtml += "<div class='description'>"+data.description+"</div><br>";
+            itemHtml += "<a href='javascript:;' class='letter-blue-5' onclick='alert(\"What's the quoi???\")'> Save / Update</a>"+
                 "</div>"+
-                "<div class='col-md-2 text-center'><span>"+(data.price*data.countQuantity)+"</span></div>"+
+                "<div class='col-md-2 text-center'><span>"+(data.price*data.countQuantity)+" €</span></div>"+
                 "<div class='col-md-1 text-center no-padding'>"+incQtt+"</div>"+
-                "<div class='col-md-2 text-center'><span>"+(data.price*data.countQuantity)+"</span></div>"+
-                "<div class='col-md-1 text-center'><span> <a href='javascript:;' class='text-red' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",true,\""+subType+"\");'><i class='fa fa-trash'></i></a></span></div>";
+                "<div class='col-md-2 text-center'><span>"+(data.price*data.countQuantity)+" €</span></div>"+
+                "<div class='col-md-1 text-center'><span> <a href='javascript:;' class='letter-lightgray' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",true,\""+subType+"\");'><i class='fa fa-trash fa-2x'></i></a></span></div>";
                 if(typeof data.reservations != "undefined"){
             itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 dateHoursDetail'>"; 
                //     countDate=Object.keys(data.reservations).length;

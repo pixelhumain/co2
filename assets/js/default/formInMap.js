@@ -29,8 +29,8 @@ var formInMap = {
 	bindActived : false,
 
 
-	showMarkerNewElement : function(modePC){
-		mylog.log("forminmap showMarkerNewElement");
+	showMarkerNewElement : function(modePC, position){
+		mylog.log("forminmap showMarkerNewElement contextData:", contextData);
 		Sig.clearMap();
 		formInMap.actived = true ;
 		formInMap.hiddenHtmlMap(true);
@@ -50,7 +50,7 @@ var formInMap = {
 			mylog.log("NE_country", formInMap.NE_country);
 		}
 
-		var coordinates = new Array(-22.30295900, 166.43908700);
+		var coordinates = typeof position != "undefined" ? position : new Array(-22.30295900, 166.43908700);
 		if( notNull(contextData) && notNull(contextData.geo) && formInMap.updateLocality == true 
 			&& formInMap.NE_lat != "" && formInMap.NE_lng != "")
 			coordinates = new Array(formInMap.NE_lat, formInMap.NE_lng);
@@ -85,8 +85,14 @@ var formInMap = {
 		}
 
 		Sig.markerFindPlace.on('dragend', function(){
-			formInMap.NE_lat = Sig.markerFindPlace.getLatLng().lat;
-			formInMap.NE_lng = Sig.markerFindPlace.getLatLng().lng;
+			formInMap.NE_lat = this.getLatLng().lat;
+			formInMap.NE_lng = this.getLatLng().lng;
+			if(typeof contextData != "undefined"){
+				contextData.geo.latitude = formInMap.NE_lat;
+				contextData.geo.longitude = formInMap.NE_lng;
+				contextData.geoPosition.coordinates = new Array(formInMap.NE_lng, formInMap.NE_lat);
+				console.log("modify contextData.position *", contextData);
+			}
 			Sig.markerFindPlace.openPopup();
 		});
 
@@ -441,7 +447,7 @@ var formInMap = {
 		
 		Sig.markerFindPlace.setLatLng([data.data("lat"), data.data("lng")]);
 		mylog.log("geoShape", inseeGeoSHapes);
-		if(notEmpty(inseeGeoSHapes[formInMap.NE_insee])){
+		if(notEmpty(inseeGeoSHapes) && notEmpty(inseeGeoSHapes[formInMap.NE_insee])){
 			var shape = inseeGeoSHapes[formInMap.NE_insee];
 			shape = Sig.inversePolygon(shape);
 			Sig.showPolygon(shape);

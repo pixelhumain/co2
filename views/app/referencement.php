@@ -208,12 +208,17 @@ var coordinatesPreLoadedFormMap = [0, 0];
 
 var urlExists = "DONTKNOW";
 
+var contextData = {};
+
 console.log("CITIES", cities);
 
 jQuery(document).ready(function() {
     initKInterface();
     buildListCategoriesForm();
+    mapBg = Sig.loadMap("mapCanvas", initSigParams);
+    Sig.showIcoLoading(false);
 
+    
     $('#form-url').val("");//"https://www.bci.nc/");//" http://groupe-vocal-nc.net/");
 
     $("#btn-start-ref-url").click(function(){
@@ -251,35 +256,114 @@ jQuery(document).ready(function() {
 
     $(".btn-scope").click(function(){
     	//h4-name-city btn-select-city name-city-selected
-    	var cityName = $(this).data("city-name");
-    	var cityCp = $(this).data("city-cp");
-    	var cityInsee = $(this).data("city-insee");
-    	var cityLat = $(this).data("city-lat");
-    	var cityLng = $(this).data("city-lng");
+    	var cityName = $(this).data("name");
+    	var cityCp = $(this).data("cp");
+    	var cityInsee = $(this).data("insee");
+    	var cityLat = $(this).data("lat");
+        var cityLng = $(this).data("lng");
+
+        var id = $(this).data("locid");
+        var l1 = $(this).data("level1");
+        var l1n = $(this).data("level1name");
+        var l3 = $(this).data("level3");
+        var l3n = $(this).data("level3name");
+        var l4 = $(this).data("level4");
+        var l4n = $(this).data("level4name");
+        
 
     	$("#h4-name-city, #form-street, #btn-find-position, #name-city-selected").show();
     	$("#name-city-selected").html(cityName + ", " + cityCp);
 
     	coordinatesPreLoadedFormMap = [cityLat, cityLng];
-	    formInMap.showMarkerNewElement();
-	    preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "");
+        formInMap.formType = "url";
+        formInMap.bindFormInMap();
+	    formInMap.showMarkerNewElement(false, coordinatesPreLoadedFormMap);
+	    preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "", 
+                        id, l1, l1n, l3, l3n, l4, l4n);
+
+        formInMap.add(true, $(this));
+       // formInMap.add(true, data);
 
 	    $("#btn-find-position").off().click(function(){
 	    	showMap(true);
-
+            $("#newElement_country").val("NC");
+            //$("#divCity").removeClass("hidden");
 	    	if(Sig.markerFindPlace == null)
 	    		formInMap.showMarkerNewElement();
    	
 	    	var street = $("#form-street").val();
-    		preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, street);
+    		preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, street, 
+                            id, l1, l1n, l3, l3n, l4, l4n);
     		
-    		if(street != "")
-    			searchAdressNewElement();	    	
+    		//if(street != "")
+    			//searchAdressNewElement();	    	
 	    });
     });
 
 });
 
+function preLoadAddress(bool, addressCountry, cityInsee, cityName, cityCp, cityLat, cityLng, street, 
+                        id, l1, l1n, l3, l3n, l4, l4n){
+    contextData = {
+        "address": {
+             "@type" : "PostalAddress",
+            "codeInsee" : "98818",
+            "streetAddress" : street,
+            "postalCode" : cityCp,
+            "addressLocality" : cityName,
+            "level1" : l1,
+            "level1Name" : l1n,
+            "addressCountry" : addressCountry,
+            "localityId" : id,
+            "level3" : l3,
+            "level3Name" : l3n,
+            "level4" : l4,
+            "level4Name" : l4n
+        },
+        "geo" : {
+            "@type" : "GeoCoordinates",
+            "latitude" : cityLat,
+            "longitude" : cityLng
+        },
+        "geoPosition": {
+            "type" : "Point",
+            "coordinates" : [ 
+                cityLng, 
+                cityLat
+            ]
+        }
+    };
+
+    /*
+    "address" : {
+        "@type" : "PostalAddress",
+        "codeInsee" : "98818",
+        "streetAddress" : "",
+        "postalCode" : "98800",
+        "addressLocality" : "NOUMEA",
+        "level1" : "58be4bd194ef47e31d0ddbcb",
+        "level1Name" : "Nouvelle-Calédonie",
+        "addressCountry" : "NC",
+        "localityId" : "54c0965cf6b95c141800a58a",
+        "level3" : "59e9947176a1678016ee7ced",
+        "level3Name" : "Province Sud",
+        "level4" : "59e996fb76a1678016ee7cf0",
+        "level4Name" : "Drubea-Kapumè"
+    },
+    "geo" : {
+        "@type" : "GeoCoordinates",
+        "latitude" : "-22.286872708692744",
+        "longitude" : "166.4531707763672"
+    },
+    "geoPosition" : {
+        "type" : "Point",
+        "coordinates" : [ 
+            166.453170776367, 
+            -22.2868727086927
+        ]
+    },
+    */
+}
 
 function buildListCategoriesForm(){
     //console.log(mainCategories);
@@ -512,7 +596,7 @@ function refUrl(url){
 		error:function(xhr, status, error){
 			$("#lbl-url").removeClass("letter-green").addClass("letter-red");
 			$("#status-ref").html("<span class='letter-red'><i class='fa fa-ban'></i> URL INNACCESSIBLE</span>");
-		},
+        },
 		statusCode:{
 				404: function(){
 				$("#lbl-url").removeClass("letter-green").addClass("letter-red");
@@ -563,7 +647,7 @@ function sendReferencement(){
 
 	if(urlValidated != "" && title != "" /*&& description != "" && keywords.length > 0 && categoriesSelected.length > 0*/){
 
-		var address = getAddressObj(); //formInMap.js
+		var address = contextData; //getAddressObj(); //formInMap.js
 
 
 		var urlObj = {

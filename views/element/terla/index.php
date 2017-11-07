@@ -42,6 +42,7 @@
     	background-color: white;
 	}
 	.podDash .content-view-dashboard{
+		margin-bottom:150px !important;
 		min-height: 300px;
 		-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.5);
         -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.5);
@@ -54,43 +55,55 @@
 <div class="headerTitleStanalone">
 	<span>My Dashboard</span> 
 	<?php if(!@$element["professional"]){ ?> 
-		<button class="createPro bg-orange">Create a professional account<button>
+		<button class="createPro bg-orange"><?php echo Yii::t("terla", "Create a professional account"); ?></button>
 	<?php } ?>
 </div>
 <div class="col-md-10 col-md-offset-1 contentOnePage">
-	<div class="col-md-12 no-padding margin-bottom-20 margin-top-20">
-		<div class="col-md-12 bg-lightgray">
-			<h2 class="col-md-12 letter-blue-2">Some of our top trip</h2>
-			<div class="row col-md-10">	
-				<p>
-					Lipsr rakeklaef zejfiaoiz ijezfjezajifo jiofeza quesako ezokdozdoiezi dezijdjiezdjiezijdijez ijezdjezid ezdiezjd ezdiezjdo
-				</p>
+	<div class="col-md-12 margin-bottom-50 margin-top-50 blockHome1">
+		<div class="col-md-12 bg-lightgray margin-top-50">
+			<h2 class="block no-margin letter-lightgray">Headline</h2>
+			<div class="col-md-10 no-padding">	
+				<span>
+					Suspendisse feugiat dui magna, vel molestie mauris porttitor quis. Vivamus et enim felis tincidunt nisi pulvinar mi.
+				</span>
 			</div>
-			<div class="row col-md-2">
-				<a href="javascript:;" class="btn bg-orange">View more</a>
+			<div class="col-md-2">
+				<a href="javascript:;" class="btn bg-orange"><b><?php echo Yii::t("terla", "VIEW MORE"); ?></b></a>
 			</div>
 		</div>
 	</div>
 	<div class="podDash col-md-12 margin-top-20">
 		<ul class="nav pull-left">
 		  <li class="nav-item active">
-		    <a class="nav-link" href="javascript:;" id="btn-detail"><?php echo Yii::t("common","My infos") ?></a>
+		    <a class="nav-link letter-lightgray" href="javascript:;" id="btn-detail">
+		    	<?php echo Yii::t("common","My infos") ?>
+		    </a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="javascript:;" id="btn-message"><?php echo Yii::t("common","My messages") ?></a>
+		    <a class="nav-link letter-lightgray" href="javascript:;" id="btn-message">
+		    	<?php echo Yii::t("common","My messages") ?>
+		    </a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="javascript:;" id="btn-history"><?php echo Yii::t("common","Historic") ?></a>
+		    <a class="nav-link letter-lightgray" href="javascript:;" id="btn-history">
+		    	<?php echo Yii::t("common","Historic") ?>
+		    </a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="javascript:;" id="btn-backup"><?php echo Yii::t("common","Backup") ?></a>
+		    <a class="nav-link letter-lightgray" href="javascript:;" id="btn-backup">
+		    	<?php echo Yii::t("common","Backup") ?>
+		    </a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="javascript:;" id="btn-invoice"><?php echo Yii::t("common","Invoice") ?></a>
+		    <a class="nav-link letter-lightgray" href="javascript:;" id="btn-invoice">
+		    	<?php echo Yii::t("common","Invoice") ?>
+		    </a>
 		  </li>
 		  	<?php if(@$element["professional"]){ ?>
 		  	<li class="nav-item">
-		    	<a class="nav-link" href="javascript:;" id="btn-list-pro"><?php echo Yii::t("common","Pro listing") ?></a>
+		    	<a class="nav-link letter-lightgray" href="javascript:;" id="btn-list-pro">
+		    		<?php echo Yii::t("common","Pro listing") ?>
+		    	</a>
 		  	</li>
 			<?php } ?>
 		</ul>
@@ -100,6 +113,13 @@
 	</div>
 
 </div>
+
+
+<?php 
+    $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+    $this->renderPartial($layoutPath.'footer', array("subdomain"=>"page")); 
+?>
+
 <script type="text/javascript">
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
 	var edit=true;

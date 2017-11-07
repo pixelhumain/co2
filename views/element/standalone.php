@@ -24,9 +24,10 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 		min-height: 500px;
 	}
 	.contentOnePage .title > h2{
-		    padding: 15px 0px;
+		padding: 15px 0px;
     	text-transform: inherit;
     	font-size: 20px;
+    	margin-top:100px;
 	}
 	/*.carousel-media > ol > li.active{
 	   margin:1px;
@@ -55,16 +56,57 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	.informations .btn-social{
 		padding: 0px;
 	    height: inherit;
-	    width: 50px;
+	    width: 45px;
+	    height:45px;
+	    border-radius: 8px;
 	}
 	.informations .btn-social > span{
-		position: absolute;
+		/*position: absolute;*/
     	font-size: 20px;
 	}
+
+	.carousel-media .carousel-inner {
+	    max-width: 900px;
+	    max-height: 900px;
+	    margin-left: auto;
+	    margin-right: auto;
+	}
+
+	.btn-linkedin{
+		background-color: #517dae;
+		color:white;
+	}
+	.btn-facebook{
+		background-color: #506eae;
+		color:white;
+	}
+	.btn-twitter{
+		background-color: #6fbee9;
+		color:white;
+	}
+	.btn-google{
+		background-color: #e24d47;
+		color:white;
+	}
+
+	.associated{
+		padding: 0px 50px 50px 50px;
+	}
+
+	.associated .entity{
+		margin-bottom:50px;
+	}
+
 </style>
-<div class="headerTitleStanalone"></div>
-<div class="col-md-10 col-md-offset-1 contentOnePage">
-	<div class="col-md-12 title text-left"><h2><?php echo ucfirst($element["name"]) ?></h2></div>
+
+<header>
+<div class="container">
+    <div class="headerTitle"> <?php echo ucfirst($element["parent"]["name"]) ?></div>
+</div>
+</header>
+
+<div class="col-xs-12 col-md-10 col-md-offset-1 contentOnePage margin-bottom-50">
+	<div class="col-md-12 title letter-lightgray text-left"><h2><?php echo ucfirst($element["name"]) ?></h2></div>
 	<?php 
 	$images=Document::getListDocumentsWhere(array("id"=>(string)$element["_id"],"type"=>$type,"doctype"=>Document::DOC_TYPE_IMAGE),Document::DOC_TYPE_IMAGE);
 	$this->renderPartial('../pod/sliderMedia', 
@@ -73,59 +115,90 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 									  "images" => @$images,
 									  ) ); 
 									  ?>
+
+
+
+	<div class="col-md-12 margin-bottom-20">
+	<hr>
+	</div>
+
 	<div class="informations col-md-12 margin-bottom-20">
-	<div class="header-info col-md-12 no-padding text-left">
-		<h4 class="text-dark col-md-4 no-margin text-left">Project information</h4>
-		<div class="evalutation col-md-3">
-			<?php if(@$element["averageRating"]){ ?>
-				<div class="br-wrapper br-theme-fontawesome-stars-o pull-left margin-left-10">
-					<select id="ratingElement" class="ratingComments">
-					    <option value="1">1</option>
-	                    <option value="2">2</option>
-	                    <option value="3">3</option>
-	                    <option value="4">4</option>
-	                    <option value="5">5</option>
-                  	</select>
-                </div>
-                <span><?php echo $element["averageRating"] ?></span>
-			<?php }else{ ?>
-				<span>Aucun commentaire</span>
-			<?php } ?>
-		</div>
-		<div class="col-md-5">
-			<h3 class="pull-left no-margin" style="font-size: 20px;">Share</h3>
-			<a target="_blank" href="" class="btn btn-facebook btn-social pull-left"><span class="fa fa-facebook"></span></a>
-			<a target="_blank" href="" class="btn btn-facebook btn-social pull-left"><span class="fa fa-twitter"></span></a>
-			<a target="_blank" href="" class="btn btn-facebook btn-social pull-left"><span class="fa fa-google-plus"></span></a>
-			<a target="_blank" href="" class="btn btn-facebook btn-social pull-left"><span class="fa fa-linkedin"></span></a>
-		</div>
-		<div class="col-md-8 description text-left margin-top-20">
-			<span class="">
-				jiezjfiz ijezjfzeif ezoijfjiez fjiezfj ezof<br>
-				jiezjfiz ijezjfzeif ezoijfjiez fjiezfj ezof hdhuiezu ezhidihueza diuadhezaiud ezaudehzadiuezahd<br>
-				jiezjfiz ijezjfzeif ezoijfjiez fjiezfj ezof
-			</span>
-		</div>
-		<div class="col-md-4 padding-20 margin-top-20">
-			<?php if($type==Service::COLLECTION){ ?>
-				<a href="javascript:;" class="btn bg-orange ssmla btn-available-calendar" data-toggle="modal" 
-					data-target="#modal-available">
-							Book it
+		<div class="header-info col-md-12 no-padding text-left">
+			<div class="letter-lightgray col-md-6 no-margin text-left"><h5><?php echo Yii::t("terla", "PROJECT DESCRIPTION"); ?>
+				<span class="evalutation">
+					<?php if(@$element["averageRating"]){ ?>
+						<div class="br-wrapper br-theme-fontawesome-stars-o pull-left margin-left-10">
+							<select id="ratingElement" class="ratingComments">
+							    <option value="1">1</option>
+			                    <option value="2">2</option>
+			                    <option value="3">3</option>
+			                    <option value="4">4</option>
+			                    <option value="5">5</option>
+		                  	</select>
+		                </div>
+		                <span><?php echo $element["averageRating"] ?></span>
+					<?php }else{ ?>
+						<small class="letter-lightgray"><?php echo Yii::t("terla", "No evaluation"); ?></small>
+					<?php } ?>
+				</span></h5>
+			</div>
+			
+			<div class="col-md-6">
+				<a target="_blank" href="" class="btn btn-linkedin btn-social pull-right">
+					<span class="fa fa-linkedin"></span>
 				</a>
-			<?php } else { ?>
-				<a href="javascript:;" class="btn bg-orange" onclick="addToShoppingCart('<?php echo (string)$element["_id"] ?>','<?php echo $type ?>');">Buy it</a>
-			<?php } ?>
+				<a target="_blank" href="" class="btn btn-google btn-social pull-right">
+					<span class="fa fa-google-plus"></span>
+				</a>
+				<a target="_blank" href="" class="btn btn-twitter btn-social pull-right">
+					<span class="fa fa-twitter"></span>
+				</a>
+				<a target="_blank" href="" class="btn btn-facebook btn-social pull-right">
+					<span class="fa fa-facebook"></span>
+				</a>
+				
+				<h4 class="pull-right letter-lightgray margin-15" style=""><?php echo Yii::t("terla", "SHARE"); ?></h4>
+			</div>
+			<div class="col-md-8 description text-left margin-top-20">
+				<span class="letter-lightgray">
+					<?php echo nl2br(@$element["description"]); ?>
+					<!-- Vestibulum eu lobortis orci. Donec aliquet finibus augue, at tempus dui rutrum in. Proin pellentesque felis ligula, ac congue ante hendrerit tempor. Duis lobortis, quam at porta tincidunt, enim felis tincidunt nisi, sed ornare dui neque non nunc. Quisque pellentesque at ex a volutpat.
+					<br><br>
+					Suspendisse feugiat dui magna, vel molestie mauris porttitor quis. Vivamus et pulvinar mi, vel dictum mauris. Donec sapien sem, gravida eu arcu sit amet, ullamcorper faucibus tellus. Duis non odio non nisi laoreet egestas vel sed tortor. Nullam lectus orci, hendrerit eget malesuada fermentum, blandit quis nunc. Quisque laoreet aliquam nisi eget aliquam. Nulla sapien enim, gravida in ex eu, ultricies commodo ipsum. Donec orci libero, dictum vel enim ut, auctor interdum mauris. -->
+				</span>
+			</div>
+			<div class="col-md-3 pull-right padding-20 margin-top-20">
+				<?php if($type==Service::COLLECTION){ ?>
+					<a href="javascript:;" class="col-md-12 btn bg-orange ssmla btn-available-calendar pull-right" 
+						data-toggle="modal" 
+						data-target="#modal-available">
+								Book it
+					</a>
+				<?php } else { ?>
+					<a href="javascript:;" class="btn bg-orange" onclick="addToShoppingCart('<?php echo (string)$element["_id"] ?>','<?php echo $type ?>');">Buy it</a>
+				<?php } ?>
+			</div>
+		</div>
+		<div id="commentElement" class="col-xs-12 margin-top-20">
 		</div>
 	</div>
-	<div id="commentElement" class="col-md-12 margin-top-20">
-	</div>
+
+	<?php 
+		if($type==Service::COLLECTION)
+			$this->renderPartial('../pod/availableCalendar',
+					array(	"type"=>$type, 
+							"parentId" => (string)$element['_id'], 
+							"element" => @$element));
+	?>
+
 </div>
+
+
+
 <?php 
-	if($type==Service::COLLECTION)
-		$this->renderPartial('../pod/availableCalendar',
-				array(	"type"=>$type, 
-						"parentId" => (string)$element['_id'], 
-						"element" => @$element));
+    $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+    $this->renderPartial('../element/terla/associated', array()); 
+    $this->renderPartial($layoutPath.'footer', array("subdomain"=>"page")); 
 ?>
 
 <script type="text/javascript">

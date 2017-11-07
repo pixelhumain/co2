@@ -2487,14 +2487,13 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 	public function actionBatchInterRemoveGeoShapeZone() {
 		ini_set('memory_limit', '-1');
-		$where = array(	"geoShape" => array('$exists' => 1) );
-		$zones = PHDB::find(Zone::COLLECTION, $where);
+		$zones = PHDB::find(Zone::COLLECTION, array("geoShape" => array('$exists' => 1) ));
 		$nbelement = 0 ;
 		foreach ($zones as $key => $zone) {
-			// $res = PHDB::update( Zone::COLLECTION, 
-			// 					  	array("_id"=>new MongoId($key)),
-			// 						array('$unset' => array("geoShape" =>  ""))
-			// 		);
+			$res = PHDB::update( Zone::COLLECTION, 
+								  	array("_id"=>new MongoId($key)),
+									array('$unset' => array("geoShape" =>  ""))
+					);
 			$nbelement++;
 						
 		}

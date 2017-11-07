@@ -4,17 +4,17 @@
 	<h1 class="homestead explainTitle blue "><i class="fa fa-home"></i> Communectez-moi</h1>
 	<center class="caretExplain blue"><i class="fa fa-caret-down"></i><br/></center>
 	<div class="explainDesc">
-		Ce n'est pas la technologie qui changera la société mais une population bien outillée.
-		<br/>Se communecter c'est être un citoyen, un acteur local
-		<br/>Me communecter me permet :  
+		<?php echo Yii::t("docs" , "Technology won't change society but a well-equipped population will.") ; ?>
+		<br/><?php echo Yii::t("docs" , "Being connected to one's city means being a citizen, a local actor.") ; ?>
+		<br/><?php echo Yii::t("docs" , "Being connected give me opportunity :") ; ?> 
 		<ul>
-			<li><i class="fa fa-angle-right"></i> d'agir localement et pas juste m'informer</li>
-			<li><i class="fa fa-angle-right"></i> de voir les acteurs autour de moi</li>
-			<li><i class="fa fa-angle-right"></i> de référencer et valoriser les choses auxquelles je crois</li>
+			<li><i class="fa fa-angle-right"></i> <?php echo Yii::t("docs" , "to act localy and not only being informed") ; ?></li>
+			<li><i class="fa fa-angle-right"></i> <?php echo Yii::t("docs" , "to see all the actors around me") ; ?></li>
+			<li><i class="fa fa-angle-right"></i> <?php echo Yii::t("docs" , "to list and add value to the things in which I believe") ; ?></li>
 			
-			<li><i class="fa fa-angle-right"></i> je participe à l'activité citoyenne locale</li>
-			<li><i class="fa fa-angle-right"></i> je partage pour améliorer mon territoire</li>
-			<li><i class="fa fa-angle-right"></i> je fais des propositions aux autres habitants (Discuter, Décider ,Agir)</li>
+			<li><i class="fa fa-angle-right"></i> <?php echo Yii::t("docs" , "I get involve into local citizen activity") ; ?></li>
+			<li><i class="fa fa-angle-right"></i> <?php echo Yii::t("docs" , "I share in order to inhance my territory") ; ?></li>
+			<li><i class="fa fa-angle-right"></i> <?php echo Yii::t("docs" , "I can suggest ideas to my neighborhood ( Discuss, Decide, Act)") ; ?></li>
 		</ul>
 	</div>
 </div>

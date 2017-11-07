@@ -6,6 +6,7 @@
 
     echo Preference::showPreference($element, $type, "locality", Yii::app()->session["userId"]) ? "yes" : "no";*/
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+    $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? Yii::app()->params["CO2DomainName"] : "CO2";
 ?>
 
 <style> 
@@ -39,8 +40,8 @@
 
             <br>
 
-             <?php $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? Yii::app()->params["CO2DomainName"] : "CO2";
-                  if($CO2DomainName == "kgougle"){ ?>
+             <?php
+                if($CO2DomainName == "kgougle"){ ?>
                     <button class="btn btn-link letter-red btn-xs pull-left no-padding btn-change-loc" 
                             data-toggle="modal" data-target="#modalLocalization">
                         <i class="fa fa-map-marker"></i> <?php echo $scope; ?>

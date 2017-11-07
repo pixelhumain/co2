@@ -371,15 +371,15 @@ function showCalendar() {
 function getDayFilter(event){
 	currentCartFilter={"quantity":0,"myQuantity":0};
 	// GET QUANTITY OF CURRENT CART
-	if(typeof shoppingCart["services"] != "undefined" 
-		&& typeof shoppingCart["services"][subType] != "undefined"
-		&& typeof shoppingCart["services"][subType][itemId] != "undefined"
-		&& typeof shoppingCart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')] != "undefined"){
+	if(typeof shopping.cart.services != "undefined" 
+		&& typeof shopping.cart.services[subType] != "undefined"
+		&& typeof shopping.cart.services[subType][itemId] != "undefined"
+		&& typeof shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')] != "undefined"){
 		if(event.allDay==true){
-			currentCartFilter.myQuantity=currentCartFilter.myQuantity+shoppingCart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["countQuantity"];
+			currentCartFilter.myQuantity=currentCartFilter.myQuantity+shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["countQuantity"];
 		}else{
-			if(typeof shoppingCart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["hours"] != "undefined"){
-				$.each(shoppingCart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["hours"],function(e,v){
+			if(typeof shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["hours"] != "undefined"){
+				$.each(shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["hours"],function(e,v){
 					if(v.start==event.startTime && v.end==event.endTime)
 						currentCartFilter.myQuantity=currentCartFilter.myQuantity+v.countQuantity;			
 				});

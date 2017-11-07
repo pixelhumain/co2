@@ -1,14 +1,17 @@
 var shopping = {
+	cart:{
+		countQuantity:0
+	}
 	addToShoppingCart: function(id, type, subType, ranges){
 		incCart=true;
 		if(typeof userId != "undefined" && userId != ""){
-			if(typeof shoppingCart[type] == "undefined")
-				shoppingCart[type]=new Object;
+			if(typeof shopping.cart[type] == "undefined")
+				shopping.cart[type]=new Object;
 			if(type=="services" ){
-				if(typeof shoppingCart[type][subType]=="undefined")
-					shoppingCart[type][subType]=new Object;
+				if(typeof shopping.cart[type][subType]=="undefined")
+					shopping.cart[type][subType]=new Object;
 
-				if(typeof shoppingCart[type][subType][id]=="undefined"){
+				if(typeof shopping.cart[type][subType][id]=="undefined"){
 					params={
 						name : element.name,
 						providerId : element.parentId,
@@ -24,44 +27,44 @@ var shopping = {
 						params.capacity=element.capacity;
 					if(notNull(subType))
 						params.type=subType;
-					shoppingCart[type][subType][id]=params;
+					shopping.cart[type][subType][id]=params;
 				}
 				else{
-					shoppingCart[type][subType][id]["countQuantity"]++;
+					shopping.cart[type][subType][id]["countQuantity"]++;
 					incCart=false;
 				}
 				if(typeof ranges != "undefined" && notNull(ranges)){
-					if(typeof shoppingCart[type][subType][id]["reservations"] == "undefined")
-					 	shoppingCart[type][subType][id]["reservations"]=new Object;
+					if(typeof shopping.cart[type][subType][id]["reservations"] == "undefined")
+					 	shopping.cart[type][subType][id]["reservations"]=new Object;
 
-					if(typeof shoppingCart[type][subType][id]["reservations"][ranges.date] == "undefined"){
-						shoppingCart[type][subType][id]["reservations"][ranges.date] = {"countQuantity":1};
+					if(typeof shopping.cart[type][subType][id]["reservations"][ranges.date] == "undefined"){
+						shopping.cart[type][subType][id]["reservations"][ranges.date] = {"countQuantity":1};
 					}else{
-						shoppingCart[type][subType][id]["reservations"][ranges.date]["countQuantity"]++;
+						shopping.cart[type][subType][id]["reservations"][ranges.date]["countQuantity"]++;
 						incCart=false;
 					}
 					if(typeof ranges.hours != "undefined"){
 						ranges.hours.countQuantity=1;
-						if(typeof shoppingCart[type][subType][id]["reservations"][ranges.date]["hours"] == "undefined")
-							shoppingCart[type][subType][id]["reservations"][ranges.date]["hours"]=[];
+						if(typeof shopping.cart[type][subType][id]["reservations"][ranges.date]["hours"] == "undefined")
+							shopping.cart[type][subType][id]["reservations"][ranges.date]["hours"]=[];
 
-						if(jQuery.isEmptyObject(shoppingCart[type][subType][id]["reservations"][ranges.date]["hours"])){
-							shoppingCart[type][subType][id]["reservations"][ranges.date]["hours"].push(ranges.hours);
+						if(jQuery.isEmptyObject(shopping.cart[type][subType][id]["reservations"][ranges.date]["hours"])){
+							shopping.cart[type][subType][id]["reservations"][ranges.date]["hours"].push(ranges.hours);
 						}else{
 							hoursInArray=false;
-							$.each(shoppingCart[type][subType][id]["reservations"][ranges.date]["hours"], function(e,v){
+							$.each(shopping.cart[type][subType][id]["reservations"][ranges.date]["hours"], function(e,v){
 								if(v.start==ranges.hours.start && v.end==ranges.hours.end){
-									shoppingCart[type][subType][id]["reservations"][ranges.date]["hours"][e]["countQuantity"]++;
+									shopping.cart[type][subType][id]["reservations"][ranges.date]["hours"][e]["countQuantity"]++;
 									hoursInArray=true;
 								}
 							});
 							if(!hoursInArray)
-								shoppingCart[type][subType][id]["reservations"][ranges.date]["hours"].push(ranges.hours);
+								shopping.cart[type][subType][id]["reservations"][ranges.date]["hours"].push(ranges.hours);
 						}
 					}
 				}
 			}else{
-				if(typeof shoppingCart[type][id] == "undefined"){
+				if(typeof shopping.cart[type][id] == "undefined"){
 					params={
 						name : element.name,
 						providerId : element.parentId,
@@ -77,16 +80,16 @@ var shopping = {
 						params.capacity=element.capacity;
 					if(notNull(subType))
 						params.type=subType;
-					shoppingCart[type][id]={};
-					shoppingCart[type][id]=params;
+					shopping.cart[type][id]={};
+					shopping.cart[type][id]=params;
 				}else{
-					shoppingCart[type][id].countQuantity++;
+					shopping.cart[type][id].countQuantity++;
 					incCart=false;
 				}
 			}
 			if(incCart)
 				shopping.countShoppingCart(true);
-			localStorage.setItem("shoppingCart",JSON.stringify(shoppingCart));
+			localStorage.setItem("shoppingCart",JSON.stringify(shopping.cart));
 		}else{
 			$('#modalLogin').modal("show");
 		}
@@ -95,49 +98,49 @@ var shopping = {
 		incCart=false;
 		if(typeof userId != "undefined" && userId != ""){
 			if(type=="services" ){
-				if(shoppingCart[type][subType][id]["countQuantity"]==1 || (deleteAll && ranges==null)){
-					delete shoppingCart[type][subType][id];
+				if(shopping.cart[type][subType][id]["countQuantity"]==1 || (deleteAll && ranges==null)){
+					delete shopping.cart[type][subType][id];
 					incCart=true;
 				}else{
 					if(!deleteAll)
-						shoppingCart[type][subType][id]["countQuantity"]--;
+						shopping.cart[type][subType][id]["countQuantity"]--;
 					if(typeof ranges != "undefined" && notNull(ranges)){
 						console.log(ranges);
 						if(deleteAll && typeof ranges.hours == "undefined"){
-							removeQuantityDate=shoppingCart[type][subType][id]["reservations"][ranges.date]["countQuantity"];
-							delete shoppingCart[type][subType][id]["reservations"][ranges.date];
+							removeQuantityDate=shopping.cart[type][subType][id]["reservations"][ranges.date]["countQuantity"];
+							delete shopping.cart[type][subType][id]["reservations"][ranges.date];
 						}else{
-							if(shoppingCart[type][subType][id]["reservations"][ranges.date]["countQuantity"]==1){
-								delete shoppingCart[type][subType][id]["reservations"][ranges.date];
+							if(shopping.cart[type][subType][id]["reservations"][ranges.date]["countQuantity"]==1){
+								delete shopping.cart[type][subType][id]["reservations"][ranges.date];
 							}else{
 								if(!deleteAll)
-									shoppingCart[type][subType][id]["reservations"][ranges.date]["countQuantity"]--;
+									shopping.cart[type][subType][id]["reservations"][ranges.date]["countQuantity"]--;
 								if(typeof ranges.hours != "undefined"){
-									$.each(shoppingCart[type][subType][id]["reservations"][ranges.date]["hours"], function(e,v){
+									$.each(shopping.cart[type][subType][id]["reservations"][ranges.date]["hours"], function(e,v){
 										if(typeof v != "undefined"){
 											if(v.start==ranges.hours.start && v.end==ranges.hours.end){
 												if(deleteAll){
-													removeQuantityHours=shoppingCart[type][subType][id]["reservations"][ranges.date]["hours"][e]["countQuantity"];
-													shoppingCart[type][subType][id]["reservations"][ranges.date]["hours"].splice(e,1);
+													removeQuantityHours=shopping.cart[type][subType][id]["reservations"][ranges.date]["hours"][e]["countQuantity"];
+													shopping.cart[type][subType][id]["reservations"][ranges.date]["hours"].splice(e,1);
 												}else{
 													if(v.countQuantity==1){
-														shoppingCart[type][subType][id]["reservations"][ranges.date]["hours"].splic(e,1);
+														shopping.cart[type][subType][id]["reservations"][ranges.date]["hours"].splic(e,1);
 													}
 													else{
-														shoppingCart[type][subType][id]["reservations"][ranges.date]["hours"][e]["countQuantity"]--;
+														shopping.cart[type][subType][id]["reservations"][ranges.date]["hours"][e]["countQuantity"]--;
 													}
 												}
 											}
 										}
 									});
 									if(typeof removeQuantityHours != "undefined"){
-										shoppingCart[type][subType][id]["reservations"][ranges.date]["countQuantity"]=shoppingCart[type][subType][id]["reservations"][ranges.date]["countQuantity"]-removeQuantityHours;
-										shoppingCart[type][subType][id]["countQuantity"]=shoppingCart[type][subType][id]["countQuantity"]-removeQuantityHours;
-										if(shoppingCart[type][subType][id]["reservations"][ranges.date]["countQuantity"]==0){
-											delete shoppingCart[type][subType][id]["reservations"][ranges.date];
+										shopping.cart[type][subType][id]["reservations"][ranges.date]["countQuantity"]=shopping.cart[type][subType][id]["reservations"][ranges.date]["countQuantity"]-removeQuantityHours;
+										shopping.cart[type][subType][id]["countQuantity"]=shopping.cart[type][subType][id]["countQuantity"]-removeQuantityHours;
+										if(shopping.cart[type][subType][id]["reservations"][ranges.date]["countQuantity"]==0){
+											delete shopping.cart[type][subType][id]["reservations"][ranges.date];
 										}
-										if(shoppingCart[type][subType][id]["countQuantity"]==0){
-											delete shoppingCart[type][subType][id];
+										if(shopping.cart[type][subType][id]["countQuantity"]==0){
+											delete shopping.cart[type][subType][id];
 											incCart=true;
 										}
 									}
@@ -145,9 +148,9 @@ var shopping = {
 							}
 						}
 						if(typeof removeQuantityDate != "undefined"){
-							shoppingCart[type][subType][id]["countQuantity"]=shoppingCart[type][subType][id]["countQuantity"]-removeQuantityDate;
-							if(shoppingCart[type][subType][id]["countQuantity"]==0){
-								delete shoppingCart[type][subType][id];
+							shopping.cart[type][subType][id]["countQuantity"]=shopping.cart[type][subType][id]["countQuantity"]-removeQuantityDate;
+							if(shopping.cart[type][subType][id]["countQuantity"]==0){
+								delete shopping.cart[type][subType][id];
 								incCart=true;
 							}
 						}
@@ -155,20 +158,20 @@ var shopping = {
 				}
 			}else{
 				if(deleteAll){
-					delete shoppingCart[type][id];
+					delete shopping.cart[type][id];
 					incCart=true;
 				}else{	
-					if(shoppingCart[type][id].countQuantity==1){
+					if(shopping.cart[type][id].countQuantity==1){
 						incCart=true;
-						delete shoppingCart[type][id];
+						delete shopping.cart[type][id];
 					}else{
-						shoppingCart[type][id].countQuantity--;
+						shopping.cart[type][id].countQuantity--;
 					}
 				}
 			}
 			if(incCart)
 				shopping.countShoppingCart(false);
-			localStorage.setItem("shoppingCart",JSON.stringify(shoppingCart));
+			localStorage.setItem("shoppingCart",JSON.stringify(shopping.cart));
 		}else{
 			$('#modalLogin').modal("show");
 		}
@@ -176,12 +179,12 @@ var shopping = {
 	countShoppingCart:function(pos){
 		if(pos != "init"){
 			if(pos)
-				shoppingCart.countQuantity++;
+				shopping.cart.countQuantity++;
 			else
-				shoppingCart.countQuantity--;
+				shopping.cart.countQuantity--;
 		}
-		if(shoppingCart.countQuantity > 0){
-			$(".shoppingCart-count").html(shoppingCart.countQuantity);
+		if(shopping.cart.countQuantity > 0){
+			$(".shoppingCart-count").html(shopping.cart.countQuantity);
 			$('.shoppingCart-count').removeClass('hide');
 			$('.shoppingCart-count').addClass('animated bounceIn');
 			$('.shoppingCart-count').addClass('badge-success');
@@ -201,13 +204,13 @@ var shopping = {
     	str="<div class='col-md-12 bg-orange padding-10'>"+
     			"<div class='pull-right'>"+
     				"<a href='javascript:alert(\"Rapha pour toi\")' class='text-white padding-5' onclick=''><i class='fa fa-print'></i> Print</a>"+
-    				"<a href='javascript:alert(\"On sauvegarde le panier en attente\")' class='text-white padding-5' onclick=''><i class='fa fa-floppy-o'></i> Save</a>"+
+    				"<a href='javascript:;' onclick='shopping.saveCart();' class='text-white padding-5' onclick=''><i class='fa fa-floppy-o'></i> Save</a>"+
     				"<a href='javascript:alert(\"Partager quoi sur quoi???\")' class='text-white padding-5' onclick=''><i class='fa fa-link'></i> Share</a>"+
     				"<a href='javascript:alert(\"Kill all mother fuck\")' class='text-white padding-5' onclick=''><i class='fa fa-trash'></i> Empty</a>"+
     			"</div>"+
     		"</div>"+
     		"<div class='col-md-11' style='margin-left:4.133333333%'>";
-    		str+=shopping.getComponentsHtml(shoppingCart,true);
+    		str+=shopping.getComponentsHtml(shopping.cart,true);
     		str+="<div class='col-md-12 bg-orange-1 padding-5 margin-top-20'>"+
     				"<div class='pull-right'>"+
     					"<h3 class='letter-orange no-margin totalPrice'>Total of your order: "+totalCart+" euros</h3>"+
@@ -222,7 +225,7 @@ var shopping = {
     			"</div></div>";
     	return str;
     },
-    getComponentsHtml:function(data,firstLevel){
+    getComponentsHtml:function(data,firstLevel, readOnly){
         itemHtml="";
         $.each(data,function(i,v){
             console.log(v);
@@ -230,31 +233,35 @@ var shopping = {
                 if(i=="services"){
                     $.each(v,function(e, service){
                         console.log(service);
-                        itemHtml+=shopping.getItemByCategory(e,service,"services");
+                        itemHtml+=shopping.getItemByCategory(e,service,"services",readOnly);
                     });
                 }
                 else{
-                    itemHtml+=shopping.getItemByCategory(i,v, "products");
+                    itemHtml+=shopping.getItemByCategory(i,v, "products",readOnly);
                 }
             }
         });
         return itemHtml;
     },
-    getItemByCategory:function(label,item, type){
-        itemHtml="<div class='col-md-12 headerCategory margin-top-20'>"+
-            "<div class='col-md-12'>"+
-                "<h2 class='letter-orange mainTitle text-left'>"+label+"</h2>"+
-            "</div>"+
-            "<div class='col-md-1'></div>"+
-            "<div class='col-md-5'><h3 class='subTitleCart letter-orange'>Label<h3></div>"+
-            "<div class='col-md-2'><h3 class='subTitleCart letter-orange'>Price ht<h3></div>"+
-            "<div class='col-md-1'><h3 class='subTitleCart letter-orange'>Detail<h3></div>"+
-            "<div class='col-md-2'><h3 class='subTitleCart letter-orange'>Price ttc<h3></div>"+
-            "<div class='col-md-1'></div>"+
-        "</div>";
+    getItemByCategory:function(label,item, type,readOnly){
+    	itemHtml="";
+    	if(!readOnly){
+	        itemHtml="<div class='col-md-12 headerCategory margin-top-20'>"+
+	            "<div class='col-md-12'>"+
+	                "<h2 class='letter-orange mainTitle text-left'>"+label+"</h2>"+
+	            "</div>"+
+	            "<div class='col-md-1'></div>"+
+	            "<div class='col-md-5'><h3 class='subTitleCart letter-orange'>Label<h3></div>"+
+	            "<div class='col-md-2'><h3 class='subTitleCart letter-orange'>Price ht<h3></div>"+
+	            "<div class='col-md-1'><h3 class='subTitleCart letter-orange'>Detail<h3></div>"+
+	            "<div class='col-md-2'><h3 class='subTitleCart letter-orange'>Price ttc<h3></div>"+
+	            "<div class='col-md-1'></div>"+
+	        "</div>";
+	    }
         $.each(item,function(e,data){
-            itemHtml+=shopping.getViewItem(e, data, type);
-            totalCart=totalCart+(data.price*data.countQuantity);
+            itemHtml+=shopping.getViewItem(e, data, type, readOnly);
+            if(!readOnly)
+            	totalCart=totalCart+(data.price*data.countQuantity);
         });
         return itemHtml;
     },
@@ -390,7 +397,7 @@ var shopping = {
     },
     reloadViewCart:function(){
         totalCart=0;
-        if(shoppingCart.countQuantity > 0 )
+        if(shopping.cart.countQuantity > 0 )
             html=shopping.generateCartView();
         else
             html=shopping.generateEmptyCartView();
@@ -408,7 +415,7 @@ var shopping = {
         orderItem=new Object;
         order.totalPrice=totalCart;
         order.currency="EUR";
-        $.each(shoppingCart,function(e,v){
+        $.each(shopping.cart,function(e,v){
             if(e=="countQuantity")
                 order.countOrderItem=v;
             else if(e=="services"){
@@ -443,7 +450,7 @@ var shopping = {
                   success: function(data){
                     if(data.result) {
                         toastr.success(data.msg);
-                        shoppingCart={countQuantity:0};
+                        shopping.cart={countQuantity:0};
                         //if(reload)
                         urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.history");
                     }
@@ -461,15 +468,20 @@ var shopping = {
             title: "Give a name to the saving cart:", 
             value : "Backup of "+moment(new Date()).format('DD-MM-YYYY HH:MM'), 
             callback : function(result){ 
-                order.name=result;
+                params={
+                	name:result,
+                	type:"shoppingCart",
+                	totalPrice:totalCart,
+                	object:shopping.cart
+                };
                 $.ajax({
                   type: "POST",
-                  url: baseUrl+"/"+moduleId+"/cart/save", 
-                  data: order,
+                  url: baseUrl+"/"+moduleId+"/backup/save", 
+                  data: params,
                   success: function(data){
                     if(data.result) {
                         toastr.success(data.msg);
-                        shoppingCart={countQuantity:0};
+                        shopping.cart={countQuantity:0};
                         localStorage.removeItem("shoppingCart");
                         //if(reload)
                         urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.backup");
@@ -479,7 +491,6 @@ var shopping = {
                   },
                   dataType: "json"
                 });
-                console.log(order);
             }
         })
     }

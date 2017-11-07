@@ -195,7 +195,7 @@
 <?php $cities = CO2::getCitiesNewCaledonia(); ?>
 <?php $this->renderPartial($layoutPath.'modals.kgougle.citiesReferencement', array("cities"=>$cities)); ?>
 
-<?php $this->renderPartial($layoutPath.'footer', array("subdomain"=>"referencement")); ?>
+<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array("subdomain"=>"referencement")); ?>
 
 
 <script type="text/javascript" >

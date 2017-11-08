@@ -990,53 +990,108 @@ function getAjaxFiche(url, breadcrumLevel){
 	}
 
 	allReadyLoad = true;
+	alert(url);
 	//location.hash = url;
 	urlHash=url;
 	mylog.log("urlHash", urlHash);
+	pageView=false;
 	if( urlHash.indexOf("type") < 0 && 
 		urlHash.indexOf("default.view") < 0 && 
 		urlHash.indexOf("gallery") < 0 && 
 		urlHash.indexOf("news") < 0 &&
 		urlHash.indexOf("network") < 0 && 
 		urlHash.indexOf("invite") < 0){
+		//hash = hash.replace( "#","" );
+		//	hashT=hash.split(".");
+		pageView=true;
+		var urlSplit=urlHash.replace( "#","" ).split(".");
+		if(typeof urlSplit == "string")
+			slug=urlSplit;
+		else
+			slug=urlSplit[0];
+		$.ajax({
+  			type: "POST",
+  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
+  			dataType: "json",
+  			success: function(data){
+		  		if(data.result){
+		  			//viewPage="";			  			
+		  			/*if(hashT.length > 1){
+		  				hashT.shift();
+		  				viewPage="/"+hashT.join("/");
+		  			}*/
+		  			var urlHash="#page.type."+data.contextType+".id."+data.contextId;
+		  			alert(urlHash);
+		  			//showAjaxPanel('/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
+		  		}else{
+		  			if(urlSplit[0]=="person")
+						urlType="citoyens";
+					else
+						urlType=urlSplit[0]+"s";
+		  			var urlHash="#page.type."+urlType+".id."+urlSplit[3];
+		  		}
+		  		alert(urlHash);
+		  		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
+				mylog.log("url", url);
+				$("#repertory").hide( 700 );
+				$(".main-menu-left").hide( 700 );
+				$("#ficheInfoDetail").show( 700 );
+				$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
+				
+				$.blockUI({
+					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
+				});
 
-		urlSplit=urlHash.replace( "#","" ).split(".");
-		mylog.log(urlHash);
+				mylog.log("networkParams", networkParams);
+				
+				getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
+					$.unblockUI();
+					mylog.log(contextData);
+					//Construct breadcrumb
+					if(breadcrumLevel != false){
+						$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
+						$("#breadcrum").append($html);
+					}
+				},"html");
+			}
+		});
+		//mylog.log(urlHash);
 
-		if(urlSplit[0]=="person")
+		/*if(urlSplit[0]=="person")
 			urlType="citoyens";
 		else
-			urlType=urlSplit[0]+"s";
+			urlType=urlSplit[0]+"s";	
 
-		urlHash="#element."+urlSplit[1]+".type."+urlType+".id."+urlSplit[3];
+		urlHash="#element."+urlSplit[1]+".type."+urlType+".id."+urlSplit[3];*/
 	}
-
-	if(urlHash.indexOf("news") >= 0){
-		urlHash=urlHash+"&isFirst=1";
-	}
-	mylog.log("urlHash2", urlHash);
-	url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
-	mylog.log("url", url);
-	$("#repertory").hide( 700 );
-	$(".main-menu-left").hide( 700 );
-	$("#ficheInfoDetail").show( 700 );
-	$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
-	
-	$.blockUI({
-		message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
-	});
-
-	mylog.log("networkParams", networkParams);
-	
-	getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
-		$.unblockUI();
-		mylog.log(contextData);
-		//Construct breadcrumb
-		if(breadcrumLevel != false){
-			$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
-			$("#breadcrum").append($html);
+	/*if(!pageView){
+		if(urlHash.indexOf("news") >= 0){
+			urlHash=urlHash+"&isFirst=1";
 		}
-	},"html");
+		mylog.log("urlHash2", urlHash);
+		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
+		mylog.log("url", url);
+		$("#repertory").hide( 700 );
+		$(".main-menu-left").hide( 700 );
+		$("#ficheInfoDetail").show( 700 );
+		$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
+		
+		$.blockUI({
+			message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
+		});
+
+		mylog.log("networkParams", networkParams);
+		
+		getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
+			$.unblockUI();
+			mylog.log(contextData);
+			//Construct breadcrumb
+			if(breadcrumLevel != false){
+				$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
+				$("#breadcrum").append($html);
+			}
+		},"html");
+	}*/
 }
 
 

@@ -125,7 +125,7 @@
         return this.currentYear = time.year;
       },
       prev: function() {
-        if (this.currentMonth - 1 < 0) {
+        /*if (this.currentMonth - 1 < 0) {
           this.currentYear = this.currentYear - 1;
           this.currentMonth = 11;
         } else {
@@ -134,11 +134,16 @@
         this.drawDays(this.currentYear, this.currentMonth);
         if (this.options.onMonthChange) {
           this.options.onMonthChange.call(this);
-        }
+        }*/
+        
+        agendaWinMonth--;
+        calculateAgendaWindow(agendaWinMonth);
+        startSearch(0, indexStep, searchCallback);
+
         return null;
       },
       next: function() {
-        if (this.currentMonth + 1 > 11) {
+        /*if (this.currentMonth + 1 > 11) {
           this.currentYear = this.currentYear + 1;
           this.currentMonth = 0;
         } else {
@@ -147,7 +152,12 @@
         this.drawDays(this.currentYear, this.currentMonth);
         if (this.options.onMonthChange) {
           this.options.onMonthChange.call(this);
-        }
+        }*/
+
+        agendaWinMonth++;
+        calculateAgendaWindow(agendaWinMonth);
+        startSearch(0, indexStep, searchCallback);
+
         return null;
       },
       curr: function() {
@@ -262,7 +272,7 @@
           this.applyTransform(day, 'rotateY(180deg)');
           this.applyBackfaceVisibility(day);
         }
-        console.log("debug calendar", this.options);
+        //console.log("debug calendar", this.options);
         day = this.makeActive(day, this.options.events[dateString]);
         return this.$element.find('[data-group="days"]').append(day);
       },

@@ -126,6 +126,15 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       "indexMax" : indexMax
     };
 
+    console.log("DATE ***", searchType[0], STARTDATE, ENDDATE)
+    if(searchType[0] == "events"){
+      if(typeof STARTDATE != "undefined" && typeof ENDDATE != "undefined"){
+        console.log("integrate AGENDA_WINDOW");
+        data.startDate = STARTDATE;
+        data.endDate = ENDDATE;
+        console.log("DATE **", "data", data) ;
+      }
+    }
     
     if($("#priceMin").val()!="") data.priceMin = $("#priceMin").val();
     if($("#priceMax").val()!="") data.priceMax = $("#priceMax").val();
@@ -341,6 +350,31 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         }
     });
 
+
+  }
+
+  function calculateAgendaWindow(nbMonth){
+
+      //console.log("calculateAgendaWindow", nbMonth);
+      if(typeof STARTDATE == "undefined") return;
+      //console.log("calculateAgendaWindow ok");
+
+      var today = new Date();
+
+      if(nbMonth != 0)
+          today.setMonth(today.getMonth() + nbMonth);
+
+      startWinDATE = today;   
+      //console.log("DATE **", "today", today) ;
+      STARTDATE = today.setDate(1);
+
+      //console.log("DATE **", "STARTDATE", STARTDATE) ;
+      ENDDATE = today.setMonth(today.getMonth() + 1);
+
+      STARTDATE = Math.floor(STARTDATE / 1000);
+      ENDDATE = Math.floor(ENDDATE / 1000);
+
+     // console.log("DATE **", "startWinDATE", startWinDATE, "STARTDATE", STARTDATE, "ENDDATE", ENDDATE) ;
 
   }
 

@@ -373,8 +373,8 @@ function lockScopeOnCityKey(cityKey, cityName){
 	if(cp != "") url += ".postalCode." + cityKeyPart(cityKey, "cp");
 	
 	$(".city-name-locked").html("<a href='javascript:' class='text-red'>"+
-									"<i class='fa fa-lock tooltips' id='cadenas' data-toggle='tooltip' data-placement='top' title='Débloquer'></i>"+
-								"</a> <a href='"+url+"' class='lbh homestead text-red tooltips' data-toggle='tooltip' data-placement='top' title='Retourner sur la page'>"+ cityName + "</a>" );
+									"<i class='fa fa-lock tooltips' id='cadenas' data-toggle='tooltip' data-placement='top' title='"+trad.Unblock+"'></i>"+
+								"</a> <a href='"+url+"' class='lbh homestead text-red tooltips' data-toggle='tooltip' data-placement='top' title='"+trad.backtopage+"'>"+ cityName + "</a>" );
 
 	$(".city-name-locked").click(function(){
 		rebuildSearchScopeInput();

@@ -154,6 +154,15 @@ var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
 var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
 
+
+
+<?php if(@$type=="events"){ ?>
+  var STARTDATE = new Date();
+  var ENDDATE = new Date();
+  var startWinDATE = new Date();
+  var agendaWinMonth = 0;
+<?php } ?>
+
 //var TPL = "kgougle";
 
 //allSearchType = ["persons", "NGO", "LocalBusiness", "projects", "Group"];
@@ -211,6 +220,8 @@ jQuery(document).ready(function() {
             }
         });
 
+
+
         loadingData = false; 
         initTypeSearch(type);
         startSearch(0, indexStepInit, searchCallback);
@@ -219,7 +230,10 @@ jQuery(document).ready(function() {
 
     initSearchInterface(); //themes/co2/assets/js/default/search.js
 
-    
+
+
+    calculateAgendaWindow(0);
+
     if(page == "annonces" || page == "agenda" || page == "power"){
         setTimeout(function(){
             //KScrollTo("#content-social");  
@@ -240,11 +254,13 @@ function showResultInCalendar(mapElements){
     //mylog.dir(mapElements);
 
     var events = new Array();
+    var fstDate = "";
     console.log("data mapElements", mapElements);
     $.each(mapElements, function(key, thisEvent){
     
         var startDate = exists(thisEvent["startDateTime"]) ? thisEvent["startDateTime"].substr(0, 10) : "";
         var endDate = exists(thisEvent["endDateTime"]) ? thisEvent["endDateTime"].substr(0, 10) : "";
+
         var cp = "";
         var loc = "";
         if(thisEvent["address"] != null){
@@ -271,8 +287,8 @@ function showResultInCalendar(mapElements){
 
     $(".calendar").html($(".responsive-calendar-init").html());
 
-    var aujourdhui = new Date();
-    var  month = (aujourdhui.getMonth()+1).toString();
+    var aujourdhui = startWinDATE; //new Date();
+    var  month = (aujourdhui.getMonth()).toString();
     if(aujourdhui.getMonth() < 10) month = "0" + month;
     var date = aujourdhui.getFullYear().toString() + "-" + month;
 
@@ -283,6 +299,19 @@ function showResultInCalendar(mapElements){
         });
 
     $(".responsive-calendar").show();
+
+
+    /*$("#btn-month-next").click(function(){
+        agendaWinMonth++;
+        calculateAgendaWindow(agendaWinMonth);
+        startSearch(0, indexStep, searchCallback);
+    });
+    $("#btn-month-before").click(function(){
+        agendaWinMonth--;
+        calculateAgendaWindow(agendaWinMonth);
+        startSearch(0, indexStep, searchCallback);
+    });*/
+
 
     calendarInit = true;
 }

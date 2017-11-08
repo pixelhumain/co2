@@ -55,29 +55,29 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	.contentRatingComment textarea{
 		min-height: 100px;
 	}
-	#orderList{
+	#columnList{
 		bottom: 0px;
 		list-style: none;
 		border-right: 1px solid rgba(0,0,0,0.1);
 		min-height: 300px
 	}
-	#orderList li:hover{
+	#columnList li:hover{
 		cursor:pointer;
 		background-color:rgba(0,0,0,0.1);
 		border-left: 4px solid #FF9E85;
 	}
-	#orderList li{
+	#columnList li{
 		border-left: 4px solid white;
 	}
 	/*#orderList li.active:hover{
 		background-color: yellow;
 	}*/
-	.orderSection .title{
+	.columnSection .title{
 		font-size: 18px;
 		font-weight: 100;
 		text-transform: inherit;
 	}
-	#orderList li.active{
+	#columnList li.active{
 		border-left: 4px solid #EF5B34;
 		/*font-weight: bold;
 		font-size: 20px;*/
@@ -93,39 +93,51 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 		<button data-form-type="product"  
                     data-dismiss="modal"
                     class="btn btn-link btn-open-form col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2 col-lg-4 text-orange">
-                <h6><i class="fa fa-shopping-basket fa-2x"></i><br> <?php echo Yii::t("common", "Product") ?></h6>
+                <h5><i class="fa fa-shopping-basket fa-2x"></i><br> <?php echo Yii::t("common", "Product") ?></h5>
                 <small><?php echo Yii::t("form","Food, hand-made, jewelery...<br>Sell your product here") ?></small>
             </button>
             <button data-form-type="service" data-form-subtype=""  
                     data-dismiss="modal"
                     class="btn btn-link btn-open-form col-xs-6 col-sm-4 col-md-4 col-lg-4 text-green">
-                <h6><i class="fa fa-sun-o fa-2x"></i><br> <?php echo Yii::t("common", "Services") ?></h6>
+                <h5><i class="fa fa-sun-o fa-2x"></i><br> <?php echo Yii::t("common", "Services") ?></h5>
                 <small><?php echo Yii::t("form","Hostel, funny activity, food, guide...<br>Purpose your services here !") ?></small>
             </button>
 	</div>
 </div>
 <?php } ?>
-<?php if($actionType=="history"){ ?>
-	<ul id="orderList" class="col-md-3 col-sm-3 col-xs-3 no-padding">
+<?php if($actionType=="history" || $actionType=="backup"){ ?>
+	<ul id="columnList" class="col-md-3 col-sm-3 col-xs-3 no-padding">
 		
 		<?php $i=0;
-			foreach ($orderList as $key => $value){ 
+			foreach ($parentList as $key => $value){ 
 				if($i==0){
-					$initHeader=$value;
+					$nameHeader=$value["name"];
+					$priceHeader=@$value["totalPrice"];
+					$currencyHeader=@$value["currency"];
+					if(@$value["countOrderItem"])
+						$countHeader=$value["countOrderItem"];
+					else{
+						$firstId=$key;
+						$countHeader=$value["object"]["countQuantity"];
+					}
 				}
-				$idOrder=(string)$value["_id"];
+				if(@$value["countOrderItem"])
+					$count=$value["countOrderItem"];
+				else
+					$count=$value["object"]["countQuantity"];
+				//$idOrder=(string)$value["_id"];
 				?>
-				<li class="orderSection <?php if($i==0) echo "active" ?> orderSection<?php echo $key ?> padding-10" data-id="<?php echo $key ?>">
+				<li class="columnSection <?php if($i==0) echo "active" ?> columnSection<?php echo $key ?> padding-10" data-id="<?php echo $key ?>">
 					<h4 class="title no-margin"><?php echo $value["name"] ?></h4>
-					<span><i><?php echo $value["countOrderItem"]; ?> purchase<?php if ($value["countOrderItem"] >1) echo "s" ?></i></span>
+					<span><i><?php echo $count; ?> purchase<?php if ($count >1) echo "s" ?></i></span>
 				</li>
 		<?php $i++; 
 		} ?>
 	</ul>
-	<div id="headerOrder" class="col-md-9 col-sm-9 col-xs-9 margin-bottom-20">
-		<h4 class="col-md-12 col-sm-12 orderTitle no-padding letter-orange"><?php echo $initHeader["name"] ?></h4>
-		<span>Price of this command: <span class="orderPrice"><?php echo $initHeader["totalPrice"] ?> <?php echo $initHeader["currency"] ?></span></span><br/>
-		<span class="orderPurchases"><i><?php echo $value["countOrderItem"]; ?> purchase<?php if ($value["countOrderItem"] >1) echo "s" ?></i></span>
+	<div id="headerList" class="col-md-9 col-sm-9 col-xs-9 margin-bottom-20">
+		<h4 class="col-md-12 col-sm-12 title no-padding letter-orange"><?php echo $nameHeader ?></h4>
+		<span>Price of this command: <span class="price"><?php echo $priceHeader ?> <?php echo $currencyHeader ?></span></span><br/>
+		<span class="purchases"><i><?php echo $countHeader; ?> purchase<?php if ($countHeader >1) echo "s" ?></i></span>
 	</div>
 	<div id="listList" class="col-md-9 col-sm-9 col-xs-9 pull-right">
 
@@ -141,10 +153,15 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	var view = "<?php echo @$view; ?>";
 	var indexStepGS = 20;
 	var listElement = <?php echo json_encode( $list ); ?>;
-	var orderList= <?php echo json_encode( @$orderList ); ?>;
+	var parentList= <?php echo json_encode( @$parentList ); ?>;
 	var actionType="<?php echo $actionType ?>";
 	jQuery(document).ready(function() {
-		list.initList(listElement, actionType);
+		if(actionType=="backup"){
+			html=shopping.getComponentsHtml(parentList["<?php echo @$firstId ?>"].object,true,true);
+			$("#listList").html(html);
+		}else
+			list.initList(listElement, actionType);
+		
 		$(".btn-open-form").click(function(){
 			dyFObj.openForm($(this).data("form-type"),"sub");
 		});
@@ -153,28 +170,33 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 			initOrderEvent();
 	})
 	function initOrderEvent(){
-		$(".orderSection").click(function(){
+		$(".columnSection").click(function(){
 			showLoader('#listList');
-			$(".orderSection").removeClass("active");
+			$(".columnSection").removeClass("active");
 			$(this).addClass("active");
-			orderId=$(this).data("id");
-			$("#headerOrder .orderTitle").text(orderList[orderId].name);
-			$("#headerOrder .orderPrice").text(orderList[orderId].totalPrice+" "+orderList[orderId].currency);
-			s=(orderList[orderId].countOrderItem > 1) ? "s": "";
-			$("#headerOrder .orderPurchases").text(orderList[orderId].countOrderItem+" purchase"+s);
-			$.ajax({
-				type: "POST",
-				url: baseUrl+"/"+moduleId+"/order/get/id/"+orderId, 
-				  success: function(data){
-					if(data.result) {
-						listElement = data.list;
-			        	list.initList(data.list, actionType);
-					}
-			        else
-			        	toastr.error(data.msg);  
-				  },
-				  dataType: "json"
-			});
+			parentId=$(this).data("id");
+			$("#headerList .title").text(parentList[parentId].name);
+			$("#headerList .price").text(parentList[parentId].totalPrice+" "+parentList[parentId].currency);
+			s=(parentList[parentId].countOrderItem > 1) ? "s": "";
+			$("#headerList .purchases").text(parentList[parentId].countOrderItem+" purchase"+s);
+			if(actionType=="history"){
+				$.ajax({
+					type: "POST",
+					url: baseUrl+"/"+moduleId+"/order/get/id/"+parentId, 
+					  success: function(data){
+						if(data.result) {
+							listElement = data.list;
+				        	list.initList(data.list, actionType);
+						}
+				        else
+				        	toastr.error(data.msg);  
+					  },
+					  dataType: "json"
+				});
+			}else{
+				html=shopping.getComponentsHtml(parentList[parentId].object,firstLevel);
+				$("#listList").html(html);
+			}
 		});
 	}
 	/*function initList(){

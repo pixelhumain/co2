@@ -27,7 +27,7 @@
         	
 <header>
 <div class="container">
-    <div class="headerTitle"> CONTACT</div>
+    <div class="headerTitle"> <?php echo Yii::t("terla", "Contact"); ?></div>
 </div>
 </header>
 

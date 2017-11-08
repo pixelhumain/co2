@@ -42,7 +42,6 @@
 ?>
 
 <style>
-    <?php if($params["title"] != "Kgougle") { ?>
     header .headerImg{
       background-image: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion1.jpg");
           background-size: 100% auto;
@@ -62,7 +61,10 @@
         border-radius: 50%;
         padding-right: 4px;
     }
-    <?php } ?>
+
+    #dropdown_search{
+        margin-top:20px;
+    }
 </style>
 
 

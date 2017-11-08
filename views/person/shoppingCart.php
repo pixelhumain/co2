@@ -6,7 +6,7 @@
         top:0px !important;
 	}
 	#shoppingCart .contentOnePage{
-		min-height:700px;
+		/*min-height:700px;*/
 		margin-top: 45px !important;
 	}
 	.contentOnePage .title > h2{
@@ -65,6 +65,30 @@
         line-height: 21px;
         font-size: 16px;
    }
+
+   #shoppingCart .description{
+    max-height: 60px;
+    overflow: hidden;
+    color:grey;
+   }
+
+   #openModal .container,
+   #openModal .modal-content{
+     padding:0px!important;
+   }
+
+   .modal-open-footer{
+    display: none;
+   }
+
+   footer{
+    margin-top:50px;
+   }
+
+   .associated{
+      margin-top: 100px;
+   }
+
 </style>
 <div id="shoppingCart">
     <div class="headerTitleStanalone"></div>
@@ -73,6 +97,11 @@
     	</div>
     </div>
 </div>
+<?php 
+    $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+    $this->renderPartial('../element/terla/associated', array()); 
+    $this->renderPartial($layoutPath.'footer', array("subdomain"=>"page")); 
+?>
 <script type="text/javascript">
     var totalCart=0;
     var openDetails=[];
@@ -83,7 +112,7 @@
       "</div>";
       $(".headerTitleStanalone").html(str);
       initBtnLink();
-      if(shoppingCart.countQuantity > 0 )
+      if(shopping.cart.countQuantity > 0 )
       	html=shopping.generateCartView();
       else
       	html=shopping.generateEmptyCartView();

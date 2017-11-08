@@ -2,7 +2,7 @@ var shopping = {
 	cart:{
 		countQuantity:0
 	},
-	checkoutObj = {},
+	checkoutObj : {},
 	addToShoppingCart: function(id, type, subType, ranges){
 		incCart=true;
 		if(typeof userId != "undefined" && userId != ""){
@@ -408,21 +408,16 @@ var shopping = {
         }
     },
     buyCart:function(){
-        order=new Object;
-        orderItem=new Object;
-        order.totalPrice=totalCart;
-        order.currency="EUR";
-        if(typeof shopping.cart.backup != "undefined"){
-        	order.backup=shopping.cart.backup;
-        }
-        $.each(shopping.cart,function(e,v){
         order = {
         	totalPrice : totalCart,
 	        currency : "EUR"
         };
-        orderItem = new Object;
+        orderItem=new Object;
+        if(typeof shopping.cart.backup != "undefined"){
+        	order.backup=shopping.cart.backup;
+        }
         shopping.checkoutObj = {};
-        $.each(shoppingCart,function(e,v){
+        $.each(shopping.cart,function(e,v){
             if(e=="countQuantity")
                 order.countOrderItem=v;
             else if(e=="services"){
@@ -493,14 +488,14 @@ var shopping = {
     saveCart:function(){
     	if(typeof shopping.cart.backup !="undefined"){
     		params={
-    			id:shopping.cart.backup,
-    			totalPrice:totalCart,
-	            object:shopping.cart
+    			id : shopping.cart.backup,
+    			totalPrice : totalCart,
+	            object : shopping.cart
 	        };
     		$.ajax({
-              type: "POST",
-              url: baseUrl+"/"+moduleId+"/backup/update", 
-              data: params,
+              type : "POST",
+              url : baseUrl+"/"+moduleId+"/backup/update", 
+              data : params,
               success: function(data){
                 if(data.result) {
                     toastr.success(data.msg);

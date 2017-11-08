@@ -990,14 +990,37 @@ function getAjaxFiche(url, breadcrumLevel){
 	}
 
 	allReadyLoad = true;
-	alert(url);
 	//location.hash = url;
 	urlHash=url;
 	mylog.log("urlHash", urlHash);
 	pageView=false;
-	if( urlHash.indexOf("type") < 0 && 
+	if(urlHash.indexOf("page") >= 0){
+		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
+				mylog.log("url", url);
+				$("#repertory").hide( 700 );
+				$(".main-menu-left").hide( 700 );
+				$("#ficheInfoDetail").show( 700 );
+				$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
+				
+				$.blockUI({
+					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
+				});
+
+				mylog.log("networkParams", networkParams);
+				
+				getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
+					$.unblockUI();
+					mylog.log(contextData);
+					//Construct breadcrumb
+					if(breadcrumLevel != false){
+						$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
+						$("#breadcrum").append($html);
+					}
+				},"html");
+	}
+	else if( /*urlHash.indexOf("type") < 0 &&*/ 
 		urlHash.indexOf("default.view") < 0 && 
-		urlHash.indexOf("gallery") < 0 && 
+		/*urlHash.indexOf("gallery") < 0 &&*/ 
 		urlHash.indexOf("news") < 0 &&
 		urlHash.indexOf("network") < 0 && 
 		urlHash.indexOf("invite") < 0){
@@ -1021,16 +1044,14 @@ function getAjaxFiche(url, breadcrumLevel){
 		  				viewPage="/"+hashT.join("/");
 		  			}*/
 		  			var urlHash="#page.type."+data.contextType+".id."+data.contextId;
-		  			alert(urlHash);
 		  			//showAjaxPanel('/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
-		  		}else{
+		  		}/*else{
 		  			if(urlSplit[0]=="person")
 						urlType="citoyens";
 					else
 						urlType=urlSplit[0]+"s";
 		  			var urlHash="#page.type."+urlType+".id."+urlSplit[3];
-		  		}
-		  		alert(urlHash);
+		  		}*/
 		  		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
 				mylog.log("url", url);
 				$("#repertory").hide( 700 );

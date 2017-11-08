@@ -49,9 +49,9 @@
 							<i class="fa fa-tags"></i>
 						</button>
 						<ul class="dropdown-menu panel_map pull-right" id="panel_map" role="menu" aria-labelledby="panel_map">
-						    <h3 class="title_panel_map"><i class="fa fa-angle-down"></i> Filtrer les résultats par tags</h3>
+						    <h3 class="title_panel_map"><i class="fa fa-angle-down"></i> <?php echo Yii::t("common", "Filter results by tags"); ?></h3>
 							<button class='item_panel_map' id='item_panel_map_all'>
-								<i class='fa fa-star'></i> Tous
+								<i class='fa fa-star'></i> <?php echo Yii::t("common", "All"); ?>
 							</button>
 						</ul>
 					</div>	
@@ -62,21 +62,21 @@
 							<i class="fa fa-filter"></i>
 						</button>
 						<ul class="dropdown-menu panel_map" id="panel_filter" role="menu" aria-labelledby="panel_filter">
-						    <h3 class="title_panel_map"><i class="fa fa-angle-down"></i> Filtrer les résultats par types</h3>
+						    <h3 class="title_panel_map"><i class="fa fa-angle-down"></i> <?php echo Yii::t("common", "Filter results by types"); ?></h3>
 							<button class='item_panel_map' id='item_panel_filter_all'>
-								<i class='fa fa-star'></i> Tous
+								<i class='fa fa-star'></i> <?php echo Yii::t("common", "All"); ?>
 							</button>
 						</ul>
 					</div>
 				<?php } ?>	
-				<span class="right_tool_map_header_title">Résultats</span>
+				<span class="right_tool_map_header_title"><?php echo Yii::t("common", "Results"); ?></span>
 					<span class="right_tool_map_header_info"> / </span>
 					
 				</div>
 				
 				<!-- 	PSEUDO SEARCH -->
 				<div id="map_pseudo_filters">
-					<input class="form-control date-range active" type="text" id="input_name_filter" placeholder="filtrer par nom ...">
+					<input class="form-control date-range active" type="text" id="input_name_filter" placeholder="<?php echo Yii::t("common", "Filter by names"); ?> ...">
 				</div>
 				<!-- 	PSEUDO SEARCH -->
 
@@ -206,12 +206,12 @@
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title text-dark"><i class="fa fa-map-marker"></i></i> Cette donnée n'est pas géolocalisée</h4>
+			        <h4 class="modal-title text-dark"><i class="fa fa-map-marker"></i></i> <?php echo Yii::t("common", "This data is not geolocated"); ?></h4>
 			      </div>
 			      <div class="modal-body"></div>
 			      <div class="modal-footer">
-			        <button type="button" id="btn-open-details" class="btn btn-default btn-sm btn-success" data-dismiss="modal"><i class="fa fa-plus"></i> Afficher les détails</button>
-			      	<button type="button" class="btn btn-default btn-sm btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Fermer</button>
+			        <button type="button" id="btn-open-details" class="btn btn-default btn-sm btn-success" data-dismiss="modal"><i class="fa fa-plus"></i> <?php echo Yii::t("common", "Show the details"); ?></button>
+			      	<button type="button" class="btn btn-default btn-sm btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> <?php echo Yii::t("common", "Close"); ?></button>
 			      </div>
 			    </div>
 
@@ -238,7 +238,7 @@
 	            <div class="dropdown pull-left" id="dropdown-find-place">
 	                 <a href="#" id="btn-dropdown-find-place" data-toggle="dropdown" class="dropdown-toggle"></a>
 	                 <ul id="list-dropdown-find-place" class="dropdown-menu" style=" width:100%;" role="menu" aria-labelledby="dropdown-find-place">
-	                 	<li style="width:100%;"><a href="#" class="btn-find-place"><i class="fa fa-magic"></i> lancer la recherche ...</a></li>
+	                 	<li style="width:100%;"><a href="#" class="btn-find-place"><i class="fa fa-magic"></i> <?php echo Yii::t("common", "Launch search"); ?> ...</a></li>
 	                 </ul>
 	            </div>
 	        </div>
@@ -256,7 +256,7 @@
 		
 			<?php if(!isset($sigParams['useBtnCloseMap']) || @$sigParams['useBtnCloseMap'] == true ){ ?>
 			<div class="btn-group btn-group-lg tooltips"
-				 data-toggle="tooltip" data-placement="bottom" title="Fermer la carte">
+				 data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common", "Change the map"); ?>">
 				<button type="button" class="btn btn-map " id="btn-back" >
 				<i class="fa fa-chevron-up"></i></button>
 			</div>
@@ -264,7 +264,7 @@
 			<?php } ?>	
 			<?php if(@$sigParams['useSatelliteTiles']){ ?>
 				<div class="btn-group btn-group-lg hidden-xs tooltips"
-					 data-toggle="tooltip" data-placement="bottom" title="Changer le fond de carte">
+					 data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common", "Change the map"); ?>">
 					<button type="button" class="btn btn-map " id="btn-satellite" >
 						<i class="fa fa-magic"></i></button>
 				</div>
@@ -272,16 +272,16 @@
 			<?php if($sigParams['useZoomButton']){ ?>
 				<div class="btn-group btn-group-lg">		
 					<button type="button" class="btn btn-map tooltips" id="btn-zoom-out" 
-							data-toggle="tooltip" data-placement="bottom" title="Zoom -">
+							data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common", "Zoom"); ?> -">
 					<i class="fa fa-search-minus"></i></button>
 					<button type="button" class="btn btn-map tooltips" id="btn-zoom-in" 
-							data-toggle="tooltip" data-placement="bottom" title="Zoom +">
+							data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common", "Zoom"); ?> +">
 					<i class="fa fa-search-plus"></i></button>
 				</div>
 			<?php } ?>
 			<?php if($sigParams['useHomeButton']){ ?>
 				<div class="btn-group btn-group-lg tooltips" 
-							data-toggle="tooltip" data-placement="bottom" title="Autour de moi">
+							data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common", "Around me"); ?>">
 					<button type="button" class="btn btn-map " id="btn-home">
 					<i class="fa fa-bullseye"></i></button>
 				</div>
@@ -298,7 +298,7 @@
 		  <button class="btn btn-map" data-km="25000">25 km</button>
 		  <button class="btn btn-map" data-km="50000">50 km</button>
 		  <button class="btn btn-map bg-azure tooltips" id="btn-share-aroundme" onclick="javascript:Sig.showIframeSig()"
-				  data-toggle="tooltip" data-placement="bottom" title="Autour de moi">
+				  data-toggle="tooltip" data-placement="bottom" title="<?php echo Yii::t("common", "Around me"); ?>">
 		  	<i class="fa fa-share-square-o"></i>
 		  </button>
 		  <button class="btn btn-map" id="loader-aroundme">

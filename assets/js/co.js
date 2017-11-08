@@ -4895,9 +4895,9 @@ function getContextDataLinks(){
 			contextData.map = {
 				data : data,
 				icon : "link",
-				title : "La communauté de <b>"+contextData.name+"</b>"
+				title : trad.thecommunityof+" <b>"+contextData.name+"</b>"
 			} ;
-			Sig.showMapElements(Sig.map, data, "link", "La communauté de <b>"+contextData.name+"</b>");
+			Sig.showMapElements(Sig.map, data, "link", trad.thecommunityof+" <b>"+contextData.name+"</b>");
 			//showMap();
 		},
 		error: function (error) {

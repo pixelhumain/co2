@@ -386,7 +386,9 @@ var trad = {
 
 	"thxForParticipation" : "<?php echo Yii::t("cooperation", "Thanks for your participation !") ?>",
 
-	"loadingComments" : "<?php echo Yii::t("cooperation", "Loading comments") ?>"
+	"loadingComments" : "<?php echo Yii::t("cooperation", "Loading comments") ?>",
+
+	"thecommunityof" : "<?php echo Yii::t("common", "The community of") ?>"
 
 
 };

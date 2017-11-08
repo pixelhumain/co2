@@ -564,26 +564,7 @@ var formInMap = {
 			showMap(false);
 			if(typeof contextData.map != "undefined" && contextData.map != null)
 				Sig.showMapElements(Sig.map, contextData.map.data, contextData.map.icon, contextData.map.title);
-		}	
-			// }else{
-			// 	mylog.log("backToForm 4");
-			// 	if(notEmpty($("[name='newPC_lat']").val())){
-			// 		postalCodeObj = {
-			// 			postalCode : $("[name='newPC_postalCode']").val(),
-			// 			name : $("[name='newPC_name']").val(),
-			// 			latitude : $("[name='newPC_lat']").val(),
-			// 			longitude : $("[name='newPC_lon']").val()
-			// 		};
-			// 		mylog.log("forminmap copyMapForm2Dynform 2");
-			// 		dyFInputs.locationObj.copyMapForm2Dynform(postalCodeObj);
-			// 		dyFInputs.locationObj.addLocationToForm(postalCodeObj);
-			// 	}
-			// 	showMap(false);
-			// 	Sig.clearMap();
-			// 	if(location.hash != "#referencement" && location.hash != "#web")
-			// 		$('#ajax-modal').modal("show");
-			// }
-		//}
+		}
 		
 	},
 
@@ -939,7 +920,7 @@ var formInMap = {
 		if(typeof keepType =="undefined" || keepType==false){
 			formInMap.formType = "";
 		}
-		formInMap.updateLocality = false;
+		//formInMap.updateLocality = false;
 		formInMap.addressesIndex = false;
 		formInMap.initDropdown();
 		formInMap.saveCities = {} ;

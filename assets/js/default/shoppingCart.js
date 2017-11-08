@@ -225,25 +225,25 @@ var shopping = {
     			"</div></div>";
     	return str;
     },
-    getComponentsHtml:function(data,firstLevel, readOnly){
+    getComponentsHtml:function(data,firstLevel){
         itemHtml="";
         $.each(data,function(i,v){
             console.log(v);
-            if(i!="countQuantity"){
+            if(i!="countQuantity" && i != "backup"){
                 if(i=="services"){
                     $.each(v,function(e, service){
                         console.log(service);
-                        itemHtml+=shopping.getItemByCategory(e,service,"services",readOnly);
+                        itemHtml+=shopping.getItemByCategory(e,service,"services");
                     });
                 }
                 else{
-                    itemHtml+=shopping.getItemByCategory(i,v, "products",readOnly);
+                    itemHtml+=shopping.getItemByCategory(i,v, "products");
                 }
             }
         });
         return itemHtml;
     },
-    getItemByCategory:function(label,item, type,readOnly){
+    getItemByCategory:function(label,item, type){
         itemHtml="<div class='col-md-12 headerCategory margin-top-20'>"+
             "<div class='col-md-12'>"+
                 "<h2 class='letter-orange mainTitle text-left'>"+label+"</h2>"+
@@ -256,13 +256,12 @@ var shopping = {
             "<div class='col-md-1'></div>"+
         "</div>";
         $.each(item,function(e,data){
-            itemHtml+=shopping.getViewItem(e, data, type, readOnly);
-            if(!readOnly)
-            	totalCart=totalCart+(data.price*data.countQuantity);
+            itemHtml+=shopping.getViewItem(e, data, type);
+            totalCart=totalCart+(data.price*data.countQuantity);
         });
         return itemHtml;
     },
-    getViewItem:function(key, data, type,readOnly){
+    getViewItem:function(key, data, type){
         itemId=key;
         itemType=type;
         subType=null;
@@ -412,6 +411,9 @@ var shopping = {
         orderItem=new Object;
         order.totalPrice=totalCart;
         order.currency="EUR";
+        if(typeof shopping.cart.backup != "undefined"){
+        	order.backup=shopping.cart.backup;
+        }
         $.each(shopping.cart,function(e,v){
             if(e=="countQuantity")
                 order.countOrderItem=v;
@@ -461,34 +463,59 @@ var shopping = {
         })
     },
     saveCart:function(){
-        bootbox.prompt({
-            title: "Give a name to the saving cart:", 
-            value : "Backup of "+moment(new Date()).format('DD-MM-YYYY HH:MM'), 
-            callback : function(result){ 
-                params={
-                	name:result,
-                	type:"shoppingCart",
-                	totalPrice:totalCart,
-                	object:shopping.cart
-                };
-                $.ajax({
-                  type: "POST",
-                  url: baseUrl+"/"+moduleId+"/backup/save", 
-                  data: params,
-                  success: function(data){
-                    if(data.result) {
-                        toastr.success(data.msg);
-                        shopping.cart={countQuantity:0};
-                        localStorage.removeItem("shoppingCart");
-                        //if(reload)
-                        urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.backup");
-                    }
-                    else
-                        toastr.error(data.msg);  
-                  },
-                  dataType: "json"
-                });
-            }
-        })
+    	if(typeof shopping.cart.backup !="undefined"){
+    		params={
+    			id:shopping.cart.backup,
+    			totalPrice:totalCart,
+	            object:shopping.cart
+	        };
+    		$.ajax({
+              type: "POST",
+              url: baseUrl+"/"+moduleId+"/backup/update", 
+              data: params,
+              success: function(data){
+                if(data.result) {
+                    toastr.success(data.msg);
+                    shopping.cart={countQuantity:0};
+                    localStorage.removeItem("shoppingCart");
+                    urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.backup");
+                }
+                else
+                    toastr.error(data.msg);  
+              },
+              dataType: "json"
+	        });
+    	}else{
+	        bootbox.prompt({
+	            title: "Give a name to the saving cart:", 
+	            value : "Backup of "+moment(new Date()).format('DD-MM-YYYY HH:MM'), 
+	            callback : function(result){ 
+	                params={
+	                	name:result,
+	                	type:"shoppingCart",
+	                	totalPrice:totalCart,
+	                	currency:"EUR",
+	                	object:shopping.cart
+	                };
+	                $.ajax({
+	                  type: "POST",
+	                  url: baseUrl+"/"+moduleId+"/backup/save", 
+	                  data: params,
+	                  success: function(data){
+	                    if(data.result) {
+	                        toastr.success(data.msg);
+	                        shopping.cart={countQuantity:0};
+	                        localStorage.removeItem("shoppingCart");
+	                        //if(reload)
+	                        urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.backup");
+	                    }
+	                    else
+	                        toastr.error(data.msg);  
+	                  },
+	                  dataType: "json"
+	                });
+	            }
+	        })
+	    }
     }
 }

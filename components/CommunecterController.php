@@ -441,6 +441,8 @@ class CommunecterController extends Controller
     ),
     "backup"=> array(
        "save"   => array("href" => "/ph/co2/backup/save"),
+       "delete"   => array("href" => "/ph/co2/backup/delete"),
+       "update"   => array("href" => "/ph/co2/backup/update"),
       // "get"   => array("href" => "/ph/co2/order/get"),
     ),
     "orderitem"=> array(

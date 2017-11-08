@@ -18,6 +18,8 @@ class BackupController extends CommunecterController {
 	    return array(
 	        //CTK actions
 	        'save'                => 'citizenToolKit.controllers.backup.SaveAction',
+	        'delete'                => 'citizenToolKit.controllers.backup.DeleteAction',
+	        'update'                => 'citizenToolKit.controllers.backup.UpdateAction',
 	    );
 	}
     

@@ -388,7 +388,9 @@ var trad = {
 
 	"loadingComments" : "<?php echo Yii::t("cooperation", "Loading comments") ?>",
 
-	"thecommunityof" : "<?php echo Yii::t("common", "The community of") ?>"
+	"thecommunityof" : "<?php echo Yii::t("common", "The community of") ?>",
+	"Unblock" : "<?php echo Yii::t("common", "Unblock") ?>",
+	"backtopage" : "<?php echo Yii::t("common", "Back to page") ?>",
 
 
 };

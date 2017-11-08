@@ -1,4 +1,5 @@
 var shopping = {
+	checkoutObj = {},
 	addToShoppingCart: function(id, type, subType, ranges){
 		incCart=true;
 		if(typeof userId != "undefined" && userId != ""){
@@ -386,33 +387,57 @@ var shopping = {
         }
     },
     buyCart:function(){
-        order=new Object;
-        orderItem=new Object;
-        order.totalPrice=totalCart;
-        order.currency="EUR";
+        order = {
+        	totalPrice : totalCart,
+	        currency : "EUR"
+        };
+        orderItem = new Object;
+        shopping.checkoutObj = {};
         $.each(shoppingCart,function(e,v){
             if(e=="countQuantity")
                 order.countOrderItem=v;
             else if(e=="services"){
                 $.each(v, function(cat, listByCat){
                     $.each(listByCat, function(key, data){
-                        orderItem[key]=new Object;
-                        orderItem[key].orderedItemType=e;
-                        orderItem[key].quantity=data.countQuantity;
-                        orderItem[key].price=(data.price*data.countQuantity);
-                        orderItem[key].reservations=data.reservations;
+                        orderItem[key]={
+                            orderedItemType : e,
+                            quantity : data.countQuantity,
+                            price : (data.price * data.countQuantity),
+                            reservations : data.reservation
+                        };
+
+                        if( typeof checkoutObj[data.providerId] == "undefined" )
+                            checkoutObj[data.providerId] = {
+                                total : orderItem[key].price,
+                                providerType : data.providerType
+                            };
+                        else
+                            checkoutObj[data.providerId].total  += orderItem[key].price;
                     });
                 });
             }else if(e=="products"){
                 $.each(v, function(key, data){
-                    orderItem[key]=new Object;
-                    orderItem[key].orderedItemType=e;
-                    orderItem[key].quantity=data.countQuantity;
-                    orderItem[key].price=(data.price*data.countQuantity);
+                    orderItem[key]={
+                        orderedItemType : e,
+                        quantity : data.countQuantity,
+                        price : (data.price*data.countQuantity)
+                    };
+
+                    if( typeof checkoutObj[data.providerId] == "undefined" )
+                        checkoutObj[data.providerId] = {
+                            total : orderItem[key].price,
+                            providerType : data.providerType
+                        };
+                    else
+                        checkoutObj[data.providerId].total  += orderItem[key].price;
                 });
             }
         });
         order.orderItems=orderItem;
+        
+		console.log("checkout",shopping.checkoutObj);
+		alert("checkout");
+
         bootbox.prompt({
             title: "Give a name to your command:", 
             value : "Cart of "+moment(new Date()).format('DD-MM-YYYY HH:MM'), 
@@ -425,9 +450,7 @@ var shopping = {
                   success: function(data){
                     if(data.result) {
                         toastr.success(data.msg);
-                        shoppingCart={countQuantity:0};
-                        //if(reload)
-                        urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.history");
+                        //urlCtrl.loadByHash("#checkout");
                     }
                     else
                         toastr.error(data.msg);  

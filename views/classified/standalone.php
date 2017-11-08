@@ -137,12 +137,12 @@
 		//var html = directory.preview(classified);
 	  	//$("#classified").html(html);
 	});
-	function addToShoppingCart(id,type){
+	/*function addToShoppingCart(id,type){
 		if(typeof userId != "undefined" && userId != ""){
 			if(typeof shoppingCart[type] == "undefined")
 				shoppingCart[type]=[];
 			shoppingCart[type].push(mapElements[id]);
-			countShoppingCart(true);
+			shopping.countShoppingCart(true);
 			console.log("element",mapElements[id]);
 		}else{
 			$('#modalLogin').modal("show");
@@ -164,5 +164,5 @@
 			$('.shoppingCart-count').removeClass('badge-success');
 			$('.shoppingCart-count').addClass('badge-tranparent');
 		}
-	}
+	}*/
 </script>

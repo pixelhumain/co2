@@ -360,16 +360,32 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       //console.log("calculateAgendaWindow ok");
 
       var today = new Date();
+      var start = new Date();
 
-      if(nbMonth != 0)
-          today.setMonth(today.getMonth() + nbMonth);
-
-      startWinDATE = today;   
       //console.log("DATE **", "today", today) ;
-      STARTDATE = today.setDate(1);
+      //console.log("startWinDATE **", start) ;
+      start.setDate(27);
+      STARTDATE = today.setDate(27);
 
-      //console.log("DATE **", "STARTDATE", STARTDATE) ;
-      ENDDATE = today.setMonth(today.getMonth() + 1);
+      //startWinDATE = today; 
+      //console.log("startWinDATE **", start) ;
+      
+      if(nbMonth != 0){
+          today.setMonth(today.getMonth() + nbMonth);
+          start.setMonth(start.getMonth() + nbMonth);
+      }
+
+      startWinDATE = start;   
+      //console.log("startWinDATE **", startWinDATE) ;
+      STARTDATE = today.setDate(1);
+      //STARTDATE = today.setDate(today.getDate() - 1);
+
+      //console.log("DATE **", "STARTDATE", STARTDATE, today);
+      ENDDATE = today.setMonth(today.getMonth() + 2);
+      ENDDATE = today.setDate(2);
+      //console.log("startWinDATE **", startWinDATE) ;
+      //console.log("DATE **", "ENDDATE", ENDDATE, today) ;
+      //ENDDATE = today.setDate(today.getDate() + 1);
 
       STARTDATE = Math.floor(STARTDATE / 1000);
       ENDDATE = Math.floor(ENDDATE / 1000);

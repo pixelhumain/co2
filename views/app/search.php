@@ -288,11 +288,12 @@ function showResultInCalendar(mapElements){
     $(".calendar").html($(".responsive-calendar-init").html());
 
     var aujourdhui = startWinDATE; //new Date();
-    var  month = (aujourdhui.getMonth()).toString();
+    //console.log("aujourdhui", aujourdhui);
+    var  month = (aujourdhui.getMonth()+1).toString();
     if(aujourdhui.getMonth() < 10) month = "0" + month;
     var date = aujourdhui.getFullYear().toString() + "-" + month;
 
-    console.log("data events", events);
+    //console.log("data events", events, "time", date);
     $(".responsive-calendar").responsiveCalendar({
           time: date,
           events: events

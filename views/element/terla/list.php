@@ -55,29 +55,29 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	.contentRatingComment textarea{
 		min-height: 100px;
 	}
-	#orderList{
+	#columnList{
 		bottom: 0px;
 		list-style: none;
 		border-right: 1px solid rgba(0,0,0,0.1);
 		min-height: 300px
 	}
-	#orderList li:hover{
+	#columnList li:hover{
 		cursor:pointer;
 		background-color:rgba(0,0,0,0.1);
 		border-left: 4px solid #FF9E85;
 	}
-	#orderList li{
+	#columnList li{
 		border-left: 4px solid white;
 	}
 	/*#orderList li.active:hover{
 		background-color: yellow;
 	}*/
-	.orderSection .title{
+	.columnSection .title{
 		font-size: 18px;
 		font-weight: 100;
 		text-transform: inherit;
 	}
-	#orderList li.active{
+	#columnList li.active{
 		border-left: 4px solid #EF5B34;
 		/*font-weight: bold;
 		font-size: 20px;*/
@@ -105,27 +105,45 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	</div>
 </div>
 <?php } ?>
-<?php if($actionType=="history"){ ?>
-	<ul id="orderList" class="col-md-3 col-sm-3 col-xs-3 no-padding">
+<?php if(($actionType=="history" || $actionType=="backup") && @$parentList){ ?>
+	<ul id="columnList" class="col-md-3 col-sm-3 col-xs-3 no-padding">
 		
 		<?php $i=0;
-			foreach ($orderList as $key => $value){ 
+			foreach ($parentList as $key => $value){ 
 				if($i==0){
-					$initHeader=$value;
+					$nameHeader=$value["name"];
+					$priceHeader=@$value["totalPrice"];
+					$currencyHeader=@$value["currency"];
+					if(@$value["countOrderItem"])
+						$countHeader=$value["countOrderItem"];
+					else{
+						$firstId=$key;
+						$countHeader=$value["object"]["countQuantity"];
+					}
 				}
-				$idOrder=(string)$value["_id"];
+				if(@$value["countOrderItem"])
+					$count=$value["countOrderItem"];
+				else
+					$count=$value["object"]["countQuantity"];
+				//$idOrder=(string)$value["_id"];
 				?>
-				<li class="orderSection <?php if($i==0) echo "active" ?> orderSection<?php echo $key ?> padding-10" data-id="<?php echo $key ?>">
+				<li class="columnSection <?php if($i==0) echo "active" ?> columnSection<?php echo $key ?> padding-10" data-id="<?php echo $key ?>">
 					<h4 class="title no-margin"><?php echo $value["name"] ?></h4>
-					<span><i><?php echo $value["countOrderItem"]; ?> purchase<?php if ($value["countOrderItem"] >1) echo "s" ?></i></span>
+					<span><i><?php echo $count; ?> purchase<?php if ($count >1) echo "s" ?></i></span>
 				</li>
 		<?php $i++; 
 		} ?>
 	</ul>
-	<div id="headerOrder" class="col-md-9 col-sm-9 col-xs-9 margin-bottom-20">
-		<h4 class="col-md-12 col-sm-12 orderTitle no-padding letter-orange"><?php echo $initHeader["name"] ?></h4>
-		<span>Price of this command: <span class="orderPrice"><?php echo $initHeader["totalPrice"] ?> <?php echo $initHeader["currency"] ?></span></span><br/>
-		<span class="orderPurchases"><i><?php echo $value["countOrderItem"]; ?> purchase<?php if ($value["countOrderItem"] >1) echo "s" ?></i></span>
+	<div id="headerList" class="col-md-9 col-sm-9 col-xs-9 margin-bottom-20">
+		<h4 class="col-md-12 col-sm-12 title no-padding letter-orange"><?php echo $nameHeader ?></h4>
+		<span>Price of this command: <span class="price"><?php echo $priceHeader ?> <?php echo $currencyHeader ?></span></span><br/>
+		<span class="purchases"><i><?php echo $countHeader; ?> purchase<?php if ($countHeader >1) echo "s" ?></i></span>
+		<?php if($actionType=="backup") { ?>
+			<div class="pull-right">
+				<a href="javascript:;" id="goBackToThisCart" class="btn btn-success" data-id="<?php echo $key ?>">Continue this cart</a>
+				<a href="javascript:;" id="deleteBackup" class="btn btn-danger" data-id="<?php echo $key ?>">Delete</a>
+			</div>
+		<?php } ?>
 	</div>
 	<div id="listList" class="col-md-9 col-sm-9 col-xs-9 pull-right">
 
@@ -140,77 +158,128 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	var id = "<?php echo $id; ?>";
 	var view = "<?php echo @$view; ?>";
 	var indexStepGS = 20;
-	var listElement = <?php echo json_encode( $list ); ?>;
-	var orderList= <?php echo json_encode( @$orderList ); ?>;
 	var actionType="<?php echo $actionType ?>";
+	var parentList= <?php echo json_encode( @$parentList ); ?>;
+	if(actionType=="backup")
+		var listElement = parentList["<?php echo @$firstId ?>"].object;
+	else
+		var listElement = <?php echo json_encode( $list ); ?>;
 	jQuery(document).ready(function() {
 		list.initList(listElement, actionType);
 		$(".btn-open-form").click(function(){
 			dyFObj.openForm($(this).data("form-type"),"sub");
 		});
 		bindLBHLinks();
-		if(actionType=="history")
+		if(actionType=="history" || actionType=="backup")
 			initOrderEvent();
+		if(actionType=="backup")
+			initBackupEvent();
 	})
 	function initOrderEvent(){
-		$(".orderSection").click(function(){
+		$(".columnSection").click(function(){
 			showLoader('#listList');
-			$(".orderSection").removeClass("active");
+			$(".columnSection").removeClass("active");
 			$(this).addClass("active");
-			orderId=$(this).data("id");
-			$("#headerOrder .orderTitle").text(orderList[orderId].name);
-			$("#headerOrder .orderPrice").text(orderList[orderId].totalPrice+" "+orderList[orderId].currency);
-			s=(orderList[orderId].countOrderItem > 1) ? "s": "";
-			$("#headerOrder .orderPurchases").text(orderList[orderId].countOrderItem+" purchase"+s);
-			$.ajax({
-				type: "POST",
-				url: baseUrl+"/"+moduleId+"/order/get/id/"+orderId, 
-				  success: function(data){
-					if(data.result) {
-						listElement = data.list;
-			        	list.initList(data.list, actionType);
-					}
-			        else
-			        	toastr.error(data.msg);  
-				  },
-				  dataType: "json"
-			});
+			parentId=$(this).data("id");
+			$("#headerList .title").text(parentList[parentId].name);
+			$("#headerList .price").text(parentList[parentId].totalPrice+" "+parentList[parentId].currency);
+			s=(parentList[parentId].countOrderItem > 1) ? "s": "";
+			$("#headerList .purchases").text(parentList[parentId].countOrderItem+" purchase"+s);
+			if(actionType=="history"){
+				$.ajax({
+					type: "POST",
+					url: baseUrl+"/"+moduleId+"/order/get/id/"+parentId, 
+					  success: function(data){
+						if(data.result) {
+							listElement = data.list;
+				        	list.initList(data.list, actionType);
+						}
+				        else
+				        	toastr.error(data.msg);  
+					  },
+					  dataType: "json"
+				});
+			}else{
+				$("#headerList #goBackToThisCart").data("id",parentId);
+				$("#headerList #deleteBackup").data("id",parentId);
+				list.initList(parentList[parentId].object, actionType);
+			}
 		});
 	}
-	/*function initList(){
-		var viewList="";
-		$.each(list, function(e,v){
-			viewList+="<h4 class='listSubtitle col-md-12 col-sm-12 col-xs-12 letter-orange'>"+Object.keys(v).length+" "+e+"</h4>";
-			$.each(v, function(i, data){
-				viewList+=getListOf(e,data);	
-			});
-			$("#listList").append(viewList)
-			
+	function initBackupEvent(){
+		$("#deleteBackup").click(function(){
+			var idBackup=$(this).data("id");
+			bootbox.dialog({
+		        onEscape: function() {
+		            //$(".disconnectBtnIcon").removeClass("fa-spinner fa-spin").addClass("fa-unlink");
+		        },
+		        message: '<div class="row">  ' +
+		            '<div class="col-md-12"> ' +
+		            '<span>Are you sure to delete this backup ?</span> ' +
+		            '</div></div>',
+		        buttons: {
+		            success: {
+		                label: "Ok",
+		                className: "btn-primary",
+		                callback: function () {
+		                    $.ajax({
+								type: "POST",
+								url: baseUrl+"/"+moduleId+"/backup/delete/id/"+idBackup,
+								//data : formData,
+								dataType: "json",
+								success: function(data){
+									if ( data && data.result ) {
+										loadBackup();
+										toastr.error("The backup has been deleted with success");
+									} else {
+									   toastr.error("Something went wrong");
+									}
+								}
+							});
+		                }
+		            },
+		            cancel: {
+		            	label: trad.cancel,
+		            	className: "btn-secondary",
+		            	callback: function() {
+		            		//$(".disconnectBtnIcon").removeClass("fa-spinner fa-spin").addClass("fa-unlink");
+		            	}
+		            }
+		        }
+		    });      
+		});
+		$("#goBackToThisCart").click(function(){
+			var idBackup=$(this).data("id");
+			bootbox.dialog({
+		        onEscape: function() {
+		            //$(".disconnectBtnIcon").removeClass("fa-spinner fa-spin").addClass("fa-unlink");
+		        },
+		        message: '<div class="row">  ' +
+		            '<div class="col-md-12"> ' +
+		            '<span>If you have a current cart, it will be destroyed... Are you sure to continue ?</span> ' +
+		            '</div></div>',
+		        buttons: {
+		            success: {
+		                label: "Ok",
+		                className: "btn-primary",
+		                callback: function () {
+		                    shopping.cart=parentList[idBackup].object;
+		                    shopping.cart.backup=idBackup;
+		                    shopping.countShoppingCart("init");
+							localStorage.setItem("shoppingCart",JSON.stringify(shopping.cart));
+							smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/person/shoppingcart");
+							//urlCtrl.loadByHash("#person.shoppingcart");
+		                }
+		            },
+		            cancel: {
+		            	label: trad.cancel,
+		            	className: "btn-secondary",
+		            	callback: function() {
+		            		//$(".disconnectBtnIcon").removeClass("fa-spinner fa-spin").addClass("fa-unlink");
+		            	}
+		            }
+		        }
+		    });      
 		});
 	}
-	function getListOf(type,data){
-		data.imgProfil = ""; 
-    	if(!data.useMinSize)
-        	data.imgProfil = "<i class='fa fa-image fa-3x'></i>";
-   		if("undefined" != typeof data.profilMediumImageUrl && data.profilMediumImageUrl != "")
-        	data.imgProfil= "<img class='img-responsive' src='"+baseUrl+data.profilMediumImageUrl+"'/>";
-		str="<div class='col-md-12 col-sm-12 contentListItem padding-5'>"+
-				"<div class='col-md-2 col-sm-2 contentImg text-center no-padding'>"+
-					data.imgProfil+
-				"</div>"+
-				"<div class='col-md-10 col-sm-10 listItemInfo'>"+
-					"<div class='col-md-10 col-sm-10'>"+
-						"<h4>"+data.name+"</h4>"+
-						"<span>Price: "+data.price+"</span><br/>";
-						if(typeof data.toBeValidated != "undefined")
-						str+="<i class='text-azul'>Waiting for validation</i>";
-		str+=		"</div>"+
-					"<div class='col-md-2 col-sm-2'>"+
-						
-					"</div>"+
-				"</div>"+
-				"<a href='#page.type."+type+".id."+data._id.$id+"' class='lbh btn bg-orange linkBtnList'>Manage it</a>"+
-			"</div>";
-		return str;
-	}*/
 </script>

@@ -112,7 +112,7 @@
       "</div>";
       $(".headerTitleStanalone").html(str);
       initBtnLink();
-      if(shoppingCart.countQuantity > 0 )
+      if(shopping.cart.countQuantity > 0 )
       	html=shopping.generateCartView();
       else
       	html=shopping.generateEmptyCartView();

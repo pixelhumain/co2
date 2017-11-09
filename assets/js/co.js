@@ -2540,12 +2540,29 @@ var list = {
 	initList : function(dataList, action){
 		var viewList="";
 		$.each(dataList, function(e,v){
-			if(action != "history")
-				viewList+="<h4 class='listSubtitle col-md-12 col-sm-12 col-xs-12 letter-orange'>"+Object.keys(v).length+" "+e+"</h4>";
-			$.each(v, function(i, data){
-				console.log(data);
-				viewList+=list.getListOf(e,data,action);	
-			});
+			if(action == "backup"){
+				if(e=="services"){
+					$.each(v, function(i, data){
+						$.each(data,function(key, service){
+							viewList+=list.getListOf(key,service,action);
+						});
+						console.log(data);	
+					});
+				}else if(e=="products"){
+					$.each(v, function(i, data){
+						console.log(data);
+						viewList+=list.getListOf(e,data,action);	
+					});
+				}
+			}
+			else{
+				if(action != "history")
+					viewList+="<h4 class='listSubtitle col-md-12 col-sm-12 col-xs-12 letter-orange'>"+Object.keys(v).length+" "+e+"</h4>";
+				$.each(v, function(i, data){
+					console.log(data);
+					viewList+=list.getListOf(e,data,action);	
+				});
+			}
 			$("#listList").html(viewList);
 		});
 		if(action=="history"){
@@ -2557,6 +2574,7 @@ var list = {
 	},
 	getListOf : function(type,data, action){
 		data.imgProfil = ""; 
+		btnAction="";
 		if(action=="manage")
 			btnAction="<a href='#page.type."+type+".id."+data._id.$id+"' class='lbh btn bg-orange linkBtnList'>Manage it</a>";
 		else if(action=="history"){
@@ -2580,8 +2598,11 @@ var list = {
 					"<div class='col-md-10 col-sm-10'>"+
 						"<h4>"+data.name+"</h4>"+
 						"<span>Price: "+data.price+"</span><br/>";
+						if(action=="backup"){
+							str+="<span>Quantity: "+data.countQuantity+"</span>";
+						}
 						if(action=="manage" && typeof data.toBeValidated != "undefined")
-						str+="<i class='text-azul'>Waiting for validation</i>";
+							str+="<i class='text-azul'>Waiting for validation</i>";
 		str+=		"</div>"+
 					"<div class='col-md-2 col-sm-2'>"+
 						
@@ -2594,6 +2615,36 @@ var list = {
 				"<div id='content-comment-"+data._id.$id+"' class='col-md-5 col-sm-5 col-xs-6 pull-right contentRatingComment'>"+
 				"</div>"+
 			"</div>"
+		}
+		if(action=="backup"){
+			if(typeof data.reservations != "undefined"){
+           				 		str += "<div class='col-md-12 col-sm-12 col-xs-12'>"; 
+			                    $.each(data.reservations, function(date, value){
+			                        s=(value.countQuantity > 1) ? "s" : "";
+			                        dateStr=directory.getDateFormated({startDate:date}, true);
+			            str += "<div class='col-md-12 col-sm-12 col-xs-12 bookDate margin-bottom-10'>"+
+			                            "<div class='col-md-12 col-sm-12 col-xs-12 dateHeader'>"+
+			                                "<h4 class='pull-left margin-bottom-5 no-margin col-md-5 col-sm-5 col-xs-5 no-padding'><i class='fa fa-calendar'></i> "+dateStr+"</h4>";
+			                               	incQtt="";
+			                                if(typeof value.hours =="undefined")
+			                                    incQtt=value.countQuantity+" reservation"+s;
+			            str +=         "<span class='pull-left text-center col-md-3 col-sm-3 col-xs-3'>"+incQtt+"</span>"+
+			                            "</div>";
+			                            
+			                        if(typeof value.hours != "undefined"){
+			                            $.each(value.hours, function(key, hours){
+			                                s=(hours.countQuantity > 1) ? "s" : "";
+			                                incQtt=hours.countQuantity+" reservation"+s;
+			            str +=         "<div class='col-md-12 col-sm-12 col-xs-12 margin-bottom-5 padding-5 contentHoursSession'>"+
+			                                    "<h4 class='col-md-4 col-sm-4 col-xs-3 no-padding no-margin'><i class='fa fa-clock-o'></i> "+hours.start+" - "+hours.end+"</h4>"+
+			                                    "<span class='col-md-5 col-sm-5 col-xs-6 text-center'>"+incQtt+"</span>"+
+			                                "</div>";
+			                            });
+			                        }
+			            str += "</div>"; 
+			                    }); 
+			            str += "</div>";
+			                }
 		}
 		return str;
 	}
@@ -4556,11 +4607,11 @@ var typeObj = {
 
 	contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
 		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	"product":{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",	icon:"shopping-basket"},
-	"products" : {sameAs:"product"},
-	"service":{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",	icon:"sun-o"},
-	"services" : {sameAs:"service"},
-	"classified":{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
+	product:{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",	icon:"shopping-basket"},
+	products : {sameAs:"product"},
+	service:{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",	icon:"sun-o"},
+	services : {sameAs:"service"},
+	classified:{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
 				   subTypes : [
 				   //FR
 				   "Technologie","Immobilier","Véhicules","Maison","Loisirs","Mode",

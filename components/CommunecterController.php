@@ -439,6 +439,12 @@ class CommunecterController extends Controller
        "save"   => array("href" => "/ph/co2/order/save"),
        "get"   => array("href" => "/ph/co2/order/get"),
     ),
+    "backup"=> array(
+       "save"   => array("href" => "/ph/co2/backup/save"),
+       "delete"   => array("href" => "/ph/co2/backup/delete"),
+       "update"   => array("href" => "/ph/co2/backup/update"),
+      // "get"   => array("href" => "/ph/co2/order/get"),
+    ),
     "orderitem"=> array(
        "save"   => array("href" => "/ph/co2/orderitem/save"),
        "get"   => array("href" => "/ph/co2/orderitem/get"),
@@ -570,8 +576,8 @@ class CommunecterController extends Controller
 
     if( Yii::app()->controller->id == "adminpublic" && ( !Yii::app()->session[ "userIsAdmin" ] && !Yii::app()->session[ "userIsAdminPublic" ] ) )
       throw new CHttpException(403,Yii::t('error','Unauthorized Access.'));
-
-    $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];
+    if( Yii::app()->controller->id != "test")
+      $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];
     $pagesWithoutLogin = array(
                             //Login Page
                             "person/login", 
@@ -623,6 +629,8 @@ class CommunecterController extends Controller
       $this->notifications = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );
       CornerDev::addWorkLog("communecter",Yii::app()->session["userId"],Yii::app()->controller->id,Yii::app()->controller->action->id);
     }
+
+    Application::loadDBAppConfig();
   }
   
   protected function beforeAction($action){

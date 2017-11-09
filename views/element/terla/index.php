@@ -178,6 +178,10 @@
 			location.hash=hashUrlPage+".view.history";
 			loadHistory();
 		});
+		$("#btn-backup").click(function(){
+			location.hash=hashUrlPage+".view.backup";
+			loadBackup();
+		});
 	}
 	function loadDetail(){
 		initBtnDash("#btn-detail");
@@ -195,6 +199,13 @@
 	function loadHistory(){
 		initBtnDash("#btn-history");
 		data={category:["orders"],actionType:"history"};
+		var url = "element/list/type/"+contextData.type+"/id/"+contextData.id;
+		showLoader('.content-view-dashboard');
+		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
+	}
+	function loadBackup(){
+		initBtnDash("#btn-backup");
+		data={category:["backups"],actionType:"backup"};
 		var url = "element/list/type/"+contextData.type+"/id/"+contextData.id;
 		showLoader('.content-view-dashboard');
 		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");

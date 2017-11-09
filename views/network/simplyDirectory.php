@@ -5,6 +5,7 @@
 </style>
 
 <div class="col-md-12 no-padding" id="repertory" >
+	<div id="dropdown_search_result" class="col-md-12 col-sm-12 col-xs-12"></div>
 	<div id="dropdown_search" class="col-md-12 container list-group-item dropdown_searchListNW"></div>
 </div>
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="ficheInfoDetail"></div>
@@ -278,7 +279,7 @@ function showMapNetwork(show){
 			top: -1000,
 			opacity:0,
 		}, 'slow' );
-
+		setTitle(networkJson.name , "", networkJson.name+ " : "+networkJson.skin.title, networkJson.name,networkJson.skin.shortDescription);
 		setTimeout(function(){ 
 			$(".my-main-container").hide();
 		}, 1000);
@@ -289,7 +290,7 @@ function showMapNetwork(show){
 		hideMapLegende();
 		$(".btn-group-map").hide( 700 );
 		$(".main-bottom-menu").hide( 700 );
-		$("#dropdown_params").show( 700 );
+		//$("#dropdown_params").show( 700 );
 		showMenuNetwork(false);
 		$(".btn-menu5, .btn-menu-add").show();
 		$(".panel_map").hide(1);
@@ -298,7 +299,7 @@ function showMapNetwork(show){
 			top: 50,
 			opacity:1
 		}, 'slow' );
-
+		setTitle(networkJson.name , "", networkJson.name+ " : "+networkJson.skin.title, networkJson.name,networkJson.skin.shortDescription);
 		setTimeout(function(){ 
 			$(".my-main-container").show();
 			if( !$('.main-menu-left').is(":visible") && location.hash.indexOf("#page") == -1 )
@@ -456,7 +457,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	//$("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
 	if(isMapEnd){
 		$.blockUI({
-			message : "<h1 class='homestead text-red'><i class='fa fa-spin fa-circle-o-notch'></i><span class='text-dark'> En cours ...</span></h1>"
+			message : "<div class='col-xs-12 text-center'><div class='col-md-offset-2 col-md-8 bg-white'><h1 class='homestead text-red'><span class='text-dark'>Welcome on</span><br/><span>"+networkJson.skin.title+"</span><br/></h1><i class='fa fa-spin fa-circle-o-notch'></i><span class='text-dark'> Initialization of map</span></div></div>",
 		});
 	}
 		
@@ -495,6 +496,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 					var htmlCO2 = "";
 					htmlCO2 = directory.showResultsDirectoryHtml(data.res);
 					//parcours la liste des résultats de la recherche
+					countResult=Object.keys(data.res).length;
 					$.each(data.res, function(i, o) {
 						mylog.log("Search ", o);
 						
@@ -690,7 +692,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 						}
 
 						$("#dropdown_search").html(htmlCO2);
-
+						refreshResultHeader(countResult);
 
 						//On met à jour les filtres
 						// if( typeof networkJson.mode != "undefined" && networkJson.mode == "client" ){
@@ -766,10 +768,27 @@ function tagActivedUpdate(checked, tag, parent){
 		tagsActived[parent].push(tag);
 	}
 }
-
+function refreshResultHeader(count){
+	if(count=="loading"){
+		str='<h4 style="font-weight:300" class=" text-dark padding-10">'+
+			'<i class="fa fa-spin fa-circle-o-notch"></i><br>'+trad.currentlyloading+'...'+
+		  '</h4>';
+	}
+	else{             
+		if(count == 0)      totalDataGSMSG = "<i class='fa fa-ban'></i> "+trad.noresult;
+        else if(count == 1) totalDataGSMSG = count + " "+trad.result;   
+        else if(count > 1)  totalDataGSMSG = count + " "+trad.results;   
+        str='<h4 style="font-weight:300" class=" text-dark padding-10">'+
+			totalDataGSMSG+
+		'</h4>';
+	}
+	$("#dropdown_search_result").html(str);
+}
 function chargement(){
 	mylog.log("chargement");
 	//processingBlockUi();
+	$(".searchEntityContainer").hide(700);
+	refreshResultHeader("loading");
 	setTimeout(function(){ updateMap(); }, 1000);
 }
 
@@ -1078,7 +1097,7 @@ function reverseToRepertory(){
 	updateMap();
 	$("#ficheInfoDetail").hide( 700 );
 	$(".main-col-search").removeClass("col-md-12 col-sm-12").addClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3");
-	$("#dropdown_search").show();
+	//$("#dropdown_search").show();
 	$("#repertory").show();
 	$(".main-menu-left").show( 700 );
 	$html = '<a href="javascript:;" onclick="breadcrumGuide(0)" class="breadcrumAnchor text-dark" style="font-size:20px;">'+trad.list+'</a>';
@@ -1268,7 +1287,6 @@ function updateMap(){
 	mylog.log("searchValNetwork", searchValNetwork);
 	var filteredList = [];
 	var add = false;
-	$(".searchEntityContainer").hide();
 	if(test.length > 0){
 		$.each(test,function(keyTags,tags){
 			$.each(contextMapNetwork,function(k,v){
@@ -1346,8 +1364,10 @@ function updateMap(){
 		}
 	}
 	$.each(filteredList, function(e,v){
-		$(".contain_"+v.type+"_"+v.id).show();
+		$(".contain_"+v.type+"_"+v.id).show(700);
 	});
+	countResult=filteredList.length;
+	refreshResultHeader(countResult);
 	mylog.log("filteredList", filteredList);
 	Sig.restartMap();
 	Sig.showMapElements(Sig.map,filteredList);

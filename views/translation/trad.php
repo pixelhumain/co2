@@ -391,7 +391,12 @@ var trad = {
 	"thecommunityof" : "<?php echo Yii::t("common", "The community of") ?>",
 	"Unblock" : "<?php echo Yii::t("common", "Unblock") ?>",
 	"backtopage" : "<?php echo Yii::t("common", "Back to page") ?>",
-
+	"searchbyname" : "<?php echo Yii::t("common", "Search by name") ?>",
+	"map" : "<?php echo Yii::t("common", "Map") ?>",
+	"list" : "<?php echo Yii::t("common", "List") ?>",
+	"cartography" : "<?php echo Yii::t("common", "Cartography") ?>",
+	"alltags" : "<?php echo Yii::t("common", "All tags") ?>",
+	"alltypes" : "<?php echo Yii::t("common", "All types") ?>",
 
 };
 

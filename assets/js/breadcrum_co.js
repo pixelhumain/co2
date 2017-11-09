@@ -1,3 +1,14 @@
+function scopeActive(scopeValue){
+    if(myMultiScopes[scopeValue].active){
+        $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
+        $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-check-circle");
+        $("[data-scope-value='"+scopeValue+"'].item-scope-input").removeClass("disabled");
+    }else{
+        $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-circle-o");
+        $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-check-circle");
+        $("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
+    }
+}
 
 function bindCommunexionScopeEvents(){
     $(".btn-decommunecter").off().on('click',function(){
@@ -14,15 +25,16 @@ function bindCommunexionScopeEvents(){
     
     $(".item-scope-input").click(function(){ 
         scopeValue=$(this).data("scope-value");
-        if($(this).hasClass("disabled")){
-            $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
-            $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-check-circle");
-            $("[data-scope-value='"+scopeValue+"'].item-scope-input").removeClass("disabled");
-        }else{
-            $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-circle-o");
-            $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-check-circle");
-            $("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
-        }
+        scopeActive(scopeValue);
+        // if($(this).hasClass("disabled")){
+        //     $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
+        //     $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-check-circle");
+        //     $("[data-scope-value='"+scopeValue+"'].item-scope-input").removeClass("disabled");
+        // }else{
+        //     $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-circle-o");
+        //     $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-check-circle");
+        //     $("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
+        // }
         toogleScopeMultiscope( $(this).data("scope-value") );
         if(actionOnSetGlobalScope=="filter")
             $("#newsstream").html("<div class='col-md-12 text-center'><i class='fa fa-circle'></i> <i class='fa fa-circle'></i> <i class='fa fa-circle'></i><hr style='margin-top: 34px;'></div>");

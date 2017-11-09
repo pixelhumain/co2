@@ -181,8 +181,8 @@ jQuery(document).ready(function() {
         communecterUser();
     });
 
-    if(typeof contextData.address.addressLocality != "undefined")
-    $(".btn-change-loc").append(" - " + contextData.address.addressLocality);
+    if(typeof contextData != "undefined" && contextData != null && typeof contextData.address != "undefined" &&  typeof contextData.address.addressLocality != "undefined")
+        $(".btn-change-loc").append(" - " + contextData.address.addressLocality);
 });
 
 function enlargeNow() { 

@@ -114,7 +114,7 @@ var mapElements = new Array();
 
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
-  console.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
+  mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
 	var searchLocality = getLocalityForSearch();
     
     var data = {
@@ -126,13 +126,13 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       "indexMax" : indexMax
     };
 
-    console.log("DATE ***", searchType[0], STARTDATE, ENDDATE)
+    mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
     if(searchType[0] == "events"){
       if(typeof STARTDATE != "undefined" && typeof ENDDATE != "undefined"){
-        console.log("integrate AGENDA_WINDOW");
+        mylog.log("integrate AGENDA_WINDOW");
         data.startDate = STARTDATE;
         data.endDate = ENDDATE;
-        console.log("DATE **", "data", data) ;
+        mylog.log("DATE **", "data", data) ;
       }
     }
     

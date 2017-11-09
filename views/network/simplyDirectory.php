@@ -934,7 +934,6 @@ function breadcrumGuide(level, url){
 	}
 }
 
-
 function getAjaxFiche(url, breadcrumLevel){
 	mylog.log("getAjaxFiche Network", url, breadcrumLevel);
 	$("#ficheInfoDetail").empty();
@@ -950,7 +949,6 @@ function getAjaxFiche(url, breadcrumLevel){
 		pathTitle="Annuaire";
 		pathIcon = "list";
 	}
-
 	allReadyLoad = true;
 	//location.hash = url;
 	urlHash=url;
@@ -967,7 +965,6 @@ function getAjaxFiche(url, breadcrumLevel){
 				$.blockUI({
 					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
 				});
-
 				mylog.log("networkParams", networkParams);
 				
 				getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
@@ -1024,7 +1021,6 @@ function getAjaxFiche(url, breadcrumLevel){
 				$.blockUI({
 					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
 				});
-
 				mylog.log("networkParams", networkParams);
 				
 				getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
@@ -1039,12 +1035,10 @@ function getAjaxFiche(url, breadcrumLevel){
 			}
 		});
 		//mylog.log(urlHash);
-
 		/*if(urlSplit[0]=="person")
 			urlType="citoyens";
 		else
 			urlType=urlSplit[0]+"s";	
-
 		urlHash="#element."+urlSplit[1]+".type."+urlType+".id."+urlSplit[3];*/
 	}
 	/*if(!pageView){
@@ -1062,7 +1056,6 @@ function getAjaxFiche(url, breadcrumLevel){
 		$.blockUI({
 			message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
 		});
-
 		mylog.log("networkParams", networkParams);
 		
 		getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){

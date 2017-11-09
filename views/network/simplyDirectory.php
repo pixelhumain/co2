@@ -86,7 +86,7 @@ function initVar(){
 		nwVar[v] = ( ( typeof networkJson.request[v] != "undefined" && $.isArray(networkJson.request[v]) ) ? networkJson.request[v] : [] );
 	});
 
-	var btnSearch = '<div class="btn-group btn-group-lg tooltips" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Recherche par nom">'+
+	var btnSearch = '<div class="btn-group btn-group-lg tooltips" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="'+trad.searchbyname+'">'+
 					'<button type="button" class="btn btn-map " id="btn-search">'+
 					'<i class="fa fa-chevron-left"></i></button>'+
 				'</div>';
@@ -325,9 +325,9 @@ function showMenuNetwork(show){
 		$("#titleMapTop").show( 700 );
 		$("#btn-menu-launch").show( 700 );
 		$("#btn-toogle-map").html("<i class='fa fa-list'></i>");
+		$("#btn-toogle-map").attr("title", trad.list);
+		$("#btn-toogle-map").attr("data-original-title", trad.list);
 		$("#btn-toogle-map").removeClass("resizer");
-		$("#btn-toogle-map").attr("data-original-title", "Annuaire");
-		$("#btn-toogle-map").attr("title", "Annuaire");
 		$(".main-menu-left").hide( 700 );
 		$("#menuTopList").hide( 700 );
 		$(".main-top-menu").removeClass("bg-white");
@@ -336,8 +336,8 @@ function showMenuNetwork(show){
 		$("#titleMapTop").hide( 700 );
 		$("#btn-menu-launch").hide( 700 );
 		$("#btn-toogle-map").html("<i class='fa fa-map-marker'></i>");
+		$("#btn-toogle-map").attr("data-original-title", trad.map);
 		$("#btn-toogle-map").addClass("resizer");
-		$("#btn-toogle-map").attr("data-original-title", "Carte");
 		$("#menuTopList").show( 700 );
 		$(".main-top-menu").addClass("bg-white");
 		if($("#btn-menu-launch").hasClass("active"))
@@ -944,11 +944,11 @@ function getAjaxFiche(url, breadcrumLevel){
 	}
 	
 	if(isMapEnd){
-		pathTitle="Cartographie";
+		pathTitle= trad.cartography;
 		pathIcon = "map-marker";
 		showMapNetwork();
 	}else{
-		pathTitle="Annuaire";
+		pathTitle= trad.list;
 		pathIcon = "list";
 	}
 	allReadyLoad = true;
@@ -964,7 +964,7 @@ function getAjaxFiche(url, breadcrumLevel){
 				$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
 				
 				$.blockUI({
-					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
+					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>"+trad.currentlyloading+" ...</span></h4>"
 				});
 				mylog.log("networkParams", networkParams);
 				
@@ -1018,7 +1018,7 @@ function getAjaxFiche(url, breadcrumLevel){
 				$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
 				
 				$.blockUI({
-					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
+					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>"+trad.currentlyloading+" ...</span></h4>"
 				});
 				mylog.log("networkParams", networkParams);
 				
@@ -1081,7 +1081,7 @@ function reverseToRepertory(){
 	$("#dropdown_search").show();
 	$("#repertory").show();
 	$(".main-menu-left").show( 700 );
-	$html = '<a href="javascript:;" onclick="breadcrumGuide(0)" class="breadcrumAnchor text-dark" style="font-size:20px;">Liste</a>';
+	$html = '<a href="javascript:;" onclick="breadcrumGuide(0)" class="breadcrumAnchor text-dark" style="font-size:20px;">'+trad.list+'</a>';
 	$("#breadcrum").html($html);
 	history.replaceState(null, '', window.location.href.split('#')[0]);
 	
@@ -1397,7 +1397,7 @@ function filterTags(tags){
 	if(typeof tags != "undefined" ){
 		str = '<div class="panel-heading">'+
 	          '<h4 class="panel-title" onclick="manageCollapse(\'tags\', \'false\')">'+
-	            '<a data-toggle="collapse" href="#tags" style="color:#719FAB" data-label="tags">Tous les tags'+ 
+	            '<a data-toggle="collapse" href="#tags" style="color:#719FAB" data-label="tags">'+trad.alltags+ 
 	              '<i class="fa fa-chevron-right right" aria-hidden="true" id="fa_tags"></i>'+
 	            '</a>'+
 	          '</h4>'+
@@ -1419,7 +1419,7 @@ function filterType(types){
 	if(typeof tags != "undefined" ){
 		str = '<div class="panel-heading">'+
 	          '<h4 class="panel-title" onclick="manageCollapse(\'types\', \'false\')">'+
-	            '<a data-toggle="collapse" href="#types" style="color:#719FAB" data-label="types">Tous les types'+ 
+	            '<a data-toggle="collapse" href="#types" style="color:#719FAB" data-label="types">'+trad.alltypes+  
 	              '<i class="fa fa-chevron-right right" aria-hidden="true" id="fa_tags"></i>'+
 	            '</a>'+
 	          '</h4>'+

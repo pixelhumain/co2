@@ -126,7 +126,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       "indexMax" : indexMax
     };
 
-    mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
+    //mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
     if(searchType[0] == "events"){
       if(typeof STARTDATE != "undefined" && typeof ENDDATE != "undefined"){
         mylog.log("integrate AGENDA_WINDOW");
@@ -890,7 +890,7 @@ var directory = {
 	  elementPanelHtml : function(params){
     		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList);
     		
-        mylog.log("----------- elementPanelHtml log", params.elTagsList);
+        mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList);
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;

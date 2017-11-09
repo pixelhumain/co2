@@ -24,7 +24,7 @@ class TestController extends CommunecterController {
 	    	foreach ($fr as $k => $v) {
 	    		//echo $k.":".$v."<br/>";
 	    		//if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
-	    		if(!@$de[$k]) echo '<span>"'.htmlspecialchars($k).'" => ""</span> <br/>';
+	    		if(!@$de[$k]) echo '<span>"'.htmlspecialchars($k).'" => "",</span> <br/>';
 	    	}	
     	} catch (Exception $e) {
     		echo $value."file unfound <br/>";
@@ -41,7 +41,7 @@ class TestController extends CommunecterController {
 	    	foreach ($fr as $k => $v) {
 	    		//echo $k.":".$v."<br/>";
 	    		//if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
-	    		if(!@$es[$k])echo '<span>"'.$k.'" => ""</span> <br/>';
+	    		if(!@$es[$k])echo '<span>"'.$k.'" => "",</span> <br/>';
 	    	}	
     	} catch (Exception $e) {
     		echo $value."file unfound <br/>";

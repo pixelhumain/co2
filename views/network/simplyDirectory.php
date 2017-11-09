@@ -7,7 +7,7 @@
 <div class="col-md-12 no-padding" id="repertory" >
 	<div id="dropdown_search" class="col-md-12 container list-group-item dropdown_searchListNW"></div>
 </div>
-<div class="col-md-12 padding-10" id="ficheInfoDetail"></div>
+<div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="ficheInfoDetail"></div>
 
 <script type="text/javascript">
 var contextMapNetwork = [];
@@ -697,7 +697,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 						// 	loadFilters(allTypes, allTags);
 						// }
 						loadFilters();
-
+						initBtnLink();
 						//on affiche par liste par défaut
 						$('#list').click();
 						//remet l'icon "loupe" du bouton search

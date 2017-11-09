@@ -3,6 +3,11 @@
 	"metaImg" : "/assets/img/bg_pixeltree2.jpg",
 	"metaTitle" : "Réseau sociétal citoyen",
 	"metaDesc" : "Communecter : Connecter à sa commune, inter connecter les communs, un réseau sociétal pour un citoyen connecté et acteur au centre de sa société.",
+    "devises" : {"€" : "€",
+                 "£" : "£",
+                 "$" : "$",
+                 "CFP" : "CFP"},
+    "deviseDefault" : "€",
 
 	"pages" : {
 		"#app.index": {"redirect":"welcome"},
@@ -63,8 +68,6 @@
 			"colorBtnCreate" : "orange"
 		},
 
-
-
 		"#live": {
 			"inMenu" : true, 
 			"useHeader" : true, 
@@ -78,7 +81,7 @@
 		},
 
 		"#chat": {
-			"inMenu" : true, 
+			"inMenu" : false, 
 			"open" : true, 
 			"subdomain" : "chat", 
 			"subdomainName" : "Chat",
@@ -99,7 +102,7 @@
 			"subdomainName" : "page",
 			"hash":"#app.page",
 			"icon" : "", 
-			"mainTitle" : "Le réseau social à effet de sert",
+			"mainTitle" : "Le réseau social citoyen",
 			"placeholderMainSearch" : "search ..."
 		},
 
@@ -111,7 +114,7 @@
 			"subdomainName" : "Info",
 			"hash":"#app.info",
 			"icon" : "info-circle", 
-			"mainTitle" : "Le réseau social à effet de sert",
+			"mainTitle" : "Le réseau social citoyen",
 			"placeholderMainSearch" : "search on people communected ..."
 		},
 
@@ -140,6 +143,18 @@
             "icon" : "university", 
             "mainTitle" : "Communexion activée",
             "placeholderMainSearch" : "search ..."
+        },
+
+		"#interoperability": {
+            "inMenu" : false, 
+            "useHeader" : true, 
+            "open" : true, 
+            "subdomain" : "interoperability", 
+            "subdomainName" : "Intéropérabilité",
+            "hash" : "#app.interoperability",
+            "icon" : "database", 
+            "mainTitle" : "Module d'intéropérabilité",
+            "placeholderMainSearch" : "Rechercher des données venus d'ailleurs ..."
         },
 
 		"#rooms": {
@@ -190,5 +205,4 @@
             "placeholderMainSearch" : "Admin Public ..."
         }
 	}
-
 }

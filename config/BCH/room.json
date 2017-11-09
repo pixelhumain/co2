@@ -1,0 +1,19 @@
+{
+    "sections" : {
+        "discuss": {
+            "label":"Discussion",           
+            "key" : "discuss",  
+            "icon" : "comment"
+        },
+        "vote": {
+            "label":"Decision",      
+            "key" : "vote",     
+            "icon" : "gavel"
+        },
+        "actions": {
+            "label":"Action",             
+            "key" : "actions",     
+            "icon" : "cogs"
+        }
+    }
+}

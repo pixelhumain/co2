@@ -5,7 +5,7 @@
  */
 class CommunecterController extends Controller
 {
-  public $version = "v0.1.4";
+  public $version = "v0.2.1.02";
   public $versionDate = "29/07/2016 19:12";
   public $title = "Communectez";
   public $subTitle = "se connecter à sa commune";
@@ -16,13 +16,13 @@ class CommunecterController extends Controller
   public $projectName = "";
   public $projectImage = "/images/CTK.png";
   public $projectImageL = "/images/logo.png";
-  public $footerImages = array(
+  /*public $footerImages = array(
       array("img"=>"/images/logoORD.PNG","url"=>"http://openrd.io"),
       array("img"=>"/images/logo_region_reunion.png","url"=>"http://www.regionreunion.com"),
       array("img"=>"/images/technopole.jpg","url"=>"http://technopole-reunion.com"),
       array("img"=>"/images/Logo_Licence_Ouverte_noir_avec_texte.gif","url"=>"https://data.gouv.fr"),
       array("img"=>'/images/blog-github.png',"url"=>"https://github.com/orgs/pixelhumain/dashboard"),
-      array("img"=>'/images/opensource.gif',"url"=>"http://opensource.org/"));
+      array("img"=>'/images/opensource.gif',"url"=>"http://opensource.org/"));*/
   const theme = "ph-dori";
   public $person = null;
   public $themeStyle = "theme-style11";//3,4,5,7,9
@@ -114,7 +114,8 @@ class CommunecterController extends Controller
       "assigndata"    => array("href" => "/ph/co2/adminpublic/assigndata"),
       "getdatabyurl"   => array("href" => "/ph/co2/adminpublic/getdatabyurl"),
       "previewdata"    => array("href" => "/ph/co2/adminpublic/previewdata"),
-      
+      "interopproposed" => array("href" => "/ph/co2/adminpublic/interopproposed"),
+      "cleantags" => array("href" => "ph/co2/adminpublic/cleantags"),
     ),
     "collections" => array(
       "add"    => array("href" => "/ph/co2/collections/add"),
@@ -176,7 +177,7 @@ class CommunecterController extends Controller
       'cityexists'          => array("href" => "/ph/co2/city/cityexists"),
       'autocompletemultiscope'          => array("href" => "/ph/co2/city/autocompletemultiscope"),
       "save"               => array("href" => "/ph/co2/city/save", "public" => true),
-      'getdepandregion'          => array("href" => "/ph/co2/city/getdepandregion"),
+      'getlevel'          => array("href" => "/ph/co2/city/getlevel"),
     ),
     "news"=> array(
       "index"   => array( "href" => "/ph/co2/news/index", "public" => true,'title' => "Fil d'actualités - N.E.W.S", "subTitle"=>"Nord.Est.West.Sud","pageTitle"=>"Fil d'actualités - N.E.W.S"),
@@ -284,6 +285,7 @@ class CommunecterController extends Controller
 
         "get"      => array("href" => "/ph/co2/person/get"),
         "getcontactsbymails"      => array("href" => "/ph/co2/person/getcontactsbymails"),
+        "updatescopeinter" => array("href" => "/ph/co2/person/updatescopeinter"),
     ),
     "organization"=> array(
       "addorganizationform" => array("href" => "/ph/co2/organization/addorganizationform",
@@ -371,6 +373,7 @@ class CommunecterController extends Controller
     ),
     "slug" => array(
       "check"        => array("href" => "ph/communecter/slug/check"),
+      "getinfo"        => array("href" => "ph/communecter/slug/getinfo"),
     ),
     "gallery" => array(
       "index"        => array("href" => "ph/communecter/gallery/index"),
@@ -482,6 +485,7 @@ class CommunecterController extends Controller
       "getdatadetail"       => array("href" => "/ph/co2/element/getdatadetail"),
       "stopdelete"          => array("href" => "/ph/co2/element/stopdelete"),
       'getthumbpath'    => array("href" => "/ph/co2/element/getThumbPath"),
+      'getcommunexion'    => array("href" => "/ph/co2/element/getcommunexion"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/co2/app/welcome",         "public" => true),
@@ -510,13 +514,27 @@ class CommunecterController extends Controller
       "checkurlexists" => array('href' => "/ph/co2/app/checkurlexists", "public" => true),
       "rooms" => array('href' => "/ph/co2/app/rooms", "public" => true),
       "survey" => array('href' => "/ph/co2/app/survey", "public" => true),
+      "interoperability" => array(
+        "index"              => array('href' => 'ph/co2/interoperability/index',  "public" => true),
+        "get"              => array('href' => 'ph/co2/interoperability/get',  "public" => true),
+        "copedia"              => array('href' => 'ph/co2/interoperability/copedia',  "public" => true),
+        "co-osm"              => array('href' => 'ph/co2/interoperability/co-osm',  "public" => true),
+        "co-osm-getode"      => array('href' => 'ph/co2/interoperability/co-osm-getnode',  "public" => true),
+        "wikitoco"              => array('href' => 'ph/co2/interoperability/wikitoco',  "public" => true),
+        "pushtypewikidata"    => array('href' => 'ph/co2/interoperability/pushtypewikidata',  "public" => true),
+        "wikidata-put-description"    => array('href' => 'ph/co2/interoperability/wikidata-put-description',  "public" => true),
+      ),
     ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/co2/siteurl/incnbclick")
     ),
     "cooperation" => array(
-      "getcoopdata"        => array('href' => "ph/communecter/cooperation/getcoopdata"),
-      "savevote"        => array('href' => "ph/communecter/cooperation/savevote")
+      "getcoopdata"        => array('href' => "ph/co2/cooperation/getcoopdata"),
+      "savevote"           => array('href' => "ph/co2/cooperation/savevote"),
+      "deleteamendement"  => array('href' => "ph/co2/cooperation/deleteamendement")
+    ),
+    "pdf" => array(
+      "create"        => array('href' => "ph/co2/pdf/create")
     ),
   );
 
@@ -526,7 +544,7 @@ class CommunecterController extends Controller
     //creates an issue with Json requests : to clear add josn:true on the page definition here 
     //if( Yii::app()->request->isAjaxRequest && (!isset( $page["json"] )) )
       //echo "<script type='text/javascript'> userId = '".Yii::app()->session['userId']."'; var blackfly = 'sosos';</script>";
-    
+    Yii::app()->params["version"] = $this->version ;
     if( @$_GET["theme"] ){
       Yii::app()->theme = $_GET["theme"];
       Yii::app()->session["theme"] = $_GET["theme"];
@@ -543,7 +561,8 @@ class CommunecterController extends Controller
     if( Yii::app()->controller->id == "adminpublic" && ( !Yii::app()->session[ "userIsAdmin" ] && !Yii::app()->session[ "userIsAdminPublic" ] ) )
       throw new CHttpException(403,Yii::t('error','Unauthorized Access.'));
 
-    $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];
+    if( Yii::app()->controller->id != "test")
+      $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];
     $pagesWithoutLogin = array(
                             //Login Page
                             "person/login", 
@@ -595,6 +614,9 @@ class CommunecterController extends Controller
       $this->notifications = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );
       CornerDev::addWorkLog("communecter",Yii::app()->session["userId"],Yii::app()->controller->id,Yii::app()->controller->action->id);
     }
+
+    //load any DB config Params
+    Application::loadDBAppConfig();    
   }
   
   protected function beforeAction($action){

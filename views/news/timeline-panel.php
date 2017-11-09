@@ -19,12 +19,14 @@
       if(@$media["scope"]) {
         $scopeSpan="";
         if($media["type"]=="news"){
-          foreach (array("cities", "departements", "regions") as $s) {
+          foreach (array(/*"cities", "departements", "regions"*/ "localities") as $s) {
             if(@$media["scope"][$s])
             foreach ($media["scope"][$s] as $keyy => $scopes) {
               foreach ($scopes as $k => $v) {
                 foreach (array("postalCode", "addressLocality", "name") as $kk => $s) {
-                  if(@$k == $s && $v != ""){ 
+
+
+                  if(@$k == $s && $v != "" && !is_array($v) ) {
                     if($count<3){
                      $scopeSpan.="<span class='label label-danger pull-right margin-left-5 margin-top-10'>
                       <i class='fa fa-bullseye'></i> ".$v."</span>";
@@ -293,7 +295,7 @@
             frameborder="0" allowfullscreen></iframe>
   <?php } ?>
   <?php if(@$media["media"]){ ?>
-    <div id="result<?php echo $key ?>" class="bg-white results padding-15"></div>
+    <div id="result<?php echo $key ?>" class="bg-white results padding-15 col-md-12 col-sm-12 col-xs-12"></div>
   <?php } ?>
 
 

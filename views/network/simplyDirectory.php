@@ -72,6 +72,14 @@ function initVar(){
 
 	citiesActived = ( ((typeof networkJson.request.searchLocalityNAME == "undefined") || networkJson == null) ? [] : networkJson.request.searchLocalityNAME);
 
+	if( notEmpty(citiesActived) ){
+		var cA = [];
+		$.each(citiesActived,function(k,v){
+			cA.push(v.toUpperCase());
+		});
+		citiesActived = cA ;
+	}
+
 	indexStep = indexStepInit;
 	var allSearchParams = ["mainTag", "sourceKey", "searchType", "searchTag","searchCategory","searchLocalityNAME","searchLocalityCODE_POSTAL_INSEE","searchLocalityDEPARTEMENT","searchLocalityINSEE","searchLocalityREGION"];
 	$.each(allSearchParams,function(k,v){
@@ -118,6 +126,13 @@ function bindNetwork(){
 		tagsActived = {};
 		disableActived = false;
 		citiesActived = ( ((typeof networkJson.request.searchLocalityNAME == "undefined") || networkJson == null) ? [] : networkJson.request.searchLocalityNAME);
+		if( notEmpty(citiesActived) ){
+			var cA = [];
+			$.each(citiesActived,function(k,v){
+				cA.push(v.toUpperCase());
+			});
+			citiesActived = cA ;
+		}
 		typesActived = [] ;
 		rolesActived = [] ;
 		searchValNetwork = "";
@@ -434,9 +449,9 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	$(".btn-start-search").removeClass("bg-dark");
 	//$("#dropdown_search").css({"display" : "inline" });
 	if(indexMin > 0)
-	$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
+	$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
 	else
-	$("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span></center>");
+	$("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
 	if(isMapEnd){
 		$.blockUI({
 			message : "<h1 class='homestead text-red'><i class='fa fa-spin fa-circle-o-notch'></i><span class='text-dark'> En cours ...</span></h1>"
@@ -633,7 +648,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 						$(".btn-start-search").html("<i class='fa fa-search'></i>");
 						if(indexMin == 0){
 							//ajout du footer
-							var msg = "Aucun résultat";
+							var msg = trad.noresult;
 							if(name == "" && locality == "") 
 								msg = "<h3 class='text-dark'><i class='fa fa-3x fa-keyboard-o'></i><br> Préciser votre recherche pour plus de résultats ...</h3>";
 							str += '<div class="center" id="footerDropdown">';
@@ -861,8 +876,16 @@ function loadFilters(){
 	});
 
 	$(".villeFilter").off().click(function(e){
-		var checked = $(this).is( ':checked' );
-		var ville = $(this).attr("value");
+		mylog.log(".villeFilter",  $(this));
+		var checked = false;
+		if($(this).hasClass( "active" ) == false){
+			$(this).addClass("active");
+			checked = true;
+		}else{
+			$(this).removeClass("active");
+		}
+
+		var ville = $(this).data("value");
 		cityActivedUpdate(checked, ville);
 		chargement();
 	});
@@ -932,50 +955,126 @@ function getAjaxFiche(url, breadcrumLevel){
 	//location.hash = url;
 	urlHash=url;
 	mylog.log("urlHash", urlHash);
-	if( urlHash.indexOf("type") < 0 && 
+	pageView=false;
+	if(urlHash.indexOf("page") >= 0){
+		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
+				mylog.log("url", url);
+				$("#repertory").hide( 700 );
+				$(".main-menu-left").hide( 700 );
+				$("#ficheInfoDetail").show( 700 );
+				$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
+				
+				$.blockUI({
+					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
+				});
+
+				mylog.log("networkParams", networkParams);
+				
+				getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
+					$.unblockUI();
+					mylog.log(contextData);
+					//Construct breadcrumb
+					if(breadcrumLevel != false){
+						$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
+						$("#breadcrum").append($html);
+					}
+				},"html");
+	}
+	else if( /*urlHash.indexOf("type") < 0 &&*/ 
 		urlHash.indexOf("default.view") < 0 && 
-		urlHash.indexOf("gallery") < 0 && 
+		/*urlHash.indexOf("gallery") < 0 &&*/ 
 		urlHash.indexOf("news") < 0 &&
 		urlHash.indexOf("network") < 0 && 
 		urlHash.indexOf("invite") < 0){
+		//hash = hash.replace( "#","" );
+		//	hashT=hash.split(".");
+		pageView=true;
+		var urlSplit=urlHash.replace( "#","" ).split(".");
+		if(typeof urlSplit == "string")
+			slug=urlSplit;
+		else
+			slug=urlSplit[0];
+		$.ajax({
+  			type: "POST",
+  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
+  			dataType: "json",
+  			success: function(data){
+		  		if(data.result){
+		  			//viewPage="";			  			
+		  			/*if(hashT.length > 1){
+		  				hashT.shift();
+		  				viewPage="/"+hashT.join("/");
+		  			}*/
+		  			var urlHash="#page.type."+data.contextType+".id."+data.contextId;
+		  			//showAjaxPanel('/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
+		  		}/*else{
+		  			if(urlSplit[0]=="person")
+						urlType="citoyens";
+					else
+						urlType=urlSplit[0]+"s";
+		  			var urlHash="#page.type."+urlType+".id."+urlSplit[3];
+		  		}*/
+		  		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
+				mylog.log("url", url);
+				$("#repertory").hide( 700 );
+				$(".main-menu-left").hide( 700 );
+				$("#ficheInfoDetail").show( 700 );
+				$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
+				
+				$.blockUI({
+					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
+				});
 
-		urlSplit=urlHash.replace( "#","" ).split(".");
-		mylog.log(urlHash);
+				mylog.log("networkParams", networkParams);
+				
+				getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
+					$.unblockUI();
+					mylog.log(contextData);
+					//Construct breadcrumb
+					if(breadcrumLevel != false){
+						$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
+						$("#breadcrum").append($html);
+					}
+				},"html");
+			}
+		});
+		//mylog.log(urlHash);
 
-		if(urlSplit[0]=="person")
+		/*if(urlSplit[0]=="person")
 			urlType="citoyens";
 		else
-			urlType=urlSplit[0]+"s";
+			urlType=urlSplit[0]+"s";	
 
-		urlHash="#element."+urlSplit[1]+".type."+urlType+".id."+urlSplit[3];
+		urlHash="#element."+urlSplit[1]+".type."+urlType+".id."+urlSplit[3];*/
 	}
-
-	if(urlHash.indexOf("news") >= 0){
-		urlHash=urlHash+"&isFirst=1";
-	}
-	mylog.log("urlHash2", urlHash);
-	url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
-	mylog.log("url", url);
-	$("#repertory").hide( 700 );
-	$(".main-menu-left").hide( 700 );
-	$("#ficheInfoDetail").show( 700 );
-	$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
-	
-	$.blockUI({
-		message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
-	});
-
-	mylog.log("networkParams", networkParams);
-	
-	getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
-		$.unblockUI();
-		mylog.log(contextData);
-		//Construct breadcrumb
-		if(breadcrumLevel != false){
-			$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
-			$("#breadcrum").append($html);
+	/*if(!pageView){
+		if(urlHash.indexOf("news") >= 0){
+			urlHash=urlHash+"&isFirst=1";
 		}
-	},"html");
+		mylog.log("urlHash2", urlHash);
+		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
+		mylog.log("url", url);
+		$("#repertory").hide( 700 );
+		$(".main-menu-left").hide( 700 );
+		$("#ficheInfoDetail").show( 700 );
+		$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
+		
+		$.blockUI({
+			message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
+		});
+
+		mylog.log("networkParams", networkParams);
+		
+		getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
+			$.unblockUI();
+			mylog.log(contextData);
+			//Construct breadcrumb
+			if(breadcrumLevel != false){
+				$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
+				$("#breadcrum").append($html);
+			}
+		},"html");
+	}*/
 }
 
 
@@ -1050,29 +1149,15 @@ function inArrayRegex(tab,regex){
 }
 
 
-function tagActivedUpdate(checked, tag, parent){
-	mylog.log("tagActivedUpdate", checked, tag, parent,tagsActived, typeof tagsActived[parent], (typeof tagsActived[parent] == "undefined"));
-	if(checked== false){
-		tagsActived[parent].splice($.inArray(tag, tagsActived),1);
-	}
-	else{
-		if(typeof tagsActived[parent] == "undefined"){
-			tagsActived[parent] = [];
-		}
-		tagsActived[parent].push(tag);
-	}
 
-	//tagsActived = orAndAnd(tagsActived) ;
-	//mylog.log("tagsActived", tagsActived);
-}
 
 function cityActivedUpdate(checked, city){
 	mylog.log("cityActivedUpdate", checked, city);
 	if(checked== false){
-		citiesActived.splice($.inArray(city, citiesActived),1);
+		citiesActived.splice($.inArray(city.toUpperCase(), citiesActived),1);
 	}
 	else{
-		citiesActived.push(city);
+		citiesActived.push(city.toUpperCase());
 	}
 }
 
@@ -1199,14 +1284,15 @@ function updateMap(){
 					add = ( (verb == "and") ? and( tags, v.tags ) : or( tags, v.tags ) );
 				else
 					add= false;
-				mylog.log("configFiltre", disableActived, v.disabled, citiesActived, typesActived, rolesActived);
+				mylog.log("configFiltre", add, disableActived, v.disabled, v.address.addressLocality, citiesActived, typesActived, rolesActived);
 				if(	add && 
 					( 	disableActived == false || 
 						(disableActived == true && typeof v.disabled != "undefined" && v.disabled == true) ) && 
+					
 					( citiesActived.length == 0  || 
 						(	typeof v.address != "undefined" && 
 							typeof v.address.addressLocality != "undefined" && 
-							$.inArray( v.address.addressLocality, citiesActived ) >= 0  ) ) &&
+							$.inArray( v.address.addressLocality.toUpperCase(), citiesActived ) >= 0  ) ) &&
 
 
 					( typesActived.length == 0  || 
@@ -1221,7 +1307,7 @@ function updateMap(){
 
 					( 	searchValNetwork.length == 0 || 
 						( 	v.name.search( new RegExp( searchValNetwork, "i" ) ) >= 0  ) ) )  {
-					
+					mylog.log("v.tags", v.tags);
 					filteredList = addTabMap(v, filteredList);
 					$("#"+v.id).show();
 				}
@@ -1238,7 +1324,7 @@ function updateMap(){
 					( citiesActived.length == 0  || 
 						(	typeof v.address != "undefined" && 
 							typeof v.address.addressLocality != "undefined" && 
-							$.inArray( v.address.addressLocality, citiesActived ) >= 0 ) ) &&
+							$.inArray( v.address.addressLocality.toUpperCase(), citiesActived ) >= 0 ) ) &&
 					( typesActived.length == 0  || 
 						(	typeof v.typeSig != "undefined" && 
 							$.inArray( v.typeSig, typesActived ) >= 0  ) ) &&

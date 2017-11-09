@@ -5,6 +5,7 @@ class CO2 {
     	$domainName = @$domainName ? $domainName : Yii::app()->params["CO2DomainName"];
     	
     	$layoutPath ="../../modules/co2/config/".$domainName."/params.json";
+
     	$str = file_get_contents($layoutPath);
 
 		$params = json_decode($str, true);
@@ -26,13 +27,14 @@ class CO2 {
     	$query = array("country"=>"NC", "name"=>array('$in'=>array("Noumea", "Dumbea", "Paita", "Mont-Dore")));
     	$citiesGN = PHDB::find(City::COLLECTION, $query);
 
-    	$query = array("country"=>"NC", "depName"=>"Province Sud", "name"=>array('$nin'=>array("Noumea", "Dumbea", "Paita", "Mont-Dore")));
+    	$query = array("country"=>"NC", "level3Name"=>"Province Sud", 
+                        "name"=>array('$nin'=>array("Noumea", "Dumbea", "Paita", "Mont-Dore")));
     	$citiesS = PHDB::find(City::COLLECTION, $query);
 
-    	$query = array("country"=>"NC", "depName"=>"Province Nord");
+    	$query = array("country"=>"NC", "level3Name"=>"Province Nord");
     	$citiesN = PHDB::find(City::COLLECTION, $query);
 
-    	$query = array("country"=>"NC", "depName"=>"Province Des Iles");
+    	$query = array("country"=>"NC", "level3Name"=>"Province des Iles");
     	$citiesI = PHDB::find(City::COLLECTION, $query);
 
     	$cities = array("GN"=>$citiesGN, 
@@ -42,77 +44,46 @@ class CO2 {
     	return $cities;
     }
 
-    public static function getCommunexionCookies(){
-        $communexion = array("state"=>false, "values"=>array());
-        //var_dump(Yii::app()->request->cookies['communexionActivated']);
-        if(isset( Yii::app()->request->cookies['communexionActivated'] ) && 
-                  (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
-            $communexion["state"] = true;
-        }        
-        if(@Yii::app()->request->cookies['cpCommunexion'] && !empty(Yii::app()->request->cookies['cpCommunexion']->value)){
-            $communexion["state"] = true;
-            $cp = (string)Yii::app()->request->cookies['cpCommunexion'];
-            $insee = (string)Yii::app()->request->cookies['inseeCommunexion'];
-            $where = array("postalCodes.postalCode" =>new MongoRegex("/^".$cp."/i"));
-            $citiesResult = PHDB::find( City::COLLECTION , $where );
-            $cities=array();
-            $levelMin="inseeCommunexion";
+	public static function getCommunexionCookies(){
+		$communexion = array("state"=>false, "values"=>array());
+		//var_dump(Yii::app()->request->cookies['communexionActivated']);
+		
+
+		if(CookieHelper::hasCookie("communexion") && CookieHelper::hasCookie("communexionType")) {
+			if(isset( Yii::app()->request->cookies['communexionActivated'] ) && (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
+                $communexion["state"] = true;
+            }
+            $communexion["values"] = json_decode(CookieHelper::getCookie("communexion"), true);
+
+            if(!empty($communexion["values"])){
+                $communexion["values"] = json_decode(CookieHelper::getCookie("communexion"), true);
+            }
+            $communexion["currentLevel"] = "city";
             
-            foreach($citiesResult as $v){
-                if($v["insee"]==$insee){
-                    $city=$v;
-                    $alternateName=$v["alternateName"];
-                    $inseeName=$v["alternateName"];
-                    if(count($city["postalCodes"])>1){
-                        $cities=[];
-                        $levelMin="cpCommunexion";
-                        foreach($city["postalCodes"] as $value){
-                            if($value["postalCode"]==$cp){
-                                $currentName=$cp;
-                                $alternateName=$value["name"];
-                                $cities[]=$value["postalCode"].", ".$value["name"];
-                            }else
-                                $cities[]=$value["postalCode"].", ".$value["name"];
-                        }
-                    }
+            if($communexion["values"]["cp"]){
+                $where = array("postalCodes.postalCode" =>new MongoRegex("/^".$communexion["values"]["cp"]."/i"));
+                $citiesResult = PHDB::find( City::COLLECTION , $where );
+
+                $cities=array();
+                foreach ($citiesResult as $key => $v) {
+                    // $trad4 = Zone::getTranslateById($key, City::COLLECTION);
+                    // $cities[]=(!empty($trad4["translates"]["EN"]) ? $trad4["translates"]["EN"] : $v["name"]);
+                    $cities[] = City::getNameCity($key);
                 }
-                else if($levelMin=="inseeCommunexion")
-                    $cities[]=$v["alternateName"];
+                $communexion["cities"] = $cities;
             }
-            $cityKey=$city["country"]."_".$insee."-".$cp;
-            $currentName=(string)Yii::app()->request->cookies['communexionName'];
-            $communexion["values"] = array( "cityName"  =>$alternateName,
-                                            "cityKey"   => $cityKey,
-                                            "inseeName" => $inseeName,
-                                            "cityCp"    => $cp,
-                                            "depName"   =>@$city["depName"],
-                                            "regionName"=>@$city["regionName"],
-                                            "cities"=>$cities);
-            $communexion["levelMinCommunexion"] =  $levelMin;
-            if($currentName!="" && $currentName != "false"){
-                $communexion["currentLevel"] =  (string)Yii::app()->request->cookies['communexionType'];
-                $communexion["currentName"] = $currentName;
-                $communexion["currentValue"] =  (string)Yii::app()->request->cookies['communexionValue'];
-            }else{
-                $communexion["currentValue"] =  $cityKey;
-                $communexion["currentName"] = $alternateName;
-                if($levelMin=="cpCommunexion")
-                    $communexion["currentLevel"] =  "cp";
-                else
-                    $communexion["currentLevel"] =  "city";
-                //return $communexion;           
-            }
-        }else{
+
+            $communexion["communexionType"] = CookieHelper::getCookie("communexionType");
+            $communexion["currentName"] = $communexion["values"]["cityName"];
+            $communexion["currentValue"] =  $communexion["values"]["city"];
+		}else{
             $communexion["levelMinCommunexion"] =  false;
             $communexion["currentLevel"] =  false;
             $communexion["currentName"] = false;
             $communexion["currentValue"] =  false;
+            $communexion["state"] = false;
         }
-
-        
-       // var_dump($communexion);
         return $communexion;
-
     }
 
 

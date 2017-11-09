@@ -54,7 +54,7 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 			mylog.info("xxxxxxxxxxxxxx UNREAD ","<?php echo Yii::app()->session["loginToken"]; ?>", e.data.eventName,e.data.data);
 			//toastr.info("unread-changed :: "+e.data.data);
 			
-				 $(".chatNotifs").html(e.data.data);
+			$(".chatNotifs").html(e.data.data);
 			/*else {
 				//can be when messages arrives, like notifiactions
 				//or disconnect so forcing reconnect

@@ -60,6 +60,7 @@ class PersonController extends CommunecterController {
           'get'                => 'citizenToolKit.controllers.person.GetAction',
           'getcontactsbymails' => 'citizenToolKit.controllers.person.GetContactsByMailsAction',
           'removehelpblock'    => 'citizenToolKit.controllers.person.RemoveHelpBlockAction',
+          'updatescopeinter'   => 'citizenToolKit.controllers.person.UpdatescopeinterAction',
           
 
 	    );

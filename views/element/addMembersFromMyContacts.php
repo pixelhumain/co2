@@ -245,7 +245,7 @@
         <div class="form-group" id="addMemberSection">
 
         	<input type="radio" value="citoyens" name="memberType" data-fa="user" checked> <i class="fa fa-user"></i> <?php echo Yii::t("common","a citizen"); ?>
-        	<?php if($type != "events"){ ?>
+        	<?php if($type != "events" || Authorisation::isElementAdmin($parentId, $type, @Yii::app()->session["userId"])){ ?>
         		<input type="radio" value="organizations" name="memberType" data-fa="group" style="margin-left:25px;"> <i class="fa fa-group"></i> <?php echo Yii::t("common","an organization"); ?>
         	<?php } ?>
 			<div class="input-group">
@@ -287,11 +287,11 @@ var myContactsMembers = $.extend( true, {}, myContacts );
 var listContact = new Array();
 var newMemberInCommunity = false;
 var isElementAdmin= "<?php echo Authorisation::isElementAdmin($parentId, $type, @Yii::app()->session["userId"]) ?>";
-var contactTypes = [{ name : "people", color: "yellow", icon:"user", label:"Citoyens" }];
+var contactTypes = [{ name : "people", color: "yellow", icon:"user", label:"People" }];
 var listMails = {};
-var rolesList=[tradCategory.financier,tradCategory.partner,tradCategory.sponsor,tradCategory.organizor,tradCategory.president, tradCategory.director,tradCategory.speaker,tradCategory.intervener];
+var rolesList=[ tradCategory.financier, tradCategory.partner, tradCategory.sponsor, tradCategory.organizor, tradCategory.president, tradCategory.director, tradCategory.speaker, tradCategory.intervener];
 if(elementType != "<?php echo Event::COLLECTION ?>" || isElementAdmin)
-	contactTypes.push({ name : "organizations", color: "green", icon:"group", label:"Organisations" });
+	contactTypes.push({ name : "organizations", color: "green", icon:"group", label:"Organizations" });
 
 
 var members = <?php echo json_encode(@$members) ?>;
@@ -326,6 +326,8 @@ var addLinkDynFormInvite = {
 
 var addLinkSearchMode = "contacts";
 jQuery(document).ready(function() {
+
+	mylog.log("here");
 	if(elementType != "citoyens")
 		buildModal(addLinkDynForm, "modalDirectoryForm");
 	else
@@ -345,7 +347,7 @@ jQuery(document).ready(function() {
 	});
 
 	$.each(organizationTypes, function(k, v) {
-   		$(".member-organization-type").append($("<option />").val(k).text(v));
+   		$(".member-organization-type").append($("<option />").val(k).text(tradCategory[k]));
 	});
 	bindInvite();
 });
@@ -404,7 +406,7 @@ function switchContact(){
 	mylog.log("switchContact");
 	$("#select-type-search-contacts").prop("checked", true);
 	$("#btn-save").removeClass("hidden");
-	$("#search-contact").attr("placeholder", "Recherchez parmis vos contacts...");
+	$("#search-contact").attr("placeholder", trad.searchamongcontact+"...");
 	showMyContactInModalAddMembers(addLinkDynForm, "#list-scroll-type");
 	addLinkSearchMode = "contacts";
 	filterContact($("#search-contact").val());
@@ -604,7 +606,7 @@ function buildModal(fieldObj, idUi){
 				    '<div class="modal-content">'+
 				      '<div class="modal-header">'+
 				        //'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'+
-				        '<input type="text" id="search-contact" class="form-control pull-right" placeholder="Recherchez parmis vos contacts...">' +
+				        '<input type="text" id="search-contact" class="form-control pull-right" placeholder="'+trad.searchamongcontact+'...">' +
 						'<h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> '+fieldObj.title1+'</h4>'+
 				      '</div>'+
 				      '<div class="modal-body">'+
@@ -622,7 +624,7 @@ function buildModal(fieldObj, idUi){
 	fieldHTML += 								'<li>'+
 													'<div id="btn-scroll-type-'+type.name+'" class="btn btn-default btn-scroll-type text-'+type.color+'">' +
 														//'<input type="checkbox" name="chk-all-type'+type.name+'" id="chk-all-type'+type.name+'" value="'+type.name+'"> '+
-														'<span style="font-size:16px;"><i class="fa fa-'+type.icon+'"></i> ' + type.label + "</span>" +
+														'<span style="font-size:16px;"><i class="fa fa-'+type.icon+'"></i> ' + trad[type.label] + "</span>" +
 													'</div>'+
 												'</li>';
 											});									
@@ -677,7 +679,7 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 		mylog.log("fieldObj.contactTypes", key, type, typeof type);
 	fieldHTML += 			'<div class="panel panel-default" id="scroll-type-'+type.name+'">  '+	
 								'<div class="panel-heading">'+
-									'<h4 class="text-'+type.color+'"><i class="fa fa-'+type.icon+'"></i> '+type.label+'</h4>'+			
+									'<h4 class="text-'+type.color+'"><i class="fa fa-'+type.icon+'"></i> '+trad[type.label]+'</h4>'+			
 								'</div>'+
 								'<div class="panel-body no-padding">'+
 									'<div class="list-group padding-5">'+
@@ -731,11 +733,9 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 	bindEventScopeContactsModal();
 }
 
-//var searchValLast = "";
+
 function filterContact(searchVal){
-	//mylog.log(searchVal, "==", searchValLast);
-	//if(searchVal == searchValLast) return;
-	//searchValLast = searchVal;
+	mylog.log("filterContact", searchVal, "==", addLinkSearchMode);
 
 	if(addLinkSearchMode == "contacts"){
 		$("#btn-save").removeClass("hidden");
@@ -768,10 +768,10 @@ function autoCompleteEmailAddMember(searchValue){
 		"search" : searchValue,
 		"elementId" : elementId
 	};
-	if (elementType == "<?php echo Event::COLLECTION ?>")
+	if (elementType == "<?php echo Event::COLLECTION ?>" && !isElementAdmin)
 		data.searchMode = "personOnly";
 
-	$("#list-scroll-type").html("<div class='padding-10'><i class='fa fa-spin fa-refresh'></i> Recherche en cours</div>");
+	$("#list-scroll-type").html("<div class='padding-10'><i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+"</div>");
 	$.ajax({
 		type: "POST",
         url: baseUrl+'/'+moduleId+'/search/searchmemberautocomplete',
@@ -842,7 +842,7 @@ function sendInvitation(){
 			var contactPublicFound = new Array();
 			var connectType = "";
 			var roles = "";
-			if ($("#tagsRoles"+id).val() != ""){ 
+			if (typeof $("#tagsRoles"+id).val() != "undefined" && $("#tagsRoles"+id).val() != ""){ 
 		        roles = $("#tagsRoles"+id).val().split(",");   
 		      } 
 			if(addLinkSearchMode == "all") { contactPublicFound = listContact;
@@ -861,9 +861,9 @@ function sendInvitation(){
 			if ($("#isAdmin"+id).hasClass("isAdmin")) {
 				connectType = "admin";
 			}
-			if ($("#tagsRoles"+id).val() != ""){
+			/*if ($("#tagsRoles"+id).val() != ""){
 				roles = $("#tagsRoles"+id).val().split(",");	
-			}
+			}*/
 
 			mylog.log("add this element ?", email, type, id, name);
 			if(type != "" && id != "" && name != "")
@@ -1388,16 +1388,14 @@ function autoCompleteInviteSearch2(search){
 
 
 function buildModalInvite(fieldObj, idUi){
-	mylog.log("buildModal", fieldObj, idUi);
+	mylog.log("buildModalInvite", fieldObj, idUi);
 	//var fieldClass = " select2TagsInput select2ScopeInput";
     var fieldHTML = "";    		
 	fieldHTML += '<div class="modal fade" id="modal-scope" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
 				  '<div class="modal-dialog">'+
 				    '<div class="modal-content">'+
 				      '<div class="modal-header">'+
-				        //'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'+
-				        // '<input type="text" id="search-contact" class="form-control pull-right" placeholder="Recherchez parmis vos contacts...">' +
-						'<div class="col-xs-6" ><h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> '+fieldObj.title1+'</h4></div>'+
+				        '<div class="col-xs-6" ><h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> '+fieldObj.title1+'</h4></div>'+
 						'<div class="col-xs-6 hidden" id="countContacts" ><h4 class="modal-title pull-right"><span id="nbContacts"></span> / <span id="allContacts"></span> contacts selectionnées</h4></div>'+
 				      '</div>'+
 				      '<div class="modal-body">'+

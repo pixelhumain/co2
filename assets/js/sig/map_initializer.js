@@ -381,8 +381,18 @@
 											"markerPlace" 		: { ico : "map-marker", color : "red" 	},
 											"me" 				: { ico : "map-marker", color : "blue" 	},
 
-											"poi" 				: { ico : "map-marker", color : "green-poi" 	},
-											"poi.video" 		: { ico : "video-camera", color : "green-poi" 	},
+											"poi" 				: { ico : "info-circle", color : "dark" 	},
+											"poi.video" 		: { ico : "video-camera", color : "dark" 	},
+											"poi.interop.wiki" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.datagouv" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.osm" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.ods" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.datanova" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.poleemploi" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.educ_etab" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.educ_struct" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.educ_membre" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.educ_ecole" 	: { ico : "folder-open", color : "yellow" 	},
 
 											"entry" 			: { ico : "gavel", color : "azure" 	},
 											"action" 			: { ico : "cogs", color : "lightblue2" 	},
@@ -501,7 +511,12 @@
 				defaultType=element['typeSig'].split(".");
 				defaultType=defaultType[1];
 			}
-			var imgProfilPath =  assetPath + "/images/thumb/default_"+defaultType+".png";
+
+			if (element.typeSig.substr(0,11) == "poi.interop") {
+				var imgProfilPath = getimgProfilPathForInteropDataOnMap(element.typeSig);
+			} else {
+				var imgProfilPath =  assetPath + "/images/thumb/default_"+defaultType+".png";
+			}
 			if(typeof element.author !== "undefined" && typeof element.author.profilImageUrl !== "undefined" && element.author.profilImageUrl != "") 
 				imgProfilPath = baseUrl + element.author.profilImageUrl;
 			if(typeof element.profilThumbImageUrl !== "undefined" && element.profilThumbImageUrl != "") 

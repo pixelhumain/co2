@@ -397,7 +397,7 @@ function initPanelLibrary(){
 			
 		}else{
 			var htmlDefault = "<div class='center col-md-12 col-sm-12 col-xs-12 padding-5'>"+
-								"<i class='fa fa-files-o fa-5x text-blue'></i>"+
+								"<i class='fa fa-ban fa-4x text-dark'></i> <i class='fa fa-files-o fa-3x text-dark'></i>"+
 								"<br>"+trad.nofile+
 							"</div>";
 			$('#Grid').append(htmlDefault);

@@ -260,7 +260,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream");
   var loading = "<div class='loader text-dark '>"+
 		"<span style='font-size:25px;' class='homestead'>"+
 			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
-			"<span class='text-dark'>Chargement en cours ...</span>" + 
+			"<span class='text-dark'>"+trad.currentlyloading+" ...</span>" + 
 	"</div>";
 
 	//loading = "";

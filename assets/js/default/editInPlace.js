@@ -32,14 +32,14 @@ function bindAboutPodElement() {
 	function removeAddresses (index, formInMap){
 
 		bootbox.confirm({
-			message: trad["suredeletelocality"]+"<span class='text-red'></span>",
+			message: trad.suredeletelocality+"<span class='text-red'></span>",
 			buttons: {
 				confirm: {
-					label: trad["yes"],
+					label: trad.yes,
 					className: 'btn-success'
 				},
 				cancel: {
-					label: trad["no"],
+					label: trad.no,
 					className: 'btn-danger'
 				}
 			},
@@ -276,9 +276,7 @@ function bindAboutPodElement() {
 									$("#typeAbout").html(tradCategory[data.resultGoods.values.type]);
 									$("#typeHeader .type-header").html(tradCategory[data.resultGoods.values.type]);
 								}
-								if(typeof data.resultGoods.values.email != "undefined"){
 
-								}
 								if(typeof data.resultGoods.values.email != "undefined"){
 									mylog.log("update email");
 									contextData.email = data.resultGoods.values.email;
@@ -374,7 +372,7 @@ function bindAboutPodElement() {
 					}
 				}
 			};
-			//form.dynForm.jsonSchema.properties.slug = dyFInputs.slug("Slug", "Slug", {minlength : 3, uniqueSlug:true});
+
 			if(contextData.type == typeObj.person.col ){
 				form.dynForm.jsonSchema.properties.username = dyFInputs.inputText("Username", "Username", { required : true });
 				form.dynForm.jsonSchema.properties.birthDate = dyFInputs.birthDate;
@@ -665,7 +663,7 @@ function bindAboutPodElement() {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
-						title : "Créer un slug",// trad["Update network"],
+						title : tradDynForm.updateslug,// trad["Update network"],
 						icon : "fa-key",
 						onLoads : {
 							sub : function(){
@@ -689,12 +687,12 @@ function bindAboutPodElement() {
 						properties : {
 							info : {
 				                inputType : "custom",
-				                html:"<p class='text-dark'><i class='fa fa-info-circle'></i> Slug is very important.<br> It will permit to give a unique name to chat in a room,<br>A beautiful url like www.communecter.org/livincoop<br>And a specific mention name<hr></p>",
+				                html:"<p class='text-dark'><i class='fa fa-info-circle'></i> "+tradDynForm.infoslug+"<hr></p>",
 				            },
 				            block : dyFInputs.inputHidden(),
 							id : dyFInputs.inputHidden(),
 							typeElement : dyFInputs.inputHidden(), 
-							slug : dyFInputs.slug("Slug","Slug",{minlength:3/*, uniqueSlug:true*/}),
+							slug : dyFInputs.slug(tradDynForm.slug,tradDynForm.slug,{minlength:3/*, uniqueSlug:true*/}),
 						}
 					}
 				}
@@ -750,7 +748,7 @@ function bindAboutPodElement() {
 				saveUrl : baseUrl+"/"+moduleId+"/link/removerole/",
 				dynForm : {
 					jsonSchema : {
-						title : "Ajouter ou modifier les rôles de "+childName,// trad["Update network"],
+						title : tradDynForm.modifyoraddroles+"<br/>"+childName,// trad["Update network"],
 						icon : "fa-key",
 						onLoads : {
 							sub : function(){
@@ -772,7 +770,7 @@ function bindAboutPodElement() {
 						properties : {
 							contextId : dyFInputs.inputHidden(),
 							contextType : dyFInputs.inputHidden(), 
-							roles : dyFInputs.tags(rolesList),
+							roles : dyFInputs.tags(rolesList, tradDynForm["addroles"] , tradDynForm["addroles"]),
 							childId : dyFInputs.inputHidden(), 
 							childType : dyFInputs.inputHidden(),
 							connectType : dyFInputs.inputHidden()

@@ -18,7 +18,7 @@ var translate = {"organizations":"Organisations",
                  "followers":"Ils nous suivent"};
 
 function startSearch(indexMin, indexMax, callBack){
-    console.log("startSearch 1", typeof callBack, callBack, loadingData);
+    console.log("startSearch directory.js", typeof callBack, callBack, loadingData);
     if(loadingData) return;
     loadingData = true;
     showIsLoading(true);
@@ -47,8 +47,7 @@ function startSearch(indexMin, indexMax, callBack){
     if(name.length>=3 || name.length == 0)
     {
       var locality = "";
-      if( communexionActivated )
-      {
+      if( communexionActivated ){
   	    if(typeof(cityInseeCommunexion) != "undefined")
         {
     			if(levelCommunexion == 1) locality = cpCommunexion;
@@ -61,6 +60,8 @@ function startSearch(indexMin, indexMax, callBack){
         if(levelCommunexion == 3) locality = inseeCommunexion;
         if(levelCommunexion == 4) locality = inseeCommunexion;
         if(levelCommunexion == 5) locality = "";
+
+        mylog.log("Locality : ", locality);
       } 
       console.log("locality",locality);
       autoCompleteSearch(name, locality, indexMin, indexMax, callBack);
@@ -113,36 +114,27 @@ var mapElements = new Array();
 
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
-  console.log("START -------- autoCompleteSearch ", typeof callBack, callBack);
-	if(typeof(cityInseeCommunexion) != "undefined"){
-	    var levelCommunexionName = { 1 : "CODE_POSTAL_INSEE",
-	                             2 : "INSEE",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
-	}else{
-		var levelCommunexionName = { 1 : "INSEE",
-	                             2 : "CODE_POSTAL_INSEE",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
-	}
-    //mylog.log("levelCommunexionName", levelCommunexionName[levelCommunexion]);
+  console.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
+	var searchLocality = getLocalityForSearch();
+    
     var data = {
       "name" : name, 
-      "locality" : "",//locality, 
+      "locality" : searchLocality,//locality, 
       "searchType" : searchType, 
-      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] , //is an array
-      "searchLocalityCITYKEY" : ($('#searchLocalityCITYKEY').length ) ? $('#searchLocalityCITYKEY').val().split(',') : [],
-      "searchLocalityCODE_POSTAL" : ($('#searchLocalityCODE_POSTAL').length ) ? $('#searchLocalityCODE_POSTAL').val().split(',') : [], 
-      "searchLocalityDEPARTEMENT" : ($('#searchLocalityDEPARTEMENT').length ) ?  $('#searchLocalityDEPARTEMENT').val().split(',') : [],
-      "searchLocalityREGION" : ($('#searchLocalityREGION').length ) ? $('#searchLocalityREGION').val().split(',') : [],
-      "searchLocalityLEVEL" : ($('#searchLocalityLEVEL').length ) ? $('#searchLocalityLEVEL').val() : [],
-      "searchBy" : levelCommunexionName[levelCommunexion], 
+      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
       "indexMin" : indexMin, 
       "indexMax" : indexMax
     };
 
+    console.log("DATE ***", searchType[0], STARTDATE, ENDDATE)
+    if(searchType[0] == "events"){
+      if(typeof STARTDATE != "undefined" && typeof ENDDATE != "undefined"){
+        console.log("integrate AGENDA_WINDOW");
+        data.startDate = STARTDATE;
+        data.endDate = ENDDATE;
+        console.log("DATE **", "data", data) ;
+      }
+    }
     
     if($("#priceMin").val()!="") data.priceMin = $("#priceMin").val();
     if($("#priceMax").val()!="") data.priceMax = $("#priceMax").val();
@@ -161,15 +153,15 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     $(".btn-start-search").removeClass("bg-dark");
     
     if(indexMin > 0)
-      $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
+      $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
     else
       $("#dropdown_search").html("<div class='col-md-12 col-sm-12 text-center search-loader text-dark'>"+
-                                    "<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ..."+
+                                    "<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ..."+
                                   "</div>");
     
     if(isMapEnd)
-      $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> chargement en cours");
-   
+      $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyloading);
+         
     mylog.dir(data);
     //alert();
     $.ajax({
@@ -205,9 +197,12 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
               //parcours la liste des résultats de la recherche
               //mylog.dir(data);
+              resultsStr=trad.result;
+              if(totalData > 1)
+                resultsStr=trad.results;
               str += '<div class="col-md-12 text-left" id="">';
-              str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+
-                        "<i class='fa fa-angle-down'></i> " + totalData + " "+trad["results"]+" ";
+              str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark pull-left'>"+
+                        "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
               str += "<small class='resultTypes'>";
               if(typeof headerParams != "undefined"){
                 $.each( searchType, function(key, val){
@@ -242,7 +237,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                   $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
                   if(indexMin == 0){
                     //ajout du footer   
-                    var msg = "<i class='fa fa-ban'></i> Aucun résultat";    
+                    var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
                     if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
                     str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
                     str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
@@ -256,7 +251,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               {       
                 //ajout du footer      	
                 str += '<div class="pull-left col-md-12 text-center" id="footerDropdown" style="width:100%;">';
-                str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " résultats</h3>";
+                str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " "+resultsStr+"</h3>";
                 //str += '<span class="" id="">Complétez votre recherche pour un résultat plus précis</span></center><br/>';
                 //str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
                 str += "</div>";
@@ -292,25 +287,27 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
                 //active les link lbh
                 bindLBHLinks();
+                bindCommunexionScopeEvents()
 
-                $(".start-new-communexion").click(function(){
-                    $("#main-search-bar, #second-search-bar, #input-search-map").val("");
-                    setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
-                                     $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
-                                      $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
+                // $(".start-new-communexion").click(function(){
+                //     mylog.log("start-new-communexion directory.js");
+                //     $("#main-search-bar, #second-search-bar, #input-search-map").val("");
+                //     setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
+                //                      $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
+                //                       $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
                     
-                    //only on homepage
-                    if($("#communexionNameHome").length){
-                    	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+$(this).data("name-communexion")+'</span></span>');
-                    	$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
-                      $("#main-search-bar").val("");
-                    	$(".info_co, .input_co").addClass("hidden");
-                      $("#change_co").removeClass("hidden");
-						          $("#dropdown_search").html("");
-                    }else{
-                      startSearch(0, indexStepInit, searchCallback);
-                    }
-                });
+                //     //only on homepage
+                //     if($("#communexionNameHome").length){
+                //     	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+$(this).data("name-communexion")+'</span></span>');
+                //     	$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
+                //       $("#main-search-bar").val("");
+                //     	$(".info_co, .input_co").addClass("hidden");
+                //       $("#change_co").removeClass("hidden");
+						          // $("#dropdown_search").html("");
+                //     }else{
+                //       startSearch(0, indexStepInit, searchCallback);
+                //     }
+                // });
 
 
                 $.unblockUI();
@@ -349,10 +346,51 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
                         
             if(typeof callBack == "function")
-                callBack();
+              callBack();
         }
     });
 
+
+  }
+
+  function calculateAgendaWindow(nbMonth){
+
+      //console.log("calculateAgendaWindow", nbMonth);
+      if(typeof STARTDATE == "undefined") return;
+      //console.log("calculateAgendaWindow ok");
+
+      var today = new Date();
+      var start = new Date();
+
+      //console.log("DATE **", "today", today) ;
+      //console.log("startWinDATE **", start) ;
+      start.setDate(27);
+      STARTDATE = today.setDate(27);
+
+      //startWinDATE = today; 
+      //console.log("startWinDATE **", start) ;
+      
+      if(nbMonth != 0){
+          today.setMonth(today.getMonth() + nbMonth);
+          start.setMonth(start.getMonth() + nbMonth);
+      }
+
+      startWinDATE = start;   
+      //console.log("startWinDATE **", startWinDATE) ;
+      STARTDATE = today.setDate(1);
+      //STARTDATE = today.setDate(today.getDate() - 1);
+
+      //console.log("DATE **", "STARTDATE", STARTDATE, today);
+      ENDDATE = today.setMonth(today.getMonth() + 2);
+      ENDDATE = today.setDate(2);
+      //console.log("startWinDATE **", startWinDATE) ;
+      //console.log("DATE **", "ENDDATE", ENDDATE, today) ;
+      //ENDDATE = today.setDate(today.getDate() + 1);
+
+      STARTDATE = Math.floor(STARTDATE / 1000);
+      ENDDATE = Math.floor(ENDDATE / 1000);
+
+     // console.log("DATE **", "startWinDATE", startWinDATE, "STARTDATE", STARTDATE, "ENDDATE", ENDDATE) ;
 
   }
 
@@ -539,7 +577,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     });
 
 
-    $(".coopPanelHtml").click(function(){
+    $(".coopPanelHtml").off().click(function(){
       var coopType = $(this).data("coop-type");
       var coopId = $(this).data("coop-id");
       var idParentRoom = $(this).data("coop-idparentroom");
@@ -557,13 +595,13 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
           uiCoop.startUI();
           $("#modalCoop").modal("show");
           if(coopType == "rooms"){
-            uiCoop.getCoopData(null, null, "room", null, coopId);
+            uiCoop.getCoopData(contextData.type, contextData.id, "room", null, coopId);
           }else{
             setTimeout(function(){
-              uiCoop.getCoopData(null, null, "room", null, idParentRoom, 
+              uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
               function(){
                 toastr.info(trad["processing"]);
-                uiCoop.getCoopData(null, null, coopType, null, coopId);
+                uiCoop.getCoopData(contextData.type, contextData.id, coopType, null, coopId);
               }, false);
             }, 1000);
           }
@@ -686,7 +724,7 @@ var directory = {
     colPos: "left",
     dirLog : false,
     defaultPanelHtml : function(params){
-      mylog.log("----------- defaultPanelHtml",params.type,params.name);
+      mylog.log("----------- defaultPanelHtml",params, params.type,params.name, params.url);
       str = "";  
       str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
@@ -822,7 +860,6 @@ var directory = {
             }
 
             str += "<div class='entityDescription'>" + params.description + "</div>";
-            str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
 
             if(params.useMinSize){
@@ -851,8 +888,9 @@ var directory = {
     //  ELEMENT DIRECTORY PANEL
     // ********************************
 	  elementPanelHtml : function(params){
-    		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name);
-    		//mylog.log("----------- elementPanelHtml",params.type,params.name, params);
+    		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList);
+    		
+        mylog.log("----------- elementPanelHtml log", params.elTagsList);
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
@@ -906,12 +944,18 @@ var directory = {
                     
                     
             if(typeof(params.statusLink)!="undefined"){
-              if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined")
-                str+="<span class='text-red'>Administrateur</span>";
+              if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined" && typeof(params.statusLink.isAdminInviting)=="undefined")
+                str+="<span class='text-red'>"+trad.administrator+"</span>";
+              if(typeof(params.statusLink.isAdminInviting)!="undefined"){
+                str+="<span class='text-red'>"+trad.invitingToAdmin+"</span>";
+              }
               if(typeof(params.statusLink.toBeValidated)!="undefined" || typeof(params.statusLink.isAdminPending)!="undefined")
-                str+="<span class='text-red'>En attente de validation</span>";
+                str+="<span class='text-red'>"+trad.waitingValidation+"</span>";
             }
 
+            if(params.rolesLbl != "")
+            str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
+            
             if( params.section ){
               str += "<div class='entityType'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
                 if(typeof params.subtype != "undefined") str += " > " + params.subtype;
@@ -928,7 +972,6 @@ var directory = {
             str += thisLocality;
             
             str += "<div class='entityDescription'>" + params.description + "</div>";
-            str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
             /*
               if(params.startDate != null)
@@ -944,6 +987,82 @@ var directory = {
       str += "</div>";
       return str;
     },
+
+    interopPanelHtml : function(params){
+      mylog.log("----------- interopPanelHtml",params, params.type,params.name, params.url);
+
+      var interop_type = getTypeInteropData(params.source.key);
+      params.hash = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.url);
+      params.url = params.hash;
+      params.color = getIconColorForInteropElements(interop_type);
+      params.htmlIco = getImageIcoForInteropElements(interop_type);
+      params.type = "poi.interop."+interop_type;
+
+      if (typeof params.tags == "undefined") 
+        params.tags = [];
+        params.tags.push(interop_type);
+
+      str = "";  
+      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
+      str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
+
+      if(params.itemType!="city" && (params.useMinSize))
+        str += "<div class='imgHover'>" + params.imgProfil + "</div>"+
+                "<div class='contentMin'>";
+
+      if(params.itemType!="city" && (typeof params.size == "undefined" || params.size == "max"))
+        str += "<a href='"+params.hash+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + params.imgProfil + "</a>";
+
+      str += "<div class='padding-10 informations'>";
+
+      if(!params.useMinSize){
+        if(typeof params.size == "undefined" || params.size == "max"){
+          str += "<div class='entityCenter no-padding'>";
+          str +=    "<a href='"+params.hash+"' class='lbhp add2fav'  data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
+          str += "</div>";
+        }
+      }  
+              
+      str += "<div class='entityRight no-padding'>";
+
+      var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+      str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbhp add2fav'  data-modalshow='"+params.id+"'>"+
+                iconFaReply + params.name + 
+             "</a>";
+      
+      var thisLocality = "";
+      if(params.fullLocality != "" && params.fullLocality != " ")
+        thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "' class='entityLocality lbhp add2fav'  data-modalshow='"+params.id+"'>"+
+                          "<i class='fa fa-home'></i> " + params.fullLocality + 
+                        "</a>";
+      else thisLocality = "<br>";
+      
+      str += "<div class='entityDescription'>" + params.description + "</div>";
+      str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
+
+      if(params.useMinSize){
+        // if(params.startDate != null)
+        // str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
+        // if(params.endDate != null)
+        // str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
+        
+        if(typeof params.size == "undefined" || params.size == "max"){
+          str += "<div class='entityCenter no-padding'>";
+          str +=    "<a href='"+params.hash+"' class='lbhp add2fav'  data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
+          str += "</div>";
+        }
+      }  
+
+      if(params.type!="city" && (params.useMinSize))
+        str += "</div>";
+        str += "</div>";
+      str += "</div>";
+      str += "</div>";
+
+      str += "</div>";
+      return str;
+    },
+
 
     // ********************************
     // CALCULATE NEXT PREVIOUS 
@@ -1207,8 +1326,8 @@ var directory = {
             str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
          
             if(typeof params.category != "undefined"){
-              str += "<div class='entityType'><span class='uppercase bold'>" + params.section + "</span> > " + params.category;
-              if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+              str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.section] + "</span> > " + tradCategory[params.category];
+              if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
               str += "</div>";
             }
 
@@ -1260,8 +1379,8 @@ var directory = {
       str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
-        if(params.updated != null && params.updated.indexOf("il y a")>=0)
-            params.updated = "En ce moment";
+        if(params.updated != null && params.updated.indexOf(trad.ago)>=0 && location.hash == "#agenda")
+            params.updated = trad.rightnow;
 
         if(params.updated != null && !params.useMinSize)
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
@@ -1352,7 +1471,7 @@ var directory = {
             }            
             console.log("typeDYN",params.organizerObj.type, params.organizerObj);
             elem = dyFInputs.get(params.organizerObj.type);
-            str += "<h5 class='no-margin padding-top-5'><small>Organisé par</small></h5>";
+            str += "<h5 class='no-margin padding-top-5'><small>"+tradDynForm.organizedby+"</small></h5>";
             str += "<a href='#page.type."+elem.col+".id."+params.organizerObj["_id"]["$id"]+"' class='lbh' > <small class='entityOrganizerName'>"+params.organizerObj.name+"</small></a>";
           str += "</div>";
 
@@ -1407,6 +1526,7 @@ var directory = {
     // ********************************
     cityPanelHtml : function(params){
         if(directory.dirLog) mylog.log("-----------cityPanelHtml");
+        mylog.log("-----------cityPanelHtml", params);
         str = "";  
         str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
         str +=    "<div class='searchEntity'>";
@@ -1424,8 +1544,17 @@ var directory = {
                     params.onclickCp = 'setScopeValue($(this));';
                     params.target = "";
                     params.dataId = params.name; 
-                    params.fullLocality =  "<b>" +params.name + "</b> - " +  params.cp+ "<br>" +  params.regionName;
-                    
+                    //params.fullLocality =  "<b>" +params.name + "</b> - " +  params.cp+ "<br>" +  params.regionName;
+
+                    params.fullLocality =  "<b>" + params.name + "</b> " + (notEmpty(params.cp) ? " - " +  params.cp : "") + " ( " + params.country + " ) " ;
+                    if( notEmpty( params.level4Name ) )
+                      params.fullLocality += "<br/>" +  params.level4Name ;
+                    else if( notEmpty( params.level3Name ) )
+                      params.fullLocality += "<br/>" +  params.level3Name ;
+                    else if( notEmpty( params.level2Name ) )
+                      params.fullLocality += "<br/>" +  params.level2Name ;
+
+
                     var thisLocality = "";
                     if(params.fullLocality != "" && params.fullLocality != " ")
                          thisLocality = '<span data-id="' + params.dataId + '"' + "  class='margin-bottom-5 entityName letter-red lbh add2fav'>"+
@@ -1439,18 +1568,36 @@ var directory = {
                     str += "</div>";
                   str += "</div>";
       
-                mylog.log("-----------cityPanelHtml params", params);  
-                var citykey = params.country + "_" + params.insee + "-" + params.cp;
-                str += "<button class='btn btn-sm btn-danger item-globalscope-checker start-new-communexion' "+
-                                "data-scope-value='" + citykey + "' " + 
-                                "data-scope-name='" + params.name + "' " + 
-                                "data-scope-type='city' " + 
-                                "data-insee-communexion='" + params.insee + "' "+ 
-                                "data-name-communexion='" + params.name + "' "+ 
-                                "data-cp-communexion='" + params.cp + "' "+ 
-                                "data-region-communexion='" + params.regionName + "' "+ 
-                                "data-dep-communexion='" + params.depName + "' "+ 
-                                "data-country-communexion='" + params.country + "' "+ 
+                mylog.log("-----------cityPanelHtml params", params); 
+
+                var valuesScopes = {
+                  city : params.id,
+                  cityName : params.name,
+                  cp : params.cp,
+                  level1 : params.level1,
+                  level1Name : params.level1Name
+                }
+
+                if( notEmpty( params.level4 ) ){
+                  valuesScopes.level4 = params.level4 ;
+                  valuesScopes.level4Name = params.level4Name ;
+                }
+                if( notEmpty( params.level3 ) ){
+                  valuesScopes.level3 = params.level3 ;
+                  valuesScopes.level3Name = params.level3Name ;
+                }
+                if( notEmpty( params.level2 ) ){
+                  valuesScopes.level2 = params.level2 ;
+                  valuesScopes.level2Name = params.level2Name ;
+                }
+
+                str += "<button class='btn btn-sm btn-danger item-globalscope-checker' "+
+                                "data-scope-value='" + params.id  + "' " + 
+                                "data-scope-name='" + params.name + "' " +
+                                "data-scope-level='city' " +
+                                "data-scope-type='city' " +
+                                "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
+                                "data-scope-notsearch='"+true+"' " +
                                 ">"+
                                     "<i class='fa fa-angle-right'></i> Communecter" + 
                                 "</button>";
@@ -1515,6 +1662,9 @@ var directory = {
       //if(directory.dirLog) 
       mylog.log("-----------proposalPanelHtml", params, key);
       var idParentRoom = typeof params.idParentRoom != "undefined" ? params.idParentRoom : "";
+      if(idParentRoom == "" && params.type == "rooms") idParentRoom = params.id;
+      mylog.log("-----------idParentRoom", idParentRoom);
+      
       var name = (typeof params.title != "undefined" && params.title != "undefined") ? params.title : params.name;
       var description = params.description.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
       name = escapeHtml(name);
@@ -1531,7 +1681,7 @@ var directory = {
           str += '<h4 class="panel-title letter-turq"><i class="fa '+ params.ico + '"></i> '+ name + '</h4>';
 
           if(params.type != "rooms")
-          str += '<h5 class=""><small><i class="fa fa-bell"></i> '+ trad[params.status] + '</small></h5>';
+          str += '<h5 class=""><small><i class="fa fa-certificate"></i> '+ trad[params.status] + '</small></h5>';
 
           str += '<span class="text-dark">'+description+'</span>';
           str += "</div>";
@@ -1754,13 +1904,26 @@ var directory = {
         var str = "";
 
         directory.colPos = "left";
+
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
           if(directory.dirLog) mylog.log("params", params, typeof params);
-          if(params["_id"] != null || params["id"] != null){
 
+          mylog.log("params", params, typeof params);
 
-            itemType=(contentType) ? contentType :params.type;
+          if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) {
+            params['id'] = params['_id'];
+          } else if (typeof(params.id) == "undefined") {
+            params['id'] = Math.random();
+            params['type'] = "poi";
+          }
+
+          mylog.log("params", params["name"] , params.name, params.id, params["id"], typeof params["id"]);
+
+          if(notNull(params["_id"]) || notNull(params["id"])){
+
+            itemType=(contentType) ? contentType : params.type;
+            mylog.log("params itemType", itemType);
             if( itemType ){ 
                 if(directory.dirLog) mylog.warn("TYPE -----------"+contentType);
                 //mylog.dir(params);
@@ -1769,6 +1932,7 @@ var directory = {
                 var typeIco = i;
                 params.size = size;
                 params.id = getObjectId(params);
+                mylog.log(params.id);
                 params.name = notEmpty(params.name) ? params.name : "";
                 params.description = notEmpty(params.shortDescription) ? params.shortDescription : 
                                     (notEmpty(params.message)) ? params.message : 
@@ -1780,8 +1944,13 @@ var directory = {
                 if(typeof edit != "undefined" && edit != false)
                   params.edit = edit;
                 
-                /*if( dyFInputs.get( itemType ) == null)
-                    itemType="poi";*/
+                if(typeof( typeObj[itemType] ) == "undefined") {
+                  itemType="poi";
+                }
+
+                if( dyFInputs.get( itemType ) == null)
+                  itemType="poi";
+
                 typeIco = itemType;
                 if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
 
@@ -1841,20 +2010,25 @@ var directory = {
                 params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
-                //params.url = '#page.type.'+params.type+'.id.' + params.id;
+                if( params.type == "poi" && params.source  && params.source.key.substring(0,7) == "convert") {
+                  var interop_type = getTypeInteropData(params.source.key);
+                  params.type = "poi.interop."+interop_type;
+                }
+
                 params.hash = '#page.type.'+params.type+'.id.' + params.id;
-                /*if(params.type == "poi")    
-                    params.hash = '#element.detail.type.poi.id.' + params.id;*/
 
-                params.onclick = 'urlCtrl.loadByHash("' + params.hash + '");';
+                params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
 
+                // params.tags = "";
                 params.elTagsList = "";
                 var thisTags = "";
                 if(typeof params.tags != "undefined" && params.tags != null){
                   $.each(params.tags, function(key, value){
                     if(typeof value != "undefined" && value != "" && value != "undefined"){
-                      thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value)+"'>#" + value + "</span> ";
-                      params.elTagsList += slugify(value)+" ";
+                      var tagTrad = typeof tradCategory[value] != "undefined" ? tradCategory[value] : value;
+                      thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value, true)+"' data-tag-label='"+tagTrad+"'>#" + tagTrad + "</span> ";
+                      console.log("sluggify", value, slugify(value, true));
+                      params.elTagsList += slugify(value, true)+" ";
                     }
                   });
                   params.tagsLbl = thisTags;
@@ -1865,21 +2039,22 @@ var directory = {
                 var thisRoles = "";
                 params.rolesLbl = "";
                 if(typeof params.rolesLink != "undefined" && params.rolesLink != null){
-                  thisRoles += "Roles: "
+                  thisRoles += "<small class='letter-blue'><b>"+trad.roleroles+" :</b> ";
                   thisRoles += params.rolesLink.join(", ");
                   $.each(params.rolesLink, function(key, value){
                     if(typeof value != "undefined" && value != "" && value != "undefined")
                       params.elRolesList += slugify(value)+" ";
                   });
+                  thisRoles += "</small>";
                   params.rolesLbl = thisRoles;
                 }
-              
 
                 params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
                 
-                if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);
-                
+                if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);                
                   //template principal
+                mylog.log("template principal",params,params.type, itemType);
+
                 if(params.type == "cities")
                   str += directory.cityPanelHtml(params);  
                 
@@ -1900,8 +2075,11 @@ var directory = {
                 }
                 else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
                   str += directory.coopPanelHtml(params);  
+                else if(params.type.substring(0,11) == "poi.interop")
+                  str += directory.interopPanelHtml(params);
                 else
                   str += directory.defaultPanelHtml(params);
+                
             }
 
           }else{
@@ -1937,7 +2115,7 @@ var directory = {
           countBtn++;
       }
      
-      if(data.edit=="members" || data.edit=="contributors"){
+      if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){
         if(data.type=="organizations" || (typeof data.statusLink["isAdmin"] == "undefined" || typeof data.statusLink["isAdminPending"] != "undefined")){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'"+
@@ -1969,7 +2147,7 @@ var directory = {
           "</button> ";
           countBtn++;
         }
-         if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){
+        if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){
           roles="";
           if(typeof data.rolesLink != "undefined")
               roles+=data.rolesLink.join(", ");
@@ -1981,7 +2159,7 @@ var directory = {
           countBtn++;
         }
       }
-      if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){ 
+     /* if(data.edit=="members" || data.edit=="contributors" || data.edit=="attendees"){ 
           roles=""; 
            if(typeof data.rolesLink != "undefined") 
               roles+=data.rolesLink.join(", "); 
@@ -1991,7 +2169,7 @@ var directory = {
             "<i class='fa fa-pencil'></i> "+trad.addmodifyroles 
           "</button> "; 
           countBtn++; 
-      }
+      }*/
     
       html+="</div>";
       return html;
@@ -2075,21 +2253,25 @@ var directory = {
             $("#listTags").append("<h5 class=''><i class='fa fa-search'></i> "+trad["filtertags"]+"</h5>");
             $("#listTags").append('<input id="searchBarTextJS" data-searchPage="true" type="text" class="input-search form-control">');
         }
-       // alert(directory.elemClass);
-       // $("#listTags").append("<h4 class=''> <i class='fa fa-tags'></i> trier </h4>");
+        // alert(directory.elemClass);
+        // $("#listTags").append("<h4 class=''> <i class='fa fa-tags'></i> trier </h4>");
         $("#listTags").append("<a class='btn btn-link text-red favElBtn favAllBtn' "+
             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,directory.elemClass,1)'>"+
             " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a><br/>");
+        
         $.each( $(directory.elemClass),function(k,o){
             $.each($(o).find(".btn-tag"),function(i,oT){
+                var realTag = $(oT).data('tag-label');
+                console.log("realTag", realTag);
+
                 var oTag = $(oT).data('tag-value').toLowerCase();
                 if( notEmpty( oTag ) && !inArray( oTag,directory.tagsT ) ){
                   directory.tagsT.push(oTag);
                   //mylog.log(oTag);
-                  $("#listTags").append("<a class='btn btn-link favElBtn text-red "+slugify(oTag)+"Btn' "+
+                  $("#listTags").append("<a class='btn btn-link favElBtn text-red elipsis "+slugify(oTag)+"Btn' "+
                                             "data-tag='"+slugify(oTag)+"' "+
                                             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(oTag)+"\",directory.elemClass,1)'>"+
-                                              "#"+oTag+
+                                              "#"+realTag+
                                         "</a><br> ");
                 }
             });
@@ -2112,16 +2294,16 @@ var directory = {
         $(dest).html(str);
         $.each( list,function(k,o){
             if( type == "btn" ){
-              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'"><a class="btn tagListEl btn-select-type-anc typeBtn '+k+'Btn " data-tag="'+tradCategory[k]+'" data-key="'+k+'" href="javascript:;"><i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+'</a></div>'
+              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'"><a class="btn tagListEl btn-select-type-anc elipsis typeBtn '+k+'Btn " data-tag="'+k+'" data-key="'+k+'" href="javascript:;"><i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+'</a></div>'
             }
             else 
-              str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="'+tradCategory[k]+'">'+
+              str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+
                     '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+tradCategory[k]+'</button><br>';
             if( o.subcat && type != "btn" )
             {
               $.each( o.subcat ,function(i,oT){
-                  str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+tradCategory[k]+'" data-categ="'+tradCategory[k]+'" data-keycat="'+tradCategory[oT]+'">'+
-                          '<i class="fa fa-angle-right"></i>'+tradCategory[oT]+'</button><br class="hidden">';
+                  str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
+                          '<i class="fa fa-angle-right"></i> '+tradCategory[oT]+'</button><br class="hidden">';
               });
             }
             $(dest).append(str);
@@ -2266,7 +2448,7 @@ var directory = {
     }
     mylog.log("search : "+search,searchT, scopeBtn);
     search.replace( "#","" );
-    alert(search.substring(1)); 
+    //alert(search.substring(1)); 
     $('#searchTags').val(search);
     startSearch();
 
@@ -2276,71 +2458,76 @@ var directory = {
     /*if( searchT.length > 3 && searchT[3] == "map" )
       mapEnd = true;
     return mapEnd;*/
-  },
-
-     getDateFormated: function(params){
+  },  
+  get_time_zone_offset : function( ) {
+    var current_date = new Date();
+    return -current_date.getTimezoneOffset() / 60;
+ },
+ getDateFormated: function(params){
+    console.log("getDateFormated", params.startDate);
+    var timezone = directory.get_time_zone_offset();
     
-        params.startDateDB = notEmpty(params.startDate) ? params.startDate : null;
-        params.startDay = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD") : "";
-        params.startMonth = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("MM") : "";
-        params.startYear = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("YYYY") : "";
-        params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("d") : "";
-        params.startTime = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("HH:mm") : "";
-        params.startDate = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
-        
-        params.endDateDB = notEmpty(params.endDate) ? params.endDate: null;
-        params.endDay = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD") : "";
-        params.endMonth = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("MM") : "";
-        params.endYear = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("YYYY") : "";
-        params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).format("d") : "";
-        params.endTime = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("HH:mm") : "";
-        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
-        params.startDayNum = directory.getWeekDayName(params.startDayNum);
-        params.endDayNum = directory.getWeekDayName(params.endDayNum);
+    params.startDateDB = notEmpty(params.startDate) ? params.startDate : null;
+    params.startDay = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("DD") : "";
+    params.startMonth = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("MM") : "";
+    params.startYear = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("YYYY") : "";
+    params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("d") : "";
+    params.startTime = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("HH:mm") : "";
+    params.startDate = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("DD MMMM YYYY - HH:mm") : null;
+    
+    params.endDateDB = notEmpty(params.endDate) ? params.endDate: null;
+    params.endDay = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("DD") : "";
+    params.endMonth = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("MM") : "";
+    params.endYear = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("YYYY") : "";
+    params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("d") : "";
+    params.endTime = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("HH:mm") : "";
+    params.endDate   = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("DD MMMM YYYY - HH:mm") : null;
+    params.startDayNum = directory.getWeekDayName(params.startDayNum);
+    params.endDayNum = directory.getWeekDayName(params.endDayNum);
 
-        params.startMonth = directory.getMonthName(params.startMonth);
-        params.endMonth = directory.getMonthName(params.endMonth);
-        params.color="orange";
-        
+    params.startMonth = directory.getMonthName(params.startMonth);
+    params.endMonth = directory.getMonthName(params.endMonth);
+    params.color="orange";
+    
 
-        var startLbl = (params.endDay != params.startDay) ? trad["fromdate"] : "";
-        var endTime = ( params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
-        mylog.log("params.allDay", !notEmpty(params.allDay), params.allDay);
-       
-        
-        var str = "";
-        if(params.startDate != null){
-          str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      '<small>'+startLbl+' </small>'+
-                      '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
-                      params.startDay + ' ' + params.startMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.startYear + '</small>';
-                      if(!notNull(params.allDay) || params.allDay != true){
-                        str +=  ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> '+
-                                  params.startTime+endTime+"</b></small>";
-                      }
-                      
-            str +=  '</h3>';
-        }
-          
-        var dStart = params.startDay + params.startMonth + params.startYear;
-        var dEnd = params.endDay + params.endMonth + params.endYear;
-        mylog.log("DATEE", dStart, dEnd);
+    var startLbl = (params.endDay != params.startDay) ? trad["fromdate"] : "";
+    var endTime = ( params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
+    mylog.log("params.allDay", !notEmpty(params.allDay), params.allDay);
+   
+    
+    var str = "";
+    if(params.startDate != null){
+      str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                  '<small>'+startLbl+' </small>'+
+                  '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
+                  params.startDay + ' ' + params.startMonth + 
+                  ' <small class="letter-'+params.color+'">' + params.startYear + '</small>';
+                  if(!notNull(params.allDay) || params.allDay != true){
+                    str +=  ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> '+
+                              params.startTime+endTime+"</b></small>";
+                  }
+                  
+        str +=  '</h3>';
+    }
+      
+    var dStart = params.startDay + params.startMonth + params.startYear;
+    var dEnd = params.endDay + params.endMonth + params.endYear;
+    mylog.log("DATEE", dStart, dEnd);
 
-        if(params.endDate != null && dStart != dEnd){
-          str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                      "<small>"+trad["todate"]+" </small>"+
-                      '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
-                      params.endDay + ' ' + params.endMonth + 
-                      ' <small class="letter-'+params.color+'">' + params.endYear + '</small>';
-                      if(!notNull(params.allDay) || params.allDay != true){
-                        str += ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
-                                params.endTime+"</b></small>";
-                      }
-            str +=  '</h3>';
-        }
-            
-            
-        return str;
+    if(params.endDate != null && dStart != dEnd){
+      str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                  "<small>"+trad["todate"]+" </small>"+
+                  '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
+                  params.endDay + ' ' + params.endMonth + 
+                  ' <small class="letter-'+params.color+'">' + params.endYear + '</small>';
+                  if(!notNull(params.allDay) || params.allDay != true){
+                    str += ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
+                            params.endTime+"</b></small>";
+                  }
+        str +=  '</h3>';
+    }
+        
+        
+    return str;
   },
 }

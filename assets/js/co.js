@@ -53,7 +53,7 @@ function checkPoll(){
 }
 function setLanguage(lang){
 	$.cookie('lang', lang, { expires: 365, path: "/" });
-	toastr.success("Changement de la langue en cours");
+	toastr.success(trad.changelanguageprocessing);
 	//window.reloadurlCtrl.loadByHash(location.hash);
 	location.reload();
 }
@@ -248,7 +248,7 @@ function openModal(key,collection,id,tpl,savePath,isSub){
 	});
 }
 
-function updateField(type,id,name,value,reload){ 
+function updateField(type,id,name,value,reload, toastr){ 
     	
 	$.ajax({
 	  type: "POST",
@@ -256,7 +256,8 @@ function updateField(type,id,name,value,reload){
 	  data: { "pk" : id ,"name" : name, value : value },
 	  success: function(data){
 		if(data.result) {
-        	toastr.success(data.msg);
+			if(toastr==null)
+        		toastr.success(data.msg);
         	if(reload)
         		urlCtrl.loadByHash(location.hash);
 		}
@@ -376,7 +377,7 @@ function connectPerson(connectUserId, callback)
 
 
 
-function disconnectTo(parentType,parentId,childId,childType,connectType, callback) {
+function disconnectTo(parentType,parentId,childId,childType,connectType, callback, linkOption) {
 	var messageBox = trad["removeconnection"+connectType];
 	$(".disconnectBtnIcon").removeClass("fa-unlink").addClass("fa-spinner fa-spin");
 	var formData = {
@@ -386,6 +387,8 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 		"parentId" : parentId,
 		"connectType" : connectType,
 	};
+	if(typeof linkOption != "undefined" && linkOption)
+		formData.linkOption=linkOption;
 	bootbox.dialog({
         onEscape: function() {
             $(".disconnectBtnIcon").removeClass("fa-spinner fa-spin").addClass("fa-unlink");
@@ -590,7 +593,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
                             $.ajax({
 								type: "POST",
 								url: baseUrl+"/"+moduleId+"/link/connect",
-								data: formData,
+								data: formData,	
 								dataType: "json",
 								success: function(data) {
 									if(data.result){
@@ -658,6 +661,7 @@ var urlCtrl = {
 		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
 	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
+
 	    "#admin.checkgeocodage" : {title:'CHECKGEOCODAGE ', icon : 'download', useHeader: true},
 	    "#admin.openagenda" : {title:'OPENAGENDA ', icon : 'download', useHeader: true},
 	    "#admin.adddata" : {title:'ADDDATA ', icon : 'download', useHeader: true},
@@ -674,6 +678,7 @@ var urlCtrl = {
 	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
 	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : true},
 	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : true},
+	   	"#adminpublic.interopproposed" : {title : 'INTEROP PROPOSED', icon : 'download', useHeader : true},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
@@ -691,6 +696,10 @@ var urlCtrl = {
 		"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
 		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
 		"#opendata" : {"alias":"#data.index"},
+		"#interoperability.copedia" : {title:'COPEDIA', icon : 'fa-folder-open-o','useHeader' : true},
+		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o','useHeader' : true},
+
+
 		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) }, removeAfterLoad : true },
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
@@ -792,7 +801,6 @@ var urlCtrl = {
 						path = urlCtrl.convertToPath(hash);
 						pathT = path.split('/');
 						//open path in a modal (#openModal)
-						
 						if(pathT[0] == "modal"){
 							path = path.substring(5);
 							alert(baseUrl+'/'+moduleId+path);
@@ -829,6 +837,7 @@ var urlCtrl = {
 		// 			hash.indexOf("#default.directory"), 
 		// 			location.hash.indexOf("#default.directory"), CoAllReadyLoad);
 		onchangeClick=false;
+		navInSlug=false;
 		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
 			mylog.log("globalTheme", globalTheme);
@@ -925,6 +934,30 @@ var urlCtrl = {
 		        hashT = hash.split(".");
 		        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ADD NEED '+typesLabels[hashT[3]],'cubes' );
 		} */
+		else if(hash.length>2){
+			hash = hash.replace( "#","" );
+			hashT=hash.split(".");
+			if(typeof hashT == "string")
+				slug=hashT;
+			else
+				slug=hashT[0];
+			$.ajax({
+	  			type: "POST",
+	  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
+	  			dataType: "json",
+	  			success: function(data){
+			  		if(data.result){
+			  			viewPage="";			  			
+			  			if(hashT.length > 1){
+			  				hashT.shift();
+			  				viewPage="/"+hashT.join("/");
+			  			}
+			  			showAjaxPanel('/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
+			  		}else
+			  			showAjaxPanel( '/app/index', 'Home','home' );
+	 			},
+			});
+		}
 	    else 
 	        showAjaxPanel( '/app/index', 'Home','home' );
 	    mylog.log("testnetwork hash", hash);
@@ -965,7 +998,7 @@ also switches the global Title and Icon
 
 function  processingBlockUi() { 
 	msg = '<h4 style="font-weight:300" class=" text-dark padding-10">'+
-			'<i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...'+
+			'<i class="fa fa-spin fa-circle-o-notch"></i><br>'+trad.currentlyloading+'...'+
 		  '</h4>';
 
 	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
@@ -1360,7 +1393,9 @@ var smallMenu = {
 		 },"html" );
 	},
 	//content Loader can go into a block
-	open : function (content,type) { 
+	//smallMenu.open("Recherche","blockUI")
+	//smallMenu.open("Recherche","bootbox")
+	open : function (content,type,color) { 
 		//alert("small menu open");
 		//add somewhere in page
 		if(!smallMenu.inBlockUI){
@@ -1370,6 +1405,8 @@ var smallMenu = {
 		else {
 			//this uses blockUI
 			if(type == "blockUI"){
+				colorCSS = (color == "black") ? 'rgba(0,0,0,0.70)' : 'rgba(256,256,256,0.85)';
+				colorCSS = (color == "black") ? '#fff' : '#000';
 				$.blockUI({ 
 					//title : 'Welcome to your page', 
 					message : (content) ? content : "<div class='blockContent'></div>",
@@ -1379,10 +1416,10 @@ var smallMenu = {
 			         //margin : "50px",
 			         //width:"80%",
 			         //    padding: '15px', 
-			         backgroundColor: 'rgba(256,256,256,0.85)', 
+			         backgroundColor: colorCSS,  
 			         //    '-webkit-border-radius': '10px', 
 			         //    '-moz-border-radius': '10px', 
-			             //color: '#fff' ,
+			             color: colorText ,
 			        	// "cursor": "pointer"
 			        }//,overlayCSS: { backgroundColor: '#fff'}
 				});
@@ -1492,7 +1529,9 @@ function  bindTags() {
 }
 
 function  bindExplainLinks() { 
-	$(".explainLink").click(function() {  
+	mylog.log("bindExplainLinks");
+	$(".explainLink").click(function() { 
+		mylog.log("explainLink");
 	    showDefinition( $(this).data("id") );
 	    return false;
 	 });
@@ -1706,7 +1745,7 @@ function myAdminList (ctypes) {
 				});
 			}
 		});
-		mylog.dir(myList);
+		mylog.log("myAdminList return", myList);
 	}
 	return myList;
 }
@@ -1908,27 +1947,29 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
         var $this = $(this);
         if($(appendClassName).html()==""){
         if($this.parents().eq(nbParent).find(appendClassName).html()=="" || (e.which==32 || e.which==13)){
-        	//new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?")
-        	///\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i
-	        //var match_url = /\b(https?|ftp):\/\/([\-A-Z0-9. \-]+?|www\\.)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i;
-	        //var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
-	        var match_url=/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+        	//var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?")
+        	//var match_url=new RegExp("(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})");
+        	//var match_url=/\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i
+	       // var match_url = /\b(https?|ftp):\/\/([\-A-Z0-9. \-]+?|www\\.)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i;
+	       // var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+	        //var match_url=/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+	        var match_url=/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+
 	        if (match_url.test(getUrl.val())) 
 	        {
-		        if(lastUrl != getUrl.val().match(match_url)[0] && processUrl.isLoading==false){
+	        	extract_url=getUrl.val().match(match_url)[0];
+	        	extract_url=extract_url.replace(/[\n]/gi," ");
+	        	extract_url=extract_url.split(" ");
+	        	extract_url=extract_url[0];
+		        if(lastUrl != extract_url && processUrl.isLoading==false){
 		        	processUrl.isLoading=true;
-		        	mylog.log(getUrl.val().match(match_url));
-			       // alert(lastUrl+"///"+getUrl.val().match(match_url)[0]);
-		        	var extracted_url = getUrl.val().match(match_url)[0]; //extracted first url from text filed
-	                //$this.parent().find(appendClassName).html("<i class='fa fa-spin fa-spinner text-red fa-2x'></i>");//hide();
+		        	var extracted_url = extract_url;
 	                $this.parents().eq(nbParent).find(".loading_indicator").show(); //show loading indicator image
-
 	                //ajax request to be sent to extract-process.php
 	                lastUrl=extracted_url;
 	                extracted_url_send=extracted_url;
 	                if(extracted_url_send.indexOf("http")<0)
 	                	extracted_url_send = "http://"+extracted_url;
-	               // $(appendClassName).html("<i class='fa fa-spin fa-reload'></i>");
 	                $.ajax({
 						url: baseUrl+'/'+moduleId+"/news/extractprocess",
 						data: {'url': extracted_url_send},
@@ -1965,7 +2006,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
 						error : function(){
 							$.unblockUI();
 							//toastr.error(trad["wrongwithurl"] + " !");
-
+							 processUrl.isLoading=false;
 							//content to be loaded in #results element
 							var content = '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-refresh"></i></a><h4><a href="'+extracted_url+'" target="_blank" class="lastUrl wrongUrl">'+extracted_url+'</a></h4>';
 		                    //load results in the element
@@ -2007,8 +2048,8 @@ function getMediaCommonHtml(data,action,id){
             extractClass="extracted_thumb";
             width="100%";
             height="100%";
-
-            aVideo='<a href="#" class="videoSignal text-white center"><i class="fa fa-3x fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
+            thumbImg=true;
+            aVideo='<a href="javascript:;" class="videoSignal text-white center"><i class="fa fa-3x fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
             inputToSave+="<input type='hidden' class='video_link_value' value='"+data.content.videoLink+"'/>"+
             "<input type='hidden' class='media_type' value='video_link' />";   
 		}
@@ -2019,11 +2060,13 @@ function getMediaCommonHtml(data,action,id){
                 extractClass="extracted_thumb_large";
                 width="100%";
                 height="";
+                thumbImg=false;
             }
             else{
                 extractClass="extracted_thumb";
                 width="100";
                 height="100";
+            	thumbImg=true;
             }
             inputToSave+="<input type='hidden' class='media_type' value='img_link' />";
 		}
@@ -2074,14 +2117,17 @@ function getMediaCommonHtml(data,action,id){
 	else
 		mediaUrl="";
 	if((typeof(data.description) !="undefined" || typeof(data.name) != "undefined") && (data.description !="" || data.name != "")){
-		contentMedia='<div class="extracted_content col-xs-8 padding-20">'+
+		classContentDescr="col-xs-12 padding-10";
+		if(thumbImg)
+			classContentDescr="col-xs-8";
+		contentMedia='<div class="extracted_content '+classContentDescr+'">'+
 			'<a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">';
 			if(typeof(data.name) != "undefined" && data.name!=""){
 				contentMedia+='<h4>'+data.name+'</h4></a>';
 				inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
 			}
 			if(typeof(data.description) != "undefined" && data.description!=""){
-				contentMedia+='<p>'+data.description+'</p>'+countThumbail+'>';
+				contentMedia+='<span>'+data.description+'</span>';
 				if(typeof(data.name) == "undefined" || data.name=="")
 					contentMedia+='</a>';
 				inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
@@ -2096,7 +2142,7 @@ function getMediaCommonHtml(data,action,id){
 	content="";
 	if(action == "save")
 		content += '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>';
-    content += '<div class="extracted_url padding-10">'+ inc_image +contentMedia+'</div>'+inputToSave;
+    content += '<div class="extracted_url">'+ inc_image +contentMedia+'</div>'+inputToSave;
     return content;
 }
 
@@ -2205,9 +2251,9 @@ function communecterUser(){
 }
 
 function updateLocalityEntities(addressesIndex, addressesLocality){
-	mylog.warn("updateLocalityEntities");
+	mylog.log("updateLocalityEntities", addressesIndex, addressesLocality);
 	$("#ajax-modal").modal("hide");
-	
+	mylog.log("typeof formInMap.initUpdateLocality", typeof formInMap.initUpdateLocality);
 	if(typeof formInMap.initUpdateLocality != "undefined"){
 		var address = contextData.address ;
 		var geo = contextData.geo ;
@@ -2269,7 +2315,7 @@ var processUrl = {
 	        $("#status-ref").html("<span class='letter-red'><i class='fa fa-times'></i> cette url n'est pas valide.</span>");
 	        return;
 	    }
-		$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> recherche en cours</span>");
+		$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+"</span>");
 		$("#refResult").addClass("hidden");
 		$("#send-ref").addClass("hidden");
 
@@ -2419,7 +2465,7 @@ var collection = {
 				sure = confirm("Vous êtes sûr ?");
 			}
 			else if(action == "new" || action == "update")
-				params.name = prompt('Nom de la collection ?',name);
+				params.name = prompt(tradDynForm.collectionname+' ?',name);
 			if(action == "update")
 				params.oldname = name;
 			
@@ -2540,9 +2586,12 @@ var collection = {
 ********************************** */
 var contextData = null;
 var dynForm = null;
+var mentionsInput=[];
 var mentionsInit = {
 	stopMention : false,
+	isSearching : false,
 	get : function(domElement){
+		mentionsInput=[];
 		$(domElement).mentionsInput({
 		  onDataRequest:function (mode, query, callback) {
 			  	if(mentionsInit.stopMention)
@@ -2550,38 +2599,44 @@ var mentionsInit = {
 			  	var data = mentionsContact;
 			  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 				callback.call(this, data);
-		   		var search = {"search" : query};
+				mentionsInit.isSearching=true;
+		   		var search = {"searchType" : ["citoyens","organizations","projects"]};
 		  		$.ajax({
 					type: "POST",
-			        url: baseUrl+"/"+moduleId+"/search/searchmemberautocomplete",
+			        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
 			        data: search,
 			        dataType: "json",
 			        success: function(retdata){
 			        	if(!retdata){
 			        		toastr.error(retdata.content);
 			        	}else{
-				        	//mylog.log(retdata);
+				        	mylog.log(retdata);
 				        	data = [];
-				        	for(var key in retdata){
-					        	for (var id in retdata[key]){
+				        	//for(var key in retdata){
+					        //	for (var id in retdata[key]){
+					        $.each(retdata, function (e, value){
 						        	avatar="";
-						        	if(retdata[key][id].profilThumbImageUrl!="")
-						        		avatar = baseUrl+retdata[key][id].profilThumbImageUrl;
+						        	//console.log(retdata[key]);
+						        	//aert(retdata[key][id].type);
+						        	if(typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl!="")
+						        		avatar = baseUrl+value.profilThumbImageUrl;
 						        	object = new Object;
-						        	object.id = id;
-						        	object.name = retdata[key][id].name;
+						        	object.id = e;
+						        	object.name = value.name;
+						        	object.slug = value.slug;
 						        	object.avatar = avatar;
-						        	object.type = key;
+						        	object.type = value.type;
 						        	var findInLocal = _.findWhere(mentionsContact, {
-										name: retdata[key][id].name, 
-										type: key
+										name: value.name, 
+										type: value.type
 									}); 
 									if(typeof(findInLocal) == "undefined")
 										mentionsContact.push(object);
-						 			}
-				        	}
+						 	//		}
+				        	//}
+				        	});
 				        	data=mentionsContact;
-				        	//mylog.log(data);
+				        	mylog.log(data);
 				    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 							callback.call(this, data);
 							mylog.log(callback);
@@ -2590,6 +2645,48 @@ var mentionsInit = {
 				})
 		  	}
 	  	});
+	},
+	beforeSave : function(object, domElement){
+		$(domElement).mentionsInput('getMentions', function(data) {
+			mentionsInput=data;
+		});
+		if (typeof mentionsInput != "undefined" && mentionsInput.length != 0){
+			var textMention="";
+			$(domElement).mentionsInput('val', function(text) {
+				textMention=text;
+				$.each(mentionsInput, function(e,v){
+					strRep=v.name;
+					if(typeof v.slug != "undefined")
+						strRep="@"+v.slug;
+					textMention = textMention.replace("@["+v.name+"]("+v.type+":"+v.id+")", strRep);
+				});
+			});			
+			object.mentions=mentionsInput;
+			object.text=textMention;
+		}
+		return object;		      		
+	},
+	addMentionInText: function(text,mentions){
+		$.each(mentions, function( index, value ){
+			if(typeof value.slug != "undefined"){
+				str="<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+		   						value.name+
+		   					"</span>";
+				text = text.replace("@"+value.slug, str);
+			}else{
+				//Working on old news
+		   		array = text.split(value.value);
+		   		text=array[0]+
+		   					"<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+		   						value.name+
+		   					"</span>"+
+		   				array[1];
+		   	}   					
+		});
+		return text;
+	},
+	reset: function(domElement){
+		$(domElement).mentionsInput('reset');
 	}
 }
 var uploadObj = {
@@ -2625,6 +2722,10 @@ var uploadObj = {
 var dyFObj = {
 	elementObj : null,
 	elementData : null,
+	subElementObj : null,
+	subElementData : null,
+	activeElem : null,
+	activeModal : null,
 	//rules to show hide submit btn, used anwhere on blur and can be 
 	//completed by specific rules on dynForm Obj
 	//ex : dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf
@@ -2704,7 +2805,8 @@ var dyFObj = {
 		
 		if( typeof formData.tags != "undefined" && formData.tags != "" )
 			formData.tags = formData.tags.split(",");
-
+		
+		
 		// Add collections and genres of notragora in tags
 		if( typeof formData.collections != "undefined" && formData.collections != "" ){
 			collectionsTagsSave=formData.collections.split(",");
@@ -2734,9 +2836,14 @@ var dyFObj = {
 	},
 
 	saveElement : function  ( formId,collection,ctrl,saveUrl,afterSave ) { 
+		//alert("saveElement");
 		mylog.warn("---------------- saveElement",formId,collection,ctrl,saveUrl,afterSave );
 		formData = $(formId).serializeFormJSON();
 		mylog.log("before",formData);
+
+		if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.formatData","function") )
+			formData = dyFObj.elementObj.dynForm.jsonSchema.formatData(formData);
+
 		formData = dyFObj.formatData(formData,collection,ctrl);
 		mylog.log("saveElement", formData);
 		formData.medias = [];
@@ -2769,52 +2876,63 @@ var dyFObj = {
 				formData.medias.push(mediaObject);
 			}
 		});
+		if(formData.medias.length == 0)
+			delete formData.medias;
 		mylog.log("beforeAjax",formData);
-		$.ajax( {
-	    	type: "POST",
-	    	url: (saveUrl) ? saveUrl : baseUrl+"/"+moduleId+"/element/save",
-	    	data: formData,
-	    	dataType: "json",
-	    	success: function(data){
-	    		mylog.warn("saveElement ajax result");
-	    		mylog.dir(data);
-				if(data.result == false){
-	                toastr.error(data.msg);
-	                //reset save btn 
-	                $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false).one(function() { 
-						$( settings.formId ).submit();	        	
-			        });
-	           	}
-	            else {
-	            	if(typeof data.msg != "undefined") 
-	            		toastr.success(data.msg);
-	            	else{
-	            		if(typeof data.resultGoods != "undefined" && typeof data.resultGoods.msg != "undefined")
-	            			toastr.success(data.resultGoods.msg);
-	            		if(typeof data.resultErrors != "undefined" && typeof data.resultErrors.msg != "undefined")
-	            			toastr.error(data.resultErrors.msg);
-	            	}
-	            	// mylog.log("data.id", data.id, data.url);
-	            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
-			        	addLocationToFormloopEntity(data.id, collection, data.map);*/
-			        if (typeof afterSave == "function"){
-	            		afterSave(data);
-	            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
-	            	} else {
-						dyFObj.closeForm();
-		                if(data.url){
-		                	mylog.log("urlReload data.url", data.url);
-		                	urlCtrl.loadByHash( data.url );
-		                }
-		                else if(data.id){
-		                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
-			        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
-		                }
-					}
-	            }
-	            uploadObj.set()
-	    	}
-	    });
+
+		if( dyFObj.elementObj.dynForm.jsonSchema.debug ){
+			mylog.log("debug dyn Form xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+			mylog.dir(formData);
+			dyFObj.closeForm();
+			mylog.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		} else {
+			$.ajax( {
+		    	type: "POST",
+		    	url: (saveUrl) ? saveUrl : baseUrl+"/"+moduleId+"/element/save",
+		    	data: formData,
+		    	dataType: "json",
+		    	success: function(data){
+		    		mylog.warn("saveElement ajax result");
+		    		mylog.dir(data);
+					if(data.result == false){
+		                toastr.error(data.msg);
+		                //reset save btn 
+		                $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false).one(function() { 
+							$( settings.formId ).submit();	        	
+				        });
+		           	}
+		            else {
+		            	if(typeof data.msg != "undefined") 
+		            		toastr.success(data.msg);
+		            	else{
+		            		if(typeof data.resultGoods != "undefined" && typeof data.resultGoods.msg != "undefined")
+		            			toastr.success(data.resultGoods.msg);
+		            		if(typeof data.resultErrors != "undefined" && typeof data.resultErrors.msg != "undefined")
+		            			toastr.error(data.resultErrors.msg);
+		            	}
+		            	// mylog.log("data.id", data.id, data.url);
+		            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
+				        	addLocationToFormloopEntity(data.id, collection, data.map);*/
+				        	
+				        if (typeof afterSave == "function"){
+		            		afterSave(data);
+		            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+		            	} else {
+							dyFObj.closeForm();
+			                if(data.url){
+			                	mylog.log("urlReload data.url", data.url);
+			                	urlCtrl.loadByHash( data.url );
+			                }
+			                else if(data.id){
+			                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
+				        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
+			                }
+						}
+		            }
+		            uploadObj.set()
+		    	}
+		    });
+		}
 	},
 	closeForm : function() {
 		$('#ajax-modal').modal("hide");
@@ -2856,13 +2974,15 @@ var dyFObj = {
 	},
 	
 	//entry point function for opening dynForms
-	openForm : function  (type, afterLoad,data) { 
+	openForm : function  (type, afterLoad,data,isSub) { 
 	    //mylog.clear();
 	    $.unblockUI();
 	    $("#openModal").modal("hide");
 	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
 	    mylog.dir(data);
 	    uploadObj.contentKey="profil"; 
+	    dyFObj.activeElem = (isSub) ? "subElementObj" : "elementObj";
+	    dyFObj.activeModal = (isSub) ? "#openModal" : "#ajax-modal";
       	/*if(type=="addPhoto") 
         	uploadObj.contentKey="slider";*/ 
 	    //BOUBOULE ICI ACTIVER LEVENEMENT
@@ -2893,14 +3013,14 @@ var dyFObj = {
 		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
 		if(typeof type == "object"){
 			mylog.log(" object directly Loaded : ", type);
-			dyFObj.elementObj = type;
+			dyFObj[dyFObj.activeElem] = type;
 			if( notNull(type.col) ) uploadObj.type = type.col;
     		callback(type, afterLoad, data);
 		}else if( jsonHelper.notNull( "typeObj."+type+".dynForm" , "object") ){
 			mylog.log(" typeObj Loaded : ", type);
-			dyFObj.elementObj = dyFInputs.get(type);
+			dyFObj[dyFObj.activeElem] = dyFInputs.get(type);
 			if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
-    		callback( dyFObj.elementObj, afterLoad, data );
+    		callback( dyFObj[dyFObj.activeElem], afterLoad, data );
 		}else {
 			//TODO : pouvoir surchargé le dossier dynform dans le theme
 			//via themeObj.dynForm.folder overload
@@ -2909,11 +3029,11 @@ var dyFObj = {
 				null,
 				function() { 
 					//alert(dfPath+type+'.js');
-					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+dyFInputs.get(type).ctrl+'.js');
+					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+type+'.js');
 					mylog.dir(dynForm);
 					//typeObj[type].dynForm = dynForm;
 				  	dyFInputs.get(type).dynForm = dynForm;
-					dyFObj.elementObj = dyFInputs.get(type);
+					dyFObj[dyFObj.activeElem] = dyFInputs.get(type);
 					if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
     				callback( afterLoad, data );
 			});
@@ -2922,73 +3042,90 @@ var dyFObj = {
 	//prepare information for the modal panel 
 	//and launches the build process
 	starBuild : function  (afterLoad, data) { 
-		mylog.warn("------------ starBuild",dyFObj.elementObj, afterLoad, data);
-		mylog.dir(dyFObj.elementObj);
-		$("#ajax-modal .modal-header").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA");//.addClass(dyFObj.elementObj.bgClass);
-		$("#ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
-		$("#ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
+		mylog.warn("------------ starBuild",dyFObj[dyFObj.activeElem], afterLoad, data,dyFObj.activeModal );
+		mylog.dir(dyFObj[dyFObj.activeElem]);
+		$(dyFObj.activeModal+" .modal-header").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA");//.addClass(dyFObj[elem].bgClass);
+		$(dyFObj.activeModal+" #ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
+		$(dyFObj.activeModal+" #ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
 		
-	  	$("#ajax-modal-modal-body").html( "<div class='row bg-white'>"+
+	  	$(dyFObj.activeModal+" #ajax-modal-modal-body").html( "<div class='row bg-white'>"+
 	  										"<div class='col-sm-10 col-sm-offset-1'>"+
 							              	"<div class='space20'></div>"+
 							              	//"<h1 id='proposerloiFormLabel' >Faire une proposition</h1>"+
 							              	"<form id='ajaxFormModal' enctype='multipart/form-data'></form>"+
 							              	"</div>"+
 							              "</div>");
-	  	$('#ajax-modal .modal-footer').hide();
-	  	$('#ajax-modal').modal("show");
+	  	$(dyFObj.activeModal+' .modal-footer').hide();
+	  	$(dyFObj.activeModal).modal("show");
 
 	  	dyFInputs.init();
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
-	  	dyFObj.buildDynForm(afterLoad, data);
-	  	if(typeof dyFObj.elementObj.titleClass != "undefined")
-	  		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-									  .addClass(dyFObj.elementObj.titleClass);
+	  	dyFObj.buildDynForm(afterLoad, data,dyFObj[dyFObj.activeElem],dyFObj.activeModal+" #ajaxFormModal");
+	  	//if(typeof dyFObj[dyFObj.currentKFormType].color != "undefined")
+	  		//$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+									  	  //.addClass(dyFObj[dyFObj.currentKFormType].color);
+		//alert("CO "+typeObj[currentKFormType].color);
+                    
+	  	//$(dyFObj.activeModal+" #ajax-modal-modal-title").html((typeof dyFObj[dyFObj.activeElem].title != "undefined") ? dyFObj[dyFObj.activeElem].title : "");
 	},
-	buildDynForm : function (afterLoad,data) { 
-		mylog.warn("--------------- buildDynForm", dyFObj.elementObj, afterLoad,data);
+	/*subDynForm : function(type, afterLoad,data) {
+		smallMenu.open();
+		$("#openModal div.modal-content div.container")..html( "<div class='row bg-white'>"+
+	  										"<div class='col-sm-10 col-sm-offset-1'>"+
+							              	"<div class='space20'></div>"+
+							              	//"<h1 id='proposerloiFormLabel' >Faire une proposition</h1>"+
+							              	"<form id='subFormModal' enctype='multipart/form-data'></form>"+
+							              	"</div>"+
+							              "</div>");
+		dyFObj.buildDynForm(afterLoad, data,dyFObj.subElementObj,"#openModal #subFormModal");
+
+	},*/
+	buildDynForm : function (afterLoad,data,obj,formId) { 
+		mylog.warn("--------------- buildDynForm", dyFObj[dyFObj.activeElem], afterLoad,data);
 		if(userId)
 		{ 
 			var form = $.dynForm({
-			      formId : "#ajax-modal-modal-body #ajaxFormModal",
-			      formObj : dyFObj.elementObj.dynForm,
+			      formId : formId,
+			      formObj : dyFObj[dyFObj.activeElem].dynForm,
 			      formValues : data,
 			      beforeBuild : function  () {
-			      	if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.beforeBuild","function") )
-				        	dyFObj.elementObj.dynForm.jsonSchema.beforeBuild();
+
+			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.beforeBuild","function") )
+				        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeBuild();
 			      },
 			      onLoad : function  () {
+
 			      	if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
-			      		themeObj.dynForm.onLoadPanel(dyFObj.elementObj);
+			      		themeObj.dynForm.onLoadPanel(dyFObj[dyFObj.activeElem]);
 			      	} else {
-				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj.elementObj.dynForm.jsonSchema.icon+"'></i> "+dyFObj.elementObj.dynForm.jsonSchema.title);
-				        //alert(afterLoad+"|"+typeof dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
+				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj[dyFObj.activeElem].dynForm.jsonSchema.icon+"'></i> "+dyFObj[dyFObj.activeElem].dynForm.jsonSchema.title);
+				        //alert(afterLoad+"|"+typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads[afterLoad]);
 			    	}
 			        
-			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
-			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
+			        if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.onLoads."+afterLoad, "function") )
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads[afterLoad](data);
 			        //incase we need a second global post process
-			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
-			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload(data);
+			        if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.onLoads.onload", "function") )
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads.onload(data);
 				    
 			        bindLBHLinks();
 			      },
 			      onSave : function(){
 
-			      	if( typeof dyFObj.elementObj.dynForm.jsonSchema.beforeSave == "function")
-			        	dyFObj.elementObj.dynForm.jsonSchema.beforeSave();
+			      	if( typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave == "function")
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave();
 
-			        var afterSave = ( typeof dyFObj.elementObj.dynForm.jsonSchema.afterSave == "function") ? dyFObj.elementObj.dynForm.jsonSchema.afterSave : null;
-			        mylog.log("onSave", dyFObj.elementObj.saveUrl);
-			        if( dyFObj.elementObj.save )
-			        	dyFObj.elementObj.save("#ajaxFormModal");
-			        if( dyFObj.elementObj.dynForm.jsonSchema.save )
-			        	dyFObj.elementObj.dynForm.jsonSchema.save();
-			        else if(dyFObj.elementObj.saveUrl)
-			        	dyFObj.saveElement("#ajaxFormModal",dyFObj.elementObj.col,dyFObj.elementObj.ctrl,dyFObj.elementObj.saveUrl,afterSave);
+			        var afterSave = ( typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterSave == "function") ? dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterSave : null;
+			        mylog.log("onSave ", dyFObj.activeElem, dyFObj[dyFObj.activeElem].saveUrl, dyFObj[dyFObj.activeElem].save);
+			        if( dyFObj[dyFObj.activeElem].save )
+			        	dyFObj[dyFObj.activeElem].save(dyFObj.activeModal+" #ajaxFormModal");
+			        if( dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save )
+			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save(); //use this for subDynForms
+			        else if(dyFObj[dyFObj.activeElem].saveUrl)
+			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, dyFObj[dyFObj.activeElem].saveUrl, afterSave );
 			        else
-			        	dyFObj.saveElement("#ajaxFormModal",dyFObj.elementObj.col,dyFObj.elementObj.ctrl,null,afterSave);
+			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, null, afterSave );
 			        return false;
 			    }
 			});
@@ -3247,13 +3384,20 @@ var dyFInputs = {
 												});
 											});
 	},
-	tags : function(list) { 
+	tags : function(list, placeholder, label) { 
     	tagsL = (list) ? list : tagsList;
     	return {
 			inputType : "tags",
-			placeholder : tradDynForm["tags"],
+			placeholder : placeholder != null ? placeholder : tradDynForm["tags"],
 			values : tagsL,
-			label : tradDynForm["addtags"]
+			label : (label != null) ? label : tradDynForm["addtags"]
+		}
+	},
+	radio : function(label,keyValues) { 
+    	return {
+    		label : (label != null) ? label : "",
+			inputType : "radio",
+			options : keyValues
 		}
 	},
     imageAddPhoto : {
@@ -3269,10 +3413,10 @@ var dyFInputs = {
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
-				$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-					  					  	  .addClass("bg-dark");
+				//$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+				//	  					  	  .addClass("bg-dark");
     		 	
-    		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
+    		 	//$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
 
         	},1500);
     	}
@@ -3377,6 +3521,7 @@ var dyFInputs = {
 	    console.log("create form input email", inputObj);
 	    return inputObj;
 	},
+	
 	emailOptionnel :function (label,placeholder,rules) {  
     	var inputObj = dyFInputs.text(label, placeholder, rules);
     	inputObj.init = function(){
@@ -3595,7 +3740,7 @@ var dyFInputs = {
 			 
 			          "<a href='javascript:;' data-index='"+index+"' data-indexLoc='"+dyFInputs.locationObj.countLocation+"' "+ 
 			            "class='deleteLocDynForm locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+ 
-			            "<i class='fa fa-times'></i> "+tradDynForm["clear"]+ 
+			            "<i class='fa fa-times'></i> "+tradDynForm.clear+ 
 			          "</a>"+ 
 			 
 			          "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' data-index='"+index+"'"+ 
@@ -3614,7 +3759,7 @@ var dyFInputs = {
 			 
 			          "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+", "+boolCenter+")' "+ 
 			            "class='removeLocalityBtn locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+ 
-			            "<i class='fa fa-times'></i> "+tradDynForm["clear"]+ 
+			            "<i class='fa fa-times'></i> "+tradDynForm.clear+ 
 			          "</a>"+ 
 			 
 			          "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' "+ 
@@ -3728,6 +3873,10 @@ var dyFInputs = {
 			dyFInputs.locationObj.elementLocations[ix].center = true;
 		}
     },
+    //produces 
+    subDynForm : function(form, multi){
+
+    },
     inputUrl :function (label,placeholder,rules, custom) {  
     	label = ( notEmpty(label) ? label : tradDynForm["mainurl"] );
     	placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
@@ -3761,6 +3910,10 @@ var dyFInputs = {
             getMediaFromUrlContent(".addmultifield0", ".resultGetUrl0",0);
         	$(".urlsarray").css("display","none");	
         }
+    },
+    keyVal : {
+    	label : "Key Value Pairs",
+    	inputType : "properties",
     },
     bookmarkUrl: function(label, placeholder,rules, custom){
     	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
@@ -4008,8 +4161,8 @@ var dyFInputs = {
     },
     voteDateEnd :{
     	inputType : "datetime",
-    	label : "Fin de la période de vote",
-    	placeholder : "Fin de la période de vote",
+    	label : tradDynForm.dateEndVoteSession,
+    	placeholder : tradDynForm.dateEndVoteSession,
     	rules : { 
     		required : true,
     		greaterThanNow : ["DD/MM/YYYY H:m"]
@@ -4017,8 +4170,8 @@ var dyFInputs = {
     },
     amendementDateEnd :{
     	inputType : "datetime",
-    	label : "Fin de la période d'amendement (ouverture des votes)",
-    	placeholder : "Fin de la période d'amendement",
+    	label : tradDynForm.dateEndAmendementSessionStartVote,
+    	placeholder : tradDynForm.dateEndAmendementSession,
     	rules : { 
     		required : true,
     		greaterThanNow : ["DD/MM/YYYY H:m"]
@@ -4089,7 +4242,7 @@ var dyFInputs = {
 };
 
 var typeObj = {
-	"themes":{ 
+	themes:{ 
 		dynForm : {
 		    jsonSchema : {
 			    title : "Theme Switcher ?",
@@ -4111,7 +4264,7 @@ var typeObj = {
 			    }
 			}
 		}	},
-	"addElement":{ 
+	addElement:{ 
 		dynForm : {
 		    jsonSchema : {
 			    title : "Ajouter un élément ?",
@@ -4137,69 +4290,91 @@ var typeObj = {
 			    }
 			}
 		}	},
-	"addPhoto":{ titleClass : "bg-dark" },
-	"addFile":{ titleClass : "bg-dark" },
-	"person" : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
-	"persons" : { sameAs:"person" },
-	"people" : { sameAs:"person" },
-	"citoyen" : { sameAs:"person" },
-	"citoyens" : { sameAs:"person" },
+	addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
+	addFile:{ titleClass : "bg-dark", color : "bg-dark" },
+	person : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
+	persons : { sameAs:"person" },
+	people : { sameAs:"person" },
+	citoyen : { sameAs:"person" },
+	citoyens : { sameAs:"person" },
 	
-	"poi":{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
-			subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
-				   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
-				   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
+	poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
+		subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+			   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
+			   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
+	place:{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
+	TiersLieux : {sameAs:"place",color: "azure",icon: "home"},
+	Maison : {sameAs:"place", color: "azure",icon: "home"},
+	ressource:{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
 
-	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
-	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
-	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
-	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
-
-	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
-	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
-	"organizations" : {sameAs:"organization"},
-	"LocalBusiness" : {col:"organizations",color: "azure",icon: "industry"},
-	"NGO" : {sameAs:"organization", color:"green", icon:"users"},
-	"Association" : {sameAs:"organization", color:"green", icon: "group"},
-	"GovernmentOrganization" : {col:"organization", color: "red",icon: "university"},
-	"Group" : {	col:"organizations",color: "turq",icon: "circle-o"},
-	"event" : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
-	"events" : {sameAs:"event"},
-	"project" : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
-	"projects" : {sameAs:"project"},
-	"city" : {sameAs:"cities"},
-	"cities" : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
+	siteurl:{ col:"siteurl",ctrl:"siteurl"},
+	organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
+	organizations : {sameAs:"organization"},
+	LocalBusiness : {col:"organizations",color: "azure",icon: "industry"},
+	NGO : {sameAs:"organization", color:"green", icon:"users"},
+	Association : {sameAs:"organization", color:"green", icon: "group"},
+	GovernmentOrganization : {col:"organization", color: "red",icon: "university"},
+	Group : {	col:"organizations",color: "turq",icon: "circle-o"},
+	event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
+	events : {sameAs:"event"},
+	project : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
+	projects : {sameAs:"project"},
+	city : {sameAs:"cities"},
+	cities : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
 	
-	"entry" : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
+	entry : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
 		saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
-	"vote" : {col:"actionRooms",ctrl:"survey"},
-	"survey" : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
-	"surveys" : {sameAs:"survey"},
-	"proposal" : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
-	"proposals" : { sameAs : "proposal" },
-	"action" : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
-	"actions" : { sameAs : "action" },
-	"actionRooms" : {sameAs:"room"},
-	"rooms" : {sameAs:"room"},
-	"room" : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
-	"discuss" : {col:"actionRooms",ctrl:"room"},
+	vote : {col:"actionRooms",ctrl:"survey"},
+	survey : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
+	surveys : {sameAs:"survey"},
+	proposal : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
+	proposals : { sameAs : "proposal" },
+	action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
+	actions : { sameAs : "action" },
+	actionRooms : {sameAs:"room"},
+	rooms : {sameAs:"room"},
+	room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+	discuss : {col:"actionRooms",ctrl:"room"},
 
-	"contactPoint" : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
+	contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
 		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	"classified":{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
+	classified:{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
 				   subTypes : [
 				   //FR
 				   "Technologie","Immobilier","Véhicules","Maison","Loisirs","Mode",
 				   //EN
 				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
 				   ]	},
-	"url" : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
-	"bookmark" : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
-	"document" : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
-	"default" : {icon:"arrow-circle-right",color:"dark"},
+	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
+	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
+	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
+	default : {icon:"arrow-circle-right",color:"dark"},
 	//"video" : {icon:"video-camera",color:"dark"},
-	"formContact" : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
-	"news" : { col : "news" }, 
+	formContact : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
+	news : { col : "news" }, 
+	config : { col:"config",color:"azure",icon:"cogs",titleClass : "bg-azure", title : tradDynForm.addconfig,
+				sections : {
+			        network : { label: "Network Config",key:"network",icon:"map-marker"}
+			    }},
+	network : { col:"network",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+	inputs : { color:"red",icon:"address-card-o",titleClass : "bg-phink", title : "All inputs"},
+	addAny : { color:"pink",icon:"plus",titleClass : "bg-phink",title : tradDynForm.wantToAddSomething,
+				sections : {
+			        person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
+			        organization : { label: trad.organization,key:"organization",icon:"group"},
+			        event : { label: trad.event,key:"event",icon:"calendar"},
+			        project : { label: trad.project ,key:"project",icon:"lightbulb-o"},
+			    }},
+	apps : { color:"pink",icon:"cubes",titleClass : "bg-phink",title : tradDynForm.appList,
+				sections : {
+			        search : { label: "SEARCH",key:"#search",icon:"search fa-2x text-red"},
+			        agenda : { label: "AGENDA",key:"#agenda",icon:"group fa-2x text-red"},
+			        news : { label: "NEWS",key:"#news",icon:"newspaper-o fa-2x text-red"},
+			        classifieds : { label: "ANNONCEs",key:"#classifieds",icon:"bullhorn fa-2x text-red"},
+			        dda : { label: "DISCUSS DECIDE ACT" ,key:"#dda",icon:"gavel fa-2x text-red"},
+			        chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
+			    }},
+	filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"}
 };
 
 var documents = {
@@ -4720,9 +4895,9 @@ function getContextDataLinks(){
 			contextData.map = {
 				data : data,
 				icon : "link",
-				title : "La communauté de <b>"+contextData.name+"</b>"
+				title : trad.thecommunityof+" <b>"+contextData.name+"</b>"
 			} ;
-			Sig.showMapElements(Sig.map, data, "link", "La communauté de <b>"+contextData.name+"</b>");
+			Sig.showMapElements(Sig.map, data, "link", trad.thecommunityof+" <b>"+contextData.name+"</b>");
 			//showMap();
 		},
 		error: function (error) {

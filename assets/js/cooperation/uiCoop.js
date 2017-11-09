@@ -6,6 +6,9 @@ var uiCoop = {
 		//$("#div-reopen-menu-left-container").removeClass("hidden");
 		$("#main-coop-container").html("");
 
+		$("#btn-close-coop").click(function(){
+			$("#coop-data-container").html("");
+		});
 		//KScrollTo("#div-reopen-menu-left-container");
 
 		//toogleNotif(false);
@@ -32,17 +35,19 @@ var uiCoop = {
 	},
 
 	"closeUI" : function(reloadStream){
-		//$("#menu-left-container").show();
-		//$("#div-reopen-menu-left-container").addClass("hidden");
-		//KScrollTo("#topPosKScroll");
-
-		//if(reloadStream != false) loadNewsStream(false);
+		
 	},
 
 	"initBtnLoadData" : function(){
 		//alert('initBtnLoadData');
 		$(".load-coop-data").off().click(function(){
 			var type = $(this).data("type");
+			
+			if(type == "locked"){
+				toastr.info("Vous n'avez pas accès à cet espace");
+				return;
+			}
+
 			$("#menu-room .load-coop-data").removeClass("active");
 			$(".load-coop-data[data-type='"+type+"']").removeClass("active");
 
@@ -54,8 +59,8 @@ var uiCoop = {
 			//console.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
 			uiCoop.getCoopData(contextData.type, contextData.id, type, status, dataId);
 		});
-		//uiCoop.initDragAndDrop();
 	},
+
 	"initDragAndDrop" : function(){ console.log('initDragAndDrop');
 		$('.draggable').draggable({
 		    revert : true, // sera renvoyé à sa place s'il n'est pas déposé dans #drop
@@ -152,12 +157,11 @@ var uiCoop = {
 			"parentId" : parentId,
 			"type" : type,
 			"status" : status,
-			"dataId" : dataId
+			"dataId" : dataId,
+			"json" : false
 		};
-		console.log("showLoading ?", typeof showLoading, showLoading);
+		//console.log("showLoading ?", typeof showLoading, showLoading);
 		
-		//KScrollTo("#div-reopen-menu-left-container");
-
 		if(typeof showLoading == "undefined" || showLoading == true){
 			if(typeof dataId == "undefined" || dataId == null || type == "room"){
 				$("#main-coop-container").html(
@@ -240,20 +244,19 @@ var uiCoop = {
 		var params = {
 			"parentType" : parentType,
 			"parentId" : parentId,
-			"voteValue" : voteValue
+			"voteValue" : voteValue,
+			"json" : false
 		};
 		if(typeof idAmdt != "undefined")
 			params["idAmdt"] = idAmdt;
 
 		var url = moduleId+'/cooperation/savevote';
-		//$("#coop-data-container").html("<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
-		
 		
 		toastr.info(trad["processing save"]);
 		ajaxPost("", url, params,
 			function (proposalView){
 				console.log("success save vote");
-				uiCoop.getCoopData(null, null, "room", null, idParentRoom, 
+				uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
 					function(){
 						toastr.success(trad["Your vote has been save with success"]);
 						
@@ -285,7 +288,7 @@ var uiCoop = {
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
-		    		uiCoop.getCoopData(null, null, "proposal", null, proposalId);
+		    		uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, proposalId);
 		    	}
 		});
 
@@ -294,7 +297,7 @@ var uiCoop = {
 	"saveAmendement" : function(proposalId, typeAmdt){
 		var txtAmdt = $("#txtAmdt").val();
 		if(txtAmdt.length < 10){
-			toastr.error("Votre amendement est trop court ! Minimum : 10 caractères");
+			toastr.error(trad.amendementTooShort);
 			return;
 		}
 
@@ -314,11 +317,9 @@ var uiCoop = {
 		       	dataType: "json",
 		    	success: function(data){
 					console.log("success updateblock", data);
-		    		uiCoop.getCoopData(null, null, "proposal", null, proposalId, function(){
-		    			//uiCoop.minimizeMenuRoom(true);
+		    		uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, proposalId, function(){
 		    			uiCoop.showAmendement(true);
 		    			toastr.success(trad["Your amendement has been save with success"]);
-						//$("#coop-data-container").html(proposalView);
 		    		}, false);
 		    	}
 		});
@@ -345,7 +346,7 @@ var uiCoop = {
 		    		type = (type == "proposals") ? "proposal" : type;
 		    		type = (type == "actions") ? "action" : type;
 		    		toastr.success(trad["processing ok"]);
-					uiCoop.getCoopData(null, null, "room", null, idParentRoom, function(){
+					uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, function(){
 			    		uiCoop.getCoopData(parentType, parentId, type, null, id);
 		    		});
 		    	}
@@ -369,12 +370,12 @@ var uiCoop = {
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
-		    		uiCoop.getCoopData(null, null, "room", null, idNewRoom);
+		    		uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idNewRoom);
 		    	}
 		});
 	},
 
-	"deleteByTypeAndId" : function(typeDelete, idDelete){
+	deleteByTypeAndId : function(typeDelete, idDelete){
 		toastr.info(trad["processing save"]);
 		$.ajax({
 		        type: "POST",
@@ -386,10 +387,55 @@ var uiCoop = {
 		});	
 	},
 
+	deleteAmendement : function(numAm, idProposal){
+		var param = {
+			numAm : numAm,
+			idProposal : idProposal,
+			json : false
+		};
+		
+		toastr.info(trad["processing delete"]);
+		$.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+"/cooperation/deleteamendement/",
+		        data: param,
+		       	//dataType: "json",
+		    	success: function(data){
+		    		toastr.success(trad["processing delete ok"]);
+					toastr.success(trad["processing ok"]);
+					$("#coop-data-container").html(data);
+					uiCoop.minimizeMenuRoom(true);
+					uiCoop.showAmendement(true);
+		    	},
+		    	error: function(data){
+		    		console.log("error data ", data);
+		    		toastr.error(trad["processing delete KO"]);
+		    	}
+		});
+	},
+
+	assignMe : function(idAction){
+		$.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+"/rooms/assignme",
+		        data: { "id" : idAction },
+		        success: function(data){
+		    		if(data.result){
+		    		  toastr.success(trad.thxForParticipation);
+		              uiCoop.getCoopData(contextData.type, contextData.id, "action", null, idAction); 
+	                  //alert("Tango a l'aide comment je reload stp action.php > function assignMe > l.181");
+	                }
+	                else 
+	                  toastr.error(data.msg);
+		    	}
+		});	
+	},
 
 	initUIProposal : function(){
-		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
 		
+		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> " + trad.loadingComments);
+		
+		$(".footer-comments").html("");
 		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/proposals/id/"+idParentProposal,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 				$(".container-txtarea").hide();
@@ -398,7 +444,7 @@ var uiCoop = {
 					var argval = $(this).data("argval");
 					$(".container-txtarea").show();
 
-					$(".textarea-new-comment").removeClass("bg-green-comment bg-red-comment");
+					$(".textarea-new-comment").removeClass("bg-green-comment bg-white-comment bg-red-comment");
 					var classe="";
 					var pholder="Votre commentaire";
 					if(argval == "up")   { classe="bg-green-comment"; pholder="Votre argument pour";   }
@@ -412,22 +458,27 @@ var uiCoop = {
 		$("#btn-close-proposal").click(function(){
 			uiCoop.minimizeMenuRoom(false);
 		});
+
 		$(".btn-extend-proposal").click(function(){
 			uiCoop.maximizeReader(true);
 			$(".btn-minimize-proposal").removeClass("hidden");
 			$(".btn-extend-proposal").addClass("hidden");
 		});
+
 		$(".btn-minimize-proposal").click(function(){
 			uiCoop.maximizeReader(false);
 			$(".btn-minimize-proposal").addClass("hidden");
 			$(".btn-extend-proposal").removeClass("hidden");
 		});
+
 		$(".btn-show-amendement").click(function(){
 			uiCoop.showAmendement(true);
 		});
+
 		$("#btn-hide-amendement").click(function(){
 			uiCoop.showAmendement(false);
 		});
+
 		$(".btn-create-amendement").click(function(){
 			uiCoop.showAmendement(true);
 			if($("#form-amendement").hasClass("hidden"))
@@ -436,11 +487,24 @@ var uiCoop = {
 				$("#form-amendement").addClass("hidden");
 		});
 
+		$(".btn-modal-delete-am").click(function(){ //alert(".btn-modal-delete-am " + $(this).data("id-am"));
+			var idAm = $(this).data("id-am");
+			//$("#btn-delete-am").attr("data-id-am", idAm);
+
+
+			$("#btn-delete-am").off().click(function(){
+				//var idAm = $(this).data("id-am");
+				uiCoop.deleteAmendement(idAm, idParentProposal);
+			});
+		});
+
+
 		$(".btn-send-vote").click(function(){
 			var voteValue = $(this).data('vote-value');
 			console.log("send vote", voteValue),
 			uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom);
 		});
+
 		$("#btn-activate-vote").click(function(){
 			uiCoop.activateVote(idParentProposal);
 		});
@@ -448,7 +512,7 @@ var uiCoop = {
 		$("#btn-refresh-proposal").click(function(){
 			toastr.info(trad["processing"]);
 			var idProposal = $(this).data("id-proposal");
-			uiCoop.getCoopData(null, null, "proposal", null, idProposal, 
+			uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, idProposal, 
 				function(){
 					uiCoop.minimizeMenuRoom(true);
 					uiCoop.showAmendement(false);
@@ -459,7 +523,7 @@ var uiCoop = {
 		$("#btn-refresh-amendement").click(function(){
 			toastr.info(trad["processing"]);
 			var idProposal = $(this).data("id-proposal");
-			uiCoop.getCoopData(null, null, "proposal", null, idProposal, 
+			uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, idProposal, 
 				function(){
 					uiCoop.minimizeMenuRoom(true);
 					uiCoop.showAmendement(true);
@@ -486,6 +550,65 @@ var uiCoop = {
 		if(msgController != ""){
 			toastr.error(msgController);
 		}
+	},
+
+	initUIAction : function(){
+
+		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> " + trad.loadingComments);
+		
+		$(".footer-comments").html("");
+
+		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/actions/id/"+idAction,
+			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
+		},"html");
+
+
+		$("#btn-close-action").click(function(){
+			uiCoop.minimizeMenuRoom(false);
+		});
+
+		$(".btn-extend-action").click(function(){
+			uiCoop.maximizeReader(true);
+			$(".btn-minimize-action").removeClass("hidden");
+			$(".btn-extend-action").addClass("hidden");
+		});
+
+		$(".btn-minimize-action").click(function(){
+			uiCoop.maximizeReader(false);
+			$(".btn-minimize-action").addClass("hidden");
+			$(".btn-extend-action").removeClass("hidden");
+		});
+
+		$("#btn-refresh-action").click(function(){
+			toastr.info(trad["processing"]);
+			var idProposal = $(this).data("id-action");
+			uiCoop.getCoopData(contextData.type, contextData.id, "action", null, idProposal, 
+				function(){
+					uiCoop.minimizeMenuRoom(true);
+					uiCoop.showAmendement(false);
+					toastr.success(trad["processing ok"]);
+				}, false);
+		});
+
+		$(".btn-option-status-action").click(function(){
+			var idAction = $(this).data("id-action");
+			var status = $(this).data("status");
+			console.log("update status actions", idAction, status, parentTypeElement, parentIdElement);
+			uiCoop.changeStatus("actions", idAction, status, parentTypeElement, parentIdElement);
+		});
+
+		$("#btn-edit-action").click(function(){
+			var idaction = $(this).data("id-action");
+			console.log("edit idAction", idAction);
+			dyFObj.editElement('actions', idAction);
+		});
+
+		$("#btn-validate-assign-me").off().click(function(){
+			uiCoop.assignMe(idAction);
+		});
+
+		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
+							  ".view.coop.room." + idParentRoom + ".action." + idAction;
 	}
 
 }

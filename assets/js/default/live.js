@@ -170,11 +170,6 @@ function loadLiveNow () {
 function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 	var isFirstParam = isFirst ? "?isFirst=1&tpl=co2" : "?tpl=co2";
 	isFirstParam += "&nbCol=2";
-	/*var levelCommunexionName = { 1 : "CITYKEY",
-	                             2 : "CODE_POSTAL",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };*/
 	
 	var thisType="ko";
 	var urlCtrl = ""
@@ -182,18 +177,15 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		thisType = "city";
 		urlCtrl = "/news/index/type/city/isLive/true";
 	}
-	 var dataSearch = {
+
+	var searchLocality = getLocalityForSearch();
+	mylog.log("searchLocality", searchLocality);
+	var dataSearch = {
       //"name" : name, 
-      "locality" : "",//locality, 
+      "localities" : searchLocality,
       "searchType" : searchType, 
       "textSearch" : $('#main-search-bar').val(),
-      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] , //is an array
-      "searchLocalityCITYKEY" : ($('#searchLocalityCITYKEY').length ) ? $('#searchLocalityCITYKEY').val().split(',') : [],
-      "searchLocalityCODE_POSTAL" : ($('#searchLocalityCODE_POSTAL').length ) ? $('#searchLocalityCODE_POSTAL').val().split(',') : [], 
-      "searchLocalityDEPARTEMENT" : ($('#searchLocalityDEPARTEMENT').length ) ?  $('#searchLocalityDEPARTEMENT').val().split(',') : [],
-      "searchLocalityREGION" : ($('#searchLocalityREGION').length ) ? $('#searchLocalityREGION').val().split(',') : [],
-      "searchLocalityLEVEL" : ($('#searchLocalityLEVEL').length ) ? $('#searchLocalityLEVEL').val() : [],
-      //"searchBy" : levelCommunexionName[levelCommunexion], 
+      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
       //"indexMin" : indexMin, 
       //"indexMax" : indexMax
     };
@@ -211,7 +203,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
   var loading = "<div class='loader text-dark text-center'>"+
 		"<span style='font-size:25px;'>"+
 			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
-			"<span class='text-dark'>Chargement en cours ...</span>" + 
+			"<span class='text-dark'>"+trad.currentlyloading+" ...</span>" + 
 		"</div>";
 
 	//loading = "";

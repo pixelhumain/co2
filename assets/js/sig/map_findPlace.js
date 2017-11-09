@@ -83,7 +83,7 @@ SigLoader.getSigFindPlace = function (Sig){
 
 		//affiche le message "recherche en cours"
 		if(!thisSig.useExternalSearchPlace){
-			$(thisSig.cssModuleName + " #list-dropdown-find-place").html('<li style="width:100%;"><a href="#"><i class="fa fa-refresh fa-spin"></i> ('+ nbTentative +') Recherche en cours ...</a></li>');
+			$(thisSig.cssModuleName + " #list-dropdown-find-place").html('<li style="width:100%;"><a href="#"><i class="fa fa-refresh fa-spin"></i> ('+ nbTentative +') '+trad.currentlyresearching+' ...</a></li>');
 			$(thisSig.cssModuleName + ' #list-dropdown-find-place').css({'display':'block'});
 		}
 		var urlRequest = this.getNominatimRequest(nbTentative);
@@ -134,7 +134,7 @@ SigLoader.getSigFindPlace = function (Sig){
 						thisSig.findPlace(nbTentative+1);
 					}
 					else{
-						var itemDropbox = '<li style="width:100%;"><a href="#"><i class="fa fa-exclamation-circle"></i> Aucun résultat n\'a été trouvé</a></li>';
+						var itemDropbox = '<li style="width:100%;"><a href="#"><i class="fa fa-exclamation-circle"></i> '+trad.noresult+'</a></li>';
 						$(thisSig.cssModuleName + " #list-dropdown-find-place").html(itemDropbox);
 						$(thisSig.cssModuleName + ' #list-dropdown-find-place').css({'display':'block'});
 					}

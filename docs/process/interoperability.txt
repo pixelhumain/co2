@@ -1,0 +1,39 @@
+Obtenir l'url de la requête à l'API donnant les données souhaité filtré par zone (par ville de préférence), filtrage par geoshape ou bien par insee
+
+Crée une nouvelle action dans le CTK de Convert (WikipediaAction.php ou OsmAction.php par exemple)
+	- rajouter la ligne adéquat dans ApiController
+	- rajouter aussi la ligne dans ConvertController
+
+L'action va appeller une fonction dans le model Convert.php qui va effectuer la convertion au format PH
+
+	Le mapping est à faire dans un nouveau fichier type TranslateWikipediaToPh.php qui va faire le mapping entre les différents champ du JSON source et les champs de Communecter.
+
+	Exemple de mapping : 
+
+		"properties.name" => "name"
+		"geometry.coordinates.0" => "geo.longitude"
+		"geometry.coordinates.1" => "geo.latitude"
+
+	Passer les différents paramètres dans la fonction previewData situé dans le model Import.php afin de géolocaliser les éléments par rapport à une latitude et une longitude.
+
+	les paramètres à passer est un array $param : 
+	- $param['key'] => obligatoire
+	- $param['nameFile'] => obligatoire
+	- $param['pathObject'] => optionnel (correspond au chemin où sont placé les données dans le JSON source)
+	- $param['file'][0] => obligatoire (correspond à un string, contient l'enssemble des données à traduire)
+
+	Dans le model Import.php ne pas lancer la fonction getWarnings car les data interop ne possède pas forcément les champ obligatoire d'un élément Communecter.
+
+Afin de visualiser les données dans le directory de Communecter
+
+	Dans directory.js 
+
+	Dans la fonction ShowDirectoryResults, les paramètres à afficher doivent obligatoirement avoir un id et un type (les rajouter si ce n'est pas déjà le cas);
+
+	params.htmlIco => change l'icone qui est affiché sur chaque élément du directory
+	params.url => modifie le lien de chaque élément du directory
+
+Pour modifier les images dans la carto, modifier la fonction Sig.getThumbProfil() dans le fichier map_initializer.js
+
+
+

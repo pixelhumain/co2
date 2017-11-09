@@ -1,22 +1,26 @@
 dynForm = {
     jsonSchema : {
-	    title : "Faire une proposition",
+	    title : trad.addProposal,
 	    icon : "gavel",
 	    type : "object",
 	    onLoads : {
 	    	
 	    	sub : function(){
-	    		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-						  					  .addClass("bg-dark");
-    		 	
-    		 	dataHelper.activateMarkdown("#ajaxFormModal #message");
-    			//$("#ajaxFormModal #survey").val( contextDataDDA.id );
-    			if (typeof contextDataDDA.name != "undefined" && contextDataDDA.name != "")
-    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
+	    	
 	    	},
 	    	onload : function(data){
 				$("#ajaxFormModal #idParentRoom").val(currentRoomId);
-				console.log("checkcheck0", data, typeof data);
+				console.log("checkcheck0", data, typeof data, contextData);
+
+				$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+						  					  .addClass("bg-turq");
+    		 	console.log("dynFormProposal", contextData);
+    		 	
+    		 	//dataHelper.activateMarkdown("#ajaxFormModal #message");
+    			//$("#ajaxFormModal #survey").val( contextData.id );
+    			if (typeof contextData.name != "undefined" && contextData.name != "")
+    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+"<small class='text-white'><br>" + tradDynForm.inSpace + " : <i class='text-white'>#"+currentRoomName+"</i></small>" );
+            
 
 				if(typeof data.amendementActivated != "undefined"){
 					data.amendementActivated = (data.amendementActivated == "true" || data.amendementActivated == true) ? true : false;
@@ -58,8 +62,8 @@ dynForm = {
 
 				$("#ajaxFormModal .majoritytext").append(
 						"<small class='pull-left margin-top-5' id='info'><i class='fa fa-info-circle'></i> "+
-						 "Votre proposition devra recueillir plus de <b>"+
-						 "50%</b> de votes <span class='letter-green'>favorables</span> pour être validée" +
+						 tradDynForm.proposalMustHaveMore + "<b>"+
+						 "50%</b> "+tradDynForm.ofvotes+" <span class='letter-green'>"+tradDynForm.favorables+"</span> "+tradDynForm.tobevalidated +
 						"</small>");
 
 				$("#ajaxFormModal #majority").val("50");
@@ -71,16 +75,16 @@ dynForm = {
 					console.log("intval1", intval);
 					if(intval > 100) 
 						$("#ajaxFormModal .majoritytext small#info").html(
-						"<i class='fa fa-info-circle'></i> Impossible de dépasser les 100%");
+						"<i class='fa fa-info-circle'></i> "+ tradDynForm.nowayover100);
 
 					if(intval < 50) 
 						$("#ajaxFormModal .majoritytext small#info").html(
-						"<i class='fa fa-info-circle'></i> Impossible de descendre à moins de 50%");
+						"<i class='fa fa-info-circle'></i> "+ tradDynForm.nowayunder50);
 
 					if(intval >= 50 && intval <= 100) 
 					$("#ajaxFormModal .majoritytext small#info").html(
-						"<i class='fa fa-info-circle'></i> Votre proposition devra recueillir plus de <b>"+
-						intval + "%</b> de votes <span class='letter-green'>favorables</span> pour être validée");
+						"<i class='fa fa-info-circle'></i> "+tradDynForm.proposalMustHaveMore+" <b>"+
+						intval + "%</b> "+tradDynForm.ofvotes+" <span class='letter-green'>"+tradDynForm.favorables+"</span> "+tradDynForm.tobevalidated);
 				});
 
 				$('#ajaxFormModal #majority').focusout (function(){
@@ -92,8 +96,8 @@ dynForm = {
 					console.log("intval2", intval);
 					$('#ajaxFormModal #majority').val(intval);
 					$("#ajaxFormModal .majoritytext small#info").html(
-						"<i class='fa fa-info-circle'></i> Votre proposition devra recueillir plus de <b>"+
-						intval + "%</b> de votes <span class='letter-green'>favorables</span> pour être validée");
+						"<i class='fa fa-info-circle'></i> "+tradDynForm.proposalMustHaveMore+" <b>"+
+						intval + "%</b> "+tradDynForm.ofvotes+" <span class='letter-green'>"+tradDynForm.favorables+"</span> "+tradDynForm.tobevalidated);
 				});
 
 			}
@@ -128,14 +132,14 @@ dynForm = {
                	$("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html(parseInt(oldCount)+1);
                	
                	if(typeof data.map.idParentRoom != "undefined"){
-	               	uiCoop.getCoopData(null, null, "room", null, data.map.idParentRoom);
+	               	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, data.map.idParentRoom);
 	                setTimeout(function(){
-	                	uiCoop.getCoopData(null, null, "proposal", null, data.id);
+	                	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, data.id);
 	                }, 1000);
 	            }else{
-	            	uiCoop.getCoopData(null, null, "room", null, currentRoomId);
+	            	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, currentRoomId);
 	                setTimeout(function(){
-	                	uiCoop.getCoopData(null, null, "proposal", null, idParentProposal);
+	                	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, idParentProposal);
 	                }, 1000);
 	            }
             }
@@ -143,7 +147,7 @@ dynForm = {
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<br><p><i class='fa fa-info-circle'></i> Une proposition sert à discuter et demander l'avis d'une communauté sur une idée ou une question donnée</p>",
+                html:"<br><p><i class='fa fa-info-circle'></i> "+tradDynForm.infoProposal3+"</p>",
             },
 	        id : dyFInputs.inputHidden(),
 	        idParentRoom : dyFInputs.inputHidden(currentRoomId),
@@ -178,8 +182,8 @@ dynForm = {
 	            			    
 	            			    html = buildSelectGroupOptions(window.myVotesList);
 								$("#survey").append(html);
-								if(contextDataDDA && contextDataDDA.id)
-									$("#ajaxFormModal #survey").val( contextDataDDA.id );
+								if(contextData && contextData.id)
+									$("#ajaxFormModal #survey").val( contextData.id );
 						    } );
 	            		}
 	            		/*$("#survey").change(function() { 
@@ -194,39 +198,54 @@ dynForm = {
             description : dyFInputs.textarea(tradDynForm.textproposal, "..."),
             infoargs : {
                 inputType : "custom",
-                html:"<div class='text-left'><b><i class='fa fa-info-circle'></i> <i>Le vote final portera sur le contenu de votre proposition.</b>"+
-                	 "<br>Pour plus de clareté, détaillez toute information complémentaire, relative à votre proposition, dans la section suivante.</i></div>",
+                html:"<div class='text-left'><b><i class='fa fa-info-circle'></i> "+tradDynForm.infoProposal1+"</b>"+
+                	 "<br>"+tradDynForm.infoProposal2+"</i></div>",
             },
 	        arguments : dyFInputs.textarea(tradDynForm.textargumentsandmore, "..."),
             amendementActivated : dyFInputs.checkboxSimple("true", "amendementActivated", 
-            										{ "onText" : "Oui",
-            										  "offText": "Non",
-            										  "onLabel" : "activés",
-            										  "offLabel": "désactivés",
+            										{ "onText" : trad.yes,
+            										  "offText": trad.no,
+            										  "onLabel" : trad.activated,
+            										  "offLabel": trad.disabled,
             										  "inputId" : ".amendementDateEnddatetime",
-            										  "labelText": "Activer les amendements ?",
-            										  "labelInInput": "Activer les amendements",
-            										  "labelInformation": "<i class='fa fa-info-circle'></i> Les votes sont désactivés pendant la période d'amendement"
-
+            										  "labelText": tradDynForm.lblAmmendementEnabled + " ?",
+            										  "labelInInput": tradDynForm.lblAmmendementEnabled,
+            										  "labelInformation": "<i class='fa fa-info-circle'></i> "+
+            										  					  tradDynForm.lblAmmendementDisabled
             }),
             amendementDateEnd : dyFInputs.amendementDateEnd,
             voteActivated : dyFInputs.inputHidden( true ),
-            /*dyFInputs.checkbox(false, "voteActivated", 
-            										{ "onText" : "Non",
-            										  "offText": "Oui",
-            										  "onLabel" : "activés",
-            										  "offLabel": "désactivés",
-            										  "inputId" : ".voteDateEnddatetime",
-            										  "labelText": "Votes",
-            										  "labelInInput": "Activer les votes",
-            										  "labelInformation": "Vous pourrez activer les votes plus tard",
-
-            }),*/
             voteDateEnd : dyFInputs.voteDateEnd,
+            majority: dyFInputs.inputText( trad.ruleOfMajority + " (%) <small class='letter-green'>"+trad.giveValueMajority+"</small>", "50%" ),
+            
+            voteAnonymous : dyFInputs.checkboxSimple("true", "voteAnonymous", 
+            										{ "onText" : trad.yes,
+            										  "offText": trad.no,
+            										  "onLabel" : tradDynForm.anonymous,
+            										  "offLabel": tradDynForm.nominative,
+            										  //"inputId" : ".amendementDateEnddatetime",
+            										  "labelText": tradDynForm.voteAnonymous + " ?",
+            										  //"labelInInput": "Activer les amendements",
+            										  "labelInformation": "<i class='fa fa-info-circle'></i> " + tradDynForm.keepSecretIdentityVote
+
+            }),
+            
+            voteCanChange : dyFInputs.checkboxSimple("true", "voteCanChange", 
+            										{ "onText" : trad.yes,
+            										  "offText": trad.no,
+            										  "onLabel" : tradDynForm.changeVoteEnabled,
+            										  "offLabel": tradDynForm.changeVoteForbiden,
+            										  //"inputId" : ".amendementDateEnddatetime",
+            										  "labelText": tradDynForm.authorizeChangeVote,
+            										  //"labelInInput": "Activer les amendements",
+            										  "labelInformation": "<i class='fa fa-info-circle'></i> " + tradDynForm.allowChangeVote
+
+            }),
+            
+
             tags : dyFInputs.tags(),
             //image : dyFInputs.image(),
             urls : dyFInputs.urls,
-            majority: dyFInputs.inputText( "Règle de majorité (%) <small class='letter-green'>indiquez une valeur entre 50% et 100%</small>", "50%" ),
             //email: dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userConnected.email : "") ),
             //idUserAuthor : dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userId : "") ),
             status: dyFInputs.inputHidden( "amendable" ),

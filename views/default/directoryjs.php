@@ -220,7 +220,7 @@
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
             <button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Thématiques") ?></span>
+                <span class="hidden-xs"><?php echo Yii::t("common","Themes") ?></span>
             </button><hr class="hidden-xs">
             <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
                 <i class="fa fa-search"></i> 
@@ -312,10 +312,15 @@
 
         <?php }else if($typeSelected == "classified"){ ?>
 
+        <?php 
+          $params = CO2::getThemeParams();
+          $devises = @$params["devises"];
+        ?>
           <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub classifiedFilters" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
-            <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
+            <h4 class="margin-top-25 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
+              <i class="fa fa-search"></i>
             </h4>
             <hr>
             <?php 
@@ -323,11 +328,11 @@
                 foreach ($classified['filters'] as $key => $cat) {
             ?>
                 <?php if(is_array($cat)) { ?>
-                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo Yii::t("category",$key); ?>">
+                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
                     <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo Yii::t("category",$key); ?>
                   </button><br>
                   <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
-                    <button class="btn btn-default text-azure margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo Yii::t("category",$key); ?>" data-categ="<?php echo Yii::t("category",$key); ?>" data-keycat="<?php echo Yii::t("category",$cat2); ?>">
+                    <button class="btn btn-default text-azure margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
                       <i class="fa fa-angle-right"></i> <?php echo Yii::t("category",$cat2); ?>
                     </button><br class="hidden">
                   <?php } ?>
@@ -336,7 +341,7 @@
             <?php if( @Yii::app()->session["userId"] ) { ?> 
             <hr>
             <button class="btn btn-default margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="favorites">
-              <span class="text-red"><i class="fa fa-star hidden-xs"></i> MES FAVORIS</span>
+              <span class="text-red"><i class="fa fa-star hidden-xs"></i> <?php echo Yii::t("common","MY FAVORITES") ?></span>
             </button>
             <?php } ?>
           </div>
@@ -350,7 +355,7 @@
             <?php 
                 $currentSection = 1;
                 foreach ($classified["sections"] as $key => $section) { ?>
-                  <div class="col-md-2 col-sm-3 col-sm-6 no-padding">
+                  <div class="col-md-2 col-sm-4 col-xs-6 no-padding">
                     <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
                             data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
                             data-type="classified"
@@ -364,28 +369,30 @@
 
           <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 padding-top-10" id="section-price">
           
-            <div class="form-group col-md-5 col-sm-5 col-xs-6">
+            <div class="form-group col-md-4 col-sm-4 col-xs-6">
               <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
                 <i class="fa fa-chevron-down"></i> <?php echo Yii::t("common","Min price") ?>
               </label>
-              <input type="text" id="priceMin" name="priceMin" class="form-control" placeholder="prix min"/>
+              <input type="text" id="priceMin" name="priceMin" class="form-control" 
+                     placeholder="<?php echo Yii::t("common","Max Min") ?>"/>
             </div>
 
-            <div class="form-group col-md-5 col-sm-5 col-xs-6">
+            <div class="form-group col-md-4 col-sm-4 col-xs-6">
               <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
                 <i class="fa fa-chevron-down"></i> <?php echo Yii::t("common","Max price") ?>
               </label>
-              <input type="text" id="priceMax" name="priceMax" class="form-control col-md-5" placeholder="prix max"/>
+              <input type="text" id="priceMax" name="priceMax" class="form-control col-md-5" 
+                     placeholder="<?php echo Yii::t("common","Max price") ?>"/>
             </div>
             
-            <div class="form-group col-md-2 col-sm-2 col-xs-12 hidden">
+            <div class="form-group col-md-2 col-sm-2 col-xs-12">
               <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
-                <i class="fa fa-money"></i> <?php echo Yii::t("common","Currency") ?>
+                <i class="fa fa-money"></i> <?php echo Yii::t("common","Money") ?>
               </label>
               <select class="form-control" name="devise" id="devise" style="">
-                <option class="bold" value="€">euro €</option>
-                <option class="bold" value="$">dollars $</option>
-                <option class="bold" value="CFP">CFP</option>
+                <?php foreach($devises as $key => $devise){ ?>
+                  <option class="bold" value="<?php echo $key; ?>"><?php echo $devise; ?></option>
+                <?php } ?>
               </select>
             </div>
 
@@ -407,13 +414,14 @@
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
-              <i class="fa fa-money"></i> Lieux           </h4>
+              <i class="fa fa-money"></i> Lieux
+            </h4>
             <hr>
             <?php 
                 foreach ($place["filters"] as $key => $cat) {
             ?>
                 <?php if(is_array($cat)) { ?>
-                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
+                  <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 elipsis" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
                     <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo $key; ?>
                   </button><br>
                   <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
@@ -431,7 +439,7 @@
         <?php $col = ( !in_array($typeSelected, array("classified","events","vote","all","place") )) ? 10 : 8; ?>
         <?php if(Yii::app()->params["CO2DomainName"] == "BCH"){ $col = 10; } ?>
         
-        <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
+        <div class="col-sm-<?php echo $col ?> col-md-<?php echo $col ?> col-xs-12" id="dropdown_search"></div>
 
         <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
       <?php } ?>
@@ -455,21 +463,25 @@
 <script type="text/javascript">
 
 var headerParams = {
-  "persons"       : { color: "yellow",  icon: "user",         name: trad["people"] },
-  "organizations" : { color: "green",   icon: "group",        name: trad["organizations"] },
-  "NGO"           : { color: "green",   icon: "group",        name: trad["NGO"] },
-  "LocalBusiness" : { color: "azure",   icon: "industry",     name: trad["LocalBusiness"] },
-  "Group"         : { color: "black",   icon: "circle-o",     name: trad["groups"] },
-  "projects"      : { color: "purple",  icon: "lightbulb-o",  name: trad["projects"] },
-  "events"        : { color: "orange",  icon: "calendar",     name: trad["events"] },
-  "vote"          : { color: "azure",   icon: "gavel",        name: trad["proposal"] },
-  "actions"       : { color: "lightblue2",    icon: "cogs",   name: trad["actions"] },
-  "cities"        : { color: "red",     icon: "university",   name: trad["cities"] },
-  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: trad["pointsinterests"] },
-  "place"         : { color: "green",   icon: "map-marker",   name: trad["place"] },
-  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad["classifieds"] },
-  "GovernmentOrganization" : { color: "red",   icon: "university",        name: trad["GovernmentOrganizations"] },
-  
+  "persons"       : { color: "yellow",  icon: "user",         name: trad.people },
+  "organizations" : { color: "green",   icon: "group",        name: trad.organizations },
+  "NGO"           : { color: "green",   icon: "group",        name: trad.NGOs },
+  "LocalBusiness" : { color: "azure",   icon: "industry",     name: trad.LocalBusiness },
+  "Group"         : { color: "black",   icon: "circle-o",     name: trad.groups },
+  "projects"      : { color: "purple",  icon: "lightbulb-o",  name: trad.projects },
+  "events"        : { color: "orange",  icon: "calendar",     name: trad.events },
+  "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions, Questions, Votes" },
+  "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
+  "cities"        : { color: "red",     icon: "university",   name: trad.municipalities },
+  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: trad.pointsinterests },
+  "wikidata"    : { color: "lightblue2",   icon: "group",   name: "Wikidata" },
+  "datagouv"    : { color: "lightblue2",   icon: "bullhorn",   name: "DataGouv" },
+  "osm"    : { color: "lightblue2",   icon: "bullhorn",   name: "Open Street Map" },
+  "ods"    : { color: "lightblue2",   icon: "bullhorn",   name: "OpenDatasoft" },
+  "place"         : { color: "green",   icon: "map-marker",   name: trad.places },
+  "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad.classifieds },
+  "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
+
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
@@ -483,6 +495,7 @@ if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined
 function setHeaderDirectory(type){
  
   var params = new Array();
+
   if(typeof headerParams[type] == "undefined") return;
   params = headerParams[type];
   $(".subtitle-search").html( '<span class="text-'+params.color+'">'+
@@ -531,7 +544,6 @@ var cityNameLocked = "<?php echo $cityName; ?>";
 var typeSelected = <?php echo (@$_GET['type']) ? "'".$_GET['type']."'" : "null" ?>;
 
 var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
-
 jQuery(document).ready(function() {
 
 	
@@ -583,15 +595,17 @@ jQuery(document).ready(function() {
   });
 
   $(".btn-select-filliaire").click(function(){
+      mylog.log(".btn-select-filliaire");
       var fKey = $(this).data("fkey");
       myMultiTags = {};
       $.each(filliaireCategories[fKey]["tags"], function(key, tag){
         addTagToMultitag(tag);
       });
-      console.log("myMultiTags", myMultiTags);
+      mylog.log("myMultiTags", myMultiTags);
       
       startSearch(0, indexStepInit, searchCallback);
       KScrollTo("#content-social");
+      bindCommunexionScopeEvents();
       //KScrollTo("#before-section-result");
   });
   

@@ -271,7 +271,7 @@
 		request += address;
 		
 		//affiche le chargement en cours
-		$("#dropdown_geo").html('<i class="fa fa-circle-o-notch fa-spin" style="padding:4px;"></i> Recherche en cours');
+		$("#dropdown_geo").html('<i class="fa fa-circle-o-notch fa-spin" style="padding:4px;"></i> '+trad.currentlyresearching);
 		if($("#dropdown_geo").css("display") != "block")
 		$("#dropdown_geo").css({"display" : "block" });
 		
@@ -372,7 +372,7 @@
 				$("#dropdown_geo").html(dropdown_content);
 			}
 			else {
-				$("#dropdown_geo").html("<li class='li-dropdown-scope'>aucun résultat</li>");
+				$("#dropdown_geo").html("<li class='li-dropdown-scope'>"+trad.noresult+"</li>");
 			}
 			},
 			error: function (error) {
@@ -473,7 +473,7 @@
 	
 	function showContactLoading(){
 		//affiche le chargement en cours
-		$("#dropdown_contact").html('<i class="fa fa-circle-o-notch fa-spin" style="padding:4px;"></i> Recherche en cours');
+		$("#dropdown_contact").html('<i class="fa fa-circle-o-notch fa-spin" style="padding:4px;"></i> '+trad.currentlyresearching);
 		if($("#dropdown_contact").css("display") != "block")
 		$("#dropdown_contact").css({"display" : "block" });
 		

@@ -163,7 +163,7 @@ a.btn.btn-github:hover{	color: #4078C0;	border-color: #4078C0;}
 
 
 
-<?php $this->renderPartial($layoutPath.'footer',  array( "subdomain"=>"info" ) ); ?>
+<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"],  array( "subdomain"=>"info" ) ); ?>
 
 <script>
 

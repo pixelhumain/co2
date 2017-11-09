@@ -31,7 +31,7 @@
 
     if($params["title"] == "Kgougle") {
         $page = "social";
-        if(@$type=="classified"){ $page = "freedom"; }
+        if(@$type=="classified"){ $page = "annonces"; }
         if(@$type=="events"){ $page = "agenda"; }
     }
 
@@ -55,15 +55,6 @@
     }
     
     
-    #main-scope-name a{
-        height: 130px;
-        background-color: rgba(255, 255, 255, 0.9);
-        width: 130px;
-        display: inline-block;
-        padding-top: 30px;
-        border-radius: 50%;
-        padding-right: 4px;
-    }
     <?php } ?>
 </style>
 
@@ -76,13 +67,13 @@
     <div class="responsive-calendar-init hidden"> 
       <div class="responsive-calendar light col-md-12 no-padding">   
           <div class="day-headers">
-            <div class="day header">Lun</div>
-            <div class="day header">Mar</div>
-            <div class="day header">Mer</div>
-            <div class="day header">Jeu</div>
-            <div class="day header">Ven</div>
-            <div class="day header">Sam</div>
-            <div class="day header">Dim</div>
+            <div class="day header"><?php echo Yii::t("translate","Mon") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Tue") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Wed") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Thu") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Fri") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Sat") ?></div>
+            <div class="day header"><?php echo Yii::t("translate","Sun") ?></div>
           </div>
           <div class="days" data-group="days"></div>   
           <div class="controls">
@@ -106,7 +97,7 @@
             <?php }else{ ?>
             <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips" data-type="<?php echo @$type; ?>"
                     data-toggle="tooltip" data-placement="top" 
-                    title="<?php echo @$params["pages"]["#".$page]["lblBtnCreate"]; ?>">
+                    title="<?php echo Yii::t("common", @$params["pages"]["#".$page]["lblBtnCreate"]); ?>">
                 <i class="fa fa-plus-circle"></i> <?php echo Yii::t("common",@$params["pages"]["#".$page]["lblBtnCreate"]); ?>
             </button>
             <?php } ?>
@@ -131,24 +122,23 @@
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 
             data-target="#dash-create-modal" data-toggle="modal"
             data-toggle="tooltip" data-placement="top" 
-            title="Créer une nouvelle page">
+            title="<?php echo Yii::t("common","Create a new page") ?>">
                 <i class="fa fa-times" style="font-size:18px;"></i>
         </button>
-        <h5 class="text-center letter-green margin-top-25">Créer une page</h5>
+        <h5 class="text-center letter-green margin-top-25"><?php echo Yii::t("form","Create a page") ?></h5>
         <h5 class="text-center">
             <small>             
-                <span class="text-green">associations</span> 
-                <span class="text-azure">entreprises</span> 
-                <span class="text-purple">projets</span> 
-                <span class="text-turq">groupes</span>
-                <span class="text-red">service public</span>
+                <span class="text-green"><?php echo Yii::t("common","NGOs") ?></span> 
+                <span class="text-azure"><?php echo Yii::t("common","Local Business") ?></span> 
+                <span class="text-purple"><?php echo Yii::t("common","Projects") ?></span> 
+                <span class="text-turq"><?php echo Yii::t("common","Groups") ?></span>
+                <span class="text-red"><?php echo Yii::t("common","Government Organization") ?></span>
             </small>
         </h5><br>
     </div>
     <?php } ?>
 
 </div>
-
 
 <?php $this->renderPartial($layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.pageCreate', array()); ?>
 <?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array()); ?>
@@ -163,6 +153,15 @@ var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
 var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
+
+
+
+<?php if(@$type=="events"){ ?>
+  var STARTDATE = new Date();
+  var ENDDATE = new Date();
+  var startWinDATE = new Date();
+  var agendaWinMonth = 0;
+<?php } ?>
 
 //var TPL = "kgougle";
 
@@ -222,6 +221,7 @@ jQuery(document).ready(function() {
         });
 
 
+
         loadingData = false; 
         initTypeSearch(type);
         startSearch(0, indexStepInit, searchCallback);
@@ -230,7 +230,10 @@ jQuery(document).ready(function() {
 
     initSearchInterface(); //themes/co2/assets/js/default/search.js
 
-    
+
+
+    calculateAgendaWindow(0);
+
     if(page == "annonces" || page == "agenda" || page == "power"){
         setTimeout(function(){
             //KScrollTo("#content-social");  
@@ -251,10 +254,13 @@ function showResultInCalendar(mapElements){
     //mylog.dir(mapElements);
 
     var events = new Array();
+    var fstDate = "";
+    console.log("data mapElements", mapElements);
     $.each(mapElements, function(key, thisEvent){
     
         var startDate = exists(thisEvent["startDateTime"]) ? thisEvent["startDateTime"].substr(0, 10) : "";
         var endDate = exists(thisEvent["endDateTime"]) ? thisEvent["endDateTime"].substr(0, 10) : "";
+
         var cp = "";
         var loc = "";
         if(thisEvent["address"] != null){
@@ -281,17 +287,32 @@ function showResultInCalendar(mapElements){
 
     $(".calendar").html($(".responsive-calendar-init").html());
 
-    var aujourdhui = new Date();
+    var aujourdhui = startWinDATE; //new Date();
+    //console.log("aujourdhui", aujourdhui);
     var  month = (aujourdhui.getMonth()+1).toString();
     if(aujourdhui.getMonth() < 10) month = "0" + month;
     var date = aujourdhui.getFullYear().toString() + "-" + month;
 
+    //console.log("data events", events, "time", date);
     $(".responsive-calendar").responsiveCalendar({
           time: date,
           events: events
         });
 
     $(".responsive-calendar").show();
+
+
+    /*$("#btn-month-next").click(function(){
+        agendaWinMonth++;
+        calculateAgendaWindow(agendaWinMonth);
+        startSearch(0, indexStep, searchCallback);
+    });
+    $("#btn-month-before").click(function(){
+        agendaWinMonth--;
+        calculateAgendaWindow(agendaWinMonth);
+        startSearch(0, indexStep, searchCallback);
+    });*/
+
 
     calendarInit = true;
 }

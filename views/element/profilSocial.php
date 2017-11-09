@@ -679,8 +679,7 @@
     if(typeof contextData.slug != "undefined")
      	navInSlug=true;
    
-    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?src="+networkParams : "" )+
-    				 ( (typeof contextData.slug != "undefined") ? "#"+contextData.slug : "#page.type."+contextData.type+".id."+contextData.id);
+    var hashUrlPage= ( (typeof contextData.slug != "undefined") ? "#"+contextData.slug : "#page.type."+contextData.type+".id."+contextData.id);
     
     if(location.hash.indexOf("#page")>=0){
     	strHash="";

@@ -325,6 +325,7 @@ function showMenuNetwork(show){
 		$("#titleMapTop").show( 700 );
 		$("#btn-menu-launch").show( 700 );
 		$("#btn-toogle-map").html("<i class='fa fa-list'></i>");
+		$("#btn-toogle-map").removeClass("resizer");
 		$("#btn-toogle-map").attr("data-original-title", "Annuaire");
 		$("#btn-toogle-map").attr("title", "Annuaire");
 		$(".main-menu-left").hide( 700 );
@@ -335,6 +336,7 @@ function showMenuNetwork(show){
 		$("#titleMapTop").hide( 700 );
 		$("#btn-menu-launch").hide( 700 );
 		$("#btn-toogle-map").html("<i class='fa fa-map-marker'></i>");
+		$("#btn-toogle-map").addClass("resizer");
 		$("#btn-toogle-map").attr("data-original-title", "Carte");
 		$("#menuTopList").show( 700 );
 		$(".main-top-menu").addClass("bg-white");
@@ -448,10 +450,10 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	$(".btn-start-search").addClass("bg-azure");
 	$(".btn-start-search").removeClass("bg-dark");
 	//$("#dropdown_search").css({"display" : "inline" });
-	if(indexMin > 0)
-	$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
-	else
-	$("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
+	//if(indexMin > 0)
+	//$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
+	//else
+	//$("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
 	if(isMapEnd){
 		$.blockUI({
 			message : "<h1 class='homestead text-red'><i class='fa fa-spin fa-circle-o-notch'></i><span class='text-dark'> En cours ...</span></h1>"
@@ -767,7 +769,7 @@ function tagActivedUpdate(checked, tag, parent){
 
 function chargement(){
 	mylog.log("chargement");
-	processingBlockUi();
+	//processingBlockUi();
 	setTimeout(function(){ updateMap(); }, 1000);
 }
 
@@ -952,7 +954,6 @@ function getAjaxFiche(url, breadcrumLevel){
 	allReadyLoad = true;
 	//location.hash = url;
 	urlHash=url;
-	mylog.log("urlHash", urlHash);
 	pageView=false;
 	if(urlHash.indexOf("page") >= 0){
 		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
@@ -983,8 +984,6 @@ function getAjaxFiche(url, breadcrumLevel){
 		urlHash.indexOf("news") < 0 &&
 		urlHash.indexOf("network") < 0 && 
 		urlHash.indexOf("invite") < 0){
-		//hash = hash.replace( "#","" );
-		//	hashT=hash.split(".");
 		pageView=true;
 		var urlSplit=urlHash.replace( "#","" ).split(".");
 		if(typeof urlSplit == "string")
@@ -1238,7 +1237,7 @@ function andAndOr(allFiltres){
 
 function updateMap(){
 	mylog.log("updateMap", tagsActived, disableActived);
-
+	$(".searchEntityContainer").hide();
 	var params = ((typeof networkJson.filter == "undefined" && typeof networkJson.filter.paramsFiltre == "undefined") ? null :  networkJson.filter.paramsFiltre);
 	var test = [];
 	var verb = "and";
@@ -1264,12 +1263,12 @@ function updateMap(){
 	else
 		test = orAndAnd(tagsActived);
 
-	mylog.log("test", test);
+	mylog.log("testNetwork", test);
 
 	mylog.log("searchValNetwork", searchValNetwork);
 	var filteredList = [];
 	var add = false;
-	$(".searchEntity").hide();
+	$(".searchEntityContainer").hide();
 	if(test.length > 0){
 		$.each(test,function(keyTags,tags){
 			$.each(contextMapNetwork,function(k,v){
@@ -1302,7 +1301,8 @@ function updateMap(){
 						( 	v.name.search( new RegExp( searchValNetwork, "i" ) ) >= 0  ) ) )  {
 					mylog.log("v.tags", v.tags);
 					filteredList = addTabMap(v, filteredList);
-					$("#"+v.id).show();
+					//console.log("filteredList",filteredList);
+					$(".container_"+v.type+"_"+v.id).show();
 				}
 			});
 		});
@@ -1334,7 +1334,7 @@ function updateMap(){
 
 
 					filteredList = addTabMap(v, filteredList);
-					$("#"+v.id).show();
+					//$(".container_"+v.type+"_"+v.id).show();
 				}
 			});
 		}else{
@@ -1342,9 +1342,12 @@ function updateMap(){
 				filteredList = addTabMap(v, filteredList);
 			});*/
 			filteredList = contextMapNetwork;
-			$(".searchEntity").show();
+			//$(".searchEntityContainer").show();
 		}
 	}
+	$.each(filteredList, function(e,v){
+		$(".contain_"+v.type+"_"+v.id).show();
+	});
 	mylog.log("filteredList", filteredList);
 	Sig.restartMap();
 	Sig.showMapElements(Sig.map,filteredList);

@@ -841,8 +841,8 @@ var urlCtrl = {
 		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
 			mylog.log("globalTheme", globalTheme);
-			if( hash.indexOf("#network") < 0 /*&&
-				location.hash.indexOf("#network") >= 0*/ && hash!="#" && hash!=""){ 
+			if( /*hash.indexOf("#network") < 0 &&
+				location.hash.indexOf("#network") >= 0 &&*/ hash!="#" && hash!=""){ 
 				mylog.log("network");
 			//}
 			//else{
@@ -2913,8 +2913,7 @@ var dyFObj = {
 		            	// mylog.log("data.id", data.id, data.url);
 		            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
 				        	addLocationToFormloopEntity(data.id, collection, data.map);*/
-				        	
-				        if (typeof afterSave == "function"){
+				       if (typeof afterSave == "function"){
 		            		afterSave(data);
 		            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 		            	} else {
@@ -3203,51 +3202,61 @@ var dyFInputs = {
 	    dyFInputs.locationObj.countLocation = 0 ;
 	    dyFInputs.locationObj.addresses = (typeof dyFObj.elementData != "undefined" && dyFObj.elementData != null && typeof dyFObj.elementData.map.addresses != "undefined") ? dyFObj.elementData.map.addresses  :  [] ;
 	    updateLocality = false;
-
+	    mylog.log("networkJson init", networkJson);
+	    mylog.log("networkJson typeObj", typeObj);
 	    // Initialize tags list for network in form of element
-		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"  && typeof typeObj != "undefined" ){
+		if(	typeof networkJson != 'undefined' && 
+			typeof networkJson.add != "undefined"  && 
+			typeof typeObj != "undefined" ){
 			$.each(networkJson.add, function(key, v) {
-				if(typeof networkJson.request.sourceKey != "undefined"){
-					sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
-					typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
-				}
-
-				if(v){
-					if(typeof networkJson.request.searchTag != "undefined"){
-						typeObj[key].dynForm.jsonSchema.properties.tags.data = networkJson.request.searchTag;
+				mylog.log("key", key);
+				if( typeof typeObj[key].dynForm != "undefined" ){
+					if(typeof networkJson.request.sourceKey != "undefined"){
+						sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
+						typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
 					}
 
+					if(v){
 
-					if(notNull(networkJson.dynForm)){
-						mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
-						mylog.log("networkTags", networkTags);
-						if(typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+						if(typeof networkJson.request.searchTag != "undefined"){
+							typeObj[key].dynForm.jsonSchema.properties.tags.data = networkJson.request.searchTag;
+						}
+
+						if(	typeof typeObj[key] != "undefined" &&
+							typeof typeObj[key].dynForm != "undefined" && 
+							typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+							mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
+							mylog.log("networkTags", networkTags);
 							typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
 							if(typeof networkJson.request.mainTag != "undefined")
 								typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
 						}
-						mylog.log("networkJson.dynForm");
-						mylog.log("networkJson.dynForm", "networkJson.dynForm");
-						if(notNull(networkJson.dynForm.extra)){
-							var nbListTags = 1 ;
-							mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
-							mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
-							while(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags)){
-								typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
-									"inputType" : "tags",
-									"placeholder" : networkJson.dynForm.extra["tags"+nbListTags].placeholder,
-									"values" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
-									"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
-									"label" : networkJson.dynForm.extra["tags"+nbListTags].list
-								};
-								nbListTags++;
+
+						if(notNull(networkJson.dynForm)){
+							mylog.log("networkJson.dynForm");
+							mylog.log("networkJson.dynForm", "networkJson.dynForm");
+							if(notNull(networkJson.dynForm.extra)){
+								var nbListTags = 1 ;
 								mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
 								mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
+								while(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags)){
+									typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
+										"inputType" : "tags",
+										"placeholder" : networkJson.dynForm.extra["tags"+nbListTags].placeholder,
+										"values" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
+										"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
+										"label" : networkJson.dynForm.extra["tags"+nbListTags].list
+									};
+									nbListTags++;
+									mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
+									mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
+								}
+								delete typeObj[key].dynForm.jsonSchema.properties.tags;
 							}
-							delete typeObj[key].dynForm.jsonSchema.properties.tags;
 						}
 					}
 				}
+				
 			});
 		}
 		

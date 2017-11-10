@@ -67,8 +67,11 @@
         //}
         /************** SCOPES **************/
         var iconSelectScope = "<i class='fa fa-circle-o'></i>";
-        var scopeSelected = false;
-
+        var scopeSelected = true;
+        // $.each(myMultiScopes, function(key, value){
+        //     if(value.active == false)
+        //         scopeSelected = false;
+        // });
         
         html = "<div class='list-select-scopes'>";
         if(numberOfScope > 0){
@@ -117,8 +120,8 @@
         });
 
         
-        if(scopeSelected){ $(".btnShowAllScope").hide(); $(".btnHideAllScope").show(); } 
-        else             { $(".btnShowAllScope").show(); $(".btnHideAllScope").hide(); }
+        // if(scopeSelected){ $(".btnShowAllScope").hide(); $(".btnHideAllScope").show(); } 
+        // else             { $(".btnShowAllScope").show(); $(".btnHideAllScope").hide(); }
 
         checkScopeMax();
         rebuildSearchScopeInput();

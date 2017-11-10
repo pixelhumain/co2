@@ -1,0 +1,457 @@
+///////////////////////////////////////////////////////
+////////////// LIST OF JSON NOTIFICATIONS /////////////  
+//--------ALL USE CASE BASED ON PIKACHUI USER--------//
+///////////////////////////////////////////////////////
+
+*** FIRST STEP *****
+Insert pikachui_user_json in the collection "citoyens" without the entry "_id". 
+Then add the same id in pikachui json to get all the following notification
+$["_id"]=ObjectId("59775556e2f07e141a22965c");
+
+///////////// pikachui_user_json /////////////////
+{
+    "_id" : ObjectId("59775556e2f07e141a22965c"),
+    "two_steps_register" : true,
+    "name" : "pikachui",
+    "email" : "pikachui@gmail.com",
+    "username" : "pikachui",
+    "@context" : {
+        "@vocab" : "http://schema.org",
+        "ph" : "http://pixelhumain.com/ph/ontology/"
+    },
+    "roles" : {
+        "standalonePageAccess" : true
+    },
+    "created" : ISODate("2017-07-25T14:27:34.000Z"),
+    "preferences" : {
+        "isOpenData" : true,
+        "publicFields" : [ 
+            "locality", 
+            "directory"
+        ],
+        "privateFields" : [ 
+            "birthDate", 
+    "updated" : NumberLong(1509464214),
+            "email", 
+            "phone"
+        ]
+    },
+    "seePreferences" : true,
+    "pwd" : "512a94e1b2ca2f0f7c45375efe5fbd63bd77df16d166795d5a8aaf0fc123489a",
+    "lastLoginDate" : NumberLong(1509649578),
+    "modified" : ISODate("2017-10-31T15:36:54.000Z"),
+    "gamification" : {
+        "created" : ISODate("2017-10-30T18:47:37.000Z"),
+        "total" : 8.5,
+        "actions" : {
+            "total" : NumberLong(0)
+        },
+        "links" : {
+            "total" : 8.5
+        }
+    },
+    "slug" : "pikachui"
+}
+///////////// END pikachui_user_json //////////////////////
+
+/////////////////LIST OF NOTIFS ///////////////////////////
+
+{
+    "type" : "test",
+    "verb" : "mention",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-02T13:30:43.000Z"),
+    "updated" : ISODate("2017-11-02T13:30:43.000Z"),
+    "target" : {
+        "type" : "news",
+        "id" : "59fb1e03e2f07e2e1737b34a"
+    },
+    "notify" : {
+        "objectType" : "persons",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "56f3cc4040bb4eac54f0070f" : {
+                "isUnseen" : true,
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} mentionned {mentions} {where}",
+        "icon" : "fa-rss",
+        "url" : "page/type/news/id/59fb1e03e2f07e2e1737b34a",
+        "labelAuthorObject" : "mentions",
+        "mentions" : [ 
+            "LIVIN'COOP2"
+        ],
+        "labelArray" : {
+            "{where}" : [ 
+                "in a news"
+            ],
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{mentions}" : [ 
+                "LIVIN'COOP2"
+            ]
+        },
+        "type" : "organizations"
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "follow",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-10-31T16:42:32.000Z"),
+    "updated" : ISODate("2017-10-31T16:42:32.000Z"),
+    "target" : {
+        "type" : "organizations",
+        "id" : "573db23e40bb4e64339a9f2b"
+    },
+    "notify" : {
+        "objectType" : "persons",
+        "id" : {
+            "573da8dc40bb4e302f9a9f6e" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "573dc21740bb4e44359a9f2b" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "573dc28c40bb4e25359a9f3a" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "573dc35140bb4e24359a9f47" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "573dc3ff40bb4e44359a9f30" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "573dc19640bb4e23359a9f30" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            }
+        },
+        "displayName" : "{who} is following {where}",
+        "icon" : "fa-link",
+        "url" : "page/type/organizations/id/573db23e40bb4e64339a9f2b/view/directory/dir/followers",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Art Bien-être et Culture dans les Weppes"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "post",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-10-31T15:37:42.000Z"),
+    "updated" : ISODate("2017-10-31T15:37:42.000Z"),
+    "target" : {
+        "type" : "organizations",
+        "id" : "573db23e40bb4e64339a9f2b"
+    },
+    "notify" : {
+        "objectType" : "news",
+        "id" : {
+            "573da8dc40bb4e302f9a9f6e" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "573dc21740bb4e44359a9f2b" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "573dc28c40bb4e25359a9f3a" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "573dc35140bb4e24359a9f47" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "573dc3ff40bb4e44359a9f30" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "573dc19640bb4e23359a9f30" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "59775556e2f07e141a22965c" : {
+                "isUnread":true,
+                "isUnseen" : true
+            }
+        },
+        "displayName" : "{who} writes a post on the wall of {where}",
+        "icon" : "fa-rss",
+        "url" : "page/type/organizations/id/573db23e40bb4e64339a9f2b",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Art Bien-être et Culture dans les Weppes"
+            ],
+            "{what}" : [ 
+                "a organization"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "accept",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-10-31T15:37:03.000Z"),
+    "updated" : ISODate("2017-10-31T15:37:03.000Z"),
+    "target" : {
+        "type" : "organizations",
+        "id" : "573db23e40bb4e64339a9f2b"
+    },
+    "notify" : {
+        "objectType" : "asAdmin",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            }
+        },
+        "displayName" : "{author} confirmed your request to administrate {where}",
+        "icon" : "fa-check",
+        "url" : "page/type/organizations/id/573db23e40bb4e64339a9f2b/view/directory/dir/members",
+        "labelAuthorObject" : "object",
+        "labelArray" : {
+            "{author}" : [ 
+                "Clément Damiens"
+            ],
+            "{who}" : [ 
+                ""
+            ],
+            "{where}" : [ 
+                "Art Bien-être et Culture dans les Weppes"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "ask",
+    "author" : {
+        "59775556e2f07e141a22965c" : {
+            "name" : "pikachui"
+        }
+    },
+    "created" : ISODate("2017-10-31T15:36:54.000Z"),
+    "updated" : ISODate("2017-10-31T15:36:54.000Z"),
+    "target" : {
+        "type" : "organizations",
+        "id" : "573db23e40bb4e64339a9f2b"
+    },
+    "notify" : {
+        "objectType" : "asAdmin",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            }
+        },
+        "displayName" : "{who} wants to administrate {where}",
+        "icon" : "fa-cog",
+        "url" : "page/type/organizations/id/573db23e40bb4e64339a9f2b/view/notifications",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Art Bien-être et Culture dans les Weppes"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "accept",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-10-31T15:36:46.000Z"),
+    "updated" : ISODate("2017-10-31T15:36:46.000Z"),
+    "target" : {
+        "type" : "organizations",
+        "id" : "573db23e40bb4e64339a9f2b"
+    },
+    "notify" : {
+        "objectType" : "asMember",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            }
+        },
+        "displayName" : "{author} confirmed your request to join {where}",
+        "icon" : "fa-check",
+        "url" : "page/type/organizations/id/573db23e40bb4e64339a9f2b/view/directory/dir/members",
+        "labelAuthorObject" : "object",
+        "labelArray" : {
+            "{author}" : [ 
+                "Clément Damiens"
+            ],
+            "{who}" : [ 
+                ""
+            ],
+            "{where}" : [ 
+                "Art Bien-être et Culture dans les Weppes"
+            ]
+        }
+    }
+},
+{
+    "type" : "test",
+    "verb" : "mention",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-10-31T15:36:24.000Z"),
+    "updated" : ISODate("2017-10-31T15:36:24.000Z"),
+    "target" : {
+        "type" : "news",
+        "id" : "59f89878e2f07e670e32ce71"
+    },
+    "notify" : {
+        "objectType" : "persons",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread": true,
+                "isUnseen" : true
+            }
+        },
+        "displayName" : "{who} mentionned you {mentions} {where}",
+        "icon" : "fa-rss",
+        "url" : "page/type/news/id/59f89878e2f07e670e32ce71",
+        "labelAuthorObject" : "mentions",
+        "mentions" : [ 
+            "LIVIN'COOP2"
+        ],
+        "labelArray" : {
+            "{where}" : [ 
+                "in a news"
+            ],
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{mentions}" : [ 
+                "with", 
+                "LIVIN'COOP2"
+            ]
+        },
+        "type" : "citoyens"
+    }
+},
+{
+    "type" : "test",
+    "verb" : "mention",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-10-31T15:36:10.000Z"),
+    "updated" : ISODate("2017-10-31T15:36:10.000Z"),
+    "target" : {
+        "type" : "news",
+        "id" : "59f8986ae2f07e991532ce6e"
+    },
+    "notify" : {
+        "objectType" : "persons",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            }
+        },
+        "displayName" : "{who} mentionned you {mentions} {where}",
+        "icon" : "fa-rss",
+        "url" : "page/type/news/id/59f8986ae2f07e991532ce6e",
+        "labelAuthorObject" : "mentions",
+        "labelArray" : {
+            "{where}" : [ 
+                "in a news"
+            ],
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{mentions}" : ""
+        },
+        "type" : "citoyens"
+    }
+},
+{
+    "type" : "test",
+    "verb" : "mention",
+    "author" : {
+        "597b4090e2f07eba5b9474ed" : {
+            "name" : "projet projet projet"
+        }
+    },
+    "created" : ISODate("2017-10-30T19:01:29.000Z"),
+    "updated" : ISODate("2017-10-30T19:01:29.000Z"),
+    "target" : {
+        "type" : "news",
+        "id" : "59f77709e2f07eda378b456a"
+    },
+    "notify" : {
+        "objectType" : "persons",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            }
+        },
+        "displayName" : "{who} mentionned you {mentions} {where}",
+        "icon" : "fa-rss",
+        "url" : "page/type/news/id/59f77709e2f07eda378b456a",
+        "labelAuthorObject" : "mentions",
+        "mentions" : [ 
+            "new association het link roles"
+        ],
+        "type" : "citoyens"
+    }
+}
+////////////////// END LISTS ///////////////////////////////

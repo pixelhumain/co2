@@ -1,4 +1,5 @@
 function scopeActive(scopeValue){
+    mylog.log("scopeActive", scopeValue);
     if(myMultiScopes[scopeValue].active){
         $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
         $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-check-circle");

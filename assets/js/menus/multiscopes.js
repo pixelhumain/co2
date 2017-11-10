@@ -134,16 +134,25 @@ function showCountScope(){
 }
 
 function selectAllScopes(select){
+	mylog.log("selectAllScopes", select);
+	// if(typeof select == "undefined"){ 
+	// 	select = true;
+	// 	$.each(myMultiScopes, function(key, value){
+	// 		 if(value.active) 
+	// 		 	select = false;
+	// 	});
+	// }
+
 	if(typeof select == "undefined"){ 
-		select = true;
-		$.each(myMultiScopes, function(key, value){
-			 if(value.active) 
-			 	select = false;
-		});
+		select = false;
 	}
 
 	$.each(myMultiScopes, function(key, value){
-		 //toogleScopeMultiscope(key, select);
+		value.active = select ;
+		myMultiScopes[key] = value ;
+	});
+
+	$.each(myMultiScopes, function(key, value){
 		scopeActive(key);
 	});
 

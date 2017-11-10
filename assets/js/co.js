@@ -3202,8 +3202,6 @@ var dyFInputs = {
 	    dyFInputs.locationObj.countLocation = 0 ;
 	    dyFInputs.locationObj.addresses = (typeof dyFObj.elementData != "undefined" && dyFObj.elementData != null && typeof dyFObj.elementData.map.addresses != "undefined") ? dyFObj.elementData.map.addresses  :  [] ;
 	    updateLocality = false;
-	    mylog.log("networkJson init", networkJson);
-	    mylog.log("networkJson typeObj", typeObj);
 	    // Initialize tags list for network in form of element
 		if(	typeof networkJson != 'undefined' && 
 			typeof networkJson.add != "undefined"  && 

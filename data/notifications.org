@@ -52,6 +52,7 @@ $["_id"]=ObjectId("59775556e2f07e141a22965c");
     },
     "slug" : "pikachui"
 }
+
 ///////////// END pikachui_user_json //////////////////////
 
 /////////////////LIST OF NOTIFS ///////////////////////////
@@ -452,6 +453,940 @@ $["_id"]=ObjectId("59775556e2f07e141a22965c");
             "new association het link roles"
         ],
         "type" : "citoyens"
+    }
+},
+{
+    "_id" : ObjectId("5a05db8be2f07e95128b4576"),
+    "type" : "notifications",
+    "verb" : "follow",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:02:03.000Z"),
+    "updated" : ISODate("2017-11-10T17:02:03.000Z"),
+    "target" : {
+        "type" : "citoyens",
+        "id" : "59775556e2f07e141a22965c"
+    },
+    "notify" : {
+        "objectType" : "user",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} is following you",
+        "icon" : "fa-link",
+        "url" : "page/type/citoyens/id/59775556e2f07e141a22965c/view/directory/dir/followers",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "pikachui"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "comment",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:02:20.000Z"),
+    "updated" : ISODate("2017-11-10T17:02:20.000Z"),
+    "target" : {
+        "type" : "news",
+        "id" : "5a05db43e2f07e68098b4594",
+        "parent" : {
+            "id" : "59775556e2f07e141a22965c",
+            "type" : "citoyens"
+        }
+    },
+    "notify" : {
+        "objectType" : "news",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} commented on your news {what}",
+        "icon" : "fa-comment",
+        "url" : "page/type/news/id/5a05db43e2f07e68098b4594",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "pikachui"
+            ],
+            "{what}" : [ 
+                "&quot;hellllo Le postttttt...&quot;"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "like",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:02:22.000Z"),
+    "updated" : ISODate("2017-11-10T17:02:22.000Z"),
+    "target" : {
+        "type" : "news",
+        "id" : "5a05db43e2f07e68098b4594",
+        "parent" : {
+            "id" : "59775556e2f07e141a22965c",
+            "type" : "citoyens"
+        }
+    },
+    "notify" : {
+        "objectType" : "news",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} likes your news {what}",
+        "icon" : "fa-thumbs-up",
+        "url" : "page/type/news/id/5a05db43e2f07e68098b4594",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "pikachui"
+            ],
+            "{what}" : [ 
+                "&quot;hellllo Le postttttt...&quot;"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "follow",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:07:36.000Z"),
+    "updated" : ISODate("2017-11-10T17:07:36.000Z"),
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "persons",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} is following {where}",
+        "icon" : "fa-link",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519/view/directory/dir/followers",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "ask",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:08:38.000Z"),
+    "updated" : ISODate("2017-11-10T17:08:38.000Z"),
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "asMember",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} wants to join {where}",
+        "icon" : "fa-cog",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519/view/notifications",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "post",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:09:45.000Z"),
+    "updated" : ISODate("2017-11-10T17:09:45.000Z"),
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "news",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} writes a post on the wall of {where}",
+        "icon" : "fa-rss",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ],
+            "{what}" : [ 
+                "a project"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "comment",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        },
+        "59775527e2f07e0e1c22965b" : {
+            "name" : "actionman"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:02:20.000Z"),
+    "updated" : ISODate("2017-11-10T17:22:15.000Z"),
+    "target" : {
+        "type" : "news",
+        "id" : "5a05db43e2f07e68098b4594",
+        "parent" : {
+            "id" : "59775556e2f07e141a22965c",
+            "type" : "citoyens"
+        }
+    },
+    "notify" : {
+        "objectType" : "news",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            }
+        },
+        "displayName" : "{who} added comments on your news {what}",
+        "icon" : "fa-comment",
+        "url" : "page/type/news/id/5a05db43e2f07e68098b4594",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "actionman", 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "pikachui"
+            ],
+            "{what}" : [ 
+                "&quot;hellllo Le postttttt...&quot;"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "like",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        },
+        "59775527e2f07e0e1c22965b" : {
+            "name" : "actionman"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:02:22.000Z"),
+    "updated" : ISODate("2017-11-10T17:22:17.000Z"),
+    "target" : {
+        "type" : "news",
+        "id" : "5a05db43e2f07e68098b4594",
+        "parent" : {
+            "id" : "59775556e2f07e141a22965c",
+            "type" : "citoyens"
+        }
+    },
+    "notify" : {
+        "objectType" : "news",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            }
+        },
+        "displayName" : "{who} like your news {what}",
+        "icon" : "fa-thumbs-up",
+        "url" : "page/type/news/id/5a05db43e2f07e68098b4594",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "actionman", 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "pikachui"
+            ],
+            "{what}" : [ 
+                "&quot;hellllo Le postttttt...&quot;"
+            ]
+        }
+    }
+},
+{
+    "_id" : ObjectId("5a05dcd8e2f07eea0c8b457b"),
+    "type" : "notifications",
+    "verb" : "follow",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        },
+        "59775527e2f07e0e1c22965b" : {
+            "name" : "actionman"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:07:36.000Z"),
+    "updated" : ISODate("2017-11-10T17:21:45.000Z"),
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "persons",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "55ee8d59e41d756612558516" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            }
+        },
+        "displayName" : "{who} are following {where}",
+        "icon" : "fa-link",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519/view/directory/dir/followers",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "actionman", 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "ask",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        },
+        "59775527e2f07e0e1c22965b" : {
+            "name" : "actionman"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:08:38.000Z"),
+    "updated" : ISODate("2017-11-10T17:21:51.000Z"),
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "asMember",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "55ee8d59e41d756612558516" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            }
+        },
+        "displayName" : "{who} want to join {where}",
+        "icon" : "fa-cog",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519/view/notifications",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "actionman", 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ]
+        }
+    }
+},
+{
+    "_id" : ObjectId("5a05dd59e2f07efc118b4578"),
+    "type" : "notifications",
+    "verb" : "post",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        },
+        "59775527e2f07e0e1c22965b" : {
+            "name" : "actionman"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:09:45.000Z"),
+    "updated" : ISODate("2017-11-10T17:22:00.000Z"),
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "news",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            },
+            "55ee8d59e41d756612558516" : {
+                "isUnread" : true,
+                "isUnseen" : true
+            }
+        },
+        "displayName" : "{who} write posts on the wall of {where}",
+        "icon" : "fa-rss",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "actionman", 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ],
+            "{what}" : [ 
+                "a project"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "unlike",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:31:21.000Z"),
+    "updated" : ISODate("2017-11-10T17:31:21.000Z"),
+    "object" : {
+        "type" : "comments",
+        "id" : "5a05dfafe2f07efa118b4576"
+    },
+    "target" : {
+        "type" : "news",
+        "id" : "5a05dd59e2f07efc118b4577",
+        "parent" : {
+            "id" : "597b3ffce2f07e3136947519",
+            "type" : "projects"
+        }
+    },
+    "notify" : {
+        "objectType" : "comments",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} disapproves your comment on {where}",
+        "icon" : "fa-thumbs-down",
+        "url" : "page/type/news/id/5a05dd59e2f07efc118b4577",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "the wall of", 
+                "Coucou la notif"
+            ],
+            "{what}" : [ 
+                "&quot;Salut la notif...&quot;"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "comment",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:31:29.000Z"),
+    "updated" : ISODate("2017-11-10T17:31:29.000Z"),
+    "object" : {
+        "id" : "5a05dfafe2f07efa118b4576",
+        "type" : "comments"
+    },
+    "target" : {
+        "type" : "news",
+        "id" : "5a05dd59e2f07efc118b4577",
+        "parent" : {
+            "id" : "597b3ffce2f07e3136947519",
+            "type" : "projects"
+        }
+    },
+    "notify" : {
+        "objectType" : "comments",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} answered to your comment posted on {where}",
+        "icon" : "fa-comment",
+        "url" : "page/type/news/id/5a05dd59e2f07efc118b4577",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "the wall of", 
+                "Coucou la notif"
+            ],
+            "{what}" : [ 
+                "&quot;Salut la notif...&quot;"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "add",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:32:50.000Z"),
+    "updated" : ISODate("2017-11-10T17:32:50.000Z"),
+    "object" : {
+        "id" : "5a05e2a9e2f07e70168b4585",
+        "type" : "events"
+    },
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "events",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} added a new event on {where}",
+        "icon" : "fa-plus",
+        "url" : "page/type/events/id/5a05e2a9e2f07e70168b4585",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ],
+            "{what}" : [ 
+                null
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "add",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:34:31.000Z"),
+    "updated" : ISODate("2017-11-10T17:34:31.000Z"),
+    "object" : {
+        "id" : "5a05e31ee2f07e59108b458e",
+        "type" : "rooms"
+    },
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "rooms",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} added a new room in the co-space on {where}",
+        "icon" : "fa-plus",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519/view/coop/room/5a05e31ee2f07e59108b458e",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ],
+            "{what}" : [ 
+                null
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "add",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:34:53.000Z"),
+    "updated" : ISODate("2017-11-10T17:34:53.000Z"),
+    "object" : {
+        "id" : "5a05e33de2f07e57168b4581",
+        "type" : "proposals"
+    },
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "proposals",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} added a new proposal {what} in {where}",
+        "icon" : "fa-plus",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519/view/coop/room/5a05e31ee2f07e59108b458e/proposal/5a05e33de2f07e57168b4581",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ],
+            "{what}" : [ 
+                null
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "add",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:35:08.000Z"),
+    "updated" : ISODate("2017-11-10T17:35:08.000Z"),
+    "object" : {
+        "id" : "5a05e34ce2f07e04108b459f",
+        "type" : "actions"
+    },
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "actions",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} added a new action {what} in {where}",
+        "icon" : "fa-plus",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519/view/coop/room/5a05e31ee2f07e59108b458e/action/5a05e34ce2f07e04108b459f",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ],
+            "{what}" : [ 
+                null
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "comment",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:35:18.000Z"),
+    "updated" : ISODate("2017-11-10T17:35:18.000Z"),
+    "object" : {
+        "type" : "proposals",
+        "id" : "5a05e33de2f07e57168b4581",
+        "name" : null
+    },
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "proposals",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} commented on proposal {what} in {where}",
+        "icon" : "fa-comment",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519/view/coop/room/5a05e31ee2f07e59108b458e/proposal/5a05e33de2f07e57168b4581",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ],
+            "{what}" : [ 
+                "jiejfiezfezjifiez"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "ammend",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:35:27.000Z"),
+    "updated" : ISODate("2017-11-10T17:35:27.000Z"),
+    "object" : {
+        "id" : "5a05e33de2f07e57168b4581",
+        "type" : "proposals"
+    },
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "persons",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} amended the proposal {what} in {where}",
+        "icon" : "fa-gavel",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519/view/coop/room/5a05e31ee2f07e59108b458e/proposal/5a05e33de2f07e57168b4581",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ],
+            "{what}" : [ 
+                "jiejfiezfezjifiez"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "vote",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:35:31.000Z"),
+    "updated" : ISODate("2017-11-10T17:35:31.000Z"),
+    "object" : {
+        "id" : "5a05e33de2f07e57168b4581",
+        "type" : "proposals"
+    },
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "persons",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{who} voted on {what} in {where}",
+        "icon" : "fa-gavel",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519/view/coop/room/5a05e31ee2f07e59108b458e/proposal/5a05e33de2f07e57168b4581",
+        "labelAuthorObject" : "author",
+        "labelArray" : {
+            "{who}" : [ 
+                "Clément Damiens"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ],
+            "{what}" : [ 
+                "jiejfiezfezjifiez"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "accept",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:38:45.000Z"),
+    "updated" : ISODate("2017-11-10T17:38:45.000Z"),
+    "object" : {
+        "59775527e2f07e0e1c22965b" : {
+            "name" : "actionman"
+        }
+    },
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "asMember",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{author} confirmed {who} to join {where}",
+        "icon" : "fa-check",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519/view/directory/dir/contributors",
+        "labelAuthorObject" : "object",
+        "labelArray" : {
+            "{author}" : [ 
+                "Clément Damiens"
+            ],
+            "{who}" : [ 
+                "actionman"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ]
+        }
+    }
+},
+{
+    "type" : "notifications",
+    "verb" : "invite",
+    "author" : {
+        "55ee8d59e41d756612558516" : {
+            "name" : "Clément Damiens"
+        }
+    },
+    "created" : ISODate("2017-11-10T17:38:56.000Z"),
+    "updated" : ISODate("2017-11-10T17:38:56.000Z"),
+    "object" : {
+        "59775527e2f07e0e1c22965b" : {
+            "name" : "actionman"
+        }
+    },
+    "target" : {
+        "type" : "projects",
+        "id" : "597b3ffce2f07e3136947519"
+    },
+    "notify" : {
+        "objectType" : "asAdmin",
+        "id" : {
+            "59775556e2f07e141a22965c" : {
+                "isUnread" : true
+            }
+        },
+        "displayName" : "{author} invited {who} to administrate {where}",
+        "icon" : "fa-send",
+        "url" : "page/type/projects/id/597b3ffce2f07e3136947519",
+        "labelAuthorObject" : "object",
+        "labelArray" : {
+            "{author}" : [ 
+                "Clément Damiens"
+            ],
+            "{who}" : [ 
+                "actionman"
+            ],
+            "{where}" : [ 
+                "Coucou la notif"
+            ]
+        }
     }
 }
 ////////////////// END LISTS ///////////////////////////////

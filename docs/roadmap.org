@@ -285,12 +285,13 @@ Liste des notifications déjà lues => #370 #453
 * ************************************************************  
 
 * Tib 
-[ ] #checkout page 
-[ ] test with card 
-  [ ] generate all user wallets for all sellers
-  [ ] PayIn payement 
-[ ] Simulate seller Payout 
-  ?? immediat ?
+[X] #checkout page 
+[X] test with card 
+  [X] generate all user wallets for all sellers
+  [X] PayIn payement 
+[ ]  seller Payout 
+  [ ] create bank account
+  [ ]   
 
 
 * ************************************************************    

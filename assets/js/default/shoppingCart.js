@@ -4,7 +4,8 @@ var shopping = {
 		totalCart : 0
 	},
 	checkoutObj : {
-		total : 0
+		total : 0,
+		sellers : {}
 	},
 	addToShoppingCart: function(id, type, subType, ranges){
 		incCart=true;
@@ -260,14 +261,17 @@ var shopping = {
     	$("#checkoutCart").removeClass("hide");
     },
     pay : function() { 
-    	getAjax(".contentCB", baseUrl+'/'+moduleId+"/pay?amount="+shopping.checkoutObj.total+"&cur=EUR&card=CB_VISA_MASTERCARD", null,"html");
+    	getAjax(".contentCB", baseUrl+'/'+moduleId+"/done?amount="+shopping.checkoutObj.total+"&cur=EUR&card=CB_VISA_MASTERCARD", null,"html");
     	$("#shoppingCart").addClass("hide");
     	$("#checkoutCart").addClass("hide");
     	$("#checkoutResult").addClass("hide");
     },
     getComponentsHtml:function(firstLevel){
         var itemHtml = "";
-        shopping.checkoutObj = {total:0};
+        shopping.checkoutObj = {
+        						total:0,
+        						sellers : {}
+        					};
         $.each(shopping.cart,function(i,v){
             console.log(v);
             if(i!="countQuantity" && i != "backup"){
@@ -284,7 +288,7 @@ var shopping = {
         });
 
         var sellerHtml = "";
-        $.each(shopping.checkoutObj,function(id,seller){
+        $.each(shopping.checkoutObj.sellers,function(id,seller){
             console.log(seller);
             sellerHtml += "<div class='col-md-12 headerCategory margin-top-20'>"+
             "<div class='col-md-12'>"+
@@ -312,16 +316,16 @@ var shopping = {
             itemHtml+=shopping.getViewItem(e, data, type);
             shopping.totalCart=shopping.totalCart+(data.price*data.countQuantity);
 
-            if( typeof shopping.checkoutObj[data.providerId] == "undefined" )
-                shopping.checkoutObj[data.providerId] = {
+            if( typeof shopping.checkoutObj.sellers[data.providerId] == "undefined" )
+                shopping.checkoutObj.sellers[data.providerId] = {
                     total : data.countQuantity*data.price,
                     qty : data.countQuantity,
                     type : data.providerType,
                     name : data.providerName,
                 };
             else {
-                shopping.checkoutObj[data.providerId].total  += data.countQuantity*data.price;
-                shopping.checkoutObj[data.providerId].qty  += data.countQuantity;
+                shopping.checkoutObj.sellers[data.providerId].total  += data.countQuantity*data.price;
+                shopping.checkoutObj.sellers[data.providerId].qty  += data.countQuantity;
             }
             shopping.checkoutObj.total += data.countQuantity*data.price;
         });

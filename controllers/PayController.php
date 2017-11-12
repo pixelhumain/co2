@@ -77,99 +77,150 @@ class PayController extends CommunecterController {
 			throw new CHttpException(401,Yii::t("common","Login First"));
 	  }
 
-	  public function actionDone() {
-	    require_once '../../pixelhumain/ph/vendor/autoload.php';
-	    define('MangoPayDemo_ClientId', Yii::app()->params["mangoPay"]["ClientId"] );
-		define('MangoPayDemo_ClientPassword', Yii::app()->params["mangoPay"]["ClientPassword"] );
-		define('MangoPayDemo_TemporaryFolder', Yii::app()->params["mangoPay"]["TemporaryFolder"]);
+	  public function actionIn() {
+	  	if(@Yii::app()->session["userId"])
+		{
+		    require_once '../../pixelhumain/ph/vendor/autoload.php';
+		    define('MangoPayDemo_ClientId', Yii::app()->params["mangoPay"]["ClientId"] );
+			define('MangoPayDemo_ClientPassword', Yii::app()->params["mangoPay"]["ClientPassword"] );
+			define('MangoPayDemo_TemporaryFolder', Yii::app()->params["mangoPay"]["TemporaryFolder"]);
 
-		$api = new MangoPay\MangoPayApi();
+			$api = new MangoPay\MangoPayApi();
 
-		// configuration
-		$api->Config->ClientId = Yii::app()->params["mangoPay"]["ClientId"];
-		$api->Config->ClientPassword = Yii::app()->params["mangoPay"]["ClientPassword"];
-		$api->Config->TemporaryFolder = Yii::app()->params["mangoPay"]["TemporaryFolder"];
-		
+			// configuration
+			$api->Config->ClientId = Yii::app()->params["mangoPay"]["ClientId"];
+			$api->Config->ClientPassword = Yii::app()->params["mangoPay"]["ClientPassword"];
+			$api->Config->TemporaryFolder = Yii::app()->params["mangoPay"]["TemporaryFolder"];
+			
 
-		if (!isset($_SESSION['amount'])) {
-		    die('<div style="color:red;">No payment has been started<div>');
-		}
+			if (!isset($_SESSION['amount'])) {
+			    die('<div style="color:red;">No payment has been started<div>');
+			}
 
-		try {
-		    // update register card with registration data from Payline service
-		    $cardRegister = $mangoPayApi->CardRegistrations->Get($_SESSION['cardRegisterId']);
-		    $cardRegister->RegistrationData = isset($_GET['data']) ? 'data=' . $_GET['data'] : 'errorCode=' . $_GET['errorCode'];
-		    $updatedCardRegister = $mangoPayApi->CardRegistrations->Update($cardRegister);
+			try {
+			    // update register card with registration data from Payline service
+			    //$cardRegister = $api->CardRegistrations->Get($_SESSION['cardRegisterId']);
+			    
+			    // get created virtual card object
+			    $user = Person::getById(Yii::app()->session["userId"]);
+			    $card = $api->Cards->Get( $_POST["cardId"] );
 
-		    if ($updatedCardRegister->Status != \MangoPay\CardRegistrationStatus::Validated || !isset($updatedCardRegister->CardId))
-		        die('<div style="color:red;">Cannot create card. Payment has not been created.<div>');
+			    // create temporary wallet for user
+			    $userWallet = new \MangoPay\Wallet();
+			    $userWallet->Owners = array( $user["mangoUserId"] );
+			    $userWallet->Currency = $_POST['currency'];
+			    $userWallet->Description = 'Temporary wallet for payment demo';
+			    $createdUserWallet = $api->Wallets->Create($userWallet);
 
-		    // get created virtual card object
-		    $card = $mangoPayApi->Cards->Get($updatedCardRegister->CardId);
+			    // create pay-in CARD DIRECT
+			    $payIn = new \MangoPay\PayIn();
+			    $payIn->CreditedWalletId = $createdUserWallet->Id;
+			    $payIn->AuthorId = $user["mangoUserId"];
+			    $payIn->DebitedFunds = new \MangoPay\Money();
+			    $payIn->DebitedFunds->Amount = $_POST['obj']['total'];
+			    $payIn->DebitedFunds->Currency = $_POST['currency'];
+			    $payIn->Fees = new \MangoPay\Money();
+			    $payIn->Fees->Amount = 0;
+			    $payIn->Fees->Currency = $_POST['currency'];
 
-		    // create temporary wallet for user
-		    $wallet = new \MangoPay\Wallet();
-		    $wallet->Owners = array( $updatedCardRegister->UserId );
-		    $wallet->Currency = $_SESSION['currency'];
-		    $wallet->Description = 'Temporary wallet for payment demo';
-		    $createdWallet = $mangoPayApi->Wallets->Create($wallet);
+			    // payment type as CARD
+			    $payIn->PaymentDetails = new \MangoPay\PayInPaymentDetailsCard();
+			    $payIn->PaymentDetails->CardType = $card->CardType;
+			    $payIn->PaymentDetails->CardId = $card->Id;
 
-		    // create pay-in CARD DIRECT
-		    $payIn = new \MangoPay\PayIn();
-		    $payIn->CreditedWalletId = $createdWallet->Id;
-		    $payIn->AuthorId = $updatedCardRegister->UserId;
-		    $payIn->DebitedFunds = new \MangoPay\Money();
-		    $payIn->DebitedFunds->Amount = $_SESSION['amount'];
-		    $payIn->DebitedFunds->Currency = $_SESSION['currency'];
-		    $payIn->Fees = new \MangoPay\Money();
-		    $payIn->Fees->Amount = 0;
-		    $payIn->Fees->Currency = $_SESSION['currency'];
+			    // execution type as DIRECT
+			    $payIn->ExecutionDetails = new \MangoPay\PayInExecutionDetailsDirect();
+			    $payIn->ExecutionDetails->SecureModeReturnURL = 'http://test.com';
 
-		    // payment type as CARD
-		    $payIn->PaymentDetails = new \MangoPay\PayInPaymentDetailsCard();
-		    $payIn->PaymentDetails->CardType = $card->CardType;
-		    $payIn->PaymentDetails->CardId = $card->Id;
+			    // create Pay-In
+			    $createdPayIn = $api->PayIns->Create($payIn);
 
-		    // execution type as DIRECT
-		    $payIn->ExecutionDetails = new \MangoPay\PayInExecutionDetailsDirect();
-		    $payIn->ExecutionDetails->SecureModeReturnURL = 'http://test.com';
+			    // if created Pay-in object has status SUCCEEDED it's mean that all is fine
+			    if ($createdPayIn->Status == \MangoPay\PayInStatus::Succeeded) {
+			        echo '<div style="color:green;">'.
+			                    'Pay-In has been created successfully. '
+			                    .'Pay-In Id = ' . $createdPayIn->Id.'<br/>' 
+			                    . ', Wallet Id = ' . $createdUserWallet->Id .'<br/>'
+			                    . 'transferring'.'<br/>'
+			                . '</div>';
+			        /*
+			        for each Seller from $_POST['obj']
+			        check if has mangoPay account 
+			        else create MangoPay\UserLegal();
+			        */
+			        foreach ($_POST['obj']["sellers"] as $key => $sale) 
+			        {
+			        	$seller = Person::getById( $key );
+						if(!@$seller["mangoSellerId"]){
+						
+							$sellerM = new MangoPay\UserLegal();
+							$sellerM->Name = $seller["name"];
+							$sellerM->LegalPersonType = "BUSINESS";
+							$sellerM->Email = $seller["email"];
+							$sellerM->LegalRepresentativeFirstName = $seller["name"];
+							$sellerM->LegalRepresentativeLastName = $seller["username"];
+							$sellerM->LegalRepresentativeBirthday = 121271;
+							$sellerM->LegalRepresentativeNationality = "FR";
+							$sellerM->LegalRepresentativeCountryOfResidence = "RE";
+							$mSeller = $api->Users->Create($sellerM);
 
-		    // create Pay-In
-		    $createdPayIn = $mangoPayApi->PayIns->Create($payIn);
+							echo $seller["name"]." seller account created: ".$seller["mangoSellerId"]."<br/>";
+							PHDB::update( Person::COLLECTION,	array("_id" => $seller["_id"] ),
+					            array('$set' => array("mangoSellerId"=> $mSeller->Id)) );
+						}else {
+							echo $seller["name"]." seller has mango account : ".$seller["mangoSellerId"]."<br/>";
+							$mSeller = $api->Users->GetLegal($seller["mangoSellerId"]);
+						}
+				        
 
-		    // if created Pay-in object has status SUCCEEDED it's mean that all is fine
-		    if ($createdPayIn->Status == \MangoPay\PayInStatus::Succeeded) {
-		        print '<div style="color:green;">'.
-		                    'Pay-In has been created successfully. '
-		                    .'Pay-In Id = ' . $createdPayIn->Id 
-		                    . ', Wallet Id = ' . $createdWallet->Id 
-		                . '</div>';
-		    }
-		    else {
-		        // if created Pay-in object has status different than SUCCEEDED 
-		        // that occurred error and display error message
-		        print '<div style="color:red;">'.
-		                    'Pay-In has been created with status: ' 
-		                    . $createdPayIn->Status . ' (result code: '
-		                    . $createdPayIn->ResultCode . ')'
-		                .'</div>';
-		    }
+					//create a wallet 
+						//Note that there is no difference between a Wallet for a Natural User and a Legal User
+						$Wallet = new \MangoPay\Wallet();
+						$Wallet->Owners = array( $mSeller->Id );
+						$Wallet->Description = "Demo wallet as seller";
+						$Wallet->Currency = "EUR";
+						$createdSellerWallet = $api->Wallets->Create($Wallet);
+						echo $seller["name"]." wallet created <br/>";
 
-		} catch (\MangoPay\Libraries\ResponseException $e) {
-		    
-		    print '<div style="color: red;">'
-		                .'\MangoPay\ResponseException: Code: ' 
-		                . $e->getCode() . '<br/>Message: ' . $e->getMessage()
-		                .'<br/><br/>Details: '; print_r($e->GetErrorDetails())
-		        .'</div>';
-		}
+					//transfer amount from user to seller
+						$Transfer = new \MangoPay\Transfer();
+						$buyer = Person::getById( Yii::app()->session["userId"] );
+						$Transfer->AuthorId = $buyer["mangoUserId"];
+						$Transfer->DebitedFunds = new \MangoPay\Money();
+						$Transfer->DebitedFunds->Currency = $_POST['currency'];
+						$Transfer->DebitedFunds->Amount = $sale["total"];
+						
+						$Transfer->Fees = new \MangoPay\Money();
+						$Transfer->Fees->Currency = $_POST['currency'];
+						$Transfer->Fees->Amount = $sale["total"]*0.1;
+						$Transfer->DebitedWalletID = $createdUserWallet->Id;
+						$Transfer->CreditedWalletId = $createdSellerWallet->Id;
+						$result = $api->Transfers->Create($Transfer);
+						echo "Trensfer from ".$buyer["name"]." to ".$seller["name"]." <br/>";
 
+			        }
+			    }
+			    else {
+			        // if created Pay-in object has status different than SUCCEEDED 
+			        // that occurred error and display error message
+			        echo '<div style="color:red;">'.
+			                    'Pay-In has been created with status: ' 
+			                    . $createdPayIn->Status . ' (result code: '
+			                    . $createdPayIn->ResultCode . ')'
+			                .'</div>';
+			    }
 
+			} catch (\MangoPay\Libraries\ResponseException $e) {
+			    
+			    echo '<div style="color: red;">'
+			                .'\MangoPay\ResponseException: Code: ' 
+			                . $e->getCode() . '<br/>Message: ' . $e->getMessage()
+			                .'<br/><br/>Details: '; print_r($e->GetErrorDetails())
+			        .'</div>';
+			}
+		} else 
+			throw new CHttpException(401,Yii::t("common","Login First"));
 
-		$params = array( "ClientId" => $api->Config->ClientId );
-		//$this->renderPartial( "doc/mango" , $params );
-		//$this->renderPartial( "api/index" , $params );
-		$this->renderPartial( "payment" , $params );
 	  }
 
 }

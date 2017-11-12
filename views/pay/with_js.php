@@ -59,14 +59,14 @@ $returnUrl .= 'pay/done';
         <input type="button" value="Register with Ajax (will fail for non supporting CORS browsers)" id="payAjax" />
         <div class="clear"></div>
         <br>
-        
+        <?php /*
         <input type="button" value="Register with Ajax or redirect if no CORS support" id="payAjaxOrRedirect" />
         <div class="clear"></div>
 		<br>
 		
         <input type="button" value="Register with redirect and then pay" id="payRedirect" />
         <div class="clear"></div>
-
+        */?>
     </form>
 
 </div>
@@ -125,13 +125,26 @@ function runCardRegAjax() {
     mangoPay.cardRegistration.registerCard(cardData, 
         function(res) {
             var message = 'Card has been succesfully registered under the Card Id ' + res.CardId + '.<br />';
-            message += 'Card is now ready to use e.g. in a «Direct PayIn» Object.';
+            message += 'Card is now ready to use e.g. in a «Direct PayIn» Object.<br/>';
+            message += '<a  class="btn btn-success" href="javascript:payin(' + res.CardId + ')">«PayIn» Object</a>.';
+            ;
             $("#divForm").html(message);
         },
         function(res){ 
             alert("Error occured while registering the card: " + "ResultCode: " + res.ResultCode + ", ResultMessage: " + res.ResultMessage);
         }
     );
+}
+function payin (cardId) { 
+    var params = {
+        cardId : cardId,
+        obj : shopping.checkoutObj,
+        currency : "EUR"
+    };
+    ajaxPost( "#checkoutCart", baseUrl+"/"+moduleId+'/pay/in' , params, function() { 
+        alert("return from payin");
+     } , "html" );
+
 }
 
 function runCardRegReturnUrl() {

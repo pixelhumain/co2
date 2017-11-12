@@ -441,7 +441,7 @@ class CommunecterController extends Controller
     ),
     "pay"=> array(
        "index"   => array("href" => "/ph/co2/pay/index"),
-       "done"   => array("href" => "/ph/co2/pay/done"),
+       "in"   => array("href" => "/ph/co2/pay/in"),
     ),
     "backup"=> array(
        "save"   => array("href" => "/ph/co2/backup/save"),

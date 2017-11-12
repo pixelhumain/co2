@@ -1,82 +1,35 @@
 <?php
 
-// include MangoPay SDK
-//require_once '../../vendor/autoload.php';
-require_once '../../pixelhumain/ph/vendor/autoload.php';
-require_once 'config.php';
-
-// sample data to demo
-$_SESSION['amount'] = 50;
-$_SESSION['currency'] = 'EUR';
-$_SESSION['cardType'] = 'CB_VISA_MASTERCARD';//or alternatively MAESTRO or DINERS etc
-
-// create instance of MangoPayApi SDK
-$mangoPayApi = new \MangoPay\MangoPayApi();
-$mangoPayApi->Config->ClientId = Yii::app()->params["mangoPay"]["ClientId"];//MangoPayDemo_ClientId;
-$mangoPayApi->Config->ClientPassword = Yii::app()->params["mangoPay"]["ClientPassword"];//MangoPayDemo_ClientPassword;
-$mangoPayApi->Config->TemporaryFolder = Yii::app()->params["mangoPay"]["TemporaryFolder"];
-
-// create user for payment
-$user = new MangoPay\UserNatural();
-$user->FirstName = 'COCO';
-$user->LastName = 'Jojo';
-$user->Email = 'email@domain.com';
-$user->Birthday = time();
-$user->Nationality = 'FR';
-$user->CountryOfResidence = 'FR';
-$user->Occupation = "programmer";
-$user->IncomeRange = 3;
-$createdUser = $mangoPayApi->Users->Create($user);
-
-// register card
-$cardRegister = new \MangoPay\CardRegistration();
-$cardRegister->UserId = $createdUser->Id;
-$cardRegister->Currency = $_SESSION['currency'];
-$cardRegister->CardType = $_SESSION['cardType'];
-$createdCardRegister = $mangoPayApi->CardRegistrations->Create($cardRegister);
-$_SESSION['cardRegisterId'] = $createdCardRegister->Id;
-
 // build the return URL to capture token response if browser does not support cross-domain Ajax requests
 $returnUrl = 'http' . ( isset($_SERVER['HTTPS']) ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'];
 $returnUrl .= substr($_SERVER['REQUEST_URI'], 0, strripos($_SERVER['REQUEST_URI'], '/') + 1);
-$returnUrl .= 'pay';
+$returnUrl .= 'pay/done';
 
 ?>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://rawgit.com/Mangopay/cardregistration-js-kit/master/kit/mangopay-kit.min.js"></script><!-- Or add the repo https://github.com/Mangopay/cardregistration-js-kit to your project 
-<script src="js/script.js"></script>-->
-
-
 <script>
-    var cardRegistrationURL = "<?php print $createdCardRegister->CardRegistrationURL; ?>";
-    var preregistrationData = "<?php print $createdCardRegister->PreregistrationData; ?>";
-    var cardRegistrationId = "<?php print $createdCardRegister->Id; ?>";
-    var cardType = "<?php print $createdCardRegister->CardType; ?>";
-    var accessKey = "<?php print $createdCardRegister->AccessKey; ?>";
-    var ajaxUrl = "<?php print $returnUrl; ?>";
-    var redirectUrl = "<?php print $returnUrl; ?>";
+    var cardRegistrationURL = "<?php echo $createdCardRegister->CardRegistrationURL; ?>";
+    var preregistrationData = "<?php echo $createdCardRegister->PreregistrationData; ?>";
+    var cardRegistrationId = "<?php echo $createdCardRegister->Id; ?>";
+    var cardType = "<?php echo $createdCardRegister->CardType; ?>";
+    var accessKey = "<?php echo $createdCardRegister->AccessKey; ?>";
+    var ajaxUrl = "<?php echo $returnUrl; ?>";
+    var redirectUrl = "<?php echo $returnUrl; ?>";
 
     console.log({
-        cardRegistrationURL : "<?php print $createdCardRegister->CardRegistrationURL; ?>",
-        preregistrationData : "<?php print $createdCardRegister->PreregistrationData; ?>",
-        cardRegistrationId : "<?php print $createdCardRegister->Id; ?>",
-        cardType : "<?php print $createdCardRegister->CardType; ?>",
-        accessKey : "<?php print $createdCardRegister->AccessKey; ?>",
-        ajaxUrl : "<?php print $returnUrl; ?>",
-        redirectUrl : "<?php print $returnUrl; ?>"
+        cardRegistrationURL : "<?php echo $createdCardRegister->CardRegistrationURL; ?>",
+        preregistrationData : "<?php echo $createdCardRegister->PreregistrationData; ?>",
+        cardRegistrationId : "<?php echo $createdCardRegister->Id; ?>",
+        cardType : "<?php echo $createdCardRegister->CardType; ?>",
+        accessKey : "<?php echo $createdCardRegister->AccessKey; ?>",
+        ajaxUrl : "<?php echo $returnUrl; ?>",
+        redirectUrl : "<?php echo $returnUrl; ?>"
     });
     
-    mangoPay.cardRegistration.baseURL = "<?php print $mangoPayApi->Config->BaseUrl; ?>";
-    mangoPay.cardRegistration.clientId = "<?php print $mangoPayApi->Config->ClientId; ?>";
+    mangoPay.cardRegistration.baseURL = "<?php echo $api->Config->BaseUrl; ?>";
+    mangoPay.cardRegistration.clientId = "<?php echo $api->Config->ClientId; ?>";
 </script>
 
-<p>
-  <i>
-    Shows how to register the card using JavaScript Kit <br />
-    and process payments asynchronously or with page reload.
-  </i>
-</p>
 
 <div id ="divForm">
     <label>Full Name</label>
@@ -86,20 +39,20 @@ $returnUrl .= 'pay';
     <div class="clear"></div>
 
     <label>Amount</label>
-    <label><?php print $_SESSION['amount'] . ' ' . $_SESSION['currency']; ?></label>
+    <label><?php print $amount . ' ' . $currency; ?></label>
     <div class="clear"></div>
 
     <form id="paymentForm">
         <label for="cardNumber">Card Number</label>
-        <input type="text" name="cardNumber" value="" />
+        <input type="text" name="cardNumber" value="4706750000000009" />
         <div class="clear"></div>
 
         <label for="cardExpirationDate">Expiration Date</label>
-        <input type="text" name="cardExpirationDate" value="" />
+        <input type="text" name="cardExpirationDate" value="0118" />
         <div class="clear"></div>
 
         <label for="cardCvx">CVV</label>
-        <input type="text" name="cardCvx" value="" />
+        <input type="text" name="cardCvx" value="123" />
         <div class="clear"></div>
         <br>
 

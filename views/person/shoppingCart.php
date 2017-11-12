@@ -91,11 +91,35 @@
 
 </style>
 <div id="shoppingCart">
-    <div class="headerTitleStanalone"></div>
+    <div class="headerTitleStanalone">
+        <div class='col-md-6 no-padding'>
+            <span>Shopping cart</span>
+        </div>
+    </div>
     <div class="col-md-10 col-md-offset-1 contentOnePage">
     	<div class="contentCart shadow2 col-md-12 no-padding text-center">
     	</div>
     </div>
+</div>
+
+<script src="https://rawgit.com/Mangopay/cardregistration-js-kit/master/kit/mangopay-kit.min.js"></script>
+<div id="checkoutCart" class="hide" >
+
+    <div class="headerTitleStanalone">
+        <div class='col-md-6 no-padding'>
+            <span>Checkout</span>
+        </div>
+    </div>
+
+    <div class="col-md-10 col-md-offset-1 contentOnePage" style="margin-top:100px">
+        <div class="contentCheckout shadow2 col-md-12 no-padding text-center"></div>
+        <div class="contentCB shadow2 col-md-12 no-padding text-center"></div>
+        <div class='col-md-12 pull-right btn-cart margin-top-20 no-padding'>
+            <a href='javascript:;' onclick='shopping.buyCart();' class='btn bg-orange text-white pull-right col-md-3' onclick=''>Validate</a>
+            <a href='javascript:;' class='btn bg-orange pull-right col-md-3 text-white close-modal' >Continue</a>
+        </div>
+    </div>
+
 </div>
 <?php 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
@@ -107,16 +131,21 @@
     var openDetails=[];
 	jQuery(document).ready(function() {	
         //if(typeof params.name != "undefined" && params.name != "")
-        str =  "<div class='col-md-6 no-padding'>"+ 
-        "<span>Shopping cart</span>"+
-      "</div>";
-      $(".headerTitleStanalone").html(str);
+      
       initBtnLink();
-      if(shopping.cart.countQuantity > 0 )
-      	html=shopping.generateCartView();
-      else
-      	html=shopping.generateEmptyCartView();
-      $(".contentCart").html(html);
+      htmlCart = "", htmlCheckout = '';
+      if(shopping.cart.countQuantity > 0 ){
+      	cartview = shopping.generateCartView();
+            htmlCart = cartview.cart;
+            htmlCheckout = cartview.checkout;
+      } else {
+      	htmlCart=shopping.generateEmptyCartView();
+        htmlCheckout = "";
+      }
+
+      $(".contentCart").html(htmlCart);
+      $(".contentCheckout").html(htmlCheckout);
+
       bindCartEvent();
     });
     

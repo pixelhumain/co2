@@ -1,8 +1,11 @@
 var shopping = {
 	cart:{
-		countQuantity:0
+		countQuantity:0,
+		totalCart : 0
 	},
-	checkoutObj : {},
+	checkoutObj : {
+		total : 0
+	},
 	addToShoppingCart: function(id, type, subType, ranges){
 		incCart=true;
 		if(typeof userId != "undefined" && userId != ""){
@@ -16,6 +19,7 @@ var shopping = {
 					params={
 						name : element.name,
 						providerId : element.parentId,
+						providerName : element.name,
 						providerType : element.parentType,
 						price : element.price,
 						countQuantity:1
@@ -70,6 +74,7 @@ var shopping = {
 						name : element.name,
 						providerId : element.parentId,
 						providerType : element.parentType,
+						providerName : element.name,
 						price : element.price,
 						countQuantity:1
 					};
@@ -202,6 +207,10 @@ var shopping = {
     	return str;
     },
     generateCartView:function(){
+    	var htmls = shopping.getComponentsHtml(true);
+    	//******************************************
+		// CART
+		//******************************************
     	str="<div class='col-md-12 bg-orange padding-10'>"+
     			"<div class='pull-right'>"+
     				"<a href='javascript:alert(\"Rapha pour toi\")' class='text-white padding-5' onclick=''><i class='fa fa-print'></i> Print</a>"+
@@ -211,38 +220,81 @@ var shopping = {
     			"</div>"+
     		"</div>"+
     		"<div class='col-md-11' style='margin-left:4.133333333%'>";
-    		str+=shopping.getComponentsHtml(shopping.cart,true);
+    		str+=htmls.itemHtml;
     		str+="<div class='col-md-12 bg-orange-1 padding-5 margin-top-20'>"+
     				"<div class='pull-right'>"+
-    					"<h3 class='letter-orange no-margin totalPrice'>Total of your order: "+totalCart+" euros</h3>"+
+    					"<h3 class='letter-orange no-margin totalPrice'>Total of your order: "+shopping.totalCart+" euros</h3>"+
     				"</div>"+
     			"</div>";
     		str+="<div class='col-md-12 pull-right btn-cart margin-top-20 no-padding'>"+
-    					"<a href='javascript:;' onclick='shopping.buyCart();' class='btn bg-orange text-white pull-right col-md-3' onclick=''>Validate</a>"+
+    					"<a href='javascript:;' onclick='shopping.checkout();' class='btn bg-orange text-white pull-right col-md-3' onclick=''>Checkout</a>"+
     					"<a href='javascript:;' class='btn bg-orange pull-right col-md-3 text-white close-modal' >Continue</a>"+
     			"</div>";
     		str+="<div class='col-md-12 margin-top-10 text-left'>"+
     				"<span>* folder fee included and delivery tax not included</span>"+
     			"</div></div>";
-    	return str;
+
+		//******************************************
+		// CHECKOUT 
+		//******************************************
+		cStr = "<div class='col-md-12 bg-orange padding-10'>"+
+    			"<div class='pull-left'>"+
+    				"<span class='text-white'> CHECKOUT </span>"+
+    			"</div>"+
+    		"</div>"+
+    		"<div class='col-md-11' style='margin-left:4.133333333%'>";
+    		cStr += htmls.sellerHtml;
+    		cStr += "<div class='col-md-12 bg-orange-1 padding-5 margin-top-20'>"+
+    				"<div class='pull-right'>"+
+    					"<h3 class='letter-orange no-margin totalPrice'>Passer à la caisse: "+shopping.totalCart+" euros</h3>"+
+    				"</div>"+
+    			"</div>";
+    		cStr += "<div class='col-md-12 margin-top-10 text-left'>"+
+    				"<span>* folder fee included and delivery tax not included</span>"+
+    			"</div></div>";
+    	return { cart : str , checkout : cStr };
     },
-    getComponentsHtml:function(data,firstLevel){
-        itemHtml="";
-        $.each(data,function(i,v){
+    checkout : function() { 
+    	getAjax(".contentCB", baseUrl+'/'+moduleId+"/pay?amount="+shopping.checkoutObj.total+"&cur=EUR&card=CB_VISA_MASTERCARD", null,"html");
+    	$("#shoppingCart").addClass("hide");
+    	$("#checkoutCart").removeClass("hide");
+    },
+    pay : function() { 
+    	getAjax(".contentCB", baseUrl+'/'+moduleId+"/pay?amount="+shopping.checkoutObj.total+"&cur=EUR&card=CB_VISA_MASTERCARD", null,"html");
+    	$("#shoppingCart").addClass("hide");
+    	$("#checkoutCart").addClass("hide");
+    	$("#checkoutResult").addClass("hide");
+    },
+    getComponentsHtml:function(firstLevel){
+        var itemHtml = "";
+        shopping.checkoutObj = {total:0};
+        $.each(shopping.cart,function(i,v){
             console.log(v);
             if(i!="countQuantity" && i != "backup"){
                 if(i=="services"){
                     $.each(v,function(e, service){
                         console.log(service);
-                        itemHtml+=shopping.getItemByCategory(e,service,"services");
+                        itemHtml += shopping.getItemByCategory(e,service,"services");
                     });
                 }
                 else{
-                    itemHtml+=shopping.getItemByCategory(i,v, "products");
+                    itemHtml += shopping.getItemByCategory(i,v, "products");
                 }
             }
         });
-        return itemHtml;
+
+        var sellerHtml = "";
+        $.each(shopping.checkoutObj,function(id,seller){
+            console.log(seller);
+            sellerHtml += "<div class='col-md-12 headerCategory margin-top-20'>"+
+            "<div class='col-md-12'>"+
+                "<h2 class='letter-orange mainTitle text-left'>"+id+"<h3 class='pull-right subTitleCart letter-orange'>"+seller.total+" ttc<h3></h2>"+
+            "</div>"+
+            
+        "</div>";
+        });
+
+        return { "itemHtml" : itemHtml , "sellerHtml" : sellerHtml };
     },
     getItemByCategory:function(label,item, type){
         itemHtml="<div class='col-md-12 headerCategory margin-top-20'>"+
@@ -258,10 +310,24 @@ var shopping = {
         "</div>";
         $.each(item,function(e,data){
             itemHtml+=shopping.getViewItem(e, data, type);
-            totalCart=totalCart+(data.price*data.countQuantity);
+            shopping.totalCart=shopping.totalCart+(data.price*data.countQuantity);
+
+            if( typeof shopping.checkoutObj[data.providerId] == "undefined" )
+                shopping.checkoutObj[data.providerId] = {
+                    total : data.countQuantity*data.price,
+                    qty : data.countQuantity,
+                    type : data.providerType,
+                    name : data.providerName,
+                };
+            else {
+                shopping.checkoutObj[data.providerId].total  += data.countQuantity*data.price;
+                shopping.checkoutObj[data.providerId].qty  += data.countQuantity;
+            }
+            shopping.checkoutObj.total += data.countQuantity*data.price;
         });
         return itemHtml;
     },
+    
     getViewItem:function(key, data, type){
         itemId=key;
         itemType=type;
@@ -393,14 +459,24 @@ var shopping = {
         shopping.reloadViewCart();
     },
     reloadViewCart:function(){
-        totalCart=0;
-        if(shopping.cart.countQuantity > 0 )
-            html=shopping.generateCartView();
-        else
-            html=shopping.generateEmptyCartView();
-        $(".contentCart").html(html);
+        shopping.totalCart=0;
+        htmlCart = "", htmlCheckout = '';
+        if(shopping.cart.countQuantity > 0 ){
+            cartview = shopping.generateCartView();
+            htmlCart = cartview.cart;
+            htmlCheckout = cartview.checkout;
+        }
+        else {
+            htmlCart = shopping.generateEmptyCartView();
+            htmlCheckout = "";
+        }
+
+        $(".contentCart").html(htmlCart);
+        $(".contentCheckout").html(htmlCheckout);
+
         bindCartEvent();
         initBtnLink();
+        
         if(openDetails.length > 0){
             $.each(openDetails,function(i,v){
                 $(".showDetail"+v).trigger("click");
@@ -408,15 +484,16 @@ var shopping = {
         }
     },
     buyCart:function(){
+    	alert("buyCart");
         order = {
-        	totalPrice : totalCart,
+        	totalPrice : shopping.totalCart,
 	        currency : "EUR"
         };
         orderItem=new Object;
         if(typeof shopping.cart.backup != "undefined"){
         	order.backup=shopping.cart.backup;
         }
-        shopping.checkoutObj = {};
+        
         $.each(shopping.cart,function(e,v){
             if(e=="countQuantity")
                 order.countOrderItem=v;
@@ -429,14 +506,6 @@ var shopping = {
                             price : (data.price * data.countQuantity),
                             reservations : data.reservation
                         };
-
-                        if( typeof checkoutObj[data.providerId] == "undefined" )
-                            checkoutObj[data.providerId] = {
-                                total : orderItem[key].price,
-                                providerType : data.providerType
-                            };
-                        else
-                            checkoutObj[data.providerId].total  += orderItem[key].price;
                     });
                 });
             }else if(e=="products"){
@@ -446,21 +515,11 @@ var shopping = {
                         quantity : data.countQuantity,
                         price : (data.price*data.countQuantity)
                     };
-
-                    if( typeof checkoutObj[data.providerId] == "undefined" )
-                        checkoutObj[data.providerId] = {
-                            total : orderItem[key].price,
-                            providerType : data.providerType
-                        };
-                    else
-                        checkoutObj[data.providerId].total  += orderItem[key].price;
                 });
             }
         });
         order.orderItems=orderItem;
         
-		console.log("checkout",shopping.checkoutObj);
-		alert("checkout");
 
         bootbox.prompt({
             title: "Give a name to your command:", 
@@ -489,7 +548,7 @@ var shopping = {
     	if(typeof shopping.cart.backup !="undefined"){
     		params={
     			id : shopping.cart.backup,
-    			totalPrice : totalCart,
+    			totalPrice : shopping.totalCart,
 	            object : shopping.cart
 	        };
     		$.ajax({
@@ -516,7 +575,7 @@ var shopping = {
 	                params={
 	                	name:result,
 	                	type:"shoppingCart",
-	                	totalPrice:totalCart,
+	                	totalPrice:shopping.totalCart,
 	                	currency:"EUR",
 	                	object:shopping.cart
 	                };

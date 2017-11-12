@@ -217,6 +217,7 @@ Liste des notifications déjà lues => #370 #453
     on a pas besoin d'etre membre de l'orga 
     c'est comme porter un pins de nos amis , peut etre lié au staring / favoris
   ** application launcher like linux 
+  ** lecteur de site embed dans CO en gardant la barre de menu 
 * ************************************************************    
 * Version C0.22  : en cours
 * ************************************************************  

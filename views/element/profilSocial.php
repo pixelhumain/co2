@@ -12,7 +12,10 @@
 		) , 
 	Yii::app()->theme->baseUrl. '/assets');
 
-
+ $cssAnsScriptFilesModule = array(
+    '/js/default/calendar.js',
+  );
+  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
 	$cssAnsScriptFilesTheme = array(
 		"/plugins/jquery-cropbox/jquery.cropbox.css",
@@ -22,6 +25,9 @@
 		//MARKDOWN
 		'/plugins/to-markdown/to-markdown.js',
 		'/plugins/jquery.qrcode/jquery-qrcode.min.js',
+		'/plugins/fullcalendar/fullcalendar/fullcalendar.min.js',
+        '/plugins/fullcalendar/fullcalendar/fullcalendar.css', 
+        '/plugins/fullcalendar/fullcalendar/locale/'.Yii::app()->language.'.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	

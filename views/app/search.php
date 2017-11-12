@@ -225,7 +225,7 @@ jQuery(document).ready(function() {
         loadingData = false; 
         initTypeSearch(type);
         startSearch(0, indexStepInit, searchCallback);
-
+            initSearchInterface();
     },"html");
 
     initSearchInterface(); //themes/co2/assets/js/default/search.js

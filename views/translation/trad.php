@@ -89,7 +89,8 @@ var trad = {
 	"waitingValidation" : "<?php echo Yii::t("common","Waiting for validation") ?>",
 	"Member" : "<?php echo Yii::t("common","Member") ?>",
 	"justCitizen" : "<?php echo Yii::t("common","Just a citizen wanting to give visibility to it :)") ?>",
-
+	"showcalendar" : "<?php echo Yii::t("common","Show calendar") ?>",
+	"hidecalendar" : "<?php echo Yii::t("common","Hide calendar") ?>",
 	"addProject" : "<?php echo Yii::t("common","Add a Project") ?>",
 	"addproject" : "<?php echo Yii::t("common","Add a Project") ?>",
 	"addEvent" : "<?php echo Yii::t("common","Add an Event") ?>",

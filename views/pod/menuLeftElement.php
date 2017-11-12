@@ -327,10 +327,15 @@
 			<li><hr></li>
 		<?php } ?>
 		
-		<?php if(!@$front || (@$front && $front["event"]==true)){ ?>
+		<?php if(!@$front || (@$front && $front["event"]==true)){ 
+			if($type==Event::COLLECTION)
+				$label=Yii::t("common","Program");
+			else
+				$label=Yii::t("common","Agenda");
+			?>
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="events" data-icon="calendar">
-					<i class="fa fa-calendar"></i> <?php echo Yii::t("common","Events"); ?>
+					<i class="fa fa-calendar"></i> <?php echo $label; ?>
 				</a>
 			</li>
 			<?php if ($type==Person::COLLECTION){ ?>

@@ -615,7 +615,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 function tagActivedUpdate(checked, tag, parent){
 	mylog.log("tagActivedUpdate", checked, tag, parent,tagsActived, typeof tagsActived[parent], (typeof tagsActived[parent] == "undefined"));
 	if(checked== false){
-		tagsActived[parent].splice($.inArray(tag, tagsActived),1);
+		tagsActived[parent].splice($.inArray(tag, tagsActived[parent]),1);
 	}
 	else{
 		if(typeof tagsActived[parent] == "undefined"){

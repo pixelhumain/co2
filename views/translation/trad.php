@@ -52,6 +52,7 @@ var trad = {
 	"voteaddedsuccess" : "<?php echo Yii::t("common", "Your vote has been successfully added") ?>",
 	"voteremovedsuccess" : "<?php echo Yii::t("common","Your vote has been successfully removed") ?>",
 	"thanktosignalabuse" : "<?php echo Yii::t("common","Thank you ! We are dealing it as quickly as possible. If there is more than 5 report, the news will be hidden") ?>",
+	"infoaddcitywarning" :"<?php echo Yii::t("docs","If a city doesn't exist on communecter, you have to write the full name to find the city")?>", 
 	"alreadyreportedabuse": "<?php echo Yii::t("common","You already reported this news as abuse") ?>" ,
 	"askreasonreportabuse": "<?php echo Yii::t("common", "You are going to declare an abuse : please fill the reason")?>",
 	"delete": "<?php echo Yii::t("common", "Delete")?>", 

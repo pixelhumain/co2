@@ -727,7 +727,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			html += "<div class='col-md-12 col-sm-12 col-xs-12 margin-bottom-10'>"+
 						"<a href='javascript:;' id='showHideCalendar' class='text-azure' data-hidden='0'><i class='fa fa-caret-up'></i> Hide calendar</a>"+
 					"</div>"+
-					"<div id='profil-cantent-calendar' class='col-md-12 col-sm-12 col-xs-12 margin-bottom-20'></div>";
+					"<div id='profil-content-calendar' class='col-md-12 col-sm-12 col-xs-12 margin-bottom-20'></div>";
 		mapElements = [];
 		
 		console.log("listRoles",listRoles);
@@ -760,11 +760,11 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		$("#central-container").html(html);
 		if(dataName == "events"){
 			//init calendar view
-			calendar.init("#profil-cantent-calendar");
-			calendar.showCalendar("#profil-cantent-calendar", data);
+			calendar.init("#profil-content-calendar");
+			calendar.showCalendar("#profil-content-calendar", data);
      		$(window).on('resize', function(){
   				$('#calendar').fullCalendar('destroy');
-  				calendar.showCalendar("#profil-cantent-calendar", data);
+  				calendar.showCalendar("#profil-content-calendar", data);
   			});
 	     	/*$(".fc-button").on("click", function(e){
 	      		calendar.setCategoryColor();

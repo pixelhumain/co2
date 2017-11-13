@@ -18,7 +18,7 @@ var calendar = {
             null,false);
         lazyLoad( baseUrl+'/plugins/fullcalendar/fullcalendar/locale/'+mainLanguage+'.js',null,null,false);*/
     },
-    templateColor : {
+    templateRef : {
       "competition":"#ed553b",
       "concert" :"#b45f04",
       "contest":"#ed553b",
@@ -85,13 +85,18 @@ var calendar = {
                 "end" : ( endDate ) ? endDate.format() : startDate.format(),
                 "startDate" : eventObj.startDate,
                 "endDate" : eventObj.endDate,
+                "startDateDB" : eventObj.startDateDB,
+                "endDateDB" : eventObj.endDateDB,
+                 "allDay" : eventObj.allDay,
                 "className": organiser,
                 "category": organiser,
                 "type": eventObj.typeEvent,
                 "description":eventObj.description,
                 "shortDescription": eventObj.shortDescription,
+                "profilMediumImageUrl": eventObj.profilMediumImageUrl,
                 "adresse": eventObj.cityName,
                 //"adresse": eventObj.cityName,
+                //"backgroundColor":calendar.templateColor[eventObj.typeEvent],
                 "links":eventObj.links,
             }
             if(eventObj.allDay )
@@ -112,6 +117,7 @@ var calendar = {
         }
         mylog.log(calendar);
         dateToShow = new Date();
+        
         $(domElement).fullCalendar({
             header : {
             		left : 'prev,next',
@@ -123,18 +129,31 @@ var calendar = {
             month : dateToShow.getMonth(),
             date : dateToShow.getDate(),
             editable : false,
+            eventBackgroundColor: '#FFA200',
+            textColor: '#fff',
             events : calendarObject,
             eventLimit: true,
             timezone : 'local',
             eventRender:function(event, element, view) {
               console.log("event",event,"element",element);
-              element.find(".fc-content").css("background-color", calendar.templateColor[event.type]);
+              popupHtml=calendar.popupHtml(event);
+              element.popover({
+                  html:true,
+                  animation: true,
+                  container:'body',
+                  title: event.name,
+                  placement: 'top',
+                    trigger: 'focus',
+                  content: popupHtml,
+              });
+              element.attr('tabindex', -1);
+              //element.find(".fc-content").css("background-color", calendar.templateColor[event.type]);
             },
-            eventClick : function(calEvent, jsEvent, view) {
+            /*eventClick : function(calEvent, jsEvent, view) {
                 //show event in subview
                 dateToShow = calEvent.start;
                 urlCtrl.loadByHash("#page.type.events.id."+calEvent._id);
-            }
+            }*/
         });
         calendar.setCategoryColor(calendar.tabOrganiser);
         dateToShow = new Date();
@@ -153,5 +172,68 @@ var calendar = {
   	        color += letters[Math.floor(Math.random() * 16)];
   	    }
   	    return color;
-  	}
+  	},
+    popupHtml : function(data){
+      var popupContent = "<div class='popup-calendar'>";
+  
+      var color = "orange";
+      var ico = 'calendar';
+      var imgProfilPath =  assetPath + "/images/thumb/default_events.png";
+      if(typeof data.profilMediumImageUrl !== "undefined" && data.profilMediumImageUrl != "") 
+        imgProfilPath =  baseUrl + data.profilMediumImageUrl;
+      var icons = '<i class="fa fa-'+ ico + ' text-'+ color +'"></i>';
+      
+      var typeElement = "events";
+      var icon = 'fa-calendar';
+
+      var onclick = "";
+      var url = '#page.type.'+typeElement+'.id.'+data.id;
+      onclick = 'urlCtrl.loadByHash("'+url+'");';
+
+        popupContent += "<div class='item_map_list popup-marker' id='popup"+id+"'>";
+      popupContent += "<div class='main-panel'>"
+                    +   "<div class='col-md-12 col-sm-12 col-xs-12'>"
+                    +      "<div class='thumbnail-profil' style='max-height: 150px;text-align: -webkit-center; overflow-y: hidden;background-color: lightgray;'><img src='" + imgProfilPath + "' class='popup-info-profil-thumb img-responsive'></div>"           
+                    +      "<div class='ico-type-account'>"+icons+"</div>"          
+                    +   "</div>"
+                    +   "<div class='col-md-12 col-sm-12 col-xs-12'>";
+          
+      if("undefined" != typeof data.title)
+        popupContent  +=  "<div class='info_item pseudo_item_map_list' style='width:100% !important;'>" + data.title + "</div>";
+      
+     /* if("undefined" != typeof data['tags'] && data['tags'] != null){
+        popupContent  +=  "<div class='info_item items_map_list'>";
+        var totalTags = 0;
+        if(data['tags'].length > 0){
+          $.each(data['tags'], function(index, value){ 
+            totalTags++;
+            if(totalTags<4)
+              popupContent  +=  "<div class='tag_item_map_list'>#" + value + " </div>";
+          });
+        }
+        popupContent  +=  "</div>";
+      }*/
+      popupContent += "</div>";
+      //Short description
+      if ("undefined" != typeof data['shortDescription'] && data['shortDescription'] != "" && data['shortDescription'] != null) {
+        popupContent += "<div id='pop-description' class='popup-section'>"
+                + "<div class='popup-subtitle'>Description</div>"
+                + "<div class='popup-info-profil'>" + data['shortDescription'] + "</div>"
+              + "</div>";
+      }
+      //Contacts information
+  //    popupContent += this.getPopupContactsInformation(data);
+      //address
+//      popupContent += this.getPopupAddressInformation(data);
+
+      popupContent += '</div>';
+
+        
+        popupContent += displayStartAndEndDate(data);
+                popupContent += "<a href='"+url+"' onclick='"+onclick+"' class='lbh'>";
+      popupContent += '<div class="btn btn-sm btn-more col-md-12"><i class="fa fa-hand-pointer-o"></i> en savoir +</div>';
+      popupContent += '</a>';
+
+      return popupContent;
+    }
 }

@@ -236,7 +236,7 @@
 							if($type==Event::COLLECTION){
 								$msg = Yii::t("common","Planned on") ;
 							}else{
-								$msg = Yii::t("common","Parenthood") ;
+								$msg = Yii::t("common","Handle by") ;
 							}
 
 						$icon = Element::getFaIcon($element['parentType']);

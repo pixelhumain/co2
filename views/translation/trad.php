@@ -104,7 +104,7 @@ var trad = {
 	"addGroup" : "<?php echo Yii::t("common","Add a group") ?>",
 	"addProposal" : "<?php echo Yii::t("common","Add a proposal") ?>",
 	"addAction" : "<?php echo Yii::t("common","Add an action") ?>",
-	
+	"choose" : "<?php echo Yii::t("common","Choose") ?>",
 	"chooseCountry" : "<?php echo Yii::t("common","Choose a country") ?>",
 	"LoginFirst" : "<?php echo Yii::t("common","Please Login First") ?>",
 	"mustacceptCGU" : "<?php echo Yii::t("login","You must validate the CGU to sign up.") ?>",
@@ -760,6 +760,7 @@ var tradCategory = {
 	"intervener":"<?php echo Yii::t("category","Intervener") ?>",
 	"Planned on":"<?php echo Yii::t("common","Planned on") ?>",
 	"Parenthood":"<?php echo Yii::t("common","Parenthood") ?>",
+	"handleBy":"<?php echo Yii::t("common","Handle by") ?>",
 	"common":"<?php echo Yii::t("category","Commons") ?>",
 	"food":"<?php echo Yii::t("category","Agriculture | Food") ?>",
 	"health":"<?php echo Yii::t("category","Health") ?>",

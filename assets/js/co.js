@@ -3346,21 +3346,23 @@ var dyFInputs = {
         inputType : "custom",
         html:"<div id='similarLink'><div id='listSameName'></div></div>",
     },
-    inputSelect :function(label, placeholder, list, rules) { 
+    inputSelect :function(label, placeholder, list, rules) {
+    	mylog.log("inputSelect", label, placeholder, list, rules);
 		var inputObj = {
 			inputType : "select",
 			label : ( notEmpty(label) ? label : "" ),
-			placeholder : ( notEmpty(placeholder) ? placeholder : "Choisir" ),
+			placeholder : ( notEmpty(placeholder) ? placeholder : trad.choose ),
 			options : ( notEmpty(list) ? list : [] ),
 			rules : ( notEmpty(rules) ? rules : {} )
 		};
 		return inputObj;
 	},
 	inputSelectGroup :function(label, placeholder, list, group, rules, init) { 
+		mylog.log("inputSelectGroup", label, placeholder, list, rules);
 		var inputObj = {
 			inputType : "select",
 			label : ( notEmpty(label) ? label : "" ),
-			placeholder : ( notEmpty(placeholder) ? placeholder : "Choisir" ),
+			placeholder : ( notEmpty(placeholder) ? placeholder : trad.choose ),
 			options : ( notEmpty(list) ? list : [] ),
 			groupOptions : ( notEmpty(group) ? group : [] ),
 			rules : ( notEmpty(rules) ? rules : {} ),

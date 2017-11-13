@@ -331,7 +331,7 @@ function bindAboutPodElement() {
 											'<i class="fa fa-'+dyFInputs.get(contextData.parentType).icon+'"></i> '+
 											contextData.parent.name+'</a><br/>';
 
-										htmlHeader =((contextData.type == typeObj.event.col) ? trad["Planned on"] : trad["Parenthood"] ) ;
+										htmlHeader =((contextData.type == typeObj.event.col) ? trad["Planned on"] : trad["handleBy"] ) ;
 										htmlHeader += htmlAbout;
 									}
 
@@ -406,22 +406,27 @@ function bindAboutPodElement() {
 			if(contextData.type == typeObj.event.col)
 				listParent =  ["events"] ;
 
-			
-			form.dynForm.jsonSchema.properties.parentId = {
-	         	label : tradDynForm["ispartofelement"]+" ?",
-            	inputType : "select",
-            	class : "",
-            	placeholder : tradDynForm["ispartofelement"]+" ?",
-            	options : firstOptions(),
-            	"groupOptions" : parentList( listParent, contextData.parentId, contextData.parentType ),
-            	init : function(){ console.log("init ParentId");
-	            	$("#ajaxFormModal #parentId").off().on("change",function(){
-	            		var selected = $(':selected', this);
-    					$("#ajaxFormModal #parentType").val(selected.data('type'));
-	            	});
-	            }
-            };
-            form.dynForm.jsonSchema.properties.parentType = dyFInputs.inputHidden();
+			if(contextData.type == typeObj.event.col || contextData.type == typeObj.project.col){
+				form.dynForm.jsonSchema.properties.parentId = {
+		         	label : tradDynForm["ispartofelement"]+" ?",
+	            	inputType : "select",
+	            	class : "",
+	            	placeholder : tradDynForm["ispartofelement"]+" ?",
+	            	options : firstOptions(),
+	            	"groupOptions" : parentList( listParent, contextData.parentId, contextData.parentType ),
+	            	init : function(){ 
+	            		mylog.log("init ParentId");
+		            	$("#ajaxFormModal #parentId").off().on("change",function(){
+
+		            		var selected = $(':selected', this);
+		            		mylog.log("change ParentId", selected, selected.data('type'));
+	    					$("#ajaxFormModal #parentType").val(selected.data('type'));
+		            	});
+		            }
+	            };
+
+	            form.dynForm.jsonSchema.properties.parentType = dyFInputs.inputHidden();
+	        }
 
             if(contextData.type == typeObj.event.col){
             	form.dynForm.jsonSchema.properties.organizerId =  dyFInputs.organizerId(contextData.parentId, contextData.parentType);

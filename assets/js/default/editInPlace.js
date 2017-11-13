@@ -348,7 +348,7 @@ function bindAboutPodElement() {
 									var html = "<i>"+trad["notSpecified"]+"</i>";
 									var htmlHeader = "";
 
-									if(notEmpty(contextData.organizerId)){
+									if(notEmpty(contextData.organizerId) && contextData.organizerId!="dontKnow"){
 										html = '<a href="#page.type.'+contextData.organizerType+'.id.'+contextData.organizerId+'" class="lbh">'+ 
 											'<i class="fa fa-'+dyFInputs.get(contextData.organizerType).icon+'"></i> '+
 											contextData.organizer.name+'</a><br/>';

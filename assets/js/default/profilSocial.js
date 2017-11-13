@@ -723,7 +723,11 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			 "<hr>";
 		html +=	"</div>";
 		
-		
+		if(dataName=="events")
+			html += "<div class='col-md-12 col-sm-12 col-xs-12 margin-bottom-10'>"+
+						"<a href='javascript:;' id='showHideCalendar' class='text-azure' data-hidden='0'><i class='fa fa-caret-up'></i> Hide calendar</a>"+
+					"</div>"+
+					"<div id='profil-cantent-calendar' class='col-md-12 col-sm-12 col-xs-12 margin-bottom-20'></div>";
 		var mapElements = new Array();
 		
 		console.log("listRoles",listRoles);
@@ -753,6 +757,18 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		}
 		toogleNotif(false);
 		$("#central-container").html(html);
+		if(dataName == "events"){
+			//init calendar view
+			calendar.init("#profil-cantent-calendar");
+			calendar.showCalendar("#profil-cantent-calendar", data);
+     		$(window).on('resize', function(){
+  				$('#calendar').fullCalendar('destroy');
+  				calendar.showCalendar("#profil-cantent-calendar", data);
+  			});
+	     	/*$(".fc-button").on("click", function(e){
+	      		calendar.setCategoryColor();
+	     	})*/
+		}
 		initBtnLink();
 		initBtnAdmin();
 		bindButtonOpenForm();

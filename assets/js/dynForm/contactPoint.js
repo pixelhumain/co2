@@ -4,12 +4,8 @@ dynForm = {
 	    icon : "user",
 	    type : "object",
 	    onLoads : {
-	    	"sub" : function(){
-
-    		 	
-	    	},
 	    	//pour creer un contact depuis un element existant
-	    	"contact" : function(){
+	    	"sub" : function(){
 	    		if( contextData && contextData.id )
 					$("#ajaxFormModal #parentId").val( contextData.id );
     			if( contextData && contextData.type )

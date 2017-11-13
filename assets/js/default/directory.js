@@ -114,7 +114,7 @@ var mapElements = new Array();
 
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
-  console.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
+  mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
 	var searchLocality = getLocalityForSearch();
     
     var data = {
@@ -126,13 +126,13 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       "indexMax" : indexMax
     };
 
-    console.log("DATE ***", searchType[0], STARTDATE, ENDDATE)
+    //mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
     if(searchType[0] == "events"){
       if(typeof STARTDATE != "undefined" && typeof ENDDATE != "undefined"){
-        console.log("integrate AGENDA_WINDOW");
+        mylog.log("integrate AGENDA_WINDOW");
         data.startDate = STARTDATE;
         data.endDate = ENDDATE;
-        console.log("DATE **", "data", data) ;
+        mylog.log("DATE **", "data", data) ;
       }
     }
     
@@ -360,16 +360,32 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       //console.log("calculateAgendaWindow ok");
 
       var today = new Date();
+      var start = new Date();
 
-      if(nbMonth != 0)
-          today.setMonth(today.getMonth() + nbMonth);
-
-      startWinDATE = today;   
       //console.log("DATE **", "today", today) ;
-      STARTDATE = today.setDate(1);
+      //console.log("startWinDATE **", start) ;
+      start.setDate(27);
+      STARTDATE = today.setDate(27);
 
-      //console.log("DATE **", "STARTDATE", STARTDATE) ;
-      ENDDATE = today.setMonth(today.getMonth() + 1);
+      //startWinDATE = today; 
+      //console.log("startWinDATE **", start) ;
+      
+      if(nbMonth != 0){
+          today.setMonth(today.getMonth() + nbMonth);
+          start.setMonth(start.getMonth() + nbMonth);
+      }
+
+      startWinDATE = start;   
+      //console.log("startWinDATE **", startWinDATE) ;
+      STARTDATE = today.setDate(1);
+      //STARTDATE = today.setDate(today.getDate() - 1);
+
+      //console.log("DATE **", "STARTDATE", STARTDATE, today);
+      ENDDATE = today.setMonth(today.getMonth() + 2);
+      ENDDATE = today.setDate(2);
+      //console.log("startWinDATE **", startWinDATE) ;
+      //console.log("DATE **", "ENDDATE", ENDDATE, today) ;
+      //ENDDATE = today.setDate(today.getDate() + 1);
 
       STARTDATE = Math.floor(STARTDATE / 1000);
       ENDDATE = Math.floor(ENDDATE / 1000);
@@ -874,7 +890,7 @@ var directory = {
 	  elementPanelHtml : function(params){
     		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList);
     		
-        mylog.log("----------- elementPanelHtml log", params.elTagsList);
+        mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList);
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;

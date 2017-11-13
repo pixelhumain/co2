@@ -89,7 +89,8 @@ var trad = {
 	"waitingValidation" : "<?php echo Yii::t("common","Waiting for validation") ?>",
 	"Member" : "<?php echo Yii::t("common","Member") ?>",
 	"justCitizen" : "<?php echo Yii::t("common","Just a citizen wanting to give visibility to it :)") ?>",
-
+	"showcalendar" : "<?php echo Yii::t("common","Show calendar") ?>",
+	"hidecalendar" : "<?php echo Yii::t("common","Hide calendar") ?>",
 	"addProject" : "<?php echo Yii::t("common","Add a Project") ?>",
 	"addproject" : "<?php echo Yii::t("common","Add a Project") ?>",
 	"addEvent" : "<?php echo Yii::t("common","Add an Event") ?>",
@@ -103,7 +104,7 @@ var trad = {
 	"addGroup" : "<?php echo Yii::t("common","Add a group") ?>",
 	"addProposal" : "<?php echo Yii::t("common","Add a proposal") ?>",
 	"addAction" : "<?php echo Yii::t("common","Add an action") ?>",
-	
+	"choose" : "<?php echo Yii::t("common","Choose") ?>",
 	"chooseCountry" : "<?php echo Yii::t("common","Choose a country") ?>",
 	"LoginFirst" : "<?php echo Yii::t("common","Please Login First") ?>",
 	"mustacceptCGU" : "<?php echo Yii::t("login","You must validate the CGU to sign up.") ?>",
@@ -391,7 +392,12 @@ var trad = {
 	"thecommunityof" : "<?php echo Yii::t("common", "The community of") ?>",
 	"Unblock" : "<?php echo Yii::t("common", "Unblock") ?>",
 	"backtopage" : "<?php echo Yii::t("common", "Back to page") ?>",
-
+	"searchbyname" : "<?php echo Yii::t("common", "Search by name") ?>",
+	"map" : "<?php echo Yii::t("common", "Map") ?>",
+	"list" : "<?php echo Yii::t("common", "List") ?>",
+	"cartography" : "<?php echo Yii::t("common", "Cartography") ?>",
+	"alltags" : "<?php echo Yii::t("common", "All tags") ?>",
+	"alltypes" : "<?php echo Yii::t("common", "All types") ?>",
 
 };
 
@@ -754,6 +760,7 @@ var tradCategory = {
 	"intervener":"<?php echo Yii::t("category","Intervener") ?>",
 	"Planned on":"<?php echo Yii::t("common","Planned on") ?>",
 	"Parenthood":"<?php echo Yii::t("common","Parenthood") ?>",
+	"handleBy":"<?php echo Yii::t("common","Handle by") ?>",
 	"common":"<?php echo Yii::t("category","Commons") ?>",
 	"food":"<?php echo Yii::t("category","Agriculture | Food") ?>",
 	"health":"<?php echo Yii::t("category","Health") ?>",

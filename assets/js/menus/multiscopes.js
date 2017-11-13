@@ -132,17 +132,33 @@ function showCountScope(){
 	//showTagsScopesMin(".list_tags_scopes");
 	showEmptyMsg();
 }
+
 function selectAllScopes(select){
-	if(typeof select == "undefined"){ select = true;
-		$.each(myMultiScopes, function(key, value){
-			 if(value.active) select = false;
-		});
+	mylog.log("selectAllScopes", select);
+	// if(typeof select == "undefined"){ 
+	// 	select = true;
+	// 	$.each(myMultiScopes, function(key, value){
+	// 		 if(value.active) 
+	// 		 	select = false;
+	// 	});
+	// }
+
+	if(typeof select == "undefined"){ 
+		select = false;
 	}
+
 	$.each(myMultiScopes, function(key, value){
-		 toogleScopeMultiscope(key, select);
+		value.active = select ;
+		myMultiScopes[key] = value ;
 	});
+
+	$.each(myMultiScopes, function(key, value){
+		scopeActive(key);
+	});
+
 	saveMultiScope();
 }
+
 function showScopeInMultiscope(scopeValue){ 
 	mylog.log("showScopeInMultiscope()", scopeValue);
 	var html = "";
@@ -230,7 +246,8 @@ function deleteScopeInMultiscope(scopeValue){ mylog.log("deleteScopeInMultiscope
 	//mylog.dir(myMultiScopes);
 }
 
-function toogleScopeMultiscope(scopeValue){ mylog.log("toogleScopeMultiscope(scopeValue)", scopeValue);
+function toogleScopeMultiscope(scopeValue){ 
+	mylog.log("toogleScopeMultiscope(scopeValue)", scopeValue);
 	if(scopeExists(scopeValue)){
 		myMultiScopes[scopeValue].active = !myMultiScopes[scopeValue].active;
 		
@@ -246,7 +263,7 @@ function toogleScopeMultiscope(scopeValue){ mylog.log("toogleScopeMultiscope(sco
 			$("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-check-circle");
 			$("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
 		}*/
-		console.log("before rebuildSearchScopeInput from toogleScope");
+		mylog.log("before rebuildSearchScopeInput from toogleScope");
 		 //rebuildSearchScopeInput();
 		 setTimeout(function(){ rebuildSearchScopeInput() }, 1000);
 	}else{

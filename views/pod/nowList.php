@@ -44,11 +44,11 @@
                 if($CO2DomainName == "kgougle"){ ?>
                     <button class="btn btn-link letter-red btn-xs pull-left no-padding btn-change-loc" 
                             data-toggle="modal" data-target="#modalLocalization">
-                        <i class="fa fa-map-marker"></i> <?php echo $scope; ?>
+                        <i class="fa fa-map-marker"></i> <?php echo $scope["name"]; ?>
                     </button>
                     <br>
             <?php }else{ ?>
-                <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope; ?></small>
+                <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope["name"]; ?></small>
             <?php } ?>
         </h6>
 
@@ -181,8 +181,8 @@ jQuery(document).ready(function() {
         communecterUser();
     });
 
-    if(typeof contextData.address.addressLocality != "undefined")
-    $(".btn-change-loc").append(" - " + contextData.address.addressLocality);
+    if(typeof contextData != "undefined" && notNull(contextData) && typeof contextData.address != "undefined" && typeof contextData.address.addressLocality != "undefined")
+        $(".btn-change-loc").append(" - " + contextData.address.addressLocality);
 });
 
 function enlargeNow() { 

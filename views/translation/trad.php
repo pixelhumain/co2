@@ -629,6 +629,7 @@ var tradCategory = {
 	"Festival" :"<?php echo Yii::t("category","Festival") ?>",
 	"Market" :"<?php echo Yii::t("category","Market") ?>",
 	"Other" :"<?php echo Yii::t("category","Other") ?>",
+	"Others" :"<?php echo Yii::t("category","Others") ?>",
 	"Concert" :"<?php echo Yii::t("category","Concert") ?>",
 	"Exhibition" :"<?php echo Yii::t("category","Exhibition") ?>",
 	"Get together" :"<?php echo Yii::t("category","Get together") ?>",

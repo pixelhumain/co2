@@ -728,12 +728,13 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 						"<a href='javascript:;' id='showHideCalendar' class='text-azure' data-hidden='0'><i class='fa fa-caret-up'></i> Hide calendar</a>"+
 					"</div>"+
 					"<div id='profil-cantent-calendar' class='col-md-12 col-sm-12 col-xs-12 margin-bottom-20'></div>";
-		var mapElements = new Array();
+		mapElements = [];
 		
 		console.log("listRoles",listRoles);
 		if(dataName != "collections"){
 			if(mapElements.length==0) mapElements = data;
         	else $.extend(mapElements, data);
+
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){

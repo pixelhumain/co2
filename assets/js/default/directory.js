@@ -30,6 +30,7 @@ function startSearch(indexMin, indexMax, callBack){
 
 	  var name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
     
+    if(name == "") name = ($('#second-search-bar').length>0) ? $('#second-search-bar').val() : "";
     //if(name == "" && searchType.indexOf("cities") > -1) return;  
 
     if(typeof indexMin == "undefined") indexMin = 0;

@@ -28,7 +28,7 @@
 			"subdomainName" : "Search",
 			"hash" : "#app.search",
 			"icon" : "search", 
-			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
+			"mainTitle" : "Result for",
 			"placeholderMainSearch" : "search a page ...",
 			"lblBtnCreate" : "Create a page",
 			"colorBtnCreate" : "green"
@@ -55,7 +55,7 @@
 			"subdomainName" : "Activities",
 			"hash" : "#app.activities",
 			"icon" : "sun-o", 
-			"mainTitle" : "Activities",
+			"mainTitle" : "Store",
 			"placeholderMainSearch" : "search among activities ...",
 			"lblBtnCreate" : "Create an activity",
 			"colorBtnCreate" : "orange"

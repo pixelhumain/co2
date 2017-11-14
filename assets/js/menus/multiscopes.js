@@ -274,17 +274,20 @@ function toogleScopeMultiscope(scopeValue){
 function getMultiScopeList(){ return myMultiScopes; }
 
 
-function getLocalityForSearch(){
+function getLocalityForSearch(noScope){
 
 	if(typeof communexion.state == "undefined") communexion.state = false;
 
 	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), communexion.state);
 	if(communexion.state == true ){
-	  var searchLocality = {}
+	  var searchLocality = {};
 	  searchLocality[communexion.currentValue] = { type : communexion.currentLevel, 
 													name : communexion.currentName,
 													active : true };
-	}else{
+	}else if(notNull(noScope) && noScope){
+		var searchLocality = {};
+	}
+	else{
 	  var searchLocality = getMultiScopeForSearch();
 	}
 	return searchLocality;
@@ -439,11 +442,25 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 
 	if($("#communexionNameHome").length){
 		$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+scopeName+'</span></span>');
-		$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
+		$("#liveNowCoName").html("<span class='text-red'> à "+ scopeName +"</span>");
 		$("#main-search-bar").val("");
 		$(".info_co, .input_co").addClass("hidden");
 		$("#change_co").removeClass("hidden");
 		$("#dropdown_search").html("");
+		var searchParams = {
+	      "tpl":"/pod/nowList",
+	      "indexMin" : 0, 
+	      "indexMax" : 30 
+	    };
+		if(notNull(scopeValue)){
+			communexion.state = true;
+			searchParams.searchLocality =   getLocalityForSearch(true);
+		}
+
+	    ajaxPost( "#nowList", baseUrl+'/'+moduleId+'/element/getdatadetail/type/0/id/0/dataName/liveNow?tpl=nowList',
+						searchParams, function(data) {
+						bindLBHLinks();
+		} , "html" );
 	}
 
 	if(!notNull(notSearch) || notSearch != true)
@@ -453,6 +470,7 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 	//startSearch(0, indexStepInit, searchCallback);
 	//loadByHash(location.hash);
 }
+
 
 //vision city : scoping global for all applications
 //levelCO == city cp dep region

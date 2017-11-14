@@ -229,6 +229,10 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               str += "<hr style='float:left; width:100%;'/>";
               str += "</div>";
               
+              if( $.inArray( "cities", searchType ) != "-1" && searchType.length == 1){
+              		str += '<span class="col-md-12 col-sm-12 col-xs-12 letter-blue padding-10"><i class="fa fa-info-circle"></i>'+ trad.youwillfindonlycities+'!</span>';
+              }
+
               str += directory.showResultsDirectoryHtml(data);
               
               if(str == "") { 

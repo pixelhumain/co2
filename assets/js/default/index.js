@@ -580,7 +580,6 @@ function setCookies(){
 	$.ajax({
 			type: "POST",
 			url: baseUrl+"/"+moduleId+"/element/getCommunexion/",
-			data: params,
 			dataType: "json",
 			success: function(data){
 				communexion = data ;

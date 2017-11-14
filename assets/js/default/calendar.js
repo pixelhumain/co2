@@ -18,6 +18,32 @@ var calendar = {
             null,false);
         lazyLoad( baseUrl+'/plugins/fullcalendar/fullcalendar/locale/'+mainLanguage+'.js',null,null,false);*/
     },
+    bindEventCalendar : function(){
+      //var popoverElement;
+
+      $('.popover').mouseenter(function(){
+       // alert();
+        $(this).hide();
+     //   calendar.showPopup=false;
+      });
+      $('body').off().on('click', function (e) {
+      // close the popover if: click outside of the popover || click on the close button of the popover
+        //alert(e.target);
+        if (typeof popoverElement != "undefined" && popoverElement 
+          && ((!popoverElement.is(e.target) && popoverElement.has(e.target).length === 0 && $('.popover').has(e.target).length === 0) 
+            || (popoverElement.has(e.target) && e.target.id === 'closepopover'))) {  
+          
+            // $('.popover').popover('hide'); --> works
+           // if(calendar.showPopup)
+           //alert("ici");
+              calendar.closePopovers();
+        }
+      });
+    },
+    closePopovers : function() {
+      calendar.showPopup=false;
+      $('.popover').not(this).popover('hide');
+    },
     templateRef : {
       "competition":"#ed553b",
       "concert" :"#b45f04",
@@ -43,11 +69,11 @@ var calendar = {
     //contributors,
     //subViewElement, subViewContent, subViewIndex,
     tabOrganiser : [],
-
+    showPopup : false,
     //creates fullCalendar
     buildCalObj: function(eventObj) {
         //entries for the calendar
-        console.log("eventcaleanr",eventObj);
+        //console.log("eventcaleanr",eventObj);
         var taskCal = null;
         if(eventObj.startDate && eventObj.startDate != "") {
             if(typeof eventObj.startDateDB != "undefined")
@@ -77,8 +103,9 @@ var calendar = {
             var organizerName = eventObj.name;
             if(eventObj.organizer != "")
                 organizerName = eventObj.organizer +" : "+ eventObj.name;
+           // console.log("eventObj",eventObj);
             taskCal = {
-                "title" : eventObj.name,
+                "title" : eventObj.name + " : "+tradCategory[eventObj.typeEvent],
                 "id" : eventObj['_id']['$id'],
                 "content" : (eventObj.description && eventObj.description != "" ) ? eventObj.description : "",
                 "start" : startDate.format(),
@@ -101,7 +128,7 @@ var calendar = {
             }
             if(eventObj.allDay )
                 taskCal.allDay = eventObj.allDay;
-            mylog.log(taskCal);
+            //mylog.log(taskCal);
         }
         return taskCal;
     },
@@ -134,6 +161,30 @@ var calendar = {
             events : calendarObject,
             eventLimit: true,
             timezone : 'local',
+            /*select: function (start, end, jsEvent) {
+                closePopovers();
+                popoverElement = $(jsEvent.target);
+                $(jsEvent.target).popover({
+                    title: 'the title',
+                    content: function () {
+                        return $("#popoverContent").html();
+                    },
+                    template: popTemplate,
+                    placement: 'left',
+                    html: 'true',
+                    trigger: 'click',
+                    animation: 'true',
+                    container: 'body'
+                }).popover('show');
+            },*/
+            eventClick: function (calEvent, jsEvent, view) {
+              //closePopovers();
+             // calendar.showPopup=true;
+             console.log(jsEvent);
+             popoverElement = $(jsEvent.currentTarget);
+              
+              
+            },
             eventRender:function(event, element, view) {
               console.log("event",event,"element",element);
               popupHtml=calendar.popupHtml(event);
@@ -142,11 +193,15 @@ var calendar = {
                   animation: true,
                   container:'body',
                   title: event.name,
+                  template:calendar.popupTemplate(),
                   placement: 'top',
-                    trigger: 'focus',
+                  trigger: 'focus',
                   content: popupHtml,
               });
               element.attr('tabindex', -1);
+             // $("#popup"+event.id).mouseout(function(){
+               // $(this).remove();
+              //});
               //element.find(".fc-content").css("background-color", calendar.templateColor[event.type]);
             },
             /*eventClick : function(calEvent, jsEvent, view) {
@@ -156,6 +211,7 @@ var calendar = {
             }*/
         });
         calendar.setCategoryColor(calendar.tabOrganiser);
+        calendar.bindEventCalendar();
         dateToShow = new Date();
     },
     setCategoryColor : function(tab){
@@ -173,7 +229,19 @@ var calendar = {
   	    }
   	    return color;
   	},
+    popupTemplate : function(){
+      template='<div class="popover" style="max-width:300px; no-padding" >'+
+    '<div class="arrow"></div>'+
+    '<div class="popover-header" style="background-color:lightgray;">'+
+    '<button id="closepopover" type="button" class="close margin-right-5" aria-hidden="true">&times;</button>'+
+      '<h3 class="popover-title"></h3>'+
+    '</div>'+
+    '<div class="popover-content no-padding"></div>'+
+    '</div>';
+      return template;
+    },
     popupHtml : function(data){
+      console.log("eventPopup",data);
       var popupContent = "<div class='popup-calendar'>";
   
       var color = "orange";
@@ -188,36 +256,43 @@ var calendar = {
 
       var onclick = "";
       var url = '#page.type.'+typeElement+'.id.'+data.id;
-      onclick = 'urlCtrl.loadByHash("'+url+'");';
+      onclick = 'calendar.closePopovers();urlCtrl.loadByHash("'+url+'");';
 
-        popupContent += "<div class='item_map_list popup-marker' id='popup"+id+"'>";
+        popupContent += "<div class='' id='popup"+id+"'>";
       popupContent += "<div class='main-panel'>"
-                    +   "<div class='col-md-12 col-sm-12 col-xs-12'>"
-                    +      "<div class='thumbnail-profil' style='max-height: 150px;text-align: -webkit-center; overflow-y: hidden;background-color: lightgray;'><img src='" + imgProfilPath + "' class='popup-info-profil-thumb img-responsive'></div>"           
-                    +      "<div class='ico-type-account'>"+icons+"</div>"          
+                    +   "<div class='col-md-12 col-sm-12 col-xs-12 no-padding'>"
+                    +      "<div class='thumbnail-profil' style='max-height: 200px;text-align: -webkit-center; overflow-y: hidden;background-color: #cccccc;'><img src='" + imgProfilPath + "' class='popup-info-profil-thumb img-responsive'></div>"      
                     +   "</div>"
-                    +   "<div class='col-md-12 col-sm-12 col-xs-12'>";
+                    +   "<div class='col-md-12 col-sm-12 col-xs-12 padding-5'>";
           
       if("undefined" != typeof data.title)
-        popupContent  +=  "<div class='info_item pseudo_item_map_list' style='width:100% !important;'>" + data.title + "</div>";
+        popupContent  +=  "<div class='' style='text-transform:uppercase;'>" + data.title + "</div>";
       
-     /* if("undefined" != typeof data['tags'] && data['tags'] != null){
-        popupContent  +=  "<div class='info_item items_map_list'>";
-        var totalTags = 0;
-        if(data['tags'].length > 0){
-          $.each(data['tags'], function(index, value){ 
-            totalTags++;
-            if(totalTags<4)
-              popupContent  +=  "<div class='tag_item_map_list'>#" + value + " </div>";
-          });
+      if(data.start != null){
+        popupContent +="<div style='color:#777'>";
+        startLbl="<i class='fa fa-calendar-o'></i> ";
+        startDate=moment(data.start).format("DD MMMM YYYY"); 
+        endDate="";
+        hoursStr="<br/>";
+        if(data.allDay)
+          hoursStr+=tradDynForm.allday;
+        else
+          hoursStr+="<i class='fa fa-clock-o'></i> "+moment(data.start).format("H:mm");
+        if(data.end != null){
+          if(startDate != moment(data.end).format("DD MMMM YYYY")){
+            startLbl+=trad.fromdate+" ";
+            endDate=" "+trad.todatemin+" "+moment(data.end).format("DD MMMM YYYY");
+          }
+          if(!data.allDay)
+            hoursStr+= " - "+moment(data.end).format("H:mm");
         }
-        popupContent  +=  "</div>";
-      }*/
+        popupContent += startLbl+startDate+endDate+hoursStr;
+        popupContent +="</div>";
+      }
       popupContent += "</div>";
       //Short description
       if ("undefined" != typeof data['shortDescription'] && data['shortDescription'] != "" && data['shortDescription'] != null) {
         popupContent += "<div id='pop-description' class='popup-section'>"
-                + "<div class='popup-subtitle'>Description</div>"
                 + "<div class='popup-info-profil'>" + data['shortDescription'] + "</div>"
               + "</div>";
       }
@@ -225,13 +300,14 @@ var calendar = {
   //    popupContent += this.getPopupContactsInformation(data);
       //address
 //      popupContent += this.getPopupAddressInformation(data);
-
+     // popupContent += directory.getDateFormated(data,true);
+   
       popupContent += '</div>';
 
         
-        popupContent += displayStartAndEndDate(data);
+        
                 popupContent += "<a href='"+url+"' onclick='"+onclick+"' class='lbh'>";
-      popupContent += '<div class="btn btn-sm btn-more col-md-12"><i class="fa fa-hand-pointer-o"></i> en savoir +</div>';
+      popupContent += '<div class="btn btn-sm btn-more col-md-12 col-sm-12 col-xs-12"><i class="fa fa-hand-pointer-o"></i> en savoir +</div>';
       popupContent += '</a>';
 
       return popupContent;

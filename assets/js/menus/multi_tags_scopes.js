@@ -89,7 +89,7 @@
         $(htmlId).html(html);
         if(actionOnSetGlobalScope=="save"){
             scopeHtml='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-                            'data-toggle="tooltip" data-placement="top" title="Communecter avec '+communexion.currentName+'" '+
+                            'data-toggle="tooltip" data-placement="top" title="title="'+trad["communectwith"]+' '+communexion.currentName+'" '+
                             'data-scope-value="'+communexion.currentValue+'" '+
                             'data-scope-name="'+communexion.currentName+'" '+
                             'data-scope-level="'+communexion.currentLevel+'" '+

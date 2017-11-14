@@ -229,6 +229,10 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               str += "<hr style='float:left; width:100%;'/>";
               str += "</div>";
               
+              if( $.inArray( "cities", searchType ) != "-1" && searchType.length == 1){
+              		str += '<span class="col-md-12 col-sm-12 col-xs-12 letter-blue padding-10"><i class="fa fa-info-circle"></i>'+ trad.youwillfindonlycities+'!</span>';
+              }
+
               str += directory.showResultsDirectoryHtml(data);
               
               if(str == "") { 
@@ -2463,71 +2467,77 @@ var directory = {
     var current_date = new Date();
     return -current_date.getTimezoneOffset() / 60;
  },
- getDateFormated: function(params){
+    getDateFormated: function(params, onlyStr){
     console.log("getDateFormated", params.startDate);
     var timezone = directory.get_time_zone_offset();
     
-    params.startDateDB = notEmpty(params.startDate) ? params.startDate : null;
-    params.startDay = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("DD") : "";
-    params.startMonth = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("MM") : "";
-    params.startYear = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("YYYY") : "";
-    params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("d") : "";
-    params.startTime = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("HH:mm") : "";
-    params.startDate = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().format("DD MMMM YYYY - HH:mm") : null;
-    
-    params.endDateDB = notEmpty(params.endDate) ? params.endDate: null;
-    params.endDay = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("DD") : "";
-    params.endMonth = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("MM") : "";
-    params.endYear = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("YYYY") : "";
-    params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("d") : "";
-    params.endTime = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("HH:mm") : "";
-    params.endDate   = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().format("DD MMMM YYYY - HH:mm") : null;
-    params.startDayNum = directory.getWeekDayName(params.startDayNum);
-    params.endDayNum = directory.getWeekDayName(params.endDayNum);
 
-    params.startMonth = directory.getMonthName(params.startMonth);
-    params.endMonth = directory.getMonthName(params.endMonth);
-    params.color="orange";
     
-
-    var startLbl = (params.endDay != params.startDay) ? trad["fromdate"] : "";
-    var endTime = ( params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
-    mylog.log("params.allDay", !notEmpty(params.allDay), params.allDay);
-   
-    
-    var str = "";
-    if(params.startDate != null){
-      str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                  '<small>'+startLbl+' </small>'+
-                  '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
-                  params.startDay + ' ' + params.startMonth + 
-                  ' <small class="letter-'+params.color+'">' + params.startYear + '</small>';
-                  if(!notNull(params.allDay) || params.allDay != true){
-                    str +=  ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> '+
-                              params.startTime+endTime+"</b></small>";
-                  }
-                  
-        str +=  '</h3>';
-    }
-      
-    var dStart = params.startDay + params.startMonth + params.startYear;
-    var dEnd = params.endDay + params.endMonth + params.endYear;
-    mylog.log("DATEE", dStart, dEnd);
-
-    if(params.endDate != null && dStart != dEnd){
-      str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
-                  "<small>"+trad["todate"]+" </small>"+
-                  '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
-                  params.endDay + ' ' + params.endMonth + 
-                  ' <small class="letter-'+params.color+'">' + params.endYear + '</small>';
-                  if(!notNull(params.allDay) || params.allDay != true){
-                    str += ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
-                            params.endTime+"</b></small>";
-                  }
-        str +=  '</h3>';
-    }
+        params.startDateDB = notEmpty(params.startDate) ? params.startDate : null;
+        params.startDay = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD") : "";
+        params.startMonth = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("MM") : "";
+        params.startYear = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("YYYY") : "";
+        params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("d") : "";
+        params.startTime = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("HH:mm") : "";
+        params.startDate = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
         
+        params.endDateDB = notEmpty(params.endDate) ? params.endDate: null;
+        params.endDay = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD") : "";
+        params.endMonth = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("MM") : "";
+        params.endYear = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("YYYY") : "";
+        params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).format("d") : "";
+        params.endTime = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("HH:mm") : "";
+        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        params.startDayNum = directory.getWeekDayName(params.startDayNum);
+        params.endDayNum = directory.getWeekDayName(params.endDayNum);
+
+        params.startMonth = directory.getMonthName(params.startMonth);
+        params.endMonth = directory.getMonthName(params.endMonth);
+        params.color="orange";
         
-    return str;
+
+        var startLbl = (params.endDay != params.startDay) ? trad["fromdate"] : "";
+        var endTime = ( params.endDay == params.startDay && params.endTime != params.startTime) ? " - " + params.endTime : "";
+        mylog.log("params.allDay", !notEmpty(params.allDay), params.allDay);
+       
+        
+        var str = "";
+        if(notNull(onlyStr)){
+          str += params.startDay +" "+ params.startMonth +" "+ params.startYear;
+        }else{
+          if(params.startDate != null){
+            str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                        '<small>'+startLbl+' </small>'+
+                        '<small class="letter-'+params.color+'">'+params.startDayNum+"</small> "+
+                        params.startDay + ' ' + params.startMonth + 
+                        ' <small class="letter-'+params.color+'">' + params.startYear + '</small>';
+                        if(!notNull(params.allDay) || params.allDay != true){
+                          str +=  ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> '+
+                                    params.startTime+endTime+"</b></small>";
+                        }
+                        
+              str +=  '</h3>';
+          }
+            
+          var dStart = params.startDay + params.startMonth + params.startYear;
+          var dEnd = params.endDay + params.endMonth + params.endYear;
+          mylog.log("DATEE", dStart, dEnd);
+
+          if(params.endDate != null && dStart != dEnd){
+            str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
+                        "<small>"+trad["todate"]+" </small>"+
+                        '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
+                        params.endDay + ' ' + params.endMonth + 
+                        ' <small class="letter-'+params.color+'">' + params.endYear + '</small>';
+                        if(!notNull(params.allDay) || params.allDay != true){
+                          str += ' <small class="pull-right margin-top-5"><b><i class="fa fa-clock-o margin-left-10"></i> ' + 
+                                  params.endTime+"</b></small>";
+                        }
+              str +=  '</h3>';
+          }
+        }
+            
+            
+        return str;
   },
 }

@@ -302,6 +302,7 @@ var trad = {
 	"to": "<?php echo Yii::t("common","to") ?>",
 	"todate": "<?php echo Yii::t("translate","To") ?>",
 	"fromdate": "<?php echo Yii::t("translate","From") ?>",
+	"todatemin": "<?php echo Yii::t("translate","to") ?>",
 	"page": "<?php echo Yii::t("common","page") ?>",
 	"pages": "<?php echo Yii::t("common","pages") ?>",
 	"toproject": "<?php echo Yii::t("common","to the project") ?>",
@@ -399,6 +400,7 @@ var trad = {
 	"cartography" : "<?php echo Yii::t("common", "Cartography") ?>",
 	"alltags" : "<?php echo Yii::t("common", "All tags") ?>",
 	"alltypes" : "<?php echo Yii::t("common", "All types") ?>",
+	"youwillfindonlycities" : "<?php echo Yii::t("docs","You will find only cities <b>which match data</b>.<br/> If you <b>don't find</b> a city, feel free <b>to create an organization, a project, an event, on this geographical zone...</b><br/><br/><b>Then you will find this result here</b>") ?>",
 
 };
 

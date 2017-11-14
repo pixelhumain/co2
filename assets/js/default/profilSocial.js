@@ -688,7 +688,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	var n=0;
 	listRoles={};
 	$.each(data, function(key, val){ 
-		console.log("rolesShox",val);
+		//console.log("rolesShox",val);
 		if(typeof key != "undefined") n++; 
 		if(typeof val.rolesLink != "undefined"){
 			console.log(val.rolesLink);

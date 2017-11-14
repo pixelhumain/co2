@@ -2496,7 +2496,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			if(!empty($city)){
 				$res = PHDB::update( Zone::COLLECTION, 
 								  	array("_id"=>new MongoId($key)),
-									array('$set' => array("ownACity" =>  true))
+									array('$set' => array("hasCity" =>  true))
 					);
 				$nbelement++;
 			}			

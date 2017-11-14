@@ -697,7 +697,7 @@ var urlCtrl = {
 		"#opendata" : {"alias":"#data.index"},
 		"#interoperability.copedia" : {title:'COPEDIA', icon : 'fa-folder-open-o','useHeader' : true},
 		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o','useHeader' : true},
-
+		"#graph" : { title:'Graph', icon : 'connectdevelop' },
 
 		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) }, removeAfterLoad : true },
 	},

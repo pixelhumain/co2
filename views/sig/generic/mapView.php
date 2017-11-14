@@ -94,7 +94,7 @@
 				</label> -->
 			</div>
 
-			<div id="right_tool_map_locality" class="hidden">
+			<div id="right_tool_map_locality" class="hidden" style="background-color: white; overflow-y: scroll; overflow-x: hidden; height: 100%; " >
 			<!-- 	HEADER -->
 				<div class="right_tool_map_header">	
 					<!-- <span class="right_tool_map_header_title">Ajouter une adresse</span> -->

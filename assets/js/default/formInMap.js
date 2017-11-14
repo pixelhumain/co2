@@ -354,10 +354,10 @@ var formInMap = {
 								var lblList = value.name + ", " + valueCP.name + ", " + valueCP.postalCode ;
 								html += "<li><a href='javascript:;' data-type='"+currentScopeType+"' "+
 												"data-locId='"+key+"' "+
-												"data-level4='"+value.level4+"' data-level4Name='"+value.level4Name+"'"+
-												"data-level3='"+value.level3+"' data-level3Name='"+value.level3Name+"'"+
-												"data-level2='"+value.level2+"' data-level2Name='"+value.level2Name+"'"+ 
-												"data-level1='"+value.level1+"' data-level1Name='"+value.level1Name+"'"+ 
+												"data-level4='"+value.level4+"' data-level4name='"+value.level4Name+"'"+
+												"data-level3='"+value.level3+"' data-level3name='"+value.level3Name+"'"+
+												"data-level2='"+value.level2+"' data-level2name='"+value.level2Name+"'"+ 
+												"data-level1='"+value.level1+"' data-level1name='"+value.level1Name+"'"+ 
 												"data-country='"+country+"' "+
 												"data-city='"+val+"' data-cp='"+lbl+"' "+
 												"data-lat='"+lat+"' data-lng='"+lng+"' "+
@@ -371,10 +371,10 @@ var formInMap = {
 							html += "<li><a href='javascript:;' data-type='"+currentScopeType+"' "+
 												"data-locid='"+key+"' ";
 
-							html +=	"data-level4='"+value.level4+"' data-level4Name='"+value.level4Name+"'"+
-									"data-level3='"+value.level3+"' data-level3Name='"+value.level3Name+"'"+
-									"data-level2='"+value.level2+"' data-level2Name='"+value.level2Name+"'"+ 
-									"data-level1='"+value.level1+"' data-level1Name='"+value.level1Name+"'";
+							html +=	"data-level4='"+value.level4+"' data-level4name='"+value.level4Name+"'"+
+									"data-level3='"+value.level3+"' data-level3name='"+value.level3Name+"'"+
+									"data-level2='"+value.level2+"' data-level2name='"+value.level2Name+"'"+ 
+									"data-level1='"+value.level1+"' data-level1name='"+value.level1Name+"'";
 							// if(notEmpty(level4))
 							// 	html +=	"data-level4='"+level4+"' dta-level4name='"+level4Name+"'";
 							// if(notEmpty(level3))
@@ -419,13 +419,14 @@ var formInMap = {
 		formInMap.NE_city = data.data("city");
 		formInMap.NE_country = data.data("country");
 		formInMap.NE_level4 = (notEmpty(data.data("level4")) ? data.data("level4") : null) ;
-		formInMap.NE_level4Name = (notEmpty(data.data("level4Name")) ? data.data("level4Name") : null) ;
+		formInMap.NE_level4Name = (notEmpty(data.data("level4name")) ? data.data("level4name") : null) ;
 		formInMap.NE_level3 = (notEmpty(data.data("level3")) ? data.data("level3") : null) ;
-		formInMap.NE_level3Name = (notEmpty(data.data("level3Name")) ? data.data("level3Name") : null) ;
+		formInMap.NE_level3Name = (notEmpty(data.data("level3name")) ? data.data("level3name") : null) ;
 		formInMap.NE_level2 = (notEmpty(data.data("level2")) ? data.data("level2") : null) ;
-		formInMap.NE_level2Name = (notEmpty(data.data("level2Name")) ? data.data("level2Name") : null);
+		formInMap.NE_level2Name = (notEmpty(data.data("level2name")) ? data.data("level2name") : null);
 		formInMap.NE_level1 = (notEmpty(data.data("level1")) ? data.data("level1") : null) ;
-		formInMap.NE_level1Name = (notEmpty(data.data("level1Name")) ? data.data("level1Name") : null) ;
+		formInMap.NE_level1Name = (notEmpty(data.data("level1name")) ? data.data("level1name") : null) ;
+		mylog.log("add2 level1name", data.data("formInMap.NE_level1name"), formInMap.NE_level1Name);
 		mylog.log("NE_localityId", data.data("locid"));
 		formInMap.NE_localityId = data.data("locid");
 

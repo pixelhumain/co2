@@ -4901,12 +4901,15 @@ function getContextDataLinks(){
 		success: function(data){
 			mylog.log("getContextDataLinks data", data);
 			Sig.restartMap();
-			contextData.map = {
-				data : data,
-				icon : "link",
-				title : trad.thecommunityof+" <b>"+contextData.name+"</b>"
-			} ;
-			Sig.showMapElements(Sig.map, data, "link", trad.thecommunityof+" <b>"+contextData.name+"</b>");
+			if(notNull(contextData)){
+				contextData.map = {
+					data : data,
+					icon : "link",
+					title : trad.thecommunityof+" <b>"+contextData.name+"</b>"
+				} ;
+				Sig.showMapElements(Sig.map, data, "link", trad.thecommunityof+" <b>"+contextData.name+"</b>");
+			}
+			
 			//showMap();
 		},
 		error: function (error) {

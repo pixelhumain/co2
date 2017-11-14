@@ -578,44 +578,11 @@ function selectScopeLevelCommunexion(level){
 function setCookies(){ 
 	mylog.log("setCookies");
 	$.ajax({
-			type: "POST",
-			url: baseUrl+"/"+moduleId+"/element/getCommunexion/",
-			dataType: "json",
-			success: function(data){
-				communexion = data ;
-			}
-	});
-
-	//if(false){
-	/*	$.cookie('inseeCommunexion',   	inseeCommunexion,  	{ expires: 365, path: path });
-		$.cookie('cityNameCommunexion', cityNameCommunexion,{ expires: 365, path: path });
-		$.cookie('cpCommunexion',   	cpCommunexion,  	{ expires: 365, path: path });		
-		$.cookie('regionNameCommunexion',   regionNameCommunexion,  { expires: 365, path: path });
-		$.cookie('countryCommunexion',   	countryCommunexion,  	{ expires: 365, path: path });
-		if(typeof(nbCpbyInseeCommunexion) != "undefined"){
-			$.cookie('nbCpbyInseeCommunexion',   	nbCpbyInseeCommunexion,  	{ expires: 365, path: path });
-			$.cookie('cityInseeCommunexion',   	cityInseeCommunexion,  	{ expires: 365, path: path });
+		type: "POST",
+		url: baseUrl+"/"+moduleId+"/element/getCommunexion/",
+		dataType: "json",
+		success: function(data){
+			communexion = data ;
 		}
-
-
-		// TODO 
-
-		/*
-
-		CO2.php
-		breadcrum_communexion.php
-
-		$communexion["state"] = true; Mettre a false si romve addresse
-
-
-		Si communexionLevel == cpCommunexion
-			communexionType = "cp"
-		Sinon 
-			communexionType = "city"
-		
-		$.cookie('communexionType', communexion.currentLevel, { expires: 365, path: location.pathname });
-        $.cookie('communexionValue', communexion.currentValue, { expires: 365, path: location.pathname });
-        $.cookie('communexionName', communexion.currentName, { expires: 365, path: location.pathname });
-        $.cookie('communexionLevel', communexion.levelMinCommunexion, { expires: 365, path: location.pathname });*/
-	//}*/
+	});
 }

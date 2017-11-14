@@ -15,13 +15,13 @@ function initSearchInterface(){
     });
 
     $("#second-search-bar").keyup(function(e){
-        $("#main-search-bar").val($(this).val());
-        $("#input-search-map").val($(this).val());
+        //$("#main-search-bar").val($(this).val());
+        //$("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
             initTypeSearch(typeInit);
-            startSearch(0, indexStepInit, searchCallback);
-            $(".btn-directory-type").removeClass("active");
-            KScrollTo("#content-social");
+            startSearchTerla(0, indexStepInit, searchCallback);
+            //$(".btn-directory-type").removeClass("active");
+            //KScrollTo("#content-social");
          }
     });
 
@@ -69,6 +69,52 @@ function initSearchInterface(){
         dyFObj.openForm(type);
     });
 }
+
+function startSearchTerla(indexMin, indexMax, callBack){
+    var name = $("#second-search-bar").val();
+    var data = {
+      "name" : name, 
+      "tpl" : "searchTerla",
+      "locality" : "",//locality, 
+      "searchType" : searchType, 
+      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
+      "indexMin" : indexMin, 
+      "indexMax" : indexMax
+    };
+
+    //alert();
+    $.ajax({
+        type: "POST",
+        url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
+        data: data,
+        //dataType: "json",
+        error: function (data){
+             mylog.log(">>> error autocomplete search"); 
+             mylog.dir(data);   
+             $(".main-container").html(data.responseText);  
+             $("#searchVal").html(name);  
+             //signal que le chargement est terminé
+            loadingData = false;     
+        },
+        success: function(data){ 
+            mylog.log(">>> success startSearchTerla", data); //mylog.dir(data);
+            $(".main-container").html(data);
+           /* if(!data){ 
+              toastr.error(data.content); 
+            } 
+            else 
+            {   
+            }*/
+           
+            //affiche les éléments sur la carte
+            //Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
+                        
+            //if(typeof callBack == "function")
+            //  callBack();
+        }
+    });
+}
+
 
 /* -------------------------
 CLASSIFIED

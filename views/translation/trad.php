@@ -302,6 +302,7 @@ var trad = {
 	"to": "<?php echo Yii::t("common","to") ?>",
 	"todate": "<?php echo Yii::t("translate","To") ?>",
 	"fromdate": "<?php echo Yii::t("translate","From") ?>",
+	"todatemin": "<?php echo Yii::t("translate","to") ?>",
 	"page": "<?php echo Yii::t("common","page") ?>",
 	"pages": "<?php echo Yii::t("common","pages") ?>",
 	"toproject": "<?php echo Yii::t("common","to the project") ?>",

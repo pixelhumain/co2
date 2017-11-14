@@ -1030,6 +1030,7 @@ function removeAddress(form){
 								communexion.currentName = null;
 								communexion.currentValue = null;
 								communexion.values = null;
+								communexion.state = false;
 								toastr.success(data.msg);
 								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					    	}

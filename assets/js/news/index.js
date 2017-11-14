@@ -782,13 +782,13 @@ function showFormBlock(bool){
 		if(isLiveGlobal()){
 			scopeHtml ="";
 
-			if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false" && communexion.state){
+			if( typeof communexion != "undefined" && notEmpty(communexion.values)){
 				scopeHtml +='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-	            				'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
-	                        	'data-scope-value="'+$.cookie('communexionValue')+'" '+
-	                        	'data-scope-name="'+$.cookie('communexionName')+'" '+
-	                        	'data-scope-level="'+$.cookie('communexionLevel')+'" '+
-	                        	'data-scope-type="'+$.cookie('communexionType')+'" '+
+	            				'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+communexion.currentName+'" '+
+	                        	 'data-scope-value="'+communexion.currentValue+'" '+
+                            	'data-scope-name="'+communexion.currentName+'" '+
+                            	'data-scope-level="'+communexion.currentLevel+'" '+
+                            	'data-scope-type="'+communexion.communexionType+'" '+
 	            				'id="btn-my-co">'+
 	            				'<i class="fa fa-university"></i>'+
 	            			'</a>';

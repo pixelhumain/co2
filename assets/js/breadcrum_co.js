@@ -72,7 +72,7 @@ function bindCommunexionScopeEvents(){
         checkScopeMax();
     });
 
-    $(".start-new-communexion").click(function(){
+    $(".start-new-communexion").off().on("click",function(){
         mylog.log("start-new-communexion", typeof communexion.currentName);
         if (typeof communexion.currentName !== 'undefined'){
             activateGlobalCommunexion(true);

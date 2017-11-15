@@ -94,7 +94,7 @@
 				</label> -->
 			</div>
 
-			<div id="right_tool_map_locality" class="hidden">
+			<div id="right_tool_map_locality" class="hidden" style="background-color: white; overflow-y: scroll; overflow-x: hidden; height: 100%; " >
 			<!-- 	HEADER -->
 				<div class="right_tool_map_header">	
 					<!-- <span class="right_tool_map_header_title">Ajouter une adresse</span> -->
@@ -123,6 +123,7 @@
 						?>
 					</select>
 					<div id='divCity' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> 
+						<div class='alert alert-warning' role='alert'><i class="fa fa-exclamation-triangle"></i> <?php echo Yii::t("docs","If a city doesn't exist on communecter, you have to write the full name to find the city") ?></div>
 				  		<input class='form-group col-md-12 col-xs-12' type='text' name='newElement_city' placeholder='<?php echo Yii::t("common", "Search a city, a town or a postal code") ; ?>'>
 						<ul class='dropdown-menu col-md-12 col-xs-12' id='dropdown-newElement_locality-found' style="margin-top: -15px; background-color : #ea9d13; max-height : 300px ; overflow-y: auto">
 							<li><a href='javascript:' class='disabled'><?php echo Yii::t("common", "Search a city, a town or a postal code") ; ?></a></li>

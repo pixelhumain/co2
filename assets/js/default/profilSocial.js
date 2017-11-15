@@ -688,7 +688,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	var n=0;
 	listRoles={};
 	$.each(data, function(key, val){ 
-		console.log("rolesShox",val);
+		//console.log("rolesShox",val);
 		if(typeof key != "undefined") n++; 
 		if(typeof val.rolesLink != "undefined"){
 			console.log(val.rolesLink);
@@ -727,13 +727,14 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			html += "<div class='col-md-12 col-sm-12 col-xs-12 margin-bottom-10'>"+
 						"<a href='javascript:;' id='showHideCalendar' class='text-azure' data-hidden='0'><i class='fa fa-caret-up'></i> Hide calendar</a>"+
 					"</div>"+
-					"<div id='profil-cantent-calendar' class='col-md-12 col-sm-12 col-xs-12 margin-bottom-20'></div>";
-		var mapElements = new Array();
+					"<div id='profil-content-calendar' class='col-md-12 col-sm-12 col-xs-12 margin-bottom-20'></div>";
+		mapElements = [];
 		
 		console.log("listRoles",listRoles);
 		if(dataName != "collections"){
 			if(mapElements.length==0) mapElements = data;
         	else $.extend(mapElements, data);
+
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){
@@ -759,11 +760,11 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		$("#central-container").html(html);
 		if(dataName == "events"){
 			//init calendar view
-			calendar.init("#profil-cantent-calendar");
-			calendar.showCalendar("#profil-cantent-calendar", data);
+			calendar.init("#profil-content-calendar");
+			calendar.showCalendar("#profil-content-calendar", data);
      		$(window).on('resize', function(){
   				$('#calendar').fullCalendar('destroy');
-  				calendar.showCalendar("#profil-cantent-calendar", data);
+  				calendar.showCalendar("#profil-content-calendar", data);
   			});
 	     	/*$(".fc-button").on("click", function(e){
 	      		calendar.setCategoryColor();
@@ -1029,6 +1030,7 @@ function removeAddress(form){
 								communexion.currentName = null;
 								communexion.currentValue = null;
 								communexion.values = null;
+								communexion.state = false;
 								toastr.success(data.msg);
 								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					    	}

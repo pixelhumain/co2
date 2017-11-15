@@ -146,7 +146,7 @@
 				$hiddenClass = "";
 				$nbTotalComments = sizeOf($comments);
 
-				if($nbTotalComments == 0 && $level == 1) { echo Yii::t("comment", "No comment"); }
+				if($nbTotalComments == 0 && $level == 1) { echo "<span class='noComment'>".Yii::t("comment", "No comment")."</span>"; }
 				if($nbTotalComments == 0) return;
 				//if($nbTotalComments == 0 && $level == 2) echo "Aucune commentaire";
 
@@ -463,6 +463,7 @@
 
 		if(!isAnswer){
 			$("#comments-list-<?php echo $idComment; ?>").prepend(html);
+			$("#comments-list-<?php echo $idComment; ?>").find(".noComment").remove();
 		}else{
 			$('#container-txtarea-'+idComment).after(html);
 		}

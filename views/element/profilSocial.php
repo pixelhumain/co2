@@ -9,6 +9,7 @@
 				'/css/default/directory.css',	
 				'/js/comments.js',
 				'/css/profilSocial.css',
+				'/css/calendar.css',
 		) , 
 	Yii::app()->theme->baseUrl. '/assets');
 

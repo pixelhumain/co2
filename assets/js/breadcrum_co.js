@@ -24,9 +24,9 @@ function bindCommunexionScopeEvents(){
                          $(this).data("scope-values"),  $(this).data("scope-notsearch")) ;
     });
     
-    $(".item-scope-input").click(function(){ 
+    $(".item-scope-input").off().on("click", function(){ 
         scopeValue=$(this).data("scope-value");
-        scopeActive(scopeValue);
+        
         // if($(this).hasClass("disabled")){
         //     $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
         //     $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-check-circle");
@@ -37,6 +37,7 @@ function bindCommunexionScopeEvents(){
         //     $("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
         // }
         toogleScopeMultiscope( $(this).data("scope-value") );
+        scopeActive(scopeValue);
         if(actionOnSetGlobalScope=="filter")
             $("#newsstream").html("<div class='col-md-12 text-center'><i class='fa fa-circle'></i> <i class='fa fa-circle'></i> <i class='fa fa-circle'></i><hr style='margin-top: 34px;'></div>");
         $("#footerDropdown").html("<i class='fa fa-circle'></i> <i class='fa fa-circle'></i> <i class='fa fa-circle'></i><hr style='margin-top: 34px;'>");
@@ -71,7 +72,7 @@ function bindCommunexionScopeEvents(){
         checkScopeMax();
     });
 
-    $(".start-new-communexion").click(function(){
+    $(".start-new-communexion").off().on("click",function(){
         mylog.log("start-new-communexion", typeof communexion.currentName);
         if (typeof communexion.currentName !== 'undefined'){
             activateGlobalCommunexion(true);

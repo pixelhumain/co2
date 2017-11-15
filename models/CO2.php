@@ -47,8 +47,6 @@ class CO2 {
 	public static function getCommunexionCookies(){
 		$communexion = array("state"=>false, "values"=>array());
 		//var_dump(Yii::app()->request->cookies['communexionActivated']);
-		
-
 		if(CookieHelper::hasCookie("communexion") && CookieHelper::hasCookie("communexionType")) {
 			if(isset( Yii::app()->request->cookies['communexionActivated'] ) && (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
                 $communexion["state"] = true;

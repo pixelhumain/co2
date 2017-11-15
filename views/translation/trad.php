@@ -52,6 +52,7 @@ var trad = {
 	"voteaddedsuccess" : "<?php echo Yii::t("common", "Your vote has been successfully added") ?>",
 	"voteremovedsuccess" : "<?php echo Yii::t("common","Your vote has been successfully removed") ?>",
 	"thanktosignalabuse" : "<?php echo Yii::t("common","Thank you ! We are dealing it as quickly as possible. If there is more than 5 report, the news will be hidden") ?>",
+	"infoaddcitywarning" :"<?php echo Yii::t("docs","If a city doesn't exist on communecter, you have to write the full name to find the city")?>", 
 	"alreadyreportedabuse": "<?php echo Yii::t("common","You already reported this news as abuse") ?>" ,
 	"askreasonreportabuse": "<?php echo Yii::t("common", "You are going to declare an abuse : please fill the reason")?>",
 	"delete": "<?php echo Yii::t("common", "Delete")?>", 
@@ -301,6 +302,7 @@ var trad = {
 	"to": "<?php echo Yii::t("common","to") ?>",
 	"todate": "<?php echo Yii::t("translate","To") ?>",
 	"fromdate": "<?php echo Yii::t("translate","From") ?>",
+	"todatemin": "<?php echo Yii::t("translate","to") ?>",
 	"page": "<?php echo Yii::t("common","page") ?>",
 	"pages": "<?php echo Yii::t("common","pages") ?>",
 	"toproject": "<?php echo Yii::t("common","to the project") ?>",
@@ -398,6 +400,7 @@ var trad = {
 	"cartography" : "<?php echo Yii::t("common", "Cartography") ?>",
 	"alltags" : "<?php echo Yii::t("common", "All tags") ?>",
 	"alltypes" : "<?php echo Yii::t("common", "All types") ?>",
+	"youwillfindonlycities" : "<?php echo Yii::t("docs","You will find only cities <b>which match data</b>.<br/> If you <b>don't find</b> a city, feel free <b>to create an organization, a project, an event, on this geographical zone...</b><br/><br/><b>Then you will find this result here</b>") ?>",
 
 };
 
@@ -629,6 +632,7 @@ var tradCategory = {
 	"Festival" :"<?php echo Yii::t("category","Festival") ?>",
 	"Market" :"<?php echo Yii::t("category","Market") ?>",
 	"Other" :"<?php echo Yii::t("category","Other") ?>",
+	"Others" :"<?php echo Yii::t("category","Others") ?>",
 	"Concert" :"<?php echo Yii::t("category","Concert") ?>",
 	"Exhibition" :"<?php echo Yii::t("category","Exhibition") ?>",
 	"Get together" :"<?php echo Yii::t("category","Get together") ?>",

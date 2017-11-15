@@ -2511,7 +2511,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			if(!empty($city)){
 				$res = PHDB::update( Zone::COLLECTION, 
 								  	array("_id"=>new MongoId($key)),
-									array('$set' => array("ownACity" =>  true))
+									array('$set' => array("hasCity" =>  true))
 					);
 				$nbelement++;
 			}			
@@ -2519,6 +2519,30 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
+<<<<<<< HEAD
+=======
+	public function actionBatchOwnToHas() {
+		ini_set('memory_limit', '-1');
+		$where = array(	"ownACity" => true);
+		$zones = PHDB::find(Zone::COLLECTION, $where);
+		$nbelement = 0 ;
+		foreach ($zones as $key => $zone) {
+			$city = PHDB::findOne(City::COLLECTION, array("country" => $zone["countryCode"]));
+
+			if(!empty($city)){
+				$res = PHDB::update( Zone::COLLECTION, 
+								  	array("_id"=>new MongoId($key)),
+									array(	'$unset' 	=> array(	"ownACity" => null),
+	                						'$set' 		=> array(	"hasCity" => true) ) );
+
+				$nbelement++;
+			}			
+		}
+		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+	}
+
+
+>>>>>>> master
 	public function actionBatchZoneUnsetKey(){
 		ini_set('memory_limit', '-1');
 		$nbelement = 0 ;

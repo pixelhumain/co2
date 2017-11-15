@@ -352,6 +352,13 @@ var formInMap = {
 								var lng = valueCP.geo.longitude;
 
 								var lblList = value.name + ", " + valueCP.name + ", " + valueCP.postalCode ;
+								if(notNull(value.level4Name))
+									lblList += " ( " + value.level4Name + " ) ";
+								else if(notNull(value.level3Name))
+									lblList += " ( " + value.level3Name + " ) ";
+								else if(notNull(value.level2Name))
+									lblList += " ( " + value.level2Name + " ) ";
+								
 								html += "<li><a href='javascript:;' data-type='"+currentScopeType+"' "+
 												"data-locId='"+key+"' "+
 												"data-level4='"+value.level4+"' data-level4name='"+value.level4Name+"'"+
@@ -368,6 +375,13 @@ var formInMap = {
 							var lat = value.geo.latitude;
 							var lng = value.geo.longitude;
 							var lblList = value.name ;
+							if(notNull(value.level4Name))
+								lblList += " ( " + value.level4Name + " ) ";
+							else if(notNull(value.level3Name))
+								lblList += " ( " + value.level3Name + " ) ";
+							else if(notNull(value.level2Name))
+								lblList += " ( " + value.level2Name + " ) ";
+
 							html += "<li><a href='javascript:;' data-type='"+currentScopeType+"' "+
 												"data-locid='"+key+"' ";
 

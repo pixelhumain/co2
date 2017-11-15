@@ -42,7 +42,7 @@ function initSearchInterface(){
         console.log("typeInit", typeInit);
         if(typeInit == "all") initTypeSearch("allSig");
         else initTypeSearch(typeInit);
-        startSearch(0, indexStepInit, searchCallback);
+        startSearchTerla(0, indexStepInit, searchCallback);
         $(".btn-directory-type").removeClass("active");
     });
 
@@ -71,7 +71,8 @@ function initSearchInterface(){
 }
 
 function startSearchTerla(indexMin, indexMax, callBack){
-    var name = $("#second-search-bar").val();
+    var name = $("#second-search-bar").val() != "" ? $("#second-search-bar").val() : $("#new-search-bar").val();
+    memorySearch = name;
     var data = {
       "name" : name, 
       "tpl" : "searchTerla",
@@ -83,6 +84,7 @@ function startSearchTerla(indexMin, indexMax, callBack){
     };
 
     //alert();
+    $.blockUI();
     $.ajax({
         type: "POST",
         url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
@@ -99,6 +101,7 @@ function startSearchTerla(indexMin, indexMax, callBack){
         success: function(data){ 
             mylog.log(">>> success startSearchTerla", data); //mylog.dir(data);
             $(".main-container").html(data);
+            $.unblockUI();
            /* if(!data){ 
               toastr.error(data.content); 
             } 

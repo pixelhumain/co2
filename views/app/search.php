@@ -43,13 +43,13 @@
 
 <style>
     header .headerImg{
-      background-image: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion1.jpg");
-          background-size: 100% auto;
-    height: 300px;
-    margin-top: 45px;
-    background-repeat: no-repeat;
-      /*opacity: 0.3;
-      background-color: black;*/
+        background-image: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion1.jpg");
+        background-size: 100% auto;
+        height: 300px;
+        margin-top: 45px;
+        background-repeat: no-repeat;
+        /*opacity: 0.3;
+        background-color: black;*/
     }
     
     #main-scope-name a{

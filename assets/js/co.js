@@ -5139,7 +5139,8 @@ function initKInterface(params){ console.log("initKInterface");
     });
 
     bindLBHLinks();
-
+    initSearchInterface();
+    
     $(".tooltips").tooltip();
     
     //sur mobile la carto est désactivée car non fonctionnelle pour le moment

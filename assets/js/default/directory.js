@@ -116,7 +116,7 @@ var mapElements = new Array();
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   console.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
-	var searchLocality = getLocalityForSearch();
+	var searchLocality = ""; //getLocalityForSearch();
     
     var data = {
       "name" : name, 

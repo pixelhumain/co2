@@ -462,8 +462,8 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 						bindLBHLinks();
 		} , "html" );
 	}
-
-	if(!notNull(notSearch) || notSearch != true)
+	mylog.log("notSearch", notSearch);
+	if(notNull(notSearch) && notSearch == true)
 		activateGlobalCommunexion(true);
 	//rebuildSearchScopeInput();
 	

@@ -5,7 +5,7 @@
  */
 class CommunecterController extends Controller
 {
-  public $version = "v0.2.1.02";
+  public $version = "v0.2.2.2";
   public $versionDate = "29/07/2016 19:12";
   public $title = "Communectez";
   public $subTitle = "se connecter à sa commune";

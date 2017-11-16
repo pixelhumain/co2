@@ -14,14 +14,25 @@ $this->renderPartial($layoutPath.'header',
                             "page" => "admin") ); 
 ?>
 <div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<h3>Search by name :</h3><br/>
+		<div id="" class="col-sm-3 col-md-4 col-lg-4">
+	                <input type="text" class="form-control" id="input-search-table" 
+	                        placeholder="search by name">
+	    </div>
+	    <button class="btn btn-default hidden-xs pull-left menu-btn-start-search-admin btn-directory-type">
+	        <i class="fa fa-search"></i>
+	    </button>
+    </div>
 	<div class="panel-heading border-light">
-		<h4 class="panel-title"><i class="fa fa-globe fa-2x text-green"></i> <a href="javascript:;" onclick="applyStateFilter('organization|NGO|Group|LocalBusiness')" class="filter<?php echo Organization::COLLECTION ?> btn btn-xs btn-default"> Organizations <span class="badge badge-warning"> <?php echo count(@$organizations) ?></span></a> 
-																				<a href="javascript:;" onclick="applyStateFilter('person')" class="filter<?php echo Person::COLLECTION ?> btn btn-xs btn-default"> People <span class="badge badge-warning"> <?php echo count(@$results["countPeople"]) ?></span></a>  
-																				<a href="javascript:;" onclick="applyStateFilter('event|concert|meeting|dance')" class="filter<?php echo Event::COLLECTION ?> btn btn-xs btn-default"> Events <span class="badge badge-warning"> <?php echo count(@$events) ?></span></a> 
-																				<a href="javascript:;" onclick="applyStateFilter('project')" class="filter<?php echo Project::COLLECTION ?> btn btn-xs btn-default"> Projects <span class="badge badge-warning"> <?php echo count(@$projects) ?></span></a>
-																				<a href="javascript:;" onclick="clearAllFilters('')" class="btn btn-xs btn-default"> All</a></h4>
+		<h4 class="panel-title"><i class="fa fa-globe fa-2x text-green"></i> Filtered by types : </h4>
+		<a href="javascript:;" onclick="applyStateFilter('<?php echo Person::COLLECTION ?>')" class="filter<?php echo Person::COLLECTION ?> btn btn-xs btn-default active btncountsearch"> People <span class="badge badge-warning countPeople" id="countcitoyens"> <?php echo @$results["count"]["citoyens"] ?></span></a>
+		<a href="javascript:;" onclick="applyStateFilter('<?php echo Organization::COLLECTION ?>')" class="filter<?php echo Organization::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Organizations <span class="badge badge-warning countOrganizations" id="countorganizations"> <?php echo @$results["count"]["organizations"] ?></span></a> 
+		<a href="javascript:;" onclick="applyStateFilter('<?php echo Event::COLLECTION ?>')" class="filter<?php echo Event::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Events <span class="badge badge-warning countEvents" id="countevents"> <?php echo @$results["count"]["events"] ?></span></a> 
+		<a href="javascript:;" onclick="applyStateFilter('<?php echo Project::COLLECTION ?>')" class="filter<?php echo Project::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Projects <span class="badge badge-warning countProjects" id="countprojects"> <?php echo @$results["count"]["projects"] ?></span></a>
+		<!--<a href="javascript:;" onclick="clearAllFilters('')" class="btn btn-xs btn-default"> All</a></h4>-->
 	</div>
-	<div class="panel-tools padding-20">
+	<!--<div class="panel-tools padding-20">
 		<?php if( Yii::app()->session["userId"] ) { ?>
 		<a href="javascript:;" onclick="dyFObj.openForm('organization')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Add an Organization"><i class="fa fa-plus"></i> <i class="fa fa-group"></i> </a>
 
@@ -29,15 +40,7 @@ $this->renderPartial($layoutPath.'header',
 
 		<a href="javascript:;" onclick="dyFObj.openForm('person')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Invite Someone "><i class="fa fa-plus"></i> <i class="fa fa-user"></i></a>
 		<?php } ?>
-	</div>
-
-	 <div id="" class="col-sm-3 col-md-4 col-lg-4">
-                <input type="text" class="form-control" id="input-search-table" 
-                        placeholder="<?php echo Yii::t("common", "search by name") ?>">
-    </div>
-            <button class="btn btn-default hidden-xs pull-left menu-btn-start-search-admin btn-directory-type">
-                    <i class="fa fa-search"></i>
-            </button>
+	</div>-->
 	<div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20"></div>
 	<div class="panel-body">
 		<div>	
@@ -144,7 +147,8 @@ var icons = {
 };
 var search={
 	value:"",
-	page:""
+	page:"",
+	type:"<?php echo Person::COLLECTION ?>"
 };
 jQuery(document).ready(function() {
 	setTitle("Espace administrateur : Répertoire","cog");
@@ -161,19 +165,19 @@ jQuery(document).ready(function() {
             startAdminSearch(true);
          }
     });
-    initPageTable(results.countPeople);
+    initPageTable(results.count.citoyens);
 
 });	
 function initPageTable(number){
 	numberPage=(number/100);
 	$('.pageTable').pagination({
         items: numberPage,
-        itemOnPage: 8,
+        itemOnPage: 15,
         currentPage: 1,
         hrefTextPrefix:"?page=",
         cssStyle: 'light-theme',
-        prevText: '<span aria-hidden="true">&laquo;</span>',
-        nextText: '<span aria-hidden="true">&raquo;</span>',
+        //prevText: '<span aria-hidden="true">&laquo;</span>',
+        //nextText: '<span aria-hidden="true">&raquo;</span>',
         onInit: function () {
             // fire first page loading
         },
@@ -198,6 +202,11 @@ function initViewTable(data){
 	bindAdminBtnEvents();
 	//resetDirectoryTable() ;
 }
+function refreshCountBadge(count){
+	$.each(count, function(e,v){
+		$("#count"+e).text(v);
+	});
+}
 function startAdminSearch(initPage){
 
     //$("#second-search-bar").val(search);
@@ -217,8 +226,11 @@ function startAdminSearch(initPage){
         success:function(data) { 
 	          initViewTable(data.results);
 	          bindAdminBtnEvents();
+	          if(typeof data.results.count !="undefined")
+	          	refreshCountBadge(data.results.count);
+	          console.log(data.results);
 	          if(initPage)
-	          	initPageTable(data.results.countPeople);
+	          	initPageTable(data.results.count[search.type]);
         },
         error:function(xhr, status, error){
             $("#searchResults").html("erreur");
@@ -309,7 +321,7 @@ function buildDirectoryLine( e, collection, type, icon/* tags, scopes*/ ){
 		strHTML += '<td>';
 		if(typeof e.tags != "undefined"){
 			$.each(e.tags, function(key,value){
-				strHTML += ' <a href="#" onclick="applyTagFilter(\''+value+'\')"><span class="label label-inverse">'+value+'</span></a>';
+				strHTML += ' <a href="javascript:;" onclick="applyTagFilter(\''+value+'\')"><span class="label label-inverse text-red">'+value+'</span></a>';
 				//if( tags != "" && !in_array($value, tags) ) 
 				//	array_push($tags, $value);
 			});
@@ -326,16 +338,26 @@ function buildDirectoryLine( e, collection, type, icon/* tags, scopes*/ ){
 				array_push($scopes['codeInsee'], $e["address"]['codeInsee'] );
 		}*/
 		if( typeof e.address != "undefined"){
-			if(typeof e.address.codePostal != "undefined" ){
-				strHTML += ' <a href="#" onclick="applyScopeFilter('+e.address.codePostal+')"><span class="label label-inverse">'+e.address.codePostal+'</span></a>';
+			if(typeof e.address.streetAddress != "undefined" ){
+				strHTML += ' <a href="javascript:;" onclick="applyScopeFilter('+e.address.streetAddress+')" class="letter-blue"><span class="">'+e.address.streetAddress+'</span></a><br/>';
+			//if( !in_array($e["address"]['codePostal'], $scopes['codePostal']) ) 
+			//	array_push($scopes['codePostal'], $e["address"]['codePostal'] );
+			}
+			if(typeof e.address.postalCode != "undefined" ){
+				strHTML += ' <a href="javascript:;" onclick="applyScopeFilter('+e.address.postalCode+')" class="letter-blue"><span class="">'+e.address.postalCode+'</span></a>';
 			//if( !in_array($e["address"]['codePostal'], $scopes['codePostal']) ) 
 			//	array_push($scopes['codePostal'], $e["address"]['codePostal'] );
 			}
 			if(typeof e.address.addressLocality != "undefined"){
-				strHTML += ' <a href="#" onclick="applyScopeFilter('+e.address.addressLocality+')"><span class="label label-inverse">'+e.address.addressLocality+'</span></a>';
+				strHTML += ' <a href="javascript:;" onclick="applyScopeFilter('+e.address.addressLocality+')" class="letter-blue"><span class="">'+e.address.addressLocality+'</span></a><br/>';
 			}
-			if(typeof e.address.region){
-				strHTML += '<a href="#" onclick="applyScopeFilter('+e.address.region+')"><span class="label label-inverse">'+e.address.region+'</span></a>';
+			if(typeof e.address.level1Name){
+				strHTML += '<a href="javascript:;" onclick="applyScopeFilter('+e.address.level1Name+')" class="letter-blue"><span class="">'+e.address.level1Name+'</span></a><br/>';
+			//if( !in_array($e["address"]['region'], $scopes['region']) ) 
+			//	array_push($scopes['region'], $e["address"]['region'] );
+			}
+			if(typeof e.address.addressCountry){
+				strHTML += '<a href="javascript:;" onclick="applyScopeFilter('+e.address.addressCountry+')" class="letter-blue"><span class="">'+e.address.addressCountry+'</span></a><br/>';
 			//if( !in_array($e["address"]['region'], $scopes['region']) ) 
 			//	array_push($scopes['region'], $e["address"]['region'] );
 			}	
@@ -399,8 +421,13 @@ function resetDirectoryTable()
 
 function applyStateFilter(str)
 {
-	mylog.log("applyStateFilter",str);
-	directoryTable.DataTable().column( 0 ).search( str , true , false ).draw();
+	//mylog.log("applyStateFilter",str);
+	search.type=str;
+	search.page=0;
+	$(".btncountsearch").removeClass("active");
+	$(".filter"+str).addClass("active");
+	startAdminSearch(true);
+	//directoryTable.DataTable().column( 0 ).search( str , true , false ).draw();
 }
 function clearAllFilters(str){ 
 	directoryTable.DataTable().column( 0 ).search( str , true , false ).draw();

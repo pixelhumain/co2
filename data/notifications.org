@@ -9,6 +9,7 @@ Then add the same id in pikachui json to get all the following notification
 $["_id"]=ObjectId("59775556e2f07e141a22965c");
 
 ///////////// pikachui_user_json /////////////////
+psw : pikachui
 {
     "_id" : ObjectId("59775556e2f07e141a22965c"),
     "two_steps_register" : true,

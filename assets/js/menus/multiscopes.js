@@ -30,9 +30,7 @@ function saveMultiScope(){
 }
 function saveCookieMultiscope(){ 
 	mylog.log("saveCookieMultiscope", typeof myMultiScopes, myMultiScopes);
-	$.cookie('multiscopes',   	JSON.stringify(myMultiScopes), { expires: 365, path: location.pathname });
-	/*if(location.hash.indexOf("#city.detail")==0)
-		urlCtrl.loadByHash("#default.live");*/
+	$.cookie('multiscopes', JSON.stringify(myMultiScopes), { expires: 365, path: location.pathname });
 }
 
 function autocompleteMultiScope(){

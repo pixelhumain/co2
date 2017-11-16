@@ -81,7 +81,7 @@
                src="<?php echo @$thumbAuthor; ?>" 
                height=40>
 
-          <div class="pull-left padding-5 col-md-7 col-sm-7" style="line-height: 15px;"> 
+          <div class="pull-left padding-5 col-md-7 col-sm-7 text-left" style="line-height: 15px;"> 
             <?php  //if(@$media["lastAuthorShare"]["name"]!=@$nameAuthor){ ?>
             <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh">
               <?php echo @$nameAuthor; ?>

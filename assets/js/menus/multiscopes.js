@@ -472,7 +472,7 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 	}
 
 
-	if(!notNull(notSearch) || notSearch != true)
+	if(!notNull(notSearch) || notSearch == true)
  		activateGlobalCommunexion(true);
 
 	//rebuildSearchScopeInput();

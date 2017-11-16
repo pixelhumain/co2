@@ -1595,7 +1595,7 @@ var directory = {
                   valuesScopes.level2Name = params.level2Name ;
                 }
 
-                str += "<button class='btn btn-sm btn-danger item-globalscope-checker' "+
+                str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
                                 "data-scope-value='" + params.id  + "' " + 
                                 "data-scope-name='" + params.name + "' " +
                                 "data-scope-level='city' " +

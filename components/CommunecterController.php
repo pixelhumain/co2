@@ -433,6 +433,7 @@ class CommunecterController extends Controller
       "moderate"     => array( "href" => "/ph/co2/comment/moderate"),
       "delete"       => array( "href" => "/ph/co2/comment/delete"),
       "updatefield"  => array( "href" => "/ph/co2/comment/updatefield"),
+      "update"  => array( "href" => "/ph/co2/comment/update"),
       "countcommentsfrom" => array( "href" => "/ph/co2/comment/countcommentsfrom"),
     ),
     "action"=> array(

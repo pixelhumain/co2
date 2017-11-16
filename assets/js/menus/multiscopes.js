@@ -30,7 +30,7 @@ function saveMultiScope(){
 }
 function saveCookieMultiscope(){ 
 	mylog.log("saveCookieMultiscope", typeof myMultiScopes, myMultiScopes);
-	$.cookie('multiscopes', JSON.stringify(myMultiScopes), { expires: 365, path: location.pathname });
+	$.cookie('multiscopes', JSON.stringify(myMultiScopes), { expires: 365, path: '/' });
 }
 
 function autocompleteMultiScope(){
@@ -276,17 +276,26 @@ function getLocalityForSearch(noScope){
 
 	if(typeof communexion.state == "undefined") communexion.state = false;
 
-	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), communexion.state);
+	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), communexion.state, communexion.communexionType);
 	if(communexion.state == true ){
-	  var searchLocality = {};
-	  searchLocality[communexion.currentValue] = { type : communexion.currentLevel, 
-													name : communexion.currentName,
-													active : true };
+		var searchLocality = {};
+		if(communexion.communexionType == "cp"){
+			searchLocality[communexion.currentValue] = {	type : communexion.currentLevel, 
+															name : communexion.currentName,
+															cp : communexion.values.cp,
+															active : true };
+		}
+		else{
+			searchLocality[communexion.currentValue] = {	type : communexion.currentLevel, 
+															name : communexion.currentName,
+															active : true };
+		}
+
 	}else if(notNull(noScope) && noScope){
 		var searchLocality = {};
 	}
 	else{
-	  var searchLocality = getMultiScopeForSearch();
+		var searchLocality = getMultiScopeForSearch();
 	}
 	return searchLocality;
 }
@@ -417,25 +426,26 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 	if(scopeValue == "") return;
 	
 	mylog.log("myMultiScopes", myMultiScopes, indexStepInit);
-	$("#searchLocalityCITYKEY").val("");
-	$("#searchLocalityCODE_POSTAL").val("");
-	$("#searchLocalityZONE").val("");
-	if(scopeType == "city") {$("#searchLocalityCITYKEY").val(scopeValue);} 
-	if(scopeType == "cp") $("#searchLocalityCODE_POSTAL").val(scopeValue);
-	if(scopeType == "zone") $("#searchLocalityZONE").val(scopeValue);
-	$("#searchLocalityLEVEL").val(scopeLevel);
+	// $("#searchLocalityCITYKEY").val("");
+	// $("#searchLocalityCODE_POSTAL").val("");
+	// $("#searchLocalityZONE").val("");
+	// if(scopeType == "city") {$("#searchLocalityCITYKEY").val(scopeValue);} 
+	// if(scopeType == "cp") $("#searchLocalityCODE_POSTAL").val(scopeValue);
+	// if(scopeType == "zone") $("#searchLocalityZONE").val(scopeValue);
+	//$("#searchLocalityLEVEL").val(scopeLevel);
 	$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
 
 	communexion.currentLevel = scopeLevel;
 	communexion.currentName = scopeName;
 	communexion.currentValue = scopeValue;
+	communexion.communexionType = scopeType;
 
 	if(values){
 		if(typeof values == "string")
 			values = jQuery.parseJSON(values);
 		communexion.values = values;
 	}
-
+	mylog.log("communexion before save", communexion);
 	$.cookie('communexion', communexion, { expires: 365, path: "/" });
 
 	if($("#communexionNameHome").length){
@@ -460,10 +470,11 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 						bindLBHLinks();
 		} , "html" );
 	}
-	else if(notNull(notSearch) && notSearch == true){
-		$("#main-search-bar").val("");
-		activateGlobalCommunexion(true);
-	}
+
+
+	if(!notNull(notSearch) || notSearch != true)
+ 		activateGlobalCommunexion(true);
+
 	//rebuildSearchScopeInput();
 	
 	//startSearch(0, indexStepInit, searchCallback);

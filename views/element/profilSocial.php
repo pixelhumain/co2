@@ -95,7 +95,7 @@
 #ajax-modal .close-modal .rl,
 #formContact .close-modal .lr,
 #formContact .close-modal .rl{
-	background-color: white;
+	background-color: #ea4335;
 }
 
 #btn-show-activity-onmap{

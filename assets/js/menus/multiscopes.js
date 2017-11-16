@@ -421,8 +421,8 @@ function openDropdownMultiscope(){
 
 function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch){  
 
-	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel, notSearch);
-
+	mylog.log("setGlobalScope !", scopeValue, scopeName, scopeType, scopeLevel, notSearch);
+	mylog.log("notSearch", notSearch, notNull(notSearch))
 	if(scopeValue == "") return;
 	
 	mylog.log("myMultiScopes", myMultiScopes, indexStepInit);
@@ -471,8 +471,8 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 		} , "html" );
 	}
 
-
-	if(!notNull(notSearch) || notSearch != true)
+	mylog.log("notSearch", notSearch, !notNull(notSearch));
+	if(!notNull(notSearch) || notSearch == true)
  		activateGlobalCommunexion(true);
 
 	//rebuildSearchScopeInput();

@@ -19,9 +19,16 @@ function bindCommunexionScopeEvents(){
     $(".item-globalscope-checker").click(function(){  
         $(".item-globalscope-checker").addClass("inactive");
         $(this).removeClass("inactive");
+        var notSearch = $(this).data("scope-notsearch");
+        if($(this).hasClass("communecterSearch")){
+            $("#main-search-bar").val("");
+            if(location.hash.indexOf("#search")){
+                notSearch = false;
+            }
+        }
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
         setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
-                         $(this).data("scope-values"),  $(this).data("scope-notsearch")) ;
+                         $(this).data("scope-values"),  notSearch) ;
     });
     
     $(".item-scope-input").off().on("click", function(){ 
@@ -90,7 +97,7 @@ function activateGlobalCommunexion(active, firstLoad){
     communexion.state=active;
     if(active){
         headerHtml='<i class="fa fa-university"></i> ' + communexion.currentName + "<small class='text-dark'>.CO</small>";
-        if(firstLoad)
+        //if(firstLoad)
             $("#container-scope-filter").html(getBreadcrumCommunexion());
         if(actionOnSetGlobalScope=="save")
             $("#scopeListContainerForm").html(getBreadcrumCommunexion());

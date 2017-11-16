@@ -447,7 +447,6 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 		$(".info_co, .input_co").addClass("hidden");
 		$("#change_co").removeClass("hidden");
 		$("#dropdown_search").html("");
-		$("#main-search-bar").val("");
 		var searchParams = {
 	      "tpl":"/pod/nowList",
 	      "indexMin" : 0, 
@@ -463,8 +462,10 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 						bindLBHLinks();
 		} , "html" );
 	}
-	else if(notNull(notSearch) && notSearch == true)
+	else if(notNull(notSearch) && notSearch == true){
+		$("#main-search-bar").val("");
 		activateGlobalCommunexion(true);
+	}
 	//rebuildSearchScopeInput();
 	
 	//startSearch(0, indexStepInit, searchCallback);

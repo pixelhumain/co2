@@ -684,6 +684,13 @@ function bindAboutPodElement() {
 						afterSave : function(data){
 							dyFObj.closeForm();
 							toastr.success("Votre slug a bien été enregistré");
+							strHash="";
+    						if(location.hash.indexOf(".view")>0){
+    							hashPage=location.hash.split(".view");
+    							strHash=".view"+hashPage[1];
+    						}	
+    						location.hash = data.resultGoods.values.slug+strHash;
+    						hashUrlPage="#"+data.resultGoods.values.slug;
 							contextData.slug=data.resultGoods.values.slug;
 							//rcObj.loadChat(data.resultGoods.values.slug,type,canEdit,hasRc);
 							//loadDataDirectory(connectType, "user", true);

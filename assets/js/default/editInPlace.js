@@ -331,7 +331,7 @@ function bindAboutPodElement() {
 											'<i class="fa fa-'+dyFInputs.get(contextData.parentType).icon+'"></i> '+
 											contextData.parent.name+'</a><br/>';
 
-										htmlHeader =((contextData.type == typeObj.event.col) ? trad["Planned on"] : trad["handleBy"] ) ;
+										htmlHeader =((contextData.type == typeObj.event.col) ? trad["Planned on"] : trad.carriedby ) ;
 										htmlHeader += htmlAbout;
 									}
 

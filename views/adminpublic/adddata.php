@@ -343,13 +343,13 @@ function bindAddData(){
 					});
 		  		}
 		  		
-	        	$("<a />", {
-				    "download": "Data_a_verifier.csv",
-				    "href" : "data:application/csv," + encodeURIComponent(csv)
-				  }).appendTo("body")
-				  .click(function() {
-				     $(this).remove()
-				  })[0].click() ;
+	     //    	$("<a />", {
+				  //   "download": "Data_a_verifier.csv",
+				  //   "href" : "data:application/csv," + encodeURIComponent(csv)
+				  // }).appendTo("body")
+				  // .click(function() {
+				  //    $(this).remove()
+				  // })[0].click() ;
 
 	  			$("#bodyResult").html(chaine);
 	        	$.unblockUI();

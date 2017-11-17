@@ -878,8 +878,6 @@ function bindAboutPodElement() {
 		
 	}
 
-	
-
 	function removeContact(ind) {
 		bootbox.confirm({
 			message: trad["suretodeletecontact"]+"<span class='text-red'></span>",
@@ -966,14 +964,15 @@ function bindAboutPodElement() {
 					//social network
 					( 	$.inArray( val, SNetwork ) >= 0 && 
 						( 	typeof contextData["socialNetwork"] != "undefined" && 
-							contextData["socialNetwork"] != null ) && (
-						( 	typeof contextData["socialNetwork"][val] != "undefined" || 
-							contextData["socialNetwork"][val] != null && 
-							$("#ajaxFormModal #"+val).val().trim() == contextData["socialNetwork"][val] )
-						||
-						( 	( 	typeof contextData["socialNetwork"][val] == "undefined" || 
-							contextData["socialNetwork"][val] == null ) && 
-						$("#ajaxFormModal #"+val).val().trim().length == 0 ) )
+							contextData["socialNetwork"] != null ) && 
+						(
+							( 	typeof contextData["socialNetwork"][val] != "undefined" || 
+								contextData["socialNetwork"][val] != null && 
+								$("#ajaxFormModal #"+val).val().trim() == contextData["socialNetwork"][val] )
+							||
+							( 	( 	typeof contextData["socialNetwork"][val] == "undefined" || 
+								contextData["socialNetwork"][val] == null ) && 
+							$("#ajaxFormModal #"+val).val().trim().length == 0 ) )
 					)
 				) 
 			) {

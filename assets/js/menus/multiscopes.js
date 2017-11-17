@@ -59,7 +59,7 @@ function autocompleteMultiScope(){
 					val = key;
 					lbl = (typeof value.name!= "undefined") ? value.name : ""; //value.name ;
 					lblList = lbl + ((typeof value.level3Name!= "undefined") ? " (" +value.level3Name + ")" : "");
-					html += '<li><a href="javascript:;" class="addScope" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
+					html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
 
 				};
 				if(currentScopeType == "cp") { 
@@ -67,7 +67,7 @@ function autocompleteMultiScope(){
 						val = valueCP.postalCode;
 						lbl = valueCP.postalCode ;
 						lblList = valueCP.name + ", " +valueCP.postalCode ;
-						html += '<li><a href="javascript:;" class="addScope" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
+						html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
 					});
 				}; 
 				
@@ -76,7 +76,7 @@ function autocompleteMultiScope(){
 					lbl = (typeof value.name!= "undefined") ? value.name : ""; 
 					lblList = lbl + " (" +value.countryCode + ")";
 					level = value.level[0];
-					html += '<li><a href="javascript:;" class="addScope" data-level="'+level+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
+					html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-level="'+level+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
 
 				}
 			});
@@ -87,7 +87,7 @@ function autocompleteMultiScope(){
 			});
 
 			$(".addScope").click(function(){
-				addScopeToMultiscope($(this).data("val"), $(this).data("lbl"), $(this).data("level"));
+				addScopeToMultiscope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
 			});
 			
 		},
@@ -201,7 +201,7 @@ function showScopeInMultiscope(scopeValue){
 
 //scopeValue est la valeur utilisée pour la recherche
 //scopeName est la valeur affichée
-function addScopeToMultiscope(scopeValue, scopeName, scopeLevel){
+function addScopeToMultiscope(scopeValue, scopeName, scopeLevel, scopeCountry){
 	mylog.log("addScopeToMultiscope", scopeValue, scopeName);
 	if(scopeValue == "") return;
 	if(!scopeExists(scopeValue)){ 
@@ -219,7 +219,12 @@ function addScopeToMultiscope(scopeValue, scopeName, scopeLevel){
 				scopeType = "level4";
 			myMultiScopes[scopeValue].type = scopeType ;
 			myMultiScopes[scopeValue].level = scopeLevel ;
+
+
 		}
+
+		if(notNull(scopeCountry))
+			myMultiScopes[scopeValue].countryCode = scopeCountry ;
 		//myMultiScopes[scopeValue].type = scopeType ;
 		mylog.log("myMultiScopes")
 		//alert();

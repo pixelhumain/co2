@@ -373,9 +373,13 @@
 			useIdParentResolution = true;
 			dyFObj.openForm('action');
 		});
-
-		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
-							  ".view.coop.room." + idParentRoom + ".resolution." + idParentResolution;
+		addCoopHash=".view.coop.room." + idParentRoom + ".resolution." + idParentResolution;
+		if(typeof hashUrlPage != "undefined")
+			location.hash = hashUrlPage +addCoopHash;
+		else if(notNull(contextData) && typeof contextData.slug != "undefined")
+			location.hash = "#" + contextData.slug + addCoopHash;
+		else
+			location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;
 		
 		if(msgController != ""){
 			toastr.error(msgController);

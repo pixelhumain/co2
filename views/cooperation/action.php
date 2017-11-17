@@ -162,7 +162,7 @@
 		<hr>
 		<h5>
 			Cette action est liée à la résolution suivante : 
-			<a href="#page.type.<?php echo $action['parentType']; ?>.id.<?php echo $action['parentId']; ?>.view.coop.room.<?php echo $action['idParentRoom']; ?>.action.<?php echo $action['_id']; ?>"
+			<a href="javascript:;"
 			 class="load-coop-data" data-type="resolution" data-dataid="<?php echo $action['idParentResolution']; ?>">
 				<i class="fa fa-hashtag"></i> 
 				<?php echo @$reso["title"] ? @$reso["title"] : substr(@$reso["description"], 0, 150); ?>

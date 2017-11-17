@@ -1111,7 +1111,7 @@ var directory = {
     previewedObj : null,
     preview : function(params,hash){
 
-      mylog.log("----------- preview",params,params.name, hash);
+      //mylog.log("----------- preview",params,params.name, hash);
       directory.previewedObj = {
           hash : hash,
           params : params
@@ -1143,7 +1143,7 @@ var directory = {
         // ********************************
         str +=  "<div class='col-xs-12 text-left'>";
         
-          var devise = typeof params.devise != "undefined" ? params.devise : "";
+          var devise = (typeof params.devise != "undefined") ? params.devise : "";
           var price = (typeof params.price != "undefined" && params.price != "") ? 
                         "<br/><i class='fa fa-money'></i> " + params.price + " " + devise : "";
           
@@ -1325,7 +1325,7 @@ var directory = {
                               "<i class='fa fa-share'></i> Partager</button>";
 
 
-            var devise = typeof params.devise != "undefined" ? params.devise : "";
+            var devise = (typeof params.devise != "undefined") ? params.devise : "";
             if(typeof params.price != "undefined" && params.price != "")
             str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
          

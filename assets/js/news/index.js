@@ -542,7 +542,7 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
 	$(idTextArea).val(textNews);
 	
 	//$(idTextArea).mentionsInput("update", data.mentions);
-	if(data.mentions.length != 0){
+	if(typeof data.mentions != "undefined" && data.mentions.length != 0){
 		text=data.text;
 		$.each(data.mentions, function(e,v){
 			if(typeof v.slug != "undefined")

@@ -190,7 +190,7 @@ function getBreadcrumCommunexion(){
 									'</button>';
 	}
 
-	if(communexion.cities.length != 1){
+	if(notNull(communexion.cities) && communexion.cities.length != 1){
 		htmlCommunexion+= '<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
 							'class="btn btn-link text-red item-globalscope-checker homestead tooltips ';
 								if( communexion.currentLevel != "cp" )

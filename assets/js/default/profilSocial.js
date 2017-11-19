@@ -875,7 +875,7 @@ function toogleNotif(open){
 }
 
 function loadLiveNow () {
-	mylog.log("loadLiveNow1", contextData.address);
+	//mylog.log("loadLiveNow1", contextData.address);
 
 	var level = {} ;
 	if( notNull(contextData.address)) {

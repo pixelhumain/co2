@@ -28,12 +28,12 @@
 
 <div class="row headerDirectory bg-white padding-15">
   <div class="col-md-12 no-padding pull-left" id="bar-tools-search" style="margin-top:0px; width:100%;">
-  <?php $placeholder = ($typeSelected != "cities") ? "rechercher par #tag ou mots clés..." : "rechercher une ville, un code postal..."; ?> 
+  <?php $placeholder = ($typeSelected != "cities") ? Yii::t('common',"search by #tag or keywords...") :  Yii::t('common',"search a city, a postal code ..."); ?> 
     <div class="input-group margin-bottom-10 col-md-8 col-sm-8 col-xs-8 pull-left">
       <input id="searchBarText" data-searchPage="true" type="text" placeholder="<?php echo $placeholder; ?>" class="input-search form-control">
       <span class="input-group-btn">
             <button class="btn btn-success btn-start-search tooltips" id="btn-start-search"
-                    data-toggle="tooltip" data-placement="top" title="Actualiser les résultats">
+                    data-toggle="tooltip" data-placement="top" title="<?php echo Yii::t('common','Refresh results') ; ?>">
                     <i class="fa fa-search"></i>
             </button>
       </span>
@@ -47,12 +47,12 @@
     </select>
     <button class="btn btn-sm tooltips hidden-xs" id="btn-slidup-scopetags" 
             style="margin-left:15px;margin-top:5px;"
-            data-toggle="tooltip" data-placement="top" title="Afficher/Masquer les filtres">
+            data-toggle="tooltip" data-placement="top" title="<?php echo Yii::t('common','Show / Hide filters') ; ?>">
             <i class="fa fa-minus"></i>
     </button>
     <button data-id="explainDirectory" class="explainLink btn btn-sm tooltips hidden-xs" 
             style="margin-left:7px;margin-top:5px;"
-            data-toggle="tooltip" data-placement="top" title="Comment ça marche ?">
+            data-toggle="tooltip" data-placement="top" title="<?php echo Yii::t('common','Comment ça marche ?') ; ?>">
           <i class="fa fa-question-circle"></i>
     </button>
   </div>

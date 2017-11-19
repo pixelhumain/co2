@@ -287,11 +287,11 @@ var myContactsMembers = $.extend( true, {}, myContacts );
 var listContact = new Array();
 var newMemberInCommunity = false;
 var isElementAdmin= "<?php echo Authorisation::isElementAdmin($parentId, $type, @Yii::app()->session["userId"]) ?>";
-var contactTypes = [{ name : "people", color: "yellow", icon:"user", label:"Citoyens" }];
+var contactTypes = [{ name : "people", color: "yellow", icon:"user", label:"People" }];
 var listMails = {};
 var rolesList=[ tradCategory.financier, tradCategory.partner, tradCategory.sponsor, tradCategory.organizor, tradCategory.president, tradCategory.director, tradCategory.speaker, tradCategory.intervener];
 if(elementType != "<?php echo Event::COLLECTION ?>" || isElementAdmin)
-	contactTypes.push({ name : "organizations", color: "green", icon:"group", label:"Organisations" });
+	contactTypes.push({ name : "organizations", color: "green", icon:"group", label:"Organizations" });
 
 
 var members = <?php echo json_encode(@$members) ?>;
@@ -406,7 +406,7 @@ function switchContact(){
 	mylog.log("switchContact");
 	$("#select-type-search-contacts").prop("checked", true);
 	$("#btn-save").removeClass("hidden");
-	$("#search-contact").attr("placeholder", "Recherchez parmis vos contacts...");
+	$("#search-contact").attr("placeholder", trad.searchamongcontact+"...");
 	showMyContactInModalAddMembers(addLinkDynForm, "#list-scroll-type");
 	addLinkSearchMode = "contacts";
 	filterContact($("#search-contact").val());
@@ -606,7 +606,7 @@ function buildModal(fieldObj, idUi){
 				    '<div class="modal-content">'+
 				      '<div class="modal-header">'+
 				        //'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'+
-				        '<input type="text" id="search-contact" class="form-control pull-right" placeholder="Recherchez parmis vos contacts...">' +
+				        '<input type="text" id="search-contact" class="form-control pull-right" placeholder="'+trad.searchamongcontact+'...">' +
 						'<h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> '+fieldObj.title1+'</h4>'+
 				      '</div>'+
 				      '<div class="modal-body">'+
@@ -624,7 +624,7 @@ function buildModal(fieldObj, idUi){
 	fieldHTML += 								'<li>'+
 													'<div id="btn-scroll-type-'+type.name+'" class="btn btn-default btn-scroll-type text-'+type.color+'">' +
 														//'<input type="checkbox" name="chk-all-type'+type.name+'" id="chk-all-type'+type.name+'" value="'+type.name+'"> '+
-														'<span style="font-size:16px;"><i class="fa fa-'+type.icon+'"></i> ' + type.label + "</span>" +
+														'<span style="font-size:16px;"><i class="fa fa-'+type.icon+'"></i> ' + trad[type.label] + "</span>" +
 													'</div>'+
 												'</li>';
 											});									
@@ -679,7 +679,7 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 		mylog.log("fieldObj.contactTypes", key, type, typeof type);
 	fieldHTML += 			'<div class="panel panel-default" id="scroll-type-'+type.name+'">  '+	
 								'<div class="panel-heading">'+
-									'<h4 class="text-'+type.color+'"><i class="fa fa-'+type.icon+'"></i> '+type.label+'</h4>'+			
+									'<h4 class="text-'+type.color+'"><i class="fa fa-'+type.icon+'"></i> '+trad[type.label]+'</h4>'+			
 								'</div>'+
 								'<div class="panel-body no-padding">'+
 									'<div class="list-group padding-5">'+
@@ -771,7 +771,7 @@ function autoCompleteEmailAddMember(searchValue){
 	if (elementType == "<?php echo Event::COLLECTION ?>" && !isElementAdmin)
 		data.searchMode = "personOnly";
 
-	$("#list-scroll-type").html("<div class='padding-10'><i class='fa fa-spin fa-refresh'></i> Recherche en cours</div>");
+	$("#list-scroll-type").html("<div class='padding-10'><i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+"</div>");
 	$.ajax({
 		type: "POST",
         url: baseUrl+'/'+moduleId+'/search/searchmemberautocomplete',
@@ -1395,9 +1395,7 @@ function buildModalInvite(fieldObj, idUi){
 				  '<div class="modal-dialog">'+
 				    '<div class="modal-content">'+
 				      '<div class="modal-header">'+
-				        //'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'+
-				        // '<input type="text" id="search-contact" class="form-control pull-right" placeholder="Recherchez parmis vos contacts...">' +
-						'<div class="col-xs-6" ><h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> '+fieldObj.title1+'</h4></div>'+
+				        '<div class="col-xs-6" ><h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> '+fieldObj.title1+'</h4></div>'+
 						'<div class="col-xs-6 hidden" id="countContacts" ><h4 class="modal-title pull-right"><span id="nbContacts"></span> / <span id="allContacts"></span> contacts selectionnées</h4></div>'+
 				      '</div>'+
 				      '<div class="modal-body">'+

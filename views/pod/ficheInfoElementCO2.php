@@ -356,8 +356,9 @@
 									echo $address;
 								
 						
-									if(empty($element["address"]["codeInsee"]) && $type==Person::COLLECTION && ($edit==true || $openEdition==true )) {
-										echo '<br/><a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.Yii::t("common", "Connect to your city").'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe" >'. Yii::t("common", "Why ?").'</a>';
+									if(empty($element["address"]["codeInsee"]) && $type==Person::COLLECTION && 
+										($edit==true || $openEdition==true )) {
+										echo '<br/><a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.Yii::t("common", "Connect to your city")./*'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe" >'. Yii::t("common", "Why ?").*/'</a>';
 									}else{
 										echo '<a href="javascript:;" id="btn-remove-geopos" class="pull-right tooltips" data-toggle="tooltip" data-placement="bottom" title="'.Yii::t("common","Remove Locality").'">
 													<i class="fa text-red fa-trash-o"></i>

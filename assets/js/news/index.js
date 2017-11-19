@@ -71,7 +71,6 @@ var loadStream = function(indexMin, indexMax){ mylog.log("loadStream");
 		    	mylog.log("LOAD NEWS BY AJAX");
 		    	//mylog.log(data.news);
 		    	if(data){
-		    		alert();
 					buildTimeLine (data.news, indexMin, indexMax);
 					bindTags();
 					if(typeof(data.limitDate.created) == "object")
@@ -353,7 +352,7 @@ function modifyNews(idNews,typeNews){
 	 	
 	 	message += "<div id='container-txtarea-news-"+idNews+"' class='updateMention'>";
 		message += 	"<textarea id='textarea-edit-news"+idNews+"' class='form-control newsContentEdit newsTextUpdate get-url-input' placeholder='modifier votre message'>"+commentContent+"</textarea>"+
-				   	"<div id='resultsUpdate' class='bg-white results col-sm-12'>";
+				   	"<div id='resultsUpdate' class='bg-white results col-sm-12 col-xs-12'>";
 				   	if(typeof updateNews[idNews]["media"] != "undefined"){
 				   		if(updateNews[idNews]["media"]["type"]=="url_content")
 				   			message += processUrl.getMediaCommonHtml(updateNews[idNews]["media"],"save");
@@ -398,11 +397,13 @@ function modifyNews(idNews,typeNews){
 	      callback: function() {
 	      	heightCurrent=$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").height();
 	      	$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").append("<div class='updateLoading' style='line-height:"+heightCurrent+"px'><i class='fa fa-spin fa-spinner'></i> En cours de modification</div>");
-	      	$('.newsTextUpdate').mentionsInput('getMentions', function(data) {
+	      	
+	      	/*$('.newsTextUpdate').mentionsInput('getMentions', function(data) {
       			mentionsInput=data;
-    		});
+    		});*/
     		newNews = new Object;
     		newNews.idNews = idNews;
+    		newNews.text =$(".newsTextUpdate").val();
 			if($("#resultsUpdate").html() != ""){
 				newNews.media=new Object;	
 				newNews.media.type=$("#resultsUpdate .type").val();
@@ -449,11 +450,9 @@ function modifyNews(idNews,typeNews){
 			if ($("#tagsUpdate").val() != ""){
 				newNews.tags = $("#tagsUpdate").val().split(",");	
 			}
-			if (typeof mentionsInput != "undefined" && mentionsInput.length != 0){
-				newNews.mentions=mentionsInput;
-			}
+			newNews=mentionsInit.beforeSave(newNews, '.newsTextUpdate');
+			
 		    //if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));	
-			newNews.text =$(".newsTextUpdate").val();
 			$.ajax({
 			        type: "POST",
 			        url: baseUrl+"/"+moduleId+"/news/update?tpl=co2",
@@ -542,7 +541,23 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
 	textNews=data.text;
 	$(idTextArea).val(textNews);
 	
-	$(idTextArea).mentionsInput("update", data.mentions);
+	//$(idTextArea).mentionsInput("update", data.mentions);
+	if(typeof data.mentions != "undefined" && data.mentions.length != 0){
+		text=data.text;
+		$.each(data.mentions, function(e,v){
+			if(typeof v.slug != "undefined")
+				text=text.replace("@"+v.slug, v.name);
+		});
+
+		/*$(idTextArea).mentionsInput('val', function(text) {
+      		text.replace("@@", "@");
+      		$(this).val(text);
+      		$(this).text(text);
+    	});*/
+		$(idTextArea).val(text);
+		$(idTextArea).mentionsInput("update", data.mentions);
+		//$(idTextArea).focus()
+	}
 	$(idTextArea).on('keyup ', function(e){
 		var heightTxtArea = $(idTextArea).css("height");
     	$("#container-txtarea-news-"+idNews).css('height', heightTxtArea);
@@ -767,13 +782,13 @@ function showFormBlock(bool){
 		if(isLiveGlobal()){
 			scopeHtml ="";
 
-			if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false" && communexion.state){
+			if( typeof communexion != "undefined" && notEmpty(communexion.values)){
 				scopeHtml +='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-	            				'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
-	                        	'data-scope-value="'+$.cookie('communexionValue')+'" '+
-	                        	'data-scope-name="'+$.cookie('communexionName')+'" '+
-	                        	'data-scope-level="'+$.cookie('communexionLevel')+'" '+
-	                        	'data-scope-type="'+$.cookie('communexionType')+'" '+
+	            				'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+communexion.currentName+'" '+
+	                        	 'data-scope-value="'+communexion.currentValue+'" '+
+                            	'data-scope-name="'+communexion.currentName+'" '+
+                            	'data-scope-level="'+communexion.currentLevel+'" '+
+                            	'data-scope-type="'+communexion.communexionType+'" '+
 	            				'id="btn-my-co">'+
 	            				'<i class="fa fa-university"></i>'+
 	            			'</a>';
@@ -799,7 +814,7 @@ function showFormBlock(bool){
                         '<div class="scope-min-header list_tags_scopes hidden-xs text-left ellipsis">'+
             				$(".scope-min-header").html()+
             			'</div>';
-			if(globalCommunexion){
+			if(communexion.state){
 				scopeHtml='<a class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Quitter la communexion">'+
                 			'<i class="fa fa-sign-in"></i>'+
             				'</a>'+
@@ -808,7 +823,7 @@ function showFormBlock(bool){
 			actionOnSetGlobalScope="save";
 			$("#scopeListContainerForm").append(scopeHtml);
 			$(".item-globalscope-checker:last-child").trigger("click").removeClass("inactive");
-			if(globalCommunexion)
+			if(communexion.state)
             	$(".item-globalscope-checker").attr('disabled', true);
 			$("#container-scope-filter").hide();
 			bindCommunexionScopeEvents();
@@ -1026,9 +1041,10 @@ function getMediaHtml(data,action,idNews){
     return content;
 }
 function saveNews(){
-	$('textarea.mention').mentionsInput('getMentions', function(data) {
+	//mentionsResult=mentionsInit.beforeSave('textarea.mention');
+	/*$('textarea.mention').mentionsInput('getMentions', function(data) {
       mentionsInput=data;
-    });
+    });*/
 	var formNews = $('#form-news');
 	var errorHandler2 = $('.errorHandler', formNews);
 	var successHandler2 = $('.successHandler', formNews);
@@ -1164,9 +1180,11 @@ function saveNews(){
 					newNews.codeInsee = $("input[name='cityInsee']").val();
 				if($("input[name='cityPostalCode']").length && contextParentType == "city")
 					newNews.postalCode = $("input[name='cityPostalCode']").val();
-				if (mentionsInput.length != 0){
-					newNews.mentions=mentionsInput;
-				}
+				/*if (mentionsResult.mentionsInput.length != 0){
+					newNews.mentions=mentionsResult.mentionsInput;
+					newNews.text=mentionsResult.text;
+				}*/
+				newNews=mentionsInit.beforeSave(newNews, 'textarea.mention');
 				mylog.log(newNews);
 				$.ajax({
 			        type: "POST",
@@ -1179,7 +1197,8 @@ function saveNews(){
 		    		if(data)
 		    		{
 		    			$("#form-news #get_url").val("");
- 						$('textarea.mention').mentionsInput('reset');
+		    			mentionsInit.reset('textarea.mention');
+ 						//$('textarea.mention').mentionsInput('reset');
  						$("#form-news #results").html("").hide();
  						$("#form-news #tags").select2('val', "");
  						showFormBlock(false);
@@ -1447,20 +1466,21 @@ function getMediaFiles(o,newsId, edit){
 	return html;
 }	
 function deleteImage(id,name,hideMsg,communevent){
+	var imgToDelete=id;
 	if(communevent==true)
 		path="communevent";
 	else
-		path="album";
+		path="commuencter";
 	$.ajax({
-			url : baseUrl+"/"+moduleId+"/document/delete/dir/communecter/type/"+contextParentType+"/parentId/"+contextParentId,			
+			url : baseUrl+"/"+moduleId+"/document/delete/dir/"+moduleId+"/type/"+contextParentType+"/id/"+contextParentId,			
 			type: "POST",
-			data: {"name": name, "parentId": contextParentId, "parentType": contextParentType, "path" : path, "docId" : id},
+			data: {"name": name, "parentId": contextParentId, "parentType": contextParentType, "path" : path, "ids" : [id]},
 			dataType: "json",
 			success: function(data){
 				if(data.result){
 					if(hideMsg!=true){
 						countImg=$("#results img").length;
-						$("#deleteImg"+data.id).parents().eq(1).remove();
+						$("#deleteImg"+imgToDelete).parents().eq(1).remove();
 						idImg=countImg-1;
 						if(idImg==0){
 							$("#results").empty().hide();

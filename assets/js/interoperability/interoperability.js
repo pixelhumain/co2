@@ -18,14 +18,27 @@ function getGeofilterPolygon(geoShape) {
 
     city_geoShape = [];
 
-    $.each(geoShape.coordinates, function(index, value) {
+    if (geoShape.type == "Polygon") {
 
-        $.each(value, function(index2, value2) {
-            city_geoShape.push("("+value2[1], value2[0]+")");
+        $.each(geoShape.coordinates, function(index, value) {
+            $.each(value, function(index2, value2) {
+                city_geoShape.push("("+value2[1], value2[0]+")");
+            });
         });
-    });
+        res = city_geoShape.join(",");
+    } else if (geoShape.type == "MultiPolygon") {
 
-    res = city_geoShape.join(",");
+        $.each(geoShape.coordinates, function(index, value) {
+            $.each(value, function(index2, value2) {
+                $.each(value, function(index3, value3) {
+                    city_geoShape.push("("+value2[1], value2[0]+")");
+                });
+            });
+        });
+        res = city_geoShape.join(",");
+    }
+
+    mylog.log('LE NOUVEAU GEOSHAPE', res);
     return res;
 }
 
@@ -569,7 +582,14 @@ function getCityId() {
     } else { 
         $.each(myMultiScopes, function(index, value) { 
             if (value.active == true) {
-                city_id = index;
+                if (value.type == "city") {
+                    city_id = index;
+                } else if (value.type == "cp") {
+                    city_data = getCityDataByInsee(value.name);
+                    city_id = city_data._id.$id
+                } else {
+                    city_id = index;
+                } 
             }
         });
     }
@@ -577,6 +597,26 @@ function getCityId() {
     return city_id;
 }
 
+function getTypeZone() {
+
+    if ($.cookie().communexionActivated == true) {
+        type_zone = "city";
+    } else { 
+        $.each(myMultiScopes, function(index, value) { 
+            if (value.active == true) {
+                if (value.type == "city") {
+                    type_zone = "city";
+                } else if (value.type == "cp") {
+                    type_zone = "city";
+                } else {
+                    type_zone = "zone";
+                } 
+            }
+        });
+    }
+
+    return type_zone;
+}
 
 function getCityDataByInsee(insee) {
 
@@ -598,13 +638,13 @@ function getCityDataByInsee(insee) {
     return city_data;
 }
 
-function getCityDataById(id) {
+function getCityDataById(id, type=null) {
 
     $.ajax({
         type: "GET",
-        url: baseUrl + "/co2/interoperability/get/id/"+id,
+        url: baseUrl + "/co2/interoperability/get/type/"+type+"/id/"+id,
         async: false,
-        success: function(data){ mylog.log("succes get CityDataByInsee", data); //mylog.dir(data);
+        success: function(data){ mylog.log("succes get CityDataById", data); //mylog.dir(data);
             if ((Object.keys(data).length) <= 1) {
                 $.each(data, function(index, value) {
                     city_data = value;
@@ -615,8 +655,8 @@ function getCityDataById(id) {
             }
         }
     });
-    return city_data;
 
+    return city_data;
 }
 
 function getUrlInteropForWiki(wikidataID) {
@@ -811,27 +851,25 @@ function getIconColorForInteropElements(type_elt) {
 function getImageIcoForInteropElements(type_elt) {
 
     var icon_image = "";
-    var baseUrlJustForThis = baseUrl.substring(0,baseUrl.length-2);
-    var baseUrlJustForThis = "";
 
     if (type_elt == "datanova") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/logo-laposte.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/logo-laposte.png'>";
     } else if (type_elt == "ods") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/opendata-soft-logo.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/opendata-soft-logo.png'>";
     } else if (type_elt == "osm") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/OSM-logo.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/OSM-logo.png'>";
     } else if (type_elt == "wiki") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/logo-wikidata.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/logo-wikidata.png'>";
     } else if (type_elt == "datagouv") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/data-gouv-logo.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/data-gouv-logo.png'>";
     } else if (type_elt == "poleemploi") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/logo_pole_emploi.png'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/logo_pole_emploi.png'>";
     } else if (type_elt == "educ_etab" || type_elt == "educ_membre" || type_elt == "educ_ecole" || type_elt == "educ_struct") {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"/images/logos/logo_open_data_educ.jpg'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"/images/logos/logo_open_data_educ.jpg'>";
     } 
 
     else {
-        icon_image = "<img width=100 style='margin-top:20px;' src='"+baseUrlJustForThis+moduleUrl+"'>";
+        icon_image = "<img width=100 style='margin-top:20px;' src='"+moduleUrl+"'>";
     }
 
     return icon_image;
@@ -840,23 +878,23 @@ function getImageIcoForInteropElements(type_elt) {
 
 function getimgProfilPathForInteropDataOnMap(type_elt) {
 
-    var imgProfilPath;
-    var baseUrlJustForThis = baseUrl.substring(0,baseUrl.length-2);
+    // var imgProfilPath;
+    // var baseUrlJustForThis = baseUrl.substring(0,baseUrl.length-2);
 
     if (type_elt == "poi.interop.datanova") {
-        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/logo-laposte.png";
+        var imgProfilPath = moduleUrl+"/images/logos/logo-laposte.png";
     } else if (type_elt == "poi.interop.wiki") {
-        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/logo-wikidata.png";
+        var imgProfilPath = moduleUrl+"/images/logos/logo-wikidata.png";
     } else if (type_elt == "poi.interop.datagouv") {
-        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/data-gouv-logo.png";
+        var imgProfilPath = moduleUrl+"/images/logos/data-gouv-logo.png";
     } else if (type_elt == "poi.interop.poleemploi") {
-        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/logo_pole_emploi.png";
+        var imgProfilPath = moduleUrl+"/images/logos/logo_pole_emploi.png";
     } else if (type_elt == "poi.interop.osm") {
-        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/OSM-logo.png";
+        var imgProfilPath = moduleUrl+"/images/logos/OSM-logo.png";
     } else if (type_elt == "poi.interop.ods") {
-        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/opendata-soft-logo.png";
+        var imgProfilPath = moduleUrl+"/images/logos/opendata-soft-logo.png";
     } else if (type_elt == "poi.interop.educ_etab" || type_elt == "poi.interop.educ_membre" || type_elt == "poi.interop.educ_ecole" || type_elt == "poi.interop.educ_struct") {
-        var imgProfilPath = baseUrlJustForThis+moduleUrl+"/images/logos/logo_open_data_educ.jpg";
+        var imgProfilPath = moduleUrl+"/images/logos/logo_open_data_educ.jpg";
     }
     return imgProfilPath;
 }

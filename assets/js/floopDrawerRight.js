@@ -19,9 +19,9 @@ var openPanelType = { 	"people" 		 : "citoyens",
 var tooltips_lbl = { 	"people" 		  : "Ajouter quelqu'un à votre répertoire.",
 						"organizations"   : "Créer une nouvelle organisation",
 						"projects" 	 	  : "Créer un nouveau projet",
-						"projectsHistory" : "Afficher/Cacher les vieux projets",
+						"projectsHistory" : trad.showhideoldprojects,
 						"events" 		  : "Créer un nouvel événement",
-						"eventsHistory"   : "Afficher/Cacher les vieux événements",
+						"eventsHistory"   : trad.showhideoldevents,
 					};
 
 var floopTypeUsed = new Array();
@@ -69,7 +69,7 @@ function buildListContactHtml(contacts, myId){
 										//'<button onclick="'+urlBtnAdd+'" class="tooltips btn btn-default btn-sm pull-right btn_shortcut_add bg-'+type.color+'" data-placement="left" data-original-title="'+tooltips_lbl[type.name]+'">'+
 										//	'<i class="fa fa-search"></i>'+
 										//'</button>' +		
-										'<i class="fa fa-'+type.icon+'"></i> <span class="">'+t('My '+type.name)+"</span>";
+										'<i class="fa fa-'+type.icon+'"></i> <span class="">'+trad['my'+type.name]+"</span>";
 										if(myId != ""){
 		//HTML += 						'<button onclick="'+urlBtnAdd+'" class="tooltips btn btn-default btn-sm pull-right btn_shortcut_add text-'+type.color+'" data-placement="left" data-original-title="'+tooltips_lbl[type.name]+'">'+
 		//									'<i class="fa fa-plus"></i>'+
@@ -100,7 +100,7 @@ function buildListContactHtml(contacts, myId){
 						'</div>'+
 					  '</div>' +
 					  '</div>';
-		HTML += '<i class="fa fa-search" style="padding:15px 0px 15px 11px;"></i><input type="text" id="search-contact" class="form-control" placeholder="'+t('Search name, postal code, city ...')+'">';
+		HTML += '<i class="fa fa-search" style="padding:15px 0px 15px 11px;"></i><input type="text" id="search-contact" class="form-control" placeholder="'+trad.searchnamepostalcity+'">';
 				
 
 		return HTML;

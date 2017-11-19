@@ -41,7 +41,7 @@ $this->renderPartial($layoutPath.'header',
     #page .bg-yellow{
         background-color:#FFC600 !important;
         color:white!important;
-    }
+    }N
     #page .bg-turq{
         background-color: #229296 !important;
         color:white!important;
@@ -319,13 +319,13 @@ $this->renderPartial($layoutPath.'header',
         "struct_recherche" : { color: "blue",   icon: "bullhorn",   name: "Structures de recherche" },
     }
 
-    if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
-    {
-      $.each(themeObj.headerParams,function(k,v) 
-      { 
-        headerParams[k] = v;
-      });
-    }
+    // if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
+    // {
+    //   $.each(themeObj.headerParams,function(k,v) 
+    //   { 
+    //     headerParams[k] = v;
+    //   });
+    // }
 
 	jQuery(document).ready(function() {
         initKInterface({"affixTop":320}); 
@@ -420,21 +420,14 @@ $this->renderPartial($layoutPath.'header',
     }
 
     function initTypeSearchInterop(){
-
         contextTestMap = [];
-
         scrollEnd = false;
-
         all_interop_data = [];
-
         all_interop_url = [];
-
         totalData = 0;
         nb_of_stop = 0;
-
         startNow = 0;
         endNow = 30;
-
         indexMin = 0;
         indexMax = 30;
     }
@@ -445,7 +438,10 @@ $this->renderPartial($layoutPath.'header',
         var url_interop = "";
 
         city_id = getCityId();
-        city_data = getCityDataById(city_id);
+        type_zone = getTypeZone();
+
+        city_data = getCityDataById(city_id, type_zone);
+
         var geoShape = getGeoShapeForOsm(city_data.geoShape);
         var geofilter = getGeofilterPolygon(city_data.geoShape);
         var city_wikidataID = city_data.wikidataID;
@@ -592,9 +588,9 @@ $this->renderPartial($layoutPath.'header',
 	    $(".btn-start-search").removeClass("bg-dark");
 	    
 	    if(indexMin > 0)
-	    $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
+	    $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
 	    else
-	    $("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span></center>");
+	    $("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
 	      
 	    if(isMapEnd) {
 	      $.blockUI({message : "<h1 class='homestead text-red'><i class='fa fa-spin fa-circle-o-notch'></i> Commune<span class='text-dark'>xion en cours ...</span></h1>"});
@@ -608,7 +604,8 @@ $this->renderPartial($layoutPath.'header',
 	            mylog.log("error autocomplete INTEROP search"); mylog.dir(data);     
 	            //signal que le chargement est terminé
 	            loadingData = false;  
-                $('#dropdown_search').append("<br/><div><h1>Une requête n'a pas abouti ... </h1></div>");   
+                // $('#dropdown_search').append("<br/><div><h1>Something went wrong during this research ... </h1></div>");   
+                $("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'></i> Something went wrong during this research ...</span></center>");
 	        },
 	        success: function(data){ mylog.log("success autocomplete INTEROP search", data); 
 	        	toastr.success("Une partie des données est arrivé");
@@ -690,7 +687,7 @@ $this->renderPartial($layoutPath.'header',
 		                    $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
 		                    if(indexMin == 0){
 		                        //ajout du footer   
-		                        var msg = "<i class='fa fa-ban'></i> Aucun résultat";    
+		                        var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
 		                        if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
 		                        str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
 		                        str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
@@ -761,7 +758,7 @@ $this->renderPartial($layoutPath.'header',
 		                        setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
 		                        $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
 		                        $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
-		                        activateGlobalCommunexion(true);
+		                        activateGlobalCommunexion(true, true);
 		                    });
 
 		                    $.unblockUI();

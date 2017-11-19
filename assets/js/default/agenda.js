@@ -101,9 +101,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
     //$("#dropdown_search").css({"display" : "inline" });
 
     if(indexMin > 0)
-    $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...");
+    $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
     else
-    $("#dropdown_search").html("<center><span class='search-loader text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> Recherche en cours ...</span></center>");
+    $("#dropdown_search").html("<center><span class='search-loader text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
       
     if(isMapEnd)
         $.blockUI({
@@ -163,7 +163,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
                   type = typeObj[o.type].ctrl;
                   //if(type=="citoyen") type = "person";
                   var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
-                  var onclick = 'urlCtrl.loadByHash("#' + type + '.detail.id.' + id + '");';
+                  var onclick = 'urlCtrl.loadByHash("#page.type.' + o.type + '.id.' + id + '");';
                   var onclickCp = "";
                   var target = " target='_blank'";
                   var dataId = "";
@@ -245,7 +245,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax){
                   $(".btn-start-search").html("<i class='fa fa-search'></i>"); 
                   if(indexMin == 0){
                     //ajout du footer       
-                    var msg = "Aucun résultat";    
+                    var msg = trad.noresult;    
                     if(name == "" && locality == "") msg = "<h3 class='text-dark'><i class='fa fa-3x fa-keyboard-o'></i><br> Préciser votre recherche pour plus de résultats ...</h3>"; 
                     str += '<div class="center" id="footerDropdown">';
                     str += "<hr style='float:left; width:100%;'/><label style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</label><br/>";

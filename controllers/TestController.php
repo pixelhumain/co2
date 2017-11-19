@@ -9,6 +9,136 @@ class TestController extends CommunecterController {
     $userNotifcations = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );//PHDB::find( ActivityStream::COLLECTION,array("notify.id"  => Yii::app()->session["userId"] ));
     echo count($userNotifcations);
   }
+
+  public function actionMsg() {
+    
+    $langs = array("en","fr","de","es") ;
+    $files = array("activityList","category","chart","comment","common","cooperation","docs","document","event","form","home","import","jobs","KCFinderWidget","loader","login","mail","need","news","notification","openData","organization","person","project","rooms","survey","translate" );
+    echo "<h1>Missing in folder 'de'</h1>";
+    foreach ($files as $key => $value) {
+    	echo "<h3 style='color:red'>file : ".$value.".php</h3>";
+    	try {
+    		$fr = include ( "./protected/messages/fr/".$value.".php");
+	    	//$es = include ( "./protected/messages/es/".$value.".php");
+	    	$de = include ( "./protected/messages/de/".$value.".php");
+	    	foreach ($fr as $k => $v) {
+	    		//echo $k.":".$v."<br/>";
+	    		//if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
+	    		if(!@$de[$k]) echo '<span>"'.htmlspecialchars($k).'" => "",</span> <br/>';
+	    	}	
+    	} catch (Exception $e) {
+    		echo $value."file unfound <br/>";
+    	}
+    	
+    }
+    echo "<h1>Missing in folder 'es'</h1>";
+    foreach ($files as $key => $value) {
+    	echo "<h3>file : ".$value."</h3>";
+    	try {
+    		$fr = include ( "./protected/messages/fr/".$value.".php");
+	    	$es = include ( "./protected/messages/es/".$value.".php");
+	    	//$de = include ( "./protected/messages/de/".$value.".php");
+	    	foreach ($fr as $k => $v) {
+	    		//echo $k.":".$v."<br/>";
+	    		//if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
+	    		if(!@$es[$k])echo '<span>"'.$k.'" => "",</span> <br/>';
+	    	}	
+    	} catch (Exception $e) {
+    		echo $value."file unfound <br/>";
+    	}
+    	
+    }
+    
+
+  }
+
+  public function actionMango() {
+    require_once '../../pixelhumain/ph/vendor/autoload.php';
+	$api = new MangoPay\MangoPayApi();
+
+	// configuration
+	$api->Config->ClientId = Yii::app()->params["mangoPay"]["ClientId"];
+	$api->Config->ClientPassword = Yii::app()->params["mangoPay"]["ClientPassword"];
+	$api->Config->TemporaryFolder = Yii::app()->params["mangoPay"]["TemporaryFolder"];
+
+	/*define('MangoPayDemo_ClientId', Yii::app()->params["mangoPay"]["ClientId"]);
+	define('MangoPayDemo_ClientPassword', Yii::app()->params["mangoPay"]["ClientPassword"]);
+	define('TemporaryFolder',Yii::app()->params["mangoPay"]["TemporaryFolder"]);
+	*/
+
+	// call some API methods...
+	echo "inside Mango ";	
+	/*try {
+		$john = $api->Users->Get("xx");
+		if(!@$john){
+			$User = new MangoPay\UserNatural();
+			$User->Email = "test_natural@testmangopay.com";
+			$User->FirstName = "xxx";
+			$User->LastName = "yyyy";
+			$User->Birthday = 121271;
+			$User->Nationality = "FR";
+			$User->CountryOfResidence = "RE";
+			$result = $api->Users->Create($User);
+			$_SESSION["MangoPayDemo"]["UserNatural"] = $result->Id;
+			
+			echo '<pre>' . var_export($result, true) . '</pre>';
+			echo "<br/>".$_SESSION["MangoPayDemo"]["UserNatural"]."<br/><br/>";
+
+			$Wallet = new \MangoPay\Wallet();
+			$Wallet->Owners = array($_SESSION["MangoPayDemo"]["UserNatural"]);
+			$Wallet->Description = "Demo wallet for User 1";
+			$Wallet->Currency = "EUR";
+			$result = $api->Wallets->Create($Wallet);
+
+			echo '<pre>' . var_export($result, true) . '</pre>';
+			echo "<br/><br/><br/>";
+		} else {
+			echo '<pre>' . var_export($john, true) . '</pre>';
+			$wal = $api->Users->GetWallets("35027132");
+			//echo '<pre>' . var_export($wal, true) . '</pre>';
+			foreach ($wal as $k => $v) {
+		    	echo $v->Id." : ".$v->Description."<br/>";
+		 
+		    }
+			echo "<br/><br/><br/>";
+		}
+
+	    
+	} catch(MangoPay\Libraries\ResponseException $e) {
+	    // handle/log the response exception with code $e->GetCode(), message $e->GetMessage() and error(s) $e->GetErrorDetails()
+	    echo "<br/><br/><br/>";
+	    //echo '<pre>' . var_export($e, true) . '</pre>';
+	    echo $e->GetCode()."<br/><br/>";
+	    echo $e->GetMessage()."<br/><br/>";
+	    echo $e->GetErrorDetails()."<br/><br/>";
+	} catch(MangoPay\Libraries\Exception $e) {
+	    // handle/log the exception $e->GetMessage()
+	    echo "<br/><br/><br/>";
+	    echo $e->GetMessage()."<br/>";
+	}*/
+
+	$params = array( "ClientId" => $api->Config->ClientId );
+	//$this->renderPartial( "doc/mango" , $params );
+	//$this->renderPartial( "api/index" , $params );
+	$this->renderPartial( "paymentDirect/index" , $params );
+  }
+
+  public function actionPay() {
+    require_once '../../pixelhumain/ph/vendor/autoload.php';
+	$api = new MangoPay\MangoPayApi();
+
+	// configuration
+	$api->Config->ClientId = Yii::app()->params["mangoPay"]["ClientId"];
+	$api->Config->ClientPassword = Yii::app()->params["mangoPay"]["ClientPassword"];
+	$api->Config->TemporaryFolder = Yii::app()->params["mangoPay"]["TemporaryFolder"];
+	
+	
+
+	$params = array( "ClientId" => $api->Config->ClientId );
+	//$this->renderPartial( "doc/mango" , $params );
+	//$this->renderPartial( "api/index" , $params );
+	$this->renderPartial( "paymentDirect/payment" , $params );
+  }
   
   public function actionMango() {
     require_once '../../pixelhumain/ph/vendor/autoload.php';

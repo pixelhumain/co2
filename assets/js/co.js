@@ -53,7 +53,7 @@ function checkPoll(){
 }
 function setLanguage(lang){
 	$.cookie('lang', lang, { expires: 365, path: "/" });
-	toastr.success("Changement de la langue en cours");
+	toastr.success(trad.changelanguageprocessing);
 	//window.reloadurlCtrl.loadByHash(location.hash);
 	location.reload();
 }
@@ -248,7 +248,7 @@ function openModal(key,collection,id,tpl,savePath,isSub){
 	});
 }
 
-function updateField(type,id,name,value,reload){ 
+function updateField(type,id,name,value,reload, toastr){ 
     	
 	$.ajax({
 	  type: "POST",
@@ -256,7 +256,8 @@ function updateField(type,id,name,value,reload){
 	  data: { "pk" : id ,"name" : name, value : value },
 	  success: function(data){
 		if(data.result) {
-        	toastr.success(data.msg);
+			if(toastr==null)
+        		toastr.success(data.msg);
         	if(reload)
         		urlCtrl.loadByHash(location.hash);
 		}
@@ -840,11 +841,11 @@ var urlCtrl = {
 		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
 			mylog.log("globalTheme", globalTheme);
-			if( hash.indexOf("#network") >= 0 &&
-				location.hash.indexOf("#network") >= 0 || hash=="#" || hash==""){ 
+			if( /*hash.indexOf("#network") < 0 &&
+				location.hash.indexOf("#network") >= 0 &&*/ hash!="#" && hash!=""){ 
 				mylog.log("network");
-			}
-			else{
+			//}
+			//else{
 				mylog.log("network2");
 				count=$(".breadcrumAnchor").length;
 				//case on reload view
@@ -997,7 +998,7 @@ also switches the global Title and Icon
 
 function  processingBlockUi() { 
 	msg = '<h4 style="font-weight:300" class=" text-dark padding-10">'+
-			'<i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...'+
+			'<i class="fa fa-spin fa-circle-o-notch"></i><br>'+trad.currentlyloading+'...'+
 		  '</h4>';
 
 	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
@@ -1528,7 +1529,9 @@ function  bindTags() {
 }
 
 function  bindExplainLinks() { 
-	$(".explainLink").click(function() {  
+	mylog.log("bindExplainLinks");
+	$(".explainLink").click(function() { 
+		mylog.log("explainLink");
 	    showDefinition( $(this).data("id") );
 	    return false;
 	 });
@@ -1746,7 +1749,7 @@ function myAdminList (ctypes) {
 				});
 			}
 		});
-		mylog.dir(myList);
+		mylog.log("myAdminList return", myList);
 	}
 	return myList;
 }
@@ -2061,7 +2064,7 @@ function inMyContacts (type,id) {
 	var res = false ;
 	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
 		$.each( myContacts[type], function( key,val ){
-			mylog.log("val", val);
+			//mylog.log("val", val);
 			if( ( typeof val["_id"] != "undefined" && id == val["_id"]["$id"] ) || 
 				(typeof val["id"] != "undefined" && id == val["id"] ) ) {
 				res = true;
@@ -2215,7 +2218,7 @@ var processUrl = {
 	        $("#status-ref").html("<span class='letter-red'><i class='fa fa-times'></i> cette url n'est pas valide.</span>");
 	        return;
 	    }
-		$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> recherche en cours</span>");
+		$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+"</span>");
 		$("#refResult").addClass("hidden");
 		$("#send-ref").addClass("hidden");
 
@@ -2669,7 +2672,7 @@ var collection = {
 				sure = confirm("Vous êtes sûr ?");
 			}
 			else if(action == "new" || action == "update")
-				params.name = prompt('Nom de la collection ?',name);
+				params.name = prompt(tradDynForm.collectionname+' ?',name);
 			if(action == "update")
 				params.oldname = name;
 			
@@ -2790,9 +2793,12 @@ var collection = {
 ********************************** */
 var contextData = null;
 var dynForm = null;
+var mentionsInput=[];
 var mentionsInit = {
 	stopMention : false,
+	isSearching : false,
 	get : function(domElement){
+		mentionsInput=[];
 		$(domElement).mentionsInput({
 		  onDataRequest:function (mode, query, callback) {
 			  	if(mentionsInit.stopMention)
@@ -2800,38 +2806,44 @@ var mentionsInit = {
 			  	var data = mentionsContact;
 			  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 				callback.call(this, data);
-		   		var search = {"search" : query};
+				mentionsInit.isSearching=true;
+		   		var search = {"searchType" : ["citoyens","organizations","projects"]};
 		  		$.ajax({
 					type: "POST",
-			        url: baseUrl+"/"+moduleId+"/search/searchmemberautocomplete",
+			        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
 			        data: search,
 			        dataType: "json",
 			        success: function(retdata){
 			        	if(!retdata){
 			        		toastr.error(retdata.content);
 			        	}else{
-				        	//mylog.log(retdata);
+				        	mylog.log(retdata);
 				        	data = [];
-				        	for(var key in retdata){
-					        	for (var id in retdata[key]){
+				        	//for(var key in retdata){
+					        //	for (var id in retdata[key]){
+					        $.each(retdata, function (e, value){
 						        	avatar="";
-						        	if(retdata[key][id].profilThumbImageUrl!="")
-						        		avatar = baseUrl+retdata[key][id].profilThumbImageUrl;
+						        	//console.log(retdata[key]);
+						        	//aert(retdata[key][id].type);
+						        	if(typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl!="")
+						        		avatar = baseUrl+value.profilThumbImageUrl;
 						        	object = new Object;
-						        	object.id = id;
-						        	object.name = retdata[key][id].name;
+						        	object.id = e;
+						        	object.name = value.name;
+						        	object.slug = value.slug;
 						        	object.avatar = avatar;
-						        	object.type = key;
+						        	object.type = value.type;
 						        	var findInLocal = _.findWhere(mentionsContact, {
-										name: retdata[key][id].name, 
-										type: key
+										name: value.name, 
+										type: value.type
 									}); 
 									if(typeof(findInLocal) == "undefined")
 										mentionsContact.push(object);
-						 			}
-				        	}
+						 	//		}
+				        	//}
+				        	});
 				        	data=mentionsContact;
-				        	//mylog.log(data);
+				        	mylog.log(data);
 				    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 							callback.call(this, data);
 							mylog.log(callback);
@@ -2840,6 +2852,48 @@ var mentionsInit = {
 				})
 		  	}
 	  	});
+	},
+	beforeSave : function(object, domElement){
+		$(domElement).mentionsInput('getMentions', function(data) {
+			mentionsInput=data;
+		});
+		if (typeof mentionsInput != "undefined" && mentionsInput.length != 0){
+			var textMention="";
+			$(domElement).mentionsInput('val', function(text) {
+				textMention=text;
+				$.each(mentionsInput, function(e,v){
+					strRep=v.name;
+					if(typeof v.slug != "undefined")
+						strRep="@"+v.slug;
+					textMention = textMention.replace("@["+v.name+"]("+v.type+":"+v.id+")", strRep);
+				});
+			});			
+			object.mentions=mentionsInput;
+			object.text=textMention;
+		}
+		return object;		      		
+	},
+	addMentionInText: function(text,mentions){
+		$.each(mentions, function( index, value ){
+			if(typeof value.slug != "undefined"){
+				str="<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+		   						value.name+
+		   					"</span>";
+				text = text.replace("@"+value.slug, str);
+			}else{
+				//Working on old news
+		   		array = text.split(value.value);
+		   		text=array[0]+
+		   					"<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+		   						value.name+
+		   					"</span>"+
+		   				array[1];
+		   	}   					
+		});
+		return text;
+	},
+	reset: function(domElement){
+		$(domElement).mentionsInput('reset');
 	}
 }
 var uploadObj = {
@@ -3088,7 +3142,7 @@ var dyFObj = {
 		            	// mylog.log("data.id", data.id, data.url);
 		            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
 				        	addLocationToFormloopEntity(data.id, collection, data.map);*/
-				        if (typeof afterSave == "function"){
+				       if (typeof afterSave == "function"){
 		            		afterSave(data);
 		            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 		            	} else {
@@ -3236,11 +3290,12 @@ var dyFObj = {
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
 	  	dyFObj.buildDynForm(afterLoad, data,dyFObj[dyFObj.activeElem],dyFObj.activeModal+" #ajaxFormModal");
-	  	if(typeof dyFObj[dyFObj.activeElem].titleClass != "undefined")
-	  		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-									  .addClass(dyFObj[dyFObj.activeElem].titleClass);
-		
-	  	$(dyFObj.activeModal+" #ajax-modal-modal-title").html((typeof dyFObj[dyFObj.activeElem].title != "undefined") ? dyFObj[dyFObj.activeElem].title : "");
+	  	//if(typeof dyFObj[dyFObj.currentKFormType].color != "undefined")
+	  		//$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+									  	  //.addClass(dyFObj[dyFObj.currentKFormType].color);
+		//alert("CO "+typeObj[currentKFormType].color);
+                    
+	  	//$(dyFObj.activeModal+" #ajax-modal-modal-title").html((typeof dyFObj[dyFObj.activeElem].title != "undefined") ? dyFObj[dyFObj.activeElem].title : "");
 	},
 	/*subDynForm : function(type, afterLoad,data) {
 		smallMenu.open();
@@ -3376,51 +3431,59 @@ var dyFInputs = {
 	    dyFInputs.locationObj.countLocation = 0 ;
 	    dyFInputs.locationObj.addresses = (typeof dyFObj.elementData != "undefined" && dyFObj.elementData != null && typeof dyFObj.elementData.map.addresses != "undefined") ? dyFObj.elementData.map.addresses  :  [] ;
 	    updateLocality = false;
-
 	    // Initialize tags list for network in form of element
-		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"  && typeof typeObj != "undefined" ){
+		if(	typeof networkJson != 'undefined' && 
+			typeof networkJson.add != "undefined"  && 
+			typeof typeObj != "undefined" ){
 			$.each(networkJson.add, function(key, v) {
-				if(typeof networkJson.request.sourceKey != "undefined"){
-					sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
-					typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
-				}
-
-				if(v){
-					if(typeof networkJson.request.searchTag != "undefined"){
-						typeObj[key].dynForm.jsonSchema.properties.tags.data = networkJson.request.searchTag;
+				mylog.log("key", key);
+				if( typeof typeObj[key].dynForm != "undefined" ){
+					if(typeof networkJson.request.sourceKey != "undefined"){
+						sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
+						typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
 					}
 
+					if(v){
 
-					if(notNull(networkJson.dynForm)){
-						mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
-						mylog.log("networkTags", networkTags);
-						if(typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+						if(typeof networkJson.request.searchTag != "undefined"){
+							typeObj[key].dynForm.jsonSchema.properties.tags.data = networkJson.request.searchTag;
+						}
+
+						if(	typeof typeObj[key] != "undefined" &&
+							typeof typeObj[key].dynForm != "undefined" && 
+							typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+							mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
+							mylog.log("networkTags", networkTags);
 							typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
 							if(typeof networkJson.request.mainTag != "undefined")
 								typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
 						}
-						mylog.log("networkJson.dynForm");
-						mylog.log("networkJson.dynForm", "networkJson.dynForm");
-						if(notNull(networkJson.dynForm.extra)){
-							var nbListTags = 1 ;
-							mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
-							mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
-							while(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags)){
-								typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
-									"inputType" : "tags",
-									"placeholder" : networkJson.dynForm.extra["tags"+nbListTags].placeholder,
-									"values" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
-									"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
-									"label" : networkJson.dynForm.extra["tags"+nbListTags].list
-								};
-								nbListTags++;
+
+						if(notNull(networkJson.dynForm)){
+							mylog.log("networkJson.dynForm");
+							mylog.log("networkJson.dynForm", "networkJson.dynForm");
+							if(notNull(networkJson.dynForm.extra)){
+								var nbListTags = 1 ;
 								mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
 								mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
+								while(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags)){
+									typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
+										"inputType" : "tags",
+										"placeholder" : networkJson.dynForm.extra["tags"+nbListTags].placeholder,
+										"values" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
+										"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
+										"label" : networkJson.dynForm.extra["tags"+nbListTags].list
+									};
+									nbListTags++;
+									mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
+									mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
+								}
+								delete typeObj[key].dynForm.jsonSchema.properties.tags;
 							}
-							delete typeObj[key].dynForm.jsonSchema.properties.tags;
 						}
 					}
 				}
+				
 			});
 		}
 		
@@ -3512,21 +3575,23 @@ var dyFInputs = {
         inputType : "custom",
         html:"<div id='similarLink'><div id='listSameName'></div></div>",
     },
-    inputSelect :function(label, placeholder, list, rules) { 
+    inputSelect :function(label, placeholder, list, rules) {
+    	mylog.log("inputSelect", label, placeholder, list, rules);
 		var inputObj = {
 			inputType : "select",
 			label : ( notEmpty(label) ? label : "" ),
-			placeholder : ( notEmpty(placeholder) ? placeholder : "Choisir" ),
+			placeholder : ( notEmpty(placeholder) ? placeholder : trad.choose ),
 			options : ( notEmpty(list) ? list : [] ),
 			rules : ( notEmpty(rules) ? rules : {} )
 		};
 		return inputObj;
 	},
 	inputSelectGroup :function(label, placeholder, list, group, rules, init) { 
+		mylog.log("inputSelectGroup", label, placeholder, list, rules);
 		var inputObj = {
 			inputType : "select",
 			label : ( notEmpty(label) ? label : "" ),
-			placeholder : ( notEmpty(placeholder) ? placeholder : "Choisir" ),
+			placeholder : ( notEmpty(placeholder) ? placeholder : trad.choose ),
 			options : ( notEmpty(list) ? list : [] ),
 			groupOptions : ( notEmpty(group) ? group : [] ),
 			rules : ( notEmpty(rules) ? rules : {} ),
@@ -3586,10 +3651,10 @@ var dyFInputs = {
 		        	urlCtrl.loadByHash(location.hash);
         			$('#ajax-modal').modal("hide");
 		        });
-				$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-					  					  	  .addClass("bg-dark");
+				//$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+				//	  					  	  .addClass("bg-dark");
     		 	
-    		 	$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
+    		 	//$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
 
         	},1500);
     	}
@@ -4430,8 +4495,8 @@ var dyFInputs = {
     },
     voteDateEnd :{
     	inputType : "datetime",
-    	label : "Fin de la période de vote",
-    	placeholder : "Fin de la période de vote",
+    	label : tradDynForm.dateEndVoteSession,
+    	placeholder : tradDynForm.dateEndVoteSession,
     	rules : { 
     		required : true,
     		greaterThanNow : ["DD/MM/YYYY H:m"]
@@ -4439,8 +4504,8 @@ var dyFInputs = {
     },
     amendementDateEnd :{
     	inputType : "datetime",
-    	label : "Fin de la période d'amendement (ouverture des votes)",
-    	placeholder : "Fin de la période d'amendement",
+    	label : tradDynForm.dateEndAmendementSessionStartVote,
+    	placeholder : tradDynForm.dateEndAmendementSession,
     	rules : { 
     		required : true,
     		greaterThanNow : ["DD/MM/YYYY H:m"]
@@ -4559,8 +4624,8 @@ var typeObj = {
 			    }
 			}
 		}	},
-	addPhoto:{ titleClass : "bg-dark" },
-	addFile:{ titleClass : "bg-dark" },
+	addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
+	addFile:{ titleClass : "bg-dark", color : "bg-dark" },
 	person : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
 	persons : { sameAs:"person" },
 	people : { sameAs:"person" },
@@ -4619,7 +4684,7 @@ var typeObj = {
 				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
 				   ]	},
 	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
-	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
+	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
 	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
 	default : {icon:"arrow-circle-right",color:"dark"},
 	//"video" : {icon:"video-camera",color:"dark"},
@@ -5166,12 +5231,15 @@ function getContextDataLinks(){
 		success: function(data){
 			mylog.log("getContextDataLinks data", data);
 			Sig.restartMap();
-			contextData.map = {
-				data : data,
-				icon : "link",
-				title : "La communauté de <b>"+contextData.name+"</b>"
-			} ;
-			Sig.showMapElements(Sig.map, data, "link", "La communauté de <b>"+contextData.name+"</b>");
+			if(notNull(contextData)){
+				contextData.map = {
+					data : data,
+					icon : "link",
+					title : trad.thecommunityof+" <b>"+contextData.name+"</b>"
+				} ;
+				Sig.showMapElements(Sig.map, data, "link", trad.thecommunityof+" <b>"+contextData.name+"</b>");
+			}
+			
 			//showMap();
 		},
 		error: function (error) {

@@ -18,16 +18,14 @@ var formInMap = {
 	NE_level1Name : "",
 
 	NE_localityId : "",
+	NE_betweenCP : false,
 	geoShape : "",
 
 	typeSearchInternational : "",
 	formType : "",
 	updateLocality : false,
 	addressesIndex : false,
-	saveCities : new Array(),
-	uncomplete : false,
-
-	modePostalCode : false,
+	saveCities : {},
 	bindActived : false,
 
 
@@ -152,25 +150,20 @@ var formInMap = {
 		// ---------------- newElement_country
 		$('[name="newElement_country"]').change(function(){
 			mylog.log("change country");
-			formInMap.NE_country = $('[name="newElement_country"]').val() ;
-			formInMap.NE_insee = "";
-			formInMap.NE_lat = "";
-			formInMap.NE_lng = "";
-			formInMap.NE_city = "";
-			formInMap.NE_cp = "";
-			formInMap.NE_street = "";
 
+			formInMap.initVarNE()
+			formInMap.NE_country = $('[name="newElement_country"]').val() ;
 			formInMap.initHtml();
 			$("#country_sumery_value").html($('[name="newElement_country"]').val());
 			$("#newElement_btnValidateAddress").prop('disabled', true);
 			$("#divStreetAddress").addClass("hidden");
+
 			formInMap.initDropdown();
 			mylog.log("formInMap.NE_country", formInMap.NE_country, typeof formInMap.NE_country, formInMap.NE_country.length);
 			if(formInMap.NE_country != ""){
-				$("#divPostalCode").removeClass("hidden");
+				$("#divCP").addClass("hidden");
 				$("#divCity").removeClass("hidden");
 			}else{
-				$("#divPostalCode").addClass("hidden");
 				$("#divCity").addClass("hidden");
 			}
 				
@@ -192,6 +185,15 @@ var formInMap = {
 				}, 500);
 
 			}
+		});
+
+
+		// ---------------- newElement_city
+		$('[name="newElement_cp"]').keyup(function(){ 
+			mylog.log("newElement_cp", $('[name="newElement_cp"]').val().trim());
+			formInMap.NE_cp = $('[name="newElement_cp"]').val().trim();
+			formInMap.btnValideDisable( ($('[name="newElement_cp"]').val().trim().length == 0 ? true : false) );
+
 		});
 
 		$('[name="newElement_city"]').focusout(function(){
@@ -238,7 +240,7 @@ var formInMap = {
 			if(notEmpty(formInMap.saveCities[formInMap.NE_insee])){
 				var obj = { city : formInMap.saveCities[formInMap.NE_insee] }
 				obj.city.geoShape = 1;
-				if(formInMap.uncomplete == true){
+				if(formInMap.NE_betweenCP != false){
 					var postalCode = {};
 					
 					postalCode.name = obj.city.name;
@@ -259,34 +261,34 @@ var formInMap = {
 					data: obj,
 					dataType: "json",
 					success: function(data){
-						console.dir(obj.city);
-						mylog.log("data", data);
+						mylog.log("city/save obj.city", obj.city);
+						mylog.log("city/save data", data);
 						if(data.result){
-							formInMap.NE_localityId = data.id
-
-							if(data.level1){
-								formInMap.NE_level1 = data.level1;
-								formInMap.NE_level1 = data.level1Name;
-							}
-
-							if(data.level2){
-								formInMap.NE_level2 = data.level2;
-								formInMap.NE_level2 = data.level2Name;
-							}
-
-							if(data.level3){
-								formInMap.NE_level3 = data.level3;
-								formInMap.NE_level3 = data.level3Name;
-							}
-
-							if(data.level4){
-								formInMap.NE_level4 = data.level4;
-								formInMap.NE_level4 = data.level4Name;
-							}
-
-
-							formInMap.backToForm();
+							toastr.success(data.msg);
 						}
+
+						formInMap.NE_localityId = data.id
+						if(data.city.level1){
+							formInMap.NE_level1 = data.city.level1;
+							formInMap.NE_level1Name = data.city.level1Name;
+							mylog.log("city/save data.city.level1", data.city.level1);
+						}
+
+						if(data.city.level2){
+							formInMap.NE_level2 = data.city.level2;
+							formInMap.NE_level2Name = data.city.level2Name;
+						}
+
+						if(data.city.level3){
+							formInMap.NE_level3 = data.city.level3;
+							formInMap.NE_level3Name = data.city.level3Name;
+						}
+
+						if(data.city.level4){
+							formInMap.NE_level4 = data.city.level4;
+							formInMap.NE_level4Name = data.city.level4Name;
+						}
+						formInMap.backToForm();
 					},
 					error: function(error){
 						mylog.log("error", error);
@@ -324,21 +326,24 @@ var formInMap = {
 
 				mylog.log("autocompleteFormAddress success", data);
 				html="";
-				var allCP = new Array();
-				var allCities = new Array();
-				var inseeGeoSHapes = new Array();
-				formInMap.saveCities = new Array();
+				var inseeGeoSHapes = {};
+				formInMap.saveCities = {};
 				$.each(data.cities, function(key, value){
 					mylog.log("HERE", value);
 					var insee = value.insee;
 					var country = value.country;
-					if(notEmpty(value.save))
+					mylog.log("HERE formInMap.saveCities", notEmpty(value.save), value.save);
+					if(notEmpty(value.save) &&  value.save == true){
 						formInMap.saveCities[insee] = value;
-
+						mylog.log("HERE good save", insee, value, formInMap.saveCities);
+					}
+					mylog.log("HERE formInMap.saveCities", formInMap.saveCities);
 					if(notEmpty(value.geoShape))
 						inseeGeoSHapes[insee] = value.geoShape.coordinates[0];
 
-					if(currentScopeType == "city" || currentScopeType == "locality") { mylog.log("in scope city"); mylog.dir(value);
+					if(currentScopeType == "city" || currentScopeType == "locality") { 
+						mylog.log("in scope city"); 
+						mylog.dir(value);
 						mylog.log("locId", key, value);
 						if(value.postalCodes.length > 0){
 							$.each(value.postalCodes, function(keyCP, valueCP){
@@ -348,12 +353,19 @@ var formInMap = {
 								var lng = valueCP.geo.longitude;
 
 								var lblList = value.name + ", " + valueCP.name + ", " + valueCP.postalCode ;
+								if(notNull(value.level4Name))
+									lblList += " ( " + value.level4Name + " ) ";
+								else if(notNull(value.level3Name))
+									lblList += " ( " + value.level3Name + " ) ";
+								else if(notNull(value.level2Name))
+									lblList += " ( " + value.level2Name + " ) ";
+
 								html += "<li><a href='javascript:;' data-type='"+currentScopeType+"' "+
 												"data-locId='"+key+"' "+
-												"data-level4='"+value.level4+"' data-level4Name='"+value.level4Name+"'"+
-												"data-level3='"+value.level3+"' data-level3Name='"+value.level3Name+"'"+
-												"data-level2='"+value.level2+"' data-level2Name='"+value.level2Name+"'"+ 
-												"data-level1='"+value.level1+"' data-level1Name='"+value.level1Name+"'"+ 
+												"data-level4='"+value.level4+"' data-level4name='"+value.level4Name+"'"+
+												"data-level3='"+value.level3+"' data-level3name='"+value.level3Name+"'"+
+												"data-level2='"+value.level2+"' data-level2name='"+value.level2Name+"'"+ 
+												"data-level1='"+value.level1+"' data-level1name='"+value.level1Name+"'"+ 
 												"data-country='"+country+"' "+
 												"data-city='"+val+"' data-cp='"+lbl+"' "+
 												"data-lat='"+lat+"' data-lng='"+lng+"' "+
@@ -364,13 +376,26 @@ var formInMap = {
 							var lat = value.geo.latitude;
 							var lng = value.geo.longitude;
 							var lblList = value.name ;
+							if(notNull(value.level4Name))
+								lblList += " ( " + value.level4Name + " ) ";
+							else if(notNull(value.level3Name))
+								lblList += " ( " + value.level3Name + " ) ";
+							else if(notNull(value.level2Name))
+								lblList += " ( " + value.level2Name + " ) ";
+
 							html += "<li><a href='javascript:;' data-type='"+currentScopeType+"' "+
 												"data-locid='"+key+"' ";
+							if(notNull(value.level4Name))
+								lblList += " ( " + value.level4Name + " ) ";
+							else if(notNull(value.level3Name))
+								lblList += " ( " + value.level3Name + " ) ";
+							else if(notNull(value.level2Name))
+								lblList += " ( " + value.level2Name + " ) ";
 
-							html +=	"data-level4='"+value.level4+"' data-level4Name='"+value.level4Name+"'"+
-									"data-level3='"+value.level3+"' data-level3Name='"+value.level3Name+"'"+
-									"data-level2='"+value.level2+"' data-level2Name='"+value.level2Name+"'"+ 
-									"data-level1='"+value.level1+"' data-level1Name='"+value.level1Name+"'";
+							html +=	"data-level4='"+value.level4+"' data-level4name='"+value.level4Name+"'"+
+									"data-level3='"+value.level3+"' data-level3name='"+value.level3Name+"'"+
+									"data-level2='"+value.level2+"' data-level2name='"+value.level2Name+"'"+ 
+									"data-level1='"+value.level1+"' data-level1name='"+value.level1Name+"'";
 							// if(notEmpty(level4))
 							// 	html +=	"data-level4='"+level4+"' dta-level4name='"+level4Name+"'";
 							// if(notEmpty(level3))
@@ -387,7 +412,7 @@ var formInMap = {
 					};
 				});
 
-				if(html == "") html = "<i class='fa fa-ban'></i> Aucun résultat";
+				if(html == "") html = "<i class='fa fa-ban'></i> "+trad.noresult;
 				$("#dropdown-newElement_"+currentScopeType+"-found").html(html);
 				$("#dropdown-newElement_"+currentScopeType+"-found").show();
 
@@ -415,25 +440,24 @@ var formInMap = {
 		formInMap.NE_city = data.data("city");
 		formInMap.NE_country = data.data("country");
 		formInMap.NE_level4 = (notEmpty(data.data("level4")) ? data.data("level4") : null) ;
-		formInMap.NE_level4Name = (notEmpty(data.data("level4Name")) ? data.data("level4Name") : null) ;
+		formInMap.NE_level4Name = (notEmpty(data.data("level4name")) ? data.data("level4name") : null) ;
 		formInMap.NE_level3 = (notEmpty(data.data("level3")) ? data.data("level3") : null) ;
-		formInMap.NE_level3Name = (notEmpty(data.data("level3Name")) ? data.data("level3Name") : null) ;
+		formInMap.NE_level3Name = (notEmpty(data.data("level3name")) ? data.data("level3name") : null) ;
 		formInMap.NE_level2 = (notEmpty(data.data("level2")) ? data.data("level2") : null) ;
-		formInMap.NE_level2Name = (notEmpty(data.data("level2Name")) ? data.data("level2Name") : null);
+		formInMap.NE_level2Name = (notEmpty(data.data("level2name")) ? data.data("level2name") : null);
 		formInMap.NE_level1 = (notEmpty(data.data("level1")) ? data.data("level1") : null) ;
-		formInMap.NE_level1Name = (notEmpty(data.data("level1Name")) ? data.data("level1Name") : null) ;
+		formInMap.NE_level1Name = (notEmpty(data.data("level1name")) ? data.data("level1name") : null) ;
+
 		mylog.log("NE_localityId", data.data("locid"));
 		formInMap.NE_localityId = data.data("locid");
 
 		if(complete == true){
 			formInMap.NE_cp = data.data("cp");
-		}	
-		// else{
-		// 	//formInMap.uncomplete = true;
-		// 	formInMap.NE_localityId = data.data("locId");
-		// 	// $('[name="newElement_cp"]').attr( "placeholder", "Vous devez ajouter un code postal" );
-		// 	// $('#divPostalCode').addClass("has-error");
-		// }
+		}else if ( 	notEmpty(formInMap.saveCities) && 
+					notEmpty(formInMap.saveCities[formInMap.NE_insee]) &&
+					notEmpty(formInMap.saveCities[formInMap.NE_insee].betweenCP)
+					)
+			formInMap.NE_betweenCP = formInMap.saveCities[formInMap.NE_insee].betweenCP ;
 
 		formInMap.initHtml();
 		
@@ -456,9 +480,9 @@ var formInMap = {
 
 
 		//formInMap.updateSummeryLocality(data);
-		mylog.log("complete", complete);
-		//formInMap.btnValideDisable( (complete == true ? false : true) );
-		formInMap.btnValideDisable( false );
+		mylog.log("formInMap.NE_betweenCP ", formInMap.NE_betweenCP );
+		formInMap.btnValideDisable( (formInMap.NE_betweenCP == false ? false : true) );
+		
 
 		if(userId == "")
 			$("#divStreetAddress").addClass("hidden");
@@ -495,7 +519,7 @@ var formInMap = {
 
 		formInMap.NE_street = $('[name="newElement_street"]').val();
 
-		$("#dropdown-newElement_streetAddress-found").html("<li><a href='javascript:'><i class='fa fa-spin fa-refresh'></i> recherche en cours</a></li>");
+		$("#dropdown-newElement_streetAddress-found").html("<li><a href='javascript:'><i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+"</a></li>");
 		$("#dropdown-newElement_streetAddress-found").show();
 		mylog.log("countryCode", countryCode);
 		
@@ -534,11 +558,7 @@ var formInMap = {
 			$("#mapLegende").removeClass("hidden");
 		mylog.log("backToForm 2");
 		formInMap.actived = false ;
-		// if(cancel == true ){
-		// 	showMap(false);
-		// }
-		// else{
-			// if(formInMap.modePostalCode == false ){
+
 		mylog.log("backToForm 3");
 		if(formInMap.updateLocality == false ){
 			mylog.log("backToForm 6");
@@ -567,26 +587,7 @@ var formInMap = {
 			showMap(false);
 			if(typeof contextData.map != "undefined" && contextData.map != null)
 				Sig.showMapElements(Sig.map, contextData.map.data, contextData.map.icon, contextData.map.title);
-		}	
-			// }else{
-			// 	mylog.log("backToForm 4");
-			// 	if(notEmpty($("[name='newPC_lat']").val())){
-			// 		postalCodeObj = {
-			// 			postalCode : $("[name='newPC_postalCode']").val(),
-			// 			name : $("[name='newPC_name']").val(),
-			// 			latitude : $("[name='newPC_lat']").val(),
-			// 			longitude : $("[name='newPC_lon']").val()
-			// 		};
-			// 		mylog.log("forminmap copyMapForm2Dynform 2");
-			// 		dyFInputs.locationObj.copyMapForm2Dynform(postalCodeObj);
-			// 		dyFInputs.locationObj.addLocationToForm(postalCodeObj);
-			// 	}
-			// 	showMap(false);
-			// 	Sig.clearMap();
-			// 	if(location.hash != "#referencement" && location.hash != "#web")
-			// 		$('#ajax-modal').modal("show");
-			// }
-		//}
+		}
 		
 	},
 
@@ -611,7 +612,7 @@ var formInMap = {
 				data: params,
 				dataType: "json",
 				success: function(data){
-					mylog.log("data", data);
+					mylog.log("updateLocalityElement data", data);
 					
 					if(data.result){
 						var inMap = true ;						
@@ -619,14 +620,18 @@ var formInMap = {
 						if(typeof contextData.address == "undefined" || contextData.address == null){
 							inMap =false ;
 						}
-						contextData.address = data.locality.address;
-						contextData.geo = data.locality.geo;
-						contextData.geoPosition = data.locality.geoPosition;
+
+						if(notEmpty(data.locality)){
+							contextData.address = data.locality.address;
+							contextData.geo = data.locality.geo;
+							contextData.geoPosition = data.locality.geoPosition;
+						}
+						
 						
 						formInMap.hiddenHtmlMap(false);
 						formInMap.initData();
 
-						if(!formInMap.addressesIndex){							
+						if(!formInMap.addressesIndex){
 							if(contextData.id != userId){
 								var typeMap = ((typeof contextData == "undefined" || contextData == null) ? "citoyens" : contextData.type) ;
 								if(typeMap == "citoyens")
@@ -640,6 +645,7 @@ var formInMap = {
 								currentUser.postalCode = locality.address.postalCode;
 								currentUser.codeInsee = locality.address.codeInsee;
 								currentUser.keyLocality = locality.address.key;
+								setCookies();
 								if(typeof Sig.myPosition != "undefined"){
 									Sig.myPosition.position.latitude = locality.geo.latitude;
 									Sig.myPosition.position.longitude = locality.geo.longitude;
@@ -654,7 +660,7 @@ var formInMap = {
 						if(typeof networkJson == "undefined" || networkJson == null)
 							$("#mapLegende").removeClass("hidden");
 						mylog.log("contextData", contextData.type, contextData.id);
-						//urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
+						urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 						toastr.success(data.msg);
 					}else{
 						toastr.error(data.msg);
@@ -681,6 +687,23 @@ var formInMap = {
 		}
 	},
 
+	// setCommunexion : function(address){
+	// 	var coFIM = {
+	// 		city : address.localityId,
+	// 		cityName : address.addressLocality,
+	// 		cp : address.postalCodes,
+	// 		level1 : address.level1,
+	// 		level1Name : address.level1Name,
+	// 		level2 : address.level2,
+	// 		level2Name : address.level2Name,
+	// 		level3 : address.level3,
+	// 		level3Name : address.level3Name,
+	// 		level4 : address.level4,
+	// 		level4Name : address.level4Name,
+	// 	}
+	// 	setGlobalScope(address.localityId, address.addressLocality, "cp", "city", coFIM);
+	// },
+
 	initDropdown : function(){
 		mylog.log("initDropdown");
 		$("#dropdown-newElement_cp-found").html("<li><a href='javascript:' class='disabled'>"+trad['Currently researching']+"</a></li>");
@@ -706,6 +729,11 @@ var formInMap = {
 			else
 				$('#'+value+'_sumery').addClass("hidden");
 		});
+
+		if(formInMap.NE_betweenCP != false)
+			$("#divCP").removeClass("hidden");
+
+
 	},
 
 	initVarNE : function(){
@@ -725,6 +753,7 @@ var formInMap = {
 		formInMap.NE_level1 = "";
 		formInMap.NE_level1Name = "";
 		formInMap.NE_localityId = "";
+		formInMap.NE_betweenCP = false;
 	},
 
 	createLocalityObj : function(withUnikey){
@@ -838,7 +867,7 @@ var formInMap = {
 	},
 
 	btnValideDisable : function(bool){
-		mylog.log("showWarningGeo");
+		mylog.log("btnValideDisable");
 		$("#newElement_btnValidateAddress").prop('disabled', bool);
 	},
 
@@ -882,6 +911,12 @@ var formInMap = {
 				dataType: "json",
 				success: function(data){
 					formInMap.geoShape = data.geoShape;
+
+					if(notEmpty(data.betweenCP)){
+						formInMap.NE_betweenCP = data.betweenCP;
+						$("#divCP").removeClass("hidden");
+					}
+					
 					formInMap.displayGeoShape();
 				}
 			});
@@ -890,6 +925,7 @@ var formInMap = {
 
 	displayGeoShape : function(){
 		mylog.log("displayGeoShape");
+		if(typeof formInMap.geoShape == "undefined") return;
 		var geoShape = Sig.inversePolygon(formInMap.geoShape.coordinates[0]);
 		Sig.showPolygon(geoShape);
 		setTimeout(function(){
@@ -907,12 +943,15 @@ var formInMap = {
 		if(typeof keepType =="undefined" || keepType==false){
 			formInMap.formType = "";
 		}
-		formInMap.updateLocality = false;
+		//formInMap.updateLocality = false;
 		formInMap.addressesIndex = false;
 		formInMap.initDropdown();
+		formInMap.saveCities = {} ;
+		formInMap.bindActived = false;
+		
 		$("#divStreetAddress").addClass("hidden");
-		$("#divPostalCode").addClass("hidden");
 		$("#divCity").addClass("hidden");
+		$("#divCP").addClass("hidden");
 		formInMap.initHtml();
 	},
 

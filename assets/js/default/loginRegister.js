@@ -133,31 +133,51 @@ var Login = function() {
 		    		  		userId = data.id;
 		    		  		$('#modalLogin').modal("hide");
 		    		  		dyFObj.openForm( dyFObj.openFormAfterLogin.type, dyFObj.openFormAfterLogin.afterLoad, dyFObj.openFormAfterLogin.data );
-		    		  	} /*else if(url && url.indexOf("#") >= 0 ) {
-		    		  		//mylog.log("login 1",url);
-		    		  		//reload to the url initialy requested
-		    		  		window.location.href = url;
-		        		} */ else {
-		        			if(location.hash.indexOf("#page") >= 0){
-		        				window.location.reload();
-		        			}
-		        			else if( url.split("/").length - 1 <= 3 ) {
-		        				//mylog.log("login 2",baseUrl+'#default.home');
-		        				//classic use case wherever you login from if not notifications/get/not/id...
-		        				//you stay on the current page
-		        				//if(location.hash == '#default.home')
-		        				location.hash='#page.type.citoyens.id.'+data.id;
-		        				window.location.reload();
-		        				/*else
-		        					window.location.href = baseUrl+'#default.home';*/
-		        			}
-		        			else {
-		        				//alert("3");
-		        				mylog.log("login 3 reload", data);
-		        				location.hash='#page.type.citoyens.id.'+data.id;
-		        				//for urls like notifications/get/not/id...
-		        				//window.location.href = baseUrl+'/co2#page.type.citoyens.id.'+data.id;
-		        				window.location.reload();
+		    		  	} else {
+		    		  		userId=data.id;
+	        				var hash = location.hash.replace( "#","" );
+	        				if(typeof hash != "undefined" && hash != ""){
+								var hashT=hash.split(".");
+								if(typeof hashT == "string")
+									var slug=hashT;
+								else
+									var slug=hashT[0];
+		        				$.ajax({
+							      type: "POST",
+							          url: baseUrl+"/" + moduleId + "/slug/check",
+							          data: {slug:slug},
+							          dataType: "json",
+							          error: function (data){
+							             mylog.log("error"); mylog.dir(data);
+							          },
+							          success: function(data){
+										if (!data.result) 
+											window.location.reload();
+										else{
+											if(location.hash.indexOf("#page") >= 0)
+						        				window.location.reload();
+						        			else if( url.split("/").length - 1 <= 3 ) {
+						        				location.hash='#page.type.citoyens.id.'+userId;
+						        				window.location.reload();
+						        			}
+						        			else {
+						        				location.hash='#page.type.citoyens.id.'+userId;
+						        				window.location.reload();
+					        				}
+										}
+							          }
+							 	});
+							}else{
+			        			if(location.hash.indexOf("#page") >= 0)
+			        				window.location.reload();
+			        			else if( url.split("/").length - 1 <= 3 ) {
+			        				location.hash='#page.type.citoyens.id.'+userId;
+			        				window.location.reload();
+			        			}
+			        			else {
+			        				location.hash='#page.type.citoyens.id.'+userId;
+			        				window.location.reload();
+		        				}
 		        			}
 		        		}
 		    		  } else {
@@ -188,6 +208,7 @@ var Login = function() {
 		    		  }
 		    	  },
 		    	  error: function(data) {
+		    	  	console.log(data);
 		    	  	$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
 		    	  	toastr.error("Something went really bad : contact your administrator !");
 		    	  	//loginBtn.stop();

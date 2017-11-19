@@ -5,7 +5,7 @@
 function getGeoPosInternational(requestPart, countryCode){
 
 	var countryCodes = new Array("FR", "GP", "GF", "MQ", "YT", "NC", "RE", "PM");
-	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> Recherche en cours ...");
+	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" ...");
 	
 	if($.inArray(countryCode, countryCodes) >= 0) callCommunecter(requestPart, countryCode);
 	else
@@ -14,7 +14,7 @@ function getGeoPosInternational(requestPart, countryCode){
 
 function callCommunecter(requestPart, countryCode){ /*countryCode=="FR"*/
 	mylog.log('callCommunecter');
-	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> Recherche en cours <small>Communecter</small>");
+	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" <small>Communecter</small>");
 	callGeoWebService("communecter", requestPart, countryCode,
 		function(objs){ /*success nominatim*/
 			mylog.log("SUCCESS Communecter"); 
@@ -39,7 +39,7 @@ function callCommunecter(requestPart, countryCode){ /*countryCode=="FR"*/
 
 function callDataGouv(requestPart, countryCode){ /*countryCode=="FR"*/
 	mylog.log('callDataGouv');
-	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> Recherche en cours <small>Data Gouv</small>");
+	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" <small>Data Gouv</small>");
 	callGeoWebService("data.gouv", requestPart, countryCode,
 		function(objDataGouv){ /*success nominatim*/
 			mylog.log("SUCCESS DataGouv"); 
@@ -64,7 +64,7 @@ function callDataGouv(requestPart, countryCode){ /*countryCode=="FR"*/
 
 function callNominatim(requestPart, countryCode){
 	mylog.log('callNominatim');
-	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad["Currently researching"]+" <small>Nominatim</small>");
+	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" <small>Nominatim</small>");
 	callGeoWebService("nominatim", requestPart, countryCode,
 		function(objNomi){ /*success nominatim*/
 			mylog.log("SUCCESS nominatim"); 
@@ -91,7 +91,7 @@ function callNominatim(requestPart, countryCode){
 
 function callGoogle(requestPart, countryCode){
 	mylog.log('callGoogle');
-	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> Recherche en cours <small>GoogleMap</small>");
+	showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" <small>GoogleMap</small>");
 	callGeoWebService("google", requestPart, countryCode,
 		function(objGoo){ /*success google*/
 			mylog.log("SUCCESS GOOGLE");
@@ -100,16 +100,16 @@ function callGoogle(requestPart, countryCode){
 				var commonGeoObj = getCommonGeoObject(objGoo.results, "google");
 				var res = addResultsInForm(commonGeoObj, countryCode);
 				if(res == 0) 
-					showMsgListRes("<i class='fa fa-ban'></i> Aucun résultat. Précisez votre recherche.");
+					showMsgListRes("<i class='fa fa-ban'></i> "+trad.noresult+". Précisez votre recherche.");
 	
 			}else{
 				mylog.log('Aucun résultat chez Google');
-				showMsgListRes("<i class='fa fa-ban'></i> Aucun résultat. Précisez votre recherche.");
+				showMsgListRes("<i class='fa fa-ban'></i> "+trad.noresult+". Précisez votre recherche.");
 			}
 
 		}, 
 		function(thisError){ /*error google*/
-			showMsgListRes("<i class='fa fa-ban'></i> Aucun résultat. Précisez votre recherche.");
+			showMsgListRes("<i class='fa fa-ban'></i> "+trad.noresult+". Précisez votre recherche.");
 			mylog.log("ERROR GOOGLE"); mylog.dir(thisError);
 		}
 	);
@@ -370,7 +370,7 @@ function addResultsInForm(commonGeoObj, countryCode){
 			}
 		}
 	});
-	if(html == "") html = "<i class='fa fa-ban'></i> Aucun résultat";
+	if(html == "") html = "<i class='fa fa-ban'></i> "+trad.noresult;
 	$("#dropdown-newElement_streetAddress-found").html(html);
 	$("#dropdown-newElement_streetAddress-found").show();
 

@@ -49,11 +49,13 @@
                 <div class="col-xs-6">
                     <h1><span class="text-red">CO</span>DER</h1>
                     <h2><a href="api" target="_blank" >API</a></h2>
+                    <h2><a href="default/view/page/openSourceWeUse/dir/docs|panels" class="lbhp ">Open Source We Use</a></h2>
                     <h2><a href="default/view/page/help/dir/docs|panels" class="lbhp">HELP Us Help YOU</a></h2>
                     <h2><a href="https://chat.lescommuns.org/channel/co_dev_open" target="_blank">Rejoindre la dev</a></h2>
                     <h2><a href="https://github.com/orgs/pixelhumain" target="_blank">GITHUB</a></h2>
                     <h2><a href="https://github.com/pixelhumain/communecter/wiki" target="_blank">WIKI DOCS</a></h2>
                     <h2><a href="https://github.com/pixelhumain/co2/issues" target="_blank">Déclarer des bugs</a></h2>
+
                 </div>
 
                 <div class="col-xs-6">

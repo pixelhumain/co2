@@ -13,7 +13,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 	</div>
 	<div class="panel-tools">
 		<?php if(( @$authorised || @$openEdition) && !isset($noAddLink) && isset(Yii::app()->session["userId"]) ) { ?>
-			<a class="tooltips btn btn-xs btn-light-blue " data-placement="top" data-toggle="tooltip" data-original-title="<?php echo Yii::t("common","Add",null,Yii::app()->controller->module->id) ?>" href="javascript:;" onclick="dyFObj.openForm ( 'contactPoint','contact')">
+			<a class="tooltips btn btn-xs btn-light-blue " data-placement="top" data-toggle="tooltip" data-original-title="<?php echo Yii::t("common","Add",null,Yii::app()->controller->module->id) ?>" href="javascript:;" onclick="dyFObj.openForm ( 'contactPoint','sub')">
 	    		<i class="fa fa-plus"></i> <?php echo Yii::t("common","Add") ?>
 	    	</a>
 		<?php } ?>

@@ -9,10 +9,14 @@
 				'/css/default/directory.css',	
 				'/js/comments.js',
 				'/css/profilSocial.css',
+				'/css/calendar.css',
 		) , 
 	Yii::app()->theme->baseUrl. '/assets');
 
-
+ $cssAnsScriptFilesModule = array(
+    '/js/default/calendar.js',
+  );
+  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
 	$cssAnsScriptFilesTheme = array(
 		"/plugins/jquery-cropbox/jquery.cropbox.css",
@@ -22,6 +26,9 @@
 		//MARKDOWN
 		'/plugins/to-markdown/to-markdown.js',
 		'/plugins/jquery.qrcode/jquery-qrcode.min.js',
+		'/plugins/fullcalendar/fullcalendar/fullcalendar.min.js',
+        '/plugins/fullcalendar/fullcalendar/fullcalendar.css', 
+        '/plugins/fullcalendar/fullcalendar/locale/'.Yii::app()->language.'.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	
@@ -88,7 +95,7 @@
 #ajax-modal .close-modal .rl,
 #formContact .close-modal .lr,
 #formContact .close-modal .rl{
-	background-color: white;
+	background-color: #ea4335;
 }
 
 #btn-show-activity-onmap{
@@ -283,7 +290,7 @@
 		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION ){ ?>
 		  <button type="button" class="btn btn-default bold hidden-xs letter-turq" data-toggle="modal" data-target="#modalCoop" 
 		  		  id="open-co-space" style="border-right:0px!important;">
-		  		<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("common", "Espace CO"); ?>
+		  		<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("cooperation", "CO-space"); ?>
 		  </button>
 		  <?php } ?>
 
@@ -372,7 +379,7 @@
 						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 			  				<li class="text-left">
 				               	<a href="javascript:;" onclick="updateSlug();" id="" class="bg-white">
-				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Edit slug"); ?>
+				                    <i class="fa fa-id-badge"></i> <?php echo Yii::t("common", "Edit slug"); ?>
 				                </a>
 				            </li>
 			            <?php } ?>
@@ -624,9 +631,12 @@
 	</section>
 
 	<!-- <section class="col-xs-12 col-md-9 col-sm-9 col-lg-9 no-padding form-contact-mail pull-right"> -->
-		<?php 	$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+		<?php 
+			if(Yii::app()->params["CO2DomainName"] != "kgougle"){ 
+				$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 				$this->renderPartial($layoutPath.'forms.'.Yii::app()->params["CO2DomainName"].'.formContact', 
-									array("element"=>@$element)); 
+									array("element"=>@$element));
+			} 
 		?>
 	<!-- </section> -->
 </div>	
@@ -676,8 +686,7 @@
     if(typeof contextData.slug != "undefined")
      	navInSlug=true;
    
-    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?src="+networkParams : "" )+
-    				 ( (typeof contextData.slug != "undefined") ? "#"+contextData.slug : "#page.type."+contextData.type+".id."+contextData.id);
+	var hashUrlPage= ( (typeof contextData.slug != "undefined") ? "#"+contextData.slug : "#page.type."+contextData.type+".id."+contextData.id);
     
     if(location.hash.indexOf("#page")>=0){
     	strHash="";
@@ -686,7 +695,7 @@
     		strHash=".view"+hashPage[1];
     	}
     	replaceSlug=true;
-    	history.replaceState("#page.type."+contextData.type+".id."+contextData.id, "", "#"+contextData.slug+strHash);
+    	history.replaceState("#page.type."+contextData.type+".id."+contextData.id, "", hashUrlPage+strHash);
     	//location.hash=;
     }
     

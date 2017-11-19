@@ -408,7 +408,7 @@ function showRoom(type, id){
 
 	$("#room-container").hide(200);
 	$.blockUI({
-				message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
+				message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>"+trad.currentlyloading+" ...</span></h4>"
 			});
 	
 	getAjax('#room-container',baseUrl+'/'+moduleId+'/'+url+"/id/"+id+"?renderPartial=true", 

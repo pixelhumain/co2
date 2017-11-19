@@ -61,6 +61,7 @@ class PersonController extends CommunecterController {
           'getcontactsbymails' => 'citizenToolKit.controllers.person.GetContactsByMailsAction',
           'removehelpblock'    => 'citizenToolKit.controllers.person.RemoveHelpBlockAction',
           'dashboard'    => 'citizenToolKit.controllers.person.dashboardAction',
+          'updatescopeinter'   => 'citizenToolKit.controllers.person.UpdatescopeinterAction',
           
 
 	    );

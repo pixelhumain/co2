@@ -35,7 +35,12 @@ class NetworkModule extends CWebModule {
 		    Yii::app()->session["networkParams"] = $_GET["network"];
 		} */
 
-		Yii::app()->language = (isset(Yii::app()->session["lang"])) ? Yii::app()->session["lang"] : 'fr';
+		if(@Yii::app()->request->cookies['lang'] && !empty(Yii::app()->request->cookies['lang']->value))
+        	Yii::app()->language = (string)Yii::app()->request->cookies['lang'];
+        else 
+			Yii::app()->language = (isset(Yii::app()->session["lang"])) ? Yii::app()->session["lang"] : 'fr';
+
+		//Yii::app()->language = (isset(Yii::app()->session["lang"])) ? Yii::app()->session["lang"] : 'fr';
 		
 		// import the module-level models and components
 		$this->setImport(array(

@@ -32,14 +32,14 @@ function bindAboutPodElement() {
 	function removeAddresses (index, formInMap){
 
 		bootbox.confirm({
-			message: trad["suredeletelocality"]+"<span class='text-red'></span>",
+			message: trad.suredeletelocality+"<span class='text-red'></span>",
 			buttons: {
 				confirm: {
-					label: trad["yes"],
+					label: trad.yes,
 					className: 'btn-success'
 				},
 				cancel: {
-					label: trad["no"],
+					label: trad.no,
 					className: 'btn-danger'
 				}
 			},
@@ -331,7 +331,7 @@ function bindAboutPodElement() {
 											'<i class="fa fa-'+dyFInputs.get(contextData.parentType).icon+'"></i> '+
 											contextData.parent.name+'</a><br/>';
 
-										htmlHeader =((contextData.type == typeObj.event.col) ? trad["Planned on"] : trad["Parenthood"] ) ;
+										htmlHeader =((contextData.type == typeObj.event.col) ? trad["Planned on"] : trad.carriedby ) ;
 										htmlHeader += htmlAbout;
 									}
 
@@ -348,7 +348,7 @@ function bindAboutPodElement() {
 									var html = "<i>"+trad["notSpecified"]+"</i>";
 									var htmlHeader = "";
 
-									if(notEmpty(contextData.organizerId)){
+									if(notEmpty(contextData.organizerId) && contextData.organizerId!="dontKnow"){
 										html = '<a href="#page.type.'+contextData.organizerType+'.id.'+contextData.organizerId+'" class="lbh">'+ 
 											'<i class="fa fa-'+dyFInputs.get(contextData.organizerType).icon+'"></i> '+
 											contextData.organizer.name+'</a><br/>';
@@ -406,22 +406,27 @@ function bindAboutPodElement() {
 			if(contextData.type == typeObj.event.col)
 				listParent =  ["events"] ;
 
-			
-			form.dynForm.jsonSchema.properties.parentId = {
-	         	label : tradDynForm["ispartofelement"]+" ?",
-            	inputType : "select",
-            	class : "",
-            	placeholder : tradDynForm["ispartofelement"]+" ?",
-            	options : firstOptions(),
-            	"groupOptions" : parentList( listParent, contextData.parentId, contextData.parentType ),
-            	init : function(){ console.log("init ParentId");
-	            	$("#ajaxFormModal #parentId").off().on("change",function(){
-	            		var selected = $(':selected', this);
-    					$("#ajaxFormModal #parentType").val(selected.data('type'));
-	            	});
-	            }
-            };
-            form.dynForm.jsonSchema.properties.parentType = dyFInputs.inputHidden();
+			if(contextData.type == typeObj.event.col || contextData.type == typeObj.project.col){
+				form.dynForm.jsonSchema.properties.parentId = {
+		         	label : tradDynForm["ispartofelement"]+" ?",
+	            	inputType : "select",
+	            	class : "",
+	            	placeholder : tradDynForm["ispartofelement"]+" ?",
+	            	options : firstOptions(),
+	            	"groupOptions" : parentList( listParent, contextData.parentId, contextData.parentType ),
+	            	init : function(){ 
+	            		mylog.log("init ParentId");
+		            	$("#ajaxFormModal #parentId").off().on("change",function(){
+
+		            		var selected = $(':selected', this);
+		            		mylog.log("change ParentId", selected, selected.data('type'));
+	    					$("#ajaxFormModal #parentType").val(selected.data('type'));
+		            	});
+		            }
+	            };
+
+	            form.dynForm.jsonSchema.properties.parentType = dyFInputs.inputHidden();
+	        }
 
             if(contextData.type == typeObj.event.col){
             	form.dynForm.jsonSchema.properties.organizerId =  dyFInputs.organizerId(contextData.parentId, contextData.parentType);
@@ -663,7 +668,7 @@ function bindAboutPodElement() {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
 					jsonSchema : {
-						title : "Créer un slug",// trad["Update network"],
+						title : tradDynForm.updateslug,// trad["Update network"],
 						icon : "fa-key",
 						onLoads : {
 							sub : function(){
@@ -679,6 +684,13 @@ function bindAboutPodElement() {
 						afterSave : function(data){
 							dyFObj.closeForm();
 							toastr.success("Votre slug a bien été enregistré");
+							strHash="";
+    						if(location.hash.indexOf(".view")>0){
+    							hashPage=location.hash.split(".view");
+    							strHash=".view"+hashPage[1];
+    						}	
+    						location.hash = data.resultGoods.values.slug+strHash;
+    						hashUrlPage="#"+data.resultGoods.values.slug;
 							contextData.slug=data.resultGoods.values.slug;
 							//rcObj.loadChat(data.resultGoods.values.slug,type,canEdit,hasRc);
 							//loadDataDirectory(connectType, "user", true);
@@ -687,12 +699,12 @@ function bindAboutPodElement() {
 						properties : {
 							info : {
 				                inputType : "custom",
-				                html:"<p class='text-dark'><i class='fa fa-info-circle'></i> Slug is very important.<br> It will permit to give a unique name to chat in a room,<br>A beautiful url like www.communecter.org/livincoop<br>And a specific mention name<hr></p>",
+				                html:"<p class='text-dark'><i class='fa fa-info-circle'></i> "+tradDynForm.infoslug+"<hr></p>",
 				            },
 				            block : dyFInputs.inputHidden(),
 							id : dyFInputs.inputHidden(),
 							typeElement : dyFInputs.inputHidden(), 
-							slug : dyFInputs.slug("Slug","Slug",{minlength:3/*, uniqueSlug:true*/}),
+							slug : dyFInputs.slug(tradDynForm.slug,tradDynForm.slug,{minlength:3/*, uniqueSlug:true*/}),
 						}
 					}
 				}
@@ -748,7 +760,7 @@ function bindAboutPodElement() {
 				saveUrl : baseUrl+"/"+moduleId+"/link/removerole/",
 				dynForm : {
 					jsonSchema : {
-						title : "Ajouter ou modifier les rôles de "+childName,// trad["Update network"],
+						title : tradDynForm.modifyoraddroles+"<br/>"+childName,// trad["Update network"],
 						icon : "fa-key",
 						onLoads : {
 							sub : function(){
@@ -873,8 +885,6 @@ function bindAboutPodElement() {
 		
 	}
 
-	
-
 	function removeContact(ind) {
 		bootbox.confirm({
 			message: trad["suretodeletecontact"]+"<span class='text-red'></span>",
@@ -961,14 +971,15 @@ function bindAboutPodElement() {
 					//social network
 					( 	$.inArray( val, SNetwork ) >= 0 && 
 						( 	typeof contextData["socialNetwork"] != "undefined" && 
-							contextData["socialNetwork"] != null ) && (
-						( 	typeof contextData["socialNetwork"][val] != "undefined" || 
-							contextData["socialNetwork"][val] != null && 
-							$("#ajaxFormModal #"+val).val().trim() == contextData["socialNetwork"][val] )
-						||
-						( 	( 	typeof contextData["socialNetwork"][val] == "undefined" || 
-							contextData["socialNetwork"][val] == null ) && 
-						$("#ajaxFormModal #"+val).val().trim().length == 0 ) )
+							contextData["socialNetwork"] != null ) && 
+						(
+							( 	typeof contextData["socialNetwork"][val] != "undefined" || 
+								contextData["socialNetwork"][val] != null && 
+								$("#ajaxFormModal #"+val).val().trim() == contextData["socialNetwork"][val] )
+							||
+							( 	( 	typeof contextData["socialNetwork"][val] == "undefined" || 
+								contextData["socialNetwork"][val] == null ) && 
+							$("#ajaxFormModal #"+val).val().trim().length == 0 ) )
 					)
 				) 
 			) {

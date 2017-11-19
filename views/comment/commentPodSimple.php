@@ -69,6 +69,14 @@
 	.text-comment{
 		white-space: pre-line;
 	}
+	.content-new-comment .mentions{
+		padding: 10px !important;
+    	font-size: 13px !important;
+	}
+	.content-update-comment .mentions{
+		padding: 10px !important;
+    	font-size: 14px !important;
+	}
 </style>
 <?php if($contextType == "actionRooms"){ ?>
 <div class='row'>
@@ -118,10 +126,10 @@
 				<img src="<?php echo $profilThumbImageUrlUser; ?>" class="img-responsive pull-left" 
 					 style="margin-right:6px;height:32px; border-radius:3px;">
 
-				<div id="container-txtarea-<?php echo $idComment; ?>">
+				<div id="container-txtarea-<?php echo $idComment; ?>" class="content-new-comment">
 					<div style="" class="ctnr-txtarea">
 						<textarea rows="1" style="height:1em;" class="form-control textarea-new-comment" 
-								  id="textarea-new-comment<?php echo $idComment; ?>" placeholder="Votre commentaire..."></textarea>
+								  id="textarea-new-comment<?php echo $idComment; ?>" placeholder="<?php echo Yii::t("common","Your comment") ?>..."></textarea>
 						<input type="hidden" id="argval" value=""/>
 					</div>
 				</div>
@@ -132,13 +140,13 @@
 
 		<?php 
 			$assetsUrl = $this->module->assetsUrl;
-			function showCommentTree($comments, $assetsUrl, $idComment, $canComment, $level){
+			function showCommentTree($comments, $assetsUrl, $idComment, $canComment, $level, $parentType=null){
 				$count = 0;
 				$hidden = 0;
 				$hiddenClass = "";
 				$nbTotalComments = sizeOf($comments);
 
-				if($nbTotalComments == 0 && $level == 1) { echo "Aucun commentaire"; }
+				if($nbTotalComments == 0 && $level == 1) { echo "<span class='noComment'>".Yii::t("comment", "No comment")."</span>"; }
 				if($nbTotalComments == 0) return;
 				//if($nbTotalComments == 0 && $level == 2) echo "Aucune commentaire";
 
@@ -180,11 +188,11 @@
 								 
 								<?php if(@$canComment){ ?>
 								<?php 
-									$lblReply = "Répondre";
-									if(sizeOf($comment["replies"])==1) $lblReply = "<i class='fa fa-reply fa-rotate-180'></i>" . sizeOf($comment["replies"])." réponse";
-									if(sizeOf($comment["replies"])>1) $lblReply = "<i class='fa fa-reply fa-rotate-180'></i>" . sizeOf($comment["replies"])." réponses";
+									$lblReply = Yii::t("common","Answer");
+									if(sizeOf($comment["replies"])==1) $lblReply = "<i class='fa fa-reply fa-rotate-180'></i>" . sizeOf($comment["replies"])." ".Yii::t("comment","answer");
+									if(sizeOf($comment["replies"])>1) $lblReply = "<i class='fa fa-reply fa-rotate-180'></i>" . sizeOf($comment["replies"])." ".Yii::t("comment","answers");
 								?>
-									<a class="" href="javascript:answerComment('<?php echo $idComment; ?>', '<?php echo $comment["_id"]; ?>')"><?php echo $lblReply; ?></a> 
+									<a class="" href="javascript:answerComment('<?php echo $idComment; ?>', '<?php echo $comment["_id"]; ?>','<?php echo $comment["contextType"]; ?>')"><?php echo $lblReply; ?></a> 
 								<?php } ?>
 								<?php 
 									$myId = Yii::app()->session["userId"]; $iVoted = "";
@@ -199,7 +207,7 @@
 										class="tooltips commentVoteUp <?php echo $iVoted=='up' ? 'text-green' : ''; ?>"
 										data-voted="<?php echo $iVoted!='' ? 'true' : 'false'; ?>"
 										data-id="<?php echo $comment["_id"]; ?>" data-countcomment="<?php echo $voteUpCount; ?>"
-										data-toggle="tooltip" data-placement="top" title="J'aime">
+										data-toggle="tooltip" data-placement="top" title="<?php echo Yii::t("common","I like") ?>">
 										<span class="countC"><?php echo @$voteUpCount; ?></span> 
 										<i class='fa fa-thumbs-up'></i>
 									</a> 
@@ -207,7 +215,7 @@
 										class="tooltips commentVoteDown <?php echo $iVoted=='down' ? 'text-orange' : ''; ?>"
 										data-voted="<?php echo $iVoted!='' ? 'true' : 'false'; ?>"
 										data-id="<?php echo $comment["_id"]; ?>" data-countcomment="<?php echo @$voteDownCount; ?>"
-										data-toggle="tooltip" data-placement="top" title="Je n'aime pas">
+										data-toggle="tooltip" data-placement="top" title="<?php echo Yii::t("common","I don't like") ?>">
 										<span class="countC"><?php echo @$voteDownCount; ?></span> 
 										<i class='fa fa-thumbs-down'></i>
 									</a>
@@ -217,7 +225,7 @@
 										class="tooltips commentReportAbuse <?php echo $iVoted=='abuse' ? 'text-red' : 'text-red-light'; ?>"
 										data-voted="<?php echo $iVoted!='' ? 'true' : 'false'; ?>"
 										data-id="<?php echo $comment["_id"]; ?>" data-countcomment="<?php echo @$reportAbuseCount; ?>"
-										data-toggle="tooltip" data-placement="top" title="Signaler un abus">
+										data-toggle="tooltip" data-placement="top" title="<?php echo Yii::t("common","Declare an abuse") ?>">
 										<span class="countC"><?php echo $reportAbuseCount; ?></span> 
 										<i class='fa fa-flag'></i>
 									</a>
@@ -229,7 +237,7 @@
 											class="tooltips commentReportAbuse <?php echo $iVoted=='abuse' ? 'text-red' : $reportAbuseCount >= 1 ? 'text-red-light' : ''; ?>"
 											data-voted="<?php echo $iVoted!='' ? 'true' : 'false'; ?>"
 											data-id="<?php echo $comment["_id"]; ?>" data-countcomment="<?php echo @$reportAcommentbuseCount; ?>"
-											data-toggle="tooltip" data-placement="top" title="Signaler un abus">
+											data-toggle="tooltip" data-placement="top" title="<?php echo Yii::t("common","Declare an abuse") ?>">
 											<span class="countC"><?php echo $reportAbuseCount; ?></span> 
 											<i class='fa fa-flag'></i>
 										</a>
@@ -237,11 +245,11 @@
 										
 										<?php if(@$comment["author"]["id"] == Yii::app()->session["userId"]){ ?>
 											<a style="margin-left:5px; margin-right:5px;"  class="tooltips"
-											   data-toggle="tooltip" data-placement="top" title="Modifier"
+											   data-toggle="tooltip" data-placement="top" title="<?php echo Yii::t("common","Update") ?>"
 											   href="javascript:editComment('<?php echo $comment["_id"]; ?>')"><i class='fa fa-pencil'></i>
 											</a>
 											<a class="tooltips"
-											   data-toggle="tooltip" data-placement="top" title="Supprimer"
+											   data-toggle="tooltip" data-placement="top" title="<?php echo Yii::t("common","Delete") ?>"
 											   href="javascript:confirmDeleteComment('<?php echo $comment["_id"]; ?>',$(this))"><i class='fa fa-times'></i>
 											</a>				
 										<?php } ?>
@@ -253,14 +261,14 @@
 						</span>
 						<div id="comments-list-<?php echo $comment["_id"]; ?>" class="hidden pull-left col-md-11 col-sm-11 col-xs-11 no-padding answerCommentContainer">
 							<?php if(sizeOf($comment["replies"]) > 0) //recursive for answer (replies)
-									showCommentTree($comment["replies"], $assetsUrl, $comment["_id"], $canComment, $level+1);  ?>
+									showCommentTree($comment["replies"], $assetsUrl, $comment["_id"], $canComment, $level+1, $comment["contextType"]);  ?>
 						</div>
 					</div>
 		<?php 		if(multiple10($count, $nbTotalComments)){ $hidden = $count; ?>
 		<?php			$hiddenClass = ($hidden > 10) ? "hidden hidden-".($hidden-10) : ""; ?>
 						<div class="pull-left margin-top-5 <?php echo $hiddenClass; ?> link-show-more-<?php echo ($hidden-10); ?>">
 							<a class="" href="javascript:" onclick="showMoreComments('<?php echo $idComment; ?>', <?php echo $hidden; ?>);">
-								<i class="fa fa-angle-down"></i> Voir plus de commentaires
+								<i class="fa fa-angle-down"></i> <?php echo Yii::t("comment","Show more comments") ?>
 							</a>
 						</div>
 		<?php 		} //if (multiple10 ?>
@@ -278,7 +286,7 @@
 		<?php	}//function()
 		?>
 
-		<?php showCommentTree($comments, $assetsUrl, $idComment, $canComment, 1); ?>
+		<?php showCommentTree($comments, $assetsUrl, $idComment, $canComment, 1, $contextType); ?>
 					
 	</div><!-- id="comments-list-<?php echo $idComment; ?>" -->
 
@@ -294,6 +302,7 @@
 	var context = <?php echo json_encode($context)?>;
 
 	var profilThumbImageUrlUser = "<?php echo @$profilThumbImageUrlUser; ?>";
+	var isUpdatedComment=false;
 	// mylog.log("context");
 	// mylog.dir(context);
 	// mylog.log("comments");
@@ -302,13 +311,28 @@
 	jQuery(document).ready(function() {
 
 		var idTextArea = '#textarea-new-comment<?php echo $idComment; ?>';
-		bindEventTextArea(idTextArea, idComment, false, "");
+		bindEventTextArea(idTextArea, idComment, contextType, false, "");
 		bindEventActions();
 
 		mylog.log(".comments-list-<?php echo $idComment; ?> .text-comment");
 		$("#comments-list-<?php echo $idComment; ?> .text-comment").each(function(){
-			linked = linkify($(this).html());
-			$(this).html(linked);
+			idComment=$(this).data("id");
+			idParent=$(this).data("parent-id");
+			textComment=$(this).html();
+			if(typeof idParent != "undefined"){
+				comments[idComment]=comments[idParent].replies[idComment];
+			}
+			/*if(typeof idParent != "undefined"){
+				if(typeof(comments[idParent].replies[idComment].mentions) != "undefined"){
+	          		textComment = mentionsInit.addMentionInText(textComment,comments[idParent].replies[idComment].mentions);
+	        	}
+			}else{*/
+				if(typeof(comments[idComment].mentions) != "undefined"){
+	          		textComment = mentionsInit.addMentionInText(textComment,comments[idComment].mentions);
+	        	}
+	        //}
+			textComment = linkify(textComment);
+			$(this).html(textComment);
 		});
 		$.each(comments, function(i,v){
 			if(typeof v.rating != "undefined"){
@@ -382,7 +406,11 @@
 	}
 	
 
-	function showOneComment(textComment, idComment, isAnswer, idNewComment, argval){
+	function showOneComment(textComment, idComment, isAnswer, idNewComment, argval, mentionsArray){
+		console.log(mentionsArray);
+		if(notNull(mentionsArray)){
+			textComment = mentionsInit.addMentionInText(textComment,mentionsArray);
+		}
 		textComment = linkify(textComment);
 		var classArgument = "";
 		if(argval == "up") classArgument = "bg-green-comment";
@@ -401,7 +429,7 @@
 						'	</span><br>'+
 							'<small class="bold">' +
 								<?php if(@$canComment){ ?>
-							'		<a class="" href=\'javascript:answerComment(\"<?php echo $idComment; ?>\", \"'+idNewComment+'\")\'>Répondre</a> '+
+							'		<a class="" href=\'javascript:answerComment(\"<?php echo $idComment; ?>\", \"'+idNewComment+'\", \"'+contextType+'\")\'>'+trad.answer+'</a> '+
 								<?php } ?> 
 								<?php if(isset(Yii::app()->session["userId"])){ ?>
 
@@ -409,28 +437,28 @@
 							'			    class="tooltips commentVoteUp"'+
 							'				data-voted="false"'+
 							'				data-id="'+idNewComment+'" data-countcomment="0"	' +
-							'				data-toggle="tooltip" data-placement="top" title="J\'aime"'+
+							'				data-toggle="tooltip" data-placement="top" title="'+trad.ilike+'"'+
 							'				href="javascript:">0 <i class="fa fa-thumbs-up"></i></a> ' +
 
 							'		<a class="tooltips commentVoteDown"'+
 							'			   	data-voted="false"'+
 							'				data-id="'+idNewComment+'" data-countcomment="0"	' +
-							'				data-toggle="tooltip" data-placement="top" title="Je n\'aime pas"'+
+							'				data-toggle="tooltip" data-placement="top" title="'+trad.idontlike+'"'+
 							'			  	href="javascript:">0 <i class="fa fa-thumbs-down"></i></a> ' +
 							
 							'<div class="tool-action-comment">' +
 							'		<a class="tooltips commentReportAbuse" style="margin-left:5px;margin-right:5px;"'+
 							'			   	data-voted="false"'+
 							'				data-id="'+idNewComment+'" data-countcomment="0"	' +
-							'				data-toggle="tooltip" data-placement="top" title="Signaler un abus"'+
+							'				data-toggle="tooltip" data-placement="top" title="'+trad.declareabuse+'"'+
 							'			  	href="javascript:">0 <i class="fa fa-flag"></i></a> '+
 									
 							'		<a style="margin-left:5px; margin-right:5px;"  class="tooltips"'+
-							'			   data-toggle="tooltip" data-placement="top" title="Modifier"'+
+							'			   data-toggle="tooltip" data-placement="top" title="'+trad.edit+'"'+
 							'			   href=\'javascript:editComment(\"'+idNewComment+'\")\'><i class="fa fa-pencil"></i></a>'+
 
 							'		<a class="tooltips"'+
-							'			   data-toggle="tooltip" data-placement="top" title="Supprimer"'+
+							'			   data-toggle="tooltip" data-placement="top" title="'+trad.delete+'"'+
 							'			   href=\'javascript:confirmDeleteComment(\"'+idNewComment+'\", $(this))\'><i class="fa fa-times"></i></a>'+
 							'</div>' +
 							//'			<a class="" href=\'javascript:deleteComment(\"'+idNewComment+'\")\'>Supprimer</a> '+
@@ -444,6 +472,7 @@
 
 		if(!isAnswer){
 			$("#comments-list-<?php echo $idComment; ?>").prepend(html);
+			$("#comments-list-<?php echo $idComment; ?>").find(".noComment").remove();
 		}else{
 			$('#container-txtarea-'+idComment).after(html);
 		}
@@ -451,25 +480,26 @@
 
 	
 
-	function saveComment(textComment, parentCommentId){
+	function saveComment(textComment, parentCommentId, domElement){
 		textComment = $.trim(textComment);
 		if(!notEmpty(parentCommentId)) parentCommentId = "";
 		if(textComment == "") {
-			toastr.error("Votre commentaire est vide");
+			toastr.error("<?php echo Yii::t("comment","Your comment is empty") ?>");
 			return;
 		}
 
 		var argval = $("#argval").val();
-
+		newComment={
+			parentCommentId: parentCommentId,
+			text : textComment,
+			contextId : context["_id"]["$id"],
+			contextType : contextType,
+			argval : argval
+		};
+		newComment=mentionsInit.beforeSave(newComment, domElement);
 		$.ajax({
 			url: baseUrl+'/'+moduleId+"/comment/save/",
-			data: {
-				parentCommentId: parentCommentId,
-				content : textComment,
-				contextId : context["_id"]["$id"],
-				contextType : contextType,
-				argval : argval
-			},
+			data: newComment,
 			type: 'post',
 			global: false,
 			dataType: 'json',
@@ -481,12 +511,15 @@
 					else { 
 						toastr.success(data.msg);
 						var count = $("#newsFeed"+context["_id"]["$id"]+" .nbNewsComment").html();
+						
 						if(!notEmpty(count)) count = 0;
 						//mylog.log(count, context["_id"]["$id"]);
+						comments[data.id.$id]=data.newComment;
 						if(data.newComment.contextType=="news"){
+							mentionsInit.reset(domElement);
 							count = parseInt(count);
 							var newCount = count +1;
-							var labelCom = (newCount>1) ? "commentaires" : "commentaire";
+							var labelCom = (newCount>1) ? trad.comments : trad.comment;
 							$("#newsFeed"+context["_id"]["$id"]+" .lblComment").html("<i class='fa fa-comment'></i> <span class='nbNewsComment'>"+newCount+"</span> "+labelCom);
 							$("#newsFeed"+context["_id"]["$id"]+" .newsAddComment").data('count', newCount);
 						// }else{
@@ -502,7 +535,11 @@
 						latestComments = data.time;
 
 						var isAnswer = parentCommentId!="";
-						showOneComment(textComment, parentCommentId, isAnswer, data.id.$id, argval);   
+						mentionsArray=null;
+						if(typeof data.newComment.mentions != "undefined"){
+							mentionsArray=data.newComment.mentions;
+						}
+						showOneComment(data.newComment.text, parentCommentId, isAnswer, data.id.$id, argval, mentionsArray);   
 						bindEventActions();    
 					}
 				},
@@ -674,20 +711,20 @@
 
 	function confirmDeleteComment(id, $this){
 		// mylog.log(contextId);
-		var message = "Souhaitez-vous vraiment supprimer ce commentaire ?";
+		var message = "<?php echo Yii::t("comment","Do you want to delete this comment") ?> ?";
 		var boxComment = bootbox.dialog({
 		  message: message,
 		  title: '<?php echo Yii::t("comment","You are going to delete this comment : are your sure ?") ?>', //Souhaitez-vous vraiment supprimer ce commentaire ?
 		  buttons: {
 		  	annuler: {
-		      label: "Annuler",
+		      label: trad.cancel,
 		      className: "btn-default",
 		      callback: function() {
 		        mylog.log("Annuler");
 		      }
 		    },
 		    danger: {
-		      label: "Supprimer",
+		      label: trad.delete,
 		      className: "btn-primary",
 		      callback: function() {
 		      	deleteComment(id,$this);
@@ -732,27 +769,29 @@
 
 	function editComment(idComment){
 		// mylog.log(contextId);
-		var commentContent = $('#item-comment-'+idComment+' .text-comment').html().trim();
-		var message = "<div id='container-txtarea-"+idComment+"'>"+
-						"<textarea id='textarea-new-comment"+idComment+"' class='form-control' placeholder='modifier votre commentaire'>"+commentContent+
+		isUpdatedComment=true;
+		var commentContent = comments[idComment].text;
+		var message = "<div id='container-txtarea-"+idComment+"' class='content-update-comment'>"+
+						"<textarea id='textarea-new-comment"+idComment+"' class='form-control' placeholder='"+trad.modifyyourcomment+"'>"+commentContent+
 						"</textarea>"+
 					  "</div>";
 		var boxComment = bootbox.dialog({
 		  message: message,
-		  title: '<?php echo Yii::t("comment","Modifier votre commentaire"); ?>', //Souhaitez-vous vraiment supprimer ce commentaire ?
+		  title: '<?php echo Yii::t("comment","Update your comment"); ?>', //Souhaitez-vous vraiment supprimer ce commentaire ?
 		  buttons: {
 		  	annuler: {
-		      label: "Annuler",
+		      label: trad.cancel,
 		      className: "btn-default",
 		      callback: function() {
-		        mylog.log("Annuler");
+		      	isUpdatedComment=false;
 		      }
 		    },
 		    enregistrer: {
-		      label: "Enregistrer",
+		      label: trad.save,
 		      className: "btn-success",
 		      callback: function() {
-		      	updateComment(idComment,$("#textarea-new-comment"+idComment).val());
+		      	updateComment(idComment,$("#textarea-new-comment"+idComment).val(), "#textarea-new-comment"+idComment);
+				isUpdatedComment=false;
 				return true;
 		      }
 		    },
@@ -761,7 +800,7 @@
 
 		boxComment.on("shown.bs.modal", function() {
 		  $.unblockUI();
-		  bindEventTextArea('#textarea-new-comment'+idComment, idComment, false);
+		  bindEventTextArea('#textarea-new-comment'+idComment, idComment, contextType, false, "", comments[idComment]);
 		});
 
 		boxComment.on("hide.bs.modal", function() {

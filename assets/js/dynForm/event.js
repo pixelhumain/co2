@@ -4,16 +4,20 @@ dynForm = {
 	    icon : "calendar",
 	    type : "object",
 	    onLoads : {
+	    	onload : function(){
+	    		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+						  					  .addClass("bg-orange");
+    	   	},
 	    	//pour creer un subevnt depuis un event existant
 	    	sub : function(){
 	    		
     			$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 						  					  .addClass("bg-orange");
-    		 	
     		 	$("#ajax-modal-modal-title").html(
     		 		$("#ajax-modal-modal-title").html()+
     		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
-
+    		 	
+    		 	
 	    		if(contextData && contextData.type == "events"){
 	    			$("#ajaxFormModal #parentId").removeClass('hidden');
 	    		
@@ -123,7 +127,7 @@ dynForm = {
 	         	label : tradDynForm["ispartofevent"]+" ?",
             	inputType : "select",
             	class : "",
-            	placeholder : tradDynForm["ispartevent"]+" ?",
+            	placeholder : tradDynForm["ispartofevent"]+" ?",
             	options : {
             		"":tradDynForm["noparent"]
             	},
@@ -136,7 +140,7 @@ dynForm = {
 	            		endDateParent = "2100/01/01 00:00";
 	            		if( parentId != "" ){
 	            			//Search in the current context
-	            			if (typeof contextData != "undefined") {
+	            			if (typeof contextData != "undefined" && notNull(contextData)) {
 	            				if (contextData.type == "events" && contextData.id == parentId) {
 	            					mylog.warn("event found in contextData : ",contextData.startDate+"|"+contextData.endDate);
 		            				startDateParent = contextData.startDate;

@@ -192,7 +192,7 @@ function refreshUIAroundMe(elementsMap){
 }
 
 function refreshAroundMe(radius){
-  $("#grid_around").html("<h4><i class='fa fa-refresh fa-spin' style='margin-left:15px;'></i> Nouvelle recherche en cours</h4>");
+  $("#grid_around").html("<h4><i class='fa fa-refresh fa-spin' style='margin-left:15px;'></i> "+trad.currentlyresearching+"</h4>");
   $("#loader-aroundme").html("<i class='fa fa-refresh fa-spin'></i>");
   
   $(".btn-groupe-around-me-km .btn-map").removeClass("active");

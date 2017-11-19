@@ -93,6 +93,9 @@ Liste des notifications déjà lues => #370 #453
   * COMOBI
   * interop 
     [ ] connecté une autre instance CO en mode interop 
+    [ ] amélioré le checkExist au remplisage du input NAME
+      [ ] check also les reseaux FB , Google, twitter
+      [ ] remplir réseau sociaux 
   * COPEDIA
     [ ] intégré dans un projet global universitaire trans discipline
     [ ] voir avec Fred Mesnard et David Grosser , comment l'intégrer dans le cursus , ou meme au LIM 
@@ -218,9 +221,34 @@ Liste des notifications déjà lues => #370 #453
     c'est comme porter un pins de nos amis , peut etre lié au staring / favoris
   ** application launcher like linux 
   ** lecteur de site embed dans CO en gardant la barre de menu 
+  ** export an Element as MD and import a structured MD file (to be defined)
+  ** PPT pres suivi du qui es tu :: 
+      - rempli qlq detail 
+      - et en avant
+  ** COPI as a type of POI 
+    - name 
+    - where 
+    - url for interoperating 
+  ** POI as an RSS feed 
+    could show in journal live feed 
+    or as an rss reader integrating an open source RSS reader 
+  ** Stagiaire : 
+    [ ] imaginer un serious game sociétal , interactif  
+      - réintégrer la gamification 
+    [ ] blockchain 
+  ** DDA 
+    Proposition Orienté / Duel 
+      exemple de vote: PPT terminé validé ou a retoucher 
+      pouvoir changer les libélé pour contre 
 * ************************************************************    
 * Version C0.22  : en cours
 * ************************************************************  
+  ** optim 
+    dynform Localiser
+      positionner direct sur ma localité 
+      btn validé disparait parfois
+      fonctionnalité des lieux (module places) 
+
   ** @Tib
 >>>> [ ] bug :: preview POI 
         [ ] search fork the world > opens a preview POI > should have the parent link
@@ -229,10 +257,28 @@ Liste des notifications déjà lues => #370 #453
 >>>> [ ] thematique SPORT 
 >>>> [ ] fail :: diaspora on users social networks
 >>>> [ ] when ona page , after login return to same page instead of personnal detail
+:totest: [ ] logo de l'element dans le mail d'invite 
+          - co2/test/displayMail/id/59dc95b3dd0452f9308d4af7
+>>>> [ ] ajouter Thématique Sport
+>>>> [ ] when on a page , after login return to same page instead of personnal detail
+>>>> [ ] application launcher + activater like linux 
+[X] remake error in CO
+[X] loading configs from DB applications.key = "devParams || prodParams" > Application::loadDBAppConfig();  
+[ ] integration du system de paiement Mango
+  [ ] create User 
+  [ ] create User Wallet 
+  [ ] create Seller 
+  [ ] create seller wallet 
+  [ ] Payin Cash
+    [ ] creates a CardRegistration 
+  [ ] setle transaction 
+  [ ] build payment interface
 >>>> [ ] faciliter la création de page static 
       [ ] avec du contenu MD
       [ ] un slideshow MD
      [X] json config builder 
+      [ ] read an externel .md text source 
+    [X] json config builder 
       - is just dynForm selector
       - save allready gets the collection as a param in formatData
         - any new saved Element must have a model and it's databinding at least 

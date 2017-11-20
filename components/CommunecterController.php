@@ -498,6 +498,7 @@ class CommunecterController extends Controller
       "addmembers"          => array("href" => "/ph/co2/element/addmembers", "public" => true),
       "aroundme"            => array("href" => "/ph/co2/element/aroundme"),
       "save"                => array("href" => "/ph/co2/element/save"),
+      "list"                => array("href" => "/ph/co2/element/list"),
       "savecontact"         => array("href" => "/ph/co2/element/savecontact"),
       "saveurl"             => array("href" => "/ph/co2/element/saveurl"),
       "get"                 => array("href" => "/ph/co2/element/get"),

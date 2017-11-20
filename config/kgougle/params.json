@@ -139,7 +139,30 @@
                   "hash" : "#app.info",
                   "icon" : "search", 
                   "mainTitle" : "Le moteur de recherche des Cagous",
-                  "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."}
+                  "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."},
+
+            "#admin": {
+                  "inMenu" : false, 
+                  "useHeader" : true, 
+                  "open" : true, 
+                  "subdomain" : "admin", 
+                  "subdomainName" : "admin",
+                  "hash":"#admin",
+                  "icon" : "grav", 
+                  "mainTitle" : "Partie Admin",
+                  "placeholderMainSearch" : "Admin ..."
+            },
+            "#smartconso": {
+                  "inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true, 
+                  "subdomain" : "smartconso", 
+                  "subdomainName" : "smartconso",
+                  "hash":"#app.smartconso.p.home",
+                  "icon" : "recycle", 
+                  "mainTitle" : "Consommons mieux en Nouvelle-Calédonie",
+                  "placeholderMainSearch" : "rechercher ..."
+            }
       } 								  
 
 }

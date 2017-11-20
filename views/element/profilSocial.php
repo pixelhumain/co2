@@ -586,8 +586,9 @@
 			$classDescH="hidden"; 
 			$classBtnDescH="<i class='fa fa-angle-down'></i> ".Yii::t("common","show description"); 
 				
+			if(Yii::app()->params["CO2DomainName"] == "kgougle") $classDescH = "";
 
-		if($typeItem != Person::COLLECTION){ 
+			if($typeItem != Person::COLLECTION){ 
 		?>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:20px;">
 				<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
@@ -609,6 +610,7 @@
 				<hr>
 			</div>
 		<?php }else{ $marginCentral="50"; } ?>
+
 		<!-- Permet de faire le convertion en HTML -->
 		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
 

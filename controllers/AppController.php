@@ -253,6 +253,14 @@ class AppController extends CommunecterController {
         echo $this->renderPartial("info/" . $CO2DomainName . "/" . $page, array(), true);
     }
 
+    public function actionSmartconso($p){ error_log("ecoconso");
+        $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? 
+                               Yii::app()->params["CO2DomainName"] : "CO2";
+
+        $page = @$p ? $p : "home";
+        echo $this->renderPartial("../smartconso/" . $page, array(), true);
+    }
+
     public function actionCity($insee, $postalCode){
         
         echo $this->renderPartial("city", array("insee"=> $insee, "postalCode" => $postalCode), true);

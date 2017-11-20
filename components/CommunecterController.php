@@ -467,6 +467,7 @@ class CommunecterController extends Controller
       "updatefield"         => array("href" => "/ph/co2/element/updatefield"),
       "updatefields"        => array("href" => "/ph/co2/element/updatefields"),
       "updateblock"         => array("href" => "/ph/co2/element/updateblock"),
+      "updatestatus"         => array("href" => "/ph/co2/element/updatestatus"),
       "detail"              => array("href" => "/ph/co2/element/detail", "public" => true),
       "getalllinks"         => array("href" => "/ph/co2/element/getalllinks"),
       "geturls"             => array("href" => "/ph/co2/element/geturls"),

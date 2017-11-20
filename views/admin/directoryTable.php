@@ -55,6 +55,7 @@ $this->renderPartial($layoutPath.'header',
 						<?php //} ?>
 						<th>Tags</th>
 						<th>Scope</th>
+						<th>Status</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -249,7 +250,7 @@ function buildDirectoryLine( e, collection, type, icon/* tags, scopes*/ ){
 		actions = "";
 		classes = "";
 		id = e._id.$id;
-
+		var status=[];
 		/* **************************************
 		* ADMIN STUFF
 		***************************************** */
@@ -262,7 +263,8 @@ function buildDirectoryLine( e, collection, type, icon/* tags, scopes*/ ){
 				if( typeof e.roles != "undefined" && typeof e.roles.tobeactivated != "undefined" )
 				{
 					classes += "tobeactivated";
-					actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 validateThisBtn"><span class="fa-stack"><i class="fa fa-user fa-stack-1x"></i><i class="fa fa-check fa-stack-1x stack-right-bottom text-danger"></i></span> Validate </a></li>';
+					status.push({"key":"tobeactivated","label":"To be activated"});
+					actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 activatedUserBtn"><span class="fa-stack"><i class="fa fa-user fa-stack-1x"></i><i class="fa fa-check fa-stack-2x stack-right-bottom text-danger"></i></span> Validate </a></li>';
 				}
 				//Beta Test
 				if (betaTest) {
@@ -276,20 +278,30 @@ function buildDirectoryLine( e, collection, type, icon/* tags, scopes*/ ){
 				//Super Admin
 				if( typeof e.roles != "undefined" && typeof e.roles.superAdmin != "undefined" ) {
 					classes += "superAdmin";
-					actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 revokeSuperAdminBtn"><span class="fa-stack"><i class="fa fa-user fa-stack-1x"></i><i class="fa fa-check fa-stack-1x stack-right-bottom text-danger"></i></span> Revoke this super admin </a></li>';
+					status.push({"key":"superAdmin", "label":"Super admin"});
+					actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 revokeSuperAdminBtn"><span class="fa-stack"><i class="fa fa-user-plus fa-stack-1x"></i><i class="fa fa-times fa-stack-2x stack-right-bottom text-danger"></i></span> Revoke this super admin </a></li>';
 				} else {
-					actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 addSuperAdminBtn"><span class="fa-stack"><i class="fa fa-user fa-stack-1x"></i><i class="fa fa-check fa-stack-1x stack-right-bottom text-danger"></i></span> Add this super admin </a></li>';
+					actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 addSuperAdminBtn"><span class="fa-stack"><i class="fa fa-user-plus fa-stack-1x"></i><i class="fa fa-check fa-stack-2x stack-right-bottom text-danger"></i></span> Add this super admin </a></li>';
 				}
-
-				actions += '<li><a href="javascript:;" data-id="'+id+'" class="margin-right-5 switch2UserThisBtn"><span class="fa-stack"><i class="fa fa-user fa-stack-1x"></i><i class="fa fa-eye fa-stack-1x stack-right-bottom text-danger"></i></span> Switch to this user</a> </li>';
-
-				actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 deleteThisBtn"><i class="fa fa-times text-red"></i>Delete</a> </li>';
-				//TODO
-				actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 banThisBtn"><i class="fa fa-times text-red"></i> TODO : Ban</a> </li>';
+				if( typeof e.roles != "undefined" && typeof e.roles.isBanned != "undefined" ) {
+					status.push({"key":"isBanned","label":"Banned user"});
+					actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 unbanUserBtn"><span class="fa-stack"><i class="fa fa-user fa-stack-1x"></i><i class="fa fa-stack-2x fa-check text-red"></i></span> Unban this user</a> </li>';
+				}else{
+					actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 banUserBtn"><span class="fa-stack"><i class="fa fa-user fa-stack-1x"></i><i class="fa fa-stack-2x fa-ban stack-right-bottom text-danger"></i></span> Ban this user</a> </li>';
+				}
+				actions += '<li><a href="javascript:;" data-id="'+id+'" class="margin-right-5 switch2UserThisBtn"><span class="fa-stack"><i class="fa fa-user fa-stack-1x"></i><i class="fa fa-eye fa-stack-2x stack-right-bottom text-danger"></i></span> Switch to this user</a> </li>';
 				
-			} else if( type == "<?php echo Organization::COLLECTION ?>" ) {
-			
 			}
+			if(typeof e.tobevalidated != "undefined"){
+				status.push({"key":"toBeValidated","label":"To be validated"});
+				actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 validateThisBtn"><i class="fa fa-ban text-red"></i> Validate '+type+'</a> </li>';
+			}
+			actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 deleteThisBtn"><i class="fa fa-trash text-red"></i>Delete</a> </li>';
+			//TODO
+			
+			// else if( type == "<?php echo Organization::COLLECTION ?>" ) {
+			
+			//}
 		}
 
 		/* **************************************
@@ -363,7 +375,16 @@ function buildDirectoryLine( e, collection, type, icon/* tags, scopes*/ ){
 			}	
 		}
 		strHTML += '</td>';
-
+		strHTML += '<td class="center status">';
+			console.log(status);
+			if(notEmpty(status)){
+				$.each(status,function(e,v){
+					strHTML+="<span class='badge bg-primary "+v.key+"'>"+v.label+"</span>";
+				});
+			}else{
+				strHTML += "No status";
+			}
+		strHTML += '</td>';
 		/* **************************************
 		* ACTIONS
 		***************************************** */
@@ -479,7 +500,7 @@ function bindAdminBtnEvents(){
 	***************************************** */
 	if( Yii::app()->session["userIsAdmin"] ) { ?>		
 
-		$(".validateThisBtn").off().on("click",function () 
+		$(".activatedUserBtn").off().on("click",function () 
 		{
 			mylog.log("validateThisBtn click");
 	        $(this).empty().html('<i class="fa fa-spinner fa-spin"></i>');
@@ -504,7 +525,9 @@ function bindAdminBtnEvents(){
 			    {
 			        if ( data && data.result ) {
 			        	toastr.info("Activated User!!");
+			        	btnClick.parents().eq(2).find(".status .tobeactivated").remove();
 			        	btnClick.empty().html('<i class="fa fa-thumbs-up"></i>');
+
 			        } else {
 			           toastr.info("something went wrong!! please try again.");
 			        }
@@ -624,24 +647,41 @@ function bindAdminBtnEvents(){
 	
 	<?php } ?>
 
-	$(".banThisBtn").off().on("click",function (){
+	$(".banUserBtn").off().on("click",function (){
 		mylog.log("banThisBtn click");
+		var btnClick = $(this);
+			bootbox.confirm("confirm please !!", function(result) {
+				if (result) {
+					changeRole(btnClick, "addBannedUser");
+				}
+		});
+	});
+	$(".unbanUserBtn").off().on("click",function (){
+		mylog.log("banThisBtn click");
+		var btnClick = $(this);
+			bootbox.confirm("confirm to accept this user again !!", function(result) {
+				if (result) {
+					changeRole(btnClick, "revokeBannedUser");
+				}
+		});
 	});
 }
 
 function changeRole(button, action) {
 	mylog.log(button," click");
     //$(this).empty().html('<i class="fa fa-spinner fa-spin"></i>');
-    var urlToSend = baseUrl+"/"+moduleId+"/person/changerole/";
+    var params ={
+    	type:button.data("type"),
+    	id:button.data("id"),
+    	action:action
+    }
+    var urlToSend = baseUrl+"/"+moduleId+"/element/updatestatus";
     var res = false;
 
 	$.ajax({
         type: "POST",
         url: urlToSend,
-        data: {
-        	"id" : button.data("id"),
-			"action" : action
-        },
+        data: params,
         dataType : "json"
     })
     .done(function (data) {
@@ -657,7 +697,7 @@ function changeRole(button, action) {
 
 function changeButtonName(button, action) {
 	mylog.log(action);
-	var icon = '<span class="fa-stack"> <i class="fa fa-user fa-stack-1x"></i><i class="fa fa-check fa-stack-1x stack-right-bottom text-danger"></i></span>';
+	var icon = '<span class="fa-stack"> <i class="fa fa-user fa-stack-1x"></i><i class="fa fa-check fa-stack-2x stack-right-bottom text-danger"></i></span>';
 	if (action=="addBetaTester") {
 		button.removeClass("addBetaTesterBtn");
 		button.addClass("revokeBetaTesterBtn");
@@ -669,11 +709,23 @@ function changeButtonName(button, action) {
 	} else if (action=="addSuperAdmin") {
 		button.removeClass("addSuperAdminBtn");
 		button.addClass("revokeSuperAdminBtn");
-		button.html(icon+" Revoke this super admin");
+		button.parents().eq(4).find(".status").append("<span class='badge bg-primary superAdmin'>Super Admin</span>");
+		button.html('<span class="fa-stack"> <i class="fa fa-user-plus fa-stack-1x"></i><i class="fa fa-times fa-stack-2x stack-right-bottom text-danger"></i></span>'+" Revoke this super admin");
 	} else if (action=="revokeSuperAdmin") {
 		button.removeClass("revokeSuperAdminBtn");
 		button.addClass("addSuperAdminBtn");
+		button.parents().eq(4).find(".status .superAdmin").remove();
 		button.html(icon+" Add this super admin");
+	} else if (action=="addBannedUser") {
+		button.removeClass("banUserBtn");
+		button.addClass("unbanUserBtn");
+		button.parents().eq(4).find(".status").append("<span class='badge bg-primary isBanned'>Is banned</span>");
+		button.html(icon+" Unban user");
+	}else if (action=="revokeBannedUser") {
+		button.removeClass("unbanUserBtn");
+		button.addClass("banUserBtn");
+		button.parents().eq(4).find(".status .isBanned").remove();
+		button.html('<span class="fa-stack"> <i class="fa fa-user fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x stack-right-bottom text-danger"></i></span>'+" Ban user");
 	} else {
 		mylog.warn("Unknown action !");
 	}

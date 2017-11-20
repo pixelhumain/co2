@@ -10,20 +10,22 @@
 
 <script type="text/javascript">
 
-	var poi=<?php echo json_encode($element); ?>;
+	var poiAlone=<?php echo json_encode($element); ?>;
 
 	jQuery(document).ready(function() {	
-		setTitle("", "", poi.name);
+		setTitle("", "", poiAlone.name);
 			
-		poi["typePoi"] = poi.type;
-		poi["type"] = "poi";
-		poi["typeSig"] = "poi";
+		poiAlone["typePoi"] = poiAlone.type;
+		poiAlone["type"] = "poi";
+		poiAlone["typeSig"] = "poi";
 		
-		poi["id"] = poi['_id']['$id'];
-		var html = directory.preview(poi);
+		poiAlone["id"] = poiAlone['_id']['$id'];
+		var html = directory.preview(poiAlone);
 	  	$("#poi").html(html);
 
-	  	Sig.showMapElements(Sig.map, new Array(poi));
+	  	//poi["sections"] = <?php echo json_encode(CO2::getContextList("poi")); ?>
+
+	  	Sig.showMapElements(Sig.map, new Array(poiAlone));
 	});
 
 </script>

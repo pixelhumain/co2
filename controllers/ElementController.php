@@ -19,6 +19,7 @@ class ElementController extends CommunecterController {
           'updatefields' 				  => 'citizenToolKit.controllers.element.UpdateFieldsAction',
           'updateblock'           => 'citizenToolKit.controllers.element.UpdateBlockAction',
           'updatesettings'        => 'citizenToolKit.controllers.element.UpdateSettingsAction',
+          'updatestatus'          => 'citizenToolKit.controllers.element.UpdateStatusAction',
           'detail'                => 'citizenToolKit.controllers.element.DetailAction',
           'getalllinks'           => 'citizenToolKit.controllers.element.GetAllLinksAction',
           'geturls'               => 'citizenToolKit.controllers.element.GetUrlsAction',
@@ -26,7 +27,6 @@ class ElementController extends CommunecterController {
           'directory'             => 'citizenToolKit.controllers.element.DirectoryAction',
           'addmembers'            => 'citizenToolKit.controllers.element.AddMembersAction',
           'aroundme'              => 'citizenToolKit.controllers.element.AroundMeAction',
-          'updatefield'           => 'citizenToolKit.controllers.element.UpdateFieldAction',
           'save'                  => 'citizenToolKit.controllers.element.SaveAction',
           'savecontact'           => 'citizenToolKit.controllers.element.SaveContactAction',
           'saveurl'               => 'citizenToolKit.controllers.element.SaveUrlAction',
@@ -39,6 +39,7 @@ class ElementController extends CommunecterController {
           'getthumbpath'       => 'citizenToolKit.controllers.element.GetThumbPathAction',
           'list'       => 'citizenToolKit.controllers.element.ListAction',
           'getcommunexion'       => 'citizenToolKit.controllers.element.GetCommunexionAction',
+          'getdatabyurl'       => 'citizenToolKit.controllers.element.GetDataByUrlAction',
       );
   }
 }

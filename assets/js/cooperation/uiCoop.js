@@ -7,6 +7,8 @@ var uiCoop = {
 		$("#main-coop-container").html("");
 
 		$("#btn-close-coop").click(function(){
+			if(contextData.slug != "undefined")
+				location.hash="#"+contextData.slug;
 			$("#coop-data-container").html("");
 		});
 		//KScrollTo("#div-reopen-menu-left-container");
@@ -543,9 +545,14 @@ var uiCoop = {
 			console.log("edit idProposal", idProposal);
 			dyFObj.editElement('proposals', idProposal);
 		});
-
-		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
-							  ".view.coop.room." + idParentRoom + ".proposal." + idParentProposal;
+		addCoopHash=".view.coop.room." + idParentRoom + ".proposal." + idParentProposal;
+		if(typeof hashUrlPage != "undefined")
+			location.hash = hashUrlPage +addCoopHash;
+		else if(notNull(contextData) && typeof contextData.slug != "undefined")
+			location.hash = "#" + contextData.slug + addCoopHash;
+		else
+			location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash; 
+							  
 
 		if(msgController != ""){
 			toastr.error(msgController);
@@ -606,9 +613,14 @@ var uiCoop = {
 		$("#btn-validate-assign-me").off().click(function(){
 			uiCoop.assignMe(idAction);
 		});
-
-		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
-							  ".view.coop.room." + idParentRoom + ".action." + idAction;
+		addCoopHash=".view.coop.room." + idParentRoom + ".action." + idAction;
+		if(typeof hashUrlPage != "undefined")
+			location.hash = hashUrlPage +addCoopHash;
+		else if(notNull(contextData) && typeof contextData.slug != "undefined")
+			location.hash = "#" + contextData.slug + addCoopHash;
+		else
+			location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;  
+							  
 	}
 
 }

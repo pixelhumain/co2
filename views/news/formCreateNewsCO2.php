@@ -170,7 +170,7 @@
   padding:0 !important;
 }
 .updateMention .mentions-input-box .mentions{ 
-  padding:10px 5px !important;
+  padding:10px !important;
 }
 </style>
 <?php 

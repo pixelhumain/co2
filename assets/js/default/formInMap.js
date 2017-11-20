@@ -481,7 +481,7 @@ var formInMap = {
 		//formInMap.updateSummeryLocality(data);
 		mylog.log("formInMap.NE_betweenCP ", formInMap.NE_betweenCP );
 		formInMap.btnValideDisable( (formInMap.NE_betweenCP == false ? false : true) );
-		//formInMap.btnValideDisable( false );
+		
 
 		if(userId == "")
 			$("#divStreetAddress").addClass("hidden");

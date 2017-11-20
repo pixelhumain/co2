@@ -331,7 +331,7 @@ function bindAboutPodElement() {
 											'<i class="fa fa-'+dyFInputs.get(contextData.parentType).icon+'"></i> '+
 											contextData.parent.name+'</a><br/>';
 
-										htmlHeader =((contextData.type == typeObj.event.col) ? trad["Planned on"] : trad["handleBy"] ) ;
+										htmlHeader =((contextData.type == typeObj.event.col) ? trad["Planned on"] : trad.carriedby ) ;
 										htmlHeader += htmlAbout;
 									}
 
@@ -684,6 +684,13 @@ function bindAboutPodElement() {
 						afterSave : function(data){
 							dyFObj.closeForm();
 							toastr.success("Votre slug a bien été enregistré");
+							strHash="";
+    						if(location.hash.indexOf(".view")>0){
+    							hashPage=location.hash.split(".view");
+    							strHash=".view"+hashPage[1];
+    						}	
+    						location.hash = data.resultGoods.values.slug+strHash;
+    						hashUrlPage="#"+data.resultGoods.values.slug;
 							contextData.slug=data.resultGoods.values.slug;
 							//rcObj.loadChat(data.resultGoods.values.slug,type,canEdit,hasRc);
 							//loadDataDirectory(connectType, "user", true);
@@ -878,8 +885,6 @@ function bindAboutPodElement() {
 		
 	}
 
-	
-
 	function removeContact(ind) {
 		bootbox.confirm({
 			message: trad["suretodeletecontact"]+"<span class='text-red'></span>",
@@ -966,14 +971,15 @@ function bindAboutPodElement() {
 					//social network
 					( 	$.inArray( val, SNetwork ) >= 0 && 
 						( 	typeof contextData["socialNetwork"] != "undefined" && 
-							contextData["socialNetwork"] != null ) && (
-						( 	typeof contextData["socialNetwork"][val] != "undefined" || 
-							contextData["socialNetwork"][val] != null && 
-							$("#ajaxFormModal #"+val).val().trim() == contextData["socialNetwork"][val] )
-						||
-						( 	( 	typeof contextData["socialNetwork"][val] == "undefined" || 
-							contextData["socialNetwork"][val] == null ) && 
-						$("#ajaxFormModal #"+val).val().trim().length == 0 ) )
+							contextData["socialNetwork"] != null ) && 
+						(
+							( 	typeof contextData["socialNetwork"][val] != "undefined" || 
+								contextData["socialNetwork"][val] != null && 
+								$("#ajaxFormModal #"+val).val().trim() == contextData["socialNetwork"][val] )
+							||
+							( 	( 	typeof contextData["socialNetwork"][val] == "undefined" || 
+								contextData["socialNetwork"][val] == null ) && 
+							$("#ajaxFormModal #"+val).val().trim().length == 0 ) )
 					)
 				) 
 			) {

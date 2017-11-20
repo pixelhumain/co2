@@ -95,7 +95,7 @@
 #ajax-modal .close-modal .rl,
 #formContact .close-modal .lr,
 #formContact .close-modal .rl{
-	background-color: white;
+	background-color: #ea4335;
 }
 
 #btn-show-activity-onmap{
@@ -697,7 +697,7 @@
     		strHash=".view"+hashPage[1];
     	}
     	replaceSlug=true;
-    	history.replaceState("#page.type."+contextData.type+".id."+contextData.id, "", "#"+contextData.slug+strHash);
+    	history.replaceState("#page.type."+contextData.type+".id."+contextData.id, "", hashUrlPage+strHash);
     	//location.hash=;
     }
     

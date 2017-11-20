@@ -764,7 +764,7 @@ var tradCategory = {
 	"intervener":"<?php echo Yii::t("category","Intervener") ?>",
 	"Planned on":"<?php echo Yii::t("common","Planned on") ?>",
 	"Parenthood":"<?php echo Yii::t("common","Parenthood") ?>",
-	"handleBy":"<?php echo Yii::t("common","Handle by") ?>",
+	"carriedby":"<?php echo Yii::t("common","Carried by") ?>",
 	"common":"<?php echo Yii::t("category","Commons") ?>",
 	"food":"<?php echo Yii::t("category","Agriculture | Food") ?>",
 	"health":"<?php echo Yii::t("category","Health") ?>",

@@ -7,6 +7,7 @@ var shopping = {
 		total : 0,
 		sellers : {}
 	},
+	totalCart:0,
 	addToShoppingCart: function(id, type, subType, ranges){
 		incCart=true;
 		if(typeof userId != "undefined" && userId != ""){
@@ -274,7 +275,7 @@ var shopping = {
         					};
         $.each(shopping.cart,function(i,v){
             console.log(v);
-            if(i!="countQuantity" && i != "backup"){
+            if(i!="countQuantity" && i != "backup" && i != "totalCart"){
                 if(i=="services"){
                     $.each(v,function(e, service){
                         console.log(service);

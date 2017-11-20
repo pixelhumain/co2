@@ -183,7 +183,7 @@
 
 		"#admin": {
 			"inMenu" : false, 
-			"useHeader" : false, 
+			"useHeader" : true, 
 			"open" : false, 
 			"subdomain" : "admin", 
 			"subdomainName" : "admin",

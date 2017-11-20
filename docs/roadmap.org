@@ -137,6 +137,8 @@ Liste des notifications déjà lues => #370 #453
       - mobi
   ** Keyboard nav
     Ctrl + ? > opens floop > type > reduce selection
+
+
 * ************************************************************    
 * Version C0.21.8  : en cours
 8 correpsond le nb de nouvelle fonctionalité
@@ -185,8 +187,6 @@ Liste des notifications déjà lues => #370 #453
     [ ] Features
       [X] Messagerie -> Rocket chat
         [ ] creer une instance
-      [ ] Payement -> A faire 
-        [ ] mangoPay
       [ ] Acceuil
       [ ] La Carte
       [ ] Sauvegarde -> Collection 
@@ -317,15 +317,15 @@ Liste des notifications déjà lues => #370 #453
 >>>> [ ] application launcher + activater like linux 
 [X] remake error in CO
 [X] loading configs from DB applications.key = "devParams || prodParams" > Application::loadDBAppConfig();  
-[ ] integration du system de paiement Mango
-  [ ] create User 
-  [ ] create User Wallet 
-  [ ] create Seller 
-  [ ] create seller wallet 
-  [ ] Payin Cash
-    [ ] creates a CardRegistration 
-  [ ] setle transaction 
-  [ ] build payment interface
+[X] integration du system de paiement Mango
+  [X] create User 
+  [X] create User Wallet 
+  [X] create Seller 
+  [X] create seller wallet 
+  [X] Payin Cash
+    [X] creates a CardRegistration 
+  [X] setle transaction 
+  [X] build payment interface
 >>>> [ ] faciliter la création de page static 
       [ ] avec du contenu MD
       [ ] un slideshow MD
@@ -482,12 +482,6 @@ Liste des notifications déjà lues => #370 #453
   ** @Tib et @Tango 
     [ ] lancé DDA sur plusieur communauté test
       [ ] pour : CGPME (vienne sveloupoule@cpmereunion.re), nancy mine, Pref, Digi Reunion 
-      [ ] proposition pour 15 spetembre 
-        [ ] idée sur axe regionnaux 
-        [ ] nationaux 
-        [ ] filiere
-        [ ] échanges poser les questions
-        [ ] lister vos actions concrete
     [ ] quick adder : copy link , set type 
       - get page data > fill form > save 
       - fill contact form 

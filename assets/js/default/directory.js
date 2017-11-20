@@ -2547,7 +2547,7 @@ var directory = {
     var timezone = directory.get_time_zone_offset();
     
 
-     getDateFormated: function(params, onlyStr){
+     //getDateFormated: function(params, onlyStr){
     
         params.startDateDB = notEmpty(params.startDate) ? params.startDate : null;
         params.startDay = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD") : "";

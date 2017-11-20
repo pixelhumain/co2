@@ -36,6 +36,7 @@ $arrayLabel=array(
 	"organizer" => Yii::t("common", "organizer"),
 	"contacts" => Yii::t("common", "un contact"),
 	"descriptionHTML" => Yii::t("common", "the descripton"),
+	"parent" => Yii::t("common", "the holder"),
 );
 if ($contextType == Organization::COLLECTION)
 	$contextTypeLabel=Yii::t("common","of the organization");
@@ -73,7 +74,7 @@ $countries= OpenData::getCountriesList();
 						echo Yii::t("common","{who} ".$action." {what} {where}",
 							array("{who}"=>"<a href='#page.type.".Person::COLLECTION.".id.".$value["author"]["id"]."' class='lbh'>".$value["author"]["name"]."</a>",
 								"{what}"=>"<span style='font-weight:bold;'>".$arrayLabel[$value["object"]["displayName"]]."</span>",
-								"{where}"=>$contextTypeLabel));
+								"{where}"=>@$contextTypeLabel));
 						echo ": <span style='color: #21b384;'>";
 						if($value["object"]["displayName"]=="address" || $value["object"]["displayName"]=="addresses"){
 							if(@$value["object"]["displayValue"]){
@@ -130,7 +131,12 @@ $countries= OpenData::getCountriesList();
 							if(isset($contacts["tel"]))
 								echo " ".Yii::t("common", "Phone")." : ".$contacts["tel"];
 						
-						} else if(@$value["object"]["displayValue"] && !empty($value["object"]["displayValue"]) )
+						}  else if (@$value["object"]["displayName"] == "parent" && !empty($value["object"]["displayValue"])) {
+							$parent=Element::getSimpleByTypeAndId($value["object"]["displayValue"]["parentType"], $value["object"]["displayValue"]["parentId"],array("name"=>1));
+							if(!empty($parent))
+								echo "<a href='#page.type.".$value["object"]["displayValue"]["parentType"].".id.".$value["object"]["displayValue"]["parentId"]."' class='lbh letter-green'>".@$parent["name"]."</a>";
+						}
+						else if(@$value["object"]["displayValue"] && !empty($value["object"]["displayValue"]) )
 							echo Yii::t("common",$value["object"]["displayValue"]);
 						else if($value["object"]["displayName"] == "descriptionHTML")
 							echo Yii::t("common","change description in markdown format");

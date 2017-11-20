@@ -352,6 +352,12 @@ var formInMap = {
 								var lng = valueCP.geo.longitude;
 
 								var lblList = value.name + ", " + valueCP.name + ", " + valueCP.postalCode ;
+								if(notNull(value.level4Name))
+									lblList += " ( " + value.level4Name + " ) ";
+								else if(notNull(value.level3Name))
+									lblList += " ( " + value.level3Name + " ) ";
+								else if(notNull(value.level2Name))
+									lblList += " ( " + value.level2Name + " ) ";
 								html += "<li><a href='javascript:;' data-type='"+currentScopeType+"' "+
 												"data-locId='"+key+"' "+
 												"data-level4='"+value.level4+"' data-level4name='"+value.level4Name+"'"+
@@ -370,6 +376,12 @@ var formInMap = {
 							var lblList = value.name ;
 							html += "<li><a href='javascript:;' data-type='"+currentScopeType+"' "+
 												"data-locid='"+key+"' ";
+							if(notNull(value.level4Name))
+								lblList += " ( " + value.level4Name + " ) ";
+							else if(notNull(value.level3Name))
+								lblList += " ( " + value.level3Name + " ) ";
+							else if(notNull(value.level2Name))
+								lblList += " ( " + value.level2Name + " ) ";
 
 							html +=	"data-level4='"+value.level4+"' data-level4name='"+value.level4Name+"'"+
 									"data-level3='"+value.level3+"' data-level3name='"+value.level3Name+"'"+
@@ -460,7 +472,7 @@ var formInMap = {
 		//formInMap.updateSummeryLocality(data);
 		mylog.log("formInMap.NE_betweenCP ", formInMap.NE_betweenCP );
 		formInMap.btnValideDisable( (formInMap.NE_betweenCP == false ? false : true) );
-		//formInMap.btnValideDisable( false );
+		
 
 		if(userId == "")
 			$("#divStreetAddress").addClass("hidden");

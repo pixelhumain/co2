@@ -542,7 +542,7 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
 	$(idTextArea).val(textNews);
 	
 	//$(idTextArea).mentionsInput("update", data.mentions);
-	if(data.mentions.length != 0){
+	if(typeof data.mentions != "undefined" && data.mentions.length != 0){
 		text=data.text;
 		$.each(data.mentions, function(e,v){
 			if(typeof v.slug != "undefined")
@@ -1466,20 +1466,21 @@ function getMediaFiles(o,newsId, edit){
 	return html;
 }	
 function deleteImage(id,name,hideMsg,communevent){
+	var imgToDelete=id;
 	if(communevent==true)
 		path="communevent";
 	else
-		path="album";
+		path="commuencter";
 	$.ajax({
-			url : baseUrl+"/"+moduleId+"/document/delete/dir/communecter/type/"+contextParentType+"/parentId/"+contextParentId,			
+			url : baseUrl+"/"+moduleId+"/document/delete/dir/"+moduleId+"/type/"+contextParentType+"/id/"+contextParentId,			
 			type: "POST",
-			data: {"name": name, "parentId": contextParentId, "parentType": contextParentType, "path" : path, "docId" : id},
+			data: {"name": name, "parentId": contextParentId, "parentType": contextParentType, "path" : path, "ids" : [id]},
 			dataType: "json",
 			success: function(data){
 				if(data.result){
 					if(hideMsg!=true){
 						countImg=$("#results img").length;
-						$("#deleteImg"+data.id).parents().eq(1).remove();
+						$("#deleteImg"+imgToDelete).parents().eq(1).remove();
 						idImg=countImg-1;
 						if(idImg==0){
 							$("#results").empty().hide();

@@ -758,7 +758,7 @@ $this->renderPartial($layoutPath.'header',
 		                        setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
 		                        $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
 		                        $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
-		                        activateGlobalCommunexion(true);
+		                        activateGlobalCommunexion(true, true);
 		                    });
 
 		                    $.unblockUI();

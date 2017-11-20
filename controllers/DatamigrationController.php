@@ -2496,7 +2496,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			if(!empty($city)){
 				$res = PHDB::update( Zone::COLLECTION, 
 								  	array("_id"=>new MongoId($key)),
-									array('$set' => array("ownACity" =>  true))
+									array('$set' => array("hasCity" =>  true))
 					);
 				$nbelement++;
 			}			
@@ -3347,6 +3347,91 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			foreach($typeEl as $type){
 				
 				$res=PHDB::find($type);
+				echo "//////////".count($res)." ".$type."/////////////////<br>";
+				$count=0;
+				foreach ($res as $key => $value) {
+					if(@$value["name"] && !empty($value["name"])){
+						// replace non letter or digits by -
+						$str="";
+						if(strlen($value["name"])>50)
+							substr($value["name"],50);
+						
+						$value=explode(" ",$value["name"]);
+						$i=0;
+						foreach($value as $v){
+							$text = strtr( $v, $unwanted_array );
+							//$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+			  				$text = preg_replace('~[^\\pL\d]+~u', '', $text);
+
+				  			// trim
+				  			$text = trim($text, '-');
+
+				 			// transliterate
+				  			$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+				  			// lowercase
+				  			$text = strtolower($text);
+				  			if($i>0)
+				  				$text = ucfirst($text);
+
+				  			// remove unwanted characters
+				  			$text = preg_replace('~[^-\w]+~', '', $text);
+				  			$str.=$text;
+				  			$i++;
+			  			}	
+			  			if(in_array($str, $slugExist)){
+			 			//if(!Slug::check(array("slug"=>$str,"type"=>Organization::COLLECTION,"id"=>$key))){
+			 				$v = 1; // $i est un nombre que l'on incrémentera. 
+			 				$inc=true;
+			 				//echo "ouuuuuuuuuiiii";
+							while($inc==true) 
+							{ 
+								//$inc=Slug::check(array("slug"=>$str.$i,"type"=>Organization::COLLECTION,"id"=>$key));
+							  	//echo $i . "<br />";
+							  	$inc=in_array($str.$v, $slugExist);
+							  	//echo $inc;
+							  	echo "ca bloque la ".$str.$v;
+								if(!$inc)
+									$str=$str.$v;
+								else
+							  		$v ++ ;
+							}
+						}
+						array_push($slugExist, $str);
+						echo  $key."////".$type."/////".$str."<br>";
+						//INSERT IN SLUG COLLECTION
+						PHDB::insert(Slug::COLLECTION,array("name"=>$str,"id"=>$key,"type"=>$type));
+						//INSERT SLUG ENTRY IN ELEMENT
+						PHDB::update(
+							$type,
+							array("_id"=>new MongoId($key)),
+							array('$set'=>array("slug"=>$str)));
+						$count++;
+					}
+		 		}
+		 		echo "////////////////".$count." ".$type." traités (comme des animaux) ///////";
+			}
+		}else 
+			echo "Tout le monde t'as vu !! reste bien tranquille";
+	}
+	public function actionUpdateSlugifyElement(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);
+			//$slugcitoyens=PHDB::find(Slug::COLLECTION);
+			$typeEl=array("organizations","projects","events","citoyens");
+			//$slugExist=array();
+			//foreach($slugcitoyens as $data){
+			//	array_push($slugExist,$data["name"]);
+			//}
+			$unwanted_array = array(    'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+                            'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
+                            'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
+                            'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
+                            'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y' );
+			foreach($typeEl as $type){
+				
+				$res=PHDB::find($type,array("slug"=>array('$exists'=>false)));
 				echo "//////////".count($res)." ".$type."/////////////////<br>";
 				$count=0;
 				foreach ($res as $key => $value) {

@@ -401,6 +401,8 @@ var trad = {
 	"alltags" : "<?php echo Yii::t("common", "All tags") ?>",
 	"alltypes" : "<?php echo Yii::t("common", "All types") ?>",
 	"youwillfindonlycities" : "<?php echo Yii::t("docs","You will find only cities <b>which match data</b>.<br/> If you <b>don't find</b> a city, feel free <b>to create an organization, a project, an event, on this geographical zone...</b><br/><br/><b>Then you will find this result here</b>") ?>",
+	"testAOtherCommunexion" : "<?php echo Yii::t("home", "Test a other communexion") ?>",
+	"allcitieswiththispostalcode" : "<?php echo Yii::t("common", "All cities with this postal code") ?>",
 
 };
 
@@ -764,7 +766,7 @@ var tradCategory = {
 	"intervener":"<?php echo Yii::t("category","Intervener") ?>",
 	"Planned on":"<?php echo Yii::t("common","Planned on") ?>",
 	"Parenthood":"<?php echo Yii::t("common","Parenthood") ?>",
-	"handleBy":"<?php echo Yii::t("common","Handle by") ?>",
+	"carriedby":"<?php echo Yii::t("common","Carried by") ?>",
 	"common":"<?php echo Yii::t("category","Commons") ?>",
 	"food":"<?php echo Yii::t("category","Agriculture | Food") ?>",
 	"health":"<?php echo Yii::t("category","Health") ?>",

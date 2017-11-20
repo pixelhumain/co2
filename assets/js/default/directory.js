@@ -229,7 +229,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               str += "<hr style='float:left; width:100%;'/>";
               str += "</div>";
               
-              if( $.inArray( "cities", searchType ) != "-1" && searchType.length == 1){
+              if( $.inArray( "cities", searchType ) != "-1" && searchType.length == 1  && totalData == 0){
               		str += '<span class="col-md-12 col-sm-12 col-xs-12 letter-blue padding-10"><i class="fa fa-info-circle"></i>'+ trad.youwillfindonlycities+'!</span>';
               }
 
@@ -1111,7 +1111,7 @@ var directory = {
     previewedObj : null,
     preview : function(params,hash){
 
-      mylog.log("----------- preview",params,params.name, hash);
+      //mylog.log("----------- preview",params,params.name, hash);
       directory.previewedObj = {
           hash : hash,
           params : params
@@ -1143,7 +1143,7 @@ var directory = {
         // ********************************
         str +=  "<div class='col-xs-12 text-left'>";
         
-          var devise = typeof params.devise != "undefined" ? params.devise : "";
+          var devise = (typeof params.devise != "undefined") ? params.devise : "";
           var price = (typeof params.price != "undefined" && params.price != "") ? 
                         "<br/><i class='fa fa-money'></i> " + params.price + " " + devise : "";
           
@@ -1325,7 +1325,7 @@ var directory = {
                               "<i class='fa fa-share'></i> Partager</button>";
 
 
-            var devise = typeof params.devise != "undefined" ? params.devise : "";
+            var devise = (typeof params.devise != "undefined") ? params.devise : "";
             if(typeof params.price != "undefined" && params.price != "")
             str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
          
@@ -1595,7 +1595,7 @@ var directory = {
                   valuesScopes.level2Name = params.level2Name ;
                 }
 
-                str += "<button class='btn btn-sm btn-danger item-globalscope-checker' "+
+                str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
                                 "data-scope-value='" + params.id  + "' " + 
                                 "data-scope-name='" + params.name + "' " +
                                 "data-scope-level='city' " +
@@ -1603,10 +1603,8 @@ var directory = {
                                 "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
                                 "data-scope-notsearch='"+true+"' " +
                                 ">"+
-                                    "<i class='fa fa-angle-right'></i> Communecter" + 
+                                    "<i class='fa fa-angle-right'></i> " + trad.testAOtherCommunexion + 
                                 "</button>";
-                
-
                 str += "</div>";                
               str += "</div>";
               return str;

@@ -284,6 +284,7 @@ db.cities.createIndex({"country" : 1});
 db.cities.createIndex({"postalCodes.name" : 1});
 db.cities.createIndex({"postalCodes.postalCode" : 1});
 
+
 ----------------------------------------------------
 //deja mis sur dev
 db.cities.find().forEach(function(doc)

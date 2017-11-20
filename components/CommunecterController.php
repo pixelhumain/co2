@@ -485,8 +485,9 @@ class CommunecterController extends Controller
       "about"               => array("href" => "/ph/co2/element/about"),
       "getdatadetail"       => array("href" => "/ph/co2/element/getdatadetail"),
       "stopdelete"          => array("href" => "/ph/co2/element/stopdelete"),
-      'getthumbpath'    => array("href" => "/ph/co2/element/getThumbPath"),
-      'getcommunexion'    => array("href" => "/ph/co2/element/getcommunexion"),
+      'getthumbpath'        => array("href" => "/ph/co2/element/getThumbPath"),
+      'getcommunexion'      => array("href" => "/ph/co2/element/getcommunexion"),
+      'getdatabyurl'        => array("href" => "/ph/co2/element/getdatabyurl"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/co2/app/welcome",         "public" => true),

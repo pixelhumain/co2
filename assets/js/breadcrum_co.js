@@ -20,7 +20,10 @@ function bindCommunexionScopeEvents(){
         $(".item-globalscope-checker").addClass("inactive");
         $(this).removeClass("inactive");
         var notSearch = $(this).data("scope-notsearch");
+        var testCo = false;
         if($(this).hasClass("communecterSearch")){
+            testCo = true;
+            communexion.cities = trad.allcitieswiththispostalcode
             $("#main-search-bar").val("");
             if(location.hash.indexOf("#search")){
                 notSearch = false;
@@ -28,7 +31,7 @@ function bindCommunexionScopeEvents(){
         }
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
         setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
-                         $(this).data("scope-values"),  notSearch) ;
+                         $(this).data("scope-values"),  notSearch, testCo) ;
     });
     
     $(".item-scope-input").off().on("click", function(){ 
@@ -131,7 +134,9 @@ function activateGlobalCommunexion(active, firstLoad){
 function getBreadcrumCommunexion(){
     var tips="";
 
-    if(typeof communexion.cities != "undefined") {
+    if(typeof communexion.cities == "string") {
+        tips = communexion.cities ;
+    }else if(typeof communexion.cities != "undefined") {
     	$.each(communexion.cities,function(e,v){
             tips+=v+" / ";
         });

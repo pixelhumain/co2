@@ -424,20 +424,13 @@ function openDropdownMultiscope(){
 	setTimeout(function(){ $("#dropdown-content-multi-scope").addClass('open'); }, 300);
 }
 
-function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch){  
+function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo){  
 
-	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel, notSearch);
+	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel, notSearch, testCo);
 
 	if(scopeValue == "") return;
 	
 	mylog.log("myMultiScopes", myMultiScopes, indexStepInit);
-	// $("#searchLocalityCITYKEY").val("");
-	// $("#searchLocalityCODE_POSTAL").val("");
-	// $("#searchLocalityZONE").val("");
-	// if(scopeType == "city") {$("#searchLocalityCITYKEY").val(scopeValue);} 
-	// if(scopeType == "cp") $("#searchLocalityCODE_POSTAL").val(scopeValue);
-	// if(scopeType == "zone") $("#searchLocalityZONE").val(scopeValue);
-	//$("#searchLocalityLEVEL").val(scopeLevel);
 	$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
 
 	communexion.currentLevel = scopeLevel;
@@ -451,7 +444,9 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 		communexion.values = values;
 	}
 	mylog.log("communexion before save", communexion);
-	$.cookie('communexion', communexion, { expires: 365, path: "/" });
+
+	if( notNull(testCo) && testCo == false)
+		$.cookie('communexion', communexion, { expires: 365, path: "/" });
 
 	if($("#communexionNameHome").length){
 		$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+scopeName+'</span></span>');

@@ -27,13 +27,14 @@ class CO2 {
     	$query = array("country"=>"NC", "name"=>array('$in'=>array("Noumea", "Dumbea", "Paita", "Mont-Dore")));
     	$citiesGN = PHDB::find(City::COLLECTION, $query);
 
-    	$query = array("country"=>"NC", "depName"=>"Province Sud", "name"=>array('$nin'=>array("Noumea", "Dumbea", "Paita", "Mont-Dore")));
+    	$query = array("country"=>"NC", "level3Name"=>"Province Sud", 
+                        "name"=>array('$nin'=>array("Noumea", "Dumbea", "Paita", "Mont-Dore")));
     	$citiesS = PHDB::find(City::COLLECTION, $query);
 
-    	$query = array("country"=>"NC", "depName"=>"Province Nord");
+    	$query = array("country"=>"NC", "level3Name"=>"Province Nord");
     	$citiesN = PHDB::find(City::COLLECTION, $query);
 
-    	$query = array("country"=>"NC", "depName"=>"Province Des Iles");
+    	$query = array("country"=>"NC", "level3Name"=>"Province des Iles");
     	$citiesI = PHDB::find(City::COLLECTION, $query);
 
     	$cities = array("GN"=>$citiesGN, 
@@ -46,13 +47,15 @@ class CO2 {
 	public static function getCommunexionCookies(){
 		$communexion = array("state"=>false, "values"=>array());
 		//var_dump(Yii::app()->request->cookies['communexionActivated']);
-		if(isset( Yii::app()->request->cookies['communexionActivated'] ) && (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
-			$communexion["state"] = true;
-		}
-
 		if(CookieHelper::hasCookie("communexion") && CookieHelper::hasCookie("communexionType")) {
-			$communexion["state"] = true;
+			if(isset( Yii::app()->request->cookies['communexionActivated'] ) && (string)Yii::app()->request->cookies['communexionActivated'] == "true"){
+                $communexion["state"] = true;
+            }
             $communexion["values"] = json_decode(CookieHelper::getCookie("communexion"), true);
+
+            if(!empty($communexion["values"])){
+                $communexion["values"] = json_decode(CookieHelper::getCookie("communexion"), true);
+            }
             $communexion["currentLevel"] = "city";
             
             if($communexion["values"]["cp"]){
@@ -61,8 +64,9 @@ class CO2 {
 
                 $cities=array();
                 foreach ($citiesResult as $key => $v) {
-                    $trad4 = Zone::getTranslateById($key);
-                    $cities[]=(!empty($trad4["translates"]["EN"]) ? $trad4["translates"]["EN"] : $v["name"]);
+                    // $trad4 = Zone::getTranslateById($key, City::COLLECTION);
+                    // $cities[]=(!empty($trad4["translates"]["EN"]) ? $trad4["translates"]["EN"] : $v["name"]);
+                    $cities[] = City::getNameCity($key);
                 }
                 $communexion["cities"] = $cities;
             }
@@ -75,11 +79,9 @@ class CO2 {
             $communexion["currentLevel"] =  false;
             $communexion["currentName"] = false;
             $communexion["currentValue"] =  false;
+            $communexion["state"] = false;
         }
-        
-       // var_dump($communexion);
         return $communexion;
-
     }
 
 

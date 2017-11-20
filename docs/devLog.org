@@ -25,6 +25,8 @@ co2/datamigration/BatchInterElement
 *** Batch qui tranforme les adresses des news dans le nouveau formats
 co2/datamigration/BatchInterNews
 
+----------------------------------------------------
+
 * Version C0.21.7
 
 ** @BOUBOULE
@@ -281,6 +283,7 @@ db.cities.createIndex({"cp" : 1});
 db.cities.createIndex({"country" : 1});
 db.cities.createIndex({"postalCodes.name" : 1});
 db.cities.createIndex({"postalCodes.postalCode" : 1});
+
 
 ----------------------------------------------------
 //deja mis sur dev
@@ -737,6 +740,38 @@ db.news.find({}).forEach(function(doc){
         }})
      }
 })
+
+
+TANGO - 22/05/2017
+---------------------------------------------------
+set localityid to all NC cities
+---------------------------------------------------
+
+db.cities.find().forEach(function(doc){ 
+    if(doc.country == "NC"){ 
+        print(doc.name+" :: " + doc.country + " - " + doc._id.str); 
+        db.cities.update({"_id":doc._id},{
+            '$set':{'localityId':doc._id.str}
+        }) 
+    } 
+});
+
+
+db.cities.find().forEach(function(doc){ 
+    if(doc.country == "NC"){ 
+        print(doc.name+" :: " + doc.postalCodes[0].kanakName); 
+
+        if(typeof doc.postalCodes[0].kanakName != "undefined"){
+          db.cities.update({"_id":doc._id},{
+              '$set':{'kanakName':doc.postalCodes[0].kanakName}
+          });
+        } else {
+          db.cities.update({"_id":doc._id},{
+              '$set':{'kanakName':doc.postalCodes[0].name}
+          });
+        }
+    } 
+});
 
 
 ---------------------------------------------------

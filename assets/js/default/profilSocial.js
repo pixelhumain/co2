@@ -388,33 +388,33 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	
 	var s = (n>1) ? "s" : "";
 
-	if(countData=='Aucun')
-		countData=trad.no;
+	//if(countData=='Aucun')
+	//	countData=tradException.no;
 	var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
-	if(dataName == "follows")	{ html += elementName + " "+trad.isfollowing+" " + countData + " "+trad.page+s+""; }
-	else if(dataName == "followers")	{ html += countData + " <b>"+trad.follower+s+"</b> "+trad.to+" "+ elementName; }
-	else if(dataName == "members")	{ html += elementName + " "+trad.iscomposedof+" " + countData + " <b>"+trad.member+s+"</b>"; }
-	else if(dataName == "attendees")	{ html += countData + " <b>"+trad.attendee+s+"</b> "+trad.toevent+" " + elementName; }
-	else if(dataName == "guests")	{ html += countData + " <b>"+trad.guest+s+"</b> "+trad.on+" " + elementName; }
-	else if(dataName == "contributors")	{ html += countData + " <b>"+trad.contributor+s+"</b> "+trad.toproject+" " + elementName; }
+	if(dataName == "follows")	{ html += elementName + " "+trad.isfollowing+" " + countData + " "+trad["page"+s]+""; }
+	else if(dataName == "followers")	{ html += countData + " <b>"+trad["follower"+s]+"</b> "+trad.to+" "+ elementName; }
+	else if(dataName == "members")	{ html += elementName + " "+trad.iscomposedof+" " + countData + " <b>"+trad["member"+s]+"</b>"; }
+	else if(dataName == "attendees")	{ html += countData + " <b>"+trad["attendee"+s]+"</b> "+trad.toevent+" " + elementName; }
+	else if(dataName == "guests")	{ html += countData + " <b>"+trad["guest"+s]+"</b> "+trad.on+" " + elementName; }
+	else if(dataName == "contributors")	{ html += countData + " <b>"+trad["contributor"+s]+"</b> "+trad.toproject+" " + elementName; }
 	
 	else if(dataName == "events"){ 
 		if(type == "events"){
-			html += elementName + " "+trad.iscomposedof+" " + countData+" <b> "+trad.subevent+s; 
+			html += elementName + " "+trad.iscomposedof+" " + countData+" <b> "+trad["subevent"+s]; 
 		}else{
-			html += elementName + " "+trad.takepart+" " + countData+" <b> "+trad.event+s; 
+			html += elementName + " "+trad.takepart+" " + countData+" <b> "+trad["event"+s]; 
 		}
 	}
-	else if(dataName == "organizations")	{ html += elementName + " "+trad.ismemberof+" "+ countData+" <b>"+trad.organization+s; }
-	else if(dataName == "projects")		{ html += elementName + " "+trad.contributeto+" " + countData+" <b>"+trad.project+s }
+	else if(dataName == "organizations")	{ html += elementName + " "+trad.ismemberof+" "+ countData+" <b>"+trad["organization"+s]; }
+	else if(dataName == "projects")		{ html += elementName + " "+trad.contributeto+" " + countData+" <b>"+trad["project"+s] }
 
-	else if(dataName == "collections"){ html += countData+" <b>"+trad.collection+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "collections"){ html += elementName+" "+trad.hasgot+" "+countData+" <b>"+trad["collection"+s]+"</b>"; }
 	else if(dataName == "poi"){ html += countData+" <b>"+trad["point"+s+"interest"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
-	else if(dataName == "classified"){ html += countData+" <b>"+trad.classified+s+"</b> "+trad['createdby'+s]+" " + elementName; }
+	else if(dataName == "classified"){ html += countData+" <b>"+trad[classified+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
 
-	else if(dataName == "needs"){ html += countData+" <b>"+trad.need+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "needs"){ html += countData+" <b>"+trad[need+s]+"</b> "+trad.of+" " + elementName; }
 
-	else if(dataName == "vote"){ html += countData+" <b>"+trad.proposal+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "vote"){ html += countData+" <b>"+trad[proposal+s]+"</b> "+trad.of+" " + elementName; }
 	else if(dataName == "discuss"){ html += countData+" <b>"+trad.discussion+s+"</b> "+trad.of+" " + elementName; }
 	else if(dataName == "actions"){ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName; }
 
@@ -658,13 +658,25 @@ function loadContacts(){
 
 //todo add count on each tag
     function getfilterRoles(roles) { 
-    	console.log("roles",roles);
-        $("#listRoles").html("");
-        $("#listRoles").append("<a class='btn btn-link letter-blue favElBtn favAllBtn' "+
+    	console.log("getfilterRoles roles",roles);
+    	if(typeof roles == "undefined") {
+    		$("#listRoles").hide();
+    		return;
+		}
+
+		var nRole = 0;
+    	$.each( roles,function(k,o){ nRole++; } );
+    	if(nRole == 0){
+    		$("#listRoles").hide();
+    		return;
+		}
+		$("#listRoles").show(300);
+        $("#listRoles").html("<i class='fa fa-filter'></i> "+trad.sortbyrole+": ");
+        $("#listRoles").append("<a class='btn btn-link btn-sm letter-blue favElBtn favAllBtn' "+
             "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'>"+
             " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a>");
         	$.each( roles,function(k,o){
-                $("#listRoles").append("<a class='btn btn-link favElBtn letter-blue "+slugify(k)+"Btn' "+
+                $("#listRoles").append("<a class='btn btn-link btn-sm favElBtn letter-blue "+slugify(k)+"Btn' "+
                                 "data-tag='"+slugify(k)+"' "+
                                 "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(k)+"\",\".searchEntityContainer\",1)'>"+
                                   k+" <span class='badge'>"+o.count+"</span>"+
@@ -676,7 +688,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	var n=0;
 	listRoles={};
 	$.each(data, function(key, val){ 
-		console.log("rolesShox",val);
+		//console.log("rolesShox",val);
 		if(typeof key != "undefined") n++; 
 		if(typeof val.rolesLink != "undefined"){
 			console.log(val.rolesLink);
@@ -707,17 +719,22 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			html += btnMap;
 
 		html +=	thisTitle;
-		html += "<div id='listRoles'></div>"+
+		html += "<div id='listRoles' class='shadow2'></div>"+
 			 "<hr>";
 		html +=	"</div>";
 		
-		
-		var mapElements = new Array();
+		if(dataName=="events")
+			html += "<div class='col-md-12 col-sm-12 col-xs-12 margin-bottom-10'>"+
+						"<a href='javascript:;' id='showHideCalendar' class='text-azure' data-hidden='0'><i class='fa fa-caret-up'></i> Hide calendar</a>"+
+					"</div>"+
+					"<div id='profil-content-calendar' class='col-md-12 col-sm-12 col-xs-12 margin-bottom-20'></div>";
+		mapElements = [];
 		
 		console.log("listRoles",listRoles);
 		if(dataName != "collections"){
 			if(mapElements.length==0) mapElements = data;
         	else $.extend(mapElements, data);
+
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){
@@ -728,7 +745,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 						"<div class='"+colName+" hide'>";
 				console.log("list", val);
 				if(val.count==0)
-					html +="<span class='col-xs-12 text-dark margin-bottom-20'>Aucun élément dans cette collection</span>";
+					html +="<span class='col-xs-12 text-dark margin-bottom-20'>"+trad.noelementinthiscollection+"</span>";
 				else{
 					$.each(val.list, function(key, elements){ 
 						if(mapElements.length==0) mapElements = elements;
@@ -741,10 +758,24 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		}
 		toogleNotif(false);
 		$("#central-container").html(html);
+		if(dataName == "events"){
+			//init calendar view
+			calendar.init("#profil-content-calendar");
+			calendar.showCalendar("#profil-content-calendar", data);
+     		$(window).on('resize', function(){
+  				$('#calendar').fullCalendar('destroy');
+  				calendar.showCalendar("#profil-content-calendar", data);
+  			});
+	     	/*$(".fc-button").on("click", function(e){
+	      		calendar.setCategoryColor();
+	     	})*/
+		}
 		initBtnLink();
 		initBtnAdmin();
 		bindButtonOpenForm();
+
 		getfilterRoles(listRoles);
+	
 		var dataToMap = data;
 		if(dataName == "collections"){
 			dataToMap = new Array();
@@ -765,15 +796,15 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		});
     
 	}else{
-		var nothing = "Aucun";
-		if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
-			nothing = "Aucune";
+		//var nothing = tradException.no;
+		//if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
+		//	nothing = tradException.nofem;
 
 		var html =  "<div class='col-md-12 margin-bottom-15'>"+
-						getLabelTitleDir(dataName, dataIcon, nothing, n)+
+						getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
 					"</div>";
 		$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
-												"<i class='fa fa-ban'></i> Aucune donnée"+
+												"<i class='fa fa-ban'></i> "+trad.nodata+
 											"</span>");
 		toogleNotif(false);
 	}
@@ -782,7 +813,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 var loading = "<div class='loader text-dark text-center'>"+
 		"<span style='font-size:25px;'>"+
 			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
-			"<span class='text-dark'>Chargement en cours ...</span>" + 
+			"<span class='text-dark'>"+trad.currentlyloading+" ...</span>" + 
 		"</div>";
 
 function loadStream(indexMin, indexMax, isLiveBool){ mylog.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
@@ -844,37 +875,43 @@ function toogleNotif(open){
 }
 
 function loadLiveNow () {
-	mylog.log("loadLiveNow", contextData.address);
+	//mylog.log("loadLiveNow1", contextData.address);
 
 	var level = {} ;
 	if( notNull(contextData.address)) {
-		mylog.log("loadLiveNow", contextData.address);
+		mylog.log("loadLiveNow2", contextData.address);
 		if(notNull(contextData.address.level4)){
-			mylog.log("loadLiveNow", contextData.address.level4);
+			mylog.log("loadLiveNow3", contextData.address.level4);
 			level[contextData.address.level4] = { type : "level4", name : contextData.address.level4Name } ;
 		} else if(notNull(contextData.address.level3)){
 			level[contextData.address.level3] = { type : "level3", name : contextData.address.level3Name } ;
 		} else if(notNull(contextData.address.level2)){
 			level[contextData.address.level2] = { type : "level2", name : contextData.address.level2Name } ;
-		} else
+		} else if(notNull(contextData.address.level1)){
 			level[contextData.address.level1] = { type : "level1", name : contextData.address.level1Name } ;
+		}
 	}
 
-	mylog.log("loadLiveNow", level);
-	
+	if(CO2DomainName == "kgougle")
+		level[contextData.address.level3] = { type : "level3", name : contextData.address.level3Name } ;
 
-    var searchParams = {
-      "tpl":"/pod/nowList",
-      "searchLocality" : level,
-      "indexMin" : 0, 
-      "indexMax" : 30 
-    };
+	mylog.log("loadLiveNow4", level);
+	if( jQuery.isEmptyObject(level) ) {
+		//alert("Vous n'êtes pas communecté ?");
+	} //else{
+	    var searchParams = {
+	      "tpl":"/pod/nowList",
+	      "searchLocality" : level,
+	      "indexMin" : 0, 
+	      "indexMax" : 30 
+	    };
 
-    ajaxPost( "#notif-column", baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
-					'/id/'+contextData.id+'/dataName/liveNow?tpl=nowList',
-					searchParams, function() { 
-			        bindLBHLinks();
-     } , "html" );
+	    ajaxPost( "#notif-column", baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
+						'/id/'+contextData.id+'/dataName/liveNow?tpl=nowList',
+						searchParams, function() { 
+				        bindLBHLinks();
+	     } , "html" );
+	//}
 }
 
 function showLoader(id){
@@ -941,18 +978,18 @@ function inintDescs() {
 
 function removeAddress(form){
 	var msg = trad.suredeletelocality ;
-		if(!form && contextData.type == "<?php echo Person::COLLECTION; ?>")
+		if(!form && contextData.type == personCOLLECTION)
 			msg = trad.suredeletepersonlocality ;
 
 		bootbox.confirm({
 			message: msg + "<span class='text-red'></span>",
 			buttons: {
 				confirm: {
-					label: "<?php echo Yii::t('common','Yes');?>",
+					label: trad.yes,
 					className: 'btn-success'
 				},
 				cancel: {
-					label: "<?php echo Yii::t('common','No');?>",
+					label: trad.no,
 					className: 'btn-danger'
 				}
 			},
@@ -972,7 +1009,7 @@ function removeAddress(form){
 				    	success: function(data){
 					    	//
 					    	if(data.result && !form){
-								if(contextData.type == "<?php echo Person::COLLECTION ;?>") {
+								if(contextData.type == personCOLLECTION) {
 									//Menu Left
 									$("#btn-geoloc-auto-menu").attr("href", "javascript:");
 									$('#btn-geoloc-auto-menu > span.lbl-btn-menu').html("Communectez-vous");
@@ -989,6 +1026,11 @@ function removeAddress(form){
 
 									$(".communecter-btn").removeClass("hidden");
 								}
+								communexion.currentLevel = null;
+								communexion.currentName = null;
+								communexion.currentValue = null;
+								communexion.values = null;
+								communexion.state = false;
 								toastr.success(data.msg);
 								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					    	}

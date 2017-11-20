@@ -104,6 +104,8 @@
   var subViewElement, subViewContent, subViewIndex;
   var tabOrganiser = [];
   var openingHours=element.openingHours;
+  var monthLoad=[];
+  var allBookings=[];
   jQuery(document).ready(function() {
       showCalendar();
 
@@ -114,8 +116,32 @@
       $(".fc-button").on("click", function(e){
       	setCategoryColor(tabOrganiser);
      	});
+      //if(!inArray(month,monthLoad)){
+    			//alert("getAjaxMonth");
+    			//monthLoad.push(month);
+    			//data={"id":itemId,"type":itemType,"start":start,"end":end}
+    			$.ajax({
+					type: "POST",
+					url: baseUrl+"/"+moduleId+"/orderitem/get", 
+					data:{"id":itemId,"type":itemType,"start": new Date()},
+				  success: function(data){
+					if(data.result) {
+						if(Object.keys(data.items).length > 0){
+							$.each(data.items,function(e,v){
+								$.each(v.reservations,function(i,resa){
+									allBookings.push(resa);
+								});
+							});
+						}
+						console.log(data.items);
+					}
+			        else
+			        	toastr.error(data.msg);  
+				  },
+				  dataType: "json"
+				});
+    		//}
   });
-
 //creates fullCalendar
 function buildCalObj(eventObj) {
   //entries for the calendar
@@ -167,6 +193,7 @@ function showCalendar() {
 	//mylog.info("addTasks2Calendar",events);//,taskCalendar);
 	hiddenDays=[];
 	calendar = [];
+	//$.ajax({});
 	$.each(openingHours, function(e,v){
 		if(v!=""){
 			if(typeof v.hours !="undefined"){
@@ -243,7 +270,14 @@ function showCalendar() {
 	        }
 	    },
 		//defaultView: 'month',
-		
+		viewRender: function(view, element) {
+    		console.log(view.start,view.end, view.intervalStart, view.intervalEnd);
+    		/*month=view.start.format('MM');
+    		start=view.start.format('YYYY-MM-DD');
+    		end=view.end.format('YYYY-MM-DD');
+    		
+    		alert($('#calendar').fullCalendar('getDate'));*/
+		},
 		eventRender: function(event, element) {
 			if(event.start < Date.now()) { return false; }
 		    element.find(".fc-event-title").remove();
@@ -253,18 +287,26 @@ function showCalendar() {
 		    	hoursRender=moment(event.start).format("HH:mm") + ' - '
 		        + moment(event.end).format("HH:mm") + '<br/>';
 		    }
+		    currentCartFilter=getDayFilter(event);
+
+		   	if(typeof event.filtered == "undefined"){
+			    event.capacity=event.capacity-currentCartFilter.quantity-currentCartFilter.myQuantity;
+			    event.filtered=true;
+			}
+		    event.quantity=currentCartFilter.myQuantity;
+		    classQuantity="";
+		    if(event.quantity==0)
+		    	classQuantity="hide";
 		    var new_description =   
-		        //+ event.quantity + '<br/>'
 		        hoursRender
 		        + 'Disponible: <span class="inc-capacity">' + event.capacity + '</span><br/>'
 		        +'<a href="javascript:;" class="letter-orange remove-session hide"><i class="fa fa-minus"></i></a>'
 		        +'<span class="eventCountItem margin-left-5 margin-right-5">'
                     +'<i class="fa fa-shopping-cart"></i>'
-                    +'<span class="inc-session hide topbar-badge badge animated bounceIn badge-transparent badge-success">1</span>'
+                    +'<span class="inc-session '+classQuantity+' topbar-badge badge animated bounceIn badge-transparent badge-success">'+event.quantity+'</span>'
                 +'</span>'
-		        //+'<span class="inc-session"> '+event.quantity+' </span>'
 		        +'<a href="javascript:;" class="letter-orange add-session"><i class="fa fa-plus"></i></a>';
-		    element.find(".fc-content").html(new_description);
+		    element.find(".fc-content").html(new_description); 
 		    element.find(".remove-session").on('click', function (e) {
         		bookDate=event.start.format('YYYY-MM-DD');
         		event.capacity++;
@@ -290,7 +332,7 @@ function showCalendar() {
 				if(typeof event.allDay == "undefined" || !event.allDay)
 					ranges.hours={start: event.startTime , end: event.endTime};	
 				calendar.push(event);	
-		        removeFromShoppingCart(itemId, itemType, false, subType, ranges);
+		        shopping.removeFromShoppingCart(itemId, itemType, false, subType, ranges);
     		});
     		element.find(".add-session").on('click', function (e) {
         		bookDate=event.start.format('YYYY-MM-DD');
@@ -318,34 +360,55 @@ function showCalendar() {
 				element.find(".inc-capacity").data("value",event.capacity).text(event.capacity);
 				if(typeof event.allDay == "undefined" || !event.allDay)
 					ranges.hours={start: event.startTime , end: event.endTime};		
-		        addToShoppingCart(itemId, itemType, subType, ranges);
+		        shopping.addToShoppingCart(itemId, itemType, subType, ranges);
 		        calendar.push(event);
     		});
-		}/*,
-		eventClick : function(calEvent, jsEvent, view) {
-		  //show event in subview
-		  	/*console.log(calEvent);
-		  	alert('Event: ' + calEvent.start);
-		  	bookDate=calEvent.start.format('YYYY-MM-DD');
-
-	        //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-	        //alert('View: ' + view.name);
-	        //var params=element;
-			var ranges = new Object;
-			ranges.date=bookDate;
-			if(typeof calEvent.allDay == "undefined" || !calEvent.allDay)
-				ranges.hours={start: calEvent.startTime , end: calEvent.endTime};		
-	        addToShoppingCart(itemId, itemType, ranges)
-	        // change the border color just for fun
-	        //$(this).css('border-color', 'red');
-		  //dateToShow = calEvent.start;
-		}*/
+		}
 	});
 	
 	setCategoryColor();
-	//dateToShow = new Date();
 };
-
+function getDayFilter(event){
+	currentCartFilter={"quantity":0,"myQuantity":0};
+	// GET QUANTITY OF CURRENT CART
+	if(typeof shopping.cart.services != "undefined" 
+		&& typeof shopping.cart.services[subType] != "undefined"
+		&& typeof shopping.cart.services[subType][itemId] != "undefined"
+		&& typeof shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')] != "undefined"){
+		if(event.allDay==true){
+			currentCartFilter.myQuantity=currentCartFilter.myQuantity+shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["countQuantity"];
+		}else{
+			if(typeof shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["hours"] != "undefined"){
+				$.each(shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["hours"],function(e,v){
+					if(v.start==event.startTime && v.end==event.endTime)
+						currentCartFilter.myQuantity=currentCartFilter.myQuantity+v.countQuantity;			
+				});
+			}	
+		}
+	}
+	// GET QUANTITY ALREADY BOOKED
+	//console.log("allBook",allBookings);
+	if(allBookings.length && typeof event.filtered == "undefined"){
+		//console.log("allBookings",allBookings);
+		$.each(allBookings,function(e,v){
+			date=new Date( parseInt(v.date.sec)*1000 );
+			if(moment(date).format('YYYY-MM-DD')==event.start.format('YYYY-MM-DD')){
+				if(event.allDay){
+						currentCartFilter.quantity=currentCartFilter.quantity+parseInt(v.countQuantity);
+				}else{
+					if(typeof v.hours != "undefined"){
+						$.each(v.hours,function(i, hours){
+							if(hours.start==event.startTime && hours.end==event.endTime)
+								currentCartFilter.quantity=currentCartFilter.quantity+parseInt(hours.countQuantity);
+						});
+					}
+				}
+			}
+			//alert(currentCartFilter.quantity);
+		});
+	}
+	return currentCartFilter;
+}
 function setCategoryColor(tab){
 	$(".fc-content").css("color", "white");
 	$(".fc-content").addClass("text-center");

@@ -7,6 +7,8 @@ var uiCoop = {
 		$("#main-coop-container").html("");
 
 		$("#btn-close-coop").click(function(){
+			if(contextData.slug != "undefined")
+				location.hash="#"+contextData.slug;
 			$("#coop-data-container").html("");
 		});
 		//KScrollTo("#div-reopen-menu-left-container");
@@ -157,7 +159,8 @@ var uiCoop = {
 			"parentId" : parentId,
 			"type" : type,
 			"status" : status,
-			"dataId" : dataId
+			"dataId" : dataId,
+			"json" : false
 		};
 		//console.log("showLoading ?", typeof showLoading, showLoading);
 		
@@ -243,7 +246,8 @@ var uiCoop = {
 		var params = {
 			"parentType" : parentType,
 			"parentId" : parentId,
-			"voteValue" : voteValue
+			"voteValue" : voteValue,
+			"json" : false
 		};
 		if(typeof idAmdt != "undefined")
 			params["idAmdt"] = idAmdt;
@@ -295,7 +299,7 @@ var uiCoop = {
 	"saveAmendement" : function(proposalId, typeAmdt){
 		var txtAmdt = $("#txtAmdt").val();
 		if(txtAmdt.length < 10){
-			toastr.error("Votre amendement est trop court ! Minimum : 10 caractères");
+			toastr.error(trad.amendementTooShort);
 			return;
 		}
 
@@ -389,6 +393,7 @@ var uiCoop = {
 		var param = {
 			numAm : numAm,
 			idProposal : idProposal,
+			json : false
 		};
 		
 		toastr.info(trad["processing delete"]);
@@ -418,7 +423,7 @@ var uiCoop = {
 		        data: { "id" : idAction },
 		        success: function(data){
 		    		if(data.result){
-		    		  toastr.success("Votre participation a été enregistrée");
+		    		  toastr.success(trad.thxForParticipation);
 		              uiCoop.getCoopData(contextData.type, contextData.id, "action", null, idAction); 
 	                  //alert("Tango a l'aide comment je reload stp action.php > function assignMe > l.181");
 	                }
@@ -430,7 +435,7 @@ var uiCoop = {
 
 	initUIProposal : function(){
 		
-		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
+		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> " + trad.loadingComments);
 		
 		$(".footer-comments").html("");
 		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/proposals/id/"+idParentProposal,
@@ -540,9 +545,14 @@ var uiCoop = {
 			console.log("edit idProposal", idProposal);
 			dyFObj.editElement('proposals', idProposal);
 		});
-
-		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
-							  ".view.coop.room." + idParentRoom + ".proposal." + idParentProposal;
+		addCoopHash=".view.coop.room." + idParentRoom + ".proposal." + idParentProposal;
+		if(typeof hashUrlPage != "undefined")
+			location.hash = hashUrlPage +addCoopHash;
+		else if(notNull(contextData) && typeof contextData.slug != "undefined")
+			location.hash = "#" + contextData.slug + addCoopHash;
+		else
+			location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash; 
+							  
 
 		if(msgController != ""){
 			toastr.error(msgController);
@@ -551,7 +561,7 @@ var uiCoop = {
 
 	initUIAction : function(){
 
-		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
+		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> " + trad.loadingComments);
 		
 		$(".footer-comments").html("");
 
@@ -603,9 +613,14 @@ var uiCoop = {
 		$("#btn-validate-assign-me").off().click(function(){
 			uiCoop.assignMe(idAction);
 		});
-
-		location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement + 
-							  ".view.coop.room." + idParentRoom + ".action." + idAction;
+		addCoopHash=".view.coop.room." + idParentRoom + ".action." + idAction;
+		if(typeof hashUrlPage != "undefined")
+			location.hash = hashUrlPage +addCoopHash;
+		else if(notNull(contextData) && typeof contextData.slug != "undefined")
+			location.hash = "#" + contextData.slug + addCoopHash;
+		else
+			location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;  
+							  
 	}
 
 }

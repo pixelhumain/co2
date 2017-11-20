@@ -5,6 +5,8 @@
        // return;  
 
     echo Preference::showPreference($element, $type, "locality", Yii::app()->session["userId"]) ? "yes" : "no";*/
+    $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+    $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? Yii::app()->params["CO2DomainName"] : "CO2";
 ?>
 
 <style> 
@@ -26,43 +28,33 @@
 <?php } ?>
 
 <div class="col-xs-12 no-padding col-nowList"  data-tpl="pod.nowList">
-	<?php if((!@$scope || @$scope=="") && $open==false ){ 
-			if($type="citoyens" && $id==@Yii::app()->session["userId"]){ ?>
-			<h6 class="no-margin" style="font-size:12px">
-				<i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> <?php echo Yii::t("common","Territorial activity") ?><br>
-				<small class="text-red"><i class="fa fa-map-marker"></i> <?php echo Yii::t("common","You're not communected") ?></small>
-			</h6>
-
-			<button class="btn btn-default bg-red text-white margin-top-15 btn-communecter">
-				<i class="fa fa-university"></i> <?php echo Yii::t("common","I communnect me") ?>
-			</button>
-			<br><br>
-			<h5 class="no-margin" style="font-size:12px">
-				<small class="text-red"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Communexion gives you live informations on what's happened around you") ?>.</small>
-			</h5>
-			<br>
-			<span style="font-family: 11px;">
-				<i class="fa fa-signal"></i> <?php echo Yii::t("home","To use the network efficiently, we advice you to be <i><b>communected</b></i>") ?>.
-				<br><br>
-				<!-- <h6><small>communecter : </small><br>se connecter à sa commune</h6> -->
-				<i class="fa fa-magic"></i> <?php echo Yii::t("home","Indicate your <b>living place</b>, to keep informed about what's happened around you automatically.")?><br>
-			</span>
-				<br>
-				<h5 class="no-margin" style="font-size:12px">
-					<small class="text-red"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common","You will be able to use also the communexion during your research on the others apps") ?> :
-					<span class="col-md-12 margin-top-10">
-						<a class="col-md-6 padding-5 text-center" href=""><i class="fa fa-search"></i><br><?php echo Yii::t("common","search") ?></a>
-						<a class="col-md-6 padding-5 text-center" href=""><i class="fa fa-bullhorn"></i><br><?php echo Yii::t("common","classified") ?></a>
-						<a class="col-md-6 padding-5 text-center" href=""><i class="fa fa-calendar"></i><br><?php echo Yii::t("common","agenda") ?></a>
-						<a class="col-md-6 padding-5 text-center" href=""><i class="fa fa-newspaper-o"></i><br><?php echo Yii::t("common","live") ?></a></small>
-					</span>
-				</h5>
-        <?php } ?>
+	<?php
+     if( (!@$scope || @$scope=="") && $open == true){ 
+			if($type=="citoyens" && $id==@Yii::app()->session["userId"]){ 
+			 $this->renderPartial($layoutPath.'pod.'.Yii::app()->params["CO2DomainName"].".notCommunected");
+            } 
+    ?>
     <?php } else { ?>
-        <h6 class="no-margin header-nowList" style="font-size:12px">
-            <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> <?php echo Yii::t("common","Territorial activity") ?><br>
-             <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope; ?></small>
+        <h6 class="no-margin header-nowList" style="font-size:13px">
+            <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> 
+            <?php echo Yii::t("common","Territorial activity") ?>
+
+            <br>
+
+             <?php
+                if($CO2DomainName == "kgougle"){ ?>
+                    <button class="btn btn-link letter-red btn-xs pull-left no-padding btn-change-loc" 
+                            data-toggle="modal" data-target="#modalLocalization">
+                        <i class="fa fa-map-marker"></i> <?php echo $scope["name"]; ?>
+                    </button>
+                    <br>
+            <?php }else{ ?>
+                <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope["name"]; ?></small>
+            <?php } ?>
         </h6>
+
+        
+
         <hr class="angle-down">
         <center>
             <button class="btn btn-default btn-sm btn-show-onmap block" id="btn-show-activity-onmap">
@@ -71,8 +63,9 @@
         </center>
         <br>
         <!-- <hr class="margin-5 margin-bottom-10"> -->
+        <?php
+        foreach ($result as $key => $v) { 
 
-        <?php foreach ($result as $key => $v) { 
             $specs = Element::getElementSpecsByType(@$v["type"]);
 
             $type = null;
@@ -128,15 +121,20 @@
     <?php } ?>
 </div>
 
+<?php if($CO2DomainName == "kgougle"){ 
+        $this->renderPartial($layoutPath.'modals/'.Yii::app()->params["CO2DomainName"]."/citiesNC");
+      } 
+?>
+
 <script type="text/javascript" >
 
 var localActivity = <?php echo json_encode($result); ?>;
 
 jQuery(document).ready(function() {
-    console.log("LIVENOW", localActivity);
+    mylog.log("LIVENOW", localActivity);
     $.each(localActivity, function(key, data){
         if(typeof data.geo != "undefined" && data.geo.latitude == "")
-        console.log("LIVENOW geo", data.geo, data);
+        mylog.log("LIVENOW geo", data.geo, data);
     });
     // $(".elemt_date").each(function() {
     //     var elementTime = $(this).children(".dateTZ").attr("data-time");
@@ -154,12 +152,12 @@ jQuery(document).ready(function() {
     $(".el-nowList").click(function(){
         var id = $(this).data("id");
         var type = $(this).data("type");
-        console.log("try open", id, type);
+        mylog.log("try open", id, type);
         var data = "";
         $.each(localActivity, function(key, value){
             if(key==id) data = Object.assign({}, value);
         });
-        console.log("try open data", data);
+        mylog.log("try open data", data);
 
         $(".el-nowList").removeClass("hidden");
         $(this).addClass("hidden");
@@ -168,7 +166,7 @@ jQuery(document).ready(function() {
         
         if(data!=""){
             var html = directory.showResultsDirectoryHtml(new Array(data), type);
-            console.log("try open html", html);
+            mylog.log("try open html", html);
             $("#localActivity"+type+id).html(html);
             $("#localActivity"+type+id).removeClass("hidden");
             $("#localActivity"+type+id).off().mouseleave(function(){
@@ -184,6 +182,9 @@ jQuery(document).ready(function() {
     $(".btn-communecter").click(function(){
         communecterUser();
     });
+
+    if(typeof contextData != "undefined" && notNull(contextData) && typeof contextData.address != "undefined" && typeof contextData.address.addressLocality != "undefined")
+        $(".btn-change-loc").append(" - " + contextData.address.addressLocality);
 });
 
 function enlargeNow() { 

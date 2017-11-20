@@ -15,13 +15,13 @@ function initSearchInterface(){
     });
 
     $("#second-search-bar").keyup(function(e){
-        $("#main-search-bar").val($(this).val());
-        $("#input-search-map").val($(this).val());
+        //$("#main-search-bar").val($(this).val());
+        //$("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
             initTypeSearch(typeInit);
-            startSearch(0, indexStepInit, searchCallback);
-            $(".btn-directory-type").removeClass("active");
-            KScrollTo("#content-social");
+            startSearchTerla(0, indexStepInit, searchCallback);
+            //$(".btn-directory-type").removeClass("active");
+            //KScrollTo("#content-social");
          }
     });
 
@@ -42,7 +42,7 @@ function initSearchInterface(){
         console.log("typeInit", typeInit);
         if(typeInit == "all") initTypeSearch("allSig");
         else initTypeSearch(typeInit);
-        startSearch(0, indexStepInit, searchCallback);
+        startSearchTerla(0, indexStepInit, searchCallback);
         $(".btn-directory-type").removeClass("active");
     });
 
@@ -70,10 +70,60 @@ function initSearchInterface(){
     });
 }
 
+function startSearchTerla(indexMin, indexMax, callBack){
+    var name = $("#second-search-bar").val() != "" ? $("#second-search-bar").val() : $("#new-search-bar").val();
+    memorySearch = name;
+    var data = {
+      "name" : name, 
+      "tpl" : "searchTerla",
+      "locality" : "",//locality, 
+      "searchType" : searchType, 
+      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
+      "indexMin" : indexMin, 
+      "indexMax" : indexMax
+    };
+
+    //alert();
+    $.blockUI();
+    $.ajax({
+        type: "POST",
+        url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
+        data: data,
+        //dataType: "json",
+        error: function (data){
+             mylog.log(">>> error autocomplete search"); 
+             mylog.dir(data);   
+             $(".main-container").html(data.responseText);  
+             $("#searchVal").html(name);  
+             //signal que le chargement est terminé
+            loadingData = false;     
+        },
+        success: function(data){ 
+            mylog.log(">>> success startSearchTerla", data); //mylog.dir(data);
+            $(".main-container").html(data);
+            $.unblockUI();
+           /* if(!data){ 
+              toastr.error(data.content); 
+            } 
+            else 
+            {   
+            }*/
+           
+            //affiche les éléments sur la carte
+            //Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
+                        
+            //if(typeof callBack == "function")
+            //  callBack();
+        }
+    });
+}
+
+
 /* -------------------------
 CLASSIFIED
 ----------------------------- */
 var section = "";
+var sectionKey;
 var classType = "";
 var classSubType = "";
 function initClassifiedInterface(){ return;
@@ -85,6 +135,7 @@ function initClassifiedInterface(){ return;
 }
 
 function bindLeftMenuFilters () { 
+
     $(".btn-select-type-anc").off().on("click", function()
     {    
         searchType = [ typeInit ];
@@ -104,15 +155,17 @@ function bindLeftMenuFilters () {
             sectionKey = $(this).data("key");
             //alert("section : " + section);
 
-            if( sectionKey == "forsale" || sectionKey == "forrent"){
+            if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "job"){
                 $("#section-price").show(200);
-                KScrollTo("#section-price");
+                setTimeout(function(){
+                    KScrollTo("#container-scope-filter");
+                }, 400);
             }
             else {
                 $("#section-price").hide();
                 $("#priceMin").val("");
                 $("#priceMax").val("");
-                KScrollTo("#dropdown_search");
+                KScrollTo("#container-scope-filter");
             }
 
             if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
@@ -133,19 +186,21 @@ function bindLeftMenuFilters () {
                 bindLeftMenuFilters ();
                 classified.currentLeftFilters = null;
             }
-            $('#searchTags').val(section);
+            $('#searchTags').val(sectionKey);
         }
 
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
         $(".keycat").addClass("hidden");
         
+
         if(sectionKey)
             $(this).addClass("active");
 
         startSearch(0, indexStepInit, searchCallback); 
 
         if(sectionKey && typeof classified.sections[sectionKey] != "undefined") {
-            $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]);
+            var label = classified.sections[sectionKey]["labelFront"];
+            $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + tradCategory[label]);
             $('.classifiedSection').remove();
             $(".resultTypes").append( "<span class='classifiedSection text-azure text-bold hidden-xs pull-right'><i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]+'<i class="fa fa-times text-red resetFilters"></i></span>');
             $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+classified.sections[sectionKey]["color"])
@@ -153,13 +208,15 @@ function bindLeftMenuFilters () {
         }
     });
 
-    $(".btn-select-category-1").off().on("click", function(){
+    $(".btn-select-category-1").off().on("click", function(){ //alert("onclick");
         searchType = [ typeInit ];
         var searchTxt = "";
+        var section = $('#searchTags').val();
         var classType = $(this).data("keycat");
-
+        console.log("bindLeftMenuFilters sectionKey", sectionKey);
+        
         if( $(this).hasClass( "active" ) ){
-            searchTxt = section;
+            searchTxt = sectionKey;
             $(this).removeClass( "active" );
             $(".keycat-"+classType).addClass("hidden"); 
         }else{
@@ -168,10 +225,38 @@ function bindLeftMenuFilters () {
 
             $(".keycat").addClass("hidden");
             $(".keycat-"+classType).removeClass("hidden");  
-            searchTxt = section+","+classType; 
+
+            if(typeof sectionKey != "undefined" && typeof sectionKey != null)
+                searchTxt = sectionKey+",";
+            
+            searchTxt += classType; 
         }
         $('#searchTags').val(searchTxt);
         startSearch(0, indexStepInit, searchCallback);  
+    });
+
+    $(".btn-select-category-services").off().on("click", function(){ //alert("onclick");
+        var tags = "";
+        var keycat = $(this).data("keycat");
+        if( $(this).hasClass( "active" ) ){
+            $(".btn-select-category-services[data-keycat='"+keycat+"']").removeClass( "active" );
+            $(".btn-select-category-services[data-keycat='"+keycat+"']").prop( "checked", false );
+        }else{
+            $(".btn-select-category-services[data-keycat='"+keycat+"']").addClass("active");
+            $(".btn-select-category-services[data-keycat='"+keycat+"']").prop( "checked", true );
+        }
+        
+        //.filterMenuMap
+
+        $.each($("#page .btn-select-category-services"), function (key, value){
+            console.log("checked ?", $(this).val());
+            if($(this).hasClass( "active" )){
+                if(tags!="") tags+=",";
+                tags+=$(this).data("keycat");
+            }
+        });
+        $('#searchTags').val(tags);
+        startSearch(0, indexStepInit, searchCallback); 
     });
 
     $(".keycat").off().on("click", function(){
@@ -180,17 +265,17 @@ function bindLeftMenuFilters () {
         var classType = $(this).data("categ");
         var classSubType = $(this).data("keycat");
         if( $(this).hasClass( "active" ) ){
-            searchTxt = section+","+classType;
+            searchTxt = sectionKey+","+classType;
             $(this).removeClass( "active" );
         }else{
             $(".keycat").removeClass("active");
             $(this).addClass("active");
             
-            searchTxt = section+","+classType+","+classSubType;
+            searchTxt = sectionKey+","+classType+","+classSubType;
         }
 
         $('#searchTags').val( searchTxt );
-        KScrollTo("#menu-section-classified");
+        KScrollTo("#container-scope-filter");
         startSearch(0, indexStepInit, searchCallback);  
     });
 

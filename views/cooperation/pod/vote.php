@@ -18,11 +18,11 @@
 		<div class="col-lg-4 col-md-4 col-sm-5 text-center no-padding pull-left">
 			<h5 class="no-margin">
 				<?php if(@$proposal["status"] == "tovote" && $auth){ ?>
-					<i class="fa fa-hand-o-up"></i> VOTER
+					<i class="fa fa-hand-o-up"></i> <?php echo Yii::t("cooperation", "VOTE NOW"); ?>
 				<?php }else if(@$proposal["status"] != "tovote"){ ?>
-					<i class="fa fa-balance-scale"></i> RÉSULTATS
+					<i class="fa fa-balance-scale"></i> <?php echo Yii::t("cooperation", "RESULTS"); ?>
 				<?php }else if(!$auth){ ?>
-					<i class="fa fa-lock"></i> Devenez membre ou contributeur pour voter
+					<i class="fa fa-lock"></i> <?php echo Yii::t("cooperation", "You must be member or contributor to vote"); ?>
 				<?php } ?>
 			</h5>
 
@@ -47,18 +47,18 @@
 			 			$identities .= "...";
 			 		}
 		 		}
-		 	}else{ $identities = "les votes sont anonymes"; }
+		 	}else{ $identities = Yii::t("cooperation", "votes are anonymous"); }
 
 		 	$tooltipsVoteCantChange = "";
 		 	if($hasVote && @$proposal["voteCanChange"] == "false") 
-		 		$tooltipsVoteCantChange = "Vous ne pouvez plus changer votre vote";
+		 		$tooltipsVoteCantChange = Yii::t("cooperation", "You can not change your vote");
  	?>
 		<div class="col-lg-8 col-md-8 col-sm-8 text-center no-padding pull-left margin-top-5">
 			<div class="col-lg-1 col-md-1 col-sm-1 text-center no-padding pull-left margin-top-5">
 				<?php if($key == $hasVote){ ?>
 					<i class="fa fa-chevron-right pull-right  hidden-sm hidden-md" style="margin-top:8px;"></i> 
 					<i class="fa fa-user-circle pull-right tooltips" style="margin-top:8px;"
-						data-original-title="vous avez voté <?php echo Yii::t("cooperation", $hasVote); ?>" 
+						data-original-title="<?php echo Yii::t("cooperation", "You did vote"); ?> <?php echo Yii::t("cooperation", $hasVote); ?>" 
 						data-placement="right"></i>
 				<?php } ?>
 			</div>
@@ -77,12 +77,12 @@
 
 			</div>
 			<div class="col-lg-2 col-md-2 col-sm-2 text-center pull-left margin-top-5 tooltips"
-						data-original-title="<?php echo $value["votant"]; ?> votants" data-placement="right">
+						data-original-title="<?php echo $value["votant"]; ?> <?php echo Yii::t("cooperation", "voters"); ?>" data-placement="right">
 				<label><?php echo $value["percent"]; ?>%</label>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-4 text-center pull-left margin-top-5 hidden-sm hidden-xs tooltips"
 				 data-original-title="<?php echo $identities; ?>" data-placement="top">
-				<small><?php echo $value["votant"]; ?> votant(s)</small><br>
+				<small><?php echo $value["votant"]; ?> <?php echo Yii::t("cooperation", "voter"); ?>(s)</small><br>
 			</div>
 		</div>
 
@@ -93,14 +93,14 @@
 		<?php if(@$proposal["status"] != "amendable" && $auth){ ?>
 			<?php if($hasVote!=false){ ?>
 				<h4 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
-					style="padding-left: 0px !important;">Vous avez voté 
+					style="padding-left: 0px !important;"><?php echo Yii::t("cooperation", "You did vote"); ?> 
 					<span class="letter-<?php echo Cooperation::getColorVoted($hasVote); ?>">
 						<?php echo Yii::t("cooperation", $hasVote); ?>
 					</span>
 				</h4>
 			<?php }else{ ?>
 				<h4 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
-					style="padding-left: 0px !important;">Vous n'avez pas voté</h4>
+					style="padding-left: 0px !important;"><?php echo Yii::t("cooperation", "You did not vote"); ?></h4>
 			<?php } ?>
 			<br>
 		<?php } ?>
@@ -109,18 +109,18 @@
 
 		<h4 class="pull-left">
 			<small>
-				<i class="fa fa-gavel"></i> Changement de vote : 
+				<i class="fa fa-gavel"></i> <?php echo Yii::t("cooperation", "Changing vote"); ?> : 
 				<?php if(@$proposal["voteCanChange"] == "true"){ ?> 
-					<span class="letter-green">Autorisé</span>
+					<span class="letter-green"><?php echo Yii::t("cooperation", "Allowed"); ?></span>
 				<?php }else{ ?> 
-					<span class="letter-red">Non-autorisé</span>
+					<span class="letter-red"><?php echo Yii::t("cooperation", "Not allowed"); ?></span>
 				<?php } ?> 
 				<br>
 				<i class="fa fa-user-secret"></i> Vote anonyme : 
 				<?php if(!isset($proposal["voteAnonymous"]) || @$proposal["voteAnonymous"] == "true"){ ?> 
-					<span class="letter-green">Oui</span>
+					<span class="letter-green"><?php echo Yii::t("common", "Yes"); ?></span>
 				<?php }else{ ?> 
-					<span class="letter-red">Non</span>
+					<span class="letter-red"><?php echo Yii::t("common", "No"); ?></span>
 				<?php } ?> 
 				
 				
@@ -129,13 +129,16 @@
 
 		<h4 class="pull-right text-right"> 
 			<small class="majority">
-				<i class="fa fa-2x fa-balance-scale"></i> Règle de majorité : <b><?php echo @$proposal["majority"]; ?>%</b><br>
+				<i class="fa fa-2x fa-balance-scale"></i> <?php echo Yii::t("cooperation", "Rule of majority"); ?> : 
+				<b><?php echo @$proposal["majority"]; ?>%</b><br>
 				<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
-					 Proposition <?php if($proposal["status"] == "tovote"){ ?>temporairement <?php } ?>
-					 <span class="bold letter-green">Validée</span>
+					 <?php echo Yii::t("cooperation", "Proposal"); ?> 
+					 <?php if($proposal["status"] == "tovote"){ ?><?php echo Yii::t("cooperation", "temporaly"); ?> <?php } ?>
+					 <span class="bold letter-green"><?php echo Yii::t("cooperation", "validated"); ?></span>
 				<?php }else{ ?>
-					 Proposition <?php if($proposal["status"] == "tovote"){ ?>temporairement <?php } ?> 
-					 <span class="bold letter-red">Refusée</span>
+					 <?php echo Yii::t("cooperation", "Proposal"); ?> 
+					 <?php if($proposal["status"] == "tovote"){ ?><?php echo Yii::t("cooperation", "temporaly"); ?> <?php } ?> 
+					 <span class="bold letter-red"><?php echo Yii::t("cooperation", "refused"); ?></span>
 				<?php } ?>
 			</small>
 		</h4>
@@ -182,10 +185,10 @@
 	            borderWidth: 1
             }],
             labels: [
-			        'Pour',
-			        'Contre',
-			        'Blanc',
-			        'Incomplet'
+			        trad.Agree,
+			        trad.Disagree,
+			        trad.Abstain,
+			        trad.Uncomplet
 			    ],
 			    
 		};

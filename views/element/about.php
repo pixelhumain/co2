@@ -193,13 +193,13 @@
 
 
 
-		<?php if($type != Person::COLLECTION){ ?>
+		<?php if($type != Person::COLLECTION && $type != Organization::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
-					<span><i class="fa fa-link"></i></span> <?php echo Yii::t("common","Parenthood"); ?>
+					<span><i class="fa fa-link"></i></span> <?php echo Yii::t("common","Carried by"); ?>
 				</div>
 				<div id="parentAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-desktop"></i> <?php echo Yii::t("common","Parenthood"); ?> :</span>
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-desktop"></i> <?php echo Yii::t("common","Carried by"); ?> :</span>
 				<?php 
 					if(!empty($element["parent"])){ ?>
 						<a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> 
@@ -397,11 +397,12 @@
 					 				: "").
 					 			'</span>';
 					echo $address;
-					if( empty($element["address"]["codeInsee"]) && Yii::app()->session["userId"] == (String) $element["_id"]) {
-						echo '<br><a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.
-								Yii::t("common", "Connect to your city").'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe">'. 
-								Yii::t("common", "Why ?").'</a>';
-					}
+					if( empty($element["address"]["codeInsee"]) && Yii::app()->session["userId"] == (String) $element["_id"]) { ?>
+						<br><a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">
+								<?php echo Yii::t("common", "Connect to your city") ?></a> 
+							<a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" onclick="showDefinition('explainCommunectMe',true)">
+								<?php echo  Yii::t("common", "Why ?") ?></a>
+					<?php }
 			}else
 				echo '<i>'.Yii::t("common","Not specified").'</i>';
 			?>
@@ -483,33 +484,60 @@
 		<div class="panel-body no-padding">
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Facebook">
 				<span><i class="fa fa-facebook"></i></span> 
-				<a href="<?php echo $facebook ; ?>" target="_blank" id="facebookAbout" class="socialIcon "><?php echo ($facebook != "javascript:;") ? $facebook : '<i>'.Yii::t("common","Not specified").'</i>' ; ?></a>
+				<?php if ($facebook != "javascript:;"){ ?>
+					<a href="<?php echo $facebook ; ?>" target="_blank" id="facebookAbout" class="socialIcon "><?php echo  $facebook ; ?></a>
+				<?php } else { 
+					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+				} ?>
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Twitter">
 				<span><i class="fa fa-twitter"></i></span> 
-				<a href="<?php echo $twitter ; ?>" target="_blank" id="twitterAbout" class="socialIcon" ><?php echo ($twitter != "javascript:;") ? $twitter : '<i>'.Yii::t("common","Not specified").'</i>' ; ?></a>
+				<?php if ($twitter != "javascript:;"){ ?>
+					<a href="<?php echo $twitter ; ?>" target="_blank" id="twitterAbout" class="socialIcon" ><?php echo $twitter ; ?></a>
+				<?php } else { 
+					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+				} ?>
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Instagram">
 				<span><i class="fa fa-instagram"></i></span> 
-				<a href="<?php echo $instagram ; ?>" target="_blank" id="instagramAbout" class="socialIcon" ><?php echo ($instagram != "javascript:;") ? $instagram : '<i>'.Yii::t("common","Not specified").'</i>' ; ?></a>
+				<?php if ($instagram != "javascript:;"){ ?>
+					<a href="<?php echo $instagram ; ?>" target="_blank" id="instagramAbout" class="socialIcon" ><?php echo $instagram ; ?></a>
+				<?php } else { 
+					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+				} ?>
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Skype" >
 				<span><i class="fa fa-skype"></i></span> 
-				<a href="<?php echo $skype ; ?>" target="_blank" id="skypeAbout" class="socialIcon" >
-				<?php echo ($skype != "javascript:;") ? $skype : '<i>'.Yii::t("common","Not specified").'</i>' ; ?></a>
+				<?php if ($skype != "javascript:;"){ ?>
+					<a href="<?php echo $skype ; ?>" target="_blank" id="skypeAbout" class="socialIcon" ><?php echo $skype ; ?></a>
+				<?php } else { 
+					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+				} ?>
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Google Plus">
 				<span><i class="fa fa-google-plus"></i></span> 
-				<a href="<?php echo $googleplus ; ?>" target="_blank" id="gpplusAbout" class="socialIcon" ><?php echo ($googleplus != "javascript:;") ? $googleplus : '<i>'.Yii::t("common","Not specified").'</i>' ; ?></a>
+				<?php if ($googleplus != "javascript:;"){ ?>
+					<a href="<?php echo $googleplus ; ?>" target="_blank" id="gpplusAbout" class="socialIcon" ><?php echo $googleplus ; ?></a>
+				<?php } else { 
+					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+				} ?>
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="GitHub">
 				<span><i class="fa fa-github"></i></span> 
-				<a href="<?php echo $github ; ?>" target="_blank" id="githubAbout" class="socialIcon" ><?php echo ($github != "javascript:;") ? $github : '<i>'.Yii::t("common","Not specified").'</i>' ; ?></a>
+				<?php if ($github != "javascript:;"){ ?>
+					<a href="<?php echo $github ; ?>" target="_blank" id="githubAbout" class="socialIcon" ><?php echo $github  ; ?></a>
+				<?php } else { 
+					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+				} ?>
 			</div>
 			<?php if($type==Person::COLLECTION){ ?> 
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Telegram">
 				<span><i class="fa fa-telegram"></i></span> 
-				<a href="<?php echo $telegram ; ?>" target="_blank" id="telegramAbout" class="socialIcon" ><?php echo ($telegram != "javascript:;") ? $telegram : '<i>'.Yii::t("common","Not specified").'</i>' ; ?></a>
+				<?php if ($telegram != "javascript:;"){ ?>
+					<a href="<?php echo $telegram ; ?>" target="_blank" id="telegramAbout" class="socialIcon" ><?php echo $telegram ; ?></a>
+				<?php } else { 
+					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+				} ?>
 			</div>
 			<?php } ?>
 		</div>	
@@ -517,6 +545,7 @@
     <?php } ?> 
 </div>
 
+<?php $this->renderPartial('../pod/whycommunexion',array()); ?>
 
 <script type="text/javascript">
 
@@ -533,6 +562,7 @@
 		inintDescs();
 		//changeHiddenFields();
 		bindAboutPodElement();
+		bindExplainLinks();
 
 		$("#small_profil").html($("#menu-name").html());
 		$("#menu-name").html("");

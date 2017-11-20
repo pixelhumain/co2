@@ -125,7 +125,7 @@
         return this.currentYear = time.year;
       },
       prev: function() {
-        if (this.currentMonth - 1 < 0) {
+        /*if (this.currentMonth - 1 < 0) {
           this.currentYear = this.currentYear - 1;
           this.currentMonth = 11;
         } else {
@@ -134,11 +134,16 @@
         this.drawDays(this.currentYear, this.currentMonth);
         if (this.options.onMonthChange) {
           this.options.onMonthChange.call(this);
-        }
+        }*/
+        
+        agendaWinMonth--;
+        calculateAgendaWindow(agendaWinMonth);
+        startSearch(0, indexStep, searchCallback);
+
         return null;
       },
       next: function() {
-        if (this.currentMonth + 1 > 11) {
+        /*if (this.currentMonth + 1 > 11) {
           this.currentYear = this.currentYear + 1;
           this.currentMonth = 0;
         } else {
@@ -147,7 +152,12 @@
         this.drawDays(this.currentYear, this.currentMonth);
         if (this.options.onMonthChange) {
           this.options.onMonthChange.call(this);
-        }
+        }*/
+
+        agendaWinMonth++;
+        calculateAgendaWindow(agendaWinMonth);
+        startSearch(0, indexStep, searchCallback);
+
         return null;
       },
       curr: function() {
@@ -177,7 +187,7 @@
               if (typeof dayEvents.thumb_url != "undefined" && dayEvents.thumb_url != "") {
                   imgProfil = "<img class='badge bg-orange' src='"+dayEvents.thumb_url+"'>"; 
               }
-              item += "<a href='javascript:' onclick='"+action+"' class=''>" +
+              item += "<a href='#page.type.events.id."+dayEvents.id+"' class='loadByHash'>" +
                         imgProfil + 
                         "<div class='info-event text-dark'>" + dayEvents.name+"<br><small class='text-red'>"+ dayEvents["position"] + "</small></div>" +
                       "</a>";
@@ -262,6 +272,7 @@
           this.applyTransform(day, 'rotateY(180deg)');
           this.applyBackfaceVisibility(day);
         }
+        //console.log("debug calendar", this.options);
         day = this.makeActive(day, this.options.events[dateString]);
         return this.$element.find('[data-group="days"]').append(day);
       },
@@ -389,8 +400,7 @@
       });
     };
     $.fn.responsiveCalendar.defaults = {
-      //translateMonths: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      translateMonths: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+      translateMonths: [trad.january, trad.february, trad.march, trad.april, trad.may, trad.june, trad.july, trad.august, trad.september, trad.october, trad.november, trad.december],
       events: {},
       time: void 0,
       allRows: true,

@@ -60,6 +60,18 @@
 				});
 				//lorsqu'on active/désactive le filtre par zone
 				$(this.cssModuleName + " #chk-scope").click(function (){ thisSig.checkListElementMap(thisMap); });
+
+				$(".btn-open-right-list").click(function(){
+					if($("#right_tool_map").hasClass("min")){
+						$("#right_tool_map").removeClass("min");
+						$(this).html("<i class='fa fa-angle-right'></i>");
+					}else{
+						$("#right_tool_map").addClass("min");
+						$(this).html("<i class='fa fa-angle-left'></i>");
+					}
+					thisSig.constructUI();
+
+				});
 			}
 
 			//initialise les boutons zoom-in et zoom-out
@@ -346,7 +358,17 @@
 											"address" 			: "MARKER",
 
 											"classified" 		: "classified-marker-default",
-											"services" 			: "MARKER"
+											"service" 			: "services/medical",
+											"product" 			: "services/medical",
+											"products" 			: "services/shopping",
+											
+											"services.sleeping" : "services/real-estate",
+											"services.restaurant":"services/restaurants",
+									        "services.funnytime":"services/entertainment",
+									        "services.transport":"services/automotive",
+									        "services.siteToSee":"services/photography",
+									        "services.artisants":"services/employment",
+									        "services.guideAccom":"services/professional"
 
 									  };
 
@@ -459,8 +481,9 @@
 		};
 
 		Sig.getIcoNameByType = function (data){
-			mylog.log("getIcoNameByType",this.icoMarkersMap,  data);
+			//mylog.log("getIcoNameByType",this.icoMarkersMap,  data);
 			var type = this.getTypeSigOfData(data);
+			mylog.log("getIcoNameByType",this.icoMarkersMap[type],  data);
 			if(this.icoMarkersMap[type] != null){
 					return this.icoMarkersMap[type];
 			}else{  return this.icoMarkersMap['default']; }

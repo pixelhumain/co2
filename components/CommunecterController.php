@@ -5,7 +5,7 @@
  */
 class CommunecterController extends Controller
 {
-  public $version = "v0.1.4";
+  public $version = "v0.2.2.2";
   public $versionDate = "29/07/2016 19:12";
   public $title = "Communectez";
   public $subTitle = "se connecter à sa commune";
@@ -16,13 +16,13 @@ class CommunecterController extends Controller
   public $projectName = "";
   public $projectImage = "/images/CTK.png";
   public $projectImageL = "/images/logo.png";
-  public $footerImages = array(
+  /*public $footerImages = array(
       array("img"=>"/images/logoORD.PNG","url"=>"http://openrd.io"),
       array("img"=>"/images/logo_region_reunion.png","url"=>"http://www.regionreunion.com"),
       array("img"=>"/images/technopole.jpg","url"=>"http://technopole-reunion.com"),
       array("img"=>"/images/Logo_Licence_Ouverte_noir_avec_texte.gif","url"=>"https://data.gouv.fr"),
       array("img"=>'/images/blog-github.png',"url"=>"https://github.com/orgs/pixelhumain/dashboard"),
-      array("img"=>'/images/opensource.gif',"url"=>"http://opensource.org/"));
+      array("img"=>'/images/opensource.gif',"url"=>"http://opensource.org/"));*/
   const theme = "ph-dori";
   public $person = null;
   public $themeStyle = "theme-style11";//3,4,5,7,9
@@ -286,6 +286,7 @@ class CommunecterController extends Controller
         "get"      => array("href" => "/ph/co2/person/get"),
         "getcontactsbymails"      => array("href" => "/ph/co2/person/getcontactsbymails"),
         "shoppingcart"      => array("href" => "/ph/co2/person/shoppingcart"),
+        "updatescopeinter" => array("href" => "/ph/co2/person/updatescopeinter"),
     ),
     "organization"=> array(
       "addorganizationform" => array("href" => "/ph/co2/organization/addorganizationform",
@@ -433,11 +434,26 @@ class CommunecterController extends Controller
       "moderate"     => array( "href" => "/ph/co2/comment/moderate"),
       "delete"       => array( "href" => "/ph/co2/comment/delete"),
       "updatefield"  => array( "href" => "/ph/co2/comment/updatefield"),
+      "update"  => array( "href" => "/ph/co2/comment/update"),
       "countcommentsfrom" => array( "href" => "/ph/co2/comment/countcommentsfrom"),
     ),
     "order"=> array(
        "save"   => array("href" => "/ph/co2/order/save"),
        "get"   => array("href" => "/ph/co2/order/get"),
+    ),
+    "pay"=> array(
+       "index"   => array("href" => "/ph/co2/pay/index"),
+       "in"   => array("href" => "/ph/co2/pay/in"),
+    ),
+    "backup"=> array(
+       "save"   => array("href" => "/ph/co2/backup/save"),
+       "delete"   => array("href" => "/ph/co2/backup/delete"),
+       "update"   => array("href" => "/ph/co2/backup/update"),
+      // "get"   => array("href" => "/ph/co2/order/get"),
+    ),
+    "orderitem"=> array(
+       "save"   => array("href" => "/ph/co2/orderitem/save"),
+       "get"   => array("href" => "/ph/co2/orderitem/get"),
     ),
     "action"=> array(
        "addaction"   => array("href" => "/ph/co2/action/addaction"),
@@ -445,7 +461,7 @@ class CommunecterController extends Controller
     "notification"=> array(
       "getnotifications"          => array("href" => "/ph/co2/notification/get","json" => true),
       "marknotificationasread"    => array("href" => "/ph/co2/notification/remove"),
-      "markallnotificationasread" => array("href" => "/ph/co2/notification/removeall"),
+      "removeall" => array("href" => "/ph/co2/notification/removeall"),
       "update"                    => array("href" => "/ph/co2/notification/update"),
     ),
     "gamification"=> array(
@@ -453,6 +469,7 @@ class CommunecterController extends Controller
     ),
     "graph"=> array(
       "viewer" => array("href" => "/ph/co2/graph/viewer"),
+      "getdata" => array("href" => "/ph/co2/graph/getdata"),
     ),
     "log"=> array(
       "monitoring" => array("href" => "/ph/co2/log/monitoring"),
@@ -490,6 +507,7 @@ class CommunecterController extends Controller
       "stopdelete"          => array("href" => "/ph/co2/element/stopdelete"),
       'getthumbpath'    => array("href" => "/ph/co2/element/getThumbPath"),
       "list"               => array("href" => "/ph/co2/element/list"),
+      'getcommunexion'    => array("href" => "/ph/co2/element/getcommunexion"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/co2/app/welcome",         "public" => true),
@@ -550,7 +568,7 @@ class CommunecterController extends Controller
     //creates an issue with Json requests : to clear add josn:true on the page definition here 
     //if( Yii::app()->request->isAjaxRequest && (!isset( $page["json"] )) )
       //echo "<script type='text/javascript'> userId = '".Yii::app()->session['userId']."'; var blackfly = 'sosos';</script>";
-    
+    Yii::app()->params["version"] = $this->version ;
     if( @$_GET["theme"] ){
       Yii::app()->theme = $_GET["theme"];
       Yii::app()->session["theme"] = $_GET["theme"];
@@ -566,8 +584,8 @@ class CommunecterController extends Controller
 
     if( Yii::app()->controller->id == "adminpublic" && ( !Yii::app()->session[ "userIsAdmin" ] && !Yii::app()->session[ "userIsAdminPublic" ] ) )
       throw new CHttpException(403,Yii::t('error','Unauthorized Access.'));
-
-    $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];
+    if( Yii::app()->controller->id != "test")
+      $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];
     $pagesWithoutLogin = array(
                             //Login Page
                             "person/login", 
@@ -616,9 +634,14 @@ class CommunecterController extends Controller
       $this->title = (isset($page["title"])) ? $page["title"] : $this->title;
       $this->subTitle = (isset($page["subTitle"])) ? $page["subTitle"] : $this->subTitle;
       $this->pageTitle = (isset($page["pageTitle"])) ? $page["pageTitle"] : $this->pageTitle;
-      $this->notifications = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );
-      CornerDev::addWorkLog("communecter",Yii::app()->session["userId"],Yii::app()->controller->id,Yii::app()->controller->action->id);
+      if(!empty(Yii::app()->session["userId"]))
+        $this->notifications = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );
+      if( $_SERVER['SERVER_NAME'] == "127.0.0.1" || $_SERVER['SERVER_NAME'] == "localhost" )
+        CornerDev::addWorkLog("communecter",Yii::app()->session["userId"],Yii::app()->controller->id,Yii::app()->controller->action->id);
     }
+
+    //load any DB config Params
+    Application::loadDBAppConfig();    
   }
   
   protected function beforeAction($action){

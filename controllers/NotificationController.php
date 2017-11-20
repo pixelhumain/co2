@@ -19,7 +19,7 @@ class NotificationController extends CommunecterController {
 	    return array(
 	        'getnotifications'    => 'citizenToolKit.controllers.notification.GetAction',
 	        'marknotificationasread'    => 'citizenToolKit.controllers.notification.RemoveAction',
-	        'markallnotificationasread'    => 'citizenToolKit.controllers.notification.RemoveAllAction',
+	        'removeall'    => 'citizenToolKit.controllers.notification.RemoveAllAction',
 	        'update'    => 'citizenToolKit.controllers.notification.UpdateAction',
 	    );
 	}

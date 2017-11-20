@@ -1,3 +1,15 @@
+function scopeActive(scopeValue){
+    mylog.log("scopeActive", scopeValue);
+    if(myMultiScopes[scopeValue].active){
+        $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
+        $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-check-circle");
+        $("[data-scope-value='"+scopeValue+"'].item-scope-input").removeClass("disabled");
+    }else{
+        $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-circle-o");
+        $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-check-circle");
+        $("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
+    }
+}
 
 function bindCommunexionScopeEvents(){
     $(".btn-decommunecter").off().on('click',function(){
@@ -7,24 +19,32 @@ function bindCommunexionScopeEvents(){
     $(".item-globalscope-checker").click(function(){  
         $(".item-globalscope-checker").addClass("inactive");
         $(this).removeClass("inactive");
+        var notSearch = $(this).data("scope-notsearch");
+        if($(this).hasClass("communecterSearch")){
+            $("#main-search-bar").val("");
+            if(location.hash.indexOf("#search")){
+                notSearch = false;
+            }
+        }
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
         setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
-                         $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"), 
-                         $(this).data("region-communexion"), $(this).data("country-communexion")) ;
+                         $(this).data("scope-values"),  notSearch) ;
     });
     
-    $(".item-scope-input").click(function(){ 
+    $(".item-scope-input").off().on("click", function(){ 
         scopeValue=$(this).data("scope-value");
-        if($(this).hasClass("disabled")){
-            $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
-            $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-check-circle");
-            $("[data-scope-value='"+scopeValue+"'].item-scope-input").removeClass("disabled");
-        }else{
-            $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-circle-o");
-            $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-check-circle");
-            $("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
-        }
+        
+        // if($(this).hasClass("disabled")){
+        //     $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
+        //     $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-check-circle");
+        //     $("[data-scope-value='"+scopeValue+"'].item-scope-input").removeClass("disabled");
+        // }else{
+        //     $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-circle-o");
+        //     $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-check-circle");
+        //     $("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
+        // }
         toogleScopeMultiscope( $(this).data("scope-value") );
+        scopeActive(scopeValue);
         if(actionOnSetGlobalScope=="filter")
             $("#newsstream").html("<div class='col-md-12 text-center'><i class='fa fa-circle'></i> <i class='fa fa-circle'></i> <i class='fa fa-circle'></i><hr style='margin-top: 34px;'></div>");
         $("#footerDropdown").html("<i class='fa fa-circle'></i> <i class='fa fa-circle'></i> <i class='fa fa-circle'></i><hr style='margin-top: 34px;'>");
@@ -59,10 +79,10 @@ function bindCommunexionScopeEvents(){
         checkScopeMax();
     });
 
-    $(".start-new-communexion").click(function(){
+    $(".start-new-communexion").off().on("click",function(){
         mylog.log("start-new-communexion", typeof communexion.currentName);
         if (typeof communexion.currentName !== 'undefined'){
-            activateGlobalCommunexion(true);
+            activateGlobalCommunexion(true, true);
             if(actionOnSetGlobalScope=="save")
                 $(".item-globalscope-checker").attr('disabled', true);
         }else{
@@ -71,30 +91,36 @@ function bindCommunexionScopeEvents(){
     });
 }
 function activateGlobalCommunexion(active, firstLoad){  
-	mylog.log("activateGlobalCommunexion", active);
+	mylog.log("activateGlobalCommunexion", active, firstLoad);
+    mylog.log("activateGlobalCommunexion actionOnSetGlobalScope", actionOnSetGlobalScope);
     $.cookie('communexionActivated', active, { expires: 365, path: "/" });
-    globalCommunexion=active;
+    communexion.state=active;
     if(active){
-        headerHtml='<i class="fa fa-university"></i> ' + communexion.currentName + "<small class='text-dark'>.CO</small>"
-        //setGlobalScope($.cookie('communexionValue'), communexion.currentName, $.cookie('communexionType'), $.cookie('communexionLevel'));
-        $("#container-scope-filter").html(getBreadcrumCommunexion());
+        headerHtml='<i class="fa fa-university"></i> ' + communexion.currentName + "<small class='text-dark'>.CO</small>";
+        //if(firstLoad)
+            $("#container-scope-filter").html(getBreadcrumCommunexion());
         if(actionOnSetGlobalScope=="save")
             $("#scopeListContainerForm").html(getBreadcrumCommunexion());
-        startSearch(0, indexStepInit,searchCallback);
+
+        if(actionOnSetGlobalScope=="filter"){
+            if(location.hash.indexOf("#live") >=0)
+                startNewsSearch(true);
+            else
+                startSearch(0, indexStepInit,searchCallback);
+        }
         bindCommunexionScopeEvents();
     }else{
         headerHtml='<a href="#" class="menu-btn-back-category" data-target="#modalMainMenu" data-toggle="modal">'+
-                '<img src="'+themeUrl+'/assets/img/LOGOS/'+domainName+'/logo-head-search.png" height="60" class="inline margin-bottom-15">'+
+                '<img src="'+themeUrl+'/assets/img/LOGOS/'+domainName+'/logo-head-search.png" height="60" class="inline">'+
                 '</a>';
         saveCookieMultiscope();
-        //rebuildSearchScopeInput();
         showTagsScopesMin();
         bindCommunexionScopeEvents();
 
         if(actionOnSetGlobalScope=="filter"){
             if(location.hash.indexOf("#live") >=0)
                 startNewsSearch(true);
-            else if(!firstLoad)
+            else
                 startSearch(0, indexStepInit,searchCallback);
         }
     }
@@ -103,6 +129,7 @@ function activateGlobalCommunexion(active, firstLoad){
 }
 function getBreadcrumCommunexion(){
     var tips="";
+
     if(typeof communexion.cities != "undefined") {
     	$.each(communexion.cities,function(e,v){
             tips+=v+" / ";
@@ -163,14 +190,14 @@ function getBreadcrumCommunexion(){
 									'</button>';
 	}
 
-	if(communexion.communexionType=="city"){
+	if(notNull(communexion.cities) && communexion.cities.length != 1){
 		htmlCommunexion+= '<button data-toggle="dropdown" data-target="dropdown-multi-scope" '+
 							'class="btn btn-link text-red item-globalscope-checker homestead tooltips ';
 								if( communexion.currentLevel != "cp" )
 									htmlCommunexion+="inactive";
-			htmlCommunexion+= 	'" data-scope-value="'+communexion.values.cp+'" '+
+			htmlCommunexion+= 	'" data-scope-value="'+communexion.values.city+'" '+
 								'data-scope-name="'+communexion.values.cp+'" '+
-								'data-scope-type="'+communexion.communexionType+'" '+
+								'data-scope-type="cp" '+
 								'data-scope-level="cp" '+
 								'data-toggle="tooltip" data-placement="bottom" data-original-title="'+tips+'">'+
 							'<i class="fa fa-angle-right"></i>  '+communexion.values.cp+
@@ -192,8 +219,8 @@ function getBreadcrumCommunexion(){
 									htmlCommunexion+="inactive";
 			htmlCommunexion+= 	'" data-scope-value="'+communexion.values.city+'" '+
                     'data-scope-name="'+communexion.values.cityName+'" '+
-                    'data-scope-type="'+communexion.communexionType+'" '+
-                    'data-scope-level="cp" '+
+                    'data-scope-type="city" '+
+                    'data-scope-level="city" '+
                     'data-toggle="tooltip" data-placement="bottom" data-original-title="'+tips+'"'+'>'+
                     '<i class="fa fa-angle-right"></i>  '+communexion.values.cityName+' (toute la ville)'+
                 '</button>'+
@@ -203,7 +230,7 @@ function getBreadcrumCommunexion(){
 										htmlCommunexion+="inactive";
 			htmlCommunexion+= 	'"data-scope-value="'+communexion.values.city+'" '+
                     'data-scope-name="'+communexion.values.cityName+'" '+
-                    'data-scope-type="'+communexion.communexionType+'" '+
+                    'data-scope-type="cp" '+
                     'data-scope-level="city">'+
                     '<i class="fa fa-angle-right"></i>  '+communexion.values.cityName+
                 '</button>';

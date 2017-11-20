@@ -165,12 +165,12 @@
 }
 .mentions-input-box .mentions{
   font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-  left: 5px !important;
-  top: 1px !important;
+  /*left: 5px !important;
+  top: 1px !important;*/
   padding:0 !important;
 }
 .updateMention .mentions-input-box .mentions{ 
-  padding:10px 5px !important;
+  padding:10px !important;
 }
 </style>
 <?php 
@@ -331,7 +331,7 @@
           <ul class="dropdown-menu" id="dropdown_search" style="">
           </ul>
 
-          <div id="results" class="bg-white results col-sm-12"></div>
+          <div id="results" class="bg-white results col-sm-12 padding-10"></div>
         </div>
       </div>
       <div class="form-group tagstags col-sm-12 no-padding">
@@ -414,7 +414,7 @@
                   <img height=20 width=20 src='<?php echo $this->module->assetsUrl.'/images/thumb/default_'.$contextParentType.'.png' ?>'>  
                 <?php } ?>
                 <?php echo $contextName ?></h4>
-                <p class="list-group-item-text small">Afficher <?php echo $contextName ?> comme auteur</p>
+                <p class="list-group-item-text small"><?php echo Yii::t("form", "Show {who} as author",array("{who}"=>$contextName)) ?></p>
               </a>
             </li>
             <li>
@@ -424,8 +424,8 @@
                 <?php } else {  ?>
                   <img height=20 width=20 src='<?php echo $this->module->assetsUrl.'/images/thumb/default_citoyens.png' ?>'>  
                 <?php } ?>
-                <?php echo ucfirst(Yii::t("common", "Moi")) ?></h4>
-                <p class="list-group-item-text small"><?php echo "Je suis l'auteur" ?></p>
+                <?php echo ucfirst(Yii::t("common", "Me")) ?></h4>
+                <p class="list-group-item-text small"><?php echo Yii::t("form","I am the author") ?></p>
               </a>
             </li>
           </ul>

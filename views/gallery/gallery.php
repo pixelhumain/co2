@@ -273,9 +273,8 @@ function initGrid(){
 		nameCol=k;
 		contentKey="slider";
 		contentTitle=k;
-		countLabel=v.count+' image';
-		if(v.count>1)
-			countLabel+="s";
+		var s = (v.count>1) ? "s" : "";
+		countLabel=v.count+' '+trad["image"+s];
 		if(typeof v.countAlbums!="undefined"){
 			var s = (v.countAlbums>1) ? "s" : "";
 			if(v.countAlbums > 0)
@@ -371,8 +370,8 @@ function initGrid(){
 	    });
 	}else{
 		var htmlDefault = "<div class='center col-md-12 col-sm-12 col-xs-12 padding-5'>"+
-							"<i class='fa fa-picture-o fa-5x text-blue'></i>"+
-							"<br>"+trad.nopicture+
+							"<i class='fa fa-ban fa-4x text-dark'></i> <i class='fa fa-picture-o fa-4x text-dark'></i>"+
+							" "+trad.nopicture+
 						"</div>";
 		$('#Grid').append(htmlDefault);
 	}

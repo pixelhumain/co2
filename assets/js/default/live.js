@@ -179,7 +179,8 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 	}
 
 	var searchLocality = getLocalityForSearch();
-	 var dataSearch = {
+	mylog.log("searchLocality", searchLocality);
+	var dataSearch = {
       //"name" : name, 
       "localities" : searchLocality,
       "searchType" : searchType, 
@@ -202,7 +203,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
   var loading = "<div class='loader text-dark text-center'>"+
 		"<span style='font-size:25px;'>"+
 			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
-			"<span class='text-dark'>Chargement en cours ...</span>" + 
+			"<span class='text-dark'>"+trad.currentlyloading+" ...</span>" + 
 		"</div>";
 
 	//loading = "";

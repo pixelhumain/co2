@@ -178,10 +178,10 @@
 			updateBtnUpload(true);
 			$("#"+contentId+"_imgPreview").removeClass("hidden");
 			$.ajax({
-				url: baseUrl+"/"+moduleId+"/document/delete/dir/"+moduleId+"/type/"+type+"/parentId/"+id,
+				url: baseUrl+"/"+moduleId+"/document/delete/dir/"+moduleId+"/type/"+type+"/id/"+id,
 				type: "POST",
 				dataType : "json",
-				data: {"name": imageName, "parentId": id, "parentType": type, "path" : "", "docId" : imageId},
+				data: {"name": imageName, "parentId": id, "parentType": type, "path" : "communecter", "ids" : [imageId]},
 				success: function(data){
 					if(data.result){
 						

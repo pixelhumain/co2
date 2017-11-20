@@ -90,6 +90,7 @@ function bindCommunexionScopeEvents(){
         }
     });
 }
+
 function activateGlobalCommunexion(active, firstLoad){  
 	mylog.log("activateGlobalCommunexion", active, firstLoad);
     mylog.log("activateGlobalCommunexion actionOnSetGlobalScope", actionOnSetGlobalScope);

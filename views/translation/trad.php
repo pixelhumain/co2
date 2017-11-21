@@ -517,6 +517,7 @@ var tradDynForm = {
 	"linkGplus":"<?php echo Yii::t("form","Link to Google Plus") ?>",
 	"linkFacebook":"<?php echo Yii::t("form","Link to Facebook") ?>",
 	"linkTwitter":"<?php echo Yii::t("form","Link to Twitter") ?>",
+	"linkInstagram":"<?php echo Yii::t("form","Link to Instagram") ?>",
 	"mobile":"<?php echo Yii::t("form","Mobile") ?>",
 	"fax":"<?php echo Yii::t("form","Fax") ?>",
 	"fix":"<?php echo Yii::t("form","Fix") ?>",

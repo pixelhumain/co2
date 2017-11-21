@@ -15,14 +15,20 @@
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
+    $page = "live";
+    
+    if(Yii::app()->params["CO2DomainName"] == "kgougle")
+        $page = "freedom";
+
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath ,
                                 "type" => @$type,
-                                "page" => "live",
+                                "page" => $page,
                                 "explain"=> "Live public : retrouvez tous les messages publics selon vos lieux favoris") ); 
     $randImg = rand(1, 2);
+    $page = "live";
     //$randImg = 1;
 ?>
 
@@ -89,7 +95,7 @@
 </div>
 
 
-<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array("subdomain"=>"live")); ?>
+<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array("subdomain"=>$page)); ?>
 
 
 <script type="text/javascript" >
@@ -108,6 +114,8 @@ var liveTypeName = { "news":"<i class='fa fa-rss'></i> Les messages",
 					 //"information":"<i class='fa fa-newspaper-o'></i> Les informations"
 					};
 
+var page = "<?php echo $page; ?>";
+var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
 
 var scrollEnd = false;
 <?php if(@$type && !empty($type)){ ?>
@@ -125,21 +133,21 @@ var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 jQuery(document).ready(function() {
 
 	$(".subsub").hide();
-	setTitle("", "", "Live");
+	//setTitle("", "", titlePage);
 
 	/*var liveType = "<?php echo (@$type && !empty($type)) ? $type : ''; ?>";
 	if(typeof liveTypeName[liveType] != "undefined") 
 		 liveType = " > "+liveTypeName[liveType];
 	else liveType = ", la boite à outils citoyenne connectée " + liveType;
 */
-	setTitle("Live", "Live");
+	setTitle(titlePage, titlePage);
 	//initFilterLive();
 	//showTagsScopesMin("#list_tags_scopes");
 	$("#btn-slidup-scopetags").click(function(){
       slidupScopetagsMin();
     });
 	$('#btn-start-search').click(function(e){
-		startNewsSearch(false);
+		startNewsSearch(true);
     });
 		
 	
@@ -152,7 +160,7 @@ jQuery(document).ready(function() {
 	//init loading in scroll
    
     initKInterface();//{"affixTop":10});
-    initFreedomInterface();
+    //initFreedomInterface();
     
     Sig.restartMap(Sig.map);
 
@@ -162,7 +170,7 @@ jQuery(document).ready(function() {
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
-            loadStream();
+            startNewsSearch(true);
             KScrollTo("#content-social");
         }
     });
@@ -174,7 +182,7 @@ jQuery(document).ready(function() {
         $("#main-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){            
-            loadStream();
+            startNewsSearch(true);
             KScrollTo("#content-social");
          }
     });
@@ -183,12 +191,12 @@ jQuery(document).ready(function() {
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
-            loadStream();
+            startNewsSearch(true);
          }
     });
 
-    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
-        loadStream();
+    $("#main-btn-start-search, #main-search-bar-addon").click(function(){
+        startNewsSearch(true);
     });
 
 

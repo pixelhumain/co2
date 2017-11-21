@@ -1,5 +1,5 @@
 function isLiveGlobal(){
-	return (location.hash.indexOf("#live") == 0 || location.hash.indexOf("#city.detail") == 0);
+	return (location.hash.indexOf("#live") == 0 || location.hash.indexOf("#freedom") >= 0 || location.hash.indexOf("#city.detail") == 0);
 	return typeof liveScopeType != "undefined";// && liveScopeType == "global";
 }
 /*

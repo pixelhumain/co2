@@ -13,6 +13,34 @@
 .timeline-panel .container-img-profil{
   max-height: 250px;
 }
+
+.timeline-panel#nbAbuse3,
+.timeline-panel#nbAbuse4 {
+  background-color: #ffe4e4 !important;
+  border: 2px solid #ffacac;
+}
+
+.timeline-panel#nbAbuse3 .timeline_text{
+  color: #c29898 !important;
+}
+
+.timeline-panel#nbAbuse4 .timeline_text{
+  color: #dacbcb !important;
+}
+.timeline-panel#nbAbuse3::before,
+.timeline-panel#nbAbuse4::before{
+  border-left: 15px solid #ffacac;
+  border-left-width: 15px;
+}
+
+li.timeline-inverted .timeline-panel#nbAbuse3::before,
+li.timeline-inverted .timeline-panel#nbAbuse4::before{
+  border-right-color: #ffacac !important;
+  border-right: 15 solid #ffacac!important;
+  border-left:0px!important;
+}
+
+
 </style>
 
 <?php 
@@ -55,7 +83,15 @@ foreach($news as $key => $media){
     <div class="timeline-badge primary">
       <a><i class="glyphicon glyphicon-record" rel="tooltip"></i></a>
     </div>
-    <div class="timeline-panel">
+    <div class="timeline-panel"
+         id="nbAbuse<?php echo @$media["reportAbuseCount"]; ?>">
+         <?php if( @$media["reportAbuseCount"] >= 3){ ?>
+         <h6>
+            <small class="pull-left margin-left-10 letter-red">
+              <i class="fa fa-flag"></i> Ce contenu a été signalé <?php echo @$media["reportAbuseCount"]; ?> fois !
+            </small>
+         </h6>
+         <?php } ?>
       <?php 
         $this->renderPartial('../news/timeline-panel', 
                     array(  "key"=>$key,

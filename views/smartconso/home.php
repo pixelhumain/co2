@@ -101,7 +101,7 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bg-white pageContent margin-top-50 padding-bottom-50">
 	<div class="col-lg-offset-1 col-md-offset-1 col-lg-10 col-md-10 col-sm-12 col-xs-12 no-padding">
 		<?php foreach ($ecocat as $key => $category) { ?>
-		<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 padding-15 smartcat">
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 padding-15 smartcat">
 			<div class="col-xs-12 padding-15 shadow2 bg-light">
 				<h4>
 					<a href="<?php echo $category["hash"]; ?>" class="lbh letter-blue">

@@ -4,7 +4,7 @@
       "metaDesc" : "Le moteur de recherche des cagous",
       "devises" : { "CFP" : "CFP" },
       "deviseDefault" : "CFP",
-
+      "nbAdminModeration" : 1,
       "pages" : 
       {
       	"#app.index":
@@ -57,15 +57,15 @@
                   "mainTitle" : "Fil d'actu <span class='letter-red'>média</span>",
                   "placeholderMainSearch" : "rechercher dans l'actu ..."},
 
-      	"#live": {
+            "#freedom": {
                   "inMenu" : true, 
                   "useHeader" : true, 
-                  "open" : false, 
-                  "subdomain" : "live", 
-                  "subdomainName" : "Live",
+                  "open" : true, 
+                  "subdomain" : "freedom", 
+                  "subdomainName" : "Freedom",
                   "hash":"#app.live",
                   "icon" : "stack-exchange", 
-                  "mainTitle" : "Fil d'actu Fil d'actu <span class='letter-red'>citoyen</span>",
+                  "mainTitle" : "Fil de discussion <span class='letter-red'>citoyen</span>",
                   "placeholderMainSearch" : "search in live ..."
             },
 

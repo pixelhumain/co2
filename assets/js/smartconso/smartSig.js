@@ -15,7 +15,7 @@ var smartSig = {
 
 		var data = {
 			"name" : "", 
-			"searchTag" : [dataKey],
+			"sourceKey" : dataKey,
 			"searchType" : ["poi"], 
 			"searchBy" : "ALL",
 			"indexMin" : 0, 

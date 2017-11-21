@@ -205,7 +205,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                         "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
               str += "<small class='resultTypes'>";
               if(typeof headerParams != "undefined"){
-                $.each( searchType, function(key, val){
+                var countNbTag=0;
+                $.each( searchType, function(key, val){ countNbTag++;
                   mylog.log(">>> each autocomplete search",val);
                   var params = headerParams[val];
                   str += "<span class='text-"+params.color+"'>"+
@@ -213,16 +214,18 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                           "</span> ";
                 });//console.log("myMultiTags", myMultiTags);
                 
+                if(countNbTag > 0)
+                  str += "<br><br>";
+                
+                if( Object.keys(myMultiTags).length > 0 )
+                  str += "<a href='javascript:;' class='margin-right-10 margin-left-10' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
+                
                 $.each(myMultiTags, function(key, val){
                   var params = headerParams[val];
-                  str += "<span class='text-dark hidden-xs pull-right'>"+
+                  str += "<span class='text-dark hidden-xs'>"+
                             "#"+key+
                           "</span> ";
                 });
-
-                if( Object.keys(myMultiTags).length > 0 )
-                  str += "<a href='javascript:;' class='pull-right' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
-                
               }
               str += "</small>";
               str += "</h4>";

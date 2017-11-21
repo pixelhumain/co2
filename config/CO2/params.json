@@ -8,6 +8,7 @@
                  "$" : "$",
                  "CFP" : "CFP"},
     "deviseDefault" : "€",
+    "nbAdminModeration" : 3,
 
 	"pages" : {
 		"#app.index": {"redirect":"welcome"},

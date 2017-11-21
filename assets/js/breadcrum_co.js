@@ -53,7 +53,7 @@ function bindCommunexionScopeEvents(){
         interval = setInterval(function(){ 
             if(sec == 1){
                 if(actionOnSetGlobalScope=="filter"){
-                    if(location.hash.indexOf("#live") >= 0){
+                    if(location.hash.indexOf("#live") >= 0 || location.hash.indexOf("#freedom") >= 0){
                         startNewsSearch(true)
                     } 
                     else if (location.hash.indexOf("#interoperability") >= 0) {
@@ -103,7 +103,7 @@ function activateGlobalCommunexion(active, firstLoad){
             $("#scopeListContainerForm").html(getBreadcrumCommunexion());
 
         if(actionOnSetGlobalScope=="filter"){
-            if(location.hash.indexOf("#live") >=0)
+            if(location.hash.indexOf("#live") >=0 || location.hash.indexOf("#freedom") >= 0)
                 startNewsSearch(true);
             else
                 startSearch(0, indexStepInit,searchCallback);
@@ -118,7 +118,7 @@ function activateGlobalCommunexion(active, firstLoad){
         bindCommunexionScopeEvents();
 
         if(actionOnSetGlobalScope=="filter"){
-            if(location.hash.indexOf("#live") >=0)
+            if(location.hash.indexOf("#live") >=0 || location.hash.indexOf("#freedom") >= 0)
                 startNewsSearch(true);
             else
                 startSearch(0, indexStepInit,searchCallback);

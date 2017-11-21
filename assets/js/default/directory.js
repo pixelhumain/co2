@@ -1606,10 +1606,8 @@ var directory = {
                                 "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
                                 "data-scope-notsearch='"+true+"' " +
                                 ">"+
-                                    "<i class='fa fa-angle-right'></i> Communecter" + 
+                                    "<i class='fa fa-angle-right'></i> " + trad.testAOtherCommunexion + 
                                 "</button>";
-                
-
                 str += "</div>";                
               str += "</div>";
               return str;

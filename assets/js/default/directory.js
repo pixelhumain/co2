@@ -908,8 +908,9 @@ var directory = {
     		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){
     			isFollowed=false;
 
-    			if(typeof params.isFollowed != "undefined" ) 
+    			if(typeof params.isFollowed != "undefined" )
     				isFollowed=true;
+          mylog.log("isFollowed", params.isFollowed, isFollowed);
     			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
     			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
     			' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
@@ -975,7 +976,7 @@ var directory = {
             
             str += thisLocality;
             
-            str += "<div class='entityDescription'>" + params.description + "</div>";
+            str += "<div class='entityDescription'>" + ( (params.shortDescription == null ) ? "" : params.shortDescription ) + "</div>";
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
             /*
               if(params.startDate != null)

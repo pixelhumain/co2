@@ -28,6 +28,7 @@ function bindCommunexionScopeEvents(){
             if(location.hash.indexOf("#search")){
                 notSearch = false;
             }
+            toastr.success(trad.thecommunexionhaschanged);
         }
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
         setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
@@ -82,7 +83,7 @@ function bindCommunexionScopeEvents(){
         checkScopeMax();
     });
 
-    $(".start-new-communexion").off().on("click",function(){
+    $(".start-new-communexion").click(function(){
         mylog.log("start-new-communexion", typeof communexion.currentName);
         if (typeof communexion.currentName !== 'undefined'){
             activateGlobalCommunexion(true, true);

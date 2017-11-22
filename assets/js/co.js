@@ -997,6 +997,7 @@ also switches the global Title and Icon
 **************/
 
 function  processingBlockUi() { 
+	mylog.log("processingBlockUi");
 	msg = '<h4 style="font-weight:300" class=" text-dark padding-10">'+
 			'<i class="fa fa-spin fa-circle-o-notch"></i><br>'+trad.currentlyloading+'...'+
 		  '</h4>';

@@ -730,7 +730,7 @@ var directory = {
     defaultPanelHtml : function(params){
       mylog.log("----------- defaultPanelHtml",params, params.type,params.name, params.url);
       str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
+      str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
       if(params.itemType!="city" && (params.useMinSize))
@@ -898,7 +898,7 @@ var directory = {
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
-    		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
+    		str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
     		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
     		
         var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;
@@ -908,8 +908,9 @@ var directory = {
     		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){
     			isFollowed=false;
 
-    			if(typeof params.isFollowed != "undefined" ) 
+    			if(typeof params.isFollowed != "undefined" )
     				isFollowed=true;
+          mylog.log("isFollowed", params.isFollowed, isFollowed);
     			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
     			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
     			' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
@@ -975,7 +976,7 @@ var directory = {
             
             str += thisLocality;
             
-            str += "<div class='entityDescription'>" + params.description + "</div>";
+            str += "<div class='entityDescription'>" + ( (params.shortDescription == null ) ? "" : params.shortDescription ) + "</div>";
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
             /*
               if(params.startDate != null)
@@ -1007,7 +1008,7 @@ var directory = {
         params.tags.push(interop_type);
 
       str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
+      str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
       if(params.itemType!="city" && (params.useMinSize))
@@ -1532,7 +1533,7 @@ var directory = {
         if(directory.dirLog) mylog.log("-----------cityPanelHtml");
         mylog.log("-----------cityPanelHtml", params);
         str = "";  
-        str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+        str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 margin-bottom-10 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
         str +=    "<div class='searchEntity'>";
 
                 if(params.updated != null)
@@ -1595,13 +1596,21 @@ var directory = {
                   valuesScopes.level2Name = params.level2Name ;
                 }
 
+                if( notEmpty( params.cities ) ){
+                  valuesScopes.cities = params.cities ;
+                }
+
+                if( notEmpty( params.postalCodes ) ){
+                  valuesScopes.postalCodes = params.postalCodes ;
+                }
+
                 str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
                                 "data-scope-value='" + params.id  + "' " + 
                                 "data-scope-name='" + params.name + "' " +
                                 "data-scope-level='city' " +
                                 "data-scope-type='city' " +
                                 "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-                                "data-scope-notsearch='"+true+"' " +
+                                "data-scope-search='"+false+"' " +
                                 ">"+
                                     "<i class='fa fa-angle-right'></i> " + trad.testAOtherCommunexion + 
                                 "</button>";
@@ -1768,7 +1777,7 @@ var directory = {
       //else if(params.type == "actions") params.hash = "#rooms.action.id."+params.id;
    
       str = "";  
-      str += "<div class='col-xs-12 col-sm-6 col-md-6 col-lg-4 searchEntityContainer "+itemType+" "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-xs-12 col-sm-8 col-md-6 col-lg-4 searchEntityContainer "+itemType+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
       str += "<a href='"+params.hash+"' class='container-img-profil add2fav'>" + params.imgProfil + "</a>";
@@ -2029,7 +2038,7 @@ var directory = {
                     if(typeof value != "undefined" && value != "" && value != "undefined"){
                       var tagTrad = typeof tradCategory[value] != "undefined" ? tradCategory[value] : value;
                       thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value, true)+"' data-tag-label='"+tagTrad+"'>#" + tagTrad + "</span> ";
-                      console.log("sluggify", value, slugify(value, true));
+                      // mylog.log("sluggify", value, slugify(value, true));
                       params.elTagsList += slugify(value, true)+" ";
                     }
                   });
@@ -2264,7 +2273,7 @@ var directory = {
         $.each( $(directory.elemClass),function(k,o){
             $.each($(o).find(".btn-tag"),function(i,oT){
                 var realTag = $(oT).data('tag-label');
-                console.log("realTag", realTag);
+                // mylog.log("realTag", realTag);
 
                 var oTag = $(oT).data('tag-value').toLowerCase();
                 if( notEmpty( oTag ) && !inArray( oTag,directory.tagsT ) ){

@@ -403,6 +403,8 @@ var trad = {
 	"youwillfindonlycities" : "<?php echo Yii::t("docs","You will find only cities <b>which match data</b>.<br/> If you <b>don't find</b> a city, feel free <b>to create an organization, a project, an event, on this geographical zone...</b><br/><br/><b>Then you will find this result here</b>") ?>",
 	"testAOtherCommunexion" : "<?php echo Yii::t("home", "Test a other communexion") ?>",
 	"allcitieswiththispostalcode" : "<?php echo Yii::t("common", "All cities with this postal code") ?>",
+	"thecommunexionhaschanged" : "<?php echo Yii::t("common", "The communexion has changed") ?>",
+	"allthecity" : "<?php echo Yii::t("common", "All the city") ?>",
 
 };
 
@@ -516,6 +518,7 @@ var tradDynForm = {
 	"linkGplus":"<?php echo Yii::t("form","Link to Google Plus") ?>",
 	"linkFacebook":"<?php echo Yii::t("form","Link to Facebook") ?>",
 	"linkTwitter":"<?php echo Yii::t("form","Link to Twitter") ?>",
+	"linkInstagram":"<?php echo Yii::t("form","Link to Instagram") ?>",
 	"mobile":"<?php echo Yii::t("form","Mobile") ?>",
 	"fax":"<?php echo Yii::t("form","Fax") ?>",
 	"fix":"<?php echo Yii::t("form","Fix") ?>",

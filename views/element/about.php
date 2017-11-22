@@ -483,61 +483,75 @@
 		</div>
 		<div class="panel-body no-padding">
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Facebook">
-				<span><i class="fa fa-facebook"></i></span> 
-				<?php if ($facebook != "javascript:;"){ ?>
-					<a href="<?php echo $facebook ; ?>" target="_blank" id="facebookAbout" class="socialIcon "><?php echo  $facebook ; ?></a>
-				<?php } else { 
-					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
-				} ?>
+				<span><i class="fa fa-facebook"></i></span>
+				<span id="divFacebook">
+					<?php if ($facebook != "javascript:;"){ ?>
+						<a href="<?php echo $facebook ; ?>" target="_blank" id="facebookAbout" class="socialIcon "><?php echo  $facebook ; ?></a>
+					<?php } else { 
+						echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+					} ?>
+				</span>
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Twitter">
-				<span><i class="fa fa-twitter"></i></span> 
-				<?php if ($twitter != "javascript:;"){ ?>
-					<a href="<?php echo $twitter ; ?>" target="_blank" id="twitterAbout" class="socialIcon" ><?php echo $twitter ; ?></a>
-				<?php } else { 
-					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
-				} ?>
+				<span><i class="fa fa-twitter"></i></span>
+				<span id="divTwitter">
+					<?php if ($twitter != "javascript:;"){ ?>
+						<a href="<?php echo $twitter ; ?>" target="_blank" id="twitterAbout" class="socialIcon" ><?php echo $twitter ; ?></a>
+					<?php } else { 
+						echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+					} ?>
+				</span>
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Instagram">
 				<span><i class="fa fa-instagram"></i></span> 
-				<?php if ($instagram != "javascript:;"){ ?>
-					<a href="<?php echo $instagram ; ?>" target="_blank" id="instagramAbout" class="socialIcon" ><?php echo $instagram ; ?></a>
-				<?php } else { 
-					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
-				} ?>
+				<span id="divInstagram">
+					<?php if ($instagram != "javascript:;"){ ?>
+						<a href="<?php echo $instagram ; ?>" target="_blank" id="instagramAbout" class="socialIcon" ><?php echo $instagram ; ?></a>
+					<?php } else { 
+						echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+					} ?>
+				</span>
 			</div>
-			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Skype" >
-				<span><i class="fa fa-skype"></i></span> 
-				<?php if ($skype != "javascript:;"){ ?>
-					<a href="<?php echo $skype ; ?>" target="_blank" id="skypeAbout" class="socialIcon" ><?php echo $skype ; ?></a>
-				<?php } else { 
-					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
-				} ?>
+			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Skype">
+				<span><i class="fa fa-skype"></i></span>
+				<span id="divSkype">
+					<?php if ($skype != "javascript:;"){ ?>
+						<a href="<?php echo $skype ; ?>" target="_blank" id="skypeAbout" class="socialIcon" ><?php echo $skype ; ?></a>
+					<?php } else { 
+						echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+					} ?>
+				</span>
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Google Plus">
-				<span><i class="fa fa-google-plus"></i></span> 
-				<?php if ($googleplus != "javascript:;"){ ?>
-					<a href="<?php echo $googleplus ; ?>" target="_blank" id="gpplusAbout" class="socialIcon" ><?php echo $googleplus ; ?></a>
-				<?php } else { 
-					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
-				} ?>
+				<span><i class="fa fa-google-plus"></i></span>
+				<span id="divGpplus">
+					<?php if ($googleplus != "javascript:;"){ ?>
+						<a href="<?php echo $googleplus ; ?>" target="_blank" id="gpplusAbout" class="socialIcon" ><?php echo $googleplus ; ?></a>
+					<?php } else { 
+						echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+					} ?>
+				</span>
 			</div>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="GitHub">
-				<span><i class="fa fa-github"></i></span> 
-				<?php if ($github != "javascript:;"){ ?>
-					<a href="<?php echo $github ; ?>" target="_blank" id="githubAbout" class="socialIcon" ><?php echo $github  ; ?></a>
-				<?php } else { 
-					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
-				} ?>
+				<span><i class="fa fa-github"></i></span>
+				<span id="divGithub">
+					<?php if ($github != "javascript:;"){ ?>
+						<a href="<?php echo $github ; ?>" target="_blank" id="githubAbout" class="socialIcon" ><?php echo $github  ; ?></a>
+					<?php } else { 
+						echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+					} ?>
+				</span>
 			</div>
 			<?php if($type==Person::COLLECTION){ ?> 
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Telegram">
 				<span><i class="fa fa-telegram"></i></span> 
-				<?php if ($telegram != "javascript:;"){ ?>
-					<a href="<?php echo $telegram ; ?>" target="_blank" id="telegramAbout" class="socialIcon" ><?php echo $telegram ; ?></a>
-				<?php } else { 
-					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
-				} ?>
+				<span id="divTelegram">
+					<?php if ($telegram != "javascript:;"){ ?>
+						<a href="<?php echo $telegram ; ?>" target="_blank" id="telegramAbout" class="socialIcon" ><?php echo $telegram ; ?></a>
+					<?php } else { 
+						echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+					} ?>
+				</span>
 			</div>
 			<?php } ?>
 		</div>	

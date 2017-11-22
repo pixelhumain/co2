@@ -5,7 +5,7 @@
  */
 class CommunecterController extends Controller
 {
-  public $version = "v0.2.2.2";
+  public $version = "v0.2.2.22";
   public $versionDate = "29/07/2016 19:12";
   public $title = "Communectez";
   public $subTitle = "se connecter à sa commune";
@@ -467,6 +467,7 @@ class CommunecterController extends Controller
       "updatefield"         => array("href" => "/ph/co2/element/updatefield"),
       "updatefields"        => array("href" => "/ph/co2/element/updatefields"),
       "updateblock"         => array("href" => "/ph/co2/element/updateblock"),
+      "updatestatus"         => array("href" => "/ph/co2/element/updatestatus"),
       "detail"              => array("href" => "/ph/co2/element/detail", "public" => true),
       "getalllinks"         => array("href" => "/ph/co2/element/getalllinks"),
       "geturls"             => array("href" => "/ph/co2/element/geturls"),

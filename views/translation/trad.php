@@ -404,6 +404,7 @@ var trad = {
 	"testAOtherCommunexion" : "<?php echo Yii::t("home", "Test a other communexion") ?>",
 	"allcitieswiththispostalcode" : "<?php echo Yii::t("common", "All cities with this postal code") ?>",
 	"thecommunexionhaschanged" : "<?php echo Yii::t("common", "The communexion has changed") ?>",
+	"allthecity" : "<?php echo Yii::t("common", "All the city") ?>",
 
 };
 

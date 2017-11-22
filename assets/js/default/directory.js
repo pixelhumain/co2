@@ -1596,13 +1596,21 @@ var directory = {
                   valuesScopes.level2Name = params.level2Name ;
                 }
 
+                if( notEmpty( params.cities ) ){
+                  valuesScopes.cities = params.cities ;
+                }
+
+                if( notEmpty( params.postalCodes ) ){
+                  valuesScopes.postalCodes = params.postalCodes ;
+                }
+
                 str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
                                 "data-scope-value='" + params.id  + "' " + 
                                 "data-scope-name='" + params.name + "' " +
                                 "data-scope-level='city' " +
                                 "data-scope-type='city' " +
                                 "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-                                "data-scope-notsearch='"+true+"' " +
+                                "data-scope-search='"+false+"' " +
                                 ">"+
                                     "<i class='fa fa-angle-right'></i> " + trad.testAOtherCommunexion + 
                                 "</button>";
@@ -2030,7 +2038,7 @@ var directory = {
                     if(typeof value != "undefined" && value != "" && value != "undefined"){
                       var tagTrad = typeof tradCategory[value] != "undefined" ? tradCategory[value] : value;
                       thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value, true)+"' data-tag-label='"+tagTrad+"'>#" + tagTrad + "</span> ";
-                      console.log("sluggify", value, slugify(value, true));
+                      // mylog.log("sluggify", value, slugify(value, true));
                       params.elTagsList += slugify(value, true)+" ";
                     }
                   });
@@ -2265,7 +2273,7 @@ var directory = {
         $.each( $(directory.elemClass),function(k,o){
             $.each($(o).find(".btn-tag"),function(i,oT){
                 var realTag = $(oT).data('tag-label');
-                console.log("realTag", realTag);
+                // mylog.log("realTag", realTag);
 
                 var oTag = $(oT).data('tag-value').toLowerCase();
                 if( notEmpty( oTag ) && !inArray( oTag,directory.tagsT ) ){

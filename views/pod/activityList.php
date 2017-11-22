@@ -35,7 +35,7 @@ $arrayLabel=array(
 	"state" => Yii::t("common", "state"),
 	"organizer" => Yii::t("common", "organizer"),
 	"contacts" => Yii::t("common", "un contact"),
-	"descriptionHTML" => Yii::t("common", "the descripton"),
+	//"descriptionHTML" => Yii::t("common", "the descripton"),
 	"parent" => Yii::t("common", "the holder"),
 );
 if ($contextType == Organization::COLLECTION)
@@ -56,7 +56,7 @@ $countries= OpenData::getCountriesList();
 				</div>
 	<?php } else{
 			foreach($activities as $key => $value){ 
-				if(@$value["object"]["displayName"] && $value["object"]["displayName"] != "descriptionHTML"){
+				if(@$value["object"]["displayName"] && @$arrayLabel[$value["object"]["displayName"]]){
 					if($value["verb"]==ActStr::VERB_UPDATE)
 						$action = Yii::t("common", "has updated");
 					else if($value["verb"]==ActStr::VERB_ADD )

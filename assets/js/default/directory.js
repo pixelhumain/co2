@@ -1112,7 +1112,8 @@ var directory = {
     previewedObj : null,
     preview : function(params,hash){
 
-      //mylog.log("----------- preview",params,params.name, hash);
+      mylog.log("----------- preview",params,params.name, hash);
+      mylog.log("----------- preview id : ",params.id);
       directory.previewedObj = {
           hash : hash,
           params : params
@@ -1211,6 +1212,7 @@ var directory = {
 
         str += "</div>";
 
+        //alert(params.id);
         getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/"+params.type+"/tpl/json" , function( data ) { 
           var c = 1;
           $.each(data.list,function(k,v) { 

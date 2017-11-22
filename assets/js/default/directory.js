@@ -1151,12 +1151,17 @@ var directory = {
           
           str += "<h4 class='text-azure'>"+price+"</h4>";
 
+
           if(typeof params.category != "undefined"){
               str += "<div class='entityType text-dark'><span class='bold uppercase'>" + params.section + "</span> > "+params.category;
                 if(typeof params.subtype != "undefined") str += " > " + params.subtype;
               str += "</div><hr>";
             }
-
+          if(typeof params.typePoi != "undefined"){
+              str += "<div class='entityType text-dark'><span class='bold uppercase'>" + trad[params.type] + "</span> > "+trad[params.typePoi];
+                
+              str += "</div><hr>";
+            }
          //if(typeof hash != "undefined"){
             var nav = directory.findNextPrev(hash);
             if(typeof params.name != "undefined" && params.name != "")

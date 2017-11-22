@@ -1472,7 +1472,18 @@ La vie en santé;Santé;;
 
 
 	public function actionPdf(){
-		$tpl = $this->renderPartial('application.views.pdf.test', array(), true);
+
+		$order = Order::getById("5a1537116ff9926e12b34733");
+
+		$person = Person::getById($order["customerId"]);
+
+
+		$tpl = $this->renderPartial('application.views.pdf.factureTerla', 
+				array(	"img1" => "http://127.0.0.1".Yii::app()->theme->baseUrl."/assets/img/LOGOS/terla/logo-min.png",
+						"order" => $order,
+						"person" => $person), true);
 		Pdf::createPdf($tpl);
+
+		echo $tpl;
 	}
 }

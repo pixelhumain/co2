@@ -240,6 +240,7 @@ Liste des notifications déjà lues => #370 #453
     Proposition Orienté / Duel 
       exemple de vote: PPT terminé validé ou a retoucher 
       pouvoir changer les libélé pour contre 
+  ** add location into POI list by default 
 * ************************************************************    
 * Version C0.22  : en cours
 * ************************************************************  

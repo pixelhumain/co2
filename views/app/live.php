@@ -73,6 +73,20 @@
 	#btn-my-co{
 		margin-top: 15px;
 	}
+
+    #newsstream{
+        min-height:500px;
+    }
+
+    #newsstream .loader,
+    #noMoreNews{
+       border-radius: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        display: table;
+        padding: 15px;
+        margin-top: 15px;
+    }
 </style>
 <div class="row padding-10 bg-white">
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
@@ -195,7 +209,8 @@ jQuery(document).ready(function() {
          }
     });
 
-    $("#main-btn-start-search, #main-search-bar-addon").click(function(){
+    $("#main-btn-start-search, #main-search-bar-addon, "+
+      ".subModuleTitle .btn-refresh, .menu-btn-start-search").click(function(){
         startNewsSearch(true);
     });
 

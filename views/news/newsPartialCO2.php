@@ -88,7 +88,8 @@ foreach($news as $key => $media){
          <?php if( @$media["reportAbuseCount"] >= 3){ ?>
          <h6>
             <small class="pull-left margin-left-10 letter-red">
-              <i class="fa fa-flag"></i> Ce contenu a été signalé <?php echo @$media["reportAbuseCount"]; ?> fois !
+              <i class="fa fa-flag"></i> Ce contenu a été signalé <?php echo @$media["reportAbuseCount"]; ?> fois !<br>
+              <b>participez à la modération en signalant le contenu<br>qui vous semble innaproprié</b>
             </small>
          </h6>
          <?php } ?>
@@ -117,12 +118,12 @@ foreach($news as $key => $media){
 <?php } ?>
 
 <?php if(@$isFirst == true && sizeof($news)==0){ ?>
-    <li id='noMoreNews' class='text-left padding-15'>
+    <li id='noMoreNews' class='text-left padding-15 letter-blue shadow2'>
       <i class='fa fa-ban'></i>
       <?php echo Yii::t("common", "No news in this timeline") ?>
     </li>
 <?php }else if(sizeof($news)==0 && @$actionController != "save"){
-    echo "<li id='noMoreNews' class='text-left'><i class='fa fa-ban'></i> ".Yii::t("common", "No more news")."</li>";
+    echo "<li id='noMoreNews' class='text-left letter-blue shadow2'><i class='fa fa-ban'></i> ".Yii::t("common", "No more news")."</li>";
 } ?>
 <script type="text/javascript">
   var news=<?php echo json_encode($news) ?>;

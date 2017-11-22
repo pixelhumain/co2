@@ -586,7 +586,8 @@
 			$classDescH="hidden"; 
 			$classBtnDescH="<i class='fa fa-angle-down'></i> ".Yii::t("common","show description"); 
 				
-			if(Yii::app()->params["CO2DomainName"] == "kgougle") $classDescH = "";
+			if(!isset($linksBtn["isFollowing"]) && !isset($linksBtn["isAdmin"]) )
+				$classDescH = "";
 
 			if($typeItem != Person::COLLECTION){ 
 		?>

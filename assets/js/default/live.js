@@ -200,17 +200,16 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
     //var myParent = <?php echo json_encode(@$parent)?>;
     //dataNewsSearch.parent = { }
 
-  var loading = "<div class='loader text-dark text-center'>"+
-		"<span style='font-size:25px;'>"+
-			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
-			"<span class='text-dark'>"+trad.currentlyloading+" ...</span>" + 
-		"</div>";
+  var loading = "<div class='loader bold letter-blue shadow2 text-center'>"+
+					"<i class='fa fa-spin fa-circle-o-notch'></i> "+
+					"<span>"+trad.currentlyloading+" ...</span>" + 
+				"</div>";
 
 	//loading = "";
 
 	if(isFirst){ //render HTML for 1st load
 		//if($("#newsstream .loader").length<0){
-		//	$("#newsstream").html(loading);
+			$("#newsstream").html(loading);
 		//}
 		ajaxPost("#newsstream",baseUrl+"/"+moduleId+urlCtrl+"/date/0"+isFirstParam,dataSearch, function(news){
 			//showTagsScopesMin(".list_tags_scopes");

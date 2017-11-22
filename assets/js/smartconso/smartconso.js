@@ -25,6 +25,13 @@ var chartValues = {
 	}
 };
 
+
+var chartColor = {  "green" : "#34a853",
+                    "red" : "#ea4335",
+                    "purple" : "#976BB6",
+                    "blue" : "#4285f4",
+                 };
+                 
 function smartChartInit(idCanvas, datas, chartType){ //alert("start loadchart");
 		var voteValues = new Array();
 		console.log("smart datas chart", datas);

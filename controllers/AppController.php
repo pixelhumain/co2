@@ -253,7 +253,7 @@ class AppController extends CommunecterController {
         echo $this->renderPartial("info/" . $CO2DomainName . "/" . $page, array(), true);
     }
 
-    public function actionSmartconso($p){ error_log("ecoconso");
+    public function actionSmartconso($p="home"){ //error_log("ecoconso");
         $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? 
                                Yii::app()->params["CO2DomainName"] : "CO2";
 

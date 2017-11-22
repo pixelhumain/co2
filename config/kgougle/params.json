@@ -66,7 +66,7 @@
                   "hash":"#app.live",
                   "icon" : "stack-exchange", 
                   "mainTitle" : "Fil de discussion <span class='letter-red'>citoyen</span>",
-                  "placeholderMainSearch" : "search in live ..."
+                  "placeholderMainSearch" : "Rechercher dans le fil de discussion ..."
             },
 
             "#social":
@@ -158,7 +158,7 @@
                   "open" : true, 
                   "subdomain" : "smartconso", 
                   "subdomainName" : "smartconso",
-                  "hash":"#app.smartconso.p.home",
+                  "hash":"#app.smartconso",
                   "icon" : "recycle", 
                   "mainTitle" : "Consommons mieux en Nouvelle-Calédonie",
                   "placeholderMainSearch" : "rechercher ..."

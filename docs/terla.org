@@ -1,0 +1,22 @@
+Existed Functionnality:
+[X] create travellers account
+[] Become professional 
+	[X] add label for citoyens
+	[X] alert admin
+	[ ] Admin moderation
+	[ ] link organization with juridical infos
+[ ] Add services & products
+	[X] Form and openingHours
+	[X] Add label to be validated 
+	[ ] Admin validation 
+[X] Shopping cart - Create your personal circuits
+[X] Backups - Save you current cart
+[X] Visualiser les items
+[X] Evaluer les prestations que j'ai acheté
+[X] Dashbord product
+	[X] GuestBook
+	[ ] Visualiser les réservations
+
+Roadmap:
+
+Bugs:

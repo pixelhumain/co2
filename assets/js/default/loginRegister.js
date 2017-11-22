@@ -114,7 +114,8 @@ var Login = function() {
 				$(".loginBtn").find(".fa").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
 				var params = { 
 				   "email" : $("#email-login").val(), 
-                   "pwd" : $("#password-login").val() 
+                   "pwd" : $("#password-login").val() ,
+                   "remember" : $("#formLogin #remember").prop("checked") 
                 };
 			      
 		    	$.ajax({

@@ -1673,10 +1673,8 @@ var directory = {
                                 "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
                                 "data-scope-notsearch='"+true+"' " +
                                 ">"+
-                                    "<i class='fa fa-angle-right'></i> Communecter" + 
+                                    "<i class='fa fa-angle-right'></i> " + trad.testAOtherCommunexion + 
                                 "</button>";
-                
-
                 str += "</div>";                
               str += "</div>";
               return str;
@@ -2549,7 +2547,7 @@ var directory = {
     var timezone = directory.get_time_zone_offset();
     
 
-     getDateFormated: function(params, onlyStr){
+     //getDateFormated: function(params, onlyStr){
     
         params.startDateDB = notEmpty(params.startDate) ? params.startDate : null;
         params.startDay = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD") : "";

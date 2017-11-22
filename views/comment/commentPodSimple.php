@@ -327,7 +327,7 @@
 	          		textComment = mentionsInit.addMentionInText(textComment,comments[idParent].replies[idComment].mentions);
 	        	}
 			}else{*/
-				if(typeof(comments[idComment].mentions) != "undefined"){
+				if(typeof(comments[idComment]) !="undefined" && typeof(comments[idComment].mentions) != "undefined"){
 	          		textComment = mentionsInit.addMentionInText(textComment,comments[idComment].mentions);
 	        	}
 	        //}

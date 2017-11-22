@@ -121,12 +121,25 @@
 					<hr class='col-md-12'>
 					<select class='form-group col-xs-12' name='newElement_country' id='newElement_country'>
 						<?php
-							echo "<option value=''>".Yii::t("common", "Choose a country")."</option>";
+							/*echo "<option value=''>".Yii::t("common", "Choose a country")."</option>";
 							// $asort = OpenData::$phCountries;
        //  					asort($asort);
         					$asort = Zone::getListCountry();
 							foreach ( $asort as $key => $value) {
 								echo "<option value='".$value["countryCode"]."'>".$value["name"]."</option>";
+							}*/
+						?>
+						<?php
+							echo "<option value=''>".Yii::t("common", "Choose a country")."</option>";
+							// $asort = OpenData::$phCountries;
+       						// asort($asort);
+        					$asort = array(array("countryCode"=>"NC",
+        										 "name"=>"Nouvelle-Calédonie")); 
+        					//Zone::getListCountry();
+        
+							foreach ( $asort as $key => $value) {
+								echo "<option value='".$value["countryCode"]."'>".$value["name"]."</option>";
+								error_log($value["countryCode"]." - ".$value["name"]);
 							}
 						?>
 					</select>

@@ -58,9 +58,7 @@ jQuery(document).ready(function() {
 	hideScrollTop = true;
 	checkScroll();
 	var timeoutSearch = setTimeout(function(){ }, 100);
-
 	setTimeout(function(){ $("#input-communexion").hide(300); }, 300);
-	
 	mylog.log("indexStepInit", indexStepInit);
 	startSearchSimply(0, indexStepInit);
 });
@@ -92,10 +90,8 @@ function initVar(){
 					'<i class="fa fa-chevron-left"></i></button>'+
 				'</div>';
 	$("#btn-back").parent().replaceWith(btnSearch);
-
 	$("#mapLegende").addClass("hidden");
 }
-
 
 function addTooltips(){
 	mylog.log("addTooltips");
@@ -109,7 +105,6 @@ function addTooltips(){
 		});
 	}
 }
-
 
 function bindNetwork(){
 	mylog.log("bindNetwork");
@@ -140,7 +135,6 @@ function bindNetwork(){
 		chargement();
 	});
 
-
 	$("#btn-search").click(function(){
 		mylog.log("#btn-search", $("#right_tool_map").is(":visible"));
 		if(!$("#right_tool_map").is(":visible")){
@@ -168,9 +162,6 @@ function bindNetwork(){
 		}
 	});
 
-
-	
-	
 	$(".showHideMoreTitleMap").click(function(){
 		mylog.log(".showHideMoreTitleMap");
 		if($(this).find("i").hasClass("fa-angle-down")){
@@ -187,66 +178,12 @@ function bindNetwork(){
 		
 	});
 
-
 	if( typeof networkJson.mode == "undefined" || networkJson.mode != "client"){ 
 		$('#searchBarText').keyup(function(e){
 			clearTimeout(timeoutSearch);
 			timeoutSearch = setTimeout(function(){ startSearchSimply(0, indexStepInit); }, 800);
 		});
-	} 
-	
-	/***** CHANGE THE VIEW PARAMS  *****/
-	// $('#dropdown_params').show();
-	
-	// $('#dropdown_paramsBtn').click(function(event){
-	// 	mylog.log("#dropdown_paramsBtn");
-	// 	event.preventDefault();
-	// 	if($('#dropdown_paramsBtn').hasClass('active')){
-	// 		$('#dropdown_params').fadeOut();
-	// 		$('#dropdown_params').removeClass('col-md-3');
-	// 		$('#dropdown_search').removeClass('col-md-9');
-	// 		$('#dropdown_search').addClass('col-md-12');
-	// 		$('#dropdown_paramsBtn').removeClass('active');
-	// 	}
-	// 	else{
-	// 		$('#dropdown_params').addClass('col-md-3');
-	// 		$('#dropdown_params').fadeIn();
-	// 		$('#dropdown_search').addClass('col-md-9');
-	// 		$('#dropdown_search').removeClass('col-md-12');
-	// 		$('#dropdown_paramsBtn').addClass('active');
-	// 	}
-	// });
-
-	/***** CHANGE THE VIEW GRID OR LIST *****/
-	// $('#grid').hide();
-	// $('#list').click(function(event){
-	// 	mylog.log("#list");
-	// 	event.preventDefault();
-	// 	$('#dropdown_search .item').addClass('list-group-item');
-	// 	$('.entityTop').removeClass('row');
-	// 	$('.entityMiddle').removeClass('row');
-	// 	$('.entityBottom').removeClass('row');
-	// 	$('.entityTop').addClass('col-md-2');
-	// 	$('.entityMiddle').addClass('col-md-12');
-	// 	$('.entityBottom').addClass('col-md-4');
-	// 	$('#grid').show();
-	// 	$('#list').hide();
-	// });
-
-	// $('#grid').click(function(event){
-	// 	mylog.log("#grid");
-	// 	event.preventDefault();
-	// 	$('#dropdown_search .item').removeClass('list-group-item');
-	// 	$('#dropdown_search .item').addClass('grid-group-item');
-	// 	$('.entityTop').addClass('row');
-	// 	$('.entityMiddle').addClass('row');
-	// 	$('.entityBottom').addClass('row');
-	// 	$('.entityTop').removeClass('col-md-2');
-	// 	$('.entityMiddle').removeClass('col-md-12');
-	// 	$('.entityBottom').removeClass('col-md-4');
-	// 	$('#list').show();
-	// 	$('#grid').hide();
-	// });
+	}
 }
 
 function showMapNetwork(show){
@@ -261,15 +198,12 @@ function showMapNetwork(show){
 	if(show){
 		isMapEnd =true;
 		showNotif(false);
-
 		$("#mapLegende").html("");
 		$("#mapLegende").hide();
-
 		showMenuNetwork(true);
 		if(Sig.currentMarkerPopupOpen != null){
 			Sig.currentMarkerPopupOpen.fire('click');
 		}
-
 		$(".btn-group-map").show( 700 );
 		$(".main-bottom-menu").show( 700 );
 		$(".btn-menu5, .btn-menu-add").hide();
@@ -290,7 +224,6 @@ function showMapNetwork(show){
 		hideMapLegende();
 		$(".btn-group-map").hide( 700 );
 		$(".main-bottom-menu").hide( 700 );
-		//$("#dropdown_params").show( 700 );
 		showMenuNetwork(false);
 		$(".btn-menu5, .btn-menu-add").show();
 		$(".panel_map").hide(1);
@@ -460,156 +393,161 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 			message : "<div class='col-xs-12 text-center'><div class='col-md-offset-2 col-md-8 bg-white'><h1 class='homestead text-red'><span class='text-dark'>Welcome on</span><br/><span>"+networkJson.skin.title+"</span><br/></h1><i class='fa fa-spin fa-circle-o-notch'></i><span class='text-dark'> Initialization of map</span></div></div>",
 		});
 	}
+
+
+	if( notNull(networkJson.dataSrc) ) {
+		mylog.log("networkJson.dataSrc");
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"/" + moduleId + "/element/getdatabyurl",
+			data: { url : networkJson.dataSrc , json : false},
+			dataType: "json",
+			error: function (data){
+				mylog.log("error");
+				mylog.dir(data);
+			},
+			success: function (data) { 
+				mylog.log("data", data);
+				dataSuccess(data, indexMin, indexMax); 
+			}
+		});
+	} else {
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"/" + moduleId + "/search/simplyautocomplete",
+			data: data,
+			dataType: "json",
+			error: function (data){
+				mylog.log("error");
+				mylog.dir(data);
+			},
+			success: function(data){
+				dataSuccess(data, indexMin, indexMax); 
+			}
+		});
+	}
+}
+
+function dataSuccess(data, indexMin, indexMax){
+	mylog.log("dataSuccess", data, !data.res, indexMin, indexMax);
+	if(!data.res) {
+		toastr.error(data.content); 
+	} else {
+		if(data.res.length){
+			var countData = 0;
+			$.each(data.res, function(i, v) { if(v.length!=0){ countData++; } });
+
+			if(typeof networkJson.request.oneElement != "undefined" && networkJson.request.oneElement == true){
+				filterTags(data.filters.tags);
+				filterType(data.filters.types);
+				$("#divRolesMenu").removeClass("hidden");
+			} else {
+				$("#divRolesMenu").addClass("hidden");
+			}
+			
+			bindAutocomplete();
+			str = "";
+			var city, postalCode = "";
+			var mapElements = new Array();
+			var htmlCO2 = "";
+			htmlCO2 = directory.showResultsDirectoryHtml(data.res);
+			//parcours la liste des résultats de la recherche
+			countResult=Object.keys(data.res).length;
+			mylog.log("data.res ", data.res);
+			$.each(data.res, function(i, o) {
+				mylog.log("Search ", o);
+				mylog.log("Tags element", o.tags);
+				mapElements.push(o);
+				contextMapNetwork.push(o);
+			}); //end each
 		
-	$.ajax({
-		type: "POST",
-		url: baseUrl+"/" + moduleId + "/search/simplyautocomplete",
-		data: data,
-		dataType: "json",
-		error: function (data){
-			console.log("error");
-			console.dir(data);
-		},
-		success: function(data){
-			mylog.log("!data.res", !data.res);
-			if(!data.res){toastr.error(data.content); }
-			else
-			{
-				if(data.res.length){
-					var countData = 0;
-					$.each(data.res, function(i, v) { if(v.length!=0){ countData++; } });
-
-					//totalData += countData;
-					if(typeof networkJson.request.oneElement != "undefined" && networkJson.request.oneElement == true){
-						filterTags(data.filters.tags);
-						filterType(data.filters.types);
-						$("#divRolesMenu").removeClass("hidden");
-					}else{
-  						$("#divRolesMenu").addClass("hidden");
-  					}
-					
-					bindAutocomplete();
-					str = "";
-					var city, postalCode = "";
-					var mapElements = new Array();
-					//allTags = data.filters;
-					var htmlCO2 = "";
-					htmlCO2 = directory.showResultsDirectoryHtml(data.res);
-					//parcours la liste des résultats de la recherche
-					countResult=Object.keys(data.res).length;
-					$.each(data.res, function(i, o) {
-						mylog.log("Search ", o);
-						mylog.log("Tags element", o.tags);
-						mapElements.push(o);
-						contextMapNetwork.push(o);
-					}); //end each
-				
-					if(str == "") {
-						$(".btn-start-search").html("<i class='fa fa-search'></i>");
-						if(indexMin == 0){
-							//ajout du footer
-							var msg = trad.noresult;
-							if(name == "" && locality == "") 
-								msg = "<h3 class='text-dark'><i class='fa fa-3x fa-keyboard-o'></i><br> Préciser votre recherche pour plus de résultats ...</h3>";
-							str += '<div class="center" id="footerDropdown">';
-							str += "<hr style='float:left; width:100%;'/><label style='margin-bottom:10px; margin-left:15px;' class='text-white'>"+msg+"</label><br/>";
-							str += "</div>";
-							$("#dropdown_search").html(str);
-							$("#searchBarText").focus();
-						}
-					}
-					else {
-						//ajout du footer
-
-						str += '</div><div class="center col-md-12" id="footerDropdown">';
-						str += "<hr style='float:left; width:100%;'/><label id='countResult' class='text-white'></label><br/>";
-						
-						if( typeof networkJson.mode != "undefined" && networkJson.mode != "client" ){
-							str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
-							str += "</div>";
-						}
-
-						//si on n'est pas sur une première recherche (chargement de la suite des résultat)
-						if(indexMin > 0){
-							//on supprime l'ancien bouton "afficher plus de résultat"
-							$("#btnShowMoreResult").remove();
-							//on supprimer le footer (avec nb résultats)
-							$("#footerDropdown").remove();
-							//on calcul la valeur du nouveau scrollTop
-							var heightContainer = $(".my-main-container")[0].scrollHeight - 180;
-							//on affiche le résultat à l'écran
-							$("#dropdown_search").append(str);
-						//si on est sur une première recherche
-						}else{
-							//on affiche le résultat à l'écran
-							$("#dropdown_search").html(str);
-							//on scroll pour coller le haut de l'arbre au menuTop
-							// $(".my-main-container").scrollTop(95);
-						}
-
-						$("#dropdown_search").html(htmlCO2);
-						refreshResultHeader(countResult);
-
-						//On met à jour les filtres
-						// if( typeof networkJson.mode != "undefined" && networkJson.mode == "client" ){
-						// 	loadClientFilters(allTypes, allTags);
-						// } else{ 
-						// 	loadFilters(allTypes, allTags);
-						// }
-						loadFilters();
-						initBtnLink();
-						//on affiche par liste par défaut
-						$('#list').click();
-						//remet l'icon "loupe" du bouton search
-						$(".btn-start-search").html("<i class='fa fa-search'></i>");
-
-						//active le chargement de la suite des résultat au survol du bouton "afficher plus de résultats"
-						//(au cas où le scroll n'ait pas lancé le chargement comme prévu)
-						$("#btnShowMoreResult").mouseenter(function(){
-							if(!loadingData){
-								startSearchSimply(indexMin+indexStep, indexMax+indexStep);
-								$("#btnShowMoreResult").mouseenter(function(){});
-							}
-						});
-
-						//initialise les boutons pour garder une entité dans Mon répertoire (boutons links)
-						// initBtnLink();
-					} //end else (str=="")
-
-					//signal que le chargement est terminé
-					mylog.log("test");
-					loadingData = false;
-
-					if( typeof networkJson.mode != "undefined" && networkJson.mode == "client" ){
-						loadClientFeatures();
-					} else{ 
-						loadServerFeatures();
-					}
-					//quand la recherche est terminé, on remet la couleur normal du bouton search
-					$(".btn-start-search").removeClass("bg-azure");
+			if(str == "") {
+				$(".btn-start-search").html("<i class='fa fa-search'></i>");
+				if(indexMin == 0){
+					//ajout du footer
+					var msg = trad.noresult;
+					if(name == "" && locality == "") 
+						msg = "<h3 class='text-dark'><i class='fa fa-3x fa-keyboard-o'></i><br> Préciser votre recherche pour plus de résultats ...</h3>";
+					str += '<div class="center" id="footerDropdown">';
+					str += "<hr style='float:left; width:100%;'/><label style='margin-bottom:10px; margin-left:15px;' class='text-white'>"+msg+"</label><br/>";
+					str += "</div>";
+					$("#dropdown_search").html(str);
+					$("#searchBarText").focus();
 				}
+			}
+			else {
+				//ajout du footer
+				str += '</div><div class="center col-md-12" id="footerDropdown">';
+				str += "<hr style='float:left; width:100%;'/><label id='countResult' class='text-white'></label><br/>";
 				
-			}
-			// console.log("scrollEnd ? ", scrollEnd, indexMax, countData , indexMin);
+				if( typeof networkJson.mode != "undefined" && networkJson.mode != "client" ){
+					str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
+					str += "</div>";
+				}
 
-			//si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
-			if(indexMax - countData > indexMin){
-				$("#btnShowMoreResult").remove();
-				scrollEnd = true;
-			}else{
-				scrollEnd = false;
-			}
-			//affiche les éléments sur la carte
-			Sig.restartMap();
-			Sig.showMapElements(Sig.map, mapElements);
-			//on affiche le nombre de résultat en bas
-			var s = "";
-			var length = ($( "div.searchEntity" ).length);
-			if(length > 1) s = "s";
-			$("#countResult").html(length+" résultat"+s);
-			$.unblockUI();
+				//si on n'est pas sur une première recherche (chargement de la suite des résultat)
+				if(indexMin > 0){
+					//on supprime l'ancien bouton "afficher plus de résultat"
+					$("#btnShowMoreResult").remove();
+					//on supprimer le footer (avec nb résultats)
+					$("#footerDropdown").remove();
+					//on calcul la valeur du nouveau scrollTop
+					var heightContainer = $(".my-main-container")[0].scrollHeight - 180;
+					//on affiche le résultat à l'écran
+					$("#dropdown_search").append(str);
+				//si on est sur une première recherche
+				}else{
+					//on affiche le résultat à l'écran
+					$("#dropdown_search").html(str);
+				}
+
+				$("#dropdown_search").html(htmlCO2);
+				refreshResultHeader(countResult);
+
+				//On met à jour les filtres
+				loadFilters();
+				initBtnLink();
+				//on affiche par liste par défaut
+				$('#list').click();
+				//remet l'icon "loupe" du bouton search
+				$(".btn-start-search").html("<i class='fa fa-search'></i>");
+
+				//active le chargement de la suite des résultat au survol du bouton "afficher plus de résultats"
+				//(au cas où le scroll n'ait pas lancé le chargement comme prévu)
+				$("#btnShowMoreResult").mouseenter(function(){
+					if(!loadingData){
+						startSearchSimply(indexMin+indexStep, indexMax+indexStep);
+						$("#btnShowMoreResult").mouseenter(function(){});
+					}
+				});
+			} //end else (str=="")
+
+			//signal que le chargement est terminé
+			mylog.log("test");
+			loadingData = false;
+			//quand la recherche est terminé, on remet la couleur normal du bouton search
+			$(".btn-start-search").removeClass("bg-azure");
 		}
-	});
+		
+	}
+	// console.log("scrollEnd ? ", scrollEnd, indexMax, countData , indexMin);
+
+	//si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
+	if(indexMax - countData > indexMin){
+		$("#btnShowMoreResult").remove();
+		scrollEnd = true;
+	}else{
+		scrollEnd = false;
+	}
+	//affiche les éléments sur la carte
+	Sig.restartMap();
+	Sig.showMapElements(Sig.map, mapElements);
+	//on affiche le nombre de résultat en bas
+	var s = "";
+	var length = ($( "div.searchEntity" ).length);
+	if(length > 1) s = "s";
+	$("#countResult").html(length+" résultat"+s);
+	$.unblockUI();
 }
 
 function tagActivedUpdate(checked, tag, parent){
@@ -642,7 +580,6 @@ function refreshResultHeader(count){
 }
 function chargement(){
 	mylog.log("chargement");
-	//processingBlockUi();
 	$(".searchEntityContainer").hide(700);
 	refreshResultHeader("loading");
 	setTimeout(function(){ updateMap(); }, 1000);
@@ -650,16 +587,12 @@ function chargement(){
 
 function bindAutocomplete(){
 	$(".tagFilterAuto").off().click(function(e){
-		
 		mylog.log(".tagFilter",  $(this));
-		mylog.log($(this).is( ':checked' ), $(this).prop( 'checked' ), $(this).attr( 'checked' ));
 		var checked = $(this).is( ':checked' );
 		var val = $(this).attr("value");
 		tagActivedUpdate(checked, val, "tags");
 		chargement();
-		
 	});
-
 
 	$(".typeFilterAuto").off().click(function(e){ 
 		var checked = $(this).is( ':checked' );
@@ -678,9 +611,6 @@ function bindAutocomplete(){
 }
 
 
-function loadServerFeatures(){
-
-}
 
 function loadFilters(){
 	mylog.log("loadFilters");
@@ -692,15 +622,6 @@ function loadFilters(){
 	$('.villeFilter').prop("checked", false );
 	$('.tagFilter').prop("checked", false );
 	$('.categoryFilter').prop("checked", false );
-
-	//One by One Tag
-	/*$.each(nwVar.searchTag, function(index, value){
-		//Display
-		$('.tagFilter[value="'+value+'"]').prop("checked", true );
-		if($('.tagFilter[value="'+value+'"]').length)breadcum = breadcum+"<span class='label label-danger tagFilter' value='"+value+"'>"+$('.tagFilter[value="'+value+'"]').attr("data-label")+"</span> ";
-		//Open menu
-		manageCollapse(value,true);
-	});*/
 
 	$.each(nwVar.searchLocalityNAME, function(index, value){
 		//Display
@@ -728,7 +649,6 @@ function loadFilters(){
 			$(this).removeClass("active");
 		}
 
-		// var checked = $(this).is( ':checked' );
 		var filtre = $(this).data("filtre");
 		var parent = $(this).data("parent");
 		mylog.log("parent",parent);
@@ -827,7 +747,6 @@ function getAjaxFiche(url, breadcrumLevel){
 		pathIcon = "list";
 	}
 	allReadyLoad = true;
-	//location.hash = url;
 	urlHash=url;
 	pageView=false;
 	if(urlHash.indexOf("page") >= 0){
@@ -853,12 +772,10 @@ function getAjaxFiche(url, breadcrumLevel){
 					}
 				},"html");
 	}
-	else if( /*urlHash.indexOf("type") < 0 &&*/ 
-		urlHash.indexOf("default.view") < 0 && 
-		/*urlHash.indexOf("gallery") < 0 &&*/ 
-		urlHash.indexOf("news") < 0 &&
-		urlHash.indexOf("network") < 0 && 
-		urlHash.indexOf("invite") < 0){
+	else if( 	urlHash.indexOf("default.view") < 0 &&
+				urlHash.indexOf("news") < 0 &&
+				urlHash.indexOf("network") < 0 && 
+				urlHash.indexOf("invite") < 0 ){
 		pageView=true;
 		var urlSplit=urlHash.replace( "#","" ).split(".");
 		if(typeof urlSplit == "string")
@@ -871,20 +788,8 @@ function getAjaxFiche(url, breadcrumLevel){
   			dataType: "json",
   			success: function(data){
 		  		if(data.result){
-		  			//viewPage="";			  			
-		  			/*if(hashT.length > 1){
-		  				hashT.shift();
-		  				viewPage="/"+hashT.join("/");
-		  			}*/
 		  			var urlHash="#page.type."+data.contextType+".id."+data.contextId;
-		  			//showAjaxPanel('/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
-		  		}/*else{
-		  			if(urlSplit[0]=="person")
-						urlType="citoyens";
-					else
-						urlType=urlSplit[0]+"s";
-		  			var urlHash="#page.type."+urlType+".id."+urlSplit[3];
-		  		}*/
+		  		}
 		  		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
 				mylog.log("url", url);
 				$("#repertory").hide( 700 );
@@ -908,40 +813,7 @@ function getAjaxFiche(url, breadcrumLevel){
 				},"html");
 			}
 		});
-		//mylog.log(urlHash);
-		/*if(urlSplit[0]=="person")
-			urlType="citoyens";
-		else
-			urlType=urlSplit[0]+"s";	
-		urlHash="#element."+urlSplit[1]+".type."+urlType+".id."+urlSplit[3];*/
 	}
-	/*if(!pageView){
-		if(urlHash.indexOf("news") >= 0){
-			urlHash=urlHash+"&isFirst=1";
-		}
-		mylog.log("urlHash2", urlHash);
-		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
-		mylog.log("url", url);
-		$("#repertory").hide( 700 );
-		$(".main-menu-left").hide( 700 );
-		$("#ficheInfoDetail").show( 700 );
-		$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
-		
-		$.blockUI({
-			message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
-		});
-		mylog.log("networkParams", networkParams);
-		
-		getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
-			$.unblockUI();
-			mylog.log(contextData);
-			//Construct breadcrumb
-			if(breadcrumLevel != false){
-				$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
-				$("#breadcrum").append($html);
-			}
-		},"html");
-	}*/
 }
 
 
@@ -949,7 +821,6 @@ function reverseToRepertory(){
 	mylog.log("reverseToRepertory", isMapEnd);
 	if(isMapEnd)
 		showMapNetwork();
-
 	updateMap();
 	$("#ficheInfoDetail").hide( 700 );
 	$(".main-col-search").removeClass("col-md-12 col-sm-12").addClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3");
@@ -959,7 +830,6 @@ function reverseToRepertory(){
 	$html = '<a href="javascript:;" onclick="breadcrumGuide(0)" class="breadcrumAnchor text-dark" style="font-size:20px;">'+trad.list+'</a>';
 	$("#breadcrum").html($html);
 	history.replaceState(null, '', window.location.href.split('#')[0]);
-	
 }
 
 //if all tags exist returns true
@@ -969,8 +839,7 @@ function reverseToRepertory(){
 //console.log( and( ["atelier","commun"], [ "mobilité", "atelier", "commun", "tiers-lieux" ] ));
 //console.log( and( ["coco","atelier"], [ "mobilité", "atelier", "commun", "tiers-lieux" ] ));
 //console.log( and( ["coco","atelier",'commun'], [ "mobilité", "atelier", "commun", "tiers-lieux" ] ));
-function and(tags,tagList)
-{
+function and(tags,tagList) {
 	var res = true ;
 	$.each(tags,function(i,t){
 		reg = new RegExp("^"+t+"$","i");
@@ -989,8 +858,7 @@ console.log( or( ["atelier","coco"], [ "mobilité", "atelier", "commun", "tiers-
 console.log( or( ["atelier","commun"], [ "mobilité", "atelier", "commun", "tiers-lieux" ] ));
 console.log( or( ["coco","atelier"], [ "mobilité", "atelier", "commun", "tiers-lieux" ] ));
 console.log( or( ["coco","n"], [ "mobilité", "atelier", "commun", "tiers-lieux" ] ));*/
-function or(tags,tagList)
-{
+function or(tags,tagList) {
 	res = (!tags.length) ? true :false;
 	$.each(tags,function(i,t){
 		reg = new RegExp("^"+t+"$","i");
@@ -998,11 +866,9 @@ function or(tags,tagList)
     		res = true;
 	        return false;
 	    }
-		
 	});
 	return res;
 }
-
 
 function inArrayRegex(tab,regex){
 	res = false;
@@ -1015,26 +881,20 @@ function inArrayRegex(tab,regex){
 	return res;
 }
 
-
-
-
 function cityActivedUpdate(checked, city){
 	mylog.log("cityActivedUpdate", checked, city);
 	if(checked== false){
 		citiesActived.splice($.inArray(city.toUpperCase(), citiesActived),1);
-	}
-	else{
+	} else {
 		citiesActived.push(city.toUpperCase());
 	}
 }
-
 
 function  typeActivedUpdate(checked, type){
 	mylog.log("typeActivedUpdate", checked, type);
 	if(checked== false){
 		typesActived.splice($.inArray(type, typesActived),1);
-	}
-	else{
+	} else {
 		typesActived.push(type);
 	}
 }
@@ -1043,13 +903,10 @@ function  rolesActivedUpdate(checked, role){
 	mylog.log("rolesActivedUpdate", checked, role);
 	if(checked== false){
 		rolesActived.splice($.inArray(role, rolesActived),1);
-	}
-	else{
+	} else {
 		rolesActived.push(role);
 	}
 }
-
-
 
 function addTab(tab, tab2){
 	mylog.log("addTab", tab, tab2);
@@ -1108,8 +965,6 @@ function andAndOr(allFiltres){
 	return res ;
 }
 
-
-
 function updateMap(){
 	mylog.log("updateMap", tagsActived, disableActived);
 	$(".searchEntityContainer").hide();
@@ -1123,19 +978,15 @@ function updateMap(){
 		 mylog.log("elementNetwork", elementNetwork);
 	}
 
-	//mylog.log("params", params);
 	if ( params != null && ( (params.conditionBlock == "and" || typeof params.conditionBlock == "undefined" ) && params.conditionTagsInBlock == "and" ) )
 		test = getAllTags(tagsActived);
 	else if ( params != null && ( (params.conditionTagsInBlock == "or" || typeof params.conditionTagsInBlock == "undefined" ) && params.conditionBlock == "or" ) ) {
 		test = getAllTags(tagsActived);
 		verb = "or";
-	}
-	else if ( params != null && ( (params.conditionBlock == "or" || typeof params.conditionBlock == "undefined" ) && 
+	} else if ( params != null && ( (params.conditionBlock == "or" || typeof params.conditionBlock == "undefined" ) && 
 			(params.conditionTagsInBlock == "and" || typeof params.conditionTagsInBlock == "undefined") ) ) {
-		//verb = "or";
 		test = andAndOr(tagsActived);
-	}
-	else
+	} else
 		test = orAndAnd(tagsActived);
 
 	mylog.log("testNetwork", test);
@@ -1154,28 +1005,20 @@ function updateMap(){
 				if(	add && 
 					( 	disableActived == false || 
 						(disableActived == true && typeof v.disabled != "undefined" && v.disabled == true) ) && 
-					
 					( citiesActived.length == 0  || 
 						(	typeof v.address != "undefined" && 
 							typeof v.address.addressLocality != "undefined" && 
 							$.inArray( v.address.addressLocality.toUpperCase(), citiesActived ) >= 0  ) ) &&
-
-
 					( typesActived.length == 0  || 
 						(	typeof v.typeSig != "undefined" && 
 							$.inArray( v.typeSig, typesActived ) >= 0  ) ) &&
 					( rolesActived.length == 0  || 
 						(isLinks(v, elementNetwork[0]) ) ) && 
 
-					/*( 	(typeof searchVal == "undefined") || 
-						( 	v.name.search( new RegExp( searchVal, "i" ) ) >= 0 || 
-							v.address.addressLocality.search( new RegExp( searchVal, "i" ) ) >= 0 ) ) )  {*/
-
 					( 	searchValNetwork.length == 0 || 
 						( 	v.name.search( new RegExp( searchValNetwork, "i" ) ) >= 0  ) ) )  {
 					mylog.log("v.tags", v.tags);
 					filteredList = addTabMap(v, filteredList);
-					//console.log("filteredList",filteredList);
 					$(".container_"+v.type+"_"+v.id).show();
 				}
 			});
@@ -1184,7 +1027,6 @@ function updateMap(){
 		if( disableActived == true || citiesActived.length > 0 || 
 			typesActived.length > 0 || rolesActived.length > 0 || 
 			searchValNetwork.length > 0)  {
-
 			$.each(contextMapNetwork,function(k,v){
 				if(	( 	disableActived == false || 
 						(disableActived == true && typeof v.disabled != "undefined" && v.disabled == true) ) && 
@@ -1198,30 +1040,19 @@ function updateMap(){
 					( rolesActived.length == 0  || 
 						(isLinks(v, elementNetwork[0]) ) )  && 
 
-					/*( 	(typeof searchVal == "undefined") || 
-						( 	v.name.search( new RegExp( searchVal, "i" ) ) >= 0 || 
-							v.address.addressLocality.search( new RegExp( searchVal, "i" ) ) >= 0 ) ) )  {*/
-
-
 					( 	searchValNetwork.length == 0 || 
 						( 	v.name.search( new RegExp( searchValNetwork, "i" ) ) >= 0 ) ) ) {
-
-
 					filteredList = addTabMap(v, filteredList);
-					//$(".container_"+v.type+"_"+v.id).show();
 				}
 			});
 		}else{
-			/*$.each(contextMapNetwork,function(k,v){
-				filteredList = addTabMap(v, filteredList);
-			});*/
 			filteredList = contextMapNetwork;
-			//$(".searchEntityContainer").show();
 		}
 	}
 	$.each(filteredList, function(e,v){
 		$(".contain_"+v.type+"_"+v.id).show(700);
 	});
+
 	countResult=filteredList.length;
 	refreshResultHeader(countResult);
 	mylog.log("filteredList", filteredList);
@@ -1236,7 +1067,6 @@ function addTabMap(element, tab){
 	return tab;
 }
 
-
 function isLinks(element, id){
 	mylog.log("isLinks", element, id);
 	var res = false ;
@@ -1247,7 +1077,6 @@ function isLinks(element, id){
 			if(v == "creator" && element.creator == id){
 					res = true ;
 					return true;
-				
 			}else if(	v == "admin" && 
 						element.links != null &&
 						typeof element.links["members"] != "undefined" && 
@@ -1284,7 +1113,6 @@ function filterTags(tags){
 	          			 str += '<li class="list-group-item"><input type="checkbox" class="checkbox tagFilterAuto" value="'+k+'" data-parent="tags" data-label="'+k+'"/>'+k+' (' +v+ ')</li>'
 	          		});
 	        str +=  '</ul> </div>';
-
 	    $("#divTagsMenu").append(str);
     }
 }
@@ -1306,7 +1134,6 @@ function filterType(types){
 	          			 str += '<li class="list-group-item"><input type="checkbox" class="checkbox typeFilterAuto" value="'+k+'" data-parent="types" data-label="'+k+'"/>'+trad[k]+' (' +v+ ')</li>'
 	          		});
 	        str +=  '</ul> </div>';
-
 	    $("#divTypesMenu").append(str);
 	}
 }

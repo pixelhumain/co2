@@ -244,10 +244,10 @@
                 <i class="fa fa-lightbulb-o"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Projects") ?></span>
             </button><hr class="hidden-xs">
-            <button class="btn text-red btn-directory-type" data-type="cities">
+            <!-- <button class="btn text-red btn-directory-type" data-type="cities">
                 <i class="fa fa-university"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Cities") ?></span>
-            </button><br class="hidden-xs">
+            </button><br class="hidden-xs"> -->
             <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
                 <i class="fa fa-university"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Public structures") ?></span>

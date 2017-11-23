@@ -180,6 +180,11 @@
 			location.hash=hashUrlPage+".view.backup";
 			loadBackup();
 		});
+
+		$("#btn-invoice").click(function(){
+			location.hash=hashUrlPage+".view.invoice";
+			loadInvoice();
+		});
 	}
 
 	function loadDetail(){
@@ -210,14 +215,16 @@
 		showLoader('.content-view-dashboard');
 		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
 	}
-	function showLoader(id){
-		$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
-	}
 
 	function loadInvoice(){
-		var url = "element/facture/type/"+contextData.type+"/id/"+contextData.id;
+		initBtnDash("#btn-invoice");
+		var url = "element/invoice/type/"+contextData.type+"/id/"+contextData.id;
 		showLoader('.content-view-dashboard');
 		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, null, function(){},"html");
+	}
+
+	function showLoader(id){
+		$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 	}
 
 	function inintDescs() {

@@ -510,6 +510,7 @@ class CommunecterController extends Controller
       'getthumbpath'        => array("href" => "/ph/co2/element/getThumbPath"),
       'getcommunexion'      => array("href" => "/ph/co2/element/getcommunexion"),
       'getdatabyurl'        => array("href" => "/ph/co2/element/getdatabyurl"),
+      "invoice"                => array("href" => "/ph/co2/element/invoice"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/co2/app/welcome",         "public" => true),

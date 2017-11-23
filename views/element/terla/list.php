@@ -125,7 +125,6 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 					$count=$value["countOrderItem"];
 				else
 					$count=$value["object"]["countQuantity"];
-				//$idOrder=(string)$value["_id"];
 				?>
 				<li class="columnSection <?php if($i==0) echo "active" ?> columnSection<?php echo $key ?> padding-10" data-id="<?php echo $key ?>">
 					<h4 class="title no-margin"><?php echo $value["name"] ?></h4>

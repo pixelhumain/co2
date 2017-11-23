@@ -2,7 +2,7 @@
 <style type="text/css">
 	.headerTitleStanalone{
 		left:-25px;
-		right:-25px;
+		right:0px;
 		top:88px;
 	}
 	.contentOnePage{
@@ -55,7 +55,11 @@
 <div class="headerTitleStanalone">
 	<span>My Dashboard</span> 
 	<?php if(!@$element["professional"]){ ?> 
-		<button class="createPro bg-orange"><?php echo Yii::t("terla", "Create a professional account"); ?></button>
+		<!--<button class="createPro bg-orange"><?php echo Yii::t("terla", "Create a professional account"); ?></button>-->
+	<?php } ?>
+	<?php if(!@Yii::app()->session["superAdmin"]){ ?> 
+		<a href="#admin" class="lbh btn bg-white margin-right-20 pull-right">
+		<i class="fa fa-sign-in"></i> <?php echo Yii::t("terla", "Portal administor"); ?></a>
 	<?php } ?>
 </div>
 <div class="col-md-10 col-md-offset-1 contentOnePage">
@@ -89,22 +93,22 @@
 		    	<?php echo Yii::t("common","Historic") ?>
 		    </a>
 		  </li>
-		  <li class="nav-item">
+		  <!--<li class="nav-item">
 		    <a class="nav-link letter-lightgray" href="javascript:;" id="btn-backup">
 		    	<?php echo Yii::t("common","Backup") ?>
 		    </a>
-		  </li>
+		  </li>-->
 		  <li class="nav-item">
 		    <a class="nav-link letter-lightgray" href="javascript:;" id="btn-invoice">
 		    	<?php echo Yii::t("common","Invoice") ?>
 		    </a>
 		  </li>
 		  	<?php if(@$element["professional"]){ ?>
-		  	<li class="nav-item">
+		  	<!--<li class="nav-item">
 		    	<a class="nav-link letter-lightgray" href="javascript:;" id="btn-list-pro">
 		    		<?php echo Yii::t("common","Pro listing") ?>
 		    	</a>
-		  	</li>
+		  	</li>-->
 			<?php } ?>
 		</ul>
 		<div class="content-view-dashboard col-md-12 col-sm-12 col-xs-12 margin-bottom-20 padding-10 bg-white">

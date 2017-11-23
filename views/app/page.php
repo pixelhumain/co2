@@ -74,7 +74,7 @@
 
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
-                if($element["creator"]==Yii::app()->session["userId"] && $view != "show")
+                if(($element["creator"]==Yii::app()->session["userId"] || @Yii::app()->session["superAdmin"]) && $view != "show")
                     $this->renderPartial('../element/terla/dashboard', $params );
                 else
                     $this->renderPartial('../element/standalone', $params ); 

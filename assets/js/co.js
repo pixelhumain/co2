@@ -1541,6 +1541,7 @@ function  bindExplainLinks() {
 function  bindLBHLinks() { 
 	$(".lbh").off().on("click",function(e) {  		
 		e.preventDefault();
+		$("#openModal").modal("hide");
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
 		mylog.warn("***************************************");
@@ -1550,6 +1551,7 @@ function  bindLBHLinks() {
 	//open any url in a modal window
 	$(".lbhp").unbind("click").on("click",function(e) {
 		e.preventDefault();
+		$("#openModal").modal("hide");
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
 		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));

@@ -364,7 +364,7 @@ function bindButtonOpenForm(){
     });
 }
 
-function loadDataDirectory(dataName, dataIcon, edit){ console.log("loadDataDirectory");
+function loadDataDirectory(dataName, dataIcon, edit){ mylog.log("loadDataDirectory");
 	showLoader('#central-container');
 
 	var dataIcon = $(".load-data-directory[data-type-dir="+dataName+"]").data("icon");
@@ -633,7 +633,7 @@ function loadContacts(){
 			    		
 			    		var contactMail = $(this).data("email");
 			    		var contactName = $(this).data("name");
-			    		//console.log('contactMail', contactMail);
+			    		//mylog.log('contactMail', contactMail);
 			    		$("#formContact .contact-email").html(contactMail);
 			    		$("#formContact #contact-name").html(contactName);
 
@@ -658,7 +658,7 @@ function loadContacts(){
 
 //todo add count on each tag
     function getfilterRoles(roles) { 
-    	console.log("getfilterRoles roles",roles);
+    	mylog.log("getfilterRoles roles",roles);
     	if(typeof roles == "undefined") {
     		$("#listRoles").hide();
     		return;
@@ -688,10 +688,10 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	var n=0;
 	listRoles={};
 	$.each(data, function(key, val){ 
-		//console.log("rolesShox",val);
+		//mylog.log("rolesShox",val);
 		if(typeof key != "undefined") n++; 
 		if(typeof val.rolesLink != "undefined"){
-			console.log(val.rolesLink);
+			mylog.log(val.rolesLink);
 			$.each(val.rolesLink, function(i,v){
 				//Push new roles in rolesList
 				if(v != "" && !rolesList.includes(v))
@@ -730,7 +730,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 					"<div id='profil-content-calendar' class='col-md-12 col-sm-12 col-xs-12 margin-bottom-20'></div>";
 		mapElements = [];
 		
-		console.log("listRoles",listRoles);
+		mylog.log("listRoles",listRoles);
 		if(dataName != "collections"){
 			if(mapElements.length==0) mapElements = data;
         	else $.extend(mapElements, data);
@@ -743,7 +743,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 					colName="favoris";
 				html += "<a class='btn btn-default col-xs-12 shadow2 padding-10 margin-bottom-20' onclick='$(\"."+colName+"\").toggleClass(\"hide\")' ><h2><i class='fa fa-star'></i> "+colName+" ("+Object.keys(val.list).length+")</h2></a>"+
 						"<div class='"+colName+" hide'>";
-				console.log("list", val);
+				mylog.log("list", val);
 				if(val.count==0)
 					html +="<span class='col-xs-12 text-dark margin-bottom-20'>"+trad.noelementinthiscollection+"</span>";
 				else{

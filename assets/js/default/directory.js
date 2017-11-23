@@ -1192,6 +1192,9 @@ var directory = {
           if(typeof params.contactInfo != "undefined" && params.contactInfo != ""){
             str += "<div class='entityType letter-green bold' style='font-size:17px;'><i class='fa fa-address-card'></i> Contact : " + params.contactInfo + "</div>";
             str += "<hr class='col-xs-12'>";
+          } else {
+            str += "<div class='entityType letter-green bold' style='font-size:17px;'><i class='fa fa-address-card'></i> <a class='lbh btn btn-azure' href='#page.type.citoyens.id." + params.creator + "'>Contact la personne</a></div>";
+            str += "<hr class='col-xs-12'>";
           }
 
           var thisLocality = "";
@@ -1925,20 +1928,20 @@ var directory = {
 
         if(typeof data == "object" && data!=null)
         $.each(data, function(i, params) {
-          if(directory.dirLog) mylog.log("params", params, typeof params);
+          if(directory.dirLog) mylog.log("params", params);
 
-          mylog.log("params", params, typeof params);
+          mylog.log("params", params);
 
           if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) {
-            params['id'] = params['_id'];
+            params.id = params['_id'];
           } else if (typeof(params.id) == "undefined") {
-            params['id'] = Math.random();
-            params['type'] = "poi";
+            params.id = Math.random();
+            params.type = "poi";
           }
 
-          mylog.log("params", params["name"] , params.name, params.id, params["id"], typeof params["id"]);
+          mylog.log("--->>> params", params["name"] , params.name, params.id, params.type );
 
-          if(notNull(params["_id"]) || notNull(params["id"])){
+          if(notNull(params["_id"]) || notNull(params.id)){
 
             itemType=(contentType) ? contentType : params.type;
             mylog.log("params itemType", itemType);
@@ -1962,7 +1965,9 @@ var directory = {
                 if(typeof edit != "undefined" && edit != false)
                   params.edit = edit;
                 
-                if(typeof( typeObj[itemType] ) == "undefined") {
+                if ( params.type && $.inArray(params.type, typeObj.classified.subTypes )>=0  ) {
+                  itemType = "classified";
+                } else if(typeof( typeObj[itemType] ) == "undefined") {
                   itemType="poi";
                 }
 

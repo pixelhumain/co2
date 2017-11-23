@@ -15,7 +15,7 @@
 		margin-top: 70px;
 		min-height:700px;
 	}
-	.addServices, .addCircuits{
+	.addServices, .show-form-new-circuit{
 		display:none;
 	}
 </style>
@@ -71,11 +71,11 @@
 		<a href="javascript:;" class="col-md-12 col-sm-12 col-xs-12 padding-20 text-center bg-orange" id="btn-home" style="font-size:20px;"><i class="fa fa-home"></i> Back to administrator home</a>
 		<a href="javascript:;" data-form-type="service" data-form-subtype=""  
                     data-dismiss="modal"
-                    class="col-md-12 col-sm-12 col-xs-12 padding-20 btn-open-form text-center bg-green addServices" style="font-size:20px;">
-                <i class="fa fa-plus"></i><?php echo Yii::t("common", "Create a service") ?>
+                    class="col-md-12 col-sm-12 col-xs-12 padding-20 btn-open-form text-center addServices" style="font-size:20px;background-color: #18BC9C;color: white;">
+                <i class="fa fa-plus"></i> <?php echo Yii::t("common", "Create a service") ?>
         </a>
-        <a href="javascript:;" class="col-md-12 col-sm-12 col-xs-12 padding-20 text-center bg-green addCircuits" style="font-size:20px;">
-            <i class="fa fa-plus"></i><?php echo Yii::t("common", "Create a circuit") ?></a>
+        <a href="javascript:;" class="col-md-12 col-sm-12 col-xs-12 padding-20 text-center show-form-new-circuit" style="font-size:20px;background-color: #18BC9C;color: white;">
+            <i class="fa fa-plus"></i> <?php echo Yii::t("common", "Create a circuit") ?></a>
 	</div>
 	<div id="content-view-admin" class="col-md-12 col-sm-12 col-xs-12 no-padding"></div>
 </div>
@@ -140,6 +140,9 @@
 		$(".btn-open-form").click(function(){
 			dyFObj.openForm($(this).data("form-type"),"sub");
 		});
+		$(".show-form-new-circuit").click(function(){
+			$("#create-new-circuit").show(700);
+		});
 	}
 	function loadIndex(){
 		initDashboard(true);
@@ -167,9 +170,9 @@
 	function loadCircuits(){
 		initDashboard();
 		//data={category:["circuits"],actionType:"history"};
-		//var url = "element/list";
-		$("#goBackToHome .addCircuits").show(700);
-		//ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
+		var url = "admin/circuits";
+		$("#goBackToHome .show-form-new-circuit").show(700);
+		ajaxPost('#content-view-admin', baseUrl+'/'+moduleId+'/'+url, null, function(){},"html");
 	}
 	function loadBackup(){
 		initBtnDash("#btn-backup");
@@ -188,7 +191,7 @@
 		if(home){
 			$("#goBackToHome, #content-view-admin").hide(700);
 			$("#navigationAdmin").show(700);
-			$("#goBackToHome .addServices, #goBackToHome .addCircuits").hide(700);
+			$("#goBackToHome .addServices, #goBackToHome .show-form-new-circuit").hide(700);
 		} else {
 			$("#navigationAdmin").hide(700);
 			$("#goBackToHome, #content-view-admin").show(700);

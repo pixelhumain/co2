@@ -1,5 +1,9 @@
 var circuit = {
 	obj:{
+		name:"",
+		description:"",
+		capacity:12,
+		frequency:"",
 		countQuantity:0,
 		total : 0
 	},
@@ -179,23 +183,23 @@ var circuit = {
 			$('#modalLogin').modal("show");
 		}
 	},*/
-	countShoppingCart:function(pos){
+	countCircuit:function(pos){
 		if(pos != "init"){
 			if(pos)
-				shopping.cart.countQuantity++;
+				circuit.obj.countQuantity++;
 			else
-				shopping.cart.countQuantity--;
+				circuit.obj.countQuantity--;
 		}
-		if(shopping.cart.countQuantity > 0){
-			$(".shoppingCart-count").html(shopping.cart.countQuantity);
-			$('.shoppingCart-count').removeClass('hide');
-			$('.shoppingCart-count').addClass('animated bounceIn');
-			$('.shoppingCart-count').addClass('badge-success');
-			$('.shoppingCart-count').removeClass('badge-tranparent');
+		if(circuit.obj.countQuantity > 0){
+			$(".circuit-count").html(circuit.obj.countQuantity);
+			$('.circuit-count').removeClass('hide');
+			$('.circuit-count').addClass('animated bounceIn');
+			$('.circuit-count').addClass('badge-success');
+			$('.circuit-count').removeClass('badge-tranparent');
 		}else{
-			$('.shoppingCart-count').addClass('hide');
-			$('.shoppingCart-count').removeClass('badge-success');
-			$('.shoppingCart-count').addClass('badge-tranparent');
+			$('.circuit-count').addClass('hide');
+			$('.circuit-count').removeClass('badge-success');
+			$('.circuit-count').addClass('badge-tranparent');
 		}
 	},
 	generateEmptyCartView:function(){

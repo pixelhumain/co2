@@ -1153,8 +1153,8 @@ var directory = {
 
 
           if(typeof params.category != "undefined"){
-              str += "<div class='entityType text-dark'><span class='bold uppercase'>" + params.section + "</span> > "+params.category;
-                if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+              str += "<div class='entityType text-dark'><span class='bold uppercase'>" + tradCategory[ params.section ]+ "</span> > "+tradCategory[ params.category ];
+                if(typeof params.subtype != "undefined") str += " > " + tradCategory[ params.subtype ];
               str += "</div><hr>";
             }
           if(typeof params.typePoi != "undefined"){

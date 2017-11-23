@@ -40,6 +40,7 @@ class ElementController extends CommunecterController {
           'list'                  => 'citizenToolKit.controllers.element.ListAction',
           'getcommunexion'        => 'citizenToolKit.controllers.element.GetCommunexionAction',
           'getdatabyurl'          => 'citizenToolKit.controllers.element.GetDataByUrlAction',
+          'invoice'                  => 'citizenToolKit.controllers.element.InvoiceAction',
       );
   }
 }

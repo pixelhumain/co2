@@ -113,11 +113,8 @@
 		</ul>
 		<div class="content-view-dashboard col-md-12 col-sm-12 col-xs-12 margin-bottom-20 padding-10 bg-white">
 		</div>
-		
 	</div>
-
 </div>
-
 
 <?php 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
@@ -178,6 +175,7 @@
 			location.hash=hashUrlPage+".view.prolist";
 			loadListPro();
 		});
+
 		$("#btn-history").click(function(){
 			location.hash=hashUrlPage+".view.history";
 			loadHistory();
@@ -186,13 +184,20 @@
 			location.hash=hashUrlPage+".view.backup";
 			loadBackup();
 		});
+
+		$("#btn-invoice").click(function(){
+			location.hash=hashUrlPage+".view.invoice";
+			loadInvoice();
+		});
 	}
+
 	function loadDetail(){
 		initBtnDash("#btn-detail");
 		var url = "element/about/type/"+contextData.type+"/id/"+contextData.id;
 		showLoader('.content-view-dashboard');
 		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, null, function(){},"html");
 	}
+
 	function loadListPro(){
 		initBtnDash("#btn-list-pro");
 		data={category:["services","products"],actionType:"manage"};
@@ -214,9 +219,18 @@
 		showLoader('.content-view-dashboard');
 		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
 	}
+
+	function loadInvoice(){
+		initBtnDash("#btn-invoice");
+		var url = "element/invoice/type/"+contextData.type+"/id/"+contextData.id;
+		showLoader('.content-view-dashboard');
+		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, null, function(){},"html");
+	}
+
 	function showLoader(id){
 		$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 	}
+
 	function inintDescs() {
 		return true;
 	}

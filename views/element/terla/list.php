@@ -105,7 +105,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	</div>
 </div>
 <?php } ?>
-<?php if(($actionType=="history" || $actionType=="backup") && @$parentList){ ?>
+<?php if(($actionType=="history" || $actionType=="backup") && !empty($parentList)){ ?>
 	<ul id="columnList" class="col-md-3 col-sm-3 col-xs-3 no-padding">
 		
 		<?php $i=0;
@@ -125,7 +125,6 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 					$count=$value["countOrderItem"];
 				else
 					$count=$value["object"]["countQuantity"];
-				//$idOrder=(string)$value["_id"];
 				?>
 				<li class="columnSection <?php if($i==0) echo "active" ?> columnSection<?php echo $key ?> padding-10" data-id="<?php echo $key ?>">
 					<h4 class="title no-margin"><?php echo $value["name"] ?></h4>
@@ -136,8 +135,12 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	</ul>
 	<div id="headerList" class="col-md-9 col-sm-9 col-xs-9 margin-bottom-20">
 		<h4 class="col-md-12 col-sm-12 title no-padding letter-orange"><?php echo $nameHeader ?></h4>
-		<span>Price of this command: <span class="price"><?php echo $priceHeader ?> <?php echo $currencyHeader ?></span></span><br/>
+		<span>Price of this command: <span class="price"><?php echo $priceHeader ?> <?php echo $currencyHeader ?></span></span> 
+		<a href="<?php echo Yii::app()->createUrl('/co2/pdf/create/id/'.$key) ;?>" target="_blank">
+			<i class='fa fa-file-pdf-o'></i>
+		</a><br/>
 		<span class="purchases"><i><?php echo $countHeader; ?> purchase<?php if ($countHeader >1) echo "s" ?></i></span>
+		
 		<?php if($actionType=="backup") { ?>
 			<div class="pull-right">
 				<a href="javascript:;" id="goBackToThisCart" class="btn btn-success" data-id="<?php echo $key ?>">Continue this cart</a>

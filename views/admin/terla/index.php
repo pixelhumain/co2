@@ -12,13 +12,16 @@
 		display: none;
 	}
 	#content-social{
-		margin-top: 100px;
+		margin-top: 70px;
 		min-height:700px;
+	}
+	.addServices, .addCircuits{
+		display:none;
 	}
 </style>
 
 <div class="col-lg-offset-1 col-lg-10 col-xs-12 no-padding" id="content-social">
-	<div class="col-md-10 col-sm-12 col-xs-12" id="navigationAdmin">
+	<div class="col-md-10 col-sm-12 col-xs-12 margin-top-20" id="navigationAdmin">
 		<ul class="list-group text-left no-margin">
 		<?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
 
@@ -64,8 +67,17 @@
 		
 		</ul>
 	</div>
-	<div class="col-md-12 col-sm-12 col-xs-12" id="goBackToHome"><button class="primary" id="btn-home">Retour à l'accueil admin</button></div>
-	<div id="content-view-admin"></div>
+	<div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="goBackToHome">
+		<a href="javascript:;" class="col-md-12 col-sm-12 col-xs-12 padding-20 text-center bg-orange" id="btn-home" style="font-size:20px;"><i class="fa fa-home"></i> Back to administrator home</a>
+		<a href="javascript:;" data-form-type="service" data-form-subtype=""  
+                    data-dismiss="modal"
+                    class="col-md-12 col-sm-12 col-xs-12 padding-20 btn-open-form text-center bg-green addServices" style="font-size:20px;">
+                <i class="fa fa-plus"></i><?php echo Yii::t("common", "Create a service") ?>
+        </a>
+        <a href="javascript:;" class="col-md-12 col-sm-12 col-xs-12 padding-20 text-center bg-green addCircuits" style="font-size:20px;">
+            <i class="fa fa-plus"></i><?php echo Yii::t("common", "Create a circuit") ?></a>
+	</div>
+	<div id="content-view-admin" class="col-md-12 col-sm-12 col-xs-12 no-padding"></div>
 </div>
 <!-- end: PAGE CONTENT-->
 <script type="text/javascript">
@@ -75,20 +87,10 @@
 	var subView="<?php echo @$_GET['view']; ?>";
 	jQuery(document).ready(function() {
 		//loadDetail(true);
-		$(".createPro").click(function(){
-			$.ajax({
-	    		type: "POST",
-	    		url: baseUrl+"/"+moduleId+'/person/updatefield',
-	    		data:{pk:userId,name:"professional", value:true},
-	            success: function(data){
-	            	goProAccount();
-	            }
-	         });
-		});
 		bindAdminButtonMenu();
 		initKInterface();
 		getAdminSubview(subView);
-		KScrollTo("#topPosKScroll");
+		//KScrollTo("#topPosKScroll");
 	});
 	//function goProAccount(){
 	//	urlCtrl.loadByHash("#page.type.citoyens.id."+contextData.id+".view.pro");
@@ -135,6 +137,9 @@
 			location.hash=hashUrlPage+".view.backup";
 			loadBackup();
 		});
+		$(".btn-open-form").click(function(){
+			dyFObj.openForm($(this).data("form-type"),"sub");
+		});
 	}
 	function loadIndex(){
 		initDashboard(true);
@@ -144,7 +149,7 @@
 	function loadCommunity(){
 		initDashboard();
 		initType=["citoyens"];
-		data=initType;
+		data={initType:initType};
 		var url = "admin/directory";
 		//showLoader('.content-view-dashboard');
 		ajaxPost('#content-view-admin', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
@@ -155,13 +160,16 @@
 		data={initType:initType};
 		var url = "admin/directory";
 		//showLoader('.content-view-dashboard');
+		$("#goBackToHome .addServices").show(700);
 		ajaxPost('#content-view-admin', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
+
 	}
 	function loadCircuits(){
 		initDashboard();
-		data={category:["circuits"],actionType:"history"};
-		var url = "element/list";
-		ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
+		//data={category:["circuits"],actionType:"history"};
+		//var url = "element/list";
+		$("#goBackToHome .addCircuits").show(700);
+		//ajaxPost('.content-view-dashboard', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
 	}
 	function loadBackup(){
 		initBtnDash("#btn-backup");
@@ -180,10 +188,11 @@
 		if(home){
 			$("#goBackToHome, #content-view-admin").hide(700);
 			$("#navigationAdmin").show(700);
+			$("#goBackToHome .addServices, #goBackToHome .addCircuits").hide(700);
 		} else {
 			$("#navigationAdmin").hide(700);
 			$("#goBackToHome, #content-view-admin").show(700);
-			showLoader('.content-view-dashboard');
+			showLoader('#content-view-dashboard');
 		}
 	}
 	function descHtmlToMarkdown() {

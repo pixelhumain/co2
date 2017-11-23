@@ -27,7 +27,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 		padding: 15px 0px;
     	text-transform: inherit;
     	font-size: 20px;
-    	margin-top:100px;
+    	margin-top:20px;
 	}
 	/*.carousel-media > ol > li.active{
 	   margin:1px;
@@ -99,9 +99,9 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 
 </style>
 
-<header>
-<div class="container">
-    <div class="headerTitle"> <?php echo ucfirst($element["parent"]["name"]) ?></div>
+<header style="position: fixed;width: 100%;left: 0;height: 70px;z-index: 3;">
+<div class="container" style="padding:0px">
+    <div class="headerTitle" style=""> <?php echo ucfirst($element["name"]) ?></div>
 </div>
 </header>
 

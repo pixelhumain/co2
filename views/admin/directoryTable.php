@@ -9,9 +9,9 @@ $cssAnsScriptFilesModule = array(
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->getRequest()->getBaseUrl(true));
 $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 //header + menu
-$this->renderPartial($layoutPath.'header', 
+/*$this->renderPartial($layoutPath.'header', 
                     array(  "layoutPath"=>$layoutPath , 
-                            "page" => "admin") ); 
+                            "page" => "admin") );*/ 
 ?>
 <div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -112,9 +112,6 @@ $this->renderPartial($layoutPath.'header',
 					?>
 				</tbody>
 			</table>
-
-
-			<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 0px; display: none;"><div class="ps-scrollbar-x" style="left: -10px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 230px; display: inherit;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div>
 			<?php 
 				/*if (isset($organizations) && count($organizations) == 0) {
 			?>
@@ -154,7 +151,7 @@ var icons = {
 var search={
 	value:"",
 	page:"",
-	type:"<?php echo Person::COLLECTION ?>"
+	type:initType[0]
 };
 jQuery(document).ready(function() {
 	setTitle("Espace administrateur : Répertoire","cog");

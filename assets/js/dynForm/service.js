@@ -30,7 +30,7 @@ dynForm = {
 	    },
 	    beforeBuild : function(){
 	    	dyFObj.setMongoId('services',function(){
-	    		uploadObj.gotoUrl = (contextData != null && contextData.type && contextData.id  ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.classified" : location.hash;
+	    		uploadObj.gotoUrl = location.hash;
 	    	});
 	    },
 	    beforeSave : function(){
@@ -50,7 +50,7 @@ dynForm = {
 		    else {
 		    	dyFObj.closeForm();
 		    	//loadProducts();
-			    //urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+			    urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 		    }
 	    },
 	    properties : {
@@ -76,7 +76,7 @@ dynForm = {
             tags : dyFInputs.tags(),
             parentId : dyFInputs.inputHidden(),
             parentType : dyFInputs.inputHidden(),
-            toBeValidated : dyFInputs.inputHidden(),
+            //toBeValidated : dyFInputs.inputHidden(),
 	    }
 	}
 };

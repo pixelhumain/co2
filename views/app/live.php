@@ -154,7 +154,6 @@ jQuery(document).ready(function() {
 		 liveType = " > "+liveTypeName[liveType];
 	else liveType = ", la boite à outils citoyenne connectée " + liveType;
 */
-	setTitle(titlePage, titlePage);
 	//initFilterLive();
 	//showTagsScopesMin("#list_tags_scopes");
 	$("#btn-slidup-scopetags").click(function(){
@@ -209,12 +208,17 @@ jQuery(document).ready(function() {
          }
     });
 
-    $("#main-btn-start-search, #main-search-bar-addon, "+
-      ".subModuleTitle .btn-refresh, .menu-btn-start-search").click(function(){
+    $("#main-btn-start-search, #main-search-bar-addon, .menu-btn-start-search").click(function(){
+        startNewsSearch(true);
+    });
+    $(".subModuleTitle .btn-refresh").click(function(){
+        $("#main-search-bar").val("");
+        $("#second-search-bar").val("");
         startNewsSearch(true);
     });
 
 
+    setTitle(titlePage, "stack-exchange", titlePage);
     //KScrollTo(".main-btn-scopes");
 });
 

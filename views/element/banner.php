@@ -224,6 +224,7 @@
 			</div>
 		<?php } ?>
 	<?php if($type==Event::COLLECTION || $type==Poi::COLLECTION || $type==Project::COLLECTION){ ?>
+	<?php if(@$element['parent'] || @$element['organizerId'] ){ ?>
 		<div class="section-date pull-right">
 			<?php if($type==Event::COLLECTION){ ?>
 				<div class="header-banner"  style="font-size: 14px;font-weight: none;"></div>
@@ -257,6 +258,7 @@
 				</div>
 			</div>
 	    </div>
+	<?php } ?>
 	<?php } ?>
 	</div>
 

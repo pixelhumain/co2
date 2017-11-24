@@ -809,7 +809,7 @@ function showFormBlock(bool){
                                 'title="Sélectionner des lieux de recherche">'+
                                 '<img src="'+themeUrl+'/assets/img/cible3.png" height=25>'+
                             '</a>'+ 
-                            'Selectionner les endroits de publications <i class="fa fa-angle-right"></i>'+ 
+                            'Zone(s) de publication <i class="fa fa-angle-right"></i>'+ 
                         '</h5>'+
                         '<div class="scope-min-header list_tags_scopes hidden-xs text-left ellipsis">'+
             				$(".scope-min-header").html()+

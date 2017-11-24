@@ -210,6 +210,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 	if(isFirst){ //render HTML for 1st load
 		//if($("#newsstream .loader").length<0){
 			$("#newsstream").html(loading);
+			KScrollTo("#container-scope-filter");
 		//}
 		ajaxPost("#newsstream",baseUrl+"/"+moduleId+urlCtrl+"/date/0"+isFirstParam,dataSearch, function(news){
 			//showTagsScopesMin(".list_tags_scopes");

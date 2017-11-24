@@ -591,7 +591,7 @@
 
 			if($typeItem != Person::COLLECTION){ 
 		?>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:20px;">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:30px;">
 				<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
 					<b><i class="fa fa-angle-down"></i> 
 					<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","Main description") ?></b>

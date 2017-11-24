@@ -405,6 +405,8 @@ var trad = {
 	"allcitieswiththispostalcode" : "<?php echo Yii::t("common", "All cities with this postal code") ?>",
 	"thecommunexionhaschanged" : "<?php echo Yii::t("common", "The communexion has changed") ?>",
 	"allthecity" : "<?php echo Yii::t("common", "All the city") ?>",
+	"welcomeon" : "<?php echo Yii::t("home", "Welcome on") ?>",
+	"initofmap" : "<?php echo Yii::t("common", "Initialization of map") ?>",
 
 };
 

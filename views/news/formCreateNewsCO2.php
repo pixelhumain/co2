@@ -208,9 +208,9 @@
       $contextIcon = "<i class='fa fa-circle text-yellow'></i> <i class='fa fa-user text-dark'></i> ";
       $contextTitle =  Yii::t("common", "DIRECTORY of")." ".$contextName;
       if(@Yii::app()->session["userId"] && $contextParentId==Yii::app()->session["userId"]){
-        $restricted = Yii::t("common","Visible to all");
+        $restricted = Yii::t("common","Visible to all on my wall and published on my network");
         $private = Yii::t("common","Visible only to me");
-        $textForm = Yii::t("common","Write a public message visible on the wall of selected places");
+        $textForm = Yii::t("common","Published a message in your wall for your network");
       } 
       if(Yii::app()->session["userId"] ==$contextParentId){
         $headerName= "Mon journal";

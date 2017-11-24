@@ -3879,7 +3879,7 @@ var dyFInputs = {
 					delete v.center;
 			})
 			$(".centers").removeClass('btn-success');
-			$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>addresse principale</span>");
+			$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>"+trad.mainLocality+"</span>");
 			$(".center"+ix).parent().find(".removeLocalityBtn").attr("href","javascript:dyFInputs.locationObj.removeLocation("+ix+",true)");
 			dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocations[ix];
 			dyFInputs.locationObj.elementLocations[ix].center = true;

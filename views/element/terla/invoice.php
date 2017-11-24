@@ -81,16 +81,18 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule,Yii::app()->requ
         font-size: 20px;*/
     }
 </style>
+
+
 <div class="headerList col-md-12 col-sm-12 no-padding margin-bottom-20 margin-top-20">
 	<div class="col-md-12 col-sm-12 text-center">
 		<h4 class="col-md-12 letter-orange">List of invoices</h2>
 	</div>
     <ul id="columnList" class="col-md-3 col-sm-3 col-xs-3 no-padding">
         <?php
-            foreach ($orders as $key => $value){  ?>
+            foreach ($invoices as $key => $value){  ?>
                 <li class="columnSection padding-10" data-id="<?php echo $key ?>">
                     <h4 class="title no-margin">
-                        <a href="javascript:;" onclick="pdf('<?php echo $key ?>');" >
+                        <a href='<?php echo Yii::app()->createUrl("/".$this->module->id."/pdf/create/id/".$key) ; ?>' target="_TARGET" >
                             <i class='fa fa-file-pdf-o'></i> <?php echo $value["name"] ?>
                         </a>
                     </h4>

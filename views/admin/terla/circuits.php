@@ -38,6 +38,7 @@
 		}else
 			$this.parent().find(".alert-danger").remove();
 		circuit.obj.show=true;
+		circuit.obj.total=0;
 		circuit.obj.name=$("#create-new-circuit #name").val();
 		circuit.obj.description=$("#create-new-circuit #description").val();
 		circuit.obj.capacity=$("#create-new-circuit #capacity").val();

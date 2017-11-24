@@ -125,7 +125,8 @@
 	jQuery(document).ready(function() {	
         //if(typeof params.name != "undefined" && params.name != "")
       initBtnLink();
-      htmlCart = "", htmlCheckout = '';
+      circuit.obj.total=0;
+      htmlCart = "";
       if(circuit.obj.countQuantity > 0 ){
       	circuitView = circuit.generateCircuitView();
         htmlCircuit = circuitView.circuit;

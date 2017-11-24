@@ -332,13 +332,13 @@ var circuit = {
                 "adresse": "",
  				        
         };
-         "start" : startDate.format(),
+         /*"start" : startDate.format(),
                 "end" : ( endDate ) ? endDate.format() : startDate.format(),
                 "startDate" : eventObj.startDate,
                 "endDate" : eventObj.endDate,
                 "startDateDB" : eventObj.startDateDB,
                 "endDateDB" : eventObj.endDateDB,
-               
+               */
         itemHtml="<div class='col-md-12 col-sm-12 col-xs-12 contentProduct contentProduct"+itemId+" text-left'>"+
                 "<div class='col-md-3 col-sm-3 col-xs-3 no-padding'>"+data.imgProfil+"</div>"+
                 "<div class='col-md-7 col-sm-7 col-xs-7'>"+

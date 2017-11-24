@@ -184,6 +184,103 @@ var shopping = {
 			$('#modalLogin').modal("show");
 		}
 	},
+	addEvent : function($this,data){
+		bookDate=data.start.format('YYYY-MM-DD');
+		var ranges = new Object;
+		ranges.date=bookDate;
+		data.capacity--;
+		data.quantity++;
+		if(data.quantity > 0){
+			$this.find(".remove-session").removeClass("hide");
+			$this.find(".inc-session").html(data.quantity);
+			$this.find('.inc-session').removeClass('hide');
+			$this.find('.inc-session').addClass('animated bounceIn');
+			$this.find('.inc-session').addClass('badge-success');
+			$this.find('.inc-session').removeClass('badge-tranparent');
+		}else{
+			$this.find('.inc-session').addClass('hide');
+			$this.find('.inc-session').removeClass('badge-success');
+			$this.find('.inc-session').addClass('badge-tranparent');
+			$this.find(".inc-session").addClass("hide");
+		}
+		if(data.capacity === 0){
+			$this.find(".add-session").addClass("hide");
+		}
+		//element.find(".inc-session").data("value",event.quantity).text(event.quantity);
+		$this.find(".inc-capacity").data("value",data.capacity).text(data.capacity);
+		if(typeof data.allDay == "undefined" || !data.allDay)
+			ranges.hours={start: data.startTime , end: data.endTime};		
+        shopping.addToShoppingCart(itemId, itemType, subType, ranges);
+        availableCal.push(data);
+	},
+	removeEvent: function($this,data){
+		bookDate=data.start.format('YYYY-MM-DD');
+		data.capacity++;
+		data.quantity--;
+		if(data.capacity > 0)
+			$this.find(".add-session").removeClass("hide");
+		if(data.quantity === 0){
+			$this.find('.remove-session').addClass('hide');
+			$this.find('.inc-session').removeClass('badge-success');
+			$this.find('.inc-session').addClass('badge-tranparent');
+			$this.find(".inc-session").addClass("hide");
+		}else{
+			$this.find(".inc-session").html(data.quantity);
+			$this.find('.inc-session').removeClass('hide');
+			$this.find('.inc-session').addClass('animated bounceIn');
+			$this.find('.inc-session').addClass('badge-success');
+			$this.find('.inc-session').removeClass('badge-tranparent');
+		}
+		//element.find(".inc-session").text(event.quantity);
+		$this.find(".inc-capacity").text(data.capacity);
+		var ranges = new Object;
+		ranges.date=bookDate;
+		if(typeof data.allDay == "undefined" || !data.allDay)
+			ranges.hours={start: data.startTime , end: data.endTime};	
+		availableCal.push(data);	
+        shopping.removeFromShoppingCart(itemId, itemType, false, subType, ranges);
+	},
+	getDayFilter : function(event){
+		currentCartFilter={"quantity":0,"myQuantity":0};
+		// GET QUANTITY OF CURRENT CART
+		if(typeof shopping.cart.services != "undefined" 
+			&& typeof shopping.cart.services[subType] != "undefined"
+			&& typeof shopping.cart.services[subType][itemId] != "undefined"
+			&& typeof shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')] != "undefined"){
+			if(event.allDay==true){
+				currentCartFilter.myQuantity=currentCartFilter.myQuantity+shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["countQuantity"];
+			}else{
+				if(typeof shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["hours"] != "undefined"){
+					$.each(shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["hours"],function(e,v){
+						if(v.start==event.startTime && v.end==event.endTime)
+							currentCartFilter.myQuantity=currentCartFilter.myQuantity+v.countQuantity;			
+					});
+				}	
+			}
+		}
+		// GET QUANTITY ALREADY BOOKED
+		//console.log("allBook",allBookings);
+		if(allBookings.length && typeof event.filtered == "undefined"){
+			//console.log("allBookings",allBookings);
+			$.each(allBookings,function(e,v){
+				date=new Date( parseInt(v.date.sec)*1000 );
+				if(moment(date).format('YYYY-MM-DD')==event.start.format('YYYY-MM-DD')){
+					if(event.allDay){
+							currentCartFilter.quantity=currentCartFilter.quantity+parseInt(v.countQuantity);
+					}else{
+						if(typeof v.hours != "undefined"){
+							$.each(v.hours,function(i, hours){
+								if(hours.start==event.startTime && hours.end==event.endTime)
+									currentCartFilter.quantity=currentCartFilter.quantity+parseInt(hours.countQuantity);
+							});
+						}
+					}
+				}
+				//alert(currentCartFilter.quantity);
+			});
+		}
+		return currentCartFilter;
+	},
 	countShoppingCart:function(pos){
 		if(pos != "init"){
 			if(pos)

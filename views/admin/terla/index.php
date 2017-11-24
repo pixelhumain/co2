@@ -21,6 +21,7 @@
 </style>
 
 <div class="col-lg-offset-1 col-lg-10 col-xs-12 no-padding" id="content-social">
+	<?php if(@Yii::app()->session["userIsAdmin"]){ ?>
 	<div class="col-md-10 col-sm-12 col-xs-12 margin-top-20" id="navigationAdmin">
 		<ul class="list-group text-left no-margin">
 		<?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
@@ -62,9 +63,7 @@
 					<?php echo Yii::t("admin", "CITIES", null, Yii::app()->controller->module->id); ?>              
 				</a>
 			</li> -->
-         
-<?php 	} ?>
-		
+		<?php 	} ?>
 		</ul>
 	</div>
 	<div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="goBackToHome">
@@ -78,15 +77,23 @@
             <i class="fa fa-plus"></i> <?php echo Yii::t("common", "Create a circuit") ?></a>
 	</div>
 	<div id="content-view-admin" class="col-md-12 col-sm-12 col-xs-12 no-padding"></div>
+	<?php }else{ ?>
+		<div class="col-md-10 col-sm-10 col-xs-10 alert-danger text-center margin-top-20"><strong><?php echo Yii::t("common","You are not authorized to acces adminastrator panel ! <br/>Connect you or contact us in order to become admin system") ?></strong></div>
+	<?php } ?>
 </div>
 <!-- end: PAGE CONTENT-->
 <script type="text/javascript">
 	//	initKInterface(); 
+	var superAdmin="<?php echo @Yii::app()->session["userIsAdmin"] ?>";
 	var edit=true;
 	var hashUrlPage = "#admin";
 	var subView="<?php echo @$_GET['view']; ?>";
 	jQuery(document).ready(function() {
 		//loadDetail(true);
+		if(superAdmin == ""){
+			urlCtrl.loadByHash("");
+			bootbox.dialog({message:'<div class="alert-danger text-center"><strong><?php echo Yii::t("common","You are not authorized to acces adminastrator panel ! <br/>Connect you or contact us in order to become admin system") ?></strong></div>'});
+		}
 		bindAdminButtonMenu();
 		initKInterface();
 		getAdminSubview(subView);

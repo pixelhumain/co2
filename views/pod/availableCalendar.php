@@ -96,7 +96,7 @@
   if(typeof element.type !="undefined")
   	subType=element.type;
   var templateColor = ["#93be3d", "#eb4124", "#0073b0", "#ed553b", "#df01a5", "#b45f04", "#2e2e2e"];
-  var dateToShow, calendar, $eventDetail, eventClass, eventCategory;
+  var dateToShow, $eventDetail, eventClass, eventCategory;
   var widgetNotes = $('#notes .e-slider'), sliderNotes = $('#readNote .e-slider'), $note;
   var oTable, contributors;
   var subViewElement, subViewContent, subViewIndex;
@@ -104,6 +104,7 @@
   var openingHours=element.openingHours;
   var monthLoad=[];
   var allBookings=[];
+  var availableCal = [];
   jQuery(document).ready(function() {
       showCalendar();
 
@@ -190,7 +191,7 @@ function buildCalObj(eventObj) {
 function showCalendar() {
 	//mylog.info("addTasks2Calendar",events);//,taskCalendar);
 	hiddenDays=[];
-	calendar = [];
+	
 	//$.ajax({});
 	$.each(openingHours, function(e,v){
 		if(v!=""){
@@ -200,7 +201,7 @@ function showCalendar() {
 					endTime=value.closes;
 					if(value.closes=="00:00")
 						value.closes="24:00";
-					calendar.push({
+					availableCal.push({
     					//title:"My repeating event",
     					capacity:element.capacity,
     					start: value.opens, // a start time (10am in this example)
@@ -213,7 +214,7 @@ function showCalendar() {
 					});
 				});
 			}else{
-				calendar.push({
+				availableCal.push({
     					//title:"My repeating event",
     					allDay:true,
     					capacity:element.capacity,
@@ -232,7 +233,7 @@ function showCalendar() {
 	    calendar.push( eventCal );
 	});
 	}*/
-	mylog.log(calendar);
+	mylog.log(availableCal);
 	if(typeof specificDays != "undefined"){}
 	else
 		dateToShow = new Date();
@@ -251,7 +252,7 @@ function showCalendar() {
 		month : dateToShow.getMonth(),
 		date : dateToShow.getDate(),
 		editable : false,
-		events : calendar,
+		events : availableCal,
 		eventColor: '#EF5B34',
 		eventBackgroundColor: '#EF5B34',
 		textColor: '#fff',
@@ -285,128 +286,61 @@ function showCalendar() {
 		    	hoursRender=moment(event.start).format("HH:mm") + ' - '
 		        + moment(event.end).format("HH:mm") + '<br/>';
 		    }
-		    currentCartFilter=getDayFilter(event);
 
-		   	if(typeof event.filtered == "undefined"){
-			    event.capacity=event.capacity-currentCartFilter.quantity-currentCartFilter.myQuantity;
-			    event.filtered=true;
-			}
-		    event.quantity=currentCartFilter.myQuantity;
-		    classQuantity="";
-		    if(event.quantity==0)
-		    	classQuantity="hide";
-		    var new_description =   
-		        hoursRender
-		        + 'Disponible: <span class="inc-capacity">' + event.capacity + '</span><br/>'
-		        +'<a href="javascript:;" class="letter-orange remove-session hide"><i class="fa fa-minus"></i></a>'
-		        +'<span class="eventCountItem margin-left-5 margin-right-5">'
-                    +'<i class="fa fa-shopping-cart"></i>'
-                    +'<span class="inc-session '+classQuantity+' topbar-badge badge animated bounceIn badge-transparent badge-success">'+event.quantity+'</span>'
-                +'</span>'
-		        +'<a href="javascript:;" class="letter-orange add-session"><i class="fa fa-plus"></i></a>';
-		    element.find(".fc-content").html(new_description); 
-		    element.find(".remove-session").on('click', function (e) {
-        		bookDate=event.start.format('YYYY-MM-DD');
-        		event.capacity++;
-        		event.quantity--;
-        		if(event.capacity > 0)
-					element.find(".add-session").removeClass("hide");
-				if(event.quantity === 0){
-					element.find('.remove-session').addClass('hide');
-					element.find('.inc-session').removeClass('badge-success');
-					element.find('.inc-session').addClass('badge-tranparent');
-					element.find(".inc-session").addClass("hide");
-				}else{
-					element.find(".inc-session").html(event.quantity);
-					element.find('.inc-session').removeClass('hide');
-					element.find('.inc-session').addClass('animated bounceIn');
-					element.find('.inc-session').addClass('badge-success');
-					element.find('.inc-session').removeClass('badge-tranparent');
+		    
+		    if(circuit.obj.show){
+		    	currentInCircuit=circuit.getDayFilter(event);
+		    	hideRemove="";
+		    	hideAdd="";
+		    	if(currentInCircuit)
+		    		hideAdd="hide";
+		    	else
+		    		hideRemove="hide";
+		    		var new_description=hoursRender+'<a href="javascript:;" class="btn bg-red remove-session '+hideRemove+'"><i class="fa fa-minus"></i></a>';
+		    		 	new_description+='<a href="javascript:;" class="btn btn-success add-session '+hideAdd+'"><i class="fa fa-plus"></i></a>';
+		    }else{
+		    	currentCartFilter=shopping.getDayFilter(event);
+			   	if(typeof event.filtered == "undefined"){
+				    event.capacity=event.capacity-currentCartFilter.quantity-currentCartFilter.myQuantity;
+				    event.filtered=true;
 				}
-				//element.find(".inc-session").text(event.quantity);
-				element.find(".inc-capacity").text(event.capacity);
-				var ranges = new Object;
-				ranges.date=bookDate;
-				if(typeof event.allDay == "undefined" || !event.allDay)
-					ranges.hours={start: event.startTime , end: event.endTime};	
-				calendar.push(event);	
-		        shopping.removeFromShoppingCart(itemId, itemType, false, subType, ranges);
+			    event.quantity=currentCartFilter.myQuantity;
+			    classQuantity="";
+			    if(event.quantity==0)
+			    	classQuantity="hide";
+		    	var new_description =   
+			        hoursRender
+			        + 'Disponible: <span class="inc-capacity">' + event.capacity + '</span><br/>'
+			        +'<a href="javascript:;" class="letter-orange remove-session hide"><i class="fa fa-minus"></i></a>'
+			        +'<span class="eventCountItem margin-left-5 margin-right-5">'
+	                    +'<i class="fa fa-shopping-cart"></i>'
+	                    +'<span class="inc-session '+classQuantity+' topbar-badge badge animated bounceIn badge-transparent badge-success">'+event.quantity+'</span>'
+	                +'</span>'
+			        +'<a href="javascript:;" class="letter-orange add-session"><i class="fa fa-plus"></i></a>';
+			}
+		    element.find(".fc-content").html(new_description); 
+
+		    element.find(".remove-session").on('click', function (e) {
+		    	if(circuit.obj.show){
+		    		circuit.removeEvent(element, event);
+		    	}else{
+		    		shopping.removeEvent(element, event);
+		    	}
+        		
     		});
     		element.find(".add-session").on('click', function (e) {
-        		bookDate=event.start.format('YYYY-MM-DD');
-				var ranges = new Object;
-				ranges.date=bookDate;
-				event.capacity--;
-        		event.quantity++;
-				if(event.quantity > 0){
-					element.find(".remove-session").removeClass("hide");
-					element.find(".inc-session").html(event.quantity);
-					element.find('.inc-session').removeClass('hide');
-					element.find('.inc-session').addClass('animated bounceIn');
-					element.find('.inc-session').addClass('badge-success');
-					element.find('.inc-session').removeClass('badge-tranparent');
-				}else{
-					element.find('.inc-session').addClass('hide');
-					element.find('.inc-session').removeClass('badge-success');
-					element.find('.inc-session').addClass('badge-tranparent');
-					element.find(".inc-session").addClass("hide");
-				}
-				if(event.capacity === 0){
-					element.find(".add-session").addClass("hide");
-				}
-				//element.find(".inc-session").data("value",event.quantity).text(event.quantity);
-				element.find(".inc-capacity").data("value",event.capacity).text(event.capacity);
-				if(typeof event.allDay == "undefined" || !event.allDay)
-					ranges.hours={start: event.startTime , end: event.endTime};		
-		        shopping.addToShoppingCart(itemId, itemType, subType, ranges);
-		        calendar.push(event);
+    			if(circuit.obj.show){
+		    		circuit.addEvent(element, event);
+		    	}else{
+		    		shopping.addEvent(element, event);
+		    	}
+        		
     		});
 		}
 	});
 	
 	setCategoryColor();
 };
-function getDayFilter(event){
-	currentCartFilter={"quantity":0,"myQuantity":0};
-	// GET QUANTITY OF CURRENT CART
-	if(typeof shopping.cart.services != "undefined" 
-		&& typeof shopping.cart.services[subType] != "undefined"
-		&& typeof shopping.cart.services[subType][itemId] != "undefined"
-		&& typeof shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')] != "undefined"){
-		if(event.allDay==true){
-			currentCartFilter.myQuantity=currentCartFilter.myQuantity+shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["countQuantity"];
-		}else{
-			if(typeof shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["hours"] != "undefined"){
-				$.each(shopping.cart[type][subType][id]["reservations"][event.start.format('YYYY-MM-DD')]["hours"],function(e,v){
-					if(v.start==event.startTime && v.end==event.endTime)
-						currentCartFilter.myQuantity=currentCartFilter.myQuantity+v.countQuantity;			
-				});
-			}	
-		}
-	}
-	// GET QUANTITY ALREADY BOOKED
-	//console.log("allBook",allBookings);
-	if(allBookings.length && typeof event.filtered == "undefined"){
-		//console.log("allBookings",allBookings);
-		$.each(allBookings,function(e,v){
-			date=new Date( parseInt(v.date.sec)*1000 );
-			if(moment(date).format('YYYY-MM-DD')==event.start.format('YYYY-MM-DD')){
-				if(event.allDay){
-						currentCartFilter.quantity=currentCartFilter.quantity+parseInt(v.countQuantity);
-				}else{
-					if(typeof v.hours != "undefined"){
-						$.each(v.hours,function(i, hours){
-							if(hours.start==event.startTime && hours.end==event.endTime)
-								currentCartFilter.quantity=currentCartFilter.quantity+parseInt(hours.countQuantity);
-						});
-					}
-				}
-			}
-			//alert(currentCartFilter.quantity);
-		});
-	}
-	return currentCartFilter;
-}
 function setCategoryColor(tab){
 	$(".fc-content").css("color", "white");
 	$(".fc-content").addClass("text-center");

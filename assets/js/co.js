@@ -3213,14 +3213,21 @@ var dyFInputs = {
 				mylog.log("key", key);
 				if( typeof typeObj[key].dynForm != "undefined" ){
 
-					// if(typeof typeObj[key].dynForm.jsonSchema.afterSave != "undefined"){
-					// 	mylog.log("here");
-					// 	typeObj[key].dynForm.jsonSchema.properties.afterSave = function(){
-					// 		mylog.log("here2", uploadObj.gotoUrl);
-					// 		dyFObj.closeForm(); 
-					// 		window.location.href = uploadObj.gotoUrl;
-					// 	};
-					// }
+					if(typeof typeObj[key].dynForm.jsonSchema.afterSave != "undefined"){
+						mylog.log("here network");
+						typeObj[key].dynForm.jsonSchema.afterSave = function(data){
+							mylog.log("here2 network", uploadObj.gotoUrl);
+							if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
+						    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+						    else { 
+					          dyFObj.closeForm(); 
+					          urlCtrl.loadByHash( uploadObj.gotoUrl );
+					        }
+					        showMapNetwork(false);
+					  //       mapElements.push(data.map);
+							// contextMapNetwork.push(data.map);
+						};
+					}
 
 
 					if(typeof networkJson.request.sourceKey != "undefined"){

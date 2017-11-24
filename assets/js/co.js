@@ -3212,6 +3212,17 @@ var dyFInputs = {
 			$.each(networkJson.add, function(key, v) {
 				mylog.log("key", key);
 				if( typeof typeObj[key].dynForm != "undefined" ){
+
+					// if(typeof typeObj[key].dynForm.jsonSchema.afterSave != "undefined"){
+					// 	mylog.log("here");
+					// 	typeObj[key].dynForm.jsonSchema.properties.afterSave = function(){
+					// 		mylog.log("here2", uploadObj.gotoUrl);
+					// 		dyFObj.closeForm(); 
+					// 		window.location.href = uploadObj.gotoUrl;
+					// 	};
+					// }
+
+
 					if(typeof networkJson.request.sourceKey != "undefined"){
 						sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
 						typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;

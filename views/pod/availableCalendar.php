@@ -71,12 +71,10 @@
 <!-- *** SHOW CALENDAR *** -->
 <div class="modal fade" id="modal-available" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
-		<div class="modal-content col-md-12">
-			<div class="modal-header">
-			</div>
-			<div class="modal-body">
+		<div class="modal-content col-md-12 col-sm-12 col-xs-12" style="margin-top: 75px;">
+			<div class="modal-body no-padding">
 				<div class="row no-padding bg-light">
-					<div id="showCalendar" class="col-md-12">
+					<div id="showCalendar" class="col-md-12 col-sm-12 col-xs-12">
 					  	<div class="row">
 							<div class="panel panel-white">
 						    	<div class="panel-body boder-light">

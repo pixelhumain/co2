@@ -14,7 +14,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 ?>
 <style type="text/css">
 	.headerTitleStanalone{
-		padding-top: 5px;
+		padding-top: 20px;
 		padding-right: 50px;
 		left:-25px;
 		right:-25px;
@@ -30,6 +30,9 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 		padding: 15px 0px;
     	text-transform: inherit;
     	font-size: 20px;
+	}
+	.podDash{
+		margin-top: 40px;
 	}
 	.podDash .nav{
 		display: inline-block;
@@ -96,8 +99,15 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 </style>
 <div class="headerTitleStanalone">
 	<span class="pull-left">Dashboard of your <?php echo $type ?> : <?php echo $element["name"] ?></span> 
+	<!-- BUTTON FOR PROFESSIONAL USER USING
 	<a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>.view.prolist" class="lbh btn bg-white margin-left-10 pull-right">
-		<i class="fa fa-sign-out"></i> Back to my account</a>
+		<i class="fa fa-sign-out"></i> Back to my account</a>-->
+
+	<!-- BUTTON FOR ADMIN MANAGAGE -->
+	<?php if(@Yii::app()->session["userIsAdmin"]){ ?>
+	<a href="#admin.view.services" class="lbh btn bg-white margin-left-10 pull-right">
+		<i class="fa fa-sign-out"></i> Back to service list</a>
+	<?php } ?>
 	<a href="#page.type.<?php echo $type ?>.id.<?php echo (string)$element["_id"] ?>.view.show" class="lbhp btn bg-dark margin-left-10 pull-right" data-modalshow="<?php echo (string)$element["_id"] ?>">
 		<i class="fa fa-eye"></i> Preview</a>
 </div>
@@ -112,7 +122,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 		</div>
 	</div>
 	<?php } ?>
-	<div class="podDash col-md-12 margin-top-20">
+	<div class="podDash col-md-12 col-sm-12 col-xs-12">
 		<ul class="nav pull-left">
 		  <li class="nav-item active">
 		    <a class="nav-link" href="javascript:;" id="btn-detail"><?php echo Yii::t("common","Infos") ?></a>

@@ -17,6 +17,7 @@ class AdminController extends CommunecterController {
 	public function actions(){
 	    return array(
 	        'directory'   => 'citizenToolKit.controllers.admin.DirectoryAction',
+	        'circuits'   => 'citizenToolKit.controllers.admin.CircuitsAction',
 	        'mailerrordashboard'   => 'citizenToolKit.controllers.admin.MailErrorDashboardAction',
 	        'switchto'    => 'citizenToolKit.controllers.admin.SwitchtoAction',
 	        'delete'      => 'citizenToolKit.controllers.admin.DeleteAction',
@@ -47,10 +48,15 @@ class AdminController extends CommunecterController {
 	}
 
 
-    public function actionIndex(){
+    /*public function actionIndex($view=null){
 		CO2Stat::incNbLoad("co2-admin");   
-        $params = array();
-        echo $this->renderPartial("index", $params, true);
-	}
+        $params = array(
+        	"view" => @$view,
+        );
+        $dir="";
+        if(Yii::app()->params["CO2DomainName"] == "terla")
+            $dir="terla/";
+        echo $this->renderPartial($dir."index", $params, true);
+	}*/
 	
 }

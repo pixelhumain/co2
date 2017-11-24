@@ -27,7 +27,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 		padding: 15px 0px;
     	text-transform: inherit;
     	font-size: 20px;
-    	margin-top:100px;
+    	margin-top:20px;
 	}
 	/*.carousel-media > ol > li.active{
 	   margin:1px;
@@ -99,9 +99,9 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 
 </style>
 
-<header>
-<div class="container">
-    <div class="headerTitle"> <?php echo ucfirst($element["parent"]["name"]) ?></div>
+<header style="position: fixed;width: 100%;left: 0;height: 70px;z-index: 3;">
+<div class="container" style="padding:0px">
+    <div class="headerTitle" style=""> <?php echo ucfirst($element["name"]) ?></div>
 </div>
 </header>
 
@@ -167,7 +167,12 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 					Suspendisse feugiat dui magna, vel molestie mauris porttitor quis. Vivamus et pulvinar mi, vel dictum mauris. Donec sapien sem, gravida eu arcu sit amet, ullamcorper faucibus tellus. Duis non odio non nisi laoreet egestas vel sed tortor. Nullam lectus orci, hendrerit eget malesuada fermentum, blandit quis nunc. Quisque laoreet aliquam nisi eget aliquam. Nulla sapien enim, gravida in ex eu, ultricies commodo ipsum. Donec orci libero, dictum vel enim ut, auctor interdum mauris. -->
 				</span>
 			</div>
-			<div class="col-md-3 pull-right padding-20 margin-top-20">
+			<?php if(@Yii::app()->session["isSuperAdmin"]){ ?>
+				<div class="col-md-3 pull-right padding-20 margin-top-20 btn-admin-add-circuit">
+				</div>
+			<?php } ?>
+			<!-- SYSTEM OF PRODUCT AND SERVICE FOR TRAVEL RESERVATION WITHOUT CIRCUIT -->
+			<!-- <div class="col-md-3 pull-right padding-20 margin-top-20">
 				<?php if($type==Service::COLLECTION){ ?>
 					<a href="javascript:;" class="col-md-12 btn bg-orange ssmla btn-available-calendar pull-right" 
 						data-toggle="modal" 
@@ -177,7 +182,8 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 				<?php } else { ?>
 					<a href="javascript:;" class="btn bg-orange" onclick="addToShoppingCart('<?php echo (string)$element["_id"] ?>','<?php echo $type ?>');">Buy it</a>
 				<?php } ?>
-			</div>
+			</div>-->
+			<!-- END BUTTON PROPOSAL FOR TRAVELLER FREE OF ACTION -->
 		</div>
 		<div id="commentElement" class="col-xs-12 margin-top-20">
 		</div>
@@ -243,7 +249,38 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
  			}, 300);
       		//$('#calendar').fullCalendar('gotoDate', new Date());
       	});
+      	if($(".btn-admin-add-circuit").length > 0)
+      		initBtnAddToCircuit();
 	});
+	function initBtnAddToCircuit(){
+		if(circuit.obj.frequency=="unique"){
+			btn='<a href="javascript:;" class="col-md-12 btn bg-orange ssmla btn-add-circuit pull-right" '+
+						'data-toggle="modal" '+ 
+						'data-target="#modal-available">'+
+								'Add to circuit'+
+					'</a>';
+		}else if(circuit.obj.frequency=="weekly"){
+			btn='<a href="javascript:;" class="col-md-12 btn bg-orange ssmla btn-add-circuit pull-right" '+
+						'data-toggle="modal" '+ 
+						'data-target="#modal-available">'+
+								'Add to circuit'+
+					'</a>';
+		}else if(circuit.obj.frequency=="twoweekly"){
+			btn='<a href="javascript:;" class="col-md-12 btn bg-orange ssmla btn-add-circuit pull-right" '+
+						'data-toggle="modal" '+ 
+						'data-target="#modal-available">'+
+								'Add to circuit'+
+					'</a>';
+		}
+		else if(circuit.obj.frequency=="monthly"){
+			btn='<a href="javascript:;" class="col-md-12 btn bg-orange ssmla btn-add-circuit pull-right" '+
+						'data-toggle="modal" '+ 
+						'data-target="#modal-available">'+
+								'Add to circuit'+
+					'</a>';
+		}
+		$(".btn-admin-add-circuit").append(btn);
+	}
 	
 	
 </script>

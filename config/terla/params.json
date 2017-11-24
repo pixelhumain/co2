@@ -135,7 +135,7 @@
 			"open" : false, 
 			"subdomain" : "admin", 
 			"subdomainName" : "admin",
-			"hash":"#admin",
+			"hash":"#app.admin",
 			"icon" : "university", 
 			"mainTitle" : "Partie Admin",
 			"placeholderMainSearch" : "Admin ..."

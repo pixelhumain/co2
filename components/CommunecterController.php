@@ -103,6 +103,7 @@ class CommunecterController extends Controller
       "createfile" => array("href" => "/ph/co2/admin/createfile"),
       "mailerrordashboard" => array("href" => "/ph/co2/admin/mailerrordashboard"),
       "cities" => array("href" => "/ph/co2/admin/cities"),
+      "circuits" => array("href" => "/ph/co2/admin/circuits"),
     ),
     
     "adminpublic" => array(
@@ -532,7 +533,7 @@ class CommunecterController extends Controller
       "agenda"            => array('href' => "/ph/co2/app/agenda",            "public" => true),
       "power"             => array('href' => "/ph/co2/app/power",             "public" => true),
       "superadmin"        => array('href' => "/ph/co2/app/superadmin",        "public" => false),
-      "admin"             => array('href' => "/ph/co2/app/admin",             "public" => false),
+      "admin"             => array('href' => "/ph/co2/app/admin",             "public" => true),
       "info"              => array('href' => "/ph/co2/app/info",              "public" => true),
       "smartconso"          => array('href' => "/ph/co2/app/smartconso",      "public" => true),
       "city"              => array('href' => "/ph/co2/app/city",              "public" => false),

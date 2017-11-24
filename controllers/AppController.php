@@ -186,10 +186,15 @@ class AppController extends CommunecterController {
     	echo $this->renderPartial("search", $params, true);
 	}
 
-    public function actionAdmin(){
+    public function actionAdmin($view=null){
         CO2Stat::incNbLoad("co2-admin");   
-        $params = array();
-        echo $this->renderPartial("admin", $params, true);
+         $params = array(
+            "view" => @$view,
+        );
+        $dir="";
+        if(Yii::app()->params["CO2DomainName"] == "terla")
+            $dir="terla/";
+        echo $this->renderPartial("../admin/".$dir."index", $params, true);
     }
 
     public function actionChat(){

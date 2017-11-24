@@ -9,9 +9,9 @@ $cssAnsScriptFilesModule = array(
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->getRequest()->getBaseUrl(true));
 $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 //header + menu
-$this->renderPartial($layoutPath.'header', 
+/*$this->renderPartial($layoutPath.'header', 
                     array(  "layoutPath"=>$layoutPath , 
-                            "page" => "admin") ); 
+                            "page" => "admin") );*/ 
 ?>
 <div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -26,11 +26,14 @@ $this->renderPartial($layoutPath.'header',
     </div>
 	<div class="panel-heading border-light">
 		<h4 class="panel-title"><i class="fa fa-globe fa-2x text-green"></i> Filtered by types : </h4>
-		<a href="javascript:;" onclick="applyStateFilter('<?php echo Person::COLLECTION ?>')" class="filter<?php echo Person::COLLECTION ?> btn btn-xs btn-default active btncountsearch"> People <span class="badge badge-warning countPeople" id="countcitoyens"> <?php echo @$results["count"]["citoyens"] ?></span></a>
+		<?php foreach ($typeDirectory as $value) { ?>
+			<a href="javascript:;" onclick="applyStateFilter('<?php echo $value ?>')" class="filter<?php echo $value ?> btn btn-xs btn-default active btncountsearch"> <?php echo $value ?> <span class="badge badge-warning countPeople" id="count<?php echo $value ?>"> <?php echo @$results["count"][$value] ?></span></a>
+		<?php } ?>
+		<!--<a href="javascript:;" onclick="applyStateFilter('<?php echo Person::COLLECTION ?>')" class="filter<?php echo Person::COLLECTION ?> btn btn-xs btn-default active btncountsearch"> People <span class="badge badge-warning countPeople" id="countcitoyens"> <?php echo @$results["count"]["citoyens"] ?></span></a>
 		<a href="javascript:;" onclick="applyStateFilter('<?php echo Organization::COLLECTION ?>')" class="filter<?php echo Organization::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Organizations <span class="badge badge-warning countOrganizations" id="countorganizations"> <?php echo @$results["count"]["organizations"] ?></span></a> 
 		<a href="javascript:;" onclick="applyStateFilter('<?php echo Event::COLLECTION ?>')" class="filter<?php echo Event::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Events <span class="badge badge-warning countEvents" id="countevents"> <?php echo @$results["count"]["events"] ?></span></a> 
 		<a href="javascript:;" onclick="applyStateFilter('<?php echo Project::COLLECTION ?>')" class="filter<?php echo Project::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Projects <span class="badge badge-warning countProjects" id="countprojects"> <?php echo @$results["count"]["projects"] ?></span></a>
-		<!--<a href="javascript:;" onclick="clearAllFilters('')" class="btn btn-xs btn-default"> All</a></h4>-->
+		<a href="javascript:;" onclick="clearAllFilters('')" class="btn btn-xs btn-default"> All</a></h4>-->
 	</div>
 	<!--<div class="panel-tools padding-20">
 		<?php if( Yii::app()->session["userId"] ) { ?>
@@ -109,9 +112,6 @@ $this->renderPartial($layoutPath.'header',
 					?>
 				</tbody>
 			</table>
-
-
-			<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 0px; display: none;"><div class="ps-scrollbar-x" style="left: -10px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 230px; display: inherit;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div>
 			<?php 
 				/*if (isset($organizations) && count($organizations) == 0) {
 			?>
@@ -139,17 +139,19 @@ var contextMap = {
 	"scopes" : <?php echo json_encode($scopes) ?>,
 };
 var results = <?php echo json_encode($results) ?>;
+var initType = <?php echo json_encode($typeDirectory) ?>;
 var betaTest= "<?php echo @Yii::app()->params['betaTest'] ?>";
 var icons = {
 	organizations : "fa-group",
 	projects : "fa-lightbulb-o",
 	events : "fa-calendar",
 	citoyens : "fa-user",
+	services : "fa-sun-o",
 };
 var search={
 	value:"",
 	page:"",
-	type:"<?php echo Person::COLLECTION ?>"
+	type:initType[0]
 };
 jQuery(document).ready(function() {
 	setTitle("Espace administrateur : Répertoire","cog");

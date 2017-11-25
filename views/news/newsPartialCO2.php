@@ -85,13 +85,18 @@ foreach($news as $key => $media){
     </div>
     <div class="timeline-panel"
          id="nbAbuse<?php echo @$media["reportAbuseCount"]; ?>">
-         <?php if( @$media["reportAbuseCount"] >= 3){ ?>
+         <?php if( @$media["reportAbuseCount"] >= 1){ ?>
          <h6>
-            <small class="pull-left margin-left-10 letter-red">
+            <small class="pull-left margin-left-10 letter-orange">
               <i class="fa fa-flag"></i> Ce contenu a été signalé <?php echo @$media["reportAbuseCount"]; ?> fois !<br>
-              <b>participez à la modération en signalant le contenu<br>qui vous semble innaproprié</b>
+              <b>participez à la modération en signalant le contenu qui vous semble innaproprié</b>
             </small>
          </h6>
+         <button class="btn btn-link bg-orange pull-right margin-right-10 btn-start-moderation"
+                 data-newsid="<?php echo @$media["_id"]; ?>" 
+                 data-toggle="modal" data-target="#modal-moderation">
+            <i class="fa fa-balance-scale"></i> Modération
+        </button>
          <?php } ?>
       <?php 
         $this->renderPartial('../news/timeline-panel', 
@@ -247,6 +252,11 @@ foreach($news as $key => $media){
     <?php if(sizeof($news)==0){ ?>
         scrollEnd = true;
       <?php } ?>
+
+      $(".btn-start-moderation").off().click(function(){
+        var newsid = $(this).data("newsid");
+        uiModeration.getNewsToModerate(newsid);
+      });
 
       initBtnLink();
   });

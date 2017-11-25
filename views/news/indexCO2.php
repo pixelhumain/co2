@@ -30,17 +30,19 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
       '/js/news/autosize.js',
       '/js/news/newsHtml.js',
       '/js/menus/multi_tags_scopes.js',
+      '/js/cooperation/uiModeration.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
 
     $cssAnsScriptFilesModule = array(
       '/css/news/newsSV.css',
+      '/css/cooperation.css',
       '/js/comments.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule,Yii::app()->theme->baseUrl."/assets");
 
-    $timezone = 'Pacific/Noumea';
+    $timezone = "";
 		$pair = false;
     $nbCol = @$nbCol ? $nbCol : 2;
 
@@ -93,7 +95,9 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
 <script type="text/javascript" >
 var updateNews= new Object;
 </script>
-<div class="col-md-12 col-sm-12 col-xs-12 no-padding margin-bottom-15" style="<?php if(!@isLive){ ?>padding-left:25px!important;<?php } ?>">
+<div class="col-md-12 col-sm-12 col-xs-12 no-padding margin-bottom-15" 
+     style="<?php if(!@isLive){ ?>padding-left:25px!important;<?php } ?>">
+
   <?php //var_dump($params); 
         $params = array(
                   "type" => $type,
@@ -106,21 +110,26 @@ var updateNews= new Object;
           );
         $this->renderPartial('formCreateNewsCO2', $params);
   ?>
-  </div>
+</div>
 
 <ul class="timeline inline-block" id="news-list">
   
-    <?php $this->renderPartial('newsPartialCO2', array("news"=>$news,
-                                                       "pair"=>$pair,
-                                                       "nbCol"=>$nbCol,
-                                                       "timezone"=>$timezone,
-                                                       "imgDefault" => $imgDefault,
-                                                       "contextParentId" => $contextParentId,
-                                                       "contextParentType" => $contextParentType,
-                                                       "canManageNews" => @$canManageNews,
-                                                       "isLive" => @$isLive,
-                                                       "isFirst"=>true)); ?>
+    <?php $this->renderPartial('newsPartialCO2', 
+                          array( "news"=>$news,
+                                 "pair"=>$pair,
+                                 "nbCol"=>$nbCol,
+                                 "timezone"=>$timezone,
+                                 "imgDefault" => $imgDefault,
+                                 "contextParentId" => $contextParentId,
+                                 "contextParentType" => $contextParentType,
+                                 "canManageNews" => @$canManageNews,
+                                 "isLive" => @$isLive,
+                                 "isFirst"=>true)); ?>
 </ul>
+
+
+<?php $this->renderPartial('modalModeration', array()); ?>
+
 
 <script type="text/javascript" >
   var news = <?php echo json_encode($news); ?>;

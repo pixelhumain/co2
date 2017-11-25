@@ -6,6 +6,7 @@
 	$hasVote = @$proposal["votes"] ? Cooperation::userHasVoted($myId, $proposal["votes"]) : false; 
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $proposal["parentType"], $proposal["parentId"]);
 	
+	if(@$proposal["idParentRoom"])
 	$parentRoom = Room::getById($proposal["idParentRoom"]);
 
 	$totalVotant = Proposal::getTotalVoters($proposal);
@@ -36,13 +37,14 @@
 	</div>
 <?php exit; } ?>
 
-
+<?php if(@$proposal["idParentRoom"]){ ?>
 <div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
   	<h4 class="letter-turq load-coop-data title-room" 
   		data-type="room" data-dataid="<?php echo @$proposal["idParentRoom"]; ?>">
   		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
 	</h4>
 </div>
+<?php } ?>
 
 
 <div class="col-lg-5 col-md-6 col-sm-6">
@@ -481,7 +483,7 @@
 	var parentTypeElement = "<?php echo $proposal['parentType']; ?>";
 	var parentIdElement = "<?php echo $proposal['parentId']; ?>";
 	var idParentProposal = "<?php echo $proposal['_id']; ?>";
-	var idParentRoom = "<?php echo $proposal['idParentRoom']; ?>";
+	var idParentRoom = "<?php echo @$proposal['idParentRoom']; ?>";
 	var msgController = "<?php echo @$msgController ? $msgController : ''; ?>";
 
 	currentRoomId = idParentRoom;

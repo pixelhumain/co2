@@ -1,4 +1,17 @@
+<?php 
 
+ $cssAnsScriptFilesModule = array(
+    '/js/default/calendar.js',
+  );
+  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+
+  $cssAnsScriptFilesTheme = array(
+    '/plugins/fullcalendar/fullcalendar/fullcalendar.min.js',
+    '/plugins/fullcalendar/fullcalendar/fullcalendar.css', 
+    '/plugins/fullcalendar/fullcalendar/locale/'.Yii::app()->language.'.js',
+  );
+  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
+?>
 <style type="text/css">
 	#circuit .headerTitleStanalone{
 		left:-25px;
@@ -122,6 +135,7 @@
 <script type="text/javascript">
     var totalCart=0;
     var openDetails=[];
+    var eventsCircuit=[];
 	jQuery(document).ready(function() {	
         //if(typeof params.name != "undefined" && params.name != "")
       initBtnLink();
@@ -135,6 +149,13 @@
       }
       circuit.initHeaderCircuit();
       $(".contentCircuit").html(htmlCircuit);
+      if(notEmpty(eventsCircuit)){
+        calendar.showCalendar(".contentCalendarCircuit", eventsCircuit);
+        $(window).on('resize', function(){
+          $(".contentCalendarCircuit").fullCalendar('destroy');
+          calendar.showCalendar(".contentCalendarCircuit", eventsCircuit, "agendaWeek");
+        });
+      }
 //      bindCartEvent();
     });
     

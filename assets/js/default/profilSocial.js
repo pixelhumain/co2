@@ -763,8 +763,8 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			calendar.init("#profil-content-calendar");
 			calendar.showCalendar("#profil-content-calendar", data);
      		$(window).on('resize', function(){
-  				$('#calendar').fullCalendar('destroy');
-  				calendar.showCalendar("#profil-content-calendar", data);
+  				$("#profil-content-calendar").fullCalendar('destroy');
+  				calendar.showCalendar("#profil-content-calendar", data, "month");
   			});
 	     	/*$(".fc-button").on("click", function(e){
 	      		calendar.setCategoryColor();

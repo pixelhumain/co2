@@ -188,7 +188,7 @@ class AppController extends CommunecterController {
 
     public function actionAdmin($view=null){
         CO2Stat::incNbLoad("co2-admin");   
-         $params = array(
+        $params = array(
             "view" => @$view,
         );
         $dir="";

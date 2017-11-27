@@ -167,7 +167,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 					Suspendisse feugiat dui magna, vel molestie mauris porttitor quis. Vivamus et pulvinar mi, vel dictum mauris. Donec sapien sem, gravida eu arcu sit amet, ullamcorper faucibus tellus. Duis non odio non nisi laoreet egestas vel sed tortor. Nullam lectus orci, hendrerit eget malesuada fermentum, blandit quis nunc. Quisque laoreet aliquam nisi eget aliquam. Nulla sapien enim, gravida in ex eu, ultricies commodo ipsum. Donec orci libero, dictum vel enim ut, auctor interdum mauris. -->
 				</span>
 			</div>
-			<?php if(@Yii::app()->session["isSuperAdmin"]){ ?>
+			<?php if(@Yii::app()->session["userIsAdmin"]){ ?>
 				<div class="col-md-3 pull-right padding-20 margin-top-20 btn-admin-add-circuit">
 				</div>
 			<?php } ?>
@@ -242,19 +242,20 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 				initialRating: element.averageRating
 			});
 		}
-		$(".btn-available-calendar").click(function(){
+		if($(".btn-admin-add-circuit").length > 0)
+      		initBtnAddToCircuit();
+		$(".btn-available-calendar").off().on("click",function(){
       		setTimeout(function(){
  		 		$('#calendar').fullCalendar('gotoDate', new Date());
  		 		setCategoryColor();
  			}, 300);
-      		//$('#calendar').fullCalendar('gotoDate', new Date());
+      		$('#calendar').fullCalendar('gotoDate', new Date());
       	});
-      	if($(".btn-admin-add-circuit").length > 0)
-      		initBtnAddToCircuit();
+      	
 	});
 	function initBtnAddToCircuit(){
 		if(circuit.obj.frequency=="unique"){
-			btn='<a href="javascript:;" class="col-md-12 btn bg-orange ssmla btn-add-circuit pull-right" '+
+			btn='<a href="javascript:;" class="col-md-12 btn bg-orange ssmla btn-available-calendar pull-right" '+
 						'data-toggle="modal" '+ 
 						'data-target="#modal-available">'+
 								'Add to circuit'+

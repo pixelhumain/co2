@@ -54,6 +54,17 @@ var circuit = {
 				incCart=false;
 			}
 			if(typeof ranges != "undefined" && notNull(ranges)){
+				if(circuit.obj.frequency=="unique"){
+					if(circuit.obj.start==""){
+						circuit.obj.start=ranges.date;
+						circuit.obj.end=ranges.date;
+					}
+					else if(moment(ranges.date,"YYYY-MM-DD") < moment(circuit.obj.start,"YYYY-MM-DD")){
+						circuit.obj.start=ranges.date;
+					}else if(moment(ranges.date,"YYYY-MM-DD") > moment(circuit.obj.end,"YYYY-MM-DD")){
+						circuit.obj.end=ranges.date;
+					}
+				}
 				if(typeof circuit.obj.services[type][id]["reservations"] == "undefined")
 				 	circuit.obj.services[type][id]["reservations"]=new Object;
 
@@ -83,31 +94,6 @@ var circuit = {
 					}
 				}
 			}
-			/*}else{
-				if(typeof shopping.cart[type][id] == "undefined"){
-					params={
-						name : element.name,
-						providerId : element.parentId,
-						providerType : element.parentType,
-						providerName : element.name,
-						price : element.price,
-						countQuantity:1
-					};
-					if(typeof element.imgProfil != "undefined")
-						params.imgProfil=element.imgProfil;	
-					if(typeof element.description != "undefined")
-						params.description=element.description;
-					if(typeof element.capacity != "undefined")
-						params.capacity=element.capacity;
-					if(notNull(subType))
-						params.type=subType;
-					shopping.cart[type][id]={};
-					shopping.cart[type][id]=params;
-				}else{
-					shopping.cart[type][id].countQuantity++;
-					incCart=false;
-				}
-			}*/
 			if(incCart)
 				circuit.countCircuit(true);
 			localStorage.setItem("circuit",JSON.stringify(circuit.obj));
@@ -311,30 +297,6 @@ var circuit = {
         itemId=key;
         itemType=type;
         s=(data.countQuantity > 1) ? "s" : "";
-        var circuitEvent={
-        		"name":data.name,
-        		"typeEvent":"others",
-                "id" : key,
-                "description" : (data.description && data.description != "" ) ? data.description : "",
-               	"allDay" : true,
-                "type": "others",
-                "shortDescription": (data.description && data.description != "" ) ? checkAndCutLongString(data.description,120) : "",
-                "profilMediumImageUrl": "",
-                "imgProfil":data.imgProfil,
-                "adresse": "",  
-                "startDate":"",
-                "endDate":"",    
-                "startTs":"",
-                "endTs":"",
-
-        };
-         /*"start" : startDate.format(),
-                "end" : ( endDate ) ? endDate.format() : startDate.format(),
-                "startDate" : eventObj.startDate,
-                "endDate" : eventObj.endDate,
-                "startDateDB" : eventObj.startDateDB,
-                "endDateDB" : eventObj.endDateDB,
-               */
         itemHtml="<div class='col-md-12 col-sm-12 col-xs-12 contentProduct contentProduct"+itemId+" text-left'>"+
                 "<div class='col-md-3 col-sm-3 col-xs-3 no-padding text-center' style='line-height:120px;'>"+data.imgProfil+"</div>"+
                 "<div class='col-md-7 col-sm-7 col-xs-7'>"+
@@ -349,12 +311,18 @@ var circuit = {
                 if(typeof data.reservations != "undefined"){
             itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 dateHoursDetail no-padding'>"; 
                     $.each(data.reservations, function(date, value){
+                    	if(circuit.obj.frequency=="unique"){
+							if(typeof circuit.obj.start == "undefined" || circuit.obj.start==""){
+								circuit.obj.start=date;
+								circuit.obj.end=date;
+							}
+							else if(moment(date).unix() < moment(circuit.obj.start).unix())
+								circuit.obj.start=date;
+							else if(moment(date).unix() < moment(circuit.obj.end).unix())
+								circuit.obj.end=date;
+						}
                         dateStr=directory.getDateFormated({startDate:date}, true);
-                        console.log("dateInside",date);
                         arrayDate=date.split("-");
-                        //arrayDateEnd=date.split("-");
-                        //dateCalStart=
-                        //dateCalEnd=date;
             itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 bookDate"+date+" shadow2 margin-bottom-10'>"+
                             "<div class='col-md-12 col-sm-12 col-xs-12 dateHeader'>"+
                                 "<h4 class='pull-left margin-bottom-5 no-margin col-md-5 col-sm-5 col-xs-5 no-padding'><i class='fa fa-calendar'></i> "+dateStr+"</h4>"+
@@ -365,35 +333,26 @@ var circuit = {
                             "</div>";
                             
                         if(typeof value.hours != "undefined"){
-                            //countSession=Object.keys(value.hours).length;
-                            //s=(countSession > 1) ? "s" : "";
-                            //itemHtml += "<span>"+countSession+" session"+s+"</span><br/>";
-                           // alert(date);
                             $.each(value.hours, function(key, hours){
                                 s=(hours.countQuantity > 1) ? "s" : "";
                                 startHours=hours.start.split(":");
                         		endHours=hours.end.split(":");
-                        		circuitEvent.allDay=false;
-                        		console.log("dateInside",date);
-
-                        		console.log(arrayDate);
-                        		console.log("eventCircuitBefore",circuitEvent);
-
-                        		circuitEvent.startDate=moment(date+" "+hours.start, "YYYY-MM-DD HH:mm");//new Date(arrayDate[0],arrayDate[1]-1,arrayDate[2],startHours[0],startHours[1]);
-                        		circuitEvent.endDate=moment(date+" "+hours.end, "YYYY-MM-DD HH:mm");//new Date(arrayDate[0],arrayDate[1]-1,arrayDate[2],endHours[0],endHours[1]);
-                        		//console.log('tsstartgood',circuitEvent.startDate.getTime());
-                        		//console.log('tsendgood',circuitEvent.endDate.getTime());
-                        		console.log('tsstartstring',circuitEvent.startDate.toString());
-                        		console.log('tsendstring',circuitEvent.endDate.toString());
-                        		
-                        		//circuitEvent.startTs=circuitEvent.startDate.getTime();
-                        		//circuitEvent.endTs=circuitEvent.endDate.getTime();
-                        		circuitEvent.startTostr=circuitEvent.startDate.toString();
-                        		circuitEvent.endTostr=circuitEvent.endDate.toString();
-                        		console.log("eventStart",circuitEvent.startDate);
-                        		console.log("eventEnd",circuitEvent.endDate);
-                        		console.log("eventCircuitAfter",circuitEvent);
-                        		eventsCircuit.push(circuitEvent);
+                                newObject=new Object;
+                        		newObject={
+					        		"name":data.name,
+					        		"typeEvent":"others",
+					                "id" : key,
+					                "description" : (data.description && data.description != "" ) ? data.description : "",
+					               	"allDay" : false,
+					                "type": "others",
+					                "shortDescription": (data.description && data.description != "" ) ? checkAndCutLongString(data.description,120) : "",
+					                "profilMediumImageUrl": "",
+					                "imgProfil":data.imgProfil,
+					                "adresse": "",  
+					                "startDate":new Date(arrayDate[0],arrayDate[1]-1,arrayDate[2],startHours[0],startHours[1]),
+					                "endDate":new Date(arrayDate[0],arrayDate[1]-1,arrayDate[2],endHours[0],endHours[1]),    
+					        	};
+                        		eventsCircuit.push(newObject);
             itemHtml +=         "<div class='col-md-12 col-sm-12 col-xs-12 margin-bottom-5 padding-5 contentHoursSession'>"+
                                     "<h4 class='col-md-4 col-sm-4 col-xs-3 no-padding no-margin'><i class='fa fa-clock-o'></i> "+hours.start+" - "+hours.end+"</h4>"+
                                     "<div class='pull-right'>"+
@@ -404,15 +363,23 @@ var circuit = {
                                 "</div>";
                             });
                         }else{
-                        	circuitEvent.allDay=true;
-                        	//arrayDate=date.split("-");
-                        	//alert("sinHours");
-                        	console.log("iciiii");
-                        	circuitEvent.startDate=new Date(arrayDate[0],arrayDate[1]-1,arrayDate[2]);
-                        	circuitEvent.endDate=new Date(arrayDate[0],arrayDate[1]-1,arrayDate[2]);
-                        	console.log("eventCircuit",circuitEvent);
-                        	eventsCircuit.push(circuitEvent);
-                        	//alert("endHours");
+                        	newObject=new Object;
+                        	newObject=new Object;
+                        	newObject={
+				        		"name":data.name,
+				        		"typeEvent":"others",
+				                "id" : key,
+				                "description" : (data.description && data.description != "" ) ? data.description : "",
+				               	"allDay" : true,
+				                "type": "others",
+				                "shortDescription": (data.description && data.description != "" ) ? checkAndCutLongString(data.description,120) : "",
+				                "profilMediumImageUrl": "",
+				                "imgProfil":data.imgProfil,
+				                "adresse": "",  
+				                "startDate":new Date(arrayDate[0],arrayDate[1]-1,arrayDate[2]),
+				                "endDate":new Date(arrayDate[0],arrayDate[1]-1,arrayDate[2]),    
+					        };
+                        	eventsCircuit.push(newObject);
                         }
             itemHtml += "</div>"; 
                     }); 
@@ -505,36 +472,25 @@ var circuit = {
               dataType: "json"
 	        });
     	}else{
-	        bootbox.prompt({
-	            title: "Give a name to the saving cart:", 
-	            value : "Backup of "+moment(new Date()).format('DD-MM-YYYY HH:MM'), 
-	            callback : function(result){ 
-	                params={
-	                	name:result,
-	                	type:"shoppingCart",
-	                	totalPrice:shopping.totalCart,
-	                	currency:"EUR",
-	                	object:shopping.cart
-	                };
-	                $.ajax({
-	                  type: "POST",
-	                  url: baseUrl+"/"+moduleId+"/backup/save", 
-	                  data: params,
-	                  success: function(data){
-	                    if(data.result) {
-	                        toastr.success(data.msg);
-                    		circuit.obj=circuit.init();
-                    		localStorage.removeItem("circuit");
-                    		circuit.countCircuit("init");
-                    		urlCtrl.loadByHash("#admin.view.circuits");
-	                    }
-	                    else
-	                        toastr.error(data.msg);  
-	                  },
-	                  dataType: "json"
-	                });
-	            }
-	        })
+	        params=circuit.obj;
+	        params.type="circuits";
+            $.ajax({
+              type: "POST",
+              url: baseUrl+"/"+moduleId+"/backup/save", 
+              data: params,
+              success: function(data){
+                if(data.result) {
+                    toastr.success(data.msg);
+            		circuit.obj=circuit.init();
+            		localStorage.removeItem("circuit");
+            		circuit.countCircuit("init");
+            		urlCtrl.loadByHash("#admin.view.circuits");
+                }
+                else
+                    toastr.error(data.msg);  
+              },
+              dataType: "json"
+            });
 	    }
     }
 }

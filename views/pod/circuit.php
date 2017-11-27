@@ -150,10 +150,17 @@
       circuit.initHeaderCircuit();
       $(".contentCircuit").html(htmlCircuit);
       if(notEmpty(eventsCircuit)){
-        calendar.showCalendar(".contentCalendarCircuit", eventsCircuit);
+        startCal=null;
+        //if(typeof circuit.obj.start != "undefined")
+          //startCal=circuit.obj.start;
+        calendar.showCalendar(".contentCalendarCircuit", eventsCircuit, "agendaWeek",startCal);
+        if(typeof circuit.obj.start != "undefined")
+          $(".contentCalendarCircuit").fullCalendar("gotoDate", moment(circuit.obj.start));
         $(window).on('resize', function(){
           $(".contentCalendarCircuit").fullCalendar('destroy');
-          calendar.showCalendar(".contentCalendarCircuit", eventsCircuit, "agendaWeek");
+          calendar.showCalendar(".contentCalendarCircuit", eventsCircuit, "agendaWeek",startCal);
+          if(typeof circuit.obj.start != "undefined")
+            $(".contentCalendarCircuit").fullCalendar("gotoDate", moment(circuit.obj.start));
         });
       }
 //      bindCartEvent();

@@ -76,12 +76,16 @@ var calendar = {
         //console.log("eventcaleanr",eventObj);
         var taskCal = null;
         if(eventObj.startDate && eventObj.startDate != "") {
-            if(typeof eventObj.startDateDB != "undefined")
+            if(typeof eventObj.startDateCal != "undefined")
+              var startDate = moment(eventObj.startDateCal).local();
+            else if(typeof eventObj.startDateDB != "undefined")
               var startDate = moment(eventObj.startDateDB).local();
             else
               var startDate = moment(eventObj.startDate).local();
             var endDate = null;
             if(eventObj.endDate && eventObj.endDate != "" ){
+                if(typeof eventObj.endDateCal != "undefined")
+                  endDate = moment(eventObj.endDateCal).local();
                 if(typeof eventObj.endDateDB != "undefined")
                     endDate = moment(eventObj.endDateDB).local();
                 else
@@ -138,7 +142,7 @@ var calendar = {
         }
         return taskCal;
     },
-    showCalendar : function (domElement, events, viewMode) {
+    showCalendar : function (domElement, events, initMode, initDate) {
         calendarObject = [];
         console.log("showEvent",events);
         if(events){
@@ -148,9 +152,15 @@ var calendar = {
                     calendarObject.push( eventCal );
             });
         }
-        mylog.log(calendar);
-        dateToShow = new Date();
-        
+        //mylog.log(calendar);
+        if(typeof initDate != "undefined" && notNull(initDate) ){
+          splitInit=initDate.split("-");
+          dateToShow = new Date(splitInit[0], splitInit[1]-1, splitInit[2]);
+        }
+        else{
+          initDate=null;
+          dateToShow = new Date();
+        }
         $(domElement).fullCalendar({
             header : {
             		left : 'prev,next',
@@ -161,10 +171,11 @@ var calendar = {
             year : dateToShow.getFullYear(),
             month : dateToShow.getMonth(),
             date : dateToShow.getDate(),
+            //gotoDate:moment(initDate),
             editable : false,
             eventBackgroundColor: '#FFA200',
             textColor: '#fff',
-            defaultView: viewMode,
+            defaultView: initMode,
             events : calendarObject,
             eventLimit: true,
             timezone : 'local',

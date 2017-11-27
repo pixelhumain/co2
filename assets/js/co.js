@@ -3224,7 +3224,8 @@ var dyFInputs = {
 					          urlCtrl.loadByHash( uploadObj.gotoUrl );
 					        }
 					        showMapNetwork(false);
-					  //       mapElements.push(data.map);
+					       	//window.reload
+					  		// mapElements.push(data.map);
 							// contextMapNetwork.push(data.map);
 						};
 					}

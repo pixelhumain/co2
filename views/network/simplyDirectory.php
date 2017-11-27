@@ -278,6 +278,8 @@ function showMapNetwork(show){
 		$(".btn-menu5, .btn-menu-add").hide();
 		$("#btn-toogle-map").css("display","inline !important");
 		$("#btn-toogle-map").show();
+		$(".btn-group-map").removeClass("hidden");
+		
 		$(".my-main-container").animate({
 			top: -1000,
 			opacity:0,

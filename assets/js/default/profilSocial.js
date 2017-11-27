@@ -438,7 +438,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 			str = " n'a aucun";
 		html += elementName + " a " + countData+" <b> point de contact"+s;
 		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
-			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
+			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'sub\')">';
 	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ;
 	    }
 
@@ -625,6 +625,7 @@ function loadContacts(){
 	getAjax('', baseUrl+'/'+moduleId+'/element/getcontacts/type/'+contextData.type+
 				'/id/'+contextData.id,
 				function(data){ 
+					mylog.log("loadContacts", data);
 					displayInTheContainer(data, "contacts", "envelope", "contacts");
 					$(".openFormContact").click(function(){
 			    		var idReceiver = $(this).data("id-receiver");
@@ -688,7 +689,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	var n=0;
 	listRoles={};
 	$.each(data, function(key, val){ 
-		//mylog.log("rolesShox",val);
+		mylog.log("rolesShox",key, val);
 		if(typeof key != "undefined") n++; 
 		if(typeof val.rolesLink != "undefined"){
 			mylog.log(val.rolesLink);

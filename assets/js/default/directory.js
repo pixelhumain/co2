@@ -1932,14 +1932,15 @@ var directory = {
 
           mylog.log("params", params);
 
-          if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) {
+          if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) //{
             params.id = params['_id'];
-          } else if (typeof(params.id) == "undefined") {
-            params.id = Math.random();
-            params.type = "poi";
-          }
+          // } else if (typeof(params.id) == "undefined") {
+          //   params.id = Math.random();
+          //   params.type = "poi";
+          // }
 
           mylog.log("--->>> params", params["name"] , params.name, params.id, params.type );
+          mylog.log("--->>> params.id", params.id, params["_id"], notNull(params["_id"]), notNull(params.id));
 
           if(notNull(params["_id"]) || notNull(params.id)){
 
@@ -2106,6 +2107,7 @@ var directory = {
             }
 
           }else{
+            mylog.log("pas d'id");
             if(contentType == "urls")
                 str += directory.urlPanelHtml(params, i);
             if(contentType == "contacts")

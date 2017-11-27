@@ -864,7 +864,7 @@ function bindAboutPodElement() {
 		if(telephone != "undefined")
 			dataUpdate.phone = telephone;
 		mylog.log("dataUpdate", dataUpdate);
-		dyFObj.openForm ('contactPoint','contact', dataUpdate);
+		dyFObj.openForm ('contactPoint','sub', dataUpdate);
 	}
 	function updateDocument(id, title) {
 		mylog.log("updateDocument", id, name);

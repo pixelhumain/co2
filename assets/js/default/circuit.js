@@ -55,15 +55,14 @@ var circuit = {
 			}
 			if(typeof ranges != "undefined" && notNull(ranges)){
 				if(circuit.obj.frequency=="unique"){
-					if(circuit.obj.start==""){
+					if(typeof circuit.obj.start == "undefined" || circuit.obj.start==""){
 						circuit.obj.start=ranges.date;
 						circuit.obj.end=ranges.date;
 					}
-					else if(moment(ranges.date,"YYYY-MM-DD") < moment(circuit.obj.start,"YYYY-MM-DD")){
+					else if(moment(ranges.date).unix() < moment(circuit.obj.start).unix())
 						circuit.obj.start=ranges.date;
-					}else if(moment(ranges.date,"YYYY-MM-DD") > moment(circuit.obj.end,"YYYY-MM-DD")){
+					else if(moment(ranges.date).unix() > moment(circuit.obj.end).unix())
 						circuit.obj.end=ranges.date;
-					}
 				}
 				if(typeof circuit.obj.services[type][id]["reservations"] == "undefined")
 				 	circuit.obj.services[type][id]["reservations"]=new Object;
@@ -311,16 +310,6 @@ var circuit = {
                 if(typeof data.reservations != "undefined"){
             itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 dateHoursDetail no-padding'>"; 
                     $.each(data.reservations, function(date, value){
-                    	if(circuit.obj.frequency=="unique"){
-							if(typeof circuit.obj.start == "undefined" || circuit.obj.start==""){
-								circuit.obj.start=date;
-								circuit.obj.end=date;
-							}
-							else if(moment(date).unix() < moment(circuit.obj.start).unix())
-								circuit.obj.start=date;
-							else if(moment(date).unix() < moment(circuit.obj.end).unix())
-								circuit.obj.end=date;
-						}
                         dateStr=directory.getDateFormated({startDate:date}, true);
                         arrayDate=date.split("-");
             itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 bookDate"+date+" shadow2 margin-bottom-10'>"+
@@ -430,16 +419,21 @@ var circuit = {
             });   
         }*/
     },
-    saveCircuit:function(){
-        circuit = circuit.obj;
+    save:function(){
+        delete circuit.obj.show;
+        circuitParams = circuit.obj;
         $.ajax({
           type: "POST",
           url: baseUrl+"/"+moduleId+"/circuit/save", 
-          data: order,
+          data: circuitParams,
           success: function(data){
             if(data.result) {
                 toastr.success(data.msg);
-                //urlCtrl.loadByHash("#checkout");
+                circuit.obj=circuit.init();
+       			localStorage.removeItem("circuit");
+        		circuit.countCircuit("init");    
+        
+                urlCtrl.loadByHash("#admin.view.circuits");
             }
             else
                 toastr.error(data.msg);  
@@ -448,12 +442,13 @@ var circuit = {
         });
     
     },
-    saveCircuit:function(){
+    backup:function(){
+    	var params = {
+    		object: circuit.obj,
+			type:"circuits"
+    	};
     	if(typeof circuit.obj.backup !="undefined"){
-    		var params = new Object; 
-    		params=circuit.obj;
     		params.id = circuit.obj.backup;
-    		params.type="circuits";
     		$.ajax({
               type : "POST",
               url : baseUrl+"/"+moduleId+"/backup/update", 
@@ -472,8 +467,7 @@ var circuit = {
               dataType: "json"
 	        });
     	}else{
-	        params=circuit.obj;
-	        params.type="circuits";
+	        
             $.ajax({
               type: "POST",
               url: baseUrl+"/"+moduleId+"/backup/save", 

@@ -117,7 +117,7 @@
         <span id="frequency">Frequency : <span class="frequencyValue"></span></span>
         <h3 id="total">Total of circuit per person : <span class="totalValue"></span> €</h3>
         <div class='col-md-12 col-sm-12 col-xs-12 btn-cart margin-top-20 margin-bottom-20 no-padding'>
-              <a href='javascript:;' onclick='circuit.saveBackupCircuit();' class='btn bg-orange col-md-4 col-sm-4 col-md-offset-2 col-sm-offset-2 col-xs-10 col-xs-offset-1'><i class='fa fa-floppy-o'></i> Backup</a>
+              <a href='javascript:;' onclick='circuit.backup();' class='btn bg-orange col-md-4 col-sm-4 col-md-offset-2 col-sm-offset-2 col-xs-10 col-xs-offset-1'><i class='fa fa-floppy-o'></i> Backup</a>
               <a href='javascript:;' onclick='circuit.save();' class='btn btn-success col-md-4 col-sm-4 col-xs-10 col-xs-offset-1'>Save</a>
         </div>
       </div>
@@ -154,8 +154,10 @@
         //if(typeof circuit.obj.start != "undefined")
           //startCal=circuit.obj.start;
         calendar.showCalendar(".contentCalendarCircuit", eventsCircuit, "agendaWeek",startCal);
-        if(typeof circuit.obj.start != "undefined")
+        if(typeof circuit.obj.start != "undefined"){
+          alert();
           $(".contentCalendarCircuit").fullCalendar("gotoDate", moment(circuit.obj.start));
+        }
         $(window).on('resize', function(){
           $(".contentCalendarCircuit").fullCalendar('destroy');
           calendar.showCalendar(".contentCalendarCircuit", eventsCircuit, "agendaWeek",startCal);

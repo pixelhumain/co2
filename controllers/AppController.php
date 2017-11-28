@@ -142,31 +142,29 @@ class AppController extends CommunecterController {
         echo $this->renderPartial("search", $params, true);
     }
 
-
-
     public function actionAnnonces(){
         CO2Stat::incNbLoad("co2-annonces"); 
         $params = array("type" => "classified");
         echo $this->renderPartial("search", $params, true);
     }
+
     public function actionActivities(){
         CO2Stat::incNbLoad("terla-activities"); 
         $params = array("type" => "services");
         echo $this->renderPartial("search", $params, true);
     }
+
     public function actionStore(){
         CO2Stat::incNbLoad("terla-store"); 
         $params = array("type" => "products");
         echo $this->renderPartial("search", $params, true);
     }
 
-
     public function actionFreedom(){
         CO2Stat::incNbLoad("co2-annonces"); 
         $params = array("type" => "classified");
         echo $this->renderPartial("search", $params, true);
     }
-
 
     public function actionLive(){
         CO2Stat::incNbLoad("co2-live"); 

@@ -1,5 +1,10 @@
 <?php 
 
+  HtmlHelper::registerCssAndScriptsFiles( 
+    array(
+        '/css/calendar.css',
+    ) , 
+  Yii::app()->theme->baseUrl. '/assets');
  $cssAnsScriptFilesModule = array(
     '/js/default/calendar.js',
   );

@@ -54,6 +54,16 @@ var circuit = {
 				incCart=false;
 			}
 			if(typeof ranges != "undefined" && notNull(ranges)){
+				if(circuit.obj.frequency=="unique"){
+					if(typeof circuit.obj.start == "undefined" || circuit.obj.start==""){
+						circuit.obj.start=ranges.date;
+						circuit.obj.end=ranges.date;
+					}
+					else if(moment(ranges.date).unix() < moment(circuit.obj.start).unix())
+						circuit.obj.start=ranges.date;
+					else if(moment(ranges.date).unix() > moment(circuit.obj.end).unix())
+						circuit.obj.end=ranges.date;
+				}
 				if(typeof circuit.obj.services[type][id]["reservations"] == "undefined")
 				 	circuit.obj.services[type][id]["reservations"]=new Object;
 
@@ -83,31 +93,6 @@ var circuit = {
 					}
 				}
 			}
-			/*}else{
-				if(typeof shopping.cart[type][id] == "undefined"){
-					params={
-						name : element.name,
-						providerId : element.parentId,
-						providerType : element.parentType,
-						providerName : element.name,
-						price : element.price,
-						countQuantity:1
-					};
-					if(typeof element.imgProfil != "undefined")
-						params.imgProfil=element.imgProfil;	
-					if(typeof element.description != "undefined")
-						params.description=element.description;
-					if(typeof element.capacity != "undefined")
-						params.capacity=element.capacity;
-					if(notNull(subType))
-						params.type=subType;
-					shopping.cart[type][id]={};
-					shopping.cart[type][id]=params;
-				}else{
-					shopping.cart[type][id].countQuantity++;
-					incCart=false;
-				}
-			}*/
 			if(incCart)
 				circuit.countCircuit(true);
 			localStorage.setItem("circuit",JSON.stringify(circuit.obj));
@@ -281,15 +266,7 @@ var circuit = {
     	//******************************************
 		// CART
 		//******************************************
-    	str=/*"<div class='col-md-12 bg-orange padding-10'>"+
-    			"<div class='pull-right'>"+
-    				"<a href='javascript:alert(\"Rapha pour toi\")' class='text-white padding-5' onclick=''><i class='fa fa-print'></i> Print</a>"+
-    				
-    				"<a href='javascript:alert(\"Partager quoi sur quoi???\")' class='text-white padding-5' onclick=''><i class='fa fa-link'></i> Share</a>"+
-    				"<a href='javascript:alert(\"Kill all mother fuck\")' class='text-white padding-5' onclick=''><i class='fa fa-trash'></i> Empty</a>"+
-    			"</div>"+
-    		"</div>"+*/
-    		"<div class='col-md-12'>";
+    	str="<div class='col-md-12'>";
     		str+=htmls.strHtml;
     		str+="</div>";
     	return { circuit : str };
@@ -297,22 +274,21 @@ var circuit = {
     getComponentsHtml:function(firstLevel){
         var strHtml = "";
         $.each(circuit.obj.services,function(i,v){
-            console.log(v);
             strHtml += circuit.getItemByCategory(i,v,"services");
         });
         return { "strHtml" : strHtml };
     },
     getItemByCategory:function(label,listItem, type){
-        typeHtml="<div class='col-md-12 headerCategory margin-top-20'>"+
-            "<div class='col-md-12'>"+
-                "<h2 class='letter-orange mainTitle text-left'>"+label+"</h2>"+
-            "</div>"+
-        "</div>";
+    	typeHtml="";
+    	if(Object.keys(listItem).length){
+	        typeHtml="<div class='col-md-12 col-sm-12 col-xs-12 headerCategory margin-top-20 margin-bottom-10'>"+
+	                "<h2 class='letter-orange mainTitle text-left' style='text-transform:uppercase;'>"+label+"</h2>"+
+	        "</div>";
+    	}
         $.each(listItem,function(e,data){
             typeHtml+=circuit.getViewItem(e, data, type);
             circuit.obj.total=circuit.obj.total+(data.price*data.countQuantity);
         });
-        console.log(typeHtml);
         return typeHtml;
     },
     
@@ -320,27 +296,8 @@ var circuit = {
         itemId=key;
         itemType=type;
         s=(data.countQuantity > 1) ? "s" : "";
-        eventCal={
-        		"name":data.name,
-        		"typeEvent":"others",
-                "id" : key,
-                "description" : (data.description && data.description != "" ) ? eventObj.description : "",
-                "allDay" : data.allDay,
-                "type": "others",
-                "shortDescription": (data.description && data.description != "" ) ? checkAndCutLongString(eventObj.description,120) : "",
-                "profilMediumImageUrl": "",
-                "adresse": "",
- 				        
-        };
-         /*"start" : startDate.format(),
-                "end" : ( endDate ) ? endDate.format() : startDate.format(),
-                "startDate" : eventObj.startDate,
-                "endDate" : eventObj.endDate,
-                "startDateDB" : eventObj.startDateDB,
-                "endDateDB" : eventObj.endDateDB,
-               */
         itemHtml="<div class='col-md-12 col-sm-12 col-xs-12 contentProduct contentProduct"+itemId+" text-left'>"+
-                "<div class='col-md-3 col-sm-3 col-xs-3 no-padding'>"+data.imgProfil+"</div>"+
+                "<div class='col-md-3 col-sm-3 col-xs-3 no-padding text-center' style='line-height:120px;'>"+data.imgProfil+"</div>"+
                 "<div class='col-md-7 col-sm-7 col-xs-7'>"+
                     "<h4 class='text-dark'>"+data.name+"</h4>"+
                     "<span>"+data.price+" € (for a session per person)</span><br>"+
@@ -349,13 +306,12 @@ var circuit = {
                 if(typeof data.description != "undefined" && data.description != "")
             itemHtml += "<div class='description'>"+data.description+"</div><br>";
                 itemHtml +="</div>"+
-                "<div class='col-md-2 col-sm-2 col-xs-2 text-center pull-right'><span> <a href='javascript:;' class='letter-lightgray' onclick='circuit.removeInCircuit(\""+itemId+"\", \""+itemType+"\",true,\""+data.type+"\");'><i class='fa fa-trash fa-2x'></i></a></span></div>";
+                "<div class='col-md-2 col-sm-2 col-xs-2 text-center pull-right'><span> <a href='javascript:;' class='letter-lightgray' onclick='circuit.removeInCircuit(\""+itemId+"\", \""+itemType+"\",true,\""+data.type+"\");' style='line-height:120px;'><i class='fa fa-trash fa-2x'></i></a></span></div>";
                 if(typeof data.reservations != "undefined"){
-            itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 dateHoursDetail'>"; 
+            itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 dateHoursDetail no-padding'>"; 
                     $.each(data.reservations, function(date, value){
                         dateStr=directory.getDateFormated({startDate:date}, true);
-                        dateCalStart=date;
-                        dateCalEnd=date;
+                        arrayDate=date.split("-");
             itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 bookDate"+date+" shadow2 margin-bottom-10'>"+
                             "<div class='col-md-12 col-sm-12 col-xs-12 dateHeader'>"+
                                 "<h4 class='pull-left margin-bottom-5 no-margin col-md-5 col-sm-5 col-xs-5 no-padding'><i class='fa fa-calendar'></i> "+dateStr+"</h4>"+
@@ -366,13 +322,26 @@ var circuit = {
                             "</div>";
                             
                         if(typeof value.hours != "undefined"){
-                            //countSession=Object.keys(value.hours).length;
-                            //s=(countSession > 1) ? "s" : "";
-                            //itemHtml += "<span>"+countSession+" session"+s+"</span><br/>";
                             $.each(value.hours, function(key, hours){
                                 s=(hours.countQuantity > 1) ? "s" : "";
-                                dateCalStart+=hours.start;
-                        		dateCalEnd+=hours.end;
+                                startHours=hours.start.split(":");
+                        		endHours=hours.end.split(":");
+                                newObject=new Object;
+                        		newObject={
+					        		"name":data.name,
+					        		"typeEvent":"others",
+					                "id" : key,
+					                "description" : (data.description && data.description != "" ) ? data.description : "",
+					               	"allDay" : false,
+					                "type": "others",
+					                "shortDescription": (data.description && data.description != "" ) ? checkAndCutLongString(data.description,120) : "",
+					                "profilMediumImageUrl": "",
+					                "imgProfil":data.imgProfil,
+					                "adresse": "",  
+					                "startDate":new Date(arrayDate[0],arrayDate[1]-1,arrayDate[2],startHours[0],startHours[1]),
+					                "endDate":new Date(arrayDate[0],arrayDate[1]-1,arrayDate[2],endHours[0],endHours[1]),    
+					        	};
+                        		eventsCircuit.push(newObject);
             itemHtml +=         "<div class='col-md-12 col-sm-12 col-xs-12 margin-bottom-5 padding-5 contentHoursSession'>"+
                                     "<h4 class='col-md-4 col-sm-4 col-xs-3 no-padding no-margin'><i class='fa fa-clock-o'></i> "+hours.start+" - "+hours.end+"</h4>"+
                                     "<div class='pull-right'>"+
@@ -383,7 +352,23 @@ var circuit = {
                                 "</div>";
                             });
                         }else{
-
+                        	newObject=new Object;
+                        	newObject=new Object;
+                        	newObject={
+				        		"name":data.name,
+				        		"typeEvent":"others",
+				                "id" : key,
+				                "description" : (data.description && data.description != "" ) ? data.description : "",
+				               	"allDay" : true,
+				                "type": "others",
+				                "shortDescription": (data.description && data.description != "" ) ? checkAndCutLongString(data.description,120) : "",
+				                "profilMediumImageUrl": "",
+				                "imgProfil":data.imgProfil,
+				                "adresse": "",  
+				                "startDate":new Date(arrayDate[0],arrayDate[1]-1,arrayDate[2]),
+				                "endDate":new Date(arrayDate[0],arrayDate[1]-1,arrayDate[2]),    
+					        };
+                        	eventsCircuit.push(newObject);
                         }
             itemHtml += "</div>"; 
                     }); 
@@ -434,16 +419,21 @@ var circuit = {
             });   
         }*/
     },
-    saveCircuit:function(){
-        circuit = circuit.obj;
+    save:function(){
+        delete circuit.obj.show;
+        circuitParams = circuit.obj;
         $.ajax({
           type: "POST",
           url: baseUrl+"/"+moduleId+"/circuit/save", 
-          data: order,
+          data: circuitParams,
           success: function(data){
             if(data.result) {
                 toastr.success(data.msg);
-                //urlCtrl.loadByHash("#checkout");
+                circuit.obj=circuit.init();
+       			localStorage.removeItem("circuit");
+        		circuit.countCircuit("init");    
+        
+                urlCtrl.loadByHash("#admin.view.circuits");
             }
             else
                 toastr.error(data.msg);  
@@ -452,12 +442,13 @@ var circuit = {
         });
     
     },
-    saveCircuit:function(){
+    backup:function(){
+    	var params = {
+    		object: circuit.obj,
+			type:"circuits"
+    	};
     	if(typeof circuit.obj.backup !="undefined"){
-    		var params = new Object; 
-    		params=circuit.obj;
     		params.id = circuit.obj.backup;
-    		params.type="circuits";
     		$.ajax({
               type : "POST",
               url : baseUrl+"/"+moduleId+"/backup/update", 
@@ -476,36 +467,24 @@ var circuit = {
               dataType: "json"
 	        });
     	}else{
-	        bootbox.prompt({
-	            title: "Give a name to the saving cart:", 
-	            value : "Backup of "+moment(new Date()).format('DD-MM-YYYY HH:MM'), 
-	            callback : function(result){ 
-	                params={
-	                	name:result,
-	                	type:"shoppingCart",
-	                	totalPrice:shopping.totalCart,
-	                	currency:"EUR",
-	                	object:shopping.cart
-	                };
-	                $.ajax({
-	                  type: "POST",
-	                  url: baseUrl+"/"+moduleId+"/backup/save", 
-	                  data: params,
-	                  success: function(data){
-	                    if(data.result) {
-	                        toastr.success(data.msg);
-                    		circuit.obj=circuit.init();
-                    		localStorage.removeItem("circuit");
-                    		circuit.countCircuit("init");
-                    		urlCtrl.loadByHash("#admin.view.circuits");
-	                    }
-	                    else
-	                        toastr.error(data.msg);  
-	                  },
-	                  dataType: "json"
-	                });
-	            }
-	        })
+	        
+            $.ajax({
+              type: "POST",
+              url: baseUrl+"/"+moduleId+"/backup/save", 
+              data: params,
+              success: function(data){
+                if(data.result) {
+                    toastr.success(data.msg);
+            		circuit.obj=circuit.init();
+            		localStorage.removeItem("circuit");
+            		circuit.countCircuit("init");
+            		urlCtrl.loadByHash("#admin.view.circuits");
+                }
+                else
+                    toastr.error(data.msg);  
+              },
+              dataType: "json"
+            });
 	    }
     }
 }

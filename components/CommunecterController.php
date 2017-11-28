@@ -443,6 +443,10 @@ class CommunecterController extends Controller
        "save"   => array("href" => "/ph/co2/order/save"),
        "get"   => array("href" => "/ph/co2/order/get"),
     ),
+    "circuit"=> array(
+       "save"   => array("href" => "/ph/co2/circuit/save"),
+       "get"   => array("href" => "/ph/co2/circuit/get"),
+    ),
     "pay"=> array(
        "index"   => array("href" => "/ph/co2/pay/index"),
        "in"   => array("href" => "/ph/co2/pay/in"),

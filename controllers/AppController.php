@@ -159,7 +159,11 @@ class AppController extends CommunecterController {
         $params = array("type" => "products");
         echo $this->renderPartial("search", $params, true);
     }
-
+    public function actionCircuits(){
+        CO2Stat::incNbLoad("terla-store"); 
+        $params = array("type" => "circuits");
+        echo $this->renderPartial("search", $params, true);
+    }
 
     public function actionFreedom(){
         CO2Stat::incNbLoad("co2-annonces"); 
@@ -186,15 +190,16 @@ class AppController extends CommunecterController {
     	echo $this->renderPartial("search", $params, true);
 	}
 
-    public function actionAdmin($view=null){
+    public function actionAdmin($view=null, $dir=null){
         CO2Stat::incNbLoad("co2-admin");   
         $params = array(
             "view" => @$view,
+            "dir" => @$dir,
         );
-        $dir="";
+        $redirect="";
         if(Yii::app()->params["CO2DomainName"] == "terla")
-            $dir="terla/";
-        echo $this->renderPartial("../admin/".$dir."index", $params, true);
+            $redirect="terla/";
+        echo $this->renderPartial("../admin/".$redirect."index", $params, true);
     }
 
     public function actionChat(){

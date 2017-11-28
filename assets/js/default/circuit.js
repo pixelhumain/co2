@@ -249,20 +249,20 @@ var circuit = {
 			$('.circuit-count').addClass('badge-tranparent');
 		}
 	},
-	initHeaderCircuit : function(){ 
-		$(".circuitsInfo #name").text(circuit.obj.name);
-		$(".circuitsInfo #description").text(circuit.obj.description);
-		$(".circuitsInfo #capacity .capacityValue").text(circuit.obj.capacity);
-		$(".circuitsInfo #frequency .frequencyValue").text(circuit.obj.frequency);
-		$(".circuitsInfo #total .totalValue").text(circuit.obj.total);
+	initHeaderCircuit : function(object){ 
+		$(".circuitsInfo #name, #circuitNameHeader").text(object.name);
+		$(".circuitsInfo #description").text(object.description);
+		$(".circuitsInfo #capacity .capacityValue").text(object.capacity);
+		$(".circuitsInfo #frequency .frequencyValue").text(object.frequency);
+		$(".circuitsInfo #total .totalValue").text(totalCircuit);
 	},
 	generateEmptyCircuitView:function(){
     	str="<span>Le circuit est vide</span><br/>"+
     			"<a href='#activities' class='btn bg-orange lbh'>Continue circuit</a>";
     	return str;
     },
-    generateCircuitView:function(){
-    	var htmls = circuit.getComponentsHtml(true);
+    generateCircuitView:function(object){
+    	var htmls = circuit.getComponentsHtml(object,true);
     	//******************************************
 		// CART
 		//******************************************
@@ -271,14 +271,17 @@ var circuit = {
     		str+="</div>";
     	return { circuit : str };
     },
-    getComponentsHtml:function(firstLevel){
+    getComponentsHtml:function(object, firstLevel){
         var strHtml = "";
-        $.each(circuit.obj.services,function(i,v){
-            strHtml += circuit.getItemByCategory(i,v,"services");
+        var editMode=false;
+        if(typeof object.show != "undefined" && object.show)
+        	editMode=true;
+        $.each(object.services,function(i,v){
+            strHtml += circuit.getItemByCategory(i,v,"services", editMode);
         });
         return { "strHtml" : strHtml };
     },
-    getItemByCategory:function(label,listItem, type){
+    getItemByCategory:function(label,listItem, type, edit){
     	typeHtml="";
     	if(Object.keys(listItem).length){
 	        typeHtml="<div class='col-md-12 col-sm-12 col-xs-12 headerCategory margin-top-20 margin-bottom-10'>"+
@@ -286,13 +289,13 @@ var circuit = {
 	        "</div>";
     	}
         $.each(listItem,function(e,data){
-            typeHtml+=circuit.getViewItem(e, data, type);
-            circuit.obj.total=circuit.obj.total+(data.price*data.countQuantity);
+            typeHtml+=circuit.getViewItem(e, data, type, edit);
+            totalCircuit=totalCircuit+(data.price*data.countQuantity);
         });
         return typeHtml;
     },
     
-    getViewItem:function(key, data, type){
+    getViewItem:function(key, data, type, edit){
         itemId=key;
         itemType=type;
         s=(data.countQuantity > 1) ? "s" : "";
@@ -305,8 +308,12 @@ var circuit = {
                     "<span>"+(data.price*data.countQuantity)+" € (for all session per person)</span><br>";
                 if(typeof data.description != "undefined" && data.description != "")
             itemHtml += "<div class='description'>"+data.description+"</div><br>";
-                itemHtml +="</div>"+
-                "<div class='col-md-2 col-sm-2 col-xs-2 text-center pull-right'><span> <a href='javascript:;' class='letter-lightgray' onclick='circuit.removeInCircuit(\""+itemId+"\", \""+itemType+"\",true,\""+data.type+"\");' style='line-height:120px;'><i class='fa fa-trash fa-2x'></i></a></span></div>";
+                itemHtml +="</div>";
+                if(edit){
+                	itemHtml +="<div class='col-md-2 col-sm-2 col-xs-2 text-center pull-right'><span>"+
+                		"<a href='javascript:;' class='letter-lightgray' onclick='circuit.removeInCircuit(\""+itemId+"\", \""+itemType+"\",true,\""+data.type+"\");' style='line-height:120px;'><i class='fa fa-trash fa-2x'></i></a>"+
+                		"</span></div>";
+                }
                 if(typeof data.reservations != "undefined"){
             itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 dateHoursDetail no-padding'>"; 
                     $.each(data.reservations, function(date, value){
@@ -314,12 +321,15 @@ var circuit = {
                         arrayDate=date.split("-");
             itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 bookDate"+date+" shadow2 margin-bottom-10'>"+
                             "<div class='col-md-12 col-sm-12 col-xs-12 dateHeader'>"+
-                                "<h4 class='pull-left margin-bottom-5 no-margin col-md-5 col-sm-5 col-xs-5 no-padding'><i class='fa fa-calendar'></i> "+dateStr+"</h4>"+
-                                "<div class='pull-right'>"+
-                                    "<a href='javascript:;' class='text-red' onclick='circuit.removeInCircuit(\""+itemId+"\", \""+itemType+"\",true,\""+data.type+"\",\""+date+"\");'>"+
-                                        "<i class='fa fa-trash'></i> Remove this date</a>"+
-                                "</div>"+
-                            "</div>";
+                                "<h4 class='pull-left margin-bottom-5 no-margin col-md-5 col-sm-5 col-xs-5 no-padding'><i class='fa fa-calendar'></i> "+dateStr+"</h4>";
+                                if(edit){
+            itemHtml +=				"<div class='pull-right'>"+
+                                    	"<a href='javascript:;' class='text-red' onclick='circuit.removeInCircuit(\""+itemId+"\", \""+itemType+"\",true,\""+data.type+"\",\""+date+"\");'>"+
+                                        	"<i class='fa fa-trash'></i> Remove this date"+
+                                        "</a>"+
+                              	  	"</div>";
+                            	}
+                           itemHtml += "</div>";
                             
                         if(typeof value.hours != "undefined"){
                             $.each(value.hours, function(key, hours){
@@ -343,13 +353,15 @@ var circuit = {
 					        	};
                         		eventsCircuit.push(newObject);
             itemHtml +=         "<div class='col-md-12 col-sm-12 col-xs-12 margin-bottom-5 padding-5 contentHoursSession'>"+
-                                    "<h4 class='col-md-4 col-sm-4 col-xs-3 no-padding no-margin'><i class='fa fa-clock-o'></i> "+hours.start+" - "+hours.end+"</h4>"+
-                                    "<div class='pull-right'>"+
-                                        "<a href='javascript:;' class='text-red' onclick='circuit.removeInCircuit(\""+itemId+"\", \""+itemType+"\",true,\""+data.type+"\",\""+date+"\",\""+hours.start+"\",\""+hours.end+"\");'>"+
-                                            "<i class='fa fa-times'></i>"+
-                                        "</a>"+
-                                    "</div>"+
-                                "</div>";
+                                    "<h4 class='col-md-4 col-sm-4 col-xs-3 no-padding no-margin'><i class='fa fa-clock-o'></i> "+hours.start+" - "+hours.end+"</h4>";
+                                    if(edit){
+            itemHtml +=					"<div class='pull-right'>"+
+                                        	"<a href='javascript:;' class='text-red' onclick='circuit.removeInCircuit(\""+itemId+"\", \""+itemType+"\",true,\""+data.type+"\",\""+date+"\",\""+hours.start+"\",\""+hours.end+"\");'>"+
+                                            	"<i class='fa fa-times'></i>"+
+                                        	"</a>"+
+                                    	"</div>";
+                                	}
+                                itemHtml +="</div>";
                             });
                         }else{
                         	newObject=new Object;
@@ -447,6 +459,7 @@ var circuit = {
     		object: circuit.obj,
 			type:"circuits"
     	};
+    	delete params.object.show;
     	if(typeof circuit.obj.backup !="undefined"){
     		params.id = circuit.obj.backup;
     		$.ajax({
@@ -459,7 +472,7 @@ var circuit = {
                     circuit.obj=circuit.init();
                     localStorage.removeItem("circuit");
                     circuit.countCircuit("init");
-                    urlCtrl.loadByHash("#admin.view.circuits");
+                    urlCtrl.loadByHash("#admin.view.circuits.dir.backups");
                 }
                 else
                     toastr.error(data.msg);  
@@ -478,7 +491,7 @@ var circuit = {
             		circuit.obj=circuit.init();
             		localStorage.removeItem("circuit");
             		circuit.countCircuit("init");
-            		urlCtrl.loadByHash("#admin.view.circuits");
+            		urlCtrl.loadByHash("#admin.view.circuits.dir.backups");
                 }
                 else
                     toastr.error(data.msg);  
@@ -486,5 +499,13 @@ var circuit = {
               dataType: "json"
             });
 	    }
-    }
+    },
+    restartBackup : function(obj, idBackup){
+    	circuit.obj=obj;
+    	circuit.obj.show=true;
+		circuit.obj.backup=idBackup;
+		circuit.countCircuit("init");
+		localStorage.setItem("circuit",JSON.stringify(circuit.obj));
+		smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/pod/circuit");
+	}
 }

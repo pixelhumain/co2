@@ -2540,7 +2540,7 @@ var processUrl = {
 	}
 }
 var list = {
-	initList : function(dataList, action){
+	initList : function(dataList, action, subType){
 		var viewList="";
 		$.each(dataList, function(e,v){
 			if(action == "backup"){
@@ -4676,6 +4676,8 @@ var typeObj = {
 	products : {sameAs:"product"},
 	service:{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",	icon:"sun-o"},
 	services : {sameAs:"service"},
+	circuit:{ col:"circuits",ctrl:"circuit", titleClass : "bg-orange", color:"green",	icon:"ravelry"},
+	circuits : {sameAs:"circuit"},
 	classified:{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
 				   subTypes : [
 				   //FR

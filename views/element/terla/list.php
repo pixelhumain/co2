@@ -86,53 +86,65 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 <?php if($actionType=="manage"){ ?>
 <div class="headerList col-md-12 col-sm-12 no-padding margin-bottom-20 margin-top-20">
 	<div class="col-md-12 col-sm-12 text-center">
-		<h4 class="col-md-12 letter-orange">Add products and services you want to offered</h2>
+		<h4 class="col-md-12 letter-orange">Add products and services you want to offered</h4>
 		<p>
 			These products and services will be validated by the team of terla
 		</p>
 		<button data-form-type="product"  
-                    data-dismiss="modal"
-                    class="btn btn-link btn-open-form col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2 col-lg-4 text-orange">
-                <h5><i class="fa fa-shopping-basket fa-2x"></i><br> <?php echo Yii::t("common", "Product") ?></h5>
-                <small><?php echo Yii::t("form","Food, hand-made, jewelery...<br>Sell your product here") ?></small>
-            </button>
-            <button data-form-type="service" data-form-subtype=""  
-                    data-dismiss="modal"
-                    class="btn btn-link btn-open-form col-xs-6 col-sm-4 col-md-4 col-lg-4 text-green">
-                <h5><i class="fa fa-sun-o fa-2x"></i><br> <?php echo Yii::t("common", "Services") ?></h5>
-                <small><?php echo Yii::t("form","Hostel, funny activity, food, guide...<br>Purpose your services here !") ?></small>
-            </button>
+                data-dismiss="modal"
+                class="btn btn-link btn-open-form col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2 col-lg-4 text-orange">
+            <h5><i class="fa fa-shopping-basket fa-2x"></i><br> <?php echo Yii::t("common", "Product") ?></h5>
+            <small><?php echo Yii::t("form","Food, hand-made, jewelery...<br>Sell your product here") ?></small>
+        </button>
+        <button data-form-type="service" data-form-subtype=""  
+                data-dismiss="modal"
+                class="btn btn-link btn-open-form col-xs-6 col-sm-4 col-md-4 col-lg-4 text-green">
+            <h5><i class="fa fa-sun-o fa-2x"></i><br> <?php echo Yii::t("common", "Services") ?></h5>
+            <small><?php echo Yii::t("form","Hostel, funny activity, food, guide...<br>Purpose your services here !") ?></small>
+        </button>
 	</div>
 </div>
 <?php } ?>
-<?php if(($actionType=="history" || $actionType=="backup") && !empty($parentList)){ ?>
+<?php if(($actionType=="history" || $actionType=="backup" || $actionType=="admin")){ 
+	if(empty($parentList)){ ?>
+		<div id="headerList" class="col-md-12 col-sm-12 col-xs-12 margin-bottom-20">
+			<?php echo Yii::t("common","You have nothing in this section") ?> 
+		</div>
+	<?php }else{ ?>
 	<ul id="columnList" class="col-md-3 col-sm-3 col-xs-3 no-padding">
 		
 		<?php $i=0;
 			foreach ($parentList as $key => $value){ 
 				if($i==0){
-					$nameHeader=$value["name"];
+					$nameHeader=@$value["name"];
 					$priceHeader=@$value["totalPrice"];
 					$currencyHeader=@$value["currency"];
 					if(@$value["countOrderItem"])
 						$countHeader=$value["countOrderItem"];
 					else{
 						$firstId=$key;
-						$countHeader=$value["object"]["countQuantity"];
+						if(@$subType && $subType==Circuit::COLLECTION && $actionType!="backup")
+							$countHeader=$value["countQuantity"];
+						else
+							$countHeader=$value["object"]["countQuantity"];
 					}
 				}
+
 				if(@$value["countOrderItem"])
 					$count=$value["countOrderItem"];
+				else if(@$subType && $subType==Circuit::COLLECTION && $actionType!="backup")
+					$count=$value["countQuantity"];
 				else
 					$count=$value["object"]["countQuantity"];
 				?>
 				<li class="columnSection <?php if($i==0) echo "active" ?> columnSection<?php echo $key ?> padding-10" data-id="<?php echo $key ?>">
-					<h4 class="title no-margin"><?php echo $value["name"] ?></h4>
+					<h4 class="title no-margin"><?php if($actionType == "backup" && $subType == Circuit::COLLECTION) echo $value["object"]["name"]; else echo $value["name"]; ?></h4>
 					<span><i><?php echo $count; ?> purchase<?php if ($count >1) echo "s" ?></i></span>
 				</li>
 		<?php $i++; 
 		} ?>
 	</ul>
+	<?php if(!@$subType || $subType!=Circuit::COLLECTION){ ?>
 	<div id="headerList" class="col-md-9 col-sm-9 col-xs-9 margin-bottom-20">
 		<h4 class="col-md-12 col-sm-12 title no-padding letter-orange"><?php echo $nameHeader ?></h4>
 		<span>Price of this command: <span class="price"><?php echo $priceHeader ?> <?php echo $currencyHeader ?></span></span> 
@@ -148,46 +160,64 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 			</div>
 		<?php } ?>
 	</div>
+	<?php } ?>
 	<div id="listList" class="col-md-9 col-sm-9 col-xs-9 pull-right">
 
 	</div>
-<?php } else { ?>
+<?php } 
+	} else { ?>
 	<div id="listList" class="col-md-12 col-sm-12">
 
 	</div>
-<?php } ?>
+<?php }?>
 	<script type="text/javascript">
 	var type = "<?php echo $type; ?>";
 	var id = "<?php echo $id; ?>";
 	var view = "<?php echo @$view; ?>";
 	var indexStepGS = 20;
 	var actionType="<?php echo $actionType ?>";
+	var subType="<?php echo @$subType ?>";
 	var parentList= <?php echo json_encode( @$parentList ); ?>;
-	if(actionType=="backup")
-		var listElement = parentList["<?php echo @$firstId ?>"].object;
-	else
-		var listElement = <?php echo json_encode( $list ); ?>;
+	console.log("parentlist",parentList);
+	if(notEmpty(parentList) && (actionType=="backup" || subType=="circuits")){
+		if(actionType=="backup")
+			var listComponents = parentList["<?php echo @$firstId ?>"].object;
+		else if (subType=="circuits")
+			var listComponents = parentList["<?php echo @$firstId ?>"];
+	}else
+		var listComponents = <?php echo json_encode( $list ); ?>;
 	jQuery(document).ready(function() {
-		list.initList(listElement, actionType);
+		if(notEmpty(listComponents)){
+		if(subType=="circuits")
+			getViewCircuit(listComponents, "<?php echo @$firstId ?>");
+		else
+			list.initList(listComponents, actionType);
+		}
+		bindListEvent();
+
+	});
+	function bindListEvent(){
 		$(".btn-open-form").click(function(){
 			dyFObj.openForm($(this).data("form-type"),"sub");
 		});
 		bindLBHLinks();
-		if(actionType=="history" || actionType=="backup")
+		if(actionType=="history" || actionType=="backup" || subType=="circuits")
 			initOrderEvent();
 		if(actionType=="backup")
 			initBackupEvent();
-	})
+	}
 	function initOrderEvent(){
-		$(".columnSection").click(function(){
+		$(".columnSection").off().on("click",function(){
 			showLoader('#listList');
 			$(".columnSection").removeClass("active");
 			$(this).addClass("active");
 			parentId=$(this).data("id");
-			$("#headerList .title").text(parentList[parentId].name);
-			$("#headerList .price").text(parentList[parentId].totalPrice+" "+parentList[parentId].currency);
-			s=(parentList[parentId].countOrderItem > 1) ? "s": "";
-			$("#headerList .purchases").text(parentList[parentId].countOrderItem+" purchase"+s);
+			if(subType!="circuits"){
+				$("#headerList .title").text(parentList[parentId].name);
+				$("#headerList .price").text(parentList[parentId].totalPrice+" "+parentList[parentId].currency);
+				s=(parentList[parentId].countOrderItem > 1) ? "s": "";
+				$("#headerList .purchases").text(parentList[parentId].countOrderItem+" purchase"+s);
+			}
 			if(actionType=="history"){
 				$.ajax({
 					type: "POST",
@@ -203,11 +233,27 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 					  dataType: "json"
 				});
 			}else{
-				$("#headerList #goBackToThisCart").data("id",parentId);
-				$("#headerList #deleteBackup").data("id",parentId);
-				list.initList(parentList[parentId].object, actionType);
+				if(subType=="circuits"){
+					if(actionType=="backup")
+						obj=parentList[parentId].object;
+					else
+						obj=parentList[parentId];
+					getViewCircuit(obj, parentId);
+				}
+				else
+					list.initList(parentList[parentId].object, actionType);
+				$("#goBackToThisCart").data("id",parentId);
+				$("#deleteBackup").data("id",parentId);
 			}
 		});
+	}
+	function getViewCircuit(object, id){
+		data={object:object, viewRender:true, manage: actionType};
+		if(actionType=="backup");
+			data.backup=id;
+		ajaxPost('#listList', baseUrl+'/'+moduleId+'/circuit/index', data, function(){
+			bindListEvent();
+		},"html");
 	}
 	function initBackupEvent(){
 		$("#deleteBackup").click(function(){
@@ -232,8 +278,8 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 								dataType: "json",
 								success: function(data){
 									if ( data && data.result ) {
-										loadBackup();
-										toastr.error("The backup has been deleted with success");
+										urlCtrl.loadByHash(location.hash);
+										toastr.success("The backup has been deleted with success");
 									} else {
 									   toastr.error("Something went wrong");
 									}
@@ -266,12 +312,11 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 		                label: "Ok",
 		                className: "btn-primary",
 		                callback: function () {
-		                    shopping.cart=parentList[idBackup].object;
-		                    shopping.cart.backup=idBackup;
-		                    shopping.countShoppingCart("init");
-							localStorage.setItem("shoppingCart",JSON.stringify(shopping.cart));
-							smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/person/shoppingcart");
-							//urlCtrl.loadByHash("#person.shoppingcart");
+		                	setObject=parentList[idBackup].object;
+		                	if(parentList[idBackup].type=="shoppingCart")
+		                		shopping.restartBackup(setObject, idBackup);
+		                	else if(parentList[idBackup].type=="circuits")
+		                		circuit.restartBackup(setObject, idBackup);
 		                }
 		            },
 		            cancel: {

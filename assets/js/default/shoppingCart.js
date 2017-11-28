@@ -701,5 +701,12 @@ var shopping = {
 	            }
 	        })
 	    }
-    }
+    },
+    restartBackup : function(obj,idBackup){
+    	shopping.cart=obj;
+		shopping.cart.backup=idBackup;
+		shopping.countShoppingCart("init");
+		localStorage.setItem("shoppingCart",JSON.stringify(shopping.cart));
+		smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/person/shoppingcart");
+	}
 }

@@ -445,7 +445,7 @@ class CommunecterController extends Controller
     ),
     "circuit"=> array(
        "save"   => array("href" => "/ph/co2/circuit/save"),
-       "get"   => array("href" => "/ph/co2/circuit/get"),
+       "index"   => array("href" => "/ph/co2/circuit/index"),
     ),
     "pay"=> array(
        "index"   => array("href" => "/ph/co2/pay/index"),
@@ -535,6 +535,7 @@ class CommunecterController extends Controller
       "search"            => array('href' => "/ph/co2/app/search",            "public" => true),
       "activities"              => array('href' => "/ph/co2/app/search",              "public" => true),
       "store"            => array('href' => "/ph/co2/app/search",            "public" => true),
+      "circuits"            => array('href' => "/ph/co2/app/search",            "public" => true),
       "agenda"            => array('href' => "/ph/co2/app/agenda",            "public" => true),
       "power"             => array('href' => "/ph/co2/app/power",             "public" => true),
       "superadmin"        => array('href' => "/ph/co2/app/superadmin",        "public" => false),

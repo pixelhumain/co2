@@ -19,7 +19,7 @@ class CircuitController extends CommunecterController {
 	    return array(
 	        //'index'       			=> 'citizenToolKit.controllers.comment.IndexAction',
 	        'save'					=> 'citizenToolKit.controllers.circuit.SaveAction',
-	        'get'					=> 'citizenToolKit.controllers.circuit.GetAction',
+	        'index'					=> 'citizenToolKit.controllers.circuit.IndexAction',
 	        /*'abuseprocess'			=> 'citizenToolKit.controllers.comment.AbuseProcessAction',
 	        'moderate'				=> 'citizenToolKit.controllers.comment.ModerateAction',
 	        'countcommentsfrom'		=> 'citizenToolKit.controllers.comment.CountCommentsAction',

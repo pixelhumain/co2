@@ -58,39 +58,93 @@
 	</div>
 	<div class="form-group">
 		<label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding">Capacity for the circuit:</label>
-		<input type="number" id="capacity" name="capacity" value="12" class="form-control"></input>
+		<input type="number" id="capacity" name="capacity" value="12" class="form-control">
 	</div>
 	<div class="form-group text-center">
 		<button id="validateCircuit" class="btn btn-success"><?php echo Yii::t("common", "Start the circuit") ?></button>
 	</div>
 </div>
 <div class="podDash col-md-12 margin-top-20">
-		<ul class="nav pull-left">
-		  <li class="nav-item active">
-		    <a class="nav-link letter-lightgray" href="javascript:;" id="btn-circuits">
-		    	<?php echo Yii::t("common","Circuits") ?>
-		    </a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link letter-lightgray" href="javascript:;" id="btn-backups">
-		    	<?php echo Yii::t("common","Backups") ?>
-		    </a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link letter-lightgray" href="javascript:;" id="btn-reservations">
-		    	<?php echo Yii::t("common","Reservations") ?>
-		    </a>
-		  </li>
-		</ul>
-		<div class="content-view-circuits col-md-12 col-sm-12 col-xs-12 margin-bottom-20 padding-10 bg-white">
-		</div>
+	<ul class="nav pull-left">
+	  	<li class="nav-item active">
+	    	<a class="nav-link letter-lightgray" href="javascript:;" id="btn-circuits-home">
+	    		<?php echo Yii::t("common","Circuits") ?>
+	    	</a>
+	  	</li>
+	  	<li class="nav-item">
+	    	<a class="nav-link letter-lightgray" href="javascript:;" id="btn-circuits-backups">
+	    		<?php echo Yii::t("common","Backups") ?>
+	    	</a>
+	  	</li>
+	  	<li class="nav-item">
+	    	<a class="nav-link letter-lightgray" href="javascript:;" id="btn-circuits-reservations">
+	    		<?php echo Yii::t("common","Reservations") ?>
+	    	</a>
+	  	</li>
+	</ul>
+	<div class="content-view-circuits col-md-12 col-sm-12 col-xs-12 margin-bottom-20 padding-10 bg-white">
+	</div>
 </div>
 <script type="text/javascript">
+	var hashDir=".view.circuits";
+	var dir="<?php echo @$dir; ?>";
 	jQuery(document).ready(function() {
 		$("#validateCircuit").click(function(){
 			startCircuit($(this));
 		});
+		getCircuitsDir(dir);
+		bindButtonMenu();
 	});
+	function getCircuitsDir(dir){
+		if(typeof dir != "undefined" && dir!="undefined" && dir!=""){
+			if(dir=="backups")
+				loadCircuitsBackup();
+			else if(dir=="reservations")
+				loadCircuitsReservations();
+		} else
+			loadCircuitsHome();
+	}
+	function bindButtonMenu(){
+		/*$(".nav-link").click(function(){
+			$(".podDash .nav .nav-item").removeClass("active");
+			$(this).parent().addClass("active");
+		});*/
+
+		$("#btn-circuits-home").click(function(){
+			location.hash=hashUrlPage+hashDir;
+			loadCircuitsHome();
+		});
+		$("#btn-circuits-backups").click(function(){
+			location.hash=hashUrlPage+hashDir+".dir.backups";
+			loadCircuitsBackup();
+		});
+
+		$("#btn-circuits-reservations").click(function(){
+			location.hash=hashUrlPage+hashDir+".dir.reservations";
+			loadCircuitsReservations();
+		});
+	}
+	function loadCircuitsHome(){
+		initBtnDash("#btn-circuits-home");
+		data={category:["circuits"],actionType:"admin","admin":true};
+		var url = "element/list";
+		showLoader('.content-view-circuits');
+		ajaxPost('.content-view-circuits', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
+	}
+	function loadCircuitsBackup(){
+		initBtnDash("#btn-circuits-backups");
+		data={category:["backups"],type:"circuits", actionType:"backup", admin:true};
+		var url = "element/list";
+		showLoader('.content-view-circuits');
+		ajaxPost('.content-view-circuits', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
+	}
+	function loadCircuitsReservations(){
+
+	}
+	function initBtnDash(dom){
+		$(".podDash .nav .nav-item").removeClass("active");
+		$(dom).parent().addClass("active");
+	}
 	function startCircuit($this){
 		if($("#create-new-circuit #name").val()==""
 			|| $("#create-new-circuit #description").val()==""

@@ -60,6 +60,19 @@
 			"lblBtnCreate" : "Create an activity",
 			"colorBtnCreate" : "orange"
 		},
+		"#circuits": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "circuits", 
+			"subdomainName" : "circuits",
+			"hash" : "#app.circuits",
+			"icon" : "ravelry", 
+			"mainTitle" : "Store",
+			"placeholderMainSearch" : "search among circuits ...",
+			"lblBtnCreate" : "",
+			"colorBtnCreate" : "orange"
+		},
 		"#store": {
 			"inMenu" : true, 
 			"useHeader" : true, 

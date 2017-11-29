@@ -20,49 +20,43 @@
 	}
 </style>
 
-<div class="col-lg-offset-1 col-lg-10 col-xs-12 no-padding" id="content-social">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" id="content-social">
 	<?php if(@Yii::app()->session["userIsAdmin"]){ ?>
-	<div class="col-md-10 col-sm-12 col-xs-12 margin-top-20" id="navigationAdmin">
+	<div class="col-md-10 col-sm-10 col-xs-12 margin-top-20" id="navigationAdmin">
 		<ul class="list-group text-left no-margin">
 		<?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
 
 			<li class="list-group-item col-md-4 col-sm-6 ">
 				<a href="javascript:;" class=" text-yellow" id="btn-community" style="cursor:pointer;">
 					<i class="fa fa-user fa-2x"></i>
-					<?php echo Yii::t("admin", "Community", null, Yii::app()->controller->module->id); ?>
+					<?php echo Yii::t("admin", "Community"); ?>
 				</a>
 			</li>
 
 			<li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="text-red" id="btn-services" style="cursor:pointer;" href="javascript:;">
 					<i class="fa fa-plus fa-2x"></i>
-					<?php echo Yii::t("admin", "Services", null, Yii::app()->controller->module->id); ?>
+					<?php echo Yii::t("admin", "Services"); ?>
 				</a>
 			</li>
 			<li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="text-red" id="btn-circuits" style="cursor:pointer;" href="javascript:;">
-					<i class="fa fa-plus fa-2x"></i>
-					<?php echo Yii::t("admin", "Circuits", null, Yii::app()->controller->module->id); ?>
+					<i class="fa fa-ravelry fa-2x"></i>
+					<?php echo Yii::t("admin", "Circuits"); ?>
 				</a>
 			</li>
 			<li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="lbh text-green" style="cursor:pointer;" href="#log.monitoring">
 					<i class="fa fa-list fa-2x"></i>
-					<?php echo Yii::t("admin", "LOG", null, Yii::app()->controller->module->id); ?>
+					<?php echo Yii::t("admin", "LOG"); ?>
 				</a>
 			</li>
 			<li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="lbh text-yellow" style="cursor:pointer;" href="#admin.mailerrordashboard">
 					<i class="fa fa-envelope fa-2x"></i>                
-					<?php echo Yii::t("admin", "MAILERROR", null, Yii::app()->controller->module->id); ?>              
+					<?php echo Yii::t("admin", "MAILERROR"); ?>              
 				</a>
 			</li>
-			<!-- <li class="list-group-item col-md-4 col-sm-6 ">
-				<a class="lbh text-yellow" style="cursor:pointer;" href="#admin.cities">
-					<i class="fa fa-university fa-2x"></i>               
-					<?php echo Yii::t("admin", "CITIES", null, Yii::app()->controller->module->id); ?>              
-				</a>
-			</li> -->
 		<?php 	} ?>
 		</ul>
 	</div>
@@ -88,6 +82,7 @@
 	var edit=true;
 	var hashUrlPage = "#admin";
 	var subView="<?php echo @$_GET['view']; ?>";
+	var dir="<?php echo @$_GET['dir']; ?>";
 	jQuery(document).ready(function() {
 		//loadDetail(true);
 		if(superAdmin == ""){
@@ -96,7 +91,7 @@
 		}
 		bindAdminButtonMenu();
 		initKInterface();
-		getAdminSubview(subView);
+		getAdminSubview(subView, dir);
 		//KScrollTo("#topPosKScroll");
 	});
 	//function goProAccount(){
@@ -109,7 +104,7 @@
 			else if(sub=="services")
 				loadServices();
 			else if(sub=="circuits")
-				loadCircuits();
+				loadCircuits(dir);
 			/*else if(sub=="backups")
 				loadBackup();
 			else if(sub=="bookings"){
@@ -140,15 +135,8 @@
 			location.hash=hashUrlPage+".view.services";
 			loadServices();
 		});
-		$("#btn-backup").click(function(){
-			location.hash=hashUrlPage+".view.backup";
-			loadBackup();
-		});
 		$(".btn-open-form").click(function(){
 			dyFObj.openForm($(this).data("form-type"),"sub");
-		});
-		$(".show-form-new-circuit").click(function(){
-			$("#create-new-circuit").show(700);
 		});
 	}
 	function loadIndex(){
@@ -174,10 +162,10 @@
 		ajaxPost('#content-view-admin', baseUrl+'/'+moduleId+'/'+url, data, function(){},"html");
 
 	}
-	function loadCircuits(){
+	function loadCircuits(dir){
 		initDashboard();
 		//data={category:["circuits"],actionType:"history"};
-		var url = "admin/circuits";
+		var url = "admin/circuits/dir/"+dir;
 		$("#goBackToHome .show-form-new-circuit").show(700);
 		ajaxPost('#content-view-admin', baseUrl+'/'+moduleId+'/'+url, null, function(){},"html");
 	}

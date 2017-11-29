@@ -109,6 +109,20 @@
 					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-envelope"></i> <?php echo Yii::t("common","Price"); ?> :</span><?php echo (@$element["price"]) ? $element["price"]  : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 				</div>
 			</div>
+
+
+			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
+					<span><i class="fa fa-envelope"></i></span> <?php echo Yii::t("common","Open"); ?>
+				</div>
+				<div id="priceAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-envelope"></i> <?php echo Yii::t("common","Price"); ?> :</span>
+					
+					<span id="openingHours"></span>
+				</div>
+			</div>
+
+
 		<?php } ?>
 
 
@@ -362,6 +376,7 @@
 		bindDynFormEditableTerla();
 		initDate();
 		initDescs();
+		initOpeningHours();
 		//changeHiddenFields();
 		//bindAboutPodElement();
 
@@ -449,6 +464,29 @@
 		$("#descriptionAbout").html(descHtml);
 		$("#descProfilsocial").html(descHtml);
 		mylog.log("descHtml", descHtml);
+	}
+
+	function initOpeningHours() {
+		mylog.log("initOpeningHours");
+		var html = "" ;
+		mylog.log("initOpeningHours contextData.openingHours", contextData.openingHours);
+		if(notNull(contextData.openingHours) ){
+
+			$.each(contextData.openingHours, function(i,data){
+				mylog.log("initOpeningHours data", data);
+				if(data.allDay == "true"){
+					var day = moment().day(i).local().locale(mainLanguage).format("dddd")+" : "+trad.allDay+"<br/>";
+					if( moment().format("dd") == data.dayOfWeek ){
+						html += "<b>"+day+"</b>";
+					} else
+						html += day;
+
+				}
+			});
+		} else 
+			html = '<i>'+trad.notSpecified+'</i>'; 
+
+		$("#openingHours").html(html);
 	}
 
 	

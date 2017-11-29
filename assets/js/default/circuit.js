@@ -507,5 +507,8 @@ var circuit = {
 		circuit.countCircuit("init");
 		localStorage.setItem("circuit",JSON.stringify(circuit.obj));
 		smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/pod/circuit");
+	},
+	goToShoppingCart:function(){
+		
 	}
 }

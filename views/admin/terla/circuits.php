@@ -109,7 +109,9 @@
 			$(".podDash .nav .nav-item").removeClass("active");
 			$(this).parent().addClass("active");
 		});*/
-
+		$(".show-form-new-circuit").click(function(){
+			$("#create-new-circuit").toggle("slow");
+		});
 		$("#btn-circuits-home").click(function(){
 			location.hash=hashUrlPage+hashDir;
 			loadCircuitsHome();

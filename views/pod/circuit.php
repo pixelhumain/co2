@@ -150,12 +150,12 @@
               <i class="fa fa-trash"></i> <?php echo Yii::t("common","Delete") ?>
             </a>
           <?php }else if($manage=="buy"){ ?>
-              <h3 class="letter-orange">Choose the quantity</h3><br/>
-              <div class="col-md-6 col-sm-6 col-md-offset-4 col-sm-offset-4 col-xs-10 col-xs-offset-1">
-                <input type="number" name="quantity" value="1" min="1" max="<?php echo $object["capacity"] ?>" class="form-control"/>
+              <span class="text-dark">Choose the quantity</span><br/>
+              <div class="col-md-6 col-sm-6 col-md-offset-4 col-sm-offset-4 col-xs-10 col-xs-offset-1 margin-bottom-20">
+                <input type="number" name="quantity" value="1" min="1" max="<?php echo $object["capacity"] ?>" id='bookingFor' class="form-control"/>
               </div>
-              <a href='javascript:;' onclick='circuit.goToShoppingCart();' class='btn bg-orange col-md-6 col-sm-6 col-md-offset-4 col-sm-offset-4 col-xs-10 col-xs-offset-1'>
-                <i class='fa fa-shopping-cart'></i> <?php echo Yii::t("common","Add to my cart") ?>
+              <a href='javascript:;' class='btn bg-orange col-md-6 col-sm-6 col-md-offset-4 col-sm-offset-4 col-xs-10 col-xs-offset-1 convertToShoppingCart'>
+                <i class='fa fa-shopping-cart'></i> <?php echo Yii::t("terla","Buy this circuit") ?>
               </a>
           <?php } ?>
         </div>
@@ -188,6 +188,10 @@
         //if(typeof params.name != "undefined" && params.name != "")
       initBtnLink();
       //circuit.obj.total=0;
+      $(".convertToShoppingCart").click(function(){
+        bookingFor=$("#bookingFor").val();
+        circuit.goToShoppingCart(circuitObj,bookingFor);
+      });
       htmlCart = "";
       if(circuitObj.countQuantity > 0 ){
       	circuitView = circuit.generateCircuitView(circuitObj);

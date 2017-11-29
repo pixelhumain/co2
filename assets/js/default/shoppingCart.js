@@ -372,7 +372,7 @@ var shopping = {
         					};
         $.each(shopping.cart,function(i,v){
             console.log(v);
-            if(i!="countQuantity" && i != "backup" && i != "totalCart"){
+            if(i=="services" || i=="products"){
                 if(i=="services"){
                     $.each(v,function(e, service){
                         console.log(service);
@@ -412,20 +412,34 @@ var shopping = {
         "</div>";
         $.each(item,function(e,data){
             itemHtml+=shopping.getViewItem(e, data, type);
-            shopping.totalCart=shopping.totalCart+(data.price*data.countQuantity);
-
-            if( typeof shopping.checkoutObj.sellers[data.providerId] == "undefined" )
+            if(shopping.cart.idCircuit=="undefined")
+            	shopping.totalCart+=data.price*data.countQuantity;
+            else
+            	shopping.totalCart+=data.price*data.countQuantity*shopping.cart.bookingFor;
+            if(shopping.cart.idCircuit=="undefined"){
+            		totalCheck=data.price*data.countQuantity;
+            		qtyCheck=data.countQuantity;
+            	}
+            	else{
+            		totalCheck=data.price*data.countQuantity*shopping.cart.bookingFor;
+            		qtyCheck=data.countQuantity*shopping.cart.bookingFor;
+           	}
+            if( typeof shopping.checkoutObj.sellers[data.providerId] == "undefined" ){
+            
                 shopping.checkoutObj.sellers[data.providerId] = {
-                    total : data.countQuantity*data.price,
-                    qty : data.countQuantity,
+                    total : totalCheck,
+                    qty : qtyCheck,
                     type : data.providerType,
                     name : data.providerName,
                 };
-            else {
-                shopping.checkoutObj.sellers[data.providerId].total  += data.countQuantity*data.price;
-                shopping.checkoutObj.sellers[data.providerId].qty  += data.countQuantity;
+            }else {
+                shopping.checkoutObj.sellers[data.providerId].total  += totalCheck;
+                shopping.checkoutObj.sellers[data.providerId].qty  += qtyCheck;
             }
-            shopping.checkoutObj.total += data.countQuantity*data.price;
+            if(shopping.cart.idCircuit=="undefined")
+            	shopping.checkoutObj.total+=data.price*data.countQuantity;
+            else
+            	shopping.checkoutObj.total+=data.price*data.countQuantity*shopping.cart.bookingFor;
         });
         return itemHtml;
     },
@@ -436,35 +450,54 @@ var shopping = {
         subType=null;
         if(data.type != "undefined")
             subType=data.type;
+        // View for products without reservations
         if(typeof data.reservations =="undefined"){
-            classRemove="";
-            classAdd="";
-            if(data.countQuantity==1)
-                classRemove="hide";
-            if(typeof data.capacity != "undefined" && data.countQuantity>=data.capacity)
-                classAdd="hide";
-            incQtt="<a href='javascript:;' class='letter-orange remove-session "+classRemove+"' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",null);'>"
-                    +"<i class='fa fa-minus'></i></a>"
-                +'<span class="eventCountItem margin-left-5 margin-right-5">'
-                    +'<i class="fa fa-shopping-cart"></i>'
-                    +'<span class="inc-session topbar-badge badge animated bounceIn badge-transparent badge-success">'+data.countQuantity+'</span>'
-                +'</span>'
-                +"<a href='javascript:;' class='letter-orange add-session "+classAdd+"' onclick='shopping.addInCart(\""+itemId+"\", \""+itemType+"\", null);'><i class='fa fa-plus'></i></a>";
+        	if(typeof shopping.cart.idCircuit == "undefined"){
+	            classRemove="";
+	            classAdd="";
+	            if(data.countQuantity==1)
+	                classRemove="hide";
+	            if(typeof data.capacity != "undefined" && data.countQuantity>=data.capacity)
+	                classAdd="hide";
+	            incQtt="<a href='javascript:;' class='letter-orange remove-session "+classRemove+"' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",null);'>"
+	                    +"<i class='fa fa-minus'></i></a>"
+	                +'<span class="eventCountItem margin-left-5 margin-right-5">'
+	                    +'<i class="fa fa-shopping-cart"></i>'
+	                    +'<span class="inc-session topbar-badge badge animated bounceIn badge-transparent badge-success">'+data.countQuantity+'</span>'
+	                +'</span>'
+	                +"<a href='javascript:;' class='letter-orange add-session "+classAdd+"' onclick='shopping.addInCart(\""+itemId+"\", \""+itemType+"\", null);'><i class='fa fa-plus'></i></a>";
+	        } else
+	        	incQtt="<span class='showDetail showDetail"+key+"' data-value='"+key+"''><i class='fa fa-2x fa-angle-down'></i></span>";
         }else
             incQtt="<span class='showDetail showDetail"+key+"' data-value='"+key+"''><i class='fa fa-2x fa-angle-down'></i></span>";
+        // View detail reservations
+        // Quantity systeme for circuit and specific user travel (desactivated)
+        if(typeof shopping.cart.idCircuit == "undefined"){
+        	quantityShop=data.countQuantity;
+        	priceHT=data.price*data.countQuantity
+        	priceTTC=data.price*data.countQuantity;
+        }
+        else{
+        	quantityShop=data.countQuantity*shopping.cart.bookingFor;
+        	priceHT=data.price*data.countQuantity*shopping.cart.bookingFor;
+        	priceTTC=data.price*data.countQuantity*shopping.cart.bookingFor;
+        }
         itemHtml="<div class='col-md-12 contentProduct contentProduct"+itemId+" text-left'>"+
                 "<div class='col-md-2 no-padding'>"+data.imgProfil+"</div>"+
                 "<div class='col-md-4'>"+
                     "<h4 class='text-dark'>"+data.name+"</h4>"+
-                    "<span>Quantity booked : "+data.countQuantity+"</span><br>";
+                    "<span>Quantity booked : "+quantityShop+"</span><br>";
                 if(typeof data.description != "undefined" && data.description != "")
             itemHtml += "<div class='description'>"+data.description+"</div><br>";
-            itemHtml += "<a href='javascript:;' class='letter-blue-5' onclick='alert(\"What's the quoi???\")'> Save / Update</a>"+
-                "</div>"+
-                "<div class='col-md-2 text-center'><span>"+(data.price*data.countQuantity)+" €</span></div>"+
+            //itemHtml += "<a href='javascript:;' class='letter-blue-5' onclick='alert(\"What's the quoi???\")'> Save / Update</a>"+
+            itemHtml +=   "</div>"+
+                "<div class='col-md-2 text-center'><span>"+priceHT+" €</span></div>"+
                 "<div class='col-md-1 text-center no-padding'>"+incQtt+"</div>"+
-                "<div class='col-md-2 text-center'><span>"+(data.price*data.countQuantity)+" €</span></div>"+
-                "<div class='col-md-1 text-center'><span> <a href='javascript:;' class='letter-lightgray' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",true,\""+subType+"\");'><i class='fa fa-trash fa-2x'></i></a></span></div>";
+                "<div class='col-md-2 text-center'><span>"+priceTTC+" €</span></div>"+
+                "<div class='col-md-1 text-center'><span>";
+                if(typeof shopping.cart.idCircuit == "undefined")
+            itemHtml += "<a href='javascript:;' class='letter-lightgray' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",true,\""+subType+"\");'><i class='fa fa-trash fa-2x'></i></a></span>";
+        	itemHtml += "</span></div>";
                 if(typeof data.reservations != "undefined"){
             itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 dateHoursDetail'>"; 
                //     countDate=Object.keys(data.reservations).length;
@@ -476,28 +509,33 @@ var shopping = {
             itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 bookDate"+date+" shadow2 margin-bottom-10'>"+
                             "<div class='col-md-12 col-sm-12 col-xs-12 dateHeader'>"+
                                 "<h4 class='pull-left margin-bottom-5 no-margin col-md-5 col-sm-5 col-xs-5 no-padding'><i class='fa fa-calendar'></i> "+dateStr+"</h4>";
-                                if(typeof value.hours =="undefined"){
-                                    classRemove="";
-                                    classAdd="";
-                                    if(value.countQuantity==1)
-                                        classRemove="hide";
-                                    if(value.countQuantity>=data.capacity)
-                                        classAdd="hide";
-                                    incQtt="<a href='javascript:;' class='letter-orange remove-session "+classRemove+"' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",null,\""+subType+"\",\""+date+"\");'>"
-                                            +"<i class='fa fa-minus'></i></a>"
-                                        +'<span class="eventCountItem margin-left-5 margin-right-5">'
-                                            +'<i class="fa fa-shopping-cart"></i>'
-                                            +'<span class="inc-session topbar-badge badge animated bounceIn badge-transparent badge-success">'+value.countQuantity+'</span>'
-                                        +'</span>'
-                                        +"<a href='javascript:;' class='letter-orange add-session "+classAdd+"' onclick='shopping.addInCart(\""+itemId+"\", \""+itemType+"\",\""+subType+"\",\""+date+"\");'><i class='fa fa-plus'></i></a>";
-                                }else
-                                    incQtt=value.countQuantity+" reservation"+s;
-            itemHtml +=         "<span class='pull-left text-center col-md-3 col-sm-3 col-xs-3'>"+incQtt+"</span>"+
-                                "<div class='pull-right'>"+
-                                    "<a href='javascript:;' class='text-red' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",true,\""+subType+"\",\""+date+"\");'>"+
+                                if(typeof shopping.cart.idCircuit == "undefined"){
+	                                if(typeof value.hours =="undefined"){
+	                                    classRemove="";
+	                                    classAdd="";
+	                                    if(value.countQuantity==1)
+	                                        classRemove="hide";
+	                                    if(value.countQuantity>=data.capacity)
+	                                        classAdd="hide";
+	                                    incQtt="<a href='javascript:;' class='letter-orange remove-session "+classRemove+"' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",null,\""+subType+"\",\""+date+"\");'>"
+	                                            +"<i class='fa fa-minus'></i></a>"
+	                                        +'<span class="eventCountItem margin-left-5 margin-right-5">'
+	                                            +'<i class="fa fa-shopping-cart"></i>'
+	                                            +'<span class="inc-session topbar-badge badge animated bounceIn badge-transparent badge-success">'+value.countQuantity+'</span>'
+	                                        +'</span>'
+	                                        +"<a href='javascript:;' class='letter-orange add-session "+classAdd+"' onclick='shopping.addInCart(\""+itemId+"\", \""+itemType+"\",\""+subType+"\",\""+date+"\");'><i class='fa fa-plus'></i></a>";
+	                                }else
+	                                    incQtt=value.countQuantity+" reservation"+s;
+	                            }else
+	                            	 incQtt=value.countQuantity+" sessions"+s+" at this date";
+            itemHtml +=         "<span class='pull-left text-center col-md-3 col-sm-3 col-xs-3'>"+incQtt+"</span>";
+            					if(typeof shopping.cart.idCircuit == "undefined"){
+            itemHtml +=            	"<div class='pull-right'>"+
+                                    	"<a href='javascript:;' class='text-red' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",true,\""+subType+"\",\""+date+"\");'>"+
                                         "<i class='fa fa-trash'></i> Remove this date</a>"+
-                                "</div>"+
-                            "</div>";
+                                	"</div>";
+                                }
+            itemHtml +=     "</div>";
                             
                         if(typeof value.hours != "undefined"){
                             //countSession=Object.keys(value.hours).length;
@@ -505,29 +543,35 @@ var shopping = {
                             //itemHtml += "<span>"+countSession+" session"+s+"</span><br/>";
                             $.each(value.hours, function(key, hours){
                                 s=(hours.countQuantity > 1) ? "s" : "";
-                                classRemove="";
-                                classAdd="";
-                                if(hours.countQuantity==1)
-                                    classRemove="hide";
-                                if(hours.countQuantity>=data.capacity)
-                                    classAdd="hide";
-                                incQtt="<a href='javascript:;' class='letter-orange "+classRemove+"' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",null,\""+subType+"\",\""+date+"\",\""+hours.start+"\",\""+hours.end+"\");'>"
-                                        +"<i class='fa fa-minus'></i></a>"
-                                    +'<span class="eventCountItem margin-left-5 margin-right-5">'
-                                        +'<i class="fa fa-shopping-cart"></i>'
-                                        +'<span class="inc-session topbar-badge badge animated bounceIn badge-transparent badge-success">'+hours.countQuantity+'</span>'
-                                    +'</span>'
-                                    +"<a href='javascript:;' class='letter-orange "+classAdd+"' onclick='shopping.addInCart(\""+itemId+"\", \""+itemType+"\",\""+subType+"\",\""+date+"\",\""+hours.start+"\",\""+hours.end+"\");'><i class='fa fa-plus'></i></a>";
-
+                                if(typeof shopping.cart.idCircuit == "undefined"){
+	                                classRemove="";
+	                                classAdd="";
+	                                if(hours.countQuantity==1)
+	                                    classRemove="hide";
+	                                if(hours.countQuantity>=data.capacity)
+	                                    classAdd="hide";
+	                                incQtt="<a href='javascript:;' class='letter-orange "+classRemove+"' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",null,\""+subType+"\",\""+date+"\",\""+hours.start+"\",\""+hours.end+"\");'>"
+	                                        +"<i class='fa fa-minus'></i></a>"
+	                                    +'<span class="eventCountItem margin-left-5 margin-right-5">'
+	                                        +'<i class="fa fa-shopping-cart"></i>'
+	                                        +'<span class="inc-session topbar-badge badge animated bounceIn badge-transparent badge-success">'+hours.countQuantity+'</span>'
+	                                    +'</span>'
+	                                    +"<a href='javascript:;' class='letter-orange "+classAdd+"' onclick='shopping.addInCart(\""+itemId+"\", \""+itemType+"\",\""+subType+"\",\""+date+"\",\""+hours.start+"\",\""+hours.end+"\");'><i class='fa fa-plus'></i></a>";
+	                            }else{
+	                            	 s=(shopping.cart.bookingFor > 1) ? "s" : "";
+	                            	incQtt = "session booked for "+shopping.cart.bookingFor+" person"+s;
+	                            }
             itemHtml +=         "<div class='col-md-12 col-sm-12 col-xs-12 margin-bottom-5 padding-5 contentHoursSession'>"+
                                     "<h4 class='col-md-4 col-sm-4 col-xs-3 no-padding no-margin'><i class='fa fa-clock-o'></i> "+hours.start+" - "+hours.end+"</h4>"+
-                                    "<span class='col-md-5 col-sm-5 col-xs-6 text-center'>"+incQtt+"</span>"+
-                                    "<div class='pull-right'>"+
-                                        "<a href='javascript:;' class='text-red' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",true,\""+subType+"\",\""+date+"\",\""+hours.start+"\",\""+hours.end+"\");'>"+
-                                            "<i class='fa fa-times'></i>"+
-                                        "</a>"+
-                                    "</div>"+
-                                "</div>";
+                                    "<span class='col-md-5 col-sm-5 col-xs-6 text-center'>"+incQtt+"</span>";
+                                    if(typeof shopping.cart.idCircuit == "undefined"){
+            itemHtml +=                 "<div class='pull-right'>"+
+                                        	"<a href='javascript:;' class='text-red' onclick='shopping.removeInCart(\""+itemId+"\", \""+itemType+"\",true,\""+subType+"\",\""+date+"\",\""+hours.start+"\",\""+hours.end+"\");'>"+
+                                            	"<i class='fa fa-times'></i>"+
+                                        	"</a>"+
+                                    	"</div>";
+                                    }
+            itemHtml +=         "</div>";
                             });
                         }
             itemHtml += "</div>"; 
@@ -592,6 +636,13 @@ var shopping = {
 	        currency : "EUR"
         };
         orderItem=new Object;
+
+        if(typeof shopping.cart.idCircuit != "undefined"){
+        	order.idCircuit=shopping.cart.idCircuit;
+        }
+        if(typeof shopping.cart.name != "undefined"){
+        	order.name=shopping.cart.name;
+        }
         if(typeof shopping.cart.backup != "undefined"){
         	order.backup=shopping.cart.backup;
         }
@@ -602,11 +653,30 @@ var shopping = {
             else if(e=="services"){
                 $.each(v, function(cat, listByCat){
                     $.each(listByCat, function(key, data){
+                    	if(typeof shopping.cart.idCircuit == "undefined"){
+                    		quantityByItem=data.countQuantity;
+                    		priceByItem=data.price * data.countQuantity;
+                    		reservationsByItem=data.reservations;
+                    	}
+                    	else{
+                    		quantityByItem=data.countQuantity*shopping.cart.bookingFor;
+                    		priceByItem=data.price * data.countQuantity*shopping.cart.bookingFor;
+                    		reservationsByItem=data.reservations;
+                    		$.each(reservationsByItem, function(i,v){
+                    			reservationsByItem[i].countQuantity=v.countQuantity*shopping.cart.bookingFor;
+                    			if(typeof v.hours != "undefined"){
+                    				$.each(v.hours, function(key,hour){
+                    					reservationsByItem[i].hours[key].countQuantity=hour.countQuantity*shopping.cart.bookingFor;
+                    				});
+                    			}
+                    		});
+
+                    	}
                         orderItem[key]={
                             orderedItemType : e,
-                            quantity : data.countQuantity,
-                            price : (data.price * data.countQuantity),
-                            reservations : data.reservation
+                            quantity : quantityByItem,
+                            price : priceByItem,
+                            reservations : reservationsByItem
                         };
                     });
                 });
@@ -622,29 +692,45 @@ var shopping = {
         });
         order.orderItems=orderItem;
         
-
-        bootbox.prompt({
-            title: "Give a name to your command:", 
-            value : "Cart of "+moment(new Date()).format('DD-MM-YYYY HH:MM'), 
-            callback : function(result){ 
-                order.name=result;
-                $.ajax({
-                  type: "POST",
-                  url: baseUrl+"/"+moduleId+"/order/save", 
-                  data: order,
-                  success: function(data){
-                    if(data.result) {
-                        toastr.success(data.msg);
-                        //urlCtrl.loadByHash("#checkout");
-                    }
-                    else
-                        toastr.error(data.msg);  
-                  },
-                  dataType: "json"
-                });
-                console.log(order);
-            }
-        })
+        if(typeof order.name == "undefined"){
+	        bootbox.prompt({
+	            title: "Give a name to your command:", 
+	            value : "Cart of "+moment(new Date()).format('DD-MM-YYYY HH:MM'), 
+	            callback : function(result){ 
+	                order.name=result;
+	                $.ajax({
+	                  type: "POST",
+	                  url: baseUrl+"/"+moduleId+"/order/save", 
+	                  data: order,
+	                  success: function(data){
+	                    if(data.result) {
+	                        toastr.success(data.msg);
+	                        //urlCtrl.loadByHash("#checkout");
+	                    }
+	                    else
+	                        toastr.error(data.msg);  
+	                  },
+	                  dataType: "json"
+	                });
+	                console.log(order);
+	            }
+	        });
+	    }else{
+	    	$.ajax({
+				type: "POST",
+				url: baseUrl+"/"+moduleId+"/order/save", 
+				data: order,
+				success: function(data){
+				if(data.result) {
+				    toastr.success(data.msg);
+				    //urlCtrl.loadByHash("#checkout");
+				}
+				else
+				    toastr.error(data.msg);  
+				},
+				dataType: "json"
+            });
+	    }
     },
     saveCart:function(){
     	if(typeof shopping.cart.backup !="undefined"){

@@ -473,16 +473,31 @@
 		if(notNull(contextData.openingHours) ){
 
 			$.each(contextData.openingHours, function(i,data){
-				mylog.log("initOpeningHours data", data);
-				if(data.allDay == "true"){
-					var day = moment().day(i).local().locale(mainLanguage).format("dddd")+" : "+trad.allDay+"<br/>";
-					if( moment().format("dd") == data.dayOfWeek ){
-						html += "<b>"+day+"</b>";
-					} else
-						html += day;
+				mylog.log("initOpeningHours data", data, data.allDay, notNull(data));
+				mylog.log("initOpeningHours notNull data", notNull(data), typeof data, data.length);
+				if( (typeof data == "object" && notNull(data) ) || (typeof data == "string" && data.length > 0) ) {
+					var day = "" ;
+					if(data.allDay == "true"){
+						day = moment().day(i).local().locale(mainLanguage).format("dddd")+" : "+trad.allDay+"<br/>";
+					}else {
+						mylog.log("initOpeningHours data.hours", data.hours);
+						day = moment().day(i).local().locale(mainLanguage).format("dddd")+" : <br/>";
+						day += "<ul>";
+						$.each(data.hours, function(i,hours){
+							mylog.log("initOpeningHours hours", hours);
+							day += "<li>"+hours.opens+" : "+hours.closes+"</li>";
+						});
+						day += "</ul>";
+					}
 
+					if( moment().format("dd") == data.dayOfWeek )
+						html += "<b>"+day+"</b>";
+					else
+						html += day;
 				}
+				
 			});
+
 		} else 
 			html = '<i>'+trad.notSpecified+'</i>'; 
 

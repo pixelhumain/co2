@@ -90,7 +90,7 @@
 		  </li>
 		  <li class="nav-item">
 		    <a class="nav-link letter-lightgray" href="javascript:;" id="btn-history">
-		    	<?php echo Yii::t("common","Historic") ?>
+		    	<?php echo Yii::t("common","My travels") ?>
 		    </a>
 		  </li>
 		  <!--<li class="nav-item">

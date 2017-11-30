@@ -119,9 +119,10 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 					$nameHeader=@$value["name"];
 					$priceHeader=@$value["totalPrice"];
 					$currencyHeader=@$value["currency"];
-					if(@$value["countOrderItem"])
+					if(@$value["countOrderItem"]){
 						$countHeader=$value["countOrderItem"];
-					else{
+						$circuitId=$value["circuit"];
+					}else{
 						$firstId=$key;
 						if(@$subType && $subType==Circuit::COLLECTION && $actionType!="backup")
 							$countHeader=$value["countQuantity"];
@@ -152,7 +153,9 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 			<i class='fa fa-file-pdf-o'></i>
 		</a><br/>
 		<span class="purchases"><i><?php echo $countHeader; ?> purchase<?php if ($countHeader >1) echo "s" ?></i></span>
-		
+		<?php if($actionType=="history"){ ?>
+			<br/><a href='#circuit.index.id.<?php echo $circuitId ?>.tpl.show' data-modalshow="$circuitId" class="lbhp btn bg-orange" id="programView">Show programmation</a>
+		<?php } ?>
 		<?php if($actionType=="backup") { ?>
 			<div class="pull-right">
 				<a href="javascript:;" id="goBackToThisCart" class="btn btn-success" data-id="<?php echo $key ?>">Continue this cart</a>
@@ -217,6 +220,8 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 				$("#headerList .price").text(parentList[parentId].totalPrice+" "+parentList[parentId].currency);
 				s=(parentList[parentId].countOrderItem > 1) ? "s": "";
 				$("#headerList .purchases").text(parentList[parentId].countOrderItem+" purchase"+s);
+				if(actionType=="history")
+					$("#headerList #programView").attr("href", "#circuit.index.id."+parentList[parentId].circuit);
 			}
 			if(actionType=="history"){
 				$.ajax({

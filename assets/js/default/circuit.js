@@ -507,5 +507,18 @@ var circuit = {
 		circuit.countCircuit("init");
 		localStorage.setItem("circuit",JSON.stringify(circuit.obj));
 		smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/pod/circuit");
+	},
+	goToShoppingCart:function(obj, bookingFor){
+		shopping.cart=obj;
+		shopping.cart.bookingFor=bookingFor;
+		shopping.cart.idCircuit=obj._id.$id;
+		delete shopping.cart.frequency;
+		delete shopping.cart._id;
+		delete shopping.cart.description;
+		delete shopping.cart.capacity;
+		shopping.countShoppingCart("init");
+		localStorage.setItem("shoppingCart",JSON.stringify(shopping.cart));
+		smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/person/shoppingcart");
+		toastr.success("You finalize your purchase now");	
 	}
 }

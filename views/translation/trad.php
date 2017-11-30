@@ -403,6 +403,7 @@ var trad = {
 	"youwillfindonlycities" : "<?php echo Yii::t("docs","You will find only cities <b>which match data</b>.<br/> If you <b>don't find</b> a city, feel free <b>to create an organization, a project, an event, on this geographical zone...</b><br/><br/><b>Then you will find this result here</b>") ?>",
 	"testAOtherCommunexion" : "<?php echo Yii::t("home", "Test a other communexion") ?>",
 	"allcitieswiththispostalcode" : "<?php echo Yii::t("common", "All cities with this postal code") ?>",
+	"allDay" : "<?php echo Yii::t("common", "All day") ?>",
 
 };
 

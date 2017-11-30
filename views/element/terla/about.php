@@ -2,10 +2,15 @@
 	$cssAnsScriptFilesModule = array(
 		//Data helper
 		'/js/dataHelpers.js',
-		'/js/default/editInPlace.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
-
+	$cssAnsScriptFilesTheme = array(
+		// SHOWDOWN
+		'/plugins/showdown/showdown.min.js',
+		//MARKDOWN
+		'/plugins/to-markdown/to-markdown.js',
+	);
+	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 ?>
 <style type="text/css">
 	.valueAbout{
@@ -80,60 +85,9 @@
 				<span class="visible-xs pull-left margin-right-5"><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Name") ?> :</span> <?php echo $element["name"]; ?>
 			</div>
 		</div>
-		<?php if($type==Project::COLLECTION){ ?>
-			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
-					<span><i class="fa fa-line-chart"></i></span> <?php echo Yii::t("project","Project maturity"); ?>
-				</div>
-				<div  id="avancementAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-line-chart"></i> <?php echo Yii::t("project","Project maturity"); ?> :</span><?php echo (@$element["properties"]["avancement"]) ? Yii::t("project",$element["properties"]["avancement"]) : '<i>'.Yii::t("common","Not specified").'</i>' ?>
-				</div>
-			</div>
-		<?php } ?>
-
-		<?php if($type==Person::COLLECTION){ ?>
-			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
-					<span><i class="fa fa-user-secret"></i></span> <?php echo Yii::t("common","Username"); ?>
-				</div>
-				<div id="usernameAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-user-secret"></i><?php echo Yii::t("common","Username"); ?> :</span><?php echo (@$element["username"]) ? $element["username"] : '<i>'.Yii::t("common","Not specified").'</i>' ?>
-				</div>
-			</div>
-		<?php if(Preference::showPreference($element, $type, "birthDate", Yii::app()->session["userId"])){ ?>
-			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
-					<span><i class="fa fa-birthday-cake"></i></span> <?php echo Yii::t("person","Birth date"); ?>
-				</div>
-				<div id="birthDateAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-birthday-cake"></i> <?php echo Yii::t("person","Birth date"); ?> :</span><?php echo (@$element["birthDate"]) ? date("d/m/Y", strtotime($element["birthDate"]))  : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
-				</div>
-			</div>
-		<?php }
-		} 
 
 
- 		if($type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
- 				<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-					<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
-						<span><i class="fa fa-angle-right"></i></span><?php echo Yii::t("common", "Type"); ?> 
-					</div>
-					<div id="typeAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span>
-
-						<?php 
-						if(@$typesList && @$element["type"])
-							$showType=Yii::t( "category",$typesList[$element["type"]]);
-						else if (@$element["type"])
-							$showType=Yii::t( "category",$element["type"]);
-						else
-							$showType='<i>'.Yii::t("common","Not specified").'</i>';
-						echo $showType; ?>
-					</div>
-				</div>
-		<?php }
-
-		if( (	$type==Person::COLLECTION && 
+		<?php if( (	$type==Person::COLLECTION && 
 				Preference::showPreference($element, $type, "email", Yii::app()->session["userId"]) ) || 
 		  	$type == Organization::COLLECTION ) { ?>
 		  	<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
@@ -146,49 +100,33 @@
 			</div>
 		<?php } ?>
 
-
-
-		<?php if($type != Person::COLLECTION){ ?>
-			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
+		<?php if( $type==Service::COLLECTION ) { ?>
+		  	<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
-					<span><i class="fa fa-link"></i></span> <?php echo Yii::t("common","Parenthood"); ?>
+					<span><i class="fa fa-envelope"></i></span> <?php echo Yii::t("common","Price"); ?>
 				</div>
-				<div id="parentAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-desktop"></i> <?php echo Yii::t("common","Parenthood"); ?> :</span>
-				<?php 
-					if(!empty($element["parent"])){ ?>
-						<a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> 
-						<i class="fa fa-<?php echo Element::getFaIcon($element['parentType']); ; ?>"></i> 
-						<?php echo $element['parent']['name']; ?></a><br/> 
-				<?php }else
-						echo '<i>'.Yii::t("common","Not specified").'</i>';?>
+				<div id="priceAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-envelope"></i> <?php echo Yii::t("common","Price"); ?> :</span><?php echo (@$element["price"]) ? $element["price"]  : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 				</div>
 			</div>
-		<?php } ?>
 
-		<?php if($type == Event::COLLECTION){ ?>
+
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
-					<span><i class="fa fa-link"></i></span> <?php echo Yii::t("common","Organized by"); ?>
+					<span><i class="fa fa-envelope"></i></span> <?php echo Yii::t("common","Open"); ?>
 				</div>
-				<div id="organizerAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-desktop"></i> <?php echo Yii::t("common","Organized by"); ?> :</span>
-				<?php 
-					if(!empty($element["organizer"])){ ?>
-						<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" class="lbh"> 
-						<i class="fa fa-<?php echo Element::getFaIcon($element['organizerType']); ; ?>"></i> 
-						<?php echo $element['organizer']['name']; ?></a><br/> 
-				<?php }else
-						echo '<i>'.Yii::t("common","Not specified").'</i>';?>
+				<div id="priceAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-envelope"></i> <?php echo Yii::t("common","Price"); ?> :</span>
+					
+					<span id="openingHours"></span>
 				</div>
 			</div>
+
+
 		<?php } ?>
 
 
-
-
-
-		<?php if($type!=Poi::COLLECTION){ ?>
+		<?php if($type==Person::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-desktop"></i></span> <?php echo Yii::t("common","Website URL"); ?>
@@ -205,7 +143,8 @@
 				</div>
 			</div>
 		<?php } ?>
-		<?php  if($type==Organization::COLLECTION || $type==Person::COLLECTION){ ?>
+
+		<?php  if($type==Person::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
 					<span><i class="fa fa-phone"></i></span> <?php echo Yii::t("common","Phone"); ?>
@@ -253,24 +192,6 @@
 				</div>
 			</div>
 		<?php } ?>
-
-			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
-					<span><i class="fa fa-hashtag"></i></span> <?php echo Yii::t("common","Tags"); ?>
-				</div>
-				<div id="tagsAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-					<span class="visible-xs pull-left margin-right-5">
-						<i class="fa fa-hashtag"></i> <?php echo Yii::t("common","Tags"); ?> :
-					</span>
-					<?php 	if(!empty($element["tags"])){
-								foreach ($element["tags"]  as $key => $tag) { 
-		        					echo '<span class="badge letter-red bg-white">'.$tag.'</span>';
-		   						}
-							}else{
-								echo '<i>'.Yii::t("common","Not specified").'</i>';
-							} ?>	
-				</div>
-			</div>
 	</div>
 	
 </div>
@@ -429,9 +350,9 @@
 	</div>
 	<div class="panel-body no-padding">
 		<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
-			
 			<div class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10" 
 					style="word-wrap: break-word; overflow:hidden;">
+				<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
 				<div id="descriptionAbout"><?php echo (@$element["description"]) ? $element["description"] : '<i>'.Yii::t("common","Not specified").'</i>'; ?>
 				</div>
 			</div>
@@ -440,23 +361,24 @@
 </div>
 
 </div>
-
+<?php	$cssAnsScriptFilesModule = array(
+		'/js/default/profilSocial.js',
+	);
+	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+?>
 
 <script type="text/javascript">
 
 	var formatDateView = "DD MMMM YYYY à HH:mm" ;
 	var formatDatedynForm = "DD/MM/YYYY HH:mm" ;
-	/*if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php //echo Project::COLLECTION; ?>" ) {
-		formatDateView = "DD MMMM YYYY" ;
-		formatDatedynForm = "DD/MM/YYYY" ;
-	}*/
 
 	jQuery(document).ready(function() {
-		bindDynFormEditable();
+		bindDynFormEditableTerla();
 		initDate();
-		inintDescs();
+		initDescs();
+		initOpeningHours();
 		//changeHiddenFields();
-		bindAboutPodElement();
+		//bindAboutPodElement();
 
 		$("#small_profil").html($("#menu-name").html());
 		$("#menu-name").html("");
@@ -495,7 +417,7 @@
 
 	function initDate() {//DD/mm/YYYY hh:mm
 		//moment.locale('fr');
-		if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php echo Project::COLLECTION; ?>" ) {
+		if( (typeof contextData.allDay != "undefined" && contextData.allDay == true) || contextData.type == "<?php //echo Project::COLLECTION; ?>" ) {
 			formatDateView = "DD MMMM YYYY" ;
 			formatDatedynForm = "DD/MM/YYYY" ;
 		}else{
@@ -527,7 +449,60 @@
 	    $('#dateTimezone').attr('data-original-title', "Fuseau horaire : GMT " + moment().local().format("Z"));
 	}
 
-	
+
+	function initDescs() {
+		mylog.log("initDescs");
+		if(edit == true || openEdition== true)
+			descHtmlToMarkdown();
+		mylog.log("after");
+		mylog.log("initDescs", $("#descriptionMarkdown").html());
+		var descHtml = "<i>"+trad.notSpecified+"</i>";
+		if($("#descriptionMarkdown").html().length > 0){
+			descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
+		}
+		
+		$("#descriptionAbout").html(descHtml);
+		$("#descProfilsocial").html(descHtml);
+		mylog.log("descHtml", descHtml);
+	}
+
+	function initOpeningHours() {
+		mylog.log("initOpeningHours");
+		var html = "" ;
+		mylog.log("initOpeningHours contextData.openingHours", contextData.openingHours);
+		if(notNull(contextData.openingHours) ){
+
+			$.each(contextData.openingHours, function(i,data){
+				mylog.log("initOpeningHours data", data, data.allDay, notNull(data));
+				mylog.log("initOpeningHours notNull data", notNull(data), typeof data, data.length);
+				if( (typeof data == "object" && notNull(data) ) || (typeof data == "string" && data.length > 0) ) {
+					var day = "" ;
+					if(data.allDay == "true"){
+						day = moment().day(i).local().locale(mainLanguage).format("dddd")+" : "+trad.allDay+"<br/>";
+					}else {
+						mylog.log("initOpeningHours data.hours", data.hours);
+						day = moment().day(i).local().locale(mainLanguage).format("dddd")+" : <br/>";
+						day += "<ul>";
+						$.each(data.hours, function(i,hours){
+							mylog.log("initOpeningHours hours", hours);
+							day += "<li>"+hours.opens+" : "+hours.closes+"</li>";
+						});
+						day += "</ul>";
+					}
+
+					if( moment().format("dd") == data.dayOfWeek )
+						html += "<b>"+day+"</b>";
+					else
+						html += day;
+				}
+				
+			});
+
+		} else 
+			html = '<i>'+trad.notSpecified+'</i>'; 
+
+		$("#openingHours").html(html);
+	}
 
 	
 

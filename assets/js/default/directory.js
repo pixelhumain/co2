@@ -1503,7 +1503,7 @@ var directory = {
              str += "<div class='entityPrice col-md-6'><span class='price-trunc'>"+ Math.trunc(params.price) + "</span> " + devise + "</div>";
          
             str += "<a  href='"+params.hash+"' class='showMore btn bg-orange text-white lbhp'  data-modalshow='"+params.id+"'>"+
-                      "Show +"+ 
+                      tradTerla.show+" +"+ 
                    "</a>";  
        
           str += "</div>";

@@ -84,7 +84,7 @@
 
 		<br><br>
 
-		<h5 class="bg-orange text-white padding-15">FILTRE</h5>
+		<h5 class="bg-orange text-white padding-15"><?php echo Yii::t("common", "Filters"); ?></h5>
 
 
 		<?php $filters = array("man", "woman", "fashion"); ?>
@@ -145,7 +145,7 @@ jQuery(document).ready(function() {
 
     setTitle("", "", titlePage);
 
-    $(".headerTitle").html("Result for <b>\"" + memorySearch + "\"</b>");
+    $(".headerTitle").html(tradTerla.resultFor" <b>\"" + memorySearch + "\"</b>");
 
     initKInterface({"affixTop":320});
 

@@ -8,6 +8,17 @@ var shopping = {
 		sellers : {}
 	},
 	totalCart:0,
+	init : function(){
+		shopping.cart={
+			countQuantity:0,
+			totalCart : 0
+		};
+		shopping.checkoutObj = {
+			total : 0,
+			sellers : {}
+		};
+		shopping.totalCart=0;
+	},
 	addToShoppingCart: function(id, type, subType, ranges){
 		incCart=true;
 		if(typeof userId != "undefined" && userId != ""){
@@ -630,7 +641,6 @@ var shopping = {
         }
     },
     buyCart:function(){
-    	alert("buyCart");
         order = {
         	totalPrice : shopping.totalCart,
 	        currency : "EUR"
@@ -638,7 +648,10 @@ var shopping = {
         orderItem=new Object;
 
         if(typeof shopping.cart.idCircuit != "undefined"){
-        	order.idCircuit=shopping.cart.idCircuit;
+        	order.circuit=shopping.cart.idCircuit;
+        }
+        if(typeof shopping.cart.idCircuit != "undefined"){
+        	order.bookingFor=shopping.cart.bookingFor;
         }
         if(typeof shopping.cart.name != "undefined"){
         	order.name=shopping.cart.name;
@@ -705,7 +718,9 @@ var shopping = {
 	                  success: function(data){
 	                    if(data.result) {
 	                        toastr.success(data.msg);
-	                        //urlCtrl.loadByHash("#checkout");
+	                        shopping.init();
+                    		localStorage.removeItem("shoppingCart");
+	                        urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.history");
 	                    }
 	                    else
 	                        toastr.error(data.msg);  
@@ -723,6 +738,9 @@ var shopping = {
 				success: function(data){
 				if(data.result) {
 				    toastr.success(data.msg);
+				    shopping.init();
+                    localStorage.removeItem("shoppingCart");
+				    urlCtrl.loadByHash("#page.type.citoyens.id."+userId+".view.history");
 				    //urlCtrl.loadByHash("#checkout");
 				}
 				else

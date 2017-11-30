@@ -2570,7 +2570,7 @@ var list = {
 		});
 		if(action=="history"){
 			$(".orderItemComment").click(function(){
-				orderItem=listElement["orderItems"][$(this).data("id")];
+				orderItem=listComponents["orderItems"][$(this).data("id")];
 				commentRating(orderItem, $(this).data("action"));
 			});
 		}

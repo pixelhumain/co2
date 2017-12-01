@@ -54,16 +54,7 @@ var circuit = {
 				incCart=false;
 			}
 			if(typeof ranges != "undefined" && notNull(ranges)){
-				if(circuit.obj.frequency=="unique"){
-					if(typeof circuit.obj.start == "undefined" || circuit.obj.start==""){
-						circuit.obj.start=ranges.date;
-						circuit.obj.end=ranges.date;
-					}
-					else if(moment(ranges.date).unix() < moment(circuit.obj.start).unix())
-						circuit.obj.start=ranges.date;
-					else if(moment(ranges.date).unix() > moment(circuit.obj.end).unix())
-						circuit.obj.end=ranges.date;
-				}
+				
 				if(typeof circuit.obj.services[type][id]["reservations"] == "undefined")
 				 	circuit.obj.services[type][id]["reservations"]=new Object;
 
@@ -262,6 +253,12 @@ var circuit = {
     	return str;
     },
     generateCircuitView:function(object){
+    	// In process of construction of circuit, initialization of start and end circuit
+    	if(circuit.obj.show){
+    		delete circuit.obj.start;
+			delete circuit.obj.end
+    	}
+
     	var htmls = circuit.getComponentsHtml(object,true);
     	//******************************************
 		// CART
@@ -318,6 +315,16 @@ var circuit = {
             itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 dateHoursDetail no-padding'>"; 
                     $.each(data.reservations, function(date, value){
                         dateStr=directory.getDateFormated({startDate:date}, true);
+                        if(circuit.obj.show && circuit.obj.frequency=="unique"){
+							if(typeof circuit.obj.start == "undefined" || circuit.obj.start==""){
+								circuit.obj.start=date;
+								circuit.obj.end=date;
+							}
+							else if(moment(date).unix() < moment(circuit.obj.start).unix())
+								circuit.obj.start=date;
+							else if(moment(date).unix() > moment(circuit.obj.end).unix())
+								circuit.obj.end=date;
+						}
                         arrayDate=date.split("-");
             itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 bookDate"+date+" shadow2 margin-bottom-10'>"+
                             "<div class='col-md-12 col-sm-12 col-xs-12 dateHeader'>"+

@@ -6,8 +6,11 @@ class TestController extends CommunecterController {
 	return parent::beforeAction($action);
   }
   public function actionIndex() {
-    $userNotifcations = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );//PHDB::find( ActivityStream::COLLECTION,array("notify.id"  => Yii::app()->session["userId"] ));
-    echo count($userNotifcations);
+    //$userNotifcations = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );//PHDB::find( ActivityStream::COLLECTION,array("notify.id"  => Yii::app()->session["userId"] ));
+    //echo count($userNotifcations);
+    var_dump(Authorisation::canDeleteElement("5a1fd71d539f22863190047c", "organizations" , "5996017c539f225123cb243c"));
+    $el = Element::getByTypeAndId("organizations", "5a1fd71d539f22863190047c");
+    var_dump($el["links"]["members"]["5996017c539f225123cb243c"]);
   }
 
   public function actionMsg() {

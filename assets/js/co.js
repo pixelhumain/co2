@@ -1834,14 +1834,16 @@ function globalSearch(searchValue,types,contact){
 				}
 				//var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
 				if("undefined" != typeof elem.profilImageUrl && elem.profilImageUrl != ""){
-					htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
+					htmlIco= "<img width='25' height='25' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
 				}
 				
 				if(contact == true){
 					cotmp[id] = {id:id, name : elem.name};
-					str += 	"<a href='javascript:;' onclick='fillContactFields( \""+id+"\" );' class='col-sm-12 col-sm-3 btn btn-xs btn-default w50p text-left padding-5' >"+
-								"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
-							"</a>";
+					str += 	"<div class='col-xs-6 col-sm-4 col-md-4 padding-10'>"+
+								"<a href='javascript:;' onclick='fillContactFields( \""+id+"\" );' class='btn btn-xs btn-default w50p' >"+
+									htmlIco + " " + elem.name + "</br>" + where +
+								"</a>" +
+							"</div>";
 					msg = "Verifiez si le contact est dans Communecter";
 				}else{
 					str += 	"<a target='_blank' href='#page.type."+ elem.type +".id."+ id +"' class='btn btn-xs btn-danger w50p text-left padding-5 margin-5' style='height:42px' >"+
@@ -4307,6 +4309,7 @@ var typeObj = {
 	people : { sameAs:"person" },
 	citoyen : { sameAs:"person" },
 	citoyens : { sameAs:"person" },
+	contact : { col : "citoyens", ctrl : "contact", titleClass : "bg-yellow", bgClass : "bgPerson", color:"yellow", icon:"user" },
 	
 	poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
 		subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",

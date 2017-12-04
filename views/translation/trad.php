@@ -149,6 +149,7 @@ var trad = {
 	"ressource" : "<?php echo Yii::t("common","Ressource") ?>",
 	"poi" : "<?php echo Yii::t("common","Point of interest") ?>",
 	"contactPoint" : "<?php echo Yii::t("common","contact") ?>",
+	"contact" : "<?php echo Yii::t("common","contact") ?>",
 	"collection" : "<?php echo Yii::t("common","collection") ?>",
 	"collections" : "<?php echo Yii::t("common","collections") ?>",
 	"profil" : "<?php echo Yii::t("common","profile") ?>",

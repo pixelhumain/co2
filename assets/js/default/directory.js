@@ -1931,13 +1931,14 @@ var directory = {
           if(directory.dirLog) mylog.log("params", params);
 
           mylog.log("params", params);
+          mylog.log("params interoperability", location.hash.indexOf("#interoperability"));
 
-          if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) //{
+          if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) {
             params.id = params['_id'];
-          // } else if (typeof(params.id) == "undefined") {
-          //   params.id = Math.random();
-          //   params.type = "poi";
-          // }
+          } else if (typeof(params.id) == "undefined" && location.hash.indexOf("#interoperability") >= 0) {
+            params.id = Math.random();
+            params.type = "poi";
+          }
 
           mylog.log("--->>> params", params["name"] , params.name, params.id, params.type );
           mylog.log("--->>> params.id", params.id, params["_id"], notNull(params["_id"]), notNull(params.id));

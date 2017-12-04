@@ -408,6 +408,13 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 			},
 			success: function (data) { 
 				mylog.log("data", data);
+
+				if(notNull(data.entities)){
+					data = {
+						res : data.entities
+					} ;
+				}
+
 				dataSuccess(data, indexMin, indexMax); 
 			}
 		});

@@ -57,6 +57,18 @@
                   "mainTitle" : "Fil d'actu <span class='letter-red'>média</span>",
                   "placeholderMainSearch" : "rechercher dans l'actu ..."},
 
+            "#freedom": {
+                  "inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true, 
+                  "subdomain" : "freedom", 
+                  "subdomainName" : "Freedom",
+                  "hash":"#app.live",
+                  "icon" : "stack-exchange", 
+                  "mainTitle" : "Fil de discussion <span class='letter-red'>citoyen</span>",
+                  "placeholderMainSearch" : "Rechercher dans le fil de discussion ..."
+            },
+                 
             "#social": {
                   "inMenu" : true, 
                   "useHeader" : true, 
@@ -70,17 +82,6 @@
                   "lblBtnCreate" : "Créer une page",
                   "colorBtnCreate" : "green"},
 
-            "#freedom": {
-                  "inMenu" : true, 
-                  "useHeader" : true, 
-                  "open" : true, 
-                  "subdomain" : "freedom", 
-                  "subdomainName" : "Freedom",
-                  "hash":"#app.live",
-                  "icon" : "stack-exchange", 
-                  "mainTitle" : "Fil de discussion <span class='letter-red'>citoyen</span>",
-                  "placeholderMainSearch" : "Rechercher dans le fil de discussion ..."
-            },
 
       	"#annonces":
       	  	{"inMenu" : true, 
@@ -155,7 +156,7 @@
             "#smartconso": {
                   "inMenu" : true, 
                   "useHeader" : true, 
-                  "open" : true, 
+                  "open" : false, 
                   "subdomain" : "smartconso", 
                   "subdomainName" : "smartconso",
                   "hash":"#app.smartconso",

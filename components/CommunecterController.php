@@ -125,6 +125,10 @@ class CommunecterController extends Controller
     "tool" => array(
       "get"    => array("href" => "/ph/co2/tool/get")
     ),
+    "cron" => array(
+      "docron"    => array("href" => "/ph/co2/cron/docron"),
+      "checkdeletepending"    => array("href" => "/ph/co2/cron/checkdeletepending")
+    ),
     "rocketchat" => array(
       "index"    => array("href" => "/ph/co2/rocketchat/index"),
       "cors"    => array("href" => "/ph/co2/rocketchat/cors"),

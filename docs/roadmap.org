@@ -137,7 +137,7 @@ Liste des notifications déjà lues => #370 #453
       - mobi
   ** Keyboard nav
     Ctrl + ? > opens floop > type > reduce selection
-
+    
 
 * ************************************************************    
 * Version C0.21.8  : en cours

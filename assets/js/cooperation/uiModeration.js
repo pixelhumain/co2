@@ -58,7 +58,7 @@ var uiModeration = {
 		$(".btn-send-vote").click(function(){
 			var voteValue = $(this).data('vote-value');
 			console.log("send vote", voteValue),
-			uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom);
+			uiModeration.sendVote("proposal", idParentProposal, voteValue, idParentRoom);
 		});
 	  
 		$(".btn-howitworkmoderation").click(function(){
@@ -71,5 +71,40 @@ var uiModeration = {
 		if(msgController != ""){
 			toastr.error(msgController);
 		}
-	}
+	},
+
+
+	"sendVote" : function(parentType, parentId, voteValue, idParentRoom, idAmdt){
+		console.log("uiModeration.sendVote", parentType, parentId, voteValue, idParentRoom, idAmdt);
+		
+		var params = {
+			"parentType" : parentType,
+			"parentId" : parentId,
+			"voteValue" : voteValue,
+			"json" : false,
+			"moderation" : true
+		};
+		if(typeof idAmdt != "undefined")
+			params["idAmdt"] = idAmdt;
+
+		var url = moduleId+'/cooperation/savevote';
+		
+		toastr.info(trad["processing save"]);
+		ajaxPost("", url, params,
+			function (proposalView){
+				console.log("success save vote");
+				toastr.success(trad["Your vote has been save with success"]);
+				$("#coop-data-container").html(proposalView);
+				/*uiCoop.getCoopData(null, null, "room", null, idParentRoom, 
+					function(){
+						toastr.success(trad["Your vote has been save with success"]);
+						
+						uiCoop.minimizeMenuRoom(true);
+						$("#coop-data-container").html(proposalView);
+						if(parentType == "amendement")
+							uiCoop.showAmendement(true);
+					}, false);*/
+			}
+		);
+	},
 };

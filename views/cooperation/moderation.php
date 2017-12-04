@@ -116,6 +116,10 @@
 	    border-radius: 5px;
 	}
 
+	#howitworkmoderation p{
+		font-size:14px;
+	}
+
 	.btn-howitworkmoderation{
 		border:none;
 		background-color: transparent !important;
@@ -140,14 +144,14 @@
 		<h5><i class="fa fa-info-circle"></i> Comment ça marche ?</h5>
 		<hr>
 		<p>
-			L'objectif de la modération collective est de donner l'entière responsabilité du contenu diffusé sur KGOUGLE aux utilisateurs du réseau, de sorte qu'aucune équipe de modérateurs n'ait la possibilité de "censurer" certains contenus plus que d'autres.
+			L'objectif de la modération collective est de donner l'entière responsabilité du contenu diffusé aux utilisateurs du réseau, de sorte qu'aucune équipe de modérateurs n'ait la possibilité de "censurer" certains contenus plus que d'autres.
 			<br><br>
 			La participation active des utilisateurs au processus de modération est donc indispensable. C'est à ce prix que nous garantissons la liberté d'expression sur le réseau.
 		</p>
 		<hr>
 		<p class="bold">
 			<i class="fa fa-chevron-right"></i> 
-			Toute personne ayant accès en lecture à un message a le droit d'émettre un signalement s'il considère que ce contenu est innaproprié.
+			Toute personne connectée ayant accès en lecture à un message a le droit d'émettre un signalement s'il considère que ce contenu est innaproprié.
 			<br>
 			<br>
 			<i class="fa fa-chevron-right"></i> 
@@ -155,7 +159,7 @@
 			<br>
 			<br>
 			<i class="fa fa-chevron-right"></i> 
-			La période de vote est d'une semaine à partir du 3ème signalement.
+			La période de vote est de 2 jours à partir du 3ème signalement.
 			<br>
 			<br>
 			<i class="fa fa-chevron-right"></i> 

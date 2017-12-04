@@ -127,6 +127,7 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 pull-left margin-top-10" style="padding-left: 8px;">
 
+	<?php if(@$proposal["creator"]){ ?>
 	<label>
 		<img class="img-circle" id="menu-thumb-profil" 
          width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
@@ -137,6 +138,7 @@
 		<small> <?php echo Yii::t("cooperation","is the author of this proposal"); ?></small>
 		<?php } ?>
 	</label>
+	<?php } ?>
 
 	<hr style="margin-top:5px;">
 	<h4 class="no-margin status-breadcrum">

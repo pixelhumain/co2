@@ -312,10 +312,16 @@ Liste des notifications déjà lues => #370 #453
   ** @Tib
 :totest: [ ] logo de l'element dans le mail d'invite 
           - co2/test/displayMail/id/59dc95b3dd0452f9308d4af7
->>>> [ ] ajouter Thématique Sport
->>>>[ ] add parent class to POI types
+>>>> [ ] add parent class to POI types
       [ ] poi le saviez vous , a utiliser dans les chargements
->>>>[ ] removing dynform classes from co.js and lazy load them
+      [ ] when rsc > etes vous sur de ne pas vouloir déclarer une ressource ?
+      [ ] translate
+      [ ] categories 
+      [ ] when copying a url into name 
+        [ ] getContent 
+        [ ] add a url field 
+        [ ] location online
+>>>> [ ] removing dynform classes from co.js and lazy load them
 >>>> [ ] when on a page , after login return to same page instead of personnal detail
 [ ] integration du system de paiement Mango
   [X] create User 
@@ -326,13 +332,13 @@ Liste des notifications déjà lues => #370 #453
     [X] creates a CardRegistration 
   [ ] setle transaction 
   [ ] build payment interface
-
->>>>[ ] check webpacking      
+>>>> [ ] check webpacking      
 >>>> [ ] faciliter la création de page static 
       [ ] avec du contenu MD
       [ ] un slideshow MD
       [ ] read an externel .md text source 
->>>>[ ] presistent login issue ,  SSO ?
+>>>> [ ] presistent login issue ,  SSO ?
+[X] ajouter Thématique Sport
 [X] remake error in CO
 [X] loading configs from DB applications.key = "devParams || prodParams" > Application::loadDBAppConfig();  
 [X] json config builder 

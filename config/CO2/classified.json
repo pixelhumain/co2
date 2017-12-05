@@ -8,6 +8,7 @@
             "section":2, 
             "color":"azure"
         },
+        
         "donation": {
             "label":"Give",   
             "labelFront":"To give",        
@@ -34,7 +35,6 @@
             "section":3, 
             "color":"azure"
         },
-
 
         "lookingfor" : {
             "label":"Need", 

@@ -499,6 +499,7 @@ var tradDynForm = {
 	"whichkindofconfig":"<?php echo Yii::t("form","Which kind of config") ?>",
 	"whichkindofclassified":"<?php echo Yii::t("form","Which kind of classified is it") ?>",
 	"inwhichcategoryforclassified":"<?php echo Yii::t("form","In which category do you want to publish the classified") ?>",
+	"inwhichcategoryforpoi":"<?php echo Yii::t("form","In which category do you want to publish the point of interest") ?>",
 	"subcategory":"<?php echo Yii::t("form","Subcategory") ?>",
 	"contactinfo":"<?php echo Yii::t("common","Contact information") ?>",
 	"telemail":"<?php echo Yii::t("form","phone number, email address") ?>",
@@ -593,7 +594,24 @@ var tradDynForm = {
 };
 
 var tradCategory = {
-	"link"          : "<?php echo Yii::t("category", "Link, Url") ?>",
+	"Digital" : "<?php echo Yii::t("category", "Digital") ?>",
+	"Physical" : "<?php echo Yii::t("category", "Physical") ?>",
+	"link" : "<?php echo Yii::t("category", "Link, Url") ?>",
+	"Chat": "<?php echo Yii::t("category", "Chat") ?>",
+	"Wiki": "<?php echo Yii::t("category", "Wiki") ?>",
+	"Drive": "<?php echo Yii::t("category", "Drive") ?>",
+	"ConferenceTool": "<?php echo Yii::t("category", "Conference Tool") ?>",
+	"Pad": "<?php echo Yii::t("category", "Pad") ?>",
+	"Kanban": "<?php echo Yii::t("category", "Kanban") ?>",
+	"DecisionTool": "<?php echo Yii::t("category", "Decision Tools") ?>",
+	"Software": "<?php echo Yii::t("category", "Software") ?>",
+	"GeoJson" : "<?php echo Yii::t("category", "Geo Json") ?>",
+	"Video" : "<?php echo Yii::t("category", "Video") ?>",
+	"Documentation": "<?php echo Yii::t("category", "Documentation") ?>",
+	"Server": "<?php echo Yii::t("category", "Server") ?>",
+	"Database": "<?php echo Yii::t("category", "Database") ?>",
+	"Banq": "<?php echo Yii::t("category", "Banq") ?>",
+
 	"tool"          : "<?php echo Yii::t("category", "Tool") ?>",
 	"machine"       : "<?php echo Yii::t("category", "Machine") ?>",
 	"software"      : "<?php echo Yii::t("category", "Software") ?>",

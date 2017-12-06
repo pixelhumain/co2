@@ -312,42 +312,51 @@ Liste des notifications déjà lues => #370 #453
   ** @Tib
 :totest: [ ] logo de l'element dans le mail d'invite 
           - co2/test/displayMail/id/59dc95b3dd0452f9308d4af7
->>>> [ ] ajouter Thématique Sport
+>>>> [ ] add parent class to POI types
+      [ ] poi le saviez vous , a utiliser dans les chargements
+      [ ] when rsc > etes vous sur de ne pas vouloir déclarer une ressource ?
+      [ ] translate
+      [ ] categories 
+      [ ] when copying a url into name 
+        [ ] getContent 
+        [ ] add a url field 
+        [ ] location online
+>>>> [ ] removing dynform classes from co.js and lazy load them
 >>>> [ ] when on a page , after login return to same page instead of personnal detail
->>>> [ ] application launcher + activater like linux 
-[X] remake error in CO
-[X] loading configs from DB applications.key = "devParams || prodParams" > Application::loadDBAppConfig();  
 [ ] integration du system de paiement Mango
-  [ ] create User 
-  [ ] create User Wallet 
-  [ ] create Seller 
-  [ ] create seller wallet 
-  [ ] Payin Cash
-    [ ] creates a CardRegistration 
+  [X] create User 
+  [X] create User Wallet 
+  [X] create Seller 
+  [X] create seller wallet 
+  [X] Payin Cash
+    [X] creates a CardRegistration 
   [ ] setle transaction 
   [ ] build payment interface
+>>>> [ ] check webpacking      
 >>>> [ ] faciliter la création de page static 
       [ ] avec du contenu MD
       [ ] un slideshow MD
       [ ] read an externel .md text source 
-    [X] json config builder 
-      - is just dynForm selector
-      - save allready gets the collection as a param in formatData
-        - any new saved Element must have a model and it's databinding at least 
-      [X] select type of config ex : "network"
-        - onclick : openForm of the given type 
-        - this way editing will also work
-      [X] subDynform : open a subDF from any DF
-        - similar to location process 
-        - on click opens a new modal with a dynform inside
->>>>[ ] removing dynform classes from co.js and lazy load them
->>>>[ ] check webpacking      
->>>>[ ] suppression d'un element user type COEDitor
->>>>[ ] bug : preview POI 
->>>>[ ] add parent class to POI types
-      [ ] poi le saviez vous , a utiliser dans les chargements
+>>>> [ ] presistent login issue ,  SSO ?
+[X] ajouter Thématique Sport
+[X] remake error in CO
+[X] loading configs from DB applications.key = "devParams || prodParams" > Application::loadDBAppConfig();  
+[X] json config builder 
+  - is just dynForm selector
+  - save allready gets the collection as a param in formatData
+    - any new saved Element must have a model and it's databinding at least 
+[X] select type of config ex : "network"
+  - onclick : openForm of the given type 
+  - this way editing will also work
+[X] subDynform : open a subDF from any DF
+  - similar to location process 
+  - on click opens a new modal with a dynform inside
+[X] suppression d'un element
+[X] bug : preview POI 
+
+
+
 >>>>[ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
->>>>[ ] presistent login issue ,  SSO ?
     [ ] search fork the world > opens a preview POI > should have the parent link
     [ ] verifier les qrcode 
     [ ]  NA : supprimer

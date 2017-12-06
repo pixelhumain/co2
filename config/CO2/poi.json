@@ -1,55 +1,144 @@
 {
     "sections" : {
         
+        "resource": {
+            "label":"Resource", 
+            "labelFront":"Resource",      
+            "key" : "resource",     
+            "icon" : "cubes",               
+            "section":2, 
+            "color":"azure",
+            "filters" : "resourceFilters"
+        },
 
-        "link"          : { "label": "Link, Url","key":"link","icon":"link"},
-        "tool"          : { "label": "Tool","key":"tool","icon":"wrench"},
-        "machine"       : { "label": "Machine","key":"machine","icon":"cogs"},
-        "software"      : { "label": "Software","key":"software","icon":"code"},
-        "rh"            : { "label": "Human ressource","key":"rh","icon":"users"},
-        "materialRessource" : { "label": "Material ressource","key":"RessourceMaterielle","icon":"cubes"},
-        "financialRessource" : { "label": "Financial ressource","key":"RessourceFinanciere","icon":"money"},
-        "documentation" : { "label": "Documentation","key":"ficheBlanche","icon":"file-text-o"},
-        "geoJson"       : { "label": "Geojson / UMap","key":"geoJson","icon":"map"},
-        "compostPickup" : { "label": "Compost pickup","key":"compostPickup","icon":"inbox"},
-        "video"         : { "label": "Video","key":"video","icon":"video-camera"},
-        "sharedLibrary" : { "label": "Shared library","key":"sharedLibrary","icon":"book"},
-        "recoveryCenter": { "label": "Recory center","key":"recoveryCenter","icon":"recycle"},
-        "trash"         : { "label": "Trash","key":"trash","icon":"trash"},
-        "history"       : { "label": "History","key":"history","icon":"clock-o"},
-        "something2See" : { "label": "To see","key":"something2See","icon":"eye"},
-        "funPlace"      : { "label": "Fun place","key":"funPlace","icon":"smile-o"},
-        "place"         : { "label": "Public place","key":"place","icon":"map-marker"},
-        "artPiece"      : { "label": "Art pieces","key":"artPiece","icon":"paint-brush"},
-        "streetArt"    : { "label": "Street art","key":"streetArts","icon":"paint-brush"},
-        "openScene"     : { "label": "Open mic","key":"openScene","icon":"bullhorn"},
-        "stand"         : { "label": "Stand","key":"stand","icon":"map-marker"},
-        "parking"       : { "label": "Parking","key":"parking","icon":"car"},
-        "other"           : { "label":"Other","key":"other","icon":"map-marker"}
+        "donation": {
+            "label":"Give",   
+            "labelFront":"To give",        
+            "key" : "donation",     
+            "icon" : "gift",                    
+            "section":2, 
+            "color":"azure"
+        },
+
+        "forsale": {
+            "label":"Sale",  
+            "labelFront":"For sale",            
+            "key" : "forsale",     
+            "icon" : "money",                  
+            "section":3, 
+            "color":"azure"
+        },
+
+        "forrent": {
+            "label":"Rent",   
+            "labelFront":"For rent",            
+            "key" : "forrent",    
+            "icon" : "external-link",          
+            "section":3, 
+            "color":"azure"
+        },
+
+        "lookingfor" : {
+            "label":"Need", 
+            "labelFront":"Looking for",   
+            "key" : "lookingfor",  
+            "icon" : "eye",                    
+            "section":4, 
+            "color":"azure"
+        },
+
+        "job": {
+            "label":"Jobs", 
+            "labelFront":"Offers",      
+            "key" : "job",         
+            "icon" : "briefcase",              
+            "section":5, 
+            "color":"azure",
+            "filters" : "jobFilters"
+        }
+
     },
-    "filters":{
-        "TiersLieux" : 
-            {   "icon" : "home",
+    "filters" : {
+        "Technology" : 
+            {   "icon" : "laptop",
+                "subcat" : ["TV / Video", "IT", "Touchpads", "Telephony", "Camera", "Audio device"]
+            }, 
+         
+         "Property" : 
+            {   "icon" : "building",
+                "subcat" : ["House", "Flat", "Ground", "Parking", "Office"]
+            }, 
+         
+         "Vehicles" : 
+            {   "icon" : "car",
                 "subcat" : 
-                [   "Fablab",
-                    "Repaire Café",
-                    "Coworking", 
-                    "Salle reunion",
-                    "Jardin Partagé",
-                    "Urbaine",
-                    "Rurale"
+                [   "Car", 
+                    "SUV", 
+                    "Utility", 
+                    "Moto", 
+                    "Scooter", 
+                    "Boat", 
+                    "Small car", 
+                    "Bikes",
+                    "Car equipment",
+                    "2-wheeled equipment",
+                    "Boat equipment",
+                    "Bike equipment"
                 ]
             }, 
 
-        "Maison" :  {  
-             "icon" : "home",
-            "subcat" : 
-            [    "Electroménager",
-                 "Mobilier", 
-                 "Équipement bébé", 
-                 "Animaux", 
-                 "Divers"
-            ]
+         "Home" :  
+            {   "icon" : "home",
+                "subcat" : 
+                [    "Household appliances",
+                     "Furniture", 
+                     "Baby equipment", 
+                     "Animals", 
+                     "Various"
+                ]
+            },
+
+         "Leisure" :  
+            {   "icon" : "smile-o",
+                "subcat" : 
+                [    "Sports", 
+                     "Musical instrument", 
+                     "Sound system", 
+                     "CD / DVD",
+                     "Toy", 
+                     "Games", 
+                     "Books / Comics", 
+                     "Collections", 
+                     "DIY", 
+                     "Gardening", 
+                     "Art / Deco", 
+                     "Model making", 
+                     "Childcare", 
+                     "Animals", 
+                     "Various"
+                ]
+            },
+
+        "Fashion" : 
+            {   "icon" : "shopping-bag",
+                "subcat" :  
+                [    "Clothes", 
+                     "Shoes", 
+                     "Accessories", 
+                     "Watches", 
+                     "Jewels"
+                ]
+            }
+    },
+    "resourceFilters" : {
+        "Digital" : {
+            "icon":"desktop",
+            "subcat" : [ "link" , "Chat", "Wiki","Drive","ConferenceTool", "Pad", "Kanban","DecisionTool", "Software", "GeoJson" , "Video" , "Documentation", "Server", "Database", "Banq" ]
+        },
+        "Physical" : {
+            "icon":"cogs",
+            "subcat" : ["Tool","Machine","Human ressource","Material ressource","Financial ressource","Shared library","Food","sharedObject"]
         }
     }
+    
 }

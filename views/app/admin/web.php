@@ -2,6 +2,7 @@
 
  $cssAnsScriptFiles = array(
     '/assets/js/web.js',
+    '/assets/css/circle.css',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->baseUrl);       
 ?>
@@ -21,6 +22,12 @@
 <style>
 	.c100 > span{
 		cursor:pointer;
+	}
+
+	#searchResults .moreResult,
+	#searchResults .footerWebSearch,
+	#searchResults #btn-new-search{
+		display: none!important;
 	}
 
 </style>
@@ -98,7 +105,7 @@
 
 	<hr>
 
-		<a href="http://caledoweb.com/?page_id=14">http://caledoweb.com/?page_id=14</a><br>
+		<!-- <a href="http://caledoweb.com/?page_id=14">http://caledoweb.com/?page_id=14</a><br>
 		<button class="btn btn-sm btn-default btn-superadmin" data-action="scanlinks" data-idres="#res-scan">
 			<i class="fa fa-terminal"></i> Scanner la page
 		</button> 
@@ -106,11 +113,14 @@
 		<hr>
 		<div id="res-scan"></div>
 
-		<hr>
+		<hr> -->
 
 		<div class="">
 			<h3><i class="fa fa-terminal fa-2x"></i> Auto-scan</h3>
-			<h4 class="letter-green"><?php echo sizeof($urlsNoFavicon); ?> url <span class="letter-red">no favicon</span> in database</h4>
+			<h4 class="letter-green">
+				<?php echo sizeof($urlsUncomplet); ?> url 
+				<span class="letter-red">uncomplet</span> in database
+			</h4>
 			<button class="btn btn-sm btn-default btn-start-scan" data-action="scanlinks" data-idres="#res-scan">
 				<i class="fa fa-terminal"></i> Run scan
 			</button> 
@@ -138,8 +148,10 @@
 
 <script type="text/javascript">
 
-	var urlsLocked = <?php echo json_encode($urlsNoFavicon); ?>;
-	console.log("urlsNoFavicon", urlsLocked);
+	var urlsLocked = <?php echo json_encode($urlsLocked); ?>;
+	var urlsUncomplet = <?php echo json_encode($urlsUncomplet); ?>;
+	var isWebAdmin = true;
+	console.log("urlsUncomplet", urlsUncomplet);
 	//alert("stop");
 	//var urlsValidated = <?php //echo json_encode($urlsValidated); ?>;
 
@@ -167,23 +179,32 @@
 
 		$(".c100 > span").click(function(){
 			var status = $(this).data("status");
+			$("#res-auto-scan").html("");
 			startWebSearch("", status);
 		});
+
+		$(window).unbind("scroll");
 
 	});
 
 
 	var triedUrl = "";
-	var toTotal = <?php echo sizeof($urlsLocked); ?>;
+	var toTotal = <?php echo sizeof($urlsUncomplet); ?>;
 	var total = 0;
 	var totalEchec = 0;
 	function autoScan(){ console.log("start autoScan", autoScanProcessing);
+
+		$("#searchResults").html("<h4 class='letter-blue'>"+
+									 "<i class='fa fa-spin fa-circle-o-notch'></i> SCAN'S RUNNING"+
+								 "</h4><hr>");
+
 		if(autoScanProcessing == false) {
 			$("#status-ref").html("<span class='letter-red'><i class='fa fa-square'></i> stop</span>");
 			return false;
 		}
-		
-		$.each(urlsLocked, function(key, urlObj){ 
+
+		var countScanDone = 0;
+		$.each(urlsUncomplet, function(key, urlObj){ 
 			
 			var url = urlObj.url;
 			
@@ -217,8 +238,7 @@
 		    	url: "//cors-anywhere.herokuapp.com/"+url, // 'http://google.fr', 
 		    	crossOrigin: true,
 		    	timeout:10000,
-		        success:
-					function(data) {
+		        success: function(data) {
 						
 					    var jq = $.parseHTML(data);
 					    
@@ -274,7 +294,7 @@
 						
 						$("#form-title").val(title);
 						$("#form-favicon").val(faviconSrc);
-						$("#form-description").val(faviconSrc);
+						$("#form-description").val(description);
 						
 
 						//color
@@ -329,7 +349,7 @@
 					    							"</div>");
 
 					    console.log("setTimeout autoScan");
-					    delete urlsLocked[key];
+					    delete urlsUncomplet[key];
 					    setTimeout(function(){ autoScan(); }, 1000);		   
 					},
 				error:function(xhr, status, error){
@@ -337,7 +357,7 @@
 					$("#status-ref").html("<span class='letter-red'><i class='fa fa-ban'></i> URL INNACCESSIBLE</span>");
 					//if(triedUrl != url){ triedUrl = url; }
 					//else{ 
-						setStateUnreachable(key);
+						changeStatus(key, "unreachable");
 						delete urlsLocked[key]; 
 						totalEchec++;
 					    $("#nb-auto-scan").html("<span class='letter-green'>"+ total + " / " + toTotal+"</span><br>"+
@@ -356,7 +376,7 @@
 					// $("#status-ref").html("<span class='letter-red'><i class='fa fa-ban'></i> 404 : URL INTROUVABLE OU INACCESSIBLE</span>");
 					// //if(triedUrl != url){ triedUrl = url; }
 					// //else{ 
-					// 	setStateUnreachable(key);
+					// 	changeStatus(key, "unreachable");
 					// 	delete urlsLocked[key]; 
 					// 	totalEchec++;
 					//     $("#nb-auto-scan").html("<span class='letter-green'>"+ total + " / " + toTotal+"</span><br>"+
@@ -371,8 +391,19 @@
 					// }
 				}
 			});
-		return false;
+
+			countScanDone++;
+			return false;
 		});
+
+		if(countScanDone == 0){
+			$("#searchResults").html("<div class='col-md-12 text-left margin-bottom-15'>"+
+			    							"<h4 class='siteurl_title letter-green'>"+
+			    								"<i class='fa fa-check'></i> SCAN DONE" +
+			    							"</h4>"+
+		    							"</div>");
+		}
+		
 	}
 
 
@@ -417,17 +448,17 @@ function sendReferencementAuto(id){
                 //key: "url",
         		//url: urlValidated, 
         		//hostname: hostname, 
-        		//title: title, 
-        		//description: description,
-        		//tags: keywords,
+        		title: title, 
+        		description: description,
+        		tags: keywords,
         		//categories : categoriesSelected,
-                //status: "uncomplet",
+                status: "locked",
                 favicon: favicon
         };
 
  		console.log("UPDATE THIS URL DATA ?", urlObj, id);
  		//alert("stop");
-        if(favicon!="")
+        //if(favicon!="")
 		$.ajax({
 	        type: "POST",
 	        url: baseUrl+"/"+moduleId+"/app/superadmin/action/updateurlmetadata",
@@ -451,29 +482,30 @@ function sendReferencementAuto(id){
 
 //states = locked - unreachable - uncomplet - locked
 
-function setStateUnreachable(id){
+function changeStatus(urlId, status){
 	var urlObj = {
-                status: "unreachable"
-        };
+            status: status
+    };
 
- 		console.log("unreachable THIS URL DATA ?", urlObj, id);
-        //if(false)
-		$.ajax({
-	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/app/superadmin/action/updateurlmetadata",
-	        data: { "id" : id,
-	        		"values" : urlObj },
-	       	dataType: "json",
-	    	success: function(data){
-	    		if(data.valid == true) toastr.success("Votre demande a bien été enregistrée");
-	    		//else toastr.error("Une erreur est survenue pendant le référencement");
-	    		console.log("save referencement success");
-	    	},
-	    	error: function(data){
-	    		toastr.error("Une erreur est survenue pendant l'envoi de votre demande", data);
-	    		console.log("save referencement error");
-	    	}
-	    });
+	console.log("change status", urlObj, urlId);
+    //if(false)
+	$.ajax({
+        type: "POST",
+        url: baseUrl+"/"+moduleId+"/app/superadmin/action/updateurlmetadata",
+        data: { "id" : urlId,
+        		"values" : urlObj },
+       	dataType: "json",
+    	success: function(data){
+    		if(data.valid == true) toastr.success("Le changement de status a bien été enregistré");
+    		startWebSearch("", "locked");
+    		//else toastr.error("Une erreur est survenue pendant le référencement");
+    		console.log("save referencement success");
+    	},
+    	error: function(data){
+    		toastr.error("Une erreur est survenue pendant l'envoi de votre demande", data);
+    		console.log("save referencement error");
+    	}
+    });
 }
 
 

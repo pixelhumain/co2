@@ -715,7 +715,8 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 
 		html += "<div class='col-md-12 margin-bottom-15 labelTitleDir'>";
 		
-		if(dataName != "urls")
+		console.log("eztrzeter", dataName);
+		if(dataName != "urls" && dataName != "contacts")
 			html += btnMap;
 
 		html +=	thisTitle;

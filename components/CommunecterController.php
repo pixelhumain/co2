@@ -150,6 +150,7 @@ class CommunecterController extends Controller
       "twostepregister"      => array("href" => "/ph/co2/default/twostepregister"),
       "switch"               => array("href" => "/ph/co2/default/switch"),
       "live"                 => array("href" => "/ph/co2/default/live"),
+      "sitemap"                 => array("href" => "/ph/co2/default/sitemap"),
     ),
     "city"=> array(
       "index"               => array("href" => "/ph/co2/city/index", "public" => true),

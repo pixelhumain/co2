@@ -167,4 +167,13 @@ class DefaultController extends CommunecterController {
         Yii::app()->session["lang"] = $lang;
         $this->redirect(Yii::app()->createUrl("/".$this->module->id));
     }
+
+    public function actionSitemap($type=null)
+    {
+        $this->layout = "//layouts/empty";
+        
+        $list = PHDB::find( "slugs" , array(), array("name", "slug") );
+        
+        $this->render("sitemap",array("list"=>$list));
+    }
 }

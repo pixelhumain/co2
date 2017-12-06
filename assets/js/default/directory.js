@@ -2022,6 +2022,9 @@ var directory = {
 
                 params.hash = '#page.type.'+params.type+'.id.' + params.id;
 
+                if(notNull(networkJson) && notNull(networkJson.dataSrc))
+                  params.hash = params.source;
+
                 params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
 
                 // params.tags = "";

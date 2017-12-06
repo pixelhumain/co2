@@ -281,7 +281,7 @@ function sendReferencement(){
     
     var status = $("#form-status").val();
 
-    var address = getAddressObj(); //formInMap.js
+    var address = false; //getAddressObj(); //formInMap.js
 
     var urlObj = {
             url : url,

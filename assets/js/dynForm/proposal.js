@@ -16,7 +16,7 @@ dynForm = {
 						  					  .addClass("bg-turq");
     		 	console.log("dynFormProposal", contextData);
     		 	
-    		 	//dataHelper.activateMarkdown("#ajaxFormModal #message");
+    		 	dataHelper.activateMarkdown("#ajaxFormModal #description");
     			//$("#ajaxFormModal #survey").val( contextData.id );
     			if (typeof contextData.name != "undefined" && contextData.name != "")
     		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+"<small class='text-white'><br>" + tradDynForm.inSpace + " : <i class='text-white'>#"+currentRoomName+"</i></small>" );

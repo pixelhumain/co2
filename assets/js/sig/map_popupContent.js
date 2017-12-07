@@ -52,6 +52,8 @@
 			
 			if(type == "entry") 		url = "#survey.entry.id."+id;
 			if(type == "action") 		url = "#rooms.action.id."+id;
+
+
 			
 			onclick = 'urlCtrl.loadByHash("'+url+'");';
 
@@ -61,7 +63,9 @@
 			}else if (typeof TPL_IFRAME != "undefined" && TPL_IFRAME==true){
 				url = "https://www.communecter.org/"+url;
 				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
-			}else{						
+			}else if(typeof networkJson != "undefined" && typeof networkJson.dataSrc != "undefined"){
+				popupContent += "<a href='"+data.source+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
+			} else{						
 				popupContent += "<a href='"+url+"' onclick='"+onclick+"' class='item_map_list popup-marker lbh' id='popup"+id+"'>";
 			}
 			popupContent += "<div class='main-panel'>"

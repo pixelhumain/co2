@@ -377,7 +377,7 @@
 
 	<section id="timeline" class="bg-white inline-block col-md-12 shadow">
 		<button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" 
-			    data-id="#<?php echo @$sectionKey; ?>">
+			    data-id="#timeline">
 	        	<i class="fa fa-cog"></i>
 	    </button>
 
@@ -548,7 +548,7 @@
     var mapData = <?php echo json_encode(@$mapData) ?>;
     var params = <?php echo json_encode(@$params) ?>;
 
-    console.dir("allparams", params);
+    //console.dir("allparams", params);
     var currentIdSection = "";
 	jQuery(document).ready(function() {
 		
@@ -560,12 +560,11 @@
 		$(".dropdown-onepage-main-menu li a").click(function(e){
 			e.stopPropagation();
 			var target = $(this).data("target");
-			console.log(target);
+			//console.log(target);
 			KScrollTo(target);
 		});
 
 		$("#btn-onepage-main-menu").trigger("click");
-
 
         $(".btn-full-desc").click(function(){
             var sectionKey = $(this).data("sectionkey");
@@ -582,7 +581,7 @@
 
 		//showElementPad('news');
 		var url = "news/index/type/citoyens/id/<?php echo (string)$element["_id"] ?>?isFirst=1&";
-		console.log("URL", url);
+		//console.log("URL", url);
 		ajaxPost('#timeline-page', baseUrl+'/'+moduleId+'/'+url+"renderPartial=true&tpl=co2&nbCol=2", 
 			null,
 			function(){ 
@@ -595,4 +594,8 @@
 
 	</script>
 
-    <?php $this->renderPartial('../element/sectionEditTools');?>
+    <?php $this->renderPartial('../element/sectionEditTools', 
+			array("type"=>Element::getControlerByCollection($typeItem),
+				  "id"=>$element["_id"],
+				  "element"=>$element)); 
+    ?>

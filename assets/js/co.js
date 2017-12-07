@@ -253,7 +253,7 @@ function updateField(type,id,name,value,reload, toastr){
 	$.ajax({
 	  type: "POST",
 	  url: baseUrl+"/"+moduleId+"/"+type+"/updatefield", 
-	  data: { "pk" : id ,"name" : name, value : value },
+	  data: { "pk" : id ,"name" : name, "value" : value },
 	  success: function(data){
 		if(data.result) {
 			if(toastr==null)

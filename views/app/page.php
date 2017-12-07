@@ -34,7 +34,9 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
 
-                $this->renderPartial('../element/profilSocial', $params ); 
+                $page = @$_GET["tpl"]=="onepage" ? "onepage" : "profilSocial";
+
+                $this->renderPartial('../element/'.$page, $params ); 
             }
 
 

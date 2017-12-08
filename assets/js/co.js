@@ -3396,20 +3396,22 @@ var dyFInputs = {
 												});
 											});
 	},
-	tags : function(list, placeholder, label) { 
+	tags : function(list, placeholder, label, rules) { 
     	tagsL = (list) ? list : tagsList;
     	return {
 			inputType : "tags",
 			placeholder : placeholder != null ? placeholder : tradDynForm["tags"],
 			values : tagsL,
-			label : (label != null) ? label : tradDynForm["addtags"]
+			label : (label != null) ? label : tradDynForm["addtags"],
+			rules : ( notEmpty(rules) ? rules : {} )
 		}
 	},
-	radio : function(label,keyValues) { 
+	radio : function(label,keyValues,rules) { 
     	return {
     		label : (label != null) ? label : "",
 			inputType : "radio",
-			options : keyValues
+			options : keyValues,
+			rules : ( notEmpty(rules) ? rules : {} ),
 		}
 	},
     imageAddPhoto : {
@@ -3433,7 +3435,7 @@ var dyFInputs = {
         	},1500);
     	}
     },
-    image :function() { 
+    image :function(label) { 
     	
     	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
     		uploadObj.gotoUrl = location.hash ;
@@ -3442,7 +3444,7 @@ var dyFInputs = {
     	return {
 	    	inputType : "uploader",
 	    	docType : "image",
-	    	label : tradDynForm["imageshere"]+" :", 
+	    	label : ( notEmpty(label) ? label : tradDynForm["imageshere"] ) +" :", 
 	    	showUploadBtn : false,
 	    	template:'qq-template-gallery',
 	    	filetypes:['jpeg', 'jpg', 'gif', 'png'],
@@ -3926,6 +3928,9 @@ var dyFInputs = {
     keyVal : {
     	label : "Key Value Pairs",
     	inputType : "properties",
+		placeholder : tradDynForm["tags"],
+		values : tagsList,
+		
     },
     bookmarkUrl: function(label, placeholder,rules, custom){
     	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);

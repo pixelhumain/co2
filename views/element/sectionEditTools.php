@@ -236,7 +236,7 @@
 			console.log("on save onepageEdition", onepageEdition);
 			var idSection = currentIdSection.substr(1, currentIdSection.length);
 			console.log("idSection", idSection);
-			updateField(typeEl, idEl, "onepageEdition", onepageEdition, false, "Config saved");
+			updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
 
 			hideEditionTools(false);
 		});
@@ -257,6 +257,7 @@
 			$(this).addClass("active");
 				var hex = $(this).data("hex");
 				$("input#background-color").val("#"+hex);
+				$("input#background-img").val("");
 				$("#onepage-edition-tools #btn-bgcolor-section").css("backgroundColor", "#"+hex);
 
 				$("section"+currentIdSection).css("backgroundImage", 'url()');
@@ -334,8 +335,8 @@
 		$('#onepage-edition-tools .btn-bgimg-section').click(function(){
 			$('#onepage-edition-tools .btn-bgimg-section').removeClass("active");
 			$(this).addClass("active");
-			var type = $(this).data("type");
-			$("input#text-color").val(type);
+			//var type = $(this).data("type");
+			//$("input#text-color").val(type);
 			
 			var url = urlImgBg+$(this).data("url");
 			var repeat = $(this).data("repeat");
@@ -386,6 +387,7 @@
 				if(options["text-color"] == "light" || options["text-color"] == "dark"){
 					$("section"+section).removeClass('dark').removeClass('light').addClass(options["text-color"]);
 				}else{
+					currentIdSection = section;
 					setTxtColorSection(options["text-color"]);
 				}
 			}
@@ -434,6 +436,9 @@
 		if(initType == "") initType = $("section"+currentIdSection).hasClass("dark") ? "dark" : "";
 		//$('#onepage-edition-tools input#background-color').val("#000");
 		
+		$("#text-color").val(onepageEdition[currentIdSection]["text-color"]);
+		$("#background-color").val(onepageEdition[currentIdSection]["background-color"]);
+		$("#background-img").val(onepageEdition[currentIdSection]["background-img"]);
 
 		console.log("show section edit ", idSection);
 	}

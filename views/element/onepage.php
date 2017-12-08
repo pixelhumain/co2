@@ -9,6 +9,11 @@
 		  ) , 
 	Yii::app()->theme->baseUrl. '/assets');
 
+	$cssAnsScriptFilesModule = array(
+    '/js/news/index.js',
+    );
+    HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+
 	$imgDefault = $this->module->assetsUrl.'/images/news/profile_default_l.png';
 
 	//récupération du type de l'element
@@ -552,7 +557,7 @@
     var currentIdSection = "";
 	jQuery(document).ready(function() {
 		
-		initKInterface({"affixTop":0});
+		//initKInterface({"affixTop":0});
 	
 		//$(".dropdown-onepage-main-menu").hide();
 		$("#main-page-name, title").html(elementName);

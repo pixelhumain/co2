@@ -30,13 +30,17 @@
     $randImg = rand(1, 2);
     $page = "live";
     //$randImg = 1;
+
+    $params = CO2::getThemeParams();
 ?>
 
 <style>
+    <?php if($params["title"] != "Kgougle") { ?>
     header {
       background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/live/pexels-<?php echo $randImg; ?>.jpeg") top center;
         min-height:300px;
     }
+    <?php } ?>
      
 	.scope-min-header{
         float: left;

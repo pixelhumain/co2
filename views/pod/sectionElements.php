@@ -19,14 +19,11 @@
 
     $align = $nbItem > 2 && $imgShape == "square" ? "left" : "center";
     $align = "center";
-    $textBright = @$styleParams["textBright"] ? @$styleParams["textBright"] : "light";
+    //$textBright = @$styleParams["textBright"] ? @$styleParams["textBright"] : "light";
 
 ?>
 
 <style>
-        section#<?php echo @$sectionKey; ?>{
-            background-color: <?php echo @$styleParams["bgColor"]; ?>;
-        }
 
         <?php if($nbItem >=  8){ ?>
         #onepage section#<?php echo @$sectionKey; ?> .portfolio-item .item-name,
@@ -40,8 +37,7 @@
 
 
 <section id="<?php echo @$sectionKey; ?>" 
-         class="portfolio <?php echo $textBright; ?> 
-                <?php if(@$sectionShadow==true) echo 'shadow'; ?>">
+         class="portfolio <?php if(@$sectionShadow==true) echo 'shadow'; ?>">
     
     <?php //if(@$sectionKey!="description"){ ?>
     <button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" data-id="#<?php echo @$sectionKey; ?>">
@@ -102,8 +98,8 @@
                         </div>
                     <?php } ?>
 
+                    <div class="col-md-12 col-sm-12 no-padding item-name"><?php echo @$item['name']; ?></div>
                     <?php if($nbItem <= $nbMax){ ?>
-                        <div class="col-md-12 col-sm-12 no-padding item-name"><?php echo @$item['name']; ?></div>
                         <div class="col-md-12 col-sm-12 no-padding item-address text-red">
                             <?php echo @$item['address']['addressLocality'] ?  '<i class="fa fa-map-marker"></i> '.$item['address']['addressLocality'] : ""; ?>
                         </div>

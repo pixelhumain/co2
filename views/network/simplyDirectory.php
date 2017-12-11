@@ -408,7 +408,21 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 			},
 			success: function (data) { 
 				mylog.log("data", data);
-				dataSuccess(data, indexMin, indexMax); 
+
+				if(notNull(data.entities)){
+					var val = {
+						res : []
+					} ;
+
+					$.each(data.entities, function(i, v) {
+						v["id"] = i;
+						val.res.push(v);
+					});
+
+					data = val ;
+				}
+
+				dataSuccess(data, indexMin, indexMax, locality); 
 			}
 		});
 	} else {
@@ -428,8 +442,8 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	}
 }
 
-function dataSuccess(data, indexMin, indexMax){
-	mylog.log("dataSuccess", data, !data.res, indexMin, indexMax);
+function dataSuccess(data, indexMin, indexMax, locality){
+	mylog.log("dataSuccess", data, !data.res, indexMin, indexMax, locality);
 	if(!data.res) {
 		toastr.error(data.content); 
 	} else {
@@ -466,7 +480,7 @@ function dataSuccess(data, indexMin, indexMax){
 				if(indexMin == 0){
 					//ajout du footer
 					var msg = trad.noresult;
-					if(name == "" && locality == "") 
+					if(name == "" && notNull(locality) && locality == "") 
 						msg = "<h3 class='text-dark'><i class='fa fa-3x fa-keyboard-o'></i><br> Préciser votre recherche pour plus de résultats ...</h3>";
 					str += '<div class="center" id="footerDropdown">';
 					str += "<hr style='float:left; width:100%;'/><label style='margin-bottom:10px; margin-left:15px;' class='text-white'>"+msg+"</label><br/>";

@@ -176,18 +176,22 @@
 			    <div class="col-md-12 col-sm-12 no-padding margin-top-10">
 			    	<h5><?php echo $sec["title"]; ?></h5>
 				   	<?php 
-				   		$path = Yii::app()->theme->baseUrl. '/assets/img/background-onepage/'.$sec["folder"]."/";
-				   		$path = ".".substr($path, 3);
+				   		$path = $sec["folder"]."/";
+				   		$path = ".".substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path, 3);
 				   		if(file_exists ( $path )){
 				          $files = glob($path.'*.{jpg,jpeg,png}', GLOB_BRACE);
-				        } ;
+				        }
 				    ?>
 			    	<?php
 			    		 if(isset($files))
-			    		 foreach ($files as $i => $img) { ?>
+			    		 foreach ($files as $i => $img) { 
+			    		 $dataUrl = explode( "/", $img); //var_dump($dataUrl);
+			    		 $dataUrl = $dataUrl[6] . "/" . $dataUrl[7];
+			    		 //var_dump($dataUrl);
+			    	?>
 			    			<button class="btn btn-default col-md-4 col-sm-4 btn-bgimg-section padding-5"
 			    			data-repeat="<?php echo $sec["repeat"] ? "true" : "false"; ?>"
-			    			data-url="<?php echo $img; ?>"
+			    			data-url="<?php echo $dataUrl; ?>"
 	    					style="background-image:url('<?php echo $img; ?>'); 
 	    					 <?php if($sec["repeat"]) echo "background-repeat:repeat;"; 
 	    					 	   else echo "background-size: cover;"; 
@@ -197,7 +201,7 @@
 			    	<?php } ?>
 		    	</div>
 			<?php } ?>
-	    	<input type="text" id="background-color" class="pull-right margin-top-10">
+	    	<input type="text" id="background-img" class="pull-right margin-top-10">
 	    	<br><hr>
 	    </div>
 
@@ -211,11 +215,29 @@
 </div>
 
     <script type="text/javascript" >
-    
+    var typeEl = "<?php echo $type; ?>";
+    var idEl = "<?php echo $id; ?>";
     var currentIdSection = "";
+    var onepageEdition = <?php echo @$element["onepageEdition"] ? json_encode(@$element["onepageEdition"]) : "{}" ?>;
+    var urlImgBg = "<?php echo substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/', 3); ?>";
+
 	jQuery(document).ready(function() { 
+
+		initOnepage(onepageEdition);
+
 		$("#main-page-name, title").html(elementName);
 		$(".btn-save-edition-tools").click(function(){
+			onepageEdition[currentIdSection] = {
+				"text-color" : $("#text-color").val(),
+				"background-color" : $("#background-color").val(),
+				"background-img" : $("#background-img").val()
+			};
+
+			console.log("on save onepageEdition", onepageEdition);
+			var idSection = currentIdSection.substr(1, currentIdSection.length);
+			console.log("idSection", idSection);
+			updateField(typeEl, idEl, "onepageEdition", onepageEdition, false, "Config saved");
+
 			hideEditionTools(false);
 		});
 		$(".btn-close-edition-tools").click(function(){
@@ -248,6 +270,7 @@
 				console.log("onSubmit colorpicker");
 			},
 			onChange: function(hsb, hex, rgb, el) {
+				$("input#background-img").val("");
 				$("input#background-color").val("#"+hex);
 				$("#onepage-edition-tools #btn-bgcolor-section").css("backgroundColor", "#"+hex);
 				$("section"+currentIdSection).css("backgroundColor", "#"+hex);
@@ -314,7 +337,7 @@
 			var type = $(this).data("type");
 			$("input#text-color").val(type);
 			
-			var url = $(this).data("url");
+			var url = urlImgBg+$(this).data("url");
 			var repeat = $(this).data("repeat");
 
 			console.log("repeat", repeat);
@@ -329,12 +352,46 @@
 			 	$("section"+currentIdSection).css('backgroundRepeat', "no-repeat");
 				$("section"+currentIdSection).css('backgroundSize', "cover");	
 			}
+
+			$("#background-color").val("");
+			$("#background-img").val($(this).data("url"));
 		});
 		/* BGIMG PICKER */
 		
 		
 		
 	});
+
+	function initOnepage(onepageEdition){
+		$.each(onepageEdition, function(section, options){
+
+			if(typeof options["background-img"] != "undefined" && options["background-img"] != ""){
+				$("section"+section).css('backgroundImage', "url('"+urlImgBg+options["background-img"]+"')");
+				if(options["background-img"].indexOf("pattern") >= 0){
+					console.log("repeat", true),
+					$("section"+section).css('backgroundRepeat', "repeat");
+					$("section"+section).css('backgroundSize', "unset");	
+				} 
+				else {
+					console.log("repeat", false),
+				 	$("section"+section).css('backgroundRepeat', "no-repeat");
+					$("section"+section).css('backgroundSize', "cover");	
+				}
+			}
+
+			if(typeof options["background-color"] != "undefined" && options["background-color"] != "")
+				$("section"+section).css("backgroundColor", "#"+options["background-color"]);
+
+			if(typeof options["text-color"] != "undefined" && options["text-color"] != ""){
+				if(options["text-color"] == "light" || options["text-color"] == "dark"){
+					$("section"+section).removeClass('dark').removeClass('light').addClass(options["text-color"]);
+				}else{
+					setTxtColorSection(options["text-color"]);
+				}
+			}
+
+		});
+	}
 
 	function setTxtColorSection(hex){
 		$(	"section"+currentIdSection+ " .item-name, "+

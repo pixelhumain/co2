@@ -1,7 +1,8 @@
 { 
       "title" : "Kgougle",
       "metaImg" : "/assets/img/KGOUGLE-logo-min.png",
-      "metaDesc" : "Le moteur de recherche des cagous",
+      "metaTitle" : "Le moteur de recherche des cagous",
+      "metaDesc" : "Réseau social associatif, gratuit, open-source, éthique, citoyen",
       "devises" : { "CFP" : "CFP" },
       "deviseDefault" : "CFP",
       "nbAdminModeration" : 1,

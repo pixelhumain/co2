@@ -17,6 +17,7 @@ Existed Functionnality:
 	[X] GuestBook
 	[ ] Visualiser les réservations
 
+
 Roadmap:
 [ ] Finir l'affichage du circuit
 	[ ] design dans directory #circuits
@@ -28,7 +29,6 @@ Roadmap:
 [ ] Générer la liste des circuits dans la map
 	[ ] Afficher au click la map des services proposés par circuits
 [ ] Gérer la quantité déjà réservée par circuit (bookingFor stocké dans les Orders avec l'id du circuit)
-[ ] Dynform circuit + enlever la frequency "unique" || "everyweek" MAIS frequency== "unique" à initialiser tout de même dans le circuit.obj !!!!
 [ ] Filtrage circuit
 	[ ] Par quantité souhaitée suivant la quantité restant
 	[ ] Par date de début et de fin 
@@ -47,6 +47,13 @@ Bugs:
 	[ ] Si id de backup dans circuit/SaveAction.php faire un le Backup::delete($_Post["backup"]) et enlever l'entrée backup pour le insert du circuit
 [ ] Tricky bug dans composition des circuits pour afficher les calendars des services
 [ ] Btn de navigation #admin.view.circuits avec event qui se répéte passer les event en off().on("click")
+
+
+
+@Rapha
+
+[ ] Dynform circuit + enlever la frequency "unique" || "everyweek" MAIS frequency== "unique" à initialiser tout de même dans le circuit.obj !!!!
+
 
 Remarques:
 Les dates de début et de fin des circuits sont générées directement suivant le service ajouté commencant le premier et le service ajouté terminant le circuit

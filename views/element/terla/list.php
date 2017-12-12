@@ -133,10 +133,12 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 
 				if(@$value["countOrderItem"])
 					$count=$value["countOrderItem"];
-				else if(@$subType && $subType==Circuit::COLLECTION && $actionType!="backup")
+				else if(@$subType && $subType==Circuit::COLLECTION && $actionType!="backup" && !empty($value["countQuantity"]))
 					$count=$value["countQuantity"];
-				else
+				else if(!empty($value["object"]["countQuantity"]))
 					$count=$value["object"]["countQuantity"];
+				else
+					$count = 0;
 				?>
 				<li class="columnSection <?php if($i==0) echo "active" ?> columnSection<?php echo $key ?> padding-10" data-id="<?php echo $key ?>">
 					<h4 class="title no-margin"><?php if($actionType == "backup" && $subType == Circuit::COLLECTION) echo $value["object"]["name"]; else echo $value["name"]; ?></h4>

@@ -3,27 +3,19 @@
 	//HtmlHelper::registerCssAndScriptsFiles( array('/js/default/formInMap.js') , $this->module->assetsUrl);
 
     HtmlHelper::registerCssAndScriptsFiles( 
-        array(  '/css/referencement.css',) , 
+        array(  '/css/referencement.css',
+                '/js/referencement.js') , 
         Yii::app()->theme->baseUrl. '/assets');
-
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
-                                "page" => "referencement",
-                                 )); 
+                                "page" => "referencement" )); 
 ?>
 
 <style>
-	/*.name .pastille {
-	    margin-top: -44px;
-	    display: block;
-	    text-align: right;
-	    max-width: 82%;
-	    font-size: 0.3em;
-	    margin-bottom: 22px;
-	}*/
+	
 	
 </style>
 
@@ -213,6 +205,9 @@ console.log("CITIES", cities);
 jQuery(document).ready(function() {
     initKInterface();
     buildListCategoriesForm();
+    
+    mapBg = Sig.loadMap("mapCanvas", initSigParams);
+    Sig.showIcoLoading(false);
 
     $('#form-url').val("");//"https://www.bci.nc/");//" http://groupe-vocal-nc.net/");
 
@@ -251,8 +246,9 @@ jQuery(document).ready(function() {
 
     $(".btn-scope").click(function(){
     	//h4-name-city btn-select-city name-city-selected
-    	var cityName = $(this).data("city-name");
-    	var cityCp = $(this).data("city-cp");
+    	var cityId = $(this).data("city-id");
+        var cityName = $(this).data("city-name");
+        var cityCp = $(this).data("city-cp");
     	var cityInsee = $(this).data("city-insee");
     	var cityLat = $(this).data("city-lat");
     	var cityLng = $(this).data("city-lng");
@@ -260,21 +256,23 @@ jQuery(document).ready(function() {
     	$("#h4-name-city, #form-street, #btn-find-position, #name-city-selected").show();
     	$("#name-city-selected").html(cityName + ", " + cityCp);
 
-    	coordinatesPreLoadedFormMap = [cityLat, cityLng];
+    	formInMap.formType = "url";
+        coordinatesPreLoadedFormMap = [cityLat, cityLng];
 	    formInMap.showMarkerNewElement();
-	    preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "");
+	    preLoadAddress(true, cityId, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "");
 
 	    $("#btn-find-position").off().click(function(){
 	    	showMap(true);
 
-	    	if(Sig.markerFindPlace == null)
-	    		formInMap.showMarkerNewElement();
+	    	if(Sig.markerFindPlace == null){
+                formInMap.showMarkerNewElement();
+            }
    	
 	    	var street = $("#form-street").val();
-    		preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, street);
+    		preLoadAddress(true, cityId, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, street);
     		
     		if(street != "")
-    			searchAdressNewElement();	    	
+    			formInMap.searchAdressNewElement();	    	
 	    });
     });
 
@@ -563,7 +561,8 @@ function sendReferencement(){
 
 	if(urlValidated != "" && title != "" /*&& description != "" && keywords.length > 0 && categoriesSelected.length > 0*/){
 
-		var address = getAddressObj(); //formInMap.js
+        var address = typeof locObj != "undefined" ? locObj : {}; 
+        //formInMap.createLocalityObj(true); //formInMap.js
 
 
 		var urlObj = {

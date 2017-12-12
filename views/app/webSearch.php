@@ -245,14 +245,19 @@
 	</a> 
 </div>
 <?php } ?>
+
+<?php  foreach ($siteurls as $key => $siteurl) { $siteurls[$key]["wordsFound"] = ""; } ?>
+
 <script type="text/javascript" >
   
-var siteurls = <?php echo json_encode($siteurls) ? json_encode($siteurls) : "{}"; ?>;
+var siteurls = <?php echo json_encode($siteurls) ; ?>;
+
 var search = "<?php echo $search; ?>";
 var nbUrl = <?php echo sizeof($siteurls); ?>;
+var siteEditing = false;
 
 jQuery(document).ready(function() { 
-
+	console.log("website on map", siteurls);
     Sig.showMapElements(Sig.map, siteurls);
 	
    		
@@ -264,11 +269,13 @@ jQuery(document).ready(function() {
    $(".btn-edit-url").click(function(){ console.log("siteurls", siteurls);
    		var id = $(this).data("idurl");
    		var site = siteurls[id];
+   		siteEditing = site;
    		$("#form-idurl").val(site["_id"]['$id']);
 	    $("#form-url").val(site.url);
 	    $("#form-title").val(site.title);
 	    $("#form-description").val(site.description);
-
+		$("#form-street").val(site.address.streetAddress);
+    
 	    if(typeof site.geo != "undefined"){
 	    	$("#form-lat").val(site.geo.latitude);
 		    $("#form-lng").val(site.geo.longitude);
@@ -286,6 +293,7 @@ jQuery(document).ready(function() {
 	        $("#btn-geoloc").data("city-insee", site.address.codeInsee);
 	        $("#btn-geoloc").data("city-lat", site.geo.latitude);
 	        $("#btn-geoloc").data("city-lng", site.geo.longitude);
+	        NE_localityId = site.address.localityId;
 	        NE_insee = site.address.codeInsee;
 			NE_lat = site.geo.latitude;
 			NE_lng = site.geo.longitude;
@@ -296,6 +304,25 @@ jQuery(document).ready(function() {
 			NE_level1 = site.address.level1;
 			NE_region = site.address.regionName;
 	        $("#name-city-selected").html(site.address.addressLocality + ", " + site.address.postalCode);
+
+	        coordinatesPreLoadedFormMap = [NE_lat, NE_lng];
+	        formInMap.formType = "url";
+
+	        if(site.address.streetAddress != "")
+	        	$("#form-street, #btn-find-position").show();         
+	        
+	        $("#btn-find-position").off().click(function(){ noShowAjaxModal = true;
+	            showMap(true);
+	    		
+	            var street = $("#form-street").val();
+	            formInMap.showMarkerNewElement();
+	        	preLoadAddress(true, NE_localityId, "NC", NE_insee, NE_city, NE_cp, NE_lat, NE_lng, street);
+	            
+	            if(street != ""){
+	                formInMap.searchAdressNewElement();
+	            }
+	        });
+
 	    }else{
 	    	$("#form-street, #btn-find-position").hide();
     		$("#name-city-selected").html("");
@@ -305,6 +332,8 @@ jQuery(document).ready(function() {
 
 	    $(".portfolio-item").removeClass("selected");
 	    categoriesSelected = new Array();
+
+	    if(typeof site.categories != "undefined")
 	    $.each(site.categories, function(key, val){
 	    	$(".portfolio-item.cat-"+val).addClass("selected");
 	    	console.log("cat", val);

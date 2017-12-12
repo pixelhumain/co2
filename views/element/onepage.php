@@ -84,7 +84,7 @@
 		left: 19px;
 	}
 </style>
-
+<div  id="onepage">
 	<div class="dropdown">
 		<button class="btn bg-red text-white btn font-blackoutM dropdown-toggle" 
 				data-toggle="dropdown" id="btn-onepage-main-menu">
@@ -546,6 +546,7 @@
 
     	$controler = Element::getControlerByCollection($typeItem) ;
     ?>
+</div>
 
     <script type="text/javascript" >
     

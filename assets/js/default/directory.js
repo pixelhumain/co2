@@ -1672,6 +1672,8 @@ var directory = {
       
       var name = (typeof params.title != "undefined" && params.title != "undefined") ? params.title : params.name;
       var description = params.description.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
+      description = description.replace(/\n/g,"<br>");
+      
       name = escapeHtml(name);
       if(directory.dirLog) mylog.log("-----------coopPanelHtml", params);
         str = "";  

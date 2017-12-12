@@ -299,7 +299,10 @@
 					$proposal["description"] = Translate::strToClickable($proposal["description"]);
 			} ?>
 			
-			<?php echo nl2br(@$proposal["description"]); ?>
+			<div class="descriptionMarkdown">
+				<?php echo nl2br(@$proposal["description"]); ?>
+			</div>
+
 			<?php if(@$proposal["tags"]){ ?>
 				<br><br> <b>Tags : </b>
 				<?php foreach($proposal["tags"] as $key => $tag){ ?>
@@ -412,6 +415,9 @@
 		<hr>
 		<h4 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-50 no-padding"><i class="fa fa-angle-down"></i> <?php echo Yii::t("cooperation", "More informations, arguments, exemples, demonstrations, etc"); ?></h4>
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+			<?php if(@$proposal["arguments"]){
+					$proposal["arguments"] = Translate::strToClickable($proposal["arguments"]);
+			} ?>
 			<?php echo nl2br(@$proposal["arguments"]); ?>
 		</div>
 	<?php } ?>

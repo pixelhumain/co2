@@ -10,51 +10,33 @@
             "color":"azure",
             "filters" : "resourceFilters"
         },
-
-        "donation": {
-            "label":"Give",   
-            "labelFront":"To give",        
-            "key" : "donation",     
-            "icon" : "gift",                    
+        "place": {
+            "label":"Place", 
+            "labelFront":"Place",      
+            "key" : "place",     
+            "icon" : "map-marker",               
             "section":2, 
-            "color":"azure"
-        },
-
-        "forsale": {
-            "label":"Sale",  
-            "labelFront":"For sale",            
-            "key" : "forsale",     
-            "icon" : "money",                  
-            "section":3, 
-            "color":"azure"
-        },
-
-        "forrent": {
-            "label":"Rent",   
-            "labelFront":"For rent",            
-            "key" : "forrent",    
-            "icon" : "external-link",          
-            "section":3, 
-            "color":"azure"
-        },
-
-        "lookingfor" : {
-            "label":"Need", 
-            "labelFront":"Looking for",   
-            "key" : "lookingfor",  
-            "icon" : "eye",                    
-            "section":4, 
-            "color":"azure"
-        },
-
-        "job": {
-            "label":"Jobs", 
-            "labelFront":"Offers",      
-            "key" : "job",         
-            "icon" : "briefcase",              
-            "section":5, 
             "color":"azure",
-            "filters" : "jobFilters"
+            "filters" : "placeFilters"
+        },
+
+        "interest": {
+            "label":"Interest", 
+            "labelFront":"Interest",      
+            "key" : "interest",     
+            "icon" : "question-circle-o",               
+            "section":2, 
+            "color":"azure",
+            "filters" : "interestFilters"
+        },
+        "other": {
+            "label":"Other", 
+            "labelFront":"Other",      
+            "key" : "other",     
+            "icon" : "plus-circle",               
+            "section":2, 
+            "color":"azure",
+            "filters" : "open"
         }
 
     },
@@ -139,6 +121,28 @@
             "icon":"cogs",
             "subcat" : ["Tool","Machine","Human ressource","Material ressource","Financial ressource","Shared library","Food","sharedObject"]
         }
+    },
+    "interestFilters" : {
+        "Points" : {
+            "icon":"map-marker",
+            "subcat" : [ "history", "artPiece" ,"streetArt" ]
+        },
+        "Lifepath" : {
+            "icon":"clock",
+            "subcat" : [ "event", "thought" ]
+        }
+    },
+    "placeFilters" : {
+        "meetingPoint" : {
+            "icon":"map-marker"
+        },
+        "Urban" : {
+            "icon":"building-o",
+            "subcat" : [ "recoveryCenter","trash","something2See","funPlace","place","openScene","stand","parking"]
+        },
+        "Rural" : {
+            "icon":"tree",
+            "subcat" : [ "compost", "recoveryCenter","trash","something2See","funPlace","place","openScene","stand","parking"]
+        }
     }
-    
 }

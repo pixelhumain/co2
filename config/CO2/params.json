@@ -9,6 +9,7 @@
                  "CFP" : "CFP"},
     "deviseDefault" : "€",
     "nbAdminModeration" : 3,
+    "nbReportCoModeration" : 3,
 
 	"pages" : {
 		"#app.index": {"redirect":"welcome"},
@@ -103,7 +104,7 @@
 			"subdomainName" : "page",
 			"hash":"#app.page",
 			"icon" : "", 
-			"mainTitle" : "Le réseau social citoyen",
+			"mainTitle" : "Réseau social citoyen",
 			"placeholderMainSearch" : "search ..."
 		},
 
@@ -115,7 +116,7 @@
 			"subdomainName" : "Info",
 			"hash":"#app.info",
 			"icon" : "info-circle", 
-			"mainTitle" : "Le réseau social citoyen",
+			"mainTitle" : "Réseau social citoyen",
 			"placeholderMainSearch" : "search on people communected ..."
 		},
 

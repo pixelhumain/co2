@@ -5,7 +5,8 @@
       "metaDesc" : "Réseau social associatif, gratuit, open-source, éthique, citoyen",
       "devises" : { "CFP" : "CFP" },
       "deviseDefault" : "CFP",
-      "nbAdminModeration" : 1,
+      "nbAdminModeration" : 3,
+      "nbReportCoModeration" : 3,
       "pages" : 
       {
       	"#app.index":
@@ -59,7 +60,7 @@
                   "placeholderMainSearch" : "rechercher dans l'actu ..."},
 
             "#freedom": {
-                  "inMenu" : true, 
+                  "inMenu" : false, 
                   "useHeader" : true, 
                   "open" : true, 
                   "subdomain" : "freedom", 

@@ -1,21 +1,37 @@
 
 <?php 
 	HtmlHelper::registerCssAndScriptsFiles( 
-		array(  '/css/onepage.css',
-				'/vendor/colorpicker/js/colorpicker.js',
-				'/vendor/colorpicker/css/colorpicker.css',
-				'/css/news/index.css',	
-				'/css/timeline2.css',	
-			  ) , 
-		Yii::app()->theme->baseUrl. '/assets');
+	array(  '/css/onepage.css',
+			'/vendor/colorpicker/js/colorpicker.js',
+			'/vendor/colorpicker/css/colorpicker.css',
+			'/css/news/index.css',	
+			'/css/timeline2.css',	
+		  ) , 
+	Yii::app()->theme->baseUrl. '/assets');
+
+	$cssAnsScriptFilesModule = array(
+    '/js/news/index.js',
+    );
+    HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
 	$imgDefault = $this->module->assetsUrl.'/images/news/profile_default_l.png';
-	
+
 	//récupération du type de l'element
     $typeItem = (@$element["typeSig"] && $element["typeSig"] != "") ? $element["typeSig"] : "";
-    if($typeItem == "") $typeItem = @$element["type"] ? $element["type"] : "item";
+    if($typeItem == "") $typeItem = @$element["typeSig"] ? $element["type"] : "item";
     if($typeItem == "people") $typeItem = "citoyens";
     
+    $params = Element::getParamsOnepage($typeItem, $element["_id"]);
+	
+    $edit = @$params["edit"];
+    $events = @$params["events"];
+    $linksBtn = @$params["linksBtn"];
+    $members = @$params["members"];
+    $needs = @$params["needs"];
+    $projects = @$params["projects"];
+ 	$tags = @$params["tags"];
+ 	$countStrongLinks = @$params["countStrongLinks"];
+
     $typeItemHead = $typeItem;
     if($typeItem == "organizations" && @$element["type"]) $typeItemHead = $element["type"];
 
@@ -68,10 +84,11 @@
 		left: 19px;
 	}
 </style>
-
+<div  id="onepage">
 	<div class="dropdown">
-		<button class="btn bg-red text-white btn font-blackoutM dropdown-toggle" data-toggle="dropdown" id="btn-onepage-main-menu">
-			<i class="fa fa-bars"></i> Menu
+		<button class="btn bg-red text-white btn font-blackoutM dropdown-toggle" 
+				data-toggle="dropdown" id="btn-onepage-main-menu">
+				<i class="fa fa-bars"></i> Menu
 		</button>
 		<div class="dropdown-onepage-main-menu font-montserrat" aria-labelledby="btn-onepage-main-menu">
 			<ul class="dropdown-menu arrow_box">
@@ -104,6 +121,14 @@
 		                    	<button class="btn btn-default">Editer les informations <i class="fa fa-pencil"></i></button><br>
 		                    	<button class="btn btn-default"> Paramétrer la page <i class="fa fa-cog"></i></button>
 			                    <?php } ?>
+			                    <?php
+								       	$hash = @$element["slug"] ? "#".$element["slug"] :
+																	"#page.type.".$type.".id.".$element["_id"];
+			                    ?>
+			                    <button data-hash="<?php echo $hash; ?>" class="btn btn-default lbh"> 
+			                    	Retour <i class="fa fa-chevron-left"></i> 
+			                    </button>
+			                    
 		                    </div>
 		                    <div class="col-md-6 col-sm-4 col-xs-12 text-center" style="margin-top:-20px;">
 		                    	<?php if(@$element['profilMediumImageUrl'] && @$element['profilMediumImageUrl'] != "") { ?>
@@ -355,10 +380,27 @@
 	*/
 	?>
 
-	<section id="timeline" class="bg-white inline-block col-md-12">
+	<section id="timeline" class="bg-white inline-block col-md-12 shadow">
+		<button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" 
+			    data-id="#timeline">
+	        	<i class="fa fa-cog"></i>
+	    </button>
+
+
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-title">
+                    <span class="sec-title">Actualité récente</span><br>
+                    <i class="fa fa-angle-down"></i>
+                </h2>
+            </div>
+        </div>
+
 		<div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
 			<ul class="timeline inline-block" id="timeline-page">
 		</ul>
+
+
 	</section>
 
     <!-- Contact Section -->
@@ -468,17 +510,23 @@
 	                                <a href="<?php echo @$element["socialNetwork"]["github"]; ?>" class="btn-social btn-outline"><i class="fa fa-fw fa-github"></i></a>
 	                            </li>
 		                        <?php } ?>
+	                        <?php }else{ ?>
+	                        	<li>
+	                                <i class="fa fa-ban"></i> Aucune information
+	                            </li>
 	                        <?php } ?>
                         </ul>
                     </div>
                     <div class="footer-col col-md-4">
                         <h3>A propos de nous</h3>
-                        <p><?php echo @$element["shortDescription"]; ?></p>
+                        <?php echo @$element["shortDescription"] ? @$element["shortDescription"] 
+                        											: "<i class='fa fa-ban'></i> Aucune description"; ?>
+                        
                     </div>
                 </div>
             </div>
         </div>
-        <div class="footer-below">
+        <!-- <div class="footer-below">
             <div class="container padding-15">
                 <div class="row">
                     <div class="col-md-12">
@@ -488,39 +536,41 @@
 	                </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </section>
     <?php 
     	$mapData = array();
-    	$mapData = array_merge($members, $mapData);
-    	$mapData = array_merge($projects, $mapData);
-    	$mapData = array_merge($events, $mapData);
+    	$mapData = @$members ? array_merge($members, $mapData) : array();
+    	$mapData = @$projects ? array_merge($projects, $mapData) : array();
+    	$mapData = @$events ? array_merge($events, $mapData) : array();
 
     	$controler = Element::getControlerByCollection($typeItem) ;
     ?>
+</div>
 
     <script type="text/javascript" >
     
     var elementName = "<?php echo @$element["name"]; ?>";
     var mapData = <?php echo json_encode(@$mapData) ?>;
+    var params = <?php echo json_encode(@$params) ?>;
 
-
+    //console.dir("allparams", params);
     var currentIdSection = "";
 	jQuery(document).ready(function() {
 		
-
+		//initKInterface({"affixTop":0});
+	
 		//$(".dropdown-onepage-main-menu").hide();
 		$("#main-page-name, title").html(elementName);
 
 		$(".dropdown-onepage-main-menu li a").click(function(e){
 			e.stopPropagation();
 			var target = $(this).data("target");
-			console.log(target);
+			//console.log(target);
 			KScrollTo(target);
 		});
 
 		$("#btn-onepage-main-menu").trigger("click");
-
 
         $(".btn-full-desc").click(function(){
             var sectionKey = $(this).data("sectionkey");
@@ -537,7 +587,7 @@
 
 		//showElementPad('news');
 		var url = "news/index/type/citoyens/id/<?php echo (string)$element["_id"] ?>?isFirst=1&";
-		console.log("URL", url);
+		//console.log("URL", url);
 		ajaxPost('#timeline-page', baseUrl+'/'+moduleId+'/'+url+"renderPartial=true&tpl=co2&nbCol=2", 
 			null,
 			function(){ 
@@ -550,4 +600,8 @@
 
 	</script>
 
-    <?php $this->renderPartial('sectionEditTools');?>
+    <?php $this->renderPartial('../element/sectionEditTools', 
+			array("type"=>Element::getControlerByCollection($typeItem),
+				  "id"=>$element["_id"],
+				  "element"=>$element)); 
+    ?>

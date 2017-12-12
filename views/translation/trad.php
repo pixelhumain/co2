@@ -594,6 +594,8 @@ var tradDynForm = {
 };
 
 var tradCategory = {
+	
+	"Resource" : "<?php echo Yii::t("category", "Resource") ?>",
 	"Digital" : "<?php echo Yii::t("category", "Digital") ?>",
 	"Physical" : "<?php echo Yii::t("category", "Physical") ?>",
 	"link" : "<?php echo Yii::t("category", "Link, Url") ?>",
@@ -611,6 +613,30 @@ var tradCategory = {
 	"Server": "<?php echo Yii::t("category", "Server") ?>",
 	"Database": "<?php echo Yii::t("category", "Database") ?>",
 	"Banq": "<?php echo Yii::t("category", "Banq") ?>",
+	
+	"place" 		: "<?php echo Yii::t("category", "Place") ?>",
+	"Urban" 		: "<?php echo Yii::t("category", "Urban") ?>",
+	"Rural" 		: "<?php echo Yii::t("category", "Rural") ?>",
+	"compost" 		: "<?php echo Yii::t("category", "Compost") ?>",
+	"meetingPoint"  : "<?php echo Yii::t("category", "Meeting Point") ?>",
+	"recoveryCenter": "<?php echo Yii::t("category", "Recovery center") ?>",
+	"trash"         : "<?php echo Yii::t("category", "Trash") ?>",
+	"something2See" : "<?php echo Yii::t("category", "To see") ?>",
+	"funPlace"      : "<?php echo Yii::t("category", "Fun place") ?>",
+	"place"         : "<?php echo Yii::t("category", "Public place") ?>",
+	"openScene"     : "<?php echo Yii::t("category", "Open mic") ?>",
+	"stand"         : "<?php echo Yii::t("category", "Stand") ?>",
+	"parking"       : "<?php echo Yii::t("category", "Parking") ?>",
+
+	"interest"	: "<?php echo Yii::t("category", "Interest") ?>",
+    "history"       : "<?php echo Yii::t("category", "History") ?>",
+	"artPiece"      : "<?php echo Yii::t("category", "Art pieces") ?>",
+	"streetArt"     : "<?php echo Yii::t("category", "Street art") ?>",
+	
+	"lifePath" : "<?php echo Yii::t("category", "Life Path") ?>",
+	"Points" : "<?php echo Yii::t("category", "Points") ?>",
+	"event": "<?php echo Yii::t("category", "Event") ?>",
+    "thought": "<?php echo Yii::t("category", "Thought") ?>",
 
 	"tool"          : "<?php echo Yii::t("category", "Tool") ?>",
 	"machine"       : "<?php echo Yii::t("category", "Machine") ?>",
@@ -623,18 +649,11 @@ var tradCategory = {
 	"compostPickup" : "<?php echo Yii::t("category", "Compost pickup") ?>",
 	"video"         : "<?php echo Yii::t("category", "Video") ?>",
 	"sharedLibrary" : "<?php echo Yii::t("category", "Shared library") ?>",
-	"recoveryCenter": "<?php echo Yii::t("category", "Recovery center") ?>",
-	"trash"         : "<?php echo Yii::t("category", "Trash") ?>",
-	"history"       : "<?php echo Yii::t("category", "History") ?>",
-	"something2See" : "<?php echo Yii::t("category", "To see") ?>",
-	"funPlace"      : "<?php echo Yii::t("category", "Fun place") ?>",
-	"place"         : "<?php echo Yii::t("category", "Public place") ?>",
-	"artPiece"      : "<?php echo Yii::t("category", "Art pieces") ?>",
-	"streetArt"    : "<?php echo Yii::t("category", "Street art") ?>",
-	"openScene"     : "<?php echo Yii::t("category", "Open mic") ?>",
-	"stand"         : "<?php echo Yii::t("category", "Stand") ?>",
-	"parking"       : "<?php echo Yii::t("category", "Parking") ?>",
+	
 	"other"          : "<?php echo Yii::t("category", "Other") ?>",
+
+
+
 	"contest" :"<?php echo Yii::t("category","Contest") ?>",
 	"festival" :"<?php echo Yii::t("category","Festival") ?>",
 	"market" :"<?php echo Yii::t("category","Market") ?>",

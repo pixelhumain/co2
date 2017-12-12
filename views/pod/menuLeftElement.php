@@ -379,13 +379,18 @@
 
 	<?php } ?>
 
-	<!-- <li class="">
-		<a href="javascript:" class="ssmla load-data-directory" data-type-dir="dda" data-icon="gavel">
-			<i class="fa fa-gavel"></i> <?php echo Yii::t("common","Cooperative space"); ?>
-		</a>
-	</li>
-
-	<li><hr></li> -->
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
+			  $type==Event::COLLECTION || $type==Person::COLLECTION && false){  
+			$hash = @$element["slug"] ? 
+					"#".$element["slug"] :
+					"#page.type.".$type.".id.".$element["_id"];
+	?>
+		<li>
+			<a href="<?php echo $hash; ?>.net"  class="lbh letter-blue">
+				<i class="fa fa-desktop"></i> <?php echo Yii::t("common","My web page"); ?>
+			</a>
+		</li>			
+	<?php } ?>
 </ul>
 
 

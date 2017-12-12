@@ -30,7 +30,10 @@ var formInMap = {
 
 
 	showMarkerNewElement : function(modePC){
-		mylog.log("forminmap showMarkerNewElement");
+		mylog.log("forminmap showMarkerNewElement", typeof mapBg);
+		if(typeof mapBg == "undefined")
+			mapBg = Sig.loadMap("mapCanvas", initSigParams);
+
 		Sig.clearMap();
 		formInMap.actived = true ;
 		formInMap.hiddenHtmlMap(true);
@@ -55,6 +58,10 @@ var formInMap = {
 			&& formInMap.NE_lat != "" && formInMap.NE_lng != "")
 			coordinates = new Array(formInMap.NE_lat, formInMap.NE_lng);
 		
+		if(typeof coordinatesPreLoadedFormMap != "undefined")
+			coordinates = coordinatesPreLoadedFormMap;
+
+
 		mylog.log("coordinates", coordinates);
 
 		//efface le marker s'il existe
@@ -559,20 +566,21 @@ var formInMap = {
 
 		mylog.log("backToForm 3");
 		if(formInMap.updateLocality == false ){
-			mylog.log("backToForm 6");
+			mylog.log("backToForm 6", $('#street_sumery_value').html());
+			$("#form-street").val($('#street_sumery_value').html());
 			if(notEmpty($("[name='newElement_lat']").val())){
 				locObj = formInMap.createLocalityObj();
 				mylog.log("forminmap copyMapForm2Dynform");
 				dyFInputs.locationObj.copyMapForm2Dynform(locObj);
 				dyFInputs.locationObj.addLocationToForm(locObj);
 			}
-			$("#form-street").val($('#street_sumery_value').html());
 			$(".locationBtn").html("<i class='fa fa-home'></i> Adresse secondaire");
 			formInMap.initData();
 			$.unblockUI();
 			showMap(false);
 			Sig.clearMap();
-			if(location.hash != "#referencement" && location.hash != "#web")
+			if(location.hash != "#referencement" && location.hash != "#web" && 
+				typeof noShowAjaxModal == "undefined" || noShowAjaxModal == false)
 				$('#ajax-modal').modal("show");
 		}else{
 

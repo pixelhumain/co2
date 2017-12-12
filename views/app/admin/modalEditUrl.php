@@ -1,6 +1,6 @@
 <?php 
     HtmlHelper::registerCssAndScriptsFiles( 
-        array(  '/css/referencement.css',) , 
+        array(  '/css/referencement.css','/js/referencement.js',) , 
         Yii::app()->theme->baseUrl. '/assets');
 ?>
 
@@ -190,6 +190,9 @@
 
 <script type="text/javascript">
 
+var coordinatesPreLoadedFormMap = new Array(0, 0);
+var noShowAjaxModal = false;
+
 jQuery(document).ready(function() {
     $(".btn-save-maj-metadata").click(function(){
         sendReferencement();
@@ -222,35 +225,42 @@ jQuery(document).ready(function() {
     });
 
     $("#form-street, #btn-find-position").hide();
-    $(".btn-scope").click(function(){
+
+    $(".btn-scope").click(function(){ noShowAjaxModal = true;
         //h4-name-city btn-select-city name-city-selected
+        var cityId = $(this).data("city-id");
         var cityName = $(this).data("city-name");
         var cityCp = $(this).data("city-cp");
         var cityInsee = $(this).data("city-insee");
         var cityLat = $(this).data("city-lat");
         var cityLng = $(this).data("city-lng");
 
-        $("#h4-name-city, #form-street, #btn-find-position").show();
+        $("#h4-name-city, #form-street, #btn-find-position, #name-city-selected").show();
         $("#name-city-selected").html(cityName + ", " + cityCp);
 
-        formType = "url";
+        if(mapBg == null){
+            mapBg = Sig.loadMap("mapCanvas", initSigParams);
+            Sig.showIcoLoading(false);
+        }
+
+        formInMap.formType = "url";
         coordinatesPreLoadedFormMap = [cityLat, cityLng];
         formInMap.showMarkerNewElement();
-        preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "");
+        preLoadAddress(true, cityId, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "");
 
         $("#btn-find-position").off().click(function(){
             showMap(true);
 
-            if(Sig.markerFindPlace == null)
+            if(Sig.markerFindPlace == null){
                 formInMap.showMarkerNewElement();
+            }
     
             var street = $("#form-street").val();
-            preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, street);
+            preLoadAddress(true, cityId, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, street);
             
             if(street != "")
-                searchAdressNewElement();           
+                formInMap.searchAdressNewElement();         
         });
-        
     });
 
     
@@ -281,7 +291,12 @@ function sendReferencement(){
     
     var status = $("#form-status").val();
 
-    var address = false; //getAddressObj(); //formInMap.js
+    var address = {};
+    if(typeof locObj != "undefined" && locObj != false)
+        address = locObj; 
+    else if(typeof siteEditing != "undefined" && siteEditing != false){
+        address = siteEditing;
+    }
 
     var urlObj = {
             url : url,
@@ -301,6 +316,7 @@ function sendReferencement(){
 
     console.log("UPDATE THIS URL DATA ?", urlObj, id);
    
+    //alert("ok ?"); return;
     $.ajax({
         type: "POST",
         url: baseUrl+"/"+moduleId+"/app/superadmin/action/updateurlmetadata",
@@ -324,6 +340,8 @@ function sendReferencement(){
             console.log("save referencement success");
 
             $("#modalEditUrl").modal("hide");
+            noShowAjaxModal = false;
+            locObj = false;
         },
         error: function(data){
             toastr.error("Une erreur est survenue pendant l'envoi de votre demande", data);

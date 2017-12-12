@@ -85,18 +85,22 @@ foreach($news as $key => $media){
     </div>
     <div class="timeline-panel"
          id="nbAbuse<?php echo @$media["reportAbuseCount"]; ?>">
-         <?php if( @$media["reportAbuseCount"] >= 1){ ?>
+         <?php 
+            $params = CO2::getThemeParams();
+            $abuseMax = $params["nbReportCoModeration"];
+
+            if( @$media["reportAbuseCount"] >= $abuseMax){ ?>
            <h6 class="pull-left">
               <small class="pull-left margin-left-10 letter-orange">
                 <i class="fa fa-flag"></i> Ce contenu a été signalé <?php echo @$media["reportAbuseCount"]; ?> fois !
-                <?php if(@$media["reportAbuseCount"] < 4){ ?>
+                <?php if(@$media["reportAbuseCount"] < $abuseMax){ ?>
                   <br><b>participez à la modération en signalant le contenu qui vous semble innaproprié</b>
                 <?php }else{ ?>
                   <br><b>participez à la modération en votant</b>
                 <?php } ?>
               </small>
            </h6>
-           <?php if(@$media["reportAbuseCount"] >= 1 && isset(Yii::app()->session["userId"])){ ?>
+           <?php if(@$media["reportAbuseCount"] >= $abuseMax && isset(Yii::app()->session["userId"])){ ?>
            <button class="btn btn-link bg-orange pull-right margin-right-10 margin-top-10 btn-start-moderation"
                    data-newsid="<?php echo @$media["_id"]; ?>" 
                    data-toggle="modal" data-target="#modal-moderation">

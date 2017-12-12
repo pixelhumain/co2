@@ -9,6 +9,7 @@
                  "CFP" : "CFP"},
     "deviseDefault" : "€",
     "nbAdminModeration" : 3,
+    "nbReportCoModeration" : 3,
 
 	"pages" : {
 		"#app.index": {"redirect":"welcome"},

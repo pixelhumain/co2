@@ -545,6 +545,9 @@ var uiCoop = {
 			console.log("edit idProposal", idProposal);
 			dyFObj.editElement('proposals', idProposal);
 		});
+
+		//$(".descriptionMarkdown").html(dataHelper.convertMardownToHtml($(".descriptionMarkdown").html()));
+
 		addCoopHash=".view.coop.room." + idParentRoom + ".proposal." + idParentProposal;
 		if(typeof hashUrlPage != "undefined")
 			location.hash = hashUrlPage +addCoopHash;

@@ -60,9 +60,9 @@
                   "placeholderMainSearch" : "rechercher dans l'actu ..."},
 
             "#freedom": {
-                  "inMenu" : true, 
+                  "inMenu" : false, 
                   "useHeader" : true, 
-                  "open" : false, 
+                  "open" : true, 
                   "subdomain" : "freedom", 
                   "subdomainName" : "Freedom",
                   "hash":"#app.live",

@@ -380,13 +380,13 @@
 	<?php } ?>
 
 	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
-			  $type==Event::COLLECTION || $type==Person::COLLECTION){  
+			  $type==Event::COLLECTION || $type==Person::COLLECTION && false){  
 			$hash = @$element["slug"] ? 
 					"#".$element["slug"] :
 					"#page.type.".$type.".id.".$element["_id"];
 	?>
 		<li>
-			<a href="<?php echo $hash; ?>?tpl=onepage"  class="lbh letter-blue">
+			<a href="<?php echo $hash; ?>.net"  class="lbh letter-blue">
 				<i class="fa fa-desktop"></i> <?php echo Yii::t("common","My web page"); ?>
 			</a>
 		</li>			

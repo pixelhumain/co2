@@ -116,7 +116,7 @@
         </div>
     </div>
     <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12 contentOnePage">
-    <?php } ?>
+    <?php }?>
       <div class="circuitsInfo shadow2 col-md-12 col-sm-12 col-xs-12 no-padding text-center">
         <h2 id="name"></h2>
         <span id="description" class="text-dark"></span><br/>
@@ -166,7 +166,9 @@
     	</div>
     <?php if(!@$viewRender){ ?>
     </div>
-    <?php } ?>
+    <?php }
+
+    var_dump($object); ?>
 </div>
 
 <?php 
@@ -176,48 +178,45 @@
   } 
 ?>
 <script type="text/javascript">
-    var totalCircuit=0;
-    <?php if(@$object){ ?>
-      var circuitObj=<?php echo json_encode($object) ?>;
-    <?php }else{ ?>
-      var circuitObj=circuit.obj;
-    <?php } ?>
-    var openDetails=[];
-    var eventsCircuit=[];
-	jQuery(document).ready(function() {	
-        //if(typeof params.name != "undefined" && params.name != "")
-      initBtnLink();
-      //circuit.obj.total=0;
-      $(".convertToShoppingCart").click(function(){
-        bookingFor=$("#bookingFor").val();
-        circuit.goToShoppingCart(circuitObj,bookingFor);
-      });
-      htmlCart = "";
-      if(circuitObj.countQuantity > 0 ){
-      	circuitView = circuit.generateCircuitView(circuitObj);
-        htmlCircuit = circuitView.circuit;
-      } else {
-      	htmlCircuit=circuit.generateEmptyCircuitView();
-      }
-      circuit.initHeaderCircuit(circuitObj);
-      $(".contentCircuit").html(htmlCircuit);
-      if(notEmpty(eventsCircuit)){
-        startCal=null;
-        //if(typeof circuit.obj.start != "undefined")
-          //startCal=circuit.obj.start;
-        calendar.showCalendar(".contentCalendarCircuit", eventsCircuit, "agendaWeek",startCal);
-        if(typeof circuitObj.start != "undefined"){
-          $(".contentCalendarCircuit").fullCalendar("gotoDate", moment(circuitObj.start));
-        }
-        $(window).on('resize', function(){
-          $(".contentCalendarCircuit").fullCalendar('destroy');
-          calendar.showCalendar(".contentCalendarCircuit", eventsCircuit, "agendaWeek",startCal);
-          if(typeof circuitObj.start != "undefined")
-            $(".contentCalendarCircuit").fullCalendar("gotoDate", moment(circuitObj.start));
-        });
-      }
-//      bindCartEvent();
-    });
+var totalCircuit=0;
+contextData = <?php echo json_encode($object); ?>;
+mylog.log("contextData", contextData);
+var openDetails=[];
+var eventsCircuit=[];
+jQuery(document).ready(function() {
+	//if(typeof params.name != "undefined" && params.name != "")
+	initBtnLink();
+		//circuit.obj.total=0;
+	$(".convertToShoppingCart").click(function(){
+		bookingFor=$("#bookingFor").val();
+		circuit.goToShoppingCart(contextData,bookingFor);
+	});
+	htmlCart = "";
+	if(contextData.countQuantity > 0 ){
+		circuitView = circuit.generateCircuitView(contextData);
+		htmlCircuit = circuitView.circuit;
+	} else {
+		htmlCircuit=circuit.generateEmptyCircuitView();
+	}
+	circuit.initHeaderCircuit(contextData);
+	$(".contentCircuit").html(htmlCircuit);
+	if(notEmpty(eventsCircuit)){
+		startCal=null;
+		//if(typeof circuit.obj.start != "undefined")
+		//startCal=circuit.obj.start;
+		calendar.showCalendar(".contentCalendarCircuit", eventsCircuit, "agendaWeek",startCal);
+		if(typeof contextData.start != "undefined"){
+			$(".contentCalendarCircuit").fullCalendar("gotoDate", moment(contextData.start));
+		}
+		$(window).on('resize', function(){
+		$(".contentCalendarCircuit").fullCalendar('destroy');
+		calendar.showCalendar(".contentCalendarCircuit", eventsCircuit, "agendaWeek",startCal);
+		if(typeof contextData.start != "undefined")
+			$(".contentCalendarCircuit").fullCalendar("gotoDate", moment(contextData.start));
+		});
+	}
+	//      bindCartEvent();
+});
     
     function bindCartEvent(){
         /*$(".showDetail").off().on("click",function(){

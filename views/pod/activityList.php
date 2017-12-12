@@ -155,6 +155,7 @@ $countries= OpenData::getCountriesList();
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
+		mylog.log("contextData ActivitiesList", contextData);
 		bindLBHLinks();
 	});
 </script>

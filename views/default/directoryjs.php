@@ -481,7 +481,10 @@
         ?>
 
         <?php $col = ( !in_array($typeSelected, array("classified","products","services","circuits","events","vote","all","place") )) ? 10 : 8; ?>
-        <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
+        <?php if(Yii::app()->params["CO2DomainName"] == "terla"){
+          $col = 8;
+          echo '<div>Ajout des services sur le circuit <span id="headerServices"></span></div>';
+        } ?>
         
         <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
         <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 

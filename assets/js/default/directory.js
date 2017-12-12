@@ -1328,7 +1328,7 @@ var directory = {
 
             var devise = (typeof params.devise != "undefined") ? params.devise : "";
             if(typeof params.price != "undefined" && params.price != "")
-            str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
+            str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i>pp " + params.price + " " + devise + "</div>";
          
             if(typeof params.category != "undefined"){
               str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.section] + "</span> > " + tradCategory[params.category];
@@ -1445,7 +1445,7 @@ var directory = {
       return str;
     },
     storePanelHtml : function(params){
-      if(directory.dirLog) mylog.log("----------- classifiedPanelHtml",params,params.name);
+      if(directory.dirLog) mylog.log("----------- storePanelHtml",params,params.name);
 
       str = "";  
       str += "<div class='col-lg-3 col-md-4 col-sm-4 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
@@ -2197,8 +2197,11 @@ var directory = {
                 if(domainName=="terla"){
                   if(params.type=="circuits")
                     str += directory.circuitPanelHtml(params);
-                  else
+                  else{
+                    if(notNull(contextData))
+                      $("#headerServices").html(contextData.name);
                     str += directory.storePanelHtml(params);
+                  }
                   //template principal
                 }else{
                   if(params.type == "cities")

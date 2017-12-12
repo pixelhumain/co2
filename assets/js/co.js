@@ -873,10 +873,10 @@ var urlCtrl = {
 		currentUrl = hash;
 		allReadyLoad = true;
 		CoAllReadyLoad = true;
-		if( typeof urlCtrl.loadableUrls[hash] == "undefined" || 
-			typeof urlCtrl.loadableUrls[hash].emptyContextData == "undefined" || 
-			urlCtrl.loadableUrls[hash].emptyContextData == true )
-			contextData = null;
+		// if( typeof urlCtrl.loadableUrls[hash] == "undefined" || 
+		// 	typeof urlCtrl.loadableUrls[hash].emptyContextData == "undefined" || 
+		// 	urlCtrl.loadableUrls[hash].emptyContextData == true )
+		// 	contextData = null;
 
 		$(".my-main-container").off()
 							   .bind("scroll", function () {shadowOnHeader()})

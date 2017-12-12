@@ -249,6 +249,7 @@ var circuit = {
 	},
 	generateEmptyCircuitView:function(){
     	str="<span>Le circuit est vide</span><br/>"+
+    			//"<a href='' onclick='servicesforcircuit();' class='btn bg-orange lbh'>Continue circuit</a>";
     			"<a href='#activities' class='btn bg-orange lbh'>Continue circuit</a>";
     	return str;
     },
@@ -419,6 +420,7 @@ var circuit = {
         circuit.reloadViewCircuit();
     },
     reloadViewCircuit:function(){
+    	mylog.log("reloadViewCircuit circuit",circuit);
         circuit.obj.total=0;
         htmlCart = "";
         if(circuit.obj.countQuantity > 0 )
